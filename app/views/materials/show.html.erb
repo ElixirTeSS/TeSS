@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @material.title %>
+</p>
+
+<p>
+  <strong>Url:</strong>
+  <%= @material.url %>
+</p>
+
+<p>
+  <strong>Short description:</strong>
+  <%= @material.short_description %>
+</p>
+
+<p>
+  <strong>Doi:</strong>
+  <%= @material.doi %>
+</p>
+
+<p>
+  <strong>Remote updated date:</strong>
+  <%= @material.remote_updated_date %>
+</p>
+
+<p>
+  <strong>Remote created date:</strong>
+  <%= @material.remote_created_date %>
+</p>
+
+<p>
+  <strong>Local updated date:</strong>
+  <%= @material.local_updated_date %>
+</p>
+
+<p>
+  <strong>Remote updated date:</strong>
+  <%= @material.remote_updated_date %>
+</p>
+
+<%= link_to 'Edit', edit_material_path(@material) %> |
+<%= link_to 'Back', materials_path %>

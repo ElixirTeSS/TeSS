@@ -1,0 +1,49 @@
+<%= form_for(@material) do |f| %>
+  <% if @material.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@material.errors.count, "error") %> prohibited this material from being saved:</h2>
+
+      <ul>
+      <% @material.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_area :title %>
+  </div>
+  <div class="field">
+    <%= f.label :url %><br>
+    <%= f.text_field :url %>
+  </div>
+  <div class="field">
+    <%= f.label :short_description %><br>
+    <%= f.text_field :short_description %>
+  </div>
+  <div class="field">
+    <%= f.label :doi %><br>
+    <%= f.text_field :doi %>
+  </div>
+  <div class="field">
+    <%= f.label :remote_updated_date %><br>
+    <%= f.date_select :remote_updated_date %>
+  </div>
+  <div class="field">
+    <%= f.label :remote_created_date %><br>
+    <%= f.date_select :remote_created_date %>
+  </div>
+  <div class="field">
+    <%= f.label :local_updated_date %><br>
+    <%= f.date_select :local_updated_date %>
+  </div>
+  <div class="field">
+    <%= f.label :remote_updated_date %><br>
+    <%= f.date_select :remote_updated_date %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

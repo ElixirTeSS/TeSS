@@ -1,0 +1,41 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Materials</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Url</th>
+      <th>Short description</th>
+      <th>Doi</th>
+      <th>Remote updated date</th>
+      <th>Remote created date</th>
+      <th>Local updated date</th>
+      <th>Remote updated date</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @materials.each do |material| %>
+      <tr>
+        <td><%= material.title %></td>
+        <td><%= material.url %></td>
+        <td><%= material.short_description %></td>
+        <td><%= material.doi %></td>
+        <td><%= material.remote_updated_date %></td>
+        <td><%= material.remote_created_date %></td>
+        <td><%= material.local_updated_date %></td>
+        <td><%= material.remote_updated_date %></td>
+        <td><%= link_to 'Show', material %></td>
+        <td><%= link_to 'Edit', edit_material_path(material) %></td>
+        <td><%= link_to 'Destroy', material, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Material', new_material_path %>

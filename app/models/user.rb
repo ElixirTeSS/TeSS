@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   attr_accessor :login, :email, :username
 
   has_one :profile, dependent: :destroy
+  has_many :materials
   belongs_to :role
   before_create :set_default_role, :set_default_profile
 
