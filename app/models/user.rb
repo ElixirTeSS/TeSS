@@ -1,9 +1,9 @@
 class User < ActiveRecord::Base
-  attr_accessor :login
+  attr_accessor :login, :email, :username
 
   has_one :profile, dependent: :destroy
   belongs_to :role
-  before_create :set_default_role
+  before_create :set_default_role, :set_default_profile
 
 
   # Include default devise modules. Others available are:
@@ -34,9 +34,18 @@ class User < ActiveRecord::Base
     end
   end
 
-  private
+  #private
+
   def set_default_role
     self.role ||= Role.find_by_name('registered_user')
+  end
+
+  def set_default_profile
+    if self.profile.nil?
+      self.create_profile()
+      self.profile[:email] = self[:email]
+      self.profile.save!
+    end
   end
 
 
