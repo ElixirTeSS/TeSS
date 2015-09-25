@@ -2,6 +2,9 @@ class User < ActiveRecord::Base
   attr_accessor :login
 
   has_one :profile, dependent: :destroy
+  belongs_to :role
+  before_create :set_default_role
+
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -29,6 +32,11 @@ class User < ActiveRecord::Base
     else
       where(conditions.to_h).first
     end
+  end
+
+  private
+  def set_default_role
+    self.role ||= Role.find_by_name('registered_user')
   end
 
 
