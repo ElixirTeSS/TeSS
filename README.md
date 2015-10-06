@@ -11,3 +11,5 @@ Also:
 
     rails g public_activity:migration
     rake db:migrate
+
+public_activity Railscast: http://railscasts.com/episodes/406-public-activity?view=asciicast
