@@ -17,6 +17,7 @@ gem 'coffee-rails', '~> 4.1.0'
 
 gem 'rails_admin'
 gem 'devise'
+gem 'public_activity'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'

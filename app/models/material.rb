@@ -1,4 +1,5 @@
 class Material < ActiveRecord::Base
+  include PublicActivity::Common
 
   has_one :internal_submitters, foreign_key: "user_id", class_name: "User"
   has_one :submitters, foreign_key: "user_id", class_name: "User"

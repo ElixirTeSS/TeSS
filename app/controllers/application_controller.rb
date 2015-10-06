@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include PublicActivity::StoreController
+
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   # Prevent CSRF attacks by raising an exception.

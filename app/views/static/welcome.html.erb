@@ -1,7 +1,7 @@
 <h1>TeSS</h1>
 
 <% if user_signed_in? %>
-<p>Signed in as <%= current_user.username -%></p>
+<p>Signed in as <%= current_user[:username] -%></p>
 <% else %>
 <p>Not signed in.</p>
 <% end %>
