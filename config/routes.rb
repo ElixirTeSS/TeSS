@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'static/welcome'
+
   resources :materials
   devise_for :users
 
@@ -11,6 +13,12 @@ Rails.application.routes.draw do
 
   resources :users
   resources :activities
+
+  resources :events
+  resources :packages
+  resources :workflows
+  resources :content_providers
+  resources :nodes
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

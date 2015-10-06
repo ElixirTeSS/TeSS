@@ -1,17 +1,157 @@
-<%= form_for(@user) do |f| %>
-  <% if @user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+<%= form_for @user, :html => { :class => "form-horizontal user" } do |f| %>
 
-      <ul>
-      <% @user.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+    <% if @user.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
     </div>
   <% end %>
 
-  <div class="actions">
-    <%= f.submit %>
+  <div class="control-group">
+    <%= f.label :username, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :username, :class => 'form-control' %>
+    </div>
+    <%= error_span(@user[:username]) %>
   </div>
+  <div class="control-group">
+    <%= f.label :email, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :email, :class => 'form-control' %>
+    </div>
+    <%= error_span(@user[:email]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :encrypted_password, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :encrypted_password, :class => 'form-control' %>
+    </div>
+    <%= error_span(@user[:encrypted_password]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :reset_password_token, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :reset_password_token, :class => 'form-control' %>
+    </div>
+    <%= error_span(@user[:reset_password_token]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :reset_password_sent_at, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :reset_password_sent_at, :class => 'form-control' %>
+    </div>
+    <%= error_span(@user[:reset_password_sent_at]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :remember_created_at, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :remember_created_at, :class => 'form-control' %>
+    </div>
+    <%= error_span(@user[:remember_created_at]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :current_sign_in_at, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :current_sign_in_at, :class => 'form-control' %>
+    </div>
+    <%= error_span(@user[:current_sign_in_at]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :last_sign_in_at, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :last_sign_in_at, :class => 'form-control' %>
+    </div>
+    <%= error_span(@user[:last_sign_in_at]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :current_sign_in_ip, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :current_sign_in_ip, :class => 'form-control' %>
+    </div>
+    <%= error_span(@user[:current_sign_in_ip]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :last_sign_in_ip, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :last_sign_in_ip, :class => 'form-control' %>
+    </div>
+    <%= error_span(@user[:last_sign_in_ip]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :confirmation_token, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :confirmation_token, :class => 'form-control' %>
+    </div>
+    <%= error_span(@user[:confirmation_token]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :confirmed_at, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :confirmed_at, :class => 'form-control' %>
+    </div>
+    <%= error_span(@user[:confirmed_at]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :confirmation_sent_at, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :confirmation_sent_at, :class => 'form-control' %>
+    </div>
+    <%= error_span(@user[:confirmation_sent_at]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :unconfirmed_email, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :unconfirmed_email, :class => 'form-control' %>
+    </div>
+    <%= error_span(@user[:unconfirmed_email]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :failed_attempts, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :failed_attempts, :class => 'form-control' %>
+    </div>
+    <%= error_span(@user[:failed_attempts]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :unlock_token, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :unlock_token, :class => 'form-control' %>
+    </div>
+    <%= error_span(@user[:unlock_token]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :locked_at, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :locked_at, :class => 'form-control' %>
+    </div>
+    <%= error_span(@user[:locked_at]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :role_id, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :role_id, :class => 'form-control' %>
+    </div>
+    <%= error_span(@user[:role_id]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :material_id, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :material_id, :class => 'form-control' %>
+    </div>
+    <%= error_span(@user[:material_id]) %>
+  </div>
+
+
+  <%= f.submit nil, :class => 'btn btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+            users_path, :class => 'btn btn-default' %>
+
 <% end %>

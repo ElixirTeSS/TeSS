@@ -1,44 +1,39 @@
-<p id="notice"><%= notice %></p>
+<%- model_class = Material -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+</div>
 
-<p>
-  <strong>Title:</strong>
-  <%= @material.title %>
-</p>
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:title) %>:</strong></dt>
+  <dd><%= @material.title %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:url) %>:</strong></dt>
+  <dd><%= @material.url %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:short_description) %>:</strong></dt>
+  <dd><%= @material.short_description %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:doi) %>:</strong></dt>
+  <dd><%= @material.doi %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:remote_updated_date) %>:</strong></dt>
+  <dd><%= @material.remote_updated_date %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:remote_created_date) %>:</strong></dt>
+  <dd><%= @material.remote_created_date %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:local_updated_date) %>:</strong></dt>
+  <dd><%= @material.local_updated_date %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:internal_submitter_id) %>:</strong></dt>
+  <dd><%= @material.internal_submitter_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:submitter_id) %>:</strong></dt>
+  <dd><%= @material.submitter_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:author_id) %>:</strong></dt>
+  <dd><%= @material.author_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:contributor_id) %>:</strong></dt>
+  <dd><%= @material.contributor_id %></dd>
+</dl>
 
-<p>
-  <strong>Url:</strong>
-  <%= @material.url %>
-</p>
-
-<p>
-  <strong>Short description:</strong>
-  <%= @material.short_description %>
-</p>
-
-<p>
-  <strong>Doi:</strong>
-  <%= @material.doi %>
-</p>
-
-<p>
-  <strong>Remote updated date:</strong>
-  <%= @material.remote_updated_date %>
-</p>
-
-<p>
-  <strong>Remote created date:</strong>
-  <%= @material.remote_created_date %>
-</p>
-
-<p>
-  <strong>Local updated date:</strong>
-  <%= @material.local_updated_date %>
-</p>
-
-<p>
-  <strong>Remote updated date:</strong>
-  <%= @material.remote_updated_date %>
-</p>
-
-<%= link_to 'Edit', edit_material_path(@material) %> |
-<%= link_to 'Back', materials_path %>
+<%= link_to t('.back', :default => t("helpers.links.back")),
+              materials_path, :class => 'btn btn-default'  %>
+<%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_material_path(@material), :class => 'btn btn-default' %>
+<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              material_path(@material),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>
