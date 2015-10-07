@@ -4,8 +4,7 @@ class User < ActiveRecord::Base
   has_one :profile, dependent: :destroy
   has_many :materials
   belongs_to :role
-  before_create :set_default_role, :set_default_profile
-
+  before_create :set_default_role
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
