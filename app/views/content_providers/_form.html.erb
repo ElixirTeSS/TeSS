@@ -1,0 +1,52 @@
+<%= form_for @content_provider, :html => { :class => "form-horizontal content_provider" } do |f| %>
+
+    <% if @content_provider.errors.any? %>
+        <div id="error_expl" class="panel panel-danger">
+          <div class="panel-heading">
+            <h3 class="panel-title"><%= pluralize(@content_provider.errors.count, "error") %> prohibited this content_provider from being saved:</h3>
+          </div>
+          <div class="panel-body">
+            <ul>
+              <% @content_provider.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+    <% end %>
+
+    <div class="control-group">
+      <%= f.label :title, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :title, :class => 'form-control' %>
+      </div>
+      <%= error_span(@content_provider[:title]) %>
+    </div>
+    <div class="control-group">
+      <%= f.label :url, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :url, :class => 'form-control' %>
+      </div>
+      <%= error_span(@content_provider[:url]) %>
+    </div>
+    <div class="control-group">
+      <%= f.label :logo_url, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :logo_url, :class => 'form-control' %>
+      </div>
+      <%= error_span(@content_provider[:logo_url]) %>
+    </div>
+    <div class="control-group">
+      <%= f.label :description, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :description, :class => 'form-control' %>
+      </div>
+      <%= error_span(@content_provider[:description]) %>
+    </div>
+
+
+    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                content_providers_path, :class => 'btn btn-default' %>
+
+<% end %>
