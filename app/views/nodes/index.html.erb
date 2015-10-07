@@ -1,0 +1,47 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Nodes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Member status</th>
+      <th>Country code</th>
+      <th>Home page string</th>
+      <th>Institutions</th>
+      <th>Trc</th>
+      <th>Trc email</th>
+      <th>Trc</th>
+      <th>Staff</th>
+      <th>Twitter</th>
+      <th>Carousel images</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @nodes.each do |node| %>
+      <tr>
+        <td><%= node.name %></td>
+        <td><%= node.member_status %></td>
+        <td><%= node.country_code %></td>
+        <td><%= node.home_page %></td>
+        <td><%= node.institutions %></td>
+        <td><%= node.trc %></td>
+        <td><%= node.trc_email %></td>
+        <td><%= node.trc %></td>
+        <td><%= node.staff %></td>
+        <td><%= node.twitter %></td>
+        <td><%= node.carousel_images %></td>
+        <td><%= link_to 'Show', node %></td>
+        <td><%= link_to 'Edit', edit_node_path(node) %></td>
+        <td><%= link_to 'Destroy', node, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Node', new_node_path %>
