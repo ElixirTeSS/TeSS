@@ -1,20 +1,20 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  title: MyText
-  url: MyString
-  short_description: MyString
-  doi: MyString
+  title: Training Material Example
+  url: http://training.com/trainers/1359023
+  short_description: This is a Training Material produced by an example organization
+  doi: http://dx.doi.ac.uk/2q3093032
   remote_updated_date: 2015-09-25
   remote_created_date: 2015-09-25
   local_updated_date: 2015-09-25
   remote_updated_date: 2015-09-25
 
 two:
-  title: MyText
-  url: MyString
-  short_description: MyString
-  doi: MyString
+  title: Bad Training Material Example
+  url: MyString.com
+  short_description: THis is the short descriptiopn
+  doi: not really a doi.
   remote_updated_date: 2015-09-25
   remote_created_date: 2015-09-25
   local_updated_date: 2015-09-25
