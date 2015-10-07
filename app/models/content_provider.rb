@@ -1,5 +1,7 @@
 class ContentProvider < ActiveRecord::Base
 
+  include PublicActivity::Common
+
   # TODO: Add validations for these:
   # title:text url:text logo_url:text description:text
 
