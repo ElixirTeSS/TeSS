@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
 
   resources :nodes
+
+  get 'content_providers/index'
+  get 'content_providers/show'
+  get 'content_providers/new'
+  get 'content_providers/edit'
+  get 'content_providers/create'
+
   get 'static/welcome'
 
   resources :materials
