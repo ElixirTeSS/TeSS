@@ -58,9 +58,13 @@ development:
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
+# [:database][:name] will be tess_test on regular secrets.yml
+# and travis_ci_user on Travis specific secrets.yml
 test:
   <<: *default
-  database: tess_test
+  database: <%= Rails.application.secrets[:database][:name] %>
+
+
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is

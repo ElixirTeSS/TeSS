@@ -3,5 +3,5 @@ rvm:
 - "2.2.1"
 
 before_script:
-- cp config/database.yml.travis config/database.yml
+- cp config/example_secret_file.yml.travis config/secrets.yml
 - psql -c 'create database travis_ci_tst;' -U postgres
