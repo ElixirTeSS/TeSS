@@ -19,7 +19,7 @@
         <%= menu_item "Nodes", nodes_path %>
     <% end %>
     <% if current_user %>
-        <%= menu_item "Log Out", log_out_path %>
+        <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
     <% else %>
         <%= menu_group pull: :right do %>
             <%= menu_item "Sign Up", new_user_registration_path %>
