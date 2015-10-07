@@ -1,3 +1,7 @@
+
+![travis build status](https://travis-ci.org/ElixirUK/TeSS.svg?branch=master "Travis CI")
+
+
 # TeSS
 
 Work in progress to add basic models.
