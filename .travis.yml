@@ -5,4 +5,5 @@ rvm:
 before_script:
 - cp config/example_secret_file.yml.travis config/secrets.yml
 - psql -c 'create database travis_ci_test;' -U postgres
-- bundle exec rake db:migrate
+- bundle exec rake db:setup
+
