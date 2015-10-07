@@ -56,8 +56,8 @@ class MaterialsController < ApplicationController
   # DELETE /materials/1
   # DELETE /materials/1.json
   def destroy
-    @material.destroy
     @material.create_activity :destroy, owner: current_user
+    @material.destroy
     respond_to do |format|
       format.html { redirect_to materials_url, notice: 'Material was successfully destroyed.' }
       format.json { head :no_content }
