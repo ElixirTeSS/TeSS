@@ -62,7 +62,7 @@ development:
 # and travis_ci_user on Travis specific secrets.yml
 test:
   <<: *default
-  database: tess_test
+  database: <%= Rails.application.secrets[:database][:name] %>
 
 
 
