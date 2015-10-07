@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :nodes
   get 'static/welcome'
 
   resources :materials
