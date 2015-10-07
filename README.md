@@ -1,6 +1,4 @@
-
-![travis build status](https://travis-ci.org/ElixirUK/TeSS.svg?branch=master "Travis CI")
-
+[![Build Status](https://travis-ci.org/ElixirUK/TeSS.svg?branch=master)](https://travis-ci.org/ElixirUK/TeSS)
 
 # TeSS
 
