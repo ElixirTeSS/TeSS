@@ -18,7 +18,7 @@ class NodesControllerTest < ActionController::TestCase
 
   test "should create node" do
     assert_difference('Node.count') do
-      post :create, node: { carousel_images: @node.carousel_images, country_code: @node.country_code, home_page: @node.home_page, institutions: @node.institutions, member_status: @node.member_status, name: @node.name, staff: @node.staff, trc: @node.trc, trc: @node.trc, trc_email: @node.trc_email, twitter: @node.twitter }
+      post :create, node: { carousel_images: @node.carousel_images, country_code: @node.country_code, home_page: @node.home_page, institutions: @node.institutions, member_status: @node.member_status, name: @node.name, staff: @node.staff,  trc: @node.trc, trc_email: @node.trc_email, twitter: @node.twitter }
     end
 
     assert_redirected_to node_path(assigns(:node))
@@ -35,7 +35,7 @@ class NodesControllerTest < ActionController::TestCase
   end
 
   test "should update node" do
-    patch :update, id: @node, node: { carousel_images: @node.carousel_images, country_code: @node.country_code, home_page: @node.home_page, institutions: @node.institutions, member_status: @node.member_status, name: @node.name, staff: @node.staff, trc: @node.trc, trc: @node.trc, trc_email: @node.trc_email, twitter: @node.twitter }
+    patch :update, id: @node, node: { carousel_images: @node.carousel_images, country_code: @node.country_code, home_page: @node.home_page, institutions: @node.institutions, member_status: @node.member_status, name: @node.name, staff: @node.staff, trc: @node.trc, trc_email: @node.trc_email, twitter: @node.twitter }
     assert_redirected_to node_path(assigns(:node))
   end
 
