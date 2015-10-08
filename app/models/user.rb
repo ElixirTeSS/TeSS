@@ -1,10 +1,10 @@
 class User < ActiveRecord::Base
-  attr_accessor :login, :email, :username
+  attr_accessor :login #, :email, :username
 
   has_one :profile, dependent: :destroy
   has_many :materials
   belongs_to :role
-  before_create :set_default_role
+  after_create :set_default_role, :set_default_profile
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -14,15 +14,14 @@ class User < ActiveRecord::Base
 
   validates :username,
             :presence => true,
-            :uniqueness => {
-                :case_sensitive => false
-            }
+            :case_sensitive => false
 
   validates :email,
             :presence => true,
-            :uniqueness => {
-                :case_sensitive => false
-            }
+            :case_sensitive => false
+
+  validates_format_of :email,:with => Devise.email_regexp
+
 
 
   def self.find_for_database_authentication(warden_conditions)

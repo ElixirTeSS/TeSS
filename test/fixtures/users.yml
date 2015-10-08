@@ -6,13 +6,13 @@
 #
 regular_user:
   username: 'Bob'
-  email: 'bob@hotmail.com'
+  email: 'bob@notarealdomain.org'
   encrypted_password: 'bobs_encrypted_password'
   confirmed_at: <%= Time.zone.now %>
 
 admin:
   username: 'Adam Min'
-  email: 'adam@hotmail.com'
+  email: 'adam@notarealdomain.org'
   encrypted_password: 'admin_encrypted_password'
   confirmed_at: <%= Time.zone.now %>
   role_id: 2
