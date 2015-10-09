@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
 
-  resources :nodes
 
   get 'content_providers/index'
   get 'content_providers/show'
@@ -10,7 +9,6 @@ Rails.application.routes.draw do
 
   get 'static/welcome'
 
-  resources :materials
   devise_for :users
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
@@ -21,12 +19,19 @@ Rails.application.routes.draw do
 
   resources :users
   resources :activities
-
+  resources :nodes
   resources :events
   resources :packages
   resources :workflows
   resources :content_providers
-  resources :nodes
+  resources :materials
+
+=begin
+  authenticate :user do
+    resources :materials, only: [:new, :create, :edit, :update, :destroy]
+  end
+  resources :materials, only: [:index, :show]
+=end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
