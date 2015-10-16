@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151009074405) do
+ActiveRecord::Schema.define(version: 20151016150918) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,11 +49,8 @@ ActiveRecord::Schema.define(version: 20151009074405) do
     t.string   "doi"
     t.date     "remote_updated_date"
     t.date     "remote_created_date"
-    t.date     "local_updated_date"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
-    t.integer  "internal_submitter_id"
-    t.integer  "submitter_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
     t.integer  "author_id"
     t.integer  "contributor_id"
     t.integer  "user_id"

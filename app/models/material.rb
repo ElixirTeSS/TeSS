@@ -4,7 +4,7 @@ class Material < ActiveRecord::Base
   has_one :owner, foreign_key: "id", class_name: "User"
 
   # Generated:
-  # title:text url:string short_description:string doi:string  remote_updated_date:date remote_created_date:date local_updated_date:date remote_updated_date:date
+  # title:text url:string short_description:string doi:string  remote_updated_date:date remote_created_date:date
   # TODO:
 =begin
   License
