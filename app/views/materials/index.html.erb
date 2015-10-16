@@ -12,9 +12,6 @@
       <th><%= model_class.human_attribute_name(:doi) %></th>
       <th><%= model_class.human_attribute_name(:remote_updated_date) %></th>
       <th><%= model_class.human_attribute_name(:remote_created_date) %></th>
-      <th><%= model_class.human_attribute_name(:local_updated_date) %></th>
-      <th><%= model_class.human_attribute_name(:internal_submitter_id) %></th>
-      <th><%= model_class.human_attribute_name(:submitter_id) %></th>
       <th><%= model_class.human_attribute_name(:author_id) %></th>
       <th><%= model_class.human_attribute_name(:contributor_id) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
@@ -31,9 +28,6 @@
         <td><%= material.doi %></td>
         <td><%= material.remote_updated_date %></td>
         <td><%= material.remote_created_date %></td>
-        <td><%= material.local_updated_date %></td>
-        <td><%= material.internal_submitter_id %></td>
-        <td><%= material.submitter_id %></td>
         <td><%= material.author_id %></td>
         <td><%= material.contributor_id %></td>
         <td><%=l material.created_at %></td>

@@ -7,8 +7,7 @@ one:
   doi: http://dx.doi.ac.uk/2q3093032
   remote_updated_date: 2015-09-25
   remote_created_date: 2015-09-25
-  local_updated_date: 2015-09-25
-  remote_updated_date: 2015-09-25
+
 
 two:
   title: Bad Training Material Example
@@ -17,5 +16,4 @@ two:
   doi: not really a doi.
   remote_updated_date: 2015-09-25
   remote_created_date: 2015-09-25
-  local_updated_date: 2015-09-25
-  remote_updated_date: 2015-09-25
+
