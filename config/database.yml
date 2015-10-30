@@ -21,12 +21,12 @@ default: &default
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 5
+  database: <%= Rails.application.secrets[:database][:name] %>
   username: <%= Rails.application.secrets[:database][:username] %>
   password: <%= Rails.application.secrets[:database][:password] %>
 
 development:
   <<: *default
-  database: tess_development
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -62,9 +62,6 @@ development:
 # and travis_ci_user on Travis specific secrets.yml
 test:
   <<: *default
-  database: <%= Rails.application.secrets[:database][:name] %>
-
-
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -87,6 +84,3 @@ test:
 #
 production:
   <<: *default
-  database: tess_production
-  username: tess
-  password: <%= ENV['TESS_DATABASE_PASSWORD'] %>
