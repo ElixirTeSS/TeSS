@@ -9,6 +9,8 @@ Rails.application.routes.draw do
 
   get 'static/welcome'
 
+  post 'materials/check_title' => 'materials#check_title'
+
   devise_for :users
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
