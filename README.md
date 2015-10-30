@@ -1,21 +1,63 @@
-[![Build Status](https://travis-ci.org/ElixirUK/TeSS.svg?branch=master)](https://travis-ci.org/ElixirUK/TeSS)
-
 # TeSS
 
-Work in progress to add basic models.
+ELIXIR's Training e-Support Service using Ruby on Rails.
+
+# Setup
+Below is an example guide to help you set up TeSS in development mode. More comprehensive guides on installing
+ruby, rails, rvm, bundler, postgres, etc. are avalable elsewhere.
+
+## Ruby, rails, rvm, bundler
 
 
-## Setup
+## PostgreSQL
 
-Check the tessdbs repository for any necessary commands for Devise &c.
+1. Install postgres and add a postgres user, say 'tess_user', for the use by the TeSS app.
+Make sure tess_user is either the owner of the TeSS database (to be created in the following step), or is a superuser.
+Otherwise, you may run into some issues when running and managing the TeSS app.
 
-Also:
+ From command prompt:
+ * `$ createuser --superuser tess_user`
 
-    rails g public_activity:migration
-    rake db:migrate
+ Connect to your postgres database console as superuser 'postgres' (modify to suit your postgres installation):
+ * `$ psql -U postgres`
 
-public_activity Railscast: http://railscasts.com/episodes/406-public-activity?view=asciicast
+ From the postgres console, set password for user 'tess_user':
+ * `postgres=# \password tess_user`
 
+2. Create database 'tess_development' (of any other name you want - also make sure you configure this in
+config/database.yml or config/secrets.yml). From postgres console do:
+ * `postgres=# create database tess_development;`
+
+ If your tess_user it not superuser, perform various GRANT commands (make sure you connect as superuser/DB admin):
+ * `postgres=# GRANT ALL ON tess_development TO tess_user;`
+ * `postgres=# \connect tess_development;`
+ * `tess_development=# GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO tess_user;`
+ * `ALTER USER tess_user CREATEDB;` # so you can run rake db:create
+
+ Test that you can now connect to the database from command prompt with:
+ * `$ psql -U tess_user -W -d tess_development`
+
+> Handy postgres/rails tutorials:
+>
+> https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-ruby-on-rails-application-on-ubuntu-14-04
+>
+> http://robertbeene.com/rails-4-2-and-postgresql-9-4/
+
+## App
+
+1. Copy config/example_secrets.yml to config/secrets.yml and configure your system.
+
+2. Edit config/database.yml or config/secrets.yml (depending on your preference) to add the database user and password defined above.
+
+3. Run:
+ * `rake db:setup`
+ * `rake db:migrate`
+
+4. You should be ready to fire up TeSS in development mode:
+ * `rails server`
+
+5. Access TeSS at:
+ * `http://localhost:3000`.
 
 ## Basic API
 
