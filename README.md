@@ -4,10 +4,31 @@ ELIXIR's Training e-Support Service using Ruby on Rails.
 
 # Setup
 Below is an example guide to help you set up TeSS in development mode. More comprehensive guides on installing
-ruby, rails, rvm, bundler, postgres, etc. are avalable elsewhere.
+Ruby, Rails, RVM, bundler, postgres, etc. are available elsewhere.
 
-## Ruby, rails, rvm, bundler
+## Ruby, RVM, Bundler, Rails
+### Ruby and RVM
 
+It is typically recommended to install Ruby with RVM. With RVM, you can specify the version of Ruby you want
+installed, plus a whole lot more (e.g. gemsets). Installation instructions are <a href="http://rvm.io/rvm/install/">available online</a>.
+
+TeSS was developed using Ruby 2.2 and we recommend using version 2.2 or higher:
+
+ * `rvm install ruby-2.2-head`
+ * `rvm use --create ruby-2.2-head@tessdbs`
+
+### Bundler
+ "Bundler provides a consistent environment for Ruby projects by tracking and installing the exact gems and versions that are needed."
+
+`$ gem install bundler`
+
+### Rails
+
+Once you have Ruby, RVM and bundler installed, from the root folder of the app do:
+
+`$ bundle install`
+
+This will install Rails, as well as any other gem that the TeSS app needs as specified in Gemfile (located in the root folder).
 
 ## PostgreSQL
 
@@ -24,7 +45,7 @@ Otherwise, you may run into some issues when running and managing the TeSS app.
  From the postgres console, set password for user 'tess_user':
  * `postgres=# \password tess_user`
 
-2. Create database 'tess_development' (of any other name you want - also make sure you configure this in
+2. Create database 'tess_development' (or any other name you want - also make sure you configure this in
 config/database.yml or config/secrets.yml). From postgres console do:
  * `postgres=# create database tess_development;`
 
@@ -32,7 +53,7 @@ config/database.yml or config/secrets.yml). From postgres console do:
  * `postgres=# GRANT ALL ON tess_development TO tess_user;`
  * `postgres=# \connect tess_development;`
  * `tess_development=# GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO tess_user;`
- * `ALTER USER tess_user CREATEDB;` # so you can run rake db:create
+ * `ALTER USER tess_user CREATEDB;` # this command is so you can run rake db:create
 
  Test that you can now connect to the database from command prompt with:
  * `$ psql -U tess_user -W -d tess_development`
@@ -47,7 +68,7 @@ config/database.yml or config/secrets.yml). From postgres console do:
 
 1. Copy config/example_secrets.yml to config/secrets.yml and configure your system.
 
-2. Edit config/database.yml or config/secrets.yml (depending on your preference) to add the database user and password defined above.
+2. Edit config/database.yml or config/secrets.yml (depending on your preference) to configure the database name, user and password defined above.
 
 3. Run:
  * `rake db:setup`
