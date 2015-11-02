@@ -10,12 +10,13 @@ Ruby, Rails, RVM, bundler, postgres, etc. are available elsewhere.
 ### Ruby and RVM
 
 It is typically recommended to install Ruby with RVM. With RVM, you can specify the version of Ruby you want
-installed, plus a whole lot more (e.g. gemsets). Installation instructions are <a href="http://rvm.io/rvm/install/">available online</a>.
+installed, plus a whole lot more (e.g. gemsets). Full installation instructions are [available online](http://rvm.io/rvm/install/).
 
-TeSS was developed using Ruby 2.2 and we recommend using version 2.2 or higher:
+TeSS was developed using Ruby 2.2 and we recommend using version 2.2 or higher. To install it and quickly set up a gemset 'tess', you
+can do something like the following:
 
  * `rvm install ruby-2.2-head`
- * `rvm use --create ruby-2.2-head@tessdbs`
+ * `rvm use --create ruby-2.2-head@tess`
 
 ### Bundler
  "Bundler provides a consistent environment for Ruby projects by tracking and installing the exact gems and versions that are needed."
