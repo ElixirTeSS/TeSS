@@ -1,11 +1,8 @@
 # TeSS
 
 [ELIXIR's](https://www.elixir-europe.org/) Training e-Support Service using Ruby on Rails.
-<<<<<<< HEAD
 
 TeSS is a Rails 4 application.
-=======
->>>>>>> 19646edc145b3e0cf9506c40250ae063d5fec3be
 
 # Setup
 Below is an example guide to help you set up TeSS in development mode. More comprehensive guides on installing
