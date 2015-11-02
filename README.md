@@ -1,6 +1,6 @@
 # TeSS
 
-ELIXIR's Training e-Support Service using Ruby on Rails.
+[ELIXIR's](https://www.elixir-europe.org/) Training e-Support Service using Ruby on Rails.
 
 # Setup
 Below is an example guide to help you set up TeSS in development mode. More comprehensive guides on installing
