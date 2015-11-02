@@ -1,27 +1,33 @@
 # TeSS
 
-ELIXIR's Training e-Support Service using Ruby on Rails.
+[ELIXIR's](https://www.elixir-europe.org/) Training e-Support Service using Ruby on Rails.
+
+TeSS is a Rails 4 application.
 
 # Setup
 Below is an example guide to help you set up TeSS in development mode. More comprehensive guides on installing
 Ruby, Rails, RVM, bundler, postgres, etc. are available elsewhere.
 
-## Ruby, RVM, Bundler, Rails
-### Ruby and RVM
+## RVM, Ruby, Bundler, Rails
+### RVM and Ruby
 
 It is typically recommended to install Ruby with RVM. With RVM, you can specify the version of Ruby you want
-installed, plus a whole lot more (e.g. gemsets). Full installation instructions are [available online](http://rvm.io/rvm/install/).
+installed, plus a whole lot more (e.g. gemsets). Full installation instructions for RVM are [available online](http://rvm.io/rvm/install/).
 
-TeSS was developed using Ruby 2.2 and we recommend using version 2.2 or higher. To install it and quickly set up a gemset 'tess', you
+TeSS was developed using Ruby 2.2 and we recommend using version 2.2 or higher. To install it (after you installed RVM) and set up a gemset 'tess', you
 can do something like the following:
 
  * `rvm install ruby-2.2-head`
  * `rvm use --create ruby-2.2-head@tess`
 
 ### Bundler
- "Bundler provides a consistent environment for Ruby projects by tracking and installing the exact gems and versions that are needed."
+ Bundler provides a consistent environment for Ruby projects by tracking and installing the exact gems and versions that are needed for your Ruby application.
+
+ To install it, you can do:
 
 `$ gem install bundler`
+
+Note that program 'gem' (a package management framework for Ruby called RubyGems) gets installed when you install RVM so you do not have to install it separately.
 
 ### Rails
 
@@ -31,35 +37,45 @@ Once you have Ruby, RVM and bundler installed, from the root folder of the app d
 
 This will install Rails, as well as any other gem that the TeSS app needs as specified in Gemfile (located in the root folder).
 
+To just install Rails 4, you can do (at the time of this writing we worked with Rails 4.2):
+
+`$ gem install rails -v 4.2`
+
 ## PostgreSQL
 
-1. Install postgres and add a postgres user, say 'tess_user', for the use by the TeSS app.
-Make sure tess_user is either the owner of the TeSS database (to be created in the following step), or is a superuser.
+1. Install postgres and add a postgres user called 'tess_user' for the use by the TeSS app (you can name the user any way you like).
+Make sure tess_user is either the owner of the TeSS database (to be created in the next step), or is a superuser.
 Otherwise, you may run into some issues when running and managing the TeSS app.
 
  From command prompt:
  * `$ createuser --superuser tess_user`
 
- Connect to your postgres database console as superuser 'postgres' (modify to suit your postgres installation):
+ Connect to your postgres database console as superuser 'postgres' (modify to suit your postgres installation if needed):
  * `$ psql -U postgres`
 
- From the postgres console, set password for user 'tess_user':
+ From the postgres console, set password for user 'tess_user' after the prompt:
  * `postgres=# \password tess_user`
 
-2. Create database 'tess_development' (or any other name you want - also make sure you configure this in
-config/database.yml or config/secrets.yml). From postgres console do:
+ If your tess_user it not a superuser, make sure you grant it a privilege to create databases:
+ * `ALTER USER tess_user CREATEDB;`
+
+2. Connect to postgres console as tess_user and create database 'tess_development' (or use any other name you want).
+
+ To connect to postgres console do (modify to suit your postgres installation if needed):
+ * `$ psql -U tess_user`
+
+ From postgres console, as user tess_user, do:
  * `postgres=# create database tess_development;`
 
- If your tess_user it not superuser, perform various GRANT commands (make sure you connect as superuser/DB admin):
+3. If your tess_user it not superuser, perform various GRANT commands (make sure you connect as superuser/DB admin to your postgres console):
  * `postgres=# GRANT ALL ON tess_development TO tess_user;`
  * `postgres=# \connect tess_development;`
  * `tess_development=# GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO tess_user;`
- * `ALTER USER tess_user CREATEDB;` # this command is so you can run rake db:create
 
- Test that you can now connect to the database from command prompt with:
+4. Test that you can now connect to the database from command prompt with:
  * `$ psql -U tess_user -W -d tess_development`
 
-> Handy postgres/rails tutorials:
+> Handy Postgres/Rails tutorials:
 >
 > https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-ruby-on-rails-application-on-ubuntu-14-04
 >
