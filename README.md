@@ -35,7 +35,7 @@ Once you have Ruby, RVM and bundler installed, from the root folder of the app d
 
 `$ bundle install`
 
-This will install Rails, as well as any other gem that the TeSS app needs as specified in Gemfile (located in the root folder).
+This will install Rails, as well as any other gem that the TeSS app needs as specified in Gemfile (located in the root folder of the TeSS app).
 
 To just install Rails 4, you can do (at the time of this writing we worked with Rails 4.2):
 
