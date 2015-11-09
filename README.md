@@ -50,10 +50,10 @@ Otherwise, you may run into some issues when running and managing the TeSS app.
  From command prompt:
  * `$ createuser --superuser tess_user`
 
- Connect to your postgres database console as superuser 'postgres' (modify to suit your postgres installation if needed):
+ Connect to your postgres database console as database admin 'postgres' (modify to suit your postgres database installation):
  * `$ psql -U postgres`
 
- From the postgres console, set password for user 'tess_user' after the prompt:
+ From the postgres console, set password for user 'tess_user':
  * `postgres=# \password tess_user`
 
  If your tess_user it not a superuser, make sure you grant it a privilege to create databases:
@@ -61,7 +61,7 @@ Otherwise, you may run into some issues when running and managing the TeSS app.
 
 2. Connect to postgres console as tess_user and create database 'tess_development' (or use any other name you want).
 
- To connect to postgres console do (modify to suit your postgres installation if needed):
+ To connect to postgres console do (modify to suit your postgres database installation):
  * `$ psql -U tess_user`
 
  From postgres console, as user tess_user, do:
