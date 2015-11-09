@@ -81,20 +81,27 @@ Otherwise, you may run into some issues when running and managing the TeSS app.
 >
 > http://robertbeene.com/rails-4-2-and-postgresql-9-4/
 
-## App
+## The TeSS App
 
-1. Copy config/example_secrets.yml to config/secrets.yml and configure your system.
+1. From the app's root directory, copy config/example_secrets.yml to config/secrets.yml.
 
-2. Edit config/database.yml or config/secrets.yml (depending on your preference) to configure the database name, user and password defined above.
+ `$ cp config/example_secrets.yml config/secrets.yml`
 
-3. Run:
- * `rake db:setup`
- * `rake db:migrate`
+2. Edit config/secrets.yml (or config/database.yml - depending on your preference) to configure the database name, user and password defined above.
 
-4. You should be ready to fire up TeSS in development mode:
- * `rails server`
+3. Edit config/secrets.yml to configure the app's secret_key_base which you can generate with:
 
-5. Access TeSS at:
+ `$ rake secret`
+
+4. Run:
+ * `$ bundle install` (if you have not already)
+ * `$ rake db:setup`
+ * `$ rake db:migrate`
+
+5. You should be ready to fire up TeSS in development mode:
+ * `$ rails server`
+
+6. Access TeSS at:
  * http://localhost:3000.
 
 ## Basic API
