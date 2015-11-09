@@ -102,7 +102,7 @@ Otherwise, you may run into some issues when running and managing the TeSS app.
  * `$ rails server`
 
 6. Access TeSS at:
- * http://localhost:3000.
+ * [http://localhost:3000](http://localhost:3000)
 
 ## Basic API
 
