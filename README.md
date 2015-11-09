@@ -67,7 +67,7 @@ Otherwise, you may run into some issues when running and managing the TeSS app.
  From postgres console, as user tess_user, do:
  * `postgres=# create database tess_development;`
 
-3. If your tess_user it not superuser, perform various GRANT commands (make sure you connect as superuser/DB admin to your postgres console):
+3. If your tess_user it not superuser, perform various GRANT commands (make sure you connect as database superuser/admin to your postgres console):
  * `postgres=# GRANT ALL ON tess_development TO tess_user;`
  * `postgres=# \connect tess_development;`
  * `tess_development=# GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO tess_user;`
