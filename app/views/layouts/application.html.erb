@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Tess</title>
+  <title>TeSS - Training eSupport System</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 
-<%= nav_bar static: :top, brand: "TESS", responsive: true do %>
-    <%= menu_text "Training eSupport System" %>
+<%= nav_bar static: :top, brand: "TeSS", responsive: true do %>
+    <!--<%= menu_text "Training eSupport System" %>-->
     <%= menu_group do %>
         <%= menu_item "Events", events_path %>
         <%= menu_item "Materials", materials_path %>
