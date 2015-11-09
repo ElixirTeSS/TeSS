@@ -52,4 +52,18 @@ class MaterialsControllerTest < ActionController::TestCase
 
     assert_redirected_to materials_path
   end
+
+  test "should find existing material" do
+    post 'check_title', :format => :json,  :title => @material.title
+    assert_response :success
+    assert_equal(JSON.parse(response.body)['title'], @material.title)
+
+  end
+
+  test "should return nothing when material does't exist" do
+    post 'check_title', :format => :json,  :title => 'This title should not exist'
+    assert_response :success
+    assert_equal(response.body, "")
+  end
+
 end

@@ -2,11 +2,11 @@ class MaterialsController < ApplicationController
   before_action :set_material, only: [:show, :edit, :update, :destroy]
 
   # Should allow token authentication for API calls
-  acts_as_token_authentication_handler_for User, except: [:index, :show] #only: [:new, :create, :edit, :update, :destroy]
+  acts_as_token_authentication_handler_for User, except: [:index, :show, :check_title] #only: [:new, :create, :edit, :update, :destroy]
 
   # User auth should be required in the web interface as well; it's here rather than in routes so that it
   # doesn't override the token auth, above.
-  before_filter :authenticate_user!, except: [:index, :show]
+  before_filter :authenticate_user!, except: [:index, :show, :check_title]
 
   # Should prevent forgery errors for JSON posts.
   skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
@@ -29,6 +29,32 @@ class MaterialsController < ApplicationController
 
   # GET /materials/1/edit
   def edit
+  end
+
+  # POST /materials/check_title
+  # POST /materials/check_title.json
+  def check_title
+    title = params[:title]
+    if title
+      @material = Material.find_by_title(title)
+      if @material
+        respond_to do |format|
+          format.html { redirect_to @material }
+          #format.json { render json: @material }
+          format.json { render :show, location: @material }
+        end
+      else
+        respond_to do |format|
+          format.html { render :nothing => true, :status => 200, :content_type => 'text/html' }
+          format.json { render :nothing => true, :status => 200, :content_type => 'application/json' }
+        end
+      end
+    else
+      respond_to do |format|
+        format.html { render :nothing => true, :status => 200, :content_type => 'text/html' }
+        format.json { render :nothing => true, :status => 200, :content_type => 'application/json' }
+      end
+    end
   end
 
   # POST /materials
