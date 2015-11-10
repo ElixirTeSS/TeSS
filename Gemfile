@@ -34,6 +34,12 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
+# Gem for creating before_validation callbacks for stripping whitespace
+gem "auto_strip_attributes", "~> 2.0"
+
+# Gem for validating URLs
+gem 'valid_url'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

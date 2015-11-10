@@ -5,7 +5,7 @@ class MaterialsControllerTest < ActionController::TestCase
   include Devise::TestHelpers
 
   setup do
-    @material = materials(:one)
+    @material = materials(:good_material)
     @updated_material = {
         title: "New title",
         short_description: "New description",

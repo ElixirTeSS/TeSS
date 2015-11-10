@@ -1,6 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+good_material:
   title: Training Material Example
   url: http://training.com/trainers/1359023
   short_description: This is a Training Material produced by an example organization
@@ -9,9 +9,9 @@ one:
   remote_created_date: 2015-09-25
 
 
-two:
+bad_material:
   title: Bad Training Material Example
-  url: MyString.com
+  url: Not really a valid URL.com
   short_description: THis is the short descriptiopn
   doi: not really a doi.
   remote_updated_date: 2015-09-25
