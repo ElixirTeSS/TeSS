@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class ContentProvidersControllerTest < ActionController::TestCase
+  include Devise::TestHelpers
 
   setup do
     @content_provider = content_providers(:one)

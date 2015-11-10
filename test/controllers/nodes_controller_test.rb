@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class NodesControllerTest < ActionController::TestCase
+  include Devise::TestHelpers
+
   setup do
     @node = nodes(:good)
   end
