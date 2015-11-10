@@ -3,6 +3,8 @@ class Material < ActiveRecord::Base
 
   has_one :owner, foreign_key: "id", class_name: "User"
 
+  validates :title, :short_description, :url, presence: true
+
   # Generated:
   # title:text url:string short_description:string doi:string  remote_updated_date:date remote_created_date:date
   # TODO:
