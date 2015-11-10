@@ -14,6 +14,5 @@ class MaterialTest < ActiveSupport::TestCase
   end
 
   test "url must be in correct format" do
-    materials
   end
 end
