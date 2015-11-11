@@ -1,15 +1,15 @@
 class Material < ActiveRecord::Base
   include PublicActivity::Common
-  # include Concerns::URIField
 
   has_one :owner, foreign_key: "id", class_name: "User"
 
-  # Remove trailing and squeezes white spaces inside the string (before_validation):
+  # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
-  auto_strip_attributes :title, :short_description, :url, :squish => true
+  auto_strip_attributes :title, :short_description, :url, :squish => false
 
   validates :title, :short_description, :url, presence: true
-  # Validate the URL is in correct format via url_validate gem
+
+  # Validate the URL is in correct format via valid_url gem
   validates :url, :url => true
 
   # Generated:
