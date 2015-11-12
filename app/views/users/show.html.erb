@@ -42,6 +42,9 @@
   <dd><%= @user.role_id %></dd>
   <dt><strong><%= model_class.human_attribute_name(:material_id) %>:</strong></dt>
   <dd><%= @user.material_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:authentication_token) %>:</strong></dt>
+  <dd><%= @user.authentication_token %></dd>
+
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
