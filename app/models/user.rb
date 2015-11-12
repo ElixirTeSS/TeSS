@@ -49,6 +49,13 @@ class User < ActiveRecord::Base
     end
   end
 
+  def is_admin?
+    if self.role.name == 'admin'
+      return true
+    end
+    return false
+  end
+
   def skip_email_confirmation!
     # In development environment, set the user as confirmed after creation
     # so no confirmation emails are sent
