@@ -20,6 +20,7 @@
     <% end %>
     <% if current_user %>
         <%= menu_group pull: :right do %>
+            <%= menu_item "Profile", user_path(current_user) %>
             <%= menu_item "Sign out", destroy_user_session_path, :method => :delete %>
         <% end %>
     <% else %>
