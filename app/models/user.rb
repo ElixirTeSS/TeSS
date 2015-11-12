@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   has_many :materials
   belongs_to :role
 
-  after_create :set_default_role, :set_default_profile
+  after_create :set_default_role, :set_default_profile, :skip_email_confirmation!
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -25,8 +25,6 @@ class User < ActiveRecord::Base
             :case_sensitive => false
 
   validates_format_of :email,:with => Devise.email_regexp
-
-
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
@@ -58,5 +56,10 @@ class User < ActiveRecord::Base
     return false
   end
 
+  def skip_email_confirmation!
+    # In development environment, set the user as confirmed after creation
+    # so no confirmation emails are sent
+    self.confirm! if Rails.env.development?
+  end
 
 end
