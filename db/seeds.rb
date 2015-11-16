@@ -21,7 +21,10 @@ Metabolomics is an emerging field that aims to measure the complement of metabol
 The course will be targeted towards final year undergraduate students from biology / chemical disciplines and medical students, but will also provide a valuable introduction to the metabolomics field for MSc and PhD students, and scientists at any stage in their careers. Metabolomics is a new tool to the scientific community and has widespread applications across the medical and biological sciences in academia and industry.",
     doi: 'doi:14.1502/06780841559.ab1',
     scientific_topic: ['Biophysics'],
-    keywords: ['Galaxy', 'unix', 'Taverna'])
+    target_audience: ['Bioinformaticians'],
+    keywords: ['Galaxy', 'unix', 'Taverna'],
+    remote_created_date: Date.today - 256,
+    remote_updated_date: Date.today - 48)
 
 Material.create!(
     title: 'Browsing plant and pathogen genomes with Ensembl Genomes',
@@ -31,7 +34,10 @@ Material.create!(
 This one-day, hands-on course will explore the EBI's Ensembl Genomes Browser at www.ensemblgenomes.org in order to explore genes, sequence variation, and other data for plants and pathogens. New users and those who wish to deepen their understanding of the data and navigation behind the Ensembl Genomes Browser are welcome.",
     doi: 'doi:34.1502/06435841559.ab1',
     scientific_topic: ['Biomarkers', 'Pharmacology'],
-    keywords: ['Galaxy', 'linux'])
+    target_audience: ['Bioinformaticians'],
+    keywords: ['Galaxy', 'linux'],
+    remote_created_date: Date.today - 356,
+    remote_updated_date: Date.today - 10)
 
 Material.create!(
     title: 'NGS current challenges and data analysis for plant researchers',
@@ -48,5 +54,8 @@ Data formats\n
 Data integration",
     doi: 'doi:10.1002/0470841559.ch1',
     scientific_topic: ['Computational biology', 'Function analysis'],
-    keywords: ['Galaxy', 'linux'])
+    target_audience: ['Bioinformaticians'],
+    keywords: ['Galaxy', 'linux'],
+    remote_created_date: Date.today - 25,
+    remote_updated_date: Date.today - 1)
 
