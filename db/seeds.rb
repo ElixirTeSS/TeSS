@@ -23,6 +23,8 @@ The course will be targeted towards final year undergraduate students from biolo
     scientific_topic: ['Biophysics'],
     target_audience: ['Bioinformaticians'],
     keywords: ['Galaxy', 'unix', 'Taverna'],
+    authors: ['Tom', 'Jerry'],
+    contributors: ['Peppa Pig', 'George Pig'],
     remote_created_date: Date.today - 256,
     remote_updated_date: Date.today - 48)
 
@@ -36,6 +38,8 @@ This one-day, hands-on course will explore the EBI's Ensembl Genomes Browser at 
     scientific_topic: ['Biomarkers', 'Pharmacology'],
     target_audience: ['Bioinformaticians'],
     keywords: ['Galaxy', 'linux'],
+    authors: ['Jane Doe'],
+    contributors: [],
     remote_created_date: Date.today - 356,
     remote_updated_date: Date.today - 10)
 
@@ -56,6 +60,8 @@ Data integration",
     scientific_topic: ['Computational biology', 'Function analysis'],
     target_audience: ['Bioinformaticians'],
     keywords: ['Galaxy', 'linux'],
+    authors: ['John Doe'],
+    contributors: ['J.I. Joe'],
     remote_created_date: Date.today - 25,
     remote_updated_date: Date.today - 1)
 

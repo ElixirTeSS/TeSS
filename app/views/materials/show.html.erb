@@ -18,16 +18,16 @@
   <dd><%= @material.target_audience %></dd>
   <dt><strong><%= model_class.human_attribute_name(:keywords) %>:</strong></dt>
   <dd><%= @material.keywords %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:authors) %>:</strong></dt>
+  <dd><%= @material.authors.blank? ? 'N/A' : @material.authors %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:contributors) %>:</strong></dt>
+  <dd><%= @material.contributors.blank? ? 'N/A' : @material.contributors %></dd>
   <dt><strong>DOI:</strong></dt>
   <dd><%= @material.doi %></dd>
   <dt><strong>Created:</strong></dt>
   <dd><%= @material.remote_created_date %></dd>
   <dt><strong>Last updated:</strong></dt>
   <dd><%= @material.remote_updated_date %></dd>
-  <!--<dt><strong><%#= model_class.human_attribute_name(:author_id) %>:</strong></dt>-->
-  <!--<dd><!%= @material.author_id %></dd>-->
-  <!--<dt><strong><!#= model_class.human_attribute_name(:contributor_id) %>:</strong></dt>-->
-  <!--<dd><!%= @material.contributor_id %></dd>-->
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
