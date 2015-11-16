@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151029120731) do
+ActiveRecord::Schema.define(version: 20151113160219) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,11 +49,15 @@ ActiveRecord::Schema.define(version: 20151029120731) do
     t.string   "doi"
     t.date     "remote_updated_date"
     t.date     "remote_created_date"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
-    t.integer  "author_id"
-    t.integer  "contributor_id"
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.integer  "user_id"
+    t.text     "long_description"
+    t.string   "target_audience",     default: [],              array: true
+    t.string   "scientific_topic",    default: [],              array: true
+    t.string   "keywords",            default: [],              array: true
+    t.string   "authors",             default: [],              array: true
+    t.string   "contributors",        default: [],              array: true
   end
 
   create_table "nodes", force: :cascade do |t|
@@ -89,7 +93,12 @@ ActiveRecord::Schema.define(version: 20151029120731) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.string   "username"
+    t.integer  "role_id"
+    t.integer  "material_id"
+    t.string   "authentication_token"
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
@@ -107,11 +116,6 @@ ActiveRecord::Schema.define(version: 20151029120731) do
     t.integer  "failed_attempts",        default: 0,  null: false
     t.string   "unlock_token"
     t.datetime "locked_at"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-    t.integer  "role_id"
-    t.integer  "material_id"
-    t.string   "authentication_token"
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
