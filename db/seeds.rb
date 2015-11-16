@@ -20,7 +20,8 @@ Material.create!(
 Metabolomics is an emerging field that aims to measure the complement of metabolites (the intermediates and products of metabolism) in living organisms. The complement of metabolites in a biological system is known as the metabolome and represents the downstream effect of an organism’s genome and its interaction with the environment. Metabolomics has a wide application area across the medical and biological sciences and is attractive to both new and established scientists. In this course we will provide an introduction to metabolomics, explain why we want to study the metabolome and describe the current challenges in analysing the complement of metabolites in a biological system. We will describe the interdisciplinary approaches adopted in the metabolomics workflow and demonstrate how the combined efforts of scientist’s from different disciplines is advancing this exciting field. By the end of the course the learner will understand how metabolomics can revolutionise our understanding of metabolism.
 The course will be targeted towards final year undergraduate students from biology / chemical disciplines and medical students, but will also provide a valuable introduction to the metabolomics field for MSc and PhD students, and scientists at any stage in their careers. Metabolomics is a new tool to the scientific community and has widespread applications across the medical and biological sciences in academia and industry.",
     doi: 'doi:14.1502/06780841559.ab1',
-    scientific_topic: ['Biophysics'])
+    scientific_topic: ['Biophysics'],
+    keywords: ['Galaxy', 'unix', 'Taverna'])
 
 Material.create!(
     title: 'Browsing plant and pathogen genomes with Ensembl Genomes',
@@ -29,7 +30,8 @@ Material.create!(
     long_description: "The Ensembl genome annotation system, developed jointly by the EBI and the Wellcome Trust Sanger Institute, has been used for the annotation, analysis, and display of vertebrate genomes since 2000.  Since 2009, the Ensembl site has been complemented by the creation of five new sites for bacteria, protists, fungi, plants and invertebrate metazoa, enabling users to access a single collection of interactive interfaces for accessing and comparing genome-scale data from species of scientific interest across taxonomy.
 This one-day, hands-on course will explore the EBI's Ensembl Genomes Browser at www.ensemblgenomes.org in order to explore genes, sequence variation, and other data for plants and pathogens. New users and those who wish to deepen their understanding of the data and navigation behind the Ensembl Genomes Browser are welcome.",
     doi: 'doi:34.1502/06435841559.ab1',
-    scientific_topic: ['Biomarkers', 'Pharmacology'])
+    scientific_topic: ['Biomarkers', 'Pharmacology'],
+    keywords: ['Galaxy', 'linux'])
 
 Material.create!(
     title: 'NGS current challenges and data analysis for plant researchers',
@@ -45,5 +47,6 @@ Importance of standards\n
 Data formats\n
 Data integration",
     doi: 'doi:10.1002/0470841559.ch1',
-    scientific_topic: ['Computational biology', 'Function analysis'])
+    scientific_topic: ['Computational biology', 'Function analysis'],
+    keywords: ['Galaxy', 'linux'])
 
