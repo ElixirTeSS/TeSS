@@ -2,35 +2,28 @@
 <div class="page-header">
   <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
 </div>
+
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_material_path,
+            :class => 'btn btn-primary' %>
+
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
+      <!--<th><%#= model_class.human_attribute_name(:id) %></th>-->
       <th><%= model_class.human_attribute_name(:title) %></th>
-      <th><%= model_class.human_attribute_name(:url) %></th>
       <th><%= model_class.human_attribute_name(:short_description) %></th>
-      <th><%= model_class.human_attribute_name(:doi) %></th>
-      <th><%= model_class.human_attribute_name(:remote_updated_date) %></th>
-      <th><%= model_class.human_attribute_name(:remote_created_date) %></th>
-      <th><%= model_class.human_attribute_name(:author_id) %></th>
-      <th><%= model_class.human_attribute_name(:contributor_id) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th>URL</th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
   <tbody>
     <% @materials.each do |material| %>
       <tr>
-        <td><%= link_to material.id, material_path(material) %></td>
-        <td><%= material.title %></td>
-        <td><%= material.url %></td>
+        <!--<td><%#= link_to material.id, material_path(material) %></td>-->
+        <td><%= link_to material.title, material_path(material) %></td>
         <td><%= material.short_description %></td>
-        <td><%= material.doi %></td>
-        <td><%= material.remote_updated_date %></td>
-        <td><%= material.remote_created_date %></td>
-        <td><%= material.author_id %></td>
-        <td><%= material.contributor_id %></td>
-        <td><%=l material.created_at %></td>
+        <td><%= link_to "Material source", material.url %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_material_path(material), :class => 'btn btn-default btn-xs' %>
@@ -44,7 +37,3 @@
     <% end %>
   </tbody>
 </table>
-
-<%= link_to t('.new', :default => t("helpers.links.new")),
-            new_material_path,
-            :class => 'btn btn-primary' %>
