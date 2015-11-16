@@ -1,80 +1,109 @@
-<%= form_for @material, :html => { :class => "form-horizontal material" } do |f| %>
+<%= form_for @material, :html => {:class => "form-horizontal material"} do |f| %>
 
     <% if @material.errors.any? %>
-    <div id="error_expl" class="panel panel-danger">
-      <div class="panel-heading">
-        <h3 class="panel-title"><%= pluralize(@material.errors.count, "error") %> prohibited this material from being saved:</h3>
+        <div id="error_expl" class="panel panel-danger">
+          <div class="panel-heading">
+            <h3 class="panel-title"><%= pluralize(@material.errors.count, "error") %> prohibited this material from
+              being saved:</h3>
+          </div>
+          <div class="panel-body">
+            <ul>
+              <% @material.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+    <% end %>
+
+    <div class="control-group">
+      <%= f.label :title, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :title, :class => 'form-control' %>
       </div>
-      <div class="panel-body">
-        <ul>
-        <% @material.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-        </ul>
+      <%= error_span(@material[:title]) %>
+    </div>
+    <div class="control-group">
+      <%= f.label :url, "URL", :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :url, :class => 'form-control' %>
       </div>
+      <%= error_span(@material[:url]) %>
     </div>
-  <% end %>
+    <div class="control-group">
+      <%= f.label :short_description, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :short_description, :class => 'form-control' %>
+      </div>
+      <%= error_span(@material[:short_description]) %>
+    </div>
+    <div class="control-group">
+      <%= f.label :long_description, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :long_description, :class => 'form-control' %>
+      </div>
+      <%= error_span(@material[:long_description]) %>
+    </div>
+    <div class="control-group">
+      <%= f.label :doi, "DOI", :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :doi, :class => 'form-control' %>
+      </div>
+      <%= error_span(@material[:doi]) %>
+    </div>
+    <!--<div class="control-group">-->
+    <!--<%#= f.label :remote_updated_date, :class => 'control-label' %>-->
+    <!--<div class="controls">-->
+    <!--<%#= f.text_field :remote_updated_date, :class => 'form-control' %>-->
+    <!--</div>-->
+    <!--<%#= error_span(@material[:remote_updated_date]) %>-->
+    <!--</div>-->
+    <!--<div class="control-group">-->
+    <!--<%#= f.label :remote_created_date, :class => 'control-label' %>-->
+    <!--<div class="controls">-->
+    <!--<%#= f.text_field :remote_created_date, :class => 'form-control' %>-->
+    <!--</div>-->
+    <!--<%#= error_span(@material[:remote_created_date]) %>-->
+    <!--</div>-->
+    <div class="control-group">
+      <%= f.label :scientific_topic, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :scientific_topic, :class => 'form-control' %>
+      </div>
+      <%= error_span(@material[:scientific_topic]) %>
+    </div>
+    <div class="control-group">
+      <%= f.label :target_audience, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :target_audience, :class => 'form-control' %>
+      </div>
+      <%= error_span(@material[:target_audience]) %>
+    </div>
+    <div class="control-group">
+      <%= f.label :keywords, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :keywords, :class => 'form-control' %>
+      </div>
+      <%= error_span(@material[:keywords]) %>
+    </div>
+    <div class="control-group">
+      <%= f.label :authors, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :authors, :class => 'form-control' %>
+      </div>
+      <%= error_span(@material[:authors]) %>
+    </div>
+    <div class="control-group">
+      <%= f.label :contributors, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :contributors, :class => 'form-control' %>
+      </div>
+      <%= error_span(@material[:contributors]) %>
+    </div>
 
-  <div class="control-group">
-    <%= f.label :title, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_field :title, :class => 'form-control' %>
-    </div>
-    <%= error_span(@material[:title]) %>
-  </div>
-  <div class="control-group">
-    <%= f.label :url, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_field :url, :class => 'form-control' %>
-    </div>
-    <%= error_span(@material[:url]) %>
-  </div>
-  <div class="control-group">
-    <%= f.label :short_description, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_field :short_description, :class => 'form-control' %>
-    </div>
-    <%= error_span(@material[:short_description]) %>
-  </div>
-  <div class="control-group">
-    <%= f.label :doi, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_field :doi, :class => 'form-control' %>
-    </div>
-    <%= error_span(@material[:doi]) %>
-  </div>
-  <div class="control-group">
-    <%= f.label :remote_updated_date, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_field :remote_updated_date, :class => 'form-control' %>
-    </div>
-    <%= error_span(@material[:remote_updated_date]) %>
-  </div>
-  <div class="control-group">
-    <%= f.label :remote_created_date, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_field :remote_created_date, :class => 'form-control' %>
-    </div>
-    <%= error_span(@material[:remote_created_date]) %>
-  </div>
-  <div class="control-group">
-    <%= f.label :author_id, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_field :author_id, :class => 'form-control' %>
-    </div>
-    <%= error_span(@material[:author_id]) %>
-  </div>
-  <div class="control-group">
-    <%= f.label :contributor_id, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_field :contributor_id, :class => 'form-control' %>
-    </div>
-    <%= error_span(@material[:contributor_id]) %>
-  </div>
 
-
-  <%= f.submit nil, :class => 'btn btn-primary' %>
-  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-            materials_path, :class => 'btn btn-default' %>
+    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                materials_path, :class => 'btn btn-default' %>
 
 <% end %>
