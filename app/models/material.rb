@@ -2,10 +2,11 @@ class Material < ActiveRecord::Base
   include PublicActivity::Common
 
   searchable do 
-    text :title, :long_description
-    string :short_description, :doi
+    text :title
+    text :long_description
+    text :short_description
+    text :doi
   end
-
 
   has_one :owner, foreign_key: "id", class_name: "User"
 

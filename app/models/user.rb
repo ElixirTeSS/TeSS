@@ -3,7 +3,8 @@ class User < ActiveRecord::Base
 
   attr_accessor :login
   searchable do
-    string :username, :email
+    text :username
+    text :email
   end
 
 
