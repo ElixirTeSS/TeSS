@@ -2,8 +2,8 @@ class Material < ActiveRecord::Base
   include PublicActivity::Common
 
   searchable do 
-    text :title
-#, :url, :keywords, :short_description
+    text :title, :long_description
+    string :short_description, :doi
   end
 
 
