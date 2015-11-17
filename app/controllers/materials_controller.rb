@@ -14,8 +14,8 @@ class MaterialsController < ApplicationController
   # GET /materials
   # GET /materials.json
   def index
-    if params[:q]
-      @materials = Material.search {fulltext params[:q] }.results
+    if query = search_params[:q]
+      @materials = Material.search {fulltext query }.results
     else
       @materials = Material.all
     end
@@ -120,4 +120,9 @@ class MaterialsController < ApplicationController
     def material_params
       params.require(:material).permit(:title, :url, :short_description, :doi, :remote_updated_date, :remote_created_date,  :remote_updated_date)
     end
+
+    def search_params
+      params.permit(:q)
+    end
+
 end
