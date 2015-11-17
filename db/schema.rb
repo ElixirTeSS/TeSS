@@ -89,7 +89,12 @@ ActiveRecord::Schema.define(version: 20151029120731) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.string   "username"
+    t.integer  "role_id"
+    t.integer  "material_id"
+    t.string   "authentication_token"
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
@@ -107,11 +112,6 @@ ActiveRecord::Schema.define(version: 20151029120731) do
     t.integer  "failed_attempts",        default: 0,  null: false
     t.string   "unlock_token"
     t.datetime "locked_at"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-    t.integer  "role_id"
-    t.integer  "material_id"
-    t.string   "authentication_token"
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree

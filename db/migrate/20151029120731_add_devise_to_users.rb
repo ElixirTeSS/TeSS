@@ -1,6 +1,6 @@
 class AddDeviseToUsers < ActiveRecord::Migration
   def self.up
-    return # renaming this file in a merge broke migrations
+    #return # renaming this file in a merge broke migrations
     change_table(:users) do |t|
       ## Database authenticatable
       t.string :email,              null: false, default: ""
