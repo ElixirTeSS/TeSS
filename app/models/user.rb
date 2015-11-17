@@ -2,6 +2,11 @@ class User < ActiveRecord::Base
   acts_as_token_authenticatable
 
   attr_accessor :login
+  searchable do
+    text :email
+    text :username
+  end
+
 
   has_one :profile, dependent: :destroy
   has_many :materials
