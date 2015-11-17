@@ -87,6 +87,20 @@
       <%= error_span(@material[:keywords]) %>
     </div>
     <div class="control-group">
+      <%= f.label :licence, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :licence, :class => 'form-control' %>
+      </div>
+      <%= error_span(@material[:licence]) %>
+    </div>
+    <div class="control-group">
+      <%= f.label :difficulty_level, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :difficulty_level, :class => 'form-control' %>
+      </div>
+      <%= error_span(@material[:difficulty_level]) %>
+    </div>
+    <div class="control-group">
       <%= f.label :authors, :class => 'control-label' %>
       <div class="controls">
         <%= f.text_field :authors, :class => 'form-control' %>

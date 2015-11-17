@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151113160219) do
+ActiveRecord::Schema.define(version: 20151117103355) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,8 @@ ActiveRecord::Schema.define(version: 20151113160219) do
     t.string   "keywords",            default: [],              array: true
     t.string   "authors",             default: [],              array: true
     t.string   "contributors",        default: [],              array: true
+    t.string   "licence"
+    t.string   "difficulty_level"
   end
 
   create_table "nodes", force: :cascade do |t|
