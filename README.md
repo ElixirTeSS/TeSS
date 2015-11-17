@@ -81,6 +81,17 @@ Otherwise, you may run into some issues when running and managing the TeSS app.
 >
 > http://robertbeene.com/rails-4-2-and-postgresql-9-4/
 
+## SOLR
+
+To start solr, in your commandline run:
+
+`$ rake sunspot:solr:start`
+
+You can replace *start* with *stop* or *restart* to stop or restart solr. You can use *reindex* to reindex all records. 
+
+`$ rake sunspot:solr:reindex`
+
+
 ## The TeSS App
 
 1. From the app's root directory, copy config/example_secrets.yml to config/secrets.yml.
