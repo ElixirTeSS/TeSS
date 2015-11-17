@@ -1,14 +1,7 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Listing Searches</h1>
-Search for stuff
-<%= form_tag search_path, :method => :get do %>
-  <p>
-    <%= text_field_tag :q, params[:q] %>
-    <%= submit_tag "Search", :name => nil %>
-
-  </p>
-<% end %>
+<h1> Search </h1>
+<%= render partial: 'search/bar' %>
 
 <% if !@results.nil? %>
   <% @results.each do |model, objects| %>
