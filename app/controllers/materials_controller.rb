@@ -14,8 +14,17 @@ class MaterialsController < ApplicationController
   # GET /materials
   # GET /materials.json
   def index
-    @materials = Material.all
+    if params[:q]
+      @materials = Material.search {fulltext params[:q] }.results
+    else
+      @materials = Material.all
+    end
   end
+
+  def search query
+    @materials = Material.search { fulltext query } 
+  end 
+
 
   # GET /materials/1
   # GET /materials/1.json

@@ -1,6 +1,12 @@
 class Material < ActiveRecord::Base
   include PublicActivity::Common
 
+  searchable do 
+    text :title
+#, :url, :keywords, :short_description
+  end
+
+
   has_one :owner, foreign_key: "id", class_name: "User"
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
