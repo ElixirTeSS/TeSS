@@ -6,20 +6,32 @@
 <dl class="dl-horizontal">
   <dt><strong><%= model_class.human_attribute_name(:title) %>:</strong></dt>
   <dd><%= @material.title %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:url) %>:</strong></dt>
-  <dd><%= @material.url %></dd>
+  <dt><strong>URL:</strong></dt>
+  <dd><%= link_to @material.url, @material.url %></dd>
   <dt><strong><%= model_class.human_attribute_name(:short_description) %>:</strong></dt>
   <dd><%= @material.short_description %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:doi) %>:</strong></dt>
+  <dt><strong><%= model_class.human_attribute_name(:long_description) %>:</strong></dt>
+  <dd><%= @material.long_description %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:scientific_topic) %>:</strong></dt>
+  <dd><%= @material.scientific_topic %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:target_audience) %>:</strong></dt>
+  <dd><%= @material.target_audience %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:keywords) %>:</strong></dt>
+  <dd><%= @material.keywords %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:licence) %>:</strong></dt>
+  <dd><%= @material.licence %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:difficulty_level) %>:</strong></dt>
+  <dd><%= @material.difficulty_level %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:authors) %>:</strong></dt>
+  <dd><%= @material.authors.blank? ? 'N/A' : @material.authors %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:contributors) %>:</strong></dt>
+  <dd><%= @material.contributors.blank? ? 'N/A' : @material.contributors %></dd>
+  <dt><strong>DOI:</strong></dt>
   <dd><%= @material.doi %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:remote_updated_date) %>:</strong></dt>
-  <dd><%= @material.remote_updated_date %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:remote_created_date) %>:</strong></dt>
+  <dt><strong>Created:</strong></dt>
   <dd><%= @material.remote_created_date %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:author_id) %>:</strong></dt>
-  <dd><%= @material.author_id %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:contributor_id) %>:</strong></dt>
-  <dd><%= @material.contributor_id %></dd>
+  <dt><strong>Last updated:</strong></dt>
+  <dd><%= @material.remote_updated_date %></dd>
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
