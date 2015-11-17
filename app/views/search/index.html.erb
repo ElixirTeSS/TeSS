@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Searches</h1>
+Search for stuff
+<%= form_tag search_path, :method => :get do %>
+  <p>
+    <%= text_field_tag :q, params[:q] %>
+    <%= submit_tag "Search", :name => nil %>
+
+  </p>
+<% end %>
+
+<% if !@results.nil? %>
+  <% @results.each do |model, objects| %>
+    <% if !objects.empty? %>
+      <h1> <%= model %> </h1>
+	<% objects.each do |object| %>
+	      <p> <%#= render partial: model.to_s.singularize, :material => object %> </p>
+	      <p> <%= render partial: object %> </p>
+	<% end %>
+    <% end %>
+  <% end %>
+<% else %>
+  No results found
+<% end %>
+
+

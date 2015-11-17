@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   resources :content_providers
   resources :materials
 
+  get 'search' => 'search#index'
 =begin
   authenticate :user do
     resources :materials, only: [:new, :create, :edit, :update, :destroy]

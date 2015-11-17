@@ -13,3 +13,10 @@
  *= require_tree .
  *= require_self
  */
+
+.listing_item {
+  border-style: solid;
+  border-color: lightgray;
+  padding: 10px;	
+
+}
