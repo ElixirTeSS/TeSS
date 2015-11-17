@@ -12,4 +12,10 @@
 !/log/.keep
 /tmp
 secrets.yml
+secret_file.yml
 tmp/
+solr/test/
+solr/pids/
+solr/production/
+solr/development
+solr/default
