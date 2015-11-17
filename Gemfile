@@ -26,6 +26,7 @@ gem "twitter-bootstrap-rails"
 
 gem 'sunspot_rails'
 gem 'sunspot_solr'
+gem 'progress_bar'
 
 
 # Use jquery as the JavaScript library
