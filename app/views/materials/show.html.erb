@@ -19,7 +19,7 @@
   <dt><strong><%= model_class.human_attribute_name(:keywords) %>:</strong></dt>
   <dd><%= @material.keywords %></dd>
   <dt><strong><%= model_class.human_attribute_name(:licence) %>:</strong></dt>
-  <dd><%= @material.licence %></dd>
+  <dd><%= licence_name_for_abbreviation(@material.licence) %></dd>
   <dt><strong><%= model_class.human_attribute_name(:difficulty_level) %>:</strong></dt>
   <dd><%= @material.difficulty_level %></dd>
   <dt><strong><%= model_class.human_attribute_name(:authors) %>:</strong></dt>
