@@ -7,4 +7,8 @@ module MaterialsHelper
     TeSS::LicenceDictionary.instance.licence_options_for_select
   end
 
+  def licence_name_for_abbreviation(licence)
+    TeSS::LicenceDictionary.instance.licence_name_for_abbreviation(licence)
+  end
+
 end
