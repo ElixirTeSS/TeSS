@@ -1,6 +1,6 @@
 require 'test_helper'
-require File.expand_path('lib/licence_dictionary.rb')
-
+# require File.expand_path('lib/licence_dictionary.rb')
+require File.expand_path(Rails.root.join('lib', 'tess', 'licence_dictionary.rb'))
 
 class LicenceDictionaryTest < ActiveSupport::TestCase
 
