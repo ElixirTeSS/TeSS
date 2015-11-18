@@ -12,12 +12,18 @@ class MaterialsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
 
   # GET /materials
+  # GET /materials?q=queryparam
   # GET /materials.json
+  # GET /materials.json?q=queryparam
   def index
     if query = search_params[:q]
       @materials = Material.search {fulltext query }.results
     else
       @materials = Material.all
+    end
+    respond_to do |format|
+      format.json { render json: @materials }
+      format.html
     end
   end
 
