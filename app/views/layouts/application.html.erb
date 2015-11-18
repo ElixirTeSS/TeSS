@@ -11,12 +11,13 @@
 <%= nav_bar static: :top, brand: "TeSS", responsive: true do %>
     <!--<%= menu_text "Training eSupport System" %>-->
     <%= menu_group do %>
+        <%= menu_item "Events", events_path %>
         <%= menu_item "Materials", materials_path %>
         <%= menu_item "Packages", packages_path %>
         <%= menu_item "Workflows", workflows_path %>
         <%= menu_item "Content Providers", content_providers_path %>
         <%= menu_item "Nodes", nodes_path %>
-        <%= menu_item "Events", events_path %>
+        <%= menu_item "People", users_path %>
     <% end %>
     <%= menu_group pull: :right do %>
         <% if current_user %>
@@ -26,10 +27,14 @@
             <%= menu_item "Sign In", new_user_session_path %>
             <%= menu_item "Sign Up", new_user_registration_path %>
         <% end %>
-	<%= render partial: 'search/bar.html.erb' %>
-
    <% end %>
 <% end %>
+  <div class='nav_search_bar_container'>
+    <div class='nav_search_bar'>
+  <%= render partial: 'search/bar.html.erb' %>
+  </div>
+  </div>
+   
 
 <div class="container">
 <%= yield %>
