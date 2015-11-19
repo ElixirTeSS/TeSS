@@ -42,7 +42,7 @@ This one-day, hands-on course will explore the EBI's Ensembl Genomes Browser at 
     keywords: ['Galaxy', 'linux'],
     licence: "BSD-3-Clause",
     difficulty_level: "Intermediate",
-    authors: ['Jane Doe'],
+    authors: ['Jane Doe', 'Tom', 'John Doe'],
     contributors: [],
     remote_created_date: Date.today - 356,
     remote_updated_date: Date.today - 10)
