@@ -15,12 +15,30 @@ class MaterialsController < ApplicationController
   # GET /materials?q=queryparam
   # GET /materials.json
   # GET /materials.json?q=queryparam
+
+  @@facet_fields = %w( scientific_topic target_audience keywords licence difficulty_level authors contributors )
+
   def index
-    if query = search_params[:q]
-      @materials = Material.search {fulltext query }.results
-    else
-      @materials = Material.all
+    #Extract selected facets from params
+    @selected_facets = facet_params
+    @query = search_params
+
+
+    puts "QUERY:------#{@query}"
+    @materials = Material.search do
+      fulltext search_params
+      @@facet_fields.each{|ff| facet ff} #Add all facet_fields as facets
+      facet_params.each do |facet_title, facet_value|
+          with(facet_title, facet_value) #Filter by only selected facets
+      end
     end
+
+    @@facet_fields.each do |facet_name|
+      @materials.facet(facet_name).rows.each do |facet|
+        puts "#{facet_name}  -- #{facet.value} has #{facet.count} resource!"
+      end
+    end
+
     respond_to do |format|
       format.json { render json: @materials }
       format.html
@@ -128,7 +146,13 @@ class MaterialsController < ApplicationController
     end
 
     def search_params
-      params.permit(:q)
+      params[:q]
+    end
+
+    def facet_params
+      facets = {}
+      @@facet_fields.each {|facet_title| facets[facet_title] = params[facet_title] if !params[facet_title].nil? }
+      return facets
     end
 
 end

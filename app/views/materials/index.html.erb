@@ -11,6 +11,10 @@ Search Materials
 
   </p>
 <% end %>
+<h1><%=@selected_facets%></h1>
+<%# @selected_facets.each do |facet_title, facet| %>
+    <!--Results where <%# facet_title.humanize %> is <%#= facet.humanize%>-->
+<%# end %>
 
 
 <%= link_to t('.new', :default => t("helpers.links.new")),
@@ -28,7 +32,7 @@ Search Materials
     </tr>
   </thead>
   <tbody>
-    <% @materials.each do |material| %>
+    <% @materials.results.each do |material| %>
       <tr>
         <!--<td><%#= link_to material.id, material_path(material) %></td>-->
         <td><%= link_to material.title, material_path(material) %></td>
