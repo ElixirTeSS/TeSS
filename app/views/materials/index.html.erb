@@ -18,6 +18,11 @@ Search Materials
   <div class="col-md-4"></div>
 </div>
 
+Where
+<% @selected_facets.each do |category, value| %> 
+  <% if value.is_a?(Array)%> <% value = value.join('</b> and <b>') %><% end %>
+  <%= "<b>#{category.humanize}</b> is <b>#{value}</b>, ".html_safe %>
+<% end %>
 <div class="row">
 <div class="col-md-3">
 <table class="table table-striped">
@@ -26,7 +31,7 @@ Search Materials
     <tr><td class="h4"><%= facet_field.humanize %></td> </tr>
        <% @materials.facet(facet_field).rows.each do |facet| %>
           <tr>
-            <td><%= link_to facet.value, facet_field => facet.value %></td>
+            <td><%= filter_link(facet_field, facet.value) %></td>
             <td><%= facet.count %></td>
           </tr>
        <% end %>

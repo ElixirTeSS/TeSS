@@ -18,9 +18,12 @@ class MaterialsController < ApplicationController
 
   @@facet_fields = %w( scientific_topic target_audience keywords licence difficulty_level authors contributors )
 
+  helper 'search'
   def index
     #Extract selected facets from params
     @selected_facets = facet_params
+    puts @selected_facets
+
     @query = search_params
     @facet_fields = @@facet_fields
 
@@ -28,7 +31,13 @@ class MaterialsController < ApplicationController
       fulltext search_params
       @@facet_fields.each{|ff| facet ff} #Add all facet_fields as facets
       facet_params.each do |facet_title, facet_value|
-          with(facet_title, facet_value) #Filter by only selected facets
+          if facet_value.is_a?(Array)
+            facet_value.each do |fv|
+              with(facet_title, fv)
+            end
+          else
+            with(facet_title, facet_value) #Filter by only selected facets
+          end
       end
     end
 
