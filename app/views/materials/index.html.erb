@@ -18,11 +18,17 @@ Search Materials
   <div class="col-md-4"></div>
 </div>
 
-Where
+<p style='text-align:center'>
+<b><%= @materials.total %></b> result where
 <% @selected_facets.each do |category, value| %> 
-  <% if value.is_a?(Array)%> <% value = value.join('</b> and <b>') %><% end %>
-  <%= "<b>#{category.humanize}</b> is <b>#{value}</b>, ".html_safe %>
+  <% if value.is_a?(Array)%> 
+    <% value = value.join('</b> and <b>') %>
+    <% else %>
+    <% category = "the <b>#{category.humanize.singularize}</b>" %> 
+  <% end %>
+  <%= "#{category} is <b>#{value}</b>, ".html_safe %>
 <% end %>
+</p>
 <div class="row">
 <div class="col-md-3">
 <table class="table table-striped">
@@ -30,8 +36,12 @@ Where
   <% if @materials.facet(facet_field).rows.count > 0 %>
     <tr><td class="h4"><%= facet_field.humanize %></td> </tr>
        <% @materials.facet(facet_field).rows.each do |facet| %>
-          <tr>
-            <td><%= filter_link(facet_field, facet.value) %></td>
+            <% if @selected_facets.include?(facet_field) and @selected_facets[facet_field].include?(facet.value) %>
+                <tr style="background-color:lightgray">
+                <td > <%= remove_filter(facet_field, facet.value) %> <%=facet.value %> </td>
+            <% else %>
+                <tr><td><%= filter_link(facet_field, facet.value) %></td>
+            <% end %>
             <td><%= facet.count %></td>
           </tr>
        <% end %>

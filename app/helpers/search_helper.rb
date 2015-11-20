@@ -1,13 +1,25 @@
 module SearchHelper
 	def filter_link name, value
-		if request.parameters.include?(name) 
-			if !request.parameters[name].include?(value)
-		    	new_parameter = {name => [request.parameters.delete(name), value].flatten}
+		new_parameter = {name => value}
+		parameters = request.parameters
+
+		if parameters.include?(name) 
+			if !parameters[name].include?(value)
+		    	new_parameter = {name => [parameters.delete(name), value].flatten}
 		    else new_parameter = {}
 		    end
-		else new_parameter = {name => value}
 		end
+		return link_to value, parameters.merge(new_parameter)
+	end
 
-		return link_to value, request.parameters.merge(new_parameter)
+	def remove_filter name, value
+	  parameters = Hash(request.parameters)
+	  if parameters.include?(name) 
+	  	if parameters[name].is_a?(Array)
+	  		parameters[name].delete(value)
+	  	else parameters.delete(name) 
+	  	end
+	  link_to 'x', parameters 
+	  end
 	end
 end
