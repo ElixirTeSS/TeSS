@@ -1,7 +1,9 @@
-<%- model_class = Material -%>
-<div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
-</div>
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+    <%- model_class = Material -%>
+    <div class="page-header">
+      <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
 
 Search Materials
 <%= form_tag materials_path, :method => :get do %>
@@ -11,11 +13,17 @@ Search Materials
 
   </p>
 <% end %>
+    </div>
+  </div>
+  <div class="col-md-4"></div>
+</div>
 
+<div class="row">
+<div class="col-md-3">
 <table class="table table-striped">
 <% @facet_fields.each do |facet_field| %>
   <% if @materials.facet(facet_field).rows.count > 0 %>
-    <tr><td class="h2"><%= facet_field.humanize %></td> </tr>
+    <tr><td class="h4"><%= facet_field.humanize %></td> </tr>
        <% @materials.facet(facet_field).rows.each do |facet| %>
           <tr>
             <td><%= link_to facet.value, facet_field => facet.value %></td>
@@ -25,11 +33,9 @@ Search Materials
   <% end %>
 <% end %>
 </table>
-<%# @selected_facets.each do |facet_title, facet| %>
-    <!--Results where <%# facet_title.humanize %> is <%#= facet.humanize%>-->
-<%# end %>
+</div>
 
-
+<div class="col-md-9">
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_material_path,
             :class => 'btn btn-primary' %>
@@ -64,3 +70,5 @@ Search Materials
     <% end %>
   </tbody>
 </table>
+
+</div>
