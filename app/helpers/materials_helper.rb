@@ -8,7 +8,11 @@ module MaterialsHelper
   end
 
   def licence_name_for_abbreviation(licence)
-    TeSS::LicenceDictionary.instance.licence_name_for_abbreviation(licence)
+    if licence
+      TeSS::LicenceDictionary.instance.licence_name_for_abbreviation(licence)
+    else
+      'No licence found'
+    end
   end
 
 end
