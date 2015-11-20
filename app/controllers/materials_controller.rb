@@ -22,20 +22,13 @@ class MaterialsController < ApplicationController
     #Extract selected facets from params
     @selected_facets = facet_params
     @query = search_params
+    @facet_fields = @@facet_fields
 
-
-    puts "QUERY:------#{@query}"
     @materials = Material.search do
       fulltext search_params
       @@facet_fields.each{|ff| facet ff} #Add all facet_fields as facets
       facet_params.each do |facet_title, facet_value|
           with(facet_title, facet_value) #Filter by only selected facets
-      end
-    end
-
-    @@facet_fields.each do |facet_name|
-      @materials.facet(facet_name).rows.each do |facet|
-        puts "#{facet_name}  -- #{facet.value} has #{facet.count} resource!"
       end
     end
 
