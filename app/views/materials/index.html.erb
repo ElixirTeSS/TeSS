@@ -11,7 +11,20 @@ Search Materials
 
   </p>
 <% end %>
-<h1><%=@selected_facets%></h1>
+
+<table class="table table-striped">
+<% @facet_fields.each do |facet_field| %>
+  <% if @materials.facet(facet_field).rows.count > 0 %>
+    <tr><td class="h2"><%= facet_field.humanize %></td> </tr>
+       <% @materials.facet(facet_field).rows.each do |facet| %>
+          <tr>
+            <td><%= link_to facet.value, facet_field => facet.value %></td>
+            <td><%= facet.count %></td>
+          </tr>
+       <% end %>
+  <% end %>
+<% end %>
+</table>
 <%# @selected_facets.each do |facet_title, facet| %>
     <!--Results where <%# facet_title.humanize %> is <%#= facet.humanize%>-->
 <%# end %>
