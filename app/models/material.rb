@@ -1,5 +1,6 @@
 class Material < ActiveRecord::Base
   include PublicActivity::Common
+  has_paper_trail
 
   searchable do 
     text :title
