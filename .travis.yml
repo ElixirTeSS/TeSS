@@ -8,4 +8,3 @@ before_script:
 - cp config/example_secret_file.yml.travis config/secrets.yml
 - psql -c 'create database travis_ci_test;' -U postgres
 - bundle exec rake db:setup
-- rake sunspot:solr:start RAILS_ENV=test
