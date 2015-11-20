@@ -33,8 +33,7 @@ class MaterialsController < ApplicationController
     end
 
     respond_to do |format|
-      Rails.logger.info("MATERIALS: \n#{@materials.inspect}")
-      format.json { render json: @materials }
+      format.json { render json: @materials.results }
       format.html
     end
   end
