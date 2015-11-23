@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
     model_name.search do
       fulltext search_params
       puts selected_facets
-      if true #selected_facets.delete('starts_after')
+      if selected_facets.delete('exclude_expired')
         facet 'start'
         with('start').greater_than(Time.zone.now)
       end

@@ -133,8 +133,8 @@ class EventsController < ApplicationController
         params.permit(:exclude_expired, @@facet_fields)
         @facet_params = {}
         @@facet_fields.each {|facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
-        if params[:exclude_past]
-          @facet_params['starts_after'] = Time.now
+        if params[:exclude_expired]
+          @facet_params['exclude_expired'] = true
         end
     end
 
