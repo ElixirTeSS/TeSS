@@ -2,12 +2,13 @@
 <html>
 <head>
   <title>TeSS - Training eSupport System</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 
+<!-- Navigation bar -->
 <%= nav_bar static: :top, brand: "TeSS", responsive: true do %>
     <!--<%= menu_text "Training eSupport System" %>-->
     <%= menu_group do %>
@@ -31,8 +32,33 @@
     <% end %>
 <% end %>
 
-<div class="container">
-<%= yield %>
+<div id="main-container" class="container">
+
+  <!--<%# applying styling to error / notice messages -%>-->
+  <!--<#% if flash[:error] %>-->
+  <!--<%#= alert_box('danger', :id => 'error_flash', :class => 'fade in') do %>-->
+  <!--<%#= flash[:error] %>-->
+  <!--<#% end %>-->
+  <!--<#% end %>-->
+  <!--<#% if flash[:notice] %>-->
+  <!--<%#= alert_box('success', :id => 'notice_flash', :class => 'fade in') do %>-->
+  <!--<%#= flash[:notice] %>-->
+  <!--<#% end %>-->
+  <!--<#% end %>-->
+
+  <!--<#% unless breadcrumbs.empty? %>-->
+  <!--<div class="breadcrumbs">-->
+  <!--<ol class="breadcrumb">-->
+  <!--<%#= render_breadcrumbs :tag => 'li', :separator => ' ' %>-->
+  <!--</ol>-->
+  <!--</div>-->
+  <!--<#% end %>-->
+  <%= render_breadcrumbs %>
+
+  <%# main content part of every page -%>
+  <%= yield :layout %>
+
 </div>
+
 </body>
 </html>
