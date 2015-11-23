@@ -22,12 +22,15 @@ class ApplicationController < ActionController::Base
       fulltext search_params
 
       #Add all facet_fields as facets
-      facet 'start'
       facet_fields.each{|ff| facet ff}
 
       #Go through the selected facets and apply them and their facet_values
-      unless selected_facets.keys.include?('include_expired') and selected_facets['include_expired'] == true
-        with('start').greater_than(Time.zone.now)
+      if model_name == Event
+        facet 'start'
+        unless selected_facets.keys.include?('include_expired') and selected_facets['include_expired'] == true
+          with('start').greater_than(Time.zone.now)
+        end
+
       end
 
       selected_facets.each do |facet_title, facet_value|
