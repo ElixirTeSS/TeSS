@@ -7,7 +7,9 @@ class SearchController < ApplicationController
     @results = {}
     @@search_models.each do |model|
        begin
-           @results[symbolize model] = model.constantize.search {fulltext search_params}
+         @results[symbolize model] = Sunspot.search(model.constantize) do
+            fulltext search_params
+          end
        rescue
          puts "Error finding results for #{model}"
        end 
