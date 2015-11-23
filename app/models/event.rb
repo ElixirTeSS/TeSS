@@ -14,6 +14,8 @@ class Event < ActiveRecord::Base
     string :field, :multiple => true
     string :category, :multiple => true
     string :keyword, :multiple => true
+    time :start
+    time :end
   end
 
   validates :title, :link, presence: true

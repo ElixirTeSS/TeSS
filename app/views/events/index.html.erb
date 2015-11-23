@@ -18,6 +18,8 @@
   <div class="col-md-4"></div>
 </div>
 
+<%= link_to 'Exclude past events', events_path(:exclude_expired => true) %>
+
 <h1><%= @events.total %> Events
 <% if !@facet_params.empty? %> where<% end %>
   <% sentence = '' %>

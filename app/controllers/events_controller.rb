@@ -125,14 +125,17 @@ class EventsController < ApplicationController
     end
 
     def set_search_params
-      params.permit(:q)
+      params.permit(:q, :exclude_expired)
       @search_params = params[:q] || ''
     end
 
     def set_facet_params
-        params.permit(@@facet_fields)
+        params.permit(:exclude_expired, @@facet_fields)
         @facet_params = {}
         @@facet_fields.each {|facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
+        if params[:exclude_past]
+          @facet_params['starts_after'] = Time.now
+        end
     end
 
 
