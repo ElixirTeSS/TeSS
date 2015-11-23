@@ -10,6 +10,12 @@ regular_user:
   encrypted_password: 'bobs_encrypted_password'
   confirmed_at: <%= Time.zone.now %>
 
+another_regular_user:
+  username: 'Dale'
+  email: 'dale@notarealdomain.org'
+  encrypted_password: 'dales_encrypted_password'
+  confirmed_at: <%= Time.zone.now %>
+
 admin:
   username: 'Adam Min'
   email: 'adam@notarealdomain.org'
