@@ -15,7 +15,7 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
 
-  @@facet_fields = %w( city field provider sponsor venue city country )
+  @@facet_fields = %w( city field category provider sponsor venue city country keyword )
 
   helper 'search'
   def index
@@ -135,7 +135,10 @@ class EventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:id, :title, :subtitle, :link, :provider, :field, :description, :category, :start, :end, :sponsor, :venue, :city, :county, :country, :postcode, :latitude, :longitude)
+      params.require(:event).permit(:external_id, :title, :subtitle, :link, :provider, :description,
+                                    {:field => []}, {:category => []}, {:keyword => []},
+                                    :start, :end, :sponsor, :venue, :city, :county, :country, :postcode,
+                                    :latitude, :longitude)
     end
 
     def search_params

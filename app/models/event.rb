@@ -6,16 +6,21 @@ class Event < ActiveRecord::Base
     text :title
     text :link
     string :city
-    string :field
     string :provider
     string :sponsor
     string :venue
     string :city
     string :country
+    string :field, :multiple => true
+    string :category, :multiple => true
+    string :keyword, :multiple => true
   end
 
   validates :title, :link, presence: true
 
+  serialize :field
+  serialize :category
+  serialize :keyword
 
   #Make sure there's link and title
 
@@ -41,6 +46,6 @@ class Event < ActiveRecord::Base
 
 
   def facet_fields
-    %w( city field provider sponsor venue city country )
+    %w( city field category provider sponsor venue city country keyword )
   end
 end
