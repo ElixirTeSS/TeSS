@@ -18,11 +18,16 @@ Search Materials
   <div class="col-md-4"></div>
 </div>
 
-Where
-<% @facet_params.each do |category, value| %>
-  <% if value.is_a?(Array)%> <% value = value.join('</b> and <b>') %><% end %>
-  <%= "<b>#{category.humanize}</b> is <b>#{value}</b>, ".html_safe %>
-<% end %>
+<h1><%= @materials.total %> Materials
+  <% if !@facet_params.empty? %> where<% end %>
+  <% sentence = '' %>
+  <% @facet_params.each do |category, value| %>
+      <% if value.is_a?(Array)%> <% value = value.join('</b> and <b>') %><% end %>
+      <% sentence += "<b>#{category.humanize}</b> is <b>#{value}</b>, ".html_safe %>
+  <% end %>
+  <%= sentence.chomp(', ').html_safe %>
+</h1>
+
 <div class="row">
 <div class="col-md-3">
 <table class="table table-striped">
