@@ -1,61 +1,79 @@
-<p id="notice"><%= notice %></p>
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+    <%- model_class = Event -%>
+    <div class="page-header">
+      <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
 
-<h1>Listing Events</h1>
+      Search Events
+      <%= form_tag events_path, :method => :get do %>
+          <p>
+            <%= text_field_tag :q, params[:q] %>
+            <%= submit_tag "Search", :name => nil %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Id</th>
-      <th>Title</th>
-      <th>Subtitle</th>
-      <th>Link</th>
-      <th>Provider</th>
-      <th>Field</th>
-      <th>Description</th>
-      <th>Category</th>
-      <th>Start</th>
-      <th>End</th>
-      <th>Sponsor</th>
-      <th>Venue</th>
-      <th>City</th>
-      <th>County</th>
-      <th>Country</th>
-      <th>Postcode</th>
-      <th>Latitude</th>
-      <th>Longitude</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+          </p>
+      <% end %>
+    </div>
+  </div>
+  <div class="col-md-4"></div>
+</div>
 
-  <tbody>
-    <% @events.each do |event| %>
+Where
+<% @selected_facets.each do |category, value| %>
+    <% if value.is_a?(Array)%> <% value = value.join('</b> and <b>') %><% end %>
+    <%= "<b>#{category.humanize}</b> is <b>#{value}</b>, ".html_safe %>
+<% end %>
+<div class="row">
+  <div class="col-md-3">
+    <table class="table table-striped">
+      <% @facet_fields.each do |facet_field| %>
+          <% if @events.facet(facet_field).rows.count > 0 %>
+              <tr><td class="h4"><%= facet_field.humanize %></td> </tr>
+              <% @events.facet(facet_field).rows.each do |facet| %>
+                  <tr>
+                    <td><%= filter_link(facet_field, facet.value) %></td>
+                    <td><%= facet.count %></td>
+                  </tr>
+              <% end %>
+          <% end %>
+      <% end %>
+    </table>
+  </div>
+
+  <div class="col-md-9">
+    <%= link_to t('.new', :default => t("helpers.links.new")),
+                new_event_path,
+                :class => 'btn btn-primary' %>
+
+    <table class="table table-striped">
+      <thead>
       <tr>
-        <td><%= event.id %></td>
-        <td><%= event.title %></td>
-        <td><%= event.subtitle %></td>
-        <td><%= event.link %></td>
-        <td><%= event.provider %></td>
-        <td><%= event.field %></td>
-        <td><%= event.description %></td>
-        <td><%= event.category %></td>
-        <td><%= event.start %></td>
-        <td><%= event.end %></td>
-        <td><%= event.sponsor %></td>
-        <td><%= event.venue %></td>
-        <td><%= event.city %></td>
-        <td><%= event.county %></td>
-        <td><%= event.country %></td>
-        <td><%= event.postcode %></td>
-        <td><%= event.latitude %></td>
-        <td><%= event.longitude %></td>
-        <td><%= link_to 'Show', event %></td>
-        <td><%= link_to 'Edit', edit_event_path(event) %></td>
-        <td><%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <!--<th><%#= model_class.human_attribute_name(:id) %></th>-->
+        <th><%= model_class.human_attribute_name(:title) %></th>
+        <th><%= model_class.human_attribute_name(:link) %></th>
+        <th>URL</th>
+        <th><%=t '.actions', :default => t("helpers.actions") %></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+      </thead>
+      <tbody>
+      <% @events.results.each do |event| %>
+          <tr>
+            <!--<td><%#= link_to event.id, event_path(event) %></td>-->
+            <td><%= link_to event.title, event_path(event) %></td>
+            <td><%= event.link %></td>
+            <td><%= link_to "Event source", event.link %></td>
+            <td>
+              <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                          edit_event_path(event), :class => 'btn btn-default btn-xs' %>
+              <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                          event_path(event),
+                          :method => :delete,
+                          :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                          :class => 'btn btn-xs btn-danger' %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
 
-<br>
-
-<%= link_to 'New Event', new_event_path %>
+  </div>

@@ -14,8 +14,35 @@ class EventsController < ApplicationController
 
   # GET /events
   # GET /events.json
+
+  @@facet_fields = %w( city field provider sponsor venue city country )
+
+  helper 'search'
   def index
-    @events = Event.all
+    #Extract selected facets from params
+    @selected_facets = facet_params
+    puts @selected_facets
+
+    @query = search_params
+    @facet_fields = @@facet_fields
+
+    @events = Event.search do
+      fulltext search_params
+      @@facet_fields.each{|ff| facet ff} #Add all facet_fields as facets
+      facet_params.each do |facet_title, facet_value|
+        if facet_value.is_a?(Array)
+          facet_value.each do |fv|
+            with(facet_title, fv)
+          end
+        else
+          with(facet_title, facet_value) #Filter by only selected facets
+        end
+      end
+    end
+    respond_to do |format|
+      format.json { render json: events.results }
+      format.html
+    end
   end
 
   # GET /events/1
@@ -110,4 +137,16 @@ class EventsController < ApplicationController
     def event_params
       params.require(:event).permit(:id, :title, :subtitle, :link, :provider, :field, :description, :category, :start, :end, :sponsor, :venue, :city, :county, :country, :postcode, :latitude, :longitude)
     end
+
+    def search_params
+      params[:q]
+    end
+
+    def facet_params
+      facets = {}
+      @@facet_fields.each {|facet_title| facets[facet_title] = params[facet_title] if !params[facet_title].nil? }
+      return facets
+    end
+
+
 end
