@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151120113549) do
+ActiveRecord::Schema.define(version: 20151123101633) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,28 @@ ActiveRecord::Schema.define(version: 20151120113549) do
     t.text     "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.string   "title"
+    t.string   "subtitle"
+    t.string   "link"
+    t.string   "provider"
+    t.text     "field"
+    t.text     "description"
+    t.text     "category"
+    t.datetime "start"
+    t.datetime "end"
+    t.string   "sponsor"
+    t.text     "venue"
+    t.string   "city"
+    t.string   "county"
+    t.string   "country"
+    t.string   "postcode"
+    t.decimal  "latitude",    precision: 10, scale: 6
+    t.decimal  "longitude",   precision: 10, scale: 6
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
   end
 
   create_table "materials", force: :cascade do |t|
@@ -95,7 +117,12 @@ ActiveRecord::Schema.define(version: 20151120113549) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.string   "username"
+    t.integer  "role_id"
+    t.integer  "material_id"
+    t.string   "authentication_token"
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
@@ -113,17 +140,14 @@ ActiveRecord::Schema.define(version: 20151120113549) do
     t.integer  "failed_attempts",        default: 0,  null: false
     t.string   "unlock_token"
     t.datetime "locked_at"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-    t.integer  "role_id"
-    t.integer  "material_id"
-    t.string   "authentication_token"
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
+  add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["role_id"], name: "index_users_on_role_id", using: :btree
+  add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
   create_table "version_associations", force: :cascade do |t|
