@@ -1,6 +1,8 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy]
 
+  before_action :set_search_params, :only => :index
+  before_action :set_facet_params, :only => :index
 
   # Should allow token authentication for API calls
   acts_as_token_authentication_handler_for User, except: [:index, :show, :check_title] #only: [:new, :create, :edit, :update, :destroy]
@@ -19,28 +21,10 @@ class EventsController < ApplicationController
 
   helper 'search'
   def index
-    #Extract selected facets from params
-    @selected_facets = facet_params
-    puts @selected_facets
-
-    @query = search_params
     @facet_fields = @@facet_fields
-
-    @events = Event.search do
-      fulltext search_params
-      @@facet_fields.each{|ff| facet ff} #Add all facet_fields as facets
-      facet_params.each do |facet_title, facet_value|
-        if facet_value.is_a?(Array)
-          facet_value.each do |fv|
-            with(facet_title, fv)
-          end
-        else
-          with(facet_title, facet_value) #Filter by only selected facets
-        end
-      end
-    end
+    @events = solr_search(Event, @search_params, @@facet_fields, @facet_params)
     respond_to do |format|
-      format.json { render json: events.results }
+      format.json { render json: @events.results }
       format.html
     end
   end
@@ -135,20 +119,20 @@ class EventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:external_id, :title, :subtitle, :link, :provider, :description,
-                                    {:field => []}, {:category => []}, {:keyword => []},
-                                    :start, :end, :sponsor, :venue, :city, :county, :country, :postcode,
-                                    :latitude, :longitude)
+      params.require(:event).permit(:external_id, :title, :subtitle, :link, :provider, :description, {:field => []},
+                                    {:category => []}, {:keyword => []}, :start, :end, :sponsor, :venue, :city, :county,
+                                    :country, :postcode, :latitude, :longitude)
     end
 
-    def search_params
-      params[:q]
+    def set_search_params
+      params.permit(:q)
+      @search_params = params[:q] || ''
     end
 
-    def facet_params
-      facets = {}
-      @@facet_fields.each {|facet_title| facets[facet_title] = params[facet_title] if !params[facet_title].nil? }
-      return facets
+    def set_facet_params
+        params.permit(@@facet_fields)
+        @facet_params = {}
+        @@facet_fields.each {|facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
     end
 
 

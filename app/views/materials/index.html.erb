@@ -19,7 +19,7 @@ Search Materials
 </div>
 
 Where
-<% @selected_facets.each do |category, value| %> 
+<% @facet_params.each do |category, value| %>
   <% if value.is_a?(Array)%> <% value = value.join('</b> and <b>') %><% end %>
   <%= "<b>#{category.humanize}</b> is <b>#{value}</b>, ".html_safe %>
 <% end %>

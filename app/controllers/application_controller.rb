@@ -16,4 +16,19 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
   end
 
+  def solr_search model_name, search_params, facet_fields, selected_facets
+    model_name.search do
+      fulltext search_params
+      facet_fields.each{|ff| facet ff} #Add all facet_fields as facets
+      selected_facets.each do |facet_title, facet_value|
+        if facet_value.is_a?(Array)
+          facet_value.each do |fv|
+            with(facet_title, fv)
+          end
+        else
+          with(facet_title, facet_value) #Filter by only selected facets
+        end
+      end
+    end
+  end
 end
