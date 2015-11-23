@@ -18,20 +18,27 @@ class ApplicationController < ActionController::Base
 
   def solr_search(model_name, search_params, facet_fields, selected_facets)
     model_name.search do
+      #Set the search parameter
       fulltext search_params
-      puts selected_facets
-      if selected_facets.delete('exclude_expired')
-        facet 'start'
+
+      #Add all facet_fields as facets
+      facet 'start'
+      facet_fields.each{|ff| facet ff}
+
+      #Go through the selected facets and apply them and their facet_values
+      unless selected_facets.keys.include?('include_expired') and selected_facets['include_expired'] == true
         with('start').greater_than(Time.zone.now)
       end
-      facet_fields.each{|ff| facet ff} #Add all facet_fields as facets
+
       selected_facets.each do |facet_title, facet_value|
-        if facet_value.is_a?(Array)
-          facet_value.each do |fv|
-            with(facet_title, fv)
+        if facet_title != 'include_expired'
+          if facet_value.is_a?(Array)
+            facet_value.each do |fv|
+              with(facet_title, fv)
+            end
+          else
+            with(facet_title, facet_value) #Filter by only selected facets
           end
-        else
-          with(facet_title, facet_value) #Filter by only selected facets
         end
       end
     end
