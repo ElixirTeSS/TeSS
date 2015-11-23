@@ -1,6 +1,6 @@
 class SearchController < ApplicationController
 
-  @@search_models = %w(Material User) #Profile
+  @@search_models = %w(Material User Event) #Profile
   # GET /searches
   # GET /searches.json
   def index 
