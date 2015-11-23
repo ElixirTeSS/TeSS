@@ -89,7 +89,7 @@
     <div class="control-group">
       <%= f.label :licence, :class => 'control-label' %>
       <div class="controls">
-        <%= f.select :licence, options_for_select(licence_options_for_select(), @material[:licence]), :class => 'form-control' %>
+        <%= f.select :licence, options_for_select(licence_options_for_select(), @material[:licence].blank? ? "notspecified" : @material[:licence]), :class => 'form-control' %>
       </div>
       <%= error_span(@material[:licence]) %>
     </div>
