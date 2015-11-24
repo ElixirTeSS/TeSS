@@ -50,6 +50,10 @@
     padding: 6px 10px;
     background-color: lightgray;   
 }
+
+.include_expired {
+    float: right;
+}
 /*
  *Added from bootstrap CSS as a hack.
  */

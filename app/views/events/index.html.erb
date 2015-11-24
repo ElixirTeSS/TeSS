@@ -1,31 +1,3 @@
-<!-- TITLE -->
-<div class="row">
-    <%- model_class = Event -%>
-    <div class="page-header">
-      <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
-    </div>
-    <%= link_to t('.new', :default => t("helpers.links.new")), new_event_path, :class => 'btn btn-primary' %>
-</div>
-
-<!-- SEARCH BAR -->
-<div class="row">
-  <%= render :partial=> "search/common/search_box", :locals=>{:resource_path => events_path} %>
-</div>
-
-<!-- APPLIED FILTERS AND NUMBER OF RESULTS -->
-<div class="row">
-  <% include_expired = @facet_params.delete('include_expired') %>
-  <%= render :partial => "search/common/search_info", :locals=>{:resource=>@events}  %>
-</div>
-
-<% if include_expired == true %>
-    <%= link_to 'Exclude past events', events_path %>
-<% else %>
-    <%= link_to 'Include past events', events_path(:include_expired => true) %>
-<% end %>
-
-
-
 <!-- SIDEBAR | RESULTS -->
 <div class="row">
   <!-- SIDEBAR -->
@@ -35,14 +7,31 @@
 
   <!-- RESULTS -->
   <div class="col-md-9">
-      <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@event} %>
+    <!-- SEARCH BAR -->
     <div class="row">
-        <% @events.results.each do |event| %>
+      <%= render :partial=> "search/common/search_box", :locals=>{:resource_path => events_path} %>
+    </div>
+    
+    <!-- APPLIED FILTERS AND NUMBER OF RESULTS -->
+    <div class="row">
+      <% include_expired = @facet_params.delete('include_expired') %>
+      <%= render :partial => "search/common/search_info", :locals=>{:resource=>@events}  %>
+    </div>
+
+      <% if include_expired == true %>
+          <%= link_to 'Exclude past events', events_path, :class => 'include_expired' %>
+      <% else %>
+          <%= link_to 'Include past events', events_path(:include_expired => true), :class => 'include_expired'%>
+      <% end %>
+
+    <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@materials} %>
+    <hr>
+
+    <!-- ACTUAL RESULTS LIST -->
+    <div class="row">
+      <% @events.results.each do |event| %>
          <%= render event %>
-        <% end %>    
+      <% end %>    
     </div>
   </div>
 </div>
-
-
-
