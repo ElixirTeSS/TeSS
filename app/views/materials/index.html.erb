@@ -1,23 +1,3 @@
-<!-- TITLE -->
-<div class="row">
-    <%- model_class = Material -%>
-    <div class="page-header">
-      <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
-    </div>
-    <%= link_to t('.new', :default => t("helpers.links.new")), new_material_path, :class => 'btn btn-primary' %>
-</div>
-
-<!-- SEARCH BAR -->
-<div class="row">
-  <%= render :partial=> "search/common/search_box", :locals=>{:resource_path => materials_path} %>
-</div>
-
-<!-- APPLIED FILTERS AND NUMBER OF RESULTS -->
-<div class="row">
-  <%= render :partial => "search/common/search_info", :locals=>{:resource=>@materials}  %>
-</div>
-
-
 <!-- SIDEBAR | RESULTS -->
 <div class="row">
   <!-- SIDEBAR -->
@@ -27,11 +7,24 @@
 
   <!-- RESULTS -->
   <div class="col-md-9">
-      <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@materials} %>
+    <!-- SEARCH BAR -->
     <div class="row">
-        <% @materials.results.each do |material| %>
+      <%= render :partial=> "search/common/search_box", :locals=>{:resource_path => materials_path} %>
+    </div>
+    
+    <!-- APPLIED FILTERS AND NUMBER OF RESULTS -->
+    <div class="row">
+      <%= render :partial => "search/common/search_info", :locals=>{:resource=>@materials}  %>
+    </div>
+
+    <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@materials} %>
+    <hr>
+
+    <!-- ACTUAL RESULTS LIST -->
+    <div class="row">
+      <% @materials.results.each do |material| %>
          <%= render material %>
-        <% end %>    
+      <% end %>    
     </div>
   </div>
 </div>
