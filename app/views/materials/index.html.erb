@@ -6,11 +6,10 @@
       <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
 
 Search Materials
-<%= form_tag materials_path, :method => :get do %>
+<%= form_tag materials_path(), :method => :get do %>
   <p>
     <%= text_field_tag :q, params[:q] %>
     <%= submit_tag "Search", :name => nil %>
-
   </p>
 <% end %>
     </div>
