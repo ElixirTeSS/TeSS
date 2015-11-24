@@ -4,6 +4,7 @@
   <title>TeSS - Training eSupport System</title>
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+
   <%= csrf_meta_tags %>
 </head>
 <body>
@@ -49,17 +50,7 @@
 
 <div id="main-container" class="container">
 
-  <!--<%# applying styling to error / notice messages -%>-->
-  <!--<#% if flash[:error] %>-->
-  <!--<%#= alert_box('danger', :id => 'error_flash', :class => 'fade in') do %>-->
-  <!--<%#= flash[:error] %>-->
-  <!--<#% end %>-->
-  <!--<#% end %>-->
-  <!--<#% if flash[:notice] %>-->
-  <!--<%#= alert_box('success', :id => 'notice_flash', :class => 'fade in') do %>-->
-  <!--<%#= flash[:notice] %>-->
-  <!--<#% end %>-->
-  <!--<#% end %>-->
+  <%= flash_messages %>
 
   <% unless breadcrumbs.empty? %>
       <div class="breadcrumbs">
