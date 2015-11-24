@@ -13,7 +13,7 @@ module SearchHelper
 		return link_to value, parameters.merge(new_parameter)
 	end
 
-	def remove_filter name, value
+	def remove_filter_link name, value
 	  parameters = request.parameters.clone
 	  
 	  if parameters.include?(name) 
@@ -22,6 +22,6 @@ module SearchHelper
 	  	else parameters.delete(name) 
 	  	end
 	  end
-	  return link_to 'x', parameters 
+	  return link_to "x #{value}", parameters 
 	end
 end
