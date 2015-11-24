@@ -1,0 +1,22 @@
+<div>
+  <% unless @facet_fields.blank? %>
+      Where
+      <% @selected_facets.each do |category, value| %>
+          <% if value.is_a?(Array)%> <% value = value.join('</b> and <b>') %><% end %>
+          <%= "<b>#{category.humanize}</b> is <b>#{value}</b>, ".html_safe %>
+      <% end %>
+      <table class="table table-striped">
+        <% @facet_fields.each do |facet_field| %>
+            <% if @materials.facet(facet_field).rows.count > 0 %>
+                <tr><td class="h4"><%= facet_field.humanize %></td> </tr>
+                <% @materials.facet(facet_field).rows.each do |facet| %>
+                    <tr>
+                      <td><%= filter_link(facet_field, facet.value) %></td>
+                      <td><%= facet.count %></td>
+                    </tr>
+                <% end %>
+            <% end %>
+        <% end %>
+      </table>
+  <% end %>
+</div>

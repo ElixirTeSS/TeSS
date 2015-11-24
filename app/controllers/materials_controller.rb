@@ -1,4 +1,6 @@
 class MaterialsController < ApplicationController
+  require 'bread_crumbs'
+
   before_action :set_material, only: [:show, :edit, :update, :destroy]
 
   # Should allow token authentication for API calls
@@ -10,6 +12,8 @@ class MaterialsController < ApplicationController
 
   # Should prevent forgery errors for JSON posts.
   skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
+
+  include TeSS::BreadCrumbs
 
   # GET /materials
   # GET /materials?q=queryparam
