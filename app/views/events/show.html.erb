@@ -1,0 +1,94 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Id:</strong>
+  <%= @event.id %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @event.title %>
+</p>
+
+<p>
+  <strong>Subtitle:</strong>
+  <%= @event.subtitle %>
+</p>
+
+<p>
+  <strong>Link:</strong>
+  <%= @event.link %>
+</p>
+
+<p>
+  <strong>Provider:</strong>
+  <%= @event.provider %>
+</p>
+
+<p>
+  <strong>Field:</strong>
+  <%= @event.field %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @event.description %>
+</p>
+
+<p>
+  <strong>Category:</strong>
+  <%= @event.category %>
+</p>
+
+<p>
+  <strong>Start:</strong>
+  <%= @event.start %>
+</p>
+
+<p>
+  <strong>End:</strong>
+  <%= @event.end %>
+</p>
+
+<p>
+  <strong>Sponsor:</strong>
+  <%= @event.sponsor %>
+</p>
+
+<p>
+  <strong>Venue:</strong>
+  <%= @event.venue %>
+</p>
+
+<p>
+  <strong>City:</strong>
+  <%= @event.city %>
+</p>
+
+<p>
+  <strong>County:</strong>
+  <%= @event.county %>
+</p>
+
+<p>
+  <strong>Country:</strong>
+  <%= @event.country %>
+</p>
+
+<p>
+  <strong>Postcode:</strong>
+  <%= @event.postcode %>
+</p>
+
+<p>
+  <strong>Latitude:</strong>
+  <%= @event.latitude %>
+</p>
+
+<p>
+  <strong>Longitude:</strong>
+  <%= @event.longitude %>
+</p>
+
+<%= link_to 'Edit', edit_event_path(@event) %> |
+<%= link_to 'Back', events_path %>

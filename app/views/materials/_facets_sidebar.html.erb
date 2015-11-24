@@ -1,10 +1,12 @@
 <div>
-  <% unless @facet_fields.blank? %>
+  <% unless @selected_facets.blank? %>
       Where
       <% @selected_facets.each do |category, value| %>
           <% if value.is_a?(Array)%> <% value = value.join('</b> and <b>') %><% end %>
           <%= "<b>#{category.humanize}</b> is <b>#{value}</b>, ".html_safe %>
       <% end %>
+  <% end %>
+  <% unless @facet_fields.blank? %>
       <table class="table table-striped">
         <% @facet_fields.each do |facet_field| %>
             <% if @materials.facet(facet_field).rows.count > 0 %>

@@ -63,6 +63,8 @@
 
   <% unless breadcrumbs.empty? %>
       <div class="breadcrumbs">
+        <!--<%#= render_breadcrumbs :tag => 'li', :separator => ' ' %>-->
+        <!--<%#= render_breadcrumbs :builder => ::BootstrapBreadcrumbsBuilder %>-->
         <%= render_breadcrumbs(" ", { class: '', item_class: '', divider_class: '', active_class: 'active' }) %>
       </div>
   <% end %>

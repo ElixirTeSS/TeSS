@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
 
+  resources :events
   get 'content_providers/index'
   get 'content_providers/show'
   get 'content_providers/new'
@@ -10,6 +11,7 @@ Rails.application.routes.draw do
   get 'static/welcome'
 
   post 'materials/check_title' => 'materials#check_title'
+  post 'events/check_title' => 'events#check_title'
 
   devise_for :users
 
