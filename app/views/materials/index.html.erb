@@ -1,6 +1,9 @@
 <div class="row">
-  <div class="col-md-4"></div>
-  <div class="col-md-4">
+  <div class="col-md-3 col-xs-3">
+    <%= render :partial=> "facets_sidebar" %>
+  </div>
+  <div class=" col-md-9 col-xs-9">
+
     <%- model_class = Material -%>
     <div class="page-header">
       <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
@@ -13,13 +16,10 @@ Search Materials
   </p>
 <% end %>
     </div>
-  </div>
-  <div class="col-md-4"></div>
-</div>
 
 <p style='text-align:center'>
 <b><%= @materials.total %></b> result where
-<% @selected_facets.each do |category, value| %> 
+<% @facet_params.each do |category, value| %> 
   <% if value.is_a?(Array)%> 
     <% value = value.join('</b> and <b>') %>
     <% else %>
@@ -28,61 +28,41 @@ Search Materials
   <%= "#{category} is <b>#{value}</b>, ".html_safe %>
 <% end %>
 </p>
+
 <div class="row">
-<div class="col-md-3">
-<table class="table table-striped">
-<% @facet_fields.each do |facet_field| %>
-  <% if @materials.facet(facet_field).rows.count > 0 %>
-    <tr><td class="h4"><%= facet_field.humanize %></td> </tr>
-       <% @materials.facet(facet_field).rows.each do |facet| %>
-            <% if @selected_facets.include?(facet_field) and @selected_facets[facet_field].include?(facet.value) %>
-                <tr style="background-color:lightgray">
-                <td > <%= remove_filter(facet_field, facet.value) %> <%=facet.value %> </td>
-            <% else %>
-                <tr><td><%= filter_link(facet_field, facet.value) %></td>
-            <% end %>
-            <td><%= facet.count %></td>
-          </tr>
-       <% end %>
-  <% end %>
-<% end %>
-</table>
-</div>
+    <%= link_to t('.new', :default => t("helpers.links.new")),
+                new_material_path,
+                :class => 'btn btn-primary' %>
 
-<div class="col-md-9">
-<%= link_to t('.new', :default => t("helpers.links.new")),
-            new_material_path,
-            :class => 'btn btn-primary' %>
-
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <!--<th><%#= model_class.human_attribute_name(:id) %></th>-->
-      <th><%= model_class.human_attribute_name(:title) %></th>
-      <th><%= model_class.human_attribute_name(:short_description) %></th>
-      <th>URL</th>
-      <th><%=t '.actions', :default => t("helpers.actions") %></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @materials.results.each do |material| %>
+    <table class="table table-striped">
+      <thead>
       <tr>
-        <!--<td><%#= link_to material.id, material_path(material) %></td>-->
-        <td><%= link_to material.title, material_path(material) %></td>
-        <td><%= material.short_description %></td>
-        <td><%= link_to "Material source", material.url %></td>
-        <td>
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_material_path(material), :class => 'btn btn-default btn-xs' %>
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      material_path(material),
-                      :method => :delete,
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-xs btn-danger' %>
-        </td>
+        <!--<th><%#= model_class.human_attribute_name(:id) %></th>-->
+        <th><%= model_class.human_attribute_name(:title) %></th>
+        <th><%= model_class.human_attribute_name(:short_description) %></th>
+        <th>URL</th>
+        <th><%=t '.actions', :default => t("helpers.actions") %></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
-
+      </thead>
+      <tbody>
+      <% @materials.results.each do |material| %>
+          <tr>
+            <!--<td><%#= link_to material.id, material_path(material) %></td>-->
+            <td><%= link_to material.title, material_path(material) %></td>
+            <td><%= material.short_description %></td>
+            <td><%= link_to "Material source", material.url %></td>
+            <td>
+              <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                          edit_material_path(material), :class => 'btn btn-default btn-xs' %>
+              <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                          material_path(material),
+                          :method => :delete,
+                          :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                          :class => 'btn btn-xs btn-danger' %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>

@@ -1,6 +1,9 @@
 module TeSS
   # Dictionary of licences from http://licenses.opendefinition.org/licenses/groups/all.json
   # Converted to yaml and saved to config/dictionaries/licences.yml
+
+  # Inspired by SEEK's ImageFileDictionary
+  # https://github.com/seek4science/seek/blob/master/lib/seek/image_file_dictionary.rb
   class LicenceDictionary
     include Singleton
 

@@ -1,5 +1,10 @@
 class MaterialsController < ApplicationController
+  require 'bread_crumbs'
+
   before_action :set_material, only: [:show, :edit, :update, :destroy]
+
+  before_action :set_search_params, :only => :index
+  before_action :set_facet_params, :only => :index
 
   # Should allow token authentication for API calls
   acts_as_token_authentication_handler_for User, except: [:index, :show, :check_title] #only: [:new, :create, :edit, :update, :destroy]
@@ -11,6 +16,8 @@ class MaterialsController < ApplicationController
   # Should prevent forgery errors for JSON posts.
   skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
 
+  include TeSS::BreadCrumbs
+
   # GET /materials
   # GET /materials?q=queryparam
   # GET /materials.json
@@ -19,28 +26,10 @@ class MaterialsController < ApplicationController
   @@facet_fields = %w( scientific_topic target_audience keywords licence difficulty_level authors contributors )
 
   helper 'search'
+
   def index
-    #Extract selected facets from params
-    @selected_facets = facet_params
-    puts @selected_facets
-
-    @query = search_params
     @facet_fields = @@facet_fields
-
-    @materials = Material.search do
-      fulltext search_params
-      @@facet_fields.each{|ff| facet ff} #Add all facet_fields as facets
-      facet_params.each do |facet_title, facet_value|
-          if facet_value.is_a?(Array)
-            facet_value.each do |fv|
-              with(facet_title, fv)
-            end
-          else
-            with(facet_title, facet_value) #Filter by only selected facets
-          end
-      end
-    end
-
+    @materials = solr_search(Material, @search_params, @@facet_fields, @facet_params)
     respond_to do |format|
       format.json { render json: @materials.results }
       format.html
@@ -147,14 +136,16 @@ class MaterialsController < ApplicationController
       params.require(:material).permit(:title, :url, :short_description, :long_description, :doi, :remote_updated_date, :remote_created_date,  :remote_updated_date)
     end
 
-    def search_params
-      params[:q]
+    def set_search_params
+      params.permit(:q)
+      @search_params = params[:q] || ''
     end
 
-    def facet_params
-      facets = {}
-      @@facet_fields.each {|facet_title| facets[facet_title] = params[facet_title] if !params[facet_title].nil? }
-      return facets
+    def set_facet_params
+      params.permit(@@facet_fields)
+      @facet_params = {}
+      @@facet_fields.each {|facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
     end
+
 
 end

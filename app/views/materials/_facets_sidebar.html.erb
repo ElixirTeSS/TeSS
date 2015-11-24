@@ -1,0 +1,19 @@
+<div>
+  <table class="table table-striped">
+  <% @facet_fields.each do |facet_field| %>
+    <% if @materials.facet(facet_field).rows.count > 0 %>
+      <tr><td class="h4"><%= facet_field.humanize %></td> </tr>
+         <% @materials.facet(facet_field).rows.each do |facet| %>
+              <% if @facet_params.include?(facet_field) and @facet_params[facet_field].include?(facet.value) %>
+                  <tr style="background-color:lightgray">
+                  <td > <%= remove_filter(facet_field, facet.value) %> <%=facet.value %> </td>
+              <% else %>
+                  <tr><td><%= filter_link(facet_field, facet.value) %></td>
+              <% end %>
+              <td><%= facet.count %></td>
+            </tr>
+         <% end %>
+    <% end %>
+  <% end %>
+  </table>
+</div>

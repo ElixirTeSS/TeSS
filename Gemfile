@@ -46,6 +46,9 @@ gem "auto_strip_attributes", "~> 2.0"
 # Gem for validating URLs
 gem 'valid_url'
 
+# Gem for adding breadcrumbs
+gem "breadcrumbs_on_rails"
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
