@@ -34,6 +34,22 @@
     margin-left: auto;
 }
 
+.search_box_large {
+    width: 80%;
+    height: auto;
+    margin-left: auto;
+    font-size: 30px;
+    text-align: center;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    line-height: 20px;
+    color: #555555;
+    vertical-align: middle;
+}
+
+.remove_applied_filter {
+    padding: 6px 10px;
+    background-color: lightgray;   
+}
 /*
  *Added from bootstrap CSS as a hack.
  */
