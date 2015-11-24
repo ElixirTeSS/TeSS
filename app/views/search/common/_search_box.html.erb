@@ -1,0 +1,11 @@
+
+<%#
+Parameters
+- resource_path - the path to the route to perform the search e.g. materials_path, events_path
+%>
+  <%= form_tag resource_path, :method => :get do %>
+    <p>
+      <%= text_field_tag :q, params[:q] %>
+      <%= submit_tag "Search", :name => nil %>
+    </p>
+  <% end %>

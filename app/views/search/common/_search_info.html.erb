@@ -1,0 +1,31 @@
+<%#
+Parameters 
+- resource - The SOLR object containing .results and metadata about a search. Returned by e.g. materials/index events/index
+Globals
+@facet_params
+@query_params
+%>
+
+<!-- RESULTS COUNT -->
+<% if resource.total == 1 %>
+<h1><%= resource.total %> result </h1>
+<% else %>
+<h1><%= resource.total %> results </h1>
+<% end %>
+
+
+<!-- FILTERS APPLIED -->
+<h1>
+<% @facet_params.each do |category, value| %>
+	<% if value.is_a?(Array)%>
+  		<%= category.humanize.pluralize %>: 
+    	<% value.each do |val| %> 
+      		<span class="remove_applied_filter"> <%=remove_filter_link(category, val)%></span>
+      	<% end %>
+    <% else %>
+    	<%= category.humanize %>: 
+    	<span class="remove_applied_filter"><%=remove_filter_link(category, value)%></span>
+  	<% end %>
+<% end %>
+
+</h1>

@@ -1,68 +1,37 @@
+<!-- TITLE -->
 <div class="row">
-  <div class="col-md-3 col-xs-3">
-    <%= render :partial=> "facets_sidebar" %>
-  </div>
-  <div class=" col-md-9 col-xs-9">
-
     <%- model_class = Material -%>
     <div class="page-header">
       <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
-
-Search Materials
-<%= form_tag materials_path(), :method => :get do %>
-  <p>
-    <%= text_field_tag :q, params[:q] %>
-    <%= submit_tag "Search", :name => nil %>
-  </p>
-<% end %>
     </div>
+    <%= link_to t('.new', :default => t("helpers.links.new")), new_material_path, :class => 'btn btn-primary' %>
+</div>
 
-<p style='text-align:center'>
-<b><%= @materials.total %></b> result where
-<% @facet_params.each do |category, value| %> 
-  <% if value.is_a?(Array)%> 
-    <% value = value.join('</b> and <b>') %>
-    <% else %>
-    <% category = "the <b>#{category.humanize.singularize}</b>" %> 
-  <% end %>
-  <%= "#{category} is <b>#{value}</b>, ".html_safe %>
-<% end %>
-</p>
-
+<!-- SEARCH BAR -->
 <div class="row">
-    <%= link_to t('.new', :default => t("helpers.links.new")),
-                new_material_path,
-                :class => 'btn btn-primary' %>
+  <%= render :partial=> "search/common/search_box", :locals=>{:resource_path => materials_path} %>
+</div>
 
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <!--<th><%#= model_class.human_attribute_name(:id) %></th>-->
-        <th><%= model_class.human_attribute_name(:title) %></th>
-        <th><%= model_class.human_attribute_name(:short_description) %></th>
-        <th>URL</th>
-        <th><%=t '.actions', :default => t("helpers.actions") %></th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @materials.results.each do |material| %>
-          <tr>
-            <!--<td><%#= link_to material.id, material_path(material) %></td>-->
-            <td><%= link_to material.title, material_path(material) %></td>
-            <td><%= material.short_description %></td>
-            <td><%= link_to "Material source", material.url %></td>
-            <td>
-              <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                          edit_material_path(material), :class => 'btn btn-default btn-xs' %>
-              <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                          material_path(material),
-                          :method => :delete,
-                          :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                          :class => 'btn btn-xs btn-danger' %>
-            </td>
-          </tr>
-      <% end %>
-      </tbody>
-    </table>
+<!-- APPLIED FILTERS AND NUMBER OF RESULTS -->
+<div class="row">
+  <%= render :partial => "search/common/search_info", :locals=>{:resource=>@materials}  %>
+</div>
+
+
+<!-- SIDEBAR | RESULTS -->
+<div class="row">
+  <!-- SIDEBAR -->
+  <div class="col-md-3">
+    <%= render :partial=> "search/common/facet_sidebar", :locals=>{:resources=>@materials} %>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="col-md-9">
+      <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@materials} %>
+    <div class="row">
+        <% @materials.results.each do |material| %>
+         <%= render material %>
+        <% end %>    
+    </div>
   </div>
 </div>
