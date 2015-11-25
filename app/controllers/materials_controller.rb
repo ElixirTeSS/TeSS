@@ -104,6 +104,7 @@ class MaterialsController < ApplicationController
   def update
     respond_to do |format|
       if @material.update(material_params)
+        @material.packages << Package.find(params['package']) if params['package']
         @material.create_activity :update, owner: current_user
         format.html { redirect_to @material, notice: 'Material was successfully updated.' }
         format.json { render :show, status: :ok, location: @material }
@@ -133,7 +134,8 @@ class MaterialsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def material_params
-      params.require(:material).permit(:title, :url, :short_description, :long_description, :doi, :remote_updated_date, :remote_created_date,  :remote_updated_date)
+      params.require(:material).permit(:title, :url, :short_description, :long_description, :doi, 
+        :remote_updated_date, :remote_created_date,  :remote_updated_date, :package)
     end
 
     def set_search_params
