@@ -6,7 +6,7 @@ Parameters
 <div class="resource_search_box">
   <%= form_tag resource_path, :method => :get do %>
     <p>
-      <%= text_field_tag :q, params[:q], :class=>'search_box_large', :placeholder => "What would you like to learn?" %>
+      <%= text_field_tag :q, params[:q], :class=>'search_box_large', :placeholder => "Enter search term..." %>
       <%= submit_tag "Search", :name => nil, :class=>"icon-search" %>
     </p>
   <% end %>

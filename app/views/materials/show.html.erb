@@ -34,6 +34,17 @@
       <dd><%= @material.remote_created_date %></dd>
       <dt><strong>Last updated:</strong></dt>
       <dd><%= @material.remote_updated_date %></dd>
+      <dt><strong>Packages:</strong></dt>
+      <dd>
+      <% if @material.packages.empty? %>
+        None
+      <% else %>
+        <%= material_package_list(@material).join(", ").html_safe %>
+
+      <% end %>
+      </dd>
+
+
     </dl>
 
     <%= link_to t('.back', :default => t("helpers.links.back")),

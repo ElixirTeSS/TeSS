@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151125140836) do
+ActiveRecord::Schema.define(version: 20151125152500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -122,7 +122,10 @@ ActiveRecord::Schema.define(version: 20151125140836) do
     t.boolean  "public"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.integer  "user_id"
   end
+
+  add_index "packages", ["user_id"], name: "index_packages_on_user_id", using: :btree
 
   create_table "profiles", force: :cascade do |t|
     t.text     "firstname"
@@ -199,5 +202,6 @@ ActiveRecord::Schema.define(version: 20151125140836) do
   add_index "versions", ["transaction_id"], name: "index_versions_on_transaction_id", using: :btree
 
   add_foreign_key "materials", "content_providers"
+  add_foreign_key "packages", "users"
   add_foreign_key "users", "roles"
 end

@@ -115,6 +115,28 @@
       <%= error_span(@material[:contributors]) %>
     </div>
 
+    <div class="control-group">
+      <%= f.label :packages, :class => 'control-label' %>
+      <div class="controls">
+        <%= select_tag "packages", options_from_collection_for_select(available_packages_for(@material), "id", "name") %>
+      </div>
+      <%= error_span(@material[:packages]) %>
+    </div>
+    <br>
+
+    <div class="control-group">
+        <%= f.label :existing_packages, :class=> 'control-label' %>
+      <div class="controls">
+         <% packages = material_package_list(@material) %>
+         <% if packages.empty? %>
+            <div class="nontext">None</div>
+         <% else %>  
+           <% material_package_list(@material).each do |p| %>
+             <%= p.html_safe %>
+            <% end %>
+          <% end %>
+      </div>
+    </div>
 
     <%= f.submit nil, :class => 'btn btn-primary' %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),

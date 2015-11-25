@@ -15,4 +15,12 @@ module MaterialsHelper
     end
   end
 
+  def material_package_list(material)
+    packages = []
+    material.packages.each do |p| 
+      packages << link_to(p.name, p)
+    end
+    return packages
+  end
+
 end

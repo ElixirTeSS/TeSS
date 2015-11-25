@@ -1,10 +1,31 @@
 class PackagesController < ApplicationController
   before_action :set_package, only: [:show, :edit, :update, :destroy]
 
+  require 'bread_crumbs'
+
+  before_action :set_search_params, :only => :index
+  before_action :set_facet_params, :only => :index
+
+  # Should allow token authentication for API calls
+  acts_as_token_authentication_handler_for User, except: [:index, :show, :check_title] #only: [:new, :create, :edit, :update, :destroy]
+
+  # User auth should be required in the web interface as well; it's here rather than in routes so that it
+  # doesn't override the token auth, above.
+  before_filter :authenticate_user!, except: [:index, :show, :check_title]
+
+  # Should prevent forgery errors for JSON posts.
+  skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
+
+  include TeSS::BreadCrumbs
+
+  @@facet_fields = %w( owner )
+
+
   # GET /packages
   # GET /packages.json
   def index
-    @packages = Package.all
+    @facet_fields = @@facet_fields
+    @packages = solr_search(Package, @search_params, @@facet_fields, @facet_params)
   end
 
   # GET /packages/1
@@ -28,6 +49,8 @@ class PackagesController < ApplicationController
 
     respond_to do |format|
       if @package.save
+        @package.create_activity :create, owner: current_user
+        current_user.packages << @package
         format.html { redirect_to @package, notice: 'Package was successfully created.' }
         format.json { render :show, status: :created, location: @package }
       else
@@ -42,6 +65,7 @@ class PackagesController < ApplicationController
   def update
     respond_to do |format|
       if @package.update(package_params)
+        create_activity :update, owner: current_user
         format.html { redirect_to @package, notice: 'Package was successfully updated.' }
         format.json { render :show, status: :ok, location: @package }
       else
@@ -56,6 +80,7 @@ class PackagesController < ApplicationController
   def destroy
     @package.destroy
     respond_to do |format|
+      create_activity :destroy, owner: current_user
       format.html { redirect_to packages_url, notice: 'Package was successfully destroyed.' }
       format.json { head :no_content }
     end
@@ -71,4 +96,18 @@ class PackagesController < ApplicationController
     def package_params
       params.require(:package).permit(:name, :description, :image_url, :public)
     end
+
+
+    def set_search_params
+      params.permit(:q)
+      @search_params = params[:q] || ''
+    end
+
+    def set_facet_params
+      params.permit(@@facet_fields)
+      @facet_params = {}
+      @@facet_fields.each {|facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
+    end
+
+
 end

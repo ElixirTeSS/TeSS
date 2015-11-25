@@ -1,33 +1,30 @@
-<p id="notice"><%= notice %></p>
+<!-- SIDEBAR | RESULTS -->
+<div class="row">
+  <!-- SIDEBAR -->
+  <div class="col-md-3">
+    <%= render :partial=> "search/common/facet_sidebar", :locals=>{:resources=>@packages} %>
+  </div>
 
-<h1>Listing Packages</h1>
+  <!-- RESULTS -->
+  <div class="col-md-9">
+    <!-- SEARCH BAR -->
+    <div class="row">
+      <%= render :partial=> "search/common/search_box", :locals=>{:resource_path => packages_path} %>
+    </div>
+    
+    <!-- APPLIED FILTERS AND NUMBER OF RESULTS -->
+    <div class="row">
+      <%= render :partial => "search/common/search_info", :locals=>{:resource=>@packages}  %>
+    </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Image url</th>
-      <th>Public</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+    <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@materials} %>
+    <hr>
 
-  <tbody>
-    <% @packages.each do |package| %>
-      <tr>
-        <td><%= package.name %></td>
-        <td><%= package.description %></td>
-        <td><%= package.image_url %></td>
-        <td><%= package.public %></td>
-        <td><%= link_to 'Show', package %></td>
-        <td><%= link_to 'Edit', edit_package_path(package) %></td>
-        <td><%= link_to 'Destroy', package, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Package', new_package_path %>
+    <!-- ACTUAL RESULTS LIST -->
+    <div class="row">
+      <% @packages.results.each do |package| %>
+         <%= render package %>
+      <% end %>    
+    </div>
+  </div>
+</div>
