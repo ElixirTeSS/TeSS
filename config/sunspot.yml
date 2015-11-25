@@ -16,7 +16,7 @@ development:
 
 test:
   solr:
-    url: http://<%= Rails.application.secrets[:solr][:username] %>:<%= Rails.application.secrets[:solr][:password] %>@tess.oerc.ox.ac.uk
+    url: http://<%= ENV['SOLR_USERNAME'] %>:<%= ENV['SOLR_PASSWORD'] %>@tess.oerc.ox.ac.uk
     port: 8080
     log_level: WARNING
     path: /solr
