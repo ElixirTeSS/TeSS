@@ -16,8 +16,7 @@ development:
 
 test:
   solr:
-    hostname: localhost
-    port: 8981
+    url: http://<%= Rails.application.secrets[:solr][:username] %>:<%= Rails.application.secrets[:solr][:password] %>@tess.oerc.ox.ac.uk
+    port: 8080
     log_level: WARNING
-    path: /solr/test
-    
+    path: /solr
