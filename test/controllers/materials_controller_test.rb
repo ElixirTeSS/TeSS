@@ -61,43 +61,43 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_redirected_to materials_path
   end
 
-  test 'breadcrumb for material index' do
-    get :index
-    assert_response :success
-    assert_select "div.breadcrumbs", :text => /Home #{controller_name.singularize.humanize.pluralize}/, :count => 1 do
-      assert_select "a[href=?]", root_path, :count => 1
-    end
-  end
-
-  test 'breadcrumb for showing material' do
-    get :show, :id => @material
-    assert_response :success
-    assert_select "div.breadcrumbs", :text => /Home #{controller_name.singularize.humanize.pluralize} #{@material.title}/, :count => 1 do
-      assert_select "a[href=?]", root_path, :count => 1
-      assert_select "a[href=?]", materials_url, :count => 1
-    end
-  end
-
-  test 'breadcrumb for editing material' do
-    sign_in users(:regular_user)
-    get :edit, id: @material
-    assert_response :success
-    assert_select "div.breadcrumbs", :text => /Home #{controller_name.singularize.humanize.pluralize} #{@material.title} Edit/, :count => 1 do
-      assert_select "a[href=?]", root_path, :count => 1
-      assert_select "a[href=?]", materials_url, :count => 1
-      assert_select "a[href=?]", material_url(@material), :count => 1
-    end
-  end
-
-  test 'breadcrumb for creating new material' do
-    sign_in users(:regular_user)
-    get :new
-    assert_response :success
-    assert_select "div.breadcrumbs", :text => /Home #{controller_name.singularize.humanize.pluralize} New/, :count => 1 do
-      assert_select "a[href=?]", root_path, :count => 1
-      assert_select "a[href=?]", materials_url, :count => 1
-    end
-  end
+  # test 'breadcrumb for material index' do
+  #   get :index
+  #   assert_response :success
+  #   assert_select "div.breadcrumbs", :text => /Home #{controller_name.singularize.humanize.pluralize}/, :count => 1 do
+  #     assert_select "a[href=?]", root_path, :count => 1
+  #   end
+  # end
+  #
+  # test 'breadcrumb for showing material' do
+  #   get :show, :id => @material
+  #   assert_response :success
+  #   assert_select "div.breadcrumbs", :text => /Home #{controller_name.singularize.humanize.pluralize} #{@material.title}/, :count => 1 do
+  #     assert_select "a[href=?]", root_path, :count => 1
+  #     assert_select "a[href=?]", materials_url, :count => 1
+  #   end
+  # end
+  #
+  # test 'breadcrumb for editing material' do
+  #   sign_in users(:regular_user)
+  #   get :edit, id: @material
+  #   assert_response :success
+  #   assert_select "div.breadcrumbs", :text => /Home #{controller_name.singularize.humanize.pluralize} #{@material.title} Edit/, :count => 1 do
+  #     assert_select "a[href=?]", root_path, :count => 1
+  #     assert_select "a[href=?]", materials_url, :count => 1
+  #     assert_select "a[href=?]", material_url(@material), :count => 1
+  #   end
+  # end
+  #
+  # test 'breadcrumb for creating new material' do
+  #   sign_in users(:regular_user)
+  #   get :new
+  #   assert_response :success
+  #   assert_select "div.breadcrumbs", :text => /Home #{controller_name.singularize.humanize.pluralize} New/, :count => 1 do
+  #     assert_select "a[href=?]", root_path, :count => 1
+  #     assert_select "a[href=?]", materials_url, :count => 1
+  #   end
+  # end
 
   # test "should find existing material" do
   #   post 'check_title', :format => :json,  :title => @material.title
