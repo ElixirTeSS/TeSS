@@ -10,8 +10,17 @@ Role.roles.each do |role|
   Role.find_or_create_by({name: role})
 end
 
-Material.delete_all
+User.delete_all
+User.create!(
+        username: 'test',
+        email: 'test@test.com',
+        password: 'test1234',
+        password_confirmation: 'test1234',
+        confirmed_at: Time.now
+)
 
+
+Material.delete_all
 Material.create!(
     title: 'Metabolomics: Understanding Metabolism in the 21st Century',
     short_description: 'Discover how metabolomics is revolutionising our understanding of metabolism with this free online course.',
