@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151125131841) do
+ActiveRecord::Schema.define(version: 20151125140836) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,6 +103,25 @@ ActiveRecord::Schema.define(version: 20151125131841) do
     t.string   "carousel_images",              array: true
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+  end
+
+  create_table "package_materials", id: false, force: :cascade do |t|
+    t.integer  "material_id"
+    t.integer  "package_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "package_materials", ["material_id"], name: "index_package_materials_on_material_id", using: :btree
+  add_index "package_materials", ["package_id"], name: "index_package_materials_on_package_id", using: :btree
+
+  create_table "packages", force: :cascade do |t|
+    t.string   "name"
+    t.text     "description"
+    t.string   "image_url"
+    t.boolean  "public"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "profiles", force: :cascade do |t|
