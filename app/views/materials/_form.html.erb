@@ -118,7 +118,7 @@
     <div class="control-group">
       <%= f.label :packages, :class => 'control-label' %>
       <div class="controls">
-        <%= select_tag "packages", options_from_collection_for_select(available_packages_for(@material), "id", "name") %>
+        <%= select_tag "package", options_from_collection_for_select(available_packages_for(@material), "id", "name") %>
       </div>
       <%= error_span(@material[:packages]) %>
     </div>
