@@ -6,7 +6,6 @@ module SearchHelper
 		if parameters.include?(name) 
 			if !parameters[name].include?(value)
 		    	new_parameter = {name => [parameters.delete(name), value].flatten}
-		    	puts new_parameter
 		    else new_parameter = {}
 		    end
 		end
