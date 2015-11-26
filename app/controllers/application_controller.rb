@@ -24,10 +24,14 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
   end
 
-  def solr_search(model_name, search_params, facet_fields, selected_facets)
+  def solr_search(model_name, search_params='', facet_fields=[], selected_facets=[], page=1)
     model_name.search do
       #Set the search parameter
       fulltext search_params
+
+      if !page.nil? and page != '1'
+        paginate :page => page
+      end
 
       #Add all facet_fields as facets
       facet_fields.each{|ff| facet ff}

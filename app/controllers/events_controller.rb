@@ -1,8 +1,8 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy]
 
-  before_action :set_search_params, :only => :index
-  before_action :set_facet_params, :only => :index
+  #sets @search_params, @facet_params, and @page 
+  before_action :set_params, :only => :index
 
   # Should allow token authentication for API calls
   acts_as_token_authentication_handler_for User, except: [:index, :show, :check_title] #only: [:new, :create, :edit, :update, :destroy]
@@ -22,7 +22,7 @@ class EventsController < ApplicationController
   helper 'search'
   def index
     @facet_fields = @@facet_fields
-    @events = solr_search(Event, @search_params, @@facet_fields, @facet_params)
+    @events = solr_search(Event, @search_params, @@facet_fields, @facet_params, @page)
     respond_to do |format|
       format.json { render json: @events.results }
       format.html
@@ -124,19 +124,14 @@ class EventsController < ApplicationController
                                     :country, :postcode, :latitude, :longitude)
     end
 
-    def set_search_params
-      params.permit(:q,)
+    def set_params
+      params.permit(:q, :page, @@facet_fields)
       @search_params = params[:q] || ''
-    end
-
-    def set_facet_params
-        params.permit(:include_expired, @@facet_fields)
-        @facet_params = {}
-        @@facet_fields.each {|facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
-        if params[:include_expired]
+      @facet_params = {}
+      @@facet_fields.each {|facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
+      @page = params[:page] || 1
+      if params[:include_expired]
           @facet_params['include_expired'] = true
-        end
-    end
-
-
+      end
+  end
 end

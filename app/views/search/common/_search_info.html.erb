@@ -8,11 +8,7 @@ Globals
 
 <!-- RESULTS COUNT -->
 <h3>
-<% if resource.total == 1 %>
-	<%= resource.total %> result
-<% else %>
-	<%= resource.total %> results
-<% end %>
+<%= pluralize( resource.total, 'result' ) %>
 </h3>
 
 <!-- FILTERS APPLIED -->
@@ -28,4 +24,18 @@ Globals
     	<span class="remove_applied_filter"><%=remove_filter_link(category, value)%></span>
   	<% end %>
     <br>
+<% end %>
+
+<!-- Pagination -->
+<% resource_results = resource.results %>
+<% if resource.results.total_pages > 1 %>
+  <%= link_to "|<<", request.parameters.except(:page) %>
+  <% for page in 1..resource.results.total_pages %>
+    <% if params[:page] == page.to_s or (params[:page].nil? and page == 1) %>
+      <span style="color:red"><%= "#{page}" %></span>
+    <% else %>
+      <%= link_to "|#{page}| ", request.parameters.merge(:page => page) %>
+    <% end %>
+  <% end %>
+  <%= link_to ">>|", request.parameters.merge(:page => resource_results.total_pages) %>
 <% end %>
