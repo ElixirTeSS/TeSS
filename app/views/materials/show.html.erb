@@ -13,7 +13,7 @@
       <dt><strong><%= model_class.human_attribute_name(:short_description) %>:</strong></dt>
       <dd><%= @material.short_description %></dd>
       <dt><strong><%= model_class.human_attribute_name(:long_description) %>:</strong></dt>
-      <dd><%= @material.long_description %></dd>
+      <dd><%= render_markdown(@material.long_description) %></dd>
       <dt><strong><%= model_class.human_attribute_name(:scientific_topic) %>:</strong></dt>
       <dd><%= @material.scientific_topic %></dd>
       <dt><strong><%= model_class.human_attribute_name(:target_audience) %>:</strong></dt>
