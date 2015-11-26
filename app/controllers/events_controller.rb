@@ -17,6 +17,10 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
 
+  require 'bread_crumbs'
+  include TeSS::BreadCrumbs
+
+
   @@facet_fields = %w( city field category provider sponsor venue city country keyword )
 
   helper 'search'
