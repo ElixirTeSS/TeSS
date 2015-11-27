@@ -30,6 +30,8 @@ gem 'progress_bar'
 
 gem 'paper_trail', '~> 4.0.0'
 
+gem 'activerecord-session_store'
+
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
