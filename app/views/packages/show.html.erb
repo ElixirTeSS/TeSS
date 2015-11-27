@@ -22,10 +22,20 @@
 
 
 <p>
-<strong>This package cotains <%= @package.materials.count %> materials</strong>
+<strong>Contents: </strong> This package contains <%= pluralize(@package.materials.count, 'material') %> and <%= pluralize(@package.events.count, 'event') %>
+  <br>
+  <br>
+
+  <strong>Materials</strong>
 <% @package.materials.each do |material| %>
 	<%= render material %> 
 <% end %>
+  <strong>Events</strong>
+  <% @package.events.each do |event| %>
+      <%= render event%>
+  <% end %>
+
+
 </p>
 
 <%= link_to 'Edit', edit_package_path(@package) %> |

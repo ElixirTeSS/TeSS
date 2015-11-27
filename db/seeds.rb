@@ -94,3 +94,14 @@ Data integration",
     remote_created_date: Date.today - 25,
     remote_updated_date: Date.today - 1)
 
+Package.delete_all
+
+Package.create!(
+    name: 'TGAC NGS',
+    description: 'Some of the Training provided at TGAC, Norwich UK',
+    image_url: 'http://www.tgac.ac.uk/v2images/tgac_logo_single.png',
+    public: true,
+    events: [Event.find_by_title('Signalling Networks: From Data to Modelling'), Event.find_by_title('TGAC Summer School on Bioinformatics')],
+    materials: [Material.find_by_title('NGS current challenges and data analysis for plant researchers')]
+
+)

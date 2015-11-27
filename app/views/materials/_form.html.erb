@@ -118,18 +118,17 @@
     <div class="control-group">
       <%= f.label :packages, :class => 'control-label' %>
       <div class="controls">
-        <%= select_tag "package", options_from_collection_for_select(available_packages_for(@material), "id", "name") %>
+        <%= f.select "package_ids", content_tag(:option,'select one...',:value=>"")+options_from_collection_for_select(available_packages_for(@material), "id", "name") %>
       </div>
       <%= error_span(@material[:packages]) %>
     </div>
-    <br>
 
     <div class="control-group">
         <%= f.label :existing_packages, :class=> 'control-label' %>
       <div class="controls">
          <% packages = material_package_list(@material) %>
          <% if packages.empty? %>
-            <div class="nontext">None</div>
+            <div class="nonetext">None</div>
          <% else %>  
            <% material_package_list(@material).each do |p| %>
              <%= p.html_safe %>
@@ -137,6 +136,22 @@
           <% end %>
       </div>
     </div>
+
+    <div class="control-group">
+      <%= f.label :content_provider, :class=> 'control-label' %>
+      <div class="controls">
+        <% content_provider = @material.content_provider %>
+        <% if content_provider.nil? %>
+            <%= f.select "content_provider_id", content_tag(:option,'select one...',:value=>"")+options_from_collection_for_select(ContentProvider.all, "id", "title") %>
+        <% else %>
+            <a href="<%=url_for content_provider %>">
+              <%= content_provider.title %>
+              <img src="<%= content_provider.logo_url %>"/>
+            </a>
+        <% end %>
+      </div>
+    </div>
+
 
     <%= f.submit nil, :class => 'btn btn-primary' %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),

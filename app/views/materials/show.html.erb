@@ -36,13 +36,21 @@
       <dd><%= @material.remote_updated_date %></dd>
       <dt><strong>Packages:</strong></dt>
       <dd>
-      <% if @material.packages.empty? %>
-        None
-      <% else %>
-        <%= material_package_list(@material).join(", ").html_safe %>
-
+      <% if @material.packages.empty? %> <em> This material is not included in any packages </em>
+      <% else %><%= material_package_list(@material).join(", ").html_safe %>
       <% end %>
       </dd>
+      <dt><strong>Content Provider:</strong></dt>
+      <dd>
+        <% if @material.content_provider.nil? %> <em>No content provider</em>
+        <% else %>
+            <a href="<%=url_for @material.content_provider %>">
+              <%=  @material.content_provider.title %>
+            <img src="<%= @material.content_provider.logo_url %>"/>
+            </a>
+        <% end %>
+      </dd>
+
 
 
     </dl>

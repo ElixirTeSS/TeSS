@@ -18,6 +18,9 @@ class Event < ActiveRecord::Base
     time :end
   end
 
+  has_many :package_events
+  has_many :packages, through: :package_events
+
   validates :title, :link, presence: true
 
   serialize :field
@@ -46,8 +49,4 @@ class Event < ActiveRecord::Base
   # latitude:double
   # longitude:double
 
-
-  def facet_fields
-    %w( city field category provider sponsor venue city country keyword )
-  end
 end

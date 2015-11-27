@@ -23,4 +23,11 @@ module MaterialsHelper
     return packages
   end
 
+  def content_providers_list
+    cps = []
+    ContentProvider.all.each do |content_provider|
+      cps << link_to(content_provider.title, content_provider)
+    end
+    return cps
+  end
 end
