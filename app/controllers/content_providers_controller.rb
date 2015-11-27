@@ -1,6 +1,8 @@
 class ContentProvidersController < ApplicationController
   before_action :set_content_provider, only: [:show, :edit, :update, :destroy]
 
+  require 'bread_crumbs'
+  include TeSS::BreadCrumbs
 
   def index
     @content_providers = ContentProvider.all
