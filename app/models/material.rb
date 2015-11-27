@@ -47,9 +47,5 @@ class Material < ActiveRecord::Base
   # Separate models needed for Rating, License, Keywords &c.
 =end
 
-
-  def facets_fields
-    %w( scientific_topic target_audience keywords licence difficulty_level authors contributors )
-  end
 end
 
