@@ -12,6 +12,16 @@
   <dd><%= @content_provider.logo_url %></dd>
   <dt><strong><%= model_class.human_attribute_name(:description) %>:</strong></dt>
   <dd><%= @content_provider.description %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:contents) %>:</strong></dt>
+  <dd>This package contains <%= pluralize(@content_provider.materials.count, 'material') %></dd>
+  <br><br>
+  <dt><strong><%= model_class.human_attribute_name(:materials) %>:</strong></dt>
+  <dd>
+    <% @content_provider.materials.each do |material| %>
+        <%= render material %>
+    <% end %>
+  </dd>
+
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
