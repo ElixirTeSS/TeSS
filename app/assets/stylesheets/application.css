@@ -147,3 +147,16 @@
 .alert-notice hr {
     border-top-color: #c9e2b3;
 }
+
+.alert-alert {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    margin-top: 5px;
+}
+.alert-alert hr {
+    border-top-color: #e4b9c0;
+}
+.alert-alert .alert-link {
+    color: #843534;
+}
