@@ -2,4 +2,5 @@
 <p>Title: <%= link_to(material.title, material) %></p>
 <p>URL: <%= material.url %></p>
 <p>Description: <%= material.short_description %></p>
-</div>
+  <%= html_logo_for(material.content_provider).html_safe %>
+  </div>
