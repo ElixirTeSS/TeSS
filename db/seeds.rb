@@ -10,8 +10,31 @@ Role.roles.each do |role|
   Role.find_or_create_by({name: role})
 end
 
-Material.delete_all
+ContentProvider.delete_all
+ContentProvider.create!(
+    title: "GOBLET",
+    url: "http://www.mygoblet.org",
+    logo_url: "http://www.mygoblet.org/sites/default/files/logo_goblet_trans.png",
+    description: "GOBLET, the Global Organisation for Bioinformatics Learning, Education and Training, is a legally registered foundation providing a global, sustainable support and networking structure for bioinformatics educators/trainers and students/trainees."
+)
+ContentProvider.create!(
+    title: "TGAC",
+    url: "http://www.tgac.ac.uk",
+    logo_url: "http://www.tgac.ac.uk/v2images/tgac_logo_single.png",
+    description: "The Genome Analysis Centre (TGAC) is a research institute focused on the application of state of the art genomics and bioinformatics to advance plant, animal and microbial research to promote a sustainable bioeconomy. TGAC is a hub for innovative bioinformatics founded on research, analysis and interpretation of multiple, complex data sets. We host one of the largest computing hardware facilities dedicated to life science research in Europe.."
+)
 
+User.delete_all
+User.create!(
+        username: 'test',
+        email: 'test@test.com',
+        password: 'test1234',
+        password_confirmation: 'test1234',
+        confirmed_at: Time.now
+)
+
+
+Material.delete_all
 Material.create!(
     title: 'Metabolomics: Understanding Metabolism in the 21st Century',
     short_description: 'Discover how metabolomics is revolutionising our understanding of metabolism with this free online course.',

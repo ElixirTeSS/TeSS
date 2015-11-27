@@ -1,0 +1,28 @@
+<%# Sidebar containing filterable facets.
+
+Parameters:
+- resources     - SOLR object containing results and metadata about search as returned from materials#index
+
+Variable that should be available
+- @facet_fields  - List of all facets supported by this resource type
+- @facet_params  - The facet filters the user has applied
+%>
+<div>
+  <table class="table table-striped">
+  <% @facet_fields.each do |facet_field| %>
+    <% if resources.facet(facet_field).rows.count > 0 %>
+      <tr><td class="h4"><%= facet_field.humanize %></td> </tr>
+         <% resources.facet(facet_field).rows.each do |facet| %>
+              <% if @facet_params.include?(facet_field) and @facet_params[facet_field].include?(facet.value) %>
+                  <tr style="background-color:lightgray">
+                  <td > <%= remove_filter_link(facet_field, facet.value)%></td>
+              <% else %>
+                  <tr><td><%= filter_link(facet_field, facet.value) %></td>
+              <% end %>
+              <td><%= facet.count %></td>
+            </tr>
+         <% end %>
+    <% end %>
+  <% end %>
+  </table>
+</div>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151123160540) do
+ActiveRecord::Schema.define(version: 20151125152500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,18 +74,21 @@ ActiveRecord::Schema.define(version: 20151123160540) do
     t.string   "doi"
     t.date     "remote_updated_date"
     t.date     "remote_created_date"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.integer  "user_id"
     t.text     "long_description"
-    t.string   "target_audience",     default: [],              array: true
-    t.string   "scientific_topic",    default: [],              array: true
-    t.string   "keywords",            default: [],              array: true
-    t.string   "authors",             default: [],              array: true
-    t.string   "contributors",        default: [],              array: true
-    t.string   "licence"
+    t.string   "target_audience",     default: [],                          array: true
+    t.string   "scientific_topic",    default: [],                          array: true
+    t.string   "keywords",            default: [],                          array: true
+    t.string   "authors",             default: [],                          array: true
+    t.string   "contributors",        default: [],                          array: true
+    t.string   "licence",             default: "notspecified"
     t.string   "difficulty_level"
+    t.integer  "content_provider_id"
   end
+
+  add_index "materials", ["content_provider_id"], name: "index_materials_on_content_provider_id", using: :btree
 
   create_table "nodes", force: :cascade do |t|
     t.string   "name"
@@ -101,6 +104,28 @@ ActiveRecord::Schema.define(version: 20151123160540) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
   end
+
+  create_table "package_materials", id: false, force: :cascade do |t|
+    t.integer  "material_id"
+    t.integer  "package_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "package_materials", ["material_id"], name: "index_package_materials_on_material_id", using: :btree
+  add_index "package_materials", ["package_id"], name: "index_package_materials_on_package_id", using: :btree
+
+  create_table "packages", force: :cascade do |t|
+    t.string   "name"
+    t.text     "description"
+    t.string   "image_url"
+    t.boolean  "public"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "user_id"
+  end
+
+  add_index "packages", ["user_id"], name: "index_packages_on_user_id", using: :btree
 
   create_table "profiles", force: :cascade do |t|
     t.text     "firstname"
@@ -176,5 +201,7 @@ ActiveRecord::Schema.define(version: 20151123160540) do
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
   add_index "versions", ["transaction_id"], name: "index_versions_on_transaction_id", using: :btree
 
+  add_foreign_key "materials", "content_providers"
+  add_foreign_key "packages", "users"
   add_foreign_key "users", "roles"
 end

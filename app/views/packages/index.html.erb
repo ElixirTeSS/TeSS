@@ -2,19 +2,19 @@
 <div class="row">
   <!-- SIDEBAR -->
   <div class="col-md-3">
-    <%= render :partial=> "search/common/facet_sidebar", :locals=>{:resources=>@materials} %>
+    <%= render :partial=> "search/common/facet_sidebar", :locals=>{:resources=>@packages} %>
   </div>
 
   <!-- RESULTS -->
   <div class="col-md-9">
     <!-- SEARCH BAR -->
     <div class="row">
-      <%= render :partial=> "search/common/search_box", :locals=>{:resource_path => materials_path} %>
+      <%= render :partial=> "search/common/search_box", :locals=>{:resource_path => packages_path} %>
     </div>
     
     <!-- APPLIED FILTERS AND NUMBER OF RESULTS -->
     <div class="row">
-      <%= render :partial => "search/common/search_info", :locals=>{:resource=>@materials}  %>
+      <%= render :partial => "search/common/search_info", :locals=>{:resource=>@packages}  %>
     </div>
 
     <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@materials} %>
@@ -22,8 +22,8 @@
 
     <!-- ACTUAL RESULTS LIST -->
     <div class="row">
-      <% @materials.results.each do |material| %>
-         <%= render material %>
+      <% @packages.results.each do |package| %>
+         <%= render package %>
       <% end %>    
     </div>
   </div>

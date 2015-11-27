@@ -1,0 +1,41 @@
+<%#
+Parameters 
+- resource - The SOLR object containing .results and metadata about a search. Returned by e.g. materials/index events/index
+Globals
+@facet_params
+@query_params
+%>
+
+<!-- RESULTS COUNT -->
+<h3>
+<%= pluralize( resource.total, 'result' ) %>
+</h3>
+
+<!-- FILTERS APPLIED -->
+<% @facet_params.each do |category, value| %>
+	<br>
+	<% if value.is_a?(Array)%>
+  		<b><%= category.humanize.pluralize %></b>:
+    	<% value.each do |val| %> 
+      		<span class="remove_applied_filter"> <%=remove_filter_link(category, val)%></span>
+      	<% end %>
+    <% else %>
+    	<b><%= category.humanize %></b>: 
+    	<span class="remove_applied_filter"><%=remove_filter_link(category, value)%></span>
+  	<% end %>
+    <br>
+<% end %>
+
+<!-- Pagination -->
+<% resource_results = resource.results %>
+<% if resource.results.total_pages > 1 %>
+  <%= link_to "|<<", request.parameters.except(:page) %>
+  <% for page in 1..resource.results.total_pages %>
+    <% if params[:page] == page.to_s or (params[:page].nil? and page == 1) %>
+      <span style="color:red"><%= "#{page}" %></span>
+    <% else %>
+      <%= link_to "|#{page}| ", request.parameters.merge(:page => page) %>
+    <% end %>
+  <% end %>
+  <%= link_to ">>|", request.parameters.merge(:page => resource_results.total_pages) %>
+<% end %>

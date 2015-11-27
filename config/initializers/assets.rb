@@ -13,3 +13,4 @@ Rails.application.config.assets.compile = true
 Rails.application.config.assets.precompile =  ['*.js', '*.css', '*.css.erb']
 #Rails.application.config.assets.precompile += [ 'fontawesome-webfont.*' ]
 Rails.application.config.assets.precompile += %w( twitter/bootstrap/* fontawesome*)
+Rails.application.config.assets.precompile += %w( jquery-ui/* )

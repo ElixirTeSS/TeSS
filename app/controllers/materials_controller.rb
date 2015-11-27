@@ -1,8 +1,10 @@
 class MaterialsController < ApplicationController
+  require 'bread_crumbs'
+
   before_action :set_material, only: [:show, :edit, :update, :destroy]
 
-  before_action :set_search_params, :only => :index
-  before_action :set_facet_params, :only => :index
+  #sets @search_params, @facet_params, and @page 
+  before_action :set_params, :only => :index
 
   # Should allow token authentication for API calls
   acts_as_token_authentication_handler_for User, except: [:index, :show, :check_title] #only: [:new, :create, :edit, :update, :destroy]
@@ -13,6 +15,8 @@ class MaterialsController < ApplicationController
 
   # Should prevent forgery errors for JSON posts.
   skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
+
+  include TeSS::BreadCrumbs
 
   # GET /materials
   # GET /materials?q=queryparam
@@ -25,7 +29,7 @@ class MaterialsController < ApplicationController
 
   def index
     @facet_fields = @@facet_fields
-    @materials = solr_search(Material, @search_params, @@facet_fields, @facet_params)
+    @materials = solr_search(Material, @search_params, @@facet_fields, @facet_params, @page)
     respond_to do |format|
       format.json { render json: @materials.results }
       format.html
@@ -100,6 +104,7 @@ class MaterialsController < ApplicationController
   def update
     respond_to do |format|
       if @material.update(material_params)
+        @material.packages << Package.find(params['package']) if params['package']
         @material.create_activity :update, owner: current_user
         format.html { redirect_to @material, notice: 'Material was successfully updated.' }
         format.json { render :show, status: :ok, location: @material }
@@ -129,19 +134,16 @@ class MaterialsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def material_params
-      params.require(:material).permit(:title, :url, :short_description, :long_description, :doi, :remote_updated_date, :remote_created_date,  :remote_updated_date)
+      params.require(:material).permit(:title, :url, :short_description, :long_description, :doi, 
+        :remote_updated_date, :remote_created_date,  :remote_updated_date, :package)
     end
 
-    def set_search_params
-      params.permit(:q)
+    def set_params
+      params.permit(:q, :page, @@facet_fields)
       @search_params = params[:q] || ''
-    end
-
-    def set_facet_params
-      params.permit(@@facet_fields)
       @facet_params = {}
       @@facet_fields.each {|facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
+      @page = params[:page] || 1
     end
-
 
 end

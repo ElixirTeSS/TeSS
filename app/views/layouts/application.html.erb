@@ -2,20 +2,23 @@
 <html>
 <head>
   <title>TeSS - Training eSupport System</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+
   <%= csrf_meta_tags %>
 </head>
 <body>
+
 <% if "#{Rails.env}" == 'production' %>
     <div class="jumbotron" style="text-align:center">
-        <h1>  Not the TeSS you were expecting?</h1>
-        <p>This is our sandboxed development of a new improved TeSS. Any materials added here will be deleted periodically.</p>
-        <p>The current production version of TeSS is up and running at <a href="http://tess.elixir-uk.org">http://tess.elixir-uk.org</a></p>
-        <p><a class="btn btn-primary btn-large" href="http://tess.elixir-uk.org">Go to TeSS</a></p>
+      <h1>  Not the TeSS you were expecting?</h1>
+      <p>This is our sandboxed development of a new improved TeSS. Any materials added here will be deleted periodically.</p>
+      <p>The current production version of TeSS is up and running at <a href="http://tess.elixir-uk.org">http://tess.elixir-uk.org</a></p>
+      <p><a class="btn btn-primary btn-large" href="http://tess.elixir-uk.org">Go to TeSS</a></p>
     </div>
 <% end %>
 
+<!-- Navigation bar -->
 <%= nav_bar static: :top, brand: "TeSS", responsive: true do %>
     <!--<%= menu_text "Training eSupport System" %>-->
     <%= menu_group do %>
@@ -25,30 +28,42 @@
         <%= menu_item "Workflows", workflows_path %>
         <%= menu_item "Content Providers", content_providers_path %>
         <%= menu_item "Nodes", nodes_path %>
-        <%= menu_item "People", users_path %>
     <% end %>
-    <%= menu_group pull: :right do %>
-        <% if current_user %>
+    <% if current_user %>
+        <%= menu_group pull: :right do %>
             <%= menu_item "Profile", user_path(current_user) %>
             <%= menu_item "Sign out", destroy_user_session_path, :method => :delete %>
-        <% else %>
+        <% end %>
+    <% else %>
+        <%= menu_group pull: :right do %>
             <%= menu_item "Sign In", new_user_session_path %>
             <%= menu_item "Sign Up", new_user_registration_path %>
         <% end %>
-   <% end %>
+    <% end %>
 <% end %>
-  <div class='nav_search_bar_container'>
-    <div class='nav_search_bar'>
-  <%= render partial: 'search/bar.html.erb' %>
-  </div>
-  </div>
-   
 
-<div class="container">
-<% flash.each do |key, value| %>
-<div class="alert alert-<%= key %>"><%= value %></div>
-<% end %>
-<%= yield %>
+<div class='nav_search_bar_container'>
+  <div class='nav_search_bar'>
+    <%= render partial: 'search/bar.html.erb' %>
+  </div>
 </div>
+
+<div id="main-container" class="container">
+
+  <%= flash_messages %>
+
+  <% unless breadcrumbs.empty? %>
+      <div class="breadcrumbs">
+        <!--<%#= render_breadcrumbs :tag => 'li', :separator => ' ' %>-->
+        <!--<%#= render_breadcrumbs :builder => ::BootstrapBreadcrumbsBuilder %>-->
+        <%= render_breadcrumbs(" ", { class: '', item_class: '', divider_class: '', active_class: 'active' }) %>
+      </div>
+  <% end %>
+
+  <%# main content part of every page -%>
+  <%= yield :layout %>
+
+</div>
+
 </body>
 </html>
