@@ -1,0 +1,32 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @package.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @package.description %>
+</p>
+
+<p>
+  <strong>Image url:</strong>
+  <%= @package.image_url %>
+</p>
+
+<p>
+  <strong>Public:</strong>
+  <%= @package.public %>
+</p>
+
+
+<p>
+<strong>This package cotains <%= @package.materials.count %> materials</strong>
+<% @package.materials.each do |material| %>
+	<%= render material %> 
+<% end %>
+</p>
+
+<%= link_to 'Edit', edit_package_path(@package) %> |
+<%= link_to 'Back', packages_path %>

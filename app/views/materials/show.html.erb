@@ -13,7 +13,7 @@
       <dt><strong><%= model_class.human_attribute_name(:short_description) %>:</strong></dt>
       <dd><%= @material.short_description %></dd>
       <dt><strong><%= model_class.human_attribute_name(:long_description) %>:</strong></dt>
-      <dd><%= @material.long_description %></dd>
+      <dd><%= render_markdown(@material.long_description) %></dd>
       <dt><strong><%= model_class.human_attribute_name(:scientific_topic) %>:</strong></dt>
       <dd><%= @material.scientific_topic %></dd>
       <dt><strong><%= model_class.human_attribute_name(:target_audience) %>:</strong></dt>
@@ -34,6 +34,17 @@
       <dd><%= @material.remote_created_date %></dd>
       <dt><strong>Last updated:</strong></dt>
       <dd><%= @material.remote_updated_date %></dd>
+      <dt><strong>Packages:</strong></dt>
+      <dd>
+      <% if @material.packages.empty? %>
+        None
+      <% else %>
+        <%= material_package_list(@material).join(", ").html_safe %>
+
+      <% end %>
+      </dd>
+
+
     </dl>
 
     <%= link_to t('.back', :default => t("helpers.links.back")),

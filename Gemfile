@@ -49,6 +49,9 @@ gem 'valid_url'
 # Gem for adding breadcrumbs
 gem "breadcrumbs_on_rails"
 
+# Gem for rendering Markdown
+gem "redcarpet"
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
 
+  resources :packages
   resources :events
   get 'content_providers/index'
   get 'content_providers/show'
