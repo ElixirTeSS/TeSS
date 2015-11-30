@@ -49,4 +49,6 @@ Rails.application.configure do
       password:             Rails.application.secrets[:smtp][:password],
       authentication:       'plain',
       enable_starttls_auto: true  }
+
+  SOLR_ENABLED=true
 end

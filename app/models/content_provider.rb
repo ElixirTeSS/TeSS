@@ -4,11 +4,12 @@ class ContentProvider < ActiveRecord::Base
 
   has_many :materials
 
-  searchable do
-    text :title
-    text :description
+  unless SOLR_ENABLED==false
+    searchable do
+      text :title
+      text :description
+    end
   end
-
   # TODO: Add validations for these:
   # title:text url:text logo_url:text description:text
 

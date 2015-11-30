@@ -25,7 +25,12 @@ class PackagesController < ApplicationController
   # GET /packages.json
   def index
     @facet_fields = @@facet_fields
-    @packages = solr_search(Package, @search_params, @@facet_fields, @facet_params)
+    if SOLR_ENABLED
+      @packages = solr_search(Package, @search_params, @@facet_fields, @facet_params)
+    else
+      @packages = Package.all
+    end
+
   end
 
   # GET /packages/1

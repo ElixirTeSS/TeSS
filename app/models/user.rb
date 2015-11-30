@@ -2,11 +2,12 @@ class User < ActiveRecord::Base
   acts_as_token_authenticatable
 
   attr_accessor :login
-  searchable do
-    text :username
-    text :email
+  unless SOLR_ENABLED==false
+    searchable do
+      text :username
+      text :email
+    end
   end
-
 
   has_one :profile, dependent: :destroy
   has_many :materials

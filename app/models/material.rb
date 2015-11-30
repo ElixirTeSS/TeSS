@@ -2,18 +2,20 @@ class Material < ActiveRecord::Base
   include PublicActivity::Common
   has_paper_trail
 
-  searchable do 
-    text :title
-    text :long_description
-    text :short_description
-    text :doi
-    string :authors, :multiple => true
-    string :scientific_topic, :multiple => true
-    string :target_audience, :multiple => true
-    string :keywords, :multiple => true
-    string :licence, :multiple => true
-    string :difficulty_level, :multiple => true
-    string :contributors, :multiple => true
+  unless SOLR_ENABLED==false
+    searchable do
+      text :title
+      text :long_description
+      text :short_description
+      text :doi
+      string :authors, :multiple => true
+      string :scientific_topic, :multiple => true
+      string :target_audience, :multiple => true
+      string :keywords, :multiple => true
+      string :licence, :multiple => true
+      string :difficulty_level, :multiple => true
+      string :contributors, :multiple => true
+    end
   end
 
   has_one :owner, foreign_key: "id", class_name: "User"

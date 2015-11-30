@@ -1,5 +1,6 @@
 <!-- SIDEBAR | RESULTS -->
 <div class="row">
+  <% if SOLR_ENABLED %>
   <!-- SIDEBAR -->
   <div class="col-md-3">
     <%= render :partial=> "search/common/facet_sidebar", :locals=>{:resources=>@packages} %>
@@ -19,10 +20,11 @@
 
     <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@materials} %>
     <hr>
-
+      <% @packages = packages.results %>
+    <% end %>
     <!-- ACTUAL RESULTS LIST -->
     <div class="row">
-      <% @packages.results.each do |package| %>
+      <% @packages.each do |package| %>
          <%= render package %>
       <% end %>    
     </div>

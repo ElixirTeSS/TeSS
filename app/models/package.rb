@@ -9,13 +9,14 @@ class Package < ActiveRecord::Base
 
 	has_one :owner, foreign_key: "id", class_name: "User"
 
+  unless SOLR_ENABLED==false
     searchable do 
       text :name
       text :description
       string :owner do
       	owner.username.to_s if !owner.nil?
       end
-
     end
+  end
 
 end

@@ -1,5 +1,7 @@
+
 <!-- SIDEBAR | RESULTS -->
 <div class="row">
+  <% if SOLR_ENABLED %>
   <!-- SIDEBAR -->
   <div class="col-md-3">
     <%= render :partial=> "search/common/facet_sidebar", :locals=>{:resources=>@events} %>
@@ -26,10 +28,11 @@
 
     <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@materials} %>
     <hr>
-
+      <% @events = @events.results %>
+    <% end %>
     <!-- ACTUAL RESULTS LIST -->
     <div class="row">
-      <% @events.results.each do |event| %>
+      <% @events.each do |event| %>
          <%= render event %>
       <% end %>    
     </div>

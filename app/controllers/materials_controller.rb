@@ -29,7 +29,11 @@ class MaterialsController < ApplicationController
 
   def index
     @facet_fields = @@facet_fields
-    @materials = solr_search(Material, @search_params, @@facet_fields, @facet_params, @page)
+    if SOLR_ENABLED
+      @materials = solr_search(Material, @search_params, @@facet_fields, @facet_params, @page)
+    else
+      @materials = Material.all
+    end
     respond_to do |format|
       format.json { render json: @materials.results }
       format.html

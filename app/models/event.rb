@@ -2,20 +2,22 @@ class Event < ActiveRecord::Base
   include PublicActivity::Common
   has_paper_trail
 
-  searchable do
-    text :title
-    text :link
-    string :city
-    string :provider
-    string :sponsor
-    string :venue
-    string :city
-    string :country
-    string :field, :multiple => true
-    string :category, :multiple => true
-    string :keyword, :multiple => true
-    time :start
-    time :end
+  unless SOLR_ENABLED==false
+    searchable do
+      text :title
+      text :link
+      string :city
+      string :provider
+      string :sponsor
+      string :venue
+      string :city
+      string :country
+      string :field, :multiple => true
+      string :category, :multiple => true
+      string :keyword, :multiple => true
+      time :start
+      time :end
+    end
   end
 
   has_many :package_events

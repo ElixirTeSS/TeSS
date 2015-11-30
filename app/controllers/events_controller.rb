@@ -26,7 +26,12 @@ class EventsController < ApplicationController
   helper 'search'
   def index
     @facet_fields = @@facet_fields
-    @events = solr_search(Event, @search_params, @@facet_fields, @facet_params, @page)
+    if SOLR_ENABLED
+      @events = solr_search(Event, @search_params, @@facet_fields, @facet_params, @page)
+    else
+      @events = Event.all
+    end
+
     respond_to do |format|
       format.json { render json: @events.results }
       format.html
