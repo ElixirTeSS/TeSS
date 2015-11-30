@@ -20,7 +20,7 @@
 
     <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@materials} %>
     <hr>
-      <% @packages = packages.results %>
+      <% @packages = @packages.results %>
     <% end %>
     <!-- ACTUAL RESULTS LIST -->
     <div class="row">
