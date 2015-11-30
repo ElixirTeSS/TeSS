@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  id: MyString
+  external_id: MyString1
   title: MyString
   subtitle: MyString
   link: MyString
@@ -17,11 +17,11 @@ one:
   county: MyString
   country: MyString
   postcode: MyString
-  latitude: 
-  longitude: 
+  latitude:
+  longitude:
 
 two:
-  id: MyString
+  external_id: MyString2
   title: MyString
   subtitle: MyString
   link: MyString
@@ -37,5 +37,5 @@ two:
   county: MyString
   country: MyString
   postcode: MyString
-  latitude: 
-  longitude: 
+  latitude:
+  longitude:
