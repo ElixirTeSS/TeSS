@@ -109,7 +109,7 @@ Package.create!(
     description: 'Some of the Training provided at TGAC, Norwich UK',
     image_url: 'http://www.tgac.ac.uk/v2images/tgac_logo_single.png',
     public: true,
-    events: [Event.find_by_title('Signalling Networks: From Data to Modelling'), Event.find_by_title('TGAC Summer School on Bioinformatics')],
+    events: [Event.find_by_title('Signalling Networks: From Data to Modelling'), Event.find_by_title('TGAC Summer School on Bioinformatics')].compact,
     materials: [Material.find_by_title('NGS current challenges and data analysis for plant researchers')]
 
 )
