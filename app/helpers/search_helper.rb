@@ -28,4 +28,16 @@ module SearchHelper
       parameters.delete('page')
 	  return link_to "x #{value}", parameters 
 	end
+
+	def show_more_link facet
+		parameters = request.parameters.clone
+		return link_to "Show more #{facet.pluralize}", parameters.merge("#{facet}_all"=>true)
+	end
+
+	def show_less_link facet
+		parameters = request.parameters.clone
+		parameters.delete("#{facet}_all")
+		return link_to "Show less #{facet.pluralize}", parameters
+	end
+
 end

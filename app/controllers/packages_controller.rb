@@ -108,7 +108,7 @@ class PackagesController < ApplicationController
     end
 
     def set_facet_params
-      params.permit(@@facet_fields)
+      params.permit(@@facet_fields, @@facet_fields.map{|f| "#{f}_all"})
       @facet_params = {}
       @@facet_fields.each {|facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
     end

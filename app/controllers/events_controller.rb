@@ -134,7 +134,7 @@ class EventsController < ApplicationController
     end
 
     def set_params
-      params.permit(:q, :page, @@facet_fields)
+      params.permit(:q, :page, @@facet_fields, @@facet_fields.map{|f| "#{f}_all"})
       @search_params = params[:q] || ''
       @facet_params = {}
       @@facet_fields.each {|facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
