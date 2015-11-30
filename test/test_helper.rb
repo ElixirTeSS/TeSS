@@ -4,7 +4,9 @@ require 'rails/test_help'
 
 class ActiveSupport::TestCase
 
-  include Devise::TestHelpers
+  # WARNING: Do not be tempted to include Devise TestHelpers here (e.g. include Devise::TestHelpers)
+  # It must be included in each controller it is needed in or unit tests will break.
+
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
 

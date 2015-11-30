@@ -1,6 +1,10 @@
 require 'test_helper'
 
 class PackagesControllerTest < ActionController::TestCase
+
+  include Devise::TestHelpers
+
+
   setup do
     @package = packages(:one)
   end
