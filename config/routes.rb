@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get 'content_providers/create'
 
   get 'static/welcome'
+  get 'about' => 'static#about', as: 'about'
 
   post 'materials/check_title' => 'materials#check_title'
   post 'events/check_title' => 'events#check_title'
