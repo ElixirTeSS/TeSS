@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   has_one :profile, dependent: :destroy
   has_many :materials
   has_many :packages
+  has_many :workflows
   belongs_to :role
 
   after_create :set_default_role, :set_default_profile, :skip_email_confirmation!
