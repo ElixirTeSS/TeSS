@@ -5,7 +5,6 @@ class Object
   #in addition for being useful for nil's, works for any object that doesn't provide the required method
   #so instead of a.respond_to? :b? and a.b? try_block { a.b? }
   def try_block
-    puts "blah -----------"
     yield
   rescue NoMethodError, NameError => e
     Rails.logger.error("Expected exception in try_block{} #{e}")
