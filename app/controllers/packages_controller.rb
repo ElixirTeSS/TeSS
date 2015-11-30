@@ -65,7 +65,7 @@ class PackagesController < ApplicationController
   def update
     respond_to do |format|
       if @package.update(package_params)
-        create_activity :update, owner: current_user
+        @package.create_activity :update, owner: current_user
         format.html { redirect_to @package, notice: 'Package was successfully updated.' }
         format.json { render :show, status: :ok, location: @package }
       else
@@ -80,7 +80,7 @@ class PackagesController < ApplicationController
   def destroy
     @package.destroy
     respond_to do |format|
-      create_activity :destroy, owner: current_user
+      @package.create_activity :destroy, owner: current_user
       format.html { redirect_to packages_url, notice: 'Package was successfully destroyed.' }
       format.json { head :no_content }
     end
