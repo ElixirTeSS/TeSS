@@ -3,11 +3,11 @@
 one:
   title: MyString
   description: MyString
-  user_id: 
+  user_id: <%= User.first.id %>
   workflow_content: 
 
 two:
   title: MyString
   description: MyString
-  user_id: 
+  user_id: <%= User.first.id %>
   workflow_content: 
