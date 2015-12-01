@@ -14,17 +14,24 @@
       <%= render :partial=> "search/common/search_box", :locals=>{:resource_path => events_path} %>
     </div>
     
-    <!-- APPLIED FILTERS AND NUMBER OF RESULTS -->
+    <!-- APPLIED FILTERS, NUMBER OF RESULTS, PAGINATION-->
     <div class="row">
       <% include_expired = @facet_params.delete('include_expired') %>
       <%= render :partial => "search/common/search_info", :locals=>{:resource=>@events}  %>
     </div>
 
+    <div class="row">
       <% if include_expired == true %>
           <%= link_to 'Exclude past events', events_path, :class => 'include_expired' %>
       <% else %>
           <%= link_to 'Include past events', events_path(:include_expired => true), :class => 'include_expired'%>
       <% end %>
+    </div>
+
+    <div class="row">
+      <%= render :partial => "search/common/sort_by", :locals=>{:resource=>@events}  %>
+    </div>
+
 
     <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@materials} %>
     <hr>
