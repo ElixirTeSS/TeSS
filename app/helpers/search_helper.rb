@@ -52,6 +52,10 @@ module SearchHelper
 		end
 	end
 
+	def neatly_printed_date date
+		day_month_year date
+	end
+
 	private
 
 	def day_month date
