@@ -27,9 +27,9 @@
     <% @materials = @materials.results %>
     <% end %>
     <!-- ACTUAL RESULTS LIST -->
-    <div class="row">
+    <div class="listing_container">
       <% @materials.each do |material| %>
-         <%= render material %>
+            <%= render material %>
       <% end %>    
     </div>
   </div>
