@@ -24,10 +24,28 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
   end
 
-  def solr_search(model_name, search_params='', facet_fields=[], selected_facets=[], page=1)
+  def solr_search(model_name, search_params='', facet_fields=[], selected_facets=[], page=1, sort_by=nil)
     model_name.search do
       #Set the search parameter
       fulltext search_params
+
+      if sort_by
+        case sort_by
+          when 'early'
+            # Sort by start date asc
+            order_by(:start, :asc)
+          when 'late'
+            # Sort by start date desc
+            order_by(:start, :desc)
+          when 'rel'
+            # Sort by relevance
+          when 'mod'
+            # Sort by last modified
+          else
+            order_by :title, sort_by.to_sym
+        end
+      end
+
 
       if !page.nil? and page != '1'
         paginate :page => page
