@@ -4,6 +4,8 @@
 
 TeSS is a Rails 4 application.
 
+[![Build Status](https://travis-ci.org/ElixirUK/TeSS.svg?branch=master)](https://travis-ci.org/ElixirUK/TeSS)
+
 # Setup
 Below is an example guide to help you set up TeSS in development mode. More comprehensive guides on installing
 Ruby, Rails, RVM, bundler, postgres, etc. are available elsewhere.
