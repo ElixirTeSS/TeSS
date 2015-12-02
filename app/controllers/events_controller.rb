@@ -27,10 +27,11 @@ class EventsController < ApplicationController
   def index
     @facet_fields = @@facet_fields
     if SOLR_ENABLED
-      @events = solr_search(Event, @search_params, @@facet_fields, @facet_params, @page)
+      @events = solr_search(Event, @search_params, @@facet_fields, @facet_params, @page, @sort_by)
     else
       @events = Event.all
     end
+    puts @sort_by
 
     respond_to do |format|
       format.json { render json: @events.results }
@@ -134,9 +135,10 @@ class EventsController < ApplicationController
     end
 
     def set_params
-      params.permit(:q, :page, @@facet_fields, @@facet_fields.map{|f| "#{f}_all"})
+      params.permit(:q, :page, :sort, @@facet_fields, @@facet_fields.map{|f| "#{f}_all"})
       @search_params = params[:q] || ''
       @facet_params = {}
+      @sort_by = params[:sort]
       @@facet_fields.each {|facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
       @page = params[:page] || 1
       if params[:include_expired]
