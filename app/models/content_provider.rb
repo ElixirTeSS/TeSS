@@ -2,6 +2,9 @@ class ContentProvider < ActiveRecord::Base
 
   include PublicActivity::Common
 
+  extend FriendlyId
+  friendly_id :title, use: :slugged
+
   has_many :materials
 
   unless SOLR_ENABLED==false

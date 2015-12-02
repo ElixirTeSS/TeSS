@@ -21,7 +21,7 @@ class EventsController < ApplicationController
   include TeSS::BreadCrumbs
 
 
-  @@facet_fields = %w( city field category provider sponsor venue city country keyword )
+  @@facet_fields = %w( category country field provider city sponsor keyword venue)
 
   helper 'search'
   def index
@@ -124,7 +124,7 @@ class EventsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_event
-      @event = Event.find(params[:id])
+      @event = Event.friendly.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

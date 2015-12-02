@@ -24,6 +24,9 @@ gem "therubyracer"
 gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 gem "twitter-bootstrap-rails"
 
+gem 'friendly_id', '~> 5.1.0'
+
+
 gem 'sunspot_rails'
 gem 'sunspot_solr'
 gem 'progress_bar'

@@ -2,6 +2,9 @@ class Event < ActiveRecord::Base
   include PublicActivity::Common
   has_paper_trail
 
+  extend FriendlyId
+  friendly_id :title, use: :slugged
+
   unless SOLR_ENABLED==false
     searchable do
       text :title

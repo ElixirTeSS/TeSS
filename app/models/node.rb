@@ -1,5 +1,8 @@
 class Node < ActiveRecord::Base
 
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+
   # name:string
   # member_status:string
   # country_code:string

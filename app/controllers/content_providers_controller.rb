@@ -58,7 +58,7 @@ class ContentProvidersController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_content_provider
-    @content_provider = ContentProvider.find(params[:id])
+    @content_provider = ContentProvider.friendly.find(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

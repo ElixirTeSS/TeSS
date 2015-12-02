@@ -70,6 +70,8 @@ GEM
     execjs (2.6.0)
     font-awesome-rails (4.4.0.0)
       railties (>= 3.2, < 5.0)
+    friendly_id (5.1.0)
+      activerecord (>= 4.0.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     haml (4.0.7)
@@ -248,6 +250,7 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.1.0)
   devise
+  friendly_id (~> 5.1.0)
   jbuilder (~> 2.0)
   jquery-rails
   less-rails

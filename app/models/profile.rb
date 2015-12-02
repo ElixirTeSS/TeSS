@@ -1,6 +1,12 @@
 class Profile < ActiveRecord::Base
   belongs_to :user
   attr_accessor :email
+
+=begin
+  extend FriendlyId
+  friendly_id [:firstname, :surname], use: :slugged
+=end
+
 =begin
   searchable do
     text :firstname

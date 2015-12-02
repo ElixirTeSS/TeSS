@@ -1,6 +1,9 @@
 class Package < ActiveRecord::Base
 	include PublicActivity::Common
-  	has_paper_trail
+  has_paper_trail
+
+  extend FriendlyId
+  friendly_id :name, use: :slugged
 
 	has_many :package_materials
   has_many :package_events

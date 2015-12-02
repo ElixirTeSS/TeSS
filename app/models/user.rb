@@ -1,6 +1,9 @@
 class User < ActiveRecord::Base
   acts_as_token_authenticatable
 
+  extend FriendlyId
+  friendly_id :username, use: :slugged
+
   attr_accessor :login
   unless SOLR_ENABLED==false
     searchable do
