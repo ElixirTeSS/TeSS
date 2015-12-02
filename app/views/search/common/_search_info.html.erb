@@ -27,15 +27,21 @@ Globals
 <% end %>
 
 <!-- Pagination -->
+<div class="btn-toolbar" role="toolbar" aria-label="...">
+  <div class="btn-group" role="group" aria-label="...">
+
+
 <% resource_results = resource.results %>
 <% if resource.results.total_pages > 1 %>
-  <%= link_to "|<<", request.parameters.except(:page) %>
+  <%= link_to "|<<", request.parameters.except(:page), :class=>'btn btn-default' %>
   <% for page in 1..resource.results.total_pages %>
     <% if params[:page] == page.to_s or (params[:page].nil? and page == 1) %>
-      <span style="color:red"><%= "#{page}" %></span>
+        <span style="color:red" class="btn btn-default"><%= "#{page}" %></span>
     <% else %>
-      <%= link_to "|#{page}| ", request.parameters.merge(:page => page) %>
+      <%= link_to page, request.parameters.merge(:page => page), :class=>'btn btn-default' %>
     <% end %>
   <% end %>
-  <%= link_to ">>|", request.parameters.merge(:page => resource_results.total_pages) %>
+  <%= link_to ">>|", request.parameters.merge(:page => resource_results.total_pages), :class=>'btn btn-default' %>
 <% end %>
+  </div>
+</div>
