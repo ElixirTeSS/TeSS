@@ -15,19 +15,19 @@
       <dt><strong><%= model_class.human_attribute_name(:long_description) %>:</strong></dt>
       <dd><%= render_markdown(@material.long_description) %></dd>
       <dt><strong><%= model_class.human_attribute_name(:scientific_topic) %>:</strong></dt>
-      <dd><%= @material.scientific_topic %></dd>
+      <dd><%= @material.scientific_topic.join(', ') %></dd>
       <dt><strong><%= model_class.human_attribute_name(:target_audience) %>:</strong></dt>
-      <dd><%= @material.target_audience %></dd>
+      <dd><%= @material.target_audience.join(', ') %></dd>
       <dt><strong><%= model_class.human_attribute_name(:keywords) %>:</strong></dt>
-      <dd><%= @material.keywords %></dd>
+      <dd><%= @material.keywords.join(', ') %></dd>
       <dt><strong><%= model_class.human_attribute_name(:licence) %>:</strong></dt>
       <dd><%= licence_name_for_abbreviation(@material.licence) %></dd>
       <dt><strong><%= model_class.human_attribute_name(:difficulty_level) %>:</strong></dt>
       <dd><%= @material.difficulty_level %></dd>
       <dt><strong><%= model_class.human_attribute_name(:authors) %>:</strong></dt>
-      <dd><%= @material.authors.blank? ? 'N/A' : @material.authors %></dd>
+      <dd><%= @material.authors.blank? ? 'N/A' : @material.authors.join(', ') %></dd>
       <dt><strong><%= model_class.human_attribute_name(:contributors) %>:</strong></dt>
-      <dd><%= @material.contributors.blank? ? 'N/A' : @material.contributors %></dd>
+      <dd><%= @material.contributors.blank? ? 'N/A' : @material.contributors.join(', ') %></dd>
       <dt><strong>DOI:</strong></dt>
       <dd><%= @material.doi %></dd>
       <dt><strong>Created:</strong></dt>
@@ -35,6 +35,7 @@
       <dt><strong>Last updated:</strong></dt>
       <dd><%= @material.remote_updated_date %></dd>
       <dt><strong>Packages:</strong></dt>
+
       <dd>
       <% if @material.packages.empty? %> <em> This material is not included in any packages </em>
       <% else %><%= material_package_list(@material).join(", ").html_safe %>
