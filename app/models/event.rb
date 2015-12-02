@@ -5,6 +5,7 @@ class Event < ActiveRecord::Base
   unless SOLR_ENABLED==false
     searchable do
       text :title
+      string :title
       text :link
       string :city
       string :provider
