@@ -40,4 +40,26 @@ module SearchHelper
 		return link_to "Show less #{facet.pluralize}", parameters
 	end
 
+	def neatly_printed_date_range start, finish
+		if start.year != finish.year
+			"#{day_month_year(start)} - #{day_month_year(finish)}"
+		elsif start.month != finish.month
+			"#{day_month(start)} - #{day_month(finish)} #{finish.year}"
+		elsif start.day != finish.day
+			"#{start.day} - #{finish.day} #{finish.strftime("%b")} #{finish.year}"
+		else
+			"#{day_month_year(start)}"
+		end
+	end
+
+	private
+
+	def day_month date
+		return date.strftime("%d %b")
+	end
+	def day_month_year date
+		return date.strftime("%d %b %Y")
+	end
+
+
 end
