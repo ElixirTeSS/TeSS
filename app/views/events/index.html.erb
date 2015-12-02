@@ -29,7 +29,8 @@
     </div>
 
     <div class="row">
-      <%= render :partial => "search/common/sort_by", :locals=>{:resource=>@events}  %>
+      <%= render :partial => "search/common/sort_by", :locals=>{:resource=>@events, :extras => [['Earliest', 'early'],
+                                                                                                ['Latest', 'late']]}  %>
     </div>
 
 

@@ -5,6 +5,7 @@ class Material < ActiveRecord::Base
   unless SOLR_ENABLED==false
     searchable do
       text :title
+      string :title
       text :long_description
       text :short_description
       text :doi
@@ -15,6 +16,7 @@ class Material < ActiveRecord::Base
       string :licence, :multiple => true
       string :difficulty_level, :multiple => true
       string :contributors, :multiple => true
+      time :updated_at
     end
   end
 

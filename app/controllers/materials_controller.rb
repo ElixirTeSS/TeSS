@@ -30,7 +30,7 @@ class MaterialsController < ApplicationController
   def index
     @facet_fields = @@facet_fields
     if SOLR_ENABLED
-      @materials = solr_search(Material, @search_params, @@facet_fields, @facet_params, @page)
+      @materials = solr_search(Material, @search_params, @@facet_fields, @facet_params, @page, @sort_by)
     else
       @materials = Material.all
     end
@@ -107,6 +107,7 @@ class MaterialsController < ApplicationController
   # PATCH/PUT /materials/1.json
   def update
     respond_to do |format|
+      material_params
       if @material.update(material_params)
         @material.create_activity :update, owner: current_user
         format.html { redirect_to @material, notice: 'Material was successfully updated.' }
@@ -142,9 +143,10 @@ class MaterialsController < ApplicationController
     end
 
     def set_params
-      params.permit(:q, :page, @@facet_fields, @@facet_fields.map{|f| "#{f}_all"})
+      params.permit(:q, :page, :sort, @@facet_fields, @@facet_fields.map{|f| "#{f}_all"})
       @search_params = params[:q] || ''
       @facet_params = {}
+      @sort_by = params[:sort]
       @@facet_fields.each {|facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
       @page = params[:page] || 1
     end

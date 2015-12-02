@@ -18,6 +18,7 @@ class Event < ActiveRecord::Base
       string :keyword, :multiple => true
       time :start
       time :end
+      time :updated_at
     end
   end
 

@@ -1,9 +1,23 @@
+<%#
+Parameters:
+Extras - Array of Arrays with options for select
+e.g.
+ [['Earliest', 'early'], ['Latest', 'late']]
+%>
+<% extras = extras || false %>
+
+<% options = [['Title Ascending', 'asc'],
+              ['Title Descending', 'desc'],
+              ['Last Modified', 'mod'],
+              ['Relevance', 'rel']] %>
+
+<% if extras %>
+    <% extras.each do |extra| %>
+        <% options.push(extra) %>
+    <% end %>
+<% end %>
+
 <%= select_tag(:sort, options_for_select(
-                            [['Title Ascending', 'asc'],
-                             ['Title Descending', 'desc'],
-                             ['Earliest', 'early'],
-                             ['Latest', 'late'],
-                             ['Last Modified', 'mod'],
-                             ['Relevance', 'rel']], @sort_by),
-               :onchange  => "redirect_to_sort_url()")
+     options, @sort_by),
+     :onchange  => "redirect_to_sort_url()")
 %>

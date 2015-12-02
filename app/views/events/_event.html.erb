@@ -3,5 +3,6 @@
 <p>Link: <%= event.link %></p>
 <p>Date: <%= neatly_printed_date_range(event.start, event.end) %></p>
 <p>Location: <%= [event.venue, event.city, event.country].reject { |field_value| field_value.empty? }.join(", ")%></p>
+<p>Last Modified: <%= event.updated_at.to_formatted_s(:rfc822) %></p>
  Sourced from <img src="http://iann.pro/sites/default/files/itico_logo.png" style="width:50px">
 </div>

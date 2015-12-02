@@ -18,6 +18,10 @@
       <%= render :partial => "search/common/search_info", :locals=>{:resource=>@materials}  %>
     </div>
 
+    <!-- SORT BY OPTIONS    -->
+    <div class="row">
+      <%= render :partial => "search/common/sort_by", :locals=>{:resource=>@events}  %>
+    </div>
     <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@materials} %>
     <hr>
     <% @materials = @materials.results %>
