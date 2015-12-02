@@ -1,8 +1,10 @@
 <div class="listing_item">
-<p>Title: <%= link_to(event.title, event) %></p>
-<p>Link: <%= event.link %></p>
+<h3><%= link_to(event.title, event) %></h3>
+<p><button class="btn btn-success"><a href="<%= event.link %>">View Event <span class="fa fa-external-link" aria-hidden="true"></span></a></button> </p>
 <p>Date: <%= neatly_printed_date_range(event.start, event.end) %></p>
 <p>Location: <%= [event.venue, event.city, event.country].reject { |field_value| field_value.empty? }.join(", ")%></p>
 <p>Last Modified: <%= event.updated_at.to_formatted_s(:rfc822) %></p>
  Sourced from <img src="http://iann.pro/sites/default/files/itico_logo.png" style="width:50px">
 </div>
+
+
