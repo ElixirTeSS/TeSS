@@ -1,3 +1,11 @@
+<script>
+    $('.grid').masonry({
+        // options...
+        itemSelector: '.grid-item',
+        columnWidth: 10
+    });
+</script>
+
 <!-- SIDEBAR | RESULTS -->
 <div class="row">
   <% if SOLR_ENABLED %>
@@ -23,9 +31,9 @@
       <% @packages = @packages.results %>
     <% end %>
     <!-- ACTUAL RESULTS LIST -->
-    <div class="row">
+    <div class="grid">
       <% @packages.each do |package| %>
-         <%= render package %>
+          <div class="grid-item"><%= render package %></div>
       <% end %>    
     </div>
   </div>
