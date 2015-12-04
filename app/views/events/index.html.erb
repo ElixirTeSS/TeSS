@@ -1,4 +1,10 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.js"></script>
+<script>
+    $('.grid').masonry({
+        // options...
+        itemSelector: '.grid-item',
+        columnWidth: 10
+    });
+</script>
 
 <!-- SIDEBAR | RESULTS -->
 <div class="row">
@@ -40,12 +46,10 @@
       <% @events = @events.results %>
     <% end %>
     <!-- ACTUAL RESULTS LIST -->
-  <div class="grid js-masonry"
-       data-masonry-options='{ "itemSelector": ".grid-item", "columnWidth": 10 }'>
-    <div class="grid-sizer"></div>
+  <div class="grid">
       <% @events.each do |event| %>
          <div class="grid-item"><%= render event %></div>
-      <% end %>    
+      <% end %>
     </div>
   </div>
 </div>
