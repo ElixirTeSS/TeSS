@@ -4,7 +4,6 @@
   <title>TeSS - Training eSupport System</title>
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-
   <%= csrf_meta_tags %>
 </head>
 <body>
@@ -18,36 +17,47 @@
     </div>
 <% end %>
 
-<!-- Navigation bar -->
-<%= nav_bar static: :top, brand: "TeSS", responsive: true do %>
-    <!--<%= menu_text "Training eSupport System" %>-->
-    <%= menu_group do %>
-        <%= menu_item "Events", events_path %>
-        <%= menu_item "Materials", materials_path %>
-        <%= menu_item "Packages", packages_path %>
-        <%= menu_item "Workflows", workflows_path %>
-        <%= menu_item "Content Providers", content_providers_path %>
-        <%= menu_item "Nodes", nodes_path %>
-        <%= menu_item "About", about_path %>
-    <% end %>
-    <% if current_user %>
-        <%= menu_group pull: :right do %>
-            <%= menu_item "Profile", user_path(current_user) %>
-            <%= menu_item "Sign out", destroy_user_session_path, :method => :delete %>
+<header class="account-masthead">
+  <div class="container">
+    <!-- Navigation bar -->
+    <a href="http://www.elixir-europe.org/">
+      <img src="http://elixir-uk.org/++theme++elixir-uktheme/static/hub-logo.png">
+    </a>
+        <% if current_user %>
+            <%= menu_group :class=>"account", pull: :right do %>
+                <%= menu_item current_user.username, user_path(current_user), :class=>"username"%>
+                <%= menu_item "Sign out", destroy_user_session_path, :method => :delete %>
+            <% end %>
+        <% else %>
+            <%= menu_group pull: :right do %>
+                <%= menu_item "Sign In", new_user_session_path %>
+                <%= menu_item "Sign Up", new_user_registration_path %>
+            <% end %>
         <% end %>
-    <% else %>
-        <%= menu_group pull: :right do %>
-            <%= menu_item "Sign In", new_user_session_path %>
-            <%= menu_item "Sign Up", new_user_registration_path %>
-        <% end %>
-    <% end %>
-<% end %>
+      </div>
+</header>
 
-<div class='nav_search_bar_container'>
-  <div class='nav_search_bar'>
-    <%= render partial: 'search/bar.html.erb' %>
-  </div>
-</div>
+
+<header>
+<%= nav_bar static: :top, responsive: true, :class =>'masthead navbar navbar-static-top masthead' do %>
+<%= image_tag "https://tess.elixir-uk.org/images/ELIXIR_TeSS_logo_white-small-6.png", :class=>"head-image pull-left" %>
+    <!--<%= menu_text "Training eSupport System" %>-->
+    <ul class="nav nav-pills ">
+        <%= menu_group :class=>"navigation" do %>
+            <li><%= menu_item "Events", events_path %></li>
+            <li><%= menu_item "Materials", materials_path %></li>
+            <li><%= menu_item "Packages", packages_path %></li>
+            <li><%= menu_item "Workflows", workflows_path %></li>
+            <li><%= menu_item "Content Providers", content_providers_path, :class=>'li' %></li>
+            <li><%= menu_item "Nodes", nodes_path %></li>
+            <li><%= menu_item "About", about_path %></li>
+        <% end %>
+    </ul>
+<% end %>
+</header>
+
+
+
 
 <div id="main-container" class="container">
 
