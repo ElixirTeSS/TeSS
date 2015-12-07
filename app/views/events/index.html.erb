@@ -16,6 +16,15 @@
 
   <!-- RESULTS -->
   <div class="col-md-9">
+
+    <!-- CREATE NEW BUTTON -->
+    <div class="row">
+      <%= link_to new_event_path, :class=>"btn btn-primary" do %>
+          <i class="fa fa-plus-square"></i> Create Event
+      <% end %>
+    </div>
+
+
     <!-- SEARCH BAR -->
     <div class="row">
       <%= render :partial=> "search/common/search_box", :locals=>{:resource_path => events_path} %>

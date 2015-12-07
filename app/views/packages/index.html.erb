@@ -6,6 +6,7 @@
     });
 </script>
 
+
 <!-- SIDEBAR | RESULTS -->
 <div class="row">
   <% if SOLR_ENABLED %>
@@ -17,6 +18,13 @@
   <!-- RESULTS -->
   <div class="col-md-9">
     <!-- SEARCH BAR -->
+
+    <div class="row">
+    <%= link_to new_package_path, :class=>"btn btn-primary" do %>
+        <i class="fa fa-plus"></i> Create Package
+    <% end %>
+    </div>
+
     <div class="row">
       <%= render :partial=> "search/common/search_box", :locals=>{:resource_path => packages_path} %>
     </div>
