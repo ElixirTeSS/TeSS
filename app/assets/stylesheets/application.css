@@ -27,6 +27,9 @@ a:hover {
     float:right;
 }
 
+a.btn-primary {
+    color: white;
+}
 .show-page-description {
     font-size: medium;
     padding: 50px 0;
@@ -41,6 +44,9 @@ a:hover {
   margin: 10px;
 }
 
+.resource_search_box{
+    margin: 10px 0;
+}
 .grid-item{
     width: 30%;
     margin-bottom: 5px;
