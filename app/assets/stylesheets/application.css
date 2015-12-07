@@ -16,11 +16,29 @@
  *= require_self
  */
 
+a:hover {
+    color: steelblue;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+.logo-right {
+    max-height: 70px;
+    float:right;
+}
+
+.show-page-description {
+    font-size: medium;
+    padding: 50px 0;
+}
 .listing_item {
+  /*
   border-style: solid;
   border-color: lightgray;
+  */
+  background-color: white;
   padding: 10px;
-
+  margin: 10px;
 }
 
 .grid-item{
@@ -39,7 +57,12 @@
     margin-left: auto;
 }
 
-.listing_container {
+.listing-container {
+    padding: 10px 10px;
+    background-color: whitesmoke
+}
+
+.material-index {
     display: flex; /* or inline-flex */
     flex-direction: column;
     width: 100%;

@@ -5,8 +5,17 @@
         columnWidth: 10
     });
 </script>
-<div class="grid">
+
+<%- model_class = ContentProvider -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => pluralize(@content_providers.count, model_class.to_s.titleize)%> Found</h1>
+</div>
+
+
+<div class="grid listing-container">
     <% @content_providers.each do |content_provider|  %>
-        <div class="grid-item"><%= render content_provider %></div>
+        <div class="grid-item">
+          <%= render content_provider %>
+        </div>
     <% end %>
 </div>

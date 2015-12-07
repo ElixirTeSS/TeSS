@@ -31,7 +31,8 @@
       <% @packages = @packages.results %>
     <% end %>
     <!-- ACTUAL RESULTS LIST -->
-    <div class="grid">
+
+    <div class="grid listing-container">
       <% @packages.each do |package| %>
           <div class="grid-item"><%= render package %></div>
       <% end %>    

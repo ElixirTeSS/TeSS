@@ -46,7 +46,7 @@
       <% @events = @events.results %>
     <% end %>
     <!-- ACTUAL RESULTS LIST -->
-  <div class="grid">
+  <div class="grid listing-container">
       <% @events.each do |event| %>
          <div class="grid-item"><%= render event %></div>
       <% end %>
