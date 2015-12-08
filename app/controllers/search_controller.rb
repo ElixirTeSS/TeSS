@@ -21,7 +21,7 @@ class SearchController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
 
     def symbolize symbol
-       return symbol.downcase.pluralize.to_sym
+       return symbol.underscore.pluralize.to_sym
     end
 
     def search_params
