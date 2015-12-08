@@ -14,6 +14,7 @@ class SearchController < ApplicationController
          puts "Error finding results for #{model}"
        end 
     end
+    @results.reject!{|k,result| result.total < 1}
   end
 
   private

@@ -1,0 +1,33 @@
+<script>
+	$(document).ready(function() {
+		$('.tab').click(function(){
+			var content = $(this).data('tab_content');
+
+			/* Remove any 'activated' classes from all tabs 
+				and hide all tab content */
+			$('.tab').removeClass('activated');
+			$('.tab-content').hide();
+
+			/* Set out new active tab!*/
+			$(this).addClass('activated');
+			$('#' + content).show();
+		});
+	});
+</script>
+
+<% tabs = results.keys %>
+<div class="tab-container">
+	<% tabs.each do |tab| %>
+	     <% if tab == selected_tab %>
+		 	<a class="tab activated" 
+		 <% else %>
+		 	<a class="tab"
+		 <% end %>
+			id="<%= tab.to_s%>-tab"
+			href="#<%= tab.to_s%>"
+			data-tab_content="<%= tab.to_s%>-content">
+				<span class="h3"><%= tab.to_s.titleize %></span>
+				<span class="h4">(<%= results[tab].total%>)</span>
+		</a>
+	<% end %>
+</div>
