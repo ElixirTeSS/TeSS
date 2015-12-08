@@ -1,5 +1,12 @@
 <script>
 	$(document).ready(function() {
+		initialize();
+		
+		function initialize(){
+			$('.tab-content').hide();
+			$('#<%= selected_tab %>-content').show();			
+		}
+
 		$('.tab').click(function(){
 			var content = $(this).data('tab_content');
 
