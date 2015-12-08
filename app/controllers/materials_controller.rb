@@ -92,7 +92,7 @@ class MaterialsController < ApplicationController
 
     respond_to do |format|
       if @material.save
-        @material.create_activity :create #, owner: current_user
+        @material.create_activity :create
         current_user.materials << @material
         format.html { redirect_to @material, notice: 'Material was successfully created.' }
         format.json { render :show, status: :created, location: @material }
