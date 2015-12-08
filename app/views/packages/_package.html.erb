@@ -1,5 +1,5 @@
 <div class="listing_item">
-<p>Title: <%= link_to(package.name, package) %></p>
-<p>Description: <%= package.description  %></p>
-<p>Logo: <img src="<%= package.image_url %>"></p>
+<div class="h3"><%= link_to(package.name, package) %></div>
+<p><%= package.description  %></p>
+<p><img class="listing_image" src="<%= package.image_url %>"></p>
 </div>

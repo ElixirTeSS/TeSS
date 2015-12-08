@@ -6,7 +6,6 @@ Parameters
 <div class="resource_search_box">
   <%= form_tag resource_path, :method => :get do %>
     <p>
-
       <%= text_field_tag :q, params[:q], :class=>'search_box_large', :placeholder => "Enter search term..." %>
       <%= button_tag(:type => "submit", :class => "btn btn-default") do %>
           <i class="fa fa-search"></i>

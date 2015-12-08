@@ -1,4 +1,10 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.js"></script>
+<script>
+    $('.grid').masonry({
+        // options...
+        itemSelector: '.grid-item',
+        columnWidth: 10
+    });
+</script>
 
 <!-- SIDEBAR | RESULTS -->
 <div class="row">
@@ -10,6 +16,15 @@
 
   <!-- RESULTS -->
   <div class="col-md-9">
+
+    <!-- CREATE NEW BUTTON -->
+    <div class="row">
+      <%= link_to new_event_path, :class=>"btn btn-primary" do %>
+          <i class="fa fa-plus-square"></i> Create Event
+      <% end %>
+    </div>
+
+
     <!-- SEARCH BAR -->
     <div class="row">
       <%= render :partial=> "search/common/search_box", :locals=>{:resource_path => events_path} %>
@@ -40,12 +55,10 @@
       <% @events = @events.results %>
     <% end %>
     <!-- ACTUAL RESULTS LIST -->
-  <div class="grid js-masonry"
-       data-masonry-options='{ "itemSelector": ".grid-item", "columnWidth": 10 }'>
-    <div class="grid-sizer"></div>
+  <div class="grid listing-container">
       <% @events.each do |event| %>
          <div class="grid-item"><%= render event %></div>
-      <% end %>    
+      <% end %>
     </div>
   </div>
 </div>

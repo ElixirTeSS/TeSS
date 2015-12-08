@@ -12,7 +12,7 @@ Variable that should be available
   <% @facet_fields.each do |facet_field| %>
     <% if resources.facet(facet_field).rows.count > 0 %>
             <!-- Title -->
-             <tr><td class="h4"><%= facet_field.humanize %></td> </tr>
+             <tr><td class="h4"><%= facet_field.humanize %></td><td></td></tr>
 
             <!-- Select first 10 or all filters-->
             <% showing_all = false %>

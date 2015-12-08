@@ -1,6 +1,10 @@
 <div class="listing_item">
-<p>Title: <%= link_to(material.title, material) %></p>
-<p>URL: <%= material.url %></p>
-<p>Description: <%= material.short_description %></p>
-  <%= html_logo_for(material.content_provider).html_safe %>
-  </div>
+<div class="h3"><%= link_to(material.title, material) %></div>
+<!--<p><%= material.url %></p>-->
+<p><%= truncate(material.short_description, length: 300, separator: ' ') %></p>
+<%= html_logo_for(material.content_provider).html_safe %>
+<p>Keywords: <%= material.keywords.join(', ') %></p>
+<p>Scientific Topics: <%= material.scientific_topic.join(', ') %></p>
+</div>
+
+

@@ -1,28 +1,23 @@
 <%- model_class = ContentProvider -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+  <%= image_tag(@content_provider.logo_url, :class=>'logo-right') %>
+  <h1><%=t '.title', :default => @content_provider.title %></h1>
+  <dd><%= link_to @content_provider.url, @content_provider.url, :class =>'h4'  %></dd>
 </div>
 
-<dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:title) %>:</strong></dt>
-  <dd><%= @content_provider.title %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:url) %>:</strong></dt>
-  <dd><%= @content_provider.url %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:logo_url) %>:</strong></dt>
-  <dd><%= @content_provider.logo_url %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:description) %>:</strong></dt>
-  <dd><%= @content_provider.description %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:contents) %>:</strong></dt>
-  <dd>This package contains <%= pluralize(@content_provider.materials.count, 'material') %></dd>
-  <br><br>
-  <dt><strong><%= model_class.human_attribute_name(:materials) %>:</strong></dt>
-  <dd>
-    <% @content_provider.materials.each do |material| %>
-        <%= render material %>
-    <% end %>
-  </dd>
+<div class="show-page-description ">
+    <%= @content_provider.description %>
+</div>
 
-</dl>
+<div class="h4">
+    This content provider has <%= pluralize(@content_provider.materials.count, 'material') %> in TeSS
+</div>
+
+
+<% @content_provider.materials.each do |material| %>
+    <%= render material %>
+<% end %>
+
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
             content_providers_path, :class => 'btn btn-default'  %>
