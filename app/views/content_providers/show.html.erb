@@ -1,8 +1,10 @@
+<p id="notice"><%= notice %></p>
+
 <%- model_class = ContentProvider -%>
 <div class="page-header">
   <%= image_tag(@content_provider.logo_url, :class=>'logo-right') %>
   <h1><%=t '.title', :default => @content_provider.title %></h1>
-  <dd><%= link_to @content_provider.url, @content_provider.url, :class =>'h4'  %></dd>
+  <p><%= link_to @content_provider.url, @content_provider.url, :class =>'h4'  %></p>
 </div>
 
 <div class="show-page-description ">

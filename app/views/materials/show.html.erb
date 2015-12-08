@@ -2,18 +2,14 @@
   <div class=" col-md-12 col-xs-12">
     <%- model_class = Material -%>
     <div class="page-header">
-      <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+      <h1><%=t '.title', :default => @material.title %></h1>
+      <p><%= link_to @material.url, @material.url, :class =>'h4'  %></p>
+      <p class="h5"><%= @material.short_description %></p>
     </div>
+    <div class="show-page-description"><%= render_markdown(@material.long_description) %></div>
 
-    <dl class="dl-horizontal">
-      <dt><strong><%= model_class.human_attribute_name(:title) %>:</strong></dt>
-      <dd><%= @material.title %></dd>
-      <dt><strong>URL:</strong></dt>
-      <dd><%= link_to @material.url, @material.url %></dd>
-      <dt><strong><%= model_class.human_attribute_name(:short_description) %>:</strong></dt>
-      <dd><%= @material.short_description %></dd>
-      <dt><strong><%= model_class.human_attribute_name(:long_description) %>:</strong></dt>
-      <dd><%= render_markdown(@material.long_description) %></dd>
+
+
       <dt><strong><%= model_class.human_attribute_name(:scientific_topic) %>:</strong></dt>
       <dd><%= @material.scientific_topic.join(', ') %></dd>
       <dt><strong><%= model_class.human_attribute_name(:target_audience) %>:</strong></dt>
@@ -51,10 +47,8 @@
             </a>
         <% end %>
       </dd>
-
-
-
     </dl>
+
 
     <%= link_to t('.back', :default => t("helpers.links.back")),
                 materials_path, :class => 'btn btn-default'  %>
@@ -65,6 +59,8 @@
                 :method => 'delete',
                 :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                 :class => 'btn btn-danger' %>
+    <button class="btn btn-success"><a href="<%= @material.url %>">View Material <span class="fa fa-external-link" aria-hidden="true"></span></a></button>
+
 
   </div>
 </div>

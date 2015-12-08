@@ -1,42 +1,38 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @package.name %>
-</p>
+<%- model_class = Package -%>
+<div class="page-header">
+  <%= image_tag(@package.image_url, :class=>'logo-right') %>
+  <h1><%=t '.title', :default => @package.name%></h1>
+</div>
 
-<p>
-  <strong>Description:</strong>
+<div class="show-page-description ">
   <%= @package.description %>
-</p>
+</div>
 
 <p>
-  <strong>Image url:</strong>
-  <%= @package.image_url %>
-</p>
-
-<p>
-  <strong>Public:</strong>
-  <%= @package.public %>
-</p>
-
-
-<p>
-<strong>Contents: </strong> This package contains <%= pluralize(@package.materials.count, 'material') %> and <%= pluralize(@package.events.count, 'event') %>
+  <strong>This package contains <%= pluralize(@package.materials.count, 'material') %> and <%= pluralize(@package.events.count, 'event') %></strong>
   <br>
   <br>
 
   <strong>Materials</strong>
-<% @package.materials.each do |material| %>
-	<%= render material %> 
-<% end %>
+  <% @package.materials.each do |material| %>
+      <%= render material %>
+  <% end %>
   <strong>Events</strong>
   <% @package.events.each do |event| %>
       <%= render event%>
   <% end %>
-
-
 </p>
 
-<%= link_to 'Edit', edit_package_path(@package) %> |
-<%= link_to 'Back', packages_path %>
+
+
+<%= link_to t('.back', :default => t("helpers.links.back")),
+            package_path, :class => 'btn btn-default'  %>
+<%= link_to t('.edit', :default => t("helpers.links.edit")),
+            edit_package_path(@package), :class => 'btn btn-default' %>
+<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+            package_path(@package),
+            :method => 'delete',
+            :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+            :class => 'btn btn-danger' %>
