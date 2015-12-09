@@ -138,8 +138,10 @@ class MaterialsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def material_params
-      params.require(:material).permit(:title, :url, :short_description, :long_description, :doi, 
-        :remote_updated_date, :remote_created_date,  :remote_updated_date, :package_ids, :content_provider_id)
+      params.require(:material).permit(:title, :url, :short_description, :long_description, :doi, :remote_updated_date,
+                                       :remote_created_date,  :remote_updated_date, :package_ids, :content_provider_id,
+                                       {:keywords => []},  {:scientific_topic => []}, :licence, :difficulty_level,
+                                       {:contributors => []}, {:authors=> []}, {:target_audience => []}  )
     end
 
     def set_params
