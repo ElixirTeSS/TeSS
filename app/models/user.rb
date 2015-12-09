@@ -76,4 +76,14 @@ class User < ActiveRecord::Base
     self.confirm! if Rails.env.development?
   end
 
+  def set_as_admin
+    role = Role.find_by_name('admin')
+    if role
+      self.role = role
+      self.save!
+    else
+      puts 'Sorry, no admin for you.'
+    end
+  end
+
 end
