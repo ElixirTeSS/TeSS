@@ -6,9 +6,9 @@ one:
   subtitle: MyString
   link: MyString
   provider: MyString
-  field: MyText
+  field: ["MyText"]
   description: MyText
-  category: MyText
+  category: ["MyText"]
   start: 2015-11-23 10:16:33
   end: 2015-11-23 10:16:33
   sponsor: MyString
@@ -19,6 +19,7 @@ one:
   postcode: MyString
   latitude:
   longitude:
+  keyword: ["Keyword"]
 
 two:
   external_id: MyString2
@@ -26,9 +27,9 @@ two:
   subtitle: MyString
   link: MyString
   provider: MyString
-  field: MyText
+  field: ["MyText"]
   description: MyText
-  category: MyText
+  category: ["MyText"]
   start: 2015-11-23 10:16:33
   end: 2015-11-23 10:16:33
   sponsor: MyString
@@ -39,3 +40,4 @@ two:
   postcode: MyString
   latitude:
   longitude:
+  keyword: ["Keyword"]

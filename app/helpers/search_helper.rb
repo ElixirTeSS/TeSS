@@ -31,13 +31,13 @@ module SearchHelper
 
 	def show_more_link facet
 		parameters = request.parameters.clone
-		return link_to "Show more #{facet.pluralize}", parameters.merge("#{facet}_all"=>true)
+		return link_to "Show more #{facet.humanize.pluralize}", parameters.merge("#{facet}_all"=>true)
 	end
 
 	def show_less_link facet
 		parameters = request.parameters.clone
 		parameters.delete("#{facet}_all")
-		return link_to "Show less #{facet.pluralize}", parameters
+		return link_to "Show less #{facet.humanize.pluralize}", parameters
 	end
 
 	def neatly_printed_date_range start, finish
