@@ -4,7 +4,7 @@
 <%= render partial: 'search/bar' %>
 
 <%= render partial: 'search/tab_headings', :locals=>{:results => @results, :selected_tab => @results.keys.first}%>
-<div class="listing-container">
+
 <% if !@results.nil? %>
   <% @results.each do |model, model_results| %>
   	  <div class="tab-content" id="<%=model%>-content"> 
@@ -16,4 +16,3 @@
 <% else %>
   No results found
 <% end %>
-</div>

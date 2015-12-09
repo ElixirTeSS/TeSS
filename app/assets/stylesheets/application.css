@@ -78,9 +78,10 @@ a.tab:hover{
     background-color: darkgrey;
     text-decoration: none;
 }
-
-
-
+.tab-content{
+    padding: 10px 10px;
+    background-color: whitesmoke;
+}
 .nav_search_bar_container {
     width: 100%;
     background-color: lightgray;
@@ -94,7 +95,7 @@ a.tab:hover{
 
 .listing-container {
     padding: 10px 10px;
-    background-color: #E0E0D1;
+    background-color: whitesmoke;
 }
 
 .material-index {
