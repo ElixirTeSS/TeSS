@@ -18,7 +18,8 @@ end
 
 Material.delete_all
 Workflow.delete_all
-User.delete_all
+#Probably don't need to delete existing users.
+#User.delete_all 
 
 User.create!(
         username: 'test',

@@ -3,18 +3,16 @@
 <h1> Search </h1>
 <%= render partial: 'search/bar' %>
 
+<%= render partial: 'search/tab_headings', :locals=>{:results => @results, :selected_tab => @results.keys.first}%>
+
 <% if !@results.nil? %>
   <% @results.each do |model, model_results| %>
-    <% if model_results.total > 0 %>
-      <span class="h1"> <%= model.capitalize -%> </span> has <b> <%= model_results.total%> </b>
- 	<%if model_results.total > 1%><%="result".pluralize%><%else%>result<%end%>.
-	<% model_results.results.each do |object| %>
-	      <p> <%= render partial: object %> </p>
-	<% end %>
-    <% end %>
-  <% end %>
+  	  <div class="tab-content" id="<%=model%>-content"> 
+		<% model_results.results.each do |object| %>
+	       <p><%= render partial: object %> </p>
+  		<% end %>
+  	  </div>
+  	<% end %>
 <% else %>
   No results found
 <% end %>
-
-

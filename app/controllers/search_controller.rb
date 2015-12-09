@@ -1,6 +1,6 @@
 class SearchController < ApplicationController
 
-  @@search_models = %w(Material User Event) #Profile
+  @@search_models = %w(Material User Event Package ContentProvider) #Profile
   # GET /searches
   # GET /searches.json
   def index 
@@ -14,13 +14,14 @@ class SearchController < ApplicationController
          puts "Error finding results for #{model}"
        end 
     end
+    @results.reject!{|k,result| result.total < 1}
   end
 
   private
     # Never trust parameters from the scary internet, only allow the white list through.
 
     def symbolize symbol
-       return symbol.downcase.pluralize.to_sym
+       return symbol.underscore.pluralize.to_sym
     end
 
     def search_params
