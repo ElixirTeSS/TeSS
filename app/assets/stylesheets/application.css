@@ -81,6 +81,7 @@ a.tab:hover{
 .tab-content{
     padding: 10px 10px;
     background-color: whitesmoke;
+    min-height: 5000px;
 }
 .nav_search_bar_container {
     width: 100%;
@@ -432,4 +433,9 @@ Text Color #FFAC74
     height: 300px;    
     width: 50%;
     float: right;
+}
+
+#map-canvas {
+    height: 700px;    
+    width: 700px;
 }
