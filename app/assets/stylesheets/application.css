@@ -418,3 +418,18 @@ Text Color #FFAC74
     -moz-border-radius: 4px;
     border-radius: 4px;
 }
+
+
+.masthead .site-search {
+  margin: 2px 8px 2px 0;
+}
+.masthead .site-search input {
+  width: 200px;
+  padding: 4px 10px;
+}
+
+.event-show-map {
+    height: 300px;    
+    width: 50%;
+    float: right;
+}
