@@ -22,6 +22,10 @@ class Event < ActiveRecord::Base
       time :start
       time :end
       time :updated_at
+=begin TODO: SOLR has a LatLonType to do geospatial searching. Have a look at that
+      location :latitutde
+      location :longitude
+=end
     end
   end
 
