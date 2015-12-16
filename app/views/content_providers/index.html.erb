@@ -10,8 +10,8 @@
 <div class="page-header">
   <h1><%=t '.title', :default => pluralize(@content_providers.count, model_class.to_s.titleize)%> Found</h1>
 <!-- CREATE NEW BUTTON -->
-  <%= link_to new_event_path, :class=>"btn btn-primary" do %>
-      <i class="fa fa-plus-square"></i> Create Event
+  <%= link_to new_content_provider_path, :class=>"btn btn-primary" do %>
+      <i class="fa fa-plus-square"></i> Create Content Provider
   <% end %>
 </div>
 
