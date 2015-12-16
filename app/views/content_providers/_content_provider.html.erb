@@ -1,7 +1,9 @@
-<div class="listing_item">
+<li class="masonry-brick media-item ">
   <p style="text-align:center"><%= image_tag content_provider.logo_url, :class=>"listing_image" %></p>
-  <div class="h3"><%= link_to(content_provider.title, content_provider) %></div>
-  <!--<p><%= content_provider.url %></p>-->
-  <p><%= truncate(content_provider.description, length: 150, separator: ' ') %></p>
-  <b><%= pluralize(content_provider.materials.count, 'Training Material') %></b>
-</div>
+    <div class="h3"><%= link_to(content_provider.title, content_provider) %></div>
+    <!--<p><%= content_provider.url %></p>-->
+    <p><%= truncate(content_provider.description, length: 150, separator: ' ') %></p>
+    <b><%= pluralize(content_provider.materials.count, 'Training Material') %></b>
+    <a href="<%= content_provider_path(content_provider) %>" class="media-view"></a>
+</li>
+
