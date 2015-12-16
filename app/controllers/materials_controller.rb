@@ -23,7 +23,7 @@ class MaterialsController < ApplicationController
   # GET /materials.json
   # GET /materials.json?q=queryparam
 
-  @@facet_fields = %w( scientific_topic target_audience keywords licence difficulty_level authors contributors )
+  @@facet_fields = %w(content_provider scientific_topic target_audience keywords licence difficulty_level authors contributors)
 
   helper 'search'
 
@@ -140,8 +140,8 @@ class MaterialsController < ApplicationController
     def material_params
       params.require(:material).permit(:title, :url, :short_description, :long_description, :doi, :remote_updated_date,
                                        :remote_created_date,  :remote_updated_date, :package_ids, :content_provider_id,
-                                       {:keywords => []},  {:scientific_topic => []}, :licence, :difficulty_level,
-                                       {:contributors => []}, {:authors=> []}, {:target_audience => []}  )
+                                       :content_provider, {:keywords => []},  {:scientific_topic => []}, :licence,
+                                       :difficulty_level, {:contributors => []}, {:authors=> []}, {:target_audience => []}  )
     end
 
     def set_params

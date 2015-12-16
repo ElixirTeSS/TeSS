@@ -20,6 +20,11 @@ class Material < ActiveRecord::Base
       string :licence, :multiple => true
       string :difficulty_level, :multiple => true
       string :contributors, :multiple => true
+      string :content_provider do
+        if !self.content_provider.nil?
+          self.content_provider.title
+        end
+      end
       time :updated_at
     end
   end
