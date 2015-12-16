@@ -62,6 +62,8 @@
     <fieldType name="text" class="solr.TextField" omitNorms="false">
       <analyzer>
         <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.EdgeNGramFilterFactory" minGramSize="2" maxGramSize="50" side="front"/>
+        <filter class="solr.EdgeNGramFilterFactory" minGramSize="2" maxGramSize="50" side="back"/>
         <filter class="solr.StandardFilterFactory"/>
         <filter class="solr.LowerCaseFilterFactory"/>
         <filter class="solr.PorterStemFilterFactory"/>
@@ -98,6 +100,8 @@
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.StandardFilterFactory"/>
         <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="solr.EdgeNGramFilterFactory" minGramSize="2" maxGramSize="50" side="front"/>
+        <filter class="solr.EdgeNGramFilterFactory" minGramSize="2" maxGramSize="50" side="back"/>
       </analyzer>
     </fieldType>
     <!-- A specialized field for geospatial search. If indexed, this fieldType must not be multivalued. -->
