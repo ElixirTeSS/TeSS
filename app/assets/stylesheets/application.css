@@ -78,11 +78,6 @@ a.tab:hover{
     background-color: darkgrey;
     text-decoration: none;
 }
-.tab-content{
-    padding: 10px 10px;
-    background-color: whitesmoke;
-    min-height: 5000px;
-}
 .nav_search_bar_container {
     width: 100%;
     background-color: lightgray;
@@ -108,7 +103,7 @@ a.tab:hover{
 }
 
 .listing_image {
-    min-height: 75px;
+    min-height: 50px;
     max-height: 100px;
     max-width: 100%;
 }
@@ -255,7 +250,7 @@ a.tab:hover{
 
 .masthead, .navbar-default{
     background-color: #F8761F;
-    background: #F8761F url("https://tess.elixir-uk.org/base/images/bg.png");
+    background: #F8761F url('/assets/bg.png');
 }
 
 .masthead .content {
@@ -445,7 +440,7 @@ Text Color #FFAC74
     *zoom: 1;
     margin: 0 -25px;
     padding-bottom: 15px;
-    background: #fbfbfb url("../../../base/images/bg.png");
+    background: #fbfbfb url("/assets/bg.png");
     border: 1px solid #dddddd;
     border-width: 1px 0;
 }
@@ -466,13 +461,16 @@ Text Color #FFAC74
 .media-item {
     position: relative;
     float: left;
-    width: 189px;
+    width: 200px;
     padding: 15px;
     margin: 15px 0 0 15px;
     background-color: white;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
+}
+.media-item.long {
+    width: 90%;
 }
 .media-item span.count {
     color: #999;

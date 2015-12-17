@@ -1,11 +1,11 @@
 <script>
-
-    $('.masonry').masonry({
-        // options...
-        itemSelector: '.masonry-brick',
-        columnWidth: 10
-    });
-
+    $(document).ready(function(){
+        $('.masonry').masonry({
+            // options...
+            itemSelector: '.masonry-brick',
+            columnWidth: 20
+        });
+    })
 </script>
 
 <%- model_class = ContentProvider -%>
@@ -18,7 +18,7 @@
 </div>
 
 
-<ul class="media-grid masonry">
+<ul class="masonry media-grid">
     <% @content_providers.each do |content_provider|  %>
           <%= render content_provider %>
     <% end %>

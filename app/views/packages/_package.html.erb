@@ -1,5 +1,10 @@
-<div class="listing_item">
-<div class="h3"><%= link_to(package.name, package) %></div>
-<p><%= package.description  %></p>
-<p><img class="listing_image" src="<%= package.image_url %>"></p>
-</div>
+<li class="masonry-brick media-item ">
+  <%= image_tag package.image_url, :class=>"media-image listing_image" %>
+  <h3 class="media-heading"><%= package.name %></h3>
+  <p><%= package.description  %></p>
+  <%= link_to '', package, :class=>"media-view"%>
+</li>
+
+
+
+

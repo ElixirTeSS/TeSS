@@ -1,12 +1,13 @@
-<script>
-    $('.grid').masonry({
-        // options...
-        itemSelector: '.grid-item',
-        columnWidth: 10
-    });
-</script>
 
-<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+<script>
+    $(document).ready(function(){
+        $('.masonry').masonry({
+            // options...
+            itemSelector: '.masonry-brick',
+            columnWidth: 20
+        });
+    })
+</script>
 
 <!-- SIDEBAR | RESULTS -->
 <div class="row">
@@ -57,12 +58,13 @@
 
     <%= render :partial => "tab_headings", :locals => {:selected_tab => "grid"} %>
     <!-- ACTUAL RESULTS LIST -->
-    <div class="listing-container">
-      <div id="grid-content" class="grid tab-content">
-        <% @events.each do |event| %>
-           <div class="grid-item"><%= render event %></div>
-        <% end %>
-      </div>
+    <div id="grid-content" class="tab-content">
+        <ul class="masonry media-grid">
+            <% @events.each do |event| %>
+               <%= render event %>
+            <% end %>
+        </ul>
+
       <!-- Alternative Map view -->
       <div id="map-content" class="">
         <%= render :partial => "map_view", :locals => {:events=>@events} %>

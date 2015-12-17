@@ -1,9 +1,12 @@
+
 <script>
-    $('.grid').masonry({
-        // options...
-        itemSelector: '.grid-item',
-        columnWidth: 10
-    });
+    $(document).ready(function(){
+        $('.masonry').masonry({
+            // options...
+            itemSelector: '.masonry-brick',
+            columnWidth: 30
+        });
+    })
 </script>
 
 
@@ -40,10 +43,10 @@
     <% end %>
     <!-- ACTUAL RESULTS LIST -->
 
-    <div class="grid listing-container">
-      <% @packages.each do |package| %>
-          <div class="grid-item"><%= render package %></div>
-      <% end %>    
+        <ul class="masonry media-grid">
+              <% @packages.each do |package| %>
+                  <%= render package %>
+              <% end %>
+        </ul>
     </div>
-  </div>
 </div>

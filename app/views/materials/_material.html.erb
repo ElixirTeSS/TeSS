@@ -1,10 +1,11 @@
-<div class="listing_item">
+<div class="media-item long">
 <div class="h3"><%= link_to(material.title, material) %></div>
 <!--<p><%= material.url %></p>-->
 <p><%= truncate(material.short_description, length: 300, separator: ' ') %></p>
 <%= html_logo_for(material.content_provider).html_safe %>
 <p>Keywords: <%= material.keywords.join(', ') %></p>
 <p>Scientific Topics: <%= material.scientific_topic.join(', ') %></p>
+  <%= link_to '', material, :class=>"media-view"%>
 </div>
 
 

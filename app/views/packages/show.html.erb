@@ -15,14 +15,18 @@
   <br>
   <br>
 
-  <strong>Materials</strong>
-  <% @package.materials.each do |material| %>
-      <%= render material %>
-  <% end %>
-  <strong>Events</strong>
-  <% @package.events.each do |event| %>
-      <%= render event%>
-  <% end %>
+  <ul class=" media-grid">
+      <h3>Materials</h3>
+      <% @package.materials.each do |material| %>
+          <%= render material %>
+      <% end %>
+  </ul>
+  <ul class="masonry media-grid">
+    <h3>Events</h3>
+      <% @package.events.each do |event| %>
+          <%= render event%>
+      <% end %>
+  </ul>
 </p>
 
 
