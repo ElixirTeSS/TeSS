@@ -26,9 +26,13 @@ Rails.application.routes.draw do
 
   resources :users
 
+  resource :activities
+
   resources :nodes
   resources :events
-  resources :packages
+  resources :packages do
+    resource :activities, :only => [:show]
+  end
   resources :workflows
   resources :content_providers do
     resource :activities, :only => [:show]

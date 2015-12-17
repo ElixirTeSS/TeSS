@@ -89,10 +89,9 @@ class MaterialsController < ApplicationController
   # POST /materials.json
   def create
     @material = Material.new(material_params)
-
     respond_to do |format|
       if @material.save
-        @material.create_activity :create
+        @material.create_activity :create, owner: current_user
         current_user.materials << @material
         format.html { redirect_to @material, notice: 'Material was successfully created.' }
         format.json { render :show, status: :created, location: @material }
