@@ -25,13 +25,18 @@ Rails.application.routes.draw do
   get 'static/welcome'
 
   resources :users
-  resources :activities
+
   resources :nodes
   resources :events
   resources :packages
   resources :workflows
-  resources :content_providers
-  resources :materials
+  resources :content_providers do
+    resource :activities, :only => [:show]
+  end
+
+  resources :materials do
+    resource :activities, :only => [:show]
+  end
 
   get 'search' => 'search#index'
 =begin
