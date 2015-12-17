@@ -1,0 +1,5 @@
+<%#= render_activities(@activities, layout: :activity) %>
+
+<% @resource.activities.each do |activity| %>
+  <%= render_activity(activity) %>
+<% end %>
