@@ -6,8 +6,7 @@
     <% end %>
 
     <strong>changed</strong>
-        <%= activity.parameters[:attr].humanize %> <strong>from</strong>
-        <%= activity.parameters[:old_val].inspect %> <strong>to</strong>
+        <%= activity.parameters[:attr].humanize %> <strong>to</strong>
         <%= activity.parameters[:new_val].inspect %>
 </div>
 <% end %>

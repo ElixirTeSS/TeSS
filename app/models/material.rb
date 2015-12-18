@@ -45,6 +45,8 @@ class Material < ActiveRecord::Base
   validates :url, :url => true
 
 
+  after_save :log_activities
+
   # Generated:
   # title:text url:string short_description:string doi:string  remote_updated_date:date remote_created_date:date
   # TODO:
@@ -61,19 +63,14 @@ class Material < ActiveRecord::Base
   # Separate models needed for Rating, License, Keywords &c.
 =end
 
-  def write_attribute(attr_name, value)
-    attribute_changed(attr_name, read_attribute(attr_name), value)
-    super
-  end
-
-  private
-
-  def attribute_changed(attr, old_val, new_val)
-    if old_val != new_val
-      logger.info "Attribute Changed: #{attr} from #{old_val} to #{new_val}"
-      self.create_activity :update_parameter, parameters: {attr: attr, old_val: old_val, new_val: new_val}
+  def log_activities
+    self.changed.each do |changed_attribute|
+      #TODO: Sort out what gets logged
+      # If content provider - find content provider otherwise uses ID.
+      #     maybe add new activity for content provider having a new material added to it too.
+      # If updated at - ignore
+      self.create_activity :update_parameter, parameters: {attr: changed_attribute, new_val: self.send(changed_attribute)}
     end
   end
-
 end
 
