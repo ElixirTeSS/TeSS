@@ -2,7 +2,7 @@ class ActivitiesController < ApplicationController
 
   before_action :set_resource, only: [:show]
 
-  @@models = %w( content_provider material package )
+  @@models = %w( content_provider material package event )
 
   def index
     @activities = PublicActivity::Activity.order("created_at desc")
