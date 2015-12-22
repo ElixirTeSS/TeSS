@@ -26,7 +26,7 @@ Rails.application.routes.draw do
 
   resources :users
 
-  resource :activities
+  resources :activities
   resources :nodes
   resources :events do
     resource :activities, :only => [:show]
