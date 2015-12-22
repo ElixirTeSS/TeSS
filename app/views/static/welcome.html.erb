@@ -1,22 +1,62 @@
-<h1>TeSS</h1>
+<script>
+    $(document).ready(function(){
+        $('.masonry').masonry({
+            // options...
+            itemSelector: '.masonry-brick',
+            columnWidth: 20
+        });
+    })
+</script>
 
-<% if user_signed_in? %>
-<p>Signed in as <%= current_user[:username] -%></p>
-<% else %>
-<p>Not signed in.</p>
-<% end %>
+<div class="homepage">
+	<ul class="masonry media-grid">
+		<li class="welcome-text masonry-brick media-item">
+			<div class="h1">Welcome to TeSS: ELIXIR's Training Portal</div>
+			<p>
+			ELIXIR's TeSS (Training eSupport System) is a portal for disseminating, discovering and packaging training resources, aggregating information from ELIXIR nodes and 3rd-party providers.
+			</p>
+		</li>
+		<li class="nodes-block masonry-brick">
+			<h3 class="heading">Nodes</h3>
+			<p>
+                TeSS aims to provide an at-a-glance view of <a style="position:relative; z-index: 10;" href="http://elixir-europe.org">ELIXIR's</a> training
+                landscape, while also offering individual ’shop windows’, giving customisable views of the hottest training
+                news, events, activity highlights, etc. from <a style="position:relative; z-index: 10;" href="/node">nodes</a>.
+            </p>
+			<%= link_to '', nodes_path, :class=>"media-view"%>
+		</li>
+		<li class="faq-block masonry-brick">
+			<h3 class="heading">FAQ</h3>	
+			<p>Check out our FAQ to find out more about TeSS.</p>
+			<%= link_to '', about_path, :class=>"media-view"%>
+		</li>
+	</ul>
 
-<ul>
-<% if user_signed_in? %>
-    <li>
-      <%= link_to('Logout', destroy_user_session_path, {:method => :delete}) %>
-    </li>
-<% else %>
-    <li>
-      <%= link_to('Login', new_user_session_path)  %>
-    </li>
-    <li>
-      <%= link_to('Register', new_user_registration_path)  %>
-    </li>
-<% end %>
- </ul>
+	<ul class="masonry media-grid">
+			<li class="nav-block masonry-brick">
+				<h3 class="heading">Events</h3>
+				<p>Discover the latest training events and news from ELIXIR nodes and 3rd-party providers.</p>
+				<%= link_to '', events_path, :class=>"media-view"%>
+			</li>
+			<li class="nav-block masonry-brick">
+				<h3 class="heading">Materials</h3>
+				<p>Browse the catalogue of materials offered by ELIXIR nodes and 3rd-party providers.</p>
+				<%= link_to '', materials_path, :class=>"media-view"%>
+			</li>
+			<li class="nav-block masonry-brick">
+				<h3 class="heading">Packages</h3>
+				<p>Create training packages by grouping resources that address your particular research topic.</p>
+				<%= link_to '', packages_path, :class=>"media-view"%>
+			</li>
+			<li class="nav-block masonry-brick">
+				<h3 class="heading">Workflows</h3>
+				<p>Visualise ‘workflows’ to identify resources specific to your research and training needs.</p>
+				<%= link_to '', workflows_path, :class=>"media-view"%>
+			</li>
+			<li class="nav-block masonry-brick">
+				<h3 class="heading">Content Providers</h3>
+				<p>Browse content providers and follow links to their associated training materials.</p>
+				<%= link_to '', content_providers_path, :class=>"media-view"%>
+			</li>
+		</ul>
+</div>
