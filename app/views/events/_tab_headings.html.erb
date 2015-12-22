@@ -9,7 +9,6 @@
 
 		$('.tab').click(function(){
 			var content = $(this).data('tab_content');
-
 			/* Remove any 'activated' classes from all tabs 
 				and hide all tab content */
 			$('.tab').removeClass('activated');
@@ -18,7 +17,7 @@
 			/* Set out new active tab!*/
 			$(this).addClass('activated');
 			$('#' + content).show();
-
+			reposition_tiles('masonry', 'masonry-brick');
 		});
 	});
 </script>
