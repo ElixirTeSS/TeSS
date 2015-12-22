@@ -44,3 +44,11 @@ function updateURLParameter(url, param, paramVal){
     var rows_txt = temp + "" + param + "=" + paramVal;
     return baseURL + "?" + newAdditionalURL + rows_txt;
 }
+
+function reposition_tiles(container, tile_class){
+    $('.' + container).masonry({
+            // options...
+            itemSelector: '.' + tile_class,
+            columnWidth: 20
+        });
+}
