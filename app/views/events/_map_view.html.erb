@@ -1,15 +1,16 @@
-
 <script>
 var map;
 function initialize() {
+    google.maps.event.addDomListener(window, 'load', initialize);
     /* center on first event. Map center and zoom will reconfigure later (fitbounds method)*/
       var mapOptions = {
-            zoom: 15,
+            zoom: 1,
             center: new google.maps.LatLng(events[0][0], events[0][1])
         };
         var map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
         setEvents(map, events);
 }
+
 var events = [];
 <% if events %>
     <% events.each do |event|  %>
@@ -49,9 +50,9 @@ function createMarker(map, event, infowindow){
     });
     return marker;
 }
-
-  google.maps.event.addDomListener(window, 'load', initialize);
-
+</script>
+<script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCT1w2S_2I49FwJDKHGj9A9sO86Lp9nUdg&callback=initialize">
 </script>
 
 <div id="map-canvas"></div>
