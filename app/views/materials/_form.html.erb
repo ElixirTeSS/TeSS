@@ -1,3 +1,37 @@
+<script>
+$(document).ready(function(){
+    $(document.body).on('click', '.add', function(e){
+        var field_name = $(this).attr('data-field');
+        add_one_list_item(field_name);
+    })
+
+    $(document.body).on('click', '.delete', function(e){
+        var list_item = $(this).parent();
+        remove_list_item(list_item)
+    })
+
+    $(document.body).on('keypress', '.multiple-input', function(e){
+        /*ADD NEW LINE IF USER HITS ENTER. CONSIDER ADDING MORE LIKE SHIFT, COMMA, ETC*/
+        if (e.which == '13') {
+            var field_name = $(this).attr('data-field');
+            add_one_list_item(field_name);
+        }
+    })
+
+    function add_one_list_item(field_name){
+        $('<div class="list-item">' +
+        '<input type="text" class="form-control multiple-input" data-field="' + field_name + '" name="material[' +
+        field_name + 's][]"/>' +
+        '<input type="button" value="x" class="delete" data-field="keyword"/>' +
+                '</div>').appendTo('.' + field_name).focus();
+    }
+
+    function remove_list_item(list_item){
+        list_item.remove();
+    }
+})
+</script>
+
 <%= form_for @material, :html => {:class => "form-horizontal material"} do |f| %>
 
     <% if @material.errors.any? %>
@@ -9,7 +43,7 @@
           <div class="panel-body">
             <ul>
               <% @material.errors.full_messages.each do |msg| %>
-                  <li><%= msg %></li>
+                  <li><%= msg %></li>$(document.body).on('click', '.delete', function(e){
               <% end %>
             </ul>
           </div>
@@ -79,13 +113,22 @@
       </div>
       <%= error_span(@material[:target_audience]) %>
     </div>
+
     <div class="control-group">
       <%= f.label :keywords, :class => 'control-label' %>
-      <div class="controls">
-        <%= f.text_field :keywords, :class => 'form-control' %>
-      </div>
+        <div class="keyword controls">
+            <% @material[:keywords].each do |keyword| %>
+              <div class="list-item">
+                <input type="text" class="form-control multiple-input" data-field='keyword' name="material[keywords][]" value="<%=keyword%>"/>
+                <input type="button" value="x" class="delete" data-field="keyword"/>
+              </div>
+            <% end %>
+        </div>
+        <input type="button" class="add" data-field="keyword" value="+">
       <%= error_span(@material[:keywords]) %>
     </div>
+
+
     <div class="control-group">
       <%= f.label :licence, :class => 'control-label' %>
       <div class="controls">
@@ -93,6 +136,7 @@
       </div>
       <%= error_span(@material[:licence]) %>
     </div>
+
     <div class="control-group">
       <%= f.label :difficulty_level, :class => 'control-label' %>
       <div class="controls">
@@ -100,18 +144,33 @@
       </div>
       <%= error_span(@material[:difficulty_level]) %>
     </div>
+
+
     <div class="control-group">
       <%= f.label :authors, :class => 'control-label' %>
-      <div class="controls">
-        <%= f.text_field :authors, :class => 'form-control' %>
+      <div class="author controls">
+        <% @material[:authors].each do |author| %>
+            <div class="list-item">
+              <input type="text" class="form-control multiple-input" data-field='author' name="material[authors][]" value="<%=author%>"/>
+              <input type="button" value="x" class="delete" data-field="author"/>
+            </div>
+        <% end %>
       </div>
+      <input type="button" class="add" data-field="author" value="+">
       <%= error_span(@material[:authors]) %>
     </div>
+
     <div class="control-group">
       <%= f.label :contributors, :class => 'control-label' %>
-      <div class="controls">
-        <%= f.text_field :contributors, :class => 'form-control' %>
+      <div class="contributor controls">
+        <% @material[:contributors].each do |contributor| %>
+            <div class="list-item">
+              <input type="text" class="form-control multiple-input" data-field='contributor' name="material[contributors][]" value="<%=contributor%>"/>
+              <input type="button" value="x" class="delete" data-field="contributor"/>
+            </div>
+        <% end %>
       </div>
+      <input type="button" class="add" data-field="contributor" value="+">
       <%= error_span(@material[:contributors]) %>
     </div>
 
