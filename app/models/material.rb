@@ -44,6 +44,7 @@ class Material < ActiveRecord::Base
   # Validate the URL is in correct format via valid_url gem
   validates :url, :url => true
 
+  before_save :remove_empty_array_items
 
   after_save :log_activities
 
@@ -62,6 +63,14 @@ class Material < ActiveRecord::Base
   Rating: reviews
   # Separate models needed for Rating, License, Keywords &c.
 =end
+
+  @@array_fields = %w(keywords contributors authors)
+  def remove_empty_array_items
+    @@array_fields.each do |field|
+      self.send(field).reject!{|x| x.empty?}
+    end
+  end
+
 
   def log_activities
     self.changed.each do |changed_attribute|
