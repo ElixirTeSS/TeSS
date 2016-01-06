@@ -649,3 +649,22 @@ Text Color #FFAC74
     margin: 10px;
     text-align: center;
 }
+
+.multiple-input-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+.list-item {
+    padding: 5px 10px;
+    margin: 4px 5px;
+    background-color: whitesmoke;
+
+}
+.multiple-input {
+    width: 200px;
+    border:none
+}
+.multiple-input-delete {
+    background:none;
+    border:none
+}

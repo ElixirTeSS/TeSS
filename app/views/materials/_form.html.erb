@@ -1,3 +1,61 @@
+<script>
+$(document).ready(function(){
+    $(document.body).on('click', '.multiple-input-add', function(e){
+        /* remove HTML autocfocus attribute from element */
+        this.blur()
+        var field_name = $(this).attr('data-field');
+        new_list_item(field_name);
+    })
+
+    $(document.body).on('click', '.multiple-input-delete', function(e){
+        var list_item = $(this).parent();
+        remove_list_item(list_item)
+    })
+
+    $(document.body).on('keypress', '.multiple-input', function(e){
+        /*ADD NEW LINE IF USER HITS ENTER. CONSIDER ADDING MORE LIKE SHIFT, COMMA, ETC*/
+        if (e.which == '13' || e.which == '188') {
+            event.preventDefault(); /* stops enter submitting form */
+            var field_name = $(this).attr('data-field');
+            new_list_item(field_name);
+        }
+    })
+
+    $(document.body).on('change', '#material_package_ids', function(e){
+        var selected_val =  $(this).find("option:selected").val();
+        if (selected_val != ''){
+            var field_name = $(this).parent().attr('data-field');
+            var selected_text = $(this).find("option:selected").text();
+            select_dropdown_item(field_name, selected_val, selected_text);
+            /* TODO: Remove selected package from dropdown list */
+        }
+    })
+
+    function select_dropdown_item(field_name, value, name){
+        var label = '<label type="text" class="multiple-input" data-field="package" name="material[package_ids][]" ' +
+                'value="' + value + '"> ' + name + '</label>';
+        var delete_button = '<input type="button" value="x" class="multiple-input-delete" data-field="package"/>';
+        var list_item_div = $('<div class="list item">').appendTo('.' + field_name);
+        $(label).appendTo(list_item_div);
+        $(delete_button).appendTo(list_item_div);
+    }
+
+    function new_list_item(field_name){
+        var input_box = '<input type="text" class="multiple-input" data-field="'
+                        + field_name + '" name="material[' + field_name + 's][]" />';
+        var delete_button = '<input type="button" value="x" class="multiple-input-delete" data-field="keyword" tabindex=300/>';
+
+        var list_item_div = $('<div class="list-item">').appendTo('.' + field_name);
+        $(input_box).appendTo(list_item_div).focus();
+        $(delete_button).appendTo(list_item_div);
+    }
+
+    function remove_list_item(list_item){
+        list_item.remove();
+    }
+})
+</script>
+
 <%= form_for @material, :html => {:class => "form-horizontal material"} do |f| %>
 
     <% if @material.errors.any? %>
@@ -9,7 +67,7 @@
           <div class="panel-body">
             <ul>
               <% @material.errors.full_messages.each do |msg| %>
-                  <li><%= msg %></li>
+                  <li><%= msg %></li>$(document.body).on('click', '.delete', function(e){
               <% end %>
             </ul>
           </div>
@@ -79,20 +137,30 @@
       </div>
       <%= error_span(@material[:target_audience]) %>
     </div>
+
     <div class="control-group">
       <%= f.label :keywords, :class => 'control-label' %>
-      <div class="controls">
-        <%= f.text_field :keywords, :class => 'form-control' %>
-      </div>
+        <div class="keyword controls multiple-input-list">
+            <% @material[:keywords].push('').each do |keyword| %>
+              <div class="list-item">
+                <input type="text" class="multiple-input" data-field='keyword' name="material[keywords][]" value="<%=keyword%>"/>
+                <input type="button" value="x" class="multiple-input-delete" data-field="keyword"/>
+              </div>
+            <% end %>
+        </div>
+      <i class="fa fa-plus multiple-input-add" data-field="keyword"> Add new</i>
       <%= error_span(@material[:keywords]) %>
     </div>
+
+
     <div class="control-group">
       <%= f.label :licence, :class => 'control-label' %>
       <div class="controls">
-        <%= f.select :licence, options_for_select(licence_options_for_select(), @material[:licence].blank? ? "notspecified" : @material[:licence]), :class => 'form-control' %>
+        <%= f.select :licence, options_for_select(licence_options_for_select(), @material[:licence].blank? ? "notspecified" : @material[:licence]), :class => 'form-control licence' %>
       </div>
       <%= error_span(@material[:licence]) %>
     </div>
+
     <div class="control-group">
       <%= f.label :difficulty_level, :class => 'control-label' %>
       <div class="controls">
@@ -100,25 +168,48 @@
       </div>
       <%= error_span(@material[:difficulty_level]) %>
     </div>
+
+
     <div class="control-group">
       <%= f.label :authors, :class => 'control-label' %>
-      <div class="controls">
-        <%= f.text_field :authors, :class => 'form-control' %>
+      <div class="author controls multiple-input-list">
+        <% @material[:authors].push('').each do |author| %>
+            <div class="list-item">
+              <input type="text" class="multiple-input" data-field='author' name="material[authors][]" value="<%=author%>"/>
+              <input type="button" value="x" class="multiple-input-delete" data-field="author"/>
+            </div>
+        <% end %>
       </div>
+      <i class="fa fa-plus multiple-input-add" data-field="author"> Add new</i>
       <%= error_span(@material[:authors]) %>
     </div>
+
     <div class="control-group">
       <%= f.label :contributors, :class => 'control-label' %>
-      <div class="controls">
-        <%= f.text_field :contributors, :class => 'form-control' %>
+      <div class="contributor controls multiple-input-list">
+        <% @material[:contributors].push('').each do |contributor| %>
+            <div class="list-item">
+              <input type="text" class="multiple-input" data-field='contributor' name="material[contributors][]" value="<%=contributor%>"/>
+              <input type="button" value="x" class="multiple-input-delete" data-field="contributor"/>
+            </div>
+        <% end %>
       </div>
+      <i class="fa fa-plus multiple-input-add" data-field="contributor"> Add new</i>
       <%= error_span(@material[:contributors]) %>
     </div>
 
     <div class="control-group">
       <%= f.label :packages, :class => 'control-label' %>
-      <div class="controls">
-        <%= f.select "package_ids", content_tag(:option,'select one...',:value=>"")+options_from_collection_for_select(available_packages_for(@material), "id", "name") %>
+      <div class="controls" data-field="package">
+        <div class="package multiple-input-list">
+          <% @material.packages.each do |package| %>
+              <div class="list-item">
+                <label type="text" class="multiple-input" data-field='package' name="material[package_ids][]" value=""><%=package.name%></label>
+                <input type="button" value="x" class="multiple-input-delete" data-field="package"/>
+              </div>
+          <% end %>
+        </div>
+        <%= f.select "package_ids", content_tag(:option,'select one...',:value=>"")+options_from_collection_for_select(available_packages_for(@material), "id", "name"), "data_field" => "package" %>
       </div>
       <%= error_span(@material[:packages]) %>
     </div>
