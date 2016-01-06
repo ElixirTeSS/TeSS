@@ -21,7 +21,7 @@ $(document).ready(function(){
         }
     })
 
-    $(document.body).on('change', '#material_package_ids', function(e){
+    $(document.body).on('change', '#material_packages', function(e){
         var selected_val =  $(this).find("option:selected").val();
         if (selected_val != ''){
             var field_name = $(this).parent().attr('data-field');
@@ -32,12 +32,13 @@ $(document).ready(function(){
     })
 
     function select_dropdown_item(field_name, value, name){
-        var label = '<label type="text" class="multiple-input" data-field="package" name="material[package_ids][]" ' +
-                'value="' + value + '"> ' + name + '</label>';
+        var label = '<input type="text" class="multiple-input" data-field="package" name="material[package_ids][]" ' +
+                        'value="' + value + '" style="display:none;"> ' + name + '</text>';
         var delete_button = '<input type="button" value="x" class="multiple-input-delete" data-field="package"/>';
-        var list_item_div = $('<div class="list item">').appendTo('.' + field_name);
+        var list_item_div = $('<div class="list-item">').appendTo('.' + field_name);
         $(label).appendTo(list_item_div);
         $(delete_button).appendTo(list_item_div);
+
     }
 
     function new_list_item(field_name){
@@ -204,12 +205,13 @@ $(document).ready(function(){
         <div class="package multiple-input-list">
           <% @material.packages.each do |package| %>
               <div class="list-item">
-                <label type="text" class="multiple-input" data-field='package' name="material[package_ids][]" value=""><%=package.name%></label>
+                <input type="text" class="multiple-input" data-field='package' name="material[package_ids][]"
+                       value="<%=package.id%>" style="display:none;"><%=package.name%></input>
                 <input type="button" value="x" class="multiple-input-delete" data-field="package"/>
               </div>
           <% end %>
         </div>
-        <%= f.select "package_ids", content_tag(:option,'select one...',:value=>"")+options_from_collection_for_select(available_packages_for(@material), "id", "name"), "data_field" => "package" %>
+        <%= f.select "packages", content_tag(:option,'select one...',:value=>"")+options_from_collection_for_select(available_packages_for(@material), "id", "name") %>
       </div>
       <%= error_span(@material[:packages]) %>
     </div>
