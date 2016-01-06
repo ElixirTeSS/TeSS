@@ -1,47 +1,72 @@
 <script>
 $(document).ready(function(){
+/*EVENTS*/
+    /*
+    * User clicks ADD NEW for a free text field such as keyword, author, or contributor
+    * OR they hit enter whilst in a free text field box
+    */
     $(document.body).on('click', '.multiple-input-add', function(e){
         /* remove HTML autocfocus attribute from element */
         this.blur()
         var field_name = $(this).attr('data-field');
-        new_list_item(field_name);
+        new_multiple_input_field(field_name);
     })
-
-    $(document.body).on('click', '.multiple-input-delete', function(e){
-        var list_item = $(this).parent();
-        remove_list_item(list_item)
-    })
-
     $(document.body).on('keypress', '.multiple-input', function(e){
         /*ADD NEW LINE IF USER HITS ENTER. CONSIDER ADDING MORE LIKE SHIFT, COMMA, ETC*/
         if (e.which == '13' || e.which == '188') {
             event.preventDefault(); /* stops enter submitting form */
             var field_name = $(this).attr('data-field');
-            new_list_item(field_name);
+            new_multiple_input_field(field_name);
         }
     })
-
-    $(document.body).on('change', '#material_packages', function(e){
-        var selected_val =  $(this).find("option:selected").val();
+    /* User deletes a free text field such as keyword, author or contributor */
+    $(document.body).on('click', '.multiple-input-delete', function(e){
+        var list_item = $(this).parent();
+        remove_list_item(list_item)
+    })
+    /*
+    * User selects a new package to add the material to.
+    * This adds a new added item and removes it from the dropdown
+    * */
+    $(document.body).on('click', '.dropdown-option', function(e){
+        var selected_val = $(this).val();
         if (selected_val != ''){
             var field_name = $(this).parent().attr('data-field');
-            var selected_text = $(this).find("option:selected").text();
-            select_dropdown_item(field_name, selected_val, selected_text);
-            /* TODO: Remove selected package from dropdown list */
+            var selected_text = $(this).text();
+            add_selected_dropdown_item(field_name, selected_val, selected_text);
+            /* TODO: Remove dropdown option from list after it has been selected */
         }
     })
+    /*
+     * User removes a package from a material.
+     * This adds the package back into the dropdown options.
+     */
+    $(document.body).on('click', '.dropdown-option-delete', function(e){
+        var list_item = $(this).parent();
+        add_dropdown_option($(this).attr('data-field'),
+                            $(this).attr('data-name'),
+                            $(this).attr('data-value'));
+        list_item.remove()
+    })
 
-    function select_dropdown_item(field_name, value, name){
+/*FUNCTIONS*/
+    /*
+    * Adds a new selected item to the field_name div with the values and names passed
+    */
+    function add_selected_dropdown_item(field_name, value, name){
         var label = '<input type="text" class="multiple-input" data-field="package" name="material[package_ids][]" ' +
                         'value="' + value + '" style="display:none;"> ' + name + '</text>';
-        var delete_button = '<input type="button" value="x" class="multiple-input-delete" data-field="package"/>';
+        var delete_button = '<input type="button" value="x" class="dropdown-option-delete" data-field="package"' +
+                'data-value="' + value + '" data-name="' + name + '"/>';
+
         var list_item_div = $('<div class="list-item">').appendTo('.' + field_name);
         $(label).appendTo(list_item_div);
         $(delete_button).appendTo(list_item_div);
-
     }
-
-    function new_list_item(field_name){
+    /*
+     * Creates a new input box for free text fields as a child of the field_name div
+     */
+    function new_multiple_input_field(field_name){
         var input_box = '<input type="text" class="multiple-input" data-field="'
                         + field_name + '" name="material[' + field_name + 's][]" />';
         var delete_button = '<input type="button" value="x" class="multiple-input-delete" data-field="keyword" tabindex=300/>';
@@ -50,9 +75,13 @@ $(document).ready(function(){
         $(input_box).appendTo(list_item_div).focus();
         $(delete_button).appendTo(list_item_div);
     }
-
+    /* removes an item */
     function remove_list_item(list_item){
         list_item.remove();
+    }
+    /* Adds a new option to the list of dropdown options. Used when a package is deselected (e.g. delete button pressed)"*/
+    function add_dropdown_option(field_name, name, value){
+        $('<li class="dropdown-option" value="' + value + '"><a>' + name + '</a></li>').appendTo('.' + field_name + '-options')
     }
 })
 </script>
@@ -68,7 +97,7 @@ $(document).ready(function(){
           <div class="panel-body">
             <ul>
               <% @material.errors.full_messages.each do |msg| %>
-                  <li><%= msg %></li>$(document.body).on('click', '.delete', function(e){
+                  <li><%= msg %></li>
               <% end %>
             </ul>
           </div>
@@ -201,33 +230,32 @@ $(document).ready(function(){
 
     <div class="control-group">
       <%= f.label :packages, :class => 'control-label' %>
+      <!-- have one empty one so something is always passed -->
+      <input name="material[package_ids][]" value="" style="display:none"/>
       <div class="controls" data-field="package">
         <div class="package multiple-input-list">
           <% @material.packages.each do |package| %>
               <div class="list-item">
                 <input type="text" class="multiple-input" data-field='package' name="material[package_ids][]"
                        value="<%=package.id%>" style="display:none;"><%=package.name%></input>
-                <input type="button" value="x" class="multiple-input-delete" data-field="package"/>
+                <input type="button" value="x" class="dropdown-option-delete" data-field="package"
+                data-value="<%=package.id%>" data-name="<%=package.name%>"/>
               </div>
           <% end %>
         </div>
-        <%= f.select "packages", content_tag(:option,'select one...',:value=>"")+options_from_collection_for_select(available_packages_for(@material), "id", "name") %>
+        <div class="dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Select Package
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu package-options" data-field="package" id="material_packages" aria-labelledby="dropdownMenu1">
+            <% available_packages_for(@material).each do |package| %>
+                <li class="dropdown-option" value="<%=package.id%>"><a><%= package.name %></a></li>
+            <% end %>
+          </ul>
+        </div>
       </div>
       <%= error_span(@material[:packages]) %>
-    </div>
-
-    <div class="control-group">
-        <%= f.label :existing_packages, :class=> 'control-label' %>
-      <div class="controls">
-         <% packages = material_package_list(@material) %>
-         <% if packages.empty? %>
-            <div class="nonetext">None</div>
-         <% else %>  
-           <% material_package_list(@material).each do |p| %>
-             <%= p.html_safe %>
-            <% end %>
-          <% end %>
-      </div>
     </div>
 
     <div class="control-group">
