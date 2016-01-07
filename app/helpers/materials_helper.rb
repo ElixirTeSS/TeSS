@@ -15,6 +15,21 @@ module MaterialsHelper
     end
   end
 
+  def difficulty_options_for_select()
+    TeSS::DifficultyDictionary.instance.difficulty_options_for_select
+  end
+
+  def difficulty_name_for_abbreviation(licence)
+    if licence
+      TeSS::DifficultyDictionary.instance.difficulty_name_for_abbreviation(licence)
+    else
+      'No licence found'
+    end
+  end
+
+
+
+
   def material_package_list(material)
     packages = []
     material.packages.each do |p| 
