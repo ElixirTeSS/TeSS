@@ -1,5 +1,6 @@
 module MaterialsHelper
   require 'licence_dictionary'
+  require 'difficulty_dictionary'
 
   # Returns an array of two-element arrays of licences ready to be used in options_for_select() for generating option/select tags
   # [['Licence 1 full name','Licence 1 abbreviation'], ['Licence 2 full name','Licence 2 abbreviation'], ...]
@@ -19,11 +20,11 @@ module MaterialsHelper
     TeSS::DifficultyDictionary.instance.difficulty_options_for_select
   end
 
-  def difficulty_name_for_abbreviation(licence)
-    if licence
-      TeSS::DifficultyDictionary.instance.difficulty_name_for_abbreviation(licence)
+  def difficulty_name_for_abbreviation(difficulty)
+    if difficulty
+      TeSS::DifficultyDictionary.instance.difficulty_name_for_abbreviation(difficulty)
     else
-      'No licence found'
+      'No difficulties available'
     end
   end
 
