@@ -34,7 +34,7 @@ $(document).ready(function(){
             var field_name = $(this).parent().attr('data-field');
             var selected_text = $(this).text();
             add_selected_dropdown_item(field_name, selected_val, selected_text);
-            /* TODO: Remove dropdown option from list after it has been selected */
+            $('#' + field_name + '-id-' + selected_val).remove();
         }
     })
     /*
@@ -81,7 +81,8 @@ $(document).ready(function(){
     }
     /* Adds a new option to the list of dropdown options. Used when a package is deselected (e.g. delete button pressed)"*/
     function add_dropdown_option(field_name, name, value){
-        $('<li class="dropdown-option" value="' + value + '"><a>' + name + '</a></li>').appendTo('.' + field_name + '-options')
+        $('<li class="dropdown-option" id="' + field_name + '-id-' + value + '" ' +
+                'value="' + value + '"><a>' + name + '</a></li>').appendTo('.' + field_name + '-options')
     }
 })
 </script>
@@ -250,7 +251,7 @@ $(document).ready(function(){
           </button>
           <ul class="dropdown-menu package-options" data-field="package" id="material_packages" aria-labelledby="dropdownMenu1">
             <% available_packages_for(@material).each do |package| %>
-                <li class="dropdown-option" value="<%=package.id%>"><a><%= package.name %></a></li>
+                <li class="dropdown-option" id="package-id-<%=package.id%>" value="<%=package.id%>"><a><%= package.name %></a></li>
             <% end %>
           </ul>
         </div>
