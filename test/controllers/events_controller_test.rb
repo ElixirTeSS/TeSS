@@ -51,7 +51,19 @@ class EventsControllerTest < ActionController::TestCase
     assert_difference('Event.count', -1) do
       delete :destroy, id: @event
     end
-
     assert_redirected_to events_path
   end
+
+  test "should find event by title" do
+    post 'check_exists', :format => :json,  :title => @event.title
+    assert_response :success
+    assert_equal(JSON.parse(response.body)['title'], @event.title)
+  end
+
+  test "should return nothing when event does't exist" do
+    post 'check_exists', :format => :json,  :title => 'This title should not exist'
+    assert_response :success
+    assert_equal(response.body, "")
+  end
+
 end

@@ -13,8 +13,8 @@ Rails.application.routes.draw do
   get 'static/welcome'
   get 'about' => 'static#about', as: 'about'
 
-  post 'materials/check_title' => 'materials#check_title'
-  post 'events/check_title' => 'events#check_title'
+  post 'materials/check_exists' => 'materials#check_exists'
+  post 'events/check_exists' => 'events#check_exists'
 
   devise_for :users
 
