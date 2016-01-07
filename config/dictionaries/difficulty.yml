@@ -1,0 +1,9 @@
+easy:
+  title: Easy
+  description: This content is suitable for novices
+medium:
+  title: Medium
+  description: This content is the goldilocks of training materials
+hard:
+  title: Hard
+  description: This content is difficult
