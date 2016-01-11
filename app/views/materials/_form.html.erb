@@ -66,15 +66,17 @@
     <!--<div class="controls">-->
     <!--<%#= f.text_field :remote_created_date, :class => 'form-control' %>-->
     <!--</div>-->
-    <!--<%#= error_span(@material[:remote_created_date]) %>-->
+    <!--<%#= error_span (@material[:remote_created_date]) %>-->
     <!--</div>-->
     <div class="control-group">
       <%= f.label :scientific_topic, :class => 'control-label' %>
       <div class="controls">
-        <%= f.text_field :scientific_topic, :class => 'form-control' %>
+        <input type="text" name="a" class="bp_form_complete-EDAM-name form-control" size="100"><%=@material[:scientific_topic].join(',')%></input>
       </div>
       <%= error_span(@material[:scientific_topic]) %>
     </div>
+
+
     <div class="control-group">
       <%= f.label :target_audience, :class => 'control-label' %>
       <div class="controls">
