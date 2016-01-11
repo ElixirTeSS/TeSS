@@ -6,7 +6,7 @@ field_name - The name of the attribute
 
 <div class="control-group">
   <%= f.label :packages, :class => 'control-label' %>
-  <!-- have one empty one so something is always passed -->
+  <!-- have one empty one so something is always passed when the event listener triggers -->
   <input name="material[package_ids][]" value="" style="display:none"/>
   <div class="controls" data-field="package">
     <div class="package multiple-input-list">

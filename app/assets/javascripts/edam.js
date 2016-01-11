@@ -295,7 +295,6 @@ function formComplete_setup_functions() {
             html += "<input type='hidden' id='" + jQuery(this).attr('name') + "_bioportal_full_id'>";
         if (document.getElementById(jQuery(this).attr('name') + "_bioportal_preferred_name") == null)
             html += "<input type='hidden' id='" + jQuery(this).attr('name') + "_bioportal_preferred_name'>";
-        html += "<input type='hidden' name='material[scientific_topic][]'>";
 
         jQuery(this).after(html);
     });
@@ -318,12 +317,26 @@ function bpFormSelect(li) {
             break;
     }
 
+    console.log( li.extra)
     jQuery("#" + jQuery(input).attr('name') + "_bioportal_concept_id").val(li.extra[0]);
     jQuery("#" + jQuery(input).attr('name') + "_bioportal_ontology_id").val(li.extra[2]);
     jQuery("#" + jQuery(input).attr('name') + "_bioportal_full_id").val(li.extra[3]);
     jQuery("#" + jQuery(input).attr('name') + "_bioportal_preferred_name").val(li.extra[4]);
-    jQuery("[name='material[scientific_topic][]']").val(li.extra[4]);
+
+    // Create a new selected box (taken from materials_form.js)
+    add_selected_dropdown_item('scientific_topic', encodeURIComponent(li.extra[0]), li.extra[4]);
 }
+
+function add_selected_dropdown_item(field_name, value, name){
+    var label = '<input type="text" class="multiple-input" data-field="scientific_topic" name="material[scientific_topic][]" ' +
+        'value="' + value + '" style="display:none;"> ' + name + '</text>';
+    var delete_button = '<input type="button" value="x" class="dropdown-option-delete" data-field="scientific_topic"' +
+        'data-value="' + value + '" data-name="' + name + '"/>';
+    var list_item_div = $('<div class="list-item" id="' + value +'">').appendTo('.' + field_name);
+    $(label).appendTo(list_item_div);
+    $(delete_button).appendTo(list_item_div);
+}
+
 
 // Poll for potential definitions returned with results
 function getWidgetAjaxContent() {
