@@ -1,0 +1,104 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Preferred label:</strong>
+  <%= @scientific_topic.preferred_label %>
+</p>
+
+<p>
+  <strong>Synonyms:</strong>
+  <%= @scientific_topic.synonyms %>
+</p>
+
+<p>
+  <strong>Definitions:</strong>
+  <%= @scientific_topic.definitions %>
+</p>
+
+<p>
+  <strong>Obsolete:</strong>
+  <%= @scientific_topic.obsolete %>
+</p>
+
+<p>
+  <strong>Parents:</strong>
+  <%= @scientific_topic.parents %>
+</p>
+
+<p>
+  <strong>Created in:</strong>
+  <%= @scientific_topic.created_in %>
+</p>
+
+<p>
+  <strong>Documentation:</strong>
+  <%= @scientific_topic.documentation %>
+</p>
+
+<p>
+  <strong>Prefix iri:</strong>
+  <%= @scientific_topic.prefix_iri %>
+</p>
+
+<p>
+  <strong>Consider:</strong>
+  <%= @scientific_topic.consider %>
+</p>
+
+<p>
+  <strong>Has alternative:</strong>
+  <%= @scientific_topic.has_alternative_id %>
+</p>
+
+<p>
+  <strong>Has broad synonym:</strong>
+  <%= @scientific_topic.has_broad_synonym %>
+</p>
+
+<p>
+  <strong>Has dbxref:</strong>
+  <%= @scientific_topic.has_dbxref %>
+</p>
+
+<p>
+  <strong>Has definition:</strong>
+  <%= @scientific_topic.has_definition %>
+</p>
+
+<p>
+  <strong>Has exact synonym:</strong>
+  <%= @scientific_topic.has_exact_synonym %>
+</p>
+
+<p>
+  <strong>Has related synonym:</strong>
+  <%= @scientific_topic.has_related_synonym %>
+</p>
+
+<p>
+  <strong>Has subset:</strong>
+  <%= @scientific_topic.has_subset %>
+</p>
+
+<p>
+  <strong>Replaced by:</strong>
+  <%= @scientific_topic.replaced_by %>
+</p>
+
+<p>
+  <strong>Saved by:</strong>
+  <%= @scientific_topic.saved_by %>
+</p>
+
+<p>
+  <strong>Subset property:</strong>
+  <%= @scientific_topic.subset_property %>
+</p>
+
+<p>
+  <strong>Obsolete since:</strong>
+  <%= @scientific_topic.obsolete_since %>
+</p>
+
+<%= link_to 'Edit', edit_scientific_topic_path(@scientific_topic) %> |
+<%= link_to 'Back', scientific_topics_path %>

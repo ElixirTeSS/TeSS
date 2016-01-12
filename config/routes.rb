@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
 
+  resources :scientific_topics
   resources :workflows
   resources :packages
   resources :events

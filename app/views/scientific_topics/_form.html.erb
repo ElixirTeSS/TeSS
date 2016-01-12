@@ -1,0 +1,97 @@
+<%= form_for(@scientific_topic) do |f| %>
+  <% if @scientific_topic.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@scientific_topic.errors.count, "error") %> prohibited this scientific_topic from being saved:</h2>
+
+      <ul>
+      <% @scientific_topic.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :preferred_label %><br>
+    <%= f.text_field :preferred_label %>
+  </div>
+  <div class="field">
+    <%= f.label :synonyms %><br>
+    <%= f.text_area :synonyms %>
+  </div>
+  <div class="field">
+    <%= f.label :definitions %><br>
+    <%= f.text_area :definitions %>
+  </div>
+  <div class="field">
+    <%= f.label :obsolete %><br>
+    <%= f.check_box :obsolete %>
+  </div>
+  <div class="field">
+    <%= f.label :parents %><br>
+    <%= f.text_area :parents %>
+  </div>
+  <div class="field">
+    <%= f.label :created_in %><br>
+    <%= f.text_field :created_in %>
+  </div>
+  <div class="field">
+    <%= f.label :documentation %><br>
+    <%= f.text_field :documentation %>
+  </div>
+  <div class="field">
+    <%= f.label :prefix_iri %><br>
+    <%= f.text_field :prefix_iri %>
+  </div>
+  <div class="field">
+    <%= f.label :consider %><br>
+    <%= f.text_area :consider %>
+  </div>
+  <div class="field">
+    <%= f.label :has_alternative_id %><br>
+    <%= f.text_area :has_alternative_id %>
+  </div>
+  <div class="field">
+    <%= f.label :has_broad_synonym %><br>
+    <%= f.text_area :has_broad_synonym %>
+  </div>
+  <div class="field">
+    <%= f.label :has_dbxref %><br>
+    <%= f.text_area :has_dbxref %>
+  </div>
+  <div class="field">
+    <%= f.label :has_definition %><br>
+    <%= f.text_area :has_definition %>
+  </div>
+  <div class="field">
+    <%= f.label :has_exact_synonym %><br>
+    <%= f.text_area :has_exact_synonym %>
+  </div>
+  <div class="field">
+    <%= f.label :has_related_synonym %><br>
+    <%= f.text_area :has_related_synonym %>
+  </div>
+  <div class="field">
+    <%= f.label :has_subset %><br>
+    <%= f.text_area :has_subset %>
+  </div>
+  <div class="field">
+    <%= f.label :replaced_by %><br>
+    <%= f.text_area :replaced_by %>
+  </div>
+  <div class="field">
+    <%= f.label :saved_by %><br>
+    <%= f.text_field :saved_by %>
+  </div>
+  <div class="field">
+    <%= f.label :subset_property %><br>
+    <%= f.text_area :subset_property %>
+  </div>
+  <div class="field">
+    <%= f.label :obsolete_since %><br>
+    <%= f.text_field :obsolete_since %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -150,3 +150,31 @@ Package.create!(
     events: [Event.find_by_title('Signalling Networks: From Data to Modelling'), Event.find_by_title('TGAC Summer School on Bioinformatics')].compact,
     materials: [Material.find_by_title('NGS current challenges and data analysis for plant researchers')]
 )
+
+
+edam_topics = YAML.load(File.open('config/dictionaries/edam.yml'))
+edam_topics.each do |edam_topic|
+  st = ScientificTopic.new(
+      :preferred_label => edam_topic['preferred_topic'],
+  :synonyms  => edam_topic['synonyms'],
+  :definitions  => edam_topic['definitions'],
+  :obsolete => edam_topic['obsolete'],
+  :parents => edam_topic['parents'],
+  :created_in => edam_topic['created_in'],
+  :documentation => edam_topic['documentation'],
+  :prefix_iri => edam_topic['prefixIRI'],
+  :consider => edam_topic['consider'],
+  :has_alternative_id => edam_topic['hasAlternativeId'],
+  :has_broad_synonym => edam_topic['hasBroadSynonym'],
+  :has_dbxref => edam_topic['hasDbXref'],
+  :has_definition => edam_topic['hasDefinition'],
+  :has_exact_synonym => edam_topic['hasExactSynonym'],
+  :has_related_synonym => edam_topic['hasRelatedSynonym'],
+  :has_subset => edam_topic['hasSubset'],
+  :replaced_by => edam_topic['replacedBy'],
+  :saved_by => edam_topic['savedBy'],
+  :subset_property => edam_topic['SubsetProperty'],
+  :obsolete_since => edam_topic['obsolete_since'],
+  )
+  st.save!
+end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151203122454) do
+ActiveRecord::Schema.define(version: 20160112163808) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -183,6 +183,31 @@ ActiveRecord::Schema.define(version: 20151203122454) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "scientific_topics", force: :cascade do |t|
+    t.string   "preferred_label"
+    t.text     "synonyms"
+    t.text     "definitions"
+    t.boolean  "obsolete"
+    t.text     "parents"
+    t.string   "created_in"
+    t.string   "documentation"
+    t.string   "prefix_iri"
+    t.text     "consider"
+    t.text     "has_alternative_id"
+    t.text     "has_broad_synonym"
+    t.text     "has_dbxref"
+    t.text     "has_definition"
+    t.text     "has_exact_synonym"
+    t.text     "has_related_synonym"
+    t.text     "has_subset"
+    t.text     "replaced_by"
+    t.string   "saved_by"
+    t.text     "subset_property"
+    t.string   "obsolete_since"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
   end
 
   create_table "sessions", force: :cascade do |t|
