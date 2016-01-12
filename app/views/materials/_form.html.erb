@@ -1,6 +1,22 @@
 <!-- See: /app/assets/javascripts/materials_form.js -->
 <%= javascript_include_tag 'materials_form' %>
 <%= javascript_include_tag 'edam' %>
+<%= javascript_include_tag 'jquery.autocomplete' -%>
+<%= stylesheet_link_tag 'autocomplete' -%>
+
+<script type="application/javascript">
+  $(document).ready(function () {
+    var edam = <%= raw(edam_names_for_autocomplete.to_json) -%>;
+    $('#edam_search').autocomplete({
+      orientation: top,
+      lookupLimit: 10,
+      lookup: edam,
+      onSelect: function (suggestion) {
+        //alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
+      }
+    });
+  });
+</script>
 
 
 <%= form_for @material, :html => {:class => "form-horizontal material"} do |f| %>
@@ -73,7 +89,7 @@
       <%= f.label :scientific_topic, :class => 'control-label' %>
       <div class="controls" data-field="scientific_topic">
         <div class="scientific_topic multiple-input-list">
-        <input type="text" name="a"
+        <input id="edam_search", type="text" name="a"
                class="bp_form_complete-EDAM-name form-control"
                size="100"
                placeholder="Start typing to find EDAM topics"/>

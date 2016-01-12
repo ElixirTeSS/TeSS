@@ -1,19 +1,4 @@
-<%= javascript_include_tag 'jquery.autocomplete' -%>
-<%= stylesheet_link_tag 'autocomplete' -%>
 
-<script type="application/javascript">
-  $(document).ready(function () {
-    var edam = <%= raw(edam_names_for_autocomplete.to_json) -%>;
-    $('#q').autocomplete({
-      orientation: top,
-      lookupLimit: 10,
-      lookup: edam,
-      onSelect: function (suggestion) {
-        //alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
-      }
-    });
-  });
-</script>
 
 
 <!-- SIDEBAR | RESULTS -->
