@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class ScientificTopicsControllerTest < ActionController::TestCase
+  include Devise::TestHelpers
+  
   setup do
     @scientific_topic = scientific_topics(:one)
   end
