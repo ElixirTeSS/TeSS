@@ -29,7 +29,6 @@ function initialize() {
         setEvents(map, events);
 }
 
-
 function setEvents(map, events){
     var bounds = new google.maps.LatLngBounds();
     var infowindow = new google.maps.InfoWindow({content: "Content String"});
@@ -52,9 +51,11 @@ function createMarker(map, event, infowindow){
     });
     return marker;
 }
+  $(document).ready(function(){
+    $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyCT1w2S_2I49FwJDKHGj9A9sO86Lp9nUdg&callback=initialize") 
+  })
+
 </script>
-<script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCT1w2S_2I49FwJDKHGj9A9sO86Lp9nUdg&callback=initialize">
-</script>
+
 
 <div id="map-canvas"></div>

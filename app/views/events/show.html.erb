@@ -16,11 +16,12 @@ function initMap() {
         title: '<%= @event.title %>'
     });
 }
+
+  $(document).ready(function(){
+    $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyCT1w2S_2I49FwJDKHGj9A9sO86Lp9nUdg&callback=initMap") 
+  })
 </script>
 
-<script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCT1w2S_2I49FwJDKHGj9A9sO86Lp9nUdg&callback=initMap">
-</script>
 
 View <%= link_to 'Activity Log', event_activities_path(@event) %>
 
