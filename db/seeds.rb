@@ -155,7 +155,8 @@ Package.create!(
 edam_topics = YAML.load(File.open('config/dictionaries/edam.yml'))
 edam_topics.each do |edam_topic|
   st = ScientificTopic.new(
-      :preferred_label => edam_topic['preferred_topic'],
+  :class_id => edam_topic['class_id'],
+  :preferred_label => edam_topic['preferred_label'],
   :synonyms  => edam_topic['synonyms'],
   :definitions  => edam_topic['definitions'],
   :obsolete => edam_topic['obsolete'],
@@ -166,15 +167,18 @@ edam_topics.each do |edam_topic|
   :consider => edam_topic['consider'],
   :has_alternative_id => edam_topic['hasAlternativeId'],
   :has_broad_synonym => edam_topic['hasBroadSynonym'],
+  :has_narrow_synonym => edam_topic['hasNarrowSynonym'],
   :has_dbxref => edam_topic['hasDbXref'],
   :has_definition => edam_topic['hasDefinition'],
   :has_exact_synonym => edam_topic['hasExactSynonym'],
   :has_related_synonym => edam_topic['hasRelatedSynonym'],
   :has_subset => edam_topic['hasSubset'],
+  :in_subset  => edam_topic['isSubset'],
   :replaced_by => edam_topic['replacedBy'],
   :saved_by => edam_topic['savedBy'],
   :subset_property => edam_topic['SubsetProperty'],
   :obsolete_since => edam_topic['obsolete_since'],
+  :in_cyclic => edam_topic['inCyclic'],
   )
   st.save!
 end
