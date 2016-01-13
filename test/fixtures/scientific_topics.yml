@@ -1,0 +1,45 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  preferred_label: MyString
+  synonyms: MyText
+  definitions: MyText
+  obsolete: false
+  parents: MyText
+  created_in: MyString
+  documentation: MyString
+  prefix_iri: MyString
+  consider: MyText
+  has_alternative_id: MyText
+  has_broad_synonym: MyText
+  has_dbxref: MyText
+  has_definition: MyText
+  has_exact_synonym: MyText
+  has_related_synonym: MyText
+  has_subset: MyText
+  replaced_by: MyText
+  saved_by: MyString
+  subset_property: MyText
+  obsolete_since: MyString
+
+two:
+  preferred_label: MyString
+  synonyms: MyText
+  definitions: MyText
+  obsolete: false
+  parents: MyText
+  created_in: MyString
+  documentation: MyString
+  prefix_iri: MyString
+  consider: MyText
+  has_alternative_id: MyText
+  has_broad_synonym: MyText
+  has_dbxref: MyText
+  has_definition: MyText
+  has_exact_synonym: MyText
+  has_related_synonym: MyText
+  has_subset: MyText
+  replaced_by: MyText
+  saved_by: MyString
+  subset_property: MyText
+  obsolete_since: MyString

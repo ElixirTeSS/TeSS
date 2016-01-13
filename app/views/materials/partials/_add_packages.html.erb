@@ -1,0 +1,35 @@
+<!--
+material - Material object
+f - form object
+field_name - The name of the attribute
+ -->
+
+<div class="control-group">
+  <%= f.label :packages, :class => 'control-label' %>
+  <!-- have one empty one so something is always passed -->
+  <input name="material[package_ids][]" value="" style="display:none"/>
+  <div class="controls" data-field="package">
+    <div class="package multiple-input-list">
+      <% material.packages.each do |package| %>
+          <div class="list-item">
+            <input type="text" class="multiple-input" data-field='package' name="material[package_ids][]"
+                   value="<%=package.id%>" style="display:none;"><%=package.name%></input>
+            <input type="button" value="x" class="dropdown-option-delete" data-field="package"
+                   data-value="<%=package.id%>" data-name="<%=package.name%>"/>
+          </div>
+      <% end %>
+    </div>
+    <div class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        Select Package
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu package-options" data-field="package" id="material_packages" aria-labelledby="dropdownMenu1">
+        <% available_packages_for(@material).each do |package| %>
+            <li class="dropdown-option" id="package-id-<%=package.id%>" value="<%=package.id%>"><a><%= package.name %></a></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+  <%= error_span(material[:packages]) %>
+</div>

@@ -1,63 +1,25 @@
-<script>
-$(document).ready(function(){
-    $(document.body).on('click', '.multiple-input-add', function(e){
-        /* remove HTML autocfocus attribute from element */
-        this.blur()
-        var field_name = $(this).attr('data-field');
-        new_list_item(field_name);
-    })
+<!-- See: /app/assets/javascripts/materials_form.js -->
+<%= javascript_include_tag 'materials_form' %>
+<%= javascript_include_tag 'edam' %>
+<%= javascript_include_tag 'jquery.autocomplete' -%>
+<%= stylesheet_link_tag 'autocomplete' -%>
 
-    $(document.body).on('click', '.multiple-input-delete', function(e){
-        var list_item = $(this).parent();
-        remove_list_item(list_item)
-    })
-
-    $(document.body).on('keypress', '.multiple-input', function(e){
-        /*ADD NEW LINE IF USER HITS ENTER. CONSIDER ADDING MORE LIKE SHIFT, COMMA, ETC*/
-        if (e.which == '13' || e.which == '188') {
-            event.preventDefault(); /* stops enter submitting form */
-            var field_name = $(this).attr('data-field');
-            new_list_item(field_name);
-        }
-    })
-
-    $(document.body).on('change', '#material_package_ids', function(e){
-        var selected_val =  $(this).find("option:selected").val();
-        if (selected_val != ''){
-            var field_name = $(this).parent().attr('data-field');
-            var selected_text = $(this).find("option:selected").text();
-            select_dropdown_item(field_name, selected_val, selected_text);
-            /* TODO: Remove selected package from dropdown list */
-        }
-    })
-
-    function select_dropdown_item(field_name, value, name){
-        var label = '<label type="text" class="multiple-input" data-field="package" name="material[package_ids][]" ' +
-                'value="' + value + '"> ' + name + '</label>';
-        var delete_button = '<input type="button" value="x" class="multiple-input-delete" data-field="package"/>';
-        var list_item_div = $('<div class="list item">').appendTo('.' + field_name);
-        $(label).appendTo(list_item_div);
-        $(delete_button).appendTo(list_item_div);
-    }
-
-    function new_list_item(field_name){
-        var input_box = '<input type="text" class="multiple-input" data-field="'
-                        + field_name + '" name="material[' + field_name + 's][]" />';
-        var delete_button = '<input type="button" value="x" class="multiple-input-delete" data-field="keyword" tabindex=300/>';
-
-        var list_item_div = $('<div class="list-item">').appendTo('.' + field_name);
-        $(input_box).appendTo(list_item_div).focus();
-        $(delete_button).appendTo(list_item_div);
-    }
-
-    function remove_list_item(list_item){
-        list_item.remove();
-    }
-})
+<script type="application/javascript">
+  $(document).ready(function () {
+    var edam = <%= raw(edam_names_for_autocomplete.to_json) -%>;
+    $('#edam_search').autocomplete({
+      orientation: top,
+      lookupLimit: 10,
+      lookup: edam,
+      onSelect: function (suggestion) {
+        //alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
+      }
+    });
+  });
 </script>
 
-<%= form_for @material, :html => {:class => "form-horizontal material"} do |f| %>
 
+<%= form_for @material, :html => {:class => "form-horizontal material"} do |f| %>
     <% if @material.errors.any? %>
         <div id="error_expl" class="panel panel-danger">
           <div class="panel-heading">
@@ -67,7 +29,7 @@ $(document).ready(function(){
           <div class="panel-body">
             <ul>
               <% @material.errors.full_messages.each do |msg| %>
-                  <li><%= msg %></li>$(document.body).on('click', '.delete', function(e){
+                  <li><%= msg %></li>
               <% end %>
             </ul>
           </div>
@@ -121,15 +83,21 @@ $(document).ready(function(){
     <!--<div class="controls">-->
     <!--<%#= f.text_field :remote_created_date, :class => 'form-control' %>-->
     <!--</div>-->
-    <!--<%#= error_span(@material[:remote_created_date]) %>-->
+    <!--<%#= error_span (@material[:remote_created_date]) %>-->
     <!--</div>-->
     <div class="control-group">
       <%= f.label :scientific_topic, :class => 'control-label' %>
-      <div class="controls">
-        <%= f.text_field :scientific_topic, :class => 'form-control' %>
+      <div class="controls" data-field="scientific_topic">
+        <div class="scientific_topic multiple-input-list">
+        <input id="edam_search" type="text"
+               class="form-control"
+               placeholder="Start typing to find EDAM topics"/>
+        </div>
       </div>
       <%= error_span(@material[:scientific_topic]) %>
     </div>
+
+
     <div class="control-group">
       <%= f.label :target_audience, :class => 'control-label' %>
       <div class="controls">
@@ -138,20 +106,7 @@ $(document).ready(function(){
       <%= error_span(@material[:target_audience]) %>
     </div>
 
-    <div class="control-group">
-      <%= f.label :keywords, :class => 'control-label' %>
-        <div class="keyword controls multiple-input-list">
-            <% @material[:keywords].push('').each do |keyword| %>
-              <div class="list-item">
-                <input type="text" class="multiple-input" data-field='keyword' name="material[keywords][]" value="<%=keyword%>"/>
-                <input type="button" value="x" class="multiple-input-delete" data-field="keyword"/>
-              </div>
-            <% end %>
-        </div>
-      <i class="fa fa-plus multiple-input-add" data-field="keyword"> Add new</i>
-      <%= error_span(@material[:keywords]) %>
-    </div>
-
+    <%= render :partial => 'materials/partials/multiple_input', :locals => {:field_name => 'keywords', :material => @material, :f => f} %>
 
     <div class="control-group">
       <%= f.label :licence, :class => 'control-label' %>
@@ -161,87 +116,23 @@ $(document).ready(function(){
       <%= error_span(@material[:licence]) %>
     </div>
 
+    <%= render :partial => 'materials/partials/multiple_input', :locals => {:field_name => 'authors', :material => @material, :f => f} %>
+
     <div class="control-group">
       <%= f.label :difficulty_level, :class => 'control-label' %>
       <div class="controls">
-        <%= f.text_field :difficulty_level, :class => 'form-control' %>
+        <%= f.select :difficulty_level, options_for_select(difficulty_options_for_select(), @material[:difficulty_level].blank? ? "notspecified" : @material[:difficulty]), :class => 'form-control difficulty' %>
       </div>
       <%= error_span(@material[:difficulty_level]) %>
     </div>
 
 
-    <div class="control-group">
-      <%= f.label :authors, :class => 'control-label' %>
-      <div class="author controls multiple-input-list">
-        <% @material[:authors].push('').each do |author| %>
-            <div class="list-item">
-              <input type="text" class="multiple-input" data-field='author' name="material[authors][]" value="<%=author%>"/>
-              <input type="button" value="x" class="multiple-input-delete" data-field="author"/>
-            </div>
-        <% end %>
-      </div>
-      <i class="fa fa-plus multiple-input-add" data-field="author"> Add new</i>
-      <%= error_span(@material[:authors]) %>
-    </div>
+    <%= render :partial => 'materials/partials/multiple_input', :locals => {:field_name => 'contributors', :material => @material, :f => f} %>
 
-    <div class="control-group">
-      <%= f.label :contributors, :class => 'control-label' %>
-      <div class="contributor controls multiple-input-list">
-        <% @material[:contributors].push('').each do |contributor| %>
-            <div class="list-item">
-              <input type="text" class="multiple-input" data-field='contributor' name="material[contributors][]" value="<%=contributor%>"/>
-              <input type="button" value="x" class="multiple-input-delete" data-field="contributor"/>
-            </div>
-        <% end %>
-      </div>
-      <i class="fa fa-plus multiple-input-add" data-field="contributor"> Add new</i>
-      <%= error_span(@material[:contributors]) %>
-    </div>
+    <%= render :partial => 'materials/partials/dropdown_option', :locals => {:field_name => 'package', :material => @material, :f => f} %>
 
-    <div class="control-group">
-      <%= f.label :packages, :class => 'control-label' %>
-      <div class="controls" data-field="package">
-        <div class="package multiple-input-list">
-          <% @material.packages.each do |package| %>
-              <div class="list-item">
-                <label type="text" class="multiple-input" data-field='package' name="material[package_ids][]" value=""><%=package.name%></label>
-                <input type="button" value="x" class="multiple-input-delete" data-field="package"/>
-              </div>
-          <% end %>
-        </div>
-        <%= f.select "package_ids", content_tag(:option,'select one...',:value=>"")+options_from_collection_for_select(available_packages_for(@material), "id", "name"), "data_field" => "package" %>
-      </div>
-      <%= error_span(@material[:packages]) %>
-    </div>
+    <%= render :partial => 'materials/partials/add_content_provider', :locals => {:f => f, :material => @material} %>
 
-    <div class="control-group">
-        <%= f.label :existing_packages, :class=> 'control-label' %>
-      <div class="controls">
-         <% packages = material_package_list(@material) %>
-         <% if packages.empty? %>
-            <div class="nonetext">None</div>
-         <% else %>  
-           <% material_package_list(@material).each do |p| %>
-             <%= p.html_safe %>
-            <% end %>
-          <% end %>
-      </div>
-    </div>
-
-    <div class="control-group">
-      <%= f.label :content_provider, :class=> 'control-label' %>
-      <div class="controls">
-        <% content_provider = @material.content_provider %>
-        <% if content_provider.nil? %>
-            <%= f.select "content_provider_id", content_tag(:option,'select one...',:value=>"")+options_from_collection_for_select(ContentProvider.all, "id", "title") %>
-        <% else %>
-            <a href="<%=url_for content_provider %>">
-              <%= content_provider.title %>
-              <img src="<%= content_provider.logo_url %>"/>
-            </a>
-        <% end %>
-      </div>
-    </div>
 
 
     <%= f.submit nil, :class => 'btn btn-primary' %>

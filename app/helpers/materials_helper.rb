@@ -1,5 +1,7 @@
 module MaterialsHelper
   require 'licence_dictionary'
+  require 'difficulty_dictionary'
+  require 'edam_dictionary'
 
   # Returns an array of two-element arrays of licences ready to be used in options_for_select() for generating option/select tags
   # [['Licence 1 full name','Licence 1 abbreviation'], ['Licence 2 full name','Licence 2 abbreviation'], ...]
@@ -14,6 +16,23 @@ module MaterialsHelper
       'No licence found'
     end
   end
+
+  def difficulty_options_for_select()
+    TeSS::DifficultyDictionary.instance.difficulty_options_for_select
+  end
+
+  def difficulty_name_for_abbreviation(difficulty)
+    if difficulty
+      TeSS::DifficultyDictionary.instance.difficulty_name_for_abbreviation(difficulty)
+    else
+      'No difficulties available'
+    end
+  end
+
+  def edam_names_for_autocomplete()
+    TeSS::EdamDictionary.instance.edam_names_for_autocomplete
+  end
+
 
   def material_package_list(material)
     packages = []
