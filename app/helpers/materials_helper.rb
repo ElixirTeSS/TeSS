@@ -30,7 +30,10 @@ module MaterialsHelper
   end
 
   def edam_names_for_autocomplete()
-    TeSS::EdamDictionary.instance.edam_names_for_autocomplete
+    return ScientificTopic.all.inject([]) do |topics,topic|
+      topics + [:value => topic.preferred_label, :data => topic.class_id] unless topic.preferred_label.blank?
+    end
+
   end
 
 

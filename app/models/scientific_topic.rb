@@ -1,6 +1,6 @@
 class ScientificTopic < ActiveRecord::Base
   extend FriendlyId
-  friendly_id :class_id, use: :slugged
+  friendly_id :preferred_label, use: :slugged
 
 
   serialize [:synonyms, :definitions, :parents, :consider,
