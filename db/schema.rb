@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160113165707) do
+ActiveRecord::Schema.define(version: 20160114112203) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -212,7 +212,10 @@ ActiveRecord::Schema.define(version: 20160113165707) do
     t.text     "has_narrow_synonym"
     t.text     "in_subset"
     t.text     "in_cyclic"
+    t.string   "slug"
   end
+
+  add_index "scientific_topics", ["slug"], name: "index_scientific_topics_on_slug", unique: true, using: :btree
 
   create_table "sessions", force: :cascade do |t|
     t.string   "session_id", null: false
