@@ -11,11 +11,11 @@ View <%= link_to 'Activity Log', material_activities_path(@material) %>
 
 
 
-      <dt><strong><%= model_class.human_attribute_name(:scientific_topic) %>:</strong></dt>
+      <dt><strong><%= model_class.human_attribute_name(:scientific_topic).pluralize %>:</strong></dt>
 
       <dd><ul>
         <% @material.scientific_topic.each do |x| %>
-            <li><%= x.preferred_label %></li>
+            <li><%= link_to x.preferred_label, x %></li>
          <% end %>
       </ul></dd>
       <dt><strong><%= model_class.human_attribute_name(:target_audience) %>:</strong></dt>

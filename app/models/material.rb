@@ -14,7 +14,11 @@ class Material < ActiveRecord::Base
       text :short_description
       text :doi
       string :authors, :multiple => true
-      string :scientific_topic, :multiple => true
+      string :scientific_topic, :multiple => true do
+        if !self.scientific_topic.nil?
+          self.scientific_topic.map{|x| x.preferred_label}
+        end
+      end
       string :target_audience, :multiple => true
       string :keywords, :multiple => true
       string :licence, :multiple => true
