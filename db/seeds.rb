@@ -137,6 +137,12 @@ ContentProvider.create!(
     logo_url: "https://tess.elixir-uk.org/base/images/placeholder-organization.png",
     description: "GitLab registry containing NGS Training Materials"
 ).create_activity :create
+ContentProvider.create!(
+    title: "Bioinformatics Training and Services",
+    url: "https://www.bits.vib.be/",
+    logo_url: "https://www.bits.vib.be/images/images/bits_logo_color_2012_04_transp.png",
+    description: "Provider of Bioinformatics and software training, plus informatics services and resource management support."
+).create_activity :create
 
 
 
