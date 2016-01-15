@@ -6,13 +6,29 @@
 
 <script type="application/javascript">
   $(document).ready(function () {
+
+      $("#scientific_topic_input").keypress(function(e) {
+          var code = (e.keyCode ? e.keyCode : e.which);
+          if(code == 13) { //Enter keycode
+              $('#scientific_topic_input').val('');
+              return false;
+          }
+      });
+
     var edam = <%= raw(edam_names_for_autocomplete.to_json) -%>;
-    $('#edam_search').autocomplete({
+    $('#scientific_topic_input').autocomplete({
       orientation: top,
       lookupLimit: 10,
       lookup: edam,
       onSelect: function (suggestion) {
-        //alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
+          var label = '<input type="text" class="multiple-input" data-field="scientific_topic" name="material[scientific_topic_ids][]" ' +
+                  'value="' + suggestion.data + '" style="display:none;"> ' + suggestion.value + '</text>';
+
+          var delete_button = '<input type="button" value="x" class="dropdown-option-delete" data-field="scientific_topic"' +
+                  'data-value="' + suggestion.data + '" data-name="' +  suggestion.value + '"/>';
+          var list_item = $('<div class="list-item">').appendTo('#selected_scientific_topics');
+          $(label).appendTo(list_item );
+          $(delete_button).appendTo(list_item );
       }
     });
   });
@@ -87,9 +103,25 @@
     <!--</div>-->
     <div class="control-group">
       <%= f.label :scientific_topic, :class => 'control-label' %>
+      <div id="selected_scientific_topics" class="multiple-input-list">
+          <% @material.scientific_topic.all.each do |st|%>
+            <div class="list-item">
+                <input type="text" class="multiple-input"
+                       data-field="scientific_topic"
+                       name="material[scientific_topic_ids][]"
+                       value="<%=st.id%>"
+                       style="display:none;"><%=st.preferred_label%></text>
+                <input type="button" value="x"
+                       class="dropdown-option-delete"
+                       data-field="scientific_topic"
+                       data-value="<%=st.id%>"
+                       data-name="<%=st.preferred_label%>"/>
+            </div>
+          <% end %>
+      </div>
       <div class="controls" data-field="scientific_topic">
         <div class="scientific_topic multiple-input-list">
-        <input id="edam_search" type="text"
+        <input id="scientific_topic_input" type="text"
                class="form-control"
                placeholder="Start typing to find EDAM topics"/>
         </div>

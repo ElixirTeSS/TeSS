@@ -144,7 +144,7 @@ class MaterialsController < ApplicationController
     def material_params
       params.require(:material).permit(:title, :url, :short_description, :long_description, :doi, :remote_updated_date,
                                        :remote_created_date,  :remote_updated_date, {:package_ids => []}, :content_provider_id,
-                                       :content_provider, {:keywords => []},  {:scientific_topic => []}, :licence,
+                                       :content_provider, {:keywords => []},  {:scientific_topic_ids => []}, :licence,
                                        :difficulty_level, {:contributors => []}, {:authors=> []}, {:target_audience => []}  )
     end
 

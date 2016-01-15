@@ -12,7 +12,12 @@ View <%= link_to 'Activity Log', material_activities_path(@material) %>
 
 
       <dt><strong><%= model_class.human_attribute_name(:scientific_topic) %>:</strong></dt>
-      <dd><%= @material.scientific_topic.join(', ') %></dd>
+
+      <dd><ul>
+        <% @material.scientific_topic.each do |x| %>
+            <li><%= x.preferred_label %></li>
+         <% end %>
+      </ul></dd>
       <dt><strong><%= model_class.human_attribute_name(:target_audience) %>:</strong></dt>
       <dd><%= @material.target_audience.join(', ') %></dd>
       <dt><strong><%= model_class.human_attribute_name(:keywords) %>:</strong></dt>

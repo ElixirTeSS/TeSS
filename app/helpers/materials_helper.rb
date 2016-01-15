@@ -31,7 +31,7 @@ module MaterialsHelper
 
   def edam_names_for_autocomplete()
     return ScientificTopic.all.inject([]) do |topics,topic|
-      topics + [:value => topic.preferred_label, :data => topic.class_id] unless topic.preferred_label.blank?
+      topics + [:value => topic.preferred_label, :data => topic.id] unless topic.preferred_label.blank?
     end
 
   end

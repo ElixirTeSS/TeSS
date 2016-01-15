@@ -8,4 +8,6 @@ class ScientificTopic < ActiveRecord::Base
              :has_exact_synonym, :has_related_synonym, :has_subset,
              :replaced_by, :subset_property, :has_narrow_synonym,
              :in_subset, :in_cyclic  ]
+
+  has_many :materials
 end

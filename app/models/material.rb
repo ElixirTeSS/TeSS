@@ -31,6 +31,8 @@ class Material < ActiveRecord::Base
 
   has_one :owner, foreign_key: "id", class_name: "User"
 
+  has_many :scientific_topic, foreign_key: 'class_id', class_name: "ScientificTopic"
+
   has_many :package_materials
   has_many :packages, through: :package_materials
 
