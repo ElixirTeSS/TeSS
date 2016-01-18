@@ -5,6 +5,7 @@ class UsersControllerTest < ActionController::TestCase
 
   setup do
     @user = users(:regular_user)
+    @admin = users(:admin)
   end
 
   test "should get index" do
@@ -30,25 +31,25 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test "should show user" do
-    sign_in users(:regular_user)
+    sign_in users(:admin)
     get :show, id: @user
     assert_response :success
   end
 
   test "should not show user" do
-    sign_in users(:another_regular_user)
+    sign_in users(:regular_user)
     get :show, id: @user
     assert_redirected_to root_path
   end
 
   test "should get edit" do
-    sign_in users(:regular_user)
+    sign_in users(:admin)
     get :edit, id: @user
     assert_response :success
   end
 
  test "should not get edit" do
-    sign_in users(:another_regular_user)
+    sign_in users(:regular_user)
     get :edit, id: @user
     assert_redirected_to root_path
   end
