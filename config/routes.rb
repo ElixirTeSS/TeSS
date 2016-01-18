@@ -17,6 +17,10 @@ Rails.application.routes.draw do
   post 'materials/check_exists' => 'materials#check_exists'
   post 'events/check_exists' => 'events#check_exists'
 
+  get 'users/:id' => 'profiles#show'
+  get 'profile/:id' => 'profiles#show', as: 'profile'
+  patch 'profile/:id' => 'profiles#update'
+  resources :profiles
   devise_for :users
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'

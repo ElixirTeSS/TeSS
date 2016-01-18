@@ -1,0 +1,64 @@
+<%= form_for @profile, :html => { :class => "form-horizontal profile" } do |f| %>
+
+<% if @profile.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@profile.errors.count, "error") %> prohibited this profile from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+          <% @profile.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+<% end %>
+
+<div class="control-group">
+  <%= f.label :firstname, :class => 'control-label' %>
+  <div class="controls">
+    <%= f.text_field :firstname, :class => 'form-control' %>
+  </div>
+  <%= error_span(@profile[:firstname]) %>
+</div>
+
+<div class="control-group">
+  <%= f.label :surname, :class => 'control-label' %>
+  <div class="controls">
+    <%= f.text_field :surname, :class => 'form-control' %>
+  </div>
+  <%= error_span(@profile[:surname]) %>
+</div>
+
+<div class="control-group">
+  <%= f.label :email, :class => 'control-label' %>
+  <div class="controls">
+    <%= f.text_field :email, :class => 'form-control' %>
+  </div>
+  <%= error_span(@profile[:email]) %>
+</div>
+
+
+<div class="control-group">
+  <%= f.label :website, :class => 'control-label' %>
+  <div class="controls">
+    <%= f.text_field :website, :class => 'form-control' %>
+  </div>
+  <%= error_span(@profile[:website]) %>
+</div>
+
+<div class="control-group">
+  <%= f.label :image_url, :class => 'control-label' %>
+  <div class="controls">
+    <%= f.text_field :image_url, :class => 'form-control' %>
+  </div>
+  <%= error_span(@profile[:image_url]) %>
+</div>
+
+<br/>
+
+<%= f.submit nil, :class => 'btn btn-primary' %>
+<%= link_to t('.cancel', :default => t("helpers.links.cancel")), profile_path, :class => 'btn btn-default' %>
+
+<% end -%>
