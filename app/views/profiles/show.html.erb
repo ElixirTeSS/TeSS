@@ -1,0 +1,32 @@
+<%- model_class = Profile -%>
+<div class="page-header">
+  <h1><%= "Profile for user #{@user.username}" %></h1>
+</div>
+
+  <div id="gravatar_image">
+    <%= image_tag @user.gravatar_url %>
+  </div>
+
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:firstname) %>:</strong></dt>
+  <dd><%= @profile.firstname %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:surname) %>:</strong></dt>
+  <dd><%= @profile.surname %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:email) %>:</strong></dt>
+  <dd><%= @profile.email %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:website) %>:</strong></dt>
+  <dd><%= @profile.website %></dd>
+</dl>
+
+  <% if !@profile.image_url.nil? -%>
+    <p>
+      <img src="<%= @profile.image_url %>" alt="Image for #{@user.username}" height="50"/>
+    </p>
+  <% end -%>
+
+<%= link_to t('.back', :default => t("helpers.links.back")),
+            users_path, :class => 'btn btn-default'  %>
+<%= link_to t('.edit', :default => t("helpers.links.edit")),
+            edit_profile_path(@profile), :class => 'btn btn-default' %>
+
+<%= link_to "Change your password", edit_user_registration_path, :class => 'btn btn-default' %>

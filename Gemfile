@@ -35,6 +35,8 @@ gem 'paper_trail', '~> 4.0.0'
 
 gem 'activerecord-session_store'
 
+gem 'gravtastic'
+
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'

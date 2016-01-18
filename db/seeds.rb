@@ -29,6 +29,39 @@ User.create!(
         confirmed_at: Time.now
 )
 
+ScientificTopic.delete_all
+
+edam_topics = YAML.load(File.open('config/dictionaries/edam.yml'))
+edam_topics.each do |edam_topic|
+  st = ScientificTopic.new(
+      :class_id => edam_topic['class_id'],
+      :preferred_label => edam_topic['preferred_label'],
+      :synonyms => (edam_topic['synonyms'].split('|') unless edam_topic['synonyms'].nil?),
+      :definitions  => (edam_topic['definitions'].split('|') unless edam_topic['definitions'].nil?),
+      :obsolete => edam_topic['obsolete'],
+      :parents => (edam_topic['parents'].split('|') unless edam_topic['parents'].nil?),
+      :created_in => edam_topic['created_in'],
+      :documentation => edam_topic['documentation'],
+      :prefix_iri => edam_topic['prefixIRI'],
+      :consider => (edam_topic['consider'].split('|') unless edam_topic['consider'].nil?),
+      :has_alternative_id => (edam_topic['hasAlternativeId'].split('|') unless edam_topic['hasAlternativeId'].nil?),
+      :has_broad_synonym => (edam_topic['hasBroadSynonym'].split('|') unless edam_topic['hasBroadSynonym'].nil?),
+      :has_narrow_synonym => (edam_topic['hasNarrowSynonym'].split('|') unless edam_topic['hasNarrowSynonym'].nil?),
+      :has_dbxref => (edam_topic['hasDbXref'].split('|') unless edam_topic['hasDbXref'].nil?),
+      :has_definition => edam_topic['hasDefinition'],
+      :has_exact_synonym => (edam_topic['hasExactSynonym'].split('|') unless edam_topic['hasExactSynonym'].nil?),
+      :has_related_synonym => (edam_topic['hasRelatedSynonym'].split('|') unless edam_topic['hasRelatedSynonym'].nil?),
+      :has_subset => (edam_topic['hasSubset'].split('|') unless edam_topic['hasSubset'].nil?),
+      :in_subset  => (edam_topic['inSubset'].split('|') unless edam_topic['inSubset'].nil?),
+      :replaced_by => (edam_topic['replacedBy'].split('|') unless edam_topic['replacedBy'].nil?),
+      :saved_by => edam_topic['savedBy'],
+      :subset_property => (edam_topic['SubsetProperty'].split('|') unless edam_topic['SubsetProperty'].nil?),
+      :obsolete_since => edam_topic['obsolete_since'],
+      :in_cyclic => (edam_topic['inCyclic'].split('|') unless edam_topic['inCyclic'].nil?),
+  )
+  st.save!
+end
+
 Material.create!(
     title: 'Metabolomics: Understanding Metabolism in the 21st Century',
     short_description: 'Discover how metabolomics is revolutionising our understanding of metabolism with this free online course.',
@@ -37,7 +70,7 @@ Material.create!(
 Metabolomics is an emerging field that aims to measure the complement of metabolites (the intermediates and products of metabolism) in living organisms. The complement of metabolites in a biological system is known as the metabolome and represents the downstream effect of an organism’s genome and its interaction with the environment. Metabolomics has a wide application area across the medical and biological sciences and is attractive to both new and established scientists. In this course we will provide an introduction to metabolomics, explain why we want to study the metabolome and describe the current challenges in analysing the complement of metabolites in a biological system. We will describe the interdisciplinary approaches adopted in the metabolomics workflow and demonstrate how the combined efforts of scientist’s from different disciplines is advancing this exciting field. By the end of the course the learner will understand how metabolomics can revolutionise our understanding of metabolism.
 The course will be targeted towards final year undergraduate students from biology / chemical disciplines and medical students, but will also provide a valuable introduction to the metabolomics field for MSc and PhD students, and scientists at any stage in their careers. Metabolomics is a new tool to the scientific community and has widespread applications across the medical and biological sciences in academia and industry.",
     doi: 'doi:14.1502/06780841559.ab1',
-    scientific_topic: ['Biophysics'],
+    scientific_topic: [ScientificTopic.find_by_preferred_label('Biophysics')],
     target_audience: ['Bioinformaticians'],
     keywords: ['Galaxy', 'unix', 'Taverna'],
     licence: "Apache-2.0",
@@ -54,7 +87,7 @@ Material.create!(
     long_description: "The Ensembl genome annotation system, developed jointly by the EBI and the Wellcome Trust Sanger Institute, has been used for the annotation, analysis, and display of vertebrate genomes since 2000.  Since 2009, the Ensembl site has been complemented by the creation of five new sites for bacteria, protists, fungi, plants and invertebrate metazoa, enabling users to access a single collection of interactive interfaces for accessing and comparing genome-scale data from species of scientific interest across taxonomy.
 This one-day, hands-on course will explore the EBI's Ensembl Genomes Browser at www.ensemblgenomes.org in order to explore genes, sequence variation, and other data for plants and pathogens. New users and those who wish to deepen their understanding of the data and navigation behind the Ensembl Genomes Browser are welcome.",
     doi: 'doi:34.1502/06435841559.ab1',
-    scientific_topic: ['Biomarkers', 'Pharmacology'],
+    scientific_topic: [ScientificTopic.find_by_preferred_label('Biomarkers'), ScientificTopic.find_by_preferred_label('Pharmacology')],
     target_audience: ['Bioinformaticians'],
     keywords: ['Galaxy', 'linux'],
     licence: "BSD-3-Clause",
@@ -78,7 +111,7 @@ Importance of standards\n
 Data formats\n
 Data integration",
     doi: 'doi:10.1002/0470841559.ch1',
-    scientific_topic: ['Computational biology', 'Function analysis'],
+    scientific_topic: [ScientificTopic.find_by_preferred_label('Computational biology'), ScientificTopic.find_by_preferred_label('Function analysis')],
     target_audience: ['Bioinformaticians'],
     keywords: ['Galaxy', 'linux'],
     licence: "GPL-3.0",
@@ -157,35 +190,4 @@ Package.create!(
     materials: [Material.find_by_title('NGS current challenges and data analysis for plant researchers')]
 )
 
-ScientificTopic.delete_all
 
-edam_topics = YAML.load(File.open('config/dictionaries/edam.yml'))
-edam_topics.each do |edam_topic|
-  st = ScientificTopic.new(
-      :class_id => edam_topic['class_id'],
-      :preferred_label => edam_topic['preferred_label'],
-      :synonyms => (edam_topic['synonyms'].split('|') unless edam_topic['synonyms'].nil?),
-      :definitions  => (edam_topic['definitions'].split('|') unless edam_topic['definitions'].nil?),
-      :obsolete => edam_topic['obsolete'],
-      :parents => (edam_topic['parents'].split('|') unless edam_topic['parents'].nil?),
-      :created_in => edam_topic['created_in'],
-      :documentation => edam_topic['documentation'],
-      :prefix_iri => edam_topic['prefixIRI'],
-      :consider => (edam_topic['consider'].split('|') unless edam_topic['consider'].nil?),
-      :has_alternative_id => (edam_topic['hasAlternativeId'].split('|') unless edam_topic['hasAlternativeId'].nil?),
-      :has_broad_synonym => (edam_topic['hasBroadSynonym'].split('|') unless edam_topic['hasBroadSynonym'].nil?),
-      :has_narrow_synonym => (edam_topic['hasNarrowSynonym'].split('|') unless edam_topic['hasNarrowSynonym'].nil?),
-      :has_dbxref => (edam_topic['hasDbXref'].split('|') unless edam_topic['hasDbXref'].nil?),
-      :has_definition => edam_topic['hasDefinition'],
-      :has_exact_synonym => (edam_topic['hasExactSynonym'].split('|') unless edam_topic['hasExactSynonym'].nil?),
-      :has_related_synonym => (edam_topic['hasRelatedSynonym'].split('|') unless edam_topic['hasRelatedSynonym'].nil?),
-      :has_subset => (edam_topic['hasSubset'].split('|') unless edam_topic['hasSubset'].nil?),
-      :in_subset  => (edam_topic['inSubset'].split('|') unless edam_topic['inSubset'].nil?),
-      :replaced_by => (edam_topic['replacedBy'].split('|') unless edam_topic['replacedBy'].nil?),
-      :saved_by => edam_topic['savedBy'],
-      :subset_property => (edam_topic['SubsetProperty'].split('|') unless edam_topic['SubsetProperty'].nil?),
-      :obsolete_since => edam_topic['obsolete_since'],
-      :in_cyclic => (edam_topic['inCyclic'].split('|') unless edam_topic['inCyclic'].nil?),
-  )
-  st.save!
-end

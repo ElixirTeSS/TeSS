@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :check_auth, only: [:show, :edit, :update, :destroy]
+  before_action :check_admin, only: [:show, :edit]
 
   before_filter :authenticate_user!
 
@@ -79,6 +80,16 @@ class UsersController < ApplicationController
 
     def check_auth
       if current_user.id == @user.id or current_user.is_admin?
+        return
+      end
+      redirect_to root_path, notice: "Sorry, you're not allowed to view that page."
+    end
+
+    # This is here because users shouldn't be accessing the user edit page directly -
+    # the profile is for extra information about them and their password should be changed
+    # by the usual devise mechansims.
+    def check_admin
+      if current_user.is_admin?
         return
       end
       redirect_to root_path, notice: "Sorry, you're not allowed to view that page."

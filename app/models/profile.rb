@@ -1,20 +1,22 @@
 class Profile < ActiveRecord::Base
   belongs_to :user
-  attr_accessor :email
 
 =begin
   extend FriendlyId
   friendly_id [:firstname, :surname], use: :slugged
 =end
 
-=begin
-  searchable do
-    text :firstname
-    text :surname
+  unless SOLR_ENABLED==false
+    searchable do
+      text :firstname
+      text :surname
+      text :website
+      text :email
+      text :image_url
+      time :updated_at
+    end
   end
-=end
-  # TODO:
-  # Add validations for these fields (default nil, except email)
-  # firstname:text surname:text image_url:text email:text website:text
+
+  validates :email, presence: true
 
 end
