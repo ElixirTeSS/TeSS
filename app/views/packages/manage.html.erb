@@ -1,0 +1,24 @@
+<%= form_tag(controller: 'packages', action: 'update_content', method: 'post') do |f| %>
+
+<h3>Materials</h3>
+<table class="table">
+<% @materials.all.each do |m| %>
+    <tr>
+      <td><input type="checkbox" name='package_materials_selected[]' value="<%=m.id%>"></td><td><%= m.title %></td>
+    </tr>
+<% end %>
+</table>
+
+<h3>Events</h3>
+<table class="table">
+  <% @events.all.each do |m| %>
+      <tr>
+        <td><input type="checkbox" name='package_events_selected[]' value="<%=m.id%>"></td><td><%= m.title %></td>
+      </tr>
+  <% end %>
+</table>
+
+    <input type="submit" name="action" value="Remove" />
+    <input type="submit" name="action" value="Horse" />
+
+<% end %>
