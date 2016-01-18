@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
   acts_as_token_authenticatable
+  include Gravtastic
+  gravtastic :secure => true, :size => 250
 
   extend FriendlyId
   friendly_id :username, use: :slugged
@@ -54,9 +56,10 @@ class User < ActiveRecord::Base
 
   def set_default_profile
     if self.profile.nil?
-      self.create_profile()
-      self.profile[:email] = self[:email]
-      self.profile.save!
+      profile = Profile.new()
+      profile.email = self[:email]
+      profile.save!
+      self.profile = profile
     end
   end
 

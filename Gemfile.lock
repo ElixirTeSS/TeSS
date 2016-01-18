@@ -74,6 +74,7 @@ GEM
       activerecord (>= 4.0.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
+    gravtastic (3.2.6)
     haml (4.0.7)
       tilt
     highline (1.7.8)
@@ -251,6 +252,7 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   devise
   friendly_id (~> 5.1.0)
+  gravtastic
   jbuilder (~> 2.0)
   jquery-rails
   less-rails
@@ -274,3 +276,6 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   valid_url
   web-console (~> 2.0)
+
+BUNDLED WITH
+   1.10.6

@@ -28,8 +28,12 @@ class ProfilesController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_user_profile
-    @user = User.friendly.find(params[:id])
-    @profile = @user.profile
+    begin
+      @user = User.friendly.find(params[:id])
+      @profile = @user.profile
+    rescue
+      redirect_to root_path, notice: "Sorry, that profile couldn't be found."
+    end
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
