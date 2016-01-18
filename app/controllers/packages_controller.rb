@@ -99,6 +99,9 @@ class PackagesController < ApplicationController
 
   def update_content
     @package = Package.friendly.find(params[:package_id])
+    remove_materials_from_package params[:package_materials_selected]
+    remove_events_from_package params[:package_events_selected]
+
     if true
       respond_to do |format|
         format.html { redirect_to @package, notice: 'Package was successfully updated.' }
@@ -108,7 +111,23 @@ class PackagesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    def remove_materials_from_package target_ids
+      if !target_ids.nil? and !target_ids.empty?
+        target_ids.collect{|ev| Material.find_by_id(ev)}.each do |x|
+          @package.materials.delete(x) unless x.nil?
+        end
+      end
+    end
+
+    def remove_events_from_package target_ids
+      if !target_ids.nil? and !target_ids.empty?
+        target_ids.collect{|ev| Event.find_by_id(ev)}.each do |x|
+          @package.events.delete(x) unless x.nil?
+        end
+      end
+    end
+
+  # Use callbacks to share common setup or constraints between actions.
     def set_package
       @package = Package.friendly.find(params[:id])
     end
