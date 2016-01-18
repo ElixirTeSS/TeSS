@@ -2,7 +2,9 @@
 
 user:
   name: registered_user
+  id: 1
 
 admin:
   name: admin
+  id: 2
 
