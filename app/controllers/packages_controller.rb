@@ -97,11 +97,9 @@ class PackagesController < ApplicationController
     @events = @package.events
   end
 
-  def update_content
+  def remove_resources
     @package = Package.friendly.find(params[:package_id])
-    remove_materials_from_package params[:package_materials_selected]
-    remove_events_from_package params[:package_events_selected]
-
+    remove_resources_from_package(params[:package_materials_selected], params[:package_events_selected])
     if true
       respond_to do |format|
         format.html { redirect_to @package, notice: 'Package was successfully updated.' }
@@ -110,21 +108,38 @@ class PackagesController < ApplicationController
     end
   end
 
+  def add_resources
+    @package = Package.friendly.find(params[:package_id])
+    add_resources_to_package(params[:package][:material_ids], params[:package][:event_ids])
+    if @package.save!
+      respond_to do |format|
+        format.html { redirect_to @package, notice: 'Package was successfully updated.' }
+        format.json { render :show, status: :ok, location: @package }
+      end
+    end
+  end
+
   private
-    def remove_materials_from_package target_ids
-      if !target_ids.nil? and !target_ids.empty?
-        target_ids.collect{|ev| Material.find_by_id(ev)}.each do |x|
-          @package.materials.delete(x) unless x.nil?
-        end
+    def remove_resources_from_package(materials, events)
+      remove_materials_from_package(materials) if !materials.nil? and !materials.empty?
+      remove_events_from_package(events) if !events.nil? and !events.empty?
+    end
+
+    def remove_materials_from_package(materials)
+      materials.collect{|ev| Material.find_by_id(ev)}.each do |x|
+        @package.materials.delete(x) unless x.nil?
       end
     end
 
-    def remove_events_from_package target_ids
-      if !target_ids.nil? and !target_ids.empty?
-        target_ids.collect{|ev| Event.find_by_id(ev)}.each do |x|
-          @package.events.delete(x) unless x.nil?
-        end
+    def remove_events_from_package(events)
+      events.collect{|ev| Event.find_by_id(ev)}.each do |x|
+        @package.events.delete(x) unless x.nil?
       end
+    end
+
+    def add_resources_to_package(materials, events)
+      @package.materials << materials.collect{|mat| Material.find_by_id(mat)}.compact! - @package.materials if !materials.nil? and !materials.empty?
+      @package.events << events.collect{|eve| Event.find_by_id(eve)}.compact! - @package.events if !events.nil? and !events.empty?
     end
 
   # Use callbacks to share common setup or constraints between actions.
