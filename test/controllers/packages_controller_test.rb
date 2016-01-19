@@ -52,7 +52,35 @@ class PackagesControllerTest < ActionController::TestCase
     assert_difference('Package.count', -1) do
       delete :destroy, id: @package
     end
-
     assert_redirected_to packages_path
+  end
+
+  test "should_add_materials_to_package" do
+    sign_in users(:regular_user)
+    assert_difference('@package.materials.count', +2) do
+      post :add_resources, package: {material_ids: [materials(:biojs).id, materials(:interpro).id]}, package_id: @package.id
+    end
+  end
+  test "should_remove_materials_from_package" do
+    sign_in users(:regular_user)
+    package = packages(:with_resources)
+    post :add_resources, package: {material_ids: [materials(:biojs).id, materials(:interpro).id]}, package_id: package.id
+    assert_difference('package.materials.count', -2) do
+      post :remove_resources, package: {material_ids: [materials(:biojs).id, materials(:interpro).id]}, package_id: package.id
+    end
+  end
+  test "should_add_events_to_package" do
+    sign_in users(:regular_user)
+    assert_difference('@package.events.count', +2) do
+      post :add_resources, package: { event_ids: [events(:one), events(:two)]}, package_id: @package.id
+    end
+  end
+  test "should_remove_events_from_package" do
+    sign_in users(:regular_user)
+    package = packages(:with_resources)
+    post :add_resources, package: { event_ids: [events(:one), events(:two)]}, package_id: package.id
+    assert_difference('package.events.count', -2) do
+      post :remove_resources, package: { event_ids: [events(:one), events(:two)]}, package_id: package.id
+    end
   end
 end

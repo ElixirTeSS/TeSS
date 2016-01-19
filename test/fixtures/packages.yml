@@ -11,3 +11,9 @@ two:
   description: MyText
   image_url: MyString
   public: false
+
+with_resources:
+  name: a
+  description: text
+  image_url: myString
+  public: true

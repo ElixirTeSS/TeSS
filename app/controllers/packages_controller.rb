@@ -99,7 +99,7 @@ class PackagesController < ApplicationController
 
   def remove_resources
     @package = Package.friendly.find(params[:package_id])
-    remove_resources_from_package(params[:package_materials_selected], params[:package_events_selected])
+    remove_resources_from_package(params[:package][:material_ids], params[:package][:event_ids])
     if true
       respond_to do |format|
         format.html { redirect_to @package, notice: 'Package was successfully updated.' }
@@ -109,6 +109,7 @@ class PackagesController < ApplicationController
   end
 
   def add_resources
+
     @package = Package.friendly.find(params[:package_id])
     add_resources_to_package(params[:package][:material_ids], params[:package][:event_ids])
     if @package.save!
@@ -138,8 +139,8 @@ class PackagesController < ApplicationController
     end
 
     def add_resources_to_package(materials, events)
-      @package.materials << materials.collect{|mat| Material.find_by_id(mat)}.compact! - @package.materials if !materials.nil? and !materials.empty?
-      @package.events << events.collect{|eve| Event.find_by_id(eve)}.compact! - @package.events if !events.nil? and !events.empty?
+      @package.materials << materials.collect{|mat| Material.find_by_id(mat)}.compact - [@package.materials] if !materials.nil? and !materials.empty?
+      @package.events << events.collect{|eve| Event.find_by_id(eve)}.compact - [@package.events] if !events.nil? and !events.empty?
     end
 
   # Use callbacks to share common setup or constraints between actions.

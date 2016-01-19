@@ -4,11 +4,11 @@
 
 <div class="h4">Materials</div>
 
-<% unless @materials.count < 1 %>
+<% if @materials.count > 0 %>
     <table class="table">
     <% @materials.all.each do |m| %>
         <tr>
-          <td><input type="checkbox" name='package_materials_selected[]' value="<%=m.id%>"></td><td><%= m.title %></td>
+          <td><input type="checkbox" name='package[material_ids[]]' value="<%=m.id%>"></td><td><%= m.title %></td>
         </tr>
     <% end %>
     </table>
@@ -21,7 +21,7 @@
     <table class="table">
       <% @events.all.each do |m| %>
           <tr>
-            <td><input type="checkbox" name='package_events_selected[]' value="<%=m.id%>"></td><td><%= m.title %></td>
+            <td><input type="checkbox" name='package[event_ids[]]' value="<%=m.id%>"></td><td><%= m.title %></td>
           </tr>
       <% end %>
     </table>
