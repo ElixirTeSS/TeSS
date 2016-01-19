@@ -672,3 +672,8 @@ Text Color #FFAC74
     background:none;
     border:none
 }
+
+.empty {
+    color: #aaaaaa;
+    font-style: italic;
+}
