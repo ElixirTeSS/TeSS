@@ -1,11 +1,22 @@
 
 <!-- SIDEBAR | RESULTS -->
 <div class="row">
+
   <!-- SIDEBAR -->
   <% if SOLR_ENABLED %>
-      <div class="col-md-3">
-        <%= render :partial=> "search/common/facet_sidebar", :locals=>{:resources=>@materials} %>
-      </div>
+
+      <!-- SIDEBAR -->
+      <% if @materials.results.empty? %>
+          <div class="col-md-3">
+            <p class="alert alert-info empty">
+              No materials to filter
+            </p>
+          </div>
+      <% else %>
+          <div class="col-md-3">
+            <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @materials} %>
+          </div>
+      <% end %>
 
       <!-- RESULTS -->
       <div class="col-md-9">

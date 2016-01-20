@@ -1,47 +1,56 @@
 <script>
-    $(document).ready(function(){
-      reposition_tiles('masonry', 'masonry-brick');
-    })
+  $(document).ready(function(){
+    reposition_tiles('masonry', 'masonry-brick');
+  })
 </script>
 
 
 <!-- SIDEBAR | RESULTS -->
 <div class="row">
   <% if SOLR_ENABLED %>
-  <!-- SIDEBAR -->
-  <div class="col-md-3">
-    <%= render :partial=> "search/common/facet_sidebar", :locals=>{:resources=>@packages} %>
+
+      <!-- SIDEBAR -->
+      <% if @packages.results.empty? %>
+          <div class="col-md-3">
+            <p class="alert alert-info empty">
+              No packages to filter
+            </p>
+          </div>
+      <% else %>
+          <div class="col-md-3">
+            <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @packages} %>
+          </div>
+      <% end %>
+
+      <!-- RESULTS -->
+      <div class="col-md-9">
+        <!-- SEARCH BAR -->
+
+        <div class="row">
+          <%= link_to new_package_path, :class=>"btn btn-primary" do %>
+              <i class="fa fa-plus"></i> Create package
+          <% end %>
+        </div>
+
+        <div class="row">
+          <%= render :partial=> "search/common/search_box", :locals=>{:resource_path => packages_path} %>
+        </div>
+
+        <!-- APPLIED FILTERS AND NUMBER OF RESULTS -->
+        <div class="row">
+          <%= render :partial => "search/common/search_info", :locals=>{:resources=>@packages}  %>
+        </div>
+
+        <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@packages} %>
+        <hr>
+        <% @packages = @packages.results %>
+  <% end %>
+  <!-- ACTUAL RESULTS LIST -->
+
+  <ul class="masonry media-grid">
+    <% @packages.each do |package| %>
+        <%= render package %>
+    <% end %>
+  </ul>
   </div>
-
-  <!-- RESULTS -->
-  <div class="col-md-9">
-    <!-- SEARCH BAR -->
-
-    <div class="row">
-    <%= link_to new_package_path, :class=>"btn btn-primary" do %>
-        <i class="fa fa-plus"></i> Create package
-    <% end %>
-    </div>
-
-    <div class="row">
-      <%= render :partial=> "search/common/search_box", :locals=>{:resource_path => packages_path} %>
-    </div>
-    
-    <!-- APPLIED FILTERS AND NUMBER OF RESULTS -->
-    <div class="row">
-      <%= render :partial => "search/common/search_info", :locals=>{:resources=>@packages}  %>
-    </div>
-
-    <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@packages} %>
-    <hr>
-      <% @packages = @packages.results %>
-    <% end %>
-    <!-- ACTUAL RESULTS LIST -->
-
-        <ul class="masonry media-grid">
-              <% @packages.each do |package| %>
-                  <%= render package %>
-              <% end %>
-        </ul>
-    </div>
 </div>
