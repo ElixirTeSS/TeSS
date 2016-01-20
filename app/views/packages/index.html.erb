@@ -45,12 +45,14 @@
         <hr>
         <% @packages = @packages.results %>
   <% end %>
-  <!-- ACTUAL RESULTS LIST -->
 
-  <ul class="masonry media-grid">
-    <% @packages.each do |package| %>
-        <%= render package %>
-    <% end %>
-  </ul>
+  <!-- ACTUAL RESULTS LIST -->
+  <% unless @packages.blank? %>
+    <ul class="masonry media-grid">
+      <% @packages.each do |package| %>
+          <%= render package %>
+      <% end %>
+    </ul>
+  <% end %>
   </div>
 </div>

@@ -2,7 +2,6 @@
 <!-- SIDEBAR | RESULTS -->
 <div class="row">
 
-  <!-- SIDEBAR -->
   <% if SOLR_ENABLED %>
 
       <!-- SIDEBAR -->
@@ -18,7 +17,6 @@
           </div>
       <% end %>
 
-      <!-- RESULTS -->
       <div class="col-md-9">
 
         <!-- CREATE NEW BUTTON -->
@@ -45,15 +43,18 @@
         </div>
         <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@materials} %>
         <hr>
+        <!-- RESULTS -->
         <% @materials = @materials.results %>
   <% end %>
 
   <!-- ACTUAL RESULTS LIST -->
-  <div class="listing-container material-index">
-    <% @materials.each do |material| %>
-        <%= render material %>
-    <% end %>
-  </div>
+  <% unless @materials.blank? %>
+    <div class="listing-container material-index">
+      <% @materials.each do |material| %>
+          <%= render material %>
+      <% end %>
+    </div>
+  <% end %>
   </div>
 </div>
 
