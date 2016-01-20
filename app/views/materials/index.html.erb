@@ -1,47 +1,47 @@
 
-
-
 <!-- SIDEBAR | RESULTS -->
 <div class="row">
   <!-- SIDEBAR -->
   <% if SOLR_ENABLED %>
-  <div class="col-md-3">
-    <%= render :partial=> "search/common/facet_sidebar", :locals=>{:resources=>@materials} %>
-  </div>
+      <div class="col-md-3">
+        <%= render :partial=> "search/common/facet_sidebar", :locals=>{:resources=>@materials} %>
+      </div>
 
-  <!-- RESULTS -->
-  <div class="col-md-9">
-    <!-- CREATE NEW BUTTON -->
-    <div class="row">
-      <%= link_to new_material_path, :class=>"btn btn-primary" do %>
-          <i class="fa fa-plus-square"></i> Create Material
-      <% end %>
-    </div>
+      <!-- RESULTS -->
+      <div class="col-md-9">
+        <!-- CREATE NEW BUTTON -->
+        <div class="row">
+          <%= link_to new_material_path, :class=>"btn btn-primary" do %>
+              <i class="fa fa-plus-square"></i> Register training material
+          <% end %>
+        </div>
 
-    <!-- SEARCH BAR -->
-    <div class="row">
-      <%= render :partial=> "search/common/search_box", :locals=>{:resource_path => materials_path} %>
-    </div>
-    
-    <!-- APPLIED FILTERS AND NUMBER OF RESULTS -->
-    <div class="row">
-      <%= render :partial => "search/common/search_info", :locals=>{:resource=>@materials}  %>
-    </div>
+        <!-- SEARCH BAR -->
+        <div class="row">
+          <%= render :partial=> "search/common/search_box", :locals=>{:resource_path => materials_path} %>
+        </div>
 
-    <!-- SORT BY OPTIONS    -->
-    <div class="row">
-      <%= render :partial => "search/common/sort_by", :locals=>{:resource=>@events}  %>
-    </div>
-    <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@materials} %>
-    <hr>
-    <% @materials = @materials.results %>
+        <!-- APPLIED FILTERS AND NUMBER OF RESULTS -->
+        <div class="row">
+          <div class="col-md-8">
+            <%= render :partial => "search/common/search_info", :locals=>{:resources=>@materials}  %>
+          </div>
+          <!-- SORT BY OPTIONS    -->
+          <div class="col-md-4">
+            <%= render :partial => "search/common/sort_by", :locals=>{:resources=>@materials}  %>
+          </div>
+        </div>
+        <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@materials} %>
+        <hr>
+        <% @materials = @materials.results %>
+  <% end %>
+
+  <!-- ACTUAL RESULTS LIST -->
+  <div class="listing-container material-index">
+    <% @materials.each do |material| %>
+        <%= render material %>
     <% end %>
-    <!-- ACTUAL RESULTS LIST -->
-    <div class="listing-container material-index">
-      <% @materials.each do |material| %>
-            <%= render material %>
-      <% end %>    
-    </div>
+  </div>
   </div>
 </div>
 
