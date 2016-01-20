@@ -1,14 +1,24 @@
 
 <!-- SIDEBAR | RESULTS -->
 <div class="row">
-  <!-- SIDEBAR -->
-  <% if SOLR_ENABLED %>
-      <div class="col-md-3">
-        <%= render :partial=> "search/common/facet_sidebar", :locals=>{:resources=>@materials} %>
-      </div>
 
-      <!-- RESULTS -->
+  <% if SOLR_ENABLED %>
+
+      <!-- SIDEBAR -->
+      <% if @materials.results.empty? %>
+          <div class="col-md-3">
+            <p class="alert alert-info empty">
+              No materials to filter
+            </p>
+          </div>
+      <% else %>
+          <div class="col-md-3">
+            <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @materials} %>
+          </div>
+      <% end %>
+
       <div class="col-md-9">
+
         <!-- CREATE NEW BUTTON -->
         <div class="row">
           <%= link_to new_material_path, :class=>"btn btn-primary" do %>
@@ -33,15 +43,18 @@
         </div>
         <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@materials} %>
         <hr>
+        <!-- RESULTS -->
         <% @materials = @materials.results %>
   <% end %>
 
   <!-- ACTUAL RESULTS LIST -->
-  <div class="listing-container material-index">
-    <% @materials.each do |material| %>
-        <%= render material %>
-    <% end %>
-  </div>
+  <% unless @materials.blank? %>
+    <div class="listing-container material-index">
+      <% @materials.each do |material| %>
+          <%= render material %>
+      <% end %>
+    </div>
+  <% end %>
   </div>
 </div>
 

@@ -112,10 +112,19 @@ $colHover2      : #eeeeee;
     }
 }
 
+
+// Bootstrap's breadcrumbs
 .breadcrumb {
     margin-bottom: 10px;
 }
 
+// Bootstrap's row
 .row {
    margin-bottom: 10px;
+}
+
+// Style for empty results etc.
+.empty {
+    color: #aaaaaa;
+    font-style: italic;
 }
