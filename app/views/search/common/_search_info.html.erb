@@ -1,6 +1,6 @@
 <%#
 Parameters 
-- resource - The SOLR object containing .results and metadata about a search. Returned by e.g. materials/index events/index
+- resources - The SOLR object containing .results and metadata about a search. Returned by e.g. materials/index events/index
 Globals
 @facet_params
 @query_params
@@ -8,7 +8,7 @@ Globals
 
 <!-- RESULTS COUNT -->
 <h3>
-<%= pluralize( resource.total, 'result' ) %>
+<%= pluralize( resources.total, 'result' ) %>
 </h3>
 
 <!-- FILTERS APPLIED -->
@@ -31,10 +31,10 @@ Globals
   <div class="btn-group" role="group" aria-label="...">
 
 
-<% resource_results = resource.results %>
-<% if resource.results.total_pages > 1 %>
+<% resource_results = resources.results %>
+<% if resources.results.total_pages > 1 %>
   <%= link_to "|<<", request.parameters.except(:page), :class=>'btn btn-default' %>
-  <% for page in 1..resource.results.total_pages %>
+  <% for page in 1..resources.results.total_pages %>
     <% if params[:page] == page.to_s or (params[:page].nil? and page == 1) %>
         <span style="color:red" class="btn btn-default"><%= "#{page}" %></span>
     <% else %>
