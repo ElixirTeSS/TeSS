@@ -3,16 +3,17 @@
 <head>
   <title>TeSS - Training eSupport System</title>
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= favicon_link_tag('favicon.png', :type => 'image/png') %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
   <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-59838289-2', 'auto');
-      ga('send', 'pageview');
+    ga('create', 'UA-59838289-2', 'auto');
+    ga('send', 'pageview');
 
   </script>
 </head>
@@ -27,49 +28,61 @@
     </div>
 <% end %>
 
-<header class="account-masthead">
+<header class="elixir-black-header">
   <div class="container">
     <!-- Navigation bar -->
+    <nav class="navbar navbar-default" style="margin:0px; border:0px; background-color: #333333;" role="navigation">
     <a href="http://www.elixir-europe.org/">
-      <img src="http://elixir-uk.org/++theme++elixir-uktheme/static/hub-logo.png">
+      <img src="http://elixir-uk.org/++theme++elixir-uktheme/static/hub-logo.png" style="padding-top:12px;">
     </a>
-        <% if current_user %>
-            <%= menu_group :class=>"account", pull: :right do %>
-                <%= menu_item current_user.username, user_path(current_user), :class=>"username"%>
-                <%= menu_item "Sign out", destroy_user_session_path, :method => :delete %>
-            <% end %>
-        <% else %>
-            <%= menu_group pull: :right do %>
-                <%= menu_item "Sign In", new_user_session_path %>
-                <%= menu_item "Sign Up", new_user_registration_path %>
-            <% end %>
+    <% if current_user %>
+        <%= menu_group :class=>"account", pull: :right do %>
+            <%= menu_item current_user.username, user_path(current_user), :class=>"username"%>
+            <%= menu_item "Sign out", destroy_user_session_path, :method => :delete %>
         <% end %>
-      </div>
+    <% else %>
+        <%= menu_group pull: :right do %>
+            <%= menu_item "Sign In", new_user_session_path %>
+            <%= menu_item "Sign Up", new_user_registration_path %>
+        <% end %>
+    <% end %>
+    </nav>
+  </div>
 </header>
 
-
-<header>
-<%= nav_bar static: :top, responsive: true, :class =>'masthead navbar navbar-static-top masthead' do %>
-<a href="/">
-<%= image_tag "https://tess.elixir-uk.org/images/ELIXIR_TeSS_logo_white-small-6.png", :class=>"head-image pull-left" %></a>
-
-    <!--<%= menu_text "Training eSupport System" %>-->
-    <ul class="nav nav-pills ">
-        <%= menu_group :class=>"navigation" do %>
+<header class="elixir-orange-header">
+  <div class="container">
+    <nav class="navbar navbar-default navbar-static-top" style="margin:0px; border:0px;" role="navigation">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">
+          <%= image_tag "ELIXIR_TeSS_logo_white-80px-height.png", :alt=>"Training eSupport System", :class=>"pull-left"%>
+        </a>
+      </div>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse">
+        <div style="padding-top: 35px;">
+          <ul class="nav nav-pills navbar-left">
+            <!--<li><!%= menu_item "Home", root_path %></li>-->
             <li><%= menu_item "Events", events_path %></li>
             <li><%= menu_item "Materials", materials_path %></li>
             <li><%= menu_item "Packages", packages_path %></li>
             <li><%= menu_item "Workflows", workflows_path %></li>
-            <li><%= menu_item "Content Providers", content_providers_path, :class=>'li' %></li>
+            <li><%= menu_item "Content Providers", content_providers_path %></li>
             <li><%= menu_item "Nodes", nodes_path %></li>
             <li><%= menu_item "About", about_path %></li>
-        <% end %>
-    </ul>
-<% end %>
+          </ul>
+          <form class="navbar-form navbar-right" style="margin-right: 0px;" role="search">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+          </form>
+        </div><!-- /.navbar-collapse -->
+      </div>
+    </nav>
+  </div>
 </header>
-
-
-
 
 <div id="main-container" class="container">
 

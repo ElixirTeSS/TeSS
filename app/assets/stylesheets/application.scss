@@ -1,0 +1,113 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require jquery-ui
+ *= require bootstrap_and_overrides
+ *= require_tree .
+ *= require_self
+ */
+
+.elixir-black-header {
+    background-color: #333333;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.elixir-orange-header {
+    background-color: #F0721E;
+    margin-bottom:10px;
+}
+
+/* Navbar colours */
+$bgDefault      : #F0721E;
+$bgHighlight    : #A33F00;
+$colDefault     : #ffe6d1;
+$colHover       : #333333;
+$colHover2      : #eeeeee;
+
+/* --- Style --- */
+.navbar-default {
+    background-color: $bgDefault;
+    border-color: $bgHighlight;
+
+    .navbar-brand {
+        height: 100px;
+    }
+
+    .nav-pills {
+        > li {
+            > a {
+                color: $colDefault;
+                &:hover, &:focus {
+                    color: $colHover;
+                }
+            }
+        }
+        .active {
+            > a, > a:hover, > a:focus {
+                color: $colDefault;
+                background-color: $bgHighlight;
+            }
+        }
+        .open {
+            > a, > a:hover, > a:focus {
+                color: $colHover;
+                background-color: $bgHighlight;
+                .caret {
+                    border-top-color: $colHover;
+                    border-bottom-color: $colHover;
+                }
+            }
+        }
+    }
+
+    .navbar-nav {
+        > li {
+            > a {
+                color: $colHover2;
+                &:hover, &:focus {
+                    color: $colHover;
+                    background-color: $colHover2;
+                }
+            }
+        }
+        .active {
+            > a, > a:hover, > a:focus {
+                background-color: $bgHighlight;
+                color: $colDefault;
+            }
+        }
+        .open {
+            > a, > a:hover, > a:focus {
+                color: $colHover;
+                background-color: $bgHighlight;
+                .caret {
+                    border-top-color: $colHover;
+                    border-bottom-color: $colHover;
+                }
+            }
+        }
+        > .dropdown {
+            > a {
+                .caret {
+                    border-top-color: $colDefault;
+                    border-bottom-color: $colDefault;
+                }
+                &:hover, &:focus {
+                    .caret {
+                        border-top-color: $colHover;
+                        border-bottom-color: $colHover;
+                    }
+                }
+            }
+        }
+    }
+}
