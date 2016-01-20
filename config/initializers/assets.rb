@@ -7,7 +7,7 @@ Rails.application.config.assets.version = '1.0'
 # Rails.application.config.assets.paths << Emoji.images_path
 
 # Precompile additional assets.
-# application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
+# application.js, application.scss, and all non-JS/CSS in app/assets folder are already added.
 # Rails.application.config.assets.precompile += %w( search.js )
 Rails.application.config.assets.compile = true
 Rails.application.config.assets.precompile =  ['*.js', '*.css', '*.css.erb']
@@ -15,3 +15,5 @@ Rails.application.config.assets.precompile =  ['*.js', '*.css', '*.css.erb']
 Rails.application.config.assets.precompile += %w( twitter/bootstrap/* fontawesome*)
 Rails.application.config.assets.precompile += %w( jquery-ui/* )
 Rails.application.config.assets.precompile += %w( rails_admin/* )
+Rails.application.config.assets.precompile += %w( favicon.png )
+Rails.application.config.assets.precompile += %w( ELIXIR_TeSS_logo_white-80px-height.png )
