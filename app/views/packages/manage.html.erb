@@ -1,0 +1,36 @@
+<%= javascript_include_tag 'manage_packages' %>
+
+<%= form_tag(controller: 'packages', action: 'remove_resources', method: 'post') do |f| %>
+    <div class="h4">Materials</div>
+        <% if @materials.count > 0 %>
+            <table class="table">
+            <% @materials.all.each do |m| %>
+                <tr>
+                  <td><input type="checkbox" name='package[remove_material_ids[]]' value="<%=m.id%>"></td><td><%= m.title %></td>
+                </tr>
+            <% end %>
+            </table>
+        <% else %>
+               <p class="empty">There are no materials in this package</p>
+        <% end %>
+        <div class="h4">Events</div>
+        <% unless @events.count < 1 %>
+            <table class="table">
+              <% @events.all.each do |m| %>
+                  <tr>
+                    <td><input type="checkbox" name='package[remove_event_ids[]]' value="<%=m.id%>"></td><td><%= m.title %></td>
+                  </tr>
+              <% end %>
+            </table>
+        <% else %>
+            <p class="empty">There are no events in this package</p>
+        <% end %>
+    <button type="submit" value="remove" class="btn btn-danger">Remove from package</button>
+<% end %>
+
+<%= form_tag(controller: 'packages', action: 'add_resources', method: 'post') do |f| %>
+    <div class="h3">Add New Resources to Package</div>
+    <label>Add Materials</label><%= render :partial => 'packages/partials/dropdown_option', :locals => {:field_name => 'material', :package => @package} %>
+    <label> Add Events</label><%= render :partial => 'packages/partials/dropdown_option', :locals => {:field_name => 'event', :package => @package} %>
+    <button type="submit" value="add" class="btn btn-success">Add to package</button>
+<% end %>

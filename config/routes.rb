@@ -3,9 +3,9 @@ Rails.application.routes.draw do
 
   resources :scientific_topics
   resources :workflows
-  resources :packages
+
   resources :events
-  get 'content_providers/index'
+
   get 'content_providers/show'
   get 'content_providers/new'
   get 'content_providers/edit'
@@ -40,6 +40,9 @@ Rails.application.routes.draw do
 
   resources :packages do
     resource :activities, :only => [:show]
+    get 'manage' => 'packages#manage'
+    post 'remove_resources' => 'packages#remove_resources'
+    post 'add_resources' => 'packages#add_resources'
   end
   resources :workflows
   resources :content_providers do

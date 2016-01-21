@@ -1,0 +1,32 @@
+<!--
+package - Package object
+field_name - The name of the attribute
+ -->
+
+<div class="control-group">
+  <!-- have one empty one so something is always passed when the event listener triggers -->
+  <input name="package[<%=field_name%>_ids][]" value="" style="display:none"/>
+  <div class="controls" data-field="<%=field_name%>">
+    <div class="<%=field_name%> multiple-input-list">
+<!--      <% package.send(field_name.pluralize).each do |resource| %>
+          <div class="list-item">
+            <input type="text" class="multiple-input" data-field='<%=field_name%>' name="package[<%=field_name%>_ids][]"
+                   value="<%=resource.id%>" style="display:none;"><%=resource.title%></input>
+            <input type="button" value="x" class="dropdown-option-delete" data-field="<%=field_name%>"
+                   data-value="<%=resource.id%>" data-name="<%=resource.title%>"/>
+          </div>
+      <% end %>-->
+    </div>
+    <div class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        Select <%=field_name%>
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu <%=field_name%>-options" data-field="<%=field_name%>" id="<%=field_name%>_packages" aria-labelledby="dropdownMenu1">
+        <% field_name.capitalize.constantize.all.each do |resource| %>
+            <li class="dropdown-option" id="<%=field_name%>-id-<%=resource.id%>" value="<%=resource.id%>"><a><%= resource.title %></a></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>

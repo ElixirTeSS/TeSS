@@ -31,8 +31,6 @@ class EventsController < ApplicationController
     else
       @events = Event.all
     end
-    puts @sort_by
-
     respond_to do |format|
       format.json { render json: @events.results }
       format.html

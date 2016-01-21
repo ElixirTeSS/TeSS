@@ -7,11 +7,11 @@ class PackagesController < ApplicationController
   before_action :set_facet_params, :only => :index
 
   # Should allow token authentication for API calls
-  acts_as_token_authentication_handler_for User, except: [:index, :show, :check_title] #only: [:new, :create, :edit, :update, :destroy]
+  acts_as_token_authentication_handler_for User, except: [:index, :show, :check_title,:manage] #only: [:new, :create, :edit, :update, :destroy]
 
   # User auth should be required in the web interface as well; it's here rather than in routes so that it
   # doesn't override the token auth, above.
-  before_filter :authenticate_user!, except: [:index, :show, :check_title]
+  before_filter :authenticate_user!, except: [:index, :show, :check_title, :manage]
 
   # Should prevent forgery errors for JSON posts.
   skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
@@ -90,8 +90,60 @@ class PackagesController < ApplicationController
     end
   end
 
+
+  def manage
+    @package = Package.friendly.find(params[:package_id])
+    @materials = @package.materials
+    @events = @package.events
+  end
+
+  def remove_resources
+    @package = Package.friendly.find(params[:package_id])
+    remove_resources_from_package(params[:package][:material_ids], params[:package][:event_ids])
+    if true
+      respond_to do |format|
+        format.html { redirect_to @package, notice: 'Package was successfully updated.' }
+        format.json { render :show, status: :ok, location: @package }
+      end
+    end
+  end
+
+  def add_resources
+
+    @package = Package.friendly.find(params[:package_id])
+    add_resources_to_package(params[:package][:material_ids], params[:package][:event_ids])
+    if @package.save!
+      respond_to do |format|
+        format.html { redirect_to @package, notice: 'Package was successfully updated.' }
+        format.json { render :show, status: :ok, location: @package }
+      end
+    end
+  end
+
   private
-    # Use callbacks to share common setup or constraints between actions.
+    def remove_resources_from_package(materials, events)
+      remove_materials_from_package(materials) if !materials.nil? and !materials.empty?
+      remove_events_from_package(events) if !events.nil? and !events.empty?
+    end
+
+    def remove_materials_from_package(materials)
+      materials.collect{|ev| Material.find_by_id(ev)}.each do |x|
+        @package.materials.delete(x) unless x.nil?
+      end
+    end
+
+    def remove_events_from_package(events)
+      events.collect{|ev| Event.find_by_id(ev)}.each do |x|
+        @package.events.delete(x) unless x.nil?
+      end
+    end
+
+    def add_resources_to_package(materials, events)
+      @package.materials << materials.collect{|mat| Material.find_by_id(mat)}.compact - [@package.materials] if !materials.nil? and !materials.empty?
+      @package.events << events.collect{|eve| Event.find_by_id(eve)}.compact - [@package.events] if !events.nil? and !events.empty?
+    end
+
+  # Use callbacks to share common setup or constraints between actions.
     def set_package
       @package = Package.friendly.find(params[:id])
     end

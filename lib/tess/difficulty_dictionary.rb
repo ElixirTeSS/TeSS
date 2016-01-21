@@ -46,7 +46,6 @@ module TeSS
       @difficulty_abbreviations.each do |abbr|
         list << [difficulty_name_for_abbreviation(abbr), abbr]
       end
-      puts list
       return list
     end
 
