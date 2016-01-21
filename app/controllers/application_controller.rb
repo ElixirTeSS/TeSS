@@ -26,9 +26,6 @@ class ApplicationController < ActionController::Base
 
   def solr_search(model_name, search_params='', facet_fields=[], selected_facets=[], page=1, sort_by=nil)
     model_name.search do
-      #Set the search parameter
-      fulltext search_params
-
       if sort_by
         case sort_by
           when 'early'
@@ -47,7 +44,6 @@ class ApplicationController < ActionController::Base
         end
       end
 
-
       if !page.nil? and page != '1'
         paginate :page => page
       end
@@ -59,19 +55,25 @@ class ApplicationController < ActionController::Base
       if model_name == Event
         facet 'start'
         unless selected_facets.keys.include?('include_expired') and selected_facets['include_expired'] == true
-          with('start').greater_than(Time.zone.now)
+            with('start').greater_than(Time.zone.now)
         end
-
       end
 
-      selected_facets.each do |facet_title, facet_value|
-        if facet_title != 'include_expired'
-          if facet_value.is_a?(Array)
-            facet_value.each do |fv|
-              with(facet_title, fv)
+      #Disjunction clause
+      all_of do
+        #Set the search parameter
+        fulltext search_params
+        #Set all facets
+        selected_facets.each do |facet_title, facet_value|
+          if facet_title != 'include_expired'
+            #Conjunction clause
+            any_of do
+              if facet_value.is_a?(Array)
+                facet_value.each do |fv|
+                  with(facet_title, fv)
+                end
+              end
             end
-          else
-            with(facet_title, facet_value) #Filter by only selected facets
           end
         end
       end
