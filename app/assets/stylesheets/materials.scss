@@ -8,9 +8,13 @@
 }
 
 div.list-group-item-heading .btn-default {
-  background-color: #ffe6d1;
+  background-color: #e6e6e6;
   font-weight: bold;
 }
 div.list-group-item-heading .btn-default:hover{
-  background-color: #e6e6e6;
+  background-color: #ffe6d1;
+}
+
+div.list-group-item-heading a{
+  text-align: left;
 }

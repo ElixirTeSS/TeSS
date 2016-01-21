@@ -1,5 +1,5 @@
 <div class="list-group-item">
-  <div class="list-group-item-heading"><%= link_to(material.title, material, class: "btn btn-default") %></div>
+  <div class="list-group-item-heading"><%= link_to(material.title, material, class: "btn btn-default btn-block") %></div>
   <p class="list-group-item-text">
     <p><%= truncate(material.short_description, length: 300, separator: ' ') %></p>
     <p>Keywords: <%= material.keywords.join(', ') %></p>
