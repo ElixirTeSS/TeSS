@@ -59,10 +59,10 @@ class ApplicationController < ActionController::Base
         end
       end
 
+      #Set the search parameter
+      fulltext search_params
       #Disjunction clause
       all_of do
-        #Set the search parameter
-        fulltext search_params
         #Set all facets
         selected_facets.each do |facet_title, facet_value|
           if facet_title != 'include_expired'
