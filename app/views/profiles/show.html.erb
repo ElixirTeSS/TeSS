@@ -24,6 +24,10 @@
     </p>
   <% end -%>
 
+<% if current_user == @user -%>
+<p>Your Authentication Token is <b><%= @user.authentication_token %></b>. Keep this secret.</p>
+<% end %>
+
 <%= link_to t('.back', :default => t("helpers.links.back")),
             users_path, :class => 'btn btn-default'  %>
 <%= link_to t('.edit', :default => t("helpers.links.edit")),
@@ -31,4 +35,5 @@
 
 <% if current_user == @user -%>
 <%= link_to "Change your password", edit_user_registration_path, :class => 'btn btn-default' %>
+
 <% end -%>
