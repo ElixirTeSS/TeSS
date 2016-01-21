@@ -9,16 +9,28 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test "should get index" do
-    sign_in users(:regular_user)
+    sign_in users(:admin)
     get :index
     assert_response :success
     assert_not_nil assigns(:users)
   end
 
   test "should get new" do
-    sign_in users(:regular_user)
+    sign_in users(:admin)
     get :new
     assert_response :success
+  end
+
+  test "should not get index" do
+    sign_in users(:regular_user)
+    get :index
+    assert_redirected_to root_path
+  end
+
+  test "should not get new" do
+    sign_in users(:regular_user)
+    get :new
+    assert_redirected_to root_path
   end
 
   test "should create user" do

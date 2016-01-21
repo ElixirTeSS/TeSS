@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   post 'events/check_exists' => 'events#check_exists'
 
   devise_for :users
+  get 'users/new' => 'users#new'
   get 'users/:id' => 'profiles#show'
   get 'profile/:id' => 'profiles#show', as: 'profile'
   patch 'profile/:id' => 'profiles#update'
