@@ -158,16 +158,13 @@
       <%= error_span(@material[:difficulty_level]) %>
     </div>
 
-
     <%= render :partial => 'materials/partials/multiple_input', :locals => {:field_name => 'contributors', :material => @material, :f => f} %>
 
     <%= render :partial => 'materials/partials/dropdown_option', :locals => {:field_name => 'package', :material => @material, :f => f} %>
 
     <%= render :partial => 'materials/partials/add_content_provider', :locals => {:f => f, :material => @material} %>
 
-
-
-    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= f.submit 'Register meterial', :class => 'btn btn-primary' %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                 materials_path, :class => 'btn btn-default' %>
 

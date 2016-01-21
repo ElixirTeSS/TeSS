@@ -33,7 +33,6 @@ $colDefault     : #ffe6d1;
 $colHover       : #333333;
 $colHover2      : #eeeeee;
 
-/* --- Style --- */
 .navbar-default {
     background-color: $bgDefault;
     border-color: $bgHighlight;
@@ -127,4 +126,17 @@ $colHover2      : #eeeeee;
 .empty {
     color: #aaaaaa;
     font-style: italic;
+}
+
+// Bootstrap's primary button
+.btn-primary {
+    background: #206B82;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+    background: #085871;
+}
+
+.btn-primary:active, .btn-primary.active {
+    background: #064559;
 }
