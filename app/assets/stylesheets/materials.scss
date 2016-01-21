@@ -1,3 +1,16 @@
 // Place all the styles related to the Materials controller here.
 // They will automatically be included in application.scss.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+// Boostrap's list items
+.list-group-item {
+  margin-bottom: 5px;
+}
+
+div.list-group-item-heading .btn-default {
+  background-color: #ffe6d1;
+  font-weight: bold;
+}
+div.list-group-item-heading .btn-default:hover{
+  background-color: #e6e6e6;
+}
