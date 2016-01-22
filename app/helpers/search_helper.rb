@@ -32,7 +32,7 @@ module SearchHelper
 
 	def show_more_link facet
 		parameters = params.dup
-		return link_to "Show more #{facet.humanize.pluralize}", parameters.merge("#{facet}_all"=>true)
+		return link_to "Show more #{facet.humanize.pluralize.downcase}", parameters.merge("#{facet}_all"=>true)
 	end
 
 	def show_less_link facet

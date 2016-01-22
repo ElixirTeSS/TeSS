@@ -117,11 +117,6 @@ $colHover2      : #eeeeee;
     margin-bottom: 10px;
 }
 
-// Bootstrap's row
-.row {
-   margin-bottom: 10px;
-}
-
 // Style for empty results etc.
 .empty {
     color: #aaaaaa;
@@ -139,4 +134,34 @@ $colHover2      : #eeeeee;
 
 .btn-primary:active, .btn-primary.active {
     background: #064559;
+}
+
+.wrapper {
+    *zoom: 1;
+    background-color: #FFF;
+    border: 1px solid #cccccc;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+    position: relative;
+    background-color: #fff;
+    margin-bottom: 20px;
+    margin-left: 0;
+}
+
+div#sidebar{
+    padding: 0px;
+    border: solid #cccccc;
+    border-width: 0px 1px 0px 0px;
+    height:100%;
+}
+#sidebar table tr td.h4{
+    padding-left: 10px;
+}
+
+#sidebar table tr td{
+    padding-left: 20px;
 }
