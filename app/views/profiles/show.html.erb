@@ -1,6 +1,6 @@
 <%- model_class = Profile -%>
 <div class="page-header">
-  <h1><%= "Profile for user #{@user.username}" %></h1>
+  <h2><%= "Profile for user #{@user.username}" %></h2>
 </div>
 
   <div id="gravatar_image">
@@ -29,9 +29,9 @@
 <% end %>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
-            users_path, :class => 'btn btn-default'  %>
+            users_path, :class => 'btn btn-info'  %>
 <%= link_to t('.edit', :default => t("helpers.links.edit")),
-            edit_profile_path(@profile), :class => 'btn btn-default' %>
+            edit_profile_path(@profile), :class => 'btn btn-primary' %>
 
 <% if current_user == @user -%>
 <%= link_to "Change your password", edit_user_registration_path, :class => 'btn btn-default' %>
