@@ -1,0 +1,24 @@
+<%#
+Parameters
+- resources - The SOLR object containing .results and metadata about a search. Returned by e.g. materials/index events/index
+Globals
+@facet_params
+@query_params
+%>
+<!-- Pagination -->
+<div class="btn-toolbar" role="toolbar" aria-label="...">
+  <div class="btn-group" role="group" aria-label="...">
+    <% resource_results = resources.results %>
+    <% if resources.results.total_pages > 1 %>
+        <%= link_to "|<<", params.except(:page), :class=>'btn btn-default' %>
+        <% for page in 1..resources.results.total_pages %>
+            <% if params[:page] == page.to_s or (params[:page].nil? and page == 1) %>
+                <span style="color:red" class="btn btn-default"><%= "#{page}" %></span>
+            <% else %>
+                <%= link_to page, params.merge(:page => page), :class=>'btn btn-default' %>
+            <% end %>
+        <% end %>
+        <%= link_to ">>|", params.merge(:page => resource_results.total_pages), :class=>'btn btn-default' %>
+    <% end %>
+  </div>
+</div>

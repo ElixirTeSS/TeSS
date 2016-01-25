@@ -33,10 +33,15 @@
             <%= render :partial => "search/common/sort_by", :locals=>{:resources=>@materials}  %>
           </div>
         </div>
-        <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@materials} %>
+
+        <!-- PAGINATION -->
+        <div class="row">
+          <%= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@materials} unless (@materials.blank? or @materials.results.blank?) %>
+        </div>
+
         <hr>
         <!-- RESULTS -->
-        <% @materials = @materials.results %>
+        <% @materials = @materials.results unless @materials.blank? %>
   <% end %>
 
   <!-- ACTUAL RESULTS LIST -->

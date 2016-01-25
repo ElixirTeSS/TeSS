@@ -33,9 +33,13 @@
           <%= render :partial => "search/common/search_info", :locals=>{:resources=>@packages}  %>
         </div>
 
-        <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@packages} %>
+        <!-- PAGINATION -->
+        <div class="row">
+          <%= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@packages} unless (@packages.blank? or @packages.results.blank?) %>
+        </div>
+
         <hr>
-        <% @packages = @packages.results %>
+        <% @packages = @packages.results unless @packages.blank? %>
   <% end %>
 
   <!-- ACTUAL RESULTS LIST -->

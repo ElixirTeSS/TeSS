@@ -70,9 +70,13 @@
           </div>
         </div>
 
-        <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@materials} %>
+        <!-- PAGINATION -->
+        <div class="row">
+          <%= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@events}  unless (@events.blank? or @events.results.blank?)%>
+        </div>
+
         <hr>
-        <% @events = @events.results %>
+        <% @events = @events.results unless @events.blank? %>
   <% end %>
 
   <% unless @events.blank? %>
