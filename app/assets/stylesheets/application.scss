@@ -179,3 +179,48 @@ div#sidebar table tr td a:hover {
     padding: 3px;
     text-decoration: none;
 }
+
+// From CKAN's style
+.event-grid {
+    //list-style: outside none none;
+    background: #FBFBFB url("/images/bg.png") repeat scroll 0% 0%;
+    border-style: solid;
+    border-color: #DDD;
+    border-width: 1px;
+}
+
+// Bootstrap's col-md-3
+.col-md-3, col-xs-3{
+    padding: 5px;
+}
+
+.event-item {
+    //position: relative;
+    //float: left;
+    //width: 189px;
+    padding: 5px 5px 5px 5px;
+    margin: 2px 2px 2px 2px;
+    background-color: #FFF;
+    border-radius: 5px;
+}
+
+.event-item a {
+    color: #187794;
+    text-decoration: none;
+}
+
+.event-item a:hover,
+a:focus {
+    color: #0d4252;
+    text-decoration: underline;
+    background-color: white;
+}
+
+.event-heading {
+    font-weight: bold;
+
+}
+
+.event-item p {
+    margin: 10px 0px 0px 0px;
+}
