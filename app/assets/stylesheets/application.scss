@@ -150,8 +150,8 @@ div#sidebar table tr td{
 
 // Bootstrap's row
 .row {
-    margin: 10px 0px 10px 0px;
-    padding: 0px 0px 10px 0px;
+    margin: 10px 0px 20px 0px;
+    //padding: 0px 0px 10px 0px;  // Do not add padding to the row - messes up sidebar etc.
 }
 
 div.wrapper {
