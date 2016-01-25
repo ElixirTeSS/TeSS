@@ -138,9 +138,7 @@ $colHover2      : #eeeeee;
 
 div#sidebar{
     padding: 0px;
-    border: solid #cccccc;
-    border-width: 0px 1px 0px 0px;
-    height:100%;
+    border-right: 1px solid #cccccc;
 }
 div#sidebar table tr td.h4{
     padding-left: 10px;
@@ -153,15 +151,8 @@ div#sidebar table tr td{
 // Bootstrap's row
 .row {
     margin: 10px 0px 10px 0px;
-    height: 100%;
 }
-body {
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
-body, html {
-    height: 100%;
-}
+
 div.wrapper {
     *zoom: 1;
     background-color: #FFF;
@@ -176,9 +167,9 @@ div.wrapper {
     background-color: #fff;
     margin-bottom: 20px;
     margin-left: 0;
-    display: table;
-    width: 100%;
-    height: 100%; /* this will be treated as a Minimum! It will stretch to fit content */
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
 }
 
 div#sidebar table tr td a:hover {
