@@ -1,6 +1,6 @@
 <%- model_class = User -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+  <h2><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h2>
 </div>
 <table class="table table-striped">
   <thead>
@@ -50,7 +50,7 @@
         <td><%= user.failed_attempts %></td>
         <!--<td><%= user.unlock_token %></td>-->
         <td><%= user.locked_at %></td>
-        <td><%= user.role_id %></td>
+        <td><%= user.role.name unless user.role.blank?%></td>
         <td><%= user.material_id %></td>
         <td><%=l user.created_at %></td>
         <td>

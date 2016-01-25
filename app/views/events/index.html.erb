@@ -5,21 +5,13 @@
 </script>
 
 <!-- SIDEBAR | RESULTS -->
-<div class="row">
+<div class="row wrapper">
   <% if SOLR_ENABLED %>
 
       <!-- SIDEBAR -->
-      <% if @events.results.empty? %>
-          <div class="col-md-3">
-            <p class="alert alert-info empty">
-              No events to filter
-            </p>
-          </div>
-      <% else %>
-          <div class="col-md-3">
-            <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @events} %>
-          </div>
-      <% end %>
+      <div class="col-md-3" id="sidebar">
+        <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @events} %>
+      </div>
 
       <!-- RESULTS -->
       <div class="col-md-9">
