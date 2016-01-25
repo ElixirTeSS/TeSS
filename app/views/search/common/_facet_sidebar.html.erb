@@ -7,7 +7,7 @@ Variable that should be available
 - @facet_fields  - List of all facets supported by this resource type
 - @facet_params  - The facet filters the user has applied
 %>
-<% if resources.results.blank? %>
+<% if resources.blank? or resources.results.blank? %>
     <p class="alert alert-info empty" style="margin: 10px;">
       No resources to filter
     </p>
@@ -33,9 +33,9 @@ Variable that should be available
                 <% filters_to_show.each do |facet| %>
                     <% if @facet_params.include?(facet_field) and @facet_params[facet_field].include?(facet.value) %>
                         <tr style="background-color:lightgray">
-                          <td > <%= remove_filter_link(facet_field, facet.value)%></td>
+                          <td><%= remove_filter_link(facet_field, facet.value)%></td>
                     <% else %>
-                        <tr><td><%= filter_link(facet_field, facet.value) %></td>
+                        <tr><td><%= filter_link(facet_field, facet.value)%></td>
                     <% end %>
                     <td><%= facet.count %></td>
                     </tr>
@@ -43,10 +43,10 @@ Variable that should be available
 
                 <!-- Display 'show more' link -->
                 <% if !showing_all and filters_to_show.count >= 10 %>
-                    <tr><td><strong><%= show_more_link(facet_field) %></strong></td> </tr>
+                    <tr><td colspan="2"><strong><%= show_more_link(facet_field) %></strong></td> </tr>
                 <% end %>
                 <% if showing_all and filters_to_show.count >= 10 %>
-                    <tr><td><strong><%= show_less_link(facet_field) %></strong></td> </tr>
+                    <tr><td colspan="2"><strong><%= show_less_link(facet_field) %></strong></td> </tr>
                 <% end %>
             <% end %>
         <% end %>
