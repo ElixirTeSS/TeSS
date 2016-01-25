@@ -41,8 +41,10 @@ Rails.application.routes.draw do
   resources :packages do
     resource :activities, :only => [:show]
     get 'manage' => 'packages#manage'
+    post 'update_package_resources' => 'packages#update_package_resources'
+=begin
     post 'remove_resources' => 'packages#remove_resources'
-    post 'add_resources' => 'packages#add_resources'
+=end
   end
   resources :workflows
   resources :content_providers do
