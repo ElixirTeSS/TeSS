@@ -38,7 +38,7 @@ module SearchHelper
 	def show_less_link facet
 		parameters = params.dup
 		parameters.delete("#{facet}_all")
-		return link_to "Show less #{facet.humanize.pluralize}", parameters
+		return link_to "Show less #{facet.humanize.pluralize.downcase}", parameters
 	end
 
 	def neatly_printed_date_range start, finish

@@ -136,7 +136,33 @@ $colHover2      : #eeeeee;
     background: #064559;
 }
 
-.wrapper {
+div#sidebar{
+    padding: 0px;
+    border: solid #cccccc;
+    border-width: 0px 1px 0px 0px;
+    height:100%;
+}
+div#sidebar table tr td.h4{
+    padding-left: 10px;
+}
+
+div#sidebar table tr td{
+    padding-left: 20px;
+}
+
+// Bootstrap's row
+.row {
+    margin: 10px 0px 10px 0px;
+    height: 100%;
+}
+body {
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+body, html {
+    height: 100%;
+}
+div.wrapper {
     *zoom: 1;
     background-color: #FFF;
     border: 1px solid #cccccc;
@@ -150,18 +176,14 @@ $colHover2      : #eeeeee;
     background-color: #fff;
     margin-bottom: 20px;
     margin-left: 0;
+    display: table;
+    width: 100%;
+    height: 100%; /* this will be treated as a Minimum! It will stretch to fit content */
 }
 
-div#sidebar{
-    padding: 0px;
-    border: solid #cccccc;
-    border-width: 0px 1px 0px 0px;
-    height:100%;
-}
-#sidebar table tr td.h4{
-    padding-left: 10px;
-}
-
-#sidebar table tr td{
-    padding-left: 20px;
+div#sidebar table tr td a:hover {
+    //color: #000;
+    background-color: #B0C3C9;
+    padding: 3px;
+    text-decoration: none;
 }
