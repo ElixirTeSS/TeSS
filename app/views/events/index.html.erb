@@ -35,16 +35,19 @@
             <%= render :partial => "search/common/search_info", :locals => {:resources => @events} %>
           </div>
           <!-- INCUDE EXPIRED EVENTS -->
-          <div class="col-md-4" style="padding-top:10px;">
-            <div class="checkbox pull-right">
-              <label class="checkbox-inline">
-                <% if include_expired %>
-                  <input type="checkbox" id="include_past_events" checked>Include past events
-                <% else %>
-                    <input type="checkbox" id="include_past_events">Include past events
-                <% end %>
-              </label>
-            </div>
+          <div class="col-md-4">
+            <form class="form-inline" style="padding-top:3px;">
+              <div class="form-group pull-right">
+                <!--<div class="checkbox pull-right">-->
+                <label class="checkbox-inline">
+                  <% if include_expired %>
+                      <input type="checkbox" id="include_past_events" checked>Include past events
+                  <% else %>
+                      <input type="checkbox" id="include_past_events">Include past events
+                  <% end %>
+                </label>
+              </div>
+            </form>
             <%= javascript_tag do %>
                 var eventsURL = '<%= j events_path %>';
                 var eventsURL_include_expired = '<%= j events_path(:include_expired => true) %>';
@@ -54,16 +57,16 @@
                 var checkbox = jQuery(this);
                 if(checkbox.prop("checked"))
                 {
-                  window.location.href = eventsURL_include_expired
+                window.location.href = eventsURL_include_expired
                 }
                 else{
-                  window.location.href = eventsURL
+                window.location.href = eventsURL
                 }
                 });
             <% end %>
           </div>
           <!-- SORT BY OPTIONS    -->
-          <div class="col-md-4" style="padding-top:5px;">
+          <div class="col-md-4">
             <%= render :partial => "search/common/sort_by",
                        :locals => {:resources => @events,
                                    :extras => [['Earliest', 'early'], ['Latest', 'late']]} %>

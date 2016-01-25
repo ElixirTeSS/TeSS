@@ -7,9 +7,9 @@ Globals
 %>
 
 <!-- RESULTS COUNT -->
-<h3>
+<div style="font-size: medium; font-weight: bold; margin-top: 5px;">
 	<%= pluralize( resources.total, 'result' ) %> found
-</h3>
+</div>
 
 <!-- FILTERS APPLIED -->
 <% @facet_params.each do |category, value| %>

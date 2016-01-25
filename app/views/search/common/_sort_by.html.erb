@@ -17,12 +17,12 @@ e.g.
     <% end %>
 <% end %>
 
-<div class="form-group" style="padding-top: 10px;">
-  <form class="form-inline">
-    <label for="order_by">Order by:</label>
+<form class="form-inline">
+  <div class="form-group">
+    <label for="order_by">Sort by:</label>
     <%= select_tag(:sort, options_for_select(
         options, @sort_by),
-                 :onchange  => "redirect_to_sort_url()", :class => "form-control")
+                   :onchange  => "redirect_to_sort_url()", :class => "form-control")
     %>
-    </form>
-</div>
+  </div>
+</form>
