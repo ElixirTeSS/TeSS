@@ -8,14 +8,14 @@ field_name - The name of the attribute
   <input name="package[<%=field_name%>_ids][]" value="" style="display:none"/>
   <div class="controls" data-field="<%=field_name%>">
     <div class="<%=field_name%> multiple-input-list">
-<!--      <% package.send(field_name.pluralize).each do |resource| %>
+      <% package.send(field_name.pluralize).each do |resource| %>
           <div class="list-item">
             <input type="text" class="multiple-input" data-field='<%=field_name%>' name="package[<%=field_name%>_ids][]"
                    value="<%=resource.id%>" style="display:none;"><%=resource.title%></input>
             <input type="button" value="x" class="dropdown-option-delete" data-field="<%=field_name%>"
                    data-value="<%=resource.id%>" data-name="<%=resource.title%>"/>
           </div>
-      <% end %>-->
+      <% end %>
     </div>
     <div class="dropdown">
       <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">

@@ -97,6 +97,7 @@ class PackagesController < ApplicationController
     @events = @package.events
   end
 
+=begin
   def remove_resources
     @package = Package.friendly.find(params[:package_id])
     remove_resources_from_package(params[:package][:material_ids], params[:package][:event_ids])
@@ -107,20 +108,21 @@ class PackagesController < ApplicationController
       end
     end
   end
+=end
 
-  def add_resources
-
+  def update_package_resources
     @package = Package.friendly.find(params[:package_id])
-    add_resources_to_package(params[:package][:material_ids], params[:package][:event_ids])
+    @package = add_resources_to_package(@package, params[:package][:material_ids], params[:package][:event_ids])
     if @package.save!
       respond_to do |format|
-        format.html { redirect_to @package, notice: 'Package was successfully updated.' }
+        format.html { redirect_to @package, notice: 'Package contents updated.' }
         format.json { render :show, status: :ok, location: @package }
       end
     end
   end
 
   private
+=begin
     def remove_resources_from_package(materials, events)
       remove_materials_from_package(materials) if !materials.nil? and !materials.empty?
       remove_events_from_package(events) if !events.nil? and !events.empty?
@@ -137,10 +139,22 @@ class PackagesController < ApplicationController
         @package.events.delete(x) unless x.nil?
       end
     end
+=end
 
-    def add_resources_to_package(materials, events)
-      @package.materials << materials.collect{|mat| Material.find_by_id(mat)}.compact - [@package.materials] if !materials.nil? and !materials.empty?
-      @package.events << events.collect{|eve| Event.find_by_id(eve)}.compact - [@package.events] if !events.nil? and !events.empty?
+    def add_resources_to_package(package, materials, events)
+      if !materials.nil? and !materials.empty?
+        package.materials = []
+        package.materials = materials.uniq.collect{|mat| Material.find_by_id(mat)}.compact
+      else
+        package.materials = []
+      end
+      if !events.nil? and !events.empty?
+        package.events = []
+        package.events = events.uniq.collect{|eve| Event.find_by_id(eve)}.compact
+      else
+        package.events = []
+      end
+      return package
     end
 
   # Use callbacks to share common setup or constraints between actions.
