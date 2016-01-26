@@ -176,6 +176,12 @@ ContentProvider.create!(
     logo_url: "https://www.bits.vib.be/images/images/bits_logo_color_2012_04_transp.png",
     description: "Provider of Bioinformatics and software training, plus informatics services and resource management support."
 ).create_activity :create
+ContentProvider.create!(
+    title: "ELIXIR",
+    url: "http://www.elixir-europe.org/",
+    logo_url: "http://www.elixir-europe.org/global/images/ELIXIR_logo.png",
+    description: "ELIXIR intends to create an infrastructure that integrates research data from all corners of Europe, ensuring a service provision which provides Open Access to rapidly expanding and critical datasets."
+).create_activity :create
 
 
 
