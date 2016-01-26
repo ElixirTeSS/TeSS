@@ -29,8 +29,9 @@ class EventsController < ApplicationController
     if SOLR_ENABLED
       @events = solr_search(Event, @search_params, @@facet_fields, @facet_params, @page, @sort_by)
     else
-      @events = Event.all
+      @events = Event.all # This will break things because @events.results doesn't exist
     end
+
     respond_to do |format|
       format.json { render json: @events.results }
       format.html
