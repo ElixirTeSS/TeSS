@@ -350,6 +350,17 @@ div#sidebar table tr td a:hover {
 }
 // ######## End from CKAN
 
+// Override Boostrap's pagination colours
+.pagination>li>a, .pagination>li>span {
+    color: #206B82;
+}
+.pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
+    background-color: #206B82;
+    border-color: #285e8e;
+}
+// End override Boostrap's pagination colours
+
+
 .filter-button{
     color: #ffffff;
     background-color: #B0C3C9;

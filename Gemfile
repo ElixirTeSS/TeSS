@@ -59,6 +59,9 @@ gem "breadcrumbs_on_rails"
 # Gem for rendering Markdown
 gem "redcarpet"
 
+# Gem for paginating search results
+gem "will_paginate-bootstrap"
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
