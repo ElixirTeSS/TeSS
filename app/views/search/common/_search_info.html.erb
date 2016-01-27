@@ -17,11 +17,11 @@ Globals
 		<% if value.is_a?(Array)%>
 				<b><%= category.humanize.pluralize %></b>:
 				<% value.each do |val| %>
-						<span class="remove_applied_filter"> <%=remove_filter_link(category, val)%></span>
+						<span><%=remove_filter_link(category, val, {:class =>"btn btn-default"})%></span>
 				<% end %>
 		<% else %>
 				<b><%= category.humanize %></b>:
-				<span class="remove_applied_filter"><%=remove_filter_link(category, value)%></span>
+				<span><%=remove_filter_link(category, value, {:class =>"btn btn-default"})%></span>
 		<% end %>
 		<br>
 <% end %>
