@@ -31,7 +31,7 @@ Variable that should be available
               <!-- Display all filter links -->
               <% filters_to_show.each do |facet| %>
                   <% if @facet_params.include?(facet_field) and @facet_params[facet_field].include?(facet.value) %>
-                      <tr style="background-color:lightgray">
+                      <tr style="background-color: #B0C3C9; color: #ffffff;">
                         <td><%= remove_filter_link(facet_field, facet.value)%></td>
                   <% else %>
                       <tr><td><%= filter_link(facet_field, facet.value)%></td>
