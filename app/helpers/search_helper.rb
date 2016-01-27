@@ -16,7 +16,7 @@ module SearchHelper
 	end
 
 
-	def remove_filter_link name, value
+	def remove_filter_link name, value, html_options=nil
 		parameters = params.dup
 	  #delete a filter from an array or delete the whole facet if it is the only one
 	  if parameters.include?(name)
@@ -27,7 +27,7 @@ module SearchHelper
 		end
 	  #remove the page option if it exists
 		parameters.delete('page')
-	  return link_to "x #{value}", parameters 
+	  return link_to "&times; #{value}".html_safe, parameters, html_options
 	end
 
 	def show_more_link facet
