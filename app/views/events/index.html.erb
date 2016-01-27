@@ -83,13 +83,23 @@
   <% end %>
 
   <% unless @events.blank? %>
-        <div class="row event-grid" style="background-color: #eeeeee;">
-        <!--<#%= render :partial => "tab_headings", :locals => {:selected_tab => "grid"} %>-->
-        <!-- ACTUAL RESULTS LIST -->
+
+      <div id="grid-content">
+        <ul class="masonry media-grid">
           <% @events.each do |event| %>
               <%= render event %>
           <% end %>
-        </div>
+        </ul>
+      </div>
+
+
+        <!--<div class="row event-grid" style="background-color: #eeeeee;">-->
+        <!--&lt;!&ndash;<#%= render :partial => "tab_headings", :locals => {:selected_tab => "grid"} %>&ndash;&gt;-->
+        <!--&lt;!&ndash; ACTUAL RESULTS LIST &ndash;&gt;-->
+          <!--<#% @events.each do |event| %>-->
+              <!--<#%= render event %>-->
+          <!--<#% end %>-->
+        <!--</div>-->
 
         <!-- Alternative Map view -->
         <!--<div id="map-content" class="tab-content">-->
