@@ -111,7 +111,6 @@ $colHover2      : #eeeeee;
     }
 }
 
-
 a:hover {
     color: steelblue;
     background-color: transparent;
@@ -156,7 +155,7 @@ div#sidebar table tr td{
 
 // Bootstrap's row
 .row {
-    margin: 10px 0px 20px 0px;
+    margin: 10px 0px 10px 0px;
     //padding: 0px 0px 10px 0px;  // Do not add padding to the row - messes up sidebar etc.
 }
 
@@ -179,64 +178,24 @@ div.wrapper {
     align-items: stretch;
 }
 
-div#sidebar table tr td a:hover {
-    color: #fff;
-    background-color: #B0C3C9;
+div#sidebar table tr td a {
+    color: #000000;
     padding: 3px;
     text-decoration: none;
 }
 
-// From CKAN's style
-//.event-grid {
-//    //list-style: outside none none;
-//    background: #FBFBFB url("/images/bg.png") repeat scroll 0% 0%;
-//    border-style: solid;
-//    border-color: #DDD;
-//    border-width: 1px;
-//}
-
-//// Bootstrap's col-md-3
-//.col-md-3, col-xs-3{
-//    padding: 5px;
-//}
-//
-//.event-item {
-//    //position: relative;                           s
-//    //float: left;
-//    //width: 189px;
-//    padding: 5px 5px 5px 5px;
-//    margin: 2px 2px 2px 2px;
-//    background-color: #FFF;
-//    border-radius: 5px;
-//}
-//
-//.event-item a {
-//    color: #187794;
-//    text-decoration: none;
-//}
-//
-//.event-item a:hover,
-//a:focus {
-//    color: #0d4252;
-//    text-decoration: underline;
-//    background-color: white;
-//}
-//
-//.event-heading {
-//    font-weight: bold;
-//
-//}
-//
-//.event-item p {
-//    margin: 10px 0px 0px 0px;
-//}
+div#sidebar table tr td a:hover {
+    background-color: #B0C3C9;
+    color: #ffffff;
+    padding: 3px;
+    text-decoration: none;
+}
 
  // ######## From CKAN
 .media-grid {
     margin: 0;
     list-style: none;
     *zoom: 1;
-    //margin: 0 -25px;
     padding-bottom: 15px;
     background: #fbfbfb url("/assets/bg.png");
     border: 1px solid #dddddd;
@@ -251,11 +210,6 @@ div#sidebar table tr td a:hover {
 .media-grid:after {
     clear: both;
 }
-//@media (min-width: 768px) {
-//    .media-grid {
-//        margin-left: -27px;
-//    }
-//}
 .media-item {
     position: relative;
     float: left;
@@ -395,3 +349,8 @@ div#sidebar table tr td a:hover {
     width: 186px;
 }
 // ######## End from CKAN
+
+.filter-button{
+    color: #ffffff;
+    background-color: #B0C3C9;
+}
