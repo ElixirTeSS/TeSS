@@ -1,22 +1,23 @@
 <script>
-    $(document).ready(function(){
-      reposition_tiles('masonry', 'masonry-brick');
-    })
+  $(document).ready(function(){
+    reposition_tiles('masonry', 'masonry-brick');
+  })
 </script>
 
 
 <%- model_class = ContentProvider -%>
 <div class="page-header">
   <h2><%=t '.title', :default => pluralize(@content_providers.count, model_class.to_s.titleize.downcase)%> found</h2>
-<!-- CREATE NEW BUTTON -->
+  <!-- CREATE NEW BUTTON -->
   <%= link_to new_content_provider_path, :class=>"btn btn-primary" do %>
       <i class="fa fa-plus-square"></i> Create content provider
   <% end %>
 </div>
 
-
-<ul class="masonry media-grid">
-    <% @content_providers.each do |content_provider|  %>
+<% unless @content_providers.blank? %>
+    <ul class="masonry media-grid">
+      <% @content_providers.each do |content_provider|  %>
           <%= render content_provider %>
-    <% end %>
-</ul>
+      <% end %>
+    </ul>
+<% end %>
