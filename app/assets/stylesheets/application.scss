@@ -191,7 +191,7 @@ div#sidebar table tr td a:hover {
     text-decoration: none;
 }
 
- // ######## From CKAN
+// ######## From CKAN
 .media-grid {
     margin: 0;
     list-style: none;
@@ -360,8 +360,58 @@ div#sidebar table tr td a:hover {
 }
 // End override Boostrap's pagination colours
 
+// CKAN's sidebar facets
+ul.unstyled{
+    margin-left: 0px;
+    list-style: outside none none;
+    padding-left: 0px;
+}
+.nav-simple {
+    margin: 0px;
+    list-style: outside none none;
+    padding-bottom: 0px;
+}
+.nav-simple > li {
+    padding: 0px;
+    border-bottom: 1px dotted #DDD;
+}
+.nav-simple > li:last-of-type {
+    border-bottom: 0px none;
+}
+.nav-item > a {
+    padding-left: 15px;
+    padding-right: 15px;
+    position: relative;
+    display: block;
+    color: #333;
+    //font-size: 14px;
+    //line-height: 20px;
+    //margin: -7px -25px;
+    padding: 7px 25px;
+    text-decoration: none;
+}
+.nav-item > a:hover {
+    background-color: #eeeeee;
+}
+.nav-item.active > a {
+    position: relative;
+    color: #ffffff;
+    background-color: #8CA0A6;
+}
+.nav-item.active > a:hover {
+    color: #ffffff;
+    background-color: #206B82;
+}
+// End CKAN's sidebar facets
 
+// Facet's title
+.nav-heading{
+    padding: 10px;
+    background-color: #F6F6F6;
+    margin: 0px;
+}
 .filter-button{
     color: #ffffff;
-    background-color: #B0C3C9;
+    //background-color: #B0C3C9;
+    background-color: #8CA0A6;
 }

@@ -12,11 +12,11 @@ Variable that should be available
       No resources to filter
     </p>
 <% else %>
-    <table class="table table-striped">
+    <ul class="unstyled nav-simple">
       <% @facet_fields.each do |facet_field| %>
           <% if resources.facet(facet_field).rows.count > 0 %>
               <!-- Title -->
-              <tr><td class="h4"><%= facet_field.humanize %></td><td></td></tr>
+              <li><h4 class="nav-heading"><%= facet_field.humanize %></h4></li>
 
               <!-- Select first 10 or all filters-->
               <% showing_all = false %>
@@ -27,27 +27,25 @@ Variable that should be available
                   <% filters_to_show = resources.facet(facet_field).rows.first(10) %>
               <% end %>
 
-
               <!-- Display all filter links -->
               <% filters_to_show.each do |facet| %>
                   <% if @facet_params.include?(facet_field) and @facet_params[facet_field].include?(facet.value) %>
-                      <tr style="background-color: #B0C3C9; color: #ffffff;">
-                        <td><%= remove_filter_link(facet_field, facet.value)%></td>
+                      <li class="nav-item active">
+                        <%= remove_filter_link(facet_field, facet.value)%>
+                      </li>
                   <% else %>
-                      <tr><td><%= filter_link(facet_field, facet.value)%></td>
+                      <li class="nav-item"><%= filter_link(facet_field, facet.value)%></li>
                   <% end %>
-                  <td><%= facet.count %></td>
-                  </tr>
               <% end %>
 
               <!-- Display 'show more' link -->
               <% if !showing_all and filters_to_show.count >= 10 %>
-                  <tr><td colspan="2"><strong><%= show_more_link(facet_field) %></strong></td> </tr>
+                  <li class="nav-item"><%= show_more_link(facet_field) %></li>
               <% end %>
               <% if showing_all and filters_to_show.count >= 10 %>
-                  <tr><td colspan="2"><strong><%= show_less_link(facet_field) %></strong></td> </tr>
+                  <li class="nav-item"><%= show_less_link(facet_field) %></li>
               <% end %>
           <% end %>
       <% end %>
-    </table>
+    </ul>
 <% end %>
