@@ -178,6 +178,7 @@ div.wrapper {
     align-items: stretch;
 }
 
+// Sidebar with facet filtering
 div#sidebar table tr td a {
     color: #000000;
     padding: 3px;
@@ -191,7 +192,7 @@ div#sidebar table tr td a:hover {
     text-decoration: none;
 }
 
-// ######## From CKAN
+// ######## Media-bricks modified from CKAN
 .media-grid {
     margin: 0;
     list-style: none;
@@ -348,7 +349,6 @@ div#sidebar table tr td a:hover {
 .wide .media-item {
     width: 186px;
 }
-// ######## End from CKAN
 
 // Override Boostrap's pagination colours
 .pagination>li>a, .pagination>li>span {
@@ -358,9 +358,8 @@ div#sidebar table tr td a:hover {
     background-color: #206B82;
     border-color: #285e8e;
 }
-// End override Boostrap's pagination colours
 
-// CKAN's sidebar facets
+// Modified from CKAN - for sidebar facets
 ul.unstyled{
     margin-left: 0px;
     list-style: outside none none;
@@ -391,7 +390,8 @@ ul.unstyled{
     text-decoration: none;
 }
 .nav-item > a:hover {
-    background-color: #eeeeee;
+    background-color: #e6e6e6;
+    border-color:#adadad;
 }
 .nav-item.active > a {
     position: relative;

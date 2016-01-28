@@ -32,13 +32,13 @@ module SearchHelper
 
 	def show_more_link facet
 		parameters = params.dup
-		return link_to "Show more #{facet.humanize.pluralize.downcase}", parameters.merge("#{facet}_all"=>true)
+		return link_to "Show more #{facet.humanize.pluralize.downcase} <i class='indicator glyphicon glyphicon-chevron-down pull-right'></i>".html_safe, parameters.merge("#{facet}_all"=>true)
 	end
 
 	def show_less_link facet
 		parameters = params.dup
 		parameters.delete("#{facet}_all")
-		return link_to "Show less #{facet.humanize.pluralize.downcase}", parameters
+		return link_to "Show less #{facet.humanize.pluralize.downcase} <i class='indicator glyphicon glyphicon-chevron-up pull-right'></i>".html_safe, parameters
 	end
 
 	def neatly_printed_date_range start, finish
