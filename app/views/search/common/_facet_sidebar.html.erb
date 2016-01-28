@@ -40,10 +40,14 @@ Variable that should be available
 
               <!-- Display 'show more' link -->
               <% if !showing_all and filters_to_show.count >= 10 %>
-                  <li class="nav-item"><%= show_more_link(facet_field) %></li>
+                  <li class="nav-item">
+                    <%= show_more_link(facet_field) %>
+                  </li>
               <% end %>
               <% if showing_all and filters_to_show.count >= 10 %>
-                  <li class="nav-item"><%= show_less_link(facet_field) %></li>
+                  <li class="nav-item">
+                        <%= show_less_link(facet_field) %>
+                  </li>
               <% end %>
           <% end %>
       <% end %>
