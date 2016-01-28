@@ -53,7 +53,8 @@ GEM
     bootstrap-sass (3.3.6)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
-    breadcrumbs_on_rails (2.3.1)
+    bootstrap-sass-extras (0.0.6)
+      rails (>= 3.1.0)
     builder (3.2.2)
     byebug (6.0.2)
     coffee-rails (4.1.0)
@@ -246,7 +247,7 @@ DEPENDENCIES
   activerecord-session_store
   auto_strip_attributes (~> 2.0)
   bootstrap-sass
-  breadcrumbs_on_rails
+  bootstrap-sass-extras
   byebug
   coffee-rails (~> 4.1.0)
   devise

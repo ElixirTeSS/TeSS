@@ -90,13 +90,18 @@
 
   <%= flash_messages %>
 
-  <% unless breadcrumbs.empty? %>
-      <div id="breadcrumbs">
-        <ul class="breadcrumb">
-          <%= render_breadcrumbs :tag => :li, :separator => "" %>
-          <!--<%#= render_breadcrumbs :builder => ::BootstrapBreadcrumbsBuilder %>-->
-          <!--<#%= render_breadcrumbs(" ", { class: '', item_class: '', divider_class: '', active_class: 'active' }) %>-->
-        </ul>
+  <%# unless breadcrumbs.empty? %>
+      <!--<div id="breadcrumbs">-->
+        <!--<ul class="breadcrumb">-->
+          <!--<#%= render_breadcrumbs :tag => :li, :separator => "" %>-->
+          <!--&lt;!&ndash;<%#= render_breadcrumbs :builder => ::BootstrapBreadcrumbsBuilder %>&ndash;&gt;-->
+          <!--&lt;!&ndash;<#%= render_breadcrumbs(" ", { class: '', item_class: '', divider_class: '', active_class: 'active' }) %>&ndash;&gt;-->
+        <!--</ul>-->
+      <!--</div>-->
+  <%# end %>
+  <!-- Breadcrumbs -->
+  <%= render_breadcrumbs do |breadcrumbs| %>
+      <%= content_tag(:div, breadcrumbs, class: "breadcrumbs") %>
   <% end %>
 
   <%# main content part of every page -%>

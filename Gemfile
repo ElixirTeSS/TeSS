@@ -55,7 +55,9 @@ gem "auto_strip_attributes", "~> 2.0"
 gem 'valid_url'
 
 # Gem for adding breadcrumbs
-gem "breadcrumbs_on_rails"
+# gem "breadcrumbs_on_rails"
+# Gem for breadcrums and other extras
+gem "bootstrap-sass-extras"
 
 # Gem for rendering Markdown
 gem "redcarpet"
