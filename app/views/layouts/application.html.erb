@@ -32,20 +32,20 @@
   <div class="container">
     <!-- Navigation bar -->
     <nav class="navbar navbar-default" style="margin:0px; border:0px; background-color: #333333;" role="navigation">
-    <a href="http://www.elixir-europe.org/">
-      <img src="/assets/hub-logo.png" style="padding-top:12px;">
-    </a>
-    <% if current_user %>
-        <%= menu_group :class=>"account", pull: :right do %>
-            <%= menu_item current_user.username, user_path(current_user), :class=>"username"%>
-            <%= menu_item "Log out", destroy_user_session_path, :method => :delete %>
-        <% end %>
-    <% else %>
-        <%= menu_group pull: :right do %>
-            <%= menu_item "Log in", new_user_session_path %>
-            <%= menu_item "Register", new_user_registration_path %>
-        <% end %>
-    <% end %>
+      <a href="http://www.elixir-europe.org/">
+        <img src="/assets/hub-logo.png" style="padding-top:12px;">
+      </a>
+      <% if current_user %>
+          <%= menu_group :class=>"account", pull: :right do %>
+              <%= menu_item current_user.username, user_path(current_user), :class=>"username"%>
+              <%= menu_item "Log out", destroy_user_session_path, :method => :delete %>
+          <% end %>
+      <% else %>
+          <%= menu_group pull: :right do %>
+              <%= menu_item "Log in", new_user_session_path %>
+              <%= menu_item "Register", new_user_registration_path %>
+          <% end %>
+      <% end %>
     </nav>
   </div>
 </header>
@@ -74,11 +74,11 @@
           </ul>
 
           <%= form_tag search_path, :method => :get, :class=>"navbar-form navbar-right", :role=>"search" do %>
-            <div class="form-group">
+              <div class="form-group">
                 <input type="text" class="form-control" name='q' placeholder="Search...">
-            </div>
-            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i> Submit</button>
-           <% end %>
+              </div>
+              <button type="submit" class="btn btn-default"><i class="fa fa-search"></i> Submit</button>
+          <% end %>
 
         </div><!-- /.navbar-collapse -->
       </div>
@@ -91,17 +91,18 @@
   <%= flash_messages %>
 
   <% unless breadcrumbs.empty? %>
-      <div class="breadcrumbs">
-        <!--<%#= render_breadcrumbs :tag => 'li', :separator => ' ' %>-->
-        <!--<%#= render_breadcrumbs :builder => ::BootstrapBreadcrumbsBuilder %>-->
-        <%= render_breadcrumbs(" ", { class: '', item_class: '', divider_class: '', active_class: 'active' }) %>
-      </div>
+      <div id="breadcrumbs">
+        <ul class="breadcrumb">
+          <%= render_breadcrumbs :tag => :li, :separator => "" %>
+          <!--<%#= render_breadcrumbs :builder => ::BootstrapBreadcrumbsBuilder %>-->
+          <!--<#%= render_breadcrumbs(" ", { class: '', item_class: '', divider_class: '', active_class: 'active' }) %>-->
+        </ul>
   <% end %>
 
   <%# main content part of every page -%>
   <%= yield :layout %>
 
-</div>
+  </div>
 
 </body>
 </html>

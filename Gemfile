@@ -21,11 +21,12 @@ gem 'public_activity'
 gem 'simple_token_authentication', '~> 1.0'
 
 gem "therubyracer"
-gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
-gem "twitter-bootstrap-rails"
+# gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
+# gem "twitter-bootstrap-rails"
+gem 'bootstrap-sass'
+gem 'font-awesome-sass', '~> 4.5.0'
 
 gem 'friendly_id', '~> 5.1.0'
-
 
 gem 'sunspot_rails'
 gem 'sunspot_solr'

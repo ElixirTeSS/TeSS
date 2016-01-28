@@ -27,18 +27,18 @@ module SearchHelper
 		end
 	  #remove the page option if it exists
 		parameters.delete('page')
-	  return link_to "&times; #{value}".html_safe, parameters, html_options
+	  return link_to "#{value}&nbsp;<i class='glyphicon glyphicon-remove pull-right'></i>".html_safe, parameters, html_options
 	end
 
 	def show_more_link facet
 		parameters = params.dup
-		return link_to "Show more #{facet.humanize.pluralize.downcase} <i class='indicator glyphicon glyphicon-chevron-down pull-right'></i>".html_safe, parameters.merge("#{facet}_all"=>true)
+		return link_to "<span style='font-weight: bold;'>Show more #{facet.humanize.pluralize.downcase}</span><i class='glyphicon glyphicon-chevron-down pull-right'></i>".html_safe, parameters.merge("#{facet}_all"=>true)
 	end
 
 	def show_less_link facet
 		parameters = params.dup
 		parameters.delete("#{facet}_all")
-		return link_to "Show less #{facet.humanize.pluralize.downcase} <i class='indicator glyphicon glyphicon-chevron-up pull-right'></i>".html_safe, parameters
+		return link_to "<span style='font-weight: bold;'>Show less #{facet.humanize.pluralize.downcase}</span><i class='glyphicon glyphicon-chevron-up pull-right'></i>".html_safe, parameters
 	end
 
 	def neatly_printed_date_range start, finish
