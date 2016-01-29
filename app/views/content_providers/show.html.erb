@@ -9,23 +9,29 @@
 </div>
 
 <div class="show-page-description">
-    <%= @content_provider.description %>
+  <%= @content_provider.description %>
 </div>
 
-<%= link_to t('.back', :default => t("helpers.links.back")),
-            content_providers_path, :class => 'btn btn-info'  %>
-<%= link_to t('.edit', :default => t("helpers.links.edit")),
-            edit_content_provider_path(@content_provider), :class => 'btn btn-primary' %>
-<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-            content_provider_path(@content_provider),
-            :method => 'delete',
-            :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-            :class => 'btn btn-danger' %>
-
-<div class="h4">
-    This content provider has <%= pluralize(@content_provider.materials.count, 'material') %> in TeSS
+<div class="row">
+  <%= link_to t('.back', :default => t("helpers.links.back")),
+              content_providers_path, :class => 'btn btn-info'  %>
+  <%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_content_provider_path(@content_provider), :class => 'btn btn-primary' %>
+  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              content_provider_path(@content_provider),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>
 </div>
 
-<% @content_provider.materials.each do |material| %>
-    <%= render material %>
-<% end %>
+
+<div class="search-results-count">
+  Found <%= pluralize(@content_provider.materials.count, 'training material') %>.
+</div>
+
+<div class="row">
+  <% @content_provider.materials.each do |material| %>
+      <%= render material %>
+  <% end %>
+</div>
+
