@@ -90,4 +90,14 @@ module ApplicationHelper
   end
   # End from twitter-bootstrap-rails gem for less
 
+  def get_content_provider_logo_url(content_provider)
+    if content_provider.blank?
+      return nil
+    elsif content_provider.logo_url.blank?
+      return "placeholder-organization.png" # Default placeholder logo for an institution/organisation
+    else
+      content_provider.logo_url
+    end
+  end
+
 end
