@@ -182,6 +182,12 @@ ContentProvider.create!(
     logo_url: "http://www.elixir-europe.org/global/images/ELIXIR_logo.png",
     description: "ELIXIR intends to create an infrastructure that integrates research data from all corners of Europe, ensuring a service provision which provides Open Access to rapidly expanding and critical datasets."
 ).create_activity :create
+ContentProvider.create!(
+    title: "CSC",
+    url: "https://www.csc.fi",
+    logo_url: "https://www.csc.fi/csc-subpage-theme/images/csc-logo-teksti-en.png",
+    description: "CSC maintains and develops the Finnish state-owned centralised IT infrastructure and uses it to provide nationwide IT services for research, libraries, archives, museums and culture as well as information, education and research management.."
+).create_activity :create
 
 
 
