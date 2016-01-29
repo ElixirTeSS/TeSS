@@ -6,6 +6,7 @@ class ContentProvider < ActiveRecord::Base
   friendly_id :title, use: :slugged
 
   has_many :materials
+  has_many :events
 
   unless SOLR_ENABLED==false
     searchable do

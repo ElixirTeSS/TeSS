@@ -5,6 +5,7 @@ class Event < ActiveRecord::Base
   extend FriendlyId
   friendly_id :title, use: :slugged
 
+
   unless SOLR_ENABLED==false
     searchable do
       text :title
@@ -31,6 +32,8 @@ class Event < ActiveRecord::Base
 
   has_many :package_events
   has_many :packages, through: :package_events
+
+  belongs_to :content_provider
 
   validates :title, :link, presence: true
 

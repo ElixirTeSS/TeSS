@@ -1,4 +1,4 @@
-<%= form_for @content_provider, :html => { :class => "form-horizontal content_provider" } do |f| %>
+<%= simple_form_for @content_provider, :html => { :class => "form-horizontal content_provider" } do |f| %>
 
     <% if @content_provider.errors.any? %>
         <div id="error_expl" class="panel panel-danger">
@@ -20,32 +20,31 @@
       <div class="controls">
         <%= f.text_field :title, :class => 'form-control' %>
       </div>
-      <%= error_span(@content_provider[:title]) %>
+      <%#= error_span(@content_provider[:title]) %>
     </div>
     <div class="control-group">
       <%= f.label :url, :class => 'control-label' %>
       <div class="controls">
         <%= f.text_field :url, :class => 'form-control' %>
       </div>
-      <%= error_span(@content_provider[:url]) %>
+      <%#= error_span(@content_provider[:url]) %>
     </div>
     <div class="control-group">
       <%= f.label :logo_url, :class => 'control-label' %>
       <div class="controls">
         <%= f.text_field :logo_url, :class => 'form-control' %>
       </div>
-      <%= error_span(@content_provider[:logo_url]) %>
+      <%#= error_span(@content_provider[:logo_url]) %>
     </div>
     <div class="control-group">
       <%= f.label :description, :class => 'control-label' %>
       <div class="controls">
         <%= f.text_field :description, :class => 'form-control' %>
       </div>
-      <%= error_span(@content_provider[:description]) %>
+      <%#= error_span(@content_provider[:description]) %>
     </div>
 
-
-    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= f.submit ( f.object.new_record? ? "Create" : "Update") + " content provider", :class => 'btn btn-primary' %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                 content_providers_path, :class => 'btn btn-default' %>
 

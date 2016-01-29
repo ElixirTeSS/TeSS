@@ -136,7 +136,7 @@ class EventsController < ApplicationController
     def event_params
       params.require(:event).permit(:external_id, :title, :subtitle, :link, :provider, :description, {:field => []},
                                     {:category => []}, {:keyword => []}, :start, :end, :sponsor, :venue, :city, :county,
-                                    :country, :postcode, :latitude, :longitude)
+                                    :country, :postcode, :latitude, :longitude, :content_provider_id)
     end
 
     def set_params

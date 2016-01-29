@@ -1,12 +1,27 @@
 <div class="list-group-item">
   <div class="list-group-item-heading"><%= link_to(material.title, material, class: "btn btn-default btn-block") %></div>
-  <p class="list-group-item-text">
+  <div>
     <p><%= truncate(material.short_description, length: 300, separator: ' ') %></p>
-    <p>Keywords: <%= material.keywords.join(', ') %></p>
-    <p>Scientific topics: <%= material.scientific_topic.blank? ? "none" : material.scientific_topic.map{|x| x.preferred_label}.join(', ') %></p>
-  </p>
-
-  <%= html_logo_for(material.content_provider).html_safe %>
+    <div class="row" style="margin: 0px;">
+      <% if controller_name == 'materials' %>
+          <div class="col-md-10" style="padding: 0px;">
+            <p><b>Keywords: </b><%= material.keywords.join(', ') %></p>
+            <p><b>Scientific topics: </b><%= material.scientific_topic.blank? ? "none" : material.scientific_topic.map{|x| x.preferred_label}.join(', ') %></p>
+          </div>
+          <div class="col-md-2">
+            <%= html_logo_for(material.content_provider,'pull-right small-content-provider-logo').html_safe %>
+            <!-- Add node logo as well, if material's provider  belongs to a node -->
+            <%#= html_logo_for('material's-node-logo','pull-right small-content-provider-logo').html_safe %>
+          </div>
+      <% else %>
+          <div class="col-md-12" style="padding: 0px;">
+            <p><b>Keywords: </b><%= material.keywords.join(', ') %></p>
+            <p><b>Scientific topics: </b><%= material.scientific_topic.blank? ? "none" : material.scientific_topic.map{|x| x.preferred_label}.join(', ') %></p>
+          </div>
+      <% end %>
+    </div>
+  </div>
+  <!--<#%= link_to '', material, :class=>"media-view"%>-->
   <!--<#%= link_to '', material, :class=>"media-view"%>-->
 </div>
 
