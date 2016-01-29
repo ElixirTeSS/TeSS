@@ -44,7 +44,7 @@
       <%#= error_span(@content_provider[:description]) %>
     </div>
 
-    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= f.submit ( f.object.new_record? ? "Create" : "Update") + " content provider", :class => 'btn btn-primary' %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                 content_providers_path, :class => 'btn btn-default' %>
 

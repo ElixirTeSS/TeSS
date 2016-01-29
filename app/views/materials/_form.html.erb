@@ -164,7 +164,7 @@
 
     <%= render :partial => 'materials/partials/add_content_provider', :locals => {:f => f, :material => @material} %>
 
-    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= f.submit ( f.object.new_record? ? "Create" : "Update") + " training material", :class => 'btn btn-primary' %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                 materials_path, :class => 'btn btn-default' %>
 
