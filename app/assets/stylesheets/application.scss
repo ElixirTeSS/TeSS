@@ -242,7 +242,6 @@ div#sidebar table tr td a:hover {
 
 .media-item .media-image {
   margin-bottom: 5px;
-  max-width: 150px;
 }
 
 .media-item .media-edit {
@@ -378,6 +377,10 @@ div#sidebar table tr td a:hover {
 
 .wide .media-item {
   width: 186px;
+}
+
+.listing_image {
+  max-width: 150px;
 }
 
 // Override Boostrap's pagination colours
