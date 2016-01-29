@@ -10,18 +10,3 @@ Globals
 <div style="font-size: medium; font-weight: bold; margin-top: 5px;">
 	<%= pluralize( resources.total, 'result' ) %> found
 </div>
-
-<!-- FILTERS APPLIED -->
-<% @facet_params.each do |category, value| %>
-		<br>
-		<% if value.is_a?(Array)%>
-				<b><%= category.humanize.pluralize %></b>:
-				<% value.each do |val| %>
-						<span class="remove_applied_filter"> <%=remove_filter_link(category, val)%></span>
-				<% end %>
-		<% else %>
-				<b><%= category.humanize %></b>:
-				<span class="remove_applied_filter"><%=remove_filter_link(category, value)%></span>
-		<% end %>
-		<br>
-<% end %>

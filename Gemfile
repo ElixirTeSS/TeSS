@@ -21,11 +21,12 @@ gem 'public_activity'
 gem 'simple_token_authentication', '~> 1.0'
 
 gem "therubyracer"
-gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
-gem "twitter-bootstrap-rails"
+# gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
+# gem "twitter-bootstrap-rails"
+gem 'bootstrap-sass'
+gem 'font-awesome-sass', '~> 4.5.0'
 
 gem 'friendly_id', '~> 5.1.0'
-
 
 gem 'sunspot_rails'
 gem 'sunspot_solr'
@@ -54,10 +55,15 @@ gem "auto_strip_attributes", "~> 2.0"
 gem 'valid_url'
 
 # Gem for adding breadcrumbs
-gem "breadcrumbs_on_rails"
+# gem "breadcrumbs_on_rails"
+# Gem for breadcrums and other extras
+gem "bootstrap-sass-extras"
 
 # Gem for rendering Markdown
 gem "redcarpet"
+
+# Gem for paginating search results
+gem "will_paginate-bootstrap"
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

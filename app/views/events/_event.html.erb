@@ -1,10 +1,7 @@
-<div class="col-md-3 col-xs-3">
-  <div class="event-item">
-    <div class="event-heading"><%= link_to event.title, event%></div>
+<li class="masonry-brick media-item">
+  <h3 class="media-heading"><%= event.title %></h3>
     <!--<p><button class="btn btn-success"><a href="<%= event.link %>">View Event <span class="fa fa-external-link" aria-hidden="true"></span></a></button> </p>-->
     <p><%= neatly_printed_date_range(event.start, event.end) %></p>
-    <p><%= [event.venue, event.city, event.country].reject { |field_value| field_value.blank? }.join(", ")%></p>
-    <!--<img src="http://iann.pro/sites/default/files/itico_logo.png" class="iann">-->
-    <!--<div class="timestamp">Last Modified: <#%= neatly_printed_date(event.updated_at) %></div>-->
-  </div>
-</div>
+    <p><%= [event.venue, event.city, event.country].reject { |field_value| field_value.empty? }.join(", ")%></p>
+    <%= link_to '', event, :class=>"media-view" %>
+</li>

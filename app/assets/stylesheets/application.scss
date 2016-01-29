@@ -10,11 +10,17 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= require jquery-ui
- *= require bootstrap_and_overrides
- *= require_tree .
- *= require_self
+ = require jquery-ui
+ = require_tree .
+ = require_self
  */
+
+// "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import "font-awesome-sprockets";
+@import "font-awesome";
+@import "*";
 
 .elixir-black-header {
     background-color: #333333;
@@ -111,6 +117,11 @@ $colHover2      : #eeeeee;
     }
 }
 
+a:hover {
+    color: steelblue;
+    background-color: transparent;
+    text-decoration: none;
+}
 
 // Bootstrap's breadcrumbs
 .breadcrumb {
@@ -150,7 +161,7 @@ div#sidebar table tr td{
 
 // Bootstrap's row
 .row {
-    margin: 10px 0px 20px 0px;
+    margin: 10px 0px 10px 0px;
     //padding: 0px 0px 10px 0px;  // Do not add padding to the row - messes up sidebar etc.
 }
 
@@ -173,54 +184,241 @@ div.wrapper {
     align-items: stretch;
 }
 
-div#sidebar table tr td a:hover {
-    //color: #000;
-    background-color: #B0C3C9;
+// Sidebar with facet filtering
+div#sidebar table tr td a {
+    color: #000000;
     padding: 3px;
     text-decoration: none;
 }
 
-// From CKAN's style
-.event-grid {
-    //list-style: outside none none;
-    background: #FBFBFB url("/images/bg.png") repeat scroll 0% 0%;
-    border-style: solid;
-    border-color: #DDD;
-    border-width: 1px;
-}
-
-// Bootstrap's col-md-3
-.col-md-3, col-xs-3{
-    padding: 5px;
-}
-
-.event-item {
-    //position: relative;
-    //float: left;
-    //width: 189px;
-    padding: 5px 5px 5px 5px;
-    margin: 2px 2px 2px 2px;
-    background-color: #FFF;
-    border-radius: 5px;
-}
-
-.event-item a {
-    color: #187794;
+div#sidebar table tr td a:hover {
+    background-color: #B0C3C9;
+    color: #ffffff;
+    padding: 3px;
     text-decoration: none;
 }
 
-.event-item a:hover,
-a:focus {
-    color: #0d4252;
-    text-decoration: underline;
+// ######## Media-bricks modified from CKAN
+.media-grid {
+    margin: 0;
+    list-style: none;
+    *zoom: 1;
+    padding-bottom: 15px;
+    background: #fbfbfb url("/assets/bg.png");
+    border: 1px solid #dddddd;
+    border-width: 1px;
+}
+.media-grid:before,
+.media-grid:after {
+    display: table;
+    content: "";
+    line-height: 0;
+}
+.media-grid:after {
+    clear: both;
+}
+.media-item {
+    position: relative;
+    float: left;
+    width: 200px;
+    padding: 15px;
+    margin: 15px 0 0 15px;
     background-color: white;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+.media-item.long {
+    width: 90%;
+}
+.media-item span.count {
+    color: #999;
+}
+.media-item .media-image {
+    margin-bottom: 5px;
+    max-width: 150px;
+}
+.media-item .media-edit {
+    opacity: 0;
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    -webkit-transition: opacity 0.2s ease-in;
+    -moz-transition: opacity 0.2s ease-in;
+    -o-transition: opacity 0.2s ease-in;
+    transition: opacity 0.2s ease-in;
+}
+.media-item:hover {
+    z-index: 1;
+}
+.media-item:hover .media-edit {
+    opacity: 1;
+}
+.media-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 1px solid #dddddd;
+    overflow: hidden;
+    -webkit-transition: all 0.2s ease-in;
+    -moz-transition: all 0.2s ease-in;
+    -o-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+.media-view:hover,
+.media-view.hovered {
+    border-color: #005d7a;
+    -webkit-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1);
+}
+.media-view:hover .banner,
+.media-view.hovered .banner {
+    background-color: #005d7a;
+}
+.media-view span {
+    display: none;
+}
+.media-view .banner {
+    display: block;
+    background-color: #b7b7b7;
+    -webkit-transition: background-color 0.2s ease-in;
+    -moz-transition: background-color 0.2s ease-in;
+    -o-transition: background-color 0.2s ease-in;
+    transition: background-color 0.2s ease-in;
+}
+.media-image {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+.media-item .media-heading {
+    font-size: 16px;
+    line-height: 1.3;
+    color: #005d7a;
+    margin: 5px 0;
+    -ms-word-break: break-all;
+    word-break: break-all;
+    /* Non standard for webkit */
+    word-break: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+}
+.media-overlay {
+    position: relative;
+    min-height: 35px;
+}
+.media-overlay .media-heading {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 12px 10px;
+    margin: 0;
+    background-color: #000;
+    background-color: rgba(0, 0, 0, 0.8);
+    font-size: 13px;
+    color: #fff;
+    z-index: 1;
+    -webkit-border-radius: 0 0 3px 3px;
+    -moz-border-radius: 0 0 3px 3px;
+    border-radius: 0 0 3px 3px;
+}
+.media-overlay .media-image {
+    float: none;
+    display: block;
+    margin-right: 0;
+}
+.media-item.is-expander .truncator-link {
+    -webkit-transition: opacity 0.2s ease-in;
+    -moz-transition: opacity 0.2s ease-in;
+    -o-transition: opacity 0.2s ease-in;
+    transition: opacity 0.2s ease-in;
+    position: absolute;
+    z-index: 10;
+    left: 15px;
+    bottom: 15px;
+    opacity: 0;
+}
+.media-item.is-expander:hover {
+    padding-bottom: 35px;
+}
+.media-item.is-expander:hover .truncator-link {
+    opacity: 1;
+}
+.wide .media-item {
+    width: 186px;
 }
 
-.event-heading {
-    font-weight: bold;
-
+// Override Boostrap's pagination colours
+.pagination>li>a, .pagination>li>span {
+    color: #206B82;
+}
+.pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
+    background-color: #206B82;
+    border-color: #285e8e;
 }
 
-.event-item p {
-    margin: 10px 0px 0px 0px;
+// Modified from CKAN - for sidebar facets
+ul.unstyled{
+    margin-left: 0px;
+    list-style: outside none none;
+    padding-left: 0px;
+}
+.nav-simple {
+    margin: 0px;
+    list-style: outside none none;
+    padding-bottom: 0px;
+}
+.nav-simple > li {
+    padding: 0px;
+    border-bottom: 1px dotted #DDD;
+}
+.nav-simple > li:last-of-type {
+    border-bottom: 0px none;
+}
+.nav-item > a {
+    padding-left: 15px;
+    padding-right: 15px;
+    position: relative;
+    display: block;
+    color: #333;
+    //font-size: 14px;
+    //line-height: 20px;
+    //margin: -7px -25px;
+    padding: 7px 25px;
+    text-decoration: none;
+}
+.nav-item > a:hover {
+    background-color: #e6e6e6;
+    border-color:#adadad;
+}
+.nav-item.active > a {
+    position: relative;
+    color: #ffffff;
+    background-color: #8CA0A6;
+}
+.nav-item.active > a:hover {
+    color: #ffffff;
+    background-color: #206B82;
+}
+// End CKAN's sidebar facets
+
+// Facet's title
+.nav-heading{
+    padding: 10px;
+    background-color: #F6F6F6;
+    margin: 0px;
+}
+.filter-button{
+    color: #ffffff;
+    //background-color: #B0C3C9;
+    background-color: #8CA0A6;
 }
