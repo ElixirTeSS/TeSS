@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
       #Disjunction clause
       facets = []
 
-      all do
+      any do
         #Set all facets
         selected_facets.each do |facet_title, facet_value|
           if facet_title != 'include_expired'
