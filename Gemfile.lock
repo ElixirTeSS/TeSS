@@ -194,6 +194,9 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
+    simple_form (3.2.1)
+      actionpack (> 4, < 5.1)
+      activemodel (> 4, < 5.1)
     simple_token_authentication (1.10.0)
       actionmailer (>= 3.2.6, < 5)
       actionpack (>= 3.2.6, < 5)
@@ -266,6 +269,7 @@ DEPENDENCIES
   redcarpet
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
+  simple_form
   simple_token_authentication (~> 1.0)
   spring
   sunspot_rails

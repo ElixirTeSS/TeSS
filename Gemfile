@@ -59,6 +59,8 @@ gem 'valid_url'
 # Gem for breadcrums and other extras
 gem "bootstrap-sass-extras"
 
+gem "simple_form"
+
 # Gem for rendering Markdown
 gem "redcarpet"
 

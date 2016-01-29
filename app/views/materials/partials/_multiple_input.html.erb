@@ -20,5 +20,5 @@ field_name - the name of the array attribute in it's plural form e.g. author, ke
     <% end %>
   </div>
   <i class="fa fa-plus multiple-input-add" data-field="<%=field_name.singularize%>"> Add new</i>
-  <%= error_span(material.send(field_name)) %>
+  <%#= error_span(material.send(field_name)) %>
 </div>

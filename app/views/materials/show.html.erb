@@ -1,4 +1,4 @@
-View <%= link_to 'Activity Log', material_activities_path(@material) %>
+<%= link_to 'Activity Log', material_activities_path(@material) %>
 <div class="row">
   <div class=" col-md-12 col-xs-12">
     <%- model_class = Material -%>
@@ -9,63 +9,61 @@ View <%= link_to 'Activity Log', material_activities_path(@material) %>
     </div>
     <div class="show-page-description"><%= render_markdown(@material.long_description) %></div>
 
+    <dt><strong><%= model_class.human_attribute_name(:scientific_topic).pluralize %>:</strong></dt>
 
-
-      <dt><strong><%= model_class.human_attribute_name(:scientific_topic).pluralize %>:</strong></dt>
-
-      <dd><ul>
-        <% @material.scientific_topic.each do |x| %>
-            <li><%= link_to x.preferred_label, x %></li>
-         <% end %>
-      </ul></dd>
-      <dt><strong><%= model_class.human_attribute_name(:target_audience) %>:</strong></dt>
-      <dd><%= @material.target_audience.join(', ') %></dd>
-      <dt><strong><%= model_class.human_attribute_name(:keywords) %>:</strong></dt>
-      <dd><%= @material.keywords.join(', ') %></dd>
-      <dt><strong><%= model_class.human_attribute_name(:licence) %>:</strong></dt>
-      <dd><%= licence_name_for_abbreviation(@material.licence) %></dd>
-      <dt><strong><%= model_class.human_attribute_name(:difficulty_level) %>:</strong></dt>
-      <dd><%= @material.difficulty_level %></dd>
-      <dt><strong><%= model_class.human_attribute_name(:authors) %>:</strong></dt>
-      <dd><%= @material.authors.blank? ? 'N/A' : @material.authors.join(', ') %></dd>
-      <dt><strong><%= model_class.human_attribute_name(:contributors) %>:</strong></dt>
-      <dd><%= @material.contributors.blank? ? 'N/A' : @material.contributors.join(', ') %></dd>
-      <dt><strong>DOI:</strong></dt>
-      <dd><%= @material.doi %></dd>
-      <dt><strong>Created:</strong></dt>
-      <dd><%= @material.remote_created_date %></dd>
-      <dt><strong>Last updated:</strong></dt>
-      <dd><%= @material.remote_updated_date %></dd>
-      <dt><strong>Packages:</strong></dt>
-
-      <dd>
-      <% if @material.packages.empty? %> <em> This material is not included in any packages </em>
-      <% else %><%= material_package_list(@material).join(", ").html_safe %>
+    <dd><ul>
+      <% @material.scientific_topic.each do |x| %>
+          <li><%= link_to x.preferred_label, x %></li>
       <% end %>
-      </dd>
-      <dt><strong>Content Provider:</strong></dt>
-      <dd>
-        <% if @material.content_provider.nil? %> <em>No content provider</em>
-        <% else %>
-            <a href="<%=url_for @material.content_provider %>">
-              <%=  @material.content_provider.title %>
+    </ul></dd>
+    <dt><strong><%= model_class.human_attribute_name(:target_audience) %>:</strong></dt>
+    <dd><%= @material.target_audience.join(', ') %></dd>
+    <dt><strong><%= model_class.human_attribute_name(:keywords) %>:</strong></dt>
+    <dd><%= @material.keywords.join(', ') %></dd>
+    <dt><strong><%= model_class.human_attribute_name(:licence) %>:</strong></dt>
+    <dd><%= licence_name_for_abbreviation(@material.licence) %></dd>
+    <dt><strong><%= model_class.human_attribute_name(:difficulty_level) %>:</strong></dt>
+    <dd><%= @material.difficulty_level %></dd>
+    <dt><strong><%= model_class.human_attribute_name(:authors) %>:</strong></dt>
+    <dd><%= @material.authors.blank? ? 'N/A' : @material.authors.join(', ') %></dd>
+    <dt><strong><%= model_class.human_attribute_name(:contributors) %>:</strong></dt>
+    <dd><%= @material.contributors.blank? ? 'N/A' : @material.contributors.join(', ') %></dd>
+    <dt><strong>DOI:</strong></dt>
+    <dd><%= @material.doi %></dd>
+    <dt><strong>Created:</strong></dt>
+    <dd><%= @material.remote_created_date %></dd>
+    <dt><strong>Last updated:</strong></dt>
+    <dd><%= @material.remote_updated_date %></dd>
+    <dt><strong>Packages:</strong></dt>
+
+    <dd>
+      <% if @material.packages.empty? %> <em> This material is not included in any packages </em>
+          <% else %><%= material_package_list(@material).join(", ").html_safe %>
+      <% end %>
+    </dd>
+    <dt><strong>Content provider:</strong></dt>
+    <dd>
+      <% if @material.content_provider.nil? %> <em>No content provider</em>
+      <% else %>
+          <a href="<%=url_for @material.content_provider %>">
+            <%=  @material.content_provider.title %>
             <img src="<%= @material.content_provider.logo_url %>"/>
-            </a>
-        <% end %>
-      </dd>
+          </a>
+      <% end %>
+    </dd>
     </dl>
 
 
     <%= link_to t('.back', :default => t("helpers.links.back")),
-                materials_path, :class => 'btn btn-default'  %>
+                materials_path, :class => 'btn btn-info'  %>
     <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                edit_material_path(@material), :class => 'btn btn-default' %>
+                edit_material_path(@material), :class => 'btn btn-primary' %>
     <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                 material_path(@material),
                 :method => 'delete',
                 :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                 :class => 'btn btn-danger' %>
-    <button class="btn btn-success"><a href="<%= @material.url %>" target="_blank">View Material <span class="fa fa-external-link" aria-hidden="true"></span></a></button>
+    <button class="btn btn-success"><a href="<%= @material.url %>" target="_blank">View material <span class="fa fa-external-link" aria-hidden="true"></span></a></button>
 
 
   </div>

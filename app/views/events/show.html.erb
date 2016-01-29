@@ -23,10 +23,10 @@ function initMap() {
 </script>
 
 
-View <%= link_to 'Activity Log', event_activities_path(@event) %>
+<%= link_to 'Activity Log', event_activities_path(@event) %>
 
 <div class="row">
-<p id="notice"><%= notice %></p>
+<!--<p id="notice"><%#= notice %></p>-->
 
 <%- model_class = Event -%>
 <div class="page-header">
