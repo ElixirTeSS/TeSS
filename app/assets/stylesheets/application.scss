@@ -479,3 +479,46 @@ ul.unstyled {
   width: 50%;
   float: right;
 }
+.homepage .nav-block {
+  width: 180px;
+  height: auto;
+  background-color: #EFCAB2; /*  Faded orange;*/
+  padding: 20px;
+  padding: 20px;
+  margin: 10px;
+  text-align: center;
+  border: 1px solid #CECECE;
+  border-radius: 4px;
+}
+.homepage .welcome-text {
+  width: 40%;
+  height: auto;
+  background-color: white;
+  padding: 20px;
+  margin: 10px;
+  text-align: center;
+  border: 1px solid #CECECE;
+  border-radius: 4px;
+}
+
+.homepage .nodes-block {
+  width: 40%;
+  float: right;
+  background-color: #F8761F; /* ELIXIR orange;*/
+  padding: 10px;
+  margin: 10px;
+  text-align: center;
+  border: 1px solid #CECECE;
+  border-radius: 4px;
+}
+
+.homepage .faq-block {
+  width: 40%;
+  float: right;
+  background-color: #DDDDDD; /* Dull Grey;*/
+  padding: 10px;
+  margin: 10px;
+  text-align: center;
+  border: 1px solid #CECECE;
+  border-radius: 4px;
+}
