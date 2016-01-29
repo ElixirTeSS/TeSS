@@ -10,7 +10,6 @@ Role.roles.each do |role|
   Role.find_or_create_by({name: role})
 end
 
-
 models = %w(Material Workflow Package ContentProvider User)
 models.each do |model|
   model.constantize.delete_all
@@ -19,7 +18,8 @@ end
 Material.delete_all
 Workflow.delete_all
 #Probably don't need to delete existing users.
-#User.delete_all 
+#User.delete_all
+Event.delete_all
 
 User.create!(
         username: 'test',
@@ -149,7 +149,7 @@ ContentProvider.create!(
 ContentProvider.create!(
     title: "Swiss Institute of Bioinformatics",
     url: "http://edu.isb-sib.ch/",
-    logo_url: "http://www.isb-sib.ch/templates/sib/images/sib_logo.png",
+    logo_url: "http://bcf.isb-sib.ch/img/sib.png",
     description: "The SIB Swiss Institute of Bioinformatics is an academic, non-profit foundation recognised of public utility and established in 1998. SIB coordinates research and education in bioinformatics throughout Switzerland and provides high quality bioinformatics services to the national and international research community."
 ).create_activity :create
 ContentProvider.create!(
@@ -167,11 +167,11 @@ ContentProvider.create!(
 ContentProvider.create!(
     title: "NGS Registry",
     url: "https://microasp.upsc.se/ngs_trainers/Materials/wikis/home",
-    logo_url: "https://tess.elixir-uk.org/base/images/placeholder-organization.png",
+    logo_url: "",
     description: "GitLab registry containing NGS Training Materials"
 ).create_activity :create
 ContentProvider.create!(
-    title: "Bioinformatics Training and Services",
+    title: "VIB Bioinformatics Training and Services",
     url: "https://www.bits.vib.be/",
     logo_url: "https://www.bits.vib.be/images/images/bits_logo_color_2012_04_transp.png",
     description: "Provider of Bioinformatics and software training, plus informatics services and resource management support."
@@ -183,10 +183,7 @@ ContentProvider.create!(
     description: "ELIXIR intends to create an infrastructure that integrates research data from all corners of Europe, ensuring a service provision which provides Open Access to rapidly expanding and critical datasets."
 ).create_activity :create
 
-
-
 Package.delete_all
-
 Package.create!(
     name: 'TGAC NGS',
     description: 'Some of the Training provided at TGAC, Norwich UK',
