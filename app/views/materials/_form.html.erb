@@ -35,7 +35,7 @@
 </script>
 
 
-<%= form_for @material, :html => {:class => "form-horizontal material"} do |f| %>
+<%= simple_form_for @material, :html => {:class => "form-horizontal material"} do |f| %>
     <% if @material.errors.any? %>
         <div id="error_expl" class="panel panel-danger">
           <div class="panel-heading">
@@ -57,35 +57,35 @@
       <div class="controls">
         <%= f.text_field :title, :class => 'form-control' %>
       </div>
-      <%= error_span(@material[:title]) %>
+      <%#= error_span(@material[:title]) %>
     </div>
     <div class="control-group">
       <%= f.label :url, "URL", :class => 'control-label' %>
       <div class="controls">
         <%= f.text_field :url, :class => 'form-control' %>
       </div>
-      <%= error_span(@material[:url]) %>
+      <%#= error_span(@material[:url]) %>
     </div>
     <div class="control-group">
       <%= f.label :short_description, :class => 'control-label' %>
       <div class="controls">
         <%= f.text_field :short_description, :class => 'form-control' %>
       </div>
-      <%= error_span(@material[:short_description]) %>
+      <%#= error_span(@material[:short_description]) %>
     </div>
     <div class="control-group">
       <%= f.label :long_description, :class => 'control-label' %>
       <div class="controls">
         <%= f.text_field :long_description, :class => 'form-control' %>
       </div>
-      <%= error_span(@material[:long_description]) %>
+      <%#= error_span(@material[:long_description]) %>
     </div>
     <div class="control-group">
       <%= f.label :doi, "DOI", :class => 'control-label' %>
       <div class="controls">
         <%= f.text_field :doi, :class => 'form-control' %>
       </div>
-      <%= error_span(@material[:doi]) %>
+      <%#= error_span(@material[:doi]) %>
     </div>
     <!--<div class="control-group">-->
     <!--<%#= f.label :remote_updated_date, :class => 'control-label' %>-->
@@ -126,7 +126,7 @@
                placeholder="Start typing to find EDAM topics"/>
         </div>
       </div>
-      <%= error_span(@material[:scientific_topic]) %>
+      <%#= error_span(@material[:scientific_topic]) %>
     </div>
 
 
@@ -135,7 +135,7 @@
       <div class="controls">
         <%= f.text_field :target_audience, :class => 'form-control' %>
       </div>
-      <%= error_span(@material[:target_audience]) %>
+      <%#= error_span(@material[:target_audience]) %>
     </div>
 
     <%= render :partial => 'materials/partials/multiple_input', :locals => {:field_name => 'keywords', :material => @material, :f => f} %>
@@ -145,7 +145,7 @@
       <div class="controls">
         <%= f.select :licence, options_for_select(licence_options_for_select(), @material[:licence].blank? ? "notspecified" : @material[:licence]), :class => 'form-control licence' %>
       </div>
-      <%= error_span(@material[:licence]) %>
+      <%#= error_span(@material[:licence]) %>
     </div>
 
     <%= render :partial => 'materials/partials/multiple_input', :locals => {:field_name => 'authors', :material => @material, :f => f} %>
@@ -155,7 +155,7 @@
       <div class="controls">
         <%= f.select :difficulty_level, options_for_select(difficulty_options_for_select(), @material[:difficulty_level].blank? ? "notspecified" : @material[:difficulty]), :class => 'form-control difficulty' %>
       </div>
-      <%= error_span(@material[:difficulty_level]) %>
+      <%#= error_span(@material[:difficulty_level]) %>
     </div>
 
     <%= render :partial => 'materials/partials/multiple_input', :locals => {:field_name => 'contributors', :material => @material, :f => f} %>
@@ -164,7 +164,7 @@
 
     <%= render :partial => 'materials/partials/add_content_provider', :locals => {:f => f, :material => @material} %>
 
-    <%= f.submit 'Register meterial', :class => 'btn btn-primary' %>
+    <%= f.submit nil, :class => 'btn btn-primary' %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                 materials_path, :class => 'btn btn-default' %>
 
