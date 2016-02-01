@@ -1,33 +1,49 @@
 <!--<p id="notice"><%#= notice %></p>-->
 
-<h1>Listing Workflows</h1>
+<!-- SIDEBAR | RESULTS -->
+<div class="row wrapper">
+  <% if SOLR_ENABLED %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Description</th>
-      <th>User</th>
-      <th>Workflow content</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+      <!-- SIDEBAR -->
+      <div class="col-md-3" id="sidebar">
+        <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @workflows} %>
+      </div>
 
-  <tbody>
-    <% @workflows.each do |workflow| %>
-      <tr>
-        <td><%= workflow.title %></td>
-        <td><%= workflow.description %></td>
-        <td><%= workflow.owner %></td>
-        <td><%= workflow.workflow_content %></td>
-        <td><%= link_to 'Show', workflow %></td>
-        <td><%= link_to 'Edit', edit_workflow_path(workflow) %></td>
-        <td><%= link_to 'Destroy', workflow, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+      <!-- RESULTS -->
+      <div class="col-md-9">
+        <!-- SEARCH BAR -->
 
-<br>
+        <div class="row">
+          <%= link_to new_workflow_path, :class=>"btn btn-primary" do %>
+              <i class="fa fa-plus"></i> Create workflow
+          <% end %>
+        </div>
 
-<%= link_to 'New Workflow', new_workflow_path %>
+        <div class="row">
+          <%#= render :partial=> "search/common/search_box", :locals=>{:resource_path => workflows_path} %>
+        </div>
+
+        <!-- APPLIED FILTERS AND NUMBER OF RESULTS -->
+        <div class="row">
+          <%#= render :partial => "search/common/search_info", :locals=>{:resources=>@workflows}  %>
+        </div>
+
+        <!-- PAGINATION -->
+        <div class="row">
+          <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@workflows} unless (@workflows.blank? or @workflows.results.blank?) %>
+        </div>
+
+        <hr>
+        <% @workflows = @workflows.results unless @workflows.blank? %>
+  <% end %>
+
+  <!-- ACTUAL RESULTS LIST -->
+  <% unless @workflows.blank? %>
+      <ul class="masonry media-grid">
+        <% @workflows.each do |workflow| %>
+            <%= render workflow %>
+        <% end %>
+      </ul>
+  <% end %>
+  </div>
+</div>
