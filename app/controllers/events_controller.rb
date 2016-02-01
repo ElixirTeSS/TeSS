@@ -4,6 +4,9 @@ class EventsController < ApplicationController
   #sets @search_params, @facet_params, and @page 
   before_action :set_params, :only => :index
 
+  # Prevent all but admins from creating events
+  before_action :check_admin, only: [:edit, :new]
+
   # Should allow token authentication for API calls
   acts_as_token_authentication_handler_for User, except: [:index, :show, :check_exists] #only: [:new, :create, :edit, :update, :destroy]
 
@@ -149,5 +152,12 @@ class EventsController < ApplicationController
       if params[:include_expired]
           @facet_params['include_expired'] = true
       end
-  end
+    end
+
+    def check_admin
+      if current_user.is_admin?
+        return
+      end
+      redirect_to root_path, notice: "Sorry, you're not allowed to view that page."
+    end
 end
