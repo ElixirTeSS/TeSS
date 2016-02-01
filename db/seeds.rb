@@ -173,7 +173,7 @@ ContentProvider.create!(
 ContentProvider.create!(
     title: "VIB Bioinformatics Training and Services",
     url: "https://www.bits.vib.be/",
-    logo_url: "https://www.bits.vib.be/images/images/bits_logo_color_2012_04_transp.png",
+    logo_url: "http://www.vib.be/VIBMediaLibrary/Logos/Service_facilities/BITS_website.jpg",
     description: "Provider of Bioinformatics and software training, plus informatics services and resource management support."
 ).create_activity :create
 ContentProvider.create!(
