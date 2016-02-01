@@ -15,9 +15,15 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test "should get new" do
-    sign_in users(:regular_user)
+    sign_in users(:admin)
     get :new
     assert_response :success
+  end
+
+  test "should not get new" do
+    sign_in users(:regular_user)
+    get :new
+    assert_redirected_to root_path
   end
 
   test "should create event" do
@@ -35,10 +41,18 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test "should get edit" do
-    sign_in users(:regular_user)
+    sign_in users(:admin)
     get :edit, id: @event
     assert_response :success
   end
+
+  test "should not get edit" do
+    sign_in users(:regular_user)
+    get :edit, id: @event
+    assert_redirected_to root_path
+  end
+
+
 
   test "should update event" do
     sign_in users(:regular_user)
