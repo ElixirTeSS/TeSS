@@ -87,48 +87,47 @@
         </ul>
         <a name="faq"> </a>
         <h2>FAQ</h2>
-        <div class="panel-group" id="accordionq" role="tablist" aria-multiselectable="true">
+        <div class="panel-group" id="accordion">
+
           <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingOne">
+            <div class="panel-heading">
               <h4 class="panel-title">
-                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false"
-                   aria-controls="collapseOne">
-                  Is TeSS a repository of materials?
+                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                  Is TeSS a repository of training materials and events?
                 </a>
               </h4>
             </div>
-            <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+            <div id="collapseOne" class="panel-collapse collapse">
               <div class="panel-body">
                 <p>
-                  No. TeSS is an aggregator of ELIXIR-relevant training information and resources, harvested
-                  from individual ELIXIR nodes and from 3rd-party content providers.  
+                  No - TeSS is a repository of <b>metadata</b> for training materials and events (i.e. a <b>registry</b> of training materials and events).
+                  TeSS is an aggregator of metadata of ELIXIR-relevant training information and resources, harvested
+                  from individual ELIXIR nodes and from 3rd-party content providers. It does not store original training resources, just the metadata and links to them.
                 </p>
-
                 <p>
-                  TeSS does not store
-                  training materials itself; rather, it stores links to original training materials, and also
+                  TeSS does not store original
+                  training resources itself; rather, it stores metadata of and links to original training resources, and also
                   enables users to create their own <a href="/packages">packages</a> and <a href="/workflows">workflows</a>
                   of (linked) materials to suit their needs.   
                 </p>
               </div>
             </div>
           </div>
+
           <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingTwo">
+            <div class="panel-heading">
               <h4 class="panel-title">
-                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
-                   aria-expanded="false" aria-controls="collapseTwo">
+                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
                   What is the main difference between the TeSS and GOBLET's Training Portal?
                 </a>
               </h4>
             </div>
-            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+            <div id="collapseTwo" class="panel-collapse collapse">
               <div class="panel-body">
                 <p>
-                  TeSS harvests training information from ELIXIR nodes and from 3rd-party content providers,
-                  and aggregates that information according to different ‘views’ (e.g., ELIXIR overview versus
-                  node-specific) -
-                  it does not store the training materials themselves (it is not a repository).
+                  TeSS harvests and aggregates training metadata from ELIXIR nodes and from 3rd-party content providers,
+                  and filters and displays that information according to different ‘views’ (e.g., ELIXIR overview versus
+                  node-specific versus general, etc.) - it does not store the training resources themselves (i.e. it is not a repository - it is a registry).
                 </p>
 
                 <p>
@@ -141,16 +140,16 @@
               </div>
             </div>
           </div>
+
           <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingThree">
+            <div class="panel-heading">
               <h4 class="panel-title">
-                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree"
-                   aria-expanded="false" aria-controls="collapseThree">
-                  Within TeSS, do I have to add links to training information manually? 
+                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                  Within TeSS, do I have to add links to and metadata about to training information manually? 
                 </a>
               </h4>
             </div>
-            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+            <div id="collapseThree" class="panel-collapse collapse">
               <div class="panel-body">
                 <p>
                   No, you do not have to add links manually (although manual addition of information is possible).
@@ -165,79 +164,80 @@
                 <p>
                   If you wish your content to be added to TeSS, please contact the TeSS team so that we can arrange to
                   harvest
-                  your materials. Alternatively, if you are a registered user, you may add links to your training
+                  your training materials and/or events. Alternatively, if you are a registered user, you may add links to and metadata about your training
                   information manually.   
                 </p>
               </div>
             </div>
           </div>
+
           <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingFour">
+            <div class="panel-heading">
               <h4 class="panel-title">
-                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour"
-                   aria-expanded="false" aria-controls="collapseFour">
+                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
                   How do I add a content provider?
                 </a>
               </h4>
             </div>
-            <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+            <div id="collapseFour" class="panel-collapse collapse">
               <div class="panel-body">
                 <p>
                    Registered users can add a content providers from the <a href="/content_providers">content
                   providers page</a> page, by clicking the 'Add content provider' button. In the form provided,
                   write a short description, upload the provider's logo, and provide a link to their website.
-                  Typically, this task will be performed by an admin rather than a regular user.    
-
+                  Typically, this task will be performed by an admin rather than a regular user. 
                 <p>
               </div>
             </div>
           </div>
+
           <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingFour-2">
+            <div class="panel-heading">
               <h4 class="panel-title">
-                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour-2"
-                   aria-expanded="false" aria-controls="collapseFour-2">
-                  How do I add training materials?
+                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour-2">
+                  How do I add training materials or events?
                 </a>
               </h4>
             </div>
             <div id="collapseFour-2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour-2">
               <div class="panel-body">
                 <p>
-                  You cannot upload training materials directly to TeSS (to do this, we encourage you to use
+                  You cannot upload training materials and events directly to TeSS (to do this, we encourage you to use
                   3rd-party repositories, such as GOBLET).
                 </p>
-
                 <p>
                   Registered users of TeSS can, however, add links
-                  to training resources manually from the <a href="/materials">training materials page</a>, by clicking
+                  to training materials manually from the <a href="/materials">training materials page</a>, by clicking
                   the 'Add training
-                  material' button. In the multi-step form provided, simply complete the various fields, add a
+                  material' button. In the form provided, simply complete the various fields, add a
                   link to the relevant resources and, where appropriate, attribute the content to a particular provider.
                   By doing this, you effectively create what is termed a ‘training material’ in TeSS; this does not
                   contain the actual material,
                   but links to it on the content provider’s website or portal.
                 </p>
-
                 <p>
                   Alternatively, as mentioned above, training material and related information and metadata can be
                   ingested automatically using a content provider's API (if such exists), or by contacting the TeSS
-                  development team to develop a suitable scraper.   
-
+                  development team to develop a suitable website scraper.  
+                </p>
                 <p>
+                  We disallow manual addition of events to TeSS - you should either register your event with the
+                  <a href="http://iann.pro/" target="_blank">iAnn event dissemination system</a> or contact the TeSS
+                  team to arrange inclusion of your training events automatically via your API or a website scraper.
+                </p>
               </div>
             </div>
           </div>
+
           <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingFive">
+            <div class="panel-heading">
               <h4 class="panel-title">
-                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFive"
-                   aria-expanded="false" aria-controls="collapseFive">
+                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
                   What is a training package?
                 </a>
               </h4>
             </div>
-            <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+            <div id="collapseFive" class="panel-collapse collapse">
               <div class="panel-body">
                 <p>
                   Training packages in TeSS are bespoke collections of ‘training materials’. For example, you can create
@@ -247,16 +247,16 @@
               </div>
             </div>
           </div>
+
           <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingSix">
+            <div class="panel-heading">
               <h4 class="panel-title">
-                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseSix"
-                   aria-expanded="false" aria-controls="collapseSix">
+                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">
                   How do I create a training package and add training material it?
                 </a>
               </h4>
             </div>
-            <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
+            <div id="collapseSix" class="panel-collapse collapse">
               <div class="panel-body">
                 <p>
                   This is a two-step process. First, you need to create a package from the <a
@@ -269,16 +269,16 @@
               </div>
             </div>
           </div>
+
           <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="heading7">
+            <div class="panel-heading">
               <h4 class="panel-title">
-                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse7"
-                   aria-expanded="false" aria-controls="collapse7">
+                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven">
                   What is a training workflow?
                 </a>
               </h4>
             </div>
-            <div id="collapse7" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading7">
+            <div id="collapseSeven" class="panel-collapse collapse">
               <div class="panel-body">
                 <p>
                   In TeSS, training workflows are essentially navigational tools that guide users, step-by-step,
@@ -288,7 +288,6 @@
                   From the available resources, users may select those of particular interest and assemble them into
                   their own customised training packages.
                 </p>
-
                 <p>
                   Users may navigate workflows in whatever way they wish, whether step-by-step according to the
                   predefined workflow, or skipping to steps that are more relevant to their training needs.
@@ -296,16 +295,16 @@
               </div>
             </div>
           </div>
+
           <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="heading8">
+            <div class="panel-heading">
               <h4 class="panel-title">
-                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse8"
-                   aria-expanded="false" aria-controls="collapse8">
+                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEight">
                   How do I create a training workflow and add training information to it? 
                 </a>
               </h4>
             </div>
-            <div id="collapse8" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading8">
+            <div id="collapseEight" class="panel-collapse collapse">
               <div class="panel-body">
                 <p>
                   <a href="/workflows">Creating workflows</a> is still in a prototyping stage – we are currently working
@@ -320,6 +319,7 @@
             </div>
           </div>
         </div>
+
         <a name="software"> </a>
         <h2>Software</h2>
         <p>
@@ -332,8 +332,8 @@
           The source code be found in <a href="https://github.com/ElixirUK">GitHub</a>.
         </p>
         <p>
-          Please note that, at present, TeSS is in the alpha state so all content you add is at
-          risk of being deleted.
+          Please note that, at present, TeSS is in the alpha state so all content you add manually is at
+          risk.
         </p>
       </div>
     </div>

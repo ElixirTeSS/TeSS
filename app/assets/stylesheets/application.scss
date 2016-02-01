@@ -522,3 +522,28 @@ ul.unstyled {
   border: 1px solid #CECECE;
   border-radius: 4px;
 }
+.panel-heading {
+  display: block;
+  cursor: pointer;
+}
+.panel-title {
+  font-size: 13px;
+  color: #005d7a;
+}
+.panel-title a {
+  text-decoration: none;
+  color: #005d7a;
+}
+.panel-heading .accordion-toggle:after {
+  /* symbol for "opening" panels */
+  font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
+  content: "\e113";    /* adjust as needed, taken from bootstrap.css */
+  float: right;        /* adjust as needed */
+}
+.panel-heading .accordion-toggle.collapsed:after {
+  /* symbol for "collapsed" panels */
+  content: "\e114";    /* adjust as needed, taken from bootstrap.css */
+}
+.panel-body {
+  padding-bottom: 0px;
+}
