@@ -1,6 +1,8 @@
 class NodesController < ApplicationController
   before_action :set_node, only: [:show, :edit, :update, :destroy]
 
+  include TeSS::BreadCrumbs
+
   # GET /nodes
   # GET /nodes.json
   def index
