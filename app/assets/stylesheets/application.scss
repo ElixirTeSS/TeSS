@@ -482,13 +482,16 @@ ul.unstyled {
 .homepage .nav-block {
   width: 180px;
   height: auto;
-  background-color: #EFCAB2; /*  Faded orange;*/
-  padding: 20px;
-  padding: 20px;
+  background-color: #B0C3C9;
+  padding: 10px;
   margin: 10px;
   text-align: center;
   border: 1px solid #CECECE;
   border-radius: 4px;
+  min-height: 180px;
+}
+.homepage .nav-block h3{
+  margin-top: 10px;
 }
 .homepage .welcome-text {
   width: 40%;
