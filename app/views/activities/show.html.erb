@@ -1,7 +1,7 @@
 <%#= render_activities(@activities, layout: :activity) %>
 
 <% @resource.activities.each do |activity| %>
-  <div class="activity-box">
-    <p><%= render_activity(activity) %></p>
+  <div class="activity">
+    <%= render_activity(activity) %>
   </div>
 <% end %>

@@ -63,7 +63,8 @@
           <% end %>
         </div>
         <div id="activity_log" class="tab-pane fade">
-          <%= link_to(material_activities_path(@material)) %>
+          <%= render :partial => "materials/partials/material_activities" %>
+          <!--<%#= link_to(material_activities_path(@material)) %>-->
         </div>
       </div>
     </div>
