@@ -7,15 +7,23 @@ Globals
 %>
 
 <!-- FILTERS APPLIED -->
-<% @facet_params.each do |category, value| %>
+<% @facet_params.each_with_index do |(category, value), i| %>
 		<p>
 			<b><%= category.humanize %></b>:
 			<% if value.is_a?(Array)%>
-					<% value.each do |val| %>
-							<span><%=remove_filter_link(category, val, {:class =>"btn btn-default filter-button"})%></span>
+					<% value.each_with_index do |val, j| %>
+							<span>
+								<%= remove_filter_link(category, val, {:class =>"btn btn-default filter-button"})%>
+								<% if j < value.size - 1 %>
+									or
+								<% end %>
+							</span>
 					<% end %>
 			<% else %>
-					<span><%=remove_filter_link(category, value, {:class =>"btn btn-default filter-button"})%></span>
+					<span><%= remove_filter_link(category, value, {:class =>"btn btn-default filter-button"})%></span>
 			<% end %>
 		</p>
+		<% if i < @facet_params.size - 1 %>
+				<p>and</p>
+		<% end %>
 <% end %>
