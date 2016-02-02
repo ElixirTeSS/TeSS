@@ -1,70 +1,70 @@
-<%= link_to 'Activity Log', material_activities_path(@material) %>
-<div class="row">
-  <div class=" col-md-12 col-xs-12">
-    <%- model_class = Material -%>
-    <div class="page-header">
-      <h1><%=t '.title', :default => @material.title %></h1>
-      <p><%= link_to @material.url, @material.url, :class =>'h4'  %></p>
-      <p class="h5"><%= @material.short_description %></p>
+<%- model_class = Material -%>
+
+<div class="row wrapper">
+  <!-- SIDEBAR -->
+  <div class="col-md-3 col-xs-3" id="sidebar">
+    <%= render :partial => "materials/partials/material_sidebar" %>
+  </div>
+
+  <div class=" col-md-9 col-xs-9">
+    <div class="row">
+      <ul class="nav nav-tabs">
+        <li class="active">
+          <a data-toggle="tab" href="#home"><i class="fa fa-book"></i> Material</a></li>
+        <li>
+          <a data-toggle="tab" href="#packages"><i class="fa fa-folder-open"></i> Packages</a>
+        </li>
+        <li>
+          <a data-toggle="tab" href="#activity_log"><i class="fa fa-clock-o"></i> Activity Log</a>
+        </li>
+      </ul>
+
+
+      <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+          <div class="page-header">
+            <h2><%=t '.title', :default => @material.title %></h2>
+            <p><%= link_to @material.url, @material.url, :class =>'h4' %></p>
+            <% if not @material.long_description.blank? %>
+                <p><%= render_markdown(@material.long_description) %></p>
+          <% elsif not @material.short_description.blank? %>
+                <p><%= render_markdown(@material.short_description)%></p>
+          <% end %>
+          </div>
+          <div>
+            <p><b><%= model_class.human_attribute_name(:scientific_topic).pluralize %>: </b><%= @material.scientific_topic.blank? ? empty_tag(:span, 'none specified') : @material.scientific_topic.map{|x| x.preferred_label}.join(', ') %></p>
+            <p><b><%= model_class.human_attribute_name(:keywords) %>: </b><%= @material.keywords.blank? ? empty_tag(:span, 'none specified') : @material.keywords.join(', ') %></p>
+            <p><b><%= model_class.human_attribute_name(:target_audience) %>: </b><%= @material.target_audience.blank? ? empty_tag(:span, 'none specified') : @material.target_audience.join(', ') %></p>
+            <p><b><%= model_class.human_attribute_name(:difficulty_level) %>: </b><%= @material.difficulty_level.blank? ? empty_tag(:span, 'none specified') : @material.difficulty_level %></p>
+            <p><b><%= model_class.human_attribute_name(:licence) %>: </b><%= @material.licence.blank? ? empty_tag(:span, 'licence not specified') : licence_name_for_abbreviation(@material.licence) %></p>
+            <p><b><%= model_class.human_attribute_name(:authors) %>: </b><%= @material.authors.blank? ? empty_tag(:span, 'none specified') : @material.authors.join(', ') %></p>
+            <p><b><%= model_class.human_attribute_name(:contributors) %>: </b><%= @material.contributors.blank? ? empty_tag(:span, 'none specified') : @material.contributors.join(', ') %></p>
+            <p><b>DOI: </b><%= @material.doi.blank? ? empty_tag(:span, 'none specified') : @material.doi %></p>
+            <p><b>Created: </b><%= @material.remote_created_date.blank? ? empty_tag(:span, 'none specified') : @material.remote_created_date %></p>
+            <p><b>Last updated: </b><%= @material.remote_updated_date.blank? ? empty_tag(:span, 'none specified') : @material.remote_updated_date %></p>
+          </div>
+          <p>
+            <%= link_to t('.back', :default => t("helpers.links.back")),
+                        materials_path, :class => 'btn btn-info'  %>
+            <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                        edit_material_path(@material), :class => 'btn btn-primary' %>
+            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                        material_path(@material),
+                        :method => 'delete',
+                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                        :class => 'btn btn-danger' %>
+            <button class="btn btn-success"><a href="<%= @material.url %>" target="_blank">View material <span class="fa fa-external-link" aria-hidden="true"></span></a></button>
+          </p>
+        </div>
+        <div id="packages" class="tab-pane fade">
+          <% if @material.packages.empty? %> <em> This material is not included in any packages </em>
+              <% else %><%= material_package_list(@material).join(", ").html_safe %>
+          <% end %>
+        </div>
+        <div id="activity_log" class="tab-pane fade">
+          <%= link_to(material_activities_path(@material)) %>
+        </div>
+      </div>
     </div>
-    <div class="show-page-description"><%= render_markdown(@material.long_description) %></div>
-
-    <dt><strong><%= model_class.human_attribute_name(:scientific_topic).pluralize %>:</strong></dt>
-
-    <dd><ul>
-      <% @material.scientific_topic.each do |x| %>
-          <li><%= link_to x.preferred_label, x %></li>
-      <% end %>
-    </ul></dd>
-    <dt><strong><%= model_class.human_attribute_name(:target_audience) %>:</strong></dt>
-    <dd><%= @material.target_audience.join(', ') %></dd>
-    <dt><strong><%= model_class.human_attribute_name(:keywords) %>:</strong></dt>
-    <dd><%= @material.keywords.join(', ') %></dd>
-    <dt><strong><%= model_class.human_attribute_name(:licence) %>:</strong></dt>
-    <dd><%= licence_name_for_abbreviation(@material.licence) %></dd>
-    <dt><strong><%= model_class.human_attribute_name(:difficulty_level) %>:</strong></dt>
-    <dd><%= @material.difficulty_level %></dd>
-    <dt><strong><%= model_class.human_attribute_name(:authors) %>:</strong></dt>
-    <dd><%= @material.authors.blank? ? 'N/A' : @material.authors.join(', ') %></dd>
-    <dt><strong><%= model_class.human_attribute_name(:contributors) %>:</strong></dt>
-    <dd><%= @material.contributors.blank? ? 'N/A' : @material.contributors.join(', ') %></dd>
-    <dt><strong>DOI:</strong></dt>
-    <dd><%= @material.doi %></dd>
-    <dt><strong>Created:</strong></dt>
-    <dd><%= @material.remote_created_date %></dd>
-    <dt><strong>Last updated:</strong></dt>
-    <dd><%= @material.remote_updated_date %></dd>
-    <dt><strong>Packages:</strong></dt>
-
-    <dd>
-      <% if @material.packages.empty? %> <em> This material is not included in any packages </em>
-          <% else %><%= material_package_list(@material).join(", ").html_safe %>
-      <% end %>
-    </dd>
-    <dt><strong>Content provider:</strong></dt>
-    <dd>
-      <% if @material.content_provider.nil? %> <em>No content provider</em>
-      <% else %>
-          <a href="<%=url_for @material.content_provider %>">
-            <%=  @material.content_provider.title %>
-            <img src="<%= @material.content_provider.logo_url %>"/>
-          </a>
-      <% end %>
-    </dd>
-    </dl>
-
-
-    <%= link_to t('.back', :default => t("helpers.links.back")),
-                materials_path, :class => 'btn btn-info'  %>
-    <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                edit_material_path(@material), :class => 'btn btn-primary' %>
-    <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                material_path(@material),
-                :method => 'delete',
-                :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                :class => 'btn btn-danger' %>
-    <button class="btn btn-success"><a href="<%= @material.url %>" target="_blank">View material <span class="fa fa-external-link" aria-hidden="true"></span></a></button>
-
-
   </div>
 </div>

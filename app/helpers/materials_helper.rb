@@ -10,10 +10,10 @@ module MaterialsHelper
   end
 
   def licence_name_for_abbreviation(licence)
-    if licence
+    unless licence.blank?
       TeSS::LicenceDictionary.instance.licence_name_for_abbreviation(licence)
     else
-      'No licence found'
+      'License not specified'
     end
   end
 
@@ -51,5 +51,9 @@ module MaterialsHelper
       cps << link_to(content_provider.title, content_provider)
     end
     return cps
+  end
+
+  def empty_tag (tag_symbol, text)
+    content_tag tag_symbol, text, :class=>"empty"
   end
 end
