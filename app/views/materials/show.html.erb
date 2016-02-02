@@ -19,7 +19,6 @@
         </li>
       </ul>
 
-
       <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
           <div class="page-header">
@@ -57,8 +56,10 @@
           </p>
         </div>
         <div id="packages" class="tab-pane fade">
-          <% if @material.packages.empty? %> <em> This material is not included in any packages </em>
-              <% else %><%= material_package_list(@material).join(", ").html_safe %>
+          <% if @material.packages.empty? %>
+              <%= empty_tag(:p, 'This material is not included in any packages.', "padding-top: 10px;") %>
+          <% else %>
+              <%= material_package_list(@material).join(", ").html_safe %>
           <% end %>
         </div>
         <div id="activity_log" class="tab-pane fade">

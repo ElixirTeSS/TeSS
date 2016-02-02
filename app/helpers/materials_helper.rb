@@ -53,7 +53,7 @@ module MaterialsHelper
     return cps
   end
 
-  def empty_tag (tag_symbol, text)
-    content_tag tag_symbol, text, :class=>"empty"
+  def empty_tag (tag_symbol, text, style=nil)
+    content_tag tag_symbol, text, :class=>"empty", :style=>style
   end
 end
