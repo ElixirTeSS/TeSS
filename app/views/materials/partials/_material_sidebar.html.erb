@@ -14,7 +14,7 @@ Variable that should be available
       <li><h4 class="nav-heading">Content provider</h4></li>
       <li style="padding: 7px 25px;">
         <p>
-          <%= link_to(image_tag(get_content_provider_logo_url(@material.content_provider)), @material.content_provider) %>
+          <%= link_to(image_tag(get_content_provider_logo_url(@material.content_provider), :class=>"medium-content-provider-logo"), @material.content_provider) %>
         </p>
         <p>
           <%= link_to @material.content_provider.title, @material.content_provider, :class=>"h5" %>

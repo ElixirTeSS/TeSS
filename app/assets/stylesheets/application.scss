@@ -416,8 +416,8 @@ ul.unstyled {
 }
 
 .nav-item > a {
-  padding-left: 15px;
-  padding-right: 15px;
+  //padding-left: 15px;
+  //padding-right: 15px;
   position: relative;
   display: block;
   color: #333;
@@ -464,9 +464,14 @@ ul.unstyled {
   padding: 50px 0;
 }
 .small-content-provider-logo{
-  max-width: 32px;
+  max-width: 64px;
   border-radius: 4px;
   padding-left: 10px;
+}
+.medium-content-provider-logo{
+  max-width: 256px;
+  border-radius: 4px;
+  padding: 0px 10px 0px 0px;
 }
 .search-results-count{
   font-size: medium;
@@ -549,4 +554,7 @@ ul.unstyled {
 }
 .panel-body {
   padding-bottom: 0px;
+}
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  color: #337ab7;
 }
