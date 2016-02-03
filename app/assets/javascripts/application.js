@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require bootstrap-sprockets
 //= require turbolinks
+//= require jquery.turbolinks
 //= require_tree .
 
 function redirect_to_sort_url(){

@@ -12,23 +12,27 @@
 
 
 $(document).ready(function(){
+    console.log('Loaded')
+
     /*EVENTS*/
     /*
      * User clicks ADD NEW for a free text field such as keyword, author, or contributor
      * OR they hit enter whilst in a free text field box
      */
     $(document.body).on('click', '.multiple-input-add', function(e){
+        console.log('multiple-input-add click')
+
         /* remove HTML autocfocus attribute from element */
         this.blur()
         var field_name = $(this).attr('data-field');
-        new_multiple_input_field(field_name);
+        add_multiple_input_field(field_name);
     })
     $(document.body).on('keypress', '.multiple-input', function(e){
         /*ADD NEW LINE IF USER HITS ENTER. CONSIDER ADDING MORE LIKE SHIFT, COMMA, ETC*/
         if (e.which == '13' || e.which == '188') {
             event.preventDefault(); /* stops enter submitting form */
             var field_name = $(this).attr('data-field');
-            new_multiple_input_field(field_name);
+            add_multiple_input_field(field_name);
         }
     })
     /* User deletes a free text field such as keyword, author or contributor */
@@ -58,42 +62,49 @@ $(document).ready(function(){
         add_dropdown_option($(this).attr('data-field'),
             $(this).attr('data-name'),
             $(this).attr('data-value'));
-        list_item.remove()
+        list_item.remove(); // This should also remove the hidden input field as we have removed the parent div that contains the disabled text field, hidden field and close/delete button
     })
 
-    /*FUNCTIONS*/
-    /*
-     * Adds a new selected item to the field_name div with the values and names passed
-     */
-    function add_selected_dropdown_item(field_name, value, name){
-        var label = '<input type="text" class="multiple-input form-control" data-field="package" name="material[package_ids][]" ' +
-            'value="' + value + '" style="display:none;"> ' + name + '</text>';
-        var delete_button = '<input type="button" value="&times;" class="dropdown-option-delete" data-field="package"' +
-            'data-value="' + value + '" data-name="' + name + '"/>';
 
-        var list_item_div = $('<div class="multiple-list-item">').appendTo('.' + field_name);
-        $(label).appendTo(list_item_div);
-        $(delete_button).appendTo(list_item_div);
-    }
-    /*
-     * Creates a new input box for free text fields as a child of the field_name div
-     */
-    function new_multiple_input_field(field_name){
-        var input_box = '<input type="text" class="multiple-input form-control" data-field="'
-            + field_name + '" name="material[' + field_name + 's][]" />';
-        var delete_button = '<input type="button" value="&times;" class="multiple-input-delete" data-field="keyword" tabindex=300/>';
-
-        var list_item_div = $('<div class="multiple-list-item">').appendTo('.' + field_name);
-        $(input_box).appendTo(list_item_div).focus();
-        $(delete_button).appendTo(list_item_div);
-    }
-    /* removes an item */
-    function remove_list_item(list_item){
-        list_item.remove();
-    }
-    /* Adds a new option to the list of dropdown options. Used when a package is deselected (e.g. delete button pressed)"*/
-    function add_dropdown_option(field_name, name, value){
-        $('<li class="dropdown-option" id="' + field_name + '-id-' + value + '" ' +
-            'value="' + value + '"><a>' + name + '</a></li>').appendTo('.' + field_name + '-options')
-    }
 })
+
+/*FUNCTIONS*/
+/*
+ * Adds a new selected item to the field_name div with the values and names passed
+ */
+function add_selected_dropdown_item(field_name, value, name){
+    var item_name = '<input type="text" class="multiple-input form-control" data-field="package" name="material[package_ids][]" ' +
+        'value="' + name + '" readonly="readonly" disabled="disabled" />';
+    var item_value = '<input type="hidden" data-field="package" name="material[package_ids][]" ' +
+        'value="' + value + '" />';
+    var delete_button = '<input type="button" value="&times;" class="dropdown-option-delete" data-field="package"' +
+        'data-value="' + value + '" data-name="' + name + '"/>';
+
+    var list_item_div = $('<div class="multiple-list-item">').appendTo('.' + field_name);
+    $(item_name).appendTo(list_item_div);
+    $(item_value).appendTo(list_item_div);
+    $(delete_button).appendTo(list_item_div);
+}
+
+/*
+ * Creates a new input box for free text fields as a child of the field_name div
+ */
+function add_multiple_input_field(field_name){
+    console.log('Adding new ' + field_name)
+    var input_box = '<input type="text" class="multiple-input form-control" data-field="'
+        + field_name + '" name="material[' + field_name + 's][]" />';
+    var delete_button = '<input type="button" value="&times;" class="multiple-input-delete" data-field="keyword" tabindex=300/>';
+
+    var list_item_div = $('<div class="multiple-list-item">').appendTo('.' + field_name);
+    $(input_box).appendTo(list_item_div).focus();
+    $(delete_button).appendTo(list_item_div);
+}
+/* removes an item */
+function remove_list_item(list_item){
+    list_item.remove();
+}
+/* Adds a new option to the list of dropdown options. Used when a package is deselected (e.g. delete button pressed)"*/
+function add_dropdown_option(field_name, name, value){
+    $('<li class="dropdown-option" id="' + field_name + '-id-' + value + '" ' +
+        'value="' + value + '"><a>' + name + '</a></li>').appendTo('.' + field_name + '-options')
+}

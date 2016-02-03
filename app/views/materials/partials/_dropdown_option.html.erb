@@ -13,7 +13,9 @@ field_name - The name of the attribute
       <% material.packages.each do |package| %>
           <div class="multiple-list-item">
             <input type="text" class="multiple-input form-control" data-field='package' name="material[package_ids][]"
-                   value="<%=package.id%>" style="display:none;"><%=package.name%></input>
+                   value="<%=package.name%>" readonly="readonly" disabled="disabled" />
+            <input type="hidden" data-field='package' name="material[package_ids][]"
+                   value="<%=package.id%>" />
             <input type="button" value="<%= "&times;".html_safe %>" class="dropdown-option-delete" data-field="package"
                    data-value="<%= package.id %>" data-name="<%=package.name%>"/>
           </div>
@@ -21,7 +23,7 @@ field_name - The name of the attribute
     </div>
     <div class="dropdown">
       <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        Select package
+        Add package
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu package-options" data-field="package" id="material_packages" aria-labelledby="dropdownMenu1">
