@@ -9,16 +9,16 @@
   <div class=" col-md-9 col-xs-9">
     <div class="row">
       <div class="content_action">
-          <%= link_to t('.back', :default => t("helpers.links.back")),
-                      materials_path, :class => 'btn btn-info'  %>
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_material_path(@material), :class => 'btn btn-primary' %>
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      material_path(@material),
-                      :method => 'delete',
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-danger' %>
-          <button class="btn btn-success"><a href="<%= @material.url %>" target="_blank">View material <span class="fa fa-external-link" aria-hidden="true"></span></a></button>
+        <%= link_to t('.back', :default => t("helpers.links.back")),
+                    materials_path, :class => 'btn btn-info'  %>
+        <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                    edit_material_path(@material), :class => 'btn btn-primary' %>
+        <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                    material_path(@material),
+                    :method => 'delete',
+                    :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                    :class => 'btn btn-danger' %>
+        <button class="btn btn-success"><a href="<%= @material.url %>" target="_blank">View material <span class="fa fa-external-link" aria-hidden="true"></span></a></button>
       </div>
       <ul class="nav nav-tabs">
         <li class="active">
@@ -38,9 +38,9 @@
             <p><%= link_to @material.url, @material.url, :class =>'h4' %></p>
             <% if not @material.long_description.blank? %>
                 <p><%= render_markdown(@material.long_description) %></p>
-          <% elsif not @material.short_description.blank? %>
+            <% elsif not @material.short_description.blank? %>
                 <p><%= render_markdown(@material.short_description)%></p>
-          <% end %>
+            <% end %>
           </div>
           <div>
             <p><b><%= model_class.human_attribute_name(:scientific_topic).pluralize %>: </b><%= @material.scientific_topic.blank? ? empty_tag(:span, 'none specified') : @material.scientific_topic.map{|x| x.preferred_label}.join(', ') %></p>
@@ -56,11 +56,17 @@
           </div>
         </div>
         <div id="packages" class="tab-pane fade">
-          <% if @material.packages.empty? %>
-              <%= empty_tag(:p, 'This material is not included in any packages.', "padding-top: 10px;") %>
-          <% else %>
-              <%= material_package_list(@material).join(", ").html_safe %>
-          <% end %>
+          <div class="row">
+            <% if @material.packages.empty? %>
+                <%= empty_tag(:p, 'This material is not included in any packages.', "padding-top: 10px;") %>
+            <% else %>
+                <ul class="masonry media-grid">
+                  <% @material.packages.each do |package| %>
+                      <%= render :partial => "packages/package", :locals => {:package => package} %>
+                  <% end %>
+                </ul>
+            <% end %>
+          </div>
         </div>
         <div id="activity_log" class="tab-pane fade">
           <%= render :partial => "materials/partials/material_activities" %>
