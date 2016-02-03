@@ -66,12 +66,12 @@ $(document).ready(function(){
      * Adds a new selected item to the field_name div with the values and names passed
      */
     function add_selected_dropdown_item(field_name, value, name){
-        var label = '<input type="text" class="multiple-input" data-field="package" name="material[package_ids][]" ' +
+        var label = '<input type="text" class="multiple-input form-control" data-field="package" name="material[package_ids][]" ' +
             'value="' + value + '" style="display:none;"> ' + name + '</text>';
-        var delete_button = '<input type="button" value="x" class="dropdown-option-delete" data-field="package"' +
+        var delete_button = '<input type="button" value="&times;" class="dropdown-option-delete" data-field="package"' +
             'data-value="' + value + '" data-name="' + name + '"/>';
 
-        var list_item_div = $('<div class="list-item">').appendTo('.' + field_name);
+        var list_item_div = $('<div class="multiple-list-item">').appendTo('.' + field_name);
         $(label).appendTo(list_item_div);
         $(delete_button).appendTo(list_item_div);
     }
@@ -79,11 +79,11 @@ $(document).ready(function(){
      * Creates a new input box for free text fields as a child of the field_name div
      */
     function new_multiple_input_field(field_name){
-        var input_box = '<input type="text" class="multiple-input" data-field="'
+        var input_box = '<input type="text" class="multiple-input form-control" data-field="'
             + field_name + '" name="material[' + field_name + 's][]" />';
-        var delete_button = '<input type="button" value="x" class="multiple-input-delete" data-field="keyword" tabindex=300/>';
+        var delete_button = '<input type="button" value="&times;" class="multiple-input-delete" data-field="keyword" tabindex=300/>';
 
-        var list_item_div = $('<div class="list-item">').appendTo('.' + field_name);
+        var list_item_div = $('<div class="multiple-list-item">').appendTo('.' + field_name);
         $(input_box).appendTo(list_item_div).focus();
         $(delete_button).appendTo(list_item_div);
     }

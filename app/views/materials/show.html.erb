@@ -3,7 +3,7 @@
 <div class="row wrapper">
   <!-- SIDEBAR -->
   <div class="col-md-3 col-xs-3" id="sidebar">
-    <%= render :partial => "materials/partials/material_sidebar" %>
+    <%= render :partial => "materials/partials/material_owner" %>
   </div>
 
   <div class=" col-md-9 col-xs-9">
@@ -46,8 +46,8 @@
             <p><b><%= model_class.human_attribute_name(:scientific_topic).pluralize %>: </b><%= @material.scientific_topic.blank? ? empty_tag(:span, 'none specified') : @material.scientific_topic.map{|x| x.preferred_label}.join(', ') %></p>
             <p><b><%= model_class.human_attribute_name(:keywords) %>: </b><%= @material.keywords.blank? ? empty_tag(:span, 'none specified') : @material.keywords.join(', ') %></p>
             <p><b><%= model_class.human_attribute_name(:target_audience) %>: </b><%= @material.target_audience.blank? ? empty_tag(:span, 'none specified') : @material.target_audience.join(', ') %></p>
-            <p><b><%= model_class.human_attribute_name(:difficulty_level) %>: </b><%= @material.difficulty_level.blank? ? empty_tag(:span, 'none specified') : @material.difficulty_level %></p>
-            <p><b><%= model_class.human_attribute_name(:licence) %>: </b><%= @material.licence.blank? ? empty_tag(:span, 'licence not specified') : licence_name_for_abbreviation(@material.licence) %></p>
+            <p><b><%= model_class.human_attribute_name(:difficulty_level) %>: </b><%= (@material.difficulty_level.blank? or @material.difficulty_level == 'notspecified') ? empty_tag(:span, 'none specified') : difficulty_name_for_abbreviation(@material.difficulty_level) %></p>
+            <p><b><%= model_class.human_attribute_name(:licence) %>: </b><%= (@material.licence.blank? or @material.licence == 'notspecified') ? empty_tag(:span, 'none specified') : licence_name_for_abbreviation(@material.licence) %></p>
             <p><b><%= model_class.human_attribute_name(:authors) %>: </b><%= @material.authors.blank? ? empty_tag(:span, 'none specified') : @material.authors.join(', ') %></p>
             <p><b><%= model_class.human_attribute_name(:contributors) %>: </b><%= @material.contributors.blank? ? empty_tag(:span, 'none specified') : @material.contributors.join(', ') %></p>
             <p><b>DOI: </b><%= @material.doi.blank? ? empty_tag(:span, 'none specified') : @material.doi %></p>

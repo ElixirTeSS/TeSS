@@ -1,24 +1,24 @@
 <!--
-field_name - the name of the array attribute in it's plural form e.g. author, keyword.
+field_name - the name of the array attribute in its plural form e.g. author, keyword.
 -->
 
-<div class="control-group">
-  <%= f.label field_name.to_sym, :class => 'control-label' %>
-  <div class="<%=field_name.singularize%> controls multiple-input-list">
+<div class="form-group">
+  <%= f.label field_name.to_sym %>
+  <div class="<%=field_name.singularize%> multiple-input-list">
     <% material.send(field_name.to_sym).push('').each do |attr| %>
-        <div class="list-item">
-          <input type="text"
-                 class="multiple-input"
-                 data-field='<%=field_name.singularize%>'
-                 name="material[<%=field_name%>][]"
-                 value="<%=attr%>"/>
+        <div class="multiple-list-item">
+             <input type="text"
+                    class="multiple-input form-control"
+                    data-field='<%= field_name.singularize %>'
+                    name="material[<%= field_name %>][]"
+                    value="<%=attr%>"/>
           <input type="button"
-                 value="x"
-                 class="multiple-input-delete"
-                 data-field="<%=field_name.singularize%>"/>
+                 value='<%= "&times;".html_safe %>'
+                     class="multiple-input-delete"
+                 data-field="<%= field_name.singularize %>"/>
         </div>
     <% end %>
   </div>
-  <i class="fa fa-plus multiple-input-add" data-field="<%=field_name.singularize%>"> Add new</i>
+  <a class="btn btn-info"><i class="fa fa-plus multiple-input-add" data-field="<%=field_name.singularize%>"> Add <%= field_name.singularize %></i></a>
   <%#= error_span(material.send(field_name)) %>
 </div>

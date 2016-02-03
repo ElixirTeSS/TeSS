@@ -4,17 +4,17 @@ f - form object
 field_name - The name of the attribute
  -->
 
-<div class="control-group">
-  <%= f.label :packages, :class => 'control-label' %>
+<div class="form-group">
+  <%= f.label :packages %>
   <!-- have one empty one so something is always passed -->
-  <input name="material[package_ids][]" value="" style="display:none"/>
-  <div class="controls" data-field="package">
+  <input name="material[package_ids][]" value="" style="display:none" />
+  <div data-field="package">
     <div class="package multiple-input-list">
       <% material.packages.each do |package| %>
-          <div class="list-item">
-            <input type="text" class="multiple-input" data-field='package' name="material[package_ids][]"
-                   value="<%=package.id%>" style="display:none;"><%=package.name%></input>
-            <input type="button" value="x" class="dropdown-option-delete" data-field="package"
+          <div class="multiple-list-item">
+            <input type="text" class="multiple-input form-control" data-field='package' name="material[package_ids][]"
+                   value="<%=package.id%>" style="display:none;" readonly="readonly" />
+            <input type="button" value="&times;" class="dropdown-option-delete" data-field="package"
                    data-value="<%=package.id%>" data-name="<%=package.name%>"/>
           </div>
       <% end %>
@@ -26,7 +26,7 @@ field_name - The name of the attribute
       </button>
       <ul class="dropdown-menu package-options" data-field="package" id="material_packages" aria-labelledby="dropdownMenu1">
         <% available_packages_for(@material).each do |package| %>
-            <li class="dropdown-option" id="package-id-<%=package.id%>" value="<%=package.id%>"><a><%= package.name %></a></li>
+            <li class="dropdown-option" id="package-id-<%=package.id%>" value="<%= package.id %>"><a><%= package.name %></a></li>
         <% end %>
       </ul>
     </div>

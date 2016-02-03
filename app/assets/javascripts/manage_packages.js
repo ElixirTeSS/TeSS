@@ -40,12 +40,12 @@ $(document).ready(function(){
      * Adds a new selected item to the field_name div with the values and names passed
      */
     function add_selected_dropdown_item(field_name, value, name){
-        var label = '<input type="text" class="multiple-input" data-field="package" name="package[' + field_name + '_ids][]" ' +
-            'value="' + value + '" style="display:none;"> ' + name + '</text>';
+        var label = '<input type="text" class="multiple-input form-control" data-field="package" name="package[' + field_name + '_ids][]" ' +
+            'value="' + name + '" readonly="readonly" disabled />';
         var delete_button = '<input type="button" value="x" class="dropdown-option-delete" data-field="package"' +
             'data-value="' + value + '" data-name="' + name + '"/>';
 
-        var list_item_div = $('<div class="list-item">').appendTo('.' + field_name);
+        var list_item_div = $('<div class="multiple-list-item">').appendTo('.' + field_name);
         $(label).appendTo(list_item_div);
         $(delete_button).appendTo(list_item_div);
     }

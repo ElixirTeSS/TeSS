@@ -563,3 +563,31 @@ ul.unstyled {
   margin-top: -5px;
   margin-right: -7px;
 }
+// Fix for simple form issue: http://stackoverflow.com/questions/6748446/rails-simple-form-gives-dots-under-stars-for-required-fields-better-way-to-remo
+abbr, accronym{ border-bottom: 0px !important; } /*try adding !important  after 0px if doesn't work*/
+
+//Multiple input list on forms with + button to add more input fields dynamically
+.multiple-input-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+.multiple-list-item {
+  padding: 3px;
+  margin: 3px 3px 3px 0px;
+  background-color: whitesmoke;
+  border-radius: 4px;
+  width: 40%;
+  display: inline;
+}
+.multiple-input {
+  width: 85%;
+  display: inline;
+}
+.multiple-input-delete {
+  background:none;
+  border:none
+}
+.dropdown-option-delete {
+  background:none;
+  border:none
+}

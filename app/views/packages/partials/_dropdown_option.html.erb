@@ -9,7 +9,7 @@ field_name - The name of the attribute
   <div class="controls" data-field="<%=field_name%>">
     <div class="<%=field_name%> multiple-input-list">
       <% package.send(field_name.pluralize).each do |resource| %>
-          <div class="list-item">
+          <div class="multiple-list-item">
             <input type="text" class="multiple-input" data-field='<%=field_name%>' name="package[<%=field_name%>_ids][]"
                    value="<%=resource.id%>" style="display:none;"><%=resource.title%></input>
             <input type="button" value="x" class="dropdown-option-delete" data-field="<%=field_name%>"
