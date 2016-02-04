@@ -328,11 +328,11 @@ function bpFormSelect(li) {
 }
 
 function add_selected_dropdown_item(field_name, value, name){
-    var label = '<input type="text" class="multiple-input" data-field="scientific_topic" name="material[scientific_topic][]" ' +
+    var label = '<input type="text" class="multiple-input form-control" data-field="scientific_topic" name="material[scientific_topic][]" ' +
         'value="' + value + '" style="display:none;"> ' + name + '</text>';
     var delete_button = '<input type="button" value="x" class="dropdown-option-delete" data-field="scientific_topic"' +
         'data-value="' + value + '" data-name="' + name + '"/>';
-    var list_item_div = $('<div class="list-item" id="' + value +'">').appendTo('.' + field_name);
+    var list_item_div = $('<div class="multiple-list-item" id="' + value +'">').appendTo('.' + field_name);
     $(label).appendTo(list_item_div);
     $(delete_button).appendTo(list_item_div);
 }

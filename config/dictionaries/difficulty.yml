@@ -1,9 +1,12 @@
-easy:
-  title: Easy
-  description: This content is suitable for novices
-medium:
-  title: Medium
-  description: This content is the goldilocks of training materials
-hard:
-  title: Hard
-  description: This content is difficult
+notspecified:
+  title: Not specified
+  description: Difficulty level not specified
+beginner:
+  title: Beginner
+  description: The owest level of difficulty; this content is suitable for beginners on the topic.
+intermediate:
+  title: Intermediate
+  description: Intermediate level of difficulty; suitable for people who already have some knowledge of the topic.
+advanced:
+  title: Advanced
+  description: The highest level of difficulty; this content is suitable for people who have a substantial knowledge of the topic.

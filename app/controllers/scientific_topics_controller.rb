@@ -1,6 +1,9 @@
 class ScientificTopicsController < ApplicationController
   before_action :set_scientific_topic, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate_user!, except: [:index, :show]
+
+  include TeSS::BreadCrumbs
+
   # GET /scientific_topics
   # GET /scientific_topics.json
   def index
