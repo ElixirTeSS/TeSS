@@ -4,18 +4,12 @@ Rails.application.routes.draw do
   resources :scientific_topics
   resources :workflows
 
-  resources :events
-
-  get 'content_providers/show'
-  get 'content_providers/new'
-  get 'content_providers/edit'
-  get 'content_providers/create'
-
   get 'static/welcome'
   get 'about' => 'static#about', as: 'about'
 
   post 'materials/check_exists' => 'materials#check_exists'
   post 'events/check_exists' => 'events#check_exists'
+  post 'content_providers/check_exists' => 'content_providers#check_exists'
 
   devise_for :users
   get 'users/new' => 'users#new'
@@ -37,20 +31,17 @@ Rails.application.routes.draw do
   resources :events do
     resource :activities, :only => [:show]
   end
-
   resources :packages do
     resource :activities, :only => [:show]
     get 'manage' => 'packages#manage'
     post 'update_package_resources' => 'packages#update_package_resources'
-=begin
-    post 'remove_resources' => 'packages#remove_resources'
+=begin    post 'remove_resources' => 'packages#remove_resources'
 =end
   end
   resources :workflows
   resources :content_providers do
     resource :activities, :only => [:show]
   end
-
   resources :materials do
     resource :activities, :only => [:show]
   end
