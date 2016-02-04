@@ -4,11 +4,11 @@
     <p><%= truncate(material.short_description, length: 300, separator: ' ') %></p>
     <div class="row" style="margin: 0px;">
       <% if controller_name == 'materials' %>
-          <div class="col-md-10" style="padding: 0px;">
+          <div class="col-md-9" style="padding: 0px;">
             <p><b>Scientific topics: </b><%= material.scientific_topic.blank? ? empty_tag(:span, 'none specified') : material.scientific_topic.map{|x| x.preferred_label}.join(', ') %></p>
             <p><b>Keywords: </b><%= material.keywords.blank? ? empty_tag(:span, 'none specified') : material.keywords.join(', ') %></p>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-3">
             <%= html_logo_for(material.content_provider,'pull-right small-content-provider-logo').html_safe %>
             <!-- Add node logo as well, if material's provider  belongs to a node -->
             <%#= html_logo_for('material's-node-logo','pull-right small-content-provider-logo').html_safe %>
