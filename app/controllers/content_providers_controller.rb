@@ -4,6 +4,18 @@ class ContentProvidersController < ApplicationController
   require 'bread_crumbs'
   include TeSS::BreadCrumbs
 
+  # Should allow token authentication for API calls
+  acts_as_token_authentication_handler_for User, except: [:index, :show, :check_exists] #only: [:new, :create, :edit, :update, :destroy]
+
+  # User auth should be required in the web interface as well; it's here rather than in routes so that it
+  # doesn't override the token auth, above.
+  before_filter :authenticate_user!, except: [:index, :show, :check_exists]
+
+
+  # Should prevent forgery errors for JSON posts.
+  skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
+
+
   def index
     @content_providers = ContentProvider.all
   end
@@ -20,6 +32,36 @@ class ContentProvidersController < ApplicationController
   end
 
   def edit
+  end
+
+  # POST /events/check_exists
+  # POST /events/check_exists.json
+  def check_exists
+    title = params[:title]
+    url = params[:url]
+    if !title.blank? or !url.blank?
+      @content_provider = ContentProvider.find_by_url(url)
+      if @content_provider.nil?
+        @content_provider = ContentProvider.find_by_title(title)
+      end
+    else
+      respond_to do |format|
+        format.html { render :nothing => true, :status => 200, :content_type => 'text/html' }
+        format.json { render :nothing => true, :status => 200, :content_type => 'application/json' }
+      end
+    end
+
+    if @content_provider
+      respond_to do |format|
+        format.html { redirect_to @content_provider }
+        format.json { render :show, location: @content_provider }
+      end
+    else
+      respond_to do |format|
+        format.html { render :nothing => true, :status => 200, :content_type => 'text/html' }
+        format.json { render :nothing => true, :status => 200, :content_type => 'application/json' }
+      end
+    end
   end
 
   def create

@@ -24,7 +24,7 @@ gem "therubyracer"
 # gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 # gem "twitter-bootstrap-rails"
 gem 'bootstrap-sass'
-gem 'font-awesome-sass', '~> 4.5.0'
+gem 'font-awesome-sass'
 
 gem 'friendly_id', '~> 5.1.0'
 
@@ -43,6 +43,8 @@ gem 'gravtastic'
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
+gem 'jquery-turbolinks'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.

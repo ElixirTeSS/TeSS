@@ -1,14 +1,4 @@
-<div class="control-group">
-  <%= f.label :content_provider, :class=> 'control-label' %>
-  <div class="controls">
-    <% content_provider = material.content_provider %>
-    <% if content_provider.nil? %>
-        <%= f.select "content_provider_id", content_tag(:option,'select one...',:value=>"")+options_from_collection_for_select(ContentProvider.all, "id", "title") %>
-    <% else %>
-        <a href="<%=url_for content_provider %>">
-          <%= content_provider.title %>
-          <img src="<%= content_provider.logo_url %>"/>
-        </a>
-    <% end %>
-  </div>
+<div class="form-group">
+  <%= f.label :content_provider %>
+  <%= f.select(:content_provider_id, options_for_select(ContentProvider.all.collect { |cp| [cp.title, cp.id] }, (material.content_provider.blank? ? nil : material.content_provider.id)), {include_blank: true}, :class => "form-control") %>
 </div>

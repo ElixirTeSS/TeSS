@@ -200,7 +200,7 @@ div#sidebar table tr td a:hover {
 
 // ######## Media-bricks modified from CKAN
 .media-grid {
-  margin: 0;
+  margin: 0px 0px 15px 0px;
   list-style: none;
   *zoom: 1;
   padding-bottom: 15px;
@@ -416,8 +416,8 @@ ul.unstyled {
 }
 
 .nav-item > a {
-  padding-left: 15px;
-  padding-right: 15px;
+  //padding-left: 15px;
+  //padding-right: 15px;
   position: relative;
   display: block;
   color: #333;
@@ -464,9 +464,14 @@ ul.unstyled {
   padding: 50px 0;
 }
 .small-content-provider-logo{
-  max-width: 32px;
+  max-width: 64px;
   border-radius: 4px;
   padding-left: 10px;
+}
+.medium-content-provider-logo{
+  max-width: 256px;
+  border-radius: 4px;
+  padding: 0px 10px 0px 0px;
 }
 .search-results-count{
   font-size: medium;
@@ -549,4 +554,51 @@ ul.unstyled {
 }
 .panel-body {
   padding-bottom: 0px;
+}
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  color: #337ab7;
+}
+.content_action {
+  float: right;
+  margin-top: -5px;
+  margin-right: -7px;
+}
+// Fix for simple form issue: http://stackoverflow.com/questions/6748446/rails-simple-form-gives-dots-under-stars-for-required-fields-better-way-to-remo
+abbr, accronym{ border-bottom: 0px !important; } /*try adding !important  after 0px if doesn't work*/
+
+//Multiple input list on forms with + button to add more input fields dynamically
+.multiple-input-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+.multiple-list-item {
+  padding: 3px;
+  margin: 3px 3px 3px 0px;
+  background-color: whitesmoke;
+  border-radius: 4px;
+  width: 40%;
+  display: inline;
+}
+.multiple-input {
+  width: 85%;
+  display: inline;
+}
+.multiple-input-delete {
+  background:none;
+  border:none
+}
+.dropdown-option-delete {
+  background:none;
+  border:none
+}
+.info-block {
+  color: #005d7a;
+  float: right;
+  font-size: 28px;
+  margin: 0px;
+  width: 28px;
+}
+/* The max width is dependant on the container (more info below) */
+.popover{
+  max-width: 500px !important; /* Max Width of the popover (depending on the container!) */
 }

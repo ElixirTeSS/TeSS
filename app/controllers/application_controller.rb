@@ -27,8 +27,7 @@ class ApplicationController < ActionController::Base
   def solr_search(model_name, search_params='', facet_fields=[], selected_facets=[], page=1, sort_by=nil)
     model_name.search do
 
-      puts facet_fields
-
+      fulltext search_params
       #Set the search parameter
       #Disjunction clause
       facets = []

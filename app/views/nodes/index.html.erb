@@ -1,47 +1,49 @@
 <!--<p id="notice"><%#= notice %></p>-->
 
-<h1>Listing Nodes</h1>
+<!-- SIDEBAR | RESULTS -->
+<div class="row wrapper">
+  <% if SOLR_ENABLED %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Member status</th>
-      <th>Country code</th>
-      <th>Home page string</th>
-      <th>Institutions</th>
-      <th>Trc</th>
-      <th>Trc email</th>
-      <th>Trc</th>
-      <th>Staff</th>
-      <th>Twitter</th>
-      <th>Carousel images</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+      <!-- SIDEBAR -->
+      <div class="col-md-3" id="sidebar">
+        <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @nodes} %>
+      </div>
 
-  <tbody>
-    <% @nodes.each do |node| %>
-      <tr>
-        <td><%= node.name %></td>
-        <td><%= node.member_status %></td>
-        <td><%= node.country_code %></td>
-        <td><%= node.home_page %></td>
-        <td><%= node.institutions %></td>
-        <td><%= node.trc %></td>
-        <td><%= node.trc_email %></td>
-        <td><%= node.trc %></td>
-        <td><%= node.staff %></td>
-        <td><%= node.twitter %></td>
-        <td><%= node.carousel_images %></td>
-        <td><%= link_to 'Show', node %></td>
-        <td><%= link_to 'Edit', edit_node_path(node) %></td>
-        <td><%= link_to 'Destroy', node, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+      <!-- RESULTS -->
+      <div class="col-md-9">
+        <!-- SEARCH BAR -->
 
-<br>
+        <div class="row">
+          <%= link_to new_node_path, :class=>"btn btn-primary disabled" do %>
+              <i class="fa fa-plus"></i> Create node
+          <% end %>
+        </div>
 
-<%= link_to 'New Node', new_node_path %>
+        <div class="row">
+          <%#= render :partial=> "search/common/search_box", :locals=>{:resource_path => nodes_path} %>
+        </div>
+
+        <!-- APPLIED FILTERS AND NUMBER OF RESULTS -->
+        <div class="row">
+          <%#= render :partial => "search/common/search_info", :locals=>{:resources=>@nodes}  %>
+        </div>
+
+        <!-- PAGINATION -->
+        <div class="row">
+          <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@nodes} unless (@nodes.blank? or @nodes.results.blank?) %>
+        </div>
+
+        <hr>
+        <% @nodes = @nodes.results unless @nodes.blank? %>
+  <% end %>
+
+  <!-- ACTUAL RESULTS LIST -->
+  <% unless @nodes.blank? %>
+      <ul class="masonry media-grid">
+        <% @nodes.each do |node| %>
+            <%= render node %>
+        <% end %>
+      </ul>
+  <% end %>
+  </div>
+</div>

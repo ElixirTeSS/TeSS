@@ -143,7 +143,7 @@ ContentProvider.create!(
 ContentProvider.create!(
     title: "European Bioinformatics Institute (EBI)",
     url: "http://www.ebi.ac.uk",
-    logo_url: "http://www.ebi.ac.uk/miriam/static/main/img/EBI_logo.png",
+    logo_url: "http://178.62.84.82/dev/images/EMBL_EBI-logo.png",
     description: "EMBL-EBI provides freely available data from life science experiments, performs basic research in computational biology and offers an extensive user training programme, supporting researchers in academia and industry."
 ).create_activity :create
 ContentProvider.create!(
@@ -173,7 +173,7 @@ ContentProvider.create!(
 ContentProvider.create!(
     title: "VIB Bioinformatics Training and Services",
     url: "https://www.bits.vib.be/",
-    logo_url: "https://www.bits.vib.be/images/images/bits_logo_color_2012_04_transp.png",
+    logo_url: "http://www.vib.be/VIBMediaLibrary/Logos/Service_facilities/BITS_website.jpg",
     description: "Provider of Bioinformatics and software training, plus informatics services and resource management support."
 ).create_activity :create
 ContentProvider.create!(

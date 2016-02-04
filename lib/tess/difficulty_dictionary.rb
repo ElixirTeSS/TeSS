@@ -20,10 +20,6 @@ module TeSS
       @dictionary[abbreviation]['title']
     end
 
-    def difficulty_url_for_abbreviation(abbreviation)
-      @dictionary[abbreviation]['url']
-    end
-
     def extract_difficulty_names(difficulty_dictionary=@dictionary)
       list = []
       difficulty_dictionary.each do |key,value|
