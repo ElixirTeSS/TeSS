@@ -42,15 +42,20 @@ module SearchHelper
 	end
 
 	def neatly_printed_date_range start, finish
-		if start.year != finish.year
-			"#{day_month_year(start)} - #{day_month_year(finish)}"
-		elsif start.month != finish.month
-			"#{day_month(start)} - #{day_month(finish)} #{finish.year}"
-		elsif start.day != finish.day
-			"#{start.day} - #{finish.day} #{finish.strftime("%b")} #{finish.year}"
+		if start and finish
+			if start.year != finish.year
+				"#{day_month_year(start)} - #{day_month_year(finish)}"
+			elsif start.month != finish.month
+				"#{day_month(start)} - #{day_month(finish)} #{finish.year}"
+			elsif start.day != finish.day
+				"#{start.day} - #{finish.day} #{finish.strftime("%b")} #{finish.year}"
+			else
+				"#{day_month_year(start)}"
+			end
 		else
-			"#{day_month_year(start)}"
+			return 'No date given'
 		end
+
 	end
 
 	def neatly_printed_date date
