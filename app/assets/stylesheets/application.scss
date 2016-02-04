@@ -591,3 +591,14 @@ abbr, accronym{ border-bottom: 0px !important; } /*try adding !important  after 
   background:none;
   border:none
 }
+.info-block {
+  color: #005d7a;
+  float: right;
+  font-size: 28px;
+  margin: 0px;
+  width: 28px;
+}
+/* The max width is dependant on the container (more info below) */
+.popover{
+  max-width: 500px !important; /* Max Width of the popover (depending on the container!) */
+}

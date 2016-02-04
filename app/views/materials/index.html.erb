@@ -13,9 +13,22 @@
 
         <!-- CREATE NEW BUTTON -->
         <div class="row">
-          <%= link_to new_material_path, :class=>"btn btn-primary" do %>
-              <i class="fa fa-plus-square"></i> Register training material
-          <% end %>
+          <div class="col-md-4 col-xs-4" style="padding-left: 0px;">
+            <%= link_to new_material_path, :class=>"btn btn-primary" do %>
+                <i class="fa fa-plus-square"></i> Register training material
+            <% end %>
+          </div>
+          <div class="col-md-8 col-xs-8 pull-right">
+              <script>
+                $(document).ready(function(){
+                  $('[data-toggle="popover"]').popover();
+                });
+              </script>
+              <% material_info_popover = " In the context of TeSS, materials are links to online training resources (presentations, videos, exercises, etc.) made available by 3rd-party content providers, along with description and other meta information (e.g. ontological categorization, keywords, etc.)." %>
+              <button class="btn btn-default pull-right" data-toggle="popover" data-placement="bottom" data-trigger="focus" title="What are materials in TeSS?" data-content="<%= material_info_popover %>">
+                <i class="glyphicon glyphicon-info-sign info-block"></i>
+              </button>
+          </div>
         </div>
 
         <!-- SEARCH BAR -->
