@@ -262,6 +262,9 @@ div#sidebar table tr td a:hover {
 .media-item:hover .media-edit {
   opacity: 1;
 }
+li.media-item {
+  list-style-type: none;
+}
 
 .media-view {
   position: absolute;
