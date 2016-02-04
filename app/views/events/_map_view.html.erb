@@ -1,7 +1,7 @@
 <script>
 var map;
 var events = [];
-<% if events %>
+<% unless events.blank? %>
     <% events.each do |event|  %>
         var event_display = "<a href='<%=event.link%>' target='_blank'>" +
                 "<h3><%=event.title%></h3></a>" +
