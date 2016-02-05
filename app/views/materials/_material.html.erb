@@ -1,5 +1,5 @@
 <div class="list-group-item">
-  <div class="list-group-item-heading"><%= link_to(truncate(material.title, length: 90, separator: ' '), material, class: "btn btn-default btn-block") %></div>
+  <div class="list-group-item-heading"><%= link_to(material.title, material, class: "btn btn-default btn-block") %></div>
   <div>
     <p><%= truncate(material.short_description, length: 300, separator: ' ') %></p>
     <div class="row" style="margin: 0px;">
