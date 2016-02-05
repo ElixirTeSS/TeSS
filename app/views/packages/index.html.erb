@@ -15,14 +15,17 @@
 
       <!-- RESULTS -->
       <div class="col-md-9">
-        <!-- SEARCH BAR -->
 
+        <!-- CREATE BUTTON -->
         <div class="row">
-          <%= link_to new_package_path, :class=>"btn btn-primary" do %>
-              <i class="fa fa-plus"></i> Create package
-          <% end %>
+          <div class="col-md-6 col-xs-6" style="padding-left: 0px;">
+            <%= link_to new_package_path, :class=>"btn btn-primary" do %>
+                <i class="fa fa-plus-square"></i> Create package
+            <% end %>
+          </div>
         </div>
 
+        <!-- SEARCH BAR -->
         <div class="row">
           <%= render :partial=> "search/common/search_box", :locals=>{:resource_path => packages_path} %>
         </div>
