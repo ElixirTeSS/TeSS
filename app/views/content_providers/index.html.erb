@@ -4,12 +4,15 @@
   })
 </script>
 
-
 <%- model_class = ContentProvider -%>
 <div class="row wrapper">
 
-  <div class="col-md-12 col-xs-12">
+  <!-- SIDEBAR -->
+  <div class="col-md-3 col-xs-3" id="sidebar">
+    <%= render :partial => "content_providers/partials/general_content_provider_info" %>
+  </div>
 
+  <div class="col-md-9 col-xs-9">
     <!-- CREATE NEW BUTTON -->
     <div class="row">
       <div class="col-md-4 col-xs-4" style="padding-left: 0px;">
@@ -36,5 +39,4 @@
         </ul>
     <% end %>
   </div>
-
 </div>
