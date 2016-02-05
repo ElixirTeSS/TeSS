@@ -1,5 +1,15 @@
 <%- model_class = ContentProvider -%>
-<div class="page-header">
-  <h2><%=t '.title', :default => [:'helpers.titles.edit', 'Edit %{model}'], :model => model_class.model_name.human.titleize.downcase %></h2>
+<div class="row wrapper">
+
+  <!-- SIDEBAR -->
+  <div class="col-md-3 col-xs-3" id="sidebar">
+    <%= render :partial => "content_providers/partials/general_content_provider_info" %>
+  </div>
+
+  <div class="col-md-9 col-xs-9">
+    <div class="page-header">
+      <h2><%=t '.title', :default => [:'helpers.titles.edit', 'Edit %{model}'], :model => model_class.model_name.human.titleize.downcase %></h2>
+    </div>
+    <%= render :partial => 'form' %>
+  </div>
 </div>
-<%= render :partial => 'form' %>
