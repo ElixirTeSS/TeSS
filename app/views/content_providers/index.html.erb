@@ -6,18 +6,35 @@
 
 
 <%- model_class = ContentProvider -%>
-<div class="page-header">
-  <h2><%=t '.title', :default => pluralize(@content_providers.count, model_class.to_s.titleize.downcase)%> found</h2>
-  <!-- CREATE NEW BUTTON -->
-  <%= link_to new_content_provider_path, :class=>"btn btn-primary" do %>
-      <i class="fa fa-plus-square"></i> Create content provider
-  <% end %>
-</div>
+<div class="row wrapper">
 
-<% unless @content_providers.blank? %>
-    <ul class="masonry media-grid">
-      <% @content_providers.each do |content_provider|  %>
-          <%= render content_provider %>
-      <% end %>
-    </ul>
-<% end %>
+  <div class="col-md-12 col-xs-12">
+
+    <!-- CREATE NEW BUTTON -->
+    <div class="row">
+      <div class="col-md-4 col-xs-4" style="padding-left: 0px;">
+        <%= link_to new_content_provider_path, :class=>"btn btn-primary" do %>
+            <i class="fa fa-plus-square"></i> Register content provider
+        <% end %>
+      </div>
+    </div>
+
+    <!-- SEARCH BAR -->
+    <div class="row">
+      <%= render :partial => "search/common/search_box", :locals => {:resource_path => content_providers_path} %>
+    </div>
+
+    <div class="search-results-count" style="">
+      <%=t '.title', :default => pluralize(@content_providers.count, model_class.to_s.titleize.downcase)%> found
+    </div>
+
+    <% unless @content_providers.blank? %>
+        <ul class="masonry media-grid">
+          <% @content_providers.each do |content_provider|  %>
+              <%= render content_provider %>
+          <% end %>
+        </ul>
+    <% end %>
+  </div>
+
+</div>
