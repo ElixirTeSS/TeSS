@@ -4,14 +4,13 @@
   })
 </script>
 
-
 <!-- SIDEBAR | RESULTS -->
 <div class="row wrapper">
   <% if SOLR_ENABLED %>
 
       <!-- SIDEBAR -->
-      <div class="col-md-3" id="sidebar">
-        <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @packages} %>
+      <div class="col-md-3 col-xs-3" id="sidebar">
+        <%= render :partial => "packages/partials/general_package_info" %>
       </div>
 
       <!-- RESULTS -->
