@@ -1,14 +1,14 @@
 <%#
 Parameters
-- resource_path - the path to the route to perform the search e.g. materials_path, events_path
+- resource_path - the path to the route to perform the search e.g. materials_path, events_path or general search_path
 %>
-<% placeholder = "Search " + params[:controller].humanize(capitalize: false) + "..."   %>
+<% placeholder = "Search" + (params[:controller]=='search' ? '...' : " " + params[:controller].humanize(capitalize: false) + "...") %>
 
 <%= form_tag resource_path, :class => "form-inline", :role=>"form", :method => :get do %>
     <div class="form-group col-xs-6" style="padding-left: 0px;">
         <%= text_field_tag :q, params[:q], :class => 'form-control', :placeholder => placeholder, :style=>'width:100%' %>
     </div>
-    <%= button_tag(:type => "submit", :class => "btn btn-default") do %>
+    <%= button_tag(:type => "submit", :value=>"search", :class => "btn btn-default") do %>
         <i class="fa fa-search"></i>
     <% end %>
 <% end %>

@@ -262,6 +262,9 @@ div#sidebar table tr td a:hover {
 .media-item:hover .media-edit {
   opacity: 1;
 }
+li.media-item {
+  list-style-type: none;
+}
 
 .media-view {
   position: absolute;
@@ -415,6 +418,10 @@ ul.unstyled {
   border-bottom: 0px none;
 }
 
+.nav-item{
+  padding: 7px 20px;
+}
+
 .nav-item > a {
   //padding-left: 15px;
   //padding-right: 15px;
@@ -424,7 +431,7 @@ ul.unstyled {
   //font-size: 14px;
   //line-height: 20px;
   //margin: -7px -25px;
-  padding: 7px 25px;
+  padding: 7px 20px;
   text-decoration: none;
 }
 
@@ -478,6 +485,7 @@ ul.unstyled {
   font-weight: bold;
   margin-top: 5px;
   padding-top: 5px;
+  padding-bottom: 10px;
 }
 .event-show-map {
   height: 300px;
@@ -590,4 +598,23 @@ abbr, accronym{ border-bottom: 0px !important; } /*try adding !important  after 
 .dropdown-option-delete {
   background:none;
   border:none
+}
+.info-block {
+  color: #005d7a;
+  float: right;
+  font-size: 20px;
+  margin: 0px;
+  width: 28px;
+}
+/* The max width is dependant on the container (more info below) */
+.popover{
+  max-width: 500px !important; /* Max Width of the popover (depending on the container!) */
+}
+// To make bootstrap button wrap button text into multiple lines
+.btn{
+  white-space:normal !important;
+}
+// Override margin for boostrap-s page-header
+.page-header {
+  margin: 20px 0 20px;
 }

@@ -155,8 +155,10 @@ class EventsController < ApplicationController
     end
 
     def check_admin
-      if current_user.is_admin?
-        return
+      if current_user
+        if current_user.is_admin?
+          return
+        end
       end
       redirect_to root_path, notice: "Sorry, you're not allowed to view that page."
     end

@@ -12,8 +12,6 @@
 
 
 $(document).ready(function(){
-    console.log('Loaded')
-
     /*EVENTS*/
     /*
      * User clicks ADD NEW for a free text field such as keyword, author, or contributor

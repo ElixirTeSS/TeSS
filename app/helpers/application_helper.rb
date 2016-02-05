@@ -33,8 +33,8 @@ module ApplicationHelper
     end
   end
 
- # From twitter-bootstrap-rails gem for less:
- # https://github.com/seyhunak/twitter-bootstrap-rails/blob/master/app/helpers/navbar_helper.rb
+  # From twitter-bootstrap-rails gem for less:
+  # https://github.com/seyhunak/twitter-bootstrap-rails/blob/master/app/helpers/navbar_helper.rb
   def menu_group(options={}, &block)
     pull_class = "navbar-#{options[:pull].to_s}" if options[:pull].present?
     content_tag(:ul, :class => "nav navbar-nav #{pull_class}", &block)
@@ -57,13 +57,13 @@ module ApplicationHelper
     "active" if state.in?([:active, :chosen]) || state === true
   end
 
- # Returns current url or path state (useful for buttons).
- # Example:
- #   # Assume we'r currently at blog/categories/test
- #   uri_state('/blog/categories/test', {})               # :active
- #   uri_state('/blog/categories', {})                    # :chosen
- #   uri_state('/blog/categories/test', {method: delete}) # :inactive
- #   uri_state('/blog/categories/test/3', {})             # :inactive
+  # Returns current url or path state (useful for buttons).
+  # Example:
+  #   # Assume we'r currently at blog/categories/test
+  #   uri_state('/blog/categories/test', {})               # :active
+  #   uri_state('/blog/categories', {})                    # :chosen
+  #   uri_state('/blog/categories/test', {method: delete}) # :inactive
+  #   uri_state('/blog/categories/test/3', {})             # :inactive
   def uri_state(uri, options={})
     return options[:status] if options.key?(:status)
 
@@ -97,6 +97,24 @@ module ApplicationHelper
       return "placeholder-organization.png" # Default placeholder logo for an institution/organisation
     else
       content_provider.logo_url
+    end
+  end
+
+  # Return icon classes for model name (could be symbol or string)
+  def icon_class_for_model(model)
+    puts model
+    if (model.to_s == 'materials')
+      return "fa fa-book"
+    elsif (model.to_s == 'content_providers')
+      return "fa fa-building-o"
+    elsif (model.to_s == 'activity_logs')
+      return "fa fa-clock-o"
+    elsif (model.to_s == 'events')
+      return "fa fa-table"
+    elsif (model.to_s == 'users')
+      return "fa fa-user"
+    else
+      return "fa fa-folder-open"
     end
   end
 

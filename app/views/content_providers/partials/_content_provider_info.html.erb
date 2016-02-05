@@ -1,0 +1,62 @@
+<%# Sidebar containing info on content provider.
+
+Variable that should be available
+- content_provider - content provider being displayed
+%>
+<script>
+  // From : http://stackoverflow.com/questions/11417544/truncate-paragraph-first-100-character-and-hide-rest-content-of-paragraph-to-sho
+  /*
+   Truncate paragraph's first 500 characters and hide rest then show/hide the rest with more/less links
+   */
+  jQuery(function () {
+
+    var minimized_elements = $('p.minimise');
+
+    minimized_elements.each(function () {
+      var t = $(this).text();
+      if (t.length < 500) return;
+
+      $(this).html(
+          t.slice(0, 500) + '<span>... </span><a href="#" class="more">Read more</a>' +
+          '<span style="display:none;">' + t.slice(500, t.length) + ' <a href="#" class="less">Read less</a></span>'
+      );
+    });
+
+    $('a.more', minimized_elements).click(function (event) {
+      event.preventDefault();
+      $(this).hide().prev().hide();
+      $(this).next().show();
+    });
+
+    $('a.less', minimized_elements).click(function (event) {
+      event.preventDefault();
+      $(this).parent().hide().prev().show().prev().show();
+    });
+
+  });
+</script>
+
+<ul class="unstyled nav-simple">
+  <% if content_provider.blank? %>
+      <p class="alert alert-info empty" style="margin: 10px;">
+        No content provider available
+      </p>
+  <% else %>
+      <!-- Content provider  -->
+      <li><h4 class="nav-heading">Content provider</h4></li>
+      <li style="padding: 7px 20px;">
+        <p>
+          <%= link_to(image_tag(get_content_provider_logo_url(content_provider), :class => "medium-content-provider-logo"), content_provider) %>
+        </p>
+
+        <p>
+          <%= link_to content_provider.title, content_provider, :class => "h5" %>
+        </p>
+        <% unless content_provider.description.blank? %>
+            <p class="minimise">
+              <%= content_provider.description %>
+            </p>
+        <% end %>
+      </li>
+  <% end %>
+</ul>

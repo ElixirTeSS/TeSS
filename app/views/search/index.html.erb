@@ -1,18 +1,52 @@
 <!--<p id="notice"><%#= notice %></p>-->
+<div class="row wrapper">
+	<!-- SIDEBAR -->
+	<div class="col-md-3" id="sidebar">
+		<p class="alert alert-info empty" style="margin: 10px;">
+			We need some filtering facilities here - e.g. common filter categories for events and materials: keywords, EDAM topics, ...  or separate filtering per tab.
+		</p>
+		<!--<%#= render :partial => "search/common/facet_sidebar", :locals => {:resources => @materials} %>-->
+	</div>
 
-<h2>Search</h2>
-<%= render partial: 'search/bar' %>
+	<div class="col-md-9">
+		<h2 class="module-heading">Search results</h2>
 
-<%= render partial: 'search/tab_headings', :locals=>{:results => @results, :selected_tab => @results.keys.first}%>
+		<!-- SEARCH BAR -->
+		<div class="row" style="padding-top: 10px;">
+			<%= render :partial=> "search/common/search_box", :locals=>{:resource_path => search_path} %>
+		</div>
 
-<% if !@results.nil? %>
-  <% @results.each do |model, model_results| %>
-  	  <div class="tab-content" id="<%=model%>-content"> 
-		<% model_results.results.each do |object| %>
-	       <p><%= render partial: object %> </p>
-  		<% end %>
-  	  </div>
-  	<% end %>
-<% else %>
-  No results found
-<% end %>
+		<div class="row" style="padding-top: 10px;">
+			<% tabs = @results.keys %>
+			<ul class="nav nav-tabs">
+				<% tabs.each_with_index do |tab, index| %>
+						<li class="<%= index == 0 ? 'active' : ''%>" >
+							<a data-toggle="tab" href="#<%= tab %>"><i class="<%= icon_class_for_model(tab) %>"></i> <%= tab.to_s.humanize.capitalize %> (<%= @results[tab].total%>)</a>
+						</li>
+				<% end %>
+			</ul>
+		</div>
+
+		<div class="row" style="padding-top: 5px;">
+			<% if !@results.nil? %>
+					<div class="tab-content">
+						<% @results.each do |model, model_results| %>
+								<div class="tab-pane fade" id="<%=model%>">
+									<div class="media-grid" style="margin: 0px 0px 5px 0px;">
+										<% model_results.results.each do |object| %>
+												<%= render partial: object %>
+										<% end %>
+									</div>
+								</div>
+						<% end %>
+					</div>
+			<% else %>
+					<p class="alert alert-info empty" style="margin: 10px;">
+						No results found
+					</p>
+			<% end %>
+		</div>
+
+	</div>
+</div>
+
