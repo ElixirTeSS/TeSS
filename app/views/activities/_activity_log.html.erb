@@ -1,0 +1,12 @@
+<%# Activity log partial that renders activity log for a resource.
+
+Variables that should be available
+- resource  - resource whose activity log is being displayed (a material, a content provider, etc...)
+%>
+<% unless (resource.blank? and resource.activities.blank) %>
+    <% resource.activities.each do |activity| %>
+        <div class="activity">
+          <%= render_activity(activity) %>
+        </div>
+    <% end %>
+<% end %>

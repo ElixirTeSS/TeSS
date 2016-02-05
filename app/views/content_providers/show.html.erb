@@ -1,37 +1,47 @@
-<%= link_to 'Activity Log', content_provider_activities_path(@content_provider) %>
-<!--<p id="notice"><#%= notice %></p>-->
+<div class="row wrapper">
+  <!-- SIDEBAR -->
+  <div class="col-md-3 col-xs-3" id="sidebar">
+    <%= render :partial => "content_providers/partials/content_provider_info", :locals => {:content_provider => @content_provider} %>
+  </div>
 
-<%- model_class = ContentProvider -%>
-<div class="page-header">
-  <%= image_tag(@content_provider.logo_url, :class=>'logo-right') %>
-  <h2><%=t '.title', :default => @content_provider.title %></h2>
-  <p><%= link_to @content_provider.url, @content_provider.url, :class =>'h4'  %></p>
+  <div class=" col-md-9 col-xs-9">
+    <div class="row">
+      <!-- ACTION BUTTONS -->
+      <div class="content_action">
+        <%= link_to t('.back', :default => t("helpers.links.back")),
+                    content_providers_path, :class => 'btn btn-info' %>
+        <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                    edit_content_provider_path(@content_provider), :class => 'btn btn-primary' %>
+        <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                    content_provider_path(@content_provider),
+                    :method => 'delete',
+                    :data => {:confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?'))},
+                    :class => 'btn btn-danger' %>
+      </div>
+
+      <ul class="nav nav-tabs">
+        <li class="active">
+          <a data-toggle="tab" href="#materials"><i class="fa fa-book"></i> Materials</a></li>
+        <li>
+          <a data-toggle="tab" href="#activity_log"><i class="fa fa-clock-o"></i> Activity Log</a>
+        </li>
+      </ul>
+
+      <div class="tab-content">
+        <div id="materials" class="tab-pane fade in active">
+          <div class="row">
+            <div class="search-results-count"> 
+              <%= pluralize(@content_provider.materials.count, 'training material') %> found 
+            </div>
+            <% @content_provider.materials.each do |material| %> 
+                <%= render material %> 
+            <% end %> 
+          </div>  
+        </div>
+        <div id="activity_log" class="tab-pane fade">
+          <%= render :partial => "activities/activity_log", :locals => {:resource => @content_provider} %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-
-<div class="show-page-description">
-  <%= @content_provider.description %>
-</div>
-
-<div class="row">
-  <%= link_to t('.back', :default => t("helpers.links.back")),
-              content_providers_path, :class => 'btn btn-info'  %>
-  <%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_content_provider_path(@content_provider), :class => 'btn btn-primary' %>
-  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              content_provider_path(@content_provider),
-              :method => 'delete',
-              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-              :class => 'btn btn-danger' %>
-</div>
-
-
-<div class="search-results-count">
-  Found <%= pluralize(@content_provider.materials.count, 'training material') %>.
-</div>
-
-<div class="row">
-  <% @content_provider.materials.each do |material| %>
-      <%= render material %>
-  <% end %>
-</div>
-
