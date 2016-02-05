@@ -9,7 +9,7 @@
 	</div>
 
 	<div class="col-md-9">
-		<h2 class="module-heading">Search</h2>
+		<h2 class="module-heading">Search results</h2>
 
 		<!-- SEARCH BAR -->
 		<div class="row" style="padding-top: 10px;">
@@ -21,7 +21,7 @@
 			<ul class="nav nav-tabs">
 				<% tabs.each_with_index do |tab, index| %>
 						<li class="<%= index == 0 ? 'active' : ''%>" >
-							<a data-toggle="tab" href="#<%= tab %>"><i class="fa fa-folder-open"></i> <%= tab.to_s.humanize.capitalize %> (<%= @results[tab].total%>)</a>
+							<a data-toggle="tab" href="#<%= tab %>"><i class="<%= icon_class_for_model(tab) %>"></i> <%= tab.to_s.humanize.capitalize %> (<%= @results[tab].total%>)</a>
 						</li>
 				<% end %>
 			</ul>
@@ -32,7 +32,7 @@
 					<div class="tab-content">
 						<% @results.each do |model, model_results| %>
 								<div class="tab-pane fade" id="<%=model%>">
-									<div class="media-grid" style="margin: 0px 0px 5px 0px">
+									<div class="media-grid" style="margin: 0px 0px 5px 0px;">
 										<% model_results.results.each do |object| %>
 												<%= render partial: object %>
 										<% end %>
