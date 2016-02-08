@@ -22,98 +22,102 @@
   })
 </script>
 
-
-<%= link_to 'Activity Log', event_activities_path(@event) %>
-
 <div class="row">
-  <!--<p id="notice"><%#= notice %></p>-->
+  <div class="col-md-6 col-xs-6">
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a data-toggle="tab" href="#home"><i class="fa fa-book"></i> Event</a></li>
+      <li>
+        <a data-toggle="tab" href="#activity_log"><i class="fa fa-clock-o"></i> Activity Log</a>
+      </li>
+    </ul>
 
-  <%- model_class = Event -%>
-  <div class="page-header">
-    <h2><%=t '.title', :default => @event.title %></h2>
-    <p><%= link_to @event.link, @event.link, :class =>'h4'  %></p>
-    <p class="h5"><%= @event.subtitle %></p>
+    <div class="tab-content">
+      <div id="home" class="tab-pane fade in active">
+        <div class="row">
+          <div class="page-header">
+            <h2><%= @event.title %></h2>
+          </div>
+
+          <% if @event.provider and !@event.provider.blank? %>
+              <p><strong>Provider:</strong>
+                <%= @event.provider %></p>
+          <% end %>
+
+          <% if @event.field and !@event.field.empty? %>
+              <p><strong>Field:</strong>
+                <%= @event.field.join(', ')%></p>
+          <% end %>
+
+
+          <% if @event.description and !@event.description.blank? %>
+              <p><strong>Description:</strong>
+                <%= @event.description %></p>
+          <% end %>
+
+          <% if @event.category and !@event.category.empty? %>
+              <p><strong>Category:</strong>
+                <%= @event.category.join(', ') %></p>
+          <% end %>
+
+          <% if @event.start and !@event.start.blank? %>
+              <p><strong>Start:</strong>
+                <%= @event.start %></p>
+          <% end %>
+
+          <% if @event.end and !@event.end.blank? %>
+              <p><strong>End:</strong>
+                <%= @event.end %></p>
+          <% end %>
+
+          <% if @event.sponsor and !@event.sponsor.blank? %>
+              <p><strong>Sponsor:</strong>
+                <%= @event.sponsor %></p>
+          <% end %>
+
+          <% if @event.venue and !@event.venue.blank? %>
+              <p><strong>Venue:</strong>
+                <%= @event.venue %></p>
+          <% end %>
+
+          <% if @event.city and !@event.city.blank? %>
+              <p><strong>City:</strong>
+                <%= @event.city %></p>
+          <% end %>
+
+          <% if @event.county and !@event.county.blank? %>
+              <p><strong>County:</strong>
+                <%= @event.county %></p>
+          <% end %>
+
+          <% if @event.country and !@event.country.blank? %>
+              <p><strong>Country:</strong>
+                <%= @event.country %></p>
+          <% end %>
+
+          <% if @event.postcode and !@event.postcode.blank? %>
+              <p><strong>Postcode:</strong>
+                <%= @event.postcode %></p>
+          <% end %>
+
+          <% if @event.latitude and !@event.latitude.blank? %>
+              <p><strong>Latitude:</strong>
+                <%= @event.latitude %></p>
+          <% end %>
+          <% if @event.longitude and !@event.longitude.blank? %>
+              <p><strong>Longitude:</strong>
+                <%= @event.longitude %></p>
+          <% end %>
+          <%= link_to 'Back', events_path, :class=>"btn btn-info" %>
+          <!--<%#= link_to 'Edit', edit_event_path(@event), :class=>"btn btn-primary" %> --><!-- Forbid editing of events -->
+          <button class="btn btn-success"><a href="<%= @event.link %>">View Event <span class="fa fa-external-link" aria-hidden="true"></span></a></button>
+        </div>
+      </div>
+      <div id="activity_log" class="tab-pane fade">
+        <%= render :partial => "activities/activity_log", :locals => {:resource => @event} %>
+      </div>
+    </div>
   </div>
-
-</div>
-<div class="row">
-  <div class="col-md-6">
-    <% if @event.provider and !@event.provider.blank? %>
-        <p><strong>Provider:</strong>
-          <%= @event.provider %></p>
-    <% end %>
-
-    <% if @event.field and !@event.field.empty? %>
-        <p><strong>Field:</strong>
-          <%= @event.field.join(', ')%></p>
-    <% end %>
-
-
-    <% if @event.description and !@event.description.blank? %>
-        <p><strong>Description:</strong>
-          <%= @event.description %></p>
-    <% end %>
-
-    <% if @event.category and !@event.category.empty? %>
-        <p><strong>Category:</strong>
-          <%= @event.category.join(', ') %></p>
-    <% end %>
-
-    <% if @event.start and !@event.start.blank? %>
-        <p><strong>Start:</strong>
-          <%= @event.start %></p>
-    <% end %>
-
-    <% if @event.end and !@event.end.blank? %>
-        <p><strong>End:</strong>
-          <%= @event.end %></p>
-    <% end %>
-
-    <% if @event.sponsor and !@event.sponsor.blank? %>
-        <p><strong>Sponsor:</strong>
-          <%= @event.sponsor %></p>
-    <% end %>
-
-    <% if @event.venue and !@event.venue.blank? %>
-        <p><strong>Venue:</strong>
-          <%= @event.venue %></p>
-    <% end %>
-
-    <% if @event.city and !@event.city.blank? %>
-        <p><strong>City:</strong>
-          <%= @event.city %></p>
-    <% end %>
-
-    <% if @event.county and !@event.county.blank? %>
-        <p><strong>County:</strong>
-          <%= @event.county %></p>
-    <% end %>
-
-    <% if @event.country and !@event.country.blank? %>
-        <p><strong>Country:</strong>
-          <%= @event.country %></p>
-    <% end %>
-
-    <% if @event.postcode and !@event.postcode.blank? %>
-        <p><strong>Postcode:</strong>
-          <%= @event.postcode %></p>
-    <% end %>
-
-    <% if @event.latitude and !@event.latitude.blank? %>
-        <p><strong>Latitude:</strong>
-          <%= @event.latitude %></p>
-    <% end %>
-    <% if @event.longitude and !@event.longitude.blank? %>
-        <p><strong>Longitude:</strong>
-          <%= @event.longitude %></p>
-    <% end %>
-    <%= link_to 'Back', events_path, :class=>"btn btn-info" %>
-    <%= link_to 'Edit', edit_event_path(@event), :class=>"btn btn-primary" %>
-    <button class="btn btn-success"><a href="<%= @event.link %>">View Event <span class="fa fa-external-link" aria-hidden="true"></span></a></button>
-  </div>
-
-
-  <div id="map" class="event-show-map col-md-6"></div>
-
+  <div id="map" class="event-show-map col-md-6 col-xs-6" style="margin-top: 40px;"></div>
 </div>
 
