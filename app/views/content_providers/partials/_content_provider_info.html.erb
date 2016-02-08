@@ -57,6 +57,9 @@ Variable that should be available
               <%= content_provider.description %>
             </p>
         <% end %>
+        <% if content_provider.keywords %>
+            <%= content_provider.keywords.join(', ') %>
+        <% end %>
       </li>
   <% end %>
 </ul>

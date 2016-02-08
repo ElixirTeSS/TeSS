@@ -27,6 +27,9 @@ View <%= link_to 'Activity Log', package_activities_path(@package) %>
 <div class="page-header">
   <%= image_tag(@package.image_url, :class=>'logo-right') %>
   <h1><%=t '.title', :default => @package.name%></h1>
+  <% if @package.keywords and !@package.keywords.empty? %>
+    Keywords: <%= @package.keywords.join(', ') %>
+  <% end %>
 </div>
 
 <div class="show-page-description ">
