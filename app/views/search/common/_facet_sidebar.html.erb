@@ -29,12 +29,14 @@ Variable that should be available
 
               <!-- Display all filter links -->
               <% filters_to_show.each do |facet| %>
-                  <% if @facet_params.include?(facet_field) and @facet_params[facet_field].include?(facet.value) %>
-                      <li class="nav-item active">
-                        <%= remove_filter_link(facet_field, facet.value)%>
-                      </li>
-                  <% else %>
-                      <li class="nav-item"><%= filter_link(facet_field, facet.value)%></li>
+                  <% if facet.value and !facet.value.empty?  %>
+                      <% if @facet_params.include?(facet_field) and @facet_params[facet_field].include?(facet.value) %>
+                          <li class="nav-item active">
+                            <%= remove_filter_link(facet_field, facet.value)%>
+                          </li>
+                      <% else %>
+                          <li class="nav-item"><%= filter_link(facet_field, facet.value)%></li>
+                      <% end %>
                   <% end %>
               <% end %>
 
