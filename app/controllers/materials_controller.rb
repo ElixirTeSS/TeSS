@@ -23,7 +23,7 @@ class MaterialsController < ApplicationController
   # GET /materials.json
   # GET /materials.json?q=queryparam
 
-  @@facet_fields = %w(content_provider scientific_topic target_audience keywords licence difficulty_level authors contributors)
+  @@facet_fields = %w(content_provider scientific_topic target_audience keywords licence difficulty_level authors contributors submitter)
 
   helper 'search'
 
@@ -94,6 +94,7 @@ class MaterialsController < ApplicationController
   # POST /materials.json
   def create
     @material = Material.new(material_params)
+    @material.owner = current_user
     respond_to do |format|
       if @material.save
         @material.create_activity :create, owner: current_user

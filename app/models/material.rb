@@ -29,6 +29,16 @@ class Material < ActiveRecord::Base
           self.content_provider.title
         end
       end
+      string :submitter, :multiple => true do
+        if user = User.find_by_id(self.user_id)
+          if user.profile.firstname or user.profile.surname
+            "#{user.profile.firstname} #{user.profile.surname}"
+          else
+            user.username
+          end
+        end
+      end
+
       time :updated_at
     end
   end
