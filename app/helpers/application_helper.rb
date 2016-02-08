@@ -100,6 +100,19 @@ module ApplicationHelper
     end
   end
 
+  def get_package_logo_url(package)
+    if package.blank?
+      return nil
+    elsif package.image_url.blank?
+      return "placeholder-organization.png" # Default placeholder logo for an institution/organisation
+    else
+      package.image_url
+    end
+  end
+
+
+
+
   # Return icon classes for model name (could be symbol or string)
   def icon_class_for_model(model)
     puts model
