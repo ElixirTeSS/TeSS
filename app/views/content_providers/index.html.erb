@@ -4,39 +4,85 @@
   })
 </script>
 
-<%- model_class = ContentProvider -%>
+
+<!-- SIDEBAR | RESULTS -->
 <div class="row wrapper">
 
-  <!-- SIDEBAR -->
-  <div class="col-md-3 col-xs-3" id="sidebar">
-    <%= render :partial => "content_providers/partials/general_content_provider_info" %>
-  </div>
+  <% if SOLR_ENABLED %>
 
-  <div class="col-md-9 col-xs-9">
-    <!-- CREATE NEW BUTTON -->
-    <div class="row">
-      <div class="col-md-6 col-xs-6" style="padding-left: 0px;">
-        <%= link_to new_content_provider_path, :class=>"btn btn-primary" do %>
-            <i class="fa fa-plus-square"></i> Register content provider
-        <% end %>
+      <!-- SIDEBAR -->
+      <div class="col-md-3" id="sidebar">
+        <%= render :partial => "content_providers/partials/general_content_provider_info" %>
+        <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @content_providers} %>
       </div>
-    </div>
 
-    <!-- SEARCH BAR -->
-    <div class="row">
-      <%= render :partial => "search/common/search_box", :locals => {:resource_path => content_providers_path} %>
-    </div>
+      <div class="col-md-9">
 
-    <div class="search-results-count" style="">
-      <%=t '.title', :default => pluralize(@content_providers.count, model_class.to_s.titleize.downcase)%> found
-    </div>
+        <!-- CREATE NEW BUTTON -->
+        <div class="row">
+          <div class="col-md-6 col-xs-6" style="padding-left: 0px;">
+            <%= link_to new_content_provider_path, :class=>"btn btn-primary" do %>
+                <i class="fa fa-plus-square"></i> Register a Content Provider
+            <% end %>
+          </div>
+          <div class="col-md-6 col-xs-6 pull-right">
+            <script>
+                $(document).ready(function(){
+                    $('[data-toggle="popover"]').popover();
+                });
+            </script>
+            <% content_provider_info_popover = "Content providers are entities – e.g. institutions members of ELIXIR nodes, independent institutions or related portals, like GOBLET, the Software and Data Carpentry Foundations, etc. – that provide training materials of relevance to life sciences and ELIXIR." %>
+            <button class="btn btn-default pull-right" data-toggle="popover" data-placement="bottom" data-trigger="focus" title="What are Content Providers in TeSS?" data-content="<%= content_provider_info_popover %>">
+              <i class="glyphicon glyphicon-info-sign info-block"></i>
+            </button>
+          </div>
+        </div>
 
-    <% unless @content_providers.blank? %>
-        <ul class="masonry media-grid">
-          <% @content_providers.each do |content_provider|  %>
-              <%= render content_provider %>
-          <% end %>
-        </ul>
-    <% end %>
+        <!-- SEARCH BAR -->
+        <div class="row">
+          <%= render :partial=> "search/common/search_box", :locals=>{:resource_path => content_providers_path} %>
+        </div>
+
+        <!-- APPLIED FILTERS AND NUMBER OF RESULTS -->
+        <div class="row">
+          <div class="col-md-8">
+            <%= render :partial => "search/common/search_info", :locals=>{:resources=>@content_providers}  %>
+          </div>
+          <!-- SORT BY OPTIONS    -->
+          <div class="col-md-4" style="padding-top:5px;">
+            <%= render :partial => "search/common/sort_by", :locals=>{:resources=>@content_providers}  %>
+          </div>
+        </div>
+
+        <!-- APPLIED FILTERS -->
+        <div class="row">
+          <div class="col-md-12">
+            <%= render :partial => "search/common/search_filters", :locals => {:resources => @content_providers} %>
+          </div>
+        </div>
+
+        <!-- PAGINATION -->
+        <div class="row">
+          <%= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@content_providers} unless (@content_providers.blank? or @content_providers.results.blank?) %>
+        </div>
+
+        <hr>
+        <!-- RESULTS -->
+        <% @content_providers = @content_providers.results unless @content_providers.blank? %>
+  <% end %>
+
+  <!-- ACTUAL RESULTS LIST -->
+  <% unless @content_providers.blank? %>
+      <ul class="masonry media-grid">
+        <% @content_providers.each do |content_provider|  %>
+            <%= render content_provider %>
+        <% end %>
+      </ul>
+  <% end %>
   </div>
 </div>
+
+
+
+
+

@@ -12,12 +12,21 @@ class ContentProvidersController < ApplicationController
   before_filter :authenticate_user!, except: [:index, :show, :check_exists]
 
 
+  before_action :set_search_params, :only => :index
+  before_action :set_facet_params, :only => :index
+
   # Should prevent forgery errors for JSON posts.
   skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
 
+  @@facet_fields = %w( keywords )
 
   def index
-    @content_providers = ContentProvider.all
+    @facet_fields = @@facet_fields
+    if SOLR_ENABLED
+      @content_providers = solr_search(ContentProvider, @search_params, @@facet_fields, @facet_params)
+    else
+      @content_providers = Package.all
+    end
   end
 
   def show
@@ -112,6 +121,20 @@ class ContentProvidersController < ApplicationController
     params.require(:content_provider).permit(:title, :url, :logo_url, :description,
                                              {:keywords => []}, :remote_updated_date, :remote_created_date, :local_updated_date, :remote_updated_date)
   end
+
+
+  def set_search_params
+    params.permit(:q)
+    @search_params = params[:q] || ''
+  end
+
+  def set_facet_params
+    params.permit(@@facet_fields, @@facet_fields.map{|f| "#{f}_all"})
+    @facet_params = {}
+    @@facet_fields.each {|facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
+  end
+
+
 
 
 end
