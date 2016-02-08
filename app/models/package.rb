@@ -19,9 +19,18 @@ class Package < ActiveRecord::Base
       text :name
       text :description
       string :owner do
-      	owner.username.to_s if !owner.nil?
+      	self.owner.username.to_s if !owner.nil?
       end
-    end
+      string :creator, :multiple => true do
+        if self.owner
+          if self.owner.profile and (self.owner.profile.firstname or self.owner.profile.surname)
+            "#{self.owner.profile.firstname} #{self.owner.profile.surname}"
+          else
+            self.owner.username
+          end
+        end
+        end
+      end
   end
   
   def log_activities

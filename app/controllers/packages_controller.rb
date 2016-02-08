@@ -18,7 +18,7 @@ class PackagesController < ApplicationController
 
   include TeSS::BreadCrumbs
 
-  @@facet_fields = %w( owner )
+  @@facet_fields = %w( creator )
 
 
   # GET /packages
@@ -51,6 +51,7 @@ class PackagesController < ApplicationController
   # POST /packages.json
   def create
     @package = Package.new(package_params)
+    @package.owner = current_user
 
     respond_to do |format|
       if @package.save
