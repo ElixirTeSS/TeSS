@@ -18,7 +18,7 @@ class PackagesController < ApplicationController
 
   include TeSS::BreadCrumbs
 
-  @@facet_fields = %w( creator )
+  @@facet_fields = %w( creator keywords )
 
 
   # GET /packages
@@ -165,7 +165,7 @@ class PackagesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def package_params
-      params.require(:package).permit(:name, :description, :image_url, :public)
+      params.require(:package).permit(:name, :description, :image_url, :public, {:keywords => []})
     end
 
 

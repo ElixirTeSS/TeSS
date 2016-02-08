@@ -12,6 +12,7 @@ class ContentProvider < ActiveRecord::Base
     searchable do
       text :title
       text :description
+      string :keywords, :multiple => true
     end
   end
   # TODO: Add validations for these:

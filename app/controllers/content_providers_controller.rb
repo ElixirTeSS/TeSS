@@ -109,7 +109,8 @@ class ContentProvidersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def content_provider_params
-    params.require(:content_provider).permit(:title, :url, :logo_url, :description, :remote_updated_date, :remote_created_date, :local_updated_date, :remote_updated_date)
+    params.require(:content_provider).permit(:title, :url, :logo_url, :description,
+                                             {:keywords => []}, :remote_updated_date, :remote_created_date, :local_updated_date, :remote_updated_date)
   end
 
 

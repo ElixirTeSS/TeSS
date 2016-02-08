@@ -8,7 +8,7 @@
 
   <div class="col-md-9 col-xs-9">
     <div class="page-header">
-      <h2><%=t '.title', :default => [:'helpers.titles.new', 'Edit %{model}'], :model => model_class.model_name.human.titleize.downcase %></h2>
+      <h2><%=t '.title', :default => [:'helpers.titles.edit', 'Edit %{model}'], :model => model_class.model_name.human.titleize.downcase %></h2>
     </div>
     <%= render :partial => 'form' %>
   </div>

@@ -120,7 +120,7 @@
           <%#= error_span(@material[:scientific_topic]) %>
         </div>
 
-        <%= render :partial => 'materials/partials/multiple_input', :locals => {:field_name => 'keywords', :material => @material, :f => f} %>
+        <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords', :resource => @material, :f => f} %>
 
         <div class="form-group">
           <%= f.label :target_audience %>
@@ -146,9 +146,9 @@
               <%#= error_span(@material[:licence]) %>
         </div>
 
-        <%= render :partial => 'materials/partials/multiple_input', :locals => {:field_name => 'authors', :material => @material, :f => f} %>
+        <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'authors', :resource => @material, :f => f} %>
 
-        <%= render :partial => 'materials/partials/multiple_input', :locals => {:field_name => 'contributors', :material => @material, :f => f} %>
+        <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'contributors', :resource => @material, :f => f} %>
 
         <%= render :partial => 'materials/partials/dropdown_option', :locals => {:field_name => 'package', :material => @material, :f => f} %>
 

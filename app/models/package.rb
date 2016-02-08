@@ -21,6 +21,8 @@ class Package < ActiveRecord::Base
       string :owner do
       	self.owner.username.to_s if !owner.nil?
       end
+      string :keywords, :multiple => true
+      
       string :creator, :multiple => true do
         if self.owner
           if self.owner.profile and (self.owner.profile.firstname or self.owner.profile.surname)
