@@ -1,36 +1,42 @@
-<%= form_for(@package) do |f| %>
+<div class="row">
+  <div class="col-md-9 col-xs-9">
+    <%= simple_form_for @package, :html => { :class => "form-horizontal content_provider" } do |f| %>
+
   <% if @package.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@package.errors.count, "error") %> prohibited this package from being saved:</h2>
+            <div id="error_explanation">
+              <h2><%= pluralize(@package.errors.count, "error") %> prohibited this package from being saved:</h2>
+              <ul>
+                <% @package.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+        <% end %>
 
-      <ul>
-      <% @package.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+        <div class="form-group">
+          <%= f.label :name %><br>
+          <%= f.text_field :name, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :description %><br>
+          <%= f.text_area :description, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :image_url %><br>
+          <%= f.text_field :image_url, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <label class="checkbox-inline" for="package_public">
+            <input type="checkbox" name="package[public]" id="package_public"><span style="font-weight: bold;">Public</span>
+          </label>
+        </div>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :description %><br>
-    <%= f.text_area :description %>
-  </div>
-  <div class="field">
-    <%= f.label :image_url %><br>
-    <%= f.text_field :image_url %>
-  </div>
+        <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords', :resource => @package, :f => f} %>
 
-  <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords', :resource => @package, :f => f} %>
-
-  <div class="field">
-    <%= f.label :public %><br>
-    <%= f.check_box :public %>
+        <div class="actions">
+          <%= f.submit ( f.object.new_record? ? "Create" : "Update") + " package", :class => 'btn btn-primary' %>
+          <%= link_to 'Back', packages_path, :class=>"btn btn-info" %>
+        </div>
+    <% end %>
   </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div>
