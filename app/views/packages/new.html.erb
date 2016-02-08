@@ -1,5 +1,15 @@
-<h1>New Package</h1>
+<%- model_class = Package -%>
+<div class="row wrapper">
 
-<%= render 'form' %>
+  <!-- SIDEBAR -->
+  <div class="col-md-3 col-xs-3" id="sidebar">
+    <%= render :partial => "packages/partials/general_package_info" %>
+  </div>
 
-<%= link_to 'Back', packages_path %>
+  <div class="col-md-9 col-xs-9">
+    <div class="page-header">
+      <h2><%=t '.title', :default => [:'helpers.titles.new', 'New %{model}'], :model => model_class.model_name.human.titleize.downcase %></h2>
+    </div>
+    <%= render :partial => 'form' %>
+  </div>
+</div>
