@@ -11,7 +11,7 @@ class SearchController < ApplicationController
             fulltext search_params
           end
        rescue
-         puts "Error finding results for #{model}"
+
        end 
     end
     @results.reject!{|k,result| result.total < 1}
