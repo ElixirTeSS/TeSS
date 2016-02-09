@@ -12,7 +12,7 @@ module SearchHelper
 		end
 		#remove the page option if it exists
 		parameters.delete('page')
-		return link_to value, parameters.merge(new_parameter)
+		return link_to truncate(value,length: 30), parameters.merge(new_parameter)
 	end
 
 

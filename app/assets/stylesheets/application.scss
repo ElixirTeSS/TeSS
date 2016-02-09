@@ -478,8 +478,8 @@ ul.unstyled {
 }
 .medium-content-provider-logo{
   max-width: 256px;
-  border-radius: 4px;
-  padding: 0px 10px 0px 0px;
+  border-radius: 5px;
+  margin: 0px 10px 0px 0px;
 }
 .search-results-count{
   font-size: medium;
@@ -618,4 +618,26 @@ abbr, accronym{ border-bottom: 0px !important; } /*try adding !important  after 
 // Override margin for boostrap-s page-header
 .page-header {
   margin: 20px 0 20px;
+}
+
+.keyword-pill {
+  color: #ffffff;
+  background-color: #8CA0A6;
+  margin-bottom: 5px;
+  display: inline-block;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
