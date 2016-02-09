@@ -14,6 +14,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
   end
 
   test "should get new" do
+    sign_in users(:regular_user)
     get :new
     assert_response :success
   end
@@ -33,6 +34,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
   end
 
   test "should get edit" do
+    sign_in users(:regular_user)
     get :edit, id: @content_provider
     assert_response :success
   end
