@@ -18,7 +18,7 @@
   <li style="padding: 7px 20px;">
     <% if not package.keywords.blank? %>
         <% package.keywords.each do |keyword| %>
-            <span class="keyword"><%= keyword %></span>
+            <span class="keyword-pill"><%= keyword %></span>
         <% end %>
     <% else %>
         <p class="empty">None</p>
