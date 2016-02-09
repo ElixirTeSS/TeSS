@@ -618,3 +618,25 @@ abbr, accronym{ border-bottom: 0px !important; } /*try adding !important  after 
 .page-header {
   margin: 20px 0 20px;
 }
+
+.keyword {
+  color: #ffffff;
+  background-color: #8CA0A6;
+  margin-bottom: 5px;
+  display: inline-block;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
