@@ -150,7 +150,7 @@
 
         <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'contributors', :resource => @material, :f => f} %>
 
-        <%= render :partial => 'materials/partials/dropdown_option', :locals => {:field_name => 'package', :material => @material, :f => f} %>
+        <%= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @material, :f => f} %>
 
         <%= render :partial => 'materials/partials/add_content_provider', :locals => {:f => f, :material => @material} %>
 
@@ -158,7 +158,7 @@
           <%= f.submit ( f.object.new_record? ? "Register" : "Update") + " training material", :class => 'btn btn-primary' %>
           <%= link_to 'Back', materials_path, :class=>"btn btn-info" %>
           <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                      materials_path, :class => 'btn btn-default' %>
+                      material_path, :class => 'btn btn-default' %>
         </div>
     <% end %>
   </div>

@@ -34,7 +34,7 @@
 
         <!-- APPLIED FILTERS AND NUMBER OF RESULTS -->
         <div class="row">
-          <%= render :partial => "search/common/search_info", :locals=>{:resources=>@packages}  %>
+          <%= render :partial => "search/common/search_info", :locals=>{:resources=>@packages, :resource_type => 'package'}  %>
         </div>
 
         <div class="row">

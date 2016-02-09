@@ -4,9 +4,11 @@ Parameters
 Globals
 @facet_params
 @query_params
+resource_type - type of result objects returned by SOLR, may or may not be passed
 %>
 
+<% local_assigns.fetch :resource_type, 'result' %>
 <!-- RESULTS COUNT -->
 <div class="search-results-count">
-	<%= pluralize( resources.total, 'result' ) %> found
+	<%= pluralize( resources.total, resource_type ) %> found
 </div>
