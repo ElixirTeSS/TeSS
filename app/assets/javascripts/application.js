@@ -111,6 +111,8 @@ $(document).ready(function(){
         if (selected_val != ''){
             var field_name = $(this).parent().attr('data-field');
             var model_name = $(this).parent().attr('data-model');
+            console.log(field_name);
+            console.log(model_name);
             var selected_text = $(this).text();
             add_selected_dropdown_item(model_name, field_name, selected_val, selected_text);
             $('#' + field_name + '-id-' + selected_val).remove();
@@ -134,11 +136,14 @@ $(document).ready(function(){
  * Adds a new selected item to the field_name div with the values and names passed
  */
 function add_selected_dropdown_item(model_name, field_name, value, name){
-    var item_name = '<input type="text" class="multiple-input form-control" data-field="package" name="' + model_name + '[package_ids][]" ' +
-        'value="' + name + '" readonly="readonly" disabled="disabled" />';
-    var item_value = '<input type="hidden" data-field="package" name="' + model_name + '[package_ids][]" ' +
+    var item_name = '<input type="text" class="multiple-input form-control" ' +
+                    'data-field="' + field_name + '" data-model="' + model_name + '" ' + 
+                    'name="' + model_name + '[' + field_name + '_ids][]" ' +
+                    'value="' + name + '" readonly="readonly" disabled="disabled" />';
+                    
+    var item_value = '<input type="hidden" data-field="' + field_name + '" name="' + model_name + '[' + field_name + '_ids][]" ' +
         'value="' + value + '" />';
-    var delete_button = '<input type="button" value="&times;" class="dropdown-option-delete" data-field="package"' +
+    var delete_button = '<input type="button" value="&times;" class="dropdown-option-delete" data-field="' + field_name + '"' +
         'data-value="' + value + '" data-name="' + name + '"/>';
 
     var list_item_div = $('<div class="multiple-list-item">').appendTo('.' + field_name);

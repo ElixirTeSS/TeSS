@@ -3,9 +3,11 @@
 
 <%= form_tag(controller: 'packages', action: 'update_package_resources', method: 'post') do |f| %>
     <div class="h3">Add New Resources to Package</div>
-    <label>Add Materials</label><%= render :partial => 'packages/partials/dropdown_option', :locals => {:field_name => 'material', :package => @package} %>
+    <label>Add Materials</label>
+    <%= render :partial => 'common/dropdown', :locals => {:field_name => 'material', :resource => @package, :f => f} %>
 
-    <label> Add Events</label><%= render :partial => 'packages/partials/dropdown_option', :locals => {:field_name => 'event', :package => @package} %>
+    <label> Add Events</label>
+    <%= render :partial => 'common/dropdown', :locals => {:field_name => 'event', :package => @package, :f => f} %>
 
     <button type="submit" value="add" class="btn btn-success">Update Package</button>
 <% end %>
