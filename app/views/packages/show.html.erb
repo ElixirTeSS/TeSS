@@ -54,9 +54,11 @@
           <div class="search-results-count"> 
             <%= pluralize(@package.events.count, 'event') %> found 
           </div>
-          <% @package.events.each do |event| %>
-              <%= render event %>
-          <% end %>
+          <div class="masonry media-grid">
+            <% @package.events.each do |event| %>
+                <%= render event %>
+            <% end %>
+          </div>
         </div>
       </div>
       <div id="activity_log" class="tab-pane fade">
