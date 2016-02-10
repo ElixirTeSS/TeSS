@@ -8,6 +8,8 @@ class ContentProvider < ActiveRecord::Base
   has_many :materials
   has_many :events
 
+  clean_array_fields(:keywords)
+
   unless SOLR_ENABLED==false
     searchable do
       text :title

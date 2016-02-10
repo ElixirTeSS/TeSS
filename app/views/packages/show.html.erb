@@ -1,57 +1,70 @@
 <script>
-    $(document).ready(function(){
-        reposition_tiles('masonry', 'masonry-brick');
-    })
+  $(document).ready(function () {
+    reposition_tiles('masonry', 'masonry-brick');
+  })
 </script>
 
-
-
-<%= link_to t('.back', :default => t("helpers.links.back")),
-            package_path, :class => 'btn btn-default'  %>
-<%= link_to t('.edit', :default => t("helpers.links.edit")),
-            edit_package_path(@package), :class => 'btn btn-default' %>
-<%= link_to t('.manage', :default => t("helpers.links.manage")),
-            package_manage_path(@package), :class => 'btn btn-default' %>
-<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-            package_path(@package),
-            :method => 'delete',
-            :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-            :class => 'btn btn-danger' %>
-
-<br>
-View <%= link_to 'Activity Log', package_activities_path(@package) %>
-
-<!--<p id="notice"><%#= notice %></p>-->
-
 <%- model_class = Package -%>
-<div class="page-header">
-  <%= image_tag(@package.image_url, :class=>'logo-right') %>
-  <h1><%=t '.title', :default => @package.name%></h1>
-  <% if @package.keywords and !@package.keywords.empty? %>
-    Keywords: <%= @package.keywords.join(', ') %>
-  <% end %>
+<div class="row wrapper">
+  <!-- SIDEBAR -->
+  <div class="col-md-3 col-xs-3" id="sidebar">
+    <%= render :partial => "packages/partials/package_info", :locals => {:package => @package} %>
+  </div>
+  <div class=" col-md-9 col-xs-9">
+    <div class="row">
+      <div class="content_action">
+        <%= link_to t('.back', :default => t("helpers.links.back")),
+                    package_path, :class => 'btn btn-info' %>
+        <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                    edit_package_path(@package), :class => 'btn btn-primary' %>
+        <%= link_to t('.manage', :default => t("helpers.links.manage")),
+                    package_manage_path(@package), :class => 'btn btn-default' %>
+        <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                    package_path(@package),
+                    :method => 'delete',
+                    :data => {:confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?'))},
+                    :class => 'btn btn-danger' %>
+      </div>
+
+      <ul class="nav nav-tabs">
+        <li class="active">
+          <a data-toggle="tab" href="#materials"><i class="fa fa-book"></i> Materials</a></li>
+        <li>
+          <a data-toggle="tab" href="#events"><i class="fa fa-folder-open"></i> Events</a>
+        </li>
+        <li>
+          <a data-toggle="tab" href="#activity_log"><i class="fa fa-clock-o"></i> Activity Log</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="tab-content">
+      <div id="materials" class="tab-pane fade in active">
+        <div class="row">
+          <div class="search-results-count"> 
+            <%= pluralize(@package.materials.count, 'training material') %> found 
+          </div>
+          <% @package.materials.each do |material| %>
+              <%= render material %>
+          <% end %>
+        </div>
+      </div>
+      <div id="events" class="tab-pane fade">
+        <div class="row">
+          <div class="search-results-count"> 
+            <%= pluralize(@package.events.count, 'event') %> found 
+          </div>
+          <div class="masonry media-grid">
+            <% @package.events.each do |event| %>
+                <%= render event %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div id="activity_log" class="tab-pane fade">
+        <%= render :partial => "activities/activity_log", :locals => {:resource => @package} %>
+      </div>
+    </div>
+  </div>
 </div>
-
-<div class="show-page-description ">
-  <%= @package.description %>
-</div>
-
-<p>
-  <strong>This package contains <%= pluralize(@package.materials.count, 'material') %> and <%= pluralize(@package.events.count, 'event') %></strong>
-  <br>
-  <br>
-
-  <ul class=" media-grid">
-      <h3>Materials</h3>
-      <% @package.materials.each do |material| %>
-          <%= render material %>
-      <% end %>
-  </ul>
-  <ul class="masonry media-grid">
-    <h3>Events</h3>
-      <% @package.events.each do |event| %>
-          <%= render event%>
-      <% end %>
-  </ul>
-</p>
 

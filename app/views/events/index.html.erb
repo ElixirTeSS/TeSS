@@ -41,7 +41,7 @@
         <div class="row">
           <% include_expired = @facet_params.delete('include_expired') %>
           <div class="col-md-4">
-            <%= render :partial => "search/common/search_info", :locals => {:resources => @events} %>
+            <%= render :partial => "search/common/search_info", :locals => {:resources => @events, :resource_type => 'event'} %>
           </div>
           <!-- INCUDE EXPIRED EVENTS -->
           <div class="col-md-4">

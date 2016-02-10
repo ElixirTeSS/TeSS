@@ -12,7 +12,7 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
   <%= f.label field_name.to_sym %>
   <div class="<%=field_name.singularize%> multiple-input-list">
     <% field_values = resource.send(field_name.to_sym) %>
-    <% field_values = [''] if field_values.blank? %> <!-- Add one placeholder if field's values is an empty array -->
+    <% field_values = [''] if field_values.blank? %> <!-- Add one placeholder if the field's value consist of an empty array -->
     <% field_values.each do |val| %>
         <div class="multiple-list-item">
           <input type="text"

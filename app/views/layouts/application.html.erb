@@ -7,10 +7,17 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
   <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    (function (i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r;
+      i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+          }, i[r].l = 1 * new Date();
+      a = s.createElement(o),
+          m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
     ga('create', 'UA-59838289-2', 'auto');
     ga('send', 'pageview');
@@ -21,9 +28,14 @@
 
 <% if "#{Rails.env}" == 'production' %>
     <div class="jumbotron" style="text-align:center">
-      <h1>  Not the TeSS you were expecting?</h1>
-      <p>This is our sandboxed development of a new improved TeSS. Any materials added here will be deleted periodically.</p>
-      <p>The current production version of TeSS is up and running at <a href="http://tess.elixir-uk.org">http://tess.elixir-uk.org</a></p>
+      <h1> Not the TeSS you were expecting?</h1>
+
+      <p>This is our sandboxed development of a new improved TeSS. Any materials added here will be deleted
+        periodically.</p>
+
+      <p>The current production version of TeSS is up and running at
+        <a href="http://tess.elixir-uk.org">http://tess.elixir-uk.org</a></p>
+
       <p><a class="btn btn-primary btn-large" href="http://tess.elixir-uk.org">Go to TeSS</a></p>
     </div>
 <% end %>
@@ -36,8 +48,13 @@
         <img src="/assets/hub-logo.png" style="padding-top:12px;">
       </a>
       <% if current_user %>
-          <%= menu_group :class=>"account", pull: :right do %>
-              <%= menu_item current_user.username, user_path(current_user), :class=>"username"%>
+          <%= menu_group :class => "account", pull: :right do %>
+              <%= menu_item current_user.username, user_path(current_user), :class => "username" %>
+              <% if current_user.is_admin? %>
+                  <%= menu_item rails_admin_path do %>
+                      <i class="fa fa-cog fa-lg"></i>
+                  <% end %>
+              <% end %>
               <%= menu_item "Log out", destroy_user_session_path, :method => :delete %>
           <% end %>
       <% else %>
@@ -56,7 +73,7 @@
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
         <a class="navbar-brand" href="/">
-          <%= image_tag "ELIXIR_TeSS_logo_white-80px-height.png", :alt=>"Training eSupport System", :class=>"pull-left"%>
+          <%= image_tag "ELIXIR_TeSS_logo_white-80px-height.png", :alt => "Training eSupport System", :class => "pull-left" %>
         </a>
       </div>
       <!-- Collect the nav links, forms, and other content for toggling -->
@@ -73,7 +90,7 @@
             <li><%= menu_item "About", about_path %></li>
           </ul>
 
-          <%= form_tag search_path, :method => :get, :class=>"navbar-form navbar-right", :role=>"search" do %>
+          <%= form_tag search_path, :method => :get, :class => "navbar-form navbar-right", :role => "search" do %>
               <div class="form-group">
                 <input type="text" class="form-control" name='q' placeholder="Search...">
               </div>
@@ -91,13 +108,13 @@
   <%= flash_messages %>
 
   <%# unless breadcrumbs.empty? %>
-      <!--<div id="breadcrumbs">-->
-        <!--<ul class="breadcrumb">-->
-          <!--<#%= render_breadcrumbs :tag => :li, :separator => "" %>-->
-          <!--&lt;!&ndash;<%#= render_breadcrumbs :builder => ::BootstrapBreadcrumbsBuilder %>&ndash;&gt;-->
-          <!--&lt;!&ndash;<#%= render_breadcrumbs(" ", { class: '', item_class: '', divider_class: '', active_class: 'active' }) %>&ndash;&gt;-->
-        <!--</ul>-->
-      <!--</div>-->
+  <!--<div id="breadcrumbs">-->
+  <!--<ul class="breadcrumb">-->
+  <!--<#%= render_breadcrumbs :tag => :li, :separator => "" %>-->
+  <!--&lt;!&ndash;<%#= render_breadcrumbs :builder => ::BootstrapBreadcrumbsBuilder %>&ndash;&gt;-->
+  <!--&lt;!&ndash;<#%= render_breadcrumbs(" ", { class: '', item_class: '', divider_class: '', active_class: 'active' }) %>&ndash;&gt;-->
+  <!--</ul>-->
+  <!--</div>-->
   <%# end %>
   <!-- Breadcrumbs -->
   <%= render_breadcrumbs do |breadcrumbs| %>
@@ -107,7 +124,7 @@
   <%# main content part of every page -%>
   <%= yield :layout %>
 
-  </div>
+</div>
 
 </body>
 </html>

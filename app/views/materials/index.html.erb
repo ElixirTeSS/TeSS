@@ -39,7 +39,7 @@
         <!-- APPLIED FILTERS AND NUMBER OF RESULTS -->
         <div class="row">
           <div class="col-md-8">
-            <%= render :partial => "search/common/search_info", :locals=>{:resources=>@materials}  %>
+            <%= render :partial => "search/common/search_info", :locals=>{:resources=>@materials, :resource_type => 'material'}  %>
           </div>
           <!-- SORT BY OPTIONS    -->
           <div class="col-md-4" style="padding-top:5px;">

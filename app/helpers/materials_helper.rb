@@ -1,7 +1,8 @@
+require 'licence_dictionary'
+require 'difficulty_dictionary'
+require 'edam_dictionary'
+
 module MaterialsHelper
-  require 'licence_dictionary'
-  require 'difficulty_dictionary'
-  require 'edam_dictionary'
 
   # Returns an array of two-element arrays of licences ready to be used in options_for_select() for generating option/select tags
   # [['Licence 1 full name','Licence 1 abbreviation'], ['Licence 2 full name','Licence 2 abbreviation'], ...]

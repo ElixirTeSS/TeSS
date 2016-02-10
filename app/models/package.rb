@@ -12,6 +12,8 @@ class Package < ActiveRecord::Base
 
 	has_one :owner, foreign_key: "id", class_name: "User"
 
+  clean_array_fields(:keywords)
+
   after_save :log_activities
 
   unless SOLR_ENABLED==false
