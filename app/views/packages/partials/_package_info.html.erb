@@ -5,15 +5,17 @@
     <p>
       <%= (image_tag(get_logo_url_for(package), :class => "medium-content-provider-logo")) %>
     </p>
-    <p class="h5">
+    <h5>
       <%= package.name %>
-    </p>
+    </h5>
     <% unless package.description.blank? %>
         <p class="minimise">
           <%= package.description %>
         </p>
     <% end %>
-    <h4>Keywords</h4>
+    <h4>
+      Keywords
+    </h4>
     <% if not package.keywords.blank? %>
         <% package.keywords.each do |keyword| %>
             <span class="keyword-pill"><%= keyword %></span>
