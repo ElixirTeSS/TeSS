@@ -13,9 +13,7 @@
           <%= package.description %>
         </p>
     <% end %>
-  </li>
-  <li><h4 class="nav-heading">Keywords</h4></li>
-  <li style="padding: 7px 20px;">
+    <h4>Keywords</h4>
     <% if not package.keywords.blank? %>
         <% package.keywords.each do |keyword| %>
             <span class="keyword-pill"><%= keyword %></span>
