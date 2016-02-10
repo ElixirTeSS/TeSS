@@ -1,7 +1,15 @@
 <script>
   $(document).ready(function () {
-    reposition_tiles('masonry', 'masonry-brick');
+      reposition_tiles('masonry', 'masonry-brick');
+      $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+          /*Load map script only once when event tab is selected*/
+          if (!loadedMapScript){
+              $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyCT1w2S_2I49FwJDKHGj9A9sO86Lp9nUdg&callback=initialize")
+          }
+          reposition_tiles('masonry', 'masonry-brick');
+      })
   })
+
 </script>
 
 <!-- SIDEBAR | RESULTS -->

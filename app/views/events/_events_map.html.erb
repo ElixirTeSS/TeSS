@@ -1,60 +1,63 @@
 <script>
-  var map;
-  var events = [];
-  <% unless events.blank? %>
-    <% events.each do |event|  %>
-      var event_display = "<a href='<%=event.link%>' target='_blank'>" +
-        "<h3><%=event.title%></h3></a>" +
-        "<b>Date: </b><%=event.start%><br>" +
-        "<b>Location:</b> <%=event.city%>, <%=event.country%><br>" +
-        "<b>Provider:</b> <%=event.provider%><br>"
-      events.push([
-        <%=event.latitude%>,
-        <%=event.longitude%>,
-        event_display,
-        "<%=event.title%>"
-      ]);
-    <% end %>
-  <% end %>
+    var map;
+    var events = [];
+    var loadedMapScript = 0;
 
-  function initialize() {
-    google.maps.event.addDomListener(window, 'load', initialize);
-    /* center on first event. Map center and zoom will reconfigure later (fitbounds method)*/
-    var mapOptions = {
-      zoom: 10,
-      center: new google.maps.LatLng(events[0][0], events[0][1])
-    };
-    var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-    setEvents(map, events);
-  }
-
-  function setEvents(map, events) {
-    var bounds = new google.maps.LatLngBounds();
-    var infowindow = new google.maps.InfoWindow({content: "Content String"});
-    for (var i = 0; i < events.length; i++) {
-      var new_marker = createMarker(map, events[i], infowindow)
-      bounds.extend(new_marker.position);
+    function prep() {
+        <% unless events.blank? %>
+        <% events.each do |event|  %>
+        var event_display = "<a href='<%=event.link%>' target='_blank'>" +
+                "<h3><%=event.title%></h3></a>" +
+                "<b>Date: </b><%=event.start%><br>" +
+                "<b>Location:</b> <%=event.city%>, <%=event.country%><br>" +
+                "<b>Provider:</b> <%=event.provider%><br>"
+        events.push([
+            <%=event.latitude%>,
+            <%=event.longitude%>,
+            event_display,
+            "<%=event.title%>"
+        ]);
+        <% end %>
+        <% end %>
     }
-    map.fitBounds(bounds);
-  }
 
-  function createMarker(map, event, infowindow) {
-    var position = new google.maps.LatLng(event[0], event[1]);
-    var marker = new google.maps.Marker({
-      position: position,
-      map: map,
-      title: event[3]
-    });
-    google.maps.event.addListener(marker, 'click', function () {
-      infowindow.setContent(event[2]);
-      infowindow.open(map, marker);
-    });
-    return marker;
-  }
+    function initialize() {
+        prep();
+        google.maps.event.addDomListener(window, 'load', initialize);
+        /* center on first event. Map center and zoom will reconfigure later (fitbounds method)*/
+        var mapOptions = {
+            zoom: 10,
+            center: new google.maps.LatLng(events[0][0], events[0][1])
+        };
+        var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        setEvents(map, events);
+        loadedMapScript = 1;
+    }
 
-  $(document).ready(function () {
-    $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyCT1w2S_2I49FwJDKHGj9A9sO86Lp9nUdg&callback=initialize")
-  })
+    function setEvents(map, events) {
+        var bounds = new google.maps.LatLngBounds();
+        var infowindow = new google.maps.InfoWindow({content: "Content String"});
+        for (var i = 0; i < events.length; i++) {
+            var new_marker = createMarker(map, events[i], infowindow)
+            bounds.extend(new_marker.position);
+        }
+        map.fitBounds(bounds);
+    }
+
+    function createMarker(map, event, infowindow) {
+        var position = new google.maps.LatLng(event[0], event[1]);
+        var marker = new google.maps.Marker({
+            position: position,
+            map: map,
+            title: event[3]
+        });
+        google.maps.event.addListener(marker, 'click', function () {
+            infowindow.setContent(event[2]);
+            infowindow.open(map, marker);
+        });
+        return marker;
+    }
+
 </script>
 
 <div style="width: 100%; height: 750px; margin-top: 10px;" id="map-canvas"></div>
