@@ -29,7 +29,7 @@ module TeSS
     def extract_edam_names_for_autocomplete
       list = []
       @edam_names.each do |name|
-        list << {'value': name, 'data': name}
+        list << {'value' => name, 'data' => name}
       end
       return list
     end

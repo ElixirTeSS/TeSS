@@ -1,10 +1,12 @@
+require 'tess/array_field_cleaner'
 class Material < ActiveRecord::Base
+
   include PublicActivity::Common
+
   has_paper_trail
 
   extend FriendlyId
   friendly_id :title, use: :slugged
-
 
   unless SOLR_ENABLED==false
     searchable do
@@ -60,33 +62,9 @@ class Material < ActiveRecord::Base
   # Validate the URL is in correct format via valid_url gem
   validates :url, :url => true
 
-  before_save :remove_empty_array_items
+  clean_array_fields(:keywords, :contributors, :authors)
 
   after_save :log_activities
-
-  # Generated:
-  # title:text url:string short_description:string doi:string  remote_updated_date:date remote_created_date:date
-  # TODO:
-=begin
-  License
-  Scientific topic
-  Target audience
-  Keywords
-  Level
-  Duration
-  Rating: average score
-  Rating: votes
-  Rating: reviews
-  # Separate models needed for Rating, License, Keywords &c.
-=end
-
-  @@array_fields = %w(keywords contributors authors)
-  def remove_empty_array_items
-    @@array_fields.each do |field|
-      self.send(field).reject!{|x| x.empty?}
-    end
-  end
-
 
   def log_activities
     self.changed.each do |changed_attribute|
