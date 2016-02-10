@@ -12,11 +12,8 @@
     </div>
     <div class="row">
       <%= form_tag(controller: 'packages', action: 'update_package_resources', method: 'post') do |f| %>
-          <label>Add materials</label>
           <%= render :partial => 'common/dropdown', :locals => {:field_name => 'material', :resource => @package, :f => f} %>
-          <label> Add events</label>
           <%= render :partial => 'common/dropdown', :locals => {:field_name => 'event', :resource => @package, :f => f} %>
-
           <button type="submit" value="add" class="btn btn-primary">Update package</button>
       <% end %>
     </div>

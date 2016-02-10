@@ -18,22 +18,24 @@ render :partial => 'common/dropdown',
 
 <% model_name =  resource.class.name.underscore #e.g. package %>
 
-<div class="control-group">
+<div class="form-group">
+  <label><%= field_name.pluralize.capitalize unless field_name.blank? %></label>
+
   <!-- have one empty one so something is always passed when the event listener triggers -->
   <input name="<%=model_name%>[<%=field_name%>_ids][]" value="" style="display:none"/>
 
-  <div class="controls" data-field="<%=field_name%>" data-model="<%=model_name%>">
+  <div data-field="<%=field_name%>" data-model="<%=model_name%>">
 
   	<!-- display existing ones -->
     <div class="<%=field_name%> multiple-input-list">
       <% resource.send(field_name.pluralize).each do |r| %>
           <div class="multiple-list-item">
-            <input type="text" class="multiple-input" 
+            <input type="text" class="multiple-input form-control"
             	   data-field='<%=field_name%>' data-model='<%=model_name%>'
             	   name="<%=model_name%>[<%=field_name%>_ids][]"
-                   value="<%=r.id%>" style="display:none;"><%= r.try(:title) or r.name%>
-            </input>
-            <input type="button" value="x" class="dropdown-option-delete"
+                   value="<%=r.try(:title) or r.name%>" readonly="readonly" disabled="disabled" />
+            <input type="hidden" data-field="<%=field_name%>" name="<%=model_name%>[<%=field_name%>_ids][]" value="<%=r.id%>" />
+            <input type="button" value="<%= "&times;".html_safe %>" class="dropdown-option-delete"
             	   data-field="<%=field_name%>" data-model='<%=model_name%>'
                    data-value="<%=r.id%>" data-name="<%= r.try(:title) or r.name%>"
             />
@@ -43,7 +45,7 @@ render :partial => 'common/dropdown',
     <!-- Create list of dropdown options-->
     <div class="dropdown">
       <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        Select <%=field_name%>
+        Add <%=field_name%>
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu <%=field_name%>-options" 
