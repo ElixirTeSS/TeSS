@@ -1,36 +1,57 @@
+<div class="row wrapper">
+  <!-- SIDEBAR -->
+  <div class="col-md-3" id="sidebar">
+    <%= render :partial => "content_providers/partials/general_content_provider_info" %>
+    <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @content_providers} %>
+  </div>
+
+  <div class="col-md-9">
+
+    <!-- CREATE NEW BUTTON -->
+    <div class="row">
+      <div class="col-md-6 col-xs-6" style="padding-left: 0px;">
+        <%= link_to new_user_path, :class=>"btn btn-primary" do %>
+            <i class="fa fa-plus-square"></i> Register user
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <%- model_class = User -%>
 <div class="page-header">
   <h2><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h2>
 </div>
 <table class="table table-striped">
   <thead>
-    <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
-      <th><%= model_class.human_attribute_name(:username) %></th>
-      <th><%= model_class.human_attribute_name(:email) %></th>
-      <!--<th><%= model_class.human_attribute_name(:encrypted_password) %></th>-->
-      <!--<th><%= model_class.human_attribute_name(:reset_password_token) %></th>-->
-      <th><%= model_class.human_attribute_name(:reset_password_sent_at) %></th>
-      <th><%= model_class.human_attribute_name(:remember_created_at) %></th>
-      <th><%= model_class.human_attribute_name(:current_sign_in_at) %></th>
-      <th><%= model_class.human_attribute_name(:last_sign_in_at) %></th>
-      <!--<th><%= model_class.human_attribute_name(:current_sign_in_ip) %></th>-->
-      <!--<th><%= model_class.human_attribute_name(:last_sign_in_ip) %></th>-->
-      <!--<th><%= model_class.human_attribute_name(:confirmation_token) %></th>-->
-      <th><%= model_class.human_attribute_name(:confirmed_at) %></th>
-      <th><%= model_class.human_attribute_name(:confirmation_sent_at) %></th>
-      <th><%= model_class.human_attribute_name(:unconfirmed_email) %></th>
-      <th><%= model_class.human_attribute_name(:failed_attempts) %></th>
-      <!--<th><%= model_class.human_attribute_name(:unlock_token) %></th>-->
-      <th><%= model_class.human_attribute_name(:locked_at) %></th>
-      <th><%= model_class.human_attribute_name(:role_id) %></th>
-      <th><%= model_class.human_attribute_name(:material_id) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
-      <th><%=t '.actions', :default => t("helpers.actions") %></th>
-    </tr>
+  <tr>
+    <th><%= model_class.human_attribute_name(:id) %></th>
+    <th><%= model_class.human_attribute_name(:username) %></th>
+    <th><%= model_class.human_attribute_name(:email) %></th>
+    <!--<th><%= model_class.human_attribute_name(:encrypted_password) %></th>-->
+    <!--<th><%= model_class.human_attribute_name(:reset_password_token) %></th>-->
+    <th><%= model_class.human_attribute_name(:reset_password_sent_at) %></th>
+    <th><%= model_class.human_attribute_name(:remember_created_at) %></th>
+    <th><%= model_class.human_attribute_name(:current_sign_in_at) %></th>
+    <th><%= model_class.human_attribute_name(:last_sign_in_at) %></th>
+    <!--<th><%= model_class.human_attribute_name(:current_sign_in_ip) %></th>-->
+    <!--<th><%= model_class.human_attribute_name(:last_sign_in_ip) %></th>-->
+    <!--<th><%= model_class.human_attribute_name(:confirmation_token) %></th>-->
+    <th><%= model_class.human_attribute_name(:confirmed_at) %></th>
+    <th><%= model_class.human_attribute_name(:confirmation_sent_at) %></th>
+    <th><%= model_class.human_attribute_name(:unconfirmed_email) %></th>
+    <th><%= model_class.human_attribute_name(:failed_attempts) %></th>
+    <!--<th><%= model_class.human_attribute_name(:unlock_token) %></th>-->
+    <th><%= model_class.human_attribute_name(:locked_at) %></th>
+    <th><%= model_class.human_attribute_name(:role_id) %></th>
+    <th><%= model_class.human_attribute_name(:material_id) %></th>
+    <th><%= model_class.human_attribute_name(:created_at) %></th>
+    <th><%=t '.actions', :default => t("helpers.actions") %></th>
+  </tr>
   </thead>
   <tbody>
-    <% @users.each do |user| %>
+  <% @users.each do |user| %>
       <tr>
         <td><%= link_to user.id, user_path(user) %></td>
         <td><%= user.username %></td>
@@ -63,7 +84,7 @@
                       :class => 'btn btn-xs btn-danger' %>
         </td>
       </tr>
-    <% end %>
+  <% end %>
   </tbody>
 </table>
 

@@ -1,58 +1,25 @@
-<%- model_class = User -%>
-<div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+<div class="row wrapper">
+  <!-- SIDEBAR -->
+  <div class="col-md-3 col-xs-3" id="sidebar">
+    <%= render :partial => "users/partials/user_info", :locals => {:user => @user} %>
+  </div>
+
+  <div class=" col-md-9 col-xs-9">
+    <div class="row">
+      <ul class="nav nav-tabs">
+        <li class="active">
+          <a data-toggle="tab" href="#materials"><i class="fa fa-book"></i> Materials</a>
+        </li>
+        <li class="active">
+          <a data-toggle="tab" href="#packages"><i class="fa fa-book"></i> Packages</a>
+        </li>
+        <li class="active">
+          <a data-toggle="tab" href="#workflows"><i class="fa fa-book"></i> Workflows</a>
+        </li>
+        <li>
+          <a data-toggle="tab" href="#activity_log"><i class="fa fa-clock-o"></i> Activity Log</a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>
-
-<dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:username) %>:</strong></dt>
-  <dd><%= @user.username %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:email) %>:</strong></dt>
-  <dd><%= @user.email %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:encrypted_password) %>:</strong></dt>
-  <dd><%= @user.encrypted_password %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:reset_password_token) %>:</strong></dt>
-  <dd><%= @user.reset_password_token %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:reset_password_sent_at) %>:</strong></dt>
-  <dd><%= @user.reset_password_sent_at %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:remember_created_at) %>:</strong></dt>
-  <dd><%= @user.remember_created_at %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:current_sign_in_at) %>:</strong></dt>
-  <dd><%= @user.current_sign_in_at %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:last_sign_in_at) %>:</strong></dt>
-  <dd><%= @user.last_sign_in_at %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:current_sign_in_ip) %>:</strong></dt>
-  <dd><%= @user.current_sign_in_ip %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:last_sign_in_ip) %>:</strong></dt>
-  <dd><%= @user.last_sign_in_ip %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:confirmation_token) %>:</strong></dt>
-  <dd><%= @user.confirmation_token %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:confirmed_at) %>:</strong></dt>
-  <dd><%= @user.confirmed_at %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:confirmation_sent_at) %>:</strong></dt>
-  <dd><%= @user.confirmation_sent_at %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:unconfirmed_email) %>:</strong></dt>
-  <dd><%= @user.unconfirmed_email %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:failed_attempts) %>:</strong></dt>
-  <dd><%= @user.failed_attempts %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:unlock_token) %>:</strong></dt>
-  <dd><%= @user.unlock_token %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:locked_at) %>:</strong></dt>
-  <dd><%= @user.locked_at %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:role_id) %>:</strong></dt>
-  <dd><%= @user.role_id %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:material_id) %>:</strong></dt>
-  <dd><%= @user.material_id %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:authentication_token) %>:</strong></dt>
-  <dd><%= @user.authentication_token %></dd>
-
-</dl>
-
-<%= link_to t('.back', :default => t("helpers.links.back")),
-              users_path, :class => 'btn btn-default'  %>
-<%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_user_path(@user), :class => 'btn btn-default' %>
-<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              user_path(@user),
-              :method => 'delete',
-              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-              :class => 'btn btn-danger' %>
