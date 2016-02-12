@@ -33,7 +33,7 @@
           <a data-toggle="tab" href="#events"><i class="fa fa-folder-open"></i> Events</a>
         </li>
         <li>
-          <a data-toggle="tab" href="#activity_log"><i class="fa fa-clock-o"></i> Activity Log</a>
+          <a data-toggle="tab" href="#activity_log"><i class="fa fa-clock-o"></i> Activity log</a>
         </li>
       </ul>
     </div>
@@ -54,11 +54,13 @@
           <div class="search-results-count"> 
             <%= pluralize(@package.events.count, 'event') %> found 
           </div>
-          <div class="masonry media-grid">
-            <% @package.events.each do |event| %>
-                <%= render event %>
-            <% end %>
-          </div>
+          <% unless @package.events.count == 0 %>
+              <div class="masonry media-grid">
+                <% @package.events.each do |event| %>
+                    <%= render event %>
+                <% end %>
+              </div>
+          <% end %>
         </div>
       </div>
       <div id="activity_log" class="tab-pane fade">

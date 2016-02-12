@@ -28,7 +28,7 @@
           <a data-toggle="tab" href="#packages"><i class="fa fa-folder-open"></i> Packages</a>
         </li>
         <li>
-          <a data-toggle="tab" href="#activity_log"><i class="fa fa-clock-o"></i> Activity Log</a>
+          <a data-toggle="tab" href="#activity_log"><i class="fa fa-clock-o"></i> Activity log</a>
         </li>
       </ul>
 
@@ -64,7 +64,7 @@
             <% unless available_packages.blank? %>
                 <div class="col-md-9 col-xs-9 form-inline" style="margin:15px 0px 10px 0px;">
                   <div class="form-group">
-                    <%= select_tag('material[package_ids][]', options_from_collection_for_select(available_packages, :id, :name), :class => "form-control")
+                    <%= select_tag('material[package_ids][]', options_from_collection_for_select(available_packages, :id, :title), :class => "form-control")
                     %>
                     <button class="btn btn-info">Add to package</button>
                   </div>
@@ -72,7 +72,7 @@
             <% end %>
           </div>
           <div class="row">
-            <% if @material.packages.empty? %>
+            <% if @material.packages.blank? %>
                 <%= empty_tag(:p, 'This material is currently not included in any packages.', "padding-top: 10px;") %>
             <% else %>
                 <ul class="masonry media-grid">

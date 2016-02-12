@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160208135809) do
+ActiveRecord::Schema.define(version: 20160212105653) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 20160208135809) do
   create_table "content_providers", force: :cascade do |t|
     t.text     "title"
     t.text     "url"
-    t.text     "logo_url"
+    t.text     "image_url"
     t.text     "description"
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 20160208135809) do
     t.string   "external_id"
     t.string   "title"
     t.string   "subtitle"
-    t.string   "link"
+    t.string   "url"
     t.string   "provider"
     t.text     "field"
     t.text     "description"
@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(version: 20160208135809) do
     t.decimal  "longitude",           precision: 10, scale: 6
     t.datetime "created_at",                                                    null: false
     t.datetime "updated_at",                                                    null: false
-    t.text     "keyword"
+    t.text     "keywords"
     t.text     "source",                                       default: "tess"
     t.string   "slug"
     t.integer  "content_provider_id"
@@ -105,7 +105,7 @@ ActiveRecord::Schema.define(version: 20160208135809) do
     t.string   "authors",             default: [],                          array: true
     t.string   "contributors",        default: [],                          array: true
     t.string   "licence",             default: "notspecified"
-    t.string   "difficulty_level"
+    t.string   "difficulty_level",    default: "notspecified"
     t.integer  "content_provider_id"
     t.string   "slug"
   end
@@ -154,15 +154,15 @@ ActiveRecord::Schema.define(version: 20160208135809) do
   add_index "package_materials", ["package_id"], name: "index_package_materials_on_package_id", using: :btree
 
   create_table "packages", force: :cascade do |t|
-    t.string   "name"
+    t.string   "title"
     t.text     "description"
     t.string   "image_url"
-    t.boolean  "public"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.boolean  "public",      default: true
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "user_id"
     t.string   "slug"
-    t.string   "keywords",    default: [],              array: true
+    t.string   "keywords",    default: [],                array: true
   end
 
   add_index "packages", ["slug"], name: "index_packages_on_slug", unique: true, using: :btree

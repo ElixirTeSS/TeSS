@@ -6,7 +6,7 @@
     function prep() {
         <% unless events.blank? %>
         <% events.each do |event|  %>
-        var event_display = "<a href='<%=event.link%>' target='_blank'>" +
+        var event_display = "<a href='<%=event.url%>' target='_blank'>" +
                 "<h3><%=event.title%></h3></a>" +
                 "<b>Date: </b><%=event.start%><br>" +
                 "<b>Location:</b> <%=event.city%>, <%=event.country%><br>" +

@@ -1,4 +1,5 @@
 require 'tess/array_field_cleaner'
+
 class Material < ActiveRecord::Base
 
   include PublicActivity::Common

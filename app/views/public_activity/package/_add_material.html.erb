@@ -4,7 +4,7 @@
     <%= link_to activity.owner.username, activity.owner %>
 <% end %>
 
-<strong> Added Material</strong>
+<strong> Added material</strong>
 <%= link_to activity.parameters[:material].title, activity.parameters[:material] %>
-<strong> To Package </strong>
-<%= link_to activity.parameters[:package].name, activity.parameters[:package] %>
+<strong> to package </strong>
+<%= link_to activity.parameters[:package].title, activity.parameters[:package] %>

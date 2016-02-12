@@ -9,9 +9,8 @@
             <p><b>Keywords: </b><%= material.keywords.blank? ? empty_tag(:span, 'none specified') : material.keywords.join(', ') %></p>
           </div>
           <div class="col-md-3">
-            <%= html_logo_for(material.content_provider,'pull-right small-content-provider-logo').html_safe %>
-            <!-- Add node logo as well, if material's provider  belongs to a node -->
-            <%#= html_logo_for('material's-node-logo','pull-right small-content-provider-logo').html_safe %>
+            <%= link_to(image_tag(get_image_url_for(material.content_provider), :class=>"pull-right small-content-provider-logo")) %>
+            <!-- TODO Add node logo as well, if material's provider  belongs to a node -->
           </div>
       <% else %>
           <div class="col-md-12" style="padding: 0px;">

@@ -1,9 +1,11 @@
+require 'tess/array_field_cleaner'
+
 class Package < ActiveRecord::Base
 	include PublicActivity::Common
   has_paper_trail
 
   extend FriendlyId
-  friendly_id :name, use: :slugged
+  friendly_id :title, use: :slugged
 
 	has_many :package_materials
   has_many :package_events
@@ -18,7 +20,7 @@ class Package < ActiveRecord::Base
 
   unless SOLR_ENABLED==false
     searchable do 
-      text :name
+      text :title
       text :description
       string :owner do
       	self.owner.username.to_s if !owner.nil?

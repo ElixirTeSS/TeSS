@@ -90,13 +90,13 @@ module ApplicationHelper
   end
   # End from twitter-bootstrap-rails gem for less
 
-  def get_logo_url_for(resource)
+  def get_image_url_for(resource)
     return nil if resource.blank?
     if resource.class.name == 'ContentProvider'
-      if resource.logo_url.blank?
+      if resource.image_url.blank?
         return "placeholder-organization.png" # Default placeholder logo for an institution/organisation
       else
-        return resource.logo_url
+        return resource.image_url
       end
     elsif resource.class.name == 'Package'
         if resource.image_url.blank?
@@ -106,19 +106,6 @@ module ApplicationHelper
         end
     end
   end
-
-  def get_package_logo_url(package)
-    if package.blank?
-      return nil
-    elsif package.image_url.blank?
-      return "placeholder-organization.png" # Default placeholder logo for an institution/organisation
-    else
-      package.image_url
-    end
-  end
-
-
-
 
   # Return icon classes for model name (could be symbol or string)
   def icon_class_for_model(model)
