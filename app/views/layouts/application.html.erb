@@ -55,7 +55,7 @@
                       <i class="fa fa-cog fa-lg"></i>
                   <% end %>
               <% end %>
-              <%= menu_item "Log out", destroy_user_session_path, :method => :delete %>
+              <%= menu_item "Log out", destroy_user_session_path, :method => :delete, :data => { :confirm => 'Are you sure you want to log out?' } %>
           <% end %>
       <% else %>
           <%= menu_group pull: :right do %>
