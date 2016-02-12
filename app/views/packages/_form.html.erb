@@ -1,28 +1,32 @@
 <div class="row">
   <div class="col-md-9 col-xs-9">
     <%= simple_form_for @package, :html => { :class => "form-horizontal content_provider" } do |f| %>
-
         <% if @package.errors.any? %>
-            <div id="error_explanation">
-              <h2><%= pluralize(@package.errors.count, "error") %> prohibited this package from being saved:</h2>
-              <ul>
-                <% @package.errors.full_messages.each do |message| %>
-                    <li><%= message %></li>
-                <% end %>
-              </ul>
+            <div id="error_expl" class="panel panel-danger">
+              <div class="panel-heading">
+                <h3 class="panel-title"><%= pluralize(@package.errors.count, "error") %> prohibited this package from
+                  being saved:</h3>
+              </div>
+              <div class="panel-body">
+                <ul>
+                  <% @package.errors.full_messages.each do |msg| %>
+                      <li><%= msg %></li>
+                  <% end %>
+                </ul>
+              </div>
             </div>
         <% end %>
 
         <div class="form-group">
-          <%= f.label :name %><br>
-          <%= f.text_field :name, :class => 'form-control' %>
+          <%= f.label :title %>
+          <%= f.text_field :title, :class => 'form-control' %>
         </div>
         <div class="form-group">
-          <%= f.label :description %><br>
+          <%= f.label :description %>
           <%= f.text_area :description, :class => 'form-control' %>
         </div>
         <div class="form-group">
-          <%= f.label :image_url %><br>
+          <%= f.label :image_url, label: 'Image URL' %>
           <%= f.text_field :image_url, :class => 'form-control' %>
         </div>
         <div class="form-group">

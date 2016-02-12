@@ -1,9 +1,11 @@
+require 'tess/array_field_cleaner'
+
 class Package < ActiveRecord::Base
 	include PublicActivity::Common
   has_paper_trail
 
   extend FriendlyId
-  friendly_id :name, use: :slugged
+  friendly_id :title, use: :slugged
 
 	has_many :package_materials
   has_many :package_events
@@ -12,13 +14,20 @@ class Package < ActiveRecord::Base
 
 	has_one :owner, foreign_key: "id", class_name: "User"
 
+
+  # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
+  # e.g. "James     Bond  " => "James Bond"
+  auto_strip_attributes :title, :description, :image_url, :squish => false
+
+  validates :title, presence: true
+
   clean_array_fields(:keywords)
 
   after_save :log_activities
 
   unless SOLR_ENABLED==false
     searchable do 
-      text :name
+      text :title
       text :description
       string :owner do
       	self.owner.username.to_s if !owner.nil?

@@ -1,1 +1,1 @@
-json.extract! @event, :id, :id, :title, :subtitle, :link, :provider, :field, :description, :category, :start, :end, :sponsor, :venue, :city, :county, :country, :postcode, :latitude, :longitude, :created_at, :updated_at
+json.extract! @event, :id, :id, :title, :subtitle, :url, :provider, :field, :description, :category, :start, :end, :sponsor, :venue, :city, :county, :country, :postcode, :latitude, :longitude, :created_at, :updated_at

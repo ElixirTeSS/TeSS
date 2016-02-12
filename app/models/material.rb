@@ -1,4 +1,5 @@
 require 'tess/array_field_cleaner'
+
 class Material < ActiveRecord::Base
 
   include PublicActivity::Common
@@ -53,9 +54,10 @@ class Material < ActiveRecord::Base
   has_many :packages, through: :package_materials
 
   belongs_to :content_provider
+
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
-  auto_strip_attributes :title, :short_description, :url, :squish => false
+  auto_strip_attributes :title, :short_description, :long_description, :url, :squish => false
 
   validates :title, :short_description, :url, presence: true
 

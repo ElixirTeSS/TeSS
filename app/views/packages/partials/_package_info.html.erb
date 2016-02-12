@@ -3,10 +3,10 @@
   <li><h4 class="nav-heading">Package</h4></li>
   <li style="padding: 7px 20px;">
     <p>
-      <%= (image_tag(get_logo_url_for(package), :class => "medium-content-provider-logo")) %>
+      <%= (image_tag(get_image_url_for(package), :class => "medium-content-provider-logo")) %>
     </p>
     <h5>
-      <%= package.name %>
+      <%= package.title %>
     </h5>
     <% unless package.description.blank? %>
         <p class="minimise">

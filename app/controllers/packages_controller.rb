@@ -164,9 +164,8 @@ class PackagesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def package_params
-      params.require(:package).permit(:name, :description, :image_url, :public, {:keywords => []})
+      params.require(:package).permit(:title, :description, :image_url, :public, {:keywords => []})
     end
-
 
     def set_search_params
       params.permit(:q)

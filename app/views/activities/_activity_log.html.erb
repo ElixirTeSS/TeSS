@@ -3,10 +3,14 @@
 Variables that should be available
 - resource  - resource whose activity log is being displayed (a material, a content provider, etc...)
 %>
-<% unless (resource.blank? and resource.activities.blank) %>
-    <% resource.activities.each do |activity| %>
-        <div class="activity">
-          <%= render_activity(activity) %>
-        </div>
-    <% end %>
+<% unless resource.blank? %>
+    <div class="activity">
+      <% if resource.activities.blank? %>
+          <p class="empty">No activities recorded</p>
+      <% else %>
+          <% resource.activities.each do |activity| %>
+              <%= render_activity(activity) %>
+          <% end %>
+      <% end %>
+    </div>
 <% end %>

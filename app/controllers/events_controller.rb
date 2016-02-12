@@ -21,11 +21,9 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
 
-  require 'bread_crumbs'
   include TeSS::BreadCrumbs
 
-
-  @@facet_fields = %w( category country field provider city sponsor keyword venue)
+  @@facet_fields = %w( category country field provider city sponsor keywords venue)
 
   helper 'search'
   def index
@@ -62,7 +60,7 @@ class EventsController < ApplicationController
     title = params[:title]
     url = params[:url]
     if !title.blank? or !url.blank?
-      @event = Event.find_by_link(url)
+      @event = Event.find_by_url(url)
       if @event.nil?
         @event = Event.find_by_title(title)
       end
@@ -138,7 +136,7 @@ class EventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:external_id, :title, :subtitle, :link, :provider, :description, {:field => []},
+      params.require(:event).permit(:external_id, :title, :subtitle, :url, :provider, :description, {:field => []},
                                     {:category => []}, {:keyword => []}, :start, :end, :sponsor, :venue, :city, :county,
                                     :country, :postcode, :latitude, :longitude, :content_provider_id)
     end
