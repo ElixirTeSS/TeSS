@@ -24,7 +24,7 @@ class PackagesControllerTest < ActionController::TestCase
   test "should create package" do
     sign_in users(:regular_user)
     assert_difference('Package.count') do
-      post :create, package: { description: @package.description, image_url: @package.image_url, name: @package.name, public: @package.public }
+      post :create, package: { description: @package.description, image_url: @package.image_url, title: @package.title, public: @package.public }
     end
 
     assert_redirected_to package_path(assigns(:package))
@@ -43,7 +43,7 @@ class PackagesControllerTest < ActionController::TestCase
 
   test "should update package" do
     sign_in users(:regular_user)
-    patch :update, id: @package, package: { description: @package.description, image_url: @package.image_url, name: @package.name, public: @package.public }
+    patch :update, id: @package, package: { description: @package.description, image_url: @package.image_url, title: @package.title, public: @package.public }
     assert_redirected_to package_path(assigns(:package))
   end
 
