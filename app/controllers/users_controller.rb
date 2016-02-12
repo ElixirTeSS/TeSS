@@ -1,7 +1,8 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :check_auth, only: [:show, :edit, :update, :destroy]
-  before_action :check_admin, only: [:show, :edit, :new, :index]
+  before_action :check_admin, only: [:show, :edit, :new]
+  before_action :closed_route, only: [:new, :update, :edit]
 
   before_filter :authenticate_user!
 
@@ -89,9 +90,17 @@ class UsersController < ApplicationController
     # the profile is for extra information about them and their password should be changed
     # by the usual devise mechansims.
     def check_admin
-      if current_user.is_admin?
-        return
+      if current_user
+        if current_user.is_admin?
+          return
+        end
       end
       redirect_to root_path, notice: "Sorry, you're not allowed to view that page."
+    end
+
+    def closed_route
+      if !((request.post? or request.put? or request.patch?) and request.format.json?)
+        redirect_to root_path, notice: 'Sorry, that page is not available.'
+      end
     end
 end
