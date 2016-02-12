@@ -9,7 +9,11 @@
   <tbody>
   <% @users.each do |user| %>
       <tr>
-        <td><%= link_to user.username, profile_path(user.profile) %></td>
+        <% if !user.profile.nil? -%>
+        <td><%= link_to user.username, :controller => :profiles, :action => :show, :id => user.profile.id %></td>
+        <% else -%>
+        <%= user.username -%>
+        <% end -%>
         <td>
           <%= image_tag user.gravatar_url, size: "40" -%>
       </tr>

@@ -9,26 +9,17 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test "should get index" do
-    sign_in users(:admin)
+    sign_in users(:regular_user)
     get :index
     assert_response :success
     assert_not_nil assigns(:users)
   end
 
-  test "should get new" do
-    sign_in users(:admin)
-    get :new
-    assert_response :success
-  end
-
-  test "should not get index" do
-    sign_in users(:regular_user)
-    get :index
-    assert_redirected_to root_path
-  end
-
   test "should not get new" do
     sign_in users(:regular_user)
+    get :new
+    assert_redirected_to root_path
+    sign_in users(:admin)
     get :new
     assert_redirected_to root_path
   end
@@ -54,22 +45,21 @@ class UsersControllerTest < ActionController::TestCase
     assert_redirected_to root_path
   end
 
-  test "should get edit" do
-    sign_in users(:admin)
-    get :edit, id: @user
-    assert_response :success
-  end
-
  test "should not get edit" do
     sign_in users(:regular_user)
     get :edit, id: @user
     assert_redirected_to root_path
+    sign_in users(:admin)
+    get :edit, id: @user
+    #assert_response :success
+    assert_redirected_to root_path
   end
 
-  test "should update user" do
+  test "should not update user" do
     sign_in users(:regular_user)
     patch :update, id: @user, user: { email: 'hot@mail.com' }
-    assert_redirected_to user_path(assigns(:user))
+    #assert_redirected_to user_path(assigns(:user))
+    assert_redirected_to root_path
   end
 
   test "should destroy user" do
