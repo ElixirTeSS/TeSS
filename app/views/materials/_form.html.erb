@@ -59,7 +59,7 @@
           <%#= error_span(@material[:title]) %>
         </div>
         <div class="form-group">
-          <%= f.label :url, "URL"%>
+          <%= f.label :url, label: 'URL', :class => "required" %>
           <%= f.text_field :url, :class => 'form-control' %>
           <%#= error_span(@material[:url]) %>
         </div>

@@ -5,7 +5,7 @@
         <% if @content_provider.errors.any? %>
             <div id="error_expl" class="panel panel-danger">
               <div class="panel-heading">
-                <h3 class="panel-title"><%= pluralize(@content_provider.errors.count, "error") %> prohibited this content_provider from being saved:</h3>
+                <h3 class="panel-title"><%= pluralize(@content_provider.errors.count, "error") %> prohibited this content provider from being saved:</h3>
               </div>
               <div class="panel-body">
                 <ul>
@@ -19,31 +19,24 @@
 
         <div class="form-group">
           <%= f.label :title %>
-          <div class="controls">
-            <%= f.text_field :title, :class => 'form-control' %>
-          </div>
+          <%= f.text_field :title, :class => 'form-control' %>
           <%#= error_span(@content_provider[:title]) %>
         </div>
+
         <div class="form-group">
-          <%= f.label :url, "URL" %>
-          <div class="controls">
-            <%= f.text_field :url, :class => 'form-control' %>
-          </div>
+          <%= f.label :url, label: 'URL', :class => "required" %>
+          <%= f.text_field :url, :class => 'form-control' %>
           <%#= error_span(@content_provider[:url]) %>
         </div>
         <div class="form-group">
-          <%= f.label :image_url, "Image URL" %>
-          <div class="controls">
-            <%= f.text_field :image_url, :class => 'form-control' %>
-          </div>
-          <%#= error_span(@content_provider[:image_url]) %>
+          <%= f.label :description %>
+          <%= f.text_area :description, :class => 'form-control' %>
+          <%#= error_span(@content_provider[:description]) %>
         </div>
         <div class="form-group">
-          <%= f.label :description %>
-          <div class="controls">
-            <%= f.text_area :description, :class => 'form-control' %>
-          </div>
-          <%#= error_span(@content_provider[:description]) %>
+          <%= f.label :image_url, "Image URL" %>
+          <%= f.text_field :image_url, :class => 'form-control' %>
+          <%#= error_span(@content_provider[:image_url]) %>
         </div>
 
         <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords', :resource => @content_provider, :f => f} %>

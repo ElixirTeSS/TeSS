@@ -14,6 +14,13 @@ class Package < ActiveRecord::Base
 
 	has_one :owner, foreign_key: "id", class_name: "User"
 
+
+  # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
+  # e.g. "James     Bond  " => "James Bond"
+  auto_strip_attributes :title, :description, :image_url, :squish => false
+
+  validates :title, presence: true
+
   clean_array_fields(:keywords)
 
   after_save :log_activities
