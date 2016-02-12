@@ -1,5 +1,16 @@
 module SearchHelper
 
+	def set_tab value
+		parameters = params.dup
+		if parameters.include?('tab')
+			parameters['tab'] = value
+		else
+			parameters.merge({'tab' => value})
+			puts url_for(parameters)
+		end
+		return url_for(parameters)
+	end
+
 	def filter_link name, value
 		new_parameter = {name => value}
 		parameters = params.dup
