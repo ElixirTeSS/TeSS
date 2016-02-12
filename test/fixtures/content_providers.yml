@@ -3,11 +3,11 @@
 one:
   title: MyText
   url: MyText
-  logo_url: MyText
+  image_url: MyText
   description: MyText
 
 two:
   title: MyText
   url: MyText
-  logo_url: MyText
+  image_url: MyText
   description: MyText

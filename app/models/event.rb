@@ -10,7 +10,7 @@ class Event < ActiveRecord::Base
     searchable do
       text :title
       string :title
-      text :link
+      text :url
       string :city
       string :provider
       string :sponsor
@@ -19,7 +19,7 @@ class Event < ActiveRecord::Base
       string :country
       string :field, :multiple => true
       string :category, :multiple => true
-      string :keyword, :multiple => true
+      string :keywords, :multiple => true
       time :start
       time :end
       time :updated_at
@@ -35,19 +35,19 @@ class Event < ActiveRecord::Base
 
   belongs_to :content_provider
 
-  validates :title, :link, presence: true
+  validates :title, :url, presence: true
 
   serialize :field
   serialize :category
-  serialize :keyword
+  serialize :keywords
 
-  #Make sure there's link and title
+  #Make sure there's url and title
 
   #Generated Event:
   # external_id:string
   # title:string
   # subtitle:string
-  # link:string
+  # url:string
   # provider:string
   # field:text
   # description:text

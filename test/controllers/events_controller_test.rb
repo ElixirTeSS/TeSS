@@ -30,9 +30,10 @@ class EventsControllerTest < ActionController::TestCase
   test "should create event" do
     sign_in users(:admin)
     assert_difference('Event.count') do
-      post :create, event: { category: @event.category, city: @event.city, country: @event.country, county: @event.county, description: @event.description, end: @event.end, field: @event.field, id: @event.id, latitude: @event.latitude, link: @event.link, longitude: @event.longitude, postcode: @event.postcode, provider: @event.provider, sponsor: @event.sponsor, start: @event.start, subtitle: @event.subtitle, title: @event.title, venue: @event.venue }
+      post :create, :format => :json, event: { category: @event.category, city: @event.city, country: @event.country, county: @event.county, description: @event.description, end: @event.end, field: @event.field, id: @event.id, latitude: @event.latitude, url: @event.url, longitude: @event.longitude, postcode: @event.postcode, provider: @event.provider, sponsor: @event.sponsor, start: @event.start, subtitle: @event.subtitle, title: @event.title, venue: @event.venue }
     end
-    assert_redirected_to event_path(assigns(:event))
+    #assert_redirected_to event_path(assigns(:event))
+    assert_response :success
   end
 
   test "should show event" do
@@ -58,7 +59,7 @@ class EventsControllerTest < ActionController::TestCase
   # TODO: and I've not been able to work out how to adapt the test to fit around this.
   #test "should update event" do
   #  sign_in users(:admin)
-  #  patch :update, id: @event, event: { category: @event.category, city: @event.city, country: @event.country, county: @event.county, description: @event.description, end: @event.end, field: @event.field, id: @event.id, latitude: @event.latitude, link: @event.link, longitude: @event.longitude, postcode: @event.postcode, provider: @event.provider, sponsor: @event.sponsor, start: @event.start, subtitle: @event.subtitle, title: @event.title, venue: @event.venue }
+  #  patch :update, id: @event, event: { category: @event.category, city: @event.city, country: @event.country, county: @event.county, description: @event.description, end: @event.end, field: @event.field, id: @event.id, latitude: @event.latitude, url: @event.url, longitude: @event.longitude, postcode: @event.postcode, provider: @event.provider, sponsor: @event.sponsor, start: @event.start, subtitle: @event.subtitle, title: @event.title, venue: @event.venue }
   #  assert_redirected_to event_path(assigns(:event))
   #end
 

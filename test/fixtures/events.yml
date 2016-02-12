@@ -4,7 +4,7 @@ one:
   external_id: MyString1
   title: MyString
   subtitle: MyString
-  link: MyString
+  url: http://example.com
   provider: MyString
   field: ["MyText"]
   description: MyText
@@ -19,13 +19,13 @@ one:
   postcode: MyString
   latitude:
   longitude:
-  keyword: ["Keyword"]
+  keywords: ["Keyword"]
 
 two:
   external_id: MyString2
   title: MyString
   subtitle: MyString
-  link: MyString
+  url: http://example.com
   provider: MyString
   field: ["MyText"]
   description: MyText
@@ -40,4 +40,4 @@ two:
   postcode: MyString
   latitude:
   longitude:
-  keyword: ["Keyword"]
+  keywords: ["Keyword"]

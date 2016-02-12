@@ -22,7 +22,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
   test "should create content_provider" do
     sign_in users(:regular_user)
     assert_difference('ContentProvider.count') do
-      post :create, content_provider: { title: @content_provider.title, url: @content_provider.url, logo_url: @content_provider.logo_url, description: @content_provider.description }
+      post :create, content_provider: { title: @content_provider.title, url: @content_provider.url, image_url: @content_provider.image_url, description: @content_provider.description }
     end
 
     assert_redirected_to content_provider_path(assigns(:content_provider))
@@ -41,13 +41,13 @@ class ContentProvidersControllerTest < ActionController::TestCase
 
   test "should update content_provider" do
     sign_in users(:regular_user)
-    patch :update, id: @content_provider, content_provider: { title: @content_provider.title, url: @content_provider.url, logo_url: @content_provider.logo_url, description: @content_provider.description }
+    patch :update, id: @content_provider, content_provider: { title: @content_provider.title, url: @content_provider.url, image_url: @content_provider.image_url, description: @content_provider.description }
     assert_redirected_to content_provider_path(assigns(:content_provider))
   end
 
   test "should destroy content_provider" do
     sign_in users(:regular_user)
-    post :create, content_provider: { title: @content_provider.title, url: @content_provider.url, logo_url: @content_provider.logo_url, description: @content_provider.description }
+    post :create, content_provider: { title: @content_provider.title, url: @content_provider.url, image_url: @content_provider.image_url, description: @content_provider.description }
     assert_difference('ContentProvider.count', -1) do
       delete :destroy, id: @content_provider
     end

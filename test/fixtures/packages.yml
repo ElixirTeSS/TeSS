@@ -1,19 +1,19 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: 
+  title: Dot Slash Configure
   description: MyText
   image_url: MyString
   public: false
 
 two:
-  name: 
+  title: This Package Is Big
   description: MyText
   image_url: MyString
   public: false
 
 with_resources:
-  name: a
+  title: But My Package Is Bigger
   description: text
   image_url: myString
   public: true
