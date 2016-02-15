@@ -24,7 +24,6 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_difference('ContentProvider.count') do
       post :create, content_provider: { title: @content_provider.title, url: @content_provider.url, image_url: @content_provider.image_url, description: @content_provider.description }
     end
-
     assert_redirected_to content_provider_path(assigns(:content_provider))
   end
 
