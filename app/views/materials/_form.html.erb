@@ -31,6 +31,8 @@
         $(delete_button).appendTo(list_item );
       }
     });
+
+
   });
 </script>
 
@@ -120,7 +122,10 @@
           <%#= error_span(@material[:scientific_topic]) %>
         </div>
 
-        <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords', :resource => @material, :f => f} %>
+        <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords',
+                                                                    :resource => @material,
+                                                                    :f => f,
+                                                                    :suggestions => raw(TeSS::KeywordManager.keywords_array.to_json)} %>
 
         <div class="form-group">
           <%= f.label :target_audience %>

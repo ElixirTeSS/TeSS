@@ -157,7 +157,7 @@ function add_selected_dropdown_item(model_name, field_name, value, name){
  */
 function add_multiple_input_field(model_name, field_name){
     console.log('Adding new ' + field_name)
-    var input_box = '<input type="text" class="multiple-input form-control" ' +
+    var input_box = '<input type="text" class="multiple-input form-control ' + field_name + 's" ' +
                     'data-field="' + field_name + '" ' +
                     'data-model="' + model_name + '" ' +
                     'name="' + model_name + '[' + field_name + 's][]"' +

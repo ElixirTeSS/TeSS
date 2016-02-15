@@ -17,6 +17,7 @@ class MaterialsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
 
   include TeSS::BreadCrumbs
+  include TeSS::KeywordManager
 
   # GET /materials
   # GET /materials?q=queryparam
