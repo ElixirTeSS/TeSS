@@ -17,7 +17,7 @@ module TeSS
     end
 
     def self.keywords_array
-      k = keywords_file('r')
+      k = TeSS::KeywordManager.keywords_file('r')
       words = k.read.split("\n").uniq
       k.close
       return words
@@ -35,11 +35,11 @@ module TeSS
     module InstanceMethods
       private
       def add_keywords
-        keywords = keywords_array
+        keywords = TeSS::KeywordManager.keywords_array
         submitted_keywords = self["keywords"].dup
         submitted_keywords.each do |keyword|
           unless keywords.include?(keyword)
-            file = keywords_file('a+')
+            file = TeSS::KeywordManager.keywords_file('a+')
             file << "#{keyword}\n"
             file.close
           end
