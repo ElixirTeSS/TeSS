@@ -41,7 +41,7 @@ module MaterialsHelper
   def material_package_list(material)
     packages = []
     material.packages.each do |p| 
-      packages << link_to(p.name, p)
+      packages << link_to(p.title, p)
     end
     return packages
   end
