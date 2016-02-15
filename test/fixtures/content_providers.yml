@@ -2,12 +2,12 @@
 
 one:
   title: MyText
-  url: MyText
+  url: http://example.com
   image_url: MyText
   description: MyText
 
 two:
-  title: MyText
-  url: MyText
-  image_url: MyText
-  description: MyText
+  title: MyTextAgain
+  url: http://anotherexample.com
+  image_url: MyTextAgain
+  description: MyTextAgain
