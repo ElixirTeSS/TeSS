@@ -120,6 +120,8 @@ module ApplicationHelper
       return "fa fa-table"
     elsif (model.to_s == 'users')
       return "fa fa-user"
+    elsif (model.to_s == "workflows")
+      return "fa fa-sitemap"
     else
       return "fa fa-folder-open"
     end

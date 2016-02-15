@@ -30,27 +30,27 @@
 
 	<ul class="masonry media-grid">
 			<li class="nav-block masonry-brick">
-				<h3 class="heading">Events</h3>
+				<h3 class="heading"><i class="<%= icon_class_for_model(:events) %>"></i> Events</h3>
 				<p>Discover the latest training events and news from ELIXIR nodes and 3rd-party providers.</p>
 				<%= link_to '', events_path, :class=>"media-view"%>
 			</li>
 			<li class="nav-block masonry-brick">
-				<h3 class="heading">Materials</h3>
+				<h3 class="heading"><i class="<%= icon_class_for_model(:materials) %>"></i> Materials</h3>
 				<p>Browse the catalogue of materials offered by ELIXIR nodes and 3rd-party providers.</p>
 				<%= link_to '', materials_path, :class=>"media-view"%>
 			</li>
 			<li class="nav-block masonry-brick">
-				<h3 class="heading">Packages</h3>
+				<h3 class="heading"><i class="<%= icon_class_for_model(:packages) %>"></i> Packages</h3>
 				<p>Create training packages by grouping resources that address your particular research topic.</p>
 				<%= link_to '', packages_path, :class=>"media-view"%>
 			</li>
 			<li class="nav-block masonry-brick">
-				<h3 class="heading">Workflows</h3>
+				<h3 class="heading"><i class="<%= icon_class_for_model(:workflows) %>"></i> Workflows</h3>
 				<p>Visualise ‘workflows’ to identify resources specific to your research and training needs.</p>
 				<%= link_to '', workflows_path, :class=>"media-view"%>
 			</li>
 			<li class="nav-block masonry-brick">
-				<h3 class="heading">Content Providers</h3>
+				<h3 class="heading"><i class="<%= icon_class_for_model(:content_providers) %>"></i> Content Providers</h3>
 				<p>Browse content providers and follow links to their associated training materials.</p>
 				<%= link_to '', content_providers_path, :class=>"media-view"%>
 			</li>
