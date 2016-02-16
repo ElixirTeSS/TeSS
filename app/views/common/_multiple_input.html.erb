@@ -17,7 +17,7 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
             $(this).autocomplete({
                 orientation: top,
                 lookupLimit: 10,
-                lookup: <%=suggestions%>
+                lookup: <%= @suggestions -%>
             })
         })
     })
