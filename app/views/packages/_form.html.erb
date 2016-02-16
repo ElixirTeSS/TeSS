@@ -34,7 +34,11 @@
           <%= f.check_box :public %>
         </div>
 
-        <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords', :resource => @package, :f => f} %>
+        <%= render :partial => 'common/multiple_input',
+                   :locals => {:field_name => 'keywords',
+                               :resource => @package,
+                               :f => f,
+                               :suggestions => raw(TeSS::AutocompleteManager.suggestions_array_for('keywords').to_json)} %>
 
         <div class="form-group actions">
           <%= f.submit ( f.object.new_record? ? "Create" : "Update") + " package", :class => 'btn btn-primary' %>
