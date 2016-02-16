@@ -51,7 +51,7 @@ module TeSS
         end
       end
 
-      def delete_keywords
+      def delete_suggestions
         # pass
       end
 
