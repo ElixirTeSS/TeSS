@@ -11,19 +11,17 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
 
 -->
 <script type="application/javascript">
-  <% if field_name == 'keywords'%>
+
     $(document).ready(function () {
-        $('.keywords').live('keydown.autocomplete', function(){
+        $('.<%=field_name%>').live('keydown.autocomplete', function(){
             $(this).autocomplete({
                 orientation: top,
                 lookupLimit: 10,
-                lookup: <%= @suggestions -%>
+                lookup: <%= suggestions ||= []-%>
             })
         })
     })
-  <% end %>
 </script>
-
 
 <div class="form-group">
   <%= f.label field_name.to_sym %>

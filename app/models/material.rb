@@ -1,5 +1,5 @@
 require 'tess/array_field_cleaner'
-require 'tess/keyword_manager'
+require 'tess/autocomplete_manager'
 
 class Material < ActiveRecord::Base
 
@@ -67,7 +67,7 @@ class Material < ActiveRecord::Base
 
   clean_array_fields(:keywords, :contributors, :authors)
 
-  update_keywords
+  update_suggestions(:keywords, :contributors, :authors)
 
   after_save :log_activities
 
