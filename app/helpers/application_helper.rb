@@ -90,21 +90,13 @@ module ApplicationHelper
   end
   # End from twitter-bootstrap-rails gem for less
 
+  DEFAULT_IMAGE_FOR_MODEL = {
+      'ContentProvider' => 'placeholder-organization.png',
+      'Package' => 'placeholder-group.png'
+  }
+
   def get_image_url_for(resource)
-    return nil if resource.blank?
-    if resource.class.name == 'ContentProvider'
-      if resource.image_url.blank?
-        return "placeholder-organization.png" # Default placeholder logo for an institution/organisation
-      else
-        return resource.image_url
-      end
-    elsif resource.class.name == 'Package'
-        if resource.image_url.blank?
-          return "placeholder-group.png" # Default placeholder logo for an institution/organisation
-        else
-          return resource.image_url
-        end
-    end
+    return resource.blank? ? nil : (resource.image_url.blank? ? DEFAULT_IMAGE_FOR_MODEL.fetch(resource.class.name, 'placeholder-group.png') : resource.image_url)
   end
 
   # Return icon classes for model name (could be symbol or string)
