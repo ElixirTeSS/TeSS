@@ -1,4 +1,5 @@
 require 'tess/array_field_cleaner'
+require 'tess/autocomplete_manager'
 
 class Package < ActiveRecord::Base
 	include PublicActivity::Common
@@ -22,6 +23,7 @@ class Package < ActiveRecord::Base
   validates :title, presence: true
 
   clean_array_fields(:keywords)
+  update_suggestions(:keywords)
 
   after_save :log_activities
 

@@ -19,3 +19,4 @@ solr/pids/
 solr/production/
 solr/development
 solr/default
+lib/assets/
