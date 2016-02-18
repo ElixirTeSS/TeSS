@@ -1,4 +1,9 @@
-<div class="listing_item">
-    <p> Username: <%= link_to user.username, user %> </p>
-    <p> Email: <%= user.email %> </p>
-</div>
+<li class="masonry-brick media-item">
+  <%= image_tag user.gravatar_url, size: "40" %>
+  <% if !user.profile.nil? -%>
+      <%= user.username %>
+      <%= link_to '', {:controller => :profiles, :action => :show, :id => user.profile.id}, :class=> "media-view" %>
+  <% else %>
+      <%= link_to '', {:controller => :users, :action => :show, :id => user.profile.id}, :class=> "media-view" %>
+<% end -%>
+</li>

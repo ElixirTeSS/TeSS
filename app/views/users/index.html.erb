@@ -1,23 +1,17 @@
+<div class="row wrapper">
+  <div class="col-md-12 col-xs-12">
 
-<%- model_class = User -%>
-<div class="page-header">
-  <h2><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h2>
+    <%- model_class = User -%>
+    <div class="page-header">
+      <h2><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h2>
+    </div>
+
+    <ul class="masonry media-grid" style="margin-top: 15px;">
+      <% @users.each do |user| %>
+          <%= render user %>
+      <% end %>
+    </ul>
+  </div>
 </div>
-<table class="table table-striped">
-  <thead>
-  </thead>
-  <tbody>
-  <% @users.each do |user| %>
-      <tr>
-        <% if !user.profile.nil? -%>
-        <td><%= link_to user.username, :controller => :profiles, :action => :show, :id => user.profile.id %></td>
-        <% else -%>
-        <%= user.username -%>
-        <% end -%>
-        <td>
-          <%= image_tag user.gravatar_url, size: "40" -%>
-      </tr>
-  <% end %>
-  </tbody>
-</table>
+
 

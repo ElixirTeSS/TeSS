@@ -48,8 +48,11 @@
         <img src="/assets/hub-logo.png" style="padding-top:12px;">
       </a>
       <% if current_user %>
-          <%= menu_group :class => "account", pull: :right do %>
-              <%= menu_item current_user.username, user_path(current_user), :class => "username" %>
+          <%= menu_group pull: :right do %>
+              <%= menu_item current_user.username, user_path(current_user) %>
+              <%= menu_item users_path do %>
+                  <i class="fa fa-users fa-lg"></i>
+              <% end %>
               <% if current_user.is_admin? %>
                   <%= menu_item rails_admin_path do %>
                       <i class="fa fa-cog fa-lg"></i>
@@ -59,6 +62,9 @@
           <% end %>
       <% else %>
           <%= menu_group pull: :right do %>
+              <%= menu_item users_path do %>
+                  <i class="fa fa-users fa-lg"></i>
+              <% end %>
               <%= menu_item "Log in", new_user_session_path %>
               <%= menu_item "Register", new_user_registration_path %>
           <% end %>

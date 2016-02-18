@@ -1,39 +1,75 @@
-<%- model_class = Profile -%>
-<div class="page-header">
-  <h2><%= "Profile for user #{@user.username}" %></h2>
-</div>
+<div class="row wrapper">
 
-  <div id="gravatar_image">
-    <%= image_tag @user.gravatar_url %>
+  <%- model_class = Profile -%>
+
+  <!-- SIDEBAR -->
+  <div id="sidebar" class="col-md-3 col-xs-3" style="padding: 15px;">
+
+    <div id="gravatar_image">
+      <%= image_tag @user.gravatar_url %>
+    </div>
+    <hr/>
+    <p>
+      <strong><%= model_class.human_attribute_name(:firstname) %></strong>
+      <br>
+      <%= @profile.firstname %>
+    </p>
+    <p>
+      <strong><%= model_class.human_attribute_name(:surname) %></strong>
+      <br>
+      <%= @profile.surname %>
+    </p>
+    <p>
+      <strong><%= model_class.human_attribute_name(:email) %></strong>
+      <br>
+      <%= mail_to @profile.email unless @profile.email.blank? %>
+    </p>
+    <p>
+      <strong><%= model_class.human_attribute_name(:website) %></strong>
+      <br>
+      <%= link_to @profile.website unless @profile.website.blank? %>
+    </p>
+    <p>
+      <% if current_user == @user -%>
+        <p><strong>Authentication Token</strong><br>(keep it secret)
+          <br>
+          <%= @user.authentication_token %></p>
+    <% end %>
+    </p>
   </div>
 
-<dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:firstname) %>:</strong></dt>
-  <dd><%= @profile.firstname %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:surname) %>:</strong></dt>
-  <dd><%= @profile.surname %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:email) %>:</strong></dt>
-  <dd><%= @profile.email %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:website) %>:</strong></dt>
-  <dd><%= @profile.website %></dd>
-</dl>
+  <div class="col-md-9 col-xs-9">
+    <div class="page-header">
+      <h2><%= "Profile for user #{@user.username}" %></h2>
+    </div>
 
-  <% if !@profile.image_url.nil? -%>
-    <p>
-      <img src="<%= @profile.image_url %>" alt="Image for #{@user.username}" height="50"/>
-    </p>
-  <% end -%>
+    <div class="row">
+      <div class="content_action">
+        <%= link_to t('.back', :default => t("helpers.links.back")),
+                    users_path, :class => 'btn btn-info'  %>
+        <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                    edit_profile_path(@profile), :class => 'btn btn-primary' %>
 
-<% if current_user == @user -%>
-<p>Your Authentication Token is <b><%= @user.authentication_token %></b>. Keep this secret.</p>
-<% end %>
+        <% if current_user == @user -%>
+            <%= link_to "Change your password", edit_user_registration_path, :class => 'btn btn-default' %>
+        <% end -%>
+      </div>
+    </div>
 
-<%= link_to t('.back', :default => t("helpers.links.back")),
-            users_path, :class => 'btn btn-info'  %>
-<%= link_to t('.edit', :default => t("helpers.links.edit")),
-            edit_profile_path(@profile), :class => 'btn btn-primary' %>
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a data-toggle="tab" href="#home"><i class="<%= icon_class_for_model('materials') %>"></i> Materials</a></li>
+      <li>
+        <a data-toggle="tab" href="#packages"><i class="<%= icon_class_for_model('packages') %>"></i> Packages</a>
+      </li>
+      <li>
+        <a data-toggle="tab" href="#packages"><i class="<%= icon_class_for_model('workflows') %>"></i> Workflows</a>
+      </li>
+      <li>
+        <a data-toggle="tab" href="#activity_log"><i class="<%= icon_class_for_model('activity_logs') %>"></i> Activity log</a>
+      </li>
+    </ul>
 
-<% if current_user == @user -%>
-<%= link_to "Change your password", edit_user_registration_path, :class => 'btn btn-default' %>
+  </div>
+</div>
 
-<% end -%>
