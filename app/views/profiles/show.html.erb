@@ -19,18 +19,19 @@
       <br>
       <%= @profile.surname %>
     </p>
-    <p>
-      <strong><%= model_class.human_attribute_name(:email) %></strong>
-      <br>
-      <%= mail_to @profile.email unless @profile.email.blank? %>
-    </p>
+    <% if current_user == @user -%>
+        <p>
+          <strong><%= model_class.human_attribute_name(:email) %></strong>
+          <br>
+          <%= mail_to @profile.email unless @profile.email.blank? %>
+        </p>
+    <% end %>
     <p>
       <strong><%= model_class.human_attribute_name(:website) %></strong>
       <br>
       <%= link_to @profile.website unless @profile.website.blank? %>
     </p>
-    <p>
-      <% if current_user == @user -%>
+    <% if current_user == @user -%>
         <p><strong>Authentication Token</strong><br>(keep it secret)
           <br>
           <%= @user.authentication_token %></p>
