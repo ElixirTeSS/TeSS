@@ -109,7 +109,7 @@ module ApplicationHelper
     elsif (model.to_s == 'activity_logs')
       return "fa fa-clock-o"
     elsif (model.to_s == 'events')
-      return "fa fa-table"
+      return "fa fa-calendar"
     elsif (model.to_s == 'users')
       return "fa fa-user"
     elsif (model.to_s == "workflows")

@@ -227,9 +227,9 @@ div#sidebar table tr td a:hover {
   padding: 15px;
   margin: 15px 0 0 15px;
   background-color: white;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
 
 .media-item.long {
@@ -278,9 +278,9 @@ li.media-item {
   -moz-transition: all 0.2s ease-in;
   -o-transition: all 0.2s ease-in;
   transition: all 0.2s ease-in;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
 
 .media-view:hover,
@@ -490,7 +490,7 @@ ul.unstyled {
 }
 .event-show-map {
   height: 300px;
-  width: 50%;
+  width: 100%;
   float: right;
 }
 .homepage .nav-block {
