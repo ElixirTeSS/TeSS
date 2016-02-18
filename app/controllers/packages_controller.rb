@@ -18,7 +18,7 @@ class PackagesController < ApplicationController
 
   include TeSS::BreadCrumbs
 
-  @@facet_fields = %w( creator keywords )
+  @@facet_fields = %w( owner keywords )
 
 
   # GET /packages

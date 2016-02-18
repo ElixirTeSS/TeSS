@@ -36,7 +36,7 @@ class Package < ActiveRecord::Base
       end
       string :keywords, :multiple => true
       
-      string :creator, :multiple => true do
+      string :owner, :multiple => true do
         if self.owner
           if self.owner.profile and (self.owner.profile.firstname or self.owner.profile.surname)
             "#{self.owner.profile.firstname} #{self.owner.profile.surname}"
