@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  has_one :profile, dependent: :destroy
+  has_one :profile
   has_many :materials
   has_many :packages
   has_many :workflows
@@ -60,6 +60,7 @@ class User < ActiveRecord::Base
       profile.email = self[:email]
       profile.save!
       self.profile = profile
+      self.profile_id = profile.id
     end
   end
 
