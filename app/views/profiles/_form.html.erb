@@ -52,5 +52,6 @@
 
 <%= f.submit 'Update profile', :class => 'btn btn-primary' %>
 <%= link_to t('.cancel', :default => t("helpers.links.cancel")), profile_path, :class => 'btn btn-default' %>
+<%= link_to 'Regenerate API Key', { :controller => 'users', :action => 'change_token' }, :method => :patch,  :class => 'btn btn-info', data: { confirm: 'Are you sure?' }  %>
 
 <% end -%>

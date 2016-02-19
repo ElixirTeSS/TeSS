@@ -62,6 +62,14 @@ class UsersControllerTest < ActionController::TestCase
     assert_redirected_to root_path
   end
 
+  test "should reset token" do
+    sign_in users(:regular_user)
+    old_token = @user.authentication_token
+    patch :change_token
+    new_token = User.find_by_username('Bob').authentication_token
+    assert_not_equal old_token, new_token
+  end
+
   test "should destroy user" do
     sign_in users(:regular_user)
     assert_difference('User.count', -1) do

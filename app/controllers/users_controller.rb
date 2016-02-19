@@ -68,6 +68,23 @@ class UsersController < ApplicationController
     end
   end
 
+  def change_token
+    @user = current_user
+    if @user.authentication_token.nil?
+      flash[:alert] = "Action not allowed."
+      redirect_to root_path and return
+    end
+    @user.authentication_token = Devise.friendly_token
+    if @user.save
+      flash[:notice] = "API key changed."
+      redirect_to "/users/#{@user.profile.id}"
+    else
+      flash[:alert] = "Failed to change api_key."
+      redirect_to root_path
+    end
+  end
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user

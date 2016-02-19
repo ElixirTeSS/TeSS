@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   post 'content_providers/check_exists' => 'content_providers#check_exists'
 
   devise_for :users
+  patch 'users/change_token' => 'users#change_token'
   get 'users/new' => 'users#new'
   get 'users/:id' => 'profiles#show'
   get 'profile/:id' => 'profiles#show', as: 'profile'
