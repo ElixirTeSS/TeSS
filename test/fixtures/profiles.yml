@@ -3,13 +3,24 @@
 one:
   firstname: MyText
   surname: MyText
-  image_url: MyText
+  image_url: http://example.com/me.png
   email: MyText
-  website: MyText
+  website: http://example.com
+  user_id: <%= ActiveRecord::FixtureSet.identify(:regular_user) %>
+
 
 two:
   firstname: MyText
   surname: MyText
-  image_url: MyText
+  image_url: http://example.com/me.png
   email: MyText
-  website: MyText
+  website: http://example.com
+  user_id: <%= ActiveRecord::FixtureSet.identify(:admin) %>
+
+three:
+  firstname: MyText
+  surname: MyText
+  image_url: http://example.com/me.png
+  email: MyText
+  website: http://example.com
+  user_id: <%= ActiveRecord::FixtureSet.identify(:another_regular_user) %>
