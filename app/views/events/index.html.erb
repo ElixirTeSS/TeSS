@@ -20,7 +20,7 @@
 
       <!-- SIDEBAR -->
       <div class="col-md-3" id="sidebar">
-        <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @events} %>
+        <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @events, :resource_type => 'event'} %>
       </div>
 
       <!-- RESULTS -->

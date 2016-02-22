@@ -6,7 +6,7 @@
 
       <!-- SIDEBAR -->
       <div class="col-md-3" id="sidebar">
-        <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @nodes} %>
+        <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @nodes, :resource_type => 'node'} %>
       </div>
 
       <!-- RESULTS -->

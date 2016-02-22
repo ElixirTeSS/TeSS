@@ -6,7 +6,7 @@
 
       <!-- SIDEBAR -->
       <div class="col-md-3" id="sidebar">
-        <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @materials} %>
+        <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @materials, :resource_type => 'material'} %>
       </div>
 
       <div class="col-md-9">

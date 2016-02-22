@@ -11,7 +11,7 @@
       <!-- SIDEBAR -->
       <div class="col-md-3" id="sidebar">
         <%= render :partial => "content_providers/partials/general_content_provider_info" %>
-        <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @content_providers} %>
+        <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @content_providers, :resource_type => 'content_provider'} %>
       </div>
 
       <div class="col-md-9">
