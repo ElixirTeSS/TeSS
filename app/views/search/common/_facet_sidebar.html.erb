@@ -7,9 +7,12 @@ Variable that should be available
 - @facet_fields  - List of all facets supported by this resource type
 - @facet_params  - The facet filters the user has applied
 %>
+
+<% local_assigns.fetch :resource_type, 'result' %>
+
 <% if resources.blank? or resources.results.blank? %>
     <p class="alert alert-info empty" style="margin: 10px;">
-      No resources to filter
+      No <%= resource_type.humanize.pluralize.downcase %> to filter
     </p>
 <% else %>
     <ul class="unstyled nav-simple">
