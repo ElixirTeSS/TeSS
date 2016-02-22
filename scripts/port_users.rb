@@ -3,7 +3,8 @@
 # The full name will have to be split to get the firstname/surname used in the
 # profile for the current version of tess.
 # Run this script with:
-# rails runner -e development scripts/port_users.rb
+# rails runner -e $ENVIRONMENT $PATH_TO_SCRIPT
+# Note that I've assumed you'll put users.csv in a particular place.
 
 IO.readlines("#{Rails.root}/scripts/users.csv").each do |line|
   parts = line.split('|').map(&:strip)
