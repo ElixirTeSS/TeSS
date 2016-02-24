@@ -508,8 +508,7 @@ ul.unstyled {
   margin-top: 10px;
 }
 .homepage .welcome-text {
-  width: 40%;
-  height: auto;
+  //width: 40%;
   background-color: white;
   padding: 20px;
   margin: 10px;
@@ -519,7 +518,7 @@ ul.unstyled {
 }
 
 .homepage .nodes-block {
-  width: 40%;
+  //width: 40%;
   float: right;
   background-color: #F8761F; /* ELIXIR orange;*/
   padding: 10px;
@@ -530,7 +529,7 @@ ul.unstyled {
 }
 
 .homepage .faq-block {
-  width: 40%;
+  //width: 40%;
   float: right;
   background-color: #DDDDDD; /* Dull Grey;*/
   padding: 10px;
@@ -539,6 +538,7 @@ ul.unstyled {
   border: 1px solid #CECECE;
   border-radius: 4px;
 }
+
 .panel-heading {
   display: block;
   cursor: pointer;
