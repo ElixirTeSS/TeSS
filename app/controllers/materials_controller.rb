@@ -18,6 +18,8 @@ class MaterialsController < ApplicationController
 
   include TeSS::BreadCrumbs
 
+  before_filter :find_scientific_topics, only: [:update, :create]
+
   # GET /materials
   # GET /materials?q=queryparam
   # GET /materials.json
@@ -26,6 +28,17 @@ class MaterialsController < ApplicationController
   @@facet_fields = %w(content_provider scientific_topic target_audience keywords licence difficulty_level authors contributors submitter)
 
   helper 'search'
+
+  def find_scientific_topics
+    res = []
+    if params[:scientific_topic_names]
+      params.delete(:scientific_topic_names).each do |st_name|
+        res << ScientificTopic.find_by_preferred_label(st_name)
+      end
+    end
+    params[:scientific_topic] = res.compact.flatten.uniq if res and !res.empty?
+    puts params[:scientific_topic]
+  end
 
   def index
     @facet_fields = @@facet_fields
@@ -145,8 +158,12 @@ class MaterialsController < ApplicationController
     def material_params
       params.require(:material).permit(:title, :url, :short_description, :long_description, :doi, :remote_updated_date,
                                        :remote_created_date,  :remote_updated_date, {:package_ids => []}, :content_provider_id,
-                                       :content_provider, {:keywords => []},  {:scientific_topic_ids => []}, :licence,
-                                       :difficulty_level, {:contributors => []}, {:authors=> []}, {:target_audience => []}  )
+                                       :content_provider, {:keywords => []},
+                                       {:scientific_topic_ids => []},
+                                       {:scientific_topic_names => []},
+                                       {:scientific_topic => []},
+                                       :licence, :difficulty_level, {:contributors => []},
+                                       {:authors=> []}, {:target_audience => []}  )
     end
 
     def set_params
