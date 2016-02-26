@@ -1,62 +1,127 @@
 <script>
-	$(document).ready(function(){
-		reposition_tiles('masonry', 'masonry-brick');
-	})
+  $(document).ready(function () {
+    reposition_tiles('masonry', 'masonry-brick');
+  })
 </script>
 
 <div class="homepage">
-	<div class="row media-grid">
-		<div class="col-md-6">
-			<div class="welcome-text">
-				<h2 class="module-heading" style="margin-top: 10px;">Welcome to TeSS: ELIXIR's Training Portal</h2>
-				<p>
-					ELIXIR's TeSS (Training eSupport System) is a portal for browsing, discovering and organising training resources, aggregating training information from ELIXIR nodes and 3rd-party providers.
-				</p>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="nodes-block col-md-12">
-				<h3 style="margin-top: 10px;">Nodes</h3>
-				<p>
-					TeSS aims to provide an at-a-glance view of <a style="position:relative; z-index: 10;" href="http://elixir-europe.org">ELIXIR's</a> training
-					landscape, while also offering individual ’shop windows’, giving customisable views of the hottest training
-					news, events, activity highlights, etc. from <a style="position:relative; z-index: 10;" href="/nodes">ELIXIR nodes</a>.
-				</p>
-				<%#= link_to '', nodes_path, :class=>"media-view"%>
-			</div>
-			<div class="faq-block col-md-12">
-				<h3 style="margin-top: 10px;">FAQ</h3>
-				<p>Check out our <a style="position:relative; z-index: 10;" href="/about#faq">FAQ</a> to find out more about TeSS.</p>
-				<%#= link_to '', about_path, :class=>"media-view"%>
-			</div>
-		</div>
-	</div>
+  <div class="row media-grid">
+    <div class="col-md-6">
+      <div class="welcome-text">
+        <h2 class="module-heading" style="margin-top: 10px;">Welcome to TeSS: ELIXIR's Training Portal</h2>
 
-	<ul class="masonry media-grid">
-		<li class="nav-block masonry-brick">
-			<h3 class="heading"><i class="<%= icon_class_for_model(:events) %>"></i> Events</h3>
-			<p>Discover the latest training events and news from ELIXIR nodes and 3rd-party providers.</p>
-			<%= link_to '', events_path, :class=>"media-view"%>
-		</li>
-		<li class="nav-block masonry-brick">
-			<h3 class="heading"><i class="<%= icon_class_for_model(:materials) %>"></i> Materials</h3>
-			<p>Browse the catalogue of materials offered by ELIXIR nodes and 3rd-party providers.</p>
-			<%= link_to '', materials_path, :class=>"media-view"%>
-		</li>
-		<li class="nav-block masonry-brick">
-			<h3 class="heading"><i class="<%= icon_class_for_model(:packages) %>"></i> Packages</h3>
-			<p>Create training packages by grouping resources that address your particular research topic.</p>
-			<%= link_to '', packages_path, :class=>"media-view"%>
-		</li>
-		<li class="nav-block masonry-brick">
-			<h3 class="heading"><i class="<%= icon_class_for_model(:workflows) %>"></i> Workflows</h3>
-			<p>Visualise ‘workflows’ to identify resources specific to your research and training needs.</p>
-			<%= link_to '', workflows_path, :class=>"media-view"%>
-		</li>
-		<li class="nav-block masonry-brick">
-			<h3 class="heading"><i class="<%= icon_class_for_model(:content_providers) %>"></i> Content Providers</h3>
-			<p>Browse content providers and follow links to their associated training resources.</p>
-			<%= link_to '', content_providers_path, :class=>"media-view"%>
-		</li>
-	</ul>
+        <p>
+          ELIXIR's TeSS (Training eSupport System) is a portal for browsing, discovering and organising training
+          resources, aggregating training information from ELIXIR nodes and 3rd-party providers.
+        </p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="nodes-block col-md-12">
+        <h3 style="margin-top: 10px;">Nodes</h3>
+
+        <p>
+          TeSS aims to provide an at-a-glance view of
+          <a style="position:relative; z-index: 10;" href="http://elixir-europe.org">ELIXIR's</a> training
+          landscape, while also offering individual ’shop windows’, giving customisable views of the hottest training
+          news, events, activity highlights, etc. from
+          <a style="position:relative; z-index: 10;" href="/nodes">ELIXIR nodes</a>.
+        </p>
+        <%#= link_to '', nodes_path, :class=>"media-view"%>
+      </div>
+      <div class="faq-block col-md-12">
+        <h3 style="margin-top: 10px;">FAQ</h3>
+
+        <p>Check out our <a style="position:relative; z-index: 10;" href="/about#faq">FAQ</a> to find out more about
+          TeSS.</p>
+        <%#= link_to '', about_path, :class=>"media-view"%>
+      </div>
+    </div>
+  </div>
+
+  <ul class="featureblocks">
+    <li>
+      <h2><%= link_to events_path do %>
+            <i class="<%= icon_class_for_model('events') %>"></i> Events
+        <% end %>
+      </h2>
+      <%= link_to events_path do %>
+        <img src="http://www.elixir-europe.org/sites/default/files/images/ELIXIR_training_newbanner.jpg" width="100%" alt="Events" class="effect2">
+      <% end %>
+
+      <p>Discover the latest training events and news from ELIXIR nodes and 3rd-party providers.</p>
+    </li>
+    <li>
+      <h2><%= link_to materials_path do %>
+            <i class="<%= icon_class_for_model('events') %>"></i> Materials
+        <% end %>
+      </h2>
+      <%= link_to materials_path do %>
+          <img src="http://i.huffpost.com/gen/1519136/images/o-PILE-OF-BOOKS-facebook.jpg" width="100%" alt="Materials" class="effect2">
+      <% end %>
+
+      <p>Browse the catalogue of materials offered by ELIXIR nodes and 3rd-party providers.</p>
+    </li>
+    <li>
+      <h2><%= link_to packages_path do %>
+            <i class="<%= icon_class_for_model('events') %>"></i> Packages
+        <% end %>
+      </h2>
+      <%= link_to packages_path do %>
+          <img src="http://www.dbdistribution.co.uk/images/packing_materials.jpg" width="100%" alt="Packages" class="effect2">
+      <% end %>
+
+      <p>Create training packages by grouping resources that address your particular research topic.</p>
+    </li>
+    <li>
+      <h2><%= link_to workflows_path do %>
+            <i class="<%= icon_class_for_model('events') %>"></i> Workflows
+        <% end %>
+      </h2>
+      <%= link_to workflows_path do %>
+          <img src="https://www.docuware.com/sites/default/files/08_iStock_000013810623Large.jpg" width="100%" alt="Workflows" class="effect2">
+      <% end %>
+
+      <p>Create 'workflows’ to visualise learning steps and resources specific to your research and training needs.</p>
+    </li>
+    <li class="noborder">
+      <h2><%= link_to content_providers_path do %>
+            <i class="<%= icon_class_for_model('events') %>"></i> Providers
+        <% end %>
+      </h2>
+      <%= link_to content_providers_path do %>
+          <img src="http://www.infobritain.co.uk/Royal_Institution.jpg" width="100%" alt="Providers" class="effect2">
+      <% end %>
+
+      <p>Browse content providers and follow links to their associated training resources.</p>
+    </li>
+  </ul>
+
+  <!--<ul class="masonry media-grid">-->
+  <!--<li class="nav-block masonry-brick">-->
+  <!--<h3 class="heading"><i class="<%#= icon_class_for_model(:events) %>"></i> Events</h3>-->
+  <!--<p>Discover the latest training events and news from ELIXIR nodes and 3rd-party providers.</p>-->
+  <!--<%#= link_to '', events_path, :class=>"media-view"%>-->
+  <!--</li>-->
+  <!--<li class="nav-block masonry-brick">-->
+  <!--<h3 class="heading"><i class="<%#= icon_class_for_model(:materials) %>"></i> Materials</h3>-->
+  <!--<p>Browse the catalogue of materials offered by ELIXIR nodes and 3rd-party providers.</p>-->
+  <!--<%#= link_to '', materials_path, :class=>"media-view"%>-->
+  <!--</li>-->
+  <!--<li class="nav-block masonry-brick">-->
+  <!--<h3 class="heading"><i class="<%#= icon_class_for_model(:packages) %>"></i> Packages</h3>-->
+  <!--<p>Create training packages by grouping resources that address your particular research topic.</p>-->
+  <!--<%#= link_to '', packages_path, :class=>"media-view"%>-->
+  <!--</li>-->
+  <!--<li class="nav-block masonry-brick">-->
+  <!--<h3 class="heading"><i class="<%#= icon_class_for_model(:workflows) %>"></i> Workflows</h3>-->
+  <!--<p>Visualise ‘workflows’ to identify resources specific to your research and training needs.</p>-->
+  <!--<%#= link_to '', workflows_path, :class=>"media-view"%>-->
+  <!--</li>-->
+  <!--<li class="nav-block masonry-brick">-->
+  <!--<h3 class="heading"><i class="<%#= icon_class_for_model(:content_providers) %>"></i> Content Providers</h3>-->
+  <!--<p>Browse content providers and follow links to their associated training resources.</p>-->
+  <!--<%#= link_to '', content_providers_path, :class=>"media-view"%>-->
+  <!--</li>-->
+  <!--</ul>-->
 </div>
