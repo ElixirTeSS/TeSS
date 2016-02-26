@@ -508,8 +508,7 @@ ul.unstyled {
   margin-top: 10px;
 }
 .homepage .welcome-text {
-  width: 40%;
-  height: auto;
+  //width: 40%;
   background-color: white;
   padding: 20px;
   margin: 10px;
@@ -519,7 +518,7 @@ ul.unstyled {
 }
 
 .homepage .nodes-block {
-  width: 40%;
+  //width: 40%;
   float: right;
   background-color: #F8761F; /* ELIXIR orange;*/
   padding: 10px;
@@ -530,7 +529,7 @@ ul.unstyled {
 }
 
 .homepage .faq-block {
-  width: 40%;
+  //width: 40%;
   float: right;
   background-color: #DDDDDD; /* Dull Grey;*/
   padding: 10px;
@@ -539,6 +538,7 @@ ul.unstyled {
   border: 1px solid #CECECE;
   border-radius: 4px;
 }
+
 .panel-heading {
   display: block;
   cursor: pointer;
@@ -640,4 +640,54 @@ abbr, accronym{ border-bottom: 0px !important; } /*try adding !important  after 
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+
+//body {
+//  min-height: 100%;
+//  position:relative;
+//  /* Margin bottom by footer height */
+//  margin-bottom: 80px;
+//}
+//container {height: 100%; position: relative;}
+//.footer {
+//  position: absolute;
+//  bottom: 0;
+//  width: 100%;
+//  /* Set the fixed height of the footer here */
+//  height: 80px;
+//  background-color: #f5f5f5;
+//}
+
+
+// Sticky but not fixed footer
+// http://cbracco.me/css-sticky-footer-effect/
+html {
+  height: 100%;
+  position: relative;
+}
+body {
+  position: relative;
+  margin: 0;
+  padding-bottom: 120px;
+  min-height: 100%;
+}
+.footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #D8D8D8;
+}
+
+// Vertically aligned
+.vertical-align {
+  display: flex;
+  flex-direction: row;
+}
+.vertical-align > [class^="col-"],
+.vertical-align > [class*=" col-"] {
+  display: flex;
+  align-items: center;     /* Align the flex-items vertically */
+  //justify-content: center; /* Optional, to align inner flex-items horizontally within the column  */
 }

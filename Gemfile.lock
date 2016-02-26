@@ -41,6 +41,8 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.3.8)
+    app_version (0.1.8)
+      rails (>= 3.2.8)
     arel (6.0.3)
     auto_strip_attributes (2.0.6)
       activerecord (>= 3.0)
@@ -251,6 +253,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-session_store
+  app_version
   auto_strip_attributes (~> 2.0)
   bootstrap-sass
   bootstrap-sass-extras

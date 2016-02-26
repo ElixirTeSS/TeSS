@@ -119,4 +119,8 @@ module ApplicationHelper
     end
   end
 
+  def app_version_text
+    APP_VERSION.blank? ? '' : APP_VERSION.to_s
+  end
+
 end
