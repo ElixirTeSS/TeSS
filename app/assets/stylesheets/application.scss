@@ -524,7 +524,7 @@ ul.unstyled {
   margin: 10px;
   text-align: center;
   border: 1px solid #CECECE;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 .homepage .nodes-block {
@@ -777,4 +777,25 @@ ul.featureblocks li h2 a {
 
 ul.featureblocks li p {
   margin: 5px 0 5px;
+}
+
+.searchbox {
+  width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+  background-color: #efefef;
+  position: relative;
+  box-shadow: 0 0 5px #333;
+  -webkit-box-shadow: 0 0 5px #333;
+  -moz-box-shadow: 0 0 5px #333;
+  -webkit-border-radius: 3px!important;
+  -moz-border-radius: 3px!important;
+  border-radius: 3px!important;
+  text-align: center;
+}
+
+#sb-search {
+  background-color: transparent;
+  padding: 0;
 }
