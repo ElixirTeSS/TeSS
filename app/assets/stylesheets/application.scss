@@ -525,6 +525,8 @@ ul.unstyled {
   text-align: center;
   border: 1px solid #CECECE;
   border-radius: 3px;
+  width: 70%;
+  margin: auto;
 }
 
 .homepage .nodes-block {
@@ -673,22 +675,6 @@ abbr, accronym {
   user-select: none;
 }
 
-//body {
-//  min-height: 100%;
-//  position:relative;
-//  /* Margin bottom by footer height */
-//  margin-bottom: 80px;
-//}
-//container {height: 100%; position: relative;}
-//.footer {
-//  position: absolute;
-//  bottom: 0;
-//  width: 100%;
-//  /* Set the fixed height of the footer here */
-//  height: 80px;
-//  background-color: #f5f5f5;
-//}
-
 // Sticky but not fixed footer
 // http://cbracco.me/css-sticky-footer-effect/
 html {
@@ -779,10 +765,11 @@ ul.featureblocks li p {
   margin: 5px 0 5px;
 }
 
-.searchbox {
+.homepage .searchbox {
   width: 640px;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 20px;
   padding: 20px;
   background-color: #efefef;
   position: relative;
@@ -795,7 +782,7 @@ ul.featureblocks li p {
   text-align: center;
 }
 
-#sb-search {
+.homepage #sb-search {
   background-color: transparent;
   padding: 0;
 }
