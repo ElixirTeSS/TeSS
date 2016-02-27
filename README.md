@@ -117,6 +117,12 @@ You can replace *start* with *stop* or *restart* to stop or restart solr. You ca
 6. Access TeSS at:
  * [http://localhost:3000](http://localhost:3000)
 
+### Live deployment
+
+Although designed for CentOS, this document can be followed quite closely to set up TeSS to work with Apache and Passenger:
+
+    https://www.digitalocean.com/community/tutorials/how-to-setup-a-rails-4-app-with-apache-and-passenger-on-centos-6
+
 ## Basic API
 
 A record can be viewed as json by appending .json, for example:
