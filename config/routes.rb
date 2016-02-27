@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :scientific_topics
   resources :workflows
 
-  get 'static/welcome'
+  #get 'static/home'
   get 'about' => 'static#about', as: 'about'
 
   post 'materials/check_exists' => 'materials#check_exists'
@@ -21,9 +21,9 @@ Rails.application.routes.draw do
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
-  root 'static#welcome'
+  root 'static#home'
 
-  get 'static/welcome'
+  get 'static/home'
 
   resources :users
 

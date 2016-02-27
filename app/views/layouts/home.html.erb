@@ -40,32 +40,11 @@
     </div>
 <% end %>
 
-<%= render :partial=>"layouts/header", :locals => {:layout => 'application'} %>
+<%= render :partial => "layouts/header", :locals => {:layout => 'home'} %>
 
-<div id="main-container" class="container">
+<%= yield :layout %>
 
-  <%= flash_messages %>
-
-  <%# unless breadcrumbs.empty? %>
-  <!--<div id="breadcrumbs">-->
-  <!--<ul class="breadcrumb">-->
-  <!--<#%= render_breadcrumbs :tag => :li, :separator => "" %>-->
-  <!--&lt;!&ndash;<%#= render_breadcrumbs :builder => ::BootstrapBreadcrumbsBuilder %>&ndash;&gt;-->
-  <!--&lt;!&ndash;<#%= render_breadcrumbs(" ", { class: '', item_class: '', divider_class: '', active_class: 'active' }) %>&ndash;&gt;-->
-  <!--</ul>-->
-  <!--</div>-->
-  <%# end %>
-  <!-- Breadcrumbs -->
-  <%= render_breadcrumbs do |breadcrumbs| %>
-      <%= content_tag(:div, breadcrumbs, class: "breadcrumbs") %>
-  <% end %>
-
-  <%# main content part of every page -%>
-  <%= yield :layout %>
-
-</div>
-
-<%= render :partial=>"layouts/footer" %>
+<%= render :partial => "layouts/footer" %>
 
 </body>
 </html>

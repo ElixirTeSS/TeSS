@@ -3,4 +3,7 @@ class StaticController < ApplicationController
   end
   def about
   end
+  def home
+    render :layout => "home"
+  end
 end
