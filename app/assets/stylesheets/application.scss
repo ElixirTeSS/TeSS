@@ -777,13 +777,19 @@ ul.featureblocks li p {
   box-shadow: 0 0 5px #333;
   -webkit-box-shadow: 0 0 5px #333;
   -moz-box-shadow: 0 0 5px #333;
-  -webkit-border-radius: 3px!important;
-  -moz-border-radius: 3px!important;
-  border-radius: 3px!important;
+  -webkit-border-radius: 3px !important;
+  -moz-border-radius: 3px !important;
+  border-radius: 3px !important;
   text-align: center;
 }
 
 .homepage #sb-search {
   background-color: transparent;
   padding: 0;
+}
+
+sup {
+  vertical-align: top;
+  position: relative;
+  top: 5px;
 }
