@@ -26,19 +26,19 @@
 </head>
 <body>
 
-<% if "#{Rails.env}" == 'production' %>
-    <div class="jumbotron" style="text-align:center">
-      <h1> Not the TeSS you were expecting?</h1>
+<%# if "#{Rails.env}" == 'production' %>
+    <!--<div class="jumbotron" style="text-align:center">-->
+      <!--<h1> Not the TeSS you were expecting?</h1>-->
 
-      <p>This is our sandboxed development of a new improved TeSS. Any materials added here will be deleted
-        periodically.</p>
+      <!--<p>This is our sandboxed development of a new improved TeSS. Any materials added here will be deleted-->
+        <!--periodically.</p>-->
 
-      <p>The current production version of TeSS is up and running at
-        <a href="http://tess.elixir-uk.org">http://tess.elixir-uk.org</a></p>
+      <!--<p>The current production version of TeSS is up and running at-->
+        <!--<a href="http://tess.elixir-uk.org">http://tess.elixir-uk.org</a></p>-->
 
-      <p><a class="btn btn-primary btn-large" href="http://tess.elixir-uk.org">Go to TeSS</a></p>
-    </div>
-<% end %>
+      <!--<p><a class="btn btn-primary btn-large" href="http://tess.elixir-uk.org">Go to TeSS</a></p>-->
+    <!--</div>-->
+<%# end %>
 
 <%= render :partial => "layouts/header", :locals => {:layout => 'home'} %>
 
