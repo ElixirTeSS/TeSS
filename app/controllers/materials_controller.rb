@@ -24,7 +24,7 @@ class MaterialsController < ApplicationController
   # GET /materials.json
   # GET /materials.json?q=queryparam
 
-  @@facet_fields = %w(content_provider scientific_topic target_audience keywords licence difficulty_level authors contributors submitter)
+  @@facet_fields = %w(content_provider scientific_topic target_audience keywords licence difficulty_level authors contributors)
 
   helper 'search'
 
