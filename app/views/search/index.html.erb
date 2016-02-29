@@ -1,19 +1,25 @@
+<script>
+	$(document).ready(function () {
+		reposition_tiles('masonry', 'masonry-brick');
+	})
+</script>
+
 <!--<p id="notice"><%#= notice %></p>-->
 <div class="row wrapper">
-	<!-- SIDEBAR -->
-	<div class="col-md-3" id="sidebar">
-		<p class="alert alert-info empty" style="margin: 10px;">
-			We need some filtering facilities here - e.g. common filter categories for events and materials: keywords, EDAM topics, ...  or separate filtering per tab.
-		</p>
-		<!--<%#= render :partial => "search/common/facet_sidebar", :locals => {:resources => @materials} %>-->
-	</div>
+	<!--&lt;!&ndash; SIDEBAR &ndash;&gt;-->
+	<!--<div class="col-md-3" id="sidebar">-->
+	<!--<p class="alert alert-info empty" style="margin: 10px;">-->
+	<!--We need some filtering facilities here - e.g. common filter categories for events and materials: keywords, EDAM topics, ...  or separate filtering per tab.-->
+	<!--</p>-->
+	<!--&lt;!&ndash;<%#= render :partial => "search/common/facet_sidebar", :locals => {:resources => @materials} %>&ndash;&gt;-->
+	<!--</div>-->
 
-	<div class="col-md-9">
+	<div class="col-md-12">
 		<h2 class="module-heading">Search results</h2>
 
 		<!-- SEARCH BAR -->
 		<div class="row" style="padding-top: 10px;">
-			<%= render :partial=> "search/common/search_box", :locals=>{:resource_path => search_path} %>
+			<%= render :partial => "search/common/search_box", :locals => {:resource_path => search_path} %>
 		</div>
 
 		<div class="row" style="padding-top: 10px;">
@@ -30,23 +36,36 @@
 		<div class="row" style="padding-top: 5px;">
 			<% if !@results.nil? %>
 					<div class="tab-content">
-						<% @results.each do |model, model_results| %>
-								<div class="tab-pane fade" id="<%=model%>">
-									<div class="media-grid" style="margin: 0px 0px 5px 0px;">
-										<% model_results.results.each do |object| %>
-												<%= render partial: object %>
-										<% end %>
-									</div>
-								</div>
+						<% @results.each do |model, results_for_model| %>
+								<% if model.to_s == 'materials' %>
+										<div class="tab-pane fade in active" id="<%= model %>">
+											<div class="search-results-count"> 
+												<%= pluralize( results_for_model.results.count, model.to_s.humanize.singularize.downcase) %> found 
+											</div>
+											<% results_for_model.results.each do |result| %>
+													<%= render partial: result %>
+											<% end %>
+										</div>
+								<% else %>
+										<div class="tab-pane fade" id="<%= model %>">
+											<div class="search-results-count"> 
+												<%= pluralize( results_for_model.results.count, model.to_s.humanize.singularize.downcase) %> found 
+											</div>
+											<div class="media-grid">
+												<% results_for_model.results.each do |result| %>
+														<%= render partial: result %>
+												<% end %>
+											</div>
+										</div>
+								<% end %>
 						<% end %>
-					</div>
+						</div>
 			<% else %>
 					<p class="alert alert-info empty" style="margin: 10px;">
 						No results found
 					</p>
 			<% end %>
+			</div>
 		</div>
-
 	</div>
 </div>
-
