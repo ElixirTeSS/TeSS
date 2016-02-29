@@ -18,7 +18,6 @@ class MaterialsController < ApplicationController
 
   include TeSS::BreadCrumbs
 
-  before_filter :find_scientific_topics, only: [:update, :create]
 
   # GET /materials
   # GET /materials?q=queryparam
@@ -125,7 +124,6 @@ class MaterialsController < ApplicationController
   # PATCH/PUT /materials/1.json
   def update
     respond_to do |format|
-      material_params
       if @material.update(material_params)
         @material.create_activity :update, owner: current_user
         format.html { redirect_to @material, notice: 'Material was successfully updated.' }
@@ -156,7 +154,7 @@ class MaterialsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def material_params
-      params.require(:material).permit(:title, :url, :short_description, :long_description, :doi, :remote_updated_date,
+        mat_params = params.require(:material).permit(:title, :url, :short_description, :long_description, :doi, :remote_updated_date,
                                        :remote_created_date,  :remote_updated_date, {:package_ids => []}, :content_provider_id,
                                        :content_provider, {:keywords => []},
                                        {:scientific_topic_ids => []},
@@ -164,6 +162,17 @@ class MaterialsController < ApplicationController
                                        {:scientific_topic => []},
                                        :licence, :difficulty_level, {:contributors => []},
                                        {:authors=> []}, {:target_audience => []}  )
+
+       if mat_params[:scientific_topic_ids].nil? or mat_params[:scientific_topic_ids].empty?
+          mat_params[:scientific_topic_ids] = []
+          names = [mat_params.delete('scientific_topic_names')].flatten
+          if !names.empty?
+            topics = names.collect{|name| ScientificTopic.find_by_preferred_label(name)}.flatten.compact.uniq
+            topic_ids = topics.collect{|x|x.id}
+          end
+          mat_params[:scientific_topic_ids] = topic_ids
+       end
+       return mat_params
     end
 
     def set_params
