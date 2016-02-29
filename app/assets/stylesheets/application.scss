@@ -28,7 +28,6 @@
 
 .elixir-orange-header {
   background-color: #F0721E;
-  margin-bottom: 10px;
 }
 
 /* Navbar colours */
@@ -123,6 +122,9 @@ a:hover {
 }
 
 // Bootstrap's breadcrumbs
+.breadcrumbs {
+  margin-top: 5px;
+}
 .breadcrumb {
   margin-bottom: 10px;
 }
@@ -500,24 +502,7 @@ ul.unstyled {
   float: right;
 }
 
-.homepage .nav-block {
-  width: 180px;
-  height: auto;
-  //background-color: #B0C3C9;
-  background-color: #DCE4E7;
-  padding: 10px;
-  margin: 10px;
-  text-align: center;
-  border: 1px solid #CECECE;
-  border-radius: 4px;
-  min-height: 180px;
-}
-
-.homepage .nav-block h3 {
-  margin-top: 10px;
-}
-
-.homepage .welcome-text {
+.welcome-text {
   //width: 40%;
   background-color: white;
   padding: 20px;
@@ -527,29 +512,6 @@ ul.unstyled {
   //border-radius: 3px;
   width: 70%;
   margin: auto;
-}
-
-.homepage .nodes-block {
-  //width: 40%;
-  float: right;
-  background-color: #DCE4E7;
-  //background-color: #ffe6d1;;
-  padding: 10px;
-  margin: 10px;
-  text-align: center;
-  border: 1px solid #CECECE;
-  border-radius: 4px;
-}
-
-.homepage .faq-block {
-  //width: 40%;
-  float: right;
-  background-color: #DDDDDD; /* Dull Grey;*/
-  padding: 10px;
-  margin: 10px;
-  text-align: center;
-  border: 1px solid #CECECE;
-  border-radius: 4px;
 }
 
 .panel-heading {
@@ -763,7 +725,7 @@ ul.featureblocks li p {
   margin: 5px 0 5px;
 }
 
-.homepage .searchbox {
+.searchbox {
   width: 640px;
   margin-left: auto;
   margin-right: auto;
