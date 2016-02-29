@@ -40,7 +40,7 @@
 								<% if model.to_s == 'materials' %>
 										<div class="tab-pane fade in active" id="<%= model %>">
 											<div class="search-results-count"> 
-												<%= pluralize( results_for_model.results.count, model.to_s.humanize.singularize.downcase) %> found 
+												<%= pluralize( results_for_model.results.count, "training materials") %> found 
 											</div>
 											<% results_for_model.results.each do |result| %>
 													<%= render partial: result %>
