@@ -262,6 +262,7 @@ div#sidebar table tr td a:hover {
 .media-item:hover .media-edit {
   opacity: 1;
 }
+
 li.media-item {
   list-style-type: none;
 }
@@ -281,6 +282,7 @@ li.media-item {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
+  z-index: 2;
 }
 
 .media-view:hover,
@@ -323,7 +325,7 @@ li.media-item {
   -ms-word-break: break-all;
   word-break: break-all;
   /* Non standard for webkit */
-  word-break: break-word;
+  //word-break: break-word;
   -webkit-hyphens: auto;
   -moz-hyphens: auto;
   -ms-hyphens: auto;
@@ -419,7 +421,7 @@ ul.unstyled {
   border-bottom: 0px none;
 }
 
-.nav-item{
+.nav-item {
   padding: 7px 20px;
 }
 
@@ -471,32 +473,38 @@ ul.unstyled {
   font-size: medium;
   padding: 50px 0;
 }
-.small-content-provider-logo{
+
+.small-content-provider-logo {
   max-width: 64px;
   border-radius: 4px;
   padding-left: 10px;
 }
-.medium-content-provider-logo{
+
+.medium-content-provider-logo {
   max-width: 256px;
   border-radius: 5px;
   margin: 0px 10px 0px 0px;
 }
-.search-results-count{
+
+.search-results-count {
   font-size: medium;
   font-weight: bold;
   margin-top: 5px;
   padding-top: 5px;
   padding-bottom: 10px;
 }
+
 .event-show-map {
   height: 300px;
   width: 100%;
   float: right;
 }
+
 .homepage .nav-block {
   width: 180px;
   height: auto;
-  background-color: #B0C3C9;
+  //background-color: #B0C3C9;
+  background-color: #DCE4E7;
   padding: 10px;
   margin: 10px;
   text-align: center;
@@ -504,23 +512,28 @@ ul.unstyled {
   border-radius: 4px;
   min-height: 180px;
 }
-.homepage .nav-block h3{
+
+.homepage .nav-block h3 {
   margin-top: 10px;
 }
+
 .homepage .welcome-text {
   //width: 40%;
   background-color: white;
   padding: 20px;
   margin: 10px;
   text-align: center;
-  border: 1px solid #CECECE;
-  border-radius: 4px;
+  //border: 1px solid #CECECE;
+  //border-radius: 3px;
+  width: 70%;
+  margin: auto;
 }
 
 .homepage .nodes-block {
   //width: 40%;
   float: right;
-  background-color: #F8761F; /* ELIXIR orange;*/
+  background-color: #DCE4E7;
+  //background-color: #ffe6d1;;
   padding: 10px;
   margin: 10px;
   text-align: center;
@@ -543,43 +556,56 @@ ul.unstyled {
   display: block;
   cursor: pointer;
 }
+
 .panel-title {
   font-size: 13px;
   color: #005d7a;
 }
+
 .panel-title a {
   text-decoration: none;
   color: #005d7a;
 }
+
 .panel-heading .accordion-toggle:after {
   /* symbol for "opening" panels */
-  font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
-  content: "\e113";    /* adjust as needed, taken from bootstrap.css */
-  float: right;        /* adjust as needed */
+  font-family: 'Glyphicons Halflings'; /* essential for enabling glyphicon */
+  content: "\e113"; /* adjust as needed, taken from bootstrap.css */
+  float: right; /* adjust as needed */
 }
+
 .panel-heading .accordion-toggle.collapsed:after {
   /* symbol for "collapsed" panels */
-  content: "\e114";    /* adjust as needed, taken from bootstrap.css */
+  content: "\e114"; /* adjust as needed, taken from bootstrap.css */
 }
+
 .panel-body {
   padding-bottom: 0px;
 }
+
 .h1, .h2, .h3, .h4, .h5, .h6 {
   color: #337ab7;
 }
+
 .content_action {
   float: right;
   margin-top: -5px;
   margin-right: -7px;
 }
+
 // Fix for simple form issue: http://stackoverflow.com/questions/6748446/rails-simple-form-gives-dots-under-stars-for-required-fields-better-way-to-remo
-abbr, accronym{ border-bottom: 0px !important; } /*try adding !important  after 0px if doesn't work*/
+abbr, accronym {
+  border-bottom: 0px !important;
+}
+
+/*try adding !important  after 0px if doesn't work*/
 
 //Multiple input list on forms with + button to add more input fields dynamically
 .multiple-input-list {
   display: flex;
   flex-wrap: wrap;
 }
+
 .multiple-list-item {
   padding: 3px;
   margin: 3px 3px 3px 0px;
@@ -588,18 +614,22 @@ abbr, accronym{ border-bottom: 0px !important; } /*try adding !important  after 
   width: 40%;
   display: inline;
 }
+
 .multiple-input {
   width: 85%;
   display: inline;
 }
+
 .multiple-input-delete {
-  background:none;
-  border:none
+  background: none;
+  border: none
 }
+
 .dropdown-option-delete {
-  background:none;
-  border:none
+  background: none;
+  border: none
 }
+
 .info-block {
   color: #005d7a;
   float: right;
@@ -607,14 +637,17 @@ abbr, accronym{ border-bottom: 0px !important; } /*try adding !important  after 
   margin: 0px;
   width: 28px;
 }
+
 /* The max width is dependant on the container (more info below) */
-.popover{
+.popover {
   max-width: 500px !important; /* Max Width of the popover (depending on the container!) */
 }
+
 // To make bootstrap button wrap button text into multiple lines
-.btn{
-  white-space:normal !important;
+.btn {
+  white-space: normal !important;
 }
+
 // Override margin for boostrap-s page-header
 .page-header {
   margin: 20px 0 20px;
@@ -642,36 +675,20 @@ abbr, accronym{ border-bottom: 0px !important; } /*try adding !important  after 
   user-select: none;
 }
 
-
-//body {
-//  min-height: 100%;
-//  position:relative;
-//  /* Margin bottom by footer height */
-//  margin-bottom: 80px;
-//}
-//container {height: 100%; position: relative;}
-//.footer {
-//  position: absolute;
-//  bottom: 0;
-//  width: 100%;
-//  /* Set the fixed height of the footer here */
-//  height: 80px;
-//  background-color: #f5f5f5;
-//}
-
-
 // Sticky but not fixed footer
 // http://cbracco.me/css-sticky-footer-effect/
 html {
   height: 100%;
   position: relative;
 }
+
 body {
   position: relative;
   margin: 0;
   padding-bottom: 120px;
   min-height: 100%;
 }
+
 .footer {
   position: absolute;
   right: 0;
@@ -685,9 +702,92 @@ body {
   display: flex;
   flex-direction: row;
 }
+
 .vertical-align > [class^="col-"],
 .vertical-align > [class*=" col-"] {
   display: flex;
-  align-items: center;     /* Align the flex-items vertically */
+  align-items: center; /* Align the flex-items vertically */
   //justify-content: center; /* Optional, to align inner flex-items horizontally within the column  */
+}
+
+ul.featureblocks {
+  padding: 10px;
+  list-style: none;
+}
+
+ul.featureblocks li {
+  float: left;
+  width: 19%;
+  margin-right: 12px;
+  padding-right: 13px;
+  border-right: 1px dotted #ccc
+}
+
+ul.featureblocks li.noborder {
+  margin: 0;
+  border: 0
+}
+
+ul.featureblocks li h2 a {
+  color: #666;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: normal
+}
+
+ul.featureblocks li span {
+  display: block;
+  color: #999;
+  font-size: 11px;
+  margin-bottom: 10px;
+  text-indent: 10px;
+  background-color: transparent;
+  background-image: url(http://icd.hwstatic.com/static/images/1.38.6.0/refresh/general/iconsprite.png);
+  background-position: left 2px;
+  background-repeat: no-repeat
+}
+
+ul.featureblocks li span i {
+  display: none
+}
+
+ul.featureblocks li a {
+  display: block
+}
+
+ul.featureblocks li h2 a {
+  color: #444
+}
+
+ul.featureblocks li p {
+  margin: 5px 0 5px;
+}
+
+.homepage .searchbox {
+  width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  margin-bottom: 5px;
+  padding: 20px;
+  background-color: #efefef;
+  position: relative;
+  box-shadow: 0 0 5px #333;
+  -webkit-box-shadow: 0 0 5px #333;
+  -moz-box-shadow: 0 0 5px #333;
+  -webkit-border-radius: 3px !important;
+  -moz-border-radius: 3px !important;
+  border-radius: 3px !important;
+  text-align: center;
+}
+
+.homepage #sb-search {
+  background-color: transparent;
+  padding: 0;
+}
+
+sup {
+  vertical-align: top;
+  position: relative;
+  top: 5px;
 }

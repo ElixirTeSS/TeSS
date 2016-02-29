@@ -23,6 +23,11 @@
         <a href="#faq">FAQ</a>
       </li>
       <li class="nav-item">
+      <a href="#ack">
+        Acknowledgements
+      </a>
+    </li>
+      <li class="nav-item">
         <a href="#software">
           Software
         </a>
@@ -41,7 +46,7 @@
           TeSS is <a target="_blank" href="http://www.elixir-europe.org/">ELIXIR's</a>
           Training e-Support System, developed by <a target="_blank" href="http://www.elixir-uk.org/">ELIXIR-UK</a>,
           for disseminating, discovering and packaging training resources, primarily by aggregating information from
-          ELIXIR nodes, but also from various 3rd-party content providers.
+          ELIXIR nodes, but also from various 3<sup>rd</sup>-party content providers.
         </p>
 
         <p>
@@ -98,7 +103,7 @@
                   No - TeSS is a repository of <b>metadata</b> for training materials and events (i.e. a
                   <b>registry</b> of training materials and events).
                   TeSS is an aggregator of metadata of ELIXIR-relevant training information and resources, harvested
-                  from individual ELIXIR nodes and from 3rd-party content providers. It does not store original
+                  from individual ELIXIR nodes and from 3<sup>rd</sup>-party content providers. It does not store original
                   training resources, just the metadata and links to them.
                 </p>
 
@@ -125,7 +130,7 @@
             <div id="collapseTwo" class="panel-collapse collapse">
               <div class="panel-body">
                 <p>
-                  TeSS harvests and aggregates training metadata from ELIXIR nodes and from 3rd-party content
+                  TeSS harvests and aggregates training metadata from ELIXIR nodes and from 3<sup>rd</sup>-party content
                   providers,
                   and filters and displays that information according to different ‘views’ (e.g., ELIXIR overview
                   versus
@@ -210,7 +215,7 @@
                 <p>
                   You cannot upload training materials and events directly to TeSS (to do this, we encourage you to
                   use
-                  3rd-party repositories, such as GOBLET).
+                  3<sup>rd</sup>-party repositories, such as GOBLET).
                 </p>
 
                 <p>
@@ -336,24 +341,42 @@
           </div>
         </div>
 
+        <a name="ack"> </a>
+
+        <h2>Acknowledgements</h2>
+
+        <h3>Image credits</h3>
+        <p>
+          Images used on the site are (c) ELIXIR, apart from:
+          <ul>
+            <li>
+              <a href="https://commons.wikimedia.org/wiki/File%3AExome_Sequencing_workflow_1b.png">Exome Sequencing workflow</a>, by Sarah Kusala [licenced under <a href="https://creativecommons.org/licenses/by/3.0/deed.en">Creative Commons Attribution 3.0 Unported (CC BY 3.0)</a>]
+            </li>
+            <li>
+             <a href="https://www.flickr.com/photos/abee5/8314929977">Books HD</a>, by Abhi Sharma [licenced under <a href="https://creativecommons.org/licenses/by/2.0/">Creative Commons Attribution 2.0 Generic (CC BY 2.0)</a>]
+            </li>
+            </ul>
+        </p>
+
+        <h3>People credits</h3>
+        <p>
+          The TeSS team would like to acknowledge the help of a number of groups and individials and thank them for useful discussions, feedback and help while developing TeSS - to mention but a few:
+          <ul>
+            <li>ELIXIR technical staff and coordinators from the Hub, in particular Rafael Jimenez, Martin Cook and Premysl Velek</li>
+            <li>Training coordinators from ELIXIR-NL (Celia van Gelder) and ELIXIR-SI (Patricia Pelagi)</li>
+            <li>Structural bioinformatics group (lead by Chistine Orengo and Cath Brooksbank)</li>
+          </ul>
+        </p>
+
         <a name="software"> </a>
 
         <h2>Software</h2>
-
         <p>
-          TeSS is implemented using the Ruby on Rails framework.
-        </p>
-
-        <p>
-          TeSS is populated either automatically, by scraping training information from content providers, or by
-          adding links to training resources manually. Both the TeSS Portal and the scraping/aggregation scripts
-          are open source, and are released under the GPL license.
-          The source code be found in <a href="https://github.com/ElixirUK">GitHub</a>.
-        </p>
-
-        <p>
-          Please note that, at present, TeSS is in the alpha state so all content you add manually is at
-          risk.
+          TeSS is populated either automatically, by scraping training information from content providers using special scraper scripts which add links to training resources to TeSS, or by
+          adding links to training resources manually by users.
+         </p>
+         <p>
+          Hence, TeSS consists of the portal software, implemented using the Ruby on Rails framework, and the scraping/aggregation scripts written in Ruby. Both the <a href="https://github.com/ElixirUK/TeSS">TeSS portal source code</a> and the <a href="https://github.com/ElixirUK/newtessscraper">scraping/aggregation scripts</a> are open source, licensed under the <a href="https://opensource.org/licenses/BSD-3-Clause">BSD 3-clause license</a>, and can be found at GitHub.
         </p>
       </div>
     </div>
