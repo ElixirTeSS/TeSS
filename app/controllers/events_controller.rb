@@ -5,8 +5,8 @@ class EventsController < ApplicationController
   before_action :set_params, :only => :index
 
   # Prevent all but admins from creating events
-  before_action :check_admin, only: [:edit, :new, :update]
-  before_action :closed_route, only: [:edit, :new, :update]
+  before_action :check_authorized, only: [:edit, :new, :create, :update]
+  #before_action :closed_route, only: [:edit, :new]
 
   # Should allow token authentication for API calls
   acts_as_token_authentication_handler_for User, except: [:index, :show, :check_exists] #only: [:new, :create, :edit, :update, :destroy]
@@ -153,19 +153,22 @@ class EventsController < ApplicationController
       end
     end
 
-    def check_admin
-      user = User.find_by_authentication_token(params[:user_token])
-      if !user.nil?
-        if user.is_admin?
+    def check_authorized
+      if request_is_api? #is an API action - allow admin or scraper account
+        user = User.find_by_authentication_token(params[:user_token])
+        if !user.nil? and user.is_admin? #or user.is_scraper?
+            return
+        end
+      else #is UI action - allow admin
+        user = current_user
+        if !user.nil? and user.is_admin?
           return
         end
       end
       redirect_to root_path, notice: "Sorry, you're not allowed to view that page."
     end
 
-    def closed_route
-      if !((request.post? or request.put? or request.patch?) and request.format.json?)
-        redirect_to root_path, notice: 'Sorry, that page is not available.'
-      end
+    def request_is_api?
+      return ((request.post? or request.put? or request.patch?) and request.format.json?)
     end
 end
