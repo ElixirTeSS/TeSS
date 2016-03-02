@@ -60,7 +60,7 @@ class User < ActiveRecord::Base
       profile.email = self[:email]
       profile.save!
       self.profile = profile
-      self.profile_id = profile.id
+      #self.profile_id = profile.id
     end
   end
 
@@ -69,6 +69,26 @@ class User < ActiveRecord::Base
       return false
     end
     if self.role.name == 'admin'
+      return true
+    end
+    return false
+  end
+
+  def is_api_user?
+    if !self.role
+      return false
+    end
+    if self.role.name == 'api_user'
+      return true
+    end
+    return false
+  end
+
+  def is_registered_user?
+    if !self.role
+      return false
+    end
+    if self.role.name == 'registered_user'
       return true
     end
     return false
