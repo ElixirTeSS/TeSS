@@ -40,11 +40,9 @@
     <!--</div>-->
 <%# end %>
 
-<%= render :partial=>"layouts/header", :locals => {:layout => 'application'} %>
+<%= render :partial=>"layouts/header", :locals => {:display_search_box => true} %>
 
 <div id="main-container" class="container">
-
-  <%= flash_messages %>
 
   <%# unless breadcrumbs.empty? %>
   <!--<div id="breadcrumbs">-->

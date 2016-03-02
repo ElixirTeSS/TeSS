@@ -1,4 +1,3 @@
-
 <header class="elixir-black-header">
   <div class="container">
     <!-- Navigation bar -->
@@ -9,21 +8,20 @@
       <% if current_user %>
           <%= menu_group pull: :right do %>
               <%= menu_item current_user.username, user_path(current_user) %>
-              <%= menu_item users_path do %>
-                  <i class="fa fa-users fa-lg"></i>
+              <% if current_user.is_registered_user? or current_user.is_admin? %>
+                  <%= menu_item users_path do %>
+                      <i class="fa fa-users fa-lg"></i>
+                  <% end %>
               <% end %>
               <% if current_user.is_admin? %>
                   <%= menu_item rails_admin_path do %>
                       <i class="fa fa-cog fa-lg"></i>
                   <% end %>
               <% end %>
-              <%= menu_item "Log out", destroy_user_session_path, :method => :delete, :data => { :confirm => 'Are you sure you want to log out?' } %>
+              <%= menu_item "Log out", destroy_user_session_path, :method => :delete, :data => {:confirm => 'Are you sure you want to log out?'} %>
           <% end %>
       <% else %>
           <%= menu_group pull: :right do %>
-              <%= menu_item users_path do %>
-                  <i class="fa fa-users fa-lg"></i>
-              <% end %>
               <%= menu_item "Log in", new_user_session_path %>
               <%= menu_item "Register", new_user_registration_path %>
           <% end %>
@@ -55,7 +53,7 @@
             <li><%= menu_item "About", about_path %></li>
           </ul>
 
-          <% if layout.blank? or layout.include?("application") %>
+          <% if display_search_box %>
               <%= form_tag search_path, :method => :get, :class => "navbar-form navbar-right", :role => "search" do %>
                   <div class="form-group">
                     <input type="text" class="form-control" name='q' placeholder="Search training...">
@@ -69,3 +67,7 @@
     </nav>
   </div>
 </header>
+
+<div id="flash-container" class="container">
+  <%= flash_messages %>
+</div>
