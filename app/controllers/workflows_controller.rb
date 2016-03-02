@@ -1,4 +1,5 @@
 class WorkflowsController < ApplicationController
+
   before_action :set_workflow, only: [:show, :edit, :update, :destroy]
 
   include TeSS::BreadCrumbs

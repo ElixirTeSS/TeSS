@@ -2,6 +2,8 @@ class ActivitiesController < ApplicationController
 
   before_action :set_resource, only: [:show]
 
+  include TeSS::BreadCrumbs
+
   @@models = %w( content_provider material package event )
 
   def index

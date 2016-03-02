@@ -101,7 +101,6 @@ module ApplicationHelper
 
   # Return icon classes for model name (could be symbol or string)
   def icon_class_for_model(model)
-    puts model
     if (model.to_s == 'materials')
       return "fa fa-book"
     elsif (model.to_s == 'content_providers')

@@ -1,10 +1,14 @@
 class ProfilesController < ApplicationController
+
   # Controller for showing public profiles.
-  before_action :set_user_profile
-  before_action :check_auth, only: [:edit]
+  prepend_before_action :set_user_profile
 
-  before_filter :authenticate_user!
+  # Skip the parent's before_action
+  skip_before_action :authenticate_user!
+  # and define it on all methods
+  before_action :authenticate_user!
 
+  include TeSS::BreadCrumbs
 
   def show
   end
@@ -41,11 +45,20 @@ class ProfilesController < ApplicationController
     params.require(:profile).permit!
   end
 
-  def check_auth
-    if current_user.id == @user.id or current_user.is_admin?
-      return
+  protected
+
+  # Override
+  def check_authorised
+    if (current_user.nil?)
+      return # user has not been logged in yet!
+    else
+      if current_user.id == @user.id or current_user.is_admin?
+        return
+      end
     end
-    redirect_to root_path, notice: "Sorry, you're not allowed to view that page."
+    # Throw a massive fit here, user should not be nil at all!
+    flash[:error] = "Sorry, you're not allowed to view that page."
+    redirect_to root_path
   end
 
 end

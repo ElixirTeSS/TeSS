@@ -1,22 +1,10 @@
 class ContentProvidersController < ApplicationController
+
   before_action :set_content_provider, only: [:show, :edit, :update, :destroy]
-
-  require 'bread_crumbs'
-  include TeSS::BreadCrumbs
-
-  # Should allow token authentication for API calls
-  acts_as_token_authentication_handler_for User, except: [:index, :show, :check_exists] #only: [:new, :create, :edit, :update, :destroy]
-
-  # User auth should be required in the web interface as well; it's here rather than in routes so that it
-  # doesn't override the token auth, above.
-  before_filter :authenticate_user!, except: [:index, :show, :check_exists]
-
-
   before_action :set_search_params, :only => :index
   before_action :set_facet_params, :only => :index
 
-  # Should prevent forgery errors for JSON posts.
-  skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
+  include TeSS::BreadCrumbs
 
   @@facet_fields = %w( keywords )
 
@@ -129,13 +117,10 @@ class ContentProvidersController < ApplicationController
   end
 
   def set_facet_params
-    params.permit(@@facet_fields, @@facet_fields.map{|f| "#{f}_all"})
+    params.permit(@@facet_fields, @@facet_fields.map { |f| "#{f}_all" })
     @facet_params = {}
-    @@facet_fields.each {|facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
+    @@facet_fields.each { |facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
   end
-
-
-
 
 end
 

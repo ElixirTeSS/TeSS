@@ -1,27 +1,14 @@
 class EventsController < ApplicationController
+
   before_action :set_event, only: [:show, :edit, :update, :destroy]
 
   #sets @search_params, @facet_params, and @page 
   before_action :set_params, :only => :index
 
-  # Prevent all but admins from creating events
-  before_action :check_authorized, only: [:edit, :new, :create, :update]
-  #before_action :closed_route, only: [:edit, :new]
-
-  # Should allow token authentication for API calls
-  acts_as_token_authentication_handler_for User, except: [:index, :show, :check_exists] #only: [:new, :create, :edit, :update, :destroy]
-
-  # User auth should be required in the web interface as well; it's here rather than in routes so that it
-  # doesn't override the token auth, above.
-  before_filter :authenticate_user!, except: [:index, :show, :check_exists]
-
-  # Should prevent forgery errors for JSON posts.
-  skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
+  include TeSS::BreadCrumbs
 
   # GET /events
   # GET /events.json
-
-  include TeSS::BreadCrumbs
 
   @@facet_fields = %w( category country field provider city sponsor keywords venue)
 
@@ -128,47 +115,44 @@ class EventsController < ApplicationController
     end
   end
 
+
+  protected
+
+  # Override
+  def check_authorised
+    user = current_user || User.find_by_authentication_token(params[:user_token])
+    if (user.nil?)
+      return # user has not been logged in yet!
+    else
+      # Check if role is admin or api_user
+      check_admin_or_api_user(user)
+    end
+  end
+
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_event
-      @event = Event.friendly.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def event_params
-      params.require(:event).permit(:external_id, :title, :subtitle, :url, :provider, :description, {:field => []},
-                                    {:category => []}, {:keyword => []}, :start, :end, :sponsor, :venue, :city, :county,
-                                    :country, :postcode, :latitude, :longitude, :content_provider_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_event
+    @event = Event.friendly.find(params[:id])
+  end
 
-    def set_params
-      params.permit(:q, :page, :sort, @@facet_fields, @@facet_fields.map{|f| "#{f}_all"})
-      @search_params = params[:q] || ''
-      @facet_params = {}
-      @sort_by = params[:sort]
-      @@facet_fields.each {|facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
-      @page = params[:page] || 1
-      if params[:include_expired]
-          @facet_params['include_expired'] = true
-      end
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def event_params
+    params.require(:event).permit(:external_id, :title, :subtitle, :url, :provider, :description, {:field => []},
+                                  {:category => []}, {:keyword => []}, :start, :end, :sponsor, :venue, :city, :county,
+                                  :country, :postcode, :latitude, :longitude, :content_provider_id)
+  end
 
-    def check_authorized
-      if request_is_api? #is an API action - allow admin or scraper account
-        user = User.find_by_authentication_token(params[:user_token])
-        if !user.nil? and user.is_admin? #or user.is_scraper?
-            return
-        end
-      else #is UI action - allow admin
-        user = current_user
-        if !user.nil? and user.is_admin?
-          return
-        end
-      end
-      redirect_to root_path, notice: "Sorry, you're not allowed to view that page."
+  def set_params
+    params.permit(:q, :page, :sort, @@facet_fields, @@facet_fields.map { |f| "#{f}_all" })
+    @search_params = params[:q] || ''
+    @facet_params = {}
+    @sort_by = params[:sort]
+    @@facet_fields.each { |facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
+    @page = params[:page] || 1
+    if params[:include_expired]
+      @facet_params['include_expired'] = true
     end
+  end
 
-    def request_is_api?
-      return ((request.post? or request.put? or request.patch?) and request.format.json?)
-    end
 end

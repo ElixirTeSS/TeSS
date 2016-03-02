@@ -6,18 +6,7 @@ class MaterialsController < ApplicationController
   #sets @search_params, @facet_params, and @page 
   before_action :set_params, :only => :index
 
-  # Should allow token authentication for API calls
-  acts_as_token_authentication_handler_for User, except: [:index, :show, :check_exists] #only: [:new, :create, :edit, :update, :destroy]
-
-  # User auth should be required in the web interface as well; it's here rather than in routes so that it
-  # doesn't override the token auth, above.
-  before_filter :authenticate_user!, except: [:index, :show, :check_exists]
-
-  # Should prevent forgery errors for JSON posts.
-  skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
-
   include TeSS::BreadCrumbs
-
 
   # GET /materials
   # GET /materials?q=queryparam
@@ -36,7 +25,6 @@ class MaterialsController < ApplicationController
       end
     end
     params[:scientific_topic] = res.compact.flatten.uniq if res and !res.empty?
-    puts params[:scientific_topic]
   end
 
   def index

@@ -1,4 +1,7 @@
 class ApplicationController < ActionController::Base
+
+  require 'bread_crumbs'
+
   include PublicActivity::StoreController
 
   before_action :configure_permitted_parameters, if: :devise_controller?
@@ -7,6 +10,19 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  # Prevent all but admins from creating events
+  before_action :check_authorised, except: [:index, :show, :check_exists]
+
+  # Should allow token authentication for API calls
+  acts_as_token_authentication_handler_for User, except: [:index, :show, :check_exists] #only: [:new, :create, :edit, :update, :destroy]
+
+  # User auth should be required in the web interface as well; it's here rather than in routes so that it
+  # doesn't override the token auth, above.
+  before_action :authenticate_user!, except: [:index, :show, :check_exists]
+
+  # Should prevent forgery errors for JSON posts.
+  skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
+
   #def after_sign_in_path_for(resource)
   #  root_path
   #end
@@ -14,7 +30,6 @@ class ApplicationController < ActionController::Base
   #def after_sign_out_path_for(resource_or_scope)
   #  request.referrer
   #end
-
 
   protected
 
@@ -68,7 +83,7 @@ class ApplicationController < ActionController::Base
       if model_name == Event
         facet 'start'
         unless selected_facets.keys.include?('include_expired') and selected_facets['include_expired'] == true
-            with('start').greater_than(Time.zone.now)
+          with('start').greater_than(Time.zone.now)
         end
       end
 
@@ -76,5 +91,61 @@ class ApplicationController < ActionController::Base
         facet ff, exclude: facets
       end
     end
+  end
+
+  def check_authorised
+    user = current_user || User.find_by_authentication_token(params[:user_token])
+    if (user.nil?)
+       return # user has not been logged in yet!
+    else
+      # In most cases we'd need to check if role is admin, registered user or api_user
+      check_admin_or_api_or_registered_user(user)
+    end
+  end
+
+  def request_is_api?
+    return ((request.post? or request.put? or request.patch?) and request.format.json?)
+  end
+
+  def closed_route
+    if !((request.post? or request.put? or request.patch?) and request.format.json?)
+      head(403)
+      #redirect_to :back, notice: "Sorry, you're not allowed to view that page."
+    end
+    #rescue ActionController::RedirectBackError
+    #  redirect_to root_path, notice: "Sorry, you're not allowed to view that page."
+  end
+
+  def check_admin_or_api_user(user)
+    if !user.nil?
+      return if user.is_admin? # allow admins for all requests - UI and API
+      if request_is_api? #is an API action - allow api_user accounts such as scrapers
+        if user.is_api_user?
+          return
+        else #return 403 Forbidden status code
+          head(403)
+        end
+      end
+    end
+    # User should not be nil at this point - throw a massive fit
+    flash[:error] = "Sorry, you're not allowed to view that page."
+    redirect_to root_path
+  end
+
+  def check_admin_or_api_or_registered_user(user)
+    if !user.nil?
+      return if user.is_admin? # allow admins for all requests - UI and API
+      if request_is_api? #is an API action - allow api_user accounts such as scrapers
+        if user.is_api_user?
+          return
+        else #return 403 Forbidden status code
+          head(403)
+        end
+      end
+      return if user.is_registered_user? # Not an API request, so allow registered users
+    end
+    # User should not be nil at this point - throw a massive fit
+    flash[:error] = "Sorry, you're not allowed to view that page."
+    redirect_to root_path
   end
 end

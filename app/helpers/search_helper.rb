@@ -6,7 +6,6 @@ module SearchHelper
 			parameters['tab'] = value
 		else
 			parameters.merge({'tab' => value})
-			puts url_for(parameters)
 		end
 		return url_for(parameters)
 	end

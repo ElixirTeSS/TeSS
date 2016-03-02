@@ -1,25 +1,12 @@
 class PackagesController < ApplicationController
   before_action :set_package, only: [:show, :edit, :update, :destroy]
 
-  require 'bread_crumbs'
-
   before_action :set_search_params, :only => :index
   before_action :set_facet_params, :only => :index
-
-  # Should allow token authentication for API calls
-  acts_as_token_authentication_handler_for User, except: [:index, :show, :check_title,:manage] #only: [:new, :create, :edit, :update, :destroy]
-
-  # User auth should be required in the web interface as well; it's here rather than in routes so that it
-  # doesn't override the token auth, above.
-  before_filter :authenticate_user!, except: [:index, :show, :check_title, :manage]
-
-  # Should prevent forgery errors for JSON posts.
-  skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
 
   include TeSS::BreadCrumbs
 
   @@facet_fields = %w( owner keywords )
-
 
   # GET /packages
   # GET /packages.json

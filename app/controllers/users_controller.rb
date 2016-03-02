@@ -1,10 +1,13 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :check_auth, only: [:show, :edit, :update, :destroy]
-  before_action :check_admin, only: [:show, :edit, :new]
-  before_action :closed_route, only: [:new, :update, :edit]
 
-  before_filter :authenticate_user!
+  prepend_before_action :set_user, only: [:show, :edit, :update, :destroy]
+
+  # Skip the parent's before_action
+  skip_before_action :authenticate_user!
+  # and define it on all methods
+  before_action :authenticate_user!
+
+  include TeSS::BreadCrumbs
 
   # GET /users
   # GET /users.json
@@ -84,40 +87,32 @@ class UsersController < ApplicationController
     end
   end
 
+  protected
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.friendly.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def user_params
-      params.require(:user).permit!
-    end
-
-    def check_auth
+  # Override
+  def check_authorised
+    if (current_user.nil?)
+      return # user has not been logged in yet!
+    else
       if current_user.id == @user.id or current_user.is_admin?
         return
       end
-      redirect_to root_path, notice: "Sorry, you're not allowed to view that page."
     end
+    # Throw a massive fit here, user should not be nil at all!
+    flash[:error] = "Sorry, you're not allowed to view that page."
+    redirect_to root_path
+  end
 
-    # This is here because users shouldn't be accessing the user edit page directly -
-    # the profile is for extra information about them and their password should be changed
-    # by the usual devise mechansims.
-    def check_admin
-      if current_user
-        if current_user.is_admin?
-          return
-        end
-      end
-      redirect_to root_path, notice: "Sorry, you're not allowed to view that page."
-    end
+  private
 
-    def closed_route
-      if !((request.post? or request.put? or request.patch?) and request.format.json?)
-        redirect_to root_path, notice: 'Sorry, that page is not available.'
-      end
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_user
+    @user = User.friendly.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def user_params
+    params.require(:user).permit!
+  end
+
 end
