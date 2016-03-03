@@ -1,11 +1,12 @@
 class StaticController < ActionController::Base
 
-  layout 'application'
+  layout 'home'
 
   def about
+    @display_search_box = true
   end
 
   def home
-    render :layout => "home"
+    @display_search_box = false
   end
 end
