@@ -65,12 +65,11 @@
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")),
                     users_path, :class => 'btn btn-info' %>
-        <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                    edit_profile_path(@profile), :class => 'btn btn-primary' %>
-
-        <% if current_user == @user -%>
+        <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
+            <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                        edit_profile_path(@profile), :class => 'btn btn-primary' %>
             <%= link_to "Change your password", edit_user_registration_path, :class => 'btn btn-default' %>
-        <% end -%>
+        <% end %>
       </div>
     </div>
 
@@ -88,6 +87,8 @@
           log</a>
       </li>
     </ul>
+
+    <p class="empty" style="margin-top: 10px;">This part is still under construction.</p>
 
   </div>
 </div>
