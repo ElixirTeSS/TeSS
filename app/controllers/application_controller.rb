@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   # Should prevent forgery errors for JSON posts.
   skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
 
-    # Prevent all but admins from creating events
+  # Prevent all but admins from creating events
   before_action :check_authorised, except: [:index, :show, :check_exists]
 
   #def after_sign_in_path_for(resource)
@@ -96,7 +96,7 @@ class ApplicationController < ActionController::Base
   def check_authorised
     user = current_user || User.find_by_authentication_token(params[:user_token])
     if (user.nil?)
-       return # user has not been logged in yet!
+      return # user has not been logged in yet!
     else
       # In most cases we'd need to check if role is admin, registered user or api_user
       check_admin_or_api_or_registered_user(user)
@@ -118,16 +118,20 @@ class ApplicationController < ActionController::Base
 
   def check_admin_or_api_user(user)
     if !user.nil?
-      return if user.is_admin? # allow admins for all requests - UI and API
+      return if user.is_admin? # allow admins for all requests - UI and API, and all methods
       if request_is_api? #is an API action - allow api_user accounts such as scrapers
         if user.is_api_user?
-          return
+          if [:edit, :update, :destroy].include?(action_name) # for some methods check ownership
+            return if check_permissions?(user, determine_resource)
+          else
+            return
+          end
         else #return 403 Forbidden status code
           head(403)
         end
       end
     end
-    # User should not be nil at this point - throw a massive fit
+    # Should not really ever come to here
     flash[:error] = "Sorry, you're not allowed to view that page."
     redirect_to root_path
   end
@@ -137,20 +141,30 @@ class ApplicationController < ActionController::Base
       return if user.is_admin? # allow admins for all requests - UI and API
       if request_is_api? #is an API action - allow api_user accounts such as scrapers
         if user.is_api_user?
-          return
+          if [:edit, :update, :destroy].include?(action_name) # for some methods check ownership
+            return if check_permissions?(user, determine_resource)
+          else
+            return
+          end
         else #return 403 Forbidden status code
           head(403)
         end
       end
-      return if user.is_registered_user? # Not an API request, so allow registered users
+      if user.is_registered_user? # Not an API request, so allow registered user if he is the owner of the resource
+        if [:edit, :update, :destroy].include?(action_name) # for some methods check ownership
+          return if check_permissions?(user, determine_resource)
+        else
+          return
+        end
+      end
     end
-    # User should not be nil at this point - throw a massive fit
+    # Should not really ever come to here
     flash[:error] = "Sorry, you're not allowed to view that page."
     redirect_to root_path
   end
 
   # Check if user is owner of a resource or user is admin
-  def check_permissions(user, resource)
+  def check_permissions?(user, resource)
     return false if user.nil? or resource.nil?
     return false if !resource.respond_to?("owner".to_sym)
     return true if user.is_admin?
@@ -162,7 +176,14 @@ class ApplicationController < ActionController::Base
       return false
     end
   end
+  helper_method :check_permissions?
 
-  helper_method :check_permissions
+  def determine_resource
+    #Find out the resource object being requested
+    resource_id = params[:id]
+    return nil if resource_id.blank?
+
+    return controller_name.classify.constantize.find(resource_id)
+  end
 
 end

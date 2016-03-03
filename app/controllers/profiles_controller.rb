@@ -56,7 +56,6 @@ class ProfilesController < ApplicationController
         return
       end
     end
-    # Throw a massive fit here, user should not be nil at all!
     flash[:error] = "Sorry, you're not allowed to view that page."
     redirect_to root_path
   end

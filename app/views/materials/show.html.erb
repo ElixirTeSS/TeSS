@@ -11,7 +11,7 @@
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")),
                     materials_path, :class => 'btn btn-info'  %>
-        <% if check_permissions(current_user, @material) %>
+        <% if check_permissions?(current_user, @material) %>
             <%= link_to t('.edit', :default => t("helpers.links.edit")),
                         edit_material_path(@material), :class => 'btn btn-primary' %>
             <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
