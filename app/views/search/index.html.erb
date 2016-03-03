@@ -37,20 +37,22 @@
 			<% if !@results.nil? %>
 					<div class="tab-content">
 						<% @results.each do |model, results_for_model| %>
-								<% if model.to_s == 'materials' %>
+                          		<% if model.to_s == 'materials' %>
 										<div class="tab-pane fade in active" id="<%= model %>">
 											<div class="search-results-count"> 
-												<%= pluralize( results_for_model.results.count, "training materials") %> found 
+                                                <%= "Showing #{pluralize(results_for_model.results.count, model.to_s.humanize.singularize.downcase)} results#{(results_for_model.results.count > 30) ? " of #{results_for_model.total}" : ''}." %>
 											</div>
+                                           <%= link_to "View more #{model.to_s.humanize.singularize.downcase} results", :controller => model, :q => params[:q] %><br>
 											<% results_for_model.results.each do |result| %>
-													<%= render partial: result %>
+												<%= render partial: result %>
 											<% end %>
 										</div>
 								<% else %>
 										<div class="tab-pane fade" id="<%= model %>">
 											<div class="search-results-count"> 
-												<%= pluralize( results_for_model.results.count, model.to_s.humanize.singularize.downcase) %> found 
+                                              <%= "Showing #{pluralize(results_for_model.results.count, model.to_s.humanize.singularize.downcase)} results#{(results_for_model.total > 30) ? " of #{results_for_model.total}" : ''}." %>
 											</div>
+                                            <%= link_to "View more #{model.to_s.humanize.singularize.downcase} results", :controller => model, :q => params[:q] %><br>
 											<div class="media-grid">
 												<% results_for_model.results.each do |result| %>
 														<%= render partial: result %>
