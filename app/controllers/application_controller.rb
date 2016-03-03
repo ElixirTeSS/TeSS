@@ -21,6 +21,8 @@ class ApplicationController < ActionController::Base
   skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
 
   # Prevent all but admins from creating events
+  # !!!!!! Make sure this method is always invoked in conjunction with authenticate_user!
+  # otherwise access control loopholes will be opened
   before_action :check_authorised, except: [:index, :show, :check_exists]
 
   #def after_sign_in_path_for(resource)
@@ -150,7 +152,7 @@ class ApplicationController < ActionController::Base
           head(403)
         end
       end
-      if user.is_registered_user? # Not an API request, so allow registered user if he is the owner of the resource
+      if user.is_registered_user? or user.is_api_user? # Not an API request, so allow registered users and API users only if they are the owner of the resource
         if [:edit, :update, :destroy].include?(action_name) # for some methods check ownership
           return if check_permissions?(user, determine_resource)
         else
