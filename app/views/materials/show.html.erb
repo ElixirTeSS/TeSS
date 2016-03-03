@@ -11,13 +11,15 @@
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")),
                     materials_path, :class => 'btn btn-info'  %>
-        <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                    edit_material_path(@material), :class => 'btn btn-primary' %>
-        <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                    material_path(@material),
-                    :method => 'delete',
-                    :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                    :class => 'btn btn-danger' %>
+        <% if check_permissions?(current_user, @material) %>
+            <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                        edit_material_path(@material), :class => 'btn btn-primary' %>
+            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                        material_path(@material),
+                        :method => 'delete',
+                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                        :class => 'btn btn-danger' %>
+        <% end %>
         <button class="btn btn-success"><a href="<%= @material.url %>" target="_blank">View material <span class="fa fa-external-link" aria-hidden="true"></span></a></button>
       </div>
 

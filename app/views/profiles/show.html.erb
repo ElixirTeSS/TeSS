@@ -12,26 +12,43 @@
     <p>
       <strong><%= model_class.human_attribute_name(:firstname) %></strong>
       <br>
-      <%= @profile.firstname %>
+      <% if @profile.firstname.blank? %>
+        <p class="empty">None specified</p>
+    <% else %>
+        <%= @profile.firstname %>
+    <% end %>
     </p>
     <p>
       <strong><%= model_class.human_attribute_name(:surname) %></strong>
       <br>
-      <%= @profile.surname %>
+      <% if @profile.surname.blank? %>
+        <p class="empty">None specified</p>
+    <% else %>
+        <%= @profile.surname %>
+    <% end %>
     </p>
     <% if current_user == @user -%>
         <p>
           <strong><%= model_class.human_attribute_name(:email) %></strong>
           <br>
-          <%= mail_to @profile.email unless @profile.email.blank? %>
+          <% if @profile.surname.blank? %>
+            <p class="empty">None specified</p>
+        <% else %>
+            <%= mail_to @profile.email %>
+        <% end %>
         </p>
     <% end %>
     <p>
       <strong><%= model_class.human_attribute_name(:website) %></strong>
       <br>
-      <%= link_to @profile.website unless @profile.website.blank? %>
+      <% if @profile.surname.blank? %>
+        <p class="empty">None specified</p>
+    <% else %>
+        <%= link_to @profile.website %>
+    <% end %>
     </p>
-    <% if current_user == @user -%>
+    <p>
+      <% if current_user == @user -%>
         <p><strong>Authentication Token</strong><br>(keep it secret)
           <br>
           <%= @user.authentication_token %></p>
@@ -47,13 +64,12 @@
     <div class="row">
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")),
-                    users_path, :class => 'btn btn-info'  %>
-        <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                    edit_profile_path(@profile), :class => 'btn btn-primary' %>
-
-        <% if current_user == @user -%>
+                    users_path, :class => 'btn btn-info' %>
+        <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
+            <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                        edit_profile_path(@profile), :class => 'btn btn-primary' %>
             <%= link_to "Change your password", edit_user_registration_path, :class => 'btn btn-default' %>
-        <% end -%>
+        <% end %>
       </div>
     </div>
 
@@ -67,9 +83,12 @@
         <a data-toggle="tab" href="#packages"><i class="<%= icon_class_for_model('workflows') %>"></i> Workflows</a>
       </li>
       <li>
-        <a data-toggle="tab" href="#activity_log"><i class="<%= icon_class_for_model('activity_logs') %>"></i> Activity log</a>
+        <a data-toggle="tab" href="#activity_log"><i class="<%= icon_class_for_model('activity_logs') %>"></i> Activity
+          log</a>
       </li>
     </ul>
+
+    <p class="empty" style="margin-top: 10px;">This part is still under construction.</p>
 
   </div>
 </div>
