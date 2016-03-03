@@ -40,7 +40,7 @@
                           		<% if model.to_s == 'materials' %>
 										<div class="tab-pane fade in active" id="<%= model %>">
 											<div class="search-results-count"> 
-                                                <%= "Showing #{pluralize(results_for_model.results.count, model.to_s.humanize.singularize.downcase)} results#{(results_for_model.results.count > 30) ? " of #{results_for_model.total}" : ''}." %>
+                                                <%= "Showing #{pluralize(results_for_model.results.count, "#{model.to_s.humanize.singularize.downcase} result")}#{(results_for_model.total > 30) ? " of #{results_for_model.total}" : ''}." %>
 											</div>
                                            <%= link_to "View more #{model.to_s.humanize.singularize.downcase} results", :controller => model, :q => params[:q] %><br>
 											<% results_for_model.results.each do |result| %>
@@ -50,7 +50,7 @@
 								<% else %>
 										<div class="tab-pane fade" id="<%= model %>">
 											<div class="search-results-count"> 
-                                              <%= "Showing #{pluralize(results_for_model.results.count, model.to_s.humanize.singularize.downcase)} results#{(results_for_model.total > 30) ? " of #{results_for_model.total}" : ''}." %>
+                                              <%= "Showing #{pluralize(results_for_model.results.count, "#{model.to_s.humanize.singularize.downcase} result")}#{(results_for_model.total > 30) ? " of #{results_for_model.total}" : ''}." %>
 											</div>
                                             <%= link_to "View more #{model.to_s.humanize.singularize.downcase} results", :controller => model, :q => params[:q] %><br>
 											<div class="media-grid">
