@@ -10,9 +10,6 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  # Prevent all but admins from creating events
-  before_action :check_authorised, except: [:index, :show, :check_exists]
-
   # Should allow token authentication for API calls
   acts_as_token_authentication_handler_for User, except: [:index, :show, :check_exists] #only: [:new, :create, :edit, :update, :destroy]
 
@@ -22,6 +19,9 @@ class ApplicationController < ActionController::Base
 
   # Should prevent forgery errors for JSON posts.
   skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
+
+    # Prevent all but admins from creating events
+  before_action :check_authorised, except: [:index, :show, :check_exists]
 
   #def after_sign_in_path_for(resource)
   #  root_path
@@ -148,4 +148,21 @@ class ApplicationController < ActionController::Base
     flash[:error] = "Sorry, you're not allowed to view that page."
     redirect_to root_path
   end
+
+  # Check if user is owner of a resource or user is admin
+  def check_permissions(user, resource)
+    return false if user.nil? or resource.nil?
+    return false if !resource.respond_to?("owner".to_sym)
+    return true if user.is_admin?
+
+    # Else the user needs to be the owner of the resource
+    if user == resource.owner
+      return true
+    else
+      return false
+    end
+  end
+
+  helper_method :check_permissions
+
 end

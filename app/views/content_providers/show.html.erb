@@ -10,13 +10,15 @@
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")),
                     content_providers_path, :class => 'btn btn-info' %>
-        <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                    edit_content_provider_path(@content_provider), :class => 'btn btn-primary' %>
-        <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                    content_provider_path(@content_provider),
-                    :method => 'delete',
-                    :data => {:confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?'))},
-                    :class => 'btn btn-danger' %>
+        <% if !current_user.nil? and current_user.is_admin? %>
+            <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                        edit_content_provider_path(@content_provider), :class => 'btn btn-primary' %>
+            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                        content_provider_path(@content_provider),
+                        :method => 'delete',
+                        :data => {:confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?'))},
+                        :class => 'btn btn-danger' %>
+        <% end %>
       </div>
 
       <ul class="nav nav-tabs">
