@@ -58,9 +58,11 @@ class User < ActiveRecord::Base
   def set_default_profile
     if self.profile.nil?
       profile = Profile.new()
-      profile.email = self[:email]
+      email = (self[:email].blank? ? self[:email] : self[:unconfirmed_email])
+      profile.email = email
       profile.save!
       self.profile = profile
+      self.save!
       #self.profile_id = profile.id
     end
   end
