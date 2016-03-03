@@ -1,6 +1,9 @@
 <script>
 	$(document).ready(function () {
 		reposition_tiles('masonry', 'masonry-brick');
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            reposition_tiles('masonry', 'masonry-brick');
+        })
 	})
 </script>
 
@@ -53,7 +56,7 @@
                                               <%= "Showing #{pluralize(results_for_model.results.count, "#{model.to_s.humanize.singularize.downcase} result")}#{(results_for_model.total > 30) ? " of #{results_for_model.total}" : ''}." %>
 											</div>
                                             <%= link_to "View more #{model.to_s.humanize.singularize.downcase} results", :controller => model, :q => params[:q] %><br>
-											<div class="media-grid">
+											<div class="masonry media-grid">
 												<% results_for_model.results.each do |result| %>
 														<%= render partial: result %>
 												<% end %>
