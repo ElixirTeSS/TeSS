@@ -11,6 +11,9 @@ class SearchController < ApplicationController
        begin
          @results[symbolize model] = Sunspot.search(model.constantize) do
             fulltext search_params
+            if model == 'Event'
+              with('start').greater_than(Time.zone.now)
+            end
           end
        rescue
 
