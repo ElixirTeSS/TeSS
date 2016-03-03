@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   has_many :workflows
   belongs_to :role
 
-  after_create :set_default_role, :set_default_profile, :skip_email_confirmation!
+  after_create :skip_email_confirmation!, :set_default_role, :set_default_profile
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -52,18 +52,16 @@ class User < ActiveRecord::Base
 
   def set_default_role
     self.role ||= Role.find_by_name('registered_user')
-    self.save!
+    #self.save!  # having several save! in after_create causes problems
   end
 
   def set_default_profile
     if self.profile.nil?
       profile = Profile.new()
-      email = (self[:email].blank? ? self[:email] : self[:unconfirmed_email])
-      profile.email = email
+      profile.email = self[:email]
       profile.save!
       self.profile = profile
       self.save!
-      #self.profile_id = profile.id
     end
   end
 
@@ -100,7 +98,8 @@ class User < ActiveRecord::Base
   def skip_email_confirmation!
     # In development environment, set the user as confirmed after creation
     # so no confirmation emails are sent
-    self.confirm! if Rails.env.development?
+    self.skip_confirmation! if Rails.env.development?
+    #self.save!  # having several save! in after_create causes problems
   end
 
   def set_as_admin
