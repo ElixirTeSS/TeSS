@@ -20,7 +20,8 @@ class User < ActiveRecord::Base
   has_many :workflows
   belongs_to :role
 
-  after_create :set_default_role, :set_default_profile, :skip_email_confirmation_for_non_production
+  before_create :set_default_role, :set_default_profile
+  after_create :skip_email_confirmation_for_non_production
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -55,12 +56,7 @@ class User < ActiveRecord::Base
   end
 
   def set_default_profile
-    if self.profile.nil?
-      profile = Profile.new()
-      profile.email = self[:email]
-      profile.save!
-      self.profile = profile
-    end
+    self.profile ||= Profile.new(email: self[:email])
   end
 
   def is_admin?
