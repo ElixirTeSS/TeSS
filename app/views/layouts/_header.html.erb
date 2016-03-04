@@ -8,10 +8,8 @@
       <% if current_user %>
           <%= menu_group pull: :right do %>
               <%= menu_item current_user.username, user_path(current_user) %>
-              <% if current_user.is_registered_user? or current_user.is_admin? %>
-                  <%= menu_item users_path do %>
-                      <i class="fa fa-users fa-lg"></i>
-                  <% end %>
+              <%= menu_item users_path do %>
+                  <i class="fa fa-users fa-lg"></i>
               <% end %>
               <% if current_user.is_admin? %>
                   <%= menu_item rails_admin_path do %>
