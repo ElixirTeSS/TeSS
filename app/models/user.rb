@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   has_many :workflows
   belongs_to :role
 
-  after_create :skip_email_confirmation!, :set_default_role, :set_default_profile
+  after_create :set_default_role, :set_default_profile, :skip_email_confirmation_for_non_production
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -37,12 +37,12 @@ class User < ActiveRecord::Base
             :presence => true,
             :case_sensitive => false
 
-  validates_format_of :email,:with => Devise.email_regexp
+  validates_format_of :email, :with => Devise.email_regexp
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
-      where(conditions.to_h).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
+      where(conditions.to_h).where(["lower(username) = :value OR lower(email) = :value", {:value => login.downcase}]).first
     else
       where(conditions.to_h).first
     end
@@ -52,7 +52,6 @@ class User < ActiveRecord::Base
 
   def set_default_role
     self.role ||= Role.find_by_name('registered_user')
-    #self.save!  # having several save! in after_create causes problems
   end
 
   def set_default_profile
@@ -61,7 +60,6 @@ class User < ActiveRecord::Base
       profile.email = self[:email]
       profile.save!
       self.profile = profile
-      self.save!
     end
   end
 
@@ -95,11 +93,11 @@ class User < ActiveRecord::Base
     return false
   end
 
-  def skip_email_confirmation!
-    # In development environment, set the user as confirmed after creation
+  def skip_email_confirmation_for_non_production
+    # In development and test environments, set the user as confirmed
+    # after creation but before save
     # so no confirmation emails are sent
-    self.skip_confirmation! if Rails.env.development?
-    #self.save!  # having several save! in after_create causes problems
+    self.confirm unless Rails.env.production?
   end
 
   def set_as_admin
