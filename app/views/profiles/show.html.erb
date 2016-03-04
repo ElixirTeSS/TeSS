@@ -49,7 +49,7 @@
     </p>
     <p>
       <% if current_user == @user -%>
-        <p><strong>Authentication token</strong><br><span style=" font-style: italic;">(keep it secret)</span>
+        <p><strong>Authentication token</strong><br><span class="empty" style="font-style: italic;">(keep it secret)</span>
           <br>
           <%= @user.authentication_token %>
         </p>
