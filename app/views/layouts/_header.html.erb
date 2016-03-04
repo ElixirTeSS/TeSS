@@ -1,29 +1,57 @@
+<script>
+  $(".nav a").on("click", function () {
+    $(".nav").find(".active").removeClass("active");
+    $(this).parent().addClass("active");
+  });
+</script>
+
 <header class="elixir-black-header">
   <div class="container">
     <!-- Navigation bar -->
-    <nav class="navbar navbar-default" style="margin:0px; border:0px; background-color: #333333;" role="navigation">
-      <a href="http://www.elixir-europe.org/">
-        <img src="/assets/hub-logo.png" style="padding-top:12px;">
-      </a>
-      <% if current_user %>
-          <%= menu_group pull: :right do %>
-              <%= menu_item current_user.username, user_path(current_user) %>
-              <%= menu_item users_path do %>
-                  <i class="fa fa-users fa-lg"></i>
-              <% end %>
-              <% if current_user.is_admin? %>
-                  <%= menu_item rails_admin_path do %>
-                      <i class="fa fa-cog fa-lg"></i>
-                  <% end %>
-              <% end %>
-              <%= menu_item "Log out", destroy_user_session_path, :method => :delete, :data => {:confirm => 'Are you sure you want to log out?'} %>
-          <% end %>
-      <% else %>
-          <%= menu_group pull: :right do %>
-              <%= menu_item "Log in", new_user_session_path %>
-              <%= menu_item "Register", new_user_registration_path %>
-          <% end %>
-      <% end %>
+
+    <nav class="navbar navbar-default" role="navigation" style="margin:0px; border:0px; background-color: #333333;">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a href="http://www.elixir-europe.org/">
+            <img src="/assets/hub-logo.png" style="padding-top:12px;">
+          </a>
+        </div>
+        <div class="collapse navbar-collapse navbarCollapse">
+          <ul class="nav navbar-nav navbar-right">
+            <% if current_user %>
+                <%= menu_group pull: :right do %>
+                    <li class="<%= (request.fullpath == user_path(current_user)) ? 'active' : '' %>">
+                      <%= link_to current_user.username, user_path(current_user) %>
+                    </li>
+                    <li class="<%= (request.fullpath == users_path) ? 'active' : '' %>">
+                      <%= link_to users_path do %>
+                          <i class="fa fa-users fa-lg"></i>
+                      <% end %>
+                    </li>
+                    <% if current_user.is_admin? %>
+                        <li class="<%= (request.fullpath == rails_admin_path) ? 'active' : '' %>">
+                          <%= link_to rails_admin_path do %>
+                              <i class="fa fa-cog fa-lg"></i>
+                          <% end %>
+                        </li>
+                    <% end %>
+                    <li class="<%= (request.fullpath == destroy_user_session_path) ? 'active' : '' %>">
+                      <%= link_to "Log out", destroy_user_session_path, :method => :delete, :data => {:confirm => 'Are you sure you want to log out?'} %>
+                    </li>
+                <% end %>
+            <% else %>
+                <%= menu_group pull: :right do %>
+                    <li class="<%= (request.fullpath == new_user_session_path) ? 'active' : '' %>">
+                      <%= link_to "Log in", new_user_session_path %>
+                    </li>
+                    <li class="<%= (request.fullpath == new_user_registration_path) ? 'active' : '' %>">
+                      <%= link_to "Register", new_user_registration_path %>
+                    </li>
+                <% end %>
+            <% end %>
+          </ul>
+        </div>
+      </div>
     </nav>
   </div>
 </header>
