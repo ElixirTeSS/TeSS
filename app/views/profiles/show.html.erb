@@ -14,45 +14,46 @@
       <br>
       <% if @profile.firstname.blank? %>
         <p class="empty">None specified</p>
-    <% else %>
+      <% else %>
         <%= @profile.firstname %>
-    <% end %>
+      <% end %>
     </p>
     <p>
       <strong><%= model_class.human_attribute_name(:surname) %></strong>
       <br>
       <% if @profile.surname.blank? %>
         <p class="empty">None specified</p>
-    <% else %>
+      <% else %>
         <%= @profile.surname %>
-    <% end %>
+      <% end %>
     </p>
     <% if current_user == @user -%>
         <p>
           <strong><%= model_class.human_attribute_name(:email) %></strong>
           <br>
-          <% if @profile.surname.blank? %>
+          <% if @profile.email.blank? %>
             <p class="empty">None specified</p>
-        <% else %>
+          <% else %>
             <%= mail_to @profile.email %>
-        <% end %>
+          <% end %>
         </p>
     <% end %>
     <p>
       <strong><%= model_class.human_attribute_name(:website) %></strong>
       <br>
-      <% if @profile.surname.blank? %>
+      <% if @profile.website.blank? %>
         <p class="empty">None specified</p>
-    <% else %>
+      <% else %>
         <%= link_to @profile.website %>
-    <% end %>
+      <% end %>
     </p>
     <p>
       <% if current_user == @user -%>
-        <p><strong>Authentication Token</strong><br>(keep it secret)
+        <p><strong>Authentication token</strong><br><span style=" font-style: italic;">(keep it secret)</span>
           <br>
-          <%= @user.authentication_token %></p>
-    <% end %>
+          <%= @user.authentication_token %>
+        </p>
+      <% end %>
     </p>
   </div>
 
