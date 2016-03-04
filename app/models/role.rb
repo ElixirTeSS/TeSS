@@ -6,7 +6,7 @@ class Role < ActiveRecord::Base
   end
 
   # Use this with Role.create_roles on a new installation
-  # to set the initial roles up.
+  # to set the initial roles up if not using seeds.
   def self.create_roles
     self.roles.each do |name|
       r = Role.find_by_name(name)
