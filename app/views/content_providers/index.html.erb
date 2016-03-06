@@ -5,7 +5,7 @@
 </script>
 
 <div class="row wrapper">
-
+<% results = @content_providers.results.select{|x| x.materials.count > 0  } %>
   <% if SOLR_ENABLED %>
 
       <!-- SIDEBAR -->
@@ -13,7 +13,7 @@
         <%= render :partial => "content_providers/partials/general_content_provider_info" %>
         <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @content_providers, :resource_type => 'content_provider'} %>
       </div>
-
+ 
       <div class="col-md-9">
 
         <!-- CREATE NEW BUTTON -->
@@ -44,7 +44,10 @@
         <!-- APPLIED FILTERS AND NUMBER OF RESULTS -->
         <div class="row">
           <div class="col-md-8">
-            <%= render :partial => "search/common/search_info", :locals=>{:resources=>@content_providers, :resource_type => 'content_provider'}  %>
+            <%# render :partial => "search/common/search_info", :locals=>{:resources=>@content_providers, :resource_type => 'content_provider'}  %>
+		<div class="search-results-count">
+		   <%= pluralize( results.count, 'content provider') %> found
+		</div>
           </div>
           <!-- SORT BY OPTIONS    -->
           <div class="col-md-4" style="padding-top:5px;">
@@ -66,14 +69,16 @@
 
         <hr>
         <!-- RESULTS -->
-        <% @content_providers = @content_providers.results unless @content_providers.blank? %>
+        <% @content_providers = results %>
   <% end %>
 
   <!-- ACTUAL RESULTS LIST -->
   <% unless @content_providers.blank? %>
       <ul class="masonry media-grid">
         <% @content_providers.each do |content_provider|  %>
-            <%= render content_provider %>
+            <% if content_provider.materials.count > 0 %>
+                <%= render content_provider %>
+            <% end %>
         <% end %>
       </ul>
   <% end %>
