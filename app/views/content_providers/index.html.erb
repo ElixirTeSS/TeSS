@@ -5,7 +5,7 @@
 </script>
 
 <div class="row wrapper">
-<% results = @content_providers.results.select{|x| x.materials.count > 0  } %>
+<% results = @content_providers.results.select{|x| x.materials.count > 0 or x.events.count > 0  } %>
   <% if SOLR_ENABLED %>
 
       <!-- SIDEBAR -->
@@ -76,7 +76,7 @@
   <% unless @content_providers.blank? %>
       <ul class="masonry media-grid">
         <% @content_providers.each do |content_provider|  %>
-            <% if content_provider.materials.count > 0 %>
+            <% if content_provider.materials.count > 0 or content_provider.events.count > 0 %>
                 <%= render content_provider %>
             <% end %>
         <% end %>
