@@ -94,7 +94,7 @@ class MaterialsController < ApplicationController
   # POST /materials.json
   def create
     @material = Material.new(material_params)
-    @material.owner = current_user
+    @material.user_id = current_user.id
     respond_to do |format|
       if @material.save
         @material.create_activity :create, owner: current_user
