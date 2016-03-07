@@ -13,10 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap-sprockets
-// Causes jQuery/Boostrap not to load correctly even with jquery.turbolinks
-// so commenting out for now
-// //= require turbolinks
-// //= require jquery.turbolinks
 //= require_tree .
 
 function redirect_to_sort_url(){
