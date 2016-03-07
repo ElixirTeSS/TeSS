@@ -54,7 +54,7 @@
             <% end %> 
           </div>  
         </div>
-        <div id="events" class="tab-pain fade
+        <div id="events" class="tab-pane fade
               <%= "in active" if @content_provider.events.count > 0 and @content_provider.materials.count < 1 %>
           ">
           <div class="row">
@@ -68,7 +68,6 @@
             </ul>
           </div>  
         </div>
-
         <div id="activity_log" class="tab-pane fade">
           <%= render :partial => "activities/activity_log", :locals => {:resource => @content_provider} %>
         </div>

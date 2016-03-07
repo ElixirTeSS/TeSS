@@ -14,18 +14,18 @@
       <br>
       <% if @profile.firstname.blank? %>
         <p class="empty">None specified</p>
-      <% else %>
+    <% else %>
         <%= @profile.firstname %>
-      <% end %>
+    <% end %>
     </p>
     <p>
       <strong><%= model_class.human_attribute_name(:surname) %></strong>
       <br>
       <% if @profile.surname.blank? %>
         <p class="empty">None specified</p>
-      <% else %>
+    <% else %>
         <%= @profile.surname %>
-      <% end %>
+    <% end %>
     </p>
     <% if current_user == @user -%>
         <p>
@@ -33,9 +33,9 @@
           <br>
           <% if @profile.email.blank? %>
             <p class="empty">None specified</p>
-          <% else %>
+        <% else %>
             <%= mail_to @profile.email %>
-          <% end %>
+        <% end %>
         </p>
     <% end %>
     <p>
@@ -43,17 +43,18 @@
       <br>
       <% if @profile.website.blank? %>
         <p class="empty">None specified</p>
-      <% else %>
+    <% else %>
         <%= link_to @profile.website %>
-      <% end %>
+    <% end %>
     </p>
     <p>
       <% if current_user == @user -%>
-        <p><strong>Authentication token</strong><br><span class="empty" style="font-style: italic;">(keep it secret)</span>
+        <p><strong>Authentication
+          token</strong><br><span class="empty" style="font-style: italic;">(keep it secret)</span>
           <br>
           <%= @user.authentication_token %>
         </p>
-      <% end %>
+    <% end %>
     </p>
   </div>
 
@@ -76,21 +77,58 @@
 
     <ul class="nav nav-tabs">
       <li class="active">
-        <a data-toggle="tab" href="#home"><i class="<%= icon_class_for_model('materials') %>"></i> Materials</a></li>
+        <a data-toggle="tab" href="#materials"><i class="<%= icon_class_for_model('materials') %>"></i> Materials</a>
+      </li>
       <li>
         <a data-toggle="tab" href="#packages"><i class="<%= icon_class_for_model('packages') %>"></i> Packages</a>
       </li>
       <li>
-        <a data-toggle="tab" href="#packages"><i class="<%= icon_class_for_model('workflows') %>"></i> Workflows</a>
-      </li>
-      <li>
-        <a data-toggle="tab" href="#activity_log"><i class="<%= icon_class_for_model('activity_logs') %>"></i> Activity
-          log</a>
+        <a data-toggle="tab" href="#workflows"><i class="<%= icon_class_for_model('workflows') %>"></i> Workflows</a>
       </li>
     </ul>
 
-    <p class="empty" style="margin-top: 10px;">This part is still under construction.</p>
-
+    <div class="tab-content">
+      <div id="materials" class="tab-pane fade in active">
+        <div class="row">
+          <div class="search-results-count"> 
+            <%= pluralize(@user.materials.count, 'training material') %> found 
+          </div>
+          <% if !@user.materials.blank? %>
+              <% @user.materials.each do |material| %> 
+                  <%= render material %> 
+              <% end %> 
+          <% end %>
+        </div>
+      </div>
+      <div id="packages" class="tab-pane fade">
+        <div class="row">
+          <div class="search-results-count">
+            <%= pluralize(@user.packages.count, 'package') %> found
+          </div>
+          <% if !@user.packages.blank? %>
+              <ul class="masonry media-grid" style="margin-top: 15px;">
+                <% @user.packages.each do |package| %>
+                    <%= render package %>
+                <% end %>
+              </ul>
+          <% end %>
+        </div>
+      </div>
+      <div id="workflows" class="tab-pane fade">
+        <div class="row">
+          <div class="search-results-count">
+            <%= pluralize(@user.workflows.count, 'workflow') %> found
+          </div>
+          <% if !@user.workflows.blank? %>
+              <ul class="masonry media-grid" style="margin-top: 15px;">
+                <% @user.workflows.each do |workflow| %>
+                    <%= render workflow %>
+                <% end %>
+              </ul>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
