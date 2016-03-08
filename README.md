@@ -109,7 +109,6 @@ You can replace *start* with *stop* or *restart* to stop or restart solr. You ca
 4. Run:
  * `$ bundle install` (if you have not already)
  * `$ rake db:setup`
- * `$ rake db:migrate`
 
 5. You should be ready to fire up TeSS in development mode:
  * `$ rails server`
@@ -119,9 +118,35 @@ You can replace *start* with *stop* or *restart* to stop or restart solr. You ca
 
 ### Live deployment
 
-Although designed for CentOS, this document can be followed quite closely to set up TeSS to work with Apache and Passenger:
+Although designed for CentOS, this document can be followed quite closely to set up a Rails app to work with Apache and Passenger:
 
     https://www.digitalocean.com/community/tutorials/how-to-setup-a-rails-4-app-with-apache-and-passenger-on-centos-6
+
+To set up TeSS in production, do:
+
+`rake db:setup RAILS_ENV=production`
+
+which will do db:create, db:schema:load, db:seed. If you want the DB dropped as well:
+
+`rake db:reset RAILS_ENV=production`
+
+ (which will do db:drop, db:setup)
+
+`unset XDG_RUNTIME_DIR` may need setting in ~/.profile or similar if rails console moans about permissions.
+
+Delete all from Solr if need be:
+
+`curl http://localhost:8983/solr/update?commit=true -d  '<delete><query>*:*</query></delete>'`
+`rake sunspot:solr:reindex RAILS_ENV=production`
+
+ Create an admin user and assign it appropriate 'admin' role.
+
+ The first time and each time a css or js file is updated:
+
+ `bundle exec rake assets:clean RAILS_ENV=production`
+ `bundle exec rake assets:precompile RAILS_ENV=production`
+
+ Restart your Web server.
 
 ## Basic API
 
