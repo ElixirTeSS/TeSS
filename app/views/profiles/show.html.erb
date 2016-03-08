@@ -27,7 +27,7 @@
         <%= @profile.surname %>
     <% end %>
     </p>
-    <% if current_user == @user -%>
+    <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
         <p>
           <strong><%= model_class.human_attribute_name(:email) %></strong>
           <br>
@@ -48,7 +48,7 @@
     <% end %>
     </p>
     <p>
-      <% if current_user == @user -%>
+      <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
         <p><strong>Authentication
           token</strong><br><span class="empty" style="font-style: italic;">(keep it secret)</span>
           <br>
