@@ -29,4 +29,4 @@ Rails.application.config.assets.precompile += %w( events.jpg )
 Rails.application.config.assets.precompile += %w( packages.jpg )
 Rails.application.config.assets.precompile += %w( providers-6.jpg )
 Rails.application.config.assets.precompile += %w( workflows.png )
-
+Rails.application.config.assets.precompile += %w( workflow.png )
