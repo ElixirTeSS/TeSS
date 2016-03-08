@@ -134,16 +134,18 @@ which will do db:create, db:schema:load, db:seed. If you want the DB dropped as 
 
 `unset XDG_RUNTIME_DIR` may need setting in ~/.profile or similar if rails console moans about permissions.
 
-Delete all from Solr if need be:
+Delete all from Solr if need be and reindex it:
 
 `curl http://localhost:8983/solr/update?commit=true -d  '<delete><query>*:*</query></delete>'`
+
 `rake sunspot:solr:reindex RAILS_ENV=production`
 
- Create an admin user and assign it appropriate 'admin' role.
+ Create an admin user and assign it appropriate 'admin' role bu looking up that role in console in model Role (default roles should be created automatically).
 
  The first time and each time a css or js file is updated:
 
  `bundle exec rake assets:clean RAILS_ENV=production`
+
  `bundle exec rake assets:precompile RAILS_ENV=production`
 
  Restart your Web server.
