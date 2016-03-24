@@ -46,11 +46,11 @@ Variable that should be available
       <li><h4 class="nav-heading">Content provider</h4></li>
       <li style="padding: 7px 20px;">
         <p>
-          <%= link_to(image_tag(get_image_url_for(content_provider), :class => "medium-content-provider-logo"), content_provider) %>
+          <%= link_to(image_tag(get_image_url_for(content_provider), :class => "medium-content-provider-logo"), content_provider.url) %>
         </p>
 
         <p>
-          <%= link_to content_provider.title, content_provider, :class => "h5" %>
+          <%= link_to content_provider.title, content_provider.url, :class => "h5", :target => "_blank" %>
         </p>
         <% unless content_provider.description.blank? %>
             <p class="minimise">
