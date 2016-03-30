@@ -5,8 +5,8 @@
 </script>
 
 <div class="row wrapper">
-<% results = @content_providers.results.select{|x| x.materials.count > 0 or x.events.count > 0  } %>
   <% if SOLR_ENABLED %>
+      <% results = @content_providers.results.select{|x| x.materials.count > 0 or x.events.count > 0  } %>
 
       <!-- SIDEBAR -->
       <div class="col-md-3" id="sidebar">
