@@ -48,7 +48,7 @@ class UsersControllerTest < ActionController::TestCase
     assert_no_difference('User.count') do
       post :create, user: { username: 'frank', email: 'frank@notarealdomain.org', password: 'franksreallylongpass'}
     end
-    assert_redirected_to new_user_session_path
+    assert_redirected_to root_path
   end
 
   test "should show user if admin" do
