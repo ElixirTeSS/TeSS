@@ -9,12 +9,14 @@ regular_user:
   email: 'bob@notarealdomain.org'
   encrypted_password: 'bobs_encrypted_password'
   confirmed_at: <%= Time.zone.now %>
+  role_id: 1
   authentication_token: <%= Devise.friendly_token %>
 
 another_regular_user:
   username: 'Dale'
   email: 'dale@notarealdomain.org'
   encrypted_password: 'dales_encrypted_password'
+  role_id: 1
   confirmed_at: <%= Time.zone.now %>
 
 admin:
