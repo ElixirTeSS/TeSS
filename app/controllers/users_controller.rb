@@ -91,10 +91,10 @@ class UsersController < ApplicationController
 
   # Override
   def check_authorised
-    if (current_user.nil?)
+    if (@user.nil?)
       return # user has not been logged in yet!
     else
-      if current_user.id == @user.id or current_user.is_admin?
+      if @user.id == @user.id or @user.is_admin?
         return
       end
     end
