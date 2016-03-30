@@ -64,7 +64,7 @@ class EventsControllerTest < ActionController::TestCase
   #end
 
   test "should destroy event" do
-    sign_in users(:regular_user)
+    sign_in users(:admin)
     assert_difference('Event.count', -1) do
       delete :destroy, id: @event
     end
