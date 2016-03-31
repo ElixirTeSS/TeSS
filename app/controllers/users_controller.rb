@@ -37,12 +37,16 @@ class UsersController < ApplicationController
     logger.info "USER: #{@user.inspect}"
 
     respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
+      if current_user and current_user.is_admin?
+        if @user.save
+          format.html { redirect_to @user, notice: 'User was successfully created.' }
+          format.json { render :show, status: :created, location: @user }
+        else
+          format.html { render :new }
+          format.json { render json: @user.errors, status: :unprocessable_entity }
+        end
       else
-        format.html { render :new }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.html {redirect_to root_path, notice: 'You are not authorized to create new users'}
       end
     end
   end
@@ -91,10 +95,10 @@ class UsersController < ApplicationController
 
   # Override
   def check_authorised
-    if (current_user.nil?)
+    if (@user.nil?)
       return # user has not been logged in yet!
     else
-      if current_user.id == @user.id or current_user.is_admin?
+      if @user.id == @user.id or @user.is_admin?
         return
       end
     end

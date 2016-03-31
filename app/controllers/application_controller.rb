@@ -96,7 +96,7 @@ class ApplicationController < ActionController::Base
   end
 
   def check_authorised
-    user = current_user || User.find_by_authentication_token(params[:user_token])
+    user = @user || User.find_by_authentication_token(params[:user_token])
     if (user.nil?)
       return # user has not been logged in yet!
     else
