@@ -51,4 +51,9 @@ Rails.application.configure do
       enable_starttls_auto: true  }
 
   SOLR_ENABLED=true
+
+  # The message to display at the very top of the page.
+  # Use this for extra special messages like very important announcements and maintenance notices.
+  # ANNOUNCEMENT_MESSAGE = "TeSS is undergoing scheduled maintenance on Thursday March 31 2016, during which the service may go down unexpectedly. Apologies for the disruption."
+
 end

@@ -53,6 +53,15 @@
   <!--</ul>-->
   <!--</div>-->
   <%# end %>
+
+  <% if defined? ANNOUNCEMENT_MESSAGE and !ANNOUNCEMENT_MESSAGE.blank? %>
+      <%= content_tag(:div, ANNOUNCEMENT_MESSAGE.html_safe(), class: "alert alert-danger fade in", style: "text-align: center; margin-bottom: 0px; margin-top: 5px;") do
+          concat content_tag(:button, '&times;'.html_safe, class: "close", data: { dismiss: 'alert' }, "aria-label" => 'close')
+          concat ANNOUNCEMENT_MESSAGE.html_safe()
+          end
+      %>
+  <% end %>
+
   <!-- Breadcrumbs -->
   <%= render_breadcrumbs do |breadcrumbs| %>
       <%= content_tag(:div, breadcrumbs, class: "breadcrumbs") %>
