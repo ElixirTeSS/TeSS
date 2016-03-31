@@ -39,7 +39,7 @@
           <div class="row">
             <div class="page-header">
               <h2><%=t '.title', :default => @material.title %></h2>
-              <p><%= link_to @material.url, @material.url, :class =>'h5' %></p>
+              <p><%= link_to @material.url, @material.url, :class =>'h5', :target => "_blank" %></p>
               <% if not @material.long_description.blank? %>
                   <p><%= render_markdown(@material.long_description) %></p>
               <% elsif not @material.short_description.blank? %>
