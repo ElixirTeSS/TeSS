@@ -1,6 +1,9 @@
-<h2>Edit event</h2>
-
-<%= render 'form' %>
-
-<%= link_to 'Show', @event %> |
-<%= link_to 'Back', events_path %>
+<div class="row wrapper">
+  <div class=" col-md-12 col-xs-12">
+    <%- model_class = Event -%>
+    <div class="page-header">
+      <h2><%=t '.title', :default => [:'helpers.titles.edit', 'Edit %{model}'], :model => model_class.model_name.human.titleize.downcase %></h2>
+    </div>
+    <%= render :partial => 'form' %>
+  </div>
+</div>

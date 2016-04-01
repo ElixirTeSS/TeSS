@@ -1,89 +1,96 @@
-<%= form_for(@event) do |f| %>
-  <% if @event.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
+<div class="row">
+  <div class="col-md-9 col-xs-9">
+    <%= simple_form_for @event, :html => {:class => "form-horizontal"} do |f| %>
+        <% if @event.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
 
-      <ul>
-      <% @event.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+              <ul>
+                <% @event.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+        <% end %>
 
-  <div class="field">
-    <%= f.label :id %><br>
-    <%= f.text_field :id %>
+        <div class="form-group">
+          <%= f.label :id %>
+          <%= f.text_field :id, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :title %>
+          <%= f.text_field :title, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :subtitle %>
+          <%= f.text_field :subtitle, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :url %>
+          <%= f.text_field :url, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :provider %>
+          <%= f.text_field :provider, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :field %><br>
+          <%= f.text_area :field, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :description %>
+          <%= f.text_area :description, :rows => "10", :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :category %>
+          <%= f.text_area :category, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :start %>
+          <%= f.datetime_select :start, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :end %>
+          <%= f.datetime_select :end, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :sponsor %>
+          <%= f.text_field :sponsor, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :venue %>
+          <%= f.text_area :venue, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :city %>
+          <%= f.text_field :city, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :county %>
+          <%= f.text_field :county, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :country %>
+          <%= f.text_field :country, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :postcode %>
+          <%= f.text_field :postcode, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :latitude %>
+          <%= f.text_field :latitude, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :longitude %>
+          <%= f.text_field :longitude, :class => 'form-control' %>
+        </div>
+           <div class="form-group">
+          <%= f.submit ( f.object.new_record? ? "Add" : "Update") + " event", :class => 'btn btn-primary' %>
+          <%= link_to 'Back', events_path, :class=>"btn btn-info" %>
+          <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                      events_path, :class => 'btn btn-default' %>
+        </div>
+    <% end %>
   </div>
-  <div class="field">
-    <%= f.label :title %><br>
-    <%= f.text_field :title %>
-  </div>
-  <div class="field">
-    <%= f.label :subtitle %><br>
-    <%= f.text_field :subtitle %>
-  </div>
-  <div class="field">
-    <%= f.label :url %><br>
-    <%= f.text_field :url %>
-  </div>
-  <div class="field">
-    <%= f.label :provider %><br>
-    <%= f.text_field :provider %>
-  </div>
-  <div class="field">
-    <%= f.label :field %><br>
-    <%= f.text_area :field %>
-  </div>
-  <div class="field">
-    <%= f.label :description %><br>
-    <%= f.text_area :description, :rows => "10" %>
-  </div>
-  <div class="field">
-    <%= f.label :category %><br>
-    <%= f.text_area :category %>
-  </div>
-  <div class="field">
-    <%= f.label :start %><br>
-    <%= f.datetime_select :start %>
-  </div>
-  <div class="field">
-    <%= f.label :end %><br>
-    <%= f.datetime_select :end %>
-  </div>
-  <div class="field">
-    <%= f.label :sponsor %><br>
-    <%= f.text_field :sponsor %>
-  </div>
-  <div class="field">
-    <%= f.label :venue %><br>
-    <%= f.text_area :venue %>
-  </div>
-  <div class="field">
-    <%= f.label :city %><br>
-    <%= f.text_field :city %>
-  </div>
-  <div class="field">
-    <%= f.label :county %><br>
-    <%= f.text_field :county %>
-  </div>
-  <div class="field">
-    <%= f.label :country %><br>
-    <%= f.text_field :country %>
-  </div>
-  <div class="field">
-    <%= f.label :postcode %><br>
-    <%= f.text_field :postcode %>
-  </div>
-  <div class="field">
-    <%= f.label :latitude %><br>
-    <%= f.text_field :latitude %>
-  </div>
-  <div class="field">
-    <%= f.label :longitude %><br>
-    <%= f.text_field :longitude %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div>
