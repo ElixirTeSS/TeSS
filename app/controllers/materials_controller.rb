@@ -150,6 +150,8 @@ class MaterialsController < ApplicationController
                                        {:scientific_topic => []},
                                        :licence, :difficulty_level, {:contributors => []},
                                        {:authors=> []}, {:target_audience => []}  )
+        mat_params[:short_description] = ActionView::Base.full_sanitizer.sanitize(mat_params[:short_description])
+        mat_params[:long_description] = ActionView::Base.full_sanitizer.sanitize(mat_params[:long_description])
 
        if mat_params[:scientific_topic_ids].nil? or mat_params[:scientific_topic_ids].empty?
           mat_params[:scientific_topic_ids] = []
