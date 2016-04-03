@@ -49,6 +49,10 @@ To just install Rails 4, you can do (at the time of this writing we worked with 
 Make sure tess_user is either the owner of the TeSS database (to be created in the next step), or is a superuser.
 Otherwise, you may run into some issues when running and managing the TeSS app.
 
+Normally you'd start postgres with something like (passing the path to your database with -D):
+
+ * `$ pg_ctl -D ~/Postgresql/data/ start`
+
  From command prompt:
  * `$ createuser --superuser tess_user`
 
