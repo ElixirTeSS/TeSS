@@ -148,6 +148,12 @@ a:hover {
   background: #085871;
 }
 
+// Override Bootstrap's alert
+.alert {
+  margin-bottom: 0px;
+  margin-top: 5px;
+}
+
 .btn-primary:active, .btn-primary.active {
   background: #064559;
 }
