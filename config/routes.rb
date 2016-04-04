@@ -6,7 +6,6 @@ Rails.application.routes.draw do
 
   #get 'static/home'
   get 'about' => 'static#about', as: 'about'
-  get 'forbidden' => 'static#forbidden'
 
   post 'materials/check_exists' => 'materials#check_exists'
   post 'events/check_exists' => 'events#check_exists'

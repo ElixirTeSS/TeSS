@@ -40,16 +40,12 @@ class UsersController < ApplicationController
     logger.info "USER: #{@user.inspect}"
 
     respond_to do |format|
-      if current_user and current_user.is_admin?
-        if @user.save
-          format.html { redirect_to @user, notice: 'User was successfully created.' }
-          format.json { render :show, status: :created, location: @user }
-        else
-          format.html { render :new }
-          format.json { render json: @user.errors, status: :unprocessable_entity }
-        end
+      if @user.save
+        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.json { render :show, status: :created, location: @user }
       else
-        format.html {redirect_to root_path, notice: 'You are not authorized to create new users'}
+        format.html { render :new }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -81,36 +77,21 @@ class UsersController < ApplicationController
   end
 
   def change_token
-    #authorize @user
+    authorize @user
     @user = current_user
     if @user.authentication_token.nil?
       flash[:alert] = "Action not allowed."
-      redirect_to root_path and return
+      handle_error() and return
     end
     @user.authentication_token = Devise.friendly_token
     if @user.save
       flash[:notice] = "API key changed."
       redirect_to "/users/#{@user.profile.id}"
     else
-      flash[:alert] = "Failed to change api_key."
-      redirect_to root_path
+      flash[:alert] = "Failed to change API key."
+      handle_error()
     end
   end
-
-  protected
-
-  # # Override
-  # def check_authorised
-  #   if (@user.nil?)
-  #     return # user has not been logged in yet!
-  #   else
-  #     if @user.id == @user.id or @user.is_admin?
-  #       return
-  #     end
-  #   end
-  #   flash[:error] = "Sorry, you're not allowed to view that page."
-  #   redirect_to root_path
-  # end
 
   private
 
