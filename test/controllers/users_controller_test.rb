@@ -8,27 +8,28 @@ class UsersControllerTest < ActionController::TestCase
     @admin = users(:admin)
   end
 
-  test "should get index page when logged in" do
+  test 'should get index page for everyone' do
     sign_in users(:regular_user)
     get :index
     assert_response :success
     assert_not_nil assigns(:users)
   end
 
-  test "should_redirect_user_to_login_page when going to index page whilst not logged in" do
+  test 'should_redirect_user_to_login_page when going to index page whilst not logged in' do
     get :index
     assert_redirected_to new_user_session_path
   end
 
-  test "should never allow user#new route" do
+  # User new is handled by devise
+  test "should never allow user new route" do
     get :new
     assert_redirected_to new_user_session_path
     sign_in users(:regular_user)
     get :new
-    assert_redirected_to new_user_session_path
+    assert_redirected_to root_path
     sign_in users(:admin)
     get :new
-    assert_redirected_to new_user_session_path
+    assert_redirected_to root_path
   end
 
   test "should be able to create user whilst logged in as admin" do
@@ -60,7 +61,7 @@ class UsersControllerTest < ActionController::TestCase
   test "should not show other users page if not admin and self" do
     sign_in users(:another_regular_user)
     get :show, id: @user
-    assert_redirected_to root_path #FORBIDDEN PAGE!
+    assert_response :forbidden #FORBIDDEN PAGE!?
   end
 
  test "should only allow edit for admin and self" do
