@@ -17,16 +17,19 @@ class ScientificTopicsController < ApplicationController
 
   # GET /scientific_topics/new
   def new
+    authorize ScientificTopic
     @scientific_topic = ScientificTopic.new
   end
 
   # GET /scientific_topics/1/edit
   def edit
+    authorize @scientific_topic
   end
 
   # POST /scientific_topics
   # POST /scientific_topics.json
   def create
+    authorize ScientificTopic
     @scientific_topic = ScientificTopic.new(scientific_topic_params)
 
     respond_to do |format|
@@ -43,6 +46,7 @@ class ScientificTopicsController < ApplicationController
   # PATCH/PUT /scientific_topics/1
   # PATCH/PUT /scientific_topics/1.json
   def update
+    authorize @scientific_topic
     respond_to do |format|
       if @scientific_topic.update(scientific_topic_params)
         format.html { redirect_to @scientific_topic, notice: 'Scientific topic was successfully updated.' }
@@ -57,6 +61,7 @@ class ScientificTopicsController < ApplicationController
   # DELETE /scientific_topics/1
   # DELETE /scientific_topics/1.json
   def destroy
+    authorize @scientific_topic
     @scientific_topic.destroy
     respond_to do |format|
       format.html { redirect_to scientific_topics_url, notice: 'Scientific topic was successfully destroyed.' }

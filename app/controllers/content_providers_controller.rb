@@ -25,10 +25,12 @@ class ContentProvidersController < ApplicationController
   end
 
   def new
+    authorize ContentProvider
     @content_provider = ContentProvider.new
   end
 
   def edit
+    authorize @content_provider
   end
 
   # POST /events/check_exists
@@ -62,6 +64,7 @@ class ContentProvidersController < ApplicationController
   end
 
   def create
+    authorize ContentProvider
     @content_provider = ContentProvider.new(content_provider_params)
 
     respond_to do |format|
@@ -77,6 +80,7 @@ class ContentProvidersController < ApplicationController
   end
 
   def update
+    authorize @content_provider
     respond_to do |format|
       if @content_provider.update(content_provider_params)
         @content_provider.create_activity :update, owner: current_user
@@ -90,6 +94,7 @@ class ContentProvidersController < ApplicationController
   end
 
   def destroy
+    authorize @content_provider
     @content_provider.create_activity :destroy, owner: current_user
     @content_provider.destroy
     respond_to do |format|

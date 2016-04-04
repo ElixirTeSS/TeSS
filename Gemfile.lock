@@ -134,6 +134,8 @@ GEM
       activerecord (>= 3.0)
       i18n (>= 0.5.0)
       railties (>= 3.0.0)
+    pundit (1.1.0)
+      activesupport (>= 3.0.0)
     rack (1.6.4)
     rack-pjax (0.8.0)
       nokogiri (~> 1.5)
@@ -271,6 +273,7 @@ DEPENDENCIES
   pg
   progress_bar
   public_activity
+  pundit
   rails (= 4.2.4)
   rails_admin
   redcarpet

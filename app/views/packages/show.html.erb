@@ -15,11 +15,15 @@
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")),
                     package_path, :class => 'btn btn-info' %>
-        <% if check_permissions?(current_user, @package) %>
+        <% if !current_user.nil? and policy(@package).update? %>
             <%= link_to t('.edit', :default => t("helpers.links.edit")),
                         edit_package_path(@package), :class => 'btn btn-primary' %>
+        <% end %>
+        <% if !current_user.nil? and policy(@package).manage? %>
             <%= link_to t('.manage', :default => t("helpers.links.manage")),
                         package_manage_path(@package), :class => 'btn btn-default' %>
+        <% end %>
+        <% if !current_user.nil? and policy(@package).destroy? %>
             <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                         package_path(@package),
                         :method => 'delete',

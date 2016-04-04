@@ -20,18 +20,23 @@ class ApplicationController < ActionController::Base
   # Should prevent forgery errors for JSON posts.
   skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
 
-  # Prevent all but admins from creating events
-  # !!!!!! Make sure this method is always invoked in conjunction with authenticate_user!
-  # otherwise access control loopholes will be opened
-  before_action :check_authorised, except: [:index, :show, :check_exists]
+  # Do some access control - see policies folder for individual policies on models
+  include Pundit
+  protect_from_forgery
 
-  #def after_sign_in_path_for(resource)
-  #  root_path
-  #end
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  #def after_sign_out_path_for(resource_or_scope)
-  #  request.referrer
-  #end
+  def pundit_user
+    CurrentContext.new(current_user, request)
+  end
+
+  private
+
+  def user_not_authorized(exception)
+    policy_name = exception.policy.class.to_s.underscore
+    flash[:warning] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
+    redirect_to(request.referrer || root_path)
+  end
 
   protected
 
@@ -95,90 +100,20 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def check_authorised
-    user = @user || User.find_by_authentication_token(params[:user_token])
-    if (user.nil?)
-      return # user has not been logged in yet!
-    else
-      # In most cases we'd need to check if role is admin, registered user or api_user
-      check_admin_or_api_or_registered_user(user)
-    end
-  end
-
-  def request_is_api?
-    return ((request.post? or request.put? or request.patch?) and request.format.json?)
-  end
-
-  def closed_route
-    if !((request.post? or request.put? or request.patch?) and request.format.json?)
-      head(403)
-      #redirect_to :back, notice: "Sorry, you're not allowed to view that page."
-    end
-    #rescue ActionController::RedirectBackError
-    #  redirect_to root_path, notice: "Sorry, you're not allowed to view that page."
-  end
-
-  def check_admin_or_api_user(user)
-    if !user.nil?
-      return if user.is_admin? # allow admins for all requests - UI and API, and all methods
-      if request_is_api? #is an API action - allow api_user accounts such as scrapers
-        if user.is_api_user?
-          if [:edit, :update, :destroy].include?(action_name) # for some methods check ownership
-            return if check_permissions?(user, determine_resource)
-          else
-            return
-          end
-        else #return 403 Forbidden status code
-          head(403)
-        end
-      end
-    end
-    # Should not really ever come to here
-    flash[:error] = "Sorry, you're not allowed to view that page."
-    redirect_to root_path
-  end
-
-  def check_admin_or_api_or_registered_user(user)
-    if !user.nil?
-      return if user.is_admin? # allow admins for all requests - UI and API
-      if request_is_api? #is an API action - allow api_user accounts such as scrapers
-        if user.is_api_user?
-          if [:edit, :update, :destroy].include?(action_name) # for some methods check ownership
-            return if check_permissions?(user, determine_resource)
-          else
-            return
-          end
-        else #return 403 Forbidden status code
-          head(403)
-        end
-      end
-      if user.is_registered_user? or user.is_api_user? # Not an API request, so allow registered users and API users only if they are the owner of the resource
-        if [:edit, :update, :destroy].include?(action_name) # for some methods check ownership
-          return if check_permissions?(user, determine_resource)
-        else
-          return
-        end
-      end
-    end
-    # Should not really ever come to here
-    flash[:error] = "Sorry, you're not allowed to view that page."
-    redirect_to root_path
-  end
-
-  # Check if user is owner of a resource or user is admin
-  def check_permissions?(user, resource)
-    return false if user.nil? or resource.nil?
-    return false if !resource.respond_to?("owner".to_sym)
-    return true if user.is_admin?
-
-    # Else the user needs to be the owner of the resource
-    if user == resource.owner
-      return true
-    else
-      return false
-    end
-  end
-  helper_method :check_permissions?
+  # # Check if user is owner of a resource or user is admin
+  # def check_permissions?(user, resource)
+  #   return false if user.nil? or resource.nil?
+  #   return false if !resource.respond_to?("owner".to_sym)
+  #   return true if user.is_admin?
+  #
+  #   # Else the user needs to be the owner of the resource
+  #   if user == resource.owner
+  #     return true
+  #   else
+  #     return false
+  #   end
+  # end
+  # helper_method :check_permissions?
 
   def determine_resource
     #Find out the resource object being requested

@@ -17,16 +17,19 @@ class WorkflowsController < ApplicationController
 
   # GET /workflows/new
   def new
+    authorize Workflow
     @workflow = Workflow.new
   end
 
   # GET /workflows/1/edit
   def edit
+    authorize @workflow
   end
 
   # POST /workflows
   # POST /workflows.json
   def create
+    authorize Workflow
     @workflow = Workflow.new(workflow_params)
 
     respond_to do |format|
@@ -43,6 +46,7 @@ class WorkflowsController < ApplicationController
   # PATCH/PUT /workflows/1
   # PATCH/PUT /workflows/1.json
   def update
+    authorize @workflow
     respond_to do |format|
       if @workflow.update(workflow_params)
         format.html { redirect_to @workflow, notice: 'Workflow was successfully updated.' }
@@ -57,6 +61,7 @@ class WorkflowsController < ApplicationController
   # DELETE /workflows/1
   # DELETE /workflows/1.json
   def destroy
+    authorize @workflow
     @workflow.destroy
     respond_to do |format|
       format.html { redirect_to workflows_url, notice: 'Workflow was successfully destroyed.' }
