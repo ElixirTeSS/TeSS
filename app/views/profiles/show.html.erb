@@ -9,53 +9,56 @@
       <%= image_tag @user.gravatar_url %>
     </div>
     <hr/>
-    <p>
+    <p style="margin-bottom: 0px;">
       <strong><%= model_class.human_attribute_name(:firstname) %></strong>
-      <br>
-      <% if @profile.firstname.blank? %>
+    </p>
+    <% if @profile.firstname.blank? %>
         <p class="empty">None specified</p>
     <% else %>
-        <%= @profile.firstname %>
+        <p><%= @profile.firstname %></p>
     <% end %>
-    </p>
-    <p>
+
+    <p style="margin-bottom: 0px;">
       <strong><%= model_class.human_attribute_name(:surname) %></strong>
-      <br>
-      <% if @profile.surname.blank? %>
+    </p>
+    <% if @profile.surname.blank? %>
         <p class="empty">None specified</p>
     <% else %>
-        <%= @profile.surname %>
+        <p><%= @profile.surname %></p>
     <% end %>
+
+    <p style="margin-bottom: 0px;">
+      <strong>Role</strong>
     </p>
+    <p><%= @user.role.name.titleize.humanize %></p>
+
     <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
-        <p>
+        <p style="margin-bottom: 0px;">
           <strong><%= model_class.human_attribute_name(:email) %></strong>
-          <br>
-          <% if @profile.email.blank? %>
+        </p>
+        <% if @profile.email.blank? %>
             <p class="empty">None specified</p>
         <% else %>
-            <%= mail_to @profile.email %>
+            <p><%= mail_to @profile.email %></p>
         <% end %>
-        </p>
     <% end %>
-    <p>
+
+    <p style="margin-bottom: 0px;">
       <strong><%= model_class.human_attribute_name(:website) %></strong>
-      <br>
-      <% if @profile.website.blank? %>
+    </p>
+    <% if @profile.website.blank? %>
         <p class="empty">None specified</p>
     <% else %>
-        <%= link_to @profile.website %>
+        <p><%= link_to @profile.website %></p>
     <% end %>
+
+    <% if !current_user.nil? and current_user == @user %>
+    <p style="margin-bottom: 0px;">
+      <strong>Authentication
+        token</strong><br><span class="empty" style="font-style: italic;">(keep it secret)</span>
     </p>
-    <p>
-      <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
-        <p><strong>Authentication
-          token</strong><br><span class="empty" style="font-style: italic;">(keep it secret)</span>
-          <br>
-          <%= @user.authentication_token %>
-        </p>
+    <p><%= @user.authentication_token %></p>
     <% end %>
-    </p>
   </div>
 
   <div class="col-md-9 col-xs-9">

@@ -72,6 +72,9 @@ gem "will_paginate-bootstrap"
 # Gem for managing the app version
 gem 'app_version'
 
+# Gem for authorisation
+gem "pundit"
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

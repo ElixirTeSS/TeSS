@@ -34,6 +34,11 @@
                 <% end %>
             <% else %>
                 <%= menu_group pull: :right do %>
+                    <li class="<%= (request.fullpath == users_path) ? 'active' : '' %>">
+                      <%= link_to users_path do %>
+                          <i class="fa fa-users fa-lg"></i>
+                      <% end %>
+                    </li>
                     <li class="<%= (request.fullpath == new_user_session_path) ? 'active' : '' %>">
                       <%= link_to "Log in", new_user_session_path %>
                     </li>
