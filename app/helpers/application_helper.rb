@@ -7,7 +7,9 @@ module ApplicationHelper
       success: 'alert-success',
       error: 'alert-danger',
       alert: 'alert-warning',
-      notice: 'alert-info'
+      notice: 'alert-info',
+      warning: 'alert-warning',
+      info: 'alert-info'
   }
 
   def bootstrap_class_for(flash_type)

@@ -3,10 +3,10 @@ class ProfilesController < ApplicationController
   # Controller for showing public profiles.
   prepend_before_action :set_user_profile
 
-  # Skip the parent's before_action
-  skip_before_action :authenticate_user!
-  # and define it on all methods
-  before_action :authenticate_user!
+  # # Skip the parent's before_action
+  # skip_before_action :authenticate_user!
+  # # and define it on all methods
+  # before_action :authenticate_user!
 
   include TeSS::BreadCrumbs
 

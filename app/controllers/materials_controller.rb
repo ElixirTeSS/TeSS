@@ -52,11 +52,13 @@ class MaterialsController < ApplicationController
 
   # GET /materials/new
   def new
+    authorize Material
     @material = Material.new
   end
 
   # GET /materials/1/edit
   def edit
+    authorize @material
   end
 
   # POST /materials/check_title
@@ -93,6 +95,7 @@ class MaterialsController < ApplicationController
   # POST /materials
   # POST /materials.json
   def create
+    authorize Material
     @material = Material.new(material_params)
     @material.user_id = current_user.id
     respond_to do |format|
@@ -111,6 +114,7 @@ class MaterialsController < ApplicationController
   # PATCH/PUT /materials/1
   # PATCH/PUT /materials/1.json
   def update
+    authorize @material
     respond_to do |format|
       if @material.update(material_params)
         @material.create_activity :update, owner: current_user
@@ -126,6 +130,7 @@ class MaterialsController < ApplicationController
   # DELETE /materials/1
   # DELETE /materials/1.json
   def destroy
+    authorize @material
     @material.create_activity :destroy, owner: current_user
     @material.destroy
     respond_to do |format|

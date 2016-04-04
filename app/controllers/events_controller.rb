@@ -34,11 +34,13 @@ class EventsController < ApplicationController
 
   # GET /events/new
   def new
+    authorize Event
     @event = Event.new
   end
 
   # GET /events/1/edit
   def edit
+    authorize @event
   end
 
   # POST /events/check_exists
@@ -75,8 +77,8 @@ class EventsController < ApplicationController
   # POST /events
   # POST /events.json
   def create
+    authorize Event
     @event = Event.new(event_params)
-
     respond_to do |format|
       if @event.save
         @event.create_activity :create, owner: current_user
@@ -93,6 +95,7 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1
   # PATCH/PUT /events/1.json
   def update
+    authorize @event
     respond_to do |format|
       if @event.update(event_params)
         @event.create_activity :update, owner: current_user
@@ -108,6 +111,7 @@ class EventsController < ApplicationController
   # DELETE /events/1
   # DELETE /events/1.json
   def destroy
+    authorize @event
     @event.destroy
     respond_to do |format|
       format.html { redirect_to events_url, notice: 'Event was successfully destroyed.' }
@@ -115,19 +119,7 @@ class EventsController < ApplicationController
     end
   end
 
-
   protected
-
-  # Override
-  def check_authorised
-    user = current_user || User.find_by_authentication_token(params[:user_token])
-    if (user.nil?)
-      return # user has not been logged in yet!
-    else
-      # Check if role is admin or api_user
-      check_admin_or_api_user(user)
-    end
-  end
 
   private
 
