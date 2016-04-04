@@ -112,7 +112,7 @@
             <% end %>
             <%= link_to 'Back', events_path, :class=>"btn btn-info" %>
             <!--<%#= link_to 'Edit', edit_event_path(@event), :class=>"btn btn-primary" %> --><!-- Forbid editing of events -->
-            <button class="btn btn-success"><a href="<%= @event.url %>">View event <span class="fa fa-external-link" aria-hidden="true"></span></a></button>
+            <button class="btn btn-success"><a target="_blank" href="<%= @event.url %>">View event <span class="fa fa-external-link" aria-hidden="true"></span></a></button>
           </div>
         </div>
         <div id="activity_log" class="tab-pane fade">
