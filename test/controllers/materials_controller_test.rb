@@ -6,6 +6,9 @@ class MaterialsControllerTest < ActionController::TestCase
 
   setup do
     @material = materials(:good_material)
+    u = assigns(:regular_user)
+    @material.owner = u
+    @material.save!
     @updated_material = {
         title: 'New title',
         short_description: 'New description',
@@ -45,33 +48,32 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   #EDIT TESTS
-  test 'should get edit page for material owners and admins' do
+  test 'should not get edit page for not logged in users' do
     #Not logged in = Redirect to login
     get :edit, id: @material
-    assert_response :redirect
-  end
-  test 'should not get edit page for non-owner regular user' do
-    #logged in but insufficient permissions = ERROR
-    sign_in users(:regular_user)
-    get :edit, id: @material
-    assert_response :error
+    assert_redirected_to new_user_session_path
   end
 
-  test 'should get edit for owner user' do
-    #Owner of material logged in = SUCCESS
+    #logged in but insufficient permissions = ERROR
+  test 'should get edit for material owner' do
     sign_in users(:regular_user)
-    u = assigns(:regular_user)
-    @material.owner = u
-    @material.save!
     get :edit, id: @material
     assert_response :success
   end
 
-  test 'should get edit for administrator user' do
-    #Administrator = SUCCESS
+  test 'should get edit for admin' do
+    #Owner of material logged in = SUCCESS
     sign_in users(:admin)
     get :edit, id: @material
     assert_response :success
+  end
+
+  test 'should not get edit page for non-owner user' do
+    #Administrator = SUCCESS
+    sign_in users(:another_regular_user)
+    get :edit, id: @material
+    assert :forbidden
+    assert_redirected_to forbidden_path
   end
 
   #CREATE TEST
@@ -104,15 +106,6 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test 'should get edit' do
-    sign_in users(:regular_user)
-    get :edit, id: @material
-    assert_response :success
-  end
-
-  test '       ' do
-
-  end
 
   #UPDATE TEST
   test 'should update material' do
@@ -131,16 +124,25 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_redirected_to materials_path
   end
 
-  test 'should not destroy material not owned by user' do
-    sign_in users(:another_regular_user)
-    puts 'destroyiiinnng---'
-    assert_no_difference('Material.count') do
+  test 'should destroy material when administrator' do
+    sign_in users(:admin)
+    assert_difference('Material.count', -1) do
       delete :destroy, id: @material
     end
     assert_redirected_to materials_path
   end
 
+  test 'should not destroy material not owned by user' do
+    sign_in users(:another_regular_user)
+    assert_no_difference('Material.count') do
+      delete :destroy, id: @material
+    end
+    assert_redirected_to forbidden_path
+  end
 
+
+  #CONTENT TESTS
+  #BREADCRUMBS
   test 'breadcrumbs for materials index' do
     get :index
     assert_response :success
@@ -191,6 +193,11 @@ class MaterialsControllerTest < ActionController::TestCase
     end
   end
 
+  #OTHER CONTENT
+
+
+
+  #API Actions
   test 'should find existing material by title' do
     post 'check_exists', :format => :json,  :title => @material.title
     assert_response :success

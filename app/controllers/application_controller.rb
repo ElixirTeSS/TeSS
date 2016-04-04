@@ -35,7 +35,15 @@ class ApplicationController < ActionController::Base
   def user_not_authorized(exception)
     policy_name = exception.policy.class.to_s.underscore
     flash[:warning] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
-    redirect_to(request.referrer || root_path)
+    redirect_to(forbidden_path)
+  end
+
+  def forbidden
+    respond_to do |format|
+      format.html  { render 'static/forbidden.html',
+                            :status => :forbidden,
+                            :content_type => 'text/html' }
+    end
   end
 
   protected
