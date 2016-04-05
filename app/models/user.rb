@@ -93,7 +93,7 @@ class User < ActiveRecord::Base
   def is_owner?(resource)
     return false if resource.nil?
     return false if !resource.respond_to?("owner".to_sym)
-
+    return true if resource.user_id == self.id
     if self == resource.owner
       return true
     else

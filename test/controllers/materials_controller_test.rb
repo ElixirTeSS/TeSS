@@ -6,8 +6,8 @@ class MaterialsControllerTest < ActionController::TestCase
 
   setup do
     @material = materials(:good_material)
-    u = assigns(:regular_user)
-    @material.owner = u
+    u = users(:regular_user)
+    @material.user_id = u.id
     @material.save!
     @updated_material = {
         title: 'New title',
@@ -73,7 +73,6 @@ class MaterialsControllerTest < ActionController::TestCase
     sign_in users(:another_regular_user)
     get :edit, id: @material
     assert :forbidden
-    assert_redirected_to forbidden_path
   end
 
   #CREATE TEST
@@ -104,6 +103,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'should show material' do
     get :show, id: @material
     assert_response :success
+    assert assigns(:material)
   end
 
 
@@ -137,7 +137,7 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_no_difference('Material.count') do
       delete :destroy, id: @material
     end
-    assert_redirected_to forbidden_path
+    assert_response :forbidden
   end
 
 
