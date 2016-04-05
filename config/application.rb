@@ -29,5 +29,8 @@ module TeSS
     config.autoload_paths += Dir["#{Rails.root}/lib/**/"]
     config.autoload_paths << Rails.root.join('lib')
 
+    # Route exceptions to the application router vs. default
+    config.exceptions_app = self.routes
+
   end
 end

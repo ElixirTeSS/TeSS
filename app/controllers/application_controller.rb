@@ -30,24 +30,34 @@ class ApplicationController < ActionController::Base
     CurrentContext.new(current_user, request)
   end
 
+  def handle_error(status_code = 200)
+    status_code = params[:status_code] || status_code # params[:status_code] comes from routes for 500, 503, 422 and 404 errors
+    @skip_flash_messages_in_header = true
+    if status_code == "500"
+      flash[:alert] = "Our apology - your request caused an error (status code: 500 Server Error)."
+    elsif status_code == "503"
+      flash[:alert] = "Our apology - the server is temporarily down or unavailable due to maintenance (status code: 503 Service Unavailable)."
+    elsif status_code == "422"
+      flash[:alert] = "The request you sent was well-formed but the change you wanted was rejected (status code: 422 Unprocessable Entity)."
+    elsif status_code == "404"
+      flash[:alert] = "The requested page could not be found - you may have mistyped the address or the page may have moved (status code: 404 Not Found)."
+    end
+    respond_to do |format|
+      format.html  { render 'static/error.html',
+                            :status => status_code}
+
+      # format.json  { head status }
+      format.json { render :json => flash,
+                           :status => status_code}
+    end
+  end
+
   private
 
   def user_not_authorized(exception)
     policy_name = exception.policy.class.to_s.underscore
-    flash[:warning] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
+    flash[:alert] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
     handle_error(:forbidden)
-  end
-
-  def handle_error(status = 200)
-    @skip_flash_messages_in_header = true
-    respond_to do |format|
-      format.html  { render 'static/error.html',
-                            :status => status}
-
-      # format.json  { head status }
-      format.json { render :json => flash,
-                           :status => status}
-    end
   end
 
   protected

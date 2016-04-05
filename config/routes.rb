@@ -48,6 +48,12 @@ Rails.application.routes.draw do
   end
 
   get 'search' => 'search#index'
+
+  # error pages
+  %w( 404 422 500 503 ).each do |code|
+    get code, :to => "application#handle_error", :status_code => code
+  end
+
 =begin
   authenticate :user do
     resources :materials, only: [:new, :create, :edit, :update, :destroy]
