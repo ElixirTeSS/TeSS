@@ -16,8 +16,8 @@ class UserPolicy < ApplicationPolicy
   end
 
   def update?
-    # Do not allow updates via API and only admin role can update anything
-    # and owners can update their own record
+    # Do not allow updates via API
+    # Only admin role can update other users or the users themselves
     !request_is_api?(request) and (@user == @record or @user.is_admin?)
   end
 
