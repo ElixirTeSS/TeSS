@@ -39,14 +39,14 @@ class ApplicationController < ActionController::Base
   end
 
   def handle_error(status = 200)
+    @skip_flash_messages_in_header = true
     respond_to do |format|
       format.html  { render 'static/error.html',
-                            :status => status,
-                            :content_type => 'text/html' }
+                            :status => status}
+
       # format.json  { head status }
       format.json { render :json => flash,
-                           :status => status,
-                           :content_type => 'application/json' }
+                           :status => status}
     end
   end
 
