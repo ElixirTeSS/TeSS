@@ -18,7 +18,11 @@ class UserPolicy < ApplicationPolicy
   def update?
     # Do not allow updates via API and only admin role can update anything
     # and owners can update their own record
-    !request_is_api?(request) and (@user.is_owner?(@record) or @user.is_admin?)
+    !request_is_api?(request) and (@user == @record or @user.is_admin?)
+  end
+
+  def change_token?
+    update?
   end
 
   class Scope < Scope

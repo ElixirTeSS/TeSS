@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  prepend_before_action :set_user, only: [:show, :edit, :update, :destroy]
+  prepend_before_action :set_user, only: [:show, :edit, :update, :destroy, :change_token]
   #
   # # Skip the parent's before_action, which is defined only on some methods
   # skip_before_action :authenticate_user!
@@ -52,11 +52,12 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
+  #THIS IS FOR UPDATING PROFILES
   def update
     authorize @user
     respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+      if @user.profile.update(profile_params)
+        format.html { redirect_to @user, notice: 'Profile was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }
@@ -78,7 +79,6 @@ class UsersController < ApplicationController
 
   def change_token
     authorize @user
-    @user = current_user
     if @user.authentication_token.nil?
       flash[:alert] = "Action not allowed."
       handle_error() and return
@@ -86,7 +86,7 @@ class UsersController < ApplicationController
     @user.authentication_token = Devise.friendly_token
     if @user.save
       flash[:notice] = "API key changed."
-      redirect_to "/users/#{@user.profile.id}"
+      redirect_to @user
     else
       flash[:alert] = "Failed to change API key."
       handle_error()
@@ -103,6 +103,9 @@ class UsersController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
     params.require(:user).permit!
+  end
+  def profile_params
+    params.require(:user).require(:profile).permit!
   end
 
 end

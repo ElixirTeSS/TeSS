@@ -1,5 +1,5 @@
 <div class="page-header">
-  <h2>Edit <%= resource_name.to_s.humanize %></h2>
+  <h2>Edit Account Details</h2>
 </div>
 <div class="col-md-6">
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
@@ -34,6 +34,7 @@
       <div class="actions">
         <%= f.submit "Update", :class => 'btn btn-primary' %>
       </div>
+      <%= link_to 'Regenerate API Key', change_token_path(resource), :method => :patch,  :class => 'btn btn-info', data: { confirm: 'Are you sure?' }  %>
   <% end %>
 
   <h3>Cancel my account</h3>

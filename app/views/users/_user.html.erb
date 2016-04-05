@@ -1,9 +1,8 @@
 <li class="masonry-brick media-item">
   <%= image_tag user.gravatar_url, size: "40" %>
-  <% if !user.profile.nil? -%>
-      <%= user.username %>
-      <%= link_to '', {:controller => :profiles, :action => :show, :id => user.profile.id}, :class=> "media-view" %>
-  <% else %>
-      <%= link_to '', {:controller => :users, :action => :show, :id => user.profile.id}, :class=> "media-view" %>
-<% end -%>
+  <h4><%= user.username %></h4>
+  <% if !user.profile.nil? %>
+    <%= user.profile.firstname %> <%= user.profile.surname %>
+  <% end %>
+  <%= link_to '', {:controller => :users, :action => :show, :id => user.id}, :class=> "media-view" %>
 </li>
