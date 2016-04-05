@@ -54,7 +54,8 @@ class User < ActiveRecord::Base
   end
 
   def set_default_profile
-    self.profile ||= Profile.new(email: self[:email])
+    #self.profile ||= Profile.new(email: self[:email])
+    self.profile ||= Profile.new()
   end
 
  # Check if user has a particular role

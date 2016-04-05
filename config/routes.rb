@@ -11,11 +11,13 @@ Rails.application.routes.draw do
   post 'events/check_exists' => 'events#check_exists'
   post 'content_providers/check_exists' => 'content_providers#check_exists'
 
-  devise_for :users
-  #Redirect to users index page after devise account update
-  as :user do
-    get 'users', :to => 'users#index', :as => :user_root
-  end
+  #devise_for :users
+  # Use custom registrations controller that subclasses devise's
+  devise_for :users, :controllers => {:registrations => "my_devise/registrations"}
+  #Redirect to users index page after devise user account update
+  # as :user do
+  #   get 'users', :to => 'users#index', :as => :user_root
+  # end
 
   patch 'users/:id/change_token' => 'users#change_token', as: 'change_token'
 

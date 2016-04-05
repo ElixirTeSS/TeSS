@@ -32,7 +32,6 @@ module TeSS
     end
 
     def add_index_breadcrumb controller_name, breadcrumb_name=nil
-      controller_name = (controller_name == "profiles") ? "users" : controller_name
       breadcrumb_name ||= "#{controller_name.singularize.humanize.pluralize}"
       add_breadcrumb breadcrumb_name, url_for(:controller => controller_name, :action => 'index')
     end

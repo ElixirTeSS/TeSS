@@ -32,8 +32,12 @@
       </div>
 
       <div class="actions">
-        <%= f.submit "Update", :class => 'btn btn-primary' %>
-        <%= link_to 'Regenerate API key', change_token_path(resource), :method => :patch,  :class => 'btn btn-info', data: { confirm: 'Are you sure want to regenerate your API key? Your previous API key will no longer work' }  %>
+        <p>
+          <%= f.submit "Update", :class => 'btn btn-primary' %>
+        </p>
+        <p>
+          <%= link_to 'Regenerate API key', change_token_path(resource), :method => :patch,  :class => 'btn btn-info', data: { confirm: 'Are you sure want to regenerate your API key? Your previous API key will no longer work' }  %>
+        </p>
       </div>
   <% end %>
 
