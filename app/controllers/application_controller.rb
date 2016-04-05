@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
     CurrentContext.new(current_user, request)
   end
 
-  def handle_error(status_code = 200)
+  def handle_error(status_code = 500)
     status_code = params[:status_code] || status_code # params[:status_code] comes from routes for 500, 503, 422 and 404 errors
     @skip_flash_messages_in_header = true
     if status_code == "500"
