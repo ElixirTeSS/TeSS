@@ -13,7 +13,7 @@ Rails.application.routes.draw do
 
   #devise_for :users
   # Use custom registrations controller that subclasses devise's
-  devise_for :users, :controllers => {:registrations => "my_devise/registrations"}
+  devise_for :users, :controllers => {:registrations => "tess_devise/registrations"}
   #Redirect to users index page after devise user account update
   # as :user do
   #   get 'users', :to => 'users#index', :as => :user_root

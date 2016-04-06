@@ -8,6 +8,9 @@ class ApplicationPolicy
   #   @record = record
   # end
 
+  # For tricks on how to bundle an extra object and pass it to policy
+  # in addition to user and record object - see
+  # http://stackoverflow.com/questions/28216678/pundit-policies-with-two-input-parameters
   def initialize(context, record)
     raise Pundit::NotAuthorizedError, "User must be logged in" unless context.user
     @user = context.user

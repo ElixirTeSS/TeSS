@@ -1,4 +1,5 @@
 class MyDevise::RegistrationsController < Devise::RegistrationsController
+  # Inspired by http://stackoverflow.com/questions/3546289/override-devise-registrations-controller
 
   def create
     build_resource(sign_up_params)
@@ -7,9 +8,6 @@ class MyDevise::RegistrationsController < Devise::RegistrationsController
     if params[:make_email_public]
       resource.profile.email = resource.email
       resource.profile.save!
-    # else
-    #   resource.profile.email = nil
-    #   resource.profile.save!
     end
 
     resource.save
@@ -31,6 +29,8 @@ class MyDevise::RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  # Set the after update path to be user's show page
+  # instead the default root_path
   def after_update_path_for(resource)
     user_path(resource)
   end
