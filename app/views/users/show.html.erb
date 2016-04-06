@@ -50,7 +50,7 @@
 
         <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
             <div class="row">
-              <%= link_to t('.edit', :default => 'Edit profile'), edit_user_path(@user), :class => 'btn btn-info pull-right' %>
+              <%= link_to t('.edit', :default => 'Edit profile'), edit_user_path(@user), :class => 'btn btn-primary center-block' %>
             </div>
         <% end %>
       </li>
@@ -76,7 +76,7 @@
 
         <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
             <div class="row">
-              <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-primary pull-right' %>
+              <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default center-block' %>
             </div>
         <% end %>
       </li>
@@ -90,12 +90,12 @@
     <div class="row">
       <div class="content_action col-md-6 col-xs-6">
         <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
-            <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-primary pull-right' %>
+            <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default pull-right' %>
             <%= link_to t('.edit', :default => 'Edit profile'),
-                        edit_user_path(@user), :class => 'btn btn-info pull-right', :style => "margin-right: 5px;" %>
+                        edit_user_path(@user), :class => 'btn btn-primary pull-right', :style => "margin-right: 5px;" %>
         <% end %>
         <%= link_to t('.back', :default => t("helpers.links.back")),
-                    users_path, :class => 'btn btn-default pull-right', :style => "margin-right: 5px;" %>
+                    users_path, :class => 'btn btn-info pull-right', :style => "margin-right: 5px;" %>
       </div>
     </div>
 
