@@ -10,8 +10,8 @@
         <%= f.text_field :username, autofocus: true, class: "form-control" %><br />
         <%= f.label :email %><br />
         <%= f.email_field :email, autofocus: false, class: "form-control" %><br />
-          <%= f.check_box :remember_me %>
-          <%= f.label :remember_me %>
+        <input checked="checked" type="checkbox" id="make_email_public" name="make_email_public" value="true" />
+        <%= f.label 'Make email public' %>
       </div>
 
       <div class="form-group">

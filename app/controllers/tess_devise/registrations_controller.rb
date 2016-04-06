@@ -6,8 +6,8 @@ class TessDevise::RegistrationsController < Devise::RegistrationsController
 
     # Add account email as public email in profile
     if params[:make_email_public]
-      resource.profile.email = resource.email
-      resource.profile.save!
+      resource.profile = Profile.new(email: resource.email)
+      # resource.profile.email = resource.email
     end
 
     resource.save
