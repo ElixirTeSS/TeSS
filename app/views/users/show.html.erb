@@ -42,7 +42,7 @@
             <% end %>
               <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
                   <%= link_to t('.edit', :default => 'Edit profile information'),
-                              edit_user_path(@user), :class => 'btn btn-default pull-right' %>
+                              edit_user_path(@user), :class => 'btn btn-default center-block' %>
               <% end %>
         </div>
         <div class="user_info_box account">
@@ -64,7 +64,7 @@
               <p><%= @user.authentication_token %></p>
           <% end %>
           <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
-              <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-primary pull-right', :style => "margin-right: 5px;" %>
+              <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-primary center-block', :style => "margin-right: 5px;" %>
           <% end %>
 
         </div>
