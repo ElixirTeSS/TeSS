@@ -29,15 +29,13 @@
             <p><%= @user.profile.surname %></p>
         <% end %>
 
-        <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
-            <p style="margin-bottom: 0px;">
-              <strong>Public email</strong>
-            </p>
-            <% if @user.profile.email.blank? %>
-                <p class="empty">None specified</p>
-            <% else %>
-                <p><%= mail_to @user.profile.email %></p>
-            <% end %>
+        <p style="margin-bottom: 0px;">
+          <strong>Public email</strong>
+        </p>
+        <% if @user.profile.email.blank? %>
+            <p class="empty">None specified</p>
+        <% else %>
+            <p><%= mail_to @user.profile.email %></p>
         <% end %>
 
         <p style="margin-bottom: 0px;">
@@ -63,17 +61,21 @@
         <p style="margin-bottom: 0px;">
           <strong>Role</strong>
         </p>
+
         <p><%= @user.role.name.titleize.humanize %></p>
 
         <% if !current_user.nil? and current_user == @user %>
             <p style="margin-bottom: 0px;">
               <strong>Account email</strong>
             </p>
+
             <p><%= @user.email %></p>
 
             <p style="margin-bottom: 0px;">
-              <strong>Authentication token</strong><span class="empty" style="font-style: italic;"> (keep it secret)</span>
+              <strong>Authentication
+                token</strong><span class="empty" style="font-style: italic;"> (keep it secret)</span>
             </p>
+
             <p><%= @user.authentication_token %></p>
         <% end %>
       </div>
