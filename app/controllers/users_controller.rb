@@ -80,15 +80,15 @@ class UsersController < ApplicationController
   def change_token
     authorize @user
     if @user.authentication_token.nil?
-      flash[:alert] = "API key token cannot be set to nil - action not allowed (status code: 422 Unprocessable Entity)."
+      flash[:alert] = "Authentication token cannot be set to nil - action not allowed (status code: 422 Unprocessable Entity)."
       handle_error(:unprocessable_entity) and return
     end
     @user.authentication_token = Devise.friendly_token
     if @user.save
-      flash[:notice] = "API key successfully regenerated."
+      flash[:notice] = "Authentication token successfully regenerated."
       redirect_to @user
     else
-      flash[:alert] = "Failed to regenerate API key (status code: 422 Unprocessable Entity)."
+      flash[:alert] = "Failed to regenerate Authentication token (status code: 422 Unprocessable Entity)."
       handle_error(:unprocessable_entity)
     end
   end
