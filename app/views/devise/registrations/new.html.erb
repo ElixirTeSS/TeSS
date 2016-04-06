@@ -9,7 +9,9 @@
         <%= f.label :username %><br />
         <%= f.text_field :username, autofocus: true, class: "form-control" %><br />
         <%= f.label :email %><br />
-        <%= f.email_field :email, autofocus: false, class: "form-control" %>
+        <%= f.email_field :email, autofocus: false, class: "form-control" %><br />
+          <%= f.check_box :remember_me %>
+          <%= f.label :remember_me %>
       </div>
 
       <div class="form-group">
