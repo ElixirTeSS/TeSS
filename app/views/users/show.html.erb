@@ -11,73 +11,80 @@
           <%= image_tag @user.gravatar_url %>
         </div>
         <hr/>
-        <p style="margin-bottom: 0px;">
-          <strong><%= model_class.human_attribute_name(:firstname) %></strong>
-        </p>
-        <% if @user.profile.firstname.blank? %>
-            <p class="empty">None specified</p>
-        <% else %>
-            <p><%= @user.profile.firstname %></p>
-        <% end %>
-
-        <p style="margin-bottom: 0px;">
-          <strong><%= model_class.human_attribute_name(:surname) %></strong>
-        </p>
-        <% if @user.profile.surname.blank? %>
-            <p class="empty">None specified</p>
-        <% else %>
-            <p><%= @user.profile.surname %></p>
-        <% end %>
-
-        <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
+        <div class="user_info_box profile">
             <p style="margin-bottom: 0px;">
-              <strong>Public email</strong>
+              <strong><%= model_class.human_attribute_name(:firstname) %></strong>
             </p>
-            <% if @user.profile.email.blank? %>
+            <% if @user.profile.firstname.blank? %>
                 <p class="empty">None specified</p>
             <% else %>
-                <p><%= mail_to @user.profile.email %></p>
+                <p><%= @user.profile.firstname %></p>
             <% end %>
-        <% end %>
 
-        <p style="margin-bottom: 0px;">
-          <strong><%= model_class.human_attribute_name(:website) %></strong>
-        </p>
-        <% if @user.profile.website.blank? %>
-            <p class="empty">None specified</p>
-        <% else %>
-            <p><%= link_to @user.profile.website %></p>
-        <% end %>
+            <p style="margin-bottom: 0px;">
+              <strong><%= model_class.human_attribute_name(:surname) %></strong>
+            </p>
+            <% if @user.profile.surname.blank? %>
+                <p class="empty">None specified</p>
+            <% else %>
+                <p><%= @user.profile.surname %></p>
+            <% end %>
+
+            <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
+                <p style="margin-bottom: 0px;">
+                  <strong>Public email</strong>
+                </p>
+                <% if @user.profile.email.blank? %>
+                    <p class="empty">None specified</p>
+                <% else %>
+                    <p><%= mail_to @user.profile.email %></p>
+                <% end %>
+            <% end %>
+
+            <p style="margin-bottom: 0px;">
+              <strong><%= model_class.human_attribute_name(:website) %></strong>
+            </p>
+            <% if @user.profile.website.blank? %>
+                <p class="empty">None specified</p>
+            <% else %>
+                <p><%= link_to @user.profile.website %></p>
+            <% end %>
+          <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
+              <%= link_to t('.edit', :default => 'Edit profile information'),
+                          edit_user_path(@user), :class => 'btn btn-default pull-right' %>
+          <% end %>
+        </div>
+        <div class="user_info_box account">
+          <p style="margin-bottom: 0px;">
+            <strong>Role</strong>
+          </p>
+          <p><%= @user.role.name.titleize.humanize %></p>
+
+          <% if !current_user.nil? and current_user == @user %>
+              <p style="margin-bottom: 0px;">
+                <strong>Account email</strong>
+              </p>
+              <p><%= @user.email %></p>
+
+              <p style="margin-bottom: 0px;">
+                <strong>Authentication token</strong><span class="empty" style="font-style: italic;"> (keep it secret)</span>
+              </p>
+              <p><%= @user.authentication_token %></p>
+          <% end %>
+          <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
+              <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-primary pull-right', :style => "margin-right: 5px;" %>
+          <% end %>
+
+        </div>
       </li>
     </ul>
   </div>
 
   <div class="col-md-9 col-xs-9">
     <div class="page-header">
-      <h2><%= "User account details for #{@user.username}" %></h2>
+      <h2><%= "#{@user.username}" %></h2>
     </div>
-
     <div class="row">
-      <div class="col-md-6 col-xs-6">
-
-        <p style="margin-bottom: 0px;">
-          <strong>Role</strong>
-        </p>
-        <p><%= @user.role.name.titleize.humanize %></p>
-
-        <% if !current_user.nil? and current_user == @user %>
-            <p style="margin-bottom: 0px;">
-              <strong>Account email</strong>
-            </p>
-            <p><%= @user.email %></p>
-
-            <p style="margin-bottom: 0px;">
-              <strong>Authentication token</strong><span class="empty" style="font-style: italic;"> (keep it secret)</span>
-            </p>
-            <p><%= @user.authentication_token %></p>
-        <% end %>
-      </div>
-
       <div class="content_action col-md-6 col-xs-6">
         <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
             <%= link_to t('.edit', :default => 'Edit profile'),

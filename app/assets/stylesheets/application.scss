@@ -41,6 +41,17 @@ $colDefault: #ffe6d1;
 $colHover: #333333;
 $colHover2: #eeeeee;
 
+
+.user_info_box{
+  border: 1px solid #ddd;
+  padding: 10px;
+  padding-bottom: 50px;
+}
+
+.profile{
+  margin-bottom: 30px;
+}
+
 .navbar-default {
   background-color: $bgDefault;
   border-color: $bgHighlight;
