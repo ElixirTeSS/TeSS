@@ -89,7 +89,7 @@
           <%= f.submit ( f.object.new_record? ? "Add" : "Update") + " event", :class => 'btn btn-primary' %>
           <%= link_to 'Back', :back, :class=>"btn btn-info" %>
           <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                      event_path(@event), :class => 'btn btn-default' %>
+                      :back, :class => 'btn btn-default' %>
         </div>
     <% end %>
   </div>
