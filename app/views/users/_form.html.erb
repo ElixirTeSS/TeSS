@@ -2,7 +2,6 @@
   <div class="col-md-6 col-xs-6">
     <%= simple_form_for @user, :html => {:class => "form-horizontal profile"} do |user_f| %>
         <%= user_f.fields_for :profile do |f| %>
-
             <% if @user.profile.errors.any? %>
                 <div id="error_expl" class="panel panel-danger">
                   <div class="panel-heading">
@@ -37,7 +36,7 @@
             <div class="form-group">
               <%= f.label 'Public email address', :class => 'control-label' %>
               <div class="controls">
-                <%= f.text_field :email, :class => 'form-control' %>
+                <%= f.text_field :email, :class => 'form-control', :value => @user.profile.email %>
               </div>
               <%#= error_span(@profile[:email]) %>
             </div>
@@ -46,7 +45,7 @@
             <div class="form-group">
               <%= f.label :website, :class => 'control-label' %>
               <div class="controls">
-                <%= f.text_field :website, :class => 'form-control' %>
+                <%= f.text_field :website, :class => 'form-control', :value => @user.profile.website  %>
               </div>
               <%#= error_span(@profile[:website]) %>
             </div>
