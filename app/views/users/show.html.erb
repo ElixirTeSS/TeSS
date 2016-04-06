@@ -40,25 +40,17 @@
                     <p><%= mail_to @user.profile.email %></p>
                 <% end %>
             <% end %>
-
-            <p style="margin-bottom: 0px;">
-              <strong><%= model_class.human_attribute_name(:website) %></strong>
-            </p>
-            <% if @user.profile.website.blank? %>
-                <p class="empty">None specified</p>
-            <% else %>
-                <p><%= link_to @user.profile.website %></p>
-            <% end %>
-          <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
-              <%= link_to t('.edit', :default => 'Edit profile information'),
-                          edit_user_path(@user), :class => 'btn btn-default pull-right' %>
-          <% end %>
+              <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
+                  <%= link_to t('.edit', :default => 'Edit profile information'),
+                              edit_user_path(@user), :class => 'btn btn-default pull-right' %>
+              <% end %>
         </div>
         <div class="user_info_box account">
           <p style="margin-bottom: 0px;">
             <strong>Role</strong>
           </p>
           <p><%= @user.role.name.titleize.humanize %></p>
+
 
           <% if !current_user.nil? and current_user == @user %>
               <p style="margin-bottom: 0px;">
@@ -87,9 +79,9 @@
     <div class="row">
       <div class="content_action col-md-6 col-xs-6">
         <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
+            <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-primary pull-right', :style => "margin-right: 5px;" %>
             <%= link_to t('.edit', :default => 'Edit profile'),
                         edit_user_path(@user), :class => 'btn btn-default pull-right' %>
-            <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-primary pull-right', :style => "margin-right: 5px;" %>
         <% end %>
         <%= link_to t('.back', :default => t("helpers.links.back")),
                     users_path, :class => 'btn btn-info pull-right', :style => "margin-right: 5px;" %>
