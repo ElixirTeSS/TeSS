@@ -19,7 +19,6 @@ class MaterialsControllerTest < ActionController::TestCase
   #Tests
   # INDEX, NEW, EDIT, CREATE, SHOW, BREADCRUMBS, TABS, API CHECKS
 
-
   #INDEX TESTS
   test 'should get index' do
     get :index
@@ -260,7 +259,6 @@ class MaterialsControllerTest < ActionController::TestCase
 
   test 'should display filters on index' do
     get :index
-    puts @response.body
     assert_select 'h4.nav-heading', :text => /Content provider/, :count => 0
     assert_select 'div.list-group-item', :count => Material.count
   end
