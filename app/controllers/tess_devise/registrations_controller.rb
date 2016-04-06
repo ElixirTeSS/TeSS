@@ -1,4 +1,4 @@
-class MyDevise::RegistrationsController < Devise::RegistrationsController
+class TessDevise::RegistrationsController < Devise::RegistrationsController
   # Inspired by http://stackoverflow.com/questions/3546289/override-devise-registrations-controller
 
   def create
