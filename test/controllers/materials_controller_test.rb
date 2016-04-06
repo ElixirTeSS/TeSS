@@ -193,6 +193,7 @@ class MaterialsControllerTest < ActionController::TestCase
     end
   end
 
+  #OTHER CONTENT
   test 'material has correct tabs' do
     get :show, :id => @material
     assert_response :success
@@ -201,7 +202,6 @@ class MaterialsControllerTest < ActionController::TestCase
         assert_select 'a[data-toggle="tab"]', :count => 3
       end
     end
-    #<a data-toggle="tab" href="#packages"><i class="fa fa-folder-open"></i> Packages</a>
   end
 
   test 'material has correct layout' do
@@ -239,11 +239,6 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_select 'a.btn-danger[href=?]', material_path(@material), :text => 'Delete', :count => 1
   end
 
-
-  #OTHER CONTENT
-
-
-
   #API Actions
   test 'should find existing material by title' do
     post 'check_exists', :format => :json,  :title => @material.title
@@ -262,6 +257,15 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_response :success
     assert_equal(response.body, '')
   end
+
+  test 'should display filters on index' do
+    get :index
+    puts @response.body
+    assert_select 'h4.nav-heading', :text => /Content provider/, :count => 0
+    assert_select 'div.list-group-item', :count => Material.count
+  end
+
+
 
   # TODO: SOLR tests will not run on TRAVIS. Explore stratergy for testing solr
 =begin
