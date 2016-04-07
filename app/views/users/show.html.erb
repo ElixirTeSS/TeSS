@@ -1,24 +1,161 @@
 <div class="row wrapper">
+
+  <%- model_class = Profile -%>
+
   <!-- SIDEBAR -->
-  <div class="col-md-3 col-xs-3" id="sidebar">
-    <%= render :partial => "profiles/partials/user_info", :locals => {:user => @user} %>
+  <div id="sidebar" class="col-md-3 col-xs-3">
+    <ul class="unstyled nav-simple">
+      <li><h4 class="nav-heading">Profile details</h4></li>
+      <li style="padding: 10px 10px;">
+        <div id="gravatar_image">
+          <%= image_tag @user.gravatar_url %>
+        </div>
+        <hr/>
+
+        <p style="margin-bottom: 0px;">
+          <strong><%= model_class.human_attribute_name(:firstname) %></strong>
+        </p>
+        <% if @user.profile.firstname.blank? %>
+            <p class="empty">None specified</p>
+        <% else %>
+            <p><%= @user.profile.firstname %></p>
+        <% end %>
+
+        <p style="margin-bottom: 0px;">
+          <strong><%= model_class.human_attribute_name(:surname) %></strong>
+        </p>
+        <% if @user.profile.surname.blank? %>
+            <p class="empty">None specified</p>
+        <% else %>
+            <p><%= @user.profile.surname %></p>
+        <% end %>
+
+        <p style="margin-bottom: 0px;">
+          <strong>Public email</strong>
+        </p>
+        <% if @user.profile.email.blank? %>
+            <p class="empty">None specified</p>
+        <% else %>
+            <p><%= mail_to @user.profile.email %></p>
+        <% end %>
+
+        <p style="margin-bottom: 0px;">
+          <strong><%= model_class.human_attribute_name(:website) %></strong>
+        </p>
+        <% if @user.profile.website.blank? %>
+            <p class="empty">None specified</p>
+        <% else %>
+            <p><%= link_to @user.profile.website, @user.profile.website %></p>
+        <% end %>
+
+        <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
+            <div class="row">
+              <%= link_to t('.edit', :default => 'Edit profile'), edit_user_path(@user), :class => 'btn btn-primary center-block' %>
+            </div>
+        <% end %>
+      </li>
+      <li><h4 class="nav-heading">Account details</h4></li>
+      <li style="padding: 10px 10px;">
+        <p style="margin-bottom: 0px;">
+          <strong>Role</strong>
+        </p>
+        <p><%= @user.role.name.titleize.humanize %></p>
+
+        <% if !current_user.nil? and current_user == @user %>
+            <p style="margin-bottom: 0px;">
+              <strong>Account email</strong>
+            </p>
+            <p><%= @user.email %></p>
+
+            <p style="margin-bottom: 0px;">
+              <strong>Authentication
+                token</strong><span class="empty" style="font-style: italic;"> (keep it secret)</span>
+            </p>
+            <p><%= @user.authentication_token %></p>
+        <% end %>
+
+        <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
+            <div class="row">
+              <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default center-block' %>
+            </div>
+        <% end %>
+      </li>
+    </ul>
   </div>
-  <div class=" col-md-9 col-xs-9">
+
+  <div class="col-md-9 col-xs-9">
+    <div class="page-header">
+      <h2>User <%= "#{@user.username}" %></h2>
+    </div>
+    <div class="row">
+      <div class="content_action col-md-6 col-xs-6">
+        <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
+            <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default pull-right' %>
+            <%= link_to t('.edit', :default => 'Edit profile'),
+                        edit_user_path(@user), :class => 'btn btn-primary pull-right', :style => "margin-right: 5px;" %>
+        <% end %>
+        <%= link_to t('.back', :default => t("helpers.links.back")),
+                    users_path, :class => 'btn btn-info pull-right', :style => "margin-right: 5px;" %>
+      </div>
+    </div>
+
     <div class="row">
       <ul class="nav nav-tabs">
         <li class="active">
-          <a data-toggle="tab" href="#materials"><i class="<%= icon_class_for_model('materials') %>"></i> Materials</a>
-        </li>
-        <li class="active">
-          <a data-toggle="tab" href="#packages"><i class="<%= icon_class_for_model('packages') %>"></i> Packages</a>
-        </li>
-        <li class="active">
-          <a data-toggle="tab" href="#workflows"><i class="<%= icon_class_for_model('workflows') %>"></i> Workflows</a>
+          <a data-toggle="tab" href="#materials"><i class="<%= icon_class_for_model('materials') %>"></i>
+            Materials</a>
         </li>
         <li>
-          <a data-toggle="tab" href="#activity_log"><i class="<%= icon_class_for_model('activity_logs') %>"></i> Activity log</a>
+          <a data-toggle="tab" href="#packages"><i class="<%= icon_class_for_model('packages') %>"></i> Packages</a>
+        </li>
+        <li>
+          <a data-toggle="tab" href="#workflows"><i class="<%= icon_class_for_model('workflows') %>"></i>
+            Workflows</a>
         </li>
       </ul>
+
+      <div class="tab-content">
+        <div id="materials" class="tab-pane fade in active">
+          <div class="row">
+            <div class="search-results-count"> 
+              <%= pluralize(@user.materials.count, 'training material') %> found 
+            </div>
+            <% if !@user.materials.blank? %>
+                <% @user.materials.each do |material| %> 
+                    <%= render material %> 
+                <% end %> 
+            <% end %>
+          </div>
+        </div>
+        <div id="packages" class="tab-pane fade">
+          <div class="row">
+            <div class="search-results-count">
+              <%= pluralize(@user.packages.count, 'package') %> found
+            </div>
+            <% if !@user.packages.blank? %>
+                <ul class="masonry media-grid" style="margin-top: 15px;">
+                  <% @user.packages.each do |package| %>
+                      <%= render package %>
+                  <% end %>
+                </ul>
+            <% end %>
+          </div>
+        </div>
+        <div id="workflows" class="tab-pane fade">
+          <div class="row">
+            <div class="search-results-count">
+              <%= pluralize(@user.workflows.count, 'workflow') %> found
+            </div>
+            <% if !@user.workflows.blank? %>
+                <ul class="masonry media-grid" style="margin-top: 15px;">
+                  <% @user.workflows.each do |workflow| %>
+                      <%= render workflow %>
+                  <% end %>
+                </ul>
+            <% end %>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

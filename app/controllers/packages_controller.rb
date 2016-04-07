@@ -27,16 +27,19 @@ class PackagesController < ApplicationController
 
   # GET /packages/new
   def new
+    authorize Package
     @package = Package.new
   end
 
   # GET /packages/1/edit
   def edit
+    authorize @package
   end
 
   # POST /packages
   # POST /packages.json
   def create
+    authorize Package
     @package = Package.new(package_params)
 
     respond_to do |format|
@@ -55,6 +58,7 @@ class PackagesController < ApplicationController
   # PATCH/PUT /packages/1
   # PATCH/PUT /packages/1.json
   def update
+    authorize @package
     respond_to do |format|
       if @package.update(package_params)
         @package.create_activity :update, owner: current_user
@@ -70,13 +74,13 @@ class PackagesController < ApplicationController
   # DELETE /packages/1
   # DELETE /packages/1.json
   def destroy
+    authorize @package
     @package.destroy
     respond_to do |format|
       format.html { redirect_to packages_url, notice: 'Package was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
-
 
   def manage
     @package = Package.friendly.find(params[:package_id])

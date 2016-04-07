@@ -16,16 +16,19 @@ class NodesController < ApplicationController
 
   # GET /nodes/new
   def new
+    authorize Node
     @node = Node.new
   end
 
   # GET /nodes/1/edit
   def edit
+    authorize @node
   end
 
   # POST /nodes
   # POST /nodes.json
   def create
+    authorize Node
     @node = Node.new(node_params)
 
     respond_to do |format|
@@ -42,6 +45,7 @@ class NodesController < ApplicationController
   # PATCH/PUT /nodes/1
   # PATCH/PUT /nodes/1.json
   def update
+    authorize @node
     respond_to do |format|
       if @node.update(node_params)
         format.html { redirect_to @node, notice: 'Node was successfully updated.' }
@@ -56,6 +60,7 @@ class NodesController < ApplicationController
   # DELETE /nodes/1
   # DELETE /nodes/1.json
   def destroy
+    authorize @node
     @node.destroy
     respond_to do |format|
       format.html { redirect_to nodes_url, notice: 'Node was successfully destroyed.' }

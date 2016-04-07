@@ -26,7 +26,7 @@
           <%= f.text_field :subtitle, :class => 'form-control' %>
         </div>
         <div class="form-group">
-          <%= f.label :url %>
+          <%= f.label :url, label: 'URL', :class => "required" %>
           <%= f.text_field :url, :class => 'form-control' %>
         </div>
         <div class="form-group">
@@ -34,7 +34,7 @@
           <%= f.text_field :provider, :class => 'form-control' %>
         </div>
         <div class="form-group">
-          <%= f.label :field %><br>
+          <%= f.label :field %><br />
           <%= f.text_area :field, :class => 'form-control' %>
         </div>
         <div class="form-group">
@@ -87,9 +87,9 @@
         </div>
            <div class="form-group">
           <%= f.submit ( f.object.new_record? ? "Add" : "Update") + " event", :class => 'btn btn-primary' %>
-          <%= link_to 'Back', events_path, :class=>"btn btn-info" %>
+          <%= link_to 'Back', :back, :class=>"btn btn-info" %>
           <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                      events_path, :class => 'btn btn-default' %>
+                      :back, :class => 'btn btn-default' %>
         </div>
     <% end %>
   </div>

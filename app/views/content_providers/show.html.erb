@@ -19,9 +19,11 @@
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")),
                     content_providers_path, :class => 'btn btn-info' %>
-        <% if !current_user.nil? and current_user.is_admin? %>
+        <% if !current_user.nil? and policy(@content_provider).update? %>
             <%= link_to t('.edit', :default => t("helpers.links.edit")),
                         edit_content_provider_path(@content_provider), :class => 'btn btn-primary' %>
+        <% end %>
+        <% if !current_user.nil? and policy(@content_provider).destroy? %>
             <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                         content_provider_path(@content_provider),
                         :method => 'delete',

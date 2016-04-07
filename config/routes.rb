@@ -11,13 +11,15 @@ Rails.application.routes.draw do
   post 'events/check_exists' => 'events#check_exists'
   post 'content_providers/check_exists' => 'content_providers#check_exists'
 
-  devise_for :users
-  patch 'users/change_token' => 'users#change_token'
-  get 'users/new' => 'users#new'
-  get 'users/:id' => 'profiles#show'
-  get 'profile/:id' => 'profiles#show', as: 'profile'
-  patch 'profile/:id' => 'profiles#update'
-  resources :profiles
+  #devise_for :users
+  # Use custom registrations controller that subclasses devise's
+  devise_for :users, :controllers => {:registrations => "tess_devise/registrations"}
+  #Redirect to users index page after devise user account update
+  # as :user do
+  #   get 'users', :to => 'users#index', :as => :user_root
+  # end
+
+  patch 'users/:id/change_token' => 'users#change_token', as: 'change_token'
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
@@ -26,6 +28,7 @@ Rails.application.routes.draw do
   get 'static/home'
 
   resources :users
+
 
   resources :activities
   resources :nodes
@@ -48,6 +51,13 @@ Rails.application.routes.draw do
   end
 
   get 'search' => 'search#index'
+
+
+  # error pages
+  %w( 404 422 500 503 ).each do |code|
+    get code, :to => "application#handle_error", :status_code => code
+  end
+
 =begin
   authenticate :user do
     resources :materials, only: [:new, :create, :edit, :update, :destroy]

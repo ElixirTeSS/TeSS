@@ -34,6 +34,11 @@
                 <% end %>
             <% else %>
                 <%= menu_group pull: :right do %>
+                    <li class="<%= (request.fullpath == users_path) ? 'active' : '' %>">
+                      <%= link_to users_path do %>
+                          <i class="fa fa-users fa-lg"></i>
+                      <% end %>
+                    </li>
                     <li class="<%= (request.fullpath == new_user_session_path) ? 'active' : '' %>">
                       <%= link_to "Log in", new_user_session_path %>
                     </li>
@@ -87,6 +92,8 @@
   </div>
 </header>
 
-<div id="flash-container" class="container" style="text-align: center;">
-  <%= flash_messages %>
-</div>
+<% if !defined? @skip_flash_messages_in_header or !@skip_flash_messages_in_header%>
+    <div id="flash-container" class="container" style="text-align: center;">
+      <%= flash_messages %>
+    </div>
+<% end %>

@@ -49,14 +49,35 @@ class User < ActiveRecord::Base
     end
   end
 
-  #private
-
   def set_default_role
     self.role ||= Role.find_by_name('registered_user')
   end
 
   def set_default_profile
-    self.profile ||= Profile.new(email: self[:email])
+    #self.profile ||= Profile.new(email: self[:email])
+    self.profile ||= Profile.new()
+  end
+
+ # Check if user has a particular role
+  def has_role?(role)
+    if !self.role
+      return false
+    end
+    if self.role.name == role.to_s
+      return true
+    end
+    return false
+  end
+
+  # Check if user has any of the roles in the passed array
+  def has_any_of_roles?(roles)
+    if !self.role
+      return false
+    end
+    if roles.include?(self.role.name)
+      return true
+    end
+    return false
   end
 
   def is_admin?
@@ -69,24 +90,16 @@ class User < ActiveRecord::Base
     return false
   end
 
-  def is_api_user?
-    if !self.role
+  # Check if user is owner of a resource
+  def is_owner?(resource)
+    return false if resource.nil?
+    return false if !resource.respond_to?("owner".to_sym)
+    return true if resource.user_id == self.id
+    if self == resource.owner
+      return true
+    else
       return false
     end
-    if self.role.name == 'api_user'
-      return true
-    end
-    return false
-  end
-
-  def is_registered_user?
-    if !self.role
-      return false
-    end
-    if self.role.name == 'registered_user'
-      return true
-    end
-    return false
   end
 
   def skip_email_confirmation_for_non_production
