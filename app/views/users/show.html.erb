@@ -45,7 +45,7 @@
         <% if @user.profile.website.blank? %>
             <p class="empty">None specified</p>
         <% else %>
-            <p><%= link_to @user.profile.website %></p>
+            <p><%= link_to @user.profile.website, @user.profile.website %></p>
         <% end %>
 
         <% if !current_user.nil? and (current_user.is_admin? or current_user == @user) %>
