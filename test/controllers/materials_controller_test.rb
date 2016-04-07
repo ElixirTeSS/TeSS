@@ -19,7 +19,6 @@ class MaterialsControllerTest < ActionController::TestCase
   #Tests
   # INDEX, NEW, EDIT, CREATE, SHOW, BREADCRUMBS, TABS, API CHECKS
 
-
   #INDEX TESTS
   test 'should get index' do
     get :index
@@ -194,8 +193,50 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   #OTHER CONTENT
+  test 'material has correct tabs' do
+    get :show, :id => @material
+    assert_response :success
+    assert_select 'ul.nav-tabs' do
+      assert_select 'li' do
+        assert_select 'a[data-toggle="tab"]', :count => 3
+      end
+    end
+  end
 
+  test 'material has correct layout' do
+    get :show, :id => @material
+    assert_response :success
+    assert_select 'h2', :text => @material.title #Has Title
+    assert_select 'a.h5[href=?]', @material.url #Has plain written URL
+    assert_select 'a.btn-info[href=?]', materials_path, :count => 1 #Back button
+    assert_select 'button.btn-success', :text => "View material", :count => 1 do
+      assert_select 'a[href=?]', @material.url, :count => 1 #View Material button
+    end
+    #Should not show when not logged in
+    assert_select 'a.btn-primary[href=?]', edit_material_path(@material), :count => 0 #No Edit
+    assert_select 'a.btn-danger[href=?]', material_path(@material), :count => 0 #No Edit
+  end
 
+  test 'do not show action buttons when not owner or admin' do
+    sign_in users(:another_regular_user)
+    get :show, :id => @material
+    assert_select 'a.btn-primary[href=?]', edit_material_path(@material), :count => 0 #No Edit
+    assert_select 'a.btn-danger[href=?]', material_path(@material), :count => 0 #No Edit
+  end
+
+  test 'show action buttons when owner' do
+    sign_in users(:regular_user)
+    get :show, :id => @material
+    assert_select 'a.btn-primary[href=?]', edit_material_path(@material), :count => 1
+    assert_select 'a.btn-danger[href=?]', material_path(@material), :text => 'Delete', :count => 1
+  end
+
+  test 'show action buttons when admin' do
+    sign_in users(:admin)
+    get :show, :id => @material
+    assert_select 'a.btn-primary[href=?]', edit_material_path(@material), :count => 1
+    assert_select 'a.btn-danger[href=?]', material_path(@material), :text => 'Delete', :count => 1
+  end
 
   #API Actions
   test 'should find existing material by title' do
@@ -215,6 +256,14 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_response :success
     assert_equal(response.body, '')
   end
+
+  test 'should display filters on index' do
+    get :index
+    assert_select 'h4.nav-heading', :text => /Content provider/, :count => 0
+    assert_select 'div.list-group-item', :count => Material.count
+  end
+
+
 
   # TODO: SOLR tests will not run on TRAVIS. Explore stratergy for testing solr
 =begin

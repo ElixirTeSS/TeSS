@@ -38,7 +38,11 @@ module TeSS
 
     def add_show_breadcrumb resource, breadcrumb_name=nil
         breadcrumb_name ||= "#{resource.respond_to?(:title) ? resource.title : resource.respond_to?(:name) ? resource.name : resource.respond_to?(:username) ? resource.username : resource.id}"
-        add_breadcrumb breadcrumb_name, url_for(:controller => resource.class.name.underscore.pluralize, :action => 'show', :id => (resource.respond_to?(:username) ? resource.username: resource.id))
+        add_breadcrumb breadcrumb_name,
+                       url_for(:controller => resource.class.name.underscore.pluralize,
+                               :action => 'show',
+                               :id => (resource.try(:username) ?
+                                   resource.username : (resource.try(:friendly_id) ? resource.friendly_id : resource.id)))
     end
 
     def add_edit_breadcrumb resource, breadcrumb_name=nil
