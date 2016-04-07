@@ -14,7 +14,7 @@ else
     cat /dev/null > $OUTPUT
 fi
 
-rvm use 2.2-head@scraper
+#rvm use 2.2-head@scraper
 
 SCRAPERS=(bitsvib_events_scraper
           bitsvib_scraper
@@ -24,7 +24,7 @@ SCRAPERS=(bitsvib_events_scraper
           elixir_events_scraper
           genome3d_scraper
           goblet_rdfa_scraper
-          legacy_software_carpentry_scraper
+          #legacy_software_carpentry_scraper # Probably doesn't need re-running
           ngs_registry_scraper
           sib_scraper
           )
