@@ -1,58 +1,288 @@
 require 'test_helper'
 
 class PackagesControllerTest < ActionController::TestCase
-
   include Devise::TestHelpers
-
 
   setup do
     @package = packages(:one)
+    #u = users(:regular_user)
+    #@package.user_id = u.id
+    #@package.save!
+    @updated_package = {
+        title: 'New title',
+        short_description: 'New description'
+    }
   end
-
-  test "should get index" do
+  #INDEX TESTS
+  test 'should get index' do
     get :index
     assert_response :success
     assert_not_nil assigns(:packages)
   end
 
-  test "should get new" do
+  #NEW TESTS
+  test 'should get new' do
     sign_in users(:regular_user)
     get :new
     assert_response :success
   end
 
-  test "should create package" do
+  test 'should get new page for logged in users only' do
+    #Redirect to login if not logged in
+    get :new
+    assert_response :redirect
     sign_in users(:regular_user)
-    assert_difference('Package.count') do
-      post :create, package: { description: @package.description, image_url: @package.image_url, title: @package.title, public: @package.public }
-    end
-
-    assert_redirected_to package_path(assigns(:package))
-  end
-
-  test "should show package" do
-    get :show, id: @package
+    #Success for everyone else
+    get :new
+    assert_response :success
+    sign_in users(:admin)
+    get :new
     assert_response :success
   end
 
-  test "should get edit" do
+  #EDIT TESTS
+  test 'should not get edit page for not logged in users' do
+    #Not logged in = Redirect to login
+    get :edit, id: @package
+    assert_redirected_to new_user_session_path
+  end
+
+    #logged in but insufficient permissions = ERROR
+  test 'should get edit for content provider owner' do
     sign_in users(:regular_user)
     get :edit, id: @package
     assert_response :success
   end
 
-  test "should update package" do
+  test 'should get edit for admin' do
+    #Owner of package logged in = SUCCESS
+    sign_in users(:admin)
+    get :edit, id: @package
+    assert_response :success
+  end
+
+  test 'should not get edit page for non-owner user' do
+    #Administrator = SUCCESS
+    sign_in users(:another_regular_user)
+    get :edit, id: @package
+    assert :forbidden
+  end
+
+  #CREATE TEST
+  test 'should create content provider for user' do
     sign_in users(:regular_user)
-    patch :update, id: @package, package: { description: @package.description, image_url: @package.image_url, title: @package.title, public: @package.public }
+    assert_difference('Package.count') do
+      post :create, package: {description: @package.description, title: @package.title, url: @package.url }
+    end
     assert_redirected_to package_path(assigns(:package))
   end
 
-  test "should destroy package" do
+  test 'should create content provider for admin' do
+    sign_in users(:admin)
+    assert_difference('Package.count') do
+      post :create, package: { title: @package.title, url: @package.url, image_url: @package.image_url, description: @package.description }
+    end
+    assert_redirected_to package_path(assigns(:package))
+  end
+
+  test 'should not create content provider for non-logged in user' do
+    assert_no_difference('Package.count') do
+      post :create, package: { title: @package.title, url: @package.url, image_url: @package.image_url, description: @package.description }
+    end
+    assert_redirected_to new_user_session_path
+  end
+
+  #SHOW TEST
+  test 'should show content provider' do
+    get :show, id: @package
+    assert_response :success
+    assert assigns(:package)
+  end
+
+
+  #UPDATE TEST
+  test 'should update content provider' do
+    sign_in users(:regular_user)
+    # patch :update, id: @package, package: { doi: @package.doi,  remote_created_date: @package.remote_created_date,  remote_updated_date: @package.remote_updated_date, short_description: @package.short_description, title: @package.title, url: @package.url }
+    patch :update, id: @package, package: @updated_package
+    assert_redirected_to package_path(assigns(:package))
+  end
+
+  #DESTROY TEST
+  test 'should destroy content provider owned by user' do
     sign_in users(:regular_user)
     assert_difference('Package.count', -1) do
       delete :destroy, id: @package
     end
     assert_redirected_to packages_path
+  end
+
+  test 'should destroy content provider when administrator' do
+    sign_in users(:admin)
+    assert_difference('Package.count', -1) do
+      delete :destroy, id: @package
+    end
+    assert_redirected_to packages_path
+  end
+
+  test 'should not destroy content provider not owned by user' do
+    sign_in users(:another_regular_user)
+    assert_no_difference('Package.count') do
+      delete :destroy, id: @package
+    end
+    assert_response :forbidden
+  end
+
+
+  #CONTENT TESTS
+  #BREADCRUMBS
+  test 'breadcrumbs for packages index' do
+    get :index
+    assert_response :success
+    assert_select 'div.breadcrumbs', :text => /Home/, :count => 1 do
+      assert_select 'a[href=?]', root_path, :count => 1
+      assert_select 'li[class=active]', :text => /Content providers/, :count => 1
+    end
+  end
+
+  test 'breadcrumbs for showing package' do
+    get :show, :id => @package
+    assert_response :success
+    assert_select 'div.breadcrumbs', :text => /Home/, :count => 1 do
+      assert_select 'a[href=?]', root_path, :count => 1
+      assert_select 'li', :text => /Content providers/, :count => 1 do
+        assert_select 'a[href=?]', packages_url, :count => 1
+      end
+      assert_select 'li[class=active]', :text => /#{@package.title}/, :count => 1
+    end
+  end
+
+  test 'breadcrumbs for editing package' do
+    sign_in users(:admin)
+    get :edit, id: @package
+    assert_response :success
+    assert_select 'div.breadcrumbs', :text => /Home/, :count => 1 do
+      assert_select 'a[href=?]', root_path, :count => 1
+      assert_select 'li', :text => /Content providers/, :count => 1 do
+        assert_select 'a[href=?]', packages_url, :count => 1
+      end
+      assert_select 'li', :text => /#{@package.title}/, :count => 1 do
+        assert_select 'a[href=?]', package_url(@package), :count => 1
+      end
+      assert_select 'li[class=active]', :text => /Edit/, :count => 1
+    end
+  end
+
+  test 'breadcrumbs for creating new package' do
+    sign_in users(:regular_user)
+    get :new
+    assert_response :success
+    assert_select 'div.breadcrumbs', :text => /Home/, :count => 1 do
+      assert_select 'a[href=?]', root_path, :count => 1
+      assert_select 'li', :text => /Content providers/, :count => 1 do
+        assert_select 'a[href=?]', packages_url, :count => 1
+      end
+      assert_select 'li[class=active]', :text => /New/, :count => 1
+    end
+  end
+
+  #OTHER CONTENT
+  test 'package has correct tabs' do
+    get :show, :id => @package
+    assert_response :success
+    assert_select 'ul.nav-tabs' do
+      assert_select 'li' do
+        assert_select 'a[data-toggle="tab"]', :count => 3
+      end
+    end
+  end
+
+  test 'package has correct layout' do
+    get :show, :id => @package
+    assert_response :success
+    assert_select 'h2', :text => @package.title #Has Title
+    assert_select 'a.h5[href=?]', @package.url #Has plain written URL
+    assert_select 'a.btn-info[href=?]', packages_path, :count => 1 #Back button
+    assert_select 'button.btn-success', :text => "View package", :count => 1 do
+      assert_select 'a[href=?]', @package.url, :count => 1 #View package button
+    end
+    #Should not show when not logged in
+    assert_select 'a.btn-primary[href=?]', edit_package_path(@package), :count => 0 #No Edit
+    assert_select 'a.btn-danger[href=?]', package_path(@package), :count => 0 #No Edit
+  end
+
+  test 'do not show action buttons when not owner or admin' do
+    sign_in users(:another_regular_user)
+    get :show, :id => @package
+    assert_select 'a.btn-primary[href=?]', edit_package_path(@package), :count => 0 #No Edit
+    assert_select 'a.btn-danger[href=?]', package_path(@package), :count => 0 #No Edit
+  end
+
+  test 'show action buttons when owner' do
+    sign_in users(:regular_user)
+    get :show, :id => @package
+    assert_select 'a.btn-primary[href=?]', edit_package_path(@package), :count => 1
+    assert_select 'a.btn-danger[href=?]', package_path(@package), :text => 'Delete', :count => 1
+  end
+
+  test 'show action buttons when admin' do
+    sign_in users(:admin)
+    get :show, :id => @package
+    assert_select 'a.btn-primary[href=?]', edit_package_path(@package), :count => 1
+    assert_select 'a.btn-danger[href=?]', package_path(@package), :text => 'Delete', :count => 1
+  end
+
+  #API Actions
+  test 'should find existing package by title' do
+    post 'check_exists', :format => :json,  :title => @package.title
+    assert_response :success
+    assert_equal(JSON.parse(response.body)['title'], @package.title)
+  end
+
+  test 'should find existing package by url' do
+    post 'check_exists', :format => :json,  :url => @package.url
+    assert_response :success
+    assert_equal(JSON.parse(response.body)['title'], @package.title)
+  end
+
+  test 'should return nothing when package does not exist' do
+    post 'check_exists', :format => :json,  :title => 'This title should not exist'
+    assert_response :success
+    assert_equal(response.body, '')
+  end
+
+  test 'should display filters on index' do
+    get :index
+    assert_select 'h4.nav-heading', :text => /Content provider/, :count => 0
+    assert_select 'div.list-group-item', :count => Package.count
+  end
+
+
+
+  # TODO: SOLR tests will not run on TRAVIS. Explore stratergy for testing solr
+=begin
+      test 'should return matching packages' do
+        get 'index', :format => :json, :q => 'training'
+        assert_response :success
+        assert response.body.size > 0
+      end
+
+      test 'should return no matching packages' do
+        get 'index', :format => :json, :q => 'kdfsajfklasdjfljsdfljdsfjncvmn'
+        assert_response :success
+        assert_equal(response.body,'[]')
+        end
+=end
+
+  test "should find package by title" do
+    post 'check_exists', :format => :json,  :title => @package.title
+    assert_response :success
+    assert_equal(JSON.parse(response.body)['title'], @package.title)
+  end
+  test "should return nothing when package does't exist" do
+    post 'check_exists', :format => :json,  :title => 'This title should not exist'
+    assert_response :success
+    assert_equal(response.body, "")
   end
 
   test "should_add_materials_to_package" do
@@ -83,4 +313,6 @@ class PackagesControllerTest < ActionController::TestCase
       post :update_package_resources, package: { event_ids: []}, package_id: package.id
     end
   end
+
 end
+
