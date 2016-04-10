@@ -44,12 +44,13 @@ class UsersControllerTest < ActionController::TestCase
     assert_no_difference('User.count') do
       post :create, user: { username: 'frank', email: 'frank@notarealdomain.org', password: 'franksreallylongpass'}
     end
+    assert_response :success
     assert_redirected_to new_user_session_path
     sign_in users(:regular_user)
     assert_no_difference('User.count') do
       post :create, user: { username: 'frank', email: 'frank@notarealdomain.org', password: 'franksreallylongpass'}
     end
-    assert_redirected_to root_path
+    assert_resonse :forbidden
   end
 
   test "should show user if admin" do
@@ -58,10 +59,10 @@ class UsersControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should not show other users page if not admin and self" do
+  test "should show other users page if not admin or self" do
     sign_in users(:another_regular_user)
     get :show, id: @user
-    assert_response :forbidden #FORBIDDEN PAGE!?
+    assert_response :success #FORBIDDEN PAGE!?
   end
 
  test "should only allow edit for admin and self" do
@@ -78,16 +79,16 @@ class UsersControllerTest < ActionController::TestCase
     #assert_redirected_to root_path
   end
 
-  test "should update user" do
+  test "should update profile" do
     sign_in users(:regular_user)
-    patch :update, id: @user, user: { email: 'hot@mail.com' }
+    patch :update, id: @user, user: { profile: { email: 'hot@mail.com'}}
     assert_redirected_to user_path(assigns(:user))
   end
 
   test "should reset token" do
     sign_in users(:regular_user)
     old_token = @user.authentication_token
-    patch :change_token
+    patch :change_token, id: @user
     new_token = User.find_by_username('Bob').authentication_token
     assert_not_equal old_token, new_token
   end
