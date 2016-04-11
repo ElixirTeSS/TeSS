@@ -39,7 +39,7 @@
       <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
           <div class="row">
-            <div class="page-header">
+            <div class="page-header dont-break-out">
               <h2><%=t '.title', :default => @material.title %></h2>
               <p><%= link_to @material.url, @material.url, :class =>'h5', :target => "_blank" %></p>
               <% if not @material.long_description.blank? %>

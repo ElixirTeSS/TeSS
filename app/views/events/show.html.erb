@@ -102,14 +102,14 @@
                   <%= @event.postcode %></p>
             <% end %>
 
-            <% if @event.latitude and !@event.latitude.blank? %>
-                <p><strong>Latitude:</strong>
-                  <%= @event.latitude %></p>
-            <% end %>
-            <% if @event.longitude and !@event.longitude.blank? %>
-                <p><strong>Longitude:</strong>
-                  <%= @event.longitude %></p>
-            <% end %>
+            <!--<%# if @event.latitude and !@event.latitude.blank? %>-->
+                <!--<p><strong>Latitude:</strong>
+                  <%#= @event.latitude %></p> -->
+            <!--<%# end %>-->
+            <!--<%# if @event.longitude and !@event.longitude.blank? %>-->
+                <!--<p><strong>Longitude:</strong>
+                  <%#= @event.longitude %></p> -->
+            <!--<%# end %>-->
             <%= link_to 'Back', events_path, :class=>"btn btn-info" %>
             <!--<%#= link_to 'Edit', edit_event_path(@event), :class=>"btn btn-primary" %> --><!-- Forbid editing of events -->
             <button class="btn btn-success"><a target="_blank" href="<%= @event.url %>">View event <span class="fa fa-external-link" aria-hidden="true"></span></a></button>
