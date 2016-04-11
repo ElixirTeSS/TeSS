@@ -44,13 +44,12 @@ class UsersControllerTest < ActionController::TestCase
     assert_no_difference('User.count') do
       post :create, user: { username: 'frank', email: 'frank@notarealdomain.org', password: 'franksreallylongpass'}
     end
-    assert_response :success
     assert_redirected_to new_user_session_path
     sign_in users(:regular_user)
     assert_no_difference('User.count') do
       post :create, user: { username: 'frank', email: 'frank@notarealdomain.org', password: 'franksreallylongpass'}
     end
-    assert_resonse :forbidden
+    assert_response :forbidden
   end
 
   test "should show user if admin" do

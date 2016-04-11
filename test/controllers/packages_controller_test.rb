@@ -72,7 +72,7 @@ class PackagesControllerTest < ActionController::TestCase
   test 'should create content provider for user' do
     sign_in users(:regular_user)
     assert_difference('Package.count') do
-      post :create, package: {description: @package.description, title: @package.title, url: @package.url }
+      post :create, package: { title: @package.title, image_url: @package.image_url, description: @package.description }
     end
     assert_redirected_to package_path(assigns(:package))
   end
@@ -80,14 +80,14 @@ class PackagesControllerTest < ActionController::TestCase
   test 'should create content provider for admin' do
     sign_in users(:admin)
     assert_difference('Package.count') do
-      post :create, package: { title: @package.title, url: @package.url, image_url: @package.image_url, description: @package.description }
+      post :create, package: { title: @package.title, image_url: @package.image_url, description: @package.description }
     end
     assert_redirected_to package_path(assigns(:package))
   end
 
   test 'should not create content provider for non-logged in user' do
     assert_no_difference('Package.count') do
-      post :create, package: { title: @package.title, url: @package.url, image_url: @package.image_url, description: @package.description }
+      post :create, package: { title: @package.title, image_url: @package.image_url, description: @package.description }
     end
     assert_redirected_to new_user_session_path
   end
@@ -233,64 +233,6 @@ class PackagesControllerTest < ActionController::TestCase
   end
 
   #API Actions
-  test 'should find existing package by title' do
-    post 'check_exists', :format => :json,  :title => @package.title
-    assert_response :success
-    assert_equal(JSON.parse(response.body)['title'], @package.title)
-  end
-
-  test 'should find existing package by url' do
-    post 'check_exists', :format => :json,  :url => @package.url
-    assert_response :success
-    assert_equal(JSON.parse(response.body)['title'], @package.title)
-  end
-
-  test 'should return nothing when package does not exist' do
-    post 'check_exists', :format => :json,  :title => 'This title should not exist'
-    assert_response :success
-    assert_equal(response.body, '')
-  end
-
-  test 'should display filters on index' do
-    get :index
-    assert_select 'h4.nav-heading', :text => /Content provider/, :count => 0
-    assert_select 'div.list-group-item', :count => Package.count
-  end
-
-
-
-  # TODO: SOLR tests will not run on TRAVIS. Explore stratergy for testing solr
-=begin
-      test 'should return matching packages' do
-        get 'index', :format => :json, :q => 'training'
-        assert_response :success
-        assert response.body.size > 0
-      end
-
-      test 'should return no matching packages' do
-        get 'index', :format => :json, :q => 'kdfsajfklasdjfljsdfljdsfjncvmn'
-        assert_response :success
-        assert_equal(response.body,'[]')
-        end
-=end
-
-  test "should find package by title" do
-    post 'check_exists', :format => :json,  :title => @package.title
-    assert_response :success
-    assert_equal(JSON.parse(response.body)['title'], @package.title)
-  end
-  test "should return nothing when package does't exist" do
-    post 'check_exists', :format => :json,  :title => 'This title should not exist'
-    assert_response :success
-    assert_equal(response.body, "")
-  end
-
-  test "should_add_materials_to_package" do
-    sign_in users(:regular_user)
-    assert_difference('@package.materials.count', +2) do
-      post :update_package_resources, package: {material_ids: [materials(:biojs).id, materials(:interpro).id]}, package_id: @package.id
-    end
-  end
   test "should_remove_materials_from_package" do
     sign_in users(:regular_user)
     package = packages(:with_resources)
