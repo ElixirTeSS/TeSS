@@ -11,8 +11,9 @@
 /log/*
 !/log/.keep
 /tmp
-secrets.yml
-secret_file.yml
+config/secrets.yml
+config/sunspot.yml
+config/environments/production.rb
 tmp/
 solr/test/
 solr/pids/
