@@ -29,7 +29,7 @@ gem 'font-awesome-sass'
 gem 'friendly_id', '~> 5.1.0'
 
 gem 'sunspot_rails'
-gem 'sunspot_solr', '~> 2.2.0'
+gem 'sunspot_solr', '= 2.2.0'
 gem 'progress_bar'
 
 gem 'paper_trail', '~> 4.0.0'
