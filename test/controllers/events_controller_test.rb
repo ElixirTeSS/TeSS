@@ -16,9 +16,9 @@ class EventsControllerTest < ActionController::TestCase
 
   setup do
     @event = events(:one)
-    #u = users(:regular_user)
-    #@event.user_id = u.id
-    #@event.save!
+    u = users(:regular_user)
+    @event.user = u
+    @event.save!
     @updated_event = {
         title: 'New title',
         short_description: 'New description'
