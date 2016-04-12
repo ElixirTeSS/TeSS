@@ -10,7 +10,7 @@ class MaterialPolicy < ApplicationPolicy
         return false
       end
     end
-    if @user.is_owner?(@record) # check ownership
+    if @user.has_role?(:curator) or @user.is_owner?(@record)
       return true
     else
       return false

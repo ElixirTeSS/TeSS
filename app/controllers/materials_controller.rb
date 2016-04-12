@@ -97,7 +97,9 @@ class MaterialsController < ApplicationController
   def create
     authorize Material
     @material = Material.new(material_params)
-    @material.user_id = current_user.id
+    #@material.user_id = current_user.id
+    @material.user = current_user
+
     respond_to do |format|
       if @material.save
         @material.create_activity :create, owner: current_user

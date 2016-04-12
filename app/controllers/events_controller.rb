@@ -79,6 +79,8 @@ class EventsController < ApplicationController
   def create
     authorize Event
     @event = Event.new(event_params)
+    @event.user = current_user
+
     respond_to do |format|
       if @event.save
         @event.create_activity :create, owner: current_user
@@ -112,6 +114,7 @@ class EventsController < ApplicationController
   # DELETE /events/1.json
   def destroy
     authorize @event
+    @event.create_activity :destroy, owner: current_user
     @event.destroy
     respond_to do |format|
       format.html { redirect_to events_url, notice: 'Event was successfully destroyed.' }

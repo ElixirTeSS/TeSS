@@ -41,6 +41,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        @user.create_activity :create, owner: current_user
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
@@ -57,6 +58,7 @@ class UsersController < ApplicationController
     authorize @user
     respond_to do |format|
       if @user.profile.update(profile_params)
+        @user.create_activity :update, owner: current_user
         format.html { redirect_to @user, notice: 'Profile was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
@@ -70,6 +72,7 @@ class UsersController < ApplicationController
   # DELETE /users/1.json
   def destroy
     authorize @user
+    @user.create_activity :destroy, owner: current_user
     @user.destroy
     respond_to do |format|
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }

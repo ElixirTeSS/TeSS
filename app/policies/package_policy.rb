@@ -34,7 +34,7 @@ class PackagePolicy < ApplicationPolicy
       if user.is_admin?
         Package.all
       else
-        query = Package.unscoped.where(public: true, owner: user)
+        query = Package.unscoped.where(public: true, user: user)
         Package.where(query.where_values.inject(:or))
       end
     end

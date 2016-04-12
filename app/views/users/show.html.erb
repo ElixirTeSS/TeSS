@@ -106,6 +106,9 @@
             Materials</a>
         </li>
         <li>
+          <a data-toggle="tab" href="#events"><i class="<%= icon_class_for_model('events') %>"></i> Events</a>
+        </li>
+        <li>
           <a data-toggle="tab" href="#packages"><i class="<%= icon_class_for_model('packages') %>"></i> Packages</a>
         </li>
         <li>
@@ -124,6 +127,20 @@
                 <% @user.materials.each do |material| %> 
                     <%= render material %> 
                 <% end %> 
+            <% end %>
+          </div>
+        </div>
+        <div id="events" class="tab-pane fade">
+          <div class="row">
+            <div class="search-results-count">
+              <%= pluralize(@user.events.count, 'event') %> found
+            </div>
+            <% if !@user.events.blank? %>
+                <ul class="masonry media-grid" style="margin-top: 15px;">
+                  <% @user.events.each do |event| %>
+                      <%= render event %>
+                  <% end %>
+                </ul>
             <% end %>
           </div>
         </div>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160218175653) do
+ActiveRecord::Schema.define(version: 20160412105109) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,9 +71,11 @@ ActiveRecord::Schema.define(version: 20160218175653) do
     t.text     "source",                                       default: "tess"
     t.string   "slug"
     t.integer  "content_provider_id"
+    t.integer  "user_id"
   end
 
   add_index "events", ["slug"], name: "index_events_on_slug", unique: true, using: :btree
+  add_index "events", ["user_id"], name: "index_events_on_user_id", using: :btree
 
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string   "slug",                      null: false
@@ -97,7 +99,6 @@ ActiveRecord::Schema.define(version: 20160218175653) do
     t.date     "remote_created_date"
     t.datetime "created_at",                                   null: false
     t.datetime "updated_at",                                   null: false
-    t.integer  "user_id"
     t.text     "long_description"
     t.string   "target_audience",     default: [],                          array: true
     t.string   "scientific_topic",    default: [],                          array: true
@@ -108,10 +109,12 @@ ActiveRecord::Schema.define(version: 20160218175653) do
     t.string   "difficulty_level",    default: "notspecified"
     t.integer  "content_provider_id"
     t.string   "slug"
+    t.integer  "user_id"
   end
 
   add_index "materials", ["content_provider_id"], name: "index_materials_on_content_provider_id", using: :btree
   add_index "materials", ["slug"], name: "index_materials_on_slug", unique: true, using: :btree
+  add_index "materials", ["user_id"], name: "index_materials_on_user_id", using: :btree
 
   create_table "nodes", force: :cascade do |t|
     t.string   "name"
@@ -255,8 +258,6 @@ ActiveRecord::Schema.define(version: 20160218175653) do
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.string   "slug"
-    t.integer  "package_id"
-    t.integer  "profile_id"
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
@@ -304,7 +305,9 @@ ActiveRecord::Schema.define(version: 20160218175653) do
   add_index "workflows", ["slug"], name: "index_workflows_on_slug", unique: true, using: :btree
   add_index "workflows", ["user_id"], name: "index_workflows_on_user_id", using: :btree
 
+  add_foreign_key "events", "users"
   add_foreign_key "materials", "content_providers"
+  add_foreign_key "materials", "users"
   add_foreign_key "packages", "users"
   add_foreign_key "users", "roles"
   add_foreign_key "workflows", "users"
