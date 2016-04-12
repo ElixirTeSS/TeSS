@@ -6,10 +6,12 @@ e.g.
 %>
 <% extras = extras || false %>
 
-<% options = [['Title Ascending', 'asc'],
-              ['Title Descending', 'desc'],
-              ['Last Modified', 'mod'],
-              ['Relevance', 'rel']] %>
+<% options = [
+    ['Title ascending', 'asc'],
+    ['Title descending', 'desc'],
+  # ['Last modified', 'mod'],
+  # ['Relevance', 'rel']
+] %>
 
 <% if extras %>
     <% extras.each do |extra| %>
@@ -22,7 +24,7 @@ e.g.
     <label for="order_by">Sort by:</label>
     <%= select_tag(:sort, options_for_select(
         options, @sort_by),
-                   :onchange  => "redirect_to_sort_url()", :class => "form-control")
+                   :onchange => "redirect_to_sort_url()", :class => "form-control")
     %>
   </div>
 </form>
