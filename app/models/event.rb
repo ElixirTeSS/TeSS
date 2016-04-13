@@ -5,7 +5,6 @@ class Event < ActiveRecord::Base
   extend FriendlyId
   friendly_id :title, use: :slugged
 
-
   unless SOLR_ENABLED==false
     searchable do
       text :title
@@ -29,6 +28,8 @@ class Event < ActiveRecord::Base
 =end
     end
   end
+
+  belongs_to :user
 
   has_many :package_events
   has_many :packages, through: :package_events

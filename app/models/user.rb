@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
   has_many :materials
   has_many :packages
   has_many :workflows
+  has_many :events
   belongs_to :role
 
   before_create :set_default_role, :set_default_profile
@@ -93,9 +94,8 @@ class User < ActiveRecord::Base
   # Check if user is owner of a resource
   def is_owner?(resource)
     return false if resource.nil?
-    return false if !resource.respond_to?("owner".to_sym)
-    return true if resource.user_id == self.id
-    if self == resource.owner
+    return false if !resource.respond_to?("user".to_sym)
+    if self == resource.user
       return true
     else
       return false

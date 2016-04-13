@@ -33,6 +33,7 @@ class NodesController < ApplicationController
 
     respond_to do |format|
       if @node.save
+        @node.create_activity :create, owner: current_user
         format.html { redirect_to @node, notice: 'Node was successfully created.' }
         format.json { render :show, status: :created, location: @node }
       else
@@ -48,6 +49,7 @@ class NodesController < ApplicationController
     authorize @node
     respond_to do |format|
       if @node.update(node_params)
+        @node.create_activity :update, owner: current_user
         format.html { redirect_to @node, notice: 'Node was successfully updated.' }
         format.json { render :show, status: :ok, location: @node }
       else
@@ -61,6 +63,7 @@ class NodesController < ApplicationController
   # DELETE /nodes/1.json
   def destroy
     authorize @node
+    @node.create_activity :destroy, owner: current_user
     @node.destroy
     respond_to do |format|
       format.html { redirect_to nodes_url, notice: 'Node was successfully destroyed.' }

@@ -12,5 +12,7 @@ class Workflow < ActiveRecord::Base
     end
   end
 
-  has_one :owner, foreign_key: "id", class_name: "User"
+  # has_one :owner, foreign_key: "id", class_name: "User"
+  belongs_to :user
+
 end

@@ -32,7 +32,7 @@ class WorkflowPolicy < ApplicationPolicy
       else
         # For how to do OR queries in Rails 4 see
         # https://coderwall.com/p/dgv7ag/or-queries-with-arrays-as-arguments-in-rails-4
-        query = Workflow.unscoped.where(public: true, owner: user)
+        query = Workflow.unscoped.where(public: true, user: user)
         Workflow.where(query.where_values.inject(:or))
       end
     end

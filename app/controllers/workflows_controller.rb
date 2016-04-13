@@ -31,9 +31,11 @@ class WorkflowsController < ApplicationController
   def create
     authorize Workflow
     @workflow = Workflow.new(workflow_params)
+    @workflow.user = current_user
 
     respond_to do |format|
       if @workflow.save
+        @workflow.create_activity :create, owner: current_user
         format.html { redirect_to @workflow, notice: 'Workflow was successfully created.' }
         format.json { render :show, status: :created, location: @workflow }
       else
@@ -49,6 +51,7 @@ class WorkflowsController < ApplicationController
     authorize @workflow
     respond_to do |format|
       if @workflow.update(workflow_params)
+        @workflow.create_activity :update, owner: current_user
         format.html { redirect_to @workflow, notice: 'Workflow was successfully updated.' }
         format.json { render :show, status: :ok, location: @workflow }
       else
@@ -62,6 +65,7 @@ class WorkflowsController < ApplicationController
   # DELETE /workflows/1.json
   def destroy
     authorize @workflow
+    @workflow.create_activity :destroy, owner: current_user
     @workflow.destroy
     respond_to do |format|
       format.html { redirect_to workflows_url, notice: 'Workflow was successfully destroyed.' }

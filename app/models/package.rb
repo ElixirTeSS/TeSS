@@ -13,8 +13,8 @@ class Package < ActiveRecord::Base
 	has_many :materials, through: :package_materials
   has_many :events, through: :package_events
 
-	has_one :owner, foreign_key: "id", class_name: "User"
-
+	#has_one :owner, foreign_key: "id", class_name: "User"
+  belongs_to :user
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
@@ -31,17 +31,17 @@ class Package < ActiveRecord::Base
     searchable do 
       text :title
       text :description
-      string :owner do
-      	self.owner.username.to_s if !owner.nil?
+      string :user do
+      	self.user.username.to_s unless self.user.blank?
       end
       string :keywords, :multiple => true
       
-      string :owner, :multiple => true do
-        if self.owner
-          if self.owner.profile and (self.owner.profile.firstname or self.owner.profile.surname)
-            "#{self.owner.profile.firstname} #{self.owner.profile.surname}"
+      string :user, :multiple => true do
+        if self.user
+          if self.user.profile and (self.user.profile.firstname or self.user.profile.surname)
+            "#{self.user.profile.firstname} #{self.user.profile.surname}"
           else
-            self.owner.username
+            self.user.username
           end
         end
         end

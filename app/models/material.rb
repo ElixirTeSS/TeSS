@@ -47,7 +47,8 @@ class Material < ActiveRecord::Base
     end
   end
 
-  has_one :owner, foreign_key: "id", class_name: "User"
+  # has_one :owner, foreign_key: "id", class_name: "User"
+  belongs_to :user
 
   has_many :scientific_topic, foreign_key: 'class_id', class_name: "ScientificTopic"
 
@@ -79,6 +80,10 @@ class Material < ActiveRecord::Base
       # If updated at - ignore
       self.create_activity :update_parameter, parameters: {attr: changed_attribute, new_val: self.send(changed_attribute)}
     end
+  end
+
+  def self.owner
+    self.user
   end
 end
 

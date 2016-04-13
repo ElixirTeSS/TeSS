@@ -6,7 +6,7 @@ class PackagesController < ApplicationController
 
   include TeSS::BreadCrumbs
 
-  @@facet_fields = %w( owner keywords )
+  @@facet_fields = %w( user keywords )
 
   # GET /packages
   # GET /packages.json
@@ -41,6 +41,7 @@ class PackagesController < ApplicationController
   def create
     authorize Package
     @package = Package.new(package_params)
+    @package.user = current_user
 
     respond_to do |format|
       if @package.save
@@ -75,6 +76,7 @@ class PackagesController < ApplicationController
   # DELETE /packages/1.json
   def destroy
     authorize @package
+    @package.create_activity :destroy, owner: current_user
     @package.destroy
     respond_to do |format|
       format.html { redirect_to packages_url, notice: 'Package was successfully destroyed.' }
