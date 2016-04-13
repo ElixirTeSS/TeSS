@@ -27,7 +27,11 @@ module TeSS
 
       def clean_fields
         self.class.fields_to_clean.each do |field|
-          self[field] = self[field].reject{ |element| element.blank? }
+          if self[field].nil?
+            self[field] = []
+          else
+            self[field] = self[field].reject{ |element| element.blank? }
+          end
         end
       end
     end
