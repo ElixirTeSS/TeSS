@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160412105109) do
+ActiveRecord::Schema.define(version: 20160413104231) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,9 +42,11 @@ ActiveRecord::Schema.define(version: 20160412105109) do
     t.datetime "updated_at",               null: false
     t.string   "slug"
     t.string   "keywords",    default: [],              array: true
+    t.integer  "user_id"
   end
 
   add_index "content_providers", ["slug"], name: "index_content_providers_on_slug", unique: true, using: :btree
+  add_index "content_providers", ["user_id"], name: "index_content_providers_on_user_id", using: :btree
 
   create_table "events", force: :cascade do |t|
     t.string   "external_id"
@@ -130,9 +132,11 @@ ActiveRecord::Schema.define(version: 20160412105109) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.string   "slug"
+    t.integer  "user_id"
   end
 
   add_index "nodes", ["slug"], name: "index_nodes_on_slug", unique: true, using: :btree
+  add_index "nodes", ["user_id"], name: "index_nodes_on_user_id", using: :btree
 
   create_table "package_events", id: false, force: :cascade do |t|
     t.integer  "event_id"
@@ -305,9 +309,11 @@ ActiveRecord::Schema.define(version: 20160412105109) do
   add_index "workflows", ["slug"], name: "index_workflows_on_slug", unique: true, using: :btree
   add_index "workflows", ["user_id"], name: "index_workflows_on_user_id", using: :btree
 
+  add_foreign_key "content_providers", "users"
   add_foreign_key "events", "users"
   add_foreign_key "materials", "content_providers"
   add_foreign_key "materials", "users"
+  add_foreign_key "nodes", "users"
   add_foreign_key "packages", "users"
   add_foreign_key "users", "roles"
   add_foreign_key "workflows", "users"
