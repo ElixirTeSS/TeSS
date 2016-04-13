@@ -53,7 +53,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
 
     #logged in but insufficient permissions = ERROR
   test 'should get edit for content provider owner' do
-    sign_in users(:regular_user)
+    sign_in @content_provider.user
     get :edit, id: @content_provider
     assert_response :success
   end
@@ -106,7 +106,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
 
   #UPDATE TEST
   test 'should update content provider' do
-    sign_in users(:regular_user)
+    sign_in @content_provider.user
     # patch :update, id: @content_provider, content_provider: { doi: @content_provider.doi,  remote_created_date: @content_provider.remote_created_date,  remote_updated_date: @content_provider.remote_updated_date, short_description: @content_provider.short_description, title: @content_provider.title, url: @content_provider.url }
     patch :update, id: @content_provider, content_provider: @updated_content_provider
     assert_redirected_to content_provider_path(assigns(:content_provider))
@@ -114,7 +114,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
 
   #DESTROY TEST
   test 'should destroy content provider owned by user' do
-    sign_in users(:regular_user)
+    sign_in @content_provider.user
     assert_difference('ContentProvider.count', -1) do
       delete :destroy, id: @content_provider
     end

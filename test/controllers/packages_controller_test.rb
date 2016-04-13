@@ -48,8 +48,8 @@ class PackagesControllerTest < ActionController::TestCase
   end
 
     #logged in but insufficient permissions = ERROR
-  test 'should get edit for content provider owner' do
-    sign_in users(:regular_user)
+  test 'should get edit for package owner' do
+    sign_in @package.user
     get :edit, id: @package
     assert_response :success
   end
@@ -69,7 +69,7 @@ class PackagesControllerTest < ActionController::TestCase
   end
 
   #CREATE TEST
-  test 'should create content provider for user' do
+  test 'should create package for user' do
     sign_in users(:regular_user)
     assert_difference('Package.count') do
       post :create, package: { title: @package.title, image_url: @package.image_url, description: @package.description }
@@ -77,7 +77,7 @@ class PackagesControllerTest < ActionController::TestCase
     assert_redirected_to package_path(assigns(:package))
   end
 
-  test 'should create content provider for admin' do
+  test 'should create package for admin' do
     sign_in users(:admin)
     assert_difference('Package.count') do
       post :create, package: { title: @package.title, image_url: @package.image_url, description: @package.description }
@@ -85,7 +85,7 @@ class PackagesControllerTest < ActionController::TestCase
     assert_redirected_to package_path(assigns(:package))
   end
 
-  test 'should not create content provider for non-logged in user' do
+  test 'should not create package for non-logged in user' do
     assert_no_difference('Package.count') do
       post :create, package: { title: @package.title, image_url: @package.image_url, description: @package.description }
     end
@@ -93,7 +93,7 @@ class PackagesControllerTest < ActionController::TestCase
   end
 
   #SHOW TEST
-  test 'should show content provider' do
+  test 'should show package' do
     get :show, id: @package
     assert_response :success
     assert assigns(:package)
@@ -101,23 +101,23 @@ class PackagesControllerTest < ActionController::TestCase
 
 
   #UPDATE TEST
-  test 'should update content provider' do
-    sign_in users(:regular_user)
+  test 'should update package' do
+    sign_in @package.user
     # patch :update, id: @package, package: { doi: @package.doi,  remote_created_date: @package.remote_created_date,  remote_updated_date: @package.remote_updated_date, short_description: @package.short_description, title: @package.title, url: @package.url }
     patch :update, id: @package, package: @updated_package
     assert_redirected_to package_path(assigns(:package))
   end
 
   #DESTROY TEST
-  test 'should destroy content provider owned by user' do
-    sign_in users(:regular_user)
+  test 'should destroy package owned by user' do
+    sign_in @package.user
     assert_difference('Package.count', -1) do
       delete :destroy, id: @package
     end
     assert_redirected_to packages_path
   end
 
-  test 'should destroy content provider when administrator' do
+  test 'should destroy package when administrator' do
     sign_in users(:admin)
     assert_difference('Package.count', -1) do
       delete :destroy, id: @package
@@ -125,7 +125,7 @@ class PackagesControllerTest < ActionController::TestCase
     assert_redirected_to packages_path
   end
 
-  test 'should not destroy content provider not owned by user' do
+  test 'should not destroy package not owned by user' do
     sign_in users(:another_regular_user)
     assert_no_difference('Package.count') do
       delete :destroy, id: @package
@@ -141,7 +141,7 @@ class PackagesControllerTest < ActionController::TestCase
     assert_response :success
     assert_select 'div.breadcrumbs', :text => /Home/, :count => 1 do
       assert_select 'a[href=?]', root_path, :count => 1
-      assert_select 'li[class=active]', :text => /Content providers/, :count => 1
+      assert_select 'li[class=active]', :text => /Packages/, :count => 1
     end
   end
 
@@ -150,7 +150,7 @@ class PackagesControllerTest < ActionController::TestCase
     assert_response :success
     assert_select 'div.breadcrumbs', :text => /Home/, :count => 1 do
       assert_select 'a[href=?]', root_path, :count => 1
-      assert_select 'li', :text => /Content providers/, :count => 1 do
+      assert_select 'li', :text => /Packages/, :count => 1 do
         assert_select 'a[href=?]', packages_url, :count => 1
       end
       assert_select 'li[class=active]', :text => /#{@package.title}/, :count => 1
@@ -163,7 +163,7 @@ class PackagesControllerTest < ActionController::TestCase
     assert_response :success
     assert_select 'div.breadcrumbs', :text => /Home/, :count => 1 do
       assert_select 'a[href=?]', root_path, :count => 1
-      assert_select 'li', :text => /Content providers/, :count => 1 do
+      assert_select 'li', :text => /Packages/, :count => 1 do
         assert_select 'a[href=?]', packages_url, :count => 1
       end
       assert_select 'li', :text => /#{@package.title}/, :count => 1 do
@@ -179,7 +179,7 @@ class PackagesControllerTest < ActionController::TestCase
     assert_response :success
     assert_select 'div.breadcrumbs', :text => /Home/, :count => 1 do
       assert_select 'a[href=?]', root_path, :count => 1
-      assert_select 'li', :text => /Content providers/, :count => 1 do
+      assert_select 'li', :text => /Packages/, :count => 1 do
         assert_select 'a[href=?]', packages_url, :count => 1
       end
       assert_select 'li[class=active]', :text => /New/, :count => 1
@@ -200,15 +200,12 @@ class PackagesControllerTest < ActionController::TestCase
   test 'package has correct layout' do
     get :show, :id => @package
     assert_response :success
-    assert_select 'h2', :text => @package.title #Has Title
-    assert_select 'a.h5[href=?]', @package.url #Has plain written URL
-    assert_select 'a.btn-info[href=?]', packages_path, :count => 1 #Back button
-    assert_select 'button.btn-success', :text => "View package", :count => 1 do
-      assert_select 'a[href=?]', @package.url, :count => 1 #View package button
-    end
+    assert_select 'div.search-results-count', :count => 2 #Has results
+    assert_select 'a.btn-info', :text => 'Back', :count => 1 #No Edit
     #Should not show when not logged in
     assert_select 'a.btn-primary[href=?]', edit_package_path(@package), :count => 0 #No Edit
     assert_select 'a.btn-danger[href=?]', package_path(@package), :count => 0 #No Edit
+
   end
 
   test 'do not show action buttons when not owner or admin' do
@@ -219,7 +216,7 @@ class PackagesControllerTest < ActionController::TestCase
   end
 
   test 'show action buttons when owner' do
-    sign_in users(:regular_user)
+    sign_in @package.user
     get :show, :id => @package
     assert_select 'a.btn-primary[href=?]', edit_package_path(@package), :count => 1
     assert_select 'a.btn-danger[href=?]', package_path(@package), :text => 'Delete', :count => 1

@@ -26,10 +26,10 @@ class UsersControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_path
     sign_in users(:regular_user)
     get :new
-    assert_redirected_to root_path
+    assert_response :forbidden
     sign_in users(:admin)
     get :new
-    assert_redirected_to root_path
+    assert_response :success
   end
 
   test "should be able to create user whilst logged in as admin" do

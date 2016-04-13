@@ -12,6 +12,7 @@ good:
   staff: 
   twitter: MyString
   carousel_images: 
+  user_id: <%= User.first.id %>
 
 no_name:
   name:

@@ -20,6 +20,7 @@ one:
   latitude:
   longitude:
   keywords: ["Keyword"]
+  user_id: <%= User.first.id %>
 
 two:
   external_id: MyString2

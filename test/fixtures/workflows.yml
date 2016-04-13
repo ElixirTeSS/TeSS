@@ -4,7 +4,8 @@ one:
   title: MyString
   description: MyString
   user_id:
-  workflow_content: 
+  workflow_content:
+  user_id: <%= User.first.id %>
 
 two:
   title: MyString

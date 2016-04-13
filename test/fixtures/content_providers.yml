@@ -1,10 +1,12 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  id: 1
   title: MyText
   url: http://example.com
   image_url: MyText
   description: MyText
+  user_id: <%= User.first.id %>
 
 two:
   title: MyTextAgain

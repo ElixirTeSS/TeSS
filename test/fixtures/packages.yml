@@ -5,6 +5,7 @@ one:
   description: MyText
   image_url: MyString
   public: false
+  user_id: <%= User.first.id %>
 
 two:
   title: This Package Is Big
