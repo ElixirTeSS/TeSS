@@ -30,6 +30,7 @@ class NodesController < ApplicationController
   def create
     authorize Node
     @node = Node.new(node_params)
+    @node.user = current_user
 
     respond_to do |format|
       if @node.save

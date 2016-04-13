@@ -66,6 +66,7 @@ class ContentProvidersController < ApplicationController
   def create
     authorize ContentProvider
     @content_provider = ContentProvider.new(content_provider_params)
+    @content_provider.user = current_user
 
     respond_to do |format|
       if @content_provider.save
