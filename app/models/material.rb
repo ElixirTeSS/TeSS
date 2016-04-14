@@ -4,7 +4,6 @@ require 'tess/autocomplete_manager'
 class Material < ActiveRecord::Base
 
   include PublicActivity::Common
-
   has_paper_trail
 
   extend FriendlyId
