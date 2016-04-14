@@ -64,7 +64,7 @@ class EventsControllerTest < ActionController::TestCase
 
     #logged in but insufficient permissions = ERROR
   test 'should get edit for event owner' do
-    sign_in users(:regular_user)
+    sign_in @event.user
     get :edit, id: @event
     assert_response :success
   end
@@ -234,7 +234,7 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test 'show action buttons when owner' do
-    sign_in users(:regular_user)
+    sign_in @event.user
     get :show, :id => @event
     assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 1
     assert_select 'a.btn-danger[href=?]', event_path(@event), :text => 'Delete', :count => 1
