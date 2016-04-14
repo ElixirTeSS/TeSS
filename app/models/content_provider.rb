@@ -20,6 +20,7 @@ class ContentProvider < ActiveRecord::Base
 
   # Validate the URL is in correct format via valid_url gem
   validates :url, :url => true
+  validates :image_url, :url => true
 
   clean_array_fields(:keywords)
 
