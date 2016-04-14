@@ -3,18 +3,18 @@
 one:
   title: Dot Slash Configure
   description: MyText
-  image_url: MyString
+  image_url: http://google.com
   public: false
   user_id: <%= User.first.id %>
 
 two:
   title: This Package Is Big
   description: MyText
-  image_url: MyString
+  image_url: http://google.com
   public: false
 
 with_resources:
   title: But My Package Is Bigger
   description: text
-  image_url: myString
+  image_url: http://google.com
   public: true

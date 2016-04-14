@@ -76,7 +76,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
   test 'should create content provider for user' do
     sign_in users(:regular_user)
     assert_difference('ContentProvider.count') do
-      post :create, content_provider: {description: @content_provider.description, title: @content_provider.title, url: @content_provider.url }
+      post :create, content_provider: {description: @content_provider.description, image_url: @content_provider.image_url, title: @content_provider.title, url: @content_provider.url }
     end
     assert_redirected_to content_provider_path(assigns(:content_provider))
   end
@@ -191,7 +191,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
   end
 
   #OTHER CONTENT
-  test 'content_provider has correct tabs' do
+  test 'content provider has correct tabs' do
     get :show, :id => @content_provider
     assert_response :success
     assert_select 'ul.nav-tabs' do
@@ -201,15 +201,14 @@ class ContentProvidersControllerTest < ActionController::TestCase
     end
   end
 
-  test 'content_provider has correct layout' do
+  test 'content provider has correct layout' do
     get :show, :id => @content_provider
     assert_response :success
-    assert_select 'h2', :text => @content_provider.title #Has Title
-    assert_select 'a.h5[href=?]', @content_provider.url #Has plain written URL
-    assert_select 'a.btn-info[href=?]', content_providers_path, :count => 1 #Back button
-    assert_select 'button.btn-success', :text => "View content_provider", :count => 1 do
-      assert_select 'a[href=?]', @content_provider.url, :count => 1 #View content_provider button
+    assert_select 'h4.nav-heading', :text => /Content provider/
+    assert_select 'a[href=?]', @content_provider.url, :count => 2 do
+      assert_select 'img[src=?]', @content_provider.image_url, :count => 1
     end
+    assert_select 'a.btn-info[href=?]', content_providers_path, :count => 1 #Back button
     #Should not show when not logged in
     assert_select 'a.btn-primary[href=?]', edit_content_provider_path(@content_provider), :count => 0 #No Edit
     assert_select 'a.btn-danger[href=?]', content_provider_path(@content_provider), :count => 0 #No Edit
@@ -223,7 +222,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
   end
 
   test 'show action buttons when owner' do
-    sign_in users(:regular_user)
+    sign_in @content_provider.user
     get :show, :id => @content_provider
     assert_select 'a.btn-primary[href=?]', edit_content_provider_path(@content_provider), :count => 1
     assert_select 'a.btn-danger[href=?]', content_provider_path(@content_provider), :text => 'Delete', :count => 1
@@ -255,16 +254,14 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_equal(response.body, '')
   end
 
-  test 'should display filters on index' do
-    get :index
-    assert_select 'h4.nav-heading', :text => /Content provider/, :count => 0
-    assert_select 'div.list-group-item', :count => ContentProvider.count
-  end
-
-
 
   # TODO: SOLR tests will not run on TRAVIS. Explore stratergy for testing solr
 =begin
+      test 'should display filters on index' do
+        get :index
+        assert_select 'h4.nav-heading', :text => /Content provider/, :count => 0
+        assert_select 'div.list-group-item', :count => ContentProvider.count
+      end
       test 'should return matching content_providers' do
         get 'index', :format => :json, :q => 'training'
         assert_response :success

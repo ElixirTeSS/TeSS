@@ -233,18 +233,18 @@ class EventsControllerTest < ActionController::TestCase
     assert_select 'a.btn-danger[href=?]', event_path(@event), :count => 0 #No Edit
   end
 
-  test 'show action buttons when owner' do
+  test 'should not show action buttons when owner' do
     sign_in @event.user
     get :show, :id => @event
-    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 1
-    assert_select 'a.btn-danger[href=?]', event_path(@event), :text => 'Delete', :count => 1
+    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 0
+    assert_select 'a.btn-danger[href=?]', event_path(@event), :text => 'Delete', :count => 0
   end
 
-  test 'show action buttons when admin' do
+  test 'should not show action buttons when admin' do
     sign_in users(:admin)
     get :show, :id => @event
-    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 1
-    assert_select 'a.btn-danger[href=?]', event_path(@event), :text => 'Delete', :count => 1
+    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 0
+    assert_select 'a.btn-danger[href=?]', event_path(@event), :text => 'Delete', :count => 0
   end
 
   #API Actions
@@ -266,16 +266,15 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal(response.body, '')
   end
 
-  test 'should display filters on index' do
-    get :index
-    assert_select 'h4.nav-heading', :text => /Content provider/, :count => 0
-    assert_select 'div.list-group-item', :count => Event.count
-  end
-
-
 
   # TODO: SOLR tests will not run on TRAVIS. Explore stratergy for testing solr
 =begin
+      test 'should display filters on index' do
+        get :index
+        assert_select 'h4.nav-heading', :text => /Content provider/, :count => 0
+        assert_select 'div.list-group-item', :count => Event.count
+      end
+
       test 'should return matching events' do
         get 'index', :format => :json, :q => 'training'
         assert_response :success

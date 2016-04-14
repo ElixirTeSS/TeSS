@@ -4,12 +4,12 @@ one:
   id: 1
   title: MyText
   url: http://example.com
-  image_url: MyText
+  image_url: http://google.com
   description: MyText
   user_id: <%= User.first.id %>
 
 two:
   title: MyTextAgain
   url: http://anotherexample.com
-  image_url: MyTextAgain
+  image_url: http://google.com
   description: MyTextAgain
