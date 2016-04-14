@@ -39,6 +39,7 @@
           <div class="row">
             <div class="page-header">
               <h2><%= @event.title %></h2>
+              <p><%= link_to @event.url, @event.url, :class =>'h5', :target => "_blank" %></p>
             </div>
 
             <% if @event.provider and !@event.provider.blank? %>
