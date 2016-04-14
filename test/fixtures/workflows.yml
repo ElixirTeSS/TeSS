@@ -5,7 +5,7 @@ one:
   description: MyString
   user_id:
   workflow_content:
-  user_id: <%= User.first.id %>
+  user: regular_user
 
 two:
   title: MyString

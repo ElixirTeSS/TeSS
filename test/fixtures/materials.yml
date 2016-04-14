@@ -7,7 +7,8 @@ good_material:
   doi: http://dx.doi.ac.uk/2q3093032
   remote_updated_date: 2015-09-25
   remote_created_date: 2015-09-25
-  user_id: <%= User.first.id %>
+  user: regular_user
+  content_provider: goblet
 
 bad_material:
   title: Bad Training Material Example
@@ -16,22 +17,23 @@ bad_material:
   doi: not really a doi.
   remote_updated_date: 2015-09-25
   remote_created_date: 2015-09-25
+  content_provider: goblet
 
 biojs:
   title: BioJS
   url: http://www.mygoblet.org//training-portal/materials/biojs
   short_description: BioJS is a library of graphical components easy to reuse to represent biological information
   scientific_topic: <%= ScientificTopic.last %>
-  content_provider: <%= ContentProvider.first %>
+  content_provider: goblet
 
 interpro:
   title: InterPro
   url: http://www.mygoblet.org//training-portal/materials/interpro-introduction
   short_description: 'This presentation introduces the background to the InterPro database: what it is, where it came from, and what was the vision behind its creation'
-  scientific_topic: <%= ScientificTopic.first %>
+  scientific_topic: [topic_two]
 
 prints:
   title: 'PRINTS: A protein family database with a difference'
   url: http://www.mygoblet.org//training-portal/materials/prints-protein-family-database-difference
   short_description: 'A presentation designed to introduce the concept of protein family analysis and characterisation using motif-based methods, with a particular focus on protein fingerprinting.'
-  scientific_topic: <%= ScientificTopic.first %>
+  scientific_topic: [topic_one]

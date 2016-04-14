@@ -12,7 +12,8 @@ class MaterialsControllerTest < ActionController::TestCase
     @updated_material = {
         title: 'New title',
         short_description: 'New description',
-        url: 'http://new.url.com'
+        url: 'http://new.url.com',
+        content_provider: @material.content_provider
     }
   end
 
@@ -108,7 +109,7 @@ class MaterialsControllerTest < ActionController::TestCase
 
   #UPDATE TEST
   test 'should update material' do
-    sign_in users(:regular_user)
+    sign_in @material.user
     # patch :update, id: @material, material: { doi: @material.doi,  remote_created_date: @material.remote_created_date,  remote_updated_date: @material.remote_updated_date, short_description: @material.short_description, title: @material.title, url: @material.url }
     patch :update, id: @material, material: @updated_material
     assert_redirected_to material_path(assigns(:material))

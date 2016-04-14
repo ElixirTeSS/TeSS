@@ -1,6 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+topic_one:
   preferred_label: MyString
   synonyms: MyText
   definitions: MyText
@@ -22,7 +22,7 @@ one:
   subset_property: MyText
   obsolete_since: MyString
 
-two:
+topic_two:
   preferred_label: MyString
   synonyms: MyText
   definitions: MyText

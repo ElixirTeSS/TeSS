@@ -6,7 +6,7 @@ one:
   image_url: http://example.com/me.png
   email: MyText
   website: http://example.com
-  user_id: <%= ActiveRecord::FixtureSet.identify(:regular_user) %>
+  user: regular_user
 
 
 two:
@@ -15,7 +15,7 @@ two:
   image_url: http://example.com/me.png
   email: MyText
   website: http://example.com
-  user_id: <%= ActiveRecord::FixtureSet.identify(:admin) %>
+  user: another_regular_user
 
 three:
   firstname: MyText
@@ -23,4 +23,4 @@ three:
   image_url: http://example.com/me.png
   email: MyText
   website: http://example.com
-  user_id: <%= ActiveRecord::FixtureSet.identify(:another_regular_user) %>
+  user: admin

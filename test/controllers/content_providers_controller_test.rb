@@ -4,7 +4,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
   include Devise::TestHelpers
 
   setup do
-    @content_provider = content_providers(:one)
+    @content_provider = content_providers(:goblet)
     #u = users(:regular_user)
     #@content_provider.user_id = u.id
     #@content_provider.save!

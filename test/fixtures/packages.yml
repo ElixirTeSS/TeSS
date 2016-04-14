@@ -5,16 +5,18 @@ one:
   description: MyText
   image_url: http://google.com
   public: false
-  user_id: <%= User.first.id %>
+  user: regular_user
 
 two:
   title: This Package Is Big
   description: MyText
   image_url: http://google.com
   public: false
+  user: regular_user
 
 with_resources:
   title: But My Package Is Bigger
   description: text
   image_url: http://google.com
   public: true
+  user: regular_user

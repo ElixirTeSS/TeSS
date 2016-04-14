@@ -1,15 +1,16 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+goblet:
   id: 1
-  title: MyText
-  url: http://example.com
-  image_url: http://google.com
-  description: MyText
-  user_id: <%= User.first.id %>
+  title: Goblet
+  url: http://mygoblet.org
+  image_url: http://goblet.com/photo.jpg
+  description: This is the goblet test description
+  user: regular_user
 
 two:
   title: MyTextAgain
   url: http://anotherexample.com
   image_url: http://google.com
   description: MyTextAgain
+  user: regular_user

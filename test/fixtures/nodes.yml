@@ -12,7 +12,7 @@ good:
   staff: 
   twitter: MyString
   carousel_images: 
-  user_id: <%= User.first.id %>
+  user: regular_user
 
 no_name:
   name:
@@ -26,6 +26,7 @@ no_name:
   staff: 
   twitter: MyString
   carousel_images:
+  user: regular_user
 
 no_url:
   name: MyString
@@ -39,3 +40,4 @@ no_url:
   staff:
   twitter: MyString
   carousel_images:
+  user: regular_user

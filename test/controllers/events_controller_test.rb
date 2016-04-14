@@ -117,7 +117,7 @@ class EventsControllerTest < ActionController::TestCase
 
   #UPDATE TEST
   test 'should update event' do
-    sign_in users(:regular_user)
+    sign_in @event.user
     # patch :update, id: @event, event: { doi: @event.doi,  remote_created_date: @event.remote_created_date,  remote_updated_date: @event.remote_updated_date, short_description: @event.short_description, title: @event.title, url: @event.url }
     patch :update, id: @event, event: @updated_event
     assert_redirected_to event_path(assigns(:event))
@@ -125,7 +125,7 @@ class EventsControllerTest < ActionController::TestCase
 
   #DESTROY TEST
   test 'should destroy event owned by user' do
-    sign_in users(:regular_user)
+    sign_in @event.user
     assert_difference('Event.count', -1) do
       delete :destroy, id: @event
     end
