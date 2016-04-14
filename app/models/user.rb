@@ -1,4 +1,8 @@
 class User < ActiveRecord::Base
+
+  include PublicActivity::Common
+  has_paper_trail
+
   acts_as_token_authenticatable
   include Gravtastic
   gravtastic :secure => true, :size => 250
