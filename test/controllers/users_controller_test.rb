@@ -9,15 +9,13 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'should get index page for everyone' do
+    get :index
+    assert_response :success
     sign_in users(:regular_user)
+    assert_not_nil assigns(:users)
     get :index
     assert_response :success
     assert_not_nil assigns(:users)
-  end
-
-  test 'should_redirect_user_to_login_page when going to index page whilst not logged in' do
-    get :index
-    assert_redirected_to new_user_session_path
   end
 
   # User new is handled by devise
@@ -29,7 +27,7 @@ class UsersControllerTest < ActionController::TestCase
     assert_response :forbidden
     sign_in users(:admin)
     get :new
-    assert_response :success
+    assert_response :forbidden
   end
 
   test "should be able to create user whilst logged in as admin" do
