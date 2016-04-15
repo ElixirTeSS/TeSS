@@ -34,9 +34,19 @@ module MaterialsHelper
     return ScientificTopic.all.inject([]) do |topics,topic|
       topics + [:value => topic.preferred_label, :data => topic.id] unless topic.preferred_label.blank?
     end
-
   end
 
+  def scientific_topic_names_for_autocomplete()
+    return ScientificTopic.all.inject([]) do |topics,topic|
+      topics << topic.preferred_label unless topic.preferred_label.blank?
+    end
+  end
+
+  def scientific_topic_ids_for_autocomplete()
+    return ScientificTopic.all.inject([]) do |topics,topic|
+      topics << topic.id unless topic.preferred_label.blank?
+    end
+  end
 
   def material_package_list(material)
     packages = []
