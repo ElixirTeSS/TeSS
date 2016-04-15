@@ -17,9 +17,9 @@ class Material < ActiveRecord::Base
       text :short_description
       text :doi
       string :authors, :multiple => true
-      string :scientific_topic, :multiple => true do
-        if !self.scientific_topic.nil?
-          self.scientific_topic.map{|x| x.preferred_label}
+      string :scientific_topics, :multiple => true do
+        if !self.scientific_topics.nil?
+          self.scientific_topics.map{|x| x.preferred_label}
         end
       end
       string :target_audience, :multiple => true
@@ -49,7 +49,7 @@ class Material < ActiveRecord::Base
   # has_one :owner, foreign_key: "id", class_name: "User"
   belongs_to :user
 
-  has_many :scientific_topic, foreign_key: 'class_id', class_name: "ScientificTopic"
+  has_many :scientific_topics, foreign_key: 'class_id', class_name: "ScientificTopic"
 
   has_many :package_materials
   has_many :packages, through: :package_materials
@@ -65,7 +65,7 @@ class Material < ActiveRecord::Base
   # Validate the URL is in correct format via valid_url gem
   validates :url, :url => true
 
-  clean_array_fields(:keywords, :contributors, :authors)
+  clean_array_fields(:keywords, :contributors, :authors, :scientific_topics)
 
   update_suggestions(:keywords, :contributors, :authors)
 

@@ -49,7 +49,7 @@
               <% end %>
             </div>
             <div>
-              <p><b><%= model_class.human_attribute_name(:scientific_topic).pluralize %>: </b><%= @material.scientific_topic.blank? ? empty_tag(:span, 'none specified') : @material.scientific_topic.map{|x| x.preferred_label}.join(', ') %></p>
+              <p><b><%= model_class.human_attribute_name(:scientific_topics).pluralize %>: </b><%= @material.scientific_topics.blank? ? empty_tag(:span, 'none specified') : @material.scientific_topics.map{|x| x.preferred_label}.join(', ') %></p>
               <p><b><%= model_class.human_attribute_name(:keywords) %>: </b><%= @material.keywords.blank? ? empty_tag(:span, 'none specified') : @material.keywords.join(', ') %></p>
               <p><b><%= model_class.human_attribute_name(:target_audience) %>: </b><%= @material.target_audience.blank? ? empty_tag(:span, 'none specified') : @material.target_audience.join(', ') %></p>
               <p><b><%= model_class.human_attribute_name(:difficulty_level) %>: </b><%= (@material.difficulty_level.blank? or @material.difficulty_level == 'notspecified') ? empty_tag(:span, 'none specified') : difficulty_name_for_abbreviation(@material.difficulty_level) %></p>

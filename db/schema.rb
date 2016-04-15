@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160413104231) do
+ActiveRecord::Schema.define(version: 20160413144723) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,7 +103,7 @@ ActiveRecord::Schema.define(version: 20160413104231) do
     t.datetime "updated_at",                                   null: false
     t.text     "long_description"
     t.string   "target_audience",     default: [],                          array: true
-    t.string   "scientific_topic",    default: [],                          array: true
+    t.string   "scientific_topics",   default: [],                          array: true
     t.string   "keywords",            default: [],                          array: true
     t.string   "authors",             default: [],                          array: true
     t.string   "contributors",        default: [],                          array: true

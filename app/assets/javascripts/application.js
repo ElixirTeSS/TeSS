@@ -54,13 +54,6 @@ function reposition_tiles(container, tile_class){
         });
 }
 
-
-
-
-
-
-
-
 /**
  * Created by Niall Beard on 07/01/2016.
  *
@@ -81,12 +74,15 @@ $(document).ready(function(){
      * OR they hit enter whilst in a free text field box
      */
     $(document.body).on('click', '.multiple-input-add', function(e){
-        /* remove HTML autocfocus attribute from element */
+        /* remove HTML autofocus attribute from element */
+        console.log('Clicked on "Add new ... "')
+
         this.blur()
         var field_name = $(this).attr('data-field');
         var model_name = $(this).attr('data-model');
+        var placeholder_text = $(this).attr('placeholder-text');
 
-        add_multiple_input_field(model_name, field_name);
+        add_multiple_input_field(model_name, field_name, placeholder_text);
     })
     $(document.body).on('keypress', '.multiple-input', function(e){
         /*ADD NEW LINE IF USER HITS ENTER. CONSIDER ADDING MORE LIKE SHIFT, COMMA, ETC*/
@@ -94,7 +90,9 @@ $(document).ready(function(){
             event.preventDefault(); /* stops enter submitting form */
             var field_name = $(this).attr('data-field');
             var model_name = $(this).attr('data-model');
-            add_multiple_input_field(model_name, field_name);
+            var placeholder_text = $(this).attr('placeholder-text');
+
+            add_multiple_input_field(model_name, field_name, placeholder_text);
         }
     })
     /* User deletes a free text field such as keyword, author or contributor */
@@ -155,11 +153,12 @@ function add_selected_dropdown_item(model_name, field_name, value, name){
 /*
  * Creates a new input box for free text fields as a child of the field_name div
  */
-function add_multiple_input_field(model_name, field_name){
+function add_multiple_input_field(model_name, field_name, placeholder_text){
     console.log('Adding new ' + field_name)
     var input_box = '<input type="text" class="multiple-input form-control ' + field_name + 's" ' +
                     'data-field="' + field_name + '" ' +
                     'data-model="' + model_name + '" ' +
+                    'placeholder="' + placeholder_text + '" ' +
                     'name="' + model_name + '[' + field_name + 's][]"' +
                     ' />';
     var delete_button = '<input type="button" value="&times;" class="multiple-input-delete" data-field="keyword" tabindex=300/>';
