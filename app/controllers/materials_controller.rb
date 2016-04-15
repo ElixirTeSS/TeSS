@@ -159,13 +159,13 @@ class MaterialsController < ApplicationController
     mat_params[:short_description] = ActionView::Base.full_sanitizer.sanitize(mat_params[:short_description])
     mat_params[:long_description] = ActionView::Base.full_sanitizer.sanitize(mat_params[:long_description])
 
-    mat_params[:scientific_topic_ids] = mat_params[:scientific_topic_ids].reject { |sct| sct.empty? } unless mat_params[:scientific_topic_ids].blank?
+    mat_params[:scientific_topic_ids] = mat_params[:scientific_topic_ids].reject { |sct| sct.blank? } unless mat_params[:scientific_topic_ids].blank?
 
     if mat_params[:scientific_topic_ids].blank?
       mat_params[:scientific_topic_ids] = []
       scientific_topic_names = [mat_params.delete('scientific_topic_names')].flatten
-      scientific_topic_names = scientific_topic_names.reject { |sct| sct.empty? }
-      if !scientific_topic_names.empty?
+      scientific_topic_names = scientific_topic_names.reject { |sct| sct.blank? }
+      if !scientific_topic_names.blank?
         scientific_topics = scientific_topic_names.collect{|name| ScientificTopic.find_by_preferred_label(name)}.flatten.compact.uniq
         scientific_topic_ids = scientific_topics.collect{|x|x.id}
       end

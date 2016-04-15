@@ -30,7 +30,7 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
   <%= f.label field_name.to_sym %>
   <div class="<%=field_name.singularize%> multiple-input-list">
     <% field_values = resource.send(field_name.to_sym) %>
-    <% field_values = [''] if field_values.blank? %> <!-- Add one placeholder if the field's value consist of an empty array -->
+    <% field_values = [''] if field_values.blank? %> <!-- Add one placeholder if the field's value consists of an empty array -->
 
     <% field_values.each do |val| %>
         <div class="multiple-list-item">
@@ -39,7 +39,7 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
                  data-field='<%= field_name.singularize %>'
                  data-model="<%=resource.class.name.underscore%>"
                  name="<%=resource.class.name.underscore%>[<%= field_name %>][]"
-                 value="<%= field_name == 'scientific_topics' ? val.preferred_label : val %>"
+                 value="<%= (field_name == 'scientific_topics' and !val.blank?) ? val.preferred_label : val %>"
                  <%= disabled ? "disabled" : '' %>
                  placeholder="<%= placeholder_text %>"
                  />
