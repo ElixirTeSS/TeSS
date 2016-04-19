@@ -19,12 +19,12 @@ class User < ActiveRecord::Base
   end
 
   has_one :profile, :dependent => :destroy
-  has_many :materials, :dependent => :destroy
+  has_many :materials
   has_many :packages, :dependent => :destroy
   has_many :workflows, :dependent => :destroy
-  has_many :content_providers, :dependent => :destroy
-  has_many :events, :dependent => :destroy
-  has_many :nodes, :dependent => :destroy
+  has_many :content_providers
+  has_many :events
+  has_many :nodes
   belongs_to :role
 
   before_create :set_default_role, :set_default_profile
