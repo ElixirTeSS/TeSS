@@ -77,15 +77,16 @@ class User < ActiveRecord::Base
   end
 
   # Check if user has any of the roles in the passed array
-  def has_any_of_roles?(roles)
-    if !self.role
-      return false
-    end
-    if roles.include?(self.role.name)
-      return true
-    end
-    return false
-  end
+  # TODO take into account symbol to string abd vice versa conversion
+  # def has_any_of_roles?(roles)
+  #   if !self.role
+  #     return false
+  #   end
+  #   if roles.include?(self.role.name)
+  #     return true
+  #   end
+  #   return false
+  # end
 
   def is_admin?
     if !self.role
