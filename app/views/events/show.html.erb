@@ -24,11 +24,11 @@
 
 <div class="row wrapper">
   <!-- SIDEBAR -->
-  <div class="col-md-3 col-xs-3" id="sidebar">
+  <div class="col-md-3" id="sidebar">
     <%= render :partial => "content_providers/partials/content_provider_info", :locals => {:content_provider => @event.content_provider} %>
   </div>
 
-  <div class="col-md-9 col-xs-9">
+  <div class="col-md-9">
     <div class="row" style="padding: 10px 5px 0px 0px;">
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")),
@@ -54,7 +54,7 @@
               <h2><%= @event.title %></h2>
               <p><%= link_to @event.url, @event.url, :class =>'h5', :target => "_blank" %></p>
             </div>
-            <div class="col-md-4 col-xs-4">
+            <div class="col-md-4">
               <% if @event.provider and !@event.provider.blank? %>
                   <p><strong>Provider:</strong>
                     <%= @event.provider %></p>
@@ -125,7 +125,7 @@
                   <%#= @event.longitude %></p> -->
               <!--<%# end %>-->
             </div>
-            <div class="col-md-8 col-xs-8">
+            <div class="col-md-8">
               <div id="map" class="event-show-map"></div>
             </div>
           </div>

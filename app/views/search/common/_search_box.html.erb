@@ -13,7 +13,7 @@ Parameters
 <% placeholder = "Search" + (params[:controller]=='search' ? '...' : " " + params[:controller].humanize(capitalize: false) + "...") %>
 
 <%= form_tag resource_path, :class => "form-inline", :role=>"form", :method => :get do %>
-    <div class="form-group col-md-6 col-xs6" style="padding: 0px 5px 0px 0px;">
+    <div class="form-group col-md-6" style="padding: 0px 5px 0px 0px;">
       <%= text_field_tag "q", params[:q], :class => 'form-control', :placeholder => placeholder, :style=>'width:100%' %>
     </div>
     <!--<%#= button_tag(:type => "submit", :value=>"search", :class => "btn btn-default") do %>-->

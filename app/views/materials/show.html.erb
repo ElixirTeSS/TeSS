@@ -2,11 +2,11 @@
 
 <div class="row wrapper">
   <!-- SIDEBAR -->
-  <div class="col-md-3 col-xs-3" id="sidebar">
+  <div class="col-md-3" id="sidebar">
     <%= render :partial => "content_providers/partials/content_provider_info", :locals => {:content_provider => @material.content_provider} %>
   </div>
 
-  <div class=" col-md-9 col-xs-9">
+  <div class=" col-md-9">
     <div class="row" style="padding: 10px 5px 0px 0px;">
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")),
@@ -67,7 +67,7 @@
           <div class="row">
             <% available_packages = available_packages_for(@material) %>
             <% unless available_packages.blank? %>
-                <div class="col-md-9 col-xs-9 form-inline" style="margin:15px 0px 10px 0px;">
+                <div class="col-md-9 form-inline" style="margin:15px 0px 10px 0px;">
                   <div class="form-group">
                     <%= select_tag('material[package_ids][]', options_from_collection_for_select(available_packages, :id, :title), :class => "form-control")
                     %>

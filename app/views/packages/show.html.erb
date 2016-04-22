@@ -7,10 +7,10 @@
 <%- model_class = Package -%>
 <div class="row wrapper">
   <!-- SIDEBAR -->
-  <div class="col-md-3 col-xs-3" id="sidebar">
+  <div class="col-md-3" id="sidebar">
     <%= render :partial => "packages/partials/package_info", :locals => {:package => @package} %>
   </div>
-  <div class=" col-md-9 col-xs-9">
+  <div class=" col-md-9">
     <div class="row" style="padding: 10px 5px 0px 0px;">
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")),

@@ -3,7 +3,7 @@
   <%- model_class = Profile -%>
 
   <!-- SIDEBAR -->
-  <div id="sidebar" class="col-md-3 col-xs-3">
+  <div id="sidebar" class="col-md-3">
     <ul class="unstyled nav-simple">
       <li><h4 class="nav-heading">Profile details</h4></li>
       <li style="padding: 10px 10px;">
@@ -83,12 +83,12 @@
     </ul>
   </div>
 
-  <div class="col-md-9 col-xs-9">
+  <div class="col-md-9">
     <div class="page-header">
       <h2>User <%= "#{@user.username}" %></h2>
     </div>
     <div class="row">
-      <div class="content_action col-md-6 col-xs-6">
+      <div class="content_action col-md-6">
         <% if !current_user.nil? and current_user == @user %>
             <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default pull-right' %>
             <%= link_to t('.edit', :default => 'Edit profile'),
