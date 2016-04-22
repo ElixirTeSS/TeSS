@@ -43,25 +43,19 @@
 <%= render :partial=>"layouts/header", :locals => {:display_search_box => true} %>
 
 <div id="main-container" class="container">
+  <div class="row" style="margin: 0px;">
+    <div class="col-md-12">
 
-  <%# unless breadcrumbs.empty? %>
-  <!--<div id="breadcrumbs">-->
-  <!--<ul class="breadcrumb">-->
-  <!--<#%= render_breadcrumbs :tag => :li, :separator => "" %>-->
-  <!--&lt;!&ndash;<%#= render_breadcrumbs :builder => ::BootstrapBreadcrumbsBuilder %>&ndash;&gt;-->
-  <!--&lt;!&ndash;<#%= render_breadcrumbs(" ", { class: '', item_class: '', divider_class: '', active_class: 'active' }) %>&ndash;&gt;-->
-  <!--</ul>-->
-  <!--</div>-->
-  <%# end %>
+      <!-- Breadcrumbs -->
+      <%= render_breadcrumbs do |breadcrumbs| %>
+          <%= content_tag(:div, breadcrumbs, class: "breadcrumbs") %>
+      <% end %>
 
-  <!-- Breadcrumbs -->
-  <%= render_breadcrumbs do |breadcrumbs| %>
-      <%= content_tag(:div, breadcrumbs, class: "breadcrumbs") %>
-  <% end %>
+      <%# Main content of every page -%>
+      <%= yield :layout %>
 
-  <%# main content part of every page -%>
-  <%= yield :layout %>
-
+    </div>
+  </div>
 </div>
 
 <%= render :partial=>"layouts/footer" %>
