@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
     end
   end
 
+
   has_one :profile, :dependent => :destroy
   has_many :materials
   has_many :packages, :dependent => :destroy
@@ -29,6 +30,8 @@ class User < ActiveRecord::Base
 
   before_create :set_default_role, :set_default_profile
   after_create :skip_email_confirmation_for_non_production
+
+  before_destroy :reassign_assets
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -46,6 +49,33 @@ class User < ActiveRecord::Base
             :case_sensitive => false
 
   validates_format_of :email, :with => Devise.email_regexp
+
+
+  def default_user
+    default_role = Role.find_by_name('default_user')
+    if default_role.nil?
+      Role.create_roles
+      default_role = Role.find_by_name('default_user')
+    end
+    default_user = User.find_by_role_id(default_role.id)
+    if default_user.nil?
+      default_user = User.new(:username=>'default_user',
+               :email=>CONTACT_EMAIL,
+               :role => default_role,
+               :password => SecureRandom.base64
+      )
+      default_user.save!
+    end
+    return default_user
+  end
+
+  def reassign_assets
+    self.materials.each{|x| x.update_attributes({:user => default_user}) } if self.materials.any?
+    self.events.each{|x| x.update_attributes({:user => default_user}) } if self.events.any?
+    self.content_providers.each{|x| x.update_attributes({:user => default_user})} if self.content_providers.any?
+    self.nodes.each{|x| x.update_attributes({:user => default_user})} if self.nodes.any?
+  end
+
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
@@ -107,6 +137,10 @@ class User < ActiveRecord::Base
     else
       return false
     end
+  end
+
+  def is_default_user?
+    return self.has_role?('default_user')
   end
 
   def skip_email_confirmation_for_non_production

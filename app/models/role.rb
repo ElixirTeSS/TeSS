@@ -2,7 +2,7 @@ class Role < ActiveRecord::Base
   has_many :users
 
   def self.roles
-    return %w{registered_user admin node_curator curator api_user}
+    return %w{registered_user admin node_curator curator api_user default_user}
   end
 
   # Use this with Role.create_roles on a new installation
