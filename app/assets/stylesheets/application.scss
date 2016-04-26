@@ -21,18 +21,6 @@
 @import "font-awesome";
 @import "*";
 
-.elixir-black-header {
-  background-color: #333333;
-  border-bottom: 1px solid #eeeeee;
-}
-
-.elixir-orange-header {
-  background-color: #F0721E;
-}
-
-.workflow_image {
-  width: 100%;
-}
 
 /* Navbar colours */
 $bgDefault: #F0721E;
@@ -41,6 +29,18 @@ $colDefault: #ffe6d1;
 $colHover: #333333;
 $colHover2: #eeeeee;
 
+.elixir-black-header {
+  background-color: #333333;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.elixir-orange-header {
+  background-color: $bgDefault;
+}
+
+.workflow_image {
+  width: 100%;
+}
 
 .user_info_box{
   border: 1px solid #ddd;
@@ -137,6 +137,12 @@ $colHover2: #eeeeee;
 .navbar-default .navbar-form {
   border-style: none;
 }
+
+//.navbar-default .navbar-form {
+//  margin-top: 0px;
+//  margin-bottom: 0px;
+//  padding-top: 10px;
+//}
 
 a:hover {
   color: steelblue;
