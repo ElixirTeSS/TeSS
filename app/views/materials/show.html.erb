@@ -2,15 +2,15 @@
 
 <div class="row wrapper">
   <!-- SIDEBAR -->
-  <div class="col-md-3 col-xs-3" id="sidebar">
+  <div class="col-md-3" id="sidebar">
     <%= render :partial => "content_providers/partials/content_provider_info", :locals => {:content_provider => @material.content_provider} %>
   </div>
 
-  <div class=" col-md-9 col-xs-9">
-    <div class="row">
+  <div class=" col-md-9">
+    <div class="row" style="padding: 10px 5px 0px 0px;">
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")),
-                    materials_path, :class => 'btn btn-info'  %>
+                    :back, :class => 'btn btn-info'  %>
         <% if !current_user.nil? and policy(@material).update? %>
             <%= link_to t('.edit', :default => t("helpers.links.edit")),
                         edit_material_path(@material), :class => 'btn btn-primary' %>
@@ -22,9 +22,10 @@
                         :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                         :class => 'btn btn-danger' %>
         <% end %>
-        <button class="btn btn-success"><a href="<%= @material.url %>" target="_blank">View material <span class="fa fa-external-link" aria-hidden="true"></span></a></button>
+        <a href="<%= @material.url %>" target="_blank" type="submit" class="btn btn-success"><span class="fa fa-external-link"></span> View material</a>
       </div>
-
+    </div>
+    <div class="row">
       <ul class="nav nav-tabs">
         <li class="active">
           <a data-toggle="tab" href="#home"><i class="<%= icon_class_for_model('materials') %>"></i> Material</a></li>
@@ -49,7 +50,7 @@
               <% end %>
             </div>
             <div>
-              <p><b><%= model_class.human_attribute_name(:scientific_topic).pluralize %>: </b><%= @material.scientific_topic.blank? ? empty_tag(:span, 'none specified') : @material.scientific_topic.map{|x| x.preferred_label}.join(', ') %></p>
+              <p><b><%= model_class.human_attribute_name(:scientific_topics).pluralize %>: </b><%= @material.scientific_topics.blank? ? empty_tag(:span, 'none specified') : @material.scientific_topics.map{|x| x.preferred_label}.join(', ') %></p>
               <p><b><%= model_class.human_attribute_name(:keywords) %>: </b><%= @material.keywords.blank? ? empty_tag(:span, 'none specified') : @material.keywords.join(', ') %></p>
               <p><b><%= model_class.human_attribute_name(:target_audience) %>: </b><%= @material.target_audience.blank? ? empty_tag(:span, 'none specified') : @material.target_audience.join(', ') %></p>
               <p><b><%= model_class.human_attribute_name(:difficulty_level) %>: </b><%= (@material.difficulty_level.blank? or @material.difficulty_level == 'notspecified') ? empty_tag(:span, 'none specified') : difficulty_name_for_abbreviation(@material.difficulty_level) %></p>
@@ -66,7 +67,7 @@
           <div class="row">
             <% available_packages = available_packages_for(@material) %>
             <% unless available_packages.blank? %>
-                <div class="col-md-9 col-xs-9 form-inline" style="margin:15px 0px 10px 0px;">
+                <div class="col-md-9 form-inline" style="margin:15px 0px 10px 0px;">
                   <div class="form-group">
                     <%= select_tag('material[package_ids][]', options_from_collection_for_select(available_packages, :id, :title), :class => "form-control")
                     %>

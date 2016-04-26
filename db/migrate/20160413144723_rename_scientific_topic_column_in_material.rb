@@ -1,0 +1,5 @@
+class RenameScientificTopicColumnInMaterial < ActiveRecord::Migration
+  def change
+    rename_column :materials, :scientific_topic, :scientific_topics
+  end
+end

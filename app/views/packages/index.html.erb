@@ -9,7 +9,7 @@
   <% if SOLR_ENABLED %>
 
       <!-- SIDEBAR -->
-      <div class="col-md-3 col-xs-3" id="sidebar">
+      <div class="col-md-3" id="sidebar">
         <%= render :partial => "packages/partials/general_package_info" %>
         <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @packages, :resource_type => 'package'} %>
       </div>

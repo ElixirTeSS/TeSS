@@ -23,11 +23,15 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
     })
 </script>
 
+<% placeholder_text ||= '' %>
+<% disabled = (defined? disabled) ? disabled : false %>
+
 <div class="form-group">
   <%= f.label field_name.to_sym %>
   <div class="<%=field_name.singularize%> multiple-input-list">
     <% field_values = resource.send(field_name.to_sym) %>
-    <% field_values = [''] if field_values.blank? %> <!-- Add one placeholder if the field's value consist of an empty array -->
+    <% field_values = [''] if field_values.blank? %> <!-- Add one placeholder if the field's value consists of an empty array -->
+
     <% field_values.each do |val| %>
         <div class="multiple-list-item">
           <input type="text"
@@ -35,7 +39,10 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
                  data-field='<%= field_name.singularize %>'
                  data-model="<%=resource.class.name.underscore%>"
                  name="<%=resource.class.name.underscore%>[<%= field_name %>][]"
-                 value="<%= val %>"/>
+                 value="<%= (field_name == 'scientific_topics' and !val.blank?) ? val.preferred_label : val %>"
+                 <%= disabled ? "disabled" : '' %>
+                 placeholder="<%= placeholder_text %>"
+                 />
           <input type="button"
                  value='<%= "&times;".html_safe %>'
                  class="multiple-input-delete"
@@ -43,8 +50,7 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
         </div>
     <% end %>
   </div>
-  <a class="btn btn-info"><i class="fa fa-plus multiple-input-add"
-                             data-field="<%=field_name.singularize%>"
-                             data-model="<%=resource.class.name.underscore%>"></i> Add <%= field_name.singularize %></a>
+  <a class="btn btn-info"><span class="multiple-input-add" data-field="<%=field_name.singularize%>"
+                             data-model="<%=resource.class.name.underscore%>" placeholder-text="<%= placeholder_text %>"><i class="fa fa-plus"></i> Add <%= field_name.singularize.humanize.downcase %></span></a>
   <%#= error_span(material.send(field_name)) %>
 </div>

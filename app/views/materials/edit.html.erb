@@ -1,8 +1,8 @@
 <div class="row wrapper">
-  <div class="col-md-3 col-xs-3" id="sidebar">
+  <div class="col-md-3" id="sidebar">
     <%= render :partial => "materials/partials/general_material_info" %>
   </div>
-  <div class=" col-md-9 col-xs-9">
+  <div class=" col-md-9">
     <%- model_class = Material -%>
     <div class="page-header">
       <h2><%=t '.title', :default => [:'helpers.titles.edit', 'Edit %{model}'], :model => model_class.model_name.human.titleize.downcase %></h2>

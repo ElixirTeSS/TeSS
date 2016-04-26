@@ -19,7 +19,7 @@ Variable that should be available
       <% @facet_fields.each do |facet_field| %>
           <% if resources.facet(facet_field).rows.count > 0 %>
               <!-- Title -->
-              <li><h4 class="nav-heading"><%= facet_field.humanize %></h4></li>
+              <li><h4 class="nav-heading"><%= (facet_field.humanize == 'User') ? 'Owner' : facet_field.humanize %></h4></li>
 
               <!-- Select first 10 or all filters-->
               <% showing_all = false %>

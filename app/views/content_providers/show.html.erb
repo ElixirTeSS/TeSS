@@ -9,12 +9,12 @@
 
 <div class="row wrapper">
   <!-- SIDEBAR -->
-  <div class="col-md-3 col-xs-3" id="sidebar">
+  <div class="col-md-3" id="sidebar">
     <%= render :partial => "content_providers/partials/content_provider_info", :locals => {:content_provider => @content_provider} %>
   </div>
 
-  <div class=" col-md-9 col-xs-9">
-    <div class="row">
+  <div class=" col-md-9">
+    <div class="row" style="padding: 10px 5px 0px 0px;">
       <!-- ACTION BUTTONS -->
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")),
@@ -31,7 +31,8 @@
                         :class => 'btn btn-danger' %>
         <% end %>
       </div>
-
+    </div>
+    <div class="row">
       <ul class="nav nav-tabs">
         <li <%= "class=active" if @content_provider.materials.count > 0 or @content_provider.events.count < 1 %>>
           <a data-toggle="tab" href="#materials"><i class="<%= icon_class_for_model('materials') %>"></i> Materials</a>

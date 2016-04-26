@@ -43,33 +43,19 @@
 <%= render :partial=>"layouts/header", :locals => {:display_search_box => true} %>
 
 <div id="main-container" class="container">
+  <div class="row" style="margin: 0px;">
+    <div class="col-md-12">
 
-  <%# unless breadcrumbs.empty? %>
-  <!--<div id="breadcrumbs">-->
-  <!--<ul class="breadcrumb">-->
-  <!--<#%= render_breadcrumbs :tag => :li, :separator => "" %>-->
-  <!--&lt;!&ndash;<%#= render_breadcrumbs :builder => ::BootstrapBreadcrumbsBuilder %>&ndash;&gt;-->
-  <!--&lt;!&ndash;<#%= render_breadcrumbs(" ", { class: '', item_class: '', divider_class: '', active_class: 'active' }) %>&ndash;&gt;-->
-  <!--</ul>-->
-  <!--</div>-->
-  <%# end %>
+      <!-- Breadcrumbs -->
+      <%= render_breadcrumbs do |breadcrumbs| %>
+          <%= content_tag(:div, breadcrumbs, class: "breadcrumbs") %>
+      <% end %>
 
-  <% if defined? ANNOUNCEMENT_MESSAGE and !ANNOUNCEMENT_MESSAGE.blank? %>
-      <%= content_tag(:div, ANNOUNCEMENT_MESSAGE.html_safe(), class: "alert alert-danger fade in", style: "text-align: center; margin-bottom: 0px; margin-top: 5px;") do
-          concat content_tag(:button, '&times;'.html_safe, class: "close", data: { dismiss: 'alert' }, "aria-label" => 'close')
-          concat ANNOUNCEMENT_MESSAGE.html_safe()
-          end
-      %>
-  <% end %>
+      <%# Main content of every page -%>
+      <%= yield :layout %>
 
-  <!-- Breadcrumbs -->
-  <%= render_breadcrumbs do |breadcrumbs| %>
-      <%= content_tag(:div, breadcrumbs, class: "breadcrumbs") %>
-  <% end %>
-
-  <%# main content part of every page -%>
-  <%= yield :layout %>
-
+    </div>
+  </div>
 </div>
 
 <%= render :partial=>"layouts/footer" %>

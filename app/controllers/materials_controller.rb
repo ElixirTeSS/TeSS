@@ -13,19 +13,19 @@ class MaterialsController < ApplicationController
   # GET /materials.json
   # GET /materials.json?q=queryparam
 
-  @@facet_fields = %w(content_provider scientific_topic target_audience keywords licence difficulty_level authors contributors)
+  @@facet_fields = %w(content_provider scientific_topics target_audience keywords licence difficulty_level authors contributors)
 
   helper 'search'
 
-  def find_scientific_topics
-    res = []
-    if params[:scientific_topic_names]
-      params.delete(:scientific_topic_names).each do |st_name|
-        res << ScientificTopic.find_by_preferred_label(st_name)
-      end
-    end
-    params[:scientific_topic] = res.compact.flatten.uniq if res and !res.empty?
-  end
+  # def find_scientific_topics
+  #   res = []
+  #   if params[:scientific_topic_names]
+  #     params.delete(:scientific_topic_names).each do |st_name|
+  #       res << ScientificTopic.find_by_preferred_label(st_name)
+  #     end
+  #   end
+  #   params[:scientific_topics] = res.compact.flatten.uniq if res and !res.empty?
+  # end
 
   def index
     @facet_fields = @@facet_fields
@@ -41,8 +41,8 @@ class MaterialsController < ApplicationController
   end
 
   def search query
-    @materials = Material.search { fulltext query } 
-  end 
+    @materials = Material.search { fulltext query }
+  end
 
 
   # GET /materials/1
@@ -142,43 +142,46 @@ class MaterialsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_material
-      @material = Material.friendly.find(params[:id])
+  # Use callbacks to share common setup or constraints between actions.
+  def set_material
+    @material = Material.friendly.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def material_params
+    mat_params = params.require(:material).permit(:title, :url, :short_description, :long_description, :doi, :remote_updated_date,
+                                                  :remote_created_date,  :remote_updated_date, {:package_ids => []}, :content_provider_id,
+                                                  :content_provider, {:keywords => []},
+                                                  {:scientific_topic_ids => []},
+                                                  {:scientific_topic_names => []},
+                                                  :licence, :difficulty_level, {:contributors => []},
+                                                  {:authors=> []}, {:target_audience => []}  )
+    mat_params[:short_description] = ActionView::Base.full_sanitizer.sanitize(mat_params[:short_description])
+    mat_params[:long_description] = ActionView::Base.full_sanitizer.sanitize(mat_params[:long_description])
+
+    mat_params[:scientific_topic_ids] = mat_params[:scientific_topic_ids].reject { |sct| sct.blank? } unless mat_params[:scientific_topic_ids].blank?
+
+    if mat_params[:scientific_topic_ids].blank?
+      mat_params[:scientific_topic_ids] = []
+      scientific_topic_names = [mat_params.delete('scientific_topic_names')].flatten
+      scientific_topic_names = scientific_topic_names.reject { |sct| sct.blank? }
+      if !scientific_topic_names.blank?
+        scientific_topics = scientific_topic_names.collect{|name| ScientificTopic.find_by_preferred_label(name)}.flatten.compact.uniq
+        scientific_topic_ids = scientific_topics.collect{|x|x.id}
+      end
+      mat_params[:scientific_topic_ids] = scientific_topic_ids
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def material_params
-        mat_params = params.require(:material).permit(:title, :url, :short_description, :long_description, :doi, :remote_updated_date,
-                                       :remote_created_date,  :remote_updated_date, {:package_ids => []}, :content_provider_id,
-                                       :content_provider, {:keywords => []},
-                                       {:scientific_topic_ids => []},
-                                       {:scientific_topic_names => []},
-                                       {:scientific_topic => []},
-                                       :licence, :difficulty_level, {:contributors => []},
-                                       {:authors=> []}, {:target_audience => []}  )
-        mat_params[:short_description] = ActionView::Base.full_sanitizer.sanitize(mat_params[:short_description])
-        mat_params[:long_description] = ActionView::Base.full_sanitizer.sanitize(mat_params[:long_description])
+    return mat_params
+  end
 
-       if mat_params[:scientific_topic_ids].nil? or mat_params[:scientific_topic_ids].empty?
-          mat_params[:scientific_topic_ids] = []
-          names = [mat_params.delete('scientific_topic_names')].flatten
-          if !names.empty?
-            topics = names.collect{|name| ScientificTopic.find_by_preferred_label(name)}.flatten.compact.uniq
-            topic_ids = topics.collect{|x|x.id}
-          end
-          mat_params[:scientific_topic_ids] = topic_ids
-       end
-       return mat_params
-    end
-
-    def set_params
-      params.permit(:q, :page, :sort, @@facet_fields, @@facet_fields.map{|f| "#{f}_all"})
-      @search_params = params[:q] || ''
-      @facet_params = {}
-      @sort_by = params[:sort]
-      @@facet_fields.each {|facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
-      @page = params[:page] || 1
-    end
+  def set_params
+    params.permit(:q, :page, :sort, @@facet_fields, @@facet_fields.map{|f| "#{f}_all"})
+    @search_params = params[:q] || ''
+    @facet_params = {}
+    @sort_by = params[:sort]
+    @@facet_fields.each {|facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
+    @page = params[:page] || 1
+  end
 
 end

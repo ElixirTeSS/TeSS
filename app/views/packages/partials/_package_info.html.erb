@@ -13,9 +13,16 @@
           <%= package.description %>
         </p>
     <% end %>
-    <h4>
-      Keywords
-    </h4>
+  </li>
+  <li><h4 class="nav-heading">Owner</h4></li>
+  <li style="padding: 7px 20px;">
+    <%= package.user.username %>
+    <% if package.user.profile.firstname or package.user.profile.surname %>
+        <%= "(" + "#{package.user.profile.firstname} #{package.user.profile.surname}".strip + ")" %>
+    <% end %>
+  </li>
+  <li><h4 class="nav-heading">Keywords</h4></li>
+  <li style="padding: 7px 20px;">
     <% if not package.keywords.blank? %>
         <% package.keywords.each do |keyword| %>
             <span class="keyword-pill"><%= keyword %></span>

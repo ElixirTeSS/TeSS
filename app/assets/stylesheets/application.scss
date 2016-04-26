@@ -53,7 +53,10 @@ $colHover2: #eeeeee;
 
 .navbar-default {
   background-color: $bgDefault;
-  border-color: $bgHighlight;
+  border-style: none;
+  border: 0px;
+  //border-color: $bgDefault;//$bgHighlight;
+  margin-bottom: 0px;
 
   .navbar-brand {
     height: 100px;
@@ -89,6 +92,7 @@ $colHover2: #eeeeee;
   .navbar-nav {
     > li {
       > a {
+
         color: $colHover2;
         &:hover, &:focus {
           color: $colHover;
@@ -127,6 +131,11 @@ $colHover2: #eeeeee;
       }
     }
   }
+}
+
+.navbar-default .navbar-collapse,
+.navbar-default .navbar-form {
+  border-style: none;
 }
 
 a:hover {
@@ -305,6 +314,14 @@ li.media-item {
   -moz-border-radius: 5px;
   border-radius: 5px;
   z-index: 2;
+  -ms-word-break: break-all;
+  word-break: break-word;
+  /* Non standard for webkit */
+  //word-break: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
 }
 
 .media-view:hover,
@@ -615,7 +632,7 @@ abbr, accronym {
   margin: 3px 3px 3px 0px;
   background-color: whitesmoke;
   border-radius: 4px;
-  width: 40%;
+  width: 43%;
   display: inline;
 }
 
