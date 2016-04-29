@@ -102,8 +102,8 @@ class UsersControllerTest < ActionController::TestCase
     default_user = get_default_user
 
     assert_difference('User.count', -1) do
-      @user.destroy!
-      assert_redirected_to root_path
+      delete :destroy, id: @user
     end
+    assert_redirected_to users_path
   end
 end
