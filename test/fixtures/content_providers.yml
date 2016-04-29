@@ -1,7 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 goblet:
-  id: 1
   title: Goblet
   url: http://mygoblet.org
   image_url: http://goblet.com/photo.jpg
