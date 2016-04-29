@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
+  include ActionView::Helpers::ApplicationHelper
 
   include PublicActivity::Common
+
   has_paper_trail
 
   acts_as_token_authenticatable
@@ -28,10 +30,10 @@ class User < ActiveRecord::Base
   has_many :nodes
   belongs_to :role
 
-  before_create :set_default_role, :set_default_profile
+  before_create :set_registered_user_role, :set_default_profile
   after_create :skip_email_confirmation_for_non_production
 
-  before_destroy :reassign_assets
+  before_destroy :reassign_owner
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -50,33 +52,6 @@ class User < ActiveRecord::Base
 
   validates_format_of :email, :with => Devise.email_regexp
 
-
-  def default_user
-    default_role = Role.find_by_name('default_user')
-    if default_role.nil?
-      Role.create_roles
-      default_role = Role.find_by_name('default_user')
-    end
-    default_user = User.find_by_role_id(default_role.id)
-    if default_user.nil?
-      default_user = User.new(:username=>'default_user',
-               :email=>CONTACT_EMAIL,
-               :role => default_role,
-               :password => SecureRandom.base64
-      )
-      default_user.save!
-    end
-    return default_user
-  end
-
-  def reassign_assets
-    self.materials.each{|x| x.update_attributes({:user => default_user}) } if self.materials.any?
-    self.events.each{|x| x.update_attributes({:user => default_user}) } if self.events.any?
-    self.content_providers.each{|x| x.update_attributes({:user => default_user})} if self.content_providers.any?
-    self.nodes.each{|x| x.update_attributes({:user => default_user})} if self.nodes.any?
-  end
-
-
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
@@ -86,7 +61,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def set_default_role
+  def set_registered_user_role
     self.role ||= Role.find_by_name('registered_user')
   end
 
@@ -160,4 +135,25 @@ class User < ActiveRecord::Base
     end
   end
 
+  private
+
+  def reassign_owner
+    # Material.where(:user => self).each do |material|
+    #   material.update_attribute(:user, get_default_user)
+    # end
+    # Event.where(:user => self).each do |event|
+    #   event.update_attribute(:user_id, get_default_user.id)
+    # end
+    # ContentProvider.where(:user => self).each do |content_provider|
+    #   content_provider.update_attribute(:user_id, get_default_user.id)
+    # end
+    # Node.where(:user => self).each do |node|
+    #   node.update_attribute(:user_id, get_default_user.id)
+    # end
+    default_user = get_default_user
+    self.materials.each{|x| x.update_attribute(:user, default_user) } if self.materials.any?
+    self.events.each{|x| x.update_attribute(:user, default_user) } if self.events.any?
+    self.content_providers.each{|x| x.update_attribute(:user, default_user)} if self.content_providers.any?
+    self.nodes.each{|x| x.update_attribute(:user, default_user)} if self.nodes.any?
+  end
 end

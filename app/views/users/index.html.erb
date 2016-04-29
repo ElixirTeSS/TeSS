@@ -8,7 +8,7 @@
 
     <ul class="masonry media-grid" style="margin-top: 15px;">
       <% @users.each do |user| %>
-          <%= render user %>
+          <%= render user unless user.role == Role.find_by_name('default_user')%>
       <% end %>
     </ul>
   </div>

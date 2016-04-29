@@ -1,5 +1,7 @@
 require 'test_helper'
 
+include  ApplicationHelper
+
 class UsersControllerTest < ActionController::TestCase
   include Devise::TestHelpers
 
@@ -92,10 +94,16 @@ class UsersControllerTest < ActionController::TestCase
 
   test "should destroy user" do
     sign_in @user
-    assert_difference('User.count', -1) do
-      delete :destroy, id: @user
-    end
 
-    assert_redirected_to users_path
+    # Create default user that will be used as the new 'owner' of objects
+    # after @user/real owner is destroyed. We are not really using it here
+    # just making sure it is already in the DB so we can check number of users
+    # after @user is deleted
+    default_user = get_default_user
+
+    assert_difference('User.count', -1) do
+      @user.destroy!
+      assert_redirected_to root_path
+    end
   end
 end
