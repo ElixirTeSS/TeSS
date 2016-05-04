@@ -70,10 +70,15 @@ class User < ActiveRecord::Base
   end
 
   def reassign_assets
-    self.materials.each{|x| x.update_attributes({:user => default_user}) } if self.materials.any?
-    self.events.each{|x| x.update_attributes({:user => default_user}) } if self.events.any?
-    self.content_providers.each{|x| x.update_attributes({:user => default_user})} if self.content_providers.any?
-    self.nodes.each{|x| x.update_attributes({:user => default_user})} if self.nodes.any?
+    self.materials.each{|x| x.update_attributes(:user => default_user) } if self.materials.any?
+    self.events.each{|x| x.update_attributes(:user => default_user) } if self.events.any?
+    self.content_providers.each{|x| x.update_attributes(:user => default_user)} if self.content_providers.any?
+    self.nodes.each{|x| x.update_attributes(:user => default_user)} if self.nodes.any?
+    self.update_attributes(:materials => [])
+    self.update_attributes(:events => [])
+    self.update_attributes(:content_providers => [])
+    self.update_attributes(:nodes => [])
+    return true
   end
 
 

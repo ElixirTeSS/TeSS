@@ -9,6 +9,7 @@ class UserTest < ActiveSupport::TestCase
     # regular_user is already saved so make username and email unique
     @user_data.username = "0#{@user_data.username}"
     @user_data.email = "0#{@user_data.email}"
+    User.default_user
   end
 
   test "should save new user" do
@@ -73,5 +74,13 @@ class UserTest < ActiveSupport::TestCase
     assert_not user2.save, 'Saved a second user with same e-mail address'
   end
 
+  test 'should destroy user' do
+    user = users(:regular_user)
+    assert_difference('User.count', -1) do
+      puts user.destroy
+    end
+  end
 
 end
+
+
