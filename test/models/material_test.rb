@@ -52,8 +52,11 @@ class MaterialTest < ActiveSupport::TestCase
   end
 
   test 'should delete material when content provider deleted' do
-
-
+    material = @material
+    content_provider = @material.content_provider
+    assert Material.find_by_id(material.id)
+    assert content_provider.destroy
+    assert_nil Material.find_by_id(material.id)
   end
 
 =begin
