@@ -9,7 +9,7 @@ class UserTest < ActiveSupport::TestCase
     # regular_user is already saved so make username and email unique
     @user_data.username = "0#{@user_data.username}"
     @user_data.email = "0#{@user_data.email}"
-    User.default_user
+    get_default_user
   end
 
   test "should save new user" do
