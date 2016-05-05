@@ -4,7 +4,7 @@ class RemovePackageIdAndProfileIdFromUsersIfPresent < ActiveRecord::Migration
       remove_column :users, :package_id
     end
 
-    if column_exists? :users, :package_id
+    if column_exists? :users, :profile_id
       remove_column :users, :profile_id
     end
   end
@@ -14,7 +14,7 @@ class RemovePackageIdAndProfileIdFromUsersIfPresent < ActiveRecord::Migration
       add_column :users, :package_id, :integer
     end
 
-    unless column_exists? :users, :package_id
+    unless column_exists? :users, :profile_id
       add_column :users, :profile_id, :integer
     end
   end
