@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160413144723) do
+ActiveRecord::Schema.define(version: 20160505142327) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -262,7 +262,6 @@ ActiveRecord::Schema.define(version: 20160413144723) do
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.string   "slug"
-    t.integer  "package_id"
     t.integer  "profile_id"
   end
 
