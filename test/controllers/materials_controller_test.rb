@@ -13,7 +13,7 @@ class MaterialsControllerTest < ActionController::TestCase
         title: 'New title',
         short_description: 'New description',
         url: 'http://new.url.com',
-        content_provider: @material.content_provider
+        content_provider_id: ContentProvider.first.id
     }
   end
 
@@ -209,8 +209,8 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_response :success
     assert_select 'h2', :text => @material.title #Has Title
     assert_select 'a.h5[href=?]', @material.url #Has plain written URL
-    assert_select 'a.btn-info[href=?]', materials_path, :count => 1 #Back button
-    assert_select 'button.btn-success', :text => "View material", :count => 1 do
+    #assert_select 'a.btn-info[href=?]', materials_path, :count => 1 #Back button
+    assert_select 'a.btn-success', :text => "View material", :count => 1 do
       assert_select 'a[href=?]', @material.url, :count => 1 #View Material button
     end
     #Should not show when not logged in
