@@ -14,30 +14,32 @@ good:
   carousel_images: 
   user: regular_user
 
-no_name:
-  name:
-  member_status: MyString
-  country_code: MyString
-  home_page: http://example.com
-  institutions: 
-  trc: MyString
-  trc_email: MyString
-  trc: 
-  staff: 
-  twitter: MyString
-  carousel_images:
-  user: regular_user
+#
+#no_name:
+#  name:
+#  member_status: MyString
+#  country_code: MyString
+#  home_page: http://example.com
+#  institutions:
+#  trc: MyString
+#  trc_email: MyString
+#  trc:
+#  staff:
+#  twitter: MyString
+#  carousel_images:
+#  user: regular_user
+#
+#no_url:
+#  name: MyString
+#  member_status: MyString
+#  country_code: MyString
+#  home_page: Wrong!
+#  institutions:
+#  trc: MyString
+#  trc_email: MyString
+#  trc:
+#  staff:
+#  twitter: MyString
+#  carousel_images:
+#  user: regular_user
 
-no_url:
-  name: MyString
-  member_status: MyString
-  country_code: MyString
-  home_page: Wrong!
-  institutions:
-  trc: MyString
-  trc_email: MyString
-  trc:
-  staff:
-  twitter: MyString
-  carousel_images:
-  user: regular_user
