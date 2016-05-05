@@ -13,7 +13,12 @@ class MaterialTest < ActiveSupport::TestCase
                   :password => SecureRandom.base64
     )
     @user.save!
-    @material = Material.new(:title => 'title', :short_description => 'short desc', :url => 'http://goog.e.com', :user => @user)
+    @material = Material.new(:title => 'title',
+                             :short_description => 'short desc',
+                             :url => 'http://goog.e.com',
+                             :user => @user,
+                             :authors => ['horace', 'flo'],
+                             :content_provider => ContentProvider.first)
     @material.save!
   end
 
@@ -25,6 +30,30 @@ class MaterialTest < ActiveSupport::TestCase
     #Reload the material
     material = Material.find_by_id(material_id)
     assert_equal 'default_user', material.user.role.name
+  end
+
+  test 'should convert string value to empty array in authors' do
+    assert_not_equal @material.authors, []
+    assert @material.update_attribute(:authors, 'string')
+    assert_equal [], @material.authors
+  end
+
+  test 'should convert nil to empty array in authors fields' do
+    assert_not_equal @material.authors, []
+    assert @material.update_attribute(:authors, nil)
+    assert_equal [], @material.authors
+  end
+
+  test 'should strip bad values from authors array input' do
+    authors = ['john', 'bob', nil, [], '', 'frank']
+    expected_authors = ['john', 'bob', 'frank']
+    assert @material.update_attribute(:authors, authors)
+    assert_equal expected_authors, @material.authors
+  end
+
+  test 'should delete material when content provider deleted' do
+
+
   end
 
 =begin
