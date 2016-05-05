@@ -77,7 +77,7 @@ class UserTest < ActiveSupport::TestCase
   test 'should destroy user' do
     user = users(:regular_user)
     assert_difference('User.count', -1) do
-      puts user.destroy
+      user.destroy
     end
   end
 
