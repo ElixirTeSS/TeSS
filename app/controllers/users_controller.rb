@@ -75,7 +75,7 @@ class UsersController < ApplicationController
     @user.create_activity :destroy, owner: current_user
     @user.destroy
     respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+      format.html { redirect_to users_path, notice: 'User was successfully destroyed.' }  # Devise is also doing redirection here
       format.json { head :no_content }
     end
   end

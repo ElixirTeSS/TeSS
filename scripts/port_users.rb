@@ -25,7 +25,7 @@ IO.readlines("#{Rails.root}/scripts/users.csv").each do |line|
   if u.nil?
     u = User.new(:username => username, :email => email)
     u.set_default_profile
-    u.set_default_role
+    u.set_registered_user_role
     u.authentication_token = Devise.friendly_token
     u.password = Devise.friendly_token
     u.profile.firstname = firstname

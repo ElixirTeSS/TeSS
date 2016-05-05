@@ -129,4 +129,26 @@ module ApplicationHelper
     (controller.send :_layout).inspect.split("/").last.gsub(/.html.erb/,"")
   end
 
+  # Creates a special user with role 'default_user' that is set
+  # as owner of orphaned materials, events, content provider, nodes, etc.
+  # in the case when original user/owner is deleted (and we cannot have objects
+  # without assigned users)
+  def get_default_user
+    default_role = Role.find_by_name('default_user')
+    if default_role.nil?
+      Role.create_roles
+      default_role = Role.find_by_name('default_user')
+    end
+    default_user = User.find_by_role_id(default_role.id)
+    if default_user.nil?
+      default_user = User.new(:username=>'default_user',
+                              :email=>CONTACT_EMAIL,
+                              :role => default_role,
+                              :password => SecureRandom.base64
+      )
+      default_user.save!
+    end
+    return default_user
+  end
+
 end
