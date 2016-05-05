@@ -262,6 +262,8 @@ ActiveRecord::Schema.define(version: 20160413144723) do
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.string   "slug"
+    t.integer  "package_id"
+    t.integer  "profile_id"
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree

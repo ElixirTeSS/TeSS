@@ -4,6 +4,9 @@
 # output file what happened on the last run.
 LOG=/tmp/scrapers.log
 OUTPUT=/tmp/scrapers.out
+PATH=/usr/local/bin:/home/tess/.rvm/gems/ruby-2.2.1/bin:/home/tess/.rvm/gems/ruby-2.2.1@global/bin:/home/tess/.rvm/rubies/ruby-2.2.1/bin:/home/tess/.rvm/bin:/usr/local/bin:/home/tess/bin:/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games
+
+rvm use ruby-2.2.1
 
 if [ "$#" -eq 0 ];then
     echo "Usage: run_scrapers.sh <scraper_directory>"
