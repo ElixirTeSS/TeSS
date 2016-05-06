@@ -282,6 +282,24 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_equal material_title, JSON.parse(response.body)['title']
   end
 
+  test 'should not create new material without valid authentication token' do
+    scraper_role = Role.find_by_name('api_user')
+    scraper_user = User.where(:role_id => scraper_role.id).first
+    assert scraper_user
+
+    assert_no_difference('Material.count') do
+      post 'create', {user_token: 'made up authentication token',
+                      user_email: scraper_user.email,
+                      material: {
+                          title: 'material_title',
+                          url: 'http://horse.com',
+                          short_description: 'All about horses'
+                      },
+                      :format => 'json'}
+    end
+    assert_response 401
+  end
+
   test 'should update existing material through API' do
     user = users(:scraper_user)
     material = materials(:scraper_user_material)
