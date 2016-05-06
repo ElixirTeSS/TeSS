@@ -303,4 +303,63 @@ end
     assert_equal(response.body, "")
   end
 
+
+  test 'should create new event through API' do
+    scraper_role = Role.find_by_name('api_user')
+    scraper_user = User.where(:role_id => scraper_role.id).first
+    event_title = 'horse'
+    assert scraper_user
+    assert_difference('Event.count') do
+      post 'create', {user_token: scraper_user.authentication_token,
+                      user_email: scraper_user.email,
+                      event: {
+                          title: event_title,
+                          url: 'http://horse.com',
+                          short_description: 'All about horses'
+                      },
+                      :format => 'json'}
+    end
+    assert_equal event_title, JSON.parse(response.body)['title']
+  end
+
+  test 'should update existing material through API' do
+    user = users(:scraper_user)
+    event = events(:scraper_user_event)
+
+    new_title = "totally new title"
+    assert_no_difference('Material.count') do
+      post 'update', {user_token: user.authentication_token,
+                      user_email: user.email,
+                      event: {
+                          title: new_title,
+                          url: event.url,
+                          description: event.description
+                      },
+                      :id => event.id,
+                      :format => 'json'}
+    end
+    assert_not_equal event.title, JSON.parse(response.body)['title']
+    assert_equal new_title, JSON.parse(response.body)['title']
+  end
+
+  test 'should not update non scraper owner through API' do
+    user = users(:regular_user)
+    event = user.events.first
+
+    new_title = "totally new title"
+    assert_no_difference('Event.count') do
+      post 'update', {user_token: user.authentication_token,
+                      user_email: user.email,
+                      event: {
+                          title: new_title,
+                          url: event.url,
+                          description: event.description
+                      },
+                      :id => event.id,
+                      :format => 'json'}
+    end
+    assert_response :forbidden
+  end
+
+
 end

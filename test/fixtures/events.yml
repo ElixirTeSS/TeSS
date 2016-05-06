@@ -43,3 +43,10 @@ two:
   longitude:
   keywords: ["Keyword"]
   user: regular_user
+
+scraper_user_event:
+  title: material owned by scraper'
+  url: http://myurl.com
+  description: 'this is my material'
+  user: scraper_user
+  content_provider: goblet
