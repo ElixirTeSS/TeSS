@@ -37,3 +37,10 @@ prints:
   url: http://www.mygoblet.org//training-portal/materials/prints-protein-family-database-difference
   short_description: 'A presentation designed to introduce the concept of protein family analysis and characterisation using motif-based methods, with a particular focus on protein fingerprinting.'
   scientific_topics: [topic_one]
+
+scraper_user_material:
+  title: material owned by scraper'
+  url: http://myurl.com
+  short_description: 'this is my material'
+  user: scraper_user
+  content_provider: goblet

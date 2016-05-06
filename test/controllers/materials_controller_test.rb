@@ -264,6 +264,62 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_select 'div.list-group-item', :count => Material.count
   end
 
+  test 'should create new material through API' do
+    scraper_role = Role.find_by_name('api_user')
+    scraper_user = User.where(:role_id => scraper_role.id).first
+    material_title = 'horse'
+    assert scraper_user
+    assert_difference('Material.count') do
+      post 'create', {user_token: scraper_user.authentication_token,
+                      user_email: scraper_user.email,
+                      material: {
+                          title: material_title,
+                          url: 'http://horse.com',
+                          short_description: 'All about horses'
+                      },
+                      :format => 'json'}
+    end
+    assert_equal material_title, JSON.parse(response.body)['title']
+  end
+
+  test 'should update existing material through API' do
+    user = users(:scraper_user)
+    material = materials(:scraper_user_material)
+
+    new_title = "totally new title"
+    assert_no_difference('Material.count') do
+      post 'update', {user_token: user.authentication_token,
+                      user_email: user.email,
+                      material: {
+                          title: new_title,
+                          url: material.url,
+                          short_description: material.short_description
+                      },
+                      :id => material.id,
+                      :format => 'json'}
+    end
+    assert_not_equal material.title, JSON.parse(response.body)['title']
+    assert_equal new_title, JSON.parse(response.body)['title']
+  end
+
+  test 'should not update non scraper owner through API' do
+    user = users(:regular_user)
+    material = user.materials.first
+
+    new_title = "totally new title"
+    assert_no_difference('Material.count') do
+      post 'update', {user_token: user.authentication_token,
+                      user_email: user.email,
+                      material: {
+                          title: new_title,
+                          url: material.url,
+                          short_description: material.short_description
+                      },
+                      :id => material.id,
+                      :format => 'json'}
+    end
+    assert_response :forbidden
+  end
 
 
   # TODO: SOLR tests will not run on TRAVIS. Explore stratergy for testing solr

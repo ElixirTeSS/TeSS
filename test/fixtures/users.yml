@@ -25,3 +25,11 @@ admin:
   encrypted_password: 'admin_encrypted_password'
   confirmed_at: <%= Time.zone.now %>
   role_id: 2
+
+scraper_user:
+  username: 'API'
+  email: 'api_email@gmail.com'
+  authentication_token: 'hjfdslhjfdkslfjd'
+  encrypted_password: 'admin_encrypted_password'
+  confirmed_at: <%= Time.zone.now %>
+  role_id: 3

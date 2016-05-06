@@ -8,3 +8,6 @@ admin:
   name: admin
   id: 2
 
+api_user:
+  name: api_user
+  id: 3
