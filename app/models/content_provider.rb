@@ -8,7 +8,7 @@ class ContentProvider < ActiveRecord::Base
   friendly_id :title, use: :slugged
 
   has_many :materials, :dependent => :destroy
-  has_many :events
+  has_many :events, :dependent => :destroy
 
   belongs_to :user
 
