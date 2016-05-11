@@ -65,15 +65,9 @@
         </div>
         <div id="packages" class="tab-pane fade">
           <div class="row">
-            <% available_packages = available_packages_for(@material) %>
-            <% unless available_packages.blank? %>
-                <div class="col-md-9 form-inline" style="margin:15px 0px 10px 0px;">
-                  <div class="form-group">
-                    <%= select_tag('material[package_ids][]', options_from_collection_for_select(available_packages, :id, :title), :class => "form-control")
-                    %>
-                    <button class="btn btn-info">Add to package</button>
-                  </div>
-                </div>
+            <%= form_tag(controller: 'materials', id: @material.id, action: 'update_package', method: 'post') do |f| %>
+                <%= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @material, :f => f} %>
+                <button type="submit" value="add" class="btn btn-primary">Update material</button>
             <% end %>
           </div>
           <div class="row">

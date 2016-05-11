@@ -47,7 +47,23 @@ class Package < ActiveRecord::Base
         end
       end
   end
-  
+
+  def add_resources(materials=nil, events=nil)
+    if !materials.nil? and !materials.empty?
+      self.materials = []
+      self.materials = materials.uniq.collect{|mat| Material.find_by_id(mat)}.compact
+    else
+      self.materials = []
+    end
+    if !events.nil? and !events.empty?
+      self.events = []
+      self.events = events.uniq.collect{|eve| Event.find_by_id(eve)}.compact
+    else
+      self.events = []
+    end
+    return self.save
+  end
+
   def log_activities
     self.changed.each do |changed_attribute|
       #TODO: Sort out what gets logged

@@ -134,22 +134,6 @@ class PackagesController < ApplicationController
     end
 =end
 
-    def add_resources_to_package(package, materials, events)
-      if !materials.nil? and !materials.empty?
-        package.materials = []
-        package.materials = materials.uniq.collect{|mat| Material.find_by_id(mat)}.compact
-      else
-        package.materials = []
-      end
-      if !events.nil? and !events.empty?
-        package.events = []
-        package.events = events.uniq.collect{|eve| Event.find_by_id(eve)}.compact
-      else
-        package.events = []
-      end
-      return package
-    end
-
   # Use callbacks to share common setup or constraints between actions.
     def set_package
       @package = Package.friendly.find(params[:id])

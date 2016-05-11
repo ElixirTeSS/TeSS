@@ -1,7 +1,7 @@
 class MaterialsController < ApplicationController
   require 'bread_crumbs'
 
-  before_action :set_material, only: [:show, :edit, :update, :destroy]
+  before_action :set_material, only: [:show, :edit, :update, :destroy, :update_package]
 
   #sets @search_params, @facet_params, and @page 
   before_action :set_params, :only => :index
@@ -26,6 +26,16 @@ class MaterialsController < ApplicationController
   #   end
   #   params[:scientific_topics] = res.compact.flatten.uniq if res and !res.empty?
   # end
+
+  def update_package
+    packages = params[:material][:package_ids].select!{|p| !p.nil? and !p.empty?}
+    packages.collect!{|packaj| Package.find_by_id(packaj)}
+    packages.each do |packaj|
+      packaj.add_resources([@material])
+    end
+    flash[:notice] = "Added material to #{packages}"
+    redirect_to @material
+  end
 
   def index
     @facet_fields = @@facet_fields
@@ -140,6 +150,14 @@ class MaterialsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+
+=begin
+    puts 'getting here'
+    params[:package_ids].each do |package|
+      add_resource_to_packages(@material, Package.find_by_id(package))
+    end
+=end
 
   private
   # Use callbacks to share common setup or constraints between actions.
