@@ -20,16 +20,20 @@ fi
 #rvm use 2.2-head@scraper
 #legacy_software_carpentry_scraper # Probably doesn't need re-running
 
-SCRAPERS=(bitsvib_events_scraper
-          bitsvib_scraper
+SCRAPERS=(biocomp_rdfa_scrapaer
+          bitsvib_rdfa_scraper
           csc_events_scraper
           data_carpentry_scraper
+          dlts_events
           ebi_scraper
           elixir_events_scraper
+          futurelearn_rdfa_scraper
           genome3d_scraper
           goblet_rdfa_scraper
+          legacy_software_carpentry_scraper
           ngs_registry_scraper
           sib_scraper
+          iann_events_uploader
           )
 
 for SCRAPER in "${SCRAPERS[@]}"
