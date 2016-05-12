@@ -20,11 +20,11 @@ fi
 #rvm use 2.2-head@scraper
 #legacy_software_carpentry_scraper # Probably doesn't need re-running
 
-SCRAPERS=(biocomp_rdfa_scrapaer
+SCRAPERS=(biocomp_rdfa_scraper
           bitsvib_rdfa_scraper
           csc_events_scraper
           data_carpentry_scraper
-          dlts_events
+          dtls_events
           ebi_scraper
           elixir_events_scraper
           futurelearn_rdfa_scraper
@@ -43,6 +43,8 @@ do
    echo "Running $SCRAPER.rb" >> $LOG
    cd $DIR && ruby $SCRAPER.rb >> $OUTPUT 2> /dev/null
 done
+
+rake sunspot:solr:reindex
 
 echo "Done!" >> $LOG
 echo >> $LOG
