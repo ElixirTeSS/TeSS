@@ -16,44 +16,42 @@
         </div>
 
         <div class="collapse navbar-collapse" id="navbar-collapse-black">
-          <ul class="nav navbar-nav navbar-right">
-            <% if current_user %>
-                <%= menu_group pull: :right do %>
-                    <li class="<%= (request.fullpath == user_path(current_user)) ? 'active' : '' %>">
-                      <%= link_to current_user.username, user_path(current_user) %>
-                    </li>
-                    <li class="<%= (request.fullpath == users_path) ? 'active' : '' %>">
-                      <%= link_to users_path do %>
-                          <i class="fa fa-users fa-lg"></i>
-                      <% end %>
-                    </li>
-                    <% if current_user.is_admin? %>
-                        <li class="<%= (request.fullpath == rails_admin_path) ? 'active' : '' %>">
-                          <%= link_to rails_admin_path do %>
-                              <i class="fa fa-cog fa-lg"></i>
-                          <% end %>
-                        </li>
+          <% if current_user %>
+              <%= menu_group pull: :right do %>
+                  <li class="<%= (request.fullpath == user_path(current_user)) ? 'active' : '' %>">
+                    <%= link_to current_user.username, user_path(current_user) %>
+                  </li>
+                  <li class="<%= (request.fullpath == users_path) ? 'active' : '' %>">
+                    <%= link_to users_path do %>
+                        <i class="fa fa-users fa-lg"></i>
                     <% end %>
-                    <li class="<%= (request.fullpath == destroy_user_session_path) ? 'active' : '' %>">
-                      <%= link_to "Log out", destroy_user_session_path, :method => :delete, :data => {:confirm => 'Are you sure you want to log out?'} %>
-                    </li>
-                <% end %>
-            <% else %>
-                <%= menu_group pull: :right do %>
-                    <li class="<%= (request.fullpath == users_path) ? 'active' : '' %>">
-                      <%= link_to users_path do %>
-                          <i class="fa fa-users fa-lg"></i>
-                      <% end %>
-                    </li>
-                    <li class="<%= (request.fullpath == new_user_session_path) ? 'active' : '' %>">
-                      <%= link_to "Log in", new_user_session_path %>
-                    </li>
-                    <li class="<%= (request.fullpath == new_user_registration_path) ? 'active' : '' %>">
-                      <%= link_to "Register", new_user_registration_path %>
-                    </li>
-                <% end %>
-            <% end %>
-          </ul>
+                  </li>
+                  <% if current_user.is_admin? %>
+                      <li class="<%= (request.fullpath == rails_admin_path) ? 'active' : '' %>">
+                        <%= link_to rails_admin_path do %>
+                            <i class="fa fa-cog fa-lg"></i>
+                        <% end %>
+                      </li>
+                  <% end %>
+                  <li class="<%= (request.fullpath == destroy_user_session_path) ? 'active' : '' %>">
+                    <%= link_to "Log out", destroy_user_session_path, :method => :delete, :data => {:confirm => 'Are you sure you want to log out?'} %>
+                  </li>
+              <% end %>
+          <% else %>
+              <%= menu_group pull: :right do %>
+                  <li class="<%= (request.fullpath == users_path) ? 'active' : '' %>">
+                    <%= link_to users_path do %>
+                        <i class="fa fa-users fa-lg"></i>
+                    <% end %>
+                  </li>
+                  <li class="<%= (request.fullpath == new_user_session_path) ? 'active' : '' %>">
+                    <%= link_to "Log in", new_user_session_path %>
+                  </li>
+                  <li class="<%= (request.fullpath == new_user_registration_path) ? 'active' : '' %>">
+                    <%= link_to "Register", new_user_registration_path %>
+                  </li>
+              <% end %>
+          <% end %>
         </div>
       </div>
     </nav>
@@ -78,14 +76,14 @@
         </div>
         <!-- Search box on the right side of the navbar -->
         <div class="pull-right">
-            <% if display_search_box %>
-                <%= form_tag search_path, :method => :get, :class => "navbar-form navbar-right", :role => "search" do %>
-                    <div class="form-group">
-                      <input type="text" class="form-control" name='q' placeholder="Search training...">
-                    </div>
-                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                <% end %>
-            <% end %>
+          <% if display_search_box %>
+              <%= form_tag search_path, :method => :get, :class => "navbar-form navbar-right", :role => "search" do %>
+                  <div class="form-group">
+                    <input type="text" class="form-control" name='q' placeholder="Search training...">
+                  </div>
+                  <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+              <% end %>
+          <% end %>
         </div>
         <div class="collapse navbar-collapse" id="orange-navbar-collapse">
           <ul class="nav nav-pills" style="padding-top: 10px;">
