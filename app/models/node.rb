@@ -4,7 +4,7 @@ class Node < ActiveRecord::Base
   friendly_id :name, use: :slugged
 
   belongs_to :user
-  has_many :staff, class_name: 'StaffMember'
+  has_many :staff, class_name: 'StaffMember', dependent: :destroy
 
   # name:string
   # member_status:string
@@ -46,7 +46,7 @@ class Node < ActiveRecord::Base
   private
 
   def has_training_coordinator
-    unless staff.training_coordinators.any?
+    unless staff.select { |s| s.role == StaffMember::TRAINING_COORDINATOR_ROLE }.any?
       errors.add(:base, 'Requires at least one training coordinator to be defined')
     end
   end
