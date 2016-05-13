@@ -167,6 +167,24 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.get_default_user
+    default_role = Role.find_by_name('default_user')
+    if default_role.nil?
+      Role.create_roles
+      default_role = Role.find_by_name('default_user')
+    end
+    default_user = User.find_by_role_id(default_role.id)
+    if default_user.nil?
+      default_user = User.new(:username=>'default_user',
+                              :email=>CONTACT_EMAIL,
+                              :role => default_role,
+                              :password => SecureRandom.base64
+      )
+      default_user.save!
+    end
+    default_user
+  end
+
   private
 
   def reassign_owner
@@ -182,7 +200,7 @@ class User < ActiveRecord::Base
     # Node.where(:user => self).each do |node|
     #   node.update_attribute(:user_id, get_default_user.id)
     # end
-    default_user = get_default_user
+    default_user = User.get_default_user
     self.materials.each{|x| x.update_attribute(:user, default_user) } if self.materials.any?
     self.events.each{|x| x.update_attribute(:user, default_user) } if self.events.any?
     self.content_providers.each{|x| x.update_attribute(:user, default_user)} if self.content_providers.any?
