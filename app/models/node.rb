@@ -4,16 +4,13 @@ class Node < ActiveRecord::Base
   friendly_id :name, use: :slugged
 
   belongs_to :user
+  has_many :staff_members
 
   # name:string
   # member_status:string
   # country_code:string
   # home_page:string
   # institutions:array
-  # trc:string
-  # trc_email:string
-  # trc:image:string
-  # staff:array
   # twitter:string
   # carousel_images:array
 
