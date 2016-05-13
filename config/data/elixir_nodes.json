@@ -1,0 +1,394 @@
+{
+  "nodes": [
+    {
+      "country": "Belgium",
+      "country_code": "BE",
+      "status": "Member",
+      "url": "",
+      "image_url": "",
+      "description": "",
+      "twitter": "",
+      "google_calendar_url": "",
+      "carousel_images": [],
+      "staff": [
+        {
+          "name": "Alexander Botzki",
+          "role": "Training coordinator",
+          "email": "Alexander.Botzki@vib.be",
+          "image_url": ""
+        }
+      ]
+    },
+    {
+      "country": "Czech Republic",
+      "country_code": "CZ",
+      "status": "Member",
+      "url": "",
+      "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/ELIXIR_CZECHREPUBLIC_white_background.png?itok=opWwGJM1",
+      "description": "",
+      "twitter": "",
+      "google_calendar_url": "",
+      "carousel_images": [],
+      "staff": [
+        {
+          "name": "Vojtech Spiwok",
+          "role": "Training coordinator",
+          "email": "Vojtech.Spiwok@vscht.cz",
+          "image_url": ""
+        }
+      ]
+    },
+    {
+      "country": "Denmark",
+      "country_code": "DK",
+      "status": "Member",
+      "url": "",
+      "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/ELIXIR_DENMARK_white_background.png?itok=1zZgCAMj",
+      "description": "",
+      "twitter": "",
+      "google_calendar_url": "",
+      "carousel_images": [],
+      "staff": [
+        {
+          "name": "Henriette Husum Bak-Jensen",
+          "role": "Training coordinator",
+          "email": "hhu@bio.ku.dk",
+          "image_url": ""
+        }
+      ]
+    },
+    {
+      "country": "EMBL-EBI",
+      "country_code": "EMBL-EBI",
+      "status": "Member",
+      "url": "http://www.ebi.ac.uk/training",
+      "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/EMBLEBIlogo.jpeg?itok=QjfBMq39",
+      "description": "",
+      "twitter": "emblebi",
+      "google_calendar_url": "",
+      "carousel_images": [],
+      "staff": [
+        {
+          "name": "Sarah Morgan",
+          "role": "Training coordinator",
+          "email": "sarah.morgan@ebi.ac.uk",
+          "image_url": "http://www.ebi.ac.uk/sites/ebi.ac.uk/files/styles/medium/public/person/image/sarah_squared.jpg"
+        }
+      ]
+    },
+    {
+      "country": "Estonia",
+      "country_code": "EE",
+      "status": "Member",
+      "url": "",
+      "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/250_elixir_estonia_node_logo.png?itok=4fiNEbme",
+      "description": "",
+      "twitter": "",
+      "google_calendar_url": "",
+      "carousel_images": [],
+      "staff": [
+        {
+          "name": "Hedi Peterson",
+          "role": "Training coordinator",
+          "email": "hedi.peterson@ut.ee",
+          "image_url": ""
+        }
+      ]
+    },
+    {
+      "country": "Finland",
+      "country_code": "FI",
+      "status": "Member",
+      "url": "https://research.csc.fi/training",
+      "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/250-elixir_fi_node_logo_0.png?itok=Gqkm4UPK",
+      "description": "",
+      "twitter": "",
+      "google_calendar_url": "",
+      "carousel_images": [],
+      "staff": [
+        {
+          "name": "Eija Korpelainen",
+          "role": "Training coordinator",
+          "email": "Eija.Korpelainen@csc.fi",
+          "image_url": ""
+        },
+        {
+          "name": "Aleksi Kallio",
+          "role": "Training coordinator",
+          "email": "aleksi.kallio@csc.fi",
+          "image_url": ""
+        }
+      ]
+    },
+    {
+      "country": "France",
+      "country_code": "FR",
+      "status": "Member",
+      "url": "",
+      "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/elixir_node_france_0.png?itok=UFZPb39N",
+      "description": "",
+      "twitter": "",
+      "google_calendar_url": "",
+      "carousel_images": [],
+      "staff": [
+        {
+          "name": "Victoria Dominguez",
+          "role": "Training coordinator",
+          "email": "victoria.dominguez@france-bioinformatique.fr",
+          "image_url": ""
+        }
+      ]
+    },
+    {
+      "country": "Greece",
+      "country_code": "GR",
+      "status": "Observer",
+      "url": "",
+      "image_url": "",
+      "description": "",
+      "twitter": "",
+      "google_calendar_url": "",
+      "carousel_images": [],
+      "staff": [
+        {
+          "name": "Dimitris Kafetzopoulos",
+          "role": "Training coordinator",
+          "email": "kafetzo@imbb.forth.gr",
+          "image_url": ""
+        },
+        {
+          "name": "Martin Reczko",
+          "role": "Training coordinator",
+          "email": "reczko@fleming.gr",
+          "image_url": ""
+        }
+      ]
+    },
+    {
+      "country": "Israel",
+      "country_code": "IL",
+      "status": "Member",
+      "url": "",
+      "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/elixir_israel_white_background.png?itok=Vu4B3S45",
+      "description": "",
+      "twitter": "",
+      "google_calendar_url": "",
+      "carousel_images": [],
+      "staff": [
+        {
+          "name": "Michal Linial",
+          "role": "Training coordinator",
+          "email": "michall@mail.huji.ac.il",
+          "image_url": ""
+        },
+        {
+          "name": "Ron Unger",
+          "role": "Training coordinator",
+          "email": "ron@biomodel.os.biu.ac.il",
+          "image_url": ""
+        }
+      ]
+    },
+    {
+      "country": "Italy",
+      "country_code": "IT",
+      "status": "Member",
+      "url": "",
+      "image_url": "",
+      "description": "",
+      "twitter": "",
+      "google_calendar_url": "",
+      "carousel_images": [],
+      "staff": [
+        {
+          "name": "Allegra Via",
+          "role": "Training coordinator",
+          "email": "allegra.via@uniroma1.it",
+          "image_url": ""
+        }
+      ]
+    },
+    {
+      "country": "Ireland",
+      "country_code": "IE",
+      "status": "Observer",
+      "url": "",
+      "image_url": "",
+      "description": "",
+      "twitter": "",
+      "google_calendar_url": "",
+      "carousel_images": [],
+      "staff": []
+    },
+    {
+      "country": "Netherlands",
+      "country_code": "NL",
+      "status": "Member",
+      "url": "http://www.dtls.nl/courses/",
+      "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/250_elixir_nl_node_logo.png?itok=7YdjbiBY",
+      "description": "",
+      "twitter": "",
+      "google_calendar_url": "",
+      "carousel_images": [],
+      "staff": [
+        {
+          "name": "Celia van Gelder",
+          "role": "Training coordinator",
+          "email": "Celia.vanGelder@radboudumc.nl",
+          "image_url": ""
+        }
+      ]
+    },
+    {
+      "country": "Norway",
+      "country_code": "NO",
+      "status": "Member",
+      "url": "",
+      "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/elixir_norway_white_background.png?itok=4OL8JNvs",
+      "description": "",
+      "twitter": "",
+      "google_calendar_url": "",
+      "carousel_images": [],
+      "staff": [
+        {
+          "name": "Ståle Nygård",
+          "role": "Training coordinator",
+          "email": "staaln@ifi.uio.no",
+          "image_url": ""
+        }
+      ]
+    },
+    {
+      "country": "Portugal",
+      "country_code": "PT",
+      "status": "Member",
+      "url": "",
+      "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/elixir_portugal_white_background.png?itok=bz-CM7o9",
+      "description": "",
+      "twitter": "",
+      "google_calendar_url": "",
+      "carousel_images": [],
+      "staff": [
+        {
+          "name": "Pedro Fernandes",
+          "role": "Training coordinator",
+          "email": "pfern@igc.gulbenkian.pt",
+          "image_url": ""
+        }
+      ]
+    },
+    {
+      "country": "Slovenia",
+      "country_code": "SI",
+      "status": "Member",
+      "url": "",
+      "image_url": "",
+      "description": "",
+      "twitter": "",
+      "google_calendar_url": "",
+      "carousel_images": [],
+      "staff": [
+        {
+          "name": "Brane Leskosek",
+          "role": "Training coordinator",
+          "email": "brane.leskosek@mf.uni-lj.si",
+          "image_url": ""
+        },
+        {
+          "name": "Peter Juvan",
+          "role": "Training coordinator",
+          "email": "peter.juvan@mf.uni-lj.si",
+          "image_url": ""
+        }
+      ]
+    },
+    {
+      "country": "Spain",
+      "country_code": "ES",
+      "status": "Member",
+      "url": "",
+      "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/elixir_spain_white_background_0.png?itok=BvKx76s3",
+      "description": "",
+      "twitter": "",
+      "google_calendar_url": "",
+      "carousel_images": [],
+      "staff": [
+        {
+          "name": "Alex Upton",
+          "role": "Training coordinator",
+          "email": "aupton@uma.es",
+          "image_url": ""
+        },
+        {
+          "name": "Oswaldo Trelles",
+          "role": "Training coordinator",
+          "email": "ortrelles@uma.es",
+          "image_url": ""
+        }
+      ]
+    },
+    {
+      "country": "Sweden",
+      "country_code": "SE",
+      "status": "Member",
+      "url": "",
+      "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/elixir_sweden_white_background.png?itok=SqpIvoLH",
+      "description": "",
+      "twitter": "",
+      "google_calendar_url": "",
+      "carousel_images": [],
+      "staff": [
+        {
+          "name": "Sara Light",
+          "role": "Training coordinator",
+          "email": "sara.light@bils.se",
+          "image_url": ""
+        },
+        {
+          "name": "Jessica Lindvall",
+          "role": "Training coordinator",
+          "email": "jessica.lindvall@bils.se",
+          "image_url": ""
+        }
+      ]
+    },
+    {
+      "country": "Switzerland",
+      "country_code": "CH",
+      "status": "Member",
+      "url": "http://www.isb-sib.ch/training/",
+      "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/elixir_switzerland_white_background.png?itok=PltN07mz",
+      "description": "",
+      "twitter": "isbsib",
+      "google_calendar_url": "",
+      "carousel_images": [],
+      "staff": [
+        {
+          "name": "Patricia Palagi",
+          "role": "Training coordinator",
+          "email": "Patricia.Palagi@isb-sib.ch",
+          "image_url": ""
+        }
+      ]
+    },
+    {
+      "country": "United Kingdom",
+      "country_code": "GB",
+      "status": "Member",
+      "url": "http://elixir-uk.org/elixir-uk-training-sectors",
+      "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/250-elixir_uk_node_logo.png?itok=KIeak5bi",
+      "description": "",
+      "twitter": "ElixirNodeUK",
+      "google_calendar_url": "",
+      "carousel_images": [],
+      "staff": [
+        {
+          "name": "Rita Hendricusdottir",
+          "role": "Training coordinator",
+          "email": "rita.hendricusdottir@igmm.ed.ac.uk",
+          "image_url": ""
+        }
+      ]
+    }
+  ]
+}
