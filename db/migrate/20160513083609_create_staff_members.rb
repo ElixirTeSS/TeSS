@@ -6,7 +6,6 @@ class CreateStaffMembers < ActiveRecord::Migration
       t.string :email
       t.text :image_url
       t.references :node, index: true, foreign_key: true
-      t.boolean :is_coordinator, default: false
 
       t.timestamps null: false
     end
