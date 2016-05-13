@@ -1,0 +1,46 @@
+@import "variables";
+
+.elixir-black-header {
+  height: 35px;
+  line-height: 35px;
+  background-color: #333333;
+  border-bottom: 1px solid #eeeeee;
+
+  .user-options {
+    float: right;
+    a {
+      display: block;
+      float: left;
+      padding: 0 10px;
+      color: #eee;
+      &:hover {
+        color: #333;
+        background: #eee;
+      }
+    }
+  }
+}
+
+.elixir-orange-header {
+  background-color: $bgDefault;
+  ul.navbar-nav {
+    margin-top: 5px;
+    li > a {
+      margin-right: 3px;
+      @media (min-width: $screen-md) {
+        border-radius: $nav-pills-border-radius;
+      }
+    }
+  }
+
+  .navbar-brand {
+    padding: 0 20px;
+  }
+}
+
+#search-box {
+  width: 100%;
+  @media (min-width: $screen-md) {
+    width: 160px;
+  }
+}

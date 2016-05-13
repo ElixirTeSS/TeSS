@@ -11,138 +11,23 @@
  * file per style scope.
  *
  = require jquery-ui
- = require_tree .
  = require_self
  */
 // "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"
 @import "bootstrap-sprockets";
+@import "variables";
 @import "bootstrap";
 @import "font-awesome-sprockets";
 @import "font-awesome";
 @import "*";
 
-
-/* Navbar colours */
-$bgDefault: #F0721E;
-$bgHighlight: #A33F00;
-$colDefault: #ffe6d1;
-$colHover: #333333;
-$colHover2: #eeeeee;
-
-.elixir-black-header {
-  background-color: #333333;
-  border-bottom: 1px solid #eeeeee;
-}
-
-.elixir-orange-header {
-  background-color: $bgDefault;
-}
-
 .workflow_image {
   width: 100%;
-}
-
-.user_info_box{
-  border: 1px solid #ddd;
-  padding: 10px;
 }
 
 .profile{
   margin-bottom: 30px;
 }
-
-.navbar-default {
-  background-color: $bgDefault;
-  border-style: none;
-  border: 0px;
-  //border-color: $bgDefault;//$bgHighlight;
-  margin-bottom: 0px;
-
-  .navbar-brand {
-    height: 100px;
-  }
-
-  .nav-pills {
-    > li {
-      > a {
-        color: $colDefault;
-        &:hover, &:focus {
-          color: $colHover;
-        }
-      }
-    }
-    .active {
-      > a, > a:hover, > a:focus {
-        color: $colDefault;
-        background-color: $bgHighlight;
-      }
-    }
-    .open {
-      > a, > a:hover, > a:focus {
-        color: $colHover;
-        background-color: $bgHighlight;
-        .caret {
-          border-top-color: $colHover;
-          border-bottom-color: $colHover;
-        }
-      }
-    }
-  }
-
-  .navbar-nav {
-    > li {
-      > a {
-
-        color: $colHover2;
-        &:hover, &:focus {
-          color: $colHover;
-          background-color: $colHover2;
-        }
-      }
-    }
-    .active {
-      > a, > a:hover, > a:focus {
-        background-color: $bgHighlight;
-        color: $colDefault;
-      }
-    }
-    .open {
-      > a, > a:hover, > a:focus {
-        color: $colHover;
-        background-color: $bgHighlight;
-        .caret {
-          border-top-color: $colHover;
-          border-bottom-color: $colHover;
-        }
-      }
-    }
-    > .dropdown {
-      > a {
-        .caret {
-          border-top-color: $colDefault;
-          border-bottom-color: $colDefault;
-        }
-        &:hover, &:focus {
-          .caret {
-            border-top-color: $colHover;
-            border-bottom-color: $colHover;
-          }
-        }
-      }
-    }
-  }
-}
-
-.navbar-default .navbar-collapse,
-.navbar-default .navbar-form {
-  border-style: none;
-}
-
-//.navbar-default .navbar-form {
-//  margin-top: 0px;
-//  margin-bottom: 0px;
-//  padding-top: 10px;
-//}
 
 a:hover {
   color: steelblue;

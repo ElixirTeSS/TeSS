@@ -1,0 +1,24 @@
+@import "bootstrap/variables";
+
+/* Navbar colours */
+$bgDefault: #f0721e;
+$bgHighlight: darken($bgDefault, 10%);
+$colDefault: #ffe6d1;
+$colHover: #333333;
+$colHover2: #eeeeee;
+
+$navbar-height: 60px;
+$navbar-default-bg: $bgDefault;
+$navbar-default-border: transparent;
+$navbar-default-link-active-bg: $bgHighlight;
+$navbar-default-link-hover-bg: $bgHighlight;
+$navbar-default-link-color: $colDefault;
+$navbar-default-link-active-color: lighten($navbar-default-link-color, 30%);
+$navbar-default-link-hover-color: lighten($navbar-default-link-color, 40%);
+
+$navbar-default-toggle-hover-bg: $bgDefault;
+$navbar-default-toggle-icon-bar-bg: $bgHighlight;
+$navbar-default-toggle-border-color: $bgHighlight;
+
+$grid-float-breakpoint: $screen-md; /* collapse navbar on md and smaller screens */
+$grid-float-breakpoint-max: $grid-float-breakpoint - 1;
