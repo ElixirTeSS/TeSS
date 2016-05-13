@@ -1,14 +1,12 @@
 {
   "nodes": [
     {
-      "country": "Belgium",
+      "name": "Belgium",
       "country_code": "BE",
-      "status": "Member",
-      "url": "",
+      "member_status": "Member",
+      "home_page": "",
       "image_url": "",
-      "description": "",
       "twitter": "",
-      "google_calendar_url": "",
       "carousel_images": [],
       "staff": [
         {
@@ -20,14 +18,12 @@
       ]
     },
     {
-      "country": "Czech Republic",
+      "name": "Czech Republic",
       "country_code": "CZ",
-      "status": "Member",
-      "url": "",
+      "member_status": "Member",
+      "home_page": "",
       "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/ELIXIR_CZECHREPUBLIC_white_background.png?itok=opWwGJM1",
-      "description": "",
       "twitter": "",
-      "google_calendar_url": "",
       "carousel_images": [],
       "staff": [
         {
@@ -39,14 +35,12 @@
       ]
     },
     {
-      "country": "Denmark",
+      "name": "Denmark",
       "country_code": "DK",
-      "status": "Member",
-      "url": "",
+      "member_status": "Member",
+      "home_page": "",
       "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/ELIXIR_DENMARK_white_background.png?itok=1zZgCAMj",
-      "description": "",
       "twitter": "",
-      "google_calendar_url": "",
       "carousel_images": [],
       "staff": [
         {
@@ -58,14 +52,12 @@
       ]
     },
     {
-      "country": "EMBL-EBI",
+      "name": "EMBL-EBI",
       "country_code": "EMBL-EBI",
-      "status": "Member",
-      "url": "http://www.ebi.ac.uk/training",
+      "member_status": "Member",
+      "home_page": "http://www.ebi.ac.uk/training",
       "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/EMBLEBIlogo.jpeg?itok=QjfBMq39",
-      "description": "",
       "twitter": "emblebi",
-      "google_calendar_url": "",
       "carousel_images": [],
       "staff": [
         {
@@ -77,14 +69,12 @@
       ]
     },
     {
-      "country": "Estonia",
+      "name": "Estonia",
       "country_code": "EE",
-      "status": "Member",
-      "url": "",
+      "member_status": "Member",
+      "home_page": "",
       "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/250_elixir_estonia_node_logo.png?itok=4fiNEbme",
-      "description": "",
       "twitter": "",
-      "google_calendar_url": "",
       "carousel_images": [],
       "staff": [
         {
@@ -96,14 +86,12 @@
       ]
     },
     {
-      "country": "Finland",
+      "name": "Finland",
       "country_code": "FI",
-      "status": "Member",
-      "url": "https://research.csc.fi/training",
+      "member_status": "Member",
+      "home_page": "https://research.csc.fi/training",
       "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/250-elixir_fi_node_logo_0.png?itok=Gqkm4UPK",
-      "description": "",
       "twitter": "",
-      "google_calendar_url": "",
       "carousel_images": [],
       "staff": [
         {
@@ -121,14 +109,12 @@
       ]
     },
     {
-      "country": "France",
+      "name": "France",
       "country_code": "FR",
-      "status": "Member",
-      "url": "",
+      "member_status": "Member",
+      "home_page": "",
       "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/elixir_node_france_0.png?itok=UFZPb39N",
-      "description": "",
       "twitter": "",
-      "google_calendar_url": "",
       "carousel_images": [],
       "staff": [
         {
@@ -140,14 +126,12 @@
       ]
     },
     {
-      "country": "Greece",
+      "name": "Greece",
       "country_code": "GR",
-      "status": "Observer",
-      "url": "",
+      "member_status": "Observer",
+      "home_page": "",
       "image_url": "",
-      "description": "",
       "twitter": "",
-      "google_calendar_url": "",
       "carousel_images": [],
       "staff": [
         {
@@ -165,14 +149,12 @@
       ]
     },
     {
-      "country": "Israel",
+      "name": "Israel",
       "country_code": "IL",
-      "status": "Member",
-      "url": "",
+      "member_status": "Member",
+      "home_page": "",
       "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/elixir_israel_white_background.png?itok=Vu4B3S45",
-      "description": "",
       "twitter": "",
-      "google_calendar_url": "",
       "carousel_images": [],
       "staff": [
         {
@@ -190,14 +172,12 @@
       ]
     },
     {
-      "country": "Italy",
+      "name": "Italy",
       "country_code": "IT",
-      "status": "Member",
-      "url": "",
+      "member_status": "Member",
+      "home_page": "",
       "image_url": "",
-      "description": "",
       "twitter": "",
-      "google_calendar_url": "",
       "carousel_images": [],
       "staff": [
         {
@@ -209,26 +189,22 @@
       ]
     },
     {
-      "country": "Ireland",
+      "name": "Ireland",
       "country_code": "IE",
-      "status": "Observer",
-      "url": "",
+      "member_status": "Observer",
+      "home_page": "",
       "image_url": "",
-      "description": "",
       "twitter": "",
-      "google_calendar_url": "",
       "carousel_images": [],
       "staff": []
     },
     {
-      "country": "Netherlands",
+      "name": "Netherlands",
       "country_code": "NL",
-      "status": "Member",
-      "url": "http://www.dtls.nl/courses/",
+      "member_status": "Member",
+      "home_page": "http://www.dtls.nl/courses/",
       "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/250_elixir_nl_node_logo.png?itok=7YdjbiBY",
-      "description": "",
       "twitter": "",
-      "google_calendar_url": "",
       "carousel_images": [],
       "staff": [
         {
@@ -240,14 +216,12 @@
       ]
     },
     {
-      "country": "Norway",
+      "name": "Norway",
       "country_code": "NO",
-      "status": "Member",
-      "url": "",
+      "member_status": "Member",
+      "home_page": "",
       "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/elixir_norway_white_background.png?itok=4OL8JNvs",
-      "description": "",
       "twitter": "",
-      "google_calendar_url": "",
       "carousel_images": [],
       "staff": [
         {
@@ -259,14 +233,12 @@
       ]
     },
     {
-      "country": "Portugal",
+      "name": "Portugal",
       "country_code": "PT",
-      "status": "Member",
-      "url": "",
+      "member_status": "Member",
+      "home_page": "",
       "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/elixir_portugal_white_background.png?itok=bz-CM7o9",
-      "description": "",
       "twitter": "",
-      "google_calendar_url": "",
       "carousel_images": [],
       "staff": [
         {
@@ -278,14 +250,12 @@
       ]
     },
     {
-      "country": "Slovenia",
+      "name": "Slovenia",
       "country_code": "SI",
-      "status": "Member",
-      "url": "",
+      "member_status": "Member",
+      "home_page": "",
       "image_url": "",
-      "description": "",
       "twitter": "",
-      "google_calendar_url": "",
       "carousel_images": [],
       "staff": [
         {
@@ -303,14 +273,12 @@
       ]
     },
     {
-      "country": "Spain",
+      "name": "Spain",
       "country_code": "ES",
-      "status": "Member",
-      "url": "",
+      "member_status": "Member",
+      "home_page": "",
       "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/elixir_spain_white_background_0.png?itok=BvKx76s3",
-      "description": "",
       "twitter": "",
-      "google_calendar_url": "",
       "carousel_images": [],
       "staff": [
         {
@@ -328,14 +296,12 @@
       ]
     },
     {
-      "country": "Sweden",
+      "name": "Sweden",
       "country_code": "SE",
-      "status": "Member",
-      "url": "",
+      "member_status": "Member",
+      "home_page": "",
       "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/elixir_sweden_white_background.png?itok=SqpIvoLH",
-      "description": "",
       "twitter": "",
-      "google_calendar_url": "",
       "carousel_images": [],
       "staff": [
         {
@@ -353,14 +319,12 @@
       ]
     },
     {
-      "country": "Switzerland",
+      "name": "Switzerland",
       "country_code": "CH",
-      "status": "Member",
-      "url": "http://www.isb-sib.ch/training/",
+      "member_status": "Member",
+      "home_page": "http://www.isb-sib.ch/training/",
       "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/elixir_switzerland_white_background.png?itok=PltN07mz",
-      "description": "",
       "twitter": "isbsib",
-      "google_calendar_url": "",
       "carousel_images": [],
       "staff": [
         {
@@ -372,14 +336,12 @@
       ]
     },
     {
-      "country": "United Kingdom",
+      "name": "United Kingdom",
       "country_code": "GB",
-      "status": "Member",
-      "url": "http://elixir-uk.org/elixir-uk-training-sectors",
+      "member_status": "Member",
+      "home_page": "http://elixir-uk.org/elixir-uk-training-sectors",
       "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/250-elixir_uk_node_logo.png?itok=KIeak5bi",
-      "description": "",
       "twitter": "ElixirNodeUK",
-      "google_calendar_url": "",
       "carousel_images": [],
       "staff": [
         {
