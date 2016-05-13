@@ -14,7 +14,7 @@ class Node < ActiveRecord::Base
   # twitter:string
   # carousel_images:array
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
   validates :home_page, format: { with: URI.regexp }, if: Proc.new { |a| a.home_page.present? }
   # validate :has_training_coordinator
 
