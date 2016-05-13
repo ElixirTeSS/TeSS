@@ -16,7 +16,7 @@ class Node < ActiveRecord::Base
 
   validates :name, presence: true
   validates :home_page, format: { with: URI.regexp }, if: Proc.new { |a| a.home_page.present? }
-  validate :has_training_coordinator
+  # validate :has_training_coordinator
 
   def self.load_from_hash(hash, verbose: false)
     hash["nodes"].map do |node_data|
