@@ -1,0 +1,72 @@
+{
+  "nodes": [
+    {
+      "name": "Narnia",
+      "country_code": "Nn",
+      "member_status": "Member",
+      "home_page": "",
+      "image_url": "",
+      "twitter": "",
+      "carousel_images": [],
+      "staff": [
+        {
+          "name": "Aslan",
+          "role": "Training coordinator",
+          "email": "aslan@lionmail.example.com",
+          "image_url": ""
+        }
+      ]
+    },
+    {
+      "name": "Middle-earth",
+      "country_code": "NZ",
+      "member_status": "Member",
+      "home_page": "",
+      "image_url": "http://www.example.com/me",
+      "twitter": "",
+      "carousel_images": [],
+      "staff": [
+        {
+          "name": "Gandalf the Grey",
+          "role": "Training coordinator",
+          "email": "mithrandir@shiremail.example.com",
+          "image_url": ""
+        },
+        {
+          "name": "Bilbo Baggins",
+          "role": "Training coordinator",
+          "email": "bbb@shiremail.example.com",
+          "image_url": ""
+        }
+      ]
+    },
+    {
+      "name": "Norway",
+      "country_code": "NO",
+      "member_status": "Member",
+      "home_page": "",
+      "image_url": "",
+      "twitter": "",
+      "carousel_images": [],
+      "staff": [
+        {
+          "name": "Sven the Stronk",
+          "role": "Training coordinator",
+          "email": "sven@example.com",
+          "image_url": ""
+        },
+        {
+          "name": "Elsa",
+          "role": "Princess of Arendelle",
+          "email": "elsa@example.com",
+          "image_url": ""
+        },        {
+          "name": "Anna",
+          "role": "Princess of Arendelle",
+          "email": "anna@example.com",
+          "image_url": ""
+        }
+      ]
+    }
+  ]
+}

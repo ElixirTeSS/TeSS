@@ -2,25 +2,14 @@ require 'test_helper'
 
 class NodeTest < ActiveSupport::TestCase
 
-
-=begin
-  test "invalid home page" do
-    sign_in users(:regular_user)
-    node = nodes(:no_url)
-    assert_not node.save!
+  test "can load seed data" do
+    hash = JSON.parse(File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'node_test_data.json')))
+    assert_difference('Node.count', 3) do
+      assert_difference('StaffMember.count', 6) do
+        Node.load_from_hash(hash)
+      end
+    end
   end
 
-  test "no name" do
-    sign_in users(:regular_user)
-    node = nodes(:no_name)
-    assert_not node.save!
-  end
-
-  test "correct save" do
-    sign_in users(:regular_user)
-    node = nodes(:good)
-    assert_not node.save!
-  end
-=end
 
 end
