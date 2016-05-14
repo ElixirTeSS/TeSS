@@ -623,56 +623,36 @@ body {
 }
 
 ul.featureblocks {
-  padding: 10px;
+  padding: 10px 0;
+  margin: 0 -10px;
   list-style: none;
-}
 
-ul.featureblocks li {
-  float: left;
-  width: 19%;
-  margin-right: 12px;
-  padding-right: 13px;
-  border-right: 1px dotted #ccc
-}
-
-ul.featureblocks li.noborder {
-  margin: 0;
-  border: 0
-}
-
-ul.featureblocks li h2 a {
-  color: #666;
-  font-size: 20px;
-  line-height: 24px;
-  font-weight: normal
-}
-
-ul.featureblocks li span {
-  display: block;
-  color: #999;
-  font-size: 11px;
-  margin-bottom: 10px;
-  text-indent: 10px;
-  background-color: transparent;
-  background-image: url(http://icd.hwstatic.com/static/images/1.38.6.0/refresh/general/iconsprite.png);
-  background-position: left 2px;
-  background-repeat: no-repeat
-}
-
-ul.featureblocks li span i {
-  display: none
-}
-
-ul.featureblocks li a {
-  display: block
-}
-
-ul.featureblocks li h2 a {
-  color: #444
-}
-
-ul.featureblocks li p {
-  margin: 5px 0 5px;
+  li {
+    float: left;
+    width: 20%;
+    padding: 0 12px;
+    border-right: 1px dotted #ccc;
+    &:last-child {
+      border: none;
+    }
+    @media (max-width: $screen-md) {
+      width: 50%;
+      border-right: none;
+      margin-bottom: 10px;
+    }
+    h2 {
+      margin-top: 10px;
+      font-size: 20px;
+      line-height: 24px;
+      font-weight: normal
+    }
+    a {
+      color: #444;
+    }
+    p {
+      margin: 5px 0;
+    }
+  }
 }
 
 .searchbox {
