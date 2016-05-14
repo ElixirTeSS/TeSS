@@ -1,28 +1,18 @@
 <footer class="footer">
   <div class="container">
-    <div class="row vertical-align" style="border-left: 1px dotted #8B7777; border-right: 1px dotted #8B7777;">
-      <div class="col-md-6">
-        <div class="text-muted"><strong>Version: </strong><%= app_version_text -%> (alpha pre-release)<br />
-          <strong>Contact us: </strong><a href="mailto:tess@elixir-uk.info">tess@elixir-uk.info</a><br />
-          <a href="https://github.com/ElixirUK/TeSS" target="_blank">Source code</a> (licensed under the <a target="_blank" href="https://opensource.org/licenses/BSD-3-Clause">BSD 3-clause license</a>)<br />
-          <a href="/about#ack">Funders, acknowledgements and image credits</a>
-        </div>
-      </div>
-      <div class="col-md-6" style="float:right; justify-content: right;">
-        <div class="pull-right" style="float:right; justify-content: right; margin-left: auto;">
-          <a target="_blank" href="http://elixir-uk.org/">
-            <img src="/assets/ELIXIR_UK_logo_orange.png" style="max-height: 64px; padding-left: 10px; float:right; justify-content: right;">
-          </a>
-        </div>
+    <%= link_to 'http://elixir-uk.org/', class: 'footer-logo', target: '_blank' do %>
+      <%= image_tag('ELIXIR_UK_logo_orange.png') %>
+    <% end %>
+    <%= link_to 'http:www.manchester.ac.uk/', class: 'footer-logo hidden-xs', target: '_blank' do %>
+        <%= image_tag('manchester_logo.png') %>
+    <% end %>
+    <%= link_to 'http://www.oerc.ox.ac.uk/', class: 'footer-logo hidden-xs', target: '_blank' do %>
+        <%= image_tag('oxford_logo.jpeg') %>
+    <% end %>
 
-        <a target="_blank" href="http:www.manchester.ac.uk/">
-          <img src="/assets/manchester_logo.png" style="max-height: 64px; padding-left: 10px; float:right; justify-content: right;">
-        </a>
-        <a target="_blank" href="http://www.oerc.ox.ac.uk/">
-          <img src="/assets/oxford_logo.jpeg" style="max-height: 64px; padding-left: 10px; float:right; justify-content: right;">
-        </a>
-      </div>
-    </div>
+    <strong>Version: </strong><%= app_version_text -%> (alpha pre-release)<br />
+    <a href="mailto:tess@elixir-uk.info">Contact us</a><br />
+    <a href="https://github.com/ElixirUK/TeSS" target="_blank">Source code</a><br/>
+    <a href="/about#ack">Funders, acknowledgements and image credits</a>
   </div>
-  <div style="clear: both;"></div>
 </footer>

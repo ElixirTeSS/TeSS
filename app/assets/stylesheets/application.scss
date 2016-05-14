@@ -602,11 +602,18 @@ body {
 }
 
 .footer {
+  padding: 10px;
   position: absolute;
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: #D8D8D8;
+  background-color: #ddd;
+  .footer-logo {
+    display: block;
+    float: right;
+    margin: 0 5px;
+    img { height: 64px; }
+  }
 }
 
 // Vertically aligned
@@ -626,6 +633,7 @@ ul.featureblocks {
   padding: 10px 0;
   margin: 0 -10px;
   list-style: none;
+  overflow: auto;
 
   li {
     float: left;
