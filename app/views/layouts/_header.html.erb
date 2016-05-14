@@ -45,7 +45,7 @@
       </div>
 
       <div class="collapse navbar-collapse" id="orange-navbar-collapse">
-        <% if display_search_box %>
+        <% unless @hide_search_box %>
             <%= form_tag search_path, :method => :get, :class => "navbar-form navbar-right", :role => "search" do %>
                 <div class="input-group">
                   <input type="text" class="form-control" name='q' placeholder="Search training..." id="search-box"/>
@@ -70,11 +70,10 @@
 </header>
 
 <% if defined? ANNOUNCEMENT_MESSAGE and !ANNOUNCEMENT_MESSAGE.blank? %>
-    <%= content_tag(:div, ANNOUNCEMENT_MESSAGE.html_safe(), class: "alert alert-danger fade in", style: "font-size: 120%; font-weight: bold; text-align: center; margin-bottom: 0px; margin-top: 5px;") do
-      concat content_tag(:button, '&times;'.html_safe, class: "close", data: { dismiss: 'alert' }, "aria-label" => 'close')
-      concat ANNOUNCEMENT_MESSAGE.html_safe()
-    end
-    %>
+    <div class="alert alert-danger fade in" id="front-page-announcement">
+      <button class="close" data-dismiss="alert" aria-label="close">&times;</button>
+      <%= ANNOUNCEMENT_MESSAGE.html_safe %>
+    </div>
 <% end %>
 
 <% if !defined? @skip_flash_messages_in_header or !@skip_flash_messages_in_header%>
