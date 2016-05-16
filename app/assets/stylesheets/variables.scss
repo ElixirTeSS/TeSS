@@ -20,5 +20,5 @@ $navbar-default-toggle-hover-bg: $bgDefault;
 $navbar-default-toggle-icon-bar-bg: $bgHighlight;
 $navbar-default-toggle-border-color: $bgHighlight;
 
-$grid-float-breakpoint: $screen-md; /* collapse navbar on md and smaller screens */
+$grid-float-breakpoint: $screen-md-min; /* collapse navbar on md and smaller screens */
 $grid-float-breakpoint-max: $grid-float-breakpoint - 1;
