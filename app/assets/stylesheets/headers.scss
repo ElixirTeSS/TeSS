@@ -24,8 +24,10 @@
 .elixir-orange-header {
   background-color: $bgDefault;
   ul.navbar-nav {
-    margin-top: 5px;
+    margin-top: 10px;
     li > a {
+      padding-top: 10px;
+      padding-bottom: 10px;
       margin-right: 3px;
       @media (min-width: $screen-md) {
         border-radius: $nav-pills-border-radius;
