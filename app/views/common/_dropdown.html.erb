@@ -4,18 +4,20 @@ f - the form
 resource - The object you wish to modify e.g. #<Material id: 99....
 field_name - The field name that the dropdown is for 
 			 e.g. 'package' for my_material.packages, or 'material' for my_package.materials
-
-COMING SOON:
-dropdown_options - rather than using <field_name>.all - pass the 
-				   values you want. Preferably excluding already selected ones.
+options - Array of objects to populate the dropdown with. Object must respons to .id and .title
 
 
 Example Usage
 render :partial => 'common/dropdown', 
-	   :locals => {:f => f, :resource => @package, :field_name => 'material' }
+	   :locals => {:f => f,
+                   :resource => @package,
+                   :field_name => 'material',
+                   :options => available_options_for(@material) #OPTIONAL - defaults to field_name.all
+	   }
  -->
 
 <% model_name =  resource.class.name.underscore #e.g. package %>
+<% options = field_name.capitalize.constantize.all unless options %>
 
 <div class="form-group">
   <label><%= field_name.pluralize.capitalize unless field_name.blank? %></label>
@@ -50,8 +52,7 @@ render :partial => 'common/dropdown',
       <ul class="dropdown-menu <%=field_name%>-options"
           data-field="<%=field_name%>" data-model="<%= model_name %>"
           id="<%= field_name %>_packages" aria-labelledby="dropdownMenu1">
-        <%# TODO: Replace with passed options parameter %>
-        <% field_name.capitalize.constantize.all.each do |r| %>
+        <% options.each do |r| %>
             <li class="dropdown-option" id="<%=field_name%>-id-<%= r.id %>" value="<%= r.id %>"><a><%= r.title %></a></li>
         <% end %>
       </ul>

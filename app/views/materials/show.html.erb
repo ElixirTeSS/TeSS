@@ -64,12 +64,14 @@
           </div>
         </div>
         <div id="packages" class="tab-pane fade">
+          <% if current_user and policy(@material).update? %>
           <div class="row">
             <%= form_tag(controller: 'materials', id: @material.id, action: 'update_package', method: 'post') do |f| %>
-                <%= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @material, :f => f} %>
+                <%= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @material, :f => f, :options => available_packages_for(@material)} %>
                 <button type="submit" value="add" class="btn btn-primary">Update material</button>
             <% end %>
           </div>
+          <% end %>
           <div class="row">
             <% if @material.packages.blank? %>
                 <%= empty_tag(:p, 'This material is currently not included in any packages.', "padding-top: 10px;") %>
