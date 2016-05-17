@@ -21,3 +21,5 @@ solr/production/
 solr/development
 solr/default
 lib/assets/
+public/assets/*
+.idea/*

@@ -1,0 +1,13 @@
+tc:
+  node: good
+  name: John Doe
+  email: jd@example.com
+  image_url:
+  role: Training coordinator
+
+other:
+  node: good
+  name: Joe Bloggs
+  email: jb@example.com
+  image_url:
+  role: Tea boy

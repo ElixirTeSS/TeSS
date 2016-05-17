@@ -6,10 +6,6 @@ good:
   country_code: MyString
   home_page: http://example.com
   institutions: 
-  trc: MyString
-  trc_email: MyString
-  trc: 
-  staff: 
   twitter: MyString
   carousel_images: 
   user: regular_user

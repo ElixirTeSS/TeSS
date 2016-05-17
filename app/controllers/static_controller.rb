@@ -1,12 +1,12 @@
-class StaticController < ActionController::Base
+class StaticController < ApplicationController
 
-  layout 'home'
+  skip_before_action :authenticate_user!, :authenticate_user_from_token!
 
   def about
-    @display_search_box = true
   end
 
   def home
-    @display_search_box = false
+    @hide_search_box = true
   end
+
 end

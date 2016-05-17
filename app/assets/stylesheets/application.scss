@@ -10,139 +10,23 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- = require jquery-ui
- = require_tree .
- = require_self
  */
 // "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"
+@import "jquery-ui";
 @import "bootstrap-sprockets";
+@import "mixins/variables";
 @import "bootstrap";
 @import "font-awesome-sprockets";
 @import "font-awesome";
 @import "*";
 
-
-/* Navbar colours */
-$bgDefault: #F0721E;
-$bgHighlight: #A33F00;
-$colDefault: #ffe6d1;
-$colHover: #333333;
-$colHover2: #eeeeee;
-
-.elixir-black-header {
-  background-color: #333333;
-  border-bottom: 1px solid #eeeeee;
-}
-
-.elixir-orange-header {
-  background-color: $bgDefault;
-}
-
 .workflow_image {
   width: 100%;
-}
-
-.user_info_box{
-  border: 1px solid #ddd;
-  padding: 10px;
 }
 
 .profile{
   margin-bottom: 30px;
 }
-
-.navbar-default {
-  background-color: $bgDefault;
-  border-style: none;
-  border: 0px;
-  //border-color: $bgDefault;//$bgHighlight;
-  margin-bottom: 0px;
-
-  .navbar-brand {
-    height: 100px;
-  }
-
-  .nav-pills {
-    > li {
-      > a {
-        color: $colDefault;
-        &:hover, &:focus {
-          color: $colHover;
-        }
-      }
-    }
-    .active {
-      > a, > a:hover, > a:focus {
-        color: $colDefault;
-        background-color: $bgHighlight;
-      }
-    }
-    .open {
-      > a, > a:hover, > a:focus {
-        color: $colHover;
-        background-color: $bgHighlight;
-        .caret {
-          border-top-color: $colHover;
-          border-bottom-color: $colHover;
-        }
-      }
-    }
-  }
-
-  .navbar-nav {
-    > li {
-      > a {
-
-        color: $colHover2;
-        &:hover, &:focus {
-          color: $colHover;
-          background-color: $colHover2;
-        }
-      }
-    }
-    .active {
-      > a, > a:hover, > a:focus {
-        background-color: $bgHighlight;
-        color: $colDefault;
-      }
-    }
-    .open {
-      > a, > a:hover, > a:focus {
-        color: $colHover;
-        background-color: $bgHighlight;
-        .caret {
-          border-top-color: $colHover;
-          border-bottom-color: $colHover;
-        }
-      }
-    }
-    > .dropdown {
-      > a {
-        .caret {
-          border-top-color: $colDefault;
-          border-bottom-color: $colDefault;
-        }
-        &:hover, &:focus {
-          .caret {
-            border-top-color: $colHover;
-            border-bottom-color: $colHover;
-          }
-        }
-      }
-    }
-  }
-}
-
-.navbar-default .navbar-collapse,
-.navbar-default .navbar-form {
-  border-style: none;
-}
-
-//.navbar-default .navbar-form {
-//  margin-top: 0px;
-//  margin-bottom: 0px;
-//  padding-top: 10px;
-//}
 
 a:hover {
   color: steelblue;
@@ -710,6 +594,7 @@ html {
 }
 
 body {
+  min-width: 320px;
   position: relative;
   margin: 0;
   padding-bottom: 120px;
@@ -717,11 +602,18 @@ body {
 }
 
 .footer {
+  padding: 10px;
   position: absolute;
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: #D8D8D8;
+  background-color: #ddd;
+  .footer-logo {
+    display: block;
+    float: right;
+    margin: 0 5px;
+    img { height: 64px; }
+  }
 }
 
 // Vertically aligned
@@ -738,56 +630,37 @@ body {
 }
 
 ul.featureblocks {
-  padding: 10px;
+  padding: 10px 0;
+  margin: 0 -10px;
   list-style: none;
-}
+  overflow: auto;
 
-ul.featureblocks li {
-  float: left;
-  width: 19%;
-  margin-right: 12px;
-  padding-right: 13px;
-  border-right: 1px dotted #ccc
-}
-
-ul.featureblocks li.noborder {
-  margin: 0;
-  border: 0
-}
-
-ul.featureblocks li h2 a {
-  color: #666;
-  font-size: 20px;
-  line-height: 24px;
-  font-weight: normal
-}
-
-ul.featureblocks li span {
-  display: block;
-  color: #999;
-  font-size: 11px;
-  margin-bottom: 10px;
-  text-indent: 10px;
-  background-color: transparent;
-  background-image: url(http://icd.hwstatic.com/static/images/1.38.6.0/refresh/general/iconsprite.png);
-  background-position: left 2px;
-  background-repeat: no-repeat
-}
-
-ul.featureblocks li span i {
-  display: none
-}
-
-ul.featureblocks li a {
-  display: block
-}
-
-ul.featureblocks li h2 a {
-  color: #444
-}
-
-ul.featureblocks li p {
-  margin: 5px 0 5px;
+  li {
+    float: left;
+    width: 20%;
+    padding: 0 12px;
+    border-right: 1px dotted #ccc;
+    &:last-child {
+      border: none;
+    }
+    @media (max-width: $screen-md) {
+      width: 50%;
+      border-right: none;
+      margin-bottom: 10px;
+    }
+    h2 {
+      margin-top: 10px;
+      font-size: 20px;
+      line-height: 24px;
+      font-weight: normal
+    }
+    a {
+      color: #444;
+    }
+    p {
+      margin: 5px 0;
+    }
+  }
 }
 
 .searchbox {
@@ -826,4 +699,12 @@ sup {
   padding: 0.3em 0.6em;
   margin-bottom: 1em;
   line-height: 1.7;
+}
+
+#front-page-announcement {
+  font-size: 120%;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 0;
+  margin-top: 5px;
 }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>TeSS - Training eSupport System</title>
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= favicon_link_tag('favicon.png', :type => 'image/png') %>
@@ -40,22 +41,16 @@
     <!--</div>-->
 <%# end %>
 
-<%= render :partial=>"layouts/header", :locals => {:display_search_box => true} %>
+<%= render :partial=>"layouts/header" %>
 
 <div id="main-container" class="container">
-  <div class="row" style="margin: 0px;">
-    <div class="col-md-12">
+  <!-- Breadcrumbs -->
+  <%= render_breadcrumbs do |breadcrumbs| %>
+      <%= content_tag(:div, breadcrumbs, class: "breadcrumbs") %>
+  <% end %>
 
-      <!-- Breadcrumbs -->
-      <%= render_breadcrumbs do |breadcrumbs| %>
-          <%= content_tag(:div, breadcrumbs, class: "breadcrumbs") %>
-      <% end %>
-
-      <%# Main content of every page -%>
-      <%= yield :layout %>
-
-    </div>
-  </div>
+  <%# Main content of every page -%>
+  <%= yield :layout %>
 </div>
 
 <%= render :partial=>"layouts/footer" %>

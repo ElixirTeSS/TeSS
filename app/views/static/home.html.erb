@@ -1,91 +1,69 @@
 <div id="main-container" class="container">
 
-  <div class="row" style="margin: 0px;">
-    <div class="col-md-12">
-      <!-- Welcome text -->
-      <div class="welcome-text">
-        <h2 class="module-heading" style="margin-top: 5px;">Welcome to TeSS: ELIXIR's Training Portal</h2>
-        <p>
-          Browsing, discovering and organising life sciences training
-          resources, aggregated from ELIXIR nodes and 3<sup>rd</sup>-party providers.
-        </p>
-      </div>
+  <!-- Welcome text -->
+  <div class="welcome-text">
+    <h2 class="module-heading" style="margin-top: 5px;">Welcome to TeSS: ELIXIR's Training Portal</h2>
+    <p>
+      Browsing, discovering and organising life sciences training
+      resources, aggregated from ELIXIR nodes and 3<sup>rd</sup>-party providers.
+    </p>
+  </div>
 
-      <!-- Big search box -->
-      <div class="media-grid" style="background-color: #D8D8D8;">
-        <div class="searchbox">
-          <div id="sb-search">
-            <%= form_tag search_path, :method => :get, :class => "navbar-form", :role => "search" do %>
-                <div class="form-group" style="width: 65%">
-                  <input type="text" class="form-control" style="width: 100%; font-size: 130%;" name='q' placeholder="Search training...">
-                </div>
-                <button type="submit" class="btn btn-default" style="font-size: 110%;">
-                  <i class="fa fa-search" style="font-size: 18px;"></i></button>
-            <% end %>
-          </div>
-        </div>
+  <!-- Big search box -->
+  <div class="media-grid" style="background-color: #D8D8D8;">
+    <div class="searchbox">
+      <div id="sb-search">
+        <%= form_tag search_path, :method => :get, :class => "navbar-form", :role => "search" do %>
+            <div class="form-group" style="width: 65%">
+              <input type="text" class="form-control" style="width: 100%; font-size: 130%;" name='q' placeholder="Search training...">
+            </div>
+            <button type="submit" class="btn btn-default" style="font-size: 110%;">
+              <i class="fa fa-search" style="font-size: 18px;"></i></button>
+        <% end %>
       </div>
     </div>
   </div>
 
   <!-- Feature buttons -->
-  <div class="row" style="margin: 0px;">
-    <div class="col-md-12">
-      <ul class="featureblocks">
-        <li>
-          <h2><%= link_to events_path do %>
-                <i class="<%= icon_class_for_model('events') %>"></i> Events
-            <% end %>
-          </h2>
-          <%= link_to events_path do %>
-              <img src="/assets/events.jpg" width="100%" alt="Events">
-          <% end %>
-          <p>Discover the latest training events and news from ELIXIR nodes and 3<sup>rd</sup>-party providers.</p>
-        </li>
-        <li>
-          <h2><%= link_to materials_path do %>
-                <i class="<%= icon_class_for_model('materials') %>"></i> Materials
-            <% end %>
-          </h2>
-          <%= link_to materials_path do %>
-              <img src="/assets/materials.jpg" width="100%" alt="Materials">
-          <% end %>
+  <ul class="featureblocks">
+    <li>
+      <%= link_to events_path do %>
+        <h2><i class="<%= icon_class_for_model('events') %>"></i> Events</h2>
+        <img src="/assets/events.jpg" width="100%" alt="Events">
+      <% end %>
+      <p>Discover the latest training events and news from ELIXIR nodes and 3<sup>rd</sup>-party providers.</p>
+    </li>
 
-          <p>Browse the catalogue of training materials offered by ELIXIR nodes and 3<sup>rd</sup>-party providers.</p>
-        </li>
-        <li>
-          <h2><%= link_to packages_path do %>
-                <i class="<%= icon_class_for_model('packages') %>"></i> Packages
-            <% end %>
-          </h2>
-          <%= link_to packages_path do %>
-              <img src="/assets/packages.jpg" width="100%" alt="Packages">
-          <% end %>
+    <li>
+      <%= link_to materials_path do %>
+        <h2><i class="<%= icon_class_for_model('materials') %>"></i> Materials</h2>
+        <img src="/assets/materials.jpg" width="100%" alt="Materials">
+      <% end %>
+      <p>Browse the catalogue of training materials offered by ELIXIR nodes and 3<sup>rd</sup>-party providers.</p>
+    </li>
 
-          <p>Create training packages by grouping resources that address your particular training topic.</p>
-        </li>
-        <li>
-          <h2><%= link_to workflows_path do %>
-                <i class="<%= icon_class_for_model('workflows') %>"></i> Workflows
-            <% end %>
-          </h2>
-          <%= link_to workflows_path do %>
-              <img src="/assets/workflows.png" width="100%" alt="Workflows">
-          <% end %>
+    <li>
+      <%= link_to packages_path do %>
+        <h2><i class="<%= icon_class_for_model('packages') %>"></i> Packages</h2>
+        <img src="/assets/packages.jpg" width="100%" alt="Packages">
+      <% end %>
+      <p>Create training packages by grouping resources that address your particular training topic.</p>
+    </li>
 
-          <p>Create training workflows to visualise learning steps and link to resources specific to your training needs.</p>
-        </li>
-        <li class="noborder">
-          <h2><%= link_to content_providers_path do %>
-                <i class="<%= icon_class_for_model('content_providers') %>"></i> Providers
-            <% end %>
-          </h2>
-          <%= link_to content_providers_path do %>
-              <img src="/assets/providers-6.jpg" width="100%" alt="Providers">
-          <% end %>
-          <p>Browse training providers to discover training resources they offer and follow links to their materials and courses.</p>
-        </li>
-      </ul>
-    </div>
-  </div>
+    <li>
+      <%= link_to workflows_path do %>
+        <h2><i class="<%= icon_class_for_model('workflows') %>"></i> Workflows</h2>
+        <img src="/assets/workflows.png" width="100%" alt="Workflows">
+      <% end %>
+      <p>Create training workflows to visualise learning steps and link to resources specific to your training needs.</p>
+    </li>
+
+    <li>
+      <%= link_to content_providers_path do %>
+        <h2><i class="<%= icon_class_for_model('content_providers') %>"></i> Providers</h2>
+        <img src="/assets/providers-6.jpg" width="100%" alt="Providers">
+      <% end %>
+      <p>Browse training providers to discover training resources they offer and follow links to their materials and courses.</p>
+    </li>
+  </ul>
 </div>
