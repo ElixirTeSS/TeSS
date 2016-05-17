@@ -105,7 +105,7 @@ class PackagesController < ApplicationController
 
   def update_package_resources
     @package = Package.friendly.find(params[:package_id])
-    @package = add_resources_to_package(@package, params[:package][:material_ids], params[:package][:event_ids])
+    @package.update_resources_by_id(params[:package][:material_ids], params[:package][:event_ids])
     if @package.save!
       respond_to do |format|
         format.html { redirect_to @package, notice: 'Package contents updated.' }

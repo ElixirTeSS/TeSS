@@ -48,14 +48,24 @@ class Package < ActiveRecord::Base
       end
   end
 
-  def add_resources(materials=nil, events=nil)
-    if !materials.nil? and !materials.empty?
+
+
+  #Overwrites a packages materials and events.
+  #[] or nil will delete
+  def update_resources_by_id(materials=[], events=[])
+    self.update_attribute('materials', materials.uniq.collect{|materials| Material.find_by_id(materials)}.compact) if materials
+    self.update_attribute('events', events.uniq.collect{|events| Event.find_by_id(events)}.compact) if events
+  end
+
+
+  def add_resources_by_id(materials=[], events=[])
+    if materials and materials.any?
       self.materials = []
       self.materials = materials.uniq.collect{|mat| Material.find_by_id(mat)}.compact
     else
       self.materials = []
     end
-    if !events.nil? and !events.empty?
+    if events and events.any?
       self.events = []
       self.events = events.uniq.collect{|eve| Event.find_by_id(eve)}.compact
     else
@@ -63,6 +73,24 @@ class Package < ActiveRecord::Base
     end
     return self.save
   end
+
+  def remove_resources_by_id(materials=nil, events=nil)
+    if materials and materials.any?
+      self.materials = []
+      self.materials = self.materials - materials.uniq.collect{|mat| Material.find_by_id(mat)}.compact
+    else
+      self.materials = []
+    end
+    if events and events.any?
+      self.events = []
+      self.events = self.events - events.uniq.collect{|eve| Event.find_by_id(eve)}.compact
+    else
+      self.events = []
+    end
+    return self.save
+  end
+
+  private
 
   def log_activities
     self.changed.each do |changed_attribute|

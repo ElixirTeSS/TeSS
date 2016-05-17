@@ -27,13 +27,24 @@ class MaterialsController < ApplicationController
   #   params[:scientific_topics] = res.compact.flatten.uniq if res and !res.empty?
   # end
 
+
+
+
+    include ActionView::Helpers::TextHelper
   def update_package
+    # Go through each selected package
+    # and update it's resources to include this one.
+    # Go through each other package
     packages = params[:material][:package_ids].select!{|p| !p.nil? and !p.empty?}
-    packages.collect!{|packaj| Package.find_by_id(packaj)}
-    packages.each do |packaj|
-      packaj.add_resources([@material])
+    packages.collect!{|package| Package.find_by_id(package)}
+    packages_to_remove = @material.packages - packages
+    packages.each do |package|
+      package.update_resources_by_id((package.materials + [@material.id]).uniq, nil)
     end
-    flash[:notice] = "Added material to #{packages}"
+    packages_to_remove.each do |package|
+      package.update_resources_by_id((package.materials.collect{|x| x.id} - [@material.id]).uniq, nil)
+    end
+    flash[:notice] = "Material has been included in #{pluralize(packages.count, 'package')}"
     redirect_to @material
   end
 
