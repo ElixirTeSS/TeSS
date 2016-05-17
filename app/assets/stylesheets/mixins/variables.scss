@@ -1,12 +1,15 @@
 @import "bootstrap/variables";
 
-/* Navbar colours */
+/* TeSS colours */
 $bgDefault: #f0721e;
 $bgHighlight: darken($bgDefault, 10%);
 $colDefault: #ffe6d1;
 $colHover: #333333;
 $colHover2: #eeeeee;
 
+/* Bootstrap variable tweaks */
+/* For reference, see: */
+/* https://github.com/twbs/bootstrap-sass/blob/3.2-stable/assets/stylesheets/bootstrap/_variables.scss */
 $navbar-height: 60px;
 $navbar-default-bg: $bgDefault;
 $navbar-default-border: transparent;
@@ -16,9 +19,10 @@ $navbar-default-link-color: $colDefault;
 $navbar-default-link-active-color: lighten($navbar-default-link-color, 30%);
 $navbar-default-link-hover-color: lighten($navbar-default-link-color, 40%);
 
-$navbar-default-toggle-hover-bg: $bgDefault;
-$navbar-default-toggle-icon-bar-bg: $bgHighlight;
+$navbar-default-toggle-hover-bg: $bgHighlight;
+$navbar-default-toggle-icon-bar-bg: $colHover2;
 $navbar-default-toggle-border-color: $bgHighlight;
 
-$grid-float-breakpoint: $screen-md-min; /* collapse navbar on md and smaller screens */
+/* collapse navbar on md and smaller screens */
+$grid-float-breakpoint: $screen-md-min;
 $grid-float-breakpoint-max: $grid-float-breakpoint - 1;
