@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
 
-  before_action :set_event, only: [:show, :edit, :update, :destroy]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages]
 
   #sets @search_params, @facet_params, and @page 
   before_action :set_params, :only => :index
@@ -121,6 +121,28 @@ class EventsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  # POST /events/1/update_packages
+  # POST /events/1/update_packages.json
+  include ActionView::Helpers::TextHelper
+  def update_packages
+    # Go through each selected package
+    # and update it's resources to include this one.
+    # Go through each other package
+    packages = params[:event][:package_ids].select{|p| !p.nil? and !p.empty?}
+    packages = packages.collect{|package| Package.find_by_id(package)}
+    packages_to_remove = @event.packages - packages
+    packages.each do |package|
+      package.update_resources_by_id(nil, (package.events + [@event.id]).uniq)
+    end
+    packages_to_remove.each do |package|
+      package.update_resources_by_id(nil, (package.events.collect{|x| x.id} - [@event.id]).uniq)
+    end
+    flash[:notice] = "Event has been included in #{pluralize(packages.count, 'package')}"
+    redirect_to @event
+  end
+
+
 
   protected
 

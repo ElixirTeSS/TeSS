@@ -50,7 +50,8 @@ Rails.application.routes.draw do
     resource :activities, :only => [:show]
   end
 
-  post 'materials/:id/update_package' => 'materials#update_package'
+  post 'materials/:id/update_packages' => 'materials#update_packages'
+  post 'events/:id/update_packages' => 'events#update_packages'
 
   get 'search' => 'search#index'
 

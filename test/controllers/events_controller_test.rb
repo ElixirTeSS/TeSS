@@ -207,7 +207,7 @@ class EventsControllerTest < ActionController::TestCase
     assert_response :success
     assert_select 'ul.nav-tabs' do
       assert_select 'li' do
-        assert_select 'a[data-toggle="tab"]', :count => 2
+        assert_select 'a[data-toggle="tab"]', :count => 3
       end
     end
   end
@@ -378,6 +378,41 @@ end
                       :format => 'json'}
     end
     assert_response :forbidden
+  end
+
+  test 'should add material to multiple packages' do
+    sign_in @event.user
+    package1 = packages(:one)
+    package1_event_count = package1.events.count
+    package2 = packages(:two)
+    @event.packages = []
+    @event.save!
+    assert_difference('@event.packages.count', 2) do
+      post 'update_packages', { id: @event.id,
+                                event: {
+                                    package_ids: [package1.id, package2.id]
+                                }
+                            }
+    end
+    assert_in_delta(package1.events.count, package1_event_count, 1)
+  end
+
+  test 'should remove material from packages' do
+    sign_in @event.user
+    package1 = packages(:one)
+    package1_event_count = package1.events.count
+    package2 = packages(:two)
+    @event.packages << [package1, package2]
+    @event.save
+
+    assert_difference('@event.packages.count', -2) do
+      post 'update_packages', { id: @event.id,
+                                event: {
+                                    package_ids: ['']
+                                }
+                            }
+    end
+    assert_in_delta(package1.events.count, package1_event_count, 1)
   end
 
 
