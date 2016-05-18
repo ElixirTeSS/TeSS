@@ -1,0 +1,11 @@
+div.staff-form {
+  @include clearfix;
+
+  .staff-member-fields {
+    @media (min-width: $screen-md) {
+      width: 33%;
+      float: left;
+      padding-right: 20px;
+    }
+  }
+}

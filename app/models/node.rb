@@ -1,20 +1,18 @@
 class Node < ActiveRecord::Base
 
+  include PublicActivity::Common
+  has_paper_trail
+
   FACET_FIELDS = %w(name)
 
   extend FriendlyId
   friendly_id :name, use: :slugged
 
   belongs_to :user
+
   has_many :staff, class_name: 'StaffMember', dependent: :destroy
 
-  # name:string
-  # member_status:string
-  # country_code:string
-  # home_page:string
-  # institutions:array
-  # twitter:string
-  # carousel_images:array
+  accepts_nested_attributes_for :staff, allow_destroy: true
 
   unless SOLR_ENABLED==false
     searchable do
