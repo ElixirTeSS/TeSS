@@ -43,10 +43,10 @@ class NodesControllerTest < ActionController::TestCase
     assert_redirected_to node_path(assigns(:node))
   end
 
-  # test "should show node" do
-  #   get :show, id: @node
-  #   assert_response :success
-  # end
+  test "should show node" do
+    get :show, id: @node
+    assert_response :success
+  end
 
   test "should get edit" do
     sign_in users(:admin)
@@ -129,11 +129,13 @@ class NodesControllerTest < ActionController::TestCase
     assert_equal 'Nobody', assigns(:node).staff[1].role
   end
 
-  # test "should destroy node" do
-  #   assert_difference('Node.count', -1) do
-  #     delete :destroy, id: @node
-  #   end
-  #
-  #   assert_redirected_to nodes_path
-  # end
+  test "should destroy node" do
+    sign_in users(:admin)
+
+    assert_difference('Node.count', -1) do
+      delete :destroy, id: @node
+    end
+
+    assert_redirected_to nodes_path
+  end
 end

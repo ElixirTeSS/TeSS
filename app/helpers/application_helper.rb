@@ -116,6 +116,8 @@ module ApplicationHelper
       return "fa fa-user"
     elsif (model.to_s == "workflows")
       return "fa fa-sitemap"
+    elsif (model.to_s == "nodes")
+      return "fa fa-share-alt"
     else
       return "fa fa-folder-open"
     end
@@ -136,6 +138,12 @@ module ApplicationHelper
   # without assigned users)
   def get_default_user
     User.get_default_user
+  end
+
+  def twitter_link(username)
+    link_to("http://twitter.com/#{username}", target: :_blank) do
+      "<i class='fa fa-twitter'></i> @#{username}".html_safe
+    end
   end
 
 end

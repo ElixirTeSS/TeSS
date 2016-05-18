@@ -4,11 +4,7 @@
   <% training_coordinators = node.staff.training_coordinators %>
   <p>
     <b><%= 'Training coordinator'.pluralize(training_coordinators.count) -%>: </b>
-    <% if training_coordinators.any? %>
-        <%= training_coordinators.map(&:name).join(', ') %>
-    <% else %>
-        <span class="text-muted">None</span>
-    <% end %>
+    <%= node_staff_list(training_coordinators, false) %>
   </p>
   <%= link_to '', node, :class=>"media-view"%>
 </li>
