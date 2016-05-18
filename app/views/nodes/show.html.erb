@@ -38,7 +38,10 @@
         <div id="home" class="tab-pane fade in active">
           <div class="row">
             <div class="page-header dont-break-out">
-              <h2><%=t '.title', :default => @node.name %></h2>
+              <h2>
+                <%= country_flag(@node.country_code, class: 'large-flag') %>
+                <%=t '.title', :default => @node.name %>
+              </h2>
               <% unless @node.home_page.blank? %>
                   <p><%= link_to @node.home_page, @node.home_page, :class =>'h5', :target => "_blank" %></p>
               <% end %>
