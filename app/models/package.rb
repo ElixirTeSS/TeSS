@@ -90,6 +90,10 @@ class Package < ActiveRecord::Base
     return self.save
   end
 
+  def self.facet_fields
+    %w( user keywords )
+  end
+
   private
 
   def log_activities

@@ -1,23 +1,13 @@
 class PackagesController < ApplicationController
   before_action :set_package, only: [:show, :edit, :update, :destroy]
 
-  before_action :set_search_params, :only => :index
-  before_action :set_facet_params, :only => :index
-
   include TeSS::BreadCrumbs
-
-  @@facet_fields = %w( user keywords )
+  include SearchableIndex
 
   # GET /packages
   # GET /packages.json
   def index
-    @facet_fields = @@facet_fields
-    if SOLR_ENABLED
-      @packages = solr_search(Package, @search_params, @@facet_fields, @facet_params)
-    else
-      @packages = Package.all
-    end
-
+    @packages = @index_resources
   end
 
   # GET /packages/1
@@ -143,17 +133,4 @@ class PackagesController < ApplicationController
     def package_params
       params.require(:package).permit(:title, :description, :image_url, :public, {:keywords => []})
     end
-
-    def set_search_params
-      params.permit(:q)
-      @search_params = params[:q] || ''
-    end
-
-    def set_facet_params
-      params.permit(@@facet_fields, @@facet_fields.map{|f| "#{f}_all"})
-      @facet_params = {}
-      @@facet_fields.each {|facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
-    end
-
-
 end

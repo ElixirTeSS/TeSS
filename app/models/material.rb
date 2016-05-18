@@ -84,5 +84,9 @@ class Material < ActiveRecord::Base
   def self.owner
     self.user
   end
+
+  def self.facet_fields
+    %w(content_provider scientific_topics target_audience keywords licence difficulty_level authors contributors)
+  end
 end
 

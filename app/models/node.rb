@@ -3,8 +3,6 @@ class Node < ActiveRecord::Base
   include PublicActivity::Common
   has_paper_trail
 
-  FACET_FIELDS = %w(name)
-
   extend FriendlyId
   friendly_id :name, use: :slugged
 
@@ -56,6 +54,10 @@ class Node < ActiveRecord::Base
 
       node
     end
+  end
+
+  def self.facet_fields
+    %w(name)
   end
 
   private

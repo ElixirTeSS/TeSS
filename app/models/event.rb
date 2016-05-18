@@ -64,4 +64,8 @@ class Event < ActiveRecord::Base
   # latitude:double
   # longitude:double
 
+  def self.facet_fields
+    %w( category country field provider city sponsor keywords venue )
+  end
+
 end

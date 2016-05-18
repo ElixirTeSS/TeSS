@@ -37,4 +37,8 @@ class ContentProvider < ActiveRecord::Base
   # TODO:
   # Add link to Node, once node is defined.
 
+  def self.facet_fields
+    %w( keywords )
+  end
+
 end

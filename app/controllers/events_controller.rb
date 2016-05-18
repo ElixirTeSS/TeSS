@@ -1,25 +1,13 @@
 class EventsController < ApplicationController
-
   before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages]
 
-  #sets @search_params, @facet_params, and @page 
-  before_action :set_params, :only => :index
-
   include TeSS::BreadCrumbs
+  include SearchableIndex
 
   # GET /events
   # GET /events.json
-
-  @@facet_fields = %w( category country field provider city sponsor keywords venue)
-
-  helper 'search'
   def index
-    @facet_fields = @@facet_fields
-    if SOLR_ENABLED
-      @events = solr_search(Event, @search_params, @@facet_fields, @facet_params, @page, @sort_by)
-    else
-      @events = Event.all # This will break things because @events.results doesn't exist
-    end
+    @events = @index_resources
 
     respond_to do |format|
       format.json { render json: @events.results }
@@ -161,17 +149,4 @@ class EventsController < ApplicationController
     event_params[:description] = ActionView::Base.full_sanitizer.sanitize(event_params[:description])
     return event_params
   end
-
-  def set_params
-    params.permit(:q, :page, :sort, @@facet_fields, @@facet_fields.map { |f| "#{f}_all" })
-    @search_params = params[:q] || ''
-    @facet_params = {}
-    @sort_by = params[:sort]
-    @@facet_fields.each { |facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
-    @page = params[:page] || 1
-    if params[:include_expired]
-      @facet_params['include_expired'] = true
-    end
-  end
-
 end
