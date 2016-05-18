@@ -94,7 +94,8 @@ module ApplicationHelper
 
   DEFAULT_IMAGE_FOR_MODEL = {
       'ContentProvider' => 'placeholder-organization.png',
-      'Package' => 'placeholder-group.png'
+      'Package' => 'placeholder-group.png',
+      'Node' => 'elixir_logo_orange.png'
   }
 
   def get_image_url_for(resource)

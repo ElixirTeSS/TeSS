@@ -1,5 +1,7 @@
 class Node < ActiveRecord::Base
 
+  FACET_FIELDS = %w(name)
+
   extend FriendlyId
   friendly_id :name, use: :slugged
 
@@ -13,6 +15,19 @@ class Node < ActiveRecord::Base
   # institutions:array
   # twitter:string
   # carousel_images:array
+
+  unless SOLR_ENABLED==false
+    searchable do
+      string :name
+      text :name
+      string :country_code
+      text :staff do
+        staff.map(&:name)
+      end
+
+      time :updated_at
+    end
+  end
 
   validates :name, presence: true, uniqueness: true
   validates :home_page, format: { with: URI.regexp }, if: Proc.new { |a| a.home_page.present? }

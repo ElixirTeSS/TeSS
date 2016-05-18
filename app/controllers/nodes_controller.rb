@@ -1,12 +1,24 @@
 class NodesController < ApplicationController
   before_action :set_node, only: [:show, :edit, :update, :destroy]
+  before_action :set_params, :only => :index
 
   include TeSS::BreadCrumbs
+
+  helper 'search'
 
   # GET /nodes
   # GET /nodes.json
   def index
-    @nodes = Node.all
+    @facet_fields = Node::FACET_FIELDS
+    if SOLR_ENABLED
+      @nodes = solr_search(Node, @search_params, @facet_fields, @facet_params, @page, @sort_by)
+    else
+      @nodes = Node.all
+    end
+    respond_to do |format|
+      format.json { render json: @nodes.results }
+      format.html
+    end
   end
 
   # GET /nodes/1
@@ -73,13 +85,23 @@ class NodesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_node
-      @node = Node.friendly.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_node
+    @node = Node.friendly.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def node_params
-      params.require(:node).permit(:name, :member_status, :country_code, :home_page, :institutions, :trc, :trc_email, :trc, :staff, :twitter, :carousel_images)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def node_params
+    params.require(:node).permit(:name, :member_status, :country_code, :home_page, :institutions, :trc, :trc_email, :trc, :staff, :twitter, :carousel_images)
+  end
+
+  def set_params
+    params.permit(:q, :page, :sort, Node::FACET_FIELDS, Node::FACET_FIELDS.map{|f| "#{f}_all"})
+    @search_params = params[:q] || ''
+    @facet_params = {}
+    @sort_by = params[:sort]
+    Node::FACET_FIELDS.each {|facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
+    @page = params[:page] || 1
+  end
+
 end
