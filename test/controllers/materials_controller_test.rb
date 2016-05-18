@@ -339,6 +339,40 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_response :forbidden
   end
 
+  test 'should add material to multiple packages' do
+    sign_in @material.user
+    package1 = packages(:one)
+    package1_material_count = package1.materials.count
+    package2 = packages(:two)
+    @material.packages = []
+    @material.save!
+    assert_difference('@material.packages.count', 2) do
+      post 'update_packages', { id: @material.id,
+                                material: {
+                                    package_ids: [package1.id, package2.id]
+                                }
+                            }
+    end
+    assert_in_delta(package1.materials.count, package1_material_count, 1)
+  end
+
+  test 'should remove material from packages' do
+    sign_in @material.user
+    package1 = packages(:one)
+    package1_material_count = package1.materials.count
+    package2 = packages(:two)
+    @material.packages << [package1, package2]
+    @material.save
+
+    assert_difference('@material.packages.count', -2) do
+        post 'update_packages', { id: @material.id,
+                                  material: {
+                                      package_ids: ['']
+                                  }
+                              }
+    end
+    assert_in_delta(package1.materials.count, package1_material_count, 1)
+  end
 
   # TODO: SOLR tests will not run on TRAVIS. Explore stratergy for testing solr
 =begin
