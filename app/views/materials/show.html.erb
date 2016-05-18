@@ -1,3 +1,12 @@
+<script>
+    $(document).ready(function () {
+        reposition_tiles('masonry', 'masonry-brick');
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            reposition_tiles('masonry', 'masonry-brick');
+        })
+    })
+</script>
+
 <%- model_class = Material -%>
 
 <div class="row wrapper">
@@ -66,8 +75,8 @@
         <div id="packages" class="tab-pane fade">
           <% if current_user and policy(@material).update? %>
           <div class="row">
-            <%= form_tag(controller: 'materials', id: @material.id, action: 'update_package', method: 'post') do |f| %>
-                <%= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @material, :f => f, :options => available_packages_for(@material)} %>
+            <%= form_tag(controller: 'materials', id: @material.id, action: 'update_packages', method: 'post') do |f| %>
+                <%= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @material, :f => f, :options => available_packages_for_material(@material)} %>
                 <button type="submit" value="add" class="btn btn-primary">Update material</button>
             <% end %>
           </div>
