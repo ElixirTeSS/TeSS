@@ -1,4 +1,4 @@
-<%= form_for(@node) do |f| %>
+<%= simple_form_for(@node) do |f| %>
   <% if @node.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@node.errors.count, "error") %> prohibited this node from being saved:</h2>
@@ -30,23 +30,24 @@
     <%= f.label :home_page %>
     <%= f.text_field :home_page, class: 'form-control' %>
   </div>
-    
-  <div class="form-group">
-    <%= f.label :institutions %>
-    <%= f.text_field :institutions, class: 'form-control' %>
-  </div>
 
   <div class="form-group">
     <%= f.label :twitter %>
     <%= f.text_field :twitter, class: 'form-control' %>
   </div>
 
-  <div class="form-group">
-    <%= f.label :carousel_images %>
-    <%= f.text_field :carousel_images, class: 'form-control' %>
-  </div>
+  <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'institutions',
+                                                              :resource => @node,
+                                                              :f => f } %>
 
-  <label>Staff</label> <%= add_node_staff_button(f, '#staff-list') %>
+
+  <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'carousel_images',
+                                                              :resource => @node,
+                                                              :f => f } %>
+
+
+  <label>Staff</label><br/>
+  <%= add_node_staff_button(f, '#staff-list') %>
   <div class="staff-form" id="staff-list">
     <% @node.staff.each do |staff_member| %>
       <%= render partial: 'staff_form', locals: { form: f, staff_member: staff_member } %>

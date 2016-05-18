@@ -63,6 +63,11 @@
                   <%= node_staff_list(other_staff) %>
                 </p>
               <% end %>
+
+              <p>
+                <b>Institutions: </b>
+                <%= @node.institutions.blank? ? empty_tag(:span, 'none specified') : @node.institutions.join(', ') %>
+              </p>
             </div>
           </div>
         </div>

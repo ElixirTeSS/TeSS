@@ -14,6 +14,12 @@ class Node < ActiveRecord::Base
 
   accepts_nested_attributes_for :staff, allow_destroy: true
 
+  clean_array_fields(:institutions, :carousel_images)
+
+  validates :name, presence: true, uniqueness: true
+  validates :home_page, format: { with: URI.regexp }, if: Proc.new { |a| a.home_page.present? }
+  # validate :has_training_coordinator
+
   unless SOLR_ENABLED==false
     searchable do
       string :name
@@ -26,10 +32,6 @@ class Node < ActiveRecord::Base
       time :updated_at
     end
   end
-
-  validates :name, presence: true, uniqueness: true
-  validates :home_page, format: { with: URI.regexp }, if: Proc.new { |a| a.home_page.present? }
-  # validate :has_training_coordinator
 
   def self.load_from_hash(hash, verbose: false)
     hash["nodes"].map do |node_data|
