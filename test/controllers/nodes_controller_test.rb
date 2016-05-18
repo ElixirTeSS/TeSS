@@ -124,9 +124,10 @@ class NodesControllerTest < ActionController::TestCase
     }
 
     assert_redirected_to node_path(assigns(:node))
-    assert_equal 'Updated name', assigns(:node).staff[1].name
-    assert_equal 'u@example.com', assigns(:node).staff[1].email
-    assert_equal 'Nobody', assigns(:node).staff[1].role
+    updated_staff = assigns(:node).staff.detect { |s| s.name == 'Updated name' }
+    assert_not_nil updated_staff
+    assert_equal 'u@example.com', updated_staff.email
+    assert_equal 'Nobody', updated_staff.role
   end
 
   test "should destroy node" do
