@@ -1,0 +1,33 @@
+<div class="staff-member-fields">
+  <%= form.fields_for(:staff, staff_member, child_index: (staff_member.new_record? ? 'replace-me' : nil)) do |sf| %>
+      <h4>Staff Member
+        <div class="pull-right">
+          <div class="checkbox btn btn-danger">
+            <%= label_tag do %>
+                <%= sf.check_box :_destroy, autocomplete: 'off', data: { role: "delete-node-staff-button" } %> Delete
+            <% end %>
+          </div>
+        </div>
+      </h4>
+
+      <div class="form-group">
+        <%= sf.label :name %>
+        <%= sf.text_field :name, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= sf.label :email %>
+        <%= sf.text_field :email, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= sf.label :role %>
+        <%= sf.text_field :role, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= sf.label :image_url, 'Image URL' %>
+        <%= sf.text_field :image_url, class: 'form-control' %>
+      </div>
+  <% end %>
+</div>

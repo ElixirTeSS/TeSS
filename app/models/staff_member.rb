@@ -6,4 +6,5 @@ class StaffMember < ActiveRecord::Base
   validates :name, presence: true
 
   scope :training_coordinators, -> { where(role: TRAINING_COORDINATOR_ROLE) }
+  scope :other_roles, -> { where.not(role: TRAINING_COORDINATOR_ROLE) }
 end

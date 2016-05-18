@@ -1,59 +1,80 @@
-<!--<p id="notice"><%#= notice %></p>-->
+<%- model_class = Node -%>
 
-<p>
-  <strong>Name:</strong>
-  <%= @node.name %>
-</p>
+<div class="row wrapper">
+  <div class="col-md-12">
+    <div class="row" style="padding: 10px 5px 0px 0px;">
+      <div class="content_action">
+        <%= link_to t('.back', :default => t("helpers.links.back")),
+                    :back, :class => 'btn btn-info'  %>
+        <% if !current_user.nil? and policy(@node).update? %>
+            <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                        edit_node_path(@node), :class => 'btn btn-primary' %>
+        <% end %>
+        <% if !current_user.nil? and policy(@node).destroy? %>
+            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                        node_path(@node),
+                        :method => 'delete',
+                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                        :class => 'btn btn-danger' %>
+        <% end %>
+        <% if @node.home_page %>
+          <a href="<%= @node.home_page %>" target="_blank" type="submit" class="btn btn-success">
+            <span class="fa fa-external-link"></span> View home page
+          </a>
+        <% end %>
+      </div>
+    </div>
+    <div class="row">
+      <ul class="nav nav-tabs">
+        <li class="active">
+          <a data-toggle="tab" href="#home"><i class="<%= icon_class_for_model('nodes') %>"></i> Node</a>
+        </li>
+        <li>
+          <a data-toggle="tab" href="#activity_log"><i class="<%= icon_class_for_model('activity_logs') %>"></i> Activity log</a>
+        </li>
+      </ul>
 
-<p>
-  <strong>Member status:</strong>
-  <%= @node.member_status %>
-</p>
+      <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+          <div class="row">
+            <div class="page-header dont-break-out">
+              <h2>
+                <%= country_flag(@node.country_code, class: 'large-flag') %>
+                <%=t '.title', :default => @node.name %>
+              </h2>
+              <% unless @node.home_page.blank? %>
+                  <p><%= link_to @node.home_page, @node.home_page, :class =>'h5', :target => "_blank" %></p>
+              <% end %>
+              <% unless @node.twitter.blank? %>
+                  <p><%= twitter_link @node.twitter %></p>
+              <% end %>
+            </div>
+            <div>
+              <% training_coordinators = @node.staff.training_coordinators %>
+              <p>
+                <b><%= 'Training coordinator'.pluralize(training_coordinators.count) -%>: </b>
+                <%= node_staff_list(training_coordinators, false) %>
+              </p>
 
-<p>
-  <strong>Country code:</strong>
-  <%= @node.country_code %>
-</p>
+              <% other_staff = @node.staff.other_roles %>
+              <% if other_staff.any? %>
+                <p>
+                  <b>Staff: </b>
+                  <%= node_staff_list(other_staff) %>
+                </p>
+              <% end %>
 
-<p>
-  <strong>Home page:</strong>
-  <%= @node.home_page %>
-</p>
-
-<p>
-  <strong>Institutions:</strong>
-  <%= @node.institutions %>
-</p>
-
-<p>
-  <strong>Trc:</strong>
-  <%= @node.trc %>
-</p>
-
-<p>
-  <strong>Trc email:</strong>
-  <%= @node.trc_email %>
-</p>
-
-<p>
-  <strong>Trc:</strong>
-  <%= @node.trc %>
-</p>
-
-<p>
-  <strong>Staff:</strong>
-  <%= @node.staff %>
-</p>
-
-<p>
-  <strong>Twitter:</strong>
-  <%= @node.twitter %>
-</p>
-
-<p>
-  <strong>Carousel images:</strong>
-  <%= @node.carousel_images %>
-</p>
-
-<%= link_to 'Edit', edit_node_path(@node) %> |
-<%= link_to 'Back', nodes_path %>
+              <p>
+                <b>Institutions: </b>
+                <%= @node.institutions.blank? ? empty_tag(:span, 'none specified') : @node.institutions.join(', ') %>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div id="activity_log" class="tab-pane fade">
+          <%= render :partial => "activities/activity_log", :locals => {:resource => @node} %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
