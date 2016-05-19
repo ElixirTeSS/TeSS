@@ -43,6 +43,9 @@
           <a data-toggle="tab" href="#home"><i class="<%= icon_class_for_model('events') %>"></i> Event</a>
         </li>
         <li>
+          <a data-toggle="tab" href="#packages"><i class="<%= icon_class_for_model('packages') %>"></i> Packages</a>
+        </li>
+        <li>
           <a data-toggle="tab" href="#activity_log"><i class="<%= icon_class_for_model('activity_logs') %>"></i> Activity log</a>
         </li>
       </ul>
@@ -132,6 +135,28 @@
         </div>
         <div id="activity_log" class="tab-pane fade">
           <%= render :partial => "activities/activity_log", :locals => {:resource => @event} %>
+        </div>
+        <div id="packages" class="tab-pane fade">
+          <% if current_user and policy(@event).update? %>
+              <div class="row">
+                <%= form_tag(controller: 'events', id: @event.id, action: 'update_packages', method: 'post') do |f| %>
+                    <%= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @event, :f => f, :options => available_packages_for_event(@event)} %>
+                    <button type="submit" value="add" class="btn btn-primary">Update event</button>
+                <% end %>
+              </div>
+          <% end %>
+          <div class="row">
+            <% if @event.packages.blank? %>
+                <%= empty_tag(:p, 'This event is currently not included in any packages.', "padding-top: 10px;") %>
+            <% else %>
+                <ul class="masonry media-grid">
+                  <% @event.packages.each do |package| %>
+                      <%= render :partial => "packages/package", :locals => {:package => package} %>
+                  <% end %>
+                </ul>
+            <% end %>
+          </div>
+
         </div>
       </div>
     </div>

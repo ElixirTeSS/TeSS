@@ -68,7 +68,7 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
   end
 
-  def solr_search(model_name, search_params='', facet_fields=[], selected_facets=[], page=1, sort_by=nil)
+  def solr_search(model_name, search_params='', selected_facets=[], page=1, sort_by=nil)
     model_name.search do
 
       fulltext search_params

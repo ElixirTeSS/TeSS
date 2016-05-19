@@ -52,29 +52,19 @@
                 <!--<div class="checkbox pull-right">-->
                 <label class="checkbox-inline">
                   <% if include_expired %>
-                      <input type="checkbox" id="include_past_events" checked>Include past events
+                      <% new_params = params.dup %>
+                      <% new_params.delete(:include_expired) %>
+                      <%= link_to new_params, class: 'btn btn-default' do %>
+                          <i class="fa fa-clock-o"></i> Hide past events
+                      <% end %>
                   <% else %>
-                      <input type="checkbox" id="include_past_events">Include past events
+                      <%= link_to params.merge(:include_expired => true), class: 'btn btn-default' do %>
+                          <i class="fa fa-clock-o"></i> Show past events
+                      <% end %>
                   <% end %>
                 </label>
               </div>
             </form>
-            <%= javascript_tag do %>
-                var eventsURL = '<%= j events_path %>';
-                var eventsURL_include_expired = '<%= j events_path(:include_expired => true) %>';
-
-                jQuery("#include_past_events").change(function(){
-
-                var checkbox = jQuery(this);
-                if(checkbox.prop("checked"))
-                {
-                window.location.href = eventsURL_include_expired
-                }
-                else{
-                window.location.href = eventsURL
-                }
-                });
-            <% end %>
           </div>
           <!-- SORT BY OPTIONS    -->
           <div class="col-md-4">
@@ -86,7 +76,6 @@
 
         <!-- APPLIED FILTERS -->
         <div class="row">
-          <% include_expired = @facet_params.delete('include_expired') %>
           <div class="col-md-12">
             <%= render :partial => "search/common/search_filters", :locals => {:resources => @events} %>
           </div>

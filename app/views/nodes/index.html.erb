@@ -14,30 +14,22 @@
         <!-- SEARCH BAR -->
 
         <div class="row">
-          <%= link_to new_node_path, :class=>"btn btn-primary disabled" do %>
+          <%= link_to new_node_path, :class=>"btn btn-primary" do %>
               <i class="fa fa-plus"></i> Create node
           <% end %>
         </div>
 
-        <div class="row">
-          <%#= render :partial=> "search/common/search_box", :locals=>{:resource_path => nodes_path} %>
-        </div>
+        <%= render :partial=> "search/common/search_box", :locals=>{:resource_path => nodes_path} %>
 
-        <!-- APPLIED FILTERS AND NUMBER OF RESULTS -->
-        <div class="row">
-          <%#= render :partial => "search/common/search_info", :locals=>{:resources=>@nodes}  %>
-        </div>
+        <%= render :partial => "search/common/search_info", :locals=>{:resources=>@nodes, :resource_type => 'node'}  %>
 
-        <!-- PAGINATION -->
-        <div class="row">
-          <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@nodes} unless (@nodes.blank? or @nodes.results.blank?) %>
-        </div>
+        <%= render :partial => "search/common/search_filters", :locals => {:resources => @nodes} %>
+
+        <%= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@nodes} unless (@nodes.blank? or @nodes.results.blank?) %>
 
         <hr>
+        <!-- RESULTS -->
         <% @nodes = @nodes.results unless @nodes.blank? %>
-        <p class="empty">
-          This functionality is still under construction.
-        </p>
   <% end %>
 
   <!-- ACTUAL RESULTS LIST -->

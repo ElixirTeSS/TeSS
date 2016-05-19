@@ -1,25 +1,13 @@
 class EventsController < ApplicationController
-
-  before_action :set_event, only: [:show, :edit, :update, :destroy]
-
-  #sets @search_params, @facet_params, and @page 
-  before_action :set_params, :only => :index
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages]
 
   include TeSS::BreadCrumbs
+  include SearchableIndex
 
   # GET /events
   # GET /events.json
-
-  @@facet_fields = %w( category country field provider city sponsor keywords venue)
-
-  helper 'search'
   def index
-    @facet_fields = @@facet_fields
-    if SOLR_ENABLED
-      @events = solr_search(Event, @search_params, @@facet_fields, @facet_params, @page, @sort_by)
-    else
-      @events = Event.all # This will break things because @events.results doesn't exist
-    end
+    @events = @index_resources
 
     respond_to do |format|
       format.json { render json: @events.results }
@@ -122,6 +110,28 @@ class EventsController < ApplicationController
     end
   end
 
+  # POST /events/1/update_packages
+  # POST /events/1/update_packages.json
+  include ActionView::Helpers::TextHelper
+  def update_packages
+    # Go through each selected package
+    # and update it's resources to include this one.
+    # Go through each other package
+    packages = params[:event][:package_ids].select{|p| !p.nil? and !p.empty?}
+    packages = packages.collect{|package| Package.find_by_id(package)}
+    packages_to_remove = @event.packages - packages
+    packages.each do |package|
+      package.update_resources_by_id(nil, (package.events + [@event.id]).uniq)
+    end
+    packages_to_remove.each do |package|
+      package.update_resources_by_id(nil, (package.events.collect{|x| x.id} - [@event.id]).uniq)
+    end
+    flash[:notice] = "Event has been included in #{pluralize(packages.count, 'package')}"
+    redirect_to @event
+  end
+
+
+
   protected
 
   private
@@ -139,17 +149,4 @@ class EventsController < ApplicationController
     event_params[:description] = ActionView::Base.full_sanitizer.sanitize(event_params[:description])
     return event_params
   end
-
-  def set_params
-    params.permit(:q, :page, :sort, @@facet_fields, @@facet_fields.map { |f| "#{f}_all" })
-    @search_params = params[:q] || ''
-    @facet_params = {}
-    @sort_by = params[:sort]
-    @@facet_fields.each { |facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
-    @page = params[:page] || 1
-    if params[:include_expired]
-      @facet_params['include_expired'] = true
-    end
-  end
-
 end

@@ -1,21 +1,15 @@
 class MaterialsController < ApplicationController
   require 'bread_crumbs'
 
-  before_action :set_material, only: [:show, :edit, :update, :destroy, :update_package]
-
-  #sets @search_params, @facet_params, and @page 
-  before_action :set_params, :only => :index
+  before_action :set_material, only: [:show, :edit, :update, :destroy, :update_packages]
 
   include TeSS::BreadCrumbs
+  include SearchableIndex
 
   # GET /materials
   # GET /materials?q=queryparam
   # GET /materials.json
   # GET /materials.json?q=queryparam
-
-  @@facet_fields = %w(content_provider scientific_topics target_audience keywords licence difficulty_level authors contributors)
-
-  helper 'search'
 
   # def find_scientific_topics
   #   res = []
@@ -27,10 +21,8 @@ class MaterialsController < ApplicationController
   #   params[:scientific_topics] = res.compact.flatten.uniq if res and !res.empty?
   # end
 
+  include ActionView::Helpers::TextHelper
 
-
-
-    include ActionView::Helpers::TextHelper
   def update_package
     # Go through each selected package
     # and update it's resources to include this one.
@@ -49,12 +41,8 @@ class MaterialsController < ApplicationController
   end
 
   def index
-    @facet_fields = @@facet_fields
-    if SOLR_ENABLED
-      @materials = solr_search(Material, @search_params, @@facet_fields, @facet_params, @page, @sort_by)
-    else
-      @materials = Material.all
-    end
+    @materials = @index_resources
+
     respond_to do |format|
       format.json { render json: @materials.results }
       format.html
@@ -64,7 +52,6 @@ class MaterialsController < ApplicationController
   def search query
     @materials = Material.search { fulltext query }
   end
-
 
   # GET /materials/1
   # GET /materials/1.json
@@ -162,13 +149,25 @@ class MaterialsController < ApplicationController
     end
   end
 
-
-=begin
-    puts 'getting here'
-    params[:package_ids].each do |package|
-      add_resource_to_packages(@material, Package.find_by_id(package))
+  # POST /materials/1/update_packages
+  # POST /materials/1/update_packages.json
+  include ActionView::Helpers::TextHelper
+  def update_packages
+    # Go through each selected package
+    # and update it's resources to include this material.
+    # Go through each other package that is not selected and remove this material from it.
+    packages = params[:material][:package_ids].select{|p| !p.nil? and !p.empty?}
+    packages = packages.collect{|package| Package.find_by_id(package)}
+    packages_to_remove = @material.packages - packages
+    packages.each do |package|
+      package.update_resources_by_id((package.materials + [@material.id]).uniq, nil)
     end
-=end
+    packages_to_remove.each do |package|
+      package.update_resources_by_id((package.materials.collect{|x| x.id} - [@material.id]).uniq, nil)
+    end
+    flash[:notice] = "Material has been included in #{pluralize(packages.count, 'package')}"
+    redirect_to @material
+  end
 
   private
   # Use callbacks to share common setup or constraints between actions.
@@ -203,14 +202,4 @@ class MaterialsController < ApplicationController
 
     return mat_params
   end
-
-  def set_params
-    params.permit(:q, :page, :sort, @@facet_fields, @@facet_fields.map{|f| "#{f}_all"})
-    @search_params = params[:q] || ''
-    @facet_params = {}
-    @sort_by = params[:sort]
-    @@facet_fields.each {|facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
-    @page = params[:page] || 1
-  end
-
 end

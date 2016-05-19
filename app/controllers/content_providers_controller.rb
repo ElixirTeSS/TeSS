@@ -1,20 +1,11 @@
 class ContentProvidersController < ApplicationController
-
   before_action :set_content_provider, only: [:show, :edit, :update, :destroy]
-  before_action :set_search_params, :only => :index
-  before_action :set_facet_params, :only => :index
 
   include TeSS::BreadCrumbs
-
-  @@facet_fields = %w( keywords )
+  include SearchableIndex
 
   def index
-    @facet_fields = @@facet_fields
-    if SOLR_ENABLED
-      @content_providers = solr_search(ContentProvider, @search_params, @@facet_fields, @facet_params)
-    else
-      @content_providers = Package.all
-    end
+    @content_providers = @index_resources
   end
 
   def show
@@ -115,18 +106,4 @@ class ContentProvidersController < ApplicationController
     params.require(:content_provider).permit(:title, :url, :image_url, :description, :id,
                                              {:keywords => []}, :remote_updated_date, :remote_created_date, :local_updated_date, :remote_updated_date)
   end
-
-
-  def set_search_params
-    params.permit(:q)
-    @search_params = params[:q] || ''
-  end
-
-  def set_facet_params
-    params.permit(@@facet_fields, @@facet_fields.map { |f| "#{f}_all" })
-    @facet_params = {}
-    @@facet_fields.each { |facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
-  end
-
 end
-

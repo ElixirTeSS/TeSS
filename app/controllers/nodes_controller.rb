@@ -2,11 +2,17 @@ class NodesController < ApplicationController
   before_action :set_node, only: [:show, :edit, :update, :destroy]
 
   include TeSS::BreadCrumbs
+  include SearchableIndex
 
   # GET /nodes
   # GET /nodes.json
   def index
-    @nodes = Node.all
+    @nodes = @index_resources
+
+    respond_to do |format|
+      format.json { render json: @nodes.results }
+      format.html
+    end
   end
 
   # GET /nodes/1
@@ -73,13 +79,16 @@ class NodesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_node
-      @node = Node.friendly.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_node
+    @node = Node.friendly.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def node_params
-      params.require(:node).permit(:name, :member_status, :country_code, :home_page, :institutions, :trc, :trc_email, :trc, :staff, :twitter, :carousel_images)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def node_params
+    params.require(:node).permit(:name, :member_status, :country_code, :home_page, :staff, :twitter, :image_url,
+                                 { institutions: [] }, { carousel_images: [] },
+                                 { staff_attributes: [:id, :name, :email, :role, :image_url, :_destroy] })
+  end
+
 end
