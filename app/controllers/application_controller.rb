@@ -87,6 +87,7 @@ class ApplicationController < ActionController::Base
           end
         end
       end
+
       if sort_by
         case sort_by
           when 'early'
@@ -103,7 +104,10 @@ class ApplicationController < ActionController::Base
           else
             order_by :title, sort_by.to_sym
         end
+      elsif model_name == Event
+        order_by(:start, :asc)
       end
+
       if !page.nil? and page != '1'
         paginate :page => page
       end

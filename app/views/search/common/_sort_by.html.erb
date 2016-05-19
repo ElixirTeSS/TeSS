@@ -4,7 +4,7 @@ Extras - Array of Arrays with options for select
 e.g.
  [['Earliest', 'early'], ['Latest', 'late']]
 %>
-<% extras = extras || false %>
+<% extras = extras.reverse! || false %>
 
 <% options = [
     ['Title ascending', 'asc'],
@@ -14,9 +14,8 @@ e.g.
 ] %>
 
 <% if extras %>
-    <% extras.each do |extra| %>
-        <% options.push(extra) %>
-    <% end %>
+    <% extras.each {|extra| options.push(extra)} %>
+    <% options.reverse! %>
 <% end %>
 
 <form class="form-inline pull-right">
