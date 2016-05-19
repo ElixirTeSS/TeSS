@@ -36,6 +36,7 @@ SCRAPERS=(biocomp_rdfa_scraper
           ngs_registry_scraper
           sib_scraper
           iann_events_uploader
+          coursera_scraper
           )
 
 
