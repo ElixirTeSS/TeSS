@@ -38,6 +38,8 @@ gem 'activerecord-session_store'
 
 gem 'gravtastic'
 
+gem 'green_monkey'
+
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'

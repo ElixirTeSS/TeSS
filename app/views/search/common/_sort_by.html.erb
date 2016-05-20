@@ -4,7 +4,9 @@ Extras - Array of Arrays with options for select
 e.g.
  [['Earliest', 'early'], ['Latest', 'late']]
 %>
-<% extras = extras.reverse! || false %>
+<% if defined? extras %>
+    <% extras = extras.reverse! || false %>
+<% end %>
 
 <% options = [
     ['Title ascending', 'asc'],

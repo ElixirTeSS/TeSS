@@ -48,27 +48,66 @@
 
       <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
-          <div class="row">
-            <div class="page-header dont-break-out">
-              <h2><%=t '.title', :default => @material.title %></h2>
-              <p><%= link_to @material.url, @material.url, :class =>'h5', :target => "_blank" %></p>
-              <% if not @material.long_description.blank? %>
-                  <p><%= render_markdown(@material.long_description) %></p>
-              <% elsif not @material.short_description.blank? %>
-                  <p><%= render_markdown(@material.short_description)%></p>
-              <% end %>
-            </div>
-            <div>
-              <p><b><%= model_class.human_attribute_name(:scientific_topics).pluralize %>: </b><%= @material.scientific_topics.blank? ? empty_tag(:span, 'none specified') : @material.scientific_topics.map{|x| x.preferred_label}.join(', ') %></p>
-              <p><b><%= model_class.human_attribute_name(:keywords) %>: </b><%= @material.keywords.blank? ? empty_tag(:span, 'none specified') : @material.keywords.join(', ') %></p>
-              <p><b><%= model_class.human_attribute_name(:target_audience) %>: </b><%= @material.target_audience.blank? ? empty_tag(:span, 'none specified') : @material.target_audience.join(', ') %></p>
-              <p><b><%= model_class.human_attribute_name(:difficulty_level) %>: </b><%= (@material.difficulty_level.blank? or @material.difficulty_level == 'notspecified') ? empty_tag(:span, 'none specified') : difficulty_name_for_abbreviation(@material.difficulty_level) %></p>
-              <p><b><%= model_class.human_attribute_name(:licence) %>: </b><%= (@material.licence.blank? or @material.licence == 'notspecified') ? empty_tag(:span, 'none specified') : licence_name_for_abbreviation(@material.licence) %></p>
-              <p><b><%= model_class.human_attribute_name(:authors) %>: </b><%= @material.authors.blank? ? empty_tag(:span, 'none specified') : @material.authors.join(', ') %></p>
-              <p><b><%= model_class.human_attribute_name(:contributors) %>: </b><%= @material.contributors.blank? ? empty_tag(:span, 'none specified') : @material.contributors.join(', ') %></p>
-              <p><b>DOI: </b><%= @material.doi.blank? ? empty_tag(:span, 'none specified') : @material.doi %></p>
-              <p><b>Created: </b><%= @material.remote_created_date.blank? ? empty_tag(:span, 'none specified') : @material.remote_created_date %></p>
-              <p><b>Last updated: </b><%= @material.remote_updated_date.blank? ? empty_tag(:span, 'none specified') : @material.remote_updated_date %></p>
+          <div itemscope itemtype="https://schema.org/CreativeWork">
+            <div class="row">
+              <div class="page-header dont-break-out">
+                <h2 itemprop="name"><%=t '.title', :default => @material.title %></h2>
+                <p><%= link_to @material.url, @material.url, :class =>'h5', :target => "_blank" %></p>
+                <% if not @material.long_description.blank? %>
+                    <p><%= render_markdown(@material.long_description) %></p>
+                <% elsif not @material.short_description.blank? %>
+                    <p><%= render_markdown(@material.short_description)%></p>
+                <% end %>
+              </div>
+              <div>
+                <p><b><%= model_class.human_attribute_name(:scientific_topics).pluralize %>: </b><%= @material.scientific_topics.blank? ? empty_tag(:span, 'none specified') : @material.scientific_topics.map{|x| x.preferred_label}.join(', ') %></p>
+                <p><b><%= model_class.human_attribute_name(:keywords) %>: </b><%= @material.keywords.blank? ? empty_tag(:span, 'none specified') : @material.keywords.join(', ') %></p>
+                <p><b><%= model_class.human_attribute_name(:target_audience) %>: </b><%= @material.target_audience.blank? ? empty_tag(:span, 'none specified') : @material.target_audience.join(', ') %></p>
+                <p><b><%= model_class.human_attribute_name(:difficulty_level) %>: </b><%= (@material.difficulty_level.blank? or @material.difficulty_level == 'notspecified') ? empty_tag(:span, 'none specified') : difficulty_name_for_abbreviation(@material.difficulty_level) %></p>
+                <p><b><%= model_class.human_attribute_name(:licence) %>: </b><%= (@material.licence.blank? or @material.licence == 'notspecified') ? empty_tag(:span, 'none specified') : licence_name_for_abbreviation(@material.licence) %></p>
+
+                <p>
+                  <b><%= model_class.human_attribute_name(:authors) %>: </b>
+                  <% if @material.authors.blank? -%>
+                    <% empty_tag(:span, 'none specified') -%>
+                  <% else -%>
+                      <% @material.authors.each do |auth| -%>
+                        <%= content_tag(:span, auth, {:itemprop => 'author', :itemtype => 'https://schema.org/Person'})  -%><% unless auth == @material.authors.last -%>,<% end -%>
+                      <% end -%>
+                  <% end -%>
+                </p>
+
+                <p>
+                  <b><%= model_class.human_attribute_name(:contributors) %>: </b>
+                  <% if @material.contributors.blank? -%>
+                    <% empty_tag(:span, 'none specified') -%>
+                  <% else -%>
+                      <% @material.contributors.each do |contrib| -%>
+                        <%= content_tag(:span, contrib, {:itemprop => 'contributor', :itemtype => 'https://schema.org/Person'})  -%><% unless contrib == @material.contributors.last -%>,<% end -%>
+                      <% end -%>
+                  <% end -%>
+                </p>
+
+                <p><b>DOI: </b><%= @material.doi.blank? ? empty_tag(:span, 'none specified') : @material.doi %></p>
+
+                <p><b>Created: </b>
+                  <% if @material.remote_created_date.blank? -%>
+                      <%= empty_tag(:span, 'none specified') -%>
+                  <% else -%>
+                      <%= content_tag(:span, @material.remote_created_date, {:itemprop => 'dateCreated'}) -%>
+                  <% end -%>
+                </p>
+
+                <p><b>Last updated: </b>
+                  <% if @material.remote_updated_date.blank? -%>
+                      <%= empty_tag(:span, 'none specified') -%>
+                  <% else -%>
+                      <%= content_tag(:span, @material.remote_updated_date, {:itemprop => 'dateModified'}) -%>
+                  <% end -%>
+                </p>
+
+
+              </div>
             </div>
           </div>
         </div>
