@@ -54,8 +54,8 @@
         <div id="home" class="tab-pane fade in active" itemscope itemtype="http://schema.org/Event">
           <div class="row">
             <div class="page-header">
-              <h2><%= @event.title %></h2>
-              <p><%= link_to @event.url, @event.url, :class =>'h5', :target => "_blank" %></p>
+              <%= content_tag 'h2', @event.title, itemprop: 'name' %>
+              <p><%= link_to @event.url, @event.url, :class =>'h5', :target => "_blank", itemprop: 'sameAs' %></p>
             </div>
             <div class="col-md-4">
               <% if @event.provider and !@event.provider.blank? %>
@@ -100,7 +100,7 @@
               <% end %>
 
               <%= content_tag :span, nil, {itemprop: 'location',
-                                         itemype: 'http://schema.org/PostalAddress'},
+                                         itemtype: 'http://schema.org/PostalAddress'},
                                          itemscope: false do %>
                   <% if @event.venue and !@event.venue.blank? %>
                       <p><strong>Venue:</strong>
