@@ -6,22 +6,22 @@
     <p class="dont-break-out"><%= [event.venue, event.city, event.country].reject { |field_value| field_value.blank? }.join(", ")%></p>
     <%= link_to '', event, :class=>"media-view" %>
 
-   <%= content_tag :span, nil, {itemprop: 'description', content: event.description} if event.description.any? %>
-   <%= content_tag :span, nil, {itemprop: 'startDate', content: event.start}  if event.start.any? %>
-   <%= content_tag :span, nil, {itemprop: 'endDate', content: event.end} if event.end.any? %>
+   <%= content_tag :span, nil, {itemprop: 'description', content: event.description} if event.description.present? %>
+   <%= content_tag :span, nil, {itemprop: 'startDate', content: event.start}  if event.start.present? %>
+   <%= content_tag :span, nil, {itemprop: 'endDate', content: event.end} if event.end.present? %>
    <%= content_tag :span, nil, {itemprop: 'organizer',
                                 itemtype: 'http://schema.org/Organization'},
                                 itemscope: true do %>
       <%= content_tag 'span', nil, {itemprop: 'name', content: event.provider} %>
-    <% end if event.provider.any? %>
+    <% end if event.provider.present? %>
     <%= content_tag :span, nil, {itemprop: 'location',
                                  itemtype: 'http://schema.org/PostalAddress'},
                                  itemscope: false do %>
-      <%= content_tag 'span', nil, {itemprop: 'streetAddress', content: event.venue} if event.venue.any? %>
-      <%= content_tag 'span', nil, {itemprop: 'addressLocality', content: event.city} if event.city.any? %>
-      <%= content_tag 'span', nil, {itemprop: 'addressRegion', content: event.county} if event.county.any? %>
-      <%= content_tag 'span', nil, {itemprop: 'addressCountry', content: event.country} if event.country.any? %>
-      <%= content_tag 'span', nil, {itemprop: 'postalCode', content: event.postcode} if event.postcode.any? %>
-  <% end if event.venue.any? or event.city.any? or event.county.any? or event.country.any? or event.postcode.any? %>
+      <%= content_tag 'span', nil, {itemprop: 'streetAddress', content: event.venue} if event.venue.present? %>
+      <%= content_tag 'span', nil, {itemprop: 'addressLocality', content: event.city} if event.city.present? %>
+      <%= content_tag 'span', nil, {itemprop: 'addressRegion', content: event.county} if event.county.present? %>
+      <%= content_tag 'span', nil, {itemprop: 'addressCountry', content: event.country} if event.country.present? %>
+      <%= content_tag 'span', nil, {itemprop: 'postalCode', content: event.postcode} if event.postcode.present? %>
+  <% end if event.venue.present? or event.city.present? or event.county.present? or event.country.present? or event.postcode.present? %>
 </li>
 
