@@ -1,3 +1,16 @@
-<h2>New node</h2>
+<div class="row wrapper">
 
-<%= render 'form' %>
+  <!-- SIDEBAR -->
+  <div class="col-md-3" id="sidebar">
+    <%= render :partial => "nodes/partials/general_node_info" %>
+  </div>
+
+  <div class=" col-md-9">
+    <%- model_class = Node -%>
+    <div class="page-header">
+      <h2><%=t '.title', :default => [:'helpers.titles.new', 'New %{model}'], :model => model_class.model_name.human.titleize.downcase %></h2>
+    </div>
+    <%= render :partial => 'form' %>
+  </div>
+</div>
+
