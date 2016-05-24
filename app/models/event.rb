@@ -68,7 +68,7 @@ class Event < ActiveRecord::Base
   # latitude:double
   # longitude:double
 
-  def expired?
+  def upcoming?
     return (Time.now < self.end)
   end
 
@@ -80,7 +80,7 @@ class Event < ActiveRecord::Base
     end
   end
 
-  def upcoming?
+  def expired?
     return Time.now > self.start
   end
 
