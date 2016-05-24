@@ -1,6 +1,15 @@
+#!/bin/bash --login
+
+if [ "$#" -eq 0 ];then
+    echo "Usage: update.sh <development | production>"
+	exit 0
+else
+    ENV=$1
+fi
+
 git pull origin master
-rake db:migrate
-rake assets:clean
-rake assets:precompile
-rake sunspot:solr:reindex
+bundle exec rake db:migrate RAILS_ENV=$ENV
+bundle exec rake assets:clean RAILS_ENV=$ENV
+bundle exec rake assets:precompile RAILS_ENV=$ENV
+bundle exec rake sunspot:solr:reindex RAILS_ENV=$ENV
 
