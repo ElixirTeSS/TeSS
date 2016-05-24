@@ -1,25 +1,25 @@
 <script>
-  function initMap() {
-    var myLatLng = {lat: <%=@event.latitude%>, lng: <%=@event.longitude%>};
+    function initMap() {
+        var myLatLng = {lat: <%=@event.latitude%>, lng: <%=@event.longitude%>};
 
-    // Create a map object and specify the DOM element for display.
-    var map = new google.maps.Map(document.getElementById('map'), {
-      center: myLatLng,
-      scrollwheel: true,
-      zoom: 5
-    });
+        // Create a map object and specify the DOM element for display.
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: myLatLng,
+            scrollwheel: true,
+            zoom: 5
+        });
 
-    // Create a marker and set its position.
-    var marker = new google.maps.Marker({
-      map: map,
-      position: myLatLng,
-      title: '<%= @event.title %>'
-    });
-  }
+        // Create a marker and set its position.
+        var marker = new google.maps.Marker({
+            map: map,
+            position: myLatLng,
+            title: '<%= @event.title %>'
+        });
+    }
 
-  $(document).ready(function(){
-    $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyCT1w2S_2I49FwJDKHGj9A9sO86Lp9nUdg&callback=initMap")
-  })
+    $(document).ready(function(){
+        $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyCT1w2S_2I49FwJDKHGj9A9sO86Lp9nUdg&callback=initMap")
+    })
 </script>
 
 <div class="row wrapper">
@@ -51,21 +51,16 @@
       </ul>
 
       <div class="tab-content">
-        <div id="home" class="tab-pane fade in active" itemscope itemtype="http://schema.org/Event">
+        <div id="home" class="tab-pane fade in active">
           <div class="row">
             <div class="page-header">
-              <%= content_tag 'h2', @event.title, itemprop: 'name' %>
-              <p><%= link_to @event.url, @event.url, :class =>'h5', :target => "_blank", itemprop: 'sameAs' %></p>
+              <h2><%= @event.title %></h2>
+              <p><%= link_to @event.url, @event.url, :class =>'h5', :target => "_blank" %></p>
             </div>
             <div class="col-md-4">
               <% if @event.provider and !@event.provider.blank? %>
                   <p><strong>Provider:</strong>
-                  <%= content_tag :span, nil,
-                                  {itemprop: 'organizer',
-                                  itemtype: 'http://schema.org/Organization'},
-                                  itemscope: true do %>
-                    <%= content_tag 'span', @event.provider, {itemprop: 'name'} %></p>
-                  <% end %>
+                    <%= @event.provider %></p>
               <% end %>
 
               <% if @event.field and !@event.field.empty? %>
@@ -76,7 +71,7 @@
 
               <% if @event.description and !@event.description.blank? %>
                   <p><strong>Description:</strong>
-                    <%= content_tag :span, @event.description, {itemprop: 'description'} %></p>
+                    <%= @event.description %></p>
               <% end %>
 
               <% if @event.category and !@event.category.empty? %>
@@ -86,12 +81,12 @@
 
               <% if @event.start and !@event.start.blank? %>
                   <p><strong>Start:</strong>
-                    <%= content_tag :span, @event.start, {itemprop: 'startDate'} %></p>
+                    <%= @event.start %></p>
               <% end %>
 
               <% if @event.end and !@event.end.blank? %>
                   <p><strong>End:</strong>
-                    <%= content_tag :span, @event.end, {itemprop: 'endDate'} %></p>
+                    <%= @event.end %></p>
               <% end %>
 
               <% if @event.sponsor and !@event.sponsor.blank? %>
@@ -99,34 +94,32 @@
                     <%= @event.sponsor %></p>
               <% end %>
 
-              <%= content_tag :span, nil, {itemprop: 'location',
-                                         itemtype: 'http://schema.org/PostalAddress'},
-                                         itemscope: false do %>
-                  <% if @event.venue and !@event.venue.blank? %>
-                      <p><strong>Venue:</strong>
-                        <%= content_tag 'span', @event.venue, {itemprop: 'streetAddress'} %></p>
-                  <% end %>
-
-                  <% if @event.city and !@event.city.blank? %>
-                      <p><strong>City:</strong>
-                        <%= content_tag 'span', @event.city, {itemprop: 'addressLocality'} %></p>
-                  <% end %>
-
-                  <% if @event.county and !@event.county.blank? %>
-                      <p><strong>County:</strong>
-                        <%= content_tag 'span', @event.county, {itemprop: 'addressRegion'} %></p>
-                  <% end %>
-
-                  <% if @event.country and !@event.country.blank? %>
-                      <p><strong>Country:</strong>
-                        <%= content_tag 'span', @event.country, {itemprop: 'addressCountry'} %></p>
-                  <% end %>
-
-                  <% if @event.postcode and !@event.postcode.blank? %>
-                      <p><strong>Postcode:</strong>
-                        <%= content_tag 'span', @event.postcode, {itemprop: 'postalCode'} %></p>
-                  <% end %>
+              <% if @event.venue and !@event.venue.blank? %>
+                  <p><strong>Venue:</strong>
+                    <%= @event.venue %></p>
               <% end %>
+
+              <% if @event.city and !@event.city.blank? %>
+                  <p><strong>City:</strong>
+                    <%= @event.city %></p>
+              <% end %>
+
+              <% if @event.county and !@event.county.blank? %>
+                  <p><strong>County:</strong>
+                    <%= @event.county %></p>
+              <% end %>
+
+              <% if @event.country and !@event.country.blank? %>
+                  <p><strong>Country:</strong>
+                    <%= @event.country %></p>
+              <% end %>
+
+              <% if @event.postcode and !@event.postcode.blank? %>
+                  <p><strong>Postcode:</strong>
+                    <%= @event.postcode %></p>
+              <% end %>
+
+              <%= render :partial => 'events/partials/event_schemaorg', :locals => {:event => @event} %>
 
               <!--<%# if @event.latitude and !@event.latitude.blank? %>-->
               <!--<p><strong>Latitude:</strong>
@@ -171,4 +164,3 @@
     </div>
   </div>
 </div>
-
