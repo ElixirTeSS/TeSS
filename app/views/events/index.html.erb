@@ -3,10 +3,16 @@
       reposition_tiles('masonry', 'masonry-brick');
       $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
           /*Load map script only once when event tab is selected*/
-          if (!loadedMapScript){
-              $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyCT1w2S_2I49FwJDKHGj9A9sO86Lp9nUdg&callback=initialize")
-          } else {
-              $.getScript("https://www.gstatic.com/charts/loader.js")
+          console.log(e.target.id)
+          if (e.target.id == 'caltab'){
+              if (!loadedCalendarScript){
+                  $.getScript('https://www.gstatic.com/charts/loader.js', function(){drawChart()})
+              }
+          }
+          if (e.target.id == 'maptab') {
+              if (!loadedMapScript){
+                  $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyCT1w2S_2I49FwJDKHGj9A9sO86Lp9nUdg&callback=initialize")
+              }
           }
           reposition_tiles('masonry', 'masonry-brick');
       })
@@ -97,11 +103,11 @@
 
       <ul class="nav nav-tabs">
         <li class="active">
-          <a data-toggle="tab" href="#home"><i class="fa fa-table"></i> Grid view</a></li>
+          <a data-toggle="tab" id="gridtab" href="#home"><i class="fa fa-table"></i> Grid view</a></li>
         <li>
-          <a data-toggle="tab" href="#map"><i class="fa fa-globe"></i> Map view</a></li>
+          <a data-toggle="tab" id="maptab" href="#map"><i class="fa fa-globe"></i> Map view</a></li>
         <li>
-          <a data-toggle="tab" href="#calendar"><i class="fa fa-calendar"></i> Calendar view</a>
+          <a data-toggle="tab" id="caltab" href="#calendar"><i class="fa fa-calendar"></i> Calendar view</a>
         </li>
       </ul>
 
@@ -122,8 +128,8 @@
           <div id="calendar-content">
             <br>
             <p class="h1">Calendar chart feature coming soon</p>
-            <img style="width:100%" src="http://blogs.opentext.com/wp-content/uploads/2015/03/calendar-chart-preview.png"/>
-            <%#= render :partial => "events/partials/events_calendar", :locals => {:events => @events} %>
+            <!--<img style="width:100%" src="http://blogs.opentext.com/wp-content/uploads/2015/03/calendar-chart-preview.png"/>-->
+            <%= render :partial => "events/partials/events_calendar", :locals => { :events => @events} %>
           </div>
         </div>
       </div>
