@@ -64,16 +64,31 @@
               <%= "in active" if @content_provider.events.count > 0 and @content_provider.materials.count < 1 %>
           ">
           <div class="row">
+            <% upcoming_events = @content_provider.events.select{|x| x.upcoming?} %>
+            <% past_events = @content_provider.events.select{|x| x.expired?} %>
+
             <div class="search-results-count">
-              <%= pluralize(@content_provider.events.count, 'event') %> found
+              <%= pluralize(upcoming_events.count, 'upcoming event') %>
             </div>
-            <% if !@content_provider.events.blank? %>
+            <% if !upcoming_events.blank? %>
                 <ul class="masonry media-grid" style="margin-top: 15px;">
-                  <% @content_provider.events.each do |event| %>
+                  <% upcoming_events.each do |event| %>
+                     <%= render event %>
+                  <% end %>
+                </ul>
+            <% end %>
+          </div>
+          <div class="row">
+            <div class="search-results-count">
+              <%= pluralize(past_events.count, 'past event') %>
+            </div>
+            <% if !past_events.blank? %>
+                <ul class="masonry media-grid" style="margin-top: 15px;">
+                  <% past_events.each do |event| %>
                       <%= render event %>
                   <% end %>
+                </ul>
             <% end %>
-            </ul>
           </div>
         </div>
         <div id="activity_log" class="tab-pane fade">

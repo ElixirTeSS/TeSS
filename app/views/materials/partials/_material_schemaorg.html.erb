@@ -1,13 +1,13 @@
 <div itemscope itemtype="http://schema.org/CreativeWork">
-  <%= content_tag :span, nil, {itemprop: 'name', content: material.title} %>
-  <%= content_tag :span, nil, {itemprop: 'url', content: material.url} %>
-  <%= content_tag :span, nil, {itemprop: 'sameAs', content: material_url(material) } %>
-  <%= content_tag :span, nil, {itemprop: 'description', content: material.short_description} if material.short_description and not material.short_description.empty? %>
+  <%= content_tag :span, material.title, {itemprop: 'name', content: material.title, class: 'schemaorg-element'} %>
+  <%= content_tag :span, material.url, {itemprop: 'url', content: material.url, class: 'schemaorg-element'} %>
+  <%= content_tag :span, material_url(material), {itemprop: 'sameAs', content: material_url(material), class: 'schemaorg-element' } %>
+  <%= content_tag :span, material.short_description, {itemprop: 'description', content: material.short_description, class: 'schemaorg-element'} if material.short_description and not material.short_description.empty? %>
 
   <%  if material.authors and not material.authors.empty? %>
       <% material.authors.each do |author| %>
         <span itemscope itemprop='author' itemtype="http://schema.org/Person">
-            <%= content_tag 'span', nil, {itemprop: 'name', content: author} %>
+            <%= content_tag 'span', author, {itemprop: 'name', content: author, class: 'schemaorg-element'} %>
         </span>
       <% end %>
   <% end %>
@@ -15,30 +15,48 @@
   <%  if material.contributors and not material.contributors.empty? %>
       <% material.contributors.each do |contributor| %>
         <span itemscope itemprop='contributor' itemtype="http://schema.org/Person">
-            <%= content_tag 'span', nil, {itemprop: 'name', content: contributor} %>
+            <%= content_tag 'span', contributor,
+                            {itemprop: 'name',
+                             content: contributor,
+                             class: 'schemaorg-element'
+                            } %>
         </span>
       <% end %>
   <% end %>
 
   <%  if material.scientific_topics and not material.scientific_topics.empty? %>
       <% material.scientific_topics.each do |scientific_topic| %>
-        <%= content_tag 'span', nil, {itemprop: 'genre', content: scientific_topic.preferred_label} %>
+        <%= content_tag 'span', scientific_topic.preferred_label,
+                        {itemprop: 'genre',
+                         content: scientific_topic.preferred_label,
+                         class: 'schemaorg-element'
+                        } %>
       <% end %>
   <% end %>
 
   <%  if material.keywords and not material.keywords.empty? %>
-      <%= content_tag 'span', nil, {itemprop: 'keywords', content: material.keywords.join(', ')} %>
+      <% keywords = material.keywords.join(', ') %>
+      <%= content_tag 'span', keywords, {itemprop: 'keywords', content: keywords, class: 'schemaorg-element'} %>
   <% end %>
 
   <%  if material.target_audience and not material.target_audience.empty? %>
       <% material.target_audience.each do |target_audience| %>
         <span itemscope itemprop='audience' itemtype="http://schema.org/PeopleAudience">
-            <%= content_tag 'span', nil, {itemprop: 'name', content: target_audience} %>
+            <%= content_tag 'span', target_audience,
+                            {itemprop: 'name',
+                             content: target_audience,
+                             class: 'schemaorg-element'
+                            } %>
         </span>
       <% end %>
   <% end %>
 
-  <%= content_tag 'span', nil, {itemprop: 'dateCreated', content: material.remote_created_date} if material.remote_created_date and not material.remote_created_date.to_s.empty? %>
-  <%= content_tag 'span', nil, {itemprop: 'dateModified', content: material.remote_updated_date} if material.remote_updated_date and not material.remote_updated_date.to_s.empty? %>
-
+  <%= content_tag 'span', material.remote_created_date,
+                  {itemprop: 'dateCreated',
+                   content: material.remote_created_date,
+                   class: 'schemaorg-element'} if material.remote_created_date and not material.remote_created_date.to_s.empty? %>
+  <%= content_tag 'span', material.remote_updated_date,
+                  {itemprop: 'dateModified',
+                   content: material.remote_updated_date,
+                   class: 'schemaorg-element'} if material.remote_updated_date and not material.remote_updated_date.to_s.empty? %>
 </div>

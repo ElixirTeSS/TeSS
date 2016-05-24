@@ -17,31 +17,38 @@ class Material < ActiveRecord::Base
       text :short_description
       text :doi
       string :authors, :multiple => true
+      text :authors
       string :scientific_topics, :multiple => true do
         if !self.scientific_topics.nil?
           self.scientific_topics.map{|x| x.preferred_label}
         end
       end
       string :target_audience, :multiple => true
+      text :target_audience
       string :keywords, :multiple => true
+      text :keywords
       string :licence, :multiple => true
+      text :licence
       string :difficulty_level, :multiple => true
+      text :difficulty_level
       string :contributors, :multiple => true
+      text :contributors
       string :content_provider do
         if !self.content_provider.nil?
           self.content_provider.title
         end
       end
-      string :submitter, :multiple => true do
-        if user = User.find_by_id(self.user_id)
-          if user.profile.firstname or user.profile.surname
-            "#{user.profile.firstname} #{user.profile.surname}"
-          else
-            user.username
-          end
+      text :content_provider do
+        if !self.content_provider.nil?
+          self.content_provider.title
         end
       end
-
+      string :submitter, :multiple => true do
+        submitter_index
+      end
+      text :submitter do
+        submitter_index
+      end
       time :updated_at
     end
   end
@@ -88,5 +95,17 @@ class Material < ActiveRecord::Base
   def self.facet_fields
     %w(content_provider scientific_topics target_audience keywords licence difficulty_level authors contributors)
   end
+
+  private
+  def submitter_index
+    if user = User.find_by_id(self.user_id)
+      if user.profile.firstname or user.profile.surname
+        return "#{user.profile.firstname} #{user.profile.surname}"
+      else
+        return user.username
+      end
+    end
+  end
+
 end
 
