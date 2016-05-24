@@ -2,7 +2,7 @@
   <%= content_tag :span, material.title, {itemprop: 'name', content: material.title, class: 'schemaorg-element'} %>
   <%= content_tag :span, material.url, {itemprop: 'url', content: material.url, class: 'schemaorg-element'} %>
   <%= content_tag :span, material_url(material), {itemprop: 'sameAs', content: material_url(material), class: 'schemaorg-element' } %>
-  <%= content_tag :span, material.short_description, {itemprop: 'description', content: material.short_description} if material.short_description and not material.short_description.empty? %>
+  <%= content_tag :span, material.short_description, {itemprop: 'description', content: material.short_description, class: 'schemaorg-element'} if material.short_description and not material.short_description.empty? %>
 
   <%  if material.authors and not material.authors.empty? %>
       <% material.authors.each do |author| %>
