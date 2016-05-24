@@ -5,4 +5,7 @@
   <p class="dont-break-out"><%= [event.venue, event.city, event.country].reject { |field_value| field_value.blank? }.join(", ")%></p>
   <%= link_to '', event, :class=>"media-view" %>
   <%= render :partial => 'events/partials/event_schemaorg', :locals => {:event => event} %>
+  <% if event.started? %>
+      <i>This event is currently in progress</i>
+  <% end %>
 </li>
