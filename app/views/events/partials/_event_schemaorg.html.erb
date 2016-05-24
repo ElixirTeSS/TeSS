@@ -1,0 +1,43 @@
+<div itemscope itemtype="http://schema.org/Event">
+  <% address_string = [event.venue, event.city, event.country].reject { |field_value| field_value.blank? }.join(", ")%>
+
+  <%= content_tag :span, nil, {itemprop: 'name', content: event.title} %>
+  <%= content_tag :span, nil, {itemprop: 'url', content: event.url} %>
+  <%= content_tag :span, nil, {itemprop: 'sameAs', content: event_url(event) } %>
+  <%= content_tag :span, nil, {itemprop: 'description', content: event.description} if event.description and not event.description.empty? %>
+  <%= content_tag :span, nil, {itemprop: 'startDate', content: event.start}  if event.start and not event.start.nil? %>
+  <%= content_tag :span, nil, {itemprop: 'endDate', content: event.end} if event.end and not event.end.nil? %>
+  <%  if event.provider and not event.provider.empty? %>
+      <span itemscope itemprop='organizer' itemtype="http://schema.org/Organization">
+      <!--   <%#= content_tag :span, nil, {itemprop: 'organizer',
+                                    itemtype: 'http://schema.org/Organization'},
+                                    itemscope: true do %>-->
+        <%= content_tag 'span', nil, {itemprop: 'name', content: event.provider} %>
+      </span>
+     <%# end if event.provider and not event.provider.empty? %>
+  <% end %>
+
+
+  <% if (event.venue and not event.venue.empty?) or
+        (event.city and not event.city.empty?) or
+        (event.county and not event.county.empty?) or
+        (event.country and not event.country.empty?) or
+        (event.postcode and not event.postcode.empty?) %>
+  <!--    <%#= content_tag :div, nil, {itemprop: 'location',
+                                 itemtype: 'http://schema.org/PostalAddress'},
+                                 itemscope: true do %>-->
+  <span itemscope itemprop='location' itemtype="http://schema.org/PostalAddress">
+    <%= content_tag 'span', nil, {itemprop: 'name', content: address_string} if address_string and not address_string.empty? %>
+    <%= content_tag 'span', nil, {itemprop: 'streetAddress', content: event.venue} if event.venue and not event.venue.empty? %>
+    <%= content_tag 'span', nil, {itemprop: 'addressLocality', content: event.city} if event.city and not event.city.empty? %>
+    <%= content_tag 'span', nil, {itemprop: 'addressRegion', content: event.county} if event.county and not event.county.empty? %>
+    <%= content_tag 'span', nil, {itemprop: 'addressCountry', content: event.country} if event.country and not event.country.empty? %>
+    <%= content_tag 'span', nil, {itemprop: 'postalCode', content: event.postcode} if event.postcode and not event.postcode.empty? %>
+  </span>
+<%# end if (event.venue and not event.venue.empty?) or
+            (event.city and not event.city.empty?) or
+            (event.county and not event.county.empty?) or
+            (event.country and not event.country.empty?) or
+            (event.postcode and not event.postcode.empty?) %>
+   <% end %>
+</div>

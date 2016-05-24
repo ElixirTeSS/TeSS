@@ -5,6 +5,8 @@
           /*Load map script only once when event tab is selected*/
           if (!loadedMapScript){
               $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyCT1w2S_2I49FwJDKHGj9A9sO86Lp9nUdg&callback=initialize")
+          } else {
+              $.getScript("https://www.gstatic.com/charts/loader.js")
           }
           reposition_tiles('masonry', 'masonry-brick');
       })
@@ -97,7 +99,9 @@
         <li class="active">
           <a data-toggle="tab" href="#home"><i class="fa fa-table"></i> Grid view</a></li>
         <li>
-          <a data-toggle="tab" href="#map"><i class="fa fa-globe"></i> Map view</a>
+          <a data-toggle="tab" href="#map"><i class="fa fa-globe"></i> Map view</a></li>
+        <li>
+          <a data-toggle="tab" href="#calendar"><i class="fa fa-globe"></i> Calendar view</a>
         </li>
       </ul>
 
@@ -112,6 +116,11 @@
         <div id="map" class="tab-pane fade">
           <div id="map-content">
             <%= render :partial => "events/partials/events_map", :locals => {:events => @events} %>
+          </div>
+        </div>
+        <div id="calendar" class="tab-pane fade">
+          <div id="calendar-content">
+            <%= render :partial => "events/partials/events_calendar", :locals => {:events => @events} %>
           </div>
         </div>
       </div>

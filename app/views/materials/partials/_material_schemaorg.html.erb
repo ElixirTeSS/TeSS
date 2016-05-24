@@ -1,0 +1,36 @@
+<div itemscope itemtype="http://schema.org/CreativeWork">
+  <%= content_tag :span, nil, {itemprop: 'name', content: material.title} %>
+  <%= content_tag :span, nil, {itemprop: 'url', content: material.url} %>
+  <%= content_tag :span, nil, {itemprop: 'sameAs', content: material_url(material) } %>
+  <%= content_tag :span, nil, {itemprop: 'description', content: material.short_description} if material.short_description and not material.short_description.empty? %>
+
+  <%  if material.authors and not material.authors.empty? %>
+      <% material.authors.each do |author| %>
+        <span itemscope itemprop='author' itemtype="http://schema.org/Person">
+            <%= content_tag 'span', nil, {itemprop: 'name', content: author} %>
+        </span>
+      <% end %>
+  <% end %>
+
+  <%  if material.contributors and not material.contributors.empty? %>
+      <% material.contributors.each do |contributor| %>
+        <span itemscope itemprop='contributor' itemtype="http://schema.org/Person">
+            <%= content_tag 'span', nil, {itemprop: 'name', content: contributor} %>
+        </span>
+      <% end %>
+  <% end %>
+
+  <%  if material.scientific_topics and not material.scientific_topics.empty? %>
+      <% material.scientific_topics.each do |scientific_topic| %>
+        <%= content_tag 'span', nil, {itemprop: 'genre', content: scientific_topic.preferred_label} %>
+      <% end %>
+  <% end %>
+
+  <%  if material.keywords and not material.keywords.empty? %>
+      <%= content_tag 'span', nil, {itemprop: 'keywords', content: material.keywords.join(', ')} %>
+  <% end %>
+
+  <%= content_tag 'span', nil, {itemprop: 'dateCreated', content: material.remote_created_date} if material.remote_created_date and not material.remote_created_date.to_s.empty? %>
+  <%= content_tag 'span', nil, {itemprop: 'dateModified', content: material.remote_updated_date} if material.remote_updated_date and not material.remote_updated_date.to_s.empty? %>
+
+</div>

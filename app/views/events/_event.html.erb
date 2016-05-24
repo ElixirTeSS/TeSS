@@ -1,27 +1,8 @@
-<li class="masonry-brick media-item" itemscope itemtype="http://schema.org/Event">
-  <%= content_tag 'h3', event.title, class: "media-heading dont-break-out", itemprop: 'name' %>
-    <!--<p><button class="btn btn-success"><a href="<%#= event.url %>">View Event <span class="fa fa-external-link" aria-hidden="true"></span></a></button> </p>-->
-    <p><%= neatly_printed_date_range(event.start, event.end) %></p>
-
-    <p class="dont-break-out"><%= [event.venue, event.city, event.country].reject { |field_value| field_value.blank? }.join(", ")%></p>
-    <%= link_to '', event, :class=>"media-view" %>
-
-   <%= content_tag :span, nil, {itemprop: 'description', content: event.description} if event.description.any? %>
-   <%= content_tag :span, nil, {itemprop: 'startDate', content: event.start}  if event.start.any? %>
-   <%= content_tag :span, nil, {itemprop: 'endDate', content: event.end} if event.end.any? %>
-   <%= content_tag :span, nil, {itemprop: 'organizer',
-                                itemtype: 'http://schema.org/Organization'},
-                                itemscope: true do %>
-      <%= content_tag 'span', nil, {itemprop: 'name', content: event.provider} %>
-    <% end if event.provider.any? %>
-    <%= content_tag :span, nil, {itemprop: 'location',
-                                 itemtype: 'http://schema.org/PostalAddress'},
-                                 itemscope: false do %>
-      <%= content_tag 'span', nil, {itemprop: 'streetAddress', content: event.venue} if event.venue.any? %>
-      <%= content_tag 'span', nil, {itemprop: 'addressLocality', content: event.city} if event.city.any? %>
-      <%= content_tag 'span', nil, {itemprop: 'addressRegion', content: event.county} if event.county.any? %>
-      <%= content_tag 'span', nil, {itemprop: 'addressCountry', content: event.country} if event.country.any? %>
-      <%= content_tag 'span', nil, {itemprop: 'postalCode', content: event.postcode} if event.postcode.any? %>
-  <% end if event.venue.any? or event.city.any? or event.county.any? or event.country.any? or event.postcode.any? %>
+<li class="masonry-brick media-item">
+  <h3 class="media-heading dont-break-out"><%= event.title %></h3>
+  <!--<p><button class="btn btn-success"><a href="<%#= event.url %>">View Event <span class="fa fa-external-link" aria-hidden="true"></span></a></button> </p>-->
+  <p><%= neatly_printed_date_range(event.start, event.end) %></p>
+  <p class="dont-break-out"><%= [event.venue, event.city, event.country].reject { |field_value| field_value.blank? }.join(", ")%></p>
+  <%= link_to '', event, :class=>"media-view" %>
+  <%= render :partial => 'events/partials/event_schemaorg', :locals => {:event => event} %>
 </li>
-
