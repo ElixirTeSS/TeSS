@@ -69,7 +69,11 @@ class Event < ActiveRecord::Base
   # longitude:double
 
   def upcoming?
-    return (Time.now < self.end)
+    if self.end
+      return (Time.now < self.end)
+    else
+      return false
+    end
   end
 
   def started?
@@ -81,10 +85,13 @@ class Event < ActiveRecord::Base
   end
 
   def expired?
-    return Time.now > self.start
+    if self.start
+      return Time.now > self.start
+    else
+      return false
+    end
   end
-
-
+  
 
   def self.facet_fields
     %w( category country field provider city sponsor keywords venue )
