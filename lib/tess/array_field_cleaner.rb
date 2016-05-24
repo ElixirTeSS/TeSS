@@ -9,6 +9,7 @@ module TeSS
 
     module ClassMethods
 
+      # Remove empty array elements
       def clean_array_fields(*fields)
         cattr_accessor :fields_to_clean
 
