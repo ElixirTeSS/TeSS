@@ -30,6 +30,14 @@
       <%= content_tag 'span', nil, {itemprop: 'keywords', content: material.keywords.join(', ')} %>
   <% end %>
 
+  <%  if material.target_audience and not material.target_audience.empty? %>
+      <% material.target_audience.each do |target_audience| %>
+        <span itemscope itemprop='audience' itemtype="http://schema.org/PeopleAudience">
+            <%= content_tag 'span', nil, {itemprop: 'name', content: target_audience} %>
+        </span>
+      <% end %>
+  <% end %>
+
   <%= content_tag 'span', nil, {itemprop: 'dateCreated', content: material.remote_created_date} if material.remote_created_date and not material.remote_created_date.to_s.empty? %>
   <%= content_tag 'span', nil, {itemprop: 'dateModified', content: material.remote_updated_date} if material.remote_updated_date and not material.remote_updated_date.to_s.empty? %>
 
