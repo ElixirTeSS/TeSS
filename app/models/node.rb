@@ -1,3 +1,5 @@
+require 'tess/array_field_cleaner'
+
 class Node < ActiveRecord::Base
 
   include PublicActivity::Common
