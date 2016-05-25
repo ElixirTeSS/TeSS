@@ -146,5 +146,12 @@ module ApplicationHelper
     end
   end
 
+  def info_button(title, &block)
+    button_tag(type: 'button', class: 'btn btn-default has-popover',
+               data: { toggle: 'popover', placement: 'bottom', trigger: 'focus',
+                       title: title, content: capture(&block) }) do
+      content_tag(:i, '', class: 'glyphicon glyphicon-info-sign info-block')
+    end
+  end
 
 end
