@@ -1,6 +1,4 @@
 class MaterialsController < ApplicationController
-  require 'bread_crumbs'
-
   before_action :set_material, only: [:show, :edit, :update, :destroy, :update_packages]
 
   include TeSS::BreadCrumbs

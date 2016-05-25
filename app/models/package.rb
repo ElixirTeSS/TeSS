@@ -1,6 +1,3 @@
-require 'tess/array_field_cleaner'
-require 'tess/autocomplete_manager'
-
 class Package < ActiveRecord::Base
 	include PublicActivity::Common
   has_paper_trail

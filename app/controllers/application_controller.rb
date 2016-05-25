@@ -1,7 +1,4 @@
 class ApplicationController < ActionController::Base
-
-  require 'bread_crumbs'
-
   include PublicActivity::StoreController
 
   before_action :configure_permitted_parameters, if: :devise_controller?

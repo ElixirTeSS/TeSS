@@ -1,5 +1,3 @@
-require 'tess/array_field_cleaner'
-
 class ContentProvider < ActiveRecord::Base
 
   include PublicActivity::Common

@@ -1,6 +1,4 @@
 require 'test_helper'
-require 'licence_dictionary'
-require 'bread_crumbs'
 
 class LicenceDictionaryTest < ActiveSupport::TestCase
 
