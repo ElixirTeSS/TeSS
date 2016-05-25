@@ -10,7 +10,6 @@
 
       <!-- SIDEBAR -->
       <div class="col-md-3" id="sidebar">
-        <%= render :partial => "nodes/partials/general_node_info" %>
         <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @nodes, :resource_type => 'node'} %>
       </div>
 
@@ -22,6 +21,13 @@
           <%= link_to new_node_path, :class=>"btn btn-primary" do %>
               <i class="fa fa-plus"></i> Create node
           <% end %>
+          <div class="pull-right">
+            <%= info_button('What are ELIXIR Nodes?') do %>
+                ELIXIR is a pan-European research infrastructure consisting of the Hub and a number of, primarily,
+                national nodes that provide services to their local communities.
+                Select a node to find out more about its training events, training provision, staff and member institutions.
+            <% end %>
+          </div>
         </div>
 
         <%= render :partial=> "search/common/search_box", :locals=>{:resource_path => nodes_path} %>

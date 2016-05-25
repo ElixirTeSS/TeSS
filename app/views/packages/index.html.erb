@@ -10,7 +10,6 @@
 
       <!-- SIDEBAR -->
       <div class="col-md-3" id="sidebar">
-        <%= render :partial => "packages/partials/general_package_info" %>
         <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @packages, :resource_type => 'package'} %>
       </div>
       
@@ -19,9 +18,15 @@
 
         <!-- CREATE BUTTON -->
         <div class="row">
-            <%= link_to new_package_path, :class=>"btn btn-primary" do %>
-                <i class="fa fa-plus-square"></i> Create package
+          <%= link_to new_package_path, :class=>"btn btn-primary" do %>
+              <i class="fa fa-plus-square"></i> Create package
+          <% end %>
+          <div class="pull-right">
+            <%= info_button('What are packages in TeSS?') do %>
+                Packages can be thought of as folders in which users may collect particular training materials or events,
+                from the full catalogue available within TeSS, to address their specific training needs.
             <% end %>
+          </div>
         </div>
 
         <!-- SEARCH BAR -->

@@ -10,29 +10,21 @@
 
       <!-- SIDEBAR -->
       <div class="col-md-3" id="sidebar">
-        <%= render :partial => "content_providers/partials/general_content_provider_info" %>
         <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @content_providers, :resource_type => 'content_provider'} %>
       </div>
  
       <div class="col-md-9">
-
         <!-- CREATE NEW BUTTON -->
         <div class="row">
-          <div class="col-md-6" style="padding-left: 0px;">
-            <%= link_to new_content_provider_path, :class=>"btn btn-primary" do %>
-                <i class="fa fa-plus-square"></i> Register content provider
+          <%= link_to new_content_provider_path, :class=>"btn btn-primary" do %>
+              <i class="fa fa-plus-square"></i> Register content provider
+          <% end %>
+          <div class="pull-right">
+            <%= info_button('What are Content Providers in TeSS?') do %>
+                Content providers are entities – e.g. institutions members of ELIXIR nodes,
+                independent institutions or related portals, like GOBLET, the Software and Data Carpentry Foundations,
+                etc. – that provide training materials of relevance to life sciences and ELIXIR.
             <% end %>
-          </div>
-          <div class="col-md-6 pull-right">
-            <script>
-                $(document).ready(function(){
-                    $('[data-toggle="popover"]').popover();
-                });
-            </script>
-            <% content_provider_info_popover = "Content providers are entities – e.g. institutions members of ELIXIR nodes, independent institutions or related portals, like GOBLET, the Software and Data Carpentry Foundations, etc. – that provide training materials of relevance to life sciences and ELIXIR." %>
-            <button class="btn btn-default pull-right" data-toggle="popover" data-placement="bottom" data-trigger="focus" title="What are Content Providers in TeSS?" data-content="<%= content_provider_info_popover %>">
-              <i class="glyphicon glyphicon-info-sign info-block"></i>
-            </button>
           </div>
         </div>
 
