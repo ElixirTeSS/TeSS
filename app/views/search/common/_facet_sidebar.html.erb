@@ -19,11 +19,11 @@ Variable that should be available
       <% @facet_fields.each do |facet_field| %>
           <% if resources.facet(facet_field).rows.count > 0 %>
               <!-- Title -->
-              <li><h4 class="nav-heading"><%= (facet_field.humanize == 'User') ? 'Owner' : facet_field.humanize %></h4></li>
+              <li><h4 class="nav-heading"><%= (facet_field.humanize == 'User') ? 'Owner' : ((facet_field == 'name' && resource_type == 'node') ? "Node" : facet_field.humanize) %></h4></li>
 
               <!-- Select first 10 or all filters-->
               <% showing_all = false %>
-              <% if params.include?("#{facet_field}_all") %>
+              <% if params.include?("#{facet_field}_all") || resource_type.humanize == 'Node' %>
                   <% showing_all = true %>
                   <% filters_to_show = resources.facet(facet_field).rows %>
               <% else %>
@@ -49,7 +49,7 @@ Variable that should be available
                     <%= show_more_link(facet_field) %>
                   </li>
               <% end %>
-              <% if showing_all and filters_to_show.count >= 10 %>
+              <% if (showing_all and filters_to_show.count >= 10 and !resource_type == 'node') %>
                   <li class="nav-item">
                         <%= show_less_link(facet_field) %>
                   </li>
