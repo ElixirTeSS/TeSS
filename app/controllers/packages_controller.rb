@@ -7,7 +7,6 @@ class PackagesController < ApplicationController
   # GET /packages
   # GET /packages.json
   def index
-    @packages = @index_resources
   end
 
   # GET /packages/1
