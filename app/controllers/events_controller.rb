@@ -7,10 +7,8 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
-    @events = @index_resources
-
     respond_to do |format|
-      format.json { render json: @events.results }
+      format.json { render json: @events }
       format.html
     end
   end
