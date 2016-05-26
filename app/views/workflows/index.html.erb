@@ -1,59 +1,49 @@
-<!--<p id="notice"><%#= notice %></p>-->
-
-<!-- SIDEBAR | RESULTS -->
-<div class="row wrapper">
+<div class="wrapper">
   <% if SOLR_ENABLED %>
-
-      <!-- SIDEBAR -->
-      <div class="col-md-3" id="sidebar">
-        <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @workflows, :resource_type => 'workflow'} %>
+      <div id="sidebar">
+        <%= render partial: "search/common/facet_sidebar", locals:  { resources: @workflows_results, resource_type: 'workflow' } %>
       </div>
-
-      <!-- RESULTS -->
-      <div class="col-md-9">
-        <!-- SEARCH BAR -->
-
-        <div class="row">
-          <%= link_to new_workflow_path, :class=>"btn btn-primary disabled" do %>
-              <i class="fa fa-plus"></i> Create workflow
-          <% end %>
-        </div>
-
-        <div class="row">
-          <%#= render :partial=> "search/common/search_box", :locals=>{:resource_path => workflows_path} %>
-        </div>
-
-        <!-- APPLIED FILTERS AND NUMBER OF RESULTS -->
-        <div class="row">
-          <%#= render :partial => "search/common/search_info", :locals=>{:resources=>@workflows}  %>
-        </div>
-
-        <!-- PAGINATION -->
-        <div class="row">
-          <%#= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@workflows} unless (@workflows.blank? or @workflows.results.blank?) %>
-        </div>
-
-        <hr>
-        <% @workflows = @workflows.results unless @workflows.blank? %>
-        <p class="empty">
-          This functionality is still under construction.
-        </p>
-        <p>
-          You can see examples of how Training Workflows will be implemented on the <a href="https://tess-old.elixir-uk.org/workflow/25c37b3b-f88a-42b1-a23e-a7563102823c"> old TeSS Pilot site</a> (now defunct).  
-        </p>
-        <a href="https://tess-old.elixir-uk.org/workflow/25c37b3b-f88a-42b1-a23e-a7563102823c">
-        <%= image_tag('workflow', :class=> "workflow_image") %>
-        </a>
-        
   <% end %>
 
-  <!-- ACTUAL RESULTS LIST -->
-  <% unless @workflows.blank? %>
-      <ul class="masonry media-grid">
-        <% @workflows.each do |workflow| %>
-            <%= render workflow %>
+  <div id="content">
+    <div class="row">
+      <%= link_to new_workflow_path, class: "btn btn-primary disabled" do %>
+          <i class="fa fa-plus"></i> Create workflow
+      <% end %>
+      <div class="pull-right">
+        <%= info_button('What are ELIXIR workflows?') do %>
+            ELIXIR is a pan-European research infrastructure consisting of the Hub and a number of, primarily,
+            national workflows that provide services to their local communities.
+            Select a workflow to find out more about its training events, training provision, staff and member institutions.
         <% end %>
-      </ul>
-  <% end %>
+      </div>
+    </div>
+
+    <% if false && SOLR_ENABLED %>
+        <div class="row">
+          <%= render partial: "search/common/search_box", locals: { resource_path: workflows_path } %>
+          <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
+            <i class="fa fa-filter"></i> Filters
+          </button>
+          <%= render partial: "search/common/search_info", locals: { resources: @workflows_results, resource_type: 'workflow' } %>
+          <%= render partial: "search/common/search_filters", locals: { resources: @workflows_results } %>
+        </div>
+    <% end %>
+
+    <%# render partial: "search/common/pagination_bar", locals: { resources: @workflows } %>
+
+    <hr>
+
+    <p class="empty">
+      This functionality is still under construction.
+    </p>
+    <p>
+      You can see examples of how Training Workflows will be implemented on the <a href="https://tess-old.elixir-uk.org/workflow/25c37b3b-f88a-42b1-a23e-a7563102823c"> old TeSS Pilot site</a> (now defunct).
+    </p>
+    <a href="https://tess-old.elixir-uk.org/workflow/25c37b3b-f88a-42b1-a23e-a7563102823c">
+      <%= image_tag('workflow', :class=> "workflow_image") %>
+    </a>
+
+    <%= render partial: 'common/masonry_grid', locals: { objects: @workflows } %>
   </div>
 </div>

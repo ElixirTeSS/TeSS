@@ -39,10 +39,8 @@ class MaterialsController < ApplicationController
   end
 
   def index
-    @materials = @index_resources
-
     respond_to do |format|
-      format.json { render json: @materials.results }
+      format.json { render json: @materials }
       format.html
     end
   end

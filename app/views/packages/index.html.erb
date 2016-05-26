@@ -1,68 +1,38 @@
-<script>
-  $(document).ready(function(){
-    reposition_tiles('masonry', 'masonry-brick');
-  })
-</script>
-
-<!-- SIDEBAR | RESULTS -->
-<div class="row wrapper">
+<div class="wrapper">
   <% if SOLR_ENABLED %>
-
-      <!-- SIDEBAR -->
-      <div class="col-md-3" id="sidebar">
-        <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @packages, :resource_type => 'package'} %>
+      <div id="sidebar">
+        <%= render partial: "search/common/facet_sidebar", locals:  { resources: @packages_results, resource_type: 'package' } %>
       </div>
-      
-      <!-- RESULTS -->
-      <div class="col-md-9">
-
-        <!-- CREATE BUTTON -->
-        <div class="row">
-          <%= link_to new_package_path, :class=>"btn btn-primary" do %>
-              <i class="fa fa-plus-square"></i> Create package
-          <% end %>
-          <div class="pull-right">
-            <%= info_button('What are packages in TeSS?') do %>
-                Packages can be thought of as folders in which users may collect particular training materials or events,
-                from the full catalogue available within TeSS, to address their specific training needs.
-            <% end %>
-          </div>
-        </div>
-
-        <!-- SEARCH BAR -->
-        <div class="row">
-          <%= render :partial=> "search/common/search_box", :locals=>{:resource_path => packages_path} %>
-        </div>
-
-
-        <!-- APPLIED FILTERS AND NUMBER OF RESULTS -->
-        <div class="row">
-          <%= render :partial => "search/common/search_info", :locals=>{:resources=>@packages, :resource_type => 'package'}  %>
-        </div>
-
-        <div class="row">
-          <div class="col-md-12">
-            <%= render :partial => "search/common/search_filters", :locals => {:resources => @packages} %>
-          </div>
-        </div>
-
-
-        <!-- PAGINATION -->
-        <div class="row">
-          <%= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@packages} unless (@packages.blank? or @packages.results.blank?) %>
-        </div>
-
-        <hr>
-        <% @packages = @packages.results unless @packages.blank? %>
   <% end %>
 
-  <!-- ACTUAL RESULTS LIST -->
-  <% unless @packages.blank? %>
-    <ul class="masonry media-grid">
-      <% @packages.each do |package| %>
-          <%= render package %>
+  <div id="content">
+    <div class="row">
+      <%= link_to new_package_path, :class=>"btn btn-primary" do %>
+          <i class="fa fa-plus-square"></i> Create package
       <% end %>
-    </ul>
-  <% end %>
+      <div class="pull-right">
+        <%= info_button('What are packages in TeSS?') do %>
+            Packages can be thought of as folders in which users may collect particular training materials or events,
+            from the full catalogue available within TeSS, to address their specific training needs.
+        <% end %>
+      </div>
+    </div>
+
+    <% if SOLR_ENABLED %>
+        <div class="row">
+          <%= render partial: "search/common/search_box", locals: { resource_path: packages_path } %>
+          <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
+            <i class="fa fa-filter"></i> Filters
+          </button>
+          <%= render partial: "search/common/search_info", locals: { resources: @packages_results, resource_type: 'package' } %>
+          <%= render partial: "search/common/search_filters", locals: { resources: @packages_results } %>
+        </div>
+    <% end %>
+
+    <%= render partial: "search/common/pagination_bar", locals: { resources: @packages } %>
+
+    <hr>
+
+    <%= render partial: 'common/masonry_grid', locals: { objects: @packages } %>
   </div>
 </div>
