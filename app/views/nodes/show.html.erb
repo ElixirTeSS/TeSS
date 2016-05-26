@@ -3,7 +3,13 @@
 <div class="row wrapper">
   <div class="col-md-12">
     <div class="row" style="padding: 10px 5px 0px 0px;">
-      <div class="content_action">
+      <div>
+        <h2 style="margin-top: 0px;">
+          <%= country_flag(@node.country_code, class: 'large-flag') %>
+          <%=t '.title', :default => @node.name %>
+        </h2>
+      </div>
+      <div class="content_action" style="margin-top: -50px;">
         <%= link_to t('.back', :default => t("helpers.links.back")),
                     :back, :class => 'btn btn-info'  %>
         <% if !current_user.nil? and policy(@node).update? %>
@@ -18,9 +24,9 @@
                         :class => 'btn btn-danger' %>
         <% end %>
         <% unless @node.home_page.blank? %>
-          <a href="<%= @node.home_page %>" target="_blank" type="submit" class="btn btn-success">
-            <span class="fa fa-external-link"></span> View home page
-          </a>
+            <a href="<%= @node.home_page %>" target="_blank" type="submit" class="btn btn-success">
+              <span class="fa fa-external-link"></span> View home page
+            </a>
         <% end %>
       </div>
     </div>
@@ -30,6 +36,12 @@
           <a data-toggle="tab" href="#home"><i class="<%= icon_class_for_model('nodes') %>"></i> Node</a>
         </li>
         <li>
+          <a data-toggle="tab" href="#materials"><i class="<%= icon_class_for_model('materials') %>"></i> Materials</a>
+        </li>
+        <li>
+          <a data-toggle="tab" href="#events"><i class="<%= icon_class_for_model('events') %>"></i> Events</a>
+        </li>
+        <li>
           <a data-toggle="tab" href="#activity_log"><i class="<%= icon_class_for_model('activity_logs') %>"></i> Activity log</a>
         </li>
       </ul>
@@ -37,19 +49,20 @@
       <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
           <div class="row">
-            <div class="page-header dont-break-out">
-              <h2>
-                <%= country_flag(@node.country_code, class: 'large-flag') %>
-                <%=t '.title', :default => @node.name %>
-              </h2>
+            <div class="dont-break-out" style="padding: 10px;">
+              <% unless @node.description.blank? %>
+                  <p><%= @node.description %></p>
+              <% end %>
+              <p>
+                <b>Status: </b>
+                <%= @node.member_status %>
+              </p>
               <% unless @node.home_page.blank? %>
                   <p><%= link_to @node.home_page, @node.home_page, :class =>'h5', :target => "_blank" %></p>
               <% end %>
               <% unless @node.twitter.blank? %>
                   <p><%= twitter_link @node.twitter %></p>
               <% end %>
-            </div>
-            <div>
               <% training_coordinators = @node.staff.training_coordinators %>
               <p>
                 <b><%= 'Training coordinator'.pluralize(training_coordinators.count) -%>: </b>
@@ -58,18 +71,21 @@
 
               <% other_staff = @node.staff.other_roles %>
               <% if other_staff.any? %>
-                <p>
-                  <b>Staff: </b>
-                  <%= node_staff_list(other_staff) %>
-                </p>
+                  <p>
+                    <b>Staff: </b>
+                    <%= node_staff_list(other_staff) %>
+                  </p>
               <% end %>
-
               <p>
                 <b>Institutions: </b>
                 <%= @node.institutions.blank? ? empty_tag(:span, 'none specified') : @node.institutions.join(', ') %>
               </p>
             </div>
           </div>
+        </div>
+        <div id="materials" class="tab-pane fade">
+        </div>
+        <div id="events" class="tab-pane fade">
         </div>
         <div id="activity_log" class="tab-pane fade">
           <%= render :partial => "activities/activity_log", :locals => {:resource => @node} %>
