@@ -13,3 +13,17 @@ two:
   image_url: http://google.com
   description: MyTextAgain
   user: regular_user
+
+provider_with_invalid_image_url:
+  title: MyTextAgain
+  url: http://google.com
+  image_url: invalid URL
+  description: MyTextAgain
+  user: regular_user
+
+provider_with_empty_image_url:
+  title: MyTextAgain
+  url: http://google.com
+  image_url:
+  description: MyTextAgain
+  user: regular_user
