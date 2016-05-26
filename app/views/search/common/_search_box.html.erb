@@ -5,8 +5,8 @@ Parameters
 
 <% placeholder = "Search" + (params[:controller]=='search' ? '...' : " " + params[:controller].humanize(capitalize: false) + "...") %>
 
-<%= form_tag resource_path, :class => "form-inline pull-right", :role=>"form", :method => :get, :enforce_utf8 => false do %>
-    <div class="input-group">
+<%= form_tag resource_path, :role=>"form", :method => :get, :enforce_utf8 => false do %>
+    <div class="input-group responsive-search-box">
       <%= text_field_tag "q", params[:q], :class => 'form-control', :placeholder => placeholder %>
       <div class="input-group-btn">
         <button id="search-link" class="btn btn-default">

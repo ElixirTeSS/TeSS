@@ -11,10 +11,14 @@ module SearchableIndex
 
   def fetch_resources
     if SOLR_ENABLED
-      @index_resources = solr_search(@model, @search_params, @facet_params, @page, @sort_by)
+      @search_results = solr_search(@model, @search_params, @facet_params, @page, @sort_by)
+      @index_resources = @search_results.results
+      instance_variable_set("@#{controller_name}_results", @search_results) #e.g. @nodes_results
     else
       @index_resources = @model.all
     end
+
+    instance_variable_set("@#{controller_name}", @index_resources) # e.g. @nodes
   end
 
   def set_params

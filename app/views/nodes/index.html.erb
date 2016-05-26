@@ -1,19 +1,22 @@
 <div class="wrapper">
   <% if SOLR_ENABLED %>
       <div id="sidebar">
-        <%= render partial: "search/common/facet_sidebar", locals:  { resources: @nodes, resource_type: 'node' } %>
+        <%= render partial: "search/common/facet_sidebar", locals:  { resources: @nodes_results, resource_type: 'node' } %>
       </div>
   <% end %>
+
   <div id="content">
-    <%= link_to new_node_path, class: "btn btn-primary" do %>
-        <i class="fa fa-plus"></i> Create node
-    <% end %>
-    <div class="pull-right">
-      <%= info_button('What are ELIXIR Nodes?') do %>
-          ELIXIR is a pan-European research infrastructure consisting of the Hub and a number of, primarily,
-          national nodes that provide services to their local communities.
-          Select a node to find out more about its training events, training provision, staff and member institutions.
+    <div class="row">
+      <%= link_to new_node_path, class: "btn btn-primary" do %>
+          <i class="fa fa-plus"></i> Create node
       <% end %>
+      <div class="pull-right">
+        <%= info_button('What are ELIXIR Nodes?') do %>
+            ELIXIR is a pan-European research infrastructure consisting of the Hub and a number of, primarily,
+            national nodes that provide services to their local communities.
+            Select a node to find out more about its training events, training provision, staff and member institutions.
+        <% end %>
+      </div>
     </div>
 
     <% if SOLR_ENABLED %>
@@ -22,27 +25,15 @@
           <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
             <i class="fa fa-filter"></i> Filters
           </button>
-          <%= render partial: "search/common/search_info", locals: { resources: @nodes, resource_type: 'node' } %>
-          <%= render partial: "search/common/search_filters", locals: { resources: @nodes } %>
+          <%= render partial: "search/common/search_info", locals: { resources: @nodes_results, resource_type: 'node' } %>
+          <%= render partial: "search/common/search_filters", locals: { resources: @nodes_results } %>
         </div>
     <% end %>
 
-    <%= render partial: "search/common/pagination_bar", locals: { resources: @nodes } unless (@nodes.blank? or @nodes.results.blank?) %>
+    <%= render partial: "search/common/pagination_bar", locals: { resources: @nodes } %>
 
     <hr>
-    <% @nodes = @nodes.results unless @nodes.blank? || !SOLR_ENABLED %>
 
-    <ul class="masonry media-grid">
-      <% @nodes.each do |node| %>
-          <%= render node %>
-      <% end %>
-    </ul>
-
+    <%= render partial: 'common/masonry_grid', locals: { objects: @nodes } %>
   </div>
 </div>
-
-<script>
-  $(document).ready(function(){
-    reposition_tiles('masonry', 'masonry-brick');
-  })
-</script>

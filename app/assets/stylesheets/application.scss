@@ -547,3 +547,13 @@ sup {
 .schemaorg-element {
   display: none
 }
+
+.responsive-search-box {
+  float: right;
+  width: 300px;
+  @include xs {
+    float: none;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
