@@ -15,7 +15,7 @@ module SearchableIndex
       @index_resources = @search_results.results
       instance_variable_set("@#{controller_name}_results", @search_results) #e.g. @nodes_results
     else
-      @index_resources = @model.all
+      @index_resources = @model.paginate(page: params[:page])
     end
 
     instance_variable_set("@#{controller_name}", @index_resources) # e.g. @nodes
