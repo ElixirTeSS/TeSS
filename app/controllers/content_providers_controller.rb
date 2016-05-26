@@ -5,7 +5,6 @@ class ContentProvidersController < ApplicationController
   include SearchableIndex
 
   def index
-    @content_providers = @index_resources
   end
 
   def show

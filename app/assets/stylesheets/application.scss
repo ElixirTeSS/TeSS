@@ -18,6 +18,7 @@
 @import "bootstrap";
 @import "font-awesome-sprockets";
 @import "font-awesome";
+@import "mixins/mixins";
 @import "*";
 
 .workflow_image {
@@ -67,17 +68,61 @@ a:hover {
   background: #064559;
 }
 
-div#sidebar {
-  padding: 0px;
+#content {
+  padding: 15px;
+  flex-grow: 1;
+}
+
+#sidebar {
+  width: 280px;
   border-right: 1px solid #cccccc;
+  flex-shrink: 0;
+
+  @media (max-width: $screen-md-min) {
+    position: absolute;
+    z-index: 10;
+    background: white;
+    border-bottom: 1px solid #cccccc;
+    box-shadow: 2px 2px 3px 0 #999;
+    display: none;
+    &.open { display: block; }
+  }
+
+  table tr td.h4 {
+    padding-left: 10px;
+  }
+
+  table tr td {
+    padding-left: 20px;
+  }
+
+  // Sidebar with facet filtering
+  table tr td a {
+    color: #000000;
+    padding: 3px;
+    text-decoration: none;
+  }
+
+  table tr td a:hover {
+    background-color: #B0C3C9;
+    color: #ffffff;
+    padding: 3px;
+    text-decoration: none;
+  }
 }
 
-div#sidebar table tr td.h4 {
-  padding-left: 10px;
+#sidebar-toggle {
+  display: none;
+  @media (max-width: $screen-md-min) {
+    display: inline;
+  }
 }
 
-div#sidebar table tr td {
-  padding-left: 20px;
+#sidebar-header {
+  display: none;
+  @media (max-width: $screen-md-min) {
+    display: block;
+  }
 }
 
 // Bootstrap's row
@@ -96,27 +141,8 @@ div.wrapper {
   -webkit-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
   -moz-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
   box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
-  position: relative;
-  background-color: #fff;
   margin-bottom: 20px;
-  margin-left: 0;
   display: flex;
-  flex-direction: row;
-  align-items: stretch;
-}
-
-// Sidebar with facet filtering
-div#sidebar table tr td a {
-  color: #000000;
-  padding: 3px;
-  text-decoration: none;
-}
-
-div#sidebar table tr td a:hover {
-  background-color: #B0C3C9;
-  color: #ffffff;
-  padding: 3px;
-  text-decoration: none;
 }
 
 // From https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/
@@ -520,4 +546,14 @@ sup {
 
 .schemaorg-element {
   display: none
+}
+
+.responsive-search-box {
+  float: right;
+  width: 300px;
+  @include xs {
+    float: none;
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }
