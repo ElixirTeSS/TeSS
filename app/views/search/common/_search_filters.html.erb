@@ -9,7 +9,7 @@ Globals
 <!-- FILTERS APPLIED -->
 <% @facet_params.each_with_index do |(category, value), i| %>
 		<p>
-			<b><%= (category == 'name' && params[:controller] == 'nodes') ? 'Node'.pluralize(value.count): category.humanize %></b>:
+			<b><%= (category == 'name' && params[:controller] == 'nodes') ? 'Node'.pluralize(value.kind_of?(Array) ? value.length : 1) : category.humanize %></b>:
 			<% if value.is_a?(Array)%>
 					<% value.each_with_index do |val, j| %>
 							<span>
