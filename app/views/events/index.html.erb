@@ -46,7 +46,7 @@
               <i class="fa fa-clock-o"></i> <%= button_text %> past events
           <% end %>
         </div>
-          <div class="row">
+        <div class="row">
           <%= render partial: "search/common/sort_by",
                      locals: { resource: @events,
                                extras: [['Earliest', 'early'], ['Latest', 'late']] } %>
