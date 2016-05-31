@@ -4,10 +4,10 @@
       "name": "Belgium",
       "country_code": "BE",
       "member_status": "Member",
-      "description": "",
-      "home_page": "",
+      "description": "ELIXIR BE gives basic and intermediate bioinformatics training to the life sciences research community, focusing on the use of tools and databases to extract useful results from large amounts of raw data. These training  provisions help researchers develop indispensable bioinformatics skills needed in modern, data-intensive life sciences. Scientists who are members of VIB BITS (organisation constituting the ELIXIR BE node at the moment) can join bioinformatics training sessions for free. For other scientists, there is a number of reserved and paid for slots.",
+      "home_page": "https://www.bits.vib.be/training",
       "image_url": "",
-      "twitter": "",
+      "twitter": "bitsatvib",
       "carousel_images": [],
       "staff": [
         {
@@ -56,9 +56,9 @@
     },
     {
       "name": "EMBL-EBI",
-      "country_code": "EMBL-EBI",
+      "country_code": "GB",
       "member_status": "Member",
-      "description": "",
+      "description": "The EMBL-European Bioinformatics Institute (EMBL-EBI) is an academic research institute based in the UK, and is part of the European Molecular Biology Laboratory (EMBL). Established in 1994, EMBL-EBI grew out of EMBL’s commitment to making biological data and information accessible to life scientists in all disciplines. EMBL-EBI serves the scientific community by providing freely available bioinformatics resources, promoting basic research, providing training to scientists at all levels and disseminating cutting-edge technologies to the academic community and industry.",
       "home_page": "http://www.ebi.ac.uk/training",
       "image_url": "https://www.elixir-europe.org/system/files/styles/medium/private/EMBLEBIlogo.jpeg?itok=QjfBMq39",
       "twitter": "emblebi",
