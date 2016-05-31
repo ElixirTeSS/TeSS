@@ -5,7 +5,7 @@
     <div class="row" style="padding: 10px 5px 0px 0px;">
       <div>
         <h2 style="margin-top: 0px;">
-          <%= country_flag(@node.country_code, class: 'large-flag') %>
+          <%= image_tag get_image_url_for(@node), :class=>"media-image listing_image" %>
           <%=t '.title', :default => @node.name %>
         </h2>
       </div>
@@ -53,6 +53,11 @@
               <% unless @node.description.blank? %>
                   <p><%= @node.description %></p>
               <% end %>
+              <p>
+                <b>Country: </b>
+                <%= country_flag(@node.country_code, class: 'small-flag') %>
+                <%= Node::COUNTRIES[@node.country_code] %>
+              </p>
               <p>
                 <b>Status: </b>
                 <%= @node.member_status %>
