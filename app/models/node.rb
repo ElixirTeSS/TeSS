@@ -31,6 +31,9 @@ class Node < ActiveRecord::Base
     end
   end
 
+  MEMBER_STATUS = ['Member', 'Observer']
+  COUNTRIES = JSON.parse(File.read(File.join(Rails.root, 'config', 'data', 'countries.json')))
+
   def self.load_from_hash(hash, verbose: false)
     hash["nodes"].map do |node_data|
       node = Node.find_or_initialize_by(name: node_data["name"])
