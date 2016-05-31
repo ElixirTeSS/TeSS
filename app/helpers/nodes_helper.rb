@@ -17,12 +17,16 @@ module NodesHelper
         !staff_member.email.blank? ? mail_to(staff_member.email, text) : text
       end.join(', ').html_safe
     else
-      empty_tag(:span, 'None')
+      empty_tag(:span, 'none specified')
     end
   end
 
   def country_flag(country_code, options = {})
-    image_tag "node_flags/#{country_code}", options
+    image_tag "nodes/flags/#{country_code}", options
+  end
+
+  def countries_options_for_select
+    Node::COUNTRIES.map {|k, v| [v + " (#{k})", k] }.to_h
   end
 
 end
