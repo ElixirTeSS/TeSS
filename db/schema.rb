@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160531153848) do
+ActiveRecord::Schema.define(version: 20160601132411) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,8 +43,10 @@ ActiveRecord::Schema.define(version: 20160531153848) do
     t.string   "slug"
     t.string   "keywords",    default: [],              array: true
     t.integer  "user_id"
+    t.integer  "node_id"
   end
 
+  add_index "content_providers", ["node_id"], name: "index_content_providers_on_node_id", using: :btree
   add_index "content_providers", ["slug"], name: "index_content_providers_on_slug", unique: true, using: :btree
   add_index "content_providers", ["user_id"], name: "index_content_providers_on_user_id", using: :btree
 
@@ -319,6 +321,7 @@ ActiveRecord::Schema.define(version: 20160531153848) do
   add_index "workflows", ["slug"], name: "index_workflows_on_slug", unique: true, using: :btree
   add_index "workflows", ["user_id"], name: "index_workflows_on_user_id", using: :btree
 
+  add_foreign_key "content_providers", "nodes"
   add_foreign_key "content_providers", "users"
   add_foreign_key "events", "users"
   add_foreign_key "materials", "content_providers"

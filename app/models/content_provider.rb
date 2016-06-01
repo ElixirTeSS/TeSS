@@ -10,6 +10,8 @@ class ContentProvider < ActiveRecord::Base
 
   belongs_to :user
 
+  belongs_to :node
+
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
   auto_strip_attributes :title, :description, :url, :image_url, :squish => false

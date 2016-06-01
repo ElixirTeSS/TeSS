@@ -62,12 +62,25 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal 'White Witch', Node.find_by_name('Narnia').staff.first.name
   end
 
+  test 'can load countries data' do
+    countries_hash = {}
+    assert_difference('countries_hash.keys.size', 250) do
+      countries_hash = JSON.parse(File.read(File.join(Rails.root, 'config', 'data', 'countries.json')))
+    end
+  end
+
   test 'can get staff and training coordinators' do
     node = nodes(:good)
     assert_equal 2, node.staff.length
     assert_equal 1, node.staff.training_coordinators.length
     assert_equal 'John Doe', node.staff.training_coordinators.first.name
     assert_equal ['John Doe', 'Joe Bloggs'].sort, node.staff.map(&:name).sort
+  end
+
+  test 'should have content providers' do
+    node = nodes(:good)
+    assert_equal 1, node.content_provider.length
+    assert node.content_provider[0] == content_providers(:goblet)
   end
 
   private

@@ -10,6 +10,8 @@ class Node < ActiveRecord::Base
 
   has_many :staff, class_name: 'StaffMember', dependent: :destroy
 
+  has_many :content_provider
+
   accepts_nested_attributes_for :staff, allow_destroy: true
 
   clean_array_fields(:carousel_images) #, :institutions

@@ -22,4 +22,9 @@ class ContentProviderTest < ActiveSupport::TestCase
     assert content_provider.errors[:image_url].any?
   end
 
+  test 'should have node' do
+    content_provider = content_providers(:goblet)
+    assert content_provider.node == nodes(:good)
+  end
+
 end
