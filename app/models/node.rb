@@ -12,7 +12,7 @@ class Node < ActiveRecord::Base
 
   accepts_nested_attributes_for :staff, allow_destroy: true
 
-  clean_array_fields(:institutions, :carousel_images)
+  clean_array_fields(:carousel_images) #, :institutions
 
   validates :name, presence: true, uniqueness: true
   validates :home_page, format: { with: URI.regexp }, if: Proc.new { |a| a.home_page.present? }
