@@ -10,7 +10,7 @@ class Node < ActiveRecord::Base
 
   has_many :staff, class_name: 'StaffMember', dependent: :destroy
 
-  has_many :content_provider
+  has_many :content_provider, dependent: :nullify
 
   accepts_nested_attributes_for :staff, allow_destroy: true
 
