@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160601132411) do
+ActiveRecord::Schema.define(version: 20160602122936) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,12 +38,13 @@ ActiveRecord::Schema.define(version: 20160601132411) do
     t.text     "url"
     t.text     "image_url"
     t.text     "description"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
     t.string   "slug"
-    t.string   "keywords",    default: [],              array: true
+    t.string   "keywords",              default: [],                          array: true
     t.integer  "user_id"
     t.integer  "node_id"
+    t.string   "content_provider_type", default: "Organisation"
   end
 
   add_index "content_providers", ["node_id"], name: "index_content_providers_on_node_id", using: :btree

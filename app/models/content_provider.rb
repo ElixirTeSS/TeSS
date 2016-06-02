@@ -24,6 +24,8 @@ class ContentProvider < ActiveRecord::Base
 
   clean_array_fields(:keywords)
 
+  PROVIDER_TYPE = ['Organisation', 'Portal', 'Project', 'Individual']
+
   unless SOLR_ENABLED==false
     searchable do
       text :title
