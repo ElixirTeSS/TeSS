@@ -1,0 +1,41 @@
+<ul class="unstyled nav-simple">
+  <!-- Node  -->
+  <li><h4 class="nav-heading">ELIXIR node</h4></li>
+  <li style="padding: 7px 20px;">
+    <% unless node.description.blank? %>
+        <p><%= node.description %></p>
+    <% end %>
+    <p>
+      <b>Country: </b>
+      <%= country_flag(node.country_code, class: 'small-flag') %>
+      <%= Node::COUNTRIES[node.country_code] %>
+    </p>
+    <p>
+      <b>Status: </b>
+      <%= node.member_status %>
+    </p>
+    <% unless node.home_page.blank? %>
+        <p><%= link_to node.home_page, node.home_page, :class =>'h5', :target => "_blank" %></p>
+    <% end %>
+    <% unless node.twitter.blank? %>
+        <p><%= twitter_link node.twitter %></p>
+    <% end %>
+    <% training_coordinators = node.staff.training_coordinators %>
+    <p>
+      <b><%= 'Training coordinator'.pluralize(training_coordinators.count) -%>: </b>
+      <%= node_staff_list(training_coordinators, false) %>
+    </p>
+
+    <% other_staff = node.staff.other_roles %>
+    <% if other_staff.any? %>
+        <p>
+          <b>Staff: </b>
+          <%= node_staff_list(other_staff) %>
+        </p>
+    <% end %>
+    <!--<p>-->
+    <!--<b>Institutions: </b>-->
+    <!--<%#= @node.institutions.blank? ? empty_tag(:span, 'none specified') : @node.institutions.join(', ') %>-->
+    <!--</p>-->
+  </li>
+</ul>

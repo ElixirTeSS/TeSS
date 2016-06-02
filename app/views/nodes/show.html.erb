@@ -1,7 +1,22 @@
+<script>
+  $(document).ready(function () {
+    reposition_tiles('masonry', 'masonry-brick');
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+      reposition_tiles('masonry', 'masonry-brick');
+    })
+  })
+</script>
+
 <%- model_class = Node -%>
 
 <div class="row wrapper">
-  <div class="col-md-12">
+
+  <!-- SIDEBAR -->
+  <div class="col-md-3" id="sidebar">
+    <%= render :partial => "nodes/partials/node_info", :locals => {:node => @node} %>
+  </div>
+
+  <div class=" col-md-9">
     <div class="row" style="padding: 10px 5px 0px 0px;">
       <div>
         <h2 style="margin-top: 0px;">
@@ -33,7 +48,7 @@
     <div class="row">
       <ul class="nav nav-tabs">
         <li class="active">
-          <a data-toggle="tab" href="#home"><i class="<%= icon_class_for_model('nodes') %>"></i> Node</a>
+          <a data-toggle="tab" href="#providers"><i class="<%= icon_class_for_model('providers') %>"></i> Providers</a>
         </li>
         <li>
           <a data-toggle="tab" href="#materials"><i class="<%= icon_class_for_model('materials') %>"></i> Materials</a>
@@ -47,50 +62,44 @@
       </ul>
 
       <div class="tab-content">
-        <div id="home" class="tab-pane fade in active">
+        <div id="providers" class="tab-pane fade in active">
           <div class="row">
-            <div class="dont-break-out" style="padding: 10px;">
-              <% unless @node.description.blank? %>
-                  <p><%= @node.description %></p>
-              <% end %>
-              <p>
-                <b>Country: </b>
-                <%= country_flag(@node.country_code, class: 'small-flag') %>
-                <%= Node::COUNTRIES[@node.country_code] %>
-              </p>
-              <p>
-                <b>Status: </b>
-                <%= @node.member_status %>
-              </p>
-              <% unless @node.home_page.blank? %>
-                  <p><%= link_to @node.home_page, @node.home_page, :class =>'h5', :target => "_blank" %></p>
-              <% end %>
-              <% unless @node.twitter.blank? %>
-                  <p><%= twitter_link @node.twitter %></p>
-              <% end %>
-              <% training_coordinators = @node.staff.training_coordinators %>
-              <p>
-                <b><%= 'Training coordinator'.pluralize(training_coordinators.count) -%>: </b>
-                <%= node_staff_list(training_coordinators, false) %>
-              </p>
-
-              <% other_staff = @node.staff.other_roles %>
-              <% if other_staff.any? %>
-                  <p>
-                    <b>Staff: </b>
-                    <%= node_staff_list(other_staff) %>
-                  </p>
-              <% end %>
-              <!--<p>-->
-                <!--<b>Institutions: </b>-->
-                <!--<%#= @node.institutions.blank? ? empty_tag(:span, 'none specified') : @node.institutions.join(', ') %>-->
-              <!--</p>-->
+            <div class="search-results-count"> 
+              <% providers = @node.content_providers %>
+              <%= pluralize(providers.count, 'content provider') %> found 
             </div>
+            <% if !providers.blank? %>
+                <% providers.each do |provider| %> 
+                    <%= render provider %> 
+                <% end %> 
+            <% end %>
           </div>
         </div>
         <div id="materials" class="tab-pane fade">
+          <div class="row">
+            <div class="search-results-count"> 
+              <% materials = materials_for(@node) %>
+              <%= pluralize(materials.count, 'training material') %> found 
+            </div>
+            <% if !materials.blank? %>
+                <% materials.each do |material| %> 
+                    <%= render material %> 
+                <% end %> 
+            <% end %>
+          </div>
         </div>
         <div id="events" class="tab-pane fade">
+          <div class="row">
+            <div class="search-results-count"> 
+              <% events = events_for(@node) %>
+              <%= pluralize(events.count, 'event') %> found 
+            </div>
+            <% if !events.blank? %>
+                <% events.each do |event| %> 
+                    <%= render event %> 
+                <% end %> 
+            <% end %>
+          </div>
         </div>
         <div id="activity_log" class="tab-pane fade">
           <%= render :partial => "activities/activity_log", :locals => {:resource => @node} %>

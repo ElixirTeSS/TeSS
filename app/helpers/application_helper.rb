@@ -154,4 +154,8 @@ module ApplicationHelper
     end
   end
 
+  def empty_tag (tag_symbol, text, style=nil)
+    content_tag tag_symbol, text, :class=>"empty", :style=>style
+  end
+
 end

@@ -60,7 +60,29 @@ module MaterialsHelper
     return cps
   end
 
-  def empty_tag (tag_symbol, text, style=nil)
-    content_tag tag_symbol, text, :class=>"empty", :style=>style
+  def available_packages(resource=nil)
+    return [] if resource.nil? || current_user.nil? || !resource.respond_to?(:packages)
+
+    # Admin can add a resource to any package, others only to packages they own
+    current_packages = (current_user.is_admin?) ? Package.all : current_user.packages
+    return current_packages - resource.packages
   end
+
+  def materials_for(resource=nil)
+    return [] if resource.nil?
+
+    return resource.materials if resource.respond_to?(:materials)
+
+    materials = []
+    if resource.instance_of? Node
+      resource.content_providers.each do |cp|
+        cp.materials.each do |material|
+          materials << material
+        end
+      end
+    end
+
+    return materials
+  end
+
 end
