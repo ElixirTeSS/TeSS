@@ -38,7 +38,10 @@
           <%= f.text_field :image_url, :class => 'form-control' %>
           <%#= error_span(@content_provider[:image_url]) %>
         </div>
-
+        <div class="form-group">
+          <%= f.label :content_provider_type, "Type" %>
+          <%= f.select :content_provider_type, ContentProvider::PROVIDER_TYPE, {}, {:class => "form-control"} %>
+        </div>
         <div class="form-group">
           <%= f.label :node, "ELIXIR node" %>
           <%= f.select(:node_id, options_for_select(Node.all.collect { |node| [node.name, node.id] }, (@content_provider.node.blank? ? nil : @content_provider.node.id)), {include_blank: true}, :class => "form-control") %>
