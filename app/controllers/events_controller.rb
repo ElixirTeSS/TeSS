@@ -3,6 +3,7 @@ class EventsController < ApplicationController
 
   include TeSS::BreadCrumbs
   include SearchableIndex
+  include ActionView::Helpers::TextHelper
 
   # GET /events
   # GET /events.json
@@ -110,12 +111,11 @@ class EventsController < ApplicationController
 
   # POST /events/1/update_packages
   # POST /events/1/update_packages.json
-  include ActionView::Helpers::TextHelper
   def update_packages
     # Go through each selected package
-    # and update it's resources to include this one.
+    # and update its resources to include this one.
     # Go through each other package
-    packages = params[:event][:package_ids].select{|p| !p.nil? and !p.empty?}
+    packages = params[:event][:package_ids].select{|p| !p.blank?}
     packages = packages.collect{|package| Package.find_by_id(package)}
     packages_to_remove = @event.packages - packages
     packages.each do |package|
@@ -127,8 +127,6 @@ class EventsController < ApplicationController
     flash[:notice] = "Event has been included in #{pluralize(packages.count, 'package')}"
     redirect_to @event
   end
-
-
 
   protected
 
@@ -143,7 +141,7 @@ class EventsController < ApplicationController
   def event_params
     event_params = params.require(:event).permit(:external_id, :title, :subtitle, :url, :provider, :description, {:field => []},
                                   {:category => []}, {:keyword => []}, :start, :end, :sponsor, :venue, :city, :county,
-                                  :country, :postcode, :latitude, :longitude, :content_provider_id)
+                                  :country, :postcode, :latitude, :longitude, :content_provider_id, {:package_ids => []})
     event_params[:description] = ActionView::Base.full_sanitizer.sanitize(event_params[:description])
     return event_params
   end

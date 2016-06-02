@@ -40,6 +40,9 @@
                                :f => f,
                                :suggestions => raw(TeSS::AutocompleteManager.suggestions_array_for('keywords').to_json)} %>
 
+        <%= render :partial => 'common/dropdown', :locals => {:field_name => 'material', :resource => @package, :f => f} %>
+        <%= render :partial => 'common/dropdown', :locals => {:field_name => 'event', :resource => @package, :f => f} %>
+
         <div class="form-group actions">
           <%= f.submit ( f.object.new_record? ? "Create" : "Update") + " package", :class => 'btn btn-primary' %>
           <%= link_to 'Back', packages_path, :class=>"btn btn-info" %>

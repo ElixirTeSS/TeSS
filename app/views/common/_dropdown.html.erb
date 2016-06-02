@@ -18,6 +18,8 @@ render :partial => 'common/dropdown',
 
 <% model_name =  resource.class.name.underscore #e.g. package %>
 <% options = field_name.capitalize.constantize.all unless options %>
+<!-- Name for the dropdown toggle button, if not specified will be set to 'Add <%#= field_name %>' -->
+<% dropdown_toggle_button_name ||= '' %>
 
 <div class="form-group">
   <label><%= field_name.pluralize.capitalize unless field_name.blank? %></label>
@@ -46,7 +48,7 @@ render :partial => 'common/dropdown',
     <!-- Create list of dropdown options-->
     <div class="dropdown">
       <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        Add <%= field_name %>
+        <%= dropdown_toggle_button_name.blank? ? "Add #{field_name}" : dropdown_toggle_button_name %>
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu <%=field_name%>-options"
