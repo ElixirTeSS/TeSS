@@ -1,7 +1,7 @@
 <div class="wrapper">
   <% if SOLR_ENABLED %>
       <div id="sidebar">
-        <%= render partial: "search/common/facet_sidebar", locals:  { resources: @workflows_results, resource_type: 'workflow' } %>
+        <%= render partial: "search/common/facet_sidebar", locals: {resources: @workflows_results, resource_type: 'workflow'} %>
       </div>
   <% end %>
 
@@ -11,22 +11,25 @@
           <i class="fa fa-plus"></i> Create workflow
       <% end %>
       <div class="pull-right">
-        <%= info_button('What are ELIXIR workflows?') do %>
-            ELIXIR is a pan-European research infrastructure consisting of the Hub and a number of, primarily,
-            national workflows that provide services to their local communities.
-            Select a workflow to find out more about its training events, training provision, staff and member institutions.
+        <%= info_button('What are workflows in TeSS?') do %>
+            Training workflows in TeSS are visual, step-by-step protocols that allow users to navigate materials in TeSS
+            in topic- or task-related ways.
+
+            For example, they may encapsulate typical stages of particular kinds of data analysis (protein sequence
+            analysis, structure analysis, etc.), where each stage/node in the workflow represents a given analysis step
+            and links to the corresponding training resources.
         <% end %>
       </div>
     </div>
 
     <% if false && SOLR_ENABLED %>
         <div class="row">
-          <%= render partial: "search/common/search_box", locals: { resource_path: workflows_path } %>
+          <%= render partial: "search/common/search_box", locals: {resource_path: workflows_path} %>
           <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
             <i class="fa fa-filter"></i> Filters
           </button>
-          <%= render partial: "search/common/search_info", locals: { resources: @workflows_results, resource_type: 'workflow' } %>
-          <%= render partial: "search/common/search_filters", locals: { resources: @workflows_results } %>
+          <%= render partial: "search/common/search_info", locals: {resources: @workflows_results, resource_type: 'workflow'} %>
+          <%= render partial: "search/common/search_filters", locals: {resources: @workflows_results} %>
         </div>
     <% end %>
 
@@ -37,13 +40,16 @@
     <p class="empty">
       This functionality is still under construction.
     </p>
+
     <p>
-      You can see examples of how Training Workflows will be implemented on the <a href="https://tess-old.elixir-uk.org/workflow/25c37b3b-f88a-42b1-a23e-a7563102823c"> old TeSS Pilot site</a> (now defunct).
+      You can see examples of how Training Workflows will be implemented on the
+      <a href="https://tess-old.elixir-uk.org/workflow/25c37b3b-f88a-42b1-a23e-a7563102823c"> old TeSS Pilot site</a>
+      (now defunct).
     </p>
     <a href="https://tess-old.elixir-uk.org/workflow/25c37b3b-f88a-42b1-a23e-a7563102823c">
-      <%= image_tag('workflow', :class=> "workflow_image") %>
+      <%= image_tag('workflow', :class => "workflow_image") %>
     </a>
 
-    <%= render partial: 'common/masonry_grid', locals: { objects: @workflows } %>
+    <%= render partial: 'common/masonry_grid', locals: {objects: @workflows} %>
   </div>
 </div>

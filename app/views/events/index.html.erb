@@ -29,6 +29,15 @@
   <div id="content">
     <% if SOLR_ENABLED %>
         <div class="row">
+          <div class="pull-right">
+            <%= info_button('What are events in TeSS?') do %>
+                  In the context of TeSS, an event is a link to a single training event sourced by a content provider along with description and other meta information (e.g. date, location, ontological categorization, keywords, etc.).
+                  TeSS harvests training events automatically, including descriptions and other relevant meta-data made available by providers.
+                  If your website contains training materials that you wish to include in TeSS, please contact the TeSS team (tess@elixir-uk.info) for further details.
+            <% end %>
+          </div>
+        </div>
+        <div class="row">
           <%= render partial: "search/common/search_box", locals: { resource_path: events_path } %>
           <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
             <i class="fa fa-filter"></i> Filters

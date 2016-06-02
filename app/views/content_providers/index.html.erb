@@ -1,46 +1,46 @@
-<% providers_with_content = @content_providers.select{ |x| x.materials.any? || x.events.any? } %>
+<% providers_with_content = @content_providers.select { |x| x.materials.any? || x.events.any? } %>
 
 <div class="wrapper">
   <% if SOLR_ENABLED %>
       <div id="sidebar">
-        <%= render partial: "search/common/facet_sidebar", locals:  { resources: @content_providers_results, resource_type: 'content_provider' } %>
+        <%= render partial: "search/common/facet_sidebar", locals: {resources: @content_providers_results, resource_type: 'content_provider'} %>
       </div>
   <% end %>
 
   <div id="content">
     <div class="row">
-      <%= link_to new_content_provider_path, :class=>"btn btn-primary" do %>
+      <%= link_to new_content_provider_path, :class => "btn btn-primary" do %>
           <i class="fa fa-plus-square"></i> Register content provider
       <% end %>
       <div class="pull-right">
         <%= info_button('What are content providers in TeSS?') do %>
-            Content providers are entities – e.g. institutions members of ELIXIR nodes,
-            independent institutions or related portals, like GOBLET, the Software and Data Carpentry Foundations,
-            etc. – that provide training materials of relevance to life sciences and ELIXIR.
+            Content providers are entities – e.g. institutions members of ELIXIR nodes, independent institutions or
+            related portals, like GOBLET, the Software and Data Carpentry Foundations, etc., or individual people – that
+            provide training materials of relevance to life sciences and ELIXIR.
         <% end %>
       </div>
     </div>
 
     <% if SOLR_ENABLED %>
         <div class="row">
-          <%= render partial: "search/common/search_box", locals: { resource_path: content_providers_path } %>
+          <%= render partial: "search/common/search_box", locals: {resource_path: content_providers_path} %>
           <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
             <i class="fa fa-filter"></i> Filters
           </button>
         </div>
         <div class="row">
-          <%= render partial: "search/common/sort_by", locals: { resources: @content_providers } %>
+          <%= render partial: "search/common/sort_by", locals: {resources: @content_providers} %>
           <div class="search-results-count">
             <%= pluralize(providers_with_content.count, 'content provider') %> found
           </div>
-          <%= render partial: "search/common/search_filters", locals: { resources: @content_providers_results } %>
+          <%= render partial: "search/common/search_filters", locals: {resources: @content_providers_results} %>
         </div>
     <% end %>
 
-    <%= render partial: "search/common/pagination_bar", locals: { resources: @content_providers } %>
+    <%= render partial: "search/common/pagination_bar", locals: {resources: @content_providers} %>
 
     <hr>
 
-    <%= render partial: 'common/masonry_grid', locals: { objects: providers_with_content } %>
+    <%= render partial: 'common/masonry_grid', locals: {objects: providers_with_content} %>
   </div>
 </div>
