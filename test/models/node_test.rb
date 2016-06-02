@@ -79,8 +79,8 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'should have content providers' do
     node = nodes(:good)
-    assert_equal 1, node.content_provider.length
-    assert node.content_provider[0] == content_providers(:goblet)
+    assert_equal 1, node.content_providers.length
+    assert node.content_providers[0] == content_providers(:goblet)
   end
 
   private
