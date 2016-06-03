@@ -1,15 +1,13 @@
-<div class="row wrapper">
+<%- model_class = Node -%>
 
-  <!-- SIDEBAR -->
-  <div class="col-md-3" id="sidebar">
-    <%= render :partial => "nodes/partials/general_node_info" %>
+<div class="page-header">
+  <h2><%=t '.title', :default => [:'helpers.titles.edit', 'Edit %{model}'], :model => model_class.model_name.human.titleize.downcase %></h2>
+</div>
+<div class="row">
+  <div class="col-md-4 col-md-push-8">
+    <%= render :partial => 'nodes/partials/general_node_info' %>
   </div>
-
-  <div class=" col-md-9">
-    <%- model_class = Node -%>
-    <div class="page-header">
-      <h2><%=t '.title', :default => [:'helpers.titles.edit', 'Edit %{model}'], :model => model_class.model_name.human.titleize.downcase %></h2>
-    </div>
+  <div class="col-md-8 col-md-pull-4">
     <%= render :partial => 'form' %>
   </div>
 </div>
