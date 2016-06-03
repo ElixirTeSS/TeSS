@@ -3,17 +3,17 @@ PARAMETERS:
 f - the form 
 resource - The object you wish to modify e.g. #<Material id: 99....
 field_name - The field name that the dropdown is for 
-			 e.g. 'package' for my_material.packages, or 'material' for my_package.materials
+       e.g. 'package' for my_material.packages, or 'material' for my_package.materials
 options - Array of objects to populate the dropdown with. Object must respons to .id and .title
 
 
 Example Usage
 render :partial => 'common/dropdown', 
-	   :locals => {:f => f,
+     :locals => {:f => f,
                    :resource => @package,
                    :field_name => 'material',
                    :options => available_options_for(@material) #OPTIONAL - defaults to field_name.all
-	   }
+     }
  -->
 
 <% model_name =  resource.class.name.underscore #e.g. package %>

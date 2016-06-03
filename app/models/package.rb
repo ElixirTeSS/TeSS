@@ -1,16 +1,16 @@
 class Package < ActiveRecord::Base
-	include PublicActivity::Common
+  include PublicActivity::Common
   has_paper_trail
 
   extend FriendlyId
   friendly_id :title, use: :slugged
 
-	has_many :package_materials
+  has_many :package_materials
   has_many :package_events
-	has_many :materials, through: :package_materials
+  has_many :materials, through: :package_materials
   has_many :events, through: :package_events
 
-	#has_one :owner, foreign_key: "id", class_name: "User"
+  #has_one :owner, foreign_key: "id", class_name: "User"
   belongs_to :user
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
@@ -29,7 +29,7 @@ class Package < ActiveRecord::Base
       text :title
       text :description
       string :user do
-      	self.user.username.to_s unless self.user.blank?
+        self.user.username.to_s unless self.user.blank?
       end
       string :keywords, :multiple => true
       

@@ -1,37 +1,37 @@
 <script>
-	$(document).ready(function () {
-		reposition_tiles('masonry', 'masonry-brick');
-		$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-			reposition_tiles('masonry', 'masonry-brick');
-		})
-	})
+  $(document).ready(function () {
+    reposition_tiles('masonry', 'masonry-brick');
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+      reposition_tiles('masonry', 'masonry-brick');
+    })
+  })
 </script>
 
 <div class="row wrapper">
-	<div class="col-md-12">
-		<h2 class="module-heading">Search results</h2>
+  <div class="col-md-12">
+    <h2 class="module-heading">Search results</h2>
 
-		<!-- SEARCH BAR -->
-		<div class="row" style="padding-top: 10px;">
-			<%= render :partial => "search/common/search_box", :locals => {:resource_path => search_path} %>
-		</div>
+    <!-- SEARCH BAR -->
+    <div class="row" style="padding-top: 10px;">
+      <%= render :partial => "search/common/search_box", :locals => {:resource_path => search_path} %>
+    </div>
 
-		<div class="row" style="padding-top: 10px;">
-			<% if @results.blank? %>
-					<p class="empty">No results found</p>
-			<% else %>
-					<% tabs = @results.keys %>
-					<ul class="nav nav-tabs">
-						<% tabs.each_with_index do |tab, index| %>
-								<li class="<%= index == 0 ? 'active' : ''%>" >
-									<a data-toggle="tab" href="#<%= tab %>"><i class="<%= icon_class_for_model(tab) %>"></i> <%= tab.to_s.humanize.capitalize %> (<%= @results[tab].total%>)</a>
-								</li>
-						<% end %>
-					</ul>
+    <div class="row" style="padding-top: 10px;">
+      <% if @results.blank? %>
+          <p class="empty">No results found</p>
+      <% else %>
+          <% tabs = @results.keys %>
+          <ul class="nav nav-tabs">
+            <% tabs.each_with_index do |tab, index| %>
+                <li class="<%= index == 0 ? 'active' : ''%>" >
+                  <a data-toggle="tab" href="#<%= tab %>"><i class="<%= icon_class_for_model(tab) %>"></i> <%= tab.to_s.humanize.capitalize %> (<%= @results[tab].total%>)</a>
+                </li>
+            <% end %>
+          </ul>
 
-					<div class="row" style="padding-top: 5px;">
-						<div class="tab-content">
-							<% @results.each_with_index do |(model, results_for_model), index| %>
+          <div class="row" style="padding-top: 5px;">
+            <div class="tab-content">
+              <% @results.each_with_index do |(model, results_for_model), index| %>
                   <div class="tab-pane fade in <%= 'active'.html_safe if index == 0 %>" id="<%= model %>">
                     <div class="search-results-count"> 
                       <%= "Showing #{pluralize(results_for_model.results.count, "#{model.to_s.humanize.singularize.downcase} result")}#{(results_for_model.total > 30) ? " of #{results_for_model.total}" : ''}." %>
@@ -41,10 +41,10 @@
                         <%= render partial: result %>
                     <% end %>
                   </div>
-							<% end %>
-						</div>
-					</div>
-			<% end %>
-		</div>
-	</div>
+              <% end %>
+            </div>
+          </div>
+      <% end %>
+    </div>
+  </div>
 </div>
