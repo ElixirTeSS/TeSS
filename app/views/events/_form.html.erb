@@ -1,96 +1,92 @@
-<div class="row">
-  <div class="col-md-9">
-    <%= simple_form_for @event, :html => {:class => "form-horizontal"} do |f| %>
-        <% if @event.errors.any? %>
-            <div id="error_explanation">
-              <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
+<%= simple_form_for @event, :html => {:class => "form-horizontal"} do |f| %>
+    <% if @event.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
 
-              <ul>
-                <% @event.errors.full_messages.each do |message| %>
-                    <li><%= message %></li>
-                <% end %>
-              </ul>
-            </div>
-        <% end %>
-
-        <div class="form-group">
-          <%= f.label :title %>
-          <%= f.text_field :title, :class => 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :subtitle %>
-          <%= f.text_field :subtitle, :class => 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :url, label: 'URL', :class => "required" %>
-          <%= f.text_field :url, :class => 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :provider, "Event host (organiser)" %>
-          <%= f.text_field :provider, :class => 'form-control' %>
-        </div>
-
-        <%= render :partial => 'content_providers/partials/add_content_provider', :locals => {:f => f, :resource => @event, :label => "Content provider (where the event metadata is obtained from)"} %>
-
-        <div class="form-group">
-          <%= f.label :field %><br />
-          <%= f.text_area :field, :class => 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :description %>
-          <%= f.text_area :description, :rows => "10", :class => 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :category %>
-          <%= f.text_area :category, :class => 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :start %>
-          <%= f.datetime_select :start, :class => 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :end %>
-          <%= f.datetime_select :end, :class => 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :sponsor %>
-          <%= f.text_field :sponsor, :class => 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :venue %>
-          <%= f.text_area :venue, :class => 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :city %>
-          <%= f.text_field :city, :class => 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :county %>
-          <%= f.text_field :county, :class => 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :country %>
-          <%= f.text_field :country, :class => 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :postcode %>
-          <%= f.text_field :postcode, :class => 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :latitude %>
-          <%= f.text_field :latitude, :class => 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :longitude %>
-          <%= f.text_field :longitude, :class => 'form-control' %>
-        </div>
-        <%= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @event, :f => f, :options => available_packages(@event), :dropdown_toggle_button_name => "Add to package"} %>
-        <div class="form-group">
-          <%= f.submit ( f.object.new_record? ? "Add" : "Update") + " event", :class => 'btn btn-primary' %>
-          <%= link_to 'Back', :back, :class=>"btn btn-info" %>
-          <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                      :back, :class => 'btn btn-default' %>
+          <ul>
+            <% @event.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
         </div>
     <% end %>
-  </div>
-</div>
+
+    <div class="form-group">
+      <%= f.label :title %>
+      <%= f.text_field :title, :class => 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.label :subtitle %>
+      <%= f.text_field :subtitle, :class => 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.label :url, label: 'URL', :class => "required" %>
+      <%= f.text_field :url, :class => 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.label :provider, "Event host (organiser)" %>
+      <%= f.text_field :provider, :class => 'form-control' %>
+    </div>
+
+    <%= render :partial => 'content_providers/partials/add_content_provider', :locals => {:f => f, :resource => @event, :label => "Content provider (where the event metadata is obtained from)"} %>
+
+    <div class="form-group">
+      <%= f.label :field %><br />
+      <%= f.text_area :field, :class => 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.label :description %>
+      <%= f.text_area :description, :rows => "10", :class => 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.label :category %>
+      <%= f.text_area :category, :class => 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.label :start %>
+      <%= f.datetime_select :start, :class => 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.label :end %>
+      <%= f.datetime_select :end, :class => 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.label :sponsor %>
+      <%= f.text_field :sponsor, :class => 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.label :venue %>
+      <%= f.text_area :venue, :class => 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.label :city %>
+      <%= f.text_field :city, :class => 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.label :county %>
+      <%= f.text_field :county, :class => 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.label :country %>
+      <%= f.text_field :country, :class => 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.label :postcode %>
+      <%= f.text_field :postcode, :class => 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.label :latitude %>
+      <%= f.text_field :latitude, :class => 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.label :longitude %>
+      <%= f.text_field :longitude, :class => 'form-control' %>
+    </div>
+    <%= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @event, :f => f, :options => available_packages(@event), :dropdown_toggle_button_name => "Add to package"} %>
+    <div class="form-group">
+      <%= f.submit ( f.object.new_record? ? "Add" : "Update") + " event", :class => 'btn btn-primary' %>
+      <%= link_to 'Back', :back, :class=>"btn btn-info" %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                  :back, :class => 'btn btn-default' %>
+    </div>
+<% end %>
