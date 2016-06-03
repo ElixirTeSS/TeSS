@@ -26,9 +26,12 @@
           <%= f.text_field :url, :class => 'form-control' %>
         </div>
         <div class="form-group">
-          <%= f.label :provider %>
+          <%= f.label :provider, "Event host (organiser)" %>
           <%= f.text_field :provider, :class => 'form-control' %>
         </div>
+
+        <%= render :partial => 'content_providers/partials/add_content_provider', :locals => {:f => f, :resource => @event, :label => "Content provider (where the event metadata is obtained from)"} %>
+
         <div class="form-group">
           <%= f.label :field %><br />
           <%= f.text_area :field, :class => 'form-control' %>

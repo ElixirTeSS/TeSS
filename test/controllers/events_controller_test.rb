@@ -233,18 +233,18 @@ class EventsControllerTest < ActionController::TestCase
     assert_select 'a.btn-danger[href=?]', event_path(@event), :count => 0 #No Edit
   end
 
-  test 'should not show action buttons when owner' do
+  test 'should show action buttons when owner' do
     sign_in @event.user
     get :show, :id => @event
-    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 0
-    assert_select 'a.btn-danger[href=?]', event_path(@event), :text => 'Delete', :count => 0
+    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 1
+    assert_select 'a.btn-danger[href=?]', event_path(@event), :text => 'Delete', :count => 1
   end
 
-  test 'should not show action buttons when admin' do
+  test 'should show action buttons when admin' do
     sign_in users(:admin)
     get :show, :id => @event
-    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 0
-    assert_select 'a.btn-danger[href=?]', event_path(@event), :text => 'Delete', :count => 0
+    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 1
+    assert_select 'a.btn-danger[href=?]', event_path(@event), :text => 'Delete', :count => 1
   end
 
   #API Actions

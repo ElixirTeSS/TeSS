@@ -41,7 +41,16 @@
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")),
                     :back, :class => 'btn btn-info'  %>
-        <!--<%#= link_to 'Edit', edit_event_path(@event), :class=>"btn btn-primary" %> --><!-- Forbid editing of events -->
+        <% if !current_user.nil? and policy(@event).update? %>
+            <%= link_to 'Edit', edit_event_path(@event), :class=>"btn btn-primary" %>
+        <% end %>
+        <% if !current_user.nil? and policy(@event).destroy? %>
+            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                        event_path(@event),
+                        :method => 'delete',
+                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                        :class => 'btn btn-danger' %>
+        <% end %>
         <a href="<%= @event.url %>" target="_blank" type="submit" class="btn btn-success"><span class="fa fa-external-link"></span> View event</a>
       </div>
     </div>
@@ -147,7 +156,7 @@
           <%= render :partial => "activities/activity_log", :locals => {:resource => @event} %>
         </div>
         <div id="packages" class="tab-pane fade">
-          <!--<%# if current_user and policy(@event).update? %>-->
+          <!--<%# if !current_user.nil? and policy(@event).update? %>-->
               <!--<div class="row">-->
                 <!--<%#= form_tag(controller: 'events', id: @event.id, action: 'update_packages', method: 'post') do |f| %>-->
                     <!--<%#= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @event, :f => f, :options => available_packages(@event), :dropdown_toggle_button_name => "Add to package"} %>-->

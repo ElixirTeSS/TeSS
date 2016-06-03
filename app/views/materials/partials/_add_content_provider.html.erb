@@ -1,4 +1,0 @@
-<div class="form-group">
-  <%= f.label :content_provider %>
-  <%= f.select(:content_provider_id, options_for_select(ContentProvider.all.collect { |cp| [cp.title, cp.id] }, (material.content_provider.blank? ? nil : material.content_provider.id)), {include_blank: true}, :class => "form-control") %>
-</div>
