@@ -7,9 +7,24 @@ $colDefault: #ffe6d1;
 $colHover: #333333;
 $colHover2: #eeeeee;
 
+$blue: #206B82;
+$blue2: #085871; /* unused? */
+$blue3: #064559; /* unused? */
+
 /* Bootstrap variable tweaks */
 /* For reference, see: */
 /* https://github.com/twbs/bootstrap-sass/blob/3.2-stable/assets/stylesheets/bootstrap/_variables.scss */
+
+$link-color: $blue;
+$link-hover-color: lighten($link-color, 10%);
+$link-hover-decoration: none;
+
+$btn-primary-bg: $blue;
+
+$pagination-color: $blue;
+$pagination-active-bg: $blue;
+$pagination-active-border: $blue;
+
 $navbar-height: 60px;
 $navbar-default-bg: $bgDefault;
 $navbar-default-border: transparent;

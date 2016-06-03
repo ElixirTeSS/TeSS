@@ -21,51 +21,55 @@
 @import "mixins/mixins";
 @import "*";
 
-.workflow_image {
-  width: 100%;
+// Sticky but not fixed footer
+// http://cbracco.me/css-sticky-footer-effect/
+html {
+  height: 100%;
+  position: relative;
 }
 
-.profile{
-  margin-bottom: 30px;
+body {
+  min-width: 320px;
+  position: relative;
+  margin: 0;
+  padding-bottom: 120px;
+  min-height: 100%;
 }
 
-a:hover {
-  color: steelblue;
-  background-color: transparent;
-  text-decoration: none;
+.footer {
+  padding: 10px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #ddd;
+  .footer-logo {
+    display: block;
+    float: right;
+    margin: 0 5px;
+    img { height: 64px; }
+  }
 }
 
-// Bootstrap's breadcrumbs
-.breadcrumbs {
-  margin-top: 5px;
-}
-.breadcrumb {
-  margin-bottom: 10px;
-}
+div.wrapper {
+  *zoom: 1;
+  background-color: #FFF;
+  border: 1px solid #cccccc;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+  display: flex;
 
-// Style for empty results etc.
-.empty {
-  color: #aaaaaa;
-  font-style: italic;
-}
-
-// Bootstrap's primary button
-.btn-primary {
-  background: #206B82;
-}
-
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
-  background: #085871;
-}
-
-// Override Bootstrap's alert
-.alert {
-  margin-bottom: 0px;
-  margin-top: 5px;
-}
-
-.btn-primary:active, .btn-primary.active {
-  background: #064559;
+  &.collapsing-wrapper {
+    // Divs that were arranged left -> right will collapse to bottom -> top
+    @media (max-width: $screen-md-min) {
+      flex-direction: column-reverse;
+    }
+  }
 }
 
 #content {
@@ -73,35 +77,32 @@ a:hover {
   flex-grow: 1;
 }
 
-#sidebar.collapsing-sidebar {
-  flex-shrink: 0;
-
-  @media (max-width: $screen-md-min) {
-    width: 100%;
-    border-right: none;
-  }
-}
-
-
-#sidebar.popout-sidebar {
-  flex-shrink: 0;
-
-  @media (max-width: $screen-md-min) {
-    position: absolute;
-    z-index: 10;
-    background: white;
-    border-bottom: 1px solid #cccccc;
-    box-shadow: 2px 2px 3px 0 #999;
-    display: none;
-    &.open { display: block; }
-  }
-}
-
 #sidebar {
   width: 280px;
   border-right: 1px solid #cccccc;
   padding: 0;
+  flex-shrink: 0;
 
+  &.collapsing-sidebar {
+    @media (max-width: $screen-md-min) {
+      width: 100%;
+      border-right: none;
+    }
+  }
+
+  &.popout-sidebar {
+    @media (max-width: $screen-md-min) {
+      position: absolute;
+      z-index: 10;
+      background: white;
+      border-bottom: 1px solid #cccccc;
+      box-shadow: 2px 2px 3px 0 #999;
+      display: none;
+      &.open { display: block; }
+    }
+  }
+
+  // Sidebar facet styles
   table tr td.h4 {
     padding-left: 10px;
   }
@@ -110,7 +111,6 @@ a:hover {
     padding-left: 20px;
   }
 
-  // Sidebar with facet filtering
   table tr td a {
     color: #000000;
     padding: 3px;
@@ -139,31 +139,38 @@ a:hover {
   }
 }
 
+.workflow_image {
+  width: 100%;
+}
+
+.profile{
+  margin-bottom: 30px;
+}
+
+// Bootstrap's breadcrumbs
+.breadcrumbs {
+  margin-top: 5px;
+}
+.breadcrumb {
+  margin-bottom: 10px;
+}
+
+// Style for empty results etc.
+.empty {
+  color: #aaaaaa;
+  font-style: italic;
+}
+
+// Override Bootstrap's alert
+.alert {
+  margin-bottom: 0px;
+  margin-top: 5px;
+}
+
 // Bootstrap's row
 .row {
   margin: 10px 0px 10px 0px;
   //padding: 0px 0px 10px 0px;  // Do not add padding to the row - messes up sidebar etc.
-}
-
-div.wrapper {
-  *zoom: 1;
-  background-color: #FFF;
-  border: 1px solid #cccccc;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
-  -moz-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
-  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
-  margin-bottom: 20px;
-  display: flex;
-
-  &.collapsing-wrapper {
-    // Divs that were arranged left -> right will collapse to bottom -> top
-    @media (max-width: $screen-md-min) {
-      flex-direction: column-reverse;
-    }
-  }
 }
 
 // From https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/
@@ -194,16 +201,6 @@ div.wrapper {
 .listing_image {
   max-width: 150px;
   height: 50px;
-}
-
-// Override Boostrap's pagination colours
-.pagination > li > a, .pagination > li > span {
-  color: #206B82;
-}
-
-.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
-  background-color: #206B82;
-  border-color: #285e8e;
 }
 
 // Modified from CKAN - for sidebar facets
@@ -440,36 +437,6 @@ abbr, accronym {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-}
-
-// Sticky but not fixed footer
-// http://cbracco.me/css-sticky-footer-effect/
-html {
-  height: 100%;
-  position: relative;
-}
-
-body {
-  min-width: 320px;
-  position: relative;
-  margin: 0;
-  padding-bottom: 120px;
-  min-height: 100%;
-}
-
-.footer {
-  padding: 10px;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: #ddd;
-  .footer-logo {
-    display: block;
-    float: right;
-    margin: 0 5px;
-    img { height: 64px; }
-  }
 }
 
 // Vertically aligned
