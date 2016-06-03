@@ -73,7 +73,17 @@ a:hover {
   flex-grow: 1;
 }
 
-.popout-sidebar {
+#sidebar.collapsing-sidebar {
+  @media (max-width: $screen-md-min) {
+    width: 100%;
+    border-right: none;
+  }
+}
+
+
+#sidebar.popout-sidebar {
+  flex-shrink: 0;
+
   @media (max-width: $screen-md-min) {
     position: absolute;
     z-index: 10;
@@ -88,7 +98,6 @@ a:hover {
 #sidebar {
   width: 280px;
   border-right: 1px solid #cccccc;
-  flex-shrink: 0;
   padding: 0;
 
   table tr td.h4 {
@@ -146,6 +155,13 @@ div.wrapper {
   box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
   margin-bottom: 20px;
   display: flex;
+
+  &.collapsing-wrapper {
+    // Divs that were arranged left -> right will collapse to bottom -> top
+    @media (max-width: $screen-md-min) {
+      flex-direction: column-reverse;
+    }
+  }
 }
 
 // From https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/
