@@ -74,6 +74,8 @@ a:hover {
 }
 
 #sidebar.collapsing-sidebar {
+  flex-shrink: 0;
+
   @media (max-width: $screen-md-min) {
     width: 100%;
     border-right: none;
