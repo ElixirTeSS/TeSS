@@ -73,12 +73,7 @@ a:hover {
   flex-grow: 1;
 }
 
-#sidebar {
-  width: 280px;
-  border-right: 1px solid #cccccc;
-  flex-shrink: 0;
-  padding: 0px;
-
+.popout-sidebar {
   @media (max-width: $screen-md-min) {
     position: absolute;
     z-index: 10;
@@ -88,6 +83,13 @@ a:hover {
     display: none;
     &.open { display: block; }
   }
+}
+
+#sidebar {
+  width: 280px;
+  border-right: 1px solid #cccccc;
+  flex-shrink: 0;
+  padding: 0;
 
   table tr td.h4 {
     padding-left: 10px;
