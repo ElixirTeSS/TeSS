@@ -36,178 +36,176 @@
   });
 </script>  -->
 
-<div class="row">
-  <div class="col-md-9">
-    <%= simple_form_for @material, :html => {:class => "form-horizontal", :id => 'material_form'} do |f| %>
-        <% if @material.errors.any? %>
-            <div id="error_expl" class="panel panel-danger">
-              <div class="panel-heading">
-                <h3 class="panel-title"><%= pluralize(@material.errors.count, "error") %> prohibited this material from
-                  being saved:</h3>
-              </div>
-              <div class="panel-body">
-                <ul>
-                  <% @material.errors.full_messages.each do |msg| %>
-                      <li><%= msg %></li>
-                  <% end %>
-                </ul>
-              </div>
-            </div>
-        <% end %>
-
-        <div class="form-group">
-          <%= f.label :title %>
-          <%= f.text_field :title, :class => 'form-control' %>
-          <%#= error_span(@material[:title]) %>
-        </div>
-        <div class="form-group">
-          <%= f.label :url, label: 'URL', :class => "required" %>
-          <%= f.text_field :url, :class => 'form-control' %>
-          <%#= error_span(@material[:url]) %>
-        </div>
-        <div class="form-group">
-          <%= f.label :short_description %>
-          <%= f.text_area :short_description, :class => 'form-control', :rows => '5' %>
-          <%#= error_span(@material[:short_description]) %>
-        </div>
-        <div class="form-group">
-          <%= f.label :long_description %>
-          <%= f.text_area :long_description, :class => 'form-control', :rows => '10'  %>
-          <%#= error_span(@material[:long_description]) %>
-        </div>
-        <div class="form-group">
-          <%= f.label :doi, "DOI" %>
-          <%= f.text_field :doi, :class => 'form-control' %>
-          <%#= error_span(@material[:doi]) %>
-        </div>
-
-        <!--<div class="form-group">-->
-        <!--<%#= f.label :remote_updated_date, :class => 'control-label' %>-->
-        <!--<div class="controls">-->
-        <!--<%#= f.text_field :remote_updated_date, :class => 'form-control' %>-->
-        <!--</div>-->
-        <!--<%#= error_span(@material[:remote_updated_date]) %>-->
-        <!--</div>-->
-        <!--<div class="form-group">-->
-        <!--<%#= f.label :remote_created_date, :class => 'control-label' %>-->
-        <!--<div class="controls">-->
-        <!--<%#= f.text_field :remote_created_date, :class => 'form-control' %>-->
-        <!--</div>-->
-        <!--<%#= error_span (@material[:remote_created_date]) %>-->
-        <!--</div>-->
-
-        <!--<div class="form-group">-->
-          <!--<%#= f.label :scientific_topics %>-->
-          <!--<div id="selected_scientific_topics" class="multiple-input-list">-->
-            <!--<%# @material.scientific_topics.all.each do |st|%>-->
-                <!--<div class="multiple-list-item">-->
-                  <!--<input type="text" class="multiple-input form-control"-->
-                         <!--data-field="scientific_topics"-->
-                         <!--name="material[scientific_topic_ids][]"-->
-                         <!--value="<%#=st.id%>"-->
-                         <!--style="display:none;"><%#=st.preferred_label%></text>-->
-                  <!--<input type="button" value="x"-->
-                         <!--class="dropdown-option-delete"-->
-                         <!--data-field="scientific_topics"-->
-                         <!--data-value="<%#=st.id%>"-->
-                         <!--data-name="<%#=st.preferred_label%>"/>-->
-                <!--</div>-->
-            <!--<%# end %>-->
-          <!--</div>-->
-          <!--<div data-field="scientific_topics">-->
-            <!--<div class="scientific_topics multiple-input-list">-->
-              <!--<input id="scientific_topic_input" type="text"-->
-                     <!--class="form-control"-->
-                     <!--placeholder="Start typing to find scientific topics"/>-->
-            <!--</div>-->
-          <!--</div>-->
-          <!--<%#= error_span(@material[:scientific_topics]) %>-->
-        <!--</div>-->
-
-        <script>
-          $('#material_form').submit(function() {
-            var scientific_topics_input_fields_array = $(".scientific_topics").map(function(){return $(this).val();}).get();
-
-            $('.scientific_topics').each(function() {
-              var scientific_topic_names_hidden_input = $("<input>")
-                  .attr("type", "hidden")
-                  .attr("name", "material[scientific_topic_names][]").val($(this).val());
-              // append to the form
-              $(this).append($(scientific_topic_names_hidden_input));
-            });
-            return true;
-          });
-
-          // Binding on change event to dynamically added input text fields means
-          // we have to bind the event to a parent element because the input doesn't exist yet.
-          $(document).on('blur', '.scientific_topics', function() {
-            if ($(this).val() != ''){
-              $(this).attr('disabled','true');
-            }
-          });
-
-        </script>
-
-        <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'scientific_topics',
-                                                                    :resource => @material,
-                                                                    :f => f,
-                                                                    :placeholder_text => 'Start typing to find topics',
-                                                                    :suggestions => raw(scientific_topic_names_for_autocomplete.to_json),
-                                                                    :disabled => true} %>
-
-        <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords',
-                                                                    :resource => @material,
-                                                                    :f => f,
-                                                                    :suggestions => raw(TeSS::AutocompleteManager.suggestions_array_for('keywords').to_json)} %>
-
-        <div class="form-group">
-          <%= f.label :target_audience %>
-          <%= f.text_field :target_audience, :class => 'form-control' %>
-          <%#= error_span(@material[:target_audience]) %>
-        </div>
-
-        <div class="form-group">
-          <%= f.label :difficulty_level %>
-          <!--<%#= f.select :difficulty_level, options_for_select(difficulty_options_for_select(), @material[:difficulty_level].blank? ? "notspecified" : @material[:difficulty]) %>-->
-          <!--<label for="material_difficulty_level">Difficulty level</label>-->
-          <%= select_tag('material[difficulty_level]', options_for_select(difficulty_options_for_select(), @material.difficulty_level.blank? ? "notspecified" : @material.difficulty_level), :class => "form-control")
-          %>
-          <%#= error_span(@material[:difficulty_level]) %>
-        </div>
-
-        <div class="form-group">
-          <%= f.label :licence %>
-          <!--<%#= f.select :licence, options_for_select(licence_options_for_select(), @material[:licence].blank? ? "notspecified" : @material[:licence]), :class => 'form-control' %>-->
-          <!--<label for="material_licence">Licence</label>-->
-          <%= select_tag('material[licence]', options_for_select(licence_options_for_select(), @material.licence.blank? ? "notspecified" : @material.licence), :class => "form-control")  %>
-
-              <%#= error_span(@material[:licence]) %>
-        </div>
-
-        <%= render :partial => 'common/multiple_input',
-                   :locals => {:field_name => 'authors',
-                               :resource => @material,
-                               :f => f,
-                               :suggestions => raw([TeSS::AutocompleteManager.suggestions_array_for('contributors') +
-                                                    TeSS::AutocompleteManager.suggestions_array_for('authors')].flatten.uniq.to_json)} %>
-
-        <%= render :partial => 'common/multiple_input',
-                   :locals => {:field_name => 'contributors',
-                               :resource => @material,
-                               :f => f,
-                               :suggestions => raw([TeSS::AutocompleteManager.suggestions_array_for('contributors') +
-                                                TeSS::AutocompleteManager.suggestions_array_for('authors')].flatten.uniq.to_json)} %>
-
-        <%= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @material, :f => f, :options => available_packages(@material), :dropdown_toggle_button_name => "Add to package"} %>
-
-        <%= render :partial => 'content_providers/partials/add_content_provider', :locals => {:f => f, :resource => @material} %>
-
-        <div class="form-group">
-          <%= f.submit ( f.object.new_record? ? "Register" : "Update") + " training material", :class => 'btn btn-primary' %>
-          <%= link_to 'Back', :back, :class=>"btn btn-info" %>
-          <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                      materials_path, :class => 'btn btn-default' %>
+<%= simple_form_for @material, :html => {:id => 'material_form'} do |f| %>
+    <% if @material.errors.any? %>
+        <div id="error_expl" class="panel panel-danger">
+          <div class="panel-heading">
+            <h3 class="panel-title"><%= pluralize(@material.errors.count, "error") %> prohibited this material from
+              being saved:</h3>
+          </div>
+          <div class="panel-body">
+            <ul>
+              <% @material.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
         </div>
     <% end %>
-  </div>
-</div>
+
+    <div class="form-group">
+      <%= f.label :title %>
+      <%= f.text_field :title, :class => 'form-control' %>
+      <%#= error_span(@material[:title]) %>
+    </div>
+    <div class="form-group">
+      <%= f.label :url, label: 'URL', :class => "required" %>
+      <%= f.text_field :url, :class => 'form-control' %>
+      <%#= error_span(@material[:url]) %>
+    </div>
+    <div class="form-group">
+      <%= f.label :short_description %>
+      <%= f.text_area :short_description, :class => 'form-control', :rows => '5' %>
+      <%#= error_span(@material[:short_description]) %>
+    </div>
+    <div class="form-group">
+      <%= f.label :long_description %>
+      <%= f.text_area :long_description, :class => 'form-control', :rows => '10' %>
+      <%#= error_span(@material[:long_description]) %>
+    </div>
+    <div class="form-group">
+      <%= f.label :doi, "DOI" %>
+      <%= f.text_field :doi, :class => 'form-control' %>
+      <%#= error_span(@material[:doi]) %>
+    </div>
+
+    <!--<div class="form-group">-->
+    <!--<%#= f.label :remote_updated_date, :class => 'control-label' %>-->
+    <!--<div class="controls">-->
+    <!--<%#= f.text_field :remote_updated_date, :class => 'form-control' %>-->
+    <!--</div>-->
+    <!--<%#= error_span(@material[:remote_updated_date]) %>-->
+    <!--</div>-->
+    <!--<div class="form-group">-->
+    <!--<%#= f.label :remote_created_date, :class => 'control-label' %>-->
+    <!--<div class="controls">-->
+    <!--<%#= f.text_field :remote_created_date, :class => 'form-control' %>-->
+    <!--</div>-->
+    <!--<%#= error_span (@material[:remote_created_date]) %>-->
+    <!--</div>-->
+
+    <!--<div class="form-group">-->
+    <!--<%#= f.label :scientific_topics %>-->
+    <!--<div id="selected_scientific_topics" class="multiple-input-list">-->
+    <!--<%# @material.scientific_topics.all.each do |st|%>-->
+    <!--<div class="multiple-list-item">-->
+    <!--<input type="text" class="multiple-input form-control"-->
+    <!--data-field="scientific_topics"-->
+    <!--name="material[scientific_topic_ids][]"-->
+    <!--value="<%#=st.id%>"-->
+    <!--style="display:none;"><%#=st.preferred_label%></text>-->
+    <!--<input type="button" value="x"-->
+    <!--class="dropdown-option-delete"-->
+    <!--data-field="scientific_topics"-->
+    <!--data-value="<%#=st.id%>"-->
+    <!--data-name="<%#=st.preferred_label%>"/>-->
+    <!--</div>-->
+    <!--<%# end %>-->
+    <!--</div>-->
+    <!--<div data-field="scientific_topics">-->
+    <!--<div class="scientific_topics multiple-input-list">-->
+    <!--<input id="scientific_topic_input" type="text"-->
+    <!--class="form-control"-->
+    <!--placeholder="Start typing to find scientific topics"/>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<%#= error_span(@material[:scientific_topics]) %>-->
+    <!--</div>-->
+
+    <script>
+      $('#material_form').submit(function () {
+        var scientific_topics_input_fields_array = $(".scientific_topics").map(function () {
+          return $(this).val();
+        }).get();
+
+        $('.scientific_topics').each(function () {
+          var scientific_topic_names_hidden_input = $("<input>")
+              .attr("type", "hidden")
+              .attr("name", "material[scientific_topic_names][]").val($(this).val());
+          // append to the form
+          $(this).append($(scientific_topic_names_hidden_input));
+        });
+        return true;
+      });
+
+      // Binding on change event to dynamically added input text fields means
+      // we have to bind the event to a parent element because the input doesn't exist yet.
+      $(document).on('blur', '.scientific_topics', function () {
+        if ($(this).val() != '') {
+          $(this).attr('disabled', 'true');
+        }
+      });
+
+    </script>
+
+    <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'scientific_topics',
+                                                                :resource => @material,
+                                                                :f => f,
+                                                                :placeholder_text => 'Start typing to find topics',
+                                                                :suggestions => raw(scientific_topic_names_for_autocomplete.to_json),
+                                                                :disabled => true} %>
+
+    <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords',
+                                                                :resource => @material,
+                                                                :f => f,
+                                                                :suggestions => raw(TeSS::AutocompleteManager.suggestions_array_for('keywords').to_json)} %>
+
+    <div class="form-group">
+      <%= f.label :target_audience %>
+      <%= f.text_field :target_audience, :class => 'form-control' %>
+      <%#= error_span(@material[:target_audience]) %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :difficulty_level %>
+      <!--<%#= f.select :difficulty_level, options_for_select(difficulty_options_for_select(), @material[:difficulty_level].blank? ? "notspecified" : @material[:difficulty]) %>-->
+      <!--<label for="material_difficulty_level">Difficulty level</label>-->
+      <%= select_tag('material[difficulty_level]', options_for_select(difficulty_options_for_select(), @material.difficulty_level.blank? ? "notspecified" : @material.difficulty_level), :class => "form-control")
+      %>
+      <%#= error_span(@material[:difficulty_level]) %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :licence %>
+      <!--<%#= f.select :licence, options_for_select(licence_options_for_select(), @material[:licence].blank? ? "notspecified" : @material[:licence]), :class => 'form-control' %>-->
+      <!--<label for="material_licence">Licence</label>-->
+      <%= select_tag('material[licence]', options_for_select(licence_options_for_select(), @material.licence.blank? ? "notspecified" : @material.licence), :class => "form-control") %>
+
+      <%#= error_span(@material[:licence]) %>
+    </div>
+
+    <%= render :partial => 'common/multiple_input',
+               :locals => {:field_name => 'authors',
+                           :resource => @material,
+                           :f => f,
+                           :suggestions => raw([TeSS::AutocompleteManager.suggestions_array_for('contributors') +
+                                                    TeSS::AutocompleteManager.suggestions_array_for('authors')].flatten.uniq.to_json)} %>
+
+    <%= render :partial => 'common/multiple_input',
+               :locals => {:field_name => 'contributors',
+                           :resource => @material,
+                           :f => f,
+                           :suggestions => raw([TeSS::AutocompleteManager.suggestions_array_for('contributors') +
+                                                    TeSS::AutocompleteManager.suggestions_array_for('authors')].flatten.uniq.to_json)} %>
+
+    <%= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @material, :f => f, :options => available_packages(@material), :dropdown_toggle_button_name => "Add to package"} %>
+
+    <%= render :partial => 'content_providers/partials/add_content_provider', :locals => {:f => f, :resource => @material} %>
+
+    <div class="form-group">
+      <%= f.submit (f.object.new_record? ? "Register" : "Update") + " training material", :class => 'btn btn-primary' %>
+      <%= link_to 'Back', :back, :class => "btn btn-info" %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                  materials_path, :class => 'btn btn-default' %>
+    </div>
+<% end %>

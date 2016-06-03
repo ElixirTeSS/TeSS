@@ -1,21 +1,17 @@
 <%- model_class = Package -%>
-<div class="row wrapper">
 
-  <!-- SIDEBAR -->
-  <div class="col-md-3" id="sidebar">
-    <%= render :partial => "packages/partials/general_package_info" %>
+<div class="page-header">
+  <h2><%=t '.title', :default => [:'helpers.titles.manage', 'Manage %{model}'], :model => model_class.model_name.human.titleize.downcase %></h2>
+</div>
+<div class="row">
+  <div class="col-md-4 col-md-push-8">
+    <%= render :partial => 'packages/partials/general_package_info' %>
   </div>
-
-  <div class="col-md-9">
-    <div class="page-header">
-      <h2><%=t '.title', :default => [:'helpers.titles.manage', 'Manage %{model}'], :model => model_class.model_name.human.titleize.downcase %></h2>
-    </div>
-    <div class="row">
-      <%= form_tag(controller: 'packages', action: 'update_package_resources', method: 'post') do |f| %>
-          <%= render :partial => 'common/dropdown', :locals => {:field_name => 'material', :resource => @package, :f => f} %>
-          <%= render :partial => 'common/dropdown', :locals => {:field_name => 'event', :resource => @package, :f => f} %>
-          <button type="submit" value="add" class="btn btn-primary">Update package</button>
-      <% end %>
-    </div>
+  <div class="col-md-8 col-md-pull-4">
+    <%= form_tag(controller: 'packages', action: 'update_package_resources', method: 'post') do |f| %>
+        <%= render :partial => 'common/dropdown', :locals => {:field_name => 'material', :resource => @package, :f => f} %>
+        <%= render :partial => 'common/dropdown', :locals => {:field_name => 'event', :resource => @package, :f => f} %>
+        <button type="submit" value="add" class="btn btn-primary">Update package</button>
+    <% end %>
   </div>
 </div>

@@ -1,12 +1,13 @@
-<div class="row wrapper">
-  <div class="col-md-3" id="sidebar">
+<%- model_class = Material -%>
+
+<div class="page-header">
+  <h2><%=t '.title', :default => [:'helpers.titles.new', 'New %{model}'], :model => model_class.model_name.human.titleize.downcase %></h2>
+</div>
+<div class="row">
+  <div class="col-md-4 col-md-push-8">
     <%= render :partial => "materials/partials/general_material_info" %>
   </div>
-  <div class=" col-md-9">
-    <%- model_class = Material -%>
-    <div class="page-header">
-      <h2><%=t '.title', :default => [:'helpers.titles.new', 'New %{model}'], :model => model_class.model_name.human.titleize.downcase %></h2>
-    </div>
+  <div class="col-md-8 col-md-pull-4">
     <%= render :partial => 'form' %>
   </div>
 </div>

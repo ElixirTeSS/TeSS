@@ -159,4 +159,11 @@ module ApplicationHelper
     content_tag tag_symbol, text, :class=>"empty", :style=>style
   end
 
+  def info_box(title, &block)
+    content_tag(:div, class: 'info-box') do
+      content_tag(:h4, raw('<i class="glyphicon glyphicon-info-sign"></i> ' + title), class: 'info-box-header') +
+      content_tag(:div, class: 'info-box-content', &block)
+    end
+  end
+
 end
