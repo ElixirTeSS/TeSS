@@ -8,16 +8,13 @@
 </script>
 
 <%- model_class = Node -%>
-
-<div class="row wrapper">
-
+<div class="wrapper collapsing-wrapper">
   <!-- SIDEBAR -->
-  <div class="col-md-3" id="sidebar">
+  <div class="collapsing-sidebar" id="sidebar">
     <%= render :partial => "nodes/partials/node_info", :locals => {:node => @node} %>
   </div>
-
-  <div class=" col-md-9">
-    <div class="row" style="padding: 10px 5px 0px 0px;">
+  <div id="content">
+    <div class="row">
       <div>
         <h2 style="margin-top: 0px;">
           <%= image_tag get_image_url_for(@node), :class=>"media-image listing_image" %>

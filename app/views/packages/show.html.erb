@@ -13,13 +13,13 @@
 </script>
 
 <%- model_class = Package -%>
-<div class="row wrapper">
+<div class="wrapper collapsing-wrapper">
   <!-- SIDEBAR -->
-  <div class="col-md-3" id="sidebar">
+  <div class="collapsing-sidebar" id="sidebar">
     <%= render :partial => "packages/partials/package_info", :locals => {:package => @package} %>
   </div>
-  <div class=" col-md-9">
-    <div class="row" style="padding: 10px 5px 0px 0px;">
+  <div id="content">
+    <div class="row">
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")),
                     packages_path, :class => 'btn btn-info' %>
