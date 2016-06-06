@@ -14,9 +14,7 @@
       <% end %>
       <div class="pull-right">
         <%= info_button('What are content providers in TeSS?') do %>
-            Content providers are entities – e.g. institutions members of ELIXIR nodes, independent institutions or
-            related portals, like GOBLET, the Software and Data Carpentry Foundations, etc., or individual people – that
-            provide training materials of relevance to life sciences and ELIXIR.
+            <%= render_markdown(ContentProvidersHelper::CONTENT_PROVIDERS_INFO) %>
         <% end %>
       </div>
     </div>

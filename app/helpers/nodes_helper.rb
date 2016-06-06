@@ -1,5 +1,9 @@
 module NodesHelper
 
+  NODES_INFO = "ELIXIR is a pan-European research infrastructure consisting of the Hub and a number of, primarily,national nodes that provide services to their local communities.\n\n"+
+
+      "Select a node to find out more about its training events, training provision, staff and member institutions."
+
   def add_node_staff_button(form, target)
     link_to('#', data: { role: 'add-node-staff-button', target: target }, class: 'btn btn-info') do
       '<i class="fa fa-plus"></i> Add staff'.html_safe

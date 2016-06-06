@@ -1,9 +1,3 @@
 <%= info_box('What are ELIXIR nodes?') do %>
-    <p>
-      ELIXIR is a pan-European research infrastructure consisting of the Hub and a number of, primarily,
-      national nodes that provide services to their local communities.
-    </p>
-    <p>
-      Select a node to find out more about its training events, training provision, staff and member institutions.
-    </p>
+    <%= render_markdown(NodesHelper::NODES_INFO) %>
 <% end %>

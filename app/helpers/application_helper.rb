@@ -149,7 +149,7 @@ module ApplicationHelper
   def info_button(title, &block)
     button_tag(type: 'button', class: 'btn btn-default has-popover filter-button',
                data: { toggle: 'popover', placement: 'bottom', trigger: 'focus',
-                       title: title, content: capture(&block) }) do
+                       title: title, html: true, content: capture(&block) }) do
       #content_tag(:i, '', class: 'glyphicon glyphicon-info-sign info-block')
       "<i class='fa fa-info-circle'></i> ".html_safe + title
     end

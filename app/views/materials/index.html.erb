@@ -12,8 +12,7 @@
       <% end %>
       <div class="pull-right">
         <%= info_button('What are materials in TeSS?') do %>
-            In the context of TeSS, materials are links to online training resources (presentations, videos, exercises, etc.)
-            made available by 3rd-party content providers, along with description and other meta information (e.g. ontological categorization, keywords, etc.).
+            <%= render_markdown(MaterialsHelper::MATERIALS_INFO) %>
         <% end %>
       </div>
     </div>

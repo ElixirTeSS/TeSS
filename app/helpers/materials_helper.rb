@@ -1,6 +1,12 @@
 module MaterialsHelper
 
-  # Returns an array of two-element arrays of licences ready to be used in options_for_select() for generating option/select tags
+  MATERIALS_INFO = "In the context of TeSS, a training material is a link to a single online training material sourced by a content provider (such as a text on a Web page, presentation, video, etc.) along with description and other meta information (e.g. ontological categorization, keywords, etc.).\n\n"+
+
+      "TeSS harvests materials automatically, including descriptions and other relevant meta-data made available by providers. Materials can also be registered manually.\n\n"+
+
+      "If your website contains training materials that you wish to include in TeSS, please contact the TeSS team (<a href='mailto:tess @elixir-uk.info'>tess@elixir-uk.info</a>) for further details."
+
+      # Returns an array of two-element arrays of licences ready to be used in options_for_select() for generating option/select tags
   # [['Licence 1 full name','Licence 1 abbreviation'], ['Licence 2 full name','Licence 2 abbreviation'], ...]
   def licence_options_for_select()
     TeSS::LicenceDictionary.instance.licence_options_for_select

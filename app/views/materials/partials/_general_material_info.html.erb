@@ -1,15 +1,3 @@
 <%= info_box('What are training materials?') do %>
-    <p>
-      In the context of TeSS, a training material is a link to a single online training material sourced by a
-      content provider (such as a text on a Web page, presentation, video, etc.) along with description and other
-      meta information (e.g. ontological categorization, keywords, etc.).
-    </p>
-    <p>
-      TeSS harvests materials automatically, including descriptions and other relevant meta-data made available by
-      providers. Materials can also be registered manually.
-    </p>
-    <p>
-      If your website contains training materials that you wish to include in TeSS,
-      please contact the TeSS team (<a href="mailto:tess@elixir-uk.info">tess@elixir-uk.info</a>) for further details.
-    </p>
+    <%= render_markdown(MaterialsHelper::MATERIALS_INFO) %>
 <% end %>

@@ -12,9 +12,7 @@
       <% end %>
       <div class="pull-right">
         <%= info_button('What are ELIXIR nodes?') do %>
-            ELIXIR is a pan-European research infrastructure consisting of the Hub and a number of, primarily,
-            national nodes that provide services to their local communities.
-            Select a node to find out more about its training events, training provision, staff and member institutions.
+            <%= render_markdown(NodesHelper::NODES_INFO) %>
         <% end %>
       </div>
     </div>
