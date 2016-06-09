@@ -2,7 +2,7 @@
 
 if [ "$#" -eq 0 ];then
     echo "Usage: update.sh <development | production>"
-	exit 0
+    exit 0
 else
     ENV=$1
 fi

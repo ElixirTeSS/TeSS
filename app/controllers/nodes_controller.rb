@@ -7,10 +7,8 @@ class NodesController < ApplicationController
   # GET /nodes
   # GET /nodes.json
   def index
-    @nodes = @index_resources
-
     respond_to do |format|
-      format.json { render json: @nodes.results }
+      format.json { render json: @nodes }
       format.html
     end
   end

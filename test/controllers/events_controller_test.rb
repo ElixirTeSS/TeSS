@@ -233,18 +233,18 @@ class EventsControllerTest < ActionController::TestCase
     assert_select 'a.btn-danger[href=?]', event_path(@event), :count => 0 #No Edit
   end
 
-  test 'should not show action buttons when owner' do
+  test 'should show action buttons when owner' do
     sign_in @event.user
     get :show, :id => @event
-    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 0
-    assert_select 'a.btn-danger[href=?]', event_path(@event), :text => 'Delete', :count => 0
+    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 1
+    assert_select 'a.btn-danger[href=?]', event_path(@event), :text => 'Delete', :count => 1
   end
 
-  test 'should not show action buttons when admin' do
+  test 'should show action buttons when admin' do
     sign_in users(:admin)
     get :show, :id => @event
-    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 0
-    assert_select 'a.btn-danger[href=?]', event_path(@event), :text => 'Delete', :count => 0
+    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 1
+    assert_select 'a.btn-danger[href=?]', event_path(@event), :text => 'Delete', :count => 1
   end
 
   #API Actions
@@ -413,6 +413,15 @@ end
                             }
     end
     assert_in_delta(package1.events.count, package1_event_count, 1)
+  end
+
+  test 'should provide an ics file' do
+    get :get_ics, :id => @event
+    assert_response :redirect # should be 302
+    #assert_equal @response.content_type, 'text/calendar'
+    # The test above doesn't get the correct content type; it's not yet clear how to test that
+    # this actually downloads the required file. But, send_file counts as a redirect so I
+    # can at least detect that the route works.
   end
 
 

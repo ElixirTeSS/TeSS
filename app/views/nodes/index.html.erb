@@ -1,45 +1,37 @@
-<!--<p id="notice"><%#= notice %></p>-->
-
-<!-- SIDEBAR | RESULTS -->
-<div class="row wrapper">
+<div class="wrapper">
   <% if SOLR_ENABLED %>
-
-      <!-- SIDEBAR -->
-      <div class="col-md-3" id="sidebar">
-        <%= render :partial => "nodes/partials/general_node_info" %>
-        <%= render :partial => "search/common/facet_sidebar", :locals => {:resources => @nodes, :resource_type => 'node'} %>
+      <div id="sidebar" class="popout-sidebar">
+        <%= render partial: "search/common/facet_sidebar", locals:  { resources: @nodes_results, resource_type: 'node' } %>
       </div>
-
-      <!-- RESULTS -->
-      <div class="col-md-9">
-        <!-- SEARCH BAR -->
-
-        <div class="row">
-          <%= link_to new_node_path, :class=>"btn btn-primary" do %>
-              <i class="fa fa-plus"></i> Create node
-          <% end %>
-        </div>
-
-        <%= render :partial=> "search/common/search_box", :locals=>{:resource_path => nodes_path} %>
-
-        <%= render :partial => "search/common/search_info", :locals=>{:resources=>@nodes, :resource_type => 'node'}  %>
-
-        <%= render :partial => "search/common/search_filters", :locals => {:resources => @nodes} %>
-
-        <%= render :partial=> "search/common/pagination_bar", :locals=>{:resources=>@nodes} unless (@nodes.blank? or @nodes.results.blank?) %>
-
-        <hr>
-        <!-- RESULTS -->
-        <% @nodes = @nodes.results unless @nodes.blank? %>
   <% end %>
 
-  <!-- ACTUAL RESULTS LIST -->
-  <% unless @nodes.blank? %>
-      <ul class="masonry media-grid">
-        <% @nodes.each do |node| %>
-            <%= render node %>
+  <div id="content">
+    <div class="row">
+      <%= link_to new_node_path, class: "btn btn-primary" do %>
+          <i class="fa fa-plus"></i> Create node
+      <% end %>
+      <div class="pull-right">
+        <%= info_button('What are ELIXIR nodes?') do %>
+            <%= render_markdown(NodesHelper::NODES_INFO) %>
         <% end %>
-      </ul>
-  <% end %>
+      </div>
+    </div>
+
+    <% if SOLR_ENABLED %>
+        <div class="row">
+          <%= render partial: "search/common/search_box", locals: { resource_path: nodes_path } %>
+          <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
+            <i class="fa fa-filter"></i> Filters
+          </button>
+          <%= render partial: "search/common/search_info", locals: { resources: @nodes_results, resource_type: 'node' } %>
+          <%= render partial: "search/common/search_filters", locals: { resources: @nodes_results } %>
+        </div>
+    <% end %>
+
+    <%= render partial: "search/common/pagination_bar", locals: { resources: @nodes } %>
+
+    <hr>
+
+    <%= render partial: 'common/masonry_grid', locals: { objects: @nodes } %>
   </div>
 </div>

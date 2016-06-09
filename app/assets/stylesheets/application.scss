@@ -18,7 +18,126 @@
 @import "bootstrap";
 @import "font-awesome-sprockets";
 @import "font-awesome";
+@import "mixins/mixins";
 @import "*";
+
+// Sticky but not fixed footer
+// http://cbracco.me/css-sticky-footer-effect/
+html {
+  height: 100%;
+  position: relative;
+}
+
+body {
+  min-width: 320px;
+  position: relative;
+  margin: 0;
+  padding-bottom: 120px;
+  min-height: 100%;
+}
+
+.footer {
+  padding: 10px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #ddd;
+  .footer-logo {
+    display: block;
+    float: right;
+    margin: 0 5px;
+    img { height: 64px; }
+  }
+}
+
+div.wrapper {
+  *zoom: 1;
+  background-color: #FFF;
+  border: 1px solid #cccccc;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+  display: flex;
+
+  &.collapsing-wrapper {
+    // Divs that were arranged left -> right will collapse to bottom -> top
+    @media (max-width: $screen-md-min) {
+      flex-direction: column-reverse;
+    }
+  }
+}
+
+#content {
+  padding: 15px;
+  flex-grow: 1;
+}
+
+#sidebar {
+  width: 280px;
+  border-right: 1px solid #cccccc;
+  padding: 0;
+  flex-shrink: 0;
+
+  &.collapsing-sidebar {
+    @media (max-width: $screen-md-min) {
+      width: 100%;
+      border-right: none;
+    }
+  }
+
+  &.popout-sidebar {
+    @media (max-width: $screen-md-min) {
+      position: absolute;
+      z-index: 10;
+      background: white;
+      border-bottom: 1px solid #cccccc;
+      box-shadow: 2px 2px 3px 0 #999;
+      display: none;
+      &.open { display: block; }
+    }
+  }
+
+  // Sidebar facet styles
+  table tr td.h4 {
+    padding-left: 10px;
+  }
+
+  table tr td {
+    padding-left: 20px;
+  }
+
+  table tr td a {
+    color: #000000;
+    padding: 3px;
+    text-decoration: none;
+  }
+
+  table tr td a:hover {
+    background-color: #B0C3C9;
+    color: #ffffff;
+    padding: 3px;
+    text-decoration: none;
+  }
+}
+
+#sidebar-toggle {
+  display: none;
+  @media (max-width: $screen-md-min) {
+    display: inline;
+  }
+}
+
+#sidebar-header {
+  display: none;
+  @media (max-width: $screen-md-min) {
+    display: block;
+  }
+}
 
 .workflow_image {
   width: 100%;
@@ -26,12 +145,6 @@
 
 .profile{
   margin-bottom: 30px;
-}
-
-a:hover {
-  color: steelblue;
-  background-color: transparent;
-  text-decoration: none;
 }
 
 // Bootstrap's breadcrumbs
@@ -48,266 +161,16 @@ a:hover {
   font-style: italic;
 }
 
-// Bootstrap's primary button
-.btn-primary {
-  background: #206B82;
-}
-
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
-  background: #085871;
-}
-
 // Override Bootstrap's alert
 .alert {
   margin-bottom: 0px;
   margin-top: 5px;
 }
 
-.btn-primary:active, .btn-primary.active {
-  background: #064559;
-}
-
-div#sidebar {
-  padding: 0px;
-  border-right: 1px solid #cccccc;
-}
-
-div#sidebar table tr td.h4 {
-  padding-left: 10px;
-}
-
-div#sidebar table tr td {
-  padding-left: 20px;
-}
-
 // Bootstrap's row
 .row {
   margin: 10px 0px 10px 0px;
   //padding: 0px 0px 10px 0px;  // Do not add padding to the row - messes up sidebar etc.
-}
-
-div.wrapper {
-  *zoom: 1;
-  background-color: #FFF;
-  border: 1px solid #cccccc;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
-  -moz-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
-  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
-  position: relative;
-  background-color: #fff;
-  margin-bottom: 20px;
-  margin-left: 0;
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-}
-
-// Sidebar with facet filtering
-div#sidebar table tr td a {
-  color: #000000;
-  padding: 3px;
-  text-decoration: none;
-}
-
-div#sidebar table tr td a:hover {
-  background-color: #B0C3C9;
-  color: #ffffff;
-  padding: 3px;
-  text-decoration: none;
-}
-
-// ######## Media-bricks modified from CKAN
-.media-grid {
-  margin: 0px 0px 15px 0px;
-  list-style: none;
-  *zoom: 1;
-  padding-bottom: 15px;
-  background: #fbfbfb url("/assets/bg.png");
-  border: 1px solid #dddddd;
-  border-width: 1px;
-}
-
-.media-grid:before,
-.media-grid:after {
-  display: table;
-  content: "";
-  line-height: 0;
-}
-
-.media-grid:after {
-  clear: both;
-}
-
-.media-item {
-  position: relative;
-  float: left;
-  width: 200px;
-  padding: 15px;
-  margin: 15px 0 0 15px;
-  background-color: white;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-}
-
-.media-item.long {
-  width: 90%;
-}
-
-.media-item span.count {
-  color: #999;
-}
-
-.media-item .media-image {
-  margin-bottom: 5px;
-}
-
-.media-item .media-edit {
-  opacity: 0;
-  position: absolute;
-  right: 15px;
-  bottom: 15px;
-  -webkit-transition: opacity 0.2s ease-in;
-  -moz-transition: opacity 0.2s ease-in;
-  -o-transition: opacity 0.2s ease-in;
-  transition: opacity 0.2s ease-in;
-}
-
-.media-item:hover {
-  z-index: 1;
-}
-
-.media-item:hover .media-edit {
-  opacity: 1;
-}
-
-li.media-item {
-  list-style-type: none;
-}
-
-.media-view {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border: 1px solid #dddddd;
-  overflow: hidden;
-  -webkit-transition: all 0.2s ease-in;
-  -moz-transition: all 0.2s ease-in;
-  -o-transition: all 0.2s ease-in;
-  transition: all 0.2s ease-in;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  z-index: 2;
-  -ms-word-break: break-all;
-  word-break: break-word;
-  /* Non standard for webkit */
-  //word-break: break-word;
-  -webkit-hyphens: auto;
-  -moz-hyphens: auto;
-  -ms-hyphens: auto;
-  hyphens: auto;
-}
-
-.media-view:hover,
-.media-view.hovered {
-  border-color: #005d7a;
-  -webkit-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1);
-}
-
-.media-view:hover .banner,
-.media-view.hovered .banner {
-  background-color: #005d7a;
-}
-
-.media-view span {
-  display: none;
-}
-
-.media-view .banner {
-  display: block;
-  background-color: #b7b7b7;
-  -webkit-transition: background-color 0.2s ease-in;
-  -moz-transition: background-color 0.2s ease-in;
-  -o-transition: background-color 0.2s ease-in;
-  transition: background-color 0.2s ease-in;
-}
-
-.media-image {
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-}
-
-.media-item .media-heading {
-
-  font-size: 16px;
-  line-height: 1.3;
-  color: #005d7a;
-  margin: 5px 0;
-  -ms-word-break: break-all;
-  word-break: break-word;
-  /* Non standard for webkit */
-  //word-break: break-word;
-  -webkit-hyphens: auto;
-  -moz-hyphens: auto;
-  -ms-hyphens: auto;
-  hyphens: auto;
-}
-
-.media-overlay {
-  position: relative;
-  min-height: 35px;
-}
-
-.media-overlay .media-heading {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 12px 10px;
-  margin: 0;
-  background-color: #000;
-  background-color: rgba(0, 0, 0, 0.8);
-  font-size: 13px;
-  color: #fff;
-  z-index: 1;
-  -webkit-border-radius: 0 0 3px 3px;
-  -moz-border-radius: 0 0 3px 3px;
-  border-radius: 0 0 3px 3px;
-}
-
-.media-overlay .media-image {
-  float: none;
-  display: block;
-  margin-right: 0;
-}
-
-.media-item.is-expander .truncator-link {
-  -webkit-transition: opacity 0.2s ease-in;
-  -moz-transition: opacity 0.2s ease-in;
-  -o-transition: opacity 0.2s ease-in;
-  transition: opacity 0.2s ease-in;
-  position: absolute;
-  z-index: 10;
-  left: 15px;
-  bottom: 15px;
-  opacity: 0;
-}
-
-.media-item.is-expander:hover {
-  padding-bottom: 35px;
-}
-
-.media-item.is-expander:hover .truncator-link {
-  opacity: 1;
 }
 
 // From https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/
@@ -338,16 +201,6 @@ li.media-item {
 .listing_image {
   max-width: 150px;
   height: 50px;
-}
-
-// Override Boostrap's pagination colours
-.pagination > li > a, .pagination > li > span {
-  color: #206B82;
-}
-
-.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
-  background-color: #206B82;
-  border-color: #285e8e;
 }
 
 // Modified from CKAN - for sidebar facets
@@ -586,36 +439,6 @@ abbr, accronym {
   user-select: none;
 }
 
-// Sticky but not fixed footer
-// http://cbracco.me/css-sticky-footer-effect/
-html {
-  height: 100%;
-  position: relative;
-}
-
-body {
-  min-width: 320px;
-  position: relative;
-  margin: 0;
-  padding-bottom: 120px;
-  min-height: 100%;
-}
-
-.footer {
-  padding: 10px;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: #ddd;
-  .footer-logo {
-    display: block;
-    float: right;
-    margin: 0 5px;
-    img { height: 64px; }
-  }
-}
-
 // Vertically aligned
 .vertical-align {
   display: flex;
@@ -711,4 +534,24 @@ sup {
 
 .schemaorg-element {
   display: none
+}
+
+.responsive-search-box {
+  float: right;
+  width: 300px;
+  @include xs {
+    float: none;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+.info-box {
+  .info-box-header {
+    padding: 10px;
+    background-color: #F6F6F6;
+  }
+  .info-box-content {
+    margin-top: 10px;
+  }
 }

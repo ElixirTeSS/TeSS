@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160513131545) do
+ActiveRecord::Schema.define(version: 20160602122936) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,13 +38,16 @@ ActiveRecord::Schema.define(version: 20160513131545) do
     t.text     "url"
     t.text     "image_url"
     t.text     "description"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
     t.string   "slug"
-    t.string   "keywords",    default: [],              array: true
+    t.string   "keywords",              default: [],                          array: true
     t.integer  "user_id"
+    t.integer  "node_id"
+    t.string   "content_provider_type", default: "Organisation"
   end
 
+  add_index "content_providers", ["node_id"], name: "index_content_providers_on_node_id", using: :btree
   add_index "content_providers", ["slug"], name: "index_content_providers_on_slug", unique: true, using: :btree
   add_index "content_providers", ["user_id"], name: "index_content_providers_on_user_id", using: :btree
 
@@ -123,7 +126,6 @@ ActiveRecord::Schema.define(version: 20160513131545) do
     t.string   "member_status"
     t.string   "country_code"
     t.string   "home_page"
-    t.string   "institutions",                 array: true
     t.string   "twitter"
     t.string   "carousel_images",              array: true
     t.datetime "created_at",      null: false
@@ -131,6 +133,7 @@ ActiveRecord::Schema.define(version: 20160513131545) do
     t.string   "slug"
     t.integer  "user_id"
     t.text     "image_url"
+    t.text     "description"
   end
 
   add_index "nodes", ["slug"], name: "index_nodes_on_slug", unique: true, using: :btree
@@ -319,6 +322,7 @@ ActiveRecord::Schema.define(version: 20160513131545) do
   add_index "workflows", ["slug"], name: "index_workflows_on_slug", unique: true, using: :btree
   add_index "workflows", ["user_id"], name: "index_workflows_on_user_id", using: :btree
 
+  add_foreign_key "content_providers", "nodes"
   add_foreign_key "content_providers", "users"
   add_foreign_key "events", "users"
   add_foreign_key "materials", "content_providers"

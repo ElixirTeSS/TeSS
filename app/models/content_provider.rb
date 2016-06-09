@@ -1,5 +1,3 @@
-require 'tess/array_field_cleaner'
-
 class ContentProvider < ActiveRecord::Base
 
   include PublicActivity::Common
@@ -12,6 +10,8 @@ class ContentProvider < ActiveRecord::Base
 
   belongs_to :user
 
+  belongs_to :node
+
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
   auto_strip_attributes :title, :description, :url, :image_url, :squish => false
@@ -20,9 +20,11 @@ class ContentProvider < ActiveRecord::Base
 
   # Validate the URL is in correct format via valid_url gem
   validates :url, :url => true
-  validates :image_url, :url => true
+  validates :image_url, :url => true, allow_blank: true
 
   clean_array_fields(:keywords)
+
+  PROVIDER_TYPE = ['Organisation', 'Portal', 'Project', 'Individual']
 
   unless SOLR_ENABLED==false
     searchable do

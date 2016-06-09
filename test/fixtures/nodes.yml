@@ -5,7 +5,7 @@ good:
   member_status: MyString
   country_code: MyString
   home_page: http://example.com
-  institutions: 
+#  institutions:
   twitter: MyString
   carousel_images: 
   user: regular_user

@@ -1,7 +1,4 @@
 class ApplicationController < ActionController::Base
-
-  require 'bread_crumbs'
-
   include PublicActivity::StoreController
 
   before_action :configure_permitted_parameters, if: :devise_controller?
@@ -15,7 +12,7 @@ class ApplicationController < ActionController::Base
 
   # User auth should be required in the web interface as well; it's here rather than in routes so that it
   # doesn't override the token auth, above.
-  before_action :authenticate_user!, except: [:index, :show, :check_exists]
+  before_action :authenticate_user!, except: [:index, :show, :check_exists, :get_ics]
 
   # Should prevent forgery errors for JSON posts.
   skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }

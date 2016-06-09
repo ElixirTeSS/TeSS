@@ -177,4 +177,4 @@ function add_dropdown_option(field_name, name, value){
         'value="' + value + '"><a>' + name + '</a></li>').appendTo('.' + field_name + '-options')
 }
 
-
+$(document).ready(function () { reposition_tiles('masonry', 'masonry-brick'); });

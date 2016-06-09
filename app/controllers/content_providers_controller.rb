@@ -5,7 +5,6 @@ class ContentProvidersController < ApplicationController
   include SearchableIndex
 
   def index
-    @content_providers = @index_resources
   end
 
   def show
@@ -103,7 +102,7 @@ class ContentProvidersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def content_provider_params
-    params.require(:content_provider).permit(:title, :url, :image_url, :description, :id,
+    params.require(:content_provider).permit(:title, :url, :image_url, :description, :id, :content_provider_type, :node_id,
                                              {:keywords => []}, :remote_updated_date, :remote_created_date, :local_updated_date, :remote_updated_date)
   end
 end

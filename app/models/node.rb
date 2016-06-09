@@ -1,5 +1,3 @@
-require 'tess/array_field_cleaner'
-
 class Node < ActiveRecord::Base
 
   include PublicActivity::Common
@@ -12,9 +10,11 @@ class Node < ActiveRecord::Base
 
   has_many :staff, class_name: 'StaffMember', dependent: :destroy
 
+  has_many :content_providers, dependent: :nullify
+
   accepts_nested_attributes_for :staff, allow_destroy: true
 
-  clean_array_fields(:institutions, :carousel_images)
+  clean_array_fields(:carousel_images) #, :institutions
 
   validates :name, presence: true, uniqueness: true
   validates :home_page, format: { with: URI.regexp }, if: Proc.new { |a| a.home_page.present? }
@@ -32,6 +32,9 @@ class Node < ActiveRecord::Base
       time :updated_at
     end
   end
+
+  MEMBER_STATUS = ['Member', 'Observer']
+  COUNTRIES = JSON.parse(File.read(File.join(Rails.root, 'config', 'data', 'countries.json')))
 
   def self.load_from_hash(hash, verbose: false)
     hash["nodes"].map do |node_data|

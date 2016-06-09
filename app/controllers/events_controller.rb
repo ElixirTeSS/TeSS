@@ -1,16 +1,15 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages, :get_ics]
 
   include TeSS::BreadCrumbs
   include SearchableIndex
+  include ActionView::Helpers::TextHelper
 
   # GET /events
   # GET /events.json
   def index
-    @events = @index_resources
-
     respond_to do |format|
-      format.json { render json: @events.results }
+      format.json { render json: @events }
       format.html
     end
   end
@@ -112,12 +111,11 @@ class EventsController < ApplicationController
 
   # POST /events/1/update_packages
   # POST /events/1/update_packages.json
-  include ActionView::Helpers::TextHelper
   def update_packages
     # Go through each selected package
-    # and update it's resources to include this one.
+    # and update its resources to include this one.
     # Go through each other package
-    packages = params[:event][:package_ids].select{|p| !p.nil? and !p.empty?}
+    packages = params[:event][:package_ids].select{|p| !p.blank?}
     packages = packages.collect{|package| Package.find_by_id(package)}
     packages_to_remove = @event.packages - packages
     packages.each do |package|
@@ -130,7 +128,20 @@ class EventsController < ApplicationController
     redirect_to @event
   end
 
-
+  def get_ics
+    Rails.logger.info("Got event: #{@event.inspect}")
+    cal = Icalendar::Calendar.new
+    ical_event =  Icalendar::Event.new
+    ical_event.dtstart     = Icalendar::Values::Date.new(@event.start)
+    ical_event.dtend       = Icalendar::Values::Date.new(@event.end)
+    ical_event.summary     = @event.title
+    ical_event.description = @event.description
+    if !@event.venue.blank?
+      ical_event.location = @event.venue
+    end
+    cal.add_event(ical_event)
+    send_data cal.to_ical, :filename => "#{@event.title}.ics", :disposition => 'attachment', :type => 'text/calendar'
+  end
 
   protected
 
@@ -145,7 +156,7 @@ class EventsController < ApplicationController
   def event_params
     event_params = params.require(:event).permit(:external_id, :title, :subtitle, :url, :provider, :description, {:field => []},
                                   {:category => []}, {:keyword => []}, :start, :end, :sponsor, :venue, :city, :county,
-                                  :country, :postcode, :latitude, :longitude, :content_provider_id)
+                                  :country, :postcode, :latitude, :longitude, :content_provider_id, {:package_ids => []})
     event_params[:description] = ActionView::Base.full_sanitizer.sanitize(event_params[:description])
     return event_params
   end

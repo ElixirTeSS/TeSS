@@ -1,9 +1,27 @@
-<%- model_class = Node -%>
+<script>
+  $(document).ready(function () {
+    reposition_tiles('masonry', 'masonry-brick');
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+      reposition_tiles('masonry', 'masonry-brick');
+    })
+  })
+</script>
 
-<div class="row wrapper">
-  <div class="col-md-12">
-    <div class="row" style="padding: 10px 5px 0px 0px;">
-      <div class="content_action">
+<%- model_class = Node -%>
+<div class="wrapper collapsing-wrapper">
+  <!-- SIDEBAR -->
+  <div class="collapsing-sidebar" id="sidebar">
+    <%= render :partial => "nodes/partials/node_info", :locals => {:node => @node} %>
+  </div>
+  <div id="content">
+    <div class="row">
+      <div>
+        <h2 style="margin-top: 0px;">
+          <%= image_tag get_image_url_for(@node), :class=>"media-image listing_image" %>
+          <%=t '.title', :default => @node.name %>
+        </h2>
+      </div>
+      <div class="content_action" style="margin-top: -50px;">
         <%= link_to t('.back', :default => t("helpers.links.back")),
                     :back, :class => 'btn btn-info'  %>
         <% if !current_user.nil? and policy(@node).update? %>
@@ -17,17 +35,23 @@
                         :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                         :class => 'btn btn-danger' %>
         <% end %>
-        <% if @node.home_page %>
-          <a href="<%= @node.home_page %>" target="_blank" type="submit" class="btn btn-success">
-            <span class="fa fa-external-link"></span> View home page
-          </a>
+        <% unless @node.home_page.blank? %>
+            <a href="<%= @node.home_page %>" target="_blank" type="submit" class="btn btn-success">
+              <span class="fa fa-external-link"></span> View home page
+            </a>
         <% end %>
       </div>
     </div>
     <div class="row">
       <ul class="nav nav-tabs">
         <li class="active">
-          <a data-toggle="tab" href="#home"><i class="<%= icon_class_for_model('nodes') %>"></i> Node</a>
+          <a data-toggle="tab" href="#providers"><i class="<%= icon_class_for_model('providers') %>"></i> Providers</a>
+        </li>
+        <li>
+          <a data-toggle="tab" href="#materials"><i class="<%= icon_class_for_model('materials') %>"></i> Materials</a>
+        </li>
+        <li>
+          <a data-toggle="tab" href="#events"><i class="<%= icon_class_for_model('events') %>"></i> Events</a>
         </li>
         <li>
           <a data-toggle="tab" href="#activity_log"><i class="<%= icon_class_for_model('activity_logs') %>"></i> Activity log</a>
@@ -35,40 +59,43 @@
       </ul>
 
       <div class="tab-content">
-        <div id="home" class="tab-pane fade in active">
+        <div id="providers" class="tab-pane fade in active">
           <div class="row">
-            <div class="page-header dont-break-out">
-              <h2>
-                <%= country_flag(@node.country_code, class: 'large-flag') %>
-                <%=t '.title', :default => @node.name %>
-              </h2>
-              <% unless @node.home_page.blank? %>
-                  <p><%= link_to @node.home_page, @node.home_page, :class =>'h5', :target => "_blank" %></p>
-              <% end %>
-              <% unless @node.twitter.blank? %>
-                  <p><%= twitter_link @node.twitter %></p>
-              <% end %>
+            <div class="search-results-count"> 
+              <% providers = @node.content_providers %>
+              <%= pluralize(providers.count, 'content provider') %> found 
             </div>
-            <div>
-              <% training_coordinators = @node.staff.training_coordinators %>
-              <p>
-                <b><%= 'Training coordinator'.pluralize(training_coordinators.count) -%>: </b>
-                <%= node_staff_list(training_coordinators, false) %>
-              </p>
-
-              <% other_staff = @node.staff.other_roles %>
-              <% if other_staff.any? %>
-                <p>
-                  <b>Staff: </b>
-                  <%= node_staff_list(other_staff) %>
-                </p>
-              <% end %>
-
-              <p>
-                <b>Institutions: </b>
-                <%= @node.institutions.blank? ? empty_tag(:span, 'none specified') : @node.institutions.join(', ') %>
-              </p>
+            <% if !providers.blank? %>
+                <% providers.each do |provider| %> 
+                    <%= render provider %> 
+                <% end %> 
+            <% end %>
+          </div>
+        </div>
+        <div id="materials" class="tab-pane fade">
+          <div class="row">
+            <div class="search-results-count"> 
+              <% materials = materials_for(@node) %>
+              <%= pluralize(materials.count, 'training material') %> found 
             </div>
+            <% if !materials.blank? %>
+                <% materials.each do |material| %> 
+                    <%= render material %> 
+                <% end %> 
+            <% end %>
+          </div>
+        </div>
+        <div id="events" class="tab-pane fade">
+          <div class="row">
+            <div class="search-results-count"> 
+              <% events = events_for(@node) %>
+              <%= pluralize(events.count, 'event') %> found 
+            </div>
+            <% if !events.blank? %>
+                <% events.each do |event| %> 
+                    <%= render event %> 
+                <% end %> 
+            <% end %>
           </div>
         </div>
         <div id="activity_log" class="tab-pane fade">

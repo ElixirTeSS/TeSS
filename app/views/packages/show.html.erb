@@ -1,17 +1,25 @@
+<!--<script>
+//  $(document).ready(function () {
+//    reposition_tiles('masonry', 'masonry-brick');
+//  })
+</script>-->
 <script>
   $(document).ready(function () {
     reposition_tiles('masonry', 'masonry-brick');
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+      reposition_tiles('masonry', 'masonry-brick');
+    })
   })
 </script>
 
 <%- model_class = Package -%>
-<div class="row wrapper">
+<div class="wrapper collapsing-wrapper">
   <!-- SIDEBAR -->
-  <div class="col-md-3" id="sidebar">
+  <div class="collapsing-sidebar" id="sidebar">
     <%= render :partial => "packages/partials/package_info", :locals => {:package => @package} %>
   </div>
-  <div class=" col-md-9">
-    <div class="row" style="padding: 10px 5px 0px 0px;">
+  <div id="content">
+    <div class="row">
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")),
                     packages_path, :class => 'btn btn-info' %>
@@ -19,10 +27,10 @@
             <%= link_to t('.edit', :default => t("helpers.links.edit")),
                         edit_package_path(@package), :class => 'btn btn-primary' %>
         <% end %>
-        <% if !current_user.nil? and policy(@package).manage? %>
-            <%= link_to t('.manage', :default => t("helpers.links.manage")),
+        <!--<%# if !current_user.nil? and policy(@package).manage? %>-->
+            <%#= link_to t('.manage', :default => t("helpers.links.manage")),
                         package_manage_path(@package), :class => 'btn btn-default' %>
-        <% end %>
+        <!--<%# end %>-->
         <% if !current_user.nil? and policy(@package).destroy? %>
             <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                         package_path(@package),

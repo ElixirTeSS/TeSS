@@ -9,14 +9,13 @@
 
 <%- model_class = Material -%>
 
-<div class="row wrapper">
+<div class="wrapper collapsing-wrapper">
   <!-- SIDEBAR -->
-  <div class="col-md-3" id="sidebar">
+  <div class="collapsing-sidebar" id="sidebar">
     <%= render :partial => "content_providers/partials/content_provider_info", :locals => {:content_provider => @material.content_provider} %>
   </div>
-
-  <div class=" col-md-9">
-    <div class="row" style="padding: 10px 5px 0px 0px;">
+  <div id="content">
+    <div class="row">
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")),
                     :back, :class => 'btn btn-info'  %>
@@ -75,14 +74,14 @@
           </div>
         </div>
         <div id="packages" class="tab-pane fade">
-          <% if current_user and policy(@material).update? %>
-              <div class="row">
-                <%= form_tag(controller: 'materials', id: @material.id, action: 'update_packages', method: 'post') do |f| %>
-                    <%= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @material, :f => f, :options => available_packages_for_material(@material)} %>
-                    <button type="submit" value="add" class="btn btn-primary">Update material</button>
-                <% end %>
-              </div>
-          <% end %>
+          <!--<#% if current_user and policy(@material).update? %>-->
+              <!--<div class="row">-->
+                <!--<%#= form_tag(controller: 'materials', id: @material.id, action: 'update_packages', method: 'post') do |f| %>-->
+                    <!--<%#= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @material, :f => f, :options => available_packages(@material), :dropdown_toggle_button_name => "Add to package"} %>-->
+                    <!--<button type="submit" value="add" class="btn btn-primary">Update material</button>-->
+                <!--<#% end %>-->
+              <!--</div>-->
+          <!--<#% end %>-->
           <div class="row">
             <% if @material.packages.blank? %>
                 <%= empty_tag(:p, 'This material is currently not included in any packages.', "padding-top: 10px;") %>

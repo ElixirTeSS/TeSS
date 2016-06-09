@@ -3,23 +3,15 @@ Parameters
 - resource_path - the path to the route to perform the search e.g. materials_path, events_path or general search_path
 %>
 
-<script>
-    $(document).ready(function() {
-        $('#search-link').click(function(event){
-            $('#search-link').attr("href", '<%= resource_path %>?q=' + $('#q').val());
-        });
-    });
-</script>
 <% placeholder = "Search" + (params[:controller]=='search' ? '...' : " " + params[:controller].humanize(capitalize: false) + "...") %>
 
-<%= form_tag resource_path, :class => "form-inline", :role=>"form", :method => :get do %>
-    <div class="form-group col-md-6" style="padding: 0px 5px 0px 0px;">
-      <%= text_field_tag "q", params[:q], :class => 'form-control', :placeholder => placeholder, :style=>'width:100%' %>
+<%= form_tag resource_path, :role=>"form", :method => :get, :enforce_utf8 => false do %>
+    <div class="input-group responsive-search-box">
+      <%= text_field_tag "q", params[:q], :class => 'form-control', :placeholder => placeholder %>
+      <div class="input-group-btn">
+        <button id="search-link" class="btn btn-default">
+          <i class="fa fa-search"></i>
+        </button>
+      </div>
     </div>
-    <!--<%#= button_tag(:type => "submit", :value=>"search", :class => "btn btn-default") do %>-->
-        <!--<i class="fa fa-search"></i>-->
-    <!--<%# end %>-->
-    <a href="" id="search-link" class="btn btn-default">
-      <i class="fa fa-search"></i>
-    </a>
 <% end %>

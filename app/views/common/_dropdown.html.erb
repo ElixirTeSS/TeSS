@@ -3,21 +3,23 @@ PARAMETERS:
 f - the form 
 resource - The object you wish to modify e.g. #<Material id: 99....
 field_name - The field name that the dropdown is for 
-			 e.g. 'package' for my_material.packages, or 'material' for my_package.materials
+       e.g. 'package' for my_material.packages, or 'material' for my_package.materials
 options - Array of objects to populate the dropdown with. Object must respons to .id and .title
 
 
 Example Usage
 render :partial => 'common/dropdown', 
-	   :locals => {:f => f,
+     :locals => {:f => f,
                    :resource => @package,
                    :field_name => 'material',
                    :options => available_options_for(@material) #OPTIONAL - defaults to field_name.all
-	   }
+     }
  -->
 
 <% model_name =  resource.class.name.underscore #e.g. package %>
 <% options = field_name.capitalize.constantize.all unless options %>
+<!-- Name for the dropdown toggle button, if not specified will be set to 'Add <%#= field_name %>' -->
+<% dropdown_toggle_button_name ||= '' %>
 
 <div class="form-group">
   <label><%= field_name.pluralize.capitalize unless field_name.blank? %></label>
@@ -46,7 +48,7 @@ render :partial => 'common/dropdown',
     <!-- Create list of dropdown options-->
     <div class="dropdown">
       <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        Add <%= field_name %>
+        <%= dropdown_toggle_button_name.blank? ? "Add #{field_name}" : dropdown_toggle_button_name %>
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu <%=field_name%>-options"

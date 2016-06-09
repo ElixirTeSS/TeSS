@@ -21,19 +21,34 @@
         $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyCT1w2S_2I49FwJDKHGj9A9sO86Lp9nUdg&callback=initMap")
     })
 </script>
-
-<div class="row wrapper">
+<script>
+  $(document).ready(function () {
+    reposition_tiles('masonry', 'masonry-brick');
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+      reposition_tiles('masonry', 'masonry-brick');
+    })
+  })
+</script>
+<div class="wrapper collapsing-wrapper">
   <!-- SIDEBAR -->
-  <div class="col-md-3" id="sidebar">
+  <div class="collapsing-sidebar" id="sidebar">
     <%= render :partial => "content_providers/partials/content_provider_info", :locals => {:content_provider => @event.content_provider} %>
   </div>
-
-  <div class="col-md-9">
-    <div class="row" style="padding: 10px 5px 0px 0px;">
+  <div id="content">
+    <div class="row">
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")),
                     :back, :class => 'btn btn-info'  %>
-        <!--<%#= link_to 'Edit', edit_event_path(@event), :class=>"btn btn-primary" %> --><!-- Forbid editing of events -->
+        <% if !current_user.nil? and policy(@event).update? %>
+            <%= link_to 'Edit', edit_event_path(@event), :class=>"btn btn-primary" %>
+        <% end %>
+        <% if !current_user.nil? and policy(@event).destroy? %>
+            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                        event_path(@event),
+                        :method => 'delete',
+                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                        :class => 'btn btn-danger' %>
+        <% end %>
         <a href="<%= @event.url %>" target="_blank" type="submit" class="btn btn-success"><span class="fa fa-external-link"></span> View event</a>
       </div>
     </div>
@@ -134,19 +149,22 @@
               <div id="map" class="event-show-map"></div>
             </div>
           </div>
+          <div class="col-md-8">
+            <%= link_to 'Download', "/events/#{@event.id}/get_ics", :class=>"btn btn-info" %>
+          </div>
         </div>
         <div id="activity_log" class="tab-pane fade">
           <%= render :partial => "activities/activity_log", :locals => {:resource => @event} %>
         </div>
         <div id="packages" class="tab-pane fade">
-          <% if current_user and policy(@event).update? %>
-              <div class="row">
-                <%= form_tag(controller: 'events', id: @event.id, action: 'update_packages', method: 'post') do |f| %>
-                    <%= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @event, :f => f, :options => available_packages_for_event(@event)} %>
-                    <button type="submit" value="add" class="btn btn-primary">Update event</button>
-                <% end %>
-              </div>
-          <% end %>
+          <!--<%# if !current_user.nil? and policy(@event).update? %>-->
+              <!--<div class="row">-->
+                <!--<%#= form_tag(controller: 'events', id: @event.id, action: 'update_packages', method: 'post') do |f| %>-->
+                    <!--<%#= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @event, :f => f, :options => available_packages(@event), :dropdown_toggle_button_name => "Add to package"} %>-->
+                    <!--<button type="submit" value="add" class="btn btn-primary">Update event</button>-->
+                <!--<%# end %>-->
+              <!--</div>-->
+          <!--<%# end %>-->
           <div class="row">
             <% if @event.packages.blank? %>
                 <%= empty_tag(:p, 'This event is currently not included in any packages.', "padding-top: 10px;") %>

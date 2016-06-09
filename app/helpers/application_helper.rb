@@ -146,5 +146,24 @@ module ApplicationHelper
     end
   end
 
+  def info_button(title, &block)
+    button_tag(type: 'button', class: 'btn btn-default has-popover filter-button',
+               data: { toggle: 'popover', placement: 'bottom', trigger: 'focus',
+                       title: title, html: true, content: capture(&block) }) do
+      #content_tag(:i, '', class: 'glyphicon glyphicon-info-sign info-block')
+      "<i class='fa fa-info-circle'></i> ".html_safe + title
+    end
+  end
+
+  def empty_tag (tag_symbol, text, style=nil)
+    content_tag tag_symbol, text, :class=>"empty", :style=>style
+  end
+
+  def info_box(title, &block)
+    content_tag(:div, class: 'info-box') do
+      content_tag(:h4, raw('<i class="glyphicon glyphicon-info-sign"></i> ' + title), class: 'info-box-header') +
+      content_tag(:div, class: 'info-box-content', &block)
+    end
+  end
 
 end

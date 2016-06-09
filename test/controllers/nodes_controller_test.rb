@@ -26,7 +26,7 @@ class NodesControllerTest < ActionController::TestCase
     assert_difference('Node.count') do
       assert_difference('StaffMember.count') do
         post :create, node: { carousel_images: '', country_code: 'FN',
-                              home_page: 'http://www.example.com', institutions: '',
+                              home_page: 'http://www.example.com', #institutions: '',
                               member_status: 'Member', name: 'Finnland',
                               twitter: '@finnlandnode', staff_attributes:
                                   {
@@ -59,7 +59,7 @@ class NodesControllerTest < ActionController::TestCase
     sign_in users(:admin)
 
     patch :update, id: @node, node: { carousel_images: @node.carousel_images, country_code: ':)',
-                                      home_page: @node.home_page, institutions: @node.institutions,
+                                      home_page: @node.home_page, #institutions: @node.institutions,
                                       member_status: @node.member_status, name: @node.name,
                                       twitter: @node.twitter }
     assert_redirected_to node_path(assigns(:node))
@@ -71,7 +71,7 @@ class NodesControllerTest < ActionController::TestCase
 
     assert_difference('StaffMember.count', 1) do
       patch :update, id: @node, node: { carousel_images: @node.carousel_images, country_code: @node.country_code,
-                                        home_page: @node.home_page, institutions: @node.institutions,
+                                        home_page: @node.home_page, #institutions: @node.institutions,
                                         member_status: @node.member_status, name: @node.name,
                                         twitter: @node.twitter, staff_attributes:
                                             {
@@ -94,7 +94,7 @@ class NodesControllerTest < ActionController::TestCase
 
     assert_difference('StaffMember.count', -1) do
       patch :update, id: @node, node: { carousel_images: @node.carousel_images, country_code: @node.country_code,
-                                        home_page: @node.home_page, institutions: @node.institutions,
+                                        home_page: @node.home_page, #institutions: @node.institutions,
                                         member_status: @node.member_status, name: @node.name,
                                         twitter: @node.twitter, staff_attributes:
                                             {
@@ -111,7 +111,7 @@ class NodesControllerTest < ActionController::TestCase
     sign_in users(:admin)
 
     patch :update, id: @node, node: { carousel_images: @node.carousel_images, country_code: @node.country_code,
-                                      home_page: @node.home_page, institutions: @node.institutions,
+                                      home_page: @node.home_page, #institutions: @node.institutions,
                                       member_status: @node.member_status, name: @node.name,
                                       twitter: @node.twitter, staff_attributes:
                                           {

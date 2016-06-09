@@ -1,10 +1,9 @@
 class MaterialsController < ApplicationController
-  require 'bread_crumbs'
-
   before_action :set_material, only: [:show, :edit, :update, :destroy, :update_packages]
 
   include TeSS::BreadCrumbs
   include SearchableIndex
+  include ActionView::Helpers::TextHelper
 
   # GET /materials
   # GET /materials?q=queryparam
@@ -21,30 +20,9 @@ class MaterialsController < ApplicationController
   #   params[:scientific_topics] = res.compact.flatten.uniq if res and !res.empty?
   # end
 
-  include ActionView::Helpers::TextHelper
-
-  def update_package
-    # Go through each selected package
-    # and update it's resources to include this one.
-    # Go through each other package
-    packages = params[:material][:package_ids].select!{|p| !p.nil? and !p.empty?}
-    packages.collect!{|package| Package.find_by_id(package)}
-    packages_to_remove = @material.packages - packages
-    packages.each do |package|
-      package.update_resources_by_id((package.materials + [@material.id]).uniq, nil)
-    end
-    packages_to_remove.each do |package|
-      package.update_resources_by_id((package.materials.collect{|x| x.id} - [@material.id]).uniq, nil)
-    end
-    flash[:notice] = "Material has been included in #{pluralize(packages.count, 'package')}"
-    redirect_to @material
-  end
-
   def index
-    @materials = @index_resources
-
     respond_to do |format|
-      format.json { render json: @materials.results }
+      format.json { render json: @materials }
       format.html
     end
   end
@@ -111,7 +89,7 @@ class MaterialsController < ApplicationController
     respond_to do |format|
       if @material.save
         @material.create_activity :create, owner: current_user
-        current_user.materials << @material
+        #current_user.materials << @material
         format.html { redirect_to @material, notice: 'Material was successfully created.' }
         format.json { render :show, status: :created, location: @material }
       else
@@ -151,12 +129,11 @@ class MaterialsController < ApplicationController
 
   # POST /materials/1/update_packages
   # POST /materials/1/update_packages.json
-  include ActionView::Helpers::TextHelper
   def update_packages
     # Go through each selected package
-    # and update it's resources to include this material.
+    # and update its resources to include this material.
     # Go through each other package that is not selected and remove this material from it.
-    packages = params[:material][:package_ids].select{|p| !p.nil? and !p.empty?}
+    packages = params[:material][:package_ids].select{|p| !p.blank?}
     packages = packages.collect{|package| Package.find_by_id(package)}
     packages_to_remove = @material.packages - packages
     packages.each do |package|
