@@ -415,5 +415,14 @@ end
     assert_in_delta(package1.events.count, package1_event_count, 1)
   end
 
+  test 'should provide an ics file' do
+    get :get_ics, :id => @event
+    assert_response :redirect # should be 302
+    #assert_equal @response.content_type, 'text/calendar'
+    # The test above doesn't get the correct content type; it's not yet clear how to test that
+    # this actually downloads the required file. But, send_file counts as a redirect so I
+    # can at least detect that the route works.
+  end
+
 
 end

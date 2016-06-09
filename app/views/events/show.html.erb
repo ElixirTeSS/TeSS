@@ -149,6 +149,9 @@
               <div id="map" class="event-show-map"></div>
             </div>
           </div>
+          <div class="col-md-8">
+            <%= link_to 'Download', "/events/#{@event.id}/get_ics", :class=>"btn btn-info" %>
+          </div>
         </div>
         <div id="activity_log" class="tab-pane fade">
           <%= render :partial => "activities/activity_log", :locals => {:resource => @event} %>

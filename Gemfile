@@ -40,6 +40,8 @@ gem 'gravtastic'
 
 gem 'green_monkey'
 
+gem 'icalendar'
+
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
