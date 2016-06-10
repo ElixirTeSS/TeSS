@@ -2,15 +2,24 @@
 {
   "@context": "http://schema.org",
   "@type": "WebSite",
-  "url": "https://tess.elixir-uk.org/",
+  "name": "TeSS",
+  "alternateName": "The ELIXIR Life Science Training Portal",
+  "url": "<%= root_url%>",
   "potentialAction": {
     "@type": "SearchAction",
-    "target": "https://tess.elixir-uk.org/search?utf8=%E2%9C%93&q={search_term_string}",
+    "target": "<%=root_url%>search?utf8=%E2%9C%93&q={search_term_string}",
     "query-input": "required name=search_term_string"
   }
 }
 </script>
-
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "url": "<%= root_url%>",
+  "logo": <%= image_url "ELIXIR_TeSS_logo_normal.png" %>
+}
+</script>
 
 <div id="main-container" class="container">
 
