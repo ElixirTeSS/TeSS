@@ -7,7 +7,7 @@
 
   <div id="content">
     <div class="row">
-      <%= link_to new_workflow_path, class: "btn btn-primary disabled" do %>
+      <%= link_to new_workflow_path, class: "btn btn-primary" do %>
           <i class="fa fa-plus"></i> Create workflow
       <% end %>
       <div class="pull-right">
@@ -36,15 +36,6 @@
       This functionality is still under construction.
     </p>
 
-    <p>
-      You can see examples of how Training Workflows will be implemented on the
-      <a href="https://tess-old.elixir-uk.org/workflow/25c37b3b-f88a-42b1-a23e-a7563102823c"> old TeSS Pilot site</a>
-      (now defunct).
-    </p>
-    <a href="https://tess-old.elixir-uk.org/workflow/25c37b3b-f88a-42b1-a23e-a7563102823c">
-      <%= image_tag('workflow', :class => "workflow_image") %>
-    </a>
-
-    <%= render partial: 'common/masonry_grid', locals: {objects: @workflows} %>
+    <%= render partial: 'common/masonry_grid', locals: { objects: @workflows } %>
   </div>
 </div>

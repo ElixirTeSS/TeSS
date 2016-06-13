@@ -1,5 +1,16 @@
-<h2>New workflow</h2>
-
-<%= render 'form' %>
-
-<%= link_to 'Back', workflows_path %>
+<%- model_class = Workflow -%>
+<div class="row wrapper">
+  <div class="col-md-12">
+    <div class="page-header">
+      <h2><%= t '.title', :default => [:'helpers.titles.new', 'New %{workflow}'], :model => model_class.model_name.human.titleize.downcase %></h2>
+    </div>
+    <div class="row">
+      <div class="col-md-4 col-md-push-8">
+        <%= render :partial => 'workflows/partials/general_workflow_info' %>
+      </div>
+      <div class="col-md-8 col-md-pull-4">
+        <%= render :partial => 'form' %>
+      </div>
+    </div>
+  </div>
+</div>
