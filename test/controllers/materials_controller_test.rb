@@ -322,12 +322,13 @@ class MaterialsControllerTest < ActionController::TestCase
 
   test 'should not update non scraper owner through API' do
     user = users(:regular_user)
+    other_user = users(:another_regular_user)
     material = user.materials.first
 
     new_title = "totally new title"
     assert_no_difference('Material.count') do
-      post 'update', {user_token: user.authentication_token,
-                      user_email: user.email,
+      post 'update', {user_token: other_user.authentication_token,
+                      user_email: other_user.email,
                       material: {
                           title: new_title,
                           url: material.url,
@@ -336,7 +337,7 @@ class MaterialsControllerTest < ActionController::TestCase
                       :id => material.id,
                       :format => 'json'}
     end
-    assert_response :forbidden
+    assert_response 401
   end
 
   test 'should add material to multiple packages' do
