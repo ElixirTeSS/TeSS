@@ -1,13 +1,14 @@
+<% editable ||= false %>
 <div class="wrapper" id="cy"></div>
 <script>
   <%# TODO: Move all this into a special JS file. Render the workflow as JSON in a script element, and load via JS %>
   $(document).ready(function () {
     var cy = window.cy = cytoscape({
       container: document.getElementById('cy'),
-      elements: <%= workflow.workflow_content['elements'].to_json.html_safe %>,
+      elements: <%= workflow.workflow_content ? workflow.workflow_content['elements'].to_json.html_safe : 'null' %>,
       layout: {
         name: 'preset',
-        padding: 50
+        padding: 20
       },
       style: [
         {
@@ -18,10 +19,10 @@
             'background-color': 'data(color)',
             'text-valign': 'center',
             'text-halign': 'center',
-            'width': 100,
-            'height': 50,
-            'font-size': 12,
-            'border-width': '1',
+            'width': '150px',
+            'height': '30px',
+            'font-size': '9px',
+            'border-width': '1px',
             'border-color': '#999'
           }
         },
@@ -38,7 +39,7 @@
             'text-halign': 'center',
             'width': 'auto',
             'height': 'auto',
-            'font-size': 12
+            'font-size': '9px'
           }
         },
         {
@@ -46,28 +47,27 @@
           css: {
             'target-arrow-shape': 'triangle',
             'content': 'data(short_name)',
-            'line-color': '#ff0000',
-            'source-arrow-color': '#ff0000',
-            'target-arrow-color': '#ff0000',
-            'font-size': 12
+            'line-color': '#ccc',
+            'source-arrow-color': '#ccc',
+            'target-arrow-color': '#ccc',
+            'font-size': '9px'
           }
         },
         {
           selector: ':selected',
           css: {
             'background-color': 'data[\'color\'])',
-            'line-color': '#0000ff',
-            //'width': '5',
-            //'line-style': 'dotted',
-            'target-arrow-color': '#0000ff',
-            'source-arrow-color': '#0000ff',
-            'border-width': '7',
-            'border-color': '#0000ff',//'#999',
+            'line-color': '#2A62E4',
+            'target-arrow-color': '#2A62E4',
+            'source-arrow-color': '#2A62E4',
+            'border-width': '2px',
+            'border-color': '#2A62E4',
             'background-blacken': '0.3'
           }
         }
       ],
-      userZoomingEnabled: false
+      userZoomingEnabled: false,
+      autolock: <%= editable ? 'false' : 'true' -%>
     });
 
     cy.panzoom();

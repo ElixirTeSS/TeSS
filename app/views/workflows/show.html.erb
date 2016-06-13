@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="row">
-      <%= render partial: 'workflows/workflow', object: @workflow %>
+      <%= render partial: 'workflows/workflow_diagram', locals: { workflow:  @workflow } %>
     </div>
   </div>
 </div>
