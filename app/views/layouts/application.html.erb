@@ -45,8 +45,8 @@
 
 <div id="main-container" class="container">
   <!-- Breadcrumbs -->
-  <%= render_breadcrumbs do |breadcrumbs| %>
-      <%= content_tag(:div, breadcrumbs, class: "breadcrumbs") %>
+  <%= render_breadcrumbs :partial => 'common/breadcrumbs' do |breadcrumbs| %>
+      <%= content_tag(:div, breadcrumbs, {class: "breadcrumbs"}) %>
   <% end %>
 
   <%# Main content of every page -%>
