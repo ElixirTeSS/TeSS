@@ -1,24 +1,28 @@
-<!--<p id="notice"><%#= notice %></p>-->
-
-<p>
-  <strong>Title:</strong>
-  <%= @workflow.title %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @workflow.description %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @workflow.owner %>
-</p>
-
-<p>
-  <strong>Workflow content:</strong>
-  <%= @workflow.workflow_content %>
-</p>
-
-<%= link_to 'Edit', edit_workflow_path(@workflow) %> |
-<%= link_to 'Back', workflows_path %>
+<div class="wrapper collapsing-wrapper">
+  <!-- SIDEBAR -->
+  <div class="collapsing-sidebar" id="sidebar">
+    <%= render partial: 'workflows/partials/workflow_info', locals: { workflow:  @workflow } %>
+  </div>
+  <div id="content">
+    <div class="row">
+      <div class="content_action">
+        <%= link_to t('.back', :default => t("helpers.links.back")),
+                    :back, :class => 'btn btn-info'  %>
+        <% if !current_user.nil? and policy(@workflow).update? %>
+            <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                        edit_workflow_path(@workflow), :class => 'btn btn-primary' %>
+        <% end %>
+        <% if !current_user.nil? and policy(@workflow).destroy? %>
+            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                        workflow_path(@workflow),
+                        :method => 'delete',
+                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                        :class => 'btn btn-danger' %>
+        <% end %>
+      </div>
+    </div>
+    <div class="row">
+      <%= render partial: 'workflows/workflow', object: @workflow %>
+    </div>
+  </div>
+</div>
