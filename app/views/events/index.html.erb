@@ -47,9 +47,9 @@
           <% if include_expired %>
               <% button_params = params.dup %>
               <% button_params.delete(:include_expired) %>
-              <% button_text = "Show" %>
-          <% else %>
               <% button_text = "Hide" %>
+          <% else %>
+              <% button_text = "Show" %>
               <% button_params = params.merge(:include_expired => true) %>
           <% end %>
           <%= link_to button_params, class: 'btn btn-default' do %>
