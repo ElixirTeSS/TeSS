@@ -31,8 +31,19 @@ class ContentProvider < ActiveRecord::Base
       text :title
       text :description
       string :keywords, :multiple => true
+      string :node, :multiple => true do
+        unless self.node.blank?
+          self.node.name
+        end
+      end
+      text :node do
+        unless self.node.blank?
+          self.node.name
+        end
+      end
     end
   end
+
   # TODO: Add validations for these:
   # title:text url:text image_url:text description:text
 
@@ -40,7 +51,7 @@ class ContentProvider < ActiveRecord::Base
   # Add link to Node, once node is defined.
 
   def self.facet_fields
-    %w( keywords )
+    %w( keywords node )
   end
 
 end
