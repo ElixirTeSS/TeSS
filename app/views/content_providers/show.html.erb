@@ -51,7 +51,7 @@
           <div class="row">
             <% materials = @content_provider.materials.count > 30 ? @content_provider.materials.first(30) : @content_provider.materials %>
             <div class="search-results-count"> 
-              <%= "Showing #{pluralize(materials.count, "material")}#{(@content_provider.materials.count > 30) ? " out of #{@content_provider.materials.count}" : ''}." %>
+              <%= (materials.count > 0 ? "Showing" : "Found") + " #{pluralize(materials.count, "material")}#{(@content_provider.materials.count > 30) ? " out of #{@content_provider.materials.count}" : ''}." %>
               <%= link_to "View all results.", :controller => 'materials', :content_provider => @content_provider.title if (@content_provider.materials.count > 30) %>
             </div>
 
