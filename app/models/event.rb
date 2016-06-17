@@ -26,6 +26,16 @@ class Event < ActiveRecord::Base
       time :start
       time :end
       time :updated_at
+      string :content_provider do
+        if !self.content_provider.nil?
+          self.content_provider.title
+        end
+      end
+      text :content_provider do
+        if !self.content_provider.nil?
+          self.content_provider.title
+        end
+      end
 =begin TODO: SOLR has a LatLonType to do geospatial searching. Have a look at that
       location :latitutde
       location :longitude
@@ -94,7 +104,7 @@ class Event < ActiveRecord::Base
   
 
   def self.facet_fields
-    %w( category country field provider city sponsor keywords venue )
+    %w( category country field provider city sponsor keywords venue content_provider)
   end
 
 end
