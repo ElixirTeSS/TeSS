@@ -24,7 +24,7 @@ class ContentProvider < ActiveRecord::Base
 
   clean_array_fields(:keywords)
 
-  PROVIDER_TYPE = ['Organisation', 'Portal', 'Project', 'Individual']
+  PROVIDER_TYPE = ['Organisation', 'Portal', 'Project']#, 'Individual']
 
   unless SOLR_ENABLED==false
     searchable do
@@ -41,6 +41,7 @@ class ContentProvider < ActiveRecord::Base
           self.node.name
         end
       end
+      string :content_provider_type
     end
   end
 
@@ -51,7 +52,7 @@ class ContentProvider < ActiveRecord::Base
   # Add link to Node, once node is defined.
 
   def self.facet_fields
-    %w( keywords node )
+    %w( keywords node content_provider_type)
   end
 
 end
