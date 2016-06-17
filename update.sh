@@ -1,8 +1,9 @@
 #!/bin/bash --login
 
 if [ "$#" -eq 0 ];then
-    echo "Usage: update.sh <development | production>"
-    exit 0
+#    echo "Usage: update.sh <development | production>"
+#    exit 0
+    ENV="production"
 else
     ENV=$1
 fi
