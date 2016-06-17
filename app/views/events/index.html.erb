@@ -84,11 +84,13 @@
 
         <div class="tab-content">
           <div id="home" class="tab-pane fade in active">
-            <ul class="masonry media-grid" style="margin-top: 15px;">
-              <% @events.each do |event| %>
-                  <%= render event %>
-              <% end %>
-            </ul>
+            <% if @events.count > 0 %>
+                <ul class="masonry media-grid" style="margin-top: 15px;">
+                  <% @events.each do |event| %>
+                      <%= render event %>
+                  <% end %>
+                </ul>
+            <% end %>
           </div>
           <div id="map" class="tab-pane fade">
             <div id="map-content">

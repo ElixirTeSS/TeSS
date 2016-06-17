@@ -49,14 +49,16 @@
               <%= "in active" if @content_provider.materials.count > 0 or @content_provider.events.count < 1 %>
           ">
           <div class="row">
+            <% materials = @content_provider.materials.count > 30 ? @content_provider.materials.first(30) : @content_provider.materials %>
             <div class="search-results-count"> 
-              <%= pluralize(@content_provider.materials.count, 'training material') %> found 
+              <%= "Showing #{pluralize(materials.count, "material")}#{(@content_provider.materials.count > 30) ? " out of #{@content_provider.materials.count}" : ''}." %>
+              <%= link_to "View all results.", :controller => 'materials', :content_provider => @content_provider.title if (@content_provider.materials.count > 30) %>
             </div>
-            <% @content_provider.materials.each do |material| %> 
+
+            <% materials.each do |material| %> 
                 <%= render material %> 
             <% end %> 
           </div>
-            
         </div>
         <div id="events" class="tab-pane fade
               <%= "in active" if @content_provider.events.count > 0 and @content_provider.materials.count < 1 %>
@@ -65,28 +67,21 @@
             <% upcoming_events = @content_provider.events.select{|x| x.upcoming?} %>
             <% past_events = @content_provider.events.select{|x| x.expired?} %>
 
-            <div class="search-results-count">
-              <%= pluralize(upcoming_events.count, 'upcoming event') %>
+            <div class="row">
+              <% events = upcoming_events.count > 30 ? upcoming_events.first(30) : upcoming_events %>
+              <div class="search-results-count"> 
+                <%= (upcoming_events.count > 0 ? "Showing" : "Found") + " #{pluralize(events.count, "upcoming event")}#{(upcoming_events.count > 30) ? " out of #{upcoming_events.count}" : ''}." %>
+                <%= "Found #{pluralize(past_events.count, "past event")}." %>
+                <%= link_to "View all results.", :controller => 'events', :content_provider => @content_provider.title if (upcoming_events.count > 30 || past_events.count > 0) %>
+              </div>
+              <% if upcoming_events.count > 0 %>
+                  <ul class="masonry media-grid" style="margin-top: 15px;">
+                    <% upcoming_events.each do |upcoming_event| %> 
+                        <%= render upcoming_event %> 
+                    <% end %> 
+                  </ul>
+              <% end %>
             </div>
-            <% if !upcoming_events.blank? %>
-                <ul class="masonry media-grid" style="margin-top: 15px;">
-                  <% upcoming_events.each do |event| %>
-                     <%= render event %>
-                  <% end %>
-                </ul>
-            <% end %>
-          </div>
-          <div class="row">
-            <div class="search-results-count">
-              <%= pluralize(past_events.count, 'past event') %>
-            </div>
-            <% if !past_events.blank? %>
-                <ul class="masonry media-grid" style="margin-top: 15px;">
-                  <% past_events.each do |event| %>
-                      <%= render event %>
-                  <% end %>
-                </ul>
-            <% end %>
           </div>
         </div>
         <div id="activity_log" class="tab-pane fade">
