@@ -23,7 +23,8 @@ Variable that should be available
       <% @facet_fields.each do |facet_field| %>
           <% if resources.facet(facet_field).rows.count > 0 %>
               <!-- Title -->
-              <li><h4 class="nav-heading"><%= (facet_field.humanize == 'User') ? 'Owner' : facet_field.humanize %></h4></li>
+              <li><h4 class="nav-heading"><%= (facet_field.humanize == 'User') ? 'Owner' : facet_field.humanize %></h4>
+              </li>
 
               <!-- Select first 10 or all filters-->
               <% showing_all = false %>
@@ -39,24 +40,26 @@ Variable that should be available
                   <% if !facet.value.blank? %>
                       <% if @facet_params.include?(facet_field) and @facet_params[facet_field].include?(facet.value) %>
                           <li class="nav-item active">
-                            <%= remove_filter_link(facet_field, facet.value)%>
+                            <%= remove_filter_link(facet_field, facet.value) %>
                           </li>
                       <% else %>
-                          <li class="nav-item"><%= filter_link(facet_field, facet.value)%></li>
+                          <li class="nav-item"><%= filter_link(facet_field, facet.value) %></li>
                       <% end %>
                   <% end %>
               <% end %>
 
               <!-- Display 'show more' link -->
-              <% if !showing_all and filters_to_show.count >= 10 %>
-                  <li class="nav-item">
-                    <%= show_more_link(facet_field) %>
-                  </li>
-              <% end %>
-              <% if (showing_all and filters_to_show.count >= 10) %>
-                  <li class="nav-item">
+              <% unless resources.facet(facet_field).rows.count == 10 %>
+                  <% if !showing_all and filters_to_show.count >= 10 %>
+                      <li class="nav-item">
+                        <%= show_more_link(facet_field) %>
+                      </li>
+                  <% end %>
+                  <% if (showing_all and filters_to_show.count >= 10) %>
+                      <li class="nav-item">
                         <%= show_less_link(facet_field) %>
-                  </li>
+                      </li>
+                  <% end %>
               <% end %>
           <% end %>
       <% end %>
