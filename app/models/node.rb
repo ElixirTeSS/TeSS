@@ -20,7 +20,7 @@ class Node < ActiveRecord::Base
   validates :home_page, format: { with: URI.regexp }, if: Proc.new { |a| a.home_page.present? }
   # validate :has_training_coordinator
 
-  unless SOLR_ENABLED==false
+  if SOLR_ENABLED==true
     searchable do
       string :name
       text :name
@@ -28,7 +28,7 @@ class Node < ActiveRecord::Base
       text :staff do
         staff.map(&:name)
       end
-
+      string :member_status
       time :updated_at
     end
   end
@@ -62,7 +62,7 @@ class Node < ActiveRecord::Base
   end
 
   def self.facet_fields
-    %w(name)
+    %w( member_status )
   end
 
   private

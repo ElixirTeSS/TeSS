@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   friendly_id :username, use: :slugged
 
   attr_accessor :login
-  unless SOLR_ENABLED==false
+  if SOLR_ENABLED==true
     searchable do
       text :username
       text :email
