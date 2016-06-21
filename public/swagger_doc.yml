@@ -1,0 +1,157 @@
+# this is the TESS API spec SWAGGER YAML
+swagger: '2.0'
+info:
+  title: TeSS API
+  description: Access, search and filter through collection of training materials, events, packages, and workflows in TeSS.
+  version: "1.0.0"
+# the domain of the service
+host: tess.elixir-uk.org
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /
+produces:
+  - application/json
+paths:
+  /materials.json:
+    get:
+      summary: Search over the collection of training materials
+      description: |
+        The base url (materials.json) returns the first page of materials as seen on the UI (if you just go to /materials). To navigate through and filter out; use the below parameters. The returned value is an array of JSON objects.
+      parameters:
+        - name: page
+          in: query
+          description: Selects which page of results to return (e.g. 2)
+          required: false
+          type: number
+          format: integer
+        - name: scientific_topics
+          in: query
+          description: Returns all materials annotated with a certain scientific topic using EDAM (e.g. Alignment or Data Visualization)
+          required: false
+          type: string
+          format: string
+        - name: content_provider
+          in: query
+          description: Returns all materials from the content provider that provided records to TeSS (e.g. Goblet or Erasys+App)
+          required: false
+          type: string
+          format: string
+        - name: target_audience
+          in: query
+          description: Returns all the materials for an intended audience (e.g. PhD Student or Bench Biologist)
+          required: false
+          type: string
+          format: string
+        - name: keywords
+          in: query
+          description: Returns all the materials that use this keyword to describe it.
+          required: false
+          type: string
+          format: string
+        - name: licence
+          in: query
+          description: Returns all materials with this type of licence (e.g. BSD or GNU or CC-BY)
+          required: false
+          type: string
+          format: string
+        - name: difficulty_level
+          in: query
+          description: Returns all materials with the selected difficultly level (e.g. Intermediate or Novice)
+          required: false
+          type: string
+          format: string
+        - name: authors
+          in: query
+          description: Returns all materials by the specified author (e.g. John+Smith or Sarah+Michelle+Gellar
+          required: false
+          type: string
+          format: string
+      tags:
+        - Materials
+      responses:
+        200:
+          description: An array of materials
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Material'
+#   default:
+#          description: Unexpected error
+#          schema:
+#            $ref: '#/definitions/Error'
+definitions:
+  Material:
+    type: object
+    properties:
+      id:
+        type: number
+        description: Unique identifier of the material
+      title:
+        type: string
+        description: The title of the material
+      url:
+        type: string
+        description: The URL where the actual material can be found.
+      short_description:
+        type: string
+        description: A succinct description of what the training material is about.
+      doi:
+        type: string
+        description: The DOI of the material (if it has one).
+      remote_updated_date:
+        type: string
+        format: date
+        description: The date the material was last updated on it's original site
+      remote_created_date:
+        type: string
+        format: date
+        description: The date the material was first created on it's original site
+      created_at:
+        type: string
+        format: date
+        description: The date the material was first created on TeSS
+      updated_at:
+        type: string
+        format: date
+        description: The date the material was last updated on TeSS
+      long_description:
+        type: string
+        description: A longer, more indepth explanation of the content of the training material.
+      target_audience:
+        type: array
+        items:
+          type: string
+        description: The audience the material was intended for.
+      scientific_topics:
+        type: array
+        items:
+          type: string
+        description: The classification of the material based on the EDAM ontologies scientific topics.
+      keywords:
+        type: array
+        items:
+          type: string
+        description: A list of freetext keywords to describe the material
+      authors:
+        type: array
+        items:
+          type: string
+        description: A list of people who wrote or helped write the material
+      contributors:
+        type: array
+        items:
+          type: string
+        description: Any person who was not the author but contributed in some way. Maybe they produced some software used, reviewed the paper, or helped inspire the author
+      licence:
+        type: string
+        description: The licence chosed to determine how the material may be re-used.
+      difficulty_level:
+        type: string
+      content_provider_id:
+        type: integer
+      slug:
+        type: string
+      user_id:
+        type: integer
