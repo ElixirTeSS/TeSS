@@ -77,7 +77,7 @@ module MaterialsHelper
   def materials_for(resource=nil)
     return [] if resource.nil?
 
-    return resource.materials if resource.respond_to?(:materials)
+    return resource.materials.flatten if resource.respond_to?(:materials)
 
     materials = []
     if resource.instance_of? Node
@@ -87,7 +87,6 @@ module MaterialsHelper
         end
       end
     end
-
     return materials
   end
 

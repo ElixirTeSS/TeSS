@@ -47,9 +47,9 @@
           <% if include_expired %>
               <% button_params = params.dup %>
               <% button_params.delete(:include_expired) %>
-              <% button_text = "Show" %>
-          <% else %>
               <% button_text = "Hide" %>
+          <% else %>
+              <% button_text = "Show" %>
               <% button_params = params.merge(:include_expired => true) %>
           <% end %>
           <%= link_to button_params, class: 'btn btn-default' do %>
@@ -84,11 +84,13 @@
 
         <div class="tab-content">
           <div id="home" class="tab-pane fade in active">
-            <ul class="masonry media-grid" style="margin-top: 15px;">
-              <% @events.each do |event| %>
-                  <%= render event %>
-              <% end %>
-            </ul>
+            <% if @events.count > 0 %>
+                <ul class="masonry media-grid" style="margin-top: 15px;">
+                  <% @events.each do |event| %>
+                      <%= render event %>
+                  <% end %>
+                </ul>
+            <% end %>
           </div>
           <div id="map" class="tab-pane fade">
             <div id="map-content">

@@ -1,0 +1,10 @@
+<ul class="unstyled nav-simple">
+  <li><h4 class="nav-heading">Nodes</h4></li>
+
+  <% @nodes.each do |node| %>
+      <li class="nav-item">
+        <%= link_to node.name, node %>
+      </li>
+  <% end %>
+</ul>
+

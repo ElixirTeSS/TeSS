@@ -5,7 +5,7 @@ class Workflow < ActiveRecord::Base
   extend FriendlyId
   friendly_id :title, use: :slugged
 
-  unless SOLR_ENABLED==false
+  if SOLR_ENABLED==true
     searchable do
       text :title
       text :description

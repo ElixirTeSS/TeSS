@@ -24,15 +24,27 @@ class ContentProvider < ActiveRecord::Base
 
   clean_array_fields(:keywords)
 
-  PROVIDER_TYPE = ['Organisation', 'Portal', 'Project', 'Individual']
+  PROVIDER_TYPE = ['Organisation', 'Portal', 'Project']#, 'Individual']
 
-  unless SOLR_ENABLED==false
+  if SOLR_ENABLED==true
     searchable do
       text :title
       text :description
       string :keywords, :multiple => true
+      string :node, :multiple => true do
+        unless self.node.blank?
+          self.node.name
+        end
+      end
+      text :node do
+        unless self.node.blank?
+          self.node.name
+        end
+      end
+      string :content_provider_type
     end
   end
+
   # TODO: Add validations for these:
   # title:text url:text image_url:text description:text
 
@@ -40,7 +52,7 @@ class ContentProvider < ActiveRecord::Base
   # Add link to Node, once node is defined.
 
   def self.facet_fields
-    %w( keywords )
+    %w( keywords node content_provider_type)
   end
 
 end
