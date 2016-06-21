@@ -2,7 +2,7 @@
 swagger: '2.0'
 info:
   title: TeSS API
-  description: Access, search and filter through collection of training materials, events, packages, and workflows in TeSS.
+  description: Access, search and filter through collection of training materials, events, packages, and workflows in TeSS. 
   version: "1.0.0"
 # the domain of the service
 host: tess.elixir-uk.org
@@ -16,10 +16,15 @@ produces:
 paths:
   /materials.json:
     get:
-      summary: Search over the collection of training materials
+      summary: Search over the collection of training materials 
       description: |
         The base url (materials.json) returns the first page of materials as seen on the UI (if you just go to /materials). To navigate through and filter out; use the below parameters. The returned value is an array of JSON objects.
       parameters:
+        - name: sort
+          in: query
+          description: Sorts the results by a particular attribute. The options are 'asc' (Title ascending), 'desc' (Title descending), 'early' (Earliest first), and 'late' (Latest first).
+          required: false
+          type: string
         - name: page
           in: query
           description: Selects which page of results to return (e.g. 2)
@@ -69,7 +74,7 @@ paths:
           type: string
           format: string
       tags:
-        - Materials
+        - Materials 
       responses:
         200:
           description: An array of materials
@@ -77,6 +82,80 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Material'
+              
+  /events.json:
+    get:
+      summary: Search over the collection of events 
+      description: |
+        The base endpoint (events.json) returns the first page of events as seen on the UI (if you just go to <tess>/events). To navigate through and filter by attributes; use the below parameters. The returned value is an array of JSON objects described below.
+      parameters:
+        - name: include_expired
+          in: query
+          description: When true; the results will return include events that have already occured. By default this is false and will only return upcoming events. 
+          required: false
+          type: boolean
+        - name: sort
+          in: query
+          description: Sorts the results by a particular attribute. The options are 'asc' (Title ascending), 'desc' (Title descending), 'early' (Earliest first), and 'late' (Latest first).
+          required: false
+          type: string
+        - name: page
+          in: query
+          description: Selects which page of results to return (e.g. 2)
+          required: false
+          type: number
+          format: integer
+        - name: field
+          in: query
+          description: Returns all events annotated with a certain scientific topic.
+          required: false
+          type: string
+          format: string
+        - name: content_provider
+          in: query
+          description: Returns all events from the content provider that provided records to TeSS (e.g. iAnn or ELIXIR)
+          required: false
+          type: string
+          format: string
+        - name: country
+          in: query
+          description: Returns all the events that will be hosted in a certain country (e.g. Portugal or United Kingdom)
+          required: false
+          type: string
+          format: string
+        - name: city
+          in: query
+          description: Returns all the events that are held in a certain city (e.g. London or Daghstul)
+          required: false
+          type: string
+          format: string
+        - name: venue
+          in: query
+          description: Returns all events that are held in a venue (e.g. University of Melbourne or Harvard)
+          required: false
+          type: string
+          format: string
+        - name: category
+          in: query
+          description: Returns all events of a categorical type. These can be 'event' 'meeting' or 'course'
+          required: false
+          type: string
+          format: string
+        - name: provider
+          in: query
+          description: Returns all events that will be hosted by a provider. This is different to content provider in that the content provider is the website that provided the information. The provider is the group that are actually hosting the event.
+          required: false
+          type: string
+          format: string
+      tags:
+        - Events 
+      responses:
+        200:
+          description: An array of events
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Event'
 #   default:
 #          description: Unexpected error
 #          schema:
@@ -96,7 +175,7 @@ definitions:
         description: The URL where the actual material can be found.
       short_description:
         type: string
-        description: A succinct description of what the training material is about.
+        description: A succinct description of what the training material is about. 
       doi:
         type: string
         description: The DOI of the material (if it has one).
@@ -131,27 +210,109 @@ definitions:
         description: The classification of the material based on the EDAM ontologies scientific topics.
       keywords:
         type: array
-        items:
+        items: 
           type: string
         description: A list of freetext keywords to describe the material
       authors:
         type: array
-        items:
+        items: 
           type: string
-        description: A list of people who wrote or helped write the material
+        description: A list of people who wrote or helped write the material 
       contributors:
         type: array
-        items:
+        items: 
           type: string
-        description: Any person who was not the author but contributed in some way. Maybe they produced some software used, reviewed the paper, or helped inspire the author
-      licence:
+        description: Any person who was not the author but contributed in some way. Maybe they produced some software used, reviewed the paper, or helped inspire the author 
+      licence: 
         type: string
         description: The licence chosed to determine how the material may be re-used.
       difficulty_level:
         type: string
       content_provider_id:
         type: integer
-      slug:
+      slug: 
         type: string
       user_id:
         type: integer
+  Event:
+    type: object
+    properties:
+      id:
+        type: number
+        description: Unique identifier of the event
+      title:
+        type: string
+        description: The title of the event
+      subtitle:
+        type: string
+        description: The subtitle of the event
+      url:
+        type: string
+        description: The URL where the actual event can be found.
+      description:
+        type: string
+        description: A succinct description of what the event is about. 
+      provider:
+        type: string
+        description: The organization that are providing the event.
+      start:
+        type: string
+        format: date
+        description: The date and time the event starts on
+      end:
+        type: string
+        format: date
+        description: The date and time the event ends on.
+      created_at:
+        type: string
+        format: date
+        description: The date the event was first created on TeSS
+      updated_at:
+        type: string
+        format: date
+        description: The date the event was last updated on TeSS
+      field:
+        type: string
+        description: The classification of the event as a scientific term. 
+      category:
+        type: array
+        items:
+          type: string
+        description: The category of the event. This could be a meeting or a course; or if unknown or neither, an event
+      city:
+        type: string
+        description: The city the event will be hosted in
+      country:
+        type: string
+        description: The country the event will be hosted in
+      postcode:
+        type: string
+        description: The postcode of the venue hosting the event
+      latitude:
+          type: string
+          description: The latitude co-ordinate of the event.
+      longitude:
+          type: string
+          description: The longitude co-ordinate of the event.
+      sponsor:
+        type: string
+        description: The person or organization that is sponsoring the event.
+      keywords:
+        type: array
+        items: 
+          type: string
+        description: A series of freetext words used to describe an event. 
+      source: 
+        type: string
+        description: The name of the organization or website that TeSS took the information about the event from.
+      difficulty_level:
+        type: string
+      content_provider_id:
+        type: integer
+      slug: 
+        type: string
+      user_id:
+        type: integer
+            
+            
+            
