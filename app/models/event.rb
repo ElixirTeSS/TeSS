@@ -79,10 +79,11 @@ class Event < ActiveRecord::Base
   # longitude:double
 
   def upcoming?
-    if self.end
-      return (Time.now < self.end)
+    # Handle nil for start date
+    if self.end.blank?
+      return true
     else
-      return false
+      return (Time.now < self.end)
     end
   end
 
