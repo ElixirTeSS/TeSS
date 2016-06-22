@@ -34,6 +34,7 @@
       <div class="col-md-12">
         <%= f.label :workflow_content %><br />
         <%= f.hidden_field :workflow_content  %>
+
         <%= render partial: 'workflows/workflow_diagram', locals: { workflow:  @workflow, editable: true } %>
 
         <div class="form-group actions">
