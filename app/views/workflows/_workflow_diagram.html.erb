@@ -1,11 +1,23 @@
 <% editable ||= false %>
+<div class="workflow-toolbar pull-right">
+  <a class="btn btn-default" id="workflow-toolbar-undo">
+    <i class="fa fa-undo"></i> Undo
+  </a>
+  <a class="btn btn-default disabled" id="workflow-toolbar-redo">
+    <i class="fa fa-repeat"></i> Redo
+  </a>
+  <a class="btn btn-default" id="workflow-toolbar-add">
+    <i class="fa fa-plus-square"></i> Add Node
+  </a>
+</div>
+
 <div class="wrapper" id="cy"></div>
 <script>
   <%# TODO: Move all this into a special JS file. Render the workflow as JSON in a script element, and load via JS %>
   $(document).ready(function () {
     var cy = window.cy = cytoscape({
       container: document.getElementById('cy'),
-      elements: <%= workflow.workflow_content ? workflow.workflow_content['elements'].to_json.html_safe : 'null' %>,
+      elements: <%= workflow.workflow_content ? workflow.workflow_content.to_json.html_safe : 'null' %>,
       layout: {
         name: 'preset',
         padding: 20
