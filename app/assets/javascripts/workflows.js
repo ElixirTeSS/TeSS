@@ -56,7 +56,7 @@ $(document).ready(function () {
                 {
                     selector: ':selected',
                     css: {
-                        'background-color': 'data[\'color\'])',
+                        'background-color': 'data(color)',
                         'line-color': '#2A62E4',
                         'target-arrow-color': '#2A62E4',
                         'source-arrow-color': '#2A62E4',
@@ -72,4 +72,70 @@ $(document).ready(function () {
 
         cy.panzoom();
     }
+
+    $('#workflow-toolbar-add').click(Workflows.setAddNodeState);
+    $('#workflow-toolbar-cancel').click(Workflows.cancelState);
+    $('#workflow-modal-form-confirm').click(Workflows.addNode);
+    cy.on('tap', Workflows.placeNode);
+
+    $('#workflow-modal').on('hide.bs.modal', Workflows.cancelState);
+
+    // Update JSON in form
+    $('#workflow-form-submit').click(function () {
+        $('#workflow_workflow_content').val(JSON.stringify(cy.json()['elements']));
+
+        return true;
+    });
 });
+
+Workflows = {};
+
+Workflows.setAddNodeState = function () {
+    Workflows.setState('adding node', 'Click on the diagram to add a new node.');
+};
+
+Workflows.placeNode = function (e) {
+    if(Workflows.state === 'adding node') {
+        Workflows.cancelState();
+        $('#workflow-modal').modal('show');
+        $('#workflow-modal-form-title').val('');
+        $('#workflow-modal-form-description').val('');
+        $('#workflow-modal-form-colour').val('#ccaaff');
+        $('#workflow-modal-form-x').val(e.cyPosition.x);
+        $('#workflow-modal-form-y').val(e.cyPosition.y);
+    }
+};
+
+Workflows.addNode = function () {
+    var object = {
+        group: 'nodes',
+        data: {
+            name: $('#workflow-modal-form-title').val(),
+            short_name: $('#workflow-modal-form-title').val(),
+            content: $('#workflow-modal-form-title').val(),
+            color: $('#workflow-modal-form-colour').val()
+        },
+        position: {
+            x: parseInt($('#workflow-modal-form-x').val()),
+            y: parseInt($('#workflow-modal-form-y').val())
+        },
+        selected: true
+    };
+
+    cy.add(object);
+    $('#workflow-modal').modal('hide');
+};
+
+Workflows.cancelState = function () {
+    Workflows.state = '';
+    $('#workflow-status-bar span').html('');
+    $('#workflow-toolbar-cancel').hide();   
+};
+
+Workflows.setState = function (state, message) {
+    Workflows.state = state;
+    $('#workflow-status-bar span').html(message);
+    var button = $('#workflow-toolbar-cancel');
+    button.find('span').html('Cancel ' + state);
+    button.show();
+};
