@@ -1,3 +1,5 @@
+<script src="jscolor.js"></script>
+
 <% editable ||= false %>
 
 <% if editable %>
@@ -37,7 +39,7 @@
             </div>
             <div class="form-group">
               <label for="workflow-modal-form-colour">Colour</label>
-              <input type="text" class="form-control" id="workflow-modal-form-colour" placeholder="#663399">
+              <input type="text" class="form-control jscolor {hash:true, zIndex: 100000}" id="workflow-modal-form-colour" value="CCAAFF">
             </div>
 
             <input type="hidden" id="workflow-modal-form-x">

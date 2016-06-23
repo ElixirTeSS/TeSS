@@ -17,6 +17,7 @@
 //= require jquery.turbolinks
 //= require cytoscape
 //= require cytoscape-panzoom
+//= require jscolor
 //= require_tree .
 
 function redirect_to_sort_url(){
