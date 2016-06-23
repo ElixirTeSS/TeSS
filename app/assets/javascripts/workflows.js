@@ -100,8 +100,8 @@ Workflows.placeNode = function (e) {
         $('#workflow-modal').modal('show');
         $('#workflow-modal-form-title').val('');
         $('#workflow-modal-form-description').val('');
-        $('#workflow-modal-form-colour').val('#CCAAFF');
-        $('#workflow-modal-form-colour').css('background-color', '#CCAAFF');
+        $('#workflow-modal-form-colour').val('#88CC33');
+        $('#workflow-modal-form-colour').css('background-color', '#88CC33');
         $('#workflow-modal-form-colour').css('color', '#000000');
         $('#workflow-modal-form-x').val(e.cyPosition.x);
         $('#workflow-modal-form-y').val(e.cyPosition.y);
