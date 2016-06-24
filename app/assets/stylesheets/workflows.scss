@@ -20,3 +20,9 @@
   margin-left: 10px;
   font-style: italic;
 }
+
+/* Hide the border from the predefined colour selector */
+.simplecolorpicker span.color:hover, .simplecolorpicker span.color[data-selected],
+.simplecolorpicker span.color[data-selected]:hover {
+  border-color: transparent !important;
+}
