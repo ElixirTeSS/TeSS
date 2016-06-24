@@ -56,7 +56,6 @@ $(document).ready(function () {
                 {
                     selector: ':selected',
                     css: {
-                        'background-color': 'data(color)',
                         'line-color': '#2A62E4',
                         'target-arrow-color': '#2A62E4',
                         'source-arrow-color': '#2A62E4',
@@ -76,8 +75,9 @@ $(document).ready(function () {
     $('#workflow-toolbar-add').click(Workflows.setAddNodeState);
     $('#workflow-toolbar-cancel').click(Workflows.cancelState);
     $('#workflow-toolbar-edit').click(Workflows.editNode);
+    $('#workflow-toolbar-link').click(Workflows.setLinkNodeState);
     $('#workflow-modal-form-confirm').click(Workflows.modalConfirm);
-    cy.on('tap', Workflows.placeNode);
+    cy.on('tap', Workflows.handleClick);
     cy.on('select', function (e) { Workflows.selectNode(e.cyTarget); });
     cy.on('unselect', Workflows.cancelState);
 
@@ -193,5 +193,30 @@ Workflows.modalConfirm = function () {
         Workflows.addNode();
     } else if(Workflows.state === 'node selection') {
         Workflows.updateNode();
+    }
+};
+
+Workflows.setLinkNodeState = function () {
+    Workflows.setState('linking node', 'Click on a node to create a link.');
+};
+
+Workflows.createLink = function (e) {
+    e.cy.add({
+        group: "edges",
+        data: {
+            source: Workflows.selectedNode.data('id'),
+            target: e.cyTarget.data('id')
+        }
+    });
+    Workflows.cancelState();
+};
+
+Workflows.handleClick = function (e) {
+    if(Workflows.state === 'adding node') {
+        Workflows.placeNode(e);
+    } else if(Workflows.state === 'linking node') {
+        if(e.cyTarget !== cy) {
+            Workflows.createLink(e);
+        }
     }
 };
