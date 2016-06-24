@@ -15,7 +15,7 @@ $(document).ready(function () {
                     selector: 'node',
                     css: {
                         'shape': 'roundrectangle',
-                        'content': 'data(short_name)',
+                        'content': 'data(name)',
                         'background-color': 'data(color)',
                         'text-valign': 'center',
                         'text-halign': 'center',
@@ -46,7 +46,7 @@ $(document).ready(function () {
                     selector: 'edge',
                     css: {
                         'target-arrow-shape': 'triangle',
-                        'content': 'data(short_name)',
+                        'content': 'data(name)',
                         'line-color': '#ccc',
                         'source-arrow-color': '#ccc',
                         'target-arrow-color': '#ccc',
@@ -105,9 +105,8 @@ Workflows.placeNode = function (e) {
         $('#workflow-modal').modal('show');
         $('#workflow-modal-form-title').val('');
         $('#workflow-modal-form-description').val('');
-        $('#workflow-modal-form-colour').val('#88CC33');
-        $('#workflow-modal-form-colour').css('background-color', '#88CC33');
-        $('#workflow-modal-form-colour').css('color', '#000000');
+        $('#workflow-modal-form-colour').val('#f0721e');
+        $('#workflow-modal-form-colour')[0].jscolor.fromString('#f0721e');
         $('#workflow-modal-form-x').val(e.cyPosition.x);
         $('#workflow-modal-form-y').val(e.cyPosition.y);
     }
@@ -118,8 +117,7 @@ Workflows.addNode = function () {
         group: 'nodes',
         data: {
             name: $('#workflow-modal-form-title').val(),
-            short_name: $('#workflow-modal-form-title').val(),
-            content: $('#workflow-modal-form-title').val(),
+            description: $('#workflow-modal-form-description').val(),
             color: $('#workflow-modal-form-colour').val()
         },
         position: {
@@ -135,8 +133,7 @@ Workflows.addNode = function () {
 Workflows.updateNode = function () {
     var node = Workflows.selectedNode;
     node.data('name', $('#workflow-modal-form-title').val());
-    node.data('short_name', $('#workflow-modal-form-title').val());
-    node.data('content', $('#workflow-modal-form-title').val());
+    node.data('description', $('#workflow-modal-form-description').val());
     node.data('color', $('#workflow-modal-form-colour').val());
 
     $('#workflow-modal').modal('hide');
@@ -179,10 +176,9 @@ Workflows.editNode = function () {
         var position = Workflows.selectedNode.position();
         $('#workflow-modal').modal('show');
         $('#workflow-modal-form-title').val(data.name);
-        $('#workflow-modal-form-description').val('');
+        $('#workflow-modal-form-description').val(data.description);
         $('#workflow-modal-form-colour').val(data.color);
-        $('#workflow-modal-form-colour').css('background-color', data.color);
-        $('#workflow-modal-form-colour').css('color', '#000000');
+        $('#workflow-modal-form-colour')[0].jscolor.fromString(data.color);
         $('#workflow-modal-form-x').val(position.x);
         $('#workflow-modal-form-y').val(position.y);
     }
