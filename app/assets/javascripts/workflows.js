@@ -75,8 +75,11 @@ $(document).ready(function () {
 
     $('#workflow-toolbar-add').click(Workflows.setAddNodeState);
     $('#workflow-toolbar-cancel').click(Workflows.cancelState);
-    $('#workflow-modal-form-confirm').click(Workflows.addNode);
+    $('#workflow-toolbar-edit').click(Workflows.editNode);
+    $('#workflow-modal-form-confirm').click(Workflows.modalConfirm);
     cy.on('tap', Workflows.placeNode);
+    cy.on('select', function (e) { Workflows.selectNode(e.cyTarget); });
+    cy.on('unselect', Workflows.cancelState);
 
     $('#workflow-modal').on('hide.bs.modal', Workflows.cancelState);
 
@@ -86,17 +89,19 @@ $(document).ready(function () {
 
         return true;
     });
+    
+    Workflows.cancelState();
 });
 
 Workflows = {};
 
 Workflows.setAddNodeState = function () {
+    Workflows.cancelState();
     Workflows.setState('adding node', 'Click on the diagram to add a new node.');
 };
 
 Workflows.placeNode = function (e) {
     if(Workflows.state === 'adding node') {
-        Workflows.cancelState();
         $('#workflow-modal').modal('show');
         $('#workflow-modal-form-title').val('');
         $('#workflow-modal-form-description').val('');
@@ -120,24 +125,73 @@ Workflows.addNode = function () {
         position: {
             x: parseInt($('#workflow-modal-form-x').val()),
             y: parseInt($('#workflow-modal-form-y').val())
-        },
-        selected: true
+        }
     };
 
-    cy.add(object);
     $('#workflow-modal').modal('hide');
+    cy.add(object).select();
 };
+
+Workflows.updateNode = function () {
+    var node = Workflows.selectedNode;
+    node.data('name', $('#workflow-modal-form-title').val());
+    node.data('short_name', $('#workflow-modal-form-title').val());
+    node.data('content', $('#workflow-modal-form-title').val());
+    node.data('color', $('#workflow-modal-form-colour').val());
+
+    $('#workflow-modal').modal('hide');
+    node.select();
+};
+
 
 Workflows.cancelState = function () {
     Workflows.state = '';
-    $('#workflow-status-bar span').html('');
+
+    if(Workflows.selectedNode) {
+        Workflows.selectedNode.unselect();
+        Workflows.selectedNode = null;
+    }
+
+    $('#workflow-status-message').html('');
+    $('#workflow-status-selected-node').html('<span class="muted">nothing</span>');
+    $('#workflow-status-bar .node-context-button').hide();
     $('#workflow-toolbar-cancel').hide();   
 };
 
 Workflows.setState = function (state, message) {
     Workflows.state = state;
-    $('#workflow-status-bar span').html(message);
+    $('#workflow-status-message').html(message);
     var button = $('#workflow-toolbar-cancel');
     button.find('span').html('Cancel ' + state);
     button.show();
+};
+
+Workflows.selectNode = function (node) {
+    Workflows.selectedNode = node;
+    Workflows.setState('node selection');
+    $('#workflow-status-bar .node-context-button').show();
+    $('#workflow-status-selected-node').html(Workflows.selectedNode.data('name'));
+};
+
+Workflows.editNode = function () {
+    if(Workflows.state === 'node selection') {
+        var data = Workflows.selectedNode.data();
+        var position = Workflows.selectedNode.position();
+        $('#workflow-modal').modal('show');
+        $('#workflow-modal-form-title').val(data.name);
+        $('#workflow-modal-form-description').val('');
+        $('#workflow-modal-form-colour').val(data.color);
+        $('#workflow-modal-form-colour').css('background-color', data.color);
+        $('#workflow-modal-form-colour').css('color', '#000000');
+        $('#workflow-modal-form-x').val(position.x);
+        $('#workflow-modal-form-y').val(position.y);
+    }
+};
+
+Workflows.modalConfirm = function () {
+    if(Workflows.state === 'adding node') {
+        Workflows.addNode();
+    } else if(Workflows.state === 'node selection') {
+        Workflows.updateNode();
+    }
 };
