@@ -1,9 +1,11 @@
+var cy;
+
 $(document).ready(function () {
     var wfJsonElement = $('#workflow-content-json');
     var cytoscapeElement = $('#cy');
 
     if(wfJsonElement.length) {
-        var cy = window.cy = cytoscape({
+        cy = window.cy = cytoscape({
             container: cytoscapeElement[0],
             elements: JSON.parse(wfJsonElement.html()),
             layout: {
@@ -61,7 +63,7 @@ $(document).ready(function () {
                         'source-arrow-color': '#2A62E4',
                         'border-width': '2px',
                         'border-color': '#2A62E4',
-                        'background-blacken': '0.3'
+                        'background-blacken': '-0.1'
                     }
                 }
             ],
@@ -141,11 +143,11 @@ Workflows = {
 
 
     cancelState: function () {
-        state: '';
+        this.state = '';
 
         if (Workflows.selectedNode) {
             Workflows.selectedNode.unselect();
-            selectedNode: null;
+            this.selectedNode = null;
         }
 
         $('#workflow-status-message').html('');
@@ -155,7 +157,7 @@ Workflows = {
     },
 
     setState: function (state, message) {
-        state: state;
+        this.state = state;
         $('#workflow-status-message').html(message);
         var button = $('#workflow-toolbar-cancel');
         button.find('span').html('Cancel ' + state);
@@ -163,7 +165,7 @@ Workflows = {
     },
 
     selectNode: function (node) {
-        selectedNode: node;
+        this.selectedNode = node;
         Workflows.setState('node selection');
         $('#workflow-status-bar .node-context-button').show();
         $('#workflow-status-selected-node').html(Workflows.selectedNode.data('name'));
