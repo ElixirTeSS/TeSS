@@ -78,10 +78,13 @@ $(document).ready(function () {
     $('#workflow-toolbar-cancel').click(Workflows.cancelState);
     $('#workflow-toolbar-edit').click(Workflows.editNode);
     $('#workflow-toolbar-link').click(Workflows.setLinkNodeState);
+    $('#workflow-toolbar-undo').click(Workflows.history.undo);
+    $('#workflow-toolbar-redo').click(Workflows.history.redo);
     $('#workflow-modal-form-confirm').click(Workflows.modalConfirm);
     cy.on('tap', Workflows.handleClick);
     cy.on('select', function (e) { Workflows.selectNode(e.cyTarget); });
     cy.on('unselect', Workflows.cancelState);
+    cy.on('free', function () { Workflows.history.modify('move node') });
 
     $('#workflow-modal').on('hide.bs.modal', Workflows.cancelState);
 
@@ -93,6 +96,7 @@ $(document).ready(function () {
     });
     
     Workflows.cancelState();
+    Workflows.history.initialize();
 });
 
 Workflows = {
@@ -128,14 +132,19 @@ Workflows = {
         };
 
         $('#workflow-modal').modal('hide');
-        cy.add(object).select();
+
+        Workflows.history.modify('add node', function () {
+            cy.add(object).select();
+        });
     },
 
     updateNode: function () {
         var node = Workflows.selectedNode;
-        node.data('name', $('#workflow-modal-form-title').val());
-        node.data('description', $('#workflow-modal-form-description').val());
-        node.data('color', $('#workflow-modal-form-colour').val());
+        Workflows.history.modify('edit node', function () {
+            node.data('name', $('#workflow-modal-form-title').val());
+            node.data('description', $('#workflow-modal-form-description').val());
+            node.data('color', $('#workflow-modal-form-colour').val());
+        });
 
         $('#workflow-modal').modal('hide');
         node.select();
@@ -198,13 +207,16 @@ Workflows = {
     },
 
     createLink: function (e) {
-        e.cy.add({
-            group: "edges",
-            data: {
-                source: Workflows.selectedNode.data('id'),
-                target: e.cyTarget.data('id')
-            }
+        Workflows.history.modify('link', function () {
+            e.cy.add({
+                group: "edges",
+                data: {
+                    source: Workflows.selectedNode.data('id'),
+                    target: e.cyTarget.data('id')
+                }
+            });
         });
+
         Workflows.cancelState();
     },
 
@@ -214,6 +226,60 @@ Workflows = {
         } else if (Workflows.state === 'linking node') {
             if (e.cyTarget !== cy) {
                 Workflows.createLink(e);
+            }
+        }
+    },
+
+    history: {
+        initialize: function () {
+              Workflows.history.index = 0;
+              Workflows.history.stack = [{ action: 'initial state', elements: cy.elements().clone() }];
+        },
+
+        modify: function (action, modification) {
+            Workflows.history.stack.length = Workflows.history.index + 1; // Removes all "future" history after the current point.
+            Workflows.history.index++;
+            Workflows.history.stack.push({ action: action, elements: cy.elements().clone() });
+            if(typeof modification != 'undefined')
+                modification();
+            Workflows.history.setButtonState();
+        },
+        
+        undo: function () {
+            if(Workflows.history.index > 0) {
+                Workflows.history.index--;
+                Workflows.history.restore();
+            }
+        },
+
+        redo: function () {
+            if(Workflows.history.index < (Workflows.history.stack.length - 1)) {
+                Workflows.history.index++;
+                Workflows.history.restore();
+            }
+        },
+
+        restore: function () {
+            cy.elements().remove();
+            Workflows.history.stack[Workflows.history.index].elements.restore();
+            Workflows.history.setButtonState();
+        },
+
+        setButtonState: function () {
+            if(Workflows.history.index < (Workflows.history.stack.length - 1)) {
+                $('#workflow-toolbar-redo').removeClass('disabled');
+                $('#workflow-toolbar-redo').find('span').attr('title', 'Redo ' + Workflows.history.stack[Workflows.history.index + 1].action);
+            } else {
+                $('#workflow-toolbar-redo').addClass('disabled');
+                $('#workflow-toolbar-redo').find('span').attr('title', 'Redo');
+            }
+
+            if(Workflows.history.index > 0) {
+                $('#workflow-toolbar-undo').removeClass('disabled');
+                $('#workflow-toolbar-undo').find('span').attr('title', 'Undo ' + Workflows.history.stack[Workflows.history.index].action);
+            } else {
+                $('#workflow-toolbar-undo').addClass('disabled');
+                $('#workflow-toolbar-undo').find('span').attr('title', 'Undo');
             }
         }
     }
