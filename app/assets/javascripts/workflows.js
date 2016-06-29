@@ -253,7 +253,9 @@ Workflows = {
 
     deleteNode: function () {
         if (confirm('Are you sure you wish to delete this node?')) {
-            Workflows.selectedNode.remove();
+            Workflows.history.modify('delete node', function () {
+                Workflows.selectedNode.remove();
+            });
             Workflows.cancelState();
         }
     },
