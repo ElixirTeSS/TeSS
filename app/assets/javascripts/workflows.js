@@ -93,7 +93,13 @@ $(document).ready(function () {
         }
     });
     cy.on('unselect', Workflows.cancelState);
-    cy.on('free', function () { Workflows.history.modify('move node') });
+    cy.on('drag', function () { Workflows._dragged = true; });
+    cy.on('free', function () {
+        if (Workflows._dragged) {
+            Workflows.history.modify('move node');
+            Workflows._dragged = false;
+        }
+    });
 
     $('#workflow-modal').on('hide.bs.modal', Workflows.cancelState);
 
@@ -148,7 +154,7 @@ Workflows = {
 
         $('#workflow-modal').modal('hide');
 
-        Workflows.history.modify('add node', function () {
+        Workflows.history.modify(object.data.parent ? 'add child node' : 'add node', function () {
             cy.add(object).select();
         });
     },
@@ -267,11 +273,11 @@ Workflows = {
         },
 
         modify: function (action, modification) {
+            if (typeof modification != 'undefined')
+                modification();
             Workflows.history.stack.length = Workflows.history.index + 1; // Removes all "future" history after the current point.
             Workflows.history.index++;
             Workflows.history.stack.push({ action: action, elements: cy.elements().clone() });
-            if (typeof modification != 'undefined')
-                modification();
             Workflows.history.setButtonState();
         },
 
