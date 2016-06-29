@@ -1,9 +1,11 @@
+var cy;
+
 $(document).ready(function () {
     var wfJsonElement = $('#workflow-content-json');
     var cytoscapeElement = $('#cy');
 
     if(wfJsonElement.length) {
-        var cy = window.cy = cytoscape({
+        cy = window.cy = cytoscape({
             container: cytoscapeElement[0],
             elements: JSON.parse(wfJsonElement.html()),
             layout: {
@@ -61,7 +63,7 @@ $(document).ready(function () {
                         'source-arrow-color': '#2A62E4',
                         'border-width': '2px',
                         'border-color': '#2A62E4',
-                        'background-blacken': '0.3'
+                        'background-blacken': '-0.1'
                     }
                 }
             ],
@@ -76,10 +78,13 @@ $(document).ready(function () {
     $('#workflow-toolbar-cancel').click(Workflows.cancelState);
     $('#workflow-toolbar-edit').click(Workflows.editNode);
     $('#workflow-toolbar-link').click(Workflows.setLinkNodeState);
+    $('#workflow-toolbar-undo').click(Workflows.history.undo);
+    $('#workflow-toolbar-redo').click(Workflows.history.redo);
     $('#workflow-modal-form-confirm').click(Workflows.modalConfirm);
     cy.on('tap', Workflows.handleClick);
     cy.on('select', function (e) { Workflows.selectNode(e.cyTarget); });
     cy.on('unselect', Workflows.cancelState);
+    cy.on('free', function () { Workflows.history.modify('move node') });
 
     $('#workflow-modal').on('hide.bs.modal', Workflows.cancelState);
 
@@ -91,128 +96,191 @@ $(document).ready(function () {
     });
     
     Workflows.cancelState();
+    Workflows.history.initialize();
 });
 
-Workflows = {};
+Workflows = {
+    setAddNodeState: function () {
+        Workflows.cancelState();
+        Workflows.setState('adding node', 'Click on the diagram to add a new node.');
+    },
 
-Workflows.setAddNodeState = function () {
-    Workflows.cancelState();
-    Workflows.setState('adding node', 'Click on the diagram to add a new node.');
-};
+    placeNode: function (e) {
+        if (Workflows.state === 'adding node') {
+            $('#workflow-modal').modal('show');
+            $('#workflow-modal-form-title').val('');
+            $('#workflow-modal-form-description').val('');
+            $('#workflow-modal-form-colour').val('#f0721e');
+            $('#workflow-modal-form-colour')[0].jscolor.fromString('#f0721e');
+            $('#workflow-modal-form-x').val(e.cyPosition.x);
+            $('#workflow-modal-form-y').val(e.cyPosition.y);
+        }
+    },
 
-Workflows.placeNode = function (e) {
-    if(Workflows.state === 'adding node') {
-        $('#workflow-modal').modal('show');
-        $('#workflow-modal-form-title').val('');
-        $('#workflow-modal-form-description').val('');
-        $('#workflow-modal-form-colour').val('#f0721e');
-        $('#workflow-modal-form-colour')[0].jscolor.fromString('#f0721e');
-        $('#workflow-modal-form-x').val(e.cyPosition.x);
-        $('#workflow-modal-form-y').val(e.cyPosition.y);
-    }
-};
+    addNode: function () {
+        var object = {
+            group: 'nodes',
+            data: {
+                name: $('#workflow-modal-form-title').val(),
+                description: $('#workflow-modal-form-description').val(),
+                color: $('#workflow-modal-form-colour').val()
+            },
+            position: {
+                x: parseInt($('#workflow-modal-form-x').val()),
+                y: parseInt($('#workflow-modal-form-y').val())
+            }
+        };
 
-Workflows.addNode = function () {
-    var object = {
-        group: 'nodes',
-        data: {
-            name: $('#workflow-modal-form-title').val(),
-            description: $('#workflow-modal-form-description').val(),
-            color: $('#workflow-modal-form-colour').val()
+        $('#workflow-modal').modal('hide');
+
+        Workflows.history.modify('add node', function () {
+            cy.add(object).select();
+        });
+    },
+
+    updateNode: function () {
+        var node = Workflows.selectedNode;
+        Workflows.history.modify('edit node', function () {
+            node.data('name', $('#workflow-modal-form-title').val());
+            node.data('description', $('#workflow-modal-form-description').val());
+            node.data('color', $('#workflow-modal-form-colour').val());
+        });
+
+        $('#workflow-modal').modal('hide');
+        node.select();
+    },
+
+
+    cancelState: function () {
+        this.state = '';
+
+        if (Workflows.selectedNode) {
+            Workflows.selectedNode.unselect();
+            this.selectedNode = null;
+        }
+
+        $('#workflow-status-message').html('');
+        $('#workflow-status-selected-node').html('<span class="muted">nothing</span>');
+        $('#workflow-status-bar .node-context-button').hide();
+        $('#workflow-toolbar-cancel').hide();
+    },
+
+    setState: function (state, message) {
+        this.state = state;
+        $('#workflow-status-message').html(message);
+        var button = $('#workflow-toolbar-cancel');
+        button.find('span').html('Cancel ' + state);
+        button.show();
+    },
+
+    selectNode: function (node) {
+        this.selectedNode = node;
+        Workflows.setState('node selection');
+        $('#workflow-status-bar .node-context-button').show();
+        $('#workflow-status-selected-node').html(Workflows.selectedNode.data('name'));
+    },
+
+    editNode: function () {
+        if (Workflows.state === 'node selection') {
+            var data = Workflows.selectedNode.data();
+            var position = Workflows.selectedNode.position();
+            $('#workflow-modal').modal('show');
+            $('#workflow-modal-form-title').val(data.name);
+            $('#workflow-modal-form-description').val(data.description);
+            $('#workflow-modal-form-colour').val(data.color);
+            $('#workflow-modal-form-colour')[0].jscolor.fromString(data.color);
+            $('#workflow-modal-form-x').val(position.x);
+            $('#workflow-modal-form-y').val(position.y);
+        }
+    },
+
+    modalConfirm: function () {
+        if (Workflows.state === 'adding node') {
+            Workflows.addNode();
+        } else if (Workflows.state === 'node selection') {
+            Workflows.updateNode();
+        }
+    },
+
+    setLinkNodeState: function () {
+        Workflows.setState('linking node', 'Click on a node to create a link.');
+    },
+
+    createLink: function (e) {
+        Workflows.history.modify('link', function () {
+            e.cy.add({
+                group: "edges",
+                data: {
+                    source: Workflows.selectedNode.data('id'),
+                    target: e.cyTarget.data('id')
+                }
+            });
+        });
+
+        Workflows.cancelState();
+    },
+
+    handleClick: function (e) {
+        if (Workflows.state === 'adding node') {
+            Workflows.placeNode(e);
+        } else if (Workflows.state === 'linking node') {
+            if (e.cyTarget !== cy) {
+                Workflows.createLink(e);
+            }
+        }
+    },
+
+    history: {
+        initialize: function () {
+              Workflows.history.index = 0;
+              Workflows.history.stack = [{ action: 'initial state', elements: cy.elements().clone() }];
         },
-        position: {
-            x: parseInt($('#workflow-modal-form-x').val()),
-            y: parseInt($('#workflow-modal-form-y').val())
-        }
-    };
 
-    $('#workflow-modal').modal('hide');
-    cy.add(object).select();
-};
+        modify: function (action, modification) {
+            Workflows.history.stack.length = Workflows.history.index + 1; // Removes all "future" history after the current point.
+            Workflows.history.index++;
+            Workflows.history.stack.push({ action: action, elements: cy.elements().clone() });
+            if(typeof modification != 'undefined')
+                modification();
+            Workflows.history.setButtonState();
+        },
+        
+        undo: function () {
+            if(Workflows.history.index > 0) {
+                Workflows.history.index--;
+                Workflows.history.restore();
+            }
+        },
 
-Workflows.updateNode = function () {
-    var node = Workflows.selectedNode;
-    node.data('name', $('#workflow-modal-form-title').val());
-    node.data('description', $('#workflow-modal-form-description').val());
-    node.data('color', $('#workflow-modal-form-colour').val());
+        redo: function () {
+            if(Workflows.history.index < (Workflows.history.stack.length - 1)) {
+                Workflows.history.index++;
+                Workflows.history.restore();
+            }
+        },
 
-    $('#workflow-modal').modal('hide');
-    node.select();
-};
+        restore: function () {
+            cy.elements().remove();
+            Workflows.history.stack[Workflows.history.index].elements.restore();
+            Workflows.history.setButtonState();
+        },
 
+        setButtonState: function () {
+            if(Workflows.history.index < (Workflows.history.stack.length - 1)) {
+                $('#workflow-toolbar-redo').removeClass('disabled');
+                $('#workflow-toolbar-redo').find('span').attr('title', 'Redo ' + Workflows.history.stack[Workflows.history.index + 1].action);
+            } else {
+                $('#workflow-toolbar-redo').addClass('disabled');
+                $('#workflow-toolbar-redo').find('span').attr('title', 'Redo');
+            }
 
-Workflows.cancelState = function () {
-    Workflows.state = '';
-
-    if(Workflows.selectedNode) {
-        Workflows.selectedNode.unselect();
-        Workflows.selectedNode = null;
-    }
-
-    $('#workflow-status-message').html('');
-    $('#workflow-status-selected-node').html('<span class="muted">nothing</span>');
-    $('#workflow-status-bar .node-context-button').hide();
-    $('#workflow-toolbar-cancel').hide();   
-};
-
-Workflows.setState = function (state, message) {
-    Workflows.state = state;
-    $('#workflow-status-message').html(message);
-    var button = $('#workflow-toolbar-cancel');
-    button.find('span').html('Cancel ' + state);
-    button.show();
-};
-
-Workflows.selectNode = function (node) {
-    Workflows.selectedNode = node;
-    Workflows.setState('node selection');
-    $('#workflow-status-bar .node-context-button').show();
-    $('#workflow-status-selected-node').html(Workflows.selectedNode.data('name'));
-};
-
-Workflows.editNode = function () {
-    if(Workflows.state === 'node selection') {
-        var data = Workflows.selectedNode.data();
-        var position = Workflows.selectedNode.position();
-        $('#workflow-modal').modal('show');
-        $('#workflow-modal-form-title').val(data.name);
-        $('#workflow-modal-form-description').val(data.description);
-        $('#workflow-modal-form-colour').val(data.color);
-        $('#workflow-modal-form-colour')[0].jscolor.fromString(data.color);
-        $('#workflow-modal-form-x').val(position.x);
-        $('#workflow-modal-form-y').val(position.y);
-    }
-};
-
-Workflows.modalConfirm = function () {
-    if(Workflows.state === 'adding node') {
-        Workflows.addNode();
-    } else if(Workflows.state === 'node selection') {
-        Workflows.updateNode();
-    }
-};
-
-Workflows.setLinkNodeState = function () {
-    Workflows.setState('linking node', 'Click on a node to create a link.');
-};
-
-Workflows.createLink = function (e) {
-    e.cy.add({
-        group: "edges",
-        data: {
-            source: Workflows.selectedNode.data('id'),
-            target: e.cyTarget.data('id')
-        }
-    });
-    Workflows.cancelState();
-};
-
-Workflows.handleClick = function (e) {
-    if(Workflows.state === 'adding node') {
-        Workflows.placeNode(e);
-    } else if(Workflows.state === 'linking node') {
-        if(e.cyTarget !== cy) {
-            Workflows.createLink(e);
+            if(Workflows.history.index > 0) {
+                $('#workflow-toolbar-undo').removeClass('disabled');
+                $('#workflow-toolbar-undo').find('span').attr('title', 'Undo ' + Workflows.history.stack[Workflows.history.index].action);
+            } else {
+                $('#workflow-toolbar-undo').addClass('disabled');
+                $('#workflow-toolbar-undo').find('span').attr('title', 'Undo');
+            }
         }
     }
 };
