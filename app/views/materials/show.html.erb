@@ -30,13 +30,13 @@
                         :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                         :class => 'btn btn-danger' %>
         <% end %>
-        <a href="<%= @material.url %>" target="_blank" type="submit" class="btn btn-success"><span class="fa fa-external-link"></span> View material</a>
+        <a href="<%= @material.url %>" target="_blank" class="btn btn-success"><span class="fa fa-external-link"></span> View material</a>
       </div>
     </div>
     <div class="row">
       <ul class="nav nav-tabs">
         <li class="active">
-          <a data-toggle="tab" href="#home"><i class="<%= icon_class_for_model('materials') %>"></i> Material</a></li>
+          <a data-toggle="tab" href="#home"><i class="<%= icon_class_for_model('materials') %>"></i> Material</a>
         <li>
           <a data-toggle="tab" href="#packages"><i class="<%= icon_class_for_model('packages') %>"></i> Packages</a>
         </li>
@@ -69,7 +69,6 @@
               <p><b>Created: </b><%= @material.remote_created_date.blank? ? empty_tag(:span, 'none specified') : @material.remote_created_date %></p>
               <p><b>Last updated: </b><%= @material.remote_updated_date.blank? ? empty_tag(:span, 'none specified') : @material.remote_updated_date %></p>
               <%= render :partial => 'materials/partials/material_schemaorg', :locals => {:material => @material} %>
-
             </div>
           </div>
         </div>
