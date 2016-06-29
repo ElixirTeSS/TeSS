@@ -9,7 +9,7 @@
         <i class="fa fa-repeat"></i> <span>Redo</span>
       </a>
       <a class="btn btn-default" id="workflow-toolbar-add">
-        <i class="fa fa-plus-square"></i> Add Node
+        <i class="fa fa-plus"></i> Add Node
       </a>
     </div>
 
@@ -22,6 +22,12 @@
         </a>
         <a class="btn btn-default node-context-button" id="workflow-toolbar-link" style="display: none">
           <i class="fa fa-link"></i> Link
+        </a>
+        <a class="btn btn-default node-context-button" id="workflow-toolbar-add-child" style="display: none">
+          <i class="fa fa-plus-square"></i> Add Child
+        </a>
+        <a class="btn btn-default node-context-button" id="workflow-toolbar-delete" style="display: none">
+          <i class="fa fa-trash"></i> Delete
         </a>
         <a class="btn btn-default" id="workflow-toolbar-cancel" style="display: none">
           <i class="fa fa-ban"></i> <span>Cancel</span>
@@ -42,10 +48,12 @@
               <label for="workflow-modal-form-title">Title</label>
               <input type="text" class="form-control" id="workflow-modal-form-title" placeholder="Title">
             </div>
+
             <div class="form-group">
               <label for="workflow-modal-form-description">Description</label>
               <textarea class="form-control" id="workflow-modal-form-description" rows="3"></textarea>
             </div>
+
             <div class="form-group">
               <label for="workflow-modal-form-colour">Colour</label>
               <p style="margin: 0px; padding: 5px;">
@@ -58,6 +66,8 @@
                 </p>
             </div>
 
+            <input type="hidden" id="workflow-modal-form-id">
+            <input type="hidden" id="workflow-modal-form-parent-id">
             <input type="hidden" id="workflow-modal-form-x">
             <input type="hidden" id="workflow-modal-form-y">
           </div>
