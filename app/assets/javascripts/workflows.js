@@ -4,7 +4,7 @@ $(document).ready(function () {
     var wfJsonElement = $('#workflow-content-json');
     var cytoscapeElement = $('#cy');
 
-    if(wfJsonElement.length) {
+    if (wfJsonElement.length && cytoscapeElement.length) {
         cy = window.cy = cytoscape({
             container: cytoscapeElement[0],
             elements: JSON.parse(wfJsonElement.html()),
@@ -121,13 +121,12 @@ Workflows = {
         $('#workflow-modal-form-id').val('');
         $('#workflow-modal-form-title').val('');
         $('#workflow-modal-form-description').val('');
-        $('#workflow-modal-form-colour').val('#f0721e');
-        $('#workflow-modal-form-colour')[0].jscolor.fromString('#f0721e');
+        $('#workflow-modal-form-colour').val('#f0721e')[0].jscolor.fromString('#f0721e');
         $('#workflow-modal-form-parent-id').val(parentId);
         $('#workflow-modal-form-x').val(position.x);
         // Offset child nodes a bit so they don't stack on top of each other...
         var y = position.y;
-        if(parentId && Workflows.selectedNode.children().length > 0)
+        if (parentId && Workflows.selectedNode.children().length > 0)
             y = Workflows.selectedNode.children().last().position().y + 40;
         $('#workflow-modal-form-y').val(y);
     },
@@ -177,7 +176,7 @@ Workflows = {
 
         $('#workflow-status-message').html('');
         $('#workflow-status-selected-node').html('<span class="muted">nothing</span>');
-        $('#workflow-status-bar .node-context-button').hide();
+        $('#workflow-status-bar').find('.node-context-button').hide();
         $('#workflow-toolbar-cancel').hide();
     },
 
@@ -192,7 +191,7 @@ Workflows = {
     selectNode: function (node) {
         Workflows.selectedNode = node;
         Workflows.setState('node selection');
-        $('#workflow-status-bar .node-context-button').show();
+        $('#workflow-status-bar').find('.node-context-button').show();
         $('#workflow-status-selected-node').html(Workflows.selectedNode.data('name'));
     },
 
@@ -205,8 +204,7 @@ Workflows = {
             $('#workflow-modal-form-id').val(data.id);
             $('#workflow-modal-form-title').val(data.name);
             $('#workflow-modal-form-description').val(data.description);
-            $('#workflow-modal-form-colour').val(data.color);
-            $('#workflow-modal-form-colour')[0].jscolor.fromString(data.color);
+            $('#workflow-modal-form-colour').val(data.color)[0].jscolor.fromString(data.color);
             $('#workflow-modal-form-parent-id').val(data.parent);
             $('#workflow-modal-form-x').val(position.x);
             $('#workflow-modal-form-y').val(position.y);
@@ -254,7 +252,7 @@ Workflows = {
     },
 
     deleteNode: function () {
-        if(confirm('Are you sure you wish to delete this node?')) {
+        if (confirm('Are you sure you wish to delete this node?')) {
             Workflows.selectedNode.remove();
             Workflows.cancelState();
         }
@@ -270,20 +268,20 @@ Workflows = {
             Workflows.history.stack.length = Workflows.history.index + 1; // Removes all "future" history after the current point.
             Workflows.history.index++;
             Workflows.history.stack.push({ action: action, elements: cy.elements().clone() });
-            if(typeof modification != 'undefined')
+            if (typeof modification != 'undefined')
                 modification();
             Workflows.history.setButtonState();
         },
 
         undo: function () {
-            if(Workflows.history.index > 0) {
+            if (Workflows.history.index > 0) {
                 Workflows.history.index--;
                 Workflows.history.restore();
             }
         },
 
         redo: function () {
-            if(Workflows.history.index < (Workflows.history.stack.length - 1)) {
+            if (Workflows.history.index < (Workflows.history.stack.length - 1)) {
                 Workflows.history.index++;
                 Workflows.history.restore();
             }
@@ -296,7 +294,7 @@ Workflows = {
         },
 
         setButtonState: function () {
-            if(Workflows.history.index < (Workflows.history.stack.length - 1)) {
+            if (Workflows.history.index < (Workflows.history.stack.length - 1)) {
                 $('#workflow-toolbar-redo')
                     .removeClass('disabled')
                     .find('span')
@@ -308,7 +306,7 @@ Workflows = {
                     .attr('title', 'Redo');
             }
 
-            if(Workflows.history.index > 0) {
+            if (Workflows.history.index > 0) {
                 $('#workflow-toolbar-undo')
                     .removeClass('disabled')
                     .find('span')
