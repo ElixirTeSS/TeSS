@@ -79,13 +79,14 @@ $(document).ready(function () {
 
     $('#workflow-toolbar-add').click(Workflows.setAddNodeState);
     $('#workflow-toolbar-cancel').click(Workflows.cancelState);
-    $('#workflow-toolbar-edit').click(Workflows.editNode);
+    $('#workflow-toolbar-edit').click(Workflows.edit);
     $('#workflow-toolbar-link').click(Workflows.setLinkNodeState);
     $('#workflow-toolbar-undo').click(Workflows.history.undo);
     $('#workflow-toolbar-redo').click(Workflows.history.redo);
     $('#workflow-toolbar-add-child').click(Workflows.addChild);
-    $('#workflow-toolbar-delete').click(Workflows.deleteNode);
-    $('#workflow-modal-form-confirm').click(Workflows.modalConfirm);
+    $('#workflow-toolbar-delete').click(Workflows.delete);
+    $('#node-modal-form-confirm').click(Workflows.nodeModalConfirm);
+    $('#edge-modal-form-confirm').click(Workflows.edgeModalConfirm);
     cy.on('tap', Workflows.handleClick);
     cy.on('select', function (e) {
         if (Workflows.state !== 'adding node') {
@@ -101,7 +102,8 @@ $(document).ready(function () {
         }
     });
 
-    $('#workflow-modal').on('hide.bs.modal', Workflows.cancelState);
+    $('#node-modal').on('hide.bs.modal', Workflows.cancelState);
+    $('#edge-modal').on('hide.bs.modal', Workflows.cancelState);
 
     // Update JSON in form
     $('#workflow-form-submit').click(function () {
@@ -122,37 +124,37 @@ Workflows = {
     },
 
     placeNode: function (position, parentId) {
-        $('#workflow-modal-title').html(parentId ? 'Add child node' : 'Add node');
-        $('#workflow-modal').modal('show');
-        $('#workflow-modal-form-id').val('');
-        $('#workflow-modal-form-title').val('');
-        $('#workflow-modal-form-description').val('');
-        $('#workflow-modal-form-colour').val('#f0721e')[0].jscolor.fromString('#f0721e');
-        $('#workflow-modal-form-parent-id').val(parentId);
-        $('#workflow-modal-form-x').val(position.x);
+        $('#node-modal-title').html(parentId ? 'Add child node' : 'Add node');
+        $('#node-modal').modal('show');
+        $('#node-modal-form-id').val('');
+        $('#node-modal-form-title').val('');
+        $('#node-modal-form-description').val('');
+        $('#node-modal-form-colour').val('#f0721e')[0].jscolor.fromString('#f0721e');
+        $('#node-modal-form-parent-id').val(parentId);
+        $('#node-modal-form-x').val(position.x);
         // Offset child nodes a bit so they don't stack on top of each other...
         var y = position.y;
-        if (parentId && Workflows.selectedNode.children().length > 0)
-            y = Workflows.selectedNode.children().last().position().y + 40;
-        $('#workflow-modal-form-y').val(y);
+        if (parentId && Workflows.selected.children().length > 0)
+            y = Workflows.selected.children().last().position().y + 40;
+        $('#node-modal-form-y').val(y);
     },
 
     addNode: function () {
         var object = {
             group: 'nodes',
             data: {
-                name: $('#workflow-modal-form-title').val(),
-                description: $('#workflow-modal-form-description').val(),
-                color: $('#workflow-modal-form-colour').val(),
-                parent: $('#workflow-modal-form-parent-id').val()
+                name: $('#node-modal-form-title').val(),
+                description: $('#node-modal-form-description').val(),
+                color: $('#node-modal-form-colour').val(),
+                parent: $('#node-modal-form-parent-id').val()
             },
             position: {
-                x: parseInt($('#workflow-modal-form-x').val()),
-                y: parseInt($('#workflow-modal-form-y').val())
+                x: parseInt($('#node-modal-form-x').val()),
+                y: parseInt($('#node-modal-form-y').val())
             }
         };
 
-        $('#workflow-modal').modal('hide');
+        $('#node-modal').modal('hide');
 
         Workflows.history.modify(object.data.parent ? 'add child node' : 'add node', function () {
             cy.add(object).select();
@@ -160,24 +162,33 @@ Workflows = {
     },
 
     updateNode: function () {
-        var node = Workflows.selectedNode;
+        var node = Workflows.selected;
         Workflows.history.modify('edit node', function () {
-            node.data('name', $('#workflow-modal-form-title').val());
-            node.data('description', $('#workflow-modal-form-description').val());
-            node.data('color', $('#workflow-modal-form-colour').val());
+            node.data('name', $('#node-modal-form-title').val());
+            node.data('description', $('#node-modal-form-description').val());
+            node.data('color', $('#node-modal-form-colour').val());
         });
 
-        $('#workflow-modal').modal('hide');
+        $('#node-modal').modal('hide');
         node.select();
     },
 
+    updateEdge: function () {
+        var edge = Workflows.selected;
+        Workflows.history.modify('edit edge', function () {
+            edge.data('name', $('#edge-modal-form-label').val());
+        });
+
+        $('#edge-modal').modal('hide');
+        edge.select();
+    },
 
     cancelState: function () {
         Workflows.state = '';
 
-        if (Workflows.selectedNode) {
-            Workflows.selectedNode.unselect();
-            Workflows.selectedNode = null;
+        if (Workflows.selected) {
+            Workflows.selected.unselect();
+            Workflows.selected = null;
         }
 
         $('#workflow-status-message').html('');
@@ -194,35 +205,50 @@ Workflows = {
         button.show();
     },
 
-    selectNode: function (node) {
-        Workflows.selectedNode = node;
-        Workflows.setState('node selection');
-        $('#workflow-status-bar').find('.node-context-button').show();
-        $('#workflow-status-selected-node').html(Workflows.selectedNode.data('name'));
-    },
-
-    editNode: function () {
-        if (Workflows.state === 'node selection') {
-            var data = Workflows.selectedNode.data();
-            var position = Workflows.selectedNode.position();
-            $('#workflow-modal-title').html('Edit node');
-            $('#workflow-modal').modal('show');
-            $('#workflow-modal-form-id').val(data.id);
-            $('#workflow-modal-form-title').val(data.name);
-            $('#workflow-modal-form-description').val(data.description);
-            $('#workflow-modal-form-colour').val(data.color)[0].jscolor.fromString(data.color);
-            $('#workflow-modal-form-parent-id').val(data.parent);
-            $('#workflow-modal-form-x').val(position.x);
-            $('#workflow-modal-form-y').val(position.y);
+    selectNode: function (target) {
+        if (target.isNode()) {
+            Workflows.selected = target;
+            Workflows.setState('node selection');
+            $('#workflow-status-bar').find('.node-context-button').show();
+            $('#workflow-status-selected-node').html(Workflows.selected.data('name'));
+        } else if (target.isEdge()) {
+            Workflows.selected = target;
+            Workflows.setState('edge selection');
+            $('#workflow-status-bar').find('.edge-context-button').show();
+            $('#workflow-status-selected-node').html(Workflows.selected.data('name') + ' (edge)');
         }
     },
 
-    modalConfirm: function () {
-        if ($('#workflow-modal-form-id').val()) {
+    edit: function () {
+        if (Workflows.state === 'node selection') {
+            var data = Workflows.selected.data();
+            var position = Workflows.selected.position();
+            $('#node-modal-title').html('Edit node');
+            $('#node-modal').modal('show');
+            $('#node-modal-form-id').val(data.id);
+            $('#node-modal-form-title').val(data.name);
+            $('#node-modal-form-description').val(data.description);
+            $('#node-modal-form-colour').val(data.color)[0].jscolor.fromString(data.color);
+            $('#node-modal-form-parent-id').val(data.parent);
+            $('#node-modal-form-x').val(position.x);
+            $('#node-modal-form-y').val(position.y);
+        } else if (Workflows.state === 'edge selection') {
+            var data = Workflows.selected.data();
+            $('#edge-modal').modal('show');
+            $('#edge-modal-form-label').val(data.name);
+        }
+    },
+
+    nodeModalConfirm: function () {
+        if ($('#node-modal-form-id').val()) {
             Workflows.updateNode();
         } else {
             Workflows.addNode();
         }
+    },
+
+    edgeModalConfirm: function () {
+        Workflows.updateEdge();
     },
 
     setLinkNodeState: function () {
@@ -234,7 +260,7 @@ Workflows = {
             e.cy.add({
                 group: "edges",
                 data: {
-                    source: Workflows.selectedNode.data('id'),
+                    source: Workflows.selected.data('id'),
                     target: e.cyTarget.data('id')
                 }
             });
@@ -254,13 +280,13 @@ Workflows = {
     },
 
     addChild: function () {
-        Workflows.placeNode(Workflows.selectedNode.position(), Workflows.selectedNode.id());
+        Workflows.placeNode(Workflows.selected.position(), Workflows.selected.id());
     },
 
-    deleteNode: function () {
-        if (confirm('Are you sure you wish to delete this node?')) {
+    delete: function () {
+        if (confirm('Are you sure you wish to delete this?')) {
             Workflows.history.modify('delete node', function () {
-                Workflows.selectedNode.remove();
+                Workflows.selected.remove();
             });
             Workflows.cancelState();
         }
