@@ -82,9 +82,6 @@ gem "pundit"
 # Simple colour picker from a predefined list
 gem 'jquery-simplecolorpicker-rails'
 
-# Colour picker from a palette
-gem 'jscolor-rails'
-
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
