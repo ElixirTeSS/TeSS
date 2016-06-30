@@ -38,7 +38,7 @@
         <%= render partial: 'workflows/workflow_diagram', locals: { workflow:  @workflow, editable: true } %>
 
         <div class="form-group actions">
-          <%= f.submit ( f.object.new_record? ? "Create" : "Update") + " workflow", class: 'btn btn-primary', id: 'workflow-form-submit' %>
+          <%= f.submit "Save workflow", class: 'btn btn-primary', id: 'workflow-form-submit' %>
           <%= link_to 'Back', workflows_path, :class=>"btn btn-info" %>
           <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                       workflows_path, :class => 'btn btn-default' %>
