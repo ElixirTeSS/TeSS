@@ -1,6 +1,10 @@
-<h1>Editing Workflow</h1>
+<%- model_class = Workflow -%>
+<div class="row wrapper">
+  <div class="col-md-12">
+    <div class="page-header">
+      <h2><%= t '.title', :default => [:'helpers.titles.edit', 'Edit %{workflow}'], :model => model_class.model_name.human.titleize.downcase %></h2>
+    </div>
 
-<%= render 'form' %>
-
-<%= link_to 'Show', @workflow %> |
-<%= link_to 'Back', workflows_path %>
+    <%= render :partial => 'form' %>
+  </div>
+</div>

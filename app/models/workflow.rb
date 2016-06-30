@@ -5,8 +5,10 @@ class Workflow < ActiveRecord::Base
   extend FriendlyId
   friendly_id :title, use: :slugged
 
-  if SOLR_ENABLED==true
+  if SOLR_ENABLED
     searchable do
+      string :title
+      string :description
       text :title
       text :description
     end
@@ -14,5 +16,11 @@ class Workflow < ActiveRecord::Base
 
   # has_one :owner, foreign_key: "id", class_name: "User"
   belongs_to :user
+
+  validates :title, presence: true
+
+  def self.facet_fields
+    %w( )
+  end
 
 end

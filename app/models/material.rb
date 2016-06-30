@@ -6,7 +6,7 @@ class Material < ActiveRecord::Base
   extend FriendlyId
   friendly_id :title, use: :slugged
 
-  if SOLR_ENABLED==true
+  if SOLR_ENABLED
     searchable do
       text :title
       string :title

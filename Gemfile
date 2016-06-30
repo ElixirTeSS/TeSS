@@ -79,6 +79,9 @@ gem 'app_version'
 # Gem for authorisation
 gem "pundit"
 
+# Simple colour picker from a predefined list
+gem 'jquery-simplecolorpicker-rails'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

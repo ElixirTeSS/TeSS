@@ -6,7 +6,7 @@ class Profile < ActiveRecord::Base
   friendly_id [:firstname, :surname], use: :slugged
 =end
 
-  if SOLR_ENABLED==true
+  if SOLR_ENABLED
     searchable do
       text :firstname
       text :surname

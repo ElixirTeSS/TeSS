@@ -15,6 +15,10 @@
 //= require bootstrap-sprockets
 //= require turbolinks
 //= require jquery.turbolinks
+//= require cytoscape
+//= require cytoscape-panzoom
+//= require jscolor
+//= require jquery.simplecolorpicker.js
 //= require_tree .
 
 function redirect_to_sort_url(){

@@ -24,8 +24,8 @@ class Package < ActiveRecord::Base
 
   after_save :log_activities
 
-  if SOLR_ENABLED==true
-    searchable do 
+  if SOLR_ENABLED
+    searchable do
       text :title
       text :description
       string :user do

@@ -1,0 +1,44 @@
+<% editable ||= false %>
+
+<% if editable %>
+    <div id="workflow-toolbar">
+      <a class="btn btn-default disabled" id="workflow-toolbar-undo">
+        <i class="fa fa-undo"></i> <span>Undo</span>
+      </a>
+      <a class="btn btn-default disabled" id="workflow-toolbar-redo">
+        <i class="fa fa-repeat"></i> <span>Redo</span>
+      </a>
+      <a class="btn btn-default" id="workflow-toolbar-add">
+        <i class="fa fa-plus"></i> Add Node
+      </a>
+    </div>
+
+    <div id="workflow-status-bar">
+      <strong>Selected:</strong> <span id="workflow-status-selected-node"></span>
+      <span id="workflow-status-message"></span>
+      <div class="pull-right">
+        <a class="btn btn-default node-context-button edge-context-button" id="workflow-toolbar-edit" style="display: none">
+          <i class="fa fa-edit"></i> Edit
+        </a>
+        <a class="btn btn-default node-context-button" id="workflow-toolbar-link" style="display: none">
+          <i class="fa fa-link"></i> Link
+        </a>
+        <a class="btn btn-default node-context-button" id="workflow-toolbar-add-child" style="display: none">
+          <i class="fa fa-plus-square"></i> Add Child
+        </a>
+        <a class="btn btn-default node-context-button edge-context-button" id="workflow-toolbar-delete" style="display: none">
+          <i class="fa fa-trash"></i> Delete
+        </a>
+        <a class="btn btn-default" id="workflow-toolbar-cancel" style="display: none">
+          <i class="fa fa-ban"></i> <span>Cancel</span>
+        </a>
+      </div>
+    </div>
+
+    <%= render 'node_modal' %>
+    <%= render 'edge_modal' %>
+<% end %>
+
+<div class="wrapper" id="cy" data-editable="<%= editable -%>"></div>
+<%= content_tag(:script, workflow.workflow_content.to_json.html_safe,
+                id: 'workflow-content-json', type: 'application/json') %>
