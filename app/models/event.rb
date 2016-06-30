@@ -5,7 +5,7 @@ class Event < ActiveRecord::Base
   extend FriendlyId
   friendly_id :title, use: :slugged
 
-  unless SOLR_ENABLED==false
+  if SOLR_ENABLED
     searchable do
       text :title
       string :title
@@ -91,7 +91,6 @@ class Event < ActiveRecord::Base
       return false
     end
   end
-  
 
   def self.facet_fields
     %w( category country field provider city sponsor keywords venue )

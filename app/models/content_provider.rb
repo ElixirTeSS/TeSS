@@ -26,7 +26,7 @@ class ContentProvider < ActiveRecord::Base
 
   PROVIDER_TYPE = ['Organisation', 'Portal', 'Project', 'Individual']
 
-  unless SOLR_ENABLED==false
+  if SOLR_ENABLED
     searchable do
       text :title
       text :description
