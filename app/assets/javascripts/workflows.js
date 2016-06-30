@@ -116,6 +116,7 @@ $(document).ready(function () {
     cy.$(':selected').unselect();
     Workflows.cancelState();
     Workflows.history.initialize();
+    jscolor.installByClassName('jscolor');
 });
 
 Workflows = {
