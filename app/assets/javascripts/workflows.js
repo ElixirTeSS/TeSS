@@ -54,7 +54,8 @@ $(document).ready(function () {
                         'line-color': '#ccc',
                         'source-arrow-color': '#ccc',
                         'target-arrow-color': '#ccc',
-                        'font-size': '9px'
+                        'font-size': '9px',
+                        'curve-style': 'bezier'
                     }
                 },
                 {
