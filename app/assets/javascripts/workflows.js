@@ -299,6 +299,7 @@ Workflows = {
             cy.elements().remove();
             Workflows.history.stack[Workflows.history.index].elements.restore();
             Workflows.history.setButtonState();
+            Workflows.cancelState();
         },
 
         setButtonState: function () {
