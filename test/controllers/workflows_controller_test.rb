@@ -10,18 +10,22 @@ class WorkflowsControllerTest < ActionController::TestCase
   test "should get index" do
     get :index
     assert_response :success
-    #assert_not_nil assigns(:workflows)
+    assert_not_empty assigns(:workflows)
   end
-=begin
 
   test "should get new" do
+    sign_in users(:admin)
+
     get :new
     assert_response :success
   end
 
   test "should create workflow" do
+    sign_in users(:admin)
+
     assert_difference('Workflow.count') do
-      post :create, workflow: { description: @workflow.description, title: @workflow.title, user_id: @workflow.user_id, workflow_content: @workflow.workflow_content }
+      post :create, workflow: { description: @workflow.description, title: @workflow.title,
+          workflow_content: @workflow.workflow_content }
     end
 
     assert_redirected_to workflow_path(assigns(:workflow))
@@ -33,21 +37,28 @@ class WorkflowsControllerTest < ActionController::TestCase
   end
 
   test "should get edit" do
+    sign_in users(:admin)
+
     get :edit, id: @workflow
     assert_response :success
   end
 
   test "should update workflow" do
-    patch :update, id: @workflow, workflow: { description: @workflow.description, title: @workflow.title, user_id: @workflow.user_id, workflow_content: @workflow.workflow_content }
+    sign_in users(:admin)
+
+    patch :update, id: @workflow, workflow: { description: @workflow.description, title: 'hello',
+                                              workflow_content: @workflow.workflow_content }
     assert_redirected_to workflow_path(assigns(:workflow))
+    assert_equal 'hello', assigns(:workflow).title
   end
 
   test "should destroy workflow" do
+    sign_in users(:admin)
+
     assert_difference('Workflow.count', -1) do
       delete :destroy, id: @workflow
     end
 
     assert_redirected_to workflows_path
   end
-=end
 end
