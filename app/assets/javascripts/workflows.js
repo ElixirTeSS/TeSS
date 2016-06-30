@@ -127,7 +127,7 @@ Workflows = {
         $('#workflow-modal-form-id').val('');
         $('#workflow-modal-form-title').val('');
         $('#workflow-modal-form-description').val('');
-        $('#workflow-modal-form-colour').val('#f0721e')[0].jscolor.fromString('#F0721E');
+        $('#workflow-modal-form-colour').val('#F0721E')[0].jscolor.fromString('#F0721E');
         $('#workflow-modal-form-parent-id').val(parentId);
         $('#workflow-modal-form-x').val(position.x);
         // Offset child nodes a bit so they don't stack on top of each other...
