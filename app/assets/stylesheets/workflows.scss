@@ -47,10 +47,13 @@
   }
 }
 
-.workflow-diagram-sidebar {
+#workflow-diagram-sidebar {
   flex-shrink: 0;
   width: 300px;
   border-left: 1px solid #ccc;
+  @media (min-width: $screen-lg-min) {
+    width: 450px;
+  }
 
   @media (max-width: $screen-md-min) {
     border-left: none;
@@ -60,7 +63,7 @@
   }
 }
 
-.workflow-diagram-content {
+#workflow-diagram-content {
   flex-grow: 1;
 }
 

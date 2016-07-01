@@ -118,8 +118,9 @@ $(document).ready(function () {
         Workflows.history.initialize();
         jscolor.installByClassName('jscolor');
     } else {
-        cy.on('select', Workflows.populateSidebar);
-        cy.on('unselect', Workflows.clearSidebar);
+        Workflows.sidebar.init();
+        cy.on('select', Workflows.sidebar.populate);
+        cy.on('unselect', Workflows.sidebar.clear);
         cy.$(':selected').unselect();
     }
 });
@@ -299,16 +300,24 @@ Workflows = {
         }
     },
 
-    populateSidebar: function (e) {
-        if (e.cyTarget.isNode()) {
-            $('#workflow-diagram-sidebar-title').html(e.cyTarget.data('name') || '<span class="muted">Untitled</span>');
-            $('#workflow-diagram-sidebar-desc').html(e.cyTarget.data('description') || '<span class="muted">No description provided</span>');
-        }
-    },
+    sidebar: {
+        init: function () {
+            var sidebar = $('#workflow-diagram-sidebar');
+            sidebar.data('initialState', sidebar.html());
+            sidebar.html('');
+        },
 
-    clearSidebar: function (e) {
-        $('#workflow-diagram-sidebar-title').html('<span class="muted">Nothing selected</span>');
-        $('#workflow-diagram-sidebar-desc').html('<span class="muted">Click on a node to see more information.</span>');
+        populate: function (e) {
+            if (e.cyTarget.isNode()) {
+                $('#workflow-diagram-sidebar-title').html(e.cyTarget.data('name') || '<span class="muted">Untitled</span>');
+                $('#workflow-diagram-sidebar-desc').html(e.cyTarget.data('description') || '<span class="muted">No description provided</span>');
+            }
+        },
+
+        clear: function () {
+            var sidebar = $('#workflow-diagram-sidebar');
+            sidebar.html(sidebar.data('initialState'));
+        }
     },
 
     history: {
