@@ -39,6 +39,6 @@
     <%= render 'edge_modal' %>
 <% end %>
 
-<div class="wrapper" id="cy" data-editable="<%= editable -%>"></div>
+<div id="cy" data-editable="<%= editable -%>"></div>
 <%= content_tag(:script, workflow.workflow_content.to_json.html_safe,
                 id: 'workflow-content-json', type: 'application/json') %>

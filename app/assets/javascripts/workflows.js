@@ -1,11 +1,10 @@
-var cy;
-
 $(document).ready(function () {
     var wfJsonElement = $('#workflow-content-json');
     var cytoscapeElement = $('#cy');
+    var editable = cytoscapeElement.data('editable');
 
     if (wfJsonElement.length && cytoscapeElement.length) {
-        cy = window.cy = cytoscape({
+        var cy = window.cy = cytoscape({
             container: cytoscapeElement[0],
             elements: JSON.parse(wfJsonElement.html()),
             layout: {
@@ -72,51 +71,57 @@ $(document).ready(function () {
                 }
             ],
             userZoomingEnabled: false,
-            autolock: !cytoscapeElement.data('editable')
+            autolock: !editable
         });
 
         cy.panzoom();
     }
 
-    $('#workflow-toolbar-add').click(Workflows.setAddNodeState);
-    $('#workflow-toolbar-cancel').click(Workflows.cancelState);
-    $('#workflow-toolbar-edit').click(Workflows.edit);
-    $('#workflow-toolbar-link').click(Workflows.setLinkNodeState);
-    $('#workflow-toolbar-undo').click(Workflows.history.undo);
-    $('#workflow-toolbar-redo').click(Workflows.history.redo);
-    $('#workflow-toolbar-add-child').click(Workflows.addChild);
-    $('#workflow-toolbar-delete').click(Workflows.delete);
-    $('#node-modal-form-confirm').click(Workflows.nodeModalConfirm);
-    $('#edge-modal-form-confirm').click(Workflows.edgeModalConfirm);
-    cy.on('tap', Workflows.handleClick);
-    cy.on('select', function (e) {
-        if (Workflows.state !== 'adding node') {
-            Workflows.selectNode(e.cyTarget);
-        }
-    });
-    cy.on('unselect', Workflows.cancelState);
-    cy.on('drag', function () { Workflows._dragged = true; });
-    cy.on('free', function () {
-        if (Workflows._dragged) {
-            Workflows.history.modify('move node');
-            Workflows._dragged = false;
-        }
-    });
+    if (editable) {
+        $('#workflow-toolbar-add').click(Workflows.setAddNodeState);
+        $('#workflow-toolbar-cancel').click(Workflows.cancelState);
+        $('#workflow-toolbar-edit').click(Workflows.edit);
+        $('#workflow-toolbar-link').click(Workflows.setLinkNodeState);
+        $('#workflow-toolbar-undo').click(Workflows.history.undo);
+        $('#workflow-toolbar-redo').click(Workflows.history.redo);
+        $('#workflow-toolbar-add-child').click(Workflows.addChild);
+        $('#workflow-toolbar-delete').click(Workflows.delete);
+        $('#node-modal-form-confirm').click(Workflows.nodeModalConfirm);
+        $('#edge-modal-form-confirm').click(Workflows.edgeModalConfirm);
+        cy.on('tap', Workflows.handleClick);
+        cy.on('select', function (e) {
+            if (Workflows.state !== 'adding node') {
+                Workflows.selectNode(e.cyTarget);
+            }
+        });
+        cy.on('unselect', Workflows.cancelState);
+        cy.on('drag', function () { Workflows._dragged = true; });
+        cy.on('free', function () {
+            if (Workflows._dragged) {
+                Workflows.history.modify('move node');
+                Workflows._dragged = false;
+            }
+        });
 
-    $('#node-modal').on('hide.bs.modal', Workflows.cancelState);
-    $('#edge-modal').on('hide.bs.modal', Workflows.cancelState);
+        $('#node-modal').on('hide.bs.modal', Workflows.cancelState);
+        $('#edge-modal').on('hide.bs.modal', Workflows.cancelState);
 
-    // Update JSON in form
-    $('#workflow-form-submit').click(function () {
-        $('#workflow_workflow_content').val(JSON.stringify(cy.json()['elements']));
+        // Update JSON in form
+        $('#workflow-form-submit').click(function () {
+            $('#workflow_workflow_content').val(JSON.stringify(cy.json()['elements']));
 
-        return true;
-    });
+            return true;
+        });
 
-    cy.$(':selected').unselect();
-    Workflows.cancelState();
-    Workflows.history.initialize();
-    jscolor.installByClassName('jscolor');
+        cy.$(':selected').unselect();
+        Workflows.cancelState();
+        Workflows.history.initialize();
+        jscolor.installByClassName('jscolor');
+    } else {
+        cy.on('select', Workflows.populateSidebar);
+        cy.on('unselect', Workflows.clearSidebar);
+        cy.$(':selected').unselect();
+    }
 });
 
 Workflows = {
@@ -292,6 +297,18 @@ Workflows = {
             });
             Workflows.cancelState();
         }
+    },
+
+    populateSidebar: function (e) {
+        if (e.cyTarget.isNode()) {
+            $('#workflow-diagram-sidebar-title').html(e.cyTarget.data('name') || '<span class="muted">Untitled</span>');
+            $('#workflow-diagram-sidebar-desc').html(e.cyTarget.data('description') || '<span class="muted">No description provided</span>');
+        }
+    },
+
+    clearSidebar: function (e) {
+        $('#workflow-diagram-sidebar-title').html('<span class="muted">Nothing selected</span>');
+        $('#workflow-diagram-sidebar-desc').html('<span class="muted">Click on a node to see more information.</span>');
     },
 
     history: {

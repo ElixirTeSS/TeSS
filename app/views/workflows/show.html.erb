@@ -21,6 +21,17 @@
     <% if not @workflow.description.blank? %>
         <p><%= render_markdown(@workflow.description) %></p>
     <% end %>
-    <%= render partial: 'workflows/workflow_diagram', locals: {workflow: @workflow} %>
+
+    <div class="workflow-diagram-container">
+      <div class="workflow-diagram-content">
+        <%= render partial: 'workflows/workflow_diagram', locals: { workflow: @workflow } %>
+      </div>
+
+      <div class="workflow-diagram-sidebar">
+        <h3 class="nav-heading" id="workflow-diagram-sidebar-title"></h3>
+        <div id="workflow-diagram-sidebar-desc"></div>
+      </div>
+    </div>
+
   </div>
 </div>

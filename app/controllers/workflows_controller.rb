@@ -1,5 +1,7 @@
 class WorkflowsController < ApplicationController
 
+  layout 'application'
+
   before_action :set_workflow, only: [:show, :edit, :update, :destroy]
 
   include TeSS::BreadCrumbs
@@ -14,6 +16,7 @@ class WorkflowsController < ApplicationController
   # GET /workflows/1
   # GET /workflows/1.json
   def show
+    render layout: 'workflows'
   end
 
   # GET /workflows/new

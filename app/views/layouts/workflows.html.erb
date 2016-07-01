@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<%= render 'layouts/head' %>
+
+<body>
+
+<%= render :partial=>"layouts/header" %>
+
+<div id="main-container" class="workflows-container">
+  <!-- Breadcrumbs -->
+  <%= render_breadcrumbs :partial => 'common/breadcrumbs' do |breadcrumbs| %>
+      <%= content_tag(:div, breadcrumbs, {class: "breadcrumbs"}) %>
+  <% end %>
+
+  <%# Main content of every page -%>
+  <%= yield :layout %>
+</div>
+
+<%= render :partial=>"layouts/footer" %>
+
+</body>
+</html>

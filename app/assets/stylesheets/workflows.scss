@@ -26,3 +26,44 @@
 .simplecolorpicker span.color[data-selected]:hover {
   border-color: transparent !important;
 }
+
+.workflows-container {
+  padding: 10px;
+}
+
+.workflow-diagram-wrapper {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.workflow-diagram-container {
+  border: 1px solid #ccc;
+  display: flex;
+
+  @media (max-width: $screen-md-min) {
+    flex-direction: column-reverse;
+  }
+}
+
+.workflow-diagram-sidebar {
+  flex-shrink: 0;
+  width: 300px;
+  border-left: 1px solid #ccc;
+
+  @media (max-width: $screen-md-min) {
+    border-left: none;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+}
+
+.workflow-diagram-content {
+  flex-grow: 1;
+}
+
+#workflow-diagram-sidebar-desc {
+  padding: 10px;
+}
