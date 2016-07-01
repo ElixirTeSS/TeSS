@@ -91,7 +91,7 @@ $(document).ready(function () {
         cy.on('tap', Workflows.handleClick);
         cy.on('select', function (e) {
             if (Workflows.state !== 'adding node') {
-                Workflows.selectNode(e.cyTarget);
+                Workflows.select(e.cyTarget);
             }
         });
         cy.on('unselect', Workflows.cancelState);
@@ -125,6 +125,52 @@ $(document).ready(function () {
 });
 
 Workflows = {
+    handleClick: function (e) {
+        if (Workflows.state === 'adding node') {
+            Workflows.placeNode(e.cyPosition);
+        } else if (Workflows.state === 'linking node') {
+            if (e.cyTarget !== cy && e.cyTarget.isNode()) {
+                Workflows.createLink(e);
+            }
+        }
+    },
+
+    setState: function (state, message) {
+        Workflows.state = state;
+        $('#workflow-status-message').html(message);
+        var button = $('#workflow-toolbar-cancel');
+        button.find('span').html('Cancel ' + state);
+        button.show();
+    },
+
+    cancelState: function () {
+        Workflows.state = '';
+
+        if (Workflows.selected) {
+            Workflows.selected.unselect();
+            Workflows.selected = null;
+        }
+
+        $('#workflow-status-message').html('');
+        $('#workflow-status-selected-node').html('<span class="muted">nothing</span>');
+        $('#workflow-status-bar').find('.node-context-button').hide();
+        $('#workflow-toolbar-cancel').hide();
+    },
+
+    select: function (target) {
+        if (target.isNode()) {
+            Workflows.selected = target;
+            Workflows.setState('node selection');
+            $('#workflow-status-bar').find('.node-context-button').show();
+            $('#workflow-status-selected-node').html(Workflows.selected.data('name'));
+        } else if (target.isEdge()) {
+            Workflows.selected = target;
+            Workflows.setState('edge selection');
+            $('#workflow-status-bar').find('.edge-context-button').show();
+            $('#workflow-status-selected-node').html(Workflows.selected.data('name') + ' (edge)');
+        }
+    },
+
     setAddNodeState: function () {
         Workflows.cancelState();
         Workflows.setState('adding node', 'Click on the diagram to add a new node.');
@@ -168,62 +214,8 @@ Workflows = {
         });
     },
 
-    updateNode: function () {
-        var node = Workflows.selected;
-        Workflows.history.modify('edit node', function () {
-            node.data('name', $('#node-modal-form-title').val());
-            node.data('description', $('#node-modal-form-description').val());
-            node.data('color', $('#node-modal-form-colour').val());
-        });
-
-        $('#node-modal').modal('hide');
-        node.select();
-    },
-
-    updateEdge: function () {
-        var edge = Workflows.selected;
-        Workflows.history.modify('edit edge', function () {
-            edge.data('name', $('#edge-modal-form-label').val());
-        });
-
-        $('#edge-modal').modal('hide');
-        edge.select();
-    },
-
-    cancelState: function () {
-        Workflows.state = '';
-
-        if (Workflows.selected) {
-            Workflows.selected.unselect();
-            Workflows.selected = null;
-        }
-
-        $('#workflow-status-message').html('');
-        $('#workflow-status-selected-node').html('<span class="muted">nothing</span>');
-        $('#workflow-status-bar').find('.node-context-button').hide();
-        $('#workflow-toolbar-cancel').hide();
-    },
-
-    setState: function (state, message) {
-        Workflows.state = state;
-        $('#workflow-status-message').html(message);
-        var button = $('#workflow-toolbar-cancel');
-        button.find('span').html('Cancel ' + state);
-        button.show();
-    },
-
-    selectNode: function (target) {
-        if (target.isNode()) {
-            Workflows.selected = target;
-            Workflows.setState('node selection');
-            $('#workflow-status-bar').find('.node-context-button').show();
-            $('#workflow-status-selected-node').html(Workflows.selected.data('name'));
-        } else if (target.isEdge()) {
-            Workflows.selected = target;
-            Workflows.setState('edge selection');
-            $('#workflow-status-bar').find('.edge-context-button').show();
-            $('#workflow-status-selected-node').html(Workflows.selected.data('name') + ' (edge)');
-        }
+    addChild: function () {
+        Workflows.placeNode(Workflows.selected.position(), Workflows.selected.id());
     },
 
     edit: function () {
@@ -244,6 +236,28 @@ Workflows = {
             $('#edge-modal').modal('show');
             $('#edge-modal-form-label').val(data.name);
         }
+    },
+
+    updateNode: function () {
+        var node = Workflows.selected;
+        Workflows.history.modify('edit node', function () {
+            node.data('name', $('#node-modal-form-title').val());
+            node.data('description', $('#node-modal-form-description').val());
+            node.data('color', $('#node-modal-form-colour').val());
+        });
+
+        $('#node-modal').modal('hide');
+        node.select();
+    },
+
+    updateEdge: function () {
+        var edge = Workflows.selected;
+        Workflows.history.modify('edit edge', function () {
+            edge.data('name', $('#edge-modal-form-label').val());
+        });
+
+        $('#edge-modal').modal('hide');
+        edge.select();
     },
 
     nodeModalConfirm: function () {
@@ -274,20 +288,6 @@ Workflows = {
         });
 
         Workflows.cancelState();
-    },
-
-    handleClick: function (e) {
-        if (Workflows.state === 'adding node') {
-            Workflows.placeNode(e.cyPosition);
-        } else if (Workflows.state === 'linking node') {
-            if (e.cyTarget !== cy && e.cyTarget.isNode()) {
-                Workflows.createLink(e);
-            }
-        }
-    },
-
-    addChild: function () {
-        Workflows.placeNode(Workflows.selected.position(), Workflows.selected.id());
     },
 
     delete: function () {
