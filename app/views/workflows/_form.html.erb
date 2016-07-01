@@ -41,7 +41,6 @@
 
         <div class="form-group actions">
           <%= f.submit "Save workflow", class: 'btn btn-primary', id: 'workflow-form-submit' %>
-          <%= link_to 'Back', workflows_path, :class=>"btn btn-info" %>
           <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                       workflows_path, :class => 'btn btn-default' %>
         </div>
