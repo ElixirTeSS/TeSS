@@ -311,6 +311,9 @@ Workflows = {
             if (e.cyTarget.isNode()) {
                 $('#workflow-diagram-sidebar-title').html(e.cyTarget.data('name') || '<span class="muted">Untitled</span>');
                 $('#workflow-diagram-sidebar-desc').html(e.cyTarget.data('description') || '<span class="muted">No description provided</span>');
+            } else if (e.cyTarget.isEdge()) {
+                e.cyTarget.unselect();
+                return false;
             }
         },
 
