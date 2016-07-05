@@ -41,16 +41,16 @@
       <div id="workflow-diagram-content" class="split split-horizontal"> 
         <%= render partial: 'workflows/workflow_diagram', locals: {workflow: @workflow} %> 
       </div>
-        
       <div id="workflow-diagram-sidebar" class="split split-horizontal"> 
         <h3 class="nav-heading" id="workflow-diagram-sidebar-title"> 
           <i class="fa fa-sitemap"></i> <%= @workflow.title %>  </h3> 
         <div id="workflow-diagram-sidebar-desc"> 
-          <% if @workflow.description.blank? %>  <p class="muted">No description provided</p> 
-          <% else %>  <p><%= render_markdown(@workflow.description) %></p> 
+          <% if @workflow.description.blank? %>
+               <p class="muted">No description provided</p> 
+          <% else %> 
+              <p><%= render_markdown(@workflow.description) %></p> 
           <% end %> 
         </div>
-         
       </div>
     </div>
   </div>
