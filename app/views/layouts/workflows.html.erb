@@ -7,6 +7,10 @@
 
 <%= render :partial=>"layouts/header" %>
 
+<div id="flash-container" style="margin: 5px 10px 0px 10px;">
+  <%= flash_messages %>
+</div>
+
 <div id="main-container" class="workflows-container">
   <!-- Breadcrumbs -->
   <%= render_breadcrumbs :partial => 'common/breadcrumbs' do |breadcrumbs| %>
