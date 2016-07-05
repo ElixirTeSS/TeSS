@@ -2,6 +2,9 @@ class ApplicationController < ActionController::Base
   include PublicActivity::StoreController
 
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :check_server
+
+  attr_reader :test_server
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -146,4 +149,14 @@ class ApplicationController < ActionController::Base
     return controller_name.classify.constantize.find(resource_id)
   end
 
+  def check_server
+    @test_server =  false
+    test_ip = Rails.application.secrets.test_server_ip
+    if !test_ip.nil?
+      hostname = `hostname -i`.chomp! # I have naughtily assumed this is a linux box
+      if hostname == test_ip
+        @test_server = true
+      end
+    end
+  end
 end
