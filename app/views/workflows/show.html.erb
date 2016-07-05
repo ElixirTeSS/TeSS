@@ -5,16 +5,10 @@
       direction: 'horizontal',
       sizes: [70, 30],
       onDragEnd: function() {
-        //alert($("#cy").css("width"));
         $("#cy").css("width", $('#workflow-diagram-content').css('width'));
-       // alert($("#cy").css("width"));
-        cy.forceRender();
-      },
-      onDragStart: function() {
-       // alert($("#cy").css("width"));
+        cy.resize();
       }
-    })
-
+    });
   });
 </script>
 
