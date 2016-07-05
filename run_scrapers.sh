@@ -40,6 +40,7 @@ SCRAPERS=(biocomp_rdfa_scraper
           erasys_rdfa_scraper
           birmingham_metabolomics_transfer
           france-bioinformatique_scraper
+          rss_scraper
           )
 
 
