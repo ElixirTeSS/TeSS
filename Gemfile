@@ -82,6 +82,9 @@ gem "pundit"
 # Simple colour picker from a predefined list
 gem 'jquery-simplecolorpicker-rails'
 
+# Markdown rendering in JavaScript
+gem 'markdownjs-rails'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

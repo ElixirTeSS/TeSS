@@ -21,72 +21,69 @@
 }
 </script>
 
-<div id="main-container" class="container">
+<!-- Welcome text -->
+<div class="welcome-text">
+  <h2 class="module-heading" style="margin-top: 5px;">Welcome to TeSS: ELIXIR's Training Portal</h2>
+  <p>
+    Browsing, discovering and organising life sciences training
+    resources, aggregated from ELIXIR nodes and 3<sup>rd</sup>-party providers.
+  </p>
+</div>
 
-  <!-- Welcome text -->
-  <div class="welcome-text">
-    <h2 class="module-heading" style="margin-top: 5px;">Welcome to TeSS: ELIXIR's Training Portal</h2>
-    <p>
-      Browsing, discovering and organising life sciences training
-      resources, aggregated from ELIXIR nodes and 3<sup>rd</sup>-party providers.
-    </p>
-  </div>
-
-  <!-- Big search box -->
-  <div class="media-grid" style="background-color: #D8D8D8;">
-    <div class="searchbox">
-      <div id="sb-search">
-        <%= form_tag search_path, :method => :get, :class => "navbar-form", :role => "search" do %>
-            <div class="form-group">
-              <input type="text" class="form-control" name='q' placeholder="Search training..." size="50">
-            </div>
-            <button type="submit" class="btn btn-default">
-              <i class="fa fa-search"></i></button>
-        <% end %>
-      </div>
+<!-- Big search box -->
+<div class="media-grid" style="background-color: #D8D8D8;">
+  <div class="searchbox">
+    <div id="sb-search">
+      <%= form_tag search_path, :method => :get, :class => "navbar-form", :role => "search" do %>
+          <div class="form-group">
+            <input type="text" class="form-control" name='q' placeholder="Search training..." size="50">
+          </div>
+          <button type="submit" class="btn btn-default">
+            <i class="fa fa-search"></i></button>
+      <% end %>
     </div>
   </div>
+</div>
 
-  <!-- Feature buttons -->
-  <ul class="featureblocks">
-    <li>
-      <%= link_to events_path do %>
+<!-- Feature buttons -->
+<ul class="featureblocks">
+  <li>
+    <%= link_to events_path do %>
         <h2><i class="<%= icon_class_for_model('events') %>"></i> Events</h2>
         <img src="/assets/events.jpg" width="100%" alt="Events">
-      <% end %>
-      <p>Discover the latest training events and news from ELIXIR nodes and 3<sup>rd</sup>-party providers.</p>
-    </li>
+    <% end %>
+    <p>Discover the latest training events and news from ELIXIR nodes and 3<sup>rd</sup>-party providers.</p>
+  </li>
 
-    <li>
-      <%= link_to materials_path do %>
+  <li>
+    <%= link_to materials_path do %>
         <h2><i class="<%= icon_class_for_model('materials') %>"></i> Materials</h2>
         <img src="/assets/materials.jpg" width="100%" alt="Materials">
-      <% end %>
-      <p>Browse the catalogue of training materials offered by ELIXIR nodes and 3<sup>rd</sup>-party providers.</p>
-    </li>
+    <% end %>
+    <p>Browse the catalogue of training materials offered by ELIXIR nodes and 3<sup>rd</sup>-party providers.</p>
+  </li>
 
-    <li>
-      <%= link_to packages_path do %>
+  <li>
+    <%= link_to packages_path do %>
         <h2><i class="<%= icon_class_for_model('packages') %>"></i> Packages</h2>
         <img src="/assets/packages.jpg" width="100%" alt="Packages">
-      <% end %>
-      <p>Create training packages by grouping resources that address your particular training topic.</p>
-    </li>
+    <% end %>
+    <p>Create training packages by grouping resources that address your particular training topic.</p>
+  </li>
 
-    <li>
-      <%= link_to workflows_path do %>
+  <li>
+    <%= link_to workflows_path do %>
         <h2><i class="<%= icon_class_for_model('workflows') %>"></i> Workflows</h2>
         <img src="/assets/workflows.png" width="100%" alt="Workflows">
-      <% end %>
-      <p>Create training workflows to visualise learning steps and link to resources specific to your training needs.</p>
-    </li>
+    <% end %>
+    <p>Create training workflows to visualise learning steps and link to resources specific to your training needs.</p>
+  </li>
 
-    <li>
-      <%= link_to content_providers_path do %>
+  <li>
+    <%= link_to content_providers_path do %>
         <h2><i class="<%= icon_class_for_model('content_providers') %>"></i> Providers</h2>
         <img src="/assets/providers-6.jpg" width="100%" alt="Providers">
-      <% end %>
-      <p>Browse training providers to discover training resources they offer and follow links to their materials and courses.</p>
-    </li>
-  </ul>
-</div>
+    <% end %>
+    <p>Browse training providers to discover training resources they offer and follow links to their materials and courses.</p>
+  </li>
+</ul>

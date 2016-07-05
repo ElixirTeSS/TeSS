@@ -19,6 +19,7 @@
 //= require cytoscape-panzoom
 //= require jscolor
 //= require jquery.simplecolorpicker.js
+//= require markdown
 //= require_tree .
 
 function redirect_to_sort_url(){
