@@ -37,6 +37,9 @@ SCRAPERS=(biocomp_rdfa_scraper
           sib_scraper
           iann_events_uploader
           coursera_scraper
+          erasys_rdfa_scraper
+          birmingham_metabolomics_transfer
+          france-bioinformatique_scraper
           )
 
 
