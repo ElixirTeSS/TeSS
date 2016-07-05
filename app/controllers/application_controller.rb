@@ -153,7 +153,7 @@ class ApplicationController < ActionController::Base
     @test_server =  false
     test_ip = Rails.application.secrets.test_server_ip
     if !test_ip.nil?
-      hostname = `hostname -i` # I have naughtily assumed this is a linux box
+      hostname = `hostname -i`.chomp! # I have naughtily assumed this is a linux box
       if hostname == test_ip
         @test_server = true
       end
