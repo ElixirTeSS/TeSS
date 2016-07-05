@@ -4,11 +4,15 @@
     Split(['#workflow-diagram-content', '#workflow-diagram-sidebar'], {
       direction: 'horizontal',
       sizes: [70, 30],
+      minSize: [500, 300],
       onDragEnd: function() {
-        $("#cy").css("width", $('#workflow-diagram-content').css('width'));
         cy.resize();
+        cy.fit();
       }
     });
+
+    cy.resize();
+    cy.fit();
   });
 </script>
 
