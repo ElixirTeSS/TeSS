@@ -121,8 +121,6 @@ GEM
     lunchy (0.10.4)
     mail (2.6.4)
       mime-types (>= 1.16, < 4)
-    markdownjs-rails (1.0.2)
-      railties (>= 3.1)
     mida_vocabulary (0.2.2)
       blankslate (~> 3.1)
     mime-types (3.0)
@@ -289,7 +287,6 @@ DEPENDENCIES
   jquery-simplecolorpicker-rails
   jquery-turbolinks
   lunchy
-  markdownjs-rails
   paper_trail (~> 4.0.0)
   pg
   progress_bar
