@@ -118,7 +118,7 @@ $(document).ready(function () {
         Workflows.history.initialize();
         jscolor.installByClassName('jscolor');
     } else {
-        Workflows.sidebar.init();
+        Workflows.sidebar.init();   // already initialised from the show.html.erb
         cy.on('select', Workflows.sidebar.populate);
         cy.on('unselect', Workflows.sidebar.clear);
         cy.$(':selected').unselect();
@@ -304,7 +304,7 @@ Workflows = {
         init: function () {
             var sidebar = $('#workflow-diagram-sidebar');
             sidebar.data('initialState', sidebar.html());
-            sidebar.html('');
+            //sidebar.html('');
         },
 
         populate: function (e) {
