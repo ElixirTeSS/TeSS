@@ -19,7 +19,6 @@
 //= require cytoscape-panzoom
 //= require jscolor
 //= require jquery.simplecolorpicker.js
-//= require markdown
 //= require split
 //= require_tree .
 
