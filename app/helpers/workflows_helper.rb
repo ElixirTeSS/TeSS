@@ -8,8 +8,7 @@ module WorkflowsHelper
     workflow = JSON.parse(json)
     wf_elements_to_change = workflow['nodes'] + workflow['edges']
     wf_elements_to_change.each do |element|
-      description = element['data']['description']
-      element['data']['html_description'] = render_markdown(description)
+      element['data']['html_description'] = render_markdown(element['data']['description'])
     end
     return workflow.to_json
   end
