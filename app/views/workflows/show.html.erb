@@ -1,19 +1,28 @@
 <script>
-  $(document).ready(function () {
 
+  function redrawWorkflowDiagram (){
+    cy.resize();  //recalculate the viewport bounds
+    cy.fit(); // refit all nodes and edges in the graph diagram
+  }
+
+  $(document).ready(function () {
     Split(['#workflow-diagram-content', '#workflow-diagram-sidebar'], {
       direction: 'horizontal',
       sizes: [70, 30],
       minSize: [500, 300],
       onDragEnd: function() {
-        cy.resize();
-        cy.fit();
+        redrawWorkflowDiagram();
       }
     });
 
-    cy.resize();
-    cy.fit();
+    redrawWorkflowDiagram(); // when document is loaded - for some reason not all nodes fit onto the diagram so redraw
   });
+
+  // Redraw the workflow diagram when window is resized
+  $(window).resize(function() {
+    redrawWorkflowDiagram();
+  });
+
 </script>
 
 <div class="wrapper collapsing-wrapper">
