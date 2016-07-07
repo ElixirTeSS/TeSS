@@ -40,5 +40,6 @@
 <% end %>
 
 <div id="cy" data-editable="<%= editable -%>"></div>
-<%= content_tag(:script, convertMarkdownDescriptionsIntoHTML(workflow.workflow_content.to_json).html_safe,
+<%#= As an empty string is not a valid JSON, returning "null" string here which is a valid JSON %>
+<%= content_tag(:script, workflow.workflow_content.blank? ? "null" : convert_markdown_descriptions_into_html(workflow.workflow_content.to_json).html_safe,
                 id: 'workflow-content-json', type: 'application/json') %>

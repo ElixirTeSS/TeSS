@@ -45,7 +45,11 @@
         <h3 class="nav-heading" id="workflow-diagram-sidebar-title"> 
           <i class="fa fa-sitemap"></i> <%= @workflow.title %> </h3> 
         <div id="workflow-diagram-sidebar-desc"> 
-          <% if @workflow.description.blank? %> <p class="muted">No description provided</p><% else %><p><%= render_markdown(@workflow.description) %></p><% end %> 
+          <% if @workflow.description.blank? %>
+               <p class="muted">No description provided</p>
+          <% else %>
+              <p><%= render_markdown(@workflow.description) %></p>
+          <% end %> 
         </div>
       </div>
     </div>
