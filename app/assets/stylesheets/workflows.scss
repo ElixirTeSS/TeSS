@@ -3,16 +3,22 @@
   width: 100%;
 }
 
+.workflow-toolbar-wrapper {
+  background-color: #DDDDDD;
+  padding: 5px;
+  border-radius: 4px;
+}
+
 #workflow-toolbar {
   text-align: right;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 #workflow-status-bar {
   line-height: 34px;
-  margin-bottom: 10px;
+  //margin-bottom: 10px;
   padding: 5px 10px;
-  background: #eee;
+  background: #efefef;
   border-radius: 4px;
 }
 
