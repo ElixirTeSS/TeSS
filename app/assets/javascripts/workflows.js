@@ -18,6 +18,7 @@ $(document).ready(function () {
                         'shape': 'roundrectangle',
                         'content': 'data(name)',
                         'background-color': 'data(color)',
+                        'color': 'data(font_color)',
                         'background-opacity': 0.8,
                         'text-valign': 'center',
                         'text-halign': 'center',
@@ -202,11 +203,15 @@ Workflows = {
                 name: $('#node-modal-form-title').val(),
                 description: $('#node-modal-form-description').val(),
                 color: $('#node-modal-form-colour').val(),
+                font_color: $('#node-modal-form-colour').css("color"),
                 parent: $('#node-modal-form-parent-id').val()
             },
             position: {
                 x: parseInt($('#node-modal-form-x').val()),
                 y: parseInt($('#node-modal-form-y').val())
+            },
+            css: {
+                color: $('#node-modal-form-colour').css("color")
             }
         };
 
@@ -247,6 +252,8 @@ Workflows = {
             node.data('name', $('#node-modal-form-title').val());
             node.data('description', $('#node-modal-form-description').val());
             node.data('color', $('#node-modal-form-colour').val());
+            node.data('font_color', $('#node-modal-form-colour').css("color"));
+            node.css('color', node.data('font_color'));
         });
 
         $('#node-modal').modal('hide');
