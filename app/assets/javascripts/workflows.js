@@ -75,6 +75,8 @@ $(document).ready(function () {
         });
 
         cy.panzoom();
+        cy.zoom(2);
+        cy.center();
     }
 
     if (editable) {
