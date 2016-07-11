@@ -9,6 +9,7 @@ else
 fi
 
 git pull origin master
+bundle install --deployment
 bundle exec rake db:migrate RAILS_ENV=$ENV
 bundle exec rake assets:clean RAILS_ENV=$ENV
 bundle exec rake assets:precompile RAILS_ENV=$ENV
