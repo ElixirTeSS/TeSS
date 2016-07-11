@@ -75,53 +75,56 @@ $(document).ready(function () {
         });
 
         cy.panzoom();
-    }
 
-    if (editable) {
-        $('#workflow-toolbar-add').click(Workflows.setAddNodeState);
-        $('#workflow-toolbar-cancel').click(Workflows.cancelState);
-        $('#workflow-toolbar-edit').click(Workflows.edit);
-        $('#workflow-toolbar-link').click(Workflows.setLinkNodeState);
-        $('#workflow-toolbar-undo').click(Workflows.history.undo);
-        $('#workflow-toolbar-redo').click(Workflows.history.redo);
-        $('#workflow-toolbar-add-child').click(Workflows.addChild);
-        $('#workflow-toolbar-delete').click(Workflows.delete);
-        $('#node-modal-form-confirm').click(Workflows.nodeModalConfirm);
-        $('#edge-modal-form-confirm').click(Workflows.edgeModalConfirm);
-        cy.on('tap', Workflows.handleClick);
-        cy.on('select', function (e) {
-            if (Workflows.state !== 'adding node') {
-                Workflows.select(e.cyTarget);
-            }
-        });
-        cy.on('unselect', Workflows.cancelState);
-        cy.on('drag', function () { Workflows._dragged = true; });
-        cy.on('free', function () {
-            if (Workflows._dragged) {
-                Workflows.history.modify('move node');
-                Workflows._dragged = false;
-            }
-        });
 
-        $('#node-modal').on('hide.bs.modal', Workflows.cancelState);
-        $('#edge-modal').on('hide.bs.modal', Workflows.cancelState);
+        if (editable) {
+            $('#workflow-toolbar-add').click(Workflows.setAddNodeState);
+            $('#workflow-toolbar-cancel').click(Workflows.cancelState);
+            $('#workflow-toolbar-edit').click(Workflows.edit);
+            $('#workflow-toolbar-link').click(Workflows.setLinkNodeState);
+            $('#workflow-toolbar-undo').click(Workflows.history.undo);
+            $('#workflow-toolbar-redo').click(Workflows.history.redo);
+            $('#workflow-toolbar-add-child').click(Workflows.addChild);
+            $('#workflow-toolbar-delete').click(Workflows.delete);
+            $('#node-modal-form-confirm').click(Workflows.nodeModalConfirm);
+            $('#edge-modal-form-confirm').click(Workflows.edgeModalConfirm);
+            cy.on('tap', Workflows.handleClick);
+            cy.on('select', function (e) {
+                if (Workflows.state !== 'adding node') {
+                    Workflows.select(e.cyTarget);
+                }
+            });
+            cy.on('unselect', Workflows.cancelState);
+            cy.on('drag', function () {
+                Workflows._dragged = true;
+            });
+            cy.on('free', function () {
+                if (Workflows._dragged) {
+                    Workflows.history.modify('move node');
+                    Workflows._dragged = false;
+                }
+            });
 
-        // Update JSON in form
-        $('#workflow-form-submit').click(function () {
-            $('#workflow_workflow_content').val(JSON.stringify(cy.json()['elements']));
+            $('#node-modal').on('hide.bs.modal', Workflows.cancelState);
+            $('#edge-modal').on('hide.bs.modal', Workflows.cancelState);
 
-            return true;
-        });
+            // Update JSON in form
+            $('#workflow-form-submit').click(function () {
+                $('#workflow_workflow_content').val(JSON.stringify(cy.json()['elements']));
 
-        cy.$(':selected').unselect();
-        Workflows.cancelState();
-        Workflows.history.initialize();
-        jscolor.installByClassName('jscolor');
-    } else {
-        Workflows.sidebar.init();
-        cy.on('select', Workflows.sidebar.populate);
-        cy.on('unselect', Workflows.sidebar.clear);
-        cy.$(':selected').unselect();
+                return true;
+            });
+
+            cy.$(':selected').unselect();
+            Workflows.cancelState();
+            Workflows.history.initialize();
+            jscolor.installByClassName('jscolor');
+        } else {
+            Workflows.sidebar.init();
+            cy.on('select', Workflows.sidebar.populate);
+            cy.on('unselect', Workflows.sidebar.clear);
+            cy.$(':selected').unselect();
+        }
     }
 });
 
