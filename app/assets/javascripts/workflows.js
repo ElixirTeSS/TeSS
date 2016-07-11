@@ -17,8 +17,8 @@ $(document).ready(function () {
                     css: {
                         'shape': 'roundrectangle',
                         'content': 'data(name)',
-                        'background-color': 'data(color)',
-                        'color': 'data(font_color)',
+                        'background-color': function( ele ){ return (typeof ele.data('color') === 'undefined') ? "#F0721E" : ele.data('color')},
+                        'color': function( ele ){ return (typeof ele.data('font_color') === 'undefined') ? "#000000" : ele.data('font_color')},
                         'background-opacity': 0.8,
                         'text-valign': 'center',
                         'text-halign': 'center',
