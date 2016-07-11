@@ -9,7 +9,7 @@
 <div class="wrapper collapsing-wrapper">
   <!-- SIDEBAR -->
   <div class="collapsing-sidebar" id="sidebar">
-    <%= render :partial => "content_providers/partials/content_provider_info", :locals => {:content_provider => @content_provider} %>
+    <%= render :partial => "content_providers/partials/content_provider_sidebar", :locals => {:content_provider => @content_provider} %>
   </div>
   <div id="content">
     <div class="row">
@@ -29,6 +29,19 @@
                         :class => 'btn btn-danger' %>
         <% end %>
       </div>
+    </div>
+    <div class="row">
+      <p>
+        <%= link_to(image_tag(get_image_url_for(@content_provider), :class => "medium-content-provider-logo"), @content_provider.url, :target => @content_provider.url) %>
+      </p>
+      <p>
+        <%= link_to @content_provider.title, @content_provider.url, :class => "h5", :target => @content_provider.url %>
+      </p>
+      <% unless @content_provider.description.blank? %>
+          <p class="minimise">
+            <%= @content_provider.description %>
+          </p>
+      <% end %>
     </div>
     <div class="row">
       <ul class="nav nav-tabs">

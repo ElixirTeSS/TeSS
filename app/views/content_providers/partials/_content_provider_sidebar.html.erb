@@ -1,0 +1,25 @@
+<ul class="unstyled nav-simple">
+  <li><h4 class="nav-heading">Type</h4></li>
+  <li style="padding: 7px 20px;">
+    <%= content_provider.content_provider_type %>
+  </li>
+  <% unless content_provider.keywords.blank? %>
+      <li><h4 class="nav-heading">Keywords</h4></li>
+      <li style="padding: 7px 20px;">
+        <%= content_provider.keywords.join(', ') %>
+      </li>
+  <% end %>
+  <% unless content_provider.node.blank? %>
+      <li><h4 class="nav-heading">ELIXIR node</h4></li>
+      <li style="padding: 7px 20px;">
+        <p>
+          <%= link_to country_flag(content_provider.node.country_code, class: 'small-flag'), content_provider.node %>
+          <%= link_to content_provider.node.name, content_provider.node %>
+        </p>
+
+        <p>
+          <%= link_to (image_tag get_image_url_for(content_provider.node), :class => "media-image listing_image"), content_provider.node %>
+        </p>
+      </li>
+  <% end %>
+</ul>
