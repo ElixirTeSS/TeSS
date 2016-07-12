@@ -129,7 +129,9 @@ $(document).ready(function () {
         }
 
         cy.panzoom();
-        cy.fit();
+        cy.maxZoom(2);
+        cy.fit(15);
+        cy.maxZoom(10);
     }
 });
 
