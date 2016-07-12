@@ -129,9 +129,10 @@ $(document).ready(function () {
         }
 
         cy.panzoom();
-        cy.maxZoom(2);
-        cy.fit(15);
-        cy.maxZoom(10);
+        var defaultZoom = cy.maxZoom();
+        cy.maxZoom(2); // Temporary limit the zoom level, to restrict how zoomed-in the diagram appears by default
+        cy.fit(15); // Fit diagram to screen with some padding around the edges
+        cy.maxZoom(defaultZoom); // Reset the zoom limit to allow user to further zoom if they wish
     }
 });
 
