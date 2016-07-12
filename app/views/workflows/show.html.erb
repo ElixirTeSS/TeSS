@@ -1,17 +1,3 @@
-<script>
-
-  $(document).ready(function () {
-    Split(['#workflow-diagram-content', '#workflow-diagram-sidebar'], {
-      direction: 'horizontal',
-      sizes: [70, 30],
-      minSize: [100, 50],
-      onDragEnd: function() {
-        cy.resize();
-      }
-    });
-  });
-</script>
-
 <div class="wrapper collapsing-wrapper">
   <div id="content">
     <div class="row">
@@ -51,3 +37,14 @@
     </div>
   </div>
 </div>
+
+<script>
+  Split(['#workflow-diagram-content', '#workflow-diagram-sidebar'], {
+    direction: 'horizontal',
+    sizes: [70, 30],
+    minSize: [100, 50],
+    onDragEnd: function() {
+      cy.resize();
+    }
+  });
+</script>
