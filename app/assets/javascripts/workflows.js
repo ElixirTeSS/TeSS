@@ -17,8 +17,12 @@ $(document).ready(function () {
                     css: {
                         'shape': 'roundrectangle',
                         'content': 'data(name)',
-                        'background-color': function( ele ){ return (typeof ele.data('color') === 'undefined') ? "#F0721E" : ele.data('color')},
-                        'color': function( ele ){ return (typeof ele.data('font_color') === 'undefined') ? "#000000" : ele.data('font_color')},
+                        'background-color': function (ele) {
+                            return (typeof ele.data('color') === 'undefined') ? "#F0721E" : ele.data('color')
+                        },
+                        'color': function (ele) {
+                            return (typeof ele.data('font_color') === 'undefined') ? "#000000" : ele.data('font_color')
+                        },
                         'background-opacity': 0.8,
                         'text-valign': 'center',
                         'text-halign': 'center',
@@ -75,56 +79,58 @@ $(document).ready(function () {
             autolock: !editable
         });
 
+        if (editable) {
+            $('#workflow-toolbar-add').click(Workflows.setAddNodeState);
+            $('#workflow-toolbar-cancel').click(Workflows.cancelState);
+            $('#workflow-toolbar-edit').click(Workflows.edit);
+            $('#workflow-toolbar-link').click(Workflows.setLinkNodeState);
+            $('#workflow-toolbar-undo').click(Workflows.history.undo);
+            $('#workflow-toolbar-redo').click(Workflows.history.redo);
+            $('#workflow-toolbar-add-child').click(Workflows.addChild);
+            $('#workflow-toolbar-delete').click(Workflows.delete);
+            $('#node-modal-form-confirm').click(Workflows.nodeModalConfirm);
+            $('#edge-modal-form-confirm').click(Workflows.edgeModalConfirm);
+            cy.on('tap', Workflows.handleClick);
+            cy.on('select', function (e) {
+                if (Workflows.state !== 'adding node') {
+                    Workflows.select(e.cyTarget);
+                }
+            });
+            cy.on('unselect', Workflows.cancelState);
+            cy.on('drag', function () {
+                Workflows._dragged = true;
+            });
+            cy.on('free', function () {
+                if (Workflows._dragged) {
+                    Workflows.history.modify('move node');
+                    Workflows._dragged = false;
+                }
+            });
+
+            $('#node-modal').on('hide.bs.modal', Workflows.cancelState);
+            $('#edge-modal').on('hide.bs.modal', Workflows.cancelState);
+
+            // Update JSON in form
+            $('#workflow-form-submit').click(function () {
+                $('#workflow_workflow_content').val(JSON.stringify(cy.json()['elements']));
+
+                return true;
+            });
+
+            cy.$(':selected').unselect();
+            Workflows.cancelState();
+            Workflows.history.initialize();
+            jscolor.installByClassName('jscolor');
+        } else {
+            Workflows.sidebar.init();
+            cy.on('select', Workflows.sidebar.populate);
+            cy.on('unselect', Workflows.sidebar.clear);
+            cy.$(':selected').unselect();
+        }
+
         cy.panzoom();
         cy.zoom(2);
         cy.center();
-    }
-
-    if (editable) {
-        $('#workflow-toolbar-add').click(Workflows.setAddNodeState);
-        $('#workflow-toolbar-cancel').click(Workflows.cancelState);
-        $('#workflow-toolbar-edit').click(Workflows.edit);
-        $('#workflow-toolbar-link').click(Workflows.setLinkNodeState);
-        $('#workflow-toolbar-undo').click(Workflows.history.undo);
-        $('#workflow-toolbar-redo').click(Workflows.history.redo);
-        $('#workflow-toolbar-add-child').click(Workflows.addChild);
-        $('#workflow-toolbar-delete').click(Workflows.delete);
-        $('#node-modal-form-confirm').click(Workflows.nodeModalConfirm);
-        $('#edge-modal-form-confirm').click(Workflows.edgeModalConfirm);
-        cy.on('tap', Workflows.handleClick);
-        cy.on('select', function (e) {
-            if (Workflows.state !== 'adding node') {
-                Workflows.select(e.cyTarget);
-            }
-        });
-        cy.on('unselect', Workflows.cancelState);
-        cy.on('drag', function () { Workflows._dragged = true; });
-        cy.on('free', function () {
-            if (Workflows._dragged) {
-                Workflows.history.modify('move node');
-                Workflows._dragged = false;
-            }
-        });
-
-        $('#node-modal').on('hide.bs.modal', Workflows.cancelState);
-        $('#edge-modal').on('hide.bs.modal', Workflows.cancelState);
-
-        // Update JSON in form
-        $('#workflow-form-submit').click(function () {
-            $('#workflow_workflow_content').val(JSON.stringify(cy.json()['elements']));
-
-            return true;
-        });
-
-        cy.$(':selected').unselect();
-        Workflows.cancelState();
-        Workflows.history.initialize();
-        jscolor.installByClassName('jscolor');
-    } else {
-        Workflows.sidebar.init();
-        cy.on('select', Workflows.sidebar.populate);
-        cy.on('unselect', Workflows.sidebar.clear);
-        cy.$(':selected').unselect();
     }
 });
 
