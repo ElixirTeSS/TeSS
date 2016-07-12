@@ -4,17 +4,11 @@
     Split(['#workflow-diagram-content', '#workflow-diagram-sidebar'], {
       direction: 'horizontal',
       sizes: [70, 30],
-      minSize: [400, 300],
+      minSize: [100, 50],
       onDragEnd: function() {
         cy.resize();
       }
     });
-
-    // when document is loaded and diagram div is split so the actual size of the container is calculated
-    cy.resize();
-    cy.fit();
-    cy.zoom(2);
-    cy.center();
   });
 </script>
 
@@ -39,11 +33,11 @@
     </div>
     <h2><%= t '.title', :default => @workflow.title %></h2>
 
-    <div class="workflow-diagram-container" style="height: 650px;"> 
-      <div id="workflow-diagram-content" class="split split-horizontal"> 
+    <div class="workflow-diagram-container"> 
+      <div id="workflow-diagram-content"> 
         <%= render partial: 'workflows/workflow_diagram', locals: {workflow: @workflow} %> 
       </div>
-      <div id="workflow-diagram-sidebar" class="split split-horizontal">
+      <div id="workflow-diagram-sidebar">
         <h3 class="nav-heading" id="workflow-diagram-sidebar-title"> 
           <i class="fa fa-sitemap"></i> <%= @workflow.title %> </h3> 
         <div id="workflow-diagram-sidebar-desc"> 
