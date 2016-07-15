@@ -42,6 +42,8 @@ gem 'green_monkey'
 
 gem 'icalendar'
 
+gem 'dynamic_sitemaps'
+
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
