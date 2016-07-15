@@ -44,6 +44,8 @@ gem 'icalendar'
 
 gem 'dynamic_sitemaps'
 
+gem 'whenever'
+
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
