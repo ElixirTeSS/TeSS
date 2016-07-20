@@ -31,7 +31,9 @@ $(document).ready(function () {
                         'font-size': '9px',
                         'border-width': '1px',
                         'border-color': '#000',
-                        'border-opacity': 0.5
+                        'border-opacity': 0.5,
+                        'text-wrap': 'wrap',
+                        'text-max-width': '130px'
                     }
                 },
                 {
