@@ -40,7 +40,7 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
                  data-model="<%=resource.class.name.underscore%>"
                  name="<%=resource.class.name.underscore%>[<%= field_name %>][]"
                  value="<%= (field_name == 'scientific_topics' and !val.blank?) ? val.preferred_label : val %>"
-                 <%= disabled ? "disabled" : '' %>
+                 <%= disabled && !val.blank? ? "disabled" : '' %>
                  placeholder="<%= placeholder_text %>"
                  />
           <input type="button"
