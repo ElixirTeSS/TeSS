@@ -1,41 +1,3 @@
-<!-- See: /app/assets/javascripts/materials_form.js -->
-<%#= javascript_include_tag 'materials_form' %>
-<%#= javascript_include_tag 'edam' %>
-<%#= javascript_include_tag 'jquery.autocomplete' -%>
-<%#= stylesheet_link_tag 'autocomplete' -%>
-
-<!-- <script type="application/javascript">
-  $(document).ready(function () {
-
-    $("#scientific_topic_input").keypress(function(e) {
-      var code = (e.keyCode ? e.keyCode : e.which);
-      if(code == 13) { //Enter keycode
-        $('#scientific_topic_input').val('');
-        return false;
-      }
-    });
-
-    var edam = <%#= raw(edam_names_for_autocomplete.to_json) -%>;
-    $('#scientific_topic_input').autocomplete({
-      orientation: top,
-      lookupLimit: 10,
-      lookup: edam,
-      onSelect: function (suggestion) {
-        var label = '<input type="text" class="multiple-input form-control" data-field="scientific_topics" name="material[scientific_topic_ids][]" ' +
-            'value="' + suggestion.data + '" style="display:none;"> ' + suggestion.value + '</text>';
-
-        var delete_button = '<input type="button" value="x" class="dropdown-option-delete" data-field="scientific_topics"' +
-            'data-value="' + suggestion.data + '" data-name="' +  suggestion.value + '"/>';
-        var list_item = $('<div class="multiple-list-item">').appendTo('#selected_scientific_topics');
-        $(label).appendTo(list_item );
-        $(delete_button).appendTo(list_item );
-      }
-    });
-
-
-  });
-</script>  -->
-
 <%= simple_form_for @material, :html => {:id => 'material_form'} do |f| %>
     <% if @material.errors.any? %>
         <div id="error_expl" class="panel panel-danger">
@@ -78,49 +40,6 @@
       <%= f.text_field :doi, :class => 'form-control' %>
       <%#= error_span(@material[:doi]) %>
     </div>
-
-    <!--<div class="form-group">-->
-    <!--<%#= f.label :remote_updated_date, :class => 'control-label' %>-->
-    <!--<div class="controls">-->
-    <!--<%#= f.text_field :remote_updated_date, :class => 'form-control' %>-->
-    <!--</div>-->
-    <!--<%#= error_span(@material[:remote_updated_date]) %>-->
-    <!--</div>-->
-    <!--<div class="form-group">-->
-    <!--<%#= f.label :remote_created_date, :class => 'control-label' %>-->
-    <!--<div class="controls">-->
-    <!--<%#= f.text_field :remote_created_date, :class => 'form-control' %>-->
-    <!--</div>-->
-    <!--<%#= error_span (@material[:remote_created_date]) %>-->
-    <!--</div>-->
-
-    <!--<div class="form-group">-->
-    <!--<%#= f.label :scientific_topics %>-->
-    <!--<div id="selected_scientific_topics" class="multiple-input-list">-->
-    <!--<%# @material.scientific_topics.all.each do |st|%>-->
-    <!--<div class="multiple-list-item">-->
-    <!--<input type="text" class="multiple-input form-control"-->
-    <!--data-field="scientific_topics"-->
-    <!--name="material[scientific_topic_ids][]"-->
-    <!--value="<%#=st.id%>"-->
-    <!--style="display:none;"><%#=st.preferred_label%></text>-->
-    <!--<input type="button" value="x"-->
-    <!--class="dropdown-option-delete"-->
-    <!--data-field="scientific_topics"-->
-    <!--data-value="<%#=st.id%>"-->
-    <!--data-name="<%#=st.preferred_label%>"/>-->
-    <!--</div>-->
-    <!--<%# end %>-->
-    <!--</div>-->
-    <!--<div data-field="scientific_topics">-->
-    <!--<div class="scientific_topics multiple-input-list">-->
-    <!--<input id="scientific_topic_input" type="text"-->
-    <!--class="form-control"-->
-    <!--placeholder="Start typing to find scientific topics"/>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<%#= error_span(@material[:scientific_topics]) %>-->
-    <!--</div>-->
 
     <script>
       $('#material_form').submit(function () {
