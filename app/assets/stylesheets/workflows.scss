@@ -91,3 +91,23 @@
   background-image: url('grips/horizontal.png');
   cursor: ns-resize;
 }
+
+.associated-resource {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.delete-associated-resource {
+  font-weight: bold;
+  font-size: 120%;
+  color: $brand-danger;
+
+  &:hover {
+    color: lighten($brand-danger, 10%);
+  }
+}
+
+#node-modal, #edge-modal {
+  z-index: 100000;
+}

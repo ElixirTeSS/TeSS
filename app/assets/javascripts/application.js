@@ -19,6 +19,9 @@
 //= require jscolor
 //= require jquery.simplecolorpicker.js
 //= require split
+//= require handlebars.runtime
+//= require handlebars_helpers
+//= require_tree ./templates
 //= require_tree .
 //= require_self
 //= require turbolinks
