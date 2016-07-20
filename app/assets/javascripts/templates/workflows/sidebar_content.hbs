@@ -4,29 +4,31 @@
     <span class="muted">No description provided</span>
 {{/if}}
 
-{{#if_any associatedResources "type" "materials"}}
-    <h3 class="nav-heading">Training Materials</h3>
+{{#if associatedResources}}
+    {{#if_any associatedResources "type" "materials"}}
+        <h3 class="nav-heading">Training Materials</h3>
+        <ul>
+        {{#each_when associatedResources "type" "materials"}}
+            <li><a href="{{this.url}}" target="_blank">{{this.title}}</a></li>
+        {{/each_when}}
+        </ul>
+    {{/if_any}}
+
+    {{#if_any associatedResources "type" "tools"}}
+    <h3 class="nav-heading">Tools</h3>
     <ul>
-    {{#each_when associatedResources "type" "materials"}}
+        {{#each_when associatedResources "type" "tools"}}
         <li><a href="{{this.url}}" target="_blank">{{this.title}}</a></li>
-    {{/each_when}}
+        {{/each_when}}
     </ul>
-{{/if_any}}
+    {{/if_any}}
 
-{{#if_any associatedResources "type" "tools"}}
-<h3 class="nav-heading">Tools</h3>
-<ul>
-    {{#each_when associatedResources "type" "tools"}}
-    <li><a href="{{this.url}}" target="_blank">{{this.title}}</a></li>
-    {{/each_when}}
-</ul>
-{{/if_any}}
-
-{{#if_any associatedResources "type" "policies"}}
-<h3 class="nav-heading">Policies</h3>
-<ul>
-    {{#each_when associatedResources "type" "policies"}}
-    <li><a href="{{this.url}}" target="_blank">{{this.title}}</a></li>
-    {{/each_when}}
-</ul>
-{{/if_any}}
+    {{#if_any associatedResources "type" "policies"}}
+    <h3 class="nav-heading">Policies</h3>
+    <ul>
+        {{#each_when associatedResources "type" "policies"}}
+        <li><a href="{{this.url}}" target="_blank">{{this.title}}</a></li>
+        {{/each_when}}
+    </ul>
+    {{/if_any}}
+{{/if}}
