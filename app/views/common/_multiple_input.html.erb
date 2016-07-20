@@ -10,17 +10,16 @@ Example Usage:
 render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords', :resource => @content_provider, :f => f}
 
 -->
-<script type="application/javascript">
-
+<script type="text/javascript">
     $(document).ready(function () {
         $('.<%=field_name.singularize%>').on('keydown.autocomplete','.<%=field_name%>', function(){
             $(this).autocomplete({
                 orientation: top,
                 lookupLimit: 10,
                 lookup: <%= suggestions ||= []-%>
-            })
-        })
-    })
+            });
+        });
+    });
 </script>
 
 <% placeholder_text ||= '' %>
@@ -35,6 +34,7 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
     <% field_values.each do |val| %>
         <div class="multiple-list-item">
           <input type="text"
+                 autocomplete="off"
                  class="multiple-input form-control <%=field_name%>"
                  data-field='<%= field_name.singularize %>'
                  data-model="<%=resource.class.name.underscore%>"
@@ -50,7 +50,9 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
         </div>
     <% end %>
   </div>
-  <a class="btn btn-info"><span class="multiple-input-add" data-field="<%=field_name.singularize%>"
-                             data-model="<%=resource.class.name.underscore%>" placeholder-text="<%= placeholder_text %>"><i class="fa fa-plus"></i> Add <%= field_name.singularize.humanize.downcase %></span></a>
+  <a class="btn btn-info multiple-input-add" data-field="<%=field_name.singularize%>"
+                             data-model="<%=resource.class.name.underscore%>" placeholder-text="<%= placeholder_text %>">
+    <i class="fa fa-plus"></i> Add <%= field_name.singularize.humanize.downcase %>
+  </a>
   <%#= error_span(material.send(field_name)) %>
 </div>

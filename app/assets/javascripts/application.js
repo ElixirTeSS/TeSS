@@ -11,16 +11,17 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery.turbolinks
 //= require jquery_ujs
 //= require bootstrap-sprockets
-//= require turbolinks
-//= require jquery.turbolinks
 //= require cytoscape
 //= require cytoscape-panzoom
 //= require jscolor
 //= require jquery.simplecolorpicker.js
 //= require split
 //= require_tree .
+//= require_self
+//= require turbolinks
 
 function redirect_to_sort_url(){
     window.location.replace(
@@ -159,8 +160,8 @@ function add_selected_dropdown_item(model_name, field_name, value, name){
  * Creates a new input box for free text fields as a child of the field_name div
  */
 function add_multiple_input_field(model_name, field_name, placeholder_text){
-    console.log('Adding new ' + field_name)
     var input_box = '<input type="text" class="multiple-input form-control ' + field_name + 's" ' +
+                    'autocomplete="off"' +
                     'data-field="' + field_name + '" ' +
                     'data-model="' + model_name + '" ' +
                     'placeholder="' + placeholder_text + '" ' +
