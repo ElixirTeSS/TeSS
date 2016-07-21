@@ -44,3 +44,10 @@ scraper_user_material:
   short_description: 'this is my material'
   user: scraper_user
   content_provider: goblet
+
+material_with_external_resource:
+  title: External Resource Material
+  url: http://myurl.com/123
+  short_description: 'this is my material'
+  user: regular_user
+  content_provider: goblet

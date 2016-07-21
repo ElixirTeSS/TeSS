@@ -36,3 +36,13 @@
     #{$property}: $lg;
   }
 }
+
+@mixin delete-cross {
+  font-weight: bold;
+  font-size: 120%;
+  color: $brand-danger;
+
+  &:hover {
+    color: lighten($brand-danger, 10%);
+  }
+}

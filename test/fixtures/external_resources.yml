@@ -1,0 +1,6 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+tess:
+  material: material_with_external_resource
+  url: https://tess.elixir-uk.org/
+  title: TeSS

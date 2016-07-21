@@ -68,6 +68,22 @@
               <p><b>DOI: </b><%= @material.doi.blank? ? empty_tag(:span, 'none specified') : @material.doi %></p>
               <p><b>Created: </b><%= @material.remote_created_date.blank? ? empty_tag(:span, 'none specified') : @material.remote_created_date %></p>
               <p><b>Last updated: </b><%= @material.remote_updated_date.blank? ? empty_tag(:span, 'none specified') : @material.remote_updated_date %></p>
+              <b>External resources: </b>
+              <% if @material.external_resources.none? %>
+                  <%= empty_tag(:span, 'none specified') %>
+              <% else %>
+                  <ul>
+                    <% @material.external_resources.each do |external_resource| %>
+                        <li>
+                          <%= link_to(external_resource.url, target: :_blank) do %>
+                              <%= external_resource.title %>
+                              <i class="fa fa-external-link"></i>
+                        <% end %>
+                        </li>
+                    <% end %>
+                  </ul>
+              <% end %>
+
               <%= render :partial => 'materials/partials/material_schemaorg', :locals => {:material => @material} %>
             </div>
           </div>

@@ -99,13 +99,7 @@
 }
 
 .delete-associated-resource {
-  font-weight: bold;
-  font-size: 120%;
-  color: $brand-danger;
-
-  &:hover {
-    color: lighten($brand-danger, 10%);
-  }
+  @include delete-cross;
 }
 
 #node-modal, #edge-modal {

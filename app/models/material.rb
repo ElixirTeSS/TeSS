@@ -52,13 +52,13 @@ class Material < ActiveRecord::Base
 
   # has_one :owner, foreign_key: "id", class_name: "User"
   belongs_to :user
-
   has_many :scientific_topics, foreign_key: 'class_id', class_name: "ScientificTopic"
-
   has_many :package_materials
   has_many :packages, through: :package_materials
-
   belongs_to :content_provider
+  has_many :external_resources
+
+  accepts_nested_attributes_for :external_resources, allow_destroy: true
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"

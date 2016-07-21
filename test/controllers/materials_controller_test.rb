@@ -375,6 +375,66 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_in_delta(package1.materials.count, package1_material_count, 1)
   end
 
+  test 'should add external resource to material' do
+    sign_in @material.user
+
+    assert_difference('ExternalResource.count', 1) do
+      patch :update, id: @material, material: {
+          title: 'New title',
+          short_description: 'New description',
+          url: 'http://new.url.com',
+          content_provider_id: ContentProvider.first.id,
+          external_resources_attributes: { "1" => { title: 'Cool link', url: 'https://tess.elixir-uk.org/', _destroy: '0' } }
+      }
+    end
+
+    assert_redirected_to material_path(assigns(:material))
+    resource = assigns(:material).external_resources.first
+    assert_equal 'Cool link', resource.title
+    assert_equal 'https://tess.elixir-uk.org/', resource.url
+  end
+
+  test 'should remove external resource from material' do
+    material = materials(:material_with_external_resource)
+    resource = material.external_resources.first
+    sign_in material.user
+
+    assert_difference('ExternalResource.count', -1) do
+      patch :update, id: material, material: {
+          title: 'New title',
+          short_description: 'New description',
+          url: 'http://new.url.com',
+          content_provider_id: ContentProvider.first.id,
+          external_resources_attributes: { "0" => { id: resource.id, _destroy: '1' } }
+      }
+    end
+
+    assert_redirected_to material_path(assigns(:material))
+    assert_equal 0, assigns(:material).external_resources.count
+  end
+
+  test 'should modify external resource from material' do
+    material = materials(:material_with_external_resource)
+    resource = material.external_resources.first
+    sign_in material.user
+
+    assert_no_difference('ExternalResource.count') do
+      patch :update, id: material, material: {
+          title: 'New title',
+          short_description: 'New description',
+          url: 'http://new.url.com',
+          content_provider_id: ContentProvider.first.id,
+          external_resources_attributes: { "1" => { id: resource.id, title: 'Cool link',
+                                                    url: 'http://www.reddit.com', _destroy: '0' } }
+      }
+    end
+
+    assert_redirected_to material_path(assigns(:material))
+    resource = assigns(:material).external_resources.first
+    assert_equal 'Cool link', resource.title
+    assert_equal 'http://www.reddit.com', resource.url
+  end
+
   # TODO: SOLR tests will not run on TRAVIS. Explore stratergy for testing solr
 =begin
       test 'should return matching materials' do
