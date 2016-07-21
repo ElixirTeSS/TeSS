@@ -136,16 +136,7 @@
 
               <% if @event.external_resources.any? %>
                   <b>External resources: </b>
-                  <ul>
-                    <% @event.external_resources.each do |external_resource| %>
-                        <li>
-                          <%= link_to(external_resource.url, target: :_blank) do %>
-                              <%= external_resource.title %>
-                              <i class="fa fa-external-link"></i>
-                          <% end %>
-                        </li>
-                    <% end %>
-                  </ul>
+                  <%= render partial: 'common/external_resources_list', locals: { external_resources: @event.external_resources } %>
               <% end %>
 
               <%= render :partial => 'events/partials/event_schemaorg', :locals => {:event => @event} %>

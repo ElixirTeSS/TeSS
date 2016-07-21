@@ -1,0 +1,10 @@
+<ul>
+  <% external_resources.each do |external_resource| %>
+      <li>
+        <%= link_to(external_resource.url, target: :_blank) do %>
+            <%= external_resource.title %>
+            <i class="fa fa-external-link"></i>
+        <% end %>
+      </li>
+  <% end %>
+</ul>

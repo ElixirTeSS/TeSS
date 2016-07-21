@@ -72,16 +72,7 @@
               <% if @material.external_resources.none? %>
                   <%= empty_tag(:span, 'none specified') %>
               <% else %>
-                  <ul>
-                    <% @material.external_resources.each do |external_resource| %>
-                        <li>
-                          <%= link_to(external_resource.url, target: :_blank) do %>
-                              <%= external_resource.title %>
-                              <i class="fa fa-external-link"></i>
-                        <% end %>
-                        </li>
-                    <% end %>
-                  </ul>
+                  <%= render partial: 'common/external_resources_list', locals: { external_resources: @material.external_resources} %>
               <% end %>
 
               <%= render :partial => 'materials/partials/material_schemaorg', :locals => {:material => @material} %>
