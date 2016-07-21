@@ -18,3 +18,22 @@
 .list-group-item-heading a{
   text-align: left;
 }
+
+.external-resource-form {
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+
+  &.deleted {
+    color: $brand-danger;
+    text-decoration: line-through;
+  }
+}
+
+.delete-external-resource-btn {
+  @include delete-cross;
+  cursor: pointer;
+
+  input[type=checkbox] {
+    display: none;
+  }
+}

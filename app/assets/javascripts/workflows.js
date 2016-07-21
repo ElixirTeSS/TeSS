@@ -140,7 +140,7 @@ $(document).ready(function () {
     }
 });
 
-Workflows = {
+var Workflows = {
     handleClick: function (e) {
         if (Workflows.state === 'adding node') {
             Workflows.placeNode(e.cyPosition);

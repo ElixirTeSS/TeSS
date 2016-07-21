@@ -121,6 +121,21 @@
 
     <%= render :partial => 'content_providers/partials/add_content_provider', :locals => {:f => f, :resource => @material} %>
 
+    <div class="form-group" id="external-resources">
+      <%= f.label :external_resources %>
+
+      <div id="external-resources-list">
+        <% @material.external_resources.each_with_index do |external_resource, index| %>
+            <%= render partial: 'materials/partials/external_resource_form',
+                       locals: { index: index, external_resource: external_resource } %>
+        <% end %>
+      </div>
+
+      <a href="#" id="add-external-resource-btn" class="btn btn-info">
+        <i class="fa fa-plus"></i> Add external resource
+      </a>
+    </div>
+
     <div class="form-group">
       <%= f.submit (f.object.new_record? ? "Register" : "Update") + " training material", :class => 'btn btn-primary' %>
       <%= link_to 'Back', :back, :class => "btn btn-info" %>
@@ -128,3 +143,8 @@
                   materials_path, :class => 'btn btn-default' %>
     </div>
 <% end %>
+
+<div id="external-resource-template" style="display: none">
+  <%= render partial: 'materials/partials/external_resource_form',
+             locals: { external_resource: ExternalResource.new } %>
+</div>

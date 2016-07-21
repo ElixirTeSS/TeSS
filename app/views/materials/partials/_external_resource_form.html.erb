@@ -1,0 +1,24 @@
+<% index ||= 'replace-me' %> <%# This is so we can render a blank version of this sub-form in the page, %>
+                             <%# which can be dynamically cloned using JavaScript to add more ExternalResources to the main material form %>
+<% field_name_prefix = "material[external_resources_attributes][#{index}]" %> <%# This format is dictated by "accepts_nested_attributes_for" %>
+
+<div class="form-inline external-resource-form" data-index="<%= index -%>">
+  <span class="icon"><i class="fa fa-external-link"></i></span>
+  <%= hidden_field_tag("#{field_name_prefix}[id]", external_resource.id) %>
+
+  <div class="form-group">
+    <label>Title</label>
+    <%= text_field_tag "#{field_name_prefix}[title]", external_resource.title, :class => 'form-control', :placeholder => 'Title' %>
+  </div>
+
+  <div class="form-group">
+    <label>URL</label>
+    <%= text_field_tag "#{field_name_prefix}[url]", external_resource.url, :class => 'form-control', :placeholder => 'URL' %>
+  </div>
+
+  <label class="delete-external-resource-btn">
+    &times;
+    <%= hidden_field_tag "#{field_name_prefix}[_destroy]", '0', :autocomplete => 'off' %>
+    <%= check_box_tag "#{field_name_prefix}[_destroy]", '1', false, :class => 'destroy-attribute', :autocomplete => 'off' %>
+  </label>
+</div>
