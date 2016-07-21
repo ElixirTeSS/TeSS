@@ -6,7 +6,7 @@
 
 {{#if associatedResources}}
     {{#if_any associatedResources "type" "materials"}}
-        <h4 class="nav-heading" style="background-color:#dddddd; margin-bottom: 5px;">Training materials</h3>
+        <h4 class="nav-heading-darker">Training materials</h3>
         <ul>
         {{#each_when associatedResources "type" "materials"}}
             <li><a href="{{this.url}}" target="_blank">{{this.title}}</a></li>
@@ -15,7 +15,7 @@
     {{/if_any}}
 
     {{#if_any associatedResources "type" "events"}}
-        <h4 class="nav-heading" style="background-color:#dddddd; margin-bottom: 5px;">Training events</h3>
+        <h4 class="nav-heading-darker">Training events</h3>
         <ul>
         {{#each_when associatedResources "type" "events"}}
             <li><a href="{{this.url}}" target="_blank">{{this.title}}</a></li>
@@ -24,7 +24,7 @@
     {{/if_any}}
 
     {{#if_any associatedResources "type" "tools"}}
-    <h4 class="nav-heading" style="background-color:#dddddd; margin-bottom: 5px;">Tools</h3>
+    <h4 class="nav-heading-darker">Tools</h3>
     <ul>
         {{#each_when associatedResources "type" "tools"}}
         <li><a href="{{this.url}}" target="_blank">{{this.title}}</a></li>
