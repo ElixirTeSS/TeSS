@@ -417,6 +417,7 @@ Workflows = {
     associatedResources: {
         types: {
             materials: { icon: 'fa-book' },
+            events: {icon: 'fa-calendar'},
             tools: { icon: 'fa-wrench' },
             policies: { icon: 'fa-file-text-o' }
         },

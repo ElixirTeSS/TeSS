@@ -1,7 +1,7 @@
 {{#if html_description}}
      {{{html_description}}}
 {{else}}
-    <span class="muted">No description provided</span>
+    <p class="muted">No description provided</p>
 {{/if}}
 
 {{#if associatedResources}}
@@ -9,6 +9,15 @@
         <h4 class="nav-heading" style="background-color:#dddddd; margin-bottom: 5px;">Training materials</h3>
         <ul>
         {{#each_when associatedResources "type" "materials"}}
+            <li><a href="{{this.url}}" target="_blank">{{this.title}}</a></li>
+        {{/each_when}}
+        </ul>
+    {{/if_any}}
+
+    {{#if_any associatedResources "type" "events"}}
+        <h4 class="nav-heading" style="background-color:#dddddd; margin-bottom: 5px;">Training events</h3>
+        <ul>
+        {{#each_when associatedResources "type" "events"}}
             <li><a href="{{this.url}}" target="_blank">{{this.title}}</a></li>
         {{/each_when}}
         </ul>
