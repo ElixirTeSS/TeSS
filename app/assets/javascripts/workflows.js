@@ -31,7 +31,9 @@ $(document).ready(function () {
                         'font-size': '9px',
                         'border-width': '1px',
                         'border-color': '#000',
-                        'border-opacity': 0.5
+                        'border-opacity': 0.5,
+                        'text-wrap': 'wrap',
+                        'text-max-width': '130px'
                     }
                 },
                 {
@@ -90,6 +92,8 @@ $(document).ready(function () {
             $('#workflow-toolbar-delete').click(Workflows.delete);
             $('#node-modal-form-confirm').click(Workflows.nodeModalConfirm);
             $('#edge-modal-form-confirm').click(Workflows.edgeModalConfirm);
+            $('.node-modal-add-resource-btn').click(Workflows.associatedResources.add);
+            $('#node-modal').on('click', '.delete-associated-resource', Workflows.associatedResources.delete);
             cy.on('tap', Workflows.handleClick);
             cy.on('select', function (e) {
                 if (Workflows.state !== 'adding node') {
@@ -212,7 +216,8 @@ Workflows = {
                 description: $('#node-modal-form-description').val(),
                 color: $('#node-modal-form-colour').val(),
                 font_color: $('#node-modal-form-colour').css("color"),
-                parent: $('#node-modal-form-parent-id').val()
+                parent: $('#node-modal-form-parent-id').val(),
+                associatedResources: Workflows.associatedResources.fetch()
             },
             position: {
                 x: parseInt($('#node-modal-form-x').val()),
@@ -235,8 +240,9 @@ Workflows = {
     },
 
     edit: function () {
+        var data;
         if (Workflows.state === 'node selection') {
-            var data = Workflows.selected.data();
+            data = Workflows.selected.data();
             var position = Workflows.selected.position();
             $('#node-modal-title').html('Edit node');
             $('#node-modal').modal('show');
@@ -247,8 +253,12 @@ Workflows = {
             $('#node-modal-form-parent-id').val(data.parent);
             $('#node-modal-form-x').val(position.x);
             $('#node-modal-form-y').val(position.y);
+            if (data.associatedResources) {
+                Workflows.associatedResources.populate(data.associatedResources);
+            }
+
         } else if (Workflows.state === 'edge selection') {
-            var data = Workflows.selected.data();
+            data = Workflows.selected.data();
             $('#edge-modal').modal('show');
             $('#edge-modal-form-label').val(data.name);
         }
@@ -261,6 +271,7 @@ Workflows = {
             node.data('description', $('#node-modal-form-description').val());
             node.data('color', $('#node-modal-form-colour').val());
             node.data('font_color', $('#node-modal-form-colour').css("color"));
+            node.data('associatedResources', Workflows.associatedResources.fetch());
             node.css('color', node.data('font_color'));
         });
 
@@ -327,7 +338,7 @@ Workflows = {
         populate: function (e) {
             if (e.cyTarget.isNode()) {
                 $('#workflow-diagram-sidebar-title').html(e.cyTarget.data('name') || '<span class="muted">Untitled</span>');
-                $('#workflow-diagram-sidebar-desc').html(e.cyTarget.data('html_description') || '<span class="muted">No description provided</span>');
+                $('#workflow-diagram-sidebar-desc').html(HandlebarsTemplates['workflows/sidebar_content'](e.cyTarget.data()))
             } else if (e.cyTarget.isEdge()) {
                 e.cyTarget.unselect();
                 return false;
@@ -399,6 +410,66 @@ Workflows = {
                     .addClass('disabled')
                     .find('span')
                     .attr('title', 'Undo');
+            }
+        }
+    },
+
+    associatedResources: {
+        types: {
+            materials: { icon: 'fa-book' },
+            events: {icon: 'fa-calendar'},
+            tools: { icon: 'fa-wrench' },
+            policies: { icon: 'fa-file-text-o' }
+        },
+
+        // Add a new blank form for an associated resource
+        add: function () {
+            var type = $(this).data('resourceType');
+            $('#node-modal-associated-resource-list').append(
+                HandlebarsTemplates['workflows/associated_resource_form']({
+                    type: type,
+                    icon: Workflows.associatedResources.types[type].icon
+                })
+            );
+            return false;
+        },
+
+        delete: function () {
+            $(this).parents('.associated-resource').remove();
+            return false;
+        },
+        
+        // Fetch the associated resources from the modal. Returns an array of objects that can be added to a node's data
+        fetch: function (node) {
+            var resources = [];
+            $('#node-modal-associated-resource-list .associated-resource').each(function () {
+                // "data-attribute" is just something I made up so I could identify the two form fields.
+                // If I used the standard "name", they would end up getting posted to the server when the main workflow form is submitted.
+                var resource = {
+                    title: $('[data-attribute=title]', $(this)).val(),
+                    url: $('[data-attribute=url]', $(this)).val(),
+                    type: $('[data-attribute=type]', $(this)).val()
+                };
+
+                if (resource.url && resource.title) {
+                    resources.push(resource);
+                }
+            });
+
+            return resources;
+        },
+
+        // Populate the modal with existing associated resource forms that can be edited by the user
+        populate: function (resources) {
+            var resourceList = $('#node-modal-associated-resource-list');
+            resourceList.html('');
+
+            for(var i = 0; i < resources.length; i++) {
+                var resource = resources[i];
+                resource.icon = Workflows.associatedResources.types[resource.type].icon;
+                resourceList.append(
+                    HandlebarsTemplates['workflows/associated_resource_form'](resource)
+                );
             }
         }
     }

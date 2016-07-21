@@ -96,6 +96,11 @@ GEM
       mida_vocabulary (>= 0.2.2)
     haml (4.0.7)
       tilt
+    handlebars_assets (0.23.0)
+      execjs (~> 2.0)
+      multi_json (~> 1.0)
+      sprockets (>= 2.0.0)
+      tilt (>= 1.2)
     highline (1.7.8)
     i18n (0.7.0)
     icalendar (2.3.0)
@@ -286,6 +291,7 @@ DEPENDENCIES
   friendly_id (~> 5.1.0)
   gravtastic
   green_monkey
+  handlebars_assets
   icalendar
   jbuilder (~> 2.0)
   jquery-rails
