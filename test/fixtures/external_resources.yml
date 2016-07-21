@@ -1,6 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 tess:
-  material: material_with_external_resource
+  source: material_with_external_resource (Material)
   url: https://tess.elixir-uk.org/
   title: TeSS
+
+google:
+  source: event_with_external_resource (Event)
+  url: http://www.google.com
+  title: Google

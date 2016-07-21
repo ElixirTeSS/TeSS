@@ -56,7 +56,7 @@ class Material < ActiveRecord::Base
   has_many :package_materials
   has_many :packages, through: :package_materials
   belongs_to :content_provider
-  has_many :external_resources, dependent: :destroy
+  has_many :external_resources, as: :source, dependent: :destroy
 
   accepts_nested_attributes_for :external_resources, allow_destroy: true
 

@@ -156,7 +156,8 @@ class EventsController < ApplicationController
   def event_params
     event_params = params.require(:event).permit(:external_id, :title, :subtitle, :url, :provider, :description, {:field => []},
                                   {:category => []}, {:keyword => []}, :start, :end, :sponsor, :venue, :city, :county,
-                                  :country, :postcode, :latitude, :longitude, :content_provider_id, {:package_ids => []})
+                                  :country, :postcode, :latitude, :longitude, :content_provider_id, {:package_ids => []},
+                                  external_resources_attributes: [:id, :url, :title, :_destroy])
     event_params[:description] = ActionView::Base.full_sanitizer.sanitize(event_params[:description])
     return event_params
   end

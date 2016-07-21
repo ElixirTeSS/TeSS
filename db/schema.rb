@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160721134059) do
+ActiveRecord::Schema.define(version: 20160721154535) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -83,14 +83,15 @@ ActiveRecord::Schema.define(version: 20160721134059) do
   add_index "events", ["user_id"], name: "index_events_on_user_id", using: :btree
 
   create_table "external_resources", force: :cascade do |t|
-    t.integer  "material_id"
+    t.integer  "source_id"
     t.text     "url"
     t.string   "title"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.string   "source_type"
   end
 
-  add_index "external_resources", ["material_id"], name: "index_external_resources_on_material_id", using: :btree
+  add_index "external_resources", ["source_id", "source_type"], name: "index_external_resources_on_source_id_and_source_type", using: :btree
 
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string   "slug",                      null: false
@@ -335,7 +336,6 @@ ActiveRecord::Schema.define(version: 20160721134059) do
   add_foreign_key "content_providers", "nodes"
   add_foreign_key "content_providers", "users"
   add_foreign_key "events", "users"
-  add_foreign_key "external_resources", "materials"
   add_foreign_key "materials", "content_providers"
   add_foreign_key "materials", "users"
   add_foreign_key "nodes", "users"

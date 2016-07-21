@@ -50,3 +50,10 @@ scraper_user_event:
   description: 'this is my material'
   user: scraper_user
   content_provider: goblet
+
+event_with_external_resource:
+  title: External Resource Event
+  url: http://myurl.com
+  description: 'this is my material'
+  user: scraper_user
+  content_provider: goblet

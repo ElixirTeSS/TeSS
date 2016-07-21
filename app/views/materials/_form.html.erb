@@ -126,8 +126,8 @@
 
       <div id="external-resources-list">
         <% @material.external_resources.each_with_index do |external_resource, index| %>
-            <%= render partial: 'materials/partials/external_resource_form',
-                       locals: { index: index, external_resource: external_resource } %>
+            <%= render partial: 'common/external_resource_form',
+                       locals: { form_name: 'material', index: index, external_resource: external_resource } %>
         <% end %>
       </div>
 
@@ -145,6 +145,6 @@
 <% end %>
 
 <div id="external-resource-template" style="display: none">
-  <%= render partial: 'materials/partials/external_resource_form',
-             locals: { external_resource: ExternalResource.new } %>
+  <%= render partial: 'common/external_resource_form',
+             locals: { form_name: 'material', external_resource: ExternalResource.new } %>
 </div>

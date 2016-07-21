@@ -424,5 +424,62 @@ end
     # can at least detect that the route works.
   end
 
+  test 'should add external resource to event' do
+    sign_in @event.user
+
+    assert_difference('ExternalResource.count', 1) do
+      patch :update, id: @event, event: {
+          title: 'New title',
+          description: 'New description',
+          url: 'http://new.url.com',
+          external_resources_attributes: { "1" => { title: 'Cool link', url: 'https://tess.elixir-uk.org/', _destroy: '0' } }
+      }
+    end
+
+    assert_redirected_to event_path(assigns(:event))
+    resource = assigns(:event).external_resources.first
+    assert_equal 'Cool link', resource.title
+    assert_equal 'https://tess.elixir-uk.org/', resource.url
+  end
+
+  test 'should remove external resource from event' do
+    event = events(:event_with_external_resource)
+    resource = event.external_resources.first
+    sign_in event.user
+
+    assert_difference('ExternalResource.count', -1) do
+      patch :update, id: event, event: {
+          title: 'New title',
+          description: 'New description',
+          url: 'http://new.url.com',
+          external_resources_attributes: { "0" => { id: resource.id, _destroy: '1' } }
+      }
+    end
+
+    assert_redirected_to event_path(assigns(:event))
+    assert_equal 0, assigns(:event).external_resources.count
+  end
+
+  test 'should modify external resource from event' do
+    event = events(:event_with_external_resource)
+    resource = event.external_resources.first
+    sign_in event.user
+
+    assert_no_difference('ExternalResource.count') do
+      patch :update, id: event, event: {
+          title: 'New title',
+          description: 'New description',
+          url: 'http://new.url.com',
+          external_resources_attributes: { "1" => { id: resource.id, title: 'Cool link',
+                                                    url: 'http://www.reddit.com', _destroy: '0' } }
+      }
+    end
+
+    assert_redirected_to event_path(assigns(:event))
+    resource = assigns(:event).external_resources.first
+    assert_equal 'Cool link', resource.title
+    assert_equal 'http://www.reddit.com', resource.url
+  end
+
 
 end
