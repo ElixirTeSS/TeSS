@@ -9,7 +9,6 @@ class ContentProvider < ActiveRecord::Base
   has_many :events, :dependent => :destroy
 
   belongs_to :user
-
   belongs_to :node
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
@@ -20,11 +19,11 @@ class ContentProvider < ActiveRecord::Base
 
   # Validate the URL is in correct format via valid_url gem
   validates :url, :url => true
-  validates :image_url, :url => true, allow_blank: true
 
   clean_array_fields(:keywords)
 
   PROVIDER_TYPE = ['Organisation', 'Portal', 'Project']#, 'Individual']
+  has_image(placeholder: "/images/placeholder-organization.png")
 
   if SOLR_ENABLED
     searchable do
