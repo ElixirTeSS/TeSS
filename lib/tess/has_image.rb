@@ -24,8 +24,9 @@ module TeSS
       private
 
       def resolve_image_url
-        if self.image_url
-          if !self.image? # Download the image from the given URL if no image file provided.
+        unless self.image_url.blank?
+          # Download the image from the given URL if no image file provided or if URL was changed.
+          if !self.image? || self.image_url_changed?
             self.image = URI.parse(self.image_url)
           elsif self.image.dirty? # Clear the URL if there was a file provided (as it won't match the file anymore)
             self.image_url = nil

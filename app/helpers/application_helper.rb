@@ -99,7 +99,19 @@ module ApplicationHelper
   }
 
   def get_image_url_for(resource)
-    return resource.blank? ? nil : ( (resource.class.name.downcase == 'node' && File.exists?("#{(Rails.root.to_s)}/app/assets/images/nodes/logos/#{resource.country_code}.png")) ? "nodes/logos/#{resource.country_code}.png" : (resource.image_url.blank? ? DEFAULT_IMAGE_FOR_MODEL.fetch(resource.class.name, 'placeholder-group.png') : resource.image_url))
+    if resource.blank?
+      nil
+    else
+      if resource.is_a?(Node) && File.exists?("#{(Rails.root.to_s)}/app/assets/images/nodes/logos/#{resource.country_code}.png")
+        "nodes/logos/#{resource.country_code}.png"
+      else
+        if !resource.image?
+          DEFAULT_IMAGE_FOR_MODEL.fetch(resource.class.name, 'placeholder-group.png')
+        else
+          resource.image.url
+        end
+      end
+    end
   end
 
   # Return icon classes for model name (could be symbol or string)

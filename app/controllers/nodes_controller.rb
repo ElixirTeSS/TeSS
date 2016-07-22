@@ -86,7 +86,7 @@ class NodesController < ApplicationController
   def node_params
     params.require(:node).permit(:name, :member_status, :country_code, :home_page, :staff, :twitter, :image_url,
                                  { institutions: [] }, { carousel_images: [] },
-                                 { staff_attributes: [:id, :name, :email, :role, :image_url, :_destroy] })
+                                 { staff_attributes: [:id, :name, :email, :role, :image, :image_url, :_destroy] })
   end
 
 end

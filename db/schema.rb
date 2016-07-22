@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160722120711) do
+ActiveRecord::Schema.define(version: 20160722125757) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -169,12 +169,16 @@ ActiveRecord::Schema.define(version: 20160722120711) do
     t.string   "title"
     t.text     "description"
     t.text     "image_url"
-    t.boolean  "public",      default: true
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.boolean  "public",             default: true
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.integer  "user_id"
     t.string   "slug"
-    t.string   "keywords",    default: [],                array: true
+    t.string   "keywords",           default: [],                array: true
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
   end
 
   add_index "packages", ["slug"], name: "index_packages_on_slug", unique: true, using: :btree
@@ -248,8 +252,12 @@ ActiveRecord::Schema.define(version: 20160722120711) do
     t.string   "email"
     t.text     "image_url"
     t.integer  "node_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
   end
 
   add_index "staff_members", ["node_id"], name: "index_staff_members_on_node_id", using: :btree

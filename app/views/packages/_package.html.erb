@@ -1,5 +1,5 @@
 <li class="masonry-brick media-item ">
-  <%= image_tag get_image_url_for(package), :class=>"media-image listing_image" %>
+  <%= image_tag package.image.url(:media), :class=>"media-image listing_image" %>
   <h3 class="media-heading"><%= package.title %></h3>
   <p><%= package.description  %></p>
   <%= link_to '', package, :class=>"media-view"%>

@@ -7,4 +7,6 @@ class StaffMember < ActiveRecord::Base
 
   scope :training_coordinators, -> { where(role: TRAINING_COORDINATOR_ROLE) }
   scope :other_roles, -> { where.not(role: TRAINING_COORDINATOR_ROLE) }
+
+  has_image(placeholder: "/images/placeholder-person.png")
 end

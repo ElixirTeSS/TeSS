@@ -1,0 +1,11 @@
+<%= form.label :image, "Image" %>
+
+<% if form.object.image? %>
+    <div class="preview-image">
+      <%= image_tag form.object.image.url(:media) %>
+    </div>
+<% end %>
+
+<%= form.file_field :image %>
+<p class="help-block">or enter a URL:</p>
+<%= form.text_field :image_url, :class => 'form-control', placeholder: 'http://example.com/image.png' %>
