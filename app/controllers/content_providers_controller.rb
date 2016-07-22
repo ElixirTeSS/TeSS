@@ -109,10 +109,6 @@ class ContentProvidersController < ApplicationController
     end
     params[:content_provider].delete :node_name
 
-    if params[:image].blank? && params[:image_url]
-      params[:image] = URI.parse(params[:image_url])
-    end
-
     params.require(:content_provider).permit(:title, :url, :image, :image_url, :description, :id, :content_provider_type, :node_id,
                                              {:keywords => []}, :remote_updated_date, :remote_created_date, :local_updated_date, :remote_updated_date)
   end
