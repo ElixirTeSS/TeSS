@@ -4,6 +4,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
   include Devise::TestHelpers
 
   setup do
+    mock_images
     @content_provider = content_providers(:goblet)
     #u = users(:regular_user)
     #@content_provider.user_id = u.id
@@ -206,7 +207,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_response :success
     # assert_select 'h4.nav-heading', :text => /Content provider/
     assert_select 'a[href=?]', @content_provider.url, :count => 2 do
-      assert_select 'img[src=?]', @content_provider.image_url, :count => 1
+      assert_select 'img[src=?]', @content_provider.image.url, :count => 1
     end
     assert_select 'a.btn-info[href=?]', content_providers_path, :count => 1 #Back button
     #Should not show when not logged in

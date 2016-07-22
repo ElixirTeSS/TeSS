@@ -1,4 +1,4 @@
-<%= simple_form_for @content_provider, :html => { :class => "content_provider" } do |f| %>
+<%= simple_form_for @content_provider, html: { class: "content_provider", multipart: true } do |f| %>
 
     <% if @content_provider.errors.any? %>
         <div id="error_expl" class="panel panel-danger">
@@ -32,9 +32,7 @@
       <%#= error_span(@content_provider[:description]) %>
     </div>
     <div class="form-group">
-      <%= f.label :image_url, "Image URL" %>
-      <%= f.text_field :image_url, :class => 'form-control' %>
-      <%#= error_span(@content_provider[:image_url]) %>
+      <%= render partial: 'common/image_form', locals: { form: f } %>
     </div>
     <div class="form-group">
       <%= f.label :content_provider_type, "Type" %>

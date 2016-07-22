@@ -3,20 +3,20 @@
 one:
   title: Dot Slash Configure
   description: MyText
-  image_url: http://google.com
+  image_url: http://example.com/package.png
   public: false
   user: regular_user
 
 two:
   title: This Package Is Big
   description: MyText
-  image_url: http://google.com
+  image_url: http://example.com/package.png
   public: false
   user: regular_user
 
 with_resources:
   title: But My Package Is Bigger
   description: text
-  image_url: http://google.com
+  image_url: http://example.com/package.png
   public: true
   user: regular_user

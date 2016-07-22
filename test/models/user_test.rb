@@ -5,6 +5,7 @@ class UserTest < ActiveSupport::TestCase
   #   assert true
   # end
   setup do
+    mock_images
     @user_data = users(:regular_user)
     # regular_user is already saved so make username and email unique
     @user_data.username = "0#{@user_data.username}"

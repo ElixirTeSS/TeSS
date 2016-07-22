@@ -5,7 +5,7 @@ class SearchControllerTest < ActionController::TestCase
   include Devise::TestHelpers
 
   setup do
-    #
+    mock_images
   end
 
   test "should get index" do

@@ -24,6 +24,8 @@ class Package < ActiveRecord::Base
 
   after_save :log_activities
 
+  has_image(placeholder: "/images/placeholder-package.png")
+
   if SOLR_ENABLED
     searchable do
       text :title

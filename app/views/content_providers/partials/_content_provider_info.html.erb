@@ -50,7 +50,7 @@ Variable that should be available
           based on which controller/view is currenlty active -->
           <% cp_url = (controller_name == 'content_providers') ? content_provider.url : (url_for content_provider) %>
           <% cp_target = (controller_name == 'content_providers') ? '_blank' : '_self' %>
-          <%= link_to(image_tag(get_image_url_for(content_provider), :class => "medium-content-provider-logo"), cp_url, :target => cp_target) %>
+          <%= link_to(image_tag(content_provider.image.url, :class => "medium-content-provider-logo"), cp_url, :target => cp_target) %>
         </p>
 
         <p>

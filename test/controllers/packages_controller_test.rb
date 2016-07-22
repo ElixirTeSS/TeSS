@@ -4,6 +4,7 @@ class PackagesControllerTest < ActionController::TestCase
   include Devise::TestHelpers
 
   setup do
+    mock_images
     @package = packages(:one)
     #u = users(:regular_user)
     #@package.user_id = u.id

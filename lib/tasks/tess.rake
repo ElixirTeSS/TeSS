@@ -13,4 +13,29 @@ namespace :tess do
     puts "Done"
   end
 
+  task download_images: :environment do
+    ActiveRecord::Base.record_timestamps = false
+    begin
+      [Package, ContentProvider, StaffMember].each do |klass|
+        downloadable = klass.all.select { |o| o.image_url && !o.image? }
+        if downloadable.length > 0
+          puts "Downloading #{downloadable.length} images for #{klass.name}s"
+
+          downloadable.each do |resource|
+            unless resource.image_url.blank? || resource.image?
+              print '.'
+              resource.save!
+            end
+          end
+          puts
+        else
+          puts "Nothing to download for #{klass.name}s"
+        end
+      end
+    ensure
+      ActiveRecord::Base.record_timestamps = true
+    end
+    puts "Done"
+  end
+
 end

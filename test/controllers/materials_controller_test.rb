@@ -5,6 +5,7 @@ class MaterialsControllerTest < ActionController::TestCase
   include Devise::TestHelpers
 
   setup do
+    mock_images
     @material = materials(:good_material)
     u = users(:regular_user)
     @material.user_id = u.id
