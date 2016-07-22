@@ -48,7 +48,7 @@ for SCRAPER in "${SCRAPERS[@]}"
 do
    :
    echo "Running $SCRAPER.rb" >> $LOG
-   cd $DIR && bundle exec ruby $SCRAPER.rb >> $OUTPUT 2> /dev/null
+   cd $DIR && bundle exec ruby $SCRAPER.rb >> $LOG #$OUTPUT 2> /dev/null
 done
 
 rake sunspot:solr:reindex
