@@ -105,7 +105,7 @@ module ApplicationHelper
       if resource.is_a?(Node) && File.exists?("#{(Rails.root.to_s)}/app/assets/images/nodes/logos/#{resource.country_code}.png")
         "nodes/logos/#{resource.country_code}.png"
       else
-        if !resouce.respond_to?(:image?) || !resource.image?
+        if !resource.respond_to?(:image?) || !resource.image?
           DEFAULT_IMAGE_FOR_MODEL.fetch(resource.class.name, 'placeholder-group.png')
         else
           resource.image.url
