@@ -18,7 +18,11 @@ class ActiveSupport::TestCase
   # Mock remote images so paperclip doesn't break:
   def mock_images
     WebMock.stub_request(:any, /http\:\/\/example\.com\/(.+)\.png/).to_return(
-        status: 200, body: File.read('test/fixtures/files/image.png'), headers: { content_type: 'image/png' }
+        status: 200, body: File.read(File.join(Rails.root, 'test/fixtures/files/image.png')), headers: { content_type: 'image/png' }
+    )
+
+    WebMock.stub_request(:any, "http://image.host/another_image.png").to_return(
+        status: 200, body: File.read(File.join(Rails.root, 'test/fixtures/files/another_image.png')), headers: { content_type: 'image/png' }
     )
   end
 

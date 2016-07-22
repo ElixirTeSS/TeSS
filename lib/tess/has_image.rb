@@ -30,7 +30,8 @@ module TeSS
             begin
               uri = URI.parse(self.image_url)
               self.image = uri
-            rescue URI::InvalidURIError
+            rescue URI::InvalidURIError, OpenURI::HTTPError
+              self.errors.add(:image_url, 'is not valid')
             end
           elsif self.image.dirty? # Clear the URL if there was a file provided (as it won't match the file anymore)
             self.image_url = nil
