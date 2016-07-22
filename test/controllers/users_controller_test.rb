@@ -4,6 +4,7 @@ class UsersControllerTest < ActionController::TestCase
   include Devise::TestHelpers
 
   setup do
+    mock_images
     @user = users(:regular_user)
     @admin = users(:admin)
   end

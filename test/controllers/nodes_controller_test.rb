@@ -4,6 +4,7 @@ class NodesControllerTest < ActionController::TestCase
   include Devise::TestHelpers
 
   setup do
+    mock_images
     @node = nodes(:good)
   end
 
@@ -33,7 +34,7 @@ class NodesControllerTest < ActionController::TestCase
                                       "948593" => { name: 'Finn',
                                                     email: 'f@example.com',
                                                     role: 'Training coordinator',
-                                                    image_url: 'http://example.com/images/gorgeouspic.png',
+                                                    image_url: 'http://example.com/gorgeouspic.png',
                                                     _destroy: '0'  }
                                   }
         }
@@ -80,7 +81,7 @@ class NodesControllerTest < ActionController::TestCase
                                                 "1256161262" => { name: 'New Staff Member',
                                                                   email: 'nsm@example.com',
                                                                   role: 'Training coordinator',
-                                                                  image_url: 'http://example.com/images/newb.png',
+                                                                  image_url: 'http://example.com/newb.png',
                                                                   _destroy: '0'  },
                                             }
       }

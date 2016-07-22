@@ -3,7 +3,7 @@
 goblet:
   title: Goblet
   url: http://mygoblet.org
-  image_url: http://goblet.com/photo.jpg
+  image_url: http://example.com/goblet.png
   description: This is the goblet test description
   user: regular_user
   node: good
@@ -11,7 +11,7 @@ goblet:
 two:
   title: MyTextAgain
   url: http://anotherexample.com
-  image_url: http://google.com
+  image_url: http://example.com/package.png
   description: MyTextAgain
   user: regular_user
 

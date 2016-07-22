@@ -5,6 +5,7 @@ class EventsControllerTest < ActionController::TestCase
   include Devise::TestHelpers
 
   setup do
+    mock_images
     @event = events(:one)
   end
 
