@@ -21,6 +21,8 @@
 //= require split
 //= require handlebars.runtime
 //= require handlebars_helpers
+//= require masonry.pkgd
+//= require imagesloaded.pkgd
 //= require_tree ./templates
 //= require_tree .
 //= require_self
@@ -56,11 +58,15 @@ function updateURLParameter(url, param, paramVal){
 }
 
 function reposition_tiles(container, tile_class){
-    $('.' + container).masonry({
+    var $container = $('.' + container);
+    
+    $container.imagesLoaded(function () {
+        $container.masonry({
             // options...
             itemSelector: '.' + tile_class,
             columnWidth: 20
         });
+    });
 }
 
 /**
