@@ -23,7 +23,7 @@ class ContentProvider < ActiveRecord::Base
   clean_array_fields(:keywords)
 
   PROVIDER_TYPE = ['Organisation', 'Portal', 'Project']#, 'Individual']
-  has_image(placeholder: "/images/placeholder-organization.png")
+  has_image(placeholder: "/assets/placeholder-organization.png")
 
   if SOLR_ENABLED
     searchable do
