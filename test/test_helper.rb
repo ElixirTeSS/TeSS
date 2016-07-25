@@ -24,6 +24,16 @@ class ActiveSupport::TestCase
     WebMock.stub_request(:any, "http://image.host/another_image.png").to_return(
         status: 200, body: File.read(File.join(Rails.root, 'test/fixtures/files/another_image.png')), headers: { content_type: 'image/png' }
     )
+
+    WebMock.stub_request(:any, "http://malicious.host/image.png").to_return(
+        status: 200, body: File.read(File.join(Rails.root, 'test/fixtures/files/bad.js')), headers: { content_type: 'image/png' }
+    )
+
+    WebMock.stub_request(:any, "http://text.host/text.txt").to_return(
+        status: 200, body: File.read(File.join(Rails.root, 'test/fixtures/files/text.txt')), headers: { content_type: 'text/plain' }
+    )
+
+    WebMock.stub_request(:any, "http://404.host/image.png").to_return(status: 404)
   end
 
 end

@@ -13,7 +13,7 @@ module TeSS
         validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
         validates :image_url, url: true, allow_blank: true
 
-        before_save :resolve_image_url
+        before_validation :resolve_image_url
         include HasImage::InstanceMethods
       end
 
@@ -29,9 +29,18 @@ module TeSS
           if !self.image? || self.image_url_changed?
             begin
               uri = URI.parse(self.image_url)
+              return unless uri.absolute? # Error message will be added by the `image_url` validator
+
               self.image = uri
-            rescue URI::InvalidURIError, OpenURI::HTTPError
-              self.errors.add(:image_url, 'is not valid')
+
+              # NOTE! The two lines below are needed because Paperclip validates the image on assignment, and then again
+              #  when the actual validations are run, resulting in duplicate error messages!
+              self.errors.delete(:image)
+              self.errors.delete(:image_content_type)
+            rescue URI::InvalidURIError
+              return
+            rescue OpenURI::HTTPError
+              self.errors.add(:image_url, 'could not be accessed')
             end
           elsif self.image.dirty? # Clear the URL if there was a file provided (as it won't match the file anymore)
             self.image_url = nil
