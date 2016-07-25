@@ -22,8 +22,12 @@ namespace :tess do
           puts "Downloading #{downloadable.length} images for #{klass.name}s"
 
           downloadable.each do |resource|
-            resource.save!
-            print '.'
+            begin
+              resource.save!
+            rescue Exception => e
+              puts "Exception occurred fetching image for #{klass.name} ID: #{resource.id}"
+              raise e
+            end
           end
           puts
         else
