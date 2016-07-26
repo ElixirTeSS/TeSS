@@ -74,6 +74,10 @@ div.wrapper {
   }
 }
 
+#main-container {
+  max-width: 1200px;
+}
+
 #content {
   padding: 15px;
   flex-grow: 1;
@@ -313,15 +317,8 @@ ul.unstyled {
 }
 
 .welcome-text {
-  //width: 40%;
-  background-color: white;
   padding: 20px;
-  margin: 10px;
   text-align: center;
-  //border: 1px solid #CECECE;
-  //border-radius: 3px;
-  width: 70%;
-  margin: auto;
 }
 
 .panel-heading {
