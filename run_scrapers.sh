@@ -31,6 +31,7 @@ SCRAPERS=(biocomp_rdfa_scraper
           futurelearn_rdfa_scraper
           genome3d_scraper
           goblet_rdfa_scraper
+          ifb_rdfa_scraper
           khan_academy_api
           legacy_software_carpentry_scraper
           ngs_registry_scraper
@@ -39,7 +40,6 @@ SCRAPERS=(biocomp_rdfa_scraper
           coursera_scraper
           erasys_rdfa_scraper
           birmingham_metabolomics_transfer
-          france-bioinformatique_scraper
           rss_scraper
           )
 
