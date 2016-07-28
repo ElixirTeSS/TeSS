@@ -39,17 +39,15 @@ body {
 }
 
 .footer {
-  padding: 10px;
+  padding: 0px;
   position: absolute;
   right: 0;
   bottom: 0;
   left: 0;
   background-color: #ddd;
   .footer-logo {
-    display: block;
-    float: right;
     margin: 0 5px;
-    img { height: 64px; }
+    img { height: 48px; }
   }
 }
 
@@ -72,6 +70,10 @@ div.wrapper {
       flex-direction: column-reverse;
     }
   }
+}
+
+#main-container {
+  max-width: 1200px;
 }
 
 #content {
@@ -313,15 +315,8 @@ ul.unstyled {
 }
 
 .welcome-text {
-  //width: 40%;
-  background-color: white;
   padding: 20px;
-  margin: 10px;
   text-align: center;
-  //border: 1px solid #CECECE;
-  //border-radius: 3px;
-  width: 70%;
-  margin: auto;
 }
 
 .panel-heading {

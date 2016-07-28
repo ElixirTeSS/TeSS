@@ -33,8 +33,9 @@
   border-color: transparent !important;
 }
 
-.workflows-container {
+#main-container.workflows-container {
   padding: 0px 10px 10px 10px;
+  max-width: none;
 }
 
 .workflow-diagram-wrapper {
