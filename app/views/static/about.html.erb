@@ -1,9 +1,16 @@
 <div id="main-container" class="container">
 
   <div class="breadcrumbs">
-    <ol class="breadcrumb">
-      <li><a href="/">Home</a></li>
-      <li class="active">About</li>
+    <ol class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
+      <li itemprop="itemListElement" itemscope
+          itemtype="http://schema.org/ListItem">
+        <a itemprop='name' href="/">Home</a>
+      </li>
+      <li itemprop="itemListElement" itemscope
+          itemtype="http://schema.org/ListItem"
+      class="active">
+        <span itemprop='name'>About</span>
+      </li>
     </ol>
   </div>
 
