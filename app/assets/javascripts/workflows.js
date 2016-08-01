@@ -49,7 +49,8 @@ $(document).ready(function () {
                         'text-halign': 'center',
                         'width': 'auto',
                         'height': 'auto',
-                        'font-size': '9px'
+                        'font-size': '9px',
+                        'color': '#000000'
                     }
                 },
                 {
@@ -222,9 +223,6 @@ var Workflows = {
             position: {
                 x: parseInt($('#node-modal-form-x').val()),
                 y: parseInt($('#node-modal-form-y').val())
-            },
-            css: {
-                color: $('#node-modal-form-colour').css("color")
             }
         };
 
@@ -272,7 +270,6 @@ var Workflows = {
             node.data('color', $('#node-modal-form-colour').val());
             node.data('font_color', $('#node-modal-form-colour').css("color"));
             node.data('associatedResources', Workflows.associatedResources.fetch());
-            node.css('color', node.data('font_color'));
         });
 
         $('#node-modal').modal('hide');
