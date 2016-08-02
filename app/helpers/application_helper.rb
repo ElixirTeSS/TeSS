@@ -26,7 +26,7 @@ module ApplicationHelper
     nil
   end
 
-  def render_markdown(markdown_text, options={:filter_html=>true})
+  def render_markdown(markdown_text, options = { filter_html: true, tables: true })
     if markdown_text
       markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, options)
       return markdown.render(markdown_text).html_safe
