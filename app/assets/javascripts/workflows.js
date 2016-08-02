@@ -207,6 +207,7 @@ var Workflows = {
         if (parentId && Workflows.selected.children().length > 0)
             y = Workflows.selected.children().last().position().y + 40;
         $('#node-modal-form-y').val(y);
+        Workflows.associatedResources.populate([]);
     },
 
     addNode: function () {
