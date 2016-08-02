@@ -192,4 +192,19 @@ function add_dropdown_option(field_name, name, value){
         'value="' + value + '"><a>' + name + '</a></li>').appendTo('.' + field_name + '-options')
 }
 
-$(document).ready(function () { reposition_tiles('masonry', 'masonry-brick'); });
+$(document).ready(function () {
+    // Show the tab associated with the window location hash (e.g. "#packages")
+    if (window.location.hash) {
+        var tab = $('ul.nav a[href="' + window.location.hash + '"]');
+        if (tab.length) {
+            tab.tab('show');
+        }
+    }
+
+    // Store the open tab in the window location hash
+    $('.nav-tabs a').on("shown.bs.tab", function(e) {
+        window.location.hash = this.hash;
+    });
+
+    reposition_tiles('masonry', 'masonry-brick');
+});
