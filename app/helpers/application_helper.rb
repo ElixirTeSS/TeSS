@@ -188,9 +188,7 @@ module ApplicationHelper
         end
       end +
       content_tag(:div, class: 'panel-collapse collapse', id: id) do
-        content_tag(:div, class: 'panel-body') do
-          block.call
-        end
+        content_tag(:div, class: 'panel-body', &block)
       end
     end
   end
