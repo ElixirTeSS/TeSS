@@ -70,9 +70,9 @@ class Material < ActiveRecord::Base
   # Validate the URL is in correct format via valid_url gem
   validates :url, :url => true
 
-  clean_array_fields(:keywords, :contributors, :authors)
+  clean_array_fields(:keywords, :contributors, :authors, :target_audience)
 
-  update_suggestions(:keywords, :contributors, :authors)
+  update_suggestions(:keywords, :contributors, :authors, :target_audience)
 
   after_save :log_activities
 

@@ -21,9 +21,9 @@ class Workflow < ActiveRecord::Base
 
   validates :title, presence: true
 
-  clean_array_fields(:keywords, :contributors, :authors)
+  clean_array_fields(:keywords, :contributors, :authors, :target_audience)
 
-  update_suggestions(:keywords, :contributors, :authors)
+  update_suggestions(:keywords, :contributors, :authors, :target_audience)
 
   def self.facet_fields
     %w( )

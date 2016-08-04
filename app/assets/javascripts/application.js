@@ -81,6 +81,15 @@ function reposition_tiles(container, tile_class){
  *  - Functions: Select, Delete
  */
 
+function handleMultipleInputAdd(element) {
+    var field_name = $(element).attr('data-field');
+    var field_name_plural = $(element).attr('data-field-plural');
+    var model_name = $(element).attr('data-model');
+    var placeholder_text = $(element).attr('placeholder-text');
+
+    add_multiple_input_field(model_name, field_name, field_name_plural, placeholder_text);
+}
+
 
 $(document).ready(function(){
     /*EVENTS*/
@@ -90,31 +99,21 @@ $(document).ready(function(){
      */
     $(document.body).on('click', '.multiple-input-add', function(e){
         /* remove HTML autofocus attribute from element */
-        console.log('Clicked on "Add new ... "')
-
-        this.blur()
-        var field_name = $(this).attr('data-field');
-        var model_name = $(this).attr('data-model');
-        var placeholder_text = $(this).attr('placeholder-text');
-
-        add_multiple_input_field(model_name, field_name, placeholder_text);
-    })
+        this.blur();
+        handleMultipleInputAdd(this);
+    });
     $(document.body).on('keypress', '.multiple-input', function(e){
         /*ADD NEW LINE IF USER HITS ENTER. CONSIDER ADDING MORE LIKE SHIFT, COMMA, ETC*/
         if (e.which == '13' || e.which == '188') {
             event.preventDefault(); /* stops enter submitting form */
-            var field_name = $(this).attr('data-field');
-            var model_name = $(this).attr('data-model');
-            var placeholder_text = $(this).attr('placeholder-text');
-
-            add_multiple_input_field(model_name, field_name, placeholder_text);
+            handleMultipleInputAdd(this);
         }
-    })
+    });
     /* User deletes a free text field such as keyword, author or contributor */
     $(document.body).on('click', '.multiple-input-delete', function(e){
         var list_item = $(this).parent();
         remove_list_item(list_item)
-    })
+    });
     /*
      * User selects a new package to add the resource to.
      * This adds a new added item and removes it from the dropdown
@@ -168,13 +167,13 @@ function add_selected_dropdown_item(model_name, field_name, value, name){
 /*
  * Creates a new input box for free text fields as a child of the field_name div
  */
-function add_multiple_input_field(model_name, field_name, placeholder_text){
+function add_multiple_input_field(model_name, field_name, field_name_plural, placeholder_text){
     var input_box = '<input type="text" class="multiple-input form-control ' + field_name + 's" ' +
                     'autocomplete="off"' +
                     'data-field="' + field_name + '" ' +
                     'data-model="' + model_name + '" ' +
                     'placeholder="' + placeholder_text + '" ' +
-                    'name="' + model_name + '[' + field_name + 's][]"' +
+                    'name="' + model_name + '[' + field_name_plural + '][]"' +
                     ' />';
     var delete_button = '<input type="button" value="&times;" class="multiple-input-delete" data-field="keyword" tabindex=300/>';
 

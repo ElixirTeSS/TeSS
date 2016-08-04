@@ -52,8 +52,8 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
         </div>
     <% end %>
   </div>
-  <a class="btn btn-info multiple-input-add" data-field="<%=field_name.singularize%>"
-                             data-model="<%=resource.class.name.underscore%>" placeholder-text="<%= placeholder_text %>">
+  <a class="btn btn-info multiple-input-add" data-field="<%=field_name.singularize -%>" data-field-plural="<%= field_name -%>"
+                             data-model="<%=resource.class.name.underscore -%>" placeholder-text="<%= placeholder_text -%>">
     <i class="fa fa-plus"></i> Add <%= label.singularize.downcase %>
   </a>
 </div>

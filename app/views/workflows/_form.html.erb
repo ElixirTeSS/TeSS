@@ -59,10 +59,10 @@
                                                                       :suggestions => raw(TeSS::AutocompleteManager.suggestions_array_for('keywords').to_json)} %>
 
 
-          <div class="form-group">
-            <%= f.label :target_audience %>
-            <%= f.text_field :target_audience, :class => 'form-control' %>
-          </div>
+          <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'target_audience',
+                                                                      :resource => @workflow,
+                                                                      :f => f,
+                                                                      :suggestions => raw(TeSS::AutocompleteManager.suggestions_array_for('target_audience').to_json)} %>
 
           <div class="form-group">
             <%= f.label :difficulty_level %>
