@@ -39,6 +39,63 @@
           <%= render partial: 'workflows/workflow_diagram', locals: { workflow:  @workflow, editable: true } %>
         </div>
 
+        <%= collapsible_panel('Extra metadata', 'extra-metadata') do %>
+          <div class="form-group">
+            <%= f.label :doi, "DOI" %>
+            <%= f.text_field :doi, :class => 'form-control' %>
+          </div>
+
+          <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'scientific_topic_names',
+                                                                      :label => 'Scientific topics',
+                                                                      :resource => @workflow,
+                                                                      :f => f,
+                                                                      :placeholder_text => 'Start typing to find topics',
+                                                                      :suggestions => raw(scientific_topic_names_for_autocomplete.to_json),
+                                                                      :disabled => true} %>
+
+          <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords',
+                                                                      :resource => @workflow,
+                                                                      :f => f,
+                                                                      :suggestions => raw(TeSS::AutocompleteManager.suggestions_array_for('keywords').to_json)} %>
+
+
+          <div class="form-group">
+            <%= f.label :target_audience %>
+            <%= f.text_field :target_audience, :class => 'form-control' %>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :difficulty_level %>
+            <%= f.select(:difficulty_level,
+                         options_for_select(difficulty_options_for_select, @workflow.difficulty_level.blank? ? "notspecified" : @workflow.difficulty_level), {},
+                         class: "form-control")
+            %>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :licence %>
+            <%= f.select(:licence,
+                         options_for_select(licence_options_for_select, @workflow.licence.blank? ? "notspecified" : @workflow.licence), {},
+                         class: "form-control")
+            %>
+          </div>
+
+          <%= render :partial => 'common/multiple_input',
+                     :locals => {:field_name => 'authors',
+                                 :resource => @workflow,
+                                 :f => f,
+                                 :suggestions => raw([TeSS::AutocompleteManager.suggestions_array_for('contributors') +
+                                                          TeSS::AutocompleteManager.suggestions_array_for('authors')].flatten.uniq.to_json)} %>
+
+          <%= render :partial => 'common/multiple_input',
+                     :locals => {:field_name => 'contributors',
+                                 :resource => @workflow,
+                                 :f => f,
+                                 :suggestions => raw([TeSS::AutocompleteManager.suggestions_array_for('contributors') +
+                                                          TeSS::AutocompleteManager.suggestions_array_for('authors')].flatten.uniq.to_json)} %>
+
+        <% end %>
+
         <div class="form-group actions">
           <%= f.submit "Save workflow", class: 'btn btn-primary', id: 'workflow-form-submit' %>
           <%= link_to t('.cancel', :default => t("helpers.links.cancel")),

@@ -1,5 +1,7 @@
 class Workflow < ActiveRecord::Base
+
   include PublicActivity::Common
+  include HasScientificTopics
   has_paper_trail
 
   extend FriendlyId
@@ -18,6 +20,10 @@ class Workflow < ActiveRecord::Base
   belongs_to :user
 
   validates :title, presence: true
+
+  clean_array_fields(:keywords, :contributors, :authors)
+
+  update_suggestions(:keywords, :contributors, :authors)
 
   def self.facet_fields
     %w( )

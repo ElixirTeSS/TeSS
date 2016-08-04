@@ -86,6 +86,9 @@ class WorkflowsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def workflow_params
-      params.require(:workflow).permit(:title, :description, :user_id, :workflow_content)
+      params.require(:workflow).permit(:title, :description, :user_id, :workflow_content, :doi,
+                                       :remote_created_date,  :remote_updated_date, { keywords: [] },
+                                       { scientific_topic_names: [] }, :licence, :difficulty_level,
+                                       { contributors: [] }, { authors: [] }, { target_audience: [] })
     end
 end

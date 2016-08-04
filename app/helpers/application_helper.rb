@@ -178,4 +178,21 @@ module ApplicationHelper
     end
   end
 
+  def collapsible_panel(title, id, &block)
+    content_tag(:div, class: 'panel panel-default') do
+      content_tag(:div, class: 'panel-heading') do
+        content_tag(:h4, class: 'panel-title') do
+          link_to("##{id}", 'data-toggle' => 'collapse') do
+            (title + ' <i class="fa fa-caret-down" aria-hidden="true"></i>').html_safe
+          end
+        end
+      end +
+      content_tag(:div, class: 'panel-collapse collapse', id: id) do
+        content_tag(:div, class: 'panel-body') do
+          block.call
+        end
+      end
+    end
+  end
+
 end
