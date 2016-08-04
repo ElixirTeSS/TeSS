@@ -1,6 +1,8 @@
 class Material < ActiveRecord::Base
 
   include PublicActivity::Common
+  include HasScientificTopics
+
   has_paper_trail
 
   extend FriendlyId
@@ -52,7 +54,6 @@ class Material < ActiveRecord::Base
 
   # has_one :owner, foreign_key: "id", class_name: "User"
   belongs_to :user
-  has_many :scientific_topics, foreign_key: 'class_id', class_name: "ScientificTopic"
   has_many :package_materials
   has_many :packages, through: :package_materials
   belongs_to :content_provider
@@ -69,7 +70,7 @@ class Material < ActiveRecord::Base
   # Validate the URL is in correct format via valid_url gem
   validates :url, :url => true
 
-  clean_array_fields(:keywords, :contributors, :authors, :scientific_topics)
+  clean_array_fields(:keywords, :contributors, :authors)
 
   update_suggestions(:keywords, :contributors, :authors)
 

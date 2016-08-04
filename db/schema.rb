@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160802145010) do
+ActiveRecord::Schema.define(version: 20160804114007) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -121,7 +121,6 @@ ActiveRecord::Schema.define(version: 20160802145010) do
     t.datetime "updated_at",                                   null: false
     t.text     "long_description"
     t.string   "target_audience",     default: [],                          array: true
-    t.string   "scientific_topics",   default: [],                          array: true
     t.string   "keywords",            default: [],                          array: true
     t.string   "authors",             default: [],                          array: true
     t.string   "contributors",        default: [],                          array: true
@@ -214,6 +213,15 @@ ActiveRecord::Schema.define(version: 20160802145010) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "scientific_topic_links", force: :cascade do |t|
+    t.integer "scientific_topic_id"
+    t.integer "resource_id"
+    t.string  "resource_type"
+  end
+
+  add_index "scientific_topic_links", ["resource_type", "resource_id"], name: "index_scientific_topic_links_on_resource_type_and_resource_id", using: :btree
+  add_index "scientific_topic_links", ["scientific_topic_id"], name: "index_scientific_topic_links_on_scientific_topic_id", using: :btree
 
   create_table "scientific_topics", force: :cascade do |t|
     t.string   "preferred_label"
@@ -341,7 +349,6 @@ ActiveRecord::Schema.define(version: 20160802145010) do
     t.datetime "updated_at",                       null: false
     t.string   "slug"
     t.string   "target_audience",     default: [],              array: true
-    t.string   "scientific_topic",    default: [],              array: true
     t.string   "keywords",            default: [],              array: true
     t.string   "authors",             default: [],              array: true
     t.string   "contributors",        default: [],              array: true
@@ -362,6 +369,7 @@ ActiveRecord::Schema.define(version: 20160802145010) do
   add_foreign_key "materials", "users"
   add_foreign_key "nodes", "users"
   add_foreign_key "packages", "users"
+  add_foreign_key "scientific_topic_links", "scientific_topics"
   add_foreign_key "staff_members", "nodes"
   add_foreign_key "users", "roles"
   add_foreign_key "workflows", "users"

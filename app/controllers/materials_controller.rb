@@ -10,16 +10,6 @@ class MaterialsController < ApplicationController
   # GET /materials.json
   # GET /materials.json?q=queryparam
 
-  # def find_scientific_topics
-  #   res = []
-  #   if params[:scientific_topic_names]
-  #     params.delete(:scientific_topic_names).each do |st_name|
-  #       res << ScientificTopic.find_by_preferred_label(st_name)
-  #     end
-  #   end
-  #   params[:scientific_topics] = res.compact.flatten.uniq if res and !res.empty?
-  # end
-
   def index
     respond_to do |format|
       format.json { render json: @materials }
@@ -157,7 +147,6 @@ class MaterialsController < ApplicationController
     mat_params = params.require(:material).permit(:title, :url, :short_description, :long_description, :doi, :remote_updated_date,
                                                   :remote_created_date,  :remote_updated_date, {:package_ids => []}, :content_provider_id,
                                                   :content_provider, {:keywords => []},
-                                                  {:scientific_topic_ids => []},
                                                   {:scientific_topic_names => []},
                                                   :licence, :difficulty_level, {:contributors => []},
                                                   {:authors=> []}, {:target_audience => []},
@@ -165,19 +154,6 @@ class MaterialsController < ApplicationController
     mat_params[:short_description] = ActionView::Base.full_sanitizer.sanitize(mat_params[:short_description])
     mat_params[:long_description] = ActionView::Base.full_sanitizer.sanitize(mat_params[:long_description])
 
-    mat_params[:scientific_topic_ids] = mat_params[:scientific_topic_ids].reject { |sct| sct.blank? } unless mat_params[:scientific_topic_ids].blank?
-
-    if mat_params[:scientific_topic_ids].blank?
-      mat_params[:scientific_topic_ids] = []
-      scientific_topic_names = [mat_params.delete('scientific_topic_names')].flatten
-      scientific_topic_names = scientific_topic_names.reject { |sct| sct.blank? }
-      if !scientific_topic_names.blank?
-        scientific_topics = scientific_topic_names.collect{|name| ScientificTopic.find_by_preferred_label(name)}.flatten.compact.uniq
-        scientific_topic_ids = scientific_topics.collect{|x|x.id}
-      end
-      mat_params[:scientific_topic_ids] = scientific_topic_ids
-    end
-
-    return mat_params
+    mat_params
   end
 end

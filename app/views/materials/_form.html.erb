@@ -41,33 +41,8 @@
       <%#= error_span(@material[:doi]) %>
     </div>
 
-    <script>
-      $('#material_form').submit(function () {
-        var scientific_topics_input_fields_array = $(".scientific_topics").map(function () {
-          return $(this).val();
-        }).get();
-
-        $('.scientific_topics').each(function () {
-          var scientific_topic_names_hidden_input = $("<input>")
-              .attr("type", "hidden")
-              .attr("name", "material[scientific_topic_names][]").val($(this).val());
-          // append to the form
-          $(this).append($(scientific_topic_names_hidden_input));
-        });
-        return true;
-      });
-
-      // Binding on change event to dynamically added input text fields means
-      // we have to bind the event to a parent element because the input doesn't exist yet.
-      $(document).on('blur', '.scientific_topics', function () {
-        if ($(this).val() != '') {
-          $(this).attr('disabled', 'true');
-        }
-      });
-
-    </script>
-
-    <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'scientific_topics',
+    <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'scientific_topic_names',
+                                                                :label => 'Scientific topics',
                                                                 :resource => @material,
                                                                 :f => f,
                                                                 :placeholder_text => 'Start typing to find topics',
@@ -82,25 +57,22 @@
     <div class="form-group">
       <%= f.label :target_audience %>
       <%= f.text_field :target_audience, :class => 'form-control' %>
-      <%#= error_span(@material[:target_audience]) %>
     </div>
 
     <div class="form-group">
       <%= f.label :difficulty_level %>
-      <!--<%#= f.select :difficulty_level, options_for_select(difficulty_options_for_select(), @material[:difficulty_level].blank? ? "notspecified" : @material[:difficulty]) %>-->
-      <!--<label for="material_difficulty_level">Difficulty level</label>-->
-      <%= select_tag('material[difficulty_level]', options_for_select(difficulty_options_for_select(), @material.difficulty_level.blank? ? "notspecified" : @material.difficulty_level), :class => "form-control")
+      <%= f.select(:difficulty_level,
+                   options_for_select(difficulty_options_for_select, @material.difficulty_level.blank? ? "notspecified" : @material.difficulty_level), {},
+                   class: "form-control")
       %>
-      <%#= error_span(@material[:difficulty_level]) %>
     </div>
 
     <div class="form-group">
       <%= f.label :licence %>
-      <!--<%#= f.select :licence, options_for_select(licence_options_for_select(), @material[:licence].blank? ? "notspecified" : @material[:licence]), :class => 'form-control' %>-->
-      <!--<label for="material_licence">Licence</label>-->
-      <%= select_tag('material[licence]', options_for_select(licence_options_for_select(), @material.licence.blank? ? "notspecified" : @material.licence), :class => "form-control") %>
-
-      <%#= error_span(@material[:licence]) %>
+      <%= f.select(:licence,
+                   options_for_select(licence_options_for_select, @material.licence.blank? ? "notspecified" : @material.licence), {},
+                   class: "form-control")
+      %>
     </div>
 
     <%= render :partial => 'common/multiple_input',

@@ -24,9 +24,10 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
 
 <% placeholder_text ||= '' %>
 <% disabled = (defined? disabled) ? disabled : false %>
+<% label ||= field_name.humanize %>
 
 <div class="form-group">
-  <%= f.label field_name.to_sym %>
+  <%= f.label field_name.to_sym, label %>
   <div class="<%=field_name.singularize%> multiple-input-list">
     <% field_values = resource.send(field_name.to_sym) %>
     <% field_values = [''] if field_values.blank? %> <!-- Add one placeholder if the field's value consists of an empty array -->
@@ -39,8 +40,9 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
                  data-field='<%= field_name.singularize %>'
                  data-model="<%=resource.class.name.underscore%>"
                  name="<%=resource.class.name.underscore%>[<%= field_name %>][]"
-                 value="<%= (field_name == 'scientific_topics' and !val.blank?) ? val.preferred_label : val %>"
-                 <%= disabled && !val.blank? ? "disabled" : '' %>
+                 value="<%= val %>"
+                 <%# Using `readonly` rather than `disabled`, as `disabled` stops the elements being submitted in the form %>
+                 <%= disabled && !val.blank? ? "readonly" : '' %>
                  placeholder="<%= placeholder_text %>"
                  />
           <input type="button"
@@ -52,7 +54,6 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
   </div>
   <a class="btn btn-info multiple-input-add" data-field="<%=field_name.singularize%>"
                              data-model="<%=resource.class.name.underscore%>" placeholder-text="<%= placeholder_text %>">
-    <i class="fa fa-plus"></i> Add <%= field_name.singularize.humanize.downcase %>
+    <i class="fa fa-plus"></i> Add <%= label.singularize.downcase %>
   </a>
-  <%#= error_span(material.send(field_name)) %>
 </div>
