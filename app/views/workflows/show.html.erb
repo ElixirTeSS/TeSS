@@ -32,6 +32,7 @@
           <% else %>
               <p><%= render_markdown(@workflow.description) %></p>
           <% end %> 
+          <%= render partial: 'common/extra_metadata', locals: { resource: @workflow } %>
         </div>
       </div>
     </div>
