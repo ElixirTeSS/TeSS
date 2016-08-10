@@ -74,7 +74,7 @@
     <div class="form-group">
       <%= f.label :location %>
       <br>
-      Face-to-face <i class="fa fa-users" aria-hidden="true" id="f2f-symbol"></i> <%= f.radio_button 'online', 'false', :class=>'location' %>
+      Face-to-face <%= icon_for(:face_to_face, :small)%></i> <%= f.radio_button 'online', 'false', :class=>'location' %>
       <%= f.radio_button 'online', 'true', :class=>'location', :checked => @event.online? %>     <i class="fa fa-desktop" aria-hidden="true" id="online-symbol"></i> Online
     </div>
 
@@ -108,6 +108,14 @@
           <%= f.text_field :longitude, :class => 'form-control' %>
         </div>
     </div>
+
+    <div class="form-group">
+      <%= f.label 'for_profit' %> <%= icon_for(:for_profit, :small)%>
+       <%= f.check_box :for_profit %>
+    </div>
+
+
+
     <%= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @event, :f => f, :options => available_packages(@event), :dropdown_toggle_button_name => "Add to package"} %>
 
     <div class="form-group" id="external-resources">
