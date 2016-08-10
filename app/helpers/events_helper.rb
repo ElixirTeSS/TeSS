@@ -29,8 +29,9 @@ module EventsHelper
       for_profit: {:icon => 'fa-credit-card', :message => 'From a for-profit company'}
   }
 
-  def icon_for(type)
-    return "<i class=\"fa #{ICONS[type][:icon]} has-tooltip event-info-icon\"
+  def icon_for(type, size=nil)
+
+    return "<i class=\"fa #{ICONS[type][:icon]} has-tooltip event-info-icon#{'-' + size.to_s if size}\"
     aria-hidden=\"true\"
     data-toggle=\"tooltip\"
     data-placement=\"top\"

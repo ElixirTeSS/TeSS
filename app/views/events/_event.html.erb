@@ -3,15 +3,24 @@
   <!--<p><button class="btn btn-success"><a href="<%#= event.url %>">View Event <span class="fa fa-external-link" aria-hidden="true"></span></a></button> </p>-->
   <p><%= neatly_printed_date_range(event.start, event.end) %></p>
   <% if event.online? %>
-      <%= content_tag(:span, :class=>'pull-right') do %>
-          <%= icon_for(:online) %>
+      <%= content_tag(:span, :class=>'pull-right gap') do %>
+          <%= icon_for(:online, :small) %>
       <% end %>
   <% else %>
     <p class="dont-break-out"><%= [event.venue, event.city, event.country].reject { |field_value| field_value.blank? }.join(", ")%></p>
   <% end %>
   <% if event.started? %>
-      <%= content_tag(:span, :class=>'pull-right') do %>
-        <%= icon_for(:started) %>
+      <%= content_tag(:span, :class=>'pull-right gap') do %>
+        <%= icon_for(:started, :small) %>
+      <% end %>
+  <% elsif event.expired? %>
+      <%= content_tag(:span, :class=>'pull-right gap') do %>
+          <%= icon_for(:expired, :small) %>
+      <% end %>
+  <% end %>
+  <% if event.for_profit? %>
+      <%= content_tag(:span, :class=>'pull-right gap') do %>
+          <%= icon_for(:for_profit, :small) %>
       <% end %>
   <% end %>
   <%= link_to '', event, :class=>"media-view" %>
