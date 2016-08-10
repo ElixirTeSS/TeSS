@@ -46,12 +46,13 @@
             <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                         event_path(@event),
                         :method => 'delete',
-                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                        :data => { :confirm => t('.confirm', :default => t("helpers.l inks.confirm", :default => 'Are you sure?')) },
                         :class => 'btn btn-danger' %>
         <% end %>
         <a href="<%= @event.url %>" target="_blank" class="btn btn-success"><span class="fa fa-external-link"></span> View event</a>
       </div>
     </div>
+
     <div class="row">
       <ul class="nav nav-tabs">
         <li class="active">
@@ -72,6 +73,10 @@
               <h2><%= @event.title %></h2>
               <p><%= link_to @event.url, @event.url, :class =>'h5', :target => "_blank" %></p>
             </div>
+
+            <%= render :partial => 'events/partials/icon_info' %>
+
+
             <div class="col-md-4">
               <% if @event.provider and !@event.provider.blank? %>
                   <p><strong>Provider:</strong>
@@ -155,7 +160,9 @@
             </div>
           </div>
           <div class="col-md-8">
-            <%= link_to 'Download', "/events/#{@event.id}/get_ics", :class=>"btn btn-info" %>
+            <%= link_to "/events/#{@event.id}/get_ics", :class=>"btn btn-info" do %>
+                <i class="fa fa-calendar-o"></i> Download as .ics
+            <% end %>
           </div>
         </div>
         <div id="activity_log" class="tab-pane fade">
