@@ -114,29 +114,31 @@
                     <%= @event.sponsor %></p>
               <% end %>
 
-              <% if @event.venue and !@event.venue.blank? %>
-                  <p><strong>Venue:</strong>
-                    <%= @event.venue %></p>
-              <% end %>
+              <% unless @event.online? %>
+                  <% if @event.venue and !@event.venue.blank? %>
+                      <p><strong>Venue:</strong>
+                        <%= @event.venue %></p>
+                  <% end %>
 
-              <% if @event.city and !@event.city.blank? %>
-                  <p><strong>City:</strong>
-                    <%= @event.city %></p>
-              <% end %>
+                  <% if @event.city and !@event.city.blank? %>
+                      <p><strong>City:</strong>
+                        <%= @event.city %></p>
+                  <% end %>
 
-              <% if @event.county and !@event.county.blank? %>
-                  <p><strong>County:</strong>
-                    <%= @event.county %></p>
-              <% end %>
+                  <% if @event.county and !@event.county.blank? %>
+                      <p><strong>County:</strong>
+                        <%= @event.county %></p>
+                  <% end %>
 
-              <% if @event.country and !@event.country.blank? %>
-                  <p><strong>Country:</strong>
-                    <%= @event.country %></p>
-              <% end %>
+                  <% if @event.country and !@event.country.blank? %>
+                      <p><strong>Country:</strong>
+                        <%= @event.country %></p>
+                  <% end %>
 
-              <% if @event.postcode and !@event.postcode.blank? %>
-                  <p><strong>Postcode:</strong>
-                    <%= @event.postcode %></p>
+                  <% if @event.postcode and !@event.postcode.blank? %>
+                      <p><strong>Postcode:</strong>
+                        <%= @event.postcode %></p>
+                  <% end %>
               <% end %>
 
               <% if @event.external_resources.any? %>
@@ -155,9 +157,11 @@
                   <%#= @event.longitude %></p> -->
               <!--<%# end %>-->
             </div>
+            <% unless @event.online? %>
             <div class="col-md-8">
               <div id="map" class="event-show-map"></div>
             </div>
+            <% end %>
           </div>
           <div class="col-md-8">
             <%= link_to "/events/#{@event.id}/get_ics", :class=>"btn btn-info" do %>

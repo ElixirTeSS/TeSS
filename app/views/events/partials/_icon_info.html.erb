@@ -1,35 +1,19 @@
 <% if @event.for_profit? or @event.online? or @event.expired? or @event.started?%>
 <div class="event-info-icons">
   <% if @event.for_profit? %>
-      <i class="fa fa-credit-card has-tooltip event-info-icon"
-         data-toggle="tooltip"
-         data-placement="top"
-         title="From a for-profit company">
-      </i>
+      <%= icon_for(:for_profit) %>
+      <span class="gap"></span>
   <% end %>
   <% if @event.online? %>
-      <i class="fa fa-desktop has-tooltip event-info-icon"
-         aria-hidden="true"
-         data-toggle="tooltip"
-         data-placement="top"
-         title="Accessible online only">
-      </i>
+      <%= icon_for(:online) %>
+      <span class="gap"></span>
   <% end %>
   <% if @event.expired? %>
-      <i class="fa fa-hourglass-end has-tooltip event-info-icon"
-         aria-hidden="true"
-         data-toggle="tooltip"
-         data-placement="top"
-         title="The event has already finished">
-      </i>
+      <%= icon_for(:expired) %>
+      <span class="gap"></span>
   <% end %>
   <% if @event.started? %>
-      <i class="fa fa-hourglass-half has-tooltip event-info-icon"
-         aria-hidden="true"
-         data-toggle="tooltip"
-         data-placement="top"
-         title="This event has already started">
-      </i>
+    <%= icon_for(:started) %>
   <% end %>
 </div>
 <% end %>

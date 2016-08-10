@@ -2,10 +2,18 @@
   <h3 class="media-heading dont-break-out"><%= event.title %></h3>
   <!--<p><button class="btn btn-success"><a href="<%#= event.url %>">View Event <span class="fa fa-external-link" aria-hidden="true"></span></a></button> </p>-->
   <p><%= neatly_printed_date_range(event.start, event.end) %></p>
-  <p class="dont-break-out"><%= [event.venue, event.city, event.country].reject { |field_value| field_value.blank? }.join(", ")%></p>
+  <% if event.online? %>
+      <%= content_tag(:span, :class=>'pull-right') do %>
+          <%= icon_for(:online) %>
+      <% end %>
+  <% else %>
+    <p class="dont-break-out"><%= [event.venue, event.city, event.country].reject { |field_value| field_value.blank? }.join(", ")%></p>
+  <% end %>
+  <% if event.started? %>
+      <%= content_tag(:span, :class=>'pull-right') do %>
+        <%= icon_for(:started) %>
+      <% end %>
+  <% end %>
   <%= link_to '', event, :class=>"media-view" %>
   <%= render :partial => 'events/partials/event_schemaorg', :locals => {:event => event} %>
-  <% if event.started? %>
-      <i>This event is currently in progress</i>
-  <% end %>
 </li>

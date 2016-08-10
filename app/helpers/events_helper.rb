@@ -22,4 +22,29 @@ module EventsHelper
     return events
   end
 
+  ICONS = {
+      started: {:icon => 'fa-hourglass-half', :message => 'This event has already started'},
+      expired: {:icon => 'fa-hourglass-end', :message => 'This event has finished'},
+      online: {:icon => 'fa-desktop', :message => 'Accessible online'},
+      for_profit: {:icon => 'fa-credit-card', :message => 'From a for-profit company'}
+  }
+
+  def icon_for(type)
+    return "<i class=\"fa #{ICONS[type][:icon]} has-tooltip event-info-icon\"
+    aria-hidden=\"true\"
+    data-toggle=\"tooltip\"
+    data-placement=\"top\"
+    title=\"#{ICONS[type][:message]}\">
+    </i>".html_safe
+  end
+
+  def started_event
+
+  end
+
+  def expired_event
+
+  end
+
+
 end
