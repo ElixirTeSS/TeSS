@@ -25,8 +25,9 @@ module EventsHelper
   ICONS = {
       started: {:icon => 'fa-hourglass-half', :message => 'This event has already started'},
       expired: {:icon => 'fa-hourglass-end', :message => 'This event has finished'},
-      online: {:icon => 'fa-desktop', :message => 'Accessible online'},
-      for_profit: {:icon => 'fa-credit-card', :message => 'From a for-profit company'}
+      online: {:icon => 'fa-desktop', :message => 'This is an online event'},
+      face_to_face: {:icon => 'fa-users', :message => 'This is a physical event'},
+      for_profit: {:icon => 'fa-credit-card', :message => 'This event is from a for-profit company'}
   }
 
   def icon_for(type, size=nil)
