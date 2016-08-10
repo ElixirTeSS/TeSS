@@ -84,10 +84,10 @@ class Event < ActiveRecord::Base
 
   def upcoming?
     # Handle nil for start date
-    if self.end.blank?
+    if self.start.blank?
       return true
     else
-      return (Time.now < self.end)
+      return (Time.now < self.start)
     end
   end
 
@@ -100,8 +100,8 @@ class Event < ActiveRecord::Base
   end
 
   def expired?
-    if self.start
-      return Time.now > self.start
+    if self.end
+      return Time.now > self.end
     else
       return false
     end

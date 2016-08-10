@@ -116,7 +116,7 @@ class ApplicationController < ActionController::Base
       if model_name == Event
         facet 'start'
         unless selected_facets.keys.include?('include_expired') and selected_facets['include_expired'] == true
-          with('start').greater_than(Time.zone.now)
+          with('end').greater_than(Time.zone.now)
         end
       end
 
