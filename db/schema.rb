@@ -81,8 +81,14 @@ ActiveRecord::Schema.define(version: 20160804114007) do
     t.string   "slug"
     t.integer  "content_provider_id"
     t.integer  "user_id"
+    t.boolean  "online",                                       default: false
+    t.text     "cost"
+    t.boolean  "for_profit",                                   default: false
   end
 
+  add_index "events", ["cost"], name: "index_events_on_cost", using: :btree
+  add_index "events", ["for_profit"], name: "index_events_on_for_profit", using: :btree
+  add_index "events", ["online"], name: "index_events_on_online", using: :btree
   add_index "events", ["slug"], name: "index_events_on_slug", unique: true, using: :btree
   add_index "events", ["user_id"], name: "index_events_on_user_id", using: :btree
 
