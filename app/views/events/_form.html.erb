@@ -1,3 +1,19 @@
+<script>
+    $(function(){
+        if (<%=@event.online?%>){
+            console.log('cockkkk')
+            $('.address_content').hide()
+        }
+    })
+  $(document).on('change', '.location', function(){
+      console.log(this.value)
+      if (this.value == 'true'){
+          $('.address_content').hide()
+      } else {
+          $('.address_content').show()
+      }
+  })
+</script>
 <%= simple_form_for @event, :html => {:id => 'event_form'}  do |f| %>
     <% if @event.errors.any? %>
         <div id="error_explanation">
@@ -54,33 +70,43 @@
       <%= f.label :sponsor %>
       <%= f.text_field :sponsor, :class => 'form-control' %>
     </div>
+
     <div class="form-group">
-      <%= f.label :venue %>
-      <%= f.text_area :venue, :class => 'form-control' %>
+      <%= f.label :location %>
+      <br>
+      Face-to-face <i class="fa fa-users" aria-hidden="true" id="f2f-symbol"></i> <%= f.radio_button 'online', 'false', :class=>'location' %>
+      <%= f.radio_button 'online', 'true', :class=>'location', :checked => @event.online? %>     <i class="fa fa-desktop" aria-hidden="true" id="online-symbol"></i> Online
     </div>
-    <div class="form-group">
-      <%= f.label :city %>
-      <%= f.text_field :city, :class => 'form-control' %>
-    </div>
-    <div class="form-group">
-      <%= f.label :county %>
-      <%= f.text_field :county, :class => 'form-control' %>
-    </div>
-    <div class="form-group">
-      <%= f.label :country %>
-      <%= f.text_field :country, :class => 'form-control' %>
-    </div>
-    <div class="form-group">
-      <%= f.label :postcode %>
-      <%= f.text_field :postcode, :class => 'form-control' %>
-    </div>
-    <div class="form-group">
-      <%= f.label :latitude %>
-      <%= f.text_field :latitude, :class => 'form-control' %>
-    </div>
-    <div class="form-group">
-      <%= f.label :longitude %>
-      <%= f.text_field :longitude, :class => 'form-control' %>
+
+    <div class="address_content">
+        <div class="form-group">
+          <%= f.label :venue %>
+          <%= f.text_area :venue, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :city %>
+          <%= f.text_field :city, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :county %>
+          <%= f.text_field :county, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :country %>
+          <%= f.text_field :country, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :postcode %>
+          <%= f.text_field :postcode, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :latitude %>
+          <%= f.text_field :latitude, :class => 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :longitude %>
+          <%= f.text_field :longitude, :class => 'form-control' %>
+        </div>
     </div>
     <%= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @event, :f => f, :options => available_packages(@event), :dropdown_toggle_button_name => "Add to package"} %>
 

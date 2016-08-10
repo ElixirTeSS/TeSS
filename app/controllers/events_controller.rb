@@ -155,7 +155,7 @@ class EventsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def event_params
     event_params = params.require(:event).permit(:external_id, :title, :subtitle, :url, :provider, :description, {:field => []},
-                                  {:category => []}, {:keyword => []}, :start, :end, :sponsor, :venue, :city, :county,
+                                  {:category => []}, {:keyword => []}, :start, :end, :sponsor, :online, :for_profit, :venue, :city, :county,
                                   :country, :postcode, :latitude, :longitude, :content_provider_id, {:package_ids => []},
                                   external_resources_attributes: [:id, :url, :title, :_destroy])
     event_params[:description] = ActionView::Base.full_sanitizer.sanitize(event_params[:description])
