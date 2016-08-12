@@ -10,23 +10,30 @@ module SearchHelper
     return url_for(parameters)
   end
 
-  def filter_link name, value
+  def filter_link name, value, title=nil, html_options={}, &block
     new_parameter = {name => value}
     parameters = params.dup
     #if there's already a filter of the same facet type, create/add to an array
     if parameters.include?(name)
       if !parameters[name].include?(value)
-          new_parameter = {name => [parameters.dup.delete(name), value].flatten}
-        else new_parameter = {}
-        end
+        new_parameter = {name => [parameters.dup.delete(name), value].flatten}
+      else new_parameter = {}
+      end
     end
     #remove the page option if it exists
     parameters.delete('page')
-    return link_to truncate(value,length: 30), parameters.merge(new_parameter)
+
+    if block_given?
+      link_to parameters.merge(new_parameter), html_options do
+        title || truncate(value.to_s,length: 30)
+        yield
+      end
+    else
+      link_to (title || truncate(value.to_s,length: 30)), parameters.merge(new_parameter), html_options
+    end
   end
 
-
-  def remove_filter_link name, value, html_options=nil
+  def remove_filter_link name, value, html_options={}, title=nil, &block
     parameters = params.dup
     #delete a filter from an array or delete the whole facet if it is the only one
     if parameters.include?(name)
@@ -37,7 +44,16 @@ module SearchHelper
     end
     #remove the page option if it exists
     parameters.delete('page')
-    return link_to "#{value}&nbsp;<i class='glyphicon glyphicon-remove pull-right'></i>".html_safe, parameters, html_options
+
+    if block_given?
+      link_to parameters, html_options do
+        "#{title || truncate(value.to_s,length: 30)}&nbsp;<i class='glyphicon glyphicon-remove pull-right'></i>".html_safe
+        yield
+      end
+    else
+      return link_to "#{title || truncate(value.to_s,length: 30)}&nbsp;<i class='glyphicon glyphicon-remove pull-right'></i>".html_safe, parameters, html_options
+    end
+
   end
 
   def show_more_link facet
