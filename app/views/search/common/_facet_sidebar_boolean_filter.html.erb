@@ -1,0 +1,23 @@
+<!-- for things like 'online' or for_profit. Check the box sets it as false.  -->
+
+    <!-- Title -->
+    <li><h4 class="nav-heading"><%= facet_field.humanize %></h4>
+    </li>
+    <% facet = resources.facet(facet_field).rows %>
+
+    <!-- Display all filter links -->
+
+
+    <% if @facet_params.include?(facet_field)  %>
+    <%= remove_filter_link(:online, 'true') do %>
+        <li class="nav-item">
+            <input type="checkbox" checked> Show all events </input>
+        </li>
+        <% end %>
+    <% else %>
+        <%= filter_link(:online, 'true') do %>
+        <li class="nav-item active">
+            <input type="checkbox"> Only show online events </input>
+        </li>
+        <% end %>
+    <% end %>
