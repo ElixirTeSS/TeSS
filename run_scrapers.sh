@@ -23,6 +23,7 @@ fi
 
 SCRAPERS=(biocomp_rdfa_scraper
           bitsvib_rdfa_scraper
+	  bmtc_jsonld_scraper
           csc_events_scraper
           data_carpentry_scraper
           dtls_events
@@ -39,7 +40,6 @@ SCRAPERS=(biocomp_rdfa_scraper
           iann_events_uploader
           coursera_scraper
           erasys_rdfa_scraper
-          birmingham_metabolomics_transfer
           rss_scraper
           )
 
