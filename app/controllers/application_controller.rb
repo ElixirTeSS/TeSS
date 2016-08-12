@@ -80,8 +80,16 @@ class ApplicationController < ActionController::Base
         #Set all facets
         selected_facets.each do |facet_title, facet_value|
           if facet_title != 'include_expired'
-            any do
-              #Conjunction clause
+            any do #Conjunction clause
+              #Convert 'true' or 'false' to boolean true or false
+              if facet_title == 'online'
+                if facet_value and facet_value == 'true'
+                  facet_value = true
+                else
+                  facet_value = false
+                end
+              end
+              # Add to array that get executed lower down
               facets << with(facet_title, facet_value)
             end
           end
