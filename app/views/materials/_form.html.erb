@@ -105,6 +105,18 @@
       <a href="#" id="add-external-resource-btn" class="btn btn-info">
         <i class="fa fa-plus"></i> Add external resource
       </a>
+
+      <%= f.label :suggested_resources %>
+      <div class="row">
+        <%= render :partial => 'common/external_resource',
+                   :locals =>
+                       {:external_resource => ExternalResource.new(
+                            {:url => 'https://bio.tools/tool/cipf.es/Babelomics/5',
+                             :title => 'Babelomics'
+                            })
+                       }
+                   %>
+      </div>
     </div>
 
     <div class="form-group">
@@ -119,3 +131,4 @@
   <%= render partial: 'common/external_resource_form',
              locals: { form_name: 'material', external_resource: ExternalResource.new } %>
 </div>
+
