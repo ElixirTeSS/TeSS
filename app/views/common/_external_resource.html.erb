@@ -1,0 +1,31 @@
+<% if external_resource.url.starts_with?('https://bio.tools') %>
+    <% api_uri = 'https://bio.tools/api' + URI.split(external_resource.url)[5] %>
+    <% id = Digest::SHA256.hexdigest external_resource.url %>
+<% end %>
+
+<script>
+  $(function(){
+    if (<%= !api_uri.nil? %>){
+      var json = $.get('<%=api_uri%>', function(json){
+        var json_object = json;
+        console.log(json_object.description);
+        console.log(json_object.name);
+        console.log(json_object);
+        $('#<%=id%>-desc').text(json_object.description.substr(0,150) + '...');
+        $('#<%=id%>-resource-type-icon').addClass('fa-wrench').removeClass('fa-external-link');
+      });
+
+    }
+
+  })
+</script>
+
+<div class="col-md-4 col-sm-6">
+  <%= link_to(external_resource.url, target: :_blank) do %>
+      <h4>
+        <i class="fa fa-external-link" id="<%=id%>-resource-type-icon"></i>
+        <%= external_resource.title %>
+      </h4>
+  <% end %>
+  <span id="<%=id%>-desc"></span>
+</div>
