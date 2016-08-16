@@ -108,14 +108,7 @@
 
       <%= f.label :suggested_resources %>
       <div class="row">
-        <%= render :partial => 'common/external_resource',
-                   :locals =>
-                       {:external_resource => ExternalResource.new(
-                            {:url => 'https://bio.tools/tool/cipf.es/Babelomics/5',
-                             :title => 'Babelomics'
-                            })
-                       }
-                   %>
+        <%= render :partial => 'materials/partials/biotools_suggestions' %>
       </div>
     </div>
 
