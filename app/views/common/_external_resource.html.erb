@@ -9,21 +9,32 @@
       var json = $.get('<%=api_uri%>', function(json){
         var json_object = json;
         console.log(json_object)
-        $('#<%=id%>-desc').text(json_object.description.substr(0,150) + '...');
+        $('#<%=id%>-desc').text(json_object.description);
         $('#<%=id%>-resource-type-icon').addClass('fa-wrench').removeClass('fa-external-link');
         $.each(json_object.topic, function(index, topic){
           $('#<%=id%>-topics').append(
-              '<span class="topic-title btn btn-default filter-button">' +
-              '<a href="' + topic.uri + '">' + topic.term + '</a>' +
+              '<span class="topic-title">' +
+              '<a href="' + topic.uri + '">' + topic.term + ', </a>' +
               '</span>'
           );
         })
+        $('#<%=id%>-external-links').append(
+            '<a class="btn btn-default" target="_blank" href="' + json_object.homepage +'">' +
+            json_object.name + 's homepage ' +
+            '<i class="fa fa-external-link"/></a>' +
+            '</a>'
+        );
+        $('#<%=id%>-external-links').append(
+            '<a class="btn btn-default" target="_blank" href="https://dev.bio.tools/tool/' + json_object.id +'">' +
+            json_object.name + ' on bio.tools ' +
+            '<i class="fa fa-external-link"/></a>'
+        );
       });
     }
   })
 </script>
 
-<div class="col-md-4 col-sm-6">
+<div class="col-md-12 col-sm-12">
   <%= link_to(external_resource.url, target: :_blank) do %>
       <h4>
         <i class="fa fa-external-link" id="<%=id%>-resource-type-icon"></i>
@@ -33,5 +44,7 @@
   <span id="<%=id%>-desc"></span>
   <div class="topics" id="<%=id%>-topics">
     <em>Topics:</em>
+  </div>
+  <div id="<%=id%>-external-links">
   </div>
 </div>
