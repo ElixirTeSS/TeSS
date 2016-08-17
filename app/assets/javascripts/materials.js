@@ -1,6 +1,7 @@
 var Materials = {
     externalResources: {
-        add: function () {
+        add: function (title, url) {
+            console.log(title + ' ' + url);
             var newForm = $('#external-resource-template').clone().html();
 
             // Ensure the index of the new form is 1 greater than the current highest index, to prevent collisions
@@ -16,7 +17,12 @@ var Materials = {
             newForm = newForm.replace(/replace-me/g, index + 1);
             $('#external-resources-list').append(newForm);
 
+            if (typeof title !== 'undefined' && typeof url !== 'undefined') {
+                $('#material_external_resources_attributes_' + (index + 1) + '_url').val(url);
+                $('#material_external_resources_attributes_' + (index + 1) + '_title').val(title);
+            }
             return false; // Stop form being submitted
+
         },
 
         // This is just cosmetic. The actual removal is done by rails,

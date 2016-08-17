@@ -13,22 +13,22 @@
       return hash;
   }
 
-  $(document).on('click', '.associate-tool', function(){
-      url = this.getAttribute('data-url');
-      title = this.getAttribute('data-title');
-      this.parent().remove()
+  $(document).on('click', '.associate-tool', function(event){
+      obj = $(event.target);
+      Materials.externalResources.add(obj.data('title'), obj.data('url'));
+      obj.parent().parent().fadeOut();
   })
 
   $(function(){
         $.get('<%=api_base + query_parameter + '&' + score_sort%>', function(json){
-            console.log(json);
             var items = json.list;
             $.each(items, function(index, item){
+                var url = 'https://dev.bio.tools/tool/' + item.id
                 $('#biotools-results').append('' +
                         '<div id="' + item.name + '" class="col-md-4 col-sm-6" data-toggle=\"tooltip\" data-placement=\"top\" aria-hidden=\"true\" title=\"'+ item.description +'\">' +
                             '<h4>' +
                                 '<i class="fa fa-wrench"></i> ' +
-                                '<a href="' + item.homepage + '">' +
+                                '<a href="' + url + '">' +
                                     '<span class="title">' +
                                         item.name +
                                     '</span>' +
@@ -36,8 +36,10 @@
                                 ' <i id="' + item.name.hashCode() + '" ' +
                                         'class="fa fa-plus-square-o associate-tool"/ ' +
                                         'title="click to associate ' + item.name + ' with this training material"' +
-                                        'data-title="' + item.name + '" data-url="' + item.homepage + '">' +
+                                        'data-title="' + item.name + '" data-url="' + url + '"/>' +
                             '</h4>' +
+                            '<span>' + item.description.substring(0,150) + '...</span>' +
+
                         '</div>');
             });
 
