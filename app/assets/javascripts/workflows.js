@@ -40,6 +40,9 @@ $(document).ready(function () {
                     selector: '$node > node',
                     css: {
                         'shape': 'roundrectangle',
+                        'content': function (e) {
+                            return e.data('name') + ' (' + e.children().length + ')';
+                        },
                         'padding-top': '10px',
                         'font-weight': 'bold',
                         'padding-left': '10px',
@@ -47,10 +50,11 @@ $(document).ready(function () {
                         'padding-right': '10px',
                         'text-valign': 'top',
                         'text-halign': 'center',
+                        'text-margin-y': '-2px',
                         'width': 'auto',
                         'height': 'auto',
                         'font-size': '9px',
-                        'color': '#000000'
+                        'color': '#111111'
                     }
                 },
                 {
@@ -127,6 +131,12 @@ $(document).ready(function () {
             Workflows.history.initialize();
             jscolor.installByClassName('jscolor');
         } else {
+            // Hiding/revealing of child nodes
+            cy.style()
+                .selector('node > node').style({ 'opacity': 0 })
+                .selector('node > node.visible').style({ 'opacity': 1, 'transition-property': 'opacity', 'transition-duration': '0.2s' })
+                .update();
+
             Workflows.sidebar.init();
             cy.on('select', Workflows.sidebar.populate);
             cy.on('unselect', Workflows.sidebar.clear);
@@ -335,6 +345,14 @@ var Workflows = {
 
         populate: function (e) {
             if (e.cyTarget.isNode()) {
+                // Hide all expanded nodes not related to this one
+                var relatives = e.cyTarget.ancestors().descendants();
+                cy.$('.visible').difference(relatives).removeClass('visible');
+
+                // Show child nodes
+                if (e.cyTarget.isParent()) {
+                    e.cyTarget.children().addClass('visible');
+                }
                 $('#workflow-diagram-sidebar-title').html(e.cyTarget.data('name') || '<span class="muted">Untitled</span>');
                 $('#workflow-diagram-sidebar-desc').html(HandlebarsTemplates['workflows/sidebar_content'](e.cyTarget.data()))
             } else if (e.cyTarget.isEdge()) {
