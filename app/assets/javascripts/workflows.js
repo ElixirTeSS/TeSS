@@ -449,6 +449,12 @@ var Workflows = {
                     type: $('[data-attribute=type]', $(this)).val()
                 };
 
+                // Detect if URL is internal, and make it relative
+                var base = window.location.toString().split('/workflows')[0];
+                if (resource.url.indexOf(base) !== -1) {
+                    resource.url = resource.url.substr(base.length)
+                }
+
                 if (resource.url && resource.title) {
                     resources.push(resource);
                 }
@@ -469,6 +475,10 @@ var Workflows = {
                     HandlebarsTemplates['workflows/associated_resource_form'](resource)
                 );
             }
+        },
+
+        baseURI: function () {
+            window.location.toString().split('/workflows')[0];
         }
     }
 };
