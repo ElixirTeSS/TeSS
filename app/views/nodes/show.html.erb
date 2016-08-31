@@ -76,7 +76,7 @@
         </div>
         <div id="materials" class="tab-pane fade">
           <div class="row">
-            <% materials_for_node = materials_for(@node) %>
+            <% materials_for_node = @node.materials %>
             <% materials = materials_for_node.count > 30 ? materials_for_node.first(30) : materials_for_node %>
             <div class="search-results-count"> 
               <%= (materials.count > 0 ? "Showing" : "Found") + " #{pluralize(materials.count, "material")}#{(materials_for_node.count > 30) ? " out of #{materials_for_node.count}" : ''}." %>

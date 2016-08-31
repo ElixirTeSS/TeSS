@@ -74,20 +74,4 @@ module MaterialsHelper
     return current_packages - resource.packages
   end
 
-  def materials_for(resource=nil)
-    return [] if resource.nil?
-
-    return resource.materials.flatten if resource.respond_to?(:materials)
-
-    materials = []
-    if resource.instance_of? Node
-      resource.content_providers.each do |cp|
-        cp.materials.each do |material|
-          materials << material
-        end
-      end
-    end
-    return materials
-  end
-
 end

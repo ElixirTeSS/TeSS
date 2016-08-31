@@ -12,6 +12,8 @@ class Node < ActiveRecord::Base
 
   has_many :content_providers, dependent: :nullify
 
+  has_many :materials, through: :content_providers
+
   accepts_nested_attributes_for :staff, allow_destroy: true
 
   clean_array_fields(:carousel_images) #, :institutions
