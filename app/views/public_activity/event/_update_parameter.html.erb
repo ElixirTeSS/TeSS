@@ -1,0 +1,12 @@
+<% if !activity.parameters.empty? %>
+    <div class="activity-box-indented">
+      <i class="fa fa-pencil-square-o"></i>
+      <% if activity.owner %>
+          <%= link_to activity.owner.username, activity.owner %>
+      <% end %>
+
+      <strong>changed</strong>
+      <%= activity.parameters[:attr].humanize %> <strong>to</strong>
+      <%= activity.parameters[:new_val].inspect %>
+    </div>
+<% end %>
