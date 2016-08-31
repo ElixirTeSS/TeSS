@@ -6,7 +6,7 @@ Variables that should be available
 <% unless resource.blank? %>
     <div class="activity">
       <% if resource.activities.blank? %>
-          <p class="empty">No activities recorded</p>
+          <p class="empty">No activities recorded.</p>
       <% else %>
           <% resource.activities.each do |activity| %>
               <%= render_activity(activity) %>

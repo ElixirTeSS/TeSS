@@ -44,18 +44,16 @@
     </div>
     <div class="row">
       <ul class="nav nav-tabs">
-        <li class="active">
-          <a data-toggle="tab" href="#providers"><i class="<%= icon_class_for_model('content_providers') %>"></i> Providers</a>
-        </li>
-        <li>
-          <a data-toggle="tab" href="#materials"><i class="<%= icon_class_for_model('materials') %>"></i> Materials</a>
-        </li>
-        <li>
-          <a data-toggle="tab" href="#events"><i class="<%= icon_class_for_model('events') %>"></i> Events</a>
-        </li>
-        <li>
-          <a data-toggle="tab" href="#activity_log"><i class="<%= icon_class_for_model('activity_logs') %>"></i> Activity log</a>
-        </li>
+        <%= tab('Providers', icon_class_for_model('content_providers'), 'providers', active: true) %>
+
+        <%= tab('Materials', icon_class_for_model('materials'), 'materials',
+                disabled: { check: @node.materials.none?, message: 'No registered training materials' }) %>
+
+        <%= tab('Events', icon_class_for_model('events'), 'events',
+                disabled: { check: @node.events.none?, message: 'No registered events' }) %>
+
+        <%= tab('Activity log', icon_class_for_model('activity_logs'), 'activity_log',
+                disabled: { check: @node.activities.none?, message: 'No activities recorded' }) %>
       </ul>
 
       <div class="tab-content">

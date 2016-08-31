@@ -45,21 +45,19 @@
     </div>
     <div class="row">
       <ul class="nav nav-tabs">
-        <li <%= "class=active" if @content_provider.materials.count > 0 or @content_provider.events.count < 1 %>>
-          <a data-toggle="tab" href="#materials"><i class="<%= icon_class_for_model('materials') %>"></i> Materials</a>
-        </li>
-        <li <%= "class=active" if @content_provider.events.count > 0 and @content_provider.materials.count < 1 %>>
-          <a data-toggle="tab" href="#events"><i class="<%= icon_class_for_model('events') %>"></i> Events</a>
-        </li>
-        <li>
-          <a data-toggle="tab" href="#activity_log"><i class="<%= icon_class_for_model('activity_logs') %>"></i>
-            Activity log</a>
-        </li>
+        <%= tab('Materials', icon_class_for_model('materials'), 'materials', active: @content_provider.materials.any? || @content_provider.events.none?,
+                disabled: { check: @content_provider.materials.none?, message: 'No associated training materials' }) %>
+
+        <%= tab('Events', icon_class_for_model('events'), 'events', active: @content_provider.materials.none? && @content_provider.events.any?,
+                disabled: { check: @content_provider.events.none?, message: 'No associated events' }) %>
+
+        <%= tab('Activity log', icon_class_for_model('activity_logs'), 'activity_log',
+                disabled: { check: @content_provider.activities.none?, message: 'No activities recorded' }) %>
       </ul>
 
       <div class="tab-content">
         <div id="materials" class="tab-pane fade 
-              <%= "in active" if @content_provider.materials.count > 0 or @content_provider.events.count < 1 %>
+              <%= "in active" if @content_provider.materials.any? || @content_provider.events.none? %>
           ">
           <div class="row">
             <% materials = @content_provider.materials.count > 30 ? @content_provider.materials.first(30) : @content_provider.materials %>
@@ -74,7 +72,7 @@
           </div>
         </div>
         <div id="events" class="tab-pane fade
-              <%= "in active" if @content_provider.events.count > 0 and @content_provider.materials.count < 1 %>
+              <%= "in active" if @content_provider.materials.none? && @content_provider.events.any? %>
           ">
           <div class="row">
             <% upcoming_events = @content_provider.events.select{|x| x.upcoming?} %>

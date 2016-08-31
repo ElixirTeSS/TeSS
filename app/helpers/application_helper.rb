@@ -193,4 +193,23 @@ module ApplicationHelper
     end
   end
 
+  def tab(text, icon, href, disabled: { check: false }, active: false)
+    classes = []
+    classes << 'disabled' if disabled[:check]
+    classes << 'active' if active
+    content_tag(:li, class: classes.join(' ')) do
+      options = {}
+      if disabled[:check]
+        options['title'] = disabled[:message]
+        options['data-toggle'] = 'tooltip'
+      else
+        options['data-toggle'] = 'tab'
+      end
+
+      link_to("##{href}", options) do
+        %(<i class="#{icon}" aria-hidden="true"></i> #{text}).html_safe
+      end
+    end
+  end
+
 end
