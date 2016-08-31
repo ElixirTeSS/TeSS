@@ -3,6 +3,7 @@
 <% if editable %>
     <div class="workflow-toolbar-wrapper">
       <div id="workflow-toolbar">
+        <span id="workflow-status-message"></span>
         <a class="btn btn-default disabled" id="workflow-toolbar-undo">
           <i class="fa fa-undo"></i> <span>Undo</span>
         </a>
@@ -15,7 +16,6 @@
       </div>
       <div id="workflow-status-bar">
         <strong>Selected:</strong> <span id="workflow-status-selected-node"></span>
-        <span id="workflow-status-message"></span>
         <div class="pull-right">
           <a class="btn btn-default node-context-button edge-context-button" id="workflow-toolbar-edit" style="display: none">
             <i class="fa fa-edit"></i> Edit

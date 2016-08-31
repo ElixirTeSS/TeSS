@@ -167,7 +167,8 @@ var Workflows = {
 
     setState: function (state, message) {
         Workflows.state = state;
-        $('#workflow-status-message').html(message);
+        if (message)
+            $('#workflow-status-message').html(message).show();
         var button = $('#workflow-toolbar-cancel');
         button.find('span').html('Cancel ' + state);
         button.show();
@@ -181,7 +182,7 @@ var Workflows = {
             Workflows.selected = null;
         }
 
-        $('#workflow-status-message').html('');
+        $('#workflow-status-message').html('').hide();
         $('#workflow-status-selected-node').html('<span class="muted">nothing</span>');
         $('#workflow-status-bar').find('.node-context-button').hide();
         $('#workflow-toolbar-cancel').hide();
