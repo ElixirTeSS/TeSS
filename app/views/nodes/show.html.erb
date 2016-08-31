@@ -90,7 +90,7 @@
         </div>
         <div id="events" class="tab-pane fade">
           <div class="row">
-            <% events_for_node = events_for(@node) %>
+            <% events_for_node = @node.events %>
             <% upcoming_events = events_for_node.select{|x| x.upcoming?} %>
             <% past_events = events_for_node.select{|x| x.expired?} %>
 

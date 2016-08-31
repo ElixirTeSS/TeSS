@@ -6,22 +6,6 @@ module EventsHelper
 
       "If your website contains training events that you wish to include in TeSS, please contact the TeSS team (<a href='mailto:tess@elixir-uk.info'>tess@elixir-uk.info</a>) for further details."
 
-  def events_for(resource=nil)
-    return [] if resource.nil?
-
-    return resource.events.flatten if resource.respond_to?(:events)
-
-    events = []
-    if resource.instance_of? Node
-      resource.content_providers.each do |cp|
-        cp.events.each do |event|
-          events << event
-        end
-      end
-    end
-    return events
-  end
-
   ICONS = {
       started: {:icon => 'fa-hourglass-half', :message => 'This event has already started'},
       expired: {:icon => 'fa-hourglass-end', :message => 'This event has finished'},
