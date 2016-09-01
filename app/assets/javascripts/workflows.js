@@ -138,7 +138,10 @@ $(document).ready(function () {
             cy.style()
                 .selector('node > node').style({ 'opacity': 0 })
                 .selector('node > node.visible').style({ 'opacity': 1, 'transition-property': 'opacity', 'transition-duration': '0.2s' })
+                .selector('edge.hidden').style({ 'opacity': 0 })
                 .update();
+
+            cy.$('node > node').connectedEdges().addClass('hidden');
 
             Workflows.sidebar.init();
             cy.on('select', Workflows.sidebar.populate);
@@ -342,13 +345,15 @@ var Workflows = {
 
         populate: function (e) {
             if (e.cyTarget.isNode()) {
-                // Hide all expanded nodes not related to this one
+                // Hide all expanded nodes and edges not related to this one
                 var relatives = e.cyTarget.ancestors().descendants();
-                cy.$('.visible').difference(relatives).removeClass('visible');
+                var unrelated = cy.$('.visible').difference(relatives);
+                unrelated.removeClass('visible');
+                unrelated.connectedEdges().addClass('hidden');
 
-                // Show child nodes
+                // Show child nodes and their edges
                 if (e.cyTarget.isParent()) {
-                    e.cyTarget.children().addClass('visible');
+                    e.cyTarget.children().addClass('visible').connectedEdges().removeClass('hidden');
                 }
                 $('#workflow-diagram-sidebar-title').html(e.cyTarget.data('name') || '<span class="muted">Untitled</span>');
                 $('#workflow-diagram-sidebar-desc').html(HandlebarsTemplates['workflows/sidebar_content'](e.cyTarget.data()))
