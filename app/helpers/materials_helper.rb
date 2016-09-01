@@ -11,14 +11,18 @@ module MaterialsHelper
       not_scraped_recently: {:icon => 'fa-exclamation-circle', :message => 'This event has not been updated recently'},
   }
 
-  def icon_for(type, size=nil)
+  def material_icon_for(type, material, size=nil)
 
-    return "<i class=\"fa #{ICONS[type][:icon]} has-tooltip event-info-icon#{'-' + size.to_s if size}\"
-    aria-hidden=\"true\"
-    data-toggle=\"tooltip\"
-    data-placement=\"top\"
-    title=\"#{ICONS[type][:message]}\">
-    </i>".html_safe
+    if !material.last_scraped.nil? and material.scraper_record
+      return "<i class=\"fa #{ICONS[type][:icon]} has-tooltip event-info-icon#{'-' + size.to_s if size}\"
+      aria-hidden=\"true\"
+      data-toggle=\"tooltip\"
+      data-placement=\"top\"
+      title=\"#{ICONS[type][:message]}\">
+      </i>".html_safe
+    else
+      return nil
+    end
   end
 
       # Returns an array of two-element arrays of licences ready to be used in options_for_select() for generating option/select tags
