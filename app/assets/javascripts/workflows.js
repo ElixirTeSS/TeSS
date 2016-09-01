@@ -105,7 +105,7 @@ $(document).ready(function () {
             $('#edge-modal').on('hide.bs.modal', Workflows.cancelState);
 
             // Update JSON in form
-            $('#workflow-form-submit').click(function () {
+            $('.workflow-form-submit').click(function () {
                 $('#workflow_workflow_content').val(JSON.stringify(cy.json()['elements']));
 
                 return true;
