@@ -20,6 +20,7 @@
   padding: 5px 10px;
   background: #efefef;
   border-radius: 4px;
+  overflow: auto;
 }
 
 #workflow-status-message {
@@ -113,4 +114,10 @@
 
 #node-modal, #edge-modal {
   z-index: 100000;
+}
+
+#workflow-status-selected-node {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

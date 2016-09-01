@@ -183,7 +183,7 @@ var Workflows = {
         }
 
         $('#workflow-status-message').html('').hide();
-        $('#workflow-status-selected-node').html('<span class="muted">nothing</span>');
+        $('#workflow-status-selected-node').html('<span class="muted">Nothing selected</span>').attr('title', '');
         $('#workflow-status-bar').find('.node-context-button').hide();
         $('#workflow-toolbar-cancel').hide();
     },
@@ -193,12 +193,14 @@ var Workflows = {
             Workflows.selected = target;
             Workflows.setState('node selection');
             $('#workflow-status-bar').find('.node-context-button').show();
-            $('#workflow-status-selected-node').html(Workflows.selected.data('name'));
+            $('#workflow-status-selected-node').html(Workflows.selected.data('name'))
+                .attr('title', Workflows.selected.data('name'));
         } else if (target.isEdge()) {
             Workflows.selected = target;
             Workflows.setState('edge selection');
             $('#workflow-status-bar').find('.edge-context-button').show();
-            $('#workflow-status-selected-node').html(Workflows.selected.data('name') + ' (edge)');
+            $('#workflow-status-selected-node').html(Workflows.selected.data('name') + ' (edge)')
+                .attr('title',Workflows.selected.data('name') + ' (edge)');
         }
     },
 
