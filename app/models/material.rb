@@ -49,6 +49,7 @@ class Material < ActiveRecord::Base
         submitter_index
       end
       time :updated_at
+      
     end
   end
 

@@ -48,7 +48,12 @@
         <div id="home" class="tab-pane fade in active">
           <div class="row">
             <div class="page-header dont-break-out">
-              <h2><%=t '.title', :default => @material.title %></h2>
+              <h2>
+                <%=t '.title', :default => @material.title %>
+                <% if (Time.now - 14.days) > @material.last_scraped -%>
+                <%= icon_for(:not_scraped_recently) %>
+                <% end -%>
+              </h2>
               <p><%= link_to @material.url, @material.url, :class =>'h5', :target => "_blank" %></p>
               <% if not @material.long_description.blank? %>
                   <p><%= render_markdown(@material.long_description) %></p>

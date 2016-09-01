@@ -1,7 +1,12 @@
 <div class="list-group-item">
   <div class="list-group-item-heading"><%= link_to(material.title, material, class: "btn btn-default btn-block") %></div>
   <div class="dont-break-out">
-    <p class><%= truncate(material.short_description, length: 300, separator: ' ') %></p>
+    <p class>
+      <% if (Time.now - 14.days) > material.last_scraped -%>
+      <%= icon_for(:not_scraped_recently) %>
+      <% end -%>
+      <%= truncate(material.short_description, length: 300, separator: ' ') %>
+    </p>
     <div class="row" style="margin: 0px;">
       <% if controller_name != 'content_providers' %>
           <div class="col-md-9" style="padding: 0px;">
