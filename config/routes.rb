@@ -42,10 +42,14 @@ Rails.application.routes.draw do
 =begin    post 'remove_resources' => 'packages#remove_resources'
 =end
   end
-  resources :workflows
+  resources :workflows do
+    resources :collaborations
+  end
+
   resources :content_providers do
     resource :activities, :only => [:show]
   end
+
   resources :materials do
     resource :activities, :only => [:show]
   end
