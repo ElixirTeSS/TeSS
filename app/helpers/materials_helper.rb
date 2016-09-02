@@ -7,24 +7,6 @@ module MaterialsHelper
       "If your website contains training materials that you wish to include in TeSS, please contact the TeSS team (<a href='mailto:tess @elixir-uk.info'>tess@elixir-uk.info</a>) for further details."
 
 
-  ICONS = {
-      not_scraped_recently: {:icon => 'fa-exclamation-circle', :message => 'This event has not been updated recently'},
-  }
-
-  def material_icon_for(type, material, size=nil)
-
-    if !material.last_scraped.nil? and material.scraper_record
-      return "<i class=\"fa #{ICONS[type][:icon]} has-tooltip event-info-icon#{'-' + size.to_s if size}\"
-      aria-hidden=\"true\"
-      data-toggle=\"tooltip\"
-      data-placement=\"top\"
-      title=\"#{ICONS[type][:message]}\">
-      </i>".html_safe
-    else
-      return nil
-    end
-  end
-
       # Returns an array of two-element arrays of licences ready to be used in options_for_select() for generating option/select tags
   # [['Licence 1 full name','Licence 1 abbreviation'], ['Licence 2 full name','Licence 2 abbreviation'], ...]
   def licence_options_for_select()

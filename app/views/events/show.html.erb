@@ -68,7 +68,10 @@
         <div id="home" class="tab-pane fade in active">
           <div class="row">
             <div class="page-header">
-              <h2><%= @event.title %></h2>
+              <h2>
+                <%= @event.title %>
+                <%= conditional_icon_for(:not_scraped_recently,@event) %>
+              </h2>
               <p><%= link_to @event.url, @event.url, :class =>'h5', :target => "_blank" %></p>
             </div>
 

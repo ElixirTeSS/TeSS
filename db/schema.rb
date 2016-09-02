@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160901153122) do
+ActiveRecord::Schema.define(version: 20160902073643) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,8 @@ ActiveRecord::Schema.define(version: 20160901153122) do
     t.boolean  "online",                                       default: false
     t.text     "cost"
     t.boolean  "for_profit",                                   default: false
+    t.date     "last_scraped"
+    t.boolean  "scraper_record",                               default: false
   end
 
   add_index "events", ["cost"], name: "index_events_on_cost", using: :btree

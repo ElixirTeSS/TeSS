@@ -12,6 +12,24 @@ module ApplicationHelper
       info: 'alert-info'
   }
 
+  ICONS = {
+      not_scraped_recently: {:icon => 'fa-exclamation-circle', :message => 'This record has not been updated recently'},
+  }
+
+  def conditional_icon_for(type, record, size=nil)
+
+    if !record.last_scraped.nil? and record.scraper_record
+      return "<i class=\"fa #{ICONS[type][:icon]} has-tooltip event-info-icon#{'-' + size.to_s if size}\"
+      aria-hidden=\"true\"
+      data-toggle=\"tooltip\"
+      data-placement=\"top\"
+      title=\"#{ICONS[type][:message]}\">
+      </i>".html_safe
+    else
+      return nil
+    end
+  end
+
   def bootstrap_class_for(flash_type)
     BOOTSTRAP_FLASH_MSG.fetch(flash_type.to_sym, 'alert-info')
   end
