@@ -2,6 +2,8 @@ class Workflow < ActiveRecord::Base
 
   include PublicActivity::Common
   include HasScientificTopics
+  include Collaboratable
+
   has_paper_trail
 
   extend FriendlyId
