@@ -17,17 +17,17 @@ module ApplicationHelper
   }
 
   def conditional_icon_for(type, record, size=nil)
-
     if !record.last_scraped.nil? and record.scraper_record
-      return "<i class=\"fa #{ICONS[type][:icon]} has-tooltip event-info-icon#{'-' + size.to_s if size}\"
-      aria-hidden=\"true\"
-      data-toggle=\"tooltip\"
-      data-placement=\"top\"
-      title=\"#{ICONS[type][:message]}\">
-      </i>".html_safe
-    else
-      return nil
+      if record.last_scraped < (Time.now - 14.days)
+        return "<i class=\"fa #{ICONS[type][:icon]} has-tooltip event-info-icon#{'-' + size.to_s if size}\"
+        aria-hidden=\"true\"
+        data-toggle=\"tooltip\"
+        data-placement=\"top\"
+        title=\"#{ICONS[type][:message]}\">
+        </i>".html_safe
+      end
     end
+    return nil
   end
 
   def bootstrap_class_for(flash_type)
