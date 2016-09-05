@@ -6,20 +6,26 @@ class CollaborationsController < ApplicationController
   respond_to :json
 
   def create
-    @collaboration = @resource.collaborations.create(Collaboration.new(user: params[:user_id]))
+    @collaboration = @resource.collaborations.create(collaboration_params)
 
     respond_with(@collaboration)
   end
 
   def destroy
     Collaboration.find(params[:id]).destroy
-    head :no_content
+    render json: '{}', status: :no_content
   end
 
   def index
     @collaborations = @resource.collaborations
 
     respond_with(@collaborations)
+  end
+
+  def show
+    @collaboration = Collaboration.find(params[:id])
+
+    respond_with(@collaboration)
   end
 
   private
@@ -39,6 +45,10 @@ class CollaborationsController < ApplicationController
 
   def authorize_resource
     authorize @resource, :manage?
+  end
+
+  def collaboration_params
+    params.require(:collaboration).permit(:user_id)
   end
 
 end

@@ -1,0 +1,7 @@
+<li class="collaboration" data-id="{{ id }}">
+    {{ user.username }}
+    {{#if user.firstname}}
+    ( {{ user.firstname }} {{ user.surname }} )
+    {{/if}}
+    <a href="#" class="delete-collaboration">&times;</a>
+</li>

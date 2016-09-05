@@ -8,6 +8,9 @@
             <%= link_to t('.edit', :default => t("helpers.links.edit")),
                         edit_workflow_path(@workflow), :class => 'btn btn-primary' %>
         <% end %>
+        <% if !current_user.nil? and policy(@workflow).manage? %>
+            <%= render partial: 'common/collaborators_button', locals: { resource: @workflow } %>
+        <% end %>
         <% if !current_user.nil? and policy(@workflow).destroy? %>
             <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                         workflow_path(@workflow),
