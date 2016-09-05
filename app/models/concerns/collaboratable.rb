@@ -8,7 +8,7 @@ module Collaboratable
   end
 
   def collaborator?(user)
-    self.collaborations.include?(user)
+    self.collaborators.include?(user)
   end
 
 end
