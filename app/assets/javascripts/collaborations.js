@@ -19,6 +19,7 @@ var Collaborations = {
 
         $.ajax({
             url: url + '/' + element.data('id'),
+            dataType: 'json',
             method: 'DELETE'
         }).success(function() {
             element.remove();
@@ -35,7 +36,9 @@ var Collaborations = {
                 data: { collaboration: { user_id: $('#collaborators-modal-add-id').val() } }
             }).success(function(collaboration) {
                 $('#collaborators-modal-add').val('');
-                $('.collaboration-list').append(HandlebarsTemplates['collaborations/collaboration'](collaboration));
+                $('#collaborators-modal-add-btn').addClass('disabled');
+                var element = $(HandlebarsTemplates['collaborations/collaboration'](collaboration)).addClass('new');
+                $('.collaboration-list').append(element);
                 Collaborations.displayEmptyText();
             });
         }
