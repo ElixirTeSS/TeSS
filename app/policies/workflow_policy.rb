@@ -31,14 +31,8 @@ class WorkflowPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      if user.is_admin?
-        Workflow.all
-      else
-        # For how to do OR queries in Rails 4 see
-        # https://coderwall.com/p/dgv7ag/or-queries-with-arrays-as-arguments-in-rails-4
-        query = Workflow.unscoped.where(public: true, user: (@workflow.collaborators + [user]))
-        Workflow.where(query.where_values.inject(:or))
-      end
+      # Workflow.unscoped.joins(:collaborations).where('"workflows"."user_id" = :user OR "collaborations"."user_id" = :user', user: user)
+      Workflow.all
     end
   end
 
