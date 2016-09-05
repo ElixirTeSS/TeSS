@@ -46,8 +46,10 @@ var Collaborations = {
 
     displayEmptyText: function () {
         var list = $('.collaboration-list');
-        if (!list.children().length) {
+        if (!list.children('li').length) {
             list.append('<span class="empty">No collaborators</span>');
+        } else {
+            list.children('span').remove();
         }
     }
 };
