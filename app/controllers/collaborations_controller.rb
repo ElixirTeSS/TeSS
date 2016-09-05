@@ -13,7 +13,7 @@ class CollaborationsController < ApplicationController
 
   def destroy
     Collaboration.find(params[:id]).destroy
-    render json: '{}', status: :no_content
+    render json: '{}'
   end
 
   def index
