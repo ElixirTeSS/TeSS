@@ -56,8 +56,8 @@
     <div class="tab-content">
       <div id="materials" class="tab-pane fade <%= 'in active' if @package.materials.any? || @package.events.none? %>">
         <div class="row">
-          <div class="search-results-count"> 
-            <%= pluralize(@package.materials.count, 'training material') %> found 
+          <div class="search-results-count">
+            <%= pluralize(@package.materials.count, 'training material') %> found
           </div>
           <% @package.materials.each do |material| %>
               <%= render material %>
@@ -66,8 +66,8 @@
       </div>
       <div id="events" class="tab-pane fade <%= 'in active' if @package.materials.none? && @package.events.any? %>">
         <div class="row">
-          <div class="search-results-count"> 
-            <%= pluralize(@package.events.count, 'event') %> found 
+          <div class="search-results-count">
+            <%= pluralize(@package.events.count, 'event') %> found
           </div>
           <% unless @package.events.count == 0 %>
               <div class="masonry media-grid">

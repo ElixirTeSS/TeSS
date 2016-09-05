@@ -32,19 +32,19 @@
       <div id="workflow" class="tab-pane fade in active">
         <h2><%= t '.title', :default => @workflow.title %></h2>
 
-        <div class="workflow-diagram-container"> 
-          <div id="workflow-diagram-content"> 
-            <%= render partial: 'workflows/workflow_diagram', locals: {workflow: @workflow} %> 
+        <div class="workflow-diagram-container">
+          <div id="workflow-diagram-content">
+            <%= render partial: 'workflows/workflow_diagram', locals: {workflow: @workflow} %>
           </div>
           <div id="workflow-diagram-sidebar">
-            <h3 class="nav-heading" id="workflow-diagram-sidebar-title"> 
-              <i class="fa fa-sitemap"></i> <%= @workflow.title %> </h3> 
-            <div id="workflow-diagram-sidebar-desc"> 
+            <h3 class="nav-heading" id="workflow-diagram-sidebar-title">
+              <i class="fa fa-sitemap"></i> <%= @workflow.title %></h3>
+            <div id="workflow-diagram-sidebar-desc">
               <% if @workflow.description.blank? %>
-                   <p class="muted">No description provided</p>
+                  <p class="muted">No description provided</p>
               <% else %>
                   <p><%= render_markdown(@workflow.description) %></p>
-              <% end %> 
+              <% end %>
               <%= render partial: 'common/extra_metadata', locals: { resource: @workflow } %>
             </div>
           </div>

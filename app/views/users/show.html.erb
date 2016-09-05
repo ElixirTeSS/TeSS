@@ -128,13 +128,13 @@
       <div class="tab-content">
         <div id="materials" class="tab-pane fade in active">
           <div class="row">
-            <div class="search-results-count"> 
-              <%= pluralize(@user.materials.count, 'training material') %> found 
+            <div class="search-results-count">
+              <%= pluralize(@user.materials.count, 'training material') %> found
             </div>
             <% if !@user.materials.blank? %>
-                <% @user.materials.each do |material| %> 
-                    <%= render material %> 
-                <% end %> 
+                <% @user.materials.each do |material| %>
+                    <%= render material %>
+                <% end %>
             <% end %>
           </div>
         </div>
