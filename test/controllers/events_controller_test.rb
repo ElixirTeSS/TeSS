@@ -422,6 +422,8 @@ end
     get :show, format: :ics, id: @event.id
 
     assert_response :success
+    assert_equal 'text/calendar', @response.content_type
+
     cal_event = Icalendar::Calendar.parse(@response.body).first.events.first
 
     assert_equal @event.title, cal_event.summary
