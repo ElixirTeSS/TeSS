@@ -40,8 +40,6 @@ gem 'gravtastic'
 
 gem 'green_monkey'
 
-gem 'icalendar'
-
 gem 'dynamic_sitemaps'
 
 gem 'whenever'
@@ -98,6 +96,8 @@ gem 'jquery-simplecolorpicker-rails'
 gem 'handlebars_assets'
 
 gem "paperclip", "~> 5.0.0"
+
+gem 'icalendar', '~> 2.4.1'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages, :get_ics]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages]
 
   include TeSS::BreadCrumbs
   include SearchableIndex
@@ -16,7 +16,13 @@ class EventsController < ApplicationController
 
   # GET /events/1
   # GET /events/1.json
+  # GET /events/1.ics
   def show
+    respond_to do |format|
+      format.html
+      format.json
+      format.ics { render text: @event.to_ical }
+    end
   end
 
   # GET /events/new
@@ -126,21 +132,6 @@ class EventsController < ApplicationController
     end
     flash[:notice] = "Event has been included in #{pluralize(packages.count, 'package')}"
     redirect_to @event
-  end
-
-  def get_ics
-    Rails.logger.info("Got event: #{@event.inspect}")
-    cal = Icalendar::Calendar.new
-    ical_event =  Icalendar::Event.new
-    ical_event.dtstart     = Icalendar::Values::Date.new(@event.start)
-    ical_event.dtend       = Icalendar::Values::Date.new(@event.end)
-    ical_event.summary     = @event.title
-    ical_event.description = @event.description
-    if !@event.venue.blank?
-      ical_event.location = @event.venue
-    end
-    cal.add_event(ical_event)
-    send_data cal.to_ical, :filename => "#{@event.title}.ics", :disposition => 'attachment', :type => 'text/calendar'
   end
 
   protected

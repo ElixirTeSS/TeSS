@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
 
   # User auth should be required in the web interface as well; it's here rather than in routes so that it
   # doesn't override the token auth, above.
-  before_action :authenticate_user!, except: [:index, :show, :check_exists, :get_ics]
+  before_action :authenticate_user!, except: [:index, :show, :check_exists]
 
   # Should prevent forgery errors for JSON posts.
   skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }

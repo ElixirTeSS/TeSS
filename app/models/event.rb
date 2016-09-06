@@ -1,3 +1,5 @@
+require 'icalendar'
+
 class Event < ActiveRecord::Base
   include PublicActivity::Common
   has_paper_trail
@@ -110,6 +112,22 @@ class Event < ActiveRecord::Base
 
   def self.facet_fields
     %w( category online country field provider city sponsor keywords venue content_provider )
+  end
+
+  def to_ical
+    cal = Icalendar::Calendar.new
+
+    cal.event do |ical_event|
+      ical_event.dtstart     = Icalendar::Values::Date.new(self.start)
+      ical_event.dtend       = Icalendar::Values::Date.new(self.end)
+      ical_event.summary     = self.title
+      ical_event.description = self.description
+      if !self.venue.blank?
+        ical_event.location = self.venue
+      end
+    end
+
+    cal.to_ical
   end
 
 end

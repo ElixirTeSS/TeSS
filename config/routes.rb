@@ -57,7 +57,6 @@ Rails.application.routes.draw do
 
   post 'materials/:id/update_packages' => 'materials#update_packages'
   post 'events/:id/update_packages' => 'events#update_packages'
-  get 'events/:id/get_ics' => 'events#get_ics'
 
   get 'search' => 'search#index'
 
