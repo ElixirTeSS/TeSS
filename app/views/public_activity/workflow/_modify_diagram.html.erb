@@ -1,0 +1,10 @@
+<ul>
+  <% [:added_nodes, :removed_nodes, :modified_nodes].each do |key| %>
+      <% if activity.parameters[key].any? %>
+          <li>
+            <%= key.to_s.sub('_nodes','').capitalize %> <%= pluralize(activity.parameters[key].count, 'node') %>:
+            <%= activity.parameters[key].map { |n| "'#{n['data']['name']}'" }.join(', ') %>
+          </li>
+      <% end %>
+  <% end %>
+</ul>
