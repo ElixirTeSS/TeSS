@@ -122,9 +122,7 @@ class Event < ActiveRecord::Base
       ical_event.dtend       = Icalendar::Values::Date.new(self.end)
       ical_event.summary     = self.title
       ical_event.description = self.description
-      if !self.venue.blank?
-        ical_event.location = self.venue
-      end
+      ical_event.location    = self.venue unless self.venue.blank?
     end
 
     cal.to_ical
