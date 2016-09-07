@@ -311,7 +311,11 @@ var Workflows = {
             $('#node-modal-form-id').val(data.id);
             $('#node-modal-form-title').val(data.name);
             $('#node-modal-form-description').val(data.description);
-            $('#node-modal-form-colour')[0].jscolor.fromString(data.color || '#F0721E');
+            if (data.color) {
+                $('#node-modal-form-colour')[0].jscolor.fromString(data.color);
+            } else if (data.parent) {
+                $('#node-modal-form-colour')[0].jscolor.fromString(cy.$('#' + data.parent).data('color'));
+            }
             $('#node-modal-form-parent-id').val(data.parent);
             $('#node-modal-form-x').val(position.x);
             $('#node-modal-form-y').val(position.y);
