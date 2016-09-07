@@ -1,6 +1,8 @@
 class Node < ActiveRecord::Base
 
   include PublicActivity::Common
+  include LogParameterChanges
+
   has_paper_trail
 
   extend FriendlyId

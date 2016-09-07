@@ -3,6 +3,7 @@ class Workflow < ActiveRecord::Base
   include PublicActivity::Common
   include HasScientificTopics
   include Collaboratable
+  include LogParameterChanges
 
   has_paper_trail
 

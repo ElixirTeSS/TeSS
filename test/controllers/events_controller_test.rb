@@ -206,12 +206,13 @@ class EventsControllerTest < ActionController::TestCase
   #OTHER CONTENT
   test 'event has correct tabs' do
     get :show, :id => @event
+
     assert_response :success
     assert_select 'ul.nav-tabs' do
       assert_select 'li' do
-        assert_select 'a[data-toggle="tab"]', :count => 1 # Event
+        assert_select 'a[data-toggle="tab"]', :count => 2 # Event, Activity
       end
-      assert_select 'li.disabled', :count => 2 # Packages, Activity
+      assert_select 'li.disabled', :count => 1 # Packages
     end
   end
 

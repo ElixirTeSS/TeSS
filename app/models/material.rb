@@ -2,6 +2,7 @@ class Material < ActiveRecord::Base
 
   include PublicActivity::Common
   include HasScientificTopics
+  include LogParameterChanges
 
   has_paper_trail
 
@@ -74,18 +75,6 @@ class Material < ActiveRecord::Base
   clean_array_fields(:keywords, :contributors, :authors, :target_audience)
 
   update_suggestions(:keywords, :contributors, :authors, :target_audience)
-
-  after_save :log_activities
-
-  def log_activities
-    self.changed.each do |changed_attribute|
-      #TODO: Sort out what gets logged
-      # If content provider - find content provider otherwise uses ID.
-      #     maybe add new activity for content provider having a new material added to it too.
-      # If updated at - ignore
-      self.create_activity :update_parameter, parameters: {attr: changed_attribute, new_val: self.send(changed_attribute)}
-    end
-  end
 
   def self.owner
     self.user
