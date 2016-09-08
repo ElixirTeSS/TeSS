@@ -43,10 +43,12 @@
     <div class="row">
       <ul class="nav nav-tabs">
         <%= tab('Materials', icon_class_for_model('materials'), 'materials', active: @package.materials.any? || @package.events.none?,
-                disabled: { check: @package.materials.none?, message: 'No associated training materials' }) %>
+                disabled: { check: @package.materials.none?, message: 'No associated training materials' },
+                count: @package.materials.count) %>
 
         <%= tab('Events', icon_class_for_model('events'), 'events', active: @package.materials.none? && @package.events.any?,
-                disabled: { check: @package.events.none?, message: 'No associated events' }) %>
+                disabled: { check: @package.events.none?, message: 'No associated events' },
+                count: @package.events.count) %>
 
         <%= tab('Activity log', icon_class_for_model('activity_logs'), 'activity_log',
                 disabled: { check: @package.activities.none?, message: 'No activities recorded' }) %>

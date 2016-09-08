@@ -211,7 +211,7 @@ module ApplicationHelper
     end
   end
 
-  def tab(text, icon, href, disabled: { check: false }, active: false)
+  def tab(text, icon, href, disabled: { check: false }, active: false, count: nil)
     classes = []
     classes << 'disabled' if disabled[:check]
     classes << 'active' if active
@@ -223,6 +223,8 @@ module ApplicationHelper
       else
         options['data-toggle'] = 'tab'
       end
+
+      text << " (#{count})" if count
 
       link_to("##{href}", options) do
         %(<i class="#{icon}" aria-hidden="true"></i> #{text}).html_safe
