@@ -43,7 +43,7 @@
               <% if @workflow.description.blank? %>
                   <p class="muted">No description provided</p>
               <% else %>
-                  <p><%= render_markdown(@workflow.description) %></p>
+                  <%= render_markdown(@workflow.description) %>
               <% end %>
               <%= render partial: 'common/extra_metadata', locals: { resource: @workflow } %>
             </div>
