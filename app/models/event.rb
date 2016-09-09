@@ -60,9 +60,8 @@ class Event < ActiveRecord::Base
 
   validates :title, :url, presence: true
 
-  serialize :field
-  serialize :category
-  serialize :keywords
+  clean_array_fields(:keywords, :category, :field)
+  update_suggestions(:keywords, :category, :field)
 
   #Make sure there's url and title
 

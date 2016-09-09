@@ -47,17 +47,30 @@
     <%= render :partial => 'content_providers/partials/add_content_provider', :locals => {:f => f, :resource => @event, :label => "Content provider (where the event metadata is obtained from)"} %>
 
     <div class="form-group">
-      <%= f.label :field %><br />
-      <%= f.text_area :field, :class => 'form-control' %>
-    </div>
-    <div class="form-group">
       <%= f.label :description %>
       <%= f.text_area :description, :rows => "10", :class => 'form-control' %>
     </div>
-    <div class="form-group">
-      <%= f.label :category %>
-      <%= f.text_area :category, :class => 'form-control' %>
-    </div>
+
+    <%= render partial: 'common/multiple_input',
+               locals: { field_name: 'field',
+                         label: 'Fields',
+                         resource: @event,
+                         f: f,
+                         suggestions: raw(TeSS::AutocompleteManager.suggestions_array_for('field').to_json)} %>
+
+    <%= render partial: 'common/multiple_input',
+               locals: { field_name: 'category',
+                         label: 'Categories',
+                         resource: @event,
+                         f: f,
+                         suggestions: raw(TeSS::AutocompleteManager.suggestions_array_for('category').to_json)} %>
+
+    <%= render partial: 'common/multiple_input',
+               locals: { field_name: 'keywords',
+                         resource: @event,
+                         f: f,
+                         suggestions: raw(TeSS::AutocompleteManager.suggestions_array_for('keywords').to_json)} %>
+
     <div class="form-group">
       <%= f.label :start %>
       <%= f.datetime_select :start, :class => 'form-control' %>
