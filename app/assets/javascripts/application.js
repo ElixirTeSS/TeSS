@@ -214,4 +214,8 @@ $(document).ready(function () {
             $(this).attr('readonly', 'true');
         }
     });
+
+    // Disabled tabs
+    $('.nav-tabs li a[data-toggle="tooltip"]').tooltip();
+    $('.nav-tabs li.disabled a').click(function (e) { e.preventDefault(); return false });
 });

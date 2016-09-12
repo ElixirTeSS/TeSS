@@ -8,6 +8,9 @@
             <%= link_to t('.edit', :default => t("helpers.links.edit")),
                         edit_workflow_path(@workflow), :class => 'btn btn-primary' %>
         <% end %>
+        <% if !current_user.nil? and policy(@workflow).manage? %>
+            <%= render partial: 'collaborations/collaborators_button', locals: { resource: @workflow } %>
+        <% end %>
         <% if !current_user.nil? and policy(@workflow).destroy? %>
             <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                         workflow_path(@workflow),
@@ -17,23 +20,38 @@
         <% end %>
       </div>
     </div>
-    <h2><%= t '.title', :default => @workflow.title %></h2>
+    <div class="row">
+      <ul class="nav nav-tabs">
+        <%= tab('Workflow', icon_class_for_model('workflow'), 'workflow', active: true) %>
 
-    <div class="workflow-diagram-container"> 
-      <div id="workflow-diagram-content"> 
-        <%= render partial: 'workflows/workflow_diagram', locals: {workflow: @workflow} %> 
-      </div>
-      <div id="workflow-diagram-sidebar">
-        <h3 class="nav-heading" id="workflow-diagram-sidebar-title"> 
-          <i class="fa fa-sitemap"></i> <%= @workflow.title %> </h3> 
-        <div id="workflow-diagram-sidebar-desc"> 
-          <% if @workflow.description.blank? %>
-               <p class="muted">No description provided</p>
-          <% else %>
-              <p><%= render_markdown(@workflow.description) %></p>
-          <% end %> 
-          <%= render partial: 'common/extra_metadata', locals: { resource: @workflow } %>
+        <%= tab('Activity log', icon_class_for_model('activity_logs'), 'activity_log',
+                disabled: { check: @workflow.activities.none?, message: 'No activities recorded' }) %>
+      </ul>
+    </div>
+    <div class="tab-content">
+      <div id="workflow" class="tab-pane fade in active">
+        <h2><%= t '.title', :default => @workflow.title %></h2>
+
+        <div class="workflow-diagram-container">
+          <div id="workflow-diagram-content">
+            <%= render partial: 'workflows/workflow_diagram', locals: {workflow: @workflow} %>
+          </div>
+          <div id="workflow-diagram-sidebar">
+            <h3 class="nav-heading" id="workflow-diagram-sidebar-title">
+              <i class="fa fa-sitemap"></i> <%= @workflow.title %></h3>
+            <div id="workflow-diagram-sidebar-desc">
+              <% if @workflow.description.blank? %>
+                  <p class="muted">No description provided</p>
+              <% else %>
+                  <%= render_markdown(@workflow.description) %>
+              <% end %>
+              <%= render partial: 'common/extra_metadata', locals: { resource: @workflow } %>
+            </div>
+          </div>
         </div>
+      </div>
+      <div id="activity_log" class="tab-pane fade">
+        <%= render :partial => "activities/activity_log", :locals => {:resource => @workflow} %>
       </div>
     </div>
   </div>

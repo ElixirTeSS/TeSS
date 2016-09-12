@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160804114007) do
+ActiveRecord::Schema.define(version: 20160908141626) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,15 @@ ActiveRecord::Schema.define(version: 20160804114007) do
   add_index "activities", ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type", using: :btree
   add_index "activities", ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type", using: :btree
   add_index "activities", ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type", using: :btree
+
+  create_table "collaborations", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "resource_id"
+    t.string  "resource_type"
+  end
+
+  add_index "collaborations", ["resource_type", "resource_id"], name: "index_collaborations_on_resource_type_and_resource_id", using: :btree
+  add_index "collaborations", ["user_id"], name: "index_collaborations_on_user_id", using: :btree
 
   create_table "content_providers", force: :cascade do |t|
     t.text     "title"
@@ -61,9 +70,7 @@ ActiveRecord::Schema.define(version: 20160804114007) do
     t.string   "subtitle"
     t.string   "url"
     t.string   "provider"
-    t.text     "field"
     t.text     "description"
-    t.text     "category"
     t.datetime "start"
     t.datetime "end"
     t.string   "sponsor"
@@ -76,7 +83,6 @@ ActiveRecord::Schema.define(version: 20160804114007) do
     t.decimal  "longitude",           precision: 10, scale: 6
     t.datetime "created_at",                                                    null: false
     t.datetime "updated_at",                                                    null: false
-    t.text     "keywords"
     t.text     "source",                                       default: "tess"
     t.string   "slug"
     t.integer  "content_provider_id"
@@ -84,6 +90,11 @@ ActiveRecord::Schema.define(version: 20160804114007) do
     t.boolean  "online",                                       default: false
     t.text     "cost"
     t.boolean  "for_profit",                                   default: false
+    t.date     "last_scraped"
+    t.boolean  "scraper_record",                               default: false
+    t.string   "keywords",                                     default: [],                  array: true
+    t.string   "category",                                     default: [],                  array: true
+    t.string   "field",                                        default: [],                  array: true
   end
 
   add_index "events", ["cost"], name: "index_events_on_cost", using: :btree
@@ -135,6 +146,8 @@ ActiveRecord::Schema.define(version: 20160804114007) do
     t.integer  "content_provider_id"
     t.string   "slug"
     t.integer  "user_id"
+    t.date     "last_scraped"
+    t.boolean  "scraper_record",      default: false
   end
 
   add_index "materials", ["content_provider_id"], name: "index_materials_on_content_provider_id", using: :btree
@@ -368,6 +381,7 @@ ActiveRecord::Schema.define(version: 20160804114007) do
   add_index "workflows", ["slug"], name: "index_workflows_on_slug", unique: true, using: :btree
   add_index "workflows", ["user_id"], name: "index_workflows_on_user_id", using: :btree
 
+  add_foreign_key "collaborations", "users"
   add_foreign_key "content_providers", "nodes"
   add_foreign_key "content_providers", "users"
   add_foreign_key "events", "users"

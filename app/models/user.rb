@@ -185,6 +185,13 @@ class User < ActiveRecord::Base
     default_user
   end
 
+  def name
+    n = "#{username}"
+    if self.profile && self.profile.firstname
+      n += " (#{self.profile.firstname} #{self.profile.surname})"
+    end
+  end
+
   private
 
   def reassign_owner

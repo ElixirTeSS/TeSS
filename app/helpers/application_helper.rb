@@ -12,6 +12,24 @@ module ApplicationHelper
       info: 'alert-info'
   }
 
+  ICONS = {
+      not_scraped_recently: {:icon => 'fa-exclamation-circle', :message => 'This record has not been updated recently'},
+  }
+
+  def conditional_icon_for(type, record, size=nil)
+    if !record.last_scraped.nil? and record.scraper_record
+      if record.last_scraped < (Time.now - 14.days)
+        return "<i class=\"fa #{ICONS[type][:icon]} has-tooltip event-info-icon#{'-' + size.to_s if size}\"
+        aria-hidden=\"true\"
+        data-toggle=\"tooltip\"
+        data-placement=\"top\"
+        title=\"#{ICONS[type][:message]}\">
+        </i>".html_safe
+      end
+    end
+    return nil
+  end
+
   def bootstrap_class_for(flash_type)
     BOOTSTRAP_FLASH_MSG.fetch(flash_type.to_sym, 'alert-info')
   end
@@ -189,6 +207,27 @@ module ApplicationHelper
       end +
       content_tag(:div, class: 'panel-collapse collapse', id: id) do
         content_tag(:div, class: 'panel-body', &block)
+      end
+    end
+  end
+
+  def tab(text, icon, href, disabled: { check: false }, active: false, count: nil)
+    classes = []
+    classes << 'disabled' if disabled[:check]
+    classes << 'active' if active
+    content_tag(:li, class: classes.join(' ')) do
+      options = {}
+      if disabled[:check]
+        options['title'] = disabled[:message]
+        options['data-toggle'] = 'tooltip'
+      else
+        options['data-toggle'] = 'tab'
+      end
+
+      text << " (#{count})" if count
+
+      link_to("##{href}", options) do
+        %(<i class="#{icon}" aria-hidden="true"></i> #{text}).html_safe
       end
     end
   end

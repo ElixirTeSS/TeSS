@@ -51,3 +51,4 @@ material_with_external_resource:
   short_description: 'this is my material'
   user: regular_user
   content_provider: goblet
+

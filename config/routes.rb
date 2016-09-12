@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  concern :collaboratable do
+    resources :collaborations, only: [:create, :destroy, :index, :show]
+  end
 
   resources :scientific_topics
   resources :workflows
@@ -42,17 +45,18 @@ Rails.application.routes.draw do
 =begin    post 'remove_resources' => 'packages#remove_resources'
 =end
   end
-  resources :workflows
+  resources :workflows, concerns: :collaboratable
+
   resources :content_providers do
     resource :activities, :only => [:show]
   end
+
   resources :materials do
     resource :activities, :only => [:show]
   end
 
   post 'materials/:id/update_packages' => 'materials#update_packages'
   post 'events/:id/update_packages' => 'events#update_packages'
-  get 'events/:id/get_ics' => 'events#get_ics'
 
   get 'search' => 'search#index'
 

@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'icalendar'
 
 class EventsControllerTest < ActionController::TestCase
 
@@ -205,11 +206,13 @@ class EventsControllerTest < ActionController::TestCase
   #OTHER CONTENT
   test 'event has correct tabs' do
     get :show, :id => @event
+
     assert_response :success
     assert_select 'ul.nav-tabs' do
       assert_select 'li' do
-        assert_select 'a[data-toggle="tab"]', :count => 3
+        assert_select 'a[data-toggle="tab"]', :count => 2 # Event, Activity
       end
+      assert_select 'li.disabled', :count => 1 # Packages
     end
   end
 
@@ -417,12 +420,18 @@ end
   end
 
   test 'should provide an ics file' do
-    get :get_ics, :id => @event
-    assert_response :redirect # should be 302
-    #assert_equal @response.content_type, 'text/calendar'
-    # The test above doesn't get the correct content type; it's not yet clear how to test that
-    # this actually downloads the required file. But, send_file counts as a redirect so I
-    # can at least detect that the route works.
+    get :show, format: :ics, id: @event.id
+
+    assert_response :success
+    assert_equal 'text/calendar', @response.content_type
+
+    cal_event = Icalendar::Calendar.parse(@response.body).first.events.first
+
+    assert_equal @event.title, cal_event.summary
+    assert_equal @event.description, cal_event.description
+    # Need to call .to_s, or Ruby thinks these two dates are not equal despite looking the same
+    assert_equal @event.start.to_date.to_s, cal_event.dtstart.to_s
+    assert_equal @event.end.to_date.to_s, cal_event.dtend.to_s
   end
 
   test 'should add external resource to event' do

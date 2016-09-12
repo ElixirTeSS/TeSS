@@ -1,5 +1,8 @@
+require 'icalendar'
+
 class Event < ActiveRecord::Base
   include PublicActivity::Common
+  include LogParameterChanges
   has_paper_trail
 
   extend FriendlyId
@@ -57,9 +60,8 @@ class Event < ActiveRecord::Base
 
   validates :title, :url, presence: true
 
-  serialize :field
-  serialize :category
-  serialize :keywords
+  clean_array_fields(:keywords, :category, :field)
+  update_suggestions(:keywords, :category, :field)
 
   #Make sure there's url and title
 
@@ -110,6 +112,20 @@ class Event < ActiveRecord::Base
 
   def self.facet_fields
     %w( category online country field provider city sponsor keywords venue content_provider )
+  end
+
+  def to_ical
+    cal = Icalendar::Calendar.new
+
+    cal.event do |ical_event|
+      ical_event.dtstart     = Icalendar::Values::Date.new(self.start)
+      ical_event.dtend       = Icalendar::Values::Date.new(self.end)
+      ical_event.summary     = self.title
+      ical_event.description = self.description
+      ical_event.location    = self.venue unless self.venue.blank?
+    end
+
+    cal.to_ical
   end
 
 end

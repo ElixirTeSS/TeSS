@@ -20,11 +20,16 @@
   padding: 5px 10px;
   background: #efefef;
   border-radius: 4px;
+  overflow: auto;
 }
 
 #workflow-status-message {
-  margin-left: 10px;
-  font-style: italic;
+  float: left;
+  background-color: $alert-info-bg;
+  padding: 6px;
+  border: 1px solid $alert-info-border;
+  border-radius: 4px;
+  color: $alert-info-text;
 }
 
 /* Hide the border from the predefined colour selector */
@@ -109,4 +114,10 @@
 
 #node-modal, #edge-modal {
   z-index: 100000;
+}
+
+#workflow-status-selected-node {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

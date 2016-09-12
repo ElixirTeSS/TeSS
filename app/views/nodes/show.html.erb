@@ -44,68 +44,69 @@
     </div>
     <div class="row">
       <ul class="nav nav-tabs">
-        <li class="active">
-          <a data-toggle="tab" href="#providers"><i class="<%= icon_class_for_model('content_providers') %>"></i> Providers</a>
-        </li>
-        <li>
-          <a data-toggle="tab" href="#materials"><i class="<%= icon_class_for_model('materials') %>"></i> Materials</a>
-        </li>
-        <li>
-          <a data-toggle="tab" href="#events"><i class="<%= icon_class_for_model('events') %>"></i> Events</a>
-        </li>
-        <li>
-          <a data-toggle="tab" href="#activity_log"><i class="<%= icon_class_for_model('activity_logs') %>"></i> Activity log</a>
-        </li>
+        <%= tab('Providers', icon_class_for_model('content_providers'), 'providers', active: true,
+                count: @node.content_providers.count) %>
+
+        <%= tab('Materials', icon_class_for_model('materials'), 'materials',
+                disabled: { check: @node.materials.none?, message: 'No registered training materials' },
+                count: @node.materials.count) %>
+
+        <%= tab('Events', icon_class_for_model('events'), 'events',
+                disabled: { check: @node.events.none?, message: 'No registered events' },
+                count: @node.events.count) %>
+
+        <%= tab('Activity log', icon_class_for_model('activity_logs'), 'activity_log',
+                disabled: { check: @node.activities.none?, message: 'No activities recorded' }) %>
       </ul>
 
       <div class="tab-content">
         <div id="providers" class="tab-pane fade in active">
           <div class="row">
-            <div class="search-results-count"> 
+            <div class="search-results-count">
               <% providers = @node.content_providers %>
-              <%= "Found " + pluralize(providers.count, 'content provider') + "." %> 
+              <%= "Found " + pluralize(providers.count, 'content provider') + "." %>
             </div>
             <% if !providers.blank? %>
                 <ul class="masonry media-grid" style="margin-top: 15px;">
-                  <% providers.each do |provider| %> 
-                      <%= render provider %> 
-                  <% end %> 
+                  <% providers.each do |provider| %>
+                      <%= render provider %>
+                  <% end %>
                 </ul>
             <% end %>
           </div>
         </div>
         <div id="materials" class="tab-pane fade">
           <div class="row">
-            <% materials_for_node = materials_for(@node) %>
+            <% materials_for_node = @node.materials %>
             <% materials = materials_for_node.count > 30 ? materials_for_node.first(30) : materials_for_node %>
-            <div class="search-results-count"> 
+            <div class="search-results-count">
               <%= (materials.count > 0 ? "Showing" : "Found") + " #{pluralize(materials.count, "material")}#{(materials_for_node.count > 30) ? " out of #{materials_for_node.count}" : ''}." %>
               <%= link_to "View all results.", :controller => 'materials', :content_provider => providers.map{ |x| x.title} if (materials_for_node.count > 30) %>
             </div>
 
-            <% materials.each do |material| %> 
-                <%= render material %> 
-            <% end %> 
+            <% materials.each do |material| %>
+                <%= render material %>
+            <% end %>
           </div>
         </div>
         <div id="events" class="tab-pane fade">
           <div class="row">
-            <% events_for_node = events_for(@node) %>
+            <% events_for_node = @node.events %>
             <% upcoming_events = events_for_node.select{|x| x.upcoming?} %>
             <% past_events = events_for_node.select{|x| x.expired?} %>
 
             <div class="row">
               <% events = upcoming_events.count > 30 ? upcoming_events.first(30) : upcoming_events %>
-              <div class="search-results-count"> 
+              <div class="search-results-count">
                 <%= (upcoming_events.count > 0 ? "Showing" : "Found") + " #{pluralize(events.count, "upcoming event")}#{(upcoming_events.count > 30) ? " out of #{upcoming_events.count}" : ''}." %>
                 <%= "Found #{pluralize(past_events.count, "past event")}." %>
                 <%= link_to "View all results.", :controller => 'events', :content_provider => providers.map{ |x| x.title} if (upcoming_events.count > 30 || past_events.count > 0) %>
               </div>
               <% if upcoming_events.count > 0 %>
                   <ul class="masonry media-grid" style="margin-top: 15px;">
-                    <% upcoming_events.each do |upcoming_event| %> 
-                        <%= render upcoming_event %> 
-                    <% end %> 
+                    <% upcoming_events.each do |upcoming_event| %>
+                        <%= render upcoming_event %>
+                    <% end %>
                   </ul>
               <% end %>
             </div>

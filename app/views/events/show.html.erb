@@ -39,6 +39,9 @@
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")),
                     :back, :class => 'btn btn-info'  %>
+        <%= link_to event_path(@event, format: :ics), class: "btn btn-info" do %>
+            <i class="fa fa-calendar-o"></i> Download as .ics
+        <% end %>
         <% if !current_user.nil? and policy(@event).update? %>
             <%= link_to 'Edit', edit_event_path(@event), :class=>"btn btn-primary" %>
         <% end %>
@@ -55,22 +58,23 @@
 
     <div class="row">
       <ul class="nav nav-tabs">
-        <li class="active">
-          <a data-toggle="tab" href="#home"><i class="<%= icon_class_for_model('events') %>"></i> Event</a>
-        </li>
-        <li>
-          <a data-toggle="tab" href="#packages"><i class="<%= icon_class_for_model('packages') %>"></i> Packages</a>
-        </li>
-        <li>
-          <a data-toggle="tab" href="#activity_log"><i class="<%= icon_class_for_model('activity_logs') %>"></i> Activity log</a>
-        </li>
+        <%= tab('Event', icon_class_for_model('events'), 'home', active: true) %>
+
+        <%= tab('Packages', icon_class_for_model('packages'), 'packages',
+                disabled: { check: @event.packages.none?, message: 'This event is currently not included in any packages' }) %>
+
+        <%= tab('Activity log', icon_class_for_model('activity_logs'), 'activity_log',
+                disabled: { check: @event.activities.none?, message: 'No activities recorded' }) %>
       </ul>
 
       <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
           <div class="row">
             <div class="page-header">
-              <h2><%= @event.title %></h2>
+              <h2>
+                <%= @event.title %>
+                <%= conditional_icon_for(:not_scraped_recently,@event) %>
+              </h2>
               <p><%= link_to @event.url, @event.url, :class =>'h5', :target => "_blank" %></p>
             </div>
 
@@ -164,35 +168,16 @@
             <% end %>
           </div>
           <div class="col-md-8">
-            <%= link_to "/events/#{@event.id}/get_ics", :class=>"btn btn-info" do %>
+            <%= link_to event_path(@event, format: :ics), class: "btn btn-info" do %>
                 <i class="fa fa-calendar-o"></i> Download as .ics
             <% end %>
           </div>
         </div>
+        <div id="packages" class="tab-pane fade">
+          <%= render :partial => "packages/packages_list", :locals => {:resource => @event} %>
+        </div>
         <div id="activity_log" class="tab-pane fade">
           <%= render :partial => "activities/activity_log", :locals => {:resource => @event} %>
-        </div>
-        <div id="packages" class="tab-pane fade">
-          <!--<%# if !current_user.nil? and policy(@event).update? %>-->
-              <!--<div class="row">-->
-                <!--<%#= form_tag(controller: 'events', id: @event.id, action: 'update_packages', method: 'post') do |f| %>-->
-                    <!--<%#= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @event, :f => f, :options => available_packages(@event), :dropdown_toggle_button_name => "Add to package"} %>-->
-                    <!--<button type="submit" value="add" class="btn btn-primary">Update event</button>-->
-                <!--<%# end %>-->
-              <!--</div>-->
-          <!--<%# end %>-->
-          <div class="row">
-            <% if @event.packages.blank? %>
-                <%= empty_tag(:p, 'This event is currently not included in any packages.', "padding-top: 10px;") %>
-            <% else %>
-                <ul class="masonry media-grid">
-                  <% @event.packages.each do |package| %>
-                      <%= render :partial => "packages/package", :locals => {:package => package} %>
-                  <% end %>
-                </ul>
-            <% end %>
-          </div>
-
         </div>
       </div>
     </div>

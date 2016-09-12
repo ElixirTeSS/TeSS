@@ -40,6 +40,9 @@ $(document).ready(function () {
                     selector: '$node > node',
                     css: {
                         'shape': 'roundrectangle',
+                        'content': function (e) {
+                            return e.data('name') + ' (' + e.children().length + ')';
+                        },
                         'padding-top': '10px',
                         'font-weight': 'bold',
                         'padding-left': '10px',
@@ -47,10 +50,11 @@ $(document).ready(function () {
                         'padding-right': '10px',
                         'text-valign': 'top',
                         'text-halign': 'center',
+                        'text-margin-y': '-2px',
                         'width': 'auto',
                         'height': 'auto',
                         'font-size': '9px',
-                        'color': '#000000'
+                        'color': '#111111'
                     }
                 },
                 {
@@ -83,6 +87,7 @@ $(document).ready(function () {
         });
 
         if (editable) {
+            // Bind events
             $('#workflow-toolbar-add').click(Workflows.setAddNodeState);
             $('#workflow-toolbar-cancel').click(Workflows.cancelState);
             $('#workflow-toolbar-edit').click(Workflows.edit);
@@ -94,7 +99,18 @@ $(document).ready(function () {
             $('#node-modal-form-confirm').click(Workflows.nodeModalConfirm);
             $('#edge-modal-form-confirm').click(Workflows.edgeModalConfirm);
             $('.node-modal-add-resource-btn').click(Workflows.associatedResources.add);
-            $('#node-modal').on('click', '.delete-associated-resource', Workflows.associatedResources.delete);
+            $('#node-modal')
+                .on('hide.bs.modal', Workflows.cancelState)
+                .on('click', '.delete-associated-resource', Workflows.associatedResources.delete);
+            $('#edge-modal').on('hide.bs.modal', Workflows.cancelState);
+
+            // Update JSON in form
+            $('.workflow-form-submit').click(function () {
+                $('#workflow_workflow_content').val(JSON.stringify(cy.json()['elements']));
+
+                return true;
+            });
+
             cy.on('tap', Workflows.handleClick);
             cy.on('select', function (e) {
                 if (Workflows.state !== 'adding node') {
@@ -111,22 +127,22 @@ $(document).ready(function () {
                     Workflows._dragged = false;
                 }
             });
-
-            $('#node-modal').on('hide.bs.modal', Workflows.cancelState);
-            $('#edge-modal').on('hide.bs.modal', Workflows.cancelState);
-
-            // Update JSON in form
-            $('#workflow-form-submit').click(function () {
-                $('#workflow_workflow_content').val(JSON.stringify(cy.json()['elements']));
-
-                return true;
-            });
-
             cy.$(':selected').unselect();
+
+            // Initialize
             Workflows.cancelState();
             Workflows.history.initialize();
             jscolor.installByClassName('jscolor');
         } else {
+            // Hiding/revealing of child nodes
+            cy.style()
+                .selector('node > node').style({ 'opacity': 0 })
+                .selector('node > node.visible').style({ 'opacity': 1, 'transition-property': 'opacity', 'transition-duration': '0.2s' })
+                .selector('edge.hidden').style({ 'opacity': 0 })
+                .update();
+
+            cy.$('node > node').connectedEdges().addClass('hidden');
+
             Workflows.sidebar.init();
             cy.on('select', Workflows.sidebar.populate);
             cy.on('unselect', Workflows.sidebar.clear);
@@ -154,7 +170,8 @@ var Workflows = {
 
     setState: function (state, message) {
         Workflows.state = state;
-        $('#workflow-status-message').html(message);
+        if (message)
+            $('#workflow-status-message').html(message).show();
         var button = $('#workflow-toolbar-cancel');
         button.find('span').html('Cancel ' + state);
         button.show();
@@ -168,8 +185,8 @@ var Workflows = {
             Workflows.selected = null;
         }
 
-        $('#workflow-status-message').html('');
-        $('#workflow-status-selected-node').html('<span class="muted">nothing</span>');
+        $('#workflow-status-message').html('').hide();
+        $('#workflow-status-selected-node').html('<span class="muted">Nothing selected</span>').attr('title', '');
         $('#workflow-status-bar').find('.node-context-button').hide();
         $('#workflow-toolbar-cancel').hide();
     },
@@ -179,12 +196,14 @@ var Workflows = {
             Workflows.selected = target;
             Workflows.setState('node selection');
             $('#workflow-status-bar').find('.node-context-button').show();
-            $('#workflow-status-selected-node').html(Workflows.selected.data('name'));
+            $('#workflow-status-selected-node').html(Workflows.selected.data('name'))
+                .attr('title', Workflows.selected.data('name'));
         } else if (target.isEdge()) {
             Workflows.selected = target;
             Workflows.setState('edge selection');
             $('#workflow-status-bar').find('.edge-context-button').show();
-            $('#workflow-status-selected-node').html(Workflows.selected.data('name') + ' (edge)');
+            $('#workflow-status-selected-node').html(Workflows.selected.data('name') + ' (edge)')
+                .attr('title',Workflows.selected.data('name') + ' (edge)');
         }
     },
 
@@ -194,44 +213,24 @@ var Workflows = {
     },
 
     placeNode: function (position, parentId) {
-        $('#node-modal-title').html(parentId ? 'Add child node' : 'Add node');
-        $('#node-modal').modal('show');
-        $('#node-modal-form-id').val('');
-        $('#node-modal-form-title').val('');
-        $('#node-modal-form-description').val('');
-        $('#node-modal-form-colour').val('#F0721E')[0].jscolor.fromString('#F0721E');
-        $('#node-modal-form-parent-id').val(parentId);
-        $('#node-modal-form-x').val(position.x);
         // Offset child nodes a bit so they don't stack on top of each other...
-        var y = position.y;
+        var pos = { x: position.x, y: position.y };
         if (parentId && Workflows.selected.children().length > 0)
-            y = Workflows.selected.children().last().position().y + 40;
-        $('#node-modal-form-y').val(y);
-        Workflows.associatedResources.populate([]);
+            pos.y = Workflows.selected.children().last().position().y + 40;
+
+        Workflows.nodeModal.populate(parentId ? 'Add child node' : 'Add node', { parent: parentId }, pos);
+
+        $('#node-modal').modal('show');
     },
 
     addNode: function () {
-        var object = {
-            group: 'nodes',
-            data: {
-                name: $('#node-modal-form-title').val(),
-                description: $('#node-modal-form-description').val(),
-                color: $('#node-modal-form-colour').val(),
-                font_color: $('#node-modal-form-colour').css("color"),
-                parent: $('#node-modal-form-parent-id').val(),
-                associatedResources: Workflows.associatedResources.fetch()
-            },
-            position: {
-                x: parseInt($('#node-modal-form-x').val()),
-                y: parseInt($('#node-modal-form-y').val())
-            }
-        };
+        var node = Workflows.nodeModal.fetch();
+
+        Workflows.history.modify(node.data.parent ? 'add child node' : 'add node', function () {
+            cy.add(node).select();
+        });
 
         $('#node-modal').modal('hide');
-
-        Workflows.history.modify(object.data.parent ? 'add child node' : 'add node', function () {
-            cy.add(object).select();
-        });
     },
 
     addChild: function () {
@@ -239,38 +238,19 @@ var Workflows = {
     },
 
     edit: function () {
-        var data;
         if (Workflows.state === 'node selection') {
-            data = Workflows.selected.data();
-            var position = Workflows.selected.position();
-            $('#node-modal-title').html('Edit node');
-            $('#node-modal').modal('show');
-            $('#node-modal-form-id').val(data.id);
-            $('#node-modal-form-title').val(data.name);
-            $('#node-modal-form-description').val(data.description);
-            $('#node-modal-form-colour').val(data.color)[0].jscolor.fromString(data.color);
-            $('#node-modal-form-parent-id').val(data.parent);
-            $('#node-modal-form-x').val(position.x);
-            $('#node-modal-form-y').val(position.y);
-            if (data.associatedResources) {
-                Workflows.associatedResources.populate(data.associatedResources);
-            }
-
+            Workflows.nodeModal.populate('Edit node', Workflows.selected.data(), Workflows.selected.position());
         } else if (Workflows.state === 'edge selection') {
-            data = Workflows.selected.data();
             $('#edge-modal').modal('show');
-            $('#edge-modal-form-label').val(data.name);
+            $('#edge-modal-form-label').val(Workflows.selected.data('name'));
         }
     },
 
     updateNode: function () {
         var node = Workflows.selected;
+
         Workflows.history.modify('edit node', function () {
-            node.data('name', $('#node-modal-form-title').val());
-            node.data('description', $('#node-modal-form-description').val());
-            node.data('color', $('#node-modal-form-colour').val());
-            node.data('font_color', $('#node-modal-form-colour').css("color"));
-            node.data('associatedResources', Workflows.associatedResources.fetch());
+            node.data(Workflows.nodeModal.fetch().data);
         });
 
         $('#node-modal').modal('hide');
@@ -279,6 +259,7 @@ var Workflows = {
 
     updateEdge: function () {
         var edge = Workflows.selected;
+
         Workflows.history.modify('edit edge', function () {
             edge.data('name', $('#edge-modal-form-label').val());
         });
@@ -288,11 +269,7 @@ var Workflows = {
     },
 
     nodeModalConfirm: function () {
-        if ($('#node-modal-form-id').val()) {
-            Workflows.updateNode();
-        } else {
-            Workflows.addNode();
-        }
+        $('#node-modal-form-id').val() ? Workflows.updateNode() : Workflows.addNode();
     },
 
     edgeModalConfirm: function () {
@@ -319,10 +296,47 @@ var Workflows = {
 
     delete: function () {
         if (confirm('Are you sure you wish to delete this?')) {
-            Workflows.history.modify('delete node', function () {
+            Workflows.history.modify('delete', function () {
                 Workflows.selected.remove();
             });
+
             Workflows.cancelState();
+        }
+    },
+
+    nodeModal: {
+        populate: function (title, data, position) {
+            $('#node-modal-title').html('title');
+            $('#node-modal').modal('show');
+            $('#node-modal-form-id').val(data.id);
+            $('#node-modal-form-title').val(data.name);
+            $('#node-modal-form-description').val(data.description);
+            if (data.color) {
+                $('#node-modal-form-colour')[0].jscolor.fromString(data.color);
+            } else if (data.parent) {
+                $('#node-modal-form-colour')[0].jscolor.fromString(cy.$('#' + data.parent).data('color'));
+            }
+            $('#node-modal-form-parent-id').val(data.parent);
+            $('#node-modal-form-x').val(position.x);
+            $('#node-modal-form-y').val(position.y);
+            Workflows.associatedResources.populate(data.associatedResources || []);
+        },
+
+        fetch: function () {
+            return {
+                data: {
+                    name: $('#node-modal-form-title').val(),
+                    description: $('#node-modal-form-description').val(),
+                    color: $('#node-modal-form-colour').val(),
+                    font_color: $('#node-modal-form-colour').css("color"),
+                    parent: $('#node-modal-form-parent-id').val(),
+                    associatedResources: Workflows.associatedResources.fetch()
+                },
+                position: {
+                    x: parseInt($('#node-modal-form-x').val()),
+                    y: parseInt($('#node-modal-form-y').val())
+                }
+            };
         }
     },
 
@@ -335,6 +349,16 @@ var Workflows = {
 
         populate: function (e) {
             if (e.cyTarget.isNode()) {
+                // Hide all expanded nodes and edges not related to this one
+                var relatives = e.cyTarget.ancestors().descendants();
+                var unrelated = cy.$('.visible').difference(relatives);
+                unrelated.removeClass('visible');
+                unrelated.connectedEdges().addClass('hidden');
+
+                // Show child nodes and their edges
+                if (e.cyTarget.isParent()) {
+                    e.cyTarget.children().addClass('visible').connectedEdges().removeClass('hidden');
+                }
                 $('#workflow-diagram-sidebar-title').html(e.cyTarget.data('name') || '<span class="muted">Untitled</span>');
                 $('#workflow-diagram-sidebar-desc').html(HandlebarsTemplates['workflows/sidebar_content'](e.cyTarget.data()))
             } else if (e.cyTarget.isEdge()) {
@@ -448,6 +472,12 @@ var Workflows = {
                     url: $('[data-attribute=url]', $(this)).val(),
                     type: $('[data-attribute=type]', $(this)).val()
                 };
+
+                // Detect if URL is internal, and make it relative
+                var base = window.location.toString().split('/workflows')[0];
+                if (resource.url.indexOf(base) !== -1) {
+                    resource.url = resource.url.substr(base.length)
+                }
 
                 if (resource.url && resource.title) {
                     resources.push(resource);

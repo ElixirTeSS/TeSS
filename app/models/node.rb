@@ -1,6 +1,8 @@
 class Node < ActiveRecord::Base
 
   include PublicActivity::Common
+  include LogParameterChanges
+
   has_paper_trail
 
   extend FriendlyId
@@ -11,6 +13,8 @@ class Node < ActiveRecord::Base
   has_many :staff, class_name: 'StaffMember', dependent: :destroy
 
   has_many :content_providers, dependent: :nullify
+  has_many :materials, through: :content_providers
+  has_many :events, through: :content_providers
 
   accepts_nested_attributes_for :staff, allow_destroy: true
 

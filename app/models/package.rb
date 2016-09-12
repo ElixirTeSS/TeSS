@@ -1,5 +1,8 @@
 class Package < ActiveRecord::Base
-  include PublicActivity::Common
+
+  include PublicActivity::Model
+  include LogParameterChanges
+
   has_paper_trail
 
   extend FriendlyId
@@ -21,8 +24,6 @@ class Package < ActiveRecord::Base
 
   clean_array_fields(:keywords)
   update_suggestions(:keywords)
-
-  after_save :log_activities
 
   has_image(placeholder: "/assets/placeholder-package.png")
 
@@ -93,15 +94,4 @@ class Package < ActiveRecord::Base
     %w( user keywords )
   end
 
-  private
-
-  def log_activities
-    self.changed.each do |changed_attribute|
-      #TODO: Sort out what gets logged
-      # If content provider - find content provider otherwise uses ID.
-      #     maybe add new activity for content provider having a new material added to it too.
-      # If updated at - ignore
-      self.create_activity :update_parameter, parameters: {attr: changed_attribute, new_val: self.send(changed_attribute)}
-    end
-  end
 end

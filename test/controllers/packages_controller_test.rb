@@ -192,8 +192,17 @@ class PackagesControllerTest < ActionController::TestCase
     get :show, :id => @package
     assert_response :success
     assert_select 'ul.nav-tabs' do
+      assert_select 'li.disabled', :count => 3 # This package has no events, materials or activity
+    end
+
+    packages(:with_resources).materials << materials(:good_material)
+    packages(:with_resources).events << events(:one)
+
+    get :show, :id => packages(:with_resources)
+    assert_response :success
+    assert_select 'ul.nav-tabs' do
       assert_select 'li' do
-        assert_select 'a[data-toggle="tab"]', :count => 3
+        assert_select 'a[data-toggle="tab"]', :count => 3 # Events, Materials, Activity (added the resources)
       end
     end
   end

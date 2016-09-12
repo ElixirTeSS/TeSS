@@ -32,6 +32,12 @@
     </div>
     <div class="row">
       <div class="col-md-12">
+        <div class="form-group actions">
+          <%= f.submit "Save workflow", class: 'btn btn-primary workflow-form-submit' %>
+          <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                      workflows_path, :class => 'btn btn-default' %>
+        </div>
+
         <%= f.label :workflow_content, "Workflow diagram" %><br />
         <%= f.hidden_field :workflow_content  %>
 
@@ -97,7 +103,7 @@
         <% end %>
 
         <div class="form-group actions">
-          <%= f.submit "Save workflow", class: 'btn btn-primary', id: 'workflow-form-submit' %>
+          <%= f.submit "Save workflow", class: 'btn btn-primary workflow-form-submit' %>
           <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                       workflows_path, :class => 'btn btn-default' %>
         </div>

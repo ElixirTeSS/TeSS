@@ -35,21 +35,23 @@
     </div>
     <div class="row">
       <ul class="nav nav-tabs">
-        <li class="active">
-          <a data-toggle="tab" href="#home"><i class="<%= icon_class_for_model('materials') %>"></i> Material</a>
-        <li>
-          <a data-toggle="tab" href="#packages"><i class="<%= icon_class_for_model('packages') %>"></i> Packages</a>
-        </li>
-        <li>
-          <a data-toggle="tab" href="#activity_log"><i class="<%= icon_class_for_model('activity_logs') %>"></i> Activity log</a>
-        </li>
+        <%= tab('Material', icon_class_for_model('materials'), 'home', active: true) %>
+
+        <%= tab('Packages', icon_class_for_model('packages'), 'packages',
+                disabled: { check: @material.packages.none?, message: 'This material is currently not included in any packages' }) %>
+
+        <%= tab('Activity log', icon_class_for_model('activity_logs'), 'activity_log',
+                disabled: { check: @material.activities.none?, message: 'No activities recorded' }) %>
       </ul>
 
       <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
           <div class="row">
             <div class="page-header dont-break-out">
-              <h2><%=t '.title', :default => @material.title %></h2>
+              <h2>
+                <%=t '.title', :default => @material.title %>
+                <%= conditional_icon_for(:not_scraped_recently, @material) %>
+              </h2>
               <p><%= link_to @material.url, @material.url, :class =>'h5', :target => "_blank" %></p>
               <% if not @material.long_description.blank? %>
                   <p><%= render_markdown(@material.long_description) %></p>
@@ -71,29 +73,10 @@
           </div>
         </div>
         <div id="packages" class="tab-pane fade">
-          <!--<#% if current_user and policy(@material).update? %>-->
-              <!--<div class="row">-->
-                <!--<%#= form_tag(controller: 'materials', id: @material.id, action: 'update_packages', method: 'post') do |f| %>-->
-                    <!--<%#= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @material, :f => f, :options => available_packages(@material), :dropdown_toggle_button_name => "Add to package"} %>-->
-                    <!--<button type="submit" value="add" class="btn btn-primary">Update material</button>-->
-                <!--<#% end %>-->
-              <!--</div>-->
-          <!--<#% end %>-->
-          <div class="row">
-            <% if @material.packages.blank? %>
-                <%= empty_tag(:p, 'This material is currently not included in any packages.', "padding-top: 10px;") %>
-            <% else %>
-                <ul class="masonry media-grid">
-                  <% @material.packages.each do |package| %>
-                      <%= render :partial => "packages/package", :locals => {:package => package} %>
-                  <% end %>
-                </ul>
-            <% end %>
-          </div>
+          <%= render :partial => "packages/packages_list", :locals => {:resource => @material} %>
         </div>
         <div id="activity_log" class="tab-pane fade">
           <%= render :partial => "activities/activity_log", :locals => {:resource => @material} %>
-          <!--<%#= link_to(material_activities_path(@material)) %>-->
         </div>
       </div>
     </div>

@@ -61,4 +61,34 @@ class WorkflowsControllerTest < ActionController::TestCase
 
     assert_redirected_to workflows_path
   end
+
+  test 'should allow collaborator to edit' do
+    user = users(:another_regular_user)
+    @workflow.collaborators << user
+    sign_in user
+
+    get :edit, id: @workflow
+    assert_response :success
+  end
+
+  test 'should not allow non-collaborator to edit' do
+    user = users(:another_regular_user)
+    sign_in user
+
+    get :edit, id: @workflow
+    assert_response :forbidden
+  end
+
+  test 'should not allow collaborator to delete' do
+    user = users(:another_regular_user)
+    @workflow.collaborators << user
+    sign_in user
+
+    assert_no_difference('Workflow.count') do
+      delete :destroy, id: @workflow
+    end
+
+    assert_response :forbidden
+  end
+
 end

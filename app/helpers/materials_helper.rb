@@ -6,6 +6,7 @@ module MaterialsHelper
 
       "If your website contains training materials that you wish to include in TeSS, please contact the TeSS team (<a href='mailto:tess @elixir-uk.info'>tess@elixir-uk.info</a>) for further details."
 
+
       # Returns an array of two-element arrays of licences ready to be used in options_for_select() for generating option/select tags
   # [['Licence 1 full name','Licence 1 abbreviation'], ['Licence 2 full name','Licence 2 abbreviation'], ...]
   def licence_options_for_select()
@@ -72,22 +73,6 @@ module MaterialsHelper
     # Admin can add a resource to any package, others only to packages they own
     current_packages = (current_user.is_admin?) ? Package.all : current_user.packages
     return current_packages - resource.packages
-  end
-
-  def materials_for(resource=nil)
-    return [] if resource.nil?
-
-    return resource.materials.flatten if resource.respond_to?(:materials)
-
-    materials = []
-    if resource.instance_of? Node
-      resource.content_providers.each do |cp|
-        cp.materials.each do |material|
-          materials << material
-        end
-      end
-    end
-    return materials
   end
 
 end

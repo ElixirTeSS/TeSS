@@ -108,33 +108,35 @@
     </div>
 
     <div class="row">
+
       <ul class="nav nav-tabs">
-        <li class="active">
-          <a data-toggle="tab" href="#materials"><i class="<%= icon_class_for_model('materials') %>"></i>
-            Materials</a>
-        </li>
-        <li>
-          <a data-toggle="tab" href="#events"><i class="<%= icon_class_for_model('events') %>"></i> Events</a>
-        </li>
-        <li>
-          <a data-toggle="tab" href="#packages"><i class="<%= icon_class_for_model('packages') %>"></i> Packages</a>
-        </li>
-        <li>
-          <a data-toggle="tab" href="#workflows"><i class="<%= icon_class_for_model('workflows') %>"></i>
-            Workflows</a>
-        </li>
+        <%= tab('Materials', icon_class_for_model('materials'), 'materials', active: true,
+                disabled: { check: @user.materials.none?, message: 'No registered training materials' },
+                count: @user.materials.count) %>
+
+        <%= tab('Events', icon_class_for_model('events'), 'events',
+                disabled: { check: @user.events.none?, message: 'No registered events' },
+                count: @user.events.count) %>
+
+        <%= tab('Packages', icon_class_for_model('packages'), 'packages',
+                disabled: { check: @user.packages.none?, message: 'No packages' },
+                count: @user.packages.count) %>
+
+        <%= tab('Workflows', icon_class_for_model('events'), 'events',
+                disabled: { check: @user.workflows.none?, message: 'No workflows' },
+                count: @user.workflows.count) %>
       </ul>
 
       <div class="tab-content">
         <div id="materials" class="tab-pane fade in active">
           <div class="row">
-            <div class="search-results-count"> 
-              <%= pluralize(@user.materials.count, 'training material') %> found 
+            <div class="search-results-count">
+              <%= pluralize(@user.materials.count, 'training material') %> found
             </div>
-            <% if !@user.materials.blank? %>
-                <% @user.materials.each do |material| %> 
-                    <%= render material %> 
-                <% end %> 
+            <% if @user.materials.any? %>
+                <% @user.materials.each do |material| %>
+                    <%= render material %>
+                <% end %>
             <% end %>
           </div>
         </div>
@@ -143,7 +145,7 @@
             <div class="search-results-count">
               <%= pluralize(@user.events.count, 'event') %> found
             </div>
-            <% if !@user.events.blank? %>
+            <% if @user.events.any? %>
                 <ul class="masonry media-grid" style="margin-top: 15px;">
                   <% @user.events.each do |event| %>
                       <%= render event %>
@@ -157,7 +159,7 @@
             <div class="search-results-count">
               <%= pluralize(@user.packages.count, 'package') %> found
             </div>
-            <% if !@user.packages.blank? %>
+            <% if @user.packages.any? %>
                 <ul class="masonry media-grid" style="margin-top: 15px;">
                   <% @user.packages.each do |package| %>
                       <%= render package %>
@@ -171,7 +173,7 @@
             <div class="search-results-count">
               <%= pluralize(@user.workflows.count, 'workflow') %> found
             </div>
-            <% if !@user.workflows.blank? %>
+            <% if @user.workflows.any? %>
                 <ul class="masonry media-grid" style="margin-top: 15px;">
                   <% @user.workflows.each do |workflow| %>
                       <%= render workflow %>
