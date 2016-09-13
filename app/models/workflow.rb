@@ -73,7 +73,7 @@ class Workflow < ActiveRecord::Base
     results = []
     self.workflow_content['nodes'].each do |node|
       results << node['data'][type]
-    end
+    end if self.workflow_content['nodes']
     return results
   end
 
