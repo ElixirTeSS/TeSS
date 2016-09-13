@@ -23,6 +23,8 @@ module SearchHelper
     #remove the page option if it exists
     parameters.delete('page')
 
+    html_options.reverse_merge!(title: value.to_s)
+
     if block_given?
       link_to parameters.merge(new_parameter), html_options do
         title || truncate(value.to_s,length: 30)
