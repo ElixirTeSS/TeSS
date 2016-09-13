@@ -35,6 +35,8 @@
 
     <hr>
 
-    <%= render partial: 'common/masonry_grid', locals: { objects: @materials } %>
+    <% @materials.each do |material| %>
+        <%= render material %>
+    <% end %>
   </div>
 </div>
