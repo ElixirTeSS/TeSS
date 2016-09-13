@@ -2,7 +2,7 @@ module LogParameterChanges
 
   extend ActiveSupport::Concern
 
-  IGNORED_ATTRIBUTES = ['id', 'updated_at']
+  IGNORED_ATTRIBUTES = ['id', 'updated_at', 'workflow_content']
 
   included do
     after_update :log_parameter_changes
