@@ -38,9 +38,9 @@ class Workflow < ActiveRecord::Base
 
   def log_diagram_modification
     if workflow_content_changed?
-      old_nodes = workflow_content_was['nodes']
+      old_nodes = workflow_content_was['nodes'] || []
       old_node_ids = old_nodes.map { |n| n['data']['id'] }
-      current_nodes = workflow_content['nodes']
+      current_nodes = workflow_content['nodes'] || []
       current_node_ids = current_nodes.map { |n| n['data']['id'] }
 
       added_node_ids = (current_node_ids - old_node_ids)
