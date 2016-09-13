@@ -34,6 +34,10 @@ class Workflow < ActiveRecord::Base
     %w( )
   end
 
+  def hide_child_nodes?
+    false
+  end
+
   private
 
   def log_diagram_modification

@@ -2,6 +2,7 @@ $(document).ready(function () {
     var wfJsonElement = $('#workflow-content-json');
     var cytoscapeElement = $('#cy');
     var editable = cytoscapeElement.data('editable');
+    var hideChildNodes = cytoscapeElement.data('hideChildNodes');
 
     if (wfJsonElement.length && cytoscapeElement.length) {
         var cy = window.cy = cytoscape({
@@ -135,13 +136,15 @@ $(document).ready(function () {
             jscolor.installByClassName('jscolor');
         } else {
             // Hiding/revealing of child nodes
-            cy.style()
-                .selector('node > node').style({ 'opacity': 0 })
-                .selector('node > node.visible').style({ 'opacity': 1, 'transition-property': 'opacity', 'transition-duration': '0.2s' })
-                .selector('edge.hidden').style({ 'opacity': 0 })
-                .update();
+            if(hideChildNodes) {
+                cy.style()
+                    .selector('node > node').style({ 'opacity': 0 })
+                    .selector('node > node.visible').style({ 'opacity': 1, 'transition-property': 'opacity', 'transition-duration': '0.2s' })
+                    .selector('edge.hidden').style({ 'opacity': 0 })
+                    .update();
 
-            cy.$('node > node').connectedEdges().addClass('hidden');
+                cy.$('node > node').connectedEdges().addClass('hidden');
+            }
 
             Workflows.sidebar.init();
             cy.on('select', Workflows.sidebar.populate);
