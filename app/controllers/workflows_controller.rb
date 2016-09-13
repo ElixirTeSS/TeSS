@@ -79,16 +79,19 @@ class WorkflowsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_workflow
-      @workflow = Workflow.friendly.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def workflow_params
-      params.require(:workflow).permit(:title, :description, :user_id, :workflow_content, :doi,
-                                       :remote_created_date,  :remote_updated_date, { keywords: [] },
-                                       { scientific_topic_names: [] }, :licence, :difficulty_level,
-                                       { contributors: [] }, { authors: [] }, { target_audience: [] })
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_workflow
+    @workflow = Workflow.friendly.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def workflow_params
+    params.require(:workflow).permit(:title, :description, :user_id, :workflow_content, :doi,
+                                     :remote_created_date,  :remote_updated_date, { keywords: [] },
+                                     { scientific_topic_names: [] }, :licence, :difficulty_level,
+                                     { contributors: [] }, { authors: [] }, { target_audience: [] },
+                                     :hide_child_nodes)
+  end
+
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160908141626) do
+ActiveRecord::Schema.define(version: 20160913090818) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -364,18 +364,19 @@ ActiveRecord::Schema.define(version: 20160908141626) do
     t.string   "description"
     t.integer  "user_id"
     t.json     "workflow_content"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.string   "slug"
-    t.string   "target_audience",     default: [],              array: true
-    t.string   "keywords",            default: [],              array: true
-    t.string   "authors",             default: [],              array: true
-    t.string   "contributors",        default: [],              array: true
+    t.string   "target_audience",     default: [],                 array: true
+    t.string   "keywords",            default: [],                 array: true
+    t.string   "authors",             default: [],                 array: true
+    t.string   "contributors",        default: [],                 array: true
     t.string   "licence"
     t.string   "difficulty_level"
     t.string   "doi"
     t.date     "remote_created_date"
     t.date     "remote_updated_date"
+    t.boolean  "hide_child_nodes",    default: false
   end
 
   add_index "workflows", ["slug"], name: "index_workflows_on_slug", unique: true, using: :btree
