@@ -20,14 +20,10 @@
             </div>
         <% end %>
 
-        <div class="form-group">
-          <%= f.label :title %><br />
-          <%= f.text_field :title, :class => 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :description %><br />
-          <%= f.text_area :description, :class => 'form-control', :rows => '5' %>
-        </div>
+        <%= f.input :title %>
+        <%= f.input :description, as: :text, input_html: { rows: 5 } %>
+        <%= f.input :hide_child_nodes,
+                    hint: 'Ticking this box will hide child nodes from the diagram until their parent node is clicked.' %>
       </div>
     </div>
     <div class="row">
