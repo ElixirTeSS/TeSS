@@ -4,11 +4,11 @@ one:
   title: MyString
   description: MyString
   user_id:
-  workflow_content:
+  workflow_content: {}
   user: regular_user
 
 two:
   title: MyString
   description: MyString
   user_id: 
-  workflow_content: 
+  workflow_content: { "nodes": [ { "data": { "name": "Exciting stuff", "description": "This is very exciting indeed!", "color": "#F0721E", "font_color": "rgb(0, 0, 0)", "associatedResources": [ ], "id": "8b97907c-ac90-4003-a645-6fad508992c6" }, "position": { "x": 576, "y": 131 }, "group": "nodes", "removed": false, "selected": false, "selectable": true, "locked": false, "grabbable": true, "classes": "" }, { "data": { "name": "Another fun node", "description": "This one is fun and thrilling. ", "color": "#800080", "font_color": "rgb(255, 255, 255)", "associatedResources": [ ], "id": "d10ab565-ab08-4b73-93c6-3b9c93ae644d" }, "position": { "x": 241, "y": 358 }, "group": "nodes", "removed": false, "selected": true, "selectable": true, "locked": false, "grabbable": true, "classes": "" } ], "edges": [ { "data": { "source": "8b97907c-ac90-4003-a645-6fad508992c6", "target": "d10ab565-ab08-4b73-93c6-3b9c93ae644d", "id": "0c4176b5-48f7-4926-9195-af504d6fcb79" }, "position": { }, "group": "edges", "removed": false, "selected": false, "selectable": true, "locked": false, "grabbable": true, "classes": "" } ] }

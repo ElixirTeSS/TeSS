@@ -16,6 +16,13 @@ class Workflow < ActiveRecord::Base
       string :description
       text :title
       text :description
+      text :node_names do
+        node_index('name')
+      end
+      text :node_descriptions do
+        node_index('description')
+      end
+
     end
   end
 
@@ -62,5 +69,12 @@ class Workflow < ActiveRecord::Base
     end
   end
 
+  def node_index(type)
+    results = []
+    self.workflow_content['nodes'].each do |node|
+      results << node['data'][type]
+    end
+    return results
+  end
 
 end
