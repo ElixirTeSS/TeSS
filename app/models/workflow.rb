@@ -22,7 +22,21 @@ class Workflow < ActiveRecord::Base
       text :node_descriptions do
         node_index('description')
       end
-
+      string :authors, :multiple => true
+      text :authors
+      string :scientific_topics, :multiple => true do
+        self.scientific_topic_names
+      end
+      string :target_audience, :multiple => true
+      text :target_audience
+      string :keywords, :multiple => true
+      text :keywords
+      string :licence, :multiple => true
+      text :licence
+      string :difficulty_level, :multiple => true
+      text :difficulty_level
+      string :contributors, :multiple => true
+      text :contributors
     end
   end
 
@@ -38,7 +52,7 @@ class Workflow < ActiveRecord::Base
   after_update :log_diagram_modification
 
   def self.facet_fields
-    %w( )
+    %w(scientific_topics target_audience keywords licence difficulty_level authors contributors)
   end
 
   private

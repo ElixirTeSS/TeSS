@@ -20,9 +20,7 @@ class Material < ActiveRecord::Base
       string :authors, :multiple => true
       text :authors
       string :scientific_topics, :multiple => true do
-        if !self.scientific_topics.nil?
-          self.scientific_topics.map{|x| x.preferred_label}
-        end
+        self.scientific_topic_names
       end
       string :target_audience, :multiple => true
       text :target_audience
