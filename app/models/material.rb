@@ -3,6 +3,7 @@ class Material < ActiveRecord::Base
   include PublicActivity::Common
   include HasScientificTopics
   include LogParameterChanges
+  include HasAssociatedNodes
 
   has_paper_trail
 
@@ -43,6 +44,9 @@ class Material < ActiveRecord::Base
           self.content_provider.title
         end
       end
+      string :node, multiple: true do
+        self.associated_nodes.map(&:name)
+      end
       string :submitter, :multiple => true do
         submitter_index
       end
@@ -81,7 +85,7 @@ class Material < ActiveRecord::Base
   end
 
   def self.facet_fields
-    %w(content_provider scientific_topics target_audience keywords licence difficulty_level authors contributors)
+    %w(content_provider scientific_topics target_audience keywords licence difficulty_level authors contributors node)
   end
 
   private

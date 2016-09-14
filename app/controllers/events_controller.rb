@@ -149,7 +149,7 @@ class EventsController < ApplicationController
                                                  :scraper_record, :description, {:field => []}, {:category => []},
                                                  {:keyword => []}, :start, :end, :sponsor, :online, :for_profit, :venue,
                                                  :city, :county, :country, :postcode, :latitude, :longitude,
-                                                 :content_provider_id, {:package_ids => []},
+                                                 :content_provider_id, {:package_ids => []}, {:node_ids => []},
                                                  external_resources_attributes: [:id, :url, :title, :_destroy])
     event_params[:description] = ActionView::Base.full_sanitizer.sanitize(event_params[:description])
     return event_params

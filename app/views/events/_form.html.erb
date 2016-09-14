@@ -44,7 +44,17 @@
       <%= f.text_field :provider, :class => 'form-control' %>
     </div>
 
-    <%= render :partial => 'content_providers/partials/add_content_provider', :locals => {:f => f, :resource => @event, :label => "Content provider (where the event metadata is obtained from)"} %>
+    <%= render :partial => 'content_providers/partials/add_content_provider',
+               :locals => {:f => f,
+                           :resource => @event,
+                           :label => "Content provider (where the event metadata is obtained from)"} %>
+
+    <%= render :partial => 'common/dropdown',
+               :locals => {:field_name => 'node',
+                           :resource => @event,
+                           :f => f,
+                           :options => Node.order(:name).all,
+                           :dropdown_toggle_button_name => "Associate with node"} %>
 
     <div class="form-group">
       <%= f.label :description %>
@@ -88,7 +98,8 @@
       <%= f.label :location %>
       <br>
       Face-to-face <%= icon_for(:face_to_face, :small)%></i> <%= f.radio_button 'online', 'false', :class=>'location' %>
-      <%= f.radio_button 'online', 'true', :class=>'location', :checked => @event.online? %>     <i class="fa fa-desktop" aria-hidden="true" id="online-symbol"></i> Online
+      <%= f.radio_button 'online', 'true', :class=>'location', :checked => @event.online? %>
+      <i class="fa fa-desktop" aria-hidden="true" id="online-symbol"></i> Online
     </div>
 
     <div class="address_content">
@@ -127,9 +138,12 @@
        <%= f.check_box :for_profit %>
     </div>
 
-
-
-    <%= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @event, :f => f, :options => available_packages(@event), :dropdown_toggle_button_name => "Add to package"} %>
+    <%= render :partial => 'common/dropdown',
+               :locals => {:field_name => 'package',
+                           :resource => @event,
+                           :f => f,
+                           :options => available_packages(@event),
+                           :dropdown_toggle_button_name => "Add to package"} %>
 
     <div class="form-group" id="external-resources">
       <%= f.label :external_resources %>

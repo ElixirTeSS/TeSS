@@ -1,0 +1,20 @@
+<%# Sidebar containing info on associated nodes.
+
+Variable that should be available
+- associated_nodes - an array (or AR collection) of nodes
+%>
+
+<ul class="unstyled nav-simple">
+  <% if associated_nodes.any? %>
+      <!-- Content provider  -->
+      <li><h4 class="nav-heading"><%= 'Node'.pluralize(associated_nodes.count) %></h4></li>
+      <% associated_nodes.each do |node| %>
+          <li>
+            <%= link_to node, class: 'associated-node-link' do %>
+                <%= image_tag(get_image_url_for(node), class: 'node-logo') %>
+                <%= country_flag(node.country_code, class: 'small-flag') %> <%= node.name %>
+            <% end %>
+          </li>
+      <% end %>
+  <% end %>
+</ul>

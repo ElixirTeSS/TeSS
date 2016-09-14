@@ -10,6 +10,14 @@ good:
   carousel_images: 
   user: regular_user
 
+westeros:
+  name: Westeros
+  member_status: MyString
+  country_code: WS
+  home_page: http://example.com
+  twitter: westeros
+  user: regular_user
+
 #
 #no_name:
 #  name:

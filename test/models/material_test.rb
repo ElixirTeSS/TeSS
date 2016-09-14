@@ -59,6 +59,30 @@ class MaterialTest < ActiveSupport::TestCase
     assert_nil Material.find_by_id(material.id)
   end
 
+
+  test 'can get associated nodes for material' do
+    m = materials(:good_material)
+
+    assert_equal [], m.nodes
+    assert_equal 1, m.associated_nodes.count
+    assert_includes m.associated_nodes, nodes(:good)
+  end
+
+  test 'can add a node to a material' do
+    m = materials(:good_material)
+
+    assert_difference('NodeLink.count', 1) do
+      m.nodes << nodes(:westeros)
+    end
+
+    assert_equal 1, m.nodes.count
+    assert_includes m.nodes, nodes(:westeros)
+    assert_equal 2, m.associated_nodes.count
+    assert_includes m.associated_nodes, nodes(:good)
+    assert_includes m.associated_nodes, nodes(:westeros)
+  end
+
+
 =begin
   test 'should save good new material' do
     material = new_material()

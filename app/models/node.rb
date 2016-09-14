@@ -24,6 +24,8 @@ class Node < ActiveRecord::Base
   validates :home_page, format: { with: URI.regexp }, if: Proc.new { |a| a.home_page.present? }
   # validate :has_training_coordinator
 
+  alias_attribute(:title, :name)
+
   if SOLR_ENABLED
     searchable do
       string :name

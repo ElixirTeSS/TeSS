@@ -32,3 +32,14 @@ img.small-flag {
   width: 16px;
   height: 12px;
 }
+
+.associated-node-link {
+  padding: 10px;
+  display: block;
+
+  img.node-logo {
+    display: block;
+    margin-bottom: 10px;
+    max-height: 100px;
+  }
+}

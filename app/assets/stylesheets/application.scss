@@ -391,6 +391,14 @@ abbr, accronym {
   border: none
 }
 
+.dropdown-option {
+  cursor: pointer;
+
+  &:hover {
+    background: $dropdown-link-hover-bg;
+  }
+}
+
 .dropdown-option-delete {
   background: none;
   border: none
