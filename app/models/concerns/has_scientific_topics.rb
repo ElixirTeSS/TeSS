@@ -9,6 +9,12 @@ module HasScientificTopics
 
   def scientific_topic_names= names
     self.scientific_topics = ScientificTopic.where(preferred_label: names)
+    # Only check synonyms if no preferred labels exist.
+    # Otherwise we end up with redundant synonyms being added
+    if self.scientific_topics.empty?
+      self.scientific_topics << ScientificTopic.where("'Data handling' = ANY (synonyms)")
+    end
+
   end
 
   def scientific_topic_names
