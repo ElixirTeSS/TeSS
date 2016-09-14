@@ -10,7 +10,6 @@ class WorkflowsController < ApplicationController
   # GET /workflows
   # GET /workflows.json
   def index
-    @workflows = Workflow.all
   end
 
   # GET /workflows/1
