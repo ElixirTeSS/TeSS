@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160908141626) do
+ActiveRecord::Schema.define(version: 20160914094342) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -244,32 +244,32 @@ ActiveRecord::Schema.define(version: 20160908141626) do
 
   create_table "scientific_topics", force: :cascade do |t|
     t.string   "preferred_label"
-    t.text     "synonyms"
-    t.text     "definitions"
     t.boolean  "obsolete"
-    t.text     "parents"
     t.string   "created_in"
     t.string   "documentation"
     t.string   "prefix_iri"
-    t.text     "consider"
-    t.text     "has_alternative_id"
-    t.text     "has_broad_synonym"
-    t.text     "has_dbxref"
     t.text     "has_definition"
-    t.text     "has_exact_synonym"
-    t.text     "has_related_synonym"
-    t.text     "has_subset"
-    t.text     "replaced_by"
     t.string   "saved_by"
-    t.text     "subset_property"
     t.string   "obsolete_since"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.string   "class_id"
-    t.text     "has_narrow_synonym"
-    t.text     "in_subset"
-    t.text     "in_cyclic"
     t.string   "slug"
+    t.string   "synonyms",            default: [],              array: true
+    t.string   "definitions",         default: [],              array: true
+    t.string   "parents",             default: [],              array: true
+    t.string   "consider",            default: [],              array: true
+    t.string   "has_alternative_id",  default: [],              array: true
+    t.string   "has_broad_synonym",   default: [],              array: true
+    t.string   "has_dbxref",          default: [],              array: true
+    t.string   "has_exact_synonym",   default: [],              array: true
+    t.string   "has_related_synonym", default: [],              array: true
+    t.string   "has_subset",          default: [],              array: true
+    t.string   "replaced_by",         default: [],              array: true
+    t.string   "subset_property",     default: [],              array: true
+    t.string   "has_narrow_synonym",  default: [],              array: true
+    t.string   "in_subset",           default: [],              array: true
+    t.string   "in_cyclic",           default: [],              array: true
   end
 
   add_index "scientific_topics", ["slug"], name: "index_scientific_topics_on_slug", unique: true, using: :btree
@@ -364,18 +364,19 @@ ActiveRecord::Schema.define(version: 20160908141626) do
     t.string   "description"
     t.integer  "user_id"
     t.json     "workflow_content"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.string   "slug"
-    t.string   "target_audience",     default: [],              array: true
-    t.string   "keywords",            default: [],              array: true
-    t.string   "authors",             default: [],              array: true
-    t.string   "contributors",        default: [],              array: true
+    t.string   "target_audience",     default: [],                 array: true
+    t.string   "keywords",            default: [],                 array: true
+    t.string   "authors",             default: [],                 array: true
+    t.string   "contributors",        default: [],                 array: true
     t.string   "licence"
     t.string   "difficulty_level"
     t.string   "doi"
     t.date     "remote_created_date"
     t.date     "remote_updated_date"
+    t.boolean  "hide_child_nodes",    default: false
   end
 
   add_index "workflows", ["slug"], name: "index_workflows_on_slug", unique: true, using: :btree

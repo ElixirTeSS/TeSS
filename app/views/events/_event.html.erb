@@ -1,7 +1,10 @@
 <li class="masonry-brick media-item">
-  <h3 class="media-heading dont-break-out">
+  <div id="event-title">
+  <h3 class="media-heading dont-break-out" style="display: inline;">
     <%= event.title %>
   </h3>
+  <%= conditional_icon_for(:not_scraped_recently,event) %>
+  </div>
   <!--<p><button class="btn btn-success"><a href="<%#= event.url %>">View Event <span class="fa fa-external-link" aria-hidden="true"></span></a></button> </p>-->
   <p><%= neatly_printed_date_range(event.start, event.end) %></p>
   <% if event.online? %>
@@ -25,7 +28,6 @@
           <%= icon_for(:for_profit, :small) %>
       <% end %>
   <% end %>
-  <%= conditional_icon_for(:not_scraped_recently,event) %>
   <%= link_to '', event, :class=>"media-view" %>
   <%= render :partial => 'events/partials/event_schemaorg', :locals => {:event => event} %>
 </li>

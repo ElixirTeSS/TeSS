@@ -16,6 +16,13 @@ class Workflow < ActiveRecord::Base
       string :description
       text :title
       text :description
+      text :node_names do
+        node_index('name')
+      end
+      text :node_descriptions do
+        node_index('description')
+      end
+
     end
   end
 
@@ -38,9 +45,9 @@ class Workflow < ActiveRecord::Base
 
   def log_diagram_modification
     if workflow_content_changed?
-      old_nodes = workflow_content_was['nodes']
+      old_nodes = workflow_content_was['nodes'] || []
       old_node_ids = old_nodes.map { |n| n['data']['id'] }
-      current_nodes = workflow_content['nodes']
+      current_nodes = workflow_content['nodes'] || []
       current_node_ids = current_nodes.map { |n| n['data']['id'] }
 
       added_node_ids = (current_node_ids - old_node_ids)
@@ -62,5 +69,12 @@ class Workflow < ActiveRecord::Base
     end
   end
 
+  def node_index(type)
+    results = []
+    self.workflow_content['nodes'].each do |node|
+      results << node['data'][type]
+    end if self.workflow_content['nodes']
+    return results
+  end
 
 end
