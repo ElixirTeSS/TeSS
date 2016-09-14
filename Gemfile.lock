@@ -1,5 +1,6 @@
 GEM
   remote: https://rubygems.org/
+  remote: https://rails-assets.org/
   specs:
     actionmailer (4.2.4)
       actionpack (= 4.2.4)
@@ -189,6 +190,7 @@ GEM
       bundler (>= 1.3.0, < 2.0)
       railties (= 4.2.4)
       sprockets-rails
+    rails-assets-markdown-it (7.0.1)
     rails-deprecated_sanitizer (1.0.3)
       activesupport (>= 4.2.0.alpha)
     rails-dom-testing (1.0.7)
@@ -323,6 +325,7 @@ DEPENDENCIES
   public_activity
   pundit
   rails (= 4.2.4)
+  rails-assets-markdown-it (~> 7.0.1)!
   rails_admin
   redcarpet
   sass-rails (~> 5.0)

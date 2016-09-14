@@ -23,11 +23,13 @@ class WorkflowsController < ApplicationController
   def new
     authorize Workflow
     @workflow = Workflow.new
+    render layout: 'workflows'
   end
 
   # GET /workflows/1/edit
   def edit
     authorize @workflow
+    render layout: 'workflows'
   end
 
   # POST /workflows

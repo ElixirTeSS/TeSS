@@ -23,6 +23,7 @@
 //= require handlebars_helpers
 //= require masonry.pkgd
 //= require imagesloaded.pkgd
+//= require markdown-it
 //= require_tree ./templates
 //= require_tree .
 //= require_self

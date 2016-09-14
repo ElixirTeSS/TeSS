@@ -37,9 +37,10 @@
         <%= f.label :workflow_content, "Workflow diagram" %><br />
         <%= f.hidden_field :workflow_content  %>
 
-        <div class="workflow-diagram-wrapper">
-          <%= render partial: 'workflows/workflow_diagram', locals: { workflow:  @workflow, editable: true } %>
-        </div>
+        <% content_for :sidebar_title do %>
+            <span class="muted">Nothing selected</span>
+        <% end %>
+        <%= render partial: 'workflows/workflow_diagram', locals: { workflow:  @workflow, editable: true } %>
 
         <%= collapsible_panel('Extra metadata', 'extra-metadata') do %>
           <div class="form-group">

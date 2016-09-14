@@ -99,6 +99,10 @@ gem "paperclip", "~> 5.0.0"
 
 gem 'icalendar', '~> 2.4.1'
 
+source 'https://rails-assets.org' do
+  gem 'rails-assets-markdown-it', '~> 7.0.1'
+end
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'webmock', "~> 2.1.0"

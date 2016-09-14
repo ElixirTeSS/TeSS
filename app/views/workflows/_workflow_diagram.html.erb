@@ -1,46 +1,60 @@
 <% editable ||= false %>
 
-<% if editable %>
-    <div class="workflow-toolbar-wrapper">
-      <div id="workflow-toolbar">
-        <span id="workflow-status-message"></span>
-        <a class="btn btn-default disabled" id="workflow-toolbar-undo">
-          <i class="fa fa-undo"></i> <span>Undo</span>
-        </a>
-        <a class="btn btn-default disabled" id="workflow-toolbar-redo">
-          <i class="fa fa-repeat"></i> <span>Redo</span>
-        </a>
-        <a class="btn btn-default" id="workflow-toolbar-add">
-          <i class="fa fa-plus"></i> Add node
-        </a>
-      </div>
-      <div id="workflow-status-bar">
-        <div class="pull-right">
-          <a class="btn btn-default node-context-button edge-context-button" id="workflow-toolbar-edit" style="display: none">
-            <i class="fa fa-edit"></i> Edit
+<div class="workflow-diagram-wrapper">
+  <% if editable %>
+      <div class="workflow-toolbar-wrapper">
+        <div id="workflow-toolbar">
+          <span id="workflow-status-message"></span>
+          <a class="btn btn-default disabled" id="workflow-toolbar-undo">
+            <i class="fa fa-undo"></i> <span>Undo</span>
           </a>
-          <a class="btn btn-default node-context-button" id="workflow-toolbar-link" style="display: none">
-            <i class="fa fa-link"></i> Link
+          <a class="btn btn-default disabled" id="workflow-toolbar-redo">
+            <i class="fa fa-repeat"></i> <span>Redo</span>
           </a>
-          <a class="btn btn-default node-context-button" id="workflow-toolbar-add-child" style="display: none">
-            <i class="fa fa-plus-square"></i> Add child
-          </a>
-          <a class="btn btn-default node-context-button edge-context-button" id="workflow-toolbar-delete" style="display: none">
-            <i class="fa fa-trash"></i> Delete
-          </a>
-          <a class="btn btn-default" id="workflow-toolbar-cancel" style="display: none">
-            <i class="fa fa-ban"></i> <span>Cancel</span>
+          <a class="btn btn-default" id="workflow-toolbar-add">
+            <i class="fa fa-plus"></i> Add node
           </a>
         </div>
-        <div id="workflow-status-selected-node"></div>
+        <div id="workflow-status-bar">
+          <div class="pull-right">
+            <a class="btn btn-default node-context-button edge-context-button" id="workflow-toolbar-edit" style="display: none">
+              <i class="fa fa-edit"></i> Edit
+            </a>
+            <a class="btn btn-default node-context-button" id="workflow-toolbar-link" style="display: none">
+              <i class="fa fa-link"></i> Link
+            </a>
+            <a class="btn btn-default node-context-button" id="workflow-toolbar-add-child" style="display: none">
+              <i class="fa fa-plus-square"></i> Add child
+            </a>
+            <a class="btn btn-default node-context-button edge-context-button" id="workflow-toolbar-delete" style="display: none">
+              <i class="fa fa-trash"></i> Delete
+            </a>
+            <a class="btn btn-default" id="workflow-toolbar-cancel" style="display: none">
+              <i class="fa fa-ban"></i> <span>Cancel</span>
+            </a>
+          </div>
+          <div id="workflow-status-selected-node"></div>
+        </div>
       </div>
+
+      <%= render 'node_modal' %>
+      <%= render 'edge_modal' %>
+  <% end %>
+  <div class="workflow-diagram-container">
+    <div id="workflow-diagram-content">
+      <div id="cy" data-editable="<%= editable -%>" data-hide-child-nodes="<%= workflow.hide_child_nodes? %>"></div>
+      <%= content_tag(:script, id: 'workflow-content-json', type: 'application/json') do %>
+          <%#= As an empty string is not a valid JSON, returning "null" string here which is a valid JSON %>
+          <% if workflow.workflow_content.blank? %>
+              null
+          <% else %>
+              <%= workflow.workflow_content.to_json.html_safe %>
+          <% end %>
+      <% end %>
     </div>
-
-    <%= render 'node_modal' %>
-    <%= render 'edge_modal' %>
-<% end %>
-
-<div id="cy" data-editable="<%= editable -%>" data-hide-child-nodes="<%= workflow.hide_child_nodes? %>"></div>
-<%#= As an empty string is not a valid JSON, returning "null" string here which is a valid JSON %>
-<%= content_tag(:script, workflow.workflow_content.blank? ? "null" : convert_markdown_descriptions_into_html(workflow.workflow_content.to_json).html_safe,
-                id: 'workflow-content-json', type: 'application/json') %>
+    <div id="workflow-diagram-sidebar">
+      <h3 class="nav-heading" id="workflow-diagram-sidebar-title"><%= yield :sidebar_title %></h3>
+      <div id="workflow-diagram-sidebar-desc"><%= yield :sidebar_description %></div>
+    </div>
+  </div>
+</div>
