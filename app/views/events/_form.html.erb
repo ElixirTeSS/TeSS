@@ -28,6 +28,20 @@
     <% end %>
 
     <div class="form-group">
+      <%= label_tag('type')%> <br/>
+      <div class="btn-group" data-toggle="buttons">
+        <label class="btn btn-default <%= 'active' unless @event.online? %>">
+          <%= f.radio_button 'online', 'false', class: 'location', checked: !@event.online?, autocomplete: 'off' %>
+          <%= icon_for(:face_to_face, :small)%> Face-to-face
+        </label>
+        <label class="btn btn-default <%= 'active' if @event.online? %>">
+          <%= f.radio_button 'online', 'true', class: 'location', checked: @event.online?, autocomplete: 'off' %>
+          <i class="fa fa-desktop" aria-hidden="true" id="online-symbol"></i> Online
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group">
       <%= f.label :title %>
       <%= f.text_field :title, :class => 'form-control' %>
     </div>
@@ -92,14 +106,6 @@
     <div class="form-group">
       <%= f.label :sponsor %>
       <%= f.text_field :sponsor, :class => 'form-control' %>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :location %>
-      <br>
-      Face-to-face <%= icon_for(:face_to_face, :small)%></i> <%= f.radio_button 'online', 'false', :class=>'location' %>
-      <%= f.radio_button 'online', 'true', :class=>'location', :checked => @event.online? %>
-      <i class="fa fa-desktop" aria-hidden="true" id="online-symbol"></i> Online
     </div>
 
     <div class="address_content">
