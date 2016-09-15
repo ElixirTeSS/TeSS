@@ -99,8 +99,12 @@ gem "paperclip", "~> 5.0.0"
 
 gem 'icalendar', '~> 2.4.1'
 
+gem 'bootstrap-datepicker-rails', '~> 1.6.4.1'
+
 source 'https://rails-assets.org' do
   gem 'rails-assets-markdown-it', '~> 7.0.1'
+  gem 'rails-assets-moment', '~> 2.15.0'
+  gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '~> 4.17.42'
 end
 
 group :development, :test do

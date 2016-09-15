@@ -232,4 +232,13 @@ module ApplicationHelper
     end
   end
 
+  def datetime_picker(form, field)
+    content_tag(:div, class: 'input-group date', data: { datetimepicker: true }) do
+      content_tag(:span, class: 'input-group-addon', title: 'Click to display calendar') do
+        content_tag(:i, '', class: 'glyphicon glyphicon-calendar')
+      end +
+      form.text_field(field, class: 'form-control')
+    end
+  end
+
 end

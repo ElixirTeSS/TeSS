@@ -106,12 +106,12 @@
 
               <% if @event.start and !@event.start.blank? %>
                   <p><strong>Start:</strong>
-                    <%= @event.start %></p>
+                    <%= @event.start.strftime('%A, %d %B %Y @ %H:%M') %></p>
               <% end %>
 
               <% if @event.end and !@event.end.blank? %>
                   <p><strong>End:</strong>
-                    <%= @event.end %></p>
+                    <%= @event.end.strftime('%A, %d %B %Y @ %H:%M') %></p>
               <% end %>
 
               <% if @event.sponsor and !@event.sponsor.blank? %>

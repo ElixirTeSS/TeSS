@@ -97,11 +97,11 @@
 
     <div class="form-group">
       <%= f.label :start %>
-      <%= f.datetime_select :start, :class => 'form-control' %>
+      <%= datetime_picker(f, :start) %>
     </div>
     <div class="form-group">
       <%= f.label :end %>
-      <%= f.datetime_select :end, :class => 'form-control' %>
+      <%= datetime_picker(f, :end) %>
     </div>
     <div class="form-group">
       <%= f.label :sponsor %>
