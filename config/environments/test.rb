@@ -43,4 +43,7 @@ Rails.application.configure do
 
   CONTACT_EMAIL = 'test@example.com'
   SOLR_ENABLED = false
+
+  GOOGLE_MAPS_API_KEY = 'AIzaSyAUI5mvJQGZ7Ljhv4FvjKPrdHoBRHwXL2Q'
+
 end

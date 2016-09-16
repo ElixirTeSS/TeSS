@@ -108,34 +108,7 @@
     </div>
 
     <div class="address_content">
-        <div class="form-group">
-          <%= f.label :venue %>
-          <%= f.text_area :venue, :class => 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :city %>
-          <%= f.text_field :city, :class => 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :county %>
-          <%= f.text_field :county, :class => 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :country %>
-          <%= f.text_field :country, :class => 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :postcode %>
-          <%= f.text_field :postcode, :class => 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :latitude %>
-          <%= f.text_field :latitude, :class => 'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= f.label :longitude %>
-          <%= f.text_field :longitude, :class => 'form-control' %>
-        </div>
+      <%= render partial: 'events/partials/address_finder', locals: { f: f } %>
     </div>
 
     <div class="form-group">

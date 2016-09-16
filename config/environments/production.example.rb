@@ -87,4 +87,6 @@ Rails.application.configure do
   # ANNOUNCEMENT_MESSAGE = "TeSS is undergoing scheduled maintenance on Thursday March 31 2016, during which the service may go down unexpectedly. Apologies for the disruption."
   #ANNOUNCEMENT_MESSAGE = "TeSS is undergoing scheduled maintenance today, during which the service may go down unexpectedly. Apologies for the disruption."
 
+  GOOGLE_MAPS_API_KEY = ''
+
 end

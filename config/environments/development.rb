@@ -59,4 +59,6 @@ Rails.application.configure do
   # ANNOUNCEMENT_MESSAGE = "TeSS is undergoing scheduled maintenance on Thursday March 31 2016, during which the service may go down unexpectedly. Apologies for the disruption."
   ANNOUNCEMENT_MESSAGE = "This is our sandbox test TeSS server. You can use it to play with, but data you enter may be destroyed without notice. To see the real TeSS, go to <a href='https://tess.elixir-uk.org'>https://tess.elixir-uk.org</a>."
 
+  GOOGLE_MAPS_API_KEY = 'AIzaSyAUI5mvJQGZ7Ljhv4FvjKPrdHoBRHwXL2Q'
+
 end

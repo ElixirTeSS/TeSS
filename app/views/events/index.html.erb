@@ -9,7 +9,7 @@
       }
       if (e.target.id == 'maptab') {
         if (!loadedMapScript){
-          $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyCT1w2S_2I49FwJDKHGj9A9sO86Lp9nUdg&callback=initialize");
+          initialize();
         }
       }
       reposition_tiles('masonry', 'masonry-brick');
