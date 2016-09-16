@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   # Should allow token authentication for API calls
-  acts_as_token_authentication_handler_for User, except: [:index, :show, :check_exists] #only: [:new, :create, :edit, :update, :destroy]
+  acts_as_token_authentication_handler_for User, except: [:index, :show, :check_exists, :handle_error] #only: [:new, :create, :edit, :update, :destroy]
 
   # User auth should be required in the web interface as well; it's here rather than in routes so that it
   # doesn't override the token auth, above.
