@@ -1,5 +1,5 @@
 <% if @event.for_profit? or @event.online? or @event.expired? or @event.started?%>
-<div class="event-info-icons">
+<div class="bounding-box">
   <% if @event.for_profit? %>
       <%= icon_for(:for_profit) %>
       <span class="gap"></span>

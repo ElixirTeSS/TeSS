@@ -3,48 +3,27 @@
     <% id = Digest::SHA256.hexdigest external_resource.url %>
 <% end %>
 
-<script>
-  $(function(){
-    if (<%= !api_uri.nil? %>){
-      var json = $.get('<%=api_uri%>', function(json){
-        var json_object = json;
-        console.log(json_object)
-        $('#<%=id%>-desc').text(json_object.description);
-        $('#<%=id%>-resource-type-icon').addClass('fa-wrench').removeClass('fa-external-link');
-        $.each(json_object.topic, function(index, topic){
-          $('#<%=id%>-topics').append(
-              '<span class="topic-title">' +
-              '<a href="' + topic.uri + '">' + topic.term + ', </a>' +
-              '</span>'
-          );
-        })
-        $('#<%=id%>-external-links').append(
-            '<a class="btn btn-default" target="_blank" href="' + json_object.homepage +'">' +
-            json_object.name + 's homepage ' +
-            '<i class="fa fa-external-link"/></a>' +
-            '</a>'
-        );
-        $('#<%=id%>-external-links').append(
-            '<a class="btn btn-default" target="_blank" href="https://dev.bio.tools/tool/' + json_object.id +'">' +
-            json_object.name + ' on bio.tools ' +
-            '<i class="fa fa-external-link"/></a>'
-        );
-      });
-    }
-  })
-</script>
 
-<div class="col-md-12 col-sm-12">
+<div class="col-md-12 col-sm-12 bounding-box" data-api_uri="<%=api_uri || nil%>" data-id="<%=id || nil%>">
   <%= link_to(external_resource.url, target: :_blank) do %>
       <h4>
         <i class="fa fa-external-link" id="<%=id%>-resource-type-icon"></i>
         <%= external_resource.title %>
       </h4>
   <% end %>
-  <span id="<%=id%>-desc"></span>
-  <div class="topics" id="<%=id%>-topics">
-    <em>Topics:</em>
-  </div>
-  <div id="<%=id%>-external-links">
-  </div>
+
+  <% if api_uri %>
+    <span id="<%=id%>-desc"></span>
+      <div class="topics external-links" id="<%=id%>-topics">
+        <strong>Topics:</strong>
+      </div>
+      <div id="<%=id%>-external-links" class="btn-group external-links">
+      </div>
+  <% end %>
 </div>
+
+<% if api_uri %>
+    <script>
+       Biotools.displayFullTool('<%=api_uri%>', '<%=id%>');
+    </script>
+<% end %>

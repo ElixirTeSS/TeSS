@@ -1,6 +1,8 @@
-<div class="row event-info-icons">
+<%= collapsible_panel('Blah', 'external-resources-box') do %>
+<div class="row bounding-box external-resources-box ">
   <% external_resources.each do |external_resource| %>
     <%= render :partial => 'common/external_resource.html.erb',
                :locals => {:external_resource => external_resource} %>
   <% end %>
 </div>
+<% end %>
