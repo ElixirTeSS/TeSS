@@ -23,6 +23,9 @@
 //= require handlebars_helpers
 //= require masonry.pkgd
 //= require imagesloaded.pkgd
+//= require markdown-it
+//= require moment
+//= require eonasdan-bootstrap-datetimepicker
 //= require_tree ./templates
 //= require_tree .
 //= require_self
@@ -218,4 +221,12 @@ $(document).ready(function () {
     // Disabled tabs
     $('.nav-tabs li a[data-toggle="tooltip"]').tooltip();
     $('.nav-tabs li.disabled a').click(function (e) { e.preventDefault(); return false });
+
+    // Datetime pickers
+    $(function () {
+        $('[data-datetimepicker]').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm',
+            sideBySide: true
+        });
+    });
 });

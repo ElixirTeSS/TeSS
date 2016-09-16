@@ -3,6 +3,7 @@ require 'icalendar'
 class Event < ActiveRecord::Base
   include PublicActivity::Common
   include LogParameterChanges
+  include HasAssociatedNodes
   has_paper_trail
 
   extend FriendlyId
@@ -38,6 +39,9 @@ class Event < ActiveRecord::Base
         if !self.content_provider.nil?
           self.content_provider.title
         end
+      end
+      string :node, multiple: true do
+        self.associated_nodes.map(&:name)
       end
       boolean :online
 =begin TODO: SOLR has a LatLonType to do geospatial searching. Have a look at that
@@ -111,7 +115,7 @@ class Event < ActiveRecord::Base
   end
 
   def self.facet_fields
-    %w( category online country field provider city sponsor keywords venue content_provider )
+    %w( category online country field provider city sponsor keywords venue content_provider node )
   end
 
   def to_ical

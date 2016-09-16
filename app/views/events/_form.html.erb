@@ -27,6 +27,20 @@
     <% end %>
 
     <div class="form-group">
+      <%= label_tag('type')%> <br/>
+      <div class="btn-group" data-toggle="buttons">
+        <label class="btn btn-default <%= 'active' unless @event.online? %>">
+          <%= f.radio_button 'online', 'false', class: 'location', checked: !@event.online?, autocomplete: 'off' %>
+          <%= icon_for(:face_to_face, :small)%> Face-to-face
+        </label>
+        <label class="btn btn-default <%= 'active' if @event.online? %>">
+          <%= f.radio_button 'online', 'true', class: 'location', checked: @event.online?, autocomplete: 'off' %>
+          <i class="fa fa-desktop" aria-hidden="true" id="online-symbol"></i> Online
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group">
       <%= f.label :title %>
       <%= f.text_field :title, :class => 'form-control' %>
     </div>
@@ -43,7 +57,17 @@
       <%= f.text_field :provider, :class => 'form-control' %>
     </div>
 
-    <%= render :partial => 'content_providers/partials/add_content_provider', :locals => {:f => f, :resource => @event, :label => "Content provider (where the event metadata is obtained from)"} %>
+    <%= render :partial => 'content_providers/partials/add_content_provider',
+               :locals => {:f => f,
+                           :resource => @event,
+                           :label => "Content provider (where the event metadata is obtained from)"} %>
+
+    <%= render :partial => 'common/dropdown',
+               :locals => {:field_name => 'node',
+                           :resource => @event,
+                           :f => f,
+                           :options => Node.order(:name).all,
+                           :dropdown_toggle_button_name => "Associate with node"} %>
 
     <div class="form-group">
       <%= f.label :description %>
@@ -72,22 +96,15 @@
 
     <div class="form-group">
       <%= f.label :start %>
-      <%= f.datetime_select :start, :class => 'form-control' %>
+      <%= datetime_picker(f, :start) %>
     </div>
     <div class="form-group">
       <%= f.label :end %>
-      <%= f.datetime_select :end, :class => 'form-control' %>
+      <%= datetime_picker(f, :end) %>
     </div>
     <div class="form-group">
       <%= f.label :sponsor %>
       <%= f.text_field :sponsor, :class => 'form-control' %>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :location %>
-      <br>
-      Face-to-face <%= icon_for(:face_to_face, :small)%></i> <%= f.radio_button 'online', 'false', :class=>'location' %>
-      <%= f.radio_button 'online', 'true', :class=>'location', :checked => @event.online? %>     <i class="fa fa-desktop" aria-hidden="true" id="online-symbol"></i> Online
     </div>
 
     <div class="address_content">
@@ -126,9 +143,12 @@
        <%= f.check_box :for_profit %>
     </div>
 
-
-
-    <%= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @event, :f => f, :options => available_packages(@event), :dropdown_toggle_button_name => "Add to package"} %>
+    <%= render :partial => 'common/dropdown',
+               :locals => {:field_name => 'package',
+                           :resource => @event,
+                           :f => f,
+                           :options => available_packages(@event),
+                           :dropdown_toggle_button_name => "Add to package"} %>
 
     <div class="form-group" id="external-resources">
       <%= f.label :external_resources %>

@@ -1,3 +1,5 @@
+var MarkdownIt = window.markdownit();
+
 $(document).ready(function () {
     var wfJsonElement = $('#workflow-content-json');
     var cytoscapeElement = $('#cy');
@@ -129,6 +131,7 @@ $(document).ready(function () {
                 }
             });
             cy.$(':selected').unselect();
+            cy.on('select', Workflows.sidebar.populate);
 
             // Initialize
             Workflows.cancelState();
@@ -145,18 +148,31 @@ $(document).ready(function () {
 
                 cy.$('node > node').connectedEdges().addClass('hidden');
             }
-
-            Workflows.sidebar.init();
-            cy.on('select', Workflows.sidebar.populate);
-            cy.on('unselect', Workflows.sidebar.clear);
-            cy.$(':selected').unselect();
+            cy.on('select', 'node', Workflows.sidebar.populate);
+            cy.on('select', 'edge', function (e) {
+                e.cyTarget.unselect();
+                return false;
+            });
         }
+
+        Workflows.sidebar.init();
+        cy.on('unselect', Workflows.sidebar.clear);
+        cy.$(':selected').unselect();
 
         cy.panzoom();
         var defaultZoom = cy.maxZoom();
         cy.maxZoom(2); // Temporary limit the zoom level, to restrict how zoomed-in the diagram appears by default
         cy.fit(50); // Fit diagram to screen with some padding around the edges
         cy.maxZoom(defaultZoom); // Reset the zoom limit to allow user to further zoom if they wish
+
+        Split(['#workflow-diagram-content', '#workflow-diagram-sidebar'], {
+            direction: 'horizontal',
+            sizes: [70, 30],
+            minSize: [100, 50],
+            onDragEnd: function() {
+                cy.resize();
+            }
+        });
     }
 });
 
@@ -330,6 +346,7 @@ var Workflows = {
                 data: {
                     name: $('#node-modal-form-title').val(),
                     description: $('#node-modal-form-description').val(),
+                    html_description: MarkdownIt.render($('#node-modal-form-description').val()),
                     color: $('#node-modal-form-colour').val(),
                     font_color: $('#node-modal-form-colour').css("color"),
                     parent: $('#node-modal-form-parent-id').val(),
@@ -362,11 +379,19 @@ var Workflows = {
                 if (e.cyTarget.isParent()) {
                     e.cyTarget.children().addClass('visible').connectedEdges().removeClass('hidden');
                 }
+
+                if (!e.cyTarget.data('html_description')) {
+                    e.cyTarget.data('html_description', MarkdownIt.render(e.cyTarget.data('description')));
+                }
+
                 $('#workflow-diagram-sidebar-title').html(e.cyTarget.data('name') || '<span class="muted">Untitled</span>');
                 $('#workflow-diagram-sidebar-desc').html(HandlebarsTemplates['workflows/sidebar_content'](e.cyTarget.data()))
             } else if (e.cyTarget.isEdge()) {
-                e.cyTarget.unselect();
-                return false;
+                if (e.cyTarget.data('name')) {
+                    $('#workflow-diagram-sidebar-title').html(e.cyTarget.data('name') + ' (edge)');
+                } else {
+                    $('#workflow-diagram-sidebar-title').html('<span class="muted">Untitled (edge)</span>');
+                }
             }
         },
 

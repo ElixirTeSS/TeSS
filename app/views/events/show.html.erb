@@ -33,6 +33,7 @@
   <!-- SIDEBAR -->
   <div class="collapsing-sidebar" id="sidebar">
     <%= render :partial => "content_providers/partials/content_provider_info", :locals => {:content_provider => @event.content_provider} %>
+    <%= render partial: "nodes/partials/associated_node_info", locals: { associated_nodes: @event.associated_nodes } %>
   </div>
   <div id="content">
     <div class="row">
@@ -105,12 +106,12 @@
 
               <% if @event.start and !@event.start.blank? %>
                   <p><strong>Start:</strong>
-                    <%= @event.start %></p>
+                    <%= @event.start.strftime('%A, %d %B %Y @ %H:%M') %></p>
               <% end %>
 
               <% if @event.end and !@event.end.blank? %>
                   <p><strong>End:</strong>
-                    <%= @event.end %></p>
+                    <%= @event.end.strftime('%A, %d %B %Y @ %H:%M') %></p>
               <% end %>
 
               <% if @event.sponsor and !@event.sponsor.blank? %>

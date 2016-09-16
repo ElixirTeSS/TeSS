@@ -13,6 +13,7 @@
   <!-- SIDEBAR -->
   <div class="collapsing-sidebar" id="sidebar">
     <%= render :partial => "content_providers/partials/content_provider_info", :locals => {:content_provider => @material.content_provider} %>
+    <%= render partial: "nodes/partials/associated_node_info", locals: { associated_nodes: @material.associated_nodes } %>
   </div>
   <div id="content">
     <div class="row">
