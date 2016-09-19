@@ -593,11 +593,14 @@ sup {
   border-radius: 4px;
 }
 
-.event-info-icon{
+.info-icon{
   font-size: 24px;
 }
-.event-info-icon-small{
+.info-icon-small{
   font-size: 16px;
+}
+.info-icon-large{
+  font-size: 48px;
 }
 
 .gap {
@@ -609,4 +612,12 @@ sup {
 }
 .external-links {
   margin-top: 10px;
+}
+
+.fresh-icon{
+  color: green;
+}
+
+.stale-icon{
+  color: orangered;
 }

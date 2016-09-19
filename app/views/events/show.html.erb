@@ -51,7 +51,7 @@
             <div class="page-header">
               <h2>
                 <%= @event.title %>
-                <%= conditional_icon_for(:not_scraped_recently,@event) %>
+                <%= scrape_status_icon(@event, 'large') if current_user and current_user.is_admin? %>
               </h2>
               <p><%= link_to @event.url, @event.url, :class =>'h5', :target => "_blank" %></p>
             </div>
