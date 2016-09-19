@@ -1,10 +1,11 @@
-<p><b><%= resource.class.human_attribute_name(:scientific_topics).pluralize %>: </b><%= resource.scientific_topics.blank? ? empty_tag(:span, 'none specified') : resource.scientific_topics.map{|x| x.preferred_label}.join(', ') %></p>
-<p><b><%= resource.class.human_attribute_name(:keywords) %>: </b><%= resource.keywords.blank? ? empty_tag(:span, 'none specified') : resource.keywords.join(', ') %></p>
-<p><b><%= resource.class.human_attribute_name(:target_audience) %>: </b><%= resource.target_audience.blank? ? empty_tag(:span, 'not specified') : resource.target_audience.join(', ') %></p>
-<p><b><%= resource.class.human_attribute_name(:difficulty_level) %>: </b><%= (resource.difficulty_level.blank? or resource.difficulty_level == 'notspecified') ? empty_tag(:span, 'none specified') : difficulty_name_for_abbreviation(resource.difficulty_level) %></p>
-<p><b><%= resource.class.human_attribute_name(:licence) %>: </b><%= (resource.licence.blank? or resource.licence == 'notspecified') ? empty_tag(:span, 'not specified') : licence_name_for_abbreviation(resource.licence) %></p>
-<p><b><%= resource.class.human_attribute_name(:authors) %>: </b><%= resource.authors.blank? ? empty_tag(:span, 'none specified') : resource.authors.join(', ') %></p>
-<p><b><%= resource.class.human_attribute_name(:contributors) %>: </b><%= resource.contributors.blank? ? empty_tag(:span, 'none specified') : resource.contributors.join(', ') %></p>
-<p><b>DOI: </b><%= resource.doi.blank? ? empty_tag(:span, 'not specified') : resource.doi %></p>
-<p><b>Created: </b><%= resource.remote_created_date.blank? ? empty_tag(:span, 'not specified') : resource.remote_created_date %></p>
-<p><b>Last updated: </b><%= resource.remote_updated_date.blank? ? empty_tag(:span, 'not specified') : resource.remote_updated_date %></p>
+<%= display_attribute(resource, :scientific_topics){|values| values.map{|x| x.preferred_label}.join(', ')} %>
+<%= display_attribute(resource, :keywords){|values| values.join(', ')} %>
+<%= display_attribute(resource, :target_audience){|values| values.join(', ')} %>
+<%= display_attribute(resource, :difficulty_level){|value| difficulty_name_for_abbreviation(value)} %>
+<%= display_attribute(resource, :licence){|value| licence_name_for_abbreviation(value)} %>
+<%= display_attribute(resource, :authors){|values| values.join(', ')} %>
+<%= display_attribute(resource, :contributors){|values| values.join(', ')} %>
+<%= display_attribute(resource, :doi) %>
+<%= display_attribute(resource, :remote_created_date) %>
+<%= display_attribute(resource, :remote_updated_date) %>
+

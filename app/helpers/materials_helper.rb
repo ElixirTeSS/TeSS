@@ -75,4 +75,21 @@ module MaterialsHelper
     return current_packages - resource.packages
   end
 
+  def none_specified(resource, attribute)
+    #return '' #comment to display all non specified fields
+    return "<p><b> #{resource.class.human_attribute_name(attribute)}: </b> #{empty_tag(:span, 'not specified')}".html_safe
+  end
+
+  def display_attribute(resource, attribute) #resource e.g. <#Material> & symbol e.g. :target_audience
+    if resource.send(attribute).blank? or ['notspecified ','notspecified', "", []].include?(resource.send(attribute))
+      return none_specified(resource, attribute)
+    else
+      string = "<p><b> #{resource.class.human_attribute_name(attribute)}: </b>"
+      if block_given?
+        return (string + yield(resource.send(attribute)) + '</p>').html_safe
+      else
+        return (string + resource.send(attribute).to_s + '</p>').html_safe
+      end
+    end
+  end
 end
