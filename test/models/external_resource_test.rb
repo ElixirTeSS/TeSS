@@ -8,8 +8,6 @@ class ExternalResourceTest < ActiveSupport::TestCase
   end
 
   test 'correctly identifiers a resource is not from bio.tools' do
-    puts external_resources(:google).inspect
-    puts external_resources(:google).is_tool?
     assert_equal external_resources(:google).is_tool?, false
     assert_equal external_resources(:tess).is_tool?, false
   end

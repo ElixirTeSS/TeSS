@@ -412,7 +412,7 @@ class MaterialsControllerTest < ActionController::TestCase
     end
 
     assert_redirected_to material_path(assigns(:material))
-    assert_equal 0, assigns(:material).external_resources.count
+    assert_equal 1, assigns(:material).external_resources.count
   end
 
   test 'should modify external resource from material' do
