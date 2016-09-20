@@ -26,6 +26,7 @@
 //= require markdown-it
 //= require moment
 //= require eonasdan-bootstrap-datetimepicker
+//= require devbridge-autocomplete
 //= require_tree ./templates
 //= require_tree .
 //= require_self
@@ -228,5 +229,10 @@ $(document).ready(function () {
             format: 'YYYY-MM-DD HH:mm',
             sideBySide: true
         });
+    });
+
+    $(document).on('click', '.delete-list-item', function () {
+        $(this).parents('li').remove();
+        return false;
     });
 });
