@@ -1,0 +1,53 @@
+<% model_name = f.object.class.name.underscore %>
+
+<div class="form-group">
+  <%= f.label field_name %>
+  <ul id="<%= field_name -%>-list">
+    <%# This blank association is needed to trigger the delete when all associations are removed %>
+    <input type="hidden" name="<%= model_name %>[<%= field_name.to_s.singularize %>_ids][]" value="" />
+    <% f.object.send(field_name).each do |resource| %>
+        <%# This duplicates what is in javascripts/templates/autocompleter/resource.hbs :( %>
+        <li class="collaboration" data-id="<%= resource.id %>">
+          <input type="hidden" name="<%= model_name %>[<%= field_name.to_s.singularize %>_ids][]" value="<%= resource.id %>" />
+          <%= resource.title %> <a href="#" class="delete-list-item">&times;</a>
+        </li>
+    <% end %>
+  </ul>
+  <input type="text" autocomplete="off" class="form-control" id="<%= field_name -%>-autocompleter" placeholder="Add a new <%= field_name.to_s.singularize -%>...">
+</div>
+
+<script>
+  $(document).ready(function () {
+    $('#<%= field_name -%>-autocompleter').autocomplete({
+      serviceUrl: '<%= url -%>',
+      dataType: 'json',
+      deferRequestBy: 300, // Wait 300ms before submitting to stop search being flooded
+      paramName: 'q',
+      onSearchStart: function (query) {
+        query.q = query.q + '*';
+      },
+      transformResult: function(response) {
+        return {
+          suggestions: $.map(response, function(item) {
+            return { value: item.title, data: item.id };
+          })
+        };
+      },
+      onSelect: function (suggestion) {
+        var listElement = $('#<%= field_name -%>-list');
+        // Don't add duplicates
+        if (!$("[data-id='" + suggestion.data + "']", listElement).length) {
+          var obj = {
+            id: suggestion.data,
+            title: suggestion.value,
+            prefix: "<%= model_name -%>[<%= field_name.to_s.singularize -%>_ids]"
+          };
+
+          listElement.append(HandlebarsTemplates['autocompleter/resource'](obj));
+        }
+
+        $(this).val('').focus();
+      }
+    });
+  });
+</script>

@@ -603,3 +603,15 @@ sup {
 .gap {
   padding: 0px 5px;
 }
+
+
+a.delete-list-item, a.delete-collaboration {
+  vertical-align: middle;
+  color: $brand-danger;
+  font-weight: bold;
+  font-size: 120%;
+
+  &:hover {
+    color: darken($brand-danger, 20%);
+  }
+}

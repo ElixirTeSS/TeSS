@@ -9,14 +9,3 @@
     background: white;
   }
 }
-
-a.delete-collaboration {
-  vertical-align: middle;
-  color: $brand-danger;
-  font-weight: bold;
-  font-size: 120%;
-
-  &:hover {
-    color: darken($brand-danger, 20%);
-  }
-}
