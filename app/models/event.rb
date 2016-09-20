@@ -115,7 +115,7 @@ class Event < ActiveRecord::Base
   end
 
   def self.facet_fields
-    %w( event_type online country field provider city sponsor keywords venue content_provider node )
+    %w( event_type online country field organizer city sponsor keywords venue content_provider node )
   end
 
   def to_ical
