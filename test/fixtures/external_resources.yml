@@ -9,3 +9,14 @@ google:
   source: event_with_external_resource (Event)
   url: http://www.google.com
   title: Google
+
+biotools:
+  source: material_with_external_resource (Material)
+  url: https://dev.bio.tools/tool/SR-Tesseler
+  title: SR-Tesseler
+
+
+biotwools:
+  source: event_with_external_resource (Event)
+  url: https://dev.bio.tools/tool/FuNeL
+  title: FuNeL
