@@ -7,14 +7,14 @@
   <%= content_tag :span, event.description, {itemprop: 'description', content: event.description, class: 'schemaorg-element'} if event.description and not event.description.empty? %>
   <%= content_tag :span, event.start, {itemprop: 'startDate', content: event.start, class: 'schemaorg-element'}  if event.start and not event.start.nil? %>
   <%= content_tag :span, event.end, {itemprop: 'endDate', content: event.end, class: 'schemaorg-element'} if event.end and not event.end.nil? %>
-  <%  if event.provider and not event.provider.empty? %>
+  <%  if event.organizer and not event.organizer.empty? %>
       <span itemscope itemprop='organizer' itemtype="http://schema.org/Organization">
       <!--   <%#= content_tag :span, nil, {itemprop: 'organizer',
                                     itemtype: 'http://schema.org/Organization'},
                                     itemscope: true do %>-->
-        <%= content_tag 'span', event.provider, {itemprop: 'name', content: event.provider, class: 'schemaorg-element'} %>
+        <%= content_tag 'span', event.organizer, {itemprop: 'name', content: event.organizer, class: 'schemaorg-element'} %>
       </span>
-     <%# end if event.provider and not event.provider.empty? %>
+     <%# end if event.organizer and not event.organizer.empty? %>
   <% end %>
 
 

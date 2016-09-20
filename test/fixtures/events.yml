@@ -5,7 +5,7 @@ one:
   title: MyString
   subtitle: MyString
   url: http://example.com
-  provider: MyString
+  organizer: MyString
   field: ["MyText"]
   description: MyText
   event_type: ["MyText"]
@@ -27,7 +27,7 @@ two:
   title: MyString
   subtitle: MyString
   url: http://example.com
-  provider: MyString
+  organizer: MyString
   field: ["MyText"]
   description: MyText
   event_type: ["MyText"]

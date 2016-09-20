@@ -60,9 +60,9 @@
 
 
             <div class="col-md-4">
-              <% if @event.provider and !@event.provider.blank? %>
-                  <p><strong>Provider:</strong>
-                    <%= @event.provider %></p>
+              <% if @event.organizer and !@event.organizer.blank? %>
+                  <p><strong>Organizer:</strong>
+                    <%= @event.organizer %></p>
               <% end %>
 
               <% if @event.field and !@event.field.empty? %>

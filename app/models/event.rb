@@ -14,8 +14,8 @@ class Event < ActiveRecord::Base
       text :title
       string :title
       text :url
-      string :provider
-      text :provider
+      string :organizer
+      text :organizer
       string :sponsor
       text :sponsor
       string :venue
@@ -74,7 +74,7 @@ class Event < ActiveRecord::Base
   # title:string
   # subtitle:string
   # url:string
-  # provider:string
+  # organizer:string
   # field:text
   # description:text
   # event_type:text
