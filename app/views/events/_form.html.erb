@@ -82,11 +82,11 @@
                          suggestions: raw(TeSS::AutocompleteManager.suggestions_array_for('field').to_json)} %>
 
     <%= render partial: 'common/multiple_input',
-               locals: { field_name: 'category',
-                         label: 'Categories',
+               locals: { field_name: 'event_type',
+                         label: 'Event type',
                          resource: @event,
                          f: f,
-                         suggestions: raw(TeSS::AutocompleteManager.suggestions_array_for('category').to_json)} %>
+                         suggestions: raw(TeSS::AutocompleteManager.suggestions_array_for('event_type').to_json)} %>
 
     <%= render partial: 'common/multiple_input',
                locals: { field_name: 'keywords',

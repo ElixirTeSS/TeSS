@@ -25,7 +25,7 @@ class Event < ActiveRecord::Base
       string :country
       text :country
       string :field, :multiple => true
-      string :category, :multiple => true
+      string :event_type, :multiple => true
       string :keywords, :multiple => true
       time :start
       time :end
@@ -64,8 +64,8 @@ class Event < ActiveRecord::Base
 
   validates :title, :url, presence: true
 
-  clean_array_fields(:keywords, :category, :field)
-  update_suggestions(:keywords, :category, :field)
+  clean_array_fields(:keywords, :event_type, :field)
+  update_suggestions(:keywords, :event_type, :field)
 
   #Make sure there's url and title
 
@@ -77,7 +77,7 @@ class Event < ActiveRecord::Base
   # provider:string
   # field:text
   # description:text
-  # category:text
+  # event_type:text
   # start:datetime
   # end:datetime
   # sponsor:string
@@ -115,7 +115,7 @@ class Event < ActiveRecord::Base
   end
 
   def self.facet_fields
-    %w( category online country field provider city sponsor keywords venue content_provider node )
+    %w( event_type online country field provider city sponsor keywords venue content_provider node )
   end
 
   def to_ical
