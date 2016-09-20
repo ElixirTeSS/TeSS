@@ -24,7 +24,7 @@ render :partial => 'common/dropdown',
 <div class="form-group">
   <label><%= field_name.pluralize.capitalize unless field_name.blank? %></label>
 
-  <!-- have one empty one so something is always passed when the event listener triggers -->
+  <%# have one empty one so something is always passed when the event listener triggers %>
   <input name="<%=model_name%>[<%= field_name %>_ids][]" value="" style="display:none"/>
 
   <div data-field="<%= field_name %>" data-model="<%= model_name %>">

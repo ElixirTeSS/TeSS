@@ -32,6 +32,7 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
     <% field_values = resource.send(field_name.to_sym) %>
     <% field_values = [''] if field_values.blank? %> <!-- Add one placeholder if the field's value consists of an empty array -->
 
+    <input name="<%=resource.class.name.underscore%>[<%= field_name %>][]" value="" type="hidden"/>
     <% field_values.each do |val| %>
         <div class="multiple-list-item">
           <input type="text"
