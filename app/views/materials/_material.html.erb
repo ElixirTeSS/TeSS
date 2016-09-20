@@ -2,14 +2,14 @@
   <div class="list-group-item-heading"><%= link_to(material.title, material, class: "btn btn-default btn-block") %></div>
   <div class="dont-break-out">
     <p class>
-      <%= conditional_icon_for(:not_scraped_recently,material) %>
+      <%= scrape_status_icon(material) if current_user and current_user.is_admin? %>
       <%= truncate(material.short_description, length: 300, separator: ' ') %>
     </p>
     <div class="row" style="margin: 0px;">
       <% if controller_name != 'content_providers' %>
           <div class="col-md-9" style="padding: 0px;">
-            <p><b>Scientific topics: </b><%= material.scientific_topics.blank? ? empty_tag(:span, 'none specified') : material.scientific_topics.map{|x| x.preferred_label}.join(', ') %></p>
-            <p><b>Keywords: </b><%= material.keywords.blank? ? empty_tag(:span, 'none specified') : material.keywords.join(', ') %></p>
+            <%= display_attribute(material, :scientific_topics){|values| values.map{|x| x.preferred_label}.join(', ')} %>
+            <%= display_attribute(material, :keywords){|values| values.join(', ')} %>
           </div>
           <div class="col-md-3">
             <% if material.content_provider %>
@@ -21,8 +21,8 @@
           </div>
       <% else %>
           <div class="col-md-12" style="padding: 0px;">
-            <p><b>Scientific topics: </b><%= material.scientific_topics.blank? ? empty_tag(:span, 'none specified') : material.scientific_topics.map{|x| x.preferred_label}.join(', ') %></p>
-            <p><b>Keywords: </b><%= material.keywords.blank? ? empty_tag(:span, 'none specified') : material.keywords.join(', ') %></p>
+            <%= display_attribute(material, :scientific_topics){|values| values.map{|x| x.preferred_label}.join(', ')} %>
+            <%= display_attribute(material, :keywords){|values| values.join(', ')} %>
           </div>
       <% end %>
     </div>

@@ -13,22 +13,36 @@ module ApplicationHelper
   }
 
   ICONS = {
-      not_scraped_recently: {:icon => 'fa-exclamation-circle', :message => 'This record has not been updated recently'},
+      started: {:icon => 'fa-hourglass-half', :message => 'This event has already started'},
+      expired: {:icon => 'fa-hourglass-end', :message => 'This event has finished'},
+      online: {:icon => 'fa-desktop', :message => 'This is an online event'},
+      face_to_face: {:icon => 'fa-users', :message => 'This is a physical event'},
+      for_profit: {:icon => 'fa-credit-card', :message => 'This event is from a for-profit company'},
+      scraped_today: {:icon => 'fa-check-circle-o', :message => 'This record was updated today'},
+      not_scraped_recently: {:icon => 'fa-exclamation-circle', :message => 'This record has not been updated since %SUB%'}
   }
 
-  def conditional_icon_for(type, record, size=nil)
+  def scrape_status_icon(record, size=nil)
     if !record.last_scraped.nil? and record.scraper_record
-      if record.last_scraped < (Time.now - 14.days)
-        return "<i class=\"fa #{ICONS[type][:icon]} has-tooltip event-info-icon#{'-' + size.to_s if size}\"
-        aria-hidden=\"true\"
-        data-toggle=\"tooltip\"
-        data-placement=\"top\"
-        title=\"#{ICONS[type][:message]}\">
-        </i>".html_safe
+      if record.last_scraped < (Time.now - 2.days)
+        ICONS[:not_scraped_recently][:message].gsub!(/%SUB%/, (record.last_scraped.to_s))
+        return "<span class='stale-icon pull-right'>#{icon_for(:not_scraped_recently, size)}</span>".html_safe
+      else
+        return "<span class='fresh-icon pull-right'>#{icon_for(:scraped_today, size)}</span>".html_safe
       end
     end
     return nil
   end
+
+  def icon_for(type, size=nil)
+    return "<i class=\"fa #{ICONS[type][:icon]} has-tooltip info-icon#{'-' + size.to_s if size}\"
+    aria-hidden=\"true\"
+    data-toggle=\"tooltip\"
+    data-placement=\"top\"
+    title=\"#{ICONS[type][:message]}\">
+    </i>".html_safe
+  end
+
 
   def bootstrap_class_for(flash_type)
     BOOTSTRAP_FLASH_MSG.fetch(flash_type.to_sym, 'alert-info')

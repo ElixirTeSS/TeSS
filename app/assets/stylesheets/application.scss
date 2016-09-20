@@ -586,24 +586,26 @@ sup {
   }
 }
 
-.event-info-icons {
+.bounding-box {
   padding: 19px;
   margin-bottom: 20px;
   border: 1px solid #e3e3e3;
   border-radius: 4px;
 }
 
-.event-info-icon{
+.info-icon{
   font-size: 24px;
 }
-.event-info-icon-small{
+.info-icon-small{
   font-size: 16px;
+}
+.info-icon-large{
+  font-size: 48px;
 }
 
 .gap {
   padding: 0px 5px;
 }
-
 
 a.delete-list-item, a.delete-collaboration {
   vertical-align: middle;
@@ -614,4 +616,19 @@ a.delete-list-item, a.delete-collaboration {
   &:hover {
     color: darken($brand-danger, 20%);
   }
+}
+
+.tool-suggestions-header{
+  margin-bottom: 20px;
+}
+.external-links {
+  margin-top: 10px;
+}
+
+.fresh-icon{
+  color: green;
+}
+
+.stale-icon{
+  color: orangered;
 }

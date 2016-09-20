@@ -3,7 +3,7 @@
   <h3 class="media-heading dont-break-out" style="display: inline;">
     <%= event.title %>
   </h3>
-  <%= conditional_icon_for(:not_scraped_recently,event) %>
+    <%= scrape_status_icon(event) if current_user and current_user.is_admin? %>
   </div>
   <!--<p><button class="btn btn-success"><a href="<%#= event.url %>">View Event <span class="fa fa-external-link" aria-hidden="true"></span></a></button> </p>-->
   <p><%= neatly_printed_date_range(event.start, event.end) %></p>
