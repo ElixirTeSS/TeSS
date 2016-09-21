@@ -7,7 +7,7 @@
     <input type="hidden" name="<%= model_name %>[<%= field_name.to_s.singularize %>_ids][]" value="" />
     <% f.object.send(field_name).each do |resource| %>
         <%# This duplicates what is in javascripts/templates/autocompleter/resource.hbs :( %>
-        <li class="collaboration" data-id="<%= resource.id %>">
+        <li data-id="<%= resource.id %>">
           <input type="hidden" name="<%= model_name %>[<%= field_name.to_s.singularize %>_ids][]" value="<%= resource.id %>" />
           <%= resource.title %> <a href="#" class="delete-list-item">&times;</a>
         </li>
@@ -17,6 +17,7 @@
 </div>
 
 <script>
+  // TODO: Move this into a proper javascript file
   $(document).ready(function () {
     $('#<%= field_name -%>-autocompleter').autocomplete({
       serviceUrl: '<%= url -%>',
