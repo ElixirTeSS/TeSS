@@ -607,7 +607,7 @@ sup {
   padding: 0px 5px;
 }
 
-a.delete-list-item, a.delete-collaboration {
+.dropdown-option-delete, a.delete-list-item, a.delete-collaboration {
   vertical-align: middle;
   color: $brand-danger;
   font-weight: bold;

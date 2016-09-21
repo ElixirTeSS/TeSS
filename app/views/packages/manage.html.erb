@@ -9,8 +9,8 @@
   </div>
   <div class="col-md-8 col-md-pull-4">
     <%= form_tag(controller: 'packages', action: 'update_package_resources', method: 'post') do |f| %>
-        <%= render :partial => 'common/dropdown', :locals => {:field_name => 'material', :resource => @package, :f => f} %>
-        <%= render :partial => 'common/dropdown', :locals => {:field_name => 'event', :resource => @package, :f => f} %>
+        <%= render :partial => 'common/autocompleter', locals: { field_name: :materials, url: materials_path, f: f } %>
+        <%= render :partial => 'common/autocompleter', locals: { field_name: :events, url: events_path, f: f } %>
         <button type="submit" value="add" class="btn btn-primary">Update package</button>
     <% end %>
   </div>

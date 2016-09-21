@@ -1,0 +1,9 @@
+first_come_first_served:
+  title: First come first served
+  description: Registrations will be accepted in the order received
+registration_of_interest:
+  title: Registration of interest
+  description: The organisers will select successful registrants from a list of interested parties
+by_invitation:
+  title: By invitation
+  description: Only invited parties may register (this option may be used on its own or in conjunction with either of the others by specifying both values, e.g. for an event where people are individually invited but only the first X will be able to register)

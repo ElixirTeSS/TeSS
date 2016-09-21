@@ -96,6 +96,11 @@
                     <%= @event.sponsor %></p>
               <% end %>
 
+              <% if @event.contact and !@event.contact.blank? %>
+                  <p><strong>Contact:</strong>
+                    <%= @event.contact %></p>
+              <% end %>
+
               <% unless @event.online? %>
                   <% if @event.venue and !@event.venue.blank? %>
                       <p><strong>Venue:</strong>
@@ -121,6 +126,20 @@
                       <p><strong>Postcode:</strong>
                         <%= @event.postcode %></p>
                   <% end %>
+              <% end %>
+
+              <% if @event.capacity and !@event.capacity.blank? %>
+                  <p><strong>Capacity:</strong>
+                    <%= @event.capacity %></p>
+              <% end %>
+
+              <% if @event.eligibility.any? %>
+                  <strong>Eligibility:</strong>
+                  <ul>
+                    <% @event.eligibility.each do |e| %>
+                        <li><%= TeSS::EligibilityDictionary.instance.lookup(e)["title"] %></li>
+                    <% end %>
+                  </ul>
               <% end %>
 
               <% if @event.external_resources.any? %>

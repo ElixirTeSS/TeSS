@@ -2,60 +2,64 @@
 PARAMETERS:
 f - the form 
 resource - The object you wish to modify e.g. #<Material id: 99....
-field_name - The field name that the dropdown is for 
-       e.g. 'package' for my_material.packages, or 'material' for my_package.materials
-options - Array of objects to populate the dropdown with. Object must respons to .id and .title
+field_label - The label shown in the view above the field, e.g. "Packages"
+field_name  - The name of the form field, e.g. "package_ids"
+options     - Array of pairs to populate the dropdown with. The first value is the key which is displayed, and the
+              second value is the actual value that is submitted to the controller
+existing    - Existing values. Format as above.
 
 
 Example Usage
 render :partial => 'common/dropdown', 
      :locals => {:f => f,
-                   :resource => @package,
-                   :field_name => 'material',
-                   :options => available_options_for(@material) #OPTIONAL - defaults to field_name.all
+                 :resource => @package,
+                 :field_label => 'Materials',
+                 :field_name => 'material_ids',
+                 :options => Material.all
+                 :existing => @package.materials
      }
  -->
 
 <% model_name =  resource.class.name.underscore #e.g. package %>
-<% options = field_name.capitalize.constantize.all unless options %>
+<% options ||= format_for_dropdown(field_name.capitalize.constantize.all) %>
+<% existing ||= format_for_dropdown(resource.send(field_name.pluralize)) %>
+
+<%# Remove existing objects from the pool of options %>
+<% options = options - existing %>
 <!-- Name for the dropdown toggle button, if not specified will be set to 'Add <%#= field_name %>' -->
 <% dropdown_toggle_button_name ||= '' %>
 
-<div class="form-group">
-  <label><%= field_name.pluralize.capitalize unless field_name.blank? %></label>
+<% field_label ||= field_name.pluralize.capitalize unless field_name.blank? %>
 
-  <%# have one empty one so something is always passed when the event listener triggers %>
-  <input name="<%=model_name%>[<%= field_name %>_ids][]" value="" style="display:none"/>
+<div class="form-group">
+  <label><%= field_label %></label>
 
   <div data-field="<%= field_name %>" data-model="<%= model_name %>">
-
     <!-- display existing ones -->
-    <div class="<%=field_name%> multiple-input-list">
-      <% resource.send(field_name.pluralize).each do |r| %>
-          <div class="multiple-list-item">
-            <input type="text" class="multiple-input form-control"
-                   data-field='<%= field_name %>' data-model='<%= model_name %>'
-                   name="<%= model_name %>[<%=field_name%>_ids][]"
-                   value="<%= r.title %>" readonly="readonly" disabled="disabled" />
-            <input type="hidden" data-field="<%= field_name %>" name="<%= model_name %>[<%= field_name %>_ids][]" value="<%= r.id %>" />
+    <ul class="<%= field_name %>">
+      <%# have one empty one so something is always passed when the event listener triggers %>
+      <input name="<%= model_name %>[<%= field_name %>][]" value="" type="hidden"/>
+      <% existing.each do |r| %>
+          <li>
+            <%= r[0] %>
+            <input type="hidden" data-field="<%= field_name %>" name="<%= model_name %>[<%= field_name %>][]" value="<%= r[1] %>" />
             <input type="button" value="<%= "&times;".html_safe %>" class="dropdown-option-delete"
-                   data-field="<%= field_name %>" data-model='<%=model_name%>'
-                   data-value="<%= r.id %>" data-name="<%= r.title %>"
-            />
-          </div>
+                   data-field="<%= field_name %>" data-model='<%= model_name %>'
+                   data-value="<%= r[1] %>" data-name="<%= r[0] %>" />
+          </li>
       <% end %>
-    </div>
+    </ul>
     <!-- Create list of dropdown options-->
     <div class="dropdown">
-      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
         <%= dropdown_toggle_button_name.blank? ? "Add #{field_name}" : dropdown_toggle_button_name %>
         <span class="caret"></span>
       </button>
-      <ul class="dropdown-menu <%=field_name%>-options"
-          data-field="<%=field_name%>" data-model="<%= model_name %>"
-          id="<%= field_name %>_packages" aria-labelledby="dropdownMenu1">
+      <ul class="dropdown-menu <%= field_name %>-options"
+          data-field="<%= field_name %>" data-model="<%= model_name %>"
+          id="<%= field_name %>_packages">
         <% options.each do |r| %>
-            <li class="dropdown-option" id="<%=field_name%>-id-<%= r.id %>" value="<%= r.id %>"><a><%= r.title %></a></li>
+            <li class="dropdown-option" id="<%= field_name %>-id-<%= r[1] %>" data-value="<%= r[1] %>"><a><%= r[0] %></a></li>
         <% end %>
       </ul>
     </div>

@@ -1,0 +1,7 @@
+<li>
+    {{ name }}
+    <input type="hidden" data-field="{{ field_name }}" name="{{ model_name }}[{{ field_name }}][]" value="{{ value }}" />
+    <input type="button" value="&times;" class="dropdown-option-delete"
+    data-field="{{ field_name }}" data-model='{{model_name}}'
+    data-value="{{ value }}" data-name="{{ name }}" />
+</li>

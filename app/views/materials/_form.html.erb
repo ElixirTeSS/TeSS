@@ -43,8 +43,9 @@
 
     <%= render :partial => 'content_providers/partials/add_content_provider', :locals => {:f => f, :resource => @material} %>
 
-    <%= render :partial => 'common/dropdown', :locals => {:field_name => 'node', :resource => @material, :f => f,
-                                                          :options => Node.order(:name).all,
+    <%= render :partial => 'common/dropdown', :locals => {:field_label => 'Nodes', :field_name => 'node_ids', :resource => @material, :f => f,
+                                                          :options => format_for_dropdown(Node.order(:name).all),
+                                                          :existing => format_for_dropdown(@material.nodes),
                                                           :dropdown_toggle_button_name => "Associate with node"} %>
 
     <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'scientific_topic_names',

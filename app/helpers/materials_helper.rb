@@ -67,14 +67,6 @@ module MaterialsHelper
     return cps
   end
 
-  def available_packages(resource=nil)
-    return [] if resource.nil? || current_user.nil? || !resource.respond_to?(:packages)
-
-    # Admin can add a resource to any package, others only to packages they own
-    current_packages = (current_user.is_admin?) ? Package.all : current_user.packages
-    return current_packages - resource.packages
-  end
-
   def none_specified(resource, attribute)
     #return '' #comment to display all non specified fields
     return "<p><b> #{resource.class.human_attribute_name(attribute)}: </b> #{empty_tag(:span, 'not specified')}".html_safe

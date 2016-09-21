@@ -67,11 +67,10 @@ class Event < ActiveRecord::Base
   accepts_nested_attributes_for :external_resources, allow_destroy: true
 
   validates :title, :url, presence: true
+  validates :capacity, numericality: true, allow_blank: true
 
-  clean_array_fields(:keywords, :event_type)
-  update_suggestions(:keywords, :event_type)
-
-  #Make sure there's url and title
+  clean_array_fields(:keywords, :event_type, :target_audience, :eligibility)
+  update_suggestions(:keywords, :event_type, :target_audience)
 
   #Generated Event:
   # external_id:string

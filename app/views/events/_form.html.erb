@@ -63,10 +63,12 @@
                            :label => "Content provider (where the event metadata is obtained from)"} %>
 
     <%= render :partial => 'common/dropdown',
-               :locals => {:field_name => 'node',
+               :locals => {:field_name => 'node_ids',
+                           :field_label => 'Nodes',
                            :resource => @event,
                            :f => f,
-                           :options => Node.order(:name).all,
+                           :options => format_for_dropdown(Node.order(:name).all),
+                           :existing => format_for_dropdown(@event.nodes),
                            :dropdown_toggle_button_name => "Associate with node"} %>
 
     <div class="form-group">
@@ -96,17 +98,30 @@
                          f: f,
                          suggestions: raw(TeSS::AutocompleteManager.suggestions_array_for('keywords').to_json)} %>
 
+    <%= render partial: 'common/multiple_input',
+               locals: { field_name: 'target_audience',
+                         resource: @event,
+                         f: f,
+                         suggestions: raw(TeSS::AutocompleteManager.suggestions_array_for('target_audience').to_json)} %>
+
     <div class="form-group">
       <%= f.label :start %>
       <%= datetime_picker(f, :start) %>
     </div>
+
     <div class="form-group">
       <%= f.label :end %>
       <%= datetime_picker(f, :end) %>
     </div>
+
     <div class="form-group">
       <%= f.label :sponsor %>
       <%= f.text_field :sponsor, :class => 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :contact %>
+      <%= f.text_area :contact, :rows => '5', :class => 'form-control' %>
     </div>
 
     <div class="address_content">
@@ -114,15 +129,31 @@
     </div>
 
     <div class="form-group">
+      <%= f.label :capacity %>
+      <%= f.text_field :capacity, :class => 'form-control' %>
+    </div>
+
+    <%= render :partial => 'common/dropdown',
+               :locals => {:field_name => 'eligibility',
+                           :field_label => 'Eligibility',
+                           :resource => @event,
+                           :f => f,
+                           :options => TeSS::EligibilityDictionary.instance.options_for_select,
+                           :existing => TeSS::EligibilityDictionary.instance.options_for_select(@event.eligibility),
+                           :dropdown_toggle_button_name => "Eligibility"} %>
+
+    <div class="form-group">
       <%= f.label 'for_profit' %> <%= icon_for(:for_profit, :small)%>
        <%= f.check_box :for_profit %>
     </div>
 
     <%= render :partial => 'common/dropdown',
-               :locals => {:field_name => 'package',
+               :locals => {:field_name => 'package_ids',
+                           :field_label => 'Packages',
                            :resource => @event,
                            :f => f,
-                           :options => available_packages(@event),
+                           :options => format_for_dropdown(available_packages(@event)),
+                           :existing => format_for_dropdown(@event.packages),
                            :dropdown_toggle_button_name => "Add to package"} %>
 
     <div class="form-group" id="external-resources">

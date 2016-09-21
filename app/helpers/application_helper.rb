@@ -255,4 +255,9 @@ module ApplicationHelper
     end
   end
 
+  # Format an AR collection, or array, into an array of pairs that the common/dropdown partial expects
+  def format_for_dropdown(collection)
+    collection.map { |o| [o.title, o.id] }
+  end
+
 end
