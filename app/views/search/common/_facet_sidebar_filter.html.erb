@@ -18,7 +18,7 @@
     <% if filters_to_show.any? %>
         <!-- Title -->
         <li>
-          <h4 class="nav-heading"><%= (facet_field.humanize == 'User') ? 'Owner' : facet_field.humanize %></h4>
+          <h4 class="nav-heading"><%= (facet_field.humanize == 'User') ? 'Owner' : facet_field.humanize.singularize %></h4>
         </li>
 
         <!-- Display all filter links -->
