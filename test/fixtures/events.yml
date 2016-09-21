@@ -6,7 +6,6 @@ one:
   subtitle: MyString
   url: http://example.com
   organizer: MyString
-  field: ["MyText"]
   description: MyText
   event_type: ["MyText"]
   start: 2015-11-23 10:16:33
@@ -28,7 +27,6 @@ two:
   subtitle: MyString
   url: http://example.com
   organizer: MyString
-  field: ["MyText"]
   description: MyText
   event_type: ["MyText"]
   start: 2015-11-23 10:16:33

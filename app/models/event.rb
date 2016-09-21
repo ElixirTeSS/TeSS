@@ -4,6 +4,8 @@ class Event < ActiveRecord::Base
   include PublicActivity::Common
   include LogParameterChanges
   include HasAssociatedNodes
+  include HasScientificTopics
+
   has_paper_trail
 
   extend FriendlyId
@@ -24,7 +26,6 @@ class Event < ActiveRecord::Base
       text :city
       string :country
       text :country
-      string :field, :multiple => true
       string :event_type, :multiple => true
       string :keywords, :multiple => true
       time :start
@@ -42,6 +43,9 @@ class Event < ActiveRecord::Base
       end
       string :node, multiple: true do
         self.associated_nodes.map(&:name)
+      end
+      string :scientific_topics, :multiple => true do
+        self.scientific_topic_names
       end
       boolean :online
 =begin TODO: SOLR has a LatLonType to do geospatial searching. Have a look at that
@@ -64,8 +68,8 @@ class Event < ActiveRecord::Base
 
   validates :title, :url, presence: true
 
-  clean_array_fields(:keywords, :event_type, :field)
-  update_suggestions(:keywords, :event_type, :field)
+  clean_array_fields(:keywords, :event_type)
+  update_suggestions(:keywords, :event_type)
 
   #Make sure there's url and title
 
@@ -75,7 +79,6 @@ class Event < ActiveRecord::Base
   # subtitle:string
   # url:string
   # organizer:string
-  # field:text
   # description:text
   # event_type:text
   # start:datetime
@@ -115,7 +118,7 @@ class Event < ActiveRecord::Base
   end
 
   def self.facet_fields
-    %w( event_type online country field organizer city sponsor keywords venue content_provider node )
+    %w( event_type online country scientific_topics organizer city sponsor keywords venue content_provider node )
   end
 
   def to_ical

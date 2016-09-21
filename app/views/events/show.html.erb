@@ -65,9 +65,9 @@
                     <%= @event.organizer %></p>
               <% end %>
 
-              <% if @event.field and !@event.field.empty? %>
-                  <p><strong>Field:</strong>
-                    <%= @event.field.join(', ')%></p>
+              <% unless @event.scientific_topics.empty? %>
+                  <p><strong>Scientific topic:</strong>
+                    <%= @event.scientific_topic_names.join(', ')%></p>
               <% end %>
 
 

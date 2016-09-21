@@ -74,12 +74,14 @@
       <%= f.text_area :description, :rows => "10", :class => 'form-control' %>
     </div>
 
-    <%= render partial: 'common/multiple_input',
-               locals: { field_name: 'field',
-                         label: 'Fields',
+    <%= render :partial => 'common/multiple_input',
+               locals: { field_name: 'scientific_topic_names',
+                         label: 'Scientific topics',
                          resource: @event,
                          f: f,
-                         suggestions: raw(TeSS::AutocompleteManager.suggestions_array_for('field').to_json)} %>
+                         placeholder_text: 'Start typing to find topics',
+                         suggestions: raw(scientific_topic_names_for_autocomplete.to_json),
+                         disabled: true } %>
 
     <%= render partial: 'common/multiple_input',
                locals: { field_name: 'event_type',
