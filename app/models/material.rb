@@ -52,7 +52,12 @@ class Material < ActiveRecord::Base
         submitter_index
       end
       time :updated_at
-      
+      string :tools, :multiple => true do
+        self.external_resources.select{|x| x.is_tool?}.collect{|x| x.title}
+      end
+      string :related_resources, :multiple => true do
+        self.external_resources.select{|x| !x.is_tool?}.collect{|x| x.title}
+      end
     end
   end
 
@@ -83,7 +88,7 @@ class Material < ActiveRecord::Base
   end
 
   def self.facet_fields
-    %w(content_provider scientific_topics target_audience keywords licence difficulty_level authors contributors node)
+    %w(content_provider scientific_topics tools target_audience keywords difficulty_level authors related_resources contributors licence node )
   end
 
   private

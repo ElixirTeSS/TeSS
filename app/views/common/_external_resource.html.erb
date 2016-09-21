@@ -1,5 +1,5 @@
-<% if external_resource.url.starts_with?('https://dev.bio.tools') %>
-    <% api_uri = 'https://dev.bio.tools/api' + URI.split(external_resource.url)[5] %>
+<% if external_resource.is_tool? %>
+    <% api_uri = external_resource.api_url_of_tool %>
     <% id = Digest::SHA256.hexdigest external_resource.url %>
 <% end %>
 

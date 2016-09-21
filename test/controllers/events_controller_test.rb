@@ -467,7 +467,7 @@ end
     end
 
     assert_redirected_to event_path(assigns(:event))
-    assert_equal 0, assigns(:event).external_resources.count
+    assert_equal 1, assigns(:event).external_resources.count
   end
 
   test 'should modify external resource from event' do
