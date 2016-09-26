@@ -12,7 +12,7 @@ class MaterialsController < ApplicationController
 
   def index
     respond_to do |format|
-      format.json { render json: @materials }
+      format.json
       format.html
     end
   end
