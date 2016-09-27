@@ -27,7 +27,7 @@ class Event < ActiveRecord::Base
       string :country
       text :country
       string :event_type, :multiple => true do
-        self.event_type.map { |t| TeSS::EventTypeDictionary.instance.lookup(t)["title"] }
+        TeSS::EventTypeDictionary.instance.values_for_search(self.event_type)
       end
       string :keywords, :multiple => true
       time :start

@@ -28,7 +28,9 @@ class Material < ActiveRecord::Base
       text :keywords
       string :licence, :multiple => true
       text :licence
-      string :difficulty_level, :multiple => true
+      string :difficulty_level, :multiple => true do
+        TeSS::DifficultyDictionary.instance.values_for_search(self.difficulty_level)
+      end
       text :difficulty_level
       string :contributors, :multiple => true
       text :contributors

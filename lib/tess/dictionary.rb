@@ -22,6 +22,10 @@ class Dictionary
     end
   end
 
+  def values_for_search(keys)
+    @dictionary.select { |key, value| keys.include?(key) }.map { |key, value| value['title'] }
+  end
+
   private
 
   def load_dictionary
