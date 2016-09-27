@@ -24,4 +24,15 @@ class EventTest < ActiveSupport::TestCase
     assert_includes e.associated_nodes, nodes(:westeros)
   end
 
+  test 'validates CV terms' do
+    e = events(:scraper_user_event)
+    e.event_type = ['warehouse rave']
+    e.eligibility = ['cool dudes only']
+
+    refute e.save
+    assert_equal 2, e.errors.count
+    assert_equal ['contained invalid terms: warehouse rave'], e.errors[:event_type]
+    assert_equal ['contained invalid terms: cool dudes only'], e.errors[:eligibility]
+  end
+
 end

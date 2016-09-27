@@ -70,6 +70,8 @@ class Event < ActiveRecord::Base
 
   validates :title, :url, presence: true
   validates :capacity, numericality: true, allow_blank: true
+  validates :event_type, controlled_vocabulary: { dictionary: TeSS::EventTypeDictionary.instance }
+  validates :eligibility, controlled_vocabulary: { dictionary: TeSS::EligibilityDictionary.instance }
 
   clean_array_fields(:keywords, :event_type, :target_audience, :eligibility)
   update_suggestions(:keywords, :target_audience)

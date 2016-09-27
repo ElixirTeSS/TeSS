@@ -1,7 +1,5 @@
 module TeSS
-
-  class EligibilityDictionary
-    include Singleton
+  class EligibilityDictionary < Dictionary
 
     def initialize
       @dictionary = eligibility_dictionary_definition
@@ -17,10 +15,6 @@ module TeSS
       d.map do |key, value|
         [value['title'], key]
       end
-    end
-
-    def lookup(key)
-      @dictionary[key]
     end
 
     private

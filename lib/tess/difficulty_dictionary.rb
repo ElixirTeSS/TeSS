@@ -4,8 +4,7 @@ module TeSS
 
   # Inspired by SEEK's ImageFileDictionary
   # https://github.com/seek4science/seek/blob/master/lib/seek/image_file_dictionary.rb
-  class DifficultyDictionary
-    include Singleton
+  class DifficultyDictionary < Dictionary
 
     attr_reader :difficulty_names, :difficulty_abbreviations, :difficulty_options_for_select
 

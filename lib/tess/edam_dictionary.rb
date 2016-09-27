@@ -1,6 +1,5 @@
 module TeSS
-  class EdamDictionary
-    include Singleton
+  class EdamDictionary < Dictionary
 
     attr_reader :edam_names, :edam_names_for_autocomplete
 
