@@ -26,7 +26,9 @@ class Event < ActiveRecord::Base
       text :city
       string :country
       text :country
-      string :event_type, :multiple => true
+      string :event_type, :multiple => true do
+        self.event_type.map { |t| TeSS::EventTypeDictionary.instance.lookup(t)["title"] }
+      end
       string :keywords, :multiple => true
       time :start
       time :end
@@ -70,7 +72,7 @@ class Event < ActiveRecord::Base
   validates :capacity, numericality: true, allow_blank: true
 
   clean_array_fields(:keywords, :event_type, :target_audience, :eligibility)
-  update_suggestions(:keywords, :event_type, :target_audience)
+  update_suggestions(:keywords, :target_audience)
 
   #Generated Event:
   # external_id:string

@@ -76,9 +76,13 @@
                     <%= @event.description %></p>
               <% end %>
 
-              <% if @event.event_type and !@event.event_type.empty? %>
-                  <p><strong>Event type:</strong>
-                    <%= @event.event_type.join(', ') %></p>
+              <% if @event.event_type.any? %>
+                  <strong>Event type:</strong>
+                  <ul>
+                    <% @event.event_type.each do |t| %>
+                        <li><%= TeSS::EventTypeDictionary.instance.lookup(t)["title"] %></li>
+                    <% end %>
+                  </ul>
               <% end %>
 
               <% if @event.start and !@event.start.blank? %>
