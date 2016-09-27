@@ -1,4 +1,4 @@
-module TeSS
+module Tess
   class EligibilityDictionary < Dictionary
 
     private

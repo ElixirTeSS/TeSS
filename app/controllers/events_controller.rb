@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages]
 
-  include TeSS::BreadCrumbs
+  include Tess::BreadCrumbs
   include SearchableIndex
   include ActionView::Helpers::TextHelper
 

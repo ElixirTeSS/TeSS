@@ -1,4 +1,4 @@
-module TeSS
+module Tess
   # Dictionary of licences from http://licenses.opendefinition.org/licenses/groups/all.json
   # Converted to yaml and saved to config/dictionaries/licences.yml
 

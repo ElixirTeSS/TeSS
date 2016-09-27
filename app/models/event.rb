@@ -27,7 +27,7 @@ class Event < ActiveRecord::Base
       string :country
       text :country
       string :event_types, :multiple => true do
-        TeSS::EventTypeDictionary.instance.values_for_search(self.event_types)
+        Tess::EventTypeDictionary.instance.values_for_search(self.event_types)
       end
       string :keywords, :multiple => true
       time :start
@@ -70,8 +70,8 @@ class Event < ActiveRecord::Base
 
   validates :title, :url, presence: true
   validates :capacity, numericality: true, allow_blank: true
-  validates :event_types, controlled_vocabulary: { dictionary: TeSS::EventTypeDictionary.instance }
-  validates :eligibility, controlled_vocabulary: { dictionary: TeSS::EligibilityDictionary.instance }
+  validates :event_types, controlled_vocabulary: { dictionary: Tess::EventTypeDictionary.instance }
+  validates :eligibility, controlled_vocabulary: { dictionary: Tess::EligibilityDictionary.instance }
 
   clean_array_fields(:keywords, :event_types, :target_audience, :eligibility)
   update_suggestions(:keywords, :target_audience)

@@ -1,4 +1,4 @@
-module TeSS
+module Tess
   module HasImage
 
     def self.included(mod)

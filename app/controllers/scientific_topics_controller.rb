@@ -2,7 +2,7 @@ class ScientificTopicsController < ApplicationController
 
   before_action :set_scientific_topic, only: [:show, :edit, :update, :destroy]
 
-  include TeSS::BreadCrumbs
+  include Tess::BreadCrumbs
 
   # GET /scientific_topics
   # GET /scientific_topics.json

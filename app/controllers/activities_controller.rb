@@ -2,7 +2,7 @@ class ActivitiesController < ApplicationController
 
   before_action :set_resource, only: [:show]
 
-  include TeSS::BreadCrumbs
+  include Tess::BreadCrumbs
 
   @@models = %w( content_provider material package event )
 

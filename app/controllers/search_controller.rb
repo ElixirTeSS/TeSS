@@ -1,6 +1,6 @@
 class SearchController < ApplicationController
 
-  include TeSS::BreadCrumbs
+  include Tess::BreadCrumbs
 
   @@search_models = %w(Material User Event Package ContentProvider Workflow) #Profile
   # GET /searches
