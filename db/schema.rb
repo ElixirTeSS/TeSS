@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160927130119) do
+ActiveRecord::Schema.define(version: 20160927130203) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -383,7 +383,7 @@ ActiveRecord::Schema.define(version: 20160927130119) do
     t.string   "keywords",            default: [],                          array: true
     t.string   "authors",             default: [],                          array: true
     t.string   "contributors",        default: [],                          array: true
-    t.string   "licence"
+    t.string   "licence",             default: "notspecified"
     t.string   "difficulty_level",    default: "notspecified"
     t.string   "doi"
     t.date     "remote_created_date"

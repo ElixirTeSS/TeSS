@@ -26,7 +26,9 @@ class Material < ActiveRecord::Base
       text :target_audience
       string :keywords, :multiple => true
       text :keywords
-      string :licence, :multiple => true
+      string :licence do
+        TeSS::LicenceDictionary.instance.lookup(self.licence)['title']
+      end
       text :licence
       string :difficulty_level do
         TeSS::DifficultyDictionary.instance.lookup(self.difficulty_level)['title']
@@ -83,6 +85,7 @@ class Material < ActiveRecord::Base
   validates :url, :url => true
 
   validates :difficulty_level, controlled_vocabulary: { dictionary: TeSS::DifficultyDictionary.instance }
+  validates :licence, controlled_vocabulary: { dictionary: TeSS::LicenceDictionary.instance }
 
   clean_array_fields(:keywords, :contributors, :authors, :target_audience)
 

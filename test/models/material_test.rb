@@ -81,16 +81,19 @@ class MaterialTest < ActiveSupport::TestCase
     assert_includes m.associated_nodes, nodes(:westeros)
   end
 
-  test 'validates difficulty level on material is part of the CV' do
+  test 'validates material CV fields' do
     m = materials(:good_material)
 
     m.difficulty_level = 'ez pz'
-    refute m.save
-    assert_equal 1, m.errors.count
-    assert_equal ["must be a controlled vocabulary term"], m.errors[:difficulty_level]
+    m.licence = '__DEfinitely Not a VAlId LiCEnCe__'
 
+    refute m.save
+    assert_equal 2, m.errors.count
+    assert_equal ["must be a controlled vocabulary term"], m.errors[:difficulty_level]
+    assert_equal ["must be a controlled vocabulary term"], m.errors[:licence]
 
     m.difficulty_level = 'beginner'
+    m.licence = 'GPL-3.0'
     assert m.save
     assert_equal 0, m.errors.count
   end

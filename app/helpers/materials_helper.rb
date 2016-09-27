@@ -10,12 +10,12 @@ module MaterialsHelper
       # Returns an array of two-element arrays of licences ready to be used in options_for_select() for generating option/select tags
   # [['Licence 1 full name','Licence 1 abbreviation'], ['Licence 2 full name','Licence 2 abbreviation'], ...]
   def licence_options_for_select()
-    TeSS::LicenceDictionary.instance.licence_options_for_select
+    TeSS::LicenceDictionary.instance.options_for_select
   end
 
   def licence_name_for_abbreviation(licence)
     unless licence.blank?
-      TeSS::LicenceDictionary.instance.licence_name_for_abbreviation(licence)
+      TeSS::LicenceDictionary.instance.lookup(licence)['title']
     else
       'License not specified'
     end

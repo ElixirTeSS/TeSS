@@ -4,49 +4,20 @@ module TeSS
 
   # Inspired by SEEK's ImageFileDictionary
   # https://github.com/seek4science/seek/blob/master/lib/seek/image_file_dictionary.rb
-  class LicenceDictionary
-    include Singleton
+  class LicenceDictionary < Dictionary
 
-    attr_reader :licence_names, :licence_abbreviations, :licence_options_for_select
-
-    def initialize
-      @dictionary = licence_dictionary_definition
-      @licence_names = extract_licence_names
-      @licence_abbreviations = @dictionary.keys
-      @licence_options_for_select = extract_licence_options_for_select
+    def licence_abbreviations
+      @abbrvs ||= @dictionary.keys
     end
 
-    def licence_name_for_abbreviation(abbreviation)
-      @dictionary[abbreviation]['title']
-    end
-
-    def licence_url_for_abbreviation(abbreviation)
-      @dictionary[abbreviation]['url']
-    end
-
-    def extract_licence_names(licence_dictionary=@dictionary)
-      list = []
-      licence_dictionary.each do |key,value|
-        list << value['title']
-      end
-      list
+    def licence_names(licence_dictionary=@dictionary)
+      @licence_names ||= licence_dictionary.map { |_, value| value['title'] }
     end
 
     private
 
-    def licence_dictionary_definition
-      licence_dictionary_filepath = File.join(Rails.root, "config", "dictionaries", "licences.yml")
-      YAML.load(File.read(licence_dictionary_filepath))
-    end
-
-    # Returns an array of two-element arrays of licences ready to be used in options_for_select() for generating option/select tags
-    # [['Licence 1 full name','Licence 1 abbreviation'], ['Licence 2 full name','Licence 2 abbreviation'], ...]
-    def extract_licence_options_for_select
-      list = []
-      @licence_abbreviations.each do |abbr|
-        list << [licence_name_for_abbreviation(abbr), abbr]
-      end
-      return list
+    def dictionary_filepath
+      File.join(Rails.root, "config", "dictionaries", "licences.yml")
     end
 
   end
