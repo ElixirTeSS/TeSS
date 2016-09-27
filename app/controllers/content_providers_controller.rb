@@ -1,7 +1,7 @@
 class ContentProvidersController < ApplicationController
   before_action :set_content_provider, only: [:show, :edit, :update, :destroy]
 
-  include TeSS::BreadCrumbs
+  include Tess::BreadCrumbs
   include SearchableIndex
 
   def index

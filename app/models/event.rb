@@ -26,8 +26,8 @@ class Event < ActiveRecord::Base
       text :city
       string :country
       text :country
-      string :event_type, :multiple => true do
-        self.event_type.map { |t| TeSS::EventTypeDictionary.instance.lookup(t)["title"] }
+      string :event_types, :multiple => true do
+        Tess::EventTypeDictionary.instance.values_for_search(self.event_types)
       end
       string :keywords, :multiple => true
       time :start
@@ -70,8 +70,10 @@ class Event < ActiveRecord::Base
 
   validates :title, :url, presence: true
   validates :capacity, numericality: true, allow_blank: true
+  validates :event_types, controlled_vocabulary: { dictionary: Tess::EventTypeDictionary.instance }
+  validates :eligibility, controlled_vocabulary: { dictionary: Tess::EligibilityDictionary.instance }
 
-  clean_array_fields(:keywords, :event_type, :target_audience, :eligibility)
+  clean_array_fields(:keywords, :event_types, :target_audience, :eligibility)
   update_suggestions(:keywords, :target_audience)
 
   #Generated Event:
@@ -81,7 +83,7 @@ class Event < ActiveRecord::Base
   # url:string
   # organizer:string
   # description:text
-  # event_type:text
+  # event_types:text
   # start:datetime
   # end:datetime
   # sponsor:string
@@ -119,7 +121,7 @@ class Event < ActiveRecord::Base
   end
 
   def self.facet_fields
-    %w( event_type online country scientific_topics organizer city sponsor keywords venue content_provider node )
+    %w( event_types online country scientific_topics organizer city sponsor keywords venue content_provider node )
   end
 
   def to_ical

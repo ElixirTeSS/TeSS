@@ -10,9 +10,9 @@ class ConvertEventTypesToControlledVocabulary < ActiveRecord::Migration
     puts 'Converting event_type to controlled vocab'
     Event.transaction do
       Event.all.each do |e|
-        types = e.event_type
+        types = e.event_types
         new_types = types.map { |type| MAPPING[type] || type }.reject(&:blank?)
-        new_types = new_types.select { |type| TeSS::EventTypeDictionary.instance.lookup(type) }.compact
+        new_types = new_types.select { |type| Tess::EventTypeDictionary.instance.lookup(type) }.compact
         if types != new_types
           e.update_column(:event_type, new_types)
           print '.'
@@ -26,7 +26,7 @@ class ConvertEventTypesToControlledVocabulary < ActiveRecord::Migration
     puts 'Reverting event_type to old values'
     Event.transaction do
       Event.all.each do |e|
-        types = e.event_type                   # v  Note the invert!
+        types = e.event_types                   # v  Note the invert!
         new_types = types.map { |type| MAPPING.invert[type] || type }.reject(&:blank?).compact
         if types != new_types
           e.update_column(:event_type, new_types)

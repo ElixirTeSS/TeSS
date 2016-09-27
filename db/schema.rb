@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160927092231) do
+ActiveRecord::Schema.define(version: 20160927130203) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,7 +93,7 @@ ActiveRecord::Schema.define(version: 20160927092231) do
     t.date     "last_scraped"
     t.boolean  "scraper_record",                               default: false
     t.string   "keywords",                                     default: [],                  array: true
-    t.string   "event_type",                                   default: [],                  array: true
+    t.string   "event_types",                                  default: [],                  array: true
     t.string   "target_audience",                              default: [],                  array: true
     t.integer  "capacity"
     t.string   "eligibility",                                  default: [],                  array: true
@@ -376,15 +376,15 @@ ActiveRecord::Schema.define(version: 20160927092231) do
     t.string   "description"
     t.integer  "user_id"
     t.json     "workflow_content"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.string   "slug"
-    t.string   "target_audience",     default: [],                 array: true
-    t.string   "keywords",            default: [],                 array: true
-    t.string   "authors",             default: [],                 array: true
-    t.string   "contributors",        default: [],                 array: true
-    t.string   "licence"
-    t.string   "difficulty_level"
+    t.string   "target_audience",     default: [],                          array: true
+    t.string   "keywords",            default: [],                          array: true
+    t.string   "authors",             default: [],                          array: true
+    t.string   "contributors",        default: [],                          array: true
+    t.string   "licence",             default: "notspecified"
+    t.string   "difficulty_level",    default: "notspecified"
     t.string   "doi"
     t.date     "remote_created_date"
     t.date     "remote_updated_date"

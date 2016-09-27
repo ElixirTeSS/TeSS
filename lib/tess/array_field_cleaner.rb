@@ -1,6 +1,6 @@
 # From http://pastebin.com/4p6aN7n0
 # in lib/tess/array_field_cleaner.rb
-module TeSS
+module Tess
   module ArrayFieldCleaner
 
     def self.included(mod)
@@ -15,7 +15,7 @@ module TeSS
 
         self.fields_to_clean = fields
 
-        before_save :clean_fields
+        before_validation :clean_fields
 
         include ArrayFieldCleaner::InstanceMethods
       end

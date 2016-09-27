@@ -35,7 +35,7 @@
                :locals => {:field_name => 'keywords',
                            :resource => @package,
                            :f => f,
-                           :suggestions => raw(TeSS::AutocompleteManager.suggestions_array_for('keywords').to_json)} %>
+                           :suggestions => raw(Tess::AutocompleteManager.suggestions_array_for('keywords').to_json)} %>
 
     <%= render :partial => 'common/autocompleter', locals: { field_name: :materials, url: materials_path, f: f } %>
     <%= render :partial => 'common/autocompleter', locals: { field_name: :events, url: events_path, f: f } %>

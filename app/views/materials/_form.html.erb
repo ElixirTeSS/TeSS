@@ -59,12 +59,12 @@
     <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords',
                                                                 :resource => @material,
                                                                 :f => f,
-                                                                :suggestions => raw(TeSS::AutocompleteManager.suggestions_array_for('keywords').to_json)} %>
+                                                                :suggestions => raw(Tess::AutocompleteManager.suggestions_array_for('keywords').to_json)} %>
 
     <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'target_audience',
                                                                 :resource => @material,
                                                                 :f => f,
-                                                                :suggestions => raw(TeSS::AutocompleteManager.suggestions_array_for('target_audience').to_json)} %>
+                                                                :suggestions => raw(Tess::AutocompleteManager.suggestions_array_for('target_audience').to_json)} %>
     <div class="form-group">
       <%= f.label :difficulty_level %>
       <%= f.select(:difficulty_level,
@@ -85,15 +85,15 @@
                :locals => {:field_name => 'authors',
                            :resource => @material,
                            :f => f,
-                           :suggestions => raw([TeSS::AutocompleteManager.suggestions_array_for('contributors') +
-                                                    TeSS::AutocompleteManager.suggestions_array_for('authors')].flatten.uniq.to_json)} %>
+                           :suggestions => raw([Tess::AutocompleteManager.suggestions_array_for('contributors') +
+                                                    Tess::AutocompleteManager.suggestions_array_for('authors')].flatten.uniq.to_json)} %>
 
     <%= render :partial => 'common/multiple_input',
                :locals => {:field_name => 'contributors',
                            :resource => @material,
                            :f => f,
-                           :suggestions => raw([TeSS::AutocompleteManager.suggestions_array_for('contributors') +
-                                                    TeSS::AutocompleteManager.suggestions_array_for('authors')].flatten.uniq.to_json)} %>
+                           :suggestions => raw([Tess::AutocompleteManager.suggestions_array_for('contributors') +
+                                                    Tess::AutocompleteManager.suggestions_array_for('authors')].flatten.uniq.to_json)} %>
 
     <%= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @material, :f => f, :options => available_packages(@material), :dropdown_toggle_button_name => "Add to package"} %>
 

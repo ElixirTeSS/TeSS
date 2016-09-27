@@ -30,4 +30,20 @@ class WorkflowTest < ActiveSupport::TestCase
     assert_equal descriptions[0], 'This is very exciting indeed!'
   end
 
+  test 'validates workflow CV fields' do
+    w = @wf1
+
+    w.difficulty_level = 'well ard'
+    w.licence = 'to kill'
+    refute w.save
+    assert_equal 2, w.errors.count
+    assert_equal ["must be a controlled vocabulary term"], w.errors[:difficulty_level]
+    assert_equal ["must be a controlled vocabulary term"], w.errors[:licence]
+
+    w.difficulty_level = 'intermediate'
+    w.licence = 'BSD-3-Clause'
+    assert w.save
+    assert_equal 0, w.errors.count
+  end
+
 end

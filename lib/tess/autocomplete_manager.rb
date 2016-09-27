@@ -1,6 +1,6 @@
 # From http://pastebin.com/4p6aN7n0
 # in lib/tess/keyword_manager.rb
-module TeSS
+module Tess
   module AutocompleteManager
 
     def self.included(mod)

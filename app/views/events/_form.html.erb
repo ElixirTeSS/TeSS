@@ -77,12 +77,12 @@
     </div>
 
     <%= render :partial => 'common/dropdown',
-               :locals => {:field_name => 'event_type',
+               :locals => {:field_name => 'event_types',
                            :field_label => 'Event type',
                            :resource => @event,
                            :f => f,
-                           :options => TeSS::EventTypeDictionary.instance.options_for_select,
-                           :existing => TeSS::EventTypeDictionary.instance.options_for_select(@event.event_type),
+                           :options => Tess::EventTypeDictionary.instance.options_for_select,
+                           :existing => Tess::EventTypeDictionary.instance.options_for_select(@event.event_types),
                            :dropdown_toggle_button_name => "Event type"} %>
 
     <%= render :partial => 'common/multiple_input',
@@ -98,13 +98,13 @@
                locals: { field_name: 'keywords',
                          resource: @event,
                          f: f,
-                         suggestions: raw(TeSS::AutocompleteManager.suggestions_array_for('keywords').to_json)} %>
+                         suggestions: raw(Tess::AutocompleteManager.suggestions_array_for('keywords').to_json)} %>
 
     <%= render partial: 'common/multiple_input',
                locals: { field_name: 'target_audience',
                          resource: @event,
                          f: f,
-                         suggestions: raw(TeSS::AutocompleteManager.suggestions_array_for('target_audience').to_json)} %>
+                         suggestions: raw(Tess::AutocompleteManager.suggestions_array_for('target_audience').to_json)} %>
 
     <div class="form-group">
       <%= f.label :start %>
@@ -140,8 +140,8 @@
                            :field_label => 'Eligibility',
                            :resource => @event,
                            :f => f,
-                           :options => TeSS::EligibilityDictionary.instance.options_for_select,
-                           :existing => TeSS::EligibilityDictionary.instance.options_for_select(@event.eligibility),
+                           :options => Tess::EligibilityDictionary.instance.options_for_select,
+                           :existing => Tess::EligibilityDictionary.instance.options_for_select(@event.eligibility),
                            :dropdown_toggle_button_name => "Eligibility"} %>
 
     <div class="form-group">
