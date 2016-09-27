@@ -451,5 +451,41 @@ class MaterialsControllerTest < ActionController::TestCase
         assert_equal(response.body,'[]')
         end
 =end
+  test 'finds multiple preferred labels' do
+    topic_one = scientific_topics(:topic_one)
+    topic_two = scientific_topics(:topic_two)
+    topics = [topic_one.preferred_label, topic_two.preferred_label]
+    @material.scientific_topic_names = topics
+    assert_not_empty @material.scientific_topics
+    assert_equal [topic_one, topic_two], @material.scientific_topics
+  end
+  test 'finds single preferred label' do
+    topic_one = scientific_topics(:topic_one)
+    topics = topic_one.preferred_label
+    @material.scientific_topic_names = topics
+    assert_not_empty @material.scientific_topics
+    assert_equal [topic_one], @material.scientific_topics
+  end
+
+  test 'find scientific topic that has an exact synonym of parameter' do
+    synonym_topic = scientific_topics(:exact_synonym_topic)
+    topics = synonym_topic.has_exact_synonym
+    @material.scientific_topic_names = topics
+    assert_equal [synonym_topic], @material.scientific_topics
+  end
+
+  test 'find scientific topic that is a broad synonym of parameter' do
+    broad_topic = scientific_topics(:broad_topic)
+    topics = broad_topic.has_narrow_synonym
+    @material.scientific_topic_names = topics
+    assert_equal [broad_topic], @material.scientific_topics
+  end
+
+  test 'set topics to nil if empty array passed' do
+    topics = []
+    @material.scientific_topic_names = topics
+    assert_empty @material.scientific_topics
+  end
+
 
 end
