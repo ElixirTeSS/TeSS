@@ -97,8 +97,10 @@
   <% @materials.each do |m| -%>
   <li>
       <h2>
+        <% if !m.content_provider.nil? and !m.content_provider.image.nil? -%>
         <%= link_to(image_tag(m.content_provider.image.url, :class => "tiny-content-provider-logo"), m.content_provider.url, :target => 'blank') -%>
-        <%= link_to(m.title, m) -%>
+        <% end -%>
+        <%= link_to(m.title,m) -%>
       </h2>
     <p><%= m.short_description -%></p>
   </li>
