@@ -50,6 +50,7 @@ class Event < ActiveRecord::Base
         self.scientific_topic_names
       end
       boolean :online
+      text :host_institutions
 =begin TODO: SOLR has a LatLonType to do geospatial searching. Have a look at that
       location :latitutde
       location :longitude
@@ -73,8 +74,8 @@ class Event < ActiveRecord::Base
   validates :event_types, controlled_vocabulary: { dictionary: Tess::EventTypeDictionary.instance }
   validates :eligibility, controlled_vocabulary: { dictionary: Tess::EligibilityDictionary.instance }
 
-  clean_array_fields(:keywords, :event_types, :target_audience, :eligibility)
-  update_suggestions(:keywords, :target_audience)
+  clean_array_fields(:keywords, :event_types, :target_audience, :eligibility, :host_institutions)
+  update_suggestions(:keywords, :target_audience, :host_institutions)
 
   #Generated Event:
   # external_id:string
@@ -136,6 +137,10 @@ class Event < ActiveRecord::Base
     end
 
     cal.to_ical
+  end
+
+  def show_map?
+    !(self.online? || self.latitude.blank? || self.longitude.blank?)
   end
 
 end

@@ -106,6 +106,12 @@
                          f: f,
                          suggestions: raw(Tess::AutocompleteManager.suggestions_array_for('target_audience').to_json)} %>
 
+    <%= render partial: 'common/multiple_input',
+               locals: { field_name: 'host_institutions',
+                         resource: @event,
+                         f: f,
+                         suggestions: raw(Tess::AutocompleteManager.suggestions_array_for('host_institutions').to_json)} %>
+
     <div class="form-group">
       <%= f.label :start %>
       <%= datetime_picker(f, :start) %>
