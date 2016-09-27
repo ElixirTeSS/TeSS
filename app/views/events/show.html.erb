@@ -76,10 +76,10 @@
                     <%= @event.description %></p>
               <% end %>
 
-              <% if @event.event_type.any? %>
+              <% if @event.event_types.any? %>
                   <strong>Event type:</strong>
                   <ul>
-                    <% @event.event_type.each do |t| %>
+                    <% @event.event_types.each do |t| %>
                         <li><%= TeSS::EventTypeDictionary.instance.lookup(t)["title"] %></li>
                     <% end %>
                   </ul>

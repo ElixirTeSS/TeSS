@@ -77,12 +77,12 @@
     </div>
 
     <%= render :partial => 'common/dropdown',
-               :locals => {:field_name => 'event_type',
+               :locals => {:field_name => 'event_types',
                            :field_label => 'Event type',
                            :resource => @event,
                            :f => f,
                            :options => TeSS::EventTypeDictionary.instance.options_for_select,
-                           :existing => TeSS::EventTypeDictionary.instance.options_for_select(@event.event_type),
+                           :existing => TeSS::EventTypeDictionary.instance.options_for_select(@event.event_types),
                            :dropdown_toggle_button_name => "Event type"} %>
 
     <%= render :partial => 'common/multiple_input',
