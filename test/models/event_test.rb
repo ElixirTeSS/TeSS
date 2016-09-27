@@ -33,6 +33,12 @@ class EventTest < ActiveSupport::TestCase
     assert_equal 2, e.errors.count
     assert_equal ['contained invalid terms: warehouse rave'], e.errors[:event_type]
     assert_equal ['contained invalid terms: cool dudes only'], e.errors[:eligibility]
+
+    e.event_type = ['receptions_and_networking']
+    e.eligibility = ['registration_of_interest']
+
+    assert e.save
+    assert_equal 0, e.errors.count
   end
 
 end
