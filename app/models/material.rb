@@ -80,6 +80,8 @@ class Material < ActiveRecord::Base
   # Validate the URL is in correct format via valid_url gem
   validates :url, :url => true
 
+  validates :difficulty_level, controlled_vocabulary: { dictionary: TeSS::DifficultyDictionary.instance }
+
   clean_array_fields(:keywords, :contributors, :authors, :target_audience)
 
   update_suggestions(:keywords, :contributors, :authors, :target_audience)

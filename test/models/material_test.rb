@@ -81,6 +81,20 @@ class MaterialTest < ActiveSupport::TestCase
     assert_includes m.associated_nodes, nodes(:westeros)
   end
 
+  test 'validates difficulty level on material is part of the CV' do
+    m = materials(:good_material)
+
+    m.difficulty_level = 'ez pz'
+    refute m.save
+    assert_equal 1, m.errors.count
+    assert_equal ["must be a controlled vocabulary term"], m.errors[:difficulty_level]
+
+
+    m.difficulty_level = 'beginner'
+    assert m.save
+    assert_equal 0, m.errors.count
+  end
+
 
 =begin
   test 'should save good new material' do
