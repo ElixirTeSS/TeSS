@@ -1,9 +1,6 @@
 module TeSS
-  # Dictionary of difficultys from http://licenses.opendefinition.org/licenses/groups/all.json
-  # Converted to yaml and saved to config/dictionaries/difficultys.yml
-
-  # Inspired by SEEK's ImageFileDictionary
-  # https://github.com/seek4science/seek/blob/master/lib/seek/image_file_dictionary.rb
+  # Dictionary of difficulties from http://licenses.opendefinition.org/licenses/groups/all.json
+  # Converted to yaml and saved to config/dictionaries/difficulty.yml
   class DifficultyDictionary < Dictionary
 
     attr_reader :difficulty_names, :difficulty_abbreviations, :difficulty_options_for_select

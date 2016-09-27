@@ -22,12 +22,12 @@ module MaterialsHelper
   end
 
   def difficulty_options_for_select()
-    TeSS::DifficultyDictionary.instance.difficulty_options_for_select
+    TeSS::DifficultyDictionary.instance.options_for_select
   end
 
   def difficulty_name_for_abbreviation(difficulty)
     if difficulty
-      TeSS::DifficultyDictionary.instance.difficulty_name_for_abbreviation(difficulty)
+      TeSS::DifficultyDictionary.instance.lookup(difficulty)['title']
     else
       'No difficulties available'
     end
