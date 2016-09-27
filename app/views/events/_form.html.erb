@@ -76,6 +76,15 @@
       <%= f.text_area :description, :rows => "10", :class => 'form-control' %>
     </div>
 
+    <%= render :partial => 'common/dropdown',
+               :locals => {:field_name => 'event_type',
+                           :field_label => 'Event type',
+                           :resource => @event,
+                           :f => f,
+                           :options => TeSS::EventTypeDictionary.instance.options_for_select,
+                           :existing => TeSS::EventTypeDictionary.instance.options_for_select(@event.event_type),
+                           :dropdown_toggle_button_name => "Event type"} %>
+
     <%= render :partial => 'common/multiple_input',
                locals: { field_name: 'scientific_topic_names',
                          label: 'Scientific topics',
@@ -84,13 +93,6 @@
                          placeholder_text: 'Start typing to find topics',
                          suggestions: raw(scientific_topic_names_for_autocomplete.to_json),
                          disabled: true } %>
-
-    <%= render partial: 'common/multiple_input',
-               locals: { field_name: 'event_type',
-                         label: 'Event type',
-                         resource: @event,
-                         f: f,
-                         suggestions: raw(TeSS::AutocompleteManager.suggestions_array_for('event_type').to_json)} %>
 
     <%= render partial: 'common/multiple_input',
                locals: { field_name: 'keywords',
