@@ -108,7 +108,10 @@ class ApplicationController < ActionController::Base
             # Sort by relevance
           when 'mod'
             # Sort by last modified
-            order_by(:updated_at, :asc)
+            order_by(:updated_at, :desc)
+          when 'new'
+            # Sort by newest 
+            order_by(:created_at, :desc)
           else
             order_by :title, sort_by.to_sym
         end

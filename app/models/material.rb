@@ -52,6 +52,7 @@ class Material < ActiveRecord::Base
         submitter_index
       end
       time :updated_at
+      time :created_at
       string :tools, :multiple => true do
         self.external_resources.select{|x| x.is_tool?}.collect{|x| x.title}
       end
