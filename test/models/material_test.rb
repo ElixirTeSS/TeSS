@@ -34,20 +34,20 @@ class MaterialTest < ActiveSupport::TestCase
 
   test 'should convert string value to empty array in authors' do
     assert_not_equal @material.authors, []
-    assert @material.update_attribute(:authors, 'string')
+    assert @material.update_attributes(authors: 'string')
     assert_equal [], @material.authors
   end
 
   test 'should convert nil to empty array in authors fields' do
     assert_not_equal @material.authors, []
-    assert @material.update_attribute(:authors, nil)
+    assert @material.update_attributes(authors: nil)
     assert_equal [], @material.authors
   end
 
   test 'should strip bad values from authors array input' do
     authors = ['john', 'bob', nil, [], '', 'frank']
     expected_authors = ['john', 'bob', 'frank']
-    assert @material.update_attribute(:authors, authors)
+    assert @material.update_attributes(authors: authors)
     assert_equal expected_authors, @material.authors
   end
 
@@ -58,7 +58,6 @@ class MaterialTest < ActiveSupport::TestCase
     assert content_provider.destroy
     assert_nil Material.find_by_id(material.id)
   end
-
 
   test 'can get associated nodes for material' do
     m = materials(:good_material)

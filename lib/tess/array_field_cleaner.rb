@@ -15,7 +15,7 @@ module TeSS
 
         self.fields_to_clean = fields
 
-        before_save :clean_fields
+        before_validation :clean_fields
 
         include ArrayFieldCleaner::InstanceMethods
       end
