@@ -7,6 +7,7 @@ class StaticController < ApplicationController
 
   def home
     @hide_search_box = true
+    @materials = Material.between_times(Time.zone.now - 1.month, Time.zone.now).limit(5)
   end
 
 end

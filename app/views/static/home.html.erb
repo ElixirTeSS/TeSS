@@ -87,3 +87,21 @@
     <p>Browse training providers to discover training resources they offer and follow links to their materials and courses.</p>
   </li>
 </ul>
+
+<% if @materials.length > 0 -%>
+<div id="materials-title">
+  <h3>Latest Materials</h3>
+</div>
+
+<ul class="featureblocks">
+  <% @materials.each do |m| -%>
+  <li>
+      <h2>
+        <%= link_to(image_tag(m.content_provider.image.url, :class => "tiny-content-provider-logo"), m.content_provider.url, :target => 'blank') -%>
+        <%= link_to(m.title, m) -%>
+      </h2>
+    <p><%= m.short_description -%></p>
+  </li>
+  <% end -%>
+</ul>
+<% end -%>
