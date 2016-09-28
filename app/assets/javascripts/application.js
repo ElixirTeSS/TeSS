@@ -113,4 +113,8 @@ $(document).ready(function () {
         $(this).parents('li').remove();
         return false;
     });
+
+    $(window).on('orientationchange', function() {
+        reposition_tiles('masonry', 'masonry-brick');
+    });
 });
