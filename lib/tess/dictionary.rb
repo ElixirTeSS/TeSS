@@ -7,8 +7,20 @@ module Tess
       @dictionary = load_dictionary
     end
 
-    def lookup(key)
-      @dictionary[key]
+    def lookup(id)
+      @dictionary[id]
+    end
+
+    # Find the value for the given key, for the given entry.
+    # Returns nil if no entry found or the entry doesn't contain that key.
+    #  e.g.
+    #    Tess::LicenceDictionary.instance.lookup_value('GPL-3.0', 'title') => "GNU General Public License 3.0"
+    #    Tess::LicenceDictionary.instance.lookup_value('GPL-3.0', 'fish') => nil
+    #    Tess::LicenceDictionary.instance.lookup_value('fish', 'title') => nil
+    #    Tess::LicenceDictionary.instance.lookup_value('fish', 'fish') => nil
+    #
+    def lookup_value(id, key)
+      lookup(id).try(:[], key)
     end
 
     def options_for_select(existing = nil)

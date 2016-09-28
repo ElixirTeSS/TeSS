@@ -32,11 +32,11 @@ class Workflow < ActiveRecord::Base
       string :keywords, :multiple => true
       text :keywords
       string :licence do
-        Tess::LicenceDictionary.instance.lookup(self.licence)['title']
+        Tess::LicenceDictionary.instance.lookup_value(self.licence, 'title')
       end
       text :licence
       string :difficulty_level do
-        Tess::DifficultyDictionary.instance.lookup(self.difficulty_level)['title']
+        Tess::DifficultyDictionary.instance.lookup_value(self.difficulty_level, 'title')
       end
       text :difficulty_level
       string :contributors, :multiple => true
