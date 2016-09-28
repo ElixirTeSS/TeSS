@@ -49,15 +49,13 @@
         <div id="home" class="tab-pane fade in active">
           <div class="row">
             <div class="page-header">
+              <%= render :partial => 'events/partials/icon_info' %>
               <h2>
                 <%= @event.title %>
                 <%= scrape_status_icon(@event, 'large') if current_user and current_user.is_admin? %>
               </h2>
               <p><%= link_to @event.url, @event.url, :class =>'h5', :target => "_blank" %></p>
             </div>
-
-            <%= render :partial => 'events/partials/icon_info' %>
-
 
             <div class="<%= @event.show_map? ? 'col-md-4' : 'col-md-12' -%>">
               <% if @event.organizer and !@event.organizer.blank? %>
