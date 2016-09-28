@@ -54,10 +54,10 @@ class User < ActiveRecord::Base
 
 =begin
   def default_user
-    default_role = Role.find_by_name('default_user')
+    default_role = Role.fetch('default_user')
     if default_role.nil?
       Role.create_roles
-      default_role = Role.find_by_name('default_user')
+      default_role = Role.fetch('default_user')
     end
     default_user = User.find_by_role_id(default_role.id)
     if default_user.nil?
@@ -94,7 +94,7 @@ class User < ActiveRecord::Base
   end
 
   def set_registered_user_role
-    self.role ||= Role.find_by_name('registered_user')
+    self.role ||= Role.fetch('registered_user')
   end
 
   def set_default_profile
@@ -158,7 +158,7 @@ class User < ActiveRecord::Base
   end
 
   def set_as_admin
-    role = Role.find_by_name('admin')
+    role = Role.fetch('admin')
     if role
       self.role = role
       self.save!
@@ -168,21 +168,9 @@ class User < ActiveRecord::Base
   end
 
   def self.get_default_user
-    default_role = Role.find_by_name('default_user')
-    if default_role.nil?
-      Role.create_roles
-      default_role = Role.find_by_name('default_user')
-    end
-    default_user = User.find_by_role_id(default_role.id)
-    if default_user.nil?
-      default_user = User.new(:username=>'default_user',
-                              :email=>CONTACT_EMAIL,
-                              :role => default_role,
-                              :password => SecureRandom.base64
-      )
-      default_user.save!
-    end
-    default_user
+    where(role_id: Role.fetch('default_user').id).first_or_create(username: 'default_user',
+                                                                  email: CONTACT_EMAIL,
+                                                                  password: SecureRandom.base64)
   end
 
   def name
