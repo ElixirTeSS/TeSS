@@ -1,0 +1,12 @@
+registered_user:
+  title: Registered user
+admin:
+  title: Administrator
+node_curator:
+  title: Node curator
+curator:
+  title: Curator
+api_user:
+  title: API user
+default_user:
+  title: Default user
