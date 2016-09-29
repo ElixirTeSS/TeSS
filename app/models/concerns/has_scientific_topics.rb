@@ -16,9 +16,8 @@ module HasScientificTopics
         st = ScientificTopic.where("'#{name}' = ANY (has_narrow_synonym)").to_a if st.empty?
         topics << st
       end
-
     end
-    self.scientific_topics = topics.flatten
+    self.scientific_topics = topics.flatten.uniq
   end
 
   def scientific_topic_names
