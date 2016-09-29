@@ -11,6 +11,7 @@ User.get_default_user
 
 # Scientific Topics
 puts "\nSeeding scientific topics"
+ScientificTopic.create_topics
 
 # Nodes
 puts "\nSeeding nodes"
