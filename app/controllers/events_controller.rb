@@ -147,7 +147,7 @@ class EventsController < ApplicationController
   def event_params
     event_params = params.require(:event).permit(:external_id, :title, :subtitle, :url, :organizer, :last_scraped,
                                                  :scraper_record, :description, {:scientific_topic_names => []}, {:event_types => []},
-                                                 {:keyword => []}, :start, :end, :sponsor, :online, :for_profit, :venue,
+                                                 {:keywords => []}, :start, :end, :sponsor, :online, :for_profit, :venue,
                                                  :city, :county, :country, :postcode, :latitude, :longitude,
                                                  :content_provider_id, {:package_ids => []}, {:node_ids => []},
                                                  {:target_audience => []}, {:eligibility => []},
