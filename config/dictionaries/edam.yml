@@ -10779,7 +10779,7 @@
   obsolete_since: 
 - class_id: http://edamontology.org/topic_3656
   preferred_label: Immunoprecipitation experiment
-  synonyms: "|Chromatin immunoprecipitation"
+  synonyms: "Chromatin immunoprecipitation"
   definitions: Experimental techniques to purify a protein-DNA crosslinked complex.  Usually
     sequencing follows e.g. in the techniques ChIP-chip, ChIP-seq and MeDIP-seq.
   obsolete: 'FALSE'
@@ -10793,7 +10793,7 @@
   hasDbXref: 
   hasDefinition: Experimental techniques to purify a protein-DNA crosslinked complex.  Usually
     sequencing follows e.g. in the techniques ChIP-chip, ChIP-seq and MeDIP-seq.
-  hasExactSynonym: "|Chromatin immunoprecipitation"
+  hasExactSynonym: "Chromatin immunoprecipitation"
   hasNarrowSynonym: 
   hasRelatedSynonym: 
   hasSubset: 
