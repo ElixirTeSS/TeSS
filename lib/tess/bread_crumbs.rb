@@ -1,6 +1,6 @@
 # Inspired by SEEK's breadcrumbs library
 # https://github.com/seek4science/seek/blob/02d63e9e483deb466ee9097252446c02b5837916/lib/seek/breadcrumbs.rb
-module TeSS
+module Tess
   module BreadCrumbs
 
     require 'object'

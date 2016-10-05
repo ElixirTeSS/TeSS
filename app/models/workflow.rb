@@ -31,9 +31,13 @@ class Workflow < ActiveRecord::Base
       text :target_audience
       string :keywords, :multiple => true
       text :keywords
-      string :licence, :multiple => true
+      string :licence do
+        Tess::LicenceDictionary.instance.lookup_value(self.licence, 'title')
+      end
       text :licence
-      string :difficulty_level, :multiple => true
+      string :difficulty_level do
+        Tess::DifficultyDictionary.instance.lookup_value(self.difficulty_level, 'title')
+      end
       text :difficulty_level
       string :contributors, :multiple => true
       text :contributors
@@ -44,6 +48,8 @@ class Workflow < ActiveRecord::Base
   belongs_to :user
 
   validates :title, presence: true
+  validates :difficulty_level, controlled_vocabulary: { dictionary: Tess::DifficultyDictionary.instance }
+  validates :licence, controlled_vocabulary: { dictionary: Tess::LicenceDictionary.instance }
 
   clean_array_fields(:keywords, :contributors, :authors, :target_audience)
 

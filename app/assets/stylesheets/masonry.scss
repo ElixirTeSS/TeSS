@@ -25,9 +25,17 @@
 .media-item {
   position: relative;
   float: left;
-  width: 200px;
-  padding: 15px;
-  margin: 15px 0 0 15px;
+  min-width: 150px;
+  width: 30%;
+  @include sm {
+    width: 45%;
+  }
+  @include xs {
+    float: none;
+    width: 95%;
+  }
+  padding: 10px;
+  margin: 10px 0 0 10px;
   background-color: white;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;

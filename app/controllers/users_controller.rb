@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   # # and define it on all methods
   # before_action :authenticate_user!
 
-  include TeSS::BreadCrumbs
+  include Tess::BreadCrumbs
 
   # GET /users
   # GET /users.json

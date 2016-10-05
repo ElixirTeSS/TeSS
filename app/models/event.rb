@@ -26,7 +26,9 @@ class Event < ActiveRecord::Base
       text :city
       string :country
       text :country
-      string :event_type, :multiple => true
+      string :event_types, :multiple => true do
+        Tess::EventTypeDictionary.instance.values_for_search(self.event_types)
+      end
       string :keywords, :multiple => true
       time :start
       time :end
@@ -48,6 +50,7 @@ class Event < ActiveRecord::Base
         self.scientific_topic_names
       end
       boolean :online
+      text :host_institutions
 =begin TODO: SOLR has a LatLonType to do geospatial searching. Have a look at that
       location :latitutde
       location :longitude
@@ -68,9 +71,11 @@ class Event < ActiveRecord::Base
 
   validates :title, :url, presence: true
   validates :capacity, numericality: true, allow_blank: true
+  validates :event_types, controlled_vocabulary: { dictionary: Tess::EventTypeDictionary.instance }
+  validates :eligibility, controlled_vocabulary: { dictionary: Tess::EligibilityDictionary.instance }
 
-  clean_array_fields(:keywords, :event_type, :target_audience, :eligibility)
-  update_suggestions(:keywords, :event_type, :target_audience)
+  clean_array_fields(:keywords, :event_types, :target_audience, :eligibility, :host_institutions)
+  update_suggestions(:keywords, :target_audience, :host_institutions)
 
   #Generated Event:
   # external_id:string
@@ -79,7 +84,7 @@ class Event < ActiveRecord::Base
   # url:string
   # organizer:string
   # description:text
-  # event_type:text
+  # event_types:text
   # start:datetime
   # end:datetime
   # sponsor:string
@@ -117,7 +122,7 @@ class Event < ActiveRecord::Base
   end
 
   def self.facet_fields
-    %w( event_type online country scientific_topics organizer city sponsor keywords venue content_provider node )
+    %w( event_types online country scientific_topics organizer city sponsor keywords venue content_provider node )
   end
 
   def to_ical
@@ -132,6 +137,10 @@ class Event < ActiveRecord::Base
     end
 
     cal.to_ical
+  end
+
+  def show_map?
+    !(self.online? || self.latitude.blank? || self.longitude.blank?)
   end
 
 end

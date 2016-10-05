@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages]
 
-  include TeSS::BreadCrumbs
+  include Tess::BreadCrumbs
   include SearchableIndex
   include ActionView::Helpers::TextHelper
 
@@ -146,11 +146,12 @@ class EventsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def event_params
     event_params = params.require(:event).permit(:external_id, :title, :subtitle, :url, :organizer, :last_scraped,
-                                                 :scraper_record, :description, {:scientific_topic_names => []}, {:event_type => []},
-                                                 {:keyword => []}, :start, :end, :sponsor, :online, :for_profit, :venue,
+                                                 :scraper_record, :description, {:scientific_topic_names => []}, {:event_types => []},
+                                                 {:keywords => []}, :start, :end, :sponsor, :online, :for_profit, :venue,
                                                  :city, :county, :country, :postcode, :latitude, :longitude,
                                                  :content_provider_id, {:package_ids => []}, {:node_ids => []},
-                                                 {:target_audience => []}, {:eligibility => []}, :capacity, :contact,
+                                                 {:target_audience => []}, {:eligibility => []},
+                                                 {:host_institutions => []}, :capacity, :contact,
                                                  external_resources_attributes: [:id, :url, :title, :_destroy])
 
     event_params[:description] = ActionView::Base.full_sanitizer.sanitize(event_params[:description])

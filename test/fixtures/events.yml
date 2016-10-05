@@ -7,7 +7,7 @@ one:
   url: http://example.com
   organizer: MyString
   description: MyText
-  event_type: ["MyText"]
+  event_types: ["workshops_and_courses"]
   start: 2015-11-23 10:16:33
   end: 2015-11-23 10:16:33
   sponsor: MyString
@@ -28,7 +28,7 @@ two:
   url: http://example.com
   organizer: MyString
   description: MyText
-  event_type: ["MyText"]
+  event_types: ["meetings_and_conferences"]
   start: 2015-11-23 10:16:33
   end: 2015-11-23 10:16:33
   sponsor: MyString

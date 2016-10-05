@@ -49,6 +49,7 @@
         <div id="home" class="tab-pane fade in active">
           <div class="row">
             <div class="page-header">
+              <%= render :partial => 'events/partials/icon_info' %>
               <h2>
                 <%= @event.title %>
                 <%= scrape_status_icon(@event, 'large') if current_user and current_user.is_admin? %>
@@ -56,13 +57,15 @@
               <p><%= link_to @event.url, @event.url, :class =>'h5', :target => "_blank" %></p>
             </div>
 
-            <%= render :partial => 'events/partials/icon_info' %>
-
-
-            <div class="col-md-4">
+            <div class="<%= @event.show_map? ? 'col-md-4' : 'col-md-12' -%>">
               <% if @event.organizer and !@event.organizer.blank? %>
                   <p><strong>Organizer:</strong>
                     <%= @event.organizer %></p>
+              <% end %>
+
+              <% if @event.host_institutions.any? %>
+                  <p><strong>Host institution:</strong>
+                    <%= @event.host_institutions.join(', ') %></p>
               <% end %>
 
               <% unless @event.scientific_topics.empty? %>
@@ -70,15 +73,23 @@
                     <%= @event.scientific_topic_names.join(', ')%></p>
               <% end %>
 
+              <% unless @event.target_audience.empty? %>
+                  <p><strong>Target audience:</strong>
+                    <%= @event.target_audience.join(', ')%></p>
+              <% end %>
 
               <% if @event.description and !@event.description.blank? %>
                   <p><strong>Description:</strong>
                     <%= @event.description %></p>
               <% end %>
 
-              <% if @event.event_type and !@event.event_type.empty? %>
-                  <p><strong>Event type:</strong>
-                    <%= @event.event_type.join(', ') %></p>
+              <% if @event.event_types.any? %>
+                  <strong>Event type:</strong>
+                  <ul>
+                    <% @event.event_types.each do |t| %>
+                        <li><%= Tess::EventTypeDictionary.instance.lookup(t)["title"] %></li>
+                    <% end %>
+                  </ul>
               <% end %>
 
               <% if @event.start and !@event.start.blank? %>
@@ -137,9 +148,14 @@
                   <strong>Eligibility:</strong>
                   <ul>
                     <% @event.eligibility.each do |e| %>
-                        <li><%= TeSS::EligibilityDictionary.instance.lookup(e)["title"] %></li>
+                        <li><%= Tess::EligibilityDictionary.instance.lookup(e)["title"] %></li>
                     <% end %>
                   </ul>
+              <% end %>
+
+              <% unless @event.keywords.empty? %>
+                  <p><strong>Keywords:</strong>
+                    <%= @event.keywords.join(', ')%></p>
               <% end %>
 
               <% if @event.external_resources.any? %>
@@ -149,7 +165,7 @@
 
               <%= render :partial => 'events/partials/event_schemaorg', :locals => {:event => @event} %>
             </div>
-            <% unless (@event.online? || @event.latitude.blank? || @event.longitude.blank?) %>
+            <% if @event.show_map? %>
                 <div class="col-md-8">
                   <div id="map" class="event-show-map"></div>
                 </div>

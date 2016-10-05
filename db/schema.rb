@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160920134707) do
+ActiveRecord::Schema.define(version: 20160929120052) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,11 +93,12 @@ ActiveRecord::Schema.define(version: 20160920134707) do
     t.date     "last_scraped"
     t.boolean  "scraper_record",                               default: false
     t.string   "keywords",                                     default: [],                  array: true
-    t.string   "event_type",                                   default: [],                  array: true
+    t.string   "event_types",                                  default: [],                  array: true
     t.string   "target_audience",                              default: [],                  array: true
     t.integer  "capacity"
     t.string   "eligibility",                                  default: [],                  array: true
     t.text     "contact"
+    t.string   "host_institutions",                            default: [],                  array: true
   end
 
   add_index "events", ["cost"], name: "index_events_on_cost", using: :btree
@@ -243,6 +244,7 @@ ActiveRecord::Schema.define(version: 20160920134707) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "title"
   end
 
   create_table "scientific_topic_links", force: :cascade do |t|
@@ -376,15 +378,15 @@ ActiveRecord::Schema.define(version: 20160920134707) do
     t.string   "description"
     t.integer  "user_id"
     t.json     "workflow_content"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.string   "slug"
-    t.string   "target_audience",     default: [],                 array: true
-    t.string   "keywords",            default: [],                 array: true
-    t.string   "authors",             default: [],                 array: true
-    t.string   "contributors",        default: [],                 array: true
-    t.string   "licence"
-    t.string   "difficulty_level"
+    t.string   "target_audience",     default: [],                          array: true
+    t.string   "keywords",            default: [],                          array: true
+    t.string   "authors",             default: [],                          array: true
+    t.string   "contributors",        default: [],                          array: true
+    t.string   "licence",             default: "notspecified"
+    t.string   "difficulty_level",    default: "notspecified"
     t.string   "doi"
     t.date     "remote_created_date"
     t.date     "remote_updated_date"

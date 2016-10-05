@@ -195,7 +195,7 @@ module ApplicationHelper
                data: { toggle: 'popover', placement: 'bottom', trigger: 'focus',
                        title: title, html: true, content: capture(&block) }) do
       #content_tag(:i, '', class: 'glyphicon glyphicon-info-sign info-block')
-      "<i class='fa fa-info-circle'></i> ".html_safe + title
+      "<i class='fa fa-info-circle'></i> <span class='hidden-xs'>#{title}</span>".html_safe
     end
   end
 

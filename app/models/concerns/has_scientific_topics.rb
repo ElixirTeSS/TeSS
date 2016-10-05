@@ -8,13 +8,16 @@ module HasScientificTopics
   end
 
   def scientific_topic_names= names
-    self.scientific_topics = ScientificTopic.where(preferred_label: names)
-    # Only check synonyms if no preferred labels exist.
-    # Otherwise we end up with redundant synonyms being added
-    if self.scientific_topics.empty?
-      self.scientific_topics << ScientificTopic.where("'Data handling' = ANY (synonyms)")
+    topics = []
+    [names].flatten.each do |name|
+      unless name.blank? or name == ''
+        st = ScientificTopic.where(preferred_label: name).to_a
+        st = ScientificTopic.where("'#{name}' = ANY (has_exact_synonym)").to_a if st.empty?
+        st = ScientificTopic.where("'#{name}' = ANY (has_narrow_synonym)").to_a if st.empty?
+        topics << st
+      end
     end
-
+    self.scientific_topics = topics.flatten.uniq
   end
 
   def scientific_topic_names

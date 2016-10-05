@@ -1,7 +1,7 @@
 class MaterialsController < ApplicationController
   before_action :set_material, only: [:show, :edit, :update, :destroy, :update_packages]
 
-  include TeSS::BreadCrumbs
+  include Tess::BreadCrumbs
   include SearchableIndex
   include ActionView::Helpers::TextHelper
 
@@ -146,12 +146,12 @@ class MaterialsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def material_params
-    mat_params = params.require(:material).permit(:title, :url, :short_description, :long_description, :doi,:last_scraped, :scraper_record,
-                                                  :remote_created_date,  :remote_updated_date, {:package_ids => []}, :content_provider_id,
-                                                  :content_provider, {:keywords => []},
+    mat_params = params.require(:material).permit(:id, :title, :url, :short_description, :long_description, :doi,:last_scraped, :scraper_record,
+                                                  :remote_created_date,  :remote_updated_date, {:package_ids => []},
+                                                  :content_provider_id, {:keywords => []},
                                                   {:scientific_topic_names => []},
                                                   :licence, :difficulty_level, {:contributors => []},
-                                                  {:authors=> []}, {:target_audience => []}, {:node_ids => []},
+                                                  {:authors => []}, {:target_audience => []}, {:node_ids => []},
                                                   external_resources_attributes: [:id, :url, :title, :_destroy])
     mat_params[:short_description] = ActionView::Base.full_sanitizer.sanitize(mat_params[:short_description])
     mat_params[:long_description] = ActionView::Base.full_sanitizer.sanitize(mat_params[:long_description])
