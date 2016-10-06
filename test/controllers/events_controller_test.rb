@@ -491,5 +491,17 @@ end
     assert_equal 'http://www.reddit.com', resource.url
   end
 
+  test 'should sanitize description when creating event' do
+    sign_in users(:regular_user)
+
+    assert_difference('Event.count', 1) do
+      post :create, event: { description: '<script>alert("hi!");</script>',
+                             title: 'Dirty Event',
+                             url: 'http://www.example.com/events/dirty' }
+    end
+
+    assert_redirected_to event_path(assigns(:event))
+    assert_not_includes assigns(:event).description, '<script>'
+  end
 
 end

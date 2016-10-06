@@ -7,8 +7,8 @@ class MaterialsControllerTest < ActionController::TestCase
   setup do
     mock_images
     @material = materials(:good_material)
-    u = users(:regular_user)
-    @material.user_id = u.id
+    @user = users(:regular_user)
+    @material.user_id = @user.id
     @material.save!
     @updated_material = {
         title: 'New title',
@@ -487,5 +487,19 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_empty @material.scientific_topics
   end
 
+  test 'should sanitize descriptions when creating material' do
+    sign_in @user
+
+    assert_difference('Material.count', 1) do
+      post :create, material: { short_description: '<script>alert("hi!");</script>',
+                                long_description: '<script>alert("hi!");</script>',
+                                title: 'Insanity',
+                                url: 'http://www.example.com/sanity/0' }
+    end
+
+    assert_redirected_to material_path(assigns(:material))
+    assert_not_includes assigns(:material).short_description, '<script>'
+    assert_not_includes assigns(:material).long_description, '<script>'
+  end
 
 end

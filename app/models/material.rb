@@ -1,3 +1,5 @@
+require 'html/sanitizer'
+
 class Material < ActiveRecord::Base
 
   include PublicActivity::Common
@@ -90,6 +92,14 @@ class Material < ActiveRecord::Base
   clean_array_fields(:keywords, :contributors, :authors, :target_audience)
 
   update_suggestions(:keywords, :contributors, :authors, :target_audience)
+
+  def short_description= desc
+    super(HTML::FullSanitizer.new.sanitize(desc))
+  end
+
+  def long_description= desc
+    super(HTML::FullSanitizer.new.sanitize(desc))
+  end
 
   def self.owner
     self.user
