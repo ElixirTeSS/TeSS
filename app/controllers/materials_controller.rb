@@ -153,8 +153,8 @@ class MaterialsController < ApplicationController
                                                   :licence, :difficulty_level, {:contributors => []},
                                                   {:authors => []}, {:target_audience => []}, {:node_ids => []},
                                                   external_resources_attributes: [:id, :url, :title, :_destroy])
-    mat_params[:short_description] = ActionView::Base.full_sanitizer.sanitize(mat_params[:short_description])
-    mat_params[:long_description] = ActionView::Base.full_sanitizer.sanitize(mat_params[:long_description])
+    mat_params[:short_description] = ActionView::Base.full_sanitizer.sanitize(mat_params[:short_description]) if mat_params.key?(:short_description)
+    mat_params[:long_description] = ActionView::Base.full_sanitizer.sanitize(mat_params[:long_description]) if mat_params.key?(:long_description)
 
     mat_params
   end
