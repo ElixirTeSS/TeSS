@@ -26,7 +26,7 @@ namespace :biosharing do
           enew.save
           m.external_resources << enew
         else
-          print "Already found: #{$biosharing_url + bid}"
+          puts "Already found resources for: #{$biosharing_url + bid}"
         end
       end
     end
