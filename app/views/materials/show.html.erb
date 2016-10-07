@@ -62,12 +62,14 @@
             </div>
             <div>
               <%= render partial: 'common/extra_metadata', locals: { resource: @material } %>
-              <b>External resources: </b>
-              <% if @material.external_resources.none? %>
-                  <%= empty_tag(:span, 'none specified') %>
-              <% else %>
-                  <%= render partial: 'common/external_resources_list', locals: { external_resources: @material.external_resources} %>
-              <% end %>
+              <div>
+                <b>External resources: </b>
+                <% if @material.external_resources.none? %>
+                    <%= empty_tag(:span, 'none specified') %>
+                <% else %>
+                    <%= render partial: 'common/external_resources_list', locals: { external_resources: @material.external_resources} %>
+                <% end %>
+              </div>
 
               <%= render :partial => 'materials/partials/material_schemaorg', :locals => {:material => @material} %>
             </div>
