@@ -495,13 +495,13 @@ end
     sign_in users(:regular_user)
 
     assert_difference('Event.count', 1) do
-      post :create, event: { description: '<script>alert("hi!");</script>',
+      post :create, event: { description: '<b>hi</b><script>alert("hi!");</script>',
                              title: 'Dirty Event',
                              url: 'http://www.example.com/events/dirty' }
     end
 
     assert_redirected_to event_path(assigns(:event))
-    assert_not_includes assigns(:event).description, '<script>'
+    assert_equal 'hi', assigns(:event).description
   end
 
 end

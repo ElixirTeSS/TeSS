@@ -491,15 +491,15 @@ class MaterialsControllerTest < ActionController::TestCase
     sign_in @user
 
     assert_difference('Material.count', 1) do
-      post :create, material: { short_description: '<script>alert("hi!");</script>',
-                                long_description: '<script>alert("hi!");</script>',
+      post :create, material: { short_description: '<b>hi</b><script>alert("hi!");</script>',
+                                long_description: '<b>hi</b><script>alert("hi!");</script>',
                                 title: 'Insanity',
                                 url: 'http://www.example.com/sanity/0' }
     end
 
     assert_redirected_to material_path(assigns(:material))
-    assert_not_includes assigns(:material).short_description, '<script>'
-    assert_not_includes assigns(:material).long_description, '<script>'
+    assert_equal 'hi', assigns(:material).short_description
+    assert_equal 'hi', assigns(:material).long_description
   end
 
 end
