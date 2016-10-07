@@ -365,7 +365,7 @@ end
     assert_equal new_title, JSON.parse(response.body)['title']
   end
 
-  test 'should not update non scraper owner through API' do
+  test 'user can update their own event through the API' do
     user = users(:regular_user)
     event = user.events.first
 
@@ -381,7 +381,7 @@ end
                       :id => event.id,
                       :format => 'json'}
     end
-    assert_response :forbidden
+    assert_response :success
   end
 
   test 'should add material to multiple packages' do
