@@ -25,8 +25,9 @@ namespace :biosharing do
           enew = ExternalResource.new(:title => bname, :url => $biosharing_url + bid)
           enew.save
           m.external_resources << enew
+          puts "Adding link for: #{bid}/#{tslug}"
         else
-          puts "Already found resources for: #{$biosharing_url + bid}"
+          puts "Already found resources for: #{bid}/#{tslug}"
         end
       end
     end
