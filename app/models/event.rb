@@ -1,4 +1,5 @@
 require 'icalendar'
+require 'rails/html/sanitizer'
 
 class Event < ActiveRecord::Base
   include PublicActivity::Common
@@ -95,6 +96,10 @@ class Event < ActiveRecord::Base
   # postcode:string
   # latitude:double
   # longitude:double
+
+  def description= desc
+    super(Rails::Html::FullSanitizer.new.sanitize(desc))
+  end
 
   def upcoming?
     # Handle nil for start date

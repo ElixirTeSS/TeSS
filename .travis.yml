@@ -1,6 +1,4 @@
-language: ruby 
-rvm: 
-- "2.2.1"
+language: ruby
 addons:
   postgresql: "9.4"
 
