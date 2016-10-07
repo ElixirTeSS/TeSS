@@ -5,4 +5,5 @@ class ScientificTopicPolicy < ApplicationPolicy
       ScientificTopic.all
     end
   end
+
 end

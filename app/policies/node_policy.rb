@@ -28,4 +28,5 @@ class NodePolicy < ApplicationPolicy
       Node.all
     end
   end
+
 end

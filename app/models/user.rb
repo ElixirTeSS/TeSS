@@ -104,13 +104,7 @@ class User < ActiveRecord::Base
 
  # Check if user has a particular role
   def has_role?(role)
-    if !self.role
-      return false
-    end
-    if self.role.name == role.to_s
-      return true
-    end
-    return false
+    self.role && self.role.name == role.to_s
   end
 
   # Check if user has any of the roles in the passed array
@@ -126,13 +120,7 @@ class User < ActiveRecord::Base
   # end
 
   def is_admin?
-    if !self.role
-      return false
-    end
-    if self.role.name == 'admin'
-      return true
-    end
-    return false
+    self.has_role?('admin')
   end
 
   # Check if user is owner of a resource
@@ -147,7 +135,11 @@ class User < ActiveRecord::Base
   end
 
   def is_default_user?
-    return self.has_role?('default_user')
+    self.has_role?('default_user')
+  end
+
+  def is_curator?
+    self.has_role?('curator')
   end
 
   def skip_email_confirmation_for_non_production
