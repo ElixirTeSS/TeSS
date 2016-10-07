@@ -1,4 +1,4 @@
-require 'html/sanitizer'
+require 'rails/html/sanitizer'
 
 class Material < ActiveRecord::Base
 
@@ -94,11 +94,11 @@ class Material < ActiveRecord::Base
   update_suggestions(:keywords, :contributors, :authors, :target_audience)
 
   def short_description= desc
-    super(HTML::FullSanitizer.new.sanitize(desc))
+    super(Rails::Html::FullSanitizer.new.sanitize(desc))
   end
 
   def long_description= desc
-    super(HTML::FullSanitizer.new.sanitize(desc))
+    super(Rails::Html::FullSanitizer.new.sanitize(desc))
   end
 
   def self.owner

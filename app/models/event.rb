@@ -1,5 +1,5 @@
 require 'icalendar'
-require 'html/sanitizer'
+require 'rails/html/sanitizer'
 
 class Event < ActiveRecord::Base
   include PublicActivity::Common
@@ -98,7 +98,7 @@ class Event < ActiveRecord::Base
   # longitude:double
 
   def description= desc
-    super(HTML::FullSanitizer.new.sanitize(desc))
+    super(Rails::Html::FullSanitizer.new.sanitize(desc))
   end
 
   def upcoming?
