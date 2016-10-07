@@ -31,6 +31,16 @@
   color: $alert-info-text;
 }
 
+#workflow-save-warning {
+  float: left;
+  background-color: $alert-warning-bg;
+  padding: 6px;
+  border: 1px solid $alert-warning-border;
+  border-radius: 4px;
+  color: $alert-warning-text;
+  margin-right: 10px;
+}
+
 /* Hide the border from the predefined colour selector */
 .simplecolorpicker span.color:hover, .simplecolorpicker span.color[data-selected],
 .simplecolorpicker span.color[data-selected]:hover {

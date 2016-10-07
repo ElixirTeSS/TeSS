@@ -460,11 +460,13 @@ var Workflows = {
             }
 
             if (Workflows.history.index > 0) {
+                $('#workflow-save-warning').show();
                 $('#workflow-toolbar-undo')
                     .removeClass('disabled')
                     .find('span')
                     .attr('title', 'Undo ' + Workflows.history.stack[Workflows.history.index].action);
             } else {
+                $('#workflow-save-warning').hide();
                 $('#workflow-toolbar-undo')
                     .addClass('disabled')
                     .find('span')
