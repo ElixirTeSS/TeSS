@@ -9,6 +9,9 @@
       <h4>
         <i class="fa fa-external-link" id="<%=id%>-resource-type-icon"></i>
         <%= external_resource.title %>
+        <% if external_resource.is_biosharing? -%>
+        <img src="<%= image_url('biosharing-is.svg')-%>" class="pull-right" alt="Link to BioSharing" width="100px"/>
+        <% end -%>
       </h4>
   <% end %>
 

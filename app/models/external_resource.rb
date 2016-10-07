@@ -7,11 +7,15 @@ class ExternalResource < ActiveRecord::Base
   validates :url, url: true
 
   BIOTOOLS_BASE = 'https://dev.bio.tools'
+  BIOSHARING_BASE = 'https://biosharing.org'
 
   def is_tool?
     return self.url.starts_with?(BIOTOOLS_BASE)
   end
 
+  def is_biosharing?
+    return self.url.starts_with?(BIOSHARING_BASE)
+  end
 
   def api_url_of_tool
     if self.is_tool?
