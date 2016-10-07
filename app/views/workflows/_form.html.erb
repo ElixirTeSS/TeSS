@@ -107,3 +107,10 @@
       </div>
     </div>
 <% end %>
+
+<script>
+  $(window).unbind('page:before-change', Workflows.promptBeforeLeaving);
+  $(window).unbind('beforeunload', Workflows.promptBeforeLeaving);
+  $(window).bind('page:before-change', Workflows.promptBeforeLeaving);
+  $(window).bind('beforeunload', Workflows.promptBeforeLeaving);
+</script>
