@@ -29,6 +29,7 @@ class ContentProvider < ActiveRecord::Base
   if SOLR_ENABLED
     searchable do
       text :title
+      string :title
       text :description
       string :keywords, :multiple => true
       string :node, :multiple => true do
@@ -42,6 +43,13 @@ class ContentProvider < ActiveRecord::Base
         end
       end
       string :content_provider_type
+      integer :count do
+        if self.events.count > self.materials.count
+          self.events.count
+        else
+          self.materials.count
+        end
+      end
     end
   end
 

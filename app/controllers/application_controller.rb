@@ -115,8 +115,15 @@ class ApplicationController < ActionController::Base
           else
             order_by :title, sort_by.to_sym
         end
+      # Defaults
       elsif model_name == Event
         order_by(:start, :asc)
+      elsif [Material, Workflow, Package].include? model_name
+        order_by(:title, :asc)
+      elsif [Node].include? model_name
+        order_by(:name, :asc)
+      elsif [ContentProvider].include? model_name
+        order_by(:count, :desc)
       end
 
       if !page.nil? and page != '1'

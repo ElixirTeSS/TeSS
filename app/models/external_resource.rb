@@ -17,6 +17,10 @@ class ExternalResource < ActiveRecord::Base
     return self.url.starts_with?(BIOSHARING_BASE)
   end
 
+  def is_generic_external_resource?
+    return !self.url.starts_with?(BIOSHARING_BASE, BIOTOOLS_BASE)
+  end
+
   def api_url_of_tool
     if self.is_tool?
       return BIOTOOLS_BASE + '/api' + tool_id
