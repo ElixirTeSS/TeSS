@@ -1,4 +1,4 @@
-# A "super" policy for Events and Materials
+# A policy for general "resources" in TeSS. This includes things registered by the scraper and things created by users.
 
 class ResourcePolicy < ApplicationPolicy
 
@@ -12,7 +12,7 @@ class ResourcePolicy < ApplicationPolicy
         return false
       end
     end
-    if @user.is_curator? or @user.is_owner?(@record)
+    if @user.is_owner?(@record)
       return true
     else
       return false
