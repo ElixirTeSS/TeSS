@@ -4,6 +4,10 @@
   <% if editable %>
       <div class="workflow-toolbar-wrapper">
         <div id="workflow-toolbar">
+          <span id="workflow-save-warning" style="display: none">
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            You have unsaved changes
+          </span>
           <span id="workflow-status-message"></span>
           <a class="btn btn-default disabled" id="workflow-toolbar-undo">
             <i class="fa fa-undo"></i> <span>Undo</span>

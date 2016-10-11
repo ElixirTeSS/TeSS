@@ -30,6 +30,7 @@ class Package < ActiveRecord::Base
   if SOLR_ENABLED
     searchable do
       text :title
+      string :title
       text :description
       string :user do
         self.user.username.to_s unless self.user.blank?

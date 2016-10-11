@@ -62,8 +62,11 @@ class Material < ActiveRecord::Base
       string :tools, :multiple => true do
         self.external_resources.select{|x| x.is_tool?}.collect{|x| x.title}
       end
+      string :standard_database_or_policy, :multiple => true do
+        self.external_resources.select{|x| x.is_biosharing?}.collect{|x| x.title}
+      end
       string :related_resources, :multiple => true do
-        self.external_resources.select{|x| !x.is_tool?}.collect{|x| x.title}
+        self.external_resources.select{|x| x.is_generic_external_resource?}.collect{|x| x.title}
       end
     end
   end
@@ -106,7 +109,7 @@ class Material < ActiveRecord::Base
   end
 
   def self.facet_fields
-    %w(content_provider scientific_topics tools target_audience keywords difficulty_level authors related_resources contributors licence node )
+    %w(content_provider scientific_topics tools standard_database_or_policy target_audience keywords difficulty_level authors related_resources contributors licence node )
   end
 
   private

@@ -110,6 +110,7 @@ $(document).ready(function () {
             // Update JSON in form
             $('.workflow-form-submit').click(function () {
                 $('#workflow_workflow_content').val(JSON.stringify(cy.json()['elements']));
+                Workflows.formSubmitted = true;
 
                 return true;
             });
@@ -177,6 +178,8 @@ $(document).ready(function () {
 });
 
 var Workflows = {
+    formSubmitted: false,
+
     handleClick: function (e) {
         if (Workflows.state === 'adding node') {
             Workflows.placeNode(e.cyPosition);
@@ -323,6 +326,16 @@ var Workflows = {
         }
     },
 
+    promptBeforeLeaving: function (e) {
+        if ($("#workflow-diagram-content #cy[data-editable='true']").length > 0) {
+            if (Workflows.history.index > 0 && !Workflows.formSubmitted) {
+                return confirm('You have unsaved changes, are you sure you wish to leave the page?');
+            } else {
+                e = null;
+            }
+        }
+    },
+
     nodeModal: {
         populate: function (title, data, position) {
             $('#node-modal-title').html('title');
@@ -451,11 +464,13 @@ var Workflows = {
             }
 
             if (Workflows.history.index > 0) {
+                $('#workflow-save-warning').show();
                 $('#workflow-toolbar-undo')
                     .removeClass('disabled')
                     .find('span')
                     .attr('title', 'Undo ' + Workflows.history.stack[Workflows.history.index].action);
             } else {
+                $('#workflow-save-warning').hide();
                 $('#workflow-toolbar-undo')
                     .addClass('disabled')
                     .find('span')
