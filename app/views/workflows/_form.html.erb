@@ -112,6 +112,7 @@
 <% end %>
 
 <script>
+  Workflows.formSubmitted = false;
   $(window).unbind('page:before-change', Workflows.promptBeforeLeaving);
   $(window).unbind('beforeunload', Workflows.promptBeforeLeaving);
   $(window).bind('page:before-change', Workflows.promptBeforeLeaving);
