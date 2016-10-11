@@ -25,6 +25,10 @@ class UserPolicy < ApplicationPolicy
     update?
   end
 
+  def change_role?
+    @user.is_admin?
+  end
+
   class Scope < Scope
     def resolve
       User.all

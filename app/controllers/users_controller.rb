@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 
   prepend_before_action :set_user, only: [:show, :edit, :update, :destroy, :change_token]
+  prepend_before_action :init_user, only: [:new, :create]
   #
   # # Skip the parent's before_action, which is defined only on some methods
   # skip_before_action :authenticate_user!
@@ -23,7 +24,6 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     authorize User
-    @user = User.new
   end
 
   # GET /users/1/edit
@@ -35,7 +35,7 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     authorize User
-    @user = User.new(user_params)
+    @user.assign_attributes(user_params)
     logger.info "PARAMS: #{user_params}"
     logger.info "USER: #{@user.inspect}"
 
@@ -57,7 +57,7 @@ class UsersController < ApplicationController
   def update
     authorize @user
     respond_to do |format|
-      if @user.profile.update(profile_params)
+      if @user.update(user_params)
         @user.create_activity :update, owner: current_user
         format.html { redirect_to @user, notice: 'Profile was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
@@ -98,17 +98,19 @@ class UsersController < ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_user
     @user = User.friendly.find(params[:id])
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
-  def user_params
-    params.require(:user).permit!
+  # Need to do this before `user_params` is called, to ensure policy(@user).change_role? works
+  def init_user
+    @user = User.new
   end
-  def profile_params
-    params.require(:user).require(:profile).permit!
+
+  def user_params
+    allowed_parameters = [:email, :username, :password, { profile_attributes: [:firstname, :surname, :email, :website] }]
+    allowed_parameters << :role_id if policy(@user).change_role?
+    params.require(:user).permit(allowed_parameters)
   end
 
 end
