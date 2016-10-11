@@ -66,6 +66,12 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'should get edit for curator' do
+    sign_in users(:curator)
+    get :edit, id: @content_provider
+    assert_response :success
+  end
+
   test 'should not get edit page for non-owner user' do
     #Administrator = SUCCESS
     sign_in users(:another_regular_user)
@@ -113,6 +119,20 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_redirected_to content_provider_path(assigns(:content_provider))
   end
 
+  test 'should update content provider if curator' do
+    sign_in users(:curator)
+    assert_not_equal @content_provider.user, users(:curator)
+    patch :update, id: @content_provider, content_provider: @updated_content_provider
+    assert_redirected_to content_provider_path(assigns(:content_provider))
+  end
+
+  test 'should not update content provider if not owner or curator etc.' do
+    sign_in users(:collaborative_user)
+    assert_not_equal @content_provider.user, users(:collaborative_user)
+    patch :update, id: @content_provider, content_provider: @updated_content_provider
+    assert_response :forbidden
+  end
+
   #DESTROY TEST
   test 'should destroy content provider owned by user' do
     sign_in @content_provider.user
@@ -129,6 +149,15 @@ class ContentProvidersControllerTest < ActionController::TestCase
     end
     assert_redirected_to content_providers_path
   end
+
+  test 'should destroy content provider when curator' do
+    sign_in users(:curator)
+    assert_difference('ContentProvider.count', -1) do
+      delete :destroy, id: @content_provider
+    end
+    assert_redirected_to content_providers_path
+  end
+
 
   test 'should not destroy content provider not owned by user' do
     sign_in users(:another_regular_user)

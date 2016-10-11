@@ -1,4 +1,5 @@
 class ApplicationPolicy
+
   attr_reader :user, :record
   attr_accessor :request
 
@@ -73,4 +74,5 @@ class ApplicationPolicy
       scope
     end
   end
+
 end

@@ -69,6 +69,12 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'should get edit for curator' do
+    sign_in users(:curator)
+    get :edit, id: @material
+    assert_response :success
+  end
+
   test 'should not get edit page for non-owner user' do
     #Administrator = SUCCESS
     sign_in users(:another_regular_user)
@@ -116,6 +122,20 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_redirected_to material_path(assigns(:material))
   end
 
+  test 'should update material if curator' do
+    sign_in users(:curator)
+    assert_not_equal @material.user, users(:curator)
+    patch :update, id: @material, material: @updated_material
+    assert_redirected_to material_path(assigns(:material))
+  end
+
+  test 'should not update material if not owner or curator etc.' do
+    sign_in users(:collaborative_user)
+    assert_not_equal @material.user, users(:collaborative_user)
+    patch :update, id: @material, material: @updated_material
+    assert_response :forbidden
+  end
+
   #DESTROY TEST
   test 'should destroy material owned by user' do
     sign_in users(:regular_user)
@@ -139,6 +159,14 @@ class MaterialsControllerTest < ActionController::TestCase
       delete :destroy, id: @material
     end
     assert_response :forbidden
+  end
+
+  test 'should destroy material when curator' do
+    sign_in users(:curator)
+    assert_difference('Material.count', -1) do
+      delete :destroy, id: @material
+    end
+    assert_redirected_to materials_path
   end
 
 

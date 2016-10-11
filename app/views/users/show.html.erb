@@ -97,8 +97,10 @@
     </div>
     <div class="row">
       <div class="content_action col-md-6">
-        <% if !current_user.nil? and current_user == @user %>
-            <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default pull-right' %>
+        <% if !current_user.nil? and policy(@user).update? %>
+            <% if current_user == @user %>
+                <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default pull-right' %>
+            <% end %>
             <%= link_to t('.edit', :default => 'Edit profile'),
                         edit_user_path(@user), :class => 'btn btn-primary pull-right', :style => "margin-right: 5px;" %>
         <% end %>

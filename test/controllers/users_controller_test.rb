@@ -79,7 +79,7 @@ class UsersControllerTest < ActionController::TestCase
 
   test "should update profile" do
     sign_in users(:regular_user)
-    patch :update, id: @user, user: { profile: { email: 'hot@mail.com'}}
+    patch :update, id: @user, user: { profile_attributes: { email: 'hot@mail.com'}}
     assert_redirected_to user_path(assigns(:user))
   end
 
@@ -105,4 +105,37 @@ class UsersControllerTest < ActionController::TestCase
     end
     assert_redirected_to users_path
   end
+
+  test 'should change user role' do
+    sign_in @admin
+    assert_not_equal roles(:admin), @user.role
+
+    patch :update, id: @user, user: { role_id: roles(:admin).id }
+
+    assert_redirected_to user_path(assigns(:user))
+    assert_equal roles(:admin), assigns(:user).role
+  end
+
+  test 'should not change user role if not an admin' do
+    sign_in @user
+    assert_not_equal roles(:admin), @user.role
+
+    patch :update, id: @user, user: { profile_attributes: { firstname: 'George' }, role_id: roles(:admin).id }
+
+    assert_redirected_to user_path(assigns(:user))
+    assert_not_equal roles(:admin), assigns(:user).role
+    assert_equal 'George', assigns(:user).profile.firstname
+  end
+
+  test 'should not update user if curator' do
+    sign_in users(:curator)
+    assert_not_equal roles(:curator), @user.role
+
+    patch :update, id: @user, user: { profile_attributes: { firstname: 'George' }, role_id: roles(:admin).id }
+
+    assert_response :forbidden
+    assert_not_equal roles(:curator), assigns(:user).role
+    assert_not_equal 'George', assigns(:user).profile.firstname
+  end
+
 end

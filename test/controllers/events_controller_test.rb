@@ -78,6 +78,12 @@ class EventsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'should get edit for curator' do
+    sign_in users(:curator)
+    get :edit, id: @event
+    assert_response :success
+  end
+
   test 'should not get edit page for non-owner user' do
     #Administrator = SUCCESS
     sign_in users(:another_regular_user)
@@ -125,6 +131,20 @@ class EventsControllerTest < ActionController::TestCase
     assert_redirected_to event_path(assigns(:event))
   end
 
+  test 'should update event if curator' do
+    sign_in users(:curator)
+    assert_not_equal @event.user, users(:curator)
+    patch :update, id: @event, event: @updated_event
+    assert_redirected_to event_path(assigns(:event))
+  end
+
+  test 'should not update event if not owner or curator etc.' do
+    sign_in users(:collaborative_user)
+    assert_not_equal @event.user, users(:collaborative_user)
+    patch :update, id: @event, event: @updated_event
+    assert_response :forbidden
+  end
+
   #DESTROY TEST
   test 'should destroy event owned by user' do
     sign_in @event.user
@@ -136,6 +156,14 @@ class EventsControllerTest < ActionController::TestCase
 
   test 'should destroy event when administrator' do
     sign_in users(:admin)
+    assert_difference('Event.count', -1) do
+      delete :destroy, id: @event
+    end
+    assert_redirected_to events_path
+  end
+
+  test 'should destroy event when curator' do
+    sign_in users(:curator)
     assert_difference('Event.count', -1) do
       delete :destroy, id: @event
     end
