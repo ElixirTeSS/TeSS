@@ -1,4 +1,4 @@
-class ContentProviderPolicy < ResourcePolicy
+class ContentProviderPolicy < ScrapedResourcePolicy
 
   class Scope < Scope
     def resolve
