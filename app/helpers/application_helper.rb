@@ -19,7 +19,9 @@ module ApplicationHelper
       face_to_face: {:icon => 'fa-users', :message => 'This is a physical event'},
       for_profit: {:icon => 'fa-credit-card', :message => 'This event is from a for-profit company'},
       scraped_today: {:icon => 'fa-check-circle-o', :message => 'This record was updated today'},
-      not_scraped_recently: {:icon => 'fa-exclamation-circle', :message => 'This record has not been updated since %SUB%'}
+      not_scraped_recently: {:icon => 'fa-exclamation-circle', :message => 'This record has not been updated since %SUB%'},
+      event: {:icon => 'fa-calendar', :message => 'This is a training event'},
+      material: {:icon => 'fa-book', :message => 'This is a training material'}
   }
 
   def scrape_status_icon(record, size=nil)

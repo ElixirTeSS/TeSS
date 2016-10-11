@@ -30,7 +30,6 @@
   <%= render :partial => 'materials/partials/material_schemaorg', :locals => {:material => material} %>
   <!--<#%= link_to '', material, :class=>"media-view"%>-->
   <!--<#%= link_to '', material, :class=>"media-view"%>-->
-  <% if defined? show_added and show_added %><div class="days_ago_text">Added to TeSS <%= ((Time.now - material.created_at) / 1.day).to_i %> days ago</div><% end %>
 </div>
 
 

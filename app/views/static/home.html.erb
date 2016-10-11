@@ -88,10 +88,9 @@
   </li>
 </ul>
 
-<% if @materials.length > 0 -%>
+<% if @resources.length > 0 -%>
 <div id="materials-title">
-  <h3>Latest Materials</h3>
+  <h3>Latest Content in TeSS</h3>
 </div>
-
-<%= render @materials, {:show_added => true} %>
+<%= render partial: 'common/latest_resources', locals: {resources: @resources} %>
 <% end -%>
