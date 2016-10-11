@@ -324,11 +324,12 @@ var Workflows = {
     },
 
     promptBeforeLeaving: function (e) {
-        console.log(1);
-        if (Workflows.history.index > 0) {
-            return confirm('You have unsaved changes, are you sure you wish to leave the page?');
-        } else {
-            e = null;
+        if ($("#workflow-diagram-content #cy[data-editable='true']").length > 0) {
+            if (Workflows.history.index > 0) {
+                return confirm('You have unsaved changes, are you sure you wish to leave the page?');
+            } else {
+                e = null;
+            }
         }
     },
 

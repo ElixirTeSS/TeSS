@@ -91,7 +91,7 @@
         <div class="form-group actions">
           <%= f.submit "Save workflow", class: 'btn btn-primary workflow-form-submit' %>
           <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                      workflows_path, :class => 'btn btn-default' %>
+                      @workflow.new_record? ? workflows_path : workflow_path(@workflow), :class => 'btn btn-default' %>
         </div>
 
         <h3>Diagram</h3>
@@ -105,7 +105,7 @@
         <div class="form-group actions">
           <%= f.submit "Save workflow", class: 'btn btn-primary workflow-form-submit' %>
           <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                      workflows_path, :class => 'btn btn-default' %>
+                      @workflow.new_record? ? workflows_path : workflow_path(@workflow), :class => 'btn btn-default' %>
         </div>
       </div>
     </div>
