@@ -18,7 +18,7 @@ class UserPolicy < ApplicationPolicy
   def update?
     # Do not allow updates via API
     # Only admin role can update other users or the users themselves
-    !request_is_api?(request) and (@user == @record or @user.is_admin? or @user.is_curator?)
+    !request_is_api?(request) and (@user == @record or @user.is_admin?)
   end
 
   def change_token?
