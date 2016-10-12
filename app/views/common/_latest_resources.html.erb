@@ -17,14 +17,14 @@
         <% end %>
       </div>
     </div>
-    <div class="col-md-10">
+    <div class="col-md-10 latest_resource_description">
       <% if resource.respond_to? 'short_description' %>
           <%= truncate(resource.short_description, length: 300, separator: ' ') %>
       <% else %>
           <%= truncate(resource.description, length: 300, separator: ' ') %>
       <% end %>
     </div>
-    <div class="col-md-1">
+    <div class="col-md-1 pull-right">
       <% if resource.content_provider %>
           <%= link_to resource.content_provider, :class=>"pull-right" do %>
               <%= image_tag(resource.content_provider.image.url, :class => "small-content-provider-logo") %>
