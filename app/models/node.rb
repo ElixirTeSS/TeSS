@@ -29,6 +29,9 @@ class Node < ActiveRecord::Base
   if SOLR_ENABLED
     searchable do
       string :name
+      string :sort_title do
+        name.downcase.gsub(/^(an?|the) /, '')
+      end
       text :name
       string :country_code
       text :staff do

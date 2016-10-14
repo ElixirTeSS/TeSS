@@ -113,15 +113,15 @@ class ApplicationController < ActionController::Base
             # Sort by newest 
             order_by(:created_at, :desc)
           else
-            order_by :title, sort_by.to_sym
+            order_by(:sort_title, sort_by.to_sym)
         end
       # Defaults
       elsif model_name == Event
         order_by(:start, :asc)
       elsif [Material, Workflow, Package].include? model_name
-        order_by(:title, :asc)
+        order_by(:sort_title, :asc)
       elsif [Node].include? model_name
-        order_by(:name, :asc)
+        order_by(:sort_title, :asc)
       elsif [ContentProvider].include? model_name
         order_by(:count, :desc)
       end

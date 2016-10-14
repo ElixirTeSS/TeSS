@@ -16,6 +16,9 @@ class Event < ActiveRecord::Base
     searchable do
       text :title
       string :title
+      string :sort_title do
+        title.downcase.gsub(/^(an?|the) /, '')
+      end
       text :url
       string :organizer
       text :organizer

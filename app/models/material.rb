@@ -16,6 +16,9 @@ class Material < ActiveRecord::Base
     searchable do
       text :title
       string :title
+      string :sort_title do
+        title.downcase.gsub(/^(an?|the) /, '')
+      end
       text :long_description
       text :short_description
       text :doi
