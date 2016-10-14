@@ -21,7 +21,11 @@ module LogParameterChanges
     (self.changed - IGNORED_ATTRIBUTES).each do |changed_attribute|
       if self.class.is_foreign_key?(changed_attribute)
         ob = self.send(changed_attribute.chomp('_id'))
-        val = ob.respond_to?(:title) ? ob.title : ob.name
+        if ob
+          val = ob.respond_to?(:title) ? ob.title : ob.name
+        else
+          val = nil
+        end
       else
         val = self.send(changed_attribute)
       end
