@@ -36,5 +36,8 @@
     <hr>
 
     <%= render @materials %>
+
+    <%= render partial: "search/common/pagination_bar", locals: { resources: @materials } %>
+
   </div>
 </div>
