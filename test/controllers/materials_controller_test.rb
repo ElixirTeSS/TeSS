@@ -530,4 +530,56 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_equal 'hi', assigns(:material).long_description
   end
 
+  test 'should log parameter changes when updating a material' do
+    sign_in @material.user
+    @material.activities.destroy_all
+
+    # 5 = 4 for parameters + 1 for update
+    assert_difference('PublicActivity::Activity.count', 5) do
+      patch :update, id: @material, material: @updated_material
+    end
+
+    assert_equal 1, @material.activities.where(key: 'material.update').count
+    assert_equal 4, @material.activities.where(key: 'material.update_parameter').count
+
+    parameters = @material.activities.where(key: 'material.update_parameter').map(&:parameters)
+    title_activity = parameters.detect { |p| p[:attr] == 'title' }
+    url_activity = parameters.detect { |p| p[:attr] == 'url' }
+    description_activity = parameters.detect { |p| p[:attr] == 'short_description' }
+    content_provider_activity = parameters.detect { |p| p[:attr] == 'content_provider_id' }
+
+    assert_equal 'New title', title_activity[:new_val]
+    assert_equal 'http://new.url.com', url_activity[:new_val]
+    assert_equal 'New description', description_activity[:new_val]
+    assert_equal ContentProvider.first.id, content_provider_activity[:new_val]
+    assert_equal ContentProvider.first.title, content_provider_activity[:association_name]
+
+    get :show, id: @material
+
+    assert_select '#activity_log .activity', count: 6 # +1 because they are wrapped in a .activity div for some reason...
+  end
+
+  test 'parameter log activity works when removing an association' do
+    sign_in @material.user
+    @material.activities.destroy_all
+
+    assert_difference('PublicActivity::Activity.count', 2) do  # 2 = 1 for parameters + 1 for update
+      patch :update, id: @material, material: { content_provider_id: nil }
+    end
+
+    assert_equal 1, @material.activities.where(key: 'material.update').count
+    assert_equal 1, @material.activities.where(key: 'material.update_parameter').count
+
+    parameters = @material.activities.where(key: 'material.update_parameter').map(&:parameters)
+    content_provider_activity = parameters.detect { |p| p[:attr] == 'content_provider_id' }
+
+    assert content_provider_activity[:new_val].blank?
+    assert content_provider_activity[:association_name].blank?
+
+    get :show, id: @material
+
+    assert_select '#activity_log .activity', count: 3 # +1 because they are wrapped in a .activity div for some reason...
+  end
+
+
 end

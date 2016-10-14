@@ -19,18 +19,18 @@ module LogParameterChanges
 
   def log_parameter_changes
     (self.changed - IGNORED_ATTRIBUTES).each do |changed_attribute|
+      parameters = { attr: changed_attribute }
       if self.class.is_foreign_key?(changed_attribute)
         ob = self.send(changed_attribute.chomp('_id'))
         if ob
-          val = ob.respond_to?(:title) ? ob.title : ob.name
+          parameters[:association_name] = ob.respond_to?(:title) ? ob.title : ob.name
         else
-          val = nil
+          parameters[:association_name] = nil
         end
-      else
-        val = self.send(changed_attribute)
       end
+      parameters[:new_val] = self.send(changed_attribute)
 
-      self.create_activity :update_parameter, parameters: { attr: changed_attribute, new_val: val }
+      self.create_activity :update_parameter, parameters: parameters
     end
   end
 end
