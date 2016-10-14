@@ -79,7 +79,7 @@ class ApplicationController < ActionController::Base
       any do
         #Set all facets
         selected_facets.each do |facet_title, facet_value|
-          if facet_title != 'include_expired'
+          if !['include_expired', 'days_since_scrape'].include?(facet_title)
             any do #Conjunction clause
               #Convert 'true' or 'false' to boolean true or false
               if facet_title == 'online'
@@ -136,6 +136,10 @@ class ApplicationController < ActionController::Base
         unless selected_facets.keys.include?('include_expired') and selected_facets['include_expired'] == true
           with('end').greater_than(Time.zone.now)
         end
+      end
+
+      if selected_facets.keys.include?('days_since_scrape')
+        with(:last_scraped).less_than(selected_facets['days_since_scrape'].to_i.days.ago)
       end
 
       facet_fields.each do |ff|

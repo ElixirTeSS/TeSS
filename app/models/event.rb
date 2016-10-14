@@ -52,6 +52,7 @@ class Event < ActiveRecord::Base
       end
       boolean :online
       text :host_institutions
+      time :last_scraped
 =begin TODO: SOLR has a LatLonType to do geospatial searching. Have a look at that
       location :latitutde
       location :longitude

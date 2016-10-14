@@ -22,7 +22,7 @@
 <div class="wrapper">
   <% if SOLR_ENABLED %>
       <div id="sidebar" class="popout-sidebar">
-        <%= render partial: "search/common/facet_sidebar", locals:  { resources: @events_results, resource_type: 'event' } %>
+        <%= render partial: "search/common/facet_sidebar", locals:  { resources: @events_results, resource_type: Event } %>
       </div>
   <% end %>
 

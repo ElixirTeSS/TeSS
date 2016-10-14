@@ -1,7 +1,7 @@
 <div class="wrapper">
   <% if SOLR_ENABLED %>
       <div id="sidebar" class="popout-sidebar">
-        <%= render partial: "search/common/facet_sidebar", locals:  { resources: @packages_results, resource_type: 'package' } %>
+        <%= render partial: "search/common/facet_sidebar", locals:  { resources: @packages_results, resource_type: Package } %>
       </div>
   <% end %>
 

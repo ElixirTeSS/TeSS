@@ -1,0 +1,29 @@
+<li><h4 class="nav-heading">Last Checked</h4></li>
+<%
+  selected = nil
+  opts = [[nil, ''], [1, '1 day'], [3, '3 days'], [7, '1 week'], [30, '1 month']].map do |days, text|
+    new_params = params.dup
+    if days
+      new_params[:days_since_scrape] = days
+      text = "More than #{text} ago"
+    else
+      new_params.delete(:days_since_scrape)
+      text = "Anytime"
+    end
+    url = url_for(new_params)
+    selected = url if days == params[:days_since_scrape].to_i
+
+    [text, url]
+  end
+
+  blank_params = params.dup
+  blank_params.delete(:days_since_scrape)
+%>
+
+<%= select_tag 'days_since_scrape', options_for_select(opts, selected), id: 'curation-select', class: 'form-control' %>
+
+<script>
+  $('#curation-select').change(function () {
+    window.location = $(this).val();
+  });
+</script>

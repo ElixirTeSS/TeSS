@@ -68,6 +68,7 @@ class Material < ActiveRecord::Base
       string :related_resources, :multiple => true do
         self.external_resources.select{|x| x.is_generic_external_resource?}.collect{|x| x.title}
       end
+      time :last_scraped
     end
   end
 

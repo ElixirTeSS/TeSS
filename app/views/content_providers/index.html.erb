@@ -2,7 +2,7 @@
 <div class="wrapper">
   <% if SOLR_ENABLED %>
       <div id="sidebar" class="popout-sidebar">
-        <%= render partial: "search/common/facet_sidebar", locals: {resources: @content_providers_results, resource_type: 'content_provider'} %>
+        <%= render partial: "search/common/facet_sidebar", locals: {resources: @content_providers_results, resource_type: ContentProvider } %>
       </div>
   <% end %>
 
