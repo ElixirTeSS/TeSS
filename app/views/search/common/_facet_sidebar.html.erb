@@ -21,7 +21,9 @@ Variable that should be available
 <% else %>
     <ul class="unstyled nav-simple">
       <% @facet_fields.each do |facet_field| %>
-          <% if facet_field == 'online' %>
+          <% if IGNORED_FILTERS.include?(facet_field)   %>
+            <!-- no filtering for <%= facet_field -%> -->
+          <% elsif facet_field == 'online' %>
               <%= render :partial => 'search/common/facet_sidebar_boolean_filter.html.erb',
                          :locals => {:facet_field => facet_field,
                                      :resources => resources} %>
