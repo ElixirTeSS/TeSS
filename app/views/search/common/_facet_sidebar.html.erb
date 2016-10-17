@@ -18,7 +18,7 @@ Variable that should be available
     </p>
 <% else %>
     <ul class="unstyled nav-simple">
-      <% if (current_user.is_curator? || current_user.is_admin?) && resource_type.method_defined?(:last_scraped) %>
+      <% if current_user && (current_user.is_curator? || current_user.is_admin?) && resource_type.method_defined?(:last_scraped) %>
         <%= render :partial => 'search/common/facet_sidebar_curation' %>
       <% end %>
       <% @facet_fields.each do |facet_field| %>
