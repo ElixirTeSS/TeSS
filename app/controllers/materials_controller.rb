@@ -97,7 +97,7 @@ class MaterialsController < ApplicationController
     authorize @material
     respond_to do |format|
       if @material.update(material_params)
-        @material.create_activity :update, owner: current_user
+        @material.create_activity(:update, owner: current_user) if @material.log_update_activity?
         format.html { redirect_to @material, notice: 'Material was successfully updated.' }
         format.json { render :show, status: :ok, location: @material }
       else

@@ -2,7 +2,7 @@ module LogParameterChanges
 
   extend ActiveSupport::Concern
 
-  IGNORED_ATTRIBUTES = ['id', 'updated_at', 'workflow_content']
+  IGNORED_ATTRIBUTES = ['id', 'updated_at', 'workflow_content', 'last_scraped']
 
   included do
     after_update :log_parameter_changes
@@ -13,6 +13,10 @@ module LogParameterChanges
       return false unless attr.end_with?('_id')
       self.reflections.keys.include?(attr.chomp('_id'))
     end
+  end
+
+  def log_update_activity?
+    (previous_changes.keys - IGNORED_ATTRIBUTES).any?
   end
 
   private

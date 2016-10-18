@@ -57,7 +57,7 @@ class WorkflowsController < ApplicationController
     authorize @workflow
     respond_to do |format|
       if @workflow.update(workflow_params)
-        @workflow.create_activity :update, owner: current_user
+        @workflow.create_activity(:update, owner: current_user) if @workflow.log_update_activity?
         format.html { redirect_to @workflow, notice: 'Workflow was successfully updated.' }
         format.json { render :show, status: :ok, location: @workflow }
       else

@@ -581,5 +581,14 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_select '#activity_log .activity', count: 3 # +1 because they are wrapped in a .activity div for some reason...
   end
 
+  test 'should not log an update when only boring fields have changed' do
+    sign_in @material.user
+    @material.activities.destroy_all
+
+    assert_no_difference('PublicActivity::Activity.count') do
+      patch :update, id: @material, material: { last_scraped: Time.now }
+    end
+  end
+
 
 end

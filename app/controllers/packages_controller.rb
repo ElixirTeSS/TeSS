@@ -51,7 +51,7 @@ class PackagesController < ApplicationController
     authorize @package
     respond_to do |format|
       if @package.update(package_params)
-        @package.create_activity :update, owner: current_user
+        @package.create_activity(:update, owner: current_user) if @package.log_update_activity?
         format.html { redirect_to @package, notice: 'Package was successfully updated.' }
         format.json { render :show, status: :ok, location: @package }
       else
