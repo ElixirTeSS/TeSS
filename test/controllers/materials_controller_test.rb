@@ -69,6 +69,12 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'should get edit for curator' do
+    sign_in users(:curator)
+    get :edit, id: @material
+    assert_response :success
+  end
+
   test 'should not get edit page for non-owner user' do
     #Administrator = SUCCESS
     sign_in users(:another_regular_user)
@@ -116,6 +122,20 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_redirected_to material_path(assigns(:material))
   end
 
+  test 'should update material if curator' do
+    sign_in users(:curator)
+    assert_not_equal @material.user, users(:curator)
+    patch :update, id: @material, material: @updated_material
+    assert_redirected_to material_path(assigns(:material))
+  end
+
+  test 'should not update material if not owner or curator etc.' do
+    sign_in users(:collaborative_user)
+    assert_not_equal @material.user, users(:collaborative_user)
+    patch :update, id: @material, material: @updated_material
+    assert_response :forbidden
+  end
+
   #DESTROY TEST
   test 'should destroy material owned by user' do
     sign_in users(:regular_user)
@@ -139,6 +159,14 @@ class MaterialsControllerTest < ActionController::TestCase
       delete :destroy, id: @material
     end
     assert_response :forbidden
+  end
+
+  test 'should destroy material when curator' do
+    sign_in users(:curator)
+    assert_difference('Material.count', -1) do
+      delete :destroy, id: @material
+    end
+    assert_redirected_to materials_path
   end
 
 
@@ -501,5 +529,66 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_equal 'hi', assigns(:material).short_description
     assert_equal 'hi', assigns(:material).long_description
   end
+
+  test 'should log parameter changes when updating a material' do
+    sign_in @material.user
+    @material.activities.destroy_all
+
+    # 5 = 4 for parameters + 1 for update
+    assert_difference('PublicActivity::Activity.count', 5) do
+      patch :update, id: @material, material: @updated_material
+    end
+
+    assert_equal 1, @material.activities.where(key: 'material.update').count
+    assert_equal 4, @material.activities.where(key: 'material.update_parameter').count
+
+    parameters = @material.activities.where(key: 'material.update_parameter').map(&:parameters)
+    title_activity = parameters.detect { |p| p[:attr] == 'title' }
+    url_activity = parameters.detect { |p| p[:attr] == 'url' }
+    description_activity = parameters.detect { |p| p[:attr] == 'short_description' }
+    content_provider_activity = parameters.detect { |p| p[:attr] == 'content_provider_id' }
+
+    assert_equal 'New title', title_activity[:new_val]
+    assert_equal 'http://new.url.com', url_activity[:new_val]
+    assert_equal 'New description', description_activity[:new_val]
+    assert_equal ContentProvider.first.id, content_provider_activity[:new_val]
+    assert_equal ContentProvider.first.title, content_provider_activity[:association_name]
+
+    get :show, id: @material
+
+    assert_select '#activity_log .activity', count: 6 # +1 because they are wrapped in a .activity div for some reason...
+  end
+
+  test 'parameter log activity works when removing an association' do
+    sign_in @material.user
+    @material.activities.destroy_all
+
+    assert_difference('PublicActivity::Activity.count', 2) do  # 2 = 1 for parameters + 1 for update
+      patch :update, id: @material, material: { content_provider_id: nil }
+    end
+
+    assert_equal 1, @material.activities.where(key: 'material.update').count
+    assert_equal 1, @material.activities.where(key: 'material.update_parameter').count
+
+    parameters = @material.activities.where(key: 'material.update_parameter').map(&:parameters)
+    content_provider_activity = parameters.detect { |p| p[:attr] == 'content_provider_id' }
+
+    assert content_provider_activity[:new_val].blank?
+    assert content_provider_activity[:association_name].blank?
+
+    get :show, id: @material
+
+    assert_select '#activity_log .activity', count: 3 # +1 because they are wrapped in a .activity div for some reason...
+  end
+
+  test 'should not log an update when only boring fields have changed' do
+    sign_in @material.user
+    @material.activities.destroy_all
+
+    assert_no_difference('PublicActivity::Activity.count') do
+      patch :update, id: @material, material: { last_scraped: Time.now }
+    end
+  end
+
 
 end

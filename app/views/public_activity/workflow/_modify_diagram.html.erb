@@ -1,3 +1,10 @@
+<i class="fa fa-pencil-square-o"></i>
+
+<% if activity.owner %>
+    <%= link_to activity.owner.username, activity.owner %>
+<% end %>
+
+modified the workflow diagram at <%= activity.created_at -%>.
 <ul>
   <% [:added_nodes, :removed_nodes, :modified_nodes].each do |key| %>
       <% if activity.parameters[key].any? %>

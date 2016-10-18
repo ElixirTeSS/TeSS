@@ -9,14 +9,14 @@ regular_user:
   email: 'bob@notarealdomain.org'
   encrypted_password: 'bobs_encrypted_password'
   confirmed_at: <%= Time.zone.now %>
-  role_id: 1
+  role: user
   authentication_token: <%= Devise.friendly_token %>
 
 another_regular_user:
   username: 'Dale'
   email: 'dale@notarealdomain.org'
   encrypted_password: 'dales_encrypted_password'
-  role_id: 1
+  role: user
   confirmed_at: <%= Time.zone.now %>
 
 admin:
@@ -24,7 +24,7 @@ admin:
   email: 'adam@notarealdomain.org'
   encrypted_password: 'admin_encrypted_password'
   confirmed_at: <%= Time.zone.now %>
-  role_id: 2
+  role: admin
 
 scraper_user:
   username: 'API'
@@ -32,18 +32,25 @@ scraper_user:
   authentication_token: 'hjfdslhjfdkslfjd'
   encrypted_password: 'admin_encrypted_password'
   confirmed_at: <%= Time.zone.now %>
-  role_id: 3
+  role: api_user
 
 collaborative_user:
   username: 'Francesca'
   email: 'fran@notarealdomain.org'
   encrypted_password: 'frans_encrypted_password'
-  role_id: 1
+  role: user
   confirmed_at: <%= Time.zone.now %>
 
 non_collaborative_user:
   username: 'Helen'
   email: 'helen@notarealdomain.org'
   encrypted_password: 'helen_encrypted_password'
-  role_id: 1
+  role: user
   confirmed_at: <%= Time.zone.now %>
+
+curator:
+  username: 'qrator'
+  email: 'q@example.com'
+  encrypted_password: 'curator_encrypted_password'
+  confirmed_at: <%= Time.zone.now %>
+  role: curator

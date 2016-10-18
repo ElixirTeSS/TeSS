@@ -24,3 +24,11 @@ three:
   email: MyText
   website: http://example.com
   user: admin
+
+curator_profile:
+  firstname: Quentin
+  surname: Rator
+  image_url: http://example.com/quentin.png
+  email: qr@example.com
+  website: http://example.com
+  user: curator

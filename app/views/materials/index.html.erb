@@ -1,7 +1,7 @@
 <div class="wrapper">
   <% if SOLR_ENABLED %>
       <div id="sidebar" class="popout-sidebar">
-        <%= render partial: "search/common/facet_sidebar", locals:  { resources: @materials_results, resource_type: 'material' } %>
+        <%= render partial: "search/common/facet_sidebar", locals:  { resources: @materials_results, resource_type: Material } %>
       </div>
   <% end %>
 
@@ -36,5 +36,8 @@
     <hr>
 
     <%= render @materials %>
+
+    <%= render partial: "search/common/pagination_bar", locals: { resources: @materials } %>
+
   </div>
 </div>

@@ -32,6 +32,9 @@ module SearchableIndex
     if params[:include_expired] # TODO: Move this
       @facet_params['include_expired'] = true
     end
+    if params[:days_since_scrape] # TODO: Move this
+      @facet_params['days_since_scrape'] = params[:days_since_scrape]
+    end
     @page = params[:page] || 1
   end
 end

@@ -17,6 +17,7 @@
                   </div>
                 </div>
             <% end %>
+
             <div class="form-group">
               <%= f.label :firstname, :class => 'control-label' %>
               <div class="controls">
@@ -41,7 +42,6 @@
               <%#= error_span(@profile[:email]) %>
             </div>
 
-
             <div class="form-group">
               <%= f.label :website, :class => 'control-label' %>
               <div class="controls">
@@ -49,13 +49,23 @@
               </div>
               <%#= error_span(@profile[:website]) %>
             </div>
-
-            <br/>
-
-            <%= f.submit 'Update profile', :class => 'btn btn-primary' %>
-            <%= link_to 'Back', :back, :class=>"btn btn-info" %>
-            <%= link_to t('.cancel', :default => t("helpers.links.cancel")), user_path(@user), :class => 'btn btn-default' %>
         <% end %>
+
+        <% if policy(@user).change_role? %>
+            <div class="form-group">
+              <%= user_f.label :role_id, 'Role', :class => 'control-label' %>
+              <div class="controls">
+                <%= user_f.select :role_id, Role.all.map { |p| [p.title, p.id] }, {}, :class => 'form-control'  %>
+              </div>
+              <%#= error_span(@profile[:website]) %>
+            </div>
+        <% end %>
+
+        <div class="form-group">
+          <%= user_f.submit 'Update profile', :class => 'btn btn-primary' %>
+          <%= link_to 'Back', :back, :class=>"btn btn-info" %>
+          <%= link_to t('.cancel', :default => t("helpers.links.cancel")), user_path(@user), :class => 'btn btn-default' %>
+        </div>
     <% end -%>
   </div>
 </div>

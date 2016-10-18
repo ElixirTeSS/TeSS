@@ -1,7 +1,8 @@
-# A "super" policy for Events and Materials
+# A policy for general "resources" in TeSS. This includes things registered by the scraper and things created by users.
 
 class ResourcePolicy < ApplicationPolicy
-  def update?
+
+  def manage?
     # Admin role can update/destroy any object, other roles can only update objects they created
     return true if @user.is_admin? # allow admin roles for all requests - UI and API
     if request_is_api?(@request) #is this an API action - allow api_user roles only
@@ -11,11 +12,15 @@ class ResourcePolicy < ApplicationPolicy
         return false
       end
     end
-    if @user.has_role?(:curator) or @user.is_owner?(@record)
+    if @user.is_owner?(@record)
       return true
     else
       return false
     end
+  end
+
+  def update?
+    manage?
   end
 
   def edit?
@@ -23,7 +28,7 @@ class ResourcePolicy < ApplicationPolicy
   end
 
   def destroy?
-    update?
+    manage?
   end
 
   class Scope < Scope
@@ -31,4 +36,5 @@ class ResourcePolicy < ApplicationPolicy
       scope.all
     end
   end
+
 end

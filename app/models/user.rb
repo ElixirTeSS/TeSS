@@ -52,37 +52,7 @@ class User < ActiveRecord::Base
 
   validates_format_of :email, :with => Devise.email_regexp
 
-=begin
-  def default_user
-    default_role = Role.fetch('default_user')
-    if default_role.nil?
-      Role.create_roles
-      default_role = Role.fetch('default_user')
-    end
-    default_user = User.find_by_role_id(default_role.id)
-    if default_user.nil?
-      default_user = User.new(:username=>'default_user',
-               :email=>CONTACT_EMAIL,
-               :role => default_role,
-               :password => SecureRandom.base64
-      )
-      default_user.save!
-    end
-    return default_user
-  end
-
-  def reassign_assets
-    self.materials.each{|x| x.update_attributes(:user => default_user) } if self.materials.any?
-    self.events.each{|x| x.update_attributes(:user => default_user) } if self.events.any?
-    self.content_providers.each{|x| x.update_attributes(:user => default_user)} if self.content_providers.any?
-    self.nodes.each{|x| x.update_attributes(:user => default_user)} if self.nodes.any?
-    self.update_attributes(:materials => [])
-    self.update_attributes(:events => [])
-    self.update_attributes(:content_providers => [])
-    self.update_attributes(:nodes => [])
-    return true
-  end
-=end
+  accepts_nested_attributes_for :profile
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
@@ -104,35 +74,11 @@ class User < ActiveRecord::Base
 
  # Check if user has a particular role
   def has_role?(role)
-    if !self.role
-      return false
-    end
-    if self.role.name == role.to_s
-      return true
-    end
-    return false
+    self.role && self.role.name == role.to_s
   end
 
-  # Check if user has any of the roles in the passed array
-  # TODO take into account symbol to string abd vice versa conversion
-  # def has_any_of_roles?(roles)
-  #   if !self.role
-  #     return false
-  #   end
-  #   if roles.include?(self.role.name)
-  #     return true
-  #   end
-  #   return false
-  # end
-
   def is_admin?
-    if !self.role
-      return false
-    end
-    if self.role.name == 'admin'
-      return true
-    end
-    return false
+    self.has_role?('admin')
   end
 
   # Check if user is owner of a resource
@@ -147,7 +93,11 @@ class User < ActiveRecord::Base
   end
 
   def is_default_user?
-    return self.has_role?('default_user')
+    self.has_role?('default_user')
+  end
+
+  def is_curator?
+    self.has_role?('curator')
   end
 
   def skip_email_confirmation_for_non_production
