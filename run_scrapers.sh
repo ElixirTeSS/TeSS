@@ -6,7 +6,7 @@ LOG=/tmp/scrapers.log
 OUTPUT=/tmp/scrapers.out
 #PATH=/usr/local/bin:/home/tess/.rvm/gems/ruby-2.2.1/bin:/home/tess/.rvm/gems/ruby-2.2.1@global/bin:/home/tess/.rvm/rubies/ruby-2.2.1/bin:/home/tess/.rvm/bin:/usr/local/bin:/home/tess/bin:/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games
 
-rvm use ruby-2.2.2
+#rvm use ruby-2.2.2
 
 if [ "$#" -eq 0 ];then
     echo "Usage: run_scrapers.sh <scraper_directory>"
@@ -23,7 +23,7 @@ fi
 
 SCRAPERS=(biocomp_rdfa_scraper
           bitsvib_rdfa_scraper
-	  bmtc_jsonld_scraper
+          bmtc_jsonld_scraper
           csc_events_scraper
           data_carpentry_scraper
           dtls_events
@@ -37,6 +37,7 @@ SCRAPERS=(biocomp_rdfa_scraper
           legacy_software_carpentry_scraper
           ngs_registry_scraper
           sib_scraper
+          software_carpentry_events
           iann_events_uploader
           coursera_scraper
           erasys_rdfa_scraper

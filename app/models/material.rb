@@ -16,6 +16,9 @@ class Material < ActiveRecord::Base
     searchable do
       text :title
       string :title
+      string :sort_title do
+        title.downcase.gsub(/^(an?|the) /, '')
+      end
       text :long_description
       text :short_description
       text :doi
@@ -68,6 +71,7 @@ class Material < ActiveRecord::Base
       string :related_resources, :multiple => true do
         self.external_resources.select{|x| x.is_generic_external_resource?}.collect{|x| x.title}
       end
+      time :last_scraped
     end
   end
 

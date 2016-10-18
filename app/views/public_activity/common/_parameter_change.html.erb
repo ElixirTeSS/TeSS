@@ -1,4 +1,8 @@
 <div class="sub-activity">
   changed <em><%= parameter_change[:attr].humanize %></em>
-  to: <strong><%= parameter_change[:new_val] %></strong>
+  <% if parameter_change[:association_name] -%>
+      to: <strong><%= parameter_change[:association_name] -%></strong> (<%= parameter_change[:new_val] -%>)
+  <% else %>
+      to: <strong><%= parameter_change[:new_val] -%></strong>
+  <% end %>
 </div>

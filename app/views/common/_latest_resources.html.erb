@@ -17,14 +17,14 @@
         <% end %>
       </div>
     </div>
-    <div class="col-md-10">
+    <div class="col-md-10 latest_resource_description">
       <% if resource.respond_to? 'short_description' %>
           <%= truncate(resource.short_description, length: 300, separator: ' ') %>
       <% else %>
           <%= truncate(resource.description, length: 300, separator: ' ') %>
       <% end %>
     </div>
-    <div class="col-md-1">
+    <div class="col-md-1 pull-right">
       <% if resource.content_provider %>
           <%= link_to resource.content_provider, :class=>"pull-right" do %>
               <%= image_tag(resource.content_provider.image.url, :class => "small-content-provider-logo") %>
@@ -36,7 +36,12 @@
   <div class="row">
     <%= display_attribute(resource, :scientific_topics){|values| values.map{|x| x.preferred_label}.join(', ')} if resource.scientific_topics.any? %>
     <%= display_attribute(resource, :keywords){|values| values.join(', ')} if resource.keywords.any? %>
-    <div class="days_ago_text">Added to TeSS <%= ((Time.now - resource.created_at) / 1.day).to_i %> days ago</div>
+    <% days = ((Time.now - resource.created_at) / 1.day).to_i %>
+    <% if days == 0 %>
+        <div class="days_ago_text">Added to TeSS today </div>
+    <% else %>
+        <div class="days_ago_text">Added to TeSS <%= pluralize(days, "day") %> ago</div>
+    <% end %>
   </div>
 </div>
 

@@ -89,7 +89,7 @@ class EventsController < ApplicationController
     authorize @event
     respond_to do |format|
       if @event.update(event_params)
-        @event.create_activity :update, owner: current_user
+        @event.create_activity(:update, owner: current_user) if @event.log_update_activity?
         format.html { redirect_to @event, notice: 'Event was successfully updated.' }
         format.json { render :show, status: :ok, location: @event }
       else

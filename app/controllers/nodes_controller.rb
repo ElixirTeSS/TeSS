@@ -54,7 +54,7 @@ class NodesController < ApplicationController
     authorize @node
     respond_to do |format|
       if @node.update(node_params)
-        @node.create_activity :update, owner: current_user
+        @node.create_activity(:update, owner: current_user) if @node.log_update_activity?
         format.html { redirect_to @node, notice: 'Node was successfully updated.' }
         format.json { render :show, status: :ok, location: @node }
       else

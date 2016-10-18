@@ -70,7 +70,7 @@ class ContentProvidersController < ApplicationController
     authorize @content_provider
     respond_to do |format|
       if @content_provider.update(content_provider_params)
-        @content_provider.create_activity :update, owner: current_user
+        @content_provider.create_activity(:update, owner: current_user) if @content_provider.log_update_activity?
         format.html { redirect_to @content_provider, notice: 'Content Provider was successfully updated.' }
         format.json { render :show, status: :ok, location: @content_provider }
       else
