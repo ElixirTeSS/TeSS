@@ -4,5 +4,5 @@
   <% if !user.profile.nil? %>
     <%= user.profile.firstname %> <%= user.profile.surname %>
   <% end %>
-  <%= link_to '', {:controller => :users, :action => :show, :id => user.username}, :class=> "media-view" %>
+  <%= link_to '', user, :class=> "media-view" %>
 </li>
