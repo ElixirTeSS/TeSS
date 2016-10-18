@@ -267,20 +267,15 @@ class ContentProvidersControllerTest < ActionController::TestCase
   end
 
   #API Actions
-  test 'should find existing content_provider by title' do
-    post 'check_exists', :format => :json,  :title => @content_provider.title
-    assert_response :success
-    assert_equal(JSON.parse(response.body)['title'], @content_provider.title)
-  end
-
   test 'should find existing content_provider by url' do
     post 'check_exists', :format => :json,  :url => @content_provider.url
     assert_response :success
-    assert_equal(JSON.parse(response.body)['title'], @content_provider.title)
+    assert_equal(JSON.parse(response.body)['url'], @content_provider.url)
   end
 
+
   test 'should return nothing when content_provider does not exist' do
-    post 'check_exists', :format => :json,  :title => 'This title should not exist'
+    post 'check_exists', :format => :json,  :url => 'http://no-such-site.com'
     assert_response :success
     assert_equal(response.body, '')
   end
@@ -306,16 +301,6 @@ class ContentProvidersControllerTest < ActionController::TestCase
         end
 =end
 
-  test "should find content_provider by title" do
-    post 'check_exists', :format => :json,  :title => @content_provider.title
-    assert_response :success
-    assert_equal(JSON.parse(response.body)['title'], @content_provider.title)
-  end
-  test "should return nothing when content_provider does't exist" do
-    post 'check_exists', :format => :json,  :title => 'This title should not exist'
-    assert_response :success
-    assert_equal(response.body, "")
-  end
 
 end
 

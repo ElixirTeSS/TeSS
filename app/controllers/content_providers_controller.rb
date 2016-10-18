@@ -26,13 +26,9 @@ class ContentProvidersController < ApplicationController
   # POST /events/check_exists
   # POST /events/check_exists.json
   def check_exists
-    title = params[:title]
     url = params[:url]
-    if !title.blank? or !url.blank?
+    if !url.blank?
       @content_provider = ContentProvider.find_by_url(url)
-      if @content_provider.nil?
-        @content_provider = ContentProvider.find_by_title(title)
-      end
     else
       respond_to do |format|
         format.html { render :nothing => true, :status => 200, :content_type => 'text/html' }
@@ -40,7 +36,7 @@ class ContentProvidersController < ApplicationController
       end
     end
 
-    if @content_provider
+    if !@content_provider.nil?
       respond_to do |format|
         format.html { redirect_to @content_provider }
         format.json { render :show, location: @content_provider }

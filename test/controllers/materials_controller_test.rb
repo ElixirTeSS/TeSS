@@ -271,9 +271,9 @@ class MaterialsControllerTest < ActionController::TestCase
 
   #API Actions
   test 'should find existing material by title' do
-    post 'check_exists', :format => :json,  :title => @material.title
+    post 'check_exists', :format => :json,  :url => @material.url
     assert_response :success
-    assert_equal(JSON.parse(response.body)['title'], @material.title)
+    assert_equal(JSON.parse(response.body)['url'], @material.url)
   end
 
   test 'should find existing material by url' do
@@ -283,7 +283,7 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   test 'should return nothing when material does not exist' do
-    post 'check_exists', :format => :json,  :title => 'This title should not exist'
+    post 'check_exists', :format => :json,  :url => 'http://no-such-url.com'
     assert_response :success
     assert_equal(response.body, '')
   end
