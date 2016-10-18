@@ -36,7 +36,12 @@
   <div class="row">
     <%= display_attribute(resource, :scientific_topics){|values| values.map{|x| x.preferred_label}.join(', ')} if resource.scientific_topics.any? %>
     <%= display_attribute(resource, :keywords){|values| values.join(', ')} if resource.keywords.any? %>
-    <div class="days_ago_text">Added to TeSS <%= ((Time.now - resource.created_at) / 1.day).to_i %> days ago</div>
+    <% days = ((Time.now - resource.created_at) / 1.day).to_i %>
+    <% if days == 0 %>
+        <div class="days_ago_text">Added to TeSS today </div>
+    <% else %>
+        <div class="days_ago_text">Added to TeSS <%= pluralize(days, "day") %> ago</div>
+    <% end %>
   </div>
 </div>
 
