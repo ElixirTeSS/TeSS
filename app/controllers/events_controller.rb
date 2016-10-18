@@ -39,13 +39,9 @@ class EventsController < ApplicationController
   # POST /events/check_exists
   # POST /events/check_exists.json
   def check_exists
-    title = params[:title]
     url = params[:url]
-    if !title.blank? or !url.blank?
+    if !url.blank?
       @event = Event.find_by_url(url)
-      if @event.nil?
-        @event = Event.find_by_title(title)
-      end
     else
       respond_to do |format|
         format.html { render :nothing => true, :status => 200, :content_type => 'text/html' }
@@ -53,7 +49,7 @@ class EventsController < ApplicationController
       end
     end
 
-    if @event
+    if !@event.nil?
       respond_to do |format|
         format.html { redirect_to @event }
         format.json { render :show, location: @event }

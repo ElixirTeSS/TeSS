@@ -42,13 +42,9 @@ class MaterialsController < ApplicationController
   # POST /materials/check_title
   # POST /materials/check_title.json
   def check_exists
-    title = params[:title]
     url = params[:url]
-    if !title.blank? or !url.blank?
+    if !url.blank?
       @material = Material.find_by_url(url)
-      if @material.nil?
-        @material = Material.find_by_title(title)
-      end
     else
       respond_to do |format|
         format.html { render :nothing => true, :status => 200, :content_type => 'text/html' }
@@ -56,7 +52,7 @@ class MaterialsController < ApplicationController
       end
     end
 
-    if @material
+    if !@material.nil?
       respond_to do |format|
         format.html { redirect_to @material }
         #format.json { render json: @material }

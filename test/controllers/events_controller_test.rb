@@ -280,11 +280,7 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   #API Actions
-  test 'should find existing event by title' do
-    post 'check_exists', :format => :json,  :title => @event.title
-    assert_response :success
-    assert_equal(JSON.parse(response.body)['title'], @event.title)
-  end
+
 
   test 'should find existing event by url' do
     post 'check_exists', :format => :json,  :url => @event.url
@@ -293,7 +289,7 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test 'should return nothing when event does not exist' do
-    post 'check_exists', :format => :json,  :title => 'This title should not exist'
+    post 'check_exists', :format => :json,  :url => 'http://no-such-site.com'
     assert_response :success
     assert_equal(response.body, '')
   end
@@ -322,18 +318,6 @@ class EventsControllerTest < ActionController::TestCase
 
 end
 
-
-  test "should find event by title" do
-    post 'check_exists', :format => :json,  :title => @event.title
-    assert_response :success
-    assert_equal(JSON.parse(response.body)['title'], @event.title)
-  end
-
-  test "should return nothing when event does't exist" do
-    post 'check_exists', :format => :json,  :title => 'This title should not exist'
-    assert_response :success
-    assert_equal(response.body, "")
-  end
 
 
   test 'should create new event through API' do
