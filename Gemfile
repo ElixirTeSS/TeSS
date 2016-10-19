@@ -115,6 +115,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'webmock', "~> 2.1.0"
   gem 'byebug'
+  gem 'simplecov'
 end
 
 group :development do
