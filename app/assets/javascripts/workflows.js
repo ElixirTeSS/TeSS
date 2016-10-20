@@ -393,7 +393,7 @@ var Workflows = {
                     e.cyTarget.children().addClass('visible').connectedEdges().removeClass('hidden');
                 }
 
-                if (!e.cyTarget.data('html_description')) {
+                if (!e.cyTarget.data('html_description') && e.cyTarget.data('description')) {
                     e.cyTarget.data('html_description', MarkdownIt.render(e.cyTarget.data('description')));
                 }
 
