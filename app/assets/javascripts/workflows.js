@@ -159,6 +159,7 @@ $(document).ready(function () {
         Workflows.sidebar.init();
         cy.on('unselect', Workflows.sidebar.clear);
         cy.$(':selected').unselect();
+        Workflows.loadLastSelection();
 
         cy.panzoom();
         var defaultZoom = cy.maxZoom();
@@ -336,6 +337,26 @@ var Workflows = {
         }
     },
 
+    storeLastSelection: function () {
+        if (typeof Storage !== 'undefined') {
+            var id = $('#workflow-content-json').data('tessId');
+            var lastSelectedID = cy.$(':selected').id();
+            if (lastSelectedID) {
+                localStorage.setItem('workflow-last-selection-' + id, lastSelectedID);
+            }
+        }
+    },
+
+    loadLastSelection: function () {
+        if (typeof Storage !== 'undefined') {
+            var id = $('#workflow-content-json').data('tessId');
+            var lastSelectedID = localStorage.getItem('workflow-last-selection-' + id);
+            if (lastSelectedID) {
+                cy.$('#' + lastSelectedID).select();
+            }
+        }
+    },
+
     nodeModal: {
         populate: function (title, data, position) {
             $('#node-modal-title').html('title');
@@ -388,17 +409,22 @@ var Workflows = {
                 unrelated.removeClass('visible');
                 unrelated.connectedEdges().addClass('hidden');
 
+                // Show parents if they are hidden
+                relatives.addClass('visible').connectedEdges().removeClass('hidden');
+
                 // Show child nodes and their edges
                 if (e.cyTarget.isParent()) {
                     e.cyTarget.children().addClass('visible').connectedEdges().removeClass('hidden');
                 }
 
-                if (!e.cyTarget.data('html_description')) {
+                if (!e.cyTarget.data('html_description') && e.cyTarget.data('description')) {
                     e.cyTarget.data('html_description', MarkdownIt.render(e.cyTarget.data('description')));
                 }
 
                 $('#workflow-diagram-sidebar-title').html(e.cyTarget.data('name') || '<span class="muted">Untitled</span>');
                 $('#workflow-diagram-sidebar-desc').html(HandlebarsTemplates['workflows/sidebar_content'](e.cyTarget.data()))
+
+                Workflows.storeLastSelection();
 
                 // Zoom in on the node
                 cy.animate({ center: { eles: e.cyTarget }, zoom: 2, duration: 300 })

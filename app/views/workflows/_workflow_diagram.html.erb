@@ -47,7 +47,7 @@
   <div class="workflow-diagram-container">
     <div id="workflow-diagram-content">
       <div id="cy" data-editable="<%= editable -%>" data-hide-child-nodes="<%= workflow.hide_child_nodes? %>"></div>
-      <%= content_tag(:script, id: 'workflow-content-json', type: 'application/json') do %>
+      <%= content_tag(:script, id: 'workflow-content-json', type: 'application/json', 'data-tess-id' => workflow.id) do %>
           <%#= As an empty string is not a valid JSON, returning "null" string here which is a valid JSON %>
           <% if workflow.workflow_content.blank? %>
               null
