@@ -215,7 +215,6 @@ var Workflows = {
 
     select: function (target) {
         if (target.isNode()) {
-            console.log('hi');
             Workflows.selected = target;
             Workflows.setState('node selection');
             $('#workflow-status-bar').find('.node-context-button').show();
