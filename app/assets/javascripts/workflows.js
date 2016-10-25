@@ -426,8 +426,14 @@ var Workflows = {
 
                 Workflows.storeLastSelection();
 
-                // Zoom in on the node
-                cy.animate({ center: { eles: e.cyTarget }, zoom: 2, duration: 300 })
+                var zoom = 1.8;
+                // Fit the view to the selected thing if it will be too big to fit in the viewport when zoomed
+                if ((e.cyTarget.width() * zoom) > (cy.width() * 0.9)) {
+                    cy.animate({ fit: { eles: e.cyTarget.children().union(e.cyTarget), padding: 40 }, duration: 300 })
+                } else { // Or just zoom in on it
+                    cy.animate({ center: { eles: e.cyTarget }, zoom: zoom, duration: 300 })
+                }
+
             } else if (e.cyTarget.isEdge()) {
                 if (e.cyTarget.data('name')) {
                     $('#workflow-diagram-sidebar-title').html(e.cyTarget.data('name') + ' (edge)');
