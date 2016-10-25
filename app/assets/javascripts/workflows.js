@@ -215,6 +215,7 @@ var Workflows = {
 
     select: function (target) {
         if (target.isNode()) {
+            console.log('hi');
             Workflows.selected = target;
             Workflows.setState('node selection');
             $('#workflow-status-bar').find('.node-context-button').show();
@@ -399,6 +400,9 @@ var Workflows = {
 
                 $('#workflow-diagram-sidebar-title').html(e.cyTarget.data('name') || '<span class="muted">Untitled</span>');
                 $('#workflow-diagram-sidebar-desc').html(HandlebarsTemplates['workflows/sidebar_content'](e.cyTarget.data()))
+
+                // Zoom in on the node
+                cy.animate({ center: { eles: e.cyTarget }, zoom: 2, duration: 300 })
             } else if (e.cyTarget.isEdge()) {
                 if (e.cyTarget.data('name')) {
                     $('#workflow-diagram-sidebar-title').html(e.cyTarget.data('name') + ' (edge)');
