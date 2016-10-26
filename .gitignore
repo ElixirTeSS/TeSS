@@ -23,3 +23,4 @@ solr/default
 lib/assets/
 public/assets/*
 .idea/*
+coverage
