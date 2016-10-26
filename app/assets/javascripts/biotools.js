@@ -1,4 +1,5 @@
 var Biotools = {
+    baseUrl: 'https://bio.tools',
     titleElement: function() {
         return $('#' + $('#title_element').val())
     },
@@ -12,10 +13,10 @@ var Biotools = {
         return 'per_page=5'
     },
     apiBaseURL: function(){
-        return 'https://dev.bio.tools/api/tool';
+        return Biotools.baseUrl + '/api/tool';
     },
     websiteBaseURL: function(){
-        return 'https://dev.bio.tools/tool';
+        return Biotools.baseUrl + '/tool';
     },
     search: function(){
         $('#biotools-results').empty();
@@ -44,7 +45,7 @@ var Biotools = {
     displayTools: function(json){
         var items = json.list;
         $.each(items, function (index, item) {
-            var url = 'https://dev.bio.tools/tool/' + item.id;
+            var url = Biotools.websiteBaseURL() + '/' + item.id;
             $('#biotools-results').append('' +
                 '<div id="' + item.id + '" class="col-md-12 col-sm-12 bounding-box" data-toggle=\"tooltip\" data-placement=\"top\" aria-hidden=\"true\" title=\"' + item.description + '\">' +
                 '<h4>' +

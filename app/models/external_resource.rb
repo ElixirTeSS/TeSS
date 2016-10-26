@@ -6,7 +6,7 @@ class ExternalResource < ActiveRecord::Base
   validates :title, :url, presence: true
   validates :url, url: true
 
-  BIOTOOLS_BASE = 'https://dev.bio.tools'
+  BIOTOOLS_BASE = 'https://bio.tools'
   BIOSHARING_BASE = 'https://biosharing.org'
 
   def is_tool?
