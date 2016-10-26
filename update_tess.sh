@@ -15,3 +15,4 @@ bundle exec rake assets:clean RAILS_ENV=$ENV
 bundle exec rake assets:precompile RAILS_ENV=$ENV
 bundle exec rake sunspot:solr:reindex RAILS_ENV=$ENV
 
+touch tmp/restart.txt
