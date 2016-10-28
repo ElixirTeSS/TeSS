@@ -39,17 +39,9 @@ class EventsController < ApplicationController
   # POST /events/check_exists
   # POST /events/check_exists.json
   def check_exists
-    url = params[:url]
-    if !url.blank?
-      @event = Event.find_by_url(url)
-    else
-      respond_to do |format|
-        format.html { render :nothing => true, :status => 200, :content_type => 'text/html' }
-        format.json { render :nothing => true, :status => 200, :content_type => 'application/json' }
-      end
-    end
+    @event = params[:url].blank? ? nil : Event.find_by_url(params[:url])
 
-    if !@event.nil?
+    if @event
       respond_to do |format|
         format.html { redirect_to @event }
         format.json { render :show, location: @event }
