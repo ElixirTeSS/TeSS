@@ -4,4 +4,11 @@ json.array!(@events) do |event|
                 :latitude, :longitude, :created_at, :updated_at, :target_audience, :eligibility, :capacity, :contact,
                 :keywords, :host_institutions
   json.url event_url(event, format: :json)
+
+  json.external_resources do
+    event.external_resources.each do |external_resource|
+      json.partial! 'common/external_resource', external_resource: external_resource
+    end
+  end
+
 end

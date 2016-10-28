@@ -103,7 +103,6 @@ var Biotools = {
 };
 
 $(document).ready(function () {
-    $('#external-resources').on('click', '#add-external-resource-btn', Materials.externalResources.add);
     $('#next-tools-button').click(Biotools.nextPage);
     $('#tool_query').keyup(Biotools.search);
     $('#search_tools').click(Biotools.search);
