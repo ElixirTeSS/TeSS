@@ -24,6 +24,7 @@ fi
 SCRAPERS=(biocomp_rdfa_scraper
           bitsvib_rdfa_scraper
           bmtc_jsonld_scraper
+          cambridge_events
           csc_events_scraper
           data_carpentry_scraper
           dtls_events
