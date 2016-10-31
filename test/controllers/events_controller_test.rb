@@ -294,6 +294,12 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal(response.body, '')
   end
 
+  test 'should render properly when no url supplied' do
+    post 'check_exists', :format => :json,  :url => nil
+    assert_response :success
+    assert_equal(response.body, '')
+  end
+
 
   # TODO: SOLR tests will not run on TRAVIS. Explore stratergy for testing solr
 =begin

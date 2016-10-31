@@ -288,6 +288,12 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_equal(response.body, '')
   end
 
+  test 'should render properly when no url supplied' do
+    post 'check_exists', :format => :json,  :url => nil
+    assert_response :success
+    assert_equal(response.body, '')
+  end
+
   test 'should display filters on index' do
     get :index
     assert_select 'h4.nav-heading', :text => /Content provider/, :count => 0

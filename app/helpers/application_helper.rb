@@ -40,7 +40,7 @@ module ApplicationHelper
     return "<i class=\"fa #{ICONS[type][:icon]} has-tooltip info-icon#{'-' + size.to_s if size}\"
     aria-hidden=\"true\"
     data-toggle=\"tooltip\"
-    data-placement=\"top\"
+    data-placement=\"auto\"
     title=\"#{ICONS[type][:message]}\">
     </i>".html_safe
   end
