@@ -1,4 +1,9 @@
+<!-- onmouseenter="showTooltips()" onmouseleave="hideTooltips()" -->
+<% if event.started? or event.expired? or event.for_profit? -%>
+<li class="masonry-brick media-item" data-toggle="tooltip" data-placement="auto" title="<%= tooltip_titles(event) -%>">
+<% else -%>
 <li class="masonry-brick media-item">
+<% end -%>
   <div id="event-title">
   <h3 class="media-heading dont-break-out" style="display: inline;">
     <%= event.title %>
@@ -30,4 +35,18 @@
   <%= link_to '', event, :class=>"media-view" %>
   <%= render :partial => 'events/partials/event_schemaorg', :locals => {:event => event} %>
 </li>
+
+<!--
+<script>
+  function showTooltips(){
+    console.log("Mouse in!" + $(this).find('.has-tooltip'));
+    $(this).find('.has-tooltip').tooltip('show');
+  }
+  function hideTooltips(){
+    console.log("Mouse out!"+ $(this).find('.has-tooltip'));
+    $(this).find('.has-tooltip').tooltip('hide');
+  }
+</script>
+-->
+
 

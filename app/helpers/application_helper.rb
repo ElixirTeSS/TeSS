@@ -37,12 +37,27 @@ module ApplicationHelper
   end
 
   def icon_for(type, size=nil)
-    return "<i class=\"fa #{ICONS[type][:icon]} has-tooltip info-icon#{'-' + size.to_s if size}\"
+    return "<div>
+    <i class=\"fa #{ICONS[type][:icon]} has-tooltip info-icon#{'-' + size.to_s if size}\"
     aria-hidden=\"true\"
     data-toggle=\"tooltip\"
     data-placement=\"auto\"
     title=\"#{ICONS[type][:message]}\">
     </i>".html_safe
+  end
+
+  def tooltip_titles(event)
+    titles = []
+    if event.started?
+      titles << ICONS[:started][:message]
+    end
+    if event.for_profit?
+      titles << ICONS[:for_profit][:message]
+    end
+    if event.expired?
+      titles << ICONS[:expired][:message]
+    end
+    return titles.join(" &#13;").html_safe
   end
 
 
@@ -259,7 +274,8 @@ module ApplicationHelper
 
   # Format an AR collection, or array, into an array of pairs that the common/dropdown partial expects
   def format_for_dropdown(collection)
-    collection.map { |o| [o.title, o.id] }
+    collection.map { |o| [o.name, o.id] }
   end
+
 
 end
