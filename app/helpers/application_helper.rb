@@ -37,8 +37,7 @@ module ApplicationHelper
   end
 
   def icon_for(type, size=nil)
-    return "<div>
-    <i class=\"fa #{ICONS[type][:icon]} has-tooltip info-icon#{'-' + size.to_s if size}\"
+    return "<i class=\"fa #{ICONS[type][:icon]} has-tooltip info-icon#{'-' + size.to_s if size}\"
     aria-hidden=\"true\"
     data-toggle=\"tooltip\"
     data-placement=\"auto\"
