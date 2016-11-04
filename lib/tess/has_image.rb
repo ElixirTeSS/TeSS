@@ -39,7 +39,7 @@ module Tess
               self.errors.delete(:image_content_type)
             rescue URI::InvalidURIError
               return
-            rescue OpenURI::HTTPError
+            rescue OpenURI::HTTPError, OpenSSL::SSL::SSLError
               self.errors.add(:image_url, 'could not be accessed')
             end
           elsif self.image.dirty? # Clear the URL if there was a file provided (as it won't match the file anymore)
