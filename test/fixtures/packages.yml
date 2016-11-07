@@ -4,14 +4,14 @@ one:
   title: Dot Slash Configure
   description: MyText
   image_url: http://example.com/package.png
-  public: false
+  public: true
   user: regular_user
 
 two:
   title: This Package Is Big
   description: MyText
   image_url: http://example.com/package.png
-  public: false
+  public: true
   user: regular_user
 
 with_resources:
