@@ -78,8 +78,8 @@ class Event < ActiveRecord::Base
   validates :capacity, numericality: true, allow_blank: true
   validates :event_types, controlled_vocabulary: { dictionary: Tess::EventTypeDictionary.instance }
   validates :eligibility, controlled_vocabulary: { dictionary: Tess::EligibilityDictionary.instance }
-  validates :latitude, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90 }
-  validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180 }
+  validates :latitude, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90, allow_nil: true }
+  validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true  }
 
   clean_array_fields(:keywords, :event_types, :target_audience, :eligibility, :host_institutions)
   update_suggestions(:keywords, :target_audience, :host_institutions)
