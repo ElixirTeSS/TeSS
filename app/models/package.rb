@@ -39,7 +39,7 @@ class Package < ActiveRecord::Base
         self.user.username.to_s unless self.user.blank?
       end
       string :keywords, :multiple => true
-      
+
       string :user, :multiple => true do
         if self.user
           if self.user.profile and (self.user.profile.firstname or self.user.profile.surname)
@@ -48,11 +48,12 @@ class Package < ActiveRecord::Base
             self.user.username
           end
         end
-        end
       end
+
+      integer :user_id
+      boolean :public
+    end
   end
-
-
 
   #Overwrites a packages materials and events.
   #[] or nil will delete

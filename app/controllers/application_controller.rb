@@ -68,8 +68,8 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
   end
 
-  def solr_search(model_name, search_params='', selected_facets=[], page=1, sort_by=nil)
-    model_name.search do
+  def solr_search(model, search_params='', selected_facets=[], page=1, sort_by=nil)
+    model.search do
 
       fulltext search_params
       #Set the search parameter
@@ -116,13 +116,13 @@ class ApplicationController < ActionController::Base
             order_by(:sort_title, sort_by.to_sym)
         end
       # Defaults
-      elsif model_name == Event
+      elsif model == Event
         order_by(:start, :asc)
-      elsif [Material, Workflow, Package].include? model_name
+      elsif [Material, Workflow, Package].include? model
         order_by(:sort_title, :asc)
-      elsif [Node].include? model_name
+      elsif [Node].include? model
         order_by(:sort_title, :asc)
-      elsif [ContentProvider].include? model_name
+      elsif [ContentProvider].include? model
         order_by(:count, :desc)
       end
 
@@ -131,7 +131,7 @@ class ApplicationController < ActionController::Base
       end
 
       #Go through the selected facets and apply them and their facet_values
-      if model_name == Event
+      if model == Event
         facet 'start'
         unless selected_facets.keys.include?('include_expired') and selected_facets['include_expired'] == true
           with('end').greater_than(Time.zone.now)
@@ -140,6 +140,13 @@ class ApplicationController < ActionController::Base
 
       if selected_facets.keys.include?('days_since_scrape')
         with(:last_scraped).less_than(selected_facets['days_since_scrape'].to_i.days.ago)
+      end
+
+      if model.method_defined?(:public?) # Find a better way of checking this
+        any_of do
+          with(:public, true)
+          with(:user_id, current_user.id) if current_user
+        end
       end
 
       facet_fields.each do |ff|

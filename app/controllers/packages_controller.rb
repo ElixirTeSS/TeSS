@@ -12,6 +12,7 @@ class PackagesController < ApplicationController
   # GET /packages/1
   # GET /packages/1.json
   def show
+    authorize @package
   end
 
   # GET /packages/new
