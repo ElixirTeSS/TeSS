@@ -37,4 +37,93 @@ module SearchableIndex
     end
     @page = params[:page] || 1
   end
+
+  private
+
+  def solr_search(model, search_params='', selected_facets=[], page=1, sort_by=nil)
+    model.search do
+
+      fulltext search_params
+      #Set the search parameter
+      #Disjunction clause
+      facets = []
+
+      any do
+        #Set all facets
+        selected_facets.each do |facet_title, facet_value|
+          if !['include_expired', 'days_since_scrape'].include?(facet_title)
+            any do #Conjunction clause
+              #Convert 'true' or 'false' to boolean true or false
+              if facet_title == 'online'
+                if facet_value and facet_value == 'true'
+                  facet_value = true
+                else
+                  facet_value = false
+                end
+              end
+              # Add to array that get executed lower down
+              facets << with(facet_title, facet_value)
+            end
+          end
+        end
+      end
+
+      if sort_by
+        case sort_by
+          when 'early'
+            # Sort by start date asc
+            order_by(:start, :asc)
+          when 'late'
+            # Sort by start date desc
+            order_by(:start, :desc)
+          when 'rel'
+            # Sort by relevance
+          when 'mod'
+            # Sort by last modified
+            order_by(:updated_at, :desc)
+          when 'new'
+            # Sort by newest
+            order_by(:created_at, :desc)
+          else
+            order_by(:sort_title, sort_by.to_sym)
+        end
+        # Defaults
+      elsif model == Event
+        order_by(:start, :asc)
+      elsif [Material, Workflow, Package].include? model
+        order_by(:sort_title, :asc)
+      elsif [Node].include? model
+        order_by(:sort_title, :asc)
+      elsif [ContentProvider].include? model
+        order_by(:count, :desc)
+      end
+
+      if !page.nil? and page != '1'
+        paginate :page => page
+      end
+
+      #Go through the selected facets and apply them and their facet_values
+      if model == Event
+        facet 'start'
+        unless selected_facets.keys.include?('include_expired') and selected_facets['include_expired'] == true
+          with('end').greater_than(Time.zone.now)
+        end
+      end
+
+      if selected_facets.keys.include?('days_since_scrape')
+        with(:last_scraped).less_than(selected_facets['days_since_scrape'].to_i.days.ago)
+      end
+
+      if model.method_defined?(:public?) # Find a better way of checking this
+        any_of do
+          with(:public, true)
+          with(:user_id, current_user.id) if current_user
+        end
+      end
+
+      facet_fields.each do |ff|
+        facet ff, exclude: facets
+      end
+    end
+  end
 end
