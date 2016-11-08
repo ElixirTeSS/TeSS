@@ -20,3 +20,9 @@ with_resources:
   image_url: http://example.com/package.png
   public: true
   user: regular_user
+
+secret_package:
+  title: This Package Is Secret
+  description: MyText
+  public: false
+  user: regular_user
