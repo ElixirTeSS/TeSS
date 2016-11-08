@@ -12,11 +12,12 @@ class PackagePolicy < ResourcePolicy
 
   class Scope < Scope
     def resolve
-      if user.is_admin?
+      if @user && @user.is_admin?
         Package.all
+      elsif @user
+        Package.where('packages.public = ? OR packages.user_id = ?', true, @user)
       else
-        query = Package.unscoped.where(public: true, user: user)
-        Package.where(query.where_values.inject(:or))
+        Package.where(public: true)
       end
     end
   end

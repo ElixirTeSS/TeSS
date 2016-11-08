@@ -240,27 +240,60 @@ class PackagesControllerTest < ActionController::TestCase
   end
 
   #API Actions
-  test "should_remove_materials_from_package" do
+  test "should remove materials from package" do
     sign_in users(:regular_user)
     package = packages(:with_resources)
     post :update_package_resources, package: {material_ids: [materials(:biojs).id, materials(:interpro).id]}, package_id: package.id
     assert_difference('package.materials.count', -2) do
       post :update_package_resources, package: {material_ids: []}, package_id: package.id
     end
-  end
-  test "should_add_events_to_package" do
+  end     
+  
+  test "should add events to package" do
     sign_in users(:regular_user)
     assert_difference('@package.events.count', +2) do
       post :update_package_resources, package: { event_ids: [events(:one), events(:two)]}, package_id: @package.id
     end
   end
-  test "should_remove_events_from_package" do
+  
+  test "should remove events from package" do
     sign_in users(:regular_user)
     package = packages(:with_resources)
     post :update_package_resources, package: { event_ids: [events(:one), events(:two)]}, package_id: package.id
     assert_difference('package.events.count', -2) do
       post :update_package_resources, package: { event_ids: []}, package_id: package.id
     end
+  end
+
+  test 'should not allow access to private packages' do
+    get :show, id: packages(:secret_package)
+    assert_response :forbidden
+  end
+
+  test 'should allow access to private packages if privileged' do
+    sign_in users(:regular_user)
+    get :show, id: packages(:secret_package)
+    assert_response :success
+  end
+
+  test 'should hide private packages from index' do
+    get :index
+    assert_response :success
+    assert_not_includes assigns(:packages).map(&:id), packages(:secret_package).id
+  end
+
+  test 'should not hide private packages from index from package owner' do
+    sign_in users(:regular_user)
+    get :index
+    assert_response :success
+    assert_includes assigns(:packages).map(&:id), packages(:secret_package).id
+  end
+
+  test 'should not hide private packages from index from admin' do
+    sign_in users(:admin)
+    get :index
+    assert_response :success
+    assert_includes assigns(:packages).map(&:id), packages(:secret_package).id
   end
 
 end
