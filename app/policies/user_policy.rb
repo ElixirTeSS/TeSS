@@ -29,10 +29,4 @@ class UserPolicy < ApplicationPolicy
     @user && @user.is_admin?
   end
 
-  class Scope < Scope
-    def resolve
-      User.all
-    end
-  end
-
 end

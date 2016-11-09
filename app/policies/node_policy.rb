@@ -24,10 +24,4 @@ class NodePolicy < ApplicationPolicy
     end
   end
 
-  class Scope < Scope
-    def resolve
-      Node.all
-    end
-  end
-
 end

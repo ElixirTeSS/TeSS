@@ -6,10 +6,4 @@ class ResourcePolicy < ApplicationPolicy
     super || (@user && (@user.is_owner?(@record) || (request_is_api?(@request) && @user.has_role?(:api_user))))
   end
 
-  class Scope < Scope
-    def resolve
-      scope.all
-    end
-  end
-
 end

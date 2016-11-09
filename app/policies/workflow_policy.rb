@@ -12,7 +12,7 @@ class WorkflowPolicy < ResourcePolicy
     def resolve
       if @user
         if @user.is_admin?
-          Workflow.all
+          Workflow
         else
           Workflow.references(:collaborations).includes(:collaborations).
               where('workflows.public = :public OR workflows.user_id = :user OR collaborations.user_id = :user',
