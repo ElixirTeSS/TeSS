@@ -114,11 +114,11 @@ module SearchableIndex
         with(:last_scraped).less_than(selected_facets['days_since_scrape'].to_i.days.ago)
       end
 
-      if model.method_defined?(:public?) && !(current_user && current_user.is_admin?) # Find a better way of checking this
+      if model.attribute_method?(:public) && !(current_user && current_user.is_admin?) # Find a better way of checking this
         any_of do
           with(:public, true)
           with(:user_id, current_user.id) if current_user
-          if model.method_defined?(:collaborators)
+          if model.attribute_method?(:collaborators)
             with(:collaborator_ids, current_user.id) if current_user
           end
         end
