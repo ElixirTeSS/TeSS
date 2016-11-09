@@ -6,6 +6,22 @@ class NodesControllerTest < ActionController::TestCase
   setup do
     mock_images
     @node = nodes(:good)
+    @node_attributes = {
+        carousel_images: '',
+        country_code: 'FN',
+        home_page: 'http://www.example.com', #institutions: '',
+        member_status: 'Member',
+        name: 'Finnland',
+        twitter: '@finnlandnode',
+        staff_attributes:
+            {
+                "948593" => { name: 'Finn',
+                              email: 'f@example.com',
+                              role: 'Training coordinator',
+                              image_url: 'http://example.com/gorgeouspic.png',
+                              _destroy: '0'  }
+            }
+    }
   end
 
   test "should get index" do
@@ -24,24 +40,35 @@ class NodesControllerTest < ActionController::TestCase
   test "should create node" do
     sign_in users(:admin)
 
-    assert_difference('Node.count') do
-      assert_difference('StaffMember.count') do
-        post :create, node: { carousel_images: '', country_code: 'FN',
-                              home_page: 'http://www.example.com', #institutions: '',
-                              member_status: 'Member', name: 'Finnland',
-                              twitter: '@finnlandnode', staff_attributes:
-                                  {
-                                      "948593" => { name: 'Finn',
-                                                    email: 'f@example.com',
-                                                    role: 'Training coordinator',
-                                                    image_url: 'http://example.com/gorgeouspic.png',
-                                                    _destroy: '0'  }
-                                  }
-        }
+    assert_difference('Node.count', 1) do
+      assert_difference('StaffMember.count', 1) do
+        post :create, node: @node_attributes
       end
     end
 
     assert_redirected_to node_path(assigns(:node))
+  end
+
+  test "should not create node if non-admin" do
+    sign_in users(:another_regular_user)
+
+    assert_no_difference('Node.count') do
+      assert_no_difference('StaffMember.count') do
+        post :create, node: @node_attributes
+      end
+    end
+
+    assert_response :forbidden
+  end
+
+  test "should not create node if not logged-in" do
+    assert_no_difference('Node.count') do
+      assert_no_difference('StaffMember.count') do
+        post :create, node: @node_attributes
+      end
+    end
+
+    assert_redirected_to new_user_session_path
   end
 
   test "should show node" do
@@ -65,6 +92,20 @@ class NodesControllerTest < ActionController::TestCase
                                       twitter: @node.twitter }
     assert_redirected_to node_path(assigns(:node))
     assert_equal ':)', assigns(:node).country_code
+  end
+
+  test "should not allow update if non-admin, non-owner" do
+    sign_in users(:another_regular_user)
+
+    patch :update, id: @node, node: { country_code: ':)' }
+
+    assert_response :forbidden
+  end
+
+  test "should not allow update if not logged-in" do
+    patch :update, id: @node, node: { country_code: ':)' }
+
+    assert_redirected_to new_user_session_path
   end
 
   test "should create node staff via edit form" do

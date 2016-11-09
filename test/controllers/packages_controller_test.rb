@@ -297,4 +297,3 @@ class PackagesControllerTest < ActionController::TestCase
   end
 
 end
-

@@ -2,10 +2,11 @@ class NodePolicy < ApplicationPolicy
 
   def create?
     # Only admin, api_user, curator or node_curator roles can create
-    @user.has_role?(:admin) or @user.has_role?(:api_user) or @user.has_role?(:curator) or @user.has_role?(:node_curator)
+    @user && (@user.has_role?(:admin) || @user.has_role?(:api_user) || @user.has_role?(:curator) || @user.has_role?(:node_curator))
   end
 
-  def update?
+  def manage?
+    return false unless @user
     return true if @user.is_admin?
 
     if request_is_api?(@request) #is this an API action - allow api_user roles only
@@ -16,8 +17,8 @@ class NodePolicy < ApplicationPolicy
       end
     end
 
-    if @user.has_role?(:curator) or @user.has_role?(:node_curator) or @user.is_owner?(@record)
-        return true
+    if @user.has_role?(:curator) || @user.has_role?(:node_curator) || @user.is_owner?(@record)
+      return true
     else
       return false
     end
