@@ -100,4 +100,9 @@ class Workflow < ActiveRecord::Base
     return results
   end
 
+  # Stop the huge JSON blob being printed in the console when inspecting a workflow
+  def attribute_for_inspect(attr)
+    attr.to_s == 'workflow_content' ? super[0..100] : super
+  end
+
 end
