@@ -91,4 +91,42 @@ class WorkflowsControllerTest < ActionController::TestCase
     assert_response :forbidden
   end
 
+  test 'should show private workflows in index for admin' do
+    sign_in users(:admin)
+
+    get :index
+
+    assert_response :success
+    assert_includes assigns(:workflows).map(&:id), workflows(:private_workflow).id
+    assert_includes assigns(:workflows).map(&:id), workflows(:collaborated_workflow).id
+  end
+
+  test 'should show private workflow in index to collaborator' do
+    sign_in users(:another_regular_user)
+
+    get :index
+
+    assert_response :success
+    assert_includes assigns(:workflows).map(&:id), workflows(:collaborated_workflow).id
+    assert_not_includes assigns(:workflows).map(&:id), workflows(:private_workflow).id
+  end
+
+  test 'should not show private workflow in index to not logged-in user' do
+    get :index
+
+    assert_response :success
+    assert_not_includes assigns(:workflows).map(&:id), workflows(:collaborated_workflow).id
+    assert_not_includes assigns(:workflows).map(&:id), workflows(:private_workflow).id
+  end
+
+  test 'should show private workflow in index to owner' do
+    sign_in users(:regular_user)
+
+    get :index
+
+    assert_response :success
+    assert_includes assigns(:workflows).map(&:id), workflows(:collaborated_workflow).id
+    assert_includes assigns(:workflows).map(&:id), workflows(:private_workflow).id
+  end
+
 end

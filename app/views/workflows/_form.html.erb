@@ -84,6 +84,9 @@
 
         <%= f.input :hide_child_nodes,
                     hint: 'Ticking this box will hide child nodes from the diagram until their parent node is clicked.' %>
+
+        <%= f.input :public,
+                    hint: "Un-ticking this box will hide this workflow from anyone who isn't the creator or a collaborator." %>
       </div>
     </div>
     <div class="row">

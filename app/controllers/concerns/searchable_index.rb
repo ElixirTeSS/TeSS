@@ -118,6 +118,9 @@ module SearchableIndex
         any_of do
           with(:public, true)
           with(:user_id, current_user.id) if current_user
+          if model.method_defined?(:collaborators)
+            with(:collaborator_ids, current_user.id) if current_user
+          end
         end
       end
 

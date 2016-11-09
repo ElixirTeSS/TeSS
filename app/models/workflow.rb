@@ -44,6 +44,10 @@ class Workflow < ActiveRecord::Base
       text :difficulty_level
       string :contributors, :multiple => true
       text :contributors
+
+      integer :user_id
+      boolean :public
+      integer :collaborator_ids, multiple: true
     end
   end
 
