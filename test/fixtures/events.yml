@@ -16,8 +16,8 @@ one:
   county: MyString
   country: MyString
   postcode: MyString
-  latitude:
-  longitude:
+  latitude: 53.467458
+  longitude: -2.233949
   keywords: ["Keyword"]
   user: regular_user
 

@@ -29,5 +29,13 @@ module TeSS
     # Route exceptions to the application router vs. default
     config.exceptions_app = self.routes
 
+    # Enable CORS
+    config.middleware.insert_before 0, 'Rack::Cors' do
+      allow do
+        origins '*'
+        resource '*', headers: :any, methods: [:get, :post, :options]
+      end
+    end
+
   end
 end
