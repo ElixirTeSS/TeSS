@@ -12,13 +12,13 @@ class UserPolicy < ApplicationPolicy
 
   def create?
     # Do not allow creations via API and only admin role can create users
-    !request_is_api?(request) and @user.is_admin?
+    !request_is_api?(request) && @user && @user.is_admin?
   end
 
-  def update?
+  def manage?
     # Do not allow updates via API
     # Only admin role can update other users or the users themselves
-    !request_is_api?(request) and (@user == @record or @user.is_admin?)
+    !request_is_api?(request) && (@user && (@user == @record || @user.is_admin?))
   end
 
   def change_token?
@@ -26,13 +26,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def change_role?
-    @user.is_admin?
-  end
-
-  class Scope < Scope
-    def resolve
-      User.all
-    end
+    @user && @user.is_admin?
   end
 
 end

@@ -44,6 +44,10 @@ class Workflow < ActiveRecord::Base
       text :difficulty_level
       string :contributors, :multiple => true
       text :contributors
+
+      integer :user_id
+      boolean :public
+      integer :collaborator_ids, multiple: true
     end
   end
 
@@ -98,6 +102,11 @@ class Workflow < ActiveRecord::Base
       results << node['data'][type]
     end if self.workflow_content['nodes']
     return results
+  end
+
+  # Stop the huge JSON blob being printed in the console when inspecting a workflow
+  def attribute_for_inspect(attr)
+    attr.to_s == 'workflow_content' ? super[0..100] : super
   end
 
 end

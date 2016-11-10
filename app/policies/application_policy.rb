@@ -13,7 +13,6 @@ class ApplicationPolicy
   # in addition to user and record object - see
   # http://stackoverflow.com/questions/28216678/pundit-policies-with-two-input-parameters
   def initialize(context, record)
-    raise Pundit::NotAuthorizedError, "User must be logged in" unless context.user
     @user = context.user
     @request = context.request
     @record = record
@@ -32,7 +31,7 @@ class ApplicationPolicy
     # Only admin, api_user or curator roles can create
     #@user.has_role?(:admin) or @user.has_role?(:api_user) or @user.has_role?(:curator)
     # Any registered user user can create
-    !@user.role.blank?
+    @user && !@user.role.blank?
   end
 
   def new?
@@ -40,9 +39,7 @@ class ApplicationPolicy
   end
 
   def update?
-    # Admin role can update/destroy any object
-    # See individual policies for how owners, API users, and curators can update records.
-    return true if @user.is_admin?
+    manage?
   end
 
   def edit?
@@ -50,7 +47,12 @@ class ApplicationPolicy
   end
 
   def destroy?
-    update?
+    manage?
+  end
+
+  # "manage" isn't actually an action, but the "destroy?" and "update?" policies delegate to this method.
+  def manage?
+    @user && @user.is_admin?
   end
 
   def request_is_api?(request)
@@ -65,8 +67,8 @@ class ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
-    def initialize(user, scope)
-      @user = user
+    def initialize(context, scope)
+      @user = context.user
       @scope = scope
     end
 

@@ -92,7 +92,7 @@ class WorkflowsController < ApplicationController
                                      :remote_created_date,  :remote_updated_date, { keywords: [] },
                                      { scientific_topic_names: [] }, :licence, :difficulty_level,
                                      { contributors: [] }, { authors: [] }, { target_audience: [] },
-                                     :hide_child_nodes)
+                                     :hide_child_nodes, :public)
   end
 
 end

@@ -1,22 +1,17 @@
 class PackagePolicy < ResourcePolicy
 
-  def initialize(context, record)
-    @user = context.user
-    @request = context.request
-    @record = record
-  end
-
   def show?
-    @record.public? || (@user && @user.is_owner?(@record))
+    @record.public? || manage?
   end
 
   class Scope < Scope
     def resolve
-      if user.is_admin?
-        Package.all
+      if @user && @user.is_admin?
+        Package
+      elsif @user
+        Package.where('packages.public = ? OR packages.user_id = ?', true, @user)
       else
-        query = Package.unscoped.where(public: true, user: user)
-        Package.where(query.where_values.inject(:or))
+        Package.where(public: true)
       end
     end
   end
