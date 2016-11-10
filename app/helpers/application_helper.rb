@@ -48,13 +48,16 @@ module ApplicationHelper
   def tooltip_titles(event)
     titles = []
     if event.started?
-      titles << ICONS[:started][:message]
+      titles << "#{ICONS[:started][:message]}."
     end
     if event.for_profit?
-      titles << ICONS[:for_profit][:message]
+      titles << "#{ICONS[:for_profit][:message]}."
     end
     if event.expired?
-      titles << ICONS[:expired][:message]
+      titles << "#{ICONS[:expired][:message]}."
+    end
+    if event.online?
+      titles << "#{ICONS[:online][:message]}."
     end
     return titles.join(" &#13;").html_safe
   end
