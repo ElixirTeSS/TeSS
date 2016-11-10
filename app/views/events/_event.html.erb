@@ -1,8 +1,8 @@
 <!-- onmouseenter="showTooltips()" onmouseleave="hideTooltips()" -->
-<% if event.started? or event.expired? or event.for_profit? -%>
-<li class="masonry-brick media-item" data-toggle="tooltip" data-placement="auto" title="<%= tooltip_titles(event) -%>">
+<% if tooltip_titles(event).empty? -%>
+<li class="masonry-brick media-item" -%>
 <% else -%>
-<li class="masonry-brick media-item">
+<li class="masonry-brick media-item" data-toggle="tooltip" data-placement="auto" title="<%= tooltip_titles(event) -%>">
 <% end -%>
   <div id="event-title">
   <h3 class="media-heading dont-break-out" style="display: inline;">

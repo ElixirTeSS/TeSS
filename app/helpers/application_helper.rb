@@ -47,18 +47,21 @@ module ApplicationHelper
 
   def tooltip_titles(event)
     titles = []
-    if event.started?
-      titles << "#{ICONS[:started][:message]}."
+    types = [:started, :expired, :online, :for_profit]
+    types.each do |t|
+      if event.send("#{t.to_s}?")
+        titles << "#{ICONS[t][:message]}."
+      end
     end
-    if event.for_profit?
-      titles << "#{ICONS[:for_profit][:message]}."
+    if !event.last_scraped.nil? and event.scraper_record
+      if event.last_scraped < (Time.now - 2.days)
+        ICONS[:not_scraped_recently][:message].gsub!(/%SUB%/, (event.last_scraped.to_s))
+        titles << "#{ICONS[:not_scraped_recently][:message]}."
+      else
+        titles << "#{ICONS[:scraped_today][:message]}."
+      end
     end
-    if event.expired?
-      titles << "#{ICONS[:expired][:message]}."
-    end
-    if event.online?
-      titles << "#{ICONS[:online][:message]}."
-    end
+
     return titles.join(" &#13;").html_safe
   end
 
