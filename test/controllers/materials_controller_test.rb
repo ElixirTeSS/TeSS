@@ -596,5 +596,20 @@ class MaterialsControllerTest < ActionController::TestCase
     end
   end
 
+  test 'can assign nodes by name' do
+    sign_in users(:regular_user)
+
+    assert_difference('Material.count') do
+      post :create, material: { short_description: @material.short_description,
+                                title: @material.title,
+                                url: @material.url,
+                                node_names: [nodes(:westeros).name, nodes(:good).name]
+      }
+    end
+    assert_redirected_to material_path(assigns(:material))
+
+    assert_includes assigns(:material).node_ids, nodes(:westeros).id
+    assert_includes assigns(:material).node_ids, nodes(:good).id
+  end
 
 end

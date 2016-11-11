@@ -522,4 +522,20 @@ end
     assert_equal 'hi', assigns(:event).description
   end
 
+  test 'can assign nodes by name' do
+    sign_in users(:regular_user)
+
+    assert_difference('Event.count') do
+      post :create, event: { title: @event.title,
+                             url: @event.url,
+                             node_names: [nodes(:westeros).name, nodes(:good).name]
+      }
+    end
+
+    assert_redirected_to event_path(assigns(:event))
+
+    assert_includes assigns(:event).node_ids, nodes(:westeros).id
+    assert_includes assigns(:event).node_ids, nodes(:good).id
+  end
+
 end

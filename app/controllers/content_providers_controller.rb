@@ -98,6 +98,7 @@ class ContentProvidersController < ApplicationController
     params[:content_provider].delete :node_name
 
     params.require(:content_provider).permit(:title, :url, :image, :image_url, :description, :id, :content_provider_type, :node_id,
-                                             {:keywords => []}, :remote_updated_date, :remote_created_date, :local_updated_date, :remote_updated_date)
+                                             {:keywords => []}, :remote_updated_date, :remote_created_date,
+                                             :local_updated_date, :remote_updated_date, :node_name)
   end
 end

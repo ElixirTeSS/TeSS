@@ -137,7 +137,7 @@ class EventsController < ApplicationController
                                   :scraper_record, :description, {:scientific_topic_names => []}, {:event_types => []},
                                   {:keywords => []}, :start, :end, :sponsor, :online, :for_profit, :venue,
                                   :city, :county, :country, :postcode, :latitude, :longitude,
-                                  :content_provider_id, {:package_ids => []}, {:node_ids => []},
+                                  :content_provider_id, {:package_ids => []}, {:node_ids => []}, {:node_names => []},
                                   {:target_audience => []}, {:eligibility => []},
                                   {:host_institutions => []}, :capacity, :contact,
                                   external_resources_attributes: [:id, :url, :title, :_destroy])

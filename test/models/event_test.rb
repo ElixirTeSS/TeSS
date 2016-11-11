@@ -41,4 +41,19 @@ class EventTest < ActiveSupport::TestCase
     assert_equal 0, e.errors.count
   end
 
+  test 'node names/associated node names includes names of nodes' do
+    e = events(:scraper_user_event)
+
+    assert_includes e.associated_node_names, nodes(:good).name
+    assert_not_includes e.node_names, nodes(:good).name
+
+    e.nodes << nodes(:westeros)
+
+    assert_includes e.associated_node_names, nodes(:good).name
+    assert_includes e.associated_node_names, nodes(:westeros).name
+
+    assert_not_includes e.node_names, nodes(:good).name
+    assert_includes e.node_names, nodes(:westeros).name
+  end
+
 end

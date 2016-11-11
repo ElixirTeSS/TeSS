@@ -286,6 +286,15 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_equal(response.body, '')
   end
 
+  test 'can assign nodes by name' do
+    sign_in users(:regular_user)
+    assert_difference('ContentProvider.count') do
+      post :create, content_provider: { title: @content_provider.title, url: @content_provider.url, node_name: nodes(:westeros).name }
+    end
+    assert_redirected_to content_provider_path(assigns(:content_provider))
+
+    assert_equal nodes(:westeros).id, assigns(:content_provider).node_id
+  end
 
   # TODO: SOLR tests will not run on TRAVIS. Explore stratergy for testing solr
 =begin

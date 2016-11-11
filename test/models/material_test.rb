@@ -98,6 +98,21 @@ class MaterialTest < ActiveSupport::TestCase
     assert_equal 0, m.errors.count
   end
 
+  test 'node names/associated node names includes names of nodes' do
+    m = materials(:good_material)
+
+    assert_includes m.associated_node_names, nodes(:good).name
+    assert_not_includes m.node_names, nodes(:good).name
+
+    m.nodes << nodes(:westeros)
+
+    assert_includes m.associated_node_names, nodes(:good).name
+    assert_includes m.associated_node_names, nodes(:westeros).name
+
+    assert_not_includes m.node_names, nodes(:good).name
+    assert_includes m.node_names, nodes(:westeros).name
+  end
+
 
 =begin
   test 'should save good new material' do

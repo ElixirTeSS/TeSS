@@ -14,4 +14,18 @@ module HasAssociatedNodes
     n.compact.uniq
   end
 
+  def node_names= names
+    nodes = Node.where(name: names).to_a
+
+    self.nodes = nodes
+  end
+
+  def node_names
+    nodes.map(&:name)
+  end
+
+  def associated_node_names
+    associated_nodes.map(&:name)
+  end
+
 end

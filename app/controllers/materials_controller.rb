@@ -138,7 +138,7 @@ class MaterialsController < ApplicationController
                                      :content_provider_id, {:keywords => []},
                                      {:scientific_topic_names => []},
                                      :licence, :difficulty_level, {:contributors => []},
-                                     {:authors => []}, {:target_audience => []}, {:node_ids => []},
+                                     {:authors => []}, {:target_audience => []}, {:node_ids => []}, {:node_names => []},
                                      external_resources_attributes: [:id, :url, :title, :_destroy])
   end
 end
