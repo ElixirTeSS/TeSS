@@ -17,9 +17,23 @@
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")),
                     :back, :class => 'btn btn-info'  %>
-        <%= link_to event_path(@event, format: :ics), class: "btn btn-info" do %>
-            <i class="fa fa-calendar-o"></i> Download as .ics
-        <% end %>
+        <div class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Save <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <%= link_to event_path(@event, format: :ics) do %>
+                  <i class="fa fa-download"></i> Download as .ics
+              <% end %>
+            </li>
+            <li>
+              <%= link_to google_calendar_export_url(@event) do %>
+                  <i class="fa fa-calendar-o"></i> Add to Google Calendar
+              <% end %>
+            </li>
+          </ul>
+        </div>
         <% if !current_user.nil? and policy(@event).update? %>
             <%= link_to 'Edit', edit_event_path(@event), :class=>"btn btn-primary" %>
         <% end %>
