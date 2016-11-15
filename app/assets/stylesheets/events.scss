@@ -5,3 +5,15 @@
   border: 1px solid #ccc;
   margin-top: 10px;
 }
+
+.google-map {
+  height: 250px;
+  width: 400px;
+  float: right;
+  margin: 0 0 10px 10px;
+  @include xs {
+    float: none;
+    width: 100%;
+    margin-left: 0;
+  }
+}

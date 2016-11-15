@@ -73,7 +73,28 @@
               <p><%= link_to @event.url, @event.url, :class =>'h5', :target => "_blank" %></p>
             </div>
 
-            <div class="<%= @event.show_map? ? 'col-md-4' : 'col-md-12' -%>">
+            <div>
+              <% if @event.show_map? %>
+                  <div id="map" class="google-map"></div>
+                  <script type="text/javascript">
+                    var myLatLng = { lat: <%= @event.latitude %>, lng: <%= @event.longitude %> };
+
+                    // Create a map object and specify the DOM element for display.
+                    var map = new google.maps.Map(document.getElementById('map'), {
+                      center: myLatLng,
+                      scrollwheel: true,
+                      zoom: 13
+                    });
+
+                    // Create a marker and set its position.
+                    new google.maps.Marker({
+                      map: map,
+                      position: myLatLng,
+                      title: '<%= @event.title %>'
+                    });
+                  </script>
+              <% end %>
+
               <% if @event.organizer and !@event.organizer.blank? %>
                   <p><strong>Organizer:</strong>
                     <%= @event.organizer %></p>
@@ -82,35 +103,6 @@
               <% if @event.host_institutions.any? %>
                   <p><strong>Host institution:</strong>
                     <%= @event.host_institutions.join(', ') %></p>
-              <% end %>
-
-              <% unless @event.scientific_topics.empty? %>
-                  <p><strong>Scientific topic:</strong>
-                    <%= @event.scientific_topic_names.join(', ')%></p>
-              <% end %>
-
-              <% unless @event.target_audience.empty? %>
-                  <p><strong>Target audience:</strong>
-                    <ul>
-                        <% @event.target_audience.each do |ta| %>
-                            <li><%= ta %></li>
-                        <% end %>
-                    </ul>
-
-              <% end %>
-
-              <% if @event.description and !@event.description.blank? %>
-                  <p><strong>Description:</strong>
-                    <%= render_markdown @event.description %></p>
-              <% end %>
-
-              <% if @event.event_types.any? %>
-                  <strong>Event type:</strong>
-                  <ul>
-                    <% @event.event_types.each do |t| %>
-                        <li><%= Tess::EventTypeDictionary.instance.lookup(t)["title"] %></li>
-                    <% end %>
-                  </ul>
               <% end %>
 
               <% if @event.start and !@event.start.blank? %>
@@ -160,6 +152,38 @@
                   <% end %>
               <% end %>
 
+              <% unless @event.scientific_topics.empty? %>
+                  <p>
+                    <strong>Scientific topic:</strong>
+                    <%= @event.scientific_topic_names.join(', ')%>
+                  </p>
+              <% end %>
+
+              <% unless @event.target_audience.empty? %>
+                  <strong>Target audience:</strong>
+                  <ul>
+                    <% @event.target_audience.each do |ta| %>
+                        <li><%= ta %></li>
+                    <% end %>
+                  </ul>
+              <% end %>
+
+              <% if @event.description and !@event.description.blank? %>
+                  <strong>Description:</strong>
+                  <div class="text-justify">
+                    <%= render_markdown @event.description %>
+                  </div>
+              <% end %>
+
+              <% if @event.event_types.any? %>
+                  <strong>Event type:</strong>
+                  <ul>
+                    <% @event.event_types.each do |t| %>
+                        <li><%= Tess::EventTypeDictionary.instance.lookup(t)["title"] %></li>
+                    <% end %>
+                  </ul>
+              <% end %>
+
               <% if @event.capacity and !@event.capacity.blank? %>
                   <p><strong>Capacity:</strong>
                     <%= @event.capacity %></p>
@@ -186,33 +210,11 @@
 
               <%= render :partial => 'events/partials/event_schemaorg', :locals => {:event => @event} %>
             </div>
-            <% if @event.show_map? %>
-                <div class="col-md-8">
-                  <div id="map" class="event-show-map"></div>
-                </div>
-                <script type="text/javascript">
-                  var myLatLng = { lat: <%= @event.latitude %>, lng: <%= @event.longitude %> };
-
-                  // Create a map object and specify the DOM element for display.
-                  var map = new google.maps.Map(document.getElementById('map'), {
-                    center: myLatLng,
-                    scrollwheel: true,
-                    zoom: 13
-                  });
-
-                  // Create a marker and set its position.
-                  new google.maps.Marker({
-                    map: map,
-                    position: myLatLng,
-                    title: '<%= @event.title %>'
-                  });
-                </script>
-            <% end %>
-          </div>
-          <div class="col-md-8">
-            <%= link_to event_path(@event, format: :ics), class: "btn btn-info" do %>
-                <i class="fa fa-calendar-o"></i> Download as .ics
-            <% end %>
+            <div>
+              <%= link_to event_path(@event, format: :ics), class: "btn btn-info" do %>
+                  <i class="fa fa-calendar-o"></i> Download as .ics
+              <% end %>
+            </div>
           </div>
         </div>
         <div id="packages" class="tab-pane fade">
