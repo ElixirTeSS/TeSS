@@ -1,17 +1,11 @@
-<!--<#% if current_user and policy(@material).update? %>-->
-<!--<div class="row">-->
-<!--<%#= form_tag(controller: 'materials', id: @material.id, action: 'update_packages', method: 'post') do |f| %>-->
-<!--<%#= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @material, :f => f, :options => available_packages(@material), :dropdown_toggle_button_name => "Add to package"} %>-->
-<!--<button type="submit" value="add" class="btn btn-primary">Update material</button>-->
-<!--<#% end %>-->
-<!--</div>-->
-<!--<#% end %>-->
+<% packages = resource.packages.visible_by(current_user) %>
+
 <div class="row">
-  <% if resource.packages.blank? %>
+  <% if packages.blank? %>
       <%= empty_tag(:p, "This #{resource.class.name.humanize} is currently not included in any packages.", "padding-top: 10px;") %>
   <% else %>
       <ul class="masonry media-grid">
-        <% resource.packages.each do |package| %>
+        <% packages.each do |package| %>
             <%= render :partial => "packages/package", :locals => {:package => package} %>
         <% end %>
       </ul>

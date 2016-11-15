@@ -39,7 +39,7 @@
         <%= tab('Material', icon_class_for_model('materials'), 'home', active: true) %>
 
         <%= tab('Packages', icon_class_for_model('packages'), 'packages',
-                disabled: { check: @material.packages.none?, message: 'This material is currently not included in any packages' }) %>
+                disabled: { check: @material.packages.visible_by(current_user).none?, message: 'This material is currently not included in any packages' }) %>
 
         <%= tab('Activity log', icon_class_for_model('activity_logs'), 'activity_log',
                 disabled: { check: @material.activities.none?, message: 'No activities recorded' }) %>

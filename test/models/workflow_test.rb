@@ -46,4 +46,18 @@ class WorkflowTest < ActiveSupport::TestCase
     assert_equal 0, w.errors.count
   end
 
+  test 'visibility scope' do
+    assert_not_includes Workflow.visible_by(nil), workflows(:collaborated_workflow) # Guest
+    assert_not_includes Workflow.visible_by(users(:non_collaborative_user)), workflows(:collaborated_workflow) # Non-owner user
+    assert_includes Workflow.visible_by(users(:regular_user)), workflows(:collaborated_workflow) # Owner
+    assert_includes Workflow.visible_by(users(:admin)), workflows(:collaborated_workflow) # Admin
+    assert_includes Workflow.visible_by(users(:another_regular_user)), workflows(:collaborated_workflow) # Collaborator
+
+    assert_includes Workflow.visible_by(nil), workflows(:one) # Guest
+    assert_includes Workflow.visible_by(users(:non_collaborative_user)), workflows(:one) # Non-owner user
+    assert_includes Workflow.visible_by(users(:regular_user)), workflows(:one) # Owner
+    assert_includes Workflow.visible_by(users(:admin)), workflows(:one) # Admin
+    assert_includes Workflow.visible_by(users(:another_regular_user)), workflows(:one) # Collaborator
+  end
+
 end

@@ -99,4 +99,14 @@ class Package < ActiveRecord::Base
     %w( user keywords )
   end
 
+  def self.visible_by(user)
+    if user && user.is_admin?
+      all
+    elsif user
+      where("#{self.table_name}.public = ? OR #{self.table_name}.user_id = ?", true, user)
+    else
+      where(public: true)
+    end
+  end
+
 end

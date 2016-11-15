@@ -109,4 +109,16 @@ class Workflow < ActiveRecord::Base
     attr.to_s == 'workflow_content' ? super[0..100] : super
   end
 
+  def self.visible_by(user)
+    if user && user.is_admin?
+      all
+    elsif user
+      references(:collaborations).includes(:collaborations).
+        where("#{self.table_name}.public = :public OR #{self.table_name}.user_id = :user OR collaborations.user_id = :user",
+              public: true, user: user)
+    else
+      where(public: true)
+    end
+  end
+
 end

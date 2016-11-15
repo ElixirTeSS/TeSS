@@ -10,6 +10,7 @@ class WorkflowPolicy < ResourcePolicy
 
   class Scope < Scope
     def resolve
+      Workflow.visible_by(@user)
       if @user
         if @user.is_admin?
           Workflow

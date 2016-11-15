@@ -6,13 +6,7 @@ class PackagePolicy < ResourcePolicy
 
   class Scope < Scope
     def resolve
-      if @user && @user.is_admin?
-        Package
-      elsif @user
-        Package.where('packages.public = ? OR packages.user_id = ?', true, @user)
-      else
-        Package.where(public: true)
-      end
+      Package.visible_by(@user)
     end
   end
 

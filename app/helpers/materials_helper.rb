@@ -51,14 +51,6 @@ module MaterialsHelper
     end
   end
 
-  def material_package_list(material)
-    packages = []
-    material.packages.each do |p| 
-      packages << link_to(p.title, p)
-    end
-    return packages
-  end
-
   def content_providers_list
     cps = []
     ContentProvider.all.each do |content_provider|

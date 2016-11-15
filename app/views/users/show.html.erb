@@ -110,33 +110,37 @@
     </div>
 
     <div class="row">
+      <% materials = @user.materials %>
+      <% events = @user.events %>
+      <% packages = @user.packages.visible_by(current_user) %>
+      <% workflows = @user.workflows.visible_by(current_user) %>
 
       <ul class="nav nav-tabs">
         <%= tab('Materials', icon_class_for_model('materials'), 'materials', active: true,
-                disabled: { check: @user.materials.none?, message: 'No registered training materials' },
-                count: @user.materials.count) %>
+                disabled: { check: materials.none?, message: 'No registered training materials' },
+                count: materials.count) %>
 
         <%= tab('Events', icon_class_for_model('events'), 'events',
-                disabled: { check: @user.events.none?, message: 'No registered events' },
-                count: @user.events.count) %>
+                disabled: { check: events.none?, message: 'No registered events' },
+                count: events.count) %>
 
         <%= tab('Packages', icon_class_for_model('packages'), 'packages',
-                disabled: { check: @user.packages.none?, message: 'No packages' },
-                count: @user.packages.count) %>
+                disabled: { check: packages.none?, message: 'No packages' },
+                count: packages.count) %>
 
         <%= tab('Workflows', icon_class_for_model('workflows'), 'workflows',
-                disabled: { check: @user.workflows.none?, message: 'No workflows' },
-                count: @user.workflows.count) %>
+                disabled: { check: workflows.none?, message: 'No workflows' },
+                count: workflows.count) %>
       </ul>
 
       <div class="tab-content">
         <div id="materials" class="tab-pane fade in active">
           <div class="row">
             <div class="search-results-count">
-              <%= pluralize(@user.materials.count, 'training material') %> found
+              <%= pluralize(materials.count, 'training material') %> found
             </div>
-            <% if @user.materials.any? %>
-                <% @user.materials.each do |material| %>
+            <% if materials.any? %>
+                <% materials.each do |material| %>
                     <%= render material %>
                 <% end %>
             <% end %>
@@ -145,11 +149,11 @@
         <div id="events" class="tab-pane fade">
           <div class="row">
             <div class="search-results-count">
-              <%= pluralize(@user.events.count, 'event') %> found
+              <%= pluralize(events.count, 'event') %> found
             </div>
-            <% if @user.events.any? %>
+            <% if events.any? %>
                 <ul class="masonry media-grid" style="margin-top: 15px;">
-                  <% @user.events.each do |event| %>
+                  <% events.each do |event| %>
                       <%= render event %>
                   <% end %>
                 </ul>
@@ -159,11 +163,11 @@
         <div id="packages" class="tab-pane fade">
           <div class="row">
             <div class="search-results-count">
-              <%= pluralize(@user.packages.count, 'package') %> found
+              <%= pluralize(packages.count, 'package') %> found
             </div>
-            <% if @user.packages.any? %>
+            <% if packages.any? %>
                 <ul class="masonry media-grid" style="margin-top: 15px;">
-                  <% @user.packages.each do |package| %>
+                  <% packages.each do |package| %>
                       <%= render package %>
                   <% end %>
                 </ul>
@@ -173,11 +177,11 @@
         <div id="workflows" class="tab-pane fade">
           <div class="row">
             <div class="search-results-count">
-              <%= pluralize(@user.workflows.count, 'workflow') %> found
+              <%= pluralize(workflows.count, 'workflow') %> found
             </div>
-            <% if @user.workflows.any? %>
+            <% if workflows.any? %>
                 <ul class="masonry media-grid" style="margin-top: 15px;">
-                  <% @user.workflows.each do |workflow| %>
+                  <% workflows.each do |workflow| %>
                       <%= render workflow %>
                   <% end %>
                 </ul>
