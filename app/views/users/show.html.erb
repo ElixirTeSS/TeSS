@@ -124,7 +124,7 @@
                 disabled: { check: @user.packages.none?, message: 'No packages' },
                 count: @user.packages.count) %>
 
-        <%= tab('Workflows', icon_class_for_model('events'), 'events',
+        <%= tab('Workflows', icon_class_for_model('workflows'), 'workflows',
                 disabled: { check: @user.workflows.none?, message: 'No workflows' },
                 count: @user.workflows.count) %>
       </ul>
