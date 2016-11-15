@@ -7,9 +7,7 @@ module EventsHelper
       "If your website contains training events that you wish to include in TeSS, please contact the TeSS team (<a href='mailto:tess@elixir-uk.info'>tess@elixir-uk.info</a>) for further details."
 
   def google_calendar_export_url(event)
-    all_day_event = (event.start == event.start.midnight) || (event.end == event.end.midnight)
-
-    if all_day_event
+    if event.all_day?
       dates = "#{event.start.strftime('%Y%m%d')}/#{event.end.tomorrow.strftime('%Y%m%d')}" # Need to add 1 day for all day events apparently
     else
       dates = "#{event.start.strftime('%Y%m%dT%H%M00Z')}/#{event.end.strftime('%Y%m%dT%H%M00Z')}"

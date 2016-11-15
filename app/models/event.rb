@@ -154,4 +154,8 @@ class Event < ActiveRecord::Base
     !(self.online? || self.latitude.blank? || self.longitude.blank?)
   end
 
+  def all_day?
+    self.start && self.end && (self.start == self.start.midnight) || (self.end == self.end.midnight)
+  end
+
 end
