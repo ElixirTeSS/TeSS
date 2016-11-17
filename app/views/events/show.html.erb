@@ -210,11 +210,6 @@
 
               <%= render :partial => 'events/partials/event_schemaorg', :locals => {:event => @event} %>
             </div>
-            <div>
-              <%= link_to event_path(@event, format: :ics), class: "btn btn-info" do %>
-                  <i class="fa fa-calendar-o"></i> Download as .ics
-              <% end %>
-            </div>
           </div>
         </div>
         <div id="packages" class="tab-pane fade">
