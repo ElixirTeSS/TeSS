@@ -15,7 +15,7 @@ module MaterialsHelper
 
   def licence_name_for_abbreviation(licence)
     unless licence.blank?
-      Tess::LicenceDictionary.instance.lookup(licence)['title']
+      Tess::LicenceDictionary.instance.lookup_value(licence, 'title')
     else
       'License not specified'
     end
@@ -27,7 +27,7 @@ module MaterialsHelper
 
   def difficulty_name_for_abbreviation(difficulty)
     if difficulty
-      Tess::DifficultyDictionary.instance.lookup(difficulty)['title']
+      Tess::DifficultyDictionary.instance.lookup_value(difficulty, 'title')
     else
       'No difficulties available'
     end
