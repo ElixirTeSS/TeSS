@@ -61,7 +61,7 @@ module MaterialsHelper
       none_specified(resource, attribute)
     else
       string = "<p><b> #{resource.class.human_attribute_name(attribute)}: </b>"
-      string << block_given? ? yield(value) : value.to_s
+      string << (block_given? ? yield(value) : value.to_s)
 
       (string + '</p>').html_safe
     end
