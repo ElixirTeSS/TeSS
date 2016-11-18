@@ -118,6 +118,7 @@ group :development, :test do
   gem 'webmock', "~> 2.1.0"
   gem 'byebug'
   gem 'simplecov'
+  gem 'rubocop'
 end
 
 group :development do
