@@ -9,7 +9,7 @@ class EventsController < ApplicationController
   # GET /events.json
   def index
     respond_to do |format|
-      format.json { render json: @events }
+      format.json
       format.html
     end
   end
