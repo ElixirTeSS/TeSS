@@ -8,6 +8,7 @@ class Event < ActiveRecord::Base
   include HasScientificTopics
 
   has_paper_trail
+  before_save :set_default_times
 
   extend FriendlyId
   friendly_id :title, use: :slugged
@@ -156,6 +157,31 @@ class Event < ActiveRecord::Base
 
   def all_day?
     self.start && self.end && (self.start == self.start.midnight) || (self.end == self.end.midnight)
+  end
+
+  # Ticket #375.
+  # Default end at start +1 hour for online events.
+  # Default end at 17:00 same day otherwise.
+  # Default start time 9am.
+  def set_default_times
+    if !self.start
+      return
+    end
+
+    if self.start.hour == 0 # hour set to 0 if not otherwise defined...
+      self.start = self.start + 9.hours
+    end
+
+    if !self.end
+      if self.online?
+        self.end = self.start + 1.hour
+      else
+        diff = 17 - self.start.hour
+        self.end = self.start + diff.hours
+      end
+    end
+    # TODO: Set timezone for online events. Where to get it from, though?
+
   end
 
 end
