@@ -57,6 +57,7 @@ class Event < ActiveRecord::Base
       boolean :online
       text :host_institutions
       time :last_scraped
+      text :timezone
 =begin TODO: SOLR has a LatLonType to do geospatial searching. Have a look at that
       location :latitutde
       location :longitude
@@ -181,6 +182,8 @@ class Event < ActiveRecord::Base
       end
     end
     # TODO: Set timezone for online events. Where to get it from, though?
+    # TODO: Check events form to add timezone autocomplete.
+    # Get timezones from: https://timezonedb.com/download
 
   end
 
