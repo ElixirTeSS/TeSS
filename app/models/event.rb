@@ -53,6 +53,7 @@ class Event < ActiveRecord::Base
       string :scientific_topics, :multiple => true do
         self.scientific_topic_names
       end
+      string :target_audience, multiple: true
       boolean :online
       text :host_institutions
       time :last_scraped
@@ -133,7 +134,7 @@ class Event < ActiveRecord::Base
   end
 
   def self.facet_fields
-    %w( event_types online country scientific_topics organizer city sponsor keywords venue content_provider node )
+    %w( event_types online country scientific_topics organizer city sponsor keywords venue content_provider node target_audience )
   end
 
   def to_ical
