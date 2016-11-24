@@ -123,6 +123,13 @@
       <%= datetime_picker(f, :end) %>
     </div>
 
+    <!-- TODO: add autocomplete to this field -->
+    <div class="form-group">
+      <%= f.label :timezone %>
+      <%= f.text_field :timezone, :class => 'form-control' %>
+    </div>
+
+
     <div class="form-group">
       <%= f.label :sponsor %>
       <%= f.text_field :sponsor, :class => 'form-control' %>

@@ -115,6 +115,11 @@
                     <%= @event.end.strftime('%A, %d %B %Y @ %H:%M') %></p>
               <% end %>
 
+              <% if @event.timezone and !@event.timezone.blank? %>
+                  <p><strong>Timezone:</strong>
+                    <%= @event.timezone %></p>
+              <% end %>
+
               <% if @event.sponsor and !@event.sponsor.blank? %>
                   <p><strong>Sponsor:</strong>
                     <%= @event.sponsor %></p>

@@ -56,4 +56,35 @@ class EventTest < ActiveSupport::TestCase
     assert_includes e.node_names, nodes(:westeros).name
   end
 
+  test 'set default start time' do
+    e = events(:event_with_no_start)
+    assert_nil e.start
+    e.save()
+    assert_nil e.start
+    e.start = '2016-11-22'
+    e.save()
+    assert_equal e.start.hour, 9
+
+  end
+
+  test 'set default end time' do
+    time = Time.zone.parse('2016-11-22')
+    e = events(:event_with_no_end)
+    assert_equal e.start, time
+    assert_nil e.end
+    e.save()
+    assert_equal e.start, time + 9.hours
+    assert_equal e.end, time + 17.hours
+  end
+
+  test 'set default online end time' do
+    time = Time.zone.parse('2016-11-22 14:00')
+    e = events(:online_event_with_no_end)
+    assert_equal e.start, time
+    assert_nil e.end
+    e.save()
+    assert_equal e.start, time
+    assert_equal e.end, time + 1.hours
+  end
+
 end

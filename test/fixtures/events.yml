@@ -55,3 +55,27 @@ event_with_external_resource:
   description: 'this is my material'
   user: scraper_user
   content_provider: goblet
+
+event_with_no_start:
+  title: No Start Time
+  url: http://myurl.com
+  description: 'Fun stuff, indeed!'
+  user: scraper_user
+  content_provider: goblet
+
+event_with_no_end:
+  title: No End Time
+  url: http://myurl.com
+  description: 'Fun stuff, indeed!'
+  user: scraper_user
+  content_provider: goblet
+  start: 2016-11-22
+
+online_event_with_no_end:
+  title: No End Time
+  url: http://myurl.com
+  description: 'Fun stuff, indeed!'
+  user: scraper_user
+  content_provider: goblet
+  start: 2016-11-22 14:00
+  online: true

@@ -1,0 +1,520 @@
+0:
+  title: "ACDT"
+1:
+  title: "ACST"
+2:
+  title: "ACT"
+3:
+  title: "ACWDT"
+4:
+  title: "ACWST"
+5:
+  title: "ADDT"
+6:
+  title: "ADT"
+7:
+  title: "AEDT"
+8:
+  title: "AEST"
+9:
+  title: "AFT"
+10:
+  title: "AHDT"
+11:
+  title: "AHST"
+12:
+  title: "AKDT"
+13:
+  title: "AKST"
+14:
+  title: "AMST"
+15:
+  title: "AMT"
+16:
+  title: "ANT"
+17:
+  title: "APT"
+18:
+  title: "ARST"
+19:
+  title: "ART"
+20:
+  title: "AST"
+21:
+  title: "AWDT"
+22:
+  title: "AWST"
+23:
+  title: "AWT"
+24:
+  title: "AZOMT"
+25:
+  title: "AZOST"
+26:
+  title: "AZOT"
+27:
+  title: "BDST"
+28:
+  title: "BDT"
+29:
+  title: "BEAT"
+30:
+  title: "BEAUT"
+31:
+  title: "BMT"
+32:
+  title: "BNT"
+33:
+  title: "BORT"
+34:
+  title: "BORTST"
+35:
+  title: "BOST"
+36:
+  title: "BOT"
+37:
+  title: "BRST"
+38:
+  title: "BRT"
+39:
+  title: "BST"
+40:
+  title: "BTT"
+41:
+  title: "BURT"
+42:
+  title: "CANT"
+43:
+  title: "CAPT"
+44:
+  title: "CAST"
+45:
+  title: "CAT"
+46:
+  title: "CAWT"
+47:
+  title: "CCT"
+48:
+  title: "CDDT"
+49:
+  title: "CDT"
+50:
+  title: "CEMT"
+51:
+  title: "CEST"
+52:
+  title: "CET"
+53:
+  title: "CGST"
+54:
+  title: "CGT"
+55:
+  title: "CHADT"
+56:
+  title: "CHAST"
+57:
+  title: "CHDT"
+58:
+  title: "CHOST"
+59:
+  title: "CHOT"
+60:
+  title: "CHUT"
+61:
+  title: "CKHST"
+62:
+  title: "CKT"
+63:
+  title: "CLST"
+64:
+  title: "CLT"
+65:
+  title: "CMT"
+66:
+  title: "COST"
+67:
+  title: "COT"
+68:
+  title: "CPT"
+69:
+  title: "CST"
+70:
+  title: "CUT"
+71:
+  title: "CVST"
+72:
+  title: "CVT"
+73:
+  title: "CWT"
+74:
+  title: "CXT"
+75:
+  title: "ChST"
+76:
+  title: "DACT"
+77:
+  title: "DMT"
+78:
+  title: "EASST"
+79:
+  title: "EAST"
+80:
+  title: "EAT"
+81:
+  title: "ECT"
+82:
+  title: "EDDT"
+83:
+  title: "EDT"
+84:
+  title: "EEST"
+85:
+  title: "EET"
+86:
+  title: "EGST"
+87:
+  title: "EGT"
+88:
+  title: "EHDT"
+89:
+  title: "EMT"
+90:
+  title: "EPT"
+91:
+  title: "EST"
+92:
+  title: "EWT"
+93:
+  title: "FFMT"
+94:
+  title: "FJST"
+95:
+  title: "FJT"
+96:
+  title: "FKST"
+97:
+  title: "FKT"
+98:
+  title: "FMT"
+99:
+  title: "FNST"
+100:
+  title: "FNT"
+101:
+  title: "GALT"
+102:
+  title: "GAMT"
+103:
+  title: "GBGT"
+104:
+  title: "GFT"
+105:
+  title: "GHST"
+106:
+  title: "GILT"
+107:
+  title: "GMT"
+108:
+  title: "GST"
+109:
+  title: "GYT"
+110:
+  title: "HDT"
+111:
+  title: "HKST"
+112:
+  title: "HKT"
+113:
+  title: "HMT"
+114:
+  title: "HOVST"
+115:
+  title: "HOVT"
+116:
+  title: "HST"
+117:
+  title: "ICT"
+118:
+  title: "IDDT"
+119:
+  title: "IDT"
+120:
+  title: "IMT"
+121:
+  title: "IOT"
+122:
+  title: "IRDT"
+123:
+  title: "IRST"
+124:
+  title: "ISST"
+125:
+  title: "IST"
+126:
+  title: "JAVT"
+127:
+  title: "JCST"
+128:
+  title: "JDT"
+129:
+  title: "JMT"
+130:
+  title: "JST"
+131:
+  title: "JWST"
+132:
+  title: "KART"
+133:
+  title: "KDT"
+134:
+  title: "KMT"
+135:
+  title: "KOST"
+136:
+  title: "KST"
+137:
+  title: "KWAT"
+138:
+  title: "LHDT"
+139:
+  title: "LHST"
+140:
+  title: "LINT"
+141:
+  title: "LMT"
+142:
+  title: "LRT"
+143:
+  title: "LST"
+144:
+  title: "MADMT"
+145:
+  title: "MADST"
+146:
+  title: "MADT"
+147:
+  title: "MALST"
+148:
+  title: "MALT"
+149:
+  title: "MART"
+150:
+  title: "MDDT"
+151:
+  title: "MDST"
+152:
+  title: "MDT"
+153:
+  title: "MHT"
+154:
+  title: "MIST"
+155:
+  title: "MMT"
+156:
+  title: "MOST"
+157:
+  title: "MOT"
+158:
+  title: "MPT"
+159:
+  title: "MSD"
+160:
+  title: "MSK"
+161:
+  title: "MST"
+162:
+  title: "MUST"
+163:
+  title: "MUT"
+164:
+  title: "MVT"
+165:
+  title: "MWT"
+166:
+  title: "MYT"
+167:
+  title: "NCST"
+168:
+  title: "NCT"
+169:
+  title: "NDDT"
+170:
+  title: "NDT"
+171:
+  title: "NEGT"
+172:
+  title: "NEST"
+173:
+  title: "NET"
+174:
+  title: "NFST"
+175:
+  title: "NFT"
+176:
+  title: "NMT"
+177:
+  title: "NPT"
+178:
+  title: "NRT"
+179:
+  title: "NST"
+180:
+  title: "NUT"
+181:
+  title: "NWT"
+182:
+  title: "NZDT"
+183:
+  title: "NZMT"
+184:
+  title: "NZST"
+185:
+  title: "PDDT"
+186:
+  title: "PDT"
+187:
+  title: "PEST"
+188:
+  title: "PET"
+189:
+  title: "PGT"
+190:
+  title: "PHOT"
+191:
+  title: "PHST"
+192:
+  title: "PHT"
+193:
+  title: "PKST"
+194:
+  title: "PKT"
+195:
+  title: "PLMT"
+196:
+  title: "PMDT"
+197:
+  title: "PMMT"
+198:
+  title: "PMST"
+199:
+  title: "PMT"
+200:
+  title: "PNT"
+201:
+  title: "PONT"
+202:
+  title: "PPMT"
+203:
+  title: "PPT"
+204:
+  title: "PST"
+205:
+  title: "PWT"
+206:
+  title: "PYST"
+207:
+  title: "PYT"
+208:
+  title: "QMT"
+209:
+  title: "RET"
+210:
+  title: "RMT"
+211:
+  title: "SAST"
+212:
+  title: "SBT"
+213:
+  title: "SCT"
+214:
+  title: "SDMT"
+215:
+  title: "SDT"
+216:
+  title: "SET"
+217:
+  title: "SGT"
+218:
+  title: "SJMT"
+219:
+  title: "SMT"
+220:
+  title: "SRT"
+221:
+  title: "SST"
+222:
+  title: "SWAT"
+223:
+  title: "TAHT"
+224:
+  title: "TBMT"
+225:
+  title: "TKT"
+226:
+  title: "TLT"
+227:
+  title: "TMT"
+228:
+  title: "TVT"
+229:
+  title: "ULAST"
+230:
+  title: "ULAT"
+231:
+  title: "UYHST"
+232:
+  title: "UYST"
+233:
+  title: "UYT"
+234:
+  title: "VET"
+235:
+  title: "VUST"
+236:
+  title: "VUT"
+237:
+  title: "WAKT"
+238:
+  title: "WARST"
+239:
+  title: "WART"
+240:
+  title: "WAST"
+241:
+  title: "WAT"
+242:
+  title: "WEMT"
+243:
+  title: "WEST"
+244:
+  title: "WET"
+245:
+  title: "WFT"
+246:
+  title: "WGST"
+247:
+  title: "WGT"
+248:
+  title: "WIB"
+249:
+  title: "WIT"
+250:
+  title: "WITA"
+251:
+  title: "WMT"
+252:
+  title: "WSDT"
+253:
+  title: "WSST"
+254:
+  title: "XJT"
+255:
+  title: "YDDT"
+256:
+  title: "YDT"
+257:
+  title: "YPT"
+258:
+  title: "YST"
+259:
+  title: "YWT"

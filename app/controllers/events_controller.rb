@@ -9,7 +9,7 @@ class EventsController < ApplicationController
   # GET /events.json
   def index
     respond_to do |format|
-      format.json { render json: @events }
+      format.json
       format.html
     end
   end
@@ -136,7 +136,7 @@ class EventsController < ApplicationController
     params.require(:event).permit(:external_id, :title, :subtitle, :url, :organizer, :last_scraped,
                                   :scraper_record, :description, {:scientific_topic_names => []}, {:event_types => []},
                                   {:keywords => []}, :start, :end, :sponsor, :online, :for_profit, :venue,
-                                  :city, :county, :country, :postcode, :latitude, :longitude,
+                                  :city, :county, :country, :postcode, :latitude, :longitude, :timezone,
                                   :content_provider_id, {:package_ids => []}, {:node_ids => []}, {:node_names => []},
                                   {:target_audience => []}, {:eligibility => []},
                                   {:host_institutions => []}, :capacity, :contact,
