@@ -39,7 +39,7 @@ var Biotools = {
     }, 
     associateTool: function(event){
         obj = $(event.target);
-        Materials.externalResources.add(obj.data('title'), obj.data('url'));
+        ExternalResources.add(obj.data('title'), obj.data('url'));
         obj.parent().parent().fadeOut();
     },
     displayTools: function(json){
@@ -107,7 +107,7 @@ $(document).ready(function () {
     $('#tool_query').keyup(Biotools.search);
     $('#search_tools').click(Biotools.search);
     $('#biotools-results').on('click','.associate-tool', Biotools.associateTool);
-    $('#external-resources').on('change', '.delete-external-resource-btn input.destroy-attribute', Materials.externalResources.delete);
+    $('#external-resources').on('change', '.delete-external-resource-btn input.destroy-attribute', ExternalResources.delete);
     Biotools.titleElement().keyup(Biotools.copyTitleAndSearch);
     Biotools.copyTitleAndSearch();
     Biotools.queryAPI(Biotools.apiBaseURL() + '?' + Biotools.queryParameter() + '&' + Biotools.sortParameter());

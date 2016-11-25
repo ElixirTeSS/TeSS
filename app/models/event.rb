@@ -6,6 +6,7 @@ class Event < ActiveRecord::Base
   include LogParameterChanges
   include HasAssociatedNodes
   include HasScientificTopics
+  include HasExternalResources
 
   has_paper_trail
   before_save :set_default_times
@@ -73,10 +74,6 @@ class Event < ActiveRecord::Base
 
   belongs_to :content_provider
 
-  has_many :external_resources, as: :source, dependent: :destroy
-
-  accepts_nested_attributes_for :external_resources, allow_destroy: true
-
   validates :title, :url, presence: true
   validates :capacity, numericality: true, allow_blank: true
   validates :event_types, controlled_vocabulary: { dictionary: Tess::EventTypeDictionary.instance }
@@ -136,7 +133,8 @@ class Event < ActiveRecord::Base
   end
 
   def self.facet_fields
-    %w( event_types online country scientific_topics organizer city sponsor keywords venue content_provider node target_audience )
+    %w( event_types online country scientific_topics tools organizer city sponsor keywords venue content_provider
+        node target_audience )
   end
 
   def to_ical

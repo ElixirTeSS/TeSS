@@ -6,6 +6,7 @@ class Material < ActiveRecord::Base
   include HasScientificTopics
   include LogParameterChanges
   include HasAssociatedNodes
+  include HasExternalResources
 
   has_paper_trail
 
@@ -62,15 +63,6 @@ class Material < ActiveRecord::Base
       end
       time :updated_at
       time :created_at
-      string :tools, :multiple => true do
-        self.external_resources.select{|x| x.is_tool?}.collect{|x| x.title}
-      end
-      string :standard_database_or_policy, :multiple => true do
-        self.external_resources.select{|x| x.is_biosharing?}.collect{|x| x.title}
-      end
-      string :related_resources, :multiple => true do
-        self.external_resources.select{|x| x.is_generic_external_resource?}.collect{|x| x.title}
-      end
       time :last_scraped
     end
   end
@@ -80,9 +72,6 @@ class Material < ActiveRecord::Base
   has_many :package_materials
   has_many :packages, through: :package_materials
   belongs_to :content_provider
-  has_many :external_resources, as: :source, dependent: :destroy
-
-  accepts_nested_attributes_for :external_resources, allow_destroy: true
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
@@ -113,7 +102,8 @@ class Material < ActiveRecord::Base
   end
 
   def self.facet_fields
-    %w(content_provider scientific_topics tools standard_database_or_policy target_audience keywords difficulty_level authors related_resources contributors licence node )
+    %w( content_provider scientific_topics tools standard_database_or_policy target_audience keywords difficulty_level
+        authors related_resources contributors licence node )
   end
 
   private

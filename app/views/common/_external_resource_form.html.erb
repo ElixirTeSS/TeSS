@@ -8,12 +8,12 @@
 
   <div class="form-group">
     <label>Title</label>
-    <%= text_field_tag "#{field_name_prefix}[title]", external_resource.title, :class => 'form-control', :placeholder => 'Title' %>
+    <%= text_field_tag "#{field_name_prefix}[title]", external_resource.title, :class => 'form-control external-resource-title', :placeholder => 'Title' %>
   </div>
 
   <div class="form-group">
     <label>URL</label>
-    <%= text_field_tag "#{field_name_prefix}[url]", external_resource.url, :class => 'form-control', :placeholder => 'URL' %>
+    <%= text_field_tag "#{field_name_prefix}[url]", external_resource.url, :class => 'form-control external-resource-url', :placeholder => 'URL' %>
   </div>
 
   <label class="delete-external-resource-btn">
