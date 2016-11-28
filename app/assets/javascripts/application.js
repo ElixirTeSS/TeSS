@@ -27,6 +27,7 @@
 //= require moment
 //= require eonasdan-bootstrap-datetimepicker
 //= require devbridge-autocomplete
+//= require clipboard
 //= require_tree ./templates
 //= require_tree .
 //= require_self
@@ -117,4 +118,6 @@ $(document).ready(function () {
     $(window).on('orientationchange', function() {
         reposition_tiles('masonry', 'masonry-brick');
     });
+
+    new Clipboard('.clipboard-btn');
 });

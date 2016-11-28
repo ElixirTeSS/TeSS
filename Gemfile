@@ -111,6 +111,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-moment', '~> 2.15.0'
   gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '~> 4.17.42'
   gem 'rails-assets-devbridge-autocomplete', '~> 1.2.26'
+  gem 'rails-assets-clipboard', '~> 1.5.12'
 end
 
 group :development, :test do

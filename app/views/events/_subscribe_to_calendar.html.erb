@@ -1,0 +1,35 @@
+<button type="button" class="btn btn-default" data-toggle="modal" data-target="#subscribe-calendar-modal">
+  <i class="fa fa-calendar-o"></i> Subscribe to this Filter
+</button>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="node-modal-title" id="subscribe-calendar-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="node-modal-title">Subscribe to Filter</h4>
+      </div>
+
+      <div class="modal-body">
+        <label for="calendar-link">URL</label>
+        <div class="input-group input-group-lg">
+          <input id="calendar-link" type="text" class="form-control" value="<%= events_url({ format: :ics }.merge(params)) -%>" readonly>
+          <span class="input-group-btn">
+            <button class="btn btn-default clipboard-btn" type="button" data-clipboard-target="#calendar-link" title="Click to copy">
+              <i class="fa fa-clipboard" aria-hidden="true"></i>
+            </button>
+          </span>
+        </div>
+        <h3>Importing into Google Calendar</h3>
+        <p>
+        In the left-hand column of the <a href="https://calendar.google.com/calendar" target="_blank">Google Calendar</a> main view,
+        click the arrow to the right of "Other calendars" and click "Add by URL". In the form that appears, paste in the URL from the box above, and click the button to confirm.
+        </p>
+        <p>
+          Please note, it may take a while for newly-created events in TeSS to synchronize with your Google Calendar.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -32,6 +32,9 @@
           <%= link_to new_event_path, :class=>"btn btn-primary" do %>
               <i class="fa fa-plus-square"></i> Register event
           <% end %>
+          <% unless @search_params.empty? && @facet_params.empty? %>
+            <%= render partial: 'events/subscribe_to_calendar' %>
+          <% end %>
           <div class="pull-right">
             <%= info_button('What are events in TeSS?') do %>
                 <%= render_markdown(EventsHelper::EVENTS_INFO) %>
