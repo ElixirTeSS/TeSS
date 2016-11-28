@@ -49,11 +49,11 @@ module SearchHelper
 
     if block_given?
       link_to parameters, html_options do
-        "#{title || truncate(value.to_s,length: 30)}&nbsp;<i class='glyphicon glyphicon-remove pull-right'></i>".html_safe
+        "#{title || truncate(value.to_s,length: 30)}&nbsp;<i class='glyphicon glyphicon-remove'></i>".html_safe
         yield
       end
     else
-      return link_to "#{title || truncate(value.to_s,length: 30)}&nbsp;<i class='glyphicon glyphicon-remove pull-right'></i>".html_safe, parameters, html_options
+      link_to "#{title || truncate(value.to_s,length: 30)}&nbsp;<i class='glyphicon glyphicon-remove'></i>".html_safe, parameters, html_options
     end
 
   end

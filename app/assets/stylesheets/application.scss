@@ -280,8 +280,11 @@ ul.unstyled {
 
 .filter-button {
   color: #ffffff;
-  //background-color: #B0C3C9;
   background-color: #8CA0A6;
+
+  &:hover {
+    background-color: #206B82 !important;
+  }
 }
 
 .show-page-description {
