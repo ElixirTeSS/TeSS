@@ -24,4 +24,15 @@ module EventsHelper
 
     "https://www.google.com/calendar/render?action=TEMPLATE&#{event_params.to_param}"
   end
+
+  def ical_from_collection(events)
+    cal = Icalendar::Calendar.new
+
+    events.each do |event|
+      cal.add_event(event.to_ical_event)
+    end
+
+    cal.to_ical
+  end
+
 end

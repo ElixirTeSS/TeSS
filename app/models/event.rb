@@ -140,15 +140,19 @@ class Event < ActiveRecord::Base
   def to_ical
     cal = Icalendar::Calendar.new
 
-    cal.event do |ical_event|
-      ical_event.dtstart     = Icalendar::Values::Date.new(self.start)
-      ical_event.dtend       = Icalendar::Values::Date.new(self.end)
+    cal.add_event(self.to_ical_event)
+
+    cal.to_ical
+  end
+
+  def to_ical_event
+    Icalendar::Event.new.tap do |ical_event|
+      ical_event.dtstart     = Icalendar::Values::Date.new(self.start) unless self.start.blank?
+      ical_event.dtend       = Icalendar::Values::Date.new(self.end) unless self.end.blank?
       ical_event.summary     = self.title
       ical_event.description = self.description
       ical_event.location    = self.venue unless self.venue.blank?
     end
-
-    cal.to_ical
   end
 
   def show_map?

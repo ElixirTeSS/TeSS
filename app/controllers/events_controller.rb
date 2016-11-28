@@ -1,9 +1,11 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages]
+  before_action :disable_pagination, only: :index, if: lambda { |controller| controller.request.format.ics? }
 
   include Tess::BreadCrumbs
   include SearchableIndex
   include ActionView::Helpers::TextHelper
+
 
   # GET /events
   # GET /events.json
@@ -11,6 +13,7 @@ class EventsController < ApplicationController
     respond_to do |format|
       format.json
       format.html
+      format.ics
     end
   end
 
@@ -142,4 +145,9 @@ class EventsController < ApplicationController
                                   {:host_institutions => []}, :capacity, :contact,
                                   external_resources_attributes: [:id, :url, :title, :_destroy])
   end
+
+  def disable_pagination
+    params[:per_page] = 2 ** 10
+  end
+
 end

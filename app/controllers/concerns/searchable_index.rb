@@ -11,11 +11,12 @@ module SearchableIndex
 
   def fetch_resources
     if SOLR_ENABLED
-      @search_results = solr_search(@model, @search_params, @facet_params, @page, @sort_by)
+      @search_results = solr_search(@model, @search_params, @facet_params,
+                                    page: @page, per_page: @per_page, sort_by: @sort_by)
       @index_resources = @search_results.results
       instance_variable_set("@#{controller_name}_results", @search_results) #e.g. @nodes_results
     else
-      @index_resources = policy_scope(@model).paginate(page: params[:page])
+      @index_resources = policy_scope(@model).paginate(page: @page)
     end
 
     instance_variable_set("@#{controller_name}", @index_resources) # e.g. @nodes
@@ -36,11 +37,12 @@ module SearchableIndex
       @facet_params['days_since_scrape'] = params[:days_since_scrape]
     end
     @page = params[:page] || 1
+    @per_page = params[:per_page] || 30
   end
 
   private
 
-  def solr_search(model, search_params='', selected_facets=[], page=1, sort_by=nil)
+  def solr_search(model, search_params='', selected_facets=[], page: 1, sort_by: nil, per_page: 30)
     model.search do
 
       fulltext search_params
@@ -99,7 +101,7 @@ module SearchableIndex
       end
 
       if !page.nil? and page != '1'
-        paginate :page => page
+        paginate :page => page, :per_page => per_page
       end
 
       #Go through the selected facets and apply them and their facet_values
