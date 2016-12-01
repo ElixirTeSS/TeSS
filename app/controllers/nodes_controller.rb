@@ -85,7 +85,7 @@ class NodesController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def node_params
     params.require(:node).permit(:name, :member_status, :country_code, :home_page, :staff, :twitter, :image_url,
-                                 { institutions: [] }, { carousel_images: [] },
+                                 :description, { institutions: [] }, { carousel_images: [] },
                                  { staff_attributes: [:id, :name, :email, :role, :image, :image_url, :_destroy] })
   end
 
