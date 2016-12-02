@@ -183,6 +183,13 @@ module ApplicationHelper
     (controller.send :_layout).inspect.split('/').last.gsub(/.html.erb/, '')
   end
 
+  def signup_js
+    if request.env['PATH_INFO'] == '/users/sign_up'
+      return "<script src='https://www.google.com/recaptcha/api.js'></script>\n"
+    end
+    return ''
+  end
+
   def twitter_link(username)
     link_to("http://twitter.com/#{username}", target: :_blank) do
       "<i class='fa fa-twitter'></i> @#{username}".html_safe

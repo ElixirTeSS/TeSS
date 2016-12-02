@@ -1,5 +1,6 @@
 class TessDevise::RegistrationsController < Devise::RegistrationsController
   # Inspired by http://stackoverflow.com/questions/3546289/override-devise-registrations-controller
+  prepend_before_action :check_captcha, only: [:create]
 
   def create
     add_email_to_profile_proc = Proc.new do |res|
@@ -7,6 +8,7 @@ class TessDevise::RegistrationsController < Devise::RegistrationsController
           res.profile.update_attribute(:email, res.unconfirmed_email)
         end
     end
+
     # call parent's create method and pass the proc to modify the profile's email address
     super &add_email_to_profile_proc
   end
@@ -15,5 +17,24 @@ class TessDevise::RegistrationsController < Devise::RegistrationsController
   # instead the default root_path
   def after_update_path_for(resource)
     user_path(resource)
+  end
+
+  private
+
+  def check_captcha
+    # post to https://www.google.com/recaptcha/api/siteverify
+    secret = Rails.application.secrets.recaptcha_secret
+    response = params['g-recaptcha-response']
+    uri = URI('https://www.google.com/recaptcha/api/siteverify')
+    params = { :secret => secret, :response => response, :remoteip => request.remote_ip }
+    puts "PARAMS: #{params}"
+    uri.query = URI.encode_www_form(params)
+    res = Net::HTTP.get_response(uri)
+    json = JSON.parse(res.body)
+    puts "JSON: #{json['success']}"
+    unless json['success'] == 'true'
+      self.resource = resource_class.new sign_up_params
+      respond_with_navigational(resource) { render :new }
+    end
   end
 end
