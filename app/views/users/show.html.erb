@@ -61,6 +61,8 @@
               <%= link_to t('.edit', :default => 'Edit profile'), edit_user_path(@user), :class => 'btn btn-primary center-block' %>
             </div>
         <% end %>
+
+
       </li>
       <li><h4 class="nav-heading">Account details</h4></li>
       <li style="padding: 10px 10px;">
@@ -103,6 +105,13 @@
             <% end %>
             <%= link_to t('.edit', :default => 'Edit profile'),
                         edit_user_path(@user), :class => 'btn btn-primary pull-right', :style => "margin-right: 5px;" %>
+        <% end %>
+        <% if !current_user.nil? and policy(@user).destroy? %>
+            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                        user_path(@user),
+                        :method => 'delete',
+                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                        :class => 'btn btn-danger pull-right', :style => "margin-right: 5px;" %>
         <% end %>
         <%= link_to t('.back', :default => t("helpers.links.back")),
                     users_path, :class => 'btn btn-info pull-right', :style => "margin-right: 5px;" %>
