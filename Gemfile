@@ -106,6 +106,8 @@ gem 'bootstrap-datepicker-rails', '~> 1.6.4.1'
 
 gem 'rack-cors', require: 'rack/cors'
 
+gem 'recaptcha', require: 'recaptcha/rails'
+
 source 'https://rails-assets.org' do
   gem 'rails-assets-markdown-it', '~> 7.0.1'
   gem 'rails-assets-moment', '~> 2.15.0'

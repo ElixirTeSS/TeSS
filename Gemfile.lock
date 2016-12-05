@@ -245,6 +245,8 @@ GEM
     rake (11.1.2)
     rdoc (4.2.2)
       json (~> 1.4)
+    recaptcha (4.0.0)
+      json
     redcarpet (3.3.4)
     ref (2.0.0)
     remotipart (1.2.1)
@@ -371,6 +373,7 @@ DEPENDENCIES
   rails-assets-markdown-it (~> 7.0.1)!
   rails-assets-moment (~> 2.15.0)!
   rails_admin
+  recaptcha
   redcarpet
   rubocop
   sass-rails (~> 5.0)
