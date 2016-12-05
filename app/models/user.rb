@@ -71,7 +71,7 @@ class User < ActiveRecord::Base
 
   def set_default_profile
     self.profile ||= Profile.new
-    self.profile.email = (email || unconfirmed_email) unless (publicize_email.to_s == '0')
+    self.profile.email = (email || unconfirmed_email) if (publicize_email.to_s == '1')
   end
 
  # Check if user has a particular role
