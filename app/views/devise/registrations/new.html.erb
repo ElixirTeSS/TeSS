@@ -36,9 +36,11 @@
               <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
             </div>
 
+            <% if Rails.application.secrets.captcha_sitekey -%>
             <div class="form-group">
               <%= recaptcha_tags ajax: true %>
             </div>
+            <% end -%>
 
             <div class="actions">
               <%= f.submit "Register", :class => 'btn btn-primary' %>
