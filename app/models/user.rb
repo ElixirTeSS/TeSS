@@ -54,6 +54,8 @@ class User < ActiveRecord::Base
 
   accepts_nested_attributes_for :profile
 
+  attr_accessor :publicize_email
+
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
@@ -68,8 +70,8 @@ class User < ActiveRecord::Base
   end
 
   def set_default_profile
-    #self.profile ||= Profile.new(email: self[:email])
-    self.profile ||= Profile.new()
+    self.profile ||= Profile.new
+    self.profile.email = (email || unconfirmed_email) unless (publicize_email.to_s == '0')
   end
 
  # Check if user has a particular role
