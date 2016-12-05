@@ -11,8 +11,14 @@
             <div class="form-group">
               <%= f.label :username %><br />
               <%= f.text_field :username, autofocus: true, class: "form-control" %><br />
+            </div>
+
+            <div class="form-group">
               <%= f.label :email %><br />
               <%= f.email_field :email, autofocus: false, class: "form-control" %><br />
+            </div>
+
+            <div class="form-group">
               <%= f.check_box(:publicize_email) %>
               <%= f.label :publicize_email, 'Make my email publicly visible' %>
             </div>
