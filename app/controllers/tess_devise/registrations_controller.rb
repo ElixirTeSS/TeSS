@@ -1,6 +1,6 @@
 class TessDevise::RegistrationsController < Devise::RegistrationsController
   # Inspired by http://stackoverflow.com/questions/3546289/override-devise-registrations-controller
-  prepend_before_action :check_captcha, only: [:create]
+  before_action :check_captcha, only: :create
 
   # Set the after update path to be user's show page
   # instead the default root_path
