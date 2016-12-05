@@ -80,8 +80,10 @@ class ApplicationController < ActionController::Base
     @test_server =  false
     test_ip = Rails.application.secrets.test_server_ip
     if !test_ip.nil?
-      hostname = `hostname -i`.chomp! # I have naughtily assumed this is a linux box
-      if hostname == test_ip
+      ips = Socket.ip_address_list.collect {|x| x.ip_address }
+      #hostname = `hostname -i`.chomp! # I have naughtily assumed this is a linux box
+      #if hostname == test_ip
+      if ips.include? test_ip
         @test_server = true
       end
     end

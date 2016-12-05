@@ -23,6 +23,9 @@ class TessDevise::RegistrationsController < Devise::RegistrationsController
 
   # Pinched from https://github.com/plataformatec/devise/wiki/How-To:-Use-Recaptcha-with-Devise
   def check_captcha
+    unless  Rails.application.secrets.captcha_sitekey
+      return
+    end
     # post to https://www.google.com/recaptcha/api/siteverify
     secret = Rails.application.secrets.captcha_secret
     response = params['g-recaptcha-response']
