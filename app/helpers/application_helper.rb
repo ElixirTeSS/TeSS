@@ -51,7 +51,7 @@ module ApplicationHelper
     types.each do |t|
       titles << "#{ICONS[t][:message]}." if event.send("#{t}?")
     end
-    if !event.last_scraped.nil? && event.scraper_record
+    if !event.last_scraped.nil? and event.scraper_record and current_user and current_user.is_admin?
       if event.last_scraped < (Time.now - 2.days)
         ICONS[:not_scraped_recently][:message].gsub!(/%SUB%/, event.last_scraped.to_s)
         titles << "#{ICONS[:not_scraped_recently][:message]}."
