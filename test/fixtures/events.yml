@@ -42,6 +42,13 @@ two:
   keywords: ["Keyword"]
   user: regular_user
 
+iann_event:
+  title: iAnn event
+  url: http://myurl.com
+  description: 'this is an iann event'
+  user: regular_user
+  content_provider: iann
+
 scraper_user_event:
   title: material owned by scraper'
   url: http://myurl.com
