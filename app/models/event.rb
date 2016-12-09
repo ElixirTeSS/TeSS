@@ -190,4 +190,12 @@ class Event < ActiveRecord::Base
 
   end
 
+  def self.not_finished
+    where('events.end > ?', Time.now).where.not(end: nil)
+  end
+
+  def self.finished
+    where('events.end < ?', Time.now).where.not(end: nil)
+  end
+
 end
