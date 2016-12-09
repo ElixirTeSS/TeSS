@@ -8,6 +8,13 @@ goblet:
   user: regular_user
   node: good
 
+iann:
+  title: iAnn
+  url: http://iann.org
+  image_url: http://example.com/iann.png
+  description: This is the iann test description
+  user: regular_user
+
 two:
   title: MyTextAgain
   url: http://anotherexample.com

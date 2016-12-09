@@ -1,0 +1,9 @@
+<% content_for :og_header do %>
+    <%= tag(:meta, name: "twitter:card", content: 'summary') %>
+    <%= tag(:meta, name: "twitter:site", content: '@ElixirTeSS') %>
+    <%= tag(:meta, name: "twitter:creator", content: '@ElixirTeSS') %>
+    <%= tag(:meta, property: "og:url", content: request.original_url) %>
+    <%= tag(:meta, property: "og:title", content: event.title ) %>
+    <%= tag(:meta, property: "og:description", content: event.description ) %>
+    <%= tag(:meta, property: "og:image", content: asset_url("ELIXIR_TeSS_logo_normal.png") ) %>
+<% end %>

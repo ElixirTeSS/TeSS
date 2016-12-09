@@ -29,4 +29,9 @@
     ga('send', 'pageview');
 
   </script>
+  <% if content_for? :og_header %>
+    <%= yield :og_header %>
+  <% else %>
+    <%= render :partial => 'common/default_og' %>
+  <% end %>
 </head>
