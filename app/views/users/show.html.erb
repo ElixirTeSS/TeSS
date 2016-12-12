@@ -1,12 +1,4 @@
 <% resource_limit = 30 %>
-<script>
-  $(document).ready(function () {
-    reposition_tiles('masonry', 'masonry-brick');
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-      reposition_tiles('masonry', 'masonry-brick');
-    })
-  })
-</script>
 <div class="row wrapper">
   <%- model_class = Profile -%>
 

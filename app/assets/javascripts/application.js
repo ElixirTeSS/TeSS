@@ -88,8 +88,6 @@ $(document).ready(function () {
         window.location.hash = this.hash;
     });
 
-    reposition_tiles('masonry', 'masonry-brick');
-
     // Binding on change event to dynamically added input text fields means
     // we have to bind the event to a parent element because the input doesn't exist yet.
     $(document).on('blur', '.scientific_topic_names', function () {
@@ -115,9 +113,16 @@ $(document).ready(function () {
         return false;
     });
 
+
+    // Masonry
+    $('.nav-tabs a').on("shown.bs.tab", function(e) {
+        reposition_tiles('masonry', 'masonry-brick');
+    });
     $(window).on('orientationchange', function() {
         reposition_tiles('masonry', 'masonry-brick');
     });
+    reposition_tiles('masonry', 'masonry-brick');
+
 
     new Clipboard('.clipboard-btn');
 });
