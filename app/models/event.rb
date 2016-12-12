@@ -61,6 +61,11 @@ class Event < ActiveRecord::Base
       text :host_institutions
       time :last_scraped
       text :timezone
+      string :user do
+        if self.user
+          self.user.username
+        end
+      end
 =begin TODO: SOLR has a LatLonType to do geospatial searching. Have a look at that
       location :latitutde
       location :longitude
@@ -132,7 +137,7 @@ class Event < ActiveRecord::Base
 
   def self.facet_fields
     %w( event_types online country scientific_topics tools organizer city sponsor keywords venue content_provider
-        node target_audience )
+        node target_audience user )
   end
 
   def to_ical
