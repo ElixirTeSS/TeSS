@@ -7,6 +7,7 @@ class Material < ActiveRecord::Base
   include LogParameterChanges
   include HasAssociatedNodes
   include HasExternalResources
+  include HasContentProvider
 
   has_paper_trail
 
@@ -71,7 +72,6 @@ class Material < ActiveRecord::Base
   belongs_to :user
   has_many :package_materials
   has_many :packages, through: :package_materials
-  belongs_to :content_provider
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"

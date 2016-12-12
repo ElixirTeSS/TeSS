@@ -25,7 +25,9 @@ class ContentProvider < ActiveRecord::Base
 
   clean_array_fields(:keywords)
 
-  PROVIDER_TYPE = ['Organisation', 'Portal', 'Project']#, 'Individual']
+  # The order of these determines which providers have precedence when scraping.
+  # Low -> High
+  PROVIDER_TYPE = ['Portal', 'Organisation', 'Project']
   has_image(placeholder: "/assets/placeholder-organization.png")
 
   if SOLR_ENABLED
@@ -61,15 +63,16 @@ class ContentProvider < ActiveRecord::Base
   # TODO: Add validations for these:
   # title:text url:text image_url:text description:text
 
-  # TODO:
-  # Add link to Node, once node is defined.
-
   def self.facet_fields
     %w( keywords node content_provider_type)
   end
 
   def node_name= name
     self.node = Node.find_by_name(name)
+  end
+
+  def precedence
+    PROVIDER_TYPE.index(content_provider_type)
   end
 
 end
