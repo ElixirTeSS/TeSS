@@ -21,17 +21,15 @@ Variable that should be available
       <% if current_user && (current_user.is_curator? || current_user.is_admin?) && resource_type.method_defined?(:last_scraped) %>
         <%= render :partial => 'search/common/facet_sidebar_curation' %>
       <% end %>
-      <% @facet_fields.each do |facet_field| %>
-          <% if IGNORED_FILTERS.include?(facet_field)   %>
-            <!-- no filtering for <%= facet_field -%> -->
-          <% elsif facet_field == 'online' %>
+      <% resources.facets.select { |f| f.rows.any? }.each do |facet| %>
+          <% if IGNORED_FILTERS.include?(facet.field_name.to_s)   %>
+            <!-- no filtering for <%= facet.field_name.to_s -%> -->
+          <% elsif facet.field_name == :online %>
               <%= render :partial => 'search/common/facet_sidebar_boolean_filter.html.erb',
-                         :locals => {:facet_field => facet_field,
-                                     :resources => resources} %>
+                         :locals => {:facet => facet, :resources => resources} %>
           <% else %>
               <%= render :partial => 'search/common/facet_sidebar_filter.html.erb',
-                         :locals => {:facet_field => facet_field,
-                                     :resources => resources} %>
+                         :locals => {:facet => facet, :resources => resources} %>
           <% end %>
       <% end %>
     </ul>

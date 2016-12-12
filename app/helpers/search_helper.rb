@@ -10,9 +10,11 @@ module SearchHelper
     return url_for(parameters)
   end
 
-  def filter_link name, value, title=nil, html_options={}, &block
+  def filter_link name, value, count, title = nil, html_options={}, &block
     new_parameter = {name => value}
     parameters = params.dup
+    title ||= title || truncate(value.to_s, length: 30)
+
     #if there's already a filter of the same facet type, create/add to an array
     if parameters.include?(name)
       if !parameters[name].include?(value)
@@ -27,11 +29,13 @@ module SearchHelper
 
     if block_given?
       link_to parameters.merge(new_parameter), html_options do
-        title || truncate(value.to_s,length: 30)
+        title
         yield
       end
     else
-      link_to (title || truncate(value.to_s,length: 30)), parameters.merge(new_parameter), html_options
+      link_to(parameters.merge(new_parameter), html_options) do
+        title + content_tag(:span, "#{count}", class: 'facet-count')
+      end
     end
   end
 

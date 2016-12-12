@@ -48,7 +48,7 @@ module SearchableIndex
       fulltext search_params
       #Set the search parameter
       #Disjunction clause
-      facets = []
+      active_facets = {}
 
       any do
         #Set all facets
@@ -64,7 +64,8 @@ module SearchableIndex
                 end
               end
               # Add to array that get executed lower down
-              facets << with(facet_title, facet_value)
+              active_facets[facet_title] ||= []
+              active_facets[facet_title] << with(facet_title, facet_value)
             end
           end
         end
@@ -106,7 +107,6 @@ module SearchableIndex
 
       #Go through the selected facets and apply them and their facet_values
       if model == Event
-        facet 'start'
         unless selected_facets.keys.include?('include_expired') and selected_facets['include_expired'] == true
           with('end').greater_than(Time.zone.now)
         end
@@ -127,7 +127,7 @@ module SearchableIndex
       end
 
       facet_fields.each do |ff|
-        facet ff, exclude: facets
+        facet ff, exclude: active_facets[ff]
       end
     end
   end
