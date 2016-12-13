@@ -21,7 +21,7 @@ $(document).ready(function () {
                         'shape': 'roundrectangle',
                         'content': 'data(name)',
                         'background-color': function (ele) {
-                            return (typeof ele.data('color') === 'undefined') ? "#F0721E" : ele.data('color')
+                            return (typeof ele.data('color') === 'undefined') ? "#f47d20" : ele.data('color')
                         },
                         'color': function (ele) {
                             return (typeof ele.data('font_color') === 'undefined') ? "#000000" : ele.data('font_color')

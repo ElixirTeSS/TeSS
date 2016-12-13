@@ -1,7 +1,13 @@
 @import "bootstrap/variables";
 
+/* Elixir brand colours */
+$elixir-orange: #f47d20;
+$elixir-grey: #484848;
+$elixir-blue: #005472;
+$elixir-green: #bebf32;
+
 /* TeSS colours */
-$bgDefault: #F0721E;
+$bgDefault: $elixir-orange;
 $bgHighlight: darken($bgDefault, 10%);
 $colDefault: #ffe6d1;
 $colHover: #333333;
