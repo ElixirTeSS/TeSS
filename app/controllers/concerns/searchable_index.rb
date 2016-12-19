@@ -28,14 +28,14 @@ module SearchableIndex
     params.permit(:q, :page, :sort, @facet_fields, @facet_fields.map { |f| "#{f}_all" })
     @search_params = params[:q] || ''
     @facet_params = {}
-    @sort_by = params[:sort]
-    @facet_fields.each { |facet_title| @facet_params[facet_title] = params[facet_title] unless params[facet_title].nil? }
+    @sort_by = params[:sort].blank? ? 'default' : params[:sort]
+    @facet_fields.each { |facet_title| @facet_params[facet_title] = params[facet_title] unless params[facet_title].blank? }
     @facet_params['include_expired'] = true if params[:include_expired] # TODO: Move this
     if params[:days_since_scrape] # TODO: Move this
       @facet_params['days_since_scrape'] = params[:days_since_scrape]
     end
-    @page = params[:page] || 1
-    @per_page = params[:per_page] || 30
+    @page = params[:page].blank? ? 1 : params[:page]
+    @per_page = params[:per_page].blank? ? 30 : params[:per_page]
   end
 
   private
@@ -67,7 +67,7 @@ module SearchableIndex
         end
       end
 
-      if sort_by
+      if sort_by && sort_by != 'default'
         case sort_by
         when 'early'
           # Sort by start date asc
