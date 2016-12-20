@@ -22,7 +22,7 @@
     <!-- Display all filter links -->
     <% facet_rows.each do |facet| %>
         <!-- if there's a facet already selected -->
-        <% if @facet_params.include?(facet_field) and @facet_params[facet_field].include?(facet.value.to_s) %>
+        <% if @facet_params.include?(facet_field) && Array.wrap(@facet_params[facet_field]).include?(facet.value.to_s) %>
             <li class="nav-item active">
               <%= remove_filter_link(facet_field, facet.value.to_s) %>
             </li>
