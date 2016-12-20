@@ -12,25 +12,19 @@ Variable that should be available
   <a href="#" class="pull-right" id="sidebar-close">&times;</a>
 </h3>
 
-<% if resources.blank? or resources.results.blank? %>
-    <p class="alert alert-info empty" style="margin: 10px;">
-      No <%= resource_type.name.humanize.pluralize.downcase %> to filter
-    </p>
-<% else %>
-    <ul class="unstyled nav-simple">
-      <% if current_user && (current_user.is_curator? || current_user.is_admin?) && resource_type.method_defined?(:last_scraped) %>
-        <%= render partial: 'search/common/facet_sidebar_curation' %>
+<ul class="unstyled nav-simple">
+  <% if current_user && (current_user.is_curator? || current_user.is_admin?) && resource_type.method_defined?(:last_scraped) %>
+    <%= render partial: 'search/common/facet_sidebar_curation' %>
+  <% end %>
+  <% resources.facets.select { |f| f.rows.any? }.each do |facet| %>
+      <% if IGNORED_FILTERS.include?(facet.field_name.to_s)   %>
+        <!-- no filtering for <%= facet.field_name.to_s -%> -->
+      <% elsif facet.field_name == :online %>
+          <%= render partial: 'search/common/facet_sidebar_boolean_filter.html.erb',
+                     locals: { facet: facet, resources: resources } %>
+      <% else %>
+          <%= render partial: 'search/common/facet_sidebar_filter.html.erb',
+                     locals: { facet: facet, resources: resources } %>
       <% end %>
-      <% resources.facets.select { |f| f.rows.any? }.each do |facet| %>
-          <% if IGNORED_FILTERS.include?(facet.field_name.to_s)   %>
-            <!-- no filtering for <%= facet.field_name.to_s -%> -->
-          <% elsif facet.field_name == :online %>
-              <%= render partial: 'search/common/facet_sidebar_boolean_filter.html.erb',
-                         locals: { facet: facet, resources: resources } %>
-          <% else %>
-              <%= render partial: 'search/common/facet_sidebar_filter.html.erb',
-                         locals: { facet: facet, resources: resources } %>
-          <% end %>
-      <% end %>
-    </ul>
-<% end %>
+  <% end %>
+</ul>
