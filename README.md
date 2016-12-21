@@ -10,7 +10,18 @@ TeSS is a Rails 4 application.
 Below is an example guide to help you set up TeSS in development mode. More comprehensive guides on installing
 Ruby, Rails, RVM, bundler, postgres, etc. are available elsewhere.
 
-## RVM, Ruby, Bundler, Rails
+## System Dependencies
+TeSS requires the following system packages to be installed:
+* PostgresQL
+* ImageMagick
+* A Java runtime
+* A JavaScript runtime
+
+To install these under an Ubuntu-like OS using apt:
+
+`$ sudo apt-get install postgresql imagemagick openjdk-8-jre nodejs`
+
+## RVM, Ruby, Gems
 ### RVM and Ruby
 
 It is typically recommended to install Ruby with RVM. With RVM, you can specify the version of Ruby you want
@@ -19,19 +30,19 @@ installed, plus a whole lot more (e.g. gemsets). Full installation instructions 
 TeSS was developed using Ruby 2.2 and we recommend using version 2.2 or higher. To install it (after you installed RVM) and set up a gemset 'tess', you
 can do something like the following:
 
- * `rvm install ruby-2.2-head`
- * `rvm use --create ruby-2.2-head@tess`
+`rvm install ruby-2.2-head`
+`rvm use --create ruby-2.2-head@tess`
 
 ### Bundler
- Bundler provides a consistent environment for Ruby projects by tracking and installing the exact gems and versions that are needed for your Ruby application.
+Bundler provides a consistent environment for Ruby projects by tracking and installing the exact gems and versions that are needed for your Ruby application.
 
- To install it, you can do:
+To install it, you can do:
 
 `$ gem install bundler`
 
 Note that program 'gem' (a package management framework for Ruby called RubyGems) gets installed when you install RVM so you do not have to install it separately.
 
-### Rails
+### Gems
 
 Once you have Ruby, RVM and bundler installed, from the root folder of the app do:
 
@@ -39,47 +50,31 @@ Once you have Ruby, RVM and bundler installed, from the root folder of the app d
 
 This will install Rails, as well as any other gem that the TeSS app needs as specified in Gemfile (located in the root folder of the TeSS app).
 
-To just install Rails 4, you can do (at the time of this writing we worked with Rails 4.2):
-
-`$ gem install rails -v 4.2`
-
 ## PostgreSQL
 
-1. Install postgres and add a postgres user called 'tess_user' for the use by the TeSS app (you can name the user any way you like).
+Install postgres and add a postgres user called 'tess_user' for the use by the TeSS app (you can name the user any way you like).
 Make sure tess_user is either the owner of the TeSS database (to be created in the next step), or is a superuser.
 Otherwise, you may run into some issues when running and managing the TeSS app.
 
- Normally you'd start postgres with something like (passing the path to your database with -D):
+Normally you'd start postgres with something like (passing the path to your database with -D):
 
- * `$ pg_ctl -D ~/Postgresql/data/ start`
+`$ pg_ctl -D ~/Postgresql/data/ start`
 
- From command prompt:
- * `$ createuser --superuser tess_user`
+From command prompt:
+ 
+`$ createuser --superuser tess_user`
 
- Connect to your postgres database console as database admin 'postgres' (modify to suit your postgres database installation):
- * `$ psql -U postgres`
+Connect to your postgres database console as database admin 'postgres' (modify to suit your postgres database installation):
+ 
+`$ sudo -u postgres psql`
 
- From the postgres console, set password for user 'tess_user':
- * `postgres=# \password tess_user`
+From the postgres console, set password for user 'tess_user':
+ 
+`postgres=# \password tess_user`
 
- If your tess_user it not a superuser, make sure you grant it a privilege to create databases:
- * `ALTER USER tess_user CREATEDB;`
-
-2. Connect to postgres console as tess_user and create database 'tess_development' (or use any other name you want).
-
- To connect to postgres console do (modify to suit your postgres database installation):
- * `$ psql -U tess_user`
-
- From postgres console, as user tess_user, do:
- * `postgres=# create database tess_development;`
-
-3. If your tess_user it not superuser, perform various GRANT commands (make sure you connect as database superuser/admin to your postgres console):
- * `postgres=# GRANT ALL ON tess_development TO tess_user;`
- * `postgres=# \connect tess_development;`
- * `tess_development=# GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO tess_user;`
-
-4. Test that you can now connect to the database from command prompt with:
- * `$ psql -U tess_user -W -d tess_development`
+*If your tess_user is not a superuser, make sure you grant it a privilege to create databases:*
+ 
+`postgres=# ALTER USER tess_user CREATEDB;`
 
 > Handy Postgres/Rails tutorials:
 >
@@ -87,38 +82,53 @@ Otherwise, you may run into some issues when running and managing the TeSS app.
 >
 > http://robertbeene.com/rails-4-2-and-postgresql-9-4/
 
-## SOLR
+## Solr
 
-To start solr, in your commandline run:
+TeSS uses Apache Solr to power its search and filtering system. 
 
-`$ rake sunspot:solr:start`
+To start solr, run:
+
+`$ bundle exec rake sunspot:solr:start`
 
 You can replace *start* with *stop* or *restart* to stop or restart solr. You can use *reindex* to reindex all records. 
 
-`$ rake sunspot:solr:reindex`
+`$ bundle exec rake sunspot:solr:reindex`
 
 
-## The TeSS App
+## The TeSS Application
 
-1. From the app's root directory, copy config/example_secrets.yml to config/secrets.yml.
+From the app's root directory, copy config/example_secrets.yml to config/secrets.yml.
 
- `$ cp config/example_secrets.yml config/secrets.yml`
+`$ cp config/example_secrets.yml config/secrets.yml`
 
-2. Edit config/secrets.yml (or config/database.yml - depending on your preference) to configure the database name, user and password defined above.
+Edit config/secrets.yml (or config/database.yml - depending on your preference) to configure the database name, user and password defined above.
 
-3. Edit config/secrets.yml to configure the app's secret_key_base which you can generate with:
+Edit config/secrets.yml to configure the app's secret_key_base which you can generate with:
 
- `$ rake secret`
+`$ bundle exec rake secret`
 
-4. Run:
- * `$ bundle install` (if you have not already)
- * `$ rake db:setup`
+Create the databases:
 
-5. You should be ready to fire up TeSS in development mode:
- * `$ rails server`
+`$ bundle exec rake db:create:all`
 
-6. Access TeSS at:
- * [http://localhost:3000](http://localhost:3000)
+Create the database structure and load in seed data:
+
+*Note: Ensure you have started Solr before running this command!*  
+
+`$ bundle exec rake db:setup`
+
+Start the application:
+`$ bundle exec rails server`
+
+Access TeSS at:
+
+[http://localhost:3000](http://localhost:3000)
+
+*(Optional) Run the test suite:*
+
+`$ bundle exec rake db:test:prepare`
+
+`$ bundle exec rake test`
 
 ### Live deployment
 
@@ -128,11 +138,11 @@ Although designed for CentOS, this document can be followed quite closely to set
 
 To set up TeSS in production, do:
 
-`rake db:setup RAILS_ENV=production`
+`bundle exec rake db:setup RAILS_ENV=production`
 
 which will do db:create, db:schema:load, db:seed. If you want the DB dropped as well:
 
-`rake db:reset RAILS_ENV=production`
+`bundle exec rake db:reset RAILS_ENV=production`
 
  (which will do db:drop, db:setup)
 
@@ -142,17 +152,17 @@ Delete all from Solr if need be and reindex it:
 
 `curl http://localhost:8983/solr/update?commit=true -d  '<delete><query>*:*</query></delete>'`
 
-`rake sunspot:solr:reindex RAILS_ENV=production`
+`bundle exec rake sunspot:solr:reindex RAILS_ENV=production`
 
- Create an admin user and assign it appropriate 'admin' role bu looking up that role in console in model Role (default roles should be created automatically).
+Create an admin user and assign it appropriate 'admin' role bu looking up that role in console in model Role (default roles should be created automatically).
 
- The first time and each time a css or js file is updated:
+The first time and each time a css or js file is updated:
 
- `bundle exec rake assets:clean RAILS_ENV=production`
+`bundle exec rake assets:clean RAILS_ENV=production`
 
- `bundle exec rake assets:precompile RAILS_ENV=production`
+`bundle exec rake assets:precompile RAILS_ENV=production`
 
- Restart your Web server.
+Restart your Web server.
 
 ## Basic API
 
