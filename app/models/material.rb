@@ -7,6 +7,7 @@ class Material < ActiveRecord::Base
   include LogParameterChanges
   include HasAssociatedNodes
   include HasExternalResources
+  include HasContentProvider
 
   has_paper_trail
 
@@ -64,6 +65,11 @@ class Material < ActiveRecord::Base
       time :updated_at
       time :created_at
       time :last_scraped
+      string :user do
+        if self.user
+          self.user.username
+        end
+      end
     end
   end
 
@@ -71,7 +77,6 @@ class Material < ActiveRecord::Base
   belongs_to :user
   has_many :package_materials
   has_many :packages, through: :package_materials
-  belongs_to :content_provider
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
@@ -103,7 +108,7 @@ class Material < ActiveRecord::Base
 
   def self.facet_fields
     %w( content_provider scientific_topics tools standard_database_or_policy target_audience keywords difficulty_level
-        authors related_resources contributors licence node )
+        authors related_resources contributors licence node user )
   end
 
   private

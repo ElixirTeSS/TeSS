@@ -7,6 +7,7 @@ class Event < ActiveRecord::Base
   include HasAssociatedNodes
   include HasScientificTopics
   include HasExternalResources
+  include HasContentProvider
 
   has_paper_trail
   before_save :set_default_times
@@ -60,6 +61,11 @@ class Event < ActiveRecord::Base
       text :host_institutions
       time :last_scraped
       text :timezone
+      string :user do
+        if self.user
+          self.user.username
+        end
+      end
 =begin TODO: SOLR has a LatLonType to do geospatial searching. Have a look at that
       location :latitutde
       location :longitude
@@ -68,11 +74,8 @@ class Event < ActiveRecord::Base
   end
 
   belongs_to :user
-
   has_many :package_events
   has_many :packages, through: :package_events
-
-  belongs_to :content_provider
 
   validates :title, :url, presence: true
   validates :capacity, numericality: true, allow_blank: true
@@ -134,7 +137,7 @@ class Event < ActiveRecord::Base
 
   def self.facet_fields
     %w( event_types online country scientific_topics tools organizer city sponsor keywords venue content_provider
-        node target_audience )
+        node target_audience user )
   end
 
   def to_ical
@@ -188,6 +191,14 @@ class Event < ActiveRecord::Base
     # TODO: Check events form to add timezone autocomplete.
     # Get timezones from: https://timezonedb.com/download
 
+  end
+
+  def self.not_finished
+    where('events.end > ?', Time.now).where.not(end: nil)
+  end
+
+  def self.finished
+    where('events.end < ?', Time.now).where.not(end: nil)
   end
 
 end

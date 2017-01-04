@@ -10,52 +10,54 @@ module SearchHelper
     return url_for(parameters)
   end
 
-  def filter_link name, value, title=nil, html_options={}, &block
-    new_parameter = {name => value}
+  def filter_link name, value, count, title = nil, html_options={}, &block
     parameters = params.dup
+    title ||= (title || truncate(value.to_s, length: 30))
+
     #if there's already a filter of the same facet type, create/add to an array
     if parameters.include?(name)
-      if !parameters[name].include?(value)
-        new_parameter = {name => [parameters.dup.delete(name), value].flatten}
-      else new_parameter = {}
-      end
+      parameters[name] = Array.wrap(parameters[name]) | [value]
+    else
+      parameters[name] = value
     end
-    #remove the page option if it exists
-    parameters.delete('page')
 
+    parameters.delete('page') #remove the page option if it exists
     html_options.reverse_merge!(title: value.to_s)
 
-    if block_given?
-      link_to parameters.merge(new_parameter), html_options do
-        title || truncate(value.to_s,length: 30)
+    link_to parameters, html_options do
+      if block_given?
         yield
+      else
+        title + content_tag(:span, "#{count}", class: 'facet-count')
       end
-    else
-      link_to (title || truncate(value.to_s,length: 30)), parameters.merge(new_parameter), html_options
     end
   end
 
   def remove_filter_link name, value, html_options={}, title=nil, &block
     parameters = params.dup
+    title ||= (title || truncate(value.to_s, length: 30))
+
     #delete a filter from an array or delete the whole facet if it is the only one
     if parameters.include?(name)
       if parameters[name].is_a?(Array)
         parameters[name].delete(value)
-      else parameters.delete(name)
+        # Go back to being just a singleton if only one element left
+        parameters[name] = parameters[name].first if parameters[name].one?
+      else
+        parameters.delete(name)
       end
     end
-    #remove the page option if it exists
-    parameters.delete('page')
 
-    if block_given?
-      link_to parameters, html_options do
-        "#{title || truncate(value.to_s,length: 30)}&nbsp;<i class='glyphicon glyphicon-remove'></i>".html_safe
+    parameters.delete('page') #remove the page option if it exists
+    html_options.reverse_merge!(title: value.to_s)
+
+    link_to parameters, html_options do
+      if block_given?
         yield
+      else
+      "#{title}&nbsp;<i class='glyphicon glyphicon-remove'></i>".html_safe
       end
-    else
-      link_to "#{title || truncate(value.to_s,length: 30)}&nbsp;<i class='glyphicon glyphicon-remove'></i>".html_safe, parameters, html_options
     end
-
   end
 
   def show_more_link facet

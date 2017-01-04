@@ -37,4 +37,5 @@ module LogParameterChanges
       self.create_activity :update_parameter, parameters: parameters
     end
   end
+
 end

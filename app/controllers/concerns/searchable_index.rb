@@ -14,7 +14,7 @@ module SearchableIndex
       @search_results = solr_search(@model, @search_params, @facet_params,
                                     page: @page, per_page: @per_page, sort_by: @sort_by)
       @index_resources = @search_results.results
-      instance_variable_set("@#{controller_name}_results", @search_results) #e.g. @nodes_results
+      instance_variable_set("@#{controller_name}_results", @search_results) # e.g. @nodes_results
     else
       @index_resources = policy_scope(@model).paginate(page: @page)
     end
@@ -25,69 +25,66 @@ module SearchableIndex
   def set_params
     @model = controller_name.classify.constantize
     @facet_fields = @model.send(:facet_fields)
-    params.permit(:q, :page, :sort, @facet_fields, @facet_fields.map{|f| "#{f}_all"})
+    params.permit(:q, :page, :sort, @facet_fields, @facet_fields.map { |f| "#{f}_all" })
     @search_params = params[:q] || ''
     @facet_params = {}
-    @sort_by = params[:sort]
-    @facet_fields.each {|facet_title| @facet_params[facet_title] = params[facet_title] if !params[facet_title].nil? }
-    if params[:include_expired] # TODO: Move this
-      @facet_params['include_expired'] = true
-    end
+    @sort_by = params[:sort].blank? ? 'default' : params[:sort]
+    @facet_fields.each { |facet_title| @facet_params[facet_title] = params[facet_title] unless params[facet_title].blank? }
+    @facet_params['include_expired'] = true if params[:include_expired] # TODO: Move this
     if params[:days_since_scrape] # TODO: Move this
       @facet_params['days_since_scrape'] = params[:days_since_scrape]
     end
-    @page = params[:page] || 1
-    @per_page = params[:per_page] || 30
+    @page = params[:page].blank? ? 1 : params[:page]
+    @per_page = params[:per_page].blank? ? 30 : params[:per_page]
   end
 
   private
 
-  def solr_search(model, search_params='', selected_facets=[], page: 1, sort_by: nil, per_page: 30)
+  def solr_search(model, search_params = '', selected_facets = [], page: 1, sort_by: nil, per_page: 30)
     model.search do
-
       fulltext search_params
-      #Set the search parameter
-      #Disjunction clause
-      facets = []
+      # Set the search parameter
+      # Disjunction clause
+      active_facets = {}
 
       any do
-        #Set all facets
+        # Set all facets
         selected_facets.each do |facet_title, facet_value|
-          if !['include_expired', 'days_since_scrape'].include?(facet_title)
-            any do #Conjunction clause
-              #Convert 'true' or 'false' to boolean true or false
-              if facet_title == 'online'
-                if facet_value and facet_value == 'true'
-                  facet_value = true
-                else
-                  facet_value = false
-                end
-              end
-              # Add to array that get executed lower down
-              facets << with(facet_title, facet_value)
+          next if %w(include_expired days_since_scrape).include?(facet_title)
+          any do # Conjunction clause
+            # Convert 'true' or 'false' to boolean true or false
+            if facet_title == 'online'
+              facet_value = if facet_value && (facet_value == 'true')
+                              true
+                            else
+                              false
+                            end
             end
+            # Add to array that get executed lower down
+            active_facets[facet_title] ||= []
+            active_facets[facet_title] << with(facet_title, facet_value)
           end
         end
       end
 
-      if sort_by
+      if sort_by && sort_by != 'default'
         case sort_by
-          when 'early'
-            # Sort by start date asc
-            order_by(:start, :asc)
-          when 'late'
-            # Sort by start date desc
-            order_by(:start, :desc)
-          when 'rel'
-            # Sort by relevance
-          when 'mod'
-            # Sort by last modified
-            order_by(:updated_at, :desc)
-          when 'new'
-            # Sort by newest
-            order_by(:created_at, :desc)
-          else
-            order_by(:sort_title, sort_by.to_sym)
+        when 'early'
+          # Sort by start date asc
+          order_by(:start, :asc)
+        when 'late'
+          # Sort by start date desc
+          order_by(:start, :desc)
+        when 'rel'
+        # Sort by relevance
+        when 'mod'
+          # Sort by last modified
+          order_by(:updated_at, :desc)
+        when 'new'
+          # Sort by newest
+          order_by(:created_at, :desc)
+        else
+          order_by(:sort_title, sort_by.to_sym)
         end
         # Defaults
       elsif model == Event
@@ -100,14 +97,11 @@ module SearchableIndex
         order_by(:count, :desc)
       end
 
-      if !page.nil? and page != '1'
-        paginate :page => page, :per_page => per_page
-      end
+      paginate page: page, per_page: per_page if !page.nil? && (page != '1')
 
-      #Go through the selected facets and apply them and their facet_values
+      # Go through the selected facets and apply them and their facet_values
       if model == Event
-        facet 'start'
-        unless selected_facets.keys.include?('include_expired') and selected_facets['include_expired'] == true
+        unless selected_facets.keys.include?('include_expired') && (selected_facets['include_expired'] == true)
           with('end').greater_than(Time.zone.now)
         end
       end
@@ -127,7 +121,7 @@ module SearchableIndex
       end
 
       facet_fields.each do |ff|
-        facet ff, exclude: facets
+        facet ff, exclude: active_facets[ff]
       end
     end
   end

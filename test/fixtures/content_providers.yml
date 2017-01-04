@@ -7,6 +7,7 @@ goblet:
   description: This is the goblet test description
   user: regular_user
   node: good
+  content_provider_type: Portal
 
 iann:
   title: iAnn
@@ -14,6 +15,7 @@ iann:
   image_url: http://example.com/iann.png
   description: This is the iann test description
   user: regular_user
+  content_provider_type: Portal
 
 two:
   title: MyTextAgain
@@ -35,3 +37,15 @@ provider_with_empty_image_url:
   image_url:
   description: MyTextAgain
   user: regular_user
+
+organisation_provider:
+  title: Organisation Content Provider
+  url: http://content-provider.org
+  user: regular_user
+  content_provider_type: Organisation
+
+project_provider:
+  title: Project Content Provider
+  url: http://content-provider.com
+  user: regular_user
+  content_provider_type: Organisation

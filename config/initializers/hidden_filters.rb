@@ -1,0 +1,1 @@
+IGNORED_FILTERS = %w{venue user}

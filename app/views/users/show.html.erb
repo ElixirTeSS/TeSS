@@ -1,102 +1,95 @@
-<script>
-  $(document).ready(function () {
-    reposition_tiles('masonry', 'masonry-brick');
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-      reposition_tiles('masonry', 'masonry-brick');
-    })
-  })
-</script>
-<div class="row wrapper">
-
+<% resource_limit = 30 %>
+<div class="wrapper collapsing-wrapper-tb">
   <%- model_class = Profile -%>
 
   <!-- SIDEBAR -->
-  <div id="sidebar" class="col-md-3">
+  <div id="sidebar" class="collapsing-sidebar">
     <ul class="unstyled nav-simple">
-      <li><h4 class="nav-heading">Profile details</h4></li>
+      <li><h4 class="nav-heading">User <%= "#{@user.username}" %></h4></li>
       <li style="padding: 10px 10px;">
-        <div id="gravatar_image">
-          <%= image_tag @user.gravatar_url, :class=>'medium-content-provider-logo' %>
-        </div>
-        <hr/>
-
-        <p style="margin-bottom: 0px;">
-          <strong><%= model_class.human_attribute_name(:firstname) %></strong>
-        </p>
-        <% if @user.profile.firstname.blank? %>
-            <p class="empty">None specified</p>
-        <% else %>
-            <p><%= @user.profile.firstname %></p>
-        <% end %>
-
-        <p style="margin-bottom: 0px;">
-          <strong><%= model_class.human_attribute_name(:surname) %></strong>
-        </p>
-        <% if @user.profile.surname.blank? %>
-            <p class="empty">None specified</p>
-        <% else %>
-            <p><%= @user.profile.surname %></p>
-        <% end %>
-
-        <p style="margin-bottom: 0px;">
-          <strong>Public email</strong>
-        </p>
-        <% if @user.profile.email.blank? %>
-            <p class="empty">None specified</p>
-        <% else %>
-            <p><%= mail_to @user.profile.email %></p>
-        <% end %>
-
-        <p style="margin-bottom: 0px;">
-          <strong><%= model_class.human_attribute_name(:website) %></strong>
-        </p>
-        <% if @user.profile.website.blank? %>
-            <p class="empty">None specified</p>
-        <% else %>
-            <p><%= link_to @user.profile.website, @user.profile.website, rel: 'nofollow' %></p>
-        <% end %>
-
-        <% if !current_user.nil? and current_user == @user %>
-            <div class="row">
-              <%= link_to t('.edit', :default => 'Edit profile'), edit_user_path(@user), :class => 'btn btn-primary center-block' %>
+        <div class="row">
+          <div class="col-xs-4 col-md-12">
+            <div id="gravatar_image">
+              <%= image_tag @user.gravatar_url, :class=>'medium-content-provider-logo' %>
             </div>
-        <% end %>
+          </div>
+          <div class="col-xs-8 col-md-12">
+            <p>
+              <strong>First name</strong><br/>
+              <% if @user.profile.firstname.blank? %>
+                  <span class="empty">None specified</span>
+              <% else %>
+                  <%= @user.profile.firstname %>
+              <% end %>
+            </p>
+
+            <p>
+              <strong>Surname</strong><br/>
+              <% if @user.profile.surname.blank? %>
+                  <span class="empty">None specified</span>
+              <% else %>
+                  <%= @user.profile.surname %>
+              <% end %>
+            </p>
 
 
+            <p>
+              <strong>Public email</strong><br/>
+            <% if @user.profile.email.blank? %>
+                <span class="empty">None specified</span>
+            <% else %>
+                <%= mail_to @user.profile.email %>
+            <% end %>
+            </p>
+
+            <p>
+              <strong><%= model_class.human_attribute_name(:website) %></strong><br/>
+              <% if @user.profile.website.blank? %>
+                  <span class="empty">None specified</span>
+              <% else %>
+                  <%= link_to @user.profile.website, @user.profile.website, rel: 'nofollow' %>
+              <% end %>
+            </p>
+
+            <% if !current_user.nil? and current_user == @user %>
+                <div class="row">
+                  <%= link_to t('.edit', :default => 'Edit profile'), edit_user_path(@user), :class => 'btn btn-primary center-block' %>
+                </div>
+            <% end %>
+          </div>
+        </div>
       </li>
       <li><h4 class="nav-heading">Account details</h4></li>
       <li style="padding: 10px 10px;">
-        <p style="margin-bottom: 0px;">
-          <strong>Role</strong>
-        </p>
-        <p><%= @user.role.name.titleize.humanize %></p>
+        <div class="row">
+        <div class="col-xs-12">
+          <p>
+            <strong>Role</strong><br/>
+            <%= @user.role.name.titleize.humanize %>
+          </p>
 
-        <% if !current_user.nil? and current_user == @user %>
-            <p style="margin-bottom: 0px;">
-              <strong>Account email</strong>
-            </p>
-            <p><%= @user.email %></p>
+          <% if !current_user.nil? and current_user == @user %>
+              <p>
+                <strong>Account email</strong><br/>
+                <%= @user.email %>
+              </p>
 
-            <p style="margin-bottom: 0px;">
-              <strong>Authentication
-                token</strong><span class="empty" style="font-style: italic;"> (keep it secret)</span>
-            </p>
-            <p><%= @user.authentication_token %></p>
-        <% end %>
+              <p>
+                <strong>Authentication token</strong><span class="empty" style="font-style: italic;"> (keep it secret)</span><br/>
+                <%= @user.authentication_token %>
+              </p>
+          <% end %>
 
-        <% if !current_user.nil? and current_user == @user %>
-            <div class="row">
+          <% if !current_user.nil? and current_user == @user %>
               <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default center-block' %>
-            </div>
-        <% end %>
+          <% end %>
+        </div>
+        </div>
       </li>
     </ul>
   </div>
 
-  <div class="col-md-9">
-    <div class="page-header">
-      <h2>User <%= "#{@user.username}" %></h2>
-    </div>
+  <div id="content">
     <div class="row">
       <div class="content_action col-md-6">
         <% if !current_user.nil? and policy(@user).update? %>
@@ -119,19 +112,21 @@
     </div>
 
     <div class="row">
-      <% materials = @user.materials %>
-      <% events = @user.events %>
+      <% materials = @user.materials.limit(resource_limit) %>
+      <% upcoming_events = @user.events.not_finished %>
+      <% past_events = @user.events.finished %>
+      <% events = upcoming_events.limit(resource_limit) %>
       <% packages = @user.packages.visible_by(current_user) %>
       <% workflows = @user.workflows.visible_by(current_user) %>
 
       <ul class="nav nav-tabs">
         <%= tab('Materials', icon_class_for_model('materials'), 'materials', active: true,
                 disabled: { check: materials.none?, message: 'No registered training materials' },
-                count: materials.count) %>
+                count: @user.materials.count) %>
 
         <%= tab('Events', icon_class_for_model('events'), 'events',
                 disabled: { check: events.none?, message: 'No registered events' },
-                count: events.count) %>
+                count: @user.events.count) %>
 
         <%= tab('Packages', icon_class_for_model('packages'), 'packages',
                 disabled: { check: packages.none?, message: 'No packages' },
@@ -146,21 +141,23 @@
         <div id="materials" class="tab-pane fade in active">
           <div class="row">
             <div class="search-results-count">
-              <%= pluralize(materials.count, 'training material') %> found
+              <%= (materials.count > 0 ? "Showing" : "Found") + " #{pluralize(materials.count, "material")}#{(@user.materials.count > resource_limit) ? " out of #{@user.materials.count}" : ''}." %>
+              <%= link_to('View all results.', materials_path(user: @user.username)) if (@user.materials.count > resource_limit) %>
             </div>
-            <% if materials.any? %>
-                <% materials.each do |material| %>
-                    <%= render material %>
-                <% end %>
+
+            <% materials.each do |material| %>
+                <%= render material %>
             <% end %>
           </div>
         </div>
         <div id="events" class="tab-pane fade">
           <div class="row">
             <div class="search-results-count">
-              <%= pluralize(events.count, 'event') %> found
+              <%= (upcoming_events.count > 0 ? "Showing" : "Found") + " #{pluralize(events.count, "upcoming event")}#{(upcoming_events.count > resource_limit) ? " out of #{upcoming_events.count}" : ''}." %>
+              <%= "Found #{pluralize(past_events.count, "past event")}." %>
+              <%= link_to('View all results.', events_path(user: @user.username)) if (upcoming_events.count > resource_limit || past_events.count > 0) %>
             </div>
-            <% if events.any? %>
+            <% if events.count > 0 %>
                 <ul class="masonry media-grid" style="margin-top: 15px;">
                   <% events.each do |event| %>
                       <%= render event %>

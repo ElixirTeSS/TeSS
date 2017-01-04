@@ -71,6 +71,13 @@ div.wrapper {
       flex-direction: column-reverse;
     }
   }
+
+  &.collapsing-wrapper-tb {
+    // Opposite to above
+    @media (max-width: $screen-md-min) {
+      flex-direction: column;
+    }
+  }
 }
 
 #main-container {
@@ -205,7 +212,7 @@ div.wrapper {
 
 .listing_image {
   max-width: 150px;
-  height: 50px;
+  max-height: 65px;
 }
 
 // Modified from CKAN - for sidebar facets
@@ -285,6 +292,11 @@ ul.unstyled {
   &:hover {
     background-color: $blue !important;
   }
+}
+
+.facet-count {
+  float: right;
+  color: #999;
 }
 
 .show-page-description {
@@ -650,4 +662,8 @@ sup {
   display: flex;
   flex-wrap: wrap; /* optional. only if you want the items to wrap */
   justify-content: center; /* for horizontal alignment */
+}
+
+#gravatar_image {
+  margin-bottom: 10px;
 }
