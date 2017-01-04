@@ -44,6 +44,8 @@ gem 'dynamic_sitemaps'
 
 gem 'whenever'
 
+gem 'httparty'
+
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
