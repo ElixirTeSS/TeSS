@@ -57,7 +57,7 @@
             <% materials = @content_provider.materials.count > 30 ? @content_provider.materials.first(30) : @content_provider.materials %>
             <div class="search-results-count">
               <%= (materials.count > 0 ? "Showing" : "Found") + " #{pluralize(materials.count, "material")}#{(@content_provider.materials.count > 30) ? " out of #{@content_provider.materials.count}" : ''}." %>
-              <%= link_to "View all results.", :controller => 'materials', :content_provider => @content_provider.title if (@content_provider.materials.count > 30) %>
+              <%= link_to('View all results.', materials_path(content_provider: @content_provider.title)) if (@content_provider.materials.count > 30) %>
             </div>
 
             <% materials.each do |material| %>
@@ -77,7 +77,7 @@
               <div class="search-results-count">
                 <%= (upcoming_events.count > 0 ? "Showing" : "Found") + " #{pluralize(events.count, "upcoming event")}#{(upcoming_events.count > 30) ? " out of #{upcoming_events.count}" : ''}." %>
                 <%= "Found #{pluralize(past_events.count, "past event")}." %>
-                <%= link_to "View all results.", :controller => 'events', :content_provider => @content_provider.title if (upcoming_events.count > 30 || past_events.count > 0) %>
+                <%= link_to('View all results.', events_path(content_provider: @content_provider.title, include_expired: true)) if (upcoming_events.count > 30 || past_events.count > 0) %>
               </div>
               <% if upcoming_events.count > 0 %>
                   <ul class="masonry media-grid" style="margin-top: 15px;">
