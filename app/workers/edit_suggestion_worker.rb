@@ -77,6 +77,8 @@ class EditSuggestionWorker
         topics.each do |x|
           suggestion.scientific_topics << x
         end
+        logger.info("Created topic #{topic.inspect} for #{material.slug}")
+        suggestion.save!
       end
     else
       logger.info("No topics found for #{material.slug}")
