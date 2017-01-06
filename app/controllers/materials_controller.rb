@@ -68,6 +68,7 @@ class MaterialsController < ApplicationController
     respond_to do |format|
       if @material.save
         @material.create_activity :create, owner: current_user
+        look_for_topics(@material)
         #current_user.materials << @material
         format.html { redirect_to @material, notice: 'Material was successfully created.' }
         format.json { render :show, status: :created, location: @material }
@@ -141,4 +142,13 @@ class MaterialsController < ApplicationController
                                      {:authors => []}, {:target_audience => []}, {:node_ids => []}, {:node_names => []},
                                      external_resources_attributes: [:id, :url, :title, :_destroy])
   end
+
+  #  Run a sidekiq task here to find suggested scientific topics
+  def look_for_topics(material)
+    # Something like this:
+    if material.scientific_topic_names.length == 0
+      EditSuggestionWorker.perform_in(1.minute,material.id)
+    end
+  end
+
 end
