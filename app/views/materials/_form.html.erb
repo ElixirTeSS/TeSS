@@ -98,6 +98,11 @@
     <%= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @material, :f => f,
                                                           :options => format_for_dropdown(available_packages(@material)),
                                                           :dropdown_toggle_button_name => "Add to package"} %>
+    <%= render :partial => 'common/dropdown', :locals => {:field_label => 'Events', :field_name => 'event_ids',
+                                                          :resource => @material, :f => f,
+                                                          :options => format_for_dropdown(Event.all),
+                                                          :existing => format_for_dropdown(@material.events),
+                                                          :dropdown_toggle_button_name => "Link to event"} %>
 
     <div class="form-group" id="external-resources">
       <%= f.label :external_resources %>
@@ -130,4 +135,3 @@
   <%= render partial: 'common/external_resource_form',
              locals: { form_name: 'material', external_resource: ExternalResource.new } %>
 </div>
-
