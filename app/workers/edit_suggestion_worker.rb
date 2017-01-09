@@ -50,10 +50,12 @@ class EditSuggestionWorker
 
         data.each do |entry|
           id = entry['annotatedClass']['@id']
+          logger.info("ID: #{id}")
           if id.include? 'http://edamontology.org/topic_'
+            logger.info("ENTRY: #{entry['annotatedClass']['prefLabel']}")
             annotations << entry['annotatedClass']['prefLabel']
           else
-            logger.info("Material #{material.slug} matches topic #{id}.")
+            logger.info("Material #{material.slug} matches entry #{id}.")
           end
         end
       rescue
@@ -64,6 +66,7 @@ class EditSuggestionWorker
 
 
     # Create some topics and an edit_suggestion if some annotations were returned
+    logger.info("ANNOTATION: #{annotations}")
     if annotations.length > 0
       topics = []
       annotations.each do |a|
@@ -72,13 +75,15 @@ class EditSuggestionWorker
           topics << topic
         end
       end
+      logger.info("TOPIC: #{topics}")
       if topics
         suggestion = EditSuggestion.new(:material => material)
         topics.each do |x|
+          logger.info("Created topic #{x} for #{material.slug}")
           suggestion.scientific_topics << x
         end
-        logger.info("Created topic #{topic.inspect} for #{material.slug}")
-        suggestion.save!
+        suggestion.save
+        logger.info("SUGGESTION: #{suggestion.inspect}")
       end
     else
       logger.info("No topics found for #{material.slug}")

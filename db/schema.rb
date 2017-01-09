@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170106140323) do
+ActiveRecord::Schema.define(version: 20170109090156) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(version: 20170106140323) do
   create_table "edit_suggestions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text     "name"
   end
 
   create_table "events", force: :cascade do |t|
@@ -159,10 +160,12 @@ ActiveRecord::Schema.define(version: 20170106140323) do
     t.date     "last_scraped"
     t.boolean  "scraper_record",      default: false
     t.integer  "edit_suggestion_id"
+    t.integer  "scientific_topic_id"
   end
 
   add_index "materials", ["content_provider_id"], name: "index_materials_on_content_provider_id", using: :btree
   add_index "materials", ["edit_suggestion_id"], name: "index_materials_on_edit_suggestion_id", using: :btree
+  add_index "materials", ["scientific_topic_id"], name: "index_materials_on_scientific_topic_id", using: :btree
   add_index "materials", ["slug"], name: "index_materials_on_slug", unique: true, using: :btree
   add_index "materials", ["user_id"], name: "index_materials_on_user_id", using: :btree
 
@@ -413,6 +416,7 @@ ActiveRecord::Schema.define(version: 20170106140323) do
   add_foreign_key "events", "users"
   add_foreign_key "materials", "content_providers"
   add_foreign_key "materials", "edit_suggestions"
+  add_foreign_key "materials", "scientific_topics"
   add_foreign_key "materials", "users"
   add_foreign_key "node_links", "nodes"
   add_foreign_key "nodes", "users"
