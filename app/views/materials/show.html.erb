@@ -51,6 +51,21 @@
             </div>
             <div>
               <%= render partial: 'common/extra_metadata', locals: { resource: @material } %>
+
+              <% if @material.events.any? %>
+                  <div>
+                    <b>Related events: </b>
+                    <ul>
+                      <% @material.events.not_finished.each do |event| %>
+                        <li><%= link_to event.title, event %></li>
+                      <% end %>
+                      <% @material.events.finished.each do |event| %>
+                          <li><%= link_to event.title, event %> (ended)</li>
+                      <% end %>
+                    </ul>
+                  </div>
+              <% end %>
+
               <div>
                 <b>External resources: </b>
                 <% if @material.external_resources.none? %>
