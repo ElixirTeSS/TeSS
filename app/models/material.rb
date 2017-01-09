@@ -77,6 +77,8 @@ class Material < ActiveRecord::Base
   belongs_to :user
   has_many :package_materials
   has_many :packages, through: :package_materials
+  has_many :event_materials
+  has_many :events, through: :event_materials
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
