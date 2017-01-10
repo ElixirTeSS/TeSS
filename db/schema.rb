@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170110120821) do
+ActiveRecord::Schema.define(version: 20170110152658) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,11 @@ ActiveRecord::Schema.define(version: 20170110120821) do
     t.datetime "updated_at",  null: false
     t.text     "name"
     t.integer  "material_id"
+  end
+
+  create_table "edit_suggestions_scientific_topics", id: false, force: :cascade do |t|
+    t.integer "edit_suggestion_id"
+    t.integer "scientific_topic_id"
   end
 
   create_table "event_materials", force: :cascade do |t|
@@ -304,10 +309,8 @@ ActiveRecord::Schema.define(version: 20170110120821) do
     t.string   "has_narrow_synonym",  default: [],              array: true
     t.string   "in_subset",           default: [],              array: true
     t.string   "in_cyclic",           default: [],              array: true
-    t.integer  "edit_suggestion_id"
   end
 
-  add_index "scientific_topics", ["edit_suggestion_id"], name: "index_scientific_topics_on_edit_suggestion_id", using: :btree
   add_index "scientific_topics", ["slug"], name: "index_scientific_topics_on_slug", unique: true, using: :btree
 
   create_table "sessions", force: :cascade do |t|
@@ -433,7 +436,6 @@ ActiveRecord::Schema.define(version: 20170110120821) do
   add_foreign_key "nodes", "users"
   add_foreign_key "packages", "users"
   add_foreign_key "scientific_topic_links", "scientific_topics"
-  add_foreign_key "scientific_topics", "edit_suggestions"
   add_foreign_key "staff_members", "nodes"
   add_foreign_key "users", "roles"
   add_foreign_key "workflows", "users"
