@@ -91,9 +91,10 @@ class MaterialsController < ApplicationController
         # TODO: Consider whether this is proper behaviour or whether a user should explicitly delete this
         # TODO: suggestion, somehow.
         if @material.edit_suggestion
-          #suggestion  = @material.edit_suggestion
-          #@material.edit_suggestion = nil
-          #suggestion.delete
+          suggestion  = @material.edit_suggestion
+          @material.edit_suggestion = nil
+          suggestion.delete
+          #@material.edit_suggestion.delete
         end
         format.html { redirect_to @material, notice: 'Material was successfully updated.' }
         format.json { render :show, status: :ok, location: @material }
