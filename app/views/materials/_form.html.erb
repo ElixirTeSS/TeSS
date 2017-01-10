@@ -115,9 +115,14 @@
                            :suggestions => raw([Tess::AutocompleteManager.suggestions_array_for('contributors') +
                                                     Tess::AutocompleteManager.suggestions_array_for('authors')].flatten.uniq.to_json)} %>
 
-    <%= render :partial => 'common/dropdown', :locals => {:field_name => 'package', :resource => @material, :f => f,
-                                                          :options => format_for_dropdown(available_packages(@material)),
-                                                          :dropdown_toggle_button_name => "Add to package"} %>
+    <%= render :partial => 'common/dropdown',
+               :locals => {:field_name => 'package_ids',
+                           :field_label => 'Packages',
+                           :resource => @material,
+                           :f => f,
+                           :options => format_for_dropdown(available_packages(@material)),
+                           :existing => format_for_dropdown(@material.packages),
+                           :dropdown_toggle_button_name => "Add to package"} %>
 
     <%= render :partial => 'common/autocompleter', locals: { field_name: :events, url: events_path, f: f } %>
 

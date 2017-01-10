@@ -62,7 +62,7 @@ class ConvertEventFieldToScientificTopics < ActiveRecord::Migration
     topic_mapping = IANN_MAPPING.dup
     topic_mapping.each do |key, value|
       topic = ScientificTopic.find_by_class_id(value)
-      raise "Couldn't find ScientificTopic for class ID: #{value}" if topic.nil?
+      puts "Couldn't find ScientificTopic for class ID: #{value}" if topic.nil?
       topic_mapping[key] = topic
     end
 

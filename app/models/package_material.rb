@@ -9,7 +9,9 @@ class PackageMaterial < ActiveRecord::Base
   after_save :log_activity
 
   def log_activity
-    self.package.create_activity :add_material, parameters: {material: self.material, package: self.package }
-    self.material.create_activity :add_to_package, parameters: {material: self.material, package: self.package }
+    self.package.create_activity(:add_material, owner: User.current_user,
+                                 parameters: { material_id: self.material_id, material_title: self.material.title })
+    self.material.create_activity(:add_to_package, owner: User.current_user,
+                                  parameters: { package_id: self.package_id, package_title: self.package.title })
   end
 end
