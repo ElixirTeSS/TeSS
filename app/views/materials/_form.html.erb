@@ -56,6 +56,26 @@
                                                                 :suggestions => raw(scientific_topic_names_for_autocomplete.to_json),
                                                                 :disabled => true} %>
 
+    <% if @material.edit_suggestion -%>
+    <div id="suggestions">
+      <p>Suggested scientific topics (will be saved unless removed): </p>
+      <p>
+        <div id="suggestion-buttons">
+        <% @material.edit_suggestion.scientific_topics.each do |s| -%>
+            <a class="btn btn-warning multiple-input-add" id="add-topic-<%= s.preferred_label -%>"
+               onclick="removeSuggestion('<%= s.preferred_label -%>')">
+               <%= s.preferred_label -%>
+               <i class="fa fa-close" ></i>
+              </a>
+              <input type="hidden" class="multiple-input form-control scientific_topic_names"
+                     data-field="scientific_topic_name" data-model="material" name="material[scientific_topic_names][]"
+                     value="<%= s.preferred_label -%>" readonly="readonly" id="hidden-suggestion-<%= s.preferred_label -%>">
+        <% end -%>
+        </div>
+      </p>
+    </div>
+    <% end -%>
+
     <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords',
                                                                 :resource => @material,
                                                                 :f => f,
@@ -124,8 +144,24 @@
     </div>
 <% end %>
 
+
+
 <div id="external-resource-template" style="display: none">
   <%= render partial: 'common/external_resource_form',
              locals: { form_name: 'material', external_resource: ExternalResource.new } %>
 </div>
 
+
+<script type="text/javascript">
+function removeSuggestion(suggestion) {
+    if (confirm("Are you sure you'd like to remove '" + suggestion + "'?")) {
+        $("#add-topic-" + suggestion).fadeOut(300, function(){
+            $(this).remove();
+        });
+        $("#hidden-suggestion-" + suggestion).remove();
+        return true;
+    } else {
+        return false;
+    }
+}
+</script>

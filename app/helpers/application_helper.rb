@@ -21,7 +21,8 @@ module ApplicationHelper
     scraped_today: { icon: 'fa-check-circle-o', message: 'This record was updated today' },
     not_scraped_recently: { icon: 'fa-exclamation-circle', message: 'This record has not been updated since %SUB%' },
     event: { icon: 'fa-calendar', message: 'This is a training event' },
-    material: { icon: 'fa-book', message: 'This is a training material' }
+    material: { icon: 'fa-book', message: 'This is a training material' },
+    suggestion: { icon: 'fa-comment-o', message: 'This is a suggested scientific topic'}
   }.freeze
 
   def scrape_status_icon(record, size = nil)
