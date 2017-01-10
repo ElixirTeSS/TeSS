@@ -5,8 +5,8 @@
         <%= link_to activity.owner.username, activity.owner %>
     <% end %>
 
-    <strong> Added Event</strong>
-    <%= link_to activity.parameters[:event].title, activity.parameters[:event] %>
-    <strong> To Package </strong>
-    <%= link_to activity.parameters[:package].title, activity.parameters[:package] %>
+    added to package
+    <%= link_to activity.parameters[:package_title], package_path(activity.parameters[:package_id]) %>to
+    at
+    <%= activity.created_at -%>.
 <% end %>

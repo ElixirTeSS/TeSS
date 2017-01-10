@@ -132,6 +132,14 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.current_user=(user)
+    Thread.current[:current_user] = user
+  end
+
+  def self.current_user
+    Thread.current[:current_user]
+  end
+
   private
 
   def reassign_owner
