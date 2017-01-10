@@ -1,5 +1,5 @@
 class AddSuggestionRefToMaterial < ActiveRecord::Migration
   def change
-    add_reference :materials, :edit_suggestion, index: true, foreign_key: true
+    add_reference :edit_suggestion, :material, index: true, foreign_key: true
   end
 end
