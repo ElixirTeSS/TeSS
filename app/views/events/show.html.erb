@@ -200,6 +200,17 @@
                     <%= @event.keywords.join(', ')%></p>
               <% end %>
 
+              <% if @event.materials.any? %>
+                  <div>
+                    <b>Related training materials: </b>
+                    <ul>
+                      <% @event.materials.each do |material| %>
+                          <li><%= link_to material.title, material %></li>
+                      <% end %>
+                    </ul>
+                  </div>
+              <% end %>
+
               <% if @event.external_resources.any? %>
                   <b>External resources: </b>
                   <%= render partial: 'common/external_resources_list', locals: { external_resources: @event.external_resources } %>

@@ -172,6 +172,8 @@
                            :existing => format_for_dropdown(@event.packages),
                            :dropdown_toggle_button_name => "Add to package"} %>
 
+    <%= render :partial => 'common/autocompleter', locals: { field_name: :materials, url: materials_path, f: f } %>
+
     <div class="form-group" id="external-resources">
       <%= f.label :external_resources %>
 

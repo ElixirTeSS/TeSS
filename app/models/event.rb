@@ -76,6 +76,8 @@ class Event < ActiveRecord::Base
   belongs_to :user
   has_many :package_events
   has_many :packages, through: :package_events
+  has_many :event_materials
+  has_many :materials, through: :event_materials
 
   validates :title, :url, presence: true
   validates :capacity, numericality: true, allow_blank: true

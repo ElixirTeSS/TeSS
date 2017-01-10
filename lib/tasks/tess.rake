@@ -40,4 +40,11 @@ namespace :tess do
     puts "Done"
   end
 
+  task expire_sessions: :environment do
+    max_age = Devise.remember_for
+    puts "Deleting sessions older than #{max_age.inspect}"
+    deleted = ActiveRecord::SessionStore::Session.delete_all(['updated_at < ?', max_age.ago])
+    puts "Deleted #{deleted} sessions"
+  end
+
 end
