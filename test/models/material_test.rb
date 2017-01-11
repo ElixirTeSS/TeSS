@@ -113,14 +113,6 @@ class MaterialTest < ActiveSupport::TestCase
     assert_includes m.node_names, nodes(:westeros).name
   end
 
-  #test  'apply edit suggestions to material' do
-  #  m = materials(:material_with_suggestions)
-  #  assert_not_equal m.edit_suggestion, nil
-  #  assert_equal m.scientific_topics.length, 0
-  #  m.save
-  #  assert_equal m.scientific_topics.length, 2
-  #  assert_equal m.edit_suggestion, nil
-  #end
 
 
 

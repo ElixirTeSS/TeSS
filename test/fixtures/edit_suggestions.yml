@@ -4,8 +4,7 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-#one:
-#  id: 1
-#  material_id: 100
+one:
+  scientific_topics: [topic_one,topic_two]
 
 
