@@ -95,6 +95,17 @@ You can replace *start* with *stop* or *restart* to stop or restart solr. You ca
 `$ bundle exec rake sunspot:solr:reindex`
 
 
+## Redis/Sidekiq
+
+On macOS these can be installed and run as follows:
+
+    brew install redis
+    redis-server /usr/local/etc/redis.conf
+    bundle exec sidekiq
+    
+For a Redis install on a Linux system there should presumably be an equivalent package.
+
+
 ## The TeSS Application
 
 From the app's root directory, copy config/example_secrets.yml to config/secrets.yml.
