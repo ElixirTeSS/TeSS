@@ -96,6 +96,12 @@ class UsersController < ApplicationController
     end
   end
 
+  # TODO: Log the user in, create new user if not already existing &c.
+  def omniauth_callbacks
+    flash[:notice] = "Successful AAI authentication: #{@action}!"
+    redirect_to users_path
+  end
+
   private
 
   def set_user

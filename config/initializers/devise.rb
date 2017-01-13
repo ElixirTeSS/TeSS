@@ -259,4 +259,22 @@ Devise.setup do |config|
   # When using OmniAuth, Devise cannot automatically set OmniAuth path,
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
+  config.omniauth :openid_connect, {
+      name: :elixir_aai,
+      scope: [:user, :openid, :email, :preferred_user_name],
+      response_type: :code,
+      issuer: 'https://perun.elixir-czech.cz/oidc/',
+      client_options: {
+        identifier: 'client',
+        secret: 'secret',
+        redirect_uri: 'http://localhost:8080/users/auth/elixir_aai/callback',
+        scheme: "https",
+        host: "perun.elixir-czech.cz",
+        port: 443,
+        authorization_endpoint: "https://perun.elixir-czech.cz/oidc/authorize",
+        token_endpoint: "https://perun.elixir-czech.cz/oidc/token",
+        userinfo_endpoint: "https://perun.elixir-czech.cz/oauth/rpc/json/oidcManager/userinfo",
+        jwks_uri: 'https://perun.elixir-czech.cz/oidc/jwk',
+      }
+  }
 end

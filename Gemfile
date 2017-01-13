@@ -19,7 +19,8 @@ gem 'rails_admin'
 gem 'devise'
 gem 'public_activity'
 gem 'simple_token_authentication', '~> 1.0'
-gem 'omniauth-openid-reconnect'
+gem 'omniauth-openid-connect', git: 'git://github.com/jjbohn/omniauth-openid-connect'
+#gem 'omniauth-openid'
 
 gem "therubyracer"
 # gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
