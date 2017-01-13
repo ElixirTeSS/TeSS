@@ -262,7 +262,7 @@ Devise.setup do |config|
   config.omniauth :openid_connect, {
       name: :elixir_aai,
       #scope: [:user, :openid, :email, :preferred_user_name],
-      scope: [:openid, :email],
+      scope: [:email, :user],
       response_type: :code,
       issuer: 'https://perun.elixir-czech.cz/oidc/',
       client_options: {
