@@ -261,7 +261,8 @@ Devise.setup do |config|
   # config.omniauth_path_prefix = '/my_engine/users/auth'
   config.omniauth :openid_connect, {
       name: :elixir_aai,
-      scope: [:user, :openid, :email, :preferred_user_name],
+      #scope: [:user, :openid, :email, :preferred_user_name],
+      scope: [:openid, :email],
       response_type: :code,
       issuer: 'https://perun.elixir-czech.cz/oidc/',
       client_options: {
