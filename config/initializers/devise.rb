@@ -261,20 +261,19 @@ Devise.setup do |config|
   # config.omniauth_path_prefix = '/my_engine/users/auth'
   config.omniauth :openid_connect, {
       name: :elixir_aai,
-      #scope: [:user, :openid, :email, :preferred_user_name],
-      scope: [:email, :user],
-      response_type: :code,
+      scope: [:openid, :email, :profile],
+      response_type: 'code',
       issuer: 'https://perun.elixir-czech.cz/oidc/',
       client_options: {
         identifier: 'client',
         secret: 'secret',
         redirect_uri: 'http://localhost:8080/users/auth/elixir_aai/callback',
-        scheme: "https",
-        host: "perun.elixir-czech.cz",
+        scheme: 'https',
+        host: 'perun.elixir-czech.cz',
         port: 443,
-        authorization_endpoint: "https://perun.elixir-czech.cz/oidc/authorize",
-        token_endpoint: "https://perun.elixir-czech.cz/oidc/token",
-        userinfo_endpoint: "https://perun.elixir-czech.cz/oauth/rpc/json/oidcManager/userinfo",
+        authorization_endpoint: 'https://perun.elixir-czech.cz/oidc/authorize',
+        token_endpoint: 'https://perun.elixir-czech.cz/oidc/token',
+        userinfo_endpoint: 'https://perun.elixir-czech.cz/oauth/rpc/json/oidcManager/userinfo',
         jwks_uri: 'https://perun.elixir-czech.cz/oidc/jwk',
       }
   }

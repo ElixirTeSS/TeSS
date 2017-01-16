@@ -17,8 +17,8 @@ Rails.application.routes.draw do
   #devise_for :users
   # Use custom registrations controller that subclasses devise's
   devise_for :users, :controllers => {
-      :registrations => "tess_devise/registrations",
-      #:omniauth_callbacks => "tess_devise/omniauth_callbacks"
+      :registrations => 'tess_devise/registrations',
+      :omniauth_callbacks => 'callbacks'
   }
   #Redirect to users index page after devise user account update
   # as :user do
