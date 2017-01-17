@@ -264,6 +264,7 @@ Devise.setup do |config|
       scope: [:openid, :email, :profile],
       response_type: 'code',
       issuer: 'https://perun.elixir-czech.cz/oidc/',
+      discovery: false,
       send_nonce: true,
       client_signing_alg: 'RS256',
       client_jwk_signing_key: 'mxnp2DNV3qLPlzK-e__VxtrAWYpG8UC28YCJJHYZoGocD0Hsh1sDqPtiRn0l-jlBkKFztNjPve9Yu48owQl9KB8hQLid1IgQlcKS0psO2UYLSq5MmekZ6ssb2ftSgM-VQlB1kTM2BSD5CINsR1cA9bfZjY3eH7cL-QksxCZoXQovinzxRw8knnj6OVIKGXppqgWrU3_zwdAleAaQpI0oTzV1FMlPb-Ngv17kU3EL04xFAiRB-PT4uFQSUkBnTOCNSXtntHD2EddhrNz628jMCdDgliJ7DIh_re2rx4rPfYthw-pJmMLXWGt12rw-ap1IMK9GrcQ5P9k61vc6fJeRjQ',
@@ -274,10 +275,14 @@ Devise.setup do |config|
         scheme: 'https',
         host: 'perun.elixir-czech.cz',
         port: 443,
-        authorization_endpoint: 'https://perun.elixir-czech.cz/oidc/authorize',
-        token_endpoint: 'https://perun.elixir-czech.cz/oidc/token',
+        #authorization_endpoint: 'https://perun.elixir-czech.cz/oidc/authorize',
+        #token_endpoint: 'https://perun.elixir-czech.cz/oidc/token',
+        #userinfo_endpoint: 'https://perun.elixir-czech.cz/oauth/rpc/json/oidcManager/userinfo',
+        #jwks_uri: 'https://perun.elixir-czech.cz/oidc/jwk',
+        authorization_endpoint: '/oidc/authorize',
+        token_endpoint: '/oidc/token',
         userinfo_endpoint: 'https://perun.elixir-czech.cz/oauth/rpc/json/oidcManager/userinfo',
-        jwks_uri: 'https://perun.elixir-czech.cz/oidc/jwk',
+        jwks_uri: '/oidc/jwk',
       }
   }
 end
