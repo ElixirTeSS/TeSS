@@ -141,9 +141,18 @@ class User < ActiveRecord::Base
   end
 
   def self.from_omniauth(auth)
+    # TODO: Decide what to do about users who have an account but authenticate later on via Elixir AAI.
+    # TODO: The code below will update their account to note the Elixir auth. but leave their password intact;
+    # TODO: is this what we should be doing?
     #user = User.where(:provider => auth.provider, :uid => auth.uid).first
     user = User.where(:email => auth.info.email ).first
-    unless user
+    if user
+      if user.provider.nil? and user.uid.nil?
+        user.uid = auth.uid
+        user.provider = auth.provider
+        user.save
+      end
+    else
       user = User.new(provider: auth.provider,
                       uid: auth.uid,
                       email: auth.info.email,
@@ -154,16 +163,6 @@ class User < ActiveRecord::Base
       user.save
     end
     user
-
-
-    #where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-    #  user.provider = auth.provider
-    #  user.uid = auth.uid
-    #  user.username = auth['info']['openid']
-    #  user.email = auth['info']['email']
-    #  user.password = Devise.friendly_token[0,20]
-    #  user.skip_confirmation!
-    #end
 
   end
 
