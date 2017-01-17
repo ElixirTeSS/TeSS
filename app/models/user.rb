@@ -141,14 +141,30 @@ class User < ActiveRecord::Base
   end
 
   def self.from_omniauth(auth)
-    Logger.info("AAI: #{auth.inspect}")
-    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-      user.provider = auth.provider
-      user.uid = auth.uid
-      user.username = auth.openid
-      user.email = auth.email
-      user.password = Devise.friendly_token[0,20]
+    #user = User.where(:provider => auth.provider, :uid => auth.uid).first
+    user = User.where(:email => auth.info.email ).first
+    unless user
+      user = User.new(provider: auth.provider,
+                      uid: auth.uid,
+                      email: auth.info.email,
+                      username: auth.info.openid,
+                      password: Devise.friendly_token[0,20],
+      )
+      user.skip_confirmation!
+      user.save
     end
+    user
+
+
+    #where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+    #  user.provider = auth.provider
+    #  user.uid = auth.uid
+    #  user.username = auth['info']['openid']
+    #  user.email = auth['info']['email']
+    #  user.password = Devise.friendly_token[0,20]
+    #  user.skip_confirmation!
+    #end
+
   end
 
   private

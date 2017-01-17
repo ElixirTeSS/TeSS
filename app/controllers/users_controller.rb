@@ -96,16 +96,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # TODO: Log the user in, create new user if not already existing &c.
-  def omniauth_callbacks
-    Logger.info("Got to the users controller after auth!")
-    flash[:notice] = "Successful AAI authentication: #{@action}!"
-    @user = User.from_omniauth(request.env["omniauth.auth"])
-    Logger.info("WIBBLE: #{omniauth.auth.inspect}")
-    sign_in_and_redirect @user
-    #redirect_to users_path
-  end
-
   private
 
   def set_user

@@ -264,6 +264,9 @@ Devise.setup do |config|
       scope: [:openid, :email, :profile],
       response_type: 'code',
       issuer: 'https://perun.elixir-czech.cz/oidc/',
+      send_nonce: true,
+      client_signing_alg: 'RS256',
+      client_jwk_signing_key: 'mxnp2DNV3qLPlzK-e__VxtrAWYpG8UC28YCJJHYZoGocD0Hsh1sDqPtiRn0l-jlBkKFztNjPve9Yu48owQl9KB8hQLid1IgQlcKS0psO2UYLSq5MmekZ6ssb2ftSgM-VQlB1kTM2BSD5CINsR1cA9bfZjY3eH7cL-QksxCZoXQovinzxRw8knnj6OVIKGXppqgWrU3_zwdAleAaQpI0oTzV1FMlPb-Ngv17kU3EL04xFAiRB-PT4uFQSUkBnTOCNSXtntHD2EddhrNz628jMCdDgliJ7DIh_re2rx4rPfYthw-pJmMLXWGt12rw-ap1IMK9GrcQ5P9k61vc6fJeRjQ',
       client_options: {
         identifier: 'client',
         secret: 'secret',
@@ -278,3 +281,8 @@ Devise.setup do |config|
       }
   }
 end
+
+
+
+
+
