@@ -21,7 +21,7 @@ class ContentProvider < ActiveRecord::Base
   validates :title, :url, presence: true
 
   # Validate the URL is in correct format via valid_url gem
-  validates :url, :url => true
+  validates :url, url: true
 
   clean_array_fields(:keywords)
 

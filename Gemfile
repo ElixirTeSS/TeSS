@@ -64,7 +64,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem "auto_strip_attributes", "~> 2.0"
 
 # Gem for validating URLs
-gem 'valid_url'
+gem 'validate_url'
 
 # Gem for adding breadcrumbs
 # gem "breadcrumbs_on_rails"
