@@ -3,18 +3,7 @@ require 'icalendar'
 
 class EventsControllerTest < ActionController::TestCase
 
-  include Devise::TestHelpers
-
-  setup do
-    mock_images
-    @event = events(:one)
-  end
-
-require 'test_helper'
-
-class EventsControllerTest < ActionController::TestCase
-
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   setup do
     @event = events(:one)
@@ -321,10 +310,6 @@ class EventsControllerTest < ActionController::TestCase
         assert_equal(response.body,'[]')
         end
 =end
-
-end
-
-
 
   test 'should create new event through API' do
     scraper_role = Role.fetch('api_user')

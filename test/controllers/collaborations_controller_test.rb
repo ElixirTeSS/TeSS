@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class CollaborationsControllerTest < ActionController::TestCase
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   setup do
     @workflow = workflows(:one)
