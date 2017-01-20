@@ -13,6 +13,7 @@ class EventsController < ApplicationController
     respond_to do |format|
       format.json
       format.html
+      format.csv { send_data Event.order(:title).csvify }
       format.ics
     end
   end
