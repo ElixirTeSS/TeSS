@@ -667,3 +667,7 @@ sup {
 #gravatar_image {
   margin-bottom: 10px;
 }
+
+.btn-elixir {
+  @include button-variant(white, $elixir-orange, white);
+}
