@@ -670,4 +670,10 @@ sup {
 
 .btn-elixir {
   @include button-variant(white, $elixir-orange, white);
+  background-image: url('elixir_white_small.png');
+  background-repeat: no-repeat;
+  background-position: 7px 7px;
+  padding-left: 32px;
+  cursor: pointer;
+  vertical-align: middle;
 }

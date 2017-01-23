@@ -30,7 +30,7 @@
   <% end -%>
 
   <%- if devise_mapping.omniauthable? %>
-      <div class="text-align: left;">
+      <div class="text-align: left;" style="padding-top: 5px;">
         <%- resource_class.omniauth_providers.each do |provider| %>
             <% if provider.to_s.downcase == 'elixir_aai' -%>
                 <%= link_to 'Log in with Elixir credentials', omniauth_authorize_path(resource_name, provider), class: "btn btn-elixir" -%>
