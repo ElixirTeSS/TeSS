@@ -265,7 +265,7 @@ Devise.setup do |config|
       response_type: 'code',
       issuer: 'https://perun.elixir-czech.cz/oidc/',
       discovery: false,
-      send_nonce: true,
+      send_nonce: false,
       client_signing_alg: :RS256,
       client_jwk_signing_key: '{"keys":[{"alg":"RS256","e":"AQAB","n":"mxnp2DNV3qLPlzK-e__VxtrAWYpG8UC28YCJJHYZoGocD0Hsh1sDqPtiRn0l-jlBkKFztNjPve9Yu48owQl9KB8hQLid1IgQlcKS0psO2UYLSq5MmekZ6ssb2ftSgM-VQlB1kTM2BSD5CINsR1cA9bfZjY3eH7cL-QksxCZoXQovinzxRw8knnj6OVIKGXppqgWrU3_zwdAleAaQpI0oTzV1FMlPb-Ngv17kU3EL04xFAiRB-PT4uFQSUkBnTOCNSXtntHD2EddhrNz628jMCdDgliJ7DIh_re2rx4rPfYthw-pJmMLXWGt12rw-ap1IMK9GrcQ5P9k61vc6fJeRjQ","kty":"RSA","kid":"rsa1"}]}',
       client_options: {
