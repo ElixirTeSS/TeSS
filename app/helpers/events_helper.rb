@@ -38,14 +38,16 @@ module EventsHelper
   end
 
   def csv_column_names
-    return %w(Title Organizer Start End)
+    return %w(Title Organizer Start End ContentProvider)
   end
 
   def csv_from_collection(events)
     CSV.generate do |csv|
       csv << csv_column_names
       events.each do |event|
-        csv << event.to_csv_event
+        unless event.start.nil? or event.end.nil? or event.title.nil?
+          csv << event.to_csv_event
+        end
       end
     end
   end
