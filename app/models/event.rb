@@ -142,23 +142,25 @@ class Event < ActiveRecord::Base
         node target_audience user )
   end
 
+  def to_csv_event
 
-  def self.csvify(options = {})
-    column_names = %w(title organizer start end)
-
-    CSV.generate(options) do |csv|
-      csv << column_names
-      all.each do |event|
-        csv << event.attributes.values_at(*column_names)
-      end
+    if self.organizer.class == String
+      organizer = self.organizer.gsub(',',' ')
+    elsif self.organizer.class == Array
+      organizer = self.organizer.join(' | ').gsub(',',' and ')
+    else
+      organizer = nil
     end
+    return ["#{self.title.gsub(',',' ')}",
+            "#{organizer || ''}",
+           self.start.strftime("%d %b %Y"),
+           self.end.strftime("%d %b %Y")]
+
   end
 
   def to_ical
     cal = Icalendar::Calendar.new
-
     cal.add_event(self.to_ical_event)
-
     cal.to_ical
   end
 
