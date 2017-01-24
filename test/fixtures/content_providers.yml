@@ -17,6 +17,13 @@ iann:
   user: regular_user
   content_provider_type: Portal
 
+iann:
+  title: iAnn
+  url: http://iann.org
+  image_url: http://example.com/iann.png
+  description: This is the iann test description
+  user: regular_user
+
 two:
   title: MyTextAgain
   url: http://anotherexample.com
