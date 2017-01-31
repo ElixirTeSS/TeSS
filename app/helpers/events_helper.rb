@@ -6,6 +6,8 @@ module EventsHelper
 
       "If your website contains training events that you wish to include in TeSS, please contact the TeSS team (<a href='mailto:tess@elixir-uk.info'>tess@elixir-uk.info</a>) for further details."
 
+
+
   def google_calendar_export_url(event)
     if event.all_day?
       dates = "#{event.start.strftime('%Y%m%d')}/#{event.end.tomorrow.strftime('%Y%m%d')}" # Need to add 1 day for all day events apparently
@@ -35,4 +37,18 @@ module EventsHelper
     cal.to_ical
   end
 
+  def csv_column_names
+    return %w(Title Organizer Start End ContentProvider)
+  end
+
+  def csv_from_collection(events)
+    CSV.generate do |csv|
+      csv << csv_column_names
+      events.each do |event|
+        unless event.start.nil? or event.end.nil? or event.title.nil?
+          csv << event.to_csv_event
+        end
+      end
+    end
+  end
 end
