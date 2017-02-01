@@ -80,7 +80,7 @@ class WorkflowsController < ApplicationController
   end
 
   def fork
-    @workflow = @workflow.create_fork(current_user)
+    @workflow = @workflow.new_fork(current_user)
 
     respond_to do |format|
       format.html { render :new }
