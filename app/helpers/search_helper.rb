@@ -70,17 +70,6 @@ module SearchHelper
             ".html_safe
   end
 
-  def show_more_link facet
-    parameters = params.dup
-    return link_to "<span style='font-weight: bold;'>Show more #{facet.humanize.pluralize.downcase}</span><i class='glyphicon glyphicon-chevron-down pull-right'></i>".html_safe, parameters.merge("#{facet}_all"=>true)
-  end
-
-  def show_less_link facet
-    parameters = params.dup
-    parameters.delete("#{facet}_all")
-    return link_to "<span style='font-weight: bold;'>Show less #{facet.humanize.pluralize.downcase}</span><i class='glyphicon glyphicon-chevron-up pull-right'></i>".html_safe, parameters
-  end
-
   def neatly_printed_date_range start, finish
     if start and finish
       if start.year != finish.year
