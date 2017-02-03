@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
 
   attr_accessor :login
 
-  if SOLR_ENABLED
+  if TeSS::Config.solr_enabled
     searchable do
       text :username
       text :email
@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
   belongs_to :role
 
   before_create :set_registered_user_role, :set_default_profile
-  after_create :skip_email_confirmation_for_non_production
+  before_create :skip_email_confirmation_for_non_production
 
   before_destroy :reassign_owner
 
@@ -106,7 +106,7 @@ class User < ActiveRecord::Base
     # In development and test environments, set the user as confirmed
     # after creation but before save
     # so no confirmation emails are sent
-    self.confirm unless Rails.env.production?
+    self.skip_confirmation! unless Rails.env.production?
   end
 
   def set_as_admin
@@ -121,7 +121,7 @@ class User < ActiveRecord::Base
 
   def self.get_default_user
     where(role_id: Role.fetch('default_user').id).first_or_create(username: 'default_user',
-                                                                  email: CONTACT_EMAIL,
+                                                                  email: TeSS::Config.contact_email,
                                                                   password: SecureRandom.base64)
   end
 

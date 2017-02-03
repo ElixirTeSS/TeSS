@@ -30,7 +30,7 @@ class ContentProvider < ActiveRecord::Base
   PROVIDER_TYPE = ['Portal', 'Organisation', 'Project']
   has_image(placeholder: "/assets/placeholder-organization.png")
 
-  if SOLR_ENABLED
+  if TeSS::Config.solr_enabled
     searchable do
       text :title
       string :title

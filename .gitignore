@@ -13,6 +13,7 @@
 /tmp
 config/secrets.yml
 config/sunspot.yml
+config/tess.yml
 config/environments/production.rb
 tmp/
 solr/test/
