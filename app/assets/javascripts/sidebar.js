@@ -24,3 +24,9 @@ $(document).ready(function () {
     $('#sidebar-toggle').click(Sidebar.toggle);
     $('#sidebar-close').click(Sidebar.toggle);
 });
+
+
+function toggleFacets(facet) {
+    $("." + facet + "-expanding").toggle(1000);
+    $(".toggle-" + facet).toggle();
+}
