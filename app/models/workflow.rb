@@ -68,6 +68,13 @@ class Workflow < ActiveRecord::Base
     %w(scientific_topics target_audience keywords licence difficulty_level authors contributors)
   end
 
+  def new_fork(user)
+    self.dup.tap do |wf|
+      wf.title = "Fork of #{wf.title}"
+      wf.user = user
+    end
+  end
+
   private
 
   def log_diagram_modification
