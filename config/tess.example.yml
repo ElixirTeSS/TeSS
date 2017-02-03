@@ -8,8 +8,8 @@ default: &default
     sitekey:
     secret:
   elixir_aai:
-    client_id: client
-    secret: secret
+    client_id: #client
+    secret: #secret
 
 development:
   <<: *default
