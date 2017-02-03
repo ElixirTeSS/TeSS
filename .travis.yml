@@ -3,6 +3,7 @@ addons:
   postgresql: "9.4"
 
 before_script:
+- cp config/tess.example.yml config/tess.yml
 - cp config/example_secret_file.yml.travis config/secrets.yml
 - psql -c 'create database travis_ci_test;' -U postgres
 - bundle exec rake db:setup

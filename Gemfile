@@ -19,6 +19,8 @@ gem 'rails_admin'
 gem 'devise'
 gem 'public_activity'
 gem 'simple_token_authentication', '~> 1.0'
+gem 'omniauth-openid-connect', git: 'git://github.com/jjbohn/omniauth-openid-connect'
+#gem 'omniauth-openid'
 
 gem "therubyracer"
 # gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
@@ -62,7 +64,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem "auto_strip_attributes", "~> 2.0"
 
 # Gem for validating URLs
-gem 'valid_url'
+gem 'validate_url'
 
 # Gem for adding breadcrumbs
 # gem "breadcrumbs_on_rails"

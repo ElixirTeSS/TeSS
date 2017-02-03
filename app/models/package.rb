@@ -27,7 +27,7 @@ class Package < ActiveRecord::Base
 
   has_image(placeholder: "/assets/placeholder-package.png")
 
-  if SOLR_ENABLED
+  if TeSS::Config.solr_enabled
     searchable do
       text :title
       string :title

@@ -14,7 +14,7 @@ class Material < ActiveRecord::Base
   extend FriendlyId
   friendly_id :title, use: :slugged
 
-  if SOLR_ENABLED
+  if TeSS::Config.solr_enabled
     searchable do
       text :title
       string :title
@@ -86,8 +86,7 @@ class Material < ActiveRecord::Base
 
   validates :title, :short_description, :url, presence: true
 
-  # Validate the URL is in correct format via valid_url gem
-  validates :url, :url => true
+  validates :url, url: true
 
   validates :difficulty_level, controlled_vocabulary: { dictionary: Tess::DifficultyDictionary.instance }
   validates :licence, controlled_vocabulary: { dictionary: Tess::LicenceDictionary.instance }

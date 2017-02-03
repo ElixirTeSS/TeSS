@@ -17,14 +17,14 @@
 </script>
 
 <div class="wrapper">
-  <% if SOLR_ENABLED %>
+  <% if TeSS::Config.solr_enabled %>
       <div id="sidebar" class="popout-sidebar">
         <%= render partial: "search/common/facet_sidebar", locals:  { resources: @events_results, resource_type: Event } %>
       </div>
   <% end %>
 
   <div id="content">
-    <% if SOLR_ENABLED %>
+    <% if TeSS::Config.solr_enabled %>
         <div class="row">
           <%= link_to new_event_path, :class=>"btn btn-primary" do %>
               <i class="fa fa-plus-square"></i> Register event

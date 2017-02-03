@@ -10,7 +10,7 @@ class Workflow < ActiveRecord::Base
   extend FriendlyId
   friendly_id :title, use: :slugged
 
-  if SOLR_ENABLED
+  if TeSS::Config.solr_enabled
     searchable do
       string :title
       string :sort_title do
