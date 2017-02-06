@@ -1,0 +1,24 @@
+default: &default
+  base_url: http://localhost:3000
+  contact_email: contact@example.com
+  google_maps_api_key:
+  solr_enabled: true
+  announcement_message:
+  recaptcha:
+    sitekey:
+    secret:
+  elixir_aai:
+    client_id: #client
+    secret: #secret
+
+development:
+  <<: *default
+
+production:
+  <<: *default
+
+test:
+  <<: *default
+  base_url: http://localhost:3000
+  contact_email: test@example.com
+  solr_enabled: false

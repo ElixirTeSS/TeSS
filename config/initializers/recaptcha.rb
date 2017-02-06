@@ -1,4 +1,4 @@
 Recaptcha.configure do |config|
-  config.site_key  = Rails.application.secrets.captcha_sitekey
-  config.secret_key  = Rails.application.secrets.captcha_secret
+  config.site_key  = TeSS::Config.recaptcha['sitekey']
+  config.secret_key  = TeSS::Config.recaptcha['secret']
 end

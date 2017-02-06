@@ -2,7 +2,7 @@ require 'test_helper'
 
 class StaticControllerTest < ActionController::TestCase
 
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   test "should get home" do
     get :home

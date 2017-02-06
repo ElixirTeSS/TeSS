@@ -26,7 +26,7 @@ class Node < ActiveRecord::Base
 
   alias_attribute(:title, :name)
 
-  if SOLR_ENABLED
+  if TeSS::Config.solr_enabled
     searchable do
       string :name
       string :sort_title do

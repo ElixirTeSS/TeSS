@@ -21,7 +21,7 @@ class ContentProvider < ActiveRecord::Base
   validates :title, :url, presence: true
 
   # Validate the URL is in correct format via valid_url gem
-  validates :url, :url => true
+  validates :url, url: true
 
   clean_array_fields(:keywords)
 
@@ -30,7 +30,7 @@ class ContentProvider < ActiveRecord::Base
   PROVIDER_TYPE = ['Portal', 'Organisation', 'Project']
   has_image(placeholder: "/assets/placeholder-organization.png")
 
-  if SOLR_ENABLED
+  if TeSS::Config.solr_enabled
     searchable do
       text :title
       string :title
