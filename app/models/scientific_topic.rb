@@ -2,6 +2,7 @@ class ScientificTopic < ActiveRecord::Base
   extend FriendlyId
   friendly_id :preferred_label, use: :slugged
   has_many :materials
+  has_and_belongs_to_many :edit_suggestion
 
 
   def self.create_topics

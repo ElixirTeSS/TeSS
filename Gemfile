@@ -57,7 +57,11 @@ gem 'dynamic_sitemaps', '~> 2.0.0'
 
 gem 'whenever'
 
+# These are required for Sidekiq, to look up scientific topics
 gem 'httparty'
+gem 'sidekiq'
+gem 'sinatra', require: false
+gem 'slim'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '~> 4.2.2'
