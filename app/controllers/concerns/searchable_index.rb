@@ -10,7 +10,7 @@ module SearchableIndex
   end
 
   def fetch_resources
-    if SOLR_ENABLED
+    if TeSS::Config.solr_enabled
       @search_results = solr_search(@model, @search_params, @facet_params,
                                     page: @page, per_page: @per_page, sort_by: @sort_by)
       @index_resources = @search_results.results

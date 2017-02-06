@@ -69,10 +69,10 @@
   </nav>
 </header>
 
-<% if defined? ANNOUNCEMENT_MESSAGE and !ANNOUNCEMENT_MESSAGE.blank? %>
+<% if defined? TeSS::Config.announcement_message and !TeSS::Config.announcement_message.blank? %>
     <div class="alert alert-danger fade in" id="front-page-announcement">
       <button class="close" data-dismiss="alert" aria-label="close">&times;</button>
-      <%= ANNOUNCEMENT_MESSAGE.html_safe %>
+      <%= TeSS::Config.announcement_message.html_safe %>
     </div>
 <% end %>
 

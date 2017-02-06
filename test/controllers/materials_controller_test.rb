@@ -2,7 +2,7 @@ require 'test_helper'
 
 class MaterialsControllerTest < ActionController::TestCase
 
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   setup do
     mock_images
