@@ -1,5 +1,5 @@
 <li class="masonry-brick media-item ">
-  <h3 class="media-heading"><%= workflow.title %></h3>
+  <h3 class="media-heading"><%= title_with_privacy(workflow) %></h3>
   <p><%= truncate(workflow.description, length: 300, separator: ' ') %></p>
   <%= link_to '', workflow, :class=>"media-view"%>
 </li>

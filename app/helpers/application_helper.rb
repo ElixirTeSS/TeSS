@@ -21,7 +21,8 @@ module ApplicationHelper
     scraped_today: { icon: 'fa-check-circle-o', message: 'This record was updated today' },
     not_scraped_recently: { icon: 'fa-exclamation-circle', message: 'This record has not been updated since %SUB%' },
     event: { icon: 'fa-calendar', message: 'This is a training event' },
-    material: { icon: 'fa-book', message: 'This is a training material' }
+    material: { icon: 'fa-book', message: 'This is a training material' },
+    private: { icon: 'fa-eye-slash', message: 'This resource is private' },
   }.freeze
 
   def scrape_status_icon(record, size = nil)
@@ -43,8 +44,9 @@ module ApplicationHelper
     nil
   end
 
-  def icon_for(type, size = nil)
-    "<i class=\"fa #{ICONS[type][:icon]} has-tooltip info-icon#{'-' + size.to_s if size}\"
+  def icon_for(type, size = nil, options = {})
+    options[:class] ||= "info-icon#{'-' + size.to_s if size}"
+    "<i class=\"fa #{ICONS[type][:icon]} has-tooltip #{options[:class]}\"
     aria-hidden=\"true\"
     data-toggle=\"tooltip\"
     data-placement=\"auto\"
@@ -287,4 +289,12 @@ module ApplicationHelper
   def format_for_dropdown(collection)
     collection.map { |o| [o.title, o.id] }
   end
+
+  def title_with_privacy(resource)
+    html = resource.title
+    html += " #{icon_for(:private, nil, class: 'muted')}" unless resource.public
+
+    html.html_safe
+  end
+
 end
