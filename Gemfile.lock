@@ -455,11 +455,11 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   sidekiq
-  sinatra
-  slim
   simple_form (~> 3.4.0)
   simple_token_authentication (~> 1.0)
   simplecov
+  sinatra
+  slim
   sunspot_rails (~> 2.2.7)
   sunspot_solr (= 2.2.0)
   therubyracer
