@@ -13,5 +13,6 @@ class StaticController < ApplicationController
     end
     @resources.flatten! if @resources.any?
     @resources.sort_by!{|x| x.created_at}.reverse!
+
   end
 end

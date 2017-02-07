@@ -33,7 +33,7 @@
     </div>
     <div class="tab-content">
       <div id="workflow" class="tab-pane fade in active">
-        <h2><%= t '.title', :default => @workflow.title %></h2>
+        <h2><%= t '.title', :default => title_with_privacy(@workflow) %></h2>
 
         <% content_for :sidebar_title do %>
             <i class="fa fa-sitemap"></i> <%= @workflow.title %>

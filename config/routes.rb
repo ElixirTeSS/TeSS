@@ -73,6 +73,12 @@ Rails.application.routes.draw do
     get code, :to => "application#handle_error", :status_code => code
   end
 
+  require 'sidekiq/web'
+  authenticate :user, lambda { |u| u.is_admin? } do
+    mount Sidekiq::Web, at: '/sidekiq'
+  end
+
+
 =begin
   authenticate :user do
     resources :materials, only: [:new, :create, :edit, :update, :destroy]

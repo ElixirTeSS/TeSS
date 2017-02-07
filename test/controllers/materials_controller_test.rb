@@ -16,6 +16,15 @@ class MaterialsControllerTest < ActionController::TestCase
         url: 'http://new.url.com',
         content_provider_id: ContentProvider.first.id
     }
+    @material_with_suggestions = materials(:material_with_suggestions)
+    @material_with_suggestions.edit_suggestion = edit_suggestions(:one)
+    @material_with_suggestions.save!
+    @updated_material_with_suggestions = {
+        title: 'New title for suggestion material',
+        short_description: 'New description',
+        url: 'http://new.url.com',
+        content_provider_id: ContentProvider.first.id
+    }
   end
 
   #Tests
@@ -108,9 +117,11 @@ class MaterialsControllerTest < ActionController::TestCase
 
   #SHOW TEST
   test 'should show material' do
-    get :show, id: @material
-    assert_response :success
-    assert assigns(:material)
+    get :show, id: @material do
+      assert_response :success
+      assert assigns(:material)
+      assert_select 'fa-commenting-o', :count => 0
+    end
   end
 
 
@@ -135,6 +146,28 @@ class MaterialsControllerTest < ActionController::TestCase
     patch :update, id: @material, material: @updated_material
     assert_response :forbidden
   end
+
+  test 'should apply edit suggestions to material' do
+    sign_in users(:admin)
+    assert_empty @material_with_suggestions.scientific_topics
+    assert_not_equal @material_with_suggestions.edit_suggestion, nil
+    get :show, id: @material_with_suggestions do
+      assert_response :success
+      assert_select 'Training Material Example', :count => 1
+      assert_select 'fa-commenting-o', :count => 1
+    end
+    get :edit, id: @material_with_suggestions do
+      assert_response :success
+      assert_select 'fa-commenting-o', :count => 0
+      assert_select 'a#add-topic-topiconename', :count => 1
+      assert_select 'a#add-topic-topictwoname', :count => 1
+    end
+    patch :update, id: @material_with_suggestions, material: @updated_material_with_suggestions do
+      assert_redirected_to material_path(assigns(:material))
+      assert_equal @material_with_suggestions.edit_suggestion, nil
+    end
+  end
+
 
   #DESTROY TEST
   test 'should destroy material owned by user' do

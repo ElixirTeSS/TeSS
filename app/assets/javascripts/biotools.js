@@ -31,10 +31,8 @@ var Biotools = {
         }
     },
     queryAPI: function(api_url){
-        console.log(api_url)
         $.get(api_url, function (json) {
             Biotools.displayTools(json);
-            console.log(json)
         });
     }, 
     associateTool: function(event){
@@ -75,9 +73,8 @@ var Biotools = {
         Biotools.search();
     },
     displayFullTool: function(api, id){
-        var json = $.get(api, function(json){
+        var json = $.get(api, function(json) {
             var json_object = json;
-            console.log(json_object)
             $('#' + id + '-desc').text(json_object.description);
             $('#' + id + '-resource-type-icon').addClass('fa-wrench').removeClass('fa-external-link');
             $.each(json_object.topic, function(index, topic){

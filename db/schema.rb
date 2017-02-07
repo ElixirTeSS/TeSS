@@ -11,6 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema.define(version: 20170111183004) do
 
   # These are extensions that must be enabled in order to support this database
@@ -63,6 +64,21 @@ ActiveRecord::Schema.define(version: 20170111183004) do
   add_index "content_providers", ["node_id"], name: "index_content_providers_on_node_id", using: :btree
   add_index "content_providers", ["slug"], name: "index_content_providers_on_slug", unique: true, using: :btree
   add_index "content_providers", ["user_id"], name: "index_content_providers_on_user_id", using: :btree
+
+  create_table "edit_suggestions", force: :cascade do |t|
+    t.text     "name"
+    t.text     "text"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "material_id"
+  end
+
+  add_index "edit_suggestions", ["material_id"], name: "index_edit_suggestions_on_material_id", using: :btree
+
+  create_table "edit_suggestions_scientific_topics", id: false, force: :cascade do |t|
+    t.integer "edit_suggestion_id"
+    t.integer "scientific_topic_id"
+  end
 
   create_table "event_materials", force: :cascade do |t|
     t.integer "event_id"
@@ -413,6 +429,7 @@ ActiveRecord::Schema.define(version: 20170111183004) do
   add_foreign_key "collaborations", "users"
   add_foreign_key "content_providers", "nodes"
   add_foreign_key "content_providers", "users"
+  add_foreign_key "edit_suggestions", "materials"
   add_foreign_key "event_materials", "events"
   add_foreign_key "event_materials", "materials"
   add_foreign_key "events", "users"
