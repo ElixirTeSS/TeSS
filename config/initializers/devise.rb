@@ -259,7 +259,7 @@ Devise.setup do |config|
   # When using OmniAuth, Devise cannot automatically set OmniAuth path,
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
-  unless Rails.application.secrets['elixir_aai']['client_id'].blank?
+  unless Rails.application.secrets.elixir_aai['client_id'].blank?
     config.omniauth :openid_connect, {
         name: :elixir_aai,
         scope: [:openid, :email, :profile],
@@ -270,8 +270,8 @@ Devise.setup do |config|
         client_signing_alg: :RS256,
         client_jwk_signing_key: '{"keys":[{"alg":"RS256","e":"AQAB","n":"mxnp2DNV3qLPlzK-e__VxtrAWYpG8UC28YCJJHYZoGocD0Hsh1sDqPtiRn0l-jlBkKFztNjPve9Yu48owQl9KB8hQLid1IgQlcKS0psO2UYLSq5MmekZ6ssb2ftSgM-VQlB1kTM2BSD5CINsR1cA9bfZjY3eH7cL-QksxCZoXQovinzxRw8knnj6OVIKGXppqgWrU3_zwdAleAaQpI0oTzV1FMlPb-Ngv17kU3EL04xFAiRB-PT4uFQSUkBnTOCNSXtntHD2EddhrNz628jMCdDgliJ7DIh_re2rx4rPfYthw-pJmMLXWGt12rw-ap1IMK9GrcQ5P9k61vc6fJeRjQ","kty":"RSA","kid":"rsa1"}]}',
         client_options: {
-            identifier: Rails.application.secrets['elixir_aai']['client_id'],
-            secret: Rails.application.secrets['elixir_aai']['secret'],
+            identifier: Rails.application.secrets.elixir_aai['client_id'],
+            secret: Rails.application.secrets.elixir_aai['secret'],
             # Wish I could use the url helper for this! (user_elixir_aai_omniauth_callback_url)
             redirect_uri: "#{TeSS::Config.base_url.chomp('/')}/users/auth/elixir_aai/callback",
             scheme: 'https',
