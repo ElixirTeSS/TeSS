@@ -60,4 +60,27 @@ class WorkflowTest < ActiveSupport::TestCase
     assert_includes Workflow.visible_by(users(:another_regular_user)), workflows(:one) # Collaborator
   end
 
+  test 'workflow diagram changes are logged' do
+    workflow = workflows(:two)
+    removed_node = nil
+
+    assert_difference("PublicActivity::Activity.where(key: 'workflow.modify_diagram').count", 1) do
+      removed_node = workflow.workflow_content['nodes'].pop
+      workflow.save
+    end
+
+    activity = workflow.activities.where(key: 'workflow.modify_diagram').last
+    assert_equal removed_node, activity.parameters[:removed_nodes].first
+  end
+
+  test 'can fork workflows' do
+    original = workflows(:two)
+    fork = @wf2.new_fork(users(:another_regular_user))
+
+    assert_equal original.workflow_content.hash, fork.workflow_content.hash, 'Workflow diagrams should be the same'
+    assert_equal "Fork of #{original.title}", fork.title
+    assert_not_equal original.user, fork.user
+    assert_equal users(:another_regular_user), fork.user
+  end
+
 end
