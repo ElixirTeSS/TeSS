@@ -106,10 +106,6 @@ class Material < ActiveRecord::Base
     super(Rails::Html::FullSanitizer.new.sanitize(desc))
   end
 
-  def self.owner
-    self.user
-  end
-
   def self.facet_fields
     %w( content_provider scientific_topics tools standard_database_or_policy target_audience keywords difficulty_level
         authors related_resources contributors licence node user )
