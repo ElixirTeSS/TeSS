@@ -36,7 +36,7 @@
               <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
             </div>
 
-            <% unless TeSS::Config.recaptcha['sitekey'].blank? -%>
+            <% unless Rails.application.secrets.recaptcha['sitekey'].blank? -%>
               <div class="form-group">
                 <%= recaptcha_tags ajax: true %>
               </div>
