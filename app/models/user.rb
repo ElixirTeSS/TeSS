@@ -15,10 +15,12 @@ class User < ActiveRecord::Base
   attr_accessor :login
 
   if TeSS::Config.solr_enabled
+    # :nocov:
     searchable do
       text :username
       text :email
     end
+    # :nocov:
   end
 
   has_one :profile, :dependent => :destroy

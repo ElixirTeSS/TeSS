@@ -16,6 +16,7 @@ class Event < ActiveRecord::Base
   friendly_id :title, use: :slugged
 
   if TeSS::Config.solr_enabled
+    # :nocov:
     searchable do
       text :title
       string :title
@@ -71,6 +72,7 @@ class Event < ActiveRecord::Base
       location :longitude
 =end
     end
+    # :nocov:
   end
 
   belongs_to :user

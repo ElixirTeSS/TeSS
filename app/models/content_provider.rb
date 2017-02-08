@@ -31,6 +31,7 @@ class ContentProvider < ActiveRecord::Base
   has_image(placeholder: "/assets/placeholder-organization.png")
 
   if TeSS::Config.solr_enabled
+    # :nocov:
     searchable do
       text :title
       string :title
@@ -58,6 +59,7 @@ class ContentProvider < ActiveRecord::Base
         end
       end
     end
+    # :nocov:
   end
 
   # TODO: Add validations for these:
