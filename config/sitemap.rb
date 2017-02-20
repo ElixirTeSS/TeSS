@@ -1,6 +1,6 @@
 # Change this to your host. See the readme at https://github.com/lassebunk/dynamic_sitemaps
 # for examples of multiple hosts and folders.
-host 'tess.elixir-uk.org'
+host TeSS::Config.base_url
 
 sitemap :site do
   url root_url, last_mod: Time.now, change_freq: "daily", priority: 1.0
@@ -43,4 +43,4 @@ sitemap_for Package
 
 # Ping search engines after sitemap generation:
 #
-ping_with "http://#{host}/sitemap.xml"
+ping_with "http://#{TeSS::Config.base_url}/sitemap.xml"
