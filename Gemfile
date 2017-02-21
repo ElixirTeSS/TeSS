@@ -53,7 +53,7 @@ gem 'gravtastic', '~> 3.2.6'
 
 gem 'green_monkey'
 
-gem 'dynamic_sitemaps', '~> 2.0.0'
+gem 'dynamic_sitemaps', github: 'lassebunk/dynamic_sitemaps', branch: 'master'
 
 gem 'whenever'
 
