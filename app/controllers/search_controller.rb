@@ -1,7 +1,7 @@
 class SearchController < ApplicationController
   include Tess::BreadCrumbs
 
-  SEARCH_MODELS = [%w(Material User Event Package ContentProvider Workflow)].freeze
+  SEARCH_MODELS = %w(Material User Event Package ContentProvider Workflow).freeze
 
   # GET /searches
   # GET /searches.json
