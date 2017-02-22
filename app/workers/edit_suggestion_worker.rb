@@ -5,12 +5,16 @@ class EditSuggestionWorker
 
   # TODO: Should a random time delay go in here such that the chastisement of
   # TODO: BioPortal is somewhat mimimised?
-  def perform(suggestible_id,suggestible_type)
+  def perform(arg_array)
+    suggestible_id,suggestible_type = arg_array
+    print "ID: #{suggestible_id}"
+    print "TYPE: #{suggestible_type}"
     # Run Sidekiq task to call the BioPortal annotator
     # ScientificTopic.find_by_preferred_label(label)
     # suggestion = EditSuggestion
     # for each topic: suggestion.scientific_topics < topic
     suggestible = suggestible_type.constantize.find(suggestible_id)
+    print "OBJ: #{suggestible.inspect}"
 
     # Use long description if available, otherwise short.
     desc = nil
