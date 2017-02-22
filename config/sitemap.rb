@@ -1,10 +1,21 @@
 # Change this to your host. See the readme at https://github.com/lassebunk/dynamic_sitemaps
 # for examples of multiple hosts and folders.
-host 'tess.elixir-europe.org'
+base_url = URI.parse(TeSS::Config.base_url)
+host_with_port = base_url.host
+if base_url.port != base_url.default_port
+  host_with_port += ":#{base_url.port}"
+end
+
+protocol base_url.scheme
+host host_with_port
 
 sitemap :site do
-  url root_url, last_mod: Time.now, change_freq: "daily", priority: 1.0
-  url about_url, last_mod: Time.now, change_freq: "weekly", priority: 0.9
+  url root_url, last_mod: Time.now, change_freq: 'daily', priority: 1.0
+  url about_url, change_freq: 'weekly', priority: 0.4
+  url materials_url, last_mod: Time.now, change_freq: 'daily', priority: 0.7
+  url events_url, last_mod: Time.now, change_freq: 'daily', priority: 0.7
+  url workflows_url, last_mod: Time.now, change_freq: 'daily', priority: 0.6
+  url packages_url, last_mod: Time.now, change_freq: 'weekly', priority: 0.5
 end
 
 # You can have multiple sitemaps like the above – just make sure their names are different.
@@ -43,4 +54,5 @@ sitemap_for Package
 
 # Ping search engines after sitemap generation:
 #
-ping_with "https://#{TeSS::Config.base_url}/sitemap.xml"
+
+ping_with "#{base_url.scheme}://#{host}/sitemap.xml"

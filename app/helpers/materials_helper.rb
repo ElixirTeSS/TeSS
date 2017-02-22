@@ -57,9 +57,7 @@ module MaterialsHelper
   def display_attribute(resource, attribute) # resource e.g. <#Material> & symbol e.g. :target_audience
     value = resource.send(attribute)
 
-    if value.blank? || value.try(:strip) == 'notspecified'
-      none_specified(resource, attribute)
-    else
+    unless value.blank? || value.try(:strip) == 'notspecified'
       string = "<p><b> #{resource.class.human_attribute_name(attribute)}: </b>"
       string << (block_given? ? yield(value) : value.to_s)
 
