@@ -1,35 +1,26 @@
 class SearchController < ApplicationController
-
   include Tess::BreadCrumbs
 
-  @@search_models = %w(Material User Event Package ContentProvider Workflow) #Profile
+  SEARCH_MODELS = [%w(Material User Event Package ContentProvider Workflow)].freeze
+
   # GET /searches
   # GET /searches.json
-  def index 
+  def index
     @results = {}
-    @@search_models.each do |model|
-       begin
-         @results[symbolize model] = Sunspot.search(model.constantize) do
-            fulltext search_params
-            if model == 'Event'
-              with('start').greater_than(Time.zone.now)
-            end
-          end
-       rescue
 
-       end 
+    SEARCH_MODELS.each do |model_name|
+      @results[model_name.underscore.pluralize.to_sym] = Sunspot.search(model_name.constantize) do
+        fulltext search_params
+        with('end').greater_than(Time.zone.now) if model_name == 'Event'
+      end
     end
-    @results.reject!{|k,result| result.total < 1}
+
+    @results.reject! { |_, result| result.total < 1 }
   end
 
   private
-    # Never trust parameters from the scary internet, only allow the white list through.
 
-    def symbolize symbol
-       return symbol.underscore.pluralize.to_sym
-    end
-
-    def search_params
-      params[:q]
-    end
+  def search_params
+    params[:q]
+  end
 end
