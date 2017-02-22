@@ -10,7 +10,7 @@ class EditSuggestionWorkerTest < ActiveSupport::TestCase
 
     Sidekiq::Testing.inline! do
       assert_difference('EditSuggestion.count', 1) do
-        EditSuggestionWorker.perform_async(material.id)
+        EditSuggestionWorker.perform_async(material.id,material.class.name)
       end
     end
 

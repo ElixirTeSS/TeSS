@@ -11,8 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 20170111183004) do
+ActiveRecord::Schema.define(version: 20170222160912) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,14 +65,12 @@ ActiveRecord::Schema.define(version: 20170111183004) do
   add_index "content_providers", ["user_id"], name: "index_content_providers_on_user_id", using: :btree
 
   create_table "edit_suggestions", force: :cascade do |t|
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.text     "name"
-    t.text     "text"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.integer  "material_id"
+    t.string   "suggestible_type"
+    t.integer  "suggestible_id"
   end
-
-  add_index "edit_suggestions", ["material_id"], name: "index_edit_suggestions_on_material_id", using: :btree
 
   create_table "edit_suggestions_scientific_topics", id: false, force: :cascade do |t|
     t.integer "edit_suggestion_id"
@@ -124,6 +121,8 @@ ActiveRecord::Schema.define(version: 20170111183004) do
     t.text     "contact"
     t.string   "host_institutions",                            default: [],                  array: true
     t.string   "timezone"
+    t.integer  "suggestible_id"
+    t.string   "suggestible_type"
   end
 
   add_index "events", ["cost"], name: "index_events_on_cost", using: :btree
@@ -177,9 +176,15 @@ ActiveRecord::Schema.define(version: 20170111183004) do
     t.integer  "user_id"
     t.date     "last_scraped"
     t.boolean  "scraper_record",      default: false
+    t.integer  "edit_suggestion_id"
+    t.integer  "scientific_topic_id"
+    t.integer  "suggestible_id"
+    t.string   "suggestible_type"
   end
 
   add_index "materials", ["content_provider_id"], name: "index_materials_on_content_provider_id", using: :btree
+  add_index "materials", ["edit_suggestion_id"], name: "index_materials_on_edit_suggestion_id", using: :btree
+  add_index "materials", ["scientific_topic_id"], name: "index_materials_on_scientific_topic_id", using: :btree
   add_index "materials", ["slug"], name: "index_materials_on_slug", unique: true, using: :btree
   add_index "materials", ["user_id"], name: "index_materials_on_user_id", using: :btree
 
@@ -421,6 +426,8 @@ ActiveRecord::Schema.define(version: 20170111183004) do
     t.date     "remote_updated_date"
     t.boolean  "hide_child_nodes",    default: false
     t.boolean  "public",              default: true
+    t.integer  "suggestible_id"
+    t.string   "suggestible_type"
   end
 
   add_index "workflows", ["slug"], name: "index_workflows_on_slug", unique: true, using: :btree
@@ -429,11 +436,12 @@ ActiveRecord::Schema.define(version: 20170111183004) do
   add_foreign_key "collaborations", "users"
   add_foreign_key "content_providers", "nodes"
   add_foreign_key "content_providers", "users"
-  add_foreign_key "edit_suggestions", "materials"
   add_foreign_key "event_materials", "events"
   add_foreign_key "event_materials", "materials"
   add_foreign_key "events", "users"
   add_foreign_key "materials", "content_providers"
+  add_foreign_key "materials", "edit_suggestions"
+  add_foreign_key "materials", "scientific_topics"
   add_foreign_key "materials", "users"
   add_foreign_key "node_links", "nodes"
   add_foreign_key "nodes", "users"

@@ -5,20 +5,31 @@ class EditSuggestionWorker
 
   # TODO: Should a random time delay go in here such that the chastisement of
   # TODO: BioPortal is somewhat mimimised?
-  def perform(material_id)
+  def perform(suggestible_id,suggestible_type)
     # Run Sidekiq task to call the BioPortal annotator
     # ScientificTopic.find_by_preferred_label(label)
     # suggestion = EditSuggestion
-    # suggestion.materials < material
     # for each topic: suggestion.scientific_topics < topic
-    material = Material.find(material_id)
-
+    suggestible = suggestible_type.constantize.find(suggestible_id)
 
     # Use long description if available, otherwise short.
-    if material.long_description
-      desc = material.long_description
-    elsif material.short_description
-      desc = material.short_description
+    desc = nil
+    case suggestible_type
+      when 'Material'
+        if suggestible.long_description
+          desc = suggestible.long_description
+        else
+          desc = suggestible.short_description
+        end
+      when 'Event'
+        desc = suggestible.description
+      when 'Workflow'
+        desc = suggestible.description
+    end
+
+    if !desc
+      Logger.info("No description provided for #{suggestible.inspect}");
+      return
     end
 
     # Query with BioPortal.
@@ -55,11 +66,11 @@ class EditSuggestionWorker
             logger.info("ENTRY: #{entry['annotatedClass']['prefLabel']}")
             annotations << entry['annotatedClass']['prefLabel']
           else
-            logger.info("Material #{material.slug} matches entry #{id}.")
+            logger.info("Suggestible #{suggestible.inspect} matches entry #{id}.")
           end
         end
-      rescue
-        logger.error("Material #{material.slug} threw an exception when checking BioPortal.")
+      rescue => exception
+        logger.error("Suggestible #{suggestible.inspect} threw an exception when checking BioPortal: #{exception}")
       end
 
     end
@@ -77,16 +88,16 @@ class EditSuggestionWorker
       end
       logger.info("TOPIC: #{topics}")
       if topics
-        suggestion = EditSuggestion.new(:material => material)
+        suggestion = EditSuggestion.new(:suggestible_type => suggestible_type, :suggestible_id => suggestible_id)
         topics.each do |x|
-          logger.info("Created topic #{x} for #{material.slug}")
+          logger.info("Created topic #{x} for #{suggestible.inspect}")
           suggestion.scientific_topics << x
         end
         suggestion.save
-        logger.info("SUGGESTION: #{suggestion.inspect}")
+        logger.info("Suggestion created: #{suggestion.inspect}")
       end
     else
-      logger.info("No topics found for #{material.slug}")
+      logger.info("No topics found for #{suggestible.inspect}")
     end
 
   end
