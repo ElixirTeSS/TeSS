@@ -94,11 +94,15 @@ class EditSuggestionWorker
       if topics
         suggestion = EditSuggestion.new(:suggestible_type => suggestible_type, :suggestible_id => suggestible_id)
         topics.each do |x|
-          logger.info("Created topic #{x} for #{suggestible.inspect}")
+          logger.info("Added topic #{x} to #{suggestible.inspect}")
           suggestion.scientific_topics << x
         end
-        suggestion.save
-        logger.info("Suggestion created: #{suggestion.inspect}")
+        if suggestion.scientific_topics.length > 0
+          suggestion.save
+          logger.info("Suggestion created: #{suggestion.inspect}")
+        else
+          logger.error("Suggestion has no topics: #{suggestion.inspect}")
+        end
       end
     else
       logger.info("No topics found for #{suggestible.inspect}")
