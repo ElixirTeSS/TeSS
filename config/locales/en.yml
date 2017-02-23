@@ -28,3 +28,6 @@ en:
     attributes:
       material:
         doi: 'DOI'
+      profile:
+        firstname: 'First name'
+        surname: 'Last name'
