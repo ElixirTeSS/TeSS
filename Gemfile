@@ -1,46 +1,59 @@
 source 'https://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.4'
+
 # Use postgresql as the database for Active Record
 gem 'pg'
+
+# For installing PG on macs:
 gem 'lunchy'
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
+
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
+
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.1.0'
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
 
-gem 'rails_admin'
-gem 'devise'
-gem 'public_activity'
+# See https://github.com/rails/execjs#readme for more supported runtimes
+gem 'therubyracer'#, platforms: :ruby
+
+# CRUD of resources via a UI
+gem 'rails_admin', '~> 1.1.1'
+
+# Authentication
+gem 'devise', '~> 4.2.0'
+gem 'omniauth-openid-connect', git: 'git://github.com/jjbohn/omniauth-openid-connect'
+
+# Activity logging
+gem 'public_activity', '~> 1.5.0'
+
 gem 'simple_token_authentication', '~> 1.0'
 
-gem "therubyracer"
-# gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
-# gem "twitter-bootstrap-rails"
-gem 'bootstrap-sass'
-gem 'font-awesome-sass'
+gem 'bootstrap-sass', '~> 3.3.7'
+
+gem 'font-awesome-sass', '~> 4.7.0'
 
 gem 'friendly_id', '~> 5.1.0'
 
-gem 'sunspot_rails'
+gem 'sunspot_rails', '~> 2.2.7'
+
 gem 'sunspot_solr', '= 2.2.0'
-gem 'progress_bar'
+
+gem 'progress_bar', '~> 1.1.0'
 
 gem 'paper_trail', '~> 4.0.0'
 
-gem 'activerecord-session_store'
+gem 'activerecord-session_store', '~> 1.0.0'
 
-gem 'gravtastic'
+gem 'gravtastic', '~> 3.2.6'
 
 gem 'green_monkey'
 
-gem 'dynamic_sitemaps'
+gem 'dynamic_sitemaps', '~> 2.0.0'
 
 gem 'whenever'
 
@@ -51,10 +64,11 @@ gem 'sinatra', require: false
 gem 'slim'
 
 # Use jquery as the JavaScript library
-gem 'jquery-rails'
+gem 'jquery-rails', '~> 4.2.2'
+
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
-gem 'jquery-turbolinks'
+gem 'turbolinks', '~> 2.5.3'
+gem 'jquery-turbolinks', '~> 2.1.0'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
@@ -62,35 +76,37 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Gem for creating before_validation callbacks for stripping whitespace
-gem "auto_strip_attributes", "~> 2.0"
+gem 'auto_strip_attributes', '~> 2.0'
 
 # Gem for validating URLs
-gem 'valid_url'
+gem 'validate_url', '~> 1.0.2'
 
 # Gem for adding breadcrumbs
-# gem "breadcrumbs_on_rails"
-# Gem for breadcrums and other extras
-gem "bootstrap-sass-extras"
+# gem 'breadcrumbs_on_rails'
 
-gem "simple_form"
+# Gem for breadcrums and other extras
+gem 'bootstrap-sass-extras'
+
+gem 'simple_form', '~> 3.4.0'
 
 # Gem for rendering Markdown
-gem "redcarpet"
+gem 'redcarpet', '~> 3.4.0'
 
 # Gem for paginating search results
-gem "will_paginate-bootstrap"
+gem 'will_paginate', '~> 3.1.5'
+gem 'will_paginate-bootstrap', '~> 1.0.1'
 
 # Gem for managing the app version
 gem 'app_version'
 
 # Gem for authorisation
-gem "pundit"
+gem 'pundit', '~> 1.1.0'
 
 # Simple colour picker from a predefined list
 gem 'jquery-simplecolorpicker-rails'
 
 # For getting date of materials for the home page
-gem 'by_star', git: "git://github.com/radar/by_star"
+gem 'by_star', '~> 2.2.1', git: 'git://github.com/radar/by_star'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -103,7 +119,7 @@ gem 'by_star', git: "git://github.com/radar/by_star"
 
 gem 'handlebars_assets'
 
-gem "paperclip", "~> 5.0.0"
+gem 'paperclip', '~> 5.0.0'
 
 gem 'icalendar', '~> 2.4.1'
 
@@ -111,7 +127,7 @@ gem 'bootstrap-datepicker-rails', '~> 1.6.4.1'
 
 gem 'rack-cors', require: 'rack/cors'
 
-gem 'recaptcha', require: 'recaptcha/rails'
+gem 'recaptcha', '~> 4.0.1', require: 'recaptcha/rails'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-markdown-it', '~> 7.0.1'
@@ -123,7 +139,7 @@ end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'webmock', "~> 2.1.0"
+  gem 'webmock', '~> 2.1.0'
   gem 'byebug'
   gem 'simplecov'
   gem 'rubocop'
@@ -132,8 +148,6 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
-
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   #gem 'spring'
 end
-

@@ -4,6 +4,9 @@
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")),
                     :back, :class => 'btn btn-info' %>
+        <% unless current_user.nil? %>
+            <%= link_to 'Fork', fork_workflow_path(@workflow), :class => 'btn btn-primary' %>
+        <% end %>
         <% if !current_user.nil? and policy(@workflow).update? %>
             <%= link_to t('.edit', :default => t("helpers.links.edit")),
                         edit_workflow_path(@workflow), :class => 'btn btn-primary' %>
@@ -30,7 +33,7 @@
     </div>
     <div class="tab-content">
       <div id="workflow" class="tab-pane fade in active">
-        <h2><%= t '.title', :default => @workflow.title %></h2>
+        <h2><%= t '.title', :default => title_with_privacy(@workflow) %></h2>
 
         <% content_for :sidebar_title do %>
             <i class="fa fa-sitemap"></i> <%= @workflow.title %>

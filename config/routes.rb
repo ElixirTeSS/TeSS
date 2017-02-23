@@ -16,7 +16,10 @@ Rails.application.routes.draw do
 
   #devise_for :users
   # Use custom registrations controller that subclasses devise's
-  devise_for :users, :controllers => {:registrations => "tess_devise/registrations"}
+  devise_for :users, :controllers => {
+      :registrations => 'tess_devise/registrations',
+      :omniauth_callbacks => 'callbacks'
+  }
   #Redirect to users index page after devise user account update
   # as :user do
   #   get 'users', :to => 'users#index', :as => :user_root
@@ -45,7 +48,11 @@ Rails.application.routes.draw do
 =begin    post 'remove_resources' => 'packages#remove_resources'
 =end
   end
-  resources :workflows, concerns: :collaboratable
+  resources :workflows, concerns: :collaboratable do
+    member do
+      get 'fork'
+    end
+  end
 
   resources :content_providers do
     resource :activities, :only => [:show]

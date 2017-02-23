@@ -40,10 +40,4 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
-
-  CONTACT_EMAIL = 'test@example.com'
-  SOLR_ENABLED = false
-
-  GOOGLE_MAPS_API_KEY = 'AIzaSyAUI5mvJQGZ7Ljhv4FvjKPrdHoBRHwXL2Q'
-
 end

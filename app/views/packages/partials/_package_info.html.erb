@@ -6,7 +6,7 @@
       <%= (image_tag(package.image.url, :class => "medium-content-provider-logo")) %>
     </p>
     <h5>
-      <%= package.title %>
+      <%= title_with_privacy(package) %>
     </h5>
     <% unless package.description.blank? %>
         <p class="minimise">

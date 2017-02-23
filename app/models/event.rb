@@ -15,7 +15,7 @@ class Event < ActiveRecord::Base
   extend FriendlyId
   friendly_id :title, use: :slugged
 
-  if SOLR_ENABLED
+  if TeSS::Config.solr_enabled
     searchable do
       text :title
       string :title

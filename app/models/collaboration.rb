@@ -12,7 +12,7 @@ class Collaboration < ActiveRecord::Base
   private
 
   def reindex_resource
-    Sunspot.index(resource) if SOLR_ENABLED
+    Sunspot.index(resource) if TeSS::Config.solr_enabled
   end
 
 end
