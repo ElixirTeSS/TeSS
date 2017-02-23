@@ -8,6 +8,13 @@ GIT
       openid_connect (~> 0.9.2)
 
 GIT
+  remote: git://github.com/lassebunk/dynamic_sitemaps.git
+  revision: 37beeba143e8202218ee814056231b0e6974bafb
+  branch: master
+  specs:
+    dynamic_sitemaps (2.0.0)
+
+GIT
   remote: git://github.com/radar/by_star
   revision: 3fe3ef33e98aebcc226cbfea51d1e5101f948c78
   specs:
@@ -109,7 +116,6 @@ GEM
       responders
       warden (~> 1.2.3)
     docile (1.1.5)
-    dynamic_sitemaps (2.0.0)
     erubis (2.7.0)
     execjs (2.7.0)
     font-awesome-rails (4.7.0.1)
@@ -421,7 +427,7 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.1.0)
   devise (~> 4.2.0)
-  dynamic_sitemaps (~> 2.0.0)
+  dynamic_sitemaps!
   font-awesome-sass (~> 4.7.0)
   friendly_id (~> 5.1.0)
   gravtastic (~> 3.2.6)
@@ -455,11 +461,11 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   sidekiq
-  sinatra
-  slim
   simple_form (~> 3.4.0)
   simple_token_authentication (~> 1.0)
   simplecov
+  sinatra
+  slim
   sunspot_rails (~> 2.2.7)
   sunspot_solr (= 2.2.0)
   therubyracer

@@ -7,6 +7,7 @@ class Profile < ActiveRecord::Base
 =end
 
   if TeSS::Config.solr_enabled
+    # :nocov:
     searchable do
       text :firstname
       text :surname
@@ -15,6 +16,7 @@ class Profile < ActiveRecord::Base
       text :image_url
       time :updated_at
     end
+    # :nocov:
   end
 
   #validates :email, presence: true

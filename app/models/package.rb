@@ -28,6 +28,7 @@ class Package < ActiveRecord::Base
   has_image(placeholder: "/assets/placeholder-package.png")
 
   if TeSS::Config.solr_enabled
+    # :nocov:
     searchable do
       text :title
       string :title
@@ -53,6 +54,7 @@ class Package < ActiveRecord::Base
       integer :user_id
       boolean :public
     end
+    # :nocov:
   end
 
   #Overwrites a packages materials and events.

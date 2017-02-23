@@ -204,3 +204,12 @@ Structure the JSON thus:
 
 A bundle install and rake db:migrate, followed by saving the user as mentioned above, should be enough to get this
 working.
+
+
+### Rake tasks
+
+To find suggestions of EDAM topics for materials, you can run this rake task. This requires redis and sidekiq to be running as it will add jobs to a queue. It uses BioPortal Annotator web service against the materials description to create suggestions
+
+```
+bundle exec rake tess:add_topic_suggestions
+```

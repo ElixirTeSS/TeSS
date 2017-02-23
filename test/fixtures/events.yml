@@ -95,3 +95,12 @@ organisation_event:
   content_provider: organisation_provider
   start: 2016-12-12 10:00:00
   end: 2016-12-12 12:00:00
+
+portal_event:
+  title: Awesome Training Day
+  url: http://content-provider.portal/event
+  description: 'Wow! So fun'
+  user: scraper_user
+  content_provider: portal_provider
+  start: 2016-12-12 10:00:00
+  end: 2016-12-12 12:00:00

@@ -15,6 +15,7 @@ class Material < ActiveRecord::Base
   friendly_id :title, use: :slugged
 
   if TeSS::Config.solr_enabled
+    # :nocov:
     searchable do
       text :title
       string :title
@@ -71,6 +72,7 @@ class Material < ActiveRecord::Base
         end
       end
     end
+    # :nocov:
   end
 
   # has_one :owner, foreign_key: "id", class_name: "User"
@@ -102,10 +104,6 @@ class Material < ActiveRecord::Base
 
   def long_description= desc
     super(Rails::Html::FullSanitizer.new.sanitize(desc))
-  end
-
-  def self.owner
-    self.user
   end
 
   def self.facet_fields

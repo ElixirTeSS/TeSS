@@ -15,10 +15,12 @@ class User < ActiveRecord::Base
   attr_accessor :login
 
   if TeSS::Config.solr_enabled
+    # :nocov:
     searchable do
       text :username
       text :email
     end
+    # :nocov:
   end
 
   has_one :profile, :dependent => :destroy
@@ -94,10 +96,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  def is_default_user?
-    self.has_role?('default_user')
-  end
-
   def is_curator?
     self.has_role?('curator')
   end
@@ -107,16 +105,6 @@ class User < ActiveRecord::Base
     # after creation but before save
     # so no confirmation emails are sent
     self.skip_confirmation! unless Rails.env.production?
-  end
-
-  def set_as_admin
-    role = Role.fetch('admin')
-    if role
-      self.role = role
-      self.save!
-    else
-      puts 'Sorry, no admin for you.'
-    end
   end
 
   def self.get_default_user

@@ -11,6 +11,7 @@ class Workflow < ActiveRecord::Base
   friendly_id :title, use: :slugged
 
   if TeSS::Config.solr_enabled
+    # :nocov:
     searchable do
       string :title
       string :sort_title do
@@ -49,6 +50,7 @@ class Workflow < ActiveRecord::Base
       boolean :public
       integer :collaborator_ids, multiple: true
     end
+    # :nocov:
   end
 
   # has_one :owner, foreign_key: "id", class_name: "User"

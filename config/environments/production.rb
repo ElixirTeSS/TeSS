@@ -65,7 +65,8 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default_url_options = {
       host: URI.parse(TeSS::Config.base_url).host,
-      port: URI.parse(TeSS::Config.base_url).port
+      port: URI.parse(TeSS::Config.base_url).port,
+      protocol: URI.parse(TeSS::Config.base_url).scheme
   }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to

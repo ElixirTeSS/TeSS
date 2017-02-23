@@ -3,11 +3,21 @@ require 'sidekiq/testing'
 
 class EditSuggestionWorkerTest < ActiveSupport::TestCase
 
-  test 'Start a background job' do
-    size = EditSuggestionWorker.jobs.size
+  test 'Get suggestions for a material' do
     material = materials(:biojs)
-    EditSuggestionWorker.perform_async(material.id)
-    assert_equal EditSuggestionWorker.jobs.size, size + 1
+
+    assert_nil material.edit_suggestion
+
+    Sidekiq::Testing.inline! do
+      assert_difference('EditSuggestion.count', 1) do
+        EditSuggestionWorker.perform_async(material.id)
+      end
+    end
+
+    material.reload
+
+    assert_equal 1, material.edit_suggestion.scientific_topics.count
+    assert_equal 'Bioinformatics', material.edit_suggestion.scientific_topics.first.preferred_label
   end
 
 end
