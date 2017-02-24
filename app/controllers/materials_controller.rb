@@ -150,11 +150,6 @@ class MaterialsController < ApplicationController
                                      external_resources_attributes: [:id, :url, :title, :_destroy], event_ids: [])
   end
 
-  #  Run a sidekiq task here to find suggested scientific topics
-  def look_for_topics(material)
-    if material.scientific_topic_names.length == 0 and material.edit_suggestion.nil?
-      EditSuggestionWorker.perform_in(1.minute,[material.id,material.class.name])
-    end
-  end
+
 
 end
