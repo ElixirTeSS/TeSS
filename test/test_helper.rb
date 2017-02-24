@@ -41,6 +41,16 @@ class ActiveSupport::TestCase
     WebMock.stub_request(:get, "https://bio.tools/api/tool?q=Training%20Material%20Example").
         with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
         to_return(:status => 200, :body => "", :headers => {})
+
+
+
+  end
+
+  def mock_biotools
+    biotools_file = File.read("#{Rails.root}/test/fixtures/files/annotation.json")
+    biotools_response =  JSON.parse(biotools_file)
+    WebMock.stub_request(:get, /data.bioontology.org/).
+      to_return(:status => 200, :headers => {},  :body => biotools_response.to_json  )
   end
 
 end

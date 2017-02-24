@@ -56,32 +56,25 @@ class EditSuggestionWorker
     # Run the query
     # Clearly, hitting BioPortal with test fixture data would be a bit silly, but it might be useful to test somehow
     # whether this connection actually works. For now, fake data will be returned.
-    if Rails.env == 'test'
-      annotations << 'Bioinformatics'
-    else
-      begin
-        response = HTTParty.get(url)
-        data = JSON.parse(response.body)
+    begin
+      response = HTTParty.get(url)
+      data = JSON.parse(response.body)
 
-        data.each do |entry|
-          id = entry['annotatedClass']['@id']
-          logger.info("ID: #{id}")
-          if id.include? 'http://edamontology.org/topic_'
-            logger.info("ENTRY: #{entry['annotatedClass']['prefLabel']}")
-            annotations << entry['annotatedClass']['prefLabel']
-          else
-            logger.info("Suggestible #{suggestible.inspect} matches entry #{id}.")
-          end
+      data.each do |entry|
+        id = entry['annotatedClass']['@id']
+        if id.include? 'http://edamontology.org/topic_'
+          annotations << entry['annotatedClass']['prefLabel']
+        #else
+          #logger.info("Suggestible #{suggestible.inspect} matches entry #{id}.")
         end
-      rescue => exception
-        logger.error("Suggestible #{suggestible.inspect} threw an exception when checking BioPortal: #{exception}")
       end
-
+    rescue => exception
+      logger.error("Suggestible #{suggestible.inspect} threw an exception when checking BioPortal: #{exception}")
     end
 
 
     # Create some topics and an edit_suggestion if some annotations were returned
-    logger.info("ANNOTATION: #{annotations}")
+    #logger.info("ANNOTATION: #{annotations}")
     if annotations.length > 0
       topics = []
       annotations.each do |a|
@@ -90,16 +83,16 @@ class EditSuggestionWorker
           topics << topic
         end
       end
-      logger.info("TOPIC: #{topics}")
+      #logger.info("TOPIC: #{topics}")
       if topics
         suggestion = EditSuggestion.new(:suggestible_type => suggestible_type, :suggestible_id => suggestible_id)
         topics.each do |x|
-          logger.info("Added topic #{x} to #{suggestible.inspect}")
+          #logger.info("Added topic #{x} to #{suggestible.inspect}")
           suggestion.scientific_topics << x
         end
         if suggestion.scientific_topics.length > 0
           suggestion.save
-          logger.info("Suggestion created: #{suggestion.inspect}")
+          #logger.info("Suggestion created: #{suggestion.inspect}")
         else
           logger.error("Suggestion has no topics: #{suggestion.inspect}")
         end

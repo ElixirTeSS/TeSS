@@ -3,6 +3,10 @@ require 'sidekiq/testing'
 
 class EditSuggestionWorkerTest < ActiveSupport::TestCase
 
+  setup do
+    mock_biotools
+  end
+
   test 'Get suggestions for a material' do
     material = materials(:biojs)
 
@@ -17,8 +21,8 @@ class EditSuggestionWorkerTest < ActiveSupport::TestCase
     material.reload
 
     assert_not_nil material.edit_suggestion
-    assert_equal 1, material.edit_suggestion.scientific_topics.count
-    assert_equal 'Bioinformatics', material.edit_suggestion.scientific_topics.first.preferred_label
+    assert_equal 2, material.edit_suggestion.scientific_topics.count
+    assert_equal 'RNA', material.edit_suggestion.scientific_topics.first.preferred_label
   end
 
   test 'Get suggestions for an event' do
@@ -35,8 +39,8 @@ class EditSuggestionWorkerTest < ActiveSupport::TestCase
     event.reload
 
     assert_not_nil event.edit_suggestion
-    assert_equal 1, event.edit_suggestion.scientific_topics.count
-    assert_equal 'Bioinformatics', event.edit_suggestion.scientific_topics.first.preferred_label
+    assert_equal 2, event.edit_suggestion.scientific_topics.count
+    assert_equal 'RNA', event.edit_suggestion.scientific_topics.first.preferred_label
   end
 
   test 'Get suggestions for a workflow' do
@@ -53,8 +57,8 @@ class EditSuggestionWorkerTest < ActiveSupport::TestCase
     workflow.reload
 
     assert_not_nil workflow.edit_suggestion
-    assert_equal 1, workflow.edit_suggestion.scientific_topics.count
-    assert_equal 'Bioinformatics', workflow.edit_suggestion.scientific_topics.first.preferred_label
+    assert_equal 2, workflow.edit_suggestion.scientific_topics.count
+    assert_equal 'RNA', workflow.edit_suggestion.scientific_topics.first.preferred_label
   end
 
 end
