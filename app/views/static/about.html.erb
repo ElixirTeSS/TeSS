@@ -40,6 +40,11 @@
           </a>
         </li>
         <li class="nav-item">
+          <a href="#api">
+            API
+          </a>
+        </li>
+        <li class="nav-item">
           <a href="#faq">FAQ</a>
         </li>
         <li class="nav-item">
@@ -110,9 +115,9 @@
           <h2>Contact us</h2>
 
           <p>
-            If you have any queries about TeSS, please email
+            If you have any queries about TeSS, discovered any bugs, or have any suggestions please email
             <a href="mailto:tess@elixir-uk.info">tess@elixir-uk.info</a>
-            or <a href="mailto:niall.beard@manchester.ac.uk">Niall Beard</a>
+            or <a href="mailto:niall.beard@manchester.ac.uk">Niall Beard</a> and we'll get back to you as soon as possible.
           </p>
 
           <a name="howtoadd"> </a>
@@ -130,9 +135,13 @@
           </p>
             <p>
             If you have a website with <b>more than 3</b> training materials or events and wish to add them to TeSS,
-            we can create an aggregator script for your site. There are several techniques we utilize depending on your
-            websites features. Please <b>contact our <a href="mailto:tess@elixir-uk.info">help desk</a></b> and tell us which
-            format your data is in.
+            we can create a script to aggregate from your site. There are several techniques we utilize depending on your
+            websites features.
+           <p>
+              Please <b>contact our <a href="mailto:tess@elixir-uk.info">help desk</a></b> and tell us which
+              format your data is in. If your site does not conform to one of the below formats, please see the <b>schema.org</b> item.
+           </p>
+
           </p>
 
           <ul>
@@ -178,6 +187,33 @@
               or any other format, we would be happy to write a script to parse it.
             </p></li>
           </ul>
+
+          <a name="api"> </a>
+          <h2>API</h2>
+          <div>
+            <span style="float:right">
+            <a href="https://app.swaggerhub.com/api/njall/TeSS/1.0.0/">
+              <%= image_tag 'swagger.png', size: "50x50"%>
+            </a>
+            </span>
+            <span>
+            <p>TeSS has a read API. Information about request parameters and return objects can
+              be found in our <a href="https://app.swaggerhub.com/api/njall/TeSS/1.0.0/">
+          Swagger Hub Documentation</a>. We're still in the process of documenting our full API so bare with us.
+              </p>
+              <p> As a rule of thumb - You can add .json to the end of most pages to retrieve the data in a common exchange format.
+              e.g.
+                <ul>
+                  <% model = %w(Event Material Package Workflow Node) %>
+                  <% model.each do |m| %>
+                      <li>
+                        <% url = "#{TeSS::Config.base_url}#{url_for (m.constantize.last)}.json" %>
+                        <%= link_to url, url %>
+                      </li>
+                  <% end %>
+                </ul>
+            </span>
+          </div>
 
 
           <a name="faq"> </a>

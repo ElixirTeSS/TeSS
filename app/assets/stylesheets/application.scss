@@ -35,7 +35,7 @@ body {
   min-width: 320px;
   position: relative;
   margin: 0;
-  padding-bottom: 120px;
+  padding-bottom: 130px;
   min-height: 100%;
 }
 
@@ -676,4 +676,9 @@ sup {
   padding-left: 32px;
   cursor: pointer;
   vertical-align: middle;
+}
+
+div.legal-block {
+  max-width: 800px;
+  margin: auto;
 }

@@ -20,7 +20,14 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
- pundit:
-   default: 'You are not authorised to perform this action.'
-   material_policy:
-   event_policy:
+  pundit:
+    default: 'You are not authorised to perform this action.'
+    material_policy:
+    event_policy:
+  activerecord:
+    attributes:
+      material:
+        doi: 'DOI'
+      profile:
+        firstname: 'First name'
+        surname: 'Last name'

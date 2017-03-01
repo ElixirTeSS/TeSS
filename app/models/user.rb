@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
     # :nocov:
   end
 
-  has_one :profile, :dependent => :destroy
+  has_one :profile, inverse_of: :user, dependent: :destroy
   has_many :materials
   has_many :packages, :dependent => :destroy
   has_many :workflows, :dependent => :destroy
@@ -128,11 +128,24 @@ class User < ActiveRecord::Base
     Thread.current[:current_user]
   end
 
+  # Keeps adding numbers to the end of a given username until it is unique
+  def self.unique_username(username)
+    unique_username = username
+    number = 0
+
+    while User.where(username: unique_username).any?
+      unique_username = "#{username}#{number += 1}"
+    end
+
+    unique_username
+  end
+
   def self.from_omniauth(auth)
     # TODO: Decide what to do about users who have an account but authenticate later on via Elixir AAI.
     # TODO: The code below will update their account to note the Elixir auth. but leave their password intact;
     # TODO: is this what we should be doing?
     #user = User.where(:provider => auth.provider, :uid => auth.uid).first
+    # `auth.info` fields: email, first_name, gender, image, last_name, name, nickname, phone, urls
     user = User.where(:email => auth.info.email ).first
     if user
       if user.provider.nil? and user.uid.nil?
@@ -141,17 +154,19 @@ class User < ActiveRecord::Base
         user.save
       end
     else
+      # Generate a unique username. Usernames provided by AAI may already be in use.
       user = User.new(provider: auth.provider,
                       uid: auth.uid,
                       email: auth.info.email,
-                      username: auth.info.openid,
+                      username: User.unique_username(auth.info.nickname || auth.info.openid || 'user'),
                       password: Devise.friendly_token[0,20],
+                      profile_attributes: { firstname: auth.info.first_name,
+                                            surname: auth.info.last_name }
       )
       user.skip_confirmation!
-      user.save
     end
-    user
 
+    user
   end
 
   private
