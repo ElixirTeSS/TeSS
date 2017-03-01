@@ -6,7 +6,7 @@ class ScientificTopic < ActiveRecord::Base
 
 
   def self.create_topics
-    edam_topics = YAML.load(File.open('config/dictionaries/edam.yml'))
+    edam_topics = YAML.load(File.open('config/dictionaries/edam_topics.yml'))
     edam_topics.each do |edam_topic|
       st = ScientificTopic.find_or_create_by(class_id: edam_topic['class_id'])
       st.assign_attributes(
