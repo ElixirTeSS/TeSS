@@ -519,18 +519,26 @@ var Workflows = {
             materials: { icon: 'fa-book' },
             events: {icon: 'fa-calendar'},
             tools: { icon: 'fa-wrench' },
-            policies: { icon: 'fa-file-text-o' }
+            policies: { icon: 'fa-file-text-o' },
+            ontology_terms: { icon: 'fa-link' }
         },
 
         // Add a new blank form for an associated resource
         add: function () {
             var type = $(this).data('resourceType');
-            $('#node-modal-associated-resource-list').append(
-                HandlebarsTemplates['workflows/associated_resource_form']({
-                    type: type,
-                    icon: Workflows.associatedResources.types[type].icon
-                })
-            );
+            var template;
+
+            if (type === 'ontology_terms') {
+                template = HandlebarsTemplates['workflows/ontology_term_form'];
+            } else {
+                template = HandlebarsTemplates['workflows/associated_resource_form'];
+            }
+
+            $('#node-modal-associated-resource-list').append(template({
+                type: type,
+                icon: Workflows.associatedResources.types[type].icon
+            }));
+
             return false;
         },
 
@@ -538,7 +546,7 @@ var Workflows = {
             $(this).parents('.associated-resource').remove();
             return false;
         },
-        
+
         // Fetch the associated resources from the modal. Returns an array of objects that can be added to a node's data
         fetch: function (node) {
             var resources = [];
