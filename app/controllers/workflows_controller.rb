@@ -88,6 +88,7 @@ class WorkflowsController < ApplicationController
   end
 
   def embed
+    response.headers.delete 'X-Frame-Options'
     authorize @workflow, :show?
     render layout: 'embed'
   end
