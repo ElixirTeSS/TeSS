@@ -36,6 +36,18 @@ class WorkflowsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "should show embedded workflow" do
+    get :embed, id: @workflow
+    assert_response :success
+    assert_select '.embedded-container', count: 1
+  end
+
+  test "should not show embedded private workflow" do
+    get :embed, id: workflows(:private_workflow)
+    assert_response :forbidden
+    assert_select '.embedded-container', count: 0
+  end
+
   test "should get edit" do
     sign_in users(:admin)
 

@@ -35,8 +35,6 @@ Rails.application.routes.draw do
   get 'static/home'
 
   resources :users
-
-
   resources :activities
   resources :nodes
   resources :events do
@@ -52,6 +50,7 @@ Rails.application.routes.draw do
   resources :workflows, concerns: :collaboratable do
     member do
       get 'fork'
+      get 'embed'
     end
   end
 

@@ -2,7 +2,7 @@ class WorkflowsController < ApplicationController
 
   layout 'application'
 
-  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :fork]
+  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :fork, :embed]
 
   include Tess::BreadCrumbs
   include SearchableIndex
@@ -85,6 +85,11 @@ class WorkflowsController < ApplicationController
     respond_to do |format|
       format.html { render :new }
     end
+  end
+
+  def embed
+    authorize @workflow, :show?
+    render layout: 'embed'
   end
 
   private
