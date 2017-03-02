@@ -93,4 +93,8 @@ class ApplicationController < ActionController::Base
       end
     end
   end
+
+  def allow_embedding
+    response.headers.delete 'X-Frame-Options'
+  end
 end

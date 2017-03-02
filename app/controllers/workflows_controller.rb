@@ -3,6 +3,7 @@ class WorkflowsController < ApplicationController
   layout 'application'
 
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :fork, :embed]
+  after_filter :allow_embedding, only: [:embed]
 
   include Tess::BreadCrumbs
   include SearchableIndex
@@ -88,7 +89,6 @@ class WorkflowsController < ApplicationController
   end
 
   def embed
-    response.headers.delete 'X-Frame-Options'
     authorize @workflow, :show?
     render layout: 'embed'
   end
