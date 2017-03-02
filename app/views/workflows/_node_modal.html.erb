@@ -55,3 +55,15 @@
     </div>
   </div>
 </div>
+
+<script>
+  var ScientificTopics = { names: <%= raw(scientific_topic_names_for_autocomplete.to_json) -%> };
+
+  $('#node-modal-associated-resource-list').on('keydown.autocomplete','.term-autocomplete', function () {
+    $(this).autocomplete({
+      orientation: top,
+      lookupLimit: 10,
+      lookup: ScientificTopics.names
+    });
+  });
+</script>
