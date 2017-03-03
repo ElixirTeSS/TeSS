@@ -7,37 +7,40 @@
 {{#if associatedResources}}
     {{#if_any associatedResources "type" "materials"}}
         <h4 class="nav-heading-darker">Training materials</h3>
-        <ul>
+        <div class="resourceCard">
         {{#each_when associatedResources "type" "materials"}}
-            <li><a href="{{this.url}}" target="_blank">{{this.title}}</a></li>
+            <a href="{{this.url}}" target="_blank" class="h4">{{this.title}}</a>
         {{/each_when}}
-        </ul>
+        </div>
     {{/if_any}}
 
     {{#if_any associatedResources "type" "events"}}
         <h4 class="nav-heading-darker">Training events</h3>
-        <ul>
+        <div class="resourceCard">
         {{#each_when associatedResources "type" "events"}}
-            <li><a href="{{this.url}}" target="_blank">{{this.title}}</a></li>
+            <a href="{{this.url}}" target="_blank" class="h4">{{this.title}}</a>
         {{/each_when}}
-        </ul>
+        </div>
     {{/if_any}}
 
     {{#if_any associatedResources "type" "tools"}}
     <h4 class="nav-heading-darker">Tools</h3>
-    <ul>
         {{#each_when associatedResources "type" "tools"}}
-        <li><a href="{{this.url}}" target="_blank">{{this.title}}</a></li>
+        <div class="resourceCard">
+        <a href="{{this.url}}" target="_blank" class="h4">{{this.title}}</a>
+        <i><span id=tool-description-{{this.id}}></span></i>
+        <div id=tool-topics-{{this.id}}></div>
+        </div>
         {{/each_when}}
-    </ul>
     {{/if_any}}
 
     {{#if_any associatedResources "type" "policies"}}
     <h4 class="nav-heading" style="background-color:#dddddd; margin-bottom: 5px;">Policies</h3>
-    <ul>
+    <div class="resourceCard">
         {{#each_when associatedResources "type" "policies"}}
-        <li><a href="{{this.url}}" target="_blank">{{this.title}}</a></li>
+        <a href="{{this.url}}" target="_blank" class="h4">{{this.title}}</a>
         {{/each_when}}
+    </div>
     </ul>
     {{/if_any}}
 {{/if}}
