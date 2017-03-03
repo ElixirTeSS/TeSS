@@ -8,6 +8,24 @@
   background: rgba(51, 122, 183, 0.08);
   margin: 2px;
 }
+
+.embedded-container {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+
+  .workflow-diagram-wrapper, .workflow-diagram-container, .workflow-diagram-content {
+    height: 100%;
+  }
+
+  #cy {
+    height: 100% !important;
+    max-height: none !important;
+  }
+}
+
 .workflow-toolbar-wrapper {
   background-color: #DDDDDD;
   padding: 5px;
