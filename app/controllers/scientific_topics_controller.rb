@@ -7,7 +7,11 @@ class ScientificTopicsController < ApplicationController
   # GET /scientific_topics
   # GET /scientific_topics.json
   def index
-    @scientific_topics = ScientificTopic.all
+    if params[:filter]
+      @scientific_topics = ScientificTopic.where('lower(preferred_label) LIKE ?', "#{params[:filter].downcase}%")
+    else
+      @scientific_topics = ScientificTopic.all
+    end
   end
 
   # GET /scientific_topics/1
