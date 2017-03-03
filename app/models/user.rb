@@ -14,11 +14,13 @@ class User < ActiveRecord::Base
 
   attr_accessor :login
 
-  if SOLR_ENABLED
+  if TeSS::Config.solr_enabled
+    # :nocov:
     searchable do
       text :username
       text :email
     end
+    # :nocov:
   end
 
   has_one :profile, :dependent => :destroy
@@ -31,7 +33,7 @@ class User < ActiveRecord::Base
   belongs_to :role
 
   before_create :set_registered_user_role, :set_default_profile
-  after_create :skip_email_confirmation_for_non_production
+  before_create :skip_email_confirmation_for_non_production
 
   before_destroy :reassign_owner
 
@@ -39,7 +41,7 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :authentication_keys => [:login]
+         :omniauthable, :authentication_keys => [:login]
 
   validates :username,
             :presence => true,
@@ -94,10 +96,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  def is_default_user?
-    self.has_role?('default_user')
-  end
-
   def is_curator?
     self.has_role?('curator')
   end
@@ -106,22 +104,12 @@ class User < ActiveRecord::Base
     # In development and test environments, set the user as confirmed
     # after creation but before save
     # so no confirmation emails are sent
-    self.confirm unless Rails.env.production?
-  end
-
-  def set_as_admin
-    role = Role.fetch('admin')
-    if role
-      self.role = role
-      self.save!
-    else
-      puts 'Sorry, no admin for you.'
-    end
+    self.skip_confirmation! unless Rails.env.production?
   end
 
   def self.get_default_user
     where(role_id: Role.fetch('default_user').id).first_or_create(username: 'default_user',
-                                                                  email: CONTACT_EMAIL,
+                                                                  email: TeSS::Config.contact_email,
                                                                   password: SecureRandom.base64)
   end
 
@@ -138,6 +126,32 @@ class User < ActiveRecord::Base
 
   def self.current_user
     Thread.current[:current_user]
+  end
+
+  def self.from_omniauth(auth)
+    # TODO: Decide what to do about users who have an account but authenticate later on via Elixir AAI.
+    # TODO: The code below will update their account to note the Elixir auth. but leave their password intact;
+    # TODO: is this what we should be doing?
+    #user = User.where(:provider => auth.provider, :uid => auth.uid).first
+    user = User.where(:email => auth.info.email ).first
+    if user
+      if user.provider.nil? and user.uid.nil?
+        user.uid = auth.uid
+        user.provider = auth.provider
+        user.save
+      end
+    else
+      user = User.new(provider: auth.provider,
+                      uid: auth.uid,
+                      email: auth.info.email,
+                      username: auth.info.openid,
+                      password: Devise.friendly_token[0,20],
+      )
+      user.skip_confirmation!
+      user.save
+    end
+    user
+
   end
 
   private

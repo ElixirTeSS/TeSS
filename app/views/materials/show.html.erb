@@ -69,9 +69,7 @@
 
               <div>
                 <b>External resources: </b>
-                <% if @material.external_resources.none? %>
-                    <%= empty_tag(:span, 'none specified') %>
-                <% else %>
+                <% if @material.external_resources.any? %>
                     <%= render partial: 'common/external_resources_list', locals: { external_resources: @material.external_resources} %>
                 <% end %>
               </div>

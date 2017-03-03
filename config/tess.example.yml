@@ -1,0 +1,17 @@
+default: &default
+  base_url: http://localhost:3000
+  contact_email: contact@example.com
+  solr_enabled: true
+  announcement_message:
+
+development:
+  <<: *default
+
+production:
+  <<: *default
+
+test:
+  <<: *default
+  base_url: http://localhost:3000
+  contact_email: test@example.com
+  solr_enabled: false

@@ -63,7 +63,11 @@ Rails.application.configure do
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default_url_options = { host: 'localhost' }
+  config.action_mailer.default_url_options = {
+      host: URI.parse(TeSS::Config.base_url).host,
+      port: URI.parse(TeSS::Config.base_url).port,
+      protocol: URI.parse(TeSS::Config.base_url).scheme
+  }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
@@ -77,16 +81,4 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-
-  SOLR_ENABLED=true
-
-  CONTACT_EMAIL = 'example@gmail.com'
-
-  # The message to display at the very top of the page.
-  # Use this for extra special messages like very important announcements and maintenance notices.
-  # ANNOUNCEMENT_MESSAGE = "TeSS is undergoing scheduled maintenance on Thursday March 31 2016, during which the service may go down unexpectedly. Apologies for the disruption."
-  #ANNOUNCEMENT_MESSAGE = "TeSS is undergoing scheduled maintenance today, during which the service may go down unexpectedly. Apologies for the disruption."
-
-  GOOGLE_MAPS_API_KEY = ''
-
 end

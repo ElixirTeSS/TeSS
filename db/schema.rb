@@ -11,7 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170110152658) do
+
+ActiveRecord::Schema.define(version: 20170111183004) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,11 +66,14 @@ ActiveRecord::Schema.define(version: 20170110152658) do
   add_index "content_providers", ["user_id"], name: "index_content_providers_on_user_id", using: :btree
 
   create_table "edit_suggestions", force: :cascade do |t|
+    t.text     "name"
+    t.text     "text"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.text     "name"
     t.integer  "material_id"
   end
+
+  add_index "edit_suggestions", ["material_id"], name: "index_edit_suggestions_on_material_id", using: :btree
 
   create_table "edit_suggestions_scientific_topics", id: false, force: :cascade do |t|
     t.integer "edit_suggestion_id"
@@ -173,13 +177,9 @@ ActiveRecord::Schema.define(version: 20170110152658) do
     t.integer  "user_id"
     t.date     "last_scraped"
     t.boolean  "scraper_record",      default: false
-    t.integer  "edit_suggestion_id"
-    t.integer  "scientific_topic_id"
   end
 
   add_index "materials", ["content_provider_id"], name: "index_materials_on_content_provider_id", using: :btree
-  add_index "materials", ["edit_suggestion_id"], name: "index_materials_on_edit_suggestion_id", using: :btree
-  add_index "materials", ["scientific_topic_id"], name: "index_materials_on_scientific_topic_id", using: :btree
   add_index "materials", ["slug"], name: "index_materials_on_slug", unique: true, using: :btree
   add_index "materials", ["user_id"], name: "index_materials_on_user_id", using: :btree
 
@@ -364,11 +364,15 @@ ActiveRecord::Schema.define(version: 20170110152658) do
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.string   "slug"
+    t.string   "provider"
+    t.string   "uid"
+    t.string   "identity_url"
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["identity_url"], name: "index_users_on_identity_url", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["role_id"], name: "index_users_on_role_id", using: :btree
   add_index "users", ["slug"], name: "index_users_on_slug", unique: true, using: :btree
@@ -425,12 +429,11 @@ ActiveRecord::Schema.define(version: 20170110152658) do
   add_foreign_key "collaborations", "users"
   add_foreign_key "content_providers", "nodes"
   add_foreign_key "content_providers", "users"
+  add_foreign_key "edit_suggestions", "materials"
   add_foreign_key "event_materials", "events"
   add_foreign_key "event_materials", "materials"
   add_foreign_key "events", "users"
   add_foreign_key "materials", "content_providers"
-  add_foreign_key "materials", "edit_suggestions"
-  add_foreign_key "materials", "scientific_topics"
   add_foreign_key "materials", "users"
   add_foreign_key "node_links", "nodes"
   add_foreign_key "nodes", "users"

@@ -6,7 +6,8 @@ class Profile < ActiveRecord::Base
   friendly_id [:firstname, :surname], use: :slugged
 =end
 
-  if SOLR_ENABLED
+  if TeSS::Config.solr_enabled
+    # :nocov:
     searchable do
       text :firstname
       text :surname
@@ -15,6 +16,7 @@ class Profile < ActiveRecord::Base
       text :image_url
       time :updated_at
     end
+    # :nocov:
   end
 
   #validates :email, presence: true

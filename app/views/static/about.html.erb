@@ -25,8 +25,23 @@
           </a>
         </li>
         <li class="nav-item">
+          <a href="#team" title="">
+            Team
+          </a>
+        </li>
+        <li class="nav-item">
           <a href="#contact">
             Contact
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#howtoadd">
+            How to add your resources
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#api">
+            API
           </a>
         </li>
         <li class="nav-item">
@@ -42,6 +57,7 @@
             Software
           </a>
         </li>
+
       </ul>
     </div>
 
@@ -71,63 +87,139 @@
             ELIXIR-UK aims to strengthen life sciences across Europe and set the agenda for future training needs.
           </p>
 
-          <a name="register_content"></a>
-          <h2>Add your content to TeSS</h2>
-          <p>Do you have a website containing training materials and/or Life science events and wish them to be included in TeSS? If you do, please follow these steps to register them:</p>
+          <a name="team"></a>
+          <h2>The Team</h2>
 
-          <p><b>I have a small number of resources (fewer than 4) that do not change regularly?</b></p>
-          The simplest thing would be to manually enter them </p>
-          <ol>
-            <li>Create an account</li>
-            <li>Register <a href="/materials/new">materials here</a> and <a href="/events/new">events here</a></li>
-          </ol>
-
-          <p><b>I have a website containing more than 4 resources that change regularly?</b></p>
-          We can automatically scrape your website and keep registrations of material and events in TeSS synchronized with your site.</p>
-          <p> To do this we need to write a scraper. Please send an e-mail to <a href="mailto:tess@elixir-uk.info">tess@elixir-uk.info</a> with
-            a link to your website and we will discuss how best to approach this.</p>
-          <p> The preferred technique to scrape resource pages is by structuring your
-          materials and events metadata using schema.org. More about this technique can be found on the <a href="http://bioschemas.org">Bioschemas</a> website.</p>
+          <h5>Current Members</h5>
+          <ul>
+            <li>Niall Beard (TeSS manager, University of Manchester)
+            </li>
+            <li>Milo Thurston (TeSS developer, Oxford e-Research Centre)
+            </li>
+            <li>Finn Bacall (TeSS developer, University of Manchester)
+            </li>
+            <li>Terri Atwood (TeSS co-investigator, University of Manchester)
+            </li>
+            <li>Carole Goble (TeSS co-investigator, University of Manchester)
+            </li>
+          </ul>
+          <h5>Former Members</h5>
+          <ul>
+              <li>Aleksandra Nenadic (former TeSS manager, University of Manchester)
+              </li>
+          </ul>
 
           <a name="contact"></a>
-
-          <h2>TeSS Team </h2>
+          <h2>Contact us</h2>
 
           <p>
-            The TeSS team is based in Manchester and Oxford. If you have any queries about TeSS, please email
-            <a href="mailto:tess@elixir-uk.info">tess@elixir-uk.info</a>,
-            or send a message to a member of the TeSS team:
+            If you have any queries about TeSS, discovered any bugs, or have any suggestions please email
+            <a href="mailto:tess@elixir-uk.info">tess@elixir-uk.info</a>
+            or <a href="mailto:niall.beard@manchester.ac.uk">Niall Beard</a> and we'll get back to you as soon as possible.
           </p>
+
+          <a name="howtoadd"> </a>
+          <h2>How to add your resources</h2>
+
+          <p>
+          TeSS sources the majority of its training materials and events through aggregation. We do this by creating
+            scripts that extract the metadata about resources from websites. These are ran each night to keep the
+            resource information up to date.
+          </p>
+          <p>
+            If you have a website with <b>less than 3</b> training materials or events and wish to add them to TeSS,
+            we recommend you add them manually through the <%= link_to 'new material form', new_material_path %> or the
+            <%= link_to 'new event form', new_event_path %>
+          </p>
+            <p>
+            If you have a website with <b>more than 3</b> training materials or events and wish to add them to TeSS,
+            we can create a script to aggregate from your site. There are several techniques we utilize depending on your
+            websites features.
+           <p>
+              Please <b>contact our <a href="mailto:tess@elixir-uk.info">help desk</a></b> and tell us which
+              format your data is in. If your site does not conform to one of the below formats, please see the <b>schema.org</b> item.
+           </p>
+
+          </p>
+
           <ul>
-            <li><a href="mailto:niall.beard@manchester.ac.uk">Niall Beard</a> (TeSS Project Manager, University of
-              Manchester)
+            <li><p>
+              <b>API</b>
+              - An API is a programmatic interface. If you have an API for your website we will write a client to interface with it.
+              This is our preferred method, though we ask you to keep us informed if there are any API changes
+            </p></li>
+            <li><p><b>Schema.org</b>
+            - schema.org produce schemas to structure data online for search engines to read.
+            schema.org is becoming more prevalent and we recommend this option if you do not have an API or any
+            other option readily available for us.
+              <p>
+              Details of how to implement schema.org for
+              <a href="https://docs.google.com/document/d/12O8gsOuH2qHKpis6vTHxXExraNH5XZEnoilwNgWWgaQ">Events</a>
+              and
+              <a href="https://docs.google.com/document/d/1HG2fEjCoDUE4tn1XZ_ZIeWLEFXnI3YtS_FRIIFIbv-s">Materials</a>
+              have been written by the <a href="http://bioschemas.org/">Bioschemas group</a>. More information and help
+              can be given by contacting our <a href="mailto:tess@elixir-uk.info">help desk</a>.
+              </p>
+              </p>
             </li>
-            <li><a href="mailto:finn.bacall@manchester.ac.uk">Finn Bacall</a> (TeSS developer, University of
-              Manchester)
-            </li>
-            <li><a href="mailto:milo.thurston@oerc.ox.ac.uk">Milo Thurston</a> (TeSS developer, Oxford e-Research Centre)
-            </li>
-            <li><a href="mailto:teresa.k.attwood@manchester.ac.uk">Terri Atwood</a> (TeSS
-              co-investigator, University of Manchester)
-            </li>
-            <li><a href="mailto:carole.goble@manchester.ac.uk">Carole Goble</a> (TeSS
-              co-investigator, University of Manchester)
-            </li>
-            <li><a href="mailto:susanna-assunta.sansone@oerc.ox.ac.uk">Susanna-Assunta Sansone</a> (TeSS
-              co-investigator, Oxford e-Research Centre)
-            </li>
+            <li><p><b>RSS Feed</b>
+              - An RSS feed is a type of news format. Many sites have RSS feeds which list the recent posts on a site
+              in a standard format. We can write a script to parse this.
+            </p></li>
+            <li><p><b>ICS</b> <em>(Events only)</em>
+              - An ICS is a calendar feed. If you use Google calendars or a calendar widget on your website you likely have an
+              ICS file which contains the events metadata for the calendar to render. We can write a script to parse this.
+              </p></li>
+            <li><p><b>Git Repository</b>
+              - A git repository is a directory containing files that can be collaboratively edited. If you are using GitHub (or similar)
+            to develop your training resources and/or use GitHub.io (or similar) to render them, we can write a script
+              that clones the repository and extracts resource information. We may ask you to create a metadata file in
+              YAML format to help us extract the metadata.
+            </p></li>
+            <li><p><b>SOLR server (or similar)</b>
+              - A solr server is a search engine that many sites use for their internal search functionality. If you have a SOLR
+              server that is publicly accessible, we can write a script to interface with it.
+            </p></li>
+            <li><p><b>Other</b>
+              - If you have training metadata in another structured format such as an XML or JSON dump, a CSV file, a YAML file,
+              or any other format, we would be happy to write a script to parse it.
+            </p></li>
           </ul>
-          Past members:
-          <ul>
-            <li><a href=mailto:a.nenadic@manchester.ac.uk">Aleksandra Nenadic</a> (TeSS manager, University of Manchester)
-            </li>
-          </ul>
+
+          <a name="api"> </a>
+          <h2>API</h2>
+          <div>
+            <span style="float:right">
+            <a href="https://app.swaggerhub.com/api/njall/TeSS/1.0.0/">
+              <%= image_tag 'swagger.png', size: "50x50"%>
+            </a>
+            </span>
+            <span>
+            <p>TeSS has a read API. Information about request parameters and return objects can
+              be found in our <a href="https://app.swaggerhub.com/api/njall/TeSS/1.0.0/">
+          Swagger Hub Documentation</a>. We're still in the process of documenting our full API so bare with us.
+              </p>
+              <p> As a rule of thumb - You can add .json to the end of most pages to retrieve the data in a common exchange format.
+              e.g.
+                <ul>
+                  <% model = %w(Event Material Package Workflow Node) %>
+                  <% model.each do |m| %>
+                      <li>
+                        <% url = "#{TeSS::Config.base_url}#{url_for (m.constantize.last)}.json" %>
+                        <%= link_to url, url %>
+                      </li>
+                  <% end %>
+                </ul>
+            </span>
+          </div>
+
+
           <a name="faq"> </a>
 
           <h2>FAQ</h2>
 
-          <div class="panel-group" id="accordion">
 
+          <div class="panel-group" id="accordion">
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h4 class="panel-title">
@@ -186,37 +278,6 @@
                     focus
                     of GOBLET
                     is on the training resources and events of its worldwide members.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title">
-                  <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                    Within TeSS, do I have to add links to and metadata about to training information manually?
-                  </a>
-                </h4>
-              </div>
-              <div id="collapseThree" class="panel-collapse collapse">
-                <div class="panel-body">
-                  <p>
-                    No, you do not have to add links manually (although manual addition of information is possible).
-                  </p>
-
-                  <p>
-                    Training-relevant information is brought into TeSS automatically using the APIs of its content
-                    providers
-                    (or, where APIs do not exist, by scraping information automatically from providers’ websites).
-                  </p>
-
-                  <p>
-                    If you wish your content to be added to TeSS, please contact the TeSS team so that we can arrange to
-                    harvest
-                    your training materials and/or events. Alternatively, if you are a registered user, you may add
-                    links to and metadata about your training
-                    information manually.
                   </p>
                 </div>
               </div>

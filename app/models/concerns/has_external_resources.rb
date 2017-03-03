@@ -6,7 +6,8 @@ module HasExternalResources
     has_many :external_resources, as: :source, dependent: :destroy
     accepts_nested_attributes_for :external_resources, allow_destroy: true
 
-    if SOLR_ENABLED
+    if TeSS::Config.solr_enabled
+      # :nocov:
       searchable do
         string :tools, multiple: true do
           self.external_resources.select(&:is_tool?).collect(&:title)
@@ -18,6 +19,7 @@ module HasExternalResources
           self.external_resources.select(&:is_generic_external_resource?).collect(&:title)
         end
       end
+      # :nocov:
     end
   end
 

@@ -1,4 +1,3 @@
-<!-- onmouseenter="showTooltips()" onmouseleave="hideTooltips()" -->
 <% if tooltip_titles(event).empty? -%>
 <li class="masonry-brick media-item" -%>
 <% else -%>
@@ -35,18 +34,4 @@
   <%= link_to '', event, :class=>"media-view" %>
   <%= render :partial => 'events/partials/event_schemaorg', :locals => {:event => event} %>
 </li>
-
-<!--
-<script>
-  function showTooltips(){
-    console.log("Mouse in!" + $(this).find('.has-tooltip'));
-    $(this).find('.has-tooltip').tooltip('show');
-  }
-  function hideTooltips(){
-    console.log("Mouse out!"+ $(this).find('.has-tooltip'));
-    $(this).find('.has-tooltip').tooltip('hide');
-  }
-</script>
--->
-
 

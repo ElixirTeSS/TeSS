@@ -55,3 +55,6 @@ exact_synonym_topic:
 narrow_topic:
   preferred_label: narrow_topic_test
   has_broad_synonym: [broad_topic_name]
+
+bioinformatics:
+  preferred_label: Bioinformatics

@@ -2,7 +2,7 @@ class WorkflowsController < ApplicationController
 
   layout 'application'
 
-  before_action :set_workflow, only: [:show, :edit, :update, :destroy]
+  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :fork]
 
   include Tess::BreadCrumbs
   include SearchableIndex
@@ -76,6 +76,14 @@ class WorkflowsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to workflows_url, notice: 'Workflow was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def fork
+    @workflow = @workflow.new_fork(current_user)
+
+    respond_to do |format|
+      format.html { render :new }
     end
   end
 

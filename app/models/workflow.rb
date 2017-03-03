@@ -10,7 +10,8 @@ class Workflow < ActiveRecord::Base
   extend FriendlyId
   friendly_id :title, use: :slugged
 
-  if SOLR_ENABLED
+  if TeSS::Config.solr_enabled
+    # :nocov:
     searchable do
       string :title
       string :sort_title do
@@ -49,6 +50,7 @@ class Workflow < ActiveRecord::Base
       boolean :public
       integer :collaborator_ids, multiple: true
     end
+    # :nocov:
   end
 
   # has_one :owner, foreign_key: "id", class_name: "User"
@@ -66,6 +68,13 @@ class Workflow < ActiveRecord::Base
 
   def self.facet_fields
     %w(scientific_topics target_audience keywords licence difficulty_level authors contributors)
+  end
+
+  def new_fork(user)
+    self.dup.tap do |wf|
+      wf.title = "Fork of #{wf.title}"
+      wf.user = user
+    end
   end
 
   private

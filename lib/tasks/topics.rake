@@ -50,8 +50,9 @@ namespace :tess do
           id = entry['annotatedClass']['@id']
           if id.include? 'http://edamontology.org/topic_'
             annotations << entry['annotatedClass']['prefLabel']
-          else
             puts "Material #{material.slug} matches #{id}."
+          else
+            puts "Material #{material.slug} has non-topic match #{id}."
           end
         end
       rescue

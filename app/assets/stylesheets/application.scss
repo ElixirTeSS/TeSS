@@ -35,7 +35,7 @@ body {
   min-width: 320px;
   position: relative;
   margin: 0;
-  padding-bottom: 120px;
+  padding-bottom: 130px;
   min-height: 100%;
 }
 
@@ -666,4 +666,19 @@ sup {
 
 #gravatar_image {
   margin-bottom: 10px;
+}
+
+.btn-elixir {
+  @include button-variant(white, $elixir-orange, white);
+  background-image: url('elixir_white_small.png');
+  background-repeat: no-repeat;
+  background-position: 7px 7px;
+  padding-left: 32px;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+div.legal-block {
+  max-width: 800px;
+  margin: auto;
 }

@@ -49,3 +49,15 @@ project_provider:
   url: http://content-provider.com
   user: regular_user
   content_provider_type: Organisation
+
+portal_provider:
+  title: Portal Provider
+  url: http://content-provider.portal
+  user: regular_user
+  content_provider_type: Portal
+
+another_portal_provider:
+  title: Another Portal Provider
+  url: http://another-content-provider.portal
+  user: regular_user
+  content_provider_type: Portal

@@ -60,15 +60,14 @@ module SearchHelper
     end
   end
 
-  def show_more_link facet
-    parameters = params.dup
-    return link_to "<span style='font-weight: bold;'>Show more #{facet.humanize.pluralize.downcase}</span><i class='glyphicon glyphicon-chevron-down pull-right'></i>".html_safe, parameters.merge("#{facet}_all"=>true)
-  end
-
-  def show_less_link facet
-    parameters = params.dup
-    parameters.delete("#{facet}_all")
-    return link_to "<span style='font-weight: bold;'>Show less #{facet.humanize.pluralize.downcase}</span><i class='glyphicon glyphicon-chevron-up pull-right'></i>".html_safe, parameters
+  def toggle_hidden_facet_link facet
+    return "<span class='toggle-#{facet}' style='font-weight: bold;'>
+            Show more #{facet.humanize.pluralize.downcase}</span>
+            <i class='glyphicon glyphicon-chevron-down pull-right toggle-#{facet}'></i>
+            <span class='toggle-#{facet}' style='font-weight: bold; display: none;'>
+            Show fewer #{facet.humanize.pluralize.downcase}</span>
+            <i class='glyphicon glyphicon-chevron-up pull-right toggle-#{facet}' style='display: none;'></i>
+            ".html_safe
   end
 
   def neatly_printed_date_range start, finish

@@ -3,18 +3,7 @@ require 'icalendar'
 
 class EventsControllerTest < ActionController::TestCase
 
-  include Devise::TestHelpers
-
-  setup do
-    mock_images
-    @event = events(:one)
-  end
-
-require 'test_helper'
-
-class EventsControllerTest < ActionController::TestCase
-
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   setup do
     @event = events(:one)
@@ -322,10 +311,6 @@ class EventsControllerTest < ActionController::TestCase
         end
 =end
 
-end
-
-
-
   test 'should create new event through API' do
     scraper_role = Role.fetch('api_user')
     scraper_user = User.where(:role_id => scraper_role.id).first
@@ -450,6 +435,16 @@ end
     # Need to call .to_s, or Ruby thinks these two dates are not equal despite looking the same
     assert_equal @event.start.to_date.to_s, cal_event.dtstart.to_s
     assert_equal @event.end.to_date.to_s, cal_event.dtend.to_s
+  end
+
+  test 'should provide a csv file' do
+    get :index, format: :csv
+
+    assert_response :success
+    assert_equal 'text/csv', @response.content_type
+    csv_events = CSV.parse(@response.body)
+    assert_equal csv_events.first, ["Title", "Organizer", "Start", "End", "ContentProvider"]
+
   end
 
   test 'should add external resource to event' do

@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <% if SOLR_ENABLED %>
+  <% if TeSS::Config.solr_enabled %>
       <div id="sidebar" class="popout-sidebar">
         <%= render partial: "search/common/facet_sidebar", locals: {resources: @workflows_results, resource_type: Workflow} %>
       </div>
@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <% if false && SOLR_ENABLED %>
+    <% if false && TeSS::Config.solr_enabled %>
         <div class="row">
           <%= render partial: "search/common/search_box", locals: {resource_path: workflows_path} %>
           <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">

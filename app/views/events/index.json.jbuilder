@@ -5,6 +5,8 @@ json.array!(@events) do |event|
                 :user_id, :online, :cost, :for_profit, :last_scraped, :scraper_record, :keywords,
                 :event_types, :target_audience, :capacity, :eligibility, :contact, :host_institutions,
                 :scientific_topic_names
+  json.nodes event.associated_nodes.collect{|x| {:name => x[:name], :node_id => x[:id] } }
+  
   json.url
 
   json.external_resources do

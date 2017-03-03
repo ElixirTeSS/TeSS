@@ -92,7 +92,7 @@ class EventTest < ActiveSupport::TestCase
 
     assert_equal content_providers(:organisation_provider), e.content_provider
 
-    e.content_provider = content_providers(:iann)
+    e.content_provider = content_providers(:portal_provider)
 
     assert e.save
     assert_equal content_providers(:organisation_provider), e.reload.content_provider
@@ -111,14 +111,13 @@ class EventTest < ActiveSupport::TestCase
 
 
   test 'equal precedence content provider does overwrite' do
-    e = events(:iann_event)
+    e = events(:portal_event)
 
-    assert_equal content_providers(:iann), e.content_provider
+    assert_equal content_providers(:portal_provider), e.content_provider
 
-    e.content_provider = content_providers(:goblet)
+    e.content_provider = content_providers(:another_portal_provider)
 
     assert e.save
-    assert_equal content_providers(:goblet), e.content_provider
+    assert_equal content_providers(:another_portal_provider), e.content_provider
   end
-
 end
