@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170306133943) do
+ActiveRecord::Schema.define(version: 20170306143013) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,6 +72,8 @@ ActiveRecord::Schema.define(version: 20170306133943) do
     t.integer  "suggestible_id"
     t.string   "suggestible_type"
   end
+
+  add_index "edit_suggestions", ["suggestible_id", "suggestible_type"], name: "index_edit_suggestions_on_suggestible_id_and_suggestible_type", using: :btree
 
   create_table "edit_suggestions_scientific_topics", id: false, force: :cascade do |t|
     t.integer "edit_suggestion_id"
