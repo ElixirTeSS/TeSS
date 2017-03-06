@@ -1,7 +1,7 @@
 class MaterialsController < ApplicationController
   before_action :set_material, only: [:show, :edit, :update, :destroy, :update_packages]
+  before_action :set_breadcrumbs
 
-  include Tess::BreadCrumbs
   include SearchableIndex
   include ActionView::Helpers::TextHelper
 

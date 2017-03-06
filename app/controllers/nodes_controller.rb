@@ -1,7 +1,7 @@
 class NodesController < ApplicationController
   before_action :set_node, only: [:show, :edit, :update, :destroy]
+  before_action :set_breadcrumbs
 
-  include Tess::BreadCrumbs
   include SearchableIndex
 
   # GET /nodes

@@ -1,11 +1,10 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages]
+  before_action :set_breadcrumbs
   before_action :disable_pagination, only: :index, if: lambda { |controller| controller.request.format.ics? or controller.request.format.csv? }
 
-  include Tess::BreadCrumbs
   include SearchableIndex
   include ActionView::Helpers::TextHelper
-
 
   # GET /events
   # GET /events.json

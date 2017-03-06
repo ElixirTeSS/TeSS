@@ -1,5 +1,6 @@
 class SearchController < ApplicationController
-  include Tess::BreadCrumbs
+
+  before_action :set_breadcrumbs
 
   SEARCH_MODELS = %w(Material User Event Package ContentProvider Workflow).freeze
 
