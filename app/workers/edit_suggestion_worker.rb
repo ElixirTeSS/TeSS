@@ -1,20 +1,18 @@
 class EditSuggestionWorker
   include Sidekiq::Worker
 
-  $api_key = Rails.application.secrets.bioportal_api_key
-
   # TODO: Should a random time delay go in here such that the chastisement of
   # TODO: BioPortal is somewhat mimimised?
   def perform(arg_array)
     suggestible_id,suggestible_type = arg_array
-    print "ID: #{suggestible_id}"
-    print "TYPE: #{suggestible_type}"
+    logger.debug "ID: #{suggestible_id}"
+    logger.debug "TYPE: #{suggestible_type}"
     # Run Sidekiq task to call the BioPortal annotator
     # ScientificTopic.find_by_preferred_label(label)
     # suggestion = EditSuggestion
     # for each topic: suggestion.scientific_topics < topic
     suggestible = suggestible_type.constantize.find(suggestible_id)
-    print "OBJ: #{suggestible.inspect}"
+    logger.debug "OBJ: #{suggestible.inspect}"
 
     # Use long description if available, otherwise short.
     desc = nil
@@ -31,8 +29,8 @@ class EditSuggestionWorker
         desc = suggestible.description
     end
 
-    if !desc
-      Logger.info("No description provided for #{suggestible.inspect}");
+    unless desc
+      logged.debug("No description provided for #{suggestible.inspect}")
       return
     end
 
@@ -49,7 +47,8 @@ class EditSuggestionWorker
     }
     clean_desc = desc.encode(Encoding.find('ASCII'), encoding_options).gsub(/[\n#]/,'')
 
-    url = "http://data.bioontology.org/annotator?include=prefLabel&text=#{clean_desc}&ontologies=EDAM&longest_only=false&exclude_numbers=false&whole_word_only=true&exclude_synonyms=false&apikey=#{$api_key}"
+    api_key = Rails.application.secrets.bioportal_api_key
+    url = "http://data.bioontology.org/annotator?include=prefLabel&text=#{clean_desc}&ontologies=EDAM&longest_only=false&exclude_numbers=false&whole_word_only=true&exclude_synonyms=false&apikey=#{api_key}"
 
     annotations = []
 
@@ -75,7 +74,7 @@ class EditSuggestionWorker
 
     # Create some topics and an edit_suggestion if some annotations were returned
     #logger.info("ANNOTATION: #{annotations}")
-    if annotations.length > 0
+    if annotations.any?
       topics = []
       annotations.each do |a|
         topic = ScientificTopic.find_by_preferred_label(a)
@@ -90,7 +89,7 @@ class EditSuggestionWorker
           #logger.info("Added topic #{x} to #{suggestible.inspect}")
           suggestion.scientific_topics << x
         end
-        if suggestion.scientific_topics.length > 0
+        if suggestion.scientific_topics.any?
           suggestion.save
           #logger.info("Suggestion created: #{suggestion.inspect}")
         else
@@ -98,8 +97,7 @@ class EditSuggestionWorker
         end
       end
     else
-      logger.info("No topics found for #{suggestible.inspect}")
+      logger.debug("No topics found for #{suggestible.inspect}")
     end
-
   end
 end
