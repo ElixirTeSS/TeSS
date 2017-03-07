@@ -150,3 +150,10 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.embed-floating-link {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  z-index: 20000;
+}
