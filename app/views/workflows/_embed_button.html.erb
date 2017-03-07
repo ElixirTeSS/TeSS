@@ -1,0 +1,33 @@
+<% embed_code = content_tag(:iframe, '', width: '800', height: '500', src: embed_workflow_url(@workflow)).to_s %>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#embed-modal">
+  Embed
+</button>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="embed-modal-title" id="embed-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="embed-modal-title">Embed this Workflow</h4>
+      </div>
+
+      <div class="modal-body">
+        <label for="embed-link">Embed Code</label>
+        <div class="input-group input-group-lg">
+          <input id="embed-link" type="text" class="form-control" value='<%= embed_code -%>'>
+          <span class="input-group-btn">
+            <button class="btn btn-default clipboard-btn" type="button" data-clipboard-target="#embed-link" title="Click to copy">
+              <i class="fa fa-clipboard" aria-hidden="true"></i>
+            </button>
+          </span>
+        </div>
+        <p class="help-block">
+          Copy the the snippet above and paste it into your HTML/markdown.
+          The width and height of the embedded workflow can be adjusted by changing the parameters on the iframe element.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
