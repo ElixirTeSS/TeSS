@@ -96,7 +96,7 @@ class ApplicationController < ActionController::Base
 
   def look_for_topics(suggestible)
     if suggestible.scientific_topic_names.length == 0 and suggestible.edit_suggestion.nil?
-      EditSuggestionWorker.perform_in(1.minute,[suggestible.id,suggestible.class.name])
+      EditSuggestionWorker.perform_in(1.second,[suggestible.id,suggestible.class.name])
     end
   end
 
