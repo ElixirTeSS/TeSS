@@ -1,0 +1,20 @@
+<% content_for :sidebar_title do %>
+    <i class="fa fa-sitemap"></i> <%= @workflow.title %>
+<% end %>
+<% content_for :sidebar_description do %>
+    <% if @workflow.description.blank? %>
+        <p class="muted">No description provided</p>
+    <% else %>
+        <%= render_markdown(@workflow.description) %>
+    <% end %>
+    <%= render partial: 'common/extra_metadata', locals: { resource: @workflow } %>
+<% end %>
+
+<%= render partial: 'workflows/workflow_diagram', locals: { workflow: @workflow } %>
+
+<%= link_to @workflow, class: 'embed-floating-link' do %>
+  <%= image_tag 'ELIXIR_TeSS_logo_normal-80px-height.png',
+                alt: 'ELIXIR TeSS logo',
+                title: 'View this workflow on TeSS',
+                style: 'height: 50px;' %>
+<% end %>

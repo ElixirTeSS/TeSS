@@ -11,8 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 20170111183004) do
+ActiveRecord::Schema.define(version: 20170307113734) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,12 +67,13 @@ ActiveRecord::Schema.define(version: 20170111183004) do
   create_table "edit_suggestions", force: :cascade do |t|
     t.text     "name"
     t.text     "text"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.integer  "material_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.integer  "suggestible_id"
+    t.string   "suggestible_type"
   end
 
-  add_index "edit_suggestions", ["material_id"], name: "index_edit_suggestions_on_material_id", using: :btree
+  add_index "edit_suggestions", ["suggestible_id", "suggestible_type"], name: "index_edit_suggestions_on_suggestible_id_and_suggestible_type", using: :btree
 
   create_table "edit_suggestions_scientific_topics", id: false, force: :cascade do |t|
     t.integer "edit_suggestion_id"
@@ -429,7 +429,6 @@ ActiveRecord::Schema.define(version: 20170111183004) do
   add_foreign_key "collaborations", "users"
   add_foreign_key "content_providers", "nodes"
   add_foreign_key "content_providers", "users"
-  add_foreign_key "edit_suggestions", "materials"
   add_foreign_key "event_materials", "events"
   add_foreign_key "event_materials", "materials"
   add_foreign_key "events", "users"

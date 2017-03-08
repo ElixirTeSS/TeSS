@@ -12,10 +12,7 @@
 </div>
 
 <div id="main-container" class="workflows-container">
-  <!-- Breadcrumbs -->
-  <%= render_breadcrumbs :partial => 'common/breadcrumbs' do |breadcrumbs| %>
-      <%= content_tag(:div, breadcrumbs, {class: "breadcrumbs"}) %>
-  <% end %>
+  <%= render 'common/breadcrumbs' if @breadcrumbs %>
 
   <%# Main content of every page -%>
   <%= yield :layout %>

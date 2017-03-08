@@ -81,12 +81,6 @@ gem 'auto_strip_attributes', '~> 2.0'
 # Gem for validating URLs
 gem 'validate_url', '~> 1.0.2'
 
-# Gem for adding breadcrumbs
-# gem 'breadcrumbs_on_rails'
-
-# Gem for breadcrums and other extras
-gem 'bootstrap-sass-extras'
-
 gem 'simple_form', '~> 3.4.0'
 
 # Gem for rendering Markdown

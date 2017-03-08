@@ -63,6 +63,13 @@ class UsersControllerTest < ActionController::TestCase
     assert_response :success #FORBIDDEN PAGE!?
   end
 
+  test "should show user with email address as username" do
+    user = users(:email_address_user)
+    sign_in user
+    get :show, id: user
+    assert_response :success
+  end
+
  test "should only allow edit for admin and self" do
     sign_in users(:regular_user)
     get :edit, id: @user

@@ -43,4 +43,9 @@ class ActiveSupport::TestCase
         to_return(:status => 200, :body => "", :headers => {})
   end
 
+  def mock_biotools
+    biotools_file = File.read("#{Rails.root}/test/fixtures/files/annotation.json")
+    WebMock.stub_request(:get, /data.bioontology.org/).
+      to_return(:status => 200, :headers => {},  :body => biotools_file)
+  end
 end

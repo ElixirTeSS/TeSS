@@ -4,6 +4,9 @@
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")),
                     :back, :class => 'btn btn-info' %>
+        <% if @workflow.public? %>
+            <%= render partial: 'workflows/embed_button' %>
+        <% end %>
         <% unless current_user.nil? %>
             <%= link_to 'Fork', fork_workflow_path(@workflow), :class => 'btn btn-primary' %>
         <% end %>

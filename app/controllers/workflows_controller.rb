@@ -2,9 +2,10 @@ class WorkflowsController < ApplicationController
 
   layout 'application'
 
-  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :fork]
+  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :fork, :embed]
+  before_action :set_breadcrumbs
+  after_filter :allow_embedding, only: [:embed]
 
-  include Tess::BreadCrumbs
   include SearchableIndex
 
   # GET /workflows
@@ -42,6 +43,7 @@ class WorkflowsController < ApplicationController
     respond_to do |format|
       if @workflow.save
         @workflow.create_activity :create, owner: current_user
+        look_for_topics(@workflow)
         format.html { redirect_to @workflow, notice: 'Workflow was successfully created.' }
         format.json { render :show, status: :created, location: @workflow }
       else
@@ -58,6 +60,11 @@ class WorkflowsController < ApplicationController
     respond_to do |format|
       if @workflow.update(workflow_params)
         @workflow.create_activity(:update, owner: current_user) if @workflow.log_update_activity?
+        # TODO: Consider whether this is proper behaviour or whether a user should explicitly delete this
+        # TODO: suggestion, somehow.
+        if @workflow.edit_suggestion
+          @workflow.edit_suggestion.delete
+        end
         format.html { redirect_to @workflow, notice: 'Workflow was successfully updated.' }
         format.json { render :show, status: :ok, location: @workflow }
       else
@@ -85,6 +92,11 @@ class WorkflowsController < ApplicationController
     respond_to do |format|
       format.html { render :new }
     end
+  end
+
+  def embed
+    authorize @workflow, :show?
+    render layout: 'embed'
   end
 
   private

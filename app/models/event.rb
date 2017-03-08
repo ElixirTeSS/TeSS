@@ -76,6 +76,7 @@ class Event < ActiveRecord::Base
   end
 
   belongs_to :user
+  has_one :edit_suggestion, as: :suggestible, dependent: :destroy
   has_many :package_events
   has_many :packages, through: :package_events
   has_many :event_materials
@@ -140,8 +141,8 @@ class Event < ActiveRecord::Base
   end
 
   def self.facet_fields
-    %w( event_types online country scientific_topics tools organizer city sponsor keywords venue content_provider
-        node target_audience user )
+    %w( scientific_topics event_types online country tools organizer city sponsor target_audience keywords
+        venue node content_provider user )
   end
 
   def to_csv_event

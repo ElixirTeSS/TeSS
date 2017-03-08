@@ -24,6 +24,7 @@
 //= require masonry.pkgd
 //= require imagesloaded.pkgd
 //= require markdown-it
+//= require URI
 //= require moment
 //= require eonasdan-bootstrap-datetimepicker
 //= require devbridge-autocomplete

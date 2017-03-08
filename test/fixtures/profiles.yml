@@ -32,3 +32,8 @@ curator_profile:
   email: qr@example.com
   website: http://example.com
   user: curator
+
+email_address_user_profile:
+  firstname: Email
+  surname: Fan
+  user: email_address_user

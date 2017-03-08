@@ -1,24 +1,37 @@
 class EditSuggestionWorker
   include Sidekiq::Worker
 
-  $api_key = Rails.application.secrets.bioportal_api_key
-
   # TODO: Should a random time delay go in here such that the chastisement of
   # TODO: BioPortal is somewhat mimimised?
-  def perform(material_id)
+  def perform(arg_array)
+    suggestible_id,suggestible_type = arg_array
+    logger.debug "ID: #{suggestible_id}"
+    logger.debug "TYPE: #{suggestible_type}"
     # Run Sidekiq task to call the BioPortal annotator
     # ScientificTopic.find_by_preferred_label(label)
     # suggestion = EditSuggestion
-    # suggestion.materials < material
     # for each topic: suggestion.scientific_topics < topic
-    material = Material.find(material_id)
-
+    suggestible = suggestible_type.constantize.find(suggestible_id)
+    logger.debug "OBJ: #{suggestible.inspect}"
 
     # Use long description if available, otherwise short.
-    if material.long_description
-      desc = material.long_description
-    elsif material.short_description
-      desc = material.short_description
+    desc = nil
+    case suggestible_type
+      when 'Material'
+        if suggestible.long_description
+          desc = suggestible.long_description
+        else
+          desc = suggestible.short_description
+        end
+      when 'Event'
+        desc = suggestible.description
+      when 'Workflow'
+        desc = suggestible.description
+    end
+
+    if desc.blank?
+      logger.debug("No description provided for #{suggestible.inspect}")
+      return
     end
 
     # Query with BioPortal.
@@ -34,40 +47,38 @@ class EditSuggestionWorker
     }
     clean_desc = desc.encode(Encoding.find('ASCII'), encoding_options).gsub(/[\n#]/,'')
 
-    url = "http://data.bioontology.org/annotator?include=prefLabel&text=#{clean_desc}&ontologies=EDAM&longest_only=false&exclude_numbers=false&whole_word_only=true&exclude_synonyms=false&apikey=#{$api_key}"
+    api_key = Rails.application.secrets.bioportal_api_key
+    url = "http://data.bioontology.org/annotator?include=prefLabel&text=#{clean_desc}&ontologies=EDAM&longest_only=false&exclude_numbers=false&whole_word_only=true&exclude_synonyms=false&apikey=#{api_key}"
 
     annotations = []
 
     # Run the query
     # Clearly, hitting BioPortal with test fixture data would be a bit silly, but it might be useful to test somehow
     # whether this connection actually works. For now, fake data will be returned.
-    if Rails.env == 'test'
-      annotations << 'Bioinformatics'
-    else
-      begin
-        response = HTTParty.get(url)
-        data = JSON.parse(response.body)
+    begin
+      response = HTTParty.get(url)
+      data = JSON.parse(response.body)
 
+      if data.is_a?(Hash) && data['errors']
+        logger.error("BioPortal response contained errors: \n\t#{data['errors'].join("\n\t")}")
+      else
         data.each do |entry|
           id = entry['annotatedClass']['@id']
-          logger.info("ID: #{id}")
           if id.include? 'http://edamontology.org/topic_'
-            logger.info("ENTRY: #{entry['annotatedClass']['prefLabel']}")
             annotations << entry['annotatedClass']['prefLabel']
-          else
-            logger.info("Material #{material.slug} matches entry #{id}.")
+            #else
+            #logger.info("Suggestible #{suggestible.inspect} matches entry #{id}.")
           end
         end
-      rescue
-        logger.error("Material #{material.slug} threw an exception when checking BioPortal.")
       end
-
+    rescue => exception
+      logger.error("Suggestible #{suggestible.inspect} threw an exception when checking BioPortal: #{exception}\nTrace: \n\t#{exception.backtrace.join("\n\t")}\n\nBioPortal response (#{response.code}):\n#{response.body}")
     end
 
 
     # Create some topics and an edit_suggestion if some annotations were returned
-    logger.info("ANNOTATION: #{annotations}")
-    if annotations.length > 0
+    #logger.info("ANNOTATION: #{annotations}")
+    if annotations.any?
       topics = []
       annotations.each do |a|
         topic = ScientificTopic.find_by_preferred_label(a)
@@ -75,19 +86,22 @@ class EditSuggestionWorker
           topics << topic
         end
       end
-      logger.info("TOPIC: #{topics}")
+      #logger.info("TOPIC: #{topics}")
       if topics
-        suggestion = EditSuggestion.new(:material => material)
+        suggestion = EditSuggestion.new(:suggestible_type => suggestible_type, :suggestible_id => suggestible_id)
         topics.each do |x|
-          logger.info("Created topic #{x} for #{material.slug}")
+          #logger.info("Added topic #{x} to #{suggestible.inspect}")
           suggestion.scientific_topics << x
         end
-        suggestion.save
-        logger.info("SUGGESTION: #{suggestion.inspect}")
+        if suggestion.scientific_topics.any?
+          suggestion.save
+          #logger.info("Suggestion created: #{suggestion.inspect}")
+        else
+          logger.error("Suggestion has no topics: #{suggestion.inspect}")
+        end
       end
     else
-      logger.info("No topics found for #{material.slug}")
+      logger.debug("No topics found for #{suggestible.inspect}")
     end
-
   end
 end

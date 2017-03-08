@@ -1,8 +1,7 @@
 class ActivitiesController < ApplicationController
 
   before_action :set_resource, only: [:show]
-
-  include Tess::BreadCrumbs
+  before_action :set_breadcrumbs
 
   @@models = %w( content_provider material package event )
 

@@ -77,7 +77,7 @@ class Material < ActiveRecord::Base
 
   # has_one :owner, foreign_key: "id", class_name: "User"
   belongs_to :user
-  has_one :edit_suggestion, dependent: :destroy
+  has_one :edit_suggestion, as: :suggestible, dependent: :destroy
   has_many :package_materials
   has_many :packages, through: :package_materials
   has_many :event_materials
@@ -107,8 +107,8 @@ class Material < ActiveRecord::Base
   end
 
   def self.facet_fields
-    %w( content_provider scientific_topics tools standard_database_or_policy target_audience keywords difficulty_level
-        authors related_resources contributors licence node user )
+    %w( scientific_topics tools standard_database_or_policy target_audience keywords difficulty_level
+        authors related_resources contributors licence node content_provider user )
   end
 
   private

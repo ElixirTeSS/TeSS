@@ -3,6 +3,29 @@
   width: 100%;
 }
 
+.resourceCard {
+  padding: 10px;
+  background: rgba(51, 122, 183, 0.08);
+  margin: 2px;
+}
+
+.embedded-container {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+
+  .workflow-diagram-wrapper, .workflow-diagram-container, .workflow-diagram-content {
+    height: 100%;
+  }
+
+  #cy {
+    height: 100% !important;
+    max-height: none !important;
+  }
+}
+
 .workflow-toolbar-wrapper {
   background-color: #DDDDDD;
   padding: 5px;
@@ -126,4 +149,11 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.embed-floating-link {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  z-index: 20000;
 }

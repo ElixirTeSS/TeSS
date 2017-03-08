@@ -62,3 +62,11 @@ existing_aai_user:
   confirmed_at: <%= Time.zone.now %>
   provider: elixir_aai
   uid: 1234
+
+email_address_user:
+  username: 'coolguy@email.domain'
+  email: 'coolguy@email.domain'
+  encrypted_password: 'elsa4ever'
+  confirmed_at: <%= Time.zone.now %>
+  role: user
+  authentication_token: <%= Devise.friendly_token %>
