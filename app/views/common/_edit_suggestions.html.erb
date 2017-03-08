@@ -1,0 +1,20 @@
+<% resource = form.object %>
+
+<% if resource.edit_suggestion && resource.edit_suggestion.scientific_topics.any? -%>
+    <div id="suggestions">
+      <p>Suggested scientific topics (will be saved unless removed): </p>
+      <div id="suggestion-buttons">
+        <% resource.edit_suggestion.scientific_topics.each do |s| -%>
+            <a class="btn btn-warning multiple-input-add" id="add-topic-<%= s.preferred_label.gsub(/[^a-zA-Z]/,'') -%>"
+               onclick="removeSuggestion('<%= s.preferred_label -%>')">
+              <%= s.preferred_label -%>
+              <i class="fa fa-close" ></i>
+            </a>
+
+            <%= form.hidden_field(:scientific_topic_names, multiple: true, value: s.preferred_label,
+                               class: 'multiple-input form-control scientific_topic_names',
+                               readonly: true, id: "hidden-suggestion-#{s.preferred_label.gsub(/[^a-zA-Z]/,'')}") %>
+        <% end -%>
+      </div>
+    </div>
+<% end -%>
