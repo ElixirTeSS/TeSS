@@ -16,7 +16,7 @@ class Ontology
   end
 
   def graph
-    @graph ||= load
+    @graph ||= parse
   end
 
   def load
@@ -28,6 +28,7 @@ class Ontology
   def parse
     reader = RDF::Reader.for(:rdfxml).new(File.open(path))
 
+    logger.info("Loading ontology: #{@filename}")
     RDF::Graph.new.tap do |graph|
       graph << reader
     end
