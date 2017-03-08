@@ -58,3 +58,9 @@ narrow_topic:
 
 bioinformatics:
   preferred_label: Bioinformatics
+
+dna:
+  preferred_label: DNA
+
+rna:
+  preferred_label: RNA

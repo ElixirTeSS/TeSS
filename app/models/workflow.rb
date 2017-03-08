@@ -55,6 +55,7 @@ class Workflow < ActiveRecord::Base
 
   # has_one :owner, foreign_key: "id", class_name: "User"
   belongs_to :user
+  has_one :edit_suggestion, as: :suggestible, dependent: :destroy
 
   validates :title, presence: true
   validates :difficulty_level, controlled_vocabulary: { dictionary: Tess::DifficultyDictionary.instance }

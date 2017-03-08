@@ -98,4 +98,10 @@ class ApplicationController < ActionController::Base
   def allow_embedding
     response.headers.delete 'X-Frame-Options'
   end
+
+  def look_for_topics(suggestible)
+    if suggestible.scientific_topic_names.length == 0 and suggestible.edit_suggestion.nil?
+      EditSuggestionWorker.perform_in(1.second,[suggestible.id,suggestible.class.name])
+    end
+  end
 end

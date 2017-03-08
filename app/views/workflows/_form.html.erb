@@ -39,6 +39,8 @@
                                                                         :suggestions => raw(scientific_topic_names_for_autocomplete.to_json),
                                                                         :disabled => true} %>
 
+            <%= render :partial => 'common/edit_suggestions', locals: { form: f } -%>
+
             <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords',
                                                                         :resource => @workflow,
                                                                         :f => f,

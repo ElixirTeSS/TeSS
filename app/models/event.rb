@@ -76,6 +76,7 @@ class Event < ActiveRecord::Base
   end
 
   belongs_to :user
+  has_one :edit_suggestion, as: :suggestible, dependent: :destroy
   has_many :package_events
   has_many :packages, through: :package_events
   has_many :event_materials

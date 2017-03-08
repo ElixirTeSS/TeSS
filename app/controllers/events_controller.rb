@@ -68,6 +68,7 @@ class EventsController < ApplicationController
     respond_to do |format|
       if @event.save
         @event.create_activity :create, owner: current_user
+        look_for_topics(@event)
         #current_user.events << @event
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
         format.json { render :show, status: :created, location: @event }
@@ -85,6 +86,11 @@ class EventsController < ApplicationController
     respond_to do |format|
       if @event.update(event_params)
         @event.create_activity(:update, owner: current_user) if @event.log_update_activity?
+        # TODO: Consider whether this is proper behaviour or whether a user should explicitly delete this
+        # TODO: suggestion, somehow.
+        if @event.edit_suggestion
+          @event.edit_suggestion.delete
+        end
         format.html { redirect_to @event, notice: 'Event was successfully updated.' }
         format.json { render :show, status: :ok, location: @event }
       else

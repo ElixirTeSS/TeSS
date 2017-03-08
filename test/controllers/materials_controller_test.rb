@@ -6,6 +6,7 @@ class MaterialsControllerTest < ActionController::TestCase
 
   setup do
     mock_images
+    mock_biotools
     @material = materials(:good_material)
     @user = users(:regular_user)
     @material.user_id = @user.id
@@ -98,6 +99,7 @@ class MaterialsControllerTest < ActionController::TestCase
       post :create, material: { doi: @material.doi,  remote_created_date: @material.remote_created_date, remote_updated_date: @material.remote_updated_date, short_description: @material.short_description, title: @material.title, url: @material.url }
     end
     assert_redirected_to material_path(assigns(:material))
+    @material.reload
   end
 
   test 'should create material for admin' do
@@ -344,7 +346,8 @@ class MaterialsControllerTest < ActionController::TestCase
                       material: {
                           title: material_title,
                           url: 'http://horse.com',
-                          short_description: 'All about horses'
+                          long_description: 'I love horses',
+                          short_description: 'Best of all the animals'
                       },
                       :format => 'json'}
     end

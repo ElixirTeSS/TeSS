@@ -99,7 +99,7 @@ organisation_event:
 portal_event:
   title: Awesome Training Day
   url: http://content-provider.portal/event
-  description: 'Wow! So fun'
+  description: 'Such Bioinformatics, many DNA, very Protein. Wow!'
   user: scraper_user
   content_provider: portal_provider
   start: 2016-12-12 10:00:00
