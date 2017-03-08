@@ -29,8 +29,8 @@ class EditSuggestionWorker
         desc = suggestible.description
     end
 
-    unless desc
-      logged.debug("No description provided for #{suggestible.inspect}")
+    if desc.blank?
+      logger.debug("No description provided for #{suggestible.inspect}")
       return
     end
 
@@ -59,16 +59,20 @@ class EditSuggestionWorker
       response = HTTParty.get(url)
       data = JSON.parse(response.body)
 
-      data.each do |entry|
-        id = entry['annotatedClass']['@id']
-        if id.include? 'http://edamontology.org/topic_'
-          annotations << entry['annotatedClass']['prefLabel']
-        #else
-          #logger.info("Suggestible #{suggestible.inspect} matches entry #{id}.")
+      if data.is_a?(Hash) && data['errors']
+        logger.error("BioPortal response contained errors: \n\t#{data['errors'].join("\n\t")}")
+      else
+        data.each do |entry|
+          id = entry['annotatedClass']['@id']
+          if id.include? 'http://edamontology.org/topic_'
+            annotations << entry['annotatedClass']['prefLabel']
+            #else
+            #logger.info("Suggestible #{suggestible.inspect} matches entry #{id}.")
+          end
         end
       end
     rescue => exception
-      logger.error("Suggestible #{suggestible.inspect} threw an exception when checking BioPortal: #{exception}")
+      logger.error("Suggestible #{suggestible.inspect} threw an exception when checking BioPortal: #{exception}\nTrace: \n\t#{exception.backtrace.join("\n\t")}\n\nBioPortal response (#{response.code}):\n#{response.body}")
     end
 
 
