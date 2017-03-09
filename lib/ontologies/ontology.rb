@@ -6,13 +6,8 @@ class Ontology
   end
 
   def lookup(uri)
-    results = graph.query([RDF::URI(uri), :p, :o])
-
-    if results.any?
-      @term_class.new(self, results)
-    else
-      nil
-    end
+    @cache ||= {}
+    @cache[RDF::URI(uri)] ||= fetch(uri)
   end
 
   def graph
@@ -21,6 +16,20 @@ class Ontology
 
   def load
     @graph = parse
+  end
+
+  def fetch(uri)
+    query([RDF::URI(uri), :p, :o])
+  end
+
+  def query(q)
+    results = graph.query(q)
+
+    if results.any?
+      @term_class.new(self, results)
+    else
+      nil
+    end
   end
 
   private

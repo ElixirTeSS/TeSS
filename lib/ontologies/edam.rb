@@ -26,6 +26,16 @@ module EDAM
     def lookup(uri)
       @ontology.lookup(uri)
     end
+
+    def lookup_by_name(name)
+      @name_cache ||= {}
+      if @name_cache.key?(name)
+        @name_cache[name]
+      else
+        uri = @ontology.graph.query([:u, RDF::RDFS.label, name]).first.subject
+        @name_cache[name] = lookup(uri)
+      end
+    end
   end
 
 end
