@@ -21,6 +21,7 @@ module EDAM
 
     def initialize
       @ontology = ::Ontology.new('EDAM_1.16.owl', EDAM::Term)
+      @cache = {}
     end
 
     def lookup(uri)
@@ -28,12 +29,16 @@ module EDAM
     end
 
     def lookup_by_name(name)
-      @name_cache ||= {}
-      if @name_cache.key?(name)
-        @name_cache[name]
+      lookup_by(RDF::RDFS.label, name)
+    end
+
+    def lookup_by(predicate, object)
+      @cache[predicate] ||= {}
+
+      if @cache[predicate].key?(object)
+        @cache[predicate][object]
       else
-        uri = @ontology.graph.query([:u, RDF::RDFS.label, name]).first.subject
-        @name_cache[name] = lookup(uri)
+        @cache[predicate][object] = @ontology.lookup_by(predicate, object)
       end
     end
   end

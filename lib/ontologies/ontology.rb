@@ -3,11 +3,16 @@ class Ontology
   def initialize(filename, term_class = OntologyTerm)
     @filename = filename
     @term_class = term_class
+    @cache = {}
   end
 
   def lookup(uri)
-    @cache ||= {}
     @cache[RDF::URI(uri)] ||= fetch(uri)
+  end
+
+  def lookup_by(predicate, object)
+    result = graph.query([:u, predicate, object]).first
+    lookup(result.subject) if result
   end
 
   def graph
