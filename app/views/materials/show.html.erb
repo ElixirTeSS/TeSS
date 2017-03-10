@@ -37,7 +37,7 @@
       <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
           <div class="row">
-            <div class="page-header dont-break-out">
+            <div class="text-justify">
               <h2>
                 <%=t '.title', :default => @material.title %>
                 <%= scrape_status_icon(@material, 'large') if current_user and current_user.is_admin? %>
