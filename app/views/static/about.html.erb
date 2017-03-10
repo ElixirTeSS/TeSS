@@ -202,7 +202,7 @@
               <p> As a rule of thumb - You can add .json to the end of most pages to retrieve the data in a common exchange format.
               e.g.
                 <ul>
-                  <% model = %w(Event Material Workflow) %>
+                  <% model = %w(Event Material Workflow Package Node) %>
                   <% model.each do |m| %>
                       <li>
                         <% url = "#{TeSS::Config.base_url}#{url_for (m.constantize.last)}.json" %>

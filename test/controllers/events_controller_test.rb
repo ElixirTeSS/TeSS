@@ -26,6 +26,12 @@ class EventsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:events)
   end
 
+  test 'should get index as json' do
+    get :index, format: :json
+    assert_response :success
+    assert_not_nil assigns(:events)
+  end
+
   #NEW TESTS
   test 'should get new' do
     sign_in users(:regular_user)
@@ -111,6 +117,11 @@ class EventsControllerTest < ActionController::TestCase
     assert assigns(:event)
   end
 
+  test 'should show event as json' do
+    get :show, id: @event, format: :json
+    assert_response :success
+    assert assigns(:event)
+  end
 
   #UPDATE TEST
   test 'should update event' do

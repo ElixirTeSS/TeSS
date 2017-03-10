@@ -25,6 +25,12 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_not_nil assigns(:content_providers)
   end
 
+  test 'should get index as json' do
+    get :index, format: :json
+    assert_response :success
+    assert_not_nil assigns(:content_providers)
+  end
+
   #NEW TESTS
   test 'should get new' do
     sign_in users(:regular_user)
@@ -110,6 +116,11 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert assigns(:content_provider)
   end
 
+  test 'should show content provider as json' do
+    get :show, id: @content_provider, format: :json
+    assert_response :success
+    assert assigns(:content_provider)
+  end
 
   #UPDATE TEST
   test 'should update content provider' do

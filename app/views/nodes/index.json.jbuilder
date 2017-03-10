@@ -1,4 +1,4 @@
 json.array!(@nodes) do |node|
-  json.extract! node, :id, :name, :member_status, :country_code, :home_page, :institutions, :trc, :trc_email, :trc, :staff, :twitter, :carousel_images
+  json.extract! @package, :id, :title, :description, :image_url, :events, :materials, :created_at, :updated_at
   json.url node_url(node, format: :json)
 end

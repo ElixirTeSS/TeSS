@@ -38,6 +38,12 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:materials)
   end
 
+  test 'should get index as json' do
+    get :index, format: :json
+    assert_response :success
+    assert_not_nil assigns(:materials)
+  end
+
   #NEW TESTS
   test 'should get new' do
     sign_in users(:regular_user)
@@ -123,6 +129,13 @@ class MaterialsControllerTest < ActionController::TestCase
       assert_response :success
       assert assigns(:material)
       assert_select 'fa-commenting-o', :count => 0
+    end
+  end
+
+  test 'should show material as json' do
+    get :show, id: @material, format: :json do
+      assert_response :success
+      assert assigns(:material)
     end
   end
 
