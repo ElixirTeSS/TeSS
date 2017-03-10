@@ -12,7 +12,7 @@
 
 <%= render partial: 'workflows/workflow_diagram', locals: { workflow: @workflow } %>
 
-<%= link_to @workflow, class: 'embed-floating-link' do %>
+<%= link_to @workflow, class: 'embed-floating-link', target: '_parent' do %>
   <%= image_tag 'ELIXIR_TeSS_logo_normal-80px-height.png',
                 alt: 'ELIXIR TeSS logo',
                 title: 'View this workflow on TeSS',
