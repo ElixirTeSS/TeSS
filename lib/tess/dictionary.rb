@@ -11,6 +11,11 @@ module Tess
       @dictionary[id]
     end
 
+    # Returns an array: [id, values]
+    def lookup_by(key, value)
+      @dictionary.select { |id, values| values[key] == value }.to_a.flatten
+    end
+
     # Find the value for the given key, for the given entry.
     # Returns nil if no entry found or the entry doesn't contain that key.
     #  e.g.
@@ -42,7 +47,7 @@ module Tess
     private
 
     def load_dictionary
-      YAML.load(File.read(dictionary_filepath))
+      YAML.load(File.read(dictionary_filepath)).with_indifferent_access
     end
 
   end
