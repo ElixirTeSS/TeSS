@@ -279,20 +279,25 @@ class ContentProvidersControllerTest < ActionController::TestCase
 
   #API Actions
   test 'should find existing content_provider by url' do
-    post 'check_exists', :format => :json,  :url => @content_provider.url
+    post 'check_exists', :format => :json, :content_provider => { :url => @content_provider.url }
     assert_response :success
-    assert_equal(JSON.parse(response.body)['url'], @content_provider.url)
+    assert_equal(JSON.parse(response.body)['id'], @content_provider.id)
   end
 
+  test 'should find existing content_provider by title' do
+    post 'check_exists', :format => :json, :content_provider => { :title => @content_provider.title }
+    assert_response :success
+    assert_equal(JSON.parse(response.body)['id'], @content_provider.id)
+  end
 
   test 'should return nothing when content_provider does not exist' do
-    post 'check_exists', :format => :json,  :url => 'http://no-such-site.com'
+    post 'check_exists', :format => :json, :content_provider => { :url => 'http://no-such-site.com' }
     assert_response :success
     assert_equal(response.body, '')
   end
 
   test 'should render properly when url parameter missing' do
-    post 'check_exists', :format => :json,  :url => nil
+    post 'check_exists', :format => :json, :content_provider => { :url => nil }
     assert_response :success
     assert_equal(response.body, '')
   end

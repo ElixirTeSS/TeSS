@@ -318,26 +318,30 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   #API Actions
-  test 'should find existing material by title' do
-    post 'check_exists', :format => :json,  :url => @material.url
+  test 'should find existing material by title and content provider' do
+    post 'check_exists', :format => :json, :material => { title: @material.title,
+                                                          url: 'whatever.com',
+                                                          content_provider_id: @material.content_provider_id }
     assert_response :success
-    assert_equal(JSON.parse(response.body)['url'], @material.url)
+    assert_equal(JSON.parse(response.body)['id'], @material.id)
   end
 
   test 'should find existing material by url' do
-    post 'check_exists', :format => :json,  :url => @material.url
+    post 'check_exists', :format => :json, :material => { title: 'whatever',
+                                                          url: @material.url,
+                                                          content_provider_id: @material.content_provider_id }
     assert_response :success
-    assert_equal(JSON.parse(response.body)['title'], @material.title)
+    assert_equal(JSON.parse(response.body)['id'], @material.id)
   end
 
   test 'should return nothing when material does not exist' do
-    post 'check_exists', :format => :json,  :url => 'http://no-such-url.com'
+    post 'check_exists', :format => :json, :material => { :url => 'http://no-such-url.com' }
     assert_response :success
     assert_equal(response.body, '')
   end
 
   test 'should render properly when no url supplied' do
-    post 'check_exists', :format => :json,  :url => nil
+    post 'check_exists', :format => :json, :material => { :url => nil }
     assert_response :success
     assert_equal(response.body, '')
   end

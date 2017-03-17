@@ -53,11 +53,8 @@ material_with_external_resource:
   content_provider: goblet
 
 material_with_suggestions:
-  title: Training Material Example
-  url: http://training.com/trainers/1359023
-  short_description: This is a Training Material produced by an example organization
-  doi: http://dx.doi.ac.uk/2q3093032
-  remote_updated_date: 2015-09-25
-  remote_created_date: 2015-09-25
+  title: Material with suggestions
+  url: http://training.com/suggestions
+  short_description: This is a Training Material with suggestions
   user: regular_user
   content_provider: goblet
