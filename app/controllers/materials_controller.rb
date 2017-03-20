@@ -35,8 +35,6 @@ class MaterialsController < ApplicationController
   # GET /materials/1/edit
   def edit
     authorize @material
-    tools_response = open "#{ExternalResource::BIOTOOLS_BASE}/api/tool?q=" + URI.escape(@material.title)
-    tools_response = tools_response.read
   end
 
   # POST /materials/check_title
