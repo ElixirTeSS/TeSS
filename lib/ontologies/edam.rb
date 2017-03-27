@@ -9,7 +9,7 @@ module EDAM
     end
 
     def synonyms
-      data[OBO.hasExactSynonym].map(&:value)
+      data[OBO.hasExactSynonym] ? data[OBO.hasExactSynonym].map(&:value) : []
     end
 
   end
@@ -32,14 +32,18 @@ module EDAM
       lookup_by(RDF::RDFS.label, name)
     end
 
-    def lookup_by(predicate, object)
+    def find_by(predicate, object)
       @cache[predicate] ||= {}
 
       if @cache[predicate].key?(object)
         @cache[predicate][object]
       else
-        @cache[predicate][object] = @ontology.lookup_by(predicate, object)
+        @cache[predicate][object] = @ontology.find_by(predicate, object)
       end
+    end
+
+    def lookup_by(predicate, object)
+      find_by(predicate, object).first
     end
   end
 

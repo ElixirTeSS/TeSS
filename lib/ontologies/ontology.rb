@@ -10,6 +10,13 @@ class Ontology
     @cache[RDF::URI(uri)] ||= fetch(uri)
   end
 
+  # Collection
+  def find_by(predicate, object)
+    results = graph.query([:u, predicate, object])
+    results.map { |result| lookup(result.subject) }
+  end
+
+  # Singleton
   def lookup_by(predicate, object)
     result = graph.query([:u, predicate, object]).first
     lookup(result.subject) if result
