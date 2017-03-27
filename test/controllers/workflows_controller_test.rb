@@ -13,6 +13,12 @@ class WorkflowsControllerTest < ActionController::TestCase
     assert_not_empty assigns(:workflows)
   end
 
+  test "should get index as json" do
+    get :index, format: :json
+    assert_response :success
+    assert_not_empty assigns(:workflows)
+  end
+
   test "should get new" do
     sign_in users(:admin)
 
@@ -35,6 +41,13 @@ class WorkflowsControllerTest < ActionController::TestCase
     get :show, id: @workflow
     assert_response :success
     assert_includes response.headers.keys, 'X-Frame-Options', 'X-Frame-Options header should be present in all actions except `embed`'
+    assert assigns(:workflow)
+  end
+
+  test "should show workflow as json" do
+    get :show, id: @workflow, format: :json
+    assert_response :success
+    assert assigns(:workflow)
   end
 
   test "should show embedded workflow" do

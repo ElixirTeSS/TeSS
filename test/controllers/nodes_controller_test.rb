@@ -30,6 +30,12 @@ class NodesControllerTest < ActionController::TestCase
     assert_includes assigns(:nodes), @node
   end
 
+  test "should get index as json" do
+    get :index, format: :json
+    assert_response :success
+    assert_includes assigns(:nodes), @node
+  end
+
   test "should get new" do
     sign_in users(:admin)
 
@@ -73,6 +79,11 @@ class NodesControllerTest < ActionController::TestCase
 
   test "should show node" do
     get :show, id: @node
+    assert_response :success
+  end
+
+  test "should show node as json" do
+    get :show, id: @node, format: :json
     assert_response :success
   end
 

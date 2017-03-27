@@ -4,7 +4,7 @@ one:
   external_id: MyString1
   title: MyString
   subtitle: MyString
-  url: http://example.com
+  url: http://example.com/cool-event
   organizer: MyString
   description: MyText
   event_types: ["workshops_and_courses"]
@@ -20,12 +20,13 @@ one:
   longitude: -2.233949
   keywords: ["Keyword"]
   user: regular_user
+  content_provider: goblet
 
 two:
   external_id: MyString2
   title: MyString
   subtitle: MyString
-  url: http://example.com
+  url: http://example.com/a-different-event
   organizer: MyString
   description: MyText
   event_types: ["meetings_and_conferences"]

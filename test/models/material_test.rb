@@ -114,38 +114,19 @@ class MaterialTest < ActiveSupport::TestCase
   end
 
 
+  test 'can set licence either using key or URL' do
+    m = materials(:good_material)
 
+    m.licence = 'CC-BY-4.0'
+    assert m.valid?
+    assert_equal 'CC-BY-4.0', m.licence
 
-=begin
-  test 'should save good new material' do
-    material = new_material()
-    assert material.valid?
-    assert materials.errors.empty?
+    m.licence = 'https://creativecommons.org/licenses/by-sa/4.0/'
+    assert m.valid?
+    assert_equal 'CC-BY-SA-4.0', m.licence
+
+    m.licence = 'https://not.a.real.licence.golf'
+    refute m.valid?
+    assert_equal 'https://not.a.real.licence.golf', m.licence, "should preserve URL user input if it didn't match any licenses in the dictionary"
   end
-
-  test 'url should not be empty' do
-    material = new_material('')
-    assert material.invalid?
-    assert material.errors[:url].any?
-  end
-
-  def new_material(title=materials(:good_material).title,
-                   short_description=materials(:good_material).short_description,
-                   url=materials(:good_material).url)
-    Material.new(title: title,
-        short_description: short_description,
-        url: url)
-  end
-
-  test "url must be in correct format" do
-
-    material =  new_material(materials(:bad_material).url)
-    assert material.invalid?
-    assert material.errors[:url].any?, "#{material.url} should not be valid"
-
-    material2 =  new_material(materials(:good_material).url)
-    assert material2.valid?, "#{material.url} should be valid"
-  end
-=end
-
 end

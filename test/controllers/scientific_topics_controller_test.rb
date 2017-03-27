@@ -13,6 +13,12 @@ class ScientificTopicsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:scientific_topics)
   end
 
+  test "should get index as json" do
+    get :index, format: :json
+    assert_response :success
+    assert_not_nil assigns(:scientific_topics)
+  end
+
   test "should get new" do
     sign_in users(:regular_user)
     get :new
@@ -30,6 +36,11 @@ class ScientificTopicsControllerTest < ActionController::TestCase
 
   test "should show scientific_topic" do
     get :show, id: @scientific_topic
+    assert_response :success
+  end
+
+  test "should show scientific_topic as json" do
+    get :show, id: @scientific_topic, format: :json
     assert_response :success
   end
 

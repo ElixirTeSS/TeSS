@@ -21,6 +21,12 @@ class PackagesControllerTest < ActionController::TestCase
     assert_not_nil assigns(:packages)
   end
 
+  test 'should get index as json' do
+    get :index, format: :json
+    assert_response :success
+    assert_not_nil assigns(:packages)
+  end
+
   #NEW TESTS
   test 'should get new' do
     sign_in users(:regular_user)
@@ -100,6 +106,11 @@ class PackagesControllerTest < ActionController::TestCase
     assert assigns(:package)
   end
 
+  test 'should show package as json' do
+    get :show, id: @package, format: :json
+    assert_response :success
+    assert assigns(:package)
+  end
 
   #UPDATE TEST
   test 'should update package' do

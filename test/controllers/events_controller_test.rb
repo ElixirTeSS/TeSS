@@ -26,6 +26,12 @@ class EventsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:events)
   end
 
+  test 'should get index as json' do
+    get :index, format: :json
+    assert_response :success
+    assert_not_nil assigns(:events)
+  end
+
   #NEW TESTS
   test 'should get new' do
     sign_in users(:regular_user)
@@ -111,6 +117,11 @@ class EventsControllerTest < ActionController::TestCase
     assert assigns(:event)
   end
 
+  test 'should show event as json' do
+    get :show, id: @event, format: :json
+    assert_response :success
+    assert assigns(:event)
+  end
 
   #UPDATE TEST
   test 'should update event' do
@@ -269,22 +280,43 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   #API Actions
+  test 'should find existing event by title, content provider and date' do
+    post 'check_exists', :format => :json, :event => { title: @event.title,
+                                                       url: 'whatever.com',
+                                                       content_provider_id: @event.content_provider_id,
+                                                       start: @event.start }
+    assert_response :success
+    assert_equal(JSON.parse(response.body)['id'], @event.id)
+  end
+
+  test 'should not find existing event by title and content provider but no matching date' do
+    post 'check_exists', :format => :json, :event => { title: @event.title,
+                                                       url: 'whatever.com',
+                                                       content_provider_id: @event.content_provider_id,
+                                                       start: '2017-01-02' }
+
+    assert_response :success
+    assert_equal(response.body, '')
+  end
 
 
   test 'should find existing event by url' do
-    post 'check_exists', :format => :json,  :url => @event.url
+    post 'check_exists', :format => :json, :event => { title: 'whatever',
+                                                       url: @event.url,
+                                                       content_provider_id: @event.content_provider_id }
     assert_response :success
-    assert_equal(JSON.parse(response.body)['title'], @event.title)
+    assert_equal(JSON.parse(response.body)['url'], @event.url)
+    assert_equal(JSON.parse(response.body)['id'], @event.id)
   end
 
   test 'should return nothing when event does not exist' do
-    post 'check_exists', :format => :json,  :url => 'http://no-such-site.com'
+    post 'check_exists', :format => :json, :event => { :url => 'http://no-such-site.com' }
     assert_response :success
     assert_equal(response.body, '')
   end
 
   test 'should render properly when no url supplied' do
-    post 'check_exists', :format => :json,  :url => nil
+    post 'check_exists', :format => :json, :event => { :url => nil }
     assert_response :success
     assert_equal(response.body, '')
   end

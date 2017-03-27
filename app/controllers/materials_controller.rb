@@ -35,14 +35,21 @@ class MaterialsController < ApplicationController
   # GET /materials/1/edit
   def edit
     authorize @material
-    tools_response = open "#{ExternalResource::BIOTOOLS_BASE}/api/tool?q=" + URI.escape(@material.title)
-    tools_response = tools_response.read
   end
 
   # POST /materials/check_title
   # POST /materials/check_title.json
   def check_exists
-    @material = params[:url].blank? ? nil : Material.find_by_url(params[:url])
+    given_material = Material.new(material_params)
+    @material = nil
+    if given_material.url.present?
+      @material = Material.find_by_url(given_material.url)
+    end
+
+    if given_material.content_provider.present? && given_material.title.present?
+      @material ||= Material.where(content_provider_id: given_material.content_provider_id,
+                                   title: given_material.title).last
+    end
 
     if @material
       respond_to do |format|
