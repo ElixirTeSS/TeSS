@@ -50,7 +50,7 @@ class EditSuggestionWorker
     api_key = Rails.application.secrets.bioportal_api_key
     url = "http://data.bioontology.org/annotator?include=prefLabel&text=#{clean_desc}&ontologies=EDAM&longest_only=false&exclude_numbers=false&whole_word_only=true&exclude_synonyms=false&apikey=#{api_key}"
 
-    annotations = []
+    ids = []
 
     # Run the query
     # Clearly, hitting BioPortal with test fixture data would be a bit silly, but it might be useful to test somehow
@@ -65,7 +65,7 @@ class EditSuggestionWorker
         data.each do |entry|
           id = entry['annotatedClass']['@id']
           if id.include? 'http://edamontology.org/topic_'
-            annotations << entry['annotatedClass']['prefLabel']
+            ids << entry['annotatedClass']['@id']
             #else
             #logger.info("Suggestible #{suggestible.inspect} matches entry #{id}.")
           end
@@ -78,10 +78,10 @@ class EditSuggestionWorker
 
     # Create some topics and an edit_suggestion if some annotations were returned
     #logger.info("ANNOTATION: #{annotations}")
-    if annotations.any?
+    if ids.any?
       topics = []
-      annotations.each do |a|
-        topic = ScientificTopic.find_by_preferred_label(a)
+      ids.each do |id|
+        topic = EDAM::Ontology.instance.lookup(id)
         if topic
           topics << topic
         end
@@ -91,7 +91,7 @@ class EditSuggestionWorker
         suggestion = EditSuggestion.new(:suggestible_type => suggestible_type, :suggestible_id => suggestible_id)
         topics.each do |x|
           #logger.info("Added topic #{x} to #{suggestible.inspect}")
-          suggestion.scientific_topics << x
+          suggestion.scientific_topic_links.build(term_uri: x.uri)
         end
         if suggestion.scientific_topics.any?
           suggestion.save
