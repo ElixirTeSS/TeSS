@@ -13,4 +13,8 @@ class OntologyTerm
     end
   end
 
+  def ==(other)
+    self.uri == other.uri
+  end
+
 end
