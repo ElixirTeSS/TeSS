@@ -1,4 +1,5 @@
 OBO = RDF::Vocabulary.new('http://www.geneontology.org/formats/oboInOwl#')
+OBO_EDAM = RDF::Vocabulary.new('http://purl.obolibrary.org/obo/edam#')
 
 module EDAM
 
@@ -38,6 +39,18 @@ module EDAM
     def initialize
       @ontology = ::Ontology.new('EDAM_1.16.owl', EDAM::Term)
       @cache = {}
+    end
+
+    def load
+      @ontology.load
+    end
+
+    def all_topics
+      find_by(OBO.inSubset, OBO_EDAM.topics)
+    end
+
+    def all_operations
+      find_by(OBO.inSubset, OBO_EDAM.operations)
     end
 
     def lookup(uri)
