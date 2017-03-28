@@ -23,20 +23,17 @@ biojs:
   title: BioJS
   url: http://www.mygoblet.org//training-portal/materials/biojs
   short_description: BioJS is a library of graphical components easy to reuse to represent biological information
-  scientific_topics: [topic_two, topic_one]
   content_provider: goblet
 
 interpro:
   title: InterPro
   url: http://www.mygoblet.org//training-portal/materials/interpro-introduction
   short_description: 'This presentation introduces the background to the InterPro database: what it is, where it came from, and what was the vision behind its creation'
-  scientific_topics: [topic_two]
 
 prints:
   title: 'PRINTS: A protein family database with a difference'
   url: http://www.mygoblet.org//training-portal/materials/prints-protein-family-database-difference
   short_description: 'A presentation designed to introduce the concept of protein family analysis and characterisation using motif-based methods, with a particular focus on protein fingerprinting.'
-  scientific_topics: [topic_one]
 
 scraper_user_material:
   title: material owned by scraper'

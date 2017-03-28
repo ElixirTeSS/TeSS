@@ -22,7 +22,7 @@ class EditSuggestionWorkerTest < ActiveSupport::TestCase
 
     assert_not_nil material.edit_suggestion
     assert_equal 2, material.edit_suggestion.scientific_topics.count
-    assert_equal 'RNA', material.edit_suggestion.scientific_topics.first.preferred_label
+    assert_equal ['Small molecules', 'Molecular dynamics'], material.edit_suggestion.scientific_topics.map(&:preferred_label)
   end
 
   test 'Get suggestions for an event' do
@@ -40,7 +40,7 @@ class EditSuggestionWorkerTest < ActiveSupport::TestCase
 
     assert_not_nil event.edit_suggestion
     assert_equal 2, event.edit_suggestion.scientific_topics.count
-    assert_equal 'RNA', event.edit_suggestion.scientific_topics.first.preferred_label
+    assert_equal ['Small molecules', 'Molecular dynamics'], event.edit_suggestion.scientific_topics.map(&:preferred_label)
   end
 
   test 'Get suggestions for a workflow' do
@@ -58,7 +58,7 @@ class EditSuggestionWorkerTest < ActiveSupport::TestCase
 
     assert_not_nil workflow.edit_suggestion
     assert_equal 2, workflow.edit_suggestion.scientific_topics.count
-    assert_equal 'RNA', workflow.edit_suggestion.scientific_topics.first.preferred_label
+    assert_equal ['Small molecules', 'Molecular dynamics'], workflow.edit_suggestion.scientific_topics.map(&:preferred_label)
   end
 
 end

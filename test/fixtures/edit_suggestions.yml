@@ -5,6 +5,4 @@
 # below each fixture, per the syntax in the comments below
 #
 one:
-  scientific_topics: [topic_one,topic_two]
-
-
+  suggestible: good_material (Material)

@@ -1,6 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-topic_one:
+topic_one: # http://edamontology.org/topic_0078
   preferred_label: topic_one_name
   synonyms: [topic_two_name_one]
   definitions: [MyText]
@@ -22,7 +22,7 @@ topic_one:
   subset_property: [MyText]
   obsolete_since: MyString
 
-topic_two:
+topic_two: # http://edamontology.org/topic_0079
   preferred_label: topic_two_name
   synonyms: [topic_two_name_two]
   definitions: [MyText]
@@ -44,23 +44,23 @@ topic_two:
   subset_property: [MyText]
   obsolete_since: MyString
 
-broad_topic:
+broad_topic: # http://edamontology.org/topic_0082
   preferred_label: broad_topic_test
   has_narrow_synonym: [narrow_topic_name]
 
-exact_synonym_topic:
+exact_synonym_topic: # http://edamontology.org/topic_0092
   preferred_label: exact_syn
   has_exact_synonym: [exact_syn_name]
 
-narrow_topic:
+narrow_topic: # http://edamontology.org/topic_0092
   preferred_label: narrow_topic_test
   has_broad_synonym: [broad_topic_name]
 
-bioinformatics:
+bioinformatics: # http://edamontology.org/topic_0091
   preferred_label: Bioinformatics
 
-dna:
+dna: # http://edamontology.org/topic_0654
   preferred_label: DNA
 
-rna:
+rna: # http://edamontology.org/topic_0099
   preferred_label: RNA
