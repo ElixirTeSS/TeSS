@@ -1,0 +1,1 @@
+EDAM::Ontology.instance.load
