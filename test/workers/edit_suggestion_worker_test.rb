@@ -41,8 +41,8 @@ class EditSuggestionWorkerTest < ActiveSupport::TestCase
 
     assert_not_nil event.edit_suggestion
     assert_equal 2, event.edit_suggestion.scientific_topics.count
-    assert_includes material.edit_suggestion.scientific_topics.map(&:preferred_label), 'Small molecules'
-    assert_includes material.edit_suggestion.scientific_topics.map(&:preferred_label), 'Molecular dynamics'
+    assert_includes event.edit_suggestion.scientific_topics.map(&:preferred_label), 'Small molecules'
+    assert_includes event.edit_suggestion.scientific_topics.map(&:preferred_label), 'Molecular dynamics'
   end
 
   test 'Get suggestions for a workflow' do
@@ -60,8 +60,8 @@ class EditSuggestionWorkerTest < ActiveSupport::TestCase
 
     assert_not_nil workflow.edit_suggestion
     assert_equal 2, workflow.edit_suggestion.scientific_topics.count
-    assert_includes material.edit_suggestion.scientific_topics.map(&:preferred_label), 'Small molecules'
-    assert_includes material.edit_suggestion.scientific_topics.map(&:preferred_label), 'Molecular dynamics'
+    assert_includes workflow.edit_suggestion.scientific_topics.map(&:preferred_label), 'Small molecules'
+    assert_includes workflow.edit_suggestion.scientific_topics.map(&:preferred_label), 'Molecular dynamics'
   end
 
 end
