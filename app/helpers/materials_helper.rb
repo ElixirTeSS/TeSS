@@ -29,18 +29,8 @@ module MaterialsHelper
     end
   end
 
-  def edam_names_for_autocomplete
-    ScientificTopic.where.not(preferred_label: nil).map do |topic|
-      { value: topic.preferred_label, data: topic.id }
-    end
-  end
-
   def scientific_topic_names_for_autocomplete
-    ScientificTopic.where.not(preferred_label: nil).map(&:preferred_label)
-  end
-
-  def scientific_topic_ids_for_autocomplete
-    ScientificTopic.where.not(preferred_label: nil).map(&:id)
+    EDAM::Ontology.instance.all_topics.map(&:preferred_label)
   end
 
   def content_providers_list
