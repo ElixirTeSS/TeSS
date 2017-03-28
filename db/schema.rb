@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170307113734) do
+ActiveRecord::Schema.define(version: 20170327112117) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -273,13 +273,13 @@ ActiveRecord::Schema.define(version: 20170307113734) do
   end
 
   create_table "scientific_topic_links", force: :cascade do |t|
-    t.integer "scientific_topic_id"
     t.integer "resource_id"
     t.string  "resource_type"
+    t.string  "term_uri"
   end
 
   add_index "scientific_topic_links", ["resource_type", "resource_id"], name: "index_scientific_topic_links_on_resource_type_and_resource_id", using: :btree
-  add_index "scientific_topic_links", ["scientific_topic_id"], name: "index_scientific_topic_links_on_scientific_topic_id", using: :btree
+  add_index "scientific_topic_links", ["term_uri"], name: "index_scientific_topic_links_on_term_uri", using: :btree
 
   create_table "scientific_topics", force: :cascade do |t|
     t.string   "preferred_label"
@@ -437,7 +437,6 @@ ActiveRecord::Schema.define(version: 20170307113734) do
   add_foreign_key "node_links", "nodes"
   add_foreign_key "nodes", "users"
   add_foreign_key "packages", "users"
-  add_foreign_key "scientific_topic_links", "scientific_topics"
   add_foreign_key "staff_members", "nodes"
   add_foreign_key "users", "roles"
   add_foreign_key "workflows", "users"

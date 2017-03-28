@@ -4,16 +4,16 @@ module HasScientificTopics
 
   included do
     has_many :scientific_topic_links, as: :resource
-    has_many :scientific_topics, through: :scientific_topic_links
   end
 
   def scientific_topic_names= names
     topics = []
     [names].flatten.each do |name|
       unless name.blank? or name == ''
-        st = ScientificTopic.where(preferred_label: name).to_a
-        st = ScientificTopic.where("'#{name}' = ANY (has_exact_synonym)").to_a if st.empty?
-        st = ScientificTopic.where("'#{name}' = ANY (has_narrow_synonym)").to_a if st.empty?
+        st = []
+        st << EDAM::Ontology.instance.lookup_by_name(name)
+        st = EDAM::Ontology.instance.find_by(OBO.hasExactSynonym, name) if st.empty?
+        st = EDAM::Ontology.instance.find_by(OBO.hasNarrowSynonym, name) if st.empty?
         topics << st
       end
     end
@@ -22,6 +22,14 @@ module HasScientificTopics
 
   def scientific_topic_names
     scientific_topics.map(&:preferred_label)
+  end
+
+  def scientific_topics= uris
+    uris.each { |uri| scientific_topic_links.build(term_uri: uri) }
+  end
+
+  def scientific_topics
+    scientific_topic_links.map(&:scientific_topics)
   end
 
 end
