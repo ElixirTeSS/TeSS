@@ -4,7 +4,10 @@ Rails.application.routes.draw do
     resources :collaborations, only: [:create, :destroy, :index, :show]
   end
 
-  resources :scientific_topics
+  get 'edam/terms' => 'edam#terms'
+  get 'edam/topics' => 'edam#topics'
+  get 'edam/operations' => 'edam#operations'
+
   resources :workflows
 
   #get 'static/home'

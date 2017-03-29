@@ -602,13 +602,11 @@ var Workflows = {
 
     ontologyTerms: {
         add: function (suggestion) {
-            console.log(suggestion.data)
             var template = HandlebarsTemplates['workflows/ontology_term_form'];
 
             $('#node-modal-ontology-terms-list').append(template({
-                id: suggestion.data.id,
                 label: suggestion.data.preferred_label,
-                url: suggestion.data.class_id
+                uri: suggestion.data.uri
             }));
 
             return false;
@@ -621,11 +619,10 @@ var Workflows = {
 
         fetch: function (node) {
             return $('#node-modal-ontology-terms-list .ontology-term').map(function () {
-                return { id: $(this).data('attributeId'),
-                    label: $(this).data('attributeLabel'),
-                    url: $(this).data('attributeUrl')
+                return { label: $(this).data('attributeLabel'),
+                         uri: $(this).data('attributeUrl')
                 };
-            });
+            }).toArray();
         },
 
         populate: function (resources) {
