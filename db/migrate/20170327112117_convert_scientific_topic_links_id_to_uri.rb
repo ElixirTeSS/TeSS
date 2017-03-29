@@ -2,6 +2,8 @@ class ScientificTopicLink < ActiveRecord::Base
   belongs_to :scientific_topic
 end
 
+class ScientificTopic < ActiveRecord::Base; end
+
 class ConvertScientificTopicLinksIdToUri < ActiveRecord::Migration
   def up
     add_column :scientific_topic_links, :term_uri, :string
