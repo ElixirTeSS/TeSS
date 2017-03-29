@@ -8,7 +8,7 @@ class EditSuggestionWorker
     logger.debug "ID: #{suggestible_id}"
     logger.debug "TYPE: #{suggestible_type}"
     # Run Sidekiq task to call the BioPortal annotator
-    # ScientificTopic.find_by_preferred_label(label)
+    # EDAM::Ontology.instance.lookup_by_name(label)
     # suggestion = EditSuggestion
     # for each topic: suggestion.scientific_topics < topic
     suggestible = suggestible_type.constantize.find(suggestible_id)

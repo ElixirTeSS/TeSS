@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170327112117) do
+ActiveRecord::Schema.define(version: 20170329103819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -280,38 +280,6 @@ ActiveRecord::Schema.define(version: 20170327112117) do
 
   add_index "scientific_topic_links", ["resource_type", "resource_id"], name: "index_scientific_topic_links_on_resource_type_and_resource_id", using: :btree
   add_index "scientific_topic_links", ["term_uri"], name: "index_scientific_topic_links_on_term_uri", using: :btree
-
-  create_table "scientific_topics", force: :cascade do |t|
-    t.string   "preferred_label"
-    t.boolean  "obsolete"
-    t.string   "created_in"
-    t.string   "documentation"
-    t.string   "prefix_iri"
-    t.text     "has_definition"
-    t.string   "saved_by"
-    t.string   "obsolete_since"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
-    t.string   "class_id"
-    t.string   "slug"
-    t.string   "synonyms",            default: [],              array: true
-    t.string   "definitions",         default: [],              array: true
-    t.string   "parents",             default: [],              array: true
-    t.string   "consider",            default: [],              array: true
-    t.string   "has_alternative_id",  default: [],              array: true
-    t.string   "has_broad_synonym",   default: [],              array: true
-    t.string   "has_dbxref",          default: [],              array: true
-    t.string   "has_exact_synonym",   default: [],              array: true
-    t.string   "has_related_synonym", default: [],              array: true
-    t.string   "has_subset",          default: [],              array: true
-    t.string   "replaced_by",         default: [],              array: true
-    t.string   "subset_property",     default: [],              array: true
-    t.string   "has_narrow_synonym",  default: [],              array: true
-    t.string   "in_subset",           default: [],              array: true
-    t.string   "in_cyclic",           default: [],              array: true
-  end
-
-  add_index "scientific_topics", ["slug"], name: "index_scientific_topics_on_slug", unique: true, using: :btree
 
   create_table "sessions", force: :cascade do |t|
     t.string   "session_id", null: false

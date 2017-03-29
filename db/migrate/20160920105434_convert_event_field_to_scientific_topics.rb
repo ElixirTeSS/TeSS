@@ -1,3 +1,5 @@
+class ScientificTopic < ActiveRecord::Base; end
+
 class ConvertEventFieldToScientificTopics < ActiveRecord::Migration
 
   IANN_MAPPING = {
@@ -61,7 +63,7 @@ class ConvertEventFieldToScientificTopics < ActiveRecord::Migration
     # Find ScientificTopics from the URIs
     topic_mapping = IANN_MAPPING.dup
     topic_mapping.each do |key, value|
-      topic = ScientificTopic.find_by_class_id(value)
+      topic = EDAM::Ontology.instance.lookup(value)
       puts "Couldn't find ScientificTopic for class ID: #{value}" if topic.nil?
       topic_mapping[key] = topic
     end
