@@ -539,7 +539,7 @@ class MaterialsControllerTest < ActionController::TestCase
         end
 =end
   test 'finds multiple preferred labels' do
-    topic_one = EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0079')
+    topic_one = EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0154')
     topic_two = EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0078')
     topics = [topic_one.preferred_label, topic_two.preferred_label]
     @material.scientific_topic_names = topics
@@ -547,7 +547,7 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_equal [topic_one, topic_two], @material.scientific_topics
   end
   test 'finds single preferred label' do
-    topic_one = EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0079')
+    topic_one = EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0154')
     topics = topic_one.preferred_label
     @material.scientific_topic_names = topics
     assert_not_empty @material.scientific_topics

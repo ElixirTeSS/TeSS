@@ -33,5 +33,14 @@ class EdamOntologyTest < ActiveSupport::TestCase
     assert_equal 'Gene expression', terms.first.preferred_label
   end
 
+  test 'should lookup topic by name if ambiguous' do
+    ['Mapping', 'Structure analysis', 'Nucleic acid structure analysis', 'Structure prediction',
+     'Sequence assembly', 'Sequence analysis', 'Protein structure analysis'].each do |label|
+      topic = EDAM::Ontology.instance.lookup_topic_by_name(label)
+
+      assert topic
+      assert_match /.+topic_/, topic.uri
+    end
+  end
 
 end

@@ -10,7 +10,7 @@ module HasScientificTopics
     terms = []
     [names].flatten.each do |name|
       unless name.blank? or name == ''
-        st = [EDAM::Ontology.instance.lookup_by_name(name)].compact
+        st = [EDAM::Ontology.instance.lookup_topic_by_name(name)].compact
         st = EDAM::Ontology.instance.find_by(OBO.hasExactSynonym, name) if st.empty?
         st = EDAM::Ontology.instance.find_by(OBO.hasNarrowSynonym, name) if st.empty?
         terms += st

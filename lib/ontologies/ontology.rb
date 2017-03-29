@@ -3,23 +3,29 @@ class Ontology
   def initialize(filename, term_class = OntologyTerm)
     @filename = filename
     @term_class = term_class
-    @cache = {}
+    @term_cache = {}
+    @query_cache = {}
   end
 
   def lookup(uri)
-    @cache[RDF::URI(uri)] ||= fetch(uri)
+    @term_cache[RDF::URI(uri)] ||= fetch(uri)
   end
 
   # Collection
   def find_by(predicate, object)
-    results = graph.query([:u, predicate, object])
-    results.map { |result| lookup(result.subject) }
+    @query_cache[predicate] ||= {}
+
+    if @query_cache[predicate].key?(object)
+      @query_cache[predicate][object]
+    else
+      results = graph.query([:u, predicate, object])
+      @query_cache[predicate][object] = results.map { |result| lookup(result.subject) }
+    end
   end
 
   # Singleton
   def lookup_by(predicate, object)
-    result = graph.query([:u, predicate, object]).first
-    lookup(result.subject) if result
+    find_by(predicate, object).first
   end
 
   def graph
