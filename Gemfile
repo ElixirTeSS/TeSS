@@ -137,6 +137,7 @@ group :development, :test do
   gem 'byebug'
   gem 'simplecov'
   gem 'rubocop'
+  gem 'codacy-coverage', :require => false
 end
 
 group :development do

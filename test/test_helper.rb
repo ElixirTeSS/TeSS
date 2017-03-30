@@ -1,4 +1,6 @@
 require 'simplecov'
+require 'codacy-coverage'
+Codacy::Reporter.start
 SimpleCov.start 'rails'
 
 ENV['RAILS_ENV'] ||= 'test'
