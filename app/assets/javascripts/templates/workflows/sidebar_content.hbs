@@ -6,41 +6,49 @@
 
 {{#if associatedResources}}
     {{#if_any associatedResources "type" "materials"}}
-        <h4 class="nav-heading-darker">Training materials</h3>
-        <div class="resourceCard">
+        <h4 class="nav-heading-darker">Training materials</h4>
         {{#each_when associatedResources "type" "materials"}}
+        <div class="resourceCard">
             <a href="{{this.url}}" target="_blank" class="h4">{{this.title}}</a>
-        {{/each_when}}
         </div>
+        {{/each_when}}
     {{/if_any}}
 
     {{#if_any associatedResources "type" "events"}}
-        <h4 class="nav-heading-darker">Training events</h3>
-        <div class="resourceCard">
+        <h4 class="nav-heading-darker">Training events</h4>
         {{#each_when associatedResources "type" "events"}}
+        <div class="resourceCard">
             <a href="{{this.url}}" target="_blank" class="h4">{{this.title}}</a>
-        {{/each_when}}
         </div>
+        {{/each_when}}
     {{/if_any}}
 
     {{#if_any associatedResources "type" "tools"}}
-    <h4 class="nav-heading-darker">Tools</h3>
+        <h4 class="nav-heading-darker">Tools</h4>
         {{#each_when associatedResources "type" "tools"}}
         <div class="resourceCard">
-        <a href="{{this.url}}" target="_blank" class="h4">{{this.title}}</a>
-        <i><span id=tool-description-{{this.id}}></span></i>
-        <div id=tool-topics-{{this.id}}></div>
+            <a href="{{this.url}}" target="_blank" class="h4">{{this.title}}</a>
+            <i><span id=tool-description-{{this.id}}></span></i>
+            <div id=tool-topics-{{this.id}}></div>
         </div>
         {{/each_when}}
     {{/if_any}}
 
     {{#if_any associatedResources "type" "policies"}}
-    <h4 class="nav-heading" style="background-color:#dddddd; margin-bottom: 5px;">Policies</h3>
-    <div class="resourceCard">
+    <h4 class="nav-heading-darker">Policies</h4>
         {{#each_when associatedResources "type" "policies"}}
-        <a href="{{this.url}}" target="_blank" class="h4">{{this.title}}</a>
+        <div class="resourceCard">
+            <a href="{{this.url}}" target="_blank" class="h4">{{this.title}}</a>
+        </div>
         {{/each_when}}
-    </div>
-    </ul>
     {{/if_any}}
+{{/if}}
+
+{{#if ontologyTerms}}
+    <h4 class="nav-heading-darker">Terms</h4>
+    <ul>
+        {{#each ontologyTerms}}
+        <li>{{this.label}}</li>
+        {{/each}}
+    </ul>
 {{/if}}
