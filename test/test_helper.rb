@@ -18,7 +18,7 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
 
-  WebMock.disable_net_connect!(allow_localhost: true)
+  WebMock.disable_net_connect!(allow_localhost: true, allow: 'api.codacy.com')
 
   # Mock remote images so paperclip doesn't break:
   def mock_images
