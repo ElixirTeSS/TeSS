@@ -33,15 +33,15 @@ class MaterialsControllerTest < ActionController::TestCase
 
   #INDEX TESTS
   test 'should get index' do
-    @material.scientific_topic_names = ['Chromosomes']
-    @material.save!
-
     get :index
     assert_response :success
     assert_not_nil assigns(:materials)
   end
 
   test 'should get index as json' do
+    @material.scientific_topic_names = ['Chromosomes']
+    @material.save!
+
     get :index, format: :json
     assert_response :success
     assert_not_nil assigns(:materials)

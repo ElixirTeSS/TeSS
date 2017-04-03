@@ -14,6 +14,9 @@ class WorkflowsControllerTest < ActionController::TestCase
   end
 
   test "should get index as json" do
+    @workflow.scientific_topic_names = ['Chromosomes']
+    @workflow.save!
+
     get :index, format: :json
     assert_response :success
     assert_not_empty assigns(:workflows)
@@ -45,6 +48,9 @@ class WorkflowsControllerTest < ActionController::TestCase
   end
 
   test "should show workflow as json" do
+    @workflow.scientific_topic_names = ['Chromosomes']
+    @workflow.save!
+
     get :show, id: @workflow, format: :json
     assert_response :success
     assert assigns(:workflow)
