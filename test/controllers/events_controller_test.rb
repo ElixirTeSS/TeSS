@@ -21,6 +21,9 @@ class EventsControllerTest < ActionController::TestCase
 
   #INDEX TESTS
   test 'should get index' do
+    @event.scientific_topic_names = ['Chromosomes']
+    @event.save!
+
     get :index
     assert_response :success
     assert_not_nil assigns(:events)
@@ -118,6 +121,9 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test 'should show event as json' do
+    @event.scientific_topic_names = ['Chromosomes']
+    @event.save!
+
     get :show, id: @event, format: :json
     assert_response :success
     assert assigns(:event)
