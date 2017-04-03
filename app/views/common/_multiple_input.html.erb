@@ -14,7 +14,7 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
     $(document).ready(function () {
         $('.<%=field_name.singularize%>').on('keydown.autocomplete','.<%=field_name%>', function(){
             $(this).autocomplete({
-                orientation: top,
+                orientation: 'top',
                 lookupLimit: 10,
                 lookup: <%= suggestions ||= []-%>
             });

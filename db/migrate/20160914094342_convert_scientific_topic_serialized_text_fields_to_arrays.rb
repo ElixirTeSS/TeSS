@@ -1,5 +1,6 @@
 require 'yaml'
 
+class ScientificTopic < ActiveRecord::Base; end
 
 class ConvertScientificTopicSerializedTextFieldsToArrays < ActiveRecord::Migration
   def up

@@ -9,10 +9,6 @@ Role.create_roles
 puts "\nSeeding default user"
 User.get_default_user
 
-# Scientific Topics
-puts "\nSeeding scientific topics"
-ScientificTopic.create_topics
-
 # Nodes
 puts "\nSeeding nodes"
 path = File.join(Rails.root, 'config', 'data', 'elixir_nodes.json')

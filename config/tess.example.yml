@@ -12,6 +12,3 @@ production:
 
 test:
   <<: *default
-  base_url: http://localhost:3000
-  contact_email: test@example.com
-  solr_enabled: false

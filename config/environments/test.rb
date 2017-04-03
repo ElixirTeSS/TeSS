@@ -41,3 +41,12 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 end
+
+# Override secrets/config with test configuration from test/config
+test_tess = YAML.load(File.read(File.join(Rails.root, 'test', 'config', 'test_tess.yml')))
+test_tess.each do |key, value|
+  TeSS::Config[key] = value
+end
+
+test_secrets = YAML.load(File.read(File.join(Rails.root, 'test', 'config', 'test_secrets.yml'))).symbolize_keys!
+Rails.application.secrets.merge!(test_secrets)

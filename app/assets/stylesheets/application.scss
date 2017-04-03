@@ -682,3 +682,7 @@ div.legal-block {
   max-width: 800px;
   margin: auto;
 }
+
+input.loading {
+  background: url('ajax-loader.gif') no-repeat right center;
+}

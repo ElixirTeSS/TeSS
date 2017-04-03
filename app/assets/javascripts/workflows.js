@@ -104,7 +104,9 @@ $(document).ready(function () {
             $('.node-modal-add-resource-btn').click(Workflows.associatedResources.add);
             $('#node-modal')
                 .on('hide.bs.modal', Workflows.cancelState)
-                .on('click', '.delete-associated-resource', Workflows.associatedResources.delete);
+                .on('click', '.delete-associated-resource', Workflows.associatedResources.delete)
+                .on('click', '.delete-ontology-term', Workflows.ontologyTerms.delete);
+
             $('#edge-modal').on('hide.bs.modal', Workflows.cancelState);
 
             // Update JSON in form
@@ -372,7 +374,9 @@ var Workflows = {
             $('#node-modal-form-parent-id').val(data.parent);
             $('#node-modal-form-x').val(position.x);
             $('#node-modal-form-y').val(position.y);
+            $('#term-autocomplete').val('');
             Workflows.associatedResources.populate(data.associatedResources || []);
+            Workflows.ontologyTerms.populate(data.ontologyTerms || []);
         },
 
         fetch: function () {
@@ -384,7 +388,8 @@ var Workflows = {
                     color: $('#node-modal-form-colour').val(),
                     font_color: $('#node-modal-form-colour').css("color"),
                     parent: $('#node-modal-form-parent-id').val(),
-                    associatedResources: Workflows.associatedResources.fetch()
+                    associatedResources: Workflows.associatedResources.fetch(),
+                    ontologyTerms: Workflows.ontologyTerms.fetch()
                 },
                 position: {
                     x: parseInt($('#node-modal-form-x').val()),
@@ -539,12 +544,13 @@ var Workflows = {
         // Add a new blank form for an associated resource
         add: function () {
             var type = $(this).data('resourceType');
-            $('#node-modal-associated-resource-list').append(
-                HandlebarsTemplates['workflows/associated_resource_form']({
-                    type: type,
-                    icon: Workflows.associatedResources.types[type].icon
-                })
-            );
+            var template = HandlebarsTemplates['workflows/associated_resource_form'];
+
+            $('#node-modal-associated-resource-list').append(template({
+                type: type,
+                icon: Workflows.associatedResources.types[type].icon
+            }));
+
             return false;
         },
 
@@ -552,7 +558,7 @@ var Workflows = {
             $(this).parents('.associated-resource').remove();
             return false;
         },
-        
+
         // Fetch the associated resources from the modal. Returns an array of objects that can be added to a node's data
         fetch: function (node) {
             var resources = [];
@@ -589,6 +595,43 @@ var Workflows = {
                 resource.icon = Workflows.associatedResources.types[resource.type].icon;
                 resourceList.append(
                     HandlebarsTemplates['workflows/associated_resource_form'](resource)
+                );
+            }
+        }
+    },
+
+    ontologyTerms: {
+        add: function (suggestion) {
+            var template = HandlebarsTemplates['workflows/ontology_term_form'];
+
+            $('#node-modal-ontology-terms-list').append(template({
+                label: suggestion.data.preferred_label,
+                uri: suggestion.data.uri
+            }));
+
+            return false;
+        },
+
+        delete: function () {
+            $(this).parents('.ontology-term').remove();
+            return false;
+        },
+
+        fetch: function (node) {
+            return $('#node-modal-ontology-terms-list .ontology-term').map(function () {
+                return { label: $(this).data('attributeLabel'),
+                         uri: $(this).data('attributeUrl')
+                };
+            }).toArray();
+        },
+
+        populate: function (resources) {
+            var resourceList = $('#node-modal-ontology-terms-list');
+            resourceList.html('');
+
+            for(var i = 0; i < resources.length; i++) {
+                resourceList.append(
+                    HandlebarsTemplates['workflows/ontology_term_form'](resources[i])
                 );
             }
         }

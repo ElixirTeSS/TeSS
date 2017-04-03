@@ -1,1 +1,118 @@
-[{"annotatedClass":{"prefLabel":"dna","@id":"http://edamontology.org/format_1212","@type":"http://www.w3.org/2002/07/owl#Class","links":{"self":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Fformat_1212","ontology":"http://data.bioontology.org/ontologies/EDAM","children":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Fformat_1212/children","parents":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Fformat_1212/parents","descendants":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Fformat_1212/descendants","ancestors":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Fformat_1212/ancestors","instances":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Fformat_1212/instances","tree":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Fformat_1212/tree","notes":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Fformat_1212/notes","mappings":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Fformat_1212/mappings","ui":"http://bioportal.bioontology.org/ontologies/EDAM?p=classes&conceptid=http%3A%2F%2Fedamontology.org%2Fformat_1212","@context":{"self":"http://www.w3.org/2002/07/owl#Class","ontology":"http://data.bioontology.org/metadata/Ontology","children":"http://www.w3.org/2002/07/owl#Class","parents":"http://www.w3.org/2002/07/owl#Class","descendants":"http://www.w3.org/2002/07/owl#Class","ancestors":"http://www.w3.org/2002/07/owl#Class","instances":"http://data.bioontology.org/metadata/Instance","tree":"http://www.w3.org/2002/07/owl#Class","notes":"http://data.bioontology.org/metadata/Note","mappings":"http://data.bioontology.org/metadata/Mapping","ui":"http://www.w3.org/2002/07/owl#Class"}},"@context":{"@vocab":"http://data.bioontology.org/metadata/","prefLabel":"http://data.bioontology.org/metadata/skosprefLabel"}},"hierarchy":[],"annotations":[{"from":2,"to":4,"matchType":"PREF","text":"DNA"}],"mappings":[]},{"annotatedClass":{"prefLabel":"DNA","@id":"http://edamontology.org/topic_0654","@type":"http://www.w3.org/2002/07/owl#Class","links":{"self":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0654","ontology":"http://data.bioontology.org/ontologies/EDAM","children":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0654/children","parents":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0654/parents","descendants":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0654/descendants","ancestors":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0654/ancestors","instances":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0654/instances","tree":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0654/tree","notes":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0654/notes","mappings":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0654/mappings","ui":"http://bioportal.bioontology.org/ontologies/EDAM?p=classes&conceptid=http%3A%2F%2Fedamontology.org%2Ftopic_0654","@context":{"self":"http://www.w3.org/2002/07/owl#Class","ontology":"http://data.bioontology.org/metadata/Ontology","children":"http://www.w3.org/2002/07/owl#Class","parents":"http://www.w3.org/2002/07/owl#Class","descendants":"http://www.w3.org/2002/07/owl#Class","ancestors":"http://www.w3.org/2002/07/owl#Class","instances":"http://data.bioontology.org/metadata/Instance","tree":"http://www.w3.org/2002/07/owl#Class","notes":"http://data.bioontology.org/metadata/Note","mappings":"http://data.bioontology.org/metadata/Mapping","ui":"http://www.w3.org/2002/07/owl#Class"}},"@context":{"@vocab":"http://data.bioontology.org/metadata/","prefLabel":"http://data.bioontology.org/metadata/skosprefLabel"}},"hierarchy":[],"annotations":[{"from":2,"to":4,"matchType":"PREF","text":"DNA"}],"mappings":[]},{"annotatedClass":{"prefLabel":"rna","@id":"http://edamontology.org/format_1213","@type":"http://www.w3.org/2002/07/owl#Class","links":{"self":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Fformat_1213","ontology":"http://data.bioontology.org/ontologies/EDAM","children":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Fformat_1213/children","parents":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Fformat_1213/parents","descendants":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Fformat_1213/descendants","ancestors":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Fformat_1213/ancestors","instances":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Fformat_1213/instances","tree":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Fformat_1213/tree","notes":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Fformat_1213/notes","mappings":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Fformat_1213/mappings","ui":"http://bioportal.bioontology.org/ontologies/EDAM?p=classes&conceptid=http%3A%2F%2Fedamontology.org%2Fformat_1213","@context":{"self":"http://www.w3.org/2002/07/owl#Class","ontology":"http://data.bioontology.org/metadata/Ontology","children":"http://www.w3.org/2002/07/owl#Class","parents":"http://www.w3.org/2002/07/owl#Class","descendants":"http://www.w3.org/2002/07/owl#Class","ancestors":"http://www.w3.org/2002/07/owl#Class","instances":"http://data.bioontology.org/metadata/Instance","tree":"http://www.w3.org/2002/07/owl#Class","notes":"http://data.bioontology.org/metadata/Note","mappings":"http://data.bioontology.org/metadata/Mapping","ui":"http://www.w3.org/2002/07/owl#Class"}},"@context":{"@vocab":"http://data.bioontology.org/metadata/","prefLabel":"http://data.bioontology.org/metadata/skosprefLabel"}},"hierarchy":[],"annotations":[{"from":7,"to":9,"matchType":"PREF","text":"RNA"}],"mappings":[]},{"annotatedClass":{"prefLabel":"RNA","@id":"http://edamontology.org/topic_0099","@type":"http://www.w3.org/2002/07/owl#Class","links":{"self":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0099","ontology":"http://data.bioontology.org/ontologies/EDAM","children":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0099/children","parents":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0099/parents","descendants":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0099/descendants","ancestors":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0099/ancestors","instances":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0099/instances","tree":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0099/tree","notes":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0099/notes","mappings":"http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0099/mappings","ui":"http://bioportal.bioontology.org/ontologies/EDAM?p=classes&conceptid=http%3A%2F%2Fedamontology.org%2Ftopic_0099","@context":{"self":"http://www.w3.org/2002/07/owl#Class","ontology":"http://data.bioontology.org/metadata/Ontology","children":"http://www.w3.org/2002/07/owl#Class","parents":"http://www.w3.org/2002/07/owl#Class","descendants":"http://www.w3.org/2002/07/owl#Class","ancestors":"http://www.w3.org/2002/07/owl#Class","instances":"http://data.bioontology.org/metadata/Instance","tree":"http://www.w3.org/2002/07/owl#Class","notes":"http://data.bioontology.org/metadata/Note","mappings":"http://data.bioontology.org/metadata/Mapping","ui":"http://www.w3.org/2002/07/owl#Class"}},"@context":{"@vocab":"http://data.bioontology.org/metadata/","prefLabel":"http://data.bioontology.org/metadata/skosprefLabel"}},"hierarchy":[],"annotations":[{"from":7,"to":9,"matchType":"PREF","text":"RNA"}],"mappings":[]}]
+
+[
+
+  {
+
+    "annotatedClass": {
+
+      "prefLabel": "Small molecules",
+      "@id": "http://edamontology.org/topic_0154",
+      "@type": "http://www.w3.org/2002/07/owl#Class",
+
+      "links": {
+
+        "self": "http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0154",
+        "ontology": "http://data.bioontology.org/ontologies/EDAM",
+        "children": "http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0154/children",
+        "parents": "http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0154/parents",
+        "descendants": "http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0154/descendants",
+        "ancestors": "http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0154/ancestors",
+        "instances": "http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0154/instances",
+        "tree": "http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0154/tree",
+        "notes": "http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0154/notes",
+        "mappings": "http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0154/mappings",
+        "ui": "http://bioportal.bioontology.org/ontologies/EDAM?p=classes&conceptid=http%3A%2F%2Fedamontology.org%2Ftopic_0154",
+
+        "@context": {
+          "self": "http://www.w3.org/2002/07/owl#Class",
+          "ontology": "http://data.bioontology.org/metadata/Ontology",
+          "children": "http://www.w3.org/2002/07/owl#Class",
+          "parents": "http://www.w3.org/2002/07/owl#Class",
+          "descendants": "http://www.w3.org/2002/07/owl#Class",
+          "ancestors": "http://www.w3.org/2002/07/owl#Class",
+          "instances": "http://data.bioontology.org/metadata/Instance",
+          "tree": "http://www.w3.org/2002/07/owl#Class",
+          "notes": "http://data.bioontology.org/metadata/Note",
+          "mappings": "http://data.bioontology.org/metadata/Mapping",
+          "ui": "http://www.w3.org/2002/07/owl#Class"
+        }
+
+      },
+
+      "@context": {
+        "@vocab": "http://data.bioontology.org/metadata/",
+        "prefLabel": "http://data.bioontology.org/metadata/skosprefLabel"
+      }
+
+    },
+    "hierarchy": [ ],
+    "annotations": [
+
+      {
+        "from": 1,
+        "to": 11,
+        "matchType": "SYN",
+        "text": "METABOLITES"
+      }
+    ],
+    "mappings": [ ]
+
+  },
+  {
+
+    "annotatedClass": {
+
+      "prefLabel": "Molecular dynamics",
+      "@id": "http://edamontology.org/topic_0176",
+      "@type": "http://www.w3.org/2002/07/owl#Class",
+
+      "links": {
+
+        "self": "http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0176",
+        "ontology": "http://data.bioontology.org/ontologies/EDAM",
+        "children": "http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0176/children",
+        "parents": "http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0176/parents",
+        "descendants": "http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0176/descendants",
+        "ancestors": "http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0176/ancestors",
+        "instances": "http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0176/instances",
+        "tree": "http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0176/tree",
+        "notes": "http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0176/notes",
+        "mappings": "http://data.bioontology.org/ontologies/EDAM/classes/http%3A%2F%2Fedamontology.org%2Ftopic_0176/mappings",
+        "ui": "http://bioportal.bioontology.org/ontologies/EDAM?p=classes&conceptid=http%3A%2F%2Fedamontology.org%2Ftopic_0176",
+
+        "@context": {
+          "self": "http://www.w3.org/2002/07/owl#Class",
+          "ontology": "http://data.bioontology.org/metadata/Ontology",
+          "children": "http://www.w3.org/2002/07/owl#Class",
+          "parents": "http://www.w3.org/2002/07/owl#Class",
+          "descendants": "http://www.w3.org/2002/07/owl#Class",
+          "ancestors": "http://www.w3.org/2002/07/owl#Class",
+          "instances": "http://data.bioontology.org/metadata/Instance",
+          "tree": "http://www.w3.org/2002/07/owl#Class",
+          "notes": "http://data.bioontology.org/metadata/Note",
+          "mappings": "http://data.bioontology.org/metadata/Mapping",
+          "ui": "http://www.w3.org/2002/07/owl#Class"
+        }
+
+      },
+
+      "@context": {
+        "@vocab": "http://data.bioontology.org/metadata/",
+        "prefLabel": "http://data.bioontology.org/metadata/skosprefLabel"
+      }
+
+    },
+    "hierarchy": [ ],
+    "annotations": [
+
+      {
+        "from": 13,
+        "to": 30,
+        "matchType": "PREF",
+        "text": "MOLECULAR DYNAMICS"
+      }
+    ],
+    "mappings": [ ]
+  }
+
+]
