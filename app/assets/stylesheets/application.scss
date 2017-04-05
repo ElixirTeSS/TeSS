@@ -686,3 +686,10 @@ div.legal-block {
 input.loading {
   background: url('ajax-loader.gif') no-repeat right center;
 }
+
+.url-wrap {
+  display: inline-block;
+  word-wrap: break-word;
+  word-break: break-all;
+  overflow-wrap: break-word;
+}

@@ -43,7 +43,11 @@
                 <%= scrape_status_icon(@material, 'large') if current_user and current_user.is_admin? %>
                 <%= suggestion_icon(@material, 'large') if current_user and current_user.is_admin? -%>
               </h2>
-              <p><%= link_to @material.url, @material.url, :class =>'h5', :target => "_blank" %></p>
+              <p>
+                <div class="url-wrap">
+                  <%= link_to @material.url, @material.url, :class =>'h5', :target => "_blank" %>
+                </div>
+              </p>
               <% if not @material.long_description.blank? %>
                   <p><%= render_markdown(@material.long_description) %></p>
               <% elsif not @material.short_description.blank? %>
