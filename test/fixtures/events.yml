@@ -105,3 +105,14 @@ portal_event:
   content_provider: portal_provider
   start: 2016-12-12 10:00:00
   end: 2016-12-12 12:00:00
+
+dodgy_country_event:
+  title: Fun Training Day
+  url: http://content-provider.org/event
+  description: 'Never heard of it, sorry.'
+  user: scraper_user
+  content_provider: organisation_provider
+  start: 2016-12-12 10:00:00
+  end: 2016-12-12 12:00:00
+  country: üK
+
