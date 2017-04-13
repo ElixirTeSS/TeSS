@@ -30,7 +30,28 @@ namespace :tess do
     File.open(File.join(Rails.root, 'config', 'data', 'country_synonyms.json'), 'w+') do |f|
       f.write(JSON.generate(output))
     end
+  end
 
+  desc 'Attempt to correct country names for all existing event countries'
+  task fix_current_countries: :environment do
+    puts "Checking for countries..."
+    COUNTRY_SYNONYMS = JSON.parse(File.read(File.join(Rails.root, 'config', 'data', 'country_synonyms.json')))
+    puts "#{Event.all.length} events to check."
+    Event.all.each do |event|
+      puts "Checking: #{event.title}"
+      if !event.country
+        puts "No country for: #{event.title}"
+        next
+      end
+      if event.country.respond_to?(:parameterize)
+        text = event.country.parameterize.underscore.humanize.downcase
+        if COUNTRY_SYNONYMS[text]
+          puts "#{event.title}: Changing #{text} -> #{COUNTRY_SYNONYMS[text]}"
+          event.country = COUNTRY_SYNONYMS[text]
+          event.save()
+        end
+      end
+    end
   end
 
 end
