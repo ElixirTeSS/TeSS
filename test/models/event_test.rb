@@ -125,7 +125,7 @@ class EventTest < ActiveSupport::TestCase
     e = events(:dodgy_country_event)
     assert_equal e.country, 'üK'
     assert e.save
-    assert_equal e.country, 'United Kingdom of Great Britain and Northern Ireland'
+    assert_equal e.country, 'United Kingdom'
   end
 end
 
