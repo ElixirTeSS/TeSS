@@ -293,13 +293,13 @@ class ContentProvidersControllerTest < ActionController::TestCase
   test 'should return nothing when content_provider does not exist' do
     post 'check_exists', :format => :json, :content_provider => { :url => 'http://no-such-site.com' }
     assert_response :success
-    assert_equal(response.body, '')
+    assert_equal '{}', response.body
   end
 
   test 'should render properly when url parameter missing' do
     post 'check_exists', :format => :json, :content_provider => { :url => nil }
     assert_response :success
-    assert_equal(response.body, '')
+    assert_equal '{}', response.body
   end
 
   test 'can assign nodes by name' do
