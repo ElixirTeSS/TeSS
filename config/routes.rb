@@ -69,6 +69,7 @@ Rails.application.routes.draw do
   post 'events/:id/update_packages' => 'events#update_packages'
 
   get 'search' => 'search#index'
+  get 'test_url' => 'application#test_url'
 
 
   # error pages
