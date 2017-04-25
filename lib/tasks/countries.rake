@@ -37,6 +37,7 @@ namespace :tess do
     puts "Checking for countries..."
     COUNTRY_SYNONYMS = JSON.parse(File.read(File.join(Rails.root, 'config', 'data', 'country_synonyms.json')))
     puts "#{Event.all.length} events to check."
+    count = 0
     Event.all.each do |event|
       puts "Checking: #{event.title}"
       if !event.country
@@ -49,9 +50,11 @@ namespace :tess do
           puts "#{event.title}: Changing #{text} -> #{COUNTRY_SYNONYMS[text]}"
           event.country = COUNTRY_SYNONYMS[text]
           event.save()
+          count += 1
         end
       end
     end
+    puts "Updated #{count} countries out of #{Event.all.length}"
   end
 
 end
