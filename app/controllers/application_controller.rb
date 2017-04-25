@@ -54,6 +54,21 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def test_url
+    body = {}
+
+    begin
+      res = HTTParty.get(params[:url], { timeout: 5 })
+      body = { code: res.code, message: res.message }
+    rescue StandardError
+      body = { message: 'Could not access the given URL' }
+    end
+
+    respond_to do |format|
+      format.json { render json: body }
+    end
+  end
+
   private
 
   def user_not_authorized(exception)

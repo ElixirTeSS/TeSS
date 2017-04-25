@@ -343,13 +343,13 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'should return nothing when material does not exist' do
     post 'check_exists', :format => :json, :material => { :url => 'http://no-such-url.com' }
     assert_response :success
-    assert_equal(response.body, '')
+    assert_equal '{}', response.body
   end
 
   test 'should render properly when no url supplied' do
     post 'check_exists', :format => :json, :material => { :url => nil }
     assert_response :success
-    assert_equal(response.body, '')
+    assert_equal '{}', response.body
   end
 
   test 'should display filters on index' do
