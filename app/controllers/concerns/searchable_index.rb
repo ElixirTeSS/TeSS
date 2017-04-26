@@ -31,7 +31,12 @@ module SearchableIndex
     @sort_by = params[:sort].blank? ? 'default' : params[:sort]
     @facet_fields.each { |facet_title| @facet_params[facet_title] = params[facet_title] unless params[facet_title].blank? }
     @facet_params['include_expired'] = true if params[:include_expired] # TODO: Move this
-    @facet_params['elixir'] = params[:elixir] == 'true' if params[:elixir] # TODO: Move this
+    if params[:elixir] == 'true'
+      @facet_params['elixir'] = true
+    elsif params[:elixir] == 'false'
+      @facet_params['elixir'] = false
+    end
+
     if params[:days_since_scrape] # TODO: Move this
       @facet_params['days_since_scrape'] = params[:days_since_scrape]
     end
@@ -107,7 +112,7 @@ module SearchableIndex
           with('end').greater_than(Time.zone.now)
         end
       end
-      if [Event, Material, ContentProvider].include?(model)
+      if [Event, Material, ContentProvider].include?(model) and selected_facets.keys.include?('elixir')
         if selected_facets['elixir']
           with(:node, Node.all.map{|x| x.title})
         else
