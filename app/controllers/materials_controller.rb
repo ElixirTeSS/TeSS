@@ -60,7 +60,7 @@ class MaterialsController < ApplicationController
     else
       respond_to do |format|
         format.html { render :nothing => true, :status => 200, :content_type => 'text/html' }
-        format.json { render :nothing => true, :status => 200, :content_type => 'application/json' }
+        format.json { render json: {}, :status => 200, :content_type => 'application/json' }
       end
     end
   end

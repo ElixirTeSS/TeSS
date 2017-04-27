@@ -25,12 +25,18 @@ module SearchableIndex
   def set_params
     @model = controller_name.classify.constantize
     @facet_fields = @model.send(:facet_fields)
-    params.permit(:q, :page, :sort, @facet_fields, @facet_fields.map { |f| "#{f}_all" })
+    params.permit(:q, :page, :sort, :elixir, @facet_fields, @facet_fields.map { |f| "#{f}_all" })
     @search_params = params[:q] || ''
     @facet_params = {}
     @sort_by = params[:sort].blank? ? 'default' : params[:sort]
     @facet_fields.each { |facet_title| @facet_params[facet_title] = params[facet_title] unless params[facet_title].blank? }
     @facet_params['include_expired'] = true if params[:include_expired] # TODO: Move this
+    if params[:elixir] == 'true'
+      @facet_params['elixir'] = true
+    elsif params[:elixir] == 'false'
+      @facet_params['elixir'] = false
+    end
+
     if params[:days_since_scrape] # TODO: Move this
       @facet_params['days_since_scrape'] = params[:days_since_scrape]
     end
@@ -50,7 +56,7 @@ module SearchableIndex
       any do
         # Set all facets
         selected_facets.each do |facet_title, facet_value|
-          next if %w(include_expired days_since_scrape).include?(facet_title)
+          next if %w(include_expired days_since_scrape elixir).include?(facet_title)
           any do # Conjunction clause
             # Convert 'true' or 'false' to boolean true or false
             if facet_title == 'online'
@@ -60,6 +66,7 @@ module SearchableIndex
                               false
                             end
             end
+
             # Add to array that get executed lower down
             active_facets[facet_title] ||= []
             active_facets[facet_title] << with(facet_title, facet_value)
@@ -105,7 +112,16 @@ module SearchableIndex
           with('end').greater_than(Time.zone.now)
         end
       end
-
+      if [Event, Material, ContentProvider].include?(model) and selected_facets.keys.include?('elixir')
+        if selected_facets['elixir']
+          any_of do
+            with(:node, Node.all.map{|x| x.title})
+            with(:content_provider, 'ELIXIR')
+          end
+        else
+          without(:node, Node.all.map{|x| x.title})
+        end
+      end
       if selected_facets.keys.include?('days_since_scrape')
         with(:last_scraped).less_than(selected_facets['days_since_scrape'].to_i.days.ago)
       end

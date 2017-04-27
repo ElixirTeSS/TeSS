@@ -1,0 +1,7 @@
+<div class="form-group">
+  <%= f.label :url, label: 'URL', class: 'control-label' %>
+  <% opts = { class: 'form-control' } %>
+  <% opts['data-url-check'] = url if f.object.new_record? %>
+  <%= f.text_field :url, opts %>
+  <p class="help-block"></p>
+</div>

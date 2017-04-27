@@ -29,6 +29,7 @@
 //= require eonasdan-bootstrap-datetimepicker
 //= require devbridge-autocomplete
 //= require clipboard
+//= require url_checker
 //= require_tree ./templates
 //= require_tree .
 //= require_self
