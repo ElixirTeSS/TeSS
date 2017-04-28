@@ -109,6 +109,13 @@ $(document).ready(function () {
 
             $('#edge-modal').on('hide.bs.modal', Workflows.cancelState);
 
+            $('.workflow-diagram-wrapper .modal').keydown(function (event) {
+                if (event.keyCode == 13) {
+                    event.preventDefault();
+                    return false;
+                }
+            });
+
             // Update JSON in form
             $('.workflow-form-submit').click(function () {
                 $('#workflow_workflow_content').val(JSON.stringify(cy.json()['elements']));
