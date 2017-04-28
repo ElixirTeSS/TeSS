@@ -23,7 +23,10 @@
 
         <%= f.input :title %>
 
-        <%= f.input :description, as: :text, input_html: { rows: 5 } %>
+        <div class="form-group">
+          <%= f.label :description %>
+          <%= f.markdown_area :description, :class => 'form-control', :rows => '5' %>
+        </div>
 
         <%= collapsible_panel('Extra metadata', 'extra-metadata') do %>
             <div class="form-group">
