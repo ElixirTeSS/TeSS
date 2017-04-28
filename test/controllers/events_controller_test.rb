@@ -302,7 +302,7 @@ class EventsControllerTest < ActionController::TestCase
                                                        start: '2017-01-02' }
 
     assert_response :success
-    assert_equal(response.body, '')
+    assert_equal '{}', response.body
   end
 
 
@@ -318,13 +318,13 @@ class EventsControllerTest < ActionController::TestCase
   test 'should return nothing when event does not exist' do
     post 'check_exists', :format => :json, :event => { :url => 'http://no-such-site.com' }
     assert_response :success
-    assert_equal(response.body, '')
+    assert_equal '{}', response.body
   end
 
   test 'should render properly when no url supplied' do
     post 'check_exists', :format => :json, :event => { :url => nil }
     assert_response :success
-    assert_equal(response.body, '')
+    assert_equal '{}', response.body
   end
 
 

@@ -20,11 +20,9 @@
       <%= f.text_field :title, :class => 'form-control' %>
       <%#= error_span(@material[:title]) %>
     </div>
-    <div class="form-group">
-      <%= f.label :url, label: 'URL', :class => "required" %>
-      <%= f.text_field :url, :class => 'form-control' %>
-      <%#= error_span(@material[:url]) %>
-    </div>
+
+    <%= render partial: 'common/url_checker', locals: { f: f, url: materials_check_exists_path } %>
+
     <div class="form-group">
       <%= f.label :short_description %>
       <%= f.text_area :short_description, :class => 'form-control', :rows => '5' %>

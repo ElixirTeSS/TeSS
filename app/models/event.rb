@@ -10,7 +10,7 @@ class Event < ActiveRecord::Base
   include HasContentProvider
 
   has_paper_trail
-  before_save :set_default_times
+  before_save :set_default_times, :check_country_name
 
   extend FriendlyId
   friendly_id :title, use: :slugged
@@ -91,6 +91,8 @@ class Event < ActiveRecord::Base
 
   clean_array_fields(:keywords, :event_types, :target_audience, :eligibility, :host_institutions)
   update_suggestions(:keywords, :target_audience, :host_institutions)
+
+  COUNTRY_SYNONYMS = JSON.parse(File.read(File.join(Rails.root, 'config', 'data', 'country_synonyms.json')))
 
   #Generated Event:
   # external_id:string
@@ -219,6 +221,19 @@ class Event < ActiveRecord::Base
 
   def self.finished
     where('events.end < ?', Time.now).where.not(end: nil)
+  end
+
+  # Ticket #423
+  def check_country_name
+    if !self.country
+      return
+    end
+    if self.country.respond_to?(:parameterize)
+      text = self.country.parameterize.underscore.humanize.downcase
+      if COUNTRY_SYNONYMS[text]
+        self.country = COUNTRY_SYNONYMS[text]
+      end
+    end
   end
 
 end

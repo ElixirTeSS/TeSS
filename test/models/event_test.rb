@@ -120,4 +120,13 @@ class EventTest < ActiveSupport::TestCase
     assert e.save
     assert_equal content_providers(:another_portal_provider), e.content_provider
   end
+
+  test 'country name is corrected before save' do
+    e = events(:dodgy_country_event)
+    assert_equal e.country, 'üK'
+    assert e.save
+    assert_equal e.country, 'United Kingdom'
+  end
 end
+
+
