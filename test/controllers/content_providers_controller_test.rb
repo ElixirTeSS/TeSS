@@ -312,6 +312,28 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_equal nodes(:westeros).id, assigns(:content_provider).node_id
   end
 
+  test "should update content provider's owner if admin" do
+    sign_in users(:admin)
+    other_user = users(:another_regular_user)
+
+    patch :update, id: @content_provider, content_provider: { user_id: other_user.id, title: 'test' }
+    assert_redirected_to content_provider_path(assigns(:content_provider))
+
+    assert_equal other_user, assigns(:content_provider).user
+  end
+
+  test "should not update content provider's owner if not admin" do
+    sign_in @content_provider.user
+    other_user = users(:another_regular_user)
+
+    patch :update, id: @content_provider, content_provider: { user_id: other_user.id, title: 'test' }
+    assert_redirected_to content_provider_path(assigns(:content_provider))
+
+    assert_not_equal other_user, assigns(:content_provider).user
+    assert_equal @content_provider.user, assigns(:content_provider).user
+  end
+
+
   # TODO: SOLR tests will not run on TRAVIS. Explore stratergy for testing solr
 =begin
       test 'should display filters on index' do

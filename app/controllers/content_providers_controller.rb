@@ -105,8 +105,12 @@ class ContentProvidersController < ApplicationController
     end
     params[:content_provider].delete :node_name
 
-    params.require(:content_provider).permit(:title, :url, :image, :image_url, :description, :id, :content_provider_type, :node_id,
-                                             {:keywords => []}, :remote_updated_date, :remote_created_date,
-                                             :local_updated_date, :remote_updated_date, :node_name)
+    permitted = [:title, :url, :image, :image_url, :description, :id, :content_provider_type, :node_id,
+        {:keywords => []}, :remote_updated_date, :remote_created_date,
+        :local_updated_date, :remote_updated_date, :node_name, :user_id]
+
+    permitted.delete(:user_id) unless current_user && current_user.is_admin?
+
+    params.require(:content_provider).permit(permitted)
   end
 end

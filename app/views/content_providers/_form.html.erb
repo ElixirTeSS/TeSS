@@ -41,6 +41,15 @@
 
     <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords', :resource => @content_provider, :f => f} %>
 
+    <% if current_user.is_admin? %>
+        <div class="form-group">
+          <%= f.label :user_id, 'Owner' %>
+          <%= f.select(:user_id, options_for_select(User.all.collect { |user| ["#{user.username} (#{user.email})", user.id] },
+                                                    (@content_provider.user.blank? ? nil : @content_provider.user.id)),
+                       { include_blank: true }, class: 'form-control') %>
+        </div>
+    <% end %>
+
     <div class="form-group">
       <%= f.submit ( f.object.new_record? ? "Register" : "Update") + " content provider", :class => 'btn btn-primary' %>
       <%= link_to 'Back', content_providers_path, :class=>"btn btn-info" %>
