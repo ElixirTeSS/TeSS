@@ -94,6 +94,12 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'should get edit for content provider owner' do
+    sign_in users(:curator)
+    get :edit, id: materials(:scraper_user_material)
+    assert_response :success
+  end
+
   test 'should not get edit page for non-owner user' do
     #Administrator = SUCCESS
     sign_in users(:another_regular_user)
@@ -161,6 +167,20 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_redirected_to material_path(assigns(:material))
   end
 
+  test 'should update material if content provider owner' do
+    material = materials(:scraper_user_material)
+    user = material.content_provider.user
+
+    assert_not_equal material.user, user
+    assert_equal material.content_provider.user, user
+
+    sign_in user
+
+    patch :update, id: material, material: @updated_material
+
+    assert_redirected_to material_path(assigns(:material))
+  end
+
   test 'should not update material if not owner or curator etc.' do
     sign_in users(:collaborative_user)
     assert_not_equal @material.user, users(:collaborative_user)
@@ -223,6 +243,16 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_redirected_to materials_path
   end
 
+  test 'should destroy material when content provider owner' do
+    material = materials(:scraper_user_material)
+    user = material.content_provider.user
+
+    sign_in user
+    assert_difference('Material.count', -1) do
+      delete :destroy, id: material
+    end
+    assert_redirected_to materials_path
+  end
 
   #CONTENT TESTS
   #BREADCRUMBS

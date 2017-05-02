@@ -82,6 +82,15 @@ class EventsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'should get edit for content provider owner' do
+    event = events(:scraper_user_event)
+    user = event.content_provider.user
+
+    sign_in user
+    get :edit, id: event
+    assert_response :success
+  end
+
   test 'should not get edit page for non-owner user' do
     #Administrator = SUCCESS
     sign_in users(:another_regular_user)
@@ -144,6 +153,20 @@ class EventsControllerTest < ActionController::TestCase
     assert_redirected_to event_path(assigns(:event))
   end
 
+  test 'should update event if content provider owner' do
+    event = events(:scraper_user_event)
+    user = event.content_provider.user
+
+    assert_not_equal event.user, user
+    assert_equal event.content_provider.user, user
+
+    sign_in user
+
+    patch :update, id: event, event: @updated_event
+
+    assert_redirected_to event_path(assigns(:event))
+  end
+
   test 'should not update event if not owner or curator etc.' do
     sign_in users(:collaborative_user)
     assert_not_equal @event.user, users(:collaborative_user)
@@ -172,6 +195,17 @@ class EventsControllerTest < ActionController::TestCase
     sign_in users(:curator)
     assert_difference('Event.count', -1) do
       delete :destroy, id: @event
+    end
+    assert_redirected_to events_path
+  end
+
+  test 'should destroy event when content provider owner' do
+    event = events(:scraper_user_event)
+    user = event.content_provider.user
+
+    sign_in user
+    assert_difference('Event.count', -1) do
+      delete :destroy, id: event
     end
     assert_redirected_to events_path
   end
