@@ -2,7 +2,7 @@
 
 <% if form.object.image? %>
     <div class="preview-image">
-      <%= image_tag form.object.image.url(:media) %>
+      <%= image_tag form.object.image.url(:media), class: 'img-thumbnail' %>
     </div>
 <% end %>
 

@@ -591,13 +591,13 @@ sup {
 }
 
 .preview-image {
-  margin: 0 10px 10px 0;
-  border: 1px solid #ccc;
-  float: left;
+  overflow: auto;
 
   > img {
     width: 100px;
     max-height: 150px;
+    margin: 0 10px 10px 0;
+    float: left;
   }
 }
 
