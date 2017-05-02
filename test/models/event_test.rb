@@ -127,6 +127,44 @@ class EventTest < ActiveSupport::TestCase
     assert e.save
     assert_equal e.country, 'United Kingdom'
   end
+
+  test 'does not add duplicate scientific topics' do
+    e = events(:scraper_user_event)
+
+    # Via names
+    assert_difference('ScientificTopicLink.count', 2) do
+      e.scientific_topic_names = ['Proteins', 'Chromosomes', 'Proteins', 'Chromosomes']
+      e.save!
+    end
+
+    assert_no_difference('ScientificTopicLink.count') do
+      e.scientific_topic_names = ['Proteins', 'Chromosomes']
+      e.save!
+    end
+
+    # Via terms
+    e.scientific_topic_links.clear
+
+    proteins_term = EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0078')
+    chromosomes_term = EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0624')
+
+    assert_difference('ScientificTopicLink.count', 2) do
+      e.scientific_topics = [proteins_term, chromosomes_term, proteins_term, chromosomes_term]
+      e.save!
+    end
+
+    assert_no_difference('ScientificTopicLink.count') do
+      e.scientific_topics = [proteins_term, chromosomes_term]
+      e.save!
+    end
+
+    # Both
+    assert_no_difference('ScientificTopicLink.count') do
+      e.scientific_topic_names = ['Proteins', 'Chromosomes']
+      e.save!
+    end
+  end
+
 end
 
 

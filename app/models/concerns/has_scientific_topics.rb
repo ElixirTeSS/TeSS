@@ -3,7 +3,7 @@ module HasScientificTopics
   extend ActiveSupport::Concern
 
   included do
-    has_many :scientific_topic_links, as: :resource
+    has_many :scientific_topic_links, as: :resource, dependent: :destroy
   end
 
   def scientific_topic_names= names
@@ -20,15 +20,15 @@ module HasScientificTopics
   end
 
   def scientific_topic_names
-    scientific_topics.map(&:preferred_label)
+    scientific_topics.map(&:preferred_label).uniq
   end
 
   def scientific_topics= terms
-    terms.each { |term| scientific_topic_links.build(term_uri: term.uri) if term && term.uri }
+    self.scientific_topic_links = terms.uniq.map { |term| scientific_topic_links.build(term_uri: term.uri) if term && term.uri }.compact
   end
 
   def scientific_topics
-    scientific_topic_links.map(&:scientific_topic)
+    scientific_topic_links.map(&:scientific_topic).uniq
   end
 
 end
