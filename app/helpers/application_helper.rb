@@ -307,7 +307,7 @@ module ApplicationHelper
   ActionView::Helpers::FormBuilder.class_eval do
     def markdown_area(name, options = {})
       text_area(name, options) +
-          @template.content_tag(:p, class: 'help-block') do
+          @template.content_tag(:p, class: 'help-block text-right') do
             @template.image_tag('markdown_logo.png', width: 18) +
                 ' This field supports markdown, ' +
                 @template.link_to('click here for a reference on markdown syntax.',
