@@ -17,6 +17,8 @@
       </div>
 
       <div id="biosharing-api-key" style="display: none;"><%= Rails.application.secrets.biosharing_api_key -%></div>
+      <div id="biosharing-next" style="display: none;"></div>
+      <div id="biosharing-previous" style="display: none;"></div>
       <div id=loading-spinner">
         <%= image_tag('loading42.gif', :class => 'loading_image') -%>
       </div>
@@ -25,7 +27,8 @@
       <br>
 
       <div class="load-more-results">
-        <i id="next-tools-button" class="btn btn-primary pull-right">Load more results</i>
+        <i id="prev-bs-button" class="btn btn-primary pull-left">Previous</i>
+        <i id="next-bs-button" class="btn btn-primary pull-right">Next</i>
       </div>
     </div>
 <% end %>

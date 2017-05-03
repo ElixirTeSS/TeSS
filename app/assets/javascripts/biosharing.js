@@ -3,44 +3,48 @@ var Biosharing = {
     titleElement: function() {
         return $('#' + $('#title_element').val())
     },
-    /*
-    sortParameter: function() {
-        return 'sort=score';
-    },
-    */
     queryParameter: function() {
         return 'search=' + encodeURIComponent($('#biosharing_query').val());
+    },
+    typeParameter: function() {
+        console.log("nothing yet");
     },
     allTypeURL: function() {
         return Biosharing.baseUrl + '/api/all/summary';
     },
-    /*
-    apiBaseURL: function(){
-        return Biosharing.baseUrl + '/api/tool';
-    },
-     */
     websiteBaseURL: function(){
         return Biosharing.baseUrl;
     },
     search: function(){
-        $('#biosharing-results').empty();
         $('.loading_image').show();
         Biosharing.queryAPI(Biosharing.allTypeURL() + '?' + Biosharing.queryParameter());
     },
     nextPage: function(){
-        var next_page = $(event.target).attr('data-next');
-        if (next_page){
-            Biosharing.queryAPI(Biosharing.allTypeURL() + next_page + '&' + Biosharing.queryParameter());
+        var next = $('#biosharing-next').text();
+        if (next){
+            $('.loading_image').show();
+            Biosharing.queryAPI(next);
+        } else {
+            /* display nice "we're out of stuff" message here */
+            console.log("No next URL found!");
+        }
+    },
+    prevPage: function(){
+        var prev = $('#biosharing-previous').text();
+        if (prev){
+            $('.loading_image').show();
+            Biosharing.queryAPI(prev);
         } else {
             /* display nice "we're out of stuff" message here */
         }
     },
     queryAPI: function(api_url){
         $('.loading_image').show();
+        var key = $('#biosharing-api-key').text();
         $.ajax({url: api_url,
                 type: 'GET',
                 dataType: 'json',
-                headers: {'Api-Key':'7f1af03ac7aec02b572656550f37d2f1e8f77b7b'},
+                headers: {'Api-Key':key},
                 contentType: 'application/json; charset=utf-8',
                 success: function (result) {
                     $('.loading_image').hide();
@@ -57,8 +61,27 @@ var Biosharing = {
         obj.parent().parent().fadeOut();
     },
     displayRecords: function(json){
+        $('#biosharing-results').empty();
+        var previous = json.previous;
+        var next = json.next;
+        if (previous) {
+            if (previous.includes('page='))
+            {
+                $('#biosharing-previous').text(previous);
+                $('#previous-bs-button').show();
+            } else {
+                $('#previous-bs-button').hide();
+            }
+        } else {
+            $('#previous-bs-button').hide();
+        }
+        if (next) {
+            $('#biosharing-next').text(next);
+            $('#next-bs-button').show();
+        } else {
+            $('#next-bs-button').hide();
+        }
         json.results.forEach(function(item,index) {
-            console.log("ITEM: " + index + " => " + item);
             if (item.biodbcore_id) {
                 var id = item.biodbcore_id;
             } else {
@@ -100,6 +123,7 @@ var Biosharing = {
         $('#biosharing_query').val(Biosharing.titleElement().val());
         Biosharing.search();
     },
+    /*
     displayToolInfo: function(id){
         var res = {};
         $.getJSON((Biosharing.apiBaseURL() + '/' + id), function(data){
@@ -139,16 +163,18 @@ var Biosharing = {
             );
         });
     }
+    */
 };
 
 $(document).ready(function () {
-    $('#next-tools-button').click(Biosharing.nextPage);
+    $('#next-bs-button').click(Biosharing.nextPage);
+    $('#previous-bs-button').click(Biosharing.prevPage);
     //$('#biosharing_query').keyup(Biosharing.search); // too many queries
     $('#search_biosharing').click(Biosharing.search);
     $('#biosharing-results').on('click','.associate-tool', Biosharing.associateTool);
     $('#external-resources').on('change', '.delete-external-resource-btn input.destroy-attribute', ExternalResources.delete);
-    Biosharing.titleElement().keyup(Biosharing.copyTitleAndSearch);
-    Biosharing.copyTitleAndSearch();
+    //Biosharing.titleElement().keyup(Biosharing.copyTitleAndSearch);
+    //Biosharing.copyTitleAndSearch();
     Biosharing.queryAPI(Biosharing.allTypeURL());
-    //Biosharing.queryAPI(Biosharing.apiBaseURL() + '?' + Biosharing.queryParameter() + '&' + Biosharing.sortParameter());
+    //Biosharing.queryAPI(Biosharing.apiBaseURL() + '?' + Biosharing.queryParameter());
 });
