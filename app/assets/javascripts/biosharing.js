@@ -68,12 +68,12 @@ var Biosharing = {
             if (previous.includes('page='))
             {
                 $('#biosharing-previous').text(previous);
-                $('#previous-bs-button').show();
+                $('#prev-bs-button').show();
             } else {
-                $('#previous-bs-button').hide();
+                $('#prev-bs-button').hide();
             }
         } else {
-            $('#previous-bs-button').hide();
+            $('#prev-bs-button').hide();
         }
         if (next) {
             $('#biosharing-next').text(next);
@@ -168,8 +168,8 @@ var Biosharing = {
 
 $(document).ready(function () {
     $('#next-bs-button').click(Biosharing.nextPage);
-    $('#previous-bs-button').click(Biosharing.prevPage);
-    //$('#biosharing_query').keyup(Biosharing.search); // too many queries
+    $('#prev-bs-button').click(Biosharing.prevPage);
+    //$('#biosharing_query').keyup(Biosharing.search); // too many queries - please don't use this
     $('#search_biosharing').click(Biosharing.search);
     $('#biosharing-results').on('click','.associate-tool', Biosharing.associateTool);
     $('#external-resources').on('change', '.delete-external-resource-btn input.destroy-attribute', ExternalResources.delete);
