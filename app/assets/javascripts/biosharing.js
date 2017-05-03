@@ -11,9 +11,9 @@ var Biosharing = {
         $(".bstype:checked").each(function () {
             types.push($(this).val());
         })
-        console.log('type=' + types.join());
+        console.log('types=' + types.join());
         if (types.length > 0) {
-            return 'type=' + types.join();
+            return 'types=' + types.join();
         } else {
             return null;
         }
