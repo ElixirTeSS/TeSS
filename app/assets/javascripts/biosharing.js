@@ -7,7 +7,16 @@ var Biosharing = {
         return 'search=' + encodeURIComponent($('#biosharing_query').val());
     },
     typeParameter: function() {
-        console.log("nothing yet");
+        var types = [];
+        $(".bstype:checked").each(function () {
+            types.push($(this).val());
+        })
+        console.log('type=' + types.join());
+        if (types.length > 0) {
+            return 'type=' + types.join();
+        } else {
+            return null;
+        }
     },
     allTypeURL: function() {
         return Biosharing.baseUrl + '/api/all/summary';
@@ -17,7 +26,7 @@ var Biosharing = {
     },
     search: function(){
         $('.loading_image').show();
-        Biosharing.queryAPI(Biosharing.allTypeURL() + '?' + Biosharing.queryParameter());
+        Biosharing.queryAPI(Biosharing.allTypeURL() + '?' + Biosharing.queryParameter() + '&' + Biosharing.typeParameter());
     },
     nextPage: function(){
         var next = $('#biosharing-next').text();
@@ -40,6 +49,7 @@ var Biosharing = {
     },
     queryAPI: function(api_url){
         $('.loading_image').show();
+        console.log("Querying: " + api_url);
         var key = $('#biosharing-api-key').text();
         $.ajax({url: api_url,
                 type: 'GET',
@@ -175,6 +185,5 @@ $(document).ready(function () {
     $('#external-resources').on('change', '.delete-external-resource-btn input.destroy-attribute', ExternalResources.delete);
     //Biosharing.titleElement().keyup(Biosharing.copyTitleAndSearch);
     //Biosharing.copyTitleAndSearch();
-    Biosharing.queryAPI(Biosharing.allTypeURL());
-    //Biosharing.queryAPI(Biosharing.apiBaseURL() + '?' + Biosharing.queryParameter());
+    Biosharing.queryAPI(Biosharing.allTypeURL() + '?' + Biosharing.typeParameter());
 });
