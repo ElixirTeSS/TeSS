@@ -1,5 +1,5 @@
 var Biosharing = {
-    baseUrl: 'https://dev.biosharing.org',
+    baseUrl: 'https://biosharing.org',
     titleElement: function() {
         return $('#' + $('#title_element').val())
     },
@@ -71,6 +71,7 @@ var Biosharing = {
         obj.parent().parent().fadeOut();
     },
     displayRecords: function(json){
+        $('.loading_image').hide();
         $('#biosharing-results').empty();
         var previous = json.previous;
         var next = json.next;
@@ -133,57 +134,18 @@ var Biosharing = {
         $('#biosharing_query').val(Biosharing.titleElement().val());
         Biosharing.search();
     },
-    /*
-    displayToolInfo: function(id){
-        var res = {};
-        $.getJSON((Biosharing.apiBaseURL() + '/' + id), function(data){
-            var res = {};
-            res['topics'] = [];
-            $.each(data.topic, function(index, topic){
-                console.log(topic)
-                res['topics'].push('<a href="' + topic.uri +'" class="label label-default filter-button">' + topic.term + '</a>');
-            });
-            $('#tool-topics-' + id).html('<div>' + res['topics'].join(' ') + '</div>')
-            $('#tool-description-' + id).html(data.description)
-            return res
-        })
-    },
-    displayFullTool: function(api, id){
-        var json = $.get(api, function(json) {
-            var json_object = json;
-            $('#' + id + '-desc').text(json_object.description);
-            $('#' + id + '-resource-type-icon').addClass('fa-wrench').removeClass('fa-external-link');
-            $.each(json_object.topic, function(index, topic){
-                $('#' + id + '-topics').append(
-                    '<span class="btn btn-default keyword-button">' +
-                    '<a href="' + topic.uri + '" target="_blank">' + topic.term + '</a>' +
-                    '</span>'
-                );
-            });
-            $('#' + id + '-external-links').append(
-                '<div>' +
-                '<a class="btn btn-success" target="_blank" href="' + json_object.homepage +'">' +
-                'View the ' + json_object.name + ' homepage ' +
-                '<i class="fa fa-external-link"/></a>' +
-                '</a>' +
-                '<a class="btn btn-warning" target="_blank" href="' + Biosharing.websiteBaseURL() + '/' + json_object.id +'">' +
-                'View ' + json_object.name + ' on bio.tools ' +
-                '<i class="fa fa-external-link"/></a>' +
-                '</div>'
-            );
-        });
-    }
-    */
 };
 
 $(document).ready(function () {
+    $('.loading_image').hide();
     $('#next-bs-button').click(Biosharing.nextPage);
     $('#prev-bs-button').click(Biosharing.prevPage);
     //$('#biosharing_query').keyup(Biosharing.search); // too many queries - please don't use this
     $('#search_biosharing').click(Biosharing.search);
     $('#biosharing-results').on('click','.associate-tool', Biosharing.associateTool);
     $('#external-resources').on('change', '.delete-external-resource-btn input.destroy-attribute', ExternalResources.delete);
-    //Biosharing.titleElement().keyup(Biosharing.copyTitleAndSearch);
+    Biosharing.titleElement().blur(Biosharing.copyTitleAndSearch);
+    // Haven't done an initial load as it is very slow...
     //Biosharing.copyTitleAndSearch();
-    Biosharing.queryAPI(Biosharing.allTypeURL() + '?' + Biosharing.typeParameter());
+    //Biosharing.queryAPI(Biosharing.allTypeURL() + '?' + Biosharing.typeParameter());
 });
