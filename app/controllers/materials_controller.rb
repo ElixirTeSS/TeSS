@@ -1,5 +1,5 @@
 class MaterialsController < ApplicationController
-  before_action :set_material, only: [:show, :edit, :update, :destroy, :update_packages]
+  before_action :set_material, only: [:show, :edit, :update, :destroy, :update_packages, :add_topic]
   before_action :set_breadcrumbs
 
   include SearchableIndex
@@ -138,6 +138,17 @@ class MaterialsController < ApplicationController
     end
     flash[:notice] = "Material has been included in #{pluralize(packages.count, 'package')}"
     redirect_to @material
+  end
+
+
+  #POST /materials/1/add_topic
+  def add_topic
+    topic = EDAM::Ontology.instance.lookup_by_name(params[:topic])
+    @material.scientific_topics << topic
+    if @material.save!
+      @material.edit_suggestion.delete
+    end
+    render :nothing => true
   end
 
   private
