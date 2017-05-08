@@ -155,7 +155,8 @@ class MaterialsController < ApplicationController
                                      {:scientific_topic_names => []},
                                      :licence, :difficulty_level, {:contributors => []},
                                      {:authors => []}, {:target_audience => []}, {:node_ids => []}, {:node_names => []},
-                                     external_resources_attributes: [:id, :url, :title, :_destroy], event_ids: [])
+                                     external_resources_attributes: [:id, :url, :title, :_destroy], event_ids: [],
+                                     locked_fields: [])
   end
 
 

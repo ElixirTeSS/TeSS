@@ -10,6 +10,8 @@ module FieldLockEnforcement
     resource_type = controller_name.singularize
     resource = instance_variable_get("@#{resource_type}")
 
+    params[resource_type].delete(:locked_fields)
+
     resource.locked_fields.each do |field|
       params[resource_type].delete(field)
     end

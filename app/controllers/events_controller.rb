@@ -158,7 +158,8 @@ class EventsController < ApplicationController
                                   :content_provider_id, {:package_ids => []}, {:node_ids => []}, {:node_names => []},
                                   {:target_audience => []}, {:eligibility => []},
                                   {:host_institutions => []}, :capacity, :contact,
-                                  external_resources_attributes: [:id, :url, :title, :_destroy], material_ids: [])
+                                  external_resources_attributes: [:id, :url, :title, :_destroy], material_ids: [],
+                                  locked_fields: [])
   end
 
   def disable_pagination

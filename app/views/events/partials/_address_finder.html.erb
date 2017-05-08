@@ -7,22 +7,27 @@
 <div class="manual-address-fields">
   <div class="form-group">
     <%= f.label :venue %>
+    <%= f.field_lock :venue %>
     <%= f.text_area :venue, :class => 'form-control' %>
   </div>
   <div class="form-group">
     <%= f.label :city %>
+    <%= f.field_lock :city %>
     <%= f.text_field :city, :class => 'form-control' %>
   </div>
   <div class="form-group">
     <%= f.label :county %>
+    <%= f.field_lock :county %>
     <%= f.text_field :county, :class => 'form-control' %>
   </div>
   <div class="form-group">
     <%= f.label :country %>
+    <%= f.field_lock :country %>
     <%= f.text_field :country, :class => 'form-control' %>
   </div>
   <div class="form-group">
     <%= f.label :postcode %>
+    <%= f.field_lock :postcode %>
     <%= f.text_field :postcode, :class => 'form-control' %>
   </div>
 

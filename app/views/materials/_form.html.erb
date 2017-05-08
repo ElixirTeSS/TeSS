@@ -15,8 +15,12 @@
         </div>
     <% end %>
 
+    <%# Necessary to allow removal of all field locks %>
+    <%= hidden_field_tag 'material[locked_fields][]', '' %>
+
     <div class="form-group">
       <%= f.label :title %>
+      <%= f.field_lock :title %>
       <%= f.text_field :title, :class => 'form-control' %>
       <%#= error_span(@material[:title]) %>
     </div>
@@ -25,14 +29,17 @@
 
     <div class="form-group">
       <%= f.label :short_description %>
+      <%= f.field_lock :short_description %>
       <%= f.markdown_area :short_description, :class => 'form-control', :rows => '5' %>
     </div>
     <div class="form-group">
       <%= f.label :long_description %>
+      <%= f.field_lock :long_description %>
       <%= f.markdown_area :long_description, :class => 'form-control', :rows => '10' %>
     </div>
     <div class="form-group">
       <%= f.label :doi, "DOI" %>
+      <%= f.field_lock :doi %>
       <%= f.text_field :doi, :class => 'form-control' %>
       <%#= error_span(@material[:doi]) %>
     </div>
@@ -65,6 +72,7 @@
                                                                 :suggestions => raw(Tess::AutocompleteManager.suggestions_array_for('target_audience').to_json)} %>
     <div class="form-group">
       <%= f.label :difficulty_level %>
+      <%= f.field_lock :difficulty_level %>
       <%= f.select(:difficulty_level,
                    options_for_select(difficulty_options_for_select, @material.difficulty_level.blank? ? "notspecified" : @material.difficulty_level), {},
                    class: "form-control")
@@ -73,6 +81,7 @@
 
     <div class="form-group">
       <%= f.label :licence %>
+      <%= f.field_lock :licence %>
       <%= f.select(:licence,
                    options_for_select(licence_options_for_select, @material.licence.blank? ? "notspecified" : @material.licence), {},
                    class: "form-control")
@@ -106,6 +115,7 @@
 
     <div class="form-group" id="external-resources">
       <%= f.label :external_resources %>
+      <%= f.field_lock :external_resources %>
 
       <div id="external-resources-list">
         <% @material.external_resources.each_with_index do |external_resource, index| %>
