@@ -701,6 +701,19 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_includes assigns(:material).node_ids, nodes(:good).id
   end
 
+  test 'can lock fields' do
+    sign_in @material.user
+    assert_difference('FieldLock.count', 2) do
+      patch :update, id: @material, material: { title: 'hi', locked_fields: ['title', 'short_description'] }
+    end
+
+    assert_redirected_to material_path(assigns(:material))
+    assert_equal 2, assigns(:material).locked_fields.count
+    assert assigns(:material).field_locked?(:title)
+    assert assigns(:material).field_locked?(:short_description)
+    refute assigns(:material).field_locked?(:url)
+  end
+
   test 'scraper cannot overwrite locked fields' do
     user = users(:scraper_user)
     material = materials(:scraper_user_material)

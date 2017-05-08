@@ -605,6 +605,20 @@ class EventsControllerTest < ActionController::TestCase
     assert_includes assigns(:event).node_ids, nodes(:good).id
   end
 
+  test 'can lock fields' do
+    sign_in @event.user
+    assert_difference('FieldLock.count', 3) do
+      patch :update, id: @event, event: { title: 'hi', locked_fields: ['title', 'start', 'end'] }
+    end
+
+    assert_redirected_to event_path(assigns(:event))
+    assert_equal 3, assigns(:event).locked_fields.count
+    assert assigns(:event).field_locked?(:title)
+    assert assigns(:event).field_locked?(:start)
+    assert assigns(:event).field_locked?(:end)
+    refute assigns(:event).field_locked?(:description)
+  end
+
   test 'scraper cannot overwrite locked fields' do
     user = users(:scraper_user)
     event = events(:scraper_user_event)
