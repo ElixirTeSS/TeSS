@@ -700,16 +700,23 @@ input[type=checkbox].field-lock {
 
 input[type=checkbox].field-lock + label:before {
   font-family: FontAwesome;
-  font-size: 110%;
   cursor: pointer;
   display: inline-block;
   content: "\f09c";
-  color: $brand-warning;
   letter-spacing: 10px;
 }
 
 input[type=checkbox].field-lock:checked + label:before {
   content: "\f023";
-  color: $brand-success;
-  letter-spacing: 10px;
 }
+
+input[type=checkbox].field-lock:checked + label:before, .field-lock-example-locked {
+  color: $brand-success;
+  font-size: 110%;
+}
+
+input[type=checkbox].field-lock + label:before, .field-lock-example-open {
+  color: $brand-warning;
+  font-size: 110%;
+}
+
