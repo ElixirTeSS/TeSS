@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170330101547) do
+ActiveRecord::Schema.define(version: 20170508085613) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -137,6 +137,14 @@ ActiveRecord::Schema.define(version: 20170330101547) do
   end
 
   add_index "external_resources", ["source_id", "source_type"], name: "index_external_resources_on_source_id_and_source_type", using: :btree
+
+  create_table "field_locks", force: :cascade do |t|
+    t.integer "resource_id"
+    t.string  "resource_type"
+    t.string  "field"
+  end
+
+  add_index "field_locks", ["resource_type", "resource_id"], name: "index_field_locks_on_resource_type_and_resource_id", using: :btree
 
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string   "slug",                      null: false
