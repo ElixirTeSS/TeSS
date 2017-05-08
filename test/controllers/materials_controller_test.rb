@@ -701,4 +701,27 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_includes assigns(:material).node_ids, nodes(:good).id
   end
 
+  test 'scraper cannot overwrite locked fields' do
+    user = users(:scraper_user)
+    material = materials(:scraper_user_material)
+    material.locked_fields = [:title]
+    material.save!
+
+    assert_no_difference('Material.count') do
+      post 'update', {user_token: user.authentication_token,
+                      user_email: user.email,
+                      material: {
+                          title: 'new title',
+                          url: material.url,
+                          short_description: 'new description'
+                      },
+                      id: material.id,
+                      format: 'json'}
+    end
+
+    parsed_response = JSON.parse(response.body)
+    assert_equal material.title, parsed_response['title'], 'Title should not have changed'
+    assert_equal 'new description', parsed_response['short_description']
+  end
+
 end

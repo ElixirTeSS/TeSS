@@ -4,6 +4,7 @@ class MaterialsController < ApplicationController
 
   include SearchableIndex
   include ActionView::Helpers::TextHelper
+  include FieldLockEnforcement
 
   # GET /materials
   # GET /materials?q=queryparam

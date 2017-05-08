@@ -5,6 +5,7 @@ class EventsController < ApplicationController
 
   include SearchableIndex
   include ActionView::Helpers::TextHelper
+  include FieldLockEnforcement
 
   # GET /events
   # GET /events.json

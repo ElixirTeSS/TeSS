@@ -420,12 +420,12 @@ class EventsControllerTest < ActionController::TestCase
   end
 
 
-  test 'should update existing material through API' do
+  test 'should update existing event through API' do
     user = users(:scraper_user)
     event = events(:scraper_user_event)
 
     new_title = "totally new title"
-    assert_no_difference('Material.count') do
+    assert_no_difference('Event.count') do
       post 'update', {user_token: user.authentication_token,
                       user_email: user.email,
                       event: {
@@ -459,7 +459,7 @@ class EventsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test 'should add material to multiple packages' do
+  test 'should add event to multiple packages' do
     sign_in @event.user
     package1 = packages(:one)
     package1_event_count = package1.events.count
@@ -476,7 +476,7 @@ class EventsControllerTest < ActionController::TestCase
     assert_in_delta(package1.events.count, package1_event_count, 1)
   end
 
-  test 'should remove material from packages' do
+  test 'should remove event from packages' do
     sign_in @event.user
     package1 = packages(:one)
     package1_event_count = package1.events.count
@@ -604,5 +604,29 @@ class EventsControllerTest < ActionController::TestCase
     assert_includes assigns(:event).node_ids, nodes(:westeros).id
     assert_includes assigns(:event).node_ids, nodes(:good).id
   end
+
+  test 'scraper cannot overwrite locked fields' do
+    user = users(:scraper_user)
+    event = events(:scraper_user_event)
+    event.locked_fields = [:title]
+    event.save!
+
+    assert_no_difference('Event.count') do
+      post 'update', {user_token: user.authentication_token,
+                      user_email: user.email,
+                      event: {
+                          title: 'new title',
+                          url: event.url,
+                          description: 'new description'
+                      },
+                      id: event.id,
+                      format: 'json'}
+    end
+
+    parsed_response = JSON.parse(response.body)
+    assert_equal event.title, parsed_response['title'], 'Title should not have changed'
+    assert_equal 'new description', parsed_response['description']
+  end
+
 
 end
