@@ -65,7 +65,7 @@
         <div class="col-xs-12">
           <p>
             <strong>Role</strong><br/>
-            <%= @user.role.name.titleize.humanize %>
+            <%= @user.role.title %>
           </p>
 
           <% if !current_user.nil? and current_user == @user %>

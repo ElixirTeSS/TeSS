@@ -384,7 +384,7 @@ class EventsControllerTest < ActionController::TestCase
 =end
 
   test 'should create new event through API' do
-    scraper_role = Role.fetch('api_user')
+    scraper_role = Role.fetch('scraper_user')
     scraper_user = User.where(:role_id => scraper_role.id).first
     event_title = 'horse'
     assert scraper_user
@@ -402,7 +402,7 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test 'should not create new event without valid authentication token' do
-    scraper_role = Role.fetch('api_user')
+    scraper_role = Role.fetch('scraper_user')
     scraper_user = User.where(:role_id => scraper_role.id).first
     assert scraper_user
 

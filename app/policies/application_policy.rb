@@ -28,8 +28,8 @@ class ApplicationPolicy
   end
 
   def create?
-    # Only admin, api_user or curator roles can create
-    #@user.has_role?(:admin) or @user.has_role?(:api_user) or @user.has_role?(:curator)
+    # Only admin, scraper_user or curator roles can create
+    #@user.has_role?(:admin) or @user.has_role?(:scraper_user) or @user.has_role?(:curator)
     # Any registered user user can create
     @user && !@user.role.blank?
   end

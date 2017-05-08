@@ -389,7 +389,7 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   test 'should create new material through API' do
-    scraper_role = Role.fetch('api_user')
+    scraper_role = Role.fetch('scraper_user')
     scraper_user = User.where(:role_id => scraper_role.id).first
     material_title = 'horse'
     assert scraper_user
@@ -408,7 +408,7 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   test 'should not create new material without valid authentication token' do
-    scraper_role = Role.fetch('api_user')
+    scraper_role = Role.fetch('scraper_user')
     scraper_user = User.where(:role_id => scraper_role.id).first
     assert scraper_user
 
