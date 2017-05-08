@@ -642,5 +642,15 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal 'new description', parsed_response['description']
   end
 
+  test 'normal user can overwrite locked fields' do
+    @event.locked_fields = [:title]
+    @event.save!
+
+    sign_in @event.user
+    patch :update, id: @event, event: { title: 'new title' }
+    assert_redirected_to event_path(assigns(:event))
+
+    assert_equal 'new title', assigns(:event).title
+  end
 
 end

@@ -737,4 +737,15 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_equal 'new description', parsed_response['short_description']
   end
 
+  test 'normal user can overwrite locked fields' do
+    @material.locked_fields = [:title]
+    @material.save!
+
+    sign_in @material.user
+    patch :update, id: @material, material: { title: 'new title' }
+    assert_redirected_to material_path(assigns(:material))
+
+    assert_equal 'new title', assigns(:material).title
+  end
+
 end
