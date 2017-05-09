@@ -45,10 +45,6 @@ Rails.application.routes.draw do
   end
   resources :packages do
     resource :activities, :only => [:show]
-    get 'manage' => 'packages#manage'
-    post 'update_package_resources' => 'packages#update_package_resources'
-=begin    post 'remove_resources' => 'packages#remove_resources'
-=end
   end
   resources :workflows, concerns: :collaboratable do
     member do
