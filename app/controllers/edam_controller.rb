@@ -1,25 +1,22 @@
 class EdamController < ApplicationController
 
   def terms
-    @terms = EDAM::Ontology.instance.all_topics + EDAM::Ontology.instance.all_operations
-    if params[:filter]
-      @terms = @terms.select { |t| t.preferred_label.downcase.start_with?(params[:filter].downcase) }
-    end
-
-    render 'index', format: :json
+    list(EDAM::Ontology.instance.all_topics + EDAM::Ontology.instance.all_operations)
   end
 
   def operations
-    @terms = EDAM::Ontology.instance.all_operations
-    if params[:filter]
-      @terms = @terms.select { |t| t.preferred_label.downcase.start_with?(params[:filter].downcase) }
-    end
-
-    render 'index', format: :json
+    list(EDAM::Ontology.instance.all_operations)
   end
 
   def topics
-    @terms = EDAM::Ontology.instance.all_topics
+    list(EDAM::Ontology.instance.all_topics)
+  end
+
+  private
+
+  def list(terms)
+    @terms = terms
+
     if params[:filter]
       @terms = @terms.select { |t| t.preferred_label.downcase.start_with?(params[:filter].downcase) }
     end
