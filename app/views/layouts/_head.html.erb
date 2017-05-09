@@ -9,7 +9,7 @@
   <%= signup_js.html_safe -%>
   -->
   <%= csrf_meta_tags %>
-  <% if @test_server -%>
+  <% if TeSS::Config.prevent_robot_indexing %>
       <meta name="robots" content="noindex">
   <% end -%>
   <% if Rails.application.secrets.google_analytics_code %>

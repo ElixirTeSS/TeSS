@@ -3,9 +3,6 @@ class ApplicationController < ActionController::Base
   include PublicActivity::StoreController
 
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :check_server
-
-  attr_reader :test_server
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -87,19 +84,6 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:username, :email, :password, :password_confirmation, :remember_me, :publicize_email) }
     devise_parameter_sanitizer.permit(:sign_in) { |u| u.permit(:login, :username, :email, :password, :remember_me) }
     devise_parameter_sanitizer.permit(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
-  end
-
-  def check_server
-    @test_server =  false
-    test_ip = Rails.application.secrets.test_server_ip
-    if !test_ip.nil?
-      ips = Socket.ip_address_list.collect {|x| x.ip_address }
-      #hostname = `hostname -i`.chomp! # I have naughtily assumed this is a linux box
-      #if hostname == test_ip
-      if ips.include? test_ip
-        @test_server = true
-      end
-    end
   end
 
   def allow_embedding
