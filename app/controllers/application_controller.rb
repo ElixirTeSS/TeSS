@@ -32,17 +32,17 @@ class ApplicationController < ActionController::Base
     CurrentContext.new(current_user, request)
   end
 
-  def handle_error(status_code = 500)
+  def handle_error(status_code = '500')
     status_code = params[:status_code] || status_code # params[:status_code] comes from routes for 500, 503, 422 and 404 errors
     @skip_flash_messages_in_header = true
-    if status_code == "500"
-      flash[:alert] = "Our apology - your request caused an error (status code: 500 Server Error)."
-    elsif status_code == "503"
-      flash[:alert] = "Our apology - the server is temporarily down or unavailable due to maintenance (status code: 503 Service Unavailable)."
-    elsif status_code == "422"
-      flash[:alert] = "The request you sent was well-formed but the change you wanted was rejected (status code: 422 Unprocessable Entity)."
-    elsif status_code == "404"
-      flash[:alert] = "The requested page could not be found - you may have mistyped the address or the page may have moved (status code: 404 Not Found)."
+    if status_code == '500'
+      flash[:alert] = 'Our apologies - your request caused an error (status code: 500 Server Error).'
+    elsif status_code == '503'
+      flash[:alert] = 'Our apologies - the server is temporarily down or unavailable due to maintenance (status code: 503 Service Unavailable).'
+    elsif status_code == '422'
+      flash[:alert] = 'The request you sent was well-formed but the change you wanted was rejected (status code: 422 Unprocessable Entity).'
+    elsif status_code == '404'
+      flash[:alert] = 'The requested page could not be found - you may have mistyped the address or the page may have moved (status code: 404 Not Found).'
     end
     respond_to do |format|
       format.html  { render 'static/error.html',
