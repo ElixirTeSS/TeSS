@@ -1,5 +1,7 @@
 <h2>Activity log</h2>
 
+<%= will_paginate @activities, param_name: 'page', renderer: BootstrapPagination::Rails %>
+
 <% @activities.each do |activity| %>
     <div class="activity">
         <% if activity.owner -%>
@@ -10,3 +12,5 @@
         <%= render_activity activity %>
     </div>
 <% end %>
+
+<%= will_paginate @activities, param_name: 'page', renderer: BootstrapPagination::Rails %>
