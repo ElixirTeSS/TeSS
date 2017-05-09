@@ -35,16 +35,6 @@
 //= require_self
 //= require turbolinks
 
-function redirect_to_sort_url(){
-    window.location.replace(
-        updateURLParameter(
-            window.location.href,
-            'sort',
-            $('#sort').find(":selected").val()
-        )
-    )
-}
-
 function updateURLParameter(url, param, paramVal){
     var newAdditionalURL = "";
     var tempArray = url.split("?");
@@ -62,6 +52,16 @@ function updateURLParameter(url, param, paramVal){
     }
     var rows_txt = temp + "" + param + "=" + paramVal;
     return baseURL + "?" + newAdditionalURL + rows_txt;
+}
+
+function redirect_to_sort_url(){
+    window.location.replace(
+        updateURLParameter(
+            window.location.href,
+            'sort',
+            $('#sort').find(":selected").val()
+        )
+    )
 }
 
 function reposition_tiles(container, tile_class){
