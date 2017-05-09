@@ -89,14 +89,6 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
   end
 
-  def determine_resource
-    #Find out the resource object being requested
-    resource_id = params[:id]
-    return nil if resource_id.blank?
-
-    return controller_name.classify.constantize.find(resource_id)
-  end
-
   def check_server
     @test_server =  false
     test_ip = Rails.application.secrets.test_server_ip
