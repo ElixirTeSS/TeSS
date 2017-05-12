@@ -144,10 +144,14 @@ class MaterialsController < ApplicationController
   #POST /materials/1/add_topic
   def add_topic
     topic = EDAM::Ontology.instance.lookup_by_name(params[:topic])
-    @material.scientific_topics << topic
-    if @material.save!
-      @material.edit_suggestion.delete
-    end
+    @material.edit_suggestion.accept_suggestion(@material, topic)
+    render :nothing => true
+  end
+
+  #POST /events/1/reject_topic
+  def reject_topic
+    topic = EDAM::Ontology.instance.lookup_by_name(params[:topic])
+    @event.edit_suggestion.reject_suggestion(topic)
     render :nothing => true
   end
 

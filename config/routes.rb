@@ -70,9 +70,9 @@ Rails.application.routes.draw do
   post 'events/:id/update_packages' => 'events#update_packages'
 
   post 'materials/:id/add_topic' => 'materials#add_topic'
-  post 'materials/:id/remove_topic' => 'materials#remove_topic'
+  post 'materials/:id/reject_topic' => 'materials#reject_topic'
   post 'events/:id/add_topic' => 'events#add_topic'
-  post 'events/:id/remove_topic' => 'event#remove_topic'
+  post 'events/:id/reject_topic' => 'event#reject_topic'
 
   get 'search' => 'search#index'
   get 'test_url' => 'application#test_url'

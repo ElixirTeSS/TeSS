@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages, :add_topic]
   before_action :set_breadcrumbs
   before_action :disable_pagination, only: :index, if: lambda { |controller| controller.request.format.ics? or controller.request.format.csv? }
 
@@ -137,6 +137,20 @@ class EventsController < ApplicationController
     end
     flash[:notice] = "Event has been included in #{pluralize(packages.count, 'package')}"
     redirect_to @event
+  end
+
+  #POST /events/1/add_topic
+  def add_topic
+    topic = EDAM::Ontology.instance.lookup_by_name(params[:topic])
+    @event.edit_suggestion.accept_suggestion(@event, topic)
+    render :nothing => true
+  end
+
+  #POST /events/1/reject_topic
+  def reject_topic
+    topic = EDAM::Ontology.instance.lookup_by_name(params[:topic])
+    @event.edit_suggestion.reject_suggestion(topic)
+    render :nothing => true
   end
 
   protected
