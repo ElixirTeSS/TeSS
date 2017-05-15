@@ -1,5 +1,5 @@
 class MaterialsController < ApplicationController
-  before_action :set_material, only: [:show, :edit, :update, :destroy, :update_packages]
+  before_action :set_material, only: [:show, :edit, :update, :destroy, :update_packages, :add_topic, :reject_topic]
   before_action :set_breadcrumbs
 
   include SearchableIndex
@@ -139,6 +139,21 @@ class MaterialsController < ApplicationController
     end
     flash[:notice] = "Material has been included in #{pluralize(packages.count, 'package')}"
     redirect_to @material
+  end
+
+
+  #POST /materials/1/add_topic
+  def add_topic
+    topic = EDAM::Ontology.instance.lookup_by_name(params[:topic])
+    @material.edit_suggestion.accept_suggestion(@material, topic)
+    render :nothing => true
+  end
+
+  #POST /events/1/reject_topic
+  def reject_topic
+    topic = EDAM::Ontology.instance.lookup_by_name(params[:topic])
+    @material.edit_suggestion.reject_suggestion(topic)
+    render :nothing => true
   end
 
   private
