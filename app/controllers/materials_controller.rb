@@ -1,5 +1,5 @@
 class MaterialsController < ApplicationController
-  before_action :set_material, only: [:show, :edit, :update, :destroy, :update_packages, :add_topic]
+  before_action :set_material, only: [:show, :edit, :update, :destroy, :update_packages, :add_topic, :reject_topic]
   before_action :set_breadcrumbs
 
   include SearchableIndex
@@ -151,7 +151,7 @@ class MaterialsController < ApplicationController
   #POST /events/1/reject_topic
   def reject_topic
     topic = EDAM::Ontology.instance.lookup_by_name(params[:topic])
-    @event.edit_suggestion.reject_suggestion(topic)
+    @material.edit_suggestion.reject_suggestion(topic)
     render :nothing => true
   end
 
