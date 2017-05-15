@@ -7,7 +7,7 @@ class EditSuggestion < ActiveRecord::Base
     resource.scientific_topics = resource.scientific_topics.push(topic)
     if resource.save!
       suggestions = drop_topic({uri: topic.uri})
-      self.destroy if suggestions.empty?
+      self.destroy if suggestions.nil? or suggestions.empty?
     end
   end
 
