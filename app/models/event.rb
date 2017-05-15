@@ -150,7 +150,7 @@ class Event < ActiveRecord::Base
 
   def to_csv_event
       if self.organizer.class == String
-        organizer = self.organizer.gsub(',',' ')
+        organizer = self.organizer.tr(',',' ')
       elsif self.organizer.class == Array
         organizer = self.organizer.join(' | ').gsub(',',' and ')
       else
@@ -158,7 +158,7 @@ class Event < ActiveRecord::Base
       end
       cp = self.content_provider.title unless self.content_provider.nil?
 
-      [self.title.gsub(',',' '),
+      [self.title.tr(',',' '),
               organizer,
               self.start.strftime("%d %b %Y"),
               self.end.strftime("%d %b %Y"),
