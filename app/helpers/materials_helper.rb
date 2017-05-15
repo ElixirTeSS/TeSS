@@ -3,6 +3,11 @@ module MaterialsHelper
   "TeSS harvests materials automatically, including descriptions and other relevant meta-data made available by providers. Materials can also be registered manually.\n\n"\
   "If your website contains training materials that you wish to include in TeSS, please contact the TeSS team (<a href='mailto:tess @elixir-uk.info'>tess@elixir-uk.info</a>) for further details.".freeze
 
+  TOPICS_INFO = "TeSS generates a scientific topic suggestion for each resource registered. It does this by
+  passing the description and title of the resource to the Bioportal Annotator Web service.
+The Annotator Web service finds EDAM terms that match terms in the text. You can then accept or reject these terms in TeSS.
+
+Accepting will add a topic to the resource and rejecting will remove the suggestion permanently"
   # Returns an array of two-element arrays of licences ready to be used in options_for_select() for generating option/select tags
   # [['Licence 1 full name','Licence 1 abbreviation'], ['Licence 2 full name','Licence 2 abbreviation'], ...]
   def licence_options_for_select
@@ -46,12 +51,12 @@ module MaterialsHelper
 
   def display_attribute(resource, attribute) # resource e.g. <#Material> & symbol e.g. :target_audience
     value = resource.send(attribute)
-
-    unless value.blank? || value.try(:strip) == 'notspecified'
-      string = "<p><b> #{resource.class.human_attribute_name(attribute)}: </b>"
+    if value.blank? || value.try(:strip) == 'notspecified'
+      string = "<p class=\"#{attribute}\">"
+    else
+      string = "<p class=\"#{attribute}\"><b> #{resource.class.human_attribute_name(attribute)}: </b>"
       string << (block_given? ? yield(value) : value.to_s)
-
-      (string + '</p>').html_safe
     end
+    (string + '</p>').html_safe
   end
 end
