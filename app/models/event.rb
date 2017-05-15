@@ -9,6 +9,7 @@ class Event < ActiveRecord::Base
   include HasExternalResources
   include HasContentProvider
   include LockableFields
+  include Scrapable
 
   has_paper_trail
   before_save :set_default_times, :check_country_name

@@ -113,7 +113,6 @@ class MaterialTest < ActiveSupport::TestCase
     assert_includes m.node_names, nodes(:westeros).name
   end
 
-
   test 'can set licence either using key or URL' do
     m = materials(:good_material)
 
@@ -128,5 +127,18 @@ class MaterialTest < ActiveSupport::TestCase
     m.licence = 'https://not.a.real.licence.golf'
     refute m.valid?
     assert_equal 'https://not.a.real.licence.golf', m.licence, "should preserve URL user input if it didn't match any licenses in the dictionary"
+  end
+
+  test 'can check if matearial is stale (has not been scraped recently)' do
+    m = materials(:good_material)
+
+    m.last_scraped = nil
+    refute m.stale?
+
+    m.last_scraped = Time.now
+    refute m.stale?
+
+    m.last_scraped = (Scrapable::THRESHOLD + 1.hour).ago
+    assert m.stale?
   end
 end

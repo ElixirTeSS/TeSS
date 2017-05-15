@@ -10,6 +10,7 @@ class Material < ActiveRecord::Base
   include HasContentProvider
   include HasLicence
   include LockableFields
+  include Scrapable
 
   has_paper_trail
 
