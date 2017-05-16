@@ -298,4 +298,18 @@ module ApplicationHelper
     end
   end
 
+  def schemaorg_field(resource, attribute)
+    attributes = resource.send(attribute)
+    string = ''
+    if attributes
+      if attributes.class == Array and not attributes.empty?
+        attributes.each do |attr|
+          string += content_tag :span, attr, {itemprop: attribute.camelize(:lower), content: attr, class: 'schemaorg-element'}
+        end
+      else
+        string += content_tag :span, attributes, {itemprop: attribute.camelize(:lower), content: attributes, class: 'schemaorg-element'}
+      end
+    end
+    return string
+  end
 end
