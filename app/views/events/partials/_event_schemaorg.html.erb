@@ -16,8 +16,6 @@
       </span>
      <%# end if event.organizer and not event.organizer.empty? %>
   <% end %>
-
-
   <% if (event.venue and not event.venue.empty?) or
         (event.city and not event.city.empty?) or
         (event.county and not event.county.empty?) or
@@ -40,4 +38,18 @@
             (event.country and not event.country.empty?) or
             (event.postcode and not event.postcode.empty?) %>
    <% end %>
+  <!-- end of 'valid' schema.org - bioschemas stuff from here on out-->
+  <% if event.scientific_topics and not event.scientific_topics.nil? %>
+      <% event.scientific_topics.each do |topic|  %>
+          <%= content_tag :span, topic.preferred_label, {itemprop: 'scientificTopics', content: topic.preferred_label, class: 'schemaorg-element'} %>
+      <% end %>
+  <% end %>
+  <%= schemaorg_field(event, 'host_institutions').html_safe %>
+  <%= schemaorg_field(event, 'contact').html_safe %>
+  <%= schemaorg_field(event, 'sponsor').html_safe %>
+  <%= schemaorg_field(event, 'target_audience').html_safe %>
+  <%= schemaorg_field(event, 'capacity').html_safe %>
+  <%= schemaorg_field(event, 'event_types').html_safe %>
+  <%= schemaorg_field(event, 'eligibility').html_safe %>
+  <%= schemaorg_field(event, 'keywords').html_safe %>
 </div>

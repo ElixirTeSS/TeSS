@@ -1,9 +1,10 @@
 class MaterialsController < ApplicationController
-  before_action :set_material, only: [:show, :edit, :update, :destroy, :update_packages]
+  before_action :set_material, only: [:show, :edit, :update, :destroy, :update_packages, :add_topic, :reject_topic]
   before_action :set_breadcrumbs
 
   include SearchableIndex
   include ActionView::Helpers::TextHelper
+  include FieldLockEnforcement
 
   # GET /materials
   # GET /materials?q=queryparam
@@ -140,6 +141,21 @@ class MaterialsController < ApplicationController
     redirect_to @material
   end
 
+
+  #POST /materials/1/add_topic
+  def add_topic
+    topic = EDAM::Ontology.instance.lookup_by_name(params[:topic])
+    @material.edit_suggestion.accept_suggestion(@material, topic)
+    render :nothing => true
+  end
+
+  #POST /events/1/reject_topic
+  def reject_topic
+    topic = EDAM::Ontology.instance.lookup_by_name(params[:topic])
+    @material.edit_suggestion.reject_suggestion(topic)
+    render :nothing => true
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_material
@@ -154,7 +170,8 @@ class MaterialsController < ApplicationController
                                      {:scientific_topic_names => []},
                                      :licence, :difficulty_level, {:contributors => []},
                                      {:authors => []}, {:target_audience => []}, {:node_ids => []}, {:node_names => []},
-                                     external_resources_attributes: [:id, :url, :title, :_destroy], event_ids: [])
+                                     external_resources_attributes: [:id, :url, :title, :_destroy], event_ids: [],
+                                     locked_fields: [])
   end
 
 

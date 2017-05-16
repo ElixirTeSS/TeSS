@@ -389,7 +389,7 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   test 'should create new material through API' do
-    scraper_role = Role.fetch('api_user')
+    scraper_role = Role.fetch('scraper_user')
     scraper_user = User.where(:role_id => scraper_role.id).first
     material_title = 'horse'
     assert scraper_user
@@ -408,7 +408,7 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   test 'should not create new material without valid authentication token' do
-    scraper_role = Role.fetch('api_user')
+    scraper_role = Role.fetch('scraper_user')
     scraper_user = User.where(:role_id => scraper_role.id).first
     assert scraper_user
 
@@ -699,6 +699,53 @@ class MaterialsControllerTest < ActionController::TestCase
 
     assert_includes assigns(:material).node_ids, nodes(:westeros).id
     assert_includes assigns(:material).node_ids, nodes(:good).id
+  end
+
+  test 'can lock fields' do
+    sign_in @material.user
+    assert_difference('FieldLock.count', 2) do
+      patch :update, id: @material, material: { title: 'hi', locked_fields: ['title', 'short_description'] }
+    end
+
+    assert_redirected_to material_path(assigns(:material))
+    assert_equal 2, assigns(:material).locked_fields.count
+    assert assigns(:material).field_locked?(:title)
+    assert assigns(:material).field_locked?(:short_description)
+    refute assigns(:material).field_locked?(:url)
+  end
+
+  test 'scraper cannot overwrite locked fields' do
+    user = users(:scraper_user)
+    material = materials(:scraper_user_material)
+    material.locked_fields = [:title]
+    material.save!
+
+    assert_no_difference('Material.count') do
+      post 'update', {user_token: user.authentication_token,
+                      user_email: user.email,
+                      material: {
+                          title: 'new title',
+                          url: material.url,
+                          short_description: 'new description'
+                      },
+                      id: material.id,
+                      format: 'json'}
+    end
+
+    parsed_response = JSON.parse(response.body)
+    assert_equal material.title, parsed_response['title'], 'Title should not have changed'
+    assert_equal 'new description', parsed_response['short_description']
+  end
+
+  test 'normal user can overwrite locked fields' do
+    @material.locked_fields = [:title]
+    @material.save!
+
+    sign_in @material.user
+    patch :update, id: @material, material: { title: 'new title' }
+    assert_redirected_to material_path(assigns(:material))
+
+    assert_equal 'new title', assigns(:material).title
   end
 
 end

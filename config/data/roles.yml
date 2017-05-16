@@ -6,7 +6,7 @@ node_curator:
   title: Node curator
 curator:
   title: Curator
-api_user:
-  title: API user
+scraper_user:
+  title: Automated scraper
 default_user:
   title: Default user

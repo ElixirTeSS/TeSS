@@ -74,55 +74,7 @@ class PackagesController < ApplicationController
     end
   end
 
-  def manage
-    @package = Package.friendly.find(params[:package_id])
-    @materials = @package.materials
-    @events = @package.events
-  end
-
-=begin
-  def remove_resources
-    @package = Package.friendly.find(params[:package_id])
-    remove_resources_from_package(params[:package][:material_ids], params[:package][:event_ids])
-    if true
-      respond_to do |format|
-        format.html { redirect_to @package, notice: 'Package was successfully updated.' }
-        format.json { render :show, status: :ok, location: @package }
-      end
-    end
-  end
-=end
-
-  def update_package_resources
-    @package = Package.friendly.find(params[:package_id])
-    @package.update_resources_by_id(params[:package][:material_ids], params[:package][:event_ids])
-    if @package.save!
-      respond_to do |format|
-        format.html { redirect_to @package, notice: 'Package contents updated.' }
-        format.json { render :show, status: :ok, location: @package }
-      end
-    end
-  end
-
   private
-=begin
-    def remove_resources_from_package(materials, events)
-      remove_materials_from_package(materials) if !materials.nil? and !materials.empty?
-      remove_events_from_package(events) if !events.nil? and !events.empty?
-    end
-
-    def remove_materials_from_package(materials)
-      materials.collect{|ev| Material.find_by_id(ev)}.each do |x|
-        @package.materials.delete(x) unless x.nil?
-      end
-    end
-
-    def remove_events_from_package(events)
-      events.collect{|ev| Event.find_by_id(ev)}.each do |x|
-        @package.events.delete(x) unless x.nil?
-      end
-    end
-=end
 
   # Use callbacks to share common setup or constraints between actions.
     def set_package

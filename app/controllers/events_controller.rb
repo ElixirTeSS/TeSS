@@ -1,10 +1,11 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages, :add_topic, :reject_topic]
   before_action :set_breadcrumbs
   before_action :disable_pagination, only: :index, if: lambda { |controller| controller.request.format.ics? or controller.request.format.csv? }
 
   include SearchableIndex
   include ActionView::Helpers::TextHelper
+  include FieldLockEnforcement
 
   # GET /events
   # GET /events.json
@@ -139,6 +140,20 @@ class EventsController < ApplicationController
     redirect_to @event
   end
 
+  #POST /events/1/add_topic
+  def add_topic
+    topic = EDAM::Ontology.instance.lookup_by_name(params[:topic])
+    @event.edit_suggestion.accept_suggestion(@event, topic)
+    render :nothing => true
+  end
+
+  #POST /events/1/reject_topic
+  def reject_topic
+    topic = EDAM::Ontology.instance.lookup_by_name(params[:topic])
+    @event.edit_suggestion.reject_suggestion(topic)
+    render :nothing => true
+  end
+
   protected
 
   private
@@ -157,7 +172,8 @@ class EventsController < ApplicationController
                                   :content_provider_id, {:package_ids => []}, {:node_ids => []}, {:node_names => []},
                                   {:target_audience => []}, {:eligibility => []},
                                   {:host_institutions => []}, :capacity, :contact,
-                                  external_resources_attributes: [:id, :url, :title, :_destroy], material_ids: [])
+                                  external_resources_attributes: [:id, :url, :title, :_destroy], material_ids: [],
+                                  locked_fields: [])
   end
 
   def disable_pagination

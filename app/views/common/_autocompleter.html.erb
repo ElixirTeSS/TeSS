@@ -2,6 +2,7 @@
 
 <div class="form-group">
   <%= f.label field_name %>
+  <%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
   <ul id="<%= field_name -%>-list">
     <%# This blank association is needed to trigger the delete when all associations are removed %>
     <input type="hidden" name="<%= model_name %>[<%= field_name.to_s.singularize %>_ids][]" value="" />

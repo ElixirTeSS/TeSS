@@ -254,25 +254,25 @@ class PackagesControllerTest < ActionController::TestCase
   test "should remove materials from package" do
     sign_in users(:regular_user)
     package = packages(:with_resources)
-    post :update_package_resources, package: {material_ids: [materials(:biojs).id, materials(:interpro).id]}, package_id: package.id
+    patch :update, package: {material_ids: [materials(:biojs).id, materials(:interpro).id]}, id: package.id
     assert_difference('package.materials.count', -2) do
-      post :update_package_resources, package: {material_ids: []}, package_id: package.id
+      patch :update, package: {material_ids: []}, id: package.id
     end
   end     
   
   test "should add events to package" do
     sign_in users(:regular_user)
     assert_difference('@package.events.count', +2) do
-      post :update_package_resources, package: { event_ids: [events(:one), events(:two)]}, package_id: @package.id
+      patch :update, package: { event_ids: [events(:one), events(:two)]}, id: @package.id
     end
   end
   
   test "should remove events from package" do
     sign_in users(:regular_user)
     package = packages(:with_resources)
-    post :update_package_resources, package: { event_ids: [events(:one), events(:two)]}, package_id: package.id
+    patch :update, package: { event_ids: [events(:one), events(:two)]}, id: package.id
     assert_difference('package.events.count', -2) do
-      post :update_package_resources, package: { event_ids: []}, package_id: package.id
+      patch :update, package: { event_ids: []}, id: package.id
     end
   end
 

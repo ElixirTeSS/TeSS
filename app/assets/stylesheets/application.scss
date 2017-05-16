@@ -704,3 +704,30 @@ input.loading {
   display: inline-block;
   padding: 5px;
 }
+
+input[type=checkbox].field-lock {
+  display: none;
+}
+
+input[type=checkbox].field-lock + label:before {
+  font-family: FontAwesome;
+  cursor: pointer;
+  display: inline-block;
+  content: "\f09c";
+  letter-spacing: 10px;
+}
+
+input[type=checkbox].field-lock:checked + label:before {
+  content: "\f023";
+}
+
+input[type=checkbox].field-lock:checked + label:before, .field-lock-example-locked {
+  color: $brand-success;
+  font-size: 110%;
+}
+
+input[type=checkbox].field-lock + label:before, .field-lock-example-open {
+  color: $brand-warning;
+  font-size: 110%;
+}
+

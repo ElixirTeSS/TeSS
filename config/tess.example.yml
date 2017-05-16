@@ -3,6 +3,7 @@ default: &default
   contact_email: contact@example.com
   solr_enabled: true
   announcement_message:
+  prevent_robot_indexing: false
 
 development:
   <<: *default

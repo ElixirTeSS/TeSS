@@ -28,16 +28,9 @@ module ApplicationHelper
 
   def scrape_status_icon(record, size = nil)
     if !record.last_scraped.nil? && record.scraper_record
-      if record.last_scraped < (Time.now - 2.days)
-        if record.class.name == 'Event'
-          if show_event_icons(record)
-            ICONS[:not_scraped_recently][:message].gsub!(/%SUB%/, record.last_scraped.to_s)
-            return "<span class='stale-icon pull-right'>#{icon_for(:not_scraped_recently, size)}</span>".html_safe
-          end
-        else
-          ICONS[:not_scraped_recently][:message].gsub!(/%SUB%/, record.last_scraped.to_s)
-          return "<span class='stale-icon pull-right'>#{icon_for(:not_scraped_recently, size)}</span>".html_safe
-        end
+      if record.stale?
+        message = ICONS[:not_scraped_recently][:message].gsub(/%SUB%/, record.last_scraped.to_s)
+        return "<span class='stale-icon pull-right'>#{icon_for(:not_scraped_recently, size, message: message)}</span>".html_safe
       else
         return "<span class='fresh-icon pull-right'>#{icon_for(:scraped_today, size)}</span>".html_safe
       end
@@ -57,7 +50,7 @@ module ApplicationHelper
     aria-hidden=\"true\"
     data-toggle=\"tooltip\"
     data-placement=\"auto\"
-    title=\"#{ICONS[type][:message]}\">
+    title=\"#{options[:message] || ICONS[type][:message]}\">
     </i>".html_safe
   end
 
@@ -67,32 +60,14 @@ module ApplicationHelper
     types.each do |t|
       titles << "#{ICONS[t][:message]}." if event.send("#{t}?")
     end
-    if show_event_icons(event)
-      if event.last_scraped
-        if event.last_scraped < (Time.now - 2.days)
-          ICONS[:not_scraped_recently][:message].gsub!(/%SUB%/, event.last_scraped.to_s)
-          titles << "#{ICONS[:not_scraped_recently][:message]}."
-        end
-      else
-        titles << "#{ICONS[:scraped_today][:message]}."
-      end
+
+    if event.stale?
+      titles << "#{ICONS[:not_scraped_recently][:message].gsub(/%SUB%/, event.last_scraped.to_s)}."
+    else
+      titles << "#{ICONS[:scraped_today][:message]}."
     end
 
     titles.join(' &#13;').html_safe
-  end
-
-  # Don't show icons/tooltips for iAnn events.
-  # Only show icons/tooltips if there's a logged in user
-  def show_event_icons(record)
-    if record.content_provider
-      if record.content_provider.title.downcase == 'iann'
-        return false
-      end
-    end
-    unless current_user and current_user.is_admin?
-      return false
-    end
-    return true
   end
 
   def bootstrap_class_for(flash_type)
@@ -314,6 +289,27 @@ module ApplicationHelper
                         'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet', target: '_blank')
           end
     end
+
+    def field_lock(name, options = {})
+      field_name = "#{object.class.name.downcase}[locked_fields][]"
+      field_id = "#{object.class.name.downcase}_locked_fields_#{name}"
+      @template.check_box_tag(field_name, name.to_s, object.field_locked?(name), id: field_id, class: 'field-lock') +
+          @template.label_tag(field_id, '', title: 'Lock this field to prevent it being overwritten when automated scrapers are run')
+    end
   end
 
+  def schemaorg_field(resource, attribute)
+    attributes = resource.send(attribute)
+    string = ''
+    if attributes
+      if attributes.class == Array and not attributes.empty?
+        attributes.each do |attr|
+          string += content_tag :span, attr, {itemprop: attribute.camelize(:lower), content: attr, class: 'schemaorg-element'}
+        end
+      else
+        string += content_tag :span, attributes, {itemprop: attribute.camelize(:lower), content: attributes, class: 'schemaorg-element'}
+      end
+    end
+    return string
+  end
 end

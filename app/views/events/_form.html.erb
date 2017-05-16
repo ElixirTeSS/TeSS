@@ -41,12 +41,17 @@
       </div>
     </div>
 
+    <%# Necessary to allow removal of all field locks %>
+    <%= hidden_field_tag 'event[locked_fields][]', '' %>
+
     <div class="form-group">
       <%= f.label :title %>
+      <%= f.field_lock :title %>
       <%= f.text_field :title, :class => 'form-control' %>
     </div>
     <div class="form-group">
       <%= f.label :subtitle %>
+      <%= f.field_lock :subtitle %>
       <%= f.text_field :subtitle, :class => 'form-control' %>
     </div>
 
@@ -54,6 +59,7 @@
 
     <div class="form-group">
       <%= f.label :organizer, "Organizer" %>
+      <%= f.field_lock :organizer, "Organizer" %>
       <%= f.text_field :organizer, :class => 'form-control' %>
     </div>
 
@@ -73,6 +79,7 @@
 
     <div class="form-group">
       <%= f.label :description %>
+      <%= f.field_lock :description %>
       <%= f.markdown_area :description, :rows => "10", :class => 'form-control' %>
     </div>
 
@@ -116,28 +123,32 @@
 
     <div class="form-group">
       <%= f.label :start %>
+      <%= f.field_lock :start %>
       <%= datetime_picker(f, :start) %>
     </div>
 
     <div class="form-group">
       <%= f.label :end %>
+      <%= f.field_lock :end %>
       <%= datetime_picker(f, :end) %>
     </div>
 
     <!-- TODO: add autocomplete to this field -->
     <div class="form-group">
       <%= f.label :timezone %>
+      <%= f.field_lock :timezone %>
       <%= f.text_field :timezone, :class => 'form-control' %>
     </div>
 
-
     <div class="form-group">
       <%= f.label :sponsor %>
+      <%= f.field_lock :sponsor %>
       <%= f.text_field :sponsor, :class => 'form-control' %>
     </div>
 
     <div class="form-group">
       <%= f.label :contact %>
+      <%= f.field_lock :contact %>
       <%= f.text_area :contact, :rows => '5', :class => 'form-control' %>
     </div>
 
@@ -147,6 +158,7 @@
 
     <div class="form-group">
       <%= f.label :capacity %>
+      <%= f.field_lock :capacity %>
       <%= f.text_field :capacity, :class => 'form-control' %>
     </div>
 
@@ -161,7 +173,8 @@
 
     <div class="form-group">
       <%= f.label 'for_profit' %> <%= icon_for(:for_profit, :small)%>
-       <%= f.check_box :for_profit %>
+      <%= f.field_lock :for_profit %>
+      <%= f.check_box :for_profit %>
     </div>
 
     <%= render :partial => 'common/dropdown',
@@ -177,6 +190,7 @@
 
     <div class="form-group" id="external-resources">
       <%= f.label :external_resources %>
+      <%= f.field_lock :external_resources %>
 
       <div id="external-resources-list">
         <% @event.external_resources.each_with_index do |external_resource, index| %>

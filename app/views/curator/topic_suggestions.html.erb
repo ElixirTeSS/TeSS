@@ -1,0 +1,39 @@
+
+
+<div id="content">
+  <div class="row">
+
+    <div class="h2">Curate topics</div>
+    <div class="h4"><%= @suggestions.count %> possible suggestions found</div>
+    <div class="pull-right">
+      <%= info_button('How to curate topics in TeSS') do %>
+          <%= render_markdown(MaterialsHelper::TOPICS_INFO) %>
+      <% end %>
+    </div>
+  </div>
+
+<% @suggestions.each do |suggestion| %>
+    <% resource = suggestion.suggestible %>
+    <%= render layout: 'common/mixed_resources', locals: {resource: resource} do%>
+        <div class="suggestions">
+          <b>Suggested scientific topics:</b>
+        <% suggestion.scientific_topics.each do |scientific_topic, i| %>
+              <span class="dropdown ">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  <%= scientific_topic.preferred_label %>
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu suggestion_action"
+                    data-resource_type="<%=resource.class.name.underscore.pluralize %>"
+                    data-resource_id="<%=resource.id%>"
+                    data-topic="<%=scientific_topic.preferred_label%>"
+                    aria-labelledby="dropdownMenu1">
+                  <li><a class="btn accept_suggestion" ><b>✓ Accept</b> <br>(This <%=resource.class.name.downcase%> <b>is</b> about <em><%=scientific_topic.preferred_label%></em>)</a></li>
+                  <li><a class="btn reject_suggestion" ><b>✗ Reject</b> <br> (This <%=resource.class.name.downcase%> <b>is not</b> about <em><%=scientific_topic.preferred_label%></em>)</a></li>
+                </ul>
+              </span>
+        <% end %>
+        </div>
+    <% end %>
+<% end %>
+</div>

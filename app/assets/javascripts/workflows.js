@@ -1,192 +1,5 @@
 var MarkdownIt = window.markdownit();
 
-$(document).ready(function () {
-    var wfJsonElement = $('#workflow-content-json');
-    var cytoscapeElement = $('#cy');
-    var editable = cytoscapeElement.data('editable');
-    var hideChildNodes = cytoscapeElement.data('hideChildNodes');
-
-    if (wfJsonElement.length && cytoscapeElement.length) {
-        var cy = window.cy = cytoscape({
-            container: cytoscapeElement[0],
-            elements: JSON.parse(wfJsonElement.html()),
-            layout: {
-                name: 'preset',
-                padding: 20
-            },
-            style: [
-                {
-                    selector: 'node',
-                    css: {
-                        'shape': 'roundrectangle',
-                        'content': 'data(name)',
-                        'background-color': function (ele) {
-                            return (typeof ele.data('color') === 'undefined') ? "#f47d20" : ele.data('color')
-                        },
-                        'color': function (ele) {
-                            return (typeof ele.data('font_color') === 'undefined') ? "#000000" : ele.data('font_color')
-                        },
-                        'background-opacity': 0.8,
-                        'text-valign': 'center',
-                        'text-halign': 'center',
-                        'width': '150px',
-                        'height': '30px',
-                        'font-size': '9px',
-                        'border-width': '1px',
-                        'border-color': '#000',
-                        'border-opacity': 0.5,
-                        'text-wrap': 'wrap',
-                        'text-max-width': '130px'
-                    }
-                },
-                {
-                    selector: '$node > node',
-                    css: {
-                        'shape': 'roundrectangle',
-                        'content': function (e) {
-                            return e.data('name') + ' (' + e.children().length + ')';
-                        },
-                        'padding-top': '10px',
-                        'font-weight': 'bold',
-                        'padding-left': '10px',
-                        'padding-bottom': '10px',
-                        'padding-right': '10px',
-                        'text-valign': 'top',
-                        'text-halign': 'center',
-                        'text-margin-y': '-2px',
-                        'width': 'auto',
-                        'height': 'auto',
-                        'font-size': '9px',
-                        'color': '#111111'
-                    }
-                },
-                {
-                    selector: 'edge',
-                    css: {
-                        'target-arrow-shape': 'triangle',
-                        'content': 'data(name)',
-                        'line-color': '#ccc',
-                        'source-arrow-color': '#ccc',
-                        'target-arrow-color': '#ccc',
-                        'font-size': '9px',
-                        'curve-style': 'bezier'
-                    }
-                },
-                {
-                    selector: ':selected',
-                    css: {
-                        'line-color': '#2A62E4',
-                        'target-arrow-color': '#2A62E4',
-                        'source-arrow-color': '#2A62E4',
-                        'border-width': '2px',
-                        'border-color': '#2A62E4',
-                        'border-opacity': 1,
-                        'background-blacken': '-0.1'
-                    }
-                }
-            ],
-            userZoomingEnabled: false,
-            autolock: !editable
-        });
-
-        if (editable) {
-            // Bind events
-            $('#workflow-toolbar-add').click(Workflows.setAddNodeState);
-            $('#workflow-toolbar-cancel').click(Workflows.cancelState);
-            $('#workflow-toolbar-edit').click(Workflows.edit);
-            $('#workflow-toolbar-link').click(Workflows.setLinkNodeState);
-            $('#workflow-toolbar-undo').click(Workflows.history.undo);
-            $('#workflow-toolbar-redo').click(Workflows.history.redo);
-            $('#workflow-toolbar-add-child').click(Workflows.addChild);
-            $('#workflow-toolbar-delete').click(Workflows.delete);
-            $('#node-modal-form-confirm').click(Workflows.nodeModalConfirm);
-            $('#edge-modal-form-confirm').click(Workflows.edgeModalConfirm);
-            $('.node-modal-add-resource-btn').click(Workflows.associatedResources.add);
-            $('#node-modal')
-                .on('hide.bs.modal', Workflows.cancelState)
-                .on('click', '.delete-associated-resource', Workflows.associatedResources.delete)
-                .on('click', '.delete-ontology-term', Workflows.ontologyTerms.delete);
-
-            $('#edge-modal').on('hide.bs.modal', Workflows.cancelState);
-
-            $('.workflow-diagram-wrapper .modal').keydown(function (event) {
-                if (event.keyCode == 13) {
-                    event.preventDefault();
-                    return false;
-                }
-            });
-
-            // Update JSON in form
-            $('.workflow-form-submit').click(function () {
-                $('#workflow_workflow_content').val(JSON.stringify(cy.json()['elements']));
-                Workflows.formSubmitted = true;
-
-                return true;
-            });
-
-            cy.on('tap', Workflows.handleClick);
-            cy.on('select', function (e) {
-                if (Workflows.state !== 'adding node') {
-                    Workflows.select(e.cyTarget);
-                }
-            });
-            cy.on('unselect', Workflows.cancelState);
-            cy.on('drag', function () {
-                Workflows._dragged = true;
-            });
-            cy.on('free', function () {
-                if (Workflows._dragged) {
-                    Workflows.history.modify('move node');
-                    Workflows._dragged = false;
-                }
-            });
-            cy.$(':selected').unselect();
-            cy.on('select', Workflows.sidebar.populate);
-
-            // Initialize
-            Workflows.cancelState();
-            Workflows.history.initialize();
-            jscolor.installByClassName('jscolor');
-        } else {
-            // Hiding/revealing of child nodes
-            if(hideChildNodes) {
-                cy.style()
-                    .selector('node > node').style({ 'opacity': 0 })
-                    .selector('node > node.visible').style({ 'opacity': 1, 'transition-property': 'opacity', 'transition-duration': '0.2s' })
-                    .selector('edge.hidden').style({ 'opacity': 0 })
-                    .update();
-
-                cy.$('node > node').connectedEdges().addClass('hidden');
-            }
-            cy.on('select', 'node', Workflows.sidebar.populate);
-            cy.on('select', 'edge', function (e) {
-                e.cyTarget.unselect();
-                return false;
-            });
-        }
-
-        Workflows.sidebar.init();
-        cy.on('unselect', Workflows.sidebar.clear);
-        cy.$(':selected').unselect();
-        Workflows.loadLastSelection();
-
-        cy.panzoom();
-        var defaultZoom = cy.maxZoom();
-        cy.maxZoom(2); // Temporary limit the zoom level, to restrict how zoomed-in the diagram appears by default
-        cy.fit(50); // Fit diagram to screen with some padding around the edges
-        cy.maxZoom(defaultZoom); // Reset the zoom limit to allow user to further zoom if they wish
-
-        Split(['#workflow-diagram-content', '#workflow-diagram-sidebar'], {
-            direction: 'horizontal',
-            sizes: [70, 30],
-            minSize: [100, 50],
-            onDragEnd: function() {
-                cy.resize();
-            }
-        });
-    }
-});
-
 var Workflows = {
     formSubmitted: false,
 
@@ -644,3 +457,190 @@ var Workflows = {
         }
     }
 };
+
+$(document).ready(function () {
+    var wfJsonElement = $('#workflow-content-json');
+    var cytoscapeElement = $('#cy');
+    var editable = cytoscapeElement.data('editable');
+    var hideChildNodes = cytoscapeElement.data('hideChildNodes');
+
+    if (wfJsonElement.length && cytoscapeElement.length) {
+        var cy = window.cy = cytoscape({
+            container: cytoscapeElement[0],
+            elements: JSON.parse(wfJsonElement.html()),
+            layout: {
+                name: 'preset',
+                padding: 20
+            },
+            style: [
+                {
+                    selector: 'node',
+                    css: {
+                        'shape': 'roundrectangle',
+                        'content': 'data(name)',
+                        'background-color': function (ele) {
+                            return (typeof ele.data('color') === 'undefined') ? "#f47d20" : ele.data('color')
+                        },
+                        'color': function (ele) {
+                            return (typeof ele.data('font_color') === 'undefined') ? "#000000" : ele.data('font_color')
+                        },
+                        'background-opacity': 0.8,
+                        'text-valign': 'center',
+                        'text-halign': 'center',
+                        'width': '150px',
+                        'height': '30px',
+                        'font-size': '9px',
+                        'border-width': '1px',
+                        'border-color': '#000',
+                        'border-opacity': 0.5,
+                        'text-wrap': 'wrap',
+                        'text-max-width': '130px'
+                    }
+                },
+                {
+                    selector: '$node > node',
+                    css: {
+                        'shape': 'roundrectangle',
+                        'content': function (e) {
+                            return e.data('name') + ' (' + e.children().length + ')';
+                        },
+                        'padding-top': '10px',
+                        'font-weight': 'bold',
+                        'padding-left': '10px',
+                        'padding-bottom': '10px',
+                        'padding-right': '10px',
+                        'text-valign': 'top',
+                        'text-halign': 'center',
+                        'text-margin-y': '-2px',
+                        'width': 'auto',
+                        'height': 'auto',
+                        'font-size': '9px',
+                        'color': '#111111'
+                    }
+                },
+                {
+                    selector: 'edge',
+                    css: {
+                        'target-arrow-shape': 'triangle',
+                        'content': 'data(name)',
+                        'line-color': '#ccc',
+                        'source-arrow-color': '#ccc',
+                        'target-arrow-color': '#ccc',
+                        'font-size': '9px',
+                        'curve-style': 'bezier'
+                    }
+                },
+                {
+                    selector: ':selected',
+                    css: {
+                        'line-color': '#2A62E4',
+                        'target-arrow-color': '#2A62E4',
+                        'source-arrow-color': '#2A62E4',
+                        'border-width': '2px',
+                        'border-color': '#2A62E4',
+                        'border-opacity': 1,
+                        'background-blacken': '-0.1'
+                    }
+                }
+            ],
+            userZoomingEnabled: false,
+            autolock: !editable
+        });
+
+        if (editable) {
+            // Bind events
+            $('#workflow-toolbar-add').click(Workflows.setAddNodeState);
+            $('#workflow-toolbar-cancel').click(Workflows.cancelState);
+            $('#workflow-toolbar-edit').click(Workflows.edit);
+            $('#workflow-toolbar-link').click(Workflows.setLinkNodeState);
+            $('#workflow-toolbar-undo').click(Workflows.history.undo);
+            $('#workflow-toolbar-redo').click(Workflows.history.redo);
+            $('#workflow-toolbar-add-child').click(Workflows.addChild);
+            $('#workflow-toolbar-delete').click(Workflows.delete);
+            $('#node-modal-form-confirm').click(Workflows.nodeModalConfirm);
+            $('#edge-modal-form-confirm').click(Workflows.edgeModalConfirm);
+            $('.node-modal-add-resource-btn').click(Workflows.associatedResources.add);
+            $('#node-modal')
+                .on('hide.bs.modal', Workflows.cancelState)
+                .on('click', '.delete-associated-resource', Workflows.associatedResources.delete)
+                .on('click', '.delete-ontology-term', Workflows.ontologyTerms.delete);
+
+            $('#edge-modal').on('hide.bs.modal', Workflows.cancelState);
+
+            $('.workflow-diagram-wrapper .modal').keydown(function (event) {
+                if (event.keyCode == 13) {
+                    event.preventDefault();
+                    return false;
+                }
+            });
+
+            // Update JSON in form
+            $('.workflow-form-submit').click(function () {
+                $('#workflow_workflow_content').val(JSON.stringify(cy.json()['elements']));
+                Workflows.formSubmitted = true;
+
+                return true;
+            });
+
+            cy.on('tap', Workflows.handleClick);
+            cy.on('select', function (e) {
+                if (Workflows.state !== 'adding node') {
+                    Workflows.select(e.cyTarget);
+                }
+            });
+            cy.on('unselect', Workflows.cancelState);
+            cy.on('drag', function () {
+                Workflows._dragged = true;
+            });
+            cy.on('free', function () {
+                if (Workflows._dragged) {
+                    Workflows.history.modify('move node');
+                    Workflows._dragged = false;
+                }
+            });
+            cy.$(':selected').unselect();
+            cy.on('select', Workflows.sidebar.populate);
+
+            // Initialize
+            Workflows.cancelState();
+            Workflows.history.initialize();
+            jscolor.installByClassName('jscolor');
+        } else {
+            // Hiding/revealing of child nodes
+            if(hideChildNodes) {
+                cy.style()
+                    .selector('node > node').style({ 'opacity': 0 })
+                    .selector('node > node.visible').style({ 'opacity': 1, 'transition-property': 'opacity', 'transition-duration': '0.2s' })
+                    .selector('edge.hidden').style({ 'opacity': 0 })
+                    .update();
+
+                cy.$('node > node').connectedEdges().addClass('hidden');
+            }
+            cy.on('select', 'node', Workflows.sidebar.populate);
+            cy.on('select', 'edge', function (e) {
+                e.cyTarget.unselect();
+                return false;
+            });
+        }
+
+        Workflows.sidebar.init();
+        cy.on('unselect', Workflows.sidebar.clear);
+        cy.$(':selected').unselect();
+        Workflows.loadLastSelection();
+
+        cy.panzoom();
+        var defaultZoom = cy.maxZoom();
+        cy.maxZoom(2); // Temporary limit the zoom level, to restrict how zoomed-in the diagram appears by default
+        cy.fit(50); // Fit diagram to screen with some padding around the edges
+        cy.maxZoom(defaultZoom); // Reset the zoom limit to allow user to further zoom if they wish
+
+        Split(['#workflow-diagram-content', '#workflow-diagram-sidebar'], {
+            direction: 'horizontal',
+            sizes: [70, 30],
+            minSize: [100, 50],
+            onDragEnd: function() {
+                cy.resize();
+            }
+        });
+    }
+});

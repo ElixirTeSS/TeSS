@@ -162,4 +162,13 @@ class WorkflowsControllerTest < ActionController::TestCase
     assert_includes assigns(:workflows).map(&:id), workflows(:private_workflow).id
   end
 
+  test 'should fork workflow' do
+    sign_in users(:another_regular_user)
+
+    get :fork, id: @workflow.id
+
+    assert_response :success
+    assert_select '#workflow_title[value=?]', "Fork of #{@workflow.title}"
+  end
+
 end

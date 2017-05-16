@@ -101,7 +101,7 @@ class ContentProvidersController < ApplicationController
     # For calls to create/update content_provider - get the node id from node name, if node id is not passed
     if (params[:content_provider][:node_id].blank? && !params[:content_provider][:node_name].blank?)
       node = Node.find_by_name(params[:content_provider][:node_name])
-      params[:content_provider].merge!({:node_id => node.id}) unless node.blank?
+      params[:content_provider][:node_id] = node.id unless node.blank?
     end
     params[:content_provider].delete :node_name
 

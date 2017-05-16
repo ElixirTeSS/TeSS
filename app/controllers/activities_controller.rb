@@ -6,7 +6,7 @@ class ActivitiesController < ApplicationController
   @@models = %w( content_provider material package event )
 
   def index
-    @activities = PublicActivity::Activity.order("created_at desc")
+    @activities = PublicActivity::Activity.order('created_at desc').paginate(page: params[:page], per_page: 50)
   end
 
   def show
@@ -14,6 +14,7 @@ class ActivitiesController < ApplicationController
   end
 
   private
+
   def set_resource
     params.permit(@@models)
 
