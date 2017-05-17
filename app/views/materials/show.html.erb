@@ -72,8 +72,8 @@
               <% end %>
 
               <div>
-                <b>External resources: </b>
                 <% if @material.external_resources.any? %>
+                    <b>External resources: </b>
                     <%= render partial: 'common/external_resources_list', locals: { external_resources: @material.external_resources} %>
                 <% end %>
               </div>
