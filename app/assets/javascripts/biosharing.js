@@ -134,6 +134,61 @@ var Biosharing = {
         $('#biosharing_query').val(Biosharing.titleElement().val());
         Biosharing.search();
     },
+    displayFullTool: function(api, id){
+        var key = $('#biosharing-api-key').text();
+        var json_key = 'bsg_id';
+        console.log("Attempting to display full tool info: " + api + ", " + key);
+        if (api.indexOf('policy') != -1) {
+            var iconclass = "fa-institution";
+        } else if (api.indexOf('database') != -1) {
+            var iconclass = "fa-database";
+            json_key = 'biodbcore_id';
+        } else {
+            var iconclass = "fa-list-alt";
+        }
+
+        $.ajax({url: api,
+            type: 'GET',
+            dataType: 'json',
+            headers: {'Api-Key':key},
+            contentType: 'application/json; charset=utf-8',
+            success: function (result) {
+                var json_object = result.data;
+                console.log("JSON: " + json_object);
+                $('#' + id + '-desc').text(json_object.description);
+                $('#' + id + '-resource-type-icon').addClass(iconclass).removeClass('fa-external-link');
+                $.each(json_object.domains, function(index, domain){
+                    $('#' + id + '-topics').append(
+                        '<span class="btn btn-default keyword-button">' +
+                        domain +
+                        '</span>'
+                    );
+                });
+                $.each(json_object.taxonomies, function(index, taxonomy){
+                    $('#' + id + '-topics').append(
+                        '<span class="btn btn-default keyword-button">' +
+                        taxonomy +
+                        '</span>'
+                    );
+                });
+                $('#' + id + '-external-links').append(
+                    '<div>' +
+                        '<a class="btn btn-success external-button" target="_blank" href="' + json_object.homepage +'">' +
+                        'View the ' + json_object.name + ' homepage ' +
+                        '<i class="fa fa-external-link"/></a>' +
+                        '</a>' +
+                        '<a class="btn btn-warning external-button" target="_blank" href="' + Biosharing.websiteBaseURL() + '/' + json_object[json_key] +'">' +
+                        'View ' + json_object.name + ' on BioSharing ' +
+                        '<i class="fa fa-external-link"/></a>' +
+                    '</div>'
+                );
+            },
+            error: function (error) {
+                console.log("Error querying BioSharing: " + error);
+            }
+        });
+
+    }
 };
 
 var delay = (function(){

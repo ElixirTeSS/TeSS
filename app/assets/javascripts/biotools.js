@@ -100,11 +100,11 @@ var Biotools = {
             });
             $('#' + id + '-external-links').append(
                 '<div>' +
-                    '<a class="btn btn-success" target="_blank" href="' + json_object.homepage +'">' +
+                    '<a class="btn btn-success external-button" target="_blank" href="' + json_object.homepage +'">' +
                     'View the ' + json_object.name + ' homepage ' +
                     '<i class="fa fa-external-link"/></a>' +
                     '</a>' +
-                    '<a class="btn btn-warning" target="_blank" href="' + Biotools.websiteBaseURL() + '/' + json_object.id +'">' +
+                    '<a class="btn btn-warning external-button" target="_blank" href="' + Biotools.websiteBaseURL() + '/' + json_object.id +'">' +
                     'View ' + json_object.name + ' on bio.tools ' +
                     '<i class="fa fa-external-link"/></a>' +
                 '</div>'

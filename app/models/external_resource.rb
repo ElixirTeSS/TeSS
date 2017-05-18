@@ -27,6 +27,20 @@ class ExternalResource < ActiveRecord::Base
     return ''
   end
 
+  def api_url_of_biosharing(url)
+    if self.is_biosharing?
+      biosharing_id = url.split(/\//)[-1]
+      if biosharing_id =~ /biodbcore-\d{6}/
+        return BIOSHARING_BASE + '/api/database/summary/' + biosharing_id
+      elsif biosharing_id =~ /bsg-s\d{6}/
+        return BIOSHARING_BASE + '/api/standard/summary/' + biosharing_id
+      elsif biosharing_id =~ /bsg-p\d{6}/
+        return BIOSHARING_BASE + '/api/policy/summary/' + biosharing_id
+      end
+    end
+    return ''
+  end
+
   private
 
   def tool_id
