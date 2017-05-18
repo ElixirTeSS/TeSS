@@ -11,7 +11,6 @@ var Biosharing = {
         $(".bstype:checked").each(function () {
             types.push($(this).val());
         })
-        console.log('types=' + types.join());
         if (types.length > 0) {
             return 'types=' + types.join();
         } else {
@@ -49,7 +48,6 @@ var Biosharing = {
     },
     queryAPI: function(api_url){
         $('.loading_image').show();
-        console.log("Querying: " + api_url);
         var key = $('#biosharing-api-key').text();
         $.ajax({url: api_url,
                 type: 'GET',
@@ -137,7 +135,6 @@ var Biosharing = {
     displayFullTool: function(api, id){
         var key = $('#biosharing-api-key').text();
         var json_key = 'bsg_id';
-        console.log("Attempting to display full tool info: " + api + ", " + key);
         if (api.indexOf('policy') != -1) {
             var iconclass = "fa-institution";
         } else if (api.indexOf('database') != -1) {
@@ -154,7 +151,6 @@ var Biosharing = {
             contentType: 'application/json; charset=utf-8',
             success: function (result) {
                 var json_object = result.data;
-                console.log("JSON: " + json_object);
                 $('#' + id + '-desc').text(json_object.description);
                 $('#' + id + '-resource-type-icon').addClass(iconclass).removeClass('fa-external-link');
                 $.each(json_object.domains, function(index, domain){
