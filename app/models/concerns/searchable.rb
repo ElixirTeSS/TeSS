@@ -88,7 +88,7 @@ module Searchable
           any_of do
             with(:public, true)
             with(:user_id, user.id) if user
-            if model.attribute_method?(:collaborators)
+            if attribute_method?(:collaborators)
               with(:collaborator_ids, user.id) if user
             end
           end
