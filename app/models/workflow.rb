@@ -5,6 +5,7 @@ class Workflow < ActiveRecord::Base
   include Collaboratable
   include LogParameterChanges
   include HasLicence
+  include Searchable
 
   has_paper_trail
 

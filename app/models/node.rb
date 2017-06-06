@@ -2,6 +2,7 @@ class Node < ActiveRecord::Base
 
   include PublicActivity::Common
   include LogParameterChanges
+  include Searchable
 
   has_paper_trail
 

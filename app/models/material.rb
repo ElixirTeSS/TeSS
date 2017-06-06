@@ -11,6 +11,7 @@ class Material < ActiveRecord::Base
   include HasLicence
   include LockableFields
   include Scrapable
+  include Searchable
 
   has_paper_trail
 
