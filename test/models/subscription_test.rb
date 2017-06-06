@@ -54,4 +54,16 @@ class SubscriptionTest < ActiveSupport::TestCase
     assert sub.errors.keys.include?(:subscribable_type)
   end
 
+  test 'can generate and verify unsubscribe code' do
+    user = users(:regular_user)
+    sub = user.subscriptions.create(frequency: :daily, subscribable_type: 'Event')
+    sub2 = user.subscriptions.create(frequency: :weekly, subscribable_type: 'Event')
+
+    assert sub.valid_unsubscribe_code?(sub.unsubscribe_code)
+    assert sub2.valid_unsubscribe_code?(sub2.unsubscribe_code)
+    refute sub.valid_unsubscribe_code?(sub2.unsubscribe_code)
+    refute sub2.valid_unsubscribe_code?(sub.unsubscribe_code)
+    refute sub.valid_unsubscribe_code?('meow')
+  end
+
 end

@@ -21,6 +21,16 @@ class Subscription < ActiveRecord::Base
     super(FREQUENCY[freq])
   end
 
+  def unsubscribe_code
+    unsubscribe_verifier.generate(self.id)
+  end
+
+  def valid_unsubscribe_code?(code)
+    unsubscribe_verifier.verify(code) == self.id
+  rescue ActiveSupport::MessageVerifier::InvalidSignature
+    false
+  end
+
   private
 
   def valid_subscribable_type
@@ -33,6 +43,10 @@ class Subscription < ActiveRecord::Base
     unless type && type.respond_to?(:search_and_filter)
       errors.add(:subscribable_type, 'not valid')
     end
+  end
+
+  def unsubscribe_verifier
+    Rails.application.message_verifier('unsubscribe')
   end
 
 end
