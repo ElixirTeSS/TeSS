@@ -59,7 +59,12 @@ Rails.application.routes.draw do
 
   resources :materials do
     resource :activities, :only => [:show]
+  end
 
+  resources :subscriptions, only: [:show, :index, :create, :destroy] do
+    member do
+      get 'unsubscribe'
+    end
   end
 
   post 'materials/:id/update_packages' => 'materials#update_packages'
