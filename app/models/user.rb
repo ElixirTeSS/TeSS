@@ -25,12 +25,13 @@ class User < ActiveRecord::Base
 
   has_one :profile, inverse_of: :user, dependent: :destroy
   has_many :materials
-  has_many :packages, :dependent => :destroy
-  has_many :workflows, :dependent => :destroy
+  has_many :packages, dependent: :destroy
+  has_many :workflows, dependent: :destroy
   has_many :content_providers
   has_many :events
   has_many :nodes
   belongs_to :role
+  has_many :subscriptions, dependent: :destroy
 
   before_create :set_registered_user_role, :set_default_profile
   before_create :skip_email_confirmation_for_non_production
