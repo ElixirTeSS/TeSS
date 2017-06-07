@@ -3,7 +3,7 @@ require 'test_helper'
 class SubscriptionTest < ActiveSupport::TestCase
 
   test 'users can have subscriptions' do
-    user = users(:regular_user)
+    user = users(:another_regular_user)
 
     assert_equal 0, user.subscriptions.count
 
@@ -64,6 +64,50 @@ class SubscriptionTest < ActiveSupport::TestCase
     refute sub.valid_unsubscribe_code?(sub2.unsubscribe_code)
     refute sub2.valid_unsubscribe_code?(sub.unsubscribe_code)
     refute sub.valid_unsubscribe_code?('meow')
+  end
+
+  test 'sets last_checked_at field on create' do
+    user = users(:regular_user)
+    sub = user.subscriptions.create(frequency: :daily, subscribable_type: 'Event')
+
+    assert_not_nil sub.last_checked_at
+  end
+
+  test 'sets last_checked_at field on check' do
+    sub = subscriptions(:daily_subscription)
+    old_date = sub.last_checked_at
+
+    sub.check
+
+    assert_not_nil sub.last_checked_at
+    assert_not_equal old_date, sub.last_checked_at
+  end
+
+  test 'can find all subscriptions that are due to be checked' do
+    daily_sub = subscriptions(:daily_subscription)
+    weekly_sub = subscriptions(:weekly_subscription)
+    monthly_sub = subscriptions(:monthly_subscription)
+
+    assert daily_sub.due?
+    assert weekly_sub.due?
+    assert monthly_sub.due?
+
+    due = Subscription.due
+    assert_includes due, daily_sub
+    assert_includes due, weekly_sub
+    assert_includes due, monthly_sub
+
+    daily_sub.check
+    weekly_sub.check
+
+    refute daily_sub.due?
+    refute weekly_sub.due?
+    assert monthly_sub.due?
+
+    due = Subscription.due
+    assert_not_includes due, daily_sub
+    assert_not_includes due, weekly_sub
+    assert_includes due, monthly_sub
   end
 
 end

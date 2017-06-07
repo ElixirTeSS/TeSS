@@ -8,10 +8,18 @@ class Subscription < ActiveRecord::Base
 
   INV_FREQUENCY = FREQUENCY.symbolize_keys.invert.freeze
 
+  PERIODS = {
+      daily: 1.day,
+      weekly: 1.week,
+      monthly: 1.month
+  }.freeze
+
   validates :frequency, presence: true, inclusion: { in: INV_FREQUENCY.values }
   validates :subscribable_type, presence: true
   validate :valid_subscribable_type
   belongs_to :user
+
+  before_create :set_last_checked_at
 
   def frequency
     INV_FREQUENCY[super]
@@ -38,14 +46,23 @@ class Subscription < ActiveRecord::Base
   end
 
   def period
-    case frequency
-      when :daily
-        1.day
-      when :weekly
-        1.week
-      when :monthly
-        1.month
-    end
+    PERIODS[frequency]
+  end
+
+  def due?
+    last_checked_at < (Time.now - period)
+  end
+
+  def check
+    update_attribute(:last_checked_at, Time.now)
+  end
+
+  def self.due
+    clause = PERIODS.map do |freq, period|
+      "(frequency = '#{FREQUENCY[freq]}' AND last_checked_at < '#{period.ago}')"
+    end.join(' OR ')
+
+    where(clause)
   end
 
   private
@@ -64,6 +81,10 @@ class Subscription < ActiveRecord::Base
 
   def unsubscribe_verifier
     Rails.application.message_verifier('unsubscribe')
+  end
+
+  def set_last_checked_at
+    self.last_checked_at = Time.now
   end
 
 end
