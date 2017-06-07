@@ -31,6 +31,23 @@ class Subscription < ActiveRecord::Base
     false
   end
 
+  def digest
+    type = subscribable_type.constantize
+
+    type.search_and_filter(user, query, facets, max_age: period)
+  end
+
+  def period
+    case frequency
+      when :daily
+        1.day
+      when :weekly
+        1.week
+      when :monthly
+        1.month
+    end
+  end
+
   private
 
   def valid_subscribable_type

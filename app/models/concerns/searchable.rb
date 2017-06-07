@@ -3,7 +3,7 @@ module Searchable
   extend ActiveSupport::Concern
 
   class_methods do
-    def search_and_filter(user, search_params = '', selected_facets = [], page: 1, sort_by: nil, per_page: 30)
+    def search_and_filter(user, search_params = '', selected_facets = [], page: 1, sort_by: nil, per_page: 30, max_age: nil)
       search do
         fulltext search_params
         # Set the search parameter
@@ -92,6 +92,10 @@ module Searchable
               with(:collaborator_ids, user.id) if user
             end
           end
+        end
+
+        if max_age
+          with(:created_at).greater_than(max_age.ago)
         end
 
         facet_fields.each do |ff|
