@@ -119,6 +119,7 @@ class User < ActiveRecord::Base
     if self.profile && self.profile.firstname
       n += " (#{self.profile.firstname} #{self.profile.surname})"
     end
+    n
   end
 
   def self.current_user=(user)
