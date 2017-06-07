@@ -180,8 +180,8 @@ ActiveRecord::Schema.define(version: 20170606152336) do
     t.date     "last_scraped"
     t.boolean  "scraper_record",      default: false
     t.text     "keyword"
-    t.text     "keywords"
-    t.text     "resource_type"
+    t.string   "resource_type",       default: [],                          array: true
+    t.string   "keywords",            default: [],                          array: true
   end
 
   add_index "materials", ["content_provider_id"], name: "index_materials_on_content_provider_id", using: :btree
