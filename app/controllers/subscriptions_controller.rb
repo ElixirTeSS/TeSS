@@ -1,14 +1,11 @@
 class SubscriptionsController < ApplicationController
 
   skip_before_action :authenticate_user!, :authenticate_user_from_token!, only: :unsubscribe
-
-  before_filter :find_subscription, only: [:show, :destroy, :unsubscribe]
+  before_action :authenticate_user!, only: :index
+  before_filter :find_subscription, only: [:destroy, :unsubscribe]
 
   def index
     @subscriptions = current_user.subscriptions.order('created_at DESC')
-  end
-
-  def show
   end
 
   def create
@@ -58,13 +55,12 @@ class SubscriptionsController < ApplicationController
   def subscription_params
     subscribable_type = params[:subscription][:subscribable_type].constantize
     facet_params = params.slice(*subscribable_type.facet_fields)
-    pp facet_params
     p = params.require(:subscription).permit(:frequency, :subscribable_type)
     p.merge(query: params[:q], facets: facet_params)
   end
 
   def find_subscription
-    @subscription = current_user.subscriptions.find(params[:id])
+    @subscription = Subscription.find(params[:id])
   end
 
 end

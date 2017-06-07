@@ -5,6 +5,7 @@ daily_subscription:
   query: bananas
   facets: { "type" : ["fruit", "veg"] }
   user: regular_user
+  subscribable_type: Material
 
 weekly_subscription:
   frequency: 2
@@ -13,6 +14,7 @@ weekly_subscription:
   query: pears
   facets: { "type" : ["fruit", "veg"] }
   user: regular_user
+  subscribable_type: Material
 
 monthly_subscription:
   frequency: 2
@@ -21,4 +23,5 @@ monthly_subscription:
   query: iphone
   facets: { "type" : ["fruit", "veg"] }
   user: regular_user
+  subscribable_type: Material
   
