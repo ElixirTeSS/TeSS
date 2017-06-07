@@ -1,0 +1,27 @@
+Dear <%= @user.profile.firstname || @user.username %>,
+
+You are receiving this automated email because you subscribed to a <%= @subscription.frequency -%> digest of new <%= @subscription.subscribable_type.pluralize.downcase -%> matching the following criteria:
+<% if @subscription.query -%>
+ * Search terms: "<%= @subscription.query %>"
+<% end -%>
+<% if @subscription.facets.present? %>
+      <% @subscription.facets.each do |facet, values| %>
+ * <%= facet.humanize %>: <%= Array(values).to_sentence(last_word_connector: ', or ') -%>
+      <% end %>
+<% end %>
+
+
+There <%= @digest.total_count == 1 ? 'has' : 'have' -%> been <%= pluralize(@digest.total_count, "new #{@subscription.subscribable_type.downcase}") -%> registered in TeSS:
+<% @digest.each do |result| -%>
+ * <%= result.title %>
+   <%= url_for(result) %>
+
+<% end -%>
+<% if @digest.count < @digest.total_count %>
+...and <%= pluralize(@digest.total_count - @digest.count, 'other') -%>
+<% end %>
+
+---------------------------------------------------------
+
+To cancel this subscription, visit the following link:
+<%= unsubscribe_subscription_url(@subscription, code: @subscription.unsubscribe_code) %>
