@@ -9,6 +9,7 @@ good_material:
   remote_created_date: 2015-09-25
   user: regular_user
   content_provider: goblet
+  resource_type: ['Lecture']
 
 bad_material:
   title: Bad Training Material Example

@@ -1,5 +1,8 @@
 <%= display_attribute(resource, :scientific_topics) { |values| values.map{|x| x.preferred_label}.join(', ')} %>
 <%= display_attribute(resource, :keywords) { |values| values.join(', ')} %>
+<% if resource.class.name.downcase == 'material' -%>
+<%= display_attribute(resource, :resource_type) { |values| values.join(', ')} %>
+<% end -%>
 <%= display_attribute(resource, :target_audience) { |values| values.join(', ')} %>
 <%= display_attribute(resource, :difficulty_level) { |value|  difficulty_name_for_abbreviation(value)} %>
 <%= display_attribute(resource, :licence) { |value|  licence_name_for_abbreviation(value)} %>
