@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170508093819) do
+ActiveRecord::Schema.define(version: 20170606152336) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -170,7 +170,6 @@ ActiveRecord::Schema.define(version: 20170508093819) do
     t.datetime "updated_at",                                   null: false
     t.text     "long_description"
     t.string   "target_audience",     default: [],                          array: true
-    t.string   "keywords",            default: [],                          array: true
     t.string   "authors",             default: [],                          array: true
     t.string   "contributors",        default: [],                          array: true
     t.string   "licence",             default: "notspecified"
@@ -180,6 +179,9 @@ ActiveRecord::Schema.define(version: 20170508093819) do
     t.integer  "user_id"
     t.date     "last_scraped"
     t.boolean  "scraper_record",      default: false
+    t.text     "keyword"
+    t.text     "keywords"
+    t.text     "resource_type"
   end
 
   add_index "materials", ["content_provider_id"], name: "index_materials_on_content_provider_id", using: :btree
