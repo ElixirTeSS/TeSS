@@ -10,6 +10,9 @@
       <%= link_to new_material_path, :class=>"btn btn-primary" do %>
           <i class="fa fa-plus-square"></i> Register training material
       <% end %>
+      <% unless @search_params.empty? && @facet_params.empty? %>
+          <%= render partial: 'subscriptions/subscribe_button', locals: { type: 'Material' } %>
+      <% end %>
       <div class="pull-right">
         <%= info_button('What are materials in TeSS?') do %>
             <%= render_markdown(MaterialsHelper::MATERIALS_INFO) %>
