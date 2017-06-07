@@ -21,9 +21,7 @@
                   <li>
                     <strong><%= facet.humanize %>:</strong>
                     <% Array(values).each do |value| %>
-            <span class="label label-default filter-button" title="<%= value -%>">
-              <%= truncate(value.to_s, length: 30) -%>
-            </span>
+                      <span class="label label-default filter-button" title="<%= value -%>"><%= truncate(value.to_s, length: 30) %></span>
                     <% end %>
                   </li>
               <% end %>
