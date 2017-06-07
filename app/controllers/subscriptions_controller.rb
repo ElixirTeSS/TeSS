@@ -15,9 +15,9 @@ class SubscriptionsController < ApplicationController
     @subscription = current_user.subscriptions.build(subscription_params)
 
     if @subscription.save
+      flash[:notice] = 'Subscription successfully created.'
       respond_to do |format|
-        format.js { render nothing: true, status: :created }
-        format.html { redirect_to @subscription }
+        format.html { redirect_to subscriptions_path }
       end
     else
       flash[:error] = @subscription.errors.full_messages.join(", ")
@@ -30,7 +30,7 @@ class SubscriptionsController < ApplicationController
   def destroy
     authorize @subscription.user, :manage?
     if @subscription.destroy
-      flash[:notice] = 'Your subscription was cancelled.'
+      flash[:notice] = 'Subscription cancelled.'
       respond_to do |format|
         format.html { redirect_to subscriptions_path }
       end
