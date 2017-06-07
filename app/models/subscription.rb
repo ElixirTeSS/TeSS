@@ -30,11 +30,11 @@ class Subscription < ActiveRecord::Base
   end
 
   def unsubscribe_code
-    unsubscribe_verifier.generate(self.id)
+    unsubscribe_verifier.generate(self.id).split('--').last
   end
 
   def valid_unsubscribe_code?(code)
-    unsubscribe_verifier.verify(code) == self.id
+    unsubscribe_verifier.verify("#{Base64.encode64(Marshal.dump(self.id)).chomp}--#{code}") == self.id
   rescue ActiveSupport::MessageVerifier::InvalidSignature
     false
   end
