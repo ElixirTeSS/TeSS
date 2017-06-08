@@ -170,6 +170,7 @@ ActiveRecord::Schema.define(version: 20170606152336) do
     t.datetime "updated_at",                                   null: false
     t.text     "long_description"
     t.string   "target_audience",     default: [],                          array: true
+    t.string   "keywords",            default: [],                          array: true
     t.string   "authors",             default: [],                          array: true
     t.string   "contributors",        default: [],                          array: true
     t.string   "licence",             default: "notspecified"
@@ -179,9 +180,7 @@ ActiveRecord::Schema.define(version: 20170606152336) do
     t.integer  "user_id"
     t.date     "last_scraped"
     t.boolean  "scraper_record",      default: false
-    t.text     "keyword"
     t.string   "resource_type",       default: [],                          array: true
-    t.string   "keywords",            default: [],                          array: true
   end
 
   add_index "materials", ["content_provider_id"], name: "index_materials_on_content_provider_id", using: :btree
