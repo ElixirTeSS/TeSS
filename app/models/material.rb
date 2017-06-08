@@ -38,6 +38,8 @@ class Material < ActiveRecord::Base
       text :target_audience
       string :keywords, :multiple => true
       text :keywords
+      string :resource_type, :multiple => true
+      text :resource_type
       string :difficulty_level do
         Tess::DifficultyDictionary.instance.lookup_value(self.difficulty_level, 'title')
       end
@@ -93,9 +95,9 @@ class Material < ActiveRecord::Base
 
   validates :difficulty_level, controlled_vocabulary: { dictionary: Tess::DifficultyDictionary.instance }
 
-  clean_array_fields(:keywords, :contributors, :authors, :target_audience)
+  clean_array_fields(:keywords, :contributors, :authors, :target_audience, :resource_type)
 
-  update_suggestions(:keywords, :contributors, :authors, :target_audience)
+  update_suggestions(:keywords, :contributors, :authors, :target_audience, :resource_type)
 
   def short_description= desc
     super(Rails::Html::FullSanitizer.new.sanitize(desc))
@@ -107,7 +109,7 @@ class Material < ActiveRecord::Base
 
   def self.facet_fields
     %w( scientific_topics tools standard_database_or_policy target_audience keywords difficulty_level
-        authors related_resources contributors licence node content_provider user )
+        authors related_resources contributors licence node content_provider user resource_type)
   end
 
   private

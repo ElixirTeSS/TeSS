@@ -70,6 +70,12 @@
                                                                 :resource => @material,
                                                                 :f => f,
                                                                 :suggestions => raw(Tess::AutocompleteManager.suggestions_array_for('target_audience').to_json)} %>
+
+    <%= render :partial => 'common/multiple_input', :locals => { :field_name => 'resource_type',
+                                                                 :resource => @material,
+                                                                 :f => f,
+                                                                 :suggestions => raw(Tess::AutocompleteManager.suggestions_array_for('resource_type').to_json) } %>
+
     <div class="form-group">
       <%= f.label :difficulty_level %>
       <%= f.field_lock :difficulty_level %>
