@@ -47,4 +47,15 @@ namespace :tess do
     puts "Deleted #{deleted} sessions"
   end
 
+  task process_subscriptions: :environment do
+    subs = Subscription.due
+    puts "Processing #{subs.count} subscriptions:"
+    subs.each do |sub|
+      sub.process
+      print '.'
+    end
+    puts
+    puts "Done"
+  end
+
 end

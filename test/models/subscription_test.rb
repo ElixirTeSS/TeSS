@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'minitest/mock'
 
 class SubscriptionTest < ActiveSupport::TestCase
 
@@ -108,6 +109,33 @@ class SubscriptionTest < ActiveSupport::TestCase
     assert_not_includes due, daily_sub
     assert_not_includes due, weekly_sub
     assert_includes due, monthly_sub
+  end
+
+  test 'processes subscription and sends email' do
+    sub = subscriptions(:daily_subscription)
+
+    # Mock the digest since we're not running solr
+    mock_digest = MockDigest.new(materials(:good_material))
+    sub.stub(:digest, mock_digest) do
+      assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+        sub.process
+      end
+    end
+
+    ActionMailer::Base.deliveries.clear
+  end
+
+  test 'does not send email if empty digest' do
+    sub = subscriptions(:daily_subscription)
+
+    mock_digest = MockDigest.new([])
+    sub.stub(:digest, mock_digest) do
+      assert_no_difference 'ActionMailer::Base.deliveries.size' do
+        sub.process
+      end
+    end
+
+    ActionMailer::Base.deliveries.clear
   end
 
 end

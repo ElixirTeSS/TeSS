@@ -57,6 +57,13 @@ class Subscription < ActiveRecord::Base
     update_attribute(:last_checked_at, Time.now)
   end
 
+  def process
+    r = digest
+
+    SubscriptionMailer.digest(self, r).deliver_now if r.any?
+    check
+  end
+
   def self.due
     clause = PERIODS.map do |freq, period|
       "(frequency = '#{FREQUENCY[freq]}' AND last_checked_at < '#{period.ago}')"

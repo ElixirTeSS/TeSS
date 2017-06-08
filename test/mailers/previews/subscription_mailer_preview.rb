@@ -2,7 +2,7 @@
 class SubscriptionMailerPreview < ActionMailer::Preview
 
   def monthly_digest
-    SubscriptionMailer.digest(Subscription.last)
+    SubscriptionMailer.digest(Subscription.last, Subscription.last.digest)
   end
 
 end
