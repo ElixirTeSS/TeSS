@@ -1,9 +1,15 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <style media="all" type="text/css"></style>
 </head>
-  <body>
-    <%= yield %>
-  </body>
+<body style="font-size: 13px; font-family: sans-serif; width: 100%; -webkit-font-smoothing: antialiased; background-color: #fff">
+
+<%= yield %>
+
+<br/><br/>
+<%= link_to(root_url) do %>
+    <%= image_tag('ELIXIR_TeSS_logo_normal-80px-height.png', alt: 'TeSS logo', title: 'Visit TeSS') %>
+<% end %>
+
+</body>
 </html>
