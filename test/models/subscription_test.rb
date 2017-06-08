@@ -114,6 +114,8 @@ class SubscriptionTest < ActiveSupport::TestCase
   test 'processes subscription and sends email' do
     sub = subscriptions(:daily_subscription)
 
+    assert_nil sub.last_sent_at
+
     # Mock the digest since we're not running solr
     mock_digest = MockDigest.new(materials(:good_material))
     sub.stub(:digest, mock_digest) do
@@ -122,11 +124,15 @@ class SubscriptionTest < ActiveSupport::TestCase
       end
     end
 
+    assert_not_nil sub.last_sent_at
+
     ActionMailer::Base.deliveries.clear
   end
 
   test 'does not send email if empty digest' do
     sub = subscriptions(:daily_subscription)
+
+    assert_nil sub.last_sent_at
 
     mock_digest = MockDigest.new([])
     sub.stub(:digest, mock_digest) do
@@ -134,6 +140,8 @@ class SubscriptionTest < ActiveSupport::TestCase
         sub.process
       end
     end
+
+    assert_nil sub.last_sent_at
 
     ActionMailer::Base.deliveries.clear
   end

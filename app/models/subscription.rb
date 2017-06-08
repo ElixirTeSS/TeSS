@@ -60,7 +60,10 @@ class Subscription < ActiveRecord::Base
   def process
     r = digest
 
-    SubscriptionMailer.digest(self, r).deliver_now if r.any?
+    if r.any?
+      SubscriptionMailer.digest(self, r).deliver_now
+      self.last_sent_at = Time.now # This will be saved when `check` is called below
+    end
     check
   end
 
