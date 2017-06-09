@@ -2,7 +2,7 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-sm-9">
-        <p><strong>Category:</strong> <%= subscription.subscribable_type.humanize %></p>
+        <p><strong>Category:</strong> <%= subscription.subscribable_type.humanize.pluralize %></p>
         <p><strong>Frequency:</strong> <%= subscription.frequency.to_s.capitalize %></p>
         <p><strong>Last email sent:</strong> <%= subscription.last_sent_at || 'Never' %></p>
         <p><strong>Created:</strong> <%= subscription.created_at %></p>
