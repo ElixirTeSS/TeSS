@@ -43,6 +43,7 @@ class Event < ActiveRecord::Base
       string :keywords, :multiple => true
       time :start
       time :end
+      time :created_at
       time :updated_at
       string :content_provider do
         if !self.content_provider.nil?
