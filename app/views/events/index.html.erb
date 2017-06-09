@@ -30,7 +30,6 @@
               <i class="fa fa-plus-square"></i> Register event
           <% end %>
           <% unless @search_params.empty? && @facet_params.empty? %>
-            <%= render partial: 'events/subscribe_to_calendar' %>
             <%= render partial: 'subscriptions/subscribe_button', locals: { type: 'Event' } %>
           <% end %>
           <div class="pull-right">

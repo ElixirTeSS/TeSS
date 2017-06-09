@@ -1,6 +1,24 @@
-<button type="button" class="btn btn-default" data-toggle="modal" data-target="#subscribe-email-modal">
-  <i class="fa fa-envelope-o"></i> Subscribe to this Filter
-</button>
+<div class="btn-group">
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Subscribe <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+    <% if user_signed_in? %>
+        <li>
+          <a href="#" data-toggle="modal" data-target="#subscribe-email-modal">
+            <i class="fa fa-envelope-o"></i> Subscribe via email
+          </a>
+        </li>
+    <% end %>
+    <% if type == 'Event' %>
+        <li>
+          <a href="#" data-toggle="modal" data-target="#subscribe-calendar-modal">
+            <i class="fa fa-calendar-o"></i> Add to calendar
+          </a>
+        </li>
+    <% end %>
+  </ul>
+</div>
 
 <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="subscribe-email-modal-title" id="subscribe-email-modal">
   <div class="modal-dialog" role="document">
@@ -24,3 +42,5 @@
     </div>
   </div>
 </div>
+
+<%= render partial: 'subscriptions/subscribe_to_calendar_modal' if type == 'Event' %>

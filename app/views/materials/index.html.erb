@@ -10,7 +10,7 @@
       <%= link_to new_material_path, :class=>"btn btn-primary" do %>
           <i class="fa fa-plus-square"></i> Register training material
       <% end %>
-      <% unless @search_params.empty? && @facet_params.empty? %>
+      <% unless (@search_params.empty? && @facet_params.empty?) || !user_signed_in?  %>
           <%= render partial: 'subscriptions/subscribe_button', locals: { type: 'Material' } %>
       <% end %>
       <div class="pull-right">
