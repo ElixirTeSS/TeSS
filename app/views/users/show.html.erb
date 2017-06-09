@@ -91,23 +91,18 @@
 
   <div id="content">
     <div class="row">
-      <div class="content_action col-md-6">
+      <div class="content_action col-md-6 text-right">
         <% if !current_user.nil? and policy(@user).update? %>
+            <%= link_to t('.edit', :default => 'Edit profile'), edit_user_path(@user), :class => 'btn btn-primary' %>
+
             <% if current_user == @user %>
-                <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default pull-right' %>
+                <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default' %>
             <% end %>
-            <%= link_to t('.edit', :default => 'Edit profile'),
-                        edit_user_path(@user), :class => 'btn btn-primary pull-right', :style => "margin-right: 5px;" %>
+
+            <% if current_user == @user %>
+                <%= link_to "Manage subscriptions", subscriptions_path, :class => 'btn btn-default' %>
+            <% end %>
         <% end %>
-        <% if !current_user.nil? and policy(@user).destroy? %>
-            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                        user_path(@user),
-                        :method => 'delete',
-                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                        :class => 'btn btn-danger pull-right', :style => "margin-right: 5px;" %>
-        <% end %>
-        <%= link_to t('.back', :default => t("helpers.links.back")),
-                    users_path, :class => 'btn btn-info pull-right', :style => "margin-right: 5px;" %>
       </div>
     </div>
 
