@@ -13,7 +13,7 @@ module Searchable
         any do
           # Set all facets
           selected_facets.each do |facet_title, facet_value|
-            next if %w(include_expired days_since_scrape elixir).include?(facet_title)
+            next if %w(include_expired days_since_scrape elixir max_age).include?(facet_title)
             any do # Conjunction clause
               # Convert 'true' or 'false' to boolean true or false
               if facet_title == 'online'
@@ -94,7 +94,7 @@ module Searchable
           end
         end
 
-        if max_age
+        if max_age.present?
           with(:created_at).greater_than(max_age.ago)
         end
 

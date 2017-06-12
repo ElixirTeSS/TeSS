@@ -11,8 +11,28 @@ module SearchableIndex
 
   def fetch_resources
     if TeSS::Config.solr_enabled
+      page = params[:page].blank? ? 1 : params[:page]
+      per_page = params[:per_page].blank? ? 30 : params[:per_page]
+
+      if params[:days_since_scrape] # TODO: Move this
+        @facet_params['days_since_scrape'] = params[:days_since_scrape]
+      end
+
+      if params[:max_age]
+        @facet_params['max_age'] = params[:max_age]
+        max_age = case params[:max_age]
+                    when '1 day'
+                      1.day
+                    when '1 week'
+                      1.week
+                    when '1 month'
+                      1.month
+                    else
+                      nil
+                  end
+      end
       @search_results = @model.search_and_filter(current_user, @search_params, @facet_params,
-                                    page: @page, per_page: @per_page, sort_by: @sort_by)
+                                    page: page, per_page: per_page, sort_by: @sort_by, max_age: max_age)
       @index_resources = @search_results.results
       instance_variable_set("@#{controller_name}_results", @search_results) # e.g. @nodes_results
     else
@@ -24,24 +44,18 @@ module SearchableIndex
 
   def set_params
     @model = controller_name.classify.constantize
-    @facet_fields = @model.send(:facet_fields)
-    params.permit(:q, :page, :sort, :elixir, @facet_fields, @facet_fields.map { |f| "#{f}_all" })
+    facet_fields = @model.send(:facet_fields)
+    params.permit(:q, :page, :sort, :elixir, facet_fields, facet_fields.map { |f| "#{f}_all" })
     @search_params = params[:q] || ''
     @facet_params = {}
     @sort_by = params[:sort].blank? ? 'default' : params[:sort]
-    @facet_fields.each { |facet_title| @facet_params[facet_title] = params[facet_title] unless params[facet_title].blank? }
+    facet_fields.each { |facet_title| @facet_params[facet_title] = params[facet_title] unless params[facet_title].blank? }
     @facet_params['include_expired'] = true if params[:include_expired] # TODO: Move this
     if params[:elixir] == 'true'
       @facet_params['elixir'] = true
     elsif params[:elixir] == 'false'
       @facet_params['elixir'] = false
     end
-
-    if params[:days_since_scrape] # TODO: Move this
-      @facet_params['days_since_scrape'] = params[:days_since_scrape]
-    end
-    @page = params[:page].blank? ? 1 : params[:page]
-    @per_page = params[:per_page].blank? ? 30 : params[:per_page]
   end
 
 end
