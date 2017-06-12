@@ -18,18 +18,10 @@ module SearchableIndex
         @facet_params['days_since_scrape'] = params[:days_since_scrape]
       end
 
-      if params[:max_age]
+      max_age = nil
+      if params[:max_age].present?
         @facet_params['max_age'] = params[:max_age]
-        max_age = case params[:max_age]
-                    when '1 day'
-                      1.day
-                    when '1 week'
-                      1.week
-                    when '1 month'
-                      1.month
-                    else
-                      nil
-                  end
+        max_age = Subscription::FREQUENCY.detect { |f| f[:title] == params[:max_age] }.try(:[], :period)
       end
       @search_results = @model.search_and_filter(current_user, @search_params, @facet_params,
                                     page: page, per_page: per_page, sort_by: @sort_by, max_age: max_age)

@@ -29,6 +29,7 @@
         <% end %>
       </div>
       <div class="col-sm-3 text-right">
+        <%= link_to 'Results', subscription_results_path(subscription), class: 'btn btn-primary' %>
         <%= link_to 'Cancel',
                     subscription,
                     method: 'delete',

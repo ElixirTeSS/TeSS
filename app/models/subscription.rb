@@ -1,20 +1,12 @@
 class Subscription < ActiveRecord::Base
 
-  FREQUENCY = {
-      daily: 1,
-      weekly: 2,
-      monthly: 3
-  }.with_indifferent_access.freeze
+  FREQUENCY = [
+      { key: :daily, id: 1, period: 1.day, title: '24 hours' }.with_indifferent_access,
+      { key: :weekly, id: 2, period: 1.week, title: '1 week' }.with_indifferent_access,
+      { key: :monthly, id: 3, period: 1.month, title: '1 month' }.with_indifferent_access
+  ].freeze
 
-  INV_FREQUENCY = FREQUENCY.symbolize_keys.invert.freeze
-
-  PERIODS = {
-      daily: 1.day,
-      weekly: 1.week,
-      monthly: 1.month
-  }.freeze
-
-  validates :frequency, presence: true, inclusion: { in: INV_FREQUENCY.values }
+  validates :frequency, presence: true, inclusion: { in: FREQUENCY.map { |f| f[:key] } }
   validates :subscribable_type, presence: true
   validate :valid_subscribable_type
   belongs_to :user
@@ -22,11 +14,11 @@ class Subscription < ActiveRecord::Base
   before_create :set_last_checked_at
 
   def frequency
-    INV_FREQUENCY[super]
+    FREQUENCY.detect { |f| f[:id] == super }.try(:[], :key)
   end
 
   def frequency= freq
-    super(FREQUENCY[freq])
+    super(FREQUENCY.detect { |f| f[:key] == freq.to_sym }.try(:[], :id))
   end
 
   def unsubscribe_code
@@ -46,7 +38,7 @@ class Subscription < ActiveRecord::Base
   end
 
   def period
-    PERIODS[frequency]
+    FREQUENCY.detect { |f| f[:id] == self[:frequency] }[:period]
   end
 
   def due?
@@ -68,8 +60,8 @@ class Subscription < ActiveRecord::Base
   end
 
   def self.due
-    clause = PERIODS.map do |freq, period|
-      "(frequency = '#{FREQUENCY[freq]}' AND last_checked_at < '#{period.ago}')"
+    clause = FREQUENCY.map do |freq|
+      "(frequency = '#{freq[:id]}' AND last_checked_at < '#{freq[:period].ago}')"
     end.join(' OR ')
 
     where(clause)

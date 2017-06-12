@@ -19,6 +19,9 @@ There <%= @digest.total_count == 1 ? 'has' : 'have' -%> been <%= pluralize(@dige
 ...and <%= pluralize(@digest.total_count - @digest.count, 'other') -%>
 <% end %>
 
+View all results on TeSS:
+<%= subscription_results_url(@subscription) %>
+
 ---------------------------------------------------------
 
 To cancel this subscription, visit the following link:

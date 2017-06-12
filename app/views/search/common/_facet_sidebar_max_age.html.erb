@@ -1,7 +1,9 @@
 <li><h4 class="nav-heading">Date Added</h4></li>
 <%
   selected = nil
-  opts = [[nil, ''], ['1 day', '24 hours'], ['1 week', 'week'], ['1 month', 'month']].map do |age, text|
+  opts = [[nil, '']]
+  opts += Subscription::FREQUENCY.map { |f| [f[:title], f[:title]] }
+  opts.map! do |age, text|
     new_params = params.dup
     if age
       new_params[:max_age] = age
