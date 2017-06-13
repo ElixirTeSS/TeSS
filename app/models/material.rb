@@ -114,10 +114,12 @@ class Material < ActiveRecord::Base
   private
   def submitter_index
     if user = User.find_by_id(self.user_id)
-      if user.profile.firstname or user.profile.surname
-        return "#{user.profile.firstname} #{user.profile.surname}"
-      else
-        return user.username
+      if user.profile
+        if user.profile.firstname or user.profile.surname
+          return "#{user.profile.firstname} #{user.profile.surname}"
+        else
+          return user.username
+        end
       end
     end
   end
