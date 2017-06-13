@@ -4,7 +4,6 @@ Parameters:
 - resources     - SOLR object containing results and metadata about search as returned from materials#index
 
 Variable that should be available
-- @facet_fields  - List of all facets supported by this resource type
 - @facet_params  - The facet filters the user has applied
 %>
 <h3 class="nav-heading" id="sidebar-header">
@@ -15,6 +14,9 @@ Variable that should be available
 <ul class="unstyled nav-simple">
   <% if current_user && (current_user.is_curator? || current_user.is_admin?) && resource_type.method_defined?(:last_scraped) %>
     <%= render partial: 'search/common/facet_sidebar_curation' %>
+  <% end %>
+  <% if ['Event', 'Material'].include?(resource_type.name) %>
+    <%= render partial: 'search/common/facet_sidebar_max_age' %>
   <% end %>
   <% resources.facets.select { |f| f.rows.any? }.each do |facet| %>
       <% if IGNORED_FILTERS.include?(facet.field_name.to_s)   %>

@@ -1,10 +1,9 @@
 <li class="masonry-brick media-item ">
   <%= image_tag get_image_url_for(node), :class=>"media-image listing_image" %>
   <h3 class="media-heading"><%= country_flag(node.country_code, class: 'small-flag') %> <%= node.name %></h3>
-  <% training_coordinators = node.staff.training_coordinators %>
   <p>
-    <b><%= 'Training coordinator'.pluralize(training_coordinators.count) -%>: </b>
-    <%= node_staff_list(training_coordinators, false) %>
+    <b><%= 'Training coordinator'.pluralize(node.training_coordinators.length) -%>: </b>
+    <%= node_staff_list(node.training_coordinators, false) %>
   </p>
   <%= link_to '', node, :class=>"media-view"%>
 </li>

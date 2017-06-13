@@ -10,6 +10,7 @@ class Event < ActiveRecord::Base
   include HasContentProvider
   include LockableFields
   include Scrapable
+  include Searchable
 
   has_paper_trail
   before_save :set_default_times, :check_country_name
@@ -42,6 +43,7 @@ class Event < ActiveRecord::Base
       string :keywords, :multiple => true
       time :start
       time :end
+      time :created_at
       time :updated_at
       string :content_provider do
         if !self.content_provider.nil?

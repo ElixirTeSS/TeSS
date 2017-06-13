@@ -1,0 +1,56 @@
+<%
+  show_email_sub = true
+  show_calendar_sub = (type == 'Event')
+  facet_fields = type.constantize.facet_fields
+%>
+
+<% if show_calendar_sub || show_email_sub %>
+  <div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Subscribe <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <% if show_email_sub %>
+          <li>
+            <a href="#" data-toggle="modal" data-target="#subscribe-email-modal">
+              <i class="fa fa-envelope-o"></i> Subscribe via email
+            </a>
+          </li>
+      <% end %>
+      <% if show_calendar_sub %>
+          <li>
+            <a href="#" data-toggle="modal" data-target="#subscribe-calendar-modal">
+              <i class="fa fa-calendar-o"></i> Add to calendar
+            </a>
+          </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <% if show_email_sub %>
+      <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="subscribe-email-modal-title" id="subscribe-email-modal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="subscribe-email-modal-title">Email Subscription</h4>
+            </div>
+
+            <div class="modal-body">
+              <%= form_tag(subscriptions_path(params.slice(:q, *facet_fields))) do %>
+                  <%= hidden_field_tag('subscription[subscribable_type]', type) %>
+                  <div class="form-group">
+                    <label for="frequency">Frequency</label>
+                    <%= select_tag('subscription[frequency]', frequency_options_for_select, class: 'form-control', autocomplete: 'off') %>
+                  </div>
+                  <%= submit_tag('Subscribe', class: 'btn btn-primary') %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+  <% end %>
+
+  <%= render partial: 'subscriptions/subscribe_to_calendar_modal' if show_calendar_sub %>
+<% end %>

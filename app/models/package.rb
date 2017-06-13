@@ -2,6 +2,7 @@ class Package < ActiveRecord::Base
 
   include PublicActivity::Model
   include LogParameterChanges
+  include Searchable
 
   has_paper_trail
 

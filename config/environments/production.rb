@@ -68,8 +68,9 @@ Rails.application.configure do
       port: URI.parse(TeSS::Config.base_url).port,
       protocol: URI.parse(TeSS::Config.base_url).scheme
   }
+  config.action_mailer.asset_host = TeSS::Config.base_url
 
-  # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
+      # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true
 

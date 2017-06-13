@@ -58,4 +58,21 @@ class ActiveSupport::TestCase
     WebMock.stub_request(:get, /data.bioontology.org/).
       to_return(:status => 200, :headers => {},  :body => biotools_file)
   end
+
+  # This should probably live somewhere else
+  class MockDigest
+    include Enumerable
+
+    def initialize(collection)
+      @collection = Array(collection)
+    end
+
+    def each(&block)
+      @collection.each(&block)
+    end
+
+    def total_count
+      count
+    end
+  end
 end

@@ -2,7 +2,7 @@
 <div class="row wrapper">
   <div class="col-md-12">
     <div class="page-header">
-      <h2><%= t '.title', :default => [:'helpers.titles.new', 'New %{model}'], :model => model_class.model_name.human.titleize.downcase %></h2>
+      <%= page_title(t('.title', :default => [:'helpers.titles.new', 'New %{model}'], :model => model_class.model_name.human.titleize.downcase)) %>
     </div>
     <div class="row">
       <div class="col-md-4 col-md-push-8">

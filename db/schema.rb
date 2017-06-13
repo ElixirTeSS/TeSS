@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170606152336) do
+ActiveRecord::Schema.define(version: 20170607110245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -311,6 +311,20 @@ ActiveRecord::Schema.define(version: 20170606152336) do
 
   add_index "staff_members", ["node_id"], name: "index_staff_members_on_node_id", using: :btree
 
+  create_table "subscriptions", force: :cascade do |t|
+    t.integer  "user_id"
+    t.datetime "last_sent_at"
+    t.text     "query"
+    t.json     "facets"
+    t.integer  "frequency"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.string   "subscribable_type"
+    t.datetime "last_checked_at"
+  end
+
+  add_index "subscriptions", ["user_id"], name: "index_subscriptions_on_user_id", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
@@ -410,6 +424,7 @@ ActiveRecord::Schema.define(version: 20170606152336) do
   add_foreign_key "nodes", "users"
   add_foreign_key "packages", "users"
   add_foreign_key "staff_members", "nodes"
+  add_foreign_key "subscriptions", "users"
   add_foreign_key "users", "roles"
   add_foreign_key "workflows", "users"
 end

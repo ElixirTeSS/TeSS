@@ -1,0 +1,31 @@
+<li><h4 class="nav-heading">Date Added</h4></li>
+<%
+  selected = nil
+  opts = [[nil, '']]
+  opts += Subscription::FREQUENCY.map { |f| [f[:title], f[:title]] }
+  opts.map! do |age, text|
+    new_params = params.dup
+    if age
+      new_params[:max_age] = age
+      text = "In the last #{text}"
+    else
+      new_params.delete(:max_age)
+      text = 'Anytime'
+    end
+    url = url_for(new_params)
+    selected = url if age == params[:max_age]
+
+    [text, url]
+  end
+
+  blank_params = params.dup
+  blank_params.delete(:max_age)
+%>
+
+<%= select_tag 'max_age', options_for_select(opts, selected), id: 'max-age-select', class: 'form-control' %>
+
+<script>
+  $('#max-age-select').change(function () {
+    window.location = $(this).val();
+  });
+</script>

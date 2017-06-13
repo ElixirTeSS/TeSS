@@ -2,6 +2,7 @@ class ContentProvider < ActiveRecord::Base
 
   include PublicActivity::Common
   include LogParameterChanges
+  include Searchable
 
   extend FriendlyId
   friendly_id :title, use: :slugged

@@ -1,0 +1,25 @@
+daily_subscription:
+  frequency: 1
+  last_checked_at: 1986-11-23 10:16:33
+  query: bananas
+  facets: { "type" : ["fruit", "veg"] }
+  user: regular_user
+  subscribable_type: Material
+
+weekly_subscription:
+  frequency: 2
+  last_sent_at: 1986-11-16 10:16:33
+  last_checked_at: 1986-11-23 10:16:33
+  query: pears
+  facets: { "type" : ["fruit", "veg"] }
+  user: regular_user
+  subscribable_type: Material
+
+monthly_subscription:
+  frequency: 2
+  last_sent_at: 1986-10-23 10:16:33
+  last_checked_at: 1986-11-23 10:16:33
+  query: iphone
+  facets: { "type" : ["fruit", "veg"] }
+  user: regular_user
+  subscribable_type: Material

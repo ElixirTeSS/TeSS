@@ -19,6 +19,7 @@ Rails.application.configure do
       host: URI.parse(TeSS::Config.base_url).host,
       port: URI.parse(TeSS::Config.base_url).port
   }
+  config.action_mailer.asset_host = TeSS::Config.base_url
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
