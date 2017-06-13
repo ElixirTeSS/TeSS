@@ -1,5 +1,5 @@
 <%
-  show_email_sub = user_signed_in? && (@search_params.present? || @facet_params.keys.reject { |k| k == 'max_age' }.any?)
+  show_email_sub = true
   show_calendar_sub = (type == 'Event')
 %>
 
