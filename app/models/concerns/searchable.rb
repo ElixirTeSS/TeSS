@@ -52,10 +52,10 @@ module Searchable
           end
           # Defaults
         else
-          case self
-            when Event
+          case name
+            when 'Event'
               order_by(:start, :asc)
-            when ContentProvider
+            when 'ContentProvider'
               order_by(:count, :desc)
             else
               order_by(:sort_title, :asc)
@@ -65,12 +65,12 @@ module Searchable
         paginate page: page, per_page: per_page if !page.nil? && (page != '1')
 
         # Go through the selected facets and apply them and their facet_values
-        if self == Event
+        if name == 'Event'
           unless selected_facets.keys.include?('include_expired') && (selected_facets['include_expired'] == true)
             with('end').greater_than(Time.zone.now)
           end
         end
-        if [Event, Material, ContentProvider].include?(self) and selected_facets.keys.include?('elixir')
+        if ['Event', 'Material', 'ContentProvider'].include?(name) and selected_facets.keys.include?('elixir')
           if selected_facets['elixir']
             any_of do
               with(:node, Node.all.map{|x| x.title})
