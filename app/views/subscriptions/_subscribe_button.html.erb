@@ -1,6 +1,7 @@
 <%
   show_email_sub = true
   show_calendar_sub = (type == 'Event')
+  facet_fields = type.constantize.facet_fields
 %>
 
 <% if show_calendar_sub || show_email_sub %>
@@ -37,7 +38,7 @@
             </div>
 
             <div class="modal-body">
-              <%= form_tag(subscriptions_path(params)) do %>
+              <%= form_tag(subscriptions_path(params.slice(:q, *facet_fields))) do %>
                   <%= hidden_field_tag('subscription[subscribable_type]', type) %>
                   <div class="form-group">
                     <label for="frequency">Frequency</label>

@@ -40,6 +40,19 @@ class SubscriptionsControllerTest < ActionController::TestCase
     assert_redirected_to subscriptions_path
   end
 
+  test 'should not include junk params in new subscription' do
+    sign_in users(:regular_user)
+
+    assert_difference('Subscription.count') do
+      post :create, subscription: { frequency: 'weekly', subscribable_type: 'Event' }, q: 'fish', bananas: 14,
+           country: 'Finland'
+    end
+
+    assert_equal ['country'], assigns(:subscription).facets.keys
+
+    assert_redirected_to subscriptions_path
+  end
+
   test 'should delete a subscription' do
     sign_in users(:regular_user)
     sub = subscriptions(:daily_subscription)
