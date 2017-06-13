@@ -312,4 +312,31 @@ module ApplicationHelper
     end
     return string
   end
+
+  # Try and get a suitable page title
+  def site_title
+    if content_for?(:title)
+      "#{content_for(:title)} - "
+    elsif ['static'].include?(controller_name)
+      if action_name == 'home'
+        ''
+      else
+        "#{action_name.humanize} - "
+      end
+    elsif @breadcrumbs && @breadcrumbs.any?
+      "#{@breadcrumbs.last[:name]} - "
+    elsif controller_name
+      "#{controller_name.humanize} - "
+    else
+      ''
+    end + "TeSS (Training eSupport System)"
+  end
+
+  # Renders a title on the page (by default in an H2 tag, pass a "tag" option with a symbol to change) as well as
+  # setting the page title that appears in the browser tab.
+  def page_title(title, opts = {})
+    content_for(:title, title)
+    tag = opts.delete(:tag) || :h2
+    content_tag(tag, title, opts)
+  end
 end
