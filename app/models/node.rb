@@ -12,6 +12,7 @@ class Node < ActiveRecord::Base
   belongs_to :user
 
   has_many :staff, class_name: 'StaffMember', dependent: :destroy
+  has_many :training_coordinators, -> { training_coordinators }, class_name: 'StaffMember'
 
   has_many :content_providers, dependent: :nullify
   has_many :materials, through: :content_providers

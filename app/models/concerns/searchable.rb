@@ -1,10 +1,15 @@
 module Searchable
 
+  # Associations that are used on the index pages. Eager load them to prevent N+1 queries.
+  EAGER_LOADABLE = [:content_provider, :scientific_topic_links, :edit_suggestion, :materials, :events,
+                    :training_coordinators].freeze
+
   extend ActiveSupport::Concern
 
   class_methods do
     def search_and_filter(user, search_params = '', selected_facets = [], page: 1, sort_by: nil, per_page: 30, max_age: nil)
-      search do
+      includes = Searchable::EAGER_LOADABLE.select { |a| reflections.key?(a.to_s) }
+      search(include: includes) do
         fulltext search_params
         # Set the search parameter
         # Disjunction clause
