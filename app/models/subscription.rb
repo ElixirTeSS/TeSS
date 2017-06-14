@@ -34,7 +34,7 @@ class Subscription < ActiveRecord::Base
   def digest
     type = subscribable_type.constantize
 
-    type.search_and_filter(user, query, facets, per_page: 15, max_age: period).results
+    type.search_and_filter(user, query, facets.merge(max_age: period), per_page: 15).results
   end
 
   def period
@@ -88,5 +88,4 @@ class Subscription < ActiveRecord::Base
   def set_last_checked_at
     self.last_checked_at = Time.now
   end
-
 end
