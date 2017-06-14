@@ -68,8 +68,8 @@ module Searchable
         paginate page: page, per_page: per_page if !page.nil? && (page != '1')
 
         Tess::Facets.special.each do |facet_title|
-          facet_value = selected_facets[facet_title]
           if Tess::Facets.applicable?(facet_title, name)
+            facet_value = Tess::Facets.process(facet_title, selected_facets[facet_title])
             Tess::Facets.send(facet_title.to_sym, self, facet_value)
           end
         end

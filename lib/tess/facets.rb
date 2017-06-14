@@ -33,9 +33,8 @@ module Tess
 
       def max_age(scope, age)
         return if age.blank?
-        age = process(:max_age, age).ago
         sunspot_scoped(scope) do
-          with(:created_at).greater_than(age)
+          with(:created_at).greater_than(age.ago)
         end
       end
 
