@@ -37,11 +37,7 @@ Variable that should be available
 </script>
 
 <ul class="unstyled nav-simple">
-  <% if content_provider.blank? %>
-      <p class="alert alert-info empty" style="margin: 10px;">
-        Provider not available
-      </p>
-  <% else %>
+  <% if !content_provider.blank? %>
       <!-- Content provider  -->
       <li><h4 class="nav-heading">Content provider</h4></li>
       <li style="padding: 7px 20px;">
