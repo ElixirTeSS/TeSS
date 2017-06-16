@@ -34,7 +34,7 @@ class Subscription < ActiveRecord::Base
   def digest
     type = subscribable_type.constantize
 
-    type.search_and_filter(user, query, facets.merge(max_age: period), per_page: 15).results
+    type.search_and_filter(user, query, facets.merge(max_age: period).with_indifferent_access, per_page: 15).results
   end
 
   def period
