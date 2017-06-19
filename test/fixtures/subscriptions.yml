@@ -23,3 +23,12 @@ monthly_subscription:
   facets: { "type" : ["fruit", "veg"] }
   user: regular_user
   subscribable_type: Material
+
+event_subscription:
+  frequency: 2
+  last_sent_at: 1986-11-16 10:16:33
+  last_checked_at: 1986-11-23 10:16:33
+  query: fun
+  facets: { "times" : ["good", "great"] }
+  user: admin
+  subscribable_type: Event
