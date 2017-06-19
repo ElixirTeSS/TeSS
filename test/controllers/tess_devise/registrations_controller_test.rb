@@ -39,5 +39,18 @@ module TessDevise
         end
       end
     end
+
+    test 'should redirect to user page after changing password' do
+      user = users(:regular_user)
+      sign_in user
+
+      put :update, user: { username: user.username,
+                           email: user.email,
+                           password: '12345678',
+                           password_confirmation: '12345678',
+                           current_password: 'hello' }
+
+      assert_redirected_to assigns(:user)
+    end
   end
 end
