@@ -47,23 +47,13 @@ class Material < ActiveRecord::Base
       string :contributors, :multiple => true
       text :contributors
       string :content_provider do
-        if !self.content_provider.nil?
-          self.content_provider.title
-        end
+        self.content_provider.try(:title)
       end
       text :content_provider do
-        if !self.content_provider.nil?
-          self.content_provider.title
-        end
+        self.content_provider.try(:title)
       end
       string :node, multiple: true do
         self.associated_nodes.map(&:name)
-      end
-      string :submitter, :multiple => true do
-        [user.username, user.full_name].reject(&:blank?) if user
-      end
-      text :submitter do
-        [user.username, user.full_name].reject(&:blank?) if user
       end
       time :updated_at
       time :created_at
