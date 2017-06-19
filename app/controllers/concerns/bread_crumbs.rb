@@ -15,7 +15,7 @@ module BreadCrumbs
     add_index_breadcrumb(controller_name)
 
     if params[:id]
-      resource = eval("@#{controller_name.singularize}") || guess_resource
+      resource = eval("@#{controller_name.singularize}")
 
       add_show_breadcrumb resource if (resource && resource.respond_to?(:new_record?) && !resource.new_record?)
 
@@ -35,8 +35,6 @@ module BreadCrumbs
                           resource.title
                         elsif resource.respond_to?(:name) && resource.name.present?
                           resource.name
-                        elsif resource.respond_to?(:username) && resource.username.present?
-                          resource.username
                         else
                           resource.id
                         end
@@ -47,24 +45,5 @@ module BreadCrumbs
   def add_breadcrumb(name, url = '', options = {})
     @breadcrumbs ||= []
     @breadcrumbs << { name: name, url: url, options: options }
-  end
-
-  def guess_resource
-    begin
-      klass = controller_name.singularize.camelize.constantize
-    rescue NameError
-      return nil
-    end
-
-    if klass.respond_to?(:find_by_id)
-      Rails.logger.warn("WARNING: @#{controller_name.singularize} was not set when rendering the breadcrumbs. " \
-                        "Ensure `set_breadcrumbs` is called after @#{controller_name.singularize} is set.")
-      klass = klass.friendly if klass.respond_to?(:friendly)
-      begin
-        klass.find(params[:id])
-      rescue ActiveRecord::RecordNotFound
-        nil
-      end
-    end
   end
 end
