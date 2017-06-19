@@ -7,7 +7,7 @@
 regular_user:
   username: 'Bob'
   email: 'bob@notarealdomain.org'
-  encrypted_password: 'bobs_encrypted_password'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'hello') %>
   confirmed_at: <%= Time.zone.now %>
   role: user
   authentication_token: <%= Devise.friendly_token %>
