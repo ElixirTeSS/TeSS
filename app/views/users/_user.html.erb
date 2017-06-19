@@ -2,7 +2,7 @@
   <%= image_tag user.gravatar_url, size: "40" %>
   <h4 class="dont-break-out"><%= user.username %></h4>
   <% if !user.profile.nil? %>
-    <%= user.profile.firstname %> <%= user.profile.surname %>
+    <%= user.profile.full_name %>
   <% end %>
   <%= link_to '', user, :class=> "media-view" %>
 </li>
