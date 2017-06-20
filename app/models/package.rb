@@ -43,13 +43,7 @@ class Package < ActiveRecord::Base
       string :keywords, :multiple => true
 
       string :user, :multiple => true do
-        if self.user
-          if self.user.profile and (self.user.profile.firstname or self.user.profile.surname)
-            "#{self.user.profile.firstname} #{self.user.profile.surname}"
-          else
-            self.user.username
-          end
-        end
+        [user.username, user.full_name].reject(&:blank?) if user
       end
 
       integer :user_id

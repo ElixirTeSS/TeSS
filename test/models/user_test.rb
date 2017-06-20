@@ -82,6 +82,12 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should get full name' do
+    assert_equal 'Reginald User', users(:regular_user).full_name
+    assert_equal 'Anthony', users(:another_regular_user).full_name
+    assert_nil User.new.full_name
+  end
+
 end
 
 

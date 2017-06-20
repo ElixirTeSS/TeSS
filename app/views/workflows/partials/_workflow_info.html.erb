@@ -13,9 +13,6 @@
   </li>
   <li><h4 class="nav-heading">Owner</h4></li>
   <li style="padding: 7px 20px;">
-    <%= workflow.user.username %>
-    <% if workflow.user.profile.firstname or workflow.user.profile.surname %>
-        <%= "(" + "#{workflow.user.profile.firstname} #{workflow.user.profile.surname}".strip + ")" %>
-    <% end %>
+    <%= workflow.user.name %>
   </li>
 </ul>

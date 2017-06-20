@@ -47,31 +47,19 @@ class Material < ActiveRecord::Base
       string :contributors, :multiple => true
       text :contributors
       string :content_provider do
-        if !self.content_provider.nil?
-          self.content_provider.title
-        end
+        self.content_provider.try(:title)
       end
       text :content_provider do
-        if !self.content_provider.nil?
-          self.content_provider.title
-        end
+        self.content_provider.try(:title)
       end
       string :node, multiple: true do
         self.associated_nodes.map(&:name)
-      end
-      string :submitter, :multiple => true do
-        submitter_index
-      end
-      text :submitter do
-        submitter_index
       end
       time :updated_at
       time :created_at
       time :last_scraped
       string :user do
-        if self.user
-          self.user.username
-        end
+        user.username if user
       end
     end
     # :nocov:
@@ -111,19 +99,5 @@ class Material < ActiveRecord::Base
     %w( scientific_topics tools standard_database_or_policy target_audience keywords difficulty_level
         authors related_resources contributors licence node content_provider user resource_type)
   end
-
-  private
-  def submitter_index
-    if user = User.find_by_id(self.user_id)
-      if user.profile
-        if user.profile.firstname or user.profile.surname
-          return "#{user.profile.firstname} #{user.profile.surname}"
-        else
-          return user.username
-        end
-      end
-    end
-  end
-
 end
 

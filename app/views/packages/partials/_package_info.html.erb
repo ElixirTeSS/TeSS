@@ -16,10 +16,7 @@
   </li>
   <li><h4 class="nav-heading">Owner</h4></li>
   <li style="padding: 7px 20px;">
-    <%= package.user.username %>
-    <% if package.user.profile.firstname or package.user.profile.surname %>
-        <%= "(" + "#{package.user.profile.firstname} #{package.user.profile.surname}".strip + ")" %>
-    <% end %>
+    <%= package.user.name %>
   </li>
   <li><h4 class="nav-heading">Keywords</h4></li>
   <li style="padding: 7px 20px;">

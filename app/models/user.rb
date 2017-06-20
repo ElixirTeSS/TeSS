@@ -115,11 +115,13 @@ class User < ActiveRecord::Base
   end
 
   def name
-    n = "#{username}"
-    if self.profile && self.profile.firstname
-      n += " (#{self.profile.firstname} #{self.profile.surname})"
+    "#{username}".tap do |n|
+      n << " (#{full_name})" unless full_name.blank?
     end
-    n
+  end
+
+  def full_name
+    profile.full_name if profile
   end
 
   def self.current_user=(user)

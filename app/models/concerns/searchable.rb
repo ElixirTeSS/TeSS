@@ -7,7 +7,12 @@ module Searchable
   extend ActiveSupport::Concern
 
   class_methods do
-    def search_and_filter(user, search_params = '', selected_facets = [], page: 1, sort_by: nil, per_page: 30, max_age: nil)
+    # Extract all the facet parameters
+    def facet_params(params)
+      params.slice(*(facet_fields | Tess::Facets.special))
+    end
+
+    def search_and_filter(user, search_params = '', selected_facets = {}, page: 1, sort_by: nil, per_page: 30)
       includes = Searchable::EAGER_LOADABLE.select { |a| reflections.key?(a.to_s) }
       search(include: includes) do
         fulltext search_params
@@ -15,23 +20,16 @@ module Searchable
         # Disjunction clause
         active_facets = {}
 
+        normal_facets = selected_facets.except(*Tess::Facets.special)
+
         any do
           # Set all facets
-          selected_facets.each do |facet_title, facet_value|
-            next if %w(include_expired days_since_scrape elixir max_age).include?(facet_title)
+          normal_facets.each do |facet_title, facet_value|
             any do # Conjunction clause
-              # Convert 'true' or 'false' to boolean true or false
-              if facet_title == 'online'
-                facet_value = if facet_value && (facet_value == 'true')
-                                true
-                              else
-                                false
-                              end
-              end
-
               # Add to array that get executed lower down
               active_facets[facet_title] ||= []
-              active_facets[facet_title] << with(facet_title, facet_value)
+              val = Tess::Facets.process(facet_title, facet_value)
+              active_facets[facet_title] << with(facet_title, val)
             end
           end
         end
@@ -69,24 +67,11 @@ module Searchable
 
         paginate page: page, per_page: per_page if !page.nil? && (page != '1')
 
-        # Go through the selected facets and apply them and their facet_values
-        if name == 'Event'
-          unless selected_facets.keys.include?('include_expired') && (selected_facets['include_expired'] == true)
-            with('end').greater_than(Time.zone.now)
+        Tess::Facets.special.each do |facet_title|
+          if Tess::Facets.applicable?(facet_title, name)
+            facet_value = Tess::Facets.process(facet_title, selected_facets[facet_title])
+            Tess::Facets.send(facet_title.to_sym, self, facet_value)
           end
-        end
-        if ['Event', 'Material', 'ContentProvider'].include?(name) and selected_facets.keys.include?('elixir')
-          if selected_facets['elixir']
-            any_of do
-              with(:node, Node.all.map{|x| x.title})
-              with(:content_provider, 'ELIXIR')
-            end
-          else
-            without(:node, Node.all.map{|x| x.title})
-          end
-        end
-        if selected_facets.keys.include?('days_since_scrape')
-          with(:last_scraped).less_than(selected_facets['days_since_scrape'].to_i.days.ago)
         end
 
         if attribute_method?(:public) && !(user && user.is_admin?) # Find a better way of checking this
@@ -97,10 +82,6 @@ module Searchable
               with(:collaborator_ids, user.id) if user
             end
           end
-        end
-
-        if max_age.present?
-          with(:created_at).greater_than(max_age.ago)
         end
 
         facet_fields.each do |ff|

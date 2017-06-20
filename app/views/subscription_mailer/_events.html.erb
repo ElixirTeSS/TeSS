@@ -1,0 +1,14 @@
+<table>
+  <tbody>
+  <tr>
+    <td width="5%">
+    </td>
+    <td width="95%">
+      <% digest.each do |result| -%>
+          <%= link_to(digest_event_title(result), result, style: 'color: #f57d20; font-weight: bold; text-decoration: none') %><br/>
+          <%= result.title %><br/><br/>
+      <% end -%>
+    </td>
+  </tr>
+  </tbody>
+</table>

@@ -1,25 +1,23 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  firstname: MyText
-  surname: MyText
+  firstname: Reginald
+  surname: User
   image_url: http://example.com/me.png
   email: MyText
   website: http://example.com
   user: regular_user
 
-
 two:
-  firstname: MyText
-  surname: MyText
+  firstname: Anthony
   image_url: http://example.com/me.png
   email: MyText
   website: http://example.com
   user: another_regular_user
 
 three:
-  firstname: MyText
-  surname: MyText
+  firstname: Adam
+  surname: Min
   image_url: http://example.com/me.png
   email: MyText
   website: http://example.com
