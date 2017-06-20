@@ -59,6 +59,12 @@
             <div class="page-header">
               <%= render :partial => 'events/partials/icon_info' %>
               <h2>
+                <% if @event.has_node? -%>
+                    <%= image_tag 'elixir_logo_orange.png',
+                                  :alt => 'Elixir node event',
+                                  :title => 'Elixir node event',
+                                  :style => 'height: 40px;' %>
+                <% end -%>
                 <%= @event.title %>
                 <%= scrape_status_icon(@event, 'large') if current_user and current_user.is_admin? %>
               </h2>

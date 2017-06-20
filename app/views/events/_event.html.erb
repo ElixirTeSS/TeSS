@@ -31,6 +31,14 @@
           <%= icon_for(:for_profit, :small) %>
       <% end %>
   <% end %>
+  <% if event.has_node? -%>
+    <%= content_tag(:span, :class=>'pull-right gap') do %>
+        <%= image_tag 'elixir_logo_orange.png',
+                      :alt => 'Elixir node event',
+                      :title => 'Elixir node event',
+                      :style => 'height: 20px;' %>
+    <% end %>
+  <% end -%>
   <%= link_to '', event, :class=>"media-view" %>
   <%= render :partial => 'events/partials/event_schemaorg', :locals => {:event => event} %>
 </li>
