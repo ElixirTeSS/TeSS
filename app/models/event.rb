@@ -146,6 +146,15 @@ class Event < ActiveRecord::Base
     end
   end
 
+  def has_node?
+    if self.content_provider
+      if self.content_provider.node_id
+        return true
+      end
+    end
+    return false
+  end
+
   def self.facet_fields
     %w( scientific_topics event_types online country tools organizer city sponsor target_audience keywords
         venue node content_provider user )
