@@ -1,15 +1,5 @@
 module SearchHelper
 
-  def set_tab value
-    parameters = params.dup
-    if parameters.include?('tab')
-      parameters['tab'] = value
-    else
-      parameters.merge({'tab' => value})
-    end
-    return url_for(parameters)
-  end
-
   def filter_link name, value, count, title = nil, html_options={}, &block
     parameters = params.dup
     title ||= (title || truncate(value.to_s, length: 30))
@@ -70,35 +60,32 @@ module SearchHelper
             ".html_safe
   end
 
-  def neatly_printed_date_range start, finish
-    if start and finish
-      if start.year != finish.year
-        "#{day_month_year(start)} - #{day_month_year(finish)}"
-      elsif start.month != finish.month
-        "#{day_month(start)} - #{day_month(finish)} #{finish.year}"
-      elsif start.day != finish.day
-        "#{start.day} - #{finish.day} #{finish.strftime("%b")} #{finish.year}"
-      else
-        "#{day_month_year(start)}"
+  def neatly_printed_date_range(start, finish = nil)
+    return 'No date given' if start.blank? && finish.blank?
+
+    if finish
+      out = ''
+
+      strftime_components = []
+      if finish.to_date != start.to_date
+        strftime_components << '%e'
+        if finish.month != start.month
+          strftime_components << '%B'
+          if finish.year != start.year
+            strftime_components << '%Y'
+          end
+        end
       end
+
+      if strftime_components.any?
+        out << "#{start.strftime(strftime_components.join(' '))} - "
+      end
+
+      out << "#{finish.strftime('%e %B %Y')}"
     else
-      return 'No date given'
+      out = start.strftime('%e %B %Y')
     end
 
+    out
   end
-
-  def neatly_printed_date date
-    day_month_year date
-  end
-
-  private
-
-  def day_month date
-    return date.strftime("%d %b")
-  end
-  def day_month_year date
-    return date.strftime("%d %b %Y")
-  end
-
-
 end

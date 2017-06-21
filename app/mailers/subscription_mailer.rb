@@ -1,6 +1,7 @@
 class SubscriptionMailer < ApplicationMailer
 
   include ActionView::Helpers::TextHelper
+  add_template_helper(SearchHelper)
   add_template_helper(SubscriptionsHelper)
 
   def digest(sub, dig)

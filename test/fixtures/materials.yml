@@ -10,6 +10,8 @@ good_material:
   user: regular_user
   content_provider: goblet
   resource_type: ['Lecture']
+  licence: CC-BY-4.0
+  difficulty_level: intermediate
 
 bad_material:
   title: Bad Training Material Example

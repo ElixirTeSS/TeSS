@@ -38,17 +38,6 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
     EDAM::Ontology.instance.all_topics.map(&:preferred_label)
   end
 
-  def content_providers_list
-    ContentProvider.all.map do |content_provider|
-      link_to(content_provider.title, content_provider)
-    end
-  end
-
-  def none_specified(resource, attribute)
-    # return '' #comment to display all non specified fields
-    "<p><b> #{resource.class.human_attribute_name(attribute)}: </b> #{empty_tag(:span, 'not specified')}".html_safe
-  end
-
   def display_attribute(resource, attribute) # resource e.g. <#Material> & symbol e.g. :target_audience
     value = resource.send(attribute)
     if value.blank? || value.try(:strip) == 'notspecified'

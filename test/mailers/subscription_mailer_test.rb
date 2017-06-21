@@ -39,9 +39,13 @@ class SubscriptionMailerTest < ActionMailer::TestCase
 
   test 'html event digest' do
     sub = subscriptions(:event_subscription)
-    e1 = events(:one)
-    e2 = events(:two)
-    digest = MockSearchResults.new([e1, e2])
+    e = [
+      events(:one),
+      events(:two),
+      events(:month_long_event),
+      events(:year_long_event)
+    ]
+    digest = MockSearchResults.new(e)
     email = SubscriptionMailer.digest(sub, digest)
 
     assert_emails 1 do
@@ -50,12 +54,14 @@ class SubscriptionMailerTest < ActionMailer::TestCase
 
     assert_equal [TeSS::Config.contact_email], email.from
     assert_equal [sub.user.email], email.to
-    assert_equal 'TeSS weekly digest - 2 new events matching your criteria', email.subject
+    assert_equal "TeSS weekly digest - #{e.length} new events matching your criteria", email.subject
 
     html = email.html_part.body.to_s
 
-    assert html.include?(event_url(e1)), 'Expected first event URL to appear in email html'
-    assert html.include?(event_url(e2)), 'Expected second event URL to appear in email html'
+    e.each do |event|
+      assert html.include?(event_url(event)), "Event URL was missing from email: #{event_url(event)}"
+    end
+
     assert html.include?(unsubscribe_subscription_url(sub, code: sub.unsubscribe_code)), 'Expected unsubscribe link'
   end
 end

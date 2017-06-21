@@ -31,7 +31,7 @@ two:
   description: MyText
   event_types: ["meetings_and_conferences"]
   start: 2015-11-23 10:16:33
-  end: 2015-11-23 10:16:33
+  end: 2015-11-24 10:16:33
   sponsor: MyString
   venue: MyText
   city: MyString
@@ -42,6 +42,33 @@ two:
   longitude:
   keywords: ["Keyword"]
   user: regular_user
+
+month_long_event:
+  title: Month-long event
+  url: http://example.com/month-long-event
+  description: Text
+  event_types: ["meetings_and_conferences"]
+  start: 2015-11-23 10:16:33
+  end: 2015-12-23 10:16:33
+  sponsor: Bill Gates
+  city: New York
+  country: USA
+  keywords: ["Keyword"]
+  user: regular_user
+
+year_long_event:
+  title: Year-long event
+  url: http://example.com/year-long-event
+  description: Text
+  event_types: ["meetings_and_conferences"]
+  start: 2015-11-23 10:16:33
+  end: 2016-12-23 10:16:33
+  sponsor: Bill Gates
+  city: New York
+  country: USA
+  keywords: ["Keyword"]
+  user: regular_user
+
 
 iann_event:
   title: iAnn event

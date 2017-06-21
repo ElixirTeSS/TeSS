@@ -13,28 +13,7 @@ module SubscriptionsHelper
   end
 
   def digest_event_title(event)
-    if event.end
-      title = ''
-
-      strftime_components = []
-      if event.end.to_date != event.start.to_date
-        strftime_components << '%e'
-        if event.end.month != event.start.month
-          strftime_components << '%B'
-          if event.end.year != event.start.year
-            strftime_components << '%Y'
-          end
-        end
-      end
-
-      if strftime_components.any?
-        title << "#{event.start.strftime(strftime_components.join(' '))} - "
-      end
-
-      title << "#{event.end.strftime('%e %B %Y')}"
-    else
-      title = event.start.strftime('%e %B %Y')
-    end
+    title = neatly_printed_date_range(event.start, event.end)
 
     if event.city || event.country
       title << " | #{[event.city, event.country].reject(&:blank?).join(', ')}"
