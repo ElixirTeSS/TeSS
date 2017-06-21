@@ -5,6 +5,7 @@
 TeSS is a Rails 4 application.
 
 [![Build Status](https://travis-ci.org/ElixirUK/TeSS.svg?branch=master)](https://travis-ci.org/ElixirUK/TeSS)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/11f7d36a8848462f98fa308abbec0121)](https://www.codacy.com/app/fbacall/TeSS?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ElixirUK/TeSS&amp;utm_campaign=Badge_Coverage)
 
 # Setup
 Below is an example guide to help you set up TeSS in development mode. More comprehensive guides on installing
