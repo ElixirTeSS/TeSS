@@ -12,11 +12,9 @@ class SearchControllerTest < ActionController::TestCase
     begin
       TeSS::Config.solr_enabled = true
 
-      search_method = proc {
-        return MockSearch.new(SearchController::SEARCH_MODELS.map { |c| c.constantize.limit(3).to_a }.flatten)
-      }
+      search_method = proc { |model| MockSearch.new(model.limit(3).to_a) }
 
-      Sunspot.stub(:search, search_method) do
+      Sunspot.blockless_stub(:search, search_method) do
         get :index, q: 'banana'
         assert_response :success
         assert_not_empty assigns(:results)
