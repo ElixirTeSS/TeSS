@@ -60,19 +60,57 @@ class ActiveSupport::TestCase
   end
 
   # This should probably live somewhere else
-  class MockDigest
-    include Enumerable
-
+  class MockSearchResults < Array
     def initialize(collection)
-      @collection = Array(collection)
-    end
-
-    def each(&block)
-      @collection.each(&block)
+      replace(Array(collection))
     end
 
     def total_count
       count
+    end
+
+    def total_pages
+      2
+    end
+
+    def current_page
+      1
+    end
+  end
+
+  class MockSearch
+    def initialize(collection)
+      @collection = Array(collection)
+    end
+
+    def results
+      MockSearchResults.new(@collection)
+    end
+
+    def facets
+      @facets ||= mock_facets
+    end
+
+    def facet(field_name)
+      facets.detect { |f| f.field_name == field_name }
+    end
+
+    def total
+      results.total_count
+    end
+
+    private
+
+    def mock_facets
+      if @collection.any?
+        c = @collection.first.class
+        f = c.facet_fields.map do |ff|
+          { field_name: ff.to_sym, rows: (1 + rand(4)).times.map { { value: 'Fish', count: (1 + rand(4)) } } }
+        end
+        JSON.parse(f.to_json, object_class: OpenStruct)
+      else
+        {}
+      end
     end
   end
 end

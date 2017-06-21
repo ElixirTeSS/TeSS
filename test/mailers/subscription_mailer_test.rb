@@ -18,7 +18,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     sub = subscriptions(:weekly_subscription)
     m1 = materials(:good_material)
     m2 = materials(:bad_material)
-    digest = MockDigest.new([m1, m2])
+    digest = MockSearchResults.new([m1, m2])
     email = SubscriptionMailer.digest(sub, digest)
 
     assert_emails 1 do
@@ -41,7 +41,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     sub = subscriptions(:event_subscription)
     e1 = events(:one)
     e2 = events(:two)
-    digest = MockDigest.new([e1, e2])
+    digest = MockSearchResults.new([e1, e2])
     email = SubscriptionMailer.digest(sub, digest)
 
     assert_emails 1 do

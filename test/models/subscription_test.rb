@@ -117,7 +117,7 @@ class SubscriptionTest < ActiveSupport::TestCase
     assert_nil sub.last_sent_at
 
     # Mock the digest since we're not running solr
-    mock_digest = MockDigest.new(materials(:good_material))
+    mock_digest = MockSearchResults.new(materials(:good_material))
     sub.stub(:digest, mock_digest) do
       assert_difference 'ActionMailer::Base.deliveries.size', 1 do
         sub.process
@@ -134,7 +134,7 @@ class SubscriptionTest < ActiveSupport::TestCase
 
     assert_nil sub.last_sent_at
 
-    mock_digest = MockDigest.new([])
+    mock_digest = MockSearchResults.new([])
     sub.stub(:digest, mock_digest) do
       assert_no_difference 'ActionMailer::Base.deliveries.size' do
         sub.process
