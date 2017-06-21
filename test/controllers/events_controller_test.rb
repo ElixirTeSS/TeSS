@@ -49,6 +49,15 @@ class EventsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:events)
   end
 
+  test 'should get index as ICS' do
+    @event.scientific_topic_names = ['Chromosomes']
+    @event.save!
+
+    get :index, format: :ics
+    assert_response :success
+    assert_not_nil assigns(:events)
+  end
+
   #NEW TESTS
   test 'should get new' do
     sign_in users(:regular_user)
@@ -139,6 +148,12 @@ class EventsControllerTest < ActionController::TestCase
   #SHOW TEST
   test 'should show event' do
     get :show, id: @event
+    assert_response :success
+    assert assigns(:event)
+  end
+
+  test 'should show all-day event' do
+    get :show, id: events(:two)
     assert_response :success
     assert assigns(:event)
   end

@@ -15,11 +15,7 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
   end
 
   def licence_name_for_abbreviation(licence)
-    if licence.blank?
-      'License not specified'
-    else
-      Tess::LicenceDictionary.instance.lookup_value(licence, 'title')
-    end
+    Tess::LicenceDictionary.instance.lookup_value(licence, 'title')
   end
 
   def difficulty_options_for_select
@@ -27,11 +23,7 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
   end
 
   def difficulty_name_for_abbreviation(difficulty)
-    if difficulty
-      Tess::DifficultyDictionary.instance.lookup_value(difficulty, 'title')
-    else
-      'No difficulties available'
-    end
+    Tess::DifficultyDictionary.instance.lookup_value(difficulty, 'title')
   end
 
   def scientific_topic_names_for_autocomplete

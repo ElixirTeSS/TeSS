@@ -30,8 +30,8 @@ two:
   organizer: MyString
   description: MyText
   event_types: ["meetings_and_conferences"]
-  start: 2015-11-23 10:16:33
-  end: 2015-11-24 10:16:33
+  start: 2015-11-23 00:00:00
+  end: 2015-11-24 00:00:00
   sponsor: MyString
   venue: MyText
   city: MyString

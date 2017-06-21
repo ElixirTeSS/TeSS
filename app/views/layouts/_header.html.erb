@@ -55,7 +55,7 @@
                 </div>
             <% end %>
         <% end %>
-        <ul class="nav navbar-nav">
+        <%= menu_group do %>
           <%= menu_item "Events", events_path %>
           <%= menu_item "Materials", materials_path %>
           <%= menu_item "Packages", packages_path %>
@@ -63,7 +63,7 @@
           <%= menu_item "Providers", content_providers_path %>
           <%= menu_item "Nodes", nodes_path %>
           <%= menu_item "About", about_path %>
-        </ul>
+        <% end %>
       </div>
     </div>
   </nav>
