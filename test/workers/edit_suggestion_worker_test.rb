@@ -64,4 +64,19 @@ class EditSuggestionWorkerTest < ActiveSupport::TestCase
     assert_includes workflow.edit_suggestion.scientific_topics.map(&:preferred_label), 'Molecular dynamics'
   end
 
+  test "Don't get suggestions when description is blank" do
+    event = events(:no_description_event)
+
+    assert_nil event.edit_suggestion
+
+    Sidekiq::Testing.inline! do
+      assert_no_difference('EditSuggestion.count') do
+        EditSuggestionWorker.perform_async([event.id,event.class.name])
+      end
+    end
+
+    event.reload
+
+    assert_nil event.edit_suggestion
+  end
 end
