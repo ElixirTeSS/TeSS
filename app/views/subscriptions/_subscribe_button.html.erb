@@ -52,5 +52,5 @@
       </div>
   <% end %>
 
-  <%= render partial: 'subscriptions/subscribe_to_calendar_modal' if show_calendar_sub %>
+  <%= render partial: 'subscriptions/subscribe_to_calendar_modal', locals: { facet_fields: facet_fields } if show_calendar_sub %>
 <% end %>

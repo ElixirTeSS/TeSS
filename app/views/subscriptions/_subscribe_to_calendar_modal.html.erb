@@ -10,7 +10,7 @@
       <div class="modal-body">
         <label for="calendar-link">URL</label>
         <div class="input-group input-group-lg">
-          <input id="calendar-link" type="text" class="form-control" value="<%= events_url({ format: :ics }.merge(params)) -%>" readonly>
+          <input id="calendar-link" type="text" class="form-control" value="<%= events_url({ format: :ics }.merge(params.slice(:q, *facet_fields))) -%>" readonly>
           <span class="input-group-btn">
             <button class="btn btn-default clipboard-btn" type="button" data-clipboard-target="#calendar-link" title="Click to copy">
               <i class="fa fa-clipboard" aria-hidden="true"></i>
