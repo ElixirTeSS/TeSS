@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'minitest/mock'
 
 class MaterialsControllerTest < ActionController::TestCase
 
@@ -40,15 +39,18 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   test 'should get index with solr enabled' do
-    TeSS::Config.solr_enabled = true
+    begin
+      TeSS::Config.solr_enabled = true
 
-    Material.stub(:search_and_filter, MockSearch.new(Material.all)) do
-      get :index
-      assert_response :success
-      assert_not_nil assigns(:materials)
+      Material.stub(:search_and_filter, MockSearch.new(Material.all)) do
+        get :index, q: 'breakdance for beginners', keywords: 'dancing'
+        assert_response :success
+        assert_not_empty assigns(:materials)
+      end
+
+    ensure
+      TeSS::Config.solr_enabled = false
     end
-
-    TeSS::Config.solr_enabled = false
   end
 
   test 'should get index as json' do

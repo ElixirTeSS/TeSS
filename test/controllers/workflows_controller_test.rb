@@ -13,6 +13,20 @@ class WorkflowsControllerTest < ActionController::TestCase
     assert_not_empty assigns(:workflows)
   end
 
+  test 'should get index with solr enabled' do
+    begin
+      TeSS::Config.solr_enabled = true
+
+      Workflow.stub(:search_and_filter, MockSearch.new(Workflow.all)) do
+        get :index, q: 'bananas', keywords: 'fruit'
+        assert_response :success
+        assert_not_empty assigns(:workflows)
+      end
+    ensure
+      TeSS::Config.solr_enabled = false
+    end
+  end
+
   test "should get index as json" do
     @workflow.scientific_topic_names = ['Chromosomes']
     @workflow.save!

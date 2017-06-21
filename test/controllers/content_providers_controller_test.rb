@@ -25,6 +25,21 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_not_nil assigns(:content_providers)
   end
 
+  test 'should get index with solr enabled' do
+    begin
+      TeSS::Config.solr_enabled = true
+
+      ContentProvider.stub(:search_and_filter, MockSearch.new(ContentProvider.all)) do
+        get :index, q: 'gossip', keywords: 'celebs'
+        assert_response :success
+        assert_not_empty assigns(:content_providers)
+      end
+
+    ensure
+      TeSS::Config.solr_enabled = false
+    end
+  end
+
   test 'should get index as json' do
     get :index, format: :json
     assert_response :success

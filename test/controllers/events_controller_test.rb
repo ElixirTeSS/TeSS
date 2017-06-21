@@ -26,6 +26,20 @@ class EventsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:events)
   end
 
+  test 'should get index with solr enabled' do
+    begin
+      TeSS::Config.solr_enabled = true
+
+      Event.stub(:search_and_filter, MockSearch.new(Event.all)) do
+        get :index, q: 'nightclub', keywords: 'ragtime'
+        assert_response :success
+        assert_not_empty assigns(:events)
+      end
+    ensure
+      TeSS::Config.solr_enabled = false
+    end
+  end
+
   test 'should get index as json' do
     @event.scientific_topic_names = ['Chromosomes']
     @event.save!
