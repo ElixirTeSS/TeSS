@@ -44,6 +44,10 @@ var Biotools = {
         var items = json.list;
         $.each(items, function (index, item) {
             var url = Biotools.websiteBaseURL() + '/' + item.id;
+            var types = '';
+            $.each(item.toolType, function(index, ttype){
+                types = types + '<span class="label label-info">' + ttype + '</span>\n';
+            });
             $('#biotools-results').append('' +
                 '<div id="' + item.id + '" class="col-md-12 col-sm-12 bounding-box" data-toggle=\"tooltip\" data-placement=\"top\" aria-hidden=\"true\" title=\"' + item.description + '\">' +
                 '<h4>' +
@@ -58,7 +62,7 @@ var Biotools = {
                     'title="click to associate ' + item.name + ' with this resource"' +
                     'data-title="' + item.name + '" data-url="' + url + '"/>' +
                 '</h4>' +
-                '<p><span class="label label-info">' + item.toolType + '</span></p>' +
+                '<p>' + types + '</p>' +
                 '<span>' + item.description + '</span>' +
                     '<div class="external-links">' +
                         '<a class="btn btn-warning" target="_blank" href="' + Biotools.websiteBaseURL() + '/' + item.id +'">' +
@@ -94,7 +98,7 @@ var Biotools = {
             $('#' + id + '-resource-type-icon').addClass('fa-wrench').removeClass('fa-external-link');
             $.each(json_object.toolType, function(index, ttype){
                 $('#' + id + '-types').append(
-                    '<span class="label label-info">' +
+                    '<span class="label label-info typelabel">' +
                         ttype +
                     '</span>'
                 );
