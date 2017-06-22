@@ -58,6 +58,7 @@ var Biotools = {
                     'title="click to associate ' + item.name + ' with this resource"' +
                     'data-title="' + item.name + '" data-url="' + url + '"/>' +
                 '</h4>' +
+                '<p><span class="label label-info">' + item.toolType + '</span></p>' +
                 '<span>' + item.description + '</span>' +
                     '<div class="external-links">' +
                         '<a class="btn btn-warning" target="_blank" href="' + Biotools.websiteBaseURL() + '/' + item.id +'">' +
@@ -91,6 +92,13 @@ var Biotools = {
             var json_object = json;
             $('#' + id + '-desc').text(json_object.description);
             $('#' + id + '-resource-type-icon').addClass('fa-wrench').removeClass('fa-external-link');
+            $.each(json_object.toolType, function(index, ttype){
+                $('#' + id + '-types').append(
+                    '<span class="label label-info">' +
+                        ttype +
+                    '</span>'
+                );
+            });
             $.each(json_object.topic, function(index, topic){
                 $('#' + id + '-topics').append(
                     '<span class="btn btn-default keyword-button">' +
