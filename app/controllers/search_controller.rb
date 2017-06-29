@@ -32,11 +32,13 @@ class SearchController < ApplicationController
     end
 
     @output['count'] = results.total
-    @output['url'] = "http://#{request.host_with_port}"
+    @output['url'] = "http://#{request.host_with_port}/search"
 
     if search_params
       @output['url'] += "?q=#{search_params}"
     end
+
+    @output['url'] += "#events"
 
     render json: @output
   end
