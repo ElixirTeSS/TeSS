@@ -156,6 +156,8 @@ class EventsController < ApplicationController
 
   def count_events
     @output = {}
+    # TODO: This conversion causes all & to print out as \u0026, which prevents the URL
+    # TODO: from being read.
     params = @facet_params.to_param
 
     @output['count'] = @search_results.total
