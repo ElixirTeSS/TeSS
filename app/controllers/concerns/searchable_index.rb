@@ -3,8 +3,8 @@ module SearchableIndex
 
   included do
     attr_reader :facet_fields, :search_params, :facet_params, :page, :sort_by, :index_resources
-    before_action :set_params, only: :index
-    before_action :fetch_resources, only: :index
+    before_action :set_params, only: [:index, :count_events]
+    before_action :fetch_resources, only: [:index, :count_events]
 
     helper 'search'
   end
@@ -31,4 +31,7 @@ module SearchableIndex
     @search_params = params[:q] || ''
     @sort_by = params[:sort].blank? ? 'default' : params[:sort]
   end
+
+
+
 end

@@ -154,6 +154,21 @@ class EventsController < ApplicationController
     render :nothing => true
   end
 
+  def count_events
+    @output = {}
+    params = @facet_params.to_param
+
+    @output['count'] = @search_results.total
+    @output['url'] = "http://#{request.host_with_port}/events?#{params}"
+    @output['params'] = params.inspect
+
+    #if @search_params
+    #  @output['url'] += "&#{@search_params.to_param}"
+    #end
+
+    render json: @output
+  end
+
   protected
 
   private

@@ -21,28 +21,6 @@ class SearchController < ApplicationController
     @results.reject! { |_, result| result.total < 1 }
   end
 
-  def count_events
-    @output = {}
-
-    if TeSS::Config.solr_enabled
-      results = Sunspot.search('Event'.constantize) do
-        fulltext search_params
-        with('end').greater_than(Time.zone.now)
-      end
-    end
-
-    @output['count'] = results.total
-    @output['url'] = "http://#{request.host_with_port}/search"
-
-    if search_params
-      @output['url'] += "?q=#{search_params}"
-    end
-
-    @output['url'] += "#events"
-
-    render json: @output
-  end
-
   private
 
   def search_params
