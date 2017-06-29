@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   get 'about' => 'static#about', as: 'about'
   get 'privacy' => 'static#privacy', as: 'privacy'
 
+  get 'events/count' => 'search#count_events'
+
   post 'materials/check_exists' => 'materials#check_exists'
   post 'events/check_exists' => 'events#check_exists'
   post 'content_providers/check_exists' => 'content_providers#check_exists'
@@ -74,6 +76,7 @@ Rails.application.routes.draw do
   post 'materials/:id/reject_topic' => 'materials#reject_topic'
   post 'events/:id/add_topic' => 'events#add_topic'
   post 'events/:id/reject_topic' => 'events#reject_topic'
+
 
   get 'search' => 'search#index'
   get 'test_url' => 'application#test_url'

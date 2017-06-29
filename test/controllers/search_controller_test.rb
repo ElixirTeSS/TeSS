@@ -8,7 +8,7 @@ class SearchControllerTest < ActionController::TestCase
     mock_images
   end
 
-  test 'should get index' do
+  test 'should get index and event count' do
     begin
       TeSS::Config.solr_enabled = true
 
@@ -18,10 +18,14 @@ class SearchControllerTest < ActionController::TestCase
         get :index, q: 'banana'
         assert_response :success
         assert_not_empty assigns(:results)
+        get :count_events, :format => 'json', q: 'pomegranate'
+        assert_response :success
+        assert_not_empty assigns(:results)
       end
 
     ensure
       TeSS::Config.solr_enabled = false
     end
   end
+
 end
