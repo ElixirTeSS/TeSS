@@ -122,7 +122,9 @@ For a Redis install on a Linux system there should presumably be an equivalent p
 From the app's root directory, create several config files by copying the example files.
 
 `$ cp config/tess.example.yml config/tess.yml`
+
 `$ cp config/sunspot.example.yml config/sunspot.yml`
+
 `$ cp config/secrets.example.yml config/secrets.yml`
 
 Edit config/secrets.yml to configure the database name, user and password defined above.
