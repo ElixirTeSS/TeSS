@@ -22,6 +22,12 @@ To install these under an Ubuntu-like OS using apt:
 
 `$ sudo apt-get install postgresql imagemagick openjdk-8-jre nodejs`
 
+For Mac OS X:
+
+`$ brew install postgresql && brew install imagemagick && brew install nodejs`
+
+And install the JDK from Oracle or OpenJDK directly (It is needed for the SOLR search functionality)
+
 ## RVM, Ruby, Gems
 ### RVM and Ruby
 
@@ -69,6 +75,10 @@ Connect to your postgres database console as database admin 'postgres' (modify t
  
 `$ sudo -u postgres psql`
 
+Or from Mac OS X
+
+`$ sudo psql postgres`
+
 From the postgres console, set password for user 'tess_user':
  
 `postgres=# \password tess_user`
@@ -109,11 +119,13 @@ For a Redis install on a Linux system there should presumably be an equivalent p
 
 ## The TeSS Application
 
-From the app's root directory, copy config/example_secrets.yml to config/secrets.yml.
+From the app's root directory, create several config files by copying the example files.
 
-`$ cp config/example_secrets.yml config/secrets.yml`
+`$ cp config/tess.example.yml config/tess.yml`
+`$ cp config/sunspot.example.yml config/sunspot.yml`
+`$ cp config/secrets.example.yml config/secrets.yml`
 
-Edit config/secrets.yml (or config/database.yml - depending on your preference) to configure the database name, user and password defined above.
+Edit config/secrets.yml to configure the database name, user and password defined above.
 
 Edit config/secrets.yml to configure the app's secret_key_base which you can generate with:
 
@@ -141,6 +153,17 @@ Access TeSS at:
 `$ bundle exec rake db:test:prepare`
 
 `$ bundle exec rake test`
+
+### Setup Administrators
+
+Once you have a local TeSS succesfully running, you may want to setup administrative users. To do this register a new account in TeSS through the registration page. Then go to the applications Rails console: 
+
+`$ bundle exec rails c`
+
+Find the user and assign them the administrative role. This can be completed by running this (where myemail@domain.co is the email address you used to register with):
+
+`=> User.find_by_email('myemail@domain.co').update_attributes(role: Role.find_by_name('admin'))`
+
 
 ### Live deployment
 
