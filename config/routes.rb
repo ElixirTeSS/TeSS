@@ -44,6 +44,9 @@ Rails.application.routes.draw do
   resources :nodes
   resources :events do
     resource :activities, :only => [:show]
+    member do
+      get 'redirect'
+    end
   end
   resources :packages do
     resource :activities, :only => [:show]

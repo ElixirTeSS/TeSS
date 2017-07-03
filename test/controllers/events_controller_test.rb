@@ -682,4 +682,10 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal 'new title', assigns(:event).title
   end
 
+  test 'should redirect to event URL' do
+    get :redirect, id: @event
+
+    assert_redirected_to @event.url
+  end
+
 end
