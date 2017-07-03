@@ -154,25 +154,6 @@ class EventsController < ApplicationController
     render :nothing => true
   end
 
-  def count_events
-    @output = {}
-    # TODO: This conversion causes all & to print out as \u0026, which prevents the URL
-    # TODO: from being read.
-    params = @facet_params.to_param
-
-    @output['count'] = @search_results.total
-    @output['url'] = "http://#{request.host_with_port}/events?#{params}"
-    @output['params'] = params.inspect
-
-    #if @search_params
-    #  @output['url'] += "&#{@search_params.to_param}"
-    #end
-
-    render json: @output
-  end
-
-  protected
-
   private
 
   # Use callbacks to share common setup or constraints between actions.

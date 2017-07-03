@@ -14,8 +14,6 @@ Rails.application.routes.draw do
   get 'about' => 'static#about', as: 'about'
   get 'privacy' => 'static#privacy', as: 'privacy'
 
-  get 'events/count' => 'events#count_events'
-
   post 'materials/check_exists' => 'materials#check_exists'
   post 'events/check_exists' => 'events#check_exists'
   post 'content_providers/check_exists' => 'content_providers#check_exists'
@@ -44,6 +42,9 @@ Rails.application.routes.draw do
   resources :nodes
   resources :events do
     resource :activities, :only => [:show]
+    collection do
+      get 'count'
+    end
   end
   resources :packages do
     resource :activities, :only => [:show]
