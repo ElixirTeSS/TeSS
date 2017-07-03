@@ -683,9 +683,18 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test 'should redirect to event URL' do
-    get :redirect, id: @event
+    assert_difference('WidgetLog.count', 1) do
+      get :redirect, id: @event
+    end
 
     assert_redirected_to @event.url
+    assert_equal 1, @event.widget_logs.count
+
+    log = @event.widget_logs.last
+
+    assert_equal 'events#redirect', log.action
+    assert_equal @event, log.resource
+    assert_equal @event.url, log.data
   end
 
 end

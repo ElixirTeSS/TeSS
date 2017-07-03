@@ -172,6 +172,10 @@ class EventsController < ApplicationController
   end
 
   def redirect
+    @event.widget_logs.create(widget_name: params[:widget],
+                              action: "#{controller_name}##{action_name}",
+                              data: @event.url, params: params)
+
     redirect_to @event.url
   end
 

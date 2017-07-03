@@ -85,6 +85,7 @@ class Event < ActiveRecord::Base
   has_many :packages, through: :package_events
   has_many :event_materials
   has_many :materials, through: :event_materials
+  has_many :widget_logs, as: :resource
 
   validates :title, :url, presence: true
   validates :capacity, numericality: true, allow_blank: true
