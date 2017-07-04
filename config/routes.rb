@@ -45,6 +45,9 @@ Rails.application.routes.draw do
     collection do
       get 'count'
     end
+    member do
+      get 'redirect'
+    end
   end
   resources :packages do
     resource :activities, :only => [:show]

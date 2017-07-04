@@ -9,12 +9,19 @@
       </div>
       <div class="user-options">
         <%= link_to current_user.username, user_path(current_user) if user_signed_in? %>
-        <%= link_to users_path do %>
-            <i class="fa fa-users fa-lg"></i>
+        <% if user_signed_in? && (current_user.is_curator? or current_user.is_admin?) %>
+          <%= link_to users_path, :title => 'View users' do %>
+              <i class="fa fa-users fa-lg"></i>
+          <% end %>
         <% end %>
         <% if user_signed_in? && current_user.is_admin? %>
-            <%= link_to rails_admin_path do %>
+            <%= link_to rails_admin_path, :title => 'View the administrator console' do %>
                 <i class="fa fa-cog fa-lg"></i>
+            <% end %>
+        <% end %>
+        <% if user_signed_in? && (current_user.is_curator? or current_user.is_admin?) %>
+            <%= link_to curate_topic_suggestions_path, :title => 'Assign scientific topics to TeSS resources' do %>
+                <i class="fa fa-briefcase fa-lg"></i>
             <% end %>
         <% end %>
         <% if user_signed_in? %>
