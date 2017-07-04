@@ -65,6 +65,9 @@ Rails.application.routes.draw do
 
   resources :materials do
     resource :activities, :only => [:show]
+    collection do
+      get 'count'
+    end
   end
 
   resources :subscriptions, only: [:show, :index, :create, :destroy] do
