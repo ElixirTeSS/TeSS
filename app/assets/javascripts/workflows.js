@@ -70,12 +70,17 @@ var Workflows = {
 
     addNode: function () {
         var node = Workflows.nodeModal.fetch();
+        $('#node-modal').modal('hide');
 
         Workflows.history.modify(node.data.parent ? 'add child node' : 'add node', function () {
-            cy.add(node).select();
+            var newNode = cy.add(node);
+            // Select the new node, or if it is a child node, select the parent.
+            if (!node.data.parent) {
+                newNode.select();
+            } else {
+                cy.$('#' + node.data.parent).select();
+            }
         });
-
-        $('#node-modal').modal('hide');
     },
 
     addChild: function () {
