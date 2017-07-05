@@ -251,22 +251,24 @@ var Workflows = {
                     e.cyTarget.data('html_description', MarkdownIt.render(e.cyTarget.data('description')));
                 }
 
-                var resources = e.cyTarget.data('associatedResources')
+                var resources = e.cyTarget.data('associatedResources');
                 if (resources && resources.length > 0){
                     for(var i = 0; i < resources.length; i++) {
-                        var resource = resources[i]
-                        var uri = URI.parse(resource.url)
+                        var resource = resources[i];
+                        var uri = URI.parse(resource.url);
                         if (uri.hostname == 'bio.tools') {
-                            var id = uri.path.split('/')[2]
-                            Biotools.displayToolInfo(id)
+                            var id = uri.path.split('/')[2];
+                            Biotools.displayToolInfo(id);
                             resource.id =id
                         }
                     }
                 }
-                e.cyTarget.data('associatedResources', resources)
+                e.cyTarget.data('associatedResources', resources);
 
-                $('#workflow-diagram-sidebar-title').html(e.cyTarget.data('name') || '<span class="muted">Untitled</span>');
-                $('#workflow-diagram-sidebar-desc').html(HandlebarsTemplates['workflows/sidebar_content'](e.cyTarget.data()))
+                $('#workflow-diagram-sidebar-title').html(e.cyTarget.data('name') || '<span class="muted">Untitled</span>')
+                    .css('background-color', e.cyTarget.data('color'))
+                    .css('color', e.cyTarget.data('font_color'));
+                $('#workflow-diagram-sidebar-desc').html(HandlebarsTemplates['workflows/sidebar_content'](e.cyTarget.data()));
 
                 Workflows.storeLastSelection();
 
@@ -279,11 +281,15 @@ var Workflows = {
                 }
 
             } else if (e.cyTarget.isEdge()) {
+                var title = $('#workflow-diagram-sidebar-title')
                 if (e.cyTarget.data('name')) {
-                    $('#workflow-diagram-sidebar-title').html(e.cyTarget.data('name') + ' (edge)');
+                    title.html(e.cyTarget.data('name') + ' (edge)');
                 } else {
-                    $('#workflow-diagram-sidebar-title').html('<span class="muted">Untitled (edge)</span>');
+                    title.html('<span class="muted">Untitled (edge)</span>');
                 }
+
+                title.css('background-color', '')
+                     .css('color', '');
             }
         },
 
