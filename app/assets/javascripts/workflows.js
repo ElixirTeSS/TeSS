@@ -281,7 +281,7 @@ var Workflows = {
                 }
 
             } else if (e.cyTarget.isEdge()) {
-                var title = $('#workflow-diagram-sidebar-title')
+                var title = $('#workflow-diagram-sidebar-title');
                 if (e.cyTarget.data('name')) {
                     title.html(e.cyTarget.data('name') + ' (edge)');
                 } else {
