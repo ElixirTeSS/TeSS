@@ -6,18 +6,18 @@ class ExternalResource < ActiveRecord::Base
   validates :url, url: true
 
   BIOTOOLS_BASE = 'https://bio.tools'
-  BIOSHARING_BASE = 'https://biosharing.org'
+  FAIRSHARING_BASE = 'https://fairsharing.org'
 
   def is_tool?
     return self.url.starts_with?(BIOTOOLS_BASE)
   end
 
-  def is_biosharing?
-    return self.url.starts_with?(BIOSHARING_BASE)
+  def is_fairsharing?
+    return self.url.starts_with?(FAIRSHARING_BASE)
   end
 
   def is_generic_external_resource?
-    return !self.url.starts_with?(BIOSHARING_BASE, BIOTOOLS_BASE)
+    return !self.url.starts_with?(FAIRSHARING_BASE, BIOTOOLS_BASE)
   end
 
   def api_url_of_tool
@@ -27,15 +27,15 @@ class ExternalResource < ActiveRecord::Base
     return ''
   end
 
-  def api_url_of_biosharing(url)
-    if self.is_biosharing?
-      biosharing_id = url.split(/\//)[-1]
-      if biosharing_id =~ /biodbcore-\d{6}/
-        return BIOSHARING_BASE + '/api/database/summary/' + biosharing_id
-      elsif biosharing_id =~ /bsg-s\d{6}/
-        return BIOSHARING_BASE + '/api/standard/summary/' + biosharing_id
-      elsif biosharing_id =~ /bsg-p\d{6}/
-        return BIOSHARING_BASE + '/api/policy/summary/' + biosharing_id
+  def api_url_of_fairsharing(url)
+    if self.is_fairsharing?
+      fairsharing_id = url.split(/\//)[-1]
+      if fairsharing_id =~ /biodbcore-\d{6}/
+        return FAIRSHARING_BASE + '/api/database/summary/' + fairsharing_id
+      elsif fairsharing_id =~ /bsg-s\d{6}/
+        return FAIRSHARING_BASE + '/api/standard/summary/' + fairsharing_id
+      elsif fairsharing_id =~ /bsg-p\d{6}/
+        return FAIRSHARING_BASE + '/api/policy/summary/' + fairsharing_id
       end
     end
     return ''

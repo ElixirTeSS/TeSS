@@ -1,10 +1,10 @@
-var Biosharing = {
-    baseUrl: 'https://biosharing.org',
+var Fairsharing = {
+    baseUrl: 'https://fairsharing.org',
     titleElement: function() {
         return $('#' + $('#title_element').val())
     },
     queryParameter: function() {
-        return 'search=' + encodeURIComponent($('#biosharing_query').val());
+        return 'search=' + encodeURIComponent($('#fairsharing_query').val());
     },
     typeParameter: function() {
         var types = [];
@@ -18,37 +18,37 @@ var Biosharing = {
         }
     },
     allTypeURL: function() {
-        return Biosharing.baseUrl + '/api/all/summary';
+        return Fairsharing.baseUrl + '/api/all/summary';
     },
     websiteBaseURL: function(){
-        return Biosharing.baseUrl;
+        return Fairsharing.baseUrl;
     },
     search: function(){
         $('.loading_image').show();
-        Biosharing.queryAPI(Biosharing.allTypeURL() + '?' + Biosharing.queryParameter() + '&' + Biosharing.typeParameter());
+        Fairsharing.queryAPI(Fairsharing.allTypeURL() + '?' + Fairsharing.queryParameter() + '&' + Fairsharing.typeParameter());
     },
     nextPage: function(){
-        var next = $('#biosharing-next').text();
+        var next = $('#fairsharing-next').text();
         if (next){
             $('.loading_image').show();
-            Biosharing.queryAPI(next);
+            Fairsharing.queryAPI(next);
         } else {
             /* display nice "we're out of stuff" message here */
             console.log("No next URL found!");
         }
     },
     prevPage: function(){
-        var prev = $('#biosharing-previous').text();
+        var prev = $('#fairsharing-previous').text();
         if (prev){
             $('.loading_image').show();
-            Biosharing.queryAPI(prev);
+            Fairsharing.queryAPI(prev);
         } else {
             /* display nice "we're out of stuff" message here */
         }
     },
     queryAPI: function(api_url){
         $('.loading_image').show();
-        var key = $('#biosharing-api-key').text();
+        var key = $('#fairsharing-api-key').text();
         $.ajax({url: api_url,
                 type: 'GET',
                 dataType: 'json',
@@ -56,10 +56,10 @@ var Biosharing = {
                 contentType: 'application/json; charset=utf-8',
                 success: function (result) {
                     $('.loading_image').hide();
-                    Biosharing.displayRecords(result);
+                    Fairsharing.displayRecords(result);
                 },
                 error: function (error) {
-                    console.log("Error querying BioSharing: " + error);
+                    console.log("Error querying FAIRsharing: " + error);
                 }
         });
     },
@@ -70,13 +70,13 @@ var Biosharing = {
     },
     displayRecords: function(json){
         $('.loading_image').hide();
-        $('#biosharing-results').empty();
+        $('#fairsharing-results').empty();
         var previous = json.previous;
         var next = json.next;
         if (previous) {
             if (previous.includes('page='))
             {
-                $('#biosharing-previous').text(previous);
+                $('#fairsharing-previous').text(previous);
                 $('#prev-bs-button').show();
             } else {
                 $('#prev-bs-button').hide();
@@ -85,7 +85,7 @@ var Biosharing = {
             $('#prev-bs-button').hide();
         }
         if (next) {
-            $('#biosharing-next').text(next);
+            $('#fairsharing-next').text(next);
             $('#next-bs-button').show();
         } else {
             $('#next-bs-button').hide();
@@ -96,7 +96,7 @@ var Biosharing = {
             } else {
                 var id = item.bsg_id;
             }
-            var url = Biosharing.websiteBaseURL() + '/' + id;
+            var url = Fairsharing.websiteBaseURL() + '/' + id;
             if (item.type == 'policy') {
                 var iconclass = "fa-institution";
             } else if (item.type == 'biodbcore') {
@@ -104,7 +104,7 @@ var Biosharing = {
             } else {
                 var iconclass = "fa-list-alt";
             }
-            $('#biosharing-results').append('' +
+            $('#fairsharing-results').append('' +
                 '<div id="' + id + '" class="col-md-12 col-sm-12 bounding-box" data-toggle=\"tooltip\" data-placement=\"top\" aria-hidden=\"true\" title=\"' + item.description + '\">' +
                 '<h4>' +
                 '<i class="fa ' +  iconclass + '"></i> ' +
@@ -120,8 +120,8 @@ var Biosharing = {
                 '</h4>' +
                 '<span>' + item.description + '</span>' +
                 '<div class="external-links">' +
-                '<a class="btn btn-warning" target="_blank" href="' + Biosharing.websiteBaseURL() + '/' + id +'">' +
-                'View ' + item.name + ' on BioSharing ' +
+                '<a class="btn btn-warning" target="_blank" href="' + Fairsharing.websiteBaseURL() + '/' + id +'">' +
+                'View ' + item.name + ' on FAIRsharing ' +
                 '<i class="fa fa-external-link"/></a>' +
                 '</div>' +
                 '</div>');
@@ -129,11 +129,11 @@ var Biosharing = {
         $('#next-tools-button').attr('data-next', json.next);
     },
     copyTitleAndSearch: function(){
-        $('#biosharing_query').val(Biosharing.titleElement().val());
-        Biosharing.search();
+        $('#fairsharing_query').val(Fairsharing.titleElement().val());
+        Fairsharing.search();
     },
     displayFullTool: function(api, id){
-        var key = $('#biosharing-api-key').text();
+        var key = $('#fairsharing-api-key').text();
         var json_key = 'bsg_id';
         if (api.indexOf('policy') != -1) {
             var iconclass = "fa-institution";
@@ -173,14 +173,14 @@ var Biosharing = {
                         'View the ' + json_object.name + ' homepage ' +
                         '<i class="fa fa-external-link"/></a>' +
                         '</a>' +
-                        '<a class="btn btn-warning external-button" target="_blank" href="' + Biosharing.websiteBaseURL() + '/' + json_object[json_key] +'">' +
-                        'View ' + json_object.name + ' on BioSharing ' +
+                        '<a class="btn btn-warning external-button" target="_blank" href="' + Fairsharing.websiteBaseURL() + '/' + json_object[json_key] +'">' +
+                        'View ' + json_object.name + ' on FAIRsharing ' +
                         '<i class="fa fa-external-link"/></a>' +
                     '</div>'
                 );
             },
             error: function (error) {
-                console.log("Error querying BioSharing: " + error);
+                console.log("Error querying FAIRsharing: " + error);
             }
         });
 
@@ -197,15 +197,15 @@ var delay = (function(){
 
 $(document).ready(function () {
     $('.loading_image').hide();
-    $('#next-bs-button').click(Biosharing.nextPage);
-    $('#prev-bs-button').click(Biosharing.prevPage);
-    $('#biosharing_query').keyup(function() {
+    $('#next-bs-button').click(Fairsharing.nextPage);
+    $('#prev-bs-button').click(Fairsharing.prevPage);
+    $('#fairsharing_query').keyup(function() {
         delay(function(){
-            Biosharing.search();
+            Fairsharing.search();
         }, 1000 );
     });
-    $('#search_biosharing').click(Biosharing.search);
-    $('#biosharing-results').on('click','.associate-tool', Biosharing.associateTool);
+    $('#search_fairsharing').click(Fairsharing.search);
+    $('#fairsharing-results').on('click','.associate-tool', Fairsharing.associateTool);
     $('#external-resources').on('change', '.delete-external-resource-btn input.destroy-attribute', ExternalResources.delete);
-    Biosharing.titleElement().blur(Biosharing.copyTitleAndSearch);
+    Fairsharing.titleElement().blur(Fairsharing.copyTitleAndSearch);
 });

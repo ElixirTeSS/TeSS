@@ -1,11 +1,11 @@
-$biosharing_url = 'https://biosharing.org/'
+$fairsharing_url = 'https://fairsharing.org/'
 
-namespace :biosharing do
+namespace :fairsharing do
 
-  desc 'Adds links to BioSharing records as external resources of materials'
+  desc 'Adds links to FAIRsharing records as external resources of materials'
   task :create_links => [:environment] do
 
-    # Parse data file manually imported from BioSharing
+    # Parse data file manually imported from FAIRsharing
     datafile = "#{Rails.root}/config/data/tess_links.csv"
     begin
       lines = IO.readlines(datafile)
@@ -20,9 +20,9 @@ namespace :biosharing do
       tslug = turl.chomp.split(/\//)[-1]
       m = Material.find_by_slug(tslug)
       if !m.nil?
-        existing = m.external_resources.find_by_url($biosharing_url + bid)
+        existing = m.external_resources.find_by_url($fairsharing_url + bid)
         if existing.nil?
-          enew = ExternalResource.new(:title => bname, :url => $biosharing_url + bid)
+          enew = ExternalResource.new(:title => bname, :url => $fairsharing_url + bid)
           enew.save
           m.external_resources << enew
           puts "Adding link for: #{bid}/#{tslug}"

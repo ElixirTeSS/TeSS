@@ -13,7 +13,7 @@ module HasExternalResources
           self.external_resources.select(&:is_tool?).collect(&:title)
         end
         string :standard_database_or_policy, multiple: true do
-          self.external_resources.select(&:is_biosharing?).collect(&:title)
+          self.external_resources.select(&:is_fairsharing?).collect(&:title)
         end
         string :related_resources, multiple: true do
           self.external_resources.select(&:is_generic_external_resource?).collect(&:title)

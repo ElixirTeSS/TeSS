@@ -1,11 +1,11 @@
-<%= collapsible_panel('Suggested policies, standards and databases to associate with this resource', 'external-resources-box-biosharing') do %>
+<%= collapsible_panel('Suggested policies, standards and databases to associate with this resource', 'external-resources-box-fairsharing') do %>
 
     <input type="hidden" id='title_element' value="<%=title_element%>">
 
     <div class="input-group">
-      <input type="text" class="form-control" id="biosharing_query" placeholder="Search biosharing.org"/>
+      <input type="text" class="form-control" id="fairsharing_query" placeholder="Search fairsharing.org"/>
       <div class="input-group-btn">
-        <span class="btn btn-default" id="search_biosharing"><i class="fa fa-search"></i></span>
+        <span class="btn btn-default" id="search_fairsharing"><i class="fa fa-search"></i></span>
       </div>
     </div>
 
@@ -20,17 +20,17 @@
 
     <div class="row bounding-box">
       <div class="tool-suggestions-header">
-        <em>Data provided by <a href="https://biosharing.org">BioSharing</a></em>
+        <em>Data provided by <a href="https://fairsharing.org">FAIRsharing</a></em>
         <div>Click the <i class="fa fa-plus-square-o"></i> button to add a tool as an external resource.</div>
       </div>
 
-      <div id="biosharing-api-key" style="display: none;"><%= Rails.application.secrets.biosharing_api_key -%></div>
-      <div id="biosharing-next" style="display: none;"></div>
-      <div id="biosharing-previous" style="display: none;"></div>
+      <div id="fairsharing-api-key" style="display: none;"><%= Rails.application.secrets.fairsharing_api_key -%></div>
+      <div id="fairsharing-next" style="display: none;"></div>
+      <div id="fairsharing-previous" style="display: none;"></div>
       <div id=loading-spinner">
         <%= image_tag('loading42.gif', :class => 'loading_image') -%>
       </div>
-      <div id="biosharing-results">
+      <div id="fairsharing-results">
       </div>
       <br>
 

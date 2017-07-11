@@ -1,9 +1,9 @@
-<div id="biosharing-api-key" style="display: none;"><%= Rails.application.secrets.biosharing_api_key -%></div>
-<% if external_resource.is_tool? or external_resource.is_biosharing? %>
+<div id="fairsharing-api-key" style="display: none;"><%= Rails.application.secrets.fairsharing_api_key -%></div>
+<% if external_resource.is_tool? or external_resource.is_fairsharing? %>
     <% if external_resource.is_tool? -%>
       <% api_uri = external_resource.api_url_of_tool %>
-    <% elsif external_resource.is_biosharing? -%>
-        <% api_uri = external_resource.api_url_of_biosharing(external_resource.url) %>
+    <% elsif external_resource.is_fairsharing? -%>
+        <% api_uri = external_resource.api_url_of_fairsharing(external_resource.url) %>
     <% end -%>
     <% id = Digest::SHA256.hexdigest external_resource.url %>
 <% end %>
@@ -14,8 +14,8 @@
       <h4>
         <i class="fa fa-external-link" id="<%=id%>-resource-type-icon"></i>
         <%= external_resource.title %>
-        <% if external_resource.is_biosharing? -%>
-        <img src="<%= image_url('biosharing-is.svg')-%>" class="pull-right" alt="Link to BioSharing" width="100px"/>
+        <% if external_resource.is_fairsharing? -%>
+        <img src="<%= image_url('fairsharing-logo.svg')-%>" class="pull-right" alt="Link to FAIRsharing" width="100px"/>
         <% end -%>
         <!--
         <p>API URI: <%= api_uri -%></p>
@@ -35,9 +35,9 @@
 </div>
 
 <% if api_uri %>
-    <% if api_uri =~ /biosharing/ -%> <!-- TODO: Perhaps a better means of checking this is needed... -->
+    <% if api_uri =~ /fairsharing/ -%> <!-- TODO: Perhaps a better means of checking this is needed... -->
       <script>
-         Biosharing.displayFullTool('<%=api_uri%>', '<%=id%>');
+         Fairsharing.displayFullTool('<%=api_uri%>', '<%=id%>');
       </script>
     <% else -%>
       <script>
