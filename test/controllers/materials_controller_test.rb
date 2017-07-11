@@ -763,4 +763,43 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_equal 'new title', assigns(:material).title
   end
 
+  test 'should count index results' do
+    begin
+      TeSS::Config.solr_enabled = true
+
+      materials = Material.all
+
+      Material.stub(:search_and_filter, MockSearch.new(materials)) do
+        get :count, format: :json
+        output = JSON.parse(response.body)
+
+        assert_response :success
+        assert_equal materials.count, output['count']
+        assert_equal materials_url, output['url']
+      end
+    ensure
+      TeSS::Config.solr_enabled = false
+    end
+  end
+
+  test 'should count filtered results' do
+    begin
+      TeSS::Config.solr_enabled = true
+
+      materials = Material.limit(3)
+
+      Material.stub(:search_and_filter, MockSearch.new(materials)) do
+        get :count, q: 'test', keywords: 'dolphins', blabla: 'booboo', format: :json
+        output = JSON.parse(response.body)
+
+        assert_response :success
+        assert_equal materials.count, output['count']
+        assert_equal materials_url(q: 'test', keywords: 'dolphins'), output['url']
+        assert_equal 'dolphins', output['params']['keywords']
+      end
+    ensure
+      TeSS::Config.solr_enabled = false
+    end
+  end
+
 end

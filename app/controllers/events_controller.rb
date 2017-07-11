@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages, :add_topic, :reject_topic]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages, :add_topic, :reject_topic, :redirect]
   before_action :set_breadcrumbs
   before_action :disable_pagination, only: :index, if: lambda { |controller| controller.request.format.ics? or controller.request.format.csv? }
 
@@ -154,25 +154,13 @@ class EventsController < ApplicationController
     render :nothing => true
   end
 
-  def count_events
-    @output = {}
-    # TODO: This conversion causes all & to print out as \u0026, which prevents the URL
-    # TODO: from being read.
-    params = @facet_params.to_param
+  def redirect
+    @event.widget_logs.create(widget_name: params[:widget],
+                              action: "#{controller_name}##{action_name}",
+                              data: @event.url, params: params)
 
-    @output['count'] = @search_results.total
-    #@output['url'] = "http://#{request.host_with_port}/events?#{params}"
-    #@output['url'] = "#{events_url(params.slice(:q, *Event.facet_fields))}"
-    @output['url'] = "#{events_url()}/?#{params}"
-
-    #if @search_params
-    #  @output['url'] += "&#{@search_params.to_param}"
-    #end
-
-    render json: @output
+    redirect_to @event.url
   end
-
-  protected
 
   private
 

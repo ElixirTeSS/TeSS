@@ -682,4 +682,58 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal 'new title', assigns(:event).title
   end
 
+  test 'should redirect to event URL' do
+    assert_difference('WidgetLog.count', 1) do
+      get :redirect, id: @event
+    end
+
+    assert_redirected_to @event.url
+    assert_equal 1, @event.widget_logs.count
+
+    log = @event.widget_logs.last
+
+    assert_equal 'events#redirect', log.action
+    assert_equal @event, log.resource
+    assert_equal @event.url, log.data
+  end
+
+  test 'should count index results' do
+    begin
+      TeSS::Config.solr_enabled = true
+
+      events = Event.all
+
+      Event.stub(:search_and_filter, MockSearch.new(events)) do
+        get :count, format: :json
+        output = JSON.parse(response.body)
+
+        assert_response :success
+        assert_equal events.count, output['count']
+        assert_equal events_url, output['url']
+      end
+    ensure
+      TeSS::Config.solr_enabled = false
+    end
+  end
+
+  test 'should count filtered results' do
+    begin
+      TeSS::Config.solr_enabled = true
+
+      events = Event.limit(3)
+
+      Event.stub(:search_and_filter, MockSearch.new(events)) do
+        get :count, q: 'test', keywords: 'dolphins', blabla: 'booboo', format: :json
+        output = JSON.parse(response.body)
+
+        assert_response :success
+        assert_equal events.count, output['count']
+        assert_equal events_url(q: 'test', keywords: 'dolphins'), output['url']
+        assert_equal 'dolphins', output['params']['keywords']
+      end
+    ensure
+      TeSS::Config.solr_enabled = false
+    end
+  end
+
 end
