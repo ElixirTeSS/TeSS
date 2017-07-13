@@ -37,9 +37,9 @@ installed, plus a whole lot more (e.g. gemsets). Full installation instructions 
 TeSS was developed using Ruby 2.2 and we recommend using version 2.2 or higher. To install TeSS' current version of ruby and create a gemset, you
 can do something like the following:
 
-    $ rvm install     cat .ruby-version
+    $ rvm install `cat .ruby-version`
 
-    $ rvm use --create     cat .ruby-version@    cat .ruby-gemset
+    $ rvm use --create `cat .ruby-version`@`cat .ruby-gemset`
 
 ### Bundler
 Bundler provides a consistent environment for Ruby projects by tracking and installing the exact gems and versions that are needed for your Ruby application.
