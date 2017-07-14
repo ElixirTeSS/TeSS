@@ -47,6 +47,8 @@ Rails.application.routes.draw do
     end
     member do
       get 'redirect'
+      post 'add_topic'
+      post 'reject_topic'
     end
   end
   resources :packages do
@@ -65,6 +67,10 @@ Rails.application.routes.draw do
 
   resources :materials do
     resource :activities, :only => [:show]
+    member do
+      post :reject_topic
+      post :add_topic
+    end
     collection do
       get 'count'
     end
@@ -79,10 +85,6 @@ Rails.application.routes.draw do
   post 'materials/:id/update_packages' => 'materials#update_packages'
   post 'events/:id/update_packages' => 'events#update_packages'
 
-  post 'materials/:id/add_topic' => 'materials#add_topic'
-  post 'materials/:id/reject_topic' => 'materials#reject_topic'
-  post 'events/:id/add_topic' => 'events#add_topic'
-  post 'events/:id/reject_topic' => 'events#reject_topic'
 
 
   get 'search' => 'search#index'

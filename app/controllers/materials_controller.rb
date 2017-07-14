@@ -145,14 +145,31 @@ class MaterialsController < ApplicationController
   #POST /materials/1/add_topic
   def add_topic
     topic = EDAM::Ontology.instance.lookup_by_name(params[:topic])
+    log_params = {uri: topic.uri,
+                  name: topic.preferred_label}
     @material.edit_suggestion.accept_suggestion(@material, topic)
+    @material.create_activity :add_topic,
+                              {
+                                  owner: current_user,
+                                  recipient: @material.user,
+                                  parameters: log_params
+                              }
+
     render :nothing => true
   end
 
   #POST /events/1/reject_topic
   def reject_topic
     topic = EDAM::Ontology.instance.lookup_by_name(params[:topic])
+    log_params = {uri: topic.uri,
+                  name: topic.preferred_label}
     @material.edit_suggestion.reject_suggestion(topic)
+    @material.create_activity :reject_topic,
+                              {
+                                  owner: current_user,
+                                  recipient: @material.user,
+                                  parameters: log_params
+                              }
     render :nothing => true
   end
 
