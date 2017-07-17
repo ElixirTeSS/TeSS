@@ -1,8 +1,12 @@
-json.extract! @event, :id, :external_id,:title, :subtitle, :url, :organizer, :description,
+fields = [:id, :external_id,:title, :subtitle, :url, :organizer, :description,
               :start, :end, :sponsor, :venue, :city, :county, :country, :postcode,
               :latitude, :longitude, :created_at, :updated_at, :source, :slug, :content_provider_id,
               :user_id, :online, :cost, :for_profit, :last_scraped, :scraper_record, :keywords,
-              :event_types, :target_audience, :capacity, :eligibility, :contact, :host_institutions
+              :event_types, :target_audience, :capacity, :eligibility, :contact, :host_institutions]
+
+fields += Event::SENSITIVE_FIELDS if user_signed_in? && current_user
+
+json.extract! @event, *fields
 
 json.partial! 'common/scientific_topics', resource: @event
 

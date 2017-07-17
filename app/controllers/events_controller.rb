@@ -1,5 +1,6 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages, :add_topic, :reject_topic, :redirect]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages, :add_topic, :reject_topic,
+                                   :redirect, :report, :update_report]
   before_action :set_breadcrumbs
   before_action :disable_pagination, only: :index, if: lambda { |controller| controller.request.format.ics? or controller.request.format.csv? }
 
@@ -38,6 +39,28 @@ class EventsController < ApplicationController
   # GET /events/1/edit
   def edit
     authorize @event
+  end
+
+  # GET /events/1/report
+  def report
+    authorize @event, :edit_report?
+  end
+
+  # PATCH /events/1/report
+  def update_report
+    authorize @event, :edit_report?
+
+    respond_to do |format|
+      if @event.update(event_report_params)
+        @event.create_activity(:report, owner: current_user) if @event.log_update_activity?
+
+        format.html { redirect_to event_path(@event, anchor: 'report'), notice: 'Event report successfully updated.' }
+        format.json { render :show, status: :ok, location: @event }
+      else
+        format.html { render :report }
+        format.json { render json: @event.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # POST /events/check_exists
@@ -180,6 +203,10 @@ class EventsController < ApplicationController
                                   {:host_institutions => []}, :capacity, :contact,
                                   external_resources_attributes: [:id, :url, :title, :_destroy], material_ids: [],
                                   locked_fields: [])
+  end
+
+  def event_report_params
+    params.require(:event).permit(:funding, :attendee_count, :applicant_count, :trainer_count, :feedback, :notes)
   end
 
   def disable_pagination

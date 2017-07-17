@@ -47,6 +47,8 @@ Rails.application.routes.draw do
     end
     member do
       get 'redirect'
+      get 'report'
+      patch 'report', to: 'events#update_report'
     end
   end
   resources :packages do
