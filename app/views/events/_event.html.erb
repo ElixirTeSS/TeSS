@@ -48,7 +48,7 @@
 <% if current_user and current_user.is_admin? %>
     <% unless event.edit_suggestion.nil? or event.edit_suggestion.scientific_topics.empty? %>
         <div class="suggestions" style="z-index: 3">
-          <b>Is this event about</b>
+          <b>Add topics to this event</b>
           <% event.edit_suggestion.scientific_topics.each do |scientific_topic, i| %>
             <span class="dropdown ">
               <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
