@@ -4,8 +4,8 @@
 
 TeSS is a Rails 4 application.
 
-[![Build Status](https://travis-ci.org/ElixirUK/TeSS.svg?branch=master)](https://travis-ci.org/ElixirUK/TeSS)
-[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/11f7d36a8848462f98fa308abbec0121)](https://www.codacy.com/app/fbacall/TeSS?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ElixirUK/TeSS&amp;utm_campaign=Badge_Coverage)
+[![Build Status](https://travis-ci.org/ElixirTeSS/TeSS.svg?branch=master)](https://travis-ci.org/ElixirTeSS/TeSS)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/11f7d36a8848462f98fa308abbec0121)](https://www.codacy.com/app/fbacall/TeSS?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ElixirTeSS/TeSS&amp;utm_campaign=Badge_Coverage)
 
 # Setup
 Below is an example guide to help you set up TeSS in development mode. More comprehensive guides on installing
@@ -20,11 +20,11 @@ TeSS requires the following system packages to be installed:
 
 To install these under an Ubuntu-like OS using apt:
 
-`$ sudo apt-get install postgresql imagemagick openjdk-8-jre nodejs`
+    $ sudo apt-get install postgresql imagemagick openjdk-8-jre nodejs
 
 For Mac OS X:
 
-`$ brew install postgresql && brew install imagemagick && brew install nodejs`
+    $ brew install postgresql && brew install imagemagick && brew install nodejs
 
 And install the JDK from Oracle or OpenJDK directly (It is needed for the SOLR search functionality)
 
@@ -34,18 +34,19 @@ And install the JDK from Oracle or OpenJDK directly (It is needed for the SOLR s
 It is typically recommended to install Ruby with RVM. With RVM, you can specify the version of Ruby you want
 installed, plus a whole lot more (e.g. gemsets). Full installation instructions for RVM are [available online](http://rvm.io/rvm/install/).
 
-TeSS was developed using Ruby 2.2 and we recommend using version 2.2 or higher. To install it (after you installed RVM) and set up a gemset 'tess', you
+TeSS was developed using Ruby 2.2 and we recommend using version 2.2 or higher. To install TeSS' current version of ruby and create a gemset, you
 can do something like the following:
 
-`rvm install ruby-2.2-head`
-`rvm use --create ruby-2.2-head@tess`
+    $ rvm install `cat .ruby-version`
+
+    $ rvm use --create `cat .ruby-version`@`cat .ruby-gemset`
 
 ### Bundler
 Bundler provides a consistent environment for Ruby projects by tracking and installing the exact gems and versions that are needed for your Ruby application.
 
 To install it, you can do:
 
-`$ gem install bundler`
+    $ gem install bundler
 
 Note that program 'gem' (a package management framework for Ruby called RubyGems) gets installed when you install RVM so you do not have to install it separately.
 
@@ -53,7 +54,7 @@ Note that program 'gem' (a package management framework for Ruby called RubyGems
 
 Once you have Ruby, RVM and bundler installed, from the root folder of the app do:
 
-`$ bundle install`
+    $ bundle install
 
 This will install Rails, as well as any other gem that the TeSS app needs as specified in Gemfile (located in the root folder of the TeSS app).
 
@@ -65,27 +66,27 @@ Otherwise, you may run into some issues when running and managing the TeSS app.
 
 Normally you'd start postgres with something like (passing the path to your database with -D):
 
-`$ pg_ctl -D ~/Postgresql/data/ start`
+    $ pg_ctl -D ~/Postgresql/data/ start
 
 From command prompt:
  
-`$ createuser --superuser tess_user`
+    $ createuser --superuser tess_user
 
 Connect to your postgres database console as database admin 'postgres' (modify to suit your postgres database installation):
  
-`$ sudo -u postgres psql`
+    $ sudo -u postgres psql
 
 Or from Mac OS X
 
-`$ sudo psql postgres`
+    $ sudo psql postgres
 
 From the postgres console, set password for user 'tess_user':
  
-`postgres=# \password tess_user`
+    postgres=# \password tess_user
 
 *If your tess_user is not a superuser, make sure you grant it a privilege to create databases:*
  
-`postgres=# ALTER USER tess_user CREATEDB;`
+    postgres=# ALTER USER tess_user CREATEDB;
 
 > Handy Postgres/Rails tutorials:
 >
@@ -99,20 +100,20 @@ TeSS uses Apache Solr to power its search and filtering system.
 
 To start solr, run:
 
-`$ bundle exec rake sunspot:solr:start`
+    $ bundle exec rake sunspot:solr:start
 
 You can replace *start* with *stop* or *restart* to stop or restart solr. You can use *reindex* to reindex all records. 
 
-`$ bundle exec rake sunspot:solr:reindex`
+    $ bundle exec rake sunspot:solr:reindex
 
 
 ## Redis/Sidekiq
 
 On macOS these can be installed and run as follows:
 
-    brew install redis
-    redis-server /usr/local/etc/redis.conf
-    bundle exec sidekiq
+    $ brew install redis
+    $ redis-server /usr/local/etc/redis.conf
+    $ bundle exec sidekiq
     
 For a Redis install on a Linux system there should presumably be an equivalent package.
 
@@ -121,30 +122,30 @@ For a Redis install on a Linux system there should presumably be an equivalent p
 
 From the app's root directory, create several config files by copying the example files.
 
-`$ cp config/tess.example.yml config/tess.yml`
+    $ cp config/tess.example.yml config/tess.yml
 
-`$ cp config/sunspot.example.yml config/sunspot.yml`
+    $ cp config/sunspot.example.yml config/sunspot.yml
 
-`$ cp config/secrets.example.yml config/secrets.yml`
+    $ cp config/secrets.example.yml config/secrets.yml
 
 Edit config/secrets.yml to configure the database name, user and password defined above.
 
 Edit config/secrets.yml to configure the app's secret_key_base which you can generate with:
 
-`$ bundle exec rake secret`
+    $ bundle exec rake secret
 
 Create the databases:
 
-`$ bundle exec rake db:create:all`
+    $ bundle exec rake db:create:all
 
 Create the database structure and load in seed data:
 
 *Note: Ensure you have started Solr before running this command!*  
 
-`$ bundle exec rake db:setup`
+    $ bundle exec rake db:setup
 
 Start the application:
-`$ bundle exec rails server`
+    $ bundle exec rails server
 
 Access TeSS at:
 
@@ -152,20 +153,19 @@ Access TeSS at:
 
 *(Optional) Run the test suite:*
 
-`$ bundle exec rake db:test:prepare`
+    $ bundle exec rake db:test:prepare
 
-`$ bundle exec rake test`
+    $ bundle exec rake test
 
 ### Setup Administrators
 
 Once you have a local TeSS succesfully running, you may want to setup administrative users. To do this register a new account in TeSS through the registration page. Then go to the applications Rails console: 
 
-`$ bundle exec rails c`
+    $ bundle exec rails c
 
 Find the user and assign them the administrative role. This can be completed by running this (where myemail@domain.co is the email address you used to register with):
 
-`=> User.find_by_email('myemail@domain.co').update_attributes(role: Role.find_by_name('admin'))`
-
+    2.2.6 :001 > User.find_by_email('myemail@domain.co').update_attributes(role: Role.find_by_name('admin'))
 
 ### Live deployment
 
@@ -175,29 +175,29 @@ Although designed for CentOS, this document can be followed quite closely to set
 
 To set up TeSS in production, do:
 
-`bundle exec rake db:setup RAILS_ENV=production`
+    $ bundle exec rake db:setup RAILS_ENV=production
 
 which will do db:create, db:schema:load, db:seed. If you want the DB dropped as well:
 
-`bundle exec rake db:reset RAILS_ENV=production`
+    $ bundle exec rake db:reset RAILS_ENV=production
 
  (which will do db:drop, db:setup)
 
-`unset XDG_RUNTIME_DIR` may need setting in ~/.profile or similar if rails console moans about permissions.
+    $ unset XDG_RUNTIME_DIR may need setting in ~/.profile or similar if rails console moans about permissions.
 
 Delete all from Solr if need be and reindex it:
 
-`curl http://localhost:8983/solr/update?commit=true -d  '<delete><query>*:*</query></delete>'`
+    $ curl http://localhost:8983/solr/update?commit=true -d  '<delete><query>*:*</query></delete>'
 
-`bundle exec rake sunspot:solr:reindex RAILS_ENV=production`
+    $ bundle exec rake sunspot:solr:reindex RAILS_ENV=production
 
 Create an admin user and assign it appropriate 'admin' role bu looking up that role in console in model Role (default roles should be created automatically).
 
 The first time and each time a css or js file is updated:
 
-`bundle exec rake assets:clean RAILS_ENV=production`
+    $ bundle exec rake assets:clean RAILS_ENV=production
 
-`bundle exec rake assets:precompile RAILS_ENV=production`
+    $ bundle exec rake assets:precompile RAILS_ENV=production
 
 Restart your Web server.
 
@@ -236,6 +236,4 @@ working.
 
 To find suggestions of EDAM topics for materials, you can run this rake task. This requires redis and sidekiq to be running as it will add jobs to a queue. It uses BioPortal Annotator web service against the materials description to create suggestions
 
-```
-bundle exec rake tess:add_topic_suggestions
-```
+    bundle exec rake tess:add_topic_suggestions
