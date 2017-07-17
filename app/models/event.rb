@@ -97,6 +97,9 @@ class Event < ActiveRecord::Base
   clean_array_fields(:keywords, :event_types, :target_audience, :eligibility, :host_institutions)
   update_suggestions(:keywords, :target_audience, :host_institutions)
 
+  # These fields should not been shown to users unless they have sufficient privileges
+  SENSITIVE_FIELDS = [:funding, :attendee_count, :applicant_count, :trainer_count, :feedback, :notes]
+
   COUNTRY_SYNONYMS = JSON.parse(File.read(File.join(Rails.root, 'config', 'data', 'country_synonyms.json')))
 
   #Generated Event:
@@ -248,6 +251,10 @@ class Event < ActiveRecord::Base
         self.country = COUNTRY_SYNONYMS[text]
       end
     end
+  end
+
+  def reported?
+    SENSITIVE_FIELDS.any? { |f| self.send(f).present? }
   end
 
 end

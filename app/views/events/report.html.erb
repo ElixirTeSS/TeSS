@@ -1,0 +1,47 @@
+<div class="row wrapper">
+  <div class="col-md-12">
+    <div class="page-header">
+      <%= page_title('Event report') %>
+    </div>
+    <div class="col-md-4 col-md-push-8">
+      <%= info_box('Reports') do %>
+          <p>
+            Reports are a way of recording metrics and information about an event after it has ended.
+            All fields are optional, and can be amended at any time.
+          </p>
+          <p>Reports are not publicly visible and can only be accessed by users with "edit" access to the event.</p>
+      <% end %>
+    </div>
+    <div class="col-md-8 col-md-pull-4">
+      <%= simple_form_for @event, url: report_event_path do |f| %>
+          <% if @event.errors.any? %>
+              <div id="error_explanation">
+                <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
+
+                <ul>
+                  <% @event.errors.full_messages.each do |message| %>
+                      <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+          <% end %>
+
+          <%= f.input :funding %>
+          <%= f.input :applicant_count, label: 'Number of registrations' %>
+          <%= f.input :attendee_count, label: 'Number of attendees' %>
+          <%= f.input :trainer_count, label: 'Number of trainers' %>
+          <%= f.input :feedback %>
+
+          <div class="form-group">
+            <%= f.label :notes %>
+            <%= f.markdown_area :notes, class: 'form-control', rows: '5' %>
+          </div>
+
+          <div class="form-group">
+            <%= f.submit 'Submit report', class: 'btn btn-primary' %>
+            <%= link_to 'Back', :back, class: 'btn btn-info' %>
+          </div>
+      <% end %>
+    </div>
+  </div>
+</div>

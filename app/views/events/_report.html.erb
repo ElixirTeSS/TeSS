@@ -1,0 +1,66 @@
+<div class="panel panel-default" id="report">
+  <div class="panel-heading">Report <small>(only visible to privileged users)</small></div>
+  <div class="panel-body">
+    <% if @event.reported? %>
+        <div class="pull-right">
+          <% if policy(@event).edit_report? %>
+              <%= link_to report_event_path(@event), class: 'btn btn-default btn-xs' do %>
+                  <i class="fa fa-pencil"></i> Edit report
+              <% end %>
+          <% end %>
+        </div>
+    <% else %>
+        <div class="pull-right">
+          <% if policy(@event).edit_report? %>
+              <%= link_to report_event_path(@event), class: 'btn btn-default btn-xs' do %>
+                  <i class="fa fa-plus-square"></i> Add report
+              <% end %>
+          <% end %>
+        </div>
+        <p>
+          <span class="muted">Nothing reported yet.</span>
+        </p>
+    <% end %>
+    <% if @event.funding.present? %>
+        <p>
+          <strong>Funding:</strong>
+          <%= @event.funding %>
+        </p>
+    <% end %>
+
+    <% if @event.applicant_count.present? %>
+        <p>
+          <strong>Registrations:</strong>
+          <%= @event.applicant_count %>
+        </p>
+    <% end %>
+
+    <% if @event.attendee_count.present? %>
+        <p>
+          <strong>Attendees:</strong>
+          <%= @event.attendee_count %>
+        </p>
+    <% end %>
+
+    <% if @event.trainer_count.present? %>
+        <p>
+          <strong>Trainers:</strong>
+          <%= @event.trainer_count %>
+        </p>
+    <% end %>
+
+    <% if @event.feedback.present? %>
+        <p>
+          <strong>Feedback:</strong>
+          <%= @event.feedback %>
+        </p>
+    <% end %>
+
+    <% if @event.notes.present? %>
+        <p>
+          <strong>Notes:</strong><br/>
+          <%= render_markdown(@event.notes) %>
+        </p>
+    <% end %>
+  </div>
+</div>

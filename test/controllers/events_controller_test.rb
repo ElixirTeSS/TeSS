@@ -736,4 +736,160 @@ class EventsControllerTest < ActionController::TestCase
     end
   end
 
+  test 'should not get report page for non-privileged users' do
+    event = events(:event_with_report)
+    sign_in users(:another_regular_user)
+
+    get :report, id: event
+
+    assert_response :forbidden
+  end
+
+  test 'should get report page for privileged user' do
+    event = events(:event_with_report)
+    sign_in event.user
+
+    get :report, id: event
+
+    assert_response :success
+  end
+
+  test 'should get report page for curator' do
+    event = events(:event_with_report)
+    sign_in users(:curator)
+
+    get :report, id: event
+
+    assert_response :success
+  end
+
+  test 'should get report page for admin' do
+    event = events(:event_with_report)
+    sign_in users(:admin)
+
+    get :report, id: event
+
+    assert_response :success
+  end
+
+  test 'should not update report for non-privileged users' do
+    event = events(:event_with_report)
+    sign_in users(:another_regular_user)
+
+    patch :update_report, id: event, event: { funding: 'test', attendee_count: 1337 }
+
+    assert_response :forbidden
+    assert_not_equal 'test', assigns(:event).funding
+    assert_not_equal 1337, assigns(:event).attendee_count
+  end
+
+  test 'should update report for privileged users' do
+    event = events(:event_with_report)
+    sign_in event.user
+
+    patch :update_report, id: event, event: { funding: 'test', attendee_count: 1337 }
+
+    assert_redirected_to event_path(assigns(:event), anchor: 'report')
+    assert_equal 'test', assigns(:event).funding
+    assert_equal 1337, assigns(:event).attendee_count
+  end
+
+  test 'should update report for curator' do
+    event = events(:event_with_report)
+    sign_in users(:curator)
+
+    patch :update_report, id: event, event: { funding: 'test', attendee_count: 1337 }
+
+    assert_redirected_to event_path(assigns(:event), anchor: 'report')
+    assert_equal 'test', assigns(:event).funding
+    assert_equal 1337, assigns(:event).attendee_count
+  end
+
+  test 'should update report for admin' do
+    event = events(:event_with_report)
+    sign_in users(:admin)
+
+    patch :update_report, id: event, event: { funding: 'test', attendee_count: 1337 }
+
+    assert_redirected_to event_path(assigns(:event), anchor: 'report')
+    assert_equal 'test', assigns(:event).funding
+    assert_equal 1337, assigns(:event).attendee_count
+  end
+
+  test 'should not show report to non-privileged users' do
+    event = events(:event_with_report)
+    sign_in users(:another_regular_user)
+
+    get :show, id: event
+
+    assert_select '#report', count: 0
+  end
+
+  test 'should show report to privileged users' do
+    event = events(:event_with_report)
+    sign_in event.user
+
+    get :show, id: event
+
+    assert_select '#report', count: 1
+  end
+
+  test 'should show report to curator' do
+    event = events(:event_with_report)
+    sign_in users(:curator)
+
+    get :show, id: event
+
+    assert_select '#report', count: 1
+  end
+
+  test 'should show report to admin' do
+    event = events(:event_with_report)
+    sign_in users(:admin)
+
+    get :show, id: event
+
+    assert_select '#report', count: 1
+  end
+
+  test 'should not show report-related parameter changes to non-privileged users' do
+    event = events(:event_with_report)
+    sign_in users(:another_regular_user)
+    event.funding = 'test'
+    event.save
+
+    get :show, id: event
+
+    assert_select '.sub-activity em', text: /Funding/, count: 0
+  end
+
+  test 'should show report-related parameter changes to privileged users' do
+    event = events(:event_with_report)
+    sign_in event.user
+    event.funding = 'test'
+    event.save
+
+    get :show, id: event
+
+    assert_select '.sub-activity em', text: /Funding/, count: 1
+  end
+
+  test 'should only show report fields in JSON to privileged users' do
+    hidden_report_event = events(:event_with_report)
+    visible_report_event = events(:another_event_with_report)
+    sign_in users(:another_regular_user)
+
+    get :show, id: hidden_report_event, format: :json
+    refute JSON.parse(response.body).key?('funding')
+
+    get :show, id: visible_report_event, format: :json
+    assert_equal visible_report_event.funding, JSON.parse(response.body)['funding']
+
+    get :index, format: :json
+    hidden_report_event_json = JSON.parse(response.body).detect { |e| e['id'] == hidden_report_event.id }
+    visible_report_event_json = JSON.parse(response.body).detect { |e| e['id'] == visible_report_event.id }
+    refute hidden_report_event_json.key?('funding')
+    assert_equal visible_report_event.funding, visible_report_event_json['funding']
+  end
+
 end

@@ -165,6 +165,16 @@ class EventTest < ActiveSupport::TestCase
     end
   end
 
+  test 'can check if an event has been reported on' do
+    e = events(:scraper_user_event)
+
+    refute e.reported?
+
+    e.update_attribute(:funding, 'Selling lemonade')
+
+    assert e.reported?
+  end
+
 end
 
 

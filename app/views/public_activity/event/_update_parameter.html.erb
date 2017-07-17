@@ -1,3 +1,4 @@
-<% unless activity.parameters.empty? %>
+<% unless activity.parameters.empty? ||
+    Event::SENSITIVE_FIELDS.include?(activity.parameters[:attr].to_sym) && !policy(activity.trackable).edit_report? %>
     <%= render partial: 'public_activity/common/parameter_change', object: activity.parameters %>
 <% end %>

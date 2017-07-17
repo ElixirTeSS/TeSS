@@ -49,6 +49,8 @@ Rails.application.routes.draw do
       get 'redirect'
       post 'add_topic'
       post 'reject_topic'
+      get 'report'
+      patch 'report', to: 'events#update_report'
     end
   end
   resources :packages do
