@@ -6,9 +6,7 @@ base_fields = [:id, :external_id,:title, :subtitle, :url, :organizer, :descripti
 
 json.array!(@events) do |event|
   fields = base_fields
-  if user_signed_in? && policy(current_user, @event).view_report?
-    fields += Event::SENSITIVE_FIELDS
-  end
+  fields += Event::SENSITIVE_FIELDS if policy(event).view_report?
 
   json.extract! event, *fields
 

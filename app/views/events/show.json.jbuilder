@@ -4,7 +4,7 @@ fields = [:id, :external_id,:title, :subtitle, :url, :organizer, :description,
               :user_id, :online, :cost, :for_profit, :last_scraped, :scraper_record, :keywords,
               :event_types, :target_audience, :capacity, :eligibility, :contact, :host_institutions]
 
-fields += Event::SENSITIVE_FIELDS if user_signed_in? && current_user
+fields += Event::SENSITIVE_FIELDS if policy(@event).view_report?
 
 json.extract! @event, *fields
 

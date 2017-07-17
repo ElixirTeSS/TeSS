@@ -150,3 +150,22 @@ no_description_event:
   content_provider: goblet
   start: 2016-12-12 10:00:00
   end: 2016-12-12 12:00:00
+
+event_with_report:
+  title: This event happened
+  url: http://content-provider.org/event-with-report
+  user: regular_user
+  content_provider: goblet
+  start: 2016-12-12 10:00:00
+  end: 2016-12-12 12:00:00
+  funding: Fidget spinner sales
+  attendee_count: 1
+
+another_event_with_report:
+  title: This event happened
+  url: http://content-provider.org/another-event-with-report
+  user: another_regular_user
+  content_provider: goblet
+  start: 2016-12-12 10:00:00
+  end: 2016-12-12 12:00:00
+  funding: Raffle
