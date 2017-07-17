@@ -5,9 +5,9 @@ module CuratorsHelper
     if action
       action, topic = action.split('_')
       action += 'ed'
-      return "Number of #{topic}s #{action} to #{resource}s"
+      return "#{topic} suggestions #{action=='rejected' ? action + " from " : action + ' to '}#{resource}s".humanize
     else
-      return resource
+      return resource.humanize
     end
   end
 

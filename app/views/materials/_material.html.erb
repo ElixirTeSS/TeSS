@@ -12,6 +12,29 @@
             <%= display_attribute(material, :scientific_topics){|values| values.map{|x| x.preferred_label}.join(', ')} %>
             <%= display_attribute(material, :keywords){|values| values.join(', ')} %>
             <%= display_attribute(material, :resource_type){|values| values.join(', ')} %>
+
+
+            <% unless material.edit_suggestion.nil? or material.edit_suggestion.scientific_topics.empty? %>
+                <div class="suggestions">
+                  <b>Suggested scientific topics:</b>
+                  <% material.edit_suggestion.scientific_topics.each do |scientific_topic, i| %>
+                  <span class="dropdown ">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                      <%= scientific_topic.preferred_label %>
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu suggestion_action"
+                        data-resource_type="materials"
+                        data-resource_id="<%=material.id%>"
+                        data-topic="<%=scientific_topic.preferred_label%>"
+                        aria-labelledby="dropdownMenu1">
+                      <li><a class="btn accept_suggestion" ><b>✓ Accept</b> <br>(This material <b>is</b> about <em><%=scientific_topic.preferred_label%></em>)</a></li>
+                      <li><a class="btn reject_suggestion" ><b>✗ Reject</b> <br> (This material <b>is not</b> about <em><%=scientific_topic.preferred_label%></em>)</a></li>
+                    </ul>
+                  </span>
+                  <% end %>
+                </div>
+            <% end %>
           </div>
           <div class="col-md-3">
             <% if material.content_provider %>

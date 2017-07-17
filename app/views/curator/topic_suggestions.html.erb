@@ -5,46 +5,14 @@
 
     <div class="h2">Curate topics</div>
     <div class="h4"><%= @suggestions.count %> possible suggestions found</div>
-
     <br>
-    <div class="h5">
-      Curation Leaderboard
-    </div>
-
-    <table>
-      <% @leaderboard.each do |curator, scores| %>
-        <tr>
-          <% if current_user == curator %>
-              <td>
-                <b>You have a curation score of <%= scores['total'] %></b>
-              </td>
-          <% else %>
-              <td>
-                <b><%=link_to curator.name, curator %> has a curation score of <%= scores['total'] %></b>
-              </td>
-          <% end %>
-        </tr>
-          <% scores.each do |score, value| %>
-            <tr>
-              <td><%= print_curation_action score %></td>
-              <td><%= value %></td>
-            </tr>
-          <% end %>
-      <% end %>
-      </table>
-
-
-    <div class="top-curators">
-
-    </div>
-
     <div class="pull-right">
       <%= info_button('How to curate topics in TeSS') do %>
           <%= render_markdown(MaterialsHelper::TOPICS_INFO) %>
       <% end %>
     </div>
   </div>
-
+  <div class="col-lg-9">
 <% @suggestions.each do |suggestion| %>
     <% resource = suggestion.suggestible %>
     <%= render layout: 'common/mixed_resources', locals: {resource: resource} do%>
@@ -69,4 +37,10 @@
         </div>
     <% end %>
 <% end %>
+  </div>
+  <div class="col-lg-3">
+    <% if @leaderboard %>
+      <%= render :partial => 'leaderboard', :locals => {:leaderboard => @leaderboard} %>
+    <% end %>
+  </div>
 </div>

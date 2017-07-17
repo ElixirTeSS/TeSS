@@ -17,6 +17,9 @@
   <% else %>
     <p class="dont-break-out"><%= [event.city, event.country].reject { |field_value| field_value.blank? }.join(", ")%></p>
   <% end %>
+
+
+
   <% if event.started? %>
       <%= content_tag(:span, :class=>'pull-right gap') do %>
         <%= icon_for(:started, :small) %>
@@ -41,5 +44,30 @@
   <% end -%>
   <%= link_to '', event, :class=>"media-view" %>
   <%= render :partial => 'events/partials/event_schemaorg', :locals => {:event => event} %>
+
+<% if current_user and current_user.is_admin? %>
+    <% unless event.edit_suggestion.nil? or event.edit_suggestion.scientific_topics.empty? %>
+        <div class="suggestions" style="z-index: 3">
+          <b>Is this event about</b>
+          <% event.edit_suggestion.scientific_topics.each do |scientific_topic, i| %>
+            <span class="dropdown ">
+              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <%= scientific_topic.preferred_label %>
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu suggestion_action"
+                  data-resource_type="events"
+                  data-resource_id="<%=event.id%>"
+                  data-topic="<%=scientific_topic.preferred_label%>"
+                  aria-labelledby="dropdownMenu1">
+                <li><a class="btn accept_suggestion" ><b>✓ Accept</b> <br>(This event <b>is</b> about <em><%=scientific_topic.preferred_label%></em>)</a></li>
+                <li><a class="btn reject_suggestion" ><b>✗ Reject</b> <br> (This event <b>is not</b> about <em><%=scientific_topic.preferred_label%></em>)</a></li>
+              </ul>
+            </span>
+          <% end %>
+        </div>
+    <% end %>
+<% end %>
+
 </li>
 

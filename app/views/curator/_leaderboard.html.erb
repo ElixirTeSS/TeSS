@@ -1,0 +1,25 @@
+<div class="h5">
+  Curation Leaderboard
+</div>
+
+<table>
+  <% leaderboard.each do |curator, scores| %>
+      <tr>
+        <% if current_user == curator %>
+            <td>
+              <b>You have a curation score of <%= scores['total'] %></b>
+            </td>
+        <% else %>
+            <td>
+              <b><%=link_to curator.name, curator %> has a curation score of <%= scores['total'] %></b>
+            </td>
+        <% end %>
+      </tr>
+      <% scores.each do |score, value| %>
+          <tr>
+            <td><%= print_curation_action score %></td>
+            <td><%= value %></td>
+          </tr>
+      <% end %>
+  <% end %>
+</table>
