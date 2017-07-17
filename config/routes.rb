@@ -99,7 +99,7 @@ Rails.application.routes.draw do
   end
 
   get 'curate/topic_suggestions' => 'curator#topic_suggestions'
-
+  get 'curate' => 'curator#index'
 
 
   require 'sidekiq/web'

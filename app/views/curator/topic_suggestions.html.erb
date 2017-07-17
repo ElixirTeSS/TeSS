@@ -1,24 +1,30 @@
 
+<div class="wrapper">
+  <div id="sidebar" class="popout-sidebar">
 
-<div id="content">
-  <div class="row">
-
-    <div class="h2">Curate topics</div>
-    <div class="h4"><%= @suggestions.count %> possible suggestions found</div>
-    <br>
-    <div class="pull-right">
-      <%= info_button('How to curate topics in TeSS') do %>
-          <%= render_markdown(MaterialsHelper::TOPICS_INFO) %>
-      <% end %>
-    </div>
+    <h3 class="nav-heading" id="sidebar-header">
+      Blah
+    </h3>
+    <% if @leaderboard %>
+        <%= render :partial => 'leaderboard', :locals => {:leaderboard => @leaderboard} %>
+    <% end %>
   </div>
-  <div class="col-lg-9">
-<% @suggestions.each do |suggestion| %>
-    <% resource = suggestion.suggestible %>
-    <%= render layout: 'common/mixed_resources', locals: {resource: resource} do%>
-        <div class="suggestions">
-          <b>Suggested scientific topics:</b>
-        <% suggestion.scientific_topics.each do |scientific_topic, i| %>
+
+  <div id="content">
+    <div class="row">
+      <h3>Displaying all <%= pluralize @suggestions.count, 'topic suggestion' %></h3>
+      <div class="pull-right">
+        <%= info_button('How to curate topics in TeSS') do %>
+            <%= render_markdown(MaterialsHelper::TOPICS_INFO) %>
+        <% end %>
+      </div>
+    </div>
+    <% @suggestions.each do |suggestion| %>
+        <% resource = suggestion.suggestible %>
+        <%= render layout: 'common/mixed_resources', locals: {resource: resource} do%>
+            <div class="suggestions">
+              <b>Suggested scientific topics:</b>
+              <% suggestion.scientific_topics.each do |scientific_topic, i| %>
               <span class="dropdown ">
                 <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                   <%= scientific_topic.preferred_label %>
@@ -33,14 +39,14 @@
                   <li><a class="btn reject_suggestion" ><b>✗ Reject</b> <br> (This <%=resource.class.name.downcase%> <b>is not</b> about <em><%=scientific_topic.preferred_label%></em>)</a></li>
                 </ul>
               </span>
+              <% end %>
+            </div>
         <% end %>
-        </div>
     <% end %>
-<% end %>
-  </div>
-  <div class="col-lg-3">
-    <% if @leaderboard %>
-      <%= render :partial => 'leaderboard', :locals => {:leaderboard => @leaderboard} %>
-    <% end %>
+
   </div>
 </div>
+
+
+
+

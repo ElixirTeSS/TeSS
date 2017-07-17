@@ -1,25 +1,28 @@
-<div class="h5">
-  Curation Leaderboard
-</div>
 
-<table>
+<h4 class="nav-heading">
+  Curator Contributions
+</h4>
+
   <% leaderboard.each do |curator, scores| %>
-      <tr>
+    <div class="score-box nav-heading list-group-item">
         <% if current_user == curator %>
-            <td>
-              <b>You have a curation score of <%= scores['total'] %></b>
-            </td>
+          <div class="row score">
+              <b>You have made <%= pluralize scores['total'], 'contribution' %> </b>
+          </div>
+          <% scores.each do |score, value| %>
+            <div class=" row breakdown-score list-group-item">
+                <div class="col-lg-4 score-value">
+                <h1><%= value %></h1>
+                </div>
+                <div class="col-lg-8 score-desc">
+                <%= print_curation_action score %>
+                </div>
+            </div>
+          <% end %>
         <% else %>
-            <td>
-              <b><%=link_to curator.name, curator %> has a curation score of <%= scores['total'] %></b>
-            </td>
+          <div class="row">
+            <%=link_to "#{curator.full_name.blank? ? curator.username : curator.full_name}", curator %> has made <%= pluralize scores['total'], 'contribution' %>
+          </div>
         <% end %>
-      </tr>
-      <% scores.each do |score, value| %>
-          <tr>
-            <td><%= print_curation_action score %></td>
-            <td><%= value %></td>
-          </tr>
-      <% end %>
+    </div>
   <% end %>
-</table>
