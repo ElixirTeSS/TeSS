@@ -1,6 +1,14 @@
 class CuratorController < ApplicationController
   CURATION_ACTIONS = %w(material.add_topic event.add_topic material.reject_topic event.reject_topic)
 
+  before_action :set_breadcrumbs, :only => [:topic_suggestions]
+
+
+  # Hacky stub to make breadcrumbs work
+  def index
+   redirect_to '/curate/topic_suggestions'
+  end
+
   def topic_suggestions
     @suggestions = EditSuggestion.all
     @leaderboard = {}
