@@ -49,12 +49,6 @@ class User < ActiveRecord::Base
             :case_sensitive => false,
             :uniqueness => true
 
-  validates :email,
-            :presence => true,
-            :case_sensitive => false
-
-  validates_format_of :email, :with => Devise.email_regexp
-
   accepts_nested_attributes_for :profile
 
   attr_accessor :publicize_email
