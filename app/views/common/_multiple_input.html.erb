@@ -27,8 +27,7 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
 <% label ||= field_name.humanize %>
 
 <div class="form-group">
-  <%= f.label field_name.to_sym, label %>
-  <%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
+  <%= f.label field_name.to_sym, label %><%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
   <div class="<%=field_name.singularize%> multiple-input-list">
     <% field_values = resource.send(field_name.to_sym) %>
     <% field_values = [''] if field_values.blank? %> <!-- Add one placeholder if the field's value consists of an empty array -->

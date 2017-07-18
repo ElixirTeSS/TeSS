@@ -32,8 +32,7 @@ render :partial => 'common/dropdown',
 <% field_label ||= field_name.pluralize.capitalize unless field_name.blank? %>
 
 <div class="form-group">
-  <label><%= field_label %></label>
-  <%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
+  <label><%= field_label %></label><%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
 
   <div data-field="<%= field_name %>" data-model="<%= model_name %>">
     <!-- display existing ones -->
