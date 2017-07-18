@@ -5,41 +5,24 @@
     </div>
     <div class="row">
       <div class="col-md-6">
-        <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+        <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
             <%= devise_error_messages! %>
 
-            <div class="form-group">
-              <%= f.label :username %><br />
-              <%= f.text_field :username, autofocus: true, class: "form-control" %><br />
-            </div>
+            <%= f.input :username, autofocus: true %>
 
-            <div class="form-group">
-              <%= f.label :email %><br />
-              <%= f.email_field :email, autofocus: false, class: "form-control" %><br />
-            </div>
+            <%= f.input :email, required: true %>
 
-            <div class="form-group">
-              <%= f.check_box(:publicize_email) %>
-              <%= f.label :publicize_email, 'Make my email publicly visible' %>
-            </div>
+            <%= f.input :publicize_email, as: :boolean, label: 'Make my email publicly visible' %>
 
-            <div class="form-group">
-              <%= f.label :password %>
-              <% if @minimum_password_length %>
-                  <em>(<%= @minimum_password_length %> characters minimum)</em>
-              <% end %><br />
-              <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
-            </div>
+            <%= f.input :password, required: true, input_html: { autocomplete: 'off' },
+                        hint: "(#{@minimum_password_length} characters minimum)" if @minimum_password_length %>
 
-            <div class="form-group">
-              <%= f.label :password_confirmation %><br />
-              <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
-            </div>
+            <%= f.input :password_confirmation, required: true, input_html: { autocomplete: 'off' } %>
 
             <% unless Rails.application.secrets.recaptcha['sitekey'].blank? -%>
-              <div class="form-group">
-                <%= recaptcha_tags ajax: true %>
-              </div>
+                <div class="form-group">
+                  <%= recaptcha_tags ajax: true %>
+                </div>
             <% end -%>
 
             <div class="actions">

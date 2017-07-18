@@ -5,22 +5,13 @@
     </div>
     <div class="row">
       <div class="col-md-6">
-        <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-            <div class="form-group">
-              <%= f.label 'Email or username' %><br />
-              <%= f.text_field :login, autofocus: true, class: "form-control" %>
-            </div>
+        <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+            <%= f.input :login, label: 'Email or username', autofocus: true %>
 
-            <div class="form-group">
-              <%= f.label :password %><br />
-              <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
-            </div>
+            <%= f.input :password, input_html: { autocomplete: 'off' } %>
 
             <% if devise_mapping.rememberable? -%>
-                <div class="form-group">
-                  <%= f.check_box :remember_me %>
-                  <%= f.label :remember_me %>
-                </div>
+                <%= f.input :remember_me, as: :boolean %>
             <% end -%>
 
             <div class="actions">

@@ -2,13 +2,10 @@
   <%= page_title 'Forgot your password?' %>
 </div>
 <div class="col-md-6">
-  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-      <%= devise_error_messages! %>
+  <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+      <%= devise_error_messages!('There was a problem resetting your password:') %>
 
-      <div class="form-group">
-        <%= f.label :email %><br />
-        <%= f.email_field :email, autofocus: true, class: "form-control" %>
-      </div>
+      <%= f.input :email, autofocus: true %>
 
       <div class="actions">
         <%= f.submit "Send me reset password instructions", :class => 'btn btn-primary' %>
