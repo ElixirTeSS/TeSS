@@ -91,7 +91,7 @@
 
   <div id="content">
     <div class="row">
-      <div class="content_action col-md-6 text-right">
+      <div class="content_action">
         <% if !current_user.nil? and policy(@user).update? %>
             <%= link_to t('.edit', :default => 'Edit profile'), edit_user_path(@user), :class => 'btn btn-primary' %>
 
