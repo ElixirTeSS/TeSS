@@ -1,15 +1,6 @@
 <%= simple_form_for(@node) do |f| %>
-    <% if @node.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(@node.errors.count, "error") %> prohibited this node from being saved:</h2>
 
-          <ul>
-            <% @node.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-            <% end %>
-          </ul>
-        </div>
-    <% end %>
+    <%= render partial: 'common/error_summary', locals: { resource_name: 'report', resource: @node } %>
 
     <div class="form-group">
       <%= f.label :name %>

@@ -2,21 +2,8 @@
   <div class="col-md-6">
     <%= simple_form_for @user, :html => {:class => "form-horizontal profile"} do |user_f| %>
         <%= user_f.fields_for :profile do |f| %>
-            <% if @user.profile.errors.any? %>
-                <div id="error_expl" class="panel panel-danger">
-                  <div class="panel-heading">
-                    <h3 class="panel-title"><%= pluralize(@user.profile.errors.count, "error") %> prohibited this
-                      profile from being saved:</h3>
-                  </div>
-                  <div class="panel-body">
-                    <ul>
-                      <% @user.profile.errors.full_messages.each do |msg| %>
-                          <li><%= msg %></li>
-                      <% end %>
-                    </ul>
-                  </div>
-                </div>
-            <% end %>
+
+            <%= render partial: 'common/error_summary', locals: { resource: @user.profile } %>
 
             <div class="form-group">
               <%= f.label :firstname, :class => 'control-label' %>

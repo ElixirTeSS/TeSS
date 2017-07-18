@@ -1,19 +1,6 @@
 <%= simple_form_for @package, html: { class: 'content_provider', multipart: true } do |f| %>
-    <% if @package.errors.any? %>
-        <div id="error_expl" class="panel panel-danger">
-          <div class="panel-heading">
-            <h3 class="panel-title"><%= pluralize(@package.errors.count, "error") %> prohibited this package from
-              being saved:</h3>
-          </div>
-          <div class="panel-body">
-            <ul>
-              <% @package.errors.full_messages.each do |msg| %>
-                  <li><%= msg %></li>
-              <% end %>
-            </ul>
-          </div>
-        </div>
-    <% end %>
+
+    <%= render partial: 'common/error_summary', locals: { resource: @package } %>
 
     <div class="form-group">
       <%= f.label :title %>

@@ -1,19 +1,6 @@
 <%= simple_form_for @material, :html => {:id => 'material_form'} do |f| %>
-    <% if @material.errors.any? %>
-        <div id="error_expl" class="panel panel-danger">
-          <div class="panel-heading">
-            <h3 class="panel-title"><%= pluralize(@material.errors.count, "error") %> prohibited this material from
-              being saved:</h3>
-          </div>
-          <div class="panel-body">
-            <ul>
-              <% @material.errors.full_messages.each do |msg| %>
-                  <li><%= msg %></li>
-              <% end %>
-            </ul>
-          </div>
-        </div>
-    <% end %>
+
+    <%= render partial: 'common/error_summary', locals: { resource: @material } %>
 
     <%# Necessary to allow removal of all field locks %>
     <%= hidden_field_tag 'material[locked_fields][]', '' %>
