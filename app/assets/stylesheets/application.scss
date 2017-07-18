@@ -35,12 +35,12 @@ body {
   min-width: 320px;
   position: relative;
   margin: 0;
-  padding-bottom: 130px;
+  padding-bottom: 150px;
   min-height: 100%;
 }
 
 .footer {
-  padding: 0px;
+  padding: 0;
   position: absolute;
   right: 0;
   bottom: 0;
@@ -486,7 +486,7 @@ ul.featureblocks {
 
   li {
     float: left;
-    width: 20%;
+    width: 25%;
     padding: 0 12px;
     border-right: 1px dotted #ccc;
     &:last-child {
@@ -739,3 +739,6 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
   margin-right: 5px;
 }
 
+.alert-info a {
+  text-decoration: underline;
+}

@@ -329,7 +329,6 @@ class MaterialsControllerTest < ActionController::TestCase
       assert_select 'li' do
         assert_select 'a[data-toggle="tab"]', :count => 2 # Material, Activity
       end
-      assert_select 'li.disabled', :count => 1 # Packages
     end
   end
 
