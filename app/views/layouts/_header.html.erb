@@ -74,15 +74,17 @@
   </nav>
 </header>
 
-<% if defined? TeSS::Config.announcement_message and !TeSS::Config.announcement_message.blank? %>
-    <div class="alert alert-danger fade in" id="front-page-announcement">
-      <button class="close" data-dismiss="alert" aria-label="close">&times;</button>
-      <%= TeSS::Config.announcement_message.html_safe %>
-    </div>
-<% end %>
+<div class="container-fluid" id="header-container">
+  <% if defined? TeSS::Config.announcement_message and !TeSS::Config.announcement_message.blank? %>
+      <div class="alert alert-danger fade in" id="front-page-announcement">
+        <button class="close" data-dismiss="alert" aria-label="close">&times;</button>
+        <%= TeSS::Config.announcement_message.html_safe %>
+      </div>
+  <% end %>
 
-<% if !defined? @skip_flash_messages_in_header or !@skip_flash_messages_in_header%>
-    <div id="flash-container" class="container">
-      <%= flash_messages %>
-    </div>
-<% end %>
+  <% if !defined? @skip_flash_messages_in_header or !@skip_flash_messages_in_header%>
+      <div id="flash-container">
+        <%= flash_messages %>
+      </div>
+  <% end %>
+</div>
