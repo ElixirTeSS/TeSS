@@ -18,12 +18,7 @@
     <%# Necessary to allow removal of all field locks %>
     <%= hidden_field_tag 'material[locked_fields][]', '' %>
 
-    <div class="form-group">
-      <%= f.label :title %>
-      <%= f.field_lock :title %>
-      <%= f.text_field :title, :class => 'form-control' %>
-      <%#= error_span(@material[:title]) %>
-    </div>
+    <%= f.input :title, field_lock: true %>
 
     <%= render partial: 'common/url_checker', locals: { f: f, url: materials_check_exists_path } %>
 

@@ -715,6 +715,8 @@ input[type=checkbox].field-lock + label:before {
   display: inline-block;
   content: "\f09c";
   letter-spacing: 10px;
+  margin-left: 0.5em;
+  vertical-align: middle;
 }
 
 input[type=checkbox].field-lock:checked + label:before {
