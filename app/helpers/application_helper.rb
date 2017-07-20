@@ -7,7 +7,7 @@ module ApplicationHelper
     success: 'alert-success',
     error: 'alert-danger',
     alert: 'alert-warning',
-    notice: 'alert-info',
+    notice: 'alert-success',
     warning: 'alert-warning',
     info: 'alert-info'
   }.freeze
