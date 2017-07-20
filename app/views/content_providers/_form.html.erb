@@ -2,45 +2,30 @@
 
     <%= render partial: 'common/error_summary', locals: { resource: @content_provider } %>
 
-    <div class="form-group">
-      <%= f.label :title %>
-      <%= f.text_field :title, :class => 'form-control' %>
-      <%#= error_span(@content_provider[:title]) %>
-    </div>
+    <%= f.input :title, as: :string %>
 
     <%= render partial: 'common/url_checker', locals: { f: f, url: content_providers_check_exists_path } %>
 
-    <div class="form-group">
-      <%= f.label :description %>
-      <%= f.markdown_area :description, :class => 'form-control', :rows => "10" %>
-    </div>
+    <%= f.input :description, as: :markdown_area, input_html: { rows: '10' } %>
+
     <div class="form-group">
       <%= render partial: 'common/image_form', locals: { form: f } %>
     </div>
-    <div class="form-group">
-      <%= f.label :content_provider_type, "Type" %>
-      <%= f.select :content_provider_type, ContentProvider::PROVIDER_TYPE, {}, {:class => "form-control"} %>
-    </div>
-    <div class="form-group">
-      <%= f.label :node, "ELIXIR node" %>
-      <%= f.select(:node_id, options_for_select(Node.all.collect { |node| [node.name, node.id] }, (@content_provider.node.blank? ? nil : @content_provider.node.id)), {include_blank: true}, :class => "form-control") %>
-    </div>
 
-    <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords', :resource => @content_provider, :f => f} %>
+    <%= f.input :content_provider_type, label: 'Type', collection: ContentProvider::PROVIDER_TYPE, include_blank: false %>
+
+    <%= f.input :node_id, label: 'ELIXIR node', collection: Node.all, label_method: :title %>
+
+    <%= render partial: 'common/multiple_input', locals: {field_name: 'keywords', resource: @content_provider, f: f} %>
 
     <% if current_user.is_admin? %>
-        <div class="form-group">
-          <%= f.label :user_id, 'Owner' %>
-          <%= f.select(:user_id, options_for_select(User.all.collect { |user| ["#{user.username} (#{user.email})", user.id] },
-                                                    (@content_provider.user.blank? ? nil : @content_provider.user.id)),
-                       { include_blank: true }, class: 'form-control') %>
-        </div>
+        <%= f.input :user_id, label: 'Owner', collection: User.all %>
     <% end %>
 
     <div class="form-group">
-      <%= f.submit ( f.object.new_record? ? "Register" : "Update") + " content provider", :class => 'btn btn-primary' %>
-      <%= link_to 'Back', content_providers_path, :class=>"btn btn-info" %>
-      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                  content_providers_path, :class => 'btn btn-default' %>
+      <%= f.submit ( f.object.new_record? ? "Register" : "Update") + " content provider", class: 'btn btn-primary' %>
+      <%= link_to 'Back', content_providers_path, class: "btn btn-info" %>
+      <%= link_to t('.cancel', default: t("helpers.links.cancel")),
+                  content_providers_path, class: 'btn btn-default' %>
     </div>
 <% end %>

@@ -26,6 +26,8 @@ en:
     event_policy:
   activerecord:
     attributes:
+      content_provider:
+        url: 'URL'
       event:
         url: 'URL'
       material:

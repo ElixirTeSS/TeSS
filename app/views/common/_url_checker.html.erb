@@ -2,5 +2,5 @@
 <% opts['data-url-check'] = url if f.object.new_record? %>
 
 <div class="form-group">
-  <%= f.input :url, hint: ' ', field_lock: f.object.respond_to?(:locked_fields), input_html: opts %>
+  <%= f.input :url, as: :string, hint: ' ', field_lock: f.object.respond_to?(:locked_fields), input_html: opts %>
 </div>

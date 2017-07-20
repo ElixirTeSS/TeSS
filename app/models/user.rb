@@ -167,6 +167,11 @@ class User < ActiveRecord::Base
     user
   end
 
+  # Used by `simple_form` when presenting a collection (i.e. for a <select> tag)
+  def to_label
+    "#{username} (#{email})"
+  end
+
   private
 
   def reassign_owner
