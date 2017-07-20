@@ -5,26 +5,15 @@
     <%# Necessary to allow removal of all field locks %>
     <%= hidden_field_tag 'material[locked_fields][]', '' %>
 
-    <%= f.input :title, field_lock: true %>
+    <%= f.input :title, as: :string, field_lock: true %>
 
     <%= render partial: 'common/url_checker', locals: { f: f, url: materials_check_exists_path } %>
 
-    <div class="form-group">
-      <%= f.label :short_description %>
-      <%= f.field_lock :short_description %>
-      <%= f.markdown_area :short_description, :class => 'form-control', :rows => '5' %>
-    </div>
-    <div class="form-group">
-      <%= f.label :long_description %>
-      <%= f.field_lock :long_description %>
-      <%= f.markdown_area :long_description, :class => 'form-control', :rows => '10' %>
-    </div>
-    <div class="form-group">
-      <%= f.label :doi, "DOI" %>
-      <%= f.field_lock :doi %>
-      <%= f.text_field :doi, :class => 'form-control' %>
-      <%#= error_span(@material[:doi]) %>
-    </div>
+    <%= f.input :short_description, as: :markdown_area, input_html: { rows: '5' }, field_lock: true %>
+
+    <%= f.input :long_description, as: :markdown_area, input_html: { rows: '10' }, field_lock: true %>
+
+    <%= f.input :doi, field_lock: true %>
 
     <%= render :partial => 'content_providers/partials/add_content_provider', :locals => {:f => f, :resource => @material} %>
 
@@ -58,23 +47,9 @@
                                                                  :f => f,
                                                                  :suggestions => raw(Tess::AutocompleteManager.suggestions_array_for('resource_type').to_json) } %>
 
-    <div class="form-group">
-      <%= f.label :difficulty_level %>
-      <%= f.field_lock :difficulty_level %>
-      <%= f.select(:difficulty_level,
-                   options_for_select(difficulty_options_for_select, @material.difficulty_level.blank? ? "notspecified" : @material.difficulty_level), {},
-                   class: "form-control")
-      %>
-    </div>
+    <%= f.input :difficulty_level, collection: difficulty_options_for_select, selected: @material.difficulty_level.blank? ? "notspecified" : @material.difficulty_level, field_lock: true %>
 
-    <div class="form-group">
-      <%= f.label :licence %>
-      <%= f.field_lock :licence %>
-      <%= f.select(:licence,
-                   options_for_select(licence_options_for_select, @material.licence.blank? ? "notspecified" : @material.licence), {},
-                   class: "form-control")
-      %>
-    </div>
+    <%= f.input :licence, collection: licence_options_for_select, selected: @material.licence.blank? ? "notspecified" : @material.licence, field_lock: true %>
 
     <%= render :partial => 'common/multiple_input',
                :locals => {:field_name => 'authors',
@@ -123,8 +98,6 @@
                   materials_path, :class => 'btn btn-default' %>
     </div>
 <% end %>
-
-
 
 <div id="external-resource-template" style="display: none">
   <%= render partial: 'common/external_resource_form',

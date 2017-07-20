@@ -1,6 +1,3 @@
 <% label ||= "Content provider" %>
-<div class="form-group">
-  <%= f.label label %>
-  <%= f.field_lock(:content_provider_id) if f.object.respond_to?(:locked_fields) %>
-  <%= f.select(:content_provider_id, options_for_select(ContentProvider.all.collect { |cp| [cp.title, cp.id] }, (resource.content_provider.blank? ? nil : resource.content_provider.id)), {include_blank: true}, :class => "form-control") %>
-</div>
+<%= f.input :content_provider_id, label: label, collection: ContentProvider.all, label_method: :title, value_method: :id,
+            include_blank: true, field_lock: f.object.respond_to?(:locked_fields) %>

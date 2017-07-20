@@ -35,24 +35,13 @@
     <%# Necessary to allow removal of all field locks %>
     <%= hidden_field_tag 'event[locked_fields][]', '' %>
 
-    <div class="form-group">
-      <%= f.label :title %>
-      <%= f.field_lock :title %>
-      <%= f.text_field :title, :class => 'form-control' %>
-    </div>
-    <div class="form-group">
-      <%= f.label :subtitle %>
-      <%= f.field_lock :subtitle %>
-      <%= f.text_field :subtitle, :class => 'form-control' %>
-    </div>
+    <%= f.input :title, as: :string, field_lock: true %>
+
+    <%= f.input :subtitle, field_lock: true %>
 
     <%= render partial: 'common/url_checker', locals: { f: f, url: events_check_exists_path } %>
 
-    <div class="form-group">
-      <%= f.label :organizer, "Organizer" %>
-      <%= f.field_lock :organizer, "Organizer" %>
-      <%= f.text_field :organizer, :class => 'form-control' %>
-    </div>
+    <%= f.input :organizer, field_lock: true %>
 
     <%= render :partial => 'content_providers/partials/add_content_provider',
                :locals => {:f => f,
@@ -68,11 +57,7 @@
                            :existing => format_for_dropdown(@event.nodes),
                            :dropdown_toggle_button_name => "Associate with node"} %>
 
-    <div class="form-group">
-      <%= f.label :description %>
-      <%= f.field_lock :description %>
-      <%= f.markdown_area :description, :rows => "10", :class => 'form-control' %>
-    </div>
+    <%= f.input :description, as: :markdown_area, input_html: { rows: '10' }, field_lock: true %>
 
     <%= render :partial => 'common/dropdown',
                :locals => {:field_name => 'event_types',
@@ -112,46 +97,22 @@
                          f: f,
                          suggestions: raw(Tess::AutocompleteManager.suggestions_array_for('host_institutions').to_json)} %>
 
-    <div class="form-group">
-      <%= f.label :start %>
-      <%= f.field_lock :start %>
-      <%= datetime_picker(f, :start) %>
-    </div>
+    <%= f.input :start, as: :datetime_picker, field_lock: true %>
 
-    <div class="form-group">
-      <%= f.label :end %>
-      <%= f.field_lock :end %>
-      <%= datetime_picker(f, :end) %>
-    </div>
+    <%= f.input :end, as: :datetime_picker, field_lock: true %>
 
     <!-- TODO: add autocomplete to this field -->
-    <div class="form-group">
-      <%= f.label :timezone %>
-      <%= f.field_lock :timezone %>
-      <%= f.text_field :timezone, :class => 'form-control' %>
-    </div>
+    <%= f.input :timezone, field_lock: true %>
 
-    <div class="form-group">
-      <%= f.label :sponsor %>
-      <%= f.field_lock :sponsor %>
-      <%= f.text_field :sponsor, :class => 'form-control' %>
-    </div>
+    <%= f.input :sponsor, field_lock: true %>
 
-    <div class="form-group">
-      <%= f.label :contact %>
-      <%= f.field_lock :contact %>
-      <%= f.text_area :contact, :rows => '5', :class => 'form-control' %>
-    </div>
+    <%= f.input :contact, input_html: { rows: '5' }, field_lock: true %>
 
     <div class="address_content">
       <%= render partial: 'events/partials/address_finder', locals: { f: f } %>
     </div>
 
-    <div class="form-group">
-      <%= f.label :capacity %>
-      <%= f.field_lock :capacity %>
-      <%= f.text_field :capacity, :class => 'form-control' %>
-    </div>
+    <%= f.input :capacity, field_lock: true %>
 
     <%= render :partial => 'common/dropdown',
                :locals => {:field_name => 'eligibility',
@@ -163,8 +124,7 @@
                            :dropdown_toggle_button_name => "Eligibility"} %>
 
     <div class="form-group">
-      <%= f.label 'for_profit' %> <%= icon_for(:for_profit, :small)%>
-      <%= f.field_lock :for_profit %>
+      <%= f.label 'for_profit' %> <%= icon_for(:for_profit, :small) %><%= f.field_lock :for_profit %>
       <%= f.check_box :for_profit %>
     </div>
 

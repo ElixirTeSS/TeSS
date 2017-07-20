@@ -26,8 +26,11 @@ en:
     event_policy:
   activerecord:
     attributes:
+      event:
+        url: 'URL'
       material:
         doi: 'DOI'
+        url: 'URL'
       profile:
         firstname: 'First name'
         surname: 'Last name'

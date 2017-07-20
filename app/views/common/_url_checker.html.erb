@@ -1,8 +1,6 @@
+<% opts = {} %>
+<% opts['data-url-check'] = url if f.object.new_record? %>
+
 <div class="form-group">
-  <%= f.label :url, label: 'URL', class: 'control-label' %>
-  <%= f.field_lock(:url) if f.object.respond_to?(:locked_fields) %>
-  <% opts = { class: 'form-control' } %>
-  <% opts['data-url-check'] = url if f.object.new_record? %>
-  <%= f.text_field :url, opts %>
-  <p class="help-block"></p>
+  <%= f.input :url, hint: ' ', field_lock: f.object.respond_to?(:locked_fields), input_html: opts %>
 </div>
