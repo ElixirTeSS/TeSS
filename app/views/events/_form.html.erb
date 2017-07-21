@@ -43,10 +43,9 @@
 
     <%= f.input :organizer, field_lock: true %>
 
-    <%= render :partial => 'content_providers/partials/add_content_provider',
-               :locals => {:f => f,
-                           :resource => @event,
-                           :label => "Content provider (where the event metadata is obtained from)"} %>
+    <%= f.input :content_provider_id, label: 'Content provider (where the event metadata is obtained from)',
+                collection: ContentProvider.all, label_method: :title, value_method: :id, include_blank: true,
+                field_lock: true %>
 
     <%= f.dropdown :node_ids, options: format_for_dropdown(Node.order(:name).all), label: 'Nodes' %>
 

@@ -1,3 +1,0 @@
-<% label ||= "Content provider" %>
-<%= f.input :content_provider_id, label: label, collection: ContentProvider.all, label_method: :title, value_method: :id,
-            include_blank: true, field_lock: f.object.respond_to?(:locked_fields) %>
