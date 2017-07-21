@@ -48,25 +48,11 @@
                            :resource => @event,
                            :label => "Content provider (where the event metadata is obtained from)"} %>
 
-    <%= render :partial => 'common/dropdown',
-               :locals => {:field_name => 'node_ids',
-                           :field_label => 'Nodes',
-                           :resource => @event,
-                           :f => f,
-                           :options => format_for_dropdown(Node.order(:name).all),
-                           :existing => format_for_dropdown(@event.nodes),
-                           :dropdown_toggle_button_name => "Associate with node"} %>
+    <%= f.dropdown :node_ids, options: format_for_dropdown(Node.order(:name).all), label: 'Nodes' %>
 
     <%= f.input :description, as: :markdown_area, input_html: { rows: '10' }, field_lock: true %>
 
-    <%= render :partial => 'common/dropdown',
-               :locals => {:field_name => 'event_types',
-                           :field_label => 'Event type',
-                           :resource => @event,
-                           :f => f,
-                           :options => Tess::EventTypeDictionary.instance.options_for_select,
-                           :existing => Tess::EventTypeDictionary.instance.options_for_select(@event.event_types),
-                           :dropdown_toggle_button_name => "Event type"} %>
+    <%= f.dropdown :event_types, options: Tess::EventTypeDictionary.instance.options_for_select, label: 'Event type' %>
 
     <%= render :partial => 'common/multiple_input',
                locals: { field_name: 'scientific_topic_names',
@@ -114,14 +100,7 @@
 
     <%= f.input :capacity, field_lock: true %>
 
-    <%= render :partial => 'common/dropdown',
-               :locals => {:field_name => 'eligibility',
-                           :field_label => 'Eligibility',
-                           :resource => @event,
-                           :f => f,
-                           :options => Tess::EligibilityDictionary.instance.options_for_select,
-                           :existing => Tess::EligibilityDictionary.instance.options_for_select(@event.eligibility),
-                           :dropdown_toggle_button_name => "Eligibility"} %>
+    <%= f.dropdown :eligibility, options: Tess::EligibilityDictionary.instance.options_for_select, label: 'Eligibility' %>
 
     <div class="form-group">
       <%= f.label 'for_profit' %> <%= icon_for(:for_profit, :small) %><%= f.field_lock :for_profit %>

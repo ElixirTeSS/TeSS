@@ -296,6 +296,16 @@ module ApplicationHelper
       @template.check_box_tag(field_name, name.to_s, object.field_locked?(name), id: field_id, class: 'field-lock') +
           @template.label_tag(field_id, '', title: 'Lock this field to prevent it being overwritten when automated scrapers are run')
     end
+
+    def dropdown(name, options = {})
+      existing_values = object.send(name.to_sym)
+      existing = options[:options].select { |k, v| existing_values.include?(k) }
+      @template.render(partial: 'common/dropdown', locals: { field_name: name, f: self,
+                                                             resource: object,
+                                                             options: options[:options],
+                                                             existing: existing,
+                                                             field_label: options[:label] })
+    end
   end
 
   def schemaorg_field(resource, attribute)

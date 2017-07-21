@@ -20,14 +20,19 @@ render :partial => 'common/dropdown',
      }
  -->
 
-<% model_name =  resource.class.name.underscore #e.g. package %>
-<% options ||= format_for_dropdown(field_name.capitalize.constantize.all) %>
-<% existing ||= format_for_dropdown(resource.send(field_name.pluralize)) %>
+<%
+  model_name =  resource.class.name.underscore #e.g. package
+  options ||= format_for_dropdown(field_name.capitalize.constantize.all)
+  existing ||= format_for_dropdown(resource.send(field_name.pluralize))
+  # Remove existing objects from the pool of options
+  options = options - existing
+  dropdown_toggle_button_name ||= ''
+  if dropdown_toggle_button_name.blank?
+    dropdown_toggle_button_name = "Add #{field_name.to_s.sub(/_ids?\z/, '').humanize}"
+  end
+%>
 
-<%# Remove existing objects from the pool of options %>
-<% options = options - existing %>
 <!-- Name for the dropdown toggle button, if not specified will be set to 'Add <%#= field_name %>' -->
-<% dropdown_toggle_button_name ||= '' %>
 
 <% field_label ||= field_name.pluralize.capitalize unless field_name.blank? %>
 
@@ -52,7 +57,7 @@ render :partial => 'common/dropdown',
     <!-- Create list of dropdown options-->
     <div class="dropdown">
       <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        <%= dropdown_toggle_button_name.blank? ? "Add #{field_name}" : dropdown_toggle_button_name %>
+        <%= dropdown_toggle_button_name %>
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu <%= field_name %>-options"
