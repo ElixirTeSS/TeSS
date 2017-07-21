@@ -2,53 +2,20 @@
 
 <div class="form-group">
   <%= f.label field_name %><%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
-  <ul id="<%= field_name -%>-list">
+
+  <div data-role="autocompleter-group" data-url="<%= url -%>" data-prefix="<%= "#{model_name}[#{field_name.to_s.singularize}_ids]" -%>">
     <%# This blank association is needed to trigger the delete when all associations are removed %>
     <input type="hidden" name="<%= model_name %>[<%= field_name.to_s.singularize %>_ids][]" value="" />
-    <% f.object.send(field_name).each do |resource| %>
-        <%# This duplicates what is in javascripts/templates/autocompleter/resource.hbs :( %>
-        <li data-id="<%= resource.id %>">
-          <input type="hidden" name="<%= model_name %>[<%= field_name.to_s.singularize %>_ids][]" value="<%= resource.id %>" />
-          <%= resource.title %> <a href="#" class="delete-list-item">&times;</a>
-        </li>
-    <% end %>
-  </ul>
-  <input type="text" autocomplete="off" class="form-control" id="<%= field_name -%>-autocompleter" placeholder="Add a new <%= field_name.to_s.singularize -%>...">
+
+    <ul data-role="autocompleter-list">
+      <% f.object.send(field_name).each do |resource| %>
+          <%# This duplicates what is in javascripts/templates/autocompleter/resource.hbs :( %>
+          <li data-id="<%= resource.id %>">
+            <input type="hidden" name="<%= model_name %>[<%= field_name.to_s.singularize %>_ids][]" value="<%= resource.id %>" />
+            <%= resource.title %> <a href="#" class="delete-list-item">&times;</a>
+          </li>
+      <% end %>
+    </ul>
+    <input type="text" data-role="autocompleter-input" autocomplete="off" class="form-control" placeholder="Add a new <%= field_name.to_s.singularize -%>...">
+  </div>
 </div>
-
-<script>
-  // TODO: Move this into a proper javascript file
-  $(document).ready(function () {
-    $('#<%= field_name -%>-autocompleter').autocomplete({
-      serviceUrl: '<%= url -%>',
-      dataType: 'json',
-      deferRequestBy: 300, // Wait 300ms before submitting to stop search being flooded
-      paramName: 'q',
-      onSearchStart: function (query) {
-        query.q = query.q + '*';
-      },
-      transformResult: function(response) {
-        return {
-          suggestions: $.map(response, function(item) {
-            return { value: item.title, data: item.id };
-          })
-        };
-      },
-      onSelect: function (suggestion) {
-        var listElement = $('#<%= field_name -%>-list');
-        // Don't add duplicates
-        if (!$("[data-id='" + suggestion.data + "']", listElement).length) {
-          var obj = {
-            id: suggestion.data,
-            title: suggestion.value,
-            prefix: "<%= model_name -%>[<%= field_name.to_s.singularize -%>_ids]"
-          };
-
-          listElement.append(HandlebarsTemplates['autocompleter/resource'](obj));
-        }
-
-        $(this).val('').focus();
-      }
-    });
-  });
-</script>

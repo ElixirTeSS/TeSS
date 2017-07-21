@@ -127,4 +127,43 @@ $(document).ready(function () {
 
 
     new Clipboard('.clipboard-btn');
+
+    // Autocompleters ("app/views/common/_autocompleter.html.erb")
+    $('[data-role="autocompleter-group"]').each(function () {
+        var listElement = $(this).find('[data-role="autocompleter-list"]');
+        var inputElement = $(this).find('[data-role="autocompleter-input"]');
+        var url = $(this).data('url');
+        var prefix = $(this).data('prefix');
+
+        inputElement.autocomplete({
+            serviceUrl: url,
+            dataType: 'json',
+            deferRequestBy: 300, // Wait 300ms before submitting to stop search being flooded
+            paramName: 'q',
+            onSearchStart: function (query) {
+                query.q = query.q + '*';
+            },
+            transformResult: function(response) {
+                return {
+                    suggestions: $.map(response, function(item) {
+                        return { value: item.title, data: item.id };
+                    })
+                };
+            },
+            onSelect: function (suggestion) {
+                // Don't add duplicates
+                if (!$("[data-id='" + suggestion.data + "']", listElement).length) {
+                    var obj = {
+                        id: suggestion.data,
+                        title: suggestion.value,
+                        prefix: prefix
+                    };
+
+                    listElement.append(HandlebarsTemplates['autocompleter/resource'](obj));
+                }
+
+                $(this).val('').focus();
+            }
+        });
+    });
 });
