@@ -107,7 +107,7 @@
       <%= f.check_box :for_profit %>
     </div>
 
-    <%= render :partial => 'common/autocompleter', locals: { field_name: :materials, url: materials_path, f: f } %>
+    <%= f.autocompleter :materials %>
 
     <div class="form-group" id="external-resources">
       <%= f.label :external_resources %>

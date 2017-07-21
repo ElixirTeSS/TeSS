@@ -67,7 +67,7 @@
                            :suggestions => raw([Tess::AutocompleteManager.suggestions_array_for('contributors') +
                                                     Tess::AutocompleteManager.suggestions_array_for('authors')].flatten.uniq.to_json)} %>
 
-    <%= render :partial => 'common/autocompleter', locals: { field_name: :events, url: events_path, f: f } %>
+    <%= f.autocompleter :events %>
 
     <div class="form-group" id="external-resources">
       <%= f.label :external_resources %>

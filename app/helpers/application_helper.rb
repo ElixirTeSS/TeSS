@@ -306,6 +306,11 @@ module ApplicationHelper
                                                              existing: existing,
                                                              field_label: options[:label] })
     end
+
+    def autocompleter(name, options = {})
+      url = options[:url] || @template.polymorphic_path(name)
+      @template.render(partial: 'common/autocompleter', locals: { field_name: name, f: self, url: url })
+    end
   end
 
   def schemaorg_field(resource, attribute)

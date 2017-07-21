@@ -2,17 +2,14 @@
 
     <%= render partial: 'common/error_summary', locals: { resource: @package } %>
 
-    <div class="form-group">
-      <%= f.label :title %>
-      <%= f.text_field :title, :class => 'form-control' %>
-    </div>
-    <div class="form-group">
-      <%= f.label :description %>
-      <%= f.markdown_area :description, :class => 'form-control', :rows => '10' %>
-    </div>
+    <%= f.input :title %>
+
+    <%= f.input :description, as: :markdown_area, input_html: { rows: '10' } %>
+
     <div class="form-group">
       <%= render partial: 'common/image_form', locals: { form: f } %>
     </div>
+
     <div class="form-group">
       <%= f.label :public, :class=>"checkbox inline" %>
       <%= f.check_box :public %>
@@ -24,8 +21,9 @@
                            :f => f,
                            :suggestions => raw(Tess::AutocompleteManager.suggestions_array_for('keywords').to_json)} %>
 
-    <%= render :partial => 'common/autocompleter', locals: { field_name: :materials, url: materials_path, f: f } %>
-    <%= render :partial => 'common/autocompleter', locals: { field_name: :events, url: events_path, f: f } %>
+    <%= f.autocompleter :materials %>
+
+    <%= f.autocompleter :events %>
 
     <div class="form-group actions">
       <%= f.submit ( f.object.new_record? ? "Create" : "Update") + " package", :class => 'btn btn-primary' %>
