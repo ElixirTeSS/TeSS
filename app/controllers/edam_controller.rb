@@ -17,11 +17,19 @@ class EdamController < ApplicationController
   def list(terms)
     @terms = terms
 
-    if params[:filter]
-      @terms = @terms.select { |t| t.preferred_label.downcase.start_with?(params[:filter].downcase) }
+    if filter_param
+      @terms = @terms.select { |t| t.preferred_label.downcase.start_with?(filter_param.downcase) }
     end
 
     render 'index', format: :json
+  end
+
+  def filter_param
+    if params[:filter].present?
+      params[:filter]
+    elsif params[:q].present?
+      params[:q].chomp('*') # Chop off the * appended automatically by the autocompleter
+    end
   end
 
 end

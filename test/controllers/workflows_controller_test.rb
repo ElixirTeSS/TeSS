@@ -28,7 +28,7 @@ class WorkflowsControllerTest < ActionController::TestCase
   end
 
   test "should get index as json" do
-    @workflow.scientific_topic_names = ['Chromosomes']
+    @workflow.scientific_topic_uris = ['http://edamontology.org/topic_0654']
     @workflow.save!
 
     get :index, format: :json
@@ -62,7 +62,7 @@ class WorkflowsControllerTest < ActionController::TestCase
   end
 
   test "should show workflow as json" do
-    @workflow.scientific_topic_names = ['Chromosomes']
+    @workflow.scientific_topic_uris = ['http://edamontology.org/topic_0654']
     @workflow.save!
 
     get :show, id: @workflow, format: :json

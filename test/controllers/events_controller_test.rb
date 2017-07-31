@@ -41,7 +41,7 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test 'should get index as json' do
-    @event.scientific_topic_names = ['Chromosomes']
+    @event.scientific_topic_uris = ['http://edamontology.org/topic_0654']
     @event.save!
 
     get :index, format: :json
@@ -50,7 +50,7 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test 'should get index as ICS' do
-    @event.scientific_topic_names = ['Chromosomes']
+    @event.scientific_topic_uris = ['http://edamontology.org/topic_0654']
     @event.save!
 
     get :index, format: :ics
@@ -159,7 +159,7 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test 'should show event as json' do
-    @event.scientific_topic_names = ['Chromosomes']
+    @event.scientific_topic_uris = ['http://edamontology.org/topic_0654']
     @event.save!
 
     get :show, id: @event, format: :json

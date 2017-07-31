@@ -110,8 +110,8 @@ class WorkflowsController < ApplicationController
   def workflow_params
     params.require(:workflow).permit(:title, :description, :user_id, :workflow_content, :doi,
                                      :remote_created_date,  :remote_updated_date, { keywords: [] },
-                                     { scientific_topic_names: [] }, :licence, :difficulty_level,
-                                     { contributors: [] }, { authors: [] }, { target_audience: [] },
+                                     { scientific_topic_names: [] }, { scientific_topic_uris: [] }, :licence,
+                                     :difficulty_level, { contributors: [] }, { authors: [] }, { target_audience: [] },
                                      :hide_child_nodes, :public)
   end
 

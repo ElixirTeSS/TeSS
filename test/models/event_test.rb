@@ -142,6 +142,20 @@ class EventTest < ActiveSupport::TestCase
       e.save!
     end
 
+    # Via uris
+    e.scientific_topic_links.clear
+
+    assert_difference('ScientificTopicLink.count', 2) do
+      e.scientific_topic_uris = ['http://edamontology.org/topic_0078', 'http://edamontology.org/topic_0654',
+                                  'http://edamontology.org/topic_0078', 'http://edamontology.org/topic_0654']
+      e.save!
+    end
+
+    assert_no_difference('ScientificTopicLink.count') do
+      e.scientific_topic_uris = ['http://edamontology.org/topic_0078', 'http://edamontology.org/topic_0654']
+      e.save!
+    end
+
     # Via terms
     e.scientific_topic_links.clear
 
@@ -158,9 +172,14 @@ class EventTest < ActiveSupport::TestCase
       e.save!
     end
 
-    # Both
+    # All three
     assert_no_difference('ScientificTopicLink.count') do
       e.scientific_topic_names = ['Proteins', 'Chromosomes']
+      e.save!
+    end
+
+    assert_no_difference('ScientificTopicLink.count') do
+      e.scientific_topic_uris = ['http://edamontology.org/topic_0078', 'http://edamontology.org/topic_0654']
       e.save!
     end
   end

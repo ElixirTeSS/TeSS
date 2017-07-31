@@ -31,4 +31,11 @@ module HasScientificTopics
     scientific_topic_links.map(&:scientific_topic).uniq
   end
 
+  def scientific_topic_uris= uris
+    self.scientific_topics = uris.map { |uri| EDAM::Ontology.instance.lookup(uri) }
+  end
+
+  def scientific_topic_uris
+    self.scientific_topics.map(&:uri).uniq
+  end
 end

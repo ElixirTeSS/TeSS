@@ -54,7 +54,7 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   test 'should get index as json' do
-    @material.scientific_topic_names = ['Chromosomes']
+    @material.scientific_topic_uris = ['http://edamontology.org/topic_0654']
     @material.save!
 
     get :index, format: :json
@@ -157,7 +157,7 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   test 'should show material as json' do
-    @material.scientific_topic_names = ['Chromosomes']
+    @material.scientific_topic_uris = ['http://edamontology.org/topic_0654']
     @material.save!
 
     get :show, id: @material, format: :json do

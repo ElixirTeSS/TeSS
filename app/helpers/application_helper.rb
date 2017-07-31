@@ -309,7 +309,10 @@ module ApplicationHelper
 
     def autocompleter(name, options = {})
       url = options[:url] || @template.polymorphic_path(name)
-      @template.render(partial: 'common/autocompleter', locals: { field_name: name, f: self, url: url })
+      @template.render(partial: 'common/autocompleter', locals: { field_name: name, f: self, url: url,
+                                                                  template: options[:template],
+                                                                  id_field: options[:id_field] || :id,
+                                                                  label_field: options[:label_field] || :title })
     end
   end
 

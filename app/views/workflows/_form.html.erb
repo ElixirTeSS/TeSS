@@ -21,13 +21,9 @@
               <%= f.text_field :doi, :class => 'form-control' %>
             </div>
 
-            <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'scientific_topic_names',
-                                                                        :label => 'Scientific topics',
-                                                                        :resource => @workflow,
-                                                                        :f => f,
-                                                                        :placeholder_text => 'Start typing to find topics',
-                                                                        :suggestions => raw(scientific_topic_names_for_autocomplete.to_json),
-                                                                        :disabled => true} %>
+            <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term',
+                                id_field: :uri, label_field: :preferred_label %>
+
 
             <%= render :partial => 'common/edit_suggestions', locals: { form: f } -%>
 

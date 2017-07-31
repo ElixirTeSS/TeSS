@@ -90,14 +90,6 @@ $(document).ready(function () {
         window.location.hash = this.hash;
     });
 
-    // Binding on change event to dynamically added input text fields means
-    // we have to bind the event to a parent element because the input doesn't exist yet.
-    $(document).on('blur', '.scientific_topic_names', function () {
-        if ($(this).val() != '') {
-            $(this).attr('readonly', 'true');
-        }
-    });
-
     // Disabled tabs
     $('.nav-tabs li a[data-toggle="tooltip"]').tooltip();
     $('.nav-tabs li.disabled a').click(function (e) { e.preventDefault(); return false });
@@ -130,39 +122,51 @@ $(document).ready(function () {
 
     // Autocompleters ("app/views/common/_autocompleter.html.erb")
     $('[data-role="autocompleter-group"]').each(function () {
+        var existingValues = JSON.parse($(this).find('[data-role="autocompleter-existing"]').html()) || [];
         var listElement = $(this).find('[data-role="autocompleter-list"]');
         var inputElement = $(this).find('[data-role="autocompleter-input"]');
         var url = $(this).data('url');
         var prefix = $(this).data('prefix');
+        var labelField = $(this).data('labelField') || 'title';
+        var idField = $(this).data('idField') || 'id';
+        var templateName = $(this).data('template') || 'autocompleter/resource';
+
+        // Render the existing associations on page load
+        for (var i = 0; i < existingValues.length; i++) {
+            listElement.append(HandlebarsTemplates[templateName](existingValues[i]));
+        }
 
         inputElement.autocomplete({
             serviceUrl: url,
             dataType: 'json',
             deferRequestBy: 300, // Wait 300ms before submitting to stop search being flooded
             paramName: 'q',
-            onSearchStart: function (query) {
-                query.q = query.q + '*';
-            },
             transformResult: function(response) {
                 return {
                     suggestions: $.map(response, function(item) {
-                        return { value: item.title, data: item.id };
+                        return { value: item[labelField], data: item[idField], item: item };
                     })
                 };
             },
             onSelect: function (suggestion) {
                 // Don't add duplicates
                 if (!$("[data-id='" + suggestion.data + "']", listElement).length) {
-                    var obj = {
-                        id: suggestion.data,
-                        title: suggestion.value,
-                        prefix: prefix
-                    };
+                    var obj = { item: suggestion.item };
+                    if (prefix) {
+                        obj.prefix = prefix;
+                    }
 
-                    listElement.append(HandlebarsTemplates['autocompleter/resource'](obj));
+                    listElement.append(HandlebarsTemplates[templateName](obj));
                 }
 
                 $(this).val('').focus();
+            },
+            onSearchStart: function (query) {
+                query.q = query.q + '*';
+                inputElement.addClass('loading');
+            },
+            onSearchComplete: function () {
+                inputElement.removeClass('loading');
             }
         });
     });
