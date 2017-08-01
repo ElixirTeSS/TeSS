@@ -7,54 +7,31 @@ suggestions - an array of possibles to suggest
 
 Example Usage:
 
-render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords', :resource => @content_provider, :f => f}
+render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords', :f => f}
 
 -->
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.<%=field_name.singularize%>').on('keydown.autocomplete','.<%=field_name%>', function(){
-            $(this).autocomplete({
-                orientation: 'top',
-                lookupLimit: 10,
-                lookup: <%= suggestions ||= []-%>
-            });
-        });
-    });
-</script>
 
-<% placeholder_text ||= '' %>
-<% disabled = (defined? disabled) ? disabled : false %>
-<% label ||= field_name.humanize %>
+<% label ||= field_name.to_s.humanize %>
+<% model_name = f.object.class.name.underscore %>
+<% form_field_name = "#{model_name}[#{field_name.to_s}]" %>
+<% existing = f.object.send(field_name.to_sym) %>
+<% existing = [''] if existing.blank? %> <!-- Add one placeholder if the field's value consists of an empty array -->
 
 <div class="form-group">
   <%= f.label field_name.to_sym, label %><%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
-  <div class="<%=field_name.singularize%> multiple-input-list">
-    <% field_values = resource.send(field_name.to_sym) %>
-    <% field_values = [''] if field_values.blank? %> <!-- Add one placeholder if the field's value consists of an empty array -->
 
-    <input name="<%=resource.class.name.underscore%>[<%= field_name %>][]" value="" type="hidden"/>
-    <% field_values.each do |val| %>
-        <div class="multiple-list-item">
-          <input type="text"
-                 autocomplete="off"
-                 class="multiple-input form-control <%=field_name%>"
-                 data-field='<%= field_name.singularize %>'
-                 data-model="<%=resource.class.name.underscore%>"
-                 name="<%=resource.class.name.underscore%>[<%= field_name %>][]"
-                 value="<%= val %>"
-                 <%# Using `readonly` rather than `disabled`, as `disabled` stops the elements being submitted in the form %>
-                 <%= disabled && !val.blank? ? "readonly" : '' %>
-                 placeholder="<%= placeholder_text %>"
-                 />
-          <input type="button"
-                 value='<%= "&times;".html_safe %>'
-                 class="multiple-input-delete"
-                 data-field="<%= field_name.singularize %>"/>
-        </div>
-    <% end %>
-  </div>
-  <a class="btn btn-info multiple-input-add" data-field="<%=field_name.singularize -%>" data-field-plural="<%= field_name -%>"
-                             data-model="<%=resource.class.name.underscore -%>" placeholder-text="<%= placeholder_text -%>">
-    <i class="fa fa-plus"></i> Add <%= label.singularize.downcase %>
-  </a>
+  <%= content_tag(:div, data: { role: 'multi-input', prefix: form_field_name }) do %>
+      <%# This blank association is needed to trigger the delete when all associations are removed %>
+      <input type="hidden" name="<%= form_field_name -%>[]" value="" />
+      <%= content_tag :script, raw(suggestions.to_json), type: 'application/json', data: { role: 'multi-input-suggestions' } %>
+      <%= content_tag :script, raw(existing.to_json), type: 'application/json', data: { role: 'multi-input-existing' } %>
+
+      <div class="multiple-input-list" data-role="multi-input-list">
+        <%# Populated via javascript from the JSON above %>
+      </div>
+
+      <%= link_to('#', class: 'btn btn-info', data: { role: 'multi-input-add' }) do %>
+        <i class="fa fa-plus"></i> Add <%= label.singularize.downcase %>
+      <% end %>
+  <% end %>
 </div>

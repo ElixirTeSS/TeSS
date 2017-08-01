@@ -25,38 +25,19 @@
 
     <%= render :partial => 'common/edit_suggestions', locals: { form: f } -%>
 
-    <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords',
-                                                                :resource => @material,
-                                                                :f => f,
-                                                                :suggestions => raw(Tess::AutocompleteManager.suggestions_array_for('keywords').to_json)} %>
+    <%= f.multi_input :keywords %>
 
-    <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'target_audience',
-                                                                :resource => @material,
-                                                                :f => f,
-                                                                :suggestions => raw(Tess::AutocompleteManager.suggestions_array_for('target_audience').to_json)} %>
+    <%= f.multi_input :target_audience %>
 
-    <%= render :partial => 'common/multiple_input', :locals => { :field_name => 'resource_type',
-                                                                 :resource => @material,
-                                                                 :f => f,
-                                                                 :suggestions => raw(Tess::AutocompleteManager.suggestions_array_for('resource_type').to_json) } %>
+    <%= f.multi_input :resource_type %>
 
     <%= f.input :difficulty_level, collection: difficulty_options_for_select, selected: @material.difficulty_level.blank? ? "notspecified" : @material.difficulty_level, field_lock: true %>
 
     <%= f.input :licence, collection: licence_options_for_select, selected: @material.licence.blank? ? "notspecified" : @material.licence, field_lock: true %>
 
-    <%= render :partial => 'common/multiple_input',
-               :locals => {:field_name => 'authors',
-                           :resource => @material,
-                           :f => f,
-                           :suggestions => raw([Tess::AutocompleteManager.suggestions_array_for('contributors') +
-                                                    Tess::AutocompleteManager.suggestions_array_for('authors')].flatten.uniq.to_json)} %>
+    <%= f.multi_input :authors, suggestions: people_suggestions %>
 
-    <%= render :partial => 'common/multiple_input',
-               :locals => {:field_name => 'contributors',
-                           :resource => @material,
-                           :f => f,
-                           :suggestions => raw([Tess::AutocompleteManager.suggestions_array_for('contributors') +
-                                                    Tess::AutocompleteManager.suggestions_array_for('authors')].flatten.uniq.to_json)} %>
+    <%= f.multi_input :contributors, suggestions: people_suggestions %>
 
     <%= f.autocompleter :events %>
 

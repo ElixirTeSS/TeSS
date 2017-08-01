@@ -15,11 +15,7 @@
       <%= f.check_box :public %>
     </div>
 
-    <%= render :partial => 'common/multiple_input',
-               :locals => {:field_name => 'keywords',
-                           :resource => @package,
-                           :f => f,
-                           :suggestions => raw(Tess::AutocompleteManager.suggestions_array_for('keywords').to_json)} %>
+    <%= f.multi_input :keywords %>
 
     <%= f.autocompleter :materials %>
 

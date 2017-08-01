@@ -58,23 +58,11 @@
 
     <%= render :partial => 'common/edit_suggestions', locals: { form: f } -%>
 
-    <%= render partial: 'common/multiple_input',
-               locals: { field_name: 'keywords',
-                         resource: @event,
-                         f: f,
-                         suggestions: raw(Tess::AutocompleteManager.suggestions_array_for('keywords').to_json)} %>
+    <%= f.multi_input :keywords %>
 
-    <%= render partial: 'common/multiple_input',
-               locals: { field_name: 'target_audience',
-                         resource: @event,
-                         f: f,
-                         suggestions: raw(Tess::AutocompleteManager.suggestions_array_for('target_audience').to_json)} %>
+    <%= f.multi_input :target_audience %>
 
-    <%= render partial: 'common/multiple_input',
-               locals: { field_name: 'host_institutions',
-                         resource: @event,
-                         f: f,
-                         suggestions: raw(Tess::AutocompleteManager.suggestions_array_for('host_institutions').to_json)} %>
+    <%= f.multi_input :host_institutions %>
 
     <%= f.input :start, as: :datetime_picker, field_lock: true %>
 

@@ -27,16 +27,9 @@
 
             <%= render :partial => 'common/edit_suggestions', locals: { form: f } -%>
 
-            <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords',
-                                                                        :resource => @workflow,
-                                                                        :f => f,
-                                                                        :suggestions => raw(Tess::AutocompleteManager.suggestions_array_for('keywords').to_json)} %>
+            <%= f.multi_input :keywords %>
 
-
-            <%= render :partial => 'common/multiple_input', :locals => {:field_name => 'target_audience',
-                                                                        :resource => @workflow,
-                                                                        :f => f,
-                                                                        :suggestions => raw(Tess::AutocompleteManager.suggestions_array_for('target_audience').to_json)} %>
+            <%= f.multi_input :target_audience %>
 
             <div class="form-group">
               <%= f.label :difficulty_level %>
@@ -54,20 +47,9 @@
               %>
             </div>
 
-            <%= render :partial => 'common/multiple_input',
-                       :locals => {:field_name => 'authors',
-                                   :resource => @workflow,
-                                   :f => f,
-                                   :suggestions => raw([Tess::AutocompleteManager.suggestions_array_for('contributors') +
-                                                            Tess::AutocompleteManager.suggestions_array_for('authors')].flatten.uniq.to_json)} %>
+            <%= f.multi_input :authors, suggestions: people_suggestions %>
 
-            <%= render :partial => 'common/multiple_input',
-                       :locals => {:field_name => 'contributors',
-                                   :resource => @workflow,
-                                   :f => f,
-                                   :suggestions => raw([Tess::AutocompleteManager.suggestions_array_for('contributors') +
-                                                            Tess::AutocompleteManager.suggestions_array_for('authors')].flatten.uniq.to_json)} %>
-
+            <%= f.multi_input :contributors, suggestions: people_suggestions %>
         <% end %>
 
         <%= f.input :hide_child_nodes,

@@ -314,6 +314,12 @@ module ApplicationHelper
                                                                   id_field: options[:id_field] || :id,
                                                                   label_field: options[:label_field] || :title })
     end
+
+    def multi_input(name, options = {})
+      suggestions = options[:suggestions] || Tess::AutocompleteManager.suggestions_array_for(name.to_s)
+      @template.render(partial: 'common/multiple_input', locals: { field_name: name, f: self, suggestions: suggestions,
+                                                                    disabled: options[:disabled] })
+    end
   end
 
   def schemaorg_field(resource, attribute)
@@ -356,5 +362,10 @@ module ApplicationHelper
     content_for(:title, title)
     tag = opts.delete(:tag) || :h2
     content_tag(tag, title, opts)
+  end
+
+  def people_suggestions
+    (Tess::AutocompleteManager.suggestions_array_for('contributors') +
+        Tess::AutocompleteManager.suggestions_array_for('authors')).uniq
   end
 end
