@@ -744,3 +744,13 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
 .alert-info a {
   text-decoration: underline;
 }
+
+#why-register {
+  ul {
+    font-size: 120%;
+
+    li {
+      margin: 1em 0;
+    }
+  }
+}
