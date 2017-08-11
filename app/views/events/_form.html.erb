@@ -56,8 +56,6 @@
     <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term',
                         id_field: :uri, label_field: :preferred_label %>
 
-    <%= render :partial => 'common/edit_suggestions', locals: { form: f } -%>
-
     <%= f.multi_input :keywords %>
 
     <%= f.multi_input :target_audience %>
