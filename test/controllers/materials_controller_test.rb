@@ -801,4 +801,79 @@ class MaterialsControllerTest < ActionController::TestCase
     end
   end
 
+  test 'should approve topic for curator' do
+    sign_in users(:curator)
+
+    assert_empty @material.scientific_topic_names
+
+    suggestion = @material.build_edit_suggestion
+    suggestion.scientific_topic_names = ['Genomics']
+    suggestion.save!
+
+    assert_difference('EditSuggestion.count', -1) do
+      post :add_topic, id: @material.id, topic: 'Genomics'
+    end
+
+    assert_response :success
+
+    assert_equal ['Genomics'], @material.reload.scientific_topic_names
+    assert_nil @material.reload.edit_suggestion
+  end
+
+  test 'should reject topic for curator' do
+    sign_in users(:curator)
+
+    assert_empty @material.scientific_topic_names
+
+    suggestion = @material.build_edit_suggestion
+    suggestion.scientific_topic_names = ['Genomics']
+    suggestion.save!
+
+    assert_difference('EditSuggestion.count', -1) do
+      post :reject_topic, id: @material.id, topic: 'Genomics'
+    end
+
+    assert_response :success
+
+    assert_empty @material.reload.scientific_topic_names
+    assert_nil @material.reload.edit_suggestion
+  end
+
+  test 'should not approve topic for unprivileged user' do
+    sign_in users(:another_regular_user)
+
+    assert_empty @material.scientific_topic_names
+
+    suggestion = @material.build_edit_suggestion
+    suggestion.scientific_topic_names = ['Genomics']
+    suggestion.save!
+
+    assert_no_difference('EditSuggestion.count') do
+      post :add_topic, id: @material.id, topic: 'Genomics'
+    end
+
+    assert_response :forbidden
+
+    assert_empty @material.reload.scientific_topic_names
+    assert_equal ['Genomics'], @material.reload.edit_suggestion.scientific_topic_names
+  end
+
+  test 'should not reject topic for unprivileged user' do
+    sign_in users(:another_regular_user)
+
+    assert_empty @material.scientific_topic_names
+
+    suggestion = @material.build_edit_suggestion
+    suggestion.scientific_topic_names = ['Genomics']
+    suggestion.save!
+
+    assert_no_difference('EditSuggestion.count') do
+      post :reject_topic, id: @material.id, topic: 'Genomics'
+    end
+
+    assert_response :forbidden
+
+    assert_empty @material.reload.scientific_topic_names
+    assert_equal ['Genomics'], @material.reload.edit_suggestion.scientific_topic_names
+  end
 end
