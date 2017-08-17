@@ -99,9 +99,7 @@ class MaterialsController < ApplicationController
         # suggest the same topics on every edit.
         # TODO: Consider whether this is proper behaviour or whether a user should explicitly delete this
         # TODO: suggestion, somehow.
-        if @material.edit_suggestion
-          @material.edit_suggestion.delete
-        end
+        @material.edit_suggestion.destroy if @material.edit_suggestion
         format.html { redirect_to @material, notice: 'Material was successfully updated.' }
         format.json { render :show, status: :ok, location: @material }
       else

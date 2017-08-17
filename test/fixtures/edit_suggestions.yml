@@ -5,5 +5,4 @@
 # below each fixture, per the syntax in the comments below
 #
 one:
-  suggestible: good_material (Material)
-  id: 1
+  suggestible: material_with_suggestions (Material)

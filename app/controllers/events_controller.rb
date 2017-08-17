@@ -121,9 +121,7 @@ class EventsController < ApplicationController
         @event.create_activity(:update, owner: current_user) if @event.log_update_activity?
         # TODO: Consider whether this is proper behaviour or whether a user should explicitly delete this
         # TODO: suggestion, somehow.
-        if @event.edit_suggestion
-          @event.edit_suggestion.delete
-        end
+        @event.edit_suggestion.destroy if @event.edit_suggestion
         format.html { redirect_to @event, notice: 'Event was successfully updated.' }
         format.json { render :show, status: :ok, location: @event }
       else

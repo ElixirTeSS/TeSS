@@ -1,10 +1,8 @@
 
 term_one:
-  resource_type: EditSuggestion
-  resource_id: 1
+  resource: one (EditSuggestion)
   term_uri: "http://edamontology.org/topic_3168"
 
 term_two:
-  resource_type: EditSuggestion
-  resource_id: 1
+  resource: one (EditSuggestion)
   term_uri: "http://edamontology.org/topic_0199"

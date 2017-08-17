@@ -18,8 +18,6 @@ class MaterialsControllerTest < ActionController::TestCase
         content_provider_id: ContentProvider.first.id
     }
     @material_with_suggestions = materials(:material_with_suggestions)
-    @material_with_suggestions.edit_suggestion = edit_suggestions(:one)
-    @material_with_suggestions.save!
     @updated_material_with_suggestions = {
         title: 'New title for suggestion material',
         short_description: 'New description',
@@ -875,5 +873,13 @@ class MaterialsControllerTest < ActionController::TestCase
 
     assert_empty @material.reload.scientific_topic_names
     assert_equal ['Genomics'], @material.reload.edit_suggestion.scientific_topic_names
+  end
+
+  test 'should remove edit suggestion after update' do
+    sign_in @user
+
+    assert_difference('EditSuggestion.count', -1) do
+      patch :update, id: @material_with_suggestions, material: @updated_material_with_suggestions
+    end
   end
 end
