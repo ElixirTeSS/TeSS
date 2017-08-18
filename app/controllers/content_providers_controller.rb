@@ -1,5 +1,8 @@
+require 'tess_rdf_extractors'
+require 'open-uri'
+
 class ContentProvidersController < ApplicationController
-  before_action :set_content_provider, only: [:show, :edit, :update, :destroy]
+  before_action :set_content_provider, only: [:show, :edit, :update, :destroy, :import, :scrape]
   before_action :set_breadcrumbs
 
   include SearchableIndex
@@ -88,6 +91,19 @@ class ContentProvidersController < ApplicationController
       format.html { redirect_to content_providers_url, notice: 'Content Provider was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def import
+
+  end
+
+  def scrape
+    page = open(params[:url]).read
+
+    @events = Tess::Rdf::EventExtractor.new(page, params[:format].to_sym).extract { |p| @content_provider.events.build(p) }
+    @materials = Tess::Rdf::MaterialExtractor.new(page, params[:format].to_sym).extract { |p| @content_provider.materials.build(p) }
+
+    render 'import'
   end
 
   private

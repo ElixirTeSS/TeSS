@@ -65,6 +65,11 @@ Rails.application.routes.draw do
 
   resources :content_providers do
     resource :activities, :only => [:show]
+
+    member do
+      get 'import'
+      post 'import', to: 'content_providers#scrape'
+    end
   end
 
   resources :materials do

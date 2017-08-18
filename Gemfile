@@ -125,6 +125,8 @@ gem 'recaptcha', '~> 4.0.1', require: 'recaptcha/rails'
 
 gem 'linkeddata'
 
+gem 'tess_rdf_extractors', :git => 'git://github.com/ElixirTeSS/TeSS_RDF_Extractors.git'
+
 source 'https://rails-assets.org' do
   gem 'rails-assets-markdown-it', '~> 7.0.1'
   gem 'rails-assets-moment', '~> 2.15.0'

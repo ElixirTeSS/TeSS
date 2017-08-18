@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/ElixirTeSS/TeSS_RDF_Extractors.git
+  revision: 17565c87e16d2149e5e57a812ffa7e8955b215d4
+  specs:
+    tess_rdf_extractors (0.0.1)
+      linkeddata (~> 2.0)
+
+GIT
   remote: git://github.com/jjbohn/omniauth-openid-connect
   revision: 849b181551a61f732f9990dd7ad58c258b970019
   specs:
@@ -575,6 +582,7 @@ DEPENDENCIES
   slim
   sunspot_rails (~> 2.2.7)
   sunspot_solr (= 2.2.0)
+  tess_rdf_extractors!
   therubyracer
   turbolinks (~> 2.5.3)
   uglifier (>= 1.3.0)

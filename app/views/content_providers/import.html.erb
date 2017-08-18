@@ -1,0 +1,35 @@
+<div class="page-header">
+  <%= page_title 'Import' %>
+</div>
+
+<%= form_tag(import_content_provider_path, class: 'form-inline') do %>
+    <div class="form-group">
+      <label>URL</label>
+      <%= text_field_tag(:url, params[:url], class: 'form-control') %>
+    </div>
+
+    <div class="form-group">
+      <label>Format</label>
+      <%= select_tag(:format, options_for_select([['JSON-LD', 'jsonld'],['RDFa', 'rdfa']], params[:format]), class: 'form-control') %>
+    </div>
+
+    <%= submit_tag('Go', class: 'btn btn-primary') %>
+<% end %>
+
+<% unless @events.nil? && @materials.nil? %>
+    <hr/>
+
+    <h2><%= pluralize(@events.count, 'Event') %> found</h2>
+    <ul>
+      <% @events.each do |e| %>
+          <li><%= e.title %></li>
+      <% end %>
+    </ul>
+
+    <h2><%= pluralize(@materials.count, 'Materials') %> found</h2>
+    <ul>
+      <% @materials.each do |m| %>
+          <li><%= m.title %></li>
+      <% end %>
+    </ul>
+<% end %>
