@@ -67,15 +67,7 @@ class EventsController < ApplicationController
   # POST /events/check_exists
   # POST /events/check_exists.json
   def check_exists
-    given_event = Event.new(event_params)
-    @event = nil
-    if given_event.url.present?
-      @event = Event.find_by_url(given_event.url)
-    end
-
-    if given_event.content_provider_id.present? && given_event.title.present? && given_event.start.present?
-      @event ||= Event.where(content_provider_id: given_event.content_provider_id, title: given_event.title, start: given_event.start).last
-    end
+    @event = Event.check_exists(event_params)
 
     if @event
       respond_to do |format|

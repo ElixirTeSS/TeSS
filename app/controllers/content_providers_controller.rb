@@ -26,15 +26,7 @@ class ContentProvidersController < ApplicationController
   # POST /events/check_exists
   # POST /events/check_exists.json
   def check_exists
-    given_content_provider = ContentProvider.new(content_provider_params)
-    @content_provider = nil
-    if given_content_provider.url.present?
-      @content_provider = ContentProvider.find_by_url(given_content_provider.url)
-    end
-
-    if given_content_provider.title.present?
-      @content_provider ||= ContentProvider.where(title: given_content_provider.title).last
-    end
+    @content_provider = ContentProvider.check_exists(content_provider_params)
 
     if @content_provider
       respond_to do |format|
