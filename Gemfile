@@ -60,6 +60,7 @@ gem 'whenever'
 # These are required for Sidekiq, to look up scientific topics
 gem 'httparty'
 gem 'sidekiq'
+gem 'sidekiq_status'
 gem 'sinatra', require: false
 gem 'slim'
 

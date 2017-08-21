@@ -431,6 +431,8 @@ GEM
       connection_pool (~> 2.2, >= 2.2.0)
       rack-protection (>= 1.5.0)
       redis (~> 3.2, >= 3.2.1)
+    sidekiq_status (1.2.0)
+      sidekiq (>= 3.3, < 5)
     simple_form (3.4.0)
       actionpack (> 4, < 5.1)
       activemodel (> 4, < 5.1)
@@ -575,6 +577,7 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   sidekiq
+  sidekiq_status
   simple_form (~> 3.4.0)
   simple_token_authentication (~> 1.0)
   simplecov

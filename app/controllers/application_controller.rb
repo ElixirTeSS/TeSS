@@ -65,6 +65,20 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def job_status
+    begin
+      job = SidekiqStatus::Container.load(params[:id])
+
+      respond_to do |format|
+        format.json { render json: { status: job.status } }
+      end
+    rescue SidekiqStatus::Container::StatusNotFound
+      respond_to do |format|
+        format.json { render json: { status: 'not-found' }, status: 404 }
+      end
+    end
+  end
+
   private
 
   def user_not_authorized(exception)

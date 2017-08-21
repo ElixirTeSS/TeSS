@@ -1,0 +1,15 @@
+<hr/>
+
+<h2><%= pluralize(@events.count, 'Event') %> found</h2>
+<ul>
+  <% @events.each do |e| %>
+      <li><%= e.title %></li>
+  <% end %>
+</ul>
+
+<h2><%= pluralize(@materials.count, 'Materials') %> found</h2>
+<ul>
+  <% @materials.each do |m| %>
+      <li><%= m.title %></li>
+  <% end %>
+</ul>

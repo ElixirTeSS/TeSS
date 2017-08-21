@@ -2,34 +2,76 @@
   <%= page_title 'Import' %>
 </div>
 
-<%= form_tag(import_content_provider_path, class: 'form-inline') do %>
-    <div class="form-group">
-      <label>URL</label>
-      <%= text_field_tag(:url, params[:url], class: 'form-control') %>
-    </div>
+<div class="form-inline">
+  <div class="form-group">
+    <%= text_field_tag(:url, params[:url], placeholder: 'Enter URL here', size: 100, class: 'form-control') %>
+  </div>
 
-    <div class="form-group">
-      <label>Format</label>
-      <%= select_tag(:format, options_for_select([['JSON-LD', 'jsonld'],['RDFa', 'rdfa']], params[:format]), class: 'form-control') %>
-    </div>
+  <div class="form-group">
+    <%= select_tag(:format, options_for_select([['JSON-LD', 'jsonld'],['RDFa', 'rdfa']], params[:format]), class: 'form-control') %>
+  </div>
 
-    <%= submit_tag('Go', class: 'btn btn-primary') %>
-<% end %>
+  <%= button_tag('Go', id: 'import-btn', class: 'btn btn-primary') %>
+</div>
 
-<% unless @events.nil? && @materials.nil? %>
-    <hr/>
+<script>
+  $('#import-btn').click(function () {
+    $.ajax({
+      dataType: 'json',
+      url: '<%= import_content_provider_path(@content_provider) %>',
+      data: {
+        url: $('#url').val(),
+        rdf_format: $('#format').val()
+      },
+      method: 'POST',
+      success: function (data) {
+        var jobId = data.id;
+        var input = $('#url');
+        input.addClass('loading');
 
-    <h2><%= pluralize(@events.count, 'Event') %> found</h2>
-    <ul>
-      <% @events.each do |e| %>
-          <li><%= e.title %></li>
-      <% end %>
-    </ul>
+        var interval = window.setInterval(function () {
+          $.ajax({
+            dataType: 'json',
+            url: '/job_status',
+            data: { id: jobId },
+            success: function (data) {
+              if (data.status === 'complete') {
+                window.clearInterval(interval);
+                input.removeClass('loading');
 
-    <h2><%= pluralize(@materials.count, 'Materials') %> found</h2>
-    <ul>
-      <% @materials.each do |m| %>
-          <li><%= m.title %></li>
-      <% end %>
-    </ul>
-<% end %>
+                $.ajax({
+                  dataType: 'html',
+                  url: '<%= scraper_results_content_provider_path(@content_provider) %>',
+                  data: { job_id: jobId },
+                  success: function (html) {
+                    $('#scraper-results').html(html);
+                  },
+                  error: function (data) {
+                    console.log('error', data);
+                  }
+                });
+              } else if (data.status !== 'waiting') {
+                window.clearInterval(interval);
+                input.removeClass('loading');
+              }
+            },
+            error: function (data) {
+              console.log('error', data);
+              window.clearInterval(interval);
+              input.removeClass('loading');
+            }
+          });
+        }, 3000);
+      },
+      error: function (data) {
+        console.log('error', data);
+        window.clearInterval(interval);
+        input.removeClass('loading');
+      }
+    });
+
+    return false;
+  });
+</script>
+
+<div id="scraper-results"></div>

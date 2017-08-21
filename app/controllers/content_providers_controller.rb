@@ -1,8 +1,5 @@
-require 'tess_rdf_extractors'
-require 'open-uri'
-
 class ContentProvidersController < ApplicationController
-  before_action :set_content_provider, only: [:show, :edit, :update, :destroy, :import, :scrape]
+  before_action :set_content_provider, only: [:show, :edit, :update, :destroy, :import, :scrape, :scraper_results]
   before_action :set_breadcrumbs
 
   include SearchableIndex
@@ -98,12 +95,20 @@ class ContentProvidersController < ApplicationController
   end
 
   def scrape
-    page = open(params[:url]).read
+    job_id = ScraperWorker.perform_async(params[:url], params[:rdf_format])
 
-    @events = Tess::Rdf::EventExtractor.new(page, params[:format].to_sym).extract { |p| @content_provider.events.build(p) }
-    @materials = Tess::Rdf::MaterialExtractor.new(page, params[:format].to_sym).extract { |p| @content_provider.materials.build(p) }
+    respond_to do |format|
+      format.json { render json: { id: job_id }}
+    end
+  end
 
-    render 'import'
+  def scraper_results
+    yaml = File.read(File.join(Rails.root, 'tmp', "scrape_#{params[:job_id]}.yml"))
+    data = YAML.load(yaml)
+    @events = data[:events].map { |e| @content_provider.events.build(e) }
+    @materials = data[:materials].map { |m| @content_provider.materials.build(m) }
+
+    render partial: 'content_providers/scraper_results'
   end
 
   private
