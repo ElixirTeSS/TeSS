@@ -257,4 +257,18 @@ class Event < ActiveRecord::Base
     SENSITIVE_FIELDS.any? { |f| self.send(f).present? }
   end
 
+  def self.check_exists(event_params)
+    given_event = self.new(event_params)
+    event = nil
+
+    if given_event.url.present?
+      event = self.find_by_url(given_event.url)
+    end
+
+    if given_event.content_provider_id.present? && given_event.title.present? && given_event.start.present?
+      event ||= self.where(content_provider_id: given_event.content_provider_id, title: given_event.title, start: given_event.start).last
+    end
+
+    event
+  end
 end

@@ -78,4 +78,18 @@ class ContentProvider < ActiveRecord::Base
     PROVIDER_TYPE.index(content_provider_type)
   end
 
+  def self.check_exists(content_provider_params)
+    given_content_provider = self.new(content_provider_params)
+    content_provider = nil
+
+    if given_content_provider.url.present?
+      content_provider = self.find_by_url(given_content_provider.url)
+    end
+
+    if given_content_provider.title.present?
+      content_provider ||= self.where(title: given_content_provider.title).last
+    end
+
+    content_provider
+  end
 end

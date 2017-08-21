@@ -7,6 +7,7 @@ class EventsController < ApplicationController
   include SearchableIndex
   include ActionView::Helpers::TextHelper
   include FieldLockEnforcement
+  include TopicCuration
 
   # GET /events
   # GET /events.json
@@ -66,15 +67,7 @@ class EventsController < ApplicationController
   # POST /events/check_exists
   # POST /events/check_exists.json
   def check_exists
-    given_event = Event.new(event_params)
-    @event = nil
-    if given_event.url.present?
-      @event = Event.find_by_url(given_event.url)
-    end
-
-    if given_event.content_provider_id.present? && given_event.title.present? && given_event.start.present?
-      @event ||= Event.where(content_provider_id: given_event.content_provider_id, title: given_event.title, start: given_event.start).last
-    end
+    @event = Event.check_exists(event_params)
 
     if @event
       respond_to do |format|
@@ -120,9 +113,7 @@ class EventsController < ApplicationController
         @event.create_activity(:update, owner: current_user) if @event.log_update_activity?
         # TODO: Consider whether this is proper behaviour or whether a user should explicitly delete this
         # TODO: suggestion, somehow.
-        if @event.edit_suggestion
-          @event.edit_suggestion.delete
-        end
+        @event.edit_suggestion.destroy if @event.edit_suggestion
         format.html { redirect_to @event, notice: 'Event was successfully updated.' }
         format.json { render :show, status: :ok, location: @event }
       else
@@ -161,36 +152,6 @@ class EventsController < ApplicationController
     end
     flash[:notice] = "Event has been included in #{pluralize(packages.count, 'package')}"
     redirect_to @event
-  end
-
-  #POST /events/1/add_topic
-  def add_topic
-    topic = EDAM::Ontology.instance.lookup_by_name(params[:topic])
-    log_params = {uri: topic.uri,
-                  name: topic.preferred_label}
-    @event.edit_suggestion.accept_suggestion(@event, topic)
-    @event.create_activity :add_topic,
-                              {
-                                  owner: current_user,
-                                  recipient: @event.user,
-                                  parameters: log_params
-                              }
-    render :nothing => true
-  end
-
-  #POST /events/1/reject_topic
-  def reject_topic
-    topic = EDAM::Ontology.instance.lookup_by_name(params[:topic])
-    log_params = {uri: topic.uri,
-                  name: topic.preferred_label}
-    @event.edit_suggestion.reject_suggestion(topic)
-    @event.create_activity :reject_topic,
-                           {
-                               owner: current_user,
-                               recipient: @event.user,
-                               parameters: log_params
-                           }
-    render :nothing => true
   end
 
   def redirect

@@ -18,8 +18,6 @@ class MaterialsControllerTest < ActionController::TestCase
         content_provider_id: ContentProvider.first.id
     }
     @material_with_suggestions = materials(:material_with_suggestions)
-    @material_with_suggestions.edit_suggestion = edit_suggestions(:one)
-    @material_with_suggestions.save!
     @updated_material_with_suggestions = {
         title: 'New title for suggestion material',
         short_description: 'New description',
@@ -801,4 +799,87 @@ class MaterialsControllerTest < ActionController::TestCase
     end
   end
 
+  test 'should approve topic for curator' do
+    sign_in users(:curator)
+
+    assert_empty @material.scientific_topic_names
+
+    suggestion = @material.build_edit_suggestion
+    suggestion.scientific_topic_names = ['Genomics']
+    suggestion.save!
+
+    assert_difference('EditSuggestion.count', -1) do
+      post :add_topic, id: @material.id, topic: 'Genomics'
+    end
+
+    assert_response :success
+
+    assert_equal ['Genomics'], @material.reload.scientific_topic_names
+    assert_nil @material.reload.edit_suggestion
+  end
+
+  test 'should reject topic for curator' do
+    sign_in users(:curator)
+
+    assert_empty @material.scientific_topic_names
+
+    suggestion = @material.build_edit_suggestion
+    suggestion.scientific_topic_names = ['Genomics']
+    suggestion.save!
+
+    assert_difference('EditSuggestion.count', -1) do
+      post :reject_topic, id: @material.id, topic: 'Genomics'
+    end
+
+    assert_response :success
+
+    assert_empty @material.reload.scientific_topic_names
+    assert_nil @material.reload.edit_suggestion
+  end
+
+  test 'should not approve topic for unprivileged user' do
+    sign_in users(:another_regular_user)
+
+    assert_empty @material.scientific_topic_names
+
+    suggestion = @material.build_edit_suggestion
+    suggestion.scientific_topic_names = ['Genomics']
+    suggestion.save!
+
+    assert_no_difference('EditSuggestion.count') do
+      post :add_topic, id: @material.id, topic: 'Genomics'
+    end
+
+    assert_response :forbidden
+
+    assert_empty @material.reload.scientific_topic_names
+    assert_equal ['Genomics'], @material.reload.edit_suggestion.scientific_topic_names
+  end
+
+  test 'should not reject topic for unprivileged user' do
+    sign_in users(:another_regular_user)
+
+    assert_empty @material.scientific_topic_names
+
+    suggestion = @material.build_edit_suggestion
+    suggestion.scientific_topic_names = ['Genomics']
+    suggestion.save!
+
+    assert_no_difference('EditSuggestion.count') do
+      post :reject_topic, id: @material.id, topic: 'Genomics'
+    end
+
+    assert_response :forbidden
+
+    assert_empty @material.reload.scientific_topic_names
+    assert_equal ['Genomics'], @material.reload.edit_suggestion.scientific_topic_names
+  end
+
+  test 'should remove edit suggestion after update' do
+    sign_in @user
+
+    assert_difference('EditSuggestion.count', -1) do
+      patch :update, id: @material_with_suggestions, material: @updated_material_with_suggestions
+    end
+  end
 end

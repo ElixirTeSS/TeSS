@@ -891,4 +891,81 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal visible_report_event.funding, visible_report_event_json['funding']
   end
 
+
+  test 'should approve topic for curator' do
+    sign_in users(:curator)
+
+    assert_empty @event.scientific_topic_names
+
+    suggestion = @event.build_edit_suggestion
+    suggestion.scientific_topic_names = ['Genomics']
+    suggestion.save!
+
+    assert_difference('EditSuggestion.count', -1) do
+      post :add_topic, id: @event.id, topic: 'Genomics'
+    end
+
+    assert_response :success
+
+    assert_equal ['Genomics'], @event.reload.scientific_topic_names
+    assert_nil @event.reload.edit_suggestion
+  end
+
+  test 'should reject topic for curator' do
+    sign_in users(:curator)
+
+    assert_empty @event.scientific_topic_names
+
+    suggestion = @event.build_edit_suggestion
+    suggestion.scientific_topic_names = ['Genomics']
+    suggestion.save!
+
+    assert_difference('EditSuggestion.count', -1) do
+      post :reject_topic, id: @event.id, topic: 'Genomics'
+    end
+
+    assert_response :success
+
+    assert_empty @event.reload.scientific_topic_names
+    assert_nil @event.reload.edit_suggestion
+  end
+
+  test 'should not approve topic for unprivileged user' do
+    sign_in users(:another_regular_user)
+
+    assert_empty @event.scientific_topic_names
+
+    suggestion = @event.build_edit_suggestion
+    suggestion.scientific_topic_names = ['Genomics']
+    suggestion.save!
+
+    assert_no_difference('EditSuggestion.count') do
+      post :add_topic, id: @event.id, topic: 'Genomics'
+    end
+
+    assert_response :forbidden
+
+    assert_empty @event.reload.scientific_topic_names
+    assert_equal ['Genomics'], @event.reload.edit_suggestion.scientific_topic_names
+  end
+
+  test 'should not reject topic for unprivileged user' do
+    sign_in users(:another_regular_user)
+
+    assert_empty @event.scientific_topic_names
+
+    suggestion = @event.build_edit_suggestion
+    suggestion.scientific_topic_names = ['Genomics']
+    suggestion.save!
+
+    assert_no_difference('EditSuggestion.count') do
+      post :reject_topic, id: @event.id, topic: 'Genomics'
+    end
+
+    assert_response :forbidden
+
+    assert_empty @event.reload.scientific_topic_names
+    assert_equal ['Genomics'], @event.reload.edit_suggestion.scientific_topic_names
+  end
+
 end

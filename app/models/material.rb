@@ -99,5 +99,20 @@ class Material < ActiveRecord::Base
     %w( scientific_topics tools standard_database_or_policy target_audience keywords difficulty_level
         authors related_resources contributors licence node content_provider user resource_type)
   end
-end
 
+  def self.check_exists(material_params)
+    given_material = self.new(material_params)
+    material = nil
+
+    if given_material.url.present?
+      material = self.find_by_url(given_material.url)
+    end
+
+    if given_material.content_provider.present? && given_material.title.present?
+      material ||= self.where(content_provider_id: given_material.content_provider_id,
+                                   title: given_material.title).last
+    end
+
+    material
+  end
+end

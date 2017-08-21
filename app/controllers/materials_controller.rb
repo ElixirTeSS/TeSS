@@ -5,6 +5,7 @@ class MaterialsController < ApplicationController
   include SearchableIndex
   include ActionView::Helpers::TextHelper
   include FieldLockEnforcement
+  include TopicCuration
 
   # GET /materials
   # GET /materials?q=queryparam
@@ -41,16 +42,7 @@ class MaterialsController < ApplicationController
   # POST /materials/check_title
   # POST /materials/check_title.json
   def check_exists
-    given_material = Material.new(material_params)
-    @material = nil
-    if given_material.url.present?
-      @material = Material.find_by_url(given_material.url)
-    end
-
-    if given_material.content_provider.present? && given_material.title.present?
-      @material ||= Material.where(content_provider_id: given_material.content_provider_id,
-                                   title: given_material.title).last
-    end
+    @material = Material.check_exists(material_params)
 
     if @material
       respond_to do |format|
@@ -98,9 +90,7 @@ class MaterialsController < ApplicationController
         # suggest the same topics on every edit.
         # TODO: Consider whether this is proper behaviour or whether a user should explicitly delete this
         # TODO: suggestion, somehow.
-        if @material.edit_suggestion
-          @material.edit_suggestion.delete
-        end
+        @material.edit_suggestion.destroy if @material.edit_suggestion
         format.html { redirect_to @material, notice: 'Material was successfully updated.' }
         format.json { render :show, status: :ok, location: @material }
       else
@@ -139,38 +129,6 @@ class MaterialsController < ApplicationController
     end
     flash[:notice] = "Material has been included in #{pluralize(packages.count, 'package')}"
     redirect_to @material
-  end
-
-
-  #POST /materials/1/add_topic
-  def add_topic
-    topic = EDAM::Ontology.instance.lookup_by_name(params[:topic])
-    log_params = {uri: topic.uri,
-                  name: topic.preferred_label}
-    @material.edit_suggestion.accept_suggestion(@material, topic)
-    @material.create_activity :add_topic,
-                              {
-                                  owner: current_user,
-                                  recipient: @material.user,
-                                  parameters: log_params
-                              }
-
-    render :nothing => true
-  end
-
-  #POST /events/1/reject_topic
-  def reject_topic
-    topic = EDAM::Ontology.instance.lookup_by_name(params[:topic])
-    log_params = {uri: topic.uri,
-                  name: topic.preferred_label}
-    @material.edit_suggestion.reject_suggestion(topic)
-    @material.create_activity :reject_topic,
-                              {
-                                  owner: current_user,
-                                  recipient: @material.user,
-                                  parameters: log_params
-                              }
-    render :nothing => true
   end
 
   private

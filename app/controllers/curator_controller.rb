@@ -1,8 +1,8 @@
 class CuratorController < ApplicationController
   CURATION_ACTIONS = %w(material.add_topic event.add_topic material.reject_topic event.reject_topic)
 
+  before_action :check_curator
   before_action :set_breadcrumbs, :only => [:topic_suggestions]
-
 
   # Hacky stub to make breadcrumbs work
   def index
@@ -37,4 +37,10 @@ class CuratorController < ApplicationController
   def action_count_for(action)
     return PublicActivity::Activity.where(key: action).group_by{|logs| logs.owner}.sort_by{|user, logs| -logs.count}.map{|user,logs| [user, logs.count]}.to_h
   end
+
+  def check_curator
+    flash[:alert] = 'This page is only visible to curators.'
+    handle_error(:forbidden) unless current_user && (current_user.is_admin? || current_user.is_curator?)
+  end
+
 end
