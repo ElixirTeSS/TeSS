@@ -2,14 +2,20 @@
 
 <h2><%= pluralize(@events.count, 'Event') %> found</h2>
 <ul>
-  <% @events.each do |e| %>
-      <li><%= e.title %></li>
+  <% @events.sort_by(&:start).each do |e| %>
+      <li>
+        <strong><%= e.title %></strong> (<%= neatly_printed_date_range(e.start, e.end) %>)<br/>
+        <%= link_to(e.url, e.url, target: :_blank) %>
+      </li>
   <% end %>
 </ul>
 
 <h2><%= pluralize(@materials.count, 'Materials') %> found</h2>
 <ul>
-  <% @materials.each do |m| %>
-      <li><%= m.title %></li>
+  <% @materials.sort_by(&:title).each do |m| %>
+      <li>
+        <strong><%= m.title %></strong>
+        <%= link_to(m.url, m.url, target: :_blank) %>
+      </li>
   <% end %>
 </ul>
