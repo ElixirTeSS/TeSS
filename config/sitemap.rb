@@ -15,7 +15,6 @@ sitemap :site do
   url materials_url, last_mod: Time.now, change_freq: 'daily', priority: 0.7
   url events_url, last_mod: Time.now, change_freq: 'daily', priority: 0.7
   url workflows_url, last_mod: Time.now, change_freq: 'daily', priority: 0.6
-  url packages_url, last_mod: Time.now, change_freq: 'weekly', priority: 0.5
 end
 
 # You can have multiple sitemaps like the above – just make sure their names are different.
@@ -29,7 +28,6 @@ end
 sitemap_for Material
 sitemap_for Event
 sitemap_for Workflow
-sitemap_for Package
 
 # For products with special sitemap name and priority, and link to comments:
 #
