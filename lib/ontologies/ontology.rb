@@ -1,5 +1,4 @@
 class Ontology
-
   def initialize(filename, term_class = OntologyTerm)
     @filename = filename
     @term_class = term_class
@@ -64,5 +63,4 @@ class Ontology
   def path
     File.join(Rails.root, 'config', 'ontologies', @filename)
   end
-
 end
