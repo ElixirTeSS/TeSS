@@ -181,9 +181,11 @@ which will do db:create, db:schema:load, db:seed. If you want the DB dropped as 
 
     $ bundle exec rake db:reset RAILS_ENV=production
 
- (which will do db:drop, db:setup)
+...which will do db:drop, db:setup
 
-    $ unset XDG_RUNTIME_DIR may need setting in ~/.profile or similar if rails console moans about permissions.
+    $ unset XDG_RUNTIME_DIR 
+    
+(may need setting in ~/.profile or similar if rails console moans about permissions.)
 
 Delete all from Solr if need be and reindex it:
 
