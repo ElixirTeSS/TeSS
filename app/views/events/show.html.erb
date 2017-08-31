@@ -64,6 +64,7 @@
                 <% end -%>
                 <%= @event.title %>
                 <%= scrape_status_icon(@event, 'large') if current_user and current_user.is_admin? %>
+                <%= suggestion_icon(@event, 'large') if current_user and current_user.is_admin? -%>
               </h2>
               <p><%= link_to @event.url, @event.url, :class =>'h5', :target => "_blank" %></p>
             </div>

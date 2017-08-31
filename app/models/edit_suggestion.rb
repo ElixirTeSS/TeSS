@@ -13,24 +13,20 @@ class EditSuggestion < ActiveRecord::Base
 
   def reject_suggestion topic
     suggestions = self.drop_topic({uri: topic.uri})
-    self.destroy if suggestions.empty?
+    destroy if suggestions.empty?
   end
 
   #Params: :uri => http://edamontology.org/3023
   #        :name => 'RNA-Seq'
-  def drop_topic options={}
-    if !options[:uri].nil?
-      topics = self.scientific_topics
-      topic_index = topics.index{|x| x.uri == options[:uri]}
-      if topic_index
-        topics.delete_at(topic_index)
-        self.scientific_topics = topics
-        self.save!
-        return self.scientific_topics
-      else
-        return nil
-      end
-    end
+  def drop_topic(options = {})
+    return nil unless options[:uri].nil?
+    topics = scientific_topics
+    topic_index = topics.index { |x| x.uri == options[:uri] }
+    return nil unless topic_index
+    topics.delete_at(topic_index)
+    self.scientific_topics = topics
+    save!
+    scientific_topics
   end
 
 end
