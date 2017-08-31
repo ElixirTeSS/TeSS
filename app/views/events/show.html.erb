@@ -215,6 +215,7 @@
                   </div>
               <% end %>
 
+
               <% if @event.external_resources.any? %>
                   <b>External resources: </b>
                   <%= render partial: 'common/external_resources_list', locals: { external_resources: @event.external_resources } %>
