@@ -3,9 +3,9 @@ module TopicCuration
 
   #POST /<resource>/1/add_topic
   def add_topic
-    puts "PARAMS: #{params.inspect}"
+    #puts "PARAMS: #{params.inspect}"
     resource = instance_variable_get("@#{controller_name.singularize}")
-    puts "RESOURCE: #{resource.inspect}"
+    #puts "RESOURCE: #{resource.inspect}"
     authorize resource, :update?
 
     topic = EDAM::Ontology.instance.lookup_by_name(params[:topic])
@@ -38,16 +38,17 @@ module TopicCuration
     render nothing: true
   end
 
+  #POST /<resource>/1/add_data
   def add_data
-    puts "PARAMS: #{params.inspect}"
-    resource = instance_variable_get("@#{controller_name.singularize}")
-    puts "RESOURCE: #{resource.inspect}"
+    #puts "PARAMS: #{params.inspect}"
+    resource = instance_variable_get("@#{controller_name.singularize}") # TODO: This returns nil. Why?
+    #puts "RESOURCE: #{resource.inspect}"
     authorize resource, :update?
 
     log_params = {data_field: params[:data_field],
                   data_value: params[:data_value]}
 
-    resource.edit_suggestion.accept_data(resource, topic)
+    resource.edit_suggestion.accept_data(resource, params[:data_field], params[:data_value])
     resource.create_activity :add_data,
                              owner: current_user,
                              recipient: resource.user,
@@ -56,14 +57,15 @@ module TopicCuration
 
   end
 
+  #POST /<resource>/1/reject_data
   def reject_data
-    resource = instance_variable_get("@#{controller_name.singularize}")
+    resource = instance_variable_get("@#{controller_name.singularize}") # TODO: This too returns nil.
     authorize resource, :update?
 
     log_params = {data_field: params[:data_field],
                   data_value: params[:data_value]}
 
-    resource.edit_suggestion.reject_data(resource, topic)
+    resource.edit_suggestion.reject_data(resource, params[:data_field])
     resource.create_activity :reject_data,
                              owner: current_user,
                              recipient: resource.user,
