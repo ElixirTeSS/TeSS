@@ -1,6 +1,8 @@
 <% resource = suggestion.suggestible %>
 <div class="suggestions">
+  <% if !suggestion.scientific_topics.nil? && !suggestion.scientific_topics.empty? -%>
   <b>Suggested scientific topics:</b>
+  <% end -%>
   <% suggestion.scientific_topics.each do |scientific_topic, i| %>
               <span class="dropdown ">
                 <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -17,4 +19,25 @@
                 </ul>
               </span>
   <% end %>
+  <%if suggestion.data -%>
+    <br/>
+    <b>Suggested updates:</b>
+    <% suggestion.data_fields.each do |key, value| -%>
+      <span class="dropdown ">
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <%= key.titleize %>: <%= value -%>
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu data_suggestion_action"
+              data-resource_type="<%=resource.class.name.underscore.pluralize %>"
+              data-resource_id="<%=resource.id%>"
+              data-data_field="<%= key %>"
+              data-data_value="<%= value %>"
+              aria-labelledby="dropdownMenu1">
+            <li><a class="btn accept_suggestion" ><b>✓ Accept</b> <br>(This <%=resource.class.name.downcase%> <b>has</b> field <em><%= key %></em>: <%= value -%>)</a></li>
+            <li><a class="btn reject_suggestion" ><b>✗ Reject</b> <br> (This <%=resource.class.name.downcase%> <b>doesn't have</b> field <em><%= key %></em>: <%= value -%>)</a></li>
+          </ul>
+        </span>
+    <% end -%>
+  <% end -%>
 </div>

@@ -215,7 +215,6 @@
                   </div>
               <% end %>
 
-
               <% if @event.external_resources.any? %>
                   <b>External resources: </b>
                   <%= render partial: 'common/external_resources_list', locals: { external_resources: @event.external_resources } %>
@@ -225,6 +224,12 @@
               <%= render :partial => 'events/partials/twitter_card', :locals => {:event => @event} %>
 
               <%= render partial: 'events/report' if policy(@event).view_report? %>
+
+              <% unless @event.edit_suggestion.nil? || (@event.edit_suggestion.scientific_topics.empty? &&
+                  !@event.edit_suggestion.data) || current_user.nil? || !policy(@event).update? %>
+                  <%= render partial: 'common/approve_topic_suggestions', locals: { suggestion: @event.edit_suggestion } %>
+              <% end %>
+
             </div>
           </div>
         </div>
