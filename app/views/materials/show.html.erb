@@ -6,7 +6,7 @@
   </div>
   <div id="content">
     <div class="row">
-      <%= star_button(@material) %>
+      <%= star_button(@material) if user_signed_in? %>
 
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")), :back, :class => 'btn btn-info'  %>
