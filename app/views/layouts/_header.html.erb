@@ -10,6 +10,9 @@
       <div class="user-options">
         <% if user_signed_in? %>
             <%= link_to current_user.username, user_path(current_user) %>
+            <%= link_to stars_path, title: 'View stars' do %>
+                <i class="fa fa-star fa-lg"></i>
+            <% end %>
             <% if current_user.is_curator? || current_user.is_admin? %>
                 <%= link_to users_path, :title => 'View users' do %>
                     <i class="fa fa-users fa-lg"></i>
