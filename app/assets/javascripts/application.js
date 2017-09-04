@@ -107,7 +107,6 @@ $(document).ready(function () {
         return false;
     });
 
-
     // Masonry
     $('.nav-tabs a').on("shown.bs.tab", function(e) {
         reposition_tiles('masonry', 'masonry-brick');
@@ -169,5 +168,37 @@ $(document).ready(function () {
                 inputElement.removeClass('loading');
             }
         });
+    });
+
+    $('[data-role="star-button"]').each(function () {
+        var button = $(this);
+        var starred = $(this).data('starred');
+        var resource = $(this).data('resource');
+
+        var setButtonState = function (starred) {
+            if (starred) {
+                button.html("<i class='fa fa-star'> </i> Un-star");
+            } else {
+                button.html("<i class='fa fa-star-o'> </i> Star");
+            }
+        };
+
+        setButtonState(starred);
+
+        button.click(function () {
+            button.addClass('loading');
+            $.ajax({
+                method: starred ? 'DELETE' : 'POST',
+                dataType: 'json',
+                url: '/stars',
+                data: { star: { resource_id: resource.id, resource_type: resource.type } },
+                success: function () {
+                    setButtonState(!starred)
+                },
+                complete: function () {
+                    button.removeClass('loading');
+                }
+            });
+        })
     });
 });

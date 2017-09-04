@@ -4,26 +4,26 @@ module ApplicationHelper
   # end
 
   BOOTSTRAP_FLASH_MSG = {
-    success: 'alert-success',
-    error: 'alert-danger',
-    alert: 'alert-warning',
-    notice: 'alert-success',
-    warning: 'alert-warning',
-    info: 'alert-info'
+      success: 'alert-success',
+      error: 'alert-danger',
+      alert: 'alert-warning',
+      notice: 'alert-success',
+      warning: 'alert-warning',
+      info: 'alert-info'
   }.freeze
 
   ICONS = {
-    started: { icon: 'fa-hourglass-half', message: 'This event has already started' },
-    expired: { icon: 'fa-hourglass-end', message: 'This event has finished' },
-    online: { icon: 'fa-desktop', message: 'This is an online event' },
-    face_to_face: { icon: 'fa-users', message: 'This is a physical event' },
-    for_profit: { icon: 'fa-credit-card', message: 'This event is from a for-profit company' },
-    scraped_today: { icon: 'fa-check-circle-o', message: 'This record was updated today' },
-    not_scraped_recently: { icon: 'fa-exclamation-circle', message: 'This record has not been updated since %SUB%' },
-    event: { icon: 'fa-calendar', message: 'This is a training event' },
-    material: { icon: 'fa-book', message: 'This is a training material' },
-    suggestion: { icon: 'fa-commenting-o', message: 'This record has one or more suggested scientific topics'},
-    private: { icon: 'fa-eye-slash', message: 'This resource is private' },
+      started: { icon: 'fa-hourglass-half', message: 'This event has already started' },
+      expired: { icon: 'fa-hourglass-end', message: 'This event has finished' },
+      online: { icon: 'fa-desktop', message: 'This is an online event' },
+      face_to_face: { icon: 'fa-users', message: 'This is a physical event' },
+      for_profit: { icon: 'fa-credit-card', message: 'This event is from a for-profit company' },
+      scraped_today: { icon: 'fa-check-circle-o', message: 'This record was updated today' },
+      not_scraped_recently: { icon: 'fa-exclamation-circle', message: 'This record has not been updated since %SUB%' },
+      event: { icon: 'fa-calendar', message: 'This is a training event' },
+      material: { icon: 'fa-book', message: 'This is a training material' },
+      suggestion: { icon: 'fa-commenting-o', message: 'This record has one or more suggested scientific topics'},
+      private: { icon: 'fa-eye-slash', message: 'This resource is private' },
   }.freeze
 
   def scrape_status_icon(record, size = nil)
@@ -144,9 +144,9 @@ module ApplicationHelper
   # End from twitter-bootstrap-rails gem for less
 
   DEFAULT_IMAGE_FOR_MODEL = {
-    'ContentProvider' => 'placeholder-organization.png',
-    'Package' => 'placeholder-group.png',
-    'Node' => 'elixir_logo_orange.png'
+      'ContentProvider' => 'placeholder-organization.png',
+      'Package' => 'placeholder-group.png',
+      'Node' => 'elixir_logo_orange.png'
   }.freeze
 
   def get_image_url_for(resource)
@@ -162,22 +162,22 @@ module ApplicationHelper
   # Return icon classes for model name (could be symbol or string)
   def icon_class_for_model(model)
     case model.to_s
-    when 'materials'
-      'fa fa-book'
-    when 'content_providers'
-      'fa fa-building-o'
-    when 'activity_logs'
-      'fa fa-clock-o'
-    when 'events'
-      'fa fa-calendar'
-    when 'users'
-      'fa fa-user'
-    when 'workflows'
-      'fa fa-sitemap'
-    when 'nodes'
-      'fa fa-share-alt'
-    else
-      'fa fa-folder-open'
+      when 'materials'
+        'fa fa-book'
+      when 'content_providers'
+        'fa fa-building-o'
+      when 'activity_logs'
+        'fa fa-clock-o'
+      when 'events'
+        'fa fa-calendar'
+      when 'users'
+        'fa fa-user'
+      when 'workflows'
+        'fa fa-sitemap'
+      when 'nodes'
+        'fa fa-share-alt'
+      else
+        'fa fa-folder-open'
     end
   end
 
@@ -218,7 +218,7 @@ module ApplicationHelper
   def info_box(title, &block)
     content_tag(:div, class: 'info-box') do
       content_tag(:h4, raw('<i class="glyphicon glyphicon-info-sign"></i> ' + title), class: 'info-box-header') +
-        content_tag(:div, class: 'info-box-content', &block)
+          content_tag(:div, class: 'info-box-content', &block)
     end
   end
 
@@ -231,9 +231,9 @@ module ApplicationHelper
           end
         end
       end +
-        content_tag(:div, class: 'panel-collapse collapse', id: id) do
-          content_tag(:div, class: 'panel-body', &block)
-        end
+          content_tag(:div, class: 'panel-collapse collapse', id: id) do
+            content_tag(:div, class: 'panel-body', &block)
+          end
     end
   end
 
@@ -263,7 +263,7 @@ module ApplicationHelper
       content_tag(:span, class: 'input-group-addon', title: 'Click to display calendar') do
         content_tag(:i, '', class: 'glyphicon glyphicon-calendar')
       end +
-        form.text_field(field, class: 'form-control')
+          form.text_field(field, class: 'form-control')
     end
   end
 
@@ -286,7 +286,7 @@ module ApplicationHelper
             @template.image_tag('markdown_logo.png', width: 18) +
                 ' This field supports markdown, ' +
                 @template.link_to('click here for a reference on markdown syntax.',
-                        'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet', target: '_blank')
+                                  'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet', target: '_blank')
           end
     end
 
@@ -318,7 +318,7 @@ module ApplicationHelper
     def multi_input(name, options = {})
       suggestions = options[:suggestions] || Tess::AutocompleteManager.suggestions_array_for(name.to_s)
       @template.render(partial: 'common/multiple_input', locals: { field_name: name, f: self, suggestions: suggestions,
-                                                                    disabled: options[:disabled] })
+                                                                   disabled: options[:disabled] })
     end
   end
 
@@ -367,5 +367,12 @@ module ApplicationHelper
   def people_suggestions
     (Tess::AutocompleteManager.suggestions_array_for('contributors') +
         Tess::AutocompleteManager.suggestions_array_for('authors')).uniq
+  end
+
+  def star_button(resource)
+    star = current_user.stars.where(resource_id: resource.id, resource_type: resource.class.name).first
+
+    link_to '#', '', class: 'btn btn-default',
+            data: { role: 'star-button', starred: !star.nil?, resource: { id: resource.id, type: resource.class.name } }
   end
 end
