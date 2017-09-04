@@ -372,7 +372,7 @@ module ApplicationHelper
   def star_button(resource)
     star = current_user.stars.where(resource_id: resource.id, resource_type: resource.class.name).first
 
-    link_to '#', '', class: 'btn btn-default',
+    link_to '', '#', class: 'btn btn-default',
             data: { role: 'star-button', starred: !star.nil?, resource: { id: resource.id, type: resource.class.name } }
   end
 end

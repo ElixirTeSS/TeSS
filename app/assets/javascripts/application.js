@@ -170,22 +170,22 @@ $(document).ready(function () {
         });
     });
 
+    var setStarButtonState = function (button) {
+        if (button.data('starred')) {
+            button.html("<i class='fa fa-star'> </i> Un-star");
+        } else {
+            button.html("<i class='fa fa-star-o'> </i> Star");
+        }
+    };
+
     $('[data-role="star-button"]').each(function () {
         var button = $(this);
-        var starred = $(this).data('starred');
-        var resource = $(this).data('resource');
+        var resource = button.data('resource');
 
-        var setButtonState = function (starred) {
-            if (starred) {
-                button.html("<i class='fa fa-star'> </i> Un-star");
-            } else {
-                button.html("<i class='fa fa-star-o'> </i> Star");
-            }
-        };
-
-        setButtonState(starred);
+        setStarButtonState(button);
 
         button.click(function () {
+            var starred = button.data('starred');
             button.addClass('loading');
             $.ajax({
                 method: starred ? 'DELETE' : 'POST',
@@ -193,7 +193,8 @@ $(document).ready(function () {
                 url: '/stars',
                 data: { star: { resource_id: resource.id, resource_type: resource.type } },
                 success: function () {
-                    setButtonState(!starred)
+                    button.data('starred', !starred);
+                    setStarButtonState(button);
                 },
                 complete: function () {
                     button.removeClass('loading');
