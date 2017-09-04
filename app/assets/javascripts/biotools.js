@@ -34,7 +34,7 @@ var Biotools = {
         $.get(api_url, function (json) {
             Biotools.displayTools(json);
         });
-    }, 
+    },
     associateTool: function(event){
         obj = $(event.target);
         ExternalResources.add(obj.data('title'), obj.data('url'));
@@ -131,9 +131,11 @@ $(document).ready(function () {
     $('#search_tools').click(Biotools.search);
     $('#biotools-results').on('click','.associate-tool', Biotools.associateTool);
     $('#external-resources').on('change', '.delete-external-resource-btn input.destroy-attribute', ExternalResources.delete);
-    Biotools.titleElement().keyup(Biotools.copyTitleAndSearch);
-    Biotools.copyTitleAndSearch();
-    Biotools.queryAPI(Biotools.apiBaseURL() + '?' + Biotools.queryParameter() + '&' + Biotools.sortParameter());
+
+    if ($('#tool_query').length) {
+        Biotools.titleElement().keyup(Biotools.copyTitleAndSearch);
+        Biotools.copyTitleAndSearch();
+    }
 });
 
 
