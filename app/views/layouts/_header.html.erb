@@ -8,23 +8,26 @@
         </a>
       </div>
       <div class="user-options">
-        <%= link_to current_user.username, user_path(current_user) if user_signed_in? %>
-        <% if user_signed_in? && (current_user.is_curator? or current_user.is_admin?) %>
-          <%= link_to users_path, :title => 'View users' do %>
-              <i class="fa fa-users fa-lg"></i>
-          <% end %>
-        <% end %>
-        <% if user_signed_in? && current_user.is_admin? %>
-            <%= link_to rails_admin_path, :title => 'View the administrator console' do %>
-                <i class="fa fa-cog fa-lg"></i>
-            <% end %>
-        <% end %>
-        <% if user_signed_in? && (current_user.is_curator? or current_user.is_admin?) %>
-            <%= link_to curate_topic_suggestions_path, :title => 'Assign scientific topics to TeSS resources' do %>
-                <i class="fa fa-briefcase fa-lg"></i>
-            <% end %>
-        <% end %>
         <% if user_signed_in? %>
+            <%= link_to current_user.username, user_path(current_user) %>
+            <%= link_to stars_path, title: 'View stars' do %>
+                <i class="fa fa-star fa-lg"></i>
+            <% end %>
+            <% if current_user.is_curator? || current_user.is_admin? %>
+                <%= link_to users_path, :title => 'View users' do %>
+                    <i class="fa fa-users fa-lg"></i>
+                <% end %>
+            <% end %>
+            <% if current_user.is_admin? %>
+                <%= link_to rails_admin_path, :title => 'View the administrator console' do %>
+                    <i class="fa fa-cog fa-lg"></i>
+                <% end %>
+            <% end %>
+            <% if current_user.is_curator? || current_user.is_admin? %>
+                <%= link_to curate_topic_suggestions_path, :title => 'Assign scientific topics to TeSS resources' do %>
+                    <i class="fa fa-briefcase fa-lg"></i>
+                <% end %>
+            <% end %>
             <%= link_to "Log out", destroy_user_session_path, :method => :delete, :data => {:confirm => 'Are you sure you want to log out?'} %>
         <% else %>
             <%= link_to "Log in", new_user_session_path %>

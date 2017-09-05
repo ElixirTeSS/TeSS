@@ -1,0 +1,38 @@
+<div class="page-header">
+  <%= page_title 'Starred Resources' %>
+</div>
+
+<% if @stars.any? %>
+    <% grouped_stars = @stars.group_by { |s| s.resource_type.underscore.pluralize.to_sym } %>
+
+    <ul class="nav nav-tabs">
+      <% grouped_stars.each_with_index do |(tab, stars), index| %>
+          <li class="<%= index == 0 ? 'active' : '' %>">
+            <a data-toggle="tab" href="#<%= tab %>"><i class="<%= icon_class_for_model(tab) %>"></i> <%= tab.to_s.humanize.capitalize %>
+              (<%= stars.count %>)</a>
+          </li>
+      <% end %>
+    </ul>
+
+    <div class="tab-content">
+      <% grouped_stars.each_with_index do |(model, stars), index| %>
+          <div class="tab-pane fade in <%= 'active'.html_safe if index == 0 %>" id="<%= model %>">
+            <div class="search-results-count"><%= pluralize(stars.count, model.to_s.singularize.humanize.capitalize) %></div>
+
+            <% if model == :materials %>
+                <% stars.each do |star| %>
+                    <%= render partial: star.resource %>
+                <% end %>
+            <% else %>
+                <ul class="masonry media-grid" style="margin-top: 15px;">
+                  <% stars.each do |star| %>
+                      <%= render partial: star.resource %>
+                  <% end %>
+                </ul>
+            <% end %>
+          </div>
+      <% end %>
+    </div>
+<% else %>
+    <p class="empty">You have not starred any resources.</p>
+<% end %>

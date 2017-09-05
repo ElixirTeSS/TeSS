@@ -686,6 +686,11 @@ input.loading {
   background: url('ajax-loader.gif') no-repeat right center;
 }
 
+.btn.loading {
+  padding-right: 24px;
+  background: url('ajax-loader.gif') no-repeat right center;
+}
+
 .url-wrap {
   display: inline-block;
   word-wrap: break-word;
