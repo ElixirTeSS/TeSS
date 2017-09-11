@@ -132,6 +132,7 @@ portal_event:
   content_provider: portal_provider
   start: 2016-12-12 10:00:00
   end: 2016-12-12 12:00:00
+  city: Somewhere Awesome
 
 dodgy_country_event:
   title: Fun Training Day

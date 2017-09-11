@@ -26,7 +26,7 @@ namespace :tess do
         if !seen.has_key?(location)
           result = Geocoder.search(location).first
           if result
-            puts "RESULT: #{result.latitude}, #{result.longitude}"
+            #puts "RESULT: #{result.latitude}, #{result.longitude}"
             seen[location] = [result.latitude, result.longitude]
             # Create edit suggestion here.
             latitude = result.latitude
@@ -34,7 +34,7 @@ namespace :tess do
           end
           sleep(rand(9) + 1)
         else
-          puts "SEEN: #{seen[location][0]}, #{seen[location][1]}"
+          #puts "SEEN: #{seen[location][0]}, #{seen[location][1]}"
           # Or, create edit suggestion here.
           latitude = seen[location][0]
           longitude = seen[location][1]
@@ -43,12 +43,12 @@ namespace :tess do
         next unless latitude && longitude
 
         suggestion = EditSuggestion.where(suggestible_type: 'Event', suggestible_id: e.id).first_or_create
-        puts "S1: #{suggestion.inspect}"
+        #puts "S1: #{suggestion.inspect}"
         suggestion.data_fields = {} if suggestion.data_fields.nil?
         suggestion.data_fields['latitude'] = latitude
         suggestion.data_fields['longitude'] = longitude
         suggestion.save!
-        puts "S2: #{suggestion.inspect}"
+        #puts "S2: #{suggestion.inspect}"
 
       end
     end
