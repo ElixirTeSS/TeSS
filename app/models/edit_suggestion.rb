@@ -44,14 +44,16 @@ class EditSuggestion < ActiveRecord::Base
   def accept_data(resource, field, value)
     resource[field.to_sym] = value
     if resource.save!
-      data_fields.delete(field.to_sym)
+      data_fields.delete(field)
+      save!
       destroy if (scientific_topic_links.nil? || scientific_topic_links.empty?) && !data
     end
 
   end
 
   def reject_data(resource, field)
-    data_fields.delete(field.to_sym)
+    data_fields.delete(field)
+    save!
     destroy if (scientific_topic_links.nil? || scientific_topic_links.empty?) && !data
   end
 

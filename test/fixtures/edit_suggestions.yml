@@ -6,3 +6,9 @@
 #
 one:
   suggestible: material_with_suggestions (Material)
+
+two:
+  suggestible: material_with_suggestions (Material)
+  data_fields:
+    fruit: banana
+

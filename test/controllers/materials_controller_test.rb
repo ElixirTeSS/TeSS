@@ -836,7 +836,6 @@ class MaterialsControllerTest < ActionController::TestCase
 
     assert_response :success
 
-=begin
     assert_difference('EditSuggestion.count', 0) do
       post :reject_data, id: @material.id, data_field: 'latitude', data_value: '53.141969'
     end
@@ -848,10 +847,9 @@ class MaterialsControllerTest < ActionController::TestCase
     end
 
     assert_response :success
-=end
 
     assert_empty @material.reload.scientific_topic_names
-    #assert_nil @material.reload.edit_suggestion
+    assert_nil @material.reload.edit_suggestion
   end
 
   test 'should not approve topic for unprivileged user' do

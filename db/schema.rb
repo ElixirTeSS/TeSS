@@ -320,6 +320,17 @@ ActiveRecord::Schema.define(version: 20170901091127) do
 
   add_index "staff_members", ["node_id"], name: "index_staff_members_on_node_id", using: :btree
 
+  create_table "stars", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "resource_id"
+    t.string   "resource_type"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "stars", ["resource_type", "resource_id"], name: "index_stars_on_resource_type_and_resource_id", using: :btree
+  add_index "stars", ["user_id"], name: "index_stars_on_user_id", using: :btree
+
   create_table "subscriptions", force: :cascade do |t|
     t.integer  "user_id"
     t.datetime "last_sent_at"
@@ -446,6 +457,7 @@ ActiveRecord::Schema.define(version: 20170901091127) do
   add_foreign_key "nodes", "users"
   add_foreign_key "packages", "users"
   add_foreign_key "staff_members", "nodes"
+  add_foreign_key "stars", "users"
   add_foreign_key "subscriptions", "users"
   add_foreign_key "users", "roles"
   add_foreign_key "workflows", "users"

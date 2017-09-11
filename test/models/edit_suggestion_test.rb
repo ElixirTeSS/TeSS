@@ -20,4 +20,19 @@ class EditSuggestionTest < ActiveSupport::TestCase
     assert_nil suggestion.drop_topic({:uri => 'total_gibberish'})
     assert_equal 2, suggestion.scientific_topics.count
   end
+
+  test "should remove a data field by name" do
+    suggestion = edit_suggestions(:two)
+    assert_equal 1, suggestion.data_fields.count
+    assert_equal 'banana', suggestion.data_fields.delete('fruit')
+    assert_equal 0, suggestion.data_fields.count
+  end
+
+  test "should return nil if remove non existent data field" do
+    suggestion = edit_suggestions(:two)
+    assert_equal 1, suggestion.data_fields.count
+    assert_nil suggestion.data_fields.delete('vegetable')
+    assert_equal 1, suggestion.data_fields.count
+  end
+
 end

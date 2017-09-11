@@ -46,7 +46,7 @@ namespace :tess do
         puts "S1: #{suggestion.inspect}"
         suggestion.data_fields = {} if suggestion.data_fields.nil?
         suggestion.data_fields['latitude'] = latitude
-        suggestion.data_fields['longitude'] = latitude
+        suggestion.data_fields['longitude'] = longitude
         suggestion.save!
         puts "S2: #{suggestion.inspect}"
 
