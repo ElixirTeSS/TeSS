@@ -68,7 +68,7 @@ module SearchHelper
 
       strftime_components = []
       if finish.to_date != start.to_date
-        strftime_components << '%e'
+        strftime_components << '%-e'
         if finish.month != start.month
           strftime_components << '%B'
           if finish.year != start.year
@@ -81,9 +81,9 @@ module SearchHelper
         out << "#{start.strftime(strftime_components.join(' '))} - "
       end
 
-      out << "#{finish.strftime('%e %B %Y')}"
+      out << "#{finish.strftime('%-e %B %Y')}"
     else
-      out = start.strftime('%e %B %Y')
+      out = start.strftime('%-e %B %Y')
     end
 
     out
