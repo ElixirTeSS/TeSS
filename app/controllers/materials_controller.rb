@@ -131,24 +131,22 @@ class MaterialsController < ApplicationController
     redirect_to @material
   end
 
+  PERMITTED_MATERIAL_PARAMS = [:id, :title, :url, :short_description, :long_description, :doi,:last_scraped, :scraper_record,
+                               :remote_created_date,  :remote_updated_date, {:package_ids => []},
+                               :content_provider_id, {:keywords => []}, {:resource_type => []},
+                               {:scientific_topic_names => []}, {:scientific_topic_uris => []},
+                               :licence, :difficulty_level, {:contributors => []},
+                               {:authors => []}, {:target_audience => []}, {:node_ids => []}, {:node_names => []},
+                               external_resources_attributes: [:id, :url, :title, :_destroy], event_ids: [],
+                               locked_fields: []]
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_material
     @material = Material.friendly.find(params[:id])
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
   def material_params
-    params.require(:material).permit(:id, :title, :url, :short_description, :long_description, :doi,:last_scraped, :scraper_record,
-                                     :remote_created_date,  :remote_updated_date, {:package_ids => []},
-                                     :content_provider_id, {:keywords => []}, {:resource_type => []},
-                                     {:scientific_topic_names => []}, {:scientific_topic_uris => []},
-                                     :licence, :difficulty_level, {:contributors => []},
-                                     {:authors => []}, {:target_audience => []}, {:node_ids => []}, {:node_names => []},
-                                     external_resources_attributes: [:id, :url, :title, :_destroy], event_ids: [],
-                                     locked_fields: [])
+    params.require(:material).permit(PERMITTED_MATERIAL_PARAMS)
   end
-
-
-
 end

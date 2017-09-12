@@ -162,6 +162,17 @@ class EventsController < ApplicationController
     redirect_to @event.url
   end
 
+  PERMITTED_EVENT_PARAMS = [:external_id, :title, :subtitle, :url, :organizer, :last_scraped,
+                            :scraper_record, :description, {:scientific_topic_names => []},
+                            {:scientific_topic_uris => []}, {:event_types => []},
+                            {:keywords => []}, :start, :end, :sponsor, :online, :for_profit, :venue,
+                            :city, :county, :country, :postcode, :latitude, :longitude, :timezone,
+                            :content_provider_id, {:package_ids => []}, {:node_ids => []}, {:node_names => []},
+                            {:target_audience => []}, {:eligibility => []},
+                            {:host_institutions => []}, :capacity, :contact,
+                            external_resources_attributes: [:id, :url, :title, :_destroy], material_ids: [],
+                            locked_fields: []]
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -170,17 +181,9 @@ class EventsController < ApplicationController
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
+
   def event_params
-    params.require(:event).permit(:external_id, :title, :subtitle, :url, :organizer, :last_scraped,
-                                  :scraper_record, :description, {:scientific_topic_names => []},
-                                  {:scientific_topic_uris => []}, {:event_types => []},
-                                  {:keywords => []}, :start, :end, :sponsor, :online, :for_profit, :venue,
-                                  :city, :county, :country, :postcode, :latitude, :longitude, :timezone,
-                                  :content_provider_id, {:package_ids => []}, {:node_ids => []}, {:node_names => []},
-                                  {:target_audience => []}, {:eligibility => []},
-                                  {:host_institutions => []}, :capacity, :contact,
-                                  external_resources_attributes: [:id, :url, :title, :_destroy], material_ids: [],
-                                  locked_fields: [])
+    params.require(:event).permit(PERMITTED_EVENT_PARAMS)
   end
 
   def event_report_params
@@ -190,5 +193,4 @@ class EventsController < ApplicationController
   def disable_pagination
     params[:per_page] = 2 ** 10
   end
-
 end

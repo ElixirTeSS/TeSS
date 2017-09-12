@@ -86,6 +86,10 @@ class ContentProvidersController < ApplicationController
 
   end
 
+  def bulk_create
+
+  end
+
   def scrape
     job_id = ScraperWorker.perform_async(params[:url], params[:page_format])
 
@@ -126,4 +130,13 @@ class ContentProvidersController < ApplicationController
 
     params.require(:content_provider).permit(permitted)
   end
+
+  def events_params
+    params.permit(events: EventsController::PERMITTED_EVENT_PARAMS)
+  end
+
+  def materials_params
+    params.permit(materials: MaterialsController::PERMITTED_MATERIAL_PARAMS)
+  end
+
 end
