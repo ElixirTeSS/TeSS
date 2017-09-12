@@ -138,10 +138,9 @@ ActiveRecord::Schema.define(version: 20170901091127) do
     t.integer  "source_id"
     t.text     "url"
     t.string   "title"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.string   "source_type"
-    t.json     "last_api_response"
   end
 
   add_index "external_resources", ["source_id", "source_type"], name: "index_external_resources_on_source_id_and_source_type", using: :btree
@@ -178,6 +177,7 @@ ActiveRecord::Schema.define(version: 20170901091127) do
     t.datetime "updated_at",                                   null: false
     t.text     "long_description"
     t.string   "target_audience",     default: [],                          array: true
+    t.string   "keywords",            default: [],                          array: true
     t.string   "authors",             default: [],                          array: true
     t.string   "contributors",        default: [],                          array: true
     t.string   "licence",             default: "notspecified"
@@ -187,9 +187,7 @@ ActiveRecord::Schema.define(version: 20170901091127) do
     t.integer  "user_id"
     t.date     "last_scraped"
     t.boolean  "scraper_record",      default: false
-    t.text     "keyword"
     t.string   "resource_type",       default: [],                          array: true
-    t.string   "keywords",            default: [],                          array: true
   end
 
   add_index "materials", ["content_provider_id"], name: "index_materials_on_content_provider_id", using: :btree
