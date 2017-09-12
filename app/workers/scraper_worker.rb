@@ -10,11 +10,17 @@ class ScraperWorker
 
     page = open(url).read
 
-    events = Tess::Rdf::EventExtractor.new(page, format).extract { |p| p }
-    materials = Tess::Rdf::MaterialExtractor.new(page, format).extract { |p| p }
+    if format == :ics
+      cals = Icalendar::Calendar.parse(page)
+      event_params = Event.from_ical(cals.first).map { |e| e.attributes.reject { |_,v| v.blank? }}
+      material_params = []
+    else
+      event_params = Tess::Rdf::EventExtractor.new(page, format).extract { |p| p }
+      material_params = Tess::Rdf::MaterialExtractor.new(page, format).extract { |p| p }
+    end
 
     File.open(File.join(Rails.root, 'tmp', "scrape_#{self.jid}.yml"), 'w') do |file|
-      file.write({ events: events, materials: materials }.to_yaml)
+      file.write({ events: event_params, materials: material_params }.to_yaml)
     end
   end
 

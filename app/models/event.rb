@@ -194,6 +194,22 @@ class Event < ActiveRecord::Base
       ical_event.summary     = self.title
       ical_event.description = self.description
       ical_event.location    = self.venue unless self.venue.blank?
+      ical_event.url         = self.url
+    end
+  end
+
+  def self.from_ical(calendar)
+    calendar.events.map do |ical_event|
+      Event.new.tap do |event|
+        event.start       = ical_event.dtstart.to_datetime unless ical_event.dtstart.blank?
+        event.end         = ical_event.dtend.to_datetime unless ical_event.dtend.blank?
+        event.title       = ical_event.summary.try(:to_s)
+        event.description = ical_event.description.try(:to_s)
+        event.venue       = ical_event.location.try(:to_s)
+        event.latitude    = ical_event.geo.first.to_f unless ical_event.geo.blank?
+        event.longitude   = ical_event.geo.last.to_f unless ical_event.geo.blank?
+        event.url         = ical_event.url.try(:to_s)
+      end
     end
   end
 

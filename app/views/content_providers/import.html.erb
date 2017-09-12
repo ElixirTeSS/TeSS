@@ -8,7 +8,7 @@
   </div>
 
   <div class="form-group">
-    <%= select_tag(:format, options_for_select([['JSON-LD', 'jsonld'],['RDFa', 'rdfa']], params[:format]), class: 'form-control') %>
+    <%= select_tag(:format, options_for_select([['JSON-LD', 'jsonld'],['RDFa', 'rdfa'],['iCal / ICS', 'ics']], params[:format]), class: 'form-control') %>
   </div>
 
   <%= button_tag('Go', id: 'import-btn', class: 'btn btn-primary') %>
@@ -21,7 +21,7 @@
       url: '<%= import_content_provider_path(@content_provider) %>',
       data: {
         url: $('#url').val(),
-        rdf_format: $('#format').val()
+        page_format: $('#format').val()
       },
       method: 'POST',
       success: function (data) {
@@ -50,7 +50,7 @@
                     console.log('error', data);
                   }
                 });
-              } else if (data.status !== 'waiting') {
+              } else if (data.status !== 'working') {
                 window.clearInterval(interval);
                 input.removeClass('loading');
               }

@@ -87,7 +87,7 @@ class ContentProvidersController < ApplicationController
   end
 
   def scrape
-    job_id = ScraperWorker.perform_async(params[:url], params[:rdf_format])
+    job_id = ScraperWorker.perform_async(params[:url], params[:page_format])
 
     respond_to do |format|
       format.json { render json: { id: job_id }}
