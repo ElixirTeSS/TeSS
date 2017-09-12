@@ -13,5 +13,5 @@
       </div>
   <% end %>
   <%= link_to '', content_provider, :class=>"media-view"%>
+  <%= render partial: 'content_providers/partials/content_provider_schemaorg', locals: { content_provider: content_provider } %>
 </li>
-

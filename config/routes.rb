@@ -90,10 +90,12 @@ Rails.application.routes.draw do
     end
   end
 
+  get 'stars' => 'stars#index'
+  post 'stars' => 'stars#create'
+  delete 'stars' => 'stars#destroy'
+
   post 'materials/:id/update_packages' => 'materials#update_packages'
   post 'events/:id/update_packages' => 'events#update_packages'
-
-
 
   get 'search' => 'search#index'
   get 'test_url' => 'application#test_url'

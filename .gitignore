@@ -22,5 +22,7 @@ solr/development
 solr/default
 lib/assets/
 public/assets/*
+public/sitemaps/*
+public/system
 .idea/*
 coverage

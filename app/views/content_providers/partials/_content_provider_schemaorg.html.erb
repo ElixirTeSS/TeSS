@@ -1,0 +1,7 @@
+<div itemscope itemtype="http://schema.org/Organization">
+  <%= content_tag :span, content_provider.title, {itemprop: 'name', content: content_provider.title, class: 'schemaorg-element'} %>
+  <%= content_tag :span, content_provider.url, {itemprop: 'url', content: content_provider.url, class: 'schemaorg-element'} %>
+  <%= content_tag :span, content_provider_url(content_provider), {itemprop: 'sameAs', content: content_provider_url(content_provider), class: 'schemaorg-element' } %>
+  <%= content_tag :span, content_provider.description, {itemprop: 'description', content: content_provider.description, class: 'schemaorg-element'} if content_provider.description.present? %>
+  <%= content_tag :span, content_provider.image.url, {itemprop: 'image', content: content_provider.image.url, class: 'schemaorg-element'} if content_provider.image.present? %>
+</div>
