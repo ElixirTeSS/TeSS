@@ -14,6 +14,8 @@
   <%= button_tag('Go', id: 'import-btn', class: 'btn btn-primary') %>
 </div>
 
+<div class="text-danger" id="scrape-errors"></div>
+
 <script>
   $('#import-btn').click(function () {
     $.ajax({
@@ -29,7 +31,7 @@
         var input = $('#url');
         input.addClass('loading');
 
-        var interval = window.setInterval(function () {
+        var checkStatus = function () {
           $.ajax({
             dataType: 'json',
             url: '/job_status',
@@ -42,32 +44,37 @@
                   data: { job_id: jobId },
                   success: function (html) {
                     $('#scraper-results').html(html);
-                    window.clearInterval(interval);
-                    input.removeClass('loading');
                   },
-                    error: function (data) {
-                      console.log('error', data);
-                      window.clearInterval(interval);
-                      input.removeClass('loading');
-                    }
+                  error: function (data) {
+                    console.log('error', data);
+                    $('#scrape-errors').text('There was a problem rendering the results. ' + data.responseText);
+                  },
+                  complete: function () {
+                    input.removeClass('loading');
+                  }
                 });
-              } else if (data.status !== 'working') {
-                window.clearInterval(interval);
-                input.removeClass('loading');
+              } else if (data.status === 'working') {
+                setTimeout(checkStatus, 2000);
+              } else {
+                console.log('bad job response', data);
+                $('#scrape-errors').text('There was a problem importing from the given URL. Please check the URL is correct and the appropriate format is selected. Job ' + data.status);
               }
             },
             error: function (data) {
               console.log('error', data);
-              window.clearInterval(interval);
+              $('#scrape-errors').text('There was a problem getting the job status');
+            },
+            complete: function () {
               input.removeClass('loading');
             }
           });
-        }, 3000);
+        };
+
+        checkStatus();
       },
       error: function (data) {
         console.log('error', data);
-        window.clearInterval(interval);
-        input.removeClass('loading');
+        $('#scrape-errors').text('There was a problem creating the import job: ' + data.responseText);
       }
     });
 
