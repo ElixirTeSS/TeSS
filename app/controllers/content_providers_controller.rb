@@ -90,8 +90,6 @@ class ContentProvidersController < ApplicationController
     @events = []
     @materials = []
 
-    pp bulk_import_params
-
     (bulk_import_params[:events] || []).select { |_,e| e[:include_in_create] == '1'}.each do |_, event|
       @events << @content_provider.events.create(event)
     end
