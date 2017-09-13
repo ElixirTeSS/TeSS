@@ -36,19 +36,20 @@
             data: { id: jobId },
             success: function (data) {
               if (data.status === 'complete') {
-                window.clearInterval(interval);
-                input.removeClass('loading');
-
                 $.ajax({
                   dataType: 'html',
                   url: '<%= scraper_results_content_provider_path(@content_provider) %>',
                   data: { job_id: jobId },
                   success: function (html) {
                     $('#scraper-results').html(html);
+                    window.clearInterval(interval);
+                    input.removeClass('loading');
                   },
-                  error: function (data) {
-                    console.log('error', data);
-                  }
+                    error: function (data) {
+                      console.log('error', data);
+                      window.clearInterval(interval);
+                      input.removeClass('loading');
+                    }
                 });
               } else if (data.status !== 'working') {
                 window.clearInterval(interval);

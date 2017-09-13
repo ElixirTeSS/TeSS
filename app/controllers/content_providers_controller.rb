@@ -1,5 +1,5 @@
 class ContentProvidersController < ApplicationController
-  before_action :set_content_provider, only: [:show, :edit, :update, :destroy, :import, :scrape, :scraper_results]
+  before_action :set_content_provider, only: [:show, :edit, :update, :destroy, :import, :scrape, :scraper_results, :bulk_create]
   before_action :set_breadcrumbs
 
   include SearchableIndex
@@ -87,7 +87,18 @@ class ContentProvidersController < ApplicationController
   end
 
   def bulk_create
+    @events = []
+    @materials = []
 
+    pp bulk_import_params
+
+    (bulk_import_params[:events] || []).select { |_,e| e[:include_in_create] == '1'}.each do |_, event|
+      @events << @content_provider.events.create(event)
+    end
+
+    (bulk_import_params[:materials] || []).select { |_, m| m[:include_in_create] == '1'}.each do |_, material|
+      @materials << @content_provider.materials.create(material)
+    end
   end
 
   def scrape
@@ -131,12 +142,10 @@ class ContentProvidersController < ApplicationController
     params.require(:content_provider).permit(permitted)
   end
 
-  def events_params
-    params.permit(events: EventsController::PERMITTED_EVENT_PARAMS)
+  def bulk_import_params
+    params.require(:content_provider).permit(
+        events: EventsController::PERMITTED_EVENT_PARAMS + [:include_in_create],
+        materials: MaterialsController::PERMITTED_MATERIAL_PARAMS + [:include_in_create]
+    )
   end
-
-  def materials_params
-    params.permit(materials: MaterialsController::PERMITTED_MATERIAL_PARAMS)
-  end
-
 end

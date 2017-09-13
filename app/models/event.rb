@@ -102,6 +102,8 @@ class Event < ActiveRecord::Base
 
   COUNTRY_SYNONYMS = JSON.parse(File.read(File.join(Rails.root, 'config', 'data', 'country_synonyms.json')))
 
+  attr_accessor :include_in_create
+
   #Generated Event:
   # external_id:string
   # title:string
@@ -274,7 +276,7 @@ class Event < ActiveRecord::Base
   end
 
   def self.check_exists(event_params)
-    given_event = self.new(event_params)
+    given_event = event_params.is_a?(Hash) ? self.new(event_params) : event_params
     event = nil
 
     if given_event.url.present?

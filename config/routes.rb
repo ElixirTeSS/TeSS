@@ -70,6 +70,7 @@ Rails.application.routes.draw do
       get 'import'
       get 'scraper_results'
       post 'import', to: 'content_providers#scrape'
+      post 'bulk_create'
     end
   end
 

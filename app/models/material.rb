@@ -87,6 +87,8 @@ class Material < ActiveRecord::Base
 
   update_suggestions(:keywords, :contributors, :authors, :target_audience, :resource_type)
 
+  attr_accessor :include_in_create
+
   def short_description= desc
     super(Rails::Html::FullSanitizer.new.sanitize(desc))
   end
@@ -101,7 +103,7 @@ class Material < ActiveRecord::Base
   end
 
   def self.check_exists(material_params)
-    given_material = self.new(material_params)
+    given_material = material_params.is_a?(Hash) ? self.new(material_params) : material_params
     material = nil
 
     if given_material.url.present?

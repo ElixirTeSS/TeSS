@@ -1,0 +1,21 @@
+<div class="page-header">
+  <%= page_title 'Report' %>
+</div>
+
+<% if @events.any? %>
+    <h4><%= pluralize(@events.select(&:valid?).count, 'event') %> created successfully</h4>
+    <ul>
+      <% @events.each do |event| %>
+          <li><%= link_to(event.title, event) %></li>
+      <% end %>
+    </ul>
+<% end %>
+
+<% if @materials.any? %>
+    <h4><%= pluralize(@materials.select(&:valid?).count, 'material') %> created successfully</h4>
+    <ul>
+      <% @materials.each do |material| %>
+          <li><%= link_to(material.title, material) %></li>
+      <% end %>
+    </ul>
+<% end %>

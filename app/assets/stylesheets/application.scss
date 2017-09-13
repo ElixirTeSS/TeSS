@@ -759,3 +759,7 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
     }
   }
 }
+
+.bulk-import-row {
+  border-bottom: 1px solid #ccc;
+}
