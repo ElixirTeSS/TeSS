@@ -2,7 +2,7 @@
 <%= form_for(@content_provider, url: bulk_create_content_provider_path(@content_provider), method: :post) do |form| %>
     <div id="events">
       <h2><%= pluralize(@events.count, 'Event') %> found</h2>
-      <% @events[0..10].sort_by(&:start).each_with_index do |e, i| %>
+      <% @events.sort_by(&:start).each_with_index do |e, i| %>
           <%= form.fields_for 'events[]', e, index: i do |event_fields| %>
               <div class="row bulk-import-row">
                 <div class="col-sm-8">
