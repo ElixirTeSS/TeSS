@@ -30,6 +30,7 @@
         var jobId = data.id;
         var input = $('#url');
         input.addClass('loading');
+        $('#scrape-errors').text('');
 
         var checkStatus = function () {
           $.ajax({
