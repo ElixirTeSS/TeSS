@@ -1,79 +1,53 @@
 <hr/>
 <%= form_for(@content_provider, url: bulk_create_content_provider_path(@content_provider), method: :post) do |form| %>
-    <div id="events">
-      <h2><%= pluralize(@events.count, 'Event') %> found</h2>
-      <% @events.sort_by(&:start).each_with_index do |e, i| %>
-          <%= form.fields_for 'events[]', e, index: i do |event_fields| %>
-              <div class="row bulk-import-row">
-                <div class="col-sm-8">
-                  <%= event_fields.check_box :include_in_create, class: 'bulk-import-checkbox' if e.valid? %>
-                  <strong><%= e.title %></strong><br/>
-                  <%= neatly_printed_date_range(e.start, e.end) %>
-                </div>
-                <div class="col-sm-4">
-                  <% if e.url %>
-                      <%= link_to(e.url, e.url, target: :_blank) %>
-                  <% else %>
-                      <span class="muted">No URL</span>
-                  <% end %>
-                </div>
-                <% unless (existing = Event.check_exists(e)).nil? %>
-                    <div class="col-sm-12 bg-warning text-warning">
-                      <i class="fa fa-exclamation-triangle"></i> Already registered: <%= link_to(existing.title, existing) %>
-                    </div>
-                <% end %>
-                <% unless e.valid? %>
-                    <div class="col-sm-12 bg-danger text-danger">
-                      <i class="fa fa-exclamation-circle"></i> Errors:
-                      <%= e.errors.full_messages.join(', ') %>
-                    </div>
-                <% end %>
-                <% e.attributes.select { |k,v| v.present? }.each do |attr, value| %>
-                    <%= event_fields.hidden_field(attr) %>
-                <% end %>
-              </div>
-          <% end %>
-      <% end %>
-    </div>
+    <% ['events', 'materials'].each do |type| %>
+        <% resources = instance_variable_get("@#{type}") %>
+        <% klass = type.singularize.capitalize.constantize %>
 
-    <div id="materials">
-      <h2><%= pluralize(@materials.count, 'Materials') %> found</h2>
-      <% @materials.sort_by(&:title).each_with_index do |m, i| %>
-          <%= form.fields_for 'materials[]', m, index: i do |material_fields| %>
-              <div class="row bulk-import-row">
-                <div class="col-sm-8">
-                  <%= material_fields.check_box :include_in_create, class: 'bulk-import-checkbox' if m.valid? %>
-                  <strong><%= m.title %></strong>
-                </div>
-                <div class="col-sm-4">
-                  <% if m.url %>
-                      <%= link_to(m.url, m.url, target: :_blank) %>
-                  <% else %>
-                      <span class="muted">No URL</span>
-                  <% end %>
-                </div>
-                <% unless (existing = Material.check_exists(m)).nil? %>
-                    <div class="col-sm-12 bg-warning text-warning">
-                      <i class="fa fa-exclamation-triangle"></i> Already registered: <%= link_to(existing.title, existing) %>
+        <%= content_tag(:div, id: type) do %>
+            <h2><%= pluralize(resources.count, type.singularize) %> found</h2>
+            <% resources.each_with_index do |resource, i| %>
+                <%= form.fields_for "#{type}[]", resource, index: i do |fields| %>
+                    <div class="row bulk-import-row">
+                      <div class="col-sm-8">
+                        <%= fields.check_box :include_in_create, class: 'bulk-import-checkbox' if resource.valid? %>
+                        <strong><%= resource.title %></strong><br/>
+                        <% if type == 'events' %>
+                            <%= neatly_printed_date_range(resource.start, resource.end) %>
+                        <% end %>
+                      </div>
+                      <div class="col-sm-4">
+                        <% if resource.url %>
+                            <%= link_to(resource.url, resource.url, target: :_blank) %>
+                        <% else %>
+                            <span class="muted">No URL</span>
+                        <% end %>
+                      </div>
+                      <% unless (existing = klass.check_exists(resource)).nil? %>
+                          <div class="col-sm-12 bg-warning text-warning">
+                            <i class="fa fa-exclamation-triangle"></i> Already registered: <%= link_to(existing.title, existing, target: :_blank) %>
+                          </div>
+                      <% end %>
+                      <% unless resource.valid? %>
+                          <div class="col-sm-12 bg-danger text-danger">
+                            <i class="fa fa-exclamation-circle"></i> Errors:
+                            <%= resource.errors.full_messages.join(', ') %>
+                          </div>
+                      <% end %>
+                      <% resource.attributes.select { |k,v| v.present? }.each do |attr, value| %>
+                          <%= fields.hidden_field(attr) %>
+                      <% end %>
                     </div>
                 <% end %>
-                <% unless m.valid? %>
-                    <div class="col-sm-12 bg-danger text-danger">
-                      <i class="fa fa-exclamation-circle"></i> Errors:
-                      <%= m.errors.full_messages.join(', ') %>
-                    </div>
-                <% end %>
-                <% m.attributes.select { |k,v| v.present? }.each do |attr, value| %>
-                    <%= material_fields.hidden_field attr, value %>
-                <% end %>
-              </div>
-          <% end %>
-      <% end %>
-    </div>
+            <% end %>
+        <% end %>
+    <% end %>
+
     <hr/>
 
     <%= form.submit 'Create', id: 'bulk-create-btn', class: 'btn btn-primary' %>
 <% end %>
+
 <script>
     var updateBulkCreateButton = function () {
         var button = $('#bulk-create-btn');
