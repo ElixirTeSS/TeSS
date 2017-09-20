@@ -14,10 +14,16 @@
   <%= button_tag('Go', id: 'import-btn', class: 'btn btn-primary') %>
 </div>
 
+<div class="text-success" id="scrape-status"></div>
 <div class="text-danger" id="scrape-errors"></div>
 
 <script>
   $('#import-btn').click(function () {
+    $('#scrape-errors').text('');
+    $('#scrape-status').text('Submitting job');
+    var input = $('#url');
+    input.addClass('loading');
+
     $.ajax({
       dataType: 'json',
       url: '<%= import_content_provider_path(@content_provider) %>',
@@ -28,9 +34,7 @@
       method: 'POST',
       success: function (data) {
         var jobId = data.id;
-        var input = $('#url');
-        input.addClass('loading');
-        $('#scrape-errors').text('');
+        $('#scrape-status').text('Waiting for status');
 
         var checkStatus = function () {
           $.ajax({
@@ -39,11 +43,13 @@
             data: { id: jobId },
             success: function (data) {
               if (data.status === 'complete') {
+                $('#scrape-status').text('Fetching results');
                 $.ajax({
                   dataType: 'html',
                   url: '<%= scraper_results_content_provider_path(@content_provider) %>',
                   data: { job_id: jobId },
                   success: function (html) {
+                    $('#scrape-status').text('Done');
                     $('#scraper-results').html(html);
                   },
                   error: function (data) {
@@ -55,6 +61,7 @@
                   }
                 });
               } else if (data.status === 'working') {
+                $('#scrape-status').text('Working');
                 setTimeout(checkStatus, 2000);
               } else {
                 console.log('bad job response', data);
@@ -64,8 +71,6 @@
             error: function (data) {
               console.log('error', data);
               $('#scrape-errors').text('There was a problem getting the job status');
-            },
-            complete: function () {
               input.removeClass('loading');
             }
           });
