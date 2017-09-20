@@ -17,7 +17,33 @@
 <div class="text-success" id="scrape-status"></div>
 <div class="text-danger" id="scrape-errors"></div>
 
+<div id="scraper-results"></div>
+
 <script>
+  var updateBulkCreateButton = function () {
+    var button = $('#bulk-create-btn');
+    var selectedEvents = $('#events .bulk-import-checkbox:checked').length;
+    var selectedMaterials = $('#materials .bulk-import-checkbox:checked').length;
+
+    if (!selectedEvents && !selectedMaterials) {
+      button.val('Nothing selected');
+      button.addClass('disabled');
+    } else {
+      var text = 'Create ';
+      if (selectedEvents) {
+        text += ('' + selectedEvents + ' events');
+        if (selectedMaterials) {
+          text += ' and ';
+        }
+      }
+      if (selectedMaterials) {
+        text += ('' + selectedMaterials + ' materials');
+      }
+      button.val(text);
+      button.removeClass('disabled');
+    }
+  };
+
   $('#import-btn').click(function () {
     $('#scrape-errors').text('');
     $('#scrape-status').text('Submitting job');
@@ -51,6 +77,7 @@
                   success: function (html) {
                     $('#scrape-status').text('Done');
                     $('#scraper-results').html(html);
+                    updateBulkCreateButton();
                   },
                   error: function (data) {
                     console.log('error', data);
@@ -86,6 +113,23 @@
 
     return false;
   });
-</script>
 
-<div id="scraper-results"></div>
+  $('#scraper-results').on('click', '.more-info-btn', function () {
+    $(this).parents('.bulk-import-row').find('.more-info-section').slideToggle();
+    return false;
+  });
+
+  $('#scraper-results').on('click', '.select-all-btn', function () {
+    $(this).parents('.scraper-typed-results').find('.bulk-import-checkbox').prop('checked', true);
+    updateBulkCreateButton();
+    return false;
+  });
+
+  $('#scraper-results').on('click', '.clear-btn', function () {
+    $(this).parents('.scraper-typed-results').find('.bulk-import-checkbox').prop('checked', false);
+    updateBulkCreateButton();
+    return false;
+  });
+
+  $('#scraper-results').on('change', '.bulk-import-checkbox', updateBulkCreateButton);
+</script>
