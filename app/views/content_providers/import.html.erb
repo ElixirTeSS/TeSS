@@ -14,7 +14,10 @@
   <%= button_tag('Go', id: 'import-btn', class: 'btn btn-primary') %>
 </div>
 
-<div class="text-success" id="scrape-status"></div>
+<div class="text-info">
+  <%= image_tag('ajax-loader.gif', id: 'import-spinner', style: 'display: none') %>
+  <span id="scrape-status"></span>
+</div>
 <div class="text-danger" id="scrape-errors"></div>
 
 <div id="scraper-results"></div>
@@ -48,7 +51,9 @@
     $('#scrape-errors').text('');
     $('#scrape-status').text('Submitting job');
     var input = $('#url');
-    input.addClass('loading');
+    var spinner = $('#import-spinner');
+
+    spinner.show();
 
     $.ajax({
       dataType: 'json',
@@ -75,16 +80,17 @@
                   url: '<%= scraper_results_content_provider_path(@content_provider) %>',
                   data: { job_id: jobId },
                   success: function (html) {
-                    $('#scrape-status').text('Done');
+                    $('#scrape-status').text('');
                     $('#scraper-results').html(html);
                     updateBulkCreateButton();
                   },
                   error: function (data) {
                     console.log('error', data);
+                    $('#scrape-status').text('');
                     $('#scrape-errors').text('There was a problem rendering the results. ' + data.responseText);
                   },
                   complete: function () {
-                    input.removeClass('loading');
+                    spinner.hide();
                   }
                 });
               } else if (data.status === 'working') {
@@ -92,13 +98,16 @@
                 setTimeout(checkStatus, 2000);
               } else {
                 console.log('bad job response', data);
+                $('#scrape-status').text('');
                 $('#scrape-errors').text('There was a problem importing from the given URL. Please check the URL is correct and the appropriate format is selected. Job ' + data.status);
+                spinner.hide();
               }
             },
             error: function (data) {
               console.log('error', data);
+              $('#scrape-status').text('');
               $('#scrape-errors').text('There was a problem getting the job status');
-              input.removeClass('loading');
+              spinner.hide();
             }
           });
         };
@@ -107,7 +116,9 @@
       },
       error: function (data) {
         console.log('error', data);
+        $('#scrape-status').text('');
         $('#scrape-errors').text('There was a problem creating the import job: ' + data.responseText);
+        spinner.hide();
       }
     });
 

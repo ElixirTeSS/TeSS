@@ -14,14 +14,21 @@
                 <%= form.fields_for "#{type}[]", resource, index: i do |fields| %>
                     <div class="bulk-import-row">
                       <div class="row">
-                        <div class="col-sm-8">
-                          <%= fields.check_box :include_in_create, class: 'bulk-import-checkbox' if resource.valid? %>
-                          <strong><%= resource.title %></strong><br/>
+                        <div class="col-sm-6">
+                          <% if resource.valid? %>
+                              <label class="checkbox-inline">
+                                <%= fields.check_box :include_in_create, class: 'bulk-import-checkbox' %>
+                                <strong><%= resource.title %></strong>
+                              </label>
+                          <% else %>
+                              <strong><%= resource.title %></strong>
+                          <% end %>
+                          <br/>
                           <% if type == 'events' %>
                               <%= neatly_printed_date_range(resource.start, resource.end) %>
                           <% end %>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                           <a data-toggle="collapse" class="pull-right btn btn-default btn-xs more-info-btn">Details</a>
                           <% if resource.url %>
                               <%= link_to(resource.url, resource.url, target: :_blank) %>
