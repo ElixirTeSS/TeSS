@@ -11,7 +11,7 @@
       <% if @results.blank? %>
           <p class="empty">No results found</p>
       <% else %>
-          <% tabs = @results.keys %>
+          <% tabs = @results.keys.sort {|a,b| a <=> b } %>
           <ul class="nav nav-tabs">
             <% tabs.each_with_index do |tab, index| %>
                 <li class="<%= index == 0 ? 'active' : '' %>">
