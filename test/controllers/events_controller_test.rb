@@ -851,28 +851,6 @@ class EventsControllerTest < ActionController::TestCase
     assert_select '#report', count: 1
   end
 
-  test 'should not show report-related parameter changes to non-privileged users' do
-    event = events(:event_with_report)
-    sign_in users(:another_regular_user)
-    event.funding = 'test'
-    event.save
-
-    get :show, id: event
-
-    assert_select '.sub-activity em', text: /Funding/, count: 0
-  end
-
-  test 'should show report-related parameter changes to privileged users' do
-    event = events(:event_with_report)
-    sign_in event.user
-    event.funding = 'test'
-    event.save
-
-    get :show, id: event
-
-    assert_select '.sub-activity em', text: /Funding/, count: 1
-  end
-
   test 'should only show report fields in JSON to privileged users' do
     hidden_report_event = events(:event_with_report)
     visible_report_event = events(:another_event_with_report)
