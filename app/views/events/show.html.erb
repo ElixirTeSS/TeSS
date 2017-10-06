@@ -228,8 +228,8 @@
             </div>
           </div>
         </div>
-        <div id="activity_log" class="tab-pane fade">
-          <%= render :partial => "activities/activity_log", :locals => {:resource => @event} %>
+        <div id="activity_log" class="tab-pane fade" data-activity-path="<%= event_activities_path(@event) -%>">
+          <%= image_tag('ajax-loader.gif') %>
         </div>
       </div>
     </div>

@@ -4,6 +4,10 @@ Rails.application.routes.draw do
     resources :collaborations, only: [:create, :destroy, :index, :show]
   end
 
+  concern :activities do
+    resources :activities, only: [:index]
+  end
+
   get 'edam/terms' => 'edam#terms'
   get 'edam/topics' => 'edam#topics'
   get 'edam/operations' => 'edam#operations'
@@ -38,10 +42,10 @@ Rails.application.routes.draw do
   get 'static/home'
 
   resources :users
-  resources :activities
-  resources :nodes
-  resources :events do
-    resource :activities, :only => [:show]
+
+  resources :nodes, concerns: :activities
+
+  resources :events, concerns: :activities do
     collection do
       get 'count'
     end
@@ -53,22 +57,19 @@ Rails.application.routes.draw do
       patch 'report', to: 'events#update_report'
     end
   end
-  resources :packages do
-    resource :activities, :only => [:show]
-  end
-  resources :workflows, concerns: :collaboratable do
+
+  resources :packages, concerns: :activities
+
+  resources :workflows, concerns: [:collaboratable, :activities] do
     member do
       get 'fork'
       get 'embed'
     end
   end
 
-  resources :content_providers do
-    resource :activities, :only => [:show]
-  end
+  resources :content_providers, concerns: :activities
 
-  resources :materials do
-    resource :activities, :only => [:show]
+  resources :materials, concerns: :activities do
     member do
       post :reject_topic
       post :add_topic
