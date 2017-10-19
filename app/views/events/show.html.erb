@@ -14,17 +14,17 @@
         <% if @event.start && @event.end %>
             <div class="btn-group">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Save <span class="caret"></span>
+                Add to calendar <span class="caret"></span>
               </button>
               <ul class="dropdown-menu">
                 <li>
-                  <%= link_to event_path(@event, format: :ics) do %>
-                      <i class="fa fa-download"></i> Download as .ics
+                  <%= link_to google_calendar_export_url(@event) do %>
+                      <i class="fa fa-google"></i> Google Calendar
                   <% end %>
                 </li>
                 <li>
-                  <%= link_to google_calendar_export_url(@event) do %>
-                      <i class="fa fa-calendar-o"></i> Add to Google Calendar
+                  <%= link_to event_path(@event, format: :ics) do %>
+                      <i class="<%= icon_class_for_model('events') -%>"></i> Save event (.ics file)
                   <% end %>
                 </li>
               </ul>
