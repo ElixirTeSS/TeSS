@@ -70,7 +70,7 @@ class Material < ActiveRecord::Base
   has_one :edit_suggestion, as: :suggestible, dependent: :destroy
   has_many :package_materials
   has_many :packages, through: :package_materials
-  has_many :event_materials
+  has_many :event_materials, dependent: :destroy
   has_many :events, through: :event_materials
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):

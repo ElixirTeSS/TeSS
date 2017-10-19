@@ -194,6 +194,26 @@ class EventTest < ActiveSupport::TestCase
     assert e.reported?
   end
 
+  test 'can associate material with event' do
+    event = events(:one)
+    material = materials(:good_material)
+
+    assert_difference('EventMaterial.count', 1) do
+      event.materials << material
+    end
+  end
+
+  test 'can delete an event with associated materials' do
+    event = events(:one)
+    material = materials(:good_material)
+    event.materials << material
+
+    assert_difference('EventMaterial.count', -1) do
+      assert_difference('Event.count', -1) do
+        assert_no_difference('Material.count') do
+          event.destroy
+        end
+      end
+    end
+  end
 end
-
-
