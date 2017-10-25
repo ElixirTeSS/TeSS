@@ -264,7 +264,7 @@ Devise.setup do |config|
         name: :elixir_aai,
         scope: [:openid, :email, :profile],
         response_type: 'code',
-        issuer: 'https://perun.elixir-czech.cz/oidc-idp/',
+        issuer: 'https://perun.elixir-czech.cz/oidc/',
         discovery: false,
         send_nonce: true,
         client_signing_alg: :RS256,
@@ -277,10 +277,10 @@ Devise.setup do |config|
             scheme: 'https',
             host: 'perun.elixir-czech.cz',
             port: 443,
-            authorization_endpoint: '/oidc-idp/authorize',
-            token_endpoint: '/oidc-idp/token',
-            userinfo_endpoint: '/oidc-idp/userinfo',
-            jwks_uri: '/oidc-idp/jwk',
+            authorization_endpoint: '/oidc/authorize',
+            token_endpoint: '/oidc/token',
+            userinfo_endpoint: '/oidc/userinfo',
+            jwks_uri: '/oidc/jwk',
         }
     }
   end
