@@ -553,7 +553,7 @@ DEPENDENCIES
   omniauth-openid-connect!
   paper_trail (~> 4.0.0)
   paperclip (~> 5.0.0)
-  passenger
+  passenger (~> 5.1.11)
   pg
   progress_bar (~> 1.1.0)
   public_activity (~> 1.5.0)
