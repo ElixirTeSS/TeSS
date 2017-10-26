@@ -869,7 +869,6 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal visible_report_event.funding, visible_report_event_json['funding']
   end
 
-
   test 'should approve topic for curator' do
     sign_in users(:curator)
 
@@ -879,8 +878,12 @@ class EventsControllerTest < ActionController::TestCase
     suggestion.scientific_topic_names = ['Genomics']
     suggestion.save!
 
-    assert_difference('EditSuggestion.count', -1) do
-      post :add_topic, id: @event.id, topic: 'Genomics'
+    assert_difference(-> { suggestion.scientific_topic_links.count }, -1) do
+      assert_difference(-> { @event.scientific_topic_links.count }, 1) do
+        assert_difference('EditSuggestion.count', -1) do
+          post :add_topic, id: @event.id, topic: 'Genomics'
+        end
+      end
     end
 
     assert_response :success
