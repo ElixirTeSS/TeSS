@@ -28,10 +28,12 @@
         </div>
     <% end %>
 
-    <%# render partial: "search/common/pagination_bar", locals: { resources: @workflows } %>
+    <%= render partial: "search/common/pagination_bar", locals: { resources: @workflows } %>
 
     <hr>
 
     <%= render partial: 'common/masonry_grid', locals: { objects: @workflows } %>
+
+    <%= render partial: "search/common/pagination_bar", locals: { resources: @workflows } %>
   </div>
 </div>

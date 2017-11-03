@@ -260,6 +260,9 @@ GEM
       mimemagic (~> 0.3.0)
     parser (2.3.3.1)
       ast (~> 2.2)
+    passenger (5.1.11)
+      rack
+      rake (>= 0.8.1)
     pg (0.19.0)
     powerpack (0.1.1)
     pr_geohash (1.0.0)
@@ -550,6 +553,7 @@ DEPENDENCIES
   omniauth-openid-connect!
   paper_trail (~> 4.0.0)
   paperclip (~> 5.0.0)
+  passenger (~> 5.1.11)
   pg
   progress_bar (~> 1.1.0)
   public_activity (~> 1.5.0)
