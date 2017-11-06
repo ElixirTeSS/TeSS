@@ -579,9 +579,11 @@ $(document).ready(function () {
             $('#edge-modal').on('hide.bs.modal', Workflows.cancelState);
 
             $('.workflow-diagram-wrapper .modal').keydown(function (event) {
-                if (event.keyCode == 13) {
-                    event.preventDefault();
-                    return false;
+                if(event.target.tagName != 'TEXTAREA') {
+                    if (event.keyCode == 13) {
+                        event.preventDefault();
+                        return false;
+                    }
                 }
             });
 

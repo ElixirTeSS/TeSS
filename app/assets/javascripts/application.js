@@ -202,4 +202,15 @@ $(document).ready(function () {
             });
         })
     });
+
+    $(document).on('shown.bs.tab', '[href="#activity_log"]', function () {
+        var tabPane = $('#activity_log');
+
+        $.ajax({
+            url: tabPane.data('activityPath'),
+            success: function (data) {
+                tabPane.html(data);
+            }
+        });
+    });
 });

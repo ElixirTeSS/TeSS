@@ -128,6 +128,19 @@ class EventTest < ActiveSupport::TestCase
     assert_equal e.country, 'United Kingdom'
   end
 
+  test 'destroys redundant scientific topic links' do
+    e = events(:scraper_user_event)
+
+    e.scientific_topic_names = ['Proteins', 'Chromosomes']
+    e.save!
+    assert_equal 2, e.scientific_topics.count
+
+    assert_difference('ScientificTopicLink.count', -2) do
+      e.scientific_topic_names = []
+      e.save!
+    end
+  end
+
   test 'does not add duplicate scientific topics' do
     e = events(:scraper_user_event)
 
@@ -135,25 +148,31 @@ class EventTest < ActiveSupport::TestCase
     assert_difference('ScientificTopicLink.count', 2) do
       e.scientific_topic_names = ['Proteins', 'Chromosomes', 'Proteins', 'Chromosomes']
       e.save!
+      assert_equal 2, e.scientific_topics.count
     end
 
     assert_no_difference('ScientificTopicLink.count') do
       e.scientific_topic_names = ['Proteins', 'Chromosomes']
       e.save!
+      assert_equal 2, e.scientific_topics.count
     end
 
     # Via uris
-    e.scientific_topic_links.clear
+    assert_difference('ScientificTopicLink.count', -2) do
+      e.scientific_topic_links.clear
+    end
 
     assert_difference('ScientificTopicLink.count', 2) do
       e.scientific_topic_uris = ['http://edamontology.org/topic_0078', 'http://edamontology.org/topic_0654',
                                   'http://edamontology.org/topic_0078', 'http://edamontology.org/topic_0654']
       e.save!
+      assert_equal 2, e.scientific_topics.count
     end
 
     assert_no_difference('ScientificTopicLink.count') do
       e.scientific_topic_uris = ['http://edamontology.org/topic_0078', 'http://edamontology.org/topic_0654']
       e.save!
+      assert_equal 2, e.scientific_topics.count
     end
 
     # Via terms
@@ -194,6 +213,26 @@ class EventTest < ActiveSupport::TestCase
     assert e.reported?
   end
 
+  test 'can associate material with event' do
+    event = events(:one)
+    material = materials(:good_material)
+
+    assert_difference('EventMaterial.count', 1) do
+      event.materials << material
+    end
+  end
+
+  test 'can delete an event with associated materials' do
+    event = events(:one)
+    material = materials(:good_material)
+    event.materials << material
+
+    assert_difference('EventMaterial.count', -1) do
+      assert_difference('Event.count', -1) do
+        assert_no_difference('Material.count') do
+          event.destroy
+        end
+      end
+    end
+  end
 end
-
-

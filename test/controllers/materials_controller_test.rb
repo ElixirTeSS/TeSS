@@ -661,9 +661,14 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_equal ContentProvider.first.id, content_provider_activity[:new_val]
     assert_equal ContentProvider.first.title, content_provider_activity[:association_name]
 
-    get :show, id: @material
+    old_controller = @controller
+    @controller = ActivitiesController.new
 
-    assert_select '#activity_log .activity', count: 6 # +1 because they are wrapped in a .activity div for some reason...
+    xhr :get, :index, material_id: @material, xhr: true
+
+    assert_select '.activity', count: 6 # +1 because they are wrapped in a .activity div for some reason...
+
+    @controller = old_controller
   end
 
   test 'parameter log activity works when removing an association' do
@@ -683,9 +688,14 @@ class MaterialsControllerTest < ActionController::TestCase
     assert content_provider_activity[:new_val].blank?
     assert content_provider_activity[:association_name].blank?
 
-    get :show, id: @material
+    old_controller = @controller
+    @controller = ActivitiesController.new
 
-    assert_select '#activity_log .activity', count: 3 # +1 because they are wrapped in a .activity div for some reason...
+    xhr :get, :index, material_id: @material
+
+    assert_select '.activity', count: 3 # +1 because they are wrapped in a .activity div for some reason...
+
+    @controller = old_controller
   end
 
   test 'should not log an update when only boring fields have changed' do

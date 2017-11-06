@@ -34,10 +34,9 @@ class EditSuggestion < ActiveRecord::Base
       topics.delete_at(topic_index)
       self.scientific_topics = topics
       self.save!
-      return self.scientific_topics
-    else
-      return nil
+      self.scientific_topics
     end
+    nil
 
   end
 

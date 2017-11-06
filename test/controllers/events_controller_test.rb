@@ -851,28 +851,6 @@ class EventsControllerTest < ActionController::TestCase
     assert_select '#report', count: 1
   end
 
-  test 'should not show report-related parameter changes to non-privileged users' do
-    event = events(:event_with_report)
-    sign_in users(:another_regular_user)
-    event.funding = 'test'
-    event.save
-
-    get :show, id: event
-
-    assert_select '.sub-activity em', text: /Funding/, count: 0
-  end
-
-  test 'should show report-related parameter changes to privileged users' do
-    event = events(:event_with_report)
-    sign_in event.user
-    event.funding = 'test'
-    event.save
-
-    get :show, id: event
-
-    assert_select '.sub-activity em', text: /Funding/, count: 1
-  end
-
   test 'should only show report fields in JSON to privileged users' do
     hidden_report_event = events(:event_with_report)
     visible_report_event = events(:another_event_with_report)
@@ -891,7 +869,6 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal visible_report_event.funding, visible_report_event_json['funding']
   end
 
-
   test 'should approve topic for curator' do
     sign_in users(:curator)
 
@@ -901,8 +878,12 @@ class EventsControllerTest < ActionController::TestCase
     suggestion.scientific_topic_names = ['Genomics']
     suggestion.save!
 
-    assert_difference('EditSuggestion.count', -1) do
-      post :add_topic, id: @event.id, topic: 'Genomics'
+    assert_difference(-> { suggestion.scientific_topic_links.count }, -1) do
+      assert_difference(-> { @event.scientific_topic_links.count }, 1) do
+        assert_difference('EditSuggestion.count', -1) do
+          post :add_topic, id: @event.id, topic: 'Genomics'
+        end
+      end
     end
 
     assert_response :success

@@ -53,8 +53,8 @@
         <% end %>
         <%= render partial: 'workflows/workflow_diagram', locals: { workflow: @workflow } %>
       </div>
-      <div id="activity_log" class="tab-pane fade">
-        <%= render :partial => "activities/activity_log", :locals => {:resource => @workflow} %>
+      <div id="activity_log" class="tab-pane fade" data-activity-path="<%= workflow_activities_path(@workflow) -%>">
+        <%= image_tag('ajax-loader.gif') %>
       </div>
     </div>
   </div>

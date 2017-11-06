@@ -83,7 +83,7 @@ class Event < ActiveRecord::Base
   has_one :edit_suggestion, as: :suggestible, dependent: :destroy
   has_many :package_events
   has_many :packages, through: :package_events
-  has_many :event_materials
+  has_many :event_materials, dependent: :destroy
   has_many :materials, through: :event_materials
   has_many :widget_logs, as: :resource
 

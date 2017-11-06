@@ -65,8 +65,8 @@
           <% end %>
         </div>
       </div>
-      <div id="activity_log" class="tab-pane fade">
-        <%= render :partial => "activities/activity_log", :locals => {:resource => @package} %>
+      <div id="activity_log" class="tab-pane fade" data-activity-path="<%= package_activities_path(@package) -%>">
+        <%= image_tag('ajax-loader.gif') %>
       </div>
     </div>
   </div>

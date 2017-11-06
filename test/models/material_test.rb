@@ -141,4 +141,27 @@ class MaterialTest < ActiveSupport::TestCase
     m.last_scraped = (Scrapable::THRESHOLD + 1.hour).ago
     assert m.stale?
   end
+
+  test 'can associate event with material' do
+    event = events(:one)
+    material = materials(:good_material)
+
+    assert_difference('EventMaterial.count', 1) do
+      material.events << event
+    end
+  end
+
+  test 'can delete an material with associated events' do
+    event = events(:one)
+    material = materials(:good_material)
+    material.events << event
+
+    assert_difference('EventMaterial.count', -1) do
+      assert_difference('Material.count', -1) do
+        assert_no_difference('Event.count') do
+          material.destroy
+        end
+      end
+    end
+  end
 end

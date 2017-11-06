@@ -4,7 +4,7 @@ module EventsHelper
 
       "TeSS harvests training events automatically, including descriptions and other relevant meta-data made available by providers.\n\n"+
 
-      "If your website contains training events that you wish to include in TeSS, please contact the TeSS team (<a href='mailto:tess@elixir-uk.info'>tess@elixir-uk.info</a>) for further details."
+      "If your website contains training events that you wish to include in TeSS, please contact the TeSS team (<a href='mailto:#{TeSS::Config.contact_email}'>#{TeSS::Config.contact_email}</a>) for further details."
 
 
 
