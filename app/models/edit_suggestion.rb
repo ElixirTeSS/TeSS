@@ -11,34 +11,29 @@ class EditSuggestion < ActiveRecord::Base
     self.data_fields = {} if data_fields.nil?
   end
 
-  def accept_suggestion resource, topic
-    resource.scientific_topics = resource.scientific_topics.push(topic)
-    if resource.save!
-      suggestions = drop_topic({uri: topic.uri})
-      destroy if (suggestions.nil? || suggestions.empty?) && !data
+  def accept_suggestion(topic)
+    if drop_topic(topic)
+      self.suggestible.scientific_topics = self.suggestible.scientific_topics.push(topic)
+      self.suggestible.save!
+      self.destroy if self.scientific_topics.empty? && !data
     end
   end
 
   def reject_suggestion topic
-    suggestions = self.drop_topic({uri: topic.uri})
-    destroy if suggestions.empty? && !data
+    if drop_topic(topic)
+      self.destroy if self.scientific_topics.empty? && !data
+    end
   end
 
-  #Params: :uri => http://edamontology.org/3023
-  #        :name => 'RNA-Seq'
-  def drop_topic options={}
-    return nil if options[:uri].nil?
+  def drop_topic(topic)
     topics = self.scientific_topics
-    topic_index = topics.index{|x| x.uri == options[:uri]}
-    if topic_index
-      topics.delete_at(topic_index)
+    unless (found_topic = topics.delete(topic)).nil?
       self.scientific_topics = topics
       self.save!
-      self.scientific_topics
+      found_topic
     end
-    nil
-
   end
+
 
   def accept_data(resource, field, value)
     resource[field.to_sym] = value
