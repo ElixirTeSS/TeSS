@@ -12,12 +12,24 @@ class EventSerializer < ApplicationSerializer
   end
 
   attribute(:scientific_topics) do
-    object.scientific_topics.map { |t| { preferred_label: t.preferred_label, uri: t.uri } }
+    object.scientific_topics.map do |t|
+      { preferred_label: t.preferred_label, uri: t.uri }
+    end
+  end
+
+  attribute(:external_resources) do
+    object.external_resources.map do |er|
+      { title: er.title,
+        url: er.url,
+        created_at: er.created_at,
+        updated_at: er.updated_at,
+        api_url: er.api_url_of_tool,
+        type: er.is_tool? ? 'tool' : 'other' }
+    end
   end
 
   belongs_to :user
   belongs_to :content_provider
   has_many :nodes
-  has_many :external_resources, serializer: ExternalResourceSerializer
 
 end
