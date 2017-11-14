@@ -14,6 +14,7 @@ class EventsController < ApplicationController
   def index
     respond_to do |format|
       format.json
+      format.json_api { render json: @events }
       format.html
       format.csv
       format.ics
@@ -27,6 +28,7 @@ class EventsController < ApplicationController
     respond_to do |format|
       format.html
       format.json
+      format.json_api { render json: @event }
       format.ics { render text: @event.to_ical }
     end
   end
