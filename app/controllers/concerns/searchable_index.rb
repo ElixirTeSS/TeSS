@@ -38,6 +38,12 @@ module SearchableIndex
     @sort_by = params[:sort].blank? ? 'default' : params[:sort]
   end
 
+  def facets_meta
+    { facets: @facet_params,
+      available_facets: facets_hash,
+      query: @search_params }
+  end
+
   def facets_hash
     Hash[@search_results.facets.map do |f|
       [
