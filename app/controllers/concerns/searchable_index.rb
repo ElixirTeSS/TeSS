@@ -38,4 +38,13 @@ module SearchableIndex
     @sort_by = params[:sort].blank? ? 'default' : params[:sort]
   end
 
+  def facets_hash
+    Hash[@search_results.facets.map do |f|
+      [
+        f.field_name,
+        f.rows.map { |r| { value: r.value, count: r.count } }
+      ]
+    end]
+  end
+
 end
