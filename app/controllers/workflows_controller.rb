@@ -11,13 +11,22 @@ class WorkflowsController < ApplicationController
   # GET /workflows
   # GET /workflows.json
   def index
+    respond_to do |format|
+      format.html { render layout: 'workflows' }
+      format.json
+      format.json_api { render json: @workflows }
+    end
   end
 
   # GET /workflows/1
   # GET /workflows/1.json
   def show
     @skip_flash_messages_in_header = true # we will handle flash messages in the 'workflows' layout
-    render layout: 'workflows'
+    respond_to do |format|
+      format.html { render layout: 'workflows' }
+      format.json
+      format.json_api { render json: @workflow }
+    end
   end
 
   # GET /workflows/new
