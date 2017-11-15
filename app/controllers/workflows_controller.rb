@@ -12,7 +12,7 @@ class WorkflowsController < ApplicationController
   # GET /workflows.json
   def index
     respond_to do |format|
-      format.html { render layout: 'workflows' }
+      format.html
       format.json
       format.json_api { render json: @workflows }
     end
