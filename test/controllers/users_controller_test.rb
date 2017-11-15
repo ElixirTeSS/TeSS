@@ -70,6 +70,12 @@ class UsersControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "should show user as json" do
+    sign_in users(:another_regular_user)
+    get :show, id: @user, format: 'json'
+    assert_response :success #FORBIDDEN PAGE!?
+  end
+
  test "should only allow edit for admin and self" do
     sign_in users(:regular_user)
     get :edit, id: @user
@@ -144,5 +150,4 @@ class UsersControllerTest < ActionController::TestCase
     assert_not_equal roles(:curator), assigns(:user).role
     assert_not_equal 'George', assigns(:user).profile.firstname
   end
-
 end
