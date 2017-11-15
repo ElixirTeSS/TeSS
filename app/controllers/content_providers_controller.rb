@@ -5,12 +5,18 @@ class ContentProvidersController < ApplicationController
   include SearchableIndex
 
   def index
+    respond_to do |format|
+      format.html
+      format.json
+      format.json_api { render json: @content_providers }
+    end
   end
 
   def show
     respond_to do |format|
       format.html
-      format.json { render :json => @content_provider }
+      format.json
+      format.json_api { render json: @content_provider }
     end
   end
 
