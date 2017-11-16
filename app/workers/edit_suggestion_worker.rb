@@ -1,5 +1,8 @@
+require 'geocoder'
+
 class EditSuggestionWorker
   include Sidekiq::Worker
+  Geocoder.configure(:lookup => :nominatim)
 
   # TODO: Should a random time delay go in here such that the chastisement of
   # TODO: BioPortal is somewhat mimimised?
@@ -102,6 +105,34 @@ class EditSuggestionWorker
       end
     else
       logger.debug("No topics found for #{suggestible.inspect}")
+    end
+
+    # If this is an Event and doesn't have latitude and longitude, then these should be sought out
+    # via Nominatim. There's also a nominatim.rake task to do this manually, if needed.
+    if suggestible_type == 'Event'
+      return if suggestible.latitude && suggestible.longitude
+
+      locations = [
+        suggestible.city,
+        suggestible.county,
+        suggestible.country,
+        suggestible.postcode,
+      ].select { |x| !x.nil? && x != '' }
+
+      return if locations.empty?
+
+      location = locations.reject(&:blank?).join(',')
+      result = Geocoder.search(location).first
+
+      return unless result.latitude && result.longitude
+
+      unless suggestion
+        suggestion = EditSuggestion.new(:suggestible_type => suggestible_type, :suggestible_id => suggestible_id)
+      end
+      suggestion.data_fields = {} if suggestion.data_fields.nil?
+      suggestion.data_fields['latitude'] = result.latitude
+      suggestion.data_fields['longitude'] = result.longitude
+      suggestion.save!
     end
   end
 end

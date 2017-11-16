@@ -57,6 +57,11 @@
             <div>
               <%= render partial: 'common/extra_metadata', locals: { resource: @material } %>
 
+              <% unless @material.edit_suggestion.nil? || (@material.edit_suggestion.scientific_topics.empty? &&
+                !@material.edit_suggestion.data) || current_user.nil? || !policy(@material).update? %>
+                <%= render partial: 'common/approve_topic_suggestions', locals: { suggestion: @material.edit_suggestion } %>
+              <% end %>
+
               <% if @material.events.any? %>
                   <div>
                     <b>Related events: </b>

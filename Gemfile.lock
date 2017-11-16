@@ -130,6 +130,7 @@ GEM
       sass (>= 3.2)
     friendly_id (5.1.0)
       activerecord (>= 4.0.0)
+    geocoder (1.4.4)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
     gravtastic (3.2.6)
@@ -539,6 +540,7 @@ DEPENDENCIES
   dynamic_sitemaps!
   font-awesome-sass (~> 4.7.0)
   friendly_id (~> 5.1.0)
+  geocoder
   gravtastic (~> 3.2.6)
   green_monkey
   handlebars_assets

@@ -125,6 +125,9 @@ gem 'recaptcha', '~> 4.0.1', require: 'recaptcha/rails'
 
 gem 'linkeddata'
 
+# Used for lat/lon rake task
+gem 'geocoder'
+
 source 'https://rails-assets.org' do
   gem 'rails-assets-markdown-it', '~> 7.0.1'
   gem 'rails-assets-moment', '~> 2.15.0'

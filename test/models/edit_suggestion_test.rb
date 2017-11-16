@@ -62,4 +62,39 @@ class EditSuggestionTest < ActiveSupport::TestCase
       end
     end
   end
+
+  test "should remove a data field by name" do
+    suggestion = edit_suggestions(:two)
+    assert_equal 1, suggestion.data_fields.count
+    assert_equal 'banana', suggestion.data_fields.delete('fruit')
+    assert_equal 0, suggestion.data_fields.count
+  end
+
+  test "should return nil if remove non existent data field" do
+    suggestion = edit_suggestions(:two)
+    assert_equal 1, suggestion.data_fields.count
+    assert_nil suggestion.data_fields.delete('vegetable')
+    assert_equal 1, suggestion.data_fields.count
+  end
+
+  test 'should delete edit suggestion once all data fields have gone' do
+    suggestion = edit_suggestions(:multiple_fields)
+    event = suggestion.suggestible
+    assert_equal 2, suggestion.data_fields.count
+
+    assert_nil event.reload.latitude
+
+    assert_no_difference('EditSuggestion.count') do
+      suggestion.accept_data('latitude')
+    end
+
+    assert_equal 15, event.reload.latitude
+
+    assert_difference('EditSuggestion.count', -1) do
+      suggestion.reject_data('title')
+    end
+
+    assert_not_equal 'banana', event.reload.title
+  end
+
 end

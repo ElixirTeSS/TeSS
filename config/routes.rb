@@ -52,7 +52,9 @@ Rails.application.routes.draw do
     member do
       get 'redirect'
       post 'add_topic'
+      post 'add_data'
       post 'reject_topic'
+      post 'reject_data'
       get 'report'
       patch 'report', to: 'events#update_report'
     end
@@ -72,7 +74,9 @@ Rails.application.routes.draw do
   resources :materials, concerns: :activities do
     member do
       post :reject_topic
+      post :reject_data
       post :add_topic
+      post :add_data
     end
     collection do
       get 'count'
