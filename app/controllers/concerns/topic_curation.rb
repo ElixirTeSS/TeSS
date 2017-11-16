@@ -41,25 +41,26 @@ module TopicCuration
   #POST /<resource>/1/add_data
   def add_data
     #puts "PARAMS: #{params.inspect}"
-    resource = instance_variable_get("@#{controller_name.singularize}") # TODO: This returns nil. Why?
+    resource = instance_variable_get("@#{controller_name.singularize}")
     #puts "RESOURCE: #{resource.inspect}"
     authorize resource, :update?
 
     log_params = {data_field: params[:data_field],
                   data_value: params[:data_value]}
 
-    resource.edit_suggestion.accept_data(resource, params[:data_field], params[:data_value])
+    value = resource.edit_suggestion.data_fields[params[:data_field]]
+
+    resource.edit_suggestion.accept_data(resource, params[:data_field], value)
     resource.create_activity :add_data,
                              owner: current_user,
                              recipient: resource.user,
                              parameters: log_params
     render nothing: true
-
   end
 
   #POST /<resource>/1/reject_data
   def reject_data
-    resource = instance_variable_get("@#{controller_name.singularize}") # TODO: This too returns nil.
+    resource = instance_variable_get("@#{controller_name.singularize}")
     authorize resource, :update?
 
     log_params = {data_field: params[:data_field],
@@ -71,7 +72,5 @@ module TopicCuration
                              recipient: resource.user,
                              parameters: log_params
     render nothing: true
-
   end
-
 end

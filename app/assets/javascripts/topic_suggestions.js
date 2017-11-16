@@ -5,19 +5,19 @@ var TopicSuggestions = {
         var topic_suggestions = $(this).parents('.topic_suggestions');
         var all_topics = listing_div.find('.scientific_topics');
         var dropdown_div = $(this).parents('.dropdown');
-        var url = "/" + suggestion_info.data('resource_type') + "/" + suggestion_info.data('resource_id') + "/add_topic"
+        var url = "/" + suggestion_info.data('resource_type') + "/" + suggestion_info.data('resource_id') + "/add_topic";
         $.post(url, { topic: suggestion_info.data('topic')})
             .done(function( data ) {
                 /* Remove the suggestion and add the accepted topic to the list of scientific topics */
-                dropdown_div.remove()
+                dropdown_div.remove();
                 if (listing_div.find('.scientific_topic').length == 0) {
-                    all_topics.append('<b>Scientific topics: </b>')
-                    all_topics.append('<span class=\"scientific_topic\"> ' + suggestion_info.data('topic') + '</span>')
+                    all_topics.append('<b>Scientific topics: </b>');
+                    all_topics.append('<span class=\"scientific_topic\"> ' + suggestion_info.data('topic') + '</span>');
                 } else {
-                    all_topics.append('<span class=\"scientific_topic\">, ' + suggestion_info.data('topic') + '</span>')
+                    all_topics.append('<span class=\"scientific_topic\">, ' + suggestion_info.data('topic') + '</span>');
                 }
                 if (topic_suggestions.find('.dropdown').length < 1){
-                    topic_suggestions.remove()
+                    topic_suggestions.remove();
                 }
             });
     },
@@ -26,17 +26,17 @@ var TopicSuggestions = {
         var listing_div = $(this).parents('.list-group-item');
         var topic_suggestions = $(this).parents('.topic_suggestions');
         var dropdown_div = $(this).parents('.dropdown');
-        var url = "/" + suggestion_info.data('resource_type') + "/" + suggestion_info.data('resource_id') + "/reject_topic"
+        var url = "/" + suggestion_info.data('resource_type') + "/" + suggestion_info.data('resource_id') + "/reject_topic";
         $.post(url, { topic: suggestion_info.data('topic')})
             .done(function( data ) {
-                console.log("Rejected topic")
-                dropdown_div.remove()
+                console.log("Rejected topic");
+                dropdown_div.remove();
                 if (topic_suggestions.find('.dropdown').length < 1){
-                    topic_suggestions.remove()
+                    topic_suggestions.remove();
                 }
             });
     }
-}
+};
 
 var DataSuggestions = {
     accept: function() {
@@ -44,15 +44,14 @@ var DataSuggestions = {
         var data_suggestions = $(this).parents('.data_suggestions');
         var dropdown_div = $(this).parents('.dropdown');
         var data_field = suggestion_info.data('data_field');
-        var data_value = suggestion_info.data('data_value');
-        var url = "/" + suggestion_info.data('resource_type') + "/" + suggestion_info.data('resource_id') + "/add_data"
-        $.post(url, { 'data_field' : data_field, 'data_value' : data_value })
+        var url = "/" + suggestion_info.data('resource_type') + "/" + suggestion_info.data('resource_id') + "/add_data";
+        $.post(url, { 'data_field' : data_field })
             .done(function( data ) {
                 /* Remove the suggestion and add the data to the relevant field */
                 dropdown_div.remove();
                 console.log("Removed: " + dropdown_div);
                 if (data_suggestions.find('.dropdown').length < 1){
-                    data_suggestions.remove()
+                    data_suggestions.remove();
                     console.log("(2)Removed: " + data_suggestions);
                 }
             });
@@ -63,18 +62,17 @@ var DataSuggestions = {
         var data_suggestions = $(this).parents('.data_suggestions');
         var dropdown_div = $(this).parents('.dropdown');
         var data_field = suggestion_info.data('data_field');
-        var data_value = suggestion_info.data('data_value');
-        var url = "/" + suggestion_info.data('resource_type') + "/" + suggestion_info.data('resource_id') + "/reject_data"
-        $.post(url, { 'data_field' : data_field, 'data_value' : data_value })
+        var url = "/" + suggestion_info.data('resource_type') + "/" + suggestion_info.data('resource_id') + "/reject_data";
+        $.post(url, { 'data_field' : data_field })
             .done(function( data ) {
-                console.log("Rejected data")
+                console.log("Rejected data");
                 dropdown_div.remove();
                 if (data_suggestions.find('.dropdown').length < 1){
-                    data_suggestions.remove()
+                    data_suggestions.remove();
                 }
             });
     }
-}
+};
 
 $(document).ready(function () {
     $('.suggestion_action').on('click','.accept_suggestion', TopicSuggestions.accept);
