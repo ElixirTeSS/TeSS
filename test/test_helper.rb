@@ -60,6 +60,12 @@ class ActiveSupport::TestCase
       to_return(:status => 200, :headers => {},  :body => biotools_file)
   end
 
+  def mock_nominatim
+    nominatim_file = File.read("#{Rails.root}/test/fixtures/files/nominatim.json")
+    WebMock.stub_request(:get, /nominatim.openstreetmap.org/).
+        to_return(:status => 200, :headers => {}, :body => nominatim_file)
+  end
+
   # This should probably live somewhere else
   class MockSearchResults < Array
     def initialize(collection)
