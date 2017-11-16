@@ -949,4 +949,121 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal ['Genomics'], @event.reload.edit_suggestion.scientific_topic_names
   end
 
+  test 'should approve data for curator' do
+    sign_in users(:curator)
+    event = events(:two)
+
+    assert_nil event.latitude
+    assert_nil event.longitude
+
+    suggestion = event.build_edit_suggestion
+    suggestion.data_fields = { 'latitude' => 25, 'longitude' => 25 }
+    suggestion.save!
+
+    assert_no_difference('EditSuggestion.count') do
+      post :add_data, id: event.id, data_field: 'latitude'
+    end
+
+    assert_response :success
+
+    assert_difference('EditSuggestion.count', -1) do
+      post :add_data, id: event.id, data_field: 'longitude'
+    end
+
+    assert_response :success
+
+    event.reload
+
+    assert_equal 25, event.latitude
+    assert_equal 25, event.longitude
+  end
+
+  test 'should not approve data for unprivileged user' do
+    sign_in users(:another_regular_user)
+    event = events(:two)
+
+    assert_nil event.latitude
+    assert_nil event.longitude
+
+    suggestion = event.build_edit_suggestion
+    suggestion.data_fields = { 'latitude' => 25, 'longitude' => 25 }
+    suggestion.save!
+
+    assert_no_difference('EditSuggestion.count') do
+      post :add_data, id: event.id, data_field: 'latitude'
+    end
+
+    assert_response :forbidden
+
+    assert_no_difference('EditSuggestion.count') do
+      post :add_data, id: event.id, data_field: 'longitude'
+    end
+
+    assert_response :forbidden
+
+    event.reload
+
+    assert_nil event.latitude
+    assert_nil event.longitude
+  end
+
+  test 'should reject data for curator' do
+    sign_in users(:curator)
+    event = events(:two)
+
+    assert_nil event.latitude
+    assert_nil event.longitude
+
+    suggestion = event.build_edit_suggestion
+    suggestion.data_fields = { 'latitude' => 25, 'longitude' => 25 }
+    suggestion.save!
+
+    assert_no_difference('EditSuggestion.count') do
+      post :reject_data, id: event.id, data_field: 'latitude'
+    end
+
+    assert_response :success
+
+    assert_difference('EditSuggestion.count', -1) do
+      post :reject_data, id: event.id, data_field: 'longitude'
+    end
+
+    assert_response :success
+
+    event.reload
+
+    assert_nil event.latitude
+    assert_nil event.longitude
+  end
+
+  test 'should not reject data for unprivileged user' do
+    sign_in users(:another_regular_user)
+    event = events(:two)
+
+    assert_nil event.latitude
+    assert_nil event.longitude
+
+    suggestion = event.build_edit_suggestion
+    suggestion.data_fields = { 'latitude' => 25, 'longitude' => 25 }
+    suggestion.save!
+
+    assert_no_difference('EditSuggestion.count') do
+      post :reject_data, id: event.id, data_field: 'latitude'
+    end
+
+    assert_response :forbidden
+
+    assert_no_difference('EditSuggestion.count') do
+      post :reject_data, id: event.id, data_field: 'longitude'
+    end
+
+    assert_response :forbidden
+
+    event.reload
+
+    assert_nil event.latitude
+    assert_nil event.longitude
+  end
+
+
 end
