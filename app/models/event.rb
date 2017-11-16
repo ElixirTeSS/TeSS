@@ -198,7 +198,9 @@ class Event < ActiveRecord::Base
   end
 
   def show_map?
-    !(self.online? || self.latitude.blank? || self.longitude.blank?)
+    !self.online? &&
+    ((self.latitude.present? && self.longitude.present?) ||
+        (self.suggested_latitude.present? && self.suggested_longitude.present?))
   end
 
   def all_day?
@@ -270,5 +272,13 @@ class Event < ActiveRecord::Base
     end
 
     event
+  end
+
+  def suggested_latitude
+    self.edit_suggestion && self.edit_suggestion.data_fields['latitude']
+  end
+
+  def suggested_longitude
+    self.edit_suggestion && self.edit_suggestion.data_fields['longitude']
   end
 end

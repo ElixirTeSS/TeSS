@@ -75,21 +75,32 @@
               <% if @event.show_map? %>
                   <div id="map" class="google-map"></div>
                   <script type="text/javascript">
-                    var myLatLng = { lat: <%= @event.latitude %>, lng: <%= @event.longitude %> };
+                    var actualLocation = { lat: <%= @event.latitude || 'null' %>, lng: <%= @event.longitude || 'null' %> };
+                    var suggestedLocation = { lat: <%= @event.suggested_latitude || 'null' %>, lng: <%= @event.suggested_longitude || 'null' %> };
 
                     // Create a map object and specify the DOM element for display.
                     var map = new google.maps.Map(document.getElementById('map'), {
-                      center: myLatLng,
+                      center: suggestedLocation.lat ? suggestedLocation : actualLocation,
                       scrollwheel: true,
                       zoom: 13
                     });
 
-                    // Create a marker and set its position.
-                    new google.maps.Marker({
-                      map: map,
-                      position: myLatLng,
-                      title: '<%= @event.title %>'
-                    });
+                    if (actualLocation.lat) {
+                      new google.maps.Marker({
+                        map: map,
+                        position: actualLocation,
+                        title: '<%= @event.title %>'
+                      });
+                    }
+
+                    if (suggestedLocation.lat) {
+                      new google.maps.Marker({
+                        map: map,
+                        position: suggestedLocation,
+                        title: 'Suggested Location',
+                        icon: '<%= image_url('suggestion.png') -%>'
+                      });
+                    }
                   </script>
               <% end %>
 
