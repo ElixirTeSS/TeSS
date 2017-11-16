@@ -48,9 +48,7 @@ module TopicCuration
     log_params = {data_field: params[:data_field],
                   data_value: params[:data_value]}
 
-    value = resource.edit_suggestion.data_fields[params[:data_field]]
-
-    resource.edit_suggestion.accept_data(resource, params[:data_field], value)
+    resource.edit_suggestion.accept_data(params[:data_field])
     resource.create_activity :add_data,
                              owner: current_user,
                              recipient: resource.user,
@@ -66,7 +64,7 @@ module TopicCuration
     log_params = {data_field: params[:data_field],
                   data_value: params[:data_value]}
 
-    resource.edit_suggestion.reject_data(resource, params[:data_field])
+    resource.edit_suggestion.reject_data(params[:data_field])
     resource.create_activity :reject_data,
                              owner: current_user,
                              recipient: resource.user,

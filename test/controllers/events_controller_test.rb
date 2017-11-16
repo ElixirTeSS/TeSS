@@ -957,17 +957,11 @@ class EventsControllerTest < ActionController::TestCase
     assert_nil event.longitude
 
     suggestion = event.build_edit_suggestion
-    suggestion.data_fields = { 'latitude' => 25, 'longitude' => 25 }
+    suggestion.data_fields = { 'geographic_coordinates' => [25, 25] }
     suggestion.save!
 
-    assert_no_difference('EditSuggestion.count') do
-      post :add_data, id: event.id, data_field: 'latitude'
-    end
-
-    assert_response :success
-
     assert_difference('EditSuggestion.count', -1) do
-      post :add_data, id: event.id, data_field: 'longitude'
+      post :add_data, id: event.id, data_field: 'geographic_coordinates'
     end
 
     assert_response :success
@@ -986,17 +980,11 @@ class EventsControllerTest < ActionController::TestCase
     assert_nil event.longitude
 
     suggestion = event.build_edit_suggestion
-    suggestion.data_fields = { 'latitude' => 25, 'longitude' => 25 }
+    suggestion.data_fields = { 'geographic_coordinates' => [25, 25] }
     suggestion.save!
 
     assert_no_difference('EditSuggestion.count') do
-      post :add_data, id: event.id, data_field: 'latitude'
-    end
-
-    assert_response :forbidden
-
-    assert_no_difference('EditSuggestion.count') do
-      post :add_data, id: event.id, data_field: 'longitude'
+      post :add_data, id: event.id, data_field: 'geographic_coordinates'
     end
 
     assert_response :forbidden
@@ -1015,17 +1003,11 @@ class EventsControllerTest < ActionController::TestCase
     assert_nil event.longitude
 
     suggestion = event.build_edit_suggestion
-    suggestion.data_fields = { 'latitude' => 25, 'longitude' => 25 }
+    suggestion.data_fields = { 'geographic_coordinates' => [25, 25] }
     suggestion.save!
 
-    assert_no_difference('EditSuggestion.count') do
-      post :reject_data, id: event.id, data_field: 'latitude'
-    end
-
-    assert_response :success
-
     assert_difference('EditSuggestion.count', -1) do
-      post :reject_data, id: event.id, data_field: 'longitude'
+      post :reject_data, id: event.id, data_field: 'geographic_coordinates'
     end
 
     assert_response :success
@@ -1044,17 +1026,11 @@ class EventsControllerTest < ActionController::TestCase
     assert_nil event.longitude
 
     suggestion = event.build_edit_suggestion
-    suggestion.data_fields = { 'latitude' => 25, 'longitude' => 25 }
+    suggestion.data_fields = { 'geographic_coordinates' => [25, 25] }
     suggestion.save!
 
     assert_no_difference('EditSuggestion.count') do
-      post :reject_data, id: event.id, data_field: 'latitude'
-    end
-
-    assert_response :forbidden
-
-    assert_no_difference('EditSuggestion.count') do
-      post :reject_data, id: event.id, data_field: 'longitude'
+      post :reject_data, id: event.id, data_field: 'geographic_coordinates'
     end
 
     assert_response :forbidden
@@ -1064,6 +1040,4 @@ class EventsControllerTest < ActionController::TestCase
     assert_nil event.latitude
     assert_nil event.longitude
   end
-
-
 end

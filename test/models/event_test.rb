@@ -235,4 +235,18 @@ class EventTest < ActiveSupport::TestCase
       end
     end
   end
+
+  test 'can get/set lat/lon using geographic coordinates' do
+    event = events(:two)
+
+    assert_nil event.latitude
+    assert_nil event.longitude
+    assert_equal [nil, nil], event.geographic_coordinates
+
+    event.geographic_coordinates = [14, 15]
+
+    assert_equal 14, event.latitude
+    assert_equal 15, event.longitude
+    assert_equal [14, 15], event.geographic_coordinates
+  end
 end

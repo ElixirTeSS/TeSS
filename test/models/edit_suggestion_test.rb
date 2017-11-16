@@ -77,4 +77,24 @@ class EditSuggestionTest < ActiveSupport::TestCase
     assert_equal 1, suggestion.data_fields.count
   end
 
+  test 'should delete edit suggestion once all data fields have gone' do
+    suggestion = edit_suggestions(:multiple_fields)
+    event = suggestion.suggestible
+    assert_equal 2, suggestion.data_fields.count
+
+    assert_nil event.reload.latitude
+
+    assert_no_difference('EditSuggestion.count') do
+      suggestion.accept_data('latitude')
+    end
+
+    assert_equal 15, event.reload.latitude
+
+    assert_difference('EditSuggestion.count', -1) do
+      suggestion.reject_data('title')
+    end
+
+    assert_not_equal 'banana', event.reload.title
+  end
+
 end

@@ -45,8 +45,7 @@ namespace :tess do
         suggestion = EditSuggestion.where(suggestible_type: 'Event', suggestible_id: e.id).first_or_create
         #puts "S1: #{suggestion.inspect}"
         suggestion.data_fields = {} if suggestion.data_fields.nil?
-        suggestion.data_fields['latitude'] = latitude
-        suggestion.data_fields['longitude'] = longitude
+        suggestion.data_fields['geographic_coordinates'] = [latitude, longitude]
         suggestion.save!
         #puts "S2: #{suggestion.inspect}"
 

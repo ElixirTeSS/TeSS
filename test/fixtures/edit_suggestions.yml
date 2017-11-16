@@ -12,3 +12,8 @@ two:
   data_fields:
     fruit: banana
 
+multiple_fields:
+  suggestible: iann_event (Event)
+  data_fields:
+    title: banana
+    latitude: 15

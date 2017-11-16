@@ -34,18 +34,15 @@ class EditSuggestion < ActiveRecord::Base
     end
   end
 
-
-  def accept_data(resource, field, value)
-    resource[field.to_sym] = value
-    if resource.save!
+  def accept_data(field)
+    if self.suggestible.update_attribute(field, data_fields[field])
       data_fields.delete(field)
       save!
       destroy if (scientific_topic_links.nil? || scientific_topic_links.empty?) && !data
     end
-
   end
 
-  def reject_data(resource, field)
+  def reject_data(field)
     data_fields.delete(field)
     save!
     destroy if (scientific_topic_links.nil? || scientific_topic_links.empty?) && !data
@@ -55,6 +52,4 @@ class EditSuggestion < ActiveRecord::Base
     return false if data_fields.nil? || data_fields.empty?
     true
   end
-
-
 end

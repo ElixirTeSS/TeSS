@@ -275,10 +275,25 @@ class Event < ActiveRecord::Base
   end
 
   def suggested_latitude
-    self.edit_suggestion && self.edit_suggestion.data_fields['latitude']
+    if self.edit_suggestion && self.edit_suggestion.data_fields['geographic_coordinates']
+      self.edit_suggestion.data_fields['geographic_coordinates'][0]
+    end
   end
 
   def suggested_longitude
-    self.edit_suggestion && self.edit_suggestion.data_fields['longitude']
+    if self.edit_suggestion && self.edit_suggestion.data_fields['geographic_coordinates']
+      self.edit_suggestion.data_fields['geographic_coordinates'][1]
+    end
+  end
+
+  def geographic_coordinates
+    [self.latitude, self.longitude]
+  end
+
+  def geographic_coordinates=(coords)
+    self.latitude = coords[0]
+    self.longitude = coords[1]
+
+    self.geographic_coordinates
   end
 end
