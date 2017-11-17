@@ -14,4 +14,10 @@ class EventSerializer < ApplicationSerializer
   def report
     Hash[Event::SENSITIVE_FIELDS.map { |f| [f, object.send(f)] }]
   end
+
+  def _links
+    super.tap do |hash|
+      hash[:redirect] = redirect_event_path(object)
+    end
+  end
 end
