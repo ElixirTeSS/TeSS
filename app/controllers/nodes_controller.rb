@@ -10,7 +10,7 @@ class NodesController < ApplicationController
     respond_to do |format|
       format.html
       format.json
-      format.json_api { render json: @nodes, meta: facets_meta }
+      format.json_api { ({ json: @nodes }.merge(api_collection_properties)) }
     end
   end
 

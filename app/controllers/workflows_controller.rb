@@ -14,7 +14,7 @@ class WorkflowsController < ApplicationController
     respond_to do |format|
       format.html
       format.json
-      format.json_api { render json: @workflows, meta: facets_meta }
+      format.json_api { render({ json: @workflows }.merge(api_collection_properties)) }
     end
   end
 

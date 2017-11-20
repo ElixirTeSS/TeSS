@@ -14,7 +14,7 @@ class EventsController < ApplicationController
   def index
     respond_to do |format|
       format.json
-      format.json_api { render json: @events, meta: facets_meta }
+      format.json_api { render({ json: @events }.merge(api_collection_properties)) }
       format.html
       format.csv
       format.ics

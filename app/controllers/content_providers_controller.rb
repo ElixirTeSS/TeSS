@@ -8,7 +8,7 @@ class ContentProvidersController < ApplicationController
     respond_to do |format|
       format.html
       format.json
-      format.json_api { render json: @content_providers, meta: facets_meta }
+      format.json_api { render({ json: @content_providers }.merge(api_collection_properties)) }
     end
   end
 

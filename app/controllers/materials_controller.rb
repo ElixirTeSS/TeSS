@@ -15,7 +15,7 @@ class MaterialsController < ApplicationController
   def index
     respond_to do |format|
       format.json
-      format.json_api { render json: @materials, meta: facets_meta }
+      format.json_api { render({ json: @materials }.merge(api_collection_properties)) }
       format.html
     end
   end
