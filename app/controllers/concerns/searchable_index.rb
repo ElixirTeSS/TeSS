@@ -39,26 +39,27 @@ module SearchableIndex
   end
 
   def api_collection_properties
+    # Transform facets so value is always an array
+    facets = Hash[@facet_params.map { |key, value| [key, Array(value)] }]
+
+    available_facets = Hash[@search_results.facets.map do |f|
+      [
+          f.field_name,
+          f.rows.map { |r| { value: r.value, count: r.count } }
+      ]
+    end]
+
     {
         links: {
             # This gets overridden (by something in ActiveModelSerializers)when the collection has multiple pages
             self: polymorphic_path(@model, params.slice(:q, *@model.facet_fields))
         },
         meta: {
-            facets: @facet_params,
-            available_facets: facets_hash,
+            facets: facets,
+            available_facets: available_facets,
             query: @search_params
         }
     }
-  end
-
-  def facets_hash
-    Hash[@search_results.facets.map do |f|
-      [
-        f.field_name,
-        f.rows.map { |r| { value: r.value, count: r.count } }
-      ]
-    end]
   end
 
   def page_param
