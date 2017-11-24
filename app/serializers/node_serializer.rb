@@ -1,5 +1,5 @@
 class NodeSerializer < ApplicationSerializer
-  attributes :id, :name, :member_status, :country_code, :home_page, :staff, :twitter, :created_at, :updated_at
+  attributes :id, :slug, :name, :member_status, :country_code, :home_page, :staff, :twitter, :created_at, :updated_at
 
   has_many :content_providers
 
