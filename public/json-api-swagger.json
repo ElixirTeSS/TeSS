@@ -1019,7 +1019,7 @@
         },
         "api_url" : {
           "type" : "string",
-          "description" : "A URL that resolves to more information about the external resource represented in a common exchange format (e.g. JSON or XML)"
+          "description" : "A URL that resolves to more information about the external resource represented in a common exchange format (e.g. JSON or XML)."
         },
         "type" : {
           "type" : "string",
