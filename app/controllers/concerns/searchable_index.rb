@@ -58,7 +58,7 @@ module SearchableIndex
             facets: facets,
             available_facets: available_facets,
             query: @search_params,
-            results_count: @index_resources.count
+            results_count: @search_results.total
         }
     }
   end
