@@ -58,6 +58,27 @@ class EventsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:events)
   end
 
+  test 'should get index as json-api' do
+    @event.scientific_topic_uris = ['http://edamontology.org/topic_0654']
+    @event.save!
+
+    get :index, format: :json_api
+
+    assert_response :success
+    assert_not_nil assigns(:events)
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    assert body['data'].any?
+    assert body['meta']['results-count'] > 0
+    assert body['meta'].key?('query')
+    assert body['meta'].key?('facets')
+    assert body['meta'].key?('available-facets')
+    assert_equal events_path, body['links']['self']
+  end
+
   #NEW TESTS
   test 'should get new' do
     sign_in users(:regular_user)
@@ -165,6 +186,25 @@ class EventsControllerTest < ActionController::TestCase
     get :show, id: @event, format: :json
     assert_response :success
     assert assigns(:event)
+  end
+
+  test 'should show event as json-api' do
+    @event.scientific_topic_uris = ['http://edamontology.org/topic_0654']
+    @event.save!
+
+    get :show, id: @event, format: :json_api
+
+    assert_response :success
+    assert assigns(:event)
+
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    assert_equal @event.title, body['data']['attributes']['title']
+    assert_equal @event.scientific_topic_uris.first, body['data']['attributes']['scientific-topics'].first['uri']
+    assert_equal event_path(assigns(:event)), body['data']['links']['self']
   end
 
   #UPDATE TEST

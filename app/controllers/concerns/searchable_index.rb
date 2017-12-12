@@ -39,15 +39,22 @@ module SearchableIndex
   end
 
   def api_collection_properties
-    # Transform facets so value is always an array
-    facets = Hash[@facet_params.map { |key, value| [key, Array(value)] }]
+    if TeSS::Config.solr_enabled
+      # Transform facets so value is always an array
+      facets = Hash[@facet_params.map { |key, value| [key, Array(value)] }]
 
-    available_facets = Hash[@search_results.facets.map do |f|
-      [
-          f.field_name,
-          f.rows.map { |r| { value: r.value, count: r.count } }
-      ]
-    end]
+      available_facets = Hash[@search_results.facets.map do |f|
+        [
+            f.field_name,
+            f.rows.map { |r| { value: r.value, count: r.count } }
+        ]
+      end]
+      total = @search_results.total
+    else
+      facets = {}
+      available_facets = {}
+      total = @index_resources.count
+    end
 
     {
         links: {
@@ -58,7 +65,7 @@ module SearchableIndex
             facets: facets,
             available_facets: available_facets,
             query: @search_params,
-            results_count: @search_results.total
+            results_count: total
         }
     }
   end

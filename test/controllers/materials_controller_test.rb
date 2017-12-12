@@ -58,6 +58,30 @@ class MaterialsControllerTest < ActionController::TestCase
     get :index, format: :json
     assert_response :success
     assert_not_nil assigns(:materials)
+    assert_nothing_raised do
+      JSON.parse(response.body)
+    end
+  end
+
+  test 'should get index as json-api' do
+    @material.scientific_topic_uris = ['http://edamontology.org/topic_0654']
+    @material.save!
+
+    get :index, format: :json_api
+
+    assert_response :success
+    assert_not_nil assigns(:materials)
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    assert body['data'].any?
+    assert body['meta']['results-count'] > 0
+    assert body['meta'].key?('query')
+    assert body['meta'].key?('facets')
+    assert body['meta'].key?('available-facets')
+    assert_equal materials_path, body['links']['self']
   end
 
   #NEW TESTS
@@ -158,12 +182,34 @@ class MaterialsControllerTest < ActionController::TestCase
     @material.scientific_topic_uris = ['http://edamontology.org/topic_0654']
     @material.save!
 
-    get :show, id: @material, format: :json do
-      assert_response :success
-      assert assigns(:material)
+    get :show, id: @material, format: :json
+
+    assert_response :success
+    assert assigns(:material)
+
+    assert_nothing_raised do
+      JSON.parse(response.body)
     end
   end
 
+  test 'should show material as json-api' do
+    @material.scientific_topic_uris = ['http://edamontology.org/topic_0654']
+    @material.save!
+
+    get :show, id: @material, format: :json_api
+
+    assert_response :success
+    assert assigns(:material)
+
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    assert_equal @material.title, body['data']['attributes']['title']
+    assert_equal @material.scientific_topic_uris.first, body['data']['attributes']['scientific-topics'].first['uri']
+    assert_equal material_path(assigns(:material)), body['data']['links']['self']
+  end
 
   #UPDATE TEST
   test 'should update material' do
