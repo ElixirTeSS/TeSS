@@ -36,6 +36,24 @@ class WorkflowsControllerTest < ActionController::TestCase
     assert_not_empty assigns(:workflows)
   end
 
+  test 'should get index as json-api' do
+    get :index, format: :json_api
+
+    assert_response :success
+    assert_not_nil assigns(:workflows)
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    assert body['data'].any?
+    assert body['meta']['results-count'] > 0
+    assert body['meta'].key?('query')
+    assert body['meta'].key?('facets')
+    assert body['meta'].key?('available-facets')
+    assert_equal workflows_path, body['links']['self']
+  end
+
   test "should get new" do
     sign_in users(:admin)
 

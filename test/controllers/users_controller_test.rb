@@ -19,6 +19,21 @@ class UsersControllerTest < ActionController::TestCase
     assert_not_nil assigns(:users)
   end
 
+  test 'should get index as json-api' do
+    get :index, format: :json_api
+
+    assert_response :success
+    assert_not_nil assigns(:users)
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    assert body['data'].any?
+    assert_equal users_path, body['links']['self']
+  end
+
+
   # User new is handled by devise
   test "should never allow user new route" do
     get :new
