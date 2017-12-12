@@ -17,7 +17,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html
       format.json
-      format.json_api { render json: @users }
+      format.json_api { render(json: @users, links: { self: users_path }) }
     end
   end
 
