@@ -101,6 +101,21 @@ class WorkflowsControllerTest < ActionController::TestCase
     assert_select '.embedded-container', count: 0
   end
 
+  test 'should show workflow as json-api' do
+    get :show, id: @workflow, format: :json_api
+
+    assert_response :success
+    assert assigns(:workflow)
+
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    assert_equal @workflow.title, body['data']['attributes']['title']
+    assert_equal workflow_path(assigns(:workflow)), body['data']['links']['self']
+  end
+
   test "should get edit" do
     sign_in users(:admin)
 

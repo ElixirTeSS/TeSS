@@ -84,6 +84,37 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_equal materials_path, body['links']['self']
   end
 
+  test 'should get faceted index as json-api with search enabled' do
+    @material.scientific_topic_uris = ['http://edamontology.org/topic_0654']
+    @material.save!
+
+    begin
+      TeSS::Config.solr_enabled = true
+
+      Material.stub(:search_and_filter, MockSearch.new(Material.all)) do
+        get :index, q: 'breakdance for beginners', keywords: 'dancing', format: :json_api
+
+        assert_response :success
+        assert_not_nil assigns(:materials)
+        body = nil
+        assert_nothing_raised do
+          body = JSON.parse(response.body)
+        end
+
+        assert body['data'].any?
+        assert body['meta']['results-count'] > 0
+        assert_equal 'breakdance for beginners', body['meta']['query']
+        assert_includes body['meta']['facets']['keywords'], 'dancing'
+        assert body['meta']['available-facets'].keys.any?
+        assert body['meta']['available-facets'].values.any?
+        assert body['links']['self'].include?('dancing')
+        assert body['links']['self'].include?('breakdance+for+beginners')
+      end
+    ensure
+      TeSS::Config.solr_enabled = false
+    end
+  end
+
   #NEW TESTS
   test 'should get new' do
     sign_in users(:regular_user)

@@ -33,7 +33,6 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal users_path, body['links']['self']
   end
 
-
   # User new is handled by devise
   test "should never allow user new route" do
     get :new
@@ -91,7 +90,22 @@ class UsersControllerTest < ActionController::TestCase
     assert_response :success #FORBIDDEN PAGE!?
   end
 
- test "should only allow edit for admin and self" do
+  test 'should show user as json-api' do
+    get :show, id: @user, format: :json_api
+
+    assert_response :success
+    assert assigns(:user)
+
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    assert_equal @user.profile.firstname, body['data']['attributes']['firstname']
+    assert_equal user_path(assigns(:user)), body['data']['links']['self']
+  end
+
+  test "should only allow edit for admin and self" do
     sign_in users(:regular_user)
     get :edit, id: @user
     assert_response :success

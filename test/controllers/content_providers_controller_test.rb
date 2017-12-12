@@ -155,6 +155,21 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert assigns(:content_provider)
   end
 
+  test 'should show content provider as json-api' do
+    get :show, id: @content_provider, format: :json_api
+
+    assert_response :success
+    assert assigns(:content_provider)
+
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    assert_equal @content_provider.title, body['data']['attributes']['title']
+    assert_equal content_provider_path(assigns(:content_provider)), body['data']['links']['self']
+  end
+
   #UPDATE TEST
   test 'should update content provider' do
     sign_in @content_provider.user
