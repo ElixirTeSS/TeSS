@@ -909,6 +909,24 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal visible_report_event.funding, visible_report_event_json['funding']
   end
 
+  test 'should only show report fields in JSON-API to privileged users' do
+    hidden_report_event = events(:event_with_report)
+    visible_report_event = events(:another_event_with_report)
+    sign_in users(:another_regular_user)
+
+    get :show, id: hidden_report_event, format: :json_api
+    refute JSON.parse(response.body)['data']['attributes'].key?('report')
+
+    get :show, id: visible_report_event, format: :json_api
+    assert_equal visible_report_event.funding, JSON.parse(response.body)['data']['attributes']['report']['funding']
+
+    get :index, format: :json_api
+    hidden_report_event_json = JSON.parse(response.body)['data'].detect { |e| e['id'].to_i == hidden_report_event.id }
+    visible_report_event_json = JSON.parse(response.body)['data'].detect { |e| e['id'].to_i == visible_report_event.id }
+    refute hidden_report_event_json['attributes'].key?('report')
+    assert_equal visible_report_event.funding, visible_report_event_json['attributes']['report']['funding']
+  end
+
   test 'should approve topic for curator' do
     sign_in users(:curator)
 
