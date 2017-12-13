@@ -434,6 +434,36 @@
             "$ref" : "#/definitions/ExternalResource"
           },
           "description" : "A list of external resources associated with this tool. These are largely tools from bio.tools, and standards, databases, and policies from biosharing.org - but can be anything."
+        },
+        "report" : {
+          "type" : "object",
+          "properties" : {
+            "funding" : {
+              "type" : "string",
+              "description" : "Details on who funded the event."
+            },
+            "attendee_count" : {
+              "type" : "integer",
+              "description" : "The number of people who attended the event."
+            },
+            "applicant_count" : {
+              "type" : "integer",
+              "description" : "The number of people who applied to attend the event."
+            },
+            "trainer_count" : {
+              "type" : "integer",
+              "description" : "The number of trainers who were involved with the event."
+            },
+            "feedback" : {
+              "type" : "string",
+              "description" : "Notes, or a link to feedback for the event."
+            },
+            "notes" : {
+              "type" : "string",
+              "description" : "Miscellaneous notes on the event."
+            }
+          },
+          "description" : "An after-the-fact report of what happened at the event. Only visible to privileged users."
         }
       }
     },
