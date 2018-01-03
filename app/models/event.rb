@@ -71,6 +71,7 @@ class Event < ActiveRecord::Base
           self.user.username
         end
       end
+      integer :user_id # Used for shadowbans
 =begin TODO: SOLR has a LatLonType to do geospatial searching. Have a look at that
       location :latitutde
       location :longitude

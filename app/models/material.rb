@@ -61,6 +61,7 @@ class Material < ActiveRecord::Base
       string :user do
         user.username if user
       end
+      integer :user_id # Used for shadowbans
     end
     # :nocov:
   end

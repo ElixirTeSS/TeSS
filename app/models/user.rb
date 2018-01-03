@@ -33,6 +33,7 @@ class User < ActiveRecord::Base
   belongs_to :role
   has_many :subscriptions, dependent: :destroy
   has_many :stars, dependent: :destroy
+  has_one :ban
 
   before_create :set_registered_user_role, :set_default_profile
   before_create :skip_email_confirmation_for_non_production
@@ -171,6 +172,18 @@ class User < ActiveRecord::Base
   # Used by `simple_form` when presenting a collection (i.e. for a <select> tag)
   def to_label
     "#{username} (#{email})"
+  end
+
+  def banned?
+    ban.present?
+  end
+
+  def shadowbanned?
+    banned? && ban.shadow?
+  end
+
+  def self.shadowbanned
+    joins(:ban).where(bans: { shadow: true })
   end
 
   private

@@ -70,3 +70,19 @@ email_address_user:
   confirmed_at: <%= Time.zone.now %>
   role: user
   authentication_token: <%= Devise.friendly_token %>
+
+banned_user:
+  username: 'Ban Ned'
+  email: 'banned@notarealdomain.org'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'hello') %>
+  confirmed_at: <%= Time.zone.now %>
+  role: user
+  authentication_token: <%= Devise.friendly_token %>
+
+shadowbanned_user:
+  username: Chad O'Band
+  email: 'sbanned@notarealdomain.org'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'hello') %>
+  confirmed_at: <%= Time.zone.now %>
+  role: user
+  authentication_token: <%= Devise.friendly_token %>
