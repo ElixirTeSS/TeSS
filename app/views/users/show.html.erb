@@ -97,14 +97,24 @@
 
             <% if current_user == @user %>
                 <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default' %>
+
+                <%= link_to "Manage subscriptions", subscriptions_path, :class => 'btn btn-default' %>
             <% end %>
 
-            <% if current_user == @user %>
-                <%= link_to "Manage subscriptions", subscriptions_path, :class => 'btn btn-default' %>
+            <% if current_user.try(:is_admin?) %>
+                <% if @user.banned? %>
+                    <%= link_to 'Remove ban', user_ban_path(@user),
+                                data: { confirm: 'Are you sure you want to remove this ban?.' },
+                                method: :delete, class: 'btn btn-danger' %>
+                <% else %>
+                    <%= link_to 'Ban', new_user_ban_path(@user), class: 'btn btn-danger' %>
+                <% end %>
             <% end %>
         <% end %>
       </div>
     </div>
+
+    <%= render(partial: 'users/partials/ban', locals: { ban: @user.ban }) if @user.banned? && current_user.try(:is_admin?) %>
 
     <div class="row">
       <% materials = @user.materials.limit(resource_limit) %>

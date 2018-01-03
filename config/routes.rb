@@ -41,7 +41,9 @@ Rails.application.routes.draw do
 
   get 'static/home'
 
-  resources :users
+  resources :users do
+    resource :ban, only: [:create, :new, :destroy]
+  end
 
   resources :nodes, concerns: :activities
 
