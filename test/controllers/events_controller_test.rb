@@ -1098,4 +1098,24 @@ class EventsControllerTest < ActionController::TestCase
     assert_nil event.latitude
     assert_nil event.longitude
   end
+
+  test 'should show user ban info to admin' do
+    event = events(:shadowbanned_event)
+    sign_in users(:admin)
+
+    get :show, id: event
+
+    assert_response :success
+    assert_select '.ban-info', count: 1
+  end
+
+  test 'should not show user ban info to non-admin' do
+    event = events(:shadowbanned_event)
+    sign_in users(:shadowbanned_user)
+
+    get :show, id: event
+
+    assert_response :success
+    assert_select '.ban-info', count: 0
+  end
 end

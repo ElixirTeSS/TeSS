@@ -179,4 +179,20 @@ class UsersControllerTest < ActionController::TestCase
     assert_not_equal roles(:curator), assigns(:user).role
     assert_not_equal 'George', assigns(:user).profile.firstname
   end
+
+  test 'should show ban info to admin' do
+    user = users(:shadowbanned_user)
+    sign_in users(:admin)
+    get :show, id: user
+    assert_response :success
+    assert_select '.ban-info', count: 1
+  end
+
+  test 'should not show ban info to user' do
+    user = users(:shadowbanned_user)
+    sign_in user
+    get :show, id: user
+    assert_response :success
+    assert_select '.ban-info', count: 0
+  end
 end

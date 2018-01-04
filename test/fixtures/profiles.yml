@@ -35,3 +35,9 @@ email_address_user_profile:
   firstname: Email
   surname: Fan
   user: email_address_user
+
+banned_user_profile:
+  user: banned_user
+
+shadowbanned_user_profile:
+  user: shadowbanned_user
