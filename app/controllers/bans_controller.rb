@@ -1,11 +1,10 @@
 class BansController < ApplicationController
 
   before_filter :get_user
+  before_filter :auth
   before_action :set_breadcrumbs
 
   def create
-    authorize @user, :ban?
-
     @ban = @user.create_ban(ban_params.merge(banner: current_user))
 
     flash[:notice] = "User #{'shadow' if @ban.shadow?}banned"
@@ -14,11 +13,9 @@ class BansController < ApplicationController
   end
 
   def destroy
-    authorize @user, :ban?
-
     @user.ban.destroy
 
-    flash[:notice] = 'Ban lifted.'
+    flash[:notice] = 'Ban lifted'
 
     redirect_to @user
   end
@@ -30,10 +27,11 @@ class BansController < ApplicationController
   private
 
   def get_user
-    @user = User.find_by_slug(params[:user_id])
+    @user = User.friendly.find(params[:user_id])
   end
 
   def auth
+    authorize @user, :ban?
   end
 
   def ban_params

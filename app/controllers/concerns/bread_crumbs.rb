@@ -21,12 +21,12 @@ module BreadCrumbs
     end
   end
 
-  def add_base_breadcrumbs(controller_name = controller_name)
+  def add_base_breadcrumbs(con_name = controller_name)
     #Home
     add_breadcrumb 'Home', root_path
 
     #Index
-    add_index_breadcrumb(controller_name)
+    add_index_breadcrumb(con_name)
   end
 
   def add_index_breadcrumb controller_name, breadcrumb_name = nil
