@@ -40,8 +40,110 @@
     "sort" : {
       "name" : "sort",
       "in" : "query",
-      "description" : "Field to sort by.",
-      "type" : "string"
+      "description" : "Sort order:\n * default - sort by date (for Events), sort by number of resources (for Content Providers) otherwise sort by title (default).\n * new - Sort by when the entry was created.\n * mod - Sort by when the entry was last modified.\n * rel - Sort by search query relevance.\n * early - Sort by date, earliest to latest (Events only).\n * late - Sort by date, latest to earliest (Events only).\n",
+      "type" : "string",
+      "enum" : [ "early", "late", "rel", "mod", "new" ]
+    },
+    "content-provider" : {
+      "name" : "content-provider[]",
+      "in" : "query",
+      "description" : "Filter by content provider name.",
+      "type" : "array",
+      "collectionFormat" : "multi",
+      "items" : {
+        "type" : "string"
+      }
+    },
+    "keywords" : {
+      "name" : "keywords[]",
+      "in" : "query",
+      "description" : "Filter by keywords.",
+      "type" : "array",
+      "collectionFormat" : "multi",
+      "items" : {
+        "type" : "string"
+      }
+    },
+    "node" : {
+      "name" : "node[]",
+      "in" : "query",
+      "description" : "Filter by ELIXIR node name.",
+      "type" : "array",
+      "collectionFormat" : "multi",
+      "items" : {
+        "type" : "string"
+      }
+    },
+    "scientific-topics" : {
+      "name" : "scientific-topics[]",
+      "in" : "query",
+      "description" : "Filter by scientific topics.",
+      "type" : "array",
+      "collectionFormat" : "multi",
+      "items" : {
+        "type" : "string"
+      }
+    },
+    "target-audience" : {
+      "name" : "target-audience[]",
+      "in" : "query",
+      "description" : "Filter by who the intended target audience is.",
+      "type" : "array",
+      "collectionFormat" : "multi",
+      "items" : {
+        "type" : "string"
+      }
+    },
+    "tools" : {
+      "name" : "tools[]",
+      "in" : "query",
+      "description" : "Filter by what tools are involved.",
+      "type" : "array",
+      "collectionFormat" : "multi",
+      "items" : {
+        "type" : "string"
+      }
+    },
+    "difficulty-level" : {
+      "name" : "difficulty_level[]",
+      "in" : "query",
+      "description" : "Filter by difficulty level.",
+      "type" : "array",
+      "collectionFormat" : "multi",
+      "items" : {
+        "type" : "string",
+        "enum" : [ "Not specified", "Beginner", "Intermediate", "Advanced" ]
+      }
+    },
+    "authors" : {
+      "name" : "authors[]",
+      "in" : "query",
+      "description" : "Filter by author.",
+      "type" : "array",
+      "collectionFormat" : "multi",
+      "items" : {
+        "type" : "string"
+      }
+    },
+    "contributors" : {
+      "name" : "contributors[]",
+      "in" : "query",
+      "description" : "Filter by contributor.",
+      "type" : "array",
+      "collectionFormat" : "multi",
+      "items" : {
+        "type" : "string"
+      }
+    },
+    "licence" : {
+      "name" : "licence[]",
+      "in" : "query",
+      "description" : "Filter by licence. See http://licenses.opendefinition.org/licenses/groups/all.json",
+      "type" : "array",
+      "collectionFormat" : "multi",
+      "items" : {
+        "type" : "string"
+      }
     }
   },
   "paths" : {
@@ -56,6 +158,83 @@
           "$ref" : "#/parameters/page_size"
         }, {
           "$ref" : "#/parameters/sort"
+        }, {
+          "$ref" : "#/parameters/content-provider"
+        }, {
+          "$ref" : "#/parameters/keywords"
+        }, {
+          "$ref" : "#/parameters/node"
+        }, {
+          "$ref" : "#/parameters/scientific-topics"
+        }, {
+          "$ref" : "#/parameters/target-audience"
+        }, {
+          "$ref" : "#/parameters/tools"
+        }, {
+          "name" : "event-types[]",
+          "in" : "query",
+          "description" : "Filter by event type.",
+          "type" : "array",
+          "collectionFormat" : "multi",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "Awards and prizegivings", "Meetings and conferences", "Receptions and networking", "Workshops and courses" ]
+          }
+        }, {
+          "name" : "city[]",
+          "in" : "query",
+          "description" : "Filter by city.",
+          "type" : "array",
+          "collectionFormat" : "multi",
+          "items" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "country[]",
+          "in" : "query",
+          "description" : "Filter by country.",
+          "type" : "array",
+          "collectionFormat" : "multi",
+          "items" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "venue[]",
+          "in" : "query",
+          "description" : "Filter by venue",
+          "type" : "array",
+          "collectionFormat" : "multi",
+          "items" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "organizer[]",
+          "in" : "query",
+          "description" : "Filter by organizer.",
+          "type" : "array",
+          "collectionFormat" : "multi",
+          "items" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "online",
+          "in" : "query",
+          "description" : "Only show online events?",
+          "type" : "boolean"
+        }, {
+          "name" : "sponsor[]",
+          "in" : "query",
+          "description" : "Filter by sponsor.",
+          "type" : "array",
+          "collectionFormat" : "multi",
+          "items" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "include-expired",
+          "in" : "query",
+          "description" : "Include events that have finished.",
+          "type" : "boolean"
         } ],
         "responses" : {
           "200" : {
@@ -98,6 +277,35 @@
           "$ref" : "#/parameters/page_size"
         }, {
           "$ref" : "#/parameters/sort"
+        }, {
+          "$ref" : "#/parameters/authors"
+        }, {
+          "$ref" : "#/parameters/content-provider"
+        }, {
+          "$ref" : "#/parameters/contributors"
+        }, {
+          "$ref" : "#/parameters/difficulty-level"
+        }, {
+          "$ref" : "#/parameters/keywords"
+        }, {
+          "$ref" : "#/parameters/licence"
+        }, {
+          "$ref" : "#/parameters/node"
+        }, {
+          "$ref" : "#/parameters/scientific-topics"
+        }, {
+          "$ref" : "#/parameters/target-audience"
+        }, {
+          "$ref" : "#/parameters/tools"
+        }, {
+          "name" : "resource_type[]",
+          "in" : "query",
+          "description" : "Filter by resource type, e.g. \"Lecture\" etc.",
+          "type" : "array",
+          "collectionFormat" : "multi",
+          "items" : {
+            "type" : "string"
+          }
         } ],
         "responses" : {
           "200" : {
@@ -140,6 +348,20 @@
           "$ref" : "#/parameters/page_size"
         }, {
           "$ref" : "#/parameters/sort"
+        }, {
+          "$ref" : "#/parameters/keywords"
+        }, {
+          "$ref" : "#/parameters/node"
+        }, {
+          "name" : "content_provider_type[]",
+          "in" : "query",
+          "description" : "Filter by content provider type.",
+          "type" : "array",
+          "collectionFormat" : "multi",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "Portal", "Organisation", "Project" ]
+          }
         } ],
         "responses" : {
           "200" : {
@@ -182,6 +404,20 @@
           "$ref" : "#/parameters/page_size"
         }, {
           "$ref" : "#/parameters/sort"
+        }, {
+          "$ref" : "#/parameters/authors"
+        }, {
+          "$ref" : "#/parameters/contributors"
+        }, {
+          "$ref" : "#/parameters/difficulty-level"
+        }, {
+          "$ref" : "#/parameters/keywords"
+        }, {
+          "$ref" : "#/parameters/licence"
+        }, {
+          "$ref" : "#/parameters/scientific-topics"
+        }, {
+          "$ref" : "#/parameters/target-audience"
         } ],
         "responses" : {
           "200" : {
