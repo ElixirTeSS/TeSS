@@ -19,9 +19,6 @@ class GeocodingWorker
     return unless event
     redis = Redis.new
 
-    latitude = nil
-    longitude = nil
-
     if redis.get location
       event.latitude, event.longitude = JSON.parse(redis.get(location))
       puts "Re-using: #{location}"
@@ -42,6 +39,3 @@ class GeocodingWorker
 
 end
 
-__END__
-[2785, "Heverlee,Belgium,3001"]
-[8, "Leuven,Belgium,3010"]
