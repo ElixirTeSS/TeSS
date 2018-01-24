@@ -4,51 +4,37 @@ namespace :tess do
 
   desc 'Update lat/lon for events'
   task update_lat_lon: :environment do
-    Geocoder.configure(:lookup => :nominatim)
+    Geocoder.configure(:lookup => :nominatim,
+                       :http_headers => { 'User-Agent' => 'Elixir TeSS <tess-support@googlegroups.com>' }
+                      )
 
-    seen = {}
 
-    puts Event.where(:latitude => nil, :longitude => nil).count
-    Event.where(:latitude => nil, :longitude => nil).each do |e|
+    events = Event.where(:latitude => nil, :longitude => nil).where(["#{Event.table_name}.nominatim_count < ?", 3])
+
+    puts "Found #{events.count} events to query with Nominatim"
+
+    # Submit a worker for each matching event, one per minute.
+    start_time = 1
+    events[0,2].each do |e|
       locations = [
-          #e.venue,
           e.city,
           e.county,
           e.country,
           e.postcode,
       ].select { |x| !x.nil? and x != '' }
-      unless locations.empty?
-        puts "#{e.title} | #{locations.inspect}"
+
+      # Only proceed if there's at least one location field to look up.
+      if locations.empty?
+        # TODO: Mark this record to not be queried again, i.e. set the
+        # TODO: nominatim_queries value to the maximum immediately.
+        e.nominatim_count = 3
+        e.save!
+      else
+        # TODO: submit event_id, and locations to worker.
         location = locations.reject(&:blank?).join(',')
-        latitude = nil
-        longitude = nil
-
-        if !seen.has_key?(location)
-          result = Geocoder.search(location).first
-          if result
-            #puts "RESULT: #{result.latitude}, #{result.longitude}"
-            seen[location] = [result.latitude, result.longitude]
-            # Create edit suggestion here.
-            latitude = result.latitude
-            longitude = result.longitude
-          end
-          sleep(rand(9) + 1)
-        else
-          #puts "SEEN: #{seen[location][0]}, #{seen[location][1]}"
-          # Or, create edit suggestion here.
-          latitude = seen[location][0]
-          longitude = seen[location][1]
-        end
-
-        next unless latitude && longitude
-
-        suggestion = EditSuggestion.where(suggestible_type: 'Event', suggestible_id: e.id).first_or_create
-        #puts "S1: #{suggestion.inspect}"
-        suggestion.data_fields = {} if suggestion.data_fields.nil?
-        suggestion.data_fields['geographic_coordinates'] = [latitude, longitude]
-        suggestion.save!
-        #puts "S2: #{suggestion.inspect}"
-
+        puts "Looking up: #{e.title}; #{location}"
+        GeocodingWorker.perform_in(start_time.minute, [e.id, location])
+        start_time += 1
       end
     end
   end

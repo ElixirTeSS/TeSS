@@ -2,7 +2,9 @@ require 'geocoder'
 
 class EditSuggestionWorker
   include Sidekiq::Worker
-  Geocoder.configure(:lookup => :nominatim)
+  Geocoder.configure(:lookup => :nominatim,
+                     :http_headers => { 'User-Agent' => 'Elixir TeSS <tess-support@googlegroups.com>' }
+                    )
 
   # TODO: Should a random time delay go in here such that the chastisement of
   # TODO: BioPortal is somewhat mimimised?

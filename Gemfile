@@ -127,8 +127,10 @@ gem 'linkeddata'
 
 # Used for lat/lon rake task
 gem 'geocoder'
+gem 'redis'
 
 gem 'active_model_serializers', '~> 0.10'
+
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-markdown-it', '~> 7.0.1'
