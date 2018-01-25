@@ -37,8 +37,8 @@ namespace :tess do
         location = locations.reject(&:blank?).join(',')
         puts "Looking up: #{e.title}; #{location}"
         time = Time.now.to_i + start_time.minute
-        GeocodingWorker.perform_at(time, [e.id, location])
         redis.set 'last_geocode', time
+        #GeocodingWorker.perform_at(time, [e.id, location])
         start_time += 1
       end
     end

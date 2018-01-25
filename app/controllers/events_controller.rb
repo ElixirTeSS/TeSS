@@ -200,7 +200,7 @@ class EventsController < ApplicationController
   # If no latitude or longitude, create a GeocodingWorker to find them.
   # This should run a minute after the last one is set to run (last run time stored by Redis).
   def geocoding_check(event)
-    run_at = Time.now.to_i
+    run_at = Time.now.to_i + 1.minute
     begin
       redis = Redis.new
       last_geocode = (redis.get 'last_geocode').to_i # will cast to 0 if nil
@@ -227,8 +227,8 @@ class EventsController < ApplicationController
     else
       # submit event_id, and locations to worker.
       location = locations.reject(&:blank?).join(',')
-      GeocodingWorker.perform_at(run_at + 1.minute, [e.id, location])
       redis.set 'last_geocode', run_at + 1.minute
+      GeocodingWorker.perform_at(run_at + 1.minute, [e.id, location])
     end
 
   end
