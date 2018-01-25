@@ -1,3 +1,5 @@
+require 'redis'
+
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages, :add_topic, :reject_topic,
                                    :redirect, :report, :update_report, :add_data, :reject_data]
@@ -96,6 +98,7 @@ class EventsController < ApplicationController
       if @event.save
         @event.create_activity :create, owner: current_user
         look_for_topics(@event)
+        geocoding_check(@event)
         #current_user.events << @event
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
         format.json { render :show, status: :created, location: @event }
@@ -191,6 +194,40 @@ class EventsController < ApplicationController
 
   def disable_pagination
     params[:per_page] = 2 ** 10
+  end
+
+
+  # If no latitude or longitude, create a GeocodingWorker to find them.
+  # This should run a minute after the last one is set to run (last run time stored by Redis).
+  def geocoding_check(event)
+    redis = Redis.new
+    run_at = Time.now.to_i
+    last_geocode = (redis.get 'last_geocode').to_i
+    if last_geocode
+      if last_geocode > run_at
+        run_at = last_geocode
+      end
+    end
+    locations = [
+        event.city,
+        event.county,
+        event.country,
+        event.postcode,
+    ].select { |x| !x.nil? and x != '' }
+
+    # Only proceed if there's at least one location field to look up.
+    if locations.empty?
+      # Mark this record to not be queried again, i.e. set the
+      # nominatim_queries value to the maximum immediately.
+      event.nominatim_count = 3
+      event.save!
+    else
+      # submit event_id, and locations to worker.
+      location = locations.reject(&:blank?).join(',')
+      GeocodingWorker.perform_at(run_at + 1.minute, [e.id, location])
+      redis.set 'last_geocode', run_at + 1.minute
+    end
+
   end
 
 end

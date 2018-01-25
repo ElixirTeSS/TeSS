@@ -1,4 +1,5 @@
 require 'geocoder'
+require 'redis'
 
 namespace :tess do
 
@@ -13,9 +14,11 @@ namespace :tess do
 
     puts "Found #{events.count} events to query with Nominatim"
 
+    redis = Redis.new
+
     # Submit a worker for each matching event, one per minute.
     start_time = 1
-    events[0,2].each do |e|
+    events.each do |e|
       locations = [
           e.city,
           e.county,
@@ -25,15 +28,17 @@ namespace :tess do
 
       # Only proceed if there's at least one location field to look up.
       if locations.empty?
-        # TODO: Mark this record to not be queried again, i.e. set the
-        # TODO: nominatim_queries value to the maximum immediately.
+        # Mark this record to not be queried again, i.e. set the
+        # nominatim_queries value to the maximum immediately.
         e.nominatim_count = 3
         e.save!
       else
-        # TODO: submit event_id, and locations to worker.
+        # submit event_id, and locations to worker.
         location = locations.reject(&:blank?).join(',')
         puts "Looking up: #{e.title}; #{location}"
-        GeocodingWorker.perform_in(start_time.minute, [e.id, location])
+        time = Time.now.to_i + start_time.minute
+        GeocodingWorker.perform_at(time, [e.id, location])
+        redis.set 'last_geocode', time
         start_time += 1
       end
     end

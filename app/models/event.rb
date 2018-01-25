@@ -297,4 +297,7 @@ class Event < ActiveRecord::Base
 
     self.geographic_coordinates
   end
+
+
+
 end
