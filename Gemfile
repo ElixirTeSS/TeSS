@@ -140,6 +140,10 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-clipboard', '~> 1.5.12'
 end
 
+group :test do
+  gem 'fakeredis'
+end
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'webmock', '~> 2.1.0'
