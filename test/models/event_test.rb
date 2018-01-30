@@ -290,4 +290,18 @@ class EventTest < ActiveSupport::TestCase
       event.save!
     end
   end
+
+  test 'does not enqueue a geocoding worker if the address is cached' do
+    event = Event.new(title: 'New event', url: 'http://example.com', venue: 'A place', city: 'Manchester')
+    redis = Redis.new
+    redis.set(event.address, [45, 45].to_json)
+
+    refute event.address.blank?
+
+    assert_no_difference('GeocodingWorker.jobs.size') do
+      event.save!
+      assert_equal 45, event.latitude
+      assert_equal 45, event.longitude
+    end
+  end
 end
