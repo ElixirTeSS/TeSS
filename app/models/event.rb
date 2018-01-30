@@ -314,11 +314,10 @@ class Event < ActiveRecord::Base
     ADDRESS_FIELDS.any? { |field| self.changed.include?(field.to_s) }
   end
 
-  private
-
   # Check the Redis cache for coordinates
   def geocoding_cache_lookup
     location = self.address
+
     begin
       redis = Redis.new
       if redis.exists(location)
@@ -333,13 +332,21 @@ class Event < ActiveRecord::Base
 
   # Check the external Geocoder API (currently Nominatim) for coordinates
   def geocoding_api_lookup
+    location = self.address
+
     result = Geocoder.search(location).first
     if result
       self.latitude = result.latitude
       self.longitude = result.longitude
-      redis.set(location, [self.latitude, self.longitude].to_json)
+      begin
+        redis = Redis.new
+        redis.set(location, [self.latitude, self.longitude].to_json)
+      rescue Redis::RuntimeError => e
+        raise e unless Rails.env.production?
+        puts "Redis error: #{e.message}"
+      end
     else
-      self.update_column(:nominatim_count, event.nominatim_count + 1)
+      self.update_column(:nominatim_count, self.nominatim_count + 1)
     end
   end
 
