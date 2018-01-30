@@ -12,26 +12,18 @@ class GeocodingWorker
   def perform(arg_array)
     event_id, location = arg_array
     event = Event.find(event_id)
-    return unless event
+
     redis = Redis.new
 
-
-    if redis.get location
-      event.latitude, event.longitude = JSON.parse(redis.get(location))
+    if redis.exists(location)
       puts "Re-using: #{location}"
+      event.geocoding_cache_lookup
     else
       puts "New location: #{location}"
-      result = Geocoder.search(location).first
-      if result
-        event.latitude = result.latitude
-        event.longitude = result.longitude
-        redis.set location, [event.latitude, event.longitude].to_json
-      end
-      event.nominatim_count += 1
+      event.geocoding_api_lookup
     end
 
     event.save!
-
   end
 
 end
