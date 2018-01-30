@@ -221,7 +221,7 @@ class EventsController < ApplicationController
     if locations.empty?
       # Mark this record to not be queried again, i.e. set the
       # nominatim_queries value to the maximum immediately.
-      event.update_attribute!(:nominatim_count, 3)
+      event.update_attribute(:nominatim_count, 3)
     else
       # submit event_id, and locations to worker.
       redis.set('last_geocode', run_at)
