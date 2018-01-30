@@ -1,4 +1,3 @@
-require 'geocoder'
 require 'redis'
 require 'json'
 
@@ -9,9 +8,6 @@ require 'json'
 
 class GeocodingWorker
   include Sidekiq::Worker
-  Geocoder.configure(:lookup => :nominatim,
-                     :http_headers => { 'User-Agent' => 'Elixir TeSS <tess-support@googlegroups.com>' }
-                    )
 
   def perform(arg_array)
     event_id, location = arg_array

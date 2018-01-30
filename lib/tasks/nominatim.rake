@@ -1,15 +1,9 @@
-require 'geocoder'
 require 'redis'
 
 namespace :tess do
 
   desc 'Update lat/lon for events'
   task update_lat_lon: :environment do
-    Geocoder.configure(:lookup => :nominatim,
-                       :http_headers => { 'User-Agent' => 'Elixir TeSS <tess-support@googlegroups.com>' }
-                      )
-
-
     events = Event.where(:latitude => nil, :longitude => nil).where(["#{Event.table_name}.nominatim_count < ?", 3])
 
     puts "Found #{events.count} events to query with Nominatim"
@@ -19,13 +13,7 @@ namespace :tess do
     # Submit a worker for each matching event, one per minute.
     start_time = 1
     events.each do |e|
-      locations = [
-          e.city,
-          e.county,
-          e.country,
-          e.postcode,
-      ].select { |x| !x.nil? and x != '' }
-
+      locations = e.address
       # Only proceed if there's at least one location field to look up.
       if locations.empty?
         # Mark this record to not be queried again, i.e. set the
