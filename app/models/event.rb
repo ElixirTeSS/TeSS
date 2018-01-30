@@ -1,5 +1,6 @@
 require 'icalendar'
 require 'rails/html/sanitizer'
+require 'redis'
 
 class Event < ActiveRecord::Base
   include PublicActivity::Common
@@ -13,7 +14,8 @@ class Event < ActiveRecord::Base
   include Searchable
 
   has_paper_trail
-  before_save :set_default_times, :check_country_name
+  before_save :set_default_times, :check_country_name, :geocoding_cache_check
+  after_save :enque_geocoding_worker
 
   extend FriendlyId
   friendly_id :title, use: :slugged
@@ -298,6 +300,49 @@ class Event < ActiveRecord::Base
     self.geographic_coordinates
   end
 
+  def address
+    [self.venue,
+     self.city,
+     self.county,
+     self.country,
+     self.postcode].reject(&:blank?).join(', ')
+  end
 
+  private
 
+  def geocoding_cache_check
+    location = self.address
+    begin
+      redis = Redis.new
+      if redis.exists(location)
+        self.latitude, self.longitude = JSON.parse(redis.get(location))
+        puts "Re-using: #{location}"
+      end
+    rescue Redis::RuntimeError => e
+      raise e unless Rails.env.production?
+      puts "Redis error: #{e.message}"
+    end
+  end
+
+  # If no latitude or longitude, create a GeocodingWorker to find them.
+  # This should run a minute after the last one is set to run (last run time stored by Redis).
+  def enque_geocoding_worker
+    return if (self.latitude.present? && self.longitude.present?) || self.address.blank?
+
+    location = self.address
+
+    begin
+      redis = Redis.new
+      last_geocode = redis.get('last_geocode') || Time.now
+
+      run_at = [last_geocode.to_i, Time.now.to_i].max + 1.minute
+
+      # submit event_id, and locations to worker.
+      redis.set('last_geocode', run_at)
+      GeocodingWorker.perform_at(run_at, [self.id, location])
+    rescue Redis::RuntimeError => e
+      raise e unless Rails.env.production?
+      puts "Redis error: #{e.message}"
+    end
+  end
 end
