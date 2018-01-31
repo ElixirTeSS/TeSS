@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180131143116) do
+ActiveRecord::Schema.define(version: 20180131152122) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,11 +79,11 @@ ActiveRecord::Schema.define(version: 20180131143116) do
   create_table "edit_suggestions", force: :cascade do |t|
     t.text     "name"
     t.text     "text"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "suggestible_id"
     t.string   "suggestible_type"
-    t.json     "data_fields"
+    t.json     "data_fields",      default: {}
   end
 
   add_index "edit_suggestions", ["suggestible_id", "suggestible_type"], name: "index_edit_suggestions_on_suggestible_id_and_suggestible_type", using: :btree
