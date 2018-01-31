@@ -94,6 +94,7 @@ class Event < ActiveRecord::Base
   validates :eligibility, controlled_vocabulary: { dictionary: Tess::EligibilityDictionary.instance }
   validates :latitude, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90, allow_nil: true }
   validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true  }
+  validate :allowed_url
 
   clean_array_fields(:keywords, :event_types, :target_audience, :eligibility, :host_institutions)
   update_suggestions(:keywords, :target_audience, :host_institutions)
@@ -297,4 +298,17 @@ class Event < ActiveRecord::Base
 
     self.geographic_coordinates
   end
+
+  private
+
+  def allowed_url
+    disallowed = TeSS::Config.blocked_domains.any? do |regex|
+      self.url =~ regex
+    end
+
+    if disallowed
+      errors.add(:url, 'not valid')
+    end
+  end
+
 end

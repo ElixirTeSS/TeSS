@@ -4,6 +4,8 @@ default: &default
   solr_enabled: true
   announcement_message:
   prevent_robot_indexing: false
+  blocked_domains:
+    - !ruby/regexp '/bad-domain\.example/'
 
 development:
   <<: *default

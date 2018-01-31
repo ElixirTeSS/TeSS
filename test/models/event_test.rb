@@ -109,7 +109,6 @@ class EventTest < ActiveSupport::TestCase
     assert_equal content_providers(:project_provider), e.content_provider
   end
 
-
   test 'equal precedence content provider does overwrite' do
     e = events(:portal_event)
 
@@ -248,5 +247,21 @@ class EventTest < ActiveSupport::TestCase
     assert_equal 14, event.latitude
     assert_equal 15, event.longitude
     assert_equal [14, 15], event.geographic_coordinates
+  end
+
+  test 'blocks disallowed domain' do
+    event = Event.new(title: 'Bad event', url: 'bad-domain.example/event')
+
+    refute event.save
+
+    assert_equal ['not valid'], event.errors[:url]
+  end
+
+  test 'does not block non-disallowed(?!) domain' do
+    event = Event.new(title: 'Good event', url: 'good-domain.example/event')
+
+    assert event.save
+
+    assert event.errors[:url].empty?
   end
 end
