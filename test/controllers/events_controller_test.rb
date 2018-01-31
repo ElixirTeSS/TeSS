@@ -1118,4 +1118,14 @@ class EventsControllerTest < ActionController::TestCase
     assert_response :success
     assert_select '.ban-info', count: 0
   end
+
+  test 'should get event with edit suggestion' do
+    suggestion = @event.build_edit_suggestion
+    suggestion.scientific_topic_names = ['Genomics']
+    suggestion.save!
+
+    get :show, id: @event
+
+    assert_response :success
+  end
 end
