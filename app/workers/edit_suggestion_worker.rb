@@ -1,8 +1,5 @@
-require 'geocoder'
-
 class EditSuggestionWorker
   include Sidekiq::Worker
-  Geocoder.configure(:lookup => :nominatim)
 
   # TODO: Should a random time delay go in here such that the chastisement of
   # TODO: BioPortal is somewhat mimimised?

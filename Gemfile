@@ -127,8 +127,10 @@ gem 'linkeddata'
 
 # Used for lat/lon rake task
 gem 'geocoder'
+gem 'redis'
 
 gem 'active_model_serializers', '~> 0.10'
+
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-markdown-it', '~> 7.0.1'
@@ -136,6 +138,10 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '~> 4.17.42'
   gem 'rails-assets-devbridge-autocomplete', '~> 1.2.26'
   gem 'rails-assets-clipboard', '~> 1.5.12'
+end
+
+group :test do
+  gem 'fakeredis'
 end
 
 group :development, :test do

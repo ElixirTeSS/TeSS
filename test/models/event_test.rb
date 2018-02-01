@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'sidekiq/testing'
 
 class EventTest < ActiveSupport::TestCase
 
@@ -263,5 +264,59 @@ class EventTest < ActiveSupport::TestCase
     assert event.save
 
     assert event.errors[:url].empty?
+  end
+
+  test 'enqueues a geocoding worker after creating an event' do
+    assert_difference('GeocodingWorker.jobs.size', 1) do
+      event = Event.create(title: 'New event', url: 'http://example.com', venue: 'A place', city: 'Manchester')
+      refute event.address.blank?
+    end
+  end
+
+  test 'enqueues a geocoding worker after changing address' do
+    event = events(:portal_event)
+    event.venue = 'New Venue!'
+
+    assert_difference('GeocodingWorker.jobs.size', 1) do
+      event.save!
+    end
+  end
+
+  test 'does not enqueue a geocoding worker after creating an event with no address' do
+    assert_no_difference('GeocodingWorker.jobs.size') do
+      event = Event.create(title: 'New event', url: 'http://example.com', online: true)
+      assert event.address.blank?
+    end
+  end
+
+  test 'does not enqueue a geocoding worker after creating an event with defined lat/lon' do
+    assert_no_difference('GeocodingWorker.jobs.size') do
+      event = Event.create(title: 'New event', url: 'http://example.com', latitude: 25, longitude: 25, venue: 'Place')
+      refute event.address.blank?
+    end
+  end
+
+  test 'does not enqueue a geocoding worker after changing a non-address field' do
+    event = events(:portal_event)
+    event.title = 'New title'
+    refute event.address.blank?
+
+    assert_no_difference('GeocodingWorker.jobs.size') do
+      event.save!
+    end
+  end
+
+  test 'does not enqueue a geocoding worker if the address is cached' do
+    event = Event.new(title: 'New event', url: 'http://example.com', venue: 'A place', city: 'Manchester')
+    redis = Redis.new
+    redis.set(event.address, [45, 45].to_json)
+
+    refute event.address.blank?
+
+    assert_no_difference('GeocodingWorker.jobs.size') do
+      event.save!
+      assert_equal 45, event.latitude
+      assert_equal 45, event.longitude
+    end
   end
 end

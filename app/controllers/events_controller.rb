@@ -192,5 +192,4 @@ class EventsController < ApplicationController
   def disable_pagination
     params[:per_page] = 2 ** 10
   end
-
 end

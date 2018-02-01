@@ -1,5 +1,6 @@
 require 'icalendar'
 require 'rails/html/sanitizer'
+require 'redis'
 
 class Event < ActiveRecord::Base
   include PublicActivity::Common
@@ -14,6 +15,8 @@ class Event < ActiveRecord::Base
 
   has_paper_trail
   before_save :set_default_times, :check_country_name
+  before_save :geocoding_cache_lookup, if: :address_changed?
+  after_save :enqueue_geocoding_worker, if: :address_changed?
 
   extend FriendlyId
   friendly_id :title, use: :slugged
@@ -102,7 +105,12 @@ class Event < ActiveRecord::Base
   # These fields should not been shown to users unless they have sufficient privileges
   SENSITIVE_FIELDS = [:funding, :attendee_count, :applicant_count, :trainer_count, :feedback, :notes]
 
+  ADDRESS_FIELDS = [:venue, :city, :county, :country, :postcode]
+
   COUNTRY_SYNONYMS = JSON.parse(File.read(File.join(Rails.root, 'config', 'data', 'country_synonyms.json')))
+
+  NOMINATIM_DELAY = 1.minute
+  NOMINATIM_MAX_ATTEMPTS = 3
 
   #Generated Event:
   # external_id:string
@@ -297,6 +305,72 @@ class Event < ActiveRecord::Base
     self.longitude = coords[1]
 
     self.geographic_coordinates
+  end
+
+  def address
+    ADDRESS_FIELDS.map { |field| self.send(field) }.reject(&:blank?).join(', ')
+  end
+
+  def address_changed?
+    ADDRESS_FIELDS.any? { |field| self.changed.include?(field.to_s) }
+  end
+
+  # Check the Redis cache for coordinates
+  def geocoding_cache_lookup
+    location = self.address
+
+    begin
+      redis = Redis.new
+      if redis.exists(location)
+        self.latitude, self.longitude = JSON.parse(redis.get(location))
+        Rails.logger.info("Re-using: #{location}")
+      end
+    rescue Redis::RuntimeError => e
+      raise e unless Rails.env.production?
+      puts "Redis error: #{e.message}"
+    end
+  end
+
+  # Check the external Geocoder API (currently Nominatim) for coordinates
+  def geocoding_api_lookup
+    location = self.address
+
+    result = Geocoder.search(location).first
+    if result
+      self.latitude = result.latitude
+      self.longitude = result.longitude
+      begin
+        redis = Redis.new
+        redis.set(location, [self.latitude, self.longitude].to_json)
+      rescue Redis::RuntimeError => e
+        raise e unless Rails.env.production?
+        puts "Redis error: #{e.message}"
+      end
+    else
+      self.update_column(:nominatim_count, self.nominatim_count + 1)
+    end
+  end
+
+  # If no latitude or longitude, create a GeocodingWorker to find them.
+  # This should run a minute after the last one is set to run (last run time stored by Redis).
+  def enqueue_geocoding_worker
+    return if (self.latitude.present? && self.longitude.present?) || self.address.blank? || self.nominatim_count >= NOMINATIM_MAX_ATTEMPTS
+
+    location = self.address
+
+    begin
+      redis = Redis.new
+      last_geocode = redis.get('last_geocode') || Time.now
+
+      run_at = [last_geocode.to_i, Time.now.to_i].max + NOMINATIM_DELAY
+
+      # submit event_id, and locations to worker.
+      redis.set('last_geocode', run_at)
+      GeocodingWorker.perform_at(run_at, [self.id, location])
+    rescue Redis::RuntimeError => e
+      raise e unless Rails.env.production?
+      puts "Redis error: #{e.message}"
+    end
   end
 
   private

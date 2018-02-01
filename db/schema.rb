@@ -138,6 +138,7 @@ ActiveRecord::Schema.define(version: 20180131152122) do
     t.integer  "trainer_count"
     t.string   "feedback"
     t.text     "notes"
+    t.integer  "nominatim_count",                              default: 0
   end
 
   add_index "events", ["cost"], name: "index_events_on_cost", using: :btree
