@@ -12,6 +12,7 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'webmock/minitest'
 require 'minitest/mock'
+require 'fakeredis/minitest'
 
 class ActiveSupport::TestCase
 
@@ -58,6 +59,12 @@ class ActiveSupport::TestCase
     biotools_file = File.read("#{Rails.root}/test/fixtures/files/annotation.json")
     WebMock.stub_request(:get, /data.bioontology.org/).
       to_return(:status => 200, :headers => {},  :body => biotools_file)
+  end
+
+  def mock_nominatim
+    nominatim_file = File.read("#{Rails.root}/test/fixtures/files/nominatim.json")
+    WebMock.stub_request(:get, /nominatim.openstreetmap.org/).
+        to_return(:status => 200, :headers => {}, :body => nominatim_file)
   end
 
   # This should probably live somewhere else

@@ -128,12 +128,23 @@ gem 'linkeddata'
 
 gem 'tess_rdf_extractors', :git => 'git://github.com/ElixirTeSS/TeSS_RDF_Extractors.git'
 
+# Used for lat/lon rake task
+gem 'geocoder'
+gem 'redis'
+
+gem 'active_model_serializers', '~> 0.10'
+
+
 source 'https://rails-assets.org' do
   gem 'rails-assets-markdown-it', '~> 7.0.1'
   gem 'rails-assets-moment', '~> 2.15.0'
   gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '~> 4.17.42'
   gem 'rails-assets-devbridge-autocomplete', '~> 1.2.26'
   gem 'rails-assets-clipboard', '~> 1.5.12'
+end
+
+group :test do
+  gem 'fakeredis'
 end
 
 group :development, :test do
@@ -150,4 +161,8 @@ group :development do
   gem 'web-console', '~> 2.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   #gem 'spring'
+end
+
+group :production do
+  gem 'passenger', '~> 5.1.11'
 end

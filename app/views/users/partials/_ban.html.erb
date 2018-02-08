@@ -1,0 +1,13 @@
+<div class="alert alert-danger ban-info">
+  <h5><%= ban.shadow? ? 'Shadowbanned' : 'Banned' %></h5>
+
+  <p>
+    <strong>By:</strong> <%= link_to ban.banner.name, ban.banner %>
+  </p>
+  <p>
+    <strong>Date:</strong> <%= ban.created_at %>
+  </p>
+  <p>
+    <strong>Reason:</strong> <%= ban.reason %>
+  </p>
+</div>

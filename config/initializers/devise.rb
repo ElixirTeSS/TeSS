@@ -266,9 +266,9 @@ Devise.setup do |config|
         response_type: 'code',
         issuer: 'https://perun.elixir-czech.cz/oidc/',
         discovery: false,
-        send_nonce: false,
+        send_nonce: true,
         client_signing_alg: :RS256,
-        client_jwk_signing_key: '{"keys":[{"alg":"RS256","e":"AQAB","n":"mxnp2DNV3qLPlzK-e__VxtrAWYpG8UC28YCJJHYZoGocD0Hsh1sDqPtiRn0l-jlBkKFztNjPve9Yu48owQl9KB8hQLid1IgQlcKS0psO2UYLSq5MmekZ6ssb2ftSgM-VQlB1kTM2BSD5CINsR1cA9bfZjY3eH7cL-QksxCZoXQovinzxRw8knnj6OVIKGXppqgWrU3_zwdAleAaQpI0oTzV1FMlPb-Ngv17kU3EL04xFAiRB-PT4uFQSUkBnTOCNSXtntHD2EddhrNz628jMCdDgliJ7DIh_re2rx4rPfYthw-pJmMLXWGt12rw-ap1IMK9GrcQ5P9k61vc6fJeRjQ","kty":"RSA","kid":"rsa1"}]}',
+        client_jwk_signing_key: '{"keys":[{"kty":"RSA","e":"AQAB","kid":"rsa1","alg":"RS256","n":"qt6yOiI_wCoCVlGO0MySsez0VkSqhPvDl3rfabOslx35mYEO-n4ABfIT5Gn2zN-CeIcOZ5ugAXvIIRWv5H55-tzjFazi5IKkOIMCiz5__MtsdxKCqGlZu2zt-BLpqTOAPiflNPpM3RUAlxKAhnYEqNha6-allPnFQupnW_eTYoyuzuedT7dSp90ry0ZcQDimntXWeaSbrYKCj9Rr9W1jn2uTowUuXaScKXTCjAmJVnsD75JNzQfa8DweklTyWQF-Y5Ky039I0VIu-0CIGhXY48GAFe2EFb8VpNhf07DP63p138RWQ1d3KPEM9mYJVpQC68j3wzDQYSljpLf9by7TGw"}]}',
         client_options: {
             identifier: Rails.application.secrets.elixir_aai['client_id'],
             secret: Rails.application.secrets.elixir_aai['secret'],
@@ -279,7 +279,7 @@ Devise.setup do |config|
             port: 443,
             authorization_endpoint: '/oidc/authorize',
             token_endpoint: '/oidc/token',
-            userinfo_endpoint: 'https://perun.elixir-czech.cz/oauth/rpc/json/oidcManager/userinfo',
+            userinfo_endpoint: '/oidc/userinfo',
             jwks_uri: '/oidc/jwk',
         }
     }

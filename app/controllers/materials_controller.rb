@@ -15,17 +15,19 @@ class MaterialsController < ApplicationController
   def index
     respond_to do |format|
       format.json
+      format.json_api { render({ json: @materials }.merge(api_collection_properties)) }
       format.html
     end
   end
-  #
-  # def search query
-  #   @materials = Material.search { fulltext query }
-  # end
 
   # GET /materials/1
   # GET /materials/1.json
   def show
+    respond_to do |format|
+      format.json
+      format.json_api { render json: @material }
+      format.html
+    end
   end
 
   # GET /materials/new

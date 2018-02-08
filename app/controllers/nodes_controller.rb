@@ -8,14 +8,20 @@ class NodesController < ApplicationController
   # GET /nodes.json
   def index
     respond_to do |format|
-      format.json { render json: @nodes }
       format.html
+      format.json
+      format.json_api { render({ json: @nodes }.merge(api_collection_properties)) }
     end
   end
 
   # GET /nodes/1
   # GET /nodes/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json
+      format.json_api { render json: @node }
+    end
   end
 
   # GET /nodes/new

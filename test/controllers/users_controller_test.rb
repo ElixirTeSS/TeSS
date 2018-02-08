@@ -19,6 +19,20 @@ class UsersControllerTest < ActionController::TestCase
     assert_not_nil assigns(:users)
   end
 
+  test 'should get index as json-api' do
+    get :index, format: :json_api
+
+    assert_response :success
+    assert_not_nil assigns(:users)
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    assert body['data'].any?
+    assert_equal users_path, body['links']['self']
+  end
+
   # User new is handled by devise
   test "should never allow user new route" do
     get :new
@@ -70,7 +84,28 @@ class UsersControllerTest < ActionController::TestCase
     assert_response :success
   end
 
- test "should only allow edit for admin and self" do
+  test "should show user as json" do
+    sign_in users(:another_regular_user)
+    get :show, id: @user, format: 'json'
+    assert_response :success #FORBIDDEN PAGE!?
+  end
+
+  test 'should show user as json-api' do
+    get :show, id: @user, format: :json_api
+
+    assert_response :success
+    assert assigns(:user)
+
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    assert_equal @user.profile.firstname, body['data']['attributes']['firstname']
+    assert_equal user_path(assigns(:user)), body['data']['links']['self']
+  end
+
+  test "should only allow edit for admin and self" do
     sign_in users(:regular_user)
     get :edit, id: @user
     assert_response :success
@@ -145,4 +180,19 @@ class UsersControllerTest < ActionController::TestCase
     assert_not_equal 'George', assigns(:user).profile.firstname
   end
 
+  test 'should show ban info to admin' do
+    user = users(:shadowbanned_user)
+    sign_in users(:admin)
+    get :show, id: user
+    assert_response :success
+    assert_select '.ban-info', count: 1
+  end
+
+  test 'should not show ban info to user' do
+    user = users(:shadowbanned_user)
+    sign_in user
+    get :show, id: user
+    assert_response :success
+    assert_select '.ban-info', count: 0
+  end
 end

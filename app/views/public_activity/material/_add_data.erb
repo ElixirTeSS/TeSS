@@ -1,0 +1,8 @@
+<i class="fa fa-pencil-square-o"></i>
+
+<% if activity.owner %>
+    <%= link_to activity.owner.username, activity.owner %>
+<% end %>
+
+added the data suggestion <b><%= activity.parameters[:name] %></b> to
+<%= link_to activity.trackable.title, activity.trackable %> at <%= activity.created_at -%>.

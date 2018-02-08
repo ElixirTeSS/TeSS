@@ -4,6 +4,10 @@ Rails.application.routes.draw do
     resources :collaborations, only: [:create, :destroy, :index, :show]
   end
 
+  concern :activities do
+    resources :activities, only: [:index]
+  end
+
   get 'edam/terms' => 'edam#terms'
   get 'edam/topics' => 'edam#topics'
   get 'edam/operations' => 'edam#operations'
@@ -37,35 +41,37 @@ Rails.application.routes.draw do
 
   get 'static/home'
 
-  resources :users
-  resources :activities
-  resources :nodes
-  resources :events do
-    resource :activities, :only => [:show]
+  resources :users do
+    resource :ban, only: [:create, :new, :destroy]
+  end
+
+  resources :nodes, concerns: :activities
+
+  resources :events, concerns: :activities do
     collection do
       get 'count'
     end
     member do
       get 'redirect'
       post 'add_topic'
+      post 'add_data'
       post 'reject_topic'
+      post 'reject_data'
       get 'report'
       patch 'report', to: 'events#update_report'
     end
   end
-  resources :packages do
-    resource :activities, :only => [:show]
-  end
-  resources :workflows, concerns: :collaboratable do
+
+  resources :packages, concerns: :activities
+
+  resources :workflows, concerns: [:collaboratable, :activities] do
     member do
       get 'fork'
       get 'embed'
     end
   end
 
-  resources :content_providers do
-    resource :activities, :only => [:show]
-
+  resources :content_providers, concerns: :activities do
     member do
       get 'import'
       get 'scraper_results'
@@ -74,11 +80,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :materials do
-    resource :activities, :only => [:show]
+  resources :materials, concerns: :activities do
     member do
       post :reject_topic
+      post :reject_data
       post :add_topic
+      post :add_data
     end
     collection do
       get 'count'

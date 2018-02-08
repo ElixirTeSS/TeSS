@@ -5,6 +5,7 @@ class EditSuggestionWorkerTest < ActiveSupport::TestCase
 
   setup do
     mock_biotools
+    mock_nominatim
   end
 
   test 'Get suggestions for a material' do
@@ -43,6 +44,9 @@ class EditSuggestionWorkerTest < ActiveSupport::TestCase
     assert_equal 2, event.edit_suggestion.scientific_topics.count
     assert_includes event.edit_suggestion.scientific_topics.map(&:preferred_label), 'Small molecules'
     assert_includes event.edit_suggestion.scientific_topics.map(&:preferred_label), 'Molecular dynamics'
+    assert_not_nil event.edit_suggestion.data_fields
+    assert_not_nil event.edit_suggestion.data_fields['latitude']
+    assert_not_nil event.edit_suggestion.data_fields['longitude']
   end
 
   test 'Get suggestions for a workflow' do

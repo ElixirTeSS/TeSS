@@ -87,6 +87,11 @@ module Searchable
         facet_fields.each do |ff|
           facet ff, exclude: active_facets[ff]
         end
+
+        # Hide shadowbanned users' events, except from other shadowbanned users and administrators
+        unless user && (user.shadowbanned? || user.is_admin?)
+          without(:user_id, User.shadowbanned.pluck(:id))
+        end
       end
     end
   end

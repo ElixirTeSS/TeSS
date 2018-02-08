@@ -22,9 +22,6 @@ class Profile < ActiveRecord::Base
   #validates :email, presence: true
 
   def full_name
-    "#{firstname}".tap do |n|
-      n << " #{surname}" unless surname.blank?
-    end
+    "#{firstname} #{surname}".strip
   end
-
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170825100726) do
+ActiveRecord::Schema.define(version: 20180131152122) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,18 @@ ActiveRecord::Schema.define(version: 20170825100726) do
   add_index "activities", ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type", using: :btree
   add_index "activities", ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type", using: :btree
   add_index "activities", ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type", using: :btree
+
+  create_table "bans", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "banner_id"
+    t.boolean  "shadow"
+    t.text     "reason"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "bans", ["banner_id"], name: "index_bans_on_banner_id", using: :btree
+  add_index "bans", ["user_id"], name: "index_bans_on_user_id", using: :btree
 
   create_table "collaborations", force: :cascade do |t|
     t.integer "user_id"
@@ -67,10 +79,11 @@ ActiveRecord::Schema.define(version: 20170825100726) do
   create_table "edit_suggestions", force: :cascade do |t|
     t.text     "name"
     t.text     "text"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "suggestible_id"
     t.string   "suggestible_type"
+    t.json     "data_fields",      default: {}
   end
 
   add_index "edit_suggestions", ["suggestible_id", "suggestible_type"], name: "index_edit_suggestions_on_suggestible_id_and_suggestible_type", using: :btree
@@ -125,6 +138,7 @@ ActiveRecord::Schema.define(version: 20170825100726) do
     t.integer  "trainer_count"
     t.string   "feedback"
     t.text     "notes"
+    t.integer  "nominatim_count",                              default: 0
   end
 
   add_index "events", ["cost"], name: "index_events_on_cost", using: :btree
@@ -442,6 +456,8 @@ ActiveRecord::Schema.define(version: 20170825100726) do
   add_index "workflows", ["slug"], name: "index_workflows_on_slug", unique: true, using: :btree
   add_index "workflows", ["user_id"], name: "index_workflows_on_user_id", using: :btree
 
+  add_foreign_key "bans", "users"
+  add_foreign_key "bans", "users", column: "banner_id"
   add_foreign_key "collaborations", "users"
   add_foreign_key "content_providers", "nodes"
   add_foreign_key "content_providers", "users"

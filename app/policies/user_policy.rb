@@ -29,6 +29,10 @@ class UserPolicy < ApplicationPolicy
     @user && @user.is_admin?
   end
 
+  def ban?
+    change_role?
+  end
+
   def destroy?
     manage?
   end

@@ -6,3 +6,14 @@
 #
 one:
   suggestible: material_with_suggestions (Material)
+
+two:
+  suggestible: material_with_suggestions (Material)
+  data_fields:
+    fruit: banana
+
+multiple_fields:
+  suggestible: iann_event (Event)
+  data_fields:
+    title: banana
+    latitude: 15

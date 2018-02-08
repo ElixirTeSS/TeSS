@@ -3,6 +3,7 @@
   <div class="collapsing-sidebar" id="sidebar">
     <%= render :partial => "content_providers/partials/content_provider_info", :locals => {:content_provider => @event.content_provider} %>
     <%= render partial: "nodes/partials/associated_node_info", locals: { associated_nodes: @event.associated_nodes } %>
+    <%= render(partial: 'users/partials/user_info', locals: { user: @event.user }) if current_user.try(:is_admin?) %>
   </div>
   <div id="content">
     <div class="row">
@@ -14,17 +15,17 @@
         <% if @event.start && @event.end %>
             <div class="btn-group">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Save <span class="caret"></span>
+                Add to calendar <span class="caret"></span>
               </button>
               <ul class="dropdown-menu">
                 <li>
-                  <%= link_to event_path(@event, format: :ics) do %>
-                      <i class="fa fa-download"></i> Download as .ics
+                  <%= link_to google_calendar_export_url(@event) do %>
+                      <i class="fa fa-google"></i> Google Calendar
                   <% end %>
                 </li>
                 <li>
-                  <%= link_to google_calendar_export_url(@event) do %>
-                      <i class="fa fa-calendar-o"></i> Add to Google Calendar
+                  <%= link_to event_path(@event, format: :ics) do %>
+                      <i class="<%= icon_class_for_model('events') -%>"></i> Save event (.ics file)
                   <% end %>
                 </li>
               </ul>
@@ -66,6 +67,7 @@
                 <% end -%>
                 <%= @event.title %>
                 <%= scrape_status_icon(@event, 'large') if current_user and current_user.is_admin? %>
+                <%= suggestion_icon(@event, 'large') if current_user and current_user.is_admin? -%>
               </h2>
               <p><%= link_to @event.url, @event.url, :class =>'h5', :target => "_blank" %></p>
             </div>
@@ -74,21 +76,32 @@
               <% if @event.show_map? %>
                   <div id="map" class="google-map"></div>
                   <script type="text/javascript">
-                    var myLatLng = { lat: <%= @event.latitude %>, lng: <%= @event.longitude %> };
+                    var actualLocation = { lat: <%= @event.latitude || 'null' %>, lng: <%= @event.longitude || 'null' %> };
+                    var suggestedLocation = { lat: <%= @event.suggested_latitude || 'null' %>, lng: <%= @event.suggested_longitude || 'null' %> };
 
                     // Create a map object and specify the DOM element for display.
                     var map = new google.maps.Map(document.getElementById('map'), {
-                      center: myLatLng,
+                      center: suggestedLocation.lat ? suggestedLocation : actualLocation,
                       scrollwheel: true,
                       zoom: 13
                     });
 
-                    // Create a marker and set its position.
-                    new google.maps.Marker({
-                      map: map,
-                      position: myLatLng,
-                      title: '<%= @event.title %>'
-                    });
+                    if (actualLocation.lat) {
+                      new google.maps.Marker({
+                        map: map,
+                        position: actualLocation,
+                        title: '<%= @event.title %>'
+                      });
+                    }
+
+                    if (suggestedLocation.lat) {
+                      new google.maps.Marker({
+                        map: map,
+                        position: suggestedLocation,
+                        title: 'Suggested Location',
+                        icon: '<%= image_url('suggestion.png') -%>'
+                      });
+                    }
                   </script>
               <% end %>
 
@@ -225,11 +238,17 @@
               <%= render :partial => 'events/partials/twitter_card', :locals => {:event => @event} %>
 
               <%= render partial: 'events/report' if policy(@event).view_report? %>
+
+              <% unless @event.edit_suggestion.nil? || (@event.edit_suggestion.scientific_topics.empty? &&
+                  !@event.edit_suggestion.data) || current_user.nil? || !policy(@event).update? %>
+                  <%= render partial: 'common/approve_topic_suggestions', locals: { suggestion: @event.edit_suggestion } %>
+              <% end %>
+
             </div>
           </div>
         </div>
-        <div id="activity_log" class="tab-pane fade">
-          <%= render :partial => "activities/activity_log", :locals => {:resource => @event} %>
+        <div id="activity_log" class="tab-pane fade" data-activity-path="<%= event_activities_path(@event) -%>">
+          <%= image_tag('ajax-loader.gif') %>
         </div>
       </div>
     </div>

@@ -58,6 +58,27 @@ class EventsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:events)
   end
 
+  test 'should get index as json-api' do
+    @event.scientific_topic_uris = ['http://edamontology.org/topic_0654']
+    @event.save!
+
+    get :index, format: :json_api
+
+    assert_response :success
+    assert_not_nil assigns(:events)
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    assert body['data'].any?
+    assert body['meta']['results-count'] > 0
+    assert body['meta'].key?('query')
+    assert body['meta'].key?('facets')
+    assert body['meta'].key?('available-facets')
+    assert_equal events_path, body['links']['self']
+  end
+
   #NEW TESTS
   test 'should get new' do
     sign_in users(:regular_user)
@@ -165,6 +186,25 @@ class EventsControllerTest < ActionController::TestCase
     get :show, id: @event, format: :json
     assert_response :success
     assert assigns(:event)
+  end
+
+  test 'should show event as json-api' do
+    @event.scientific_topic_uris = ['http://edamontology.org/topic_0654']
+    @event.save!
+
+    get :show, id: @event, format: :json_api
+
+    assert_response :success
+    assert assigns(:event)
+
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    assert_equal @event.title, body['data']['attributes']['title']
+    assert_equal @event.scientific_topic_uris.first, body['data']['attributes']['scientific-topics'].first['uri']
+    assert_equal event_path(assigns(:event)), body['data']['links']['self']
   end
 
   #UPDATE TEST
@@ -851,28 +891,6 @@ class EventsControllerTest < ActionController::TestCase
     assert_select '#report', count: 1
   end
 
-  test 'should not show report-related parameter changes to non-privileged users' do
-    event = events(:event_with_report)
-    sign_in users(:another_regular_user)
-    event.funding = 'test'
-    event.save
-
-    get :show, id: event
-
-    assert_select '.sub-activity em', text: /Funding/, count: 0
-  end
-
-  test 'should show report-related parameter changes to privileged users' do
-    event = events(:event_with_report)
-    sign_in event.user
-    event.funding = 'test'
-    event.save
-
-    get :show, id: event
-
-    assert_select '.sub-activity em', text: /Funding/, count: 1
-  end
-
   test 'should only show report fields in JSON to privileged users' do
     hidden_report_event = events(:event_with_report)
     visible_report_event = events(:another_event_with_report)
@@ -891,6 +909,23 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal visible_report_event.funding, visible_report_event_json['funding']
   end
 
+  test 'should only show report fields in JSON-API to privileged users' do
+    hidden_report_event = events(:event_with_report)
+    visible_report_event = events(:another_event_with_report)
+    sign_in users(:another_regular_user)
+
+    get :show, id: hidden_report_event, format: :json_api
+    refute JSON.parse(response.body)['data']['attributes'].key?('report')
+
+    get :show, id: visible_report_event, format: :json_api
+    assert_equal visible_report_event.funding, JSON.parse(response.body)['data']['attributes']['report']['funding']
+
+    get :index, format: :json_api
+    hidden_report_event_json = JSON.parse(response.body)['data'].detect { |e| e['id'].to_i == hidden_report_event.id }
+    visible_report_event_json = JSON.parse(response.body)['data'].detect { |e| e['id'].to_i == visible_report_event.id }
+    refute hidden_report_event_json['attributes'].key?('report')
+    assert_equal visible_report_event.funding, visible_report_event_json['attributes']['report']['funding']
+  end
 
   test 'should approve topic for curator' do
     sign_in users(:curator)
@@ -901,8 +936,12 @@ class EventsControllerTest < ActionController::TestCase
     suggestion.scientific_topic_names = ['Genomics']
     suggestion.save!
 
-    assert_difference('EditSuggestion.count', -1) do
-      post :add_topic, id: @event.id, topic: 'Genomics'
+    assert_difference(-> { suggestion.scientific_topic_links.count }, -1) do
+      assert_difference(-> { @event.scientific_topic_links.count }, 1) do
+        assert_difference('EditSuggestion.count', -1) do
+          post :add_topic, id: @event.id, topic: 'Genomics'
+        end
+      end
     end
 
     assert_response :success
@@ -968,4 +1007,125 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal ['Genomics'], @event.reload.edit_suggestion.scientific_topic_names
   end
 
+  test 'should approve data for curator' do
+    sign_in users(:curator)
+    event = events(:two)
+
+    assert_nil event.latitude
+    assert_nil event.longitude
+
+    suggestion = event.build_edit_suggestion
+    suggestion.data_fields = { 'geographic_coordinates' => [25, 25] }
+    suggestion.save!
+
+    assert_difference('EditSuggestion.count', -1) do
+      post :add_data, id: event.id, data_field: 'geographic_coordinates'
+    end
+
+    assert_response :success
+
+    event.reload
+
+    assert_equal 25, event.latitude
+    assert_equal 25, event.longitude
+  end
+
+  test 'should not approve data for unprivileged user' do
+    sign_in users(:another_regular_user)
+    event = events(:two)
+
+    assert_nil event.latitude
+    assert_nil event.longitude
+
+    suggestion = event.build_edit_suggestion
+    suggestion.data_fields = { 'geographic_coordinates' => [25, 25] }
+    suggestion.save!
+
+    assert_no_difference('EditSuggestion.count') do
+      post :add_data, id: event.id, data_field: 'geographic_coordinates'
+    end
+
+    assert_response :forbidden
+
+    event.reload
+
+    assert_nil event.latitude
+    assert_nil event.longitude
+  end
+
+  test 'should reject data for curator' do
+    sign_in users(:curator)
+    event = events(:two)
+
+    assert_nil event.latitude
+    assert_nil event.longitude
+
+    suggestion = event.build_edit_suggestion
+    suggestion.data_fields = { 'geographic_coordinates' => [25, 25] }
+    suggestion.save!
+
+    assert_difference('EditSuggestion.count', -1) do
+      post :reject_data, id: event.id, data_field: 'geographic_coordinates'
+    end
+
+    assert_response :success
+
+    event.reload
+
+    assert_nil event.latitude
+    assert_nil event.longitude
+  end
+
+  test 'should not reject data for unprivileged user' do
+    sign_in users(:another_regular_user)
+    event = events(:two)
+
+    assert_nil event.latitude
+    assert_nil event.longitude
+
+    suggestion = event.build_edit_suggestion
+    suggestion.data_fields = { 'geographic_coordinates' => [25, 25] }
+    suggestion.save!
+
+    assert_no_difference('EditSuggestion.count') do
+      post :reject_data, id: event.id, data_field: 'geographic_coordinates'
+    end
+
+    assert_response :forbidden
+
+    event.reload
+
+    assert_nil event.latitude
+    assert_nil event.longitude
+  end
+
+  test 'should show user ban info to admin' do
+    event = events(:shadowbanned_event)
+    sign_in users(:admin)
+
+    get :show, id: event
+
+    assert_response :success
+    assert_select '.ban-info', count: 1
+  end
+
+  test 'should not show user ban info to non-admin' do
+    event = events(:shadowbanned_event)
+    sign_in users(:shadowbanned_user)
+
+    get :show, id: event
+
+    assert_response :success
+    assert_select '.ban-info', count: 0
+  end
+
+  test 'should get event with edit suggestion' do
+    suggestion = @event.build_edit_suggestion
+    suggestion.scientific_topic_names = ['Genomics']
+    suggestion.save!
+
+    get :show, id: @event
+
+    assert_response :success
+  end
 end

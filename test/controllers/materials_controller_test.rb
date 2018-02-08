@@ -58,6 +58,61 @@ class MaterialsControllerTest < ActionController::TestCase
     get :index, format: :json
     assert_response :success
     assert_not_nil assigns(:materials)
+    assert_nothing_raised do
+      JSON.parse(response.body)
+    end
+  end
+
+  test 'should get index as json-api' do
+    @material.scientific_topic_uris = ['http://edamontology.org/topic_0654']
+    @material.save!
+
+    get :index, format: :json_api
+
+    assert_response :success
+    assert_not_nil assigns(:materials)
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    assert body['data'].any?
+    assert body['meta']['results-count'] > 0
+    assert body['meta'].key?('query')
+    assert body['meta'].key?('facets')
+    assert body['meta'].key?('available-facets')
+    assert_equal materials_path, body['links']['self']
+  end
+
+  test 'should get faceted index as json-api with search enabled' do
+    @material.scientific_topic_uris = ['http://edamontology.org/topic_0654']
+    @material.save!
+
+    begin
+      TeSS::Config.solr_enabled = true
+
+      Material.stub(:search_and_filter, MockSearch.new(Material.all)) do
+        get :index, q: 'breakdance for beginners', keywords: 'dancing', format: :json_api
+
+        assert_response :success
+        assert_not_nil assigns(:materials)
+        body = nil
+        assert_nothing_raised do
+          body = JSON.parse(response.body)
+        end
+
+        assert body['data'].any?
+        assert body['meta']['results-count'] > 0
+        assert_equal 'breakdance for beginners', body['meta']['query']
+        assert_includes body['meta']['facets']['keywords'], 'dancing'
+        assert body['meta']['available-facets'].keys.any?
+        assert body['meta']['available-facets'].values.any?
+        assert body['links']['self'].include?('dancing')
+        assert body['links']['self'].include?('breakdance+for+beginners')
+      end
+    ensure
+      TeSS::Config.solr_enabled = false
+    end
   end
 
   #NEW TESTS
@@ -158,12 +213,34 @@ class MaterialsControllerTest < ActionController::TestCase
     @material.scientific_topic_uris = ['http://edamontology.org/topic_0654']
     @material.save!
 
-    get :show, id: @material, format: :json do
-      assert_response :success
-      assert assigns(:material)
+    get :show, id: @material, format: :json
+
+    assert_response :success
+    assert assigns(:material)
+
+    assert_nothing_raised do
+      JSON.parse(response.body)
     end
   end
 
+  test 'should show material as json-api' do
+    @material.scientific_topic_uris = ['http://edamontology.org/topic_0654']
+    @material.save!
+
+    get :show, id: @material, format: :json_api
+
+    assert_response :success
+    assert assigns(:material)
+
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    assert_equal @material.title, body['data']['attributes']['title']
+    assert_equal @material.scientific_topic_uris.first, body['data']['attributes']['scientific-topics'].first['uri']
+    assert_equal material_path(assigns(:material)), body['data']['links']['self']
+  end
 
   #UPDATE TEST
   test 'should update material' do
@@ -661,9 +738,14 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_equal ContentProvider.first.id, content_provider_activity[:new_val]
     assert_equal ContentProvider.first.title, content_provider_activity[:association_name]
 
-    get :show, id: @material
+    old_controller = @controller
+    @controller = ActivitiesController.new
 
-    assert_select '#activity_log .activity', count: 6 # +1 because they are wrapped in a .activity div for some reason...
+    xhr :get, :index, material_id: @material, xhr: true
+
+    assert_select '.activity', count: 6 # +1 because they are wrapped in a .activity div for some reason...
+
+    @controller = old_controller
   end
 
   test 'parameter log activity works when removing an association' do
@@ -683,9 +765,14 @@ class MaterialsControllerTest < ActionController::TestCase
     assert content_provider_activity[:new_val].blank?
     assert content_provider_activity[:association_name].blank?
 
-    get :show, id: @material
+    old_controller = @controller
+    @controller = ActivitiesController.new
 
-    assert_select '#activity_log .activity', count: 3 # +1 because they are wrapped in a .activity div for some reason...
+    xhr :get, :index, material_id: @material
+
+    assert_select '.activity', count: 3 # +1 because they are wrapped in a .activity div for some reason...
+
+    @controller = old_controller
   end
 
   test 'should not log an update when only boring fields have changed' do
@@ -825,10 +912,25 @@ class MaterialsControllerTest < ActionController::TestCase
 
     suggestion = @material.build_edit_suggestion
     suggestion.scientific_topic_names = ['Genomics']
+    suggestion.data_fields = {}
+    suggestion.data_fields[:latitude] = '53.141969'
+    suggestion.data_fields[:longitude] = '0.3418338'
     suggestion.save!
 
-    assert_difference('EditSuggestion.count', -1) do
+    assert_difference('EditSuggestion.count', 0) do
       post :reject_topic, id: @material.id, topic: 'Genomics'
+    end
+
+    assert_response :success
+
+    assert_difference('EditSuggestion.count', 0) do
+      post :reject_data, id: @material.id, data_field: 'latitude', data_value: '53.141969'
+    end
+
+    assert_response :success
+
+    assert_difference('EditSuggestion.count', -1) do
+      post :reject_data, id: @material.id, data_field: 'longitude', data_value: '0.3418338'
     end
 
     assert_response :success

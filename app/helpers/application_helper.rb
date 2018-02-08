@@ -299,7 +299,7 @@ module ApplicationHelper
 
     def dropdown(name, options = {})
       existing_values = object.send(name.to_sym)
-      existing = options[:options].select { |k, v| existing_values.include?(k) }
+      existing = options[:options].select { |label, value| existing_values.include?(value) }
       @template.render(partial: 'common/dropdown', locals: { field_name: name, f: self,
                                                              resource: object,
                                                              options: options[:options],

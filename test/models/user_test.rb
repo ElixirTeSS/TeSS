@@ -88,6 +88,21 @@ class UserTest < ActiveSupport::TestCase
     assert_nil User.new.full_name
   end
 
+  test 'check if banned' do
+    refute users(:regular_user).banned?
+    refute users(:regular_user).shadowbanned?
+
+    assert users(:banned_user).banned?
+    refute users(:banned_user).shadowbanned?
+
+    assert users(:shadowbanned_user).banned?
+    assert users(:shadowbanned_user).shadowbanned?
+  end
+
+  test 'shadowbanned scope' do
+    assert_includes User.shadowbanned, users(:shadowbanned_user)
+    assert_not_includes User.shadowbanned, users(:regular_user)
+  end
 end
 
 

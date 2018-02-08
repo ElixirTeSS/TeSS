@@ -11,7 +11,7 @@
       <% if @results.blank? %>
           <p class="empty">No results found</p>
       <% else %>
-          <% tabs = @results.keys %>
+          <% tabs = @results.keys.sort {|a,b| a <=> b } %>
           <ul class="nav nav-tabs">
             <% tabs.each_with_index do |tab, index| %>
                 <li class="<%= index == 0 ? 'active' : '' %>">
@@ -23,8 +23,8 @@
 
           <div class="row" style="padding-top: 5px;">
             <div class="tab-content">
-              <% @results.each_with_index do |(model, results_for_model), index| %>
-                  <div class="tab-pane fade in <%= 'active'.html_safe if index == 0 %>" id="<%= model %>">
+              <% @results.each do |model, results_for_model| %>
+                  <div class="tab-pane fade in <%= 'active'.html_safe if model == tabs.first %>" id="<%= model %>">
                     <div class="search-results-count">
                       <%= "Showing #{pluralize(results_for_model.results.count, "#{model.to_s.humanize.singularize.downcase}")}#{(results_for_model.total > 30) ? " out of #{results_for_model.total}" : ''}." %>
                       <%= link_to "View all results.", :controller => model, :q => params[:q] if (results_for_model.total > 30) %>

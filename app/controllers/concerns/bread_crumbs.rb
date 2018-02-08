@@ -8,11 +8,7 @@ module BreadCrumbs
 
   # Make sure this is called after the @resource is set!
   def set_breadcrumbs
-    #Home
-    add_breadcrumb 'Home', root_path
-
-    #Index
-    add_index_breadcrumb(controller_name)
+    add_base_breadcrumbs(controller_name)
 
     if params[:id]
       resource = eval("@#{controller_name.singularize}")
@@ -23,6 +19,14 @@ module BreadCrumbs
     elsif action_name != 'index'
       add_breadcrumb action_name.capitalize.humanize, url_for(:controller => controller_name, :action => action_name)
     end
+  end
+
+  def add_base_breadcrumbs(con_name = controller_name)
+    #Home
+    add_breadcrumb 'Home', root_path
+
+    #Index
+    add_index_breadcrumb(con_name)
   end
 
   def add_index_breadcrumb controller_name, breadcrumb_name = nil

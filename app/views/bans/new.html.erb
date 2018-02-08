@@ -1,0 +1,17 @@
+<div class="row wrapper">
+  <div class="col-md-12">
+    <div class="page-header">
+      <%= page_title('Ban') %>
+    </div>
+    <div class="col-md-8">
+      <%= simple_form_for [@user, @ban], url: user_ban_path(@user) do |f| %>
+          <%= f.input :reason %>
+          <%= f.input :shadow, label: 'Shadowban?' %>
+          <div class="form-group">
+            <%= f.submit 'Submit', class: 'btn btn-primary' %>
+            <%= link_to t('.cancel', default: t("helpers.links.cancel")), :back, class: 'btn btn-default' %>
+          </div>
+      <% end %>
+    </div>
+  </div>
+</div>

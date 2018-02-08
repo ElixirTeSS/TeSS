@@ -1,5 +1,6 @@
 require 'icalendar'
 require 'rails/html/sanitizer'
+require 'redis'
 
 class Event < ActiveRecord::Base
   include PublicActivity::Common
@@ -14,6 +15,8 @@ class Event < ActiveRecord::Base
 
   has_paper_trail
   before_save :set_default_times, :check_country_name
+  before_save :geocoding_cache_lookup, if: :address_changed?
+  after_save :enqueue_geocoding_worker, if: :address_changed?
 
   extend FriendlyId
   friendly_id :title, use: :slugged
@@ -71,6 +74,7 @@ class Event < ActiveRecord::Base
           self.user.username
         end
       end
+      integer :user_id # Used for shadowbans
 =begin TODO: SOLR has a LatLonType to do geospatial searching. Have a look at that
       location :latitutde
       location :longitude
@@ -83,7 +87,7 @@ class Event < ActiveRecord::Base
   has_one :edit_suggestion, as: :suggestible, dependent: :destroy
   has_many :package_events
   has_many :packages, through: :package_events
-  has_many :event_materials
+  has_many :event_materials, dependent: :destroy
   has_many :materials, through: :event_materials
   has_many :widget_logs, as: :resource
 
@@ -93,6 +97,7 @@ class Event < ActiveRecord::Base
   validates :eligibility, controlled_vocabulary: { dictionary: Tess::EligibilityDictionary.instance }
   validates :latitude, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90, allow_nil: true }
   validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true  }
+  validate :allowed_url
 
   clean_array_fields(:keywords, :event_types, :target_audience, :eligibility, :host_institutions)
   update_suggestions(:keywords, :target_audience, :host_institutions)
@@ -100,7 +105,12 @@ class Event < ActiveRecord::Base
   # These fields should not been shown to users unless they have sufficient privileges
   SENSITIVE_FIELDS = [:funding, :attendee_count, :applicant_count, :trainer_count, :feedback, :notes]
 
+  ADDRESS_FIELDS = [:venue, :city, :county, :country, :postcode]
+
   COUNTRY_SYNONYMS = JSON.parse(File.read(File.join(Rails.root, 'config', 'data', 'country_synonyms.json')))
+
+  NOMINATIM_DELAY = 1.minute
+  NOMINATIM_MAX_ATTEMPTS = 3
 
   attr_accessor :include_in_create
 
@@ -216,7 +226,9 @@ class Event < ActiveRecord::Base
   end
 
   def show_map?
-    !(self.online? || self.latitude.blank? || self.longitude.blank?)
+    !self.online? &&
+    ((self.latitude.present? && self.longitude.present?) ||
+        (self.suggested_latitude.present? && self.suggested_longitude.present?))
   end
 
   def all_day?
@@ -289,4 +301,106 @@ class Event < ActiveRecord::Base
 
     event
   end
+
+  def suggested_latitude
+    if self.edit_suggestion && self.edit_suggestion.data_fields['geographic_coordinates']
+      self.edit_suggestion.data_fields['geographic_coordinates'][0]
+    end
+  end
+
+  def suggested_longitude
+    if self.edit_suggestion && self.edit_suggestion.data_fields['geographic_coordinates']
+      self.edit_suggestion.data_fields['geographic_coordinates'][1]
+    end
+  end
+
+  def geographic_coordinates
+    [self.latitude, self.longitude]
+  end
+
+  def geographic_coordinates=(coords)
+    self.latitude = coords[0]
+    self.longitude = coords[1]
+
+    self.geographic_coordinates
+  end
+
+  def address
+    ADDRESS_FIELDS.map { |field| self.send(field) }.reject(&:blank?).join(', ')
+  end
+
+  def address_changed?
+    ADDRESS_FIELDS.any? { |field| self.changed.include?(field.to_s) }
+  end
+
+  # Check the Redis cache for coordinates
+  def geocoding_cache_lookup
+    location = self.address
+
+    begin
+      redis = Redis.new
+      if redis.exists(location)
+        self.latitude, self.longitude = JSON.parse(redis.get(location))
+        Rails.logger.info("Re-using: #{location}")
+      end
+    rescue Redis::RuntimeError => e
+      raise e unless Rails.env.production?
+      puts "Redis error: #{e.message}"
+    end
+  end
+
+  # Check the external Geocoder API (currently Nominatim) for coordinates
+  def geocoding_api_lookup
+    location = self.address
+
+    result = Geocoder.search(location).first
+    if result
+      self.latitude = result.latitude
+      self.longitude = result.longitude
+      begin
+        redis = Redis.new
+        redis.set(location, [self.latitude, self.longitude].to_json)
+      rescue Redis::RuntimeError => e
+        raise e unless Rails.env.production?
+        puts "Redis error: #{e.message}"
+      end
+    else
+      self.update_column(:nominatim_count, self.nominatim_count + 1)
+    end
+  end
+
+  # If no latitude or longitude, create a GeocodingWorker to find them.
+  # This should run a minute after the last one is set to run (last run time stored by Redis).
+  def enqueue_geocoding_worker
+    return if (self.latitude.present? && self.longitude.present?) || self.address.blank? || self.nominatim_count >= NOMINATIM_MAX_ATTEMPTS
+
+    location = self.address
+
+    begin
+      redis = Redis.new
+      last_geocode = redis.get('last_geocode') || Time.now
+
+      run_at = [last_geocode.to_i, Time.now.to_i].max + NOMINATIM_DELAY
+
+      # submit event_id, and locations to worker.
+      redis.set('last_geocode', run_at)
+      GeocodingWorker.perform_at(run_at, [self.id, location])
+    rescue Redis::RuntimeError => e
+      raise e unless Rails.env.production?
+      puts "Redis error: #{e.message}"
+    end
+  end
+
+  private
+
+  def allowed_url
+    disallowed = (TeSS::Config.blocked_domains || []).any? do |regex|
+      self.url =~ regex
+    end
+
+    if disallowed
+      errors.add(:url, 'not valid')
+    end
+  end
+
 end

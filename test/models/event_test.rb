@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'sidekiq/testing'
 
 class EventTest < ActiveSupport::TestCase
 
@@ -109,7 +110,6 @@ class EventTest < ActiveSupport::TestCase
     assert_equal content_providers(:project_provider), e.content_provider
   end
 
-
   test 'equal precedence content provider does overwrite' do
     e = events(:portal_event)
 
@@ -128,6 +128,19 @@ class EventTest < ActiveSupport::TestCase
     assert_equal e.country, 'United Kingdom'
   end
 
+  test 'destroys redundant scientific topic links' do
+    e = events(:scraper_user_event)
+
+    e.scientific_topic_names = ['Proteins', 'Chromosomes']
+    e.save!
+    assert_equal 2, e.scientific_topics.count
+
+    assert_difference('ScientificTopicLink.count', -2) do
+      e.scientific_topic_names = []
+      e.save!
+    end
+  end
+
   test 'does not add duplicate scientific topics' do
     e = events(:scraper_user_event)
 
@@ -135,25 +148,31 @@ class EventTest < ActiveSupport::TestCase
     assert_difference('ScientificTopicLink.count', 2) do
       e.scientific_topic_names = ['Proteins', 'Chromosomes', 'Proteins', 'Chromosomes']
       e.save!
+      assert_equal 2, e.scientific_topics.count
     end
 
     assert_no_difference('ScientificTopicLink.count') do
       e.scientific_topic_names = ['Proteins', 'Chromosomes']
       e.save!
+      assert_equal 2, e.scientific_topics.count
     end
 
     # Via uris
-    e.scientific_topic_links.clear
+    assert_difference('ScientificTopicLink.count', -2) do
+      e.scientific_topic_links.clear
+    end
 
     assert_difference('ScientificTopicLink.count', 2) do
       e.scientific_topic_uris = ['http://edamontology.org/topic_0078', 'http://edamontology.org/topic_0654',
                                   'http://edamontology.org/topic_0078', 'http://edamontology.org/topic_0654']
       e.save!
+      assert_equal 2, e.scientific_topics.count
     end
 
     assert_no_difference('ScientificTopicLink.count') do
       e.scientific_topic_uris = ['http://edamontology.org/topic_0078', 'http://edamontology.org/topic_0654']
       e.save!
+      assert_equal 2, e.scientific_topics.count
     end
 
     # Via terms
@@ -194,6 +213,123 @@ class EventTest < ActiveSupport::TestCase
     assert e.reported?
   end
 
+  test 'can associate material with event' do
+    event = events(:one)
+    material = materials(:good_material)
+
+    assert_difference('EventMaterial.count', 1) do
+      event.materials << material
+    end
+  end
+
+  test 'can delete an event with associated materials' do
+    event = events(:one)
+    material = materials(:good_material)
+    event.materials << material
+
+    assert_difference('EventMaterial.count', -1) do
+      assert_difference('Event.count', -1) do
+        assert_no_difference('Material.count') do
+          event.destroy
+        end
+      end
+    end
+  end
+
+  test 'can get/set lat/lon using geographic coordinates' do
+    event = events(:two)
+
+    assert_nil event.latitude
+    assert_nil event.longitude
+    assert_equal [nil, nil], event.geographic_coordinates
+
+    event.geographic_coordinates = [14, 15]
+
+    assert_equal 14, event.latitude
+    assert_equal 15, event.longitude
+    assert_equal [14, 15], event.geographic_coordinates
+  end
+
+  test 'blocks disallowed domain' do
+    event = Event.new(title: 'Bad event', url: 'bad-domain.example/event')
+
+    refute event.save
+
+    assert_equal ['not valid'], event.errors[:url]
+  end
+
+  test 'does not block non-disallowed(?!) domain' do
+    event = Event.new(title: 'Good event', url: 'good-domain.example/event')
+
+    assert event.save
+
+    assert event.errors[:url].empty?
+  end
+
+
+  test 'does not throw error when blocked domains list is blank' do
+    domains = TeSS::Config.blocked_domains
+    begin
+      TeSS::Config.blocked_domains = nil
+      assert_nothing_raised do
+        Event.create!(title: 'Bad event', url: 'bad-domain.example/event')
+      end
+    ensure
+      TeSS::Config.blocked_domains = domains
+    end
+  end
+
+  test 'enqueues a geocoding worker after creating an event' do
+    assert_difference('GeocodingWorker.jobs.size', 1) do
+      event = Event.create(title: 'New event', url: 'http://example.com', venue: 'A place', city: 'Manchester')
+      refute event.address.blank?
+    end
+  end
+
+  test 'enqueues a geocoding worker after changing address' do
+    event = events(:portal_event)
+    event.venue = 'New Venue!'
+
+    assert_difference('GeocodingWorker.jobs.size', 1) do
+      event.save!
+    end
+  end
+
+  test 'does not enqueue a geocoding worker after creating an event with no address' do
+    assert_no_difference('GeocodingWorker.jobs.size') do
+      event = Event.create(title: 'New event', url: 'http://example.com', online: true)
+      assert event.address.blank?
+    end
+  end
+
+  test 'does not enqueue a geocoding worker after creating an event with defined lat/lon' do
+    assert_no_difference('GeocodingWorker.jobs.size') do
+      event = Event.create(title: 'New event', url: 'http://example.com', latitude: 25, longitude: 25, venue: 'Place')
+      refute event.address.blank?
+    end
+  end
+
+  test 'does not enqueue a geocoding worker after changing a non-address field' do
+    event = events(:portal_event)
+    event.title = 'New title'
+    refute event.address.blank?
+
+    assert_no_difference('GeocodingWorker.jobs.size') do
+      event.save!
+    end
+  end
+
+  test 'does not enqueue a geocoding worker if the address is cached' do
+    event = Event.new(title: 'New event', url: 'http://example.com', venue: 'A place', city: 'Manchester')
+    redis = Redis.new
+    redis.set(event.address, [45, 45].to_json)
+
+    refute event.address.blank?
+
+    assert_no_difference('GeocodingWorker.jobs.size') do
+      event.save!
+      assert_equal 45, event.latitude
+      assert_equal 45, event.longitude
+    end
+  end
 end
-
-

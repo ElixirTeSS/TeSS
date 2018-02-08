@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+ban:
+  user: banned_user
+  shadow: false
+  banner: admin
+  reason: Being bad
+
+shadowban:
+  user: shadowbanned_user
+  shadow: true
+  banner: admin
+  reason: Predatory conferences

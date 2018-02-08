@@ -46,6 +46,24 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_not_nil assigns(:content_providers)
   end
 
+  test 'should get index as json-api' do
+    get :index, format: :json_api
+
+    assert_response :success
+    assert_not_nil assigns(:content_providers)
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    assert body['data'].any?
+    assert body['meta']['results-count'] > 0
+    assert body['meta'].key?('query')
+    assert body['meta'].key?('facets')
+    assert body['meta'].key?('available-facets')
+    assert_equal content_providers_path, body['links']['self']
+  end
+
   #NEW TESTS
   test 'should get new' do
     sign_in users(:regular_user)
@@ -135,6 +153,21 @@ class ContentProvidersControllerTest < ActionController::TestCase
     get :show, id: @content_provider, format: :json
     assert_response :success
     assert assigns(:content_provider)
+  end
+
+  test 'should show content provider as json-api' do
+    get :show, id: @content_provider, format: :json_api
+
+    assert_response :success
+    assert assigns(:content_provider)
+
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    assert_equal @content_provider.title, body['data']['attributes']['title']
+    assert_equal content_provider_path(assigns(:content_provider)), body['data']['links']['self']
   end
 
   #UPDATE TEST

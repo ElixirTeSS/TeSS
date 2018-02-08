@@ -59,6 +59,7 @@ class ContentProvider < ActiveRecord::Base
           self.materials.count
         end
       end
+      integer :user_id # Used for shadowbans
     end
     # :nocov:
   end

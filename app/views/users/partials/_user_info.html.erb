@@ -1,0 +1,15 @@
+<%# Sidebar containing info on user. %>
+
+<ul class="unstyled nav-simple">
+  <% if user %>
+      <!-- Content provider  -->
+      <li><h4 class="nav-heading">User <small>(only visible to admins)</small></h4></li>
+      <li style="padding: 7px 20px;">
+        <p>
+          <%= link_to user.name, user, class: "h5" %>
+        </p>
+        <p>Registered <%= time_ago_in_words(user.created_at) %> ago</p>
+        <%= render(partial: 'users/partials/ban', locals: { ban: user.ban }) if user.banned? && current_user.try(:is_admin?) %>
+      </li>
+  <% end %>
+</ul>

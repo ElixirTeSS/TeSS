@@ -17,8 +17,8 @@ module SearchableIndex
 
   def fetch_resources
     if TeSS::Config.solr_enabled
-      page = params[:page].blank? ? 1 : params[:page]
-      per_page = params[:per_page].blank? ? 30 : params[:per_page]
+      page = page_param.blank? ? 1 : page_param
+      per_page = per_page_param.blank? ? 30 : per_page_param
 
       @search_results = @model.search_and_filter(current_user, @search_params, @facet_params,
                                     page: page, per_page: per_page, sort_by: @sort_by)
@@ -38,4 +38,43 @@ module SearchableIndex
     @sort_by = params[:sort].blank? ? 'default' : params[:sort]
   end
 
+  def api_collection_properties
+    if TeSS::Config.solr_enabled
+      # Transform facets so value is always an array
+      facets = Hash[@facet_params.map { |key, value| [key, Array(value)] }]
+
+      available_facets = Hash[@search_results.facets.map do |f|
+        [
+            f.field_name,
+            f.rows.map { |r| { value: r.value, count: r.count } }
+        ]
+      end]
+      total = @search_results.total
+    else
+      facets = {}
+      available_facets = {}
+      total = @index_resources.count
+    end
+
+    {
+        links: {
+            # This gets overridden (by something in ActiveModelSerializers)when the collection has multiple pages
+            self: polymorphic_path(@model, params.slice(:q, *@model.facet_fields))
+        },
+        meta: {
+            facets: facets,
+            available_facets: available_facets,
+            query: @search_params,
+            results_count: total
+        }
+    }
+  end
+
+  def page_param
+    params[:page] || params[:page_number]
+  end
+
+  def per_page_param
+    params[:per_page] || params[:page_size]
+  end
 end
