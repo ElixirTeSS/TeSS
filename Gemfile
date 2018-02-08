@@ -22,7 +22,7 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'therubyracer'#, platforms: :ruby
 
 # CRUD of resources via a UI
-gem 'rails_admin', '~> 1.1.1'
+gem 'rails_admin', '~> 1.2.0'
 
 # Authentication
 gem 'devise', '~> 4.2.0'
@@ -44,8 +44,6 @@ gem 'sunspot_rails', '~> 2.2.7'
 gem 'sunspot_solr', '= 2.2.0'
 
 gem 'progress_bar', '~> 1.1.0'
-
-gem 'paper_trail', '~> 4.0.0'
 
 gem 'activerecord-session_store', '~> 1.0.0'
 

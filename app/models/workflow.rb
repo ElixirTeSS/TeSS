@@ -7,7 +7,6 @@ class Workflow < ActiveRecord::Base
   include HasLicence
   include Searchable
 
-  has_paper_trail
 
   extend FriendlyId
   friendly_id :title, use: :slugged
