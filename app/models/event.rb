@@ -376,7 +376,7 @@ class Event < ActiveRecord::Base
   private
 
   def allowed_url
-    disallowed = TeSS::Config.blocked_domains.any? do |regex|
+    disallowed = (TeSS::Config.blocked_domains || []).any? do |regex|
       self.url =~ regex
     end
 

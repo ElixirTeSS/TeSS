@@ -266,6 +266,19 @@ class EventTest < ActiveSupport::TestCase
     assert event.errors[:url].empty?
   end
 
+
+  test 'does not throw error when blocked domains list is blank' do
+    domains = TeSS::Config.blocked_domains
+    begin
+      TeSS::Config.blocked_domains = nil
+      assert_nothing_raised do
+        Event.create!(title: 'Bad event', url: 'bad-domain.example/event')
+      end
+    ensure
+      TeSS::Config.blocked_domains = domains
+    end
+  end
+
   test 'enqueues a geocoding worker after creating an event' do
     assert_difference('GeocodingWorker.jobs.size', 1) do
       event = Event.create(title: 'New event', url: 'http://example.com', venue: 'A place', city: 'Manchester')
