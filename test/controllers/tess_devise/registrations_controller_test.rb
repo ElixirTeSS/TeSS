@@ -52,5 +52,16 @@ module TessDevise
 
       assert_redirected_to assigns(:user)
     end
+
+    test 'should update user email' do
+      user = users(:regular_user)
+      sign_in user
+
+      put :update, user: { username: user.username,
+                           email: "123#{user.email}",
+                           current_password: 'hello' }
+
+      assert_redirected_to assigns(:user)
+    end
   end
 end

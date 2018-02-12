@@ -36,6 +36,7 @@ class User < ActiveRecord::Base
 
   before_create :set_registered_user_role, :set_default_profile
   before_create :skip_email_confirmation_for_non_production
+  before_update :skip_email_reconfirmation_for_non_production
 
   before_destroy :reassign_owner
 
@@ -101,6 +102,13 @@ class User < ActiveRecord::Base
     # after creation but before save
     # so no confirmation emails are sent
     self.skip_confirmation! unless Rails.env.production?
+  end
+
+  def skip_email_reconfirmation_for_non_production
+    unless Rails.env.production?
+      self.unconfirmed_email = nil
+      self.skip_reconfirmation!
+    end
   end
 
   def self.get_default_user
