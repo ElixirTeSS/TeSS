@@ -1,9 +1,10 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  slug: mystring
   title: MyString
   description: MyString
-  workflow_content: {}
+  workflow_content: { "nodes": [], "edges": [] }
   user: regular_user
   public: true
 
