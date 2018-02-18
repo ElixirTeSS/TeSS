@@ -1,3 +1,6 @@
+require 'private_address_check'
+require 'private_address_check/tcpsocket_ext'
+
 class ApplicationController < ActionController::Base
   include BreadCrumbs
   include PublicActivity::StoreController
@@ -55,8 +58,10 @@ class ApplicationController < ActionController::Base
     body = {}
 
     begin
-      res = HTTParty.get(params[:url], { timeout: 5 })
-      body = { code: res.code, message: res.message }
+      PrivateAddressCheck.only_public_connections do
+        res = HTTParty.get(params[:url], { timeout: 5 })
+        body = { code: res.code, message: res.message }
+      end
     rescue StandardError
       body = { message: 'Could not access the given URL' }
     end
