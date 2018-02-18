@@ -111,7 +111,7 @@ gem 'by_star', '~> 2.2.1', git: 'git://github.com/radar/by_star'
 
 gem 'handlebars_assets'
 
-gem 'paperclip', '~> 5.0.0'
+gem 'paperclip', '~> 5.2.1'
 
 gem 'icalendar', '~> 2.4.1'
 
@@ -129,6 +129,7 @@ gem 'redis'
 
 gem 'active_model_serializers', '~> 0.10'
 
+gem 'private_address_check'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-markdown-it', '~> 7.0.1'
