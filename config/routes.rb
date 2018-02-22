@@ -15,7 +15,11 @@ Rails.application.routes.draw do
   resources :workflows
 
   #get 'static/home'
-  get 'about' => 'static#about', as: 'about'
+  get 'about' => 'about#tess', as: 'about'
+  get 'about/features' => 'about#features'
+  get 'about/project' => 'about#project'
+
+
   get 'privacy' => 'static#privacy', as: 'privacy'
 
   post 'materials/check_exists' => 'materials#check_exists'

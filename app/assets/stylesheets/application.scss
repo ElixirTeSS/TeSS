@@ -759,3 +759,33 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
     }
   }
 }
+
+.video_frame{
+  padding: 20px 0;
+  width: 560px;
+  height: 345px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.include-where{
+  font-size: 160%;
+  text-align: center;
+  margin: 10px;
+}
+
+.include-where-graphic{
+  width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.motivation_box{
+  margin: 20px;
+}
+
+.include-where-text{
+  text-align: center;
+}
+
+.widgets_guide {
+  width: 100%;
+}
