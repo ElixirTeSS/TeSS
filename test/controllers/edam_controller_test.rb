@@ -3,10 +3,6 @@ require 'test_helper'
 class EdamControllerTest < ActionController::TestCase
   include Devise::Test::ControllerHelpers
 
-  setup do
-    sign_in users(:regular_user)
-  end
-
   test 'should filter topics' do
     get :topics, filter: 'metab', format: :json
     assert_response :success
