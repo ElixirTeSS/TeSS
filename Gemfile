@@ -22,7 +22,7 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'therubyracer'#, platforms: :ruby
 
 # CRUD of resources via a UI
-gem 'rails_admin', '~> 1.2.0'
+gem 'rails_admin', '~> 1.3.0'
 
 # Authentication
 gem 'devise', '~> 4.2.0'
