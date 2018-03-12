@@ -1,5 +1,7 @@
 class EdamController < ApplicationController
 
+  skip_before_action :authenticate_user!, :authenticate_user_from_token!
+
   def terms
     list(EDAM::Ontology.instance.all_topics + EDAM::Ontology.instance.all_operations)
   end
