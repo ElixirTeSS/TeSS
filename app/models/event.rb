@@ -13,7 +13,6 @@ class Event < ActiveRecord::Base
   include Scrapable
   include Searchable
 
-  has_paper_trail
   before_save :set_default_times, :check_country_name
   before_save :geocoding_cache_lookup, if: :address_changed?
   after_save :enqueue_geocoding_worker, if: :address_changed?

@@ -25,7 +25,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    assert_equal [TeSS::Config.contact_email], email.from
+    assert_equal [TeSS::Config.sender_email], email.from
     assert_equal [sub.user.email], email.to
     assert_equal 'TeSS weekly digest - 2 new materials matching your criteria', email.subject
     body = email.text_part.body.to_s
@@ -52,7 +52,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    assert_equal [TeSS::Config.contact_email], email.from
+    assert_equal [TeSS::Config.sender_email], email.from
     assert_equal [sub.user.email], email.to
     assert_equal "TeSS weekly digest - #{e.length} new events matching your criteria", email.subject
 

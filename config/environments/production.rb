@@ -69,6 +69,7 @@ Rails.application.configure do
       protocol: URI.parse(TeSS::Config.base_url).scheme
   }
   config.action_mailer.asset_host = TeSS::Config.base_url
+  config.action_mailer.smtp_settings = Rails.application.secrets[:smtp] if Rails.application.secrets.key?(:smtp)
 
       # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).

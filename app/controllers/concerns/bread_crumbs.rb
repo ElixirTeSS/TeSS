@@ -29,9 +29,9 @@ module BreadCrumbs
     add_index_breadcrumb(con_name)
   end
 
-  def add_index_breadcrumb controller_name, breadcrumb_name = nil
-    breadcrumb_name ||= controller_name.singularize.humanize.pluralize
-    add_breadcrumb breadcrumb_name, url_for(:controller => controller_name, :action => 'index')
+  def add_index_breadcrumb(con_name, breadcrumb_name = nil)
+    breadcrumb_name ||= con_name.singularize.humanize.pluralize
+    add_breadcrumb breadcrumb_name, url_for(controller: "/#{con_name}", action: 'index')
   end
 
   def add_show_breadcrumb resource, breadcrumb_name = nil

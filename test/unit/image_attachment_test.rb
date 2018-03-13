@@ -102,4 +102,13 @@ class ImageAttachmentTest < ActiveSupport::TestCase
     assert provider.errors[:image].first.include?('contents that are not what they are reported to be')
   end
 
+  test 'should not permit internal image URL address' do
+    provider = content_providers(:goblet)
+    provider.image_url = 'http://127.0.0.1/image.png'
+
+    refute provider.save
+
+    assert_equal 1, provider.errors[:image_url].length
+    assert provider.errors[:image_url].first.include?('could not be accessed')
+  end
 end

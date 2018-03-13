@@ -103,6 +103,12 @@ class UserTest < ActiveSupport::TestCase
     assert_includes User.shadowbanned, users(:shadowbanned_user)
     assert_not_includes User.shadowbanned, users(:regular_user)
   end
+
+  test 'change email' do
+    user = users(:regular_user)
+    user.email = 'new-email@example.com'
+    assert user.save
+  end
 end
 
 

@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 4.2.9'
+gem 'rails', '~> 4.2.10'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -22,7 +22,7 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'therubyracer'#, platforms: :ruby
 
 # CRUD of resources via a UI
-gem 'rails_admin', '~> 1.1.1'
+gem 'rails_admin', '~> 1.3.0'
 
 # Authentication
 gem 'devise', '~> 4.2.0'
@@ -45,8 +45,6 @@ gem 'sunspot_solr', '= 2.2.0'
 
 gem 'progress_bar', '~> 1.1.0'
 
-gem 'paper_trail', '~> 4.0.0'
-
 gem 'activerecord-session_store', '~> 1.0.0'
 
 gem 'gravtastic', '~> 3.2.6'
@@ -61,7 +59,6 @@ gem 'whenever'
 gem 'httparty'
 gem 'sidekiq'
 gem 'sidekiq_status'
-gem 'sinatra', require: false
 gem 'slim'
 
 # Use jquery as the JavaScript library
@@ -114,7 +111,7 @@ gem 'by_star', '~> 2.2.1', git: 'git://github.com/radar/by_star'
 
 gem 'handlebars_assets'
 
-gem 'paperclip', '~> 5.0.0'
+gem 'paperclip', '~> 5.2.1'
 
 gem 'icalendar', '~> 2.4.1'
 
@@ -134,6 +131,7 @@ gem 'redis'
 
 gem 'active_model_serializers', '~> 0.10'
 
+gem 'private_address_check'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-markdown-it', '~> 7.0.1'

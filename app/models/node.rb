@@ -4,7 +4,6 @@ class Node < ActiveRecord::Base
   include LogParameterChanges
   include Searchable
 
-  has_paper_trail
 
   extend FriendlyId
   friendly_id :name, use: :slugged

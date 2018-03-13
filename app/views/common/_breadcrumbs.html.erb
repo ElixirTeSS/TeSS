@@ -2,10 +2,8 @@
   <ol class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
     <% @breadcrumbs[0..-2].each_with_index do |crumb, i| %>
         <li itemprop="itemListElement" itemscope
-            itemtype="http://schema.org/ListItem">
-          <a href="<%=crumb[:url]%>" itemscope itemtype="http://schema.org/Thing" itemprop="item">
-            <span itemprop="name"><%=crumb[:name]%></span>
-          </a>
+            itemtype="http://schema.org/ListItem"><a href="<%=crumb[:url]%>" itemscope itemtype="http://schema.org/Thing"
+                                                     itemprop="item"><span itemprop="name"><%=crumb[:name]%></span></a>
           <meta itemprop="position" content="<%=i+1%>" />
         </li>
     <% end %>

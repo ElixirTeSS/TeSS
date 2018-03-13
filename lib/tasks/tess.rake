@@ -1,5 +1,71 @@
 namespace :tess do
 
+  task :remove_spam_activities, [:type] => [:environment] do |t, args|
+    types = args[:type] ? [args[:type].constantize] : [Node, Workflow, ContentProvider, Material, Event]
+    total_deleted_count = 0
+    total_activity_count = PublicActivity::Activity.count
+    puts "#{total_activity_count} activities in database"
+
+    types.each do |type|
+      deleted_count = 0
+      records = (type == Event) ? type.all.select(&:upcoming?) : type.all
+      puts "Looking at #{records.count} #{type.name.pluralize}:"
+      records.each do |record|
+        ##########
+        # Delete `update_parameter` activities for ignored attributes
+        ignored = record.activities.where(key: "#{type.name.underscore}.update_parameter").select do |activity|
+          LogParameterChanges::IGNORED_ATTRIBUTES.include?(activity.parameters[:attr])
+        end
+        if ignored.any?
+          deleted_count += ignored.count
+          ignored.each(&:destroy)
+        end
+
+        ##########
+        # Delete `update_parameter` activities that just shuffle array elements around
+        array_changes = record.activities.where(key: "#{type.name.underscore}.update_parameter").select do |activity|
+          activity.parameters[:new_val].is_a?(Array)
+        end
+        grouped = array_changes.group_by { |a| a.parameters[:attr] }
+        # Compare each parameter change activity with the one preceding it (for the same attribute) and check if they
+        # are the same value (when sorted). If so, delete the newer one.
+        grouped.each_value do |activities|
+          activities.to_a.unshift(nil).reverse.each_cons(2) do |newer, older|
+            if newer && older
+              if newer.parameters[:new_val].length == older.parameters[:new_val].length &&
+                  newer.parameters[:new_val].sort == older.parameters[:new_val].sort
+                newer.destroy
+                deleted_count += 1
+              end
+            end
+          end
+        end
+
+        ##########
+        # Delete now-redundant `update` activities without any associated parameter changes
+        updates = record.activities.where(key: "#{type.name.underscore}.update")
+        updates.each do |activity|
+          # Have to do this very awkward query due to `update_parameter` activities being created separately from
+          # `update` activities and not necessarily at the same time!
+          if record.activities.where(key: "#{type.name.underscore}.update_parameter").
+              where('id < ?', activity.id).
+              where('created_at > ?', (activity.created_at - 2.seconds)).none?
+            activity.destroy
+            deleted_count += 1
+          end
+        end
+        print '.'
+      end
+      puts
+      puts "Deleted #{deleted_count} #{type} activities"
+      total_deleted_count += deleted_count
+    end
+
+    puts
+    puts "Deleted #{total_deleted_count} activities in total"
+    puts "Done"
+  end
+
   desc "Populates the database with Node information from a JSON document"
   task load_node_json: :environment do
     path = File.join(Rails.root, 'config', 'data', 'elixir_nodes.json')

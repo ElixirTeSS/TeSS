@@ -218,4 +218,17 @@ class WorkflowsControllerTest < ActionController::TestCase
     assert_select '#workflow_title[value=?]', "Fork of #{@workflow.title}"
   end
 
+  test 'should log diagram modification' do
+    user = users(:admin)
+    sign_in user
+
+    assert_difference(-> { @workflow.activities.count }) do
+      patch :update, id: @workflow, workflow: { description: @workflow.description, title: @workflow.title,
+                                                public: @workflow.public,
+                                                workflow_content: workflows(:two).workflow_content.to_json }
+    end
+
+    assert_redirected_to workflow_path(assigns(:workflow))
+    assert_equal user, @workflow.activities.last.owner
+  end
 end
