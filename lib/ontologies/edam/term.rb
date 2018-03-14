@@ -23,5 +23,9 @@ module EDAM
       return @parent if defined? @parent
       @parent = (data[RDF::RDFS.subClassOf] ? ontology.lookup(data[RDF::RDFS.subClassOf].first) : nil)
     end
+
+    def parent_uri
+      parent ? parent.uri : nil
+    end
   end
 end
