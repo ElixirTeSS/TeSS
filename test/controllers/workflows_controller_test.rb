@@ -54,11 +54,16 @@ class WorkflowsControllerTest < ActionController::TestCase
     assert_equal workflows_path, body['links']['self']
   end
 
-  test "should get new" do
+  test 'should get new' do
     sign_in users(:admin)
-
     get :new
     assert_response :success
+  end
+
+  test 'should not get new page for basic users' do
+    sign_in users(:basic_user)
+    get :new
+    assert_response :forbidden
   end
 
   test "should create workflow" do

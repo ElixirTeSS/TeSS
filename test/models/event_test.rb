@@ -266,7 +266,6 @@ class EventTest < ActiveSupport::TestCase
     assert event.errors[:url].empty?
   end
 
-
   test 'does not throw error when blocked domains list is blank' do
     domains = TeSS::Config.blocked_domains
     begin

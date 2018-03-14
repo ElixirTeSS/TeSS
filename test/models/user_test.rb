@@ -23,7 +23,18 @@ class UserTest < ActiveSupport::TestCase
     assert_not_instance_of Role, user.role
     user.save
     assert_instance_of Role, user.role
+    assert_equal 'registered_user', user.role.name
+  end
 
+  test 'default role should be configurable' do
+    default_role = TeSS::Config.default_role
+    begin
+      TeSS::Config.default_role = 'basic_user'
+      user = User.create!(:username => @user_data.username, :password =>  @user_data.encrypted_password, :email => @user_data.email)
+      assert_equal 'basic_user', user.role.name
+    ensure
+      TeSS::Config.default_role = default_role
+    end
   end
 
   test "should set default profile after saving new user" do

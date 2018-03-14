@@ -10,3 +10,5 @@ scraper_user:
   title: Automated scraper
 default_user:
   title: Default user
+basic_user:
+  title: Basic user

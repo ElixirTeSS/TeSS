@@ -86,3 +86,11 @@ shadowbanned_user:
   confirmed_at: <%= Time.zone.now %>
   role: user
   authentication_token: <%= Devise.friendly_token %>
+
+basic_user:
+  username: basic
+  email: 'basic@notarealdomain.org'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'hello') %>
+  confirmed_at: <%= Time.zone.now %>
+  role: basic_user
+  authentication_token: <%= Devise.friendly_token %>
