@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
   has_many :stars, dependent: :destroy
   has_one :ban
 
-  before_create :set_registered_user_role, :set_default_profile
+  before_create :set_default_role, :set_default_profile
   before_create :skip_email_confirmation_for_non_production
   before_update :skip_email_reconfirmation_for_non_production
 
@@ -64,8 +64,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def set_registered_user_role
-    self.role ||= Role.fetch('registered_user')
+  def set_default_role
+    self.role ||= Role.fetch(TeSS::Config.default_role || 'registered_user')
   end
 
   def set_default_profile

@@ -7,8 +7,10 @@
 
   <div id="content">
     <div class="row">
-      <%= link_to new_material_path, :class=>"btn btn-primary" do %>
+      <% if policy(:material).create? %>
+        <%= link_to new_material_path, class: 'btn btn-primary' do %>
           <i class="fa fa-plus-square"></i> Register training material
+        <% end %>
       <% end %>
       <%= render partial: 'subscriptions/subscribe_button', locals: { type: 'Material' } %>
       <div class="pull-right">

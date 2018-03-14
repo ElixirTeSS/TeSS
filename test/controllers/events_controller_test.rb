@@ -99,6 +99,12 @@ class EventsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'should not get new page for basic users' do
+    sign_in users(:basic_user)
+    get :new
+    assert_response :forbidden
+  end
+
   #EDIT TESTS
   test 'should not get edit page for not logged in users' do
     #Not logged in = Redirect to login

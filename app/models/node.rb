@@ -41,6 +41,7 @@ class Node < ActiveRecord::Base
       end
       string :member_status
       time :updated_at
+      integer :user_id # Used for shadowbans
     end
     # :nocov:
   end

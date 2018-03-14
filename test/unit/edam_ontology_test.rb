@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class EdamOntologyTest < ActiveSupport::TestCase
-
   test 'should lookup term' do
     term = EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0078')
 
@@ -43,4 +42,22 @@ class EdamOntologyTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should fetch term subclasses' do
+    term = EDAM::Ontology.instance.lookup_by_name('Proteins')
+
+    assert_equal 9, term.subclasses.length
+    assert_includes term.subclasses.map(&:label), 'Enzymes'
+
+    another_term = EDAM::Ontology.instance.lookup_by_name('Membrane and lipoproteins')
+    assert_empty another_term.subclasses
+  end
+
+  test 'should fetch term parent' do
+    term = EDAM::Ontology.instance.lookup_by_name('Membrane and lipoproteins')
+
+    assert_equal 'Proteins', term.parent.label
+    assert_equal 'Computational biology', term.parent.parent.label
+    assert_equal 'Topic', term.parent.parent.parent.label
+    assert_nil term.parent.parent.parent.parent
+  end
 end

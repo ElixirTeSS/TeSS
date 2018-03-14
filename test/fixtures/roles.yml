@@ -11,3 +11,6 @@ scraper_user:
 
 curator:
   name: curator
+
+basic_user:
+  name: basic_user
