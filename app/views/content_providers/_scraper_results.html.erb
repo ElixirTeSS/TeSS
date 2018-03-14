@@ -6,13 +6,15 @@
 
         <%= content_tag(:div, id: type, class: 'scraper-typed-results') do %>
             <div class="pull-right">
+              <a href="#" class="btn btn-success select-new-btn">Select New</a>
               <a href="#" class="btn btn-default select-all-btn">Select All</a>
               <a href="#" class="btn btn-default clear-btn">Clear</a>
             </div>
             <h2><%= pluralize(resources.count, type.singularize) %> found</h2>
             <% resources.each_with_index do |resource, i| %>
                 <%= form.fields_for "#{type}[]", resource, index: i do |fields| %>
-                    <div class="bulk-import-row">
+                    <% existing = klass.check_exists(resource) %>
+                    <div class="bulk-import-row<%= ' new' unless existing -%>">
                       <div class="row">
                         <div class="col-sm-6">
                           <% if resource.valid? %>
@@ -36,7 +38,7 @@
                               <span class="muted">No URL</span>
                           <% end %>
                         </div>
-                        <% unless (existing = klass.check_exists(resource)).nil? %>
+                        <% unless existing.nil? %>
                             <div class="col-sm-12 bg-warning text-warning">
                               <i class="fa fa-exclamation-triangle"></i> Already registered: <%= link_to(existing.title, existing, target: :_blank) %>
                             </div>

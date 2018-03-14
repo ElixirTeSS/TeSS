@@ -133,6 +133,12 @@
     return false;
   });
 
+  $('#scraper-results').on('click', '.select-new-btn', function () {
+      $(this).parents('.scraper-typed-results').find('.bulk-import-row.new .bulk-import-checkbox').prop('checked', true);
+      updateBulkCreateButton();
+      return false;
+  });
+
   $('#scraper-results').on('click', '.select-all-btn', function () {
     $(this).parents('.scraper-typed-results').find('.bulk-import-checkbox').prop('checked', true);
     updateBulkCreateButton();
