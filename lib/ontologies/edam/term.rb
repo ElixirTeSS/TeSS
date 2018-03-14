@@ -14,5 +14,14 @@ module EDAM
     def has_broad_synonym
       data[OBO.hasBroadSynonym] ? data[OBO.hasBroadSynonym].map(&:value) : []
     end
+
+    def subclasses
+      @subclasses ||= ontology.find_by(RDF::RDFS.subClassOf, RDF::URI(uri))
+    end
+
+    def parent
+      return @parent if defined? @parent
+      @parent = (data[RDF::RDFS.subClassOf] ? ontology.lookup(data[RDF::RDFS.subClassOf].first) : nil)
+    end
   end
 end
