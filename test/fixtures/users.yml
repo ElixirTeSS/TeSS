@@ -58,7 +58,6 @@ curator:
 existing_aai_user:
   username: 'existing_aai_user'
   email: 'eau@example.com'
-  encrypted_password: 'password'
   confirmed_at: <%= Time.zone.now %>
   provider: elixir_aai
   uid: 1234

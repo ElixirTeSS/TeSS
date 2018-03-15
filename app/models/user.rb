@@ -166,7 +166,6 @@ class User < ActiveRecord::Base
                       uid: auth.uid,
                       email: auth.info.email,
                       username: User.unique_username(auth.info.nickname || auth.info.openid || 'user'),
-                      password: Devise.friendly_token[0,20],
                       profile_attributes: { firstname: auth.info.first_name,
                                             surname: auth.info.last_name }
       )
@@ -191,6 +190,18 @@ class User < ActiveRecord::Base
 
   def self.shadowbanned
     joins(:ban).where(bans: { shadow: true })
+  end
+
+  def using_omniauth?
+    provider.present? && uid.present?
+  end
+
+  def password_required?
+    if using_omniauth?
+      false
+    else
+      super
+    end
   end
 
   private

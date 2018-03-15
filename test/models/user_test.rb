@@ -57,7 +57,17 @@ class UserTest < ActiveSupport::TestCase
 
   test "should not save with nil password" do
     user = User.new(@user_params.merge(password: nil))
+    assert user.password_required?
+    refute user.using_omniauth?
     assert_not user.save, 'Saved user with no password'
+  end
+
+  test "should save with nil password if using omniauth" do
+    user = User.new(@user_params.merge(password: nil, provider: 'elixir_aai', uid: 'abcdefg'))
+    refute user.password_required?
+    assert user.using_omniauth?
+    assert user.save
+    assert user.reload.encrypted_password.blank?
   end
 
   test "should not save with password under 8 characters" do

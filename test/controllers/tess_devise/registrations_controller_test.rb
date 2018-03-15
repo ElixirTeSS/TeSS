@@ -63,5 +63,31 @@ module TessDevise
 
       assert_redirected_to assigns(:user)
     end
+
+    test 'should get account management page if logged in' do
+      user = users(:regular_user)
+      sign_in user
+
+      get :edit
+
+      assert_response :success
+    end
+
+    test 'should not get account management page if not logged in' do
+      get :edit
+
+      assert_redirected_to new_user_session_path
+    end
+
+    test 'should update username for AAI user without requiring current password' do
+      user = users(:existing_aai_user)
+      sign_in user
+
+      assert user.using_omniauth?
+
+      put :update, user: { username: 'cooldude99' }
+
+      assert_redirected_to assigns(:user)
+    end
   end
 end
