@@ -161,11 +161,10 @@ class User < ActiveRecord::Base
         user.save
       end
     else
-      # Generate a unique username. Usernames provided by AAI may already be in use.
       user = User.new(provider: auth.provider,
                       uid: auth.uid,
                       email: auth.info.email,
-                      username: User.unique_username(auth.info.nickname || auth.info.openid || 'user'),
+                      username: User.username_from_auth_info(auth.info),
                       profile_attributes: { firstname: auth.info.first_name,
                                             surname: auth.info.last_name }
       )
@@ -202,6 +201,16 @@ class User < ActiveRecord::Base
     else
       super
     end
+  end
+
+  # Generate a unique username. Usernames provided by AAI may already be in use.
+  def self.username_from_auth_info(auth_info)
+    user_name = auth_info.nickname
+    user_name ||= auth_info.openid
+    user_name ||= auth_info.email.split('@').first if auth_info.email
+    user_name ||= 'user'
+
+    User.unique_username(user_name)
   end
 
   private

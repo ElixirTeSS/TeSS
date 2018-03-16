@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'ostruct'
 
 class UserTest < ActiveSupport::TestCase
   setup do
@@ -122,5 +123,29 @@ class UserTest < ActiveSupport::TestCase
     user = users(:regular_user)
     user.email = 'new-email@example.com'
     assert user.save
+  end
+
+  test 'generates appropriate usernames from AAI auth info' do
+    auth_info = OpenStruct.new({ nickname: 'coolguy1996', openid: 'coolguyinmcr', email: 'richard.smith@example.com' })
+    refute User.where(username: 'coolguy1996').any?
+    assert_equal 'coolguy1996', User.username_from_auth_info(auth_info)
+
+    auth_info = OpenStruct.new({ openid: 'coolguyinmcr', email: 'richard.smith@example.com' })
+    refute User.where(username: 'coolguyinmcr').any?
+    assert_equal 'coolguyinmcr', User.username_from_auth_info(auth_info)
+
+    auth_info = OpenStruct.new({ email: 'richard.smith@example.com' })
+    refute User.where(username: 'richard.smith').any?
+    assert_equal 'richard.smith', User.username_from_auth_info(auth_info)
+
+    auth_info = OpenStruct.new({})
+    refute User.where(username: 'user').any?
+    assert_equal 'user', User.username_from_auth_info(auth_info)
+
+    User.create({ username: 'user', password: '12345678', email: 'new-user@example.com' })
+    auth_info = OpenStruct.new({})
+    assert User.where(username: 'user').any?
+    refute User.where(username: 'user1').any?
+    assert_equal 'user1', User.username_from_auth_info(auth_info)
   end
 end
