@@ -22,7 +22,7 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'therubyracer'#, platforms: :ruby
 
 # CRUD of resources via a UI
-gem 'rails_admin', '~> 1.2.0'
+gem 'rails_admin', '~> 1.3.0'
 
 # Authentication
 gem 'devise', '~> 4.2.0'
@@ -58,7 +58,6 @@ gem 'whenever'
 # These are required for Sidekiq, to look up scientific topics
 gem 'httparty'
 gem 'sidekiq'
-gem 'sinatra', require: false
 gem 'slim'
 
 # Use jquery as the JavaScript library
@@ -111,7 +110,7 @@ gem 'by_star', '~> 2.2.1', git: 'git://github.com/radar/by_star'
 
 gem 'handlebars_assets'
 
-gem 'paperclip', '~> 5.0.0'
+gem 'paperclip', '~> 5.2.1'
 
 gem 'icalendar', '~> 2.4.1'
 
@@ -129,6 +128,7 @@ gem 'redis'
 
 gem 'active_model_serializers', '~> 0.10'
 
+gem 'private_address_check'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-markdown-it', '~> 7.0.1'

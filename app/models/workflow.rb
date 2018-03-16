@@ -93,11 +93,12 @@ class Workflow < ActiveRecord::Base
       modified_nodes = modified_node_ids.map { |i| workflow_content['nodes'].detect { |n| n['data']['id'] == i } }
 
       if added_node_ids.any? || removed_node_ids.any? || modified_node_ids.any?
-        self.create_activity :modify_diagram, parameters: {
-            added_nodes: added_nodes,
-            removed_nodes: removed_nodes,
-            modified_nodes: modified_nodes
-        }
+        self.create_activity :modify_diagram, owner: User.current_user,
+                             parameters: {
+                                 added_nodes: added_nodes,
+                                 removed_nodes: removed_nodes,
+                                 modified_nodes: modified_nodes
+                             }
       end
     end
   end

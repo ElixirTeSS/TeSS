@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: TeSS::Config.contact_email
+  default from: TeSS::Config.sender_email
   layout 'mailer'
 end

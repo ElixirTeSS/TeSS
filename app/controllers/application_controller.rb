@@ -1,3 +1,6 @@
+require 'private_address_check'
+require 'private_address_check/tcpsocket_ext'
+
 class ApplicationController < ActionController::Base
   include BreadCrumbs
   include PublicActivity::StoreController
@@ -14,6 +17,7 @@ class ApplicationController < ActionController::Base
   # User auth should be required in the web interface as well; it's here rather than in routes so that it
   # doesn't override the token auth, above.
   before_action :authenticate_user!, except: [:index, :show, :embed, :check_exists, :handle_error, :count, :redirect]
+  before_action :set_current_user
 
   # Should prevent forgery errors for JSON posts.
   skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
@@ -54,8 +58,10 @@ class ApplicationController < ActionController::Base
     body = {}
 
     begin
-      res = HTTParty.get(params[:url], { timeout: 5 })
-      body = { code: res.code, message: res.message }
+      PrivateAddressCheck.only_public_connections do
+        res = HTTParty.get(params[:url], { timeout: 5 })
+        body = { code: res.code, message: res.message }
+      end
     rescue StandardError
       body = { message: 'Could not access the given URL' }
     end

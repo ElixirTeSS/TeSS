@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
   has_many :stars, dependent: :destroy
   has_one :ban
 
-  before_create :set_registered_user_role, :set_default_profile
+  before_create :set_default_role, :set_default_profile
   before_create :skip_email_confirmation_for_non_production
   before_update :skip_email_reconfirmation_for_non_production
 
@@ -64,8 +64,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def set_registered_user_role
-    self.role ||= Role.fetch('registered_user')
+  def set_default_role
+    self.role ||= Role.fetch(TeSS::Config.default_role || 'registered_user')
   end
 
   def set_default_profile
@@ -161,12 +161,10 @@ class User < ActiveRecord::Base
         user.save
       end
     else
-      # Generate a unique username. Usernames provided by AAI may already be in use.
       user = User.new(provider: auth.provider,
                       uid: auth.uid,
                       email: auth.info.email,
-                      username: User.unique_username(auth.info.nickname || auth.info.openid || 'user'),
-                      password: Devise.friendly_token[0,20],
+                      username: User.username_from_auth_info(auth.info),
                       profile_attributes: { firstname: auth.info.first_name,
                                             surname: auth.info.last_name }
       )
@@ -191,6 +189,28 @@ class User < ActiveRecord::Base
 
   def self.shadowbanned
     joins(:ban).where(bans: { shadow: true })
+  end
+
+  def using_omniauth?
+    provider.present? && uid.present?
+  end
+
+  def password_required?
+    if using_omniauth?
+      false
+    else
+      super
+    end
+  end
+
+  # Generate a unique username. Usernames provided by AAI may already be in use.
+  def self.username_from_auth_info(auth_info)
+    user_name = auth_info.nickname
+    user_name ||= auth_info.openid
+    user_name ||= auth_info.email.split('@').first if auth_info.email
+    user_name ||= 'user'
+
+    User.unique_username(user_name)
   end
 
   private

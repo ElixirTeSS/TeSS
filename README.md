@@ -145,6 +145,7 @@ Create the database structure and load in seed data:
     $ bundle exec rake db:setup
 
 Start the application:
+
     $ bundle exec rails server
 
 Access TeSS at:

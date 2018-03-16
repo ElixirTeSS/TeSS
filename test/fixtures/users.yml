@@ -58,7 +58,6 @@ curator:
 existing_aai_user:
   username: 'existing_aai_user'
   email: 'eau@example.com'
-  encrypted_password: 'password'
   confirmed_at: <%= Time.zone.now %>
   provider: elixir_aai
   uid: 1234
@@ -85,4 +84,12 @@ shadowbanned_user:
   encrypted_password: <%= Devise::Encryptor.digest(User, 'hello') %>
   confirmed_at: <%= Time.zone.now %>
   role: user
+  authentication_token: <%= Devise.friendly_token %>
+
+basic_user:
+  username: basic
+  email: 'basic@notarealdomain.org'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'hello') %>
+  confirmed_at: <%= Time.zone.now %>
+  role: basic_user
   authentication_token: <%= Devise.friendly_token %>

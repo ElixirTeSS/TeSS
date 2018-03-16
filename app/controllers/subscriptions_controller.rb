@@ -3,6 +3,7 @@ class SubscriptionsController < ApplicationController
   skip_before_action :authenticate_user!, :authenticate_user_from_token!, only: :unsubscribe
   before_action :authenticate_user!, only: :index
   before_filter :find_subscription, only: [:destroy, :unsubscribe]
+  before_action :set_breadcrumbs, only: :index
 
   def index
     @subscriptions = current_user.subscriptions.order('created_at DESC')
@@ -63,4 +64,8 @@ class SubscriptionsController < ApplicationController
     @subscription = Subscription.find(params[:id])
   end
 
+  def set_breadcrumbs
+    add_base_breadcrumbs('users')
+    @breadcrumbs += [{ name: current_user.name, url: user_path(current_user) }, { name: 'Subscriptions' }]
+  end
 end

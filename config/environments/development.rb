@@ -44,12 +44,5 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-      address:              Rails.application.secrets[:smtp][:address],
-      #domain:               Rails.application.secrets[:smtp][:domain],
-      port:                 587,
-      user_name:            Rails.application.secrets[:smtp][:username],
-      password:             Rails.application.secrets[:smtp][:password],
-      authentication:       'plain',
-      enable_starttls_auto: true  }
+  config.action_mailer.smtp_settings = Rails.application.secrets[:smtp] if Rails.application.secrets.key?(:smtp)
 end

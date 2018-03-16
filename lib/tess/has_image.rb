@@ -1,3 +1,6 @@
+require 'private_address_check'
+require 'private_address_check/tcpsocket_ext'
+
 module Tess
   module HasImage
 
@@ -30,8 +33,15 @@ module Tess
             begin
               uri = URI.parse(self.image_url)
               return unless uri.absolute? # Error message will be added by the `image_url` validator
+              #
+              # if PrivateAddressCheck.resolves_to_private_address?(uri.host)
+              #   self.errors.add(:image_url, 'is not accessible')
+              #   return
+              # end
 
-              self.image = uri
+              PrivateAddressCheck.only_public_connections do
+                self.image = uri
+              end
 
               # NOTE! The two lines below are needed because Paperclip validates the image on assignment, and then again
               #  when the actual validations are run, resulting in duplicate error messages!
@@ -40,6 +50,8 @@ module Tess
             rescue URI::InvalidURIError
               return
             rescue OpenURI::HTTPError, OpenSSL::SSL::SSLError
+              self.errors.add(:image_url, 'could not be accessed')
+            rescue PrivateAddressCheck::PrivateConnectionAttemptedError
               self.errors.add(:image_url, 'could not be accessed')
             end
           elsif self.image.dirty? # Clear the URL if there was a file provided (as it won't match the file anymore)

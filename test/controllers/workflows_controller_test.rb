@@ -54,11 +54,16 @@ class WorkflowsControllerTest < ActionController::TestCase
     assert_equal workflows_path, body['links']['self']
   end
 
-  test "should get new" do
+  test 'should get new' do
     sign_in users(:admin)
-
     get :new
     assert_response :success
+  end
+
+  test 'should not get new page for basic users' do
+    sign_in users(:basic_user)
+    get :new
+    assert_response :forbidden
   end
 
   test "should create workflow" do
@@ -218,4 +223,17 @@ class WorkflowsControllerTest < ActionController::TestCase
     assert_select '#workflow_title[value=?]', "Fork of #{@workflow.title}"
   end
 
+  test 'should log diagram modification' do
+    user = users(:admin)
+    sign_in user
+
+    assert_difference(-> { @workflow.activities.count }) do
+      patch :update, id: @workflow, workflow: { description: @workflow.description, title: @workflow.title,
+                                                public: @workflow.public,
+                                                workflow_content: workflows(:two).workflow_content.to_json }
+    end
+
+    assert_redirected_to workflow_path(assigns(:workflow))
+    assert_equal user, @workflow.activities.last.owner
+  end
 end
