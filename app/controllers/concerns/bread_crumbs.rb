@@ -11,7 +11,7 @@ module BreadCrumbs
     add_base_breadcrumbs(controller_name)
 
     if params[:id]
-      resource = eval("@#{controller_name.singularize}")
+      resource = instance_variable_get("@#{controller_name.singularize}")
 
       add_show_breadcrumb resource if (resource && resource.respond_to?(:new_record?) && !resource.new_record?)
 
