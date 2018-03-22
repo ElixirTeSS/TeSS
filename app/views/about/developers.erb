@@ -1,0 +1,76 @@
+<div class="wrapper">
+
+  <div id="sidebar" class="popout-sidebar">
+    <%= render :partial => 'about_nav', locals: {show: 'home'} %>
+  </div>
+
+  <div id="content" class="">
+    <div class="about-block">
+
+      <!-- ABOUT TESS DATA -->
+      <div class="row">
+        <div class="odd-about-block">
+          <div id='how' class="h3">For Developers</div>
+          <p>
+            TeSS is Open Source.
+            <div class="row">
+              <div class="col-lg-6 motivation_box">
+                <div class="h2">Content</div>
+                <div class="register-condition-graphic"><i class="fa fa-database about-icons"></i></div>
+                <div class="register-condition">Our content is available under the Creative Commons CC-BY 4.0 licence and can be accessed through our API and widgets.</div>
+              </div>
+
+              <div class="col-lg-6 motivation_box">
+                <div class="h2">Code</div>
+                <div class="register-condition-graphic"><i class="fa fa-code about-icons"></i></div>
+                <div class="register-condition">Our codebase is available to use under BSD-3 licence and is available on Github</div>
+              </div>
+            </div>
+
+
+          </p>
+          <p>
+          <%= link_to 'https://creativecommons.org/licenses/by/4.0/', target: '_blank' do %>
+            <%= image_tag 'about/cc-by.png', class: "licence-logo" %>
+          <% end %>
+          </p>
+          <p>
+            To facilitate access to our data we provide a full read API, details of which can be found here.
+            We have also created some javascript widgets that can be easily added to your website
+            so to share training opportunities with your community.
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="even-about-block">
+        </div>
+
+        <div class="h3" id="share">Use our content</div>
+          <p>Our widgets are chunks of javascript code that can be copied into websites to render a list of events from TeSS. There are several widget styles to choose from, which can be configured to display only events that are interesting to your community (workshops in your country, meetings about a given scientific topic, etc.).</p>
+
+          <div class="h4" id="widgets">Widgets</div>
+          <div class="widgets_guide">
+            <a href="https://elixirtess.github.io/list_widget" target="_blank">
+              <%= image_tag 'about/widgets.png', class: "widgets_guide" %>
+            </a>
+          </div>
+
+
+          </p>
+          <div class="h4" id="api">API </div>
+          <span style="float:right">
+                      <a href="https://app.swaggerhub.com/api/njall/TeSS/1.0.0/">
+                        <%= image_tag 'swagger.png', size: "50x50"%>
+                      </a>
+                      </span>
+          <span>
+                        <p>TeSS has a fully functioning JSON-API. Information about request parameters and return objects can
+                        be found in our <a href="https://app.swaggerhub.com/api/njall/TeSS/1.0.0/">
+                          Swagger Hub Documentation</a>
+                        </p>
+                        <p> As a rule of thumb - You can add .json to the end of most pages to retrieve the data in a common exchange format</p>
+                      </span>
+          </div>
+    </div>
+  </div>
+</div>

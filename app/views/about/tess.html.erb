@@ -1,2 +1,98 @@
+<div class="wrapper">
 
-  <%= render :partial => 'about_nav' %>
+      <div id="sidebar" class="popout-sidebar">
+        <%= render :partial => 'about_nav', locals: {show: 'home'} %>
+      </div>
+
+
+
+  <div id="content" class="about-block">
+    <div class="row">
+
+        <div id='trainingregistry' class="h3">The ELIXIR Training Registry</div>
+        One of the goals of <%= link_to 'ELIXIR', 'https://elixir-europe.org', target: '_blank' %> (Europe's distributed infrastructure for life-science data) is to train research scientists to better use available computational infrastructures to address critical research questions. This requires access both to face-to-face training opportunities and to disparate training materials and resources, currently dispersed across Europe. TeSS is ELIXIR's training platform, providing a one-stop shop for trainers  and trainees, to find online training content such as training materials, events, and interactive tutorials. For ELIXIR nodes, TeSS provides opportunities to promote training events and news, and to contribute to a growing catalogue of materials; for trainers, the portal offers an environment for sharing materials; for trainees, it offers a convenient portal for identifying relevant training events and resources, and navigating specific training tasks via customised workflows
+
+        <!-- EVENTS-->
+        <div class="row odd-about-block">
+          <div class="col-lg-2 about-resource-icon">
+            <%= link_to events_path do %>
+            <i class="fa fa-calendar about-icons"></i><br>Visit Events
+            <% end %>
+          </div>
+          <div class="col-lg-10 about-resource">
+          <div id='events' class="h4">Events</div>
+            <p>Events in TeSS are defined as any opportunity that has a set start and end time. Our events are primarily training events such as workshops, courses, webinars, and other learning opportunities; but we also collect events information about conferences, meetings, and hackathons as these also contain learning opportunities. Events can be online or face-to-face.</p>
+            <p>A significant portion of TeSS' initial content was contributed by iAnn.pro who was also an events announcement platform.</p>
+            <p>TeSS collects events from <%=Event.all.collect{|x| x.content_provider_id}.uniq.count%> different content providers. We supplement the information that we collect with geolocation information found using <%= link_to 'Nominatim', 'https://wiki.openstreetmap.org/wiki/Nominatim' %>.</p>
+          </div>
+        </div>
+
+        <!-- MATERIALS-->
+        <div class="row even-about-block">
+          <div class="col-lg-2 about-resource-icon">
+              <%= link_to events_path do %>
+                <i class="fa fa-book about-icons"></i><br>Visit Materials
+              <% end %>
+            </div>
+            <div class="col-lg-10 about-resource">
+              <div id='materials' class="h4">Materials</div>
+              <p>Materials in TeSS are defined as any training opportunity which can be accessed at anytime. These include tutorials a variety of different formats including e-Learning courses, videos, powerpoints, and websites.</p>
+              <p>TeSS collects materials from <%=Material.all.collect{|x| x.content_provider_id}.uniq.count%> different content providers.</p>
+            </div>
+        </div>
+
+        <!-- WORKFLOWS -->
+        <div class="odd-about-block">
+          <div class="row">
+            <div class="col-lg-2 about-resource-icon">
+              <%= link_to events_path do %>
+              <i class="fa fa-sitemap about-icons"></i><br>Visit Workflows
+              <% end %>
+            </div>
+            <div class="col-lg-10 about-resource">
+              <div id='workflows' class="h4">Workflows</div>
+              <p>TeSS includes a number of graphical ‘training workflows’. There are three main workflow concepts - Educational Resources, Learning Pathways and Concept Maps. These encapsulate different types of, and/or approaches to, training, at different levels of granularity, within easy-to-use visual displays.</p>
+            </div>
+          </div>
+
+          <!-- INDIVIDUAL WORKFLOW TYPES-->
+          <div class="sub-about-block">
+            <div class="h5">Learning Paths</div>
+            <p>Trainees wishing to learn new skills essentially need to embark on a path, or developmental trajectory, in order to advance from one competency level to another. Learning paths aim to structure relevant training modules within simple visual workflows that highlight the set of resources users need to study in order to advance to higher competency levels, and hence accomplish their learning objectives. Learning paths are being developed by ELIXIR TeSS, ELIXIR-NL and ELIXIR UK.</p>
+          </div>
+          <div class="sub-about-block">
+            <div class="h5">Concept Maps</div>
+              <p>ELIXIR has developed several registries that contain and promote resources that end-users can exploit: training resources in TeSS; software tools in bio.tools; databases, standards and policies in Fairsharing. Concept maps provide overviews of typical data-analysis pipelines, surfacing the relevant tools and databases, and showing how these resources fit together. Concept maps are being developed by ELIXIR TeSS, ELIXIR-EE and ELIXIR-BE. </p>
+          </div>
+          <div class="sub-about-block">
+            <div class="h5">Educational Resource</div>
+              <p>Trainees are provided with sets of practical tasks, linked to associated online tools and/or databases, within self-contained ‘modules’. Each module includes a series of questions or ‘Reflections’ to provoke critical thinking about the tasks trainees have completed. Workflows of this type are also accompanied by succinct statements of teaching aims and learning outcomes, to convey to trainees what they will be able to do once they have completed a given module. Multiple Choice Quiz questions are also provided to verify trainee understanding at the end of a module; and additional background information and further reading are included to help support trainee learning and enquiry. Educational Resources for introductory sequence and structural bioinformatics are currently being developed by ELIXIR TeSS, ELIXIR-UK and the UK Structural Bioinformatics group (via the FunPDBe project)</p>
+          </div>
+        </div>
+
+        <!-- SUBSCRIBE-->
+        <div class="row even-about-block">
+          <div class="row">
+            <div class="col-lg-12">
+            <div id='subscribe' class="h3">Subscribe</div>
+            <p>To stay informed about courses, workshops and conferences that interest you, you can use TeSS’s subscription feature. Simply select the relevant filters and click the subscribe button. You can then choose to receive email notifications about upcoming events, or have them automatically added to your preferred calendar application.</p>
+            <%= image_tag 'about/subscription.png', class: "widgets_guide"%>
+            <p> You can use the <%= link_to 'subscriptions manager', subscriptions_path %> page to change the frequency or remove any subscriptions you have created </p>
+          </div>
+          </div>
+        </div>
+
+        <!-- WIDGET & API -->
+        <div class="row odd-about-block">
+          <div class="row">
+            <div class="col-lg-12">
+              <div id='widget' class="h3">Widget & API</div>
+              TeSS has an API and widgets
+              <%= link_to 'Visit our developers guide', developers_path, class: 'btn btn-danger' %>
+          </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+</div>

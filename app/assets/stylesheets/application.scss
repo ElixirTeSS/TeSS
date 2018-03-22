@@ -239,6 +239,7 @@ ul.unstyled {
 
 .nav-item {
   padding: 7px 20px;
+  width: 100%;
 }
 
 .nav-item > a {
@@ -787,5 +788,62 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
 }
 
 .widgets_guide {
-  width: 100%;
+  width: 80%;
+}
+
+.about-icons{
+  font-size: 10em;
+  color: gray;
+}
+
+.about-block{
+  padding: 30px 70px;
+}
+
+.odd-about-block {
+    padding: 20px;
+    background-color: #ededed;
+    border-radius: 5px;
+  }
+
+
+.even-about-block {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.sub-about-block {
+    background-color: white;
+    padding: 12px;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.about-resource {
+  padding: 0 50px;
+
+}
+
+.about-resource-icon{
+  padding: 35px 10px;
+  text-align: center;
+}
+.register-condition{
+    font-size: medium;
+    text-align: center;
+}
+.register-condition-graphic{
+  text-align: center;
+}
+.struct_data_type_logo{
+  max-width: 100px;
+  padding: 20px 0;
+}
+.data-type-examples{
+  padding-top: 20px;
+}
+.licence-logo{
+  width: 30%;
+  margin: auto;
 }

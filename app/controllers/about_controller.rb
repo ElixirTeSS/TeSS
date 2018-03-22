@@ -3,10 +3,13 @@ class AboutController < ApplicationController
   def tess
   end
 
-  def project
+  def us
   end
 
-  def features
+  def registering
+  end
+
+  def developers
   end
 
 end

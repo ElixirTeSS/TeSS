@@ -16,8 +16,9 @@ Rails.application.routes.draw do
 
   #get 'static/home'
   get 'about' => 'about#tess', as: 'about'
-  get 'about/features' => 'about#features'
-  get 'about/project' => 'about#project'
+  get 'about/registering' => 'about#registering', as: 'registering_resources'
+  get 'about/developers' => 'about#developers', as: 'developers'
+  get 'about/us' => 'about#us', as: 'us'
 
 
   get 'privacy' => 'static#privacy', as: 'privacy'

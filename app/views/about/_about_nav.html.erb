@@ -1,92 +1,91 @@
   
     <!-- SIDEBAR -->
-    <div data-spy="scroll" data-target="navbar-example" class="col-md-3" id="sidebar" style="position:relative">
-      <ul class="unstyled  nav-tabs" class='navbar-example' role="tablist">
-        <li><h4 class="nav-heading">About</h4></li>
-        <li class="nav-item">
-          <a href="#about" title="">
-            TeSS
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#about" title="">
-            -- Be included in the TeSS registry
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#about" title="">
-            ---- Automatic Registration
-          </a>
-        </li>         
-        <li class="nav-item">
-          <a href="#about" title="">
-            ---- Manual Registration
-          </a>
-        </li>         
-        <li class="nav-item">
-          <a href="#about" title="">
-            -- Share training with your community
-          </a>
-        </li> 
-        <li class="nav-item">
-          <a href="#about" title="">
-            ---- Widgets
-          </a>
-        </li> 
-        <li class="nav-item">
-          <a href="#about" title="">
-            ---- API
-          </a>
-        </li> 
-        <li class="nav-item">
-            <%= link_to "Project", controller: 'about', action: 'project' %>
-        </li>
-        <li class="nav-item">
-            <%= link_to "Features", controller: 'about', action: 'features' %>
-        </li>
-        <li class="nav-item">
-          <a href="#workflows" title="">
-            -- Workflows
-          </a>
-        </li>
 
 
-        <li class="nav-item"></li>
-        <li class="nav-item"></li>
-        <li class="nav-item"></li>
-        <li class="nav-item"></li>
-        <li class="nav-item"></li>
-        <li class="nav-item"></li>
-        <li class="nav-item"></li>
-        <li class="nav-item"></li>
-        <li class="nav-item"></li>
-        <li class="nav-item"></li>
-        <li class="nav-item"></li>
-        <li class="nav-item"></li>
-        <li class="nav-item"></li>
-        <li class="nav-item">
-          <a href="#howtoadd">
-            How to add your resources
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#api">
-            API
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#faq">FAQ</a>
-        </li>
-        <li class="nav-item">
-          <a href="#ack">
-            Acknowledgements
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#software">
-            Software
-          </a>
-        </li>
+    <div data-spy="scroll" data-target="navbar-example" class="col-md-3" id="sidebar">
+      <ul class="unstyled nav-tabs" class='navbar-example' role="tablist">
 
+        <!-- WHAT IS TESS -->
+        <li class="nav-heading h4"><%= link_to 'What is TeSS', about_path %></li>
+            <li class="nav-item">
+              <a href="#trainingregistry" title="">Training Registry</a>
+              <a href="#events" title="">-- Events</a>
+              <a href="#materials" title="">-- Materials</a>
+              <a href="#workflows" title="">-- Workflows</a>
+            </li>
+            <li class="nav-item">
+              <a href="#subscribe" title="">Subscribe to notifications</a>
+            </li>
+            <li class="nav-item">
+              <a href="#widgets" title="">Widgets & API</a>
+            </li>
+
+        <!-- REGISTERING YOUR RESOURCES -->
+        <li class="nav-heading h4"><%= link_to 'Registering Content in TeSS', registering_resources_path %></li>
+            <li class="nav-item">
+              <a href="#include" title="">
+                How we Source Content in TeSS
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a href="#how" title="">
+                Be included in the TeSS registry
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#automatic" title="">
+                -- Automatic Registration
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#bioschemas" title="">
+                ---- Bioschemas
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#manual" title="">
+                -- Manual Registration
+              </a>
+            </li>
+
+
+        <!-- DEVELOPERS -->
+        <li class="nav-heading h4"><%= link_to 'Developers', developers_path %></li>
+            <li class="nav-item">
+              <a href="#share" title="">Data</a>
+            </li>
+            <li class="nav-item">
+              <a href="#widgets" title="">Widgets</a>
+            </li>
+            <li class="nav-item">
+              <a href="#api" title="">API</a>
+            </li>
+            <li class="nav-item">
+              <a href="#software">
+                Our Codebase
+              </a>
+            </li>
+
+
+
+        <!-- ABOUT US -->
+        <li class="nav-heading h4"><%= link_to 'About Us', us_path %></li>
+            <li class="nav-item">
+              <a href="#contact">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a href="#team">The Team</a>
+            </li>
+            <li class="nav-item">
+              <a href="#funding">Funding</a>
+            </li>
+            <li class="nav-item">
+              <a href="#acknowledgments">
+                Acknowledgements
+              </a>
+            </li>
       </ul>
     </div>
+
+
