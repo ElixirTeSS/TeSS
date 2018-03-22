@@ -24,7 +24,6 @@ class ApplicationController < ActionController::Base
 
   # Do some access control - see policies folder for individual policies on models
   include Pundit
-  protect_from_forgery
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
