@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'ostruct'
 
 class UserTest < ActiveSupport::TestCase
   setup do
@@ -57,7 +58,17 @@ class UserTest < ActiveSupport::TestCase
 
   test "should not save with nil password" do
     user = User.new(@user_params.merge(password: nil))
+    assert user.password_required?
+    refute user.using_omniauth?
     assert_not user.save, 'Saved user with no password'
+  end
+
+  test "should save with nil password if using omniauth" do
+    user = User.new(@user_params.merge(password: nil, provider: 'elixir_aai', uid: 'abcdefg'))
+    refute user.password_required?
+    assert user.using_omniauth?
+    assert user.save
+    assert user.reload.encrypted_password.blank?
   end
 
   test "should not save with password under 8 characters" do
@@ -112,5 +123,29 @@ class UserTest < ActiveSupport::TestCase
     user = users(:regular_user)
     user.email = 'new-email@example.com'
     assert user.save
+  end
+
+  test 'generates appropriate usernames from AAI auth info' do
+    auth_info = OpenStruct.new({ nickname: 'coolguy1996', openid: 'coolguyinmcr', email: 'richard.smith@example.com' })
+    refute User.where(username: 'coolguy1996').any?
+    assert_equal 'coolguy1996', User.username_from_auth_info(auth_info)
+
+    auth_info = OpenStruct.new({ openid: 'coolguyinmcr', email: 'richard.smith@example.com' })
+    refute User.where(username: 'coolguyinmcr').any?
+    assert_equal 'coolguyinmcr', User.username_from_auth_info(auth_info)
+
+    auth_info = OpenStruct.new({ email: 'richard.smith@example.com' })
+    refute User.where(username: 'richard.smith').any?
+    assert_equal 'richard.smith', User.username_from_auth_info(auth_info)
+
+    auth_info = OpenStruct.new({})
+    refute User.where(username: 'user').any?
+    assert_equal 'user', User.username_from_auth_info(auth_info)
+
+    User.create({ username: 'user', password: '12345678', email: 'new-user@example.com' })
+    auth_info = OpenStruct.new({})
+    assert User.where(username: 'user').any?
+    refute User.where(username: 'user1').any?
+    assert_equal 'user1', User.username_from_auth_info(auth_info)
   end
 end

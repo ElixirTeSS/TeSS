@@ -9,6 +9,17 @@ class TessDevise::RegistrationsController < Devise::RegistrationsController
     user_path(resource)
   end
 
+  protected
+
+  def update_resource(resource, params)
+    if current_user.using_omniauth?
+      params.delete(:current_password)
+      resource.update_without_password(params)
+    else
+      super
+    end
+  end
+
   private
 
   # Pinched from https://github.com/plataformatec/devise/wiki/How-To:-Use-Recaptcha-with-Devise
