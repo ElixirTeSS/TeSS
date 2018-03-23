@@ -824,6 +824,15 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
   padding: 0 50px;
 
 }
+.licence-title{
+  text-align: center;
+}
+
+.licence-logo{
+  font-size: 5em;
+  color: gray;
+}
+
 
 .about-resource-icon{
   padding: 35px 10px;
@@ -833,8 +842,12 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
     font-size: medium;
     text-align: center;
 }
+
 .register-condition-graphic{
   text-align: center;
+  width: 150px;
+  margin: auto;
+  padding: 20px 0;
 }
 .struct_data_type_logo{
   max-width: 100px;
@@ -843,7 +856,17 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
 .data-type-examples{
   padding-top: 20px;
 }
-.licence-logo{
-  width: 30%;
-  margin: auto;
+.open-access-box{
+  background-color: white;
+  border-radius: 10px;
+  margin: 0 20px;
+  padding: 15px 5px;
+}
+
+.open-access-licence{
+  width: 250px;
+}
+
+.open-access-location{
+  width: 250px;
 }
