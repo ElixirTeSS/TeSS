@@ -46,19 +46,14 @@ def process_record(record)
 end
 
 def get_bad_response(url)
+  user_agent = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1'
   begin
-    sleep(rand(20))
-    uri = URI(url)
-    Net::HTTP.start(uri.host, uri.port) do |http|
-      request = Net::HTTP::Head.new(uri, {'User-Agent' => 'Link Validity Check'})
-      response = http.request request
-      #puts response.code
-
-      return nil if response.code.to_s =~ /2[0-9]{2}/  # Success!
-      return nil if response.code.to_s =~ /3[0-9]{2}/  # Redirection
-
-      return response.code
-    end
+    sleep(rand(10))
+    response = HTTParty.head(url)
+    #puts "#{response.code}, #{url}"
+    return nil if response.code.to_s =~ /2[0-9]{2}/  # Success!
+    return nil if response.code.to_s =~ /3[0-9]{2}/  # Redirection
+    return response.code
   rescue EOFError => e
     puts "#{e}|#{url}"
   rescue SocketError => e
