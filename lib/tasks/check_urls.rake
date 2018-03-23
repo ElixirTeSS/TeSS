@@ -58,6 +58,10 @@ def get_bad_response(url)
     puts "#{e}|#{url}"
   rescue SocketError => e
     puts "#{e}|#{url}"
+  rescue Net::ReadTimeout => e
+    puts "#{e}|#{url}"
+  rescue StandardError => e
+    puts "#{e}|#{url}"
   end
 end
 
