@@ -47,7 +47,7 @@ module Tess
     private
 
     def load_dictionary
-      YAML.load(File.read(dictionary_filepath)).with_indifferent_access
+      YAML.safe_load(File.read(dictionary_filepath)).with_indifferent_access
     end
 
   end

@@ -45,10 +45,10 @@ Rails.application.configure do
 end
 
 # Override secrets/config with test configuration from test/config
-test_tess = YAML.load(File.read(File.join(Rails.root, 'test', 'config', 'test_tess.yml')))
+test_tess = YAML.safe_load(File.read(File.join(Rails.root, 'test', 'config', 'test_tess.yml')), [Regexp])
 test_tess.each do |key, value|
   TeSS::Config[key] = value
 end
 
-test_secrets = YAML.load(File.read(File.join(Rails.root, 'test', 'config', 'test_secrets.yml'))).symbolize_keys!
+test_secrets = YAML.safe_load(File.read(File.join(Rails.root, 'test', 'config', 'test_secrets.yml'))).symbolize_keys!
 Rails.application.secrets.merge!(test_secrets)
