@@ -24,6 +24,7 @@ module ApplicationHelper
       material: { icon: 'fa-book', message: 'This is a training material' },
       suggestion: { icon: 'fa-commenting-o', message: 'This record has one or more suggested scientific topics'},
       private: { icon: 'fa-eye-slash', message: 'This resource is private' },
+      missing: { icon: 'fa-chain-broken', message: 'This resource has been offline for over three days'}
   }.freeze
 
   def scrape_status_icon(record, size = nil)
@@ -36,6 +37,14 @@ module ApplicationHelper
       end
     end
     nil
+  end
+
+  def missing_icon(record, size = nil)
+    if record.link_monitor
+      if record.link_monitor.failing?
+        return "<span class='missing-icon pull-right'>#{icon_for(:missing, size)}</span>".html_safe
+      end
+    end
   end
 
   def suggestion_icon(record,size = nil)
@@ -374,16 +383,6 @@ module ApplicationHelper
 
     link_to '', '#', class: 'btn btn-default',
             data: { role: 'star-button', starred: !star.nil?, resource: { id: resource.id, type: resource.class.name } }
-  end
-
-  # TODO: Provide some appropriate UI changes (hiding or icons) for this.
-  def failing(resource)
-    if resource.link_monitor
-      if resource.link_monitor.failing?
-        return true
-      end
-    end
-    false
   end
 
 end

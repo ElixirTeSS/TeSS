@@ -41,6 +41,7 @@
               <h2>
                 <%=t '.title', :default => @material.title %>
                 <%= scrape_status_icon(@material, 'large') if current_user and current_user.is_admin? %>
+                <%= missing_icon(@material, 'large') if current_user and current_user.is_admin? %>
                 <%= suggestion_icon(@material, 'large') if current_user and current_user.is_admin? -%>
               </h2>
               <p>
