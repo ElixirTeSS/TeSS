@@ -164,4 +164,15 @@ class MaterialTest < ActiveSupport::TestCase
       end
     end
   end
+
+  test 'can still retrieve deprecated topics' do
+    material = materials(:good_material)
+    material.scientific_topic_uris = ['http://edamontology.org/topic_0213'] # Deprecated "Mice or rats" topic
+    material.save!
+
+    assert_includes material.reload.scientific_topic_names, 'Mice or rats'
+    topic = material.scientific_topics.last
+    assert_equal 'Mice or rats', topic.label
+    assert topic.deprecated?
+  end
 end

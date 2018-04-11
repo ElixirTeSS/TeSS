@@ -26,7 +26,7 @@ class EdamControllerTest < ActionController::TestCase
     assert_response :success
 
     res = JSON.parse(response.body)
-    assert_equal 12, res.length
+    assert_equal 14, res.length
     labels = res.map { |t| t['preferred_label'] }
     uris = res.map { |t| t['uri'] }
     assert_includes labels, 'RNA splicing'
@@ -53,4 +53,27 @@ class EdamControllerTest < ActionController::TestCase
     assert_includes res.map { |t| t['preferred_label'] }, 'Database management'
   end
 
+  test 'should filter out deprecated terms' do
+    # <EDAM::Term @ontology=EDAM::OldOntology, @uri=http://edamontology.org/operation_0467, label: Protein secondary structure prediction (integrated)>
+    # <EDAM::Term @ontology=EDAM::OldOntology, @uri=http://edamontology.org/operation_0421, label: Protein folding site prediction>
+    # <EDAM::Term @ontology=EDAM::OldOntology, @uri=http://edamontology.org/operation_3088, label: Protein property calculation (from sequence)>
+    # <EDAM::Term @ontology=EDAM::OldOntology, @uri=http://edamontology.org/operation_2506, label: Protein sequence alignment analysis>
+    deprecated_protein_operation_uris = %w(
+    http://edamontology.org/operation_0467
+    http://edamontology.org/operation_0421
+    http://edamontology.org/operation_3088
+    http://edamontology.org/operation_2506)
+
+    deprecated_protein_operation_uris.each do |uri|
+      term = EDAM::Ontology.instance.lookup(uri)
+      assert term, "#{uri} should be present in EDAM ontology"
+      assert term.deprecated?, "#{uri} should be flagged as deprecated in EDAM ontology"
+    end
+
+    get :operations, filter: 'Protein ', format: :json
+    assert_response :success
+    res = JSON.parse(response.body)
+    uris = res.map { |t| t['uri'] }
+    refute (uris & deprecated_protein_operation_uris).any?, "Response should not contain any deprecated URIs"
+  end
 end
