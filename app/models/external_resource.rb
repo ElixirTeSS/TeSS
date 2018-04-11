@@ -1,6 +1,7 @@
 class ExternalResource < ActiveRecord::Base
 
   belongs_to :source, polymorphic: true
+  has_one :link_monitor, as: :lcheck, dependent: :destroy
 
   validates :title, :url, presence: true
   validates :url, url: true

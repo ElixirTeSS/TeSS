@@ -375,4 +375,15 @@ module ApplicationHelper
     link_to '', '#', class: 'btn btn-default',
             data: { role: 'star-button', starred: !star.nil?, resource: { id: resource.id, type: resource.class.name } }
   end
+
+  # TODO: Provide some appropriate UI changes (hiding or icons) for this.
+  def failing(resource)
+    if resource.link_monitor
+      if resource.link_monitor.failing?
+        return true
+      end
+    end
+    false
+  end
+
 end

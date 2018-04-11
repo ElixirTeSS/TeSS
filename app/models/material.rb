@@ -68,6 +68,7 @@ class Material < ActiveRecord::Base
   # has_one :owner, foreign_key: "id", class_name: "User"
   belongs_to :user
   has_one :edit_suggestion, as: :suggestible, dependent: :destroy
+  has_one :link_monitor, as: :lcheck, dependent: :destroy
   has_many :package_materials
   has_many :packages, through: :package_materials
   has_many :event_materials, dependent: :destroy

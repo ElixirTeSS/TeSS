@@ -3,7 +3,7 @@ namespace :tess do
   # At present the records aren't logging when they were last checked.
   # This must eventually be added, perhaps with some means of marking
   # those which have failed, e.g. with a badge.
-  # This is for ticket #511.
+  # This is for tickets #511 and #517.
 
   desc 'Check all URLs for materials'
   task check_material_urls: :environment do
@@ -23,30 +23,58 @@ end
 
 def process_record(record)
 
-  #puts "Checking: #{record.id}, #{record.url}"
+  puts "Checking: #{record.id}, #{record.url}"
   if record.url
     code = get_bad_response(record.url)
     if code
       puts "#{code}|#{record.id}|#{record.url}"
+      if record.link_monitor
+        record.link_monitor.fail!(code)
+        record.link_monitor.save!
+      else
+        m = LinkMonitor.create! url: record.url, code: code
+        record.link_monitor = m
+        record.save!
+      end
+    else
+      if record.link_monitor
+        record.link_monitor.success!
+        record.link_monitor.save!
+      end
     end
   end
 
   record.external_resources.each do |res|
     next unless res.url
 
-    #puts "Checking (ER): #{res.id}, #{res.url}"
+    puts "Checking (ER): #{res.id}, #{res.url}"
     code = get_bad_response(record.url)
 
     if code
       puts "#{code}|#{record.id}|#{record.url}|#{res.id}|#{res.url}"
+      if record.link_monitor
+        record.link_monitor.fail!(code)
+        record.link_monitor.save!
+      else
+        m = LinkMonitor.create! url: record.url, code: code
+        record.link_monitor = m
+        record.save!
+      end
+    else
+      if record.link_monitor
+        record.link_monitor.succcess!
+        record.link_monitor.save!
+      end
     end
+    record.save!
   end
 
 
 end
 
+# The fake return codes on an exception are so the LinkMonitor object has something
+# to store as "code" which might be tracked back to a particular problem.
 def get_bad_response(url)
-  user_agent = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1'
   begin
     sleep(rand(10))
     response = HTTParty.head(url)
@@ -56,12 +84,16 @@ def get_bad_response(url)
     return response.code
   rescue EOFError => e
     puts "#{e}|#{url}"
+    return 490
   rescue SocketError => e
     puts "#{e}|#{url}"
+    return 491
   rescue Net::ReadTimeout => e
     puts "#{e}|#{url}"
+    return 492
   rescue StandardError => e
     puts "#{e}|#{url}"
+    return 493
   end
 end
 
