@@ -373,6 +373,7 @@ class Event < ActiveRecord::Base
     end
   end
 
+
   private
 
   def allowed_url

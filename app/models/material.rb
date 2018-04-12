@@ -57,6 +57,9 @@ class Material < ActiveRecord::Base
       time :updated_at
       time :created_at
       time :last_scraped
+      string :failing do
+        failing?.to_s
+      end
       string :user do
         user.username if user
       end
@@ -116,4 +119,7 @@ class Material < ActiveRecord::Base
 
     material
   end
+
+
+
 end

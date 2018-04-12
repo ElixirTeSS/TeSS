@@ -42,6 +42,11 @@ class ExternalResource < ActiveRecord::Base
     return ''
   end
 
+  def failing?
+    return false unless link_monitor
+    link_monitor.failing?
+  end
+
   private
 
   def tool_id

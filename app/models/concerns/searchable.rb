@@ -92,7 +92,21 @@ module Searchable
         unless user && (user.shadowbanned? || user.is_admin?)
           without(:user_id, User.shadowbanned.pluck(:id))
         end
+
+        # Hide records the urls of which are failing
+        unless user && user.is_admin?
+          without(:failing, 'true')
+        end
+
       end
     end
   end
+
+  def failing?
+    return false unless link_monitor
+    link_monitor.failing?
+  rescue NoMethodError
+    false
+  end
+
 end
