@@ -40,11 +40,30 @@ module ApplicationHelper
   end
 
   def missing_icon(record, size = nil)
+    if failing(record)
+      return "<span class='missing-icon pull-right'>#{icon_for(:missing, size)}</span>".html_safe
+    end
+    nil
+  end
+
+  def failing(record)
     if record.link_monitor
       if record.link_monitor.failing?
-        return "<span class='missing-icon pull-right'>#{icon_for(:missing, size)}</span>".html_safe
+        return true
       end
     end
+    false
+  end
+
+  def hide_failing(record)
+    if current_user && current_user.is_admin?
+      return false
+    else
+      if failing(record)
+        return true
+      end
+    end
+    false
   end
 
   def suggestion_icon(record,size = nil)
