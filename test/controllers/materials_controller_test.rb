@@ -24,6 +24,15 @@ class MaterialsControllerTest < ActionController::TestCase
         url: 'http://new.url.com',
         content_provider_id: ContentProvider.first.id
     }
+    @failing_material = materials(:good_material)
+    @failing_material.title = 'Fail!'
+    @monitor = LinkMonitor.create! url: @failing_material.url, code: 404
+    @monitor.failed_at = Time.parse('1912-04-15 02:20')
+    @failing_material.link_monitor = @monitor
+    @failing_material.save!
+    # TODO: Think of a way to test whether failing materials are successfully hidden
+    # TODO: in the SOLR search.
+
   end
 
   #Tests
@@ -50,6 +59,7 @@ class MaterialsControllerTest < ActionController::TestCase
       TeSS::Config.solr_enabled = false
     end
   end
+
 
   test 'should get index as json' do
     @material.scientific_topic_uris = ['http://edamontology.org/topic_0654']
@@ -990,4 +1000,5 @@ class MaterialsControllerTest < ActionController::TestCase
       patch :update, id: @material_with_suggestions, material: @updated_material_with_suggestions
     end
   end
+
 end

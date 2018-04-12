@@ -20,6 +20,7 @@ class MaterialTest < ActiveSupport::TestCase
                              :authors => ['horace', 'flo'],
                              :content_provider => ContentProvider.first)
     @material.save!
+
   end
 
   test 'should reassign owner when user deleted' do

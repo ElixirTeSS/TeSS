@@ -120,6 +120,4 @@ class Material < ActiveRecord::Base
     material
   end
 
-
-
 end

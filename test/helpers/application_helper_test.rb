@@ -16,9 +16,11 @@ class ApplicationHelperTest < ActionView::TestCase
     @old_iann_event.last_scraped = Time.parse('1912-04-14 11:40')
     @old_iann_event.scraper_record = true
     @failing_material = materials(:good_material)
+    @failing_material.title = 'Fail!'
     @monitor = LinkMonitor.create! url: @failing_material.url, code: 404
     @monitor.failed_at = Time.parse('1912-04-15 02:20')
     @failing_material.link_monitor = @monitor
+    @failing_material.save!
 
   end
 
