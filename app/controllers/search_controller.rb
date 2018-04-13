@@ -17,6 +17,11 @@ class SearchController < ApplicationController
 
           with('end').greater_than(Time.zone.now) if model_name == 'Event'
 
+          # Hide failing records
+          unless current_user && current_user.is_admin?
+            without(:failing, 'true')
+          end
+          
           if model.attribute_method?(:user)
             # Hide shadowbanned users' events, except from other shadowbanned users and administrators
             unless current_user && (current_user.shadowbanned? || current_user.is_admin?)
