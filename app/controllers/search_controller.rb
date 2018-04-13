@@ -19,9 +19,13 @@ class SearchController < ApplicationController
 
           # Hide failing records
           unless current_user && current_user.is_admin?
-            without(:failing, 'true')
+            begin
+              without(:failing, 'true')
+            rescue
+              # TODO: Find a way to detect if a model responds to "failing" without this hack.
+            end
           end
-          
+
           if model.attribute_method?(:user)
             # Hide shadowbanned users' events, except from other shadowbanned users and administrators
             unless current_user && (current_user.shadowbanned? || current_user.is_admin?)
