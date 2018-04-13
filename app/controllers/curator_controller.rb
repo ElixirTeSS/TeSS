@@ -32,6 +32,16 @@ class CuratorController < ApplicationController
     end
   end
 
+  def users
+    role = params[:role] if current_user.is_admin?
+    role ||= 'unverified_user'
+    @users = User.with_role(role).unbanned
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
   private
 
   def action_count_for(action)
@@ -39,8 +49,9 @@ class CuratorController < ApplicationController
   end
 
   def check_curator
-    flash[:alert] = 'This page is only visible to curators.'
-    handle_error(:forbidden) unless current_user && (current_user.is_admin? || current_user.is_curator?)
+    unless current_user && (current_user.is_admin? || current_user.is_curator?)
+      flash[:alert] = 'This page is only visible to curators.'
+      handle_error(:forbidden)
+    end
   end
-
 end

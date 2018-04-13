@@ -177,14 +177,14 @@ class UserTest < ActiveSupport::TestCase
     assert_not_includes User.unbanned, users(:shadowbanned_user)
     assert_not_includes User.unbanned, users(:shadowbanned_unverified_user)
 
-    assert_not_includes User.unverified, users(:regular_user)
-    assert_includes User.unverified, users(:unverified_user)
-    assert_not_includes User.unverified, users(:shadowbanned_user)
-    assert_includes User.unverified, users(:shadowbanned_unverified_user)
-
-    assert_not_includes User.unbanned.unverified, users(:regular_user)
-    assert_includes User.unbanned.unverified, users(:unverified_user)
-    assert_not_includes User.unbanned.unverified, users(:shadowbanned_user)
-    assert_not_includes User.unbanned.unverified, users(:shadowbanned_unverified_user)
+    assert_not_includes User.with_role('unverified_user'), users(:regular_user)
+    assert_includes User.with_role('unverified_user'), users(:unverified_user)
+    assert_not_includes User.with_role('unverified_user'), users(:shadowbanned_user)
+    assert_includes User.with_role('unverified_user'), users(:shadowbanned_unverified_user)
+    
+    assert_not_includes User.unbanned.with_role('unverified_user'), users(:regular_user)
+    assert_includes User.unbanned.with_role('unverified_user'), users(:unverified_user)
+    assert_not_includes User.unbanned.with_role('unverified_user'), users(:shadowbanned_user)
+    assert_not_includes User.unbanned.with_role('unverified_user'), users(:shadowbanned_unverified_user)
   end
 end

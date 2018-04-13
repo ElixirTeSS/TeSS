@@ -213,8 +213,8 @@ class User < ActiveRecord::Base
     User.unique_username(user_name)
   end
 
-  def self.unverified
-    joins(:role).where(roles: { name: 'unverified_user' })
+  def self.with_role(role_name)
+    joins(:role).where(roles: { name: role_name })
   end
 
   def self.unbanned
