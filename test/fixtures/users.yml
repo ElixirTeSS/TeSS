@@ -93,3 +93,19 @@ basic_user:
   confirmed_at: <%= Time.zone.now %>
   role: basic_user
   authentication_token: <%= Devise.friendly_token %>
+
+unverified_user:
+  username: unverified
+  email: 'unverified@notarealdomain.org'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'hello') %>
+  confirmed_at: <%= Time.zone.now %>
+  role: unverified_user
+  authentication_token: <%= Devise.friendly_token %>
+
+shadowbanned_unverified_user:
+  username: naughtyspammer
+  email: 'naughtyspammer@notarealdomain.org'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'hello') %>
+  confirmed_at: <%= Time.zone.now %>
+  role: unverified_user
+  authentication_token: <%= Devise.friendly_token %>

@@ -217,6 +217,10 @@ class User < ActiveRecord::Base
     joins(:role).where(roles: { name: 'unverified_user' })
   end
 
+  def self.unbanned
+    joins('LEFT OUTER JOIN "bans" on "bans"."user_id" = "users"."id"').where(bans: { id: nil })
+  end
+
   private
 
   def reassign_owner
