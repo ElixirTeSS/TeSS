@@ -121,8 +121,10 @@ class UserTest < ActiveSupport::TestCase
 
   test 'change email' do
     user = users(:regular_user)
-    user.email = 'new-email@example.com'
-    assert user.save
+    assert_no_difference('PublicActivity::Activity.count') do
+      user.email = 'new-email@example.com'
+      assert user.save
+    end
   end
 
   test 'generates appropriate usernames from AAI auth info' do
@@ -147,5 +149,25 @@ class UserTest < ActiveSupport::TestCase
     assert User.where(username: 'user').any?
     refute User.where(username: 'user1').any?
     assert_equal 'user1', User.username_from_auth_info(auth_info)
+  end
+
+  test 'should log role change' do
+    user = users(:regular_user)
+    original_role = user.role
+    new_role = roles(:admin)
+    admin = users(:admin)
+    User.current_user = admin
+
+    assert_difference('PublicActivity::Activity.count', 1) do
+      assert user.update_attributes(role_id: new_role.id)
+    end
+
+    assert_equal roles(:admin), user.reload.role
+    activity = user.activities.last
+    assert_equal admin, activity.owner
+    assert_equal user, activity.trackable
+    assert_equal 'user.change_role', activity.key
+    assert_equal original_role.id, activity.parameters[:old]
+    assert_equal new_role.id, activity.parameters[:new]
   end
 end

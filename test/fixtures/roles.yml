@@ -14,3 +14,7 @@ curator:
 
 basic_user:
   name: basic_user
+
+unverified_user: # Content requires approval before being visible
+  name: unverified_user
+  title: New user
