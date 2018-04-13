@@ -4,16 +4,16 @@ class ApplicationHelperTest < ActionView::TestCase
 
   setup do
     @old_material = materials(:bad_material)
-    @old_material.last_scraped = Time.parse('1912-04-14 11:40')
+    @old_material.last_scraped = Time.parse('1912-04-14 23:40')
     @old_material.scraper_record = true
     @new_material = materials(:good_material)
     @new_material.last_scraped = Time.now
     @new_material.scraper_record = true
     @old_event = events(:one)
-    @old_event.last_scraped = Time.parse('1912-04-14 11:40')
+    @old_event.last_scraped = Time.parse('1912-04-14 23:40')
     @old_event.scraper_record = true
     @old_iann_event = events(:iann_event)
-    @old_iann_event.last_scraped = Time.parse('1912-04-14 11:40')
+    @old_iann_event.last_scraped = Time.parse('1912-04-14 23:40')
     @old_iann_event.scraper_record = true
     @failing_material = materials(:good_material)
     @failing_material.title = 'Fail!'

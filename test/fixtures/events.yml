@@ -191,3 +191,12 @@ shadowbanned_event:
   longitude: -2.233949
   keywords: ["Predatory"]
   user: shadowbanned_user
+
+failing_event:
+  title: Collision With Iceberg
+  url: http://white-star.com/frc
+  description: 'Women and children first'
+  user: scraper_user
+  content_provider: portal_provider
+  start: 1914-04-14 23:40:00
+  end: 1914-04-15 02:20:00

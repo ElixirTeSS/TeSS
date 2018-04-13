@@ -14,6 +14,12 @@ class EventsControllerTest < ActionController::TestCase
         title: 'New title',
         short_description: 'New description'
     }
+    @failing_event = events(:failing_event)
+    @failing_event.title = 'Fail!'
+    @monitor = LinkMonitor.create! url: @failing_event.url, code: 404
+    @monitor.failed_at = Time.parse('1912-04-15 02:20')
+    @failing_event.link_monitor = @monitor
+    @failing_event.save!
   end
 
   #Tests
@@ -77,6 +83,18 @@ class EventsControllerTest < ActionController::TestCase
     assert body['meta'].key?('facets')
     assert body['meta'].key?('available-facets')
     assert_equal events_path, body['links']['self']
+  end
+
+  test 'admins should be able to directly load failing records' do
+    sign_in users(:admin)
+    get :show, id: @failing_event
+    assert_response :success
+  end
+
+  test '...and users should not' do
+    sign_in users(:regular_user)
+    get :show, id: @failing_event
+    assert_redirected_to events_path
   end
 
   #NEW TESTS

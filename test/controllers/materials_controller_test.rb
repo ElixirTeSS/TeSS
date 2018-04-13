@@ -24,7 +24,7 @@ class MaterialsControllerTest < ActionController::TestCase
         url: 'http://new.url.com',
         content_provider_id: ContentProvider.first.id
     }
-    @failing_material = materials(:good_material)
+    @failing_material = materials(:failing_material)
     @failing_material.title = 'Fail!'
     @monitor = LinkMonitor.create! url: @failing_material.url, code: 404
     @monitor.failed_at = Time.parse('1912-04-15 02:20')
@@ -123,6 +123,18 @@ class MaterialsControllerTest < ActionController::TestCase
     ensure
       TeSS::Config.solr_enabled = false
     end
+  end
+
+  test 'admins should be able to directly load failing records' do
+    sign_in users(:admin)
+    get :show, id: @failing_material
+    assert_response :success
+  end
+
+  test '...and users should not' do
+    sign_in users(:regular_user)
+    get :show, id: @failing_material
+    assert_redirected_to materials_path
   end
 
   #NEW TESTS

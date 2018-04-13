@@ -59,3 +59,10 @@ material_with_suggestions:
   user: regular_user
   content_provider: goblet
 
+failing_material:
+  title: Failing Material
+  url: http://training.com/404
+  short_description: This is a Training Material with a dodgy URL
+  user: regular_user
+  content_provider: goblet
+
