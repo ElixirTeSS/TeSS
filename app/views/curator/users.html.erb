@@ -19,16 +19,9 @@
     <div class="panel-heading">
       <%= link_to user.name, user, target: :_blank %>
 
-      <div class="pull-right curate-user-buttons">
-        <%= form_tag user, method: :put, style: 'display: inline;' do -%>
-          <%= hidden_field_tag 'user[role_id]', approved_role.id -%>
-          <%= submit_tag 'Approve', class: 'btn btn-xs btn-success' -%>
-        <%- end -%>
-
-        <%= form_tag user, method: :put, style: 'display: inline;' do -%>
-          <%= hidden_field_tag 'user[role_id]', rejected_role.id -%>
-          <%= submit_tag 'Reject', class: 'btn btn-xs btn-danger' -%>
-        <%- end -%>
+      <div class="pull-right curate-user-buttons" data-action-url="<%= user_path(user) -%>">
+        <%= link_to('Approve', '#', class: 'btn btn-xs btn-success', 'data-role-id' => approved_role.id ) %>
+        <%= link_to('Reject', '#', class: 'btn btn-xs btn-danger', 'data-role-id' => rejected_role.id ) %>
       </div>
     </div>
     <div class="panel-body">
@@ -69,3 +62,24 @@
     </div>
   </div>
 <% end %>
+
+<script>
+    $('.curate-user-buttons .btn').click(function () {
+        var url = $(this).parents('.curate-user-buttons').data('actionUrl');
+        var panel = $(this).parents('.curate-user');
+
+        $.ajax({
+            url: url,
+            method: 'PUT',
+            dataType: 'script',
+            data: { user: { role_id: $(this).data('roleId') } }
+        }).done(function () {
+            panel.fadeOut();
+        }).fail(function (e) {
+            console.log(e);
+            alert('An error occurred while attempting to curate the user.');
+        });
+
+        return false;
+    });
+</script>
