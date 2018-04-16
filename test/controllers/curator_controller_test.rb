@@ -39,6 +39,34 @@ class CuratorControllerTest < ActionController::TestCase
     assert_nil assigns(:suggestions)
   end
 
+  test 'should get user curation page if curator' do
+    sign_in users(:curator)
+
+    get :users
+
+    assert_response :success
+    assert_includes assigns(:users), users(:unverified_user)
+  end
+
+  test 'should get user curation page if admin' do
+    sign_in users(:admin)
+
+    get :users
+
+    assert_response :success
+    assert_includes assigns(:users), users(:unverified_user)
+  end
+
+  test 'should not get user curation page if regular user' do
+    sign_in users(:regular_user)
+
+    get :users
+
+    assert_response :forbidden
+    assert flash[:alert].include?('curator')
+    assert_nil assigns(:suggestions)
+  end
+
   private
 
   def add_topic_suggestions(resource, topic_names = [])

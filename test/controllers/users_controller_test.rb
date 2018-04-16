@@ -158,6 +158,16 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal roles(:admin), assigns(:user).role
   end
 
+  test 'should change user role as js' do
+    sign_in @admin
+    assert_not_equal roles(:admin), @user.role
+
+    patch :update, id: @user, user: { role_id: roles(:admin).id }, format: :js
+
+    assert_response :success
+    assert_equal roles(:admin), assigns(:user).role
+  end
+
   test 'should not change user role if not an admin' do
     sign_in @user
     assert_not_equal roles(:admin), @user.role
