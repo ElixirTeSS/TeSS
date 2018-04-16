@@ -3,6 +3,7 @@ require 'test_helper'
 class MaterialsControllerTest < ActionController::TestCase
 
   include Devise::Test::ControllerHelpers
+  include ActiveJob::TestHelper
 
   setup do
     mock_images
@@ -989,5 +990,38 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_difference('EditSuggestion.count', -1) do
       patch :update, id: @material_with_suggestions, material: @updated_material_with_suggestions
     end
+  end
+
+  test 'should trigger notification when unverified user creates material' do
+    sign_in users(:unverified_user)
+
+    assert_enqueued_jobs 1 do
+      assert_difference('Material.count') do
+        post :create, material: { short_description: @material.short_description,
+                                  title: @material.title,
+                                  url: 'http://example.com/dodgy-event' }
+      end
+    end
+
+    assert_redirected_to material_path(assigns(:material))
+    @material.reload
+  end
+
+  test 'should not trigger notification if unverified user already created content' do
+    sign_in users(:unverified_user)
+    users(:unverified_user).materials.create!(short_description: @material.short_description,
+                                              title: @material.title,
+                                              url: 'http://example.com/dodgy-event')
+
+    assert_enqueued_jobs 0 do
+      assert_difference('Material.count') do
+        post :create, material: { short_description: @material.short_description,
+                                  title: @material.title,
+                                  url: 'http://example.com/dodgy-event-2' }
+      end
+    end
+
+    assert_redirected_to material_path(assigns(:material))
+    @material.reload
   end
 end

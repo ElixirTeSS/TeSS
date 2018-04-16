@@ -12,7 +12,7 @@ class Material < ActiveRecord::Base
   include LockableFields
   include Scrapable
   include Searchable
-
+  include CurationQueue
 
   extend FriendlyId
   friendly_id :title, use: :slugged
