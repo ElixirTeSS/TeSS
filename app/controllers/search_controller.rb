@@ -21,7 +21,7 @@ class SearchController < ApplicationController
           unless current_user && current_user.is_admin?
             begin
               if model.method_defined?(:failing?)
-                without(:failing, 'true')
+                without(:failing, true)
               end
             end
           end

@@ -57,8 +57,8 @@ class Material < ActiveRecord::Base
       time :updated_at
       time :created_at
       time :last_scraped
-      string :failing do
-        failing?.to_s
+      boolean :failing do
+        failing?
       end
       string :user do
         user.username if user

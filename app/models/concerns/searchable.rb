@@ -95,7 +95,7 @@ module Searchable
 
         # Hide records the urls of which are failing
         unless user && user.is_admin?
-          without(:failing, 'true')
+          without(:failing, true)
         end
 
       end
