@@ -131,10 +131,10 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test '...and users should not' do
+  test '...and so should users' do
     sign_in users(:regular_user)
     get :show, id: @failing_material
-    assert_redirected_to materials_path
+    assert_response :success
   end
 
   #NEW TESTS

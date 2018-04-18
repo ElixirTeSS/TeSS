@@ -103,9 +103,10 @@ module Searchable
   end
 
   def failing?
-    return false unless link_monitor
-    link_monitor.failing?
-  rescue NoMethodError
+    if respond_to?(:link_monitor)
+      return false if link_monitor.nil?
+      return link_monitor.failing?
+    end
     false
   end
 

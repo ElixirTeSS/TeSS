@@ -182,8 +182,8 @@ ActiveRecord::Schema.define(version: 20180411130325) do
   create_table "link_monitors", force: :cascade do |t|
     t.string   "url"
     t.integer  "code"
-    t.datetime "failed_at",      null: false
-    t.datetime "last_failed_at", null: false
+    t.datetime "failed_at"
+    t.datetime "last_failed_at"
     t.integer  "fail_count"
     t.integer  "lcheck_id"
     t.string   "lcheck_type"

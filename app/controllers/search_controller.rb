@@ -20,9 +20,9 @@ class SearchController < ApplicationController
           # Hide failing records
           unless current_user && current_user.is_admin?
             begin
-              without(:failing, 'true')
-            rescue
-              # TODO: Find a way to detect if a model responds to "failing" without this hack.
+              if model.method_defined?(:failing?)
+                without(:failing, 'true')
+              end
             end
           end
 

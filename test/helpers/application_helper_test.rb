@@ -15,10 +15,11 @@ class ApplicationHelperTest < ActionView::TestCase
     @old_iann_event = events(:iann_event)
     @old_iann_event.last_scraped = Time.parse('1912-04-14 23:40')
     @old_iann_event.scraper_record = true
-    @failing_material = materials(:good_material)
+    @failing_material = materials(:failing_material)
     @failing_material.title = 'Fail!'
     @monitor = LinkMonitor.create! url: @failing_material.url, code: 404
     @monitor.failed_at = Time.parse('1912-04-15 02:20')
+    @monitor.save!
     @failing_material.link_monitor = @monitor
     @failing_material.save!
 
@@ -58,7 +59,7 @@ class ApplicationHelperTest < ActionView::TestCase
 
   test "icon should be correct for missing event" do
     assert_not_nil(current_user)
-    assert_equal(current_user.is_admin?,true)
+    assert_equal(current_user.is_admin?, true)
     expected_result = "<span class='missing-icon pull-right'>#{icon_for(:missing, 'large')}</span>".html_safe
     assert_nil(missing_icon(@old_material, 'large'))
     assert_equal(missing_icon(@failing_material, 'large'), expected_result)

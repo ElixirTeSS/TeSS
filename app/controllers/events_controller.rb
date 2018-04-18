@@ -25,18 +25,11 @@ class EventsController < ApplicationController
   # GET /events/1.json
   # GET /events/1.ics
   def show
-    if @event.failing? && !(current_user && current_user.is_admin?)
-      respond_to do |format|
-        format.html { redirect_to events_path, notice: 'Sorry, that event was not found.' }
-        format.json { render json: {}, :status => 404, :content_type => 'application/json' }
-      end
-    else
-      respond_to do |format|
-        format.json
-        format.json_api { render json: @event }
-        format.html
-        format.ics { render text: @event.to_ical }
-      end
+    respond_to do |format|
+      format.json
+      format.json_api { render json: @event }
+      format.html
+      format.ics { render text: @event.to_ical }
     end
   end
 

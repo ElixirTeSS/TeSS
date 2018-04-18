@@ -25,19 +25,11 @@ class MaterialsController < ApplicationController
   # TODO: This is probably not a good way of concealing an individual record from a user.
   # TODO: In any case, it breaks various tests.
   def show
-    if @material.failing? && !(current_user && current_user.is_admin?)
-      respond_to do |format|
-        format.html { redirect_to materials_path, notice: 'Sorry, that material was not found.' }
-        format.json { render json: {}, :status => 404, :content_type => 'application/json' }
-      end
-    else
-      respond_to do |format|
-        format.json
-        format.json_api { render json: @material }
-        format.html
-      end
+    respond_to do |format|
+      format.json
+      format.json_api { render json: @material }
+      format.html
     end
-
   end
 
   # GET /materials/new
