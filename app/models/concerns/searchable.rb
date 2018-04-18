@@ -95,7 +95,7 @@ module Searchable
 
         # Hide unverified users' things, except from curators and admins
         unless user && (user.is_curator? || user.is_admin?)
-          unverified_user_ids = User.unverified.pluck(:id)
+          unverified_user_ids = User.with_role('unverified_user').pluck(:id)
           unverified_user_ids -= [user.id] if user # Let them see their own things
           without(:user_id, unverified_user_ids)
         end
