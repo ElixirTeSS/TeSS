@@ -33,9 +33,9 @@ class CuratorController < ApplicationController
   end
 
   def users
-    role = params[:role] if current_user.is_admin?
-    role ||= 'unverified_user'
-    @users = User.with_role(role).unbanned
+    @role = Role.fetch(params[:role]) if current_user.is_admin?
+    @role ||= Role.fetch('unverified_user')
+    @users = User.with_role(@role).unbanned
 
     respond_to do |format|
       format.html

@@ -213,8 +213,8 @@ class User < ActiveRecord::Base
     User.unique_username(user_name)
   end
 
-  def self.with_role(role_name)
-    joins(:role).where(roles: { name: role_name })
+  def self.with_role(role)
+    joins(:role).where(roles: { name: role.is_a?(Role) ? role.name : role })
   end
 
   def self.unbanned

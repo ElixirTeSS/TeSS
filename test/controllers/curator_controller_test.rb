@@ -39,22 +39,36 @@ class CuratorControllerTest < ActionController::TestCase
     assert_nil assigns(:suggestions)
   end
 
-  test 'should get user curation page if curator' do
+  test 'should get user curation page, but not allow role selection if curator' do
     sign_in users(:curator)
 
     get :users
 
     assert_response :success
     assert_includes assigns(:users), users(:unverified_user)
+    assert_equal roles(:unverified_user), assigns(:role)
+
+    get :users, role: :basic_user
+
+    assert_response :success
+    assert_not_includes assigns(:users), users(:basic_user)
+    assert_not_equal roles(:basic_user), assigns(:role)
   end
 
-  test 'should get user curation page if admin' do
+  test 'should get user curation page, and allow role selection if admin' do
     sign_in users(:admin)
 
     get :users
 
     assert_response :success
     assert_includes assigns(:users), users(:unverified_user)
+    assert_equal roles(:unverified_user), assigns(:role)
+
+    get :users, role: :basic_user
+
+    assert_response :success
+    assert_includes assigns(:users), users(:basic_user)
+    assert_equal roles(:basic_user), assigns(:role)
   end
 
   test 'should not get user curation page if regular user' do

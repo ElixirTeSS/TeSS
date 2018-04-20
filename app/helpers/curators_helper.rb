@@ -11,11 +11,11 @@ module CuratorsHelper
     end
   end
 
-  def role_options(selected, scope: User)
+  def role_options(selected_role, scope: User)
     array = Role.all.map do |role|
       ["#{role.title.pluralize} (#{scope.with_role(role.name).count})", role.name]
     end
 
-    options_for_select(array, selected)
+    options_for_select(array, selected_role.name)
   end
 end

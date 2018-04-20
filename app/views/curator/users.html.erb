@@ -7,7 +7,7 @@
   <h2>
     <% if current_user.is_admin? %>
       <select onchange="window.location = '<%= curate_users_path -%>?role=' + $(this).val();" autocomplete="off" class="pull-right form-control" style="width: 15em">
-        <%= role_options(params[:role] || 'unverified_user', scope: User.unbanned) %>
+        <%= role_options(@role, scope: User.unbanned) %>
       </select>
     <% end %>
     Users
@@ -61,6 +61,10 @@
       <br/>
     </div>
   </div>
+<% end %>
+
+<% if @users.empty? %>
+  Could not find any <%= @role.title.downcase.pluralize-%> requiring approval. Another curator may have already taken action.
 <% end %>
 
 <script>
