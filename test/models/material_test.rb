@@ -9,7 +9,7 @@ class MaterialTest < ActiveSupport::TestCase
   setup do
     @user = User.new(:username=>'bobo',
                   :email=>'exampl@example.com',
-                  :role => Role.first,
+                  :role => roles(:user),
                   :password => SecureRandom.base64
     )
     @user.save!
@@ -175,5 +175,16 @@ class MaterialTest < ActiveSupport::TestCase
     topic = material.scientific_topics.last
     assert_equal 'Mice or rats', topic.label
     assert topic.deprecated?
+  end
+
+  test 'user_requires_approval?' do
+    user = users(:unverified_user)
+
+    first_material = user.materials.build(title: 'bla', url: 'http://example.com/spam', short_description: '123')
+    assert first_material.user_requires_approval?
+    first_material.save!
+
+    second_material = user.materials.build(title: 'bla', url: 'http://example.com/spam2', short_description: '123')
+    refute second_material.user_requires_approval?
   end
 end

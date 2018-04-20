@@ -221,6 +221,10 @@ class User < ActiveRecord::Base
     joins('LEFT OUTER JOIN "bans" on "bans"."user_id" = "users"."id"').where(bans: { id: nil })
   end
 
+  def created_resources
+    materials + events
+  end
+
   private
 
   def reassign_owner
