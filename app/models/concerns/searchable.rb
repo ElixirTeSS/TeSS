@@ -101,8 +101,10 @@ module Searchable
         end
 
         # Hide records the urls of which are failing
-        unless user && user.is_admin?
-          without(:failing, true)
+        if method_defined?(:link_monitor)
+          unless user && user.is_admin?
+            without(:failing, true)
+          end
         end
       end
     end
