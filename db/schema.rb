@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180208152607) do
+ActiveRecord::Schema.define(version: 20180411130325) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -178,6 +178,18 @@ ActiveRecord::Schema.define(version: 20180208152607) do
   add_index "friendly_id_slugs", ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type", using: :btree
   add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
   add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
+
+  create_table "link_monitors", force: :cascade do |t|
+    t.string   "url"
+    t.integer  "code"
+    t.datetime "failed_at"
+    t.datetime "last_failed_at"
+    t.integer  "fail_count"
+    t.integer  "lcheck_id"
+    t.string   "lcheck_type"
+  end
+
+  add_index "link_monitors", ["lcheck_type", "lcheck_id"], name: "index_link_monitors_on_lcheck_type_and_lcheck_id", using: :btree
 
   create_table "materials", force: :cascade do |t|
     t.text     "title"

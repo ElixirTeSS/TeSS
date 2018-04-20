@@ -3,6 +3,7 @@
   <div class="dont-break-out">
     <p class>
       <%= scrape_status_icon(material) if current_user and current_user.is_admin? %>
+      <%= missing_icon(material) if current_user and current_user.is_admin? %>
       <%= suggestion_icon(material) if current_user and current_user.is_admin? -%>
       <%= truncate(material.short_description, length: 300, separator: ' ') %>
     </p>
@@ -39,5 +40,4 @@
   <!--<#%= link_to '', material, :class=>"media-view"%>-->
   <!--<#%= link_to '', material, :class=>"media-view"%>-->
 </div>
-
 

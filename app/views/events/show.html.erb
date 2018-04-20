@@ -66,6 +66,7 @@
                                   :style => 'height: 40px;' %>
                 <% end -%>
                 <%= @event.title %>
+                <%= missing_icon(@event, 'large') if current_user and current_user.is_admin? %>
                 <%= scrape_status_icon(@event, 'large') if current_user and current_user.is_admin? %>
                 <%= suggestion_icon(@event, 'large') if current_user and current_user.is_admin? -%>
               </h2>

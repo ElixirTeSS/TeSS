@@ -74,6 +74,9 @@ class Event < ActiveRecord::Base
         end
       end
       integer :user_id # Used for shadowbans
+      boolean :failing do
+        failing?
+      end
 =begin TODO: SOLR has a LatLonType to do geospatial searching. Have a look at that
       location :latitutde
       location :longitude
@@ -84,6 +87,7 @@ class Event < ActiveRecord::Base
 
   belongs_to :user
   has_one :edit_suggestion, as: :suggestible, dependent: :destroy
+  has_one :link_monitor, as: :lcheck, dependent: :destroy
   has_many :package_events
   has_many :packages, through: :package_events
   has_many :event_materials, dependent: :destroy
@@ -371,6 +375,7 @@ class Event < ActiveRecord::Base
       puts "Redis error: #{e.message}"
     end
   end
+
 
   private
 

@@ -22,6 +22,8 @@ class MaterialsController < ApplicationController
 
   # GET /materials/1
   # GET /materials/1.json
+  # TODO: This is probably not a good way of concealing an individual record from a user.
+  # TODO: In any case, it breaks various tests.
   def show
     respond_to do |format|
       format.json
@@ -138,6 +140,7 @@ class MaterialsController < ApplicationController
   def set_material
     @material = Material.friendly.find(params[:id])
   end
+
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def material_params

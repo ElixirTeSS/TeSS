@@ -1,6 +1,7 @@
 class ExternalResource < ActiveRecord::Base
 
   belongs_to :source, polymorphic: true
+  has_one :link_monitor, as: :lcheck, dependent: :destroy
 
   validates :title, :url, presence: true
   validates :url, url: true
@@ -39,6 +40,11 @@ class ExternalResource < ActiveRecord::Base
       end
     end
     return ''
+  end
+
+  def failing?
+    return false unless link_monitor
+    link_monitor.failing?
   end
 
   private

@@ -99,7 +99,21 @@ module Searchable
           unverified_user_ids -= [user.id] if user # Let them see their own things
           without(:user_id, unverified_user_ids)
         end
+
+        # Hide records the urls of which are failing
+        unless user && user.is_admin?
+          without(:failing, true)
+        end
       end
     end
   end
+
+  def failing?
+    if respond_to?(:link_monitor)
+      return false if link_monitor.nil?
+      return link_monitor.failing?
+    end
+    false
+  end
+
 end

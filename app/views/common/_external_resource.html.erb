@@ -17,6 +17,7 @@
         <% if external_resource.is_fairsharing? -%>
         <img src="<%= image_url('fairsharing-logo.svg')-%>" class="pull-right" alt="Link to FAIRsharing" width="100px"/>
         <% end -%>
+        <%= missing_icon(external_resource, 'medium') if current_user and current_user.is_admin? %>
         <!--
         <p>API URI: <%= api_uri -%></p>
         <p>URL: <%= external_resource.url -%></p>
