@@ -1,7 +1,5 @@
 class LinkMonitor < ActiveRecord::Base
-
-  belongs_to :link_checkable, polymorphic: true
-
+  belongs_to :link_checkable, polymorphic: true, foreign_key: :lcheck_id, foreign_type: :lcheck_type
   before_create :set_initial_date
 
   def set_initial_date
@@ -10,7 +8,7 @@ class LinkMonitor < ActiveRecord::Base
     self.fail_count = 1
   end
 
-  def fail!(code = nil)
+  def failure(code = nil) # `fail` is a Ruby Kernel method
     if code
       self.code = code
     end
@@ -21,10 +19,20 @@ class LinkMonitor < ActiveRecord::Base
     self.fail_count += 1
   end
 
-  def success!
+  def fail!(code = nil)
+    failure(code)
+    save!
+  end
+
+  def success
     self.failed_at = nil
     self.last_failed_at = nil
     self.code = 200
+  end
+
+  def success!
+    success
+    save!
   end
 
   # Using Time.diff below to get the useful output, perhaps to
@@ -44,6 +52,4 @@ class LinkMonitor < ActiveRecord::Base
     end
     Time.diff(last_failed_at, failed_at)
   end
-
-
 end
