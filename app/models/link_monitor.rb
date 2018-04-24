@@ -2,20 +2,18 @@ class LinkMonitor < ActiveRecord::Base
   belongs_to :link_checkable, polymorphic: true, foreign_key: :lcheck_id, foreign_type: :lcheck_type
   before_create :set_initial_date
 
+  FAILURE_THRESHOLD = 4
+
   def set_initial_date
-    self.failed_at = Time.now
-    self.last_failed_at = Time.now
-    self.fail_count = 1
+    self.failed_at ||= Time.now
+    self.last_failed_at ||= Time.now
+    self.fail_count ||= 1
   end
 
   def failure(code = nil) # `fail` is a Ruby Kernel method
-    if code
-      self.code = code
-    end
+    self.code = code if code
+    self.failed_at ||= Time.now
     self.last_failed_at = Time.now
-    if self.failed_at.nil?
-      self.failed_at = Time.now
-    end
     self.fail_count += 1
   end
 
@@ -25,9 +23,10 @@ class LinkMonitor < ActiveRecord::Base
   end
 
   def success
+    self.code = 200
     self.failed_at = nil
     self.last_failed_at = nil
-    self.code = 200
+    self.fail_count = 0
   end
 
   def success!
@@ -35,15 +34,8 @@ class LinkMonitor < ActiveRecord::Base
     save!
   end
 
-  # Using Time.diff below to get the useful output, perhaps to
-  # show to the user.
   def failing?
-    if failed_at.nil? || last_failed_at.nil?
-      return false
-    end
-    diff = Time.diff(last_failed_at, failed_at, '%d')
-    return true if diff[:diff].to_i >= 4
-    false
+    fail_count >= FAILURE_THRESHOLD
   end
 
   def failed_since?
