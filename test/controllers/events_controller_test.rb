@@ -16,10 +16,7 @@ class EventsControllerTest < ActionController::TestCase
     }
     @failing_event = events(:failing_event)
     @failing_event.title = 'Fail!'
-    @monitor = LinkMonitor.create! url: @failing_event.url, code: 404
-    @monitor.failed_at = Time.parse('1912-04-15 02:20')
-    @failing_event.link_monitor = @monitor
-    @failing_event.save!
+    @monitor = @failing_event.create_link_monitor(url: @failing_event.url, code: 404, fail_count: 5)
   end
 
   #Tests
@@ -663,8 +660,7 @@ class EventsControllerTest < ActionController::TestCase
     end
 
     assert_redirected_to event_path(assigns(:event))
-    resource = assigns(:event).external_resources.first
-    assert_equal 'Cool link', resource.title
+    assert_equal 'Cool link', resource.reload.title
     assert_equal 'http://www.reddit.com', resource.url
   end
 

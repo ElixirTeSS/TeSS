@@ -187,4 +187,50 @@ class MaterialTest < ActiveSupport::TestCase
     second_material = user.materials.build(title: 'bla', url: 'http://example.com/spam2', short_description: '123')
     refute second_material.user_requires_approval?
   end
+
+  test 'should not add duplicate external resources' do
+    material = materials(:material_with_external_resource)
+    resources = material.external_resources
+    assert_equal 2, resources.length
+
+    assert_no_difference('ExternalResource.count') do
+      material.external_resources_attributes = [{ title: 'TeSS', url: 'https://tess.elixir-uk.org/' }]
+      material.save!
+    end
+
+    assert_equal resources, material.reload.external_resources
+  end
+
+  test 'should not remove duplicate external resource URLs if they have different titles' do
+    material = materials(:material_with_external_resource)
+
+    assert_difference('ExternalResource.count', 1) do
+      material.external_resources_attributes = [{ title: 'Cool Website!', url: 'https://tess.elixir-uk.org/' }]
+      material.save!
+    end
+  end
+
+  test 'should not remove duplicate external resource titles if they have different titles' do
+    material = materials(:material_with_external_resource)
+
+    assert_difference('ExternalResource.count', 1) do
+      material.external_resources_attributes = [{ title: 'TeSS', url: 'https://tess.oerc.ox.ac.uk/' }]
+      material.save!
+    end
+  end
+
+  test 'should remove existing duplicate external resources on save' do
+    material = materials(:material_with_external_resource)
+    new_resource = material.external_resources.create!({ title: 'TeSS', url: 'https://tess.elixir-uk.org/' })
+    assert_equal 3, material.reload.external_resources.count
+    assert_equal 2, material.external_resources.where(title: 'TeSS').count
+
+    assert_difference('ExternalResource.count', -1) do
+      material.save!
+    end
+
+    assert_equal 2, material.reload.external_resources.count
+    assert_equal 1, material.external_resources.where(title: 'TeSS').count
+    assert_not_includes material.external_resources, new_resource, 'Should preserve oldest external resource'
+  end
 end
