@@ -25,7 +25,9 @@ module HasExternalResources
   end
 
   def remove_duplicate_external_resources
-    resources = external_resources.to_a
+    # New resources have a `nil` created_at, doing this puts them at the end of the array.
+    # Sorting them this way means that if there are duplicates, the oldest resource is preserved.
+    resources = external_resources.to_a.sort_by { |x| x.created_at || 1.year.from_now }
     (resources - resources.uniq { |r| [r.url, r.title] }).each(&:mark_for_destruction)
   end
 end

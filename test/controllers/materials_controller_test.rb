@@ -27,13 +27,7 @@ class MaterialsControllerTest < ActionController::TestCase
     }
     @failing_material = materials(:failing_material)
     @failing_material.title = 'Fail!'
-    @monitor = LinkMonitor.create! url: @failing_material.url, code: 404
-    @monitor.failed_at = Time.parse('1912-04-15 02:20')
-    @failing_material.link_monitor = @monitor
-    @failing_material.save!
-    # TODO: Think of a way to test whether failing materials are successfully hidden
-    # TODO: in the SOLR search.
-
+    @monitor = @failing_material.create_link_monitor(url: @failing_material.url, code: 404, fail_count: 5)
   end
 
   #Tests
@@ -673,8 +667,7 @@ class MaterialsControllerTest < ActionController::TestCase
     end
 
     assert_redirected_to material_path(assigns(:material))
-    resource = assigns(:material).external_resources.first
-    assert_equal 'Cool link', resource.title
+    assert_equal 'Cool link', resource.reload.title
     assert_equal 'http://www.reddit.com', resource.url
   end
 
