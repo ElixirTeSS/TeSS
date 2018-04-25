@@ -191,7 +191,6 @@ class MaterialTest < ActiveSupport::TestCase
   test 'should not add duplicate external resources' do
     material = materials(:material_with_external_resource)
     resources = material.external_resources
-    assert_equal 2, resources.length
 
     assert_no_difference('ExternalResource.count') do
       material.external_resources_attributes = [{ title: 'TeSS', url: 'https://tess.elixir-uk.org/' }]
@@ -221,15 +220,16 @@ class MaterialTest < ActiveSupport::TestCase
 
   test 'should remove existing duplicate external resources on save' do
     material = materials(:material_with_external_resource)
+    res_count = material.external_resources.count
     new_resource = material.external_resources.create!({ title: 'TeSS', url: 'https://tess.elixir-uk.org/' })
-    assert_equal 3, material.reload.external_resources.count
+    assert_equal res_count + 1, material.reload.external_resources.count
     assert_equal 2, material.external_resources.where(title: 'TeSS').count
 
     assert_difference('ExternalResource.count', -1) do
       material.save!
     end
 
-    assert_equal 2, material.reload.external_resources.count
+    assert_equal res_count, material.reload.external_resources.count
     assert_equal 1, material.external_resources.where(title: 'TeSS').count
     assert_not_includes material.external_resources, new_resource, 'Should preserve oldest external resource'
   end

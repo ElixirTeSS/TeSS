@@ -37,11 +37,4 @@ class LinkMonitor < ActiveRecord::Base
   def failing?
     fail_count >= FAILURE_THRESHOLD
   end
-
-  def failed_since?
-    if failed_at.nil? || last_failed_at.nil?
-      return { diff: 'Still working!' }
-    end
-    Time.diff(last_failed_at, failed_at)
-  end
 end

@@ -634,6 +634,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'should remove external resource from material' do
     material = materials(:material_with_external_resource)
     resource = material.external_resources.first
+    count = material.external_resources.count
     sign_in material.user
 
     assert_difference('ExternalResource.count', -1) do
@@ -647,7 +648,7 @@ class MaterialsControllerTest < ActionController::TestCase
     end
 
     assert_redirected_to material_path(assigns(:material))
-    assert_equal 1, assigns(:material).external_resources.count
+    assert_equal count - 1, assigns(:material).external_resources.count
   end
 
   test 'should modify external resource from material' do
@@ -1038,5 +1039,14 @@ class MaterialsControllerTest < ActionController::TestCase
 
     assert_redirected_to material_path(assigns(:material))
     @material.reload
+  end
+
+  test 'can view material with external resources' do
+    material = materials(:material_with_external_resource)
+    get :show, id: material
+
+    assert_response :success
+
+    assert_select '.external-resources-box div.bounding-box', count: material.external_resources.count
   end
 end
