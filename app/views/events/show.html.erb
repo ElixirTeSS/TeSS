@@ -131,9 +131,9 @@
                     <%= @event.timezone %></p>
               <% end %>
 
-              <% if @event.sponsor and !@event.sponsor.blank? %>
-                  <p><strong>Sponsor:</strong>
-                    <%= @event.sponsor %></p>
+              <% if @event.sponsors.any? %>
+                <p><strong>Sponsors:</strong>
+                  <%= @event.sponsors.join(', ') %></p>
               <% end %>
 
               <% if @event.contact and !@event.contact.blank? %>

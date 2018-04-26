@@ -32,8 +32,7 @@ class Event < ActiveRecord::Base
       text :url
       string :organizer
       text :organizer
-      string :sponsor
-      text :sponsor
+      string :sponsors, :multiple => true
       string :venue
       text :venue
       string :city
@@ -103,7 +102,7 @@ class Event < ActiveRecord::Base
   validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true  }
   validate :allowed_url
 
-  clean_array_fields(:keywords, :event_types, :target_audience, :eligibility, :host_institutions)
+  clean_array_fields(:keywords, :event_types, :target_audience, :eligibility, :host_institutions, :sponsors)
   update_suggestions(:keywords, :target_audience, :host_institutions)
 
   # These fields should not been shown to users unless they have sufficient privileges
@@ -174,7 +173,7 @@ class Event < ActiveRecord::Base
   end
 
   def self.facet_fields
-    %w( scientific_topics event_types online country tools organizer city sponsor target_audience keywords
+    %w( scientific_topics event_types online country tools organizer city sponsors target_audience keywords
         venue node content_provider user )
   end
 
