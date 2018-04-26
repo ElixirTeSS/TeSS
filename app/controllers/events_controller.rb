@@ -36,7 +36,8 @@ class EventsController < ApplicationController
   # GET /events/new
   def new
     authorize Event
-    @event = Event.new
+    @event = Event.new(start: DateTime.now.change(hour: 9),
+                       end: DateTime.now.change(hour: 17))
   end
 
   # GET /events/1/edit
