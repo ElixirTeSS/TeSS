@@ -17,15 +17,8 @@ class ApplicationHelperTest < ActionView::TestCase
     @old_iann_event.scraper_record = true
     @failing_material = materials(:failing_material)
     @failing_material.title = 'Fail!'
-    @monitor = LinkMonitor.create! url: @failing_material.url, code: 404
-    @monitor.failed_at = Time.parse('1912-04-15 02:20')
-    @monitor.save!
-    @failing_material.link_monitor = @monitor
-    @failing_material.save!
-
+    @monitor = @failing_material.create_link_monitor(url: @failing_material.url, code: 404, fail_count: 5)
   end
-
-
 
   test "icon should be correct for material scraped today" do
     expected_result  = "<span class='fresh-icon pull-right'>#{icon_for(:scraped_today, 'large')}</span>".html_safe

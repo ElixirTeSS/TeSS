@@ -2,15 +2,24 @@
 
 user:
   name: registered_user
+  title: Registered user
 
 admin:
   name: admin
+  title: Admin
 
 scraper_user:
   name: scraper_user
+  title: Scraper user
 
 curator:
   name: curator
+  title: Curator
 
 basic_user:
   name: basic_user
+  title: Basic user
+
+unverified_user: # Content requires approval before being visible
+  name: unverified_user
+  title: New user

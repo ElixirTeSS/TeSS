@@ -37,8 +37,8 @@ class User < ActiveRecord::Base
   before_create :set_default_role, :set_default_profile
   before_create :skip_email_confirmation_for_non_production
   before_update :skip_email_reconfirmation_for_non_production
-
   before_destroy :reassign_owner
+  after_update :log_role_change
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -213,6 +213,18 @@ class User < ActiveRecord::Base
     User.unique_username(user_name)
   end
 
+  def self.with_role(role)
+    joins(:role).where(roles: { name: role.is_a?(Role) ? role.name : role })
+  end
+
+  def self.unbanned
+    joins('LEFT OUTER JOIN "bans" on "bans"."user_id" = "users"."id"').where(bans: { id: nil })
+  end
+
+  def created_resources
+    materials + events
+  end
+
   private
 
   def reassign_owner
@@ -233,5 +245,11 @@ class User < ActiveRecord::Base
     self.events.each{|x| x.update_attribute(:user, default_user) } if self.events.any?
     self.content_providers.each{|x| x.update_attribute(:user, default_user)} if self.content_providers.any?
     self.nodes.each{|x| x.update_attribute(:user, default_user)} if self.nodes.any?
+  end
+
+  def log_role_change
+    if role_id_changed?
+      create_activity(:change_role, owner: User.current_user, parameters: { old: role_id_was, new: role_id })
+    end
   end
 end

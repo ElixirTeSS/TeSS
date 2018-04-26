@@ -93,11 +93,19 @@ module Searchable
           without(:user_id, User.shadowbanned.pluck(:id))
         end
 
-        # Hide records the urls of which are failing
-        unless user && user.is_admin?
-          without(:failing, true)
+        # Hide unverified users' things, except from curators and admins
+        unless user && (user.is_curator? || user.is_admin?)
+          unverified_user_ids = User.with_role('unverified_user').pluck(:id)
+          unverified_user_ids -= [user.id] if user # Let them see their own things
+          without(:user_id, unverified_user_ids)
         end
 
+        # Hide records the urls of which are failing
+        if method_defined?(:link_monitor)
+          unless user && user.is_admin?
+            without(:failing, true)
+          end
+        end
       end
     end
   end

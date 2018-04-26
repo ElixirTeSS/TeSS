@@ -11,3 +11,9 @@ shadowban:
   shadow: true
   banner: admin
   reason: Predatory conferences
+
+shadowban_on_unverified:
+  user: shadowbanned_unverified_user
+  shadow: true
+  banner: admin
+  reason: Spam

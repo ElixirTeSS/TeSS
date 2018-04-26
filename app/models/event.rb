@@ -12,6 +12,7 @@ class Event < ActiveRecord::Base
   include LockableFields
   include Scrapable
   include Searchable
+  include CurationQueue
 
   before_save :set_default_times, :check_country_name
   before_save :geocoding_cache_lookup, if: :address_changed?

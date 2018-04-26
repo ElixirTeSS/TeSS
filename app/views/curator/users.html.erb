@@ -1,0 +1,89 @@
+<%
+  approved_role = Role.find_by_name('registered_user')
+  rejected_role = Role.find_by_name('basic_user')
+%>
+
+<div class="page-header">
+  <h2>
+    <% if current_user.is_admin? %>
+      <select onchange="window.location = '<%= curate_users_path -%>?role=' + $(this).val();" autocomplete="off" class="pull-right form-control" style="width: 15em">
+        <%= role_options(@role, scope: User.unbanned) %>
+      </select>
+    <% end %>
+    Users
+  </h2>
+</div>
+
+<% @users.each do |user| %>
+  <div class="panel panel-default curate-user">
+    <div class="panel-heading">
+      <%= link_to user.name, user, target: :_blank %>
+
+      <div class="pull-right curate-user-buttons" data-action-url="<%= user_path(user) -%>">
+        <%= link_to('Approve', '#', class: 'btn btn-xs btn-success', 'data-role-id' => approved_role.id ) %>
+        <%= link_to('Reject', '#', class: 'btn btn-xs btn-danger', 'data-role-id' => rejected_role.id ) %>
+      </div>
+    </div>
+    <div class="panel-body">
+      <i>Registered <%= time_ago_in_words(user.created_at) -%> ago</i><br/>
+
+      <strong>Public email:</strong>
+      <% if user.profile.email.blank? %>
+        <span class="empty">None specified</span>
+      <% else %>
+        <%= mail_to user.profile.email %>
+      <% end %><br/>
+
+      <strong><%= User.human_attribute_name(:website) %>:</strong>
+      <% if user.profile.website.blank? %>
+        <span class="empty">None specified</span>
+      <% else %>
+        <%= link_to user.profile.website, user.profile.website, rel: 'nofollow' %>
+      <% end %><br/>
+
+      <% [:events, :materials].each do |type| %>
+        <% count = user.send(type).count %>
+        <% if count > 0 %>
+          <strong><%= type.to_s.titleize -%></strong>
+          <ul>
+            <% user.send(type).last(3).each do |resource| %>
+              <li>
+                <%= link_to resource.title, resource, target: :_blank %><br/>
+                URL: <%= link_to resource.url, resource.url, target: :_blank, rel: 'nofollow' -%>
+              </li>
+            <% end %>
+          </ul>
+          <% if count > 3 %>
+            <%= link_to "See all #{pluralize(count, type.to_s.singularize)}", polymorphic_path(type, user: user.username), target: :_blank -%><br/>
+          <% end %>
+        <% end %>
+      <% end %>
+      <br/>
+    </div>
+  </div>
+<% end %>
+
+<% if @users.empty? %>
+  Could not find any <%= @role.title.downcase.pluralize-%> requiring approval. Another curator may have already taken action.
+<% end %>
+
+<script>
+    $('.curate-user-buttons .btn').click(function () {
+        var url = $(this).parents('.curate-user-buttons').data('actionUrl');
+        var panel = $(this).parents('.curate-user');
+
+        $.ajax({
+            url: url,
+            method: 'PUT',
+            dataType: 'script',
+            data: { user: { role_id: $(this).data('roleId') } }
+        }).done(function () {
+            panel.fadeOut();
+        }).fail(function (e) {
+            console.log(e);
+            alert('An error occurred while attempting to curate the user.');
+        });
+
+        return false;
+    });
+</script>

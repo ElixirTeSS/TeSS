@@ -3,6 +3,7 @@ require 'test_helper'
 class MaterialsControllerTest < ActionController::TestCase
 
   include Devise::Test::ControllerHelpers
+  include ActiveJob::TestHelper
 
   setup do
     mock_images
@@ -26,13 +27,7 @@ class MaterialsControllerTest < ActionController::TestCase
     }
     @failing_material = materials(:failing_material)
     @failing_material.title = 'Fail!'
-    @monitor = LinkMonitor.create! url: @failing_material.url, code: 404
-    @monitor.failed_at = Time.parse('1912-04-15 02:20')
-    @failing_material.link_monitor = @monitor
-    @failing_material.save!
-    # TODO: Think of a way to test whether failing materials are successfully hidden
-    # TODO: in the SOLR search.
-
+    @monitor = @failing_material.create_link_monitor(url: @failing_material.url, code: 404, fail_count: 5)
   end
 
   #Tests
@@ -639,6 +634,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'should remove external resource from material' do
     material = materials(:material_with_external_resource)
     resource = material.external_resources.first
+    count = material.external_resources.count
     sign_in material.user
 
     assert_difference('ExternalResource.count', -1) do
@@ -652,7 +648,7 @@ class MaterialsControllerTest < ActionController::TestCase
     end
 
     assert_redirected_to material_path(assigns(:material))
-    assert_equal 1, assigns(:material).external_resources.count
+    assert_equal count - 1, assigns(:material).external_resources.count
   end
 
   test 'should modify external resource from material' do
@@ -672,8 +668,7 @@ class MaterialsControllerTest < ActionController::TestCase
     end
 
     assert_redirected_to material_path(assigns(:material))
-    resource = assigns(:material).external_resources.first
-    assert_equal 'Cool link', resource.title
+    assert_equal 'Cool link', resource.reload.title
     assert_equal 'http://www.reddit.com', resource.url
   end
 
@@ -1013,4 +1008,45 @@ class MaterialsControllerTest < ActionController::TestCase
     end
   end
 
+  test 'should trigger notification when unverified user creates material' do
+    sign_in users(:unverified_user)
+
+    assert_enqueued_jobs 1 do
+      assert_difference('Material.count') do
+        post :create, material: { short_description: @material.short_description,
+                                  title: @material.title,
+                                  url: 'http://example.com/dodgy-event' }
+      end
+    end
+
+    assert_redirected_to material_path(assigns(:material))
+    @material.reload
+  end
+
+  test 'should not trigger notification if unverified user already created content' do
+    sign_in users(:unverified_user)
+    users(:unverified_user).materials.create!(short_description: @material.short_description,
+                                              title: @material.title,
+                                              url: 'http://example.com/dodgy-event')
+
+    assert_enqueued_jobs 0 do
+      assert_difference('Material.count') do
+        post :create, material: { short_description: @material.short_description,
+                                  title: @material.title,
+                                  url: 'http://example.com/dodgy-event-2' }
+      end
+    end
+
+    assert_redirected_to material_path(assigns(:material))
+    @material.reload
+  end
+
+  test 'can view material with external resources' do
+    material = materials(:material_with_external_resource)
+    get :show, id: material
+
+    assert_response :success
+
+    assert_select '.external-resources-box div.bounding-box', count: material.external_resources.count
+  end
 end

@@ -22,7 +22,6 @@ namespace :tess do
 end
 
 def process_record(record)
-
   puts "Checking: #{record.id}, #{record.url}"
   if record.url
     code = get_bad_response(record.url)
@@ -30,16 +29,12 @@ def process_record(record)
       puts "#{code}|#{record.id}|#{record.url}"
       if record.link_monitor
         record.link_monitor.fail!(code)
-        record.link_monitor.save!
       else
-        m = LinkMonitor.create! url: record.url, code: code
-        record.link_monitor = m
-        record.save!
+        record.create_link_monitor(url: record.url, code: code)
       end
     else
       if record.link_monitor
         record.link_monitor.success!
-        record.link_monitor.save!
       end
     end
   end
@@ -54,22 +49,16 @@ def process_record(record)
       puts "#{code}|#{record.id}|#{record.url}|#{res.id}|#{res.url}"
       if record.link_monitor
         record.link_monitor.fail!(code)
-        record.link_monitor.save!
       else
-        m = LinkMonitor.create! url: record.url, code: code
-        record.link_monitor = m
-        record.save!
+        record.create_link_monitor(url: record.url, code: code)
       end
     else
       if record.link_monitor
-        record.link_monitor.succcess!
-        record.link_monitor.save!
+        record.link_monitor.success!
       end
     end
     record.save!
   end
-
-
 end
 
 # The fake return codes on an exception are so the LinkMonitor object has something
