@@ -357,9 +357,9 @@ class Event < ActiveRecord::Base
   # If no latitude or longitude, create a GeocodingWorker to find them.
   # This should run a minute after the last one is set to run (last run time stored by Redis).
   def enqueue_geocoding_worker
-    return if (self.latitude.present? && self.longitude.present?) || self.address.blank? || self.nominatim_count >= NOMINATIM_MAX_ATTEMPTS
+    return if (latitude.present? && longitude.present?) || (address.blank? && postcode.blank?) || nominatim_count >= NOMINATIM_MAX_ATTEMPTS
 
-    location = self.address
+    location = postcode ? postcode : address
 
     begin
       redis = Redis.new
@@ -369,7 +369,7 @@ class Event < ActiveRecord::Base
 
       # submit event_id, and locations to worker.
       redis.set('last_geocode', run_at)
-      GeocodingWorker.perform_at(run_at, [self.id, location])
+      GeocodingWorker.perform_at(run_at, [id, location])
     rescue Redis::RuntimeError => e
       raise e unless Rails.env.production?
       puts "Redis error: #{e.message}"
@@ -381,7 +381,7 @@ class Event < ActiveRecord::Base
 
   def allowed_url
     disallowed = (TeSS::Config.blocked_domains || []).any? do |regex|
-      self.url =~ regex
+      url =~ regex
     end
 
     if disallowed
