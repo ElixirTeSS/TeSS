@@ -62,5 +62,6 @@ $(document).ready(function(){
     /* User deletes a free text field such as keyword, author or contributor */
     $(document.body).on('click', '.multiple-input-delete', function (e) {
         $(this).parents('.multiple-list-item').remove();
+        return false;
     });
 });
