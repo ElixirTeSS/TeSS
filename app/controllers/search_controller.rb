@@ -18,11 +18,9 @@ class SearchController < ApplicationController
           with('end').greater_than(Time.zone.now) if model_name == 'Event'
 
           # Hide failing records
-          unless current_user && current_user.is_admin?
-            begin
-              if model.method_defined?(:failing?)
-                without(:failing, true)
-              end
+          if model.method_defined?(:link_monitor)
+            unless current_user && current_user.is_admin?
+              without(:failing, true)
             end
           end
 
