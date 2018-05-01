@@ -1,4 +1,4 @@
-<%#
+<!-- 
 PARAMETERS:
 f - the form 
 resource - The object you wish to modify e.g. #<Material id: 99....
@@ -18,7 +18,7 @@ render :partial => 'common/dropdown',
                  :options => Material.all
                  :existing => @package.materials
      }
- %>
+ -->
 
 <%
   model_name =  resource.class.name.underscore #e.g. package
@@ -32,7 +32,7 @@ render :partial => 'common/dropdown',
   end
 %>
 
-<%# Name for the dropdown toggle button, if not specified will be set to 'Add <%#= field_name %>' %>
+<!-- Name for the dropdown toggle button, if not specified will be set to 'Add <%#= field_name %>' -->
 
 <% field_label ||= field_name.pluralize.capitalize unless field_name.blank? %>
 
@@ -40,7 +40,7 @@ render :partial => 'common/dropdown',
   <label><%= field_label %></label><%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
 
   <div data-field="<%= field_name %>" data-model="<%= model_name %>">
-    <%# display existing ones %>
+    <!-- display existing ones -->
     <ul class="<%= field_name %>">
       <%# have one empty one so something is always passed when the event listener triggers %>
       <input name="<%= model_name %>[<%= field_name %>][]" value="" type="hidden"/>
@@ -54,7 +54,7 @@ render :partial => 'common/dropdown',
           </li>
       <% end %>
     </ul>
-    <%# Create list of dropdown options%>
+    <!-- Create list of dropdown options-->
     <div class="dropdown">
       <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
         <%= dropdown_toggle_button_name %>

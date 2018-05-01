@@ -6,7 +6,7 @@ Variable that should be available
 
 <ul class="unstyled nav-simple">
   <% if associated_nodes.any? %>
-      <%# Content provider  %>
+      <!-- Content provider  -->
       <li><h4 class="nav-heading"><%= 'Node'.pluralize(associated_nodes.count) %></h4></li>
       <% associated_nodes.each do |node| %>
           <li>

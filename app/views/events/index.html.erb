@@ -69,7 +69,7 @@
 
     <hr>
 
-    <%# ACTUAL RESULTS LIST %>
+    <!-- ACTUAL RESULTS LIST -->
     <% unless @events.blank? %>
 
         <ul class="nav nav-tabs">
@@ -102,24 +102,24 @@
             <div id="calendar-content">
               <br>
               <p class="h1">Calendar chart feature coming soon</p>
-              <%#<img style="width:100%" src="http://blogs.opentext.com/wp-content/uploads/2015/03/calendar-chart-preview.png"/>%>
+              <!--<img style="width:100%" src="http://blogs.opentext.com/wp-content/uploads/2015/03/calendar-chart-preview.png"/>-->
               <%= render :partial => "events/partials/events_calendar", :locals => { :events => @events} %>
             </div>
           </div>
         </div>
 
-        <%#<div class="row event-grid" style="background-color: #eeeeee;">%>
-        <%#&lt;!&ndash;<#%= render :partial => "tab_headings", :locals => {:selected_tab => "grid"} %>&ndash;&gt;%>
-        <%#&lt;!&ndash; ACTUAL RESULTS LIST &ndash;&gt;%>
-        <%#<#% @events.each do |event| %>%>
-        <%#<#%= render event %>%>
-        <%#<#% end %>%>
-        <%#</div>%>
+        <!--<div class="row event-grid" style="background-color: #eeeeee;">-->
+        <!--&lt;!&ndash;<#%= render :partial => "tab_headings", :locals => {:selected_tab => "grid"} %>&ndash;&gt;-->
+        <!--&lt;!&ndash; ACTUAL RESULTS LIST &ndash;&gt;-->
+        <!--<#% @events.each do |event| %>-->
+        <!--<#%= render event %>-->
+        <!--<#% end %>-->
+        <!--</div>-->
 
-        <%# Alternative Map view %>
-        <%#<div id="map-content" class="tab-content">%>
-        <%#<#%= render :partial => "map_view", :locals => {:events => @events} %>%>
-        <%#</div>%>
+        <!-- Alternative Map view -->
+        <!--<div id="map-content" class="tab-content">-->
+        <!--<#%= render :partial => "map_view", :locals => {:events => @events} %>-->
+        <!--</div>-->
     <% end %>
 
     <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>

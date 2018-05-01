@@ -1,5 +1,5 @@
 <div class="wrapper collapsing-wrapper">
-  <%# SIDEBAR %>
+  <!-- SIDEBAR -->
   <div class="collapsing-sidebar" id="sidebar">
     <%= render :partial => "content_providers/partials/content_provider_info", :locals => {:content_provider => @event.content_provider} %>
     <%= render partial: "nodes/partials/associated_node_info", locals: { associated_nodes: @event.associated_nodes } %>
@@ -66,6 +66,7 @@
                                   :style => 'height: 40px;' %>
                 <% end -%>
                 <%= @event.title %>
+                <%= missing_icon(@event, 'large') if current_user and current_user.is_admin? %>
                 <%= scrape_status_icon(@event, 'large') if current_user and current_user.is_admin? %>
                 <%= suggestion_icon(@event, 'large') if current_user and current_user.is_admin? -%>
               </h2>
@@ -130,9 +131,9 @@
                     <%= @event.timezone %></p>
               <% end %>
 
-              <% if @event.sponsor and !@event.sponsor.blank? %>
-                  <p><strong>Sponsor:</strong>
-                    <%= @event.sponsor %></p>
+              <% if @event.sponsors.any? %>
+                <p><strong>Sponsors:</strong>
+                  <%= @event.sponsors.join(', ') %></p>
               <% end %>
 
               <% if @event.contact and !@event.contact.blank? %>

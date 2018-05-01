@@ -1,12 +1,12 @@
-<%# for things like 'online' or for_profit. Check the box sets it as false.  %>
+<!-- for things like 'online' or for_profit. Check the box sets it as false.  -->
 <% facet_field = facet.field_name.to_s %>
 
-<%# Title %>
+<!-- Title -->
 <li><h4 class="nav-heading"><%= facet_field.humanize %></h4></li>
 
 <% facet = facet.rows.first %>
 
-<%# Display all filter links %>
+<!-- Display all filter links -->
 <% if @facet_params.include?(facet_field)  %>
     <%= remove_filter_link(:online, 'true') do %>
         <li class="nav-item">
