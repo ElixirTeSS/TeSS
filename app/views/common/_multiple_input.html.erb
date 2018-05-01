@@ -1,4 +1,4 @@
-<!--
+<%#
 resource - the model e.g #<ContentProvider id: 80 ....
 field_name - the name of the array attribute in its plural form e.g. authors, keywords
 f - the current form
@@ -9,13 +9,13 @@ Example Usage:
 
 render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords', :f => f}
 
--->
+%>
 
 <% label ||= field_name.to_s.humanize %>
 <% model_name = f.object.class.name.underscore %>
 <% form_field_name = "#{model_name}[#{field_name.to_s}]" %>
 <% existing = f.object.send(field_name.to_sym) %>
-<% existing = [''] if existing.blank? %> <!-- Add one placeholder if the field's value consists of an empty array -->
+<% existing = [''] if existing.blank? %> <%# Add one placeholder if the field's value consists of an empty array %>
 
 <div class="form-group">
   <%= f.label field_name.to_sym, label %><%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>

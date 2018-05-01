@@ -9,9 +9,9 @@
   <%= content_tag :span, event.end, {itemprop: 'endDate', content: event.end, class: 'schemaorg-element'} if event.end and not event.end.nil? %>
   <%  if event.organizer and not event.organizer.empty? %>
       <span itemscope itemprop='organizer' itemtype="http://schema.org/Organization">
-      <!--   <%#= content_tag :span, nil, {itemprop: 'organizer',
+      <%#   <%#= content_tag :span, nil, {itemprop: 'organizer',
                                     itemtype: 'http://schema.org/Organization'},
-                                    itemscope: true do %>-->
+                                    itemscope: true do %>%>
         <%= content_tag 'span', event.organizer, {itemprop: 'name', content: event.organizer, class: 'schemaorg-element'} %>
       </span>
      <%# end if event.organizer and not event.organizer.empty? %>
@@ -21,9 +21,9 @@
         (event.county and not event.county.empty?) or
         (event.country and not event.country.empty?) or
         (event.postcode and not event.postcode.empty?) %>
-  <!--    <%#= content_tag :div, nil, {itemprop: 'location',
+  <%#    <%#= content_tag :div, nil, {itemprop: 'location',
                                  itemtype: 'http://schema.org/PostalAddress'},
-                                 itemscope: true do %>-->
+                                 itemscope: true do %>%>
   <span itemscope itemprop='location' itemtype="http://schema.org/PostalAddress">
     <%= content_tag 'span', address_string, {itemprop: 'name', content: address_string, class: 'schemaorg-element'} if address_string and not address_string.empty? %>
     <%= content_tag 'span', event.venue, {itemprop: 'streetAddress', content: event.venue, class: 'schemaorg-element'} if event.venue and not event.venue.empty? %>
@@ -38,7 +38,7 @@
             (event.country and not event.country.empty?) or
             (event.postcode and not event.postcode.empty?) %>
    <% end %>
-  <!-- end of 'valid' schema.org - bioschemas stuff from here on out-->
+  <%# end of 'valid' schema.org - bioschemas stuff from here on out%>
   <% if event.scientific_topics and not event.scientific_topics.nil? %>
       <% event.scientific_topics.each do |topic|  %>
           <%= content_tag :span, topic.preferred_label, {itemprop: 'scientificTopics', content: topic.preferred_label, class: 'schemaorg-element'} %>
@@ -46,7 +46,7 @@
   <% end %>
   <%= schemaorg_field(event, 'host_institutions').html_safe %>
   <%= schemaorg_field(event, 'contact').html_safe %>
-  <%= schemaorg_field(event, 'sponsors').html_safe %>
+  <%= schemaorg_field(event, 'sponsor').html_safe %>
   <%= schemaorg_field(event, 'target_audience').html_safe %>
   <%= schemaorg_field(event, 'capacity').html_safe %>
   <%= schemaorg_field(event, 'event_types').html_safe %>

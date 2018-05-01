@@ -6,7 +6,7 @@ Globals
 @query_params
 %>
 
-<!-- FILTERS APPLIED -->
+<%# FILTERS APPLIED %>
 <% @facet_params.each_with_index do |(category, value), i| %>
     <p>
       <b><%= (category == 'name' && params[:controller] == 'nodes') ? 'Node'.pluralize(value.kind_of?(Array) ? value.length : 1) : category.humanize %></b>:

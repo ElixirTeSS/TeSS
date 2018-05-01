@@ -1,5 +1,5 @@
 <div class="wrapper collapsing-wrapper">
-  <!-- SIDEBAR -->
+  <%# SIDEBAR %>
   <div class="collapsing-sidebar" id="sidebar">
     <%= render :partial => "content_providers/partials/content_provider_info", :locals => {:content_provider => @material.content_provider} %>
     <%= render partial: "nodes/partials/associated_node_info", locals: { associated_nodes: @material.associated_nodes } %>
@@ -41,7 +41,6 @@
               <h2>
                 <%=t '.title', :default => @material.title %>
                 <%= scrape_status_icon(@material, 'large') if current_user and current_user.is_admin? %>
-                <%= missing_icon(@material, 'large') if current_user and current_user.is_admin? %>
                 <%= suggestion_icon(@material, 'large') if current_user and current_user.is_admin? -%>
               </h2>
               <p>
