@@ -8,7 +8,7 @@ resource_type - type of result objects returned by SOLR, may or may not be passe
 %>
 
 <% local_assigns.fetch :resource_type, 'result' %>
-<!-- RESULTS COUNT -->
+<%# RESULTS COUNT %>
 <div class="search-results-count">
   <%= pluralize( resources.total, resource_type.humanize.downcase ) %> found
 </div>
