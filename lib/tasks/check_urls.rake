@@ -66,7 +66,7 @@ end
 def get_bad_response(url)
   begin
     sleep(rand(10))
-    response = HTTParty.head(url)
+    response = HTTParty.head(url, verify: false)
     #puts "#{response.code}, #{url}"
     return nil if response.code.to_s =~ /2[0-9]{2}/  # Success!
     return nil if response.code.to_s =~ /3[0-9]{2}/  # Redirection
