@@ -12,10 +12,6 @@
             <%= link_to t('.edit', :default => t("helpers.links.edit")),
                         edit_package_path(@package), :class => 'btn btn-primary' %>
         <% end %>
-        <%#<%# if !current_user.nil? and policy(@package).manage? %>%>
-            <%#= link_to t('.manage', :default => t("helpers.links.manage")),
-                        package_manage_path(@package), :class => 'btn btn-default' %>
-        <%#<%# end %>%>
         <% if !current_user.nil? and policy(@package).destroy? %>
             <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                         package_path(@package),
