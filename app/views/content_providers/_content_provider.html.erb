@@ -1,7 +1,6 @@
 <li class="masonry-brick media-item ">
   <%= image_tag content_provider.image.url(:media), :class=>"media-image listing_image" %>
   <h3 class="media-heading"><%= content_provider.title %></h3>
-  <%#<p><%= content_provider.url %></p>%>
   <p><%= truncate(content_provider.description, length: 100, separator: ' ') %></p>
   <% if content_provider.materials.length > 0 %>
       <div><strong><%= pluralize(content_provider.materials.length, 'training material') %></strong></div>
