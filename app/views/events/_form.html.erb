@@ -70,10 +70,10 @@
 
     <%= f.multi_input :host_institutions %>
 
-    <!-- TODO: add autocomplete to this field -->
-    <%= f.input :timezone, field_lock: true %>
+    <%= f.multi_input :sponsors %>
 
-    <%= f.input :sponsor, field_lock: true %>
+    <%# TODO: add autocomplete to this field %>
+    <%= f.input :timezone, field_lock: true %>
 
     <%= f.input :contact, input_html: { rows: '5' }, field_lock: true %>
 
