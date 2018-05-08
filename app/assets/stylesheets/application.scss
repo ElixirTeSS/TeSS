@@ -797,7 +797,7 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
 }
 
 .about-block{
-  padding: 30px 70px;
+  padding: 10px 30px;
 }
 
 .odd-about-block {
@@ -832,7 +832,6 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
   font-size: 5em;
   color: gray;
 }
-
 
 .about-resource-icon{
   padding: 35px 10px;
@@ -870,3 +869,23 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
 .open-access-location{
   width: 250px;
 }
+
+
+
+/* all links */
+.about-page-menu .nav>li>a {
+  color: #999;
+  padding: 4px 20px;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+/* nested links */
+.about-page-menu .nav .nav>li>a {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 30px;
+  font-size: 12px;
+}
+
+.about-page-menu .nav>.active>a { background-color: #F0F0F0; }

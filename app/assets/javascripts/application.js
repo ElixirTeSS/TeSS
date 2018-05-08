@@ -76,7 +76,9 @@ function reposition_tiles(container, tile_class){
     });
 }
 
+
 $(document).ready(function () {
+
     // Show the tab associated with the window location hash (e.g. "#packages")
     if (window.location.hash) {
         var tab = $('ul.nav a[href="' + window.location.hash + '"]');
@@ -213,4 +215,21 @@ $(document).ready(function () {
             }
         });
     });
+
+// TODO: Try to get scrollspy to work. Something is preventing it from triggering
+    $('.about-block').scrollspy({
+        target: '.about-page-menu',
+        offset: 40
+    });
+
+    $('.about-page-menu').affix({
+        offset: {
+            top: 100,
+            bottom: function () {
+                return (this.bottom = $('.footer').outerHeight(true))
+            }
+        }
+    })
+
+
 });

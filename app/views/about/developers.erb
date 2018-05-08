@@ -1,7 +1,8 @@
-<div class="wrapper">
+
+  <div class="wrapper">
 
   <div id="sidebar" class="popout-sidebar">
-    <%= render :partial => 'about_nav', locals: {show: 'home'} %>
+    <%= render :partial => 'about_nav', locals: {show: 'developers'} %>
   </div>
 
   <div id="content" class="">
@@ -10,7 +11,7 @@
       <!-- ABOUT TESS DATA -->
       <div class="row">
         <div class="odd-about-block">
-          <div id='how' class="h3">For Developers</div>
+          <div id='code_and_data' class="h3">For Developers</div>
 
           TeSS is commited to the FAIR principles. Making data findable, accessible, interoperable and re-usable. As such,
           all of the content we collect in TeSS is available under the CC-BY-4.0 licence through and can be accessed
@@ -18,8 +19,25 @@
           be found on GitHub.
 
           <div class="row">
+            <div class="col-lg-5 5 open-access-box">
+              <div class="h2 licence-title">Software</div>
+              <div class="open-access-location">
+                <%= link_to 'https://github.com/ElixirTeSS/TeSS', target: '_blank' do %>
+                    <div class="register-condition-graphic">
+                      <%= image_tag 'about/GitHub-Mark-64px.png', class: "" %>
+                    </div>
+                    <div class="register-condition">The sourcecode for TeSS is available on GitHub</div>
+                <% end %>
+              </div>
+              <div class="open-access-licence">
+                <%= link_to 'https://github.com/ElixirTeSS/TeSS/blob/master/LICENSE', target: '_blank' do %>
+                    <div class="register-condition-graphic"><i class="fa fa-code licence-logo"></i></div>
+                    <div class="register-condition">It is available under the BSD-3 licence</div>
+                <% end %>
+              </div>
+            </div>
               <div class="col-lg-5 open-access-box">
-                <div class="h2 licence-title">Content</div>
+                <div class="h2 licence-title">Data</div>
                   <%= link_to 'https://github.com/ElixirTeSS/TeSS', target: '_blank' do %>
                     <div class="open-access-location">
                       <div class="register-condition-graphic"><i class="fa fa-plug licence-logo"></i></div>
@@ -33,29 +51,12 @@
                   <% end %>
                 </div>
               </div>
-              <div class="col-lg-5 5 open-access-box">
-                <div class="h2 licence-title">Software</div>
-                  <div class="open-access-location">
-                      <%= link_to 'https://github.com/ElixirTeSS/TeSS', target: '_blank' do %>
-                        <div class="register-condition-graphic">
-                          <%= image_tag 'about/GitHub-Mark-64px.png', class: "" %>
-                        </div>
-                        <div class="register-condition">The sourcecode for TeSS is available on GitHub</div>
-                      <% end %>
-                  </div>
-                  <div class="open-access-licence">
-                    <%= link_to 'https://github.com/ElixirTeSS/TeSS/blob/master/LICENSE', target: '_blank' do %>
-                      <div class="register-condition-graphic"><i class="fa fa-code licence-logo"></i></div>
-                      <div class="register-condition">It is available under the BSD-3 licence</div>
-                    <% end %>
-                  </div>
-                </div>
               </div>
         </div>
       </div>
       <div class="row">
         <div class="even-about-block">
-          <div class="h3" id="share">Widgets</div>
+          <div class="h3" id="widgets">Widgets</div>
             <p>Our widgets are chunks of javascript code that can be copied into websites to render a list of events from TeSS. There are several widget styles to choose from, which can be configured to display only events that are interesting to your community (workshops in your country, meetings about a given scientific topic, etc.).</p>
               <p>
                 We have also created some javascript widgets that can be easily added to your website
@@ -91,3 +92,4 @@
     </div>
   </div>
 </div>
+</body>

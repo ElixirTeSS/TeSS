@@ -1,7 +1,7 @@
 <div class="wrapper">
 
   <div id="sidebar" class="popout-sidebar">
-    <%= render :partial => 'about_nav', locals: {show: 'home'} %>
+    <%= render :partial => 'about_nav', locals: {show: 'registering'} %>
   </div>
 
   <div id="content" class="">
@@ -90,7 +90,7 @@
 
           <!-- BIOSCHEMAS -->
           <div class="sub-about-block">
-            <div class="h6">Schema.org / Bioschemas</div>
+            <div id='bioschemas' class="h6">Schema.org / Bioschemas</div>
             <div class="row">
               <div class="col-lg-9">
                 <p><%= link_to 'schema.org', 'http://schema.org', target: '_blank'%> is a project ran by a consortium of search engines.
@@ -129,7 +129,7 @@
           </div>
           <!-- API -->
           <div class="sub-about-block">
-            <div class="h6">API</div>
+            <div id='api' class="h6">API</div>
             <div class="row">
               <div class="col-lg-9">
                 <p>An API is an Application Programming Interface. Typically, they have an endpoint URL which, when accessed, returns
@@ -153,7 +153,7 @@
 
           <!-- CALENDAR -->
           <div class="sub-about-block">
-            <div class="h6">Calendar</div>
+            <div id='calendar' class="h6">Calendar</div>
             <div class="row">
               <div class="col-lg-9">
                 Many organizations use a calendar application to display their events. These can be custom-made, or utilize
@@ -176,7 +176,7 @@
 
           <!-- OTHER -->
           <div class="sub-about-block">
-            <div class="h6">Other types</div>
+            <div id='other' class="h6">Other types</div>
             <ul>
               <li><b>RSS Feed</b>: an RSS feed is a type of news format. Many websites have such feeds, which list recent posts in a standard format. We can write scripts to parse this format;</li>
               <li><b>Git Repository:</b> a git repository is a directory containing files that can be collaboratively edited. If you are using GitHub (or similar) to develop your training resources and/or use GitHub.io (or similar) to render them, we can write a script that clones the repository and extracts resource information. We may ask you to create a metadata file in YAML format to help us extract the metadata;</li>

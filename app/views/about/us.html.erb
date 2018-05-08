@@ -1,24 +1,85 @@
-
-<%= render :partial => 'about_nav' %>
-
 <div class="wrapper">
+
   <div id="sidebar" class="popout-sidebar">
-    <div data-spy="scroll" data-target="navbar-example" class="col-md-3" id="sidebar" style="position:relative">
-      <ul class="unstyled  nav-tabs" class='navbar-example' role="tablist">
-        <li class="nav-heading h4"><%= link_to 'What is TeSS?', about_path %></li>
-        <li class="nav-heading h4"><%= link_to 'How To Include Your Content', features_path %></li>
-      </ul>
-    </div>
+    <%= render :partial => 'about_nav', locals: {show: 'us'} %>
   </div>
 
+  <div id="content" class="">
+    <div class="about-block">
 
-  <div id="content">
-    <div class="row">
-      <div class="col-lg-9">
-        TeSS is
+      <!-- CONTACT-->
+      <div class="row">
+        <div class="odd-about-block">
+          <div id='contact' class="h3">Contact</div>
+          <div class="sub-about-block">
+            <%= render :partial => "common/contact_form"%>
+          </div>
+        </div>
       </div>
+
+      <!-- THE TEAM-->
+      <section id="team">
+      <div class="row">
+        <div class="even-about-block">
+          <div id='team' class="h3">The Team</div>
+
+
+          <div class="h4">Project Management</div>
+          Teresa Attwood
+          Niall Beard
+
+          <div class="h4">Leadership</div>
+          Teresa K. Attwood
+          Carole Goble
+          Susanna-Assunta Sansone
+
+          <div class="h4">Developers</div>
+          Finn Baccall
+          Milo Thurston
+          Niall Beard
+
+          <div class="h4">Past Members</div>
+          Aleksandra Nenadic - Project Manager
+        </div>
+      </div>
+      </section>
+
+
+      <!-- FUNDING-->
+      <section id="funding">
+        <div class="row">
+          <div class="odd-about-block">
+            <div id='funding' class="h3">Funding</div>
+            ELIXIR (ELIXIR-EXCELERATE grant by the European Commission within the Research Infrastructures programme of Horizon 2020, grant agreement number 676559)
+            BBSRC UK (Delivering ELIXIR-UK grant, grant agreement number BB/L005050/1)
+          </div>
+        </div>
+      </section>
+
+      <!-- ACKNOWLEDGEMENTS-->
+      <section id="acknowledgements">
+      <div class="row">
+        <div class="even-about-block">
+          <div id='acknowledgments' class="h3">Acknowledgements</div>
+          <p>The TeSS team would like to acknowledge the help of a number of groups and individuals and thank them for useful discussions, feedback and help while developing TeSS - to name but a few:</p>
+          <ul>
+            <li>ELIXIR technical staff and coordinators from the Hub, in particular Rafael Jimenez, Martin Cook and Premysl Velek</li>
+            <li>Training coordinators from ELIXIR-NL (Celia van Gelder) and ELIXIR-CH (Patricia Pelagi)</li>
+            <li>Structural bioinformatics group (lead by Chistine Orengo and Cath Brooksbank)</li>
+          </ul>
+        </div>
+      </div>
+      </section>
+
+      <!-- PUBLICATIONS -->
+      <div class="row">
+        <div class="odd-about-block">
+          <div id='publications' class="h3">Publications</div>
+          ...
+        </div>
+      </div>
+
+
     </div>
   </div>
-
-
 </div>

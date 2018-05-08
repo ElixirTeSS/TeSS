@@ -1,91 +1,71 @@
   
     <!-- SIDEBAR -->
-
-
-    <div data-spy="scroll" data-target="navbar-example" class="col-md-3" id="sidebar">
-      <ul class="unstyled nav-tabs" class='navbar-example' role="tablist">
-
-        <!-- WHAT IS TESS -->
-        <li class="nav-heading h4"><%= link_to 'What is TeSS', about_path %></li>
-            <li class="nav-item">
-              <a href="#trainingregistry" title="">Training Registry</a>
-              <a href="#events" title="">-- Events</a>
-              <a href="#materials" title="">-- Materials</a>
-              <a href="#workflows" title="">-- Workflows</a>
-            </li>
-            <li class="nav-item">
-              <a href="#subscribe" title="">Subscribe to notifications</a>
-            </li>
-            <li class="nav-item">
-              <a href="#widgets" title="">Widgets & API</a>
-            </li>
-
-        <!-- REGISTERING YOUR RESOURCES -->
-        <li class="nav-heading h4"><%= link_to 'Registering Content in TeSS', registering_resources_path %></li>
-            <li class="nav-item">
-              <a href="#include" title="">
-                How we Source Content in TeSS
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="#how" title="">
-                Be included in the TeSS registry
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="#automatic" title="">
-                -- Automatic Registration
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="#bioschemas" title="">
-                ---- Bioschemas
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="#manual" title="">
-                -- Manual Registration
-              </a>
-            </li>
-
-
-        <!-- DEVELOPERS -->
-        <li class="nav-heading h4"><%= link_to 'Developers', developers_path %></li>
-            <li class="nav-item">
-              <a href="#share" title="">Data</a>
-            </li>
-            <li class="nav-item">
-              <a href="#widgets" title="">Widgets</a>
-            </li>
-            <li class="nav-item">
-              <a href="#api" title="">API</a>
-            </li>
-            <li class="nav-item">
-              <a href="#software">
-                Our Codebase
-              </a>
-            </li>
+<nav class="about-page-menu">
+    <!-- WHAT IS TESS -->
+        <ul class="nav nav-stacked blah">
+              <% if show == 'home' %><li class="active"><% else %><li><% end %>
+              <%= link_to 'What is TeSS', about_path%></li>
+              <ul class="nav nav-stacked">
+              <!--
+                  <li><%= link_to 'Events', about_path(:anchor => 'events') %></li>
+                  <li><%= link_to 'Materials', about_path(:anchor => 'materials') %></li>
+                  <li><%= link_to 'Workflows', about_path(:anchor => 'workflows') %></li>
+                -->
+                  <li><%= link_to 'What we catalogue', about_path(:anchor => 'events') %></li>
+                  <li><%= link_to 'Subscribing to notifications', about_path(:anchor => 'subscribe') %></li>
+                  <li><%= link_to 'Widgets & API', about_path(:anchor => 'widgets') %></li>
+                </ul>
+        </ul>
 
 
 
-        <!-- ABOUT US -->
-        <li class="nav-heading h4"><%= link_to 'About Us', us_path %></li>
-            <li class="nav-item">
-              <a href="#contact">Contact</a>
-            </li>
-            <li class="nav-item">
-              <a href="#team">The Team</a>
-            </li>
-            <li class="nav-item">
-              <a href="#funding">Funding</a>
-            </li>
-            <li class="nav-item">
-              <a href="#acknowledgments">
-                Acknowledgements
-              </a>
-            </li>
+
+  <!-- REGISTERING YOUR RESOURCES -->
+  <ul class="nav nav-stacked">
+      <% if show == 'registering' %><li class="active"><% else %><li><% end %>
+    <%= link_to 'Registering Content in TeSS', registering_resources_path %></li>
+      <ul class="nav nav-stacked">
+        <li><%= link_to 'Automatic Registration', registering_resources_path(:anchor => 'automatic') %></li>
+        <!--
+        <ul class="nav nav-stacked">
+          <li><%= link_to '-- Bioschemas', registering_resources_path(:anchor => 'bioschemas') %></li>
+          <li><%= link_to '-- API', registering_resources_path(:anchor => 'api') %></li>
+          <li><%= link_to '-- Calendar', registering_resources_path(:anchor => 'calendar') %></li>
+          <li><%= link_to '-- Other', registering_resources_path(:anchor => 'other') %></li>
+        </ul>
+        -->
+        <li><%= link_to 'Manual Registration', registering_resources_path(:anchor => 'manual') %></li>
       </ul>
-    </div>
+  </ul>
 
+
+  <!-- DEVELOPERS -->
+  <ul class="nav nav-stacked">
+    <li>
+      <% if show == 'developers' %><li class="active"><% else %><li><% end %>
+      <%= link_to 'Developers', developers_path %></li>
+      <ul class="nav nav-stacked">
+        <li><%= link_to 'Code and Data', developers_path(:anchor => 'code_and_data') %></li>
+        <li><%= link_to 'Widgets', developers_path(:anchor => 'widgets') %></li>
+        <li><%= link_to 'API', developers_path(:anchor => 'api') %></li>
+      </ul>
+    </li>
+  </ul>
+
+  <!-- ABOUT US -->
+  <ul class="nav nav-stacked">
+      <% if show == 'us' %><li class="active"><% else %><li><% end %>
+      <%= link_to 'About Us', us_path%></li>
+      <ul class="nav nav-stacked">
+        <li><%= link_to 'Contact', us_path(:anchor => 'contact') %></li>
+        <li><%= link_to 'The Team', us_path(:anchor => 'team') %></li>
+        <li><%= link_to 'Funding', us_path(:anchor => 'funding') %></li>
+        <li><%= link_to 'Acknowledgements', us_path(:anchor => 'acknowledgments') %></li>
+        <li><%= link_to 'Publications', us_path(:anchor => 'publications') %></li>
+      </ul>
+  </ul>
+
+
+
+</nav>
 

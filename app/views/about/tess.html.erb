@@ -1,13 +1,14 @@
+
 <div class="wrapper">
 
-      <div id="sidebar" class="popout-sidebar">
-        <%= render :partial => 'about_nav', locals: {show: 'home'} %>
-      </div>
+  <div id="sidebar" class="popout-sidebar">
+    <%= render :partial => 'about_nav', locals: {show: 'home'} %>
+  </div>
 
 
-
-  <div id="content" class="about-block">
-    <div class="row">
+  <div id="content">
+    <div class="about-block">
+      <div class="row">
 
         <div id='trainingregistry' class="h3">The ELIXIR Training Registry</div>
         One of the goals of <%= link_to 'ELIXIR', 'https://elixir-europe.org', target: '_blank' %> (Europe's distributed infrastructure for life-science data) is to train research scientists to better use available computational infrastructures to address critical research questions. This requires access both to face-to-face training opportunities and to disparate training materials and resources, currently dispersed across Europe. TeSS is ELIXIR's training platform, providing a one-stop shop for trainers  and trainees, to find online training content such as training materials, events, and interactive tutorials. For ELIXIR nodes, TeSS provides opportunities to promote training events and news, and to contribute to a growing catalogue of materials; for trainers, the portal offers an environment for sharing materials; for trainees, it offers a convenient portal for identifying relevant training events and resources, and navigating specific training tasks via customised workflows
@@ -16,7 +17,7 @@
         <div class="row odd-about-block">
           <div class="col-lg-2 about-resource-icon">
             <%= link_to events_path do %>
-            <i class="fa fa-calendar about-icons"></i><br>Visit Events
+            <i class="fa fa-calendar about-icons"></i><br>Discover Events
             <% end %>
           </div>
           <div class="col-lg-10 about-resource">
@@ -31,7 +32,7 @@
         <div class="row even-about-block">
           <div class="col-lg-2 about-resource-icon">
               <%= link_to events_path do %>
-                <i class="fa fa-book about-icons"></i><br>Visit Materials
+                <i class="fa fa-book about-icons"></i><br>Discover Materials
               <% end %>
             </div>
             <div class="col-lg-10 about-resource">
@@ -46,7 +47,7 @@
           <div class="row">
             <div class="col-lg-2 about-resource-icon">
               <%= link_to events_path do %>
-              <i class="fa fa-sitemap about-icons"></i><br>Visit Workflows
+              <i class="fa fa-sitemap about-icons"></i><br>Discover Workflows
               <% end %>
             </div>
             <div class="col-lg-10 about-resource">
@@ -94,5 +95,5 @@
         </div>
     </div>
   </div>
-
+  </div>
 </div>
