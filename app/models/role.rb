@@ -3,6 +3,14 @@ class Role < ActiveRecord::Base
 
   # Look in config/data/roles.yml to find role definitions
 
+  def self.approved
+    fetch('registered_user')
+  end
+
+  def self.rejected
+    fetch('basic_user')
+  end
+
   def self.fetch(name)
     role = find_by_name(name)
     if role

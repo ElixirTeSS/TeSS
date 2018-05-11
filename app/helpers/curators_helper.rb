@@ -18,4 +18,22 @@ module CuratorsHelper
 
     options_for_select(array, selected_role.name)
   end
+
+  def recent_approvals
+    PublicActivity::Activity.where(key: 'user.change_role').last(50).select do |activity|
+      [Role.rejected.id, Role.approved.id].include?(activity.parameters[:new])
+    end.last(5).reverse
+  end
+
+  def approval_message(role_id)
+    if role_id == Role.approved.id
+      text = 'approved'
+      css_class = 'text-success'
+    else
+      text = 'rejected'
+      css_class = 'text-danger'
+    end
+
+    content_tag(:span, text, class: css_class)
+  end
 end

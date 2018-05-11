@@ -81,6 +81,24 @@ class CuratorControllerTest < ActionController::TestCase
     assert_nil assigns(:suggestions)
   end
 
+  test 'should show recent user approvals and rejections' do
+    admin = users(:admin)
+    approved = users(:unverified_user)
+    rejected = users(:shadowbanned_unverified_user)
+
+    sign_in admin
+    User.current_user = admin # This is needed to set the correct "owner" on the activity logs
+    assert approved.update_attributes(role_id: Role.approved.id)
+    assert rejected.update_attributes(role_id: Role.rejected.id)
+
+    get :users
+
+    assert_response :success
+    assert_select '#recent-user-curation-activity ul li', text: /#{approved.name}\s+was\s+approved\s+by\s+#{admin.username}/
+    assert_select '#recent-user-curation-activity ul li', text: /#{rejected.name}\s+was\s+rejected\s+by\s+#{admin.username}/
+  end
+
+
   private
 
   def add_topic_suggestions(resource, topic_names = [])
