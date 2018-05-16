@@ -93,11 +93,11 @@ module Searchable
           without(:user_id, User.shadowbanned.pluck(:id))
         end
 
-        # Hide unverified users' things, except from curators and admins
+        # Hide unverified/rejected users' things, except from curators and admins
         unless user && (user.is_curator? || user.is_admin?)
-          unverified_user_ids = User.with_role('unverified_user').pluck(:id)
-          unverified_user_ids -= [user.id] if user # Let them see their own things
-          without(:user_id, unverified_user_ids)
+          blocked_user_ids = User.with_role('unverified_user', Role.rejected.name).pluck(:id)
+          blocked_user_ids -= [user.id] if user # Let them see their own things
+          without(:user_id, blocked_user_ids)
         end
 
         # Hide records the urls of which are failing
