@@ -35,7 +35,7 @@ class CuratorController < ApplicationController
   def users
     @role = Role.fetch(params[:role]) if current_user.is_admin?
     @role ||= Role.fetch('unverified_user')
-    @users = User.with_role(@role).unbanned
+    @users = User.with_role(@role).unbanned.order('created_at DESC')
 
     respond_to do |format|
       format.html
