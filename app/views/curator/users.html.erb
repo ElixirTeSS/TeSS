@@ -2,7 +2,7 @@
   <h2>
     <% if current_user.is_admin? %>
       <select onchange="window.location = '<%= curate_users_path -%>?role=' + $(this).val();" autocomplete="off" class="pull-right form-control" style="width: 15em">
-        <%= role_options(@role, scope: User.unbanned) %>
+        <%= role_options(@role) %>
       </select>
     <% end %>
     Curate Users
@@ -36,6 +36,10 @@
     <div class="panel panel-default curate-user">
       <div class="panel-heading">
         <%= link_to user.name, user, target: :_blank %>
+
+        <% if user.banned? %>
+          <span class="text-danger">(<%= user.shadowbanned? ? 'shadowbanned' : 'banned'-%>)</span>
+        <% end %>
 
         <div class="pull-right curate-user-buttons" data-action-url="<%= user_path(user) -%>">
           <%= link_to('Approve', '#', class: 'btn btn-xs btn-success', 'data-role-id' => Role.approved.id ) %>
