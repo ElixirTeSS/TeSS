@@ -339,7 +339,7 @@ class Event < ActiveRecord::Base
     location = self.address
 
     #result = Geocoder.search(location).first
-    args = {postcode: postcode, city: city, county: county, country: country}
+    args = {postalcode: postcode, city: city, county: county, country: country, format: 'json'}
     result = nominatim_lookup(args)
     if result
       self.latitude = result[:lat]
@@ -379,26 +379,11 @@ class Event < ActiveRecord::Base
   end
 
   def nominatim_lookup(args)
-    url = 'https://nominatim.openstreetmap.org/search.php?'
-
-    postcode = args[:postcode]
-    city = args[:city]
-    county = args[:county]
-    country = args[:country]
-
-    parameters = []
-    parameters << "postcalcode=#{postcode}" if postcode
-    parameters << "city=#{city}" if city
-    parameters << "county=#{county}" if county
-    parameters << "country=#{country}" if country
-
-    if !parameters.empty?
-      parameters << 'format=json'
-      response = HTTParty.get("#{url}#{parameters.join('&')}")
-      return (JSON.parse response, symbolize_names: true)[0]
-    else
-      return {}
-    end
+    url = 'https://nominatim.openstreetmap.org/search.php'
+    response = HTTParty.get(url,
+                            query: args,
+                            headers: { 'User-Agent' => "Elixir TeSS <#{TeSS::Config.contact_email}>" })
+    (JSON.parse response.body, symbolize_names: true)[0]
   end
 
 
