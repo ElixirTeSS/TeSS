@@ -50,13 +50,11 @@
   </p>
 
   <h3>Information Retention</h3>
-
   <p>
     Your information will be retained by TeSS until you choose to remove it, you delete your account, or the TeSS service ceases to exist.
   </p>
 
   <h3>Code of Conduct</h3>
-
   <p>
     TeSS adheres to the
     <a href="https://wiki.refeds.org/display/CODE/Code+of+Conduct+for+Service+Providers">
@@ -64,7 +62,11 @@
     </a>
   </p>
 
-  <em>The TeSS service is provided as part of ELIXIR-UK by:</em>
+  <h3>Data Controller</h3>
+  <p>The data controller for TeSS is The University of Manchester.</p>
+  <em>For any enquiries or requests, please contact:</em><br/>
+  <strong>Email:</strong> <%= mail_to(TeSS::Config.contact_email, TeSS::Config.contact_email)-%><br/>
+  <strong>Post:</strong>
   <address>
     <strong>The TeSS Team</strong><br/>
     Room 1.17 c/o School of Computer Science,<br/>
