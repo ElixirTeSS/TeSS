@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   friendly_id :username, use: :slugged
 
   attr_accessor :login
+  attr_accessor :processing_consent
 
   if TeSS::Config.solr_enabled
     # :nocov:
@@ -50,6 +51,8 @@ class User < ActiveRecord::Base
             :presence => true,
             :case_sensitive => false,
             :uniqueness => true
+
+  validate :consents_to_processing, on: :create, unless: ->(user) { user.using_omniauth? || User.current_user.try(:is_admin?) }
 
   accepts_nested_attributes_for :profile
 
@@ -112,9 +115,10 @@ class User < ActiveRecord::Base
   end
 
   def self.get_default_user
-    where(role_id: Role.fetch('default_user').id).first_or_create(username: 'default_user',
-                                                                  email: TeSS::Config.contact_email,
-                                                                  password: SecureRandom.base64)
+    where(role_id: Role.fetch('default_user').id).first_or_create!(username: 'default_user',
+                                                                   email: TeSS::Config.contact_email,
+                                                                   password: SecureRandom.base64,
+                                                                   processing_consent: '1')
   end
 
   def name
@@ -250,6 +254,14 @@ class User < ActiveRecord::Base
   def log_role_change
     if role_id_changed?
       create_activity(:change_role, owner: User.current_user, parameters: { old: role_id_was, new: role_id })
+    end
+  end
+
+  def consents_to_processing
+    unless processing_consent
+      errors.add(:base, 'You must consent to TeSS processing your data in order to register')
+
+      false
     end
   end
 end

@@ -7,29 +7,21 @@ class MaterialTest < ActiveSupport::TestCase
 
 
   setup do
-    @user = User.new(:username=>'bobo',
-                  :email=>'exampl@example.com',
-                  :role => roles(:user),
-                  :password => SecureRandom.base64
-    )
-    @user.save!
-    @material = Material.new(:title => 'title',
-                             :short_description => 'short desc',
-                             :url => 'http://goog.e.com',
-                             :user => @user,
-                             :authors => ['horace', 'flo'],
-                             :content_provider => ContentProvider.first)
-    @material.save!
-
+    @user = users(:regular_user)
+    @material = Material.create!(title: 'title',
+                                 short_description: 'short desc',
+                                 url: 'http://goog.e.com',
+                                 user: @user,
+                                 authors: ['horace', 'flo'],
+                                 content_provider: content_providers(:goblet))
   end
 
   test 'should reassign owner when user deleted' do
-    material_id = @material.id
     owner = @material.user
     assert_not_equal 'default_user', owner.role.name
     owner.destroy
     #Reload the material
-    material = Material.find_by_id(material_id)
+    material = @material.reload
     assert_equal 'default_user', material.user.role.name
   end
 

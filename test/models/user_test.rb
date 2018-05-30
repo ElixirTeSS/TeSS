@@ -5,7 +5,7 @@ class UserTest < ActiveSupport::TestCase
   setup do
     mock_images
     @user_data = users(:regular_user)
-    @user_params = { username: 'new_user', password: '12345678', email: 'new-user@example.com' }
+    @user_params = { username: 'new_user', password: '12345678', email: 'new-user@example.com', processing_consent: '1' }
     User.get_default_user
   end
 
@@ -144,7 +144,7 @@ class UserTest < ActiveSupport::TestCase
     refute User.where(username: 'user').any?
     assert_equal 'user', User.username_from_auth_info(auth_info)
 
-    User.create({ username: 'user', password: '12345678', email: 'new-user@example.com' })
+    User.create({ username: 'user', password: '12345678', email: 'new-user@example.com', processing_consent: '1' })
     auth_info = OpenStruct.new({})
     assert User.where(username: 'user').any?
     refute User.where(username: 'user1').any?

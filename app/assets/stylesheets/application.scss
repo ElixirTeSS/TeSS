@@ -765,3 +765,15 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
     }
   }
 }
+
+.user_processing_consent {
+  @include alert-variant($alert-info-bg, $alert-info-border, $alert-info-text);
+  padding: 0 10px;
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+
+  a {
+    text-decoration: underline;
+  }
+}
