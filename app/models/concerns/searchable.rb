@@ -67,7 +67,7 @@ module Searchable
           end
         end
 
-        paginate page: page, per_page: per_page if !page.nil? && (page != '1')
+        paginate page: page, per_page: per_page unless page.nil?
 
         Tess::Facets.special.each do |facet_title|
           if Tess::Facets.applicable?(facet_title, name)

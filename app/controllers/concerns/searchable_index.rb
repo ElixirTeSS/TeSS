@@ -17,8 +17,8 @@ module SearchableIndex
 
   def fetch_resources
     if TeSS::Config.solr_enabled
-      page = page_param.blank? ? 1 : page_param
-      per_page = per_page_param.blank? ? 30 : per_page_param
+      page = page_param.blank? ? 1 : page_param.to_i
+      per_page = per_page_param.blank? ? 30 : per_page_param.to_i
 
       @search_results = @model.search_and_filter(current_user, @search_params, @facet_params,
                                     page: page, per_page: per_page, sort_by: @sort_by)
