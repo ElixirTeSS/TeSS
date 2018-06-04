@@ -52,12 +52,12 @@ class EditSuggestionTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should destroy associated scientific_topic_links on destroy' do
+  test 'should destroy associated ontology_term_links on destroy' do
     suggestion = edit_suggestions(:one)
-    assert_equal 2, suggestion.scientific_topic_links.count
+    assert_equal 2, suggestion.ontology_term_links.count
 
     assert_difference('EditSuggestion.count', -1) do
-      assert_difference('ScientificTopicLink.count', -2) do
+      assert_difference('OntologyTermLink.count', -2) do
         suggestion.destroy
       end
     end

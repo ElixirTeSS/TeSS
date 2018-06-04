@@ -3,14 +3,14 @@ module HasScientificTopics
   extend ActiveSupport::Concern
 
   included do
-    has_many :scientific_topic_links, as: :resource, dependent: :destroy
+    has_many :ontology_term_links, as: :resource, dependent: :destroy
   end
 
   def scientific_topic_names= names
     terms = []
     [names].flatten.each do |name|
       unless name.blank? or name == ''
-        st = [EDAM::Ontology.instance.lookup_topic_by_name(name)].compact
+        st = [EDAM::Ontology.instance.scoped_lookup_by_name(name, OBO_EDAM.topics)].compact
         st = EDAM::Ontology.instance.find_by(OBO.hasExactSynonym, name) if st.empty?
         st = EDAM::Ontology.instance.find_by(OBO.hasNarrowSynonym, name) if st.empty?
         terms += st
@@ -24,11 +24,11 @@ module HasScientificTopics
   end
 
   def scientific_topics= terms
-    self.scientific_topic_links = terms.uniq.map { |term| scientific_topic_links.build(term_uri: term.uri) if term && term.uri }.compact
+    self.ontology_term_links = terms.uniq.map { |term| ontology_term_links.build(term_uri: term.uri) if term && term.uri }.compact
   end
 
   def scientific_topics
-    scientific_topic_links.map(&:scientific_topic).uniq
+    ontology_term_links.map(&:ontology_term).uniq
   end
 
   def scientific_topic_uris= uris
