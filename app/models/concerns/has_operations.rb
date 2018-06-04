@@ -1,4 +1,4 @@
-module HasScientificTopics
+module HasOperations
   extend ActiveSupport::Concern
 
   included do
@@ -7,7 +7,7 @@ module HasScientificTopics
     end
   end
 
-  def scientific_topic_names= names
+  def operation_names= names
     terms = []
     [names].flatten.each do |name|
       unless name.blank?
@@ -17,26 +17,26 @@ module HasScientificTopics
         terms += st
       end
     end
-    self.scientific_topics = terms.uniq
+    self.operations = terms.uniq
   end
 
-  def scientific_topic_names
-    scientific_topics.map(&:preferred_label).uniq
+  def operation_names
+    operations.map(&:preferred_label).uniq
   end
 
-  def scientific_topics= terms
+  def operations= terms
     self.ontology_term_links = terms.uniq.map { |term| ontology_term_links.build(term_uri: term.uri) if term && term.uri }.compact
   end
 
-  def scientific_topics
+  def operations
     ontology_term_links.map(&:ontology_term).uniq
   end
 
-  def scientific_topic_uris= uris
-    self.scientific_topics = uris.map { |uri| EDAM::Ontology.instance.lookup(uri) }
+  def operation_uris= uris
+    self.operations = uris.map { |uri| EDAM::Ontology.instance.lookup(uri) }
   end
 
-  def scientific_topic_uris
-    self.scientific_topics.map(&:uri).uniq
+  def operation_uris
+    self.operations.map(&:uri).uniq
   end
 end

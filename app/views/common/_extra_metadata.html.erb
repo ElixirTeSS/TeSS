@@ -1,4 +1,7 @@
 <%= display_attribute(resource, :scientific_topics) { |values| values.map{|x| x.preferred_label}.join(', ')} %>
+<% if resource.respond_to?(:operations) %>
+  <%= display_attribute(resource, :operations) { |values| values.map{|x| x.preferred_label}.join(', ')} %>
+<% end %>
 <%= display_attribute(resource, :keywords) { |values| values.join(', ')} %>
 <% if resource.class.name.downcase == 'material' -%>
 <%= display_attribute(resource, :resource_type) { |values| values.join(', ')} %>

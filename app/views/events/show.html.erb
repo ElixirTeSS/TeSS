@@ -175,6 +175,13 @@
                   </p>
               <% end %>
 
+              <% unless @event.operations.empty? %>
+                  <p>
+                    <strong>Operations:</strong>
+                    <%= @event.operation_names.join(', ')%>
+                  </p>
+              <% end %>
+
               <% unless @event.target_audience.empty? %>
                   <strong>Target audience:</strong>
                   <ul>

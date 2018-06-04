@@ -4,6 +4,7 @@ class Material < ActiveRecord::Base
 
   include PublicActivity::Common
   include HasScientificTopics
+  include HasOperations
   include LogParameterChanges
   include HasAssociatedNodes
   include HasExternalResources
@@ -32,6 +33,9 @@ class Material < ActiveRecord::Base
       text :authors
       string :scientific_topics, :multiple => true do
         self.scientific_topic_names
+      end
+      string :operations, :multiple => true do
+        self.operation_names
       end
       string :target_audience, :multiple => true
       text :target_audience
@@ -100,7 +104,7 @@ class Material < ActiveRecord::Base
   end
 
   def self.facet_fields
-    %w( scientific_topics tools standard_database_or_policy target_audience keywords difficulty_level
+    %w( scientific_topics operations tools standard_database_or_policy target_audience keywords difficulty_level
         authors related_resources contributors licence node content_provider user resource_type)
   end
 
