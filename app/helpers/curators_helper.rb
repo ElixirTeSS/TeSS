@@ -20,9 +20,9 @@ module CuratorsHelper
   end
 
   def recent_approvals
-    PublicActivity::Activity.where(key: 'user.change_role').last(50).select do |activity|
+    PublicActivity::Activity.where(key: 'user.change_role').where('created_at > ?', 3.months.ago).order('created_at DESC').select do |activity|
       [Role.rejected.id, Role.approved.id].include?(activity.parameters[:new])
-    end.last(5).reverse
+    end.first(5)
   end
 
   def approval_message(role_id)
