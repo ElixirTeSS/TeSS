@@ -91,7 +91,7 @@ class EditSuggestionWorker
         suggestion = EditSuggestion.new(:suggestible_type => suggestible_type, :suggestible_id => suggestible_id)
         topics.each do |x|
           #logger.info("Added topic #{x} to #{suggestible.inspect}")
-          suggestion.ontology_term_links.build(term_uri: x.uri)
+          suggestion.scientific_topic_links.build(term_uri: x.uri)
         end
         if suggestion.scientific_topics.any?
           suggestion.save

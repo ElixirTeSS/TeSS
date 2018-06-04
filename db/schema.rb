@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180604122145) do
+ActiveRecord::Schema.define(version: 20180604144813) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -251,8 +251,10 @@ ActiveRecord::Schema.define(version: 20180604122145) do
     t.integer "resource_id"
     t.string  "resource_type"
     t.string  "term_uri"
+    t.string  "field"
   end
 
+  add_index "ontology_term_links", ["field"], name: "index_ontology_term_links_on_field", using: :btree
   add_index "ontology_term_links", ["resource_type", "resource_id"], name: "index_ontology_term_links_on_resource_type_and_resource_id", using: :btree
   add_index "ontology_term_links", ["term_uri"], name: "index_ontology_term_links_on_term_uri", using: :btree
 

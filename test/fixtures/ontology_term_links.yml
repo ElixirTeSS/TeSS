@@ -2,7 +2,9 @@
 term_one:
   resource: one (EditSuggestion)
   term_uri: "http://edamontology.org/topic_3168"
+  field: scientific_topics
 
 term_two:
   resource: one (EditSuggestion)
   term_uri: "http://edamontology.org/topic_0199"
+  field: scientific_topics

@@ -38,14 +38,14 @@ class EditSuggestion < ActiveRecord::Base
     if self.suggestible.update_attribute(field, data_fields[field])
       data_fields.delete(field)
       save!
-      destroy if (ontology_term_links.nil? || ontology_term_links.empty?) && !data
+      destroy if (scientific_topic_links.nil? || scientific_topic_links.empty?) && !data
     end
   end
 
   def reject_data(field)
     data_fields.delete(field)
     save!
-    destroy if (ontology_term_links.nil? || ontology_term_links.empty?) && !data
+    destroy if (scientific_topic_links.nil? || scientific_topic_links.empty?) && !data
   end
 
   def data

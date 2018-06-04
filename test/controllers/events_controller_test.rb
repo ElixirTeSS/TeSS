@@ -956,8 +956,8 @@ class EventsControllerTest < ActionController::TestCase
     suggestion.scientific_topic_names = ['Genomics']
     suggestion.save!
 
-    assert_difference(-> { suggestion.ontology_term_links.count }, -1) do
-      assert_difference(-> { @event.ontology_term_links.count }, 1) do
+    assert_difference(-> { suggestion.scientific_topic_links.count }, -1) do
+      assert_difference(-> { @event.scientific_topic_links.count }, 1) do
         assert_difference('EditSuggestion.count', -1) do
           post :add_topic, id: @event.id, topic: 'Genomics'
         end

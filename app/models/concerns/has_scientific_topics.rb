@@ -1,10 +1,10 @@
 module HasScientificTopics
   extend ActiveSupport::Concern
 
+  FIELD_NAME = 'scientific_topics'
+
   included do
-    unless method_defined?(:ontology_term_links)
-      has_many :ontology_term_links, as: :resource, dependent: :destroy
-    end
+    has_many :scientific_topic_links, -> { where(field: HasScientificTopics::FIELD_NAME) }, class_name: 'OntologyTermLink', as: :resource, dependent: :destroy
   end
 
   def scientific_topic_names= names
@@ -25,11 +25,11 @@ module HasScientificTopics
   end
 
   def scientific_topics= terms
-    self.ontology_term_links = terms.uniq.map { |term| ontology_term_links.build(term_uri: term.uri) if term && term.uri }.compact
+    self.scientific_topic_links = terms.uniq.map { |term| scientific_topic_links.build(term_uri: term.uri) if term && term.uri }.compact
   end
 
   def scientific_topics
-    ontology_term_links.map(&:ontology_term).uniq
+    scientific_topic_links.map(&:ontology_term).uniq
   end
 
   def scientific_topic_uris= uris

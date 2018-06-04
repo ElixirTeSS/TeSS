@@ -1,17 +1,17 @@
 module HasOperations
   extend ActiveSupport::Concern
 
+  FIELD_NAME = 'operations'
+
   included do
-    unless method_defined?(:ontology_term_links)
-      has_many :ontology_term_links, as: :resource, dependent: :destroy
-    end
+    has_many :operation_links, -> { where(field: HasOperations::FIELD_NAME) }, class_name: 'OntologyTermLink', as: :resource, dependent: :destroy
   end
 
   def operation_names= names
     terms = []
     [names].flatten.each do |name|
       unless name.blank?
-        st = [EDAM::Ontology.instance.scoped_lookup_by_name(name, OBO_EDAM.topics)].compact
+        st = [EDAM::Ontology.instance.scoped_lookup_by_name(name, OBO_EDAM.operations)].compact
         st = EDAM::Ontology.instance.find_by(OBO.hasExactSynonym, name) if st.empty?
         st = EDAM::Ontology.instance.find_by(OBO.hasNarrowSynonym, name) if st.empty?
         terms += st
@@ -25,11 +25,11 @@ module HasOperations
   end
 
   def operations= terms
-    self.ontology_term_links = terms.uniq.map { |term| ontology_term_links.build(term_uri: term.uri) if term && term.uri }.compact
+    self.operation_links = terms.uniq.map { |term| operation_links.build(term_uri: term.uri) if term && term.uri }.compact
   end
 
   def operations
-    ontology_term_links.map(&:ontology_term).uniq
+    operation_links.map(&:ontology_term).uniq
   end
 
   def operation_uris= uris
