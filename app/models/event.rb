@@ -6,8 +6,6 @@ class Event < ActiveRecord::Base
   include PublicActivity::Common
   include LogParameterChanges
   include HasAssociatedNodes
-  include HasScientificTopics
-  include HasOperations
   include HasExternalResources
   include HasContentProvider
   include LockableFields
@@ -97,6 +95,9 @@ class Event < ActiveRecord::Base
   has_many :event_materials, dependent: :destroy
   has_many :materials, through: :event_materials
   has_many :widget_logs, as: :resource
+
+  has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
+  has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 
   validates :title, :url, presence: true
   validates :capacity, numericality: true, allow_blank: true

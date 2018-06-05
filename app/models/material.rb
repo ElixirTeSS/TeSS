@@ -3,8 +3,6 @@ require 'rails/html/sanitizer'
 class Material < ActiveRecord::Base
 
   include PublicActivity::Common
-  include HasScientificTopics
-  include HasOperations
   include LogParameterChanges
   include HasAssociatedNodes
   include HasExternalResources
@@ -80,6 +78,9 @@ class Material < ActiveRecord::Base
   has_many :packages, through: :package_materials
   has_many :event_materials, dependent: :destroy
   has_many :events, through: :event_materials
+
+  has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
+  has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"

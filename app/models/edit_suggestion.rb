@@ -2,7 +2,7 @@ class EditSuggestion < ActiveRecord::Base
   belongs_to :suggestible, polymorphic: true
   after_create :init_data_fields
 
-  include HasScientificTopics
+  has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
 
   # data_fields: json field for storing any additional parameters
   # such as latitude, longitude &c.
