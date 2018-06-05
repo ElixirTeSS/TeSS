@@ -57,58 +57,48 @@
           <% end %>
         </div>
         <div class="row">
-          <%= render partial: "search/common/sort_by",
-                     locals: { resource: @events,
-                               extras: [['Earliest', 'early'], ['Latest', 'late']] } %>
           <%= render partial: "search/common/search_info", locals: { resources: @events_results, resource_type: 'event' } %>
           <%= render partial: "search/common/search_filters", locals: { resources: @events_results } %>
         </div>
     <% end %>
 
-    <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
-
-    <hr>
-
     <%# ACTUAL RESULTS LIST %>
     <% unless @events.blank? %>
-
         <ul class="nav nav-tabs">
           <li class="active">
-            <a data-toggle="tab" id="gridtab" href="#home"><i class="fa fa-table"></i> Grid</a></li>
+            <a data-toggle="tab" id="gridtab" href="#home"><i class="fa fa-table"></i> Grid</a>
+          </li>
           <li>
-            <a data-toggle="tab" id="maptab" href="#map"><i class="fa fa-globe"></i> Map</a></li>
-          <!--<li>-->
-            <!--<a data-toggle="tab" id="caltab" href="#calendar"><i class="fa fa-calendar"></i> Calendar</a>-->
-          <!--</li>-->
+            <a data-toggle="tab" id="maptab" href="#map"><i class="fa fa-globe"></i> Map</a>
+          </li>
         </ul>
-
 
         <div class="tab-content">
           <div id="home" class="tab-pane fade in active">
-            <% if @events.count > 0 %>
-                <ul class="masonry media-grid" style="margin-top: 15px;">
-                  <% @events.each do |event| %>
-                      <%= render event %>
-                  <% end %>
-                </ul>
+            <% if TeSS::Config.solr_enabled %>
+              <div class="row">
+                <%= render partial: "search/common/sort_by",
+                           locals: { resource: @events,
+                                     extras: [['Earliest', 'early'], ['Latest', 'late']] } %>
+              </div>
             <% end %>
+
+            <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
+
+            <ul class="masonry media-grid" style="margin-top: 15px;">
+              <% @events.each do |event| %>
+                  <%= render event %>
+              <% end %>
+            </ul>
+
+            <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
           </div>
           <div id="map" class="tab-pane fade">
             <div id="map-content">
               <%= render :partial => "events/partials/events_map", :locals => {:events => @events} %>
             </div>
           </div>
-          <div id="calendar" class="tab-pane fade">
-            <div id="calendar-content">
-              <br>
-              <p class="h1">Calendar chart feature coming soon</p>
-              <%#<img style="width:100%" src="http://blogs.opentext.com/wp-content/uploads/2015/03/calendar-chart-preview.png"/>%>
-              <%= render :partial => "events/partials/events_calendar", :locals => { :events => @events} %>
-            </div>
-          </div>
         </div>
     <% end %>
-
-    <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
   </div>
 </div>

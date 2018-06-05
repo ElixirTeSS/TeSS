@@ -87,7 +87,9 @@ $(document).ready(function () {
 
     // Store the open tab in the window location hash
     $('.nav-tabs a').on("shown.bs.tab", function(e) {
+        var scrollPos = $('html').scrollTop() || $('body').scrollTop();
         window.location.hash = this.hash;
+        $('html,body').scrollTop(scrollPos)
     });
 
     // Disabled tabs
