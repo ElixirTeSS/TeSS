@@ -28,7 +28,7 @@
           </button>
         </div>
         <div class="row">
-          <%= render partial: "search/common/sort_by", locals: { resources: @materials } %>
+          <%= render partial: "search/common/sort_by", locals: { resources: @materials, extras: [['Most recent', 'new']] } %>
           <%= render partial: "search/common/search_info", locals: { resources: @materials_results, resource_type: 'material' } %>
           <%= render partial: "search/common/search_filters", locals: { resources: @materials_results } %>
         </div>

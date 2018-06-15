@@ -61,7 +61,7 @@ module Searchable
             when 'ContentProvider'
               order_by(:count, :desc)
             when 'Material'
-              order_by(:updated_at, :desc)
+              order_by(:created_at, :desc)
             else
               order_by(:sort_title, :asc)
           end
