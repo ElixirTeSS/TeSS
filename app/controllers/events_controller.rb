@@ -26,9 +26,9 @@ class EventsController < ApplicationController
   # GET /events/1.ics
   def show
     respond_to do |format|
-      format.html
       format.json
       format.json_api { render json: @event }
+      format.html
       format.ics { render text: @event.to_ical }
     end
   end
@@ -36,7 +36,8 @@ class EventsController < ApplicationController
   # GET /events/new
   def new
     authorize Event
-    @event = Event.new
+    @event = Event.new(start: DateTime.now.change(hour: 9),
+                       end: DateTime.now.change(hour: 17))
   end
 
   # GET /events/1/edit
@@ -176,7 +177,7 @@ class EventsController < ApplicationController
     params.require(:event).permit(:external_id, :title, :subtitle, :url, :organizer, :last_scraped,
                                   :scraper_record, :description, {:scientific_topic_names => []},
                                   {:scientific_topic_uris => []}, {:event_types => []},
-                                  {:keywords => []}, :start, :end, :sponsor, :online, :for_profit, :venue,
+                                  {:keywords => []}, :start, :end, { sponsors: [] }, :online, :for_profit, :venue,
                                   :city, :county, :country, :postcode, :latitude, :longitude, :timezone,
                                   :content_provider_id, {:package_ids => []}, {:node_ids => []}, {:node_names => []},
                                   {:target_audience => []}, {:eligibility => []},

@@ -3,6 +3,7 @@ require 'test_helper'
 class MaterialsControllerTest < ActionController::TestCase
 
   include Devise::Test::ControllerHelpers
+  include ActiveJob::TestHelper
 
   setup do
     mock_images
@@ -24,6 +25,9 @@ class MaterialsControllerTest < ActionController::TestCase
         url: 'http://new.url.com',
         content_provider_id: ContentProvider.first.id
     }
+    @failing_material = materials(:failing_material)
+    @failing_material.title = 'Fail!'
+    @monitor = @failing_material.create_link_monitor(url: @failing_material.url, code: 404, fail_count: 5)
   end
 
   #Tests
@@ -50,6 +54,7 @@ class MaterialsControllerTest < ActionController::TestCase
       TeSS::Config.solr_enabled = false
     end
   end
+
 
   test 'should get index as json' do
     @material.scientific_topic_uris = ['http://edamontology.org/topic_0654']
@@ -113,6 +118,18 @@ class MaterialsControllerTest < ActionController::TestCase
     ensure
       TeSS::Config.solr_enabled = false
     end
+  end
+
+  test 'admins should be able to directly load failing records' do
+    sign_in users(:admin)
+    get :show, id: @failing_material
+    assert_response :success
+  end
+
+  test '...and so should users' do
+    sign_in users(:regular_user)
+    get :show, id: @failing_material
+    assert_response :success
   end
 
   #NEW TESTS
@@ -617,6 +634,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'should remove external resource from material' do
     material = materials(:material_with_external_resource)
     resource = material.external_resources.first
+    count = material.external_resources.count
     sign_in material.user
 
     assert_difference('ExternalResource.count', -1) do
@@ -630,7 +648,7 @@ class MaterialsControllerTest < ActionController::TestCase
     end
 
     assert_redirected_to material_path(assigns(:material))
-    assert_equal 1, assigns(:material).external_resources.count
+    assert_equal count - 1, assigns(:material).external_resources.count
   end
 
   test 'should modify external resource from material' do
@@ -650,8 +668,7 @@ class MaterialsControllerTest < ActionController::TestCase
     end
 
     assert_redirected_to material_path(assigns(:material))
-    resource = assigns(:material).external_resources.first
-    assert_equal 'Cool link', resource.title
+    assert_equal 'Cool link', resource.reload.title
     assert_equal 'http://www.reddit.com', resource.url
   end
 
@@ -989,5 +1006,47 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_difference('EditSuggestion.count', -1) do
       patch :update, id: @material_with_suggestions, material: @updated_material_with_suggestions
     end
+  end
+
+  test 'should trigger notification when unverified user creates material' do
+    sign_in users(:unverified_user)
+
+    assert_enqueued_jobs 1 do
+      assert_difference('Material.count') do
+        post :create, material: { short_description: @material.short_description,
+                                  title: @material.title,
+                                  url: 'http://example.com/dodgy-event' }
+      end
+    end
+
+    assert_redirected_to material_path(assigns(:material))
+    @material.reload
+  end
+
+  test 'should not trigger notification if unverified user already created content' do
+    sign_in users(:unverified_user)
+    users(:unverified_user).materials.create!(short_description: @material.short_description,
+                                              title: @material.title,
+                                              url: 'http://example.com/dodgy-event')
+
+    assert_enqueued_jobs 0 do
+      assert_difference('Material.count') do
+        post :create, material: { short_description: @material.short_description,
+                                  title: @material.title,
+                                  url: 'http://example.com/dodgy-event-2' }
+      end
+    end
+
+    assert_redirected_to material_path(assigns(:material))
+    @material.reload
+  end
+
+  test 'can view material with external resources' do
+    material = materials(:material_with_external_resource)
+    get :show, id: material
+
+    assert_response :success
+
+    assert_select '.external-resources-box div.bounding-box', count: material.external_resources.count
   end
 end

@@ -646,6 +646,12 @@ sup {
 
 .stale-icon{
   color: orangered;
+  padding: 2px;
+}
+
+.missing-icon{
+  color: orangered;
+  padding: 2px;
 }
 
 .days_ago_text{
@@ -863,11 +869,11 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
 }
 
 .open-access-licence{
-  width: 250px;
+  //width: 250px;
 }
 
 .open-access-location{
-  width: 250px;
+  //width: 250px;
 }
 
 
@@ -889,3 +895,26 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
 }
 
 .about-page-menu .nav>.active>a { background-color: #F0F0F0; }
+
+.user_processing_consent {
+  @include alert-variant($alert-info-bg, $alert-info-border, $alert-info-text);
+  padding: 0 10px;
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+
+  a {
+    text-decoration: underline;
+  }
+}
+
+.quick-links{
+  width: 80%;
+  text-align: center;
+  margin-left: 10%;
+}
+
+.selected-tab{
+  color: inherit;
+  text-decoration: underline;
+}

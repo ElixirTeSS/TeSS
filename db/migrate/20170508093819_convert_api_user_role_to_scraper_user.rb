@@ -4,7 +4,7 @@ class ConvertApiUserRoleToScraperUser < ActiveRecord::Migration
 
     if role
       puts 'Changing API user role to scraper user'
-      roles = YAML.load(File.read(File.join(Rails.root, 'config', 'data', 'roles.yml')))
+      roles = YAML.safe_load(File.read(File.join(Rails.root, 'config', 'data', 'roles.yml')))
       new_role = roles['scraper_user']
       raise "Couldn't find 'scraper_user' in roles.yml" unless new_role
       role.update_columns(name: 'scraper_user', title: new_role['title'])

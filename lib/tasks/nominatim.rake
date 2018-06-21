@@ -9,6 +9,9 @@ namespace :tess do
     puts "Found #{events.count} events to query with Nominatim"
 
     # Submit a worker for each matching event, one per minute.
+    events.each do |e|
+      puts "Enqueuing: #{e}"
+    end
     events.each(&:enqueue_geocoding_worker)
   end
 

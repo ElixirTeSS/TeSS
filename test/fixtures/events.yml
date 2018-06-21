@@ -10,7 +10,7 @@ one:
   event_types: ["workshops_and_courses"]
   start: 2015-11-23 10:16:33
   end: 2015-11-23 10:16:33
-  sponsor: MyString
+  sponsors: ["MyString"]
   venue: MyText
   city: MyString
   county: MyString
@@ -32,7 +32,7 @@ two:
   event_types: ["meetings_and_conferences"]
   start: 2015-11-23 00:00:00
   end: 2015-11-24 00:00:00
-  sponsor: MyString
+  sponsors: ["MyString"]
   venue: MyText
   city: MyString
   county: MyString
@@ -50,7 +50,7 @@ month_long_event:
   event_types: ["meetings_and_conferences"]
   start: 2015-11-23 10:16:33
   end: 2015-12-23 10:16:33
-  sponsor: Bill Gates
+  sponsors: ["Bill Gates"]
   city: New York
   country: USA
   keywords: ["Keyword"]
@@ -63,7 +63,7 @@ year_long_event:
   event_types: ["meetings_and_conferences"]
   start: 2015-11-23 10:16:33
   end: 2016-12-23 10:16:33
-  sponsor: Bill Gates
+  sponsors: ["Bill Gates"]
   city: New York
   country: USA
   keywords: ["Keyword"]
@@ -181,7 +181,7 @@ shadowbanned_event:
   event_types: ["workshops_and_courses"]
   start: 2018-11-23 10:16:33
   end: 2018-11-23 10:16:33
-  sponsor: MyString
+  sponsors: ["MyString"]
   venue: MyText
   city: MyString
   county: MyString
@@ -191,3 +191,26 @@ shadowbanned_event:
   longitude: -2.233949
   keywords: ["Predatory"]
   user: shadowbanned_user
+
+failing_event:
+  title: Collision With Iceberg
+  url: http://white-star.com/frc
+  description: 'Women and children first'
+  user: scraper_user
+  content_provider: portal_provider
+  start: 1914-04-14 23:40:00
+  end: 1914-04-15 02:20:00
+
+kilburn:
+  title: Kilburn Event
+  url: http://example.com/kilburn-party
+  description: Fun!
+  event_types: ["meetings_and_conferences"]
+  start: 2019-11-23 00:00:00
+  end: 2019-11-24 00:00:00
+  venue: Kilburn Building
+  city: Manchester
+  county: Greater Manchester
+  country: United Kingdom
+  postcode: M13 9PL
+  user: regular_user

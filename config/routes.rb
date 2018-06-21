@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   concern :collaboratable do
     resources :collaborations, only: [:create, :destroy, :index, :show]
   end
@@ -106,15 +105,14 @@ Rails.application.routes.draw do
   get 'search' => 'search#index'
   get 'test_url' => 'application#test_url'
 
-
   # error pages
   %w( 404 422 500 503 ).each do |code|
     get code, :to => "application#handle_error", :status_code => code
   end
 
   get 'curate/topic_suggestions' => 'curator#topic_suggestions'
+  get 'curate/users' => 'curator#users'
   get 'curate' => 'curator#index'
-
 
   require 'sidekiq/web'
   authenticate :user, lambda { |u| u.is_admin? } do

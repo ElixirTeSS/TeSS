@@ -27,5 +27,9 @@ module EDAM
     def parent_uri
       parent ? parent.uri : nil
     end
+
+    def deprecated?
+      data[RDF::OWL.deprecated] ? data[RDF::OWL.deprecated].first.value != 'false' : false
+    end
   end
 end

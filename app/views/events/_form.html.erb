@@ -41,6 +41,14 @@
 
     <%= render partial: 'common/url_checker', locals: { f: f, url: events_check_exists_path } %>
 
+    <%= f.input :start, as: :datetime_picker, field_lock: true %>
+
+    <%= f.input :end, as: :datetime_picker, field_lock: true %>
+
+    <div class="address_content">
+      <%= render partial: 'events/partials/address_finder', locals: { f: f } %>
+    </div>
+
     <%= f.input :organizer, field_lock: true %>
 
     <%= f.input :content_provider_id, label: 'Content provider (where the event metadata is obtained from)',
@@ -62,20 +70,12 @@
 
     <%= f.multi_input :host_institutions %>
 
-    <%= f.input :start, as: :datetime_picker, field_lock: true %>
+    <%= f.multi_input :sponsors %>
 
-    <%= f.input :end, as: :datetime_picker, field_lock: true %>
-
-    <!-- TODO: add autocomplete to this field -->
+    <%# TODO: add autocomplete to this field %>
     <%= f.input :timezone, field_lock: true %>
 
-    <%= f.input :sponsor, field_lock: true %>
-
     <%= f.input :contact, input_html: { rows: '5' }, field_lock: true %>
-
-    <div class="address_content">
-      <%= render partial: 'events/partials/address_finder', locals: { f: f } %>
-    </div>
 
     <%= f.input :capacity, field_lock: true %>
 

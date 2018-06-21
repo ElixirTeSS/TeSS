@@ -6,6 +6,7 @@
 
   <div id="content" class="">
     <div class="about-block">
+      <%= render :partial => 'links', :locals => {'show': 'registering'} %>
         <!-- REGISTERING CONTENT IN TESS -->
       <div class="row">
         <div id='how' class="h3">Registering Resources in TeSS</div>
@@ -70,7 +71,7 @@
             </div>
             <div class="col-md-3 motivation_box">
               <div class="register-condition-graphic"><i class="fa fa-flask about-icons"></i></div>
-              <div class="register-condition">Is relevant for Life scientists</div>
+              <div class="register-condition">Is relevant to Life scientists</div>
             </div>
           </div>
 
@@ -109,15 +110,15 @@
                   some new, useful fields.
                 </p>
                   <p>
-                  <%= link_to 'Bioschemas Events Schema FindLink', 'Bioschemas', class: 'btn btn-success', target: '_blank' %>
-                  <%= link_to 'Bioschemas Materials Schema FindLink', 'https://search.google.com/structured-data/testing-tool#url=https%3A%2F%2Fwww.france-bioinformatique.fr%2Fen%2Fevenements_upcoming', class: 'btn btn-success', target: '_blank' %>
+                  <%= link_to 'View Events Schema', 'http://bioschemas.org/specifications/Event/specification/', class: 'btn btn-primary', target: '_blank' %>
+                  <%= link_to 'View Materials Schema', 'http://bioschemas.org/specifications/TrainingMaterial/specification/', class: 'btn btn-primary', target: '_blank' %>
 
                 </p>
                 <hr>
                 <b>Examples of sites using Bioschemas parsed by TeSS</b>
                   <div class="data-type-examples">
-                    <%= link_to 'French Institute of Bioinformatics', 'https://search.google.com/structured-data/testing-tool#url=https%3A%2F%2Fwww.france-bioinformatique.fr%2Fen%2Fevenements_upcoming', class: 'btn btn-danger', target: '_blank' %>
-                    <%= link_to 'Swiss Institute Bioinformatics', 'https://search.google.com/structured-data/testing-tool#url=https%3A%2F%2Fwww.sib.swiss%2Ftraining%2Fupcoming-training-events', class: 'btn btn-danger', target: '_blank' %>
+                    <%= link_to 'French Institute of Bioinformatics', 'https://search.google.com/structured-data/testing-tool#url=https%3A%2F%2Fwww.france-bioinformatique.fr%2Fen%2Fevenements_upcoming', class: 'btn btn-success', target: '_blank' %>
+                    <%= link_to 'Swiss Institute Bioinformatics', 'https://search.google.com/structured-data/testing-tool#url=https%3A%2F%2Fwww.sib.swiss%2Ftraining%2Fupcoming-training-events', class: 'btn btn-success', target: '_blank' %>
                   </div>
               </div>
               <div class="col-lg-3">
@@ -141,8 +142,8 @@
                 <hr>
                 <b>Examples of sites with APIs included in TeSS</b>
                 <div class="data-type-examples">
-                  <%= link_to 'University of Cambridge', 'https://www.training.cam.ac.uk/api/v1/provider/BIOINFO/programmes?fetch=events.sessions,events.topics&format=json', class: 'btn btn-danger', target: '_blank' %>
-                  <%= link_to 'Dutch Techcentre for Lifesciences', 'https://www.dtls.nl/courses/feed/?filter_course=active', class: 'btn btn-danger', target: '_blank' %>
+                  <%= link_to 'University of Cambridge', 'https://www.training.cam.ac.uk/api/v1/provider/BIOINFO/programmes?fetch=events.sessions,events.topics&format=json', class: 'btn btn-success', target: '_blank' %>
+                  <%= link_to 'Dutch Techcentre for Lifesciences', 'https://www.dtls.nl/courses/feed/?filter_course=active', class: 'btn btn-success', target: '_blank' %>
                 </div>
               </div>
               <div class="col-lg-3">
@@ -161,10 +162,10 @@
                 The calendar application maintains an underlying file to store and retrieve events from; typically an .ics file.
                 We can use this file to extract date, location, and description information from the site and add it to TeSS.
                 <hr>
-                <b>Some examples of calendar files parsed by TeSS</b>
+                <b>Examples of calendar files parsed by TeSS</b>
                 <div class="data-type-examples">
-                  <%= link_to 'NBIS', 'https://nbis.se/training/events.html', class: 'btn btn-danger', target: '_blank'%>
-                  <%= link_to 'Software Carpentry', 'https://software-carpentry.org/workshops/', class: 'btn btn-danger', target: '_blank'%>
+                  <%= link_to 'NBIS', 'https://nbis.se/training/events.html', class: 'btn btn-success', target: '_blank'%>
+                  <%= link_to 'Software Carpentry', 'https://software-carpentry.org/workshops/', class: 'btn btn-success', target: '_blank'%>
                 </div>
 
               </div>
@@ -186,10 +187,11 @@
           </div>
 
           <!--  CONTACT US -->
-          If your site contains any of the above, or you would like advice about annotating with Bioschemas for inclusion
-          in TeSS, you can contact us using the form below or e-mail support@tess.elixir-europe.org:
+
           <div class="sub-about-block">
-            <%= render :partial => "common/contact_form"%>
+            <%#= render :partial => "common/contact_form"%>
+            If your site contains any of the above, or you would like advice about annotating with Bioschemas for inclusion
+            in TeSS, you can contact us <!--using the form below or --> via e-mail at <a href="mailto:support@tess.elixir-europe.org">support@tess.elixir-europe.org</a>
           </div>
         </div>
     </div>
@@ -226,6 +228,8 @@
       </div>
       -->
         </div>
+      <%= render :partial => 'links', :locals => {'show': 'registering'} %>
+
       </div>
     </div>
   </div>

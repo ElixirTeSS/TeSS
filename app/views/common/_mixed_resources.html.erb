@@ -4,6 +4,7 @@
 
       <p class>
         <%= scrape_status_icon(resource) if current_user and current_user.is_admin? %>
+        <%= missing_icon(resource) if current_user and current_user.is_admin? %>
       </p>
 
       <div class="row" style="margin: 0px;">

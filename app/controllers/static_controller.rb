@@ -8,10 +8,12 @@ class StaticController < ApplicationController
   def home
     @hide_search_box = true
     @resources = []
-    [Event, Material].each do |resource|
-      @resources << resource.between_times(Time.zone.now - 2.week, Time.zone.now).limit(5)
+    if TeSS::Config.solr_enabled
+      [Event, Material].each do |resource|
+        @resources += resource.search_and_filter(nil, '', { 'max_age' => '1 month' }, sort_by: 'new', per_page: 5).results
+      end
     end
-    @resources.flatten! if @resources.any?
-    @resources.sort_by! { |x| x.created_at }.reverse!
+
+    @resources = @resources.sort_by(&:created_at).reverse
   end
 end

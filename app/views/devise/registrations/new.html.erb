@@ -25,6 +25,9 @@
                 </div>
             <% end -%>
 
+            <%= f.input :processing_consent, as: :boolean, input_html: { autocomplete: 'off' },
+                        label: "I have read and understood the #{link_to('privacy policy', privacy_path, target: :_blank)} and consent to TeSS processing my data.".html_safe %>
+
             <div class="actions">
               <%= f.submit "Register", :class => 'btn btn-primary' %>
             </div>

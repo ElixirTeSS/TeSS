@@ -24,6 +24,7 @@ module ApplicationHelper
       material: { icon: 'fa-book', message: 'This is a training material' },
       suggestion: { icon: 'fa-commenting-o', message: 'This record has one or more suggested scientific topics'},
       private: { icon: 'fa-eye-slash', message: 'This resource is private' },
+      missing: { icon: 'fa-chain-broken', message: 'This resource has been offline for over three days'}
   }.freeze
 
   def scrape_status_icon(record, size = nil)
@@ -36,6 +37,24 @@ module ApplicationHelper
       end
     end
     nil
+  end
+
+  def missing_icon(record, size = nil)
+    if record.failing?
+      return "<span class='missing-icon pull-right'>#{icon_for(:missing, size)}</span>".html_safe
+    end
+    nil
+  end
+
+  def hide_failing(record)
+    if current_user && current_user.is_admin?
+      return false
+    else
+      if record.failing?
+        return true
+      end
+    end
+    false
   end
 
   def suggestion_icon(record,size = nil)
@@ -84,10 +103,11 @@ module ApplicationHelper
     nil
   end
 
-  def render_markdown(markdown_text, options = { filter_html: true, tables: true })
+  def render_markdown(markdown_text, options = {}, renderer_options = {})
     if markdown_text
-      markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, options)
-      markdown.render(markdown_text).html_safe
+      options.reverse_merge!(filter_html: true, tables: true)
+      renderer_options.reverse_merge!(hard_wrap: true, link_attributes: { target: '_blank' })
+      Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(renderer_options), options).render(markdown_text).html_safe
     else
       ''
     end
@@ -375,4 +395,5 @@ module ApplicationHelper
     link_to '', '#', class: 'btn btn-default',
             data: { role: 'star-button', starred: !star.nil?, resource: { id: resource.id, type: resource.class.name } }
   end
+
 end

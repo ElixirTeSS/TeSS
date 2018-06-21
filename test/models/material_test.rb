@@ -7,28 +7,21 @@ class MaterialTest < ActiveSupport::TestCase
 
 
   setup do
-    @user = User.new(:username=>'bobo',
-                  :email=>'exampl@example.com',
-                  :role => Role.first,
-                  :password => SecureRandom.base64
-    )
-    @user.save!
-    @material = Material.new(:title => 'title',
-                             :short_description => 'short desc',
-                             :url => 'http://goog.e.com',
-                             :user => @user,
-                             :authors => ['horace', 'flo'],
-                             :content_provider => ContentProvider.first)
-    @material.save!
+    @user = users(:regular_user)
+    @material = Material.create!(title: 'title',
+                                 short_description: 'short desc',
+                                 url: 'http://goog.e.com',
+                                 user: @user,
+                                 authors: ['horace', 'flo'],
+                                 content_provider: content_providers(:goblet))
   end
 
   test 'should reassign owner when user deleted' do
-    material_id = @material.id
     owner = @material.user
     assert_not_equal 'default_user', owner.role.name
     owner.destroy
     #Reload the material
-    material = Material.find_by_id(material_id)
+    material = @material.reload
     assert_equal 'default_user', material.user.role.name
   end
 
@@ -163,5 +156,73 @@ class MaterialTest < ActiveSupport::TestCase
         end
       end
     end
+  end
+
+  test 'can still retrieve deprecated topics' do
+    material = materials(:good_material)
+    material.scientific_topic_uris = ['http://edamontology.org/topic_0213'] # Deprecated "Mice or rats" topic
+    material.save!
+
+    assert_includes material.reload.scientific_topic_names, 'Mice or rats'
+    topic = material.scientific_topics.last
+    assert_equal 'Mice or rats', topic.label
+    assert topic.deprecated?
+  end
+
+  test 'user_requires_approval?' do
+    user = users(:unverified_user)
+
+    first_material = user.materials.build(title: 'bla', url: 'http://example.com/spam', short_description: '123')
+    assert first_material.user_requires_approval?
+    first_material.save!
+
+    second_material = user.materials.build(title: 'bla', url: 'http://example.com/spam2', short_description: '123')
+    refute second_material.user_requires_approval?
+  end
+
+  test 'should not add duplicate external resources' do
+    material = materials(:material_with_external_resource)
+    resources = material.external_resources
+
+    assert_no_difference('ExternalResource.count') do
+      material.external_resources_attributes = [{ title: 'TeSS', url: 'https://tess.elixir-uk.org/' }]
+      material.save!
+    end
+
+    assert_equal resources, material.reload.external_resources
+  end
+
+  test 'should not remove duplicate external resource URLs if they have different titles' do
+    material = materials(:material_with_external_resource)
+
+    assert_difference('ExternalResource.count', 1) do
+      material.external_resources_attributes = [{ title: 'Cool Website!', url: 'https://tess.elixir-uk.org/' }]
+      material.save!
+    end
+  end
+
+  test 'should not remove duplicate external resource titles if they have different titles' do
+    material = materials(:material_with_external_resource)
+
+    assert_difference('ExternalResource.count', 1) do
+      material.external_resources_attributes = [{ title: 'TeSS', url: 'https://tess.oerc.ox.ac.uk/' }]
+      material.save!
+    end
+  end
+
+  test 'should remove existing duplicate external resources on save' do
+    material = materials(:material_with_external_resource)
+    res_count = material.external_resources.count
+    new_resource = material.external_resources.create!({ title: 'TeSS', url: 'https://tess.elixir-uk.org/' })
+    assert_equal res_count + 1, material.reload.external_resources.count
+    assert_equal 2, material.external_resources.where(title: 'TeSS').count
+
+    assert_difference('ExternalResource.count', -1) do
+      material.save!
+    end
+
+    assert_equal res_count, material.reload.external_resources.count
+    assert_equal 1, material.external_resources.where(title: 'TeSS').count
+    assert_not_includes material.external_resources, new_resource, 'Should preserve oldest external resource'
   end
 end

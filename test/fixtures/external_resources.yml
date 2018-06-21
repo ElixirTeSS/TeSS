@@ -20,3 +20,8 @@ biotwools:
   source: event_with_external_resource (Event)
   url: https://bio.tools/tool/FuNeL
   title: FuNeL
+
+fairsharing:
+  source: material_with_external_resource (Material)
+  url: https://fairsharing.org/bsg-p123456
+  title: Share Fairing

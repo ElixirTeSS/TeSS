@@ -60,12 +60,14 @@ module Searchable
               order_by(:start, :asc)
             when 'ContentProvider'
               order_by(:count, :desc)
+            when 'Material'
+              order_by(:updated_at, :desc)
             else
               order_by(:sort_title, :asc)
           end
         end
 
-        paginate page: page, per_page: per_page if !page.nil? && (page != '1')
+        paginate page: page, per_page: per_page unless page.nil?
 
         Tess::Facets.special.each do |facet_title|
           if Tess::Facets.applicable?(facet_title, name)
@@ -92,7 +94,30 @@ module Searchable
         unless user && (user.shadowbanned? || user.is_admin?)
           without(:user_id, User.shadowbanned.pluck(:id))
         end
+
+        # Hide unverified/rejected users' things, except from curators and admins
+        unless user && (user.is_curator? || user.is_admin?)
+          blocked_user_ids = User.with_role('unverified_user', Role.rejected.name).pluck(:id)
+          blocked_user_ids -= [user.id] if user # Let them see their own things
+          without(:user_id, blocked_user_ids)
+        end
+
+        # Hide records the urls of which are failing
+        if method_defined?(:link_monitor)
+          unless user && user.is_admin?
+            without(:failing, true)
+          end
+        end
       end
     end
   end
+
+  def failing?
+    if respond_to?(:link_monitor)
+      return false if link_monitor.nil?
+      return link_monitor.failing?
+    end
+    false
+  end
+
 end

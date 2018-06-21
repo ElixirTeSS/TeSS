@@ -60,4 +60,24 @@ class EdamOntologyTest < ActiveSupport::TestCase
     assert_equal 'Topic', term.parent.parent.parent.label
     assert_nil term.parent.parent.parent.parent
   end
+
+  test 'should lookup deprecated term' do
+    deprecated_term = EDAM::Ontology.instance.lookup('http://edamontology.org/operation_2931')
+    term = EDAM::Ontology.instance.lookup_by_name('Proteins')
+
+    assert deprecated_term.deprecated?
+    refute term.deprecated?
+  end
+
+  test 'should compare term objects by URI' do
+    term1 = EDAM::Ontology.instance.lookup_by_name('Proteins')
+    term2 = EDAM::Ontology.instance.fetch('http://edamontology.org/topic_0078')
+
+    assert_not_equal term1.object_id, term2.object_id, 'Terms should be different Ruby objects in memory'
+    assert_equal term1.uri, term2.uri
+    assert term1 == term2
+    assert term1.eql?(term2)
+    assert [term1] == [term2]
+    assert_empty [term1] - [term2]
+  end
 end

@@ -12,6 +12,7 @@ class Event < ActiveRecord::Base
   include LockableFields
   include Scrapable
   include Searchable
+  include CurationQueue
 
   before_save :set_default_times, :check_country_name
   before_save :geocoding_cache_lookup, if: :address_changed?
@@ -31,8 +32,7 @@ class Event < ActiveRecord::Base
       text :url
       string :organizer
       text :organizer
-      string :sponsor
-      text :sponsor
+      string :sponsors, :multiple => true
       string :venue
       text :venue
       string :city
@@ -74,6 +74,9 @@ class Event < ActiveRecord::Base
         end
       end
       integer :user_id # Used for shadowbans
+      boolean :failing do
+        failing?
+      end
 =begin TODO: SOLR has a LatLonType to do geospatial searching. Have a look at that
       location :latitutde
       location :longitude
@@ -84,6 +87,7 @@ class Event < ActiveRecord::Base
 
   belongs_to :user
   has_one :edit_suggestion, as: :suggestible, dependent: :destroy
+  has_one :link_monitor, as: :lcheck, dependent: :destroy
   has_many :package_events
   has_many :packages, through: :package_events
   has_many :event_materials, dependent: :destroy
@@ -98,7 +102,7 @@ class Event < ActiveRecord::Base
   validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true  }
   validate :allowed_url
 
-  clean_array_fields(:keywords, :event_types, :target_audience, :eligibility, :host_institutions)
+  clean_array_fields(:keywords, :event_types, :target_audience, :eligibility, :host_institutions, :sponsors)
   update_suggestions(:keywords, :target_audience, :host_institutions)
 
   # These fields should not been shown to users unless they have sufficient privileges
@@ -169,7 +173,7 @@ class Event < ActiveRecord::Base
   end
 
   def self.facet_fields
-    %w( scientific_topics event_types online country tools organizer city sponsor target_audience keywords
+    %w( scientific_topics event_types online country tools organizer city sponsors target_audience keywords
         venue node content_provider user )
   end
 
@@ -353,9 +357,9 @@ class Event < ActiveRecord::Base
   # If no latitude or longitude, create a GeocodingWorker to find them.
   # This should run a minute after the last one is set to run (last run time stored by Redis).
   def enqueue_geocoding_worker
-    return if (self.latitude.present? && self.longitude.present?) || self.address.blank? || self.nominatim_count >= NOMINATIM_MAX_ATTEMPTS
+    return if (latitude.present? && longitude.present?) || (address.blank? && postcode.blank?) || nominatim_count >= NOMINATIM_MAX_ATTEMPTS
 
-    location = self.address
+    location = postcode ? postcode : address
 
     begin
       redis = Redis.new
@@ -365,18 +369,19 @@ class Event < ActiveRecord::Base
 
       # submit event_id, and locations to worker.
       redis.set('last_geocode', run_at)
-      GeocodingWorker.perform_at(run_at, [self.id, location])
+      GeocodingWorker.perform_at(run_at, [id, location])
     rescue Redis::RuntimeError => e
       raise e unless Rails.env.production?
       puts "Redis error: #{e.message}"
     end
   end
 
+
   private
 
   def allowed_url
     disallowed = (TeSS::Config.blocked_domains || []).any? do |regex|
-      self.url =~ regex
+      url =~ regex
     end
 
     if disallowed

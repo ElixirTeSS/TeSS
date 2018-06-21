@@ -17,8 +17,14 @@ class OntologyTerm
   end
 
   def ==(other)
-    self.uri == other.uri
+    uri == other.uri
   end
+
+  def hash
+    uri.hash
+  end
+
+  alias_method :eql?, :==
 
   def inspect
     "<#{self.class} @ontology=#{self.ontology.class.name}, @uri=#{self.uri}, label: #{self.label}>"

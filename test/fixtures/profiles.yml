@@ -41,3 +41,12 @@ banned_user_profile:
 
 shadowbanned_user_profile:
   user: shadowbanned_user
+
+basic_user_profile:
+  user: basic_user
+
+unverified_user_profile:
+  user: unverified_user
+
+shadowbanned_unverified_user_profile:
+  user: shadowbanned_unverified_user

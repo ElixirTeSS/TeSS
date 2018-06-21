@@ -24,7 +24,6 @@ class ApplicationController < ActionController::Base
 
   # Do some access control - see policies folder for individual policies on models
   include Pundit
-  protect_from_forgery
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -86,7 +85,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:username, :email, :password, :password_confirmation, :remember_me, :publicize_email) }
+    devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:username, :email, :password, :password_confirmation, :remember_me, :publicize_email, :processing_consent) }
     devise_parameter_sanitizer.permit(:sign_in) { |u| u.permit(:login, :username, :email, :password, :remember_me) }
     devise_parameter_sanitizer.permit(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
   end

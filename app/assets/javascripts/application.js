@@ -89,7 +89,9 @@ $(document).ready(function () {
 
     // Store the open tab in the window location hash
     $('.nav-tabs a').on("shown.bs.tab", function(e) {
+        var scrollPos = $('html').scrollTop() || $('body').scrollTop();
         window.location.hash = this.hash;
+        $('html,body').scrollTop(scrollPos)
     });
 
     // Disabled tabs
@@ -97,11 +99,28 @@ $(document).ready(function () {
     $('.nav-tabs li.disabled a').click(function (e) { e.preventDefault(); return false });
 
     // Datetime pickers
-    $(function () {
-        $('[data-datetimepicker]').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm',
-            sideBySide: true
-        });
+    $('[data-datetimepicker]').datetimepicker({
+        format: 'YYYY-MM-DD HH:mm',
+        sideBySide: true
+    });
+
+    // On events form, if start date > end date, update the end date.
+    $('#event_form').on('dp.change', function (e) {
+        // Really awkward way of doing it
+        if ($(e.target).find('#event_start').length) {
+            var startPicker = $('#event_start').parents('[data-datetimepicker]').data('DateTimePicker');
+            var endPicker = $('#event_end').parents('[data-datetimepicker]').data('DateTimePicker');
+            var endDate = endPicker.date();
+            var startDate = startPicker.date();
+            if (startDate > endDate) {
+                endDate = endDate.set({
+                    'year': startDate.year(),
+                    'month': startDate.month(),
+                    'date': startDate.date()
+                });
+                endPicker.date(endDate);
+            }
+        }
     });
 
     $(document).on('click', '.delete-list-item', function () {
@@ -117,7 +136,6 @@ $(document).ready(function () {
         reposition_tiles('masonry', 'masonry-brick');
     });
     reposition_tiles('masonry', 'masonry-brick');
-
 
     new Clipboard('.clipboard-btn');
 

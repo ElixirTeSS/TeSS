@@ -130,6 +130,9 @@ gem 'active_model_serializers', '~> 0.10'
 
 gem 'private_address_check'
 
+# For the link monitor rake taks
+gem 'time_diff'
+
 source 'https://rails-assets.org' do
   gem 'rails-assets-markdown-it', '~> 7.0.1'
   gem 'rails-assets-moment', '~> 2.15.0'

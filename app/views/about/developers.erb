@@ -7,14 +7,14 @@
 
   <div id="content" class="">
     <div class="about-block">
-
+      <%= render :partial => 'links', :locals => {'show': 'developer'} %>
       <!-- ABOUT TESS DATA -->
       <div class="row">
         <div class="odd-about-block">
           <div id='code_and_data' class="h3">For Developers</div>
 
-          TeSS is commited to the FAIR principles. Making data findable, accessible, interoperable and re-usable. As such,
-          all of the content we collect in TeSS is available under the CC-BY-4.0 licence through and can be accessed
+          TeSS is committed to the FAIR principles. Making data findable, accessible, interoperable and re-usable. As such,
+          all of the content we collect in TeSS is available under the CC-BY-4.0 licence and can be accessed
           through our API and through our widgets. The TeSS codebase is also available to re-use under the BSD Licence and can
           be found on GitHub.
 
@@ -62,11 +62,16 @@
                 We have also created some javascript widgets that can be easily added to your website
                 so to share training opportunities with your community.
               </p>
+              <%= link_to 'https://elixirtess.github.io/TeSS_widgets/', class: 'btn btn-primary', target: '_blank' do %>
+                  View Our Widgets
+              <% end %>
+<!--
               <div class="widgets_guide">
-                <%= link_to 'https://elixirtess.github.io/list_widget', target: '_blank' do %>
-                    <%= image_tag 'about/widgets.png', class: "widgets_guide" %>
-                <% end %>
+                <%#= link_to 'https://elixirtess.github.io/list_widget', target: '_blank' do %>
+                    <%#= image_tag 'about/widgets.png', class: "widgets_guide" %>
+                <%# end %>
               </div>
+-->
         </div>
       </div>
 
@@ -86,9 +91,13 @@
                         </p>
                         <p> As a rule of thumb - You can add .json to the end of most pages to retrieve the data in a common exchange format</p>
                       </span>
+          <%= link_to 'https://app.swaggerhub.com/api/njall/TeSS/1.0.0/', class: 'btn btn-primary', target: '_blank' do %>
+              View Our API
+          <% end %>
         </div>
         </div>
       </div>
+      <%= render :partial => 'links', :locals => {'show': 'developer'} %>
     </div>
   </div>
 </div>

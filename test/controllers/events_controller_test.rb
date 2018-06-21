@@ -14,6 +14,9 @@ class EventsControllerTest < ActionController::TestCase
         title: 'New title',
         short_description: 'New description'
     }
+    @failing_event = events(:failing_event)
+    @failing_event.title = 'Fail!'
+    @monitor = @failing_event.create_link_monitor(url: @failing_event.url, code: 404, fail_count: 5)
   end
 
   #Tests
@@ -77,6 +80,18 @@ class EventsControllerTest < ActionController::TestCase
     assert body['meta'].key?('facets')
     assert body['meta'].key?('available-facets')
     assert_equal events_path, body['links']['self']
+  end
+
+  test 'admins should be able to directly load failing records' do
+    sign_in users(:admin)
+    get :show, id: @failing_event
+    assert_response :success
+  end
+
+  test '...and so should users' do
+    sign_in users(:regular_user)
+    get :show, id: @failing_event
+    assert_response :success
   end
 
   #NEW TESTS
@@ -645,8 +660,7 @@ class EventsControllerTest < ActionController::TestCase
     end
 
     assert_redirected_to event_path(assigns(:event))
-    resource = assigns(:event).external_resources.first
-    assert_equal 'Cool link', resource.title
+    assert_equal 'Cool link', resource.reload.title
     assert_equal 'http://www.reddit.com', resource.url
   end
 

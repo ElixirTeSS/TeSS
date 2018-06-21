@@ -5,7 +5,7 @@ class UserTest < ActiveSupport::TestCase
   setup do
     mock_images
     @user_data = users(:regular_user)
-    @user_params = { username: 'new_user', password: '12345678', email: 'new-user@example.com' }
+    @user_params = { username: 'new_user', password: '12345678', email: 'new-user@example.com', processing_consent: '1' }
     User.get_default_user
   end
 
@@ -121,8 +121,10 @@ class UserTest < ActiveSupport::TestCase
 
   test 'change email' do
     user = users(:regular_user)
-    user.email = 'new-email@example.com'
-    assert user.save
+    assert_no_difference('PublicActivity::Activity.count') do
+      user.email = 'new-email@example.com'
+      assert user.save
+    end
   end
 
   test 'generates appropriate usernames from AAI auth info' do
@@ -142,10 +144,50 @@ class UserTest < ActiveSupport::TestCase
     refute User.where(username: 'user').any?
     assert_equal 'user', User.username_from_auth_info(auth_info)
 
-    User.create({ username: 'user', password: '12345678', email: 'new-user@example.com' })
+    User.create({ username: 'user', password: '12345678', email: 'new-user@example.com', processing_consent: '1' })
     auth_info = OpenStruct.new({})
     assert User.where(username: 'user').any?
     refute User.where(username: 'user1').any?
     assert_equal 'user1', User.username_from_auth_info(auth_info)
+  end
+
+  test 'should log role change' do
+    user = users(:regular_user)
+    original_role = user.role
+    new_role = roles(:admin)
+    admin = users(:admin)
+    User.current_user = admin
+
+    assert_difference('PublicActivity::Activity.count', 1) do
+      assert user.update_attributes(role_id: new_role.id)
+    end
+
+    assert_equal roles(:admin), user.reload.role
+    activity = user.activities.last
+    assert_equal admin, activity.owner
+    assert_equal user, activity.trackable
+    assert_equal 'user.change_role', activity.key
+    assert_equal original_role.id, activity.parameters[:old]
+    assert_equal new_role.id, activity.parameters[:new]
+  end
+
+  test 'unbanned and unverified scopes' do
+    assert_includes User.unbanned, users(:regular_user)
+    assert_includes User.unbanned, users(:unverified_user)
+    assert_not_includes User.unbanned, users(:shadowbanned_user)
+    assert_not_includes User.unbanned, users(:shadowbanned_unverified_user)
+
+    assert_not_includes User.with_role('unverified_user'), users(:regular_user)
+    assert_includes User.with_role('unverified_user'), users(:unverified_user)
+    assert_not_includes User.with_role('unverified_user'), users(:shadowbanned_user)
+    assert_includes User.with_role('unverified_user'), users(:shadowbanned_unverified_user)
+    
+    assert_not_includes User.unbanned.with_role('unverified_user'), users(:regular_user)
+    assert_includes User.unbanned.with_role('unverified_user'), users(:unverified_user)
+    assert_not_includes User.unbanned.with_role('unverified_user'), users(:shadowbanned_user)
+    assert_not_includes User.unbanned.with_role('unverified_user'), users(:shadowbanned_unverified_user)
+
+    assert_includes User.with_role('unverified_user', 'registered_user'), users(:regular_user)
+    assert_includes User.with_role('unverified_user', 'registered_user'), users(:unverified_user)
   end
 end

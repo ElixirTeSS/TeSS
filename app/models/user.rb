@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   friendly_id :username, use: :slugged
 
   attr_accessor :login
+  attr_accessor :processing_consent
 
   if TeSS::Config.solr_enabled
     # :nocov:
@@ -37,8 +38,8 @@ class User < ActiveRecord::Base
   before_create :set_default_role, :set_default_profile
   before_create :skip_email_confirmation_for_non_production
   before_update :skip_email_reconfirmation_for_non_production
-
   before_destroy :reassign_owner
+  after_update :log_role_change
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -50,6 +51,8 @@ class User < ActiveRecord::Base
             :presence => true,
             :case_sensitive => false,
             :uniqueness => true
+
+  validate :consents_to_processing, on: :create, unless: ->(user) { user.using_omniauth? || User.current_user.try(:is_admin?) }
 
   accepts_nested_attributes_for :profile
 
@@ -112,9 +115,10 @@ class User < ActiveRecord::Base
   end
 
   def self.get_default_user
-    where(role_id: Role.fetch('default_user').id).first_or_create(username: 'default_user',
-                                                                  email: TeSS::Config.contact_email,
-                                                                  password: SecureRandom.base64)
+    where(role_id: Role.fetch('default_user').id).first_or_create!(username: 'default_user',
+                                                                   email: TeSS::Config.contact_email,
+                                                                   password: SecureRandom.base64,
+                                                                   processing_consent: '1')
   end
 
   def name
@@ -213,6 +217,18 @@ class User < ActiveRecord::Base
     User.unique_username(user_name)
   end
 
+  def self.with_role(*roles)
+    joins(:role).where(roles: { name: Array(roles).map { |role| role.is_a?(Role) ? role.name : role } })
+  end
+
+  def self.unbanned
+    joins('LEFT OUTER JOIN "bans" on "bans"."user_id" = "users"."id"').where(bans: { id: nil })
+  end
+
+  def created_resources
+    materials + events
+  end
+
   private
 
   def reassign_owner
@@ -233,5 +249,19 @@ class User < ActiveRecord::Base
     self.events.each{|x| x.update_attribute(:user, default_user) } if self.events.any?
     self.content_providers.each{|x| x.update_attribute(:user, default_user)} if self.content_providers.any?
     self.nodes.each{|x| x.update_attribute(:user, default_user)} if self.nodes.any?
+  end
+
+  def log_role_change
+    if role_id_changed?
+      create_activity(:change_role, owner: User.current_user, parameters: { old: role_id_was, new: role_id })
+    end
+  end
+
+  def consents_to_processing
+    unless processing_consent
+      errors.add(:base, 'You must consent to TeSS processing your data in order to register')
+
+      false
+    end
   end
 end

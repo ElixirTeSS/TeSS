@@ -201,7 +201,7 @@
     {
       "name": "Ireland",
       "country_code": "IE",
-      "member_status": "Observer",
+      "member_status": "Member",
       "description": "",
       "home_page": "",
       "image_url": "",
@@ -370,6 +370,39 @@
           "image_url": ""
         }
       ]
+    },
+    {
+      "name": "Luxembourg",
+      "country_code": "LU",
+      "member_status": "Member",
+      "description": "",
+      "home_page": "https://elixir-luxembourg.org/",
+      "image_url": "https://www.elixir-europe.org/system/files/elixir-luxembourg-logo.jpg",
+      "twitter": "",
+      "carousel_images": [],
+      "staff": []
+    },
+    {
+      "name": "Hungary",
+      "country_code": "HU",
+      "member_status": "Member",
+      "description": "",
+      "home_page": "http://elixir-hungary.org/",
+      "image_url": "https://www.elixir-europe.org/system/files/elixir_hungary_white_background.png",
+      "twitter": "",
+      "carousel_images": [],
+      "staff": []
+    },
+    {
+      "name": "Germany",
+      "country_code": "DE",
+      "member_status": "Member",
+      "description": "",
+      "home_page": "https://www.denbi.de/",
+      "image_url": "https://www.elixir-europe.org/system/files/elixir-germany-logo_0.jpg",
+      "twitter": "",
+      "carousel_images": [],
+      "staff": []
     }
   ]
 }
