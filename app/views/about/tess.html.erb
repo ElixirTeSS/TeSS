@@ -36,7 +36,7 @@
               training events such as workshops, courses, webinars, and other learning opportunities; but we also collect
               events information about conferences, meetings, and hackathons as these also contain learning opportunities.
               Events can be online or face-to-face.</p>
-            <p>A significant portion of TeSS' initial content was contributed by iAnn.pro who was also an events
+            <p>A significant portion of TeSS' initial content was contributed by <a href="https://www.ncbi.nlm.nih.gov/pubmed/23742982" target="_blank">iAnn.pro</a> who was also an events
               announcement platform.</p>
             <p>TeSS collects events from <%=Event.all.collect{|x| x.content_provider_id}.uniq.count%> different content
               providers. We supplement the information that we collect with geolocation information found using
@@ -53,8 +53,8 @@
             </div>
             <div class="col-lg-10 about-resource">
               <div id='materials' class="h4">Materials</div>
-              <p>Materials in TeSS are defined as any training opportunity which can be accessed at anytime. These
-                include tutorials a variety of different formats including e-Learning courses, videos, powerpoints,
+              <p>Materials in TeSS are defined as training resources that can be accessed at anytime. These
+                include tutorials in a variety of different formats including e-Learning courses, videos, power-points,
                 and websites.</p>
               <p>TeSS collects materials from <%=Material.all.collect{|x| x.content_provider_id}.uniq.count%> different
                 content providers.</p>
@@ -70,8 +70,9 @@
               <% end %>
             </div>
             <div class="col-lg-10 about-resource">
-              <div id='workflows' class="h4">Workflows</div>
-              <p>TeSS includes a number of graphical ‘training workflows’. There are three main workflow concepts -
+              <div id='workflows' class="h4">Training Workflows</div>
+              <p>The TeSS team are currently developing graphical training tools called 'Training Workflows'.
+                There will be three main types of Training Workflow within TeSS -
                 Educational Resources, Learning Pathways and Concept Maps. These encapsulate different types of, and/or
                 approaches to, training, at different levels of granularity, within easy-to-use visual displays.</p>
             </div>
@@ -116,12 +117,14 @@
             <div class="col-lg-12">
             <div id='subscribe' class="h3">Subscribe</div>
             <p>To stay informed about courses, workshops and conferences that interest you, you can use TeSS’s .
-              subscription feature. Simply select the relevant filters and click the subscribe button. You can then .
+              subscription feature. Simply select the relevant filters and click the subscribe button. You can then
               choose to receive email notifications about upcoming events, or have them automatically added to your
-              .preferred calendar application.</p>
+              preferred calendar application.</p>
+              <p> You can use the <%= link_to 'subscriptions manager', subscriptions_path %> page to change the frequency
+                or remove any subscriptions you have created </p>
+
             <%= image_tag 'about/subscription.png', class: "widgets_guide"%>
-            <p> You can use the <%= link_to 'subscriptions manager', subscriptions_path %> page to change the frequency
-              or remove any subscriptions you have created </p>
+
           </div>
           </div>
         </div>

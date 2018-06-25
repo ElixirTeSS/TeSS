@@ -57,21 +57,44 @@
       <div class="row">
         <div class="even-about-block">
           <div class="h3" id="widgets">Widgets</div>
-            <p>Our widgets are chunks of javascript code that can be copied into websites to render a list of events from TeSS. There are several widget styles to choose from, which can be configured to display only events that are interesting to your community (workshops in your country, meetings about a given scientific topic, etc.).</p>
+            <p>Widgets are chunks of javascript code that can be copied into your websites source code to display
+              content from TeSS. There are several different styles and functionalities available from our configurable
+              widget suite. Widgets can be used to enhance your site and offer your community a list of relevant
+              events or training resources.</p>
               <p>
-                We have also created some javascript widgets that can be easily added to your website
-                so to share training opportunities with your community.
+              Below is a live example of a TeSS widget.
               </p>
-              <%= link_to 'https://elixirtess.github.io/TeSS_widgets/', class: 'btn btn-primary', target: '_blank' do %>
+              <p>To find out more <%= link_to 'https://elixirtess.github.io/TeSS_widgets/', class: 'btn btn-primary', target: '_blank' do %>
                   View Our Widgets
               <% end %>
-<!--
-              <div class="widgets_guide">
-                <%#= link_to 'https://elixirtess.github.io/list_widget', target: '_blank' do %>
-                    <%#= image_tag 'about/widgets.png', class: "widgets_guide" %>
-                <%# end %>
-              </div>
--->
+              </p>
+        <hr/>
+      <link rel="stylesheet" property="stylesheet" href="https://elixirtess.github.io/TeSS_widgets/css/tess-widget.css"/>
+      <div id="tess-widget-materials-table" class="tess-widget tess-widget-faceted-table"></div>
+      <script>
+      function initTeSSWidgets() {
+          TessWidget.Materials(document.getElementById('tess-widget-materials-table'),
+              'FacetedTable',
+              {
+                  opts: {
+                      columns: [{name: 'Name', field: 'title'},
+                          {name: 'Description', field: 'short-description'}],
+                      allowedFacets: ['scientific-topics', 'target-audience']
+                  },
+                  params: {
+                      pageSize: 5,
+                      q: 'Python'
+                  }
+              });
+      }
+      </script>
+      <script async="" defer="" src="https://elixirtess.github.io/TeSS_widgets/js/tess-widget-standalone.js" onload="initTeSSWidgets()"></script>
+
+      <hr>
+      <%= link_to 'https://elixirtess.github.io/TeSS_widgets/', class: 'btn btn-primary', target: '_blank' do %>
+          View our Widget Library
+      <% end %>
+
         </div>
       </div>
 
@@ -80,20 +103,40 @@
           <div class="h4" id="api">API </div>
 
           <span style="float:right">
-                      <a href="https://app.swaggerhub.com/api/njall/TeSS/1.0.0/">
-                        <%= image_tag 'swagger.png', size: "50x50"%>
-                      </a>
                       </span>
           <span>
-                        <p>TeSS has a fully functioning JSON-API. Information about request parameters and return objects can
-                        be found in our <a href="https://app.swaggerhub.com/api/njall/TeSS/1.0.0/">
-                          Swagger Hub Documentation</a>
-                        </p>
-                        <p> As a rule of thumb - You can add .json to the end of most pages to retrieve the data in a common exchange format</p>
+            <p>TeSS has a fully functioning <a href="http://jsonapi.org/" target="_blank">JSON API</a>. You can
+              explore our JSON-API by adding .json_api to the URL of most pages. For example:</p>
+            <p><code>
+               <a href="https://tess.elixir-europe.org/materials.json_api?scientific_topics=RNA-Seq">
+                 https://tess.elixir-europe.org/materials.json_api?scientific_topics=RNA-Seq </a>
+            </code></p>
+            <p><code>
+               <a href="https://tess.elixir-europe.org/events.json_api">
+                               https://tess.elixir-europe.org/events.json_api </a>
+            </code></p>
+            <p><code>
+               <a href="https://tess.elixir-europe.org/events/data-fairification-for-data-stewards.json_api">
+                  https://tess.elixir-europe.org/events/data-fairification-for-data-stewards.json_api
+           </a>
+            </code></p>
+            <p><code>
+               <a href="https://tess.elixir-europe.org/content_providers.json_api">
+                               https://tess.elixir-europe.org/content_providers.json_api </a>
+            </code></p>
+            <p><code>
+               <a href="https://tess.elixir-europe.org/workflows.json_api">
+                               https://tess.elixir-europe.org/workflows.json_api </a>
+            </code></p>
+
+            <p>We recommend using our JSON API but we will also continue supporting our legacy API;
+              technical information of which can be found on our <a href="https://app.swaggerhub.com/api/njall/TeSS/1.0.0/">
+                          Swagger Hub Documentation</a> page </p>
                       </span>
           <%= link_to 'https://app.swaggerhub.com/api/njall/TeSS/1.0.0/', class: 'btn btn-primary', target: '_blank' do %>
-              View Our API
-          <% end %>
+              View our legacy API on SwaggerHub
+              <%= image_tag 'swagger.png', size: "20x20"%>
+        <% end %>
         </div>
         </div>
       </div>
