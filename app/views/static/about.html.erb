@@ -1,5 +1,4 @@
 <div id="main-container" class="container">
-
   <div class="breadcrumbs">
     <ol class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
       <li itemprop="itemListElement" itemscope
@@ -14,81 +13,69 @@
     </ol>
   </div>
 
-  <div class="row wrapper">
-    <%# SIDEBAR %>
-    <div class="col-md-3" id="sidebar">
-      <ul class="unstyled nav-simple">
-        <li><h4 class="nav-heading">Menu</h4></li>
-        <li class="nav-item">
-          <a href="#about" title="">
-            About
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#team" title="">
-            Team
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#contact">
-            Contact
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#howtoadd">
-            How to add your resources
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#api">
-            API
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#faq">FAQ</a>
-        </li>
-        <li class="nav-item">
-          <a href="#ack">
-            Acknowledgements
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#software">
-            Software
-          </a>
-        </li>
-
-      </ul>
-    </div>
-
     <div class="col-md-9">
       <div class="module">
         <div style="padding-right: 10px;">
           <a name="about"></a>
+          <h1 style="text-align:center">What is TeSS?</h1>
 
-          <h1>About</h1>
-
-          <p>
-            TeSS is <a target="_blank" href="http://www.elixir-europe.org/">ELIXIR's</a>
-            Training e-Support System, developed by <a target="_blank" href="http://www.elixir-uk.org/">ELIXIR-UK</a>,
-            for disseminating, discovering and packaging training resources, primarily by aggregating information from
-            ELIXIR nodes, but also from various 3<sup>rd</sup>-party content providers.
-          </p>
-
-          <p>
-            New technologies are generating huge amounts of life-science data, which scientists need to
-            transform into new discoveries. However, few researchers have all the right skills to take
-            advantage of this sudden data bonanza.
-          </p>
-
-          <p>
-            ELIXIR-UK is responding to this challenge by coordinating European initiatives to training research
-            scientists in computing, statistics and bioinformatics. By plugging the skills gap,
-            ELIXIR-UK aims to strengthen life sciences across Europe and set the agenda for future training needs.
-          </p>
-
+            <p>TeSS is <a href="https://elixir-europe.org" target="_blank">ELIXIR</a>’s Training e-Support System, or training portal. The portal was originally developed by <a href="https://elixir-europe.org" target="_blank">ELIXIR-UK</a>, to disseminate and discover training resources, primarily by aggregating information from ELIXIR Nodes, but also from various 3rd-party content providers; ongoing development is supported by ELIXIR-EXCELERATE. This short video gives more information about ELIXIR Training and the role of TeSS.</p>
+              <div class="video_frame">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/oAD8FdGf8tI?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+              </div>
+            <p>
+            TeSS automatically pulls in descriptions and links to a wide range of training resources: workshops, courses, events, tutorials, videos, e-learning materials, Powerpoint presentations - anything that can be used to enhance an individual’s understanding of a life science topic. The resources are displayed in an easy-to-use, searchable and subscribable interface. We provide an API and widgets to allow communities to customise and share relevant training resources and events from their own sites. 
+            </p>
           <a name="team"></a>
-          <h2>The Team</h2>
+          <h2 style="text-align:center">Have your training included</h2>
+
+
+          <h3>Automated registration</h3>
+          <p>
+            The TeSS development team write programs to <a href="#automatic">automatically extract</a> training event and material information from your website. This is much easier if you have <a href="#structured_data">structured data</a> on your website. Please use this form to give us information about your website; we can then discuss automatic inclusion of your resources in TeSS.  
+          </p>
+
+          <%= render :partial => "common/contact_form"%>
+
+
+          <h3>Manual registration</h3>
+          <p>
+          If you do not wish to have an automatic feed of your resources pulled into TeSS, you can sign up for an account and register your events and materials manually.  
+          </p>
+          <p><b>Please note: content in TeSS must abide by our content policy guidelines. We reserve the right to remove any resources from TeSS.
+          </b></p>
+
+          <h2> Share events with your community</h2>
+          TeSS allows you to share events and training resources with your community by using our easy-to-install and -configure widgets, or by using our API. 
+          <h3>Widgets</h3>
+          <p>Our widgets are chunks of javascript code that can be copied into websites to render a list of events from TeSS. There are several widget styles to choose from, which can be configured to display only events that are interesting to your community (workshops in your country, meetings about a given scientific topic, etc.). </p>
+
+
+        <h4>
+            Setting up a widget is simple
+        </h4>
+        
+          <div>
+            <h3>API</h3>
+                  <a name="api"> </a>
+            <span style="float:right">
+            <a href="https://app.swaggerhub.com/api/njall/TeSS/1.0.0/">
+              <%= image_tag 'swagger.png', size: "50x50"%>
+            </a>
+            </span>
+            <span>
+              <p>TeSS has a fully functioning JSON-API. Information about request parameters and return objects can
+              be found in our <a href="https://app.swaggerhub.com/api/njall/TeSS/1.0.0/">
+                Swagger Hub Documentation</a>
+              </p>
+              <p> As a rule of thumb - You can add .json to the end of most pages to retrieve the data in a common exchange format</p>
+            </span>
+          </div>
+
+
+
+
+
 
           <h5>Current Members</h5>
           <ul>
@@ -98,7 +85,7 @@
             </li>
             <li>Finn Bacall (TeSS developer, University of Manchester)
             </li>
-            <li>Terri Atwood (TeSS co-investigator, University of Manchester)
+            <li>Terri Attwood (TeSS co-investigator, University of Manchester)
             </li>
             <li>Carole Goble (TeSS co-investigator, University of Manchester)
             </li>
@@ -188,32 +175,7 @@
             </p></li>
           </ul>
 
-          <a name="api"> </a>
-          <h2>API</h2>
-          <div>
-            <span style="float:right">
-            <a href="https://app.swaggerhub.com/api/njall/TeSS/1.0.0/">
-              <%= image_tag 'swagger.png', size: "50x50"%>
-            </a>
-            </span>
-            <span>
-            <p>TeSS has a read API. Information about request parameters and return objects can
-              be found in our <a href="https://app.swaggerhub.com/api/njall/TeSS/1.0.0/">
-          Swagger Hub Documentation</a>. We're still in the process of documenting our full API so bear with us.
-              </p>
-              <p> As a rule of thumb - You can add .json to the end of most pages to retrieve the data in a common exchange format.
-              e.g.
-                <ul>
-                  <% model = %w(Event Material Workflow Package Node) %>
-                  <% model.each do |m| %>
-                      <li>
-                        <% url = "#{TeSS::Config.base_url}#{url_for (m.constantize.last)}.json" %>
-                        <%= link_to url, url %>
-                      </li>
-                  <% end %>
-                </ul>
-            </span>
-          </div>
+
 
 
           <a name="faq"> </a>

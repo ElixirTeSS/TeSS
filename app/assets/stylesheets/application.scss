@@ -239,6 +239,7 @@ ul.unstyled {
 
 .nav-item {
   padding: 7px 20px;
+  width: 100%;
 }
 
 .nav-item > a {
@@ -766,6 +767,135 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
   }
 }
 
+.video_frame{
+  padding: 20px 0;
+  width: 560px;
+  height: 345px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.include-where{
+  font-size: 160%;
+  text-align: center;
+  margin: 10px;
+}
+
+.include-where-graphic{
+  width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.motivation_box{
+  margin: 20px;
+}
+
+.include-where-text{
+  text-align: center;
+}
+
+.widgets_guide {
+  width: 80%;
+}
+
+.about-icons{
+  font-size: 10em;
+  color: gray;
+}
+
+.about-block{
+  padding: 10px 30px;
+}
+
+.odd-about-block {
+    padding: 20px;
+    background-color: #ededed;
+    border-radius: 5px;
+  }
+
+
+.even-about-block {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.sub-about-block {
+    background-color: white;
+    padding: 12px;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.about-resource {
+  padding: 0 50px;
+
+}
+.licence-title{
+  text-align: center;
+}
+
+.licence-logo{
+  font-size: 5em;
+  color: gray;
+}
+
+.about-resource-icon{
+  padding: 35px 10px;
+  text-align: center;
+}
+.register-condition{
+    font-size: medium;
+    text-align: center;
+}
+
+.register-condition-graphic{
+  text-align: center;
+  width: 150px;
+  margin: auto;
+  padding: 20px 0;
+}
+.struct_data_type_logo{
+  max-width: 100px;
+  padding: 20px 0;
+}
+.data-type-examples{
+  padding-top: 20px;
+}
+.open-access-box{
+  background-color: white;
+  border-radius: 10px;
+  margin: 0 20px;
+  padding: 15px 5px;
+}
+
+.open-access-licence{
+  //width: 250px;
+}
+
+.open-access-location{
+  //width: 250px;
+}
+
+
+
+/* all links */
+.about-page-menu .nav>li>a {
+  color: #999;
+  padding: 4px 20px;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+/* nested links */
+.about-page-menu .nav .nav>li>a {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 30px;
+  font-size: 12px;
+}
+
+.about-page-menu .nav>.active>a { background-color: #F0F0F0; }
+
 .user_processing_consent {
   @include alert-variant($alert-info-bg, $alert-info-border, $alert-info-text);
   padding: 0 10px;
@@ -776,4 +906,15 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
   a {
     text-decoration: underline;
   }
+}
+
+.quick-links{
+  width: 80%;
+  text-align: center;
+  margin-left: 10%;
+}
+
+.selected-tab{
+  color: inherit;
+  text-decoration: underline;
 }

@@ -1,0 +1,147 @@
+
+  <div class="wrapper">
+
+  <div id="sidebar" class="popout-sidebar">
+    <%= render :partial => 'about_nav', locals: {show: 'developers'} %>
+  </div>
+
+  <div id="content" class="">
+    <div class="about-block">
+      <%= render :partial => 'links', :locals => {'show': 'developer'} %>
+      <!-- ABOUT TESS DATA -->
+      <div class="row">
+        <div class="odd-about-block">
+          <div id='code_and_data' class="h3">For Developers</div>
+
+          TeSS is committed to the FAIR principles. Making data findable, accessible, interoperable and re-usable. As such,
+          all of the content we collect in TeSS is available under the CC-BY-4.0 licence and can be accessed
+          through our API and through our widgets. The TeSS codebase is also available to re-use under the BSD Licence and can
+          be found on GitHub.
+
+          <div class="row">
+            <div class="col-lg-5 5 open-access-box">
+              <div class="h2 licence-title">Software</div>
+              <div class="open-access-location">
+                <%= link_to 'https://github.com/ElixirTeSS/TeSS', target: '_blank' do %>
+                    <div class="register-condition-graphic">
+                      <%= image_tag 'about/GitHub-Mark-64px.png', class: "" %>
+                    </div>
+                    <div class="register-condition">The sourcecode for TeSS is available on GitHub</div>
+                <% end %>
+              </div>
+              <div class="open-access-licence">
+                <%= link_to 'https://github.com/ElixirTeSS/TeSS/blob/master/LICENSE', target: '_blank' do %>
+                    <div class="register-condition-graphic"><i class="fa fa-code licence-logo"></i></div>
+                    <div class="register-condition">It is available under the BSD-3 licence</div>
+                <% end %>
+              </div>
+            </div>
+              <div class="col-lg-5 open-access-box">
+                <div class="h2 licence-title">Data</div>
+                  <%= link_to 'https://github.com/ElixirTeSS/TeSS', target: '_blank' do %>
+                    <div class="open-access-location">
+                      <div class="register-condition-graphic"><i class="fa fa-plug licence-logo"></i></div>
+                      <div class="register-condition">The data in TeSS can be accessed via our API</div>
+                    </div>
+                  <% end %>
+                <div class="open-access-licence">
+                  <div class="register-condition-graphic"><i class="fa fa-database licence-logo"></i></div>
+                  <%= link_to 'https://creativecommons.org/licenses/by/4.0/', target: '_blank' do %>
+                  <div class="register-condition">It is available under the Creative Commons CC-BY 4.0 licence</div>
+                  <% end %>
+                </div>
+              </div>
+              </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="even-about-block">
+          <div class="h3" id="widgets">Widgets</div>
+            <p>Widgets are chunks of javascript code that can be copied into your websites source code to display
+              content from TeSS. There are several different styles and functionalities available from our configurable
+              widget suite. Widgets can be used to enhance your site and offer your community a list of relevant
+              events or training resources.</p>
+              <p>
+              Below is a live example of a TeSS widget.
+              </p>
+              <p>To find out more <%= link_to 'https://elixirtess.github.io/TeSS_widgets/', class: 'btn btn-primary', target: '_blank' do %>
+                  View Our Widgets
+              <% end %>
+              </p>
+        <hr/>
+      <link rel="stylesheet" property="stylesheet" href="https://elixirtess.github.io/TeSS_widgets/css/tess-widget.css"/>
+      <div id="tess-widget-materials-table" class="tess-widget tess-widget-faceted-table"></div>
+      <script>
+      function initTeSSWidgets() {
+          TessWidget.Materials(document.getElementById('tess-widget-materials-table'),
+              'FacetedTable',
+              {
+                  opts: {
+                      columns: [{name: 'Name', field: 'title'},
+                          {name: 'Description', field: 'short-description'}],
+                      allowedFacets: ['scientific-topics', 'target-audience']
+                  },
+                  params: {
+                      pageSize: 5,
+                      q: 'Python'
+                  }
+              });
+      }
+      </script>
+      <script async="" defer="" src="https://elixirtess.github.io/TeSS_widgets/js/tess-widget-standalone.js" onload="initTeSSWidgets()"></script>
+
+      <hr>
+      <%= link_to 'https://elixirtess.github.io/TeSS_widgets/', class: 'btn btn-primary', target: '_blank' do %>
+          View our Widget Library
+      <% end %>
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="odd-about-block">
+          <div class="h4" id="api">API </div>
+
+          <span style="float:right">
+                      </span>
+          <span>
+            <p>TeSS has a fully functioning <a href="http://jsonapi.org/" target="_blank">JSON API</a>. You can
+              explore our JSON-API by adding .json_api to the URL of most pages. For example:</p>
+            <p><code>
+               <a href="https://tess.elixir-europe.org/materials.json_api?scientific_topics=RNA-Seq">
+                 https://tess.elixir-europe.org/materials.json_api?scientific_topics=RNA-Seq </a>
+            </code></p>
+            <p><code>
+               <a href="https://tess.elixir-europe.org/events.json_api">
+                               https://tess.elixir-europe.org/events.json_api </a>
+            </code></p>
+            <p><code>
+               <a href="https://tess.elixir-europe.org/events/data-fairification-for-data-stewards.json_api">
+                  https://tess.elixir-europe.org/events/data-fairification-for-data-stewards.json_api
+           </a>
+            </code></p>
+            <p><code>
+               <a href="https://tess.elixir-europe.org/content_providers.json_api">
+                               https://tess.elixir-europe.org/content_providers.json_api </a>
+            </code></p>
+            <p><code>
+               <a href="https://tess.elixir-europe.org/workflows.json_api">
+                               https://tess.elixir-europe.org/workflows.json_api </a>
+            </code></p>
+
+            <p>We recommend using our JSON API but we will also continue supporting our legacy API;
+              technical information of which can be found on our <a href="https://app.swaggerhub.com/api/njall/TeSS/1.0.0/">
+                          Swagger Hub Documentation</a> page </p>
+                      </span>
+          <%= link_to 'https://app.swaggerhub.com/api/njall/TeSS/1.0.0/', class: 'btn btn-primary', target: '_blank' do %>
+              View our legacy API on SwaggerHub
+              <%= image_tag 'swagger.png', size: "20x20"%>
+        <% end %>
+        </div>
+        </div>
+      </div>
+      <%= render :partial => 'links', :locals => {'show': 'developer'} %>
+    </div>
+  </div>
+</div>
+</body>

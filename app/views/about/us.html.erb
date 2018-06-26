@@ -1,0 +1,89 @@
+<div class="wrapper">
+
+  <div id="sidebar" class="popout-sidebar">
+    <%= render :partial => 'about_nav', locals: {show: 'us'} %>
+  </div>
+
+  <div id="content" class="">
+    <div class="about-block">
+      <%= render :partial => 'links', :locals => {'show': 'about'} %>
+      <!-- CONTACT-->
+      <div class="row">
+        <div class="odd-about-block">
+          <div id='contact' class="h3">Contact</div>
+          <div class="sub-about-block">
+            <%#= render :partial => "common/contact_form"%>
+            For enquiries, information, or assistance; contact the TeSS support desk at<br> <a href="mailto:tess-support@googlegroups.com">tess-support@googlegroups.com</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- THE TEAM-->
+      <section id="team">
+      <div class="row">
+        <div class="even-about-block">
+          <div id='team' class="h3">The Team</div>
+
+          <div class="h4">Project Management</div>
+          <ul>
+            <li>Niall Beard</li>
+          </ul>
+
+          <div class="h4">Leadership</div>
+          <ul>
+            <li>Teresa K. Attwood</li>
+            <li>Carole Goble</li>
+          </ul>
+
+          <div class="h4">Developers</div>
+          <ul>
+            <li>Finn Bacall</li>
+            <li>Milo Thurston</li>
+          </ul>
+
+          <div class="h4">Past Members</div>
+          Aleksandra Nenadic - Project Manager
+        </div>
+      </div>
+      </section>
+
+
+      <!-- FUNDING-->
+      <section id="funding">
+        <div class="row">
+          <div class="odd-about-block">
+            <div id='funding' class="h3">Funding</div>
+            ELIXIR (ELIXIR-EXCELERATE grant by the European Commission within the Research Infrastructures programme of Horizon 2020, grant agreement number 676559)
+            BBSRC UK (Delivering ELIXIR-UK grant, grant agreement number BB/L005050/1)
+          </div>
+        </div>
+      </section>
+
+      <!-- ACKNOWLEDGEMENTS-->
+      <section id="acknowledgements">
+      <div class="row">
+        <div class="even-about-block">
+          <div id='acknowledgments' class="h3">Acknowledgements</div>
+          <p>The TeSS team would like to acknowledge the help of a number of groups and individuals and thank them for
+            useful discussions, feedback and help while developing TeSS - to name but a few:</p>
+          <ul>
+            <li>ELIXIR technical staff and coordinators from the Hub, in particular Rafael Jimenez, Martin Cook and Premysl Velek</li>
+            <li>The ELIXIR Training coordinators group, particularly Celia van Gelder, Patricia Pelagi, and Gabriella Rustici</li>
+            <li>Structural bioinformatics group led by Christine Orengo</li>
+          </ul>
+        </div>
+      </div>
+      </section>
+
+      <!-- PUBLICATIONS --><!--
+      <div class="row">
+        <div class="odd-about-block">
+          <div id='publications' class="h3">Publications</div>
+          ...
+        </div>
+      </div>-->
+
+    </div>
+    <%= render :partial => 'links', :locals => {'show': 'about'} %>
+  </div>
+</div>
