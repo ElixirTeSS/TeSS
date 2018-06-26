@@ -18,7 +18,7 @@ module EDAM
       lookup_by(RDF::RDFS.label, name)
     end
 
-    def scoped_lookup_by_name(name, subset)
+    def scoped_lookup_by_name(name, subset = :_)
       query = RDF::Query.new do
         pattern [:u, RDF::RDFS.label, name]
         pattern [:u, OBO.inSubset, subset]

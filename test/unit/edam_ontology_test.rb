@@ -93,5 +93,12 @@ class EdamOntologyTest < ActiveSupport::TestCase
 
     refute EDAM::Ontology.instance.scoped_lookup_by_name('Monster trucks', OBO_EDAM.topics)
     refute EDAM::Ontology.instance.scoped_lookup_by_name('Monster trucks', OBO_EDAM.operations)
+
+    # Allow unscoping of the scoped lookup!
+    assert EDAM::Ontology.instance.scoped_lookup_by_name('Proteins', :_)
+    assert EDAM::Ontology.instance.scoped_lookup_by_name('Analysis', :_)
+
+    assert EDAM::Ontology.instance.scoped_lookup_by_name('Proteins')
+    assert EDAM::Ontology.instance.scoped_lookup_by_name('Analysis')
   end
 end
