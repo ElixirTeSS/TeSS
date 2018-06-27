@@ -94,6 +94,11 @@
             <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
           </div>
           <div id="map" class="tab-pane fade">
+            <div id="map-buttons">
+              <button btn-default onclick="showAllEvents()">Show all events</button>
+              <button btn-default onclick="showLatestEvents()">Show latest events</button>
+              <button btn-default onclick="clearMap()">Clear map</button>
+            </div>
             <div id="map-content">
               <%= render :partial => "events/partials/events_map", :locals => {:events => @events} %>
             </div>

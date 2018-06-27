@@ -5,14 +5,21 @@
     var events = [];
     var loadedMapScript = false;
 
+    /* center on (0, 0). Map center and zoom will reconfigure later (fitbounds method)*/
+    var mapOptions = {
+        zoom: 10,
+        center: new google.maps.LatLng(0, 0)
+    };
+
+
     function prep() {
         <% unless events.blank? %>
         <% events.each do |event|  %>
         var event_display = "<a href='<%=event.url%>' target='_blank'>" +
-                "<h3><%=event.title%></h3></a>" +
-                "<b>Date: </b><%=event.start%><br />" +
-                "<b>Location:</b> <%=event.city%>, <%=event.country%><br />" +
-                "<b>Organizer:</b> <%=event.organizer%><br />"
+                            "<h3><%=event.title%></h3></a>" +
+                            "<b>Date: </b><%=event.start%><br />" +
+                            "<b>Location:</b> <%=event.city%>, <%=event.country%><br />" +
+                            "<b>Organizer:</b> <%=event.organizer%><br />"
         events.push([
             <%=event.latitude%>,
             <%=event.longitude%>,
@@ -21,16 +28,11 @@
         ]);
         <% end %>
         <% end %>
+        console.log(events.length + " initial events.");
     }
 
     function initialize() {
         prep();
-
-        /* center on (0, 0). Map center and zoom will reconfigure later (fitbounds method)*/
-        var mapOptions = {
-            zoom: 10,
-            center: new google.maps.LatLng(0, 0)
-        };
         var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
         setEvents(map, events);
         loadedMapScript = true;
@@ -43,6 +45,7 @@
           // Check lat/lon are defined to avoid "Too much recursion" error
           if (typeof events[i][0] === 'number' && typeof events[i][1] === 'number') {
             var new_marker = createMarker(map, events[i], infowindow);
+            console.log("NEW MARKER: " + new_marker);
             bounds.extend(new_marker.position);
           }
         }
@@ -62,4 +65,61 @@
         });
         return marker;
     }
+
+    function showAllEvents() {
+        var new_events = [];
+        /*
+         * TODO: Get all the events, somehow...
+         */
+        $.ajax({
+            type: 'GET',
+            url: '/events.json_api',
+            dataType: 'json',
+        }).done(function (res) {
+            res.data.forEach(function(event) {
+                var event_display = "<a href=" + event.attributes.url + " target='_blank'>" +
+                            "<h3>" + event.attributes.title + "</h3></a>" +
+                            "<b>Date: </b>" + event.attributes.start + "<br />" +
+                            "<b>Location:</b>" + event.attributes.city + ", " + event.country + "<br />" +
+                            "<b>Organizer:</b>" + event.attributes.organizer + "<br />";
+                new_events.push([
+                    event.attributes.latitude,
+                    event.attributes.longitude,
+                    event_display,
+                    '"' + event.attributes.title + '"'
+                ]);
+            });
+            console.log(new_events.length + " new events.");
+            var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+            var bounds = new google.maps.LatLngBounds();
+
+            // TODO: Duplicated from above - check why a call to setEvents failed.
+            var infowindow = new google.maps.InfoWindow({content: "Content String"});
+            for (var i = 0; i < events.length; i++) {
+              // Check lat/lon are defined to avoid "Too much recursion" error
+              if (typeof events[i][0] === 'number' && typeof events[i][1] === 'number') {
+                var new_marker = createMarker(map, events[i], infowindow);
+                console.log("NEW MARKER: " + new_marker);
+                bounds.extend(new_marker.position);
+              }
+            }
+            map.fitBounds(bounds);
+
+            loadedMapScript = true;
+        }).fail(function (error) {
+            console.log("Error: " + error);
+        });
+    }
+
+    function clearMap() {
+        var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        var clock = new google.maps.LatLng(53.1411505,0.345498);
+        map.panTo(clock);
+    }
+
+    function showLatestEvents() {
+        var events = [];
+        initialize();
+    }
+
 </script>
