@@ -20,7 +20,7 @@ TeSS requires the following system packages to be installed:
 
 To install these under an Ubuntu-like OS using apt:
 
-    $ sudo apt-get install git postgresql imagemagick openjdk-8-jre nodejs
+    $ sudo apt-get install git postgresql libpq-dev imagemagick openjdk-8-jre nodejs
 
 For Mac OS X:
 
