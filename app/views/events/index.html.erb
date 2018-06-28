@@ -95,8 +95,9 @@
           </div>
           <div id="map" class="tab-pane fade">
             <div id="map-buttons">
+              <p>Currently, <span id="map-count">30</span> events are shown on the map.</p>
               <button btn-default onclick="showAllEvents()">Show all events</button>
-              <button btn-default onclick="showLatestEvents()">Show latest events</button>
+              <button btn-default onclick="showCurrentPageEvents()">Show events from this page</button>
               <button btn-default onclick="clearMap()">Clear map</button>
             </div>
             <div id="map-content">

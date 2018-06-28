@@ -4,6 +4,7 @@
     var map;
     var events = [];
     var loadedMapScript = false;
+    var events_shown = 0
 
     /* center on (0, 0). Map center and zoom will reconfigure later (fitbounds method)*/
     var mapOptions = {
@@ -28,13 +29,15 @@
         ]);
         <% end %>
         <% end %>
-        console.log(events.length + " initial events.");
+        //console.log(events.length + " initial events.");
     }
 
     function initialize() {
+        events_shown = 0;
         prep();
         var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
         setEvents(map, events);
+        $('#map-count').text(events_shown);
         loadedMapScript = true;
     }
 
@@ -45,8 +48,8 @@
           // Check lat/lon are defined to avoid "Too much recursion" error
           if (typeof events[i][0] === 'number' && typeof events[i][1] === 'number') {
             var new_marker = createMarker(map, events[i], infowindow);
-            console.log("NEW MARKER: " + new_marker);
             bounds.extend(new_marker.position);
+            events_shown = events_shown + 1;
           }
         }
         map.fitBounds(bounds);
@@ -67,6 +70,7 @@
     }
 
     function showAllEvents() {
+        events_shown = 0;
         var new_events = [];
         /*
          * TODO: Get all the events, somehow...
@@ -89,22 +93,22 @@
                     '"' + event.attributes.title + '"'
                 ]);
             });
-            console.log(new_events.length + " new events.");
+            //console.log(new_events.length + " new events.");
             var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
             var bounds = new google.maps.LatLngBounds();
 
             // TODO: Duplicated from above - check why a call to setEvents failed.
             var infowindow = new google.maps.InfoWindow({content: "Content String"});
-            for (var i = 0; i < events.length; i++) {
-              // Check lat/lon are defined to avoid "Too much recursion" error
-              if (typeof events[i][0] === 'number' && typeof events[i][1] === 'number') {
-                var new_marker = createMarker(map, events[i], infowindow);
-                console.log("NEW MARKER: " + new_marker);
+            for (var i = 0; i < new_events.length; i++) {
+              //console.log("NEW TYPES: " + new_events[i][0] + ", " + new_events[i][1]);
+              if (new_events[i][0] !== null  && new_events[i][1] !== null) {
+                var new_marker = createMarker(map, new_events[i], infowindow);
                 bounds.extend(new_marker.position);
+                events_shown = events_shown + 1;
               }
             }
             map.fitBounds(bounds);
-
+            $('#map-count').text(events_shown);
             loadedMapScript = true;
         }).fail(function (error) {
             console.log("Error: " + error);
@@ -112,13 +116,16 @@
     }
 
     function clearMap() {
+        events = [];
+        events_shown = 0;
         var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
         var clock = new google.maps.LatLng(53.1411505,0.345498);
         map.panTo(clock);
+        $('#map-count').text(events_shown);
     }
 
-    function showLatestEvents() {
-        var events = [];
+    function showCurrentPageEvents() {
+        events = [];
         initialize();
     }
 
