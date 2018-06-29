@@ -4,7 +4,7 @@
     var map;
     var events = [];
     var loadedMapScript = false;
-    var events_shown = 0
+    var events_shown = 0;
 
     /* center on (0, 0). Map center and zoom will reconfigure later (fitbounds method)*/
     var mapOptions = {
@@ -43,27 +43,45 @@
 
     function setEvents(map, events) {
         var bounds = new google.maps.LatLngBounds();
-        var infowindow = new google.maps.InfoWindow({content: "Content String"});
+        var pins = {};
         for (var i = 0; i < events.length; i++) {
           // Check lat/lon are defined to avoid "Too much recursion" error
           if (typeof events[i][0] === 'number' && typeof events[i][1] === 'number') {
-            var new_marker = createMarker(map, events[i], infowindow);
-            bounds.extend(new_marker.position);
-            events_shown = events_shown + 1;
+              var key = events[i][0] + ':' + events[i][1];
+              //console.log("KEY: " + key);
+              if (!(key in pins)) {
+                  pins[key] = [];
+              }
+              pins[key].push(events[i]);
+              events_shown = events_shown + 1;
           }
+        }
+        for (var key in pins) {
+            console.log("KEY: " + key);
+            var content = "";
+            var count = pins[key].length;
+            var title = count + ' event(s) at ' + pins[key][0][0] + ", " + pins[key][0][1];
+            var position = {lat: pins[key][0][0], lng: pins[key][0][1]};
+            pins[key].forEach(function(event) {
+                console.log("EVENT: " + event[2]);
+                content += event[2] + "<br/>"
+            });
+            var infowindow = new google.maps.InfoWindow({content: content});
+            var new_marker = createMarker(map, position, infowindow, title, content);
+            bounds.extend(new_marker.position);
         }
         map.fitBounds(bounds);
     }
 
-    function createMarker(map, event, infowindow) {
-        var position = new google.maps.LatLng(event[0], event[1]);
+
+    function createMarker(map, position, infowindow, title, content) {
         var marker = new google.maps.Marker({
             position: position,
             map: map,
-            title: event[3]
+            title: title
         });
         google.maps.event.addListener(marker, 'click', function () {
-            infowindow.setContent(event[2]);
+            infowindow.setContent(content);
             infowindow.open(map, marker);
         });
         return marker;
@@ -72,9 +90,6 @@
     function showAllEvents() {
         events_shown = 0;
         var new_events = [];
-        /*
-         * TODO: Get all the events, somehow...
-         */
         $.ajax({
             type: 'GET',
             url: '/events.json_api',
@@ -84,30 +99,18 @@
                 var event_display = "<a href=" + event.attributes.url + " target='_blank'>" +
                             "<h3>" + event.attributes.title + "</h3></a>" +
                             "<b>Date: </b>" + event.attributes.start + "<br />" +
-                            "<b>Location:</b>" + event.attributes.city + ", " + event.country + "<br />" +
-                            "<b>Organizer:</b>" + event.attributes.organizer + "<br />";
+                            "<b>Location:</b>" + stringForNull(event.attributes.city) + ", " + stringForNull(event.country) + "<br />" +
+                            "<b>Organizer:</b>" + stringForNull(event.attributes.organizer) + "<br />";
                 new_events.push([
-                    event.attributes.latitude,
-                    event.attributes.longitude,
+                    Number(event.attributes.latitude),
+                    Number(event.attributes.longitude),
                     event_display,
                     '"' + event.attributes.title + '"'
                 ]);
             });
             //console.log(new_events.length + " new events.");
             var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-            var bounds = new google.maps.LatLngBounds();
-
-            // TODO: Duplicated from above - check why a call to setEvents failed.
-            var infowindow = new google.maps.InfoWindow({content: "Content String"});
-            for (var i = 0; i < new_events.length; i++) {
-              //console.log("NEW TYPES: " + new_events[i][0] + ", " + new_events[i][1]);
-              if (new_events[i][0] !== null  && new_events[i][1] !== null) {
-                var new_marker = createMarker(map, new_events[i], infowindow);
-                bounds.extend(new_marker.position);
-                events_shown = events_shown + 1;
-              }
-            }
-            map.fitBounds(bounds);
+            setEvents(map, new_events);
             $('#map-count').text(events_shown);
             loadedMapScript = true;
         }).fail(function (error) {
@@ -127,6 +130,10 @@
     function showCurrentPageEvents() {
         events = [];
         initialize();
+    }
+
+    function stringForNull(value) {
+        return (value == null) ? "" : value;
     }
 
 </script>
