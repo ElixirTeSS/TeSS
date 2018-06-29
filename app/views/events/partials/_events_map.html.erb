@@ -92,21 +92,23 @@
         var new_events = [];
         $.ajax({
             type: 'GET',
-            url: '<%= events_url(params.merge(format: 'json_api')).html_safe -%>',
+            url: '<%= events_url(params.merge(format: :json_api)).html_safe -%>',
             dataType: 'json',
         }).done(function (res) {
             res.data.forEach(function(event) {
-                var event_display = "<a href=" + event.attributes.url + " target='_blank'>" +
-                            "<h3>" + event.attributes.title + "</h3></a>" +
-                            "<b>Date: </b>" + event.attributes.start + "<br />" +
-                            "<b>Location:</b>" + stringForNull(event.attributes.city) + ", " + stringForNull(event.country) + "<br />" +
-                            "<b>Organizer:</b>" + stringForNull(event.attributes.organizer) + "<br />";
-                new_events.push([
-                    Number(event.attributes.latitude),
-                    Number(event.attributes.longitude),
-                    event_display,
-                    '"' + event.attributes.title + '"'
-                ]);
+                if (event.attributes.latitude !== null && event.attributes.longitude !== null) {
+                  var event_display = "<a href=" + event.attributes.url + " target='_blank'>" +
+                              "<h3>" + event.attributes.title + "</h3></a>" +
+                              "<b>Date: </b>" + event.attributes.start + "<br />" +
+                              "<b>Location:</b>" + stringForNull(event.attributes.city) + ", " + stringForNull(event.country) + "<br />" +
+                              "<b>Organizer:</b>" + stringForNull(event.attributes.organizer) + "<br />";
+                  new_events.push([
+                      Number(event.attributes.latitude),
+                      Number(event.attributes.longitude),
+                      event_display,
+                      '"' + event.attributes.title + '"'
+                  ]);
+                }
             });
             //console.log(new_events.length + " new events.");
             var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
