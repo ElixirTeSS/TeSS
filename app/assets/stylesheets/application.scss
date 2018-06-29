@@ -50,6 +50,17 @@ body {
     margin: 0 5px;
     img { height: 48px; }
   }
+
+  .eu-notice {
+    padding-top: 10px;
+    overflow: auto;
+
+    img {
+      float: left;
+      margin: 0 8px;
+      height: 39px;
+    }
+  }
 }
 
 div.wrapper {

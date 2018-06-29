@@ -17,16 +17,25 @@ TeSS requires the following system packages to be installed:
 * ImageMagick
 * A Java runtime
 * A JavaScript runtime
+* Redis
 
 To install these under an Ubuntu-like OS using apt:
 
-    $ sudo apt-get install postgresql imagemagick openjdk-8-jre nodejs
+    $ sudo apt-get install git postgresql libpq-dev imagemagick openjdk-8-jre nodejs redis-server
 
 For Mac OS X:
 
     $ brew install postgresql && brew install imagemagick && brew install nodejs
 
 And install the JDK from Oracle or OpenJDK directly (It is needed for the SOLR search functionality)
+
+## TeSS Code
+
+Clone the TeSS source code via git:
+
+    $ git clone https://github.com/ElixirTeSS/TeSS.git
+    
+    $ cd TeSS
 
 ## RVM, Ruby, Gems
 ### RVM and Ruby
