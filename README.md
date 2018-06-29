@@ -17,10 +17,11 @@ TeSS requires the following system packages to be installed:
 * ImageMagick
 * A Java runtime
 * A JavaScript runtime
+* Redis
 
 To install these under an Ubuntu-like OS using apt:
 
-    $ sudo apt-get install git postgresql libpq-dev imagemagick openjdk-8-jre nodejs
+    $ sudo apt-get install git postgresql libpq-dev imagemagick openjdk-8-jre nodejs redis-server
 
 For Mac OS X:
 
