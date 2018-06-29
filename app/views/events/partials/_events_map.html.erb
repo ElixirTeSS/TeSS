@@ -77,7 +77,7 @@
          */
         $.ajax({
             type: 'GET',
-            url: '/events.json_api',
+            url: '<%= events_url(params.merge(format: 'json_api')).html_safe -%>',
             dataType: 'json',
         }).done(function (res) {
             res.data.forEach(function(event) {
