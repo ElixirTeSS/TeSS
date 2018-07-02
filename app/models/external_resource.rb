@@ -29,6 +29,8 @@ class ExternalResource < ActiveRecord::Base
       fairsharing_id = url.split(/\//)[-1]
       if fairsharing_id =~ /biodbcore-\d{6}/
         return "#{FAIRSHARING_BASE}/api/database/summary/#{fairsharing_id}"
+      elsif fairsharing_id =~ /bsg-d\d{6}/
+        return "#{FAIRSHARING_BASE}/api/database/summary/#{fairsharing_id}"
       elsif fairsharing_id =~ /bsg-s\d{6}/
         return "#{FAIRSHARING_BASE}/api/standard/summary/#{fairsharing_id}"
       elsif fairsharing_id =~ /bsg-p\d{6}/

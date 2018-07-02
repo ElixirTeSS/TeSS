@@ -36,7 +36,7 @@
 </div>
 
 <% if api_uri %>
-    <% if api_uri =~ /fairsharing/ -%> <%# TODO: Perhaps a better means of checking this is needed... %>
+    <% if external_resource.is_fairsharing? -%>
       <script>
          Fairsharing.displayFullTool('<%=api_uri%>', '<%=id%>');
       </script>

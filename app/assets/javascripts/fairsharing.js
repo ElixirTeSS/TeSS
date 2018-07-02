@@ -59,7 +59,7 @@ var Fairsharing = {
                     Fairsharing.displayRecords(result);
                 },
                 error: function (error) {
-                    console.log("Error querying FAIRsharing: " + error);
+                    console.log("Error querying FAIRsharing: " + JSON.stringify(error));
                 }
         });
     },
