@@ -2,7 +2,7 @@
     <!-- SIDEBAR -->
 <nav class="about-page-menu">
     <!-- WHAT IS TESS -->
-        <ul class="nav nav-stacked blah">
+        <ul class="nav nav-stacked">
               <% if show == 'home' %><li class="active"><% else %><li><% end %>
               <%= link_to 'What is TeSS', about_path%></li>
               <ul class="nav nav-stacked">
@@ -13,7 +13,7 @@
                 -->
                   <li><%= link_to 'What we catalogue', about_path(:anchor => 'events') %></li>
                   <li><%= link_to 'Subscribing to notifications', about_path(:anchor => 'subscribe') %></li>
-                  <li><%= link_to 'Widgets & API', about_path(:anchor => 'widgets') %></li>
+                  <li><%= link_to 'Widgets & API', about_path(:anchor => 'widget') %></li>
                 </ul>
         </ul>
 
