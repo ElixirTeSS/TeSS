@@ -140,7 +140,7 @@ GEM
       sass (>= 3.2)
     friendly_id (5.1.0)
       activerecord (>= 4.0.0)
-    geocoder (1.4.4)
+    geocoder (1.4.9)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     gravtastic (3.2.6)
@@ -616,4 +616,4 @@ DEPENDENCIES
   will_paginate-bootstrap (~> 1.0.1)
 
 BUNDLED WITH
-   1.16.0
+   1.16.1
