@@ -18,7 +18,7 @@ var Fairsharing = {
         }
     },
     allTypeURL: function() {
-        return Fairsharing.baseUrl + '/api/all/summary';
+        return Fairsharing.baseUrl + '/api/all/summary/';
     },
     websiteBaseURL: function(){
         return Fairsharing.baseUrl;
