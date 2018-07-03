@@ -1,0 +1,59 @@
+<a href="{{event.url}}" target='_blank'>
+    {{#if event.title}}
+        <h3>{{event.title}}</h3>
+    {{ else }}
+        <h3>Untitled Event</h3>
+    {{/if}}
+</a>
+<br/>
+
+
+{{#if event.start}}
+ <b>Date:</b>
+  {{#if event.end}}
+  {{formatDate event.start }} - {{formatDate event.end }}
+  {{else}}
+    {{event.start}}
+  {{/if}}
+ <br/>
+{{/if}}
+
+
+
+{{#if event.venue}}
+    <b>Location:</b>
+    {{#if event.city}}
+        {{#if event.country}}
+            {{event.venue}}, {{event.city}}, {{event.country}}
+        {{ else }}
+            {{event.venue}}, {{event.city}}
+        {{/if}}
+    {{ else }}
+        {{#if event.country}}
+            {{event.venue}}, {{event.country}}
+        {{ else }}
+            {{ event.venue }}
+        {{/if}}
+    {{/if}}
+{{ else }}
+    {{#if event.city}}
+        <b>Location:</b>
+        {{#if event.country}}
+            {{event.city}}, {{event.country}}
+        {{ else }}
+            {{event.city}}
+        {{/if}}
+    {{ else }}
+        {{#if event.country}}
+           <b>Location:</b> {{event.country}}
+        {{/if}}
+    {{/if}}
+{{/if}}
+
+
+
+{{#if event.organizer}}
+  <b>Organizer</b>: {{event.organizer}}
+  <br/>
+{{/if}}
+
