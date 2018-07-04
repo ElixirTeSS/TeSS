@@ -13,43 +13,48 @@ class EditSuggestion < ActiveRecord::Base
 
   def accept_suggestion(topic)
     if drop_topic(topic)
-      self.suggestible.scientific_topics = self.suggestible.scientific_topics.push(topic)
-      self.suggestible.save!
-      self.destroy if self.scientific_topics.empty? && !data
+      suggestible.scientific_topics = (suggestible.scientific_topics << topic)
+      suggestible.save!
+      destroy if redundant?
     end
   end
 
-  def reject_suggestion topic
+  def reject_suggestion(topic)
     if drop_topic(topic)
-      self.destroy if self.scientific_topics.empty? && !data
-    end
-  end
-
-  def drop_topic(topic)
-    topics = self.scientific_topics
-    unless (found_topic = topics.delete(topic)).nil?
-      self.scientific_topics = topics
-      self.save!
-      found_topic
+      destroy if redundant?
     end
   end
 
   def accept_data(field)
-    if self.suggestible.update_attribute(field, data_fields[field])
+    if suggestible.update_attribute(field, data_fields[field])
       data_fields.delete(field)
       save!
-      destroy if (scientific_topic_links.nil? || scientific_topic_links.empty?) && !data
+      destroy if redundant?
     end
   end
 
   def reject_data(field)
     data_fields.delete(field)
     save!
-    destroy if (scientific_topic_links.nil? || scientific_topic_links.empty?) && !data
+    destroy if redundant?
   end
 
   def data
-    return false if data_fields.nil? || data_fields.empty?
-    true
+    !data_fields.blank?
+  end
+
+  private
+
+  def drop_topic(topic)
+    topics = scientific_topics
+    unless (found_topic = topics.delete(topic)).nil?
+      self.scientific_topics = topics
+      save!
+      found_topic
+    end
+  end
+
+  def redundant?
+    scientific_topic_links.empty? && !data
   end
 end
