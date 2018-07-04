@@ -72,8 +72,6 @@ class MaterialsController < ApplicationController
     respond_to do |format|
       if @material.save
         @material.create_activity :create, owner: current_user
-        look_for_topics(@material)
-        #current_user.materials << @material
         format.html { redirect_to @material, notice: 'Material was successfully created.' }
         format.json { render :show, status: :created, location: @material }
       else
@@ -90,11 +88,6 @@ class MaterialsController < ApplicationController
     respond_to do |format|
       if @material.update(material_params)
         @material.create_activity(:update, owner: current_user) if @material.log_update_activity?
-        # If it's being updated and has an edit suggestion then, for now, this can be removed so it doesn't
-        # suggest the same topics on every edit.
-        # TODO: Consider whether this is proper behaviour or whether a user should explicitly delete this
-        # TODO: suggestion, somehow.
-        @material.edit_suggestion.destroy if @material.edit_suggestion
         format.html { redirect_to @material, notice: 'Material was successfully updated.' }
         format.json { render :show, status: :ok, location: @material }
       else

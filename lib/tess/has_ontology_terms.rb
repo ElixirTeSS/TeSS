@@ -35,6 +35,10 @@ module Tess
                  as: :resource,
                  dependent: :destroy
 
+        cattr_accessor :ontology_term_fields
+        self.ontology_term_fields ||= []
+        self.ontology_term_fields << method.to_sym
+
         # OntologyTerm objects
         define_method method do
           send(links_method).map(&:ontology_term).uniq

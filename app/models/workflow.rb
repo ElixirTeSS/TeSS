@@ -5,7 +5,7 @@ class Workflow < ActiveRecord::Base
   include LogParameterChanges
   include HasLicence
   include Searchable
-
+  include HasSuggestions
 
   extend FriendlyId
   friendly_id :title, use: :slugged
@@ -51,7 +51,6 @@ class Workflow < ActiveRecord::Base
 
   # has_one :owner, foreign_key: "id", class_name: "User"
   belongs_to :user
-  has_one :edit_suggestion, as: :suggestible, dependent: :destroy
 
   has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
 
