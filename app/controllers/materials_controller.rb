@@ -1,5 +1,5 @@
 class MaterialsController < ApplicationController
-  before_action :set_material, only: [:show, :edit, :update, :destroy, :update_packages, :add_topic, :reject_topic]
+  before_action :set_material, only: [:show, :edit, :update, :destroy, :update_packages, :add_term, :reject_term]
   before_action :set_breadcrumbs
 
   include SearchableIndex

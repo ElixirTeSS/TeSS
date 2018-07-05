@@ -2,7 +2,13 @@ class EditSuggestion < ActiveRecord::Base
   belongs_to :suggestible, polymorphic: true
   after_create :init_data_fields
 
+  has_many :ontology_term_links,
+           as: :resource,
+           dependent: :destroy
+
+  # These are just used to add convenience methods for ease of testing etc.
   has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
+  has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 
   # data_fields: json field for storing any additional parameters
   # such as latitude, longitude &c.
@@ -11,16 +17,18 @@ class EditSuggestion < ActiveRecord::Base
     self.data_fields = {} if data_fields.nil?
   end
 
-  def accept_suggestion(topic)
-    if drop_topic(topic)
-      suggestible.scientific_topics = (suggestible.scientific_topics << topic)
-      suggestible.save!
+  def accept_suggestion(field, term)
+    if drop_term(field, term)
+      if suggestible.class.ontology_term_fields.include?(field.to_sym)
+        suggestible.send("#{field}=", (suggestible.send(field) << term))
+        suggestible.save!
+      end
       destroy if redundant?
     end
   end
 
-  def reject_suggestion(topic)
-    if drop_topic(topic)
+  def reject_suggestion(field, term)
+    if drop_term(field, term)
       destroy if redundant?
     end
   end
@@ -45,16 +53,15 @@ class EditSuggestion < ActiveRecord::Base
 
   private
 
-  def drop_topic(topic)
-    topics = scientific_topics
-    unless (found_topic = topics.delete(topic)).nil?
-      self.scientific_topics = topics
-      save!
-      found_topic
+  def drop_term(field, term)
+    link = ontology_term_links.find_by(term_uri: term.uri, field: field)
+    if link
+      link.destroy
+      self.reload
     end
   end
 
   def redundant?
-    scientific_topic_links.empty? && !data
+    ontology_term_links.empty? && !data
   end
 end

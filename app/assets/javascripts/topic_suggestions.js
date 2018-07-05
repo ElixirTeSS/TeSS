@@ -5,16 +5,20 @@ var TopicSuggestions = {
         var topic_suggestions = $(this).parents('.topic_suggestions');
         var all_topics = listing_div.find('.scientific_topics');
         var dropdown_div = $(this).parents('.dropdown');
-        var url = "/" + suggestion_info.data('resource_type') + "/" + suggestion_info.data('resource_id') + "/add_topic";
-        $.post(url, { topic: suggestion_info.data('topic')})
+        var url = "/" + suggestion_info.data('resource_type') + "/" + suggestion_info.data('resource_id') + "/add_term";
+        $.post(url,
+            {
+                uri: suggestion_info.data('uri'),
+                field: suggestion_info.data('field')
+            })
             .done(function( data ) {
                 /* Remove the suggestion and add the accepted topic to the list of scientific topics */
                 dropdown_div.remove();
                 if (listing_div.find('.scientific_topic').length == 0) {
                     all_topics.append('<b>Scientific topics: </b>');
-                    all_topics.append('<span class=\"scientific_topic\"> ' + suggestion_info.data('topic') + '</span>');
+                    all_topics.append('<span class=\"scientific_topic\"> ' + suggestion_info.data('label') + '</span>');
                 } else {
-                    all_topics.append('<span class=\"scientific_topic\">, ' + suggestion_info.data('topic') + '</span>');
+                    all_topics.append('<span class=\"scientific_topic\">, ' + suggestion_info.data('label') + '</span>');
                 }
                 if (topic_suggestions.find('.dropdown').length < 1){
                     topic_suggestions.remove();
@@ -26,7 +30,7 @@ var TopicSuggestions = {
         var listing_div = $(this).parents('.list-group-item');
         var topic_suggestions = $(this).parents('.topic_suggestions');
         var dropdown_div = $(this).parents('.dropdown');
-        var url = "/" + suggestion_info.data('resource_type') + "/" + suggestion_info.data('resource_id') + "/reject_topic";
+        var url = "/" + suggestion_info.data('resource_type') + "/" + suggestion_info.data('resource_id') + "/reject_term";
         $.post(url, { topic: suggestion_info.data('topic')})
             .done(function( data ) {
                 console.log("Rejected topic");

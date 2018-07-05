@@ -5,7 +5,7 @@ module HasSuggestions
     has_one :edit_suggestion, as: :suggestible, dependent: :destroy
 
     after_create :enqueue_edit_suggestion_worker, if: :requires_suggestions?
-    after_update :destroy_edit_suggestion
+    # after_update :destroy_edit_suggestion
   end
 
   private

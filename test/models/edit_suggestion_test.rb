@@ -5,7 +5,7 @@ class EditSuggestionTest < ActiveSupport::TestCase
     suggestion = edit_suggestions(:one)
 
     assert_difference(-> { suggestion.scientific_topics.count }, -1) do
-      suggestion.reject_suggestion(suggestion.scientific_topics.first)
+      suggestion.reject_suggestion('scientific_topics', suggestion.scientific_topics.first)
     end
   end
 
@@ -15,7 +15,7 @@ class EditSuggestionTest < ActiveSupport::TestCase
 
     assert_difference(-> { suggestion.scientific_topics.count }, -1) do
       assert_difference(-> { resource.scientific_topics.count }, 1) do
-        suggestion.accept_suggestion(suggestion.scientific_topics.first)
+        suggestion.accept_suggestion('scientific_topics', suggestion.scientific_topics.first)
       end
     end
   end
@@ -24,7 +24,7 @@ class EditSuggestionTest < ActiveSupport::TestCase
     suggestion = edit_suggestions(:one)
 
     assert_no_difference(-> { suggestion.scientific_topics.count }) do
-      suggestion.reject_suggestion(EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0078'))
+      suggestion.reject_suggestion('scientific_topics', EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0078'))
     end
   end
 
@@ -34,7 +34,7 @@ class EditSuggestionTest < ActiveSupport::TestCase
 
     assert_no_difference(-> { suggestion.scientific_topics.count }) do
       assert_no_difference(-> { resource.scientific_topics.count }) do
-        suggestion.accept_suggestion(EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0078'))
+        suggestion.accept_suggestion('scientific_topics', EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0078'))
       end
     end
   end
@@ -46,8 +46,8 @@ class EditSuggestionTest < ActiveSupport::TestCase
 
     assert_difference('EditSuggestion.count', -1) do
       assert_difference(-> { suggestion.scientific_topics.count }, -2) do
-        suggestion.reject_suggestion(topic1)
-        suggestion.reject_suggestion(topic2)
+        suggestion.reject_suggestion('scientific_topics', topic1)
+        suggestion.reject_suggestion('scientific_topics', topic2)
       end
     end
   end

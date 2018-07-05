@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages, :add_topic, :reject_topic,
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages, :add_term, :reject_term,
                                    :redirect, :report, :update_report, :add_data, :reject_data]
   before_action :set_breadcrumbs
   before_action :disable_pagination, only: :index, if: lambda { |controller| controller.request.format.ics? or controller.request.format.csv? }
