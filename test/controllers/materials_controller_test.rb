@@ -1000,14 +1000,6 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_equal ['Genomics'], @material.reload.edit_suggestion.scientific_topic_names
   end
 
-  test 'should remove edit suggestion after update' do
-    sign_in @user
-
-    assert_difference('EditSuggestion.count', -1) do
-      patch :update, id: @material_with_suggestions, material: @updated_material_with_suggestions
-    end
-  end
-
   test 'should trigger notification when unverified user creates material' do
     sign_in users(:unverified_user)
 

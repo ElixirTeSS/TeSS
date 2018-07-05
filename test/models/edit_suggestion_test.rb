@@ -14,7 +14,7 @@ class EditSuggestionTest < ActiveSupport::TestCase
     resource = suggestion.suggestible
 
     assert_difference(-> { suggestion.scientific_topics.count }, -1) do
-      assert_difference(-> { resource.scientific_topics.count }, 1) do
+      assert_difference(-> { resource.reload.scientific_topics.count }, 1) do
         suggestion.accept_suggestion('scientific_topics', suggestion.scientific_topics.first)
       end
     end

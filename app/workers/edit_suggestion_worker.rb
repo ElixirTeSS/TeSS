@@ -47,6 +47,7 @@ class EditSuggestionWorker
     api_key = Rails.application.secrets.bioportal_api_key
     url = "http://data.bioontology.org/annotator?include=prefLabel&text=#{clean_desc}&ontologies=EDAM&longest_only=false&exclude_numbers=false&whole_word_only=true&exclude_synonyms=false&apikey=#{api_key}"
 
+    suggestion = nil
     topic_uris = []
     operation_uris = []
 
@@ -115,7 +116,7 @@ class EditSuggestionWorker
       return unless result.latitude && result.longitude
 
       unless suggestion
-        suggestion = EditSuggestion.new(:suggestible_type => suggestible_type, :suggestible_id => suggestible_id)
+        suggestion = suggestible.build_edit_suggestion
       end
       suggestion.data_fields = {} if suggestion.data_fields.nil?
       suggestion.data_fields['latitude'] = result.latitude
