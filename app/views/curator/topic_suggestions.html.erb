@@ -22,7 +22,7 @@
     <% @suggestions.each do |suggestion| %>
         <% resource = suggestion.suggestible %>
         <%= render layout: 'common/mixed_resources', locals: {resource: resource} do%>
-        <%= render partial: 'common/approve_topic_suggestions', locals: { suggestion: suggestion } %>
+        <%= render partial: 'common/approve_term_suggestions', locals: { suggestion: suggestion } %>
         <% end %>
     <% end %>
 

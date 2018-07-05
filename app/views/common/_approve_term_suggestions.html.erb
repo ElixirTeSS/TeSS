@@ -1,13 +1,14 @@
 <% resource = suggestion.suggestible %>
 <div class="suggestions">
-  <div class="topic_suggestions">
+  <div class="term_suggestions">
     <% unless suggestion.ontology_term_links.empty? -%>
     <b>Suggested terms:</b>
     <% end -%>
     <% suggestion.ontology_term_links.each do |link, i| %>
                 <span class="dropdown <%= link.field -%>_suggestion">
-                  <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     <%= link.ontology_term.preferred_label %>
+                    <span class="muted">(<%= link.field.tr('_', ' ').singularize-%>)</span>
                     <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu suggestion_action"
@@ -28,7 +29,7 @@
     <b>Suggested updates:</b>
     <% suggestion.data_fields.each do |key, value| -%>
       <span class="dropdown ">
-          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             <%= key.titleize %>: <%= value -%>
             <span class="caret"></span>
           </button>

@@ -919,6 +919,6 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
   text-decoration: underline;
 }
 
-.dropdown-backdrop {
-  position: static;
+.term_suggestions .dropdown-backdrop {
+  display: none;
 }
