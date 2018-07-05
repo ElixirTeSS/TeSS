@@ -50,6 +50,17 @@ body {
     margin: 0 5px;
     img { height: 48px; }
   }
+
+  .eu-notice {
+    padding-top: 10px;
+    overflow: auto;
+
+    img {
+      float: left;
+      margin: 0 8px;
+      height: 39px;
+    }
+  }
 }
 
 div.wrapper {
@@ -880,9 +891,9 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
 
 /* all links */
 .about-page-menu .nav>li>a {
-  color: #999;
-  padding: 4px 20px;
-  font-size: 13px;
+  color: #616161;
+  padding: 10px 20px;
+  font-size: 16px;
   font-weight: 400;
 }
 
@@ -921,4 +932,8 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
 
 .term_suggestions .dropdown-backdrop {
   display: none;
+}
+
+.funding-logo{
+  width: 100px;
 }

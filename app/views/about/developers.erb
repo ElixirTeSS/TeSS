@@ -38,7 +38,7 @@
             </div>
               <div class="col-lg-5 open-access-box">
                 <div class="h2 licence-title">Data</div>
-                  <%= link_to 'https://github.com/ElixirTeSS/TeSS', target: '_blank' do %>
+                  <%= link_to developers_path(:anchor => 'api') do %>
                     <div class="open-access-location">
                       <div class="register-condition-graphic"><i class="fa fa-plug licence-logo"></i></div>
                       <div class="register-condition">The data in TeSS can be accessed via our API</div>
@@ -64,13 +64,14 @@
               <p>
               Below is a live example of a TeSS widget.
               </p>
-              <p>To find out more <%= link_to 'https://elixirtess.github.io/TeSS_widgets/', class: 'btn btn-primary', target: '_blank' do %>
-                  View Our Widgets
-              <% end %>
-              </p>
+                <p><%= link_to 'https://elixirtess.github.io/TeSS_widgets/', class: 'btn btn-primary', target: '_blank' do %>
+                  View Our Available Widgets
+                  <% end %></p>
         <hr/>
       <link rel="stylesheet" property="stylesheet" href="https://elixirtess.github.io/TeSS_widgets/css/tess-widget.css"/>
+      <div class="sub-about-block">
       <div id="tess-widget-materials-table" class="tess-widget tess-widget-faceted-table"></div>
+      </div>
       <script>
       function initTeSSWidgets() {
           TessWidget.Materials(document.getElementById('tess-widget-materials-table'),
@@ -89,11 +90,14 @@
       }
       </script>
       <script async="" defer="" src="https://elixirtess.github.io/TeSS_widgets/js/tess-widget-standalone.js" onload="initTeSSWidgets()"></script>
-
-      <hr>
-      <%= link_to 'https://elixirtess.github.io/TeSS_widgets/', class: 'btn btn-primary', target: '_blank' do %>
-          View our Widget Library
-      <% end %>
+<hr>
+<p>
+If you do decide to include our widgets on your website, we have a mailing list you can join to keep
+informed about any service disruptions, required updates, or new features
+</p>
+                <p><%= link_to 'https://groups.google.com/forum/#!forum/tess-widgets-user-group', class: 'btn btn-primary', target: '_blank' do %>
+                  Join the widgets mailing list
+                  <% end %></p>
 
         </div>
       </div>

@@ -53,8 +53,27 @@
         <div class="row">
           <div class="odd-about-block">
             <div id='funding' class="h3">Funding</div>
-            ELIXIR (ELIXIR-EXCELERATE grant by the European Commission within the Research Infrastructures programme of Horizon 2020, grant agreement number 676559)
-            BBSRC UK (Delivering ELIXIR-UK grant, grant agreement number BB/L005050/1)
+            <p>TeSS has guaranteed funding until 2019. It is funded by:</p>
+               <p>
+                  <%= link_to 'http://www.elixir-europe.org/excelerate', target: '_blank' do %>
+                    <%= image_tag('excelerate-logo.png', {class: "funding-logo"}) %>
+                  <% end %>
+                  <%= link_to 'https://cordis.europa.eu/project/rcn/198519_en.html', target: '_blank' do %>
+                      <%= image_tag('eu_flag.svg', {class: "funding-logo"}) %>
+                  <% end %>
+                </p>
+            ELIXIR (ELIXIR-EXCELERATE grant by the European Commission within the Research Infrastructures programme of Horizon 2020, <a href="https://cordis.europa.eu/project/rcn/198519_en.html" target="_blank">grant agreement number 676559</a>)
+<hr>
+              </li>
+            </ul>
+            <p>TeSS has also been funded by:</p>
+            <%= link_to 'https://bbsrc.ukri.org/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1', target: '_blank' do %>
+                <%= image_tag('bbsrc-logo.png', {class: "funding-logo"}) %>
+            <% end %>
+              <p>
+                BBSRC UK (Delivering ELIXIR-UK grant, <a href="https://bbsrc.ukri.org/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1" target="_blank">grant agreement number BB/L005050/1</a>)
+              </p>
+            </ul>
           </div>
         </div>
       </section>

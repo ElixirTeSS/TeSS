@@ -18,7 +18,7 @@ var Fairsharing = {
         }
     },
     allTypeURL: function() {
-        return Fairsharing.baseUrl + '/api/all/summary';
+        return Fairsharing.baseUrl + '/api/all/summary/';
     },
     websiteBaseURL: function(){
         return Fairsharing.baseUrl;
@@ -59,7 +59,7 @@ var Fairsharing = {
                     Fairsharing.displayRecords(result);
                 },
                 error: function (error) {
-                    console.log("Error querying FAIRsharing: " + error);
+                    console.log("Error querying FAIRsharing: " + JSON.stringify(error));
                 }
         });
     },
