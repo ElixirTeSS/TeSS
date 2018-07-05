@@ -20,6 +20,31 @@ class EditSuggestionTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should add an operation by uri' do
+    resource = materials(:good_material)
+    suggestion = resource.build_edit_suggestion
+    term = EDAM::Ontology.instance.lookup('http://edamontology.org/operation_2931')
+    suggestion.operations = [term]
+    suggestion.save!
+
+    assert_difference(-> { suggestion.operations.count }, -1) do
+      assert_difference(-> { resource.reload.operations.count }, 1) do
+        suggestion.accept_suggestion('operations', term)
+      end
+    end
+  end
+
+  test 'should not add unsupported field' do
+    resource = materials(:good_material)
+    suggestion = resource.create_edit_suggestion
+    term = EDAM::Ontology.instance.lookup('http://edamontology.org/operation_2931')
+    suggestion.ontology_term_links.create!(term_uri: term.uri, field: 'bananas')
+
+    assert_no_difference(-> { resource.reload.ontology_term_links.count }) do
+      suggestion.accept_suggestion('bananas', term)
+    end
+  end
+
   test 'should not delete topic if bad uri' do
     suggestion = edit_suggestions(:one)
 

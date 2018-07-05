@@ -2,11 +2,6 @@ class EditSuggestion < ActiveRecord::Base
   belongs_to :suggestible, polymorphic: true
   after_create :init_data_fields
 
-  has_many :ontology_term_links,
-           as: :resource,
-           dependent: :destroy
-
-  # These are just used to add convenience methods for ease of testing etc.
   has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
   has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 
@@ -20,8 +15,7 @@ class EditSuggestion < ActiveRecord::Base
   def accept_suggestion(field, term)
     if drop_term(field, term)
       if suggestible.class.ontology_term_fields.include?(field.to_sym)
-        suggestible.send("#{field}=", (suggestible.send(field) << term))
-        suggestible.save!
+        suggestible.ontology_term_links.create!(field: field, term_uri: term.uri)
       end
       destroy if redundant?
     end

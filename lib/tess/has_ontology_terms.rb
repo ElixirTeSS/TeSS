@@ -30,6 +30,14 @@ module Tess
         uris_method = "#{singular}_uris"
         names_method = "#{singular}_names"
 
+        # General has_many for ontology term links
+        unless method_defined?(:ontology_term_links)
+          has_many :ontology_term_links,
+                   as: :resource,
+                   dependent: :destroy
+        end
+
+        # Specific ontology term links for the given field
         has_many links_method.to_sym, -> { where(field: association_name.to_s) },
                  class_name: 'OntologyTermLink',
                  as: :resource,
