@@ -344,10 +344,12 @@ class Event < ActiveRecord::Base
   def geocoding_api_lookup
     location = self.address
 
-    result = Geocoder.search(location).first
+    #result = Geocoder.search(location).first
+    args = {postalcode: postcode, city: city, county: county, country: country, format: 'json'}
+    result = nominatim_lookup(args)
     if result
-      self.latitude = result.latitude
-      self.longitude = result.longitude
+      self.latitude = result[:lat]
+      self.longitude = result[:lon]
       begin
         redis = Redis.new
         redis.set(location, [self.latitude, self.longitude].to_json)
@@ -380,6 +382,14 @@ class Event < ActiveRecord::Base
       raise e unless Rails.env.production?
       puts "Redis error: #{e.message}"
     end
+  end
+
+  def nominatim_lookup(args)
+    url = 'https://nominatim.openstreetmap.org/search.php'
+    response = HTTParty.get(url,
+                            query: args,
+                            headers: { 'User-Agent' => "Elixir TeSS <#{TeSS::Config.contact_email}>" })
+    (JSON.parse response.body, symbolize_names: true)[0]
   end
 
 
