@@ -2,7 +2,8 @@ class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages, :add_topic, :reject_topic,
                                    :redirect, :report, :update_report, :add_data, :reject_data]
   before_action :set_breadcrumbs
-  before_action :disable_pagination, only: :index, if: lambda { |controller| controller.request.format.ics? or controller.request.format.csv? }
+  before_action :disable_pagination, only: :index, if: lambda { |controller| controller.request.format.ics? or controller.request.format.csv? or controller.request.format.json_api?}
+
 
   include SearchableIndex
   include ActionView::Helpers::TextHelper
