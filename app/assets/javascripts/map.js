@@ -20,7 +20,7 @@ function plotEvents(events){
                 markers[key] = {
                     position: {lat: Number(event.attributes.latitude), lng: Number(event.attributes.longitude)},
                     content: event_display,
-                    title: '"' + event.attributes.title + '"', /* set to location? */
+                    title: '"' + event.attributes.title + '"' /* set to location? */
                 }
             }
         }

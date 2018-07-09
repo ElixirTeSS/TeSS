@@ -1,11 +1,11 @@
 <a href="{{event.url}}" target='_blank'>
     {{#if event.title}}
-        <h3>{{event.title}}</h3>
+        <h4>{{event.title}}</h4>
     {{ else }}
-        <h3>Untitled Event</h3>
+        <h4>Untitled Event</h4>
     {{/if}}
 </a>
-<br/>
+
 
 
 {{#if event.start}}
@@ -35,6 +35,7 @@
             {{ event.venue }}
         {{/if}}
     {{/if}}
+    <br/>
 {{ else }}
     {{#if event.city}}
         <b>Location:</b>
@@ -43,9 +44,10 @@
         {{ else }}
             {{event.city}}
         {{/if}}
+        <br/>
     {{ else }}
         {{#if event.country}}
-           <b>Location:</b> {{event.country}}
+           <b>Location:</b> {{event.country}}<br/>
         {{/if}}
     {{/if}}
 {{/if}}
