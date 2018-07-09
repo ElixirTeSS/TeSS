@@ -1,18 +1,54 @@
 <script>
   $(document).ready(function () {
 
-
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-      /*Load map script only once when event tab is selected*/
-      if (e.target.id == 'caltab'){
-        if (!loadedCalendarScript){
-          $.getScript('https://www.gstatic.com/charts/loader.js', function(){drawChart()});
-        }
+    /* Set all filter links to include the anchor */
+    var addTabToFilters = function(tab){
+      if (tab){
+          $(function () {
+              $('.active-filters a').attr('href', function(_, oldHref){
+                  oldHref = oldHref.replace(/\#(.*)/g, "#" + tab);
+                  if (oldHref.indexOf('#') == -1)
+                      oldHref += "#" + tab;
+                  return oldHref;
+              })
+              $('.nav-item a').attr('href', function (_, oldHref) {
+                  oldHref = oldHref.replace(/\#(.*)/g, "#" + tab);
+                  if (oldHref.indexOf('#') == -1)
+                      oldHref += "#" + tab;
+                  return oldHref;
+              });
+          });
       }
+    };
+
+    var getTab =function(){
+        var tab = window.location.hash;
+        if (tab){
+            return tab.substring(1) /* stip hash */
+        } else {
+            return ''
+        }
+    };
+
+    addTabToFilters(getTab());
+
+
+    var loadedMapScript = false;
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+      /*Load map script only once when event tab is selected
+      *
+      * if (e.target.id == 'caltab'){
+          if (!loadedCalendarScript){
+            $.getScript('https://www.gstatic.com/charts/loader.js', function(){drawChart()});
+          }
+       }
+       */
       if (e.target.id == 'maptab') {
         if (!loadedMapScript){
           initialize();
-        }
+        }addTabToFilters('map');
+      } else {
+          addTabToFilters('grid');
       }
     })
   })
@@ -98,7 +134,7 @@
           <div id="map" class="tab-pane fade">
             <div id="map-count" class="search-results-count"></div>
             <small style="float:right ">Note, this map only displays events that have geolocation information in TeSS.<br>
-              For the complete list of events, click the grid tab.</small>
+              For the complete list of events in TeSS, click the grid tab.</small>
             <div id="map-content">
               <%= render :partial => "events/partials/events_map", :locals => {:events => @events} %>
             </div>
