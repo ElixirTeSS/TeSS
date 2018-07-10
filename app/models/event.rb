@@ -359,7 +359,7 @@ class Event < ActiveRecord::Base
   def enqueue_geocoding_worker
     return if (latitude.present? && longitude.present?) || (address.blank? && postcode.blank?) || nominatim_count >= NOMINATIM_MAX_ATTEMPTS
 
-    location = postcode ? postcode : address
+    location = address
 
     begin
       redis = Redis.new
