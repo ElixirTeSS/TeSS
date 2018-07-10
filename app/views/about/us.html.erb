@@ -13,7 +13,7 @@
           <div id='contact' class="h3">Contact</div>
           <div class="sub-about-block">
             <%#= render :partial => "common/contact_form"%>
-            For enquiries, information, or assistance; contact the TeSS support desk at<br> <a href="mailto:tess-support@googlegroups.com">tess-support@googlegroups.com</a>
+            For enquiries, information, or assistance; contact the TeSS support desk at <br> <a href="mailto:tess-support@googlegroups.com">tess-support@googlegroups.com</a>
           </div>
         </div>
       </div>
@@ -23,26 +23,29 @@
       <div class="row">
         <div class="even-about-block">
           <div id='team' class="h3">The Team</div>
-
-          <div class="h4">Project Management</div>
-          <ul>
-            <li>Niall Beard</li>
-          </ul>
-
           <div class="h4">Leadership</div>
           <ul>
             <li>Teresa K. Attwood</li>
             <li>Carole Goble</li>
           </ul>
 
-          <div class="h4">Developers</div>
+          <div class="h4">Project Management</div>
+          <ul>
+            <li>Niall Beard</li>
+          </ul>
+
+          <div class="h4">Software Engineering</div>
           <ul>
             <li>Finn Bacall</li>
             <li>Milo Thurston</li>
+            <li>Niall Beard</li>
           </ul>
 
           <div class="h4">Past Members</div>
-          Aleksandra Nenadic - Project Manager
+          <ul>
+            <li>Aleksandra Nenadic - Project Manager</li>
+            <li>Aleksandra Pawlik - Project Manager</li>
+          </ul>
         </div>
       </div>
       </section>
@@ -53,27 +56,26 @@
         <div class="row">
           <div class="odd-about-block">
             <div id='funding' class="h3">Funding</div>
-            <p>TeSS has guaranteed funding until 2019. It is funded by:</p>
+            <p>European Commission, Horizon 2020 Research Infrastructures programme (ELIXIR-EXCELERATE, <a href="https://cordis.europa.eu/project/rcn/198519_en.html" target="_blank">grant agreement number 676559</a>);</p>
+            <p>ELIXIR Implementation Study (Registry Integration from a User Perspective);</p>
+            <p>ELIXIR Implementation Study (Learning Paths).</p>
+            <p>BBSRC UK (Delivering ELIXIR-UK grant, <a href="https://bbsrc.ukri.org/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1" target="_blank">grant agreement number BB/L005050/1</a>);</p>
                <p>
-                  <%= link_to 'http://www.elixir-europe.org/excelerate', target: '_blank' do %>
-                    <%= image_tag('excelerate-logo.png', {class: "funding-logo"}) %>
-                  <% end %>
                   <%= link_to 'https://cordis.europa.eu/project/rcn/198519_en.html', target: '_blank' do %>
                       <%= image_tag('eu_flag.svg', {class: "funding-logo"}) %>
                   <% end %>
+                  <%= link_to 'http://www.elixir-europe.org/excelerate', target: '_blank' do %>
+                    <%= image_tag('excelerate-logo.png', {class: "funding-logo"}) %>
+                  <% end %>
+                 <%= link_to 'https://bbsrc.ukri.org/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1', target: '_blank' do %>
+                     <%= image_tag('elixir_logo_orange.png', {class: "funding-logo"}) %>
+                 <% end %>
+                 <%= link_to 'https://bbsrc.ukri.org/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1', target: '_blank' do %>
+                     <%= image_tag('bbsrc-logo.png', {class: "funding-logo"}) %>
+                 <% end %>
                 </p>
-            ELIXIR (ELIXIR-EXCELERATE grant by the European Commission within the Research Infrastructures programme of Horizon 2020, <a href="https://cordis.europa.eu/project/rcn/198519_en.html" target="_blank">grant agreement number 676559</a>)
-<hr>
-              </li>
-            </ul>
-            <p>TeSS has also been funded by:</p>
-            <%= link_to 'https://bbsrc.ukri.org/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1', target: '_blank' do %>
-                <%= image_tag('bbsrc-logo.png', {class: "funding-logo"}) %>
-            <% end %>
-              <p>
-                BBSRC UK (Delivering ELIXIR-UK grant, <a href="https://bbsrc.ukri.org/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1" target="_blank">grant agreement number BB/L005050/1</a>)
-              </p>
-            </ul>
+
+
           </div>
         </div>
       </section>
@@ -83,12 +85,13 @@
       <div class="row">
         <div class="even-about-block">
           <div id='acknowledgments' class="h3">Acknowledgements</div>
-          <p>The TeSS team would like to acknowledge the help of a number of groups and individuals and thank them for
-            useful discussions, feedback and help while developing TeSS - to name but a few:</p>
+
+          <p>The TeSS team would like to acknowledge the help of a number of groups and individuals, and thank them
+            for useful discussions, feedback and assistance in developing TeSS - to name but a few:</p>
           <ul>
             <li>ELIXIR technical staff and coordinators from the Hub, in particular Rafael Jimenez, Martin Cook and Premysl Velek</li>
-            <li>The ELIXIR Training coordinators group, particularly Celia van Gelder, Patricia Pelagi, and Gabriella Rustici</li>
-            <li>Structural bioinformatics group led by Christine Orengo</li>
+            <li>The ELIXIR Training Coordinators group, particularly Celia van Gelder, Patricia Palagi and Gabriella Rustici</li>
+            <li>The UK structural bioinformatics group, particularly Christine Orengo </li>
           </ul>
         </div>
       </div>
