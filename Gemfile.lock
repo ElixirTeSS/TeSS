@@ -300,7 +300,7 @@ GEM
     pundit (1.1.0)
       activesupport (>= 3.0.0)
     rack (1.6.10)
-    rack-cors (0.4.0)
+    rack-cors (1.0.2)
     rack-oauth2 (1.5.1)
       activesupport (>= 2.3)
       attr_required (>= 0.0.5)
