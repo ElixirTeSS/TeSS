@@ -915,11 +915,11 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_empty @material.scientific_topic_names
 
     suggestion = @material.build_edit_suggestion
-    suggestion.scientific_topic_names = ['Genomics']
+    suggestion.scientific_topic_uris = ['http://edamontology.org/topic_0622']
     suggestion.save!
 
     assert_difference('EditSuggestion.count', -1) do
-      post :add_topic, id: @material.id, topic: 'Genomics'
+      post :add_term, id: @material.id, field: 'scientific_topics', uri: 'http://edamontology.org/topic_0622'
     end
 
     assert_response :success
@@ -934,14 +934,14 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_empty @material.scientific_topic_names
 
     suggestion = @material.build_edit_suggestion
-    suggestion.scientific_topic_names = ['Genomics']
+    suggestion.scientific_topic_uris = ['http://edamontology.org/topic_0622']
     suggestion.data_fields = {}
     suggestion.data_fields[:latitude] = '53.141969'
     suggestion.data_fields[:longitude] = '0.3418338'
     suggestion.save!
 
     assert_difference('EditSuggestion.count', 0) do
-      post :reject_topic, id: @material.id, topic: 'Genomics'
+      post :reject_term, id: @material.id, field: 'scientific_topics', uri: 'http://edamontology.org/topic_0622'
     end
 
     assert_response :success
@@ -968,11 +968,11 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_empty @material.scientific_topic_names
 
     suggestion = @material.build_edit_suggestion
-    suggestion.scientific_topic_names = ['Genomics']
+    suggestion.scientific_topic_uris = ['http://edamontology.org/topic_0622']
     suggestion.save!
 
     assert_no_difference('EditSuggestion.count') do
-      post :add_topic, id: @material.id, topic: 'Genomics'
+      post :add_term, id: @material.id, field: 'scientific_topics', uri: 'http://edamontology.org/topic_0622'
     end
 
     assert_response :forbidden
@@ -987,25 +987,17 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_empty @material.scientific_topic_names
 
     suggestion = @material.build_edit_suggestion
-    suggestion.scientific_topic_names = ['Genomics']
+    suggestion.scientific_topic_uris = ['http://edamontology.org/topic_0622']
     suggestion.save!
 
     assert_no_difference('EditSuggestion.count') do
-      post :reject_topic, id: @material.id, topic: 'Genomics'
+      post :reject_term, id: @material.id, field: 'scientific_topics', uri: 'http://edamontology.org/topic_0622'
     end
 
     assert_response :forbidden
 
     assert_empty @material.reload.scientific_topic_names
     assert_equal ['Genomics'], @material.reload.edit_suggestion.scientific_topic_names
-  end
-
-  test 'should remove edit suggestion after update' do
-    sign_in @user
-
-    assert_difference('EditSuggestion.count', -1) do
-      patch :update, id: @material_with_suggestions, material: @updated_material_with_suggestions
-    end
   end
 
   test 'should trigger notification when unverified user creates material' do

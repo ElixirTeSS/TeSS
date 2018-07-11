@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages, :add_topic, :reject_topic,
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages, :add_term, :reject_term,
                                    :redirect, :report, :update_report, :add_data, :reject_data]
   before_action :set_breadcrumbs
   before_action :disable_pagination, only: :index, if: lambda { |controller| controller.request.format.ics? or controller.request.format.csv? or controller.request.format.json_api?}
@@ -97,8 +97,6 @@ class EventsController < ApplicationController
     respond_to do |format|
       if @event.save
         @event.create_activity :create, owner: current_user
-        look_for_topics(@event)
-        #current_user.events << @event
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
         format.json { render :show, status: :created, location: @event }
       else
@@ -115,9 +113,6 @@ class EventsController < ApplicationController
     respond_to do |format|
       if @event.update(event_params)
         @event.create_activity(:update, owner: current_user) if @event.log_update_activity?
-        # TODO: Consider whether this is proper behaviour or whether a user should explicitly delete this
-        # TODO: suggestion, somehow.
-        @event.edit_suggestion.destroy if @event.edit_suggestion
         format.html { redirect_to @event, notice: 'Event was successfully updated.' }
         format.json { render :show, status: :ok, location: @event }
       else
@@ -177,7 +172,8 @@ class EventsController < ApplicationController
   def event_params
     params.require(:event).permit(:external_id, :title, :subtitle, :url, :organizer, :last_scraped,
                                   :scraper_record, :description, {:scientific_topic_names => []},
-                                  {:scientific_topic_uris => []}, {:event_types => []},
+                                  {:scientific_topic_uris => []}, {:operation_names => []},
+                                  {:operation_uris => []}, {:event_types => []},
                                   {:keywords => []}, :start, :end, { sponsors: [] }, :online, :for_profit, :venue,
                                   :city, :county, :country, :postcode, :latitude, :longitude, :timezone,
                                   :content_provider_id, {:package_ids => []}, {:node_ids => []}, {:node_names => []},

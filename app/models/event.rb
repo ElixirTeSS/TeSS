@@ -6,13 +6,13 @@ class Event < ActiveRecord::Base
   include PublicActivity::Common
   include LogParameterChanges
   include HasAssociatedNodes
-  include HasScientificTopics
   include HasExternalResources
   include HasContentProvider
   include LockableFields
   include Scrapable
   include Searchable
   include CurationQueue
+  include HasSuggestions
 
   before_save :set_default_times, :check_country_name
   before_save :geocoding_cache_lookup, if: :address_changed?
@@ -63,6 +63,9 @@ class Event < ActiveRecord::Base
       string :scientific_topics, :multiple => true do
         self.scientific_topic_names
       end
+      string :operations, :multiple => true do
+        self.operation_names
+      end
       string :target_audience, multiple: true
       boolean :online
       text :host_institutions
@@ -93,6 +96,9 @@ class Event < ActiveRecord::Base
   has_many :event_materials, dependent: :destroy
   has_many :materials, through: :event_materials
   has_many :widget_logs, as: :resource
+
+  has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
+  has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 
   validates :title, :url, presence: true
   validates :capacity, numericality: true, allow_blank: true
@@ -173,7 +179,7 @@ class Event < ActiveRecord::Base
   end
 
   def self.facet_fields
-    %w( scientific_topics event_types online country tools organizer city sponsors target_audience keywords
+    %w( scientific_topics operations event_types online country tools organizer city sponsors target_audience keywords
         venue node content_provider user )
   end
 
@@ -338,10 +344,12 @@ class Event < ActiveRecord::Base
   def geocoding_api_lookup
     location = self.address
 
-    result = Geocoder.search(location).first
+    #result = Geocoder.search(location).first
+    args = {postalcode: postcode, city: city, county: county, country: country, format: 'json'}
+    result = nominatim_lookup(args)
     if result
-      self.latitude = result.latitude
-      self.longitude = result.longitude
+      self.latitude = result[:lat]
+      self.longitude = result[:lon]
       begin
         redis = Redis.new
         redis.set(location, [self.latitude, self.longitude].to_json)
@@ -374,6 +382,14 @@ class Event < ActiveRecord::Base
       raise e unless Rails.env.production?
       puts "Redis error: #{e.message}"
     end
+  end
+
+  def nominatim_lookup(args)
+    url = 'https://nominatim.openstreetmap.org/search.php'
+    response = HTTParty.get(url,
+                            query: args,
+                            headers: { 'User-Agent' => "Elixir TeSS <#{TeSS::Config.contact_email}>" })
+    (JSON.parse response.body, symbolize_names: true)[0]
   end
 
 

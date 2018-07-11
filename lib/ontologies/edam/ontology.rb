@@ -18,10 +18,10 @@ module EDAM
       lookup_by(RDF::RDFS.label, name)
     end
 
-    def lookup_topic_by_name(name)
+    def scoped_lookup_by_name(name, subset = :_)
       query = RDF::Query.new do
         pattern [:u, RDF::RDFS.label, name]
-        pattern [:u, OBO.inSubset, OBO_EDAM.topics]
+        pattern [:u, OBO.inSubset, subset]
       end
 
       result = graph.query(query).first

@@ -3,7 +3,6 @@ require 'rails/html/sanitizer'
 class Material < ActiveRecord::Base
 
   include PublicActivity::Common
-  include HasScientificTopics
   include LogParameterChanges
   include HasAssociatedNodes
   include HasExternalResources
@@ -13,6 +12,7 @@ class Material < ActiveRecord::Base
   include Scrapable
   include Searchable
   include CurationQueue
+  include HasSuggestions
 
   extend FriendlyId
   friendly_id :title, use: :slugged
@@ -32,6 +32,9 @@ class Material < ActiveRecord::Base
       text :authors
       string :scientific_topics, :multiple => true do
         self.scientific_topic_names
+      end
+      string :operations, :multiple => true do
+        self.operation_names
       end
       string :target_audience, :multiple => true
       text :target_audience
@@ -70,12 +73,14 @@ class Material < ActiveRecord::Base
 
   # has_one :owner, foreign_key: "id", class_name: "User"
   belongs_to :user
-  has_one :edit_suggestion, as: :suggestible, dependent: :destroy
   has_one :link_monitor, as: :lcheck, dependent: :destroy
   has_many :package_materials
   has_many :packages, through: :package_materials
   has_many :event_materials, dependent: :destroy
   has_many :events, through: :event_materials
+
+  has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
+  has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
@@ -100,7 +105,7 @@ class Material < ActiveRecord::Base
   end
 
   def self.facet_fields
-    %w( scientific_topics tools standard_database_or_policy target_audience keywords difficulty_level
+    %w( scientific_topics operations tools standard_database_or_policy target_audience keywords difficulty_level
         authors related_resources contributors licence node content_provider user resource_type)
   end
 
@@ -119,5 +124,4 @@ class Material < ActiveRecord::Base
 
     material
   end
-
 end

@@ -46,10 +46,8 @@
   <%= link_to '', event, :class=>"media-view" %>
   <%= render :partial => 'events/partials/event_schemaorg', :locals => {:event => event} %>
 
-  <% unless event.edit_suggestion.nil? || (event.edit_suggestion.scientific_topics.empty? &&
-      !event.edit_suggestion.data) || current_user.nil? || !policy(event).update? %>
-      <%= render partial: 'common/approve_topic_suggestions', locals: { suggestion: event.edit_suggestion } %>
+  <% if policy(event).update? && event.edit_suggestion %>
+      <%= render partial: 'common/approve_term_suggestions', locals: { suggestion: event.edit_suggestion } %>
   <% end %>
-
 </li>
 

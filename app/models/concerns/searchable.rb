@@ -1,7 +1,7 @@
 module Searchable
 
   # Associations that are used on the index pages. Eager load them to prevent N+1 queries.
-  EAGER_LOADABLE = [:content_provider, :scientific_topic_links, :edit_suggestion, :materials, :events,
+  EAGER_LOADABLE = [:content_provider, :ontology_term_links, :edit_suggestion, :materials, :events,
                     :training_coordinators].freeze
 
   extend ActiveSupport::Concern

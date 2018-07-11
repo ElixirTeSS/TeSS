@@ -175,6 +175,13 @@
                   </p>
               <% end %>
 
+              <% unless @event.operations.empty? %>
+                  <p>
+                    <strong>Operations:</strong>
+                    <%= @event.operation_names.join(', ')%>
+                  </p>
+              <% end %>
+
               <% unless @event.target_audience.empty? %>
                   <strong>Target audience:</strong>
                   <ul>
@@ -227,7 +234,7 @@
                           <li><%= link_to material.title, material %></li>
                       <% end %>
                     </ul>
-                  </div>
+                  </div>r
               <% end %>
 
               <% if @event.external_resources.any? %>
@@ -240,9 +247,8 @@
 
               <%= render partial: 'events/report' if policy(@event).view_report? %>
 
-              <% unless @event.edit_suggestion.nil? || (@event.edit_suggestion.scientific_topics.empty? &&
-                  !@event.edit_suggestion.data) || current_user.nil? || !policy(@event).update? %>
-                  <%= render partial: 'common/approve_topic_suggestions', locals: { suggestion: @event.edit_suggestion } %>
+              <% if policy(@event).update? && @event.edit_suggestion %>
+                  <%= render partial: 'common/approve_term_suggestions', locals: { suggestion: @event.edit_suggestion } %>
               <% end %>
 
             </div>

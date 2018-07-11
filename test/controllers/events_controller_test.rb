@@ -953,13 +953,13 @@ class EventsControllerTest < ActionController::TestCase
     assert_empty @event.scientific_topic_names
 
     suggestion = @event.build_edit_suggestion
-    suggestion.scientific_topic_names = ['Genomics']
+    suggestion.scientific_topic_uris = ['http://edamontology.org/topic_0622']
     suggestion.save!
 
     assert_difference(-> { suggestion.scientific_topic_links.count }, -1) do
       assert_difference(-> { @event.scientific_topic_links.count }, 1) do
         assert_difference('EditSuggestion.count', -1) do
-          post :add_topic, id: @event.id, topic: 'Genomics'
+          post :add_term, id: @event.id, field: 'scientific_topics', uri: 'http://edamontology.org/topic_0622'
         end
       end
     end
@@ -976,11 +976,11 @@ class EventsControllerTest < ActionController::TestCase
     assert_empty @event.scientific_topic_names
 
     suggestion = @event.build_edit_suggestion
-    suggestion.scientific_topic_names = ['Genomics']
+    suggestion.scientific_topic_uris = ['http://edamontology.org/topic_0622']
     suggestion.save!
 
     assert_difference('EditSuggestion.count', -1) do
-      post :reject_topic, id: @event.id, topic: 'Genomics'
+      post :reject_term, id: @event.id, field: 'scientific_topics', uri: 'http://edamontology.org/topic_0622'
     end
 
     assert_response :success
@@ -995,11 +995,11 @@ class EventsControllerTest < ActionController::TestCase
     assert_empty @event.scientific_topic_names
 
     suggestion = @event.build_edit_suggestion
-    suggestion.scientific_topic_names = ['Genomics']
+    suggestion.scientific_topic_uris = ['http://edamontology.org/topic_0622']
     suggestion.save!
 
     assert_no_difference('EditSuggestion.count') do
-      post :add_topic, id: @event.id, topic: 'Genomics'
+      post :add_term, id: @event.id, field: 'scientific_topics', uri: 'http://edamontology.org/topic_0622'
     end
 
     assert_response :forbidden
@@ -1014,11 +1014,11 @@ class EventsControllerTest < ActionController::TestCase
     assert_empty @event.scientific_topic_names
 
     suggestion = @event.build_edit_suggestion
-    suggestion.scientific_topic_names = ['Genomics']
+    suggestion.scientific_topic_uris = ['http://edamontology.org/topic_0622']
     suggestion.save!
 
     assert_no_difference('EditSuggestion.count') do
-      post :reject_topic, id: @event.id, topic: 'Genomics'
+      post :reject_term, id: @event.id, field: 'scientific_topics', uri: 'http://edamontology.org/topic_0622'
     end
 
     assert_response :forbidden
@@ -1141,7 +1141,7 @@ class EventsControllerTest < ActionController::TestCase
 
   test 'should get event with edit suggestion' do
     suggestion = @event.build_edit_suggestion
-    suggestion.scientific_topic_names = ['Genomics']
+    suggestion.scientific_topic_uris = ['http://edamontology.org/topic_0622']
     suggestion.save!
 
     get :show, id: @event

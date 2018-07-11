@@ -12,7 +12,11 @@ class ApplicationSerializer < ActiveModel::Serializer
   end
 
   def scientific_topics
-    object.scientific_topics.map { |t| { preferred_label: t.preferred_label, uri: t.uri } }
+    ontology_terms(:scientific_topics)
+  end
+
+  def operations
+    ontology_terms(:operations)
   end
 
   def external_resources
@@ -30,6 +34,10 @@ class ApplicationSerializer < ActiveModel::Serializer
 
   def pundit_user
     CurrentContext.new(current_user, @request)
+  end
+
+  def ontology_terms(type)
+    object.send(type).map { |t| { preferred_label: t.preferred_label, uri: t.uri } }
   end
 
 end

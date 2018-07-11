@@ -11,12 +11,12 @@
       <% if controller_name != 'content_providers' %>
           <div class="col-md-9" style="padding: 0px;">
             <%= display_attribute(material, :scientific_topics){|values| values.map{|x| x.preferred_label}.join(', ')} %>
+            <%= display_attribute(material, :operations){|values| values.map{|x| x.preferred_label}.join(', ')} %>
             <%= display_attribute(material, :keywords){|values| values.join(', ')} %>
             <%= display_attribute(material, :resource_type){|values| values.join(', ')} %>
 
-            <% unless material.edit_suggestion.nil? || (material.edit_suggestion.scientific_topics.empty?  &&
-                !material.edit_suggestion.data) || current_user.nil? || !policy(material).update? %>
-                <%= render partial: 'common/approve_topic_suggestions', locals: { suggestion: material.edit_suggestion } %>
+            <% if policy(material).update? && material.edit_suggestion %>
+                <%= render partial: 'common/approve_term_suggestions', locals: { suggestion: material.edit_suggestion } %>
             <% end %>
           </div>
           <div class="col-md-3">

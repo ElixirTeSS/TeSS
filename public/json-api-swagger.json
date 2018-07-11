@@ -1,10 +1,10 @@
 {
   "swagger" : "2.0",
-  "host" : "tess.oerc.ox.ac.uk",
+  "host" : "tess.elixir-europe.org",
   "schemes" : [ "https" ],
   "info" : {
     "description" : "An implementation of the API for ELIXIR's TeSS, following JSON-API (http://jsonapi.org/) standards.",
-    "version" : "0.0.1",
+    "version" : "0.2.0",
     "title" : "TeSS JSON-API",
     "contact" : {
       "email" : "tess-support@googlegroups.com"
@@ -45,7 +45,7 @@
       "enum" : [ "early", "late", "rel", "mod", "new" ]
     },
     "content-provider" : {
-      "name" : "content-provider[]",
+      "name" : "content_provider[]",
       "in" : "query",
       "description" : "Filter by content provider name.",
       "type" : "array",
@@ -75,7 +75,7 @@
       }
     },
     "scientific-topics" : {
-      "name" : "scientific-topics[]",
+      "name" : "scientific_topics[]",
       "in" : "query",
       "description" : "Filter by scientific topics.",
       "type" : "array",
@@ -84,8 +84,18 @@
         "type" : "string"
       }
     },
+    "operations" : {
+      "name" : "operations[]",
+      "in" : "query",
+      "description" : "Filter by operations.",
+      "type" : "array",
+      "collectionFormat" : "multi",
+      "items" : {
+        "type" : "string"
+      }
+    },
     "target-audience" : {
-      "name" : "target-audience[]",
+      "name" : "target_audience[]",
       "in" : "query",
       "description" : "Filter by who the intended target audience is.",
       "type" : "array",
@@ -167,11 +177,13 @@
         }, {
           "$ref" : "#/parameters/scientific-topics"
         }, {
+          "$ref" : "#/parameters/operations"
+        }, {
           "$ref" : "#/parameters/target-audience"
         }, {
           "$ref" : "#/parameters/tools"
         }, {
-          "name" : "event-types[]",
+          "name" : "event_types[]",
           "in" : "query",
           "description" : "Filter by event type.",
           "type" : "array",
@@ -231,7 +243,7 @@
             "type" : "string"
           }
         }, {
-          "name" : "include-expired",
+          "name" : "include_expired",
           "in" : "query",
           "description" : "Include events that have finished.",
           "type" : "boolean"
@@ -293,6 +305,8 @@
           "$ref" : "#/parameters/node"
         }, {
           "$ref" : "#/parameters/scientific-topics"
+        }, {
+          "$ref" : "#/parameters/operations"
         }, {
           "$ref" : "#/parameters/target-audience"
         }, {
@@ -660,9 +674,16 @@
         "scientific-topics" : {
           "type" : "array",
           "items" : {
-            "$ref" : "#/definitions/ScientificTopic"
+            "$ref" : "#/definitions/OntologyTerm"
           },
           "description" : "The classification of the event based on the EDAM ontology's scientific topics."
+        },
+        "operations" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/OntologyTerm"
+          },
+          "description" : "The classification of the event based on the EDAM ontology's operations."
         },
         "external-resources" : {
           "type" : "array",
@@ -857,9 +878,16 @@
         "scientific-topics" : {
           "type" : "array",
           "items" : {
-            "$ref" : "#/definitions/ScientificTopic"
+            "$ref" : "#/definitions/OntologyTerm"
           },
-          "description" : "The classification of the event based on the EDAM ontology's scientific topics."
+          "description" : "The classification of the material based on the EDAM ontology's scientific topics."
+        },
+        "operations" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/OntologyTerm"
+          },
+          "description" : "The classification of the material based on the EDAM ontology's operations."
         },
         "external-resources" : {
           "type" : "array",
@@ -1187,14 +1215,14 @@
           "items" : {
             "type" : "string"
           },
-          "description" : "The audience the material was intended for."
+          "description" : "The audience the workflow was intended for."
         },
         "scientific-topics" : {
           "type" : "array",
           "items" : {
-            "$ref" : "#/definitions/ScientificTopic"
+            "$ref" : "#/definitions/OntologyTerm"
           },
-          "description" : "The classification of the event based on the EDAM ontology's scientific topics."
+          "description" : "The classification of the workflow based on the EDAM ontology's scientific topics."
         }
       }
     },
@@ -1265,7 +1293,7 @@
         }
       } ]
     },
-    "ScientificTopic" : {
+    "OntologyTerm" : {
       "type" : "object",
       "properties" : {
         "preferred-label" : {

@@ -1,5 +1,5 @@
 class MaterialsController < ApplicationController
-  before_action :set_material, only: [:show, :edit, :update, :destroy, :update_packages, :add_topic, :reject_topic]
+  before_action :set_material, only: [:show, :edit, :update, :destroy, :update_packages, :add_term, :reject_term]
   before_action :set_breadcrumbs
 
   include SearchableIndex
@@ -72,8 +72,6 @@ class MaterialsController < ApplicationController
     respond_to do |format|
       if @material.save
         @material.create_activity :create, owner: current_user
-        look_for_topics(@material)
-        #current_user.materials << @material
         format.html { redirect_to @material, notice: 'Material was successfully created.' }
         format.json { render :show, status: :created, location: @material }
       else
@@ -90,11 +88,6 @@ class MaterialsController < ApplicationController
     respond_to do |format|
       if @material.update(material_params)
         @material.create_activity(:update, owner: current_user) if @material.log_update_activity?
-        # If it's being updated and has an edit suggestion then, for now, this can be removed so it doesn't
-        # suggest the same topics on every edit.
-        # TODO: Consider whether this is proper behaviour or whether a user should explicitly delete this
-        # TODO: suggestion, somehow.
-        @material.edit_suggestion.destroy if @material.edit_suggestion
         format.html { redirect_to @material, notice: 'Material was successfully updated.' }
         format.json { render :show, status: :ok, location: @material }
       else
@@ -148,6 +141,7 @@ class MaterialsController < ApplicationController
                                      :remote_created_date,  :remote_updated_date, {:package_ids => []},
                                      :content_provider_id, {:keywords => []}, {:resource_type => []},
                                      {:scientific_topic_names => []}, {:scientific_topic_uris => []},
+                                     {:operation_names => []}, {:operation_uris => []},
                                      :licence, :difficulty_level, {:contributors => []},
                                      {:authors => []}, {:target_audience => []}, {:node_ids => []}, {:node_names => []},
                                      external_resources_attributes: [:id, :url, :title, :_destroy], event_ids: [],

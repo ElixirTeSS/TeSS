@@ -2,7 +2,8 @@ json.extract! @material, :id, :title, :url, :short_description, :doi, :remote_up
               :created_at, :updated_at, :content_provider_id, :keywords, :licence,
               :difficulty_level, :contributors, :authors, :target_audience
 
-json.partial! 'common/scientific_topics', resource: @material
+json.partial! 'common/ontology_terms', type: 'scientific_topics', resource: @material
+json.partial! 'common/ontology_terms', type: 'operations', resource: @material
 
 json.external_resources do
   @material.external_resources.each do |external_resource|

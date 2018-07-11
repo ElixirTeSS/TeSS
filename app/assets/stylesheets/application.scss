@@ -933,6 +933,10 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
   text-decoration: underline;
 }
 
+.term_suggestions .dropdown-backdrop {
+  display: none;
+}
+
 .funding-logo{
   width: 100px;
   margin: 15px;

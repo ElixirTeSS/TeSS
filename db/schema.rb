@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180604095539) do
+ActiveRecord::Schema.define(version: 20180604144813) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -247,6 +247,17 @@ ActiveRecord::Schema.define(version: 20180604095539) do
   add_index "nodes", ["slug"], name: "index_nodes_on_slug", unique: true, using: :btree
   add_index "nodes", ["user_id"], name: "index_nodes_on_user_id", using: :btree
 
+  create_table "ontology_term_links", force: :cascade do |t|
+    t.integer "resource_id"
+    t.string  "resource_type"
+    t.string  "term_uri"
+    t.string  "field"
+  end
+
+  add_index "ontology_term_links", ["field"], name: "index_ontology_term_links_on_field", using: :btree
+  add_index "ontology_term_links", ["resource_type", "resource_id"], name: "index_ontology_term_links_on_resource_type_and_resource_id", using: :btree
+  add_index "ontology_term_links", ["term_uri"], name: "index_ontology_term_links_on_term_uri", using: :btree
+
   create_table "package_events", id: false, force: :cascade do |t|
     t.integer  "event_id"
     t.integer  "package_id"
@@ -308,15 +319,6 @@ ActiveRecord::Schema.define(version: 20180604095539) do
     t.datetime "updated_at", null: false
     t.string   "title"
   end
-
-  create_table "scientific_topic_links", force: :cascade do |t|
-    t.integer "resource_id"
-    t.string  "resource_type"
-    t.string  "term_uri"
-  end
-
-  add_index "scientific_topic_links", ["resource_type", "resource_id"], name: "index_scientific_topic_links_on_resource_type_and_resource_id", using: :btree
-  add_index "scientific_topic_links", ["term_uri"], name: "index_scientific_topic_links_on_term_uri", using: :btree
 
   create_table "sessions", force: :cascade do |t|
     t.string   "session_id", null: false
