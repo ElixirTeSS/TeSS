@@ -225,4 +225,24 @@ class MaterialTest < ActiveSupport::TestCase
     assert_equal 1, material.external_resources.where(title: 'TeSS').count
     assert_not_includes material.external_resources, new_resource, 'Should preserve oldest external resource'
   end
+
+
+  test 'verified users scope' do
+    bad_user = users(:unverified_user)
+    bad_material = bad_user.materials.build(title: 'bla', url: 'http://example.com/spam', short_description: 'vvv')
+    assert bad_material.user_requires_approval?
+    bad_material.save!
+
+    good_user = users(:regular_user)
+    good_material = good_user.materials.build(title: 'h', url: 'http://example.com/good-stuff', short_description: 'vvv')
+    refute good_material.user_requires_approval?
+    good_material.save!
+
+    # Unscoped
+    assert_includes Material.where(short_description: 'vvv').to_a, good_material
+    assert_includes Material.where(short_description: 'vvv').to_a, bad_material
+    # Scoped
+    assert_includes Material.from_verified_users.where(short_description: 'vvv').to_a, good_material
+    refute_includes Material.from_verified_users.where(short_description: 'vvv').to_a, bad_material
+  end
 end

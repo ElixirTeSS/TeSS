@@ -387,6 +387,27 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_equal @content_provider.user, assigns(:content_provider).user
   end
 
+  test 'should not list unverified events on content provider' do
+    bad_user = users(:unverified_user)
+    bad_material = bad_user.materials.build(title: 'bla', url: 'http://example.com/spam', short_description: '123',
+                                            content_provider: @content_provider)
+    assert bad_material.user_requires_approval?
+    bad_material.save!
+
+    good_user = users(:regular_user)
+    good_material = good_user.materials.build(title: 'h', url: 'http://example.com/good-stuff', short_description: '456',
+                                              content_provider: @content_provider)
+    refute good_material.user_requires_approval?
+    good_material.save!
+
+    get :show, id: @content_provider
+
+    assert_response :success
+    assert_select '#materials a[href=?]', material_path(good_material), count: 1
+    assert_select '#materials a[href=?]', material_path(bad_material), count: 0
+  end
+
+
 
   # TODO: SOLR tests will not run on TRAVIS. Explore stratergy for testing solr
 =begin

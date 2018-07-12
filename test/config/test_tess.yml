@@ -2,5 +2,6 @@ base_url: http://localhost:3000
 contact_email: test@example.com
 sender_email: no-reply@example.com
 solr_enabled: false
+default_role: registered_user
 blocked_domains:
   - !ruby/regexp '/bad-domain\.example/'
