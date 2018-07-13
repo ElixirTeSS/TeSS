@@ -46,6 +46,11 @@ body {
   bottom: 0;
   left: 0;
   background-color: #ddd;
+
+  .container {
+    padding: 0;
+  }
+
   .footer-logo {
     margin: 0 5px;
     img { height: 48px; }

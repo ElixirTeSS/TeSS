@@ -1,7 +1,7 @@
 <footer class="footer">
   <div class="container">
     <div class="row">
-      <div class="col-sm-3">
+      <div class="col-sm-3 col-xs-8">
         <strong>Version: </strong><%= app_version_text -%><br />
         <%= mail_to(TeSS::Config.contact_email, 'Contact us') %><br/>
         <%= link_to 'Add your training resources to TeSS', registering_resources_path, target: '_blank'  %><br/>
@@ -9,7 +9,7 @@
         <%= link_to 'Funding & acknowledgements', us_path(anchor: 'funding'), target: '_blank' %><br/>
         <%= link_to 'Privacy', privacy_path, target: '_blank' %>
       </div>
-      <div class="col-sm-9">
+      <div class="col-sm-9 col-xs-4">
         <div class="col-sm-7">
           <%= link_to 'http://www.elixir-europe.org/excelerate', class: 'footer-logo hidden-xs', target: '_blank' do %>
             <%= image_tag('excelerate-logo.png') %>
@@ -29,7 +29,7 @@
             <%= image_tag('ELIXIR_UK_logo_orange.png') %>
           <% end %>
         </div>
-        <div class="col-md-12 eu-notice">
+        <div class="col-md-12 eu-notice hidden-xs">
           <%= image_tag('eu_flag.svg') %>
           TeSS is supported by ELIXIR through the <a href="http://www.elixir-europe.org/excelerate" target="_blank">ELIXIR-EXCELERATE grant</a>,
           which is funded by the European Union Horizon 2020 program under grant agreement <a href="https://cordis.europa.eu/project/rcn/198519_en.html" target="_blank">676559</a>.
