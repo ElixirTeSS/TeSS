@@ -526,26 +526,40 @@ ul.featureblocks {
 }
 
 .searchbox {
-  width: 85%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 20px;
-  margin-bottom: 5px;
-  padding: 20px;
-  background-color: #efefef;
-  position: relative;
-  box-shadow: 0 0 5px #333;
-  -webkit-box-shadow: 0 0 5px #333;
-  -moz-box-shadow: 0 0 5px #333;
-  -webkit-border-radius: 3px !important;
-  -moz-border-radius: 3px !important;
-  border-radius: 3px !important;
   text-align: center;
-}
+  margin-top: 10px;
+  margin-bottom: 30px;
 
-.homepage #sb-search {
-  background-color: transparent;
-  padding: 0;
+  form {
+    padding: 10px;
+    background-color: #f8f8f8;
+    text-align: center;
+    line-height: 2;
+    font-size: large;
+    margin: auto;
+    max-width: 800px;
+
+    .searchbox-wrapper {
+      display: flex;
+    }
+
+    .searchbox-field {
+      border-width: 0;
+      border-style: solid;
+      border-color: #ccc;
+      background: transparent;
+      padding: 5px 15px;
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .searchbox-btn {
+      border: none;
+      background: transparent;
+      padding: 5px 15px;
+      flex-shrink: 0;
+    }
+  }
 }
 
 sup {
