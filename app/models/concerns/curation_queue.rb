@@ -7,7 +7,7 @@ module CurationQueue
 
   class_methods do
     def from_verified_users
-      joins(:user).where.not(users: { id: User.with_role('unverified_user', Role.rejected.name).pluck(:id) })
+      joins(user: :role).where.not(users: { role_id: [Role.rejected.id, Role.fetch('unverified_user').id] })
     end
   end
 
