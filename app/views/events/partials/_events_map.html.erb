@@ -10,7 +10,7 @@ function initialize(){
 
     $.ajax({
         type: 'GET',
-        url: '<%= events_url(params.slice(:q, :include_expired, *Event.facet_fields).merge(format: :json_api)).html_safe -%>',
+        url: '<%= events_url(params.slice(:q, :include_expired, *Event.facet_fields).merge(format: :json_api, per_page: 5000)).html_safe -%>',
         dataType: 'json',
     }).done(function (res) {
         plotEvents(res.data)
