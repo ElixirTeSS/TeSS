@@ -98,6 +98,7 @@
 
 
 
+
         <hr>
         <p>
         If you do decide to include our widgets on your website, we have a mailing list you can join to keep
@@ -118,7 +119,8 @@
                       </span>
           <span>
             <p>TeSS has a fully functioning <a href="http://jsonapi.org/" target="_blank">JSON API</a>. You can
-              explore our JSON-API by adding .json_api to the URL of most pages. For example:</p>
+              explore our JSON-API by appending .json_api to the end of the URL of most pages (excluding parameters).
+              For example:</p>
             <p><code>
                <a href="https://tess.elixir-europe.org/materials.json_api?scientific_topics=RNA-Seq">
                  https://tess.elixir-europe.org/materials.json_api?scientific_topics=RNA-Seq </a>
@@ -141,14 +143,22 @@
                                https://tess.elixir-europe.org/workflows.json_api </a>
             </code></p>
 
-            <p>We recommend using our JSON API but we will also continue supporting our legacy API;
-              technical information of which can be found on our <a href="https://app.swaggerhub.com/api/njall/TeSS/1.0.0/">
-                          Swagger Hub Documentation</a> page </p>
-                      </span>
-          <%= link_to 'https://app.swaggerhub.com/api/njall/TeSS/1.0.0/', class: 'btn btn-primary', target: '_blank' do %>
-              View our legacy API on SwaggerHub
+            <p>
+              The full documentation for our JSON API with interactive examples can be found in our
+              <%= link_to 'Swagger Hub Documentation', 'https://app.swaggerhub.com/apis/fbacall/TeSS-JSON-API/0.2.0' %>
+            </p>
+            <p>
+              <%= link_to 'https://app.swaggerhub.com/apis/fbacall/TeSS-JSON-API/0.2.0', class: 'btn btn-primary', target: '_blank' do %>
+              View our API on SwaggerHub
               <%= image_tag 'swagger.png', size: "20x20"%>
-        <% end %>
+              <% end %>
+
+            </p>
+            <p>
+              We recommend using our JSON API, but if you have already begun using our old API technical information
+              can still be found on our <a href="https://app.swaggerhub.com/api/njall/TeSS/1.0.0/">here</a>.
+            </p>
+           </span>
         </div>
         </div>
       </div>
