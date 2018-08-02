@@ -198,10 +198,10 @@ class NodesControllerTest < ActionController::TestCase
                 twitter: @node.twitter, staff_attributes:
                     {
                         "0" => @node.staff[0].attributes.merge(_destroy: '0' ),
-                        "1" => @node.staff[1].attributes.merge(_destroy: '0',
-                                                               name: 'Updated name',
-                                                               email: 'u@example.com',
-                                                               role: 'Nobody'),
+                        "1" => { _destroy: '0',
+                                 name: 'Updated name',
+                                 email: 'u@example.com',
+                                 role: 'Nobody' },
                     }
         }
     }
