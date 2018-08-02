@@ -30,7 +30,7 @@ class User < ApplicationRecord
   has_many :content_providers
   has_many :events
   has_many :nodes
-  belongs_to :role
+  belongs_to :role, optional: true
   has_many :subscriptions, dependent: :destroy
   has_many :stars, dependent: :destroy
   has_one :ban

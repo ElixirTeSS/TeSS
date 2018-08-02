@@ -11,7 +11,7 @@ class ContentProvider < ApplicationRecord
   has_many :events, :dependent => :destroy
 
   belongs_to :user
-  belongs_to :node
+  belongs_to :node, optional: true
 
   delegate :name, to: :node, prefix: true, allow_nil: true
 

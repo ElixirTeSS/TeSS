@@ -3,7 +3,7 @@ module HasContentProvider
   extend ActiveSupport::Concern
 
   included do
-    belongs_to :content_provider
+    belongs_to :content_provider, optional: true
     before_save :check_content_provider_precedence
   end
 
