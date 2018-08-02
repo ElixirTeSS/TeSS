@@ -29,7 +29,7 @@ class EventsController < ApplicationController
       format.json
       format.json_api { render json: @event }
       format.html
-      format.ics { render text: @event.to_ical }
+      format.ics { render ics: @event.to_ical }
     end
   end
 

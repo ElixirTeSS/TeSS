@@ -19,7 +19,7 @@ module TopicCuration
                              owner: current_user,
                              recipient: resource.user,
                              parameters: log_params
-    render nothing: true
+    render head: :ok
   end
 
   #POST /<resource>/1/reject_term
@@ -39,7 +39,7 @@ module TopicCuration
                              owner: current_user,
                              recipient: resource.user,
                              parameters: log_params
-    render nothing: true
+    render head: :ok
   end
 
   #POST /<resource>/1/add_data
@@ -57,7 +57,7 @@ module TopicCuration
                              owner: current_user,
                              recipient: resource.user,
                              parameters: log_params
-    render nothing: true
+    render head: :ok
   end
 
   #POST /<resource>/1/reject_data
@@ -73,6 +73,6 @@ module TopicCuration
                              owner: current_user,
                              recipient: resource.user,
                              parameters: log_params
-    render nothing: true
+    render head: :ok
   end
 end

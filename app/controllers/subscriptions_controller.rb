@@ -34,7 +34,7 @@ class SubscriptionsController < ApplicationController
       end
     else
       respond_to do |format|
-        format.html { render text: 'There was a problem unsubscribing.', status: :unprocessable_entity }
+        format.html { render plain: 'There was a problem unsubscribing.', status: :unprocessable_entity }
       end
     end
   end
@@ -46,7 +46,7 @@ class SubscriptionsController < ApplicationController
       end
     else
       respond_to do |format|
-        format.html { render text: 'Invalid code', status: :unprocessable_entity }
+        format.html { render plain: 'Invalid code', status: :unprocessable_entity }
       end
     end
   end
