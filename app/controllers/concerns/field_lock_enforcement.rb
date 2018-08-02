@@ -2,7 +2,7 @@ module FieldLockEnforcement
   extend ActiveSupport::Concern
 
   included do
-    before_filter :filter_locked_fields, only: :update,
+    before_action :filter_locked_fields, only: :update,
                   if: -> { current_user && current_user.has_role?(:scraper_user) }
   end
 

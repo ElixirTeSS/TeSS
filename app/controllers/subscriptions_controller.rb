@@ -2,7 +2,7 @@ class SubscriptionsController < ApplicationController
 
   skip_before_action :authenticate_user!, :authenticate_user_from_token!, only: :unsubscribe
   before_action :authenticate_user!, only: :index
-  before_filter :find_subscription, only: [:destroy, :unsubscribe]
+  before_action :find_subscription, only: [:destroy, :unsubscribe]
   before_action :set_breadcrumbs, only: :index
 
   def index
