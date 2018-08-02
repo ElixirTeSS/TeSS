@@ -1,13 +1,4 @@
 GIT
-  remote: git://github.com/jjbohn/omniauth-openid-connect
-  revision: 849b181551a61f732f9990dd7ad58c258b970019
-  specs:
-    omniauth-openid-connect (0.2.2)
-      addressable (~> 2.3)
-      omniauth (~> 1.1)
-      openid_connect (~> 0.9.2)
-
-GIT
   remote: git://github.com/lassebunk/dynamic_sitemaps.git
   revision: 37beeba143e8202218ee814056231b0e6974bafb
   branch: master
@@ -160,7 +151,7 @@ GEM
       sprockets (>= 2.0.0)
       tilt (>= 1.2)
     hashdiff (0.3.2)
-    hashie (3.4.6)
+    hashie (3.5.7)
     highline (1.7.8)
     htmlentities (4.3.4)
     httparty (0.14.0)
@@ -249,7 +240,7 @@ GEM
     mimemagic (0.3.2)
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
-    minitest (5.11.3)
+    minitest (5.10.3)
     multi_json (1.13.1)
     multi_xml (0.6.0)
     nested_form (0.3.2)
@@ -258,15 +249,19 @@ GEM
     nokogiri (1.8.4)
       mini_portile2 (~> 2.3.0)
     numerizer (0.1.1)
-    omniauth (1.3.2)
-      hashie (>= 1.2, < 4)
-      rack (>= 1.0, < 3)
-    openid_connect (0.9.2)
+    omniauth (1.8.1)
+      hashie (>= 3.4.6, < 3.6.0)
+      rack (>= 1.6.2, < 3)
+    omniauth_openid_connect (0.1)
+      addressable (~> 2.5)
+      omniauth (~> 1.3)
+      openid_connect (~> 0.12.0)
+    openid_connect (0.12.0)
       activemodel
       attr_required (>= 1.0.0)
       json (>= 1.4.3)
       json-jwt (>= 1.5.0)
-      rack-oauth2 (>= 1.2.1)
+      rack-oauth2 (>= 1.3.1)
       swd (>= 1.0.0)
       tzinfo
       validate_email
@@ -303,12 +298,12 @@ GEM
       activesupport (>= 3.0.0)
     rack (2.0.5)
     rack-cors (1.0.2)
-    rack-oauth2 (1.5.1)
-      activesupport (>= 2.3)
-      attr_required (>= 0.0.5)
-      httpclient (>= 2.4)
-      multi_json (>= 1.3.6)
-      rack (>= 1.1)
+    rack-oauth2 (1.9.2)
+      activesupport
+      attr_required
+      httpclient
+      json-jwt (>= 1.9.0)
+      rack
     rack-pjax (1.0.0)
       nokogiri (~> 1.5)
       rack (>= 1.1)
@@ -337,6 +332,10 @@ GEM
     rails-assets-jquery (3.1.1)
     rails-assets-markdown-it (7.0.1)
     rails-assets-moment (2.15.2)
+    rails-controller-testing (1.0.2)
+      actionpack (~> 5.x, >= 5.0.1)
+      actionview (~> 5.x, >= 5.0.1)
+      activesupport (~> 5.x)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
@@ -491,12 +490,10 @@ GEM
       rails (>= 3)
       sunspot (= 2.2.7)
     sunspot_solr (2.2.0)
-    swd (1.0.1)
+    swd (1.1.2)
       activesupport (>= 3)
       attr_required (>= 0.0.5)
       httpclient (>= 2.4)
-      i18n
-      json (>= 1.4.3)
     sxp (1.0.0)
       rdf (~> 2.0)
     temple (0.7.7)
@@ -529,10 +526,9 @@ GEM
       binding_of_caller (>= 0.7.2)
       railties (>= 4.0)
       sprockets-rails (>= 2.0, < 4.0)
-    webfinger (1.0.2)
+    webfinger (1.1.0)
       activesupport
       httpclient (>= 2.4)
-      multi_json
     webmock (2.1.0)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
@@ -576,7 +572,8 @@ DEPENDENCIES
   jquery-turbolinks (~> 2.1.0)
   linkeddata
   lunchy
-  omniauth-openid-connect!
+  minitest (= 5.10.3)
+  omniauth_openid_connect
   paperclip (~> 5.2.1)
   passenger (~> 5.1.11)
   pg
@@ -591,6 +588,7 @@ DEPENDENCIES
   rails-assets-eonasdan-bootstrap-datetimepicker (~> 4.17.42)!
   rails-assets-markdown-it (~> 7.0.1)!
   rails-assets-moment (~> 2.15.0)!
+  rails-controller-testing
   rails_admin (~> 1.3.0)
   recaptcha (~> 4.0.1)
   redcarpet (~> 3.4.0)

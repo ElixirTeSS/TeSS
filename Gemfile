@@ -26,7 +26,7 @@ gem 'rails_admin', '~> 1.3.0'
 
 # Authentication
 gem 'devise', '~> 4.2.0'
-gem 'omniauth-openid-connect', git: 'git://github.com/jjbohn/omniauth-openid-connect'
+gem 'omniauth_openid_connect'
 
 # Activity logging
 gem 'public_activity', '~> 1.5.0'
@@ -139,7 +139,9 @@ source 'https://rails-assets.org' do
 end
 
 group :test do
+  gem 'minitest', '5.10.3'
   gem 'fakeredis'
+  gem 'rails-controller-testing'
 end
 
 group :development, :test do
