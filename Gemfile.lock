@@ -297,7 +297,7 @@ GEM
     progress_bar (1.1.0)
       highline (~> 1.6)
       options (~> 2.3.0)
-    public_activity (1.5.0)
+    public_activity (1.6.1)
       actionpack (>= 3.0.0)
       activerecord (>= 3.0)
       i18n (>= 0.5.0)
@@ -608,7 +608,7 @@ DEPENDENCIES
   pg
   private_address_check
   progress_bar (~> 1.1.0)
-  public_activity (~> 1.5.0)
+  public_activity (~> 1.6.1)
   pundit (~> 1.1.0)
   rack-cors
   rails (~> 5.2.0)
