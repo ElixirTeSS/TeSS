@@ -8,7 +8,7 @@ class WorkflowTest < ActiveSupport::TestCase
   end
 
   test "can create workflow" do
-    workflow = Workflow.new(title: 'hello world')
+    workflow = Workflow.new(user: users(:regular_user), title: 'hello world')
 
     assert workflow.save
   end
