@@ -41,7 +41,8 @@ module Tess
         has_many links_method.to_sym, -> { where(field: association_name.to_s) },
                  class_name: 'OntologyTermLink',
                  as: :resource,
-                 dependent: :destroy
+                 dependent: :destroy,
+                 inverse_of: :resource
 
         cattr_accessor :ontology_term_fields
         self.ontology_term_fields ||= []
