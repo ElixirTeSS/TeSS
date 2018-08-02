@@ -54,5 +54,5 @@ test_tess.each do |key, value|
   TeSS::Config[key] = value
 end
 
-test_secrets = YAML.safe_load(File.read(File.join(Rails.root, 'test', 'config', 'test_secrets.yml'))).symbolize_keys!
+test_secrets = YAML.safe_load(File.read(File.join(Rails.root, 'test', 'config', 'test_secrets.yml'))).deep_symbolize_keys!
 Rails.application.secrets.merge!(test_secrets)
