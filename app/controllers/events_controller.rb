@@ -29,7 +29,7 @@ class EventsController < ApplicationController
       format.json
       format.json_api { render json: @event }
       format.html
-      format.ics { render ics: @event.to_ical }
+      format.ics { send_data @event.to_ical, type: 'text/calendar', disposition: 'attachment', filename: "#{@event.slug}.ics"  }
     end
   end
 
