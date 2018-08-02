@@ -76,7 +76,6 @@ function reposition_tiles(container, tile_class){
     });
 }
 
-
 $(document).ready(function () {
 
     // Show the tab associated with the window location hash (e.g. "#packages")
@@ -127,6 +126,8 @@ $(document).ready(function () {
         $(this).parents('li').remove();
         return false;
     });
+
+
 
     // Masonry
     $('.nav-tabs a').on("shown.bs.tab", function(e) {
