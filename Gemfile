@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 4.2.10'
+gem 'rails', '~> 5'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -86,9 +86,6 @@ gem 'redcarpet', '~> 3.4.0'
 # Gem for paginating search results
 gem 'will_paginate', '~> 3.1.5'
 gem 'will_paginate-bootstrap', '~> 1.0.1'
-
-# Gem for managing the app version
-gem 'app_version'
 
 # Gem for authorisation
 gem 'pundit', '~> 1.1.0'
