@@ -113,7 +113,7 @@ gem 'bootstrap-datepicker-rails', '~> 1.6.4.1'
 
 gem 'rack-cors', require: 'rack/cors'
 
-gem 'recaptcha', '~> 4.0.1', require: 'recaptcha/rails'
+gem 'recaptcha', require: 'recaptcha/rails'
 
 gem 'linkeddata'
 
@@ -156,6 +156,7 @@ group :development do
   gem 'web-console'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   #gem 'spring'
+  gem 'listen'
 end
 
 group :production do
