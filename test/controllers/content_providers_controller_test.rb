@@ -149,13 +149,13 @@ class ContentProvidersControllerTest < ActionController::TestCase
 
   #SHOW TEST
   test 'should show content provider' do
-    get :show, id: @content_provider
+    get :show, params: { id: @content_provider }
     assert_response :success
     assert assigns(:content_provider)
   end
 
   test 'should show content provider as json' do
-    get :show, id: @content_provider, format: :json
+    get :show, params: { id: @content_provider, format: :json }
     assert_response :success
     assert assigns(:content_provider)
   end
