@@ -7,9 +7,12 @@ module Searchable
   extend ActiveSupport::Concern
 
   class_methods do
-    # Extract all the facet parameters
-    def facet_params(params)
-      params.slice(*(facet_fields | Tess::Facets.special))
+    def facet_keys
+      facet_fields | Tess::Facets.special
+    end
+
+    def search_and_facet_keys
+      [:q] | facet_keys
     end
 
     def search_and_filter(user, search_params = '', selected_facets = {}, page: 1, sort_by: nil, per_page: 30)

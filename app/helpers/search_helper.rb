@@ -1,7 +1,7 @@
 module SearchHelper
 
   def search_and_facet_params
-    params.permit(:q, *@model.facet_fields)
+    params.permit(*@model.search_and_facet_keys)
   end
 
   def filter_link name, value, count, title = nil, html_options={}, &block

@@ -55,9 +55,8 @@ class SubscriptionsController < ApplicationController
 
   def subscription_params
     subscribable_type = params[:subscription][:subscribable_type].constantize
-    facet_params = params.slice(*subscribable_type.facet_fields)
     p = params.require(:subscription).permit(:frequency, :subscribable_type)
-    p.merge(query: params[:q], facets: facet_params)
+    p.merge(query: params[:q], facets: params.permit(*subscribable_type.facet_fields))
   end
 
   def find_subscription

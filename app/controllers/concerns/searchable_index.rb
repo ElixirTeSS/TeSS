@@ -33,7 +33,7 @@ module SearchableIndex
 
   def set_params
     @model = controller_name.classify.constantize
-    @facet_params = @model.send(:facet_params, params).permit!
+    @facet_params = params.permit(*@model.facet_keys)
     @search_params = params[:q] || ''
     @sort_by = params[:sort].blank? ? 'default' : params[:sort]
   end
@@ -59,7 +59,7 @@ module SearchableIndex
     {
         links: {
             # This gets overridden (by something in ActiveModelSerializers)when the collection has multiple pages
-            self: polymorphic_path(@model, params.slice(:q, *@model.facet_fields))
+            self: polymorphic_path(@model, search_and_facet_params)
         },
         meta: {
             facets: facets,
@@ -76,5 +76,9 @@ module SearchableIndex
 
   def per_page_param
     params[:per_page] || params[:page_size]
+  end
+
+  def search_and_facet_params
+    params.permit(*@model.search_and_facet_keys)
   end
 end
