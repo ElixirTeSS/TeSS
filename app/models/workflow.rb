@@ -74,6 +74,10 @@ class Workflow < ApplicationRecord
     end
   end
 
+  def workflow_content= content
+    super(content.is_a?(String) ? JSON.parse(content) : content)
+  end
+
   private
 
   def log_diagram_modification
