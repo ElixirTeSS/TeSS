@@ -5,7 +5,7 @@ class ActivitiesControllerTest < ActionController::TestCase
   include Devise::Test::ControllerHelpers
 
   test 'should get activities for a material' do
-    get :index, material_id: materials(:good_material).id
+    get :index, params: { material_id: materials(:good_material).id }
     assert_response :success
   end
 
@@ -15,8 +15,7 @@ class ActivitiesControllerTest < ActionController::TestCase
     event.funding = 'test'
     event.save
 
-    get :index, event_id: event
-
+    get :index, params: { event_id: event }
     assert_select '.sub-activity em', text: /Funding/, count: 0
   end
 
@@ -26,8 +25,7 @@ class ActivitiesControllerTest < ActionController::TestCase
     event.funding = 'test'
     event.save
 
-    get :index, event_id: event
-
+    get :index, params: { event_id: event }
     assert_select '.sub-activity em', text: /Funding/, count: 1
   end
 

@@ -45,7 +45,7 @@ class MaterialsControllerTest < ActionController::TestCase
       TeSS::Config.solr_enabled = true
 
       Material.stub(:search_and_filter, MockSearch.new(Material.all)) do
-        get :index, q: 'breakdance for beginners', keywords: 'dancing'
+        get :index, params: { q: 'breakdance for beginners', keywords: 'dancing' }
         assert_response :success
         assert_not_empty assigns(:materials)
       end
@@ -60,7 +60,7 @@ class MaterialsControllerTest < ActionController::TestCase
     @material.scientific_topic_uris = ['http://edamontology.org/topic_0654']
     @material.save!
 
-    get :index, format: :json
+    get :index, params: { format: :json }
     assert_response :success
     assert_not_nil assigns(:materials)
     assert_nothing_raised do
@@ -72,8 +72,7 @@ class MaterialsControllerTest < ActionController::TestCase
     @material.scientific_topic_uris = ['http://edamontology.org/topic_0654']
     @material.save!
 
-    get :index, format: :json_api
-
+    get :index, params: { format: :json_api }
     assert_response :success
     assert_not_nil assigns(:materials)
     body = nil
@@ -97,8 +96,7 @@ class MaterialsControllerTest < ActionController::TestCase
       TeSS::Config.solr_enabled = true
 
       Material.stub(:search_and_filter, MockSearch.new(Material.all)) do
-        get :index, q: 'breakdance for beginners', keywords: 'dancing', format: :json_api
-
+        get :index, params: { q: 'breakdance for beginners', keywords: 'dancing', format: :json_api }
         assert_response :success
         assert_not_nil assigns(:materials)
         body = nil
@@ -122,13 +120,13 @@ class MaterialsControllerTest < ActionController::TestCase
 
   test 'admins should be able to directly load failing records' do
     sign_in users(:admin)
-    get :show, id: @failing_material
+    get :show, params: { id: @failing_material }
     assert_response :success
   end
 
   test '...and so should users' do
     sign_in users(:regular_user)
-    get :show, id: @failing_material
+    get :show, params: { id: @failing_material }
     assert_response :success
   end
 
@@ -161,40 +159,40 @@ class MaterialsControllerTest < ActionController::TestCase
   #EDIT TESTS
   test 'should not get edit page for not logged in users' do
     #Not logged in = Redirect to login
-    get :edit, id: @material
+    get :edit, params: { id: @material }
     assert_redirected_to new_user_session_path
   end
 
     #logged in but insufficient permissions = ERROR
   test 'should get edit for material owner' do
     sign_in users(:regular_user)
-    get :edit, id: @material
+    get :edit, params: { id: @material }
     assert_response :success
   end
 
   test 'should get edit for admin' do
     #Owner of material logged in = SUCCESS
     sign_in users(:admin)
-    get :edit, id: @material
+    get :edit, params: { id: @material }
     assert_response :success
   end
 
   test 'should get edit for curator' do
     sign_in users(:curator)
-    get :edit, id: @material
+    get :edit, params: { id: @material }
     assert_response :success
   end
 
   test 'should get edit for content provider owner' do
     sign_in users(:curator)
-    get :edit, id: materials(:scraper_user_material)
+    get :edit, params: { id: materials(:scraper_user_material) }
     assert_response :success
   end
 
   test 'should not get edit page for non-owner user' do
     #Administrator = SUCCESS
     sign_in users(:another_regular_user)
-    get :edit, id: @material
+    get :edit, params: { id: @material }
     assert :forbidden
   end
 
@@ -202,7 +200,16 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'should create material for user' do
     sign_in users(:regular_user)
     assert_difference('Material.count') do
-      post :create, material: { doi: @material.doi,  remote_created_date: @material.remote_created_date, remote_updated_date: @material.remote_updated_date, short_description: @material.short_description, title: @material.title, url: @material.url }
+      post :create, params: {
+          material: {
+              doi: @material.doi,
+              remote_created_date: @material.remote_created_date,
+              remote_updated_date: @material.remote_updated_date,
+              short_description: @material.short_description,
+              title: @material.title,
+              url: @material.url
+          }
+      }
     end
     assert_redirected_to material_path(assigns(:material))
     @material.reload
@@ -211,21 +218,39 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'should create material for admin' do
     sign_in users(:admin)
     assert_difference('Material.count') do
-      post :create, material: { doi: @material.doi,  remote_created_date: @material.remote_created_date, remote_updated_date: @material.remote_updated_date, short_description: @material.short_description, title: @material.title, url: @material.url }
+      post :create, params: {
+          material: {
+              doi: @material.doi,
+              remote_created_date: @material.remote_created_date,
+              remote_updated_date: @material.remote_updated_date,
+              short_description: @material.short_description,
+              title: @material.title,
+              url: @material.url
+          }
+      }
     end
     assert_redirected_to material_path(assigns(:material))
   end
 
   test 'should not create material for non-logged in user' do
     assert_no_difference('Material.count') do
-      post :create, material: { doi: @material.doi,  remote_created_date: @material.remote_created_date, remote_updated_date: @material.remote_updated_date, short_description: @material.short_description, title: @material.title, url: @material.url }
+      post :create, params: {
+          material: {
+              doi: @material.doi,
+              remote_created_date: @material.remote_created_date,
+              remote_updated_date: @material.remote_updated_date,
+              short_description: @material.short_description,
+              title: @material.title,
+              url: @material.url
+          }
+      }
     end
     assert_redirected_to new_user_session_path
   end
 
   #SHOW TEST
   test 'should show material' do
-    get :show, id: @material do
+    get :show, params: { id: @material } do
       assert_response :success
       assert assigns(:material)
       assert_select 'fa-commenting-o', :count => 0
@@ -236,8 +261,7 @@ class MaterialsControllerTest < ActionController::TestCase
     @material.scientific_topic_uris = ['http://edamontology.org/topic_0654']
     @material.save!
 
-    get :show, id: @material, format: :json
-
+    get :show, params: { id: @material, format: :json }
     assert_response :success
     assert assigns(:material)
 
@@ -250,8 +274,7 @@ class MaterialsControllerTest < ActionController::TestCase
     @material.scientific_topic_uris = ['http://edamontology.org/topic_0654']
     @material.save!
 
-    get :show, id: @material, format: :json_api
-
+    get :show, params: { id: @material, format: :json_api }
     assert_response :success
     assert assigns(:material)
 
@@ -269,14 +292,14 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'should update material' do
     sign_in @material.user
     # patch :update, id: @material, material: { doi: @material.doi,  remote_created_date: @material.remote_created_date,  remote_updated_date: @material.remote_updated_date, short_description: @material.short_description, title: @material.title, url: @material.url }
-    patch :update, id: @material, material: @updated_material
+    patch :update, params: { id: @material, material: @updated_material}
     assert_redirected_to material_path(assigns(:material))
   end
 
   test 'should update material if curator' do
     sign_in users(:curator)
     assert_not_equal @material.user, users(:curator)
-    patch :update, id: @material, material: @updated_material
+    patch :update, params: { id: @material, material: @updated_material}
     assert_redirected_to material_path(assigns(:material))
   end
 
@@ -289,7 +312,7 @@ class MaterialsControllerTest < ActionController::TestCase
 
     sign_in user
 
-    patch :update, id: material, material: @updated_material
+    patch :update, params: { id: material, material: @updated_material}
 
     assert_redirected_to material_path(assigns(:material))
   end
@@ -297,7 +320,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'should not update material if not owner or curator etc.' do
     sign_in users(:collaborative_user)
     assert_not_equal @material.user, users(:collaborative_user)
-    patch :update, id: @material, material: @updated_material
+    patch :update, params: { id: @material, material: @updated_material}
     assert_response :forbidden
   end
 
@@ -305,18 +328,18 @@ class MaterialsControllerTest < ActionController::TestCase
     sign_in users(:admin)
     assert_empty @material_with_suggestions.scientific_topics
     assert_not_equal @material_with_suggestions.edit_suggestion, nil
-    get :show, id: @material_with_suggestions do
+    get :show, params: { id: @material_with_suggestions } do
       assert_response :success
       assert_select 'Training Material Example', :count => 1
       assert_select 'fa-commenting-o', :count => 1
     end
-    get :edit, id: @material_with_suggestions do
+    get :edit, params: { id: @material_with_suggestions } do
       assert_response :success
       assert_select 'fa-commenting-o', :count => 0
       assert_select 'a#add-topic-topiconename', :count => 1
       assert_select 'a#add-topic-topictwoname', :count => 1
     end
-    patch :update, id: @material_with_suggestions, material: @updated_material_with_suggestions do
+    patch :update, params: {id: @material_with_suggestions, material: @updated_material_with_suggestions } do
       assert_redirected_to material_path(assigns(:material))
       assert_equal @material_with_suggestions.edit_suggestion, nil
     end
@@ -327,7 +350,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'should destroy material owned by user' do
     sign_in users(:regular_user)
     assert_difference('Material.count', -1) do
-      delete :destroy, id: @material
+      delete :destroy, params: { id: @material }
     end
     assert_redirected_to materials_path
   end
@@ -335,7 +358,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'should destroy material when administrator' do
     sign_in users(:admin)
     assert_difference('Material.count', -1) do
-      delete :destroy, id: @material
+      delete :destroy, params: { id: @material }
     end
     assert_redirected_to materials_path
   end
@@ -343,7 +366,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'should not destroy material not owned by user' do
     sign_in users(:another_regular_user)
     assert_no_difference('Material.count') do
-      delete :destroy, id: @material
+      delete :destroy, params: { id: @material }
     end
     assert_response :forbidden
   end
@@ -351,7 +374,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'should destroy material when curator' do
     sign_in users(:curator)
     assert_difference('Material.count', -1) do
-      delete :destroy, id: @material
+      delete :destroy, params: { id: @material }
     end
     assert_redirected_to materials_path
   end
@@ -362,7 +385,7 @@ class MaterialsControllerTest < ActionController::TestCase
 
     sign_in user
     assert_difference('Material.count', -1) do
-      delete :destroy, id: material
+      delete :destroy, params: { id: material }
     end
     assert_redirected_to materials_path
   end
@@ -379,7 +402,7 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   test 'breadcrumbs for showing material' do
-    get :show, :id => @material
+    get :show, params: { id: @material }
     assert_response :success
     assert_select 'div.breadcrumbs', :text => /Home/, :count => 1 do
       assert_select 'a[href=?]', root_path, :count => 1
@@ -392,7 +415,7 @@ class MaterialsControllerTest < ActionController::TestCase
 
   test 'breadcrumbs for editing material' do
     sign_in users(:regular_user)
-    get :edit, id: @material
+    get :edit, params: { id: @material }
     assert_response :success
     assert_select 'div.breadcrumbs', :text => /Home/, :count => 1 do
       assert_select 'a[href=?]', root_path, :count => 1
@@ -421,7 +444,7 @@ class MaterialsControllerTest < ActionController::TestCase
 
   #OTHER CONTENT
   test 'material has correct tabs' do
-    get :show, :id => @material
+    get :show, params: { id: @material }
     assert_response :success
     assert_select 'ul.nav-tabs' do
       assert_select 'li' do
@@ -431,7 +454,7 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   test 'material has correct layout' do
-    get :show, :id => @material
+    get :show, params: { id: @material }
     assert_response :success
     assert_select 'h2', :text => @material.title #Has Title
     assert_select 'a.h5[href=?]', @material.url #Has plain written URL
@@ -446,50 +469,63 @@ class MaterialsControllerTest < ActionController::TestCase
 
   test 'do not show action buttons when not owner or admin' do
     sign_in users(:another_regular_user)
-    get :show, :id => @material
+    get :show, params: { id: @material }
     assert_select 'a.btn-primary[href=?]', edit_material_path(@material), :count => 0 #No Edit
     assert_select 'a.btn-danger[href=?]', material_path(@material), :count => 0 #No Edit
   end
 
   test 'show action buttons when owner' do
     sign_in users(:regular_user)
-    get :show, :id => @material
+    get :show, params: { id: @material }
     assert_select 'a.btn-primary[href=?]', edit_material_path(@material), :count => 1
     assert_select 'a.btn-danger[href=?]', material_path(@material), :text => 'Delete', :count => 1
   end
 
   test 'show action buttons when admin' do
     sign_in users(:admin)
-    get :show, :id => @material
+    get :show, params: { id: @material }
     assert_select 'a.btn-primary[href=?]', edit_material_path(@material), :count => 1
     assert_select 'a.btn-danger[href=?]', material_path(@material), :text => 'Delete', :count => 1
   end
 
   #API Actions
   test 'should find existing material by title and content provider' do
-    post 'check_exists', :format => :json, :material => { title: @material.title,
-                                                          url: 'whatever.com',
-                                                          content_provider_id: @material.content_provider_id }
+    post :check_exists, params: {
+        format: :json,
+        material: { title: @material.title,
+                    url: 'whatever.com',
+                    content_provider_id: @material.content_provider_id
+        }
+    }
     assert_response :success
     assert_equal(JSON.parse(response.body)['id'], @material.id)
   end
 
   test 'should find existing material by url' do
-    post 'check_exists', :format => :json, :material => { title: 'whatever',
-                                                          url: @material.url,
-                                                          content_provider_id: @material.content_provider_id }
+    post :check_exists, params: {
+        format: :json,
+        material: { title: 'whatever',
+                    url: @material.url,
+                    content_provider_id: @material.content_provider_id }
+    }
     assert_response :success
     assert_equal(JSON.parse(response.body)['id'], @material.id)
   end
 
   test 'should return nothing when material does not exist' do
-    post 'check_exists', :format => :json, :material => { :url => 'http://no-such-url.com' }
+    post :check_exists, params: {
+        format: :json,
+        material: { url: 'http://no-such-url.com' }
+    }
     assert_response :success
     assert_equal '{}', response.body
   end
 
   test 'should render properly when no url supplied' do
-    post 'check_exists', :format => :json, :material => { :url => nil }
+    post :check_exists, params: {
+        format: :json,
+        material: { url: nil }
+    }
     assert_response :success
     assert_equal '{}', response.body
   end
@@ -506,15 +542,17 @@ class MaterialsControllerTest < ActionController::TestCase
     material_title = 'horse'
     assert scraper_user
     assert_difference('Material.count') do
-      post 'create', {user_token: scraper_user.authentication_token,
-                      user_email: scraper_user.email,
-                      material: {
-                          title: material_title,
-                          url: 'http://horse.com',
-                          long_description: 'I love horses',
-                          short_description: 'Best of all the animals'
-                      },
-                      :format => 'json'}
+      post :create, params: {
+          user_token: scraper_user.authentication_token,
+          user_email: scraper_user.email,
+          material: {
+              title: material_title,
+              url: 'http://horse.com',
+              long_description: 'I love horses',
+              short_description: 'Best of all the animals'
+          },
+          format: 'json'
+      }
     end
     assert_equal material_title, JSON.parse(response.body)['title']
   end
@@ -525,14 +563,16 @@ class MaterialsControllerTest < ActionController::TestCase
     assert scraper_user
 
     assert_no_difference('Material.count') do
-      post 'create', {user_token: 'made up authentication token',
-                      user_email: scraper_user.email,
-                      material: {
-                          title: 'material_title',
-                          url: 'http://horse.com',
-                          short_description: 'All about horses'
-                      },
-                      :format => 'json'}
+      post :create, params: {
+          user_token: 'made up authentication token',
+          user_email: scraper_user.email,
+          material: {
+              title: 'material_title',
+              url: 'http://horse.com',
+              short_description: 'All about horses'
+          },
+          format: 'json'
+      }
     end
     assert_response 401
   end
@@ -543,15 +583,17 @@ class MaterialsControllerTest < ActionController::TestCase
 
     new_title = "totally new title"
     assert_no_difference('Material.count') do
-      post 'update', {user_token: user.authentication_token,
-                      user_email: user.email,
-                      material: {
-                          title: new_title,
-                          url: material.url,
-                          short_description: material.short_description
-                      },
-                      :id => material.id,
-                      :format => 'json'}
+      patch :update, params: {
+          user_token: user.authentication_token,
+          user_email: user.email,
+          material: {
+              title: new_title,
+              url: material.url,
+              short_description: material.short_description
+          },
+          id: material.id,
+          format: 'json'
+      }
     end
     assert_not_equal material.title, JSON.parse(response.body)['title']
     assert_equal new_title, JSON.parse(response.body)['title']
@@ -564,15 +606,17 @@ class MaterialsControllerTest < ActionController::TestCase
 
     new_title = "totally new title"
     assert_no_difference('Material.count') do
-      post 'update', {user_token: other_user.authentication_token,
-                      user_email: other_user.email,
-                      material: {
-                          title: new_title,
-                          url: material.url,
-                          short_description: material.short_description
-                      },
-                      :id => material.id,
-                      :format => 'json'}
+      patch :update, params: {
+          user_token: other_user.authentication_token,
+          user_email: other_user.email,
+          material: {
+              title: new_title,
+              url: material.url,
+              short_description: material.short_description
+          },
+          id: material.id,
+          format: 'json'
+      }
     end
     assert_response 401
   end
@@ -585,11 +629,12 @@ class MaterialsControllerTest < ActionController::TestCase
     @material.packages = []
     @material.save!
     assert_difference('@material.packages.count', 2) do
-      post 'update_packages', { id: @material.id,
-                                material: {
-                                    package_ids: [package1.id, package2.id]
-                                }
-                            }
+      post :update_packages, params: {
+          id: @material.id,
+          material: {
+              package_ids: [package1.id, package2.id]
+          }
+      }
     end
     assert_in_delta(package1.materials.count, package1_material_count, 1)
   end
@@ -603,11 +648,12 @@ class MaterialsControllerTest < ActionController::TestCase
     @material.save
 
     assert_difference('@material.packages.count', -2) do
-        post 'update_packages', { id: @material.id,
-                                  material: {
-                                      package_ids: ['']
-                                  }
-                              }
+      post :update_packages, params: {
+          id: @material.id,
+          material: {
+              package_ids: ['']
+          }
+      }
     end
     assert_in_delta(package1.materials.count, package1_material_count, 1)
   end
@@ -616,12 +662,15 @@ class MaterialsControllerTest < ActionController::TestCase
     sign_in @material.user
 
     assert_difference('ExternalResource.count', 1) do
-      patch :update, id: @material, material: {
-          title: 'New title',
-          short_description: 'New description',
-          url: 'http://new.url.com',
-          content_provider_id: ContentProvider.first.id,
-          external_resources_attributes: { "1" => { title: 'Cool link', url: 'https://tess.elixir-uk.org/', _destroy: '0' } }
+      patch :update, params: {
+          id: @material,
+          material: {
+              title: 'New title',
+              short_description: 'New description',
+              url: 'http://new.url.com',
+              content_provider_id: ContentProvider.first.id,
+              external_resources_attributes: { "1" => { title: 'Cool link', url: 'https://tess.elixir-uk.org/', _destroy: '0' } }
+          }
       }
     end
 
@@ -638,12 +687,15 @@ class MaterialsControllerTest < ActionController::TestCase
     sign_in material.user
 
     assert_difference('ExternalResource.count', -1) do
-      patch :update, id: material, material: {
-          title: 'New title',
-          short_description: 'New description',
-          url: 'http://new.url.com',
-          content_provider_id: ContentProvider.first.id,
-          external_resources_attributes: { "0" => { id: resource.id, _destroy: '1' } }
+      patch :update, params: {
+          id: material,
+          material: {
+              title: 'New title',
+              short_description: 'New description',
+              url: 'http://new.url.com',
+              content_provider_id: ContentProvider.first.id,
+              external_resources_attributes: { "0" => { id: resource.id, _destroy: '1' } }
+          }
       }
     end
 
@@ -657,13 +709,16 @@ class MaterialsControllerTest < ActionController::TestCase
     sign_in material.user
 
     assert_no_difference('ExternalResource.count') do
-      patch :update, id: material, material: {
-          title: 'New title',
-          short_description: 'New description',
-          url: 'http://new.url.com',
-          content_provider_id: ContentProvider.first.id,
-          external_resources_attributes: { "1" => { id: resource.id, title: 'Cool link',
-                                                    url: 'http://www.reddit.com', _destroy: '0' } }
+      patch :update, params: {
+          id: material,
+          material: {
+              title: 'New title',
+              short_description: 'New description',
+              url: 'http://new.url.com',
+              content_provider_id: ContentProvider.first.id,
+              external_resources_attributes: { "1" => { id: resource.id, title: 'Cool link',
+                                                        url: 'http://www.reddit.com', _destroy: '0' } }
+          }
       }
     end
 
@@ -726,10 +781,13 @@ class MaterialsControllerTest < ActionController::TestCase
     sign_in @user
 
     assert_difference('Material.count', 1) do
-      post :create, material: { short_description: '<b>hi</b><script>alert("hi!");</script>',
-                                long_description: '<b>hi</b><script>alert("hi!");</script>',
-                                title: 'Insanity',
-                                url: 'http://www.example.com/sanity/0' }
+      post :create, params: {
+          material: { short_description: '<b>hi</b><script>alert("hi!");</script>',
+                      long_description: '<b>hi</b><script>alert("hi!");</script>',
+                      title: 'Insanity',
+                      url: 'http://www.example.com/sanity/0'
+          }
+      }
     end
 
     assert_redirected_to material_path(assigns(:material))
@@ -743,7 +801,7 @@ class MaterialsControllerTest < ActionController::TestCase
 
     # 5 = 4 for parameters + 1 for update
     assert_difference('PublicActivity::Activity.count', 5) do
-      patch :update, id: @material, material: @updated_material
+      patch :update, params: { id: @material, material: @updated_material }
     end
 
     assert_equal 1, @material.activities.where(key: 'material.update').count
@@ -764,7 +822,7 @@ class MaterialsControllerTest < ActionController::TestCase
     old_controller = @controller
     @controller = ActivitiesController.new
 
-    xhr :get, :index, material_id: @material, xhr: true
+    get :index, params: { material_id: @material }, xhr: true
 
     assert_select '.activity', count: 6 # +1 because they are wrapped in a .activity div for some reason...
 
@@ -776,7 +834,7 @@ class MaterialsControllerTest < ActionController::TestCase
     @material.activities.destroy_all
 
     assert_difference('PublicActivity::Activity.count', 2) do  # 2 = 1 for parameters + 1 for update
-      patch :update, id: @material, material: { content_provider_id: nil }
+      patch :update, params: { id: @material, material: { content_provider_id: nil }}
     end
 
     assert_equal 1, @material.activities.where(key: 'material.update').count
@@ -791,7 +849,7 @@ class MaterialsControllerTest < ActionController::TestCase
     old_controller = @controller
     @controller = ActivitiesController.new
 
-    xhr :get, :index, material_id: @material
+    get :index, params: { material_id: @material }, xhr: true
 
     assert_select '.activity', count: 3 # +1 because they are wrapped in a .activity div for some reason...
 
@@ -803,7 +861,7 @@ class MaterialsControllerTest < ActionController::TestCase
     @material.activities.destroy_all
 
     assert_no_difference('PublicActivity::Activity.count') do
-      patch :update, id: @material, material: { last_scraped: Time.now }
+      patch :update, params: { id: @material, material: { last_scraped: Time.now }}
     end
   end
 
@@ -811,10 +869,13 @@ class MaterialsControllerTest < ActionController::TestCase
     sign_in users(:regular_user)
 
     assert_difference('Material.count') do
-      post :create, material: { short_description: @material.short_description,
-                                title: @material.title,
-                                url: @material.url,
-                                node_names: [nodes(:westeros).name, nodes(:good).name]
+      post :create, params: {
+          material: {
+              short_description: @material.short_description,
+              title: @material.title,
+              url: @material.url,
+              node_names: [nodes(:westeros).name, nodes(:good).name]
+          }
       }
     end
     assert_redirected_to material_path(assigns(:material))
@@ -826,7 +887,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'can lock fields' do
     sign_in @material.user
     assert_difference('FieldLock.count', 2) do
-      patch :update, id: @material, material: { title: 'hi', locked_fields: ['title', 'short_description'] }
+      patch :update, params: { id: @material, material: { title: 'hi', locked_fields: ['title', 'short_description'] }}
     end
 
     assert_redirected_to material_path(assigns(:material))
@@ -843,15 +904,17 @@ class MaterialsControllerTest < ActionController::TestCase
     material.save!
 
     assert_no_difference('Material.count') do
-      post 'update', {user_token: user.authentication_token,
-                      user_email: user.email,
-                      material: {
-                          title: 'new title',
-                          url: material.url,
-                          short_description: 'new description'
-                      },
-                      id: material.id,
-                      format: 'json'}
+      patch :update, params: {
+          user_token: user.authentication_token,
+          user_email: user.email,
+          material: {
+              title: 'new title',
+              url: material.url,
+              short_description: 'new description'
+          },
+          id: material.id,
+          format: 'json'
+      }
     end
 
     parsed_response = JSON.parse(response.body)
@@ -864,7 +927,7 @@ class MaterialsControllerTest < ActionController::TestCase
     @material.save!
 
     sign_in @material.user
-    patch :update, id: @material, material: { title: 'new title' }
+    patch :update, params: {id: @material, material: { title: 'new title' }}
     assert_redirected_to material_path(assigns(:material))
 
     assert_equal 'new title', assigns(:material).title
@@ -877,7 +940,7 @@ class MaterialsControllerTest < ActionController::TestCase
       materials = Material.all
 
       Material.stub(:search_and_filter, MockSearch.new(materials)) do
-        get :count, format: :json
+        get :count, params: { format: :json }
         output = JSON.parse(response.body)
 
         assert_response :success
@@ -896,7 +959,7 @@ class MaterialsControllerTest < ActionController::TestCase
       materials = Material.limit(3)
 
       Material.stub(:search_and_filter, MockSearch.new(materials)) do
-        get :count, q: 'test', keywords: 'dolphins', blabla: 'booboo', format: :json
+        get :count, params: { q: 'test', keywords: 'dolphins', blabla: 'booboo', format: :json }
         output = JSON.parse(response.body)
 
         assert_response :success
@@ -919,7 +982,7 @@ class MaterialsControllerTest < ActionController::TestCase
     suggestion.save!
 
     assert_difference('EditSuggestion.count', -1) do
-      post :add_term, id: @material.id, field: 'scientific_topics', uri: 'http://edamontology.org/topic_0622'
+      post :add_term, params: { id: @material.id, field: 'scientific_topics', uri: 'http://edamontology.org/topic_0622' }
     end
 
     assert_response :success
@@ -941,19 +1004,19 @@ class MaterialsControllerTest < ActionController::TestCase
     suggestion.save!
 
     assert_difference('EditSuggestion.count', 0) do
-      post :reject_term, id: @material.id, field: 'scientific_topics', uri: 'http://edamontology.org/topic_0622'
+      post :reject_term, params: { id: @material.id, field: 'scientific_topics', uri: 'http://edamontology.org/topic_0622' }
     end
 
     assert_response :success
 
     assert_difference('EditSuggestion.count', 0) do
-      post :reject_data, id: @material.id, data_field: 'latitude', data_value: '53.141969'
+      post :reject_data, params: { id: @material.id, data_field: 'latitude', data_value: '53.141969' }
     end
 
     assert_response :success
 
     assert_difference('EditSuggestion.count', -1) do
-      post :reject_data, id: @material.id, data_field: 'longitude', data_value: '0.3418338'
+      post :reject_data, params: { id: @material.id, data_field: 'longitude', data_value: '0.3418338' }
     end
 
     assert_response :success
@@ -972,7 +1035,7 @@ class MaterialsControllerTest < ActionController::TestCase
     suggestion.save!
 
     assert_no_difference('EditSuggestion.count') do
-      post :add_term, id: @material.id, field: 'scientific_topics', uri: 'http://edamontology.org/topic_0622'
+      post :add_term, params: { id: @material.id, field: 'scientific_topics', uri: 'http://edamontology.org/topic_0622' }
     end
 
     assert_response :forbidden
@@ -991,7 +1054,7 @@ class MaterialsControllerTest < ActionController::TestCase
     suggestion.save!
 
     assert_no_difference('EditSuggestion.count') do
-      post :reject_term, id: @material.id, field: 'scientific_topics', uri: 'http://edamontology.org/topic_0622'
+      post :reject_term, params: { id: @material.id, field: 'scientific_topics', uri: 'http://edamontology.org/topic_0622' }
     end
 
     assert_response :forbidden
@@ -1005,9 +1068,12 @@ class MaterialsControllerTest < ActionController::TestCase
 
     assert_enqueued_jobs 1 do
       assert_difference('Material.count') do
-        post :create, material: { short_description: @material.short_description,
-                                  title: @material.title,
-                                  url: 'http://example.com/dodgy-event' }
+        post :create, params: {
+            material: { short_description: @material.short_description,
+                        title: @material.title,
+                        url: 'http://example.com/dodgy-event'
+            }
+        }
       end
     end
 
@@ -1023,9 +1089,12 @@ class MaterialsControllerTest < ActionController::TestCase
 
     assert_enqueued_jobs 0 do
       assert_difference('Material.count') do
-        post :create, material: { short_description: @material.short_description,
-                                  title: @material.title,
-                                  url: 'http://example.com/dodgy-event-2' }
+        post :create, params: {
+            material: { short_description: @material.short_description,
+                        title: @material.title,
+                        url: 'http://example.com/dodgy-event-2'
+            }
+        }
       end
     end
 
@@ -1035,8 +1104,7 @@ class MaterialsControllerTest < ActionController::TestCase
 
   test 'can view material with external resources' do
     material = materials(:material_with_external_resource)
-    get :show, id: material
-
+    get :show, params: { id: material }
     assert_response :success
 
     assert_select '.external-resources-box div.bounding-box', count: material.external_resources.count

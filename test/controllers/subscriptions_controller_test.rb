@@ -30,7 +30,7 @@ class SubscriptionsControllerTest < ActionController::TestCase
     sign_in users(:regular_user)
 
     assert_difference('Subscription.count') do
-      post :create, subscription: { frequency: 'weekly', subscribable_type: 'Event' }, q: 'fish', country: 'Finland'
+      post :create, params: { subscription: { frequency: 'weekly', subscribable_type: 'Event' }, q: 'fish', country: 'Finland' }
     end
 
     assert_equal 'fish', assigns(:subscription).query
@@ -44,8 +44,8 @@ class SubscriptionsControllerTest < ActionController::TestCase
     sign_in users(:regular_user)
 
     assert_difference('Subscription.count') do
-      post :create, subscription: { frequency: 'weekly', subscribable_type: 'Event' }, q: 'fish', bananas: 14,
-           country: 'Finland'
+      post :create, params: { subscription: { frequency: 'weekly', subscribable_type: 'Event' }, q: 'fish', bananas: 14,
+           country: 'Finland' }
     end
 
     assert_equal ['country'], assigns(:subscription).facets.keys
@@ -58,7 +58,7 @@ class SubscriptionsControllerTest < ActionController::TestCase
     sub = subscriptions(:daily_subscription)
 
     assert_difference('Subscription.count', - 1) do
-      delete :destroy, id: sub
+      delete :destroy, params: { id: sub }
     end
 
     assert_redirected_to subscriptions_path
@@ -69,7 +69,7 @@ class SubscriptionsControllerTest < ActionController::TestCase
     sub = subscriptions(:daily_subscription)
 
     assert_no_difference('Subscription.count') do
-      delete :destroy, id: sub
+      delete :destroy, params: { id: sub }
     end
 
     assert_response :forbidden
@@ -79,7 +79,7 @@ class SubscriptionsControllerTest < ActionController::TestCase
     sub = subscriptions(:daily_subscription)
 
     assert_difference('Subscription.count', -1) do
-      get :unsubscribe, id: sub, code: sub.unsubscribe_code
+      get :unsubscribe, params: { id: sub, code: sub.unsubscribe_code }
     end
 
     assert_response :success
@@ -90,7 +90,7 @@ class SubscriptionsControllerTest < ActionController::TestCase
     sub2 = subscriptions(:weekly_subscription)
 
     assert_no_difference('Subscription.count') do
-      get :unsubscribe, id: sub2, code: sub.unsubscribe_code
+      get :unsubscribe, params: { id: sub2, code: sub.unsubscribe_code }
     end
 
     assert_response :unprocessable_entity

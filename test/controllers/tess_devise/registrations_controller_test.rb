@@ -99,8 +99,7 @@ module TessDevise
 
       assert user.using_omniauth?
 
-      put :update, user: { username: 'cooldude99' }
-
+      put :update, params: { user: { username: 'cooldude99' } }
       assert_redirected_to assigns(:user)
     end
   end

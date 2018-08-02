@@ -12,8 +12,7 @@ class CollaborationsControllerTest < ActionController::TestCase
   test "should list collaborations" do
     sign_in(@workflow.user)
 
-    get :index, format: :json, workflow_id: @workflow.id
-
+    get :index, params: { format: :json, workflow_id: @workflow.id }
     assert_response :success
     collaborations = JSON.parse(@response.body)
 
@@ -25,8 +24,7 @@ class CollaborationsControllerTest < ActionController::TestCase
   test "should not list collaborations if not a manager" do
     sign_in(users(:another_regular_user))
 
-    get :index, format: :json, workflow_id: @workflow.id
-
+    get :index, params: { format: :json, workflow_id: @workflow.id }
     assert_response :forbidden
   end
 
@@ -34,7 +32,7 @@ class CollaborationsControllerTest < ActionController::TestCase
     sign_in(@workflow.user)
 
     assert_difference('Collaboration.count', 1) do
-      post :create, format: :json, workflow_id: @workflow.id, collaboration: { user_id: users(:non_collaborative_user).id }
+      post :create, params: { format: :json, workflow_id: @workflow.id, collaboration: { user_id: users(:non_collaborative_user).id } }
     end
 
     assert_response :success
@@ -47,7 +45,7 @@ class CollaborationsControllerTest < ActionController::TestCase
     sign_in(@workflow.user)
 
     assert_no_difference('Collaboration.count') do
-      post :create, format: :json, workflow_id: @workflow.id, collaboration: { user_id: users(:collaborative_user).id }
+      post :create, params: { format: :json, workflow_id: @workflow.id, collaboration: { user_id: users(:collaborative_user).id } }
     end
 
     assert_response :unprocessable_entity
@@ -58,7 +56,7 @@ class CollaborationsControllerTest < ActionController::TestCase
     sign_in(users(:another_regular_user))
 
     assert_no_difference('Collaboration.count') do
-      post :create, format: :json, workflow_id: @workflow.id, collaboration: { user_id: users(:non_collaborative_user).id }
+      post :create, params: { format: :json, workflow_id: @workflow.id, collaboration: { user_id: users(:non_collaborative_user).id } }
     end
 
     assert_response :forbidden
@@ -69,7 +67,7 @@ class CollaborationsControllerTest < ActionController::TestCase
     collaboration = @workflow.collaborations.where(user_id: users(:another_regular_user).id).first
 
     assert_difference('Collaboration.count', -1) do
-      delete :destroy, format: :json, workflow_id: @workflow.id, id: collaboration.id
+      delete :destroy, params: { format: :json, workflow_id: @workflow.id, id: collaboration.id }
     end
 
     assert_response :success
@@ -82,7 +80,7 @@ class CollaborationsControllerTest < ActionController::TestCase
     collaboration = @workflow.collaborations.where(user_id: users(:another_regular_user).id).first
 
     assert_no_difference('Collaboration.count') do
-      delete :destroy, format: :json, workflow_id: @workflow.id, id: collaboration.id
+      delete :destroy, params: { format: :json, workflow_id: @workflow.id, id: collaboration.id }
     end
 
     assert_response :forbidden

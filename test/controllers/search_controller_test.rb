@@ -15,7 +15,7 @@ class SearchControllerTest < ActionController::TestCase
       search_method = proc { |model| MockSearch.new(model.limit(3).to_a) }
 
       Sunspot.blockless_stub(:search, search_method) do
-        get :index, q: 'banana'
+        get :index, params: { q: 'banana' }
         assert_response :success
         assert_not_empty assigns(:results)
       end
