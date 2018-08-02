@@ -257,7 +257,7 @@ class PackagesControllerTest < ActionController::TestCase
     package.materials = [materials(:biojs), materials(:interpro)]
     package.save!
     assert_difference('package.materials.count', -2) do
-      patch :update, params: { package: { material_ids: [] }, id: package.id }
+      patch :update, params: { package: { material_ids: [''] }, id: package.id }
     end
   end     
   
@@ -274,7 +274,7 @@ class PackagesControllerTest < ActionController::TestCase
     package.events = [events(:one), events(:two)]
     package.save!
     assert_difference('package.events.count', -2) do
-      patch :update, params: { package: { event_ids: []}, id: package.id }
+      patch :update, params: { package: { event_ids: ['']}, id: package.id }
     end
   end
 
