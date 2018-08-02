@@ -1,24 +1,47 @@
+var record_type = null;
 var InternalResources = {
+    queryParameter: function() {
+        return 'q=' + encodeURIComponent($('#materials_query').val());
+    },
     search: function(type){
+        record_type = type;
         $('.loading_image').show();
-        const url = '/' + type;
+        var url = '/' + record_type;
+        InternalResources.queryAPI(url + '?' + InternalResources.queryParameter(), record_type);
+    },
+    nextPage: function(){
+        var next = $('#materials-next').text();
+        if (next){
+            $('.loading_image').show();
+            InternalResources.queryAPI(next);
+        } else {
+            /* display nice "we're out of stuff" message here */
+            console.log("No next URL found!");
+        }
+    },
+    queryAPI: function(url){
+        console.log("QUERYING: " + url);
+        $('.loading_image').show();
         $.ajax({url: url,
             type: 'GET',
             dataType: 'json',
             headers: {'Accept': 'application/vnd.api+json'},
             contentType: 'application/json; charset=utf-8',
             success: function (result) {
-                InternalResources.displayRecords(result, type);
+                $('.loading_image').hide();
+                InternalResources.displayRecords(result);
             },
             error: function (error) {
-                console.log("Error querying TeSS for " + type + ": " + error);
+                console.log("Error querying TeSS for " + record_type + ": " + error);
             }
         });
 
     },
-    displayRecords: function(json, type){
-        $('.loading_image').hide();
+    displayRecords: function(json){
         $('#materials-results').empty();
+        // TODO: Fix this using the relevant API info:
+        // TODO: https://app.swaggerhub.com/apis/fbacall/TeSS-JSON-API/0.2.0#/materials/get_materials
+        /*
         var previous = json.previous;
         var next = json.next;
         if (previous) {
@@ -38,12 +61,12 @@ var InternalResources = {
         } else {
             $('#next-materials-button').hide();
         }
+        */
         console.log("JSON: " + JSON.stringify(json));
         json.data.forEach(function(item, index) {
-            //var url = Fairsharing.websiteBaseURL() + '/' + id;
-            var url = '/' + type + '/';
+            var url = '/' + record_type + '/';
             // TODO: Come up with some decent icon choices here...
-            if (type == 'materials') {
+            if (record_type == 'materials') {
                 var iconclass = "fa-list-alt";
             } else {
                 var iconclass = "fa-list-alt";
