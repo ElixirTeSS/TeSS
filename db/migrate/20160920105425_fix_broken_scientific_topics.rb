@@ -1,6 +1,6 @@
 class ScientificTopic < ActiveRecord::Base; end
 
-class FixBrokenScientificTopics < ActiveRecord::Migration
+class FixBrokenScientificTopics < ActiveRecord::Migration[4.2]
 
   # Some scientific topics' class IDs were broken by #308, this fixes them
   def up

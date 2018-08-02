@@ -1,4 +1,4 @@
-class CreateEventsPackageJoinTable < ActiveRecord::Migration
+class CreateEventsPackageJoinTable < ActiveRecord::Migration[4.2]
   def change
     create_table :package_events, id: false do |t|
           t.integer :event_id, index: true

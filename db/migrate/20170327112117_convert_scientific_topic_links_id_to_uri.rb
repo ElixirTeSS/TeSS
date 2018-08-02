@@ -4,7 +4,7 @@ end
 
 class ScientificTopic < ActiveRecord::Base; end
 
-class ConvertScientificTopicLinksIdToUri < ActiveRecord::Migration
+class ConvertScientificTopicLinksIdToUri < ActiveRecord::Migration[4.2]
   def up
     add_column :scientific_topic_links, :term_uri, :string
     add_index :scientific_topic_links, :term_uri

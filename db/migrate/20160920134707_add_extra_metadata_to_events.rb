@@ -1,4 +1,4 @@
-class AddExtraMetadataToEvents < ActiveRecord::Migration
+class AddExtraMetadataToEvents < ActiveRecord::Migration[4.2]
   def change
     add_column :events, :target_audience, :string, array: true, default: []
     add_column :events, :capacity, :integer

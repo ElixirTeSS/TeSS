@@ -1,4 +1,4 @@
-class AddLastScrapedToMaterials < ActiveRecord::Migration
+class AddLastScrapedToMaterials < ActiveRecord::Migration[4.2]
   def change
     change_table :materials do |t|
       t.date :last_scraped

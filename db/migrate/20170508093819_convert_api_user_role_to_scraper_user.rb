@@ -1,4 +1,4 @@
-class ConvertApiUserRoleToScraperUser < ActiveRecord::Migration
+class ConvertApiUserRoleToScraperUser < ActiveRecord::Migration[4.2]
   def up
     role = Role.where(name: 'api_user').first
 

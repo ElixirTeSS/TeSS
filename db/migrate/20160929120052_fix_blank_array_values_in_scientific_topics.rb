@@ -1,6 +1,6 @@
 class ScientificTopic < ActiveRecord::Base; end
 
-class FixBlankArrayValuesInScientificTopics < ActiveRecord::Migration
+class FixBlankArrayValuesInScientificTopics < ActiveRecord::Migration[4.2]
   def change
     array_fields = [:synonyms, :definitions, :parents, :consider, :has_alternative_id, :has_broad_synonym,
                     :has_narrow_synonym, :has_dbxref, :has_exact_synonym, :has_related_synonym, :has_subset, :in_subset,

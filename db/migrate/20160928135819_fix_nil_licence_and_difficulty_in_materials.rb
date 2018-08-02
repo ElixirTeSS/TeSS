@@ -1,4 +1,4 @@
-class FixNilLicenceAndDifficultyInMaterials < ActiveRecord::Migration
+class FixNilLicenceAndDifficultyInMaterials < ActiveRecord::Migration[4.2]
   def change
     Material.transaction do
       Material.find_each do |m|

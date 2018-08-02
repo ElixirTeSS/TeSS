@@ -2,7 +2,7 @@ require 'yaml'
 
 class ScientificTopic < ActiveRecord::Base; end
 
-class ConvertScientificTopicSerializedTextFieldsToArrays < ActiveRecord::Migration
+class ConvertScientificTopicSerializedTextFieldsToArrays < ActiveRecord::Migration[4.2]
   def up
     fields = [:synonyms, :definitions, :parents, :consider,
               :has_alternative_id, :has_broad_synonym, :has_dbxref,

@@ -1,4 +1,4 @@
-class ConvertEventTypesToControlledVocabulary < ActiveRecord::Migration
+class ConvertEventTypesToControlledVocabulary < ActiveRecord::Migration[4.2]
 
   MAPPING = {
       'event' => '',
