@@ -33,7 +33,7 @@ module SearchableIndex
 
   def set_params
     @model = controller_name.classify.constantize
-    @facet_params = params.permit(*@model.facet_keys)
+    @facet_params = params.permit(*@model.facet_keys).to_h
     @search_params = params[:q] || ''
     @sort_by = params[:sort].blank? ? 'default' : params[:sort]
   end
@@ -41,7 +41,8 @@ module SearchableIndex
   def api_collection_properties
     if TeSS::Config.solr_enabled
       # Transform facets so value is always an array
-      facets = Hash[@facet_params.map { |key, value| [key, Array(value)] }]
+      facets = @facet_params.to_h
+      facets.each { |key, value| facets[key] = Array(value) }
 
       available_facets = Hash[@search_results.facets.map do |f|
         [
