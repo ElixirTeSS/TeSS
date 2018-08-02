@@ -252,8 +252,9 @@ class User < ApplicationRecord
   end
 
   def log_role_change
-    if role_id_changed?
-      create_activity(:change_role, owner: User.current_user, parameters: { old: role_id_was, new: role_id })
+    if saved_change_to_role_id?
+      create_activity(:change_role, owner: User.current_user, parameters: { old: role_id_before_last_save,
+                                                                            new: role_id })
     end
   end
 

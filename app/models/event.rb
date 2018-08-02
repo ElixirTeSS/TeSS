@@ -321,7 +321,7 @@ class Event < ApplicationRecord
   end
 
   def address_changed?
-    ADDRESS_FIELDS.any? { |field| self.changed.include?(field.to_s) }
+    ADDRESS_FIELDS.any? { |field| self.previous_changes.keys.include?(field.to_s) }
   end
 
   # Check the Redis cache for coordinates

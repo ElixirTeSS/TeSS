@@ -16,13 +16,17 @@ module LogParameterChanges
   end
 
   def log_update_activity?
-    (previous_changes.keys - IGNORED_ATTRIBUTES).any?
+    loggable_changes.any?
   end
 
   private
 
+  def loggable_changes
+    (previous_changes.keys - IGNORED_ATTRIBUTES)
+  end
+
   def log_parameter_changes
-    (self.changed - IGNORED_ATTRIBUTES).each do |changed_attribute|
+    loggable_changes.each do |changed_attribute|
       parameters = { attr: changed_attribute }
       if self.class.is_foreign_key?(changed_attribute)
         ob = self.send(changed_attribute.chomp('_id'))

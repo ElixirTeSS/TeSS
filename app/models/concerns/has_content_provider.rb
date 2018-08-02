@@ -10,8 +10,8 @@ module HasContentProvider
   private
 
   def check_content_provider_precedence
-    if content_provider_id_changed?
-      previous_content_provider_id = content_provider_id_was
+    if will_save_change_to_content_provider_id?
+      previous_content_provider_id = content_provider_id_before_last_save
       previous_content_provider = ContentProvider.where(id: previous_content_provider_id).first
 
       # Revert back to the old content provider if it had a higher precedence

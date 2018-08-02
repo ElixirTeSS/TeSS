@@ -81,8 +81,8 @@ class Workflow < ApplicationRecord
   private
 
   def log_diagram_modification
-    if workflow_content_changed?
-      old_nodes = workflow_content_was['nodes'] || []
+    if saved_change_to_workflow_content?
+      old_nodes = workflow_content_before_last_save['nodes'] || []
       old_node_ids = old_nodes.map { |n| n['data']['id'] }
       current_nodes = workflow_content['nodes'] || []
       current_node_ids = current_nodes.map { |n| n['data']['id'] }
@@ -93,7 +93,7 @@ class Workflow < ApplicationRecord
 
       # Resolve the actual nodes from the IDs
       added_nodes = added_node_ids.map { |i| workflow_content['nodes'].detect { |n| n['data']['id'] == i } }
-      removed_nodes = removed_node_ids.map { |i| workflow_content_was['nodes'].detect { |n| n['data']['id'] == i } }
+      removed_nodes = removed_node_ids.map { |i| workflow_content_before_last_save['nodes'].detect { |n| n['data']['id'] == i } }
       modified_nodes = modified_node_ids.map { |i| workflow_content['nodes'].detect { |n| n['data']['id'] == i } }
 
       if added_node_ids.any? || removed_node_ids.any? || modified_node_ids.any?
