@@ -126,7 +126,7 @@ var Fairsharing = {
                 '</div>' +
                 '</div>');
         });
-        $('#next-tools-button').attr('data-next', json.next);
+        $('#next-bs-button').attr('data-next', json.next);
     },
     copyTitleAndSearch: function(){
         $('#fairsharing_query').val(Fairsharing.titleElement().val());

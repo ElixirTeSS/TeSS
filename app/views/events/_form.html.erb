@@ -93,6 +93,10 @@
 
     <%= f.internal_resource :materials %>
 
+    <div class="row">
+      <%= render partial: 'common/materials_suggestions', locals: { title_element: 'event_title' } %>
+    </div>
+
     <div class="form-group" id="external-resources">
       <%= f.label :external_resources %>
       <%= f.field_lock :external_resources %>
