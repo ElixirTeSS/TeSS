@@ -7,7 +7,7 @@ class LoginTest < ActionDispatch::IntegrationTest
 
     get '/users/sign_in'
 
-    post '/users/sign_in', { 'user[login]' => user.username, 'user[password]' => 'hello' }
+    post '/users/sign_in', params: { 'user[login]' => user.username, 'user[password]' => 'hello' }
     follow_redirect!
 
     assert_equal '/', path
@@ -19,7 +19,7 @@ class LoginTest < ActionDispatch::IntegrationTest
 
     get '/users/sign_in'
 
-    post '/users/sign_in', { 'user[login]' => user.email, 'user[password]' => 'hello' }
+    post '/users/sign_in', params: { 'user[login]' => user.email, 'user[password]' => 'hello' }
     follow_redirect!
 
     assert_equal '/', path
