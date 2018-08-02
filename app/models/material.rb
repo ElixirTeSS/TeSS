@@ -1,6 +1,6 @@
 require 'rails/html/sanitizer'
 
-class Material < ActiveRecord::Base
+class Material < ApplicationRecord
 
   include PublicActivity::Common
   include LogParameterChanges

@@ -1,4 +1,4 @@
-class ContentProvider < ActiveRecord::Base
+class ContentProvider < ApplicationRecord
 
   include PublicActivity::Common
   include LogParameterChanges

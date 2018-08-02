@@ -1,4 +1,4 @@
-class OntologyTermLink < ActiveRecord::Base
+class OntologyTermLink < ApplicationRecord
   belongs_to :resource, polymorphic: true
 
   def ontology_term

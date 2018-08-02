@@ -59,13 +59,13 @@ module Tess
 
   end
 
-  ActiveRecord::Base.class_eval do
+  ApplicationRecord.class_eval do
     include AutocompleteManager
   end
 # end of lib/keyword_manager.rb
 
 # in your model:
-#   class SomeModel < ActiveRecord::Base
+#   class SomeModel < ApplicationRecord
 #     add_keywords(:keywords)
 #     delete_keywords(:keywords)
 #   end

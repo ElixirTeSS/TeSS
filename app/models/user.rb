@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   include ActionView::Helpers::ApplicationHelper
 
   include PublicActivity::Common

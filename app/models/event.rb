@@ -2,7 +2,7 @@ require 'icalendar'
 require 'rails/html/sanitizer'
 require 'redis'
 
-class Event < ActiveRecord::Base
+class Event < ApplicationRecord
   include PublicActivity::Common
   include LogParameterChanges
   include HasAssociatedNodes

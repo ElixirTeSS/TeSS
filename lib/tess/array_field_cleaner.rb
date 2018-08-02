@@ -39,13 +39,13 @@ module Tess
 
   end
 
-  ActiveRecord::Base.class_eval do
+  ApplicationRecord.class_eval do
     include ArrayFieldCleaner
   end
 # end of lib/array_field_cleaner.rb
 
 # in your model:
-#   class SomeModel < ActiveRecord::Base
+#   class SomeModel < ApplicationRecord
 #     clean_array_fields(:keywords, :contributors, :pigs)
 #   end
 end

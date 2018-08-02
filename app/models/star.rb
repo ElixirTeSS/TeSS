@@ -1,4 +1,4 @@
-class Star < ActiveRecord::Base
+class Star < ApplicationRecord
 
   belongs_to :user
   belongs_to :resource, polymorphic: true

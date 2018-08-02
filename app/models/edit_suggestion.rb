@@ -1,4 +1,4 @@
-class EditSuggestion < ActiveRecord::Base
+class EditSuggestion < ApplicationRecord
   belongs_to :suggestible, polymorphic: true
   after_create :init_data_fields
 

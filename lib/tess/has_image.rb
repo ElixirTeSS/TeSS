@@ -63,7 +63,7 @@ module Tess
 
   end
 
-  ActiveRecord::Base.class_eval do
+  ApplicationRecord.class_eval do
     include HasImage
   end
 end

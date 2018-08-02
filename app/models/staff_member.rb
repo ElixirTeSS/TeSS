@@ -1,4 +1,4 @@
-class StaffMember < ActiveRecord::Base
+class StaffMember < ApplicationRecord
   TRAINING_COORDINATOR_ROLE = 'Training coordinator'
 
   belongs_to :node

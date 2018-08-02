@@ -1,7 +1,7 @@
 # A module to handle association of ontology terms to an ActiveRecord model.
 # use like so (make sure to use a plural):
 #
-# class Model < ActiveRecord::Base
+# class Model < ApplicationRecord
 #
 #   has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 #
@@ -86,7 +86,7 @@ module Tess
     end
   end
 
-  ActiveRecord::Base.class_eval do
+  ApplicationRecord.class_eval do
     include HasOntologyTerms
   end
 end

@@ -1,4 +1,4 @@
-class Workflow < ActiveRecord::Base
+class Workflow < ApplicationRecord
 
   include PublicActivity::Common
   include Collaboratable
