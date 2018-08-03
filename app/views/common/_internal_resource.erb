@@ -5,11 +5,11 @@
             'id-field' => id_field.to_s } %>
 <% data[:template] = template if template %>
 
-<div class="form-group">
+<div class="form-group" id="<%= field_name.to_s -%>-list">
   <%= f.label field_name %><%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
 
   <% f.object.send(field_name).map do |res| %>
-    <% div_id = "#{model_name}_internal_resource_#{res.id}" %>
+    <% div_id = "#{field_name.to_s.singularize}_internal_resource_#{res.id}" %>
     <div id="<%= div_id -%>">
       <input type="hidden" name="<%= form_field_name -%>[]" value="<%= res.id -%>" />
       <div class="alert alert-info">

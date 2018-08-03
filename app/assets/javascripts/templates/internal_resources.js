@@ -59,6 +59,23 @@ var InternalResources = {
         }
 
     },
+    associateResource: function(event){
+        obj = $(event.target);
+
+        // TODO: Replace this function. Example of required output in _internal_resource.erb
+        // TODO: Fix the onclick name also - need to get 'material' from somewhere...
+        var new_element = '<div id="material_internal_resource_' + obj.attr('id') + '">' +
+            '<input type="hidden" name="materials[]" value="' + obj.attr('id') + '" />' +
+            '<div class="alert alert-info">' +
+            obj.data('title') +
+            '<a href="#" class="delete-internal-resource pull-right" style="text-decoration: none;" ' +
+            'onclick="delete_internal_resource(\'material_internal_resource_' + obj.attr('id') + '\')">' +
+            '× </a></div></div>';
+        $('#materials-list').append(new_element);
+
+
+        obj.parent().parent().fadeOut();
+    },
     queryAPI: function(url){
         console.log("QUERYING: " + url);
         $('.loading_image').show();
@@ -100,7 +117,7 @@ var InternalResources = {
                 '</span>' +
                 '</a>' +
                 ' <i id="' + item.id + '" ' +
-                'class="fa fa-plus-square-o associate-tool"/ ' +
+                'class="fa fa-plus-square-o associate-resource"/ ' +
                 'title="click to associate ' + item.attributes.title + ' with this resource"' +
                 'data-title="' + item.attributes.title + '" data-url="' + url + '"/>' +
                 '</h4>' +
@@ -117,6 +134,7 @@ var InternalResources = {
 };
 
 function delete_internal_resource(id) {
+    console.log("Deleting resource: " + id);
     $('#' + id).remove();
 }
 
@@ -128,5 +146,6 @@ $(document).ready(function () {
     // TODO: Find some way to set the next/prev button names depending on what sort of resource this is.
     $('#next-materials-button').click(InternalResources.nextPage);
     $('#prev-materials-button').click(InternalResources.prevPage);
+    $('#materials-results').on('click','.associate-resource', InternalResources.associateResource);
     //$('#search_materials').click(InternalResources.search('materials'));
 });
