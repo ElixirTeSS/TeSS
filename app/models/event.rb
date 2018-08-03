@@ -15,7 +15,7 @@ class Event < ApplicationRecord
   include HasSuggestions
 
   before_save :set_default_times, :check_country_name
-  before_save :geocoding_cache_lookup, if: :address_changed?
+  before_save :geocoding_cache_lookup, if: :address_will_change?
   after_save :enqueue_geocoding_worker, if: :address_changed?
 
   extend FriendlyId
@@ -318,6 +318,10 @@ class Event < ApplicationRecord
 
   def address
     ADDRESS_FIELDS.map { |field| self.send(field) }.reject(&:blank?).join(', ')
+  end
+
+  def address_will_change?
+    ADDRESS_FIELDS.any? { |field| self.changes.keys.include?(field.to_s) }
   end
 
   def address_changed?
