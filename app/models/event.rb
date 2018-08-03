@@ -40,7 +40,7 @@ class Event < ApplicationRecord
       string :country
       text :country
       string :event_types, :multiple => true do
-        Tess::EventTypeDictionary.instance.values_for_search(self.event_types)
+        EventTypeDictionary.instance.values_for_search(self.event_types)
       end
       string :keywords, :multiple => true
       time :start
@@ -102,8 +102,8 @@ class Event < ApplicationRecord
 
   validates :title, :url, presence: true
   validates :capacity, numericality: true, allow_blank: true
-  validates :event_types, controlled_vocabulary: { dictionary: Tess::EventTypeDictionary.instance }
-  validates :eligibility, controlled_vocabulary: { dictionary: Tess::EligibilityDictionary.instance }
+  validates :event_types, controlled_vocabulary: { dictionary: EventTypeDictionary.instance }
+  validates :eligibility, controlled_vocabulary: { dictionary: EligibilityDictionary.instance }
   validates :latitude, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90, allow_nil: true }
   validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true  }
   validate :allowed_url

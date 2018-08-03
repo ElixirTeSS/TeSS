@@ -202,7 +202,7 @@
                   <strong>Event type:</strong>
                   <ul>
                     <% @event.event_types.each do |t| %>
-                        <li><%= Tess::EventTypeDictionary.instance.lookup_value(t, 'title') %></li>
+                        <li><%= EventTypeDictionary.instance.lookup_value(t, 'title') %></li>
                     <% end %>
                   </ul>
               <% end %>
@@ -216,7 +216,7 @@
                   <strong>Eligibility:</strong>
                   <ul>
                     <% @event.eligibility.each do |e| %>
-                        <li><%= Tess::EligibilityDictionary.instance.lookup_value(e, 'title') %></li>
+                        <li><%= EligibilityDictionary.instance.lookup_value(e, 'title') %></li>
                     <% end %>
                   </ul>
               <% end %>

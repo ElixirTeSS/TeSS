@@ -16,7 +16,7 @@ module TeSS
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
 
-    config.eager_load_paths += Dir["#{Rails.root}/lib/**/"]
+    config.eager_load_paths << Rails.root.join('lib')
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do

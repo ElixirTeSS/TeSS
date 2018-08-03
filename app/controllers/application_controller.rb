@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def pundit_user
-    CurrentContext.new(current_user, request)
+    Pundit::CurrentContext.new(current_user, request)
   end
 
   def handle_error(status_code = '500')

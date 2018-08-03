@@ -36,7 +36,7 @@ class Workflow < ApplicationRecord
       string :keywords, :multiple => true
       text :keywords
       string :difficulty_level do
-        Tess::DifficultyDictionary.instance.lookup_value(self.difficulty_level, 'title')
+        DifficultyDictionary.instance.lookup_value(self.difficulty_level, 'title')
       end
       text :difficulty_level
       string :contributors, :multiple => true
@@ -55,7 +55,7 @@ class Workflow < ApplicationRecord
   has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
 
   validates :title, presence: true
-  validates :difficulty_level, controlled_vocabulary: { dictionary: Tess::DifficultyDictionary.instance }
+  validates :difficulty_level, controlled_vocabulary: { dictionary: DifficultyDictionary.instance }
 
   clean_array_fields(:keywords, :contributors, :authors, :target_audience)
 

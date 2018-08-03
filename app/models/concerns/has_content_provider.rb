@@ -19,5 +19,4 @@ module HasContentProvider
       self.content_provider = previous_content_provider
     end
   end
-
 end
