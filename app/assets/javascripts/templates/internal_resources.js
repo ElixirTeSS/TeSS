@@ -1,23 +1,63 @@
 var record_type = null;
+var current_page = 1;
+var default_length = 30;
 var InternalResources = {
     queryParameter: function() {
-        return 'q=' + encodeURIComponent($('#materials_query').val());
+        if ($('#materials_query').val()) {
+            return '?q=' + encodeURIComponent($('#materials_query').val());
+        } else {
+            return '?q=';
+        }
     },
-    search: function(type){
+    getUrl: function() {
+        var url = '/' + record_type + InternalResources.queryParameter();
+        return url;
+    },
+    search: function(type) {
         record_type = type;
         $('.loading_image').show();
-        var url = '/' + record_type;
-        InternalResources.queryAPI(url + '?' + InternalResources.queryParameter(), record_type);
+        InternalResources.queryAPI(InternalResources.getUrl());
     },
     nextPage: function(){
         var next = $('#materials-next').text();
         if (next){
             $('.loading_image').show();
-            InternalResources.queryAPI(next);
+            current_page = current_page + 1;
+            InternalResources.queryAPI(InternalResources.getUrl() + '&page_number=' + next);
         } else {
-            /* display nice "we're out of stuff" message here */
             console.log("No next URL found!");
         }
+    },
+    prevPage: function(){
+        var prev = $('#materials-previous').text();
+        if (prev){
+            $('.loading_image').show();
+            current_page = current_page - 1;
+            InternalResources.queryAPI(InternalResources.getUrl() + '&page_number=' + prev);
+        } else {
+            console.log("No next URL found!");
+        }
+    },
+    setPosition: function(length) {
+        var next = $('#materials-next').text();
+        var prev = $('#materials-previous').text();
+        $('#materials-next').text(current_page + 1);
+        $('#materials-previous').text(current_page - 1);
+
+        // Hide next button if there's a full page of results.
+        if (length >= default_length) {
+            $('#next-materials-button').show();
+        } else {
+            $('#next-materials-button').hide();
+        }
+
+        // Hide previous button if on first page
+        if (current_page == 1) {
+            $('#prev-materials-button').hide();
+        } else {
+            $('#prev-materials-button').show();
+        }
+
     },
     queryAPI: function(url){
         console.log("QUERYING: " + url);
@@ -29,6 +69,7 @@ var InternalResources = {
             contentType: 'application/json; charset=utf-8',
             success: function (result) {
                 $('.loading_image').hide();
+                InternalResources.setPosition(result.data.length);
                 InternalResources.displayRecords(result);
             },
             error: function (error) {
@@ -39,29 +80,7 @@ var InternalResources = {
     },
     displayRecords: function(json){
         $('#materials-results').empty();
-        // TODO: Fix this using the relevant API info:
-        // TODO: https://app.swaggerhub.com/apis/fbacall/TeSS-JSON-API/0.2.0#/materials/get_materials
-        /*
-        var previous = json.previous;
-        var next = json.next;
-        if (previous) {
-            if (previous.includes('page='))
-            {
-                $('#materials-previous').text(previous);
-                $('#prev-materials-button').show();
-            } else {
-                $('#prev-materials-button').hide();
-            }
-        } else {
-            $('#prev-materials-button').hide();
-        }
-        if (next) {
-            $('#materials-next').text(next);
-            $('#next-materials-button').show();
-        } else {
-            $('#next-materials-button').hide();
-        }
-        */
+        // TODO: Remove debugging string.
         console.log("JSON: " + JSON.stringify(json));
         json.data.forEach(function(item, index) {
             var url = '/' + record_type + '/';
@@ -106,5 +125,8 @@ $(document).ready(function () {
         return false;
     });
     $('.loading_image').hide();
+    // TODO: Find some way to set the next/prev button names depending on what sort of resource this is.
+    $('#next-materials-button').click(InternalResources.nextPage);
+    $('#prev-materials-button').click(InternalResources.prevPage);
     //$('#search_materials').click(InternalResources.search('materials'));
 });
