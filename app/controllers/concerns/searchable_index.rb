@@ -39,6 +39,9 @@ module SearchableIndex
   end
 
   def api_collection_properties
+    links = {
+        self: polymorphic_path(@model, search_and_facet_params)
+    }
     if TeSS::Config.solr_enabled
       # Transform facets so value is always an array
       facets = @facet_params.to_h
@@ -51,17 +54,22 @@ module SearchableIndex
         ]
       end]
       total = @search_results.total
+
+      res = @index_resources
+      p = search_and_facet_params
+      links[:first] = polymorphic_path(@model, p.merge(page_number: 1)) if res.current_page != 1
+      links[:prev] = polymorphic_path(@model, p.merge(page_number: res.previous_page)) if res.previous_page
+      links[:next] = polymorphic_path(@model, p.merge(page_number: res.next_page)) if res.next_page
+      links[:last] = polymorphic_path(@model, p.merge(page_number: res.total_pages)) if res.current_page != res.total_pages
     else
       facets = {}
       available_facets = {}
       total = @index_resources.count
     end
 
+
     {
-        links: {
-            # This gets overridden (by something in ActiveModelSerializers)when the collection has multiple pages
-            self: polymorphic_path(@model, search_and_facet_params)
-        },
+        links: links,
         meta: {
             facets: facets,
             available_facets: available_facets,
@@ -72,14 +80,18 @@ module SearchableIndex
   end
 
   def page_param
-    params[:page] || params[:page_number]
+    pagination_params[:page] || pagination_params[:page_number]
   end
 
   def per_page_param
-    params[:per_page] || params[:page_size]
+    pagination_params[:per_page] || pagination_params[:page_size]
+  end
+
+  def pagination_params
+    params.permit(:page, :page_number, :per_page, :page_size)
   end
 
   def search_and_facet_params
-    params.permit(*@model.search_and_facet_keys)
+    params.permit(*(@model.search_and_facet_keys | [:page_size, :page_number, :page, :per_page]))
   end
 end
