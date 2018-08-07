@@ -2,7 +2,7 @@
 <%
   selected = nil
   opts = [[nil, ''], [1, '1 day'], [3, '3 days'], [7, '1 week'], [30, '1 month']].map do |days, text|
-    new_params = params.dup
+    new_params = search_and_facet_params
     if days
       new_params[:days_since_scrape] = days
       text = "More than #{text} ago"
@@ -16,7 +16,7 @@
     [text, url]
   end
 
-  blank_params = params.dup
+  blank_params = search_and_facet_params
   blank_params.delete(:days_since_scrape)
 %>
 
