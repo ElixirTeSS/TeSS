@@ -195,7 +195,7 @@ var delay = (function(){
     };
 })();
 
-$(document).ready(function () {
+document.addEventListener("turbolinks:load", function() {
     $('.loading_image').hide();
     $('#next-bs-button').click(Fairsharing.nextPage);
     $('#prev-bs-button').click(Fairsharing.prevPage);

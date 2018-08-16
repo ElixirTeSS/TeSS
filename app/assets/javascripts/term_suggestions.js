@@ -87,7 +87,7 @@ var DataSuggestions = {
     }
 };
 
-$(document).ready(function () {
+document.addEventListener("turbolinks:load", function() {
     $('.suggestion_action').on('click','.accept_suggestion', TermSuggestions.accept);
     $('.suggestion_action').on('click','.reject_suggestion', TermSuggestions.reject);
     $('.data_suggestion_action').on('click','.accept_suggestion', DataSuggestions.accept);

@@ -76,8 +76,7 @@ function reposition_tiles(container, tile_class){
     });
 }
 
-
-$(document).ready(function () {
+document.addEventListener("turbolinks:load", function() {
 
     // Show the tab associated with the window location hash (e.g. "#packages")
     if (window.location.hash) {

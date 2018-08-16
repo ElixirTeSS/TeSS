@@ -125,7 +125,7 @@ var Biotools = {
     }
 };
 
-$(document).ready(function () {
+document.addEventListener("turbolinks:load", function() {
     $('#next-tools-button').click(Biotools.nextPage);
     $('#tool_query').keyup(Biotools.search);
     $('#search_tools').click(Biotools.search);

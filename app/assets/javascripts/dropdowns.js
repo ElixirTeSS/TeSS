@@ -28,7 +28,7 @@ function add_dropdown_option(field_name, name, value){
 }
 
 
-$(document).ready(function() {
+document.addEventListener("turbolinks:load", function() {
     /*
      * User selects a new package to add the resource to.
      * This adds a new added item and removes it from the dropdown

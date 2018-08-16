@@ -20,7 +20,7 @@ var Sidebar = {
     }
 };
 
-$(document).ready(function () {
+document.addEventListener("turbolinks:load", function() {
     $('#sidebar-toggle').click(Sidebar.toggle);
     $('#sidebar-close').click(Sidebar.toggle);
 });
