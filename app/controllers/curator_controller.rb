@@ -50,8 +50,7 @@ class CuratorController < ApplicationController
 
   def check_curator
     unless current_user && (current_user.is_admin? || current_user.is_curator?)
-      flash[:alert] = 'This page is only visible to curators.'
-      handle_error(:forbidden)
+      handle_error(:forbidden, 'This page is only visible to curators.')
     end
   end
 end
