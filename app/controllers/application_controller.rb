@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
 
     flash[:alert] = message
     respond_to do |format|
-      format.html  { render 'static/error.html', status: status_code}
+      format.html  { render 'static/error', status: status_code}
       format.json { render json: { error: { message: message, code: status_code } }, status: status_code }
     end
   end
