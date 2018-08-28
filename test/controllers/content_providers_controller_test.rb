@@ -407,7 +407,13 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_select '#materials a[href=?]', material_path(bad_material), count: 0
   end
 
+  test 'should show identifiers dot org button for content provider' do
+    get :show, id: @content_provider
 
+    assert_response :success
+    assert_select '.identifiers-button'
+    assert_select '#identifiers-link[value=?]', "http://example.com/identifiers/banana:c#{@content_provider.id}"
+  end
 
   # TODO: SOLR tests will not run on TRAVIS. Explore stratergy for testing solr
 =begin

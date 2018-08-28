@@ -13,6 +13,7 @@ class Event < ActiveRecord::Base
   include Searchable
   include CurationQueue
   include HasSuggestions
+  include IdentifiersDotOrg
 
   before_save :set_default_times, :check_country_name
   before_save :geocoding_cache_lookup, if: :address_changed?

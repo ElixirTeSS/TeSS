@@ -1041,4 +1041,12 @@ class MaterialsControllerTest < ActionController::TestCase
 
     assert_select '.external-resources-box div.bounding-box', count: material.external_resources.count
   end
+
+  test 'should show identifiers dot org button for material' do
+    get :show, id: @material
+
+    assert_response :success
+    assert_select '.identifiers-button'
+    assert_select '#identifiers-link[value=?]', "http://example.com/identifiers/banana:m#{@material.id}"
+  end
 end

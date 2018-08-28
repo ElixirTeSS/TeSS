@@ -6,6 +6,7 @@ class Workflow < ActiveRecord::Base
   include HasLicence
   include Searchable
   include HasSuggestions
+  include IdentifiersDotOrg
 
   extend FriendlyId
   friendly_id :title, use: :slugged

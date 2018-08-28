@@ -1148,4 +1148,25 @@ class EventsControllerTest < ActionController::TestCase
 
     assert_response :success
   end
+
+  test 'should show identifiers dot org button for event' do
+    get :show, id: @event
+
+    assert_response :success
+    assert_select '.identifiers-button'
+    assert_select '#identifiers-link[value=?]', "http://example.com/identifiers/banana:e#{@event.id}"
+  end
+
+  test 'should not show identifiers dot org button if disabled' do
+    begin
+      prefix = TeSS::Config.identifiers_prefix
+      TeSS::Config.identifiers_prefix = nil
+      get :show, id: @event
+
+      assert_response :success
+      assert_select '.identifiers-button', count: 0
+    ensure
+      TeSS::Config.identifiers_prefix = prefix
+    end
+  end
 end
