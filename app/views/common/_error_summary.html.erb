@@ -1,4 +1,4 @@
-<% resource_name ||= resource.class.name.humanize %>
+<% resource_name ||= resource.class.name.titleize %>
 <% title ||= "#{pluralize(resource.errors.count, "error")} prohibited this #{resource_name} from being saved:" %>
 <% if resource.errors.any? %>
     <div class="panel panel-danger" id="error_explanation">

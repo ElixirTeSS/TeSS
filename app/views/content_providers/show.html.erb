@@ -10,8 +10,10 @@
     <div class="row">
       <%# ACTION BUTTONS %>
       <div class="content_action">
-        <%= link_to t('.back', :default => t("helpers.links.back")),
-                    content_providers_path, :class => 'btn btn-info' %>
+        <%= link_to t('.back', :default => t("helpers.links.back")), content_providers_path, :class => 'btn btn-info' %>
+
+        <%= render partial: 'common/identifiers_dot_org_button', locals: { resource: @content_provider } if TeSS::Config.identifiers_prefix %>
+
         <% if !current_user.nil? and policy(@content_provider).update? %>
             <%= link_to t('.edit', :default => t("helpers.links.edit")),
                         edit_content_provider_path(@content_provider), :class => 'btn btn-primary' %>
