@@ -65,7 +65,7 @@ var InternalResources = {
         // TODO: Replace this function. Example of required output in _internal_resource.erb
         // TODO: Fix the onclick name also - need to get 'material' from somewhere...
         var new_element = '<div id="material_internal_resource_' + obj.attr('id') + '">' +
-            '<input type="hidden" name="materials[]" value="' + obj.attr('id') + '" />' +
+            '<input type="hidden" name="event[material_ids][]" value="' + obj.attr('id') + '" />' +
             '<div class="alert alert-info">' +
             obj.data('title') +
             '<a href="#" class="delete-internal-resource pull-right" style="text-decoration: none;" ' +
@@ -97,8 +97,6 @@ var InternalResources = {
     },
     displayRecords: function(json){
         $('#materials-results').empty();
-        // TODO: Remove debugging string.
-        console.log("JSON: " + JSON.stringify(json));
         json.data.forEach(function(item, index) {
             var url = '/' + record_type + '/';
             // TODO: Come up with some decent icon choices here...

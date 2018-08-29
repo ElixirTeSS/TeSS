@@ -7,6 +7,7 @@
 
 <div class="form-group" id="<%= field_name.to_s -%>-list">
   <%= f.label field_name %><%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
+  <input name="event[material_ids][]" value="" type="hidden">
 
   <% f.object.send(field_name).map do |res| %>
     <% div_id = "#{field_name.to_s.singularize}_internal_resource_#{res.id}" %>
