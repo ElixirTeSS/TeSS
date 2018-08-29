@@ -94,4 +94,8 @@ class ContentProvider < ActiveRecord::Base
 
     content_provider
   end
+
+  def self.identifiers_dot_org_key
+    'p'
+  end
 end

@@ -412,7 +412,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_select '.identifiers-button'
-    assert_select '#identifiers-link[value=?]', "http://example.com/identifiers/banana:c#{@content_provider.id}"
+    assert_select '#identifiers-link[value=?]', "http://example.com/identifiers/banana:p#{@content_provider.id}"
   end
 
   # TODO: SOLR tests will not run on TRAVIS. Explore stratergy for testing solr
