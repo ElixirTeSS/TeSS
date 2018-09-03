@@ -405,7 +405,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
   end
 
   test 'should show identifiers dot org button for content provider' do
-    get :show, id: @content_provider
+    get :show, params: { id: @content_provider }
 
     assert_response :success
     assert_select '.identifiers-button'

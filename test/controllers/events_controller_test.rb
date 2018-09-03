@@ -1159,7 +1159,7 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test 'should show identifiers dot org button for event' do
-    get :show, id: @event
+    get :show, params: { id: @event }
 
     assert_response :success
     assert_select '.identifiers-button'
@@ -1170,7 +1170,7 @@ class EventsControllerTest < ActionController::TestCase
     begin
       prefix = TeSS::Config.identifiers_prefix
       TeSS::Config.identifiers_prefix = nil
-      get :show, id: @event
+      get :show, params: { id: @event }
 
       assert_response :success
       assert_select '.identifiers-button', count: 0

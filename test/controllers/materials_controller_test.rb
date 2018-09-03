@@ -1111,7 +1111,7 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   test 'should show identifiers dot org button for material' do
-    get :show, id: @material
+    get :show, params: { id: @material }
 
     assert_response :success
     assert_select '.identifiers-button'

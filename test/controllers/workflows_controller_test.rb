@@ -252,7 +252,7 @@ class WorkflowsControllerTest < ActionController::TestCase
   end
 
   test 'should show identifiers dot org button for workflow' do
-    get :show, id: @workflow
+    get :show, params: { id: @workflow }
 
     assert_response :success
     assert_select '.identifiers-button'
