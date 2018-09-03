@@ -3,6 +3,7 @@ class ContentProvider < ApplicationRecord
   include PublicActivity::Common
   include LogParameterChanges
   include Searchable
+  include IdentifiersDotOrg
 
   extend FriendlyId
   friendly_id :title, use: :slugged
@@ -92,5 +93,9 @@ class ContentProvider < ApplicationRecord
     end
 
     content_provider
+  end
+
+  def self.identifiers_dot_org_key
+    'p'
   end
 end

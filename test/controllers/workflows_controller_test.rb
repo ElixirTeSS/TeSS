@@ -250,4 +250,12 @@ class WorkflowsControllerTest < ActionController::TestCase
     assert_redirected_to workflow_path(assigns(:workflow))
     assert_equal user, @workflow.activities.last.owner
   end
+
+  test 'should show identifiers dot org button for workflow' do
+    get :show, id: @workflow
+
+    assert_response :success
+    assert_select '.identifiers-button'
+    assert_select '#identifiers-link[value=?]', "http://example.com/identifiers/banana:w#{@workflow.id}"
+  end
 end
