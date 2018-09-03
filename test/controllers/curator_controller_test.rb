@@ -110,10 +110,11 @@ class CuratorControllerTest < ActionController::TestCase
 
   def add_topic_activity(resource, topic, user)
     log_params = { uri: topic.uri,
+                   field: 'topics',
                    name: topic.preferred_label }
 
     resource.edit_suggestion.accept_suggestion('scientific_topics', topic)
-    resource.create_activity :add_topic,
+    resource.create_activity :add_term,
                              owner: user,
                              recipient: resource.user,
                              parameters: log_params
