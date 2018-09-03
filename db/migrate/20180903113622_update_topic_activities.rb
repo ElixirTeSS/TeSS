@@ -1,4 +1,6 @@
-class PublicActivity::Activity < ActiveRecord::Base; end
+unless defined?(PublicActivity::Activity)
+  class PublicActivity::Activity < ActiveRecord::Base; end
+end
 
 class UpdateTopicActivities < ActiveRecord::Migration
   def up
