@@ -45,10 +45,11 @@
        */
       if (e.target.id == 'maptab') {
         if (!loadedMapScript){
-          initialize();
-        }addTabToFilters('map');
+            initializeMap();
+        }
+        addTabToFilters('map');
       } else {
-          addTabToFilters('grid');
+        addTabToFilters('grid');
       }
     })
   })
