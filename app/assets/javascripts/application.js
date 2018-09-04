@@ -82,7 +82,9 @@ document.addEventListener("turbolinks:load", function() {
     if (window.location.hash) {
         var tab = $('ul.nav a[href="' + window.location.hash + '"]');
         if (tab.length) {
-            tab.tab('show');
+            // This terrible hack gets around the fact that event handlers in view templates get bound after the
+            // `tab.tab('show')` executes, so nothing happens.
+            setTimeout(function () { tab.tab('show') }, 50);
         }
     }
 
@@ -246,7 +248,7 @@ document.addEventListener("turbolinks:load", function() {
                 return (this.bottom = $('.footer').outerHeight(true))
             }
         }
-    })
+    });
 
     $("a[rel~=popover], .has-popover").popover();
     $("a[rel~=tooltip], .has-tooltip").tooltip();
