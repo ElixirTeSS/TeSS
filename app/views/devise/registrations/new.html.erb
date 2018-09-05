@@ -19,7 +19,7 @@
 
             <%= f.input :password_confirmation, required: true, input_html: { autocomplete: 'off' } %>
 
-            <% unless Rails.application.secrets.recaptcha['sitekey'].blank? -%>
+            <% unless Rails.application.secrets.recaptcha[:sitekey].blank? -%>
                 <div class="form-group">
                   <%= recaptcha_tags ajax: true %>
                 </div>

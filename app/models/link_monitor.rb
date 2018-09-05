@@ -1,4 +1,4 @@
-class LinkMonitor < ActiveRecord::Base
+class LinkMonitor < ApplicationRecord
   belongs_to :link_checkable, polymorphic: true, foreign_key: :lcheck_id, foreign_type: :lcheck_type
   before_create :set_initial_date
 

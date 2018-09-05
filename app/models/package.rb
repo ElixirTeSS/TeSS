@@ -1,4 +1,4 @@
-class Package < ActiveRecord::Base
+class Package < ApplicationRecord
 
   include PublicActivity::Model
   include LogParameterChanges

@@ -1,4 +1,4 @@
-class PackageMaterial < ActiveRecord::Base
+class PackageMaterial < ApplicationRecord
   belongs_to :material
   belongs_to :package
 

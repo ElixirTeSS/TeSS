@@ -83,8 +83,6 @@
 
 <script>
   Workflows.formSubmitted = false;
-  $(window).unbind('page:before-change', Workflows.promptBeforeLeaving);
-  $(window).unbind('beforeunload', Workflows.promptBeforeLeaving);
-  $(window).bind('page:before-change', Workflows.promptBeforeLeaving);
-  $(window).bind('beforeunload', Workflows.promptBeforeLeaving);
+  $(window).unbind('turbolinks:before-visit', Workflows.promptBeforeLeaving);
+  $(window).bind('turbolinks:before-visit', Workflows.promptBeforeLeaving);
 </script>

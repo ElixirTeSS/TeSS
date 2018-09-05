@@ -1,4 +1,4 @@
-class CreateScientificTopics < ActiveRecord::Migration
+class CreateScientificTopics < ActiveRecord::Migration[4.2]
   def change
     create_table :scientific_topics do |t|
       t.string :preferred_label

@@ -4,13 +4,13 @@
 </div>
 
 <script>
-function initialize(){
+function initializeMap() {
     $('#map-canvas').hide();
     $('#map-loading-screen').fadeIn();
 
     $.ajax({
         type: 'GET',
-        url: '<%= events_url(params.slice(:q, :include_expired, *Event.facet_fields).merge(format: :json_api, per_page: 5000)).html_safe -%>',
+        url: '<%= events_url(search_and_facet_params.merge(format: :json_api, per_page: 5000)).html_safe -%>',
         dataType: 'json',
     }).done(function (res) {
         plotEvents(res.data)

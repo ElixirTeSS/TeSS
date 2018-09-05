@@ -1,7 +1,9 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 4.2.10'
+gem 'rails', '~> 5.2.0'
+
+gem "bootsnap", ">= 1.1.0", require: false # New Rails 5.2 default gem
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -15,21 +17,19 @@ gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 
-# Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.1.0'
-
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'therubyracer'#, platforms: :ruby
 
 # CRUD of resources via a UI
-gem 'rails_admin', '~> 1.3.0'
+gem 'rails_admin'
+gem 'haml', '~> 5.0.4' # Rails admin needs this, but doesn't fix the version to one that works with Rails 5.2
 
 # Authentication
-gem 'devise', '~> 4.2.0'
-gem 'omniauth-openid-connect', git: 'git://github.com/jjbohn/omniauth-openid-connect'
+gem 'devise'
+gem 'omniauth_openid_connect'
 
 # Activity logging
-gem 'public_activity', '~> 1.5.0'
+gem 'public_activity', '~> 1.6.1'
 
 gem 'simple_token_authentication', '~> 1.0'
 
@@ -45,11 +45,9 @@ gem 'sunspot_solr', '= 2.2.0'
 
 gem 'progress_bar', '~> 1.1.0'
 
-gem 'activerecord-session_store', '~> 1.0.0'
+gem 'activerecord-session_store'
 
 gem 'gravtastic', '~> 3.2.6'
-
-gem 'green_monkey'
 
 gem 'dynamic_sitemaps', github: 'lassebunk/dynamic_sitemaps', branch: 'master'
 
@@ -61,14 +59,14 @@ gem 'sidekiq'
 gem 'slim'
 
 # Use jquery as the JavaScript library
-gem 'jquery-rails', '~> 4.2.2'
+gem 'jquery-rails'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks', '~> 2.5.3'
-gem 'jquery-turbolinks', '~> 2.1.0'
+gem 'turbolinks'
+gem 'jquery-turbolinks'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.0'
+gem 'jbuilder'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
@@ -78,7 +76,7 @@ gem 'auto_strip_attributes', '~> 2.0'
 # Gem for validating URLs
 gem 'validate_url', '~> 1.0.2'
 
-gem 'simple_form', '~> 3.4.0'
+gem 'simple_form'
 
 # Gem for rendering Markdown
 gem 'redcarpet', '~> 3.4.0'
@@ -86,9 +84,6 @@ gem 'redcarpet', '~> 3.4.0'
 # Gem for paginating search results
 gem 'will_paginate', '~> 3.1.5'
 gem 'will_paginate-bootstrap', '~> 1.0.1'
-
-# Gem for managing the app version
-gem 'app_version'
 
 # Gem for authorisation
 gem 'pundit', '~> 1.1.0'
@@ -118,7 +113,7 @@ gem 'bootstrap-datepicker-rails', '~> 1.6.4.1'
 
 gem 'rack-cors', require: 'rack/cors'
 
-gem 'recaptcha', '~> 4.0.1', require: 'recaptcha/rails'
+gem 'recaptcha', require: 'recaptcha/rails'
 
 gem 'linkeddata'
 
@@ -126,7 +121,7 @@ gem 'linkeddata'
 gem 'geocoder'
 gem 'redis'
 
-gem 'active_model_serializers', '~> 0.10'
+gem 'active_model_serializers'
 
 gem 'private_address_check'
 
@@ -142,7 +137,9 @@ source 'https://rails-assets.org' do
 end
 
 group :test do
+  gem 'minitest', '5.10.3'
   gem 'fakeredis'
+  gem 'rails-controller-testing'
 end
 
 group :development, :test do
@@ -156,9 +153,10 @@ end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
+  gem 'web-console'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   #gem 'spring'
+  gem 'listen'
 end
 
 group :production do

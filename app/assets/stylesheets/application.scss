@@ -705,7 +705,7 @@ sup {
 
 .btn-elixir {
   @include button-variant(white, $elixir-orange, white);
-  background-image: url('elixir_white_small.png');
+  background-image: image-url('elixir_white_small.png');
   background-repeat: no-repeat;
   background-position: 7px 7px;
   padding-left: 32px;
@@ -719,12 +719,12 @@ div.legal-block {
 }
 
 input.loading {
-  background: url('ajax-loader.gif') no-repeat right center;
+  background: image-url('ajax-loader.gif') no-repeat right center;
 }
 
 .btn.loading {
   padding-right: 24px;
-  background: url('ajax-loader.gif') no-repeat right center;
+  background: image-url('ajax-loader.gif') no-repeat right center;
 }
 
 .url-wrap {

@@ -1,4 +1,4 @@
-class PackageEvent < ActiveRecord::Base
+class PackageEvent < ApplicationRecord
   belongs_to :event
   belongs_to :package
 

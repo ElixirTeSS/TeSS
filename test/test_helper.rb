@@ -84,6 +84,14 @@ class ActiveSupport::TestCase
     def current_page
       1
     end
+
+    def next_page
+      2
+    end
+
+    def previous_page
+      nil
+    end
   end
 
   class MockSearch

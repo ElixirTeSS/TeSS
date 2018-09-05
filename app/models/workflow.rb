@@ -1,4 +1,4 @@
-class Workflow < ActiveRecord::Base
+class Workflow < ApplicationRecord
 
   include PublicActivity::Common
   include Collaboratable
@@ -37,7 +37,7 @@ class Workflow < ActiveRecord::Base
       string :keywords, :multiple => true
       text :keywords
       string :difficulty_level do
-        Tess::DifficultyDictionary.instance.lookup_value(self.difficulty_level, 'title')
+        DifficultyDictionary.instance.lookup_value(self.difficulty_level, 'title')
       end
       text :difficulty_level
       string :contributors, :multiple => true
@@ -56,7 +56,7 @@ class Workflow < ActiveRecord::Base
   has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
 
   validates :title, presence: true
-  validates :difficulty_level, controlled_vocabulary: { dictionary: Tess::DifficultyDictionary.instance }
+  validates :difficulty_level, controlled_vocabulary: { dictionary: DifficultyDictionary.instance }
 
   clean_array_fields(:keywords, :contributors, :authors, :target_audience)
 
@@ -75,11 +75,15 @@ class Workflow < ActiveRecord::Base
     end
   end
 
+  def workflow_content= content
+    super(content.is_a?(String) ? JSON.parse(content) : content)
+  end
+
   private
 
   def log_diagram_modification
-    if workflow_content_changed?
-      old_nodes = workflow_content_was['nodes'] || []
+    if saved_change_to_workflow_content?
+      old_nodes = workflow_content_before_last_save['nodes'] || []
       old_node_ids = old_nodes.map { |n| n['data']['id'] }
       current_nodes = workflow_content['nodes'] || []
       current_node_ids = current_nodes.map { |n| n['data']['id'] }
@@ -90,7 +94,7 @@ class Workflow < ActiveRecord::Base
 
       # Resolve the actual nodes from the IDs
       added_nodes = added_node_ids.map { |i| workflow_content['nodes'].detect { |n| n['data']['id'] == i } }
-      removed_nodes = removed_node_ids.map { |i| workflow_content_was['nodes'].detect { |n| n['data']['id'] == i } }
+      removed_nodes = removed_node_ids.map { |i| workflow_content_before_last_save['nodes'].detect { |n| n['data']['id'] == i } }
       modified_nodes = modified_node_ids.map { |i| workflow_content['nodes'].detect { |n| n['data']['id'] == i } }
 
       if added_node_ids.any? || removed_node_ids.any? || modified_node_ids.any?

@@ -1,4 +1,4 @@
-class ShrinkPackageActivityLogs < ActiveRecord::Migration
+class ShrinkPackageActivityLogs < ActiveRecord::Migration[4.2]
   def up
     Material
     Package

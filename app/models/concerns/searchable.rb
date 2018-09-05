@@ -7,9 +7,12 @@ module Searchable
   extend ActiveSupport::Concern
 
   class_methods do
-    # Extract all the facet parameters
-    def facet_params(params)
-      params.slice(*(facet_fields | Tess::Facets.special))
+    def facet_keys
+      facet_fields | Facets.special
+    end
+
+    def search_and_facet_keys
+      [:q] | facet_keys
     end
 
     def search_and_filter(user, search_params = '', selected_facets = {}, page: 1, sort_by: nil, per_page: 30)
@@ -20,7 +23,7 @@ module Searchable
         # Disjunction clause
         active_facets = {}
 
-        normal_facets = selected_facets.except(*Tess::Facets.special)
+        normal_facets = selected_facets.except(*Facets.special)
 
         any do
           # Set all facets
@@ -28,7 +31,7 @@ module Searchable
             any do # Conjunction clause
               # Add to array that get executed lower down
               active_facets[facet_title] ||= []
-              val = Tess::Facets.process(facet_title, facet_value)
+              val = Facets.process(facet_title, facet_value)
               active_facets[facet_title] << with(facet_title, val)
             end
           end
@@ -69,10 +72,10 @@ module Searchable
 
         paginate page: page, per_page: per_page unless page.nil?
 
-        Tess::Facets.special.each do |facet_title|
-          if Tess::Facets.applicable?(facet_title, name)
-            facet_value = Tess::Facets.process(facet_title, selected_facets[facet_title])
-            Tess::Facets.send(facet_title.to_sym, self, facet_value)
+        Facets.special.each do |facet_title|
+          if Facets.applicable?(facet_title, name)
+            facet_value = Facets.process(facet_title, selected_facets[facet_title])
+            Facets.send(facet_title.to_sym, self, facet_value)
           end
         end
 

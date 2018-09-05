@@ -1,6 +1,6 @@
 require 'rails/html/sanitizer'
 
-class Material < ActiveRecord::Base
+class Material < ApplicationRecord
 
   include PublicActivity::Common
   include LogParameterChanges
@@ -44,7 +44,7 @@ class Material < ActiveRecord::Base
       string :resource_type, :multiple => true
       text :resource_type
       string :difficulty_level do
-        Tess::DifficultyDictionary.instance.lookup_value(self.difficulty_level, 'title')
+        DifficultyDictionary.instance.lookup_value(self.difficulty_level, 'title')
       end
       text :difficulty_level
       string :contributors, :multiple => true
@@ -91,7 +91,7 @@ class Material < ActiveRecord::Base
 
   validates :url, url: true
 
-  validates :difficulty_level, controlled_vocabulary: { dictionary: Tess::DifficultyDictionary.instance }
+  validates :difficulty_level, controlled_vocabulary: { dictionary: DifficultyDictionary.instance }
 
   clean_array_fields(:keywords, :contributors, :authors, :target_audience, :resource_type)
 

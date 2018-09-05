@@ -1,4 +1,4 @@
-class AddClassIdHasNarrowSynonymInSubsetInCyclic < ActiveRecord::Migration
+class AddClassIdHasNarrowSynonymInSubsetInCyclic < ActiveRecord::Migration[4.2]
   def change
     add_column :scientific_topics, :class_id, :string
     add_column :scientific_topics, :has_narrow_synonym, :text

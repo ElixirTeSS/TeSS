@@ -1,4 +1,4 @@
-class DropVersionAssociations < ActiveRecord::Migration
+class DropVersionAssociations < ActiveRecord::Migration[4.2]
   def change
     drop_table 'version_associations' do |t|
       t.integer 'version_id'

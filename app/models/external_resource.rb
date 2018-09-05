@@ -1,4 +1,4 @@
-class ExternalResource < ActiveRecord::Base
+class ExternalResource < ApplicationRecord
   belongs_to :source, polymorphic: true
   has_one :link_monitor, as: :lcheck, dependent: :destroy
 

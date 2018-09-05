@@ -1,4 +1,4 @@
-class AddExtraMetadataToWorkflows < ActiveRecord::Migration
+class AddExtraMetadataToWorkflows < ActiveRecord::Migration[4.2]
   def change
     add_column :workflows, :target_audience, :string, array: true, default: []
     add_column :workflows, :scientific_topic, :string, array: true, default: []

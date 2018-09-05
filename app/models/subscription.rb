@@ -1,4 +1,4 @@
-class Subscription < ActiveRecord::Base
+class Subscription < ApplicationRecord
 
   FREQUENCY = [
       { key: :daily, id: 1, period: 1.day, title: '24 hours' }.with_indifferent_access,

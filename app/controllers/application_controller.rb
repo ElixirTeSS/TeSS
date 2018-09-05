@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   before_action :set_current_user
 
   # Should prevent forgery errors for JSON posts.
-  skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
+  skip_before_action :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
 
   # Do some access control - see policies folder for individual policies on models
   include Pundit
@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def pundit_user
-    CurrentContext.new(current_user, request)
+    Pundit::CurrentContext.new(current_user, request)
   end
 
   def handle_error(status_code = 500, message = nil)
@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
 
     flash[:alert] = message
     respond_to do |format|
-      format.html  { render 'static/error.html', status: status_code}
+      format.html  { render 'static/error', status: status_code}
       format.json { render json: { error: { message: message, code: status_code } }, status: status_code }
     end
   end

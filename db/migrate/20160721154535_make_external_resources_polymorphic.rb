@@ -1,4 +1,4 @@
-class MakeExternalResourcesPolymorphic < ActiveRecord::Migration
+class MakeExternalResourcesPolymorphic < ActiveRecord::Migration[4.2]
   def up
     remove_foreign_key :external_resources, :materials
 

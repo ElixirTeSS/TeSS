@@ -59,7 +59,7 @@
 
     <%= f.input :description, as: :markdown_area, input_html: { rows: '10' }, field_lock: true %>
 
-    <%= f.dropdown :event_types, options: Tess::EventTypeDictionary.instance.options_for_select, label: 'Event type' %>
+    <%= f.dropdown :event_types, options: EventTypeDictionary.instance.options_for_select, label: 'Event type' %>
 
     <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term',
                         id_field: :uri, label_field: :preferred_label %>
@@ -82,7 +82,7 @@
 
     <%= f.input :capacity, field_lock: true %>
 
-    <%= f.dropdown :eligibility, options: Tess::EligibilityDictionary.instance.options_for_select, label: 'Eligibility' %>
+    <%= f.dropdown :eligibility, options: EligibilityDictionary.instance.options_for_select, label: 'Eligibility' %>
 
     <div class="form-group">
       <%= f.label 'for_profit' %> <%= icon_for(:for_profit, :small) %><%= f.field_lock :for_profit %>

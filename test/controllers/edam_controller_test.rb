@@ -4,7 +4,7 @@ class EdamControllerTest < ActionController::TestCase
   include Devise::Test::ControllerHelpers
 
   test 'should filter topics' do
-    get :topics, filter: 'metab', format: :json
+    get :topics, params: { filter: 'metab', format: :json }
     assert_response :success
 
     res = JSON.parse(response.body)
@@ -13,7 +13,7 @@ class EdamControllerTest < ActionController::TestCase
   end
 
   test 'should filter operations' do
-    get :operations, filter: 'metab', format: :json
+    get :operations, params: { filter: 'metab', format: :json }
     assert_response :success
 
     res = JSON.parse(response.body)
@@ -22,7 +22,7 @@ class EdamControllerTest < ActionController::TestCase
   end
 
   test 'should filter all terms' do
-    get :terms, filter: 'rna', format: :json
+    get :terms, params: { filter: 'rna', format: :json }
     assert_response :success
 
     res = JSON.parse(response.body)
@@ -35,18 +35,18 @@ class EdamControllerTest < ActionController::TestCase
   end
 
   test 'should filter multiple times' do
-    get :terms, filter: 'data', format: :json
+    get :terms, params: { filter: 'data', format: :json }
     assert_response :success
     res = JSON.parse(response.body)
     assert_equal 16, res.length
     assert_includes res.map { |t| t['preferred_label'] }, 'Database management'
 
-    get :terms, filter: 'xylophone', format: :json
+    get :terms, params: { filter: 'xylophone', format: :json }
     assert_response :success
     res = JSON.parse(response.body)
     assert_equal 0, res.length
 
-    get :terms, filter: 'data', format: :json
+    get :terms, params: { filter: 'data', format: :json }
     assert_response :success
     res = JSON.parse(response.body)
     assert_equal 16, res.length
@@ -70,7 +70,7 @@ class EdamControllerTest < ActionController::TestCase
       assert term.deprecated?, "#{uri} should be flagged as deprecated in EDAM ontology"
     end
 
-    get :operations, filter: 'Protein ', format: :json
+    get :operations, params: { filter: 'Protein ', format: :json }
     assert_response :success
     res = JSON.parse(response.body)
     uris = res.map { |t| t['uri'] }

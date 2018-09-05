@@ -11,7 +11,7 @@ class IdentifierResolutionTest < ActionDispatch::IntegrationTest
 
     follow_redirect!
 
-    assert_equal :html, response.content_type.symbol
+    assert_equal 'text/html', response.content_type
   end
 
   test 'resolve material' do
@@ -50,23 +50,13 @@ class IdentifierResolutionTest < ActionDispatch::IntegrationTest
     assert_redirected_to material
   end
 
-  test 'resolving preserves format' do
-    event = events(:one)
-
-    get "/resolve/e#{event.id}", format: :json_api
-
-    follow_redirect!
-
-    assert_equal :json_api, response.content_type.symbol
-    assert JSON.parse(response.body)
-  end
-
   test 'does not resolve bad identifier' do
     event = events(:one)
 
     get "/resolve/x#{event.id}"
 
     assert_response :bad_request
+
     assert_select '#flash-container .alert', /Unrecognized type/
   end
 

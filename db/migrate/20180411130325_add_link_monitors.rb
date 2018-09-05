@@ -1,4 +1,4 @@
-class AddLinkMonitors < ActiveRecord::Migration
+class AddLinkMonitors < ActiveRecord::Migration[4.2]
 
   def change
     create_table :link_monitors do |t|

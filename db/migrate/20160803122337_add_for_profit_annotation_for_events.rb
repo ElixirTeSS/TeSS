@@ -1,4 +1,4 @@
-class AddForProfitAnnotationForEvents < ActiveRecord::Migration
+class AddForProfitAnnotationForEvents < ActiveRecord::Migration[4.2]
   def up
     add_column :events, :for_profit, :boolean, :default => false
     add_index :events, :for_profit

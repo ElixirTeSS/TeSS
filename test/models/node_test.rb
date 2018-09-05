@@ -3,7 +3,7 @@ require 'test_helper'
 class NodeTest < ActiveSupport::TestCase
 
   test 'can create a node and staff' do
-    node = Node.new(name: 'Kilburn', country_code: 'ES')
+    node = Node.new(user: users(:admin), name: 'Kilburn', country_code: 'ES')
     node.staff.build(name: 'Tom', email: 'tk@example.com', role: 'Training coordinator')
     assert node.valid?
     assert node.save
@@ -11,8 +11,8 @@ class NodeTest < ActiveSupport::TestCase
   end
 
   test 'cannot create a node with duplicate name' do
-    Node.create(name: 'Kilburn', country_code: 'ES')
-    node2 = Node.new(name: 'Kilburn', country_code: 'ES')
+    Node.create(user: users(:admin), name: 'Kilburn', country_code: 'ES')
+    node2 = Node.new(user: users(:admin), name: 'Kilburn', country_code: 'ES')
     refute node2.valid?
     refute node2.save
     assert node2.errors.any?

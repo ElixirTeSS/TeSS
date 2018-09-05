@@ -1,4 +1,4 @@
-class ContentProvider < ActiveRecord::Base
+class ContentProvider < ApplicationRecord
 
   include PublicActivity::Common
   include LogParameterChanges
@@ -12,7 +12,7 @@ class ContentProvider < ActiveRecord::Base
   has_many :events, :dependent => :destroy
 
   belongs_to :user
-  belongs_to :node
+  belongs_to :node, optional: true
 
   delegate :name, to: :node, prefix: true, allow_nil: true
 

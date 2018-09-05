@@ -1,6 +1,6 @@
 class ScientificTopic < ActiveRecord::Base; end
 
-class ConvertEventFieldToScientificTopics < ActiveRecord::Migration
+class ConvertEventFieldToScientificTopics < ActiveRecord::Migration[4.2]
 
   IANN_MAPPING = {
       'Systemsbiology' => 'http://edamontology.org/topic_2259',

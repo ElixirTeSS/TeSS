@@ -1,4 +1,4 @@
-class ConvertEventTypesToControlledVocabulary < ActiveRecord::Migration
+class ConvertEventTypesToControlledVocabulary < ActiveRecord::Migration[4.2]
 
   MAPPING = {
       'event' => '',
@@ -12,7 +12,7 @@ class ConvertEventTypesToControlledVocabulary < ActiveRecord::Migration
       Event.all.each do |e|
         types = e.event_type
         new_types = types.map { |type| MAPPING[type] || type }.reject(&:blank?)
-        new_types = new_types.select { |type| Tess::EventTypeDictionary.instance.lookup(type) }.compact
+        new_types = new_types.select { |type| EventTypeDictionary.instance.lookup(type) }.compact
         if types != new_types
           e.update_column(:event_type, new_types)
           print '.'

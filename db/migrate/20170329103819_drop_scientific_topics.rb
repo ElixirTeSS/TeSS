@@ -1,4 +1,4 @@
-class DropScientificTopics < ActiveRecord::Migration
+class DropScientificTopics < ActiveRecord::Migration[4.2]
   def up
     drop_table :scientific_topics
   end

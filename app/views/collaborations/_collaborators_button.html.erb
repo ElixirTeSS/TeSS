@@ -41,7 +41,7 @@
 </div>
 
 <script>
-  $(document).ready(function () {
+  document.addEventListener("turbolinks:load", function() {
     $('.collaboration-list').on('click', '.delete-collaboration', Collaborations.delete);
     $('#collaborators-modal').on('show.bs.modal', Collaborations.fetch);
     $('#collaborators-modal-add-btn').click(Collaborations.add);

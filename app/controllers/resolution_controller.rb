@@ -6,7 +6,9 @@ class ResolutionController < ApplicationController
     model = resolve_model
 
     if model
-      redirect_to send("#{model.name.underscore}_path", params[:id], format: params[:format])
+      respond_to do |format|
+        format.any { redirect_to send("#{model.name.underscore}_path", params[:id], format: params[:format]) }
+      end
     else
       handle_error(400, "Unrecognized type: '#{params[:type]}' (valid types are: e, m, p, w)")
     end

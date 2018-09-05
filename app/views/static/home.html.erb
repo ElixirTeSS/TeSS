@@ -47,7 +47,7 @@
   <li>
     <%= link_to events_path do %>
         <h2><i class="<%= icon_class_for_model('events') %>"></i> Events</h2>
-        <img src="/assets/events.jpg" width="100%" alt="Events">
+        <%= image_tag("events.jpg", width: "100%", alt: "Events") %>
     <% end %>
     <p>Discover the latest training events and news from ELIXIR nodes and 3<sup>rd</sup>-party providers.</p>
   </li>
@@ -55,7 +55,7 @@
   <li>
     <%= link_to materials_path do %>
         <h2><i class="<%= icon_class_for_model('materials') %>"></i> Materials</h2>
-        <img src="/assets/materials.jpg" width="100%" alt="Materials">
+        <%= image_tag("materials.jpg", width: "100%", alt: "Materials") %>
     <% end %>
     <p>Browse the catalogue of training materials offered by ELIXIR nodes and 3<sup>rd</sup>-party providers.</p>
   </li>
@@ -63,7 +63,7 @@
   <li>
     <%= link_to workflows_path do %>
         <h2><i class="<%= icon_class_for_model('workflows') %>"></i> Workflows</h2>
-        <img src="/assets/workflows.png" width="100%" alt="Workflows">
+        <%= image_tag("workflows.png", width: "100%", alt: "Workflows") %>
     <% end %>
     <p>Create training workflows to visualise learning steps and link to resources specific to your training needs.</p>
   </li>
@@ -71,7 +71,7 @@
   <li>
     <%= link_to content_providers_path do %>
         <h2><i class="<%= icon_class_for_model('content_providers') %>"></i> Providers</h2>
-        <img src="/assets/providers-6.jpg" width="100%" alt="Providers">
+        <%= image_tag("providers-6.jpg", width: "100%", alt: "Providers") %>
     <% end %>
     <p>Browse training providers to discover training resources they offer and follow links to their materials and courses.</p>
   </li>
