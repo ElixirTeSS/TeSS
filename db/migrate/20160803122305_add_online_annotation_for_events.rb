@@ -1,4 +1,4 @@
-class AddOnlineAnnotationForEvents < ActiveRecord::Migration
+class AddOnlineAnnotationForEvents < ActiveRecord::Migration[4.2]
   def up
     add_column :events, :online, :boolean, :default => false
     add_index :events, :online

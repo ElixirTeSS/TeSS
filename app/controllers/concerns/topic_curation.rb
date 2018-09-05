@@ -11,15 +11,16 @@ module TopicCuration
     term = EDAM::Ontology.instance.lookup(params[:uri])
     field = params[:field]
 
-    log_params = {uri: term.uri,
-                  name: term.preferred_label}
+    log_params = { uri: term.uri,
+                   field: field,
+                   name: term.preferred_label }
 
     resource.edit_suggestion.accept_suggestion(field, term)
     resource.create_activity :add_term,
                              owner: current_user,
                              recipient: resource.user,
                              parameters: log_params
-    render nothing: true
+    head :ok
   end
 
   #POST /<resource>/1/reject_term
@@ -30,8 +31,9 @@ module TopicCuration
     term = EDAM::Ontology.instance.lookup(params[:uri])
     field = params[:field]
 
-    log_params = {uri: term.uri,
-                  name: term.preferred_label}
+    log_params = { uri: term.uri,
+                   field: field,
+                   name: term.preferred_label }
 
     resource = instance_variable_get("@#{controller_name.singularize}")
     resource.edit_suggestion.reject_suggestion(field, term)
@@ -39,7 +41,7 @@ module TopicCuration
                              owner: current_user,
                              recipient: resource.user,
                              parameters: log_params
-    render nothing: true
+    head :ok
   end
 
   #POST /<resource>/1/add_data
@@ -57,7 +59,7 @@ module TopicCuration
                              owner: current_user,
                              recipient: resource.user,
                              parameters: log_params
-    render nothing: true
+    head :ok
   end
 
   #POST /<resource>/1/reject_data
@@ -73,6 +75,6 @@ module TopicCuration
                              owner: current_user,
                              recipient: resource.user,
                              parameters: log_params
-    render nothing: true
+    head :ok
   end
 end

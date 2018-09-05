@@ -1,4 +1,4 @@
-class Role < ActiveRecord::Base
+class Role < ApplicationRecord
   has_many :users
 
   # Look in config/data/roles.yml to find role definitions

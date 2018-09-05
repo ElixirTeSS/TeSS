@@ -1,4 +1,4 @@
-class CreateMaterials < ActiveRecord::Migration
+class CreateMaterials < ActiveRecord::Migration[4.2]
   def change
     create_table :materials do |t|
       t.text :title

@@ -2,7 +2,7 @@ class SubscriptionsController < ApplicationController
 
   skip_before_action :authenticate_user!, :authenticate_user_from_token!, only: :unsubscribe
   before_action :authenticate_user!, only: :index
-  before_filter :find_subscription, only: [:destroy, :unsubscribe]
+  before_action :find_subscription, only: [:destroy, :unsubscribe]
   before_action :set_breadcrumbs, only: :index
 
   def index
@@ -34,7 +34,7 @@ class SubscriptionsController < ApplicationController
       end
     else
       respond_to do |format|
-        format.html { render text: 'There was a problem unsubscribing.', status: :unprocessable_entity }
+        format.html { render plain: 'There was a problem unsubscribing.', status: :unprocessable_entity }
       end
     end
   end
@@ -46,7 +46,7 @@ class SubscriptionsController < ApplicationController
       end
     else
       respond_to do |format|
-        format.html { render text: 'Invalid code', status: :unprocessable_entity }
+        format.html { render plain: 'Invalid code', status: :unprocessable_entity }
       end
     end
   end
@@ -55,9 +55,8 @@ class SubscriptionsController < ApplicationController
 
   def subscription_params
     subscribable_type = params[:subscription][:subscribable_type].constantize
-    facet_params = params.slice(*subscribable_type.facet_fields)
     p = params.require(:subscription).permit(:frequency, :subscribable_type)
-    p.merge(query: params[:q], facets: facet_params)
+    p.merge(query: params[:q], facets: params.permit(*subscribable_type.facet_fields))
   end
 
   def find_subscription

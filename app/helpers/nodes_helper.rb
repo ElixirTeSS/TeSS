@@ -26,7 +26,7 @@ module NodesHelper
   end
 
   def country_flag(country_code, options = {})
-    image_tag "nodes/flags/#{country_code}", options
+    image_tag "nodes/flags/#{country_code}.png", options
   end
 
   def countries_options_for_select

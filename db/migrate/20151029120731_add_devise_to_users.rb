@@ -1,4 +1,4 @@
-class AddDeviseToUsers < ActiveRecord::Migration
+class AddDeviseToUsers < ActiveRecord::Migration[4.2]
   def self.up
     #return # renaming this file in a merge broke migrations
     change_table(:users) do |t|

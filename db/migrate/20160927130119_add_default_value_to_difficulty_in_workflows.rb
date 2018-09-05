@@ -1,4 +1,4 @@
-class AddDefaultValueToDifficultyInWorkflows < ActiveRecord::Migration
+class AddDefaultValueToDifficultyInWorkflows < ActiveRecord::Migration[4.2]
   def change
     change_column_default :workflows, :difficulty_level, 'notspecified'
     Workflow.find_each do |wf|

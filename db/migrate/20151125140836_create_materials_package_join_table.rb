@@ -1,4 +1,4 @@
-class CreateMaterialsPackageJoinTable < ActiveRecord::Migration
+class CreateMaterialsPackageJoinTable < ActiveRecord::Migration[4.2]
   def change
      create_table :package_materials, id: false do |t|
        t.integer :material_id, index: true

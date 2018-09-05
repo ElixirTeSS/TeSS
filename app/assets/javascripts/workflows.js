@@ -469,7 +469,7 @@ var Workflows = {
     }
 };
 
-$(document).ready(function () {
+document.addEventListener("turbolinks:load", function() {
     var wfJsonElement = $('#workflow-content-json');
     var cytoscapeElement = $('#cy');
     var editable = cytoscapeElement.data('editable');

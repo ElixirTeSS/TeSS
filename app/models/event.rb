@@ -2,7 +2,7 @@ require 'icalendar'
 require 'rails/html/sanitizer'
 require 'redis'
 
-class Event < ActiveRecord::Base
+class Event < ApplicationRecord
   include PublicActivity::Common
   include LogParameterChanges
   include HasAssociatedNodes
@@ -16,7 +16,7 @@ class Event < ActiveRecord::Base
   include IdentifiersDotOrg
 
   before_save :set_default_times, :check_country_name
-  before_save :geocoding_cache_lookup, if: :address_changed?
+  before_save :geocoding_cache_lookup, if: :address_will_change?
   after_save :enqueue_geocoding_worker, if: :address_changed?
 
   extend FriendlyId
@@ -41,7 +41,7 @@ class Event < ActiveRecord::Base
       string :country
       text :country
       string :event_types, :multiple => true do
-        Tess::EventTypeDictionary.instance.values_for_search(self.event_types)
+        EventTypeDictionary.instance.values_for_search(self.event_types)
       end
       string :keywords, :multiple => true
       time :start
@@ -103,8 +103,8 @@ class Event < ActiveRecord::Base
 
   validates :title, :url, presence: true
   validates :capacity, numericality: true, allow_blank: true
-  validates :event_types, controlled_vocabulary: { dictionary: Tess::EventTypeDictionary.instance }
-  validates :eligibility, controlled_vocabulary: { dictionary: Tess::EligibilityDictionary.instance }
+  validates :event_types, controlled_vocabulary: { dictionary: EventTypeDictionary.instance }
+  validates :eligibility, controlled_vocabulary: { dictionary: EligibilityDictionary.instance }
   validates :latitude, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90, allow_nil: true }
   validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true  }
   validate :allowed_url
@@ -321,8 +321,12 @@ class Event < ActiveRecord::Base
     ADDRESS_FIELDS.map { |field| self.send(field) }.reject(&:blank?).join(', ')
   end
 
+  def address_will_change?
+    ADDRESS_FIELDS.any? { |field| self.changes.keys.include?(field.to_s) }
+  end
+
   def address_changed?
-    ADDRESS_FIELDS.any? { |field| self.changed.include?(field.to_s) }
+    ADDRESS_FIELDS.any? { |field| self.previous_changes.keys.include?(field.to_s) }
   end
 
   # Check the Redis cache for coordinates

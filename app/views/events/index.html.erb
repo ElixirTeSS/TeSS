@@ -1,5 +1,5 @@
 <script>
-  $(document).ready(function () {
+  document.addEventListener("turbolinks:load", function() {
 
     /* Set all filter links to include the anchor */
     var addTabToFilters = function(tab){
@@ -45,10 +45,11 @@
        */
       if (e.target.id == 'maptab') {
         if (!loadedMapScript){
-          initialize();
-        }addTabToFilters('map');
+            initializeMap();
+        }
+        addTabToFilters('map');
       } else {
-          addTabToFilters('grid');
+        addTabToFilters('grid');
       }
     })
   })
@@ -83,12 +84,12 @@
           </button>
           <% include_expired = @facet_params.delete('include_expired') %>
           <% if include_expired %>
-              <% button_params = params.dup %>
+              <% button_params = search_and_facet_params %>
               <% button_params.delete(:include_expired) %>
               <% button_text = "Hide" %>
           <% else %>
               <% button_text = "Show" %>
-              <% button_params = params.merge(:include_expired => true) %>
+              <% button_params = search_and_facet_params.merge(include_expired: true) %>
           <% end %>
           <%= link_to button_params, class: 'btn btn-default' do %>
               <i class="fa fa-hourglass-end"></i> <%= button_text %> past events

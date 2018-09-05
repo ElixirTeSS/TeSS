@@ -50,28 +50,28 @@ class PackagesControllerTest < ActionController::TestCase
   #EDIT TESTS
   test 'should not get edit page for not logged in users' do
     #Not logged in = Redirect to login
-    get :edit, id: @package
+    get :edit, params: { id: @package }
     assert_redirected_to new_user_session_path
   end
 
     #logged in but insufficient permissions = ERROR
   test 'should get edit for package owner' do
     sign_in @package.user
-    get :edit, id: @package
+    get :edit, params: { id: @package }
     assert_response :success
   end
 
   test 'should get edit for admin' do
     #Owner of package logged in = SUCCESS
     sign_in users(:admin)
-    get :edit, id: @package
+    get :edit, params: { id: @package }
     assert_response :success
   end
 
   test 'should not get edit page for non-owner user' do
     #Administrator = SUCCESS
     sign_in users(:another_regular_user)
-    get :edit, id: @package
+    get :edit, params: { id: @package }
     assert :forbidden
   end
 
@@ -79,7 +79,7 @@ class PackagesControllerTest < ActionController::TestCase
   test 'should create package for user' do
     sign_in users(:regular_user)
     assert_difference('Package.count') do
-      post :create, package: { title: @package.title, image_url: @package.image_url, description: @package.description }
+      post :create, params: { package: { title: @package.title, image_url: @package.image_url, description: @package.description } }
     end
     assert_redirected_to package_path(assigns(:package))
   end
@@ -87,27 +87,27 @@ class PackagesControllerTest < ActionController::TestCase
   test 'should create package for admin' do
     sign_in users(:admin)
     assert_difference('Package.count') do
-      post :create, package: { title: @package.title, image_url: @package.image_url, description: @package.description }
+      post :create, params: { package: { title: @package.title, image_url: @package.image_url, description: @package.description } }
     end
     assert_redirected_to package_path(assigns(:package))
   end
 
   test 'should not create package for non-logged in user' do
     assert_no_difference('Package.count') do
-      post :create, package: { title: @package.title, image_url: @package.image_url, description: @package.description }
+      post :create, params: { package: { title: @package.title, image_url: @package.image_url, description: @package.description } }
     end
     assert_redirected_to new_user_session_path
   end
 
   #SHOW TEST
   test 'should show package' do
-    get :show, id: @package
+    get :show, params: { id: @package }
     assert_response :success
     assert assigns(:package)
   end
 
   test 'should show package as json' do
-    get :show, id: @package, format: :json
+    get :show, params: { id: @package, format: :json }
     assert_response :success
     assert assigns(:package)
   end
@@ -115,8 +115,8 @@ class PackagesControllerTest < ActionController::TestCase
   #UPDATE TEST
   test 'should update package' do
     sign_in @package.user
-    # patch :update, id: @package, package: { doi: @package.doi,  remote_created_date: @package.remote_created_date,  remote_updated_date: @package.remote_updated_date, short_description: @package.short_description, title: @package.title, url: @package.url }
-    patch :update, id: @package, package: @updated_package
+    # patch :update, params: { d: @package, package: { doi: @package.doi,  remote_created_date: @package.remote_created_date,  remote_updated_date: @package.remote_updated_date, short_description: @package.short_description, title: @package.title, url: @package.url } }
+    patch :update, params: { id: @package, package: @updated_package }
     assert_redirected_to package_path(assigns(:package))
   end
 
@@ -124,7 +124,7 @@ class PackagesControllerTest < ActionController::TestCase
   test 'should destroy package owned by user' do
     sign_in @package.user
     assert_difference('Package.count', -1) do
-      delete :destroy, id: @package
+      delete :destroy, params: { id: @package }
     end
     assert_redirected_to packages_path
   end
@@ -132,7 +132,7 @@ class PackagesControllerTest < ActionController::TestCase
   test 'should destroy package when administrator' do
     sign_in users(:admin)
     assert_difference('Package.count', -1) do
-      delete :destroy, id: @package
+      delete :destroy, params: { id: @package }
     end
     assert_redirected_to packages_path
   end
@@ -140,7 +140,7 @@ class PackagesControllerTest < ActionController::TestCase
   test 'should not destroy package not owned by user' do
     sign_in users(:another_regular_user)
     assert_no_difference('Package.count') do
-      delete :destroy, id: @package
+      delete :destroy, params: { id: @package }
     end
     assert_response :forbidden
   end
@@ -158,7 +158,7 @@ class PackagesControllerTest < ActionController::TestCase
   end
 
   test 'breadcrumbs for showing package' do
-    get :show, :id => @package
+    get :show, params: { :id => @package }
     assert_response :success
     assert_select 'div.breadcrumbs', :text => /Home/, :count => 1 do
       assert_select 'a[href=?]', root_path, :count => 1
@@ -171,7 +171,7 @@ class PackagesControllerTest < ActionController::TestCase
 
   test 'breadcrumbs for editing package' do
     sign_in users(:admin)
-    get :edit, id: @package
+    get :edit, params: { id: @package }
     assert_response :success
     assert_select 'div.breadcrumbs', :text => /Home/, :count => 1 do
       assert_select 'a[href=?]', root_path, :count => 1
@@ -200,7 +200,7 @@ class PackagesControllerTest < ActionController::TestCase
 
   #OTHER CONTENT
   test 'package has correct tabs' do
-    get :show, :id => @package
+    get :show, params: { :id => @package }
     assert_response :success
     assert_select 'ul.nav-tabs' do
       assert_select 'li.disabled', :count => 3 # This package has no events, materials or activity
@@ -209,7 +209,7 @@ class PackagesControllerTest < ActionController::TestCase
     packages(:with_resources).materials << materials(:good_material)
     packages(:with_resources).events << events(:one)
 
-    get :show, :id => packages(:with_resources)
+    get :show, params: { :id => packages(:with_resources) }
     assert_response :success
     assert_select 'ul.nav-tabs' do
       assert_select 'li' do
@@ -219,7 +219,7 @@ class PackagesControllerTest < ActionController::TestCase
   end
 
   test 'package has correct layout' do
-    get :show, :id => @package
+    get :show, params: { :id => @package }
     assert_response :success
     assert_select 'div.search-results-count', :count => 2 #Has results
     assert_select 'a.btn-info', :text => 'Back', :count => 1 #No Edit
@@ -231,21 +231,21 @@ class PackagesControllerTest < ActionController::TestCase
 
   test 'do not show action buttons when not owner or admin' do
     sign_in users(:another_regular_user)
-    get :show, :id => @package
+    get :show, params: { :id => @package }
     assert_select 'a.btn-primary[href=?]', edit_package_path(@package), :count => 0 #No Edit
     assert_select 'a.btn-danger[href=?]', package_path(@package), :count => 0 #No Edit
   end
 
   test 'show action buttons when owner' do
     sign_in @package.user
-    get :show, :id => @package
+    get :show, params: { :id => @package }
     assert_select 'a.btn-primary[href=?]', edit_package_path(@package), :count => 1
     assert_select 'a.btn-danger[href=?]', package_path(@package), :text => 'Delete', :count => 1
   end
 
   test 'show action buttons when admin' do
     sign_in users(:admin)
-    get :show, :id => @package
+    get :show, params: { :id => @package }
     assert_select 'a.btn-primary[href=?]', edit_package_path(@package), :count => 1
     assert_select 'a.btn-danger[href=?]', package_path(@package), :text => 'Delete', :count => 1
   end
@@ -254,36 +254,38 @@ class PackagesControllerTest < ActionController::TestCase
   test "should remove materials from package" do
     sign_in users(:regular_user)
     package = packages(:with_resources)
-    patch :update, package: {material_ids: [materials(:biojs).id, materials(:interpro).id]}, id: package.id
+    package.materials = [materials(:biojs), materials(:interpro)]
+    package.save!
     assert_difference('package.materials.count', -2) do
-      patch :update, package: {material_ids: []}, id: package.id
+      patch :update, params: { package: { material_ids: [''] }, id: package.id }
     end
   end     
   
   test "should add events to package" do
     sign_in users(:regular_user)
     assert_difference('@package.events.count', +2) do
-      patch :update, package: { event_ids: [events(:one), events(:two)]}, id: @package.id
+      patch :update, params: { package: { event_ids: [events(:one), events(:two)]}, id: @package.id }
     end
   end
   
   test "should remove events from package" do
     sign_in users(:regular_user)
     package = packages(:with_resources)
-    patch :update, package: { event_ids: [events(:one), events(:two)]}, id: package.id
+    package.events = [events(:one), events(:two)]
+    package.save!
     assert_difference('package.events.count', -2) do
-      patch :update, package: { event_ids: []}, id: package.id
+      patch :update, params: { package: { event_ids: ['']}, id: package.id }
     end
   end
 
   test 'should not allow access to private packages' do
-    get :show, id: packages(:secret_package)
+    get :show, params: { id: packages(:secret_package) }
     assert_response :forbidden
   end
 
   test 'should allow access to private packages if privileged' do
     sign_in users(:regular_user)
-    get :show, id: packages(:secret_package)
+    get :show, params: { id: packages(:secret_package) }
     assert_response :success
   end
 

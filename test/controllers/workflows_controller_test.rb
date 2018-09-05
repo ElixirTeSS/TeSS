@@ -18,7 +18,7 @@ class WorkflowsControllerTest < ActionController::TestCase
       TeSS::Config.solr_enabled = true
 
       Workflow.stub(:search_and_filter, MockSearch.new(Workflow.all)) do
-        get :index, q: 'bananas', keywords: 'fruit'
+        get :index, params: { q: 'bananas', keywords: 'fruit' }
         assert_response :success
         assert_not_empty assigns(:workflows)
       end
@@ -31,14 +31,13 @@ class WorkflowsControllerTest < ActionController::TestCase
     @workflow.scientific_topic_uris = ['http://edamontology.org/topic_0654']
     @workflow.save!
 
-    get :index, format: :json
+    get :index, params: { format: :json }
     assert_response :success
     assert_not_empty assigns(:workflows)
   end
 
   test 'should get index as json-api' do
-    get :index, format: :json_api
-
+    get :index, params: { format: :json_api }
     assert_response :success
     assert_not_nil assigns(:workflows)
     body = nil
@@ -70,15 +69,20 @@ class WorkflowsControllerTest < ActionController::TestCase
     sign_in users(:admin)
 
     assert_difference('Workflow.count') do
-      post :create, workflow: { description: @workflow.description, title: @workflow.title,
-          workflow_content: @workflow.workflow_content }
+      post :create, params: {
+          workflow: {
+              description: @workflow.description,
+              title: @workflow.title,
+              workflow_content: @workflow.workflow_content
+          }
+      }
     end
 
     assert_redirected_to workflow_path(assigns(:workflow))
   end
 
   test "should show workflow" do
-    get :show, id: @workflow
+    get :show, params: { id: @workflow }
     assert_response :success
     assert_includes response.headers.keys, 'X-Frame-Options', 'X-Frame-Options header should be present in all actions except `embed`'
     assert assigns(:workflow)
@@ -88,27 +92,26 @@ class WorkflowsControllerTest < ActionController::TestCase
     @workflow.scientific_topic_uris = ['http://edamontology.org/topic_0654']
     @workflow.save!
 
-    get :show, id: @workflow, format: :json
+    get :show, params: { id: @workflow, format: :json }
     assert_response :success
     assert assigns(:workflow)
   end
 
   test "should show embedded workflow" do
-    get :embed, id: @workflow
+    get :embed, params: { id: @workflow }
     assert_response :success
     assert_select '.embedded-container', count: 1
     assert_not_includes response.headers.keys, 'X-Frame-Options', 'X-Frame-Options header should be removed to allow embedding in iframes'
   end
 
   test "should not show embedded private workflow" do
-    get :embed, id: workflows(:private_workflow)
+    get :embed, params: { id: workflows(:private_workflow) }
     assert_response :forbidden
     assert_select '.embedded-container', count: 0
   end
 
   test 'should show workflow as json-api' do
-    get :show, id: @workflow, format: :json_api
-
+    get :show, params: { id: @workflow, format: :json_api }
     assert_response :success
     assert assigns(:workflow)
 
@@ -124,15 +127,21 @@ class WorkflowsControllerTest < ActionController::TestCase
   test "should get edit" do
     sign_in users(:admin)
 
-    get :edit, id: @workflow
+    get :edit, params: { id: @workflow }
     assert_response :success
   end
 
   test "should update workflow" do
     sign_in users(:admin)
 
-    patch :update, id: @workflow, workflow: { description: @workflow.description, title: 'hello',
-                                              workflow_content: @workflow.workflow_content }
+    patch :update, params: {
+        id: @workflow,
+        workflow: {
+            description: @workflow.description,
+            title: 'hello',
+            workflow_content: @workflow.workflow_content
+        }
+    }
     assert_redirected_to workflow_path(assigns(:workflow))
     assert_equal 'hello', assigns(:workflow).title
   end
@@ -141,7 +150,7 @@ class WorkflowsControllerTest < ActionController::TestCase
     sign_in users(:admin)
 
     assert_difference('Workflow.count', -1) do
-      delete :destroy, id: @workflow
+      delete :destroy, params: { id: @workflow }
     end
 
     assert_redirected_to workflows_path
@@ -152,7 +161,7 @@ class WorkflowsControllerTest < ActionController::TestCase
     @workflow.collaborators << user
     sign_in user
 
-    get :edit, id: @workflow
+    get :edit, params: { id: @workflow }
     assert_response :success
   end
 
@@ -160,7 +169,7 @@ class WorkflowsControllerTest < ActionController::TestCase
     user = users(:another_regular_user)
     sign_in user
 
-    get :edit, id: @workflow
+    get :edit, params: { id: @workflow }
     assert_response :forbidden
   end
 
@@ -170,7 +179,7 @@ class WorkflowsControllerTest < ActionController::TestCase
     sign_in user
 
     assert_no_difference('Workflow.count') do
-      delete :destroy, id: @workflow
+      delete :destroy, params: { id: @workflow }
     end
 
     assert_response :forbidden
@@ -217,8 +226,7 @@ class WorkflowsControllerTest < ActionController::TestCase
   test 'should fork workflow' do
     sign_in users(:another_regular_user)
 
-    get :fork, id: @workflow.id
-
+    get :fork, params: { id: @workflow.id }
     assert_response :success
     assert_select '#workflow_title[value=?]', "Fork of #{@workflow.title}"
   end
@@ -228,9 +236,15 @@ class WorkflowsControllerTest < ActionController::TestCase
     sign_in user
 
     assert_difference(-> { @workflow.activities.count }) do
-      patch :update, id: @workflow, workflow: { description: @workflow.description, title: @workflow.title,
-                                                public: @workflow.public,
-                                                workflow_content: workflows(:two).workflow_content.to_json }
+      patch :update, params: {
+          id: @workflow,
+          workflow: {
+              description: @workflow.description,
+              title: @workflow.title,
+              public: @workflow.public,
+              workflow_content: workflows(:two).workflow_content.to_json
+          }
+      }
     end
 
     assert_redirected_to workflow_path(assigns(:workflow))
@@ -238,7 +252,7 @@ class WorkflowsControllerTest < ActionController::TestCase
   end
 
   test 'should show identifiers dot org button for workflow' do
-    get :show, id: @workflow
+    get :show, params: { id: @workflow }
 
     assert_response :success
     assert_select '.identifiers-button'

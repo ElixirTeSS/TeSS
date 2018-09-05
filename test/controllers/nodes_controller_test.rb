@@ -37,8 +37,7 @@ class NodesControllerTest < ActionController::TestCase
   end
 
   test 'should get index as json-api' do
-    get :index, format: :json_api
-
+    get :index, params: { format: :json_api }
     assert_response :success
     assert_not_nil assigns(:nodes)
     body = nil
@@ -66,7 +65,7 @@ class NodesControllerTest < ActionController::TestCase
 
     assert_difference('Node.count', 1) do
       assert_difference('StaffMember.count', 1) do
-        post :create, node: @node_attributes
+        post :create, params: { node: @node_attributes }
       end
     end
 
@@ -78,7 +77,7 @@ class NodesControllerTest < ActionController::TestCase
 
     assert_no_difference('Node.count') do
       assert_no_difference('StaffMember.count') do
-        post :create, node: @node_attributes
+        post :create, params: { node: @node_attributes }
       end
     end
 
@@ -88,7 +87,7 @@ class NodesControllerTest < ActionController::TestCase
   test "should not create node if not logged-in" do
     assert_no_difference('Node.count') do
       assert_no_difference('StaffMember.count') do
-        post :create, node: @node_attributes
+        post :create, params: { node: @node_attributes }
       end
     end
 
@@ -96,29 +95,33 @@ class NodesControllerTest < ActionController::TestCase
   end
 
   test "should show node" do
-    get :show, id: @node
+    get :show, params: { id: @node }
     assert_response :success
   end
 
   test "should show node as json" do
-    get :show, id: @node, format: :json
+    get :show, params: { id: @node, format: :json }
     assert_response :success
   end
 
   test "should get edit" do
     sign_in users(:admin)
 
-    get :edit, id: @node
+    get :edit, params: { id: @node }
     assert_response :success
   end
 
   test "should update node" do
     sign_in users(:admin)
 
-    patch :update, id: @node, node: { carousel_images: @node.carousel_images, country_code: ':)',
-                                      home_page: @node.home_page, #institutions: @node.institutions,
-                                      member_status: @node.member_status, name: @node.name,
-                                      twitter: @node.twitter }
+    patch :update, params: {
+        id: @node,
+        node: { carousel_images: @node.carousel_images, country_code: ':)',
+                home_page: @node.home_page, #institutions: @node.institutions,
+                member_status: @node.member_status, name: @node.name,
+                twitter: @node.twitter
+        }
+    }
     assert_redirected_to node_path(assigns(:node))
     assert_equal ':)', assigns(:node).country_code
   end
@@ -126,13 +129,13 @@ class NodesControllerTest < ActionController::TestCase
   test "should not allow update if non-admin, non-owner" do
     sign_in users(:another_regular_user)
 
-    patch :update, id: @node, node: { country_code: ':)' }
+    patch :update, params: { id: @node, node: { country_code: ':)' } }
 
     assert_response :forbidden
   end
 
   test "should not allow update if not logged-in" do
-    patch :update, id: @node, node: { country_code: ':)' }
+    patch :update, params: { id: @node, node: { country_code: ':)' } }
 
     assert_redirected_to new_user_session_path
   end
@@ -141,19 +144,22 @@ class NodesControllerTest < ActionController::TestCase
     sign_in users(:admin)
 
     assert_difference('StaffMember.count', 1) do
-      patch :update, id: @node, node: { carousel_images: @node.carousel_images, country_code: @node.country_code,
-                                        home_page: @node.home_page, #institutions: @node.institutions,
-                                        member_status: @node.member_status, name: @node.name,
-                                        twitter: @node.twitter, staff_attributes:
-                                            {
-                                                "0" => @node.staff[0].attributes.merge(_destroy: '0' ),
-                                                "1" => @node.staff[1].attributes.merge(_destroy: '0' ),
-                                                "1256161262" => { name: 'New Staff Member',
-                                                                  email: 'nsm@example.com',
-                                                                  role: 'Training coordinator',
-                                                                  image_url: 'http://example.com/newb.png',
-                                                                  _destroy: '0'  },
-                                            }
+      patch :update, params: {
+          id: @node,
+          node: { carousel_images: @node.carousel_images, country_code: @node.country_code,
+                  home_page: @node.home_page, #institutions: @node.institutions,
+                  member_status: @node.member_status, name: @node.name,
+                  twitter: @node.twitter, staff_attributes:
+                      {
+                          "0" => @node.staff[0].attributes.merge(_destroy: '0' ),
+                          "1" => @node.staff[1].attributes.merge(_destroy: '0' ),
+                          "1256161262" => { name: 'New Staff Member',
+                                            email: 'nsm@example.com',
+                                            role: 'Training coordinator',
+                                            image_url: 'http://example.com/newb.png',
+                                            _destroy: '0'  },
+                      }
+          }
       }
     end
     assert_redirected_to node_path(assigns(:node))
@@ -164,14 +170,17 @@ class NodesControllerTest < ActionController::TestCase
     sign_in users(:admin)
 
     assert_difference('StaffMember.count', -1) do
-      patch :update, id: @node, node: { carousel_images: @node.carousel_images, country_code: @node.country_code,
-                                        home_page: @node.home_page, #institutions: @node.institutions,
-                                        member_status: @node.member_status, name: @node.name,
-                                        twitter: @node.twitter, staff_attributes:
-                                            {
-                                                "0" => @node.staff[0].attributes.merge(_destroy: '0' ),
-                                                "1" => @node.staff[1].attributes.merge(_destroy: '1' ),
-                                            }
+      patch :update, params: {
+          id: @node,
+          node: { carousel_images: @node.carousel_images, country_code: @node.country_code,
+                  home_page: @node.home_page, #institutions: @node.institutions,
+                  member_status: @node.member_status, name: @node.name,
+                  twitter: @node.twitter, staff_attributes:
+                      {
+                          "0" => @node.staff[0].attributes.merge(_destroy: '0' ),
+                          "1" => @node.staff[1].attributes.merge(_destroy: '1' ),
+                      }
+          }
       }
     end
     assert_redirected_to node_path(assigns(:node))
@@ -181,17 +190,20 @@ class NodesControllerTest < ActionController::TestCase
   test "should edit node staff via edit form" do
     sign_in users(:admin)
 
-    patch :update, id: @node, node: { carousel_images: @node.carousel_images, country_code: @node.country_code,
-                                      home_page: @node.home_page, #institutions: @node.institutions,
-                                      member_status: @node.member_status, name: @node.name,
-                                      twitter: @node.twitter, staff_attributes:
-                                          {
-                                              "0" => @node.staff[0].attributes.merge(_destroy: '0' ),
-                                              "1" => @node.staff[1].attributes.merge(_destroy: '0',
-                                                                                     name: 'Updated name',
-                                                                                     email: 'u@example.com',
-                                                                                     role: 'Nobody'),
-                                          }
+    patch :update, params: {
+        id: @node,
+        node: { carousel_images: @node.carousel_images, country_code: @node.country_code,
+                home_page: @node.home_page, #institutions: @node.institutions,
+                member_status: @node.member_status, name: @node.name,
+                twitter: @node.twitter, staff_attributes:
+                    {
+                        "0" => @node.staff[0].attributes.merge(_destroy: '0' ),
+                        "1" => { _destroy: '0',
+                                 name: 'Updated name',
+                                 email: 'u@example.com',
+                                 role: 'Nobody' },
+                    }
+        }
     }
 
     assert_redirected_to node_path(assigns(:node))
@@ -205,7 +217,7 @@ class NodesControllerTest < ActionController::TestCase
     sign_in users(:admin)
 
     assert_difference('Node.count', -1) do
-      delete :destroy, id: @node
+      delete :destroy, params: { id: @node }
     end
 
     assert_redirected_to nodes_path

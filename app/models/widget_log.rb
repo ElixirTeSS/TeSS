@@ -1,4 +1,4 @@
-class WidgetLog < ActiveRecord::Base
+class WidgetLog < ApplicationRecord
 
   belongs_to :resource, polymorphic: true
 

@@ -20,8 +20,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'should get index as json-api' do
-    get :index, format: :json_api
-
+    get :index, params: { format: :json_api }
     assert_response :success
     assert_not_nil assigns(:users)
     body = nil
@@ -48,51 +47,52 @@ class UsersControllerTest < ActionController::TestCase
   test "should be able to create user whilst logged in as admin" do
     sign_in users(:admin) # should this be restricted to admins?
     assert_difference('User.count') do
-      post :create, user: { username: 'frank', email: 'frank@notarealdomain.org', password: 'franksreallylongpass'}
+      post :create, params: {
+          user: { username: 'frank', email: 'frank@notarealdomain.org', password: 'franksreallylongpass'}
+      }
     end
     assert_redirected_to user_path(assigns(:user))
   end
 
   test "should not be able create user if not admin" do #because you use users#sign_up in devise
     assert_no_difference('User.count') do
-      post :create, user: { username: 'frank', email: 'frank@notarealdomain.org', password: 'franksreallylongpass'}
+      post :create, params: { user: { username: 'frank', email: 'frank@notarealdomain.org', password: 'franksreallylongpass'} }
     end
     assert_redirected_to new_user_session_path
     sign_in users(:regular_user)
     assert_no_difference('User.count') do
-      post :create, user: { username: 'frank', email: 'frank@notarealdomain.org', password: 'franksreallylongpass'}
+      post :create, params: { user: { username: 'frank', email: 'frank@notarealdomain.org', password: 'franksreallylongpass'} }
     end
     assert_response :forbidden
   end
 
   test "should show user if admin" do
     sign_in users(:admin)
-    get :show, id: @user
+    get :show, params: { id: @user }
     assert_response :success
   end
 
   test "should show other users page if not admin or self" do
     sign_in users(:another_regular_user)
-    get :show, id: @user
+    get :show, params: { id: @user }
     assert_response :success #FORBIDDEN PAGE!?
   end
 
   test "should show user with email address as username" do
     user = users(:email_address_user)
     sign_in user
-    get :show, id: user
+    get :show, params: { id: user }
     assert_response :success
   end
 
   test "should show user as json" do
     sign_in users(:another_regular_user)
-    get :show, id: @user, format: 'json'
+    get :show, params: { id: @user, format: 'json' }
     assert_response :success #FORBIDDEN PAGE!?
   end
 
   test 'should show user as json-api' do
-    get :show, id: @user, format: :json_api
-
+    get :show, params: { id: @user, format: :json_api }
     assert_response :success
     assert assigns(:user)
 
@@ -107,28 +107,28 @@ class UsersControllerTest < ActionController::TestCase
 
   test "should only allow edit for admin and self" do
     sign_in users(:regular_user)
-    get :edit, id: @user
+    get :edit, params: { id: @user }
     assert_response :success
 
     sign_in users(:admin)
-    get :edit, id: @user
+    get :edit, params: { id: @user }
     assert_response :success
 
     sign_in users(:another_regular_user)
-    get :edit, id: @user
+    get :edit, params: { id: @user }
     #assert_redirected_to root_path
   end
 
   test "should update profile" do
     sign_in users(:regular_user)
-    patch :update, id: @user, user: { profile_attributes: { email: 'hot@mail.com'}}
+    patch :update, params: { id: @user, user: { profile_attributes: { email: 'hot@mail.com'} } }
     assert_redirected_to user_path(assigns(:user))
   end
 
   test "should reset token" do
     sign_in users(:regular_user)
     old_token = @user.authentication_token
-    patch :change_token, id: @user
+    patch :change_token, params: { id: @user }
     new_token = User.find_by_username('Bob').authentication_token
     assert_not_equal old_token, new_token
   end
@@ -143,7 +143,7 @@ class UsersControllerTest < ActionController::TestCase
     User.get_default_user
 
     assert_difference('User.count', -1) do
-      delete :destroy, id: @user
+      delete :destroy, params: { id: @user }
     end
     assert_redirected_to users_path
   end
@@ -152,7 +152,7 @@ class UsersControllerTest < ActionController::TestCase
     sign_in @admin
     assert_not_equal roles(:admin), @user.role
 
-    patch :update, id: @user, user: { role_id: roles(:admin).id }
+    patch :update, params: { id: @user, user: { role_id: roles(:admin).id } }
 
     assert_redirected_to user_path(assigns(:user))
     assert_equal roles(:admin), assigns(:user).role
@@ -162,7 +162,7 @@ class UsersControllerTest < ActionController::TestCase
     sign_in @admin
     assert_not_equal roles(:admin), @user.role
 
-    patch :update, id: @user, user: { role_id: roles(:admin).id }, format: :js
+    patch :update, params: { id: @user, user: { role_id: roles(:admin).id }, format: :js }
 
     assert_response :success
     assert_equal roles(:admin), assigns(:user).role
@@ -172,7 +172,7 @@ class UsersControllerTest < ActionController::TestCase
     sign_in @user
     assert_not_equal roles(:admin), @user.role
 
-    patch :update, id: @user, user: { profile_attributes: { firstname: 'George' }, role_id: roles(:admin).id }
+    patch :update, params: { id: @user, user: { profile_attributes: { firstname: 'George' }, role_id: roles(:admin).id } }
 
     assert_redirected_to user_path(assigns(:user))
     assert_not_equal roles(:admin), assigns(:user).role
@@ -183,7 +183,7 @@ class UsersControllerTest < ActionController::TestCase
     sign_in users(:curator)
     assert_not_equal roles(:curator), @user.role
 
-    patch :update, id: @user, user: { profile_attributes: { firstname: 'George' }, role_id: roles(:admin).id }
+    patch :update, params: { id: @user, user: { profile_attributes: { firstname: 'George' }, role_id: roles(:admin).id } }
 
     assert_response :forbidden
     assert_not_equal roles(:curator), assigns(:user).role
@@ -193,7 +193,7 @@ class UsersControllerTest < ActionController::TestCase
   test 'should show ban info to admin' do
     user = users(:shadowbanned_user)
     sign_in users(:admin)
-    get :show, id: user
+    get :show, params: { id: user }
     assert_response :success
     assert_select '.ban-info', count: 1
   end
@@ -201,7 +201,7 @@ class UsersControllerTest < ActionController::TestCase
   test 'should not show ban info to user' do
     user = users(:shadowbanned_user)
     sign_in user
-    get :show, id: user
+    get :show, params: { id: user }
     assert_response :success
     assert_select '.ban-info', count: 0
   end

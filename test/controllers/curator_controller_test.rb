@@ -48,8 +48,7 @@ class CuratorControllerTest < ActionController::TestCase
     assert_includes assigns(:users), users(:unverified_user)
     assert_equal roles(:unverified_user), assigns(:role)
 
-    get :users, role: :basic_user
-
+    get :users, params: { role: :basic_user }
     assert_response :success
     assert_not_includes assigns(:users), users(:basic_user)
     assert_not_equal roles(:basic_user), assigns(:role)
@@ -64,8 +63,7 @@ class CuratorControllerTest < ActionController::TestCase
     assert_includes assigns(:users), users(:unverified_user)
     assert_equal roles(:unverified_user), assigns(:role)
 
-    get :users, role: :basic_user
-
+    get :users, params: { role: :basic_user }
     assert_response :success
     assert_includes assigns(:users), users(:basic_user)
     assert_equal roles(:basic_user), assigns(:role)
@@ -110,10 +108,11 @@ class CuratorControllerTest < ActionController::TestCase
 
   def add_topic_activity(resource, topic, user)
     log_params = { uri: topic.uri,
+                   field: 'topics',
                    name: topic.preferred_label }
 
     resource.edit_suggestion.accept_suggestion('scientific_topics', topic)
-    resource.create_activity :add_topic,
+    resource.create_activity :add_term,
                              owner: user,
                              recipient: resource.user,
                              parameters: log_params

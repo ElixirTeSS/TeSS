@@ -1,7 +1,7 @@
 class CollaborationsController < ApplicationController
 
-  before_filter :get_resource
-  before_filter :authorize_resource
+  before_action :get_resource
+  before_action :authorize_resource
 
   respond_to :json
 

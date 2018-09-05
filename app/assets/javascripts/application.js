@@ -76,13 +76,16 @@ function reposition_tiles(container, tile_class){
     });
 }
 
-$(document).ready(function () {
+
+document.addEventListener("turbolinks:load", function() {
 
     // Show the tab associated with the window location hash (e.g. "#packages")
     if (window.location.hash) {
         var tab = $('ul.nav a[href="' + window.location.hash + '"]');
         if (tab.length) {
-            tab.tab('show');
+            // This terrible hack gets around the fact that event handlers in view templates get bound after the
+            // `tab.tab('show')` executes, so nothing happens.
+            setTimeout(function () { tab.tab('show') }, 50);
         }
     }
 
@@ -248,7 +251,8 @@ $(document).ready(function () {
                 return (this.bottom = $('.footer').outerHeight(true))
             }
         }
-    })
+    });
 
-
+    $("a[rel~=popover], .has-popover").popover();
+    $("a[rel~=tooltip], .has-tooltip").tooltip();
 });

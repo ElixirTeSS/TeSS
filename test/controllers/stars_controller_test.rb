@@ -9,7 +9,7 @@ class StarsControllerTest < ActionController::TestCase
     material = materials(:good_material)
 
     assert_difference('Star.count') do
-      post :create, star: { resource_id: material.id, resource_type: material.class.name }, format: :json
+      post :create, params: { star: { resource_id: material.id, resource_type: material.class.name }, format: :json }
     end
 
     assert_response :success
@@ -22,7 +22,7 @@ class StarsControllerTest < ActionController::TestCase
     user.stars.create(resource: material)
 
     assert_no_difference('Star.count') do
-      post :create, star: { resource_id: material.id, resource_type: material.class.name }, format: :json
+      post :create, params: { star: { resource_id: material.id, resource_type: material.class.name }, format: :json }
     end
 
     assert_response :success
@@ -35,7 +35,7 @@ class StarsControllerTest < ActionController::TestCase
     user.stars.create(resource: material)
 
     assert_difference('Star.count', -1) do
-      delete :destroy, star: { resource_id: material.id, resource_type: material.class.name }, format: :json
+      delete :destroy, params: { star: { resource_id: material.id, resource_type: material.class.name }, format: :json }
     end
 
     assert_response :success
@@ -45,7 +45,7 @@ class StarsControllerTest < ActionController::TestCase
     material = materials(:good_material)
 
     assert_no_difference('Star.count') do
-      post :create, star: { resource_id: material.id, resource_type: material.class.name }, format: :json
+      post :create, params: { star: { resource_id: material.id, resource_type: material.class.name }, format: :json }
     end
 
     assert_response :unauthorized
@@ -54,10 +54,9 @@ class StarsControllerTest < ActionController::TestCase
   test "cannot create bad star" do
     user = users(:regular_user)
     sign_in user
-    material = materials(:good_material)
 
     assert_no_difference('Star.count') do
-      post :create, star: { resource_id: material.id, resource_type: 'Benjamin' }, format: :json
+      post :create, params: { star: { resource_id: Material.maximum(:id) + 1, resource_type: 'Material' }, format: :json }
     end
 
     assert_response :unprocessable_entity

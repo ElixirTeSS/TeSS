@@ -4,7 +4,7 @@
   opts = [[nil, '']]
   opts += Subscription::FREQUENCY.map { |f| [f[:title], f[:title]] }
   opts.map! do |age, text|
-    new_params = params.dup
+    new_params = search_and_facet_params
     if age
       new_params[:max_age] = age
       text = "In the last #{text}"
@@ -18,7 +18,7 @@
     [text, url]
   end
 
-  blank_params = params.dup
+  blank_params = search_and_facet_params
   blank_params.delete(:max_age)
 %>
 

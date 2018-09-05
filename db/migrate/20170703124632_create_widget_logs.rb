@@ -1,4 +1,4 @@
-class CreateWidgetLogs < ActiveRecord::Migration
+class CreateWidgetLogs < ActiveRecord::Migration[4.2]
   def change
     create_table :widget_logs do |t|
       t.string :widget_name

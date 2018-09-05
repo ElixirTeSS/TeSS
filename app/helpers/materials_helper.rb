@@ -11,19 +11,19 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
   # Returns an array of two-element arrays of licences ready to be used in options_for_select() for generating option/select tags
   # [['Licence 1 full name','Licence 1 abbreviation'], ['Licence 2 full name','Licence 2 abbreviation'], ...]
   def licence_options_for_select
-    Tess::LicenceDictionary.instance.options_for_select
+    LicenceDictionary.instance.options_for_select
   end
 
   def licence_name_for_abbreviation(licence)
-    Tess::LicenceDictionary.instance.lookup_value(licence, 'title')
+    LicenceDictionary.instance.lookup_value(licence, 'title')
   end
 
   def difficulty_options_for_select
-    Tess::DifficultyDictionary.instance.options_for_select
+    DifficultyDictionary.instance.options_for_select
   end
 
   def difficulty_name_for_abbreviation(difficulty)
-    Tess::DifficultyDictionary.instance.lookup_value(difficulty, 'title')
+    DifficultyDictionary.instance.lookup_value(difficulty, 'title')
   end
 
   def scientific_topic_names_for_autocomplete

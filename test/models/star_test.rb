@@ -30,13 +30,6 @@ class StarTest < ActiveSupport::TestCase
     assert star2.valid?
   end
 
-  test 'cannot create star with invalid type' do
-    star = Star.new(resource_id: materials(:good_material).id, resource_type: 'Benjamin', user: users(:regular_user))
-
-    refute star.valid?
-    assert star.errors[:resource_type].any?
-  end
-
   test 'cannot create star of non-existent resource' do
     star = Star.new(resource_id: Material.maximum(:id) + 1, resource_type: 'Material', user: users(:regular_user))
 

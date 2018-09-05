@@ -33,7 +33,7 @@ class ApplicationSerializer < ActiveModel::Serializer
   private
 
   def pundit_user
-    CurrentContext.new(current_user, @request)
+    Pundit::CurrentContext.new(current_user, @request)
   end
 
   def ontology_terms(type)

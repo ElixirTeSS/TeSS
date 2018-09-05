@@ -1,4 +1,4 @@
-class AddUserToMaterialsAsProperReference < ActiveRecord::Migration
+class AddUserToMaterialsAsProperReference < ActiveRecord::Migration[4.2]
   def change
     # Remove the old user_id column
     remove_column :materials, :user_id, :integer

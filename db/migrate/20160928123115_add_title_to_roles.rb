@@ -1,4 +1,4 @@
-class AddTitleToRoles < ActiveRecord::Migration
+class AddTitleToRoles < ActiveRecord::Migration[4.2]
   def up
     add_column :roles, :title, :string
 

@@ -1,4 +1,4 @@
-class CreateContentProviders < ActiveRecord::Migration
+class CreateContentProviders < ActiveRecord::Migration[4.2]
   def change
     create_table :content_providers do |t|
       t.text :title

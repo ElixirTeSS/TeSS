@@ -53,6 +53,6 @@ var UrlChecker = {
     }
 };
 
-$(document).ready(function () {
+document.addEventListener("turbolinks:load", function() {
     $('[data-url-check]').blur(UrlChecker.check);
 });

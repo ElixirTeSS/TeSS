@@ -1,4 +1,4 @@
-class DropVersions < ActiveRecord::Migration
+class DropVersions < ActiveRecord::Migration[4.2]
   def change
     drop_table 'versions' do |t|
       t.string 'item_type', null: false

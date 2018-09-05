@@ -1,4 +1,4 @@
-class FixDataFieldsInEditSuggestions < ActiveRecord::Migration
+class FixDataFieldsInEditSuggestions < ActiveRecord::Migration[4.2]
   class EditSuggestion < ActiveRecord::Base
   end
 
