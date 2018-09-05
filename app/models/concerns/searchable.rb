@@ -1,5 +1,4 @@
 module Searchable
-
   # Associations that are used on the index pages. Eager load them to prevent N+1 queries.
   EAGER_LOADABLE = [:content_provider, :ontology_term_links, :edit_suggestion, :materials, :events,
                     :training_coordinators].freeze
@@ -8,11 +7,16 @@ module Searchable
 
   class_methods do
     def facet_keys
-      facet_fields | Facets.special
+      @facet_keys ||= (facet_fields | Facets.special) # Memoize things like this so we don't have to recompute in each request.
+    end
+
+    # Allows multiple of the same param, i.e. operations=bla foo operations[]=foo&operations[]=bar
+    def facet_keys_with_multiple
+      @facet_keys_with_multiple ||= (facet_keys | facet_keys.map { |key| { key => [] } })
     end
 
     def search_and_facet_keys
-      [:q] | facet_keys
+      @search_and_facet_keys ||= ([:q] | facet_keys_with_multiple)
     end
 
     def search_and_filter(user, search_params = '', selected_facets = {}, page: 1, sort_by: nil, per_page: 30)
@@ -122,5 +126,4 @@ module Searchable
     end
     false
   end
-
 end
