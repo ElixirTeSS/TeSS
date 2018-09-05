@@ -1178,4 +1178,22 @@ class EventsControllerTest < ActionController::TestCase
       TeSS::Config.identifiers_prefix = prefix
     end
   end
+
+  test 'Filters facet parameters correctly' do
+    get :index, params: { q: 'search',
+                          id: 'what am i doing',
+                          keywords: 'foo',
+                          fish: 'not a valid parameter',
+                          country: ['France', 'Germany'] }
+
+    # Facet params
+    assert_equal 2, assigns(:facet_params).keys.length
+    assert_equal 'foo', assigns(:facet_params)['keywords']
+    assert_equal ['France', 'Germany'], assigns(:facet_params)['country']
+    assert_nil assigns(:facet_params)['fish']
+    assert_nil assigns(:facet_params)['id']
+
+    # Search params
+    assert_equal 'search', assigns(:search_params)
+  end
 end

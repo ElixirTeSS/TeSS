@@ -33,7 +33,7 @@ module SearchableIndex
 
   def set_params
     @model = controller_name.classify.constantize
-    @facet_params = params.permit(*@model.facet_keys).to_h
+    @facet_params = params.permit(*@model.facet_keys_with_multiple).to_h
     @search_params = params[:q] || ''
     @sort_by = params[:sort].blank? ? 'default' : params[:sort]
   end
