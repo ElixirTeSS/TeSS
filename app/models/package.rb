@@ -25,7 +25,7 @@ class Package < ApplicationRecord
   clean_array_fields(:keywords)
   update_suggestions(:keywords)
 
-  has_image(placeholder: "/assets/placeholder-package.png")
+  has_image(placeholder: 'placeholder-package.png')
 
   if TeSS::Config.solr_enabled
     # :nocov:
