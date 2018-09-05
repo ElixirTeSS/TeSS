@@ -2,7 +2,7 @@ unless defined?(PublicActivity::Activity)
   class PublicActivity::Activity < ActiveRecord::Base; end
 end
 
-class UpdateTopicActivities < ActiveRecord::Migration
+class UpdateTopicActivities < ActiveRecord::Migration[4.2]
   def up
     puts 'Updating old "*_topic" activities'
     ['event', 'material'].each do |type|
