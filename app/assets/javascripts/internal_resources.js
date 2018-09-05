@@ -77,7 +77,7 @@ var InternalResources = {
         obj.parent().parent().fadeOut();
     },
     queryAPI: function(url){
-        console.log("QUERYING: " + url);
+        //console.log("QUERYING: " + url);
         $('.loading_image').show();
         $.ajax({url: url,
             type: 'GET',
@@ -101,7 +101,7 @@ var InternalResources = {
             var url = '/' + record_type + '/';
             // TODO: Come up with some decent icon choices here...
             if (record_type == 'materials') {
-                var iconclass = "fa-list-alt";
+                var iconclass = "fa-book";
             } else {
                 var iconclass = "fa-list-alt";
             }
@@ -109,7 +109,7 @@ var InternalResources = {
                 '<div id="' + item.id + '" class="col-md-12 col-sm-12 bounding-box" data-toggle=\"tooltip\" data-placement=\"top\" aria-hidden=\"true\" title=\"' + item.attributes['short-description'] + '\">' +
                 '<h4>' +
                 '<i class="fa ' +  iconclass + '"></i> ' +
-                '<a href="' + url + '">' +
+                '<a href="' + url + item.id + '" target="_blank">' +
                 '<span class="title">' +
                 item.attributes.title +
                 '</span>' +
@@ -119,7 +119,7 @@ var InternalResources = {
                 'title="click to associate ' + item.attributes.title + ' with this resource"' +
                 'data-title="' + item.attributes.title + '" data-url="' + url + '"/>' +
                 '</h4>' +
-                '<span>' + item.attributes['short-description'] + '</span>' +
+                '<span>' + truncateWithEllipses(item.attributes['short-description'], 600) + '</span>' +
                 '<div class="external-links">' +
                 '<a class="btn btn-warning" target="_blank" href="' + url + item.id +'">' +
                 'View ' + '<i class="fa fa-external-link"/></a>' +
@@ -136,7 +136,8 @@ function delete_internal_resource(id) {
     $('#' + id).remove();
 }
 
-$(document).ready(function () {
+
+document.addEventListener("turbolinks:load", function() {
     $(document).on('click', '.delete-internal-resource', function () {
         return false;
     });
@@ -145,5 +146,20 @@ $(document).ready(function () {
     $('#next-materials-button').click(InternalResources.nextPage);
     $('#prev-materials-button').click(InternalResources.prevPage);
     $('#materials-results').on('click','.associate-resource', InternalResources.associateResource);
-    //$('#search_materials').click(InternalResources.search('materials'));
+    $('#materials_query').on({
+        keyup: function() {
+            if ($('#materials_query').val().length >= 3) {
+                delay(function(){
+                    InternalResources.search('materials');
+                }, 1000 );
+            }
+        },
+        keydown: function search(e) {
+            if (e.keyCode === 13) {
+                InternalResources.search('materials');
+                e.preventDefault();
+                return false;
+            }
+        }
+    });
 });

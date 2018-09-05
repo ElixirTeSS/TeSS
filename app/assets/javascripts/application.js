@@ -256,3 +256,8 @@ document.addEventListener("turbolinks:load", function() {
     $("a[rel~=popover], .has-popover").popover();
     $("a[rel~=tooltip], .has-tooltip").tooltip();
 });
+
+function truncateWithEllipses(text, max)
+{
+    return text.substr(0,max-1)+(text.length>max?'&hellip;':'');
+}

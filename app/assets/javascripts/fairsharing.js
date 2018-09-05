@@ -118,7 +118,7 @@ var Fairsharing = {
                 'title="click to associate ' + item.name + ' with this resource"' +
                 'data-title="' + item.name + '" data-url="' + url + '"/>' +
                 '</h4>' +
-                '<span>' + item.description + '</span>' +
+                '<span>' + truncateWithEllipses(item.description, 500)  + '</span>' +
                 '<div class="external-links">' +
                 '<a class="btn btn-warning" target="_blank" href="' + Fairsharing.websiteBaseURL() + '/' + id +'">' +
                 'View ' + item.name + ' on FAIRsharing ' +
@@ -199,13 +199,23 @@ document.addEventListener("turbolinks:load", function() {
     $('.loading_image').hide();
     $('#next-bs-button').click(Fairsharing.nextPage);
     $('#prev-bs-button').click(Fairsharing.prevPage);
-    $('#fairsharing_query').keyup(function() {
-        delay(function(){
-            Fairsharing.search();
-        }, 1000 );
+    $('#fairsharing_query').on({
+        keyup: function () {
+            delay(function () {
+                Fairsharing.search();
+            }, 1000);
+        },
+        keydown: function search(e) {
+            if (e.keyCode === 13) {
+                Fairsharing.search();
+                e.preventDefault();
+                return false;
+            }
+        }
     });
     $('#search_fairsharing').click(Fairsharing.search);
     $('#fairsharing-results').on('click','.associate-tool', Fairsharing.associateTool);
     $('#external-resources').on('change', '.delete-external-resource-btn input.destroy-attribute', ExternalResources.delete);
     Fairsharing.titleElement().blur(Fairsharing.copyTitleAndSearch);
 });
+
