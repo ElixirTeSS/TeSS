@@ -1,0 +1,25 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "identifier": "TeSS",
+  "description": "Browsing, discovering and organising life sciences training resources, aggregated from ELIXIR nodes and 3rd-party providers.",
+  "name": "TeSS: ELIXIR's Training e-Support Service",
+  "codeRepository": "https://github.com/ElixirTess/TeSS",
+  "issueTracker": "https://github.com/ElixirTess/TeSS/issues",
+  "license": "https://opensource.org/licenses/BSD-3-Clause",
+  "version": "1.0",
+  "author": [
+
+  ],
+  "contIntegration": "https://travis-ci.org/ElixirTeSS/TeSS",
+  "developmentStatus": "active",
+  "downloadUrl": "https://github.com/ElixirTeSS/TeSS/archive/master.zip",
+  "keywords": [
+    "training",
+    "software"
+  ],
+  "softwareVersion":"1.0",
+  "dateCreated":"2015-09-25",
+  "datePublished":"2015-09-25",
+  "programmingLanguage": "Ruby"
+}
