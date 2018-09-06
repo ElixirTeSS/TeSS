@@ -89,7 +89,11 @@
       <%= f.check_box :for_profit %>
     </div>
 
-    <%= f.autocompleter :materials %>
+    <%= f.internal_resource :materials %>
+
+    <div class="row">
+      <%= render partial: 'common/materials_suggestions', locals: { title_element: 'event_title' } %>
+    </div>
 
     <div class="form-group" id="external-resources">
       <%= f.label :external_resources %>
@@ -100,6 +104,10 @@
             <%= render partial: 'common/external_resource_form',
                        locals: { form_name: 'event', index: index, external_resource: external_resource } %>
         <% end %>
+      </div>
+
+      <div class="row">
+        <%= render :partial => 'common/fairsharing_suggestions', :locals => {:title_element => 'material_title'} %>
       </div>
 
       <div class="row">

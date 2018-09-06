@@ -76,6 +76,7 @@ function reposition_tiles(container, tile_class){
     });
 }
 
+
 document.addEventListener("turbolinks:load", function() {
 
     // Show the tab associated with the window location hash (e.g. "#packages")
@@ -128,6 +129,8 @@ document.addEventListener("turbolinks:load", function() {
         $(this).parents('li').remove();
         return false;
     });
+
+
 
     // Masonry
     $('.nav-tabs a').on("shown.bs.tab", function(e) {
@@ -253,3 +256,8 @@ document.addEventListener("turbolinks:load", function() {
     $("a[rel~=popover], .has-popover").popover();
     $("a[rel~=tooltip], .has-tooltip").tooltip();
 });
+
+function truncateWithEllipses(text, max)
+{
+    return text.substr(0,max-1)+(text.length>max?'&hellip;':'');
+}

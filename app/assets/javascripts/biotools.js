@@ -63,7 +63,7 @@ var Biotools = {
                     'data-title="' + item.name + '" data-url="' + url + '"/>' +
                 '</h4>' +
                 '<p>' + types + '</p>' +
-                '<span>' + item.description + '</span>' +
+                '<span>' + truncateWithEllipses(item.description, 600) + '</span>' +
                     '<div class="external-links">' +
                         '<a class="btn btn-warning" target="_blank" href="' + Biotools.websiteBaseURL() + '/' + item.id +'">' +
                         'View ' + item.name + ' on bio.tools ' +
