@@ -54,8 +54,10 @@ document.addEventListener("turbolinks:load", function() {
         });
 
         // Render the existing associations on page load
-        for (var i = 0; i < existing.length; i++) {
-            listElement.append(HandlebarsTemplates['multi_input/field']({ prefix: prefix, value: existing[i]}));
+        if (!listElement.children('.multiple-list-item').length) {
+            for (var i = 0; i < existing.length; i++) {
+                listElement.append(HandlebarsTemplates['multi_input/field']({ prefix: prefix, value: existing[i]}));
+            }
         }
     });
 
