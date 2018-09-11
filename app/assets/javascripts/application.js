@@ -155,8 +155,10 @@ document.addEventListener("turbolinks:load", function() {
         var templateName = $(this).data('template') || 'autocompleter/resource';
 
         // Render the existing associations on page load
-        for (var i = 0; i < existingValues.length; i++) {
-            listElement.append(HandlebarsTemplates[templateName](existingValues[i]));
+        if (!listElement.children('li').length) {
+            for (var i = 0; i < existingValues.length; i++) {
+                listElement.append(HandlebarsTemplates[templateName](existingValues[i]));
+            }
         }
 
         inputElement.autocomplete({
