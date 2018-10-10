@@ -268,7 +268,7 @@ Devise.setup do |config|
         discovery: false,
         send_nonce: true,
         client_signing_alg: :RS256,
-        client_jwk_signing_key: '{"keys":[{"kty":"RSA","e":"AQAB","kid":"rsa1","alg":"RS256","n":"yUt09EkKGW30jpggX1PYqrxuUw4Fo7a_uMiNvmy8CwBLfo-BgaI35Qi-ke_Dz9784CmNXjlIzNPFq-DUi-8pBDGAJ5hznfEoQI2TDzdiG7uIART4AEpLo9xCKrL1al37jrDmvgk98gbumnHsWKQb7KFRKHpIBvNVQ6v-z3nOQZ-fl1552S750ZSIfTXWXqlZohLVE9K8JwsM9i9z7h5EBU2cJkxPbFoZEs6zGMFEOohiAA99Nm7cW_3m3dCn-Nm5TJadEt_xR08b2GXhcg-tAC7qoBthpDFnUOrLbwvNWQIyE-Mch-z4-5LVTfElOGRem2tZaqYcMG_mY6EBra8pUw"}]}',
+        client_jwk_signing_key: '{"keys":[{"kty":"RSA","e":"AQAB","kid":"rsa1","alg":"RS256","n":"uVHPfUHVEzpgOnDNi3e2pVsbK1hsINsTy_1mMT7sxDyP-1eQSjzYsGSUJ3GHq9LhiVndpwV8y7Enjdj0purywtwk_D8z9IIN36RJAh1yhFfbyhLPEZlCDdzxas5Dku9k0GrxQuV6i30Mid8OgRQ2q3pmsks414Afy6xugC6u3inyjLzLPrhR0oRPTGdNMXJbGw4sVTjnh5AzTgX-GrQWBHSjI7rMTcvqbbl7M8OOhE3MQ_gfVLXwmwSIoKHODC0RO-XnVhqd7Qf0teS1JiILKYLl5FS_7Uy2ClVrAYd2T6X9DIr_JlpRkwSD899pq6PR9nhKguipJE0qUXxamdY9nw"}]}',
         client_options: {
             identifier: Rails.application.secrets.elixir_aai[:client_id],
             secret: Rails.application.secrets.elixir_aai[:secret],
