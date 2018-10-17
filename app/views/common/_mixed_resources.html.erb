@@ -1,44 +1,42 @@
+<div class="list-card">
+  <%= link_to(resource.title, resource, class: 'list-card-heading') %>
+  <p class>
+    <%= scrape_status_icon(resource) if current_user and current_user.is_admin? %>
+    <%= missing_icon(resource) if current_user and current_user.is_admin? %>
+  </p>
 
-    <div class="list-group-item">
-      <div class="list-group-item-heading"><%= link_to(resource.title, resource, class: "btn btn-default btn-block") %></div>
-
-      <p class>
-        <%= scrape_status_icon(resource) if current_user and current_user.is_admin? %>
-        <%= missing_icon(resource) if current_user and current_user.is_admin? %>
-      </p>
-
-      <div class="row" style="margin: 0px;">
-        <div class="col-md-1">
-          <div class="resource_type_icon">
-            <% if resource.class == Event %>
-                <%= icon_for(:event, :large) %>
-            <% elsif resource.class == Material %>
-                <%= icon_for(:material, :large) %>
-            <% end %>
-          </div>
-        </div>
-        <div class="col-md-10 latest_resource_description">
-          <% if resource.respond_to? 'short_description' %>
-              <%= truncate(resource.short_description, length: 300, separator: ' ') %>
-          <% else %>
-              <%= truncate(resource.description, length: 300, separator: ' ') %>
-          <% end %>
-        </div>
-        <div class="col-md-1 pull-right">
-          <% if resource.content_provider %>
-              <%= link_to resource.content_provider, :class=>"pull-right" do %>
-                  <%= image_tag(resource.content_provider.image.url, :class => "small-content-provider-logo") %>
-              <% end %>
-          <% end %>
-        </div>
-
-      </div>
-      <div class="row">
-          <%= display_attribute(resource, :scientific_topics){|values|
-          values.map{|x| "<span class=\"scientific_topic\">#{x.preferred_label.to_s}</span>"}.join(', ')
-        } %>
-
-        <%= display_attribute(resource, :keywords){|values| values.join(', ')} if resource.keywords.any? %>
-        <%= yield %>
+  <div class="row" style="margin: 0px;">
+    <div class="col-md-1">
+      <div class="resource_type_icon">
+        <% if resource.class == Event %>
+          <%= icon_for(:event, :large) %>
+        <% elsif resource.class == Material %>
+          <%= icon_for(:material, :large) %>
+        <% end %>
       </div>
     </div>
+    <div class="col-md-10 latest_resource_description">
+      <% if resource.respond_to? 'short_description' %>
+        <%= truncate(resource.short_description, length: 300, separator: ' ') %>
+      <% else %>
+        <%= truncate(resource.description, length: 300, separator: ' ') %>
+      <% end %>
+    </div>
+    <div class="col-md-1 pull-right">
+      <% if resource.content_provider %>
+        <%= link_to resource.content_provider, :class=>"pull-right" do %>
+          <%= image_tag(resource.content_provider.image.url, :class => "small-content-provider-logo") %>
+        <% end %>
+      <% end %>
+    </div>
+
+  </div>
+  <div class="row">
+    <%= display_attribute(resource, :scientific_topics){|values|
+      values.map{|x| "<span class=\"scientific_topic\">#{x.preferred_label.to_s}</span>"}.join(', ')
+    } %>
+
+    <%= display_attribute(resource, :keywords){|values| values.join(', ')} if resource.keywords.any? %>
+    <%= yield %>
+  </div>
+</div>

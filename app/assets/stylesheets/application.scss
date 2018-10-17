@@ -532,21 +532,20 @@ ul.featureblocks {
 
   form {
     padding-right: 10px;
-    background-color: #f8f8f8;
+    background-color: #fff;
     text-align: center;
     line-height: 2;
     font-size: large;
     margin: auto;
     max-width: 800px;
+    border: 1px solid #ccc;
 
     .searchbox-wrapper {
       display: flex;
     }
 
     .searchbox-field {
-      border-width: 0;
-      border-style: solid;
-      border-color: #ccc;
+      border: none;
       background: transparent;
       padding: 15px 15px 15px 25px;
       flex: 1;
@@ -955,4 +954,19 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
 .funding-logo{
   width: 100px;
   margin: 15px;
+}
+
+.list-card {
+  @include floating-card;
+  margin-bottom: 10px;
+  position: relative;
+  display: block;
+  padding: 10px 15px;
+
+  .list-card-heading {
+    display: block;
+    padding: 5px 0;
+    font-size: 16px;
+    line-height: 1.3;
+  }
 }

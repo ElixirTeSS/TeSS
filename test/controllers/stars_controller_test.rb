@@ -72,6 +72,6 @@ class StarsControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_select '#materials div.search-results-count', text: "1 Material", count: 1
-    assert_select '#materials a.btn-block[href=?]', material_path(material), text: material.title, count: 1
+    assert_select '#materials a.list-card-heading[href=?]', material_path(material), text: material.title, count: 1
   end
 end

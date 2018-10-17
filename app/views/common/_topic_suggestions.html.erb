@@ -1,27 +1,25 @@
 <% suggestions.each do |suggestion| %>
+  <div class="list-card">
+    <%= link_to(suggestion.material.title, suggestion, class: 'list-card-heading') %>
 
-    <div class="list-group-item">
-      <div class="list-group-item-heading"><%= link_to(suggestion.material.title, suggestion, class: "btn btn-default btn-block") %></div>
-
-      <div class="row" style="margin: 0px;">
-        <div class="col-md-1">
-          <div class="suggestion_type_icon">
-           <%= icon_for(:suggestion, :large) %>
-          </div>
-        </div>
-        <div class="col-md-10 latest_suggestion_description">
-           <%=  sugestion.material.short_description %>
+    <div class="row" style="margin: 0px;">
+      <div class="col-md-1">
+        <div class="suggestion_type_icon">
+          <%= icon_for(:suggestion, :large) %>
         </div>
       </div>
-      <div class="row">
-        <%= suggestion.scientific_topics {|values| values.map{|x| x.preferred_label}.join(', ')}-%>
-        <% days = ((Time.now - suggestion.created_at) / 1.day).to_i %>
-        <% if days == 0 %>
-            <div class="days_ago_text">Added to TeSS today </div>
-        <% else %>
-            <div class="days_ago_text">Added to TeSS <%= pluralize(days, "day") %> ago</div>
-        <% end %>
+      <div class="col-md-10 latest_suggestion_description">
+        <%=  sugestion.material.short_description %>
       </div>
     </div>
-
+    <div class="row">
+      <%= suggestion.scientific_topics {|values| values.map{|x| x.preferred_label}.join(', ')}-%>
+      <% days = ((Time.now - suggestion.created_at) / 1.day).to_i %>
+      <% if days == 0 %>
+        <div class="days_ago_text">Added to TeSS today </div>
+      <% else %>
+        <div class="days_ago_text">Added to TeSS <%= pluralize(days, "day") %> ago</div>
+      <% end %>
+    </div>
+  </div>
 <% end %>

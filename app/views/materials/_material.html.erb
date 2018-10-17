@@ -1,5 +1,5 @@
-<div class="list-group-item">
-  <div class="list-group-item-heading"><%= link_to(material.title, material, class: "btn btn-default btn-block") %></div>
+<div class="list-card">
+  <%= link_to(material.title, material, class: 'list-card-heading') %>
   <div class="dont-break-out">
     <p class>
       <%= scrape_status_icon(material) if current_user and current_user.is_admin? %>

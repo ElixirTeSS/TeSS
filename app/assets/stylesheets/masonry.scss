@@ -4,11 +4,7 @@
   list-style: none;
   *zoom: 1;
   padding-bottom: 15px;
-  background: #fbfbfb image-url('bg.png');
-  border: 1px solid #dddddd;
-  border-width: 1px;
   padding-left: 0;
-  border-radius: 4px;
 }
 
 .media-grid:before,
@@ -37,9 +33,6 @@
   padding: 10px;
   margin: 10px 0 0 10px;
   background-color: white;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
 }
 
 .media-item.long {
@@ -83,15 +76,11 @@ li.media-item {
   left: 0;
   right: 0;
   bottom: 0;
-  border: 1px solid #dddddd;
   overflow: hidden;
   -webkit-transition: all 0.2s ease-in;
   -moz-transition: all 0.2s ease-in;
   -o-transition: all 0.2s ease-in;
   transition: all 0.2s ease-in;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
   z-index: 0;
   -ms-word-break: break-all;
   word-break: break-word;
@@ -101,14 +90,12 @@ li.media-item {
   -moz-hyphens: auto;
   -ms-hyphens: auto;
   hyphens: auto;
+  @include floating-card;
 }
 
 .media-view:hover,
 .media-view.hovered {
   border-color: #005d7a;
-  -webkit-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1);
 }
 
 .media-view:hover .banner,
@@ -157,44 +144,11 @@ li.media-item {
 }
 
 .media-overlay .media-heading {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 12px 10px;
-  margin: 0;
-  background-color: #000;
-  background-color: rgba(0, 0, 0, 0.8);
-  font-size: 13px;
-  color: #fff;
-  z-index: 1;
-  -webkit-border-radius: 0 0 3px 3px;
-  -moz-border-radius: 0 0 3px 3px;
-  border-radius: 0 0 3px 3px;
+
 }
 
 .media-overlay .media-image {
   float: none;
   display: block;
   margin-right: 0;
-}
-
-.media-item.is-expander .truncator-link {
-  -webkit-transition: opacity 0.2s ease-in;
-  -moz-transition: opacity 0.2s ease-in;
-  -o-transition: opacity 0.2s ease-in;
-  transition: opacity 0.2s ease-in;
-  position: absolute;
-  z-index: 10;
-  left: 15px;
-  bottom: 15px;
-  opacity: 0;
-}
-
-.media-item.is-expander:hover {
-  padding-bottom: 35px;
-}
-
-.media-item.is-expander:hover .truncator-link {
-  opacity: 1;
 }

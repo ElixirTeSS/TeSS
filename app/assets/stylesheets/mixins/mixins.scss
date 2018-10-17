@@ -46,3 +46,9 @@
     color: lighten($brand-danger, 10%);
   }
 }
+
+@mixin floating-card {
+  box-shadow: 2px 2px 2px 0 #ccc;
+  border: 1px solid #ccc;
+  border-radius: 0;
+}

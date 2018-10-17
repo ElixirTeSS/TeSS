@@ -533,7 +533,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'should display filters on index' do
     get :index
     assert_select 'h4.nav-heading', :text => /Content provider/, :count => 0
-    assert_select 'div.list-group-item', :count => Material.count
+    assert_select 'div.list-card', :count => Material.count
   end
 
   test 'should create new material through API' do
