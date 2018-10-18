@@ -74,7 +74,7 @@
               <p><%= link_to @event.url, @event.url, :class =>'h5', :target => "_blank" %></p>
             </div>
 
-            <div>
+            <div class="dont-break-out">
               <% if @event.show_map? %>
                   <div id="map" class="google-map"></div>
                   <script type="text/javascript">

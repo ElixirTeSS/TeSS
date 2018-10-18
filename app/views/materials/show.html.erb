@@ -57,7 +57,7 @@
                   <p><%= render_markdown(@material.short_description)%></p>
               <% end %>
             </div>
-            <div>
+            <div class="dont-break-out">
               <%= render partial: 'common/extra_metadata', locals: { resource: @material } %>
 
               <% if policy(@material).update? && @material.edit_suggestion %>
