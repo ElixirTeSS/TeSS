@@ -7,9 +7,7 @@ class Workflow < ApplicationRecord
   include Searchable
   include HasSuggestions
   include IdentifiersDotOrg
-
-  extend FriendlyId
-  friendly_id :title, use: :slugged
+  include HasFriendlyId
 
   if TeSS::Config.solr_enabled
     # :nocov:

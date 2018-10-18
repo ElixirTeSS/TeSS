@@ -37,7 +37,7 @@ gem 'bootstrap-sass', '~> 3.3.7'
 
 gem 'font-awesome-sass', '~> 4.7.0'
 
-gem 'friendly_id', '~> 5.1.0'
+gem 'friendly_id', '~> 5.2.4'
 
 gem 'sunspot_rails', '~> 2.2.7'
 

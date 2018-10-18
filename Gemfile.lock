@@ -133,7 +133,7 @@ GEM
       railties (>= 3.2, < 6.0)
     font-awesome-sass (4.7.0)
       sass (>= 3.2)
-    friendly_id (5.1.0)
+    friendly_id (5.2.4)
       activerecord (>= 4.0.0)
     geocoder (1.4.9)
     globalid (0.4.1)
@@ -593,7 +593,7 @@ DEPENDENCIES
   dynamic_sitemaps!
   fakeredis
   font-awesome-sass (~> 4.7.0)
-  friendly_id (~> 5.1.0)
+  friendly_id (~> 5.2.4)
   geocoder
   gravtastic (~> 3.2.6)
   haml (~> 5.0.4)

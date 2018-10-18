@@ -4,9 +4,7 @@ class ContentProvider < ApplicationRecord
   include LogParameterChanges
   include Searchable
   include IdentifiersDotOrg
-
-  extend FriendlyId
-  friendly_id :title, use: :slugged
+  include HasFriendlyId
 
   has_many :materials, :dependent => :destroy
   has_many :events, :dependent => :destroy

@@ -1,12 +1,8 @@
 class Package < ApplicationRecord
-
   include PublicActivity::Model
   include LogParameterChanges
   include Searchable
-
-
-  extend FriendlyId
-  friendly_id :title, use: :slugged
+  include HasFriendlyId
 
   has_many :package_materials
   has_many :package_events

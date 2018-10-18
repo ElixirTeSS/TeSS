@@ -14,13 +14,11 @@ class Event < ApplicationRecord
   include CurationQueue
   include HasSuggestions
   include IdentifiersDotOrg
+  include HasFriendlyId
 
   before_save :set_default_times, :check_country_name
   before_save :geocoding_cache_lookup, if: :address_will_change?
   after_save :enqueue_geocoding_worker, if: :address_changed?
-
-  extend FriendlyId
-  friendly_id :title, use: :slugged
 
   if TeSS::Config.solr_enabled
     # :nocov:

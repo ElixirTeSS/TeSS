@@ -1,7 +1,6 @@
 require 'rails/html/sanitizer'
 
 class Material < ApplicationRecord
-
   include PublicActivity::Common
   include LogParameterChanges
   include HasAssociatedNodes
@@ -14,9 +13,7 @@ class Material < ApplicationRecord
   include CurationQueue
   include HasSuggestions
   include IdentifiersDotOrg
-
-  extend FriendlyId
-  friendly_id :title, use: :slugged
+  include HasFriendlyId
 
   if TeSS::Config.solr_enabled
     # :nocov:

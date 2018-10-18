@@ -4,7 +4,6 @@ class Node < ApplicationRecord
   include LogParameterChanges
   include Searchable
 
-
   extend FriendlyId
   friendly_id :name, use: :slugged
 

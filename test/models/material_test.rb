@@ -226,7 +226,6 @@ class MaterialTest < ActiveSupport::TestCase
     assert_not_includes material.external_resources, new_resource, 'Should preserve oldest external resource'
   end
 
-
   test 'verified users scope' do
     bad_user = users(:unverified_user)
     bad_material = bad_user.materials.build(title: 'bla', url: 'http://example.com/spam', short_description: 'vvv')
@@ -244,5 +243,27 @@ class MaterialTest < ActiveSupport::TestCase
     # Scoped
     assert_includes Material.from_verified_users.where(short_description: 'vvv').to_a, good_material
     refute_includes Material.from_verified_users.where(short_description: 'vvv').to_a, bad_material
+  end
+
+  test 'creates sensible friendly ID' do
+    # Reserved word throws error
+    reserved_word_material = Material.new(title: 'edit',
+                                          short_description: 'short desc',
+                                          url: 'http://tess.elixir-europe.org',
+                                          user: @user)
+    refute reserved_word_material.save
+
+    # Numeric slug generates UUID slug
+    material = Material.create!(title: '123',
+                                short_description: 'short desc',
+                                url: 'http://tess.elixir-europe.org',
+                                user: @user)
+    refute_match(/\A\d+\Z/, material.friendly_id)
+
+    material = Material.create!(title: '第9回研究会開催案内',
+                                short_description: 'short desc',
+                                url: 'http://tess.elixir-europe.org',
+                                user: @user)
+    refute_match(/\A\d+\Z/, material.friendly_id)
   end
 end
