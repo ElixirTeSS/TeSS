@@ -76,9 +76,7 @@ function reposition_tiles(container, tile_class){
     });
 }
 
-
 document.addEventListener("turbolinks:load", function() {
-
     // Show the tab associated with the window location hash (e.g. "#packages")
     if (window.location.hash) {
         var tab = $('ul.nav a[href="' + window.location.hash + '"]');
@@ -124,13 +122,6 @@ document.addEventListener("turbolinks:load", function() {
             }
         }
     });
-
-    $(document).on('click', '.delete-list-item', function () {
-        $(this).parents('li').remove();
-        return false;
-    });
-
-
 
     // Masonry
     $('.nav-tabs a').on("shown.bs.tab", function(e) {
@@ -229,18 +220,7 @@ document.addEventListener("turbolinks:load", function() {
         })
     });
 
-    $(document).on('shown.bs.tab', '[href="#activity_log"]', function () {
-        var tabPane = $('#activity_log');
-
-        $.ajax({
-            url: tabPane.data('activityPath'),
-            success: function (data) {
-                tabPane.html(data);
-            }
-        });
-    });
-
-// TODO: Try to get scrollspy to work. Something is preventing it from triggering
+    // TODO: Try to get scrollspy to work. Something is preventing it from triggering
     $('.about-block').scrollspy({
         target: '.about-page-menu',
         offset: 40
@@ -263,3 +243,19 @@ function truncateWithEllipses(text, max)
 {
     return text.substr(0,max-1)+(text.length>max?'&hellip;':'');
 }
+
+$(document).on('click', '.delete-list-item', function () {
+    $(this).parents('li').remove();
+    return false;
+});
+
+$(document).on('shown.bs.tab', '[href="#activity_log"]', function () {
+    var tabPane = $('#activity_log');
+
+    $.ajax({
+        url: tabPane.data('activityPath'),
+        success: function (data) {
+            tabPane.html(data);
+        }
+    });
+});
