@@ -43,7 +43,7 @@ Clone the TeSS source code via git:
 It is typically recommended to install Ruby with RVM. With RVM, you can specify the version of Ruby you want
 installed, plus a whole lot more (e.g. gemsets). Full installation instructions for RVM are [available online](http://rvm.io/rvm/install/).
 
-TeSS was developed using Ruby 2.2 and we recommend using version 2.2 or higher. To install TeSS' current version of ruby and create a gemset, you
+TeSS was developed using Ruby 2.4.5 and we recommend using version 2.4.5 or higher. To install TeSS' current version of ruby and create a gemset, you
 can do something like the following:
 
     $ rvm install `cat .ruby-version`

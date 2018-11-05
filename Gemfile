@@ -82,8 +82,8 @@ gem 'simple_form'
 gem 'redcarpet', '~> 3.4.0'
 
 # Gem for paginating search results
-gem 'will_paginate', '~> 3.1.5'
-gem 'will_paginate-bootstrap', '~> 1.0.1'
+gem 'will_paginate'
+#gem 'will_paginate-bootstrap', '~> 1.0.1'
 
 # Gem for authorisation
 gem 'pundit', '~> 1.1.0'
@@ -144,7 +144,7 @@ end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'webmock', '~> 2.1.0'
+  gem 'webmock', '~> 3.4.2'
   gem 'byebug'
   gem 'simplecov'
   gem 'rubocop'
