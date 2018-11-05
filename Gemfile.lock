@@ -573,8 +573,6 @@ GEM
     whenever (0.9.7)
       chronic (>= 0.6.3)
     will_paginate (3.1.6)
-    will_paginate-bootstrap (1.0.1)
-      will_paginate (>= 3.0.3)
 
 PLATFORMS
   ruby
@@ -647,7 +645,6 @@ DEPENDENCIES
   webmock (~> 3.4.2)
   whenever
   will_paginate
-  will_paginate-bootstrap (~> 1.0.1)
 
 BUNDLED WITH
    1.17.1
