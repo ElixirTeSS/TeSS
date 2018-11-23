@@ -310,7 +310,7 @@ GEM
     public_suffix (3.0.3)
     pundit (1.1.0)
       activesupport (>= 3.0.0)
-    rack (2.0.5)
+    rack (2.0.6)
     rack-cors (1.0.2)
     rack-oauth2 (1.9.2)
       activesupport
