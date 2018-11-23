@@ -36,7 +36,7 @@
       </p>
       <% unless @content_provider.description.blank? %>
           <p class="minimise">
-            <%= @content_provider.description %>
+            <%= render_markdown @content_provider.description %>
           </p>
       <% end %>
       <%= render partial: 'content_providers/partials/content_provider_schemaorg', locals: { content_provider: @content_provider } %>
