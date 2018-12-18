@@ -63,6 +63,7 @@ development:
 # and travis_ci_user on Travis specific secrets.yml
 test:
   <<: *default
+  username: <%= Rails.application.secrets[:database][:username] %>
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is

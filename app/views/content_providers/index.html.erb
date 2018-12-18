@@ -8,10 +8,8 @@
 
   <div id="content">
     <div class="row">
-      <% if policy(:content_provider).create? %>
-        <%= link_to new_content_provider_path, class: 'btn btn-primary' do %>
-          <i class="fa fa-plus-square"></i> Register content provider
-        <% end %>
+      <%= link_to new_content_provider_path, class: 'btn btn-primary' do %>
+        <i class="fa fa-plus-square"></i> Register content provider
       <% end %>
       <div class="pull-right">
         <%= info_button('What are content providers in TeSS?') do %>
