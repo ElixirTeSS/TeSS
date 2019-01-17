@@ -153,6 +153,11 @@ div.wrapper {
   }
 }
 
+.facet-select {
+  border-radius: 0;
+  border-width: 1px 0;
+}
+
 #sidebar-toggle {
   display: none;
   @media (max-width: $screen-md-min) {

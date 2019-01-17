@@ -22,7 +22,7 @@
   blank_params.delete(:max_age)
 %>
 
-<%= select_tag 'max_age', options_for_select(opts, selected), id: 'max-age-select', class: 'form-control' %>
+<%= select_tag 'max_age', options_for_select(opts, selected), id: 'max-age-select', class: 'form-control facet-select' %>
 
 <script>
   $('#max-age-select').change(function () {

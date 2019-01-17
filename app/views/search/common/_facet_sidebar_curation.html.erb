@@ -20,7 +20,7 @@
   blank_params.delete(:days_since_scrape)
 %>
 
-<%= select_tag 'days_since_scrape', options_for_select(opts, selected), id: 'curation-select', class: 'form-control' %>
+<%= select_tag 'days_since_scrape', options_for_select(opts, selected), id: 'curation-select', class: 'form-control facet-select' %>
 
 <script>
   $('#curation-select').change(function () {
