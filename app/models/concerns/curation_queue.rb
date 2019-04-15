@@ -2,7 +2,7 @@ module CurationQueue
   extend ActiveSupport::Concern
 
   included do
-    after_create :notify_curators, if: :user_requires_approval?
+    after_commit :notify_curators, on: :create, if: :user_requires_approval?
   end
 
   class_methods do
