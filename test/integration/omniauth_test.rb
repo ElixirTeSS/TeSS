@@ -22,7 +22,7 @@ class OmniauthTest < ActionDispatch::IntegrationTest
             }
         })
 
-    get '/users/auth/elixir_aai'
+    post '/users/auth/elixir_aai'
 
     follow_redirect! # OmniAuth redirect
     follow_redirect! # CallbacksController edit profile redirect
@@ -45,7 +45,7 @@ class OmniauthTest < ActionDispatch::IntegrationTest
             }
         })
 
-    get '/users/auth/elixir_aai'
+    post '/users/auth/elixir_aai'
 
     follow_redirect! # OmniAuth redirect
     follow_redirect! # CallbacksController sign_in_and_redirect
@@ -69,7 +69,7 @@ class OmniauthTest < ActionDispatch::IntegrationTest
             }
         })
 
-    get '/users/auth/elixir_aai'
+    post '/users/auth/elixir_aai'
 
     follow_redirect!
     follow_redirect!
@@ -98,7 +98,7 @@ class OmniauthTest < ActionDispatch::IntegrationTest
             }
         })
 
-    get '/users/auth/elixir_aai'
+    post '/users/auth/elixir_aai'
 
     follow_redirect! # OmniAuth redirect
     follow_redirect! # CallbacksController sign_in_and_redirect
@@ -114,5 +114,21 @@ class OmniauthTest < ActionDispatch::IntegrationTest
     assert_equal old_password, user.encrypted_password, 'Password should have been preserved!'
   end
 
+  test 'ELIXIR AAI authentication requires POST' do
+    OmniAuth.config.mock_auth[:elixir_aai] = OmniAuth::AuthHash.new(
+        {
+            provider: 'elixir_aai',
+            uid: '0123456789abcdcef',
+            info: {
+                email: 'aai@example.com',
+                nickname: 'aai_user',
+                first_name: 'AAI',
+                last_name: 'User'
+            }
+        })
 
+    get '/users/auth/elixir_aai'
+
+    assert_response :not_found
+  end
 end

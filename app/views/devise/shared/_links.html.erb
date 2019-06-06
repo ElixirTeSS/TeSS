@@ -6,9 +6,11 @@
     <% end %>
     <% resource_class.omniauth_providers.each do |provider| %>
         <% if provider.to_s.downcase == 'elixir_aai' -%>
-            <%= link_to 'Log in with ELIXIR credentials', omniauth_authorize_path(resource_name, provider), class: 'btn btn-elixir' -%>
+            <%= link_to 'Log in with ELIXIR credentials', omniauth_authorize_path(resource_name, provider),
+                        method: :post, class: 'btn btn-elixir' -%>
         <% else -%>
-            <%= link_to "Log in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider), class: 'btn btn-info' %>
+            <%= link_to "Log in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider),
+                        method: :post, class: 'btn btn-info' %>
         <% end -%>
     <% end -%>
 <% end %>
