@@ -157,7 +157,8 @@ class User < ApplicationRecord
     # TODO: is this what we should be doing?
     #user = User.where(:provider => auth.provider, :uid => auth.uid).first
     # `auth.info` fields: email, first_name, gender, image, last_name, name, nickname, phone, urls
-    user = User.where(:email => auth.info.email ).first
+    user = User.where(uid: auth.uid, provider: auth.provider).first ||
+        User.where(email: auth.info.email).first
     if user
       if user.provider.nil? and user.uid.nil?
         user.uid = auth.uid

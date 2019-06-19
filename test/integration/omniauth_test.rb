@@ -131,4 +131,43 @@ class OmniauthTest < ActionDispatch::IntegrationTest
 
     assert_response :not_found
   end
+
+  test 'Can log in through ELIXIR AAI with multiple email addresses' do
+    user = users(:existing_aai_user)
+    OmniAuth.config.mock_auth[:elixir_aai] = OmniAuth::AuthHash.new(
+        {
+            provider: 'elixir_aai',
+            uid: user.uid,
+            info: {
+                email: user.email,
+                nickname: user.username,
+            }
+        })
+
+    post '/users/auth/elixir_aai'
+
+    follow_redirect! # OmniAuth redirect
+    follow_redirect! # CallbacksController sign_in_and_redirect
+
+    assert_equal '/', path
+    assert_select '.user-options > a:first', user.username
+
+    OmniAuth.config.mock_auth[:elixir_aai] = OmniAuth::AuthHash.new(
+        {
+            provider: 'elixir_aai',
+            uid: user.uid,
+            info: {
+                email: "blablablablalbal@emaildomain.golf",
+                nickname: "bieberfan1997",
+            }
+        })
+
+    post '/users/auth/elixir_aai'
+
+    follow_redirect! # OmniAuth redirect
+    follow_redirect! # CallbacksController sign_in_and_redirect
+
+    assert_equal '/', path
+    assert_select '.user-options > a:first', user.username
+  end
 end
