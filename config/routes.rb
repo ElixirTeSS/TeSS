@@ -28,7 +28,7 @@ Rails.application.routes.draw do
 
   #devise_for :users
   # Use custom registrations controller that subclasses devise's
-  if ActiveRecord::Base.connected?
+  if (ActiveRecord::Base.connection rescue false)
     devise_for :users, :controllers => {
         :registrations => 'tess_devise/registrations',
         :omniauth_callbacks => 'callbacks'
