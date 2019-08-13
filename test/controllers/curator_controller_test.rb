@@ -69,6 +69,23 @@ class CuratorControllerTest < ActionController::TestCase
     assert_equal roles(:basic_user), assigns(:role)
   end
 
+  test 'should allow filtering out users without content' do
+    sign_in users(:admin)
+    new_user = users(:unverified_user)
+
+    get :users, params: { with_content: true }
+
+    assert_response :success
+    assert_not_includes assigns(:users), new_user
+
+    new_user.events.create!(title: 'Spam event', url: 'http://cool-event.pancakes', start: 10.days.from_now)
+
+    get :users, params: { with_content: true }
+
+    assert_response :success
+    assert_includes assigns(:users), new_user
+  end
+
   test 'should not get user curation page if regular user' do
     sign_in users(:regular_user)
 

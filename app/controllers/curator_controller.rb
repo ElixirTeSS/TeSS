@@ -36,6 +36,9 @@ class CuratorController < ApplicationController
     @role = Role.fetch(params[:role]) if current_user.is_admin?
     @role ||= Role.fetch('unverified_user')
     @users = User.with_role(@role).order('created_at DESC')
+    if params[:with_content]
+      @users = @users.to_a.select { |u| u.created_resources.any? }
+    end
 
     respond_to do |format|
       format.html

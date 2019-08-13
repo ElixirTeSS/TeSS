@@ -1,9 +1,23 @@
+<% filter_params = {} %>
+<% filter_params[:role] = params[:role] if params.key?(:role) %>
+<% filter_params[:with_content] = params[:with_content] if params.key?(:with_content) %>
+
 <div class="page-header">
   <h2>
     <% if current_user.is_admin? %>
-      <select onchange="window.location = '<%= curate_users_path -%>?role=' + $(this).val();" autocomplete="off" class="pull-right form-control" style="width: 15em">
-        <%= role_options(@role) %>
-      </select>
+      <div class="pull-right form-inline">
+        <select id="role_id" onchange="window.location = '<%= url_for(filter_params.merge(role: '_ROLE_')) -%>'.replace('_ROLE_', $(this).val());" autocomplete="off" class="form-control" style="width: 15em">
+          <%= role_options(@role) %>
+        </select>
+        <div class="checkbox btn btn-default<%= ' active' if params[:with_content] -%>" title="Only show users who have created content.">
+          <%= label_tag do %>
+            <%= check_box_tag :with_content, true, params[:with_content], autocomplete: 'off',
+                              data: { url: url_for(params[:with_content] ? filter_params.except(:with_content) : filter_params.merge({ with_content: true })) },
+                              onchange: "window.location = $(this).data('url');" %>
+            with content?
+          <% end %>
+        </div>
+      </div>
     <% end %>
     Curate Users
   </h2>
