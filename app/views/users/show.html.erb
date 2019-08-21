@@ -158,7 +158,7 @@
             </div>
             <ul>
               <% if upcoming_events.count > resource_limit %>
-                <li><%= link_to('View all upcoming events', events_path(user: @user.username)) if (upcoming_events.count > resource_limit || past_events.count > 0) %></li>
+                <li><%= link_to('View all upcoming events', events_path(user: @user.username)) %></li>
               <% end %>
               <% if past_events.count > 0 %>
                 <li><%= link_to('View all events', events_path(user: @user.username, include_expired: true)) %></li>
