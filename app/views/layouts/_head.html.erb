@@ -1,9 +1,9 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= site_title %></title>
-  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag 'application', integrity: true, media: 'all', 'data-turbolinks-track' => true %>
   <%= favicon_link_tag('favicon.png', :type => 'image/png') %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', integrity: true, 'data-turbolinks-track' => true %>
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.secrets.google_maps_api_key -%>&libraries=places"></script>
   <%# signup_js.html_safe -%>
   <%= csrf_meta_tags %>
