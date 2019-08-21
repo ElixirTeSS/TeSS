@@ -129,7 +129,7 @@
                 count: @user.materials.count) %>
 
         <%= tab('Events', icon_class_for_model('events'), 'events',
-                disabled: { check: events.none?, message: 'No registered events' },
+                disabled: { check: @user.events.count.zero?, message: 'No registered events' },
                 count: @user.events.count) %>
 
         <%= tab('Workflows', icon_class_for_model('workflows'), 'workflows',
@@ -155,8 +155,15 @@
             <div class="search-results-count">
               <%= (upcoming_events.count > 0 ? "Showing" : "Found") + " #{pluralize(events.count, "upcoming event")}#{(upcoming_events.count > resource_limit) ? " out of #{upcoming_events.count}" : ''}." %>
               <%= "Found #{pluralize(past_events.count, "past event")}." %>
-              <%= link_to('View all results.', events_path(user: @user.username)) if (upcoming_events.count > resource_limit || past_events.count > 0) %>
             </div>
+            <ul>
+              <% if upcoming_events.count > resource_limit %>
+                <li><%= link_to('View all upcoming events', events_path(user: @user.username)) if (upcoming_events.count > resource_limit || past_events.count > 0) %></li>
+              <% end %>
+              <% if past_events.count > 0 %>
+                <li><%= link_to('View all events', events_path(user: @user.username, include_expired: true)) %></li>
+              <% end %>
+            </ul>
             <% if events.count > 0 %>
                 <ul class="masonry media-grid" style="margin-top: 15px;">
                   <% events.each do |event| %>
