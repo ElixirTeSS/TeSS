@@ -97,16 +97,16 @@ module Searchable
           facet ff, exclude: active_facets[ff]
         end
 
-        # Hide shadowbanned users' events, except from other shadowbanned users and administrators
-        unless user && (user.shadowbanned? || user.is_admin?)
-          without(:user_id, User.shadowbanned.pluck(:id))
-        end
+        if method_defined?(:user_requires_approval?)
+          # Hide shadowbanned users' events, except from other shadowbanned users and administrators
+          unless user && (user.shadowbanned? || user.is_admin?)
+            without(:shadowbanned, true)
+          end
 
-        # Hide unverified/rejected users' things, except from curators and admins
-        unless user && (user.is_curator? || user.is_admin?)
-          blocked_user_ids = User.with_role('unverified_user', Role.rejected.name).pluck(:id)
-          blocked_user_ids -= [user.id] if user # Let them see their own things
-          without(:user_id, blocked_user_ids)
+          # Hide unverified/rejected users' things, except from curators and admins
+          unless user && (user.is_curator? || user.is_admin?)
+            without(:unverified, true)
+          end
         end
 
         # Hide records the urls of which are failing

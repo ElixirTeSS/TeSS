@@ -11,6 +11,10 @@ class Role < ApplicationRecord
     fetch('basic_user')
   end
 
+  def self.unverified
+    fetch('unverified_user')
+  end
+
   def self.fetch(name)
     role = find_by_name(name)
     if role

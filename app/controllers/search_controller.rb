@@ -24,18 +24,16 @@ class SearchController < ApplicationController
             end
           end
 
-          if model.attribute_method?(:user)
+          if model.attribute_method?(:user_requires_approval?)
             # TODO: Fix this duplication!
             # Hide shadowbanned users' events, except from other shadowbanned users and administrators
             unless current_user && (current_user.shadowbanned? || current_user.is_admin?)
-              without(:user_id, User.shadowbanned.pluck(:id))
+              without(:shadowbanned, true)
             end
 
             # Hide unverified users' things, except from curators and admins
             unless current_user && (current_user.is_curator? || current_user.is_admin?)
-              blocked_user_ids = User.with_role('unverified_user', Role.rejected.name).pluck(:id)
-              blocked_user_ids -= [current_user.id] if current_user # Let them see their own things
-              without(:user_id, blocked_user_ids)
+              without(:unverified, true)
             end
           end
         end

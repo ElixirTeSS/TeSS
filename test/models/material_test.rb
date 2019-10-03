@@ -174,10 +174,30 @@ class MaterialTest < ActiveSupport::TestCase
 
     first_material = user.materials.build(title: 'bla', url: 'http://example.com/spam', short_description: '123')
     assert first_material.user_requires_approval?
+    assert first_material.from_unverified_or_rejected?
     first_material.save!
 
     second_material = user.materials.build(title: 'bla', url: 'http://example.com/spam2', short_description: '123')
     refute second_material.user_requires_approval?
+  end
+
+  test 'from_unverified_or_rejected?' do
+    user = users(:unverified_user)
+
+    first_material = user.materials.create!(title: 'bla', url: 'http://example.com/spam', short_description: '123')
+    assert first_material.from_unverified_or_rejected?
+
+    user.role = Role.rejected
+    user.save!
+
+    second_material = user.materials.create(title: 'bla', url: 'http://example.com/spam2', short_description: '123')
+    assert second_material.from_unverified_or_rejected?
+
+    user.role = Role.approved
+    user.save!
+
+    third_material = user.materials.create(title: 'bla', url: 'http://example.com/spam3', short_description: '123')
+    refute third_material.from_unverified_or_rejected?
   end
 
   test 'should not add duplicate external resources' do
