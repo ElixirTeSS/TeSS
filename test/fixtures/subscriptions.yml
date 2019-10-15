@@ -16,7 +16,7 @@ weekly_subscription:
   subscribable_type: Material
 
 monthly_subscription:
-  frequency: 2
+  frequency: 3
   last_sent_at: 1986-10-23 10:16:33
   last_checked_at: 1986-11-23 10:16:33
   query: iphone
