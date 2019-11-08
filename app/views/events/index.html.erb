@@ -43,7 +43,7 @@
           }
        }
        */
-      if (e.target.id == 'maptab') {
+      if (e.target.href.endsWith('#map')) {
         if (!loadedMapScript){
             initializeMap();
         }
@@ -102,12 +102,10 @@
     <%# ACTUAL RESULTS LIST %>
     <% unless @events.blank? %>
         <ul class="nav nav-tabs">
-          <li class="active">
-            <a data-toggle="tab" id="gridtab" href="#home"><i class="fa fa-table"></i> Grid</a>
-          </li>
-          <li>
-            <a data-toggle="tab" id="maptab" href="#map"><i class="fa fa-globe"></i> Map</a>
-          </li>
+          <%= tab('Grid', 'fa fa-table', 'home', active: true) %>
+          <%= tab('Map', 'fa fa-globe', 'map',
+                  disabled: { check: (search_and_facet_params[:online] == 'true'),
+                              message: 'Only showing online events.' }) %>
         </ul>
 
         <div class="tab-content">
@@ -132,10 +130,12 @@
           </div>
           <div id="map" class="tab-pane fade">
             <div id="map-count" class="search-results-count"></div>
-            <small style="float:right ">Note, this map only displays events that have geolocation information in TeSS.<br>
-              For the complete list of events in TeSS, click the grid tab.</small>
             <div id="map-content">
-              <%= render :partial => "events/partials/events_map", :locals => {:events => @events} %>
+              <%= render partial: 'events/partials/events_map' %>
+              <p id="map-notice" class="help-block">
+                Note, this map only displays events that have geolocation information in TeSS.<br>
+                  For the complete list of events in TeSS, click the grid tab.
+              </p>
             </div>
           </div>
         </div>

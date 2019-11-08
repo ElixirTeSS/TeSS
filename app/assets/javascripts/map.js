@@ -5,7 +5,7 @@ var count;
 
 
 function plotEvents(events){
-    var infowindow = new google.maps.InfoWindow({content: content})
+    var infowindow = new google.maps.InfoWindow({content: content});
     var markers = {};
     count = 0;
 
@@ -40,12 +40,17 @@ function plotEvents(events){
         bounds.extend(marker.position);
     });
 
-
-    $('#map-count').text(count);
     $('#map-loading-screen').fadeOut();
-    $('#map-canvas').fadeIn();
-    $('#map-count').text('Displaying ' + count + ' events');
-    map.fitBounds(bounds);
+    if (count > 0) {
+        $('#map-canvas').fadeIn();
+        $('#map-notice').show();
+        $('#map-count').text('Displaying ' + count + ' events.');
+        map.fitBounds(bounds);
+    } else {
+        $('#map-canvas').hide();
+        $('#map-notice').hide();
+        $('#map-count').text('No geolocation information provided for the selected events.');
+    }
 }
 
 
