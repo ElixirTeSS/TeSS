@@ -19,8 +19,12 @@ var Biotools = {
         return Biotools.baseUrl + '/tool';
     },
     search: function(){
-        $('#biotools-results').empty();
-        Biotools.queryAPI(Biotools.apiBaseURL() + '?' + Biotools.queryParameter() + '&' + Biotools.sortParameter());
+        clearTimeout(Biotools._searchTimeout);
+
+        Biotools._searchTimeout = setTimeout(function () {
+            $('#biotools-results').empty();
+            Biotools.queryAPI(Biotools.apiBaseURL() + '?' + Biotools.queryParameter() + '&' + Biotools.sortParameter());
+        }, 500);
     },
     nextPage: function(){
         var next_page = $(event.target).attr('data-next');
@@ -33,7 +37,7 @@ var Biotools = {
     queryAPI: function(api_url){
         $.get(api_url, function (json) {
             Biotools.displayTools(json);
-        });
+        }, 'json');
     },
     associateTool: function(event){
         obj = $(event.target);
