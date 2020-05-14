@@ -1,0 +1,95 @@
+<%= simple_form_for @material, :html => {:id => 'material_form'} do |f| %>
+
+    <%= render partial: 'common/error_summary', locals: { resource: @material } %>
+
+    <%# Necessary to allow removal of all field locks %>
+    <%= hidden_field_tag 'material[locked_fields][]', '' %>
+
+    <%= f.input :title, as: :string, field_lock: true %>
+
+    <%= render partial: 'common/url_checker', locals: { f: f, url: materials_check_exists_path } %>
+
+    <%= f.input :short_description, as: :markdown_area, input_html: { rows: '5' }, field_lock: true %>
+
+    <%= f.input :long_description, as: :markdown_area, input_html: { rows: '10' }, field_lock: true %>
+
+    <%= f.input :doi, field_lock: true %>
+
+    <%= f.input :content_provider_id, collection: ContentProvider.all, label_method: :title, value_method: :id,
+                include_blank: true, field_lock: true %>
+
+    <%= f.dropdown :node_ids, options: format_for_dropdown(Node.order(:name).all), label: 'Nodes' %>
+
+    <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term',
+                        id_field: :uri, label_field: :preferred_label %>
+
+    <%= f.autocompleter :operations, url: edam_operations_path, template: 'autocompleter/term',
+                        id_field: :uri, label_field: :preferred_label %>
+    <%= f.multi_input :keywords %>
+
+    <%= f.multi_input :target_audience %>
+
+    <%= f.multi_input :resource_type %>
+
+    <%= f.input :difficulty_level, collection: difficulty_options_for_select, selected: @material.difficulty_level.blank? ? "notspecified" : @material.difficulty_level, field_lock: true %>
+
+    <%= f.input :licence, collection: licence_options_for_select, selected: @material.licence.blank? ? "notspecified" : @material.licence, field_lock: true %>
+
+    <%= f.multi_input :authors, suggestions: people_suggestions %>
+
+    <%= f.multi_input :contributors, suggestions: people_suggestions %>
+
+    <%= f.autocompleter :events %>
+
+    <div class="form-group" id="external-resources">
+      <%= f.label :external_resources %>
+      <%= f.field_lock :external_resources %>
+
+      <div id="external-resources-list">
+        <% @material.external_resources.each_with_index do |external_resource, index| %>
+            <%= render partial: 'common/external_resource_form',
+                       locals: { form_name: 'material', index: index, external_resource: external_resource } %>
+        <% end %>
+      </div>
+
+      <div class="row">
+        <%= render :partial => 'common/fairsharing_suggestions', :locals => {:title_element => 'material_title'} %>
+      </div>
+
+      <div class="row">
+        <%= render :partial => 'common/biotools_suggestions', :locals => {:title_element => 'material_title'} %>
+      </div>
+
+      <a href="#" id="add-external-resource-btn" class="btn btn-info">
+        <i class="fa fa-plus"></i> Add external resource
+      </a>
+    </div>
+
+    <div class="form-group">
+      <%= f.submit (f.object.new_record? ? "Register" : "Update") + " training material", :class => 'btn btn-primary' %>
+      <%= link_to 'Back', :back, :class => "btn btn-info" %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                  materials_path, :class => 'btn btn-default' %>
+    </div>
+<% end %>
+
+<div id="external-resource-template" style="display: none">
+  <%= render partial: 'common/external_resource_form',
+             locals: { form_name: 'material', external_resource: ExternalResource.new } %>
+</div>
+
+
+<script type="text/javascript">
+function removeSuggestion(suggestion) {
+    s = suggestion.replace(/[^a-zA-Z]/g, '');
+    if (confirm("Are you sure you'd like to remove '" + suggestion + "'?")) {
+        $("#add-topic-" + s).fadeOut(300, function(){
+            $(this).remove();
+        });
+        $("#hidden-suggestion-" + s).remove();
+        return true;
+    } else {
+        return false;
+    }
+}
+</script>
