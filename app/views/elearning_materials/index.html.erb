@@ -7,9 +7,6 @@
 
   <div id="content">
     <div class="row">
-      <%= link_to new_material_path, class: 'btn btn-primary' do %>
-        <i class="fa fa-plus-square"></i> Register training material
-      <% end %>
       <%= render partial: 'subscriptions/subscribe_button', locals: { type: 'Material' } %>
       <div class="pull-right">
         <%= info_button('What are materials in TeSS?') do %>
@@ -20,7 +17,7 @@
 
     <% if TeSS::Config.solr_enabled %>
         <div class="row">
-          <%= render partial: "search/common/search_box", locals: { resource_path: materials_path } %>
+          <%= render partial: "search/common/search_box", locals: { resource_path: elearning_materials_path } %>
           <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
             <i class="fa fa-filter"></i> Filters
           </button>
