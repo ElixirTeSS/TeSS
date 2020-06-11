@@ -311,7 +311,8 @@ GEM
     pundit (1.1.0)
       activesupport (>= 3.0.0)
     rack (2.0.7)
-    rack-cors (1.0.2)
+    rack-cors (1.0.6)
+      rack (>= 1.6.0)
     rack-oauth2 (1.9.2)
       activesupport
       attr_required
