@@ -3,7 +3,7 @@ You are receiving this automated email because you are a curator of TeSS.
 <%= @user.name %> has registered an account on TeSS and created the following <%= pluralize(@resources.count, 'resource') -%>:
 <% @resources.each do |resource| -%>
   * <%= resource.title %> - <%= url_for(resource) %>
-    URL: <%= resource.url -%>
+    URL: <%= resource.respond_to?(:url) ? resource.url : 'n/a'-%>
 
 <% end -%>
 

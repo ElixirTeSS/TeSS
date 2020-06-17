@@ -226,7 +226,7 @@ class User < ApplicationRecord
   end
 
   def created_resources
-    materials + events
+    materials + events + workflows + content_providers
   end
 
   private

@@ -10,7 +10,7 @@
   <% @resources.each do |resource| -%>
     <li>
       <%= link_to resource.title, resource %><br/>
-      URL: <%= link_to resource.url, resource.url -%>
+      <% if resource.respond_to?(:url) %>URL: <%= link_to resource.url, resource.url -%><% end %>
     </li>
   <% end -%>
 </ul>
