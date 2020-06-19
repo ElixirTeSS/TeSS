@@ -77,15 +77,18 @@
           <%= link_to user.profile.website, user.profile.website, rel: 'nofollow' %>
         <% end %><br/>
 
-        <% [:events, :materials].each do |type| %>
+        <% [:events, :materials, :workflows, :content_providers].each do |type| %>
           <% count = user.send(type).count %>
           <% if count > 0 %>
             <strong><%= type.to_s.titleize -%></strong>
             <ul>
               <% user.send(type).last(3).each do |resource| %>
                 <li>
-                  <%= link_to resource.title, resource, target: :_blank %><br/>
-                  URL: <%= link_to resource.url, resource.url, target: :_blank, rel: 'nofollow' -%>
+                  <%= link_to resource.title, resource, target: :_blank %>
+                  <% if resource.respond_to?(:url) %>
+                    <br/>
+                    URL: <%= link_to resource.url, resource.url, target: :_blank, rel: 'nofollow' -%>
+                  <% end %>
                 </li>
               <% end %>
             </ul>
