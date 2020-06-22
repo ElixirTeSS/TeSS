@@ -5,6 +5,7 @@ class ContentProvider < ApplicationRecord
   include Searchable
   include IdentifiersDotOrg
   include HasFriendlyId
+  include CurationQueue
 
   has_many :materials, :dependent => :destroy
   has_many :events, :dependent => :destroy

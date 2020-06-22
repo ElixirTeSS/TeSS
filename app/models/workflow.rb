@@ -8,6 +8,7 @@ class Workflow < ApplicationRecord
   include HasSuggestions
   include IdentifiersDotOrg
   include HasFriendlyId
+  include CurationQueue
 
   if TeSS::Config.solr_enabled
     # :nocov:

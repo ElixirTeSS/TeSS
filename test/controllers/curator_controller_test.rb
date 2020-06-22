@@ -78,7 +78,8 @@ class CuratorControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_includes assigns(:users), new_user
 
-    new_user.events.create!(title: 'Spam event', url: 'http://cool-event.pancakes', start: 10.days.from_now)
+    e = new_user.events.create!(title: 'Spam event', url: 'http://cool-event.pancakes', start: 10.days.from_now)
+    e.create_activity(:create, owner: new_user)
 
     get :users, params: { with_content: true }
 

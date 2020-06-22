@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+
   include ActionView::Helpers::ApplicationHelper
 
   include PublicActivity::Common
@@ -23,6 +24,7 @@ class User < ApplicationRecord
   end
 
   has_one :profile, inverse_of: :user, dependent: :destroy
+  CREATED_RESOURCE_TYPES = [:events, :materials, :workflows, :content_providers]
   has_many :materials
   has_many :packages, dependent: :destroy
   has_many :workflows, dependent: :destroy
@@ -33,6 +35,9 @@ class User < ApplicationRecord
   has_many :subscriptions, dependent: :destroy
   has_many :stars, dependent: :destroy
   has_one :ban, dependent: :destroy, inverse_of: :user
+  has_many :activities_as_owner,
+           class_name: '::PublicActivity::Activity',
+           as: :owner
 
   before_create :set_default_role, :set_default_profile
   before_create :skip_email_confirmation_for_non_production
@@ -225,8 +230,12 @@ class User < ApplicationRecord
     joins('LEFT OUTER JOIN "bans" on "bans"."user_id" = "users"."id"').where(bans: { id: nil })
   end
 
+  def self.with_created_resources
+    joins(:activities_as_owner).where(activities: { key: CREATED_RESOURCE_TYPES.map { |t| "#{t.to_s.singularize}.create" } }).distinct
+  end
+
   def created_resources
-    materials + events
+    CREATED_RESOURCE_TYPES.reduce([]) { |a, t| a + send(t) }
   end
 
   private

@@ -46,59 +46,66 @@
 </div>
 
 <div class="col-sm-8 col-sm-pull-4">
-  <% @users.each do |user| %>
-    <div class="panel panel-default curate-user">
-      <div class="panel-heading">
-        <%= link_to user.name, user, target: :_blank %>
+  <% if @users.any? %>
+    <%= render partial: "search/common/pagination_bar", locals: { resources: @users } %>
 
-        <% if user.banned? %>
-          <span class="text-danger">(<%= user.shadowbanned? ? 'shadowbanned' : 'banned'-%>)</span>
-        <% end %>
+    <% @users.each do |user| %>
+      <div class="panel panel-default curate-user">
+        <div class="panel-heading">
+          <%= link_to user.name, user, target: :_blank %>
 
-        <div class="pull-right curate-user-buttons" data-action-url="<%= user_path(user) -%>">
-          <%= link_to('Approve', '#', class: 'btn btn-xs btn-success', 'data-role-id' => Role.approved.id ) %>
-          <%= link_to('Reject', '#', class: 'btn btn-xs btn-danger', 'data-role-id' => Role.rejected.id ) %>
+          <% if user.banned? %>
+            <span class="text-danger">(<%= user.shadowbanned? ? 'shadowbanned' : 'banned'-%>)</span>
+          <% end %>
+
+          <div class="pull-right curate-user-buttons" data-action-url="<%= user_path(user) -%>">
+            <%= link_to('Approve', '#', class: 'btn btn-xs btn-success', 'data-role-id' => Role.approved.id ) %>
+            <%= link_to('Reject', '#', class: 'btn btn-xs btn-danger', 'data-role-id' => Role.rejected.id ) %>
+          </div>
         </div>
-      </div>
-      <div class="panel-body">
-        <i>Registered <%= time_ago_in_words(user.created_at) -%> ago</i><br/>
+        <div class="panel-body">
+          <i>Registered <%= time_ago_in_words(user.created_at) -%> ago</i><br/>
 
-        <strong>Public email:</strong>
-        <% if user.profile.email.blank? %>
-          <span class="empty">None specified</span>
-        <% else %>
-          <%= mail_to user.profile.email %>
-        <% end %><br/>
+          <strong>Public email:</strong>
+          <% if user.profile.email.blank? %>
+            <span class="empty">None specified</span>
+          <% else %>
+            <%= mail_to user.profile.email %>
+          <% end %><br/>
 
-        <strong><%= User.human_attribute_name(:website) %>:</strong>
-        <% if user.profile.website.blank? %>
-          <span class="empty">None specified</span>
-        <% else %>
-          <%= link_to user.profile.website, user.profile.website, rel: 'nofollow' %>
-        <% end %><br/>
+          <strong><%= User.human_attribute_name(:website) %>:</strong>
+          <% if user.profile.website.blank? %>
+            <span class="empty">None specified</span>
+          <% else %>
+            <%= link_to user.profile.website, user.profile.website, rel: 'nofollow' %>
+          <% end %><br/>
 
-        <% [:events, :materials].each do |type| %>
-          <% count = user.send(type).count %>
-          <% if count > 0 %>
-            <strong><%= type.to_s.titleize -%></strong>
-            <ul>
-              <% user.send(type).last(3).each do |resource| %>
-                <li>
-                  <%= link_to resource.title, resource, target: :_blank %><br/>
-                  URL: <%= link_to resource.url, resource.url, target: :_blank, rel: 'nofollow' -%>
-                </li>
+          <% [:events, :materials, :workflows, :content_providers].each do |type| %>
+            <% count = user.send(type).count %>
+            <% if count > 0 %>
+              <strong><%= type.to_s.titleize -%></strong>
+              <ul>
+                <% user.send(type).last(3).each do |resource| %>
+                  <li>
+                    <%= link_to resource.title, resource, target: :_blank %>
+                    <% if resource.respond_to?(:url) %>
+                      <br/>
+                      URL: <%= link_to resource.url, resource.url, target: :_blank, rel: 'nofollow' -%>
+                    <% end %>
+                  </li>
+                <% end %>
+              </ul>
+              <% if count > 3 %>
+                <%= link_to "See all #{pluralize(count, type.to_s.singularize)}", polymorphic_path(type, user: user.username), target: :_blank -%><br/>
               <% end %>
-            </ul>
-            <% if count > 3 %>
-              <%= link_to "See all #{pluralize(count, type.to_s.singularize)}", polymorphic_path(type, user: user.username), target: :_blank -%><br/>
             <% end %>
           <% end %>
-        <% end %>
+        </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
 
-  <% if @users.empty? %>
+    <%= render partial: "search/common/pagination_bar", locals: { resources: @users } %>
+  <% else %>
     Could not find any <%= @role.title.downcase.pluralize-%> requiring approval. Another curator may have already taken action.
   <% end %>
 </div>
