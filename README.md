@@ -80,6 +80,8 @@ Normally you'd start postgres with something like (passing the path to your data
 From command prompt:
  
     $ createuser --superuser tess_user
+    
+*(Note: You may need to run the above, and following commands as the `postgres` user: `sudo su - postgres`)*
 
 Connect to your postgres database console as database admin 'postgres' (modify to suit your postgres database installation):
  
