@@ -1,7 +1,5 @@
 class User < ApplicationRecord
-
-  include ActionView::Helpers::ApplicationHelper
-
+  
   include PublicActivity::Common
 
   acts_as_token_authenticatable
