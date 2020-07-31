@@ -1,4 +1,4 @@
-module EDAM
+module Edam
   class Term < ::OntologyTerm
     alias_method :preferred_label, :label
 

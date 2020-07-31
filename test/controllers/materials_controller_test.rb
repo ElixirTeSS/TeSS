@@ -742,15 +742,15 @@ class MaterialsControllerTest < ActionController::TestCase
         end
 =end
   test 'finds multiple preferred labels' do
-    topic_one = EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0154')
-    topic_two = EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0078')
+    topic_one = Edam::Ontology.instance.lookup('http://edamontology.org/topic_0154')
+    topic_two = Edam::Ontology.instance.lookup('http://edamontology.org/topic_0078')
     topics = [topic_one.preferred_label, topic_two.preferred_label]
     @material.scientific_topic_names = topics
     assert_not_empty @material.scientific_topics
     assert_equal [topic_one, topic_two], @material.scientific_topics
   end
   test 'finds single preferred label' do
-    topic_one = EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0154')
+    topic_one = Edam::Ontology.instance.lookup('http://edamontology.org/topic_0154')
     topics = topic_one.preferred_label
     @material.scientific_topic_names = topics
     assert_not_empty @material.scientific_topics
@@ -758,14 +758,14 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   test 'find scientific topic that has an exact synonym of parameter' do
-    synonym_topic = EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0092')
+    synonym_topic = Edam::Ontology.instance.lookup('http://edamontology.org/topic_0092')
     topics = synonym_topic.has_exact_synonym
     @material.scientific_topic_names = topics
     assert_equal [synonym_topic], @material.scientific_topics
   end
 
   test 'find scientific topic that is a narrow synonym of parameter' do
-    narrow_topic = EDAM::Ontology.instance.lookup('http://edamontology.org/topic_3557')
+    narrow_topic = Edam::Ontology.instance.lookup('http://edamontology.org/topic_3557')
     topics = narrow_topic.has_narrow_synonym
     @material.scientific_topic_names = topics
     assert_equal [narrow_topic], @material.scientific_topics

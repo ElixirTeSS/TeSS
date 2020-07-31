@@ -79,7 +79,7 @@ class EditSuggestionWorker
     #logger.info("ANNOTATION: #{annotations}")
     [[topic_uris, 'scientific_topic'], [operation_uris, 'operation']].each do |ids, type|
       if ids.any?
-        terms = ids.map { |id| EDAM::Ontology.instance.lookup(id) }.compact
+        terms = ids.map { |id| Edam::Ontology.instance.lookup(id) }.compact
 
         if terms.any?
           suggestion = suggestible.build_edit_suggestion

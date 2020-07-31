@@ -1,9 +1,9 @@
-module EDAM
+module Edam
   class Ontology < ::Ontology
     include Singleton
 
     def initialize
-      super('EDAM_1.20.owl', EDAM::Term)
+      super('EDAM_1.20.owl', Edam::Term)
     end
 
     def all_topics
