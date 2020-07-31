@@ -39,9 +39,9 @@ gem 'font-awesome-sass', '~> 4.7.0'
 
 gem 'friendly_id', '~> 5.2.4'
 
-gem 'sunspot_rails', '~> 2.2.7'
+gem 'sunspot_rails', '~> 2.5.0'
 
-gem 'sunspot_solr', '= 2.2.0'
+gem 'sunspot_solr', '= 2.5.0'
 
 gem 'progress_bar', '~> 1.1.0'
 
