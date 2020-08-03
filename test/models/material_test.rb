@@ -27,20 +27,20 @@ class MaterialTest < ActiveSupport::TestCase
 
   test 'should convert string value to empty array in authors' do
     assert_not_equal @material.authors, []
-    assert @material.update_attributes(authors: 'string')
+    assert @material.update(authors: 'string')
     assert_equal [], @material.authors
   end
 
   test 'should convert nil to empty array in authors fields' do
     assert_not_equal @material.authors, []
-    assert @material.update_attributes(authors: nil)
+    assert @material.update(authors: nil)
     assert_equal [], @material.authors
   end
 
   test 'should strip bad values from authors array input' do
     authors = ['john', 'bob', nil, [], '', 'frank']
     expected_authors = ['john', 'bob', 'frank']
-    assert @material.update_attributes(authors: authors)
+    assert @material.update(authors: authors)
     assert_equal expected_authors, @material.authors
   end
 

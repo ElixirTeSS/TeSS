@@ -104,8 +104,8 @@ class CuratorControllerTest < ActionController::TestCase
 
     sign_in admin
     User.current_user = admin # This is needed to set the correct "owner" on the activity logs
-    assert approved.update_attributes(role_id: Role.approved.id)
-    assert rejected.update_attributes(role_id: Role.rejected.id)
+    assert approved.update(role_id: Role.approved.id)
+    assert rejected.update(role_id: Role.rejected.id)
 
     get :users
 
