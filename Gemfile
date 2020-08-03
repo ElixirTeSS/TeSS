@@ -105,7 +105,7 @@ gem 'by_star', git: 'git://github.com/radar/by_star'
 
 gem 'handlebars_assets'
 
-gem 'paperclip', '~> 5.2.1'
+gem 'kt-paperclip', '~> 6.2.2'
 
 gem 'icalendar', '~> 2.4.1'
 
