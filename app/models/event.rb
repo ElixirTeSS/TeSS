@@ -333,7 +333,7 @@ class Event < ApplicationRecord
 
     begin
       redis = Redis.new
-      if redis.exists(location)
+      if redis.exists?(location)
         self.latitude, self.longitude = JSON.parse(redis.get(location))
         Rails.logger.info("Re-using: #{location}")
       end
