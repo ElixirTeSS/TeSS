@@ -134,8 +134,6 @@ GEM
       nokogiri (>= 1.4.3)
     erubi (1.9.0)
     execjs (2.7.0)
-    fakeredis (0.8.0)
-      redis (~> 4.1)
     faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
     ffi (1.13.1)
@@ -612,7 +610,6 @@ DEPENDENCIES
   codacy-coverage
   devise
   dynamic_sitemaps!
-  fakeredis
   font-awesome-sass (~> 4.7.0)
   friendly_id (~> 5.2.4)
   geocoder

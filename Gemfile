@@ -138,7 +138,6 @@ end
 
 group :test do
   gem 'minitest', '5.14.1'
-  gem 'fakeredis'
   gem 'rails-controller-testing'
 end
 

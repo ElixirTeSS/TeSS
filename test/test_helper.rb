@@ -12,10 +12,12 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'webmock/minitest'
 require 'minitest/mock'
-require 'fakeredis/minitest'
 
 class ActiveSupport::TestCase
-
+  def setup
+    redis = Redis.new
+    redis.flushdb
+  end 
   # WARNING: Do not be tempted to include Devise TestHelpers here (e.g. include Devise::TestHelpers)
   # It must be included in each controller it is needed in or unit tests will break.
 
