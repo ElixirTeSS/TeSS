@@ -11,7 +11,7 @@ class IdentifierResolutionTest < ActionDispatch::IntegrationTest
 
     follow_redirect!
 
-    assert_equal 'text/html', response.content_type
+    assert_equal 'text/html; charset=utf-8', response.content_type
   end
 
   test 'resolve material' do

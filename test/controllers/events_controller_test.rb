@@ -607,7 +607,7 @@ class EventsControllerTest < ActionController::TestCase
   test 'should provide a csv file' do
     get :index, params: { format: :csv }
     assert_response :success
-    assert_equal 'text/csv', @response.content_type
+    assert_equal 'text/csv; charset=utf-8', @response.content_type
     csv_events = CSV.parse(@response.body)
     assert_equal csv_events.first, ["Title", "Organizer", "Start", "End", "ContentProvider"]
   end
