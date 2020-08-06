@@ -6,6 +6,14 @@ GIT
       activesupport (>= 3.2.0)
 
 GIT
+  remote: https://github.com/artygus/fakeredis/
+  revision: f68bd4f8d2b87c6445b9166447c1752c6236d63b
+  ref: f68bd4f
+  specs:
+    fakeredis (0.8.0)
+      redis (~> 4.1)
+
+GIT
   remote: https://github.com/lassebunk/dynamic_sitemaps.git
   revision: 37beeba143e8202218ee814056231b0e6974bafb
   branch: master
@@ -456,7 +464,7 @@ GEM
     rsolr (2.3.0)
       builder (>= 2.1.2)
       faraday (>= 0.9.0)
-    rubocop (0.88.0)
+    rubocop (0.89.0)
       parallel (~> 1.10)
       parser (>= 2.7.1.1)
       rainbow (>= 2.2.2, < 4.0)
@@ -610,6 +618,7 @@ DEPENDENCIES
   codacy-coverage
   devise
   dynamic_sitemaps!
+  fakeredis!
   font-awesome-sass (~> 4.7.0)
   friendly_id (~> 5.2.4)
   geocoder
