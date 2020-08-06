@@ -22,7 +22,6 @@ gem 'therubyracer'#, platforms: :ruby
 
 # CRUD of resources via a UI
 gem 'rails_admin'
-gem 'haml', '~> 5.0.4' # Rails admin needs this, but doesn't fix the version to one that works with Rails 5.2
 
 # Authentication
 gem 'devise'

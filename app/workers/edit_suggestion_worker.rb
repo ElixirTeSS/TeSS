@@ -42,7 +42,7 @@ class EditSuggestionWorker
         :replace           => '',
         :universal_newline => true
     }
-    clean_desc = desc.encode(Encoding.find('ASCII'), encoding_options).gsub(/[\n#]/,'')
+    clean_desc = desc.encode(Encoding.find('ASCII'), **encoding_options).gsub(/[\n#]/,'')
 
     api_key = Rails.application.secrets.bioportal_api_key
     url = "http://data.bioontology.org/annotator?include=prefLabel&text=#{clean_desc}&ontologies=EDAM&longest_only=false&exclude_numbers=false&whole_word_only=true&exclude_synonyms=false&apikey=#{api_key}"
