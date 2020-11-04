@@ -7,9 +7,20 @@
   <div id="content" class="">
     <div class="about-block">
       <%= render :partial => 'links', :locals => {'show': 'about'} %>
-      <!-- CONTACT-->
+      <!-- TeSS Club-->
       <div class="row">
         <div class="odd-about-block">
+          <div id='tess-club' class="h3">TeSS Club</div>
+          <div class="sub-about-block">
+            <p>Fortnightly meetings, hackathons, shared activities, open priority setting, open contribution to unite the community.</p>
+            <p>The TeSS Club runs Fortnightly at 9:00 GMT / 10:00 CET Friday.</p>
+            <p>For all the details please visit the <a href="https://elixirtess.github.io/about/">TeSS Club Website</a>.</p>
+          </div>
+        </div>
+      </div>
+      <!-- CONTACT-->
+      <div class="row">
+        <div class="even-about-block">
           <div id='contact' class="h3">Contact</div>
           <div class="sub-about-block">
             <%#= render :partial => "common/contact_form"%>
@@ -21,7 +32,7 @@
       <!-- THE TEAM-->
       <section id="team">
       <div class="row">
-        <div class="even-about-block">
+        <div class="odd-about-block">
           <div id='team' class="h3">The Team</div>
           <div class="h4">Leadership</div>
           <ul>
@@ -58,7 +69,7 @@
       <!-- FUNDING-->
       <section id="funding">
         <div class="row">
-          <div class="odd-about-block">
+          <div class="even-about-block">
             <div id='funding' class="h3">Funding</div>
             <p>European Commission, Horizon 2020 Research Infrastructures programme (ELIXIR-EXCELERATE, <a href="https://cordis.europa.eu/project/rcn/198519_en.html" target="_blank">grant agreement number 676559</a>);</p>
             <p>ELIXIR Implementation Study (Registry Integration from a User Perspective);</p>
@@ -88,7 +99,7 @@
       <!-- ACKNOWLEDGEMENTS-->
       <section id="acknowledgements">
       <div class="row">
-        <div class="even-about-block">
+        <div class="odd-about-block">
           <div id='acknowledgments' class="h3">Acknowledgements</div>
 
           <p>The TeSS team would like to acknowledge the help of a number of groups and individuals, and thank them
