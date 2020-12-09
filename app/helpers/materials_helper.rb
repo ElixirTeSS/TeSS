@@ -3,6 +3,9 @@ module MaterialsHelper
   "TeSS harvests materials automatically, including descriptions and other relevant meta-data made available by providers. Materials can also be registered manually.\n\n"\
   "If your website contains training materials that you wish to include in TeSS, please contact the TeSS team (<a href='#{TeSS::Config.contact_email}'>#{TeSS::Config.contact_email}</a>) for further details.".freeze
 
+  ELEARNING_MATERIALS_INFO = "E-learning materials are curated materials focused on e-learning.\n\n"\
+  "If your website contains e-learning materials that you wish to include in TeSS, please contact the TeSS team (<a href='#{TeSS::Config.contact_email}'>#{TeSS::Config.contact_email}</a>) for further details.".freeze
+
   TOPICS_INFO = "TeSS generates a scientific topic suggestion for each resource registered. It does this by
   passing the description and title of the resource to the Bioportal Annotator Web service.
 The Annotator Web service finds EDAM terms that match terms in the text. You can then accept or reject these terms in TeSS.
