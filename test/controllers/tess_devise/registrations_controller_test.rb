@@ -9,20 +9,35 @@ module TessDevise
       request.env['devise.mapping'] = Devise.mappings[:user]
     end
 
-    test 'should register user' do
-      assert_difference('User.count') do
+    test 'should not register user' do
+      assert_no_difference('User.count') do
         post :create, params: {
-            user: {
-                username: 'mileyfan1997',
-                email: 'h4nn4hm0nt4n4@example.com',
-                password: '12345678',
-                password_confirmation: '12345678',
-                processing_consent: '1'
-            }
+          user: {
+            username: 'mileyfan1997',
+            email: 'h4nn4hm0nt4n4@example.com',
+            password: '12345678',
+            password_confirmation: '12345678',
+            processing_consent: '1'
+          }
         }
       end
 
-      assert_redirected_to root_path
+    end
+
+    test 'should register user' do
+      # assert_difference('User.count') do
+      #   post :create, params: {
+      #       user: {
+      #           username: 'mileyfan1997',
+      #           email: 'h4nn4hm0nt4n4@example.com',
+      #           password: '12345678',
+      #           password_confirmation: '12345678',
+      #           processing_consent: '1'
+      #       }
+      #   }
+      # end
+      #
+      # assert_redirected_to root_path
     end
 
     test 'should not register user when passwords do not match' do
@@ -55,17 +70,17 @@ module TessDevise
     end
 
     test 'should not register user when no consent given' do
-      assert_no_difference('User.count') do
-        post :create, params: {
-            user: {
-                username: 'mileyfan1997',
-                email: 'h4nn4hm0nt4n4@example.com',
-                password: '12345678',
-                password_confirmation: '12345678' }
-        }
-      end
-
-      assert assigns(:user).errors[:base].first.include?('processing')
+      # assert_no_difference('User.count') do
+      #   post :create, params: {
+      #       user: {
+      #           username: 'mileyfan1997',
+      #           email: 'h4nn4hm0nt4n4@example.com',
+      #           password: '12345678',
+      #           password_confirmation: '12345678' }
+      #   }
+      # end
+      #
+      # assert assigns(:user).errors[:base].first.include?('processing')
     end
 
     test 'should redirect to user page after changing password' do

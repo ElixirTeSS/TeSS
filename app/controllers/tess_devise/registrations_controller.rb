@@ -3,6 +3,10 @@ class TessDevise::RegistrationsController < Devise::RegistrationsController
   before_action :check_captcha, only: :create
   before_action :set_breadcrumbs, only: :edit
 
+  def create
+    #super
+  end
+
   # Set the after update path to be user's show page
   # instead the default root_path
   def after_update_path_for(resource)
