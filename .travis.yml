@@ -5,8 +5,11 @@ cache: bundler
 addons:
   postgresql: "9.4"
 
+before_install:
+  - bundle update mimemagic
+
 before_script:
-- cp config/tess.example.yml config/tess.yml
-- cp config/secrets.travis.yml config/secrets.yml
-- psql -c 'create database travis_ci_test;' -U postgres
-- bundle exec rake db:setup
+  - cp config/tess.example.yml config/tess.yml
+  - cp config/secrets.travis.yml config/secrets.yml
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - bundle exec rake db:setup
