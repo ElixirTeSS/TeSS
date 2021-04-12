@@ -9,8 +9,6 @@ module TessDevise
       request.env['devise.mapping'] = Devise.mappings[:user]
     end
 
-    end
-
     test 'should register user' do
        assert_difference('User.count') do
          post :create, params: {
