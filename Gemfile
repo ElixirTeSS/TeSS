@@ -157,8 +157,10 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   #gem 'spring'
   gem 'listen'
+  gem 'unicorn'
 end
 
 group :production do
-  gem 'passenger', '~> 5.1.11'
+  gem 'unicorn'
+  #gem 'passenger', '~> 5.1.11'
 end
