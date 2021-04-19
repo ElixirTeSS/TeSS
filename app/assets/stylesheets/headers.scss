@@ -4,6 +4,12 @@
   background-color: #333333;
   border-bottom: 1px solid #eeeeee;
 
+  .server-name {
+    margin-left: 1em;
+    color: #eee;
+    font-style: bold;
+  }
+
   .user-options {
     float: right;
     a {
