@@ -14,9 +14,9 @@
         <a href="http://www.elixir-europe.org/">
           <%= image_tag('hub-logo.png', alt: 'ELIXIR Hub') %>
         </a>
-        <spa class="pull-left server-name">
-          <%= ENV['TESS_SERVER_NAME' || ""] %>
-        </spa>
+      </div>
+      <div class="pull-left server-name">
+        <%= ENV['TESS_SERVER_NAME' || ""] %>
       </div>
       <div class="user-options">
         <% if user_signed_in? %>
