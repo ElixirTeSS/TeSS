@@ -6,7 +6,7 @@ addons:
   postgresql: "9.4"
 
 before_install:
-  - bundle update --bundler
+  - gem install bundler -v '~> 2.2.16'
   - bundle update mimemagic
 
 before_script:
