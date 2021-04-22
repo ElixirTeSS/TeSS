@@ -27,6 +27,7 @@ gem 'haml', '~> 5.0.4' # Rails admin needs this, but doesn't fix the version to 
 # Authentication
 gem 'devise'
 gem 'omniauth_openid_connect'
+gem 'omniauth-jwt'
 
 # Activity logging
 gem 'public_activity', '~> 1.6.1'
@@ -92,13 +93,13 @@ gem 'pundit', '~> 1.1.0'
 gem 'jquery-simplecolorpicker-rails'
 
 # For getting date of materials for the home page
-gem 'by_star', '~> 2.2.1', git: 'git://github.com/radar/by_star'
+gem 'by_star', '~> 2.2.1', git: 'git://github.com/radar/by_star.git', tag: 'v2.2.1'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use Unicorn as the app server
-# gem 'unicorn'
+gem 'unicorn'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -157,10 +158,8 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   #gem 'spring'
   gem 'listen'
-  gem 'unicorn'
 end
 
 group :production do
-  gem 'unicorn'
   #gem 'passenger', '~> 5.1.11'
 end
