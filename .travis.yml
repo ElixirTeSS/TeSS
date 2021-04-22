@@ -5,10 +5,6 @@ cache: bundler
 addons:
   postgresql: "9.4"
 
-before_install:
-  - gem install bundler -v '~> 2.2.16'
-  - bundle update mimemagic
-
 before_script:
   - cp config/tess.example.yml config/tess.yml
   - cp config/secrets.travis.yml config/secrets.yml
