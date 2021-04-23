@@ -7,12 +7,48 @@ default: &default
   prevent_robot_indexing: false
   blocked_domains:
     - !ruby/regexp '/bad-domain\.example/'
+  site:
+    title:
+    favicon:
+    logo:
+    logo_alt:
+  questionnaire:
+    show: false
+    message:
+    url:
+  parent_org:
+    name:
+    url:
+
+elixir: &elixir
+  site:
+    title:
+    favicon: favicon.png
+    logo: ELIXIR_TeSS_logo_white-80px-height.png
+    logo_alt: 'Training eSupport System'
+  questionnaire:
+    show: true
+    message: 'Help TeSS by giving us your feedback:'
+    url: 'https://goo.gl/forms/jsVC70q6oN8FsGWR2'
+  parent_org:
+    name: 'ELIXIR Hub'
+    image: hub-logo.png
+    url: 'http://www.elixir-europe.org'
+
+atrac: &atrac
+  site:
+    title: 'AeRTeSS (Dev)'
+    favicon: atrac-logo.ico
+    logo: atrac-logo.png
+    logo_alt: 'AeRTeSS Home'
 
 development:
   <<: *default
+  <<: *elixir
 
 production:
   <<: *default
+  <<: *elixir
 
 test:
   <<: *default
