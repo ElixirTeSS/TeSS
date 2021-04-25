@@ -7,3 +7,5 @@ blocked_domains:
   - !ruby/regexp '/bad-domain\.example/'
 identifiers_url: "http://example.com/identifiers/"
 identifiers_prefix: banana
+site:
+  title: Test TeSS
