@@ -8,6 +8,7 @@ class ConfigTest < ActiveSupport::TestCase
 
   test 'should load test TeSS config' do
     assert_equal 'test@example.com', TeSS::Config.contact_email
+    assert_equal 'Test TeSS', TeSS::Config.site['title']
   end
 
 end

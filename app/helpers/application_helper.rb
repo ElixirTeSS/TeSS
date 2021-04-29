@@ -381,7 +381,8 @@ module ApplicationHelper
       "#{controller_name.humanize} - "
     else
       ''
-    end + "TeSS (Training eSupport System)"
+    #end + "TeSS (Training eSupport System)"
+    end + TeSS::Config.site['title']
   end
 
   # Renders a title on the page (by default in an H2 tag, pass a "tag" option with a symbol to change) as well as
