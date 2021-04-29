@@ -22,7 +22,7 @@ default: &default
 
 elixir: &elixir
   site:
-    title: 'TeSS (Training eSupport System)
+    title: 'TeSS (Training eSupport System)'
     favicon: favicon.png
     logo: ELIXIR_TeSS_logo_white-80px-height.png
     logo_alt: 'Training eSupport System'
