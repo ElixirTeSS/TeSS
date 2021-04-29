@@ -12,10 +12,10 @@ site:
   favicon: ''
   logo: ''
   logo_alt: ''
-  questionnaire:
-    show: false
-    message: ''
-    url: ''
-  parent_org:
-    name: ''
-    url: ''
+questionnaire:
+  show: false
+  message: ''
+  url: ''
+parent_org:
+  name: ''
+  url: ''
