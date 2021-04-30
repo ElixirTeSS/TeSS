@@ -8,21 +8,21 @@ default: &default
   blocked_domains:
     - !ruby/regexp '/bad-domain\.example/'
   site:
-    title:
-    favicon:
-    logo:
-    logo_alt:
+    title: ''
+    favicon: ''
+    logo: ''
+    logo_alt: ''
   questionnaire:
     show: false
-    message:
-    url:
+    message: ''
+    url: ''
   parent_org:
-    name:
-    url:
+    name: ''
+    url: ''
 
 elixir: &elixir
   site:
-    title:
+    title: 'TeSS (Training eSupport System)'
     favicon: favicon.png
     logo: ELIXIR_TeSS_logo_white-80px-height.png
     logo_alt: 'Training eSupport System'
@@ -37,10 +37,10 @@ elixir: &elixir
 
 atrac: &atrac
   site:
-    title: 'AeRTeSS (Dev)'
+    title: 'ATRaC (Develop)'
     favicon: atrac-logo.ico
     logo: atrac-logo.png
-    logo_alt: 'AeRTeSS Home'
+    logo_alt: 'ATRaC Home'
 
 development:
   <<: *default
