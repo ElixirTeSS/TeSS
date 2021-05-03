@@ -1,0 +1,24 @@
+en-EU:
+  pundit:
+    default: 'You are not authorised to perform this action.'
+    material_policy:
+    event_policy:
+  activerecord:
+    attributes:
+      content_provider:
+        url: 'URL'
+      event:
+        url: 'URL'
+      material:
+        doi: 'DOI'
+        url: 'URL'
+      profile:
+        firstname: 'First name'
+        surname: 'Last name'
+  home:
+    welcome: "Welcome to TeSS: Elixir's Trailing Portal"
+    subtitle: "Browsing, discovering and organising life sciences training resources, aggregated from ELIXIR nodes and 3<sup>rd</sup>-party providers."
+    events_message: "Discover the latest training events and news from ELIXIR nodes and 3<sup>rd</sup>-party providers."
+    materials_message: "Browse the catalogue of training materials offered by ELIXIR nodes and 3<sup>rd</sup>-party providers."
+    workflows_message: "Create training workflows to visualise learning steps and link to resources specific to your training needs."
+    providers_message: "Browse training providers to discover training resources they offer and follow links to their materials and courses."

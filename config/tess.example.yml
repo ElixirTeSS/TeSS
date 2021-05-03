@@ -12,6 +12,7 @@ default: &default
     favicon: ''
     logo: ''
     logo_alt: ''
+    theme: ''
   questionnaire:
     show: false
     message: ''
@@ -19,6 +20,13 @@ default: &default
   parent_org:
     name: ''
     url: ''
+  feature:
+    e-learnings: true
+    events: true
+    materials: true
+    nodes: true
+    providers: true
+    workflows: true
 
 elixir: &elixir
   site:
@@ -26,6 +34,7 @@ elixir: &elixir
     favicon: favicon.png
     logo: ELIXIR_TeSS_logo_white-80px-height.png
     logo_alt: 'Training eSupport System'
+    theme: 'en-EU'
   questionnaire:
     show: true
     message: 'Help TeSS by giving us your feedback:'
@@ -41,6 +50,14 @@ atrac: &atrac
     favicon: atrac-logo.ico
     logo: atrac-logo.png
     logo_alt: 'ATRaC Home'
+    theme: 'en-AU'
+  feature:
+    e-learnings: false
+    events: true
+    materials: true
+    nodes: false
+    providers: true
+    workflows: false
 
 development:
   <<: *default

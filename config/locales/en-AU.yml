@@ -1,0 +1,24 @@
+en-AU:
+  pundit:
+    default: 'You are not authorised to perform this action.'
+    material_policy:
+    event_policy:
+  activerecord:
+    attributes:
+      content_provider:
+        url: 'URL'
+      event:
+        url: 'URL'
+      material:
+        doi: 'DOI'
+        url: 'URL'
+      profile:
+        firstname: 'First name'
+        surname: 'Last name'
+  home:
+    welcome: "Welcome to ATRaC"
+    subtitle: "Browsing, discovering and organising digital research training resources, aggregated from Australasian providers."
+    events_message: "Discover the latest training events and news from Australasian providers."
+    materials_message: "Browse the catalogue of training materials offered by Australasian providers."
+    workflows_message: "Create training workflows to visualise learning steps and link to resources specific to your training needs."
+    providers_message: "Browse training providers to discover training resources they offer and follow links to their materials and courses."

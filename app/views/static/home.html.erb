@@ -4,29 +4,42 @@
   "@type": "WebSite",
   "name": "TeSS",
   "alternateName": "The ELIXIR Life Science Training Portal",
-  "url": "<%= root_url%>",
+  "url": "<%= root_url %>",
   "potentialAction": {
     "@type": "SearchAction",
-    "target": "<%=root_url%>search?utf8=%E2%9C%93&q={search_term_string}",
+    "target": "<%= root_url %>search?utf8=%E2%9C%93&q={search_term_string}",
     "query-input": "required name=search_term_string"
   }
 }
+
+
+
+
+
+
 </script>
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
   "@type": "Organization",
-  "url": "<%= root_url%>",
+  "url": "<%= root_url %>",
   "logo": "<%= image_url "ELIXIR_TeSS_logo_normal.png" %>"
 }
+
+
+
+
+
+
 </script>
 
 <%# Welcome text %>
 <div class="welcome-text">
-  <h2 class="module-heading" style="margin-top: 5px;">Welcome to TeSS: ATRaC's Training Portal</h2>
+  <h2 class="module-heading" style="margin-top: 5px;">
+    <%== raw t 'home.welcome' %>
+  </h2>
   <p>
-    Browsing, discovering and organising life sciences training
-    resources, aggregated from ELIXIR nodes and 3<sup>rd</sup>-party providers.
+    <%== raw t 'home.subtitle' %>
   </p>
 </div>
 
@@ -41,40 +54,48 @@
     </div>
   <% end %>
 </div>
-
+<div>liclass: <%= @liclass %></div>
 <%# Feature buttons %>
 <ul class="featureblocks">
-  <li>
-    <%= link_to events_path do %>
+  <% if TeSS::Config.feature['events'] == true %>
+    <li class="<%= @liclass %>">
+      <%= link_to events_path do %>
         <h2><i class="<%= icon_class_for_model('events') %>"></i> Events</h2>
         <%= image_tag("events.jpg", width: "100%", alt: "Events") %>
-    <% end %>
-    <p>Discover the latest training events and news from ELIXIR nodes and 3<sup>rd</sup>-party providers.</p>
-  </li>
+      <% end %>
+      <p><%== raw t 'home.events_message' %></p>
+    </li>
+  <% end %>
 
-  <li>
-    <%= link_to materials_path do %>
+  <% if TeSS::Config.feature['materials'] == true %>
+    <li class="<%= @liclass %>">
+      <%= link_to materials_path do %>
         <h2><i class="<%= icon_class_for_model('materials') %>"></i> Materials</h2>
         <%= image_tag("materials.jpg", width: "100%", alt: "Materials") %>
-    <% end %>
-    <p>Browse the catalogue of training materials offered by ELIXIR nodes and 3<sup>rd</sup>-party providers.</p>
-  </li>
+      <% end %>
+      <p><%== raw t 'home.materials_message' %></p>
+    </li>
+  <% end %>
 
-  <li>
-    <%= link_to workflows_path do %>
+  <% if TeSS::Config.feature['workflows'] == true %>
+    <li class="<%= @liclass %>">
+      <%= link_to workflows_path do %>
         <h2><i class="<%= icon_class_for_model('workflows') %>"></i> Workflows</h2>
         <%= image_tag("workflows.png", width: "100%", alt: "Workflows") %>
-    <% end %>
-    <p>Create training workflows to visualise learning steps and link to resources specific to your training needs.</p>
-  </li>
+      <% end %>
+      <p><%== raw t 'home.workflows_message' %></p>
+    </li>
+  <% end %>
 
-  <li>
-    <%= link_to content_providers_path do %>
+  <% if TeSS::Config.feature['providers'] == true %>
+    <li class="<%= @liclass %>">
+      <%= link_to content_providers_path do %>
         <h2><i class="<%= icon_class_for_model('content_providers') %>"></i> Providers</h2>
         <%= image_tag("providers-6.jpg", width: "100%", alt: "Providers") %>
-    <% end %>
-    <p>Browse training providers to discover training resources they offer and follow links to their materials and courses.</p>
-  </li>
+      <% end %>
+      <p><%== raw t 'home.providers_message' %></p>
+    </li>
+  <% end %>
 </ul>
 
 <% if @resources.length > 0 -%>
@@ -82,12 +103,12 @@
     <h3>Latest Content in TeSS</h3>
   </div>
   <% @resources.each do |resource| %>
-    <%= render layout: 'common/mixed_resources', locals: {resource: resource} do %>
+    <%= render layout: 'common/mixed_resources', locals: { resource: resource } do %>
       <% days = ((Time.now - resource.created_at) / 1.day).to_i %>
       <% if days == 0 %>
-          <div class="days_ago_text">Added to TeSS today </div>
+        <div class="days_ago_text">Added to <%= TeSS::Config.site['site'] %> today</div>
       <% else %>
-          <div class="days_ago_text">Added to TeSS <%= pluralize(days, "day") %> ago</div>
+        <div class="days_ago_text">Added to <%= TeSS::Config.site['site'] %> <%= pluralize(days, "day") %> ago</div>
       <% end %>
     <% end -%>
   <% end -%>

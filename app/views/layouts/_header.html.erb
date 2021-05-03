@@ -89,11 +89,24 @@
           <% end %>
         <% end %>
         <%= menu_group do %>
-          <%= menu_item "Events", events_path %>
-          <%= menu_item "Materials", materials_path %>
-          <%= menu_item "e-Learning", elearning_materials_path %>
-          <%= menu_item "Workflows", workflows_path %>
-          <%= menu_item "Providers", content_providers_path %>
+          <% if TeSS::Config.feature['events'] == true %>
+            <%= menu_item "Events", events_path %>
+          <% end %>
+          <% if TeSS::Config.feature['materials'] == true %>
+            <%= menu_item "Materials", materials_path %>
+          <% end %>
+          <% if TeSS::Config.feature['e-learnings'] == true %>
+            <%= menu_item "e-Learning", elearning_materials_path %>
+          <% end %>
+          <% if TeSS::Config.feature['worflows'] == true %>
+            <%= menu_item "Workflows", workflows_path %>
+          <% end %>
+          <% if TeSS::Config.feature['providers'] == true %>
+            <%= menu_item "Providers", content_providers_path %>
+          <% end %>
+          <% if TeSS::Config.feature['nodes'] == true %>
+            <%= menu_item "Nodes", nodes_path %>
+          <% end %>
           <%= menu_item "About", about_path %>
         <% end %>
       </div>
