@@ -12,7 +12,7 @@ site:
   favicon: ''
   logo: ''
   logo_alt: ''
-  theme: 'en-EU'
+  theme: 'en'
 questionnaire:
   show: true
   message: ''
