@@ -12,7 +12,7 @@ default: &default
     favicon: ''
     logo: ''
     logo_alt: ''
-    theme: ''
+    theme: 'en-EU'
   questionnaire:
     show: false
     message: ''
