@@ -12,6 +12,7 @@ site:
   favicon: ''
   logo: ''
   logo_alt: ''
+  theme: 'en'
 questionnaire:
   show: false
   message: ''
@@ -19,3 +20,10 @@ questionnaire:
 parent_org:
   name: ''
   url: ''
+feature:
+  e-learnings: true
+  events: true
+  materials: true
+  nodes: true
+  providers: true
+  workflows: true
