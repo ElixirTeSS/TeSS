@@ -12,9 +12,9 @@ site:
   favicon: ''
   logo: ''
   logo_alt: ''
-  theme: 'en'
+  theme: 'en-EU'
 questionnaire:
-  show: false
+  show: true
   message: ''
   url: ''
 parent_org:
