@@ -141,6 +141,7 @@ group :test do
   gem 'minitest', '5.10.3'
   gem 'fakeredis'
   gem 'rails-controller-testing'
+  gem 'coveralls', require: false
 end
 
 group :development, :test do
