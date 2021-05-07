@@ -1,3 +1,6 @@
+require 'coveralls'
+Coveralls.wear!
+
 require 'simplecov'
 require 'codacy-coverage'
 Codacy::Reporter.start
