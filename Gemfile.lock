@@ -110,12 +110,6 @@ GEM
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.6)
     connection_pool (2.2.2)
-    coveralls (0.8.23)
-      json (>= 1.8, < 3)
-      simplecov (~> 0.16.1)
-      term-ansicolor (~> 1.3)
-      thor (>= 0.19.4, < 2.0)
-      tins (~> 1.6)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.6)
@@ -194,7 +188,6 @@ GEM
       multi_json (~> 1.12)
       rdf (~> 3.0)
     jsonapi-renderer (0.2.0)
-    jwt (2.2.3)
     kaminari (1.2.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.1)
@@ -277,9 +270,6 @@ GEM
     omniauth (1.8.1)
       hashie (>= 3.4.6, < 3.6.0)
       rack (>= 1.6.2, < 3)
-    omniauth-jwt (0.0.2)
-      jwt
-      omniauth (~> 1.1)
     omniauth_openid_connect (0.1)
       addressable (~> 2.5)
       omniauth (~> 1.3)
@@ -546,10 +536,7 @@ GEM
       httpclient (>= 2.4)
     sxp (1.0.1)
       rdf (>= 2.2, < 4.0)
-    sync (0.5.0)
     temple (0.8.0)
-    term-ansicolor (1.7.1)
-      tins (~> 1.0)
     therubyracer (0.12.3)
       libv8 (~> 3.16.14.15)
       ref
@@ -559,8 +546,6 @@ GEM
     time_diff (0.3.0)
       activesupport
       i18n
-    tins (1.28.0)
-      sync
     turbolinks (5.1.1)
       turbolinks-source (~> 5.1)
     turbolinks-source (5.1.0)
@@ -612,7 +597,6 @@ DEPENDENCIES
   by_star (~> 2.2.1)!
   byebug
   codacy-coverage
-  coveralls
   devise
   dynamic_sitemaps!
   fakeredis
@@ -632,7 +616,6 @@ DEPENDENCIES
   listen
   lunchy
   minitest (= 5.10.3)
-  omniauth-jwt
   omniauth_openid_connect
   paperclip (~> 5.2.1)
   pg

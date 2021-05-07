@@ -27,7 +27,6 @@ gem 'haml', '~> 5.0.4' # Rails admin needs this, but doesn't fix the version to 
 # Authentication
 gem 'devise'
 gem 'omniauth_openid_connect'
-gem 'omniauth-jwt'
 
 # Activity logging
 gem 'public_activity', '~> 1.6.1'
@@ -141,7 +140,6 @@ group :test do
   gem 'minitest', '5.10.3'
   gem 'fakeredis'
   gem 'rails-controller-testing'
-  gem 'coveralls', require: false
 end
 
 group :development, :test do
