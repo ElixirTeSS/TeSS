@@ -12,6 +12,7 @@ class LoginTest < ActionDispatch::IntegrationTest
 
     assert_equal '/', path
     assert_select '.user-options > a:first', user.username
+    assert_equal 'Logged in successfully.', flash[:notice]
   end
 
   test 'can log in with email address' do
@@ -24,6 +25,7 @@ class LoginTest < ActionDispatch::IntegrationTest
 
     assert_equal '/', path
     assert_select '.user-options > a:first', user.username
+    assert_equal 'Logged in successfully.', flash[:notice]
   end
 
 end
