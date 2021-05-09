@@ -55,11 +55,11 @@ curator:
   confirmed_at: <%= Time.zone.now %>
   role: curator
 
-existing_aai_user:
-  username: 'existing_aai_user'
+existing_aaf_user:
+  username: 'existing_aaf_user'
   email: 'eau@example.com'
   confirmed_at: <%= Time.zone.now %>
-  provider: elixir_aai
+  provider: oidc
   uid: 1234
 
 email_address_user:

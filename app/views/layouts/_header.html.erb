@@ -54,7 +54,7 @@
           <!-- %= link_to "Log in", new_user_session_path % -->
           <!-- %= link_to "Register", new_user_registration_path % -->
           <%= link_to image_tag('aaf_service_110x26.png', alt: 'Login via AAF'),
-                      user_elixir_aai_omniauth_authorize_path, :method => :post %>
+                      user_oidc_omniauth_authorize_path, :method => :post %>
         <% end %>
       </div>
     </div>

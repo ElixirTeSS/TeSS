@@ -259,26 +259,26 @@ Devise.setup do |config|
   # When using OmniAuth, Devise cannot automatically set OmniAuth path,
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
-  unless Rails.application.secrets.elixir_aai[:client_id].blank?
+  unless Rails.application.secrets.oidc[:client_id].blank?
     config.omniauth :openid_connect, {
-        name: :elixir_aai,
-        issuer: 'https://central.test.aaf.edu.au',             # 'https://login.elixir-czech.org/oidc/',
+        name: :oidc,
+        issuer: Rails.application.secrets.oidc[:issuer],
         scope: [:openid, :email, :profile],
         response_type: 'code',                                 # default is 'code'
         discovery: true,                                       # default is false
         send_nonce: true,
         client_signing_alg: :RS256,
         client_options: {
-            identifier: Rails.application.secrets.elixir_aai[:client_id],
-            secret: Rails.application.secrets.elixir_aai[:secret],
-            redirect_uri: Rails.application.secrets.elixir_aai[:redirect_uri],
+            identifier: Rails.application.secrets.oidc[:client_id],
+            secret: Rails.application.secrets.oidc[:secret],
+            redirect_uri: Rails.application.secrets.oidc[:redirect_uri],
             scheme: 'https',
-            host: 'central.test.aaf.edu.au',                   # 'login.elixir-czech.org',
+            host: Rails.application.secrets.oidc[:host],
             port: 443,
-            authorization_endpoint: '/providers/op/authorize', # '/oidc/authorize',
-            token_endpoint: '/providers/op/token',             #'/oidc/token',
-            userinfo_endpoint: '/providers/op/userinfo',       # '/oidc/userinfo',
-            jwks_uri: '/providers/op/jwks',                    # '/oidc/jwk',
+            authorization_endpoint: '/providers/op/authorize',
+            token_endpoint: '/providers/op/token',
+            userinfo_endpoint: '/providers/op/userinfo',
+            jwks_uri: '/providers/op/jwks',
         }
     }
   end

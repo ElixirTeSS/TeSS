@@ -115,8 +115,8 @@ module TessDevise
       assert_redirected_to new_user_session_path
     end
 
-    test 'should update username for AAI user without requiring current password' do
-      user = users(:existing_aai_user)
+    test 'should update username for AAF user without requiring current password' do
+      user = users(:existing_aaf_user)
       sign_in user
 
       assert user.using_omniauth?
