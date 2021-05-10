@@ -4,6 +4,7 @@ Australasia's **National Training Registry and Calendar** using Ruby on Rails.
 
 TeSS is a Rails 5 application.
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/053e1a2b27f447099886aacd100975fc)](https://app.codacy.com/gh/nrmay/TeSS?utm_source=github.com&utm_medium=referral&utm_content=nrmay/TeSS&utm_campaign=Badge_Grade_Settings)
 [![Build Status](https://travis-ci.com/nrmay/TeSS.svg?branch=master)](https://travis-ci.com/nrmay/TeSS)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/fbe7186d5f2e43e890ec4f5c76445e33)](https://www.codacy.com/gh/nrmay/TeSS/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=nrmay/TeSS&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/fbe7186d5f2e43e890ec4f5c76445e33)](https://www.codacy.com/gh/nrmay/TeSS/dashboard?utm_source=github.com&utm_medium=referral&utm_content=nrmay/TeSS&utm_campaign=Badge_Coverage)
