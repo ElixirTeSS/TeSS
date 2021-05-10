@@ -51,8 +51,10 @@
           <% end %>
           <%= link_to "Log out", destroy_user_session_path, :method => :delete, :data => { :confirm => 'Are you sure you want to log out?' } %>
         <% else %>
-          <%= link_to "Log in", new_user_session_path %>
-          <%= link_to "Register", new_user_registration_path %>
+          <!-- %= link_to "Log in", new_user_session_path % -->
+          <!-- %= link_to "Register", new_user_registration_path % -->
+          <%= link_to image_tag('aaf_service_110x26.png', alt: 'Login via AAF'),
+                      user_oidc_omniauth_authorize_path, :method => :post %>
         <% end %>
       </div>
     </div>
