@@ -100,15 +100,15 @@
 
 <% if @resources.length > 0 -%>
   <div id="materials-title">
-    <h3>Latest Content in TeSS</h3>
+    <h3>Latest Content in <%= TeSS::Config.site['title_short'] %></h3>
   </div>
   <% @resources.each do |resource| %>
     <%= render layout: 'common/mixed_resources', locals: { resource: resource } do %>
       <% days = ((Time.now - resource.created_at) / 1.day).to_i %>
       <% if days == 0 %>
-        <div class="days_ago_text">Added to <%= TeSS::Config.site['site'] %> today</div>
+        <div class="days_ago_text">Added to <%= TeSS::Config.site['title_short'] %> today</div>
       <% else %>
-        <div class="days_ago_text">Added to <%= TeSS::Config.site['site'] %> <%= pluralize(days, "day") %> ago</div>
+        <div class="days_ago_text">Added to <%= TeSS::Config.site['title_short'] %> <%= pluralize(days, "day") %> ago</div>
       <% end %>
     <% end -%>
   <% end -%>

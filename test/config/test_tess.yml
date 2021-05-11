@@ -9,6 +9,7 @@ identifiers_url: "http://example.com/identifiers/"
 identifiers_prefix: banana
 site:
   title: 'Test TeSS'
+  title_short: ''
   favicon: ''
   logo: ''
   logo_alt: ''
@@ -25,5 +26,6 @@ feature:
   events: true
   materials: true
   nodes: true
+  packages: true
   providers: true
   workflows: true

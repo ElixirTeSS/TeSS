@@ -1,5 +1,4 @@
 require 'test_helper'
-include DeviseHelper
 
 class I18n_Test < ActionDispatch::IntegrationTest
 

@@ -49,12 +49,16 @@
               <i class="fa fa-briefcase fa-lg"></i>
             <% end %>
           <% end %>
-          <%= link_to "Log out", destroy_user_session_path, :method => :delete, :data => { :confirm => 'Are you sure you want to log out?' } %>
+          <%= link_to "Log out", destroy_user_session_path, :method => :delete,
+                      :data => { :confirm => 'Are you sure you want to log out?' } %>
         <% else %>
-          <!-- %= link_to "Log in", new_user_session_path % -->
-          <!-- %= link_to "Register", new_user_registration_path % -->
-          <%= link_to image_tag('aaf_service_110x26.png', alt: 'Login via AAF'),
-                      user_oidc_omniauth_authorize_path, :method => :post %>
+          <% if Rails.application.secrets.oidc[:client_id].blank? %>
+            <%= link_to "Log in", new_user_session_path %>
+            <%= link_to "Register", new_user_registration_path %>
+          <% else %>
+            <%= link_to image_tag('aaf_service_110x26.png', alt: 'Login via AAF'),
+                        user_oidc_omniauth_authorize_path, :method => :post %>
+          <% end %> %>
         <% end %>
       </div>
     </div>
@@ -66,7 +70,8 @@
   <nav class="navbar navbar-default">
     <div class="container">
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#orange-navbar-collapse" aria-expanded="false">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                data-target="#orange-navbar-collapse" aria-expanded="false">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
