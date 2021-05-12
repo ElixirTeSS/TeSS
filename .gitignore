@@ -26,3 +26,5 @@ public/sitemaps/*
 public/system
 .idea/*
 coverage
+shared
+vendor/bundle

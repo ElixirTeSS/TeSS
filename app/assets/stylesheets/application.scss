@@ -14,7 +14,8 @@
 // "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"
 @import "jquery-ui";
 @import "bootstrap-sprockets";
-@import "mixins/variables"; // *** Colour changes can be done here! ***
+@import "mixins/variables";
+// *** Colour changes can be done here! ***
 @import "bootstrap";
 @import "font-awesome-sprockets";
 @import "font-awesome";
@@ -53,7 +54,10 @@ body {
 
   .footer-logo {
     margin: 0 5px;
-    img { height: 48px; }
+
+    img {
+      height: 48px;
+    }
   }
 
   .eu-notice {
@@ -126,7 +130,9 @@ div.wrapper {
       border-bottom: 1px solid #cccccc;
       box-shadow: 2px 2px 3px 0 #999;
       display: none;
-      &.open { display: block; }
+      &.open {
+        display: block;
+      }
     }
   }
 
@@ -176,7 +182,7 @@ div.wrapper {
   width: 100%;
 }
 
-.profile{
+.profile {
   margin-bottom: 30px;
 }
 
@@ -184,6 +190,7 @@ div.wrapper {
 .breadcrumbs {
   margin-top: 5px;
 }
+
 .breadcrumb {
   margin-bottom: 10px;
 }
@@ -217,7 +224,7 @@ div.wrapper {
   /* This is the dangerous one in WebKit, as it breaks things wherever */
   word-break: break-all;
   /* Instead use this non-standard one: */
- // word-break: break-word;
+  // word-break: break-word;
 
   /* Adds a hyphen where the word breaks, if supported (No Blink) */
   -ms-hyphens: auto;
@@ -302,7 +309,7 @@ ul.unstyled {
 }
 
 .nav-heading-darker {
-  background-color:#dddddd;
+  background-color: #dddddd;
   padding: 10px;
   margin: 0px 0px 5px 0px;
 }
@@ -504,29 +511,46 @@ ul.featureblocks {
 
   li {
     float: left;
-    width: 25%;
+    width: 20%;
     padding: 0 12px;
     border-right: 1px dotted #ccc;
+
     &:last-child {
       border: none;
     }
+
     @media (max-width: $screen-md) {
       width: 50%;
       border-right: none;
       margin-bottom: 10px;
     }
+
     h2 {
       margin-top: 10px;
       font-size: 20px;
       line-height: 24px;
       font-weight: normal
     }
+
     a {
       color: #444;
     }
+
     p {
       margin: 5px 0;
     }
+  }
+
+  li.pair {
+    width: 50%;
+  }
+
+  li.triple {
+    width: 33%;
+  }
+
+  li.quad {
+    width: 25%;
   }
 }
 
@@ -587,7 +611,7 @@ sup {
   text-align: center;
 }
 
-#flash-container{
+#flash-container {
   text-align: center;
 }
 
@@ -611,6 +635,7 @@ sup {
     background-color: #F6F6F6;
     border-radius: 4px;
   }
+
   .info-box-content {
     margin-top: 10px;
   }
@@ -638,13 +663,15 @@ sup {
   border-radius: 4px;
 }
 
-.info-icon{
+.info-icon {
   font-size: 24px;
 }
-.info-icon-small{
+
+.info-icon-small {
   font-size: 16px;
 }
-.info-icon-large{
+
+.info-icon-large {
   font-size: 48px;
 }
 
@@ -663,28 +690,29 @@ sup {
   }
 }
 
-.tool-suggestions-header{
+.tool-suggestions-header {
   margin-bottom: 20px;
 }
+
 .external-links {
   margin-top: 10px;
 }
 
-.fresh-icon{
+.fresh-icon {
   color: green;
 }
 
-.stale-icon{
+.stale-icon {
   color: orangered;
   padding: 2px;
 }
 
-.missing-icon{
+.missing-icon {
   color: orangered;
   padding: 2px;
 }
 
-.days_ago_text{
+.days_ago_text {
   color: grey;
   font-style: italic;
 }
@@ -800,29 +828,31 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
   }
 }
 
-.video_frame{
+.video_frame {
   padding: 20px 0;
   width: 560px;
   height: 345px;
   margin-left: auto;
   margin-right: auto;
 }
-.include-where{
+
+.include-where {
   font-size: 160%;
   text-align: center;
   margin: 10px;
 }
 
-.include-where-graphic{
+.include-where-graphic {
   width: 200px;
   margin-left: auto;
   margin-right: auto;
 }
-.motivation_box{
+
+.motivation_box {
   margin: 20px;
 }
 
-.include-where-text{
+.include-where-text {
   text-align: center;
 }
 
@@ -830,89 +860,93 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
   width: 80%;
 }
 
-.about-icons{
+.about-icons {
   font-size: 10em;
   color: gray;
 }
 
-.about-block{
+.about-block {
   padding: 10px 30px;
 }
 
 .odd-about-block {
-    padding: 20px;
-    background-color: #ededed;
-    border-radius: 5px;
-  }
+  padding: 20px;
+  background-color: #ededed;
+  border-radius: 5px;
+}
 
 
 .even-about-block {
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 5px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
 }
 
 .sub-about-block {
-    background-color: white;
-    padding: 12px;
-    margin: 10px;
-    border-radius: 10px;
+  background-color: white;
+  padding: 12px;
+  margin: 10px;
+  border-radius: 10px;
 }
 
 .about-resource {
   padding: 0 50px;
 
 }
-.licence-title{
+
+.licence-title {
   text-align: center;
 }
 
-.licence-logo{
+.licence-logo {
   font-size: 5em;
   color: gray;
 }
 
-.about-resource-icon{
+.about-resource-icon {
   padding: 35px 10px;
   text-align: center;
 }
-.register-condition{
-    font-size: medium;
-    text-align: center;
+
+.register-condition {
+  font-size: medium;
+  text-align: center;
 }
 
-.register-condition-graphic{
+.register-condition-graphic {
   text-align: center;
   width: 150px;
   margin: auto;
   padding: 20px 0;
 }
-.struct_data_type_logo{
+
+.struct_data_type_logo {
   max-width: 100px;
   padding: 20px 0;
 }
-.data-type-examples{
+
+.data-type-examples {
   padding-top: 20px;
 }
-.open-access-box{
+
+.open-access-box {
   background-color: white;
   border-radius: 10px;
   margin: 0 20px;
   padding: 15px 5px;
 }
 
-.open-access-licence{
+.open-access-licence {
   //width: 250px;
 }
 
-.open-access-location{
+.open-access-location {
   //width: 250px;
 }
-
 
 
 /* all links */
-.about-page-menu .nav>li>a {
+.about-page-menu .nav > li > a {
   color: #616161;
   padding: 10px 20px;
   font-size: 16px;
@@ -920,14 +954,16 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
 }
 
 /* nested links */
-.about-page-menu .nav .nav>li>a {
+.about-page-menu .nav .nav > li > a {
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 30px;
   font-size: 12px;
 }
 
-.about-page-menu .nav>.active>a { background-color: #F0F0F0; }
+.about-page-menu .nav > .active > a {
+  background-color: #F0F0F0;
+}
 
 .user_processing_consent {
   @include alert-variant($alert-info-bg, $alert-info-border, $alert-info-text);
@@ -941,13 +977,13 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
   }
 }
 
-.quick-links{
+.quick-links {
   width: 80%;
   text-align: center;
   margin-left: 10%;
 }
 
-.selected-tab{
+.selected-tab {
   color: inherit;
   text-decoration: underline;
 }
@@ -956,7 +992,7 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
   display: none;
 }
 
-.funding-logo{
+.funding-logo {
   width: 100px;
   margin: 15px;
 }
@@ -975,10 +1011,11 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
     line-height: 1.3;
   }
 }
-.questionnaire{
+
+.questionnaire {
   background-color: #fbff0233;
 }
 
-.aai-login{
+.aai-login {
   width: 120px;
 }

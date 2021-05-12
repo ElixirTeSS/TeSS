@@ -1,153 +1,111 @@
 <div class="wrapper">
 
   <div id="sidebar" class="popout-sidebar">
-    <%= render :partial => 'about_nav', locals: {show: 'registering'} %>
+    <%= render :partial => 'about_nav', locals: { show: 'registering' } %>
   </div>
 
   <div id="content" class="">
     <div class="about-block">
-      <%= render :partial => 'links', :locals => {'show': 'registering'} %>
-        <!-- REGISTERING CONTENT IN TESS -->
-      <div class="row">
-        <div id='how' class="h3">Registering Resources in TeSS</div>
-          <p>Training resources (events and materials) may be added to TeSS to reach bigger audiences, increase
-            impact and bolster event attendance. Registering events and training materials makes them more
-            findable in a variety ways to various user bases.
-          </p>
+      <%= render :partial => 'links', :locals => { 'show': 'registering' } %>
 
-          <div class="row">
-            <div class="col-md-3 motivation_box">
-              <div class="include-where">...In TeSS
-              </div>
-              <div class="include-where-graphic">
-                <%= image_tag 'about/events_listing.png', size: "200x200"%>
-              </div>
-              <div class="include-where-text">Be seen by thousands of visitors to TeSS
-              </div>
+      <!-- REGISTERING CONTENT IN TESS -->
+      <div class="row">
+        <div id='how' class="h3">Registering Resources in <%= TeSS::Config.site['title_short'] %></div>
+        <%= raw t 'register.resources' %>
+
+        <div class="row">
+          <div class="col-md-3 motivation_box">
+            <div class="include-where">&hellip;in <%= TeSS::Config.site['title_short'] %>
             </div>
-            <div class="col-md-3 motivation_box">
-              <div class="include-where">...Embedded in other sites
-              </div>
-              <div class="include-where-graphic">
-                <%= image_tag 'about/widgets_adopters.png', size: "200x200"%>
-              </div>
-              <div class="include-where-text">Be seen across all the websites that display TeSS resources through our <a href="developers#widgets">widgets</a>
-              </div>
+            <div class="include-where-graphic">
+              <%= image_tag 'about/events_listing.png', size: "200x200" %>
             </div>
-            <div class="col-md-3 motivation_box">
-              <div class="include-where">...In search engines
-              </div>
-              <div class="include-where-graphic">
-                <%= image_tag 'about/search_results.png', size: "200x100"%>
-              </div>
-              <div class="include-where-text">Be seen in search results more owing to our search-engine optimisation
-              </div>
+            <div class="include-where-text">
+              Be seen by thousands of visitors to our site
             </div>
           </div>
-          <p>There are two ways to register training materials or events for display in TeSS:
-            <ol>
-              <li>Arrange for an <a href="#automatic">automatic registration</a> solution;</li>
-              <li>Use our form to register them <a href="#manual">manually</a>.</li>
-            </ol>
-
-          </p>
+          <div class="col-md-3 motivation_box">
+            <div class="include-where">&hellip;embedded in other sites</div>
+            <div class="include-where-graphic">
+              <%= image_tag 'about/widgets_adopters.png', size: "200x200" %>
+            </div>
+            <div class="include-where-text">
+              Be seen across all the websites that display site resources through our <a href="developers#widgets">
+              widgets</a>
+            </div>
+          </div>
+          <div class="col-md-3 motivation_box">
+            <div class="include-where">&hellip;in search engines</div>
+            <div class="include-where-graphic">
+              <%= image_tag 'about/search_results.png', size: "200x100" %>
+            </div>
+            <div class="include-where-text">Be seen in search results more owing to our search-engine optimisation</div>
+          </div>
+        </div>
+        <%== raw t 'register.methods' %>
       </div>
+
       <!-- AUTOMATIC REGISTRATION -->
       <div class="row">
         <div class="odd-about-block">
           <div id='automatic' class="h4">Automatic Registration</div>
-          <p>
-            The TeSS team can write scripts ('scrapers') to automatically register resources from target websites.
-            The scrapers run each night, adding any new resources to TeSS or updating any that have changed. We
-            can write a scraper to include your resources in TeSS, if your site:
-          </p>
+          <p><%== raw t 'register.automatic' %></p>
           <div class="row">
             <div class="col-md-3 motivation_box">
               <div class="register-condition-graphic"><i class="fa fa-ellipsis-h about-icons"></i></div>
-              <div class="register-condition">Contains more than 3 resources</div>
+              <div class="register-condition"><%== raw t 'register.auto_condition_1' %></div>
             </div>
             <div class="col-md-3 motivation_box">
               <div class="register-condition-graphic"><i class="fa fa-code about-icons"></i></div>
-              <div class="register-condition">Has some structured data</div>
+              <div class="register-condition"><%== raw t 'register.auto_condition_2' %></div>
             </div>
             <div class="col-md-3 motivation_box">
               <div class="register-condition-graphic"><i class="fa fa-flask about-icons"></i></div>
-              <div class="register-condition">Is relevant to life scientists</div>
+              <div class="register-condition"><%== raw t 'register.auto_condition_3' %></div>
             </div>
           </div>
 
-
           <!-- STRUCTURED DATA-->
           <div class="h5">Structured Data Types</div>
-          <p>
-            To register resources in TeSS automatically, our scrapers need to be able to extract data from target
-            websites reliably. To this end, it is helpful if these websites include some structured data.
-          </p>
-          <p>
-            The following are examples of the kinds of structured data that we can work with. If your website
-            contains one or more of these, and satisfies the criteria above, contact us and we will create a scraper.
-          </p>
-          <p>
-            If your website includes no structured data, and you’d like your resources added to TeSS, we
-            recommend using <a href="http://bioschemas.org" target="_blank">Bioschemas</a> to structure your site.
-          </p>
+          <%== raw t 'register.structured' %>
+
           <!-- BIOSCHEMAS -->
           <div class="sub-about-block">
             <div id='bioschemas' class="h6">Schema.org / Bioschemas</div>
             <div class="row">
               <div class="col-lg-9">
-                <p><%= link_to 'schema.org', 'http://schema.org', target: '_blank'%> is a project run by a consortium
-                  of search engines. Schema.org has created an extensive library of simple, lightweight schemas that
-                  web-masters can use to explicitly define their websites content in order to improve search engine
-                  visibility and interoperability.</p>
+                <%== raw t 'register.schema' %>
                 <p>
-                  For events, you can use the <%= link_to 'schema.org Event type', 'http://schema.org/Event', class: 'bold', target: '_blank'%>; and for training materials:
-                  <%= link_to 'schema.org CreativeWork Type', 'http://schema.org/CreativeWork', target: '_blank'%>.
-                </p>
-                <p>
-                  The schemas provided by schema.org are convoluted, and lack some important training-specific fields.
-                  As such, a life science community group, called
-                  <%= link_to 'Bioschemas', 'http://bioschemas.org', class: 'bold', target: '_blank'%>, has created
-                  schema.org extensions with life science-specific vocabularies, which add additional fields relevant
-                  to the discipline.
-                </p>
-                <p>The Bioschemas group is producing tools, documents and training to facilitate adoption of standard
-                  metadata mark-up.</p>
-                  <p>
-                  <%= link_to 'View Events Biochema', 'http://bioschemas.org/specifications/Event/specification/', class: 'btn btn-primary', target: '_blank' %>
-                  <%= link_to 'View Materials Bioschema', 'http://bioschemas.org/specifications/TrainingMaterial/specification/', class: 'btn btn-primary', target: '_blank' %>
-
+                  <%== raw t 'register.bioschema_events' %>
+                  <%== raw t 'register.bioschema_materials' %>
                 </p>
                 <hr>
-                <b>Examples of sites using Bioschemas parsed by TeSS</b>
-                  <div class="data-type-examples">
-                    <%= link_to 'French Institute of Bioinformatics', 'https://search.google.com/structured-data/testing-tool#url=https%3A%2F%2Fwww.france-bioinformatique.fr%2Fen%2Fevenements_upcoming', class: 'btn btn-success', target: '_blank' %>
-                    <%= link_to 'Swiss Institute Bioinformatics', 'https://search.google.com/structured-data/testing-tool#url=https%3A%2F%2Fwww.sib.swiss%2Ftraining%2Fupcoming-training-events', class: 'btn btn-success', target: '_blank' %>
-                  </div>
+                <b>Examples of sites using Bioschemas parsed by <%= TeSS::Config.site['title_short'] %></b>
+                <div class="data-type-examples">
+                  <%== raw t 'register.schema_example_1' %>
+                  <%== raw t 'register.schema_example_2' %>
+                  <%== raw t 'register.schema_example_3' %>
+                </div>
               </div>
               <div class="col-lg-3">
-                <%= image_tag 'about/bioschemas.png', class: "struct_data_type_logo"%>
-                <%= image_tag 'about/schema-org-logo.png', class: "struct_data_type_logo"%>
-
+                <%= image_tag 'about/bioschemas.png', class: "struct_data_type_logo" %>
+                <%= image_tag 'about/schema-org-logo.png', class: "struct_data_type_logo" %>
               </div>
             </div>
           </div>
+
           <!-- API -->
           <div class="sub-about-block">
             <div id='api' class="h6">API</div>
             <div class="row">
               <div class="col-lg-9">
-                <p>Application Programming Interfaces, or APIs, typically have endpoint URLs that, when accessed,
-                  return raw, unstyled data in a common exchange format, such as XML or JSON.
-                </p>
-                <p>
-                  If your website has an API that programmatically displays data for your training or event content,
-                  the TeSS team can write an API client to interface with it. </p>
+                <%== raw t 'register.api' %>
                 <hr>
-                <b>Examples of sites with APIs included in TeSS</b>
+                <b>Examples of sites with APIs included in <%= TeSS::Config.site['title_short'] %></b>
                 <div class="data-type-examples">
-                  <%= link_to 'University of Cambridge', 'https://www.training.cam.ac.uk/api/v1/provider/BIOINFO/programmes?fetch=events.sessions,events.topics&format=json', class: 'btn btn-success', target: '_blank' %>
-                  <%= link_to 'Dutch Techcentre for Lifesciences', 'https://www.dtls.nl/courses/feed/?filter_course=active', class: 'btn btn-success', target: '_blank' %>
+                  <%== raw t 'register.api_example_1' %>
+                  <%== raw t 'register.api_example_2' %>
+                  <%== raw t 'register.api_example_3' %>
                 </div>
               </div>
               <div class="col-lg-3">
@@ -161,23 +119,14 @@
             <div id='calendar' class="h6">Calendar</div>
             <div class="row">
               <div class="col-lg-9">
-                <p>
-                  Many organisations use calendar applications to organise and display their events.
-                  These may be custom-made or, more likely, utilise applications like Google Calendar.
-                  Calendar applications maintain an underlying file for event storage and retrieval,
-                  typically in the .ics format.
-                </p>
-                <p>
-                  If your website has a calendar application, the TeSS team can write a scraper to extract from it the
-                  date, location and event descriptions, and upload the data to TeSS.
-                </p>
+                <%== raw t 'register.calendar' %>
                 <hr>
-                <b>Examples of calendar files parsed by TeSS</b>
+                <b>Examples of calendar files parsed by <%= TeSS::Config.site['title_short'] %></b>
                 <div class="data-type-examples">
-                  <%= link_to 'NBIS', 'https://nbis.se/training/events.html', class: 'btn btn-success', target: '_blank'%>
-                  <%= link_to 'Software Carpentry', 'https://software-carpentry.org/workshops/', class: 'btn btn-success', target: '_blank'%>
+                  <%== raw t 'register.calendar_example_1' %>
+                  <%== raw t 'register.calendar_example_2' %>
+                  <%== raw t 'register.calendar_example_3' %>
                 </div>
-
               </div>
               <div class="col-lg-3">
                 <i class="fa fa-calendar about-icons struct_data_type_logo"></i>
@@ -188,52 +137,30 @@
           <!-- OTHER -->
           <div class="sub-about-block">
             <div id='other' class="h6">Other types</div>
-            <ul>
-              <li><b>RSS Feed</b>: an RSS feed is a type of news format. Many websites have such feeds, which list
-                recent posts in a standard format. We can write scripts to parse this format;</li>
-              <li><b>Git Repository:</b> a git repository is a directory containing files that can be edited
-                collaboratively.
-                If you are using GitHub (or similar) to develop your training resources, and/or use GitHub Pages to render
-                them, we can write a script that clones the repository and extracts resource information. We may a
-                sk you to create a metadata file in YAML format to help us extract the metadata;</li>
-              <li><b>SOLR server (or similar):</b> a SOLR server is a search engine that many sites use for their
-                internal search functionality. If you have a publicly accessible SOLR server, we can write a script
-                to interface with it;</li>
-              <li><b>Other:</b> if you have training metadata in another structured format (e.g., an XML or JSON dump,
-                a CSV file, a YAML file, or other format), we would be happy to write a script to parse it.</li>
-            </ul>
+            <%== raw t 'register.other_types' %>
           </div>
 
           <!--  CONTACT US -->
-
           <div class="sub-about-block">
             <%#= render :partial => "common/contact_form"%>
-            If your website contains any of the above, or you'd like advice about annotating with Bioschemas,
-            you can contact us <!--using the form below or --> via e-mail at
-            <a href="mailto:support@tess.elixir-europe.org">support@tess.elixir-europe.org</a>
+            <%== raw t 'register.advice' %>
           </div>
+
         </div>
-    </div>
+      </div>
 
 
       <div class="row">
         <div class="even-about-block">
           <div id='manual' class="h4">Manual Registration</div>
-          <p>Resources may be added manually to TeSS.</p>
-          <p>To do so, first register for a free account. Members of ELIXIR can use
-            ELIXIR AAI to register and login.
-          </p>
+          <%== raw t 'register.manual' %>
           <p>
-            Once registered and logged in, the 'register event' and 'register material' buttons will become
-            visible on the events and materials tabs. Alternatively click here:
-          </p>
-          <p>
-          <%= link_to new_event_path, class: 'btn btn-primary', target: '_blank' do %>
+            <%= link_to new_event_path, class: 'btn btn-primary', target: '_blank' do %>
               <i class="fa fa-plus-square"></i> Register event
-          <% end %>
-          <%= link_to new_material_path, class: 'btn btn-primary', target: '_blank' do %>
+            <% end %>
+            <%= link_to new_material_path, class: 'btn btn-primary', target: '_blank' do %>
               <i class="fa fa-plus-square"></i> Register material
-          <% end %>
+            <% end %>
           </p>
           <p>
             If you have resources that change frequently, we recommended that you establish an
@@ -242,14 +169,14 @@
         </div>
 
 
-      <!--
+        <!--
         <div id='include' class="h3">How TeSS works</div>
-        <%= image_tag 'about/tess_architecture.png', class: "widgets_guide"%>
+        <%= image_tag 'about/tess_architecture.png', class: "widgets_guide" %>
       </div>
       -->
-        </div>
-      <%= render :partial => 'links', :locals => {'show': 'registering'} %>
-
       </div>
+      <%= render :partial => 'links', :locals => { 'show': 'registering' } %>
+
     </div>
   </div>
+</div>

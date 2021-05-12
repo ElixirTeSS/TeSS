@@ -11,4 +11,9 @@ class ConfigTest < ActiveSupport::TestCase
     assert_equal 'Test TeSS', TeSS::Config.site['title']
   end
 
+  test 'site title should not be nil' do
+    assert_not_nil TeSS::Config.site['title']
+    assert_equal 'Test TeSS', TeSS::Config.site['title']
+  end
+
 end

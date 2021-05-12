@@ -9,13 +9,23 @@ identifiers_url: "http://example.com/identifiers/"
 identifiers_prefix: banana
 site:
   title: 'Test TeSS'
+  title_short: ''
   favicon: ''
   logo: ''
   logo_alt: ''
+  theme: 'en'
 questionnaire:
-  show: false
+  show: true
   message: ''
   url: ''
 parent_org:
   name: ''
   url: ''
+feature:
+  e-learnings: true
+  events: true
+  materials: true
+  nodes: true
+  packages: true
+  providers: true
+  workflows: true

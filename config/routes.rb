@@ -11,14 +11,15 @@ Rails.application.routes.draw do
   get 'edam/topics' => 'edam#topics'
   get 'edam/operations' => 'edam#operations'
 
-  resources :workflows
+  if TeSS::Config.feature['workflows'] == true
+    resources :workflows
+  end
 
   #get 'static/home'
   get 'about' => 'about#tess', as: 'about'
   get 'about/registering' => 'about#registering', as: 'registering_resources'
   get 'about/developers' => 'about#developers', as: 'developers'
   get 'about/us' => 'about#us', as: 'us'
-
 
   get 'privacy' => 'static#privacy', as: 'privacy'
 
@@ -30,8 +31,8 @@ Rails.application.routes.draw do
   # Use custom registrations controller that subclasses devise's
   if (ActiveRecord::Base.connection rescue false)
     devise_for :users, :controllers => {
-        :registrations => 'tess_devise/registrations',
-        :omniauth_callbacks => 'callbacks'
+      :registrations => 'tess_devise/registrations',
+      :omniauth_callbacks => 'callbacks'
     }
   end
   #Redirect to users index page after devise user account update
@@ -51,55 +52,67 @@ Rails.application.routes.draw do
     resource :ban, only: [:create, :new, :destroy]
   end
 
-  resources :nodes, concerns: :activities
+  if TeSS::Config.feature['nodes'] == true
+    resources :nodes, concerns: :activities
+  end
 
-  resources :events, concerns: :activities do
-    collection do
-      get 'count'
-    end
-    member do
-      get 'redirect'
-      post 'add_term'
-      post 'add_data'
-      post 'reject_term'
-      post 'reject_data'
-      get 'report'
-      patch 'report', to: 'events#update_report'
+  if TeSS::Config.feature['events'] == true
+    resources :events, concerns: :activities do
+      collection do
+        get 'count'
+      end
+      member do
+        get 'redirect'
+        post 'add_term'
+        post 'add_data'
+        post 'reject_term'
+        post 'reject_data'
+        get 'report'
+        patch 'report', to: 'events#update_report'
+      end
     end
   end
 
   resources :packages, concerns: :activities
 
-  resources :workflows, concerns: [:collaboratable, :activities] do
-    member do
-      get 'fork'
-      get 'embed'
+  if TeSS::Config.feature['workflows'] == true
+    resources :workflows, concerns: [:collaboratable, :activities] do
+      member do
+        get 'fork'
+        get 'embed'
+      end
     end
   end
 
-  resources :content_providers, concerns: :activities
+  if TeSS::Config.feature['providers'] == true
+    resources :content_providers, concerns: :activities
+  end
 
-  resources :materials, concerns: :activities do
-    member do
-      post :reject_term
-      post :reject_data
-      post :add_term
-      post :add_data
-    end
-    collection do
-      get 'count'
+  if TeSS::Config.feature['materials'] == true
+    resources :materials, concerns: :activities do
+      member do
+        post :reject_term
+        post :reject_data
+        post :add_term
+        post :add_data
+      end
+      collection do
+        get 'count'
+      end
     end
   end
 
-  resources :elearning_materials, concerns: :activities do
-    member do
-      post :reject_term
-      post :reject_data
-      post :add_term
-      post :add_data
-    end
-    collection do
-      get 'count'
+  if TeSS::Config.feature['e-learnings'] == true
+    resources :elearning_materials, concerns: :activities do
+      member do
+        post :reject_term
+        post :reject_data
+        post :add_term
+        post :add_data
+      end
+      collection do
+        get 'count'
+      end
     end
   end
 

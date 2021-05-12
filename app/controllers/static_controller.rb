@@ -13,6 +13,20 @@ class StaticController < ApplicationController
       end
     end
 
+    # count the home features switched on and set the width
+    home_keys = %w[events materials providers workflows]
+    home_features = TeSS::Config.feature.select {|k,v| home_keys.include? k}
+    on_features = home_features.select {|k,v| v == true}
+
+    case on_features.size
+    when 2
+      @liclass = "pair"
+    when 3
+      @liclass = "triple"
+    else
+      @liclass = "quad"
+    end
+
     @resources = @resources.sort_by(&:created_at).reverse
   end
 end

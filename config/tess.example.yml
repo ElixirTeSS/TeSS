@@ -9,9 +9,11 @@ default: &default
     - !ruby/regexp '/bad-domain\.example/'
   site:
     title: ''
+    title_short: ''
     favicon: ''
     logo: ''
     logo_alt: ''
+    theme: 'en'
   questionnaire:
     show: false
     message: ''
@@ -19,13 +21,23 @@ default: &default
   parent_org:
     name: ''
     url: ''
+  feature:
+    e-learnings: true
+    events: true
+    materials: true
+    nodes: true
+    packages: true
+    providers: true
+    workflows: true
 
 elixir: &elixir
   site:
     title: 'TeSS (Training eSupport System)'
+    title_short: TeSS
     favicon: favicon.png
     logo: ELIXIR_TeSS_logo_white-80px-height.png
     logo_alt: 'Training eSupport System'
+    theme: 'en-EU'
   questionnaire:
     show: true
     message: 'Help TeSS by giving us your feedback:'
@@ -37,18 +49,26 @@ elixir: &elixir
 
 atrac: &atrac
   site:
-    title: 'ATRaC (Develop)'
+    title: 'Digital Research Skills Australia'
+    title_short: 'DReSA'
     favicon: atrac-logo.ico
     logo: atrac-logo.png
-    logo_alt: 'ATRaC Home'
+    logo_alt: 'DReSA Home'
+    theme: 'en-AU'
+  feature:
+    e-learnings: false
+    events: true
+    materials: true
+    nodes: false
+    packages: false
+    providers: true
+    workflows: false
 
 development:
   <<: *default
-  <<: *elixir
 
 production:
   <<: *default
-  <<: *elixir
 
 test:
   <<: *default
