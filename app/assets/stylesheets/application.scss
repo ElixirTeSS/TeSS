@@ -112,7 +112,7 @@ div.wrapper {
 
 #sidebar {
   width: 280px;
-  border-right: 1px solid #cccccc;
+  border-right: 1px solid #ccc;
   padding: 0;
   flex-shrink: 0;
 
@@ -154,7 +154,7 @@ div.wrapper {
   }
 
   table tr td a:hover {
-    background-color: #B0C3C9;
+    background-color: #b0c3c9;
     color: #fff;
     padding: 3px;
     text-decoration: none;
@@ -219,15 +219,17 @@ div.wrapper {
 
 // From https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/
 .dont-break-out {
-
   /* These are technically the same, but use both */
   overflow-wrap: break-word;
   word-wrap: break-word;
   -ms-word-break: break-all;
+
   /* This is the dangerous one in WebKit, as it breaks things wherever */
   word-break: break-all;
+
   /* Instead use this non-standard one: */
   // word-break: break-word;
+
   /* Adds a hyphen where the word breaks, if supported (No Blink) */
   -ms-hyphens: auto;
   -moz-hyphens: auto;
@@ -259,11 +261,11 @@ ul.unstyled {
 
 .nav-simple > li {
   padding: 0;
-  border-bottom: 1px dotted #DDD;
+  border-bottom: 1px dotted #ddd;
 }
 
 .nav-simple > li:last-of-type {
-  border-bottom: 0px none;
+  border-bottom: 0 none;
 }
 
 .nav-item {
@@ -291,12 +293,12 @@ ul.unstyled {
 
 .nav-item.active > a {
   position: relative;
-  color: #ffffff;
+  color: #fff;
   background-color: $grey-blue;
 }
 
 .nav-item.active > a:hover {
-  color: #ffffff;
+  color: #fff;
   background-color: $blue;
 }
 
@@ -306,17 +308,17 @@ ul.unstyled {
 .nav-heading {
   padding: 10px;
   background-color: #f6f6f6;
-  margin: 0px;
+  margin: 0;
 }
 
 .nav-heading-darker {
-  background-color: #dddddd;
+  background-color: #ddd;
   padding: 10px;
-  margin: 0px 0px 5px 0px;
+  margin: 0 0 5px 0;
 }
 
 .filter-button {
-  color: #ffffff;
+  color: #fff;
   background-color: $grey-blue;
 
   &:hover {
@@ -449,7 +451,7 @@ accronym {
 
 .dropdown-option-delete {
   background: none;
-  border: none
+  border: none;
 }
 
 .info-block {
@@ -623,12 +625,13 @@ sup {
 }
 
 .schemaorg-element {
-  display: none
+  display: none;
 }
 
 .responsive-search-box {
   float: right;
   width: 300px;
+
   @include xs {
     float: none;
     width: 100%;
@@ -639,7 +642,7 @@ sup {
 .info-box {
   .info-box-header {
     padding: 10px;
-    background-color: #F6F6F6;
+    background-color: #f6f6f6;
     border-radius: 4px;
   }
 
@@ -683,10 +686,13 @@ sup {
 }
 
 .gap {
-  padding: 0px 5px;
+  padding: 0 5px;
 }
 
-.dropdown-option-delete, a.delete-list-item, a.delete-collaboration, a.delete-internal-resource {
+.dropdown-option-delete,
+a.delete-list-item,
+a.delete-collaboration,
+a.delete-internal-resource {
   vertical-align: middle;
   color: $brand-danger;
   font-weight: bold;
@@ -744,6 +750,7 @@ sup {
 
 .btn-elixir {
   @include button-variant(white, $elixir-orange, white);
+
   background-image: image-url('elixir_white_small.png');
   background-repeat: no-repeat;
   background-position: 7px 7px;
@@ -803,12 +810,14 @@ input[type=checkbox].field-lock:checked + label:before {
   content: "\f023";
 }
 
-input[type=checkbox].field-lock:checked + label:before, .field-lock-example-locked {
+input[type=checkbox].field-lock:checked + label:before,
+.field-lock-example-locked {
   color: $brand-success;
   font-size: 110%;
 }
 
-input[type=checkbox].field-lock + label:before, .field-lock-example-open {
+input[type=checkbox].field-lock + label:before,
+.field-lock-example-open {
   color: $brand-warning;
   font-size: 110%;
 }
@@ -882,7 +891,6 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
   border-radius: 5px;
 }
 
-
 .even-about-block {
   padding: 20px;
   background-color: #f9f9f9;
@@ -898,7 +906,6 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
 
 .about-resource {
   padding: 0 50px;
-
 }
 
 .licence-title {
@@ -969,7 +976,7 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
 }
 
 .about-page-menu .nav > .active > a {
-  background-color: #F0F0F0;
+  background-color: #f0f0f0;
 }
 
 .user_processing_consent {

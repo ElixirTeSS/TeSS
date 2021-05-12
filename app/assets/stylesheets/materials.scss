@@ -13,7 +13,7 @@
 }
 
 .list-group-item-heading .btn-default:hover {
-  background-color: #B0C3C9; //#90B6C3;//#8BB3C0;
+  background-color: #b0c3c9; //#90B6C3;//#8BB3C0;
 }
 
 .list-group-item-heading a {
@@ -32,6 +32,7 @@
 
 .delete-external-resource-btn {
   @include delete-cross;
+
   cursor: pointer;
 
   input[type=checkbox] {
