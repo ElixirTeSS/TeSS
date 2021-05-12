@@ -74,8 +74,8 @@ body {
 
 div.wrapper {
   *zoom: 1;
-  background-color: #FFF;
-  border: 1px solid #cccccc;
+  background-color: #fff;
+  border: 1px solid #ccc;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
@@ -100,7 +100,8 @@ div.wrapper {
   }
 }
 
-#main-container, #header-container {
+#main-container,
+#header-container {
   max-width: 1200px;
 }
 
@@ -127,9 +128,10 @@ div.wrapper {
       position: absolute;
       z-index: 10;
       background: white;
-      border-bottom: 1px solid #cccccc;
+      border-bottom: 1px solid #ccc;
       box-shadow: 2px 2px 3px 0 #999;
       display: none;
+
       &.open {
         display: block;
       }
@@ -146,14 +148,14 @@ div.wrapper {
   }
 
   table tr td a {
-    color: #000000;
+    color: #000;
     padding: 3px;
     text-decoration: none;
   }
 
   table tr td a:hover {
     background-color: #B0C3C9;
-    color: #ffffff;
+    color: #fff;
     padding: 3px;
     text-decoration: none;
   }
@@ -166,6 +168,7 @@ div.wrapper {
 
 #sidebar-toggle {
   display: none;
+
   @media (max-width: $screen-md-min) {
     display: inline;
   }
@@ -173,6 +176,7 @@ div.wrapper {
 
 #sidebar-header {
   display: none;
+
   @media (max-width: $screen-md-min) {
     display: block;
   }
@@ -197,19 +201,19 @@ div.wrapper {
 
 // Style for empty results etc.
 .empty {
-  color: #aaaaaa;
+  color: #aaa;
   font-style: italic;
 }
 
 // Override Bootstrap's alert
 .alert {
-  margin-bottom: 0px;
+  margin-bottom: 0;
   margin-top: 5px;
 }
 
 // Bootstrap's row
 .row {
-  margin: 10px 0px 10px 0px;
+  margin: 10px 0 10px 0;
   //padding: 0px 0px 10px 0px;  // Do not add padding to the row - messes up sidebar etc.
 }
 
@@ -219,19 +223,16 @@ div.wrapper {
   /* These are technically the same, but use both */
   overflow-wrap: break-word;
   word-wrap: break-word;
-
   -ms-word-break: break-all;
   /* This is the dangerous one in WebKit, as it breaks things wherever */
   word-break: break-all;
   /* Instead use this non-standard one: */
   // word-break: break-word;
-
   /* Adds a hyphen where the word breaks, if supported (No Blink) */
   -ms-hyphens: auto;
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
-
 }
 
 .wide .media-item {
@@ -245,19 +246,19 @@ div.wrapper {
 
 // Modified from CKAN - for sidebar facets
 ul.unstyled {
-  margin-left: 0px;
+  margin-left: 0;
   list-style: outside none none;
-  padding-left: 0px;
+  padding-left: 0;
 }
 
 .nav-simple {
-  margin: 0px;
+  margin: 0;
   list-style: outside none none;
-  padding-bottom: 0px;
+  padding-bottom: 0;
 }
 
 .nav-simple > li {
-  padding: 0px;
+  padding: 0;
   border-bottom: 1px dotted #DDD;
 }
 
@@ -304,7 +305,7 @@ ul.unstyled {
 // Facet's title
 .nav-heading {
   padding: 10px;
-  background-color: #F6F6F6;
+  background-color: #f6f6f6;
   margin: 0px;
 }
 
@@ -348,7 +349,7 @@ ul.unstyled {
 .medium-content-provider-logo {
   max-width: 98%;
   //border-radius: 5px;
-  margin: 0px 10px 0px 0px;
+  margin: 0 10px 0 0;
 }
 
 .search-results-count {
@@ -390,7 +391,12 @@ ul.unstyled {
   content: "\e114"; /* adjust as needed, taken from bootstrap.css */
 }
 
-.h1, .h2, .h3, .h4, .h5, .h6 {
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
   color: #337ab7;
 }
 
@@ -401,13 +407,14 @@ ul.unstyled {
 }
 
 // Fix for simple form issue: http://stackoverflow.com/questions/6748446/rails-simple-form-gives-dots-under-stars-for-required-fields-better-way-to-remo
-abbr, accronym {
-  border-bottom: 0px !important;
+ibbr,
+accronym {
+  border-bottom: 0 !important;
 }
 
-/*try adding !important  after 0px if doesn't work*/
+/* try adding !important  after 0px if doesn't work */
 
-//Multiple input list on forms with + button to add more input fields dynamically
+// Multiple input list on forms with + button to add more input fields dynamically
 .multiple-input-list {
   display: flex;
   flex-wrap: wrap;
@@ -415,7 +422,7 @@ abbr, accronym {
 
 .multiple-list-item {
   padding: 3px;
-  margin: 3px 3px 3px 0px;
+  margin: 3px 3px 3px 0;
   background-color: whitesmoke;
   border-radius: 4px;
   width: 43%;
@@ -429,7 +436,7 @@ abbr, accronym {
 
 .multiple-input-delete {
   background: none;
-  border: none
+  border: none;
 }
 
 .dropdown-option {
@@ -529,7 +536,7 @@ ul.featureblocks {
       margin-top: 10px;
       font-size: 20px;
       line-height: 24px;
-      font-weight: normal
+      font-weight: normal;
     }
 
     a {
@@ -597,9 +604,9 @@ sup {
 }
 
 .announcement {
-  color: #333333;
-  border: 1px solid #DDD;
-  background: #FFFFCC;
+  color: #333;
+  border: 1px solid #ddd;
+  background: #ffc;
   padding: 0.3em 0.6em;
   margin-bottom: 1em;
   line-height: 1.7;

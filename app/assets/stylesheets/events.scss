@@ -11,6 +11,7 @@
   width: 400px;
   float: right;
   margin: 0 0 10px 10px;
+
   @include xs {
     float: none;
     width: 100%;
@@ -26,6 +27,7 @@
   padding: 1px;
   z-index: 1;
 }
+
 .suggestions:hover {
   z-index: 2;
 }
@@ -34,7 +36,7 @@
   clear: both;
 }
 
-#map-loading-screen{
+#map-loading-screen {
   width: 20%;
   margin-left: 40%;
   padding-top: 100px;

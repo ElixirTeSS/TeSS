@@ -1,11 +1,13 @@
 .collaboration.new {
   animation: flash 1s; // plays instantly
 }
+
 @keyframes flash {
   0% {
     background: $state-success-bg;
   }
-  100% { // fade to black all slow
+  100% {
+    // fade to black all slow
     background: white;
   }
 }
