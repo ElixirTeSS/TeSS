@@ -458,7 +458,7 @@ accronym {
   color: #005d7a;
   float: right;
   font-size: 20px;
-  margin: 0px;
+  margin: 0;
   width: 28px;
 }
 
@@ -478,7 +478,7 @@ accronym {
 }
 
 .keyword-pill {
-  color: #ffffff;
+  color: #fff;
   background-color: $grey-blue;
   margin-bottom: 5px;
   display: inline-block;
@@ -958,7 +958,6 @@ input[type=checkbox].field-lock + label:before,
   //width: 250px;
 }
 
-
 /* all links */
 .about-page-menu .nav > li > a {
   color: #616161;
@@ -981,6 +980,7 @@ input[type=checkbox].field-lock + label:before,
 
 .user_processing_consent {
   @include alert-variant($alert-info-bg, $alert-info-border, $alert-info-text);
+
   padding: 0 10px;
   border-radius: 4px;
   border-style: solid;
@@ -1013,6 +1013,7 @@ input[type=checkbox].field-lock + label:before,
 
 .list-card {
   @include floating-card;
+
   margin-bottom: 10px;
   position: relative;
   display: block;

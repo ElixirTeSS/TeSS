@@ -42,9 +42,9 @@ Handlebars.registerHelper('formatDateRange', function(start_date, end_date){
     var end = new Date(end_date.substr(0, end_date.length-5));
 
     if (start.getDate() == end.getDate()){
-
+        // what should happen here?
     } else {
-
+        // or here?
     }
     var day = date.getDate();
     var month = date.getMonth();
