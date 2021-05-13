@@ -41,7 +41,7 @@ function updateURLParameter(url, param, paramVal){
     var baseURL = tempArray[0];
     var additionalURL = tempArray[1];
     var temp = "";
-    
+
     if (additionalURL) {
         tempArray = additionalURL.split("&");
         for (var i=0; i<tempArray.length; i++){
