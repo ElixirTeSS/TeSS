@@ -18,11 +18,13 @@ DReSA requires the following system packages to be installed:
   * ImageMagick
   * A Java runtime
   * A JavaScript runtime
-* Redis
+  * Redis
 
 To install these under an Ubuntu-like OS using apt:
 
-    $ sudo apt-get install git postgresql libpq-dev imagemagick openjdk-8-jre nodejs redis-server
+    $ sudo apt update
+    $ sudo apt install git postgresql postgresql-contrib libpq-dev imagemagick openjdk-8-jre nodejs redis-server
+    $ sudo apt upgrade
 
 For Mac OS X:
 
@@ -32,10 +34,9 @@ And install the JDK from Oracle or OpenJDK directly (It is needed for the SOLR s
 
 ### DReSA Code
 
-Clone the TeSS source code via git:
+Clone the source code via git:
 
     $ git clone https://github.com/nrmay/TeSS.git
-    
     $ cd TeSS
 
 ### RVM, Ruby, Gems
@@ -44,11 +45,19 @@ Clone the TeSS source code via git:
 It is typically recommended to install Ruby with RVM. With RVM, you can specify the version of Ruby you want
 installed, plus a whole lot more (e.g. gemsets). Full installation instructions for RVM are [available online](http://rvm.io/rvm/install/).
 
+To install these under an Ubuntu-like OS using apt:
+
+    $ sudo apt-add-repository ppa:rael-gc/rvm
+    $ sudo apt update
+    $ sudo apt install rvm
+    $ sudo usermod -a -G rvm <user>    # e.g. replace <user> with ubuntu
+
+Then re-login as *user* to enable rvm.
+
 TeSS was developed using Ruby 2.4.5 and we recommend using version 2.4.5 or higher. To install TeSS' current version of ruby and create a gemset, you
 can do something like the following:
 
     $ rvm install `cat .ruby-version`
-
     $ rvm use --create `cat .ruby-version`@`cat .ruby-gemset`
 
 #### Bundler
@@ -74,31 +83,15 @@ Install postgres and add a postgres user called 'tess_user' for the use by the T
 Make sure tess_user is either the owner of the TeSS database (to be created in the next step), or is a superuser.
 Otherwise, you may run into some issues when running and managing the TeSS app.
 
-Normally you'd start postgres with something like (passing the path to your database with -D):
+If postres is not already running, you can start postgres with something like (passing the path to your database with -D):
 
     $ pg_ctl -D ~/Postgresql/data/ start
 
-From command prompt:
- 
-    $ createuser --superuser tess_user
-    
-*(Note: You may need to run the above, and following commands as the `postgres` user: `sudo su - postgres`)*
+From command prompt, create *tess_user* and set its password:
 
-Connect to your postgres database console as database admin 'postgres' (modify to suit your postgres database installation):
- 
-    $ sudo -u postgres psql
-
-Or from Mac OS X
-
-    $ sudo psql postgres
-
-From the postgres console, set password for user 'tess_user':
- 
-    postgres=# \password tess_user
-
-*If your tess_user is not a superuser, make sure you grant it a privilege to create databases:*
- 
-    postgres=# ALTER USER tess_user CREATEDB;
+    $ sudo -i -u postgres
+    $ createuser -Prlds tess_user
+    $ exit
 
 > Handy Postgres/Rails tutorials:
 >
@@ -128,7 +121,7 @@ On macOS these can be installed and run as follows:
     
 For a Redis install on a Linux system there should presumably be an equivalent package.
 
-### The TeSS Application
+### The DReSA application
 
 From the app's root directory, create several config files by copying the example files.
 
@@ -158,7 +151,7 @@ Start the application:
 
     $ bundle exec rails server
 
-Access TeSS at:
+Access DReSA at:
 
 [http://localhost:3000](http://localhost:3000)
 
