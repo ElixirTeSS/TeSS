@@ -8,21 +8,23 @@ DReSA is a Rails 5 application.
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/fbe7186d5f2e43e890ec4f5c76445e33)](https://www.codacy.com/gh/nrmay/TeSS/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=nrmay/TeSS&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/fbe7186d5f2e43e890ec4f5c76445e33)](https://www.codacy.com/gh/nrmay/TeSS/dashboard?utm_source=github.com&utm_medium=referral&utm_content=nrmay/TeSS&utm_campaign=Badge_Coverage)
 
-# Setup
+## Setup
 Below is an example guide to help you set up DReSA in development mode. More comprehensive guides on installing
 Ruby, Rails, RVM, bundler, postgres, etc. are available elsewhere.
 
 ## System Dependencies
 DReSA requires the following system packages to be installed:
-* PostgresQL
-* ImageMagick
-* A Java runtime
-* A JavaScript runtime
-* Redis
+  * PostgresQL
+  * ImageMagick
+  * A Java runtime
+  * A JavaScript runtime
+  * Redis
 
 To install these under an Ubuntu-like OS using apt:
 
-    $ sudo apt-get install git postgresql libpq-dev imagemagick openjdk-8-jre nodejs redis-server
+    $ sudo apt update
+    $ sudo apt install git postgresql postgresql-contrib libpq-dev imagemagick openjdk-8-jre nodejs redis-server
+    $ sudo apt upgrade
 
 For Mac OS X:
 
@@ -30,28 +32,35 @@ For Mac OS X:
 
 And install the JDK from Oracle or OpenJDK directly (It is needed for the SOLR search functionality)
 
-## DReSA Code
+### DReSA Code
 
-Clone the TeSS source code via git:
+Clone the source code via git:
 
-    $ git clone https://github.com/ElixirTeSS/TeSS.git
-    
+    $ git clone https://github.com/nrmay/TeSS.git
     $ cd TeSS
 
-## RVM, Ruby, Gems
-### RVM and Ruby
+### RVM, Ruby, Gems
+#### RVM and Ruby
 
 It is typically recommended to install Ruby with RVM. With RVM, you can specify the version of Ruby you want
 installed, plus a whole lot more (e.g. gemsets). Full installation instructions for RVM are [available online](http://rvm.io/rvm/install/).
+
+To install these under an Ubuntu-like OS using apt:
+
+    $ sudo apt-add-repository ppa:rael-gc/rvm
+    $ sudo apt update
+    $ sudo apt install rvm
+    $ sudo usermod -a -G rvm <user>    # e.g. replace <user> with ubuntu
+
+Then re-login as *user* to enable rvm.
 
 TeSS was developed using Ruby 2.4.5 and we recommend using version 2.4.5 or higher. To install TeSS' current version of ruby and create a gemset, you
 can do something like the following:
 
     $ rvm install `cat .ruby-version`
-
     $ rvm use --create `cat .ruby-version`@`cat .ruby-gemset`
 
-### Bundler
+#### Bundler
 Bundler provides a consistent environment for Ruby projects by tracking and installing the exact gems and versions that are needed for your Ruby application.
 
 To install it, you can do:
@@ -60,7 +69,7 @@ To install it, you can do:
 
 Note that program 'gem' (a package management framework for Ruby called RubyGems) gets installed when you install RVM so you do not have to install it separately.
 
-### Gems
+#### Gems
 
 Once you have Ruby, RVM and bundler installed, from the root folder of the app do:
 
@@ -68,37 +77,21 @@ Once you have Ruby, RVM and bundler installed, from the root folder of the app d
 
 This will install Rails, as well as any other gem that the TeSS app needs as specified in Gemfile (located in the root folder of the TeSS app).
 
-## PostgreSQL
+### PostgreSQL
 
 Install postgres and add a postgres user called 'tess_user' for the use by the TeSS app (you can name the user any way you like).
 Make sure tess_user is either the owner of the TeSS database (to be created in the next step), or is a superuser.
 Otherwise, you may run into some issues when running and managing the TeSS app.
 
-Normally you'd start postgres with something like (passing the path to your database with -D):
+If postres is not already running, you can start postgres with something like (passing the path to your database with -D):
 
     $ pg_ctl -D ~/Postgresql/data/ start
 
-From command prompt:
- 
-    $ createuser --superuser tess_user
-    
-*(Note: You may need to run the above, and following commands as the `postgres` user: `sudo su - postgres`)*
+From command prompt, create *tess_user* and set its password:
 
-Connect to your postgres database console as database admin 'postgres' (modify to suit your postgres database installation):
- 
-    $ sudo -u postgres psql
-
-Or from Mac OS X
-
-    $ sudo psql postgres
-
-From the postgres console, set password for user 'tess_user':
- 
-    postgres=# \password tess_user
-
-*If your tess_user is not a superuser, make sure you grant it a privilege to create databases:*
- 
-    postgres=# ALTER USER tess_user CREATEDB;
+    $ sudo -i -u postgres
+    $ createuser -Prlds tess_user
+    $ exit
 
 > Handy Postgres/Rails tutorials:
 >
@@ -106,7 +99,7 @@ From the postgres console, set password for user 'tess_user':
 >
 > http://robertbeene.com/rails-4-2-and-postgresql-9-4/
 
-## Solr
+### Solr
 
 TeSS uses Apache Solr to power its search and filtering system. 
 
@@ -118,8 +111,7 @@ You can replace *start* with *stop* or *restart* to stop or restart solr. You ca
 
     $ bundle exec rake sunspot:solr:reindex
 
-
-## Redis/Sidekiq
+### Redis/Sidekiq
 
 On macOS these can be installed and run as follows:
 
@@ -129,8 +121,7 @@ On macOS these can be installed and run as follows:
     
 For a Redis install on a Linux system there should presumably be an equivalent package.
 
-
-## The TeSS Application
+### The DReSA application
 
 From the app's root directory, create several config files by copying the example files.
 
@@ -160,7 +151,7 @@ Start the application:
 
     $ bundle exec rails server
 
-Access TeSS at:
+Access DReSA at:
 
 [http://localhost:3000](http://localhost:3000)
 
@@ -170,7 +161,7 @@ Access TeSS at:
 
     $ bundle exec rake test
 
-### Setup Administrators
+#### Setup Administrators
 
 Once you have a local TeSS succesfully running, you may want to setup administrative users. To do this register a new account in TeSS through the registration page. Then go to the applications Rails console: 
 
@@ -180,7 +171,7 @@ Find the user and assign them the administrative role. This can be completed by 
 
     2.2.6 :001 > User.find_by_email('myemail@domain.co').update_attributes(role: Role.find_by_name('admin'))
 
-### Live deployment
+#### Live deployment
 
 Although designed for CentOS, this document can be followed quite closely to set up a Rails app to work with Apache and Passenger:
 
@@ -216,7 +207,7 @@ The first time and each time a css or js file is updated:
 
 Restart your Web server.
 
-## Basic API
+### Basic API
 
 A record can be viewed as json by appending .json, for example:
 
@@ -246,8 +237,7 @@ Structure the JSON thus:
 A bundle install and rake db:migrate, followed by saving the user as mentioned above, should be enough to get this
 working.
 
-
-### Rake tasks
+#### Rake tasks
 
 To find suggestions of EDAM topics for materials, you can run this rake task. This requires redis and sidekiq to be running as it will add jobs to a queue. It uses BioPortal Annotator web service against the materials description to create suggestions
 

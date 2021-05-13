@@ -8,16 +8,17 @@ $elixir-green: #bebf32;
 $bgDefault: $elixir-orange;
 $bgHighlight: darken($bgDefault, 10%);
 $colDefault: #ffe6d1;
-$colHover: #333333;
-$colHover2: #eeeeee;
+$colHover: #333;
+$colHover2: #eee;
 
-$grey-blue: #8CA0A6;
+$grey-blue: #8ca0a6;
 
-$blue: #206B82;
+$blue: #206b82;
 $blue2: #085871; /* unused? */
 $blue3: #064559; /* unused? */
 
 /* Bootstrap variable tweaks */
+
 /* For reference, see:
      https://github.com/twbs/bootstrap-sass/blob/3.2-stable/assets/stylesheets/bootstrap/_variables.scss */
 
@@ -46,9 +47,9 @@ $navbar-default-toggle-hover-bg: $bgHighlight;
 $navbar-default-toggle-icon-bar-bg: $colHover2;
 $navbar-default-toggle-border-color: $bgHighlight;
 
-
 /* ### End pre-load tweaks */
 @import "bootstrap/variables";
+
 /* ### Post-load tweaks. Anything dependant on Bootstrap's variables needs to be declared below here */
 
 /* collapse navbar on md and smaller screens */
