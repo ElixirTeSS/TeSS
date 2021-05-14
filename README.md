@@ -1,19 +1,19 @@
-# DReSA
+# TeSS
 
-**Digital Research Skill Australasia** using Ruby on Rails.
+**Training eSupport System** using Ruby on Rails.
 
-DReSA is a Rails 5 application.
+TeSS is a Rails 5 application.
 
 [![Build Status](https://travis-ci.com/nrmay/TeSS.svg?branch=master)](https://travis-ci.com/nrmay/TeSS)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/fbe7186d5f2e43e890ec4f5c76445e33)](https://www.codacy.com/gh/nrmay/TeSS/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=nrmay/TeSS&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/fbe7186d5f2e43e890ec4f5c76445e33)](https://www.codacy.com/gh/nrmay/TeSS/dashboard?utm_source=github.com&utm_medium=referral&utm_content=nrmay/TeSS&utm_campaign=Badge_Coverage)
 
 ## Setup
-Below is an example guide to help you set up DReSA in development mode. More comprehensive guides on installing
+Below is an example guide to help you set up TeSS in development mode. More comprehensive guides on installing
 Ruby, Rails, RVM, bundler, postgres, etc. are available elsewhere.
 
 ## System Dependencies
-DReSA requires the following system packages to be installed:
+TeSS requires the following system packages to be installed:
   * PostgresQL
   * ImageMagick
   * A Java runtime
@@ -32,7 +32,7 @@ For Mac OS X:
 
 And install the JDK from Oracle or OpenJDK directly (It is needed for the SOLR search functionality)
 
-### DReSA Code
+### TeSS Code
 
 Clone the source code via git:
 
@@ -121,7 +121,7 @@ On macOS these can be installed and run as follows:
     
 For a Redis install on a Linux system there should presumably be an equivalent package.
 
-### The DReSA application
+### The TeSS application
 
 From the app's root directory, create several config files by copying the example files.
 
@@ -151,7 +151,7 @@ Start the application:
 
     $ bundle exec rails server
 
-Access DReSA at:
+Access TeSS at:
 
 [http://localhost:3000](http://localhost:3000)
 
