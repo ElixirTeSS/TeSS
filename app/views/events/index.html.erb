@@ -69,12 +69,14 @@
             <i class="fa fa-plus-square"></i> Register event
           <% end %>
           <%= render partial: 'subscriptions/subscribe_button', locals: { type: 'Event' } %>
+
           <div class="pull-right">
-            <%= info_button('What are events in TeSS?') do %>
-                <%= render_markdown(EventsHelper::EVENTS_INFO) %>
+            <%= info_button('What are events in ' + TeSS::Config.site['title_short'] + '?') do %>
+              <%= render_markdown(EventsHelper::EVENTS_INFO) %>
             <% end %>
           </div>
         </div>
+
         <div class="row">
           <%= render partial: "search/common/search_box", locals: { resource_path: events_path } %>
           <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">

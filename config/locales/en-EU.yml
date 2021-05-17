@@ -92,6 +92,13 @@ en-EU:
       Widgets are chunks of javascript code that can be copied into website source code to display TeSS content.
       There are several different styles and functionalities available from our configurable widget suite.
       Widgets can be used to enhance your site and offer your community lists of relevant events or training resources.
+    widgets_available: "https://elixirtess.github.io/TeSS_Widgets/"
+    widgets_mailing: >
+      <p>If you do decide to include our widgets on your website, we have a mailing list you can join to keep informed
+        about any service disruptions, required updates, or new features</p>
+      <p><a href="https://groups.google.com/forum/#!forum/tess-widgets-user-group",
+            class="btn btn-primary", target="_blank" >
+            <i class="fa fa-envelope"></i> Join the widgets mailing list</a></p>
     api_example_1: "/events.json_api"
     api_example_2: "/events/data-fairification-for-data-stewards.json_api"
     api_example_3: "/materials.json_api?scientific_topics=RNA-Seq"
@@ -288,3 +295,10 @@ en-EU:
     code: "TeSS adheres to the <a href='https://wiki.refeds.org/display/CODE/Code+of+Conduct+for+Service+Providers'> GÉANT Data Protection Code of Conduct for Service Providers in EU/EEA </a>"
     controller: "The data controller for TeSS is The University of Manchester."
     post: "<strong>The TeSS Team</strong><br/>Room 1.17 c/o School of Computer Science,<br/>Kilburn Building,<br/>Oxford Road,<br/>Manchester,<br/>M13 9PL"
+  providers:
+    info: >
+      Content providers are entities (such as academic institutions, non-profit organisations, portals etc.) that
+      provide training materials of relevance to life sciences and ELIXIR.
+
+
+

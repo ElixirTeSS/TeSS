@@ -16,6 +16,7 @@ default: &default
     theme: 'en'
     repository: ''
     supported_by: ''
+    widget_example: ''
     gmaps_api_key: ''
   questionnaire:
     show: false
@@ -42,8 +43,9 @@ elixir: &elixir
     logo_alt: 'Training eSupport System'
     theme: 'en-EU'
     repository: 'https://github.com/ElixirTeSS/TeSS'
-    supported_by: '_elixir_supported_by'
-    gmaps_api_key: 'AIzaSyAtxeshmu-95V4KZWyDklhhO-UNqNQQJKo'
+    supported_by: 'elixir_supported_by'
+    widget_example: 'elixir_widget_example'
+    gmaps_api_key: ''
   questionnaire:
     show: true
     message: 'Help TeSS by giving us your feedback:'
@@ -62,7 +64,8 @@ atrac: &atrac
     logo_alt: 'DReSA Home'
     theme: 'en-AU'
     repository: 'https://github.com/nrmay/TeSS'
-    supported_by: '_dresa_supported_by.erb'
+    supported_by: 'dresa_supported_by.erb'
+    widget_example: 'elixir_widget_example'
     gmaps_api_key: ''
   feature:
     e-learnings: false
