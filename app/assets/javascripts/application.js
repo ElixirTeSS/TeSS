@@ -126,12 +126,12 @@ document.addEventListener("turbolinks:load", function() {
 
     // Masonry
     $(".nav-tabs a").on("shown.bs.tab", function(e) {
-        repositionTiles('masonry', 'masonry-brick');
+        reposition_tiles('masonry', 'masonry-brick');
     });
     $(window).on("orientationchange", function() {
-        repositionTiles("masonry", "masonry-brick");
+        reposition_tiles("masonry", "masonry-brick");
     });
-    repositionTiles("masonry", "masonry-brick");
+    reposition_tiles("masonry", "masonry-brick");
 
     new Clipboard(".clipboard-btn");
 

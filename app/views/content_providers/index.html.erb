@@ -12,7 +12,7 @@
         <i class="fa fa-plus-square"></i> Register content provider
       <% end %>
       <div class="pull-right">
-        <%= info_button('What are content providers in TeSS?') do %>
+        <%= info_button('What are content providers in ' + TeSS::Config.site['title_short'] + '?') do %>
             <%= render_markdown(ContentProvidersHelper::CONTENT_PROVIDERS_INFO) %>
         <% end %>
       </div>
