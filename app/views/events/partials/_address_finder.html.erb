@@ -7,7 +7,12 @@
 <div class="manual-address-fields">
   <%= f.input :venue, field_lock: true %>
   <%= f.input :city, field_lock: true %>
-  <%= f.input :county, field_lock: true %>
+
+  <!-- County: check disabled -->
+  <% if !TeSS::Config.feature['disabled'].include? 'county' %>
+    <%= f.input :county, field_lock: true %>
+  <% end %>
+
   <%= f.input :country, as: :string, field_lock: true %>
   <%= f.input :postcode, field_lock: true %>
 

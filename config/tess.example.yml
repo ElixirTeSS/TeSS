@@ -33,6 +33,7 @@ default: &default
     packages: true
     providers: true
     workflows: true
+    disabled: []
 
 elixir: &elixir
   site:
@@ -75,6 +76,7 @@ atrac: &atrac
     packages: false
     providers: true
     workflows: false
+    disabled: ['county', 'operations', 'sponsors', 'materials']
 
 development:
   <<: *default
