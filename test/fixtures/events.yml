@@ -2,12 +2,13 @@
 
 one:
   external_id: MyString1
-  title: MyString
+  title: "event one"
   subtitle: MyString
   url: http://example.com/cool-event
   organizer: MyString
   description: MyText
   event_types: ["workshops_and_courses"]
+  duration: '00:00'
   start: 2015-11-23 10:16:33
   end: 2015-11-23 10:16:33
   sponsors: ["MyString"]
@@ -28,12 +29,13 @@ one:
 
 two:
   external_id: MyString2
-  title: MyString
+  title: "event two"
   subtitle: MyString
   url: http://example.com/a-different-event
   organizer: MyString
   description: MyText
   event_types: ["meetings_and_conferences"]
+  duration: '23:59'
   start: 2015-11-23 00:00:00
   end: 2015-11-24 00:00:00
   sponsors: ["MyString"]

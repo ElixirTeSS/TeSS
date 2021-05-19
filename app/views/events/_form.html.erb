@@ -41,9 +41,14 @@
 
   <%= render partial: 'common/url_checker', locals: { f: f, url: events_check_exists_path } %>
 
+  <%# TODO: add autocomplete to this field %>
+  <%= f.input :timezone, field_lock: true %>
+
   <%= f.input :start, as: :datetime_picker, field_lock: true %>
 
   <%= f.input :end, as: :datetime_picker, field_lock: true %>
+
+  <%= f.input :duration, as: :string , label: 'HH:MM' %>
 
   <div class="address_content">
     <%= render partial: 'events/partials/address_finder', locals: { f: f } %>
@@ -60,7 +65,11 @@
     <%= f.dropdown :node_ids, options: format_for_dropdown(Node.order(:name).all), label: 'Nodes' %>
   <% end %>
 
-  <%= f.input :description, as: :markdown_area, input_html: { rows: '10' }, field_lock: true %>
+  <%= f.input :description, as: :markdown_area, input_html: { rows: '5' }, field_lock: true %>
+
+  <%= f.input :learning_objectives, as: :markdown_area, input_html: { rows: '5' }, field_lock: true %>
+
+  <%= f.input :recognition, as: :string, field_lock: true %>
 
   <%= f.dropdown :event_types, options: EventTypeDictionary.instance.options_for_select, label: 'Event type' %>
 
@@ -83,9 +92,6 @@
   <% if !TeSS::Config.feature['disabled'].include? 'sponsors' %>
     <%= f.multi_input :sponsors %>
   <% end %>
-
-  <%# TODO: add autocomplete to this field %>
-  <%= f.input :timezone, field_lock: true %>
 
   <%= f.input :contact, input_html: { rows: '5' }, field_lock: true %>
 
@@ -125,9 +131,7 @@
     <% end %>
 
     <!-- BioTooles: check disabled -->
-    <% if !TeSS::Config.feature['disabled'].include? 'biotools' %>
-
-      <div class="row">
+    <% if !TeSS::Config.feature['disabled'].include? 'biotools' %><div class="row">
         <%= render partial: 'common/biotools_suggestions', locals: { title_element: 'event_title' } %>
       </div>
     <% end %>

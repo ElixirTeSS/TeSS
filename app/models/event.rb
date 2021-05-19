@@ -101,13 +101,15 @@ class Event < ApplicationRecord
 
   validates :title, :url, :start, :end, :organizer, :description, :host_institutions, :timezone, :contact, :eligibility,
             presence: true
-  validates :address, :presence => true, :unless => :online?
+  validates :venue, :city, :country, :postcode, :presence => true, :unless => :online?
   validates :capacity, numericality: true, allow_blank: true
   validates :event_types, controlled_vocabulary: { dictionary: EventTypeDictionary.instance }
   validates :eligibility, controlled_vocabulary: { dictionary: EligibilityDictionary.instance }
   validates :latitude, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90, allow_nil: true }
   validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true }
   validate :allowed_url
+  validates :duration, format: { with: /\A[0-9][0-9]:[0-5][0-9]\z/, message: "must be in format HH:MM" },
+              allow_blank: true
 
   clean_array_fields(:keywords, :event_types, :target_audience, :eligibility, :host_institutions, :sponsors)
   update_suggestions(:keywords, :target_audience, :host_institutions)
@@ -123,25 +125,6 @@ class Event < ApplicationRecord
 
   NOMINATIM_DELAY = 1.minute
   NOMINATIM_MAX_ATTEMPTS = 3
-
-  #Generated Event:
-  # external_id:string
-  # title:string
-  # subtitle:string
-  # url:string
-  # organizer:string
-  # description:text
-  # event_types:text
-  # start:datetime
-  # end:datetime
-  # sponsor:string
-  # venue:text
-  # city:string
-  # county:string
-  # country:string
-  # postcode:string
-  # latitude:double
-  # longitude:double
 
   def description= desc
     super(Rails::Html::FullSanitizer.new.sanitize(desc))

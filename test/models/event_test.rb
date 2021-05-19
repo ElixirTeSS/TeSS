@@ -346,7 +346,7 @@ class EventTest < ActiveSupport::TestCase
     refute event.postcode.blank?
     refute event.latitude.present?
     refute event.longitude.present?
-    assert_operator event.nominatim_count, :< , Event::NOMINATIM_MAX_ATTEMPTS, "nominatim count too high"
+    assert_operator event.nominatim_count, :<, Event::NOMINATIM_MAX_ATTEMPTS, "nominatim count too high"
 
     assert_no_difference('GeocodingWorker.jobs.size') do
       event.save!
@@ -370,4 +370,59 @@ class EventTest < ActiveSupport::TestCase
       assert_equal 45, event.longitude
     end
   end
+
+  test 'can set a valid duration for event' do
+    valid_duration = "01:15"
+    e = events(:one)
+    e.duration = valid_duration
+    e.save()
+    assert_equal 0, e.errors[:duration].size, "unexpected validation error: " + e.errors[:duration].to_s
+  end
+
+  test 'cannot set an invalid duration for event' do
+    invalid_duration = "1:99"
+    e = events(:one)
+    e.duration = invalid_duration
+    e.save()
+    assert_equal 1, e.errors[:duration].size, "unexpected number of validation errors: " + e.errors[:duration].size.to_s
+    assert_equal "must be in format HH:MM", e.errors[:duration][0]
+  end
+
+  test 'can set an duration for event longer than one day' do
+    valid_duration = "25:00"
+    e = events(:one)
+    e.duration = valid_duration
+    e.save()
+    assert_equal 0, e.errors[:duration].size, "unexpected validation error: " + e.errors[:duration].to_s
+  end
+
+  test 'duration validation boundary testing' do
+    durations = [
+      {dvalue: '00:00', passed: true },
+      {dvalue: '99:00', passed: true },
+      {dvalue: '99:59', passed: true },
+      {dvalue: '00:59', passed: true },
+      {dvalue: '23:30', passed: true },
+      {dvalue: '', passed: true },
+      {dvalue: '-00:00', passed: false },
+      {dvalue: '9:9', passed: false },
+      {dvalue: '100:00', passed: false },
+      {dvalue: '00:60', passed: false },
+      {dvalue: '00:99', passed: false }
+    ]
+
+    e = events(:one)
+    durations.each do |t|
+      #puts "\n testing value[#{t[:dvalue]}] passed[#{t[:passed]}]"
+      e.duration = t[:dvalue]
+      e.save()
+      if t[:passed]
+        assert_equal 0, e.errors[:duration].size, "unexpected validation error of #{t[:dvalue]}: " + e.errors[:duration].to_s
+      else
+        assert_equal 1, e.errors[:duration].size, "expected validation error of #{t[:dvalue]}: " + e.errors[:duration].to_s
+      end
+    end
+
+  end
+
 end
