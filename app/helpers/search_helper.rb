@@ -66,6 +66,7 @@ module SearchHelper
 
   def neatly_printed_date_range(start, finish = nil)
     return 'No date given' if start.blank? && finish.blank?
+    return 'No start date' if !start
 
     if finish
       out = ''

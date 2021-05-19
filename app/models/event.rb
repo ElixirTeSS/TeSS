@@ -99,12 +99,14 @@ class Event < ApplicationRecord
   has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
   has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 
-  validates :title, :url, presence: true
+  validates :title, :url, :start, :end, :organizer, :description, :host_institutions, :timezone, :contact, :eligibility,
+            presence: true
+  validates :address, :presence => true, :unless => :online?
   validates :capacity, numericality: true, allow_blank: true
   validates :event_types, controlled_vocabulary: { dictionary: EventTypeDictionary.instance }
   validates :eligibility, controlled_vocabulary: { dictionary: EligibilityDictionary.instance }
   validates :latitude, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90, allow_nil: true }
-  validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true  }
+  validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true }
   validate :allowed_url
 
   clean_array_fields(:keywords, :event_types, :target_audience, :eligibility, :host_institutions, :sponsors)
@@ -113,7 +115,9 @@ class Event < ApplicationRecord
   # These fields should not been shown to users unless they have sufficient privileges
   SENSITIVE_FIELDS = [:funding, :attendee_count, :applicant_count, :trainer_count, :feedback, :notes]
 
-  ADDRESS_FIELDS = [:venue, :city, :county, :country, :postcode]
+  # remove county field
+  #ADDRESS_FIELDS = [:venue, :city, :county, :country, :postcode]
+  ADDRESS_FIELDS = [:venue, :city, :country, :postcode]
 
   COUNTRY_SYNONYMS = JSON.parse(File.read(File.join(Rails.root, 'config', 'data', 'country_synonyms.json')))
 
@@ -183,20 +187,20 @@ class Event < ApplicationRecord
   end
 
   def to_csv_event
-      if self.organizer.class == String
-        organizer = self.organizer.tr(',',' ')
-      elsif self.organizer.class == Array
-        organizer = self.organizer.join(' | ').gsub(',',' and ')
-      else
-        organizer = nil
-      end
-      cp = self.content_provider.title unless self.content_provider.nil?
+    if self.organizer.class == String
+      organizer = self.organizer.tr(',', ' ')
+    elsif self.organizer.class == Array
+      organizer = self.organizer.join(' | ').gsub(',', ' and ')
+    else
+      organizer = nil
+    end
+    cp = self.content_provider.title unless self.content_provider.nil?
 
-      [self.title.tr(',',' '),
-              organizer,
-              self.start.strftime("%d %b %Y"),
-              self.end.strftime("%d %b %Y"),
-              cp]
+    [self.title.tr(',', ' '),
+     organizer,
+     self.start.strftime("%d %b %Y"),
+     self.end.strftime("%d %b %Y"),
+     cp]
   end
 
   def to_ical
@@ -207,17 +211,17 @@ class Event < ApplicationRecord
 
   def to_ical_event
     Icalendar::Event.new.tap do |ical_event|
-      ical_event.dtstart     = Icalendar::Values::Date.new(self.start) unless self.start.blank?
-      ical_event.dtend       = Icalendar::Values::Date.new(self.end) unless self.end.blank?
-      ical_event.summary     = self.title
+      ical_event.dtstart = Icalendar::Values::Date.new(self.start) unless self.start.blank?
+      ical_event.dtend = Icalendar::Values::Date.new(self.end) unless self.end.blank?
+      ical_event.summary = self.title
       ical_event.description = self.description
-      ical_event.location    = self.venue unless self.venue.blank?
+      ical_event.location = self.venue unless self.venue.blank?
     end
   end
 
   def show_map?
     !self.online? &&
-    ((self.latitude.present? && self.longitude.present?) ||
+      ((self.latitude.present? && self.longitude.present?) ||
         (self.suggested_latitude.present? && self.suggested_longitude.present?))
   end
 
@@ -348,7 +352,7 @@ class Event < ApplicationRecord
     location = self.address
 
     #result = Geocoder.search(location).first
-    args = {postalcode: postcode, city: city, county: county, country: country, format: 'json'}
+    args = { postalcode: postcode, city: city, county: county, country: country, format: 'json' }
     result = nominatim_lookup(args)
     if result
       self.latitude = result[:lat]
@@ -368,7 +372,9 @@ class Event < ApplicationRecord
   # If no latitude or longitude, create a GeocodingWorker to find them.
   # This should run a minute after the last one is set to run (last run time stored by Redis).
   def enqueue_geocoding_worker
-    return if (latitude.present? && longitude.present?) || (address.blank? && postcode.blank?) || nominatim_count >= NOMINATIM_MAX_ATTEMPTS
+    return if (latitude.present? && longitude.present?) ||
+      (address.blank? && postcode.blank?) ||
+      nominatim_count >= NOMINATIM_MAX_ATTEMPTS
 
     location = address
 
@@ -394,7 +400,6 @@ class Event < ApplicationRecord
                             headers: { 'User-Agent' => "Elixir TeSS <#{TeSS::Config.contact_email}>" })
     (JSON.parse response.body, symbolize_names: true)[0]
   end
-
 
   private
 

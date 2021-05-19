@@ -3,6 +3,13 @@ require 'sidekiq/testing'
 
 class EventTest < ActiveSupport::TestCase
 
+  setup do
+    @event = events(:one)
+    @mandatory = { start: @event.start, end: @event.end, organizer: @event.organizer,
+                   timezone: @event.timezone, contact: @event.contact, eligibility: @event.eligibility,
+                   host_institutions: @event.host_institutions }
+  end
+
   test 'can get associated nodes for event' do
     e = events(:scraper_user_event)
 
@@ -74,8 +81,13 @@ class EventTest < ActiveSupport::TestCase
     assert_equal e.start, time
     assert_nil e.end
     e.save()
-    assert_equal e.start, time + 9.hours
-    assert_equal e.end, time + 17.hours
+    # end time is now mandatory
+    assert !e.errors[:end].empty?
+    assert e.errors[:end].size == 1
+    assert_equal e.errors[:end][0].to_s, "can't be blank"
+
+    #assert_equal e.start, time + 9.hours
+    #assert_equal e.end, time + 17.hours
   end
 
   test 'set default online end time' do
@@ -84,8 +96,13 @@ class EventTest < ActiveSupport::TestCase
     assert_equal e.start, time
     assert_nil e.end
     e.save()
-    assert_equal e.start, time
-    assert_equal e.end, time + 1.hours
+    # end time is now mandatory
+    assert !e.errors[:end].empty?
+    assert e.errors[:end].size == 1
+    assert_equal e.errors[:end][0].to_s, "can't be blank"
+
+    #assert_equal e.start, time
+    #assert_equal e.end, time + 1.hours
   end
 
   test 'lower precedence content provider does not overwrite' do
@@ -164,7 +181,7 @@ class EventTest < ActiveSupport::TestCase
 
     assert_difference('OntologyTermLink.count', 2) do
       e.scientific_topic_uris = ['http://edamontology.org/topic_0078', 'http://edamontology.org/topic_0654',
-                                  'http://edamontology.org/topic_0078', 'http://edamontology.org/topic_0654']
+                                 'http://edamontology.org/topic_0078', 'http://edamontology.org/topic_0654']
       e.save!
       assert_equal 2, e.scientific_topics.count
     end
@@ -251,7 +268,9 @@ class EventTest < ActiveSupport::TestCase
   end
 
   test 'blocks disallowed domain' do
-    event = Event.new(user: users(:regular_user), title: 'Bad event', url: 'bad-domain.example/event')
+    parameters = @mandatory.merge({ user: users(:regular_user), title: 'Bad event', url: 'bad-domain.example/event',
+                                    online: true })
+    event = Event.new(parameters)
 
     refute event.save
 
@@ -259,7 +278,9 @@ class EventTest < ActiveSupport::TestCase
   end
 
   test 'does not block non-disallowed(?!) domain' do
-    event = Event.new(user: users(:regular_user), title: 'Good event', url: 'good-domain.example/event')
+    parameters = @mandatory.merge({ user: users(:regular_user), title: 'Good event', url: 'good-domain.example/event',
+                                    description: "event for does not block non-disallowed domain", online: true })
+    event = Event.new(parameters)
 
     assert event.save
 
@@ -271,7 +292,10 @@ class EventTest < ActiveSupport::TestCase
     begin
       TeSS::Config.blocked_domains = nil
       assert_nothing_raised do
-        Event.create!(user: users(:regular_user), title: 'Bad event', url: 'bad-domain.example/event')
+        parameters = @mandatory.merge({ user: users(:regular_user), title: 'Bad event', url: 'bad-domain.example/event',
+                                        description: "event for does not throw error when blocked domains list is blank",
+                                        online: true })
+        Event.create!(parameters)
       end
     ensure
       TeSS::Config.blocked_domains = domains
@@ -280,7 +304,12 @@ class EventTest < ActiveSupport::TestCase
 
   test 'enqueues a geocoding worker after creating an event' do
     assert_difference('GeocodingWorker.jobs.size', 1) do
-      event = Event.create(user: users(:regular_user), title: 'New event', url: 'http://example.com', venue: 'A place', city: 'Manchester')
+      parameters = @mandatory.merge({ user: users(:regular_user), title: 'New event', url: 'http://example.com',
+                                      online: false, description: "event to test enqueing of geocoding worker",
+                                      venue: 'A place', city: 'Manchester', country: 'UK', postcode: 'M16 0TH'
+                                    })
+      event = Event.create(parameters)
+      assert event.errors[:url].empty?
       refute event.address.blank?
     end
   end
@@ -303,7 +332,8 @@ class EventTest < ActiveSupport::TestCase
 
   test 'does not enqueue a geocoding worker after creating an event with defined lat/lon' do
     assert_no_difference('GeocodingWorker.jobs.size') do
-      event = Event.create(user: users(:regular_user), title: 'New event', url: 'http://example.com', latitude: 25, longitude: 25, venue: 'Place')
+      event = Event.create(user: users(:regular_user), title: 'New event', url: 'http://example.com',
+                           latitude: 25, longitude: 25, venue: 'Place')
       refute event.address.blank?
     end
   end
@@ -311,7 +341,12 @@ class EventTest < ActiveSupport::TestCase
   test 'does not enqueue a geocoding worker after changing a non-address field' do
     event = events(:portal_event)
     event.title = 'New title'
+
     refute event.address.blank?
+    refute event.postcode.blank?
+    refute event.latitude.present?
+    refute event.longitude.present?
+    assert_operator event.nominatim_count, :< , Event::NOMINATIM_MAX_ATTEMPTS, "nominatim count too high"
 
     assert_no_difference('GeocodingWorker.jobs.size') do
       event.save!
@@ -319,7 +354,11 @@ class EventTest < ActiveSupport::TestCase
   end
 
   test 'does not enqueue a geocoding worker if the address is cached' do
-    event = Event.new(user: users(:regular_user), title: 'New event', url: 'http://example.com', venue: 'A place', city: 'Manchester')
+    parameters = @mandatory.merge({ user: users(:regular_user), title: 'New event', url: 'http://example.com',
+                                    online: false, description: "event for geocoding enqueue test",
+                                    venue: 'A place', city: 'Manchester',
+                                    country: @event.country, postcode: @event.postcode })
+    event = Event.new(parameters)
     redis = Redis.new
     redis.set(event.address, [45, 45].to_json)
 
