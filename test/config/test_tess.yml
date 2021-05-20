@@ -34,3 +34,7 @@ feature:
   providers: true
   workflows: true
   disabled: []
+dictionaries:
+  difficulty: 'difficulty.yml'
+  eligibility: 'eligibility.yml'
+  event_types: 'event_types.yml'

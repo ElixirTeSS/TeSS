@@ -34,6 +34,10 @@ default: &default
     providers: true
     workflows: true
     disabled: []
+  dictionaries:
+    difficulty: 'difficulty.yml'
+    eligibility: 'eligibility.yml'
+    event_types: 'event_types.yml'
 
 elixir: &elixir
   site:
@@ -77,6 +81,11 @@ atrac: &atrac
     providers: true
     workflows: false
     disabled: ['county', 'operations', 'sponsors', 'materials']
+  dictionaries:
+    difficulty: 'difficulty_dresa.yml'
+    eligibility: 'eligibility_dresa.yml'
+    event_types: 'event_types_dresa.yml'
+
 
 development:
   <<: *default

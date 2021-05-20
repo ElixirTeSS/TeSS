@@ -5,6 +5,10 @@ class Dictionary
     @dictionary = load_dictionary
   end
 
+  def reload
+    @dictionary = load_dictionary
+  end
+
   def lookup(id)
     @dictionary[id]
   end

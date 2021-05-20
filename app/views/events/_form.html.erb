@@ -48,7 +48,7 @@
 
   <%= f.input :end, as: :datetime_picker, field_lock: true %>
 
-  <%= f.input :duration, as: :string , label: 'HH:MM' %>
+  <%= f.input :duration, as: :string, label: 'Duration (HH:MM)' %>
 
   <div class="address_content">
     <%= render partial: 'events/partials/address_finder', locals: { f: f } %>
@@ -69,7 +69,7 @@
 
   <%= f.input :learning_objectives, as: :markdown_area, input_html: { rows: '5' }, field_lock: true %>
 
-  <%= f.input :recognition, as: :string, field_lock: true %>
+  <%= f.input :recognition, as: :string, field_lock: true, label: 'Credit or Recognition of Attendance' %>
 
   <%= f.dropdown :event_types, options: EventTypeDictionary.instance.options_for_select, label: 'Event type' %>
 
