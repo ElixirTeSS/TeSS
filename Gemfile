@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+# 
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -83,7 +85,7 @@ gem 'redcarpet', '~> 3.4.0'
 
 # Gem for paginating search results
 gem 'will_paginate'
-#gem 'will_paginate-bootstrap', '~> 1.0.1'
+# gem 'will_paginate-bootstrap', '~> 1.0.1'
 
 # Gem for authorisation
 gem 'pundit', '~> 1.1.0'
@@ -128,41 +130,40 @@ gem 'private_address_check'
 # For the link monitor rake taks
 gem 'time_diff'
 
-#
 # For internationalisation (i18n)
 gem 'rails-i18n'
 
 source 'https://rails-assets.org' do
+  gem 'rails-assets-clipboard', '~> 1.5.12'
+  gem 'rails-assets-devbridge-autocomplete', '~> 1.2.26'
+  gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '~> 4.17.42'
   gem 'rails-assets-markdown-it', '~> 7.0.1'
   gem 'rails-assets-moment', '~> 2.15.0'
-  gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '~> 4.17.42'
-  gem 'rails-assets-devbridge-autocomplete', '~> 1.2.26'
-  gem 'rails-assets-clipboard', '~> 1.5.12'
 end
 
 group :test do
-  gem 'minitest', '5.10.3'
   gem 'fakeredis'
+  gem 'minitest', '5.10.3'
   gem 'rails-controller-testing'
 end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'webmock', '~> 3.4.2'
   gem 'byebug'
-  gem 'simplecov'
-  gem 'rubocop'
   gem 'codacy-coverage', :require => false
+  gem 'rubocop'
+  gem 'simplecov'
+  gem 'webmock', '~> 3.4.2'
 end
 
 group :development do
+  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  # gem 'spring'
+  gem 'listen'
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  #gem 'spring'
-  gem 'listen'
 end
 
-group :production do
-  #gem 'passenger', '~> 5.1.11'
-end
+#group :production do
+#  gem 'passenger', '~> 5.1.11'
+#end
