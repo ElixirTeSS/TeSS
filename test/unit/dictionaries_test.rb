@@ -8,7 +8,7 @@ class DictionariesTest < ActiveSupport::TestCase
     @dictionaries = TeSS::Config.dictionaries
     @dictionaries['difficulty'] = DifficultyDictionary::DEFAULT_FILE
     @dictionaries['eligibility'] = EligibilityDictionary::DEFAULT_FILE
-    @dictionaries['event_type'] = EventTypeDictionary::DEFAULT_FILE
+    @dictionaries['event_types'] = EventTypeDictionary::DEFAULT_FILE
     DifficultyDictionary.instance.reload
     EligibilityDictionary.instance.reload
     EventTypeDictionary.instance.reload
