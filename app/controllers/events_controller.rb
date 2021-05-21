@@ -1,3 +1,5 @@
+require 'tzinfo'
+
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages, :add_term, :reject_term,
                                    :redirect, :report, :update_report, :add_data, :reject_data]
@@ -173,7 +175,7 @@ class EventsController < ApplicationController
                                   :scraper_record, :description, {:scientific_topic_names => []},
                                   {:scientific_topic_uris => []}, {:operation_names => []},
                                   {:operation_uris => []}, {:event_types => []},
-                                  {:keywords => []}, :start, :end, { sponsors: [] }, :online, :for_profit, :venue,
+                                  {:keywords => []}, :start, :end, :duration, { sponsors: [] }, :online, :for_profit, :venue,
                                   :city, :county, :country, :postcode, :latitude, :longitude, :timezone,
                                   :content_provider_id, {:package_ids => []}, {:node_ids => []}, {:node_names => []},
                                   {:target_audience => []}, {:eligibility => []},
