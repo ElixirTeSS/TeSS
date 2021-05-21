@@ -217,8 +217,8 @@ var Workflows = {
                     ontologyTerms: Workflows.ontologyTerms.fetch()
                 },
                 position: {
-                    x: parseInt($('#node-modal-form-x').val()),
-                    y: parseInt($('#node-modal-form-y').val())
+                    x: parseInt($("#node-modal-form-x", 10).val()),
+                    y: parseInt($("#node-modal-form-y", 10).val())
                 }
             };
         }
