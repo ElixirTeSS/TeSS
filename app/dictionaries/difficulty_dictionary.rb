@@ -5,13 +5,7 @@ class DifficultyDictionary < Dictionary
   private
 
   def dictionary_filepath
-    begin
-      result = File.join(Rails.root, "config", "dictionaries", TeSS::Config.dictionaries['difficulty'])
-      raise "file not found" if !File.file?(result)
-    rescue
-      result = File.join(Rails.root, "config", "dictionaries", DEFAULT_FILE)
-    end
-    return result
+    get_file_path'difficulty', DEFAULT_FILE
   end
 
 end

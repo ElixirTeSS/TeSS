@@ -72,7 +72,7 @@ class DictionariesTest < ActiveSupport::TestCase
 
   end
 
-  test "check invalid event_type dictionary" do
+  test "check invalid event_types dictionary" do
     dic = EventTypeDictionary.instance
     assert dic.is_a?(EventTypeDictionary)
     assert_not_nil dic, "event type dictionary should exist"
@@ -88,6 +88,31 @@ class DictionariesTest < ActiveSupport::TestCase
                  "event type (receptions_and_networking) title not matched"
     assert_nil dic.lookup("workshops_and_courses")['description'],
                "event type (workshops_and_courses) description was found"
+  end
+
+  test "check invalid difficulty dictionary" do
+    dic = DifficultyDictionary.instance
+    assert dic.is_a?(DifficultyDictionary)
+    assert_not_nil dic, "difficulty dictionary should exist"
+
+    @dictionaries['difficulty'] = 'difficulty_dummy.yml'
+    dic.reload
+
+    # should reload default
+    assert_not_nil dic.lookup("advanced"), "advanced: not found"
+  end
+
+  test "check invalid eligibility dictionary" do
+    dic = EligibilityDictionary.instance
+    assert dic.is_a?(EligibilityDictionary)
+    assert_not_nil dic, "eligibility dictionary should exist"
+
+    @dictionaries['eligibility'] = 'eligibility_dummy.yml'
+    dic.reload
+
+    # should reload default
+    assert_nil dic.lookup("open_to_all"), "open_to_all: was found"
+    assert_not_nil dic.lookup("by_invitation"), "eligigility level (by_invitation) not found"
   end
 
 end
