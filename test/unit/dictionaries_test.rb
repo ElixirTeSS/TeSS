@@ -4,14 +4,12 @@ class DictionariesTest < ActiveSupport::TestCase
   # test the replaceable dictionaries: difficulty, eligibility, and event_types
 
   setup do
-    # reset default dictionary files
     @dictionaries = TeSS::Config.dictionaries
-    @dictionaries['difficulty'] = DifficultyDictionary::DEFAULT_FILE
-    @dictionaries['eligibility'] = EligibilityDictionary::DEFAULT_FILE
-    @dictionaries['event_types'] = EventTypeDictionary::DEFAULT_FILE
-    DifficultyDictionary.instance.reload
-    EligibilityDictionary.instance.reload
-    EventTypeDictionary.instance.reload
+    reset_dictionaries
+  end
+
+  teardown do
+    reset_dictionaries
   end
 
   test "check default difficulty dictionary" do
@@ -113,6 +111,18 @@ class DictionariesTest < ActiveSupport::TestCase
     # should reload default
     assert_nil dic.lookup("open_to_all"), "open_to_all: was found"
     assert_not_nil dic.lookup("by_invitation"), "eligigility level (by_invitation) not found"
+  end
+
+  private
+
+  def reset_dictionaries
+    # reset default dictionary files
+    @dictionaries['difficulty'] = DifficultyDictionary::DEFAULT_FILE
+    @dictionaries['eligibility'] = EligibilityDictionary::DEFAULT_FILE
+    @dictionaries['event_types'] = EventTypeDictionary::DEFAULT_FILE
+    DifficultyDictionary.instance.reload
+    EligibilityDictionary.instance.reload
+    EventTypeDictionary.instance.reload
   end
 
 end
