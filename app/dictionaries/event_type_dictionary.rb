@@ -1,9 +1,11 @@
 class EventTypeDictionary < Dictionary
 
+  DEFAULT_FILE = "event_types.yml"
+
   private
 
   def dictionary_filepath
-    File.join(Rails.root, "config", "dictionaries", "event_types.yml")
+    get_file_path 'event_types', DEFAULT_FILE
   end
 
 end

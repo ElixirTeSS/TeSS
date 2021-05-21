@@ -2,12 +2,13 @@
 
 one:
   external_id: MyString1
-  title: MyString
+  title: "event one"
   subtitle: MyString
   url: http://example.com/cool-event
   organizer: MyString
   description: MyText
   event_types: ["workshops_and_courses"]
+  duration: '00:00'
   start: 2015-11-23 10:16:33
   end: 2015-11-23 10:16:33
   sponsors: ["MyString"]
@@ -21,15 +22,20 @@ one:
   keywords: ["Keyword"]
   user: regular_user
   content_provider: goblet
+  host_institutions: ["MyHost"]
+  timezone: MyTZ
+  contact: MyContact
+  eligibility: [ first_come_first_served ]
 
 two:
   external_id: MyString2
-  title: MyString
+  title: "event two"
   subtitle: MyString
   url: http://example.com/a-different-event
   organizer: MyString
   description: MyText
   event_types: ["meetings_and_conferences"]
+  duration: '23:59'
   start: 2015-11-23 00:00:00
   end: 2015-11-24 00:00:00
   sponsors: ["MyString"]
@@ -42,6 +48,10 @@ two:
   longitude:
   keywords: ["Keyword"]
   user: regular_user
+  host_institutions: ["MyHost"]
+  timezone: MyTZ
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
 
 month_long_event:
   title: Month-long event
@@ -55,6 +65,10 @@ month_long_event:
   country: USA
   keywords: ["Keyword"]
   user: regular_user
+  host_institutions: ["MyHost"]
+  timezone: MyTZ
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
 
 year_long_event:
   title: Year-long event
@@ -68,7 +82,10 @@ year_long_event:
   country: USA
   keywords: ["Keyword"]
   user: regular_user
-
+  host_institutions: ["MyHost"]
+  timezone: MyTZ
+  contact: MyContact
+  eligibility: [ by_invitation ]
 
 iann_event:
   title: iAnn event
@@ -76,6 +93,10 @@ iann_event:
   description: 'this is an iann event'
   user: regular_user
   content_provider: iann
+  host_institutions: ["MyHost"]
+  timezone: MyTZ
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
 
 scraper_user_event:
   title: material owned by scraper'
@@ -83,6 +104,18 @@ scraper_user_event:
   description: 'this is my material'
   user: scraper_user
   content_provider: goblet
+  host_institutions: ["MyHost"]
+  timezone: MyTZ
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  start: 2016-12-12 10:00:00
+  end: 2016-12-12 12:00:00
+  venue: MyHall
+  city: Somewhere Awesome
+  country: BigCountry
+  postcode: 1010
+  organizer: AnOrganizer
+
 
 event_with_external_resource:
   title: External Resource Event
@@ -90,6 +123,17 @@ event_with_external_resource:
   description: 'this is my material'
   user: scraper_user
   content_provider: goblet
+  host_institutions: ["MyHost"]
+  timezone: MyTZ
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  start: 2016-12-12 10:00:00
+  end: 2016-12-12 12:00:00
+  venue: MyHall
+  city: Somewhere Awesome
+  country: BigCountry
+  postcode: 1010
+  organizer: AnOrganizer
 
 event_with_no_start:
   title: No Start Time
@@ -97,6 +141,16 @@ event_with_no_start:
   description: 'Fun stuff, indeed!'
   user: scraper_user
   content_provider: goblet
+  host_institutions: ["MyHost"]
+  timezone: MyTZ
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  end: 2016-12-12 12:00:00
+  venue: MyHall
+  city: Somewhere Awesome
+  country: BigCountry
+  postcode: 1010
+  organizer: AnOrganizer
 
 event_with_no_end:
   title: No End Time
@@ -105,6 +159,15 @@ event_with_no_end:
   user: scraper_user
   content_provider: goblet
   start: 2016-11-22
+  host_institutions: ["MyHost"]
+  timezone: MyTZ
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  venue: MyHall
+  city: Somewhere Awesome
+  country: BigCountry
+  postcode: 1010
+  organizer: AnOrganizer
 
 online_event_with_no_end:
   title: No End Time
@@ -114,6 +177,15 @@ online_event_with_no_end:
   content_provider: goblet
   start: 2016-11-22 14:00
   online: true
+  host_institutions: ["MyHost"]
+  timezone: MyTZ
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  venue: MyHall
+  city: Somewhere Awesome
+  country: BigCountry
+  postcode: 1010
+  organizer: AnOrganizer
 
 organisation_event:
   title: Fun Training Day
@@ -123,8 +195,18 @@ organisation_event:
   content_provider: organisation_provider
   start: 2016-12-12 10:00:00
   end: 2016-12-12 12:00:00
+  host_institutions: ["MyHost"]
+  timezone: MyTZ
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  venue: MyHall
+  city: Somewhere Awesome
+  country: BigCountry
+  postcode: 1010
+  organizer: AnOrganizer
 
 portal_event:
+  online: false
   title: Awesome Training Day
   url: http://content-provider.portal/event
   description: 'Such Bioinformatics, many DNA, very Protein. Wow!'
@@ -132,7 +214,15 @@ portal_event:
   content_provider: portal_provider
   start: 2016-12-12 10:00:00
   end: 2016-12-12 12:00:00
-  city: Somewhere Awesome
+  host_institutions: ["MyHost"]
+  timezone: UTC
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  venue: "Birmingham City Hall"
+  city: "Birmingham"
+  country: "United Kingdom"
+  postcode: "B1 1BB"
+  organizer: AnOrganizer
 
 dodgy_country_event:
   title: Fun Training Day
@@ -143,6 +233,14 @@ dodgy_country_event:
   start: 2016-12-12 10:00:00
   end: 2016-12-12 12:00:00
   country: üK
+  host_institutions: ["MyHost"]
+  timezone: MyTZ
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  venue: MyHall
+  city: Somewhere Awesome
+  postcode: 1010
+  organizer: AnOrganizer
 
 no_description_event:
   title: All you need to know is in the title
@@ -151,16 +249,35 @@ no_description_event:
   content_provider: goblet
   start: 2016-12-12 10:00:00
   end: 2016-12-12 12:00:00
+  host_institutions: ["MyHost"]
+  timezone: MyTZ
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  venue: MyHall
+  city: Melbourne
+  country: Australia
+  postcode: 3000
+  organizer: AnOrganizer
 
 event_with_report:
   title: This event happened
   url: http://content-provider.org/event-with-report
+  description: "An event with a report"
   user: regular_user
   content_provider: goblet
   start: 2016-12-12 10:00:00
   end: 2016-12-12 12:00:00
   funding: Fidget spinner sales
   attendee_count: 1
+  host_institutions: ["MyHost"]
+  timezone: AEST
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  venue: MyHall
+  city: Sydney
+  country: AU
+  postcode: 1000
+  organizer: AnOrganizer
 
 another_event_with_report:
   title: This event happened
@@ -170,6 +287,15 @@ another_event_with_report:
   start: 2016-12-12 10:00:00
   end: 2016-12-12 12:00:00
   funding: Raffle
+  host_institutions: ["MyHost"]
+  timezone: MyTZ
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  venue: MyHall
+  city: Somewhere Awesome
+  country: BigCountry
+  postcode: 1010
+  organizer: AnOrganizer
 
 shadowbanned_event:
   external_id: MyString1
@@ -191,6 +317,10 @@ shadowbanned_event:
   longitude: -2.233949
   keywords: ["Predatory"]
   user: shadowbanned_user
+  host_institutions: ["MyHost"]
+  timezone: BST
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
 
 failing_event:
   title: Collision With Iceberg
@@ -200,6 +330,15 @@ failing_event:
   content_provider: portal_provider
   start: 1914-04-14 23:40:00
   end: 1914-04-15 02:20:00
+  host_institutions: ["MyHost"]
+  timezone: GMT
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  venue: Kilburn Building
+  city: Manchester
+  county: Greater Manchester
+  country: United Kingdom
+  postcode: M13 9PL
 
 kilburn:
   title: Kilburn Event
@@ -214,3 +353,8 @@ kilburn:
   country: United Kingdom
   postcode: M13 9PL
   user: regular_user
+  host_institutions: ["MyHost"]
+  timezone: UTC
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  organizer: "The Organizer"

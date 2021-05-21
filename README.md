@@ -14,11 +14,12 @@ Ruby, Rails, RVM, bundler, postgres, etc. are available elsewhere.
 
 ## System Dependencies
 TeSS requires the following system packages to be installed:
-  * PostgresQL
-  * ImageMagick
-  * A Java runtime
-  * A JavaScript runtime
-  * Redis
+
+-   PostgresQL
+-   ImageMagick
+-   A Java runtime
+-   A JavaScript runtime
+-   Redis
 
 To install these under an Ubuntu-like OS using apt:
 

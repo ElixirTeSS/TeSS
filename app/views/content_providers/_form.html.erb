@@ -1,31 +1,34 @@
 <%= simple_form_for @content_provider, html: { class: "content_provider", multipart: true } do |f| %>
 
-    <%= render partial: 'common/error_summary', locals: { resource: @content_provider } %>
+  <%= render partial: 'common/error_summary', locals: { resource: @content_provider } %>
 
-    <%= f.input :title, as: :string %>
+  <%= f.input :title, as: :string %>
 
-    <%= render partial: 'common/url_checker', locals: { f: f, url: content_providers_check_exists_path } %>
+  <%= render partial: 'common/url_checker', locals: { f: f, url: content_providers_check_exists_path } %>
 
-    <%= f.input :description, as: :markdown_area, input_html: { rows: '10' } %>
+  <%= f.input :description, as: :markdown_area, input_html: { rows: '10' } %>
 
-    <div class="form-group">
-      <%= render partial: 'common/image_form', locals: { form: f } %>
-    </div>
+  <div class="form-group">
+    <%= render partial: 'common/image_form', locals: { form: f } %>
+  </div>
 
-    <%= f.input :content_provider_type, label: 'Type', collection: ContentProvider::PROVIDER_TYPE, include_blank: false %>
+  <%= f.input :content_provider_type, label: 'Type', collection: ContentProvider::PROVIDER_TYPE, include_blank: false %>
 
+  <!-- Nodes: check feature enabled -->
+  <% if TeSS::Config.feature['nodes'] %>
     <%= f.input :node_id, label: 'ELIXIR node', collection: Node.all, label_method: :title %>
+  <% end %>
 
-    <%= f.multi_input :keywords %>
+  <%= f.multi_input :keywords %>
 
-    <% if current_user.is_admin? %>
-        <%= f.input :user_id, label: 'Owner', collection: User.all %>
-    <% end %>
+  <% if current_user.is_admin? %>
+    <%= f.input :user_id, label: 'Owner', collection: User.all %>
+  <% end %>
 
-    <div class="form-group">
-      <%= f.submit ( f.object.new_record? ? "Register" : "Update") + " content provider", class: 'btn btn-primary' %>
-      <%= link_to 'Back', content_providers_path, class: "btn btn-info" %>
-      <%= link_to t('.cancel', default: t("helpers.links.cancel")),
-                  content_providers_path, class: 'btn btn-default' %>
-    </div>
+  <div class="form-group">
+    <%= f.submit (f.object.new_record? ? "Register" : "Update") + " content provider", class: 'btn btn-primary' %>
+    <%= link_to 'Back', content_providers_path, class: "btn btn-info" %>
+    <%= link_to t('.cancel', default: t("helpers.links.cancel")),
+                content_providers_path, class: 'btn btn-default' %>
+  </div>
 <% end %>

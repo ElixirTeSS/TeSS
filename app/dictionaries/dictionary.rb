@@ -5,6 +5,10 @@ class Dictionary
     @dictionary = load_dictionary
   end
 
+  def reload
+    @dictionary = load_dictionary
+  end
+
   def lookup(id)
     @dictionary[id]
   end
@@ -46,5 +50,15 @@ class Dictionary
 
   def load_dictionary
     YAML.safe_load(File.read(dictionary_filepath)).with_indifferent_access
+  end
+
+  def get_file_path(config_file, default_file)
+    begin
+      result = File.join(Rails.root, "config", "dictionaries", TeSS::Config.dictionaries[ config_file ])
+      raise "file not found" if !File.file?(result)
+    rescue
+      result = File.join(Rails.root, "config", "dictionaries", default_file)
+    end
+    return result
   end
 end
