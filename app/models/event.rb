@@ -107,10 +107,8 @@ class Event < ApplicationRecord
   validates :eligibility, controlled_vocabulary: { dictionary: EligibilityDictionary.instance }
   validates :latitude, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90, allow_nil: true }
   validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true }
+  validates :duration, format: { with: /\A[0-9][0-9]:[0-5][0-9]\z/, message: "must be in format HH:MM" }, allow_blank: true
   validate :allowed_url
-  validates :duration, format: { with: /\A[0-9][0-9]:[0-5][0-9]\z/, message: "must be in format HH:MM" },
-              allow_blank: true
-
   clean_array_fields(:keywords, :event_types, :target_audience, :eligibility, :host_institutions, :sponsors)
   update_suggestions(:keywords, :target_audience, :host_institutions)
 

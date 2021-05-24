@@ -42,7 +42,15 @@
   <%= render partial: 'common/url_checker', locals: { f: f, url: events_check_exists_path } %>
 
   <%# TODO: add autocomplete to this field %>
-  <%= f.input :timezone, field_lock: true %>
+  <!--%= f.input :timezone, field_lock: true %-->
+  <% australasian_time_zones = ActiveSupport::TimeZone.country_zones('AU').concat(
+    ActiveSupport::TimeZone.country_zones('NZ')) %>
+
+  <div class="form-group string reqiured event_timezone">
+    <label class="control-label string required" for="event_timezone">Time Zone</label></br>
+    <%= f.time_zone_select :timezone, australasian_time_zones %>
+  </div>
+
 
   <%= f.input :start, as: :datetime_picker, field_lock: true %>
 
@@ -131,7 +139,8 @@
     <% end %>
 
     <!-- BioTooles: check disabled -->
-    <% if !TeSS::Config.feature['disabled'].include? 'biotools' %><div class="row">
+    <% if !TeSS::Config.feature['disabled'].include? 'biotools' %>
+      <div class="row">
         <%= render partial: 'common/biotools_suggestions', locals: { title_element: 'event_title' } %>
       </div>
     <% end %>

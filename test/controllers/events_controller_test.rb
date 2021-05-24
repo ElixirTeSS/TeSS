@@ -170,10 +170,20 @@ class EventsControllerTest < ActionController::TestCase
     sign_in users(:regular_user)
     assert_difference('Event.count') do
       # Create event with all mandatory fields
-      post :create, params: { event: { description: @event.description, title: @event.title, url: @event.url
+      post :create, params: { event: { description: @event.description, title: @event.title, url: @event.url,
+                                       duration: @event.duration, recognition: @event.recognition,
+                                       learning_objectives: @event.learning_objectives
       }.merge(@mandatory_fields) }
     end
     assert_redirected_to event_path(assigns(:event))
+    # check new fields: migration 5.2
+    assert_not_nil assigns(:event), "event is nil"
+    assert_not_nil assigns(:event).duration, "duration is nil"
+    assert_equal @event.duration, assigns(:event).duration, "duration not matched"
+    assert_not_nil assigns(:event).recognition, "recognition is nil"
+    assert_equal @event.recognition, assigns(:event).recognition, "recognition not matched"
+    assert_not_nil assigns(:event).learning_objectives, "learning objectives is nil"
+    assert_equal @event.learning_objectives, assigns(:event).learning_objectives, "learning objectives not matched"
   end
 
   test 'should create event for admin' do

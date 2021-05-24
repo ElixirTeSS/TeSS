@@ -133,6 +133,10 @@ gem 'time_diff'
 # For internationalisation (i18n)
 gem 'rails-i18n'
 
+# for timezone information
+gem 'tzinfo'
+gem 'tzinfo-data'
+
 source 'https://rails-assets.org' do
   gem 'rails-assets-clipboard', '~> 1.5.12'
   gem 'rails-assets-devbridge-autocomplete', '~> 1.2.26'
