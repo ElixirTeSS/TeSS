@@ -7,7 +7,7 @@ sudo service nginx stop
 sudo service unicorn_tess stop
 
 # backup database
-sudo scripts/pgsql_backup.sh postgres tess_$ENV ../shared/backups --exclude-schema=audit
+sudo sh ./scripts/pgsql_backup.sh postgres tess_$ENV ./shared/backups --exclude-schema=audit
 
 # rebuild rails environment
 git pull origin master
