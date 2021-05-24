@@ -12,14 +12,16 @@ fi
 sudo service nginx stop
 sudo service unicorn_tess stop
 
+# backup database
+sudo scripts/pgsql_backup.sh postgres tess_$ENV ./shared/backups/$ENV_schema.sql ./shared/backups/$ENV.data.sql --exclude-schema=audit
+
 # rebuild rails environment
 #git pull origin master
 bundle install --deployment
 bundle exec rake db:migrate RAILS_ENV="$ENV"
 bundle exec rake assets:clean RAILS_ENV="$ENV"
 bundle exec rake assets:precompile RAILS_ENV="$ENV"
-bundle exec rake sunspot:solr:reindex RAILS_ENV="$ENV"
-
+bundle exec rake sunspot:solr:reindex RAILS_ENV=
 # run tests
 bundle exec rake db:migrate RAILS_ENV=test
 bundle exec rake db:setup RAILS_ENV=test
