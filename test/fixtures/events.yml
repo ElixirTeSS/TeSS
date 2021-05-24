@@ -8,7 +8,6 @@ one:
   organizer: MyString
   description: MyText
   event_types: ["workshops_and_courses"]
-  duration: '00:00'
   start: 2015-11-23 10:16:33
   end: 2015-11-23 10:16:33
   sponsors: ["MyString"]
@@ -23,9 +22,12 @@ one:
   user: regular_user
   content_provider: goblet
   host_institutions: ["MyHost"]
-  timezone: MyTZ
   contact: MyContact
   eligibility: [ first_come_first_served ]
+  timezone: "(GMT+10:00) Melbourne"
+  duration: '00:00'
+  learning_objectives: "There are none."
+  recognition: "Yup. You attended the workshop."
 
 two:
   external_id: MyString2

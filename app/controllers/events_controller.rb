@@ -31,7 +31,7 @@ class EventsController < ApplicationController
       format.json
       format.json_api { render json: @event }
       format.html
-      format.ics { send_data @event.to_ical, type: 'text/calendar', disposition: 'attachment', filename: "#{@event.slug}.ics"  }
+      format.ics { send_data @event.to_ical, type: 'text/calendar', disposition: 'attachment', filename: "#{@event.slug}.ics" }
     end
   end
 
@@ -141,14 +141,14 @@ class EventsController < ApplicationController
     # Go through each selected package
     # and update its resources to include this one.
     # Go through each other package
-    packages = params[:event][:package_ids].select{|p| !p.blank?}
-    packages = packages.collect{|package| Package.find_by_id(package)}
+    packages = params[:event][:package_ids].select { |p| !p.blank? }
+    packages = packages.collect { |package| Package.find_by_id(package) }
     packages_to_remove = @event.packages - packages
     packages.each do |package|
       package.update_resources_by_id(nil, (package.events + [@event.id]).uniq)
     end
     packages_to_remove.each do |package|
-      package.update_resources_by_id(nil, (package.events.collect{|x| x.id} - [@event.id]).uniq)
+      package.update_resources_by_id(nil, (package.events.collect { |x| x.id } - [@event.id]).uniq)
     end
     flash[:notice] = "Event has been included in #{pluralize(packages.count, 'package')}"
     redirect_to @event
@@ -171,15 +171,14 @@ class EventsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def event_params
-    params.require(:event).permit(:external_id, :title, :subtitle, :url, :organizer, :last_scraped,
-                                  :scraper_record, :description, {:scientific_topic_names => []},
-                                  {:scientific_topic_uris => []}, {:operation_names => []},
-                                  {:operation_uris => []}, {:event_types => []},
-                                  {:keywords => []}, :start, :end, :duration, { sponsors: [] }, :online, :for_profit, :venue,
-                                  :city, :county, :country, :postcode, :latitude, :longitude, :timezone,
-                                  :content_provider_id, {:package_ids => []}, {:node_ids => []}, {:node_names => []},
-                                  {:target_audience => []}, {:eligibility => []},
-                                  {:host_institutions => []}, :capacity, :contact,
+    params.require(:event).permit(:external_id, :title, :subtitle, :url, :organizer, :last_scraped, :scraper_record,
+                                  :description, { :scientific_topic_names => [] }, { :scientific_topic_uris => [] },
+                                  { :operation_names => [] }, { :operation_uris => [] }, { :event_types => [] },
+                                  { :keywords => [] }, :start, :end, :duration, { sponsors: [] }, :online, :for_profit,
+                                  :venue, :city, :county, :country, :postcode, :latitude, :longitude, :timezone,
+                                  :content_provider_id, { :package_ids => [] }, { :node_ids => [] },
+                                  { :node_names => [] }, { :target_audience => [] }, { :eligibility => [] },
+                                  { :host_institutions => [] }, :capacity, :contact, :recognition, :learning_objectives,
                                   external_resources_attributes: [:id, :url, :title, :_destroy], material_ids: [],
                                   locked_fields: [])
   end
