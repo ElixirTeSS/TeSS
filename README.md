@@ -243,3 +243,43 @@ working.
 To find suggestions of EDAM topics for materials, you can run this rake task. This requires redis and sidekiq to be running as it will add jobs to a queue. It uses BioPortal Annotator web service against the materials description to create suggestions
 
     bundle exec rake tess:add_topic_suggestions
+
+#### Database Backup and Restore
+
+The following scripts can be used to backup and restore the database:
+
+     $ sh scripts/pgsql_backup.sh
+
+     $ sh scripts/pgsql_restore.sh
+
+Or, you can run the backup script as follows:
+
+    $ sh scripts/pgsql_backup.sh postgres tess_development ./shared/backups --exclude-schema=audit
+
+The parameters are as follows:
+1. user: e.g. *tess_user*
+1. database: e.g. *tess_development*, *tess_production*
+1. backup folder: e.g. ./shared/backups
+1. addtional parameters: e.g. --excluded-schema=audit
+
+Note: sql files are stored with timestamped names as follows:
+
+- folder/database.YYYYMMDD-HHMMSS.\[schema,data\].sql
+- eg. ~/TeSS/shared/backups/tess_development-20210524-085138.data.sql
+
+And, you can run the restore script as follows:
+
+    $ sh scripts/pgsql_restore.sh testuser testdb mydb.schema.sql mydb.data.sql
+
+With the parameter:
+1. user: e.g. *tess_user*
+1. database: e.g. *tess_development*, *tess_production*
+1. schema file: e.g. ./shared/backups/tess_development.20210524-085138.schema.sql
+1. data file: e.g. ./shared/backups/tess_development.20210524-085138.data.sql
+
+
+Note: these scripts have been adapted from the repository: 
+[fabioboris/postgresql-backup-restore-scripts](https://github.com/fabioboris/postgresql-backup-restore-scripts)
+- made available under the MIT License (MIT)
+- Copyright (c) 2013 Fabio Agostinho Boris &lt;fabioboris@gmail.com&gt;
+
