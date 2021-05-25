@@ -17,7 +17,6 @@ default: &default
     repository: ''
     supported_by: ''
     widget_example: ''
-    gmaps_api_key: ''
   questionnaire:
     show: false
     message: ''
@@ -71,7 +70,6 @@ atrac: &atrac
     repository: 'https://github.com/nrmay/TeSS'
     supported_by: 'dresa_supported_by.erb'
     widget_example: 'elixir_widget_example'
-    gmaps_api_key: ''
   feature:
     e-learnings: false
     events: true
