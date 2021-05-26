@@ -1,3 +1,4 @@
+# The controller for actions related to the curator model
 class CuratorController < ApplicationController
   CURATION_ACTIONS = %w(material.add_term event.add_term material.reject_term event.reject_term)
 

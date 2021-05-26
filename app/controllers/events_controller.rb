@@ -1,5 +1,6 @@
 require 'tzinfo'
 
+# The controller for actions related to the Events model
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages, :add_term, :reject_term,
                                    :redirect, :report, :update_report, :add_data, :reject_data]

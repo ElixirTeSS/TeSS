@@ -1,3 +1,4 @@
+# The controller for callback actions
 class CallbacksController < Devise::OmniauthCallbacksController
 
   def oidc

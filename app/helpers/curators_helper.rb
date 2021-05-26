@@ -1,3 +1,4 @@
+# The controller for actions related to the Ban model
 module CuratorsHelper
 
   def print_curation_action(action)

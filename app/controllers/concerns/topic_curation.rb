@@ -1,3 +1,4 @@
+# The concern for topics
 module TopicCuration
   extend ActiveSupport::Concern
 

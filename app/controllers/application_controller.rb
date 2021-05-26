@@ -1,6 +1,7 @@
 require 'private_address_check'
 require 'private_address_check/tcpsocket_ext'
 
+# The controller for actions related to the core application
 class ApplicationController < ActionController::Base
   include BreadCrumbs
   include PublicActivity::StoreController
