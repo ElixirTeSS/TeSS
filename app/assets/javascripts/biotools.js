@@ -87,7 +87,7 @@ var Biotools = {
                 var res = {};
                 res['topics'] = [];
                 $.each(data.topic, function(index, topic){
-                    console.log(topic)
+                    // console.log(topic)
                     res['topics'].push('<a href="' + topic.uri +'" class="label label-default filter-button">' + topic.term + '</a>');
                 });
                 $('#tool-topics-' + id).html('<div>' + res['topics'].join(' ') + '</div>')

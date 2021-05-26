@@ -25,7 +25,7 @@ var InternalResources = {
             current_page = current_page + 1;
             InternalResources.queryAPI(InternalResources.getUrl() + '&page_number=' + next);
         } else {
-            console.log("No next URL found!");
+            // console.log("No next URL found!");
         }
     },
     prevPage: function(){
@@ -35,7 +35,7 @@ var InternalResources = {
             current_page = current_page - 1;
             InternalResources.queryAPI(InternalResources.getUrl() + '&page_number=' + prev);
         } else {
-            console.log("No next URL found!");
+            // console.log("No next URL found!");
         }
     },
     setPosition: function(length) {
@@ -90,7 +90,7 @@ var InternalResources = {
                 InternalResources.displayRecords(result);
             },
             error: function (error) {
-                console.log("Error querying TeSS for " + record_type + ": " + error);
+                // console.log("Error querying TeSS for " + record_type + ": " + error);
             }
         });
 
@@ -132,7 +132,7 @@ var InternalResources = {
 };
 
 function delete_internal_resource(id) {
-    console.log("Deleting resource: " + id);
+    // console.log("Deleting resource: " + id);
     $('#' + id).remove();
 }
 
