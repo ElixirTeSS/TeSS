@@ -1,6 +1,7 @@
+# Dictionary of Event Types
 class EventTypeDictionary < Dictionary
 
-  DEFAULT_FILE = "event_types.yml"
+  DEFAULT_FILE = 'event_types.yml'
 
   private
 

@@ -34,7 +34,7 @@ namespace :tess do
 
   desc 'Attempt to correct country names for all existing event countries'
   task fix_current_countries: :environment do
-    puts "Checking for countries..."
+    puts 'Checking for countries...'
     COUNTRY_SYNONYMS = JSON.parse(File.read(File.join(Rails.root, 'config', 'data', 'country_synonyms.json')))
     puts "#{Event.all.length} events to check."
     count = 0

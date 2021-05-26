@@ -51,8 +51,8 @@ class Node < ApplicationRecord
   def self.load_from_hash(hash, verbose: false)
     hash["nodes"].map do |node_data|
       node = Node.find_or_initialize_by(name: node_data["name"])
-      puts "#{node.new_record? ? 'Creating' : 'Updating'}: #{node_data["name"]}" if verbose
-      staff_data = node_data.delete("staff")
+      puts "#{node.new_record? ? 'Creating' : 'Updating'}: #{node_data['name']}" if verbose
+      staff_data = node_data.delete('staff')
       node.attributes = node_data
       node.user ||= User.get_default_user
 
@@ -62,9 +62,9 @@ class Node < ApplicationRecord
       end
 
       if node.save
-        puts "Success" if verbose
+        puts 'Success' if verbose
       elsif verbose
-        puts "Failure:"
+        puts 'Failure:'
         node.errors.full_messages.each { |msg|  puts " * #{msg}" }
       end
       puts if verbose
