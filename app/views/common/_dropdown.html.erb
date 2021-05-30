@@ -64,7 +64,9 @@ render :partial => 'common/dropdown',
           data-field="<%= field_name %>" data-model="<%= model_name %>"
           id="<%= field_name %>_packages">
         <% options.each do |r| %>
-            <li class="dropdown-option" id="<%= field_name %>-id-<%= r[1] %>" data-value="<%= r[1] %>"><a><%= r[0] %></a></li>
+            <li class="dropdown-option" id="<%= field_name %>-id-<%= r[1] %>" data-value="<%= r[1] %>">
+              <a><span title="<%= r[2] %>"><%= r[0] %></span></a>
+            </li>
         <% end %>
       </ul>
     </div>
