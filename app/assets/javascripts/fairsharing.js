@@ -34,7 +34,7 @@ var Fairsharing = {
             Fairsharing.queryAPI(next);
         } else {
             /* display nice "we're out of stuff" message here */
-            console.log("No next URL found!");
+            // console.log("No next URL found!");
         }
     },
     prevPage: function(){
@@ -44,6 +44,7 @@ var Fairsharing = {
             Fairsharing.queryAPI(prev);
         } else {
             /* display nice "we're out of stuff" message here */
+            // console.log("We're out of stuff!");
         }
     },
     queryAPI: function(api_url){
@@ -59,7 +60,7 @@ var Fairsharing = {
                     Fairsharing.displayRecords(result);
                 },
                 error: function (error) {
-                    console.log("Error querying FAIRsharing: " + JSON.stringify(error));
+                    // console.log("Error querying FAIRsharing: " + JSON.stringify(error));
                 }
         });
     },
@@ -180,7 +181,7 @@ var Fairsharing = {
                 );
             },
             error: function (error) {
-                console.log("Error querying FAIRsharing: " + error);
+                // console.log("Error querying FAIRsharing: " + error);
             }
         });
 

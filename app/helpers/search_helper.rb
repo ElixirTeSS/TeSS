@@ -1,3 +1,4 @@
+# The helper for searches
 module SearchHelper
 
   def search_and_facet_params

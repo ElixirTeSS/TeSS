@@ -16,7 +16,7 @@ class LicenceDictionary < Dictionary
   private
 
   def dictionary_filepath
-    File.join(Rails.root, "config", "dictionaries", "licences.yml")
+    File.join(Rails.root, 'config', 'dictionaries', 'licences.yml')
   end
 
 end

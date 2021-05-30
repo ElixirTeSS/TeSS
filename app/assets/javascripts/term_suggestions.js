@@ -12,7 +12,7 @@ var TermSuggestions = {
             })
             .done(function(data) {
                 var field = suggestionInfo.data("field");
-                var all_terms = listingDiv.find("." + field);
+                var allTerms = listingDiv.find("." + field);
 
                 /* Remove the suggestion and add the accepted topic to the list of scientific topics */
                 var singularField = field.slice(0, -1);
@@ -20,12 +20,12 @@ var TermSuggestions = {
                 dropdownDiv.remove();
                 var firstTerm = listingDiv.find("." + singularField).length === 0;
                 if (firstTerm) {
-                    all_terms.append("<b>" + title + ": </b>");
+                    allTerms.append("<b>" + title + ": </b>");
                 } else {
-                    all_terms.append(", ");
+                    allTerms.append(", ");
                 }
 
-                all_terms.append('<span class=\"' + singularField + '\"> ' + suggestionInfo.data('label') + '</span>');
+                allTerms.append('<span class=\"' + singularField + '\"> ' + suggestionInfo.data('label') + '</span>');
                 if (termSuggestions.find(".dropdown").length < 1){
                     termSuggestions.remove();
                 }
@@ -42,7 +42,7 @@ var TermSuggestions = {
             field: suggestionInfo.data("field")
         })
             .done(function( data ) {
-                console.log("Rejected term");
+                // console.log("Rejected term");
                 dropdownDiv.remove();
                 if (termSuggestions.find(".dropdown").length < 1){
                     termSuggestions.remove();
@@ -62,10 +62,10 @@ var DataSuggestions = {
             .done(function( data ) {
                 /* Remove the suggestion and add the data to the relevant field */
                 dropdownDiv.remove();
-                console.log("Removed: " + dropdownDiv);
+                // console.log("Removed: " + dropdownDiv);
                 if (dataSuggestions.find(".dropdown").length < 1){
                     dataSuggestions.remove();
-                    console.log("(2)Removed: " + dataSuggestions);
+                    // console.log("(2)Removed: " + dataSuggestions);
                 }
             });
 
@@ -78,7 +78,7 @@ var DataSuggestions = {
         var url = "/" + suggestionInfo.data("resource_type") + "/" + suggestionInfo.data("resource_id") + "/reject_data";
         $.post(url, { "data_field" : dataField })
             .done(function( data ) {
-                console.log("Rejected data");
+                // console.log("Rejected data");
                 dropdownDiv.remove();
                 if (dataSuggestions.find(".dropdown").length < 1){
                     dataSuggestions.remove();

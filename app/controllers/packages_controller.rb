@@ -1,3 +1,4 @@
+# The controller for actions related to the Package model
 class PackagesController < ApplicationController
   before_action :set_package, only: [:show, :edit, :update, :destroy]
   before_action :set_breadcrumbs

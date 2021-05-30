@@ -1,3 +1,4 @@
+# The controller for actions related to searchable models
 class SearchController < ApplicationController
 
   before_action :set_breadcrumbs

@@ -1,3 +1,4 @@
+# The helper for Events classes
 module EventsHelper
 
   EVENTS_INFO = "An event in #{TeSS::Config.site['title_short']} is a link to a single training event sourced by a\

@@ -1,3 +1,4 @@
+# The controller for actions related to the Subscriptions model
 class SubscriptionsController < ApplicationController
 
   skip_before_action :authenticate_user!, :authenticate_user_from_token!, only: :unsubscribe

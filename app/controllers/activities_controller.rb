@@ -1,3 +1,4 @@
+# The controller for actions related to the Activities model
 class ActivitiesController < ApplicationController
 
   before_action :set_resource, only: [:index]

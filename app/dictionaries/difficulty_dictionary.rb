@@ -1,6 +1,7 @@
+# Dictionary of Material Difficulty categories
 class DifficultyDictionary < Dictionary
 
-  DEFAULT_FILE = "difficulty.yml"
+  DEFAULT_FILE = 'difficulty.yml'
 
   private
 

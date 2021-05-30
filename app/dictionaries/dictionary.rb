@@ -1,3 +1,4 @@
+# Base dictionary class
 class Dictionary
   include Singleton
 
@@ -54,10 +55,10 @@ class Dictionary
 
   def get_file_path(config_file, default_file)
     begin
-      result = File.join(Rails.root, "config", "dictionaries", TeSS::Config.dictionaries[ config_file ])
-      raise "file not found" if !File.file?(result)
+      result = File.join(Rails.root, 'config', 'dictionaries', TeSS::Config.dictionaries[ config_file ])
+      raise 'file not found' if !File.file?(result)
     rescue
-      result = File.join(Rails.root, "config", "dictionaries", default_file)
+      result = File.join(Rails.root, 'config', 'dictionaries', default_file)
     end
     return result
   end

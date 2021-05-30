@@ -1,3 +1,4 @@
+# The controller for actions related to the Content Providers model
 class ContentProvidersController < ApplicationController
   before_action :set_content_provider, only: [:show, :edit, :update, :destroy]
   before_action :set_breadcrumbs
