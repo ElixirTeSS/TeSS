@@ -1,3 +1,4 @@
+# The controller for actions related to the Users model
 class UsersController < ApplicationController
 
   prepend_before_action :set_user, only: [:show, :edit, :update, :destroy, :change_token]

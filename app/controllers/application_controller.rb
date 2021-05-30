@@ -1,6 +1,7 @@
 require 'private_address_check'
 require 'private_address_check/tcpsocket_ext'
 
+# The controller for actions related to the core application
 class ApplicationController < ActionController::Base
   include BreadCrumbs
   include PublicActivity::StoreController
@@ -12,7 +13,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   # Should allow token authentication for API calls
-  acts_as_token_authentication_handler_for User, except: [:index, :show, :embed, :check_exists, :handle_error, :count, :redirect] #only: [:new, :create, :edit, :update, :destroy]
+  acts_as_token_authentication_handler_for User, except: [:index, :show, :embed, :check_exists, :handle_error, :count,
+                                                          :redirect] #only: [:new, :create, :edit, :update, :destroy]
 
   # User auth should be required in the web interface as well; it's here rather than in routes so that it
   # doesn't override the token auth, above.
@@ -80,7 +82,7 @@ class ApplicationController < ActionController::Base
 
   def user_not_authorized(exception)
     policy_name = exception.policy.class.to_s.underscore
-    handle_error(:forbidden, t("#{policy_name}.#{exception.query}", scope: "pundit", default: :default))
+    handle_error(:forbidden, t("#{policy_name}.#{exception.query}", scope: 'pundit', default: :default))
   end
 
   def set_current_user
@@ -90,9 +92,13 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:username, :email, :password, :password_confirmation, :remember_me, :publicize_email, :processing_consent) }
+    devise_parameter_sanitizer.permit(:sign_up) do |u| u.permit(:username, :email, :password, :password_confirmation,
+                                                                :remember_me, :publicize_email, :processing_consent)
+    end
     devise_parameter_sanitizer.permit(:sign_in) { |u| u.permit(:login, :username, :email, :password, :remember_me) }
-    devise_parameter_sanitizer.permit(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
+    devise_parameter_sanitizer.permit(:account_update) do |u| u.permit(:username, :email, :password,
+                                                                       :password_confirmation, :current_password)
+    end
   end
 
   def allow_embedding

@@ -1,3 +1,4 @@
+# The helper for Subscription classes
 module SubscriptionsHelper
 
   def frequency_options_for_select

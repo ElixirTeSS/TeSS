@@ -1,6 +1,7 @@
+# Dictionary of Eligibility for Event categories
 class EligibilityDictionary < Dictionary
 
-  DEFAULT_FILE = "eligibility.yml"
+  DEFAULT_FILE = 'eligibility.yml'
 
   private
 

@@ -1,3 +1,4 @@
+# The helper for Workflow classes
 module WorkflowsHelper
 
   WORKFLOWS_INFO = "Training workflows in TeSS are visual, step-by-step protocols that allow users to navigate materials in TeSS in topic- or task-related ways.\n\n"+

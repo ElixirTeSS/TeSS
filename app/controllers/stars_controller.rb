@@ -1,3 +1,4 @@
+# The controller for actions related to the Stars model
 class StarsController < ApplicationController
 
   before_action :authenticate_user!

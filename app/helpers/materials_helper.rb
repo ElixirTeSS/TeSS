@@ -1,3 +1,4 @@
+# The helper for Materials classes
 module MaterialsHelper
   MATERIALS_INFO = "In the context of #{TeSS::Config.site['title_short']}, a training material is a link to a single\
   online training material sourced by a content provider (such as a text on a Web page, presentation, video, etc.) along\
