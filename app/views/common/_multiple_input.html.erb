@@ -1,37 +1,42 @@
 <%#
-resource - the model e.g #<ContentProvider id: 80 ....
+resource - the model e.g ContentProvider id: 80 ....
 field_name - the name of the array attribute in its plural form e.g. authors, keywords
 f - the current form
 suggestions - an array of possibles to suggest
 
-
 Example Usage:
-
 render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords', :f => f}
 
 %>
-
 <% label ||= field_name.to_s.humanize %>
 <% model_name = f.object.class.name.underscore %>
 <% form_field_name = "#{model_name}[#{field_name.to_s}]" %>
 <% existing = f.object.send(field_name.to_sym) %>
 <% existing = [''] if existing.blank? %> <%# Add one placeholder if the field's value consists of an empty array %>
+<% required ||= false %>
 
 <div class="form-group">
-  <%= f.label field_name.to_sym, label %><%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
+  <% if required %>
+    <label class="control-label string required">
+      <abbr title="required">*</abbr>
+    </label>
+  <% end %>
+
+  <%= f.label field_name.to_sym, label %>
+  <%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
 
   <%= content_tag(:div, data: { role: 'multi-input', prefix: form_field_name }) do %>
-      <%# This blank association is needed to trigger the delete when all associations are removed %>
-      <input type="hidden" name="<%= form_field_name -%>[]" value="" />
-      <%= content_tag :script, raw(suggestions.to_json), type: 'application/json', data: { role: 'multi-input-suggestions' } %>
-      <%= content_tag :script, raw(existing.to_json), type: 'application/json', data: { role: 'multi-input-existing' } %>
+    <%# This blank association is needed to trigger the delete when all associations are removed %>
+    <input type="hidden" name="<%= form_field_name -%>[]" value=""/>
+    <%= content_tag :script, raw(suggestions.to_json), type: 'application/json', data: { role: 'multi-input-suggestions' } %>
+    <%= content_tag :script, raw(existing.to_json), type: 'application/json', data: { role: 'multi-input-existing' } %>
 
-      <div class="multiple-input-list" data-role="multi-input-list">
-        <%# Populated via javascript from the JSON above %>
-      </div>
+    <div class="multiple-input-list" data-role="multi-input-list">
+      <%# Populated via javascript from the JSON above %>
+    </div>
 
-      <%= link_to('#', class: 'btn btn-info', data: { role: 'multi-input-add' }) do %>
-        <i class="fa fa-plus"></i> Add <%= label.singularize.downcase %>
-      <% end %>
+    <%= link_to('#', class: 'btn btn-info', data: { role: 'multi-input-add' }) do %>
+      <i class="fa fa-plus"></i> Add <%= label.singularize.downcase %>
+    <% end %>
   <% end %>
 </div>
