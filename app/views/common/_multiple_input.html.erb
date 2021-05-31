@@ -13,16 +13,17 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
 <% form_field_name = "#{model_name}[#{field_name.to_s}]" %>
 <% existing = f.object.send(field_name.to_sym) %>
 <% existing = [''] if existing.blank? %> <%# Add one placeholder if the field's value consists of an empty array %>
-<% required ||= false %>
+<% required ||= false   # is a value required %>
+<% errors ||= []        # check error count %>
 
-<div class="form-group">
+<div class="form-group<%= ' has-error' if errors.size > 0 %>">
   <% if required %>
     <label class="control-label string required">
       <abbr title="required">*</abbr>
     </label>
   <% end %>
 
-  <%= f.label field_name.to_sym, label %>
+  <%= f.label field_name.to_sym, label, class: 'control-label' %>
   <%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
 
   <%= content_tag(:div, data: { role: 'multi-input', prefix: form_field_name }) do %>
@@ -35,8 +36,11 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
       <%# Populated via javascript from the JSON above %>
     </div>
 
+    <%= f.error field_name.to_sym %>
+
     <%= link_to('#', class: 'btn btn-info', data: { role: 'multi-input-add' }) do %>
       <i class="fa fa-plus"></i> Add <%= label.singularize.downcase %>
     <% end %>
   <% end %>
+
 </div>

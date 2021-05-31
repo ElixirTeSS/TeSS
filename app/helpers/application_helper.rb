@@ -326,7 +326,9 @@ module ApplicationHelper
                                                              resource: object,
                                                              options: options[:options],
                                                              existing: existing,
-                                                             field_label: options[:label] })
+                                                             field_label: options[:label],
+                                                             required: options[:required],
+                                                             errors: options[:errors] })
     end
 
     def autocompleter(name, options = {})
@@ -350,7 +352,8 @@ module ApplicationHelper
       @template.render(partial: 'common/multiple_input', locals: { field_name: name, f: self, suggestions: suggestions,
                                                                    disabled: options[:disabled],
                                                                    required: options[:required],
-                                                                   label: options[:label] })
+                                                                   label: options[:label],
+                                                                   errors: options[:errors] })
     end
   end
 

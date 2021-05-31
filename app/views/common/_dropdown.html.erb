@@ -21,23 +21,34 @@ render :partial => 'common/dropdown',
  %>
 
 <%
-  model_name =  resource.class.name.underscore #e.g. package
+  model_name =  resource.class.name.underscore # e.g. package
   options ||= format_for_dropdown(field_name.capitalize.constantize.all)
   existing ||= format_for_dropdown(resource.send(field_name.pluralize))
+
   # Remove existing objects from the pool of options
   options = options - existing
   dropdown_toggle_button_name ||= ''
   if dropdown_toggle_button_name.blank?
     dropdown_toggle_button_name = "Add #{field_name.to_s.sub(/_ids?\z/, '').humanize}"
   end
+
+  # show the required label?
+  required ||= false
+
+  # Name for the dropdown toggle button, if not specified will be set to 'Add <field_name>
+  field_label ||= field_name.pluralize.capitalize unless field_name.blank?
+
+  # check error count
+  errors ||= []
 %>
 
-<%# Name for the dropdown toggle button, if not specified will be set to 'Add <field_name> %>
+<div class="form-group<%= ' has-error' if errors.size > 0 %>">
 
-<% field_label ||= field_name.pluralize.capitalize unless field_name.blank? %>
+  <% if required %><label class="control-label string required"><abbr title="required">*</abbr></label><% end %>
+  <%= f.label field_label, class: 'control-label' %>
+  <%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
 
-<div class="form-group">
-  <label><%= field_label %></label><%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
+  <%= f.error field_name.to_sym %>
 
   <div data-field="<%= field_name %>" data-model="<%= model_name %>">
     <%# display existing ones %>
@@ -54,6 +65,7 @@ render :partial => 'common/dropdown',
           </li>
       <% end %>
     </ul>
+
     <%# Create list of dropdown options%>
     <div class="dropdown">
       <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -71,4 +83,5 @@ render :partial => 'common/dropdown',
       </ul>
     </div>
   </div>
+
 </div>

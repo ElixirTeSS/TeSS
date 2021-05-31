@@ -63,7 +63,8 @@
 
   <!-- Nodes: check feature enabled -->
   <% if TeSS::Config.feature['nodes'] %>
-    <%= f.dropdown :node_ids, options: format_for_dropdown(Node.order(:name).all), label: 'Nodes' %>
+    <%= f.dropdown :node_ids, options: format_for_dropdown(Node.order(:name).all), label: 'Nodes',
+                   errors: @event.errors[:node_ids] %>
   <% end %>
 
   <%= f.input :description, as: :markdown_area, input_html: { rows: '5' }, field_lock: true %>
@@ -72,7 +73,8 @@
 
   <%= f.input :recognition, as: :string, field_lock: true, label: 'Credit or Recognition of Attendance' %>
 
-  <%= f.dropdown :event_types, options: EventTypeDictionary.instance.options_for_select, label: 'Event type' %>
+  <%= f.dropdown :event_types, options: EventTypeDictionary.instance.options_for_select, label: 'Event type',
+                 errors: @event.errors[:event_types] %>
 
   <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term',
                       id_field: :uri, label_field: :preferred_label %>
@@ -83,22 +85,23 @@
                         id_field: :uri, label_field: :preferred_label %>
   <% end %>
 
-  <%= f.multi_input :keywords %>
+  <%= f.multi_input :keywords, errors: @event.errors[:keywords] %>
 
-  <%= f.multi_input :target_audience %>
+  <%= f.multi_input :target_audience, errors: @event.errors[:target_audience] %>
 
-  <%= f.multi_input :host_institutions, required: true %>
+  <%= f.multi_input :host_institutions, required: true, errors: @event.errors[:host_institutions] %>
 
   <!-- Sponsors: check disabled -->
   <% if !TeSS::Config.feature['disabled'].include? 'sponsors' %>
-    <%= f.multi_input :sponsors %>
+    <%= f.multi_input :sponsors, errors: @event.errors[:sponsors] %>
   <% end %>
 
   <%= f.input :contact, input_html: { rows: '5' }, field_lock: true %>
 
   <%= f.input :capacity, field_lock: true %>
 
-  <%= f.dropdown :eligibility, options: EligibilityDictionary.instance.options_for_select, label: 'Eligibility' %>
+  <%= f.dropdown :eligibility, options: EligibilityDictionary.instance.options_for_select, label: 'Eligibility',
+                 required: true, errors: @event.errors[:eligibility] %>
 
   <div class="form-group">
     <%= f.label 'for_profit' %> <%= icon_for(:for_profit, :small) %><%= f.field_lock :for_profit %>
