@@ -86,7 +86,6 @@ atrac: &atrac
     eligibility: 'eligibility_dresa.yml'
     event_types: 'event_types_dresa.yml'
 
-
 development:
   <<: *default
 

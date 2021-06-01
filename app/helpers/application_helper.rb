@@ -412,4 +412,20 @@ module ApplicationHelper
             data: { role: 'star-button', starred: !star.nil?, resource: { id: resource.id, type: resource.class.name } }
   end
 
+  def next_about_block(feature_count)
+    if feature_count & 1 == 0
+      result = "even-about-block"
+    else
+      result = "odd-about-block"
+    end
+  end
+
+  def show_active(show, block)
+    if show == block
+      result = "active"
+    else
+      result = ""
+    end
+  end
+
 end
