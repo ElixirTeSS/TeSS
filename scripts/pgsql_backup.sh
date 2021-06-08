@@ -24,14 +24,6 @@ else
     FOLDER=$3
 fi
 
-# get data file name
-#if [ -z $4 ]; then
-#    echo "Enter the data file name:"
-#    read DATA
-#else
-#    DATA=$4
-#fi
-
 # extra params on data file
 if [ -z $4 ]; then
     echo "Extra params on data file:"
@@ -40,5 +32,8 @@ else
     EXTRA=$4
 fi
 
+# run postgresql dumps for schema and data
 pg_dump --host=localhost --username=$USERNAME --schema-only $DBNAME > $FOLDER/$DBNAME.$(date +%Y%m%d-%H%M%S).schema.sql
 pg_dump --host=localhost --username=$USERNAME --data-only --disable-triggers $EXTRA $DBNAME > $FOLDER/$DBNAME.$(date +%Y%m%d-%H%M%S).data.sql
+
+# --- end of file --- #

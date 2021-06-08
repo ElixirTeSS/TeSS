@@ -113,6 +113,43 @@ class DictionariesTest < ActiveSupport::TestCase
     assert_not_nil dic.lookup("by_invitation"), "eligigility level (by_invitation) not found"
   end
 
+  test "check options include descriptions" do
+    dic = EligibilityDictionary.instance
+    assert dic.is_a?(EligibilityDictionary)
+    assert_not_nil dic, "eligibility dictionary should exist"
+
+    @dictionaries['eligibility'] = 'eligibility_dresa.yml'
+    dic.reload
+
+    # check loaded
+    assert_not_nil dic, "eligibility (dresa) dictionary should exist"
+
+    ops = dic.options_for_select
+    assert_not_nil ops, "options should not be nil"
+    assert_equal 5, ops.size, "options size not matched"
+    item = 0
+    assert_equal 'open_to_all', ops[item][1], "item[#{item}] key not matched"
+    assert_equal 'Open to all', ops[item][0], "item[#{item}] title not matched"
+    assert_not_nil ops[item][2], "item[#{item}] description is nil"
+    assert_equal 'No restrictions on eligibility', ops[item][2], "item[#{item}] description not matched"
+  end
+
+  test "check options with no descriptions" do
+    dic = EventTypeDictionary.instance
+    assert dic.is_a?(EventTypeDictionary)
+    assert_not_nil dic, "event type dictionary should exist"
+
+    # test options for select
+    ops = dic.options_for_select
+    assert_not_nil ops, "options should not be nil"
+    assert_equal 4, ops.size, "options size not matched"
+    item = 2
+    assert_equal 'receptions_and_networking', ops[item][1], "item[#{item}] key not matched"
+    assert_equal 'Receptions and networking', ops[item][0], "item[#{item}] title not matched"
+    assert_not_nil ops[item][2], "item[#{item}] description is nil"
+    assert_equal '', ops[item][2], "item[#{item}] description not matched"
+  end
+
   private
 
   def reset_dictionaries

@@ -62,11 +62,11 @@ elixir: &elixir
 
 atrac: &atrac
   site:
-    title: 'Digital Research Skills Australia'
+    title: 'Digital Research Skills Australia (DReSA)'
     title_short: 'DReSA'
     favicon: atrac-logo.ico
     logo: atrac-logo.png
-    logo_alt: 'DReSA Home'
+    logo_alt: 'Digital Research Skills Australasia'
     theme: 'en-AU'
     repository: 'https://github.com/nrmay/TeSS'
     supported_by: 'dresa_supported_by.erb'
@@ -85,7 +85,6 @@ atrac: &atrac
     difficulty: 'difficulty_dresa.yml'
     eligibility: 'eligibility_dresa.yml'
     event_types: 'event_types_dresa.yml'
-
 
 development:
   <<: *default

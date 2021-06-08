@@ -1,6 +1,13 @@
 <h4><%= TeSS::Config.site['title_short'] %> is supported by the following organisations &hellip;</h4>
-<div class="col-sm-3 col-xs-1">Org. A</div>
-<div class="col-sm-3 col-xs-1">Org. B</div>
-<div class="col-sm-3 col-xs-1">Org. C</div>
-<div class="col-sm-3 col-xs-1">Org. D</div>
-
+<div class="col-sm-6 col-xs-2">
+  <div class="h6">The Pawsey Supercomputing Centre</div>
+  <%= link_to 'https://www.pawsey.org.au/', class: 'footer-logo hidden-xs', target: '_blank' do %>
+    <%= image_tag 'pawsey-logo-beige.png', align: 'middle' %>
+  <% end %>
+</div>
+<div class="col-sm-6 col-xs-2">
+  <div class="h6">The Australian Research Data Commons</div>
+  <%= link_to 'https://www.ardc.edu.au/', class: 'footer-logo hidden-xs', target: '_blank' do %>
+    <%= image_tag 'ardc_logo.svg', align: 'middle' %>
+  <% end %>
+</div>

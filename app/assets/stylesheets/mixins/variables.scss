@@ -4,8 +4,13 @@ $elixir-grey: #484848;
 $elixir-blue: #005472;
 $elixir-green: #bebf32;
 
+/* DReSA brand colours */
+$dresa-orange: #db5d2d;
+$dresa-blue: #4392cf;
+$dresa-green: #338e3c;
+
 /* TeSS colours */
-$bgDefault: $elixir-orange;
+$bgDefault: $dresa-blue;
 $bgHighlight: darken($bgDefault, 10%);
 $colDefault: #ffe6d1;
 $colHover: #333;

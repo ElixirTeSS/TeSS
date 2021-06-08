@@ -24,14 +24,16 @@
                     <%= image_tag 'about/GitHub-Mark-64px.png', class: "" %>
                   </div>
                   <div class="register-condition">The source code for <%= TeSS::Config.site['title_short'] %>
-                    is available on GitHub</div>
+                    is available on GitHub
+                  </div>
                 <% end %>
               </div>
               <div class="open-access-licence">
                 <%= link_to TeSS::Config.site['repository'] + '/blob/master/LICENSE', target: '_blank' do %>
                   <div class="register-condition-graphic"><i class="fa fa-code licence-logo"></i></div>
                   <div class="register-condition">Source code is available under the
-                    <%== raw t 'developer.code_license' %> license</div>
+                    <%== raw t 'developer.code_license' %> license
+                  </div>
                 <% end %>
               </div>
             </div>
@@ -83,48 +85,34 @@
 
             <!-- Events -->
             <% if TeSS::Config.feature['events'] %>
-            <p>
-              <code>
+            <p><code>
                <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_1' %>">
                  <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_1' %></a>
-            </code>
-            </p>
-            <p>
-              <code>
-               <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_2' %>">
-                  <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_2' %></a>
-            </code>
-            </p>
+            </code></p>
             <% end %>
 
             <!-- Materials -->
             <% if TeSS::Config.feature['materials'] %>
-            <p>
-              <code>
+            <p><code>
                <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_3' %>">
                  <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_3' %> </a>
-            </code>
-            </p>
-              <% end %>
+            </code></p>
+            <% end %>
 
             <!-- Providers -->
             <% if TeSS::Config.feature['providers'] %>
-            <p>
-              <code>
+            <p><code>
                <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_4' %>">
                                <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_4' %> </a>
-            </code>
-            </p>
-                          <% end %>
+            </code></p>
+            <% end %>
 
             <!-- Workflows -->
             <% if TeSS::Config.feature['workflows'] %>
-            <p>
-              <code>
+            <p><code>
                <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_5' %>">
                                <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_5' %> </a>
-            </code>
-            </p>
+            </code></p>
             <% end %>
 
             <%== raw t 'developer.swaggerhub' -%>

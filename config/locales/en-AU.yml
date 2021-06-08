@@ -16,77 +16,52 @@ en-AU:
         firstname: 'First name'
         surname: 'Last name'
   home:
-    welcome: "Welcome to Digital Research Skills Australasia"
-    subtitle: "Browsing, discovering and organising digital research training resources, aggregated from Australasian providers."
-    events_message: "Discover the latest training events and news from Australasian providers."
-    materials_message: "Browse the catalogue of training materials offered by Australasian providers."
+    welcome: "Welcome to Digital Research Skills Australasia (DReSA)"
+    subtitle: "Browsing, discovering and organising digital research events and training resources, collected from Australasian providers."
+    events_message: "Browse and discover training events from across Australasia."
+    materials_message: "Browse and discover training materials from Australasian providers."
     workflows_message: "Create training workflows to visualise learning steps and link to resources specific to your training needs."
-    providers_message: "Browse training providers to discover training resources they offer and follow links to their materials and courses."
+    providers_message: "Browse and discover Australasian training providers who contribute events and materials to DReSA."
   about:
     registry: >
-      One of the goals of <a href='https://elixir-europe.org', target='_blank'>Elixir</a>
-      (Europe's distributed infrastructure for life-science data) is to train research scientists to better use
-      available computational infrastructures to address critical research questions. This requires access both to
-      face-to-face training opportunities and to disparate training materials and resources, currently dispersed
-      across Europe.
-      </p><p>
-      TeSS is ELIXIR's training platform, providing a one-stop shop for trainers and trainees to discover
-      online information and content, including training materials, events and interactive tutorials.
-      For ELIXIR Nodes, TeSS provides opportunities to promote training events and news, and to contribute
-      to a growing catalogue of materials; for trainers, the portal offers an environment for sharing materials
-      and event information; for trainees, it offers a convenient gateway via which to identify relevant training
-      events and resources, and to perform specific, guided analysis tasks via customised training workflows
+      <p>DReSA makes it easier for learners, trainers, and training providers to find digital research skills-focused
+      educational events and resources.</p>
+      <p>Through DReSA, its creators seek to: <ul>
+      <li>Lift Australasian researchers' capabilities and skills by improving the findability of events and resources</li>
+      <li>Build national, collaborative, training partnerships</li>
+      <li>Strategically leverage trainers' and learners' time and resources</li>
+      </ul></p>
+      <p>DReSA began as a grassroots movement among trainers and training providers in Australia and New Zealand to improve
+      the discoverability of training. After scoping the landscape for similar solutions, the Working Group located
+      ELIXIR's TeSS platform. From there, began a truly collaborative, global partnership with ELIXIR and an exchange
+      of, not only the infrastructure that underlies TeSS, but also the ideas, support and encouragement.</p>
     events: >
-      Events in TeSS are defined as face-to-face or online training opportunities that have set start and end times.
-      These primarily take the form of workshops, courses, webinars, etc.; but TeSS also collects information about
-      conferences, meetings and hackathons, as these may also provide opportunities for learning.
-      </p><p>
-      A significant portion of TeSS' initial content was contributed by the progenitor event-announcement platform,
-      <a href="https://www.ncbi.nlm.nih.gov/pubmed/23742982" target="_blank">iAnn.pro</a>.
+      <p>Events in DReSA are defined as face-to-face or online training opportunities that have set start and end times.
+      These primarily take the form of workshops, courses, webinars, etc.</p>
+      <p>DReSA also collects information about conferences, meetings, and hackathons, as these may also provide
+      opportunities for learning.</p>
     nominatim: "<a href='https://wiki.openstreetmap.org/wiki/Nominatim', target='_blank'>Nominatim</a>"
     materials: >
-      Materials in TeSS are defined as training resources that can be accessed at any time. These may be in
+      Materials in DReSA are defined as training resources that can be accessed at any time. These may be in
       a variety of different formats, including online tutorials, videos, PowerPoint presentations, and so on.
-    workflows: >
-      New to TeSS are graphical training tools termed 'Training Workflows'.
-      Three main types of workflow are in development: Educational Resources, Learning Pathways and Concept Maps.
-      These encapsulate different types of, and/or approaches to, training, at different levels of granularity,
-      within easy-to-use visual displays.
-    learning_paths: >
-      In order to advance their skills, trainees need to embark on a path, or developmental trajectory.
-      To facilitate this journey, learning paths aim to structure, within simple visual workflows, the set of
-      relevant training resources that trainees need to study in order to accomplish their learning objectives.
-      Learning paths are being developed by ELIXIR TeSS, ELIXIR-NL and ELIXIR UK.
-    concept_maps: >
-      ELIXIR has developed several registries that contain and promote a variety of resources that users can
-      exploit: training resources in TeSS; software tools in
-      <a href="https://bio.tools" target="_blank">bio.tools</a>; databases, standards and policies in
-      <a href="https://fairsharing.org" target="_blank">FAIRsharing</a>. Concept maps provide visual overviews
-      of typical data-analysis pipelines, surfacing the relevant tools and databases from these registries,
-      and showing how they fit together. Concept maps are being developed by ELIXIR TeSS, ELIXIR-EE and ELIXIR-BE.
-    resources: >
-      In this type of workflow, trainees are introduced to various practical tasks, linked to associated
-      online tools and/or databases, within self-contained modules. Each module includes
-      i) succinct statements of teaching goals and learning outcomes, to convey to trainees what they will be able to do
-      on completion of the module;
-      ii) a series of questions or ‘Reflections’ to provoke critical thinking about the tasks that have been completed;
-      iii) additional background information and further reading to help support learning and enquiry; and
-      iv) multiple choice quiz questions to evaluate understanding at the end.
-      Educational Resources for introductory sequence and structural bioinformatics are currently being developed by
-      ELIXIR TeSS, ELIXIR-UK and the UK Structural Bioinformatics group (via the FunPDBe project).
+    workflows: ''
+    learning_paths: ''
+    concept_maps: ''
+    resources: ''
     subscribe: >
-      TeSS also provides a subscription feature to help users to stay informed about courses, workshops and
-      conferences of interest to them. The service may be customised by selecting the relevant filters, and
-      initiated via the subscribe button. Users may choose to receive email notifications about upcoming
-      events, or have them automatically added to their preferred calendar application.
+      DReSA also provides a subscription feature to help users to stay informed about training events of interest to
+      them. The service may be customised by selecting the relevant filters, and initiated via the subscribe button.
+      Users may choose to receive email notifications about upcoming events, or have them automatically added to their
+      preferred calendar application.
     widgets: >
-      data, organisations may readily import information about relevant events and materials to their site using
-      widgets, or may create custom feeds using our API.
+      providers, institutions and organizations may readily import information, about relevant events and materials, to
+      their site using widgets. Alternatively, they can create custom feeds using our API.
   developer:
     license: >
-      TeSS is committed to the FAIR principles: making data findable, accessible, interoperable and re-usable.
-      As such, all content in TeSS is available under the CC BY 4.0 licence, and can be accessed through our API
-      and widgets. The TeSS codebase is also available to re-use under the BSD Licence, and can be found on GitHub.
+      DReSA is committed to the FAIR principles: making data findable, accessible, interoperable and re-usable.
+      As such, all data in DReSA is available under the CC BY 4.0 licence, and can be accessed through our API
+      and widgets. The DReSA codebase is also available on <a href="https://github.com/nrmay/TeSS/"
+      target="_blank">GitHub</a> for re-use under the BSD Licence.
     code_license: >
       <a href="https://github.com/nrmay/TeSS/blob/master/LICENSE", target="_blank">BSE 3-Clause</a>
     data_license: >
@@ -94,10 +69,10 @@ en-AU:
     gmaps_countries: >
       'Australia', 'New Zealand'
     widgets: >
-      Widgets are chunks of javascript code that can be copied into website source code to display TeSS content.
+      DReSA events and materials can be displayed on your website using widgets.
       There are several different styles and functionalities available from our configurable widget suite.
-      Widgets can be used to enhance your site and offer your community lists of relevant events or training resources.
-    widgets_available: "https://elixirtess.github.io/TeSS_Widgets/"
+      The javascript code and documentation about using these widgets is available in our detailed documentation guide.
+    widgets_available: "https://nrmay.github.io/TeSS_widgets/"
     widgets_mailing: >
       <p>If you do decide to include our widgets on your website, we have a mailing list you can join to keep informed
         about any service disruptions, required updates, or new features</p>
@@ -105,8 +80,8 @@ en-AU:
             class="btn btn-primary", target="_blank" >
             <i class="fa fa-envelope"></i> Join the widgets mailing list</a></p>
     api_example_1: "/events.json_api"
-    api_example_2: "/events/data-fairification-for-data-stewards.json_api"
-    api_example_3: "/materials.json_api?scientific_topics=RNA-Seq"
+    api_example_2: ""
+    api_example_3: "/materials.json_api"
     api_example_4: "/content_providers.json_api"
     api_example_5: "/workflows.json_api"
     swaggerhub: >
@@ -124,76 +99,75 @@ en-AU:
       community.</p><p>The TeSS Club runs fortnightly at 9:00 GMT / 10:00 CET Friday.</p><p>For all the details please
       visit the <a href="https://elixirtess.github.io/about/">TeSS Club Website</a>.</p>
     contact: >
-      For enquiries, information, or assistance; contact the TeSS support desk at <br>
-      <a href="mailto:tess-support@googlegroups.com">tess-support@googlegroups.com</a>
+      For enquiries, information, or assistance; contact the DReSA support desk at <br>
+      <a href="mailto:support@dresa.edu.au">support@dresa.edu.au</a>
     team: >
-      <div class="h4">Leadership</div>
-      <ul><li>Carole Goble</li><li>Hedi Peterson</li><li>Alexia Cardona</li></ul>
-      <div class="h4">Project Management</div>
-      <ul><li>Chris Child</li></ul>
-      <div class="h4">Software Engineering</div>
-      <ul><li>Chris Child</li></ul>
-      <div class="h4">Past Members</div>
+      <p>DReSA began as a grassroots movement among trainers and training providers, in Australia and New Zealand, to
+      improve the discoverability of training. After scoping the landscape for similar solutions, the Working Group
+      located ELIXIR's TeSS platform. From there began a truly collaborative and global partnership with ELIXIR and an
+      exchange of the infrastructure that underlies TeSS, and also ideas, support and encouragement.
+      <div class="h4">Software Engineering & Project Management</div>
+      <ul><li>Nick May</li></ul>
+      <div class="h4">Working Group Members</div>
       <ul>
-        <li>Aleksandra Nenadic - Project Manager</li>
-        <li>Aleksandra Pawlik - Project Manager</li>
-        <li>Teresa K. Attwood - Leadership</li>
-        <li>Susanna-Assunta Sansone - Leadership</li>
-        <li>Niall Beard - Project Management/Software Engineering</li>
-        <li>Finn Bacall - Software Engineering</li>
-        <li>Milo Thurston - Software Engineering</li>
+        <li>Anastasios Papaioannou (Intersect Australia)</li>
+        <li>Ann Backhaus (Pawsey Supercomputing Centre)</li>
+        <li>Christina Street (Commonwealth Scientific and Industrial Research Organisation - CSIRO)</li>
+        <li>Christopher McAveney (Deakin University)</li>
+        <li>Darya Vanichkina (University of Sydney, Sydney Informatics Hub)</li>
+        <li>Jingbo Wang (National Computational Infrastructure - NCI)</li>
+        <li>Jon Symon (University of Newcastle)</li>
+        <li>Kathryn Unsworth (Australian Research Data Commons - ARDC)</li>
+        <li>Kay Steel (Federation University)</li>
+        <li>Kiowa Scott (Monash University)</li>
+        <li>Mark Crowe (Queensland Cyber Infrastructure Foundation - QCIF)</li>
+        <li>Melissa Burke (Australian BioCommons)</li>
+        <li>Nick Hamilton (University of Queensland, QCIF)</li>
+        <li>Phillippa Bourke (University of Sydney)</li>
+        <li>Titus Tang (Monash University, Data Science and AI Platform)</li>
+      </ul>
+      <div class="h4">Additional Guidance</div>
+      <ul>
+        <li>Angus White (DCC UK)</li>
+        <li>Chris Child (ELIXIR TeSS)</li>
+        <li>Iryna Kuchma (IEFL)</li>
       </ul>
     funding: >
-      <p>European Commission, Horizon 2020 Research Infrastructures programme (ELIXIR-EXCELERATE,
-      <a href="https://cordis.europa.eu/project/rcn/198519_en.html" target="_blank">grant agreement number 676559</a>);</p>
-      <p>ELIXIR Implementation Study (Registry Integration from a User Perspective);</p>
-      <p>ELIXIR Implementation Study (Learning Paths).</p>
-      <p>BBSRC UK (Delivering ELIXIR-UK grant, grant agreement numbers
-        <a href="https://bbsrc.ukri.org/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1"
-          target="_blank">BB/L005050/1</a> &amp;
-        <a href="https://bbsrc.ukri.org/research/grants-search/AwardDetails/?FundingReference=BB/L005069/1"
-          target="_blank">BB/L005069/1</a>
-        ).
-      </p>
-      <p>
-      <a href="https://cordis.europa.eu/project/rcn/198519_en.html", target="_blank" >
-        <img src="/assets/eu_flag.svg" class="funding-logo" >
-      </a>
-      <a href="http://www.elixir-europe.org/excelerate", target="_blank" >
-          <img src="/assets/excelerate-logo.png", class="funding-logo" >
-      </a>
-      <a href="https://bbsrc.ukri.org/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1",
-          target="_blank" >
-          <img src="/assets/elixir_logo_orange.png", class="funding-logo" >
-      </a>
-      <a href="https://bbsrc.ukri.org/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1",
-          target="_blank" >
-          <img src="/assets/bbsrc-logo.png", class="funding-logo" >
-      </a>
-      </p>
+      <div class="h4">DReSA is supported by development and ongoing funding from:</div>
+      <ul>
+      <li><a href="https://pawsey.org.au" target="_blank">The Pawsey Supercomputing Centre</a>
+      <li><a href="https://ardc.edu.au" target="_blank">The Australian Research Data Commons (ARDC)</a>
+      </ul.
     acknowledge: >
-      <p>The TeSS team would like to acknowledge the help of a number of groups and individuals, and thank them
+      <p>The DReSA team would like to acknowledge the help of a number of groups and individuals, and thank them
          for useful discussions, feedback and assistance in developing TeSS - to name but a few:</p>
-       <ul>
-          <li>ELIXIR technical staff and coordinators from the Hub,
-            in particular Rafael Jimenez, Martin Cook and Premysl Velek</li>
-          <li>The ELIXIR Training Coordinators group, particularly Celia van Gelder, Patricia Palagi and Gabriella Rustici
-            </li>
-          <li>The UK structural bioinformatics group, particularly Christine Orengo</li>
-        </ul>
+      <ul>
+        <li>The members of the ARDC National Training Registry Working Group</li>
+        <li>Attendees of eResearch and Data Skills conferences</li>
+        <li>The ELIXIR's Training Platform and TeSS community</li>
+        <li><a href="https://www.dcc.ac.uk/" target="_blank">The Digital Curation Centre</a></li>
+        <li><a href="https://eosc-portal.eu/" target="_blank">The European Open Science Cloud</a></li>
+      </ul>
   register:
     resources: >
-      <p>Training resources (events and materials) may be added to TeSS to reach bigger audiences, increase impact and
-      bolster event attendance. Registering events and training materials makes them more findable in a variety ways
-      to various user bases.</p>
+      <p>Adding events to DReSA make them easier to find for learners, trainers and other training providers.
+      This can help attract bigger audiences and increase the reach and impact of your events.</p>
     methods: >
-      <p>There are two ways to register training materials or events for display in TeSS:
-      <ol><li>Arrange for an <a href="#automatic">automatic registration</a> solution;</li>
-      <li>Use our form to register them <a href="#manual">manually</a>.</li></ol></p>
+      <p>To add an event to DReSA:<ol>
+      <li>Register for an account</li>
+      <li>And either:<ul>
+      <li>Use our form to register events <a href="#manual">manually</a>, or</li>
+      <li>Contact us to develop an <a href="#automatic">automatic registration</a> solution.</li>
+      </ul></li></ol></p>
+      <p>Events added to DReSA must be related to digital research skills and must take place, or be open to
+      researchers, in the Australasian region.</p>
     automatic: >
-      The TeSS team can write scripts ('scrapers') to automatically register resources from target websites.
-      The scrapers run each night, adding any new resources to TeSS or updating any that have changed.
-      We can write a scraper to include your resources in TeSS, if your site:
+      <p>The DReSA team can provide various automated scraping solutions for adding your events to the website.
+      Scrapers are based on the extraction of structured metadata from existing websites.</p>
+      <p>If those solutions are not applicable, you can contact the DReSA team to discuss potential, alternative
+      solutions. This option is particularly useful if you regularly add many events to DReSA.</p>
+      <p>For more information on automatically registering events in DReSA, refer to the
+      <a href="https://github.com/nrmay/TeSS_scrapers/" target="_blank">DReSA Scrapers</a> repository.<p>
     auto_condition_1: "Contains more than 3 resources"
     auto_condition_2: "Has some structured data"
     auto_condition_3: "Is relevant to life scientists"
@@ -273,27 +247,43 @@ en-AU:
       If your website contains any of the above, or you'd like advice about annotating with Bioschemas, you can contact
       us via e-mail at <a href="mailto:support@tess.elixir-europe.org">support@tess.elixir-europe.org</a>
     manual: >
-      <p>Resources may be added manually to TeSS.</p>
-      <p>To do so, first register for a free account. Members of ELIXIR can use ELIXIR AAI to register and login.</p>
-      <p>Once registered and logged in, the 'register event' and 'register material' buttons will become visible on the
-      events and materials tabs. Alternatively click here:</p>
+      <p>Resources may be added manually to DReSA.</p>
+      <p><ol><li>Register for an account by logging using AAF.</li>
+      <li>Click either the <em>Register Event</em> button (on the Events page) or the <em>Register Material</em> button
+      (on the Materials page) to register your training events or training materials, respectively.</li></ol></p>
   privacy:
     registration: >
-      <p>When you register with TeSS we ask for a username, password and email address.</p><ul>
-      <li>Your username is used for authentication and attribution. This information is publicly visible, e.g. when a
-      user views a resource you have created.</li>
-      <li>Your password is stored as a cryptographically-secure hash and is not publicly visible.</li>
-      <li>Your email address is used to confirm your identity and for use when requesting your password to be reset.
-      This email address is not publicly visible, but you may specify an additional public email address (see below).
-      </li></ul>
-    personal: "You may additionally provide a profile, containing your name, a public email address, website link and avatar. This information is publicly available to all users."
-    resources: "The details of any training materials and events that you register will be publicly visible and searchable. Any workflows and packages created can be opted to be made private, in which case only you, any collaborators you specify, and the TeSS administrators will be able to view and search for them."
-    server: "When you browse TeSS, the server automatically records logs of which pages you access, when you accessed them, and your IP address. These logs are used to fix errors and are not shared with any third parties. Sensitive information (such as passwords) is automatically stripped out."
-    analytics: "TeSS uses Google Analytics to track how users are discovering TeSS and interacting with the service. The information gathered includes which pages you visited, which search terms lead you to TeSS and information about your web browser. No personally identifiable information is sent to Google."
-    retention: " Your information will be retained by TeSS until you choose to remove it, you delete your account, or the TeSS service ceases to exist."
-    code: "TeSS adheres to the <a href='https://wiki.refeds.org/display/CODE/Code+of+Conduct+for+Service+Providers'> GÉANT Data Protection Code of Conduct for Service Providers in EU/EEA </a>"
-    controller: "The data controller for TeSS is The University of Manchester."
-    post: "<strong>The DReSA Team</strong><br/>TBD."
+      <p>Registration with DReSA is build upon Australian Access Federation (AAF) authentication. When you register,
+      the AAF Display Name will be visible at the top of the page.</p>
+      <ul>
+      <li>DReSA delegates authentication to your identity provider (IdP). You can view which attributes are shared with
+      DReSA by your IdP by using the <a href="https://validator.aaf.edu.au/" target="_blank">AAF Validator</a> service.
+      </li>
+      <li>The e-mail address that you provide as a contact for an event or resource will be visible when a user views
+      that event/resource.</li>
+      </ul>
+    personal: >
+      You may additionally provide a profile, containing your name, a public email address, website link and avatar.
+      This information is publicly available to all users.
+    resources: >
+      The details of any training materials and events that you register will be publicly visible and searchable.
+    server: >
+      When you browse DReSA, the server automatically records logs of which pages you access, when you accessed them,
+      and your IP address. These logs are used to fix errors and are not shared with any third parties.
+    analytics: >
+      DReSA uses Google Analytics to track how users are discovering DReSA and interacting with the service.
+      The information gathered includes which pages you visited, which search terms lead you to DReSA and information
+      about your web browser. No personally identifiable information is sent to Google.
+    retention: >
+      The information that you enter into DReSA is retained by DReSA until you choose to remove it or the DReSA service
+      ceases to exist.
+    code: >
+      DReSA adheres to the <a href='https://www.oaic.gov.au/privacy/the-privacy-act/' target='_blank'>
+      Australian Privacy Act 1988</a>, which is the principal piece of Australian legislation protecting the handling
+      of personal information about individuals (<a href='https://www.ag.gov.au/rights-and-protections/privacy'
+      target='_blank'>https://www.ag.gov.au/rights-and-protections/privacy</a>).
+    controller: "The data controller for DReSA is TBA."
+    post: ''
   providers:
     info: >
       Content providers are entities (such as academic institutions, non-profit organisations, portals etc.) that

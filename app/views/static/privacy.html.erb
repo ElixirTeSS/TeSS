@@ -29,7 +29,10 @@
   <h3>Data Controller</h3>
   <p><%== raw t 'privacy.controller' %></p>
   <em>For any enquiries or requests, please contact:</em><br/>
-  <strong>Email:</strong> <%= mail_to(TeSS::Config.contact_email, TeSS::Config.contact_email)-%><br/>
-  <strong>Post:</strong>
-  <address><%== raw t 'privacy.post' %></address>
+  <strong>Email:</strong> <%= mail_to(TeSS::Config.contact_email, TeSS::Config.contact_email) -%><br/>
+  <% if !t('privacy.post').blank? %>
+    <strong>Post:</strong>
+
+    <address><%== raw t 'privacy.post' %></address>
+  <% end %>
 </div>

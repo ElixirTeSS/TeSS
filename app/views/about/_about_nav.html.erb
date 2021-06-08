@@ -1,12 +1,5 @@
 <!-- SIDEBAR -->
 <nav class="about-page-menu">
-  <% def show_active(show, block)
-       if show == block
-         result = "active"
-       else
-         result = ""
-       end
-     end -%>
 
   <!-- WHAT IS TESS -->
   <ul class="nav nav-stacked">
@@ -50,7 +43,7 @@
       <%= link_to 'About Us', us_path %>
     </li>
     <ul class="nav nav-stacked">
-      <li><%= link_to 'TeSS Club', us_path(:anchor => 'tess-club') %></li>
+      <!--li><%= link_to 'TeSS Club', us_path(:anchor => 'tess-club') %></li-->
       <li><%= link_to 'Contact', us_path(:anchor => 'contact') %></li>
       <li><%= link_to 'The Team', us_path(:anchor => 'team') %></li>
       <li><%= link_to 'Funding', us_path(:anchor => 'funding') %></li>
