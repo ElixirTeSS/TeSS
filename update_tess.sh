@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$#" -eq 0 ];then
+if [ "$#" -eq 0 ]; then
 #    echo "Usage: update.sh <development | production>"
 #    exit 0
     ENV="development"
