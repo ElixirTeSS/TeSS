@@ -1,12 +1,18 @@
 webinar:
   title: Webinars
+  description:
 workshop:
   title: Workshops and courses
+  description:
 conference:
   title: Conferences
+  description:
 cop_meeting:
   title: CoP Meetings
+  description: Community of practice meetings
 hackathon:
   title: Hackathons
+  description:
 dropin:
   title: Drop-in sessions and hackyhours
+  description:

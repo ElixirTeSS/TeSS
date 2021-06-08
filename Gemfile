@@ -78,7 +78,9 @@ gem 'auto_strip_attributes', '~> 2.0'
 # Gem for validating URLs
 gem 'validate_url', '~> 1.0.2'
 
+# Gem for simple form: https://github.com/heartcombo/simple_form
 gem 'simple_form'
+gem 'country_select', '<= 4.0.0'
 
 # Gem for rendering Markdown
 gem 'redcarpet', '~> 3.4.0'

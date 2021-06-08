@@ -1,15 +1,6 @@
 <div class="wrapper">
 
-  <% @feature_count = 0
-     def next_about_block
-       @feature_count += 1
-       if @feature_count & 1 == 0
-         result = "even-about-block"
-       else
-         result = "odd-about-block"
-       end
-     end
-  %>
+  <% @feature_count = 0 %>
 
   <div id="sidebar" class="popout-sidebar">
     <%= render :partial => 'about_nav', locals: { show: 'home' } %>
@@ -27,7 +18,7 @@
         <!-- EVENTS-->
 
         <% if TeSS::Config.feature['events'] == true %>
-          <div class="row <%= next_about_block %>">
+          <div class="row <%= next_about_block(@feature_count += 1) %>">
             <div class="col-lg-2 about-resource-icon">
               <%= link_to events_path do %>
                 <i class="fa fa-calendar about-icons"></i><br>Discover Events
@@ -49,7 +40,7 @@
         <!-- MATERIALS-->
 
         <% if TeSS::Config.feature['materials'] == true %>
-          <div class="row <%= next_about_block %>">
+          <div class="row <%= next_about_block(@feature_count += 1) %>">
             <div class="col-lg-2 about-resource-icon">
               <%= link_to materials_path do %>
                 <i class="fa fa-book about-icons"></i><br>Discover Materials
@@ -70,7 +61,7 @@
         <!-- WORKFLOWS -->
 
         <% if TeSS::Config.feature['workflows'] == true %>
-          <div class="row <%= next_about_block %>">
+          <div class="row <%= next_about_block(@feature_count += 1) %>">
             <div class="row">
               <div class="col-lg-2 about-resource-icon">
                 <%= link_to workflows_path do %>
@@ -105,7 +96,7 @@
 
         <!-- SUBSCRIBE-->
 
-        <div class="row <%= next_about_block %>">
+        <div class="row <%= next_about_block(@feature_count += 1) %>">
           <div class="row">
             <div class="col-lg-12">
               <div id='subscribe' class="h3">Subscribe</div>
@@ -119,7 +110,7 @@
 
         <!-- WIDGET & API -->
 
-        <div class="row <%= next_about_block %>">
+        <div class="row <%= next_about_block(@feature_count += 1) %>">
           <div class="row">
             <div class="col-lg-12">
               <div id='widget' class="h3">Widgets & API</div>
