@@ -1,8 +1,7 @@
 #!/bin/sh
 
 # get username
-if [ -z $1 ];
-then
+if [ -z $1 ]; then
     echo "Enter the username:"
     read USERNAME
 else
@@ -10,8 +9,7 @@ else
 fi
 
 # get database name
-if [ -z $2 ];
-then
+if [ -z $2 ]; then
     echo "Enter the database name:"
     read DBNAME
 else
@@ -19,8 +17,7 @@ else
 fi
 
 # get schema file name
-if [ -z $3 ];
-then
+if [ -z $3 ]; then
     echo "Enter the backup folder name:"
     read FOLDER
 else
@@ -28,8 +25,7 @@ else
 fi
 
 # extra params on data file
-if [ -z $4 ];
-then
+if [ -z $4 ]; then
     echo "Extra params on data file:"
     read EXTRA
 else

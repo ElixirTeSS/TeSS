@@ -1,11 +1,11 @@
-#!/bin/bash
+#!/bin/sh
 
-if [ "$#" -eq 0 ]; then
 #    echo "Usage: update.sh <development | production>"
 #    exit 0
-    ENV="development"
+if [ -z "$1" ]; then
+  ENV=$1
 else
-    ENV=$1
+  ENV="development"
 fi
 
 # stop services
@@ -17,7 +17,7 @@ sudo sh ./scripts/pgsql_backup.sh postgres tess_$ENV ./shared/backups --exclude-
 
 # rebuild rails environment
 #git pull origin master
-bundle install --deployment
+bundle install
 bundle exec rake db:migrate RAILS_ENV="$ENV"
 bundle exec rake assets:clean RAILS_ENV="$ENV"
 bundle exec rake assets:precompile RAILS_ENV="$ENV"

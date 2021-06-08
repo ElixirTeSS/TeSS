@@ -128,11 +128,10 @@ class DictionariesTest < ActiveSupport::TestCase
     assert_not_nil ops, "options should not be nil"
     assert_equal 5, ops.size, "options size not matched"
     item = 0
-    assert_equal 'first_come_first_served', ops[item][1], "item[#{item}] key not matched"
-    assert_equal 'First come first served', ops[item][0], "item[#{item}] title not matched"
+    assert_equal 'open_to_all', ops[item][1], "item[#{item}] key not matched"
+    assert_equal 'Open to all', ops[item][0], "item[#{item}] title not matched"
     assert_not_nil ops[item][2], "item[#{item}] description is nil"
-    assert_equal 'Registrations will be accepted in the order received', ops[item][2],
-                 "item[#{item}] description not matched"
+    assert_equal 'No restrictions on eligibility', ops[item][2], "item[#{item}] description not matched"
   end
 
   test "check options with no descriptions" do
