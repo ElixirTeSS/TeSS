@@ -101,7 +101,8 @@ class Event < ApplicationRecord
 
   validates :title, :url, :start, :end, :organizer, :description, :host_institutions, :timezone, :contact, :eligibility,
             presence: true
-  validates :venue, :city, :country, :postcode, :presence => true, :unless => :online?
+  # validates :venue, :city, :country, :postcode, :presence => true, :unless => :online?
+  validates :city, :country, :presence => true, :unless => :online?
   validates :capacity, numericality: true, allow_blank: true
   validates :event_types, controlled_vocabulary: { dictionary: EventTypeDictionary.instance }
   validates :eligibility, controlled_vocabulary: { dictionary: EligibilityDictionary.instance }
