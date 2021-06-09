@@ -104,9 +104,13 @@
                  required: true, errors: @event.errors[:eligibility] %>
 
   <div class="form-group">
-    <%= f.label 'for_profit' %> <%= icon_for(:for_profit, :small) %><%= f.field_lock :for_profit %>
+    <!--%= f.label 'for_profit' %> <%= icon_for(:for_profit, :small) %> -->
+    <%= f.label 'Associated Costs?' %>
     <%= f.check_box :for_profit %>
+    <%= f.field_lock :for_profit %>
+    <%= f.hint 'See description for specifice costs and criteria.' %>
   </div>
+
 
   <!-- Materials: check disabled -->
   <% if !TeSS::Config.feature['disabled'].include? 'materials' %>

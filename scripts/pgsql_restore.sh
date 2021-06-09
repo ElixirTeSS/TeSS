@@ -7,9 +7,9 @@
 #
 # Creation: 2013-05-08
 
-
 # get username
-if [ -z $1 ]; then
+if [ -z $1 ]
+then
     echo "Enter the username:"
     read USERNAME
 else
@@ -17,7 +17,8 @@ else
 fi
 
 # get new database name
-if [ -z $2 ]; then
+if [ -z $2 ]
+then
     echo "Enter the new database name:"
     read DBNAME
 else
@@ -25,7 +26,8 @@ else
 fi
 
 # get schema file name
-if [ -z $3 ]; then
+if [ -z $3 ]
+then
     echo "Enter the schema file name:"
     read SCHEMA
 else
@@ -33,7 +35,8 @@ else
 fi
 
 # get data file name
-if [ -z $4 ]; then
+if [ -z $4 ]
+then
     echo "Enter the data file name:"
     read DATA
 else

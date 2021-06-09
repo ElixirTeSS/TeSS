@@ -2,7 +2,8 @@
 
 #    echo "Usage: update.sh <development | production>"
 #    exit 0
-if [ -z "$1" ]; then
+if [ -z "$1" ]; 
+then
   ENV=$1
 else
   ENV="development"
