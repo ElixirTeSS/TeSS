@@ -54,11 +54,13 @@
         <% else %>
           <% if Rails.application.secrets.oidc[:client_id].blank? %>
             <%= link_to "Log in", new_user_session_path %>
-            <!-- %= link_to "Register", new_user_registration_path % -->
           <% else %>
             <%= link_to image_tag('aaf_service_110x26.png', alt: 'Login via AAF'),
                         user_oidc_omniauth_authorize_path, :method => :post %>
           <% end %> %>
+          <% if TeSS::Config.site['registration'] %>
+            <%= link_to "Register", new_user_registration_path %>
+          <% end %>
         <% end %>
       </div>
     </div>

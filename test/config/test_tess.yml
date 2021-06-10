@@ -18,6 +18,7 @@ site:
   supported_by: 'elixir_supported_by'
   widget_example: 'elixir_widget_example'
   gmaps_api_key: ''
+  registration: true
 questionnaire:
   show: true
   message: ''
