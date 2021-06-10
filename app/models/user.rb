@@ -45,11 +45,14 @@ class User < ApplicationRecord
   before_destroy :reassign_owner
   after_update :react_to_role_change
 
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable, :confirmable,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, :authentication_keys => [:login]
+  # Include default devise modules. Others available are: :lockable, :timeoutable
+  if TeSS::Config.site['registration']
+    devise :database_authenticatable, :confirmable, :registerable, :recoverable, :rememberable, :trackable,
+           :validatable, :omniauthable, :authentication_keys => [:login]
+  else
+    devise :database_authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable,
+           :omniauthable, :authentication_keys => [:login]
+  end
 
   validates :username,
             :presence => true,
@@ -65,7 +68,7 @@ class User < ApplicationRecord
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
-      where(conditions.to_h).where(["lower(username) = :value OR lower(email) = :value", {:value => login.downcase}]).first
+      where(conditions.to_h).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
     else
       where(conditions.to_h).first
     end
@@ -80,7 +83,7 @@ class User < ApplicationRecord
     self.profile.email = (email || unconfirmed_email) if (publicize_email.to_s == '1')
   end
 
- # Check if user has a particular role
+  # Check if user has a particular role
   def has_role?(role)
     self.role && self.role.name == role.to_s
   end
@@ -162,7 +165,7 @@ class User < ApplicationRecord
     #user = User.where(:provider => auth.provider, :uid => auth.uid).first
     # `auth.info` fields: email, first_name, gender, image, last_name, name, nickname, phone, urls
     user = User.where(uid: auth.uid, provider: auth.provider).first ||
-        User.where(email: auth.info.email).first
+      User.where(email: auth.info.email).first
     if user
       if user.provider.nil? and user.uid.nil?
         user.uid = auth.uid
@@ -254,10 +257,10 @@ class User < ApplicationRecord
     #   node.update_attribute(:user_id, get_default_user.id)
     # end
     default_user = User.get_default_user
-    self.materials.each{|x| x.update_attribute(:user, default_user) } if self.materials.any?
-    self.events.each{|x| x.update_attribute(:user, default_user) } if self.events.any?
-    self.content_providers.each{|x| x.update_attribute(:user, default_user)} if self.content_providers.any?
-    self.nodes.each{|x| x.update_attribute(:user, default_user)} if self.nodes.any?
+    self.materials.each { |x| x.update_attribute(:user, default_user) } if self.materials.any?
+    self.events.each { |x| x.update_attribute(:user, default_user) } if self.events.any?
+    self.content_providers.each { |x| x.update_attribute(:user, default_user) } if self.content_providers.any?
+    self.nodes.each { |x| x.update_attribute(:user, default_user) } if self.nodes.any?
   end
 
   def react_to_role_change

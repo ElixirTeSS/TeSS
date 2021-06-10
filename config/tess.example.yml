@@ -18,6 +18,7 @@ default: &default
     supported_by: ''
     widget_example: ''
     gmaps_api_key: ''
+    registrations: true
   questionnaire:
     show: false
     message: ''
@@ -72,6 +73,7 @@ atrac: &atrac
     supported_by: 'dresa_supported_by.erb'
     widget_example: 'elixir_widget_example'
     gmaps_api_key: ''
+    registration: false
   feature:
     e-learnings: false
     events: true
