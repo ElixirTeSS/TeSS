@@ -288,3 +288,30 @@ en-AU:
     info: >
       Content providers are entities (such as academic institutions, non-profit organisations, portals etc.) that
       provide training materials of relevance to digital research skills.
+  events:
+    hints:
+      title: 'Add a title for your training event.'
+      subtitle: 'Include a subtitle to add context for your intended audience.'
+      description: 'Provide a textual description of the training event, for additional context.'
+      url: 'Enter a valid URL for the event landing page.'
+      start: 'When does the event start?'
+      end: 'When does the event end?'
+      duration: 'In hours and minutes (HH:MM), how long will your training event run?'
+      prerequisites: 'What understanding or knowledge does the audience need to have covered before the training event?'
+      objectives: 'What knowledge, skills, or abilities should your audience gain from completing the training?'
+      address: 'Where is this event being held?'
+      timezone: 'Select the appropriate timezone'
+      eligibility: 'Who can attend the training event?'
+      organizer: ''
+      contact: ''
+      hosts: ''
+      keywords: "Provide words or terms that clearly identify the training event's topics."
+      targets: 'Indicate the type of audience for which the training event is intended.'
+      topics: 'Select the Fields of Research (FoR) codes that the training covers.'
+      capacity: 'Provide the total number (cap) of individuals that can attend the training event.'
+      event_type: 'Select the most appropriate event type for the training event.'
+      requirements: 'Indicate the technical requirements needed to participate in the training event.'
+      recognition: 'Provide a description of any qualifications, awards, certificates, diplomas, or other
+        educational credentials that will be awarded on successful completion of the training event.'
+      materials: 'Add any training materials that are associated with the training event.'
+      costs: 'Costs'

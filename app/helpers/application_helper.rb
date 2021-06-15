@@ -280,12 +280,12 @@ module ApplicationHelper
     end
   end
 
-  def datetime_picker(form, field)
+  def datetime_picker(form, field, options)
     content_tag(:div, class: 'input-group date', data: { datetimepicker: true }) do
       content_tag(:span, class: 'input-group-addon', title: 'Click to display calendar') do
         content_tag(:i, '', class: 'glyphicon glyphicon-calendar')
       end +
-        form.text_field(field, class: 'form-control')
+        form.text_field(field, class: 'form-control', title: options[:title] )
     end
   end
 
@@ -328,7 +328,8 @@ module ApplicationHelper
                                                              existing: existing,
                                                              field_label: options[:label],
                                                              required: options[:required],
-                                                             errors: options[:errors] })
+                                                             errors: options[:errors],
+                                                             title: options[:title] })
     end
 
     def autocompleter(name, options = {})
@@ -353,7 +354,8 @@ module ApplicationHelper
                                                                    disabled: options[:disabled],
                                                                    required: options[:required],
                                                                    label: options[:label],
-                                                                   errors: options[:errors] })
+                                                                   errors: options[:errors],
+                                                                   title: options[:title] })
     end
   end
 

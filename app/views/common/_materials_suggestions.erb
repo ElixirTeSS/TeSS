@@ -3,7 +3,8 @@
 <input type="hidden" id='title_element' value="<%=title_element%>">
 
 <div class="input-group">
-    <input type="text" class="form-control" id="materials_query" placeholder="Search TeSS materials"/>
+    <input type="text" class="form-control" id="materials_query"
+           placeholder="Search <%= TeSS::Config.site['title_short'] %> materials"/>
     <div class="input-group-btn">
       <span class="btn btn-default" id="search_materials" onclick="InternalResources.search('materials')">
         <i class="fa fa-search"></i></span>

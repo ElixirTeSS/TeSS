@@ -40,6 +40,9 @@ render :partial => 'common/dropdown',
 
   # check error count
   errors ||= []
+
+  # check title
+  title ||= ''
 %>
 
 <div class="form-group<%= ' has-error' if errors.size > 0 %>">
@@ -50,7 +53,7 @@ render :partial => 'common/dropdown',
 
   <%= f.error field_name.to_sym %>
 
-  <div data-field="<%= field_name %>" data-model="<%= model_name %>">
+  <div data-field="<%= field_name %>" data-model="<%= model_name %>" title='<%= title %>'>
     <%# display existing ones %>
     <ul class="<%= field_name %>">
       <%# have one empty one so something is always passed when the event listener triggers %>

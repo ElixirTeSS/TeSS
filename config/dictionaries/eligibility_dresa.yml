@@ -1,14 +1,11 @@
 open_to_all:
   title: Open to all
   description: No restrictions on eligibility
-first_come_first_served:
-  title: First come first served
-  description: Registrations will be accepted in the order received
 host_institution:
   title: Host institutions
-  description: Only open to staff and students from the host institutions
-registration_of_interest:
-  title: Registration of interest
+  description: Only open to members of the host institutions
+expression_of_interest:
+  title: Expression of interest
   description: The organisers will select successful registrants from a list of interested parties
 by_invitation:
   title: By invitation
