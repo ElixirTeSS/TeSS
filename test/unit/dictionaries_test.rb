@@ -66,7 +66,7 @@ class DictionariesTest < ActiveSupport::TestCase
     dic.reload
 
     assert_not_nil dic.lookup("dropin"), "event type (dropin) was found"
-    assert_equal "Hackathons", dic.lookup("hackathon")['title'], "event type (hackathon) title not matched"
+    assert_equal "Hackathon", dic.lookup("hackathon")['title'], "event type (hackathon) title not matched"
 
   end
 
@@ -126,7 +126,7 @@ class DictionariesTest < ActiveSupport::TestCase
 
     ops = dic.options_for_select
     assert_not_nil ops, "options should not be nil"
-    assert_equal 5, ops.size, "options size not matched"
+    assert_equal 4, ops.size, "options size not matched"
     item = 0
     assert_equal 'open_to_all', ops[item][1], "item[#{item}] key not matched"
     assert_equal 'Open to all', ops[item][0], "item[#{item}] title not matched"
