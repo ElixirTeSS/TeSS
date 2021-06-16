@@ -91,6 +91,18 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :elearning_materials, concerns: :activities do
+    member do
+      post :reject_term
+      post :reject_data
+      post :add_term
+      post :add_data
+    end
+    collection do
+      get 'count'
+    end
+  end
+
   resources :subscriptions, only: [:show, :index, :create, :destroy] do
     member do
       get 'unsubscribe'

@@ -1,0 +1,41 @@
+<div class="wrapper">
+  <% if TeSS::Config.solr_enabled %>
+      <div id="sidebar" class="popout-sidebar">
+        <%= render partial: "search/common/facet_sidebar", locals:  { resources: @elearning_materials_results, resource_type: Material } %>
+      </div>
+  <% end %>
+
+  <div id="content">
+    <div class="row">
+      <%= render partial: 'subscriptions/subscribe_button', locals: { type: 'Material' } %>
+      <div class="pull-right">
+        <%= info_button('What are e-Learning materials in TeSS?') do %>
+            <%= render_markdown(MaterialsHelper::ELEARNING_MATERIALS_INFO) %>
+        <% end %>
+      </div>
+    </div>
+
+    <% if TeSS::Config.solr_enabled %>
+        <div class="row">
+          <%= render partial: "search/common/search_box", locals: { resource_path: elearning_materials_path } %>
+          <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
+            <i class="fa fa-filter"></i> Filters
+          </button>
+        </div>
+        <div class="row">
+          <%= render partial: "search/common/sort_by", locals: { resources: @elearning_materials, extras: [['Most recent', 'new']] } %>
+          <%= render partial: "search/common/search_info", locals: { resources: @elearning_materials_results, resource_type: 'material' } %>
+          <%= render partial: "search/common/search_filters", locals: { resources: @elearning_materials_results } %>
+        </div>
+    <% end %>
+
+    <%= render partial: "search/common/pagination_bar", locals: { resources: @elearning_materials } %>
+
+    <hr>
+
+    <%= render @elearning_materials %>
+
+    <%= render partial: "search/common/pagination_bar", locals: { resources: @elearning_materials } %>
+
+  </div>
+</div>

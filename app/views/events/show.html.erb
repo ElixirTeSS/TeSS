@@ -85,7 +85,8 @@
                     var map = new google.maps.Map(document.getElementById('map'), {
                       center: suggestedLocation.lat ? suggestedLocation : actualLocation,
                       scrollwheel: true,
-                      zoom: 13
+                      zoom: 13,
+                      maxZoom: 15,
                     });
 
                     if (actualLocation.lat) {
