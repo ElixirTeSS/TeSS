@@ -49,10 +49,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, :authentication_keys => [:login]
 
-  validates :username,
-            :presence => true,
-            :case_sensitive => false,
-            :uniqueness => true
+  validates_uniqueness_of :username, :case_sensitive => false
+
+
 
   validate :consents_to_processing, on: :create, unless: ->(user) { user.using_omniauth? || User.current_user.try(:is_admin?) }
 
