@@ -21,7 +21,8 @@ gem 'uglifier', '>= 1.3.0'
 gem 'therubyracer'#, platforms: :ruby
 
 # CRUD of resources via a UI
-gem 'rails_admin'
+gem 'rails_admin', '~> 2.0.0'
+gem 'haml'
 
 # Authentication
 gem 'devise'

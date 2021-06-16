@@ -28,7 +28,7 @@
 
 <solr>
 
-  <solrcloud configSetBaseDir="./configsets">
+  <solrcloud>
 
     <str name="host">${host:}</str>
     <int name="hostPort">${jetty.port:8983}</int>
