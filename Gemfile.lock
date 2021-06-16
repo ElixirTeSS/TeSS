@@ -1,12 +1,4 @@
 GIT
-  remote: git://github.com/radar/by_star.git
-  revision: 8c22f5108b9379adc7fc80d7c5b8b163027eee10
-  tag: v2.2.1
-  specs:
-    by_star (2.2.1)
-      activesupport
-
-GIT
   remote: https://github.com/lassebunk/dynamic_sitemaps.git
   revision: 37beeba143e8202218ee814056231b0e6974bafb
   branch: master
@@ -92,6 +84,8 @@ GEM
       autoprefixer-rails (>= 5.2.1)
       sassc (>= 2.0.0)
     builder (3.2.4)
+    by_star (2.2.1)
+      activesupport
     byebug (9.0.6)
     case_transform (0.2)
       activesupport
@@ -264,6 +258,15 @@ GEM
     mini_mime (1.0.1)
     mini_portile2 (2.4.0)
     minitest (5.10.3)
+    monetize (1.9.4)
+      money (~> 6.12)
+    money (6.13.8)
+      i18n (>= 0.6.4, <= 2)
+    money-rails (1.14.0)
+      activesupport (>= 3.0)
+      monetize (~> 1.9.0)
+      money (~> 6.13.2)
+      railties (>= 3.0)
     msgpack (1.2.4)
     multi_json (1.13.1)
     multi_xml (0.6.0)
@@ -611,7 +614,7 @@ DEPENDENCIES
   bootsnap (>= 1.1.0)
   bootstrap-datepicker-rails (~> 1.6.4.1)
   bootstrap-sass (>= 3.4.1)
-  by_star (~> 2.2.1)!
+  by_star (~> 2.2.1)
   byebug
   codacy-coverage
   country_select (<= 4.0.0)
@@ -634,6 +637,7 @@ DEPENDENCIES
   listen
   lunchy
   minitest (= 5.10.3)
+  money-rails
   omniauth_openid_connect
   paperclip (~> 5.2.1)
   pg

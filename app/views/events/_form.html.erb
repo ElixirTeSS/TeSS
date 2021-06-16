@@ -51,7 +51,7 @@
              locals: { f: f, url: events_check_exists_path, title: t('events.hints.url') } %>
 
   <!-- Field: Start -->
-  <%= f.input :start, as: :datetime_picker, field_lock: true, input_html: { title: t('events.hints.start') }  %>
+  <%= f.input :start, as: :datetime_picker, field_lock: true, input_html: { title: t('events.hints.start') } %>
 
   <!-- Field: End -->
   <%= f.input :end, as: :datetime_picker, field_lock: true, input_html: { title: t('events.hints.end') } %>
@@ -60,7 +60,7 @@
   <%= f.input :duration, as: :string, input_html: { title: t('events.hints.duration') } %>
 
   <!-- Field: Prerequisites -->
-  <!-- %= f.input :prerequisites, as: :markdown_area, input_html: { rows: '3', title: t('events.hints.prerequisites')} % -->
+  <%= f.input :prerequisites, as: :markdown_area, input_html: { rows: '3', title: t('events.hints.prerequisites') } %>
 
   <!-- Field: Learning Objectives-->
   <%= f.input :learning_objectives, as: :markdown_area, input_html: { rows: '3', title: t('events.hints.objectives') },
@@ -98,8 +98,8 @@
   <%= f.multi_input :target_audience, errors: @event.errors[:target_audience], title: t('events.hints.targets') %>
 
   <!-- Field: Topics -->
-  <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term',
-                      id_field: :uri, label_field: :preferred_label, input_html: { title: t('events.hints.topics') } %>
+  <!--%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term', label: 'Topics',
+                      id_field: :uri, label_field: :preferred_label, input_html: { title: t('events.hints.topics') } %-->
 
   <!-- Field: Capacity -->
   <%= f.input :capacity, field_lock: true, input_html: { title: t('events.hints.capacity') } %>
@@ -109,7 +109,7 @@
                  errors: @event.errors[:event_types], title: t('events.hints.event_type') %>
 
   <!-- Field: Technology Requirements -->
-  <!-- %= f.input :requirements, as: :markdown_area, input_html: { rows: '3', title: t('events.hints.requirements') } % -->
+  <%= f.input :tech_requirements, as: :markdown_area, input_html: { rows: '3', title: t('events.hints.requirements') } %>
 
   <!-- Field: Credit or Recognition -->
   <%= f.input :recognition, as: :string, field_lock: true, label: 'Credit or Recognition of Attendance',
@@ -120,10 +120,11 @@
 
   <!-- Field: Costs -->
   <div class="form-group">
-    <%= f.label 'Associated Costs?', input_html: { title: t('events.hints.costs') } %>
-    <%= f.check_box :for_profit %>
-    <%= f.field_lock :for_profit %>
-    <%= f.hint 'See description for specific costs and criteria.' %>
+    <%= f.input :cost_basis, collection: CostBasisDictionary.instance.options_for_select,
+                prompt: 'Select a cost basis...', input_html: { title: t('events.hints.cost_basis') } %>
+    <%= f.input :cost_currency, collection: currency_collection(['AUD','NZD']) , value_method: :second,
+                prompt: 'Select the currency...', input_html: { title: Money::Currency.table.to_s } %>
+    <%= f.input :cost_value, as: :decimal, label: 'Cost', input_html: { title: t('events.hints.cost_value') } %>
   </div>
 
   <!-- Field: Content Provider -->
@@ -131,7 +132,7 @@
               collection: ContentProvider.all, label_method: :title, value_method: :id, include_blank: true,
               field_lock: true %>
 
-  <!-- Field: mMaterials -->
+  <!-- Field: Materials -->
   <%= f.internal_resource :materials %>
   <div class="row">
     <%= render partial: 'common/materials_suggestions', locals: { title_element: 'event_title' } %>

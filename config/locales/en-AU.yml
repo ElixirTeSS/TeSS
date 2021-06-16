@@ -314,4 +314,5 @@ en-AU:
       recognition: 'Provide a description of any qualifications, awards, certificates, diplomas, or other
         educational credentials that will be awarded on successful completion of the training event.'
       materials: 'Add any training materials that are associated with the training event.'
-      costs: 'Costs'
+      cost_basis: 'Select the basis by which costs, if any, are applied.'
+      cost_value: 'Input the cost of the training event.'

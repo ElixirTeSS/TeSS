@@ -39,6 +39,7 @@ default: &default
     difficulty: 'difficulty.yml'
     eligibility: 'eligibility.yml'
     event_types: 'event_types.yml'
+    cost_basis: 'cost_basis.yml'
 
 elixir: &elixir
   site:
@@ -87,6 +88,7 @@ atrac: &atrac
     difficulty: 'difficulty_dresa.yml'
     eligibility: 'eligibility_dresa.yml'
     event_types: 'event_types_dresa.yml'
+    cost_basis: 'cost_basis.yml'
 
 development:
   <<: *default

@@ -79,6 +79,7 @@ class Event < ApplicationRecord
       boolean :failing do
         failing?
       end
+      string :cost_basis
 =begin TODO: SOLR has a LatLonType to do geospatial searching. Have a look at that
       location :latitutde
       location :longitude

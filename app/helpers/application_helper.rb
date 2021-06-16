@@ -18,7 +18,6 @@ module ApplicationHelper
     expired: { icon: 'fa-hourglass-end', message: 'This event has finished' },
     online: { icon: 'fa-desktop', message: 'This is an online event' },
     face_to_face: { icon: 'fa-users', message: 'This is a physical event' },
-    for_profit: { icon: 'fa-credit-card', message: 'This event is from a for-profit company' },
     scraped_today: { icon: 'fa-check-circle-o', message: 'This record was updated today' },
     not_scraped_recently: { icon: 'fa-exclamation-circle', message: 'This record has not been updated since %SUB%' },
     event: { icon: 'fa-calendar', message: 'This is a training event' },
@@ -76,7 +75,7 @@ module ApplicationHelper
 
   def tooltip_titles(event)
     titles = []
-    types = [:started, :expired, :online, :for_profit]
+    types = [:started, :expired, :online]
     types.each do |t|
       titles << "#{ICONS[t][:message]}." if event.send("#{t}?")
     end
@@ -285,7 +284,7 @@ module ApplicationHelper
       content_tag(:span, class: 'input-group-addon', title: 'Click to display calendar') do
         content_tag(:i, '', class: 'glyphicon glyphicon-calendar')
       end +
-        form.text_field(field, class: 'form-control', title: options[:title] )
+        form.text_field(field, class: 'form-control', title: options[:title])
     end
   end
 
@@ -428,6 +427,19 @@ module ApplicationHelper
     else
       result = ""
     end
+  end
+
+  def currency_collection(priority)
+    priors = []
+    others = []
+    Money::Currency.table.each do |key, value|
+      if !priority.empty? and priority.include?(value[:iso_code])
+        priors << [value[:name], value[:iso_code]]
+      else
+        others << [value[:name], value[:iso_code]]
+      end
+    end
+    return priors + others
   end
 
 end
