@@ -442,4 +442,22 @@ module ApplicationHelper
     return priors + others
   end
 
+  def currency_by_iso_code(iso_code)
+    if !iso_code.nil? and !iso_code.blank?
+      Money::Currency.table.each do |key, value|
+        if value[:iso_code] == iso_code
+          return value
+        end
+      end
+    end
+  end
+
+  def currency_symbol_by_iso_code(iso_code)
+    currency = currency_by_iso_code(iso_code)
+    if !currency.nil? and !currency[:symbol].nil?
+      return currency[:symbol]
+    else
+      return ''
+    end
+  end
 end

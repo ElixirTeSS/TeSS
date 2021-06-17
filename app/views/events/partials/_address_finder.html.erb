@@ -14,7 +14,9 @@
     <%= f.input :county, field_lock: true %>
   <% end %>
 
-  <%= f.input :country, field_lock: true, required: true, priority: ['AU','NZ'] %>
+  <%= f.input :country, priority: ['AU','NZ'], field_lock: true, required: true, 
+              selected: :country  %>
+    
   <%= f.input :postcode, field_lock: true %>
 
   <%= f.hidden_field :latitude %>

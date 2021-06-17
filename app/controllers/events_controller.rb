@@ -180,8 +180,9 @@ class EventsController < ApplicationController
                                   :content_provider_id, { :package_ids => [] }, { :node_ids => [] },
                                   { :node_names => [] }, { :target_audience => [] }, { :eligibility => [] },
                                   { :host_institutions => [] }, :capacity, :contact, :recognition, :learning_objectives,
+                                  :prerequisites, :tech_requirements, :cost_basis, :cost_value, :cost_currency,
                                   external_resources_attributes: [:id, :url, :title, :_destroy], material_ids: [],
-                                  locked_fields: [])
+                                  locked_fields: []  )
   end
 
   def event_report_params

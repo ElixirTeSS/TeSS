@@ -316,3 +316,4 @@ en-AU:
       materials: 'Add any training materials that are associated with the training event.'
       cost_basis: 'Select the basis by which costs, if any, are applied.'
       cost_value: 'Input the cost of the training event.'
+      cost_currency: 'Select the currency associated with the cost.'

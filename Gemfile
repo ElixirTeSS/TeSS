@@ -142,6 +142,9 @@ gem 'tzinfo-data'
 # for currency information
 gem 'money-rails'
 
+# for iso country codes
+gem 'iso_country_codes'
+
 source 'https://rails-assets.org' do
   gem 'rails-assets-clipboard', '~> 1.5.12'
   gem 'rails-assets-devbridge-autocomplete', '~> 1.2.26'
