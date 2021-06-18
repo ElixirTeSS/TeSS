@@ -270,7 +270,8 @@
             <% end %>
 
             <!-- Field: cost info -->
-            <% if @event.cost_basis and !@event.cost_basis.blank? %>
+            <% if @event.cost_basis and !@event.cost_basis.nil? and !@event.cost_basis.blank? and
+              !CostBasisDictionary.instance.lookup(@event.cost_basis).nil? %>
               <p>
                 <strong>Cost Basis:</strong>
                 <%= CostBasisDictionary.instance.lookup(@event.cost_basis)[:title] %>

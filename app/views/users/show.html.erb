@@ -10,51 +10,51 @@
         <div class="row">
           <div class="col-xs-4 col-md-12">
             <div id="gravatar_image">
-              <%= image_tag @user.gravatar_url, :class=>'medium-content-provider-logo' %>
+              <%= image_tag @user.gravatar_url, :class => 'medium-content-provider-logo' %>
             </div>
           </div>
           <div class="col-xs-8 col-md-12">
             <p>
               <strong>First name</strong><br/>
               <% if @user.profile.firstname.blank? %>
-                  <span class="empty">None specified</span>
+                <span class="empty">None specified</span>
               <% else %>
-                  <%= @user.profile.firstname %>
+                <%= @user.profile.firstname %>
               <% end %>
             </p>
 
             <p>
               <strong>Surname</strong><br/>
               <% if @user.profile.surname.blank? %>
-                  <span class="empty">None specified</span>
+                <span class="empty">None specified</span>
               <% else %>
-                  <%= @user.profile.surname %>
+                <%= @user.profile.surname %>
               <% end %>
             </p>
 
 
             <p>
               <strong>Public email</strong><br/>
-            <% if @user.profile.email.blank? %>
+              <% if @user.profile.email.blank? %>
                 <span class="empty">None specified</span>
-            <% else %>
+              <% else %>
                 <%= mail_to @user.profile.email %>
-            <% end %>
+              <% end %>
             </p>
 
             <p>
               <strong><%= model_class.human_attribute_name(:website) %></strong><br/>
               <% if @user.profile.website.blank? %>
-                  <span class="empty">None specified</span>
+                <span class="empty">None specified</span>
               <% else %>
-                  <%= link_to @user.profile.website, @user.profile.website, rel: 'nofollow' %>
+                <%= link_to @user.profile.website, @user.profile.website, rel: 'nofollow' %>
               <% end %>
             </p>
 
             <% if !current_user.nil? and current_user == @user %>
-                <div class="row">
-                  <%= link_to t('.edit', :default => 'Edit profile'), edit_user_path(@user), :class => 'btn btn-primary center-block' %>
-                </div>
+              <div class="row">
+                <%= link_to t('.edit', :default => 'Edit profile'), edit_user_path(@user), :class => 'btn btn-primary center-block' %>
+              </div>
             <% end %>
           </div>
         </div>
@@ -62,28 +62,31 @@
       <li><h4 class="nav-heading">Account details</h4></li>
       <li style="padding: 10px 10px;">
         <div class="row">
-        <div class="col-xs-12">
-          <p>
-            <strong>Role</strong><br/>
-            <%= @user.role.title %>
-          </p>
+          <div class="col-xs-12">
+            <p>
+              <strong>Role</strong><br/>
+              <%= @user.role.title %>
+            </p>
 
-          <% if !current_user.nil? and current_user == @user %>
+            <% if !current_user.nil? and current_user == @user %>
               <p>
                 <strong>Account email</strong><br/>
                 <%= @user.email %>
               </p>
 
               <p>
-                <strong>Authentication token</strong><span class="empty" style="font-style: italic;"> (keep it secret)</span><br/>
+                <strong>Authentication
+                  token</strong><span class="empty" style="font-style: italic;"> (keep it secret)</span><br/>
                 <%= @user.authentication_token %>
               </p>
-          <% end %>
+            <% end %>
 
-          <% if !current_user.nil? and current_user == @user %>
-              <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default center-block' %>
-          <% end %>
-        </div>
+            <% if TeSS::Config.site['registration'] %>
+              <% if !current_user.nil? and current_user == @user %>
+                <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default center-block' %>
+              <% end %>
+            <% end %>
+          </div>
         </div>
       </li>
     </ul>
@@ -93,23 +96,24 @@
     <div class="row">
       <div class="content_action">
         <% if !current_user.nil? and policy(@user).update? %>
-            <%= link_to t('.edit', :default => 'Edit profile'), edit_user_path(@user), :class => 'btn btn-primary' %>
+          <%= link_to t('.edit', :default => 'Edit profile'), edit_user_path(@user), :class => 'btn btn-primary' %>
 
-            <% if current_user == @user %>
-                <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default' %>
-
-                <%= link_to "Manage subscriptions", subscriptions_path, :class => 'btn btn-default' %>
+          <% if current_user == @user %>
+            <% if TeSS::Config.site['registration'] %>
+              <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default' %>
             <% end %>
+            <%= link_to "Manage subscriptions", subscriptions_path, :class => 'btn btn-default' %>
+          <% end %>
 
-            <% if current_user.try(:is_admin?) %>
-                <% if @user.banned? %>
-                    <%= link_to 'Remove ban', user_ban_path(@user),
-                                data: { confirm: 'Are you sure you want to remove this ban?.' },
-                                method: :delete, class: 'btn btn-danger' %>
-                <% else %>
-                    <%= link_to 'Ban', new_user_ban_path(@user), class: 'btn btn-danger' %>
-                <% end %>
+          <% if current_user.try(:is_admin?) %>
+            <% if @user.banned? %>
+              <%= link_to 'Remove ban', user_ban_path(@user),
+                          data: { confirm: 'Are you sure you want to remove this ban?.' },
+                          method: :delete, class: 'btn btn-danger' %>
+            <% else %>
+              <%= link_to 'Ban', new_user_ban_path(@user), class: 'btn btn-danger' %>
             <% end %>
+          <% end %>
         <% end %>
       </div>
     </div>
@@ -146,7 +150,7 @@
             </div>
 
             <% materials.each do |material| %>
-                <%= render material %>
+              <%= render material %>
             <% end %>
           </div>
         </div>
@@ -165,11 +169,11 @@
               <% end %>
             </ul>
             <% if events.count > 0 %>
-                <ul class="masonry media-grid" style="margin-top: 15px;">
-                  <% events.each do |event| %>
-                      <%= render event %>
-                  <% end %>
-                </ul>
+              <ul class="masonry media-grid" style="margin-top: 15px;">
+                <% events.each do |event| %>
+                  <%= render event %>
+                <% end %>
+              </ul>
             <% end %>
           </div>
         </div>
@@ -179,11 +183,11 @@
               <%= pluralize(workflows.count, 'workflow') %> found
             </div>
             <% if workflows.any? %>
-                <ul class="masonry media-grid" style="margin-top: 15px;">
-                  <% workflows.each do |workflow| %>
-                      <%= render workflow %>
-                  <% end %>
-                </ul>
+              <ul class="masonry media-grid" style="margin-top: 15px;">
+                <% workflows.each do |workflow| %>
+                  <%= render workflow %>
+                <% end %>
+              </ul>
             <% end %>
           </div>
         </div>
