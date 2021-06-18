@@ -460,4 +460,38 @@ module ApplicationHelper
       return ''
     end
   end
+
+  def country_alpha2_by_name(name)
+    failed = ''
+    return failed if name.nil?
+
+    begin
+      if name.length < 4
+        # search by alpha2 or alpha3
+        code = IsoCountryCodes.find(name)
+        if name.casecmp(code.alpha2) == 0 or
+          name.casecmp(code.alpha3) == 0
+          return code.alpha2
+        end
+      else
+        # search by name
+        codes = IsoCountryCodes.search_by_name(name)
+        if !codes.nil? and codes.length > 0
+          codes.each do |code|
+            if !code.nil? and code.name == name
+              return code.alpha2
+            end
+          end
+        end
+      end
+    rescue IsoCountryCodes::UnknownCodeError
+      # search failed
+      return failed
+    end
+
+    # nothing found
+    return failed
+
+  end
+
 end
