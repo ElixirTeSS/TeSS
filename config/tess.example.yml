@@ -62,7 +62,7 @@ elixir: &elixir
     image: hub-logo.png
     url: 'http://www.elixir-europe.org'
 
-atrac: &atrac
+dresa: &dresa
   site:
     title: 'Digital Research Skills Australia (DReSA)'
     title_short: 'DReSA'
