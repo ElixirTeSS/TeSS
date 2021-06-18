@@ -1,6 +1,7 @@
 <div class="form-group">
   <label>Address</label>
-  <input id="map-search" class="map-control form-control" type="text" placeholder="Start typing an address...">
+  <input id="map-search" class="map-control form-control" type="text" placeholder="Start typing an address..."
+    title="<%== raw t 'events.hints.address' %>">
   <div id="google-map-form">Loading map...</div>
 </div>
 
@@ -13,7 +14,11 @@
     <%= f.input :county, field_lock: true %>
   <% end %>
 
-  <%= f.input :country, field_lock: true, required: true, priority: ['AU','NZ'] %>
+  <% alpha2 = country_alpha2_by_name(@event.country) unless @event.nil? %>
+
+  <%= f.input :country, priority: ['AU','NZ'], field_lock: true, required: true, 
+              selected: ( alpha2 ||= '' )  %>
+    
   <%= f.input :postcode, field_lock: true %>
 
   <%= f.hidden_field :latitude %>

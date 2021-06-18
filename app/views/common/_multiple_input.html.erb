@@ -15,8 +15,9 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
 <% existing = [''] if existing.blank? %> <%# Add one placeholder if the field's value consists of an empty array %>
 <% required ||= false   # is a value required %>
 <% errors ||= []        # check error count %>
+<% title ||= ''         # check title defined %>
 
-<div class="form-group<%= ' has-error' if errors.size > 0 %>">
+<div class="form-group<%= ' has-error' if errors.size > 0 %>" title='<%= title %>'>
   <% if required %>
     <label class="control-label string required">
       <abbr title="required">*</abbr>

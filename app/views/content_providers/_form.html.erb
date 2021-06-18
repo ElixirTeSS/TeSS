@@ -4,7 +4,7 @@
 
   <%= f.input :title, as: :string %>
 
-  <%= render partial: 'common/url_checker', locals: { f: f, url: content_providers_check_exists_path } %>
+  <%= render partial: 'common/url_checker', locals: { f: f, url: content_providers_check_exists_path, title: '' } %>
 
   <%= f.input :description, as: :markdown_area, input_html: { rows: '10' } %>
 

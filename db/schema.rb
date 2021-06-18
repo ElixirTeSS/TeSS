@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_19_054952) do
+ActiveRecord::Schema.define(version: 2021_06_16_024730) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -114,8 +114,6 @@ ActiveRecord::Schema.define(version: 2021_05_19_054952) do
     t.integer "content_provider_id"
     t.integer "user_id"
     t.boolean "online", default: false
-    t.text "cost"
-    t.boolean "for_profit", default: false
     t.date "last_scraped"
     t.boolean "scraper_record", default: false
     t.string "keywords", default: [], array: true
@@ -136,8 +134,11 @@ ActiveRecord::Schema.define(version: 2021_05_19_054952) do
     t.string "duration"
     t.text "recognition"
     t.text "learning_objectives"
-    t.index ["cost"], name: "index_events_on_cost"
-    t.index ["for_profit"], name: "index_events_on_for_profit"
+    t.text "prerequisites"
+    t.text "tech_requirements"
+    t.string "cost_basis"
+    t.decimal "cost_value"
+    t.string "cost_currency"
     t.index ["online"], name: "index_events_on_online"
     t.index ["slug"], name: "index_events_on_slug", unique: true
     t.index ["user_id"], name: "index_events_on_user_id"

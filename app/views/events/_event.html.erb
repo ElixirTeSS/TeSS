@@ -19,8 +19,6 @@
     <p class="dont-break-out"><%= [event.city, event.country].reject { |field_value| field_value.blank? }.join(", ")%></p>
   <% end %>
 
-
-
   <% if event.started? %>
       <%= content_tag(:span, :class=>'pull-right gap') do %>
         <%= icon_for(:started, :small) %>
@@ -30,11 +28,7 @@
           <%= icon_for(:expired, :small) %>
       <% end %>
   <% end %>
-  <% if event.for_profit? %>
-      <%= content_tag(:span, :class=>'pull-right gap') do %>
-          <%= icon_for(:for_profit, :small) %>
-      <% end %>
-  <% end %>
+
   <% if event.has_node? -%>
     <%= content_tag(:span, :class=>'pull-right gap') do %>
         <%= image_tag 'elixir_logo_orange.png',

@@ -7,7 +7,7 @@
 
   <%= f.input :title, as: :string, field_lock: true %>
 
-  <%= render partial: 'common/url_checker', locals: { f: f, url: materials_check_exists_path } %>
+  <%= render partial: 'common/url_checker', locals: { f: f, url: materials_check_exists_path, title: '' } %>
 
   <%= f.input :short_description, as: :markdown_area, input_html: { rows: '5' }, field_lock: true %>
 

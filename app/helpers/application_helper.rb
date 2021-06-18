@@ -18,7 +18,6 @@ module ApplicationHelper
     expired: { icon: 'fa-hourglass-end', message: 'This event has finished' },
     online: { icon: 'fa-desktop', message: 'This is an online event' },
     face_to_face: { icon: 'fa-users', message: 'This is a physical event' },
-    for_profit: { icon: 'fa-credit-card', message: 'This event is from a for-profit company' },
     scraped_today: { icon: 'fa-check-circle-o', message: 'This record was updated today' },
     not_scraped_recently: { icon: 'fa-exclamation-circle', message: 'This record has not been updated since %SUB%' },
     event: { icon: 'fa-calendar', message: 'This is a training event' },
@@ -76,7 +75,7 @@ module ApplicationHelper
 
   def tooltip_titles(event)
     titles = []
-    types = [:started, :expired, :online, :for_profit]
+    types = [:started, :expired, :online]
     types.each do |t|
       titles << "#{ICONS[t][:message]}." if event.send("#{t}?")
     end
@@ -280,12 +279,12 @@ module ApplicationHelper
     end
   end
 
-  def datetime_picker(form, field)
+  def datetime_picker(form, field, options)
     content_tag(:div, class: 'input-group date', data: { datetimepicker: true }) do
       content_tag(:span, class: 'input-group-addon', title: 'Click to display calendar') do
         content_tag(:i, '', class: 'glyphicon glyphicon-calendar')
       end +
-        form.text_field(field, class: 'form-control')
+        form.text_field(field, class: 'form-control', title: options[:title])
     end
   end
 
@@ -328,7 +327,8 @@ module ApplicationHelper
                                                              existing: existing,
                                                              field_label: options[:label],
                                                              required: options[:required],
-                                                             errors: options[:errors] })
+                                                             errors: options[:errors],
+                                                             title: options[:title] })
     end
 
     def autocompleter(name, options = {})
@@ -353,7 +353,8 @@ module ApplicationHelper
                                                                    disabled: options[:disabled],
                                                                    required: options[:required],
                                                                    label: options[:label],
-                                                                   errors: options[:errors] })
+                                                                   errors: options[:errors],
+                                                                   title: options[:title] })
     end
   end
 
@@ -426,6 +427,71 @@ module ApplicationHelper
     else
       result = ""
     end
+  end
+
+  def currency_collection(priority)
+    priors = []
+    others = []
+    Money::Currency.table.each do |key, value|
+      if !priority.empty? and priority.include?(value[:iso_code])
+        priors << [value[:name], value[:iso_code]]
+      else
+        others << [value[:name], value[:iso_code]]
+      end
+    end
+    return priors + others
+  end
+
+  def currency_by_iso_code(iso_code)
+    if !iso_code.nil? and !iso_code.blank?
+      Money::Currency.table.each do |key, value|
+        if value[:iso_code] == iso_code
+          return value
+        end
+      end
+    end
+  end
+
+  def currency_symbol_by_iso_code(iso_code)
+    currency = currency_by_iso_code(iso_code)
+    if !currency.nil? and !currency[:symbol].nil?
+      return currency[:symbol]
+    else
+      return ''
+    end
+  end
+
+  def country_alpha2_by_name(name)
+    failed = ''
+    return failed if name.nil?
+
+    begin
+      if name.length < 4
+        # search by alpha2 or alpha3
+        code = IsoCountryCodes.find(name)
+        if name.casecmp(code.alpha2) == 0 or
+          name.casecmp(code.alpha3) == 0
+          return code.alpha2
+        end
+      else
+        # search by name
+        codes = IsoCountryCodes.search_by_name(name)
+        if !codes.nil? and codes.length > 0
+          codes.each do |code|
+            if !code.nil? and code.name == name
+              return code.alpha2
+            end
+          end
+        end
+      end
+    rescue IsoCountryCodes::UnknownCodeError
+      # search failed
+      return failed
+    end
+
+    # nothing found
+    return failed
+
   end
 
 end
