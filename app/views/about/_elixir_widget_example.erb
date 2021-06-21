@@ -12,7 +12,7 @@
               'GoogleMap',
               {
                   opts: {
-                      apiKey: <%= TeSS::Config.site['gmaps_api_key'] %> // Get your own API key!
+                      apiKey: <%= Rails.application.secrets.google_maps_api_key %> // Get your own API key!
                   },
                   params: {
                       country: [<%== raw t 'developer.gmaps_countries' %>],

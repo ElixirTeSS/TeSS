@@ -4,7 +4,7 @@
   <%= stylesheet_link_tag 'application', integrity: true, media: 'all', 'data-turbolinks-track' => true %>
 
   <% if defined? TeSS::Config.site['favicon'] and !TeSS::Config.site['title'].blank? %>
-    <%= favicon_link_tag( TeSS::Config.site['favicon'], :type => 'image/png') %>
+    <%= favicon_link_tag(TeSS::Config.site['favicon'], :type => 'image/png') %>
   <% else %>
     <%= favicon_link_tag('favicon.png', :type => 'image/png') %>
   <% end %>
@@ -20,6 +20,7 @@
 
   <% if Rails.application.secrets.google_analytics_code %>
     <%= render 'layouts/google_analytics' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   <% end %>
 
   <% if content_for? :og_header %>
