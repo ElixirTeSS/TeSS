@@ -52,7 +52,7 @@ elixir: &elixir
     repository: 'https://github.com/ElixirTeSS/TeSS'
     supported_by: 'elixir_supported_by'
     widget_example: 'elixir_widget_example'
-    gmaps_api_key: ''
+    registration: true
   questionnaire:
     show: true
     message: 'Help TeSS by giving us your feedback:'
@@ -73,7 +73,6 @@ dresa: &dresa
     repository: 'https://github.com/nrmay/TeSS'
     supported_by: 'dresa_supported_by.erb'
     widget_example: 'elixir_widget_example'
-    gmaps_api_key: ''
     registration: false
   feature:
     e-learnings: false
