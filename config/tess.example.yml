@@ -2,6 +2,7 @@ default: &default
   base_url: http://localhost:3000
   contact_email: contact@example.com
   sender_email: no-reply@localhost
+  twitter_handle: '@handle'
   solr_enabled: true
   announcement_message:
   prevent_robot_indexing: false
