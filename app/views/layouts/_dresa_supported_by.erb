@@ -1,13 +1,35 @@
 <h4><%= TeSS::Config.site['title_short'] %> is supported by the following organisations &hellip;</h4>
-<div class="col-sm-6 col-xs-2">
-  <div class="h6">The Pawsey Supercomputing Centre</div>
-  <%= link_to 'https://www.pawsey.org.au/', class: 'footer-logo hidden-xs', target: '_blank' do %>
-    <%= image_tag 'pawsey-logo-beige.png', align: 'middle' %>
-  <% end %>
-</div>
-<div class="col-sm-6 col-xs-2">
-  <div class="h6">The Australian Research Data Commons</div>
-  <%= link_to 'https://www.ardc.edu.au/', class: 'footer-logo hidden-xs', target: '_blank' do %>
-    <%= image_tag 'ardc_logo.svg', align: 'middle' %>
-  <% end %>
+
+<div class="col-sm-12 col-xs-2">
+  <div class="col-sm-2 col-xs-2">
+    <%= link_to 'https://www.biocommons.org.au/', class: 'footer-logo hidden-xs', target: '_blank' do %>
+      <%= image_tag 'Australian-Biocommons-Logo-Horizontal-144dpi.jpg', align: 'middle' %>
+    <% end %>
+  </div>
+  <div class="col-sm-3 col-xs-2">
+    <%= link_to 'https://www.ardc.edu.au/', class: 'footer-logo hidden-xs', target: '_blank' do %>
+      <%= image_tag 'ardc_logo.svg', align: 'middle' %>
+    <% end %>
+  </div>
+  <div class="col-sm-3 col-xs-2">
+    <%= link_to 'https://www.federation.edu.au/', class: 'footer-logo hidden-xs', target: '_blank' do %>
+      <%= image_tag 'Federation-Logo.jpg', align: 'middle' %>
+    <% end %>
+  </div>
+  <div class="col-sm-3 col-xs-2">
+    <%= link_to 'https://www.monash.edu/it/dsai', class: 'footer-logo hidden-xs', target: '_blank' do %>
+      <%= image_tag 'DSAI-Logo.png', align: 'middle' %>
+    <% end %>
+  </div>
+  <div class="col-sm-3 col-xs-2">
+    <%= link_to 'https://www.pawsey.org.au/', class: 'footer-logo hidden-xs', target: '_blank' do %>
+      <%= image_tag 'Pawsey-Logo-2.png', align: 'middle' %>
+    <% end %>
+  </div>
+  <div class="col-sm-2 col-xs-2">
+    <%= link_to 'https://www.sydney.edu.au/researc/facilities/sydney-informatics-hub.html',
+                class: 'footer-logo hidden-xs', target: '_blank' do %>
+      <%= image_tag 'SIH_logo_official.jpg', align: 'middle' %>
+    <% end %>
+  </div>
 </div>
