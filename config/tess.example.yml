@@ -18,8 +18,14 @@ default: &default
     repository: ''
     supported_by: ''
     widget_example: ''
-    gmaps_api_key: ''
     registrations: true
+  gmaps:
+    center:
+      latitude: 53.4674583
+      longitude: -2.233948899999973
+    zoom:
+      latitude: 3
+      longitude: 13
   questionnaire:
     show: false
     message: ''
@@ -75,6 +81,13 @@ dresa: &dresa
     supported_by: 'dresa_supported_by.erb'
     widget_example: 'elixir_widget_example'
     registration: false
+  gmaps:
+    center:
+      latitude: -30
+      longitude: 150
+    zoom:
+      latitude: 3
+      longitude: 10
   feature:
     e-learnings: false
     events: true

@@ -34,10 +34,10 @@
     init: function () {
       MapSearch.map = new google.maps.Map(document.getElementById('google-map-form'), {
         center: {
-          lat: <%= f.object.latitude || 53.4674583 %>,
-          lng: <%= f.object.longitude ||-2.233948899999973 %>
-        }, // Center on existing event, or Kilburn building
-        zoom: <%= f.object.latitude.blank? || f.object.longitude.blank? ? 3 : 13 %>
+          lat: <%= f.object.latitude || TeSS::Config.gmaps['center']['latitude'] %>,
+          lng: <%= f.object.longitude || TeSS::Config.gmaps['center']['longitude'] %>
+        }, // Center on existing event, or default location
+        zoom: <%= f.object.latitude.blank? || f.object.longitude.blank? ? TeSS::Config.gmaps['zoom']['latitude'] : TeSS::Config.gmaps['zoom']['longitude'] %>
       });
       var input = document.getElementById('map-search');
 
