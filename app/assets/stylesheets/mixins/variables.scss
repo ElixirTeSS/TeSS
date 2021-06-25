@@ -5,9 +5,9 @@ $elixir-blue: #005472;
 $elixir-green: #bebf32;
 
 /* DReSA brand colours */
-$dresa-orange: #db5d2d;
-$dresa-blue: #4392cf;
-$dresa-green: #338e3c;
+$dresa-purple: #6a57a5;
+$dresa-blue: #19224e;
+$dresa-green: #00b8b6;
 
 /* TeSS colours */
 $bgDefault: $dresa-blue;
@@ -18,7 +18,7 @@ $colHover2: #eee;
 
 $grey-blue: #8ca0a6;
 
-$blue: #206b82;
+$blue: $dresa-blue; // #206b82;
 $blue2: #085871; /* unused? */
 $blue3: #064559; /* unused? */
 
@@ -44,7 +44,7 @@ $navbar-default-bg: $bgDefault;
 $navbar-default-border: transparent;
 $navbar-default-link-active-bg: $bgHighlight;
 $navbar-default-link-hover-bg: $bgHighlight;
-$navbar-default-link-color: $colDefault;
+$navbar-default-link-color: $dresa-green; // $colDefault;
 $navbar-default-link-active-color: lighten($navbar-default-link-color, 30%);
 $navbar-default-link-hover-color: lighten($navbar-default-link-color, 40%);
 

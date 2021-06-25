@@ -81,7 +81,8 @@
         </button>
         <% if defined? TeSS::Config.site['logo'] and !TeSS::Config.site['logo'].blank? %>
           <a class="navbar-brand" href="/">
-            <%= image_tag(TeSS::Config.site['logo'], :alt => TeSS::Config.site['logo_alt'], :style => 'height: 60px;') %>
+            <%= image_tag(TeSS::Config.site['logo'], :alt => TeSS::Config.site['logo_alt'],
+                          :style => 'height: 50px; margin-top: 3px;') %>
           </a>
         <% end %>
       </div>

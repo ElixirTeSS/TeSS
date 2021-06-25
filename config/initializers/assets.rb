@@ -15,3 +15,6 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 Rails.application.config.assets.precompile += %w( twitter/bootstrap/* fontawesome*)
 Rails.application.config.assets.precompile += %w( jquery-ui/* )
 Rails.application.config.assets.precompile += %w( rails_admin/rails_admin.css rails_admin/rails_admin.js )
+
+# initialize font folder
+Rails.application.config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
