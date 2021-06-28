@@ -26,12 +26,22 @@
           </div>
           <div class="col-md-3 motivation_box">
             <div class="include-where">&hellip; embedded in other sites</div>
+            <!--
             <div class="include-where-graphic">
-              <%= image_tag 'about/widgets_adopters.png', size: "200x200" %>
+              <-%= image_tag 'about/widgets_adopters.png', size: "200x200" %>
             </div>
+            -->
             <div class="include-where-text">
+              <div style="text-align: left;">
+                By registering your event it will be:
+                <ul>
+                  <li>Listed on <%= TeSS::Config.site['title_short'] %></li>
+                  <li>Promoted on other sites that use our widgets</li>
+                  <li>Appear in more search results because of our search-engine optimisation</li>
+                </ul>
+              </div>
               Be seen across all the websites that display site resources through our <a href="developers#widgets">
-              widgets</a>
+              widgets</a>.
             </div>
           </div>
           <div class="col-md-3 motivation_box">
