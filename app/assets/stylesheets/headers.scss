@@ -1,7 +1,7 @@
-.elixir-black-header {
+.top-header {
   height: 35px;
   line-height: 35px;
-  background-color: #333;
+  background-color: black; // #333;
   border-bottom: 2px solid $dresa-green; // #eee;
 
   .server-name {
@@ -27,7 +27,7 @@
   }
 }
 
-.elixir-orange-header {
+.second-header {
   background-color: $bgDefault;
 
   ul.navbar-nav {
