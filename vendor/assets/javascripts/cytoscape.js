@@ -25143,7 +25143,7 @@ styfn.getDefaultProperties = util.memoize( function(){
     'text-border-style': 'solid',
     'text-border-color': '#000',
     'text-background-shape': 'rectangle',
-    'font-family': 'Helvetica Neue, Helvetica, sans-serif',
+    'font-family': 'Monserrat, Helvetica Neue, Helvetica, sans-serif',
     'font-style': 'normal',
     // 'font-variant': fontVariant,
     'font-weight': 'normal',

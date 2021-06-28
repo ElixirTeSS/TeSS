@@ -13,6 +13,7 @@ site:
   favicon: ''
   logo: ''
   logo_alt: ''
+  logo_open_graph: ''
   theme: 'en'
   repository: ''
   supported_by: 'elixir_supported_by'

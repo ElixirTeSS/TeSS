@@ -1,35 +1,85 @@
-<h4><%= TeSS::Config.site['title_short'] %> is supported by the following organisations &hellip;</h4>
+<h5><%= TeSS::Config.site['title_short'] %> is supported by the following organisations &hellip;</h5>
 
-<div class="col-sm-12 col-xs-2">
-  <div class="col-sm-2 col-xs-2">
-    <%= link_to 'https://www.biocommons.org.au/', class: 'footer-logo hidden-xs', target: '_blank' do %>
-      <%= image_tag 'Australian-Biocommons-Logo-Horizontal-144dpi.jpg', align: 'middle' %>
+<!-- show list on small screens -->
+<ul class='hidden-lg hidden-md'>
+  <li>
+    <%= link_to 'https://www.biocommons.org.au/', target: '_blank' do %>
+      Australian Biocommons
     <% end %>
-  </div>
-  <div class="col-sm-3 col-xs-2">
-    <%= link_to 'https://www.ardc.edu.au/', class: 'footer-logo hidden-xs', target: '_blank' do %>
-      <%= image_tag 'ardc_logo.svg', align: 'middle' %>
+  </li>
+  <li>
+    <%= link_to 'https://www.ardc.edu.au/', target: '_blank' do %>
+      Australian Research Data Commons
     <% end %>
-  </div>
-  <div class="col-sm-3 col-xs-2">
-    <%= link_to 'https://www.federation.edu.au/', class: 'footer-logo hidden-xs', target: '_blank' do %>
-      <%= image_tag 'Federation-Logo.jpg', align: 'middle' %>
+  </li>
+  <li>
+    <%= link_to 'https://www.monash.edu/it/dsai', target: '_blank' do %>
+      Department of Data Science and Artificial Intelligence, Monash University
     <% end %>
-  </div>
-  <div class="col-sm-3 col-xs-2">
-    <%= link_to 'https://www.monash.edu/it/dsai', class: 'footer-logo hidden-xs', target: '_blank' do %>
-      <%= image_tag 'DSAI-Logo.png', align: 'middle' %>
+  </li>
+  <li>
+    <%= link_to 'https://www.federation.edu.au/', target: '_blank' do %>
+      Federation University
     <% end %>
-  </div>
-  <div class="col-sm-3 col-xs-2">
-    <%= link_to 'https://www.pawsey.org.au/', class: 'footer-logo hidden-xs', target: '_blank' do %>
-      <%= image_tag 'Pawsey-Logo-2.png', align: 'middle' %>
+  </li>
+  <li>
+    <%= link_to 'https://www.intersect.org.au/', target: '_blank' do %>
+      Intersect Australia
     <% end %>
-  </div>
-  <div class="col-sm-2 col-xs-2">
-    <%= link_to 'https://www.sydney.edu.au/researc/facilities/sydney-informatics-hub.html',
-                class: 'footer-logo hidden-xs', target: '_blank' do %>
-      <%= image_tag 'SIH_logo_official.jpg', align: 'middle' %>
+  </li>
+  <li>
+    <%= link_to 'https://www.pawsey.org.au/', target: '_blank' do %>
+      Pawsey Supercomputing Centre
     <% end %>
-  </div>
+  </li>
+  <li>
+    <%= link_to 'https://www.qcif.edu.au/', target: '_blank' do %>
+      Queensland Cyber Infrastructure Foundation
+    <% end %>
+  </li>
+  <li>
+    <%= link_to 'https://www.sydney.edu.au/research/facilities/sydney-informatics-hub.html', target: '_blank' do %>
+      Sydney Informatics Hub, University of Sydney
+    <% end %>
+  </li>
+</ul>
+
+<!-- show logos on medium and large screens -->
+<div class="footer-logo-box">
+  <%= link_to 'https://www.biocommons.org.au/', class: 'footer-logo hidden-sm  hidden-xs', target: '_blank' do %>
+    <%= image_tag 'Australian-Biocommons-Logo-Horizontal-144dpi.jpg', align: 'left' %>
+  <% end %>
+  <%= link_to 'https://www.ardc.edu.au/', class: 'footer-logo hidden-sm hidden-xs', target: '_blank' do %>
+    <%= image_tag 'ardc_logo.svg', align: 'middle' %>
+  <% end %>
+
 </div>
+
+<div class="footer-logo-box">
+  <%= link_to 'https://www.monash.edu/it/dsai', class: 'footer-logo hidden-sm hidden-xs', target: '_blank' do %>
+    <%= image_tag 'DSAI-Logo.png', align: 'left' %>
+  <% end %>
+  <%= link_to 'https://www.intersect.org.au/', class: 'footer-logo hidden-sm hidden-xs', target: '_blank' do %>
+    <%= image_tag 'Intersect_Australia_logo.png', align: 'middle' %>
+  <% end %>
+</div>
+
+<div class="footer-logo-box">
+  <%= link_to 'https://www.pawsey.org.au/', class: 'footer-logo hidden-sm hidden-xs', target: '_blank' do %>
+    <%= image_tag 'Pawsey-Logo-2.png', align: 'left' %>
+  <% end %>
+  <%= link_to 'https://www.qcif.edu.au/', class: 'footer-logo hidden-sm hidden-xs', target: '_blank' do %>
+    <%= image_tag 'QCIF_Logo_Master.png', align: 'middle' %>
+  <% end %>
+</div>
+
+<div class="footer-logo-box" style="background: white;">
+  <%= link_to 'https://www.sydney.edu.au/researc/facilities/sydney-informatics-hub.html',
+              class: 'footer-logo hidden-sm hidden-xs', target: '_blank' do %>
+    <%= image_tag 'SIH_logo_official.jpg', align: 'left' %>
+  <% end %>
+  <%= link_to 'https://www.federation.edu.au/', class: 'footer-logo hidden-sm hidden-xs', target: '_blank' do %>
+    <%= image_tag 'Federation-Logo.jpg', align: 'middle' %>
+  <% end %>
+</div>
+

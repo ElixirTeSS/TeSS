@@ -14,6 +14,7 @@ default: &default
     favicon: ''
     logo: ''
     logo_alt: ''
+    logo_open_graph: ''
     theme: 'en'
     repository: ''
     supported_by: ''
@@ -73,9 +74,10 @@ dresa: &dresa
   site:
     title: 'Digital Research Skills Australia (DReSA)'
     title_short: 'DReSA'
-    favicon: atrac-logo.ico
-    logo: atrac-logo.png
+    favicon: DReSA_favicon.ico
+    logo: DReSA_logo_long_dark.png
     logo_alt: 'Digital Research Skills Australasia'
+    logo_open_graph: DReSA_logo.png
     theme: 'en-AU'
     repository: 'https://github.com/nrmay/TeSS'
     supported_by: 'dresa_supported_by.erb'
