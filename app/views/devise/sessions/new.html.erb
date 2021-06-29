@@ -9,6 +9,8 @@
           <% if devise_mapping.omniauthable? %>
             <% resource_class.omniauth_providers.each do |provider| %>
               <% if provider.to_s.downcase == 'oidc' -%>
+                <div class="h4">Institutional Login</div>
+                <p>Use the button below to log in via your Australian or New Zealand institution.</p>
                 <%= link_to image_tag("aaf_service_223x54.png"), omniauth_authorize_path(resource_name, provider),
                             method: :post -%>
               <% else -%>
@@ -19,8 +21,9 @@
           <% end %>
           <hr/>
         <% end %>
+
         <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-          <div class="h4">Local Account</div>
+          <div class="h4">Administrator Login</div>
           <%= f.input :login, label: 'Email or username', autofocus: true %>
           <%= f.input :password, input_html: { autocomplete: 'off' } %>
           <% if devise_mapping.rememberable? -%>
@@ -30,8 +33,7 @@
             <%= f.submit "Log in", :class => 'btn btn-primary' %>
           </div>
         <% end %>
-        <hr/>
-        <%= render "devise/shared/links" %>
+        <!--%= render "devise/shared/links" %-->
       </div>
     </div>
   </div>
