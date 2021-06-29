@@ -11,6 +11,7 @@
     "query-input": "required name=search_term_string"
   }
 }
+
 </script>
 
 <script type="application/ld+json">
@@ -20,6 +21,7 @@
   "url": "<%= root_url %>",
   "logo": "<%= image_url "ELIXIR_TeSS_logo_normal.png" %>"
 }
+
 </script>
 
 <%# Welcome text %>
@@ -50,7 +52,12 @@
     <li class="<%= @liclass %>">
       <%= link_to events_path do %>
         <h2><i class="<%= icon_class_for_model('events') %>"></i> Events</h2>
-        <%= image_tag("events.jpg", width: "100%", alt: "Events") %>
+        <div class="hidden-sm hidden-xs">
+          <%= image_tag("dresa/Training_Cyan_@4x.png", height: "240px", alt: "Events") %>
+        </div>
+        <div class="hidden-lg hidden-md">
+          <%= image_tag("dresa/Training_Cyan_@4x.png", height: "120px", alt: "Events") %>
+        </div>
       <% end %>
       <p><%== raw t 'home.events_message' %></p>
     </li>
@@ -60,7 +67,12 @@
     <li class="<%= @liclass %>">
       <%= link_to materials_path do %>
         <h2><i class="<%= icon_class_for_model('materials') %>"></i> Materials</h2>
-        <%= image_tag("materials.jpg", width: "100%", alt: "Materials") %>
+        <div class="hidden-sm hidden-xs">
+          <%= image_tag("dresa/Training_Materials_Cyan@4x.png", height: "240px", alt: "Events") %>
+        </div>
+        <div class="hidden-lg hidden-md">
+          <%= image_tag("dresa/Training_Materials_Cyan@4x.png", height: "120px", alt: "Events") %>
+        </div>
       <% end %>
       <p><%== raw t 'home.materials_message' %></p>
     </li>
@@ -80,7 +92,12 @@
     <li class="<%= @liclass %>">
       <%= link_to content_providers_path do %>
         <h2><i class="<%= icon_class_for_model('content_providers') %>"></i> Providers</h2>
-        <%= image_tag("providers-6.jpg", width: "100%", alt: "Providers") %>
+        <div class="hidden-sm hidden-xs">
+          <%= image_tag("dresa/Training_Providers_Cyan@4x.png", height: "240px", alt: "Events") %>
+        </div>
+        <div class="hidden-lg hidden-md">
+          <%= image_tag("dresa/Training_Providers_Cyan@4x.png", height: "120px", alt: "Events") %>
+        </div>
       <% end %>
       <p><%== raw t 'home.providers_message' %></p>
     </li>
@@ -97,7 +114,8 @@
       <% if days == 0 %>
         <div class="days_ago_text">Added to <%= TeSS::Config.site['title_short'] %> today</div>
       <% else %>
-        <div class="days_ago_text">Added to <%= TeSS::Config.site['title_short'] %> <%= pluralize(days, "day") %> ago</div>
+        <div class="days_ago_text">Added to <%= TeSS::Config.site['title_short'] %> <%= pluralize(days, "day") %>ago
+        </div>
       <% end %>
     <% end -%>
   <% end -%>
