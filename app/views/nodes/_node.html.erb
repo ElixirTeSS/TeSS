@@ -1,5 +1,5 @@
 <li class="masonry-brick media-item ">
-  <%= image_tag "elixir/#{get_image_url_for(node)}", :class=>"media-image listing_image" %>
+  <%= image_tag get_image_url_for(node), :class=>"media-image listing_image" %>
   <h3 class="media-heading"><%= country_flag(node.country_code, class: 'small-flag') %> <%= node.name %></h3>
   <p>
     <b><%= 'Training coordinator'.pluralize(node.training_coordinators.length) -%>: </b>
