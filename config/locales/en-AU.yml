@@ -154,7 +154,7 @@ en-AU:
       This can help attract bigger audiences and increase the reach and impact of your events.</p>
     methods: >
       <p>To add an event to DReSA:<ol>
-      <li>Register for an account</li>
+      <li>Create a user profile, by logging in using the Australian Access Federation (AAF)</li>
       <li>And either:<ul>
       <li>Use our form to register events <a href="#manual">manually</a>, or</li>
       <li>Contact us to develop an <a href="#automatic">automatic registration</a> solution.</li>
@@ -248,9 +248,9 @@ en-AU:
       us via e-mail at <a href="mailto:support@tess.elixir-europe.org">support@tess.elixir-europe.org</a>
     manual: >
       <p>Resources may be added manually to DReSA.</p>
-      <p><ol><li>Register for an account by logging using AAF.</li>
-      <li>Click either the <em>Register Event</em> button (on the Events page) or the <em>Register Material</em> button
-      (on the Materials page) to register your training events or training materials, respectively.</li></ol></p>
+      <p><ol><li>Create a user profile, by logging in using AAF.</li>
+      <li>Click either the <em>Register Event</em> button or the <em>Register Material</em> button to register your
+      training events or training materials, respectively.</li></ol></p>
   privacy:
     registration: >
       <p>Registration with DReSA is build upon Australian Access Federation (AAF) authentication. When you register,
