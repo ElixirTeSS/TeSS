@@ -74,10 +74,10 @@ dresa: &dresa
   site:
     title: 'Digital Research Skills Australia (DReSA)'
     title_short: 'DReSA'
-    favicon: DReSA_favicon.ico
-    logo: DReSA_logo_long_dark.png
+    favicon: 'dresa/DReSA_favicon.ico'
+    logo: 'dresa/DReSA_logo_long_dark.png'
     logo_alt: 'Digital Research Skills Australasia'
-    logo_open_graph: DReSA_logo.png
+    logo_open_graph: 'dresa/DReSA_Symbol.png'
     theme: 'en-AU'
     repository: 'https://github.com/nrmay/TeSS'
     supported_by: 'dresa_supported_by.erb'

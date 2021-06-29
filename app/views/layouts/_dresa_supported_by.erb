@@ -1,7 +1,7 @@
-<h5><%= TeSS::Config.site['title_short'] %> is supported by the following organisations &hellip;</h5>
+<h5><%= TeSS::Config.site['title_short'] %> became a reality through the hard work and contributions of &hellip;</h5>
 
 <!-- show list on small screens -->
-<ul class='hidden-lg hidden-md'>
+<ul class='hidden-lg'>
   <li>
     <%= link_to 'https://www.biocommons.org.au/', target: '_blank' do %>
       Australian Biocommons
@@ -9,7 +9,7 @@
   </li>
   <li>
     <%= link_to 'https://www.ardc.edu.au/', target: '_blank' do %>
-      Australian Research Data Commons
+      Australian Research Data Commons (ARDC)
     <% end %>
   </li>
   <li>
@@ -28,13 +28,18 @@
     <% end %>
   </li>
   <li>
+    <%= link_to 'https://www.dese.gov.au/ncris', target: '_blank' do %>
+      National Collaborative Research Infrasctructure Strategy (NCRIS)
+    <% end %>
+  </li>
+  <li>
     <%= link_to 'https://www.pawsey.org.au/', target: '_blank' do %>
       Pawsey Supercomputing Centre
     <% end %>
   </li>
   <li>
     <%= link_to 'https://www.qcif.edu.au/', target: '_blank' do %>
-      Queensland Cyber Infrastructure Foundation
+      Queensland Cyber Infrastructure Foundation (QCIF)
     <% end %>
   </li>
   <li>
@@ -45,41 +50,46 @@
 </ul>
 
 <!-- show logos on medium and large screens -->
-<div class="footer-logo-box">
-  <%= link_to 'https://www.biocommons.org.au/', class: 'footer-logo hidden-sm  hidden-xs', target: '_blank' do %>
-    <%= image_tag 'Australian-Biocommons-Logo-Horizontal-144dpi.jpg', align: 'left' %>
+<div class="footer-logo-box-sm hidden-md hidden-sm hidden-xs">
+  <%= link_to 'https://www.dese.gov.au/ncris', class: 'footer-logo-lg hidden-sm hidden-xs', target: '_blank' do %>
+    <%= image_tag 'supporters/ncris_logo.jpg' %>
+  <% end %>
+</div>
+
+<div class="footer-logo-box  hidden-md hidden-sm hidden-xs">
+  <%= link_to 'https://www.pawsey.org.au/', class: 'footer-logo hidden-sm hidden-xs', target: '_blank' do %>
+    <%= image_tag 'supporters/Pawsey-Logo-2.png', style: 'margin-left: 30px;' %>
   <% end %>
   <%= link_to 'https://www.ardc.edu.au/', class: 'footer-logo hidden-sm hidden-xs', target: '_blank' do %>
-    <%= image_tag 'ardc_logo.svg', align: 'middle' %>
+    <%= image_tag 'supporters/ARDC_logo.png', style: 'margin-left: 20px;' %>
+  <% end %>
+</div>
+
+<div class="footer-logo-box-sm hidden-md hidden-sm hidden-xs">
+  <%= link_to 'https://www.biocommons.org.au/', class: 'footer-logo hidden-sm  hidden-xs', target: '_blank' do %>
+    <%= image_tag 'supporters/Australian-Biocommons-Logo-Horizontal-144dpi.jpg' %>
+  <% end %>
+  <%= link_to 'https://www.sydney.edu.au/researc/facilities/sydney-informatics-hub.html',
+              class: 'footer-logo', target: '_blank' do %>
+    <%= image_tag 'supporters/SIH_logo_official.jpg' %>
   <% end %>
 
 </div>
 
-<div class="footer-logo-box">
+<div class="footer-logo-box-sm hidden-md hidden-md hidden-sm hidden-xs">
+  <%= link_to 'https://www.qcif.edu.au/', class: 'footer-logo hidden-sm hidden-xs', target: '_blank' do %>
+    <%= image_tag 'supporters/QCIF_Logo_Master.png', style: 'margin-left: 0;' %>
+  <% end %>
   <%= link_to 'https://www.monash.edu/it/dsai', class: 'footer-logo hidden-sm hidden-xs', target: '_blank' do %>
-    <%= image_tag 'DSAI-Logo.png', align: 'left' %>
+    <%= image_tag 'supporters/DSAI-Logo.png', style: 'margin-left: 0;' %>
+  <% end %>
+</div>
+
+<div class="footer-logo-box hidden-md hidden-sm hidden-xs">
+  <%= link_to 'https://www.federation.edu.au/', class: 'footer-logo hidden-sm hidden-xs', target: '_blank' do %>
+    <%= image_tag 'supporters/Federation-Logo.jpg' %>
   <% end %>
   <%= link_to 'https://www.intersect.org.au/', class: 'footer-logo hidden-sm hidden-xs', target: '_blank' do %>
-    <%= image_tag 'Intersect_Australia_logo.png', align: 'middle' %>
+    <%= image_tag 'supporters/Intersect_Australia_logo.png' %>
   <% end %>
 </div>
-
-<div class="footer-logo-box">
-  <%= link_to 'https://www.pawsey.org.au/', class: 'footer-logo hidden-sm hidden-xs', target: '_blank' do %>
-    <%= image_tag 'Pawsey-Logo-2.png', align: 'left' %>
-  <% end %>
-  <%= link_to 'https://www.qcif.edu.au/', class: 'footer-logo hidden-sm hidden-xs', target: '_blank' do %>
-    <%= image_tag 'QCIF_Logo_Master.png', align: 'middle' %>
-  <% end %>
-</div>
-
-<div class="footer-logo-box" style="background: white;">
-  <%= link_to 'https://www.sydney.edu.au/researc/facilities/sydney-informatics-hub.html',
-              class: 'footer-logo hidden-sm hidden-xs', target: '_blank' do %>
-    <%= image_tag 'SIH_logo_official.jpg', align: 'left' %>
-  <% end %>
-  <%= link_to 'https://www.federation.edu.au/', class: 'footer-logo hidden-sm hidden-xs', target: '_blank' do %>
-    <%= image_tag 'Federation-Logo.jpg', align: 'middle' %>
-  <% end %>
-</div>
-
