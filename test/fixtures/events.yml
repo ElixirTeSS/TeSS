@@ -51,7 +51,7 @@ two:
   keywords: ["Keyword"]
   user: regular_user
   host_institutions: ["MyHost"]
-  timezone: MyTZ
+  timezone: UTC
   contact: MyContact
   eligibility: [ registration_of_interest ]
 
