@@ -24,7 +24,7 @@ one:
   host_institutions: ["MyHost"]
   contact: MyContact
   eligibility: [ first_come_first_served ]
-  timezone: "(GMT+10:00) Melbourne"
+  timezone: "Australia/Melbourne"
   duration: '00:00'
   learning_objectives: "There are none."
   recognition: "Yup. You attended the workshop."
@@ -85,7 +85,7 @@ year_long_event:
   keywords: ["Keyword"]
   user: regular_user
   host_institutions: ["MyHost"]
-  timezone: MyTZ
+  timezone: US/Eastern
   contact: MyContact
   eligibility: [ by_invitation ]
 
@@ -252,7 +252,7 @@ no_description_event:
   start: 2016-12-12 10:00:00
   end: 2016-12-12 12:00:00
   host_institutions: ["MyHost"]
-  timezone: MyTZ
+  timezone: Australia/Melbourne
   contact: MyContact
   eligibility: [ registration_of_interest ]
   venue: MyHall
@@ -272,7 +272,7 @@ event_with_report:
   funding: Fidget spinner sales
   attendee_count: 1
   host_institutions: ["MyHost"]
-  timezone: AEST
+  timezone: Australia/Sydney
   contact: MyContact
   eligibility: [ registration_of_interest ]
   venue: MyHall
@@ -320,7 +320,7 @@ shadowbanned_event:
   keywords: ["Predatory"]
   user: shadowbanned_user
   host_institutions: ["MyHost"]
-  timezone: BST
+  timezone: UTC
   contact: MyContact
   eligibility: [ registration_of_interest ]
 
@@ -356,7 +356,7 @@ kilburn:
   postcode: M13 9PL
   user: regular_user
   host_institutions: ["MyHost"]
-  timezone: UTC
+  timezone: GMT
   contact: MyContact
   eligibility: [ registration_of_interest ]
   organizer: "The Organizer"
