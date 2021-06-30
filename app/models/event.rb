@@ -16,7 +16,7 @@ class Event < ApplicationRecord
   include IdentifiersDotOrg
   include HasFriendlyId
 
-  before_save :set_default_times, :check_country_name
+  before_save :check_country_name # :set_default_times
   before_save :geocoding_cache_lookup, if: :address_will_change?
   after_save :enqueue_geocoding_worker, if: :address_changed?
 
@@ -212,8 +212,8 @@ class Event < ApplicationRecord
     Icalendar::Event.new.tap do |ical_event|
       if self.start && self.end
         if self.all_day?
-          ical_event.dtstart = Icalendar::Values::Date.new(self.start_utc, tzid: 'UTC') unless self.start.blank?
-          ical_event.dtend = Icalendar::Values::Date.new(self.end_utc, tzid: 'UTC') unless self.end.blank?
+          ical_event.dtstart = Icalendar::Values::Date.new(self.start, tzid: 'UTC') unless self.start.blank?
+          ical_event.dtend = Icalendar::Values::Date.new(self.end.tomorrow, tzid: 'UTC') unless self.end.blank?
         else
           ical_event.dtstart = Icalendar::Values::DateTime.new(self.start_utc, tzid: 'UTC') unless self.start.blank?
           ical_event.dtend = Icalendar::Values::DateTime.new(self.end_utc, tzid: 'UTC') unless self.end.blank?
@@ -233,7 +233,9 @@ class Event < ApplicationRecord
   end
 
   def all_day?
-    self.start && self.end && (self.start == self.start.midnight) || (self.end == self.end.midnight)
+    self.start && self.end &&
+      (self.start == self.start.midnight) &&
+      (self.end.hour == 23) && (self.end.min == 59)
   end
 
   # Ticket #375.

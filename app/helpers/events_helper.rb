@@ -13,7 +13,7 @@ module EventsHelper
 
     if event.all_day?
       # Need to add 1 day for all day events apparently
-      dates = "#{event.start_utc.strftime('%Y%m%d')}/#{event.end_utc.tomorrow.strftime('%Y%m%d')}"
+      dates = "#{event.start.strftime('%Y%m%d')}/#{event.end.tomorrow.strftime('%Y%m%d')}"
     else
       dates = "#{event.start_utc.strftime('%Y%m%dT%H%M00Z')}/#{event.end_utc.strftime('%Y%m%dT%H%M00Z')}"
     end
