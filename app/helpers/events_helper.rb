@@ -10,17 +10,12 @@ module EventsHelper
   for further details.".freeze
 
   def google_calendar_export_url(event)
-    # set start and end dates to local
-    start_time = event.start.asctime.in_time_zone(event.timezone)
-    start_utc = start_time.in_time_zone('UTC')
-    end_time = event.end.asctime.in_time_zone(event.timezone)
-    end_utc = end_time.in_time_zone('UTC')
 
     if event.all_day?
       # Need to add 1 day for all day events apparently
-      dates = "#{start_utc.strftime('%Y%m%d')}/#{end_utc.tomorrow.strftime('%Y%m%d')}"
+      dates = "#{event.start_utc.strftime('%Y%m%d')}/#{event.end_utc.tomorrow.strftime('%Y%m%d')}"
     else
-      dates = "#{start_utc.strftime('%Y%m%dT%H%M00Z')}/#{end_utc.strftime('%Y%m%dT%H%M00Z')}"
+      dates = "#{event.start_utc.strftime('%Y%m%dT%H%M00Z')}/#{event.end_utc.strftime('%Y%m%dT%H%M00Z')}"
     end
 
     if event.online?

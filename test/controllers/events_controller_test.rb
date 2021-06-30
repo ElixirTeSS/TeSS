@@ -608,9 +608,26 @@ class EventsControllerTest < ActionController::TestCase
 
     assert_equal @event.title, cal_event.summary
     assert_equal @event.description, cal_event.description
-    # Need to call .to_s, or Ruby thinks these two dates are not equal despite looking the same
-    assert_equal @event.start.to_date.to_s, cal_event.dtstart.to_s
-    assert_equal @event.end.to_date.to_s, cal_event.dtend.to_s
+    assert !@event.all_day?, 'not an all day event'
+    # Need to call .to_f, or Ruby thinks these two dates are not equal despite looking the same
+    assert_equal @event.start.to_datetime.to_f, cal_event.dtstart.to_f
+    assert_equal @event.end.to_datetime.to_f, cal_event.dtend.to_f
+  end
+
+  test 'calendar export should be set to utc dates' do
+    # get the event
+    local = events(:calendar_event)
+
+    # get the icalendar content
+    get :show, params: { format: :ics, id: local.id }
+    assert_response :success
+    assert_equal 'text/calendar', @response.content_type
+    cal_event =Icalendar::Calendar.parse(@response.body).first.events.first
+
+    # check the calendar event
+    assert_equal local.title, cal_event.summary
+    assert_equal local.start_utc, cal_event.dtstart
+    assert_equal local.end_utc, cal_event.dtend
   end
 
   test 'should provide a csv file' do

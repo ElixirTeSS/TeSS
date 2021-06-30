@@ -24,7 +24,7 @@ one:
   host_institutions: ["MyHost"]
   contact: MyContact
   eligibility: [ first_come_first_served ]
-  timezone: "Australia/Melbourne"
+  timezone: UTC
   duration: '00:00'
   learning_objectives: "There are none."
   recognition: "Yup. You attended the workshop."
@@ -117,7 +117,6 @@ scraper_user_event:
   country: BigCountry
   postcode: 1010
   organizer: AnOrganizer
-
 
 event_with_external_resource:
   title: External Resource Event
@@ -360,3 +359,25 @@ kilburn:
   contact: MyContact
   eligibility: [ registration_of_interest ]
   organizer: "The Organizer"
+
+calendar_event:
+  title: "calendar event"
+  subtitle: "an event to test calendar exports"
+  url: http://microsoft.com
+  organizer: MyString
+  description: MyText
+  event_types: ["meetings_and_conferences"]
+  duration: '01:45'
+  start: 2021-09-20 23:15:00
+  end: 2021-09-21 01:00:00
+  sponsors: ["MyString"]
+  venue: 100, Lygon Street
+  city: Carlton
+  country: Australia
+  postcode: 3010
+  keywords: ["Keyword"]
+  user: regular_user
+  host_institutions: ["UoLife"]
+  timezone: Melbourne
+  contact: MyContact
+  eligibility: [ free_to_all ]

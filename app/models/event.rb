@@ -130,6 +130,22 @@ class Event < ApplicationRecord
     super(Rails::Html::FullSanitizer.new.sanitize(desc))
   end
 
+  def start_utc
+    return convert_local_to_utc self.start
+  end
+
+  def end_utc
+    return convert_local_to_utc self.end
+  end
+
+  def start_local
+    return set_to_local self.start
+  end
+
+  def end_local
+    return set_to_local self.end
+  end
+
   def upcoming?
     # Handle nil for start date
     if self.start.blank?
@@ -194,8 +210,16 @@ class Event < ApplicationRecord
 
   def to_ical_event
     Icalendar::Event.new.tap do |ical_event|
-      ical_event.dtstart = Icalendar::Values::Date.new(self.start) unless self.start.blank?
-      ical_event.dtend = Icalendar::Values::Date.new(self.end) unless self.end.blank?
+      if self.start && self.end
+        if self.all_day?
+          ical_event.dtstart = Icalendar::Values::Date.new(self.start_utc, tzid: 'UTC') unless self.start.blank?
+          ical_event.dtend = Icalendar::Values::Date.new(self.end_utc, tzid: 'UTC') unless self.end.blank?
+        else
+          ical_event.dtstart = Icalendar::Values::DateTime.new(self.start_utc, tzid: 'UTC') unless self.start.blank?
+          ical_event.dtend = Icalendar::Values::DateTime.new(self.end_utc, tzid: 'UTC') unless self.end.blank?
+        end
+
+      end
       ical_event.summary = self.title
       ical_event.description = self.description
       ical_event.location = self.venue unless self.venue.blank?
@@ -393,6 +417,22 @@ class Event < ApplicationRecord
 
     if disallowed
       errors.add(:url, 'not valid')
+    end
+  end
+
+  def convert_local_to_utc(datetime)
+    begin
+      return set_to_local(datetime).in_time_zone('UTC')
+    rescue
+      return datetime
+    end
+  end
+
+  def set_to_local(datetime)
+    begin
+      return datetime.asctime.in_time_zone(self.timezone)
+    rescue
+      return datetime
     end
   end
 
