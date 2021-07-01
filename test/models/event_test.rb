@@ -71,7 +71,7 @@ class EventTest < ActiveSupport::TestCase
     assert_nil e.start
     e.start = '2016-11-22'
     e.save()
-    assert_equal e.start.hour, 9
+    assert_equal 0, e.start.hour
 
   end
 

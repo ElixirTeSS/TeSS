@@ -11,7 +11,7 @@
               <% if provider.to_s.downcase == 'oidc' -%>
                 <div class="h4">Institutional Login</div>
                 <p>Use the button below to log in via your Australian or New Zealand institution.</p>
-                <%= link_to image_tag("aaf_service_223x54.png"), omniauth_authorize_path(resource_name, provider),
+                <%= link_to image_tag("dresa/aaf_service_223x54.png"), omniauth_authorize_path(resource_name, provider),
                             method: :post -%>
               <% else -%>
                 <%= link_to "Log in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider),

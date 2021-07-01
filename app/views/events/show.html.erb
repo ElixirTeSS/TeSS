@@ -20,7 +20,7 @@
             </button>
             <ul class="dropdown-menu">
               <li>
-                <%= link_to google_calendar_export_url(@event) do %>
+                <%= link_to google_calendar_export_url(@event), target: '_blank' do %>
                   <i class="fa fa-google"></i> Google Calendar
                 <% end %>
               </li>
@@ -61,7 +61,7 @@
               <%= render :partial => 'events/partials/icon_info' %>
               <h2>
                 <% if @event.has_node? -%>
-                  <%= image_tag 'elixir_logo_orange.png',
+                  <%= image_tag 'elixir/elixir_logo_orange.png',
                                 :alt => 'Elixir node event',
                                 :title => 'Elixir node event',
                                 :style => 'height: 40px;' %>

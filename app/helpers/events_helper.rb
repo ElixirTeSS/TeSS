@@ -10,17 +10,26 @@ module EventsHelper
   for further details.".freeze
 
   def google_calendar_export_url(event)
+
     if event.all_day?
-      dates = "#{event.start.strftime('%Y%m%d')}/#{event.end.tomorrow.strftime('%Y%m%d')}" # Need to add 1 day for all day events apparently
+      # Need to add 1 day for all day events apparently
+      dates = "#{event.start.strftime('%Y%m%d')}/#{event.end.tomorrow.strftime('%Y%m%d')}"
     else
-      dates = "#{event.start.strftime('%Y%m%dT%H%M00Z')}/#{event.end.strftime('%Y%m%dT%H%M00Z')}"
+      dates = "#{event.start_utc.strftime('%Y%m%dT%H%M00Z')}/#{event.end_utc.strftime('%Y%m%dT%H%M00Z')}"
+    end
+
+    if event.online?
+      location = 'Online'
+    else
+      location = [event.venue, event.city, event.country].join(', ')
     end
 
     event_params = {
         text: event.title,
         dates: dates,
+        ctz: event.timezone,
         details: "#{event_url(event)}",
-        location: [event.venue, event.city, event.country].join(', '),
+        location: location,
         sf: true,
         output: 'xml'
     }

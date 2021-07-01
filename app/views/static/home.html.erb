@@ -2,8 +2,8 @@
 {
   "@context": "http://schema.org",
   "@type": "WebSite",
-  "name": "TeSS",
-  "alternateName": "The ELIXIR Life Science Training Portal",
+  "name": TeSS::Config.site['title_short'],
+  "alternateName": TeSS::Config.site['title'],
   "url": "<%= root_url %>",
   "potentialAction": {
     "@type": "SearchAction",
@@ -19,7 +19,7 @@
   "@context": "http://schema.org",
   "@type": "Organization",
   "url": "<%= root_url %>",
-  "logo": "<%= image_url "ELIXIR_TeSS_logo_normal.png" %>"
+  "logo": "<%= image_url TeSS::Config.site['logo'] %>"
 }
 
 </script>
