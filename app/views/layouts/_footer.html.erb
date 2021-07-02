@@ -1,18 +1,34 @@
 <footer class="footer">
   <div class="container">
+
     <div class="row">
-      <div class="col-md-3 col-xs-3">
-        <h5>Version: <%= app_version_text -%></h5>
+      <div class="col-md-3">
         <%= mail_to(TeSS::Config.contact_email, 'Contact us') %><br/>
+        <%= link_to 'Privacy', privacy_path, target: '_blank' %><br/>
         <%= link_to 'Add your resources to ' + TeSS::Config.site['title_short'],
-                    registering_resources_path, target: '_blank'  %><br/>
-        <%= link_to 'Source code', TeSS::Config.site['repository'], target: '_blank' %><br/>
+                    registering_resources_path, target: '_blank' %><br/>
         <%= link_to 'Funding & acknowledgements', us_path(anchor: 'funding'), target: '_blank' %><br/>
-        <%= link_to 'Privacy', privacy_path, target: '_blank' %>
+        <%= link_to "Source code [ version: #{app_version_text} ]", TeSS::Config.site['repository'], target: '_blank' %>
       </div>
-      <div class="col-md-9 col-xs-9">
-        <%= render :partial => 'layouts/' + TeSS::Config.site['supported_by'] %>
+      <div class="col-md-9">
+        <%= render :partial => 'layouts/dresa_funded_by' %>
       </div>
     </div>
+
+    <div class="row hidden-sm hidden-xs">
+      <div class="col-md-10 col-md-offset-1 supported-by">
+        <div class="col-md-1 ">
+          <%= TeSS::Config.site['title_short'] %> supporters:
+        </div>
+        <%= render :partial => 'layouts/dresa_supported_by' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1 ack-country">
+        <%= raw t 'footer.acknowledgement' %>
+      </div>
+    </div>
+
   </div>
 </footer>
