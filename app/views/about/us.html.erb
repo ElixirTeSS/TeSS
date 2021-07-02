@@ -30,6 +30,29 @@
         </div>
       </div>
 
+      <!-- FUNDING -->
+      <section id="funding">
+        <div class="row">
+          <div class="<%= next_about_block(@feature_count += 1) %>">
+            <div id='funding' class="h3">Investment for the development of the <%= TeSS::Config.site['title_short'] %>
+              portal
+            </div>
+            <%== raw t 'us.funding' %>
+            <div style="align: bottom;">
+              <%= link_to 'https://www.pawsey.org.au/', target: '_blank' do %>
+                <%= image_tag 'supporters/Pawsey-Logo.png', style: 'height: 80px; padding-top: 20px;' %>
+              <% end %>
+              <%= link_to 'https://www.ardc.edu.au/', style: 'height: 20px;', target: '_blank' do %>
+                <%= image_tag 'supporters/ARDC-Logo.png', style: 'height: 80px; padding-top: 25px;' %>
+              <% end %>
+              <%= link_to 'https://www.dese.gov.au/ncris', class: 'funder-logo', target: '_blank' do %>
+                <%= image_tag 'supporters/NCRIS-Logo.png', style: "height: 140px;" %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- THE TEAM-->
       <section id="team">
         <div class="row">
@@ -41,19 +64,9 @@
             <%== raw t 'us.team.partner' %>
             <%= render :partial => 'about/partner_orgs' %>
             <%== raw t 'us.team.guidance' %>
-         </div>
-        </div>
-      </section>
-
-      <!-- FUNDING
-      <section id="funding">
-        <div class="row">
-          <div class="<-%= next_about_block(@feature_count += 1) %>">
-            <div id='funding' class="h3">Funding</div>
-            <-%== raw t 'us.funding' %>
           </div>
         </div>
-      </section> -->
+      </section>
 
       <!-- ACKNOWLEDGEMENTS-->
       <section id="acknowledgements">
@@ -61,7 +74,7 @@
           <div class="<%= next_about_block(@feature_count += 1) %>">
             <div id='acknowledgments' class="h3">Acknowledgements</div>
             <%== raw t 'us.acknowledge' %>
-           </div>
+          </div>
         </div>
       </section>
 

@@ -159,11 +159,10 @@ en-AU:
         <li>Iryna Kuchma (IEFL)</li>
         </ul>
     funding: >
-      <div class="h4">DReSA is supported by development and ongoing funding from:</div>
-      <ul>
-      <li><a href="https://pawsey.org.au" target="_blank">The Pawsey Supercomputing Centre</a>
-      <li><a href="https://ardc.edu.au" target="_blank">The Australian Research Data Commons (ARDC)</a>
-      </ul.
+      <p>DReSA received investments from the
+      <a href="https://pawsey.org.au" target="_blank">Pawsey Supercomputing Centre (Pawsey)</a> and the
+      <a href="https://ardc.edu.au" target="_blank">Australian Research Data Commons (ARDC)</a>.</p>
+      <p> Pawsey and ARDC are funded by the National Collaborative Research Infrastructure Strategy (NCRIS).</p>
     acknowledge: >
       <p>The DReSA team would like to acknowledge the help of a number of groups and individuals, and thank them
          for useful discussions, feedback and assistance in developing the DReSA portal:</p>
