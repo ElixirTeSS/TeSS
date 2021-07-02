@@ -42,20 +42,27 @@ body {
   min-width: 320px;
   position: relative;
   margin: 0;
-  padding-bottom: 150px;
+  padding-bottom: 200px;
   min-height: 100%;
 }
 
 .footer {
-  border-top: solid 6px $dresa-green;
-  padding: 0;
+  border-top: solid 3px $dresa-green;
+  margin-top: 0;
   position: absolute;
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: white; // #ddd;
+  background-color: $dresa-blue; // #ddd;
+  color: white;
 
-  h5 {
+  a {
+    color: white;
+    background-color: transparent;
+    text-decoration: none;
+  }
+
+  h5, h6 {
     font-weight: bold;
   }
 
@@ -63,25 +70,11 @@ body {
     padding: 0;
   }
 
-  .footer-logo-box {
-    @extend .col-md-3;
-    padding: 0;
-    margin: 0;
-    float: left;
-  }
-
-  .footer-logo-box-sm {
-    @extend .col-md-2;
-    padding: 0;
-    margin: 0;
-    float: left;
-  }
-
   .footer-logo {
     img {
       margin-left: 12px;
       margin-bottom: 12px;
-      height: 45px;
+      height: 30px;
     }
   }
 
@@ -90,7 +83,6 @@ body {
       height: 106px;
     }
   }
-
 
   .eu-notice {
     padding-top: 10px;
@@ -101,6 +93,52 @@ body {
       margin: 0 8px;
       height: 39px;
     }
+  }
+}
+
+.ack-country {
+  border-top: 2px solid $dresa-green;
+  margin-top: 0;
+  padding-top: 0.5em;
+  text-align: center;
+}
+
+.supported-by {
+  margin-bottom: 0;
+  text-align: center;
+  vertical-align: middle;
+  font-size: x-small;
+  line-height: 1.2;
+}
+
+.funder-text {
+  padding-top: 1em;
+  p {
+    font-size: xx-small;
+    vertical-align: bottom;
+    line-height: 1.25;
+  }
+}
+
+.funder-logo {
+  img {
+    padding: 1em 1em 0 0;
+    height: 60px;
+  }
+}
+
+.partner-logo {
+  img {
+    margin: 0 0 12px 0;
+    border-right: 1px solid $dresa-green;
+    padding: 0 12px;
+    height: 45px;
+  }
+}
+
+.partner-logos .partner-logo:last-child {
+  img {
+    border-right: none;
   }
 }
 
@@ -1044,10 +1082,11 @@ input[type=checkbox].field-lock + label:before,
 
 .list-card {
   @include floating-card;
-
-  margin-bottom: 10px;
+  width: 45%;
+  height: 100%;
+  margin: 0 10px 10px 0;
   position: relative;
-  display: block;
+  display: inline-block;
   padding: 10px 15px;
 
   .list-card-heading {
@@ -1059,9 +1098,10 @@ input[type=checkbox].field-lock + label:before,
 }
 
 .questionnaire {
-  background-color: #fbff0233;
+  background-color: $dresa-green;
 }
 
 .aai-login {
   width: 120px;
 }
+

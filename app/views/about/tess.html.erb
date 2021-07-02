@@ -21,7 +21,8 @@
           <div class="row <%= next_about_block(@feature_count += 1) %>">
             <div class="col-lg-2 about-resource-icon">
               <%= link_to events_path do %>
-                <i class="fa fa-calendar about-icons"></i><br>Discover Events
+                <%= image_tag("dresa/Training_Default.png", height: "120px", alt: "Events") %>
+                <p>Discover Events</p>
               <% end %>
             </div>
             <div class="col-lg-10 about-resource">
@@ -43,7 +44,8 @@
           <div class="row <%= next_about_block(@feature_count += 1) %>">
             <div class="col-lg-2 about-resource-icon">
               <%= link_to materials_path do %>
-                <i class="fa fa-book about-icons"></i><br>Discover Materials
+                <%= image_tag("dresa/Training_Materials_Default.png", height: "120px", alt: "Events") %>
+                <p>Discover Materials</p>
               <% end %>
             </div>
 
