@@ -2,7 +2,7 @@
   <div class="container">
 
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-md-3 col-sm-4">
         <%= mail_to(TeSS::Config.contact_email, 'Contact us') %><br/>
         <%= link_to 'Privacy', privacy_path, target: '_blank' %><br/>
         <%= link_to 'Add your resources to ' + TeSS::Config.site['title_short'],
@@ -10,12 +10,13 @@
         <%= link_to 'Funding & acknowledgements', us_path(anchor: 'funding'), target: '_blank' %><br/>
         <%= link_to "Source code [ version: #{app_version_text} ]", TeSS::Config.site['repository'], target: '_blank' %>
       </div>
-      <div class="col-md-9">
+      <div class="col-md-9 hidden-sm hidden-xs">
         <%= render :partial => 'layouts/dresa_funded_by' %>
       </div>
     </div>
 
-    <div class="row hidden-sm hidden-xs">
+
+    <div class="row hidden-md hidden-sm hidden-xs">
       <div class="col-md-10 col-md-offset-1 supported-by">
         <div class="col-md-1 ">
           <%= TeSS::Config.site['title_short'] %> supporters:
