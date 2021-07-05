@@ -41,8 +41,9 @@ default: &default
     nodes: true
     packages: true
     providers: true
-    workflows: true
+    subscription: true
     trainers: true
+    workflows: true
     disabled: []
   dictionaries:
     difficulty: 'difficulty.yml'
@@ -98,8 +99,9 @@ dresa: &dresa
     nodes: false
     packages: false
     providers: true
-    workflows: false
+    subscription: true
     trainers: true
+    workflows: false
     disabled: ['county', 'operations', 'sponsors', 'materials']
   dictionaries:
     difficulty: 'difficulty_dresa.yml'

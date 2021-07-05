@@ -1,146 +1,150 @@
 <script>
-  document.addEventListener("turbolinks:load", function() {
+    document.addEventListener("turbolinks:load", function () {
 
-    /* Set all filter links to include the anchor */
-    var addTabToFilters = function(tab){
-      if (tab){
-          $(function () {
-              $('.active-filters a').attr('href', function(_, oldHref){
-                  oldHref = oldHref.replace(/\#(.*)/g, "#" + tab);
-                  if (oldHref.indexOf('#') == -1)
-                      oldHref += "#" + tab;
-                  return oldHref;
-              })
-              $('.nav-item a').attr('href', function (_, oldHref) {
-                  oldHref = oldHref.replace(/\#(.*)/g, "#" + tab);
-                  if (oldHref.indexOf('#') == -1)
-                      oldHref += "#" + tab;
-                  return oldHref;
-              });
-          });
-      }
-    };
+        /* Set all filter links to include the anchor */
+        var addTabToFilters = function (tab) {
+            if (tab) {
+                $(function () {
+                    $('.active-filters a').attr('href', function (_, oldHref) {
+                        oldHref = oldHref.replace(/\#(.*)/g, "#" + tab);
+                        if (oldHref.indexOf('#') == -1)
+                            oldHref += "#" + tab;
+                        return oldHref;
+                    })
+                    $('.nav-item a').attr('href', function (_, oldHref) {
+                        oldHref = oldHref.replace(/\#(.*)/g, "#" + tab);
+                        if (oldHref.indexOf('#') == -1)
+                            oldHref += "#" + tab;
+                        return oldHref;
+                    });
+                });
+            }
+        };
 
-    var getTab =function(){
-        var tab = window.location.hash;
-        if (tab){
-            return tab.substring(1) /* stip hash */
-        } else {
-            return ''
-        }
-    };
+        var getTab = function () {
+            var tab = window.location.hash;
+            if (tab) {
+                return tab.substring(1) /* stip hash */
+            } else {
+                return ''
+            }
+        };
 
-    addTabToFilters(getTab());
+        addTabToFilters(getTab());
 
 
-    var loadedMapScript = false;
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-      /*Load map script only once when event tab is selected
-      *
-      * if (e.target.id == 'caltab'){
-          if (!loadedCalendarScript){
-            $.getScript('https://www.gstatic.com/charts/loader.js', function(){drawChart()});
-          }
-       }
-       */
-      if (e.target.href.endsWith('#map')) {
-        if (!loadedMapScript){
-            initializeMap();
-        }
-        addTabToFilters('map');
-      } else {
-        addTabToFilters('grid');
-      }
+        var loadedMapScript = false;
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            /*Load map script only once when event tab is selected
+            *
+            * if (e.target.id == 'caltab'){
+                if (!loadedCalendarScript){
+                  $.getScript('https://www.gstatic.com/charts/loader.js', function(){drawChart()});
+                }
+             }
+             */
+            if (e.target.href.endsWith('#map')) {
+                if (!loadedMapScript) {
+                    initializeMap();
+                }
+                addTabToFilters('map');
+            } else {
+                addTabToFilters('grid');
+            }
+        })
     })
-  })
 </script>
 
 <div class="wrapper">
   <% if TeSS::Config.solr_enabled %>
-      <div id="sidebar" class="popout-sidebar">
-        <%= render partial: "search/common/facet_sidebar", locals:  { resources: @events_results, resource_type: Event } %>
-      </div>
+    <div id="sidebar" class="popout-sidebar">
+      <%= render partial: "search/common/facet_sidebar", locals: { resources: @events_results, resource_type: Event } %>
+    </div>
   <% end %>
 
   <div id="content">
     <% if TeSS::Config.solr_enabled %>
       <div class="row">
-          <%= link_to new_event_path, class: 'btn btn-primary' do %>
-            <i class="fa fa-plus-square"></i> Register event
-          <% end %>
+        <!-- Register button -->
+        <%= link_to new_event_path, class: 'btn btn-primary' do %>
+          <i class="fa fa-plus-square"></i> Register event
+        <% end %>
+        <!-- Check subscription feature -->
+        <% if TeSS::Config.feature['subscription'] %>
           <%= render partial: 'subscriptions/subscribe_button', locals: { type: 'Event' } %>
-
-          <div class="pull-right">
-            <%= info_button('What are events in ' + TeSS::Config.site['title_short'] + '?') do %>
-              <%= render_markdown(EventsHelper::EVENTS_INFO) %>
-            <% end %>
-          </div>
-        </div>
-
-        <div class="row">
-          <%= render partial: "search/common/search_box", locals: { resource_path: events_path } %>
-          <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
-            <i class="fa fa-filter"></i> Filters
-          </button>
-          <% include_expired = @facet_params.delete('include_expired') %>
-          <% if include_expired %>
-              <% button_params = search_and_facet_params %>
-              <% button_params.delete(:include_expired) %>
-              <% button_text = "Hide" %>
-          <% else %>
-              <% button_text = "Show" %>
-              <% button_params = search_and_facet_params.merge(include_expired: true) %>
-          <% end %>
-          <%= link_to button_params, class: 'btn btn-default' do %>
-              <i class="fa fa-hourglass-end"></i> <%= button_text %> past events
+        <% end %>
+        <!-- Info -->
+        <div class="pull-right">
+          <%= info_button('What are events in ' + TeSS::Config.site['title_short'] + '?') do %>
+            <%= render_markdown(EventsHelper::EVENTS_INFO) %>
           <% end %>
         </div>
-        <div class="row">
-          <%= render partial: "search/common/search_info", locals: { resources: @events_results, resource_type: 'event' } %>
-          <%= render partial: "search/common/search_filters", locals: { resources: @events_results } %>
-        </div>
+      </div>
+
+      <div class="row">
+        <%= render partial: "search/common/search_box", locals: { resource_path: events_path } %>
+        <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
+          <i class="fa fa-filter"></i> Filters
+        </button>
+        <% include_expired = @facet_params.delete('include_expired') %>
+        <% if include_expired %>
+          <% button_params = search_and_facet_params %>
+          <% button_params.delete(:include_expired) %>
+          <% button_text = "Hide" %>
+        <% else %>
+          <% button_text = "Show" %>
+          <% button_params = search_and_facet_params.merge(include_expired: true) %>
+        <% end %>
+        <%= link_to button_params, class: 'btn btn-default' do %>
+          <i class="fa fa-hourglass-end"></i> <%= button_text %> past events
+        <% end %>
+      </div>
+      <div class="row">
+        <%= render partial: "search/common/search_info", locals: { resources: @events_results, resource_type: 'event' } %>
+        <%= render partial: "search/common/search_filters", locals: { resources: @events_results } %>
+      </div>
     <% end %>
 
     <%# ACTUAL RESULTS LIST %>
     <% unless @events.blank? %>
-        <ul class="nav nav-tabs">
-          <%= tab('Grid', 'fa fa-table', 'home', active: true) %>
-          <%= tab('Map', 'fa fa-globe', 'map',
-                  disabled: { check: (search_and_facet_params[:online] == 'true'),
-                              message: 'Only showing online events.' }) %>
-        </ul>
+      <ul class="nav nav-tabs">
+        <%= tab('Grid', 'fa fa-table', 'home', active: true) %>
+        <%= tab('Map', 'fa fa-globe', 'map',
+                disabled: { check: (search_and_facet_params[:online] == 'true'),
+                            message: 'Only showing online events.' }) %>
+      </ul>
 
-        <div class="tab-content">
-          <div id="home" class="tab-pane fade in active">
-            <% if TeSS::Config.solr_enabled %>
-              <div class="row">
-                <%= render partial: "search/common/sort_by",
-                           locals: { resource: @events,
-                                     extras: [['Earliest', 'early'], ['Latest', 'late']] } %>
-              </div>
-            <% end %>
-
-            <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
-
-            <ul class="masonry media-grid" style="margin-top: 15px;">
-              <% @events.each do |event| %>
-                  <%= render event %>
-              <% end %>
-            </ul>
-
-            <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
-          </div>
-          <div id="map" class="tab-pane fade">
-            <div id="map-count" class="search-results-count"></div>
-            <div id="map-content">
-              <%= render partial: 'events/partials/events_map' %>
-              <p id="map-notice" class="help-block">
-                Note, this map only displays events that have geolocation information in TeSS.<br>
-                  For the complete list of events in TeSS, click the grid tab.
-              </p>
+      <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+          <% if TeSS::Config.solr_enabled %>
+            <div class="row">
+              <%= render partial: "search/common/sort_by",
+                         locals: { resource: @events,
+                                   extras: [['Earliest', 'early'], ['Latest', 'late']] } %>
             </div>
+          <% end %>
+
+          <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
+
+          <ul class="masonry media-grid" style="margin-top: 15px;">
+            <% @events.each do |event| %>
+              <%= render event %>
+            <% end %>
+          </ul>
+
+          <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
+        </div>
+        <div id="map" class="tab-pane fade">
+          <div id="map-count" class="search-results-count"></div>
+          <div id="map-content">
+            <%= render partial: 'events/partials/events_map' %>
+            <p id="map-notice" class="help-block">
+              Note, this map only displays events that have geolocation information in TeSS.<br>
+              For the complete list of events in TeSS, click the grid tab.
+            </p>
           </div>
         </div>
+      </div>
     <% end %>
   </div>
 </div>

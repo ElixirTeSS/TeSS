@@ -103,9 +103,14 @@
             <div class="col-lg-12">
               <div id='subscribe' class="h3">Subscribe</div>
               <p><%== raw t 'about.subscribe' %></p>
-              <p>The <%= link_to 'subscriptions manager', subscriptions_path %> page may be used to change the frequency
-                of, or to remove, subscriptions.</p>
-              <%= image_tag 'about/subscription.png', class: "widgets_guide" %>
+              <% if TeSS::Config.feature['subscription'] %>
+                <p>The <%= link_to 'subscriptions manager', subscriptions_path %> page may be used to change the
+                  frequency
+                  of, or to remove, subscriptions.</p>
+                <%= image_tag 'about/subscription.png', class: "widgets_guide" %>
+              <% else %>
+                <p>This feature is <strong>coming soon</strong> in the next phase of DReSA development.</p>
+              <% end %>
             </div>
           </div>
         </div>
