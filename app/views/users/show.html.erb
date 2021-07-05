@@ -75,8 +75,8 @@
               </p>
 
               <p>
-                <strong>Authentication
-                  token</strong><span class="empty" style="font-style: italic;"> (keep it secret)</span><br/>
+                <strong>Authentication token</strong><br/>
+                <span class="empty" style="font-style: italic;">(keep it secret)</span><br/>
                 <%= @user.authentication_token %>
               </p>
             <% end %>
@@ -98,13 +98,19 @@
         <% if !current_user.nil? and policy(@user).update? %>
           <%= link_to t('.edit', :default => 'Edit profile'), edit_user_path(@user), :class => 'btn btn-primary' %>
 
+          <!-- Current User functions -->
           <% if current_user == @user %>
+            <!-- Registration Button -->
             <% if TeSS::Config.site['registration'] %>
               <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default' %>
             <% end %>
-            <%= link_to "Manage subscriptions", subscriptions_path, :class => 'btn btn-default' %>
+            <!-- Subscriptions Button -->
+            <% if TeSS::Config.feature['subscription'] %>
+              <%= link_to "Manage subscriptions", subscriptions_path, :class => 'btn btn-default' %>
+            <% end %>
           <% end %>
 
+          <!-- Admin User functions -->
           <% if current_user.try(:is_admin?) %>
             <% if @user.banned? %>
               <%= link_to 'Remove ban', user_ban_path(@user),
