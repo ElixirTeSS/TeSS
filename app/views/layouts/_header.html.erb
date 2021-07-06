@@ -29,7 +29,7 @@
 
       <%# Server Name -%>
       <% if defined? TeSS::Config.site['title'] and !TeSS::Config.site['title'].blank? %>
-        <div class="col-md-6 server-name hidden-xs">
+        <div class="col-md-5 server-name hidden-sm hidden-xs">
           <%= TeSS::Config.site['title'].html_safe %>
         </div>
       <% end %>
