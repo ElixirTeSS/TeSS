@@ -26,7 +26,7 @@ en-AU:
   footer:
     funded_by: >
       <p>DReSA has received investments from the
-      <a href='https://www.pawsey.org.au/' target='_blank'>Pawsey SuperComputing Centre (Pawsey)</a> and the
+      <a href='https://www.pawsey.org.au/' target='_blank'>Pawsey Supercomputing Research Centre (Pawsey)</a> and the
       <a href='https://www.ardc.edu.au/' target='_blank'>Australian Research Data Commons (ARDC)</a>.</p>
       <p>Pawsey and ARDC are funded by the National Collaborative Research Infrastructure Strategy (NCRIS).</p>
     acknowledgement: >
@@ -128,7 +128,7 @@ en-AU:
         <div class="h5">Product Owners</div>
         <ul>
         <li>Anastasios Papaioannou (Intersect Australia)</li>
-        <li>Ann Backhaus (Pawsey Supercomputing Centre)</li>
+        <li>Ann Backhaus (Pawsey Supercomputing Research Centre)</li>
         <li>Kathryn Unsworth (Australian Research Data Commons - ARDC)</li>
         <li>Melissa Burke (Australian BioCommons)</li>
         </ul>
@@ -160,7 +160,7 @@ en-AU:
         </ul>
     funding: >
       <p>DReSA received investments from the
-      <a href="https://pawsey.org.au" target="_blank">Pawsey Supercomputing Centre (Pawsey)</a> and the
+      <a href="https://pawsey.org.au" target="_blank">Pawsey Supercomputing Research Centre (Pawsey)</a> and the
       <a href="https://ardc.edu.au" target="_blank">Australian Research Data Commons (ARDC)</a>.</p>
       <p> Pawsey and ARDC are funded by the National Collaborative Research Infrastructure Strategy (NCRIS).</p>
     acknowledge: >

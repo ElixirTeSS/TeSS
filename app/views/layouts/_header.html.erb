@@ -1,4 +1,4 @@
-<%# Black header %>
+<%# questionnaire header -%>
 <% if defined? TeSS::Config.questionnaire['show'] and
   !TeSS::Config.questionnaire['show'].blank? and
   TeSS::Config.questionnaire['show'] %>
@@ -13,9 +13,12 @@
   </nav>
 <% end %>
 
+<%# top header -%>
 <header class="top-header">
   <nav>
     <div class="container">
+
+      <%# Parent Organization -%>
       <% if defined? TeSS::Config.parent_org['url'] and !TeSS::Config.parent_org['url'].blank? %>
         <div class="pull-left">
           <a href=<%= TeSS::Config.parent_org['url'] %>>
@@ -23,11 +26,15 @@
           </a>
         </div>
       <% end %>
+
+      <%# Server Name -%>
       <% if defined? TeSS::Config.site['title'] and !TeSS::Config.site['title'].blank? %>
-        <div class="pull-left server-name">
+        <div class="col-md-3 server-name hidden-xs">
           <%= TeSS::Config.site['title'].html_safe %>
         </div>
       <% end %>
+
+      <%# User Options -%>
       <div class="user-options">
         <% if user_signed_in? %>
           <%= link_to current_user.username, user_path(current_user) %>
@@ -67,7 +74,7 @@
   </nav>
 </header>
 
-<%# Orange header %>
+<%# navbar header -%>
 <header class="second-header">
   <nav class="navbar navbar-default">
     <div class="container">
@@ -124,6 +131,7 @@
   </nav>
 </header>
 
+<%# announcement header -%>
 <div class="container-fluid" id="header-container">
   <% if defined? TeSS::Config.announcement_message and !TeSS::Config.announcement_message.blank? %>
     <div class="alert alert-danger fade in" id="front-page-announcement">
