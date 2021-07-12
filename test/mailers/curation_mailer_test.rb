@@ -11,7 +11,10 @@ class CurationMailerTest < ActionMailer::TestCase
     @user = users(:unverified_user)
     @material = @user.materials.create!(title: 'Unverified Material',
                                         url: 'http://example.com/shady-event',
-                                        short_description: '123')
+                                        short_description: '123',
+                                        licence: 'Fair',
+                                        doi: 'https://doi.org/10.1200/RSE.2020.123',
+                                        keywords: ['unverified' , 'user', 'material'])
   end
 
   teardown do

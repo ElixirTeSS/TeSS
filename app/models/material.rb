@@ -43,7 +43,6 @@ class Material < ApplicationRecord
       string :difficulty_level do
         DifficultyDictionary.instance.lookup_value(self.difficulty_level, 'title')
       end
-      text :difficulty_level
       string :contributors, :multiple => true
       text :contributors
       string :content_provider do
@@ -84,11 +83,11 @@ class Material < ApplicationRecord
   # e.g. "James     Bond  " => "James Bond"
   auto_strip_attributes :title, :short_description, :long_description, :url, :squish => false
 
-  validates :title, :short_description, :url, presence: true
+  validates :title, :short_description, :url, :keywords, :doi, :licence, presence: true
 
   validates :url, url: true
 
-  validates :difficulty_level, controlled_vocabulary: { dictionary: DifficultyDictionary.instance }
+  #validates :difficulty_level, controlled_vocabulary: { dictionary: DifficultyDictionary.instance }
 
   clean_array_fields(:keywords, :contributors, :authors, :target_audience, :resource_type)
 
@@ -117,7 +116,7 @@ class Material < ApplicationRecord
 
     if given_material.content_provider.present? && given_material.title.present?
       material ||= self.where(content_provider_id: given_material.content_provider_id,
-                                   title: given_material.title).last
+                              title: given_material.title).last
     end
 
     material

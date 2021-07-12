@@ -1,0 +1,15 @@
+phd:
+  title: PhD Student
+  description: 'PhD students.'
+hdr:
+  title: HDR Student
+  description: 'Higher degree by research (PhD and Masters by Research) students.'
+ecr:
+  title: Early Career Researcher
+  description: 'ECRs, including post-doctorate researchers.'
+researcher:
+  title: Researcher
+  description: ''
+support:
+  title: Research Support
+  description: ''

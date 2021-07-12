@@ -50,6 +50,9 @@ default: &default
     eligibility: 'eligibility.yml'
     event_types: 'event_types.yml'
     cost_basis: 'cost_basis.yml'
+    material_status: 'material_status.yml'
+    material_type: 'material_type.yml'
+    target_audience: 'target_audience.yml'
 
 elixir: &elixir
   site:
@@ -108,6 +111,9 @@ dresa: &dresa
     eligibility: 'eligibility_dresa.yml'
     event_types: 'event_types_dresa.yml'
     cost_basis: 'cost_basis.yml'
+    material_status: 'material_status.yml'
+    material_type: 'material_type.yml'
+    target_audience: 'target_audience.yml'
 
 development:
   <<: *default

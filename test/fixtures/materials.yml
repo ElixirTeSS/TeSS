@@ -11,7 +11,7 @@ good_material:
   content_provider: goblet
   resource_type: ['Lecture']
   licence: CC-BY-4.0
-  difficulty_level: intermediate
+  keywords: ['good']
 
 bad_material:
   title: Bad Training Material Example
@@ -21,22 +21,37 @@ bad_material:
   remote_updated_date: 2015-09-25
   remote_created_date: 2015-09-25
   content_provider: goblet
+  licence: ''
+  keywords: []
 
 biojs:
   title: BioJS
   url: http://www.mygoblet.org//training-portal/materials/biojs
   short_description: BioJS is a library of graphical components easy to reuse to represent biological information
   content_provider: goblet
+  doi: http://doi.org/10.1109/SEAA.2009.59
+  licence: CC-BY-4.0
+  keywords: ['biological','graphical']
 
 interpro:
   title: InterPro
   url: http://www.mygoblet.org//training-portal/materials/interpro-introduction
-  short_description: 'This presentation introduces the background to the InterPro database: what it is, where it came from, and what was the vision behind its creation'
+  short_description: >
+    This presentation introduces the background to the InterPro database:
+    what it is, where it came from, and what was the vision behind its creation
+  doi: http://doi.org/10.1109/SEAA.2009.59
+  licence: CC-BY-4.0
+  keywords: ['InterPro','graphical']
 
 prints:
   title: 'PRINTS: A protein family database with a difference'
   url: http://www.mygoblet.org//training-portal/materials/prints-protein-family-database-difference
-  short_description: 'A presentation designed to introduce the concept of protein family analysis and characterisation using motif-based methods, with a particular focus on protein fingerprinting.'
+  short_description: >
+    A presentation designed to introduce the concept of protein family analysis and characterisation using motif-based
+    methods, with a particular focus on protein fingerprinting.
+  doi: http://doi.org/10.1109/SEAA.2009.59
+  licence: CC-BY-4.0
+  keywords: ['protein','prints']
 
 scraper_user_material:
   title: material owned by scraper'
@@ -44,6 +59,9 @@ scraper_user_material:
   short_description: 'this is my material'
   user: scraper_user
   content_provider: goblet
+  doi: http://doi.org/10.1109/SEAA.2009.59
+  licence: CC-BY-4.0
+  keywords: ['owned','by','scraper']
 
 material_with_external_resource:
   title: External Resource Material
@@ -51,6 +69,9 @@ material_with_external_resource:
   short_description: 'this is my material'
   user: regular_user
   content_provider: goblet
+  doi: http://doi.org/10.1109/SEAA.2009.59
+  licence: CC-BY-4.0
+  keywords: ['external','resource']
 
 material_with_suggestions:
   title: Material with suggestions
@@ -58,6 +79,9 @@ material_with_suggestions:
   short_description: This is a Training Material with suggestions
   user: regular_user
   content_provider: goblet
+  doi: http://doi.org/10.1109/SEAA.2009.59
+  licence: CC-BY-4.0
+  keywords: ['suggestions']
 
 failing_material:
   title: Failing Material
@@ -65,4 +89,7 @@ failing_material:
   short_description: This is a Training Material with a dodgy URL
   user: regular_user
   content_provider: goblet
+  doi: http://doi.org/10.1109/SEAA.2009.59
+  licence: CC-BY-4.0
+  keywords: ['biological','graphical']
 

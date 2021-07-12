@@ -388,12 +388,17 @@ class ContentProvidersControllerTest < ActionController::TestCase
   test 'should not list unverified events on content provider' do
     bad_user = users(:unverified_user)
     bad_material = bad_user.materials.build(title: 'bla', url: 'http://example.com/spam', short_description: '123',
+                                            doi: 'https://doi.org/10.1080/exa.2021.011', licence: 'Fair',
+                                            keywords: %w{ bad material user },
                                             content_provider: @content_provider)
     assert bad_material.user_requires_approval?
     bad_material.save!
 
     good_user = users(:regular_user)
-    good_material = good_user.materials.build(title: 'h', url: 'http://example.com/good-stuff', short_description: '456',
+    good_material = good_user.materials.build(title: 'h', url: 'http://example.com/good-stuff',
+                                              short_description: '456', licence: 'Fair',
+                                              doi: 'https://doi.org/10.1080/exa.2021.011',
+                                              keywords: %w{ good material user },
                                               content_provider: @content_provider)
     refute good_material.user_requires_approval?
     good_material.save!

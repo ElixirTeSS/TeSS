@@ -5,7 +5,6 @@ class MaterialTest < ActiveSupport::TestCase
   #   assert true
   # end
 
-
   setup do
     @user = users(:regular_user)
     @material = Material.create!(title: 'title',
@@ -13,6 +12,9 @@ class MaterialTest < ActiveSupport::TestCase
                                  url: 'http://goog.e.com',
                                  user: @user,
                                  authors: ['horace', 'flo'],
+                                 doi: 'https://doi.org/10.1011/RSE.2019.55',
+                                 licence: 'CC-BY-NC-SA-4.0',
+                                 keywords: ['goblet'],
                                  content_provider: content_providers(:goblet))
   end
 
@@ -77,15 +79,15 @@ class MaterialTest < ActiveSupport::TestCase
   test 'validates material CV fields' do
     m = materials(:good_material)
 
-    m.difficulty_level = 'ez pz'
+    # no longer valid - m.difficulty_level = 'ez pz'
     m.licence = '__DEfinitely Not a VAlId LiCEnCe__'
 
     refute m.save
-    assert_equal 2, m.errors.count
-    assert_equal ["must be a controlled vocabulary term"], m.errors[:difficulty_level]
+    assert_equal 1, m.errors.count
+    # no longer valid - assert_equal ["must be a controlled vocabulary term"], m.errors[:difficulty_level]
     assert_equal ["must be a controlled vocabulary term"], m.errors[:licence]
 
-    m.difficulty_level = 'beginner'
+    # no longer valid - m.difficulty_level = 'beginner'
     m.licence = 'GPL-3.0'
     assert m.save
     assert_equal 0, m.errors.count
@@ -172,31 +174,36 @@ class MaterialTest < ActiveSupport::TestCase
   test 'user_requires_approval?' do
     user = users(:unverified_user)
 
-    first_material = user.materials.build(title: 'bla', url: 'http://example.com/spam', short_description: '123')
+    first_material = user.materials.build(title: 'bla', url: 'http://example.com/spam', short_description: '123',
+                                          doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['uno'])
     assert first_material.user_requires_approval?
     assert first_material.from_unverified_or_rejected?
     first_material.save!
 
-    second_material = user.materials.build(title: 'bla', url: 'http://example.com/spam2', short_description: '123')
+    second_material = user.materials.build(title: 'bla', url: 'http://example.com/spam2', short_description: '123',
+                                           doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['dos'])
     refute second_material.user_requires_approval?
   end
 
   test 'from_unverified_or_rejected?' do
     user = users(:unverified_user)
 
-    first_material = user.materials.create!(title: 'bla', url: 'http://example.com/spam', short_description: '123')
+    first_material = user.materials.create!(title: 'bla', url: 'http://example.com/spam', short_description: '123',
+                                            doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['uno'])
     assert first_material.from_unverified_or_rejected?
 
     user.role = Role.rejected
     user.save!
 
-    second_material = user.materials.create(title: 'bla', url: 'http://example.com/spam2', short_description: '123')
+    second_material = user.materials.create(title: 'bla', url: 'http://example.com/spam2', short_description: '123',
+                                            doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['dos'])
     assert second_material.from_unverified_or_rejected?
 
     user.role = Role.approved
     user.save!
 
-    third_material = user.materials.create(title: 'bla', url: 'http://example.com/spam3', short_description: '123')
+    third_material = user.materials.create(title: 'bla', url: 'http://example.com/spam3', short_description: '123',
+                                           doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['tres'])
     refute third_material.from_unverified_or_rejected?
   end
 
@@ -248,12 +255,17 @@ class MaterialTest < ActiveSupport::TestCase
 
   test 'verified users scope' do
     bad_user = users(:unverified_user)
-    bad_material = bad_user.materials.build(title: 'bla', url: 'http://example.com/spam', short_description: 'vvv')
+    bad_material = bad_user.materials.build(title: 'bla', url: 'http://example.com/spam', short_description: 'vvv',
+                                            doi: 'https://doi.org/10.1111/123.1235',
+                                            licence: 'Fair', keywords: %w{ key words } )
     assert bad_material.user_requires_approval?
     bad_material.save!
 
     good_user = users(:regular_user)
-    good_material = good_user.materials.build(title: 'h', url: 'http://example.com/good-stuff', short_description: 'vvv')
+    good_material = good_user.materials.build(title: 'h', url: 'http://example.com/good-stuff',
+                                              short_description: 'vvv',
+                                              doi: 'https://doi.org/10.1111/123.1235',
+                                              licence: 'Fair', keywords: %w{ key words })
     refute good_material.user_requires_approval?
     good_material.save!
 
@@ -270,6 +282,9 @@ class MaterialTest < ActiveSupport::TestCase
     reserved_word_material = Material.new(title: 'edit',
                                           short_description: 'short desc',
                                           url: 'http://tess.elixir-europe.org',
+                                          doi: 'https://doi.org/10.1111/123.1235',
+                                          licence: 'Fair',
+                                          keywords: ['uno'],
                                           user: @user)
     refute reserved_word_material.save
 
@@ -277,12 +292,18 @@ class MaterialTest < ActiveSupport::TestCase
     material = Material.create!(title: '123',
                                 short_description: 'short desc',
                                 url: 'http://tess.elixir-europe.org',
+                                doi: 'https://doi.org/10.1111/123.1235',
+                                licence: 'Fair',
+                                keywords: ['uno'],
                                 user: @user)
     refute_match(/\A\d+\Z/, material.friendly_id)
 
     material = Material.create!(title: '第9回研究会開催案内',
                                 short_description: 'short desc',
                                 url: 'http://tess.elixir-europe.org',
+                                doi: 'https://doi.org/10.1111/123.1235',
+                                licence: 'Fair',
+                                keywords: ['uno'],
                                 user: @user)
     refute_match(/\A\d+\Z/, material.friendly_id)
   end

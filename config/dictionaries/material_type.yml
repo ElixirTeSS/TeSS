@@ -1,0 +1,36 @@
+video:
+  title: Video Lecture
+  description: ''
+tutorial:
+  title: Tutorial
+  description: ''
+presentation:
+  title: Presentation
+  description: ''
+handout:
+  title: Handout
+  description: ''
+case-study:
+  title: Case Study
+  description: ''
+quiz:
+  title: Quiz
+  description: ''
+infographic:
+  title: Infographic
+  description: ''
+guide:
+  title: Guide
+  description: ''
+assessment:
+  title: Assessment Item
+  description: ''
+activity:
+  title: Learning Activity
+  description: ''
+lesson:
+  title: Lesson
+  description: ''
+rubric:
+  title: Rubric/Scoring Guide
+  description: ''
