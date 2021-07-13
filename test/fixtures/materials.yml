@@ -3,7 +3,7 @@
 good_material:
   title: Training Material Example
   url: http://training.com/trainers/1359023
-  short_description: This is a Training Material produced by an example organization
+  long_description: This is a Training Material produced by an example organization
   doi: http://dx.doi.ac.uk/2q3093032
   remote_updated_date: 2015-09-25
   remote_created_date: 2015-09-25
@@ -12,84 +12,93 @@ good_material:
   resource_type: ['Lecture']
   licence: CC-BY-4.0
   keywords: ['good']
+  contact: 'default contact'
 
 bad_material:
   title: Bad Training Material Example
   url: Not really a valid URL.com
-  short_description: THis is the short descriptiopn
+  long_description: THis is the short descriptiopn
   doi: not really a doi.
   remote_updated_date: 2015-09-25
   remote_created_date: 2015-09-25
   content_provider: goblet
   licence: ''
   keywords: []
+  contact: ''
 
 biojs:
   title: BioJS
   url: http://www.mygoblet.org//training-portal/materials/biojs
-  short_description: BioJS is a library of graphical components easy to reuse to represent biological information
+  long_description: BioJS is a library of graphical components easy to reuse to represent biological information
   content_provider: goblet
   doi: http://doi.org/10.1109/SEAA.2009.59
   licence: CC-BY-4.0
   keywords: ['biological','graphical']
+  contact: 'BioJS support'
 
 interpro:
   title: InterPro
   url: http://www.mygoblet.org//training-portal/materials/interpro-introduction
-  short_description: >
+  long_description: >
     This presentation introduces the background to the InterPro database:
     what it is, where it came from, and what was the vision behind its creation
   doi: http://doi.org/10.1109/SEAA.2009.59
   licence: CC-BY-4.0
   keywords: ['InterPro','graphical']
+  contact: 'InterPro support'
 
 prints:
   title: 'PRINTS: A protein family database with a difference'
   url: http://www.mygoblet.org//training-portal/materials/prints-protein-family-database-difference
-  short_description: >
+  long_description: >
     A presentation designed to introduce the concept of protein family analysis and characterisation using motif-based
     methods, with a particular focus on protein fingerprinting.
   doi: http://doi.org/10.1109/SEAA.2009.59
   licence: CC-BY-4.0
   keywords: ['protein','prints']
+  contact: 'prints'
 
 scraper_user_material:
   title: material owned by scraper'
   url: http://myurl.com
-  short_description: 'this is my material'
+  long_description: 'this is my material'
   user: scraper_user
   content_provider: goblet
   doi: http://doi.org/10.1109/SEAA.2009.59
   licence: CC-BY-4.0
   keywords: ['owned','by','scraper']
+  contact: 'scraper'
 
 material_with_external_resource:
   title: External Resource Material
   url: http://myurl.com/123
-  short_description: 'this is my material'
+  long_description: 'this is my material'
   user: regular_user
   content_provider: goblet
   doi: http://doi.org/10.1109/SEAA.2009.59
   licence: CC-BY-4.0
   keywords: ['external','resource']
+  contact: 'try someone else'
 
 material_with_suggestions:
   title: Material with suggestions
   url: http://training.com/suggestions
-  short_description: This is a Training Material with suggestions
+  long_description: This is a Training Material with suggestions
   user: regular_user
   content_provider: goblet
   doi: http://doi.org/10.1109/SEAA.2009.59
   licence: CC-BY-4.0
   keywords: ['suggestions']
+  contact: 'suggested contact'
 
 failing_material:
   title: Failing Material
   url: http://training.com/404
-  short_description: This is a Training Material with a dodgy URL
+  long_description: This is a Training Material with a dodgy URL
   user: regular_user
   content_provider: goblet
   doi: http://doi.org/10.1109/SEAA.2009.59
   licence: CC-BY-4.0
   keywords: ['biological','graphical']
+  contact: ''
 

@@ -280,6 +280,7 @@ module ApplicationHelper
   end
 
   def datetime_picker(form, field, options)
+    #puts "datetime_picker options: #{options.to_s}"
     content_tag(:div, class: 'input-group date', data: { datetimepicker: true }) do
       content_tag(:span, class: 'input-group-addon', title: 'Click to display calendar') do
         content_tag(:i, '', class: 'glyphicon glyphicon-calendar')

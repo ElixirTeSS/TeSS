@@ -52,7 +52,6 @@ class MaterialsController < ApplicationController
     if @material
       respond_to do |format|
         format.html { redirect_to @material }
-        #format.json { render json: @material }
         format.json { render :show, location: @material }
       end
     else
@@ -138,7 +137,7 @@ class MaterialsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def material_params
-    params.require(:material).permit(:id, :title, :url, :short_description, :long_description, :doi, :licence,
+    params.require(:material).permit(:id, :title, :url, :contact, :long_description, :doi, :licence,
                                      :last_scraped, :scraper_record, :remote_created_date, :remote_updated_date,
                                      :content_provider_id,
                                      { :contributors => [] }, { :authors => [] }, { :target_audience => [] },

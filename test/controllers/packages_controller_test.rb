@@ -11,7 +11,7 @@ class PackagesControllerTest < ActionController::TestCase
     #@package.save!
     @updated_package = {
         title: 'New title',
-        short_description: 'New description'
+        description: 'New description'
     }
   end
   #INDEX TESTS
@@ -115,7 +115,6 @@ class PackagesControllerTest < ActionController::TestCase
   #UPDATE TEST
   test 'should update package' do
     sign_in @package.user
-    # patch :update, params: { d: @package, package: { doi: @package.doi,  remote_created_date: @package.remote_created_date,  remote_updated_date: @package.remote_updated_date, short_description: @package.short_description, title: @package.title, url: @package.url } }
     patch :update, params: { id: @package, package: @updated_package }
     assert_redirected_to package_path(assigns(:package))
   end

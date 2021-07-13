@@ -12,7 +12,7 @@ class EventsControllerTest < ActionController::TestCase
     @event.save!
     @updated_event = {
       title: 'New title',
-      short_description: 'New description'
+      description: 'New description'
     }
     @failing_event = events(:failing_event)
     @failing_event.title = 'Fail!'
@@ -246,7 +246,6 @@ class EventsControllerTest < ActionController::TestCase
   #UPDATE TEST
   test 'should update event' do
     sign_in @event.user
-    # patch :update, id: @event, event: { doi: @event.doi,  remote_created_date: @event.remote_created_date,  remote_updated_date: @event.remote_updated_date, short_description: @event.short_description, title: @event.title, url: @event.url }
     patch :update, params: { id: @event, event: @updated_event }
     assert_redirected_to event_path(assigns(:event))
   end

@@ -8,13 +8,14 @@ class MaterialTest < ActiveSupport::TestCase
   setup do
     @user = users(:regular_user)
     @material = Material.create!(title: 'title',
-                                 short_description: 'short desc',
+                                 long_description: 'short desc',
                                  url: 'http://goog.e.com',
                                  user: @user,
                                  authors: ['horace', 'flo'],
                                  doi: 'https://doi.org/10.1011/RSE.2019.55',
                                  licence: 'CC-BY-NC-SA-4.0',
                                  keywords: ['goblet'],
+                                 contact: 'default contact',
                                  content_provider: content_providers(:goblet))
   end
 
@@ -174,36 +175,41 @@ class MaterialTest < ActiveSupport::TestCase
   test 'user_requires_approval?' do
     user = users(:unverified_user)
 
-    first_material = user.materials.build(title: 'bla', url: 'http://example.com/spam', short_description: '123',
-                                          doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['uno'])
+    first_material = user.materials.build(title: 'bla', url: 'http://example.com/spam', long_description: '123',
+                                          doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['uno'],
+                                          contact: 'default contact')
     assert first_material.user_requires_approval?
     assert first_material.from_unverified_or_rejected?
     first_material.save!
 
-    second_material = user.materials.build(title: 'bla', url: 'http://example.com/spam2', short_description: '123',
-                                           doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['dos'])
+    second_material = user.materials.build(title: 'bla', url: 'http://example.com/spam2', long_description: '123',
+                                           doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['dos'],
+                                           contact: 'default contact')
     refute second_material.user_requires_approval?
   end
 
   test 'from_unverified_or_rejected?' do
     user = users(:unverified_user)
 
-    first_material = user.materials.create!(title: 'bla', url: 'http://example.com/spam', short_description: '123',
-                                            doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['uno'])
+    first_material = user.materials.create!(title: 'bla', url: 'http://example.com/spam', long_description: '123',
+                                            doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['uno'],
+                                            contact: 'default contact')
     assert first_material.from_unverified_or_rejected?
 
     user.role = Role.rejected
     user.save!
 
-    second_material = user.materials.create(title: 'bla', url: 'http://example.com/spam2', short_description: '123',
-                                            doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['dos'])
+    second_material = user.materials.create(title: 'bla', url: 'http://example.com/spam2', long_description: '123',
+                                            doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['dos'],
+                                            contact: 'default contact')
     assert second_material.from_unverified_or_rejected?
 
     user.role = Role.approved
     user.save!
 
-    third_material = user.materials.create(title: 'bla', url: 'http://example.com/spam3', short_description: '123',
-                                           doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['tres'])
+    third_material = user.materials.create(title: 'bla', url: 'http://example.com/spam3', long_description: '123',
+                                           doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['tres'],
+                                           contact: 'default contact')
     refute third_material.from_unverified_or_rejected?
   end
 
@@ -255,55 +261,58 @@ class MaterialTest < ActiveSupport::TestCase
 
   test 'verified users scope' do
     bad_user = users(:unverified_user)
-    bad_material = bad_user.materials.build(title: 'bla', url: 'http://example.com/spam', short_description: 'vvv',
-                                            doi: 'https://doi.org/10.1111/123.1235',
-                                            licence: 'Fair', keywords: %w{ key words } )
+    bad_material = bad_user.materials.build(title: 'bla', url: 'http://example.com/spam', long_description: 'vvv',
+                                            doi: 'https://doi.org/10.1111/123.1235', contact: 'default contact',
+                                            licence: 'Fair', keywords: %w{ key words })
     assert bad_material.user_requires_approval?
     bad_material.save!
 
     good_user = users(:regular_user)
     good_material = good_user.materials.build(title: 'h', url: 'http://example.com/good-stuff',
-                                              short_description: 'vvv',
+                                              long_description: 'vvv', contact: 'default contact',
                                               doi: 'https://doi.org/10.1111/123.1235',
                                               licence: 'Fair', keywords: %w{ key words })
     refute good_material.user_requires_approval?
     good_material.save!
 
     # Unscoped
-    assert_includes Material.where(short_description: 'vvv').to_a, good_material
-    assert_includes Material.where(short_description: 'vvv').to_a, bad_material
+    assert_includes Material.where(long_description: 'vvv').to_a, good_material
+    assert_includes Material.where(long_description: 'vvv').to_a, bad_material
     # Scoped
-    assert_includes Material.from_verified_users.where(short_description: 'vvv').to_a, good_material
-    refute_includes Material.from_verified_users.where(short_description: 'vvv').to_a, bad_material
+    assert_includes Material.from_verified_users.where(long_description: 'vvv').to_a, good_material
+    refute_includes Material.from_verified_users.where(long_description: 'vvv').to_a, bad_material
   end
 
   test 'creates sensible friendly ID' do
     # Reserved word throws error
     reserved_word_material = Material.new(title: 'edit',
-                                          short_description: 'short desc',
+                                          long_description: 'long desc',
                                           url: 'http://tess.elixir-europe.org',
                                           doi: 'https://doi.org/10.1111/123.1235',
                                           licence: 'Fair',
                                           keywords: ['uno'],
+                                          contact: 'default contact',
                                           user: @user)
     refute reserved_word_material.save
 
     # Numeric slug generates UUID slug
     material = Material.create!(title: '123',
-                                short_description: 'short desc',
+                                long_description: 'short desc',
                                 url: 'http://tess.elixir-europe.org',
                                 doi: 'https://doi.org/10.1111/123.1235',
                                 licence: 'Fair',
                                 keywords: ['uno'],
+                                contact: 'default contact',
                                 user: @user)
     refute_match(/\A\d+\Z/, material.friendly_id)
 
     material = Material.create!(title: '第9回研究会開催案内',
-                                short_description: 'short desc',
+                                long_description: 'short desc',
                                 url: 'http://tess.elixir-europe.org',
                                 doi: 'https://doi.org/10.1111/123.1235',
                                 licence: 'Fair',
                                 keywords: ['uno'],
+                                contact: 'default contact',
                                 user: @user)
     refute_match(/\A\d+\Z/, material.friendly_id)
   end
