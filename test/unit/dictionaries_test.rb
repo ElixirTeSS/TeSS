@@ -12,6 +12,76 @@ class DictionariesTest < ActiveSupport::TestCase
     reset_dictionaries
   end
 
+  test "check target audience dictionary" do
+    dic = TargetAudienceDictionary.instance
+    assert dic.is_a?(TargetAudienceDictionary)
+    assert_not_nil dic, 'target audience dictionary should exist'
+
+    key = 'dummy'
+    assert_nil dic.lookup(key), "#{key}: invalid key was found?"
+    key = 'researcher'
+    assert_not_nil dic.lookup(key), "#{key}: key not found"
+    key = 'phd'
+    assert_not_nil dic.lookup(key), "#{key}: key not found"
+    assert_equal 'PhD Student', dic.lookup(key)['title'], "#{key}: title not matched"
+    key = 'ecr'
+    assert_not_nil dic.lookup(key), "#{key}: key not found"
+    assert_equal 'ECRs, including post-doctorate researchers.', dic.lookup(key)['description'],
+                 "#{key}: description not matched"
+  end
+
+  test "check material type dictionary" do
+    dic = MaterialTypeDictionary.instance
+    assert dic.is_a?(MaterialTypeDictionary)
+    assert_not_nil dic, 'material type dictionary should exist'
+
+    key = 'dummy'
+    assert_nil dic.lookup(key), "#{key}: invalid key was found?"
+    key = 'presentation'
+    assert_not_nil dic.lookup(key), "#{key}: key not found"
+    key = 'activity'
+    assert_not_nil dic.lookup(key), "#{key}: key not found"
+    assert_equal 'Learning Activity', dic.lookup(key)['title'], "#{key}: title not matched"
+    key = 'rubric'
+    assert_not_nil dic.lookup(key), "#{key}: key not found"
+    assert_equal '', dic.lookup(key)['description'], "#{key}: description not matched"
+  end
+
+  test "check material status dictionary" do
+    dic = MaterialStatusDictionary.instance
+    assert dic.is_a?(MaterialStatusDictionary)
+    assert_not_nil dic, 'material status dictionary should exist'
+
+    key = 'dummy'
+    assert_nil dic.lookup(key), "#{key}: invalid key was found?"
+    key = 'active'
+    assert_not_nil dic.lookup(key), "#{key}: key not found"
+    key = 'development'
+    assert_not_nil dic.lookup(key), "#{key}: key not found"
+    assert_equal 'Under development', dic.lookup(key)['title'], "#{key}: title not matched"
+    key = 'archived'
+    assert_not_nil dic.lookup(key), "#{key}: key not found"
+    assert_equal 'The material has been archived.', dic.lookup(key)['description'], "#{key}: description not matched"
+  end
+
+  test "check cost basis dictionary" do
+    dic = CostBasisDictionary.instance
+    assert dic.is_a?(CostBasisDictionary)
+    assert_not_nil dic, 'cost basis dictionary should exist'
+
+    key = 'dummy'
+    assert_nil dic.lookup(key), "#{key}: invalid key was found?"
+    key = 'free'
+    assert_not_nil dic.lookup(key), "#{key}: key not found"
+    key = 'hosts'
+    assert_not_nil dic.lookup(key), "#{key}: key not found"
+    assert_equal 'Free to Hosts and Members', dic.lookup(key)['title'], "#{key}: title not matched"
+    key = 'charge'
+    assert_not_nil dic.lookup(key), "#{key}: key not found"
+    assert_equal 'This event has an associated charge for each participant.', dic.lookup(key)['description'],
+                 "#{key}: description not matched"
+  end
+
   test "check default difficulty dictionary" do
     dic = DifficultyDictionary.instance
     assert dic.is_a?(DifficultyDictionary)
@@ -157,9 +227,17 @@ class DictionariesTest < ActiveSupport::TestCase
     @dictionaries['difficulty'] = DifficultyDictionary::DEFAULT_FILE
     @dictionaries['eligibility'] = EligibilityDictionary::DEFAULT_FILE
     @dictionaries['event_types'] = EventTypeDictionary::DEFAULT_FILE
+    @dictionaries['cost_basis'] = CostBasisDictionary::DEFAULT_FILE
+    @dictionaries['material_type'] = MaterialTypeDictionary::DEFAULT_FILE
+    @dictionaries['material_status'] = MaterialStatusDictionary::DEFAULT_FILE
+    @dictionaries['target_audience'] = TargetAudienceDictionary::DEFAULT_FILE
     DifficultyDictionary.instance.reload
     EligibilityDictionary.instance.reload
     EventTypeDictionary.instance.reload
+    CostBasisDictionary.instance.reload
+    MaterialTypeDictionary.instance.reload
+    MaterialStatusDictionary.instance.reload
+    TargetAudienceDictionary.instance.reload
   end
 
 end
