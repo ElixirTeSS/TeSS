@@ -289,6 +289,16 @@ module ApplicationHelper
     end
   end
 
+  def date_picker(form, field, options)
+    #puts "date_picker options: #{options.to_s}"
+    content_tag(:div, class: 'input-group date', data: { datepicker: true }) do
+      content_tag(:span, class: 'input-group-addon', title: 'Click to display calendar') do
+        content_tag(:i, '', class: 'glyphicon glyphicon-calendar')
+      end +
+        form.text_field(field, class: 'form-control', title: options[:title])
+    end
+  end
+
   # Format an AR collection, or array, into an array of pairs that the common/dropdown partial expects
   def format_for_dropdown(collection)
     collection.map { |o| [o.title, o.id, o.description] }

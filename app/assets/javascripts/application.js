@@ -105,6 +105,12 @@ document.addEventListener("turbolinks:load", function() {
         sideBySide: true
     });
 
+    // Date pickers
+    $("[data-datepicker]").datetimepicker({
+        format: "YYYY-MM-DD"
+    });
+
+
     // On events form, if start date > end date, update the end date.
     $("#event_form").on("dp.change", function (e) {
         // Really awkward way of doing it

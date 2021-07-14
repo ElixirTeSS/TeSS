@@ -62,9 +62,9 @@
               field_lock: true %>
 
   <!-- Field: Dates -->
-  <%= f.input :date_created, as: :datetime_picker, field_lock: true, input_html: { title: t('materials.hints.date_created') } %>
-  <%= f.input :date_modified, as: :datetime_picker, field_lock: true, input_html: { title: t('materials.hints.date_modified') } %>
-  <%= f.input :date_published, as: :datetime_picker, field_lock: true, input_html: { title: t('materials.hints.date_published') } %>
+  <%= f.input :date_created, as: :date_picker, field_lock: true, input_html: { title: t('materials.hints.date_created') } %>
+  <%= f.input :date_modified, as: :date_picker, field_lock: true, input_html: { title: t('materials.hints.date_modified') } %>
+  <%= f.input :date_published, as: :date_picker, field_lock: true, input_html: { title: t('materials.hints.date_published') } %>
 
   <!-- Field: Subsets -->
   <%= f.multi_input :subsets, title: t('materials.hints.subsets') %>
