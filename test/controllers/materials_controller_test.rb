@@ -197,7 +197,7 @@ class MaterialsControllerTest < ActionController::TestCase
 
   #CREATE TEST
   test 'should create material for user' do
-    sign_in users(:regular_user)
+     sign_in users(:regular_user)
     assert_difference('Material.count') do
       post :create, params: {
         material: {
@@ -210,10 +210,102 @@ class MaterialsControllerTest < ActionController::TestCase
           licence: @material.licence,
           keywords: @material.keywords,
           contact: @material.contact
+
         }
       }
     end
     assert_redirected_to material_path(assigns(:material))
+    @material.reload
+  end
+
+  test 'should create material with all optional attributes' do
+    # reference data
+    test_title = 'test of create with optionals via post'
+    test_material = materials(:material_with_optionals)
+    assert_not_nil test_material, 'missing reference material'
+
+    sign_in users(:regular_user)
+    assert_difference('Material.count') do
+      post :create, params: {
+        material: {
+
+          # required attributes
+          title: test_title,
+          url: test_material.url,
+          long_description: test_material.long_description,
+          doi: test_material.doi,
+          licence: test_material.licence,
+          keywords: test_material.keywords,
+          contact: test_material.contact,
+
+          # optional attributes
+          content_provider: test_material.content_provider,
+          events: test_material.events,
+          target_audience: test_material.target_audience,
+          resource_type: test_material.resource_type,
+          duration: test_material.duration,
+          version: test_material.version,
+          status: test_material.status,
+          date_created: test_material.date_created,
+          date_modified: test_material.date_modified,
+          date_published: test_material.date_published,
+          subsets: test_material.subsets,
+          authors: test_material.authors,
+          contributors: test_material.contributors,
+          prerequisites: test_material.prerequisites,
+          syllabus: test_material.syllabus,
+          learning_objectives: test_material.learning_objectives
+        }
+      }
+    end
+    assert_redirected_to material_path(assigns(:material))
+
+    # check response
+    post :check_exists, params: {
+      format: :json,
+      material: { title: test_title,
+                  url: test_material.url,
+                  content_provider_id: test_material.content_provider_id
+      }
+    }
+    assert_response :success
+
+    # required attributes
+    assert_equal test_material.title, JSON.parse(response.body)['title'], 'title not matched.'
+    assert_equal test_material.url, JSON.parse(response.body)['url'], 'description not matched.'
+    assert_equal test_material.long_description, JSON.parse(response.body)['long_description'], 'description not matched.'
+    assert_equal test_material.doi, JSON.parse(response.body)['doi'], 'doi not matched.'
+    assert_equal test_material.licence, JSON.parse(response.body)['licence'], 'licence not matched.'
+    assert_equal test_material.contact, JSON.parse(response.body)['contact'], 'contact not matched.'
+    assert_equal test_material.keywords, JSON.parse(response.body)['keywords'], 'keywords not matched'
+
+    #optional attributes
+    assert_equal test_material.content_provider_id, JSON.parse(response.body)['content_provider_id'],
+                 'provider not matched'
+    assert_equal test_material.resource_type, JSON.parse(response.body)['resource_type'],
+                 'resource_type not matched'
+    assert_equal test_material.status, JSON.parse(response.body)['status'], 'status not matched'
+    assert_equal test_material.version, JSON.parse(response.body)['version'], 'version not matched'
+    assert_equal test_material.duration, JSON.parse(response.body)['duration'], 'duration not matched'
+    # assert_equal test_material.events, JSON.parse(response.body)['events'], 'events not matched'
+    assert_equal test_material.target_audience, JSON.parse(response.body)['target_audience'], 'target audience not matched'
+    assert_equal test_material.authors, JSON.parse(response.body)['authors'], 'authors not matched'
+    assert_equal test_material.contributors, JSON.parse(response.body)['contributors'], 'contributors not matched'
+    assert_equal test_material.subsets, JSON.parse(response.body)['subsets'], 'subsets not matched'
+    assert_equal test_material.prerequisites, JSON.parse(response.body)['prerequisites'], 'prerequisites not matched'
+    assert_equal test_material.syllabus, JSON.parse(response.body)['syllabus'], 'syllabus not matched'
+    assert_equal test_material.learning_objectives, JSON.parse(response.body)['learning_objectives'],
+                 'learning objectives not matched'
+
+    assert_equal test_material.date_created.to_s("%Y-%m-%d"), JSON.parse(response.body)['date_created'],
+                 'date created not matched'
+    assert_equal test_material.date_modified.to_s("%Y-%m-%d"), JSON.parse(response.body)['date_modified'],
+                 'date modified not matched'
+    assert_equal test_material.date_published.to_s("%Y-%m-%d"), JSON.parse(response.body)['date_published'],
+                 'date published not matched'
+
+
+    # reload
     @material.reload
   end
 

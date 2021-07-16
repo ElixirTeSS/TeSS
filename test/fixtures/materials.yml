@@ -1,40 +1,40 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 good_material:
+  user: regular_user
   title: Training Material Example
   url: http://training.com/trainers/1359023
   long_description: This is a Training Material produced by an example organization
   doi: http://dx.doi.ac.uk/2q3093032
-  remote_updated_date: 2015-09-25
-  remote_created_date: 2015-09-25
-  user: regular_user
-  content_provider: goblet
   resource_type: ['Lecture']
   licence: CC-BY-4.0
-  keywords: ['good']
   contact: 'default contact'
+  keywords: ['good']
+  content_provider: goblet
+  remote_updated_date: 2015-09-25
+  remote_created_date: 2015-09-25
 
 bad_material:
   title: Bad Training Material Example
   url: Not really a valid URL.com
   long_description: THis is the short descriptiopn
   doi: not really a doi.
-  remote_updated_date: 2015-09-25
-  remote_created_date: 2015-09-25
-  content_provider: goblet
   licence: ''
   keywords: []
   contact: ''
+  content_provider: goblet
+  remote_updated_date: 2015-09-25
+  remote_created_date: 2015-09-25
 
 biojs:
   title: BioJS
   url: http://www.mygoblet.org//training-portal/materials/biojs
   long_description: BioJS is a library of graphical components easy to reuse to represent biological information
-  content_provider: goblet
   doi: http://doi.org/10.1109/SEAA.2009.59
   licence: CC-BY-4.0
-  keywords: ['biological','graphical']
   contact: 'BioJS support'
+  keywords: ['biological','graphical']
+  content_provider: goblet
 
 interpro:
   title: InterPro
@@ -44,8 +44,8 @@ interpro:
     what it is, where it came from, and what was the vision behind its creation
   doi: http://doi.org/10.1109/SEAA.2009.59
   licence: CC-BY-4.0
-  keywords: ['InterPro','graphical']
   contact: 'InterPro support'
+  keywords: ['InterPro','graphical']
 
 prints:
   title: 'PRINTS: A protein family database with a difference'
@@ -55,50 +55,78 @@ prints:
     methods, with a particular focus on protein fingerprinting.
   doi: http://doi.org/10.1109/SEAA.2009.59
   licence: CC-BY-4.0
-  keywords: ['protein','prints']
   contact: 'prints'
+  keywords: ['protein','prints']
 
 scraper_user_material:
+  user: scraper_user
   title: material owned by scraper'
   url: http://myurl.com
   long_description: 'this is my material'
-  user: scraper_user
-  content_provider: goblet
   doi: http://doi.org/10.1109/SEAA.2009.59
   licence: CC-BY-4.0
-  keywords: ['owned','by','scraper']
   contact: 'scraper'
+  keywords: ['owned','by','scraper']
+  content_provider: goblet
 
 material_with_external_resource:
+  user: regular_user
   title: External Resource Material
   url: http://myurl.com/123
   long_description: 'this is my material'
-  user: regular_user
-  content_provider: goblet
   doi: http://doi.org/10.1109/SEAA.2009.59
   licence: CC-BY-4.0
-  keywords: ['external','resource']
   contact: 'try someone else'
+  keywords: ['external','resource']
+  content_provider: goblet
 
 material_with_suggestions:
+  user: regular_user
   title: Material with suggestions
   url: http://training.com/suggestions
   long_description: This is a Training Material with suggestions
-  user: regular_user
-  content_provider: goblet
   doi: http://doi.org/10.1109/SEAA.2009.59
   licence: CC-BY-4.0
-  keywords: ['suggestions']
   contact: 'suggested contact'
+  keywords: ['suggestions']
+  content_provider: goblet
 
 failing_material:
+  user: regular_user
   title: Failing Material
   url: http://training.com/404
   long_description: This is a Training Material with a dodgy URL
-  user: regular_user
-  content_provider: goblet
   doi: http://doi.org/10.1109/SEAA.2009.59
   licence: CC-BY-4.0
-  keywords: ['biological','graphical']
   contact: ''
+  keywords: ['biological','graphical']
+  content_provider: goblet
+
+material_with_optionals:
+  user: regular_user
+  title: Training Material with All Optionals
+  url: https://training.com/material/023
+  long_description: This is a Training Material produced by an example organization
+  doi: http://dx.doi.ac.uk/2q3093032
+  licence: CC-BY-4.0
+  contact: 'default contact'
+  keywords: ['material','with','optionals']
+  content_provider: goblet
+  events: [ kilburn, two ]
+  target_audience: [ 'HDR', 'ECR' ]
+  resource_type: ['Quiz', 'Presentation' ]
+  duration: '10 minutes'
+  version: 1.0.3
+  status: development
+  date_created: 2021-07-12
+  date_modified: 2021-07-13
+  date_published: 2021-07-14
+  subsets: [ 'https://training.com/material/023/part-one', 'https://training.com/material/023/part-two' ]
+  authors: [ 'Nicolai Tesla', 'Thomas Edison' ]
+  contributors: [ 'Dr Dre' ]
+  prerequisites: 'None'
+  syllabus: '1. Overview\  2. The main part\  3. Summing up'
+  learning_objectives: 'Understand the new materials model'
+
+
 

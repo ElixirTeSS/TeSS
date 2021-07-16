@@ -1,9 +1,6 @@
 require 'test_helper'
 
 class MaterialTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
 
   setup do
     @user = users(:regular_user)
@@ -17,6 +14,115 @@ class MaterialTest < ActiveSupport::TestCase
                                  keywords: ['goblet'],
                                  contact: 'default contact',
                                  content_provider: content_providers(:goblet))
+  end
+
+  test 'should update optionals' do
+    m = materials(:material_with_optionals)
+
+    # check original values
+    assert_not_nil m.content_provider, 'old content provider is nil.'
+    assert_equal 'Goblet', m.content_provider.title, 'old content provider not matched.'
+
+    assert_not_nil m.events, 'old events is nil.'
+    assert_equal 2, m.events.size, 'old events size not matched.'
+    assert_equal events(:kilburn), m.events[1], 'old events[1] not matched.' # events sorted by title?
+
+    assert_not_nil m.target_audience, 'old target audience is nil.'
+    assert_equal 2, m.target_audience.size, 'old target audience size not matched.'
+    assert_equal 'ECR', m.target_audience[1], 'old target audience[1] not matched.'
+
+    assert_not_nil m.resource_type, 'old resource type is nil.'
+    assert_equal 2, m.resource_type.size, 'old resource type size not matched.'
+    assert_equal 'Quiz', m.resource_type[0], 'old resource type[0] not matched.'
+
+    assert_equal '10 minutes', m.duration, 'old duration not matched.'
+    assert_equal '1.0.3', m.version, 'old version not matched.'
+    assert_equal 'development', m.status, 'old status not matched.'
+    assert_equal '2021-07-12', m.date_created.to_s('%Y-%m-%d'), 'old date created not matched.'
+    assert_equal '2021-07-13', m.date_modified.to_s('%Y-%m-%d'), 'old date modified not matched.'
+    assert_equal '2021-07-14', m.date_published.to_s('%Y-%m-%d'), 'old date published not matched.'
+
+    assert_not_nil m.subsets, 'old subsets is nil.'
+    assert_equal 2, m.subsets.size, 'old subsets size not matched.'
+    assert_equal "#{m.url}/part-two", m.subsets[1], 'old subsets[1] not matched.'
+
+    assert_not_nil m.authors, 'old authors is nil.'
+    assert_equal 2, m.authors.size, 'old authors size not matched.'
+    assert_equal 'Thomas Edison', m.authors[1], 'old authors[1] not matched.'
+
+    assert_not_nil m.contributors, 'old contributors is nil.'
+    assert_equal 1, m.contributors.size, 'old contributors size not matched.'
+    assert_equal 'Dr Dre', m.contributors[0], 'old contributors[0] not matched.'
+
+    assert_equal 'None', m.prerequisites, 'old prerequisites not matched.'
+    assert_equal '1. Overview\  2. The main part\  3. Summing up', m.syllabus, 'old syllabus not matched.'
+    assert_equal 'Understand the new materials model', m.learning_objectives, 'old learning objectives not matched.'
+
+    # update optionals
+    m.content_provider = content_providers(:iann)
+    m.events = [ events(:two) ]
+    m.target_audience = [ 'researcher' ]
+    m.resource_type = [ 'infographic' ]
+    m.duration = '1 hour'
+    m.version = '1.0.4'
+    m.status = 'active'
+    m.date_created = '2021-06-12'
+    m.date_modified = '2021-06-13'
+    m.date_published = '2021-06-14'
+    m.subsets = [ ]
+    m.authors = [ 'Nikolai Tesla' ]
+    m.contributors = [ 'Prof. Stephen Hawking' ]
+    m.prerequisites = 'Bring your enthusiasm'
+    m.syllabus = "1. Overview\  2. The main part\  3. Summary"
+    m.learning_objectives = "- Understand the new materials model\  - Apply the new material model"
+
+    # check update
+    assert m.valid?
+    assert m.save
+    assert_equal 0, m.errors.count
+
+    # get updated
+    m2 = Material.find(m.id)
+    assert_not_nil m2, 'updated material not found.'
+
+    # check updated values
+    assert_not_nil m2.content_provider, 'new content provider is nil.'
+    assert_equal 'iAnn', m2.content_provider.title, 'new content provider not matched.'
+
+    assert_not_nil m2.events, 'new events is nil.'
+    assert_equal 1, m2.events.size, 'new events size not matched.'
+    assert_equal events(:two), m2.events[0], 'new events[0] not matched.'
+
+    assert_not_nil m2.target_audience, 'new target audience is nil.'
+    assert_equal 1, m2.target_audience.size, 'new target audience size not matched.'
+    assert_equal 'researcher', m2.target_audience[0], 'new target audience[0] not matched.'
+
+    assert_not_nil m2.resource_type, 'new resource type is nil.'
+    assert_equal 1, m2.resource_type.size, 'new resource type size not matched.'
+    assert_equal 'infographic', m2.resource_type[0], 'new resource type[0] not matched.'
+
+    assert_equal '1 hour', m2.duration, 'new duration not matched.'
+    assert_equal '1.0.4', m2.version, 'new version not matched.'
+    assert_equal 'active', m2.status, 'new status not matched.'
+    assert_equal '2021-06-12', m2.date_created.to_s('%Y-%m-%d'), 'new date created not matched.'
+    assert_equal '2021-06-13', m2.date_modified.to_s('%Y-%m-%d'), 'new date modified not matched.'
+    assert_equal '2021-06-14', m2.date_published.to_s('%Y-%m-%d'), 'new date published not matched.'
+
+    assert_not_nil m2.subsets, 'new subsets is nil.'
+    assert_equal 0, m2.subsets.size, 'new subsets size not matched.'
+
+    assert_not_nil m2.authors, 'new authors is nil.'
+    assert_equal 1, m2.authors.size, 'new authors size not matched.'
+    assert_equal 'Nikolai Tesla', m2.authors[0], 'new authors[0] not matched.'
+
+    assert_not_nil m2.contributors, 'new contributors is nil.'
+    assert_equal 1, m2.contributors.size, 'new contributors size not matched.'
+    assert_equal 'Prof. Stephen Hawking', m2.contributors[0], 'new contributors[0] not matched.'
+
+    assert_equal 'Bring your enthusiasm', m2.prerequisites, 'new prerequisites not matched.'
+    assert_equal "1. Overview\  2. The main part\  3. Summary", m2.syllabus, 'new syllabus not matched.'
+    assert_equal "- Understand the new materials model\  - Apply the new material model", m2.learning_objectives,
+                 'new learning objectives not matched.'
   end
 
   test 'should reassign owner when user deleted' do
