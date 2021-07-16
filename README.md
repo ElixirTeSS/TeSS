@@ -230,8 +230,11 @@ Structure the JSON thus:
         "material": {
             "title": "API example",
             "url": "http://example.com",
-            "short_description": "This API is fun and easy",
-            "doi": "Put some stuff in here"
+            "long_description": "This API is fun and easy",
+            "doi": "Put some stuff in here",
+            "contact": "details of person or organisation",
+            "keywords": ["key", "words"],
+            "licence": "a valid licence"
         }
     }
 
@@ -257,28 +260,30 @@ Or, you can run the backup script as follows:
     $ sh scripts/pgsql_backup.sh tess_user tess_development ./shared/backups --exclude-schema=audit
 
 The parameters are as follows:
- 1. user: e.g. *tess_user*
- 2. database: e.g. *tess_development*, *tess_production*
- 3. backup folder: e.g. ./shared/backups
- 4. addtional parameters: e.g. --excluded-schema=audit
+
+1.  user: e.g. *tess_user*
+2.  database: e.g. *tess_development*, *tess_production*
+3.  backup folder: e.g. ./shared/backups
+4.  addtional parameters: e.g. --excluded-schema=audit
 
 Note: sql files are stored with timestamped names as follows:
 
-  - folder/database.YYYYMMDD-HHMMSS.\[schema,data\].sql
-  - eg. ~/TeSS/shared/backups/tess_development-20210524-085138.data.sql
+-  folder/database.YYYYMMDD-HHMMSS.\[schema,data\].sql
+-  eg. ~/TeSS/shared/backups/tess_development-20210524-085138.data.sql
 
 And, you can run the restore script as follows:
 
     $ sh scripts/pgsql_restore.sh tess_user tess_production ./shared/backups/tess_production.20210524-085138.schema.sql ./shared/backups/tess_production.20210524-085138.data.sql
 
 With the parameters:
- 1. user: e.g. *tess_user*
- 2. database: e.g. *tess_development*, *tess_production*
- 3. schema file: e.g. ./shared/backups/tess_development.20210524-085138.schema.sql
- 4. data file: e.g. ./shared/backups/tess_development.20210524-085138.data.sql
+
+1.  user: e.g. *tess_user*
+2.  database: e.g. *tess_development*, *tess_production*
+3.  schema file: e.g. ./shared/backups/tess_development.20210524-085138.schema.sql
+4.  data file: e.g. ./shared/backups/tess_development.20210524-085138.data.sql
 
 
 Note: these scripts have been adapted from the repository: 
 [fabioboris/postgresql-backup-restore-scripts](https://github.com/fabioboris/postgresql-backup-restore-scripts)
-  - made available under the MIT License (MIT)
-  - Copyright (c) 2013 Fabio Agostinho Boris &lt;fabioboris@gmail.com&gt;
+-  made available under the MIT License (MIT)
+-  Copyright (c) 2013 Fabio Agostinho Boris &lt;fabioboris@gmail.com&gt;

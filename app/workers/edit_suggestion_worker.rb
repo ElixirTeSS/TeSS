@@ -4,7 +4,7 @@ class EditSuggestionWorker
   # TODO: Should a random time delay go in here such that the chastisement of
   # TODO: BioPortal is somewhat mimimised?
   def perform(arg_array)
-    suggestible_id,suggestible_type = arg_array
+    suggestible_id, suggestible_type = arg_array
     logger.debug "ID: #{suggestible_id}"
     logger.debug "TYPE: #{suggestible_type}"
     # Run Sidekiq task to call the BioPortal annotator
@@ -14,16 +14,12 @@ class EditSuggestionWorker
     # Use long description if available, otherwise short.
     desc = nil
     case suggestible_type
-      when 'Material'
-        if suggestible.long_description
-          desc = suggestible.long_description
-        else
-          desc = suggestible.short_description
-        end
-      when 'Event'
-        desc = suggestible.description
-      when 'Workflow'
-        desc = suggestible.description
+    when 'Material'
+      desc = suggestible.long_description
+    when 'Event'
+      desc = suggestible.description
+    when 'Workflow'
+      desc = suggestible.description
     end
 
     if desc.blank?
@@ -37,12 +33,12 @@ class EditSuggestionWorker
     # See String#encode documentation
 
     encoding_options = {
-        :invalid           => :replace,
-        :undef             => :replace,
-        :replace           => '',
-        :universal_newline => true
+      :invalid => :replace,
+      :undef => :replace,
+      :replace => '',
+      :universal_newline => true
     }
-    clean_desc = desc.encode(Encoding.find('ASCII'), encoding_options).gsub(/[\n#]/,'')
+    clean_desc = desc.encode(Encoding.find('ASCII'), encoding_options).gsub(/[\n#]/, '')
 
     api_key = Rails.application.secrets.bioportal_api_key
     url = "http://data.bioontology.org/annotator?include=prefLabel&text=#{clean_desc}&ontologies=EDAM&longest_only=false&exclude_numbers=false&whole_word_only=true&exclude_synonyms=false&apikey=#{api_key}"

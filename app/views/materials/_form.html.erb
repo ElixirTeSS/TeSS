@@ -5,49 +5,93 @@
   <%# Necessary to allow removal of all field locks %>
   <%= hidden_field_tag 'material[locked_fields][]', '' %>
 
-  <%= f.input :title, as: :string, field_lock: true %>
+  <% # Required Fields  -%>
 
-  <%= render partial: 'common/url_checker', locals: { f: f, url: materials_check_exists_path, title: '' } %>
+  <!-- Field: Title -->
+  <%= f.input :title, as: :string, field_lock: true, input_html: { title: t('materials.hints.title') } %>
 
-  <%= f.input :short_description, as: :markdown_area, input_html: { rows: '5' }, field_lock: true %>
+  <!-- Field: URL -->
+  <%= render partial: 'common/url_checker',
+             locals: { f: f, url: materials_check_exists_path, title: t('materials.hints.url') } %>
 
-  <%= f.input :long_description, as: :markdown_area, input_html: { rows: '10' }, field_lock: true %>
+  <!-- Field: Description -->
+  <%= f.input :long_description, as: :markdown_area, field_lock: true, label: 'Description',
+              input_html: { rows: '5', title: t('materials.hints.description') } %>
 
-  <%= f.input :doi, field_lock: true %>
+  <!-- Field: DOI -->
+  <%= f.input :doi, field_lock: true, input_html: { title: t('materials.hints.doi') } %>
 
+  <!-- Field: Licence -->
+  <%= f.input :licence, collection: licence_options_for_select, input_html: { title: t('materials.hints.licence') },
+              selected: @material.licence, include_blank: true, field_lock: true %>
+
+  <!-- Field: Contact -->
+  <%= f.input :contact, input_html: { rows: '5', title: t('materials.hints.contact') }, field_lock: true %>
+
+  <!-- Field: Keywords -->
+  <%= f.multi_input :keywords, required: true, title: t('materials.hints.keywords') %>
+
+  <hr/>
+
+  <% # Optional and Recommended Fields  -%>
+
+  <!-- Field: Provider -->
   <%= f.input :content_provider_id, collection: ContentProvider.all, label_method: :title, value_method: :id,
-              include_blank: true, field_lock: true %>
+              include_blank: true, field_lock: true, label: t('materials.hints.providers') %>
 
-  <!-- Nodes: check feature enabled -->
-  <% if TeSS::Config.feature['nodes'] %>
-    <%= f.dropdown :node_ids, options: format_for_dropdown(Node.order(:name).all), label: 'Nodes' %>
-  <% end %>
+  <!-- Field: Events -->
+  <%= f.autocompleter :events, input_html: { title: t('materials.hints.events') } %>
 
+  <!-- Field: target_audience -->
+  <%= f.dropdown :target_audience, options: TargetAudienceDictionary.instance.options_for_select, label: 'Target audience',
+                 errors: @material.errors[:target_audience], title: t('events.hints.targets') %>
+
+  <!-- Field: Resource Type -->
+  <%= f.dropdown :resource_type, options: MaterialTypeDictionary.instance.options_for_select, label: 'Material type',
+                 errors: @material.errors[:material_types], title: t('materials.hints.type') %>
+
+  <!-- Field: Time -->
+  <%= f.input :duration, input_html: { title: t('materials.hints.time') }, label: 'Time', field_lock: true %>
+
+  <!-- Field: Version -->
+  <%= f.input :version, input_html: { title: t('materials.hints.version') }, field_lock: true %>
+
+  <!-- Field: Status -->
+  <%= f.input :status, collection: MaterialStatusDictionary.instance.options_for_select, prompt: 'Select a status...',
+              errors: @material.errors[:status], input_html: { title: t('materials.hints.status') },
+              field_lock: true %>
+
+  <!-- Field: Dates -->
+  <%= f.input :date_created, as: :date_picker, field_lock: true, input_html: { title: t('materials.hints.date_created') } %>
+  <%= f.input :date_modified, as: :date_picker, field_lock: true, input_html: { title: t('materials.hints.date_modified') } %>
+  <%= f.input :date_published, as: :date_picker, field_lock: true, input_html: { title: t('materials.hints.date_published') } %>
+
+  <!-- Field: Subsets -->
+  <%= f.multi_input :subsets, title: t('materials.hints.subsets') %>
+
+  <!-- Field: Authors -->
+  <%= f.multi_input :authors, suggestions: people_suggestions, title: t('materials.hints.authors') %>
+
+  <!-- Field: Contributors -->
+  <%= f.multi_input :contributors, suggestions: people_suggestions, title: t('materials.hints.contributors') %>
+
+  <!-- Field: Scientific Topics -->
   <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term',
                       id_field: :uri, label_field: :preferred_label %>
 
-  <!-- Operations: check disabled -->
-  <% if !TeSS::Config.feature['disabled'].include? 'operations' %>
-    <%= f.autocompleter :operations, url: edam_operations_path, template: 'autocompleter/term',
-                        id_field: :uri, label_field: :preferred_label %>
-  <% end %>
+  <!-- Field: Prerequisites -->
+  <%= f.input :prerequisites, as: :markdown_area, field_lock: true,
+              input_html: { rows: '3', title: t('materials.hints.prerequisites') } %>
 
-  <%= f.multi_input :keywords %>
+  <!-- Field: Syllabus -->
+  <%= f.input :syllabus, as: :markdown_area, field_lock: true,
+              input_html: { rows: '3', title: t('materials.hints.syllabus') } %>
 
-  <%= f.multi_input :target_audience %>
+  <!-- Field: Learning Objectives-->
+  <%= f.input :learning_objectives, as: :markdown_area, field_lock: true,
+              input_html: { rows: '3', title: t('materials.hints.objectives') } %>
 
-  <%= f.multi_input :resource_type %>
-
-  <%= f.input :difficulty_level, collection: difficulty_options_for_select, selected: @material.difficulty_level.blank? ? "notspecified" : @material.difficulty_level, field_lock: true %>
-
-  <%= f.input :licence, collection: licence_options_for_select, selected: @material.licence.blank? ? "notspecified" : @material.licence, field_lock: true %>
-
-  <%= f.multi_input :authors, suggestions: people_suggestions %>
-
-  <%= f.multi_input :contributors, suggestions: people_suggestions %>
-
-  <%= f.autocompleter :events %>
-
+  <!-- Field: External Resources -->
   <div class="form-group" id="external-resources">
     <%= f.label :external_resources %>
     <%= f.field_lock :external_resources %>
@@ -72,6 +116,18 @@
     </a>
   </div>
 
+  <!-- Nodes: check feature enabled -->
+  <% if TeSS::Config.feature['nodes'] %>
+    <%= f.dropdown :node_ids, options: format_for_dropdown(Node.order(:name).all), label: 'Nodes' %>
+  <% end %>
+
+  <!-- Operations: check disabled -->
+  <% if !TeSS::Config.feature['disabled'].include? 'operations' %>
+    <%= f.autocompleter :operations, url: edam_operations_path, template: 'autocompleter/term',
+                        id_field: :uri, label_field: :preferred_label %>
+  <% end %>
+
+  <!-- Form Buttons -->
   <div class="form-group">
     <%= f.submit (f.object.new_record? ? "Register" : "Update") + " training material", :class => 'btn btn-primary' %>
     <%= link_to 'Back', :back, :class => "btn btn-info" %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_16_024730) do
+ActiveRecord::Schema.define(version: 2021_07_13_082501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -187,7 +187,6 @@ ActiveRecord::Schema.define(version: 2021_06_16_024730) do
   create_table "materials", force: :cascade do |t|
     t.text "title"
     t.string "url"
-    t.string "short_description"
     t.string "doi"
     t.date "remote_updated_date"
     t.date "remote_created_date"
@@ -207,6 +206,17 @@ ActiveRecord::Schema.define(version: 2021_06_16_024730) do
     t.text "keyword"
     t.string "resource_type", default: [], array: true
     t.string "keywords", default: [], array: true
+    t.string "duration"
+    t.date "date_created"
+    t.date "date_modified"
+    t.date "date_published"
+    t.text "prerequisites"
+    t.string "version"
+    t.string "status"
+    t.text "syllabus"
+    t.string "subsets", default: [], array: true
+    t.text "contact"
+    t.text "learning_objectives"
     t.index ["content_provider_id"], name: "index_materials_on_content_provider_id"
     t.index ["slug"], name: "index_materials_on_slug", unique: true
     t.index ["user_id"], name: "index_materials_on_user_id"

@@ -24,7 +24,7 @@ class Material < ApplicationRecord
         title.downcase.gsub(/^(an?|the) /, '')
       end
       text :long_description
-      text :short_description
+      text :contact
       text :doi
       string :authors, :multiple => true
       text :authors
@@ -43,7 +43,6 @@ class Material < ApplicationRecord
       string :difficulty_level do
         DifficultyDictionary.instance.lookup_value(self.difficulty_level, 'title')
       end
-      text :difficulty_level
       string :contributors, :multiple => true
       text :contributors
       string :content_provider do
@@ -82,28 +81,24 @@ class Material < ApplicationRecord
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
-  auto_strip_attributes :title, :short_description, :long_description, :url, :squish => false
+  auto_strip_attributes :title, :long_description, :url, :squish => false
 
-  validates :title, :short_description, :url, presence: true
+  validates :title, :long_description, :url, :keywords, :doi, :licence, :contact, presence: true
 
   validates :url, url: true
 
-  validates :difficulty_level, controlled_vocabulary: { dictionary: DifficultyDictionary.instance }
+  #validates :difficulty_level, controlled_vocabulary: { dictionary: DifficultyDictionary.instance }
 
   clean_array_fields(:keywords, :contributors, :authors, :target_audience, :resource_type)
 
   update_suggestions(:keywords, :contributors, :authors, :target_audience, :resource_type)
-
-  def short_description= desc
-    super(Rails::Html::FullSanitizer.new.sanitize(desc))
-  end
 
   def long_description= desc
     super(Rails::Html::FullSanitizer.new.sanitize(desc))
   end
 
   def self.facet_fields
-    %w( scientific_topics operations tools standard_database_or_policy target_audience keywords difficulty_level
+    %w( scientific_topics operations tools standard_database_or_policy target_audience keywords
         authors related_resources contributors licence node content_provider user resource_type)
   end
 
@@ -117,7 +112,7 @@ class Material < ApplicationRecord
 
     if given_material.content_provider.present? && given_material.title.present?
       material ||= self.where(content_provider_id: given_material.content_provider_id,
-                                   title: given_material.title).last
+                              title: given_material.title).last
     end
 
     material

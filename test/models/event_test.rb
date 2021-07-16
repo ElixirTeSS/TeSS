@@ -244,6 +244,7 @@ class EventTest < ActiveSupport::TestCase
     material = materials(:good_material)
     event.materials << material
 
+
     assert_difference('EventMaterial.count', -1) do
       assert_difference('Event.count', -1) do
         assert_no_difference('Material.count') do

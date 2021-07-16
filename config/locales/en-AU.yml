@@ -343,3 +343,38 @@ en-AU:
       cost_basis: 'Select the basis by which costs, if any, are applied.'
       cost_value: 'Input the cost of the training event.'
       cost_currency: 'Select the currency associated with the cost.'
+  materials:
+    hints:
+      title: 'Add a title for your training material.'
+      url: 'Preferred URL to direct people to your training material landing page.'
+      description: 'Provide a textual description of your training material, for additional context.'
+      doi: 'Include a DOI if one exists for the training material.'
+      licence: 'Select the license for the training material.'
+      contact: >
+        Include the first name, last name and contact details of the person or organisation that can be contacted about
+        the training material.
+      keywords: "Provide words or terms that clearly identify the training material's topics."
+      providers: ''
+      for_codes: 'Indicate which Fields of Research (FoR) codes your training material covers.'
+      targets: 'Indicate the type of audience intended to use your training material.'
+      type: 'Select the type of resource that best matches the training material. '
+      authors: >
+        Add individuals and organisations involved in the preparation, creation or presentation of the published work.
+      contributors: 'Add individual and organisations that contributed to the training material.'
+      events: ''
+      resources: 'Are there any external resources that relate to the is training material?'
+      time: 'What is the estimated time it takes to work through this resource in hours?'
+      date_created: 'Add the date that the training material was created.'
+      date_modified: 'Add the date that the training material was last modified.'
+      date_published: 'Add the date that the training material was published.'
+      prerequisites: >
+        What prior understanding or knowledge does your audience need to have on the topics covered in the training
+        material?
+      objectives: >
+        Describe the knowledge, skills or abilities that students should acquire throught the completion or use of the
+        training material.
+      syllabus: 'Describe the syllabus or provide and overview of the topics covered.'
+      part_of: 'Describe the larger service of training to which this material belongs.'
+      subsets: 'Add identifier URLs or DOIs for each subset of the training material.'
+      version: 'Indicate the current version of the training material.'
+      status: 'Indicate the current status of the training material.'

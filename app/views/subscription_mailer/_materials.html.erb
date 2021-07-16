@@ -5,7 +5,7 @@
     <td>
       <% digest.each do |result| -%>
           <%= link_to(result.title, result, style: 'color: #f57d20; font-weight: bold; text-decoration: none') %><br/>
-          <%= truncate(result.short_description, length: 120, separator: ' ') %><br/><br/>
+          <%= truncate(result.long_description, length: 120, separator: ' ') %><br/><br/>
       <% end -%>
     </td>
   </tr>

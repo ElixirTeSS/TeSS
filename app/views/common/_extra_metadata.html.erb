@@ -1,17 +1,41 @@
-<%= display_attribute(resource, :scientific_topics) { |values| values.map{|x| x.preferred_label}.join(', ')} %>
-<% if resource.respond_to?(:operations) %>
-  <%= display_attribute(resource, :operations) { |values| values.map{|x| x.preferred_label}.join(', ')} %>
-<% end %>
-<%= display_attribute(resource, :keywords) { |values| values.join(', ')} %>
-<% if resource.class.name.downcase == 'material' -%>
-<%= display_attribute(resource, :resource_type) { |values| values.join(', ')} %>
-<% end -%>
-<%= display_attribute(resource, :target_audience) { |values| values.join(', ')} %>
-<%= display_attribute(resource, :difficulty_level) { |value|  difficulty_name_for_abbreviation(value)} %>
-<%= display_attribute(resource, :licence) { |value|  licence_name_for_abbreviation(value)} %>
-<%= display_attribute(resource, :authors) { |values| values.join(', ')} %>
-<%= display_attribute(resource, :contributors) { |values| values.join(', ')} %>
 <%= display_attribute(resource, :doi) %>
+<%= display_attribute(resource, :licence) { |value| licence_name_for_abbreviation(value) } %>
+
+<% if resource.class.name.downcase != 'workflow' -%>
+  <%= display_attribute(resource, :contact) %>
+<% end %>
+
+<%= display_attribute(resource, :keywords) { |values| values.join(', ') } %>
+
+<hr />
+<h4>Additional information</h4>
+
+<% if resource.class.name.downcase == 'material' -%>
+  <%= display_attribute(resource, :target_audience) { |values| values.each { |x| target_audience_title_for_label(x) }.join(', ') } %>
+  <%= display_attribute(resource, :resource_type) { |values| values.each { |x| material_type_title_for_label(x) }.join(', ') } %>
+  <%= display_attribute(resource, :duration) %>
+  <%= display_attribute(resource, :version) %>
+  <%= display_attribute(resource, :status) { |value| material_status_title_for_label(value) } %>
+  <%= display_attribute(resource, :subsets) { |values| values.join(', ') } %>
+  <%= display_attribute(resource, :prerequisites) %>
+  <%= display_attribute(resource, :syllabus) %>
+  <%= display_attribute(resource, :learning_objectives) %>
+  <%= display_attribute(resource, :date_created) %>
+  <%= display_attribute(resource, :date_modified) %>
+  <%= display_attribute(resource, :date_published) %>
+<% end -%>
+
+<% if resource.class.name.downcase == 'event' -%>
+  <%= display_attribute(resource, :target_audience) { |values| values.join(', ') } %>
+  <%= display_attribute(resource, :difficulty_level) { |value| difficulty_name_for_abbreviation(value) } %>
+<% end %>
+
+<%= display_attribute(resource, :authors) { |values| values.join(', ') } %>
+<%= display_attribute(resource, :contributors) { |values| values.join(', ') } %>
 <%= display_attribute(resource, :remote_created_date) %>
 <%= display_attribute(resource, :remote_updated_date) %>
+<%= display_attribute(resource, :scientific_topics) { |values| values.map { |x| x.preferred_label }.join(', ') } %>
 
+<% if resource.respond_to?(:operations) -%>
+  <%= display_attribute(resource, :operations) { |values| values.map { |x| x.preferred_label }.join(', ') } %>
+<% end %>

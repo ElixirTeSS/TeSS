@@ -40,6 +40,18 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
     EDAM::Ontology.instance.all_topics.map(&:preferred_label)
   end
 
+  def material_status_title_for_label(label)
+    MaterialStatusDictionary.instance.lookup_value(label, 'title')
+  end
+
+  def material_type_title_for_label(label)
+    MaterialTypeDictionary.instance.lookup_value(label, 'title')
+  end
+
+  def target_audience_title_for_label(label)
+    TargetAudienceDictionary.instance.lookup_value(label, 'title')
+  end
+
   def display_attribute(resource, attribute) # resource e.g. <#Material> & symbol e.g. :target_audience
     value = resource.send(attribute)
     if value.blank? || value.try(:strip) == 'notspecified'

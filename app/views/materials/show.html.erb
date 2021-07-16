@@ -40,30 +40,36 @@
         <div id="home" class="tab-pane fade in active">
           <div class="row">
             <div class="text-justify">
+              <!-- Field: title -->
               <h2>
                 <%=t '.title', :default => @material.title %>
                 <%= scrape_status_icon(@material, 'large') if current_user and current_user.is_admin? %>
                 <%= missing_icon(@material, 'large') if current_user and current_user.is_admin? %>
                 <%= suggestion_icon(@material, 'large') if current_user and current_user.is_admin? -%>
               </h2>
+
+              <!-- Field: URL -->
               <p>
                 <div class="url-wrap">
                   <%= link_to @material.url, @material.url, :class =>'h5', :target => "_blank" %>
                 </div>
               </p>
-              <% if not @material.long_description.blank? %>
-                  <p><%= render_markdown(@material.long_description) %></p>
-              <% elsif not @material.short_description.blank? %>
-                  <p><%= render_markdown(@material.short_description)%></p>
-              <% end %>
+
+              <!-- Field: long description -->
+              <p><%= render_markdown(@material.long_description) %></p>
+
             </div>
+
             <div class="dont-break-out">
+
+              <!-- Other metadata -->
               <%= render partial: 'common/extra_metadata', locals: { resource: @material } %>
 
               <% if policy(@material).update? && @material.edit_suggestion %>
                 <%= render partial: 'common/approve_term_suggestions', locals: { suggestion: @material.edit_suggestion } %>
               <% end %>
 
+              <!-- Field: events -->
               <% if @material.events.any? %>
                   <div>
                     <b>Related events: </b>
@@ -78,6 +84,7 @@
                   </div>
               <% end %>
 
+              <!-- Field: eternal resources -->
               <div>
                 <% if @material.external_resources.any? %>
                     <b>External resources: </b>
