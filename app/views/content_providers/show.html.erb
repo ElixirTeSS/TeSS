@@ -40,6 +40,8 @@
           </p>
       <% end %>
       <%= render partial: 'content_providers/partials/content_provider_schemaorg', locals: { content_provider: @content_provider } %>
+      <%= render :partial => 'content_providers/partials/twitter_card', :locals => { content_provider: @content_provider } %>
+
     </div>
     <div class="row">
       <ul class="nav nav-tabs">
