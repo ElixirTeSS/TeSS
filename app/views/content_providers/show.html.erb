@@ -27,20 +27,17 @@
         <% end %>
       </div>
     </div>
+
     <div class="row">
-      <p>
-        <%= link_to(image_tag(@content_provider.image.url, :class => "medium-content-provider-logo"), @content_provider.url, :target => @content_provider.url) %>
-      </p>
-      <p>
-        <%= link_to @content_provider.title, @content_provider.url, :class => "h5", :target => @content_provider.url %>
-      </p>
+      <p><%= link_to(image_tag(@content_provider.image.url, :class => "medium-content-provider-logo"), @content_provider.url, :target => @content_provider.url) %></p>
+      <p><%= link_to @content_provider.title, @content_provider.url, :class => "h5", :target => @content_provider.url %></p>
       <% unless @content_provider.description.blank? %>
-          <p class="minimise">
-            <%= render_markdown @content_provider.description %>
-          </p>
+          <p class="minimise"><%= render_markdown @content_provider.description %></p>
       <% end %>
       <%= render partial: 'content_providers/partials/content_provider_schemaorg', locals: { content_provider: @content_provider } %>
+      <%= render partial: 'content_providers/partials/twitter_card', locals: { content_provider: @content_provider } %>
     </div>
+
     <div class="row">
       <ul class="nav nav-tabs">
         <%= tab('Materials', icon_class_for_model('materials'), 'materials', active: materials.any? || events.none?,

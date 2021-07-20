@@ -220,9 +220,12 @@ class MaterialsControllerTest < ActionController::TestCase
 
   test 'should create material with all optional attributes' do
     # reference data
-    test_title = 'test of create with optionals via post'
+    test_title = 'Test of create with optionals via post'
+    test_url = 'https://test.of.create/with/optionals_via_post'
     test_material = materials(:material_with_optionals)
+    test_provider = content_providers(:portal_provider)
     assert_not_nil test_material, 'missing reference material'
+    assert_not_nil test_provider, 'missing reference provider'
 
     sign_in users(:regular_user)
     assert_difference('Material.count') do
@@ -231,7 +234,7 @@ class MaterialsControllerTest < ActionController::TestCase
 
           # required attributes
           title: test_title,
-          url: test_material.url,
+          url: test_url,
           long_description: test_material.long_description,
           doi: test_material.doi,
           licence: test_material.licence,
@@ -239,7 +242,7 @@ class MaterialsControllerTest < ActionController::TestCase
           contact: test_material.contact,
 
           # optional attributes
-          content_provider: test_material.content_provider,
+          content_provider_id: test_provider.id,
           events: test_material.events,
           target_audience: test_material.target_audience,
           resource_type: test_material.resource_type,
@@ -264,15 +267,16 @@ class MaterialsControllerTest < ActionController::TestCase
     post :check_exists, params: {
       format: :json,
       material: { title: test_title,
-                  url: test_material.url,
-                  content_provider_id: test_material.content_provider_id
+                  url: test_url,
+                  content_provider_id: test_provider.id
       }
     }
     assert_response :success
+    assert_equal 'application/json', response.content_type, 'response content type not matched'
 
     # required attributes
-    assert_equal test_material.title, JSON.parse(response.body)['title'], 'title not matched.'
-    assert_equal test_material.url, JSON.parse(response.body)['url'], 'description not matched.'
+    assert_equal test_title, JSON.parse(response.body)['title'], 'title not matched.'
+    assert_equal test_url, JSON.parse(response.body)['url'], 'description not matched.'
     assert_equal test_material.long_description, JSON.parse(response.body)['long_description'], 'description not matched.'
     assert_equal test_material.doi, JSON.parse(response.body)['doi'], 'doi not matched.'
     assert_equal test_material.licence, JSON.parse(response.body)['licence'], 'licence not matched.'
@@ -280,7 +284,7 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_equal test_material.keywords, JSON.parse(response.body)['keywords'], 'keywords not matched'
 
     #optional attributes
-    assert_equal test_material.content_provider_id, JSON.parse(response.body)['content_provider_id'],
+    assert_equal test_provider.id, JSON.parse(response.body)['content_provider_id'],
                  'provider not matched'
     assert_equal test_material.resource_type, JSON.parse(response.body)['resource_type'],
                  'resource_type not matched'

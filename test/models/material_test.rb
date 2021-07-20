@@ -25,7 +25,7 @@ class MaterialTest < ActiveSupport::TestCase
 
     assert_not_nil m.events, 'old events is nil.'
     assert_equal 2, m.events.size, 'old events size not matched.'
-    assert_equal events(:kilburn), m.events[1], 'old events[1] not matched.' # events sorted by title?
+    assert_equal events(:kilburn), m.events[1], 'old events[0] not matched.' # events sorted by title?
 
     assert_not_nil m.target_audience, 'old target audience is nil.'
     assert_equal 2, m.target_audience.size, 'old target audience size not matched.'
