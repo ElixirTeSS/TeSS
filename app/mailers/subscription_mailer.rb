@@ -8,7 +8,7 @@ class SubscriptionMailer < ApplicationMailer
     @user = sub.user
     @digest = dig
     @subscription = sub
-    subject = "TeSS #{sub.frequency} digest - #{pluralize(@digest.total_count, "new #{@subscription.subscribable_type.downcase}")} matching your criteria"
+    subject = "#{TeSS::Config.site['title_short']} #{sub.frequency} digest - #{pluralize(@digest.total_count, "new #{@subscription.subscribable_type.downcase}")} matching your criteria"
     mail(subject: subject, to: sub.user.email) do |format|
       format.html
       format.text
