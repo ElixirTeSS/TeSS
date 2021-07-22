@@ -15,7 +15,7 @@ class EditSuggestionWorker
     desc = nil
     case suggestible_type
     when 'Material'
-      desc = suggestible.long_description
+      desc = suggestible.description
     when 'Event'
       desc = suggestible.description
     when 'Workflow'

@@ -23,7 +23,7 @@ class Material < ApplicationRecord
       string :sort_title do
         title.downcase.gsub(/^(an?|the) /, '')
       end
-      text :long_description
+      text :description
       text :contact
       text :doi
       string :authors, :multiple => true
@@ -81,19 +81,23 @@ class Material < ApplicationRecord
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
-  auto_strip_attributes :title, :long_description, :url, :squish => false
+  auto_strip_attributes :title, :description, :url, :squish => false
 
-  validates :title, :long_description, :url, :keywords, :doi, :licence, :contact, presence: true
+  validates :title, :description, :keywords, :url, :licence, :status, :contact, presence: true
 
   validates :url, url: true
 
-  #validates :difficulty_level, controlled_vocabulary: { dictionary: DifficultyDictionary.instance }
+  validates :licence, exclusion: { in: ['notspecified'] ,  message: 'must be specified' }
+
+  validates :other_types, presence: true, if: Proc.new { |m| m.resource_type.include?('other') }
+
+  validates :difficulty_level, controlled_vocabulary: { dictionary: DifficultyDictionary.instance }
 
   clean_array_fields(:keywords, :contributors, :authors, :target_audience, :resource_type)
 
   update_suggestions(:keywords, :contributors, :authors, :target_audience, :resource_type)
 
-  def long_description= desc
+  def description= desc
     super(Rails::Html::FullSanitizer.new.sanitize(desc))
   end
 

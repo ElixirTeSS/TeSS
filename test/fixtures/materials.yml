@@ -4,24 +4,26 @@ good_material:
   user: regular_user
   title: Training Material Example
   url: http://training.com/trainers/1359023
-  long_description: This is a Training Material produced by an example organization
+  description: This is a Training Material produced by an example organization
   doi: http://dx.doi.ac.uk/2q3093032
   resource_type: ['Lecture']
   licence: CC-BY-4.0
   contact: 'default contact'
   keywords: ['good']
   content_provider: goblet
+  status: active
   remote_updated_date: 2015-09-25
   remote_created_date: 2015-09-25
 
 bad_material:
   title: Bad Training Material Example
   url: Not really a valid URL.com
-  long_description: THis is the short descriptiopn
+  description: THis is the short descriptiopn
   doi: not really a doi.
   licence: ''
   keywords: []
   contact: ''
+  status: ''
   content_provider: goblet
   remote_updated_date: 2015-09-25
   remote_created_date: 2015-09-25
@@ -29,84 +31,91 @@ bad_material:
 biojs:
   title: BioJS
   url: http://www.mygoblet.org//training-portal/materials/biojs
-  long_description: BioJS is a library of graphical components easy to reuse to represent biological information
+  description: BioJS is a library of graphical components easy to reuse to represent biological information
   doi: http://doi.org/10.1109/SEAA.2009.59
   licence: CC-BY-4.0
   contact: 'BioJS support'
   keywords: ['biological','graphical']
   content_provider: goblet
+  status: active
 
 interpro:
   title: InterPro
   url: http://www.mygoblet.org//training-portal/materials/interpro-introduction
-  long_description: >
+  description: >
     This presentation introduces the background to the InterPro database:
     what it is, where it came from, and what was the vision behind its creation
   doi: http://doi.org/10.1109/SEAA.2009.59
   licence: CC-BY-4.0
   contact: 'InterPro support'
   keywords: ['InterPro','graphical']
+  status: active
 
 prints:
   title: 'PRINTS: A protein family database with a difference'
   url: http://www.mygoblet.org//training-portal/materials/prints-protein-family-database-difference
-  long_description: >
+  description: >
     A presentation designed to introduce the concept of protein family analysis and characterisation using motif-based
     methods, with a particular focus on protein fingerprinting.
   doi: http://doi.org/10.1109/SEAA.2009.59
   licence: CC-BY-4.0
   contact: 'prints'
   keywords: ['protein','prints']
+  status: active
 
 scraper_user_material:
   user: scraper_user
   title: material owned by scraper'
   url: http://myurl.com
-  long_description: 'this is my material'
+  description: 'this is my material'
   doi: http://doi.org/10.1109/SEAA.2009.59
   licence: CC-BY-4.0
   contact: 'scraper'
   keywords: ['owned','by','scraper']
   content_provider: goblet
+  status: development
 
 material_with_external_resource:
   user: regular_user
   title: External Resource Material
   url: http://myurl.com/123
-  long_description: 'this is my material'
+  description: 'this is my material'
   doi: http://doi.org/10.1109/SEAA.2009.59
   licence: CC-BY-4.0
   contact: 'try someone else'
   keywords: ['external','resource']
   content_provider: goblet
+  status: archived
 
 material_with_suggestions:
   user: regular_user
   title: Material with suggestions
   url: http://training.com/suggestions
-  long_description: This is a Training Material with suggestions
+  description: This is a Training Material with suggestions
   doi: http://doi.org/10.1109/SEAA.2009.59
   licence: CC-BY-4.0
   contact: 'suggested contact'
   keywords: ['suggestions']
   content_provider: goblet
+  status: active
 
 failing_material:
   user: regular_user
   title: Failing Material
   url: http://training.com/404
-  long_description: This is a Training Material with a dodgy URL
+  description: This is a Training Material with a dodgy URL
   doi: http://doi.org/10.1109/SEAA.2009.59
   licence: CC-BY-4.0
-  contact: ''
+  contact: 'none'
   keywords: ['biological','graphical']
   content_provider: goblet
+  status: ''
 
 material_with_optionals:
   user: regular_user
   title: Training Material with All Optionals
   url: https://training.com/material/023
-  long_description: This is a Training Material produced by an example organization
+  description: This is a Training Material produced by an example organization
   doi: http://dx.doi.ac.uk/2q3093032
   licence: CC-BY-4.0
   contact: 'default contact'
@@ -115,7 +124,7 @@ material_with_optionals:
   events: [ kilburn, two ]
   target_audience: [ 'HDR', 'ECR' ]
   resource_type: ['Quiz', 'Presentation' ]
-  duration: '10 minutes'
+  other_types: 'Podcast'
   version: 1.0.3
   status: development
   date_created: 2021-07-12

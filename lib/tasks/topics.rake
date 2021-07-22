@@ -17,8 +17,8 @@ namespace :tess do
       end
 
       # Use long description
-      if material.long_description
-        desc = material.long_description
+      if material.description
+        desc = material.description
       else
         next
       end

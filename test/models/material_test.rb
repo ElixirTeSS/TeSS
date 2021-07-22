@@ -3,9 +3,10 @@ require 'test_helper'
 class MaterialTest < ActiveSupport::TestCase
 
   setup do
-    @user = users(:regular_user)
+    @user = users :regular_user
+    @event = events :kilburn
     @material = Material.create!(title: 'title',
-                                 long_description: 'short desc',
+                                 description: 'short desc',
                                  url: 'http://goog.e.com',
                                  user: @user,
                                  authors: ['horace', 'flo'],
@@ -13,7 +14,12 @@ class MaterialTest < ActiveSupport::TestCase
                                  licence: 'CC-BY-NC-SA-4.0',
                                  keywords: ['goblet'],
                                  contact: 'default contact',
-                                 content_provider: content_providers(:goblet))
+                                 content_provider: content_providers(:goblet),
+                                 status: 'active'
+    )
+    assert_not_nil @user
+    assert_not_nil @event
+    assert_not_nil @material
   end
 
   test 'should update optionals' do
@@ -25,7 +31,7 @@ class MaterialTest < ActiveSupport::TestCase
 
     assert_not_nil m.events, 'old events is nil.'
     assert_equal 2, m.events.size, 'old events size not matched.'
-    assert_equal events(:kilburn), m.events[1], 'old events[0] not matched.' # events sorted by title?
+    assert_equal @event, m.events.find { |e| e.title == @event.title }, 'old events{:two} not matched.'
 
     assert_not_nil m.target_audience, 'old target audience is nil.'
     assert_equal 2, m.target_audience.size, 'old target audience size not matched.'
@@ -35,7 +41,7 @@ class MaterialTest < ActiveSupport::TestCase
     assert_equal 2, m.resource_type.size, 'old resource type size not matched.'
     assert_equal 'Quiz', m.resource_type[0], 'old resource type[0] not matched.'
 
-    assert_equal '10 minutes', m.duration, 'old duration not matched.'
+    assert_equal 'Podcast', m.other_types, 'old other_types not matched.'
     assert_equal '1.0.3', m.version, 'old version not matched.'
     assert_equal 'development', m.status, 'old status not matched.'
     assert_equal '2021-07-12', m.date_created.to_s('%Y-%m-%d'), 'old date created not matched.'
@@ -60,18 +66,18 @@ class MaterialTest < ActiveSupport::TestCase
 
     # update optionals
     m.content_provider = content_providers(:iann)
-    m.events = [ events(:two) ]
-    m.target_audience = [ 'researcher' ]
-    m.resource_type = [ 'infographic' ]
-    m.duration = '1 hour'
+    m.events = [events(:two)]
+    m.target_audience = ['researcher']
+    m.resource_type = ['infographic']
+    m.other_types = 'Podcast, White Paper'
     m.version = '1.0.4'
     m.status = 'active'
     m.date_created = '2021-06-12'
     m.date_modified = '2021-06-13'
     m.date_published = '2021-06-14'
-    m.subsets = [ ]
-    m.authors = [ 'Nikolai Tesla' ]
-    m.contributors = [ 'Prof. Stephen Hawking' ]
+    m.subsets = []
+    m.authors = ['Nikolai Tesla']
+    m.contributors = ['Prof. Stephen Hawking']
     m.prerequisites = 'Bring your enthusiasm'
     m.syllabus = "1. Overview\  2. The main part\  3. Summary"
     m.learning_objectives = "- Understand the new materials model\  - Apply the new material model"
@@ -101,7 +107,7 @@ class MaterialTest < ActiveSupport::TestCase
     assert_equal 1, m2.resource_type.size, 'new resource type size not matched.'
     assert_equal 'infographic', m2.resource_type[0], 'new resource type[0] not matched.'
 
-    assert_equal '1 hour', m2.duration, 'new duration not matched.'
+    assert_equal 'Podcast, White Paper', m2.other_types, 'new other_types not matched.'
     assert_equal '1.0.4', m2.version, 'new version not matched.'
     assert_equal 'active', m2.status, 'new status not matched.'
     assert_equal '2021-06-12', m2.date_created.to_s('%Y-%m-%d'), 'new date created not matched.'
@@ -281,41 +287,41 @@ class MaterialTest < ActiveSupport::TestCase
   test 'user_requires_approval?' do
     user = users(:unverified_user)
 
-    first_material = user.materials.build(title: 'bla', url: 'http://example.com/spam', long_description: '123',
+    first_material = user.materials.build(title: 'bla', url: 'http://example.com/spam', description: '123',
                                           doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['uno'],
-                                          contact: 'default contact')
+                                          contact: 'default contact', status: 'active')
     assert first_material.user_requires_approval?
     assert first_material.from_unverified_or_rejected?
     first_material.save!
 
-    second_material = user.materials.build(title: 'bla', url: 'http://example.com/spam2', long_description: '123',
+    second_material = user.materials.build(title: 'bla', url: 'http://example.com/spam2', description: '123',
                                            doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['dos'],
-                                           contact: 'default contact')
+                                           contact: 'default contact', status: 'active')
     refute second_material.user_requires_approval?
   end
 
   test 'from_unverified_or_rejected?' do
     user = users(:unverified_user)
 
-    first_material = user.materials.create!(title: 'bla', url: 'http://example.com/spam', long_description: '123',
+    first_material = user.materials.create!(title: 'bla', url: 'http://example.com/spam', description: '123',
                                             doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['uno'],
-                                            contact: 'default contact')
+                                            contact: 'default contact', status: 'active')
     assert first_material.from_unverified_or_rejected?
 
     user.role = Role.rejected
     user.save!
 
-    second_material = user.materials.create(title: 'bla', url: 'http://example.com/spam2', long_description: '123',
+    second_material = user.materials.create(title: 'bla', url: 'http://example.com/spam2', description: '123',
                                             doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['dos'],
-                                            contact: 'default contact')
+                                            contact: 'default contact', status: 'development')
     assert second_material.from_unverified_or_rejected?
 
     user.role = Role.approved
     user.save!
 
-    third_material = user.materials.create(title: 'bla', url: 'http://example.com/spam3', long_description: '123',
+    third_material = user.materials.create(title: 'bla', url: 'http://example.com/spam3', description: '123',
                                            doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['tres'],
-                                           contact: 'default contact')
+                                           contact: 'default contact', status: 'archived')
     refute third_material.from_unverified_or_rejected?
   end
 
@@ -367,59 +373,62 @@ class MaterialTest < ActiveSupport::TestCase
 
   test 'verified users scope' do
     bad_user = users(:unverified_user)
-    bad_material = bad_user.materials.build(title: 'bla', url: 'http://example.com/spam', long_description: 'vvv',
+    bad_material = bad_user.materials.build(title: 'bla', url: 'http://example.com/spam', description: 'vvv',
                                             doi: 'https://doi.org/10.1111/123.1235', contact: 'default contact',
-                                            licence: 'Fair', keywords: %w{ key words })
+                                            licence: 'Fair', keywords: %w{ key words }, status: 'active')
     assert bad_material.user_requires_approval?
     bad_material.save!
 
     good_user = users(:regular_user)
     good_material = good_user.materials.build(title: 'h', url: 'http://example.com/good-stuff',
-                                              long_description: 'vvv', contact: 'default contact',
-                                              doi: 'https://doi.org/10.1111/123.1235',
+                                              description: 'vvv', contact: 'default contact',
+                                              doi: 'https://doi.org/10.1111/123.1235', status: 'active',
                                               licence: 'Fair', keywords: %w{ key words })
     refute good_material.user_requires_approval?
     good_material.save!
 
     # Unscoped
-    assert_includes Material.where(long_description: 'vvv').to_a, good_material
-    assert_includes Material.where(long_description: 'vvv').to_a, bad_material
+    assert_includes Material.where(description: 'vvv').to_a, good_material
+    assert_includes Material.where(description: 'vvv').to_a, bad_material
     # Scoped
-    assert_includes Material.from_verified_users.where(long_description: 'vvv').to_a, good_material
-    refute_includes Material.from_verified_users.where(long_description: 'vvv').to_a, bad_material
+    assert_includes Material.from_verified_users.where(description: 'vvv').to_a, good_material
+    refute_includes Material.from_verified_users.where(description: 'vvv').to_a, bad_material
   end
 
   test 'creates sensible friendly ID' do
     # Reserved word throws error
     reserved_word_material = Material.new(title: 'edit',
-                                          long_description: 'long desc',
+                                          description: 'long desc',
                                           url: 'http://tess.elixir-europe.org',
                                           doi: 'https://doi.org/10.1111/123.1235',
                                           licence: 'Fair',
                                           keywords: ['uno'],
                                           contact: 'default contact',
-                                          user: @user)
+                                          user: @user,
+                                          status: 'active')
     refute reserved_word_material.save
 
     # Numeric slug generates UUID slug
     material = Material.create!(title: '123',
-                                long_description: 'short desc',
+                                description: 'short desc',
                                 url: 'http://tess.elixir-europe.org',
                                 doi: 'https://doi.org/10.1111/123.1235',
                                 licence: 'Fair',
                                 keywords: ['uno'],
                                 contact: 'default contact',
-                                user: @user)
+                                user: @user,
+                                status: 'development')
     refute_match(/\A\d+\Z/, material.friendly_id)
 
     material = Material.create!(title: '第9回研究会開催案内',
-                                long_description: 'short desc',
+                                description: 'short desc',
                                 url: 'http://tess.elixir-europe.org',
                                 doi: 'https://doi.org/10.1111/123.1235',
                                 licence: 'Fair',
                                 keywords: ['uno'],
                                 contact: 'default contact',
-                                user: @user)
+                                user: @user,
+                                status: 'archived')
     refute_match(/\A\d+\Z/, material.friendly_id)
   end
 end

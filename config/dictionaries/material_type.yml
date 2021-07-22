@@ -34,3 +34,6 @@ lesson:
 rubric:
   title: Rubric/Scoring Guide
   description: ''
+other:
+  title: Other
+  description: 'Please, include more information below...'

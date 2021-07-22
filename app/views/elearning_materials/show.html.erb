@@ -52,7 +52,7 @@
                 <%= link_to @material.url, @material.url, :class => 'h5', :target => "_blank" %>
               </div>
               </p>
-              <p><%= render_markdown(@material.long_description) %></p>
+              <p><%= render_markdown(@material.description) %></p>
             </div>
             <div class="dont-break-out">
               <%= render partial: 'common/extra_metadata', locals: { resource: @material } %>
