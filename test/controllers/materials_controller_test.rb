@@ -197,7 +197,7 @@ class MaterialsControllerTest < ActionController::TestCase
 
   #CREATE TEST
   test 'should create material for user' do
-     sign_in users(:regular_user)
+    sign_in users(:regular_user)
     assert_difference('Material.count') do
       post :create, params: {
         material: {
@@ -304,7 +304,6 @@ class MaterialsControllerTest < ActionController::TestCase
                  'date modified not matched'
     assert_equal test_material.date_published.to_s("%Y-%m-%d"), JSON.parse(response.body)['date_published'],
                  'date published not matched'
-
 
     # reload
     @material.reload
@@ -653,7 +652,7 @@ class MaterialsControllerTest < ActionController::TestCase
           contact: 'default contact',
           doi: 'https://doi.org/10.1001/RSE.2.190',
           licence: 'CC-BY-4.0',
-          keywords: ['scraped','through','api'],
+          keywords: ['scraped', 'through', 'api'],
           status: 'active'
         },
         format: 'json'
@@ -897,7 +896,7 @@ class MaterialsControllerTest < ActionController::TestCase
                     url: 'http://www.example.com/sanity/0',
                     doi: 'https://doi.org/10.1100/RSE.2019.23',
                     licence: 'CC-BY-4.0',
-                    keywords: ['insanity','sanitized','sanitary'],
+                    keywords: ['insanity', 'sanitized', 'sanitary'],
                     contact: 'default contact',
                     status: 'development'
         }
@@ -1211,7 +1210,7 @@ class MaterialsControllerTest < ActionController::TestCase
                                               title: @material.title, url: 'http://example.com/dodgy-event',
                                               doi: 'https://doi.org/10.10067/SEA.2019.22', status: 'active',
                                               licence: 'CC-BY-4.0', contact: 'default contact',
-                                              keywords: %w{ dodgy event unverified user }  )
+                                              keywords: %w{ dodgy event unverified user })
 
     assert_enqueued_jobs 0 do
       assert_difference('Material.count') do
@@ -1244,5 +1243,35 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_response :success
     assert_select '.identifiers-button'
     assert_select '#identifiers-link[value=?]', "http://example.com/identifiers/banana:m#{@material.id}"
+  end
+
+  test 'should not add extra subset on error' do
+    title = 'Test Material with errors'
+    url = 'https://dresa.org.au/test-material-with-errors/'
+    desc = 'No description'
+    keywords = %w{ test materials with errors }
+    subsets = %w{ part-one part-two }
+    assert_equal 2, subsets.size, 'before: subsets items count not matched'
+
+    # create material without 3 required fields
+    sign_in users(:regular_user)
+    assert_no_difference('Material.count') do
+      post :create, params: {
+        material: {
+          title: title,
+          url: url,
+          description: desc,
+          keywords: keywords,
+          subsets: subsets
+        }
+      }
+
+      assert_response :success
+      material = assigns(:material)
+      assert_equal 3, material.errors.size, 'invalid number of errors'
+      assert_not_nil material.subsets, 'subsets is nil'
+      assert_equal 2, material.subsets.size, 'after: subsets items count not matched'
+    end
+
   end
 end

@@ -93,7 +93,7 @@ class Material < ApplicationRecord
 
   validates :difficulty_level, controlled_vocabulary: { dictionary: DifficultyDictionary.instance }
 
-  clean_array_fields(:keywords, :contributors, :authors, :target_audience, :resource_type)
+  clean_array_fields(:keywords, :contributors, :authors, :target_audience, :resource_type, :subsets)
 
   update_suggestions(:keywords, :contributors, :authors, :target_audience, :resource_type)
 
