@@ -2,8 +2,8 @@
   <%= content_tag :span, material.title, { itemprop: 'name', content: material.title, class: 'schemaorg-element' } %>
   <%= content_tag :span, material.url, { itemprop: 'url', content: material.url, class: 'schemaorg-element' } %>
   <%= content_tag :span, material_url(material), { itemprop: 'sameAs', content: material_url(material), class: 'schemaorg-element' } %>
-  <% if material.long_description and not material.long_description.empty? %>
-    <%= content_tag :span, material.long_description, { itemprop: 'description', content: material.long_description, class: 'schemaorg-element' } %>
+  <% if material.description and not material.description.empty? %>
+    <%= content_tag :span, material.description, { itemprop: 'description', content: material.description, class: 'schemaorg-element' } %>
   <% end %>
   <% if material.contact and not material.contact.empty? %>
     <%= content_tag :span, material.contact, { itemprop: 'contact', content: material.contact, class: 'schemaorg-element' } %>

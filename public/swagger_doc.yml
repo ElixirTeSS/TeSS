@@ -173,7 +173,7 @@ definitions:
       url:
         type: string
         description: The URL where the actual material can be found.
-      long_description:
+      description:
         type: string
         description: A description of what the training material is about.
       doi:

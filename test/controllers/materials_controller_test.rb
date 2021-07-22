@@ -14,14 +14,14 @@ class MaterialsControllerTest < ActionController::TestCase
     @material.save!
     @updated_material = {
       title: 'New title',
-      long_description: 'New description',
+      description: 'New description',
       url: 'http://new.url.com',
       content_provider_id: ContentProvider.first.id
     }
     @material_with_suggestions = materials(:material_with_suggestions)
     @updated_material_with_suggestions = {
       title: 'New title for suggestion material',
-      long_description: 'New description',
+      description: 'New description',
       url: 'http://new.url.com',
       content_provider_id: ContentProvider.first.id
     }
@@ -204,13 +204,13 @@ class MaterialsControllerTest < ActionController::TestCase
           doi: @material.doi,
           remote_created_date: @material.remote_created_date,
           remote_updated_date: @material.remote_updated_date,
-          long_description: @material.long_description,
+          description: @material.description,
           title: @material.title,
           url: @material.url,
           licence: @material.licence,
           keywords: @material.keywords,
-          contact: @material.contact
-
+          contact: @material.contact,
+          status: @material.status
         }
       }
     end
@@ -235,23 +235,23 @@ class MaterialsControllerTest < ActionController::TestCase
           # required attributes
           title: test_title,
           url: test_url,
-          long_description: test_material.long_description,
-          doi: test_material.doi,
+          description: test_material.description,
           licence: test_material.licence,
           keywords: test_material.keywords,
           contact: test_material.contact,
+          status: test_material.status,
 
           # optional attributes
           content_provider_id: test_provider.id,
           events: test_material.events,
           target_audience: test_material.target_audience,
           resource_type: test_material.resource_type,
-          duration: test_material.duration,
+          other_types: test_material.other_types,
           version: test_material.version,
-          status: test_material.status,
           date_created: test_material.date_created,
           date_modified: test_material.date_modified,
           date_published: test_material.date_published,
+          doi: test_material.doi,
           subsets: test_material.subsets,
           authors: test_material.authors,
           contributors: test_material.contributors,
@@ -277,21 +277,19 @@ class MaterialsControllerTest < ActionController::TestCase
     # required attributes
     assert_equal test_title, JSON.parse(response.body)['title'], 'title not matched.'
     assert_equal test_url, JSON.parse(response.body)['url'], 'description not matched.'
-    assert_equal test_material.long_description, JSON.parse(response.body)['long_description'], 'description not matched.'
-    assert_equal test_material.doi, JSON.parse(response.body)['doi'], 'doi not matched.'
+    assert_equal test_material.description, JSON.parse(response.body)['description'], 'description not matched.'
     assert_equal test_material.licence, JSON.parse(response.body)['licence'], 'licence not matched.'
     assert_equal test_material.contact, JSON.parse(response.body)['contact'], 'contact not matched.'
     assert_equal test_material.keywords, JSON.parse(response.body)['keywords'], 'keywords not matched'
+    assert_equal test_material.status, JSON.parse(response.body)['status'], 'status not matched'
 
     #optional attributes
-    assert_equal test_provider.id, JSON.parse(response.body)['content_provider_id'],
-                 'provider not matched'
-    assert_equal test_material.resource_type, JSON.parse(response.body)['resource_type'],
-                 'resource_type not matched'
-    assert_equal test_material.status, JSON.parse(response.body)['status'], 'status not matched'
+    assert_equal test_material.doi, JSON.parse(response.body)['doi'], 'doi not matched.'
+    assert_equal test_provider.id, JSON.parse(response.body)['content_provider_id'], 'provider not matched'
+    assert_equal test_material.resource_type, JSON.parse(response.body)['resource_type'], 'resource_type not matched'
     assert_equal test_material.version, JSON.parse(response.body)['version'], 'version not matched'
-    assert_equal test_material.duration, JSON.parse(response.body)['duration'], 'duration not matched'
-    # assert_equal test_material.events, JSON.parse(response.body)['events'], 'events not matched'
+    assert_equal test_material.other_types, JSON.parse(response.body)['other_types'], 'other_types not matched'
+    #assert_equal test_material.events, JSON.parse(response.body)['events'], 'events not matched'
     assert_equal test_material.target_audience, JSON.parse(response.body)['target_audience'], 'target audience not matched'
     assert_equal test_material.authors, JSON.parse(response.body)['authors'], 'authors not matched'
     assert_equal test_material.contributors, JSON.parse(response.body)['contributors'], 'contributors not matched'
@@ -300,7 +298,6 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_equal test_material.syllabus, JSON.parse(response.body)['syllabus'], 'syllabus not matched'
     assert_equal test_material.learning_objectives, JSON.parse(response.body)['learning_objectives'],
                  'learning objectives not matched'
-
     assert_equal test_material.date_created.to_s("%Y-%m-%d"), JSON.parse(response.body)['date_created'],
                  'date created not matched'
     assert_equal test_material.date_modified.to_s("%Y-%m-%d"), JSON.parse(response.body)['date_modified'],
@@ -321,12 +318,13 @@ class MaterialsControllerTest < ActionController::TestCase
           doi: @material.doi,
           remote_created_date: @material.remote_created_date,
           remote_updated_date: @material.remote_updated_date,
-          long_description: @material.long_description,
+          description: @material.description,
           title: @material.title,
           url: @material.url,
           licence: @material.licence,
           keywords: @material.keywords,
-          contact: @material.contact
+          contact: @material.contact,
+          status: @material.status
         }
       }
     end
@@ -340,12 +338,13 @@ class MaterialsControllerTest < ActionController::TestCase
           doi: @material.doi,
           remote_created_date: @material.remote_created_date,
           remote_updated_date: @material.remote_updated_date,
-          long_description: @material.long_description,
+          description: @material.description,
           title: @material.title,
           url: @material.url,
           licence: @material.licence,
           keywords: @material.keywords,
-          contact: @material.contact
+          contact: @material.contact,
+          status: @material.status
         }
       }
     end
@@ -650,11 +649,12 @@ class MaterialsControllerTest < ActionController::TestCase
         material: {
           title: material_title,
           url: 'http://horse.com',
-          long_description: 'I love horses',
+          description: 'I love horses',
           contact: 'default contact',
           doi: 'https://doi.org/10.1001/RSE.2.190',
           licence: 'CC-BY-4.0',
-          keywords: ['scraped','through','api']
+          keywords: ['scraped','through','api'],
+          status: 'active'
         },
         format: 'json'
       }
@@ -674,11 +674,12 @@ class MaterialsControllerTest < ActionController::TestCase
         material: {
           title: 'material_title',
           url: 'http://horse.com',
-          long_description: 'All about horses',
+          description: 'All about horses',
           contact: 'default contact',
           doi: 'https://doi.org/10.1001/RSE.2.190',
           licence: 'CC-BY-4.0',
-          keywords: %{ invalid authtoken }
+          keywords: %{ invalid authtoken },
+          status: 'active'
         },
         format: 'json'
       }
@@ -698,7 +699,7 @@ class MaterialsControllerTest < ActionController::TestCase
         material: {
           title: new_title,
           url: material.url,
-          long_description: material.long_description
+          description: material.description
         },
         id: material.id,
         format: 'json'
@@ -721,7 +722,7 @@ class MaterialsControllerTest < ActionController::TestCase
         material: {
           title: new_title,
           url: material.url,
-          long_description: material.long_description
+          description: material.description
         },
         id: material.id,
         format: 'json'
@@ -775,7 +776,7 @@ class MaterialsControllerTest < ActionController::TestCase
         id: @material,
         material: {
           title: 'New title',
-          long_description: 'New description',
+          description: 'New description',
           url: 'http://new.url.com',
           content_provider_id: ContentProvider.first.id,
           external_resources_attributes: { "1" => { title: 'Cool link', url: 'https://tess.elixir-uk.org/', _destroy: '0' } }
@@ -800,7 +801,7 @@ class MaterialsControllerTest < ActionController::TestCase
         id: material,
         material: {
           title: 'New title',
-          long_description: 'New description',
+          description: 'New description',
           url: 'http://new.url.com',
           content_provider_id: ContentProvider.first.id,
           external_resources_attributes: { "0" => { id: resource.id, _destroy: '1' } }
@@ -822,7 +823,7 @@ class MaterialsControllerTest < ActionController::TestCase
         id: material,
         material: {
           title: 'New title',
-          long_description: 'New description',
+          description: 'New description',
           url: 'http://new.url.com',
           content_provider_id: ContentProvider.first.id,
           external_resources_attributes: { "1" => { id: resource.id, title: 'Cool link',
@@ -891,19 +892,20 @@ class MaterialsControllerTest < ActionController::TestCase
 
     assert_difference('Material.count', 1) do
       post :create, params: {
-        material: { long_description: '<b>hi</b><script>alert("hi!");</script>',
+        material: { description: '<b>hi</b><script>alert("hi!");</script>',
                     title: 'Insanity',
                     url: 'http://www.example.com/sanity/0',
                     doi: 'https://doi.org/10.1100/RSE.2019.23',
                     licence: 'CC-BY-4.0',
                     keywords: ['insanity','sanitized','sanitary'],
-                    contact: 'default contact'
+                    contact: 'default contact',
+                    status: 'development'
         }
       }
     end
 
     assert_redirected_to material_path(assigns(:material))
-    assert_equal 'hi', assigns(:material).long_description
+    assert_equal 'hi', assigns(:material).description
   end
 
   test 'should log parameter changes when updating a material' do
@@ -921,7 +923,7 @@ class MaterialsControllerTest < ActionController::TestCase
     parameters = @material.activities.where(key: 'material.update_parameter').map(&:parameters)
     title_activity = parameters.detect { |p| p[:attr] == 'title' }
     url_activity = parameters.detect { |p| p[:attr] == 'url' }
-    description_activity = parameters.detect { |p| p[:attr] == 'long_description' }
+    description_activity = parameters.detect { |p| p[:attr] == 'description' }
     content_provider_activity = parameters.detect { |p| p[:attr] == 'content_provider_id' }
 
     assert_equal 'New title', title_activity[:new_val]
@@ -983,14 +985,15 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_difference('Material.count') do
       post :create, params: {
         material: {
-          long_description: @material.long_description,
+          description: @material.description,
           title: @material.title,
           url: @material.url,
           node_names: [nodes(:westeros).name, nodes(:good).name],
           doi: @material.doi,
           licence: @material.licence,
           keywords: @material.keywords,
-          contact: @material.contact
+          contact: @material.contact,
+          status: @material.status
         }
       }
     end
@@ -1003,13 +1006,13 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'can lock fields' do
     sign_in @material.user
     assert_difference('FieldLock.count', 2) do
-      patch :update, params: { id: @material, material: { title: 'hi', locked_fields: ['title', 'long_description'] } }
+      patch :update, params: { id: @material, material: { title: 'hi', locked_fields: ['title', 'description'] } }
     end
 
     assert_redirected_to material_path(assigns(:material))
     assert_equal 2, assigns(:material).locked_fields.count
     assert assigns(:material).field_locked?(:title)
-    assert assigns(:material).field_locked?(:long_description)
+    assert assigns(:material).field_locked?(:description)
     refute assigns(:material).field_locked?(:url)
   end
 
@@ -1026,7 +1029,7 @@ class MaterialsControllerTest < ActionController::TestCase
         material: {
           title: 'new title',
           url: material.url,
-          long_description: 'new description'
+          description: 'new description'
         },
         id: material.id,
         format: 'json'
@@ -1035,7 +1038,7 @@ class MaterialsControllerTest < ActionController::TestCase
 
     parsed_response = JSON.parse(response.body)
     assert_equal material.title, parsed_response['title'], 'Title should not have changed'
-    assert_equal 'new description', parsed_response['long_description']
+    assert_equal 'new description', parsed_response['description']
   end
 
   test 'normal user can overwrite locked fields' do
@@ -1185,13 +1188,14 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_enqueued_jobs 1 do
       assert_difference('Material.count') do
         post :create, params: {
-          material: { long_description: @material.long_description,
+          material: { description: @material.description,
                       title: @material.title,
                       url: 'http://example.com/dodgy-event',
                       doi: 'https://doi.org/10.10067/SEA.2019.22',
                       licence: 'CC-BY-4.0',
                       keywords: %w{ dodgy event },
-                      contact: 'default contact'
+                      contact: 'default contact',
+                      status: 'archived'
           }
         }
       end
@@ -1203,18 +1207,18 @@ class MaterialsControllerTest < ActionController::TestCase
 
   test 'should not trigger notification if unverified user already created content' do
     sign_in users(:unverified_user)
-    users(:unverified_user).materials.create!(long_description: @material.long_description,
+    users(:unverified_user).materials.create!(description: @material.description,
                                               title: @material.title, url: 'http://example.com/dodgy-event',
-                                              doi: 'https://doi.org/10.10067/SEA.2019.22',
+                                              doi: 'https://doi.org/10.10067/SEA.2019.22', status: 'active',
                                               licence: 'CC-BY-4.0', contact: 'default contact',
                                               keywords: %w{ dodgy event unverified user }  )
 
     assert_enqueued_jobs 0 do
       assert_difference('Material.count') do
         post :create, params: {
-          material: { long_description: @material.long_description,
+          material: { description: @material.description,
                       title: @material.title, url: 'http://example.com/dodgy-event-2',
-                      licence: 'CC-BY-4.0', contact: 'default contact',
+                      licence: 'CC-BY-4.0', contact: 'default contact', status: 'active',
                       doi: 'https://doi.org/10.10067/SEA.2019.22',
                       keywords: %w{ another dodgy event }
           }

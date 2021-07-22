@@ -13,7 +13,7 @@
 <% if resource.class.name.downcase == 'material' -%>
   <%= display_attribute(resource, :target_audience) { |values| values.each { |x| target_audience_title_for_label(x) }.join(', ') } %>
   <%= display_attribute(resource, :resource_type) { |values| values.each { |x| material_type_title_for_label(x) }.join(', ') } %>
-  <%= display_attribute(resource, :duration) %>
+  <%= display_attribute(resource, :other_types) %>
   <%= display_attribute(resource, :version) %>
   <%= display_attribute(resource, :status) { |value| material_status_title_for_label(value) } %>
   <%= display_attribute(resource, :subsets) { |values| values.join(', ') } %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_13_082501) do
+ActiveRecord::Schema.define(version: 2021_07_21_074829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -192,7 +192,7 @@ ActiveRecord::Schema.define(version: 2021_07_13_082501) do
     t.date "remote_created_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "long_description"
+    t.text "description"
     t.string "target_audience", default: [], array: true
     t.string "authors", default: [], array: true
     t.string "contributors", default: [], array: true
@@ -206,7 +206,7 @@ ActiveRecord::Schema.define(version: 2021_07_13_082501) do
     t.text "keyword"
     t.string "resource_type", default: [], array: true
     t.string "keywords", default: [], array: true
-    t.string "duration"
+    t.string "other_types"
     t.date "date_created"
     t.date "date_modified"
     t.date "date_published"

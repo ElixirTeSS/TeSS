@@ -230,7 +230,7 @@ Structure the JSON thus:
         "material": {
             "title": "API example",
             "url": "http://example.com",
-            "long_description": "This API is fun and easy",
+            "description": "This API is fun and easy",
             "doi": "Put some stuff in here",
             "contact": "details of person or organisation",
             "keywords": ["key", "words"],

@@ -23,10 +23,10 @@ class DictionariesTest < ActiveSupport::TestCase
     assert_not_nil dic.lookup(key), "#{key}: key not found"
     key = 'phd'
     assert_not_nil dic.lookup(key), "#{key}: key not found"
-    assert_equal 'PhD Student', dic.lookup(key)['title'], "#{key}: title not matched"
+    assert_equal 'PhD student', dic.lookup(key)['title'], "#{key}: title not matched"
     key = 'ecr'
     assert_not_nil dic.lookup(key), "#{key}: key not found"
-    assert_equal 'ECRs, including post-doctorate researchers.', dic.lookup(key)['description'],
+    assert_equal 'Early career researchers and research fellows.', dic.lookup(key)['description'],
                  "#{key}: description not matched"
   end
 
