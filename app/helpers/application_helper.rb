@@ -165,8 +165,8 @@ module ApplicationHelper
   # End from twitter-bootstrap-rails gem for less
 
   DEFAULT_IMAGE_FOR_MODEL = {
-    'ContentProvider' => 'placeholder-organization.png',
-    'Package' => 'placeholder-group.png',
+    'ContentProvider' => TeSS::Config.placeholder['provider'],
+    'Package' => TeSS::Config.placeholder['package'],
     'Node' => 'elixir_logo_orange.png'
   }.freeze
 
@@ -174,7 +174,7 @@ module ApplicationHelper
     if resource.is_a?(Node) && File.exist?("#{Rails.root}/app/assets/images/nodes/logos/#{resource.country_code}.png")
       "nodes/logos/#{resource.country_code}.png"
     elsif !resource.respond_to?(:image?) || !resource.image?
-      DEFAULT_IMAGE_FOR_MODEL.fetch(resource.class.name, 'placeholder-group.png')
+      DEFAULT_IMAGE_FOR_MODEL.fetch(resource.class.name, TeSS::Config.placeholder['group'])
     else
       resource.image.url
     end

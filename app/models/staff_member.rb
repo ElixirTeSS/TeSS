@@ -8,5 +8,5 @@ class StaffMember < ApplicationRecord
   scope :training_coordinators, -> { where(role: TRAINING_COORDINATOR_ROLE) }
   scope :other_roles, -> { where.not(role: TRAINING_COORDINATOR_ROLE) }
 
-  has_image(placeholder: 'placeholder-person.png')
+  has_image(placeholder: TeSS::Config.placeholder['person'])
 end
