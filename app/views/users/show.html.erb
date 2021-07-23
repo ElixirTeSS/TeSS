@@ -132,72 +132,118 @@
       <% past_events = @user.events.finished %>
       <% events = upcoming_events.limit(resource_limit) %>
       <% workflows = @user.workflows.visible_by(current_user) %>
+      <% packages = @user.packages.limit(resource_limit) %>
 
       <ul class="nav nav-tabs">
-        <%= tab('Materials', icon_class_for_model('materials'), 'materials', active: true,
-                disabled: { check: materials.none?, message: 'No registered training materials' },
-                count: @user.materials.count) %>
 
-        <%= tab('Events', icon_class_for_model('events'), 'events',
-                disabled: { check: @user.events.count.zero?, message: 'No registered events' },
-                count: @user.events.count) %>
+        <!-- Tab: Events -->
+        <% if TeSS::Config.feature['events'] %>
+          <%= tab('Events', icon_class_for_model('events'), 'events', active: true,
+                  disabled: { check: @user.events.count.zero?, message: 'No registered events' },
+                  count: @user.events.count) %>
+        <% end %>
 
-        <%= tab('Workflows', icon_class_for_model('workflows'), 'workflows',
-                disabled: { check: workflows.none?, message: 'No workflows' },
-                count: workflows.count) %>
+        <!-- Tab: Materials -->
+        <% if TeSS::Config.feature['materials'] %>
+          <%= tab('Materials', icon_class_for_model('materials'), 'materials',
+                  disabled: { check: materials.none?, message: 'No registered training materials' },
+                  count: @user.materials.count) %>
+        <% end %>
+
+        <!-- Tab: Packages -->
+        <% if TeSS::Config.feature['packages'] %>
+          <%= tab('Packages', icon_class_for_model('packages'), 'packages',
+                  disabled: { check: packages.none?, message: 'No registered packages' },
+                  count: @user.packages.count) %>
+        <% end %>
+
+        <!-- Tab: Workflows -->
+        <% if TeSS::Config.feature['workflows'] %>
+          <%= tab('Workflows', icon_class_for_model('workflows'), 'workflows',
+                  disabled: { check: workflows.none?, message: 'No workflows' },
+                  count: workflows.count) %>
+        <% end %>
       </ul>
 
       <div class="tab-content">
-        <div id="materials" class="tab-pane fade in active">
-          <div class="row">
-            <div class="search-results-count">
-              <%= (materials.count > 0 ? "Showing" : "Found") + " #{pluralize(materials.count, "material")}#{(@user.materials.count > resource_limit) ? " out of #{@user.materials.count}" : ''}." %>
-              <%= link_to('View all results.', materials_path(user: @user.username)) if (@user.materials.count > resource_limit) %>
-            </div>
 
-            <% materials.each do |material| %>
-              <%= render material %>
-            <% end %>
-          </div>
-        </div>
-        <div id="events" class="tab-pane fade">
-          <div class="row">
-            <div class="search-results-count">
-              <%= (upcoming_events.count > 0 ? "Showing" : "Found") + " #{pluralize(events.count, "upcoming event")}#{(upcoming_events.count > resource_limit) ? " out of #{upcoming_events.count}" : ''}." %>
-              <%= "Found #{pluralize(past_events.count, "past event")}." %>
-            </div>
-            <ul>
-              <% if upcoming_events.count > resource_limit %>
-                <li><%= link_to('View all upcoming events', events_path(user: @user.username)) %></li>
-              <% end %>
-              <% if past_events.count > 0 %>
-                <li><%= link_to('View all events', events_path(user: @user.username, include_expired: true)) %></li>
-              <% end %>
-            </ul>
-            <% if events.count > 0 %>
-              <ul class="masonry media-grid" style="margin-top: 15px;">
-                <% events.each do |event| %>
-                  <%= render event %>
+        <!-- Tab: Events -->
+        <% if TeSS::Config.feature['events'] %>
+          <div id="events" class="tab-pane fade in active">
+            <div class="row">
+              <div class="search-results-count">
+                <%= (upcoming_events.count > 0 ? "Showing" : "Found") + " #{pluralize(events.count, "upcoming event")}#{(upcoming_events.count > resource_limit) ? " out of #{upcoming_events.count}" : ''}." %>
+                <%= "Found #{pluralize(past_events.count, "past event")}." %>
+              </div>
+              <ul>
+                <% if upcoming_events.count > resource_limit %>
+                  <li><%= link_to('View all upcoming events', events_path(user: @user.username)) %></li>
+                <% end %>
+                <% if past_events.count > 0 %>
+                  <li><%= link_to('View all events', events_path(user: @user.username, include_expired: true)) %></li>
                 <% end %>
               </ul>
-            <% end %>
-          </div>
-        </div>
-        <div id="workflows" class="tab-pane fade">
-          <div class="row">
-            <div class="search-results-count">
-              <%= pluralize(workflows.count, 'workflow') %> found
+              <% if events.count > 0 %>
+                <ul class="masonry media-grid" style="margin-top: 15px;">
+                  <% events.each do |event| %>
+                    <%= render event %>
+                  <% end %>
+                </ul>
+              <% end %>
             </div>
-            <% if workflows.any? %>
-              <ul class="masonry media-grid" style="margin-top: 15px;">
-                <% workflows.each do |workflow| %>
-                  <%= render workflow %>
-                <% end %>
-              </ul>
-            <% end %>
           </div>
-        </div>
-      </div>
+        <% end %>
+
+        <!-- Tab: Materials -->
+        <% if TeSS::Config.feature['materials'] %>
+          <div id="materials" class="tab-pane fade">
+            <div class="row">
+              <div class="search-results-count">
+                <%= (materials.count > 0 ? "Showing" : "Found") + " #{pluralize(materials.count, "material")}#{(@user.materials.count > resource_limit) ? " out of #{@user.materials.count}" : ''}." %>
+                <%= link_to('View all results.', materials_path(user: @user.username)) if (@user.materials.count > resource_limit) %>
+              </div>
+              <% materials.each do |material| %>
+                <%= render material %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- Tab: Packages -->
+        <% if TeSS::Config.feature['packages'] %>
+          <div id="packages" class="tab-pane fade">
+            <div class="row">
+              <div class="search-results-count">
+                <%= (packages.count > 0 ? "Showing" : "Found") + " #{pluralize(packages.count, "package")}#{(@user.packages.count > resource_limit) ? " out of #{@user.packages.count}" : ''}." %>
+                <%= link_to('View all results.', packages(user: @user.username)) if (@user.packages.count > resource_limit) %>
+              </div>
+              <% packages.each do |package| %>
+                <%= render package %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- Tab: Workflows -->
+        <% if TeSS::Config.feature['workflows'] %>
+          <div id="workflows" class="tab-pane fade">
+            <div class="row">
+              <div class="search-results-count">
+                <%= pluralize(workflows.count, 'workflow') %> found
+              </div>
+              <% if workflows.any? %>
+                <ul class="masonry media-grid" style="margin-top: 15px;">
+                  <% workflows.each do |workflow| %>
+                    <%= render workflow %>
+                  <% end %>
+                </ul>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+      </div> <!-- end tab-content -->
+
     </div>
   </div>
 </div>
