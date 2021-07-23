@@ -9,7 +9,11 @@ class StaticController < ApplicationController
     @hide_search_box = true
     @resources = []
     if TeSS::Config.solr_enabled
-      [Event, Material].each do |resource|
+      enabled = []
+      enabled.append(Event) if TeSS::Config.feature['events']
+      enabled.append(Material) if TeSS::Config.feature['materials']
+      enabled.append(Package) if TeSS::Config.feature['packages']
+      enabled.each do |resource|
         @resources += resource.search_and_filter(nil, '', { 'max_age' => '1 month' },
                                                  sort_by: 'new', per_page: 5).results
       end

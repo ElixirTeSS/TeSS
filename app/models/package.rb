@@ -21,7 +21,7 @@ class Package < ApplicationRecord
   clean_array_fields(:keywords)
   update_suggestions(:keywords)
 
-  has_image(placeholder: 'placeholder-package.png')
+  has_image(placeholder: TeSS::Config.placeholder['package'])
 
   if TeSS::Config.solr_enabled
     # :nocov:
@@ -43,6 +43,8 @@ class Package < ApplicationRecord
 
       integer :user_id
       boolean :public
+      time :created_at
+      time :updated_at
     end
     # :nocov:
   end
@@ -67,5 +69,19 @@ class Package < ApplicationRecord
       where(public: true)
     end
   end
+
+  # implement methods to allow processing as resource
+  def last_scraped
+    return nil
+  end
+
+  def content_provider
+    return nil
+  end
+
+  def scientific_topics
+    return nil
+  end
+
 
 end

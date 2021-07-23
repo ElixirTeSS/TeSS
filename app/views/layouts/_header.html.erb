@@ -118,6 +118,9 @@
           <% if TeSS::Config.feature['worflows'] == true %>
             <%= menu_item "Workflows", workflows_path %>
           <% end %>
+          <% if TeSS::Config.feature['packages'] == true %>
+            <%= menu_item "Packages", packages_path %>
+          <% end %>
           <% if TeSS::Config.feature['providers'] == true %>
             <%= menu_item "Providers", content_providers_path %>
           <% end %>
