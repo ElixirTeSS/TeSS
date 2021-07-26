@@ -29,7 +29,7 @@ class ContentProvider < ApplicationRecord
   # The order of these determines which providers have precedence when scraping.
   # Low -> High
   PROVIDER_TYPE = ['Portal', 'Organisation', 'Project']
-  has_image(placeholder: 'placeholder-organization.png')
+  has_image(placeholder: TeSS::Config.placeholder['provider'])
 
   if TeSS::Config.solr_enabled
     # :nocov:

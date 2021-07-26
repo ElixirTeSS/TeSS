@@ -23,7 +23,8 @@
     </div>
     <div class="row">
       <ul class="nav nav-tabs">
-        <%= tab('Materials', icon_class_for_model('materials'), 'materials', active: @package.materials.any? || @package.events.none?,
+        <%= tab('Materials', icon_class_for_model('materials'), 'materials',
+                active: @package.materials.any? || @package.events.none?,
                 disabled: { check: @package.materials.none?, message: 'No associated training materials' },
                 count: @package.materials.count) %>
 

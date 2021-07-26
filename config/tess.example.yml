@@ -45,6 +45,11 @@ default: &default
     trainers: true
     workflows: true
     disabled: []
+  placeholder:
+    package: 'placeholder-package.png'
+    provider: 'placeholder-organization.png'
+    group: 'placeholder-group.png'
+    person: 'placeholder-person.png'
   dictionaries:
     difficulty: 'difficulty.yml'
     eligibility: 'eligibility.yml'
@@ -100,12 +105,17 @@ dresa: &dresa
     events: true
     materials: true
     nodes: false
-    packages: false
+    packages: true
     providers: true
     subscription: true
     trainers: true
     workflows: false
     disabled: ['county', 'operations', 'sponsors', 'materials']
+  placeholder:
+    package: 'Training_Packages@4x.png'
+    provider: 'Training_Providers@4x.png'
+    group: 'placeholder-group.png'
+    person: 'placeholder-person.png'
   dictionaries:
     difficulty: 'difficulty_dresa.yml'
     eligibility: 'eligibility_dresa.yml'

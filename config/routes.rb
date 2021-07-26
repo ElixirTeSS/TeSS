@@ -73,7 +73,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :packages, concerns: :activities
+  if TeSS::Config.feature['packages'] == true
+    resources :packages, concerns: :activities
+  end
 
   if TeSS::Config.feature['workflows'] == true
     resources :workflows, concerns: [:collaboratable, :activities] do
