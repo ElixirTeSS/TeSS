@@ -34,7 +34,7 @@ class CurationMailerTest < ActionMailer::TestCase
 
     assert_equal [TeSS::Config.sender_email], email.from
     assert_equal admin_emails, email.to
-    assert_equal "TeSS user \"#{@user.name}\" requires approval", email.subject
+    assert_equal "#{TeSS::Config.site['title_short']} user \"#{@user.name}\" requires approval", email.subject
 
     body = email.text_part.body.to_s
 
@@ -56,7 +56,7 @@ class CurationMailerTest < ActionMailer::TestCase
 
     assert_equal [TeSS::Config.sender_email], email.from
     assert_equal admin_emails, email.to
-    assert_equal "TeSS user \"#{@user.name}\" requires approval", email.subject
+    assert_equal "#{TeSS::Config.site['title_short']} user \"#{@user.name}\" requires approval", email.subject
 
     html = email.html_part.body.to_s
 

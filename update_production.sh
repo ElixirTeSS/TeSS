@@ -25,9 +25,11 @@ bundle exec rails test
 
 # restart sidekiq
 sudo touch tmp/restart.txt
-
 pkill -f sidekiq
 bundle exec sidekiq -d -e "$ENV" -L /tmp/sidekiq.log
+
+# update scheduled tasks
+whenever --update-crontab
 
 # start services
 sudo service unicorn_tess start
