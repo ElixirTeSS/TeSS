@@ -33,7 +33,7 @@ namespace :tess do
           activities.to_a.unshift(nil).reverse.each_cons(2) do |newer, older|
             if newer && older
               if newer.parameters[:new_val].length == older.parameters[:new_val].length &&
-                  newer.parameters[:new_val].sort == older.parameters[:new_val].sort
+                newer.parameters[:new_val].sort == older.parameters[:new_val].sort
                 newer.destroy
                 deleted_count += 1
               end
@@ -48,8 +48,8 @@ namespace :tess do
           # Have to do this very awkward query due to `update_parameter` activities being created separately from
           # `update` activities and not necessarily at the same time!
           if record.activities.where(key: "#{type.name.underscore}.update_parameter").
-              where('id < ?', activity.id).
-              where('created_at > ?', (activity.created_at - 2.seconds)).none?
+            where('id < ?', activity.id).
+            where('created_at > ?', (activity.created_at - 2.seconds)).none?
             activity.destroy
             deleted_count += 1
           end
@@ -120,8 +120,6 @@ namespace :tess do
       sub.process
       print '.'
     end
-    puts
     puts "Done"
   end
-
 end

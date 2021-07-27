@@ -2,24 +2,24 @@ Dear <%= @user.profile.firstname || @user.username %>,
 
 You are receiving this automated email because you subscribed to a <%= @subscription.frequency -%> digest of new <%= @subscription.subscribable_type.pluralize.downcase -%> matching the following criteria:
 <% if @subscription.query -%>
- * Search terms: "<%= @subscription.query %>"
+  * Search terms: "<%= @subscription.query %>"
 <% end -%>
 <% if @subscription.facets.present? %>
-      <% @subscription.facets.each do |facet, values| %>
- * <%= facet.humanize %>: <%= Array(values).to_sentence(last_word_connector: ', or ', two_words_connector: ' or ') -%>
-      <% end %>
+  <% @subscription.facets.each do |facet, values| %>
+    * <%= facet.humanize %>: <%= Array(values).to_sentence(last_word_connector: ', or ', two_words_connector: ' or ') -%>
+  <% end %>
 <% end %>
 
 
-There <%= @digest.total_count == 1 ? 'has' : 'have' -%> been <%= pluralize(@digest.total_count, "new #{@subscription.subscribable_type.downcase}") -%> registered in TeSS:
+There <%= @digest.total_count == 1 ? 'has' : 'have' -%> been <%= pluralize(@digest.total_count, "new #{@subscription.subscribable_type.downcase}") -%> registered in <%= TeSS::Config.site['title_short'] %>:
 <% @digest.each do |result| -%>
- * <%= result.title %> - <%= url_for(result) %>
+  * <%= result.title %> - <%= url_for(result) %>
 <% end -%>
 <% if @digest.count < @digest.total_count %>
-...and <%= pluralize(@digest.total_count - @digest.count, 'other') -%>
+  ...and <%= pluralize(@digest.total_count - @digest.count, 'other') -%>
 <% end %>
 
-View all results on TeSS:
+View all results on <%= TeSS::Config.site['title_short'] %>:
 <%= subscription_results_url(@subscription) %>
 
 ---------------------------------------------------------

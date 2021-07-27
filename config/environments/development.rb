@@ -31,9 +31,17 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.perform_caching = false
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  #config.action_mailer.raise_delivery_errors = false
+  #config.action_mailer.perform_caching = false
+  #config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_url_options = {
+    host: URI.parse(TeSS::Config.base_url).host,
+    port: URI.parse(TeSS::Config.base_url).port,
+    protocol: URI.parse(TeSS::Config.base_url).scheme
+  }
+  config.action_mailer.asset_host = TeSS::Config.base_url
+  config.action_mailer.smtp_settings = Rails.application.secrets[:smtp] if Rails.application.secrets.key?(:smtp)
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

@@ -5,7 +5,7 @@
 
 # Example:
 #
-# set :output, "/path/to/my/cron_log.log"
+set :output, "/ubuntu/TeSS/shared/log/cron_log.log"
 #
 # every 2.hours do
 #   command "/usr/bin/some_great_command"
@@ -22,4 +22,9 @@
 # Generate a new sitemap...
 every 1.day, at: "6am" do
   rake "sitemap:generate"
+end
+
+# process subscriptions
+every 1.day, at: "4am" do
+  rake "tess:process_subscriptions"
 end

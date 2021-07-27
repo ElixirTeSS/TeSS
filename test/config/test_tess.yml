@@ -8,8 +8,8 @@ blocked_domains:
 identifiers_url: "http://example.com/identifiers/"
 identifiers_prefix: banana
 site:
-  title: 'Test TeSS'
-  title_short: ''
+  title: 'Digital Research Skills Australasia'
+  title_short: 'DReSA'
   favicon: ''
   logo: ''
   logo_alt: ''
