@@ -74,6 +74,10 @@ class Subscription < ApplicationRecord
     where(clause)
   end
 
+  def reset_due
+    update_attribute(:last_checked_at, Time.now - (2 * period))
+  end
+
   private
 
   def max_age
@@ -99,4 +103,5 @@ class Subscription < ApplicationRecord
   def set_last_checked_at
     self.last_checked_at = Time.now
   end
+
 end

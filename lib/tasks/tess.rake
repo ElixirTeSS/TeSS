@@ -120,6 +120,19 @@ namespace :tess do
       sub.process
       print '.'
     end
-    puts "Done"
+    puts " Done"
   end
+
+  task reset_subscriptions: :environment do
+    subs = Subscription.all
+    puts "Resetting #{subs.count} subscriptions at #{Time.now}:"
+    subs.each do |sub|
+      sub.reset_due
+      puts "id: #{sub.id}, last_checked_at: #{sub.last_checked_at}, due?: #{sub.due?}, period: #{sub.period}\n"
+      #print '.'
+    end
+    puts " Done"
+
+  end
+
 end
