@@ -8,11 +8,11 @@
 set :output, "shared/log/cron.log"
 
 # Generate a new sitemap...
-every 1.day, at: "6am" do
+every :day, at: '6am' do
   rake "sitemap:generate"
 end
 
-# Process subscriptions
-every 1.day, at: "4am" do
+# Process subscriptions...
+every :day, at: '4am' do
   rake "tess:process_subscriptions"
 end
