@@ -8,6 +8,9 @@ TeSS is a Rails 5 application.
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/fbe7186d5f2e43e890ec4f5c76445e33)](https://www.codacy.com/gh/nrmay/TeSS/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=nrmay/TeSS&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/fbe7186d5f2e43e890ec4f5c76445e33)](https://www.codacy.com/gh/nrmay/TeSS/dashboard?utm_source=github.com&utm_medium=referral&utm_content=nrmay/TeSS&utm_campaign=Badge_Coverage)
 
+## Versions
+See the [Change Log](./CHANGE_LOG.md) for details of themes and issues associated with each version.
+
 ## Setup
 Below is an example guide to help you set up TeSS in development mode. More comprehensive guides on installing
 Ruby, Rails, RVM, bundler, postgres, etc. are available elsewhere.
