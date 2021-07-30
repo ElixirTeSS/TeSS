@@ -8,7 +8,8 @@
         <%= link_to 'Add your resources to ' + TeSS::Config.site['title_short'],
                     registering_resources_path, target: '_blank' %><br/>
         <%= link_to 'Funding & acknowledgements', us_path(anchor: 'funding'), target: '_blank' %><br/>
-        <%= link_to "Source code [ version: #{app_version_text} ]", TeSS::Config.site['repository'], target: '_blank' %>
+        <%= link_to "Source code [ version: #{app_version_text} ]",
+                    "#{TeSS::Config.site['repository']}/blob/master/README.md", target: '_blank' %>
       </div>
       <div class="col-md-9 hidden-sm hidden-xs">
         <%= render :partial => 'layouts/dresa_funded_by' %>
