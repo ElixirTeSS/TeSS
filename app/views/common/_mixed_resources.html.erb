@@ -33,12 +33,14 @@
     </div>
 
   </div>
-  <div class="row">
-    <%= display_attribute(resource, :scientific_topics) { |values|
-      values.map { |x| "<span class=\"scientific_topic\">#{x.preferred_label.to_s}</span>" }.join(', ')
-    } %>
+  <% if !TeSS::Config.feature['disabled'].include? 'topics' %>
+    <div class="row">
+      <%= display_attribute(resource, :scientific_topics) { |values|
+        values.map { |x| "<span class=\"scientific_topic\">#{x.preferred_label.to_s}</span>" }.join(', ')
+      } %>
 
-    <%= display_attribute(resource, :keywords) { |values| values.join(', ') } if resource.keywords.any? %>
-    <%= yield %>
-  </div>
+      <%= display_attribute(resource, :keywords) { |values| values.join(', ') } if resource.keywords.any? %>
+      <%= yield %>
+    </div>
+  <% end %>
 </div>

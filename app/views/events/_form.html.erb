@@ -98,8 +98,10 @@
   <%= f.multi_input :target_audience, errors: @event.errors[:target_audience], title: t('events.hints.targets') %>
 
   <!-- Field: Topics -->
-  <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term', label: 'Topics',
-                      id_field: :uri, label_field: :preferred_label, input_html: { title: t('events.hints.topics') } %>
+  <% if !TeSS::Config.feature['disabled'].include? 'topics' %>
+    <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term', label: 'Topics',
+                        id_field: :uri, label_field: :preferred_label, input_html: { title: t('events.hints.topics') } %>
+  <% end %>
 
   <!-- Field: Capacity -->
   <%= f.input :capacity, field_lock: true, input_html: { title: t('events.hints.capacity') } %>
@@ -122,7 +124,7 @@
   <div class="form-group">
     <%= f.input :cost_basis, collection: CostBasisDictionary.instance.options_for_select,
                 prompt: 'Select a cost basis...', input_html: { title: t('events.hints.cost_basis') } %>
-    <%= f.input :cost_currency, collection: currency_collection(['AUD','NZD']) , value_method: :second,
+    <%= f.input :cost_currency, collection: currency_collection(['AUD', 'NZD']), value_method: :second,
                 prompt: 'Select the currency...', input_html: { title: t('events.hints.cost_currency') } %>
     <%= f.input :cost_value, as: :decimal, label: 'Cost', input_html: { title: t('events.hints.cost_value') } %>
   </div>
