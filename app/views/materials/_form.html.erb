@@ -5,7 +5,7 @@
   <%# Necessary to allow removal of all field locks %>
   <%= hidden_field_tag 'material[locked_fields][]', '' %>
 
-  <% # Required Fields  -%>
+  <% # Required Fields   -%>
 
   <!-- Field: Title -->
   <%= f.input :title, as: :string, field_lock: true, input_html: { title: t('materials.hints.title') } %>
@@ -94,8 +94,10 @@
   <%= f.multi_input :subsets, title: t('materials.hints.subsets') %>
 
   <!-- Field: Scientific Topics -->
-  <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term',
-                      id_field: :uri, label_field: :preferred_label %>
+  <% if !TeSS::Config.feature['disabled'].include? 'topics' %>
+    <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term',
+                        id_field: :uri, label_field: :preferred_label %>
+  <% end %>
 
   <!-- Field: Syllabus -->
   <%= f.input :syllabus, as: :markdown_area, field_lock: true,

@@ -52,8 +52,11 @@
             <% end %>
           <% end %>
           <% if current_user.is_curator? || current_user.is_admin? %>
-            <%= link_to curate_topic_suggestions_path, :title => 'Assign scientific topics to TeSS resources' do %>
-              <i class="fa fa-briefcase fa-lg"></i>
+            <% if !TeSS::Config.feature['disabled'].include? 'topics' %>
+              <%= link_to curate_topic_suggestions_path,
+                          :title => "Assign scientific topics to #{TeSS::Config.site['title_short']} resources" do %>
+                <i class="fa fa-briefcase fa-lg"></i>
+              <% end %>
             <% end %>
           <% end %>
           <%= link_to "Log out", destroy_user_session_path, :method => :delete,
