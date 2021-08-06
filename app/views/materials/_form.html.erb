@@ -57,7 +57,7 @@
   <%= f.autocompleter :events, input_html: { title: t('materials.hints.events') } %>
 
   <!-- Field: Target Audience -->
-  <%= f.dropdown :target_audience, options: TargetAudienceDictionary.instance.options_for_select, label: 'Target audience',
+  <%= f.dropdown :target_audience, options: TargetAudienceDictionary.instance.options_for_select, label: 'Target audiences',
                  errors: @material.errors[:target_audience], title: t('events.hints.targets') %>
 
   <!-- Field: Prerequisites -->
@@ -84,7 +84,7 @@
   <%= f.input :date_published, as: :date_picker, field_lock: true, input_html: { title: t('materials.hints.date_published') } %>
 
   <!-- Field: Resource Type -->
-  <%= f.dropdown :resource_type, options: MaterialTypeDictionary.instance.options_for_select, label: 'Material type',
+  <%= f.dropdown :resource_type, options: MaterialTypeDictionary.instance.options_for_select, label: 'Resource types',
                  errors: @material.errors[:material_types], title: t('materials.hints.type') %>
 
   <!-- Field: Other Types -->
