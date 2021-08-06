@@ -8,6 +8,7 @@ Theme: *Mid-Sprint Bug Fixes*
 
 - Bug Fixes:
   - [Event activity log display #76](https://github.com/nrmay/TeSS/issues/76)
+  - [Materials dictionary fields #108](https://github.com/nrmay/TeSS/issues/108)
   - [Sitemap generate fails: #139](https://github.com/nrmay/TeSS/issues/139)
 
 - Features:
