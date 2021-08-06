@@ -2,6 +2,18 @@
 The sections below refer to the release tags for this repository:
 
 ---
+## [Version 1.2.1](https://github.com/nrmay/TeSS/releases/tag/v1.2.1)
+
+Theme: *Mid-Sprint Bug Fixes*
+
+- Bug Fixes:
+  - [Event activity log display #76](https://github.com/nrmay/TeSS/issues/76)
+  - [Sitemap generate fails: #139](https://github.com/nrmay/TeSS/issues/139)
+
+- Features:
+  - [Enable/disable Topics Feature: #129](https://github.com/nrmay/TeSS/issues/129)
+
+---
 ## [Version 1.2.0](https://github.com/nrmay/TeSS/releases/tag/v1.2.0)  
 
 Theme: *Materials Ready*
