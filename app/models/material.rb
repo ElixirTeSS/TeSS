@@ -87,7 +87,7 @@ class Material < ApplicationRecord
 
   validates :url, url: true
 
-  validates :licence, exclusion: { in: ['notspecified'] ,  message: 'must be specified' }
+  validates :licence, exclusion: { in: ['notspecified'], message: 'must be specified' }
 
   validates :other_types, presence: true, if: Proc.new { |m| m.resource_type.include?('other') }
 
@@ -102,8 +102,14 @@ class Material < ApplicationRecord
   end
 
   def self.facet_fields
-    %w( scientific_topics operations tools standard_database_or_policy target_audience keywords
-        authors related_resources contributors licence node content_provider user resource_type)
+    field_list = %w( keywords licence target_audience authors contributors resource_type related_resources
+                      content_provider  user)
+    field_list.append('operations') unless TeSS::Config.feature['disabled'].include? 'operations'
+    field_list.append('scientific_topics') unless TeSS::Config.feature['disabled'].include? 'topics'
+    field_list.append('standard_database_or_policy') unless TeSS::Config.feature['disabled'].include? 'fairshare'
+    field_list.append('tools') unless TeSS::Config.feature['disabled'].include? 'biotools'
+    field_list.append('node') if TeSS::Config.feature['nodes']
+    return field_list
   end
 
   def self.check_exists(material_params)
