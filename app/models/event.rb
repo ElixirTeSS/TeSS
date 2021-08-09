@@ -41,6 +41,9 @@ class Event < ApplicationRecord
       string :event_types, :multiple => true do
         EventTypeDictionary.instance.values_for_search(self.event_types)
       end
+      string :eligibility, :multiple => true do
+        EligibilityDictionary.instance.values_for_search(self.eligibility)
+      end
       string :keywords, :multiple => true
       time :start
       time :end
@@ -181,8 +184,14 @@ class Event < ApplicationRecord
   end
 
   def self.facet_fields
-    %w( scientific_topics operations event_types online country tools organizer city sponsors target_audience keywords
-        venue node content_provider user )
+    field_list = %w( online event_types venue city country organizer target_audience keywords eligibility
+                     content_provider user )
+    field_list.append('operations') unless TeSS::Config.feature['disabled'].include? 'operations'
+    field_list.append('scientific_topics') unless TeSS::Config.feature['disabled'].include? 'topics'
+    field_list.append('sponsors') unless TeSS::Config.feature['disabled'].include? 'sponsors'
+    field_list.append('tools') unless TeSS::Config.feature['disabled'].include? 'biotools'
+    field_list.append('node') if TeSS::Config.feature['nodes']
+    return field_list
   end
 
   def to_csv_event
