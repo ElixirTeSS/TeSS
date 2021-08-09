@@ -5,7 +5,7 @@
   <%# Necessary to allow removal of all field locks %>
   <%= hidden_field_tag 'material[locked_fields][]', '' %>
 
-  <% # Required Fields   -%>
+  <% # Required Fields    -%>
 
   <!-- Field: Title -->
   <%= f.input :title, as: :string, field_lock: true, input_html: { title: t('materials.hints.title') } %>
@@ -115,13 +115,19 @@
       <% end %>
     </div>
 
-    <div class="row">
-      <%= render :partial => 'common/fairsharing_suggestions', :locals => { :title_element => 'material_title' } %>
-    </div>
+    <!-- Fairshare: check disabled -->
+    <% if !TeSS::Config.feature['disabled'].include? 'fairshare' %>
+      <div class="row">
+        <%= render :partial => 'common/fairsharing_suggestions', :locals => { :title_element => 'material_title' } %>
+      </div>
+    <% end %>
 
-    <div class="row">
-      <%= render :partial => 'common/biotools_suggestions', :locals => { :title_element => 'material_title' } %>
-    </div>
+    <!-- BioTools: check disabled -->
+    <% if !TeSS::Config.feature['disabled'].include? 'biotools' %>
+      <div class="row">
+        <%= render :partial => 'common/biotools_suggestions', :locals => { :title_element => 'material_title' } %>
+      </div>
+    <% end %>
 
     <a href="#" id="add-external-resource-btn" class="btn btn-info">
       <i class="fa fa-plus"></i> Add external resource
