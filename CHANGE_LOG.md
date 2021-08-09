@@ -13,6 +13,7 @@ Theme: *Mid-Sprint Bug Fixes*
 
 - Features:
   - [Enable/disable Topics Feature: #129](https://github.com/nrmay/TeSS/issues/129)
+  - [Enable/disable Fairshare and Biotools: #147](https://github.com/nrmay/TeSS/issues/147)
 
 ---
 ## [Version 1.2.0](https://github.com/nrmay/TeSS/releases/tag/v1.2.0)  
