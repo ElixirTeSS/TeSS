@@ -110,7 +110,7 @@ dresa: &dresa
     subscription: true
     trainers: true
     workflows: false
-    disabled: ['county', 'operations', 'sponsors', 'materials', 'topics']
+    disabled: ['county', 'operations', 'sponsors', 'materials', 'topics', 'fairshare', 'biotools']
   placeholder:
     package: 'Training_Packages@4x.png'
     provider: 'Training_Providers@4x.png'
