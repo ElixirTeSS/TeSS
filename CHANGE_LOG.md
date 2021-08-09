@@ -11,7 +11,9 @@ Theme: *Mid-Sprint Bug Fixes*
   - [Materials dictionary fields #108](https://github.com/nrmay/TeSS/issues/108)
   - [Sitemap generate fails: #139](https://github.com/nrmay/TeSS/issues/139)
 
+
 - Features:
+  - [Added Venue filter: #28](https://github.com/nrmay/TeSS/issues/28)
   - [Enable/disable Topics Feature: #129](https://github.com/nrmay/TeSS/issues/129)
   - [Enable/disable Fairshare and Biotools: #147](https://github.com/nrmay/TeSS/issues/147)
 
