@@ -73,7 +73,8 @@
                 <%= suggestion_icon(@event, 'large') if current_user and current_user.is_admin? -%>
               </h2>
               <p><%= @event.subtitle %></p>
-              <p><%= link_to @event.url, @event.url, :class => 'h5', :target => "_blank" %></p>
+              <p><%= link_to @event.url, @event.url, :class => 'h5', :target => "_blank",
+                             :onclick => "getOutboundLink('#{@event.url}'); return true;" %></p>
             </div>
 
             <p class="dont-break-out">

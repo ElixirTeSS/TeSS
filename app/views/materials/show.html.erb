@@ -51,7 +51,8 @@
               <!-- Field: URL -->
               <p>
                 <div class="url-wrap">
-                  <%= link_to @material.url, @material.url, :class =>'h5', :target => "_blank" %>
+                  <%= link_to @material.url, @material.url, :class =>'h5', :target => "_blank",
+                              :onclick => "getOutboundLink('#{@material.url}'); return true;" %>
                 </div>
               </p>
 
