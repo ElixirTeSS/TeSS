@@ -74,7 +74,7 @@
               </h2>
               <p><%= @event.subtitle %></p>
               <p><%= link_to @event.url, @event.url, :class => 'h5', :target => "_blank",
-                             :onclick => "captureOutboundLink('#{@event.url}'); return false;" %></p>
+                             :onclick => "getOutboundLink('#{@event.url}'); return false;" %></p>
             </div>
 
             <p class="dont-break-out">
