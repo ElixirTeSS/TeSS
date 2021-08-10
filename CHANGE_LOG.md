@@ -4,7 +4,7 @@ The sections below refer to the release tags for this repository:
 ---
 ## [Version 1.2.1](https://github.com/nrmay/TeSS/releases/tag/v1.2.1)
 
-Theme: *Mid-Sprint Bug Fixes*
+Theme: *Mid-Sprint Bug Fixes, Etc.*
 
 - Bug Fixes:
   - [Event activity log display #76](https://github.com/nrmay/TeSS/issues/76)
@@ -16,6 +16,10 @@ Theme: *Mid-Sprint Bug Fixes*
   - [Added Venue filter: #28](https://github.com/nrmay/TeSS/issues/28)
   - [Enable/disable Topics Feature: #129](https://github.com/nrmay/TeSS/issues/129)
   - [Enable/disable Fairshare and Biotools: #147](https://github.com/nrmay/TeSS/issues/147)
+
+
+- Analytics:
+  - [Capture Outbound Links: #137](https://github.com/nrmay/TeSS/issues/137)
 
 ---
 ## [Version 1.2.0](https://github.com/nrmay/TeSS/releases/tag/v1.2.0)  
