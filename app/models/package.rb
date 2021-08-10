@@ -57,7 +57,7 @@ class Package < ApplicationRecord
   end
 
   def self.facet_fields
-    %w( user keywords )
+    %w( keywords user )
   end
 
   def self.visible_by(user)
