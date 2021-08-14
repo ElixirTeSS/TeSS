@@ -58,7 +58,7 @@ class Subscription < ApplicationRecord
 
   def process
     r = digest
-
+    puts "subscription: id[#{self.id}] digest count = #{r.size}"
     if r.any?
       SubscriptionMailer.digest(self, r).deliver_now
       self.last_sent_at = Time.now # This will be saved when `check` is called below

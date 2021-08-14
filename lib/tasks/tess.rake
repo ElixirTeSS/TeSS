@@ -118,7 +118,8 @@ namespace :tess do
     puts "Processing #{subs.count} subscriptions:"
     subs.each do |sub|
       sub.process
-      print '.'
+      puts "id: #{sub.id}, user: #{sub.user_id}, freq: #{sub.frequency}, type: #{sub.subscribable_type}\n"
+      #print '.'
     end
     puts " Done"
   end

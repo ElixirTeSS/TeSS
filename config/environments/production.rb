@@ -70,18 +70,30 @@ Rails.application.configure do
   config.active_job.queue_name_prefix = "dresa_#{Rails.env}"
   config.active_job.queue_name_delimiter = '.'
 
-  config.action_mailer.perform_caching = false
+  # action mailer smtp settings
+  if TeSS::Config.mailer['delivery_method'] == 'smtp'
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = Rails.application.secrets[:smtp] if Rails.application.secrets.key?(:smtp)
+  end
 
-  # Ignore bad email addresses and do not raise email delivery errors.
-  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
+  # action mailer sendmail settings
+  if TeSS::Config.mailer['delivery_method'] == 'sendmail'
+    config.action_mailer.delivery_method = :sendmail
+    config.action_mailer.sendmail_settings = {
+      location: TeSS::Config.mailer['location'],
+      arguments: TeSS::Config.mailer['arguments']
+    }
+  end
+
+  # action mailer other options
+  config.action_mailer.perform_caching = false
   config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.default_url_options = {
-      host: URI.parse(TeSS::Config.base_url).host,
-      port: URI.parse(TeSS::Config.base_url).port,
-      protocol: URI.parse(TeSS::Config.base_url).scheme
-  }
   config.action_mailer.asset_host = TeSS::Config.base_url
-  config.action_mailer.smtp_settings = Rails.application.secrets[:smtp] if Rails.application.secrets.key?(:smtp)
+  config.action_mailer.default_url_options = {
+    host: URI.parse(TeSS::Config.base_url).host,
+    port: URI.parse(TeSS::Config.base_url).port,
+    protocol: URI.parse(TeSS::Config.base_url).scheme
+  }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
