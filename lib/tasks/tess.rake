@@ -118,8 +118,7 @@ namespace :tess do
     puts "Processing #{subs.count} subscriptions:"
     subs.each do |sub|
       sub.process
-      puts "id: #{sub.id}, user: #{sub.user_id}, freq: #{sub.frequency}, type: #{sub.subscribable_type}\n"
-      #print '.'
+      print '.'
     end
     puts " Done"
   end
@@ -129,8 +128,7 @@ namespace :tess do
     puts "Resetting #{subs.count} subscriptions at #{Time.now}:"
     subs.each do |sub|
       sub.reset_due
-      puts "id: #{sub.id}, last_checked_at: #{sub.last_checked_at}, due?: #{sub.due?}, period: #{sub.period}\n"
-      #print '.'
+      print '.'
     end
     puts " Done"
 
