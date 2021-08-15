@@ -10,6 +10,7 @@ Theme: *Mid-Sprint Bug Fixes, Etc.*
   - [Event activity log display #76](https://github.com/nrmay/TeSS/issues/76)
   - [Materials dictionary fields #108](https://github.com/nrmay/TeSS/issues/108)
   - [Sitemap generate fails: #139](https://github.com/nrmay/TeSS/issues/139)
+  - [Preview emails not showing (in RAILS_ENV=development): #158](https://github.com/nrmay/TeSS/issues/158)
 
 
 - Features:
@@ -18,7 +19,8 @@ Theme: *Mid-Sprint Bug Fixes, Etc.*
   - [Enable/disable Fairshare and Biotools: #147](https://github.com/nrmay/TeSS/issues/147)
 
 
-- Analytics:
+- Technical:
+  - [Convert to sendmail: #132](https://github.com/nrmay/TeSS/issues/132)
   - [Capture Outbound Links: #137](https://github.com/nrmay/TeSS/issues/137)
 
 ---
