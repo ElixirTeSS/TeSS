@@ -128,8 +128,7 @@ namespace :tess do
     puts "Resetting #{subs.count} subscriptions at #{Time.now}:"
     subs.each do |sub|
       sub.reset_due
-      puts "id: #{sub.id}, last_checked_at: #{sub.last_checked_at}, due?: #{sub.due?}, period: #{sub.period}\n"
-      #print '.'
+      print '.'
     end
     puts " Done"
 

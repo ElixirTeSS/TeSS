@@ -20,6 +20,10 @@ default: &default
     supported_by: ''
     widget_example: ''
     registrations: true
+  mailer:
+    delivery_method: sendmail
+    location: /usr/sbin/sendmail
+    arguments: '-i -t'
   gmaps:
     center:
       latitude: 53.4674583

@@ -20,6 +20,10 @@ site:
   widget_example: 'elixir_widget_example'
   gmaps_api_key: ''
   registration: true
+mailer:
+  delivery_method: smtp
+  location: '/usr/sbin/sendmail'
+  arguments: '-i -t'
 questionnaire:
   show: true
   message: ''
