@@ -14,6 +14,7 @@ site:
   logo: ''
   logo_alt: ''
   logo_open_graph: ''
+  logo_email: ''
   theme: 'en'
   repository: ''
   supported_by: 'elixir_supported_by'
