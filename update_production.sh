@@ -29,7 +29,7 @@ pkill -f sidekiq
 bundle exec sidekiq -d -e "$ENV" -L /tmp/sidekiq.log
 
 # update scheduled tasks
-whenever --update-crontab
+whenever --update-crontab --set db_user="$PRODUCTION_DB_USER"
 
 # start services
 sudo service unicorn_tess start
