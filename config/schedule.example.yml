@@ -8,3 +8,6 @@ subscriptions:
 backups:
   every: saturday
   at: '12:30am'
+logrotate:
+  every: day
+  at: '11pm'

@@ -21,7 +21,8 @@ set :bkup_script, "#{path}/scripts/pgsql_backup.sh"
 set :bkup_folder, "#{path}/shared/backups"
 
 # set log file
-set :output, "#{path}/shared/log/cron.log"
+set :log_folder, "#{path}/shared/log"
+set :output, "#{log_folder}/cron.log"
 
 # Generate a new sitemap...
 if !schedules['sitemap'].nil?
@@ -58,7 +59,11 @@ end
 
 # run log rotation
 if !schedules['logrotate'].nil?
-  # TBA
+  every :"#{schedules['logrotate']['every']}", at: "schedules['logrotate']['at']}" do
+    command "logrotate -f #{path}/config/logrotate.conf -s #{log_folder}/logrotate.log"
+  end
 else
-  # TBA
+  every :day, at: '11pm' do
+    command "logrotate -f #{path}/config/logrotate.conf -s #{log_folder}/logrotate.log"
+  end
 end

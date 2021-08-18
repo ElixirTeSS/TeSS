@@ -108,14 +108,14 @@ namespace :tess do
 
   task expire_sessions: :environment do
     max_age = Devise.remember_for
-    puts "Deleting sessions older than #{max_age.inspect}"
+    puts "Deleting sessions older than #{max_age.inspect} at #{Time.now}:"
     deleted = ActiveRecord::SessionStore::Session.delete_all(['updated_at < ?', max_age.ago])
     puts "Deleted #{deleted} sessions"
   end
 
   task process_subscriptions: :environment do
     subs = Subscription.due
-    puts "Processing #{subs.count} subscriptions:"
+    puts "Processing #{subs.count} subscriptions at #{Time.now}: "
     subs.each do |sub|
       sub.process
       print '.'
