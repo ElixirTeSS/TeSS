@@ -31,6 +31,9 @@ bundle exec sidekiq -d -e "$ENV" -L /tmp/sidekiq.log
 # update scheduled tasks
 whenever --update-crontab --set db_user="$PRODUCTION_DB_USER"
 
+# restart logrotate
+sudo service logrotate restart
+
 # start services
 sudo service unicorn_tess start
 sudo service nginx start

@@ -38,6 +38,9 @@ bundle exec sidekiq -d -e "$ENV" -L /tmp/sidekiq.log
 # update scheduled tasks
 whenever --update-crontab --set environment="$ENV"
 
+# restart logrotate
+sudo service logrotate restart
+
 # start services
 sudo service unicorn_tess start
 sudo service nginx start
