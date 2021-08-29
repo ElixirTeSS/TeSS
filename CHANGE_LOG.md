@@ -22,6 +22,7 @@ Theme: *Mid-Sprint Bug Fixes, Etc.*
 - Technical:
   - [Convert to sendmail: #132](https://github.com/nrmay/TeSS/issues/132)
   - [Capture Outbound Links: #137](https://github.com/nrmay/TeSS/issues/137)
+  - [Setup Backend Services #145](https://github.com/nrmay/TeSS/issues/145)
 
 ---
 ## [Version 1.2.0](https://github.com/nrmay/TeSS/releases/tag/v1.2.0)  
