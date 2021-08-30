@@ -108,13 +108,20 @@
     <%# ACTUAL RESULTS LIST %>
     <% unless @events.blank? %>
       <ul class="nav nav-tabs">
-        <%= tab('Grid', 'fa fa-table', 'home', active: true) %>
+
+
+        <%= tab('List', 'fa fa-list', 'home', active: true) %>
+
+        <%= tab('Grid', 'fa fa-table', 'grid', active: false) %>
+
         <%= tab('Map', 'fa fa-globe', 'map',
                 disabled: { check: (search_and_facet_params[:online] == 'true'),
                             message: 'Only showing online events.' }) %>
+
       </ul>
 
       <div class="tab-content">
+
         <div id="home" class="tab-pane fade in active">
           <% if TeSS::Config.solr_enabled %>
             <div class="row">
@@ -123,9 +130,24 @@
                                    extras: [['Earliest', 'early'], ['Latest', 'late']] } %>
             </div>
           <% end %>
-
           <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
+          <ul class="masonry media-grid" style="margin-top: 15px;">
+            <% @events.each do |event| %>
+              <%= render partial: 'events/event', locals: { event: event, list: true} %>
+            <% end %>
+          </ul>
+          <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
+        </div>
 
+        <div id="grid" class="tab-pane fade in">
+          <% if TeSS::Config.solr_enabled %>
+            <div class="row">
+              <%= render partial: "search/common/sort_by",
+                         locals: { resource: @events,
+                                   extras: [['Earliest', 'early'], ['Latest', 'late']] } %>
+            </div>
+          <% end %>
+          <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
           <ul class="masonry media-grid" style="margin-top: 15px;">
             <% @events.each do |event| %>
               <%= render event %>
@@ -134,6 +156,7 @@
 
           <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
         </div>
+
         <div id="map" class="tab-pane fade">
           <div id="map-count" class="search-results-count"></div>
           <div id="map-content">
@@ -144,6 +167,7 @@
             </p>
           </div>
         </div>
+
       </div>
     <% end %>
   </div>
