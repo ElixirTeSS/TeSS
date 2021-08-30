@@ -323,7 +323,9 @@ en-AU:
   events:
     hints:
       address: 'Where is this event being held?'
-      capacity: 'Provide the total number (cap) of individuals that can attend the training event.'
+      capacity: >
+        Provide the total number (cap) of individuals that can attend the training event.
+        Leave blank if there is no limit.
       contact: ''
       cost_basis: 'Select the basis by which costs, if any, are applied.'
       cost_value: 'Input the cost of the training event.'
