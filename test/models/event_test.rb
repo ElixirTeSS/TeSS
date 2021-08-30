@@ -381,12 +381,13 @@ class EventTest < ActiveSupport::TestCase
   end
 
   test 'cannot set an invalid duration for event' do
-    invalid_duration = "1:99"
+    invalid_duration = "One hour 99 minutes"
     e = events(:one)
     e.duration = invalid_duration
     e.save()
-    assert_equal 1, e.errors[:duration].size, "unexpected number of validation errors: " + e.errors[:duration].size.to_s
-    assert_equal "must be in format HH:MM", e.errors[:duration][0]
+    # issue 172 - changed duration to allow free text
+    assert_equal 0, e.errors[:duration].size, "unexpected number of validation errors: " + e.errors[:duration].size.to_s
+    # assert_equal "must be in format HH:MM", e.errors[:duration][0]
   end
 
   test 'can set an duration for event longer than one day' do
@@ -398,6 +399,7 @@ class EventTest < ActiveSupport::TestCase
   end
 
   test 'duration validation boundary testing' do
+    # issue 172 - changed duration to allow free text
     durations = [
       {dvalue: '00:00', passed: true },
       {dvalue: '99:00', passed: true },
@@ -405,11 +407,11 @@ class EventTest < ActiveSupport::TestCase
       {dvalue: '00:59', passed: true },
       {dvalue: '23:30', passed: true },
       {dvalue: '', passed: true },
-      {dvalue: '-00:00', passed: false },
-      {dvalue: '9:9', passed: false },
-      {dvalue: '100:00', passed: false },
-      {dvalue: '00:60', passed: false },
-      {dvalue: '00:99', passed: false }
+      {dvalue: '-00:00', passed: true },
+      {dvalue: '9:9', passed: true },
+      {dvalue: '100:00', passed: true },
+      {dvalue: '00:60', passed: true },
+      {dvalue: '00:99', passed: true }
     ]
 
     e = events(:one)
