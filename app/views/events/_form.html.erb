@@ -1,9 +1,23 @@
 <script>
+    function switchCostFields(option) {
+        //alert('selected = ' + option)
+        if (!option || option == 'free' || option == '') {
+            $('.event_cost_currency').hide()
+            $('.event_cost_value').hide()
+            $('#event_cost_currency').val("")
+            $('#event_cost_value').val("")
+        } else {
+            $('.event_cost_currency').show()
+            $('.event_cost_value').show()
+        }
+    }
+
     $(function () {
         if (<%=@event.online?%>) {
             $('.address_content').hide()
         }
     })
+
     $(document).on('change', '.location', function () {
         console.log(this.value)
         if (this.value == 'true') {
@@ -12,8 +26,16 @@
             $('.address_content').show()
         }
     })
+    $(document).on('change', '.event_cost_basis', function () {
+        switchCostFields($('.event_cost_basis option:selected').val());
+    });
+
+    $(document).on('ready turbolinks:load', function() {
+        switchCostFields($('.event_cost_basis option:selected').val());
+    })
 
 </script>
+
 <%= simple_form_for @event, html: { id: 'event_form' } do |f| %>
 
   <%= render partial: 'common/error_summary', locals: { resource: @event } %>
@@ -82,7 +104,7 @@
                  required: true, errors: @event.errors[:eligibility], title: t('events.hints.eligibility') %>
 
   <!-- Field: Organiser -->
-  <%= f.input :organizer, field_lock: true, input_html: { title: t('events.hints.organizer') } %>
+  <%= f.input :organizer, field_lock: true, label: 'Organiser', input_html: { title: t('events.hints.organizer') } %>
 
   <!-- Field: Contact -->
   <%= f.input :contact, input_html: { rows: '5', title: t('events.hints.contact') }, field_lock: true %>
@@ -104,7 +126,8 @@
   <% end %>
 
   <!-- Field: Capacity -->
-  <%= f.input :capacity, field_lock: true, input_html: { title: t('events.hints.capacity') } %>
+  <%= f.input :capacity, as: :integer, field_lock: true,
+              input_html: { title: t('events.hints.capacity'), min: '0' } %>
 
   <!-- Field: Event Type -->
   <%= f.dropdown :event_types, options: EventTypeDictionary.instance.options_for_select, label: 'Event type',
@@ -126,7 +149,7 @@
                 prompt: 'Select a cost basis...', input_html: { title: t('events.hints.cost_basis') } %>
     <%= f.input :cost_currency, collection: currency_collection(['AUD', 'NZD']), value_method: :second,
                 prompt: 'Select the currency...', input_html: { title: t('events.hints.cost_currency') } %>
-    <%= f.input :cost_value, as: :decimal, label: 'Cost', input_html: { title: t('events.hints.cost_value') } %>
+    <%= f.input :cost_value, as: :decimal, label: 'Cost', input_html: { title: t('events.hints.cost_value'), min: '0' } %>
   </div>
 
   <!-- Field: Content Provider -->
