@@ -148,7 +148,7 @@
             <% end %>
 
             <!-- Field: address -->
-            <% unless @event.online? %>
+            <!--% unless @event.online? %-->
               <% if @event.venue and !@event.venue.blank? %>
                 <p><strong>Venue:</strong>
                   <%= @event.venue %></p>
@@ -170,7 +170,7 @@
                   &nbsp;<strong>Postcode:&nbsp;</strong><%= @event.postcode %>
                 <% end %>
               </p>
-            <% end %>
+            <!-- % end % -->
 
             <!-- Field: prerequisites -->
             <% if @event.prerequisites and !@event.prerequisites.blank? %>
