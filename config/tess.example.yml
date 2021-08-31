@@ -56,8 +56,8 @@ default: &default
     group: 'placeholder-group.png'
     person: 'placeholder-person.png'
   dictionaries:
-    difficulty: 'difficulty.yml'
     cost_basis: 'cost_basis.yml'
+    difficulty: 'difficulty.yml'
     eligibility: 'eligibility.yml'
     event_types: 'event_types.yml'
     licences: 'licences.yml'
@@ -124,8 +124,8 @@ dresa: &dresa
     group: 'placeholder-group.png'
     person: 'placeholder-person.png'
   dictionaries:
-    difficulty: 'difficulty_dresa.yml'
     cost_basis: 'cost_basis.yml'
+    difficulty: 'difficulty_dresa.yml'
     eligibility: 'eligibility_dresa.yml'
     event_types: 'event_types_dresa.yml'
     licences: 'licences_dresa.yml'
