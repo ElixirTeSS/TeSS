@@ -5,6 +5,8 @@
 # https://github.com/seek4science/seek/blob/master/lib/seek/image_file_dictionary.rb
 class LicenceDictionary < Dictionary
 
+  DEFAULT_FILE = 'licences.yml'
+
   def licence_abbreviations
     @abbrvs ||= @dictionary.keys
   end
@@ -16,7 +18,7 @@ class LicenceDictionary < Dictionary
   private
 
   def dictionary_filepath
-    File.join(Rails.root, 'config', 'dictionaries', 'licences.yml')
+    get_file_path 'licences', DEFAULT_FILE
   end
 
 end
