@@ -107,8 +107,8 @@ class Event < ApplicationRecord
             presence: true
   # validates :venue, :city, :country, :postcode, :presence => true, :unless => :online?
   validates :city, :country, :presence => true, :unless => :online?
-  validates :capacity, numericality: { greater_than_or_equal_to: 1 } , allow_blank: true
-  validates :cost_value, numericality: { greater_than: 0}, allow_blank: true
+  validates :capacity, numericality: { greater_than_or_equal_to: 1 }, allow_blank: true
+  validates :cost_value, numericality: { greater_than: 0 }, allow_blank: true
   validates :event_types, controlled_vocabulary: { dictionary: EventTypeDictionary.instance }
   validates :eligibility, controlled_vocabulary: { dictionary: EligibilityDictionary.instance }
   validates :latitude, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90, allow_nil: true }
@@ -237,9 +237,9 @@ class Event < ApplicationRecord
   end
 
   def show_map?
-    !self.online? &&
-      ((self.latitude.present? && self.longitude.present?) ||
-        (self.suggested_latitude.present? && self.suggested_longitude.present?))
+    #!self.online? &&
+    ((self.latitude.present? && self.longitude.present?) ||
+      (self.suggested_latitude.present? && self.suggested_longitude.present?))
   end
 
   def all_day?
