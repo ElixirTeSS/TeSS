@@ -2,9 +2,23 @@
 The sections below refer to the release tags for this repository:
 
 ---
+## [Version 1.2.2](https://github.com/nrmay/TeSS/releases/tag/v1.2.2)
+
+Theme: *Feedback from Content Sprints*
+
+- Updates:
+  - [User Manual Link: #156](https://github.com/nrmay/TeSS/issues/156)
+  - [Hybrid Events: #157](https://github.com/nrmay/TeSS/issues/157)
+  - [List tab in index pages: #170](https://github.com/nrmay/TeSS/issues/170)
+  - [User Manual updates: #171](https://github.com/nrmay/TeSS/issues/171)
+  - [Event Registration usability: #172](https://github.com/nrmay/TeSS/issues/172)
+  - [Materials Licences: #173](https://github.com/nrmay/TeSS/issues/173)
+  - [Log In button: #174](https://github.com/nrmay/TeSS/issues/174)
+
+---
 ## [Version 1.2.1](https://github.com/nrmay/TeSS/releases/tag/v1.2.1)
 
-Theme: *Mid-Sprint Bug Fixes, Etc.*
+Theme: *Mid-Sprint Bug Fixes, etc.*
 
 - Bug Fixes:
   - [Event activity log display #76](https://github.com/nrmay/TeSS/issues/76)
