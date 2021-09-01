@@ -69,6 +69,7 @@ Rails.application.routes.draw do
         post 'reject_data'
         get 'report'
         patch 'report', to: 'events#update_report'
+        get 'clone', to: 'events#clone'
       end
     end
   end
