@@ -2,6 +2,14 @@
 The sections below refer to the release tags for this repository:
 
 ---
+## [Version 1.2.3](https://github.com/nrmay/TeSS/releases/tag/v1.2.3)
+
+Theme: *TBA*
+
+- Updates:
+  - [Clone Events: #45](https://github.com/nrmay/TeSS/issues/45)
+
+---
 ## [Version 1.2.2](https://github.com/nrmay/TeSS/releases/tag/v1.2.2)
 
 Theme: *Feedback from Content Sprints*
