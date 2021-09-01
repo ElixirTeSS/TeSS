@@ -45,8 +45,7 @@ class EventsController < ApplicationController
 
   # GET /events/1/clone
   def clone
-    puts "cloning event..."
-    authorize Event
+    authorize @event
     @event = @event.dup
     @event.id = nil
     @event.url = nil
