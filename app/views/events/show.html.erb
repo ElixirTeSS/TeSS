@@ -34,6 +34,7 @@
         <% end %>
         <% if !current_user.nil? and policy(@event).update? %>
           <%= link_to 'Edit', edit_event_path(@event), :class => "btn btn-primary" %>
+          <%= link_to 'Clone', clone_event_path(@event), :class => "btn btn-primary" %>
         <% end %>
         <% if !current_user.nil? and policy(@event).destroy? %>
           <%= link_to t('.destroy', :default => t("helpers.links.destroy")),

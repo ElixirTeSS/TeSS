@@ -162,8 +162,9 @@
           <div id="map-content">
             <%= render partial: 'events/partials/events_map' %>
             <p id="map-notice" class="help-block">
-              Note, this map only displays events that have geolocation information in TeSS.<br>
-              For the complete list of events in TeSS, click the grid tab.
+              Note, this map only displays events that have geolocation information in
+              <%= TeSS::Config.site['title_short'] %>.<br>
+              For the complete list of events in <%= TeSS::Config.site['title_short'] %>, click the grid tab.
             </p>
           </div>
         </div>
