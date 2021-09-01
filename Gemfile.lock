@@ -459,7 +459,7 @@ GEM
     rdoc (4.3.0)
     recaptcha (4.9.0)
       json
-    redcarpet (3.4.0)
+    redcarpet (3.5.1)
     redis (3.3.3)
     ref (2.0.0)
     remotipart (1.4.4)
@@ -663,7 +663,7 @@ DEPENDENCIES
   rails-i18n
   rails_admin
   recaptcha
-  redcarpet (~> 3.4.0)
+  redcarpet (~> 3.5.1)
   redis
   rubocop
   sass-rails (~> 5.0)

@@ -83,7 +83,7 @@ gem 'simple_form'
 gem 'country_select', '<= 4.0.0'
 
 # Gem for rendering Markdown
-gem 'redcarpet', '~> 3.4.0'
+gem 'redcarpet', '~> 3.5.1'
 
 # Gem for paginating search results
 gem 'will_paginate'
