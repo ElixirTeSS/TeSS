@@ -24,11 +24,12 @@
 @import "cytoscape-panzoom";
 @import "jquery.simplecolorpicker";
 @import "eonasdan-bootstrap-datetimepicker";
+@import "Montserrat-Regular";
 
 // define font faces
 @font-face {
   font-family: 'Montserrat';
-  src: url('Montserrat-Regular.ttf');
+  src: 'Montserrat-Regular.ttf';
 }
 
 // Sticky but not fixed footer
