@@ -2,7 +2,7 @@ require 'tzinfo'
 
 # The controller for actions related to the Events model
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages, :add_term, :reject_term,
+  before_action :set_event, only: [:show, :edit, :clone, :update, :destroy, :update_packages, :add_term, :reject_term,
                                    :redirect, :report, :update_report, :add_data, :reject_data]
   before_action :set_breadcrumbs
   before_action :disable_pagination, only: :index, if: lambda { |controller| controller.request.format.ics? or controller.request.format.csv? }
@@ -41,6 +41,15 @@ class EventsController < ApplicationController
     authorize Event
     @event = Event.new(start: DateTime.now.change(hour: 9),
                        end: DateTime.now.change(hour: 17))
+  end
+
+  # GET /events/1/clone
+  def clone
+    authorize @event
+    @event = @event.dup
+    @event.id = nil
+    @event.url = nil
+    render :template => 'events/new'
   end
 
   # GET /events/1/edit
@@ -182,7 +191,7 @@ class EventsController < ApplicationController
                                   { :host_institutions => [] }, :capacity, :contact, :recognition, :learning_objectives,
                                   :prerequisites, :tech_requirements, :cost_basis, :cost_value, :cost_currency,
                                   external_resources_attributes: [:id, :url, :title, :_destroy], material_ids: [],
-                                  locked_fields: []  )
+                                  locked_fields: [])
   end
 
   def event_report_params
