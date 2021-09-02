@@ -6,8 +6,11 @@ The sections below refer to the release tags for this repository:
 
 Theme: *TBA*
 
-- Updates:
+- Features:
   - [Clone Events: #45](https://github.com/nrmay/TeSS/issues/45)
+
+- Bug Fixes:
+  - [Provider image not showing: #195](https://github.com/nrmay/TeSS/issues/195)
 
 ---
 ## [Version 1.2.2](https://github.com/nrmay/TeSS/releases/tag/v1.2.2)
