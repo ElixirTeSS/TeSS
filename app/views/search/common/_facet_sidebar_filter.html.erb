@@ -8,33 +8,48 @@
 
 
 <% if facet_rows.any? %>
-    <%# Title %>
-    <li>
-      <h4 class="nav-heading"><%= (facet_field == 'user') ? 'Owner' : facet_field.humanize.singularize %></h4>
+  <%# Title %>
+  <li>
+    <h4 class="nav-heading">
+      <%= case facet_field
+          when 'user'
+            'Owner'
+          when 'organizer'
+            'Organiser'
+          else
+            facet_field.humanize.singularize
+          end -%>
+    </h4>
+  </li>
+
+  <%# Display all filter links %>
+  <% facet_rows.each_with_index do |facet, index| %>
+    <%# if there's a facet already selected %>
+    <% if @facet_params.include?(facet_field) && Array.wrap(@facet_params[facet_field]).include?(facet.value.to_s) %>
+      <li class="nav-item active
+        <% if index >= 9 -%><%= facet_field -%>-expanding
+        <% end -%>"
+          <% if index >= 9 -%>style="display: none;"
+      <% end -%>
+      >
+        <%= remove_filter_link(facet_field, facet.value.to_s) %>
+      </li>
+    <% else %>
+      <li class="nav-item
+        <% if index >= 9 -%><%= facet_field -%>-expanding
+        <% end -%>"
+          <% if index >= 9 -%>style="display: none;"
+      <% end -%>>
+        <%= filter_link(facet_field, facet.value.to_s, facet.count) %>
+      </li>
+    <% end %>
+  <% end %>
+
+  <%# Display 'show/hide facet' link %>
+  <% unless resources.facet(facet_field).rows.count <= max_display %>
+    <li class="nav-item" style="padding: 10px 7px 10px 7px;"
+        onClick="toggleFacets('<%= facet_field -%>')">
+      <%= toggle_hidden_facet_link(facet_field) %>
     </li>
-
-    <%# Display all filter links %>
-    <% facet_rows.each_with_index do |facet,index| %>
-        <%# if there's a facet already selected %>
-        <% if @facet_params.include?(facet_field) && Array.wrap(@facet_params[facet_field]).include?(facet.value.to_s) %>
-            <li class="nav-item active <% if index >= 9 -%><%= facet_field -%>-expanding<% end -%>"
-                <% if index >= 9 -%>style="display: none;"<% end -%>
-            >
-              <%= remove_filter_link(facet_field, facet.value.to_s) %>
-            </li>
-        <% else %>
-            <li class="nav-item <% if index >= 9 -%><%= facet_field -%>-expanding<% end -%>"
-                <% if index >= 9 -%>style="display: none;"<% end -%>>
-              <%= filter_link(facet_field, facet.value.to_s, facet.count) %>
-            </li>
-        <% end %>
-    <% end %>
-
-    <%# Display 'show/hide facet' link %>
-    <% unless resources.facet(facet_field).rows.count <= max_display %>
-        <li class="nav-item" style="padding: 10px 7px 10px 7px;"
-          onClick="toggleFacets('<%= facet_field -%>')">
-          <%= toggle_hidden_facet_link(facet_field) %>
-        </li>
-    <% end %>
+  <% end %>
 <% end %>
