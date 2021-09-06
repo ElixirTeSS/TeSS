@@ -9,7 +9,12 @@ Theme: *TBA*
 - Features:
   - [Clone Events: #45](https://github.com/nrmay/TeSS/issues/45)
 
+- Updates:
+  - [User Manual: #171](https://github.com/nrmay/TeSS/issues/171)
+
 - Bug Fixes:
+  - [Organiser category title: #182](https://github.com/nrmay/TeSS/issues/182)
+  - [Materials Search on Event form: #193](https://github.com/nrmay/TeSS/issues/193)
   - [Provider image not showing: #195](https://github.com/nrmay/TeSS/issues/195)
 
 ---
