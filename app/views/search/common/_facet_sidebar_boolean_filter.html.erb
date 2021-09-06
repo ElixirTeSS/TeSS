@@ -2,7 +2,18 @@
 <% facet_field = facet.field_name.to_s %>
 
 <%# Title %>
-<li><h4 class="nav-heading"><%= facet_field.humanize %></h4></li>
+<li>
+  <h4 class="nav-heading">
+    <%= case facet_field
+        when 'user'
+          'Owner'
+        when 'organizer'
+          'Organiser'
+        else
+          facet_field.humanize.singularize
+        end -%>
+  </h4>
+</li>
 
 <% facet = facet.rows.first %>
 

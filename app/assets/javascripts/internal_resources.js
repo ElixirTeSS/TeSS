@@ -14,6 +14,7 @@ var InternalResources = {
         return url;
     },
     search: function(type) {
+        //console.log(">>> search: " + type)
         record_type = type;
         $('.loading_image').show();
         InternalResources.queryAPI(InternalResources.getUrl());
@@ -77,7 +78,7 @@ var InternalResources = {
         obj.parent().parent().fadeOut();
     },
     queryAPI: function(url){
-        //console.log("QUERYING: " + url);
+        //console.log(">>> queryAPI url: " + url);
         $('.loading_image').show();
         $.ajax({url: url,
             type: 'GET',
@@ -90,12 +91,13 @@ var InternalResources = {
                 InternalResources.displayRecords(result);
             },
             error: function (error) {
-                // console.log("Error querying TeSS for " + record_type + ": " + error);
+                console.log(">>> Error querying for " + record_type + ": " + error);
             }
         });
 
     },
     displayRecords: function(json){
+        //console.log("displayRecords json: " + json)
         $('#materials-results').empty();
         json.data.forEach(function(item, index) {
             var url = '/' + record_type + '/';
@@ -119,7 +121,7 @@ var InternalResources = {
                 'title="click to associate ' + item.attributes.title + ' with this resource"' +
                 'data-title="' + item.attributes.title + '" data-url="' + url + '"/>' +
                 '</h4>' +
-                '<span>' + truncateWithEllipses(item.attributes['short-description'], 600) + '</span>' +
+                '<span>' + truncateWithEllipses(item.attributes['description'], 600) + '</span>' +
                 '<div class="external-links">' +
                 '<a class="btn btn-warning" target="_blank" href="' + url + item.id +'">' +
                 'View ' + '<i class="fa fa-external-link"/></a>' +
