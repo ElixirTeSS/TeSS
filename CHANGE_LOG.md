@@ -2,6 +2,22 @@
 The sections below refer to the release tags for this repository:
 
 ---
+## [Version 1.2.3](https://github.com/nrmay/TeSS/releases/tag/v1.2.3)
+
+Theme: *TBA*
+
+- Features:
+  - [Clone Events: #45](https://github.com/nrmay/TeSS/issues/45)
+
+- Updates:
+  - [User Manual: #171](https://github.com/nrmay/TeSS/issues/171)
+
+- Bug Fixes:
+  - [Organiser category title: #182](https://github.com/nrmay/TeSS/issues/182)
+  - [Materials Search on Event form: #193](https://github.com/nrmay/TeSS/issues/193)
+  - [Provider image not showing: #195](https://github.com/nrmay/TeSS/issues/195)
+
+---
 ## [Version 1.2.2](https://github.com/nrmay/TeSS/releases/tag/v1.2.2)
 
 Theme: *Feedback from Content Sprints*
