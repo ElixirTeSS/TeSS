@@ -15,7 +15,8 @@ Theme: *TBA*
 - Bug Fixes:
   - [Organiser category title: #182](https://github.com/nrmay/TeSS/issues/182)
   - [Materials Search on Event form: #193](https://github.com/nrmay/TeSS/issues/193)
-  - [Provider image not showing: #195](https://github.com/nrmay/TeSS/issues/195)
+  - [Provider image not showing: #195](https://github.com/nrmay/TeSS/issues/195v)
+  - [Google calendar subscription pop-up: #213](https://github.com/nrmay/TeSS/issues/213)
 
 ---
 ## [Version 1.2.2](https://github.com/nrmay/TeSS/releases/tag/v1.2.2)
