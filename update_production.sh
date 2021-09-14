@@ -26,7 +26,7 @@ bundle exec rails test
 # restart sidekiq
 sudo touch tmp/restart.txt
 pkill -f sidekiq
-bundle exec sidekiq -d -e "$ENV" -L /tmp/sidekiq.log
+bundle exec sidekiq -e "$ENV" &
 
 # update scheduled tasks
 whenever --update-crontab --set db_user="$PRODUCTION_DB_USER"

@@ -53,7 +53,7 @@ gem 'gravtastic', '~> 3.2.6'
 
 gem 'dynamic_sitemaps', github: 'lassebunk/dynamic_sitemaps', branch: 'master'
 
-gem 'whenever'
+gem 'whenever', '~> 1.0.0'
 
 # These are required for Sidekiq, to look up scientific topics
 gem 'httparty'
@@ -125,7 +125,8 @@ gem 'linkeddata'
 gem 'geocoder'
 gem 'redis'
 
-gem 'active_model_serializers'
+# set serializers version
+gem 'active_model_serializers', '<= 0.10.7'
 
 gem 'private_address_check'
 

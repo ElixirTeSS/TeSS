@@ -354,13 +354,16 @@ class Event < ApplicationRecord
   def geocoding_cache_lookup
     location = self.address
 
+    puts "test" if Redis.new.exists?(location)
+
     begin
       redis = Redis.new
-      if redis.exists(location)
+      Rails.logger.debug("address = #{location}")
+      if redis.exists?(location)
         self.latitude, self.longitude = JSON.parse(redis.get(location))
         Rails.logger.info("Re-using: #{location}")
       end
-    rescue Redis::RuntimeError => e
+    rescue Redis::BaseError => e
       raise e unless Rails.env.production?
       puts "Redis error: #{e.message}"
     end
@@ -379,7 +382,7 @@ class Event < ApplicationRecord
       begin
         redis = Redis.new
         redis.set(location, [self.latitude, self.longitude].to_json)
-      rescue Redis::RuntimeError => e
+      rescue Redis::BaseError => e
         raise e unless Rails.env.production?
         puts "Redis error: #{e.message}"
       end
@@ -406,7 +409,7 @@ class Event < ApplicationRecord
       # submit event_id, and locations to worker.
       redis.set('last_geocode', run_at)
       GeocodingWorker.perform_at(run_at, [id, location])
-    rescue Redis::RuntimeError => e
+    rescue Redis::BaseError => e
       raise e unless Rails.env.production?
       puts "Redis error: #{e.message}"
     end
