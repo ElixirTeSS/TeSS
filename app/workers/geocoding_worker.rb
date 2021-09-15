@@ -11,13 +11,14 @@ class GeocodingWorker
 
   def perform(arg_array)
     event_id, location = arg_array
-    #Rails.logger.debug "GeocodingWorker.perform(#{event_id.to_s},#{location.to_s})"
+    #puts "GeocodingWorker.perform(#{event_id.to_s},#{location.to_s})"
 
     event = Event.find(event_id)
 
+    Redis.exists_returns_integer = true
     redis = Redis.new
 
-    if redis.exists?(location)
+    if redis.exists(location)
       event.geocoding_cache_lookup
     else
       event.geocoding_api_lookup
@@ -26,9 +27,9 @@ class GeocodingWorker
     event.save!
   end
 
-  def self.perform_async(i)
-    # code here
-  end
+  #def self.perform_async(i)
+   # code here
+  #end
 
 end
 

@@ -354,12 +354,12 @@ class Event < ApplicationRecord
   def geocoding_cache_lookup
     location = self.address
 
-    puts "test" if Redis.new.exists?(location)
-
     begin
+      Redis.exists_returns_integer = true
       redis = Redis.new
-      Rails.logger.debug("address = #{location}")
-      if redis.exists?(location)
+      #puts "redis not connected" if !redis.connected?
+
+      if redis.exists(location) == true
         self.latitude, self.longitude = JSON.parse(redis.get(location))
         Rails.logger.info("Re-using: #{location}")
       end

@@ -123,7 +123,7 @@ gem 'linkeddata'
 
 # Used for lat/lon rake task
 gem 'geocoder'
-gem 'redis'
+gem 'redis', '< 5.0.0'
 
 # set serializers version
 gem 'active_model_serializers', '<= 0.10.7'
