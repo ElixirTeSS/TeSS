@@ -70,7 +70,12 @@ gem 'jquery-turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder'
 # bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 0.4.0', group: :doc
+
+group :doc do
+  gem 'sdoc', '>= 0.4.0'
+  gem 'json', '>= 2.3.0'
+  gem 'rdoc', '>= 6.3.1'
+end
 
 # Gem for creating before_validation callbacks for stripping whitespace
 gem 'auto_strip_attributes', '~> 2.0'
