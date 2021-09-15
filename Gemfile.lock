@@ -684,7 +684,7 @@ DEPENDENCIES
   rails_admin
   recaptcha
   redcarpet (~> 3.5.1)
-  redis
+  redis (< 5.0.0)
   rubocop
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
