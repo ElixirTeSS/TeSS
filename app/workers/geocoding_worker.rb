@@ -11,8 +11,11 @@ class GeocodingWorker
 
   def perform(arg_array)
     event_id, location = arg_array
+    #puts "GeocodingWorker.perform(#{event_id.to_s},#{location.to_s})"
+
     event = Event.find(event_id)
 
+    Redis.exists_returns_integer = true
     redis = Redis.new
 
     if redis.exists(location)
@@ -23,6 +26,10 @@ class GeocodingWorker
 
     event.save!
   end
+
+  #def self.perform_async(i)
+   # code here
+  #end
 
 end
 
