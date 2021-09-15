@@ -53,7 +53,7 @@ gem 'gravtastic', '~> 3.2.6'
 
 gem 'dynamic_sitemaps', github: 'lassebunk/dynamic_sitemaps', branch: 'master'
 
-gem 'whenever'
+gem 'whenever', '~> 1.0.0'
 
 # These are required for Sidekiq, to look up scientific topics
 gem 'httparty'
@@ -83,7 +83,7 @@ gem 'simple_form'
 gem 'country_select', '<= 4.0.0'
 
 # Gem for rendering Markdown
-gem 'redcarpet', '~> 3.4.0'
+gem 'redcarpet', '~> 3.5.1'
 
 # Gem for paginating search results
 gem 'will_paginate'
@@ -123,9 +123,10 @@ gem 'linkeddata'
 
 # Used for lat/lon rake task
 gem 'geocoder'
-gem 'redis'
+gem 'redis', '< 5.0.0'
 
-gem 'active_model_serializers'
+# set serializers version
+gem 'active_model_serializers', '<= 0.10.7'
 
 gem 'private_address_check'
 
