@@ -4,13 +4,24 @@ The sections below refer to the release tags for this repository:
 ---
 ## [Version 1.2.3](https://github.com/nrmay/TeSS/releases/tag/v1.2.3)
 
-Theme: *TBA*
+Theme: *Upgrades to Support Scrapers*
+
+- Upgrade Software Versions: [Security Update 1](https://github.com/nrmay/TeSS/pull/190)
+  - Ruby: 2.4.5 &rarr; 2.5.8
+  - Rails: 5.2.3 &rarr; 5.2.6
+  - Rake: 13.0.0 &rarr; 13.0.6
+  - Redis: 3.3.3 &rarr; 4.4.0
+  - Sidekiq: 4.2.9 &rarr; 6.2.2
+
 
 - Features:
   - [Clone Events: #45](https://github.com/nrmay/TeSS/issues/45)
 
+
 - Updates:
   - [User Manual: #171](https://github.com/nrmay/TeSS/issues/171)
+  - [Update Partner Logos: #212](https://github.com/nrmay/TeSS/issues/212)
+
 
 - Bug Fixes:
   - [Organiser category title: #182](https://github.com/nrmay/TeSS/issues/182)
