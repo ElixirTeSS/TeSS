@@ -18,13 +18,38 @@
         <hr/>
         <h4>Trainer Profile</h4>
 
-        <%= f.input :description, label: 'Summary'%>
-
-        <%= f.input :location %>
-
-        <%= f.input :experience, as: :text, label: 'Training Experience' %>
-
         <%= f.input :public, label: 'Show in Registry of Trainers?' %>
+
+        <%= f.input :description, label: 'Summary', title: t('profile.hints.description') %>
+
+        <%= f.input :location, title: t('profile.hints.location') %>
+
+        <%= f.input :experience, collection: TrainerExperienceDictionary.instance.options_for_select,
+                    label: 'Training Experience', prompt: 'Select a level of experience...',
+                    input_html: { title: t('profile.hints.experience') } %>
+
+        <!--%= f.dropdown :language, options: I18nData.languages, label: 'Languages Spoken',
+                       errors: @user.profile.errors[:language], title: t('profile.hints.language') %-->
+
+        <%= f.multi_input :language, label: 'Languages spoken',
+                          errors: @user.profile.errors[:language],
+                          title: t('profile.hints.language') %>
+
+        <%= f.multi_input :expertise_academic, label: 'Academic Expertise',
+                          errors: @user.profile.errors[:expertise_academic],
+                          title: t('profile.hints.expertise_academic') %>
+
+        <%= f.multi_input :expertise_technical, label: 'Technical Expertise',
+                          errors: @user.profile.errors[:expertise_technical],
+                          title: t('profile.hints.expertise_technical') %>
+
+        <%= f.multi_input :interest, errors: @user.profile.errors[:interest], title: t('profile.hints.interest') %>
+
+        <%= f.multi_input :activity, errors: @user.profile.errors[:activity], title: t('profile.hints.activity') %>
+
+        <%= f.multi_input :social_media, errors: @user.profile.errors[:social_media],
+                          title: t('profile.hints.social_media') %>
+
       <% end %>
 
       <% if policy(@user).change_role? %>

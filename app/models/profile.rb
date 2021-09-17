@@ -12,6 +12,8 @@ class Profile < ApplicationRecord
       text :email
       text :image_url
       time :updated_at
+      text :experience
+      text :location
     end
     # :nocov:
   end
