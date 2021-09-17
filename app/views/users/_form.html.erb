@@ -1,28 +1,41 @@
 <div class="row">
   <div class="col-md-6">
     <%= simple_form_for @user, html: { class: "form-horizontal profile" } do |user_f| %>
-        <%= user_f.simple_fields_for :profile do |f| %>
+      <%= user_f.simple_fields_for :profile do |f| %>
 
-            <%= render partial: 'common/error_summary', locals: { resource: @user.profile } %>
+        <%= render partial: 'common/error_summary', locals: { resource: @user.profile } %>
 
-            <%= f.input :firstname, as: :string %>
+        <%= f.input :firstname, as: :string %>
 
-            <%= f.input :surname , as: :string %>
+        <%= f.input :surname, as: :string %>
 
-            <%= f.input :email, as: :string, label: 'Public email address' %>
+        <%= f.input :email, as: :string, label: 'Public email address' %>
 
-            <%= f.input :website , as: :string %>
-        <% end %>
+        <%= f.input :website, as: :string %>
 
-        <% if policy(@user).change_role? %>
-            <%= user_f.input :role_id, collection: Role.all, label_method: :title, include_blank: false %>
-        <% end %>
+        <%= f.input :orcid, as: :string, label: 'ORCID' %>
 
-        <div class="form-group">
-          <%= user_f.submit 'Update profile', class: 'btn btn-primary' %>
-          <%= link_to 'Back', :back, class: "btn btn-info" %>
-          <%= link_to t('.cancel', default: t("helpers.links.cancel")), user_path(@user), class: 'btn btn-default' %>
-        </div>
+        <hr/>
+        <h4>Trainer Profile</h4>
+
+        <%= f.input :description, label: 'Summary'%>
+
+        <%= f.input :location %>
+
+        <%= f.input :experience, as: :text, label: 'Training Experience' %>
+
+        <%= f.input :public, label: 'Show in Registry of Trainers?' %>
+      <% end %>
+
+      <% if policy(@user).change_role? %>
+        <%= user_f.input :role_id, collection: Role.all, label_method: :title, include_blank: false %>
+      <% end %>
+
+      <div class="form-group">
+        <%= user_f.submit 'Update profile', class: 'btn btn-primary' %>
+        <%= link_to 'Back', :back, class: "btn btn-info" %>
+        <%= link_to t('.cancel', default: t("helpers.links.cancel")), user_path(@user), class: 'btn btn-default' %>
+      </div>
     <% end -%>
   </div>
 </div>

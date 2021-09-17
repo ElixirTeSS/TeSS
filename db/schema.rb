@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_21_074829) do
+ActiveRecord::Schema.define(version: 2021_09_16_043709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -305,6 +305,17 @@ ActiveRecord::Schema.define(version: 2021_07_21_074829) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.string "slug"
+    t.boolean "public", default: false
+    t.text "description"
+    t.text "location"
+    t.string "orcid"
+    t.text "experience"
+    t.string "expertise_academic", default: [], array: true
+    t.string "expertise_technical", default: [], array: true
+    t.text "interest", default: [], array: true
+    t.text "activity", default: [], array: true
+    t.string "language", default: [], array: true
+    t.string "social_media", default: [], array: true
     t.index ["slug"], name: "index_profiles_on_slug", unique: true
   end
 
