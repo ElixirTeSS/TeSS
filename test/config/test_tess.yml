@@ -51,3 +51,4 @@ dictionaries:
   material_status: 'material_status.yml'
   material_type: 'material_type.yml'
   target_audience: 'target_audience.yml'
+  trainer_experience: 'trainer_experience.yml'
