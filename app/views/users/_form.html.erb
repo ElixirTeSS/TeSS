@@ -33,21 +33,32 @@
 
         <%= f.multi_input :language, label: 'Languages spoken',
                           errors: @user.profile.errors[:language],
+                          model_name: 'user[profile_attributes]',
                           title: t('profile.hints.language') %>
 
-        <%= f.multi_input :expertise_academic, label: 'Academic Expertise',
+        <%= f.multi_input :expertise_academic, label: 'Academic expertise',
                           errors: @user.profile.errors[:expertise_academic],
+                          model_name: 'user[profile_attributes]',
                           title: t('profile.hints.expertise_academic') %>
 
-        <%= f.multi_input :expertise_technical, label: 'Technical Expertise',
+        <%= f.multi_input :expertise_technical, label: 'Technical expertise',
                           errors: @user.profile.errors[:expertise_technical],
+                          model_name: 'user[profile_attributes]',
                           title: t('profile.hints.expertise_technical') %>
 
-        <%= f.multi_input :interest, errors: @user.profile.errors[:interest], title: t('profile.hints.interest') %>
+        <%= f.multi_input :interest, label: 'Interests',
+                          errors: @user.profile.errors[:interest],
+                          model_name: 'user[profile_attributes]',
+                          title: t('profile.hints.interest') %>
 
-        <%= f.multi_input :activity, errors: @user.profile.errors[:activity], title: t('profile.hints.activity') %>
+        <%= f.multi_input :activity, label: 'Activities',
+                          errors: @user.profile.errors[:activity],
+                          model_name: 'user[profile_attributes]',
+                          title: t('profile.hints.activity') %>
 
-        <%= f.multi_input :social_media, errors: @user.profile.errors[:social_media],
+        <%= f.multi_input :social_media, label: 'Social media links',
+                          errors: @user.profile.errors[:social_media],
+                          model_name: 'user[profile_attributes]',
                           title: t('profile.hints.social_media') %>
 
       <% end %>

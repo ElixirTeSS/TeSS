@@ -360,7 +360,9 @@ module ApplicationHelper
 
     def multi_input(name, options = {})
       suggestions = options[:suggestions] || AutocompleteManager.suggestions_array_for(name.to_s)
-      @template.render(partial: 'common/multiple_input', locals: { field_name: name, f: self, suggestions: suggestions,
+      @template.render(partial: 'common/multiple_input', locals: { field_name: name, f: self,
+                                                                   model_name: options[:model_name],
+                                                                   suggestions: suggestions,
                                                                    disabled: options[:disabled],
                                                                    required: options[:required],
                                                                    label: options[:label],

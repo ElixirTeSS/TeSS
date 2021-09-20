@@ -307,11 +307,11 @@ ActiveRecord::Schema.define(version: 2021_09_16_043709) do
     t.string "slug"
     t.boolean "public", default: false
     t.text "description"
-    t.text "location"
-    t.string "orcid"
-    t.text "experience"
     t.string "expertise_academic", default: [], array: true
     t.string "expertise_technical", default: [], array: true
+    t.text "location"
+    t.string "orcid"
+    t.string "experience"
     t.text "interest", default: [], array: true
     t.text "activity", default: [], array: true
     t.string "language", default: [], array: true

@@ -50,3 +50,19 @@ unverified_user_profile:
 
 shadowbanned_unverified_user_profile:
   user: shadowbanned_unverified_user
+
+trainer_one:
+  user: trainer_user
+  firstname: Josiah
+  surname: Carberry
+  image_url: https://library.brown.edu/info/wp-content/uploads/2019/12/Carberry2-150x137.jpg
+  email: jcarberry@research.org
+  website: https://library.brown.edu/info/hay/carberry/ # demo page
+  orcid: https://orcid.org/000-0002-1825-0097    # demo orcid account
+  description: >
+    Josiah Carberry is a fictitious person.
+    This account is used as a demonstration account by ORCID, CrossRef and others who wish to demonstrate the
+    interaction of ORCID with other scholarly communication systems without having to use a real-person's account.
+  location: 'Brisbane, Australia'
+  experience: none
+  public: true

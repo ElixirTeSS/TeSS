@@ -48,20 +48,21 @@ class UsersControllerTest < ActionController::TestCase
     sign_in users(:admin) # should this be restricted to admins?
     assert_difference('User.count') do
       post :create, params: {
-          user: { username: 'frank', email: 'frank@notarealdomain.org', password: 'franksreallylongpass'}
+        user: { username: 'frank', email: 'frank@notarealdomain.org', password: 'franksreallylongpass' }
       }
     end
     assert_redirected_to user_path(assigns(:user))
   end
 
-  test "should not be able create user if not admin" do #because you use users#sign_up in devise
+  test "should not be able create user if not admin" do
+    #because you use users#sign_up in devise
     assert_no_difference('User.count') do
-      post :create, params: { user: { username: 'frank', email: 'frank@notarealdomain.org', password: 'franksreallylongpass'} }
+      post :create, params: { user: { username: 'frank', email: 'frank@notarealdomain.org', password: 'franksreallylongpass' } }
     end
     assert_redirected_to new_user_session_path
     sign_in users(:regular_user)
     assert_no_difference('User.count') do
-      post :create, params: { user: { username: 'frank', email: 'frank@notarealdomain.org', password: 'franksreallylongpass'} }
+      post :create, params: { user: { username: 'frank', email: 'frank@notarealdomain.org', password: 'franksreallylongpass' } }
     end
     assert_response :forbidden
   end
@@ -121,7 +122,7 @@ class UsersControllerTest < ActionController::TestCase
 
   test "should update profile" do
     sign_in users(:regular_user)
-    patch :update, params: { id: @user, user: { profile_attributes: { email: 'hot@mail.com'} } }
+    patch :update, params: { id: @user, user: { profile_attributes: { email: 'hot@mail.com' } } }
     assert_redirected_to user_path(assigns(:user))
   end
 
@@ -205,4 +206,75 @@ class UsersControllerTest < ActionController::TestCase
     assert_response :success
     assert_select '.ban-info', count: 0
   end
+
+  test 'should update trainer profile' do
+    user = users(:trainer_user)
+    sign_in user
+
+    # check profile
+    get :show, params: { id: user }
+    assert_response :success
+    profile_old = assigns(:user).profile
+    assert_equal true, profile_old.public
+    assert_equal 'https://library.brown.edu/info/hay/carberry/', profile_old.website
+    assert_equal 'Josiah Carberry', profile_old.full_name
+    assert_equal 'jcarberry@research.org', profile_old.email
+    assert profile_old.description.include?('Josiah Carberry is a fictitious person.')
+
+    # update profile data
+    profile = { public: false, email: 'fake@email.com', orcid: '', website: '', location: '',
+                experience: 'expert', image_url: nil, expertise_technical: ['java', 'python', 'ruby']}
+    patch :update, params: { id: user, user: { profile_attributes: profile } }
+    assert_redirected_to user_path(assigns(:user))
+
+    # get user
+    get :show, params: { id: user }
+    assert_response :success
+    profile_new = assigns(:user).profile
+    assert_equal false, profile_new.public
+    assert_equal 'fake@email.com', profile_new.email
+    assert_nil profile_new.image_url
+    assert_equal '', profile_new.orcid
+    assert_equal '', profile_new.website
+    assert_equal 3, profile_new.expertise_technical.size, 'expertise_technical array size not matchted.'
+  end
+
+  test 'should not update trainer profile for invalid public record' do
+    user = users(:trainer_user)
+    sign_in user
+
+    # check validation for public fields
+    profile_new = { public: true, first_name: '', last_name: '', description: '', website: '' }
+    patch :update, params: { id: user, user: { profile_attributes: profile_new } }
+    assert_response :success
+
+    # check errors
+    profile = assigns(:user).profile
+    assert_equal 3, profile.errors.size, 'invalid number of errors'
+    assert_equal 0, profile.errors.full_messages_for(:website).size, 'invalid message for: website'
+    assert_equal 1, profile.errors.full_messages_for(:firstname).size, 'missing message for: firstname'
+    assert_equal 1, profile.errors.full_messages_for(:surname).size, 'missing message for: surname'
+    assert_equal 1, profile.errors.full_messages_for(:description).size, 'missing message for: description'
+    assert_equal "Description can't be blank", profile.errors.full_messages_for(:description).first
+
+  end
+
+  test 'should not update trainer profile for invalid urls' do
+    user = users(:trainer_user)
+    sign_in user
+
+    # check validation of urls
+    profile_new = { website: 'httpx://dresa.org.au', orcid: 'https://orcid.org/000-0002-1825-0097x' }
+    patch :update, params: { id: user, user: { profile_attributes: profile_new } }
+    assert_response :success
+
+    # check errors
+    profile = assigns(:user).profile
+    assert_equal 3, profile.errors.size, 'invalid number of errors'
+    assert_equal 2, profile.errors.full_messages_for(:website).size, 'invalid error count for: website'
+    assert_equal 1, profile.errors.full_messages_for(:orcid).size, 'invalid error count for: orcid'
+    assert_equal "Website is not a valid URL", profile.errors.full_messages_for(:website).first
+    assert_equal "Orcid is not accessible", profile.errors.full_messages_for(:orcid).first
+  end
+
 end

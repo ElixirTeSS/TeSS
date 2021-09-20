@@ -109,3 +109,11 @@ shadowbanned_unverified_user:
   confirmed_at: <%= Time.zone.now %>
   role: unverified_user
   authentication_token: <%= Devise.friendly_token %>
+
+trainer_user:
+  username: 'SteveT'
+  email: 'steve_trainer@notarealdomain.org'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'trainer') %>
+  confirmed_at: <%= Time.zone.now %>
+  role: user
+  authentication_token: <%= Devise.friendly_token %>
