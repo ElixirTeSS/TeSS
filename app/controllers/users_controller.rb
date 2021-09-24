@@ -11,7 +11,6 @@ class UsersController < ApplicationController
   # # and define it on all methods
   # before_action :authenticate_user!
 
-  include SearchableIndex
   include ActionView::Helpers::TextHelper
 
   # GET /users

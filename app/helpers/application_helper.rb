@@ -167,6 +167,7 @@ module ApplicationHelper
   DEFAULT_IMAGE_FOR_MODEL = {
     'ContentProvider' => TeSS::Config.placeholder['provider'],
     'Package' => TeSS::Config.placeholder['package'],
+    'Trainer' => TeSS::Config.placeholder['person'],
     'Node' => 'elixir_logo_orange.png'
   }.freeze
 
@@ -192,6 +193,8 @@ module ApplicationHelper
     when 'events'
       'fa fa-calendar'
     when 'users'
+      'fa fa-user'
+    when 'trainers'
       'fa fa-user'
     when 'workflows'
       'fa fa-sitemap'

@@ -9,20 +9,29 @@
 
         <%= f.input :surname, as: :string %>
 
-        <%= f.input :email, as: :string, label: 'Public email address' %>
+        <%= f.input :website, as: :string, input_html: { title: t('profile.hints.website') } %>
 
-        <%= f.input :website, as: :string %>
+        <%= f.input :orcid, as: :string, label: 'ORCID', input_html: { title: t('profile.hints.orcid') } %>
 
-        <%= f.input :orcid, as: :string, label: 'ORCID' %>
+        <%= f.input :email, as: :string, label: 'Contact email address',
+                    input_html: { title: t('profile.hints.email') } %>
 
-        <hr/>
-        <h4>Trainer Profile</h4>
+        <p>
+          <%= t 'profile.trainer.gravitar.help' %>
+          <a href=""<%= t 'profile.trainer.gravitar.url' %>" target='_blank' >
+          <%= t 'profile.trainer.gravitar.url' %></a>
+        </p>
 
-        <%= f.input :public, label: 'Show in Registry of Trainers?' %>
+        <% if policy(@user).change_role? %>
+          <%= user_f.input :role_id, collection: Role.all, label_method: :title, include_blank: false %>
+        <% end %>
 
-        <%= f.input :description, label: 'Summary', title: t('profile.hints.description') %>
+        <h3>Trainer Details</h3>
+        <hr>
 
-        <%= f.input :location, title: t('profile.hints.location') %>
+        <%= f.input :description, label: 'Summary', input_html: { title: t('profile.hints.description') } %>
+
+        <%= f.input :location, input_html: { title: t('profile.hints.location') } %>
 
         <%= f.input :experience, collection: TrainerExperienceDictionary.instance.options_for_select,
                     label: 'Training Experience', prompt: 'Select a level of experience...',
@@ -61,15 +70,17 @@
                           model_name: 'user[profile_attributes]',
                           title: t('profile.hints.social_media') %>
 
-      <% end %>
+        <p><%= t 'profile.trainer.disclaimer' %></p>
 
-      <% if policy(@user).change_role? %>
-        <%= user_f.input :role_id, collection: Role.all, label_method: :title, include_blank: false %>
+        <%= f.input :public, label: 'Show in Registry of Trainers?',
+                    input_html: { title: t('profile.hints.public') } %>
+
+
       <% end %>
 
       <div class="form-group">
         <%= user_f.submit 'Update profile', class: 'btn btn-primary' %>
-        <%= link_to 'Back', :back, class: "btn btn-info" %>
+        <!--%= link_to 'Back', :back, class: "btn btn-info" %-->
         <%= link_to t('.cancel', default: t("helpers.links.cancel")), user_path(@user), class: 'btn btn-default' %>
       </div>
     <% end -%>

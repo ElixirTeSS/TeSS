@@ -1,7 +1,6 @@
 class User < ApplicationRecord
 
   include ActionView::Helpers::ApplicationHelper
-  include Searchable
   include PublicActivity::Common
 
   acts_as_token_authenticatable
@@ -64,12 +63,6 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :profile
 
   attr_accessor :publicize_email
-
-  def self.facet_fields
-    field_list = %w( profile.full_name profile.description profile.location profile.orcid profile.experience
-          profile.expertise_academic profile.expertise_technical profile.interest profile.activity profile.language)
-    return field_list
-  end
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
@@ -279,7 +272,7 @@ class User < ApplicationRecord
 
   def consents_to_processing
     unless processing_consent
-      errors.add(:base, 'You must consent to TeSS processing your data in order to register')
+      errors.add(:base, "You must consent to #{TeSS::Config.site['title_short']} processing your data in order to register")
 
       false
     end
