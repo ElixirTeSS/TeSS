@@ -1,7 +1,6 @@
 class User < ApplicationRecord
 
   include ActionView::Helpers::ApplicationHelper
-
   include PublicActivity::Common
 
   acts_as_token_authenticatable
@@ -273,7 +272,7 @@ class User < ApplicationRecord
 
   def consents_to_processing
     unless processing_consent
-      errors.add(:base, 'You must consent to TeSS processing your data in order to register')
+      errors.add(:base, "You must consent to #{TeSS::Config.site['title_short']} processing your data in order to register")
 
       false
     end

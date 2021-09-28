@@ -52,6 +52,10 @@ Rails.application.routes.draw do
     resource :ban, only: [:create, :new, :destroy]
   end
 
+  if TeSS::Config.feature['trainers'] == true
+    resources :trainers, only: [:show, :index]
+  end
+
   if TeSS::Config.feature['nodes'] == true
     resources :nodes, concerns: :activities
   end
@@ -150,13 +154,6 @@ Rails.application.routes.draw do
   end
 
   get 'resolve/:prefix:type:id' => 'resolution#resolve', constraints: { prefix: /(.+\:)?/, type: /[a-zA-Z]/, id: /\d+/ }
-
-=begin
-  authenticate :user do
-    resources :materials, only: [:new, :create, :edit, :update, :destroy]
-  end
-  resources :materials, only: [:index, :show]
-=end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

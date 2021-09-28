@@ -23,21 +23,32 @@ class Event < ApplicationRecord
   if TeSS::Config.solr_enabled
     # :nocov:
     searchable do
+      # full text search fields
       text :title
-      string :title
+      text :keywords
+      text :url
+      text :organizer
+      text :venue
+      text :city
+      text :country
+      text :host_institutions
+      text :timezone
+      text :content_provider do
+        if !self.content_provider.nil?
+          self.content_provider.title
+        end
+      end
+      # sort title
       string :sort_title do
         title.downcase.gsub(/^(an?|the) /, '')
       end
-      text :url
+      # other fields
+      string :title
       string :organizer
-      text :organizer
       string :sponsors, :multiple => true
       string :venue
-      text :venue
       string :city
-      text :city
       string :country
-      text :country
       string :event_types, :multiple => true do
         EventTypeDictionary.instance.values_for_search(self.event_types)
       end
@@ -54,11 +65,6 @@ class Event < ApplicationRecord
           self.content_provider.title
         end
       end
-      text :content_provider do
-        if !self.content_provider.nil?
-          self.content_provider.title
-        end
-      end
       string :node, multiple: true do
         self.associated_nodes.map(&:name)
       end
@@ -70,9 +76,7 @@ class Event < ApplicationRecord
       end
       string :target_audience, multiple: true
       boolean :online
-      text :host_institutions
       time :last_scraped
-      text :timezone
       string :user do
         if self.user
           self.user.username

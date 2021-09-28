@@ -32,7 +32,8 @@
 <div class="searchbox">
   <%= form_tag search_path, method: :get, role: 'search' do %>
     <div class="searchbox-wrapper">
-      <input type="text" class="searchbox-field" name="q" placeholder="Search training..." autofocus="autofocus">
+      <input type="text" class="searchbox-field" name="q"
+             placeholder="Search <%= TeSS::Config.site['title_short'] %>..." autofocus="autofocus">
       <button type="submit" class="searchbox-btn">
         <i class="fa fa-search"></i>
       </button>
@@ -124,7 +125,7 @@
 
   <% if TeSS::Config.feature['trainers'] == true %>
     <li class="<%= @liclass %>">
-      <!--%= link_to trainers_path do %-->
+      <%= link_to trainers_path do %>
       <div class="hidden-sm hidden-xs">
         <h2>Trainers</h2>
         <%= image_tag("dresa/Trainers_Default.png", height: "#{@icon_height}px", alt: "Trainers") %>
@@ -137,7 +138,7 @@
         <h4>Trainers</h4>
         <%= image_tag("dresa/Trainers_Default.png", height: "#{@icon_height / 3}px", alt: "Trainers") %>
       </div>
-      <!--% end %-->
+      <% end %>
       <p><%== raw t 'home.trainers_message' %></p>
     </li>
   <% end %>

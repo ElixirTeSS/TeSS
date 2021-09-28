@@ -1,0 +1,9 @@
+<% content_for :og_header do %>
+  <%= tag(:meta, name: "twitter:card", content: 'summary') %>
+  <%= tag(:meta, name: "twitter:site", content: TeSS::Config.twitter_handle) %>
+  <%= tag(:meta, name: "twitter:creator", content: TeSS::Config.twitter_handle) %>
+  <%= tag(:meta, property: "og:url", content: request.original_url) %>
+  <%= tag(:meta, property: "og:title", content: @trainer.full_name) %>
+  <%= tag(:meta, property: "og:description", content: @trainer.description) %>
+  <%= tag(:meta, property: "og:image", content: asset_url(TeSS::Config.site['logo_open_graph'])) %>
+<% end %>

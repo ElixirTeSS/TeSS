@@ -34,19 +34,18 @@ class ContentProvider < ApplicationRecord
   if TeSS::Config.solr_enabled
     # :nocov:
     searchable do
+      # full text fields
       text :title
-      string :title
+      text :description
+      text :keywords
+      # sort title
       string :sort_title do
         title.downcase.gsub(/^(an?|the) /, '')
       end
-      text :description
+      # other fields
+      string :title
       string :keywords, :multiple => true
       string :node, :multiple => true do
-        unless self.node.blank?
-          self.node.name
-        end
-      end
-      text :node do
         unless self.node.blank?
           self.node.name
         end

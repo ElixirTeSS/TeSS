@@ -11,6 +11,8 @@ class UsersController < ApplicationController
   # # and define it on all methods
   # before_action :authenticate_user!
 
+  include ActionView::Helpers::TextHelper
+
   # GET /users
   # GET /users.json
   def index
@@ -89,7 +91,7 @@ class UsersController < ApplicationController
     @user.create_activity :destroy, owner: current_user
     @user.destroy
     respond_to do |format|
-      format.html { redirect_to users_path, notice: 'User was successfully destroyed.' }  # Devise is also doing redirection here
+      format.html { redirect_to users_path, notice: 'User was successfully destroyed.' } # Devise is also doing redirection here
       format.json { head :no_content }
     end
   end
@@ -120,7 +122,11 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    allowed_parameters = [:email, :username, :password, { profile_attributes: [:firstname, :surname, :email, :website] }]
+    allowed_parameters = [:email, :username, :password, {
+      profile_attributes: [:firstname, :surname, :email, :website, :public, :description, :location, :orcid,
+                           :experience, { :expertise_academic => [] }, { :expertise_technical => [] },
+                           { :interest => [] }, { :activity => [] }, { :language => [] }, { :social_media => [] }
+      ] }]
     allowed_parameters << :role_id if policy(@user).change_role?
     params.require(:user).permit(allowed_parameters)
   end
