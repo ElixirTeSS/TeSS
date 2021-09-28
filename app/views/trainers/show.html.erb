@@ -57,7 +57,11 @@
         <%= display_attribute(@trainer, :expertise_technical) { |values| values.join(', ') } %>
         <%= display_attribute(@trainer, :interest) { |values| values.join(', ') } %>
         <%= display_attribute(@trainer, :activity) { |values| values.join(', ') } %>
-        <%= display_attribute(@trainer, :language) { |values| values.join(', ') } %>
+        <%= display_attribute(@trainer, :language) do |values|
+          labels = []
+          values.each { |value| labels << language_label_by_key(value) }
+          labels.join(', ')
+        end %>
         <%= display_attribute(@trainer, :social_media) { |values| values.join(', ') } %>
 
         <!-- Other metadata -->

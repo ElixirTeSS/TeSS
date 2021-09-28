@@ -18,14 +18,17 @@ class Profile < ApplicationRecord
   if TeSS::Config.solr_enabled
     # :nocov:
     searchable do
-      string :sort_title do
-        full_name.downcase
-      end
-      integer :user_id
-      string :full_name
+      # full text search fields
       text :firstname
       text :surname
       text :description
+      # sort title
+      string :sort_title do
+        full_name.downcase
+      end
+      # other fields
+      integer :user_id
+      string :full_name
       string :location
       string :orcid
       string :experience do

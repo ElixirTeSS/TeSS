@@ -1,3 +1,5 @@
+require 'i18n_data'
+
 # define model for Trainer as subset of Profile
 class Trainer < Profile
 
@@ -20,7 +22,11 @@ class Trainer < Profile
       text :expertise_academic do expertise_academic.to_s end
       text :interest do interest.to_s end
       text :activity do activity.to_s end
-      text :language do language.to_s end
+      text :language do
+        langs = []
+        language.each { |key| langs << language_label_by_key(key) }
+        langs.join ', '
+      end
       # sort title
       string :sort_title do
         full_name.downcase
@@ -52,6 +58,14 @@ class Trainer < Profile
 
   def should_generate_new_friendly_id?
     firstname_changed? or surname_changed?
+  end
+
+  def language_label_by_key(key)
+    if key and !key.nil?
+      I18nData.languages.each do |lang|
+        return lang[1] if lang[0] == key
+      end
+    end
   end
 
 end

@@ -7,8 +7,10 @@
     <%= content_tag :span, trainer.description, { itemprop: 'description', content: trainer.description, class: 'schemaorg-element' } %>
   <% end %>
   <% if trainer.language and not trainer.language.empty? %>
-    <% items = trainer.language.join(', ') %>
-    <%= content_tag 'span', items, { itemprop: 'knowsLanguage', content: items, class: 'schemaorg-element' } %>
+    <% langs = []
+       trainer.language.each { |key| langs << language_label_by_key(key) }
+    %>
+    <%= content_tag 'span', langs, { itemprop: 'knowsLanguage', content: langs, class: 'schemaorg-element' } %>
   <% end %>
   <%= content_tag :span, trainer.website, { itemprop: 'url', content: trainer.website, class: 'schemaorg-element' } %>
   <%= content_tag :span, trainer.orcid, { itemprop: 'identifier', content: trainer.orcid, class: 'schemaorg-element' } %>
