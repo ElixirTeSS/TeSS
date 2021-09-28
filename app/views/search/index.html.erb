@@ -30,7 +30,7 @@
                       <%= link_to "View all results.", :controller => model, :q => params[:q] if (results_for_model.total > 30) %>
                     </div>
                     <% if results_for_model.results.count > 0 %>
-                        <% if model == :materials %>
+                        <% if model == :materials or model == :trainers %>
                             <% results_for_model.results.each do |result| %>
                                 <%= render partial: result %>
                             <% end %>

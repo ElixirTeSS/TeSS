@@ -65,4 +65,32 @@ trainer_one:
     interaction of ORCID with other scholarly communication systems without having to use a real-person's account.
   location: 'Brisbane, Australia'
   experience: none
+  expertise_technical: ['python', 'R']
   public: true
+
+trainer_two:
+  user: regular_user
+  firstname: Lucifer
+  surname: MorningStar
+  image_url:
+  email: samael@research.org
+  website: ''
+  orcid: ''
+  description: none
+  location: 'Sydney, Australia'
+  experience: much
+  expertise_technical: ['java', 'python', 'ruby']
+  public: true
+
+trainer_three:
+  user: banned_user
+  firstname: Roger
+  surname: Rabbit
+  email: 'rabbit@warnerbros.com'
+  website: ''
+  orcid: ''
+  description: 'A bit of a cartoon character'
+  location: 'Sydney, Australia'
+  experience: 'Done some work in films'
+  expertise_technical: ['java', 'python', 'ruby']
+  public: false

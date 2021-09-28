@@ -12,14 +12,23 @@ class Trainer < Profile
   if TeSS::Config.solr_enabled
     # :nocov:
     searchable do
+      # full text search fields
+      text :full_name
+      text :description
+      text :location
+      text :expertise_technical do  expertise_technical.to_s end
+      text :expertise_academic do expertise_academic.to_s end
+      text :interest do interest.to_s end
+      text :activity do activity.to_s end
+      text :language do language.to_s end
+      # sort title
       string :sort_title do
         full_name.downcase
       end
+      # other fields
       integer :user_id
-      string :full_name
-      text :firstname
-      text :surname
-      text :description
+      string :firstname
+      string :surname
       string :location
       string :orcid
       string :experience do

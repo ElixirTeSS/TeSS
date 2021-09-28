@@ -3,7 +3,7 @@ class SearchController < ApplicationController
 
   before_action :set_breadcrumbs
 
-  SEARCH_MODELS = %w( ContentProvider Event Material Package Trainer User ).freeze
+  SEARCH_MODELS = %w( Event Material Package ContentProvider Trainer User ).freeze
 
   # GET /searches
   # GET /searches.json
