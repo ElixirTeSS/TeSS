@@ -11,7 +11,7 @@ module TrainersHelper
   def trainer_experience_title_for_key(key)
     TrainerExperienceDictionary.instance.lookup_value(key, 'title')
   end
-
+  
   def display_attribute(resource, attribute)
     value = resource.send(attribute)
     if value.blank? || value.try(:strip) == 'notspecified'

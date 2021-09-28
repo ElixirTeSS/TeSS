@@ -18,8 +18,9 @@
 
         <p>
           <%= t 'profile.trainer.gravitar.help' %>
-          <a href=""<%= t 'profile.trainer.gravitar.url' %>" target='_blank' >
-          <%= t 'profile.trainer.gravitar.url' %></a>
+          <a href="<%= t 'profile.trainer.gravitar.url' %>" target='_blank'>
+            <%= t 'profile.trainer.gravitar.url' %>
+          </a>
         </p>
 
         <% if policy(@user).change_role? %>
@@ -37,13 +38,14 @@
                     label: 'Training Experience', prompt: 'Select a level of experience...',
                     input_html: { title: t('profile.hints.experience') } %>
 
-        <!--%= f.dropdown :language, options: I18nData.languages, label: 'Languages Spoken',
-                       errors: @user.profile.errors[:language], title: t('profile.hints.language') %-->
+        <%= f.dropdown :language, options: language_options_for_select(['EN', 'MI']),
+                       label: 'Languages Spoken', model_name: 'user[profile_attributes]',
+                       errors: @user.profile.errors[:language], title: t('profile.hints.language') %>
 
-        <%= f.multi_input :language, label: 'Languages spoken',
+        <!--%= f.multi_input :language, label: 'Languages spoken',
                           errors: @user.profile.errors[:language],
                           model_name: 'user[profile_attributes]',
-                          title: t('profile.hints.language') %>
+                          title: t('profile.hints.language') %-->
 
         <%= f.multi_input :expertise_academic, label: 'Academic expertise',
                           errors: @user.profile.errors[:expertise_academic],

@@ -21,7 +21,7 @@ render :partial => 'common/dropdown',
  %>
 
 <%
-  model_name =  resource.class.name.underscore # e.g. package
+  model_name ||=  resource.class.name.underscore # e.g. package
   options ||= format_for_dropdown(field_name.capitalize.constantize.all)
   existing ||= format_for_dropdown(resource.send(field_name.pluralize))
 
