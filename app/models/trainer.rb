@@ -44,7 +44,9 @@ class Trainer < Profile
       string :expertise_technical, multiple: true
       string :interest, multiple: true
       string :activity, multiple: true
-      string :language, multiple: true
+      string :language, multiple: true do
+        languages_from_keys(self.language)
+      end
       string :social_media, multiple: true
       time :updated_at
       boolean :public
@@ -53,7 +55,7 @@ class Trainer < Profile
   end
 
   def self.facet_fields
-    field_list = %w( location experience expertise_academic expertise_technical interest activity language)
+    field_list = %w( location experience expertise_academic expertise_technical interest activity language )
   end
 
   def should_generate_new_friendly_id?
@@ -66,6 +68,12 @@ class Trainer < Profile
         return lang[1] if lang[0] == key
       end
     end
+  end
+
+  def languages_from_keys(keys)
+    labels = []
+    keys.each { |key| labels << language_label_by_key(key) }
+    return labels
   end
 
 end
