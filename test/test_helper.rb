@@ -53,6 +53,9 @@ class ActiveSupport::TestCase
     WebMock.stub_request(:get, "https://bio.tools/api/tool?q=Material%20with%20suggestions").
         with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
         to_return(:status => 200, :body => "", :headers => {})
+
+    WebMock.stub_request(:get, 'https://orcid.org/000-0002-1825-0097x').to_return(status: 404)
+
   end
 
   def mock_biotools

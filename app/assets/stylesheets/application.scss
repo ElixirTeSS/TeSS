@@ -424,6 +424,24 @@ ul.unstyled {
   margin: 0 10px 0 0;
 }
 
+.small-trainer-logo {
+  max-width: 80px;
+  border-radius: 4px;
+  padding-left: 10px;
+}
+
+.medium-trainer-logo {
+  max-width: 160px;
+  border-radius: 4px;
+  padding-left: 0;
+}
+
+.large-trainer-logo {
+  max-width: 240px;
+  border-radius: 4px;
+  padding-left: 0;
+}
+
 .search-results-count {
   font-size: medium;
   font-weight: bold;

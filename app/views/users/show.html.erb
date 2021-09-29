@@ -47,7 +47,25 @@
               <% if @user.profile.website.blank? %>
                 <span class="empty">None specified</span>
               <% else %>
-                <%= link_to @user.profile.website, @user.profile.website, rel: 'nofollow' %>
+                <%= link_to @user.profile.website, @user.profile.website, rel: 'nofollow', target: '_blank' %>
+              <% end %>
+            </p>
+
+            <p>
+              <strong>ORCID</strong><br/>
+              <% if @user.profile.orcid.blank? %>
+                <span class="empty">None specified</span>
+              <% else %>
+                <%= link_to @user.profile.orcid, @user.profile.orcid, rel: 'nofollow', target: '_blank' %>
+              <% end %>
+            </p>
+
+            <p>
+              <strong>Included in Registry of Trainers:</strong>
+              <% if @user.profile.public? %>
+                <span style="color: green;">Yes</span>
+              <% else %>
+                <span style="color: red;">No</span>
               <% end %>
             </p>
 

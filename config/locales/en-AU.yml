@@ -28,7 +28,7 @@ en-AU:
     materials_message: "Browse and discover training materials from Australasian providers."
     workflows_message: "Create training workflows to visualise learning steps and link to resources specific to your training needs."
     providers_message: "Browse and discover Australasian training providers who contribute events and materials to DReSA."
-    trainers_message: "<strong>Coming soon&hellip;</strong> in the next phase of development."
+    trainers_message: "Browse and discover Australasian trainers for digital research skills."
   footer:
     funded_by: >
       <p>DReSA has received investments from the
@@ -388,3 +388,31 @@ en-AU:
       type: 'Select the type of resource that best matches the training material. '
       url: 'Preferred URL to direct people to your training material landing page.'
       version: 'Indicate the current version of the training material.'
+  profile:
+    trainer:
+      gravitar:
+        help: >
+          The image displayed with your profile is the Gravatar image associated with the provided contact email address.
+          Gravatar provides a way to link an avatar to an email address so that it can be used across sites and
+          platforms. To set-up a linked avatar, go to the Gravatar site:
+        url: https://en.gravatar.com
+      disclaimer: >
+        By clicking the box below you are giving permission for us to share the information in your profile
+        through a public search of registered trainers.
+    hints:
+      public: 'Select if you wish to publish your trainer profile.'
+      description: 'For additional context, provide a textual description of your training experience.'
+      email: 'Include your preferred email address.'
+      website: 'Include a preferred URL for your professional profile.'
+      orcid: 'Include your ORCID URL'
+      image_url: ''
+      location: 'The location where you are primarily based.'
+      experience: 'Select your level of experience as a trainer.'
+      expertise_academic: 'Terms and phrases that describe your academic expertise.'
+      expertise_technical: 'Terms and phrases that describe your technical expertise.'
+      language: 'Include languages in which you are fluent.'
+      interest: 'Add keyword(s) to identify your main areas of interest.'
+      activity: 'Include any global connections or activities that relate to your skills and training work.'
+      social_media: 'Links or handles for your social media profiles.'
+
+

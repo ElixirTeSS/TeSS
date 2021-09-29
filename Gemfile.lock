@@ -92,7 +92,7 @@ GEM
     bcrypt (3.1.16)
     bindata (2.4.10)
     bindex (0.8.1)
-    bootsnap (1.8.1)
+    bootsnap (1.9.0)
       msgpack (~> 1.0)
     bootstrap-datepicker-rails (1.6.4.1)
       railties (>= 3.0)
@@ -598,7 +598,7 @@ GEM
       tzinfo (>= 1.0.0)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
-    unicode-display_width (2.0.0)
+    unicode-display_width (2.1.0)
     unicode_utils (1.4.0)
     unicorn (6.0.0)
       kgio (~> 2.6)
@@ -654,6 +654,7 @@ DEPENDENCIES
   haml (~> 5.0.4)
   handlebars_assets
   httparty
+  i18n_data
   icalendar (~> 2.4.1)
   iso_country_codes
   jbuilder

@@ -18,16 +18,26 @@ class Material < ApplicationRecord
   if TeSS::Config.solr_enabled
     # :nocov:
     searchable do
+      # full text search fields
       text :title
-      string :title
-      string :sort_title do
-        title.downcase.gsub(/^(an?|the) /, '')
-      end
       text :description
       text :contact
       text :doi
-      string :authors, :multiple => true
       text :authors
+      text :contributors
+      text :target_audience
+      text :keywords
+      text :resource_type
+      text :content_provider do
+        self.content_provider.try(:title)
+      end
+      # sort title
+      string :sort_title do
+        title.downcase.gsub(/^(an?|the) /, '')
+      end
+      # other fields
+      string :title
+      string :authors, :multiple => true
       string :scientific_topics, :multiple => true do
         self.scientific_topic_names
       end
@@ -35,20 +45,13 @@ class Material < ApplicationRecord
         self.operation_names
       end
       string :target_audience, :multiple => true
-      text :target_audience
       string :keywords, :multiple => true
-      text :keywords
       string :resource_type, :multiple => true
-      text :resource_type
       string :difficulty_level do
         DifficultyDictionary.instance.lookup_value(self.difficulty_level, 'title')
       end
       string :contributors, :multiple => true
-      text :contributors
       string :content_provider do
-        self.content_provider.try(:title)
-      end
-      text :content_provider do
         self.content_provider.try(:title)
       end
       string :node, multiple: true do

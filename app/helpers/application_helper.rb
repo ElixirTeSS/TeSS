@@ -1,3 +1,5 @@
+require 'i18n_data'
+
 # The core application helper
 module ApplicationHelper
   # def bootstrap_class_for flash_type
@@ -167,6 +169,7 @@ module ApplicationHelper
   DEFAULT_IMAGE_FOR_MODEL = {
     'ContentProvider' => TeSS::Config.placeholder['provider'],
     'Package' => TeSS::Config.placeholder['package'],
+    'Trainer' => TeSS::Config.placeholder['person'],
     'Node' => 'elixir_logo_orange.png'
   }.freeze
 
@@ -192,6 +195,8 @@ module ApplicationHelper
     when 'events'
       'fa fa-calendar'
     when 'users'
+      'fa fa-user'
+    when 'trainers'
       'fa fa-user'
     when 'workflows'
       'fa fa-sitemap'
@@ -333,6 +338,7 @@ module ApplicationHelper
       existing_values = object.send(name.to_sym)
       existing = options[:options].select { |label, value| existing_values.include?(value) }
       @template.render(partial: 'common/dropdown', locals: { field_name: name, f: self,
+                                                             model_name: options[:model_name],
                                                              resource: object,
                                                              options: options[:options],
                                                              existing: existing,
@@ -360,7 +366,9 @@ module ApplicationHelper
 
     def multi_input(name, options = {})
       suggestions = options[:suggestions] || AutocompleteManager.suggestions_array_for(name.to_s)
-      @template.render(partial: 'common/multiple_input', locals: { field_name: name, f: self, suggestions: suggestions,
+      @template.render(partial: 'common/multiple_input', locals: { field_name: name, f: self,
+                                                                   model_name: options[:model_name],
+                                                                   suggestions: suggestions,
                                                                    disabled: options[:disabled],
                                                                    required: options[:required],
                                                                    label: options[:label],
@@ -502,7 +510,36 @@ module ApplicationHelper
 
     # nothing found
     return failed
+  end
 
+  def language_options_for_select(priority)
+    priors = []
+    others = []
+
+    I18nData.languages.each do |lang|
+      if lang and !lang.empty?
+        value = lang[1]
+          key = lang[0]
+        #Rails.logger.debug "language: key[#{key}] value[#{value}]"
+        if priority and !priority.empty? and priority.include?(key)
+          priors << [value,key]
+        else
+          others << [value,key]
+        end
+      end
+    end
+
+    return priors + others
+  end
+
+  def language_label_by_key(key)
+    if key and !key.nil?
+      I18nData.languages.each do |lang|
+        return lang[1] if lang[0] == key
+      end
+    end
   end
 
 end
+
+

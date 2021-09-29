@@ -220,6 +220,24 @@ class DictionariesTest < ActiveSupport::TestCase
     assert_equal '', ops[item][2], "item[#{item}] description not matched"
   end
 
+  test "check trainer experience dictionary" do
+    dic = TrainerExperienceDictionary.instance
+    assert dic.is_a?(TrainerExperienceDictionary)
+    assert_not_nil dic, "trainer experience dictionary should exist"
+
+
+    @dictionaries['trainer_experience'] = 'trainer_experience_dummy.yml'
+    dic.reload
+
+    # should reload default
+    assert_nil dic.lookup('mega'), "trainer experience (mega) was found"
+    assert_not_nil dic.lookup('none'),"trainer experience (none) not found"
+    assert_equal '10+ years', dic.lookup('expert')['title'],
+                 "trainer experience (expert) title not matched"
+    assert_equal 'Between 2 and 5 years', dic.lookup('competant')['description'],
+               "trainer experience (none) description was found"
+  end
+
   private
 
   def reset_dictionaries
@@ -231,6 +249,7 @@ class DictionariesTest < ActiveSupport::TestCase
     @dictionaries['material_type'] = MaterialTypeDictionary::DEFAULT_FILE
     @dictionaries['material_status'] = MaterialStatusDictionary::DEFAULT_FILE
     @dictionaries['target_audience'] = TargetAudienceDictionary::DEFAULT_FILE
+    @dictionaries['trainer_experience'] = TrainerExperienceDictionary::DEFAULT_FILE
     DifficultyDictionary.instance.reload
     EligibilityDictionary.instance.reload
     EventTypeDictionary.instance.reload
@@ -238,6 +257,7 @@ class DictionariesTest < ActiveSupport::TestCase
     MaterialTypeDictionary.instance.reload
     MaterialStatusDictionary.instance.reload
     TargetAudienceDictionary.instance.reload
+    TrainerExperienceDictionary.instance.reload
   end
 
 end

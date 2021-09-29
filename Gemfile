@@ -140,6 +140,7 @@ gem 'time_diff'
 
 # For internationalisation (i18n)
 gem 'rails-i18n'
+gem 'i18n_data'
 
 # for timezone information
 gem 'tzinfo'
