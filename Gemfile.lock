@@ -92,7 +92,7 @@ GEM
     bcrypt (3.1.16)
     bindata (2.4.10)
     bindex (0.8.1)
-    bootsnap (1.9.0)
+    bootsnap (1.9.1)
       msgpack (~> 1.0)
     bootstrap-datepicker-rails (1.6.4.1)
       railties (>= 3.0)
@@ -139,7 +139,7 @@ GEM
     execjs (2.8.1)
     fakeredis (0.8.0)
       redis (~> 4.1)
-    faraday (1.7.2)
+    faraday (1.8.0)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
       faraday-excon (~> 1.1)
@@ -180,7 +180,7 @@ GEM
     hashie (4.1.0)
     highline (1.7.10)
     htmlentities (4.3.4)
-    httparty (0.19.0)
+    httparty (0.20.0)
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
     httpclient (2.8.3)
@@ -202,13 +202,13 @@ GEM
       turbolinks
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
-    json (1.8.6)
+    json (2.5.1)
     json-canonicalization (0.2.1)
     json-jwt (1.13.0)
       activesupport (>= 4.2)
       aes_key_wrap
       bindata
-    json-ld (3.1.9)
+    json-ld (3.1.10)
       htmlentities (~> 4.3)
       json-canonicalization (~> 0.2)
       link_header (~> 0.0, >= 0.0.8)
@@ -274,7 +274,7 @@ GEM
     lunchy (0.10.4)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
-    marcel (1.0.1)
+    marcel (1.0.2)
     method_source (1.0.0)
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
@@ -284,14 +284,14 @@ GEM
       rake
     mini_mime (1.1.1)
     minitest (5.10.3)
-    monetize (1.9.4)
+    monetize (1.11.0)
       money (~> 6.12)
-    money (6.13.8)
+    money (6.16.0)
       i18n (>= 0.6.4, <= 2)
-    money-rails (1.14.0)
+    money-rails (1.15.0)
       activesupport (>= 3.0)
-      monetize (~> 1.9.0)
-      money (~> 6.13.2)
+      monetize (~> 1.9)
+      money (~> 6.13)
       railties (>= 3.0)
     msgpack (1.4.2)
     multi_json (1.15.0)
@@ -467,7 +467,7 @@ GEM
     rdf-xsd (3.1.1)
       rdf (~> 3.1)
       rexml (~> 3.2)
-    rdoc (4.3.0)
+    rdoc (6.3.2)
     recaptcha (5.8.1)
       json
     redcarpet (3.5.1)
@@ -482,16 +482,16 @@ GEM
     rsolr (2.3.0)
       builder (>= 2.1.2)
       faraday (>= 0.9.0)
-    rubocop (1.21.0)
+    rubocop (1.22.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
       rexml
-      rubocop-ast (>= 1.9.1, < 2.0)
+      rubocop-ast (>= 1.12.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.11.0)
+    rubocop-ast (1.12.0)
       parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
@@ -514,9 +514,8 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    sdoc (0.4.2)
-      json (~> 1.7, >= 1.7.7)
-      rdoc (~> 4.0)
+    sdoc (2.2.0)
+      rdoc (>= 5.0)
     shex (0.6.0)
       ebnf (~> 1.2)
       json-ld (~> 3.1)
@@ -594,7 +593,7 @@ GEM
     turbolinks-source (5.2.0)
     tzinfo (1.2.9)
       thread_safe (~> 0.1)
-    tzinfo-data (1.2021.1)
+    tzinfo-data (1.2021.2)
       tzinfo (>= 1.0.0)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
@@ -661,6 +660,7 @@ DEPENDENCIES
   jquery-rails
   jquery-simplecolorpicker-rails
   jquery-turbolinks
+  json (>= 2.3.0)
   linkeddata
   listen
   lunchy
@@ -683,12 +683,13 @@ DEPENDENCIES
   rails-controller-testing
   rails-i18n
   rails_admin
+  rdoc (>= 6.3.1)
   recaptcha
   redcarpet (~> 3.5.1)
   redis (< 5.0.0)
   rubocop
   sass-rails (~> 5.0)
-  sdoc (~> 0.4.0)
+  sdoc (>= 0.4.0)
   sidekiq
   simple_form
   simple_token_authentication (~> 1.0)
