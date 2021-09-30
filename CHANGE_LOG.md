@@ -2,11 +2,37 @@
 The sections below refer to the release tags for this repository:
 
 ---
+## [Version 1.3.0](https://github.com/nrmay/TeSS/releases/tag/v1.3.0)
+
+Deployed: *30<sup>th</sup> September, 2021*
+
+Theme: *Trainers Register*
+
+- Upgrade Software Versions: [Security Update 2](https://github.com/nrmay/TeSS/issues/224)
+  - packages: json, nokogiri, rdoc, sdoc.
+
+
+- Features:
+  - [Trainer Profiles (Pass 1)](https://github.com/nrmay/TeSS/issues/202)
+
+
+- Updates:
+  - [Version 1.3.0](https://github.com/nrmay/TeSS/issues/216)
+  - including: User Manual and CHANGE_LOG.
+ 
+
+- Bug Fixes:
+  - [Update General Search](https://github.com/nrmay/TeSS/issues/218)
+  - [Edit User Profile](https://github.com/nrmay/TeSS/issues/222)
+
+---
 ## [Version 1.2.3](https://github.com/nrmay/TeSS/releases/tag/v1.2.3)
+
+Deployed: *17<sup>th</sup> September, 2021*
 
 Theme: *Upgrades to Support Scrapers*
 
-- Upgrade Software Versions: [Security Update 1](https://github.com/nrmay/TeSS/pull/190)
+- Upgrade Software Versions: [Security Update 1](https://github.com/nrmay/TeSS/issues/190)
   - Ruby: 2.4.5 &rarr; 2.5.8
   - Rails: 5.2.3 &rarr; 5.2.6
   - Rake: 13.0.0 &rarr; 13.0.6
@@ -32,7 +58,10 @@ Theme: *Upgrades to Support Scrapers*
 ---
 ## [Version 1.2.2](https://github.com/nrmay/TeSS/releases/tag/v1.2.2)
 
+Deployed: *31<sup>st</sup> August, 2021*
+
 Theme: *Feedback from Content Sprints*
+
 
 - Updates:
   - [User Manual Link: #156](https://github.com/nrmay/TeSS/issues/156)
@@ -46,7 +75,10 @@ Theme: *Feedback from Content Sprints*
 ---
 ## [Version 1.2.1](https://github.com/nrmay/TeSS/releases/tag/v1.2.1)
 
+Deployed: *16<sup>th</sup> August, 2021*
+
 Theme: *Mid-Sprint Bug Fixes, etc.*
+
 
 - Bug Fixes:
   - [Event activity log display #76](https://github.com/nrmay/TeSS/issues/76)
@@ -68,6 +100,8 @@ Theme: *Mid-Sprint Bug Fixes, etc.*
 
 ---
 ## [Version 1.2.0](https://github.com/nrmay/TeSS/releases/tag/v1.2.0)  
+
+Deployed: *30<sup>th</sup> July, 2021*
 
 Theme: *Materials Ready*
 
@@ -98,6 +132,8 @@ Changes implemented in this version (with issue numbers) are as follows:
 
 ---
 ## [Version 1.1.0](https://github.com/nrmay/TeSS/releases/tag/v1.1.0)  
+
+Deployed: *6<sup>th</sup> July, 2021*
 
 Theme: *DReSA Initial Release*
 
