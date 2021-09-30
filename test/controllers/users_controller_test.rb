@@ -223,7 +223,7 @@ class UsersControllerTest < ActionController::TestCase
 
     # update profile data
     profile = { public: false, email: 'fake@email.com', orcid: '', website: '', location: '',
-                experience: 'expert', image_url: nil, expertise_technical: ['java', 'python', 'ruby']}
+                experience: 'expert', image_url: nil, expertise_technical: ['java', 'python', 'ruby'] }
     patch :update, params: { id: user, user: { profile_attributes: profile } }
     assert_redirected_to user_path(assigns(:user))
 
@@ -275,6 +275,66 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal 1, profile.errors.full_messages_for(:orcid).size, 'invalid error count for: orcid'
     assert_equal "Website is not a valid URL", profile.errors.full_messages_for(:website).first
     assert_equal "Orcid is not accessible", profile.errors.full_messages_for(:orcid).first
+  end
+
+  test 'update profile to private' do
+    user = users(:trainer_user)
+    sign_in user
+
+    # check type
+    get :show, params: { id: user }
+    assert_response :success
+    profile = assigns(:user).profile
+    assert_equal true, profile.public
+    assert_equal 'Josiah Carberry', profile.full_name
+    assert_equal 'Trainer', profile.type
+
+    # update flag
+    patch :update, params: { id: user, user: { profile_attributes: { public: false, firstname: profile.firstname,
+                                                                     surname: profile.surname, email: profile.email,
+                                                                     description: profile.description } } }
+    assert assigns(:user).profile
+    assert_equal 0, assigns(:user).profile.errors.size
+    assert_response :redirect
+
+    # recheck type
+    get :show, params: { id: user }
+    assert_response :success
+    profile = assigns(:user).profile
+    assert_equal false, profile.public
+    assert_equal 'Profile', profile.type
+  end
+
+  test 'update profile to public' do
+    user = users(:private_user)
+    sign_in user
+
+    # check type
+    get :show, params: { id: user }
+    assert_response :success
+    profile = assigns(:user).profile
+    assert_equal 'Lucifer MorningStar', profile.full_name
+    assert_equal 'Profile', profile.type
+    assert_equal false, profile.public
+
+    # update flag
+    patch :update, params: { id: user, user: { profile_attributes: { public: true, firstname: profile.firstname,
+                                                                     surname: profile.surname, email: profile.email,
+                                                                     description: profile.description } } }
+    assert assigns(:user).profile
+    assert_equal 0, assigns(:user).profile.errors.size
+    assert_response :redirect
+
+    # recheck type
+    get :show, params: { id: user }
+    assert_response :success
+    puser = assigns(:user)
+    assert puser
+    assert_equal 'StevieN', puser.username
+    profile = puser.profile
+    assert_equal 'Lucifer MorningStar', profile.full_name
+    assert_equal 'Trainer', profile.type
+    assert_equal true, profile.public
   end
 
 end

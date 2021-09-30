@@ -117,3 +117,11 @@ trainer_user:
   confirmed_at: <%= Time.zone.now %>
   role: user
   authentication_token: <%= Devise.friendly_token %>
+
+private_user:
+  username: 'StevieN'
+  email: 'stevie_nix@notarealdomain.org'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'private') %>
+  confirmed_at: <%= Time.zone.now %>
+  role: user
+  authentication_token: <%= Devise.friendly_token %>
