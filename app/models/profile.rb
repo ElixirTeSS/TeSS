@@ -6,6 +6,7 @@ class Profile < ApplicationRecord
   validates :firstname, :surname, :description, presence: true, if: :public?
   validates :website, :orcid, url: true, http_url: true, allow_blank: true
   validate :valid_orcid
+  after_validation :check_public
   clean_array_fields(:expertise_academic, :expertise_technical, :interest, :activity, :language, :social_media)
   update_suggestions(:expertise_technical, :interest)
 
@@ -54,15 +55,16 @@ class Profile < ApplicationRecord
     "#{firstname} #{surname}".strip
   end
 
+  private
+
   def valid_orcid
     if !orcid.nil? && !orcid.blank?
       errors.add(:orcid, "invalid domain") unless orcid.to_s.start_with?('https://orcid.org/')
     end
   end
 
-  def type
-    'trainer' if :public
-    'profile' if !:public
+  def check_public
+    public ? self.type = 'Trainer' : self.type = 'Profile'
   end
 
   def reindex

@@ -76,4 +76,8 @@ class Trainer < Profile
     return labels
   end
 
+  def self.finder_needs_type_condition?
+    true
+  end
+
 end
