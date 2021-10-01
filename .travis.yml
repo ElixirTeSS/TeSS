@@ -10,6 +10,15 @@ cache: bundler
 
 addons:
   postgresql: "12.8"
+  apt:
+    packages:
+    - postgresql-12
+    - postgresql-client-12
+    
+env:
+  global:
+  - PGPORT=5433
+  - PGUSER=travis
 
 before_install:
   - gem install bundler -v '~> 2.2.27'
