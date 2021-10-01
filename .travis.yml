@@ -9,19 +9,10 @@ branches:
 cache: bundler
 
 addons:
-  postgresql: "12.8"
-  apt:
-    packages:
-    - postgresql-12
-    - postgresql-client-12
+  postgresql: "9.4"
 
 services:
   - postgresql
-    
-env:
-  global:
-  - PGPORT=5433
-  - PGUSER=travis
 
 before_install:
   - gem install bundler -v '~> 2.2.27'
@@ -29,7 +20,7 @@ before_install:
 before_script:
   - cp config/tess.example.yml config/tess.yml
   - cp config/secrets.travis.yml config/secrets.yml
-  - psql -c 'create database travis_ci_test;' -U postgres - p 5433
+  - psql -c 'create database travis_ci_test;' -U postgres
   - bundle exec rake db:setup
   
 after_success:
