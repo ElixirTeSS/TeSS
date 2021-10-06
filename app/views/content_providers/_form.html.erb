@@ -25,6 +25,9 @@
     <%= f.input :user_id, label: 'Owner', collection: User.all %>
   <% end %>
 
+  <!--% f.multi_input :users, label: 'Approved Editors', collection: nil %-->
+
+
   <div class="form-group">
     <%= f.submit (f.object.new_record? ? "Register" : "Update") + " content provider", class: 'btn btn-primary' %>
     <%= link_to 'Back', content_providers_path, class: "btn btn-info" %>

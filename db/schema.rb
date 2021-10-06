@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_30_022018) do
+ActiveRecord::Schema.define(version: 2021_10_05_055212) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -316,7 +316,7 @@ ActiveRecord::Schema.define(version: 2021_09_30_022018) do
     t.text "activity", default: [], array: true
     t.string "language", default: [], array: true
     t.string "social_media", default: [], array: true
-    t.string "type", default: "Profile"
+    t.string "type"
     t.index ["slug"], name: "index_profiles_on_slug", unique: true
   end
 

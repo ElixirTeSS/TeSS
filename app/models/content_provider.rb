@@ -13,6 +13,9 @@ class ContentProvider < ApplicationRecord
   belongs_to :user
   belongs_to :node, optional: true
 
+  has_many :editors
+  has_many :users, through: :editors
+
   delegate :name, to: :node, prefix: true, allow_nil: true
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):

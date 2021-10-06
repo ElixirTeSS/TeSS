@@ -38,6 +38,9 @@ class User < ApplicationRecord
            class_name: '::PublicActivity::Activity',
            as: :owner
 
+  has_many :editors
+  has_many :content_providers, through: :editors
+
   before_create :set_default_role, :set_default_profile
   before_create :skip_email_confirmation_for_non_production
   before_update :skip_email_reconfirmation_for_non_production
