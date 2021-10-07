@@ -13,6 +13,10 @@ Theme: *Pre-launch Preparation*
   - [Add Supporter: ASDAF](https://github.com/nrmay/TeSS/issues/230)
 
 
+- Bug Fixes:
+  - [Provider sort by modified](https://github.com/nrmay/TeSS/issues/234)
+
+
 ---
 ## [Version 1.3.0](https://github.com/nrmay/TeSS/releases/tag/v1.3.0)
 
