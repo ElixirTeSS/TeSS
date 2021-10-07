@@ -83,6 +83,13 @@ ActiveRecord::Schema.define(version: 2021_10_05_055212) do
     t.index ["suggestible_id", "suggestible_type"], name: "index_edit_suggestions_on_suggestible_id_and_suggestible_type"
   end
 
+  create_table "editors", id: false, force: :cascade do |t|
+    t.bigint "content_provider_id"
+    t.bigint "user_id"
+    t.index ["content_provider_id"], name: "index_editors_on_content_provider_id"
+    t.index ["user_id"], name: "index_editors_on_user_id"
+  end
+
   create_table "event_materials", force: :cascade do |t|
     t.integer "event_id"
     t.integer "material_id"
@@ -452,6 +459,8 @@ ActiveRecord::Schema.define(version: 2021_10_05_055212) do
   add_foreign_key "collaborations", "users"
   add_foreign_key "content_providers", "nodes"
   add_foreign_key "content_providers", "users"
+  add_foreign_key "editors", "content_providers"
+  add_foreign_key "editors", "users"
   add_foreign_key "event_materials", "events"
   add_foreign_key "event_materials", "materials"
   add_foreign_key "events", "users"

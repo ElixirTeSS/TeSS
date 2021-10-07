@@ -13,8 +13,8 @@ class ContentProvider < ApplicationRecord
   belongs_to :user
   belongs_to :node, optional: true
 
-  has_many :editors
-  has_many :users, through: :editors
+  has_many :editor_users, class_name: 'Editor'
+  has_many :editors, through: :editor_users, source: :user
 
   delegate :name, to: :node, prefix: true, allow_nil: true
 
@@ -100,4 +100,23 @@ class ContentProvider < ApplicationRecord
   def self.identifiers_dot_org_key
     'p'
   end
+
+  def add_editor(editor)
+    editors << editor if !editors.include?(editor) and editor.id != user.id
+  end
+
+  def remove_editor(editor)
+    if editors.include?(editor)
+      # remove from array
+      editors.delete(editor)
+      # transfer to the owner
+      # TODO: events
+
+      # TODO: materials
+
+
+    end
+
+  end
+
 end
