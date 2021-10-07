@@ -59,6 +59,7 @@ class ContentProvider < ApplicationRecord
         end
       end
       integer :user_id # Used for shadowbans
+      time :updated_at
     end
     # :nocov:
   end
