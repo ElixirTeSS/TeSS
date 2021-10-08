@@ -38,8 +38,10 @@ class User < ApplicationRecord
            class_name: '::PublicActivity::Activity',
            as: :owner
 
-  has_many :editable_providers, class_name: 'Editor'
-  has_many :providers, through: :editable_providers, source: :content_provider
+  has_and_belongs_to_many :editables, class_name: "ContentProvider"
+
+  #has_many :content_provider_users
+  #has_many :providers, through: :content_providers, source: :content_provider, inverse_of: :editors
 
   before_create :set_default_role, :set_default_profile
   before_create :skip_email_confirmation_for_non_production

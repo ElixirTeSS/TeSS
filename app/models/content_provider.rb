@@ -13,8 +13,10 @@ class ContentProvider < ApplicationRecord
   belongs_to :user
   belongs_to :node, optional: true
 
-  has_many :editor_users, class_name: 'Editor'
-  has_many :editors, through: :editor_users, source: :user
+  has_and_belongs_to_many :editors, class_name: "User"
+
+  #has_many :content_provider_users
+  #has_many :editors, through: :users, source: :user, inverse_of: :providers
 
   delegate :name, to: :node, prefix: true, allow_nil: true
 
@@ -102,19 +104,23 @@ class ContentProvider < ApplicationRecord
   end
 
   def add_editor(editor)
-    editors << editor if !editors.include?(editor) and editor.id != user.id
+    if !editor.nil? and !editors.include?(editor) and editor.id != user.id
+      editors << editor
+      save!
+    end
   end
 
   def remove_editor(editor)
-    if editors.include?(editor)
+    if !editor.nil? and editors.include?(editor)
       # remove from array
       editors.delete(editor)
+      save!
       # transfer to the owner
       # TODO: events
 
       # TODO: materials
 
-
+      editor.save!
     end
 
   end
