@@ -380,7 +380,7 @@ calendar_event:
   host_institutions: ["UoLife"]
   timezone: Melbourne
   contact: MyContact
-  eligibility: [ free_to_all ]
+  eligibility: [ first_come_first_served ]
 
 training_event:
   title: "calendar event"
@@ -403,4 +403,4 @@ training_event:
   host_institutions: ["UoLife"]
   timezone: Melbourne
   contact: MyContact
-  eligibility: [ free_to_all ]
+  eligibility: [ first_come_first_served ]

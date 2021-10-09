@@ -139,7 +139,7 @@ material_with_optionals:
 
 training_material:
   user: trainer_user
-  title: Training Material Example
+  title: Training Material Example 2
   url: http://training.com/trainers/2
   description: This is a Training Material produced by an example organization
   doi: http://dx.doi.ac.uk/2q3093032

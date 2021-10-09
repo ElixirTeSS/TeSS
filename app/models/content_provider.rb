@@ -117,11 +117,23 @@ class ContentProvider < ApplicationRecord
       editors.delete(editor)
       save!
       editor.editables.reload
-      # transfer to the owner
-      # TODO: events
 
-      # TODO: materials
+      # transfer events to the provider's user
+      editor.events.each do |event|
+        if event.content_provider.id == id
+          event.user = user
+          event.save!
+        end
+      end
 
+      # transfer materials to the provider's user
+      editor.materials.each do |material|
+        if material.content_provider.id == id
+          material.user = user
+          material.save!
+        end
+      end
+      editor.reload
       editor.save!
     end
 

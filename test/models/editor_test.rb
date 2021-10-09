@@ -120,10 +120,11 @@ class EditorTest < ActiveSupport::TestCase
     assert_equal owner, provider.user
     assert event
     assert_equal trainer, event.user
+    assert_equal trainer.username, event.user.username
     assert_equal provider, event.content_provider
     assert material
-    assert_equal trainer, material.user
-    assert_equal provider, material.content_provider
+    assert_equal trainer.username, material.user.username
+    assert_equal provider.title, material.content_provider.title
 
     # check editors
     assert provider.editors
@@ -132,6 +133,8 @@ class EditorTest < ActiveSupport::TestCase
            "trainer[#{trainer.username}] not found in provider[#{provider.title}].editors"
     assert trainer.editables.include?(provider),
            "trainer[#{trainer.username}] cannot edit provider[#{provider.title}]"
+    assert_equal 1, provider.editors.size
+    assert_equal 1, trainer.editables.size
 
     # remove editor
     provider.remove_editor(trainer)
@@ -141,6 +144,15 @@ class EditorTest < ActiveSupport::TestCase
            "trainer[#{trainer.username}] can still edit provider[#{provider.title}]"
 
     # TODO: check reassignments
+    event.reload
+    material.reload
+    assert_equal provider.title, event.content_provider.title
+    assert_equal provider.title, material.content_provider.title
+    assert_equal provider.user.username, event.user.username, "event[#{event.title}] owner not matched"
+    assert_equal provider.user, material.user, "material[#{material.title}] owner not matched"
+    assert_equal 0, trainer.editables.size
+    assert_equal 0, provider.editors.size
+
 
   end
 
