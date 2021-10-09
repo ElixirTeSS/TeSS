@@ -107,6 +107,7 @@ class ContentProvider < ApplicationRecord
     if !editor.nil? and !editors.include?(editor) and editor.id != user.id
       editors << editor
       save!
+      editor.editables.reload
     end
   end
 
@@ -115,6 +116,7 @@ class ContentProvider < ApplicationRecord
       # remove from array
       editors.delete(editor)
       save!
+      editor.editables.reload
       # transfer to the owner
       # TODO: events
 

@@ -102,9 +102,45 @@ class EditorTest < ActiveSupport::TestCase
 
     # check user's references to providers
     assert trainer.editables
-    trainer.editables.reload
     assert_equal 2, trainer.editables.size
     assert_equal prov2.title, trainer.editables.last.title
+  end
+
+  test 'reassign resources on removal' do
+    owner = users :regular_user
+    trainer = users :trainer_user
+    provider = content_providers :goblet
+    event = events :training_event
+    material = materials :training_material
+
+    # check ownership
+    assert owner
+    assert trainer
+    assert provider
+    assert_equal owner, provider.user
+    assert event
+    assert_equal trainer, event.user
+    assert_equal provider, event.content_provider
+    assert material
+    assert_equal trainer, material.user
+    assert_equal provider, material.content_provider
+
+    # check editors
+    assert provider.editors
+    provider.add_editor(trainer)
+    assert provider.editors.include?(trainer),
+           "trainer[#{trainer.username}] not found in provider[#{provider.title}].editors"
+    assert trainer.editables.include?(provider),
+           "trainer[#{trainer.username}] cannot edit provider[#{provider.title}]"
+
+    # remove editor
+    provider.remove_editor(trainer)
+    assert !provider.editors.include?(trainer),
+           "trainer[#{trainer.username}] still in provider[#{provider.title}].editors"
+    assert !trainer.editables.include?(provider),
+           "trainer[#{trainer.username}] can still edit provider[#{provider.title}]"
+
+    # TODO: check reassignments
 
   end
 
