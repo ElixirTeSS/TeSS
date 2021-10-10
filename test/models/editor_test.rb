@@ -103,7 +103,8 @@ class EditorTest < ActiveSupport::TestCase
     # check user's references to providers
     assert trainer.editables
     assert_equal 2, trainer.editables.size
-    assert_equal prov2.title, trainer.editables.last.title
+    assert trainer.editables.include?(prov1)
+    assert trainer.editables.include?(prov2)
   end
 
   test 'reassign resources on removal' do
