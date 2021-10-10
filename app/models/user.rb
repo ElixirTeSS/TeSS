@@ -245,6 +245,16 @@ class User < ApplicationRecord
     CREATED_RESOURCE_TYPES.reduce([]) { |a, t| a + send(t) }
   end
 
+  def get_editable_providers
+    result = self.editables
+    ContentProvider.all.each do |prov|
+      if !result.include?(prov) and prov.user == self
+        result << prov
+      end
+    end
+    result.sort_by { |obj| obj.title }
+  end
+
   private
 
   def reassign_owner
@@ -282,4 +292,5 @@ class User < ApplicationRecord
       false
     end
   end
+
 end
