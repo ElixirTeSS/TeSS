@@ -2,6 +2,27 @@
 The sections below refer to the release tags for this repository:
 
 ---
+## [Version 1.3.1](https://github.com/nrmay/TeSS/releases/tag/v1.3.1)
+
+Deployed: *10<sup>th</sup> October, 2021*
+
+Theme: *Provider Editors*
+
+
+- Features:
+  - [Add Provider Editors](https://github.com/nrmay/TeSS/issues/233)
+
+
+- Updates:
+  - [Add Terms of Use](https://github.com/nrmay/TeSS/issues/148)
+  - [Add Supporter: ASDAF](https://github.com/nrmay/TeSS/issues/230)
+
+
+- Bug Fixes:
+  - [Provider sort by modified](https://github.com/nrmay/TeSS/issues/234)
+
+
+---
 ## [Version 1.3.0](https://github.com/nrmay/TeSS/releases/tag/v1.3.0)
 
 Deployed: *30<sup>th</sup> September, 2021*
