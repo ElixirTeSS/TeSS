@@ -6,6 +6,7 @@ class EventsControllerTest < ActionController::TestCase
   include Devise::Test::ControllerHelpers
 
   setup do
+    mock_images
     @event = events(:one)
     u = users(:regular_user)
     @event.user = u
@@ -159,10 +160,17 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test 'should not get edit page for non-owner user' do
-    #Administrator = SUCCESS
     sign_in users(:another_regular_user)
     get :edit, params: { id: @event }
     assert :forbidden
+  end
+
+  test 'should get edit page for approved editor' do
+    # add to approved editors and check
+    @event.content_provider.add_editor users(:another_regular_user)
+    sign_in users(:another_regular_user)
+    get :edit, params: { id: @event }
+    assert_response :success
   end
 
   #CREATE TEST
@@ -281,7 +289,7 @@ class EventsControllerTest < ActionController::TestCase
     assert_response :forbidden
   end
 
-  #DESTROY TEST
+  #DESTROY TESTS
   test 'should destroy event owned by user' do
     sign_in @event.user
     assert_difference('Event.count', -1) do
@@ -317,6 +325,16 @@ class EventsControllerTest < ActionController::TestCase
     assert_redirected_to events_path
   end
 
+
+  test 'should destroy event when approved editor' do
+    @event.content_provider.add_editor users(:another_regular_user)
+    sign_in users(:another_regular_user)
+    assert_difference('Event.count', -1) do
+      delete :destroy, params: { id: @event }
+    end
+    assert_redirected_to events_path
+  end
+
   test 'should not destroy event not owned by user' do
     sign_in users(:another_regular_user)
     assert_no_difference('Event.count') do
@@ -324,6 +342,8 @@ class EventsControllerTest < ActionController::TestCase
     end
     assert_response :forbidden
   end
+
+
 
   #CONTENT TESTS
   #BREADCRUMBS
@@ -411,6 +431,14 @@ class EventsControllerTest < ActionController::TestCase
 
   test 'should show action buttons when owner' do
     sign_in @event.user
+    get :show, params: { id: @event }
+    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 1
+    assert_select 'a.btn-danger[href=?]', event_path(@event), :text => 'Delete', :count => 1
+  end
+
+  test 'should show action buttons when approved editor' do
+    @event.content_provider.add_editor users(:another_regular_user)
+    sign_in users(:another_regular_user)
     get :show, params: { id: @event }
     assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 1
     assert_select 'a.btn-danger[href=?]', event_path(@event), :text => 'Delete', :count => 1

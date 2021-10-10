@@ -136,3 +136,18 @@ material_with_optionals:
   prerequisites: 'None'
   syllabus: '1. Overview\  2. The main part\  3. Summing up'
   learning_objectives: 'Understand the new materials model'
+
+training_material:
+  user: trainer_user
+  title: Training Material Example 2
+  url: http://training.com/trainers/2
+  description: This is a Training Material produced by an example organization
+  doi: http://dx.doi.ac.uk/2q3093032
+  resource_type: ['Lecture']
+  licence: CC-BY-4.0
+  contact: 'default contact'
+  keywords: ['good']
+  content_provider: goblet
+  status: active
+  remote_updated_date: 2015-09-25
+  remote_created_date: 2015-09-25

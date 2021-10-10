@@ -380,4 +380,27 @@ calendar_event:
   host_institutions: ["UoLife"]
   timezone: Melbourne
   contact: MyContact
-  eligibility: [ free_to_all ]
+  eligibility: [ first_come_first_served ]
+
+training_event:
+  title: "calendar event"
+  subtitle: "an event to test calendar exports"
+  url: http://microsoft.com
+  organizer: MyString
+  description: MyText
+  event_types: ["meetings_and_conferences"]
+  duration: '01:45'
+  start: 2021-09-20 23:15:00
+  end: 2021-09-21 01:00:00
+  sponsors: ["MyString"]
+  venue: 100, Lygon Street
+  city: Carlton
+  country: Australia
+  postcode: 3010
+  keywords: ["Keyword"]
+  user: trainer_user
+  content_provider: goblet
+  host_institutions: ["UoLife"]
+  timezone: Melbourne
+  contact: MyContact
+  eligibility: [ first_come_first_served ]
