@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_30_022018) do
+ActiveRecord::Schema.define(version: 2021_10_05_055212) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -70,6 +70,14 @@ ActiveRecord::Schema.define(version: 2021_09_30_022018) do
     t.index ["node_id"], name: "index_content_providers_on_node_id"
     t.index ["slug"], name: "index_content_providers_on_slug", unique: true
     t.index ["user_id"], name: "index_content_providers_on_user_id"
+  end
+
+  create_table "content_providers_users", id: false, force: :cascade do |t|
+    t.bigint "content_provider_id"
+    t.bigint "user_id"
+    t.index ["content_provider_id", "user_id"], name: "provider_user_unique", unique: true
+    t.index ["content_provider_id"], name: "index_content_providers_users_on_content_provider_id"
+    t.index ["user_id"], name: "index_content_providers_users_on_user_id"
   end
 
   create_table "edit_suggestions", force: :cascade do |t|

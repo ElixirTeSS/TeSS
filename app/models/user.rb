@@ -38,6 +38,11 @@ class User < ApplicationRecord
            class_name: '::PublicActivity::Activity',
            as: :owner
 
+  has_and_belongs_to_many :editables, class_name: "ContentProvider"
+
+  #has_many :content_provider_users
+  #has_many :providers, through: :content_providers, source: :content_provider, inverse_of: :editors
+
   before_create :set_default_role, :set_default_profile
   before_create :skip_email_confirmation_for_non_production
   before_update :skip_email_reconfirmation_for_non_production
@@ -240,6 +245,16 @@ class User < ApplicationRecord
     CREATED_RESOURCE_TYPES.reduce([]) { |a, t| a + send(t) }
   end
 
+  def get_editable_providers
+    result = self.editables
+    ContentProvider.all.each do |prov|
+      if !result.include?(prov) and prov.user == self
+        result << prov
+      end
+    end
+    result.sort_by { |obj| obj.title }
+  end
+
   private
 
   def reassign_owner
@@ -277,4 +292,5 @@ class User < ApplicationRecord
       false
     end
   end
+
 end

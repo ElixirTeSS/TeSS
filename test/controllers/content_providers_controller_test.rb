@@ -117,7 +117,6 @@ class ContentProvidersControllerTest < ActionController::TestCase
   end
 
   test 'should not get edit page for non-owner user' do
-    #Administrator = SUCCESS
     sign_in users(:another_regular_user)
     get :edit, params: { id: @content_provider }
     assert :forbidden

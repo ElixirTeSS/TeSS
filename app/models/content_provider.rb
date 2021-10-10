@@ -13,6 +13,13 @@ class ContentProvider < ApplicationRecord
   belongs_to :user
   belongs_to :node, optional: true
 
+  has_and_belongs_to_many :editors, class_name: "User"
+
+  attribute :approved_editors, :string, array: true
+
+  #has_many :content_provider_users
+  #has_many :editors, through: :users, source: :user, inverse_of: :providers
+
   delegate :name, to: :node, prefix: true, allow_nil: true
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
@@ -24,7 +31,7 @@ class ContentProvider < ApplicationRecord
   # Validate the URL is in correct format via valid_url gem
   validates :url, url: true
 
-  clean_array_fields(:keywords)
+  clean_array_fields(:keywords, :approved_editors)
 
   # The order of these determines which providers have precedence when scraping.
   # Low -> High
@@ -97,4 +104,63 @@ class ContentProvider < ApplicationRecord
   def self.identifiers_dot_org_key
     'p'
   end
+
+  def add_editor(editor)
+    if !editor.nil? and !editors.include?(editor) and !user.nil? and user.id != editor.id
+      editors << editor
+      save!
+      editor.editables.reload
+    end
+  end
+
+  def remove_editor(editor)
+    if !editor.nil? and editors.include?(editor)
+      # remove from array
+      editors.delete(editor)
+      save!
+      editor.editables.reload
+
+      # transfer events to the provider's user
+      editor.events.each do |event|
+        if event.content_provider.id == id
+          event.user = user
+          event.save!
+        end
+      end
+
+      # transfer materials to the provider's user
+      editor.materials.each do |material|
+        if material.content_provider.id == id
+          material.user = user
+          material.save!
+        end
+      end
+      editor.reload
+      editor.save!
+    end
+
+  end
+
+  def approved_editors
+    result = []
+    editors.each { |editor| result << editor.username }
+    #puts "get approved_editors: found #{result.size} editors"
+    return result
+  end
+
+  def approved_editors= values
+    #puts "set approved_editors: user count #{values.size}"
+    editors_list = []
+    values.each do |item|
+      if !item.nil? and !item.blank?
+        list_user = User.find_by_username(item)
+        editors_list << list_user if !list_user.nil?
+      end
+    end
+    # add missing
+    editors_list.each { |item| add_editor(item) if !editors.include?(item) }
+    # remove old
+    editors.each { |item| remove_editor(item) if !editors_list.include?(item) }
+  end
+
 end

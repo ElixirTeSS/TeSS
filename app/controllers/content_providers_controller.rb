@@ -28,6 +28,7 @@ class ContentProvidersController < ApplicationController
 
   def edit
     authorize @content_provider
+    @editor_usernames
   end
 
   # POST /events/check_exists
@@ -105,7 +106,7 @@ class ContentProvidersController < ApplicationController
     params[:content_provider].delete :node_name
 
     permitted = [:title, :url, :image, :image_url, :description, :id, :content_provider_type, :node_id,
-        {:keywords => []}, :remote_updated_date, :remote_created_date,
+        {:keywords => []}, :remote_updated_date, :remote_created_date, { :approved_editors => [] },
         :local_updated_date, :remote_updated_date, :node_name, :user_id]
 
     permitted.delete(:user_id) unless current_user && current_user.is_admin?
