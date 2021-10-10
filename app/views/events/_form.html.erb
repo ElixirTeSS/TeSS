@@ -155,7 +155,7 @@
 
   <!-- Field: Content Provider -->
   <%= f.input :content_provider_id, label: 'Content provider (where the event metadata is obtained from)',
-              collection: current_user.editables, label_method: :title, value_method: :id, include_blank: true,
+              collection: current_user.get_editable_providers, label_method: :title, value_method: :id, include_blank: true,
               field_lock: true %>
 
   <!-- Field: Materials -->
