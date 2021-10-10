@@ -44,7 +44,7 @@
   <%= f.input :version, input_html: { title: t('materials.hints.version') }, field_lock: true %>
 
   <!-- Field: Provider -->
-  <%= f.input :content_provider_id, collection: ContentProvider.all, label_method: :title, value_method: :id,
+  <%= f.input :content_provider_id, collection: current_user.editables, label_method: :title, value_method: :id,
               include_blank: true, field_lock: true, label: t('materials.hints.providers') %>
 
   <!-- Field: Authors -->

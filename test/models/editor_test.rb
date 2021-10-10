@@ -143,7 +143,7 @@ class EditorTest < ActiveSupport::TestCase
     assert !trainer.editables.include?(provider),
            "trainer[#{trainer.username}] can still edit provider[#{provider.title}]"
 
-    # TODO: check reassignments
+    # check reassignments
     event.reload
     material.reload
     assert_equal provider.title, event.content_provider.title
@@ -152,8 +152,43 @@ class EditorTest < ActiveSupport::TestCase
     assert_equal provider.user, material.user, "material[#{material.title}] owner not matched"
     assert_equal 0, trainer.editables.size
     assert_equal 0, provider.editors.size
+  end
 
+  test 'add and remove approved editors' do
+    owner = users :regular_user
+    trainer = users :trainer_user
+    private_user = users :private_user
+    admin = users :admin
+    provider = content_providers :organisation_provider
 
+    # check approved editors
+    assert provider.approved_editors
+    assert_equal 0, provider.approved_editors.size
+
+    # add an approved editor
+    provider.approved_editors = [ owner.username, trainer.username ]
+    provider.save
+    assert_equal 1, provider.approved_editors.size
+    assert_equal trainer.username, provider.approved_editors.first
+    assert_equal 1, provider.editors.size
+    assert_equal trainer.id, provider.editors.first.id
+
+    # add more approved editors
+    editors = provider.approved_editors
+    editors << private_user.username
+    editors << admin.username
+    provider.approved_editors = editors
+    assert_equal 3, provider.approved_editors.size
+    assert_equal admin.username, provider.approved_editors.last
+
+    # remove an approved editor
+    assert provider.approved_editors.include?(private_user.username)
+    editors = provider.approved_editors
+    editors.delete(private_user.username)
+    provider.approved_editors = editors
+    assert_equal 2, provider.approved_editors.size
+    assert !provider.approved_editors.include?(private_user.username)
+    assert !provider.editors.include?(private_user)
   end
 
 end
