@@ -4,9 +4,14 @@ The sections below refer to the release tags for this repository:
 ---
 ## [Version 1.3.1](https://github.com/nrmay/TeSS/releases/tag/v1.3.1)
 
-Deployed: *TBA*
+Deployed: *10<sup>th</sup> October, 2021*
 
-Theme: *Pre-launch Preparation*
+Theme: *Provider Editors*
+
+
+- Features:
+  - [Add Provider Editors](https://github.com/nrmay/TeSS/issues/233)
+
 
 - Updates:
   - [Add Terms of Use](https://github.com/nrmay/TeSS/issues/148)
