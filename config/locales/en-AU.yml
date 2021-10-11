@@ -153,11 +153,7 @@ en-AU:
         <li>Phillippa Bourke (University of Sydney)</li>
         <li>Titus Tang (Monash University, Data Science and AI Platform)</li>
         </ul><br/>
-      partner: >
-        <div class="h4">Partner Organisations</div>
-        <div>
-          | CSIRO | Deakin University | Monash University | University of Sydney | University of Newcastle |
-        </div><br/>
+      partner: '<div class="h4">Partner Organisations</div><br/>'
       guidance: >
         <div class="h4">Additional Guidance</div>
         <ul>
