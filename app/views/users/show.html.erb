@@ -68,12 +68,7 @@
                 <span style="color: red;">No</span>
               <% end %>
             </p>
-
-            <% if !current_user.nil? and current_user == @user %>
-              <div class="row">
-                <%= link_to t('.edit', :default => 'Edit profile'), edit_user_path(@user), :class => 'btn btn-primary center-block' %>
-              </div>
-            <% end %>
+            
           </div>
         </div>
       </li>
