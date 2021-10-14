@@ -1,6 +1,6 @@
 language: ruby
 
-dist: xenial
+dist: focal
 
 branches:
   only:
@@ -9,17 +9,8 @@ branches:
 cache: bundler
 
 addons:
-  postgresql: "11"
-  apt:
-    packages:
-    - postgresql-11
-    - postgresql-client-11
-    
-env:
-  global:
-  - PGPORT=5433
-  - PGUSER=travis
- 
+  postgresql: "9.4"
+
 services:
   - postgresql
 

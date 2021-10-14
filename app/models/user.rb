@@ -177,12 +177,18 @@ class User < ApplicationRecord
         user.save
       end
     else
+      # set name components
+      first_name = auth.info.first_name
+      first_name ||= auth.info.given_name
+      last_name = auth.info.last_name
+      last_name ||= auth.info.family_name
+
+      # create user
       user = User.new(provider: auth.provider,
                       uid: auth.uid,
                       email: auth.info.email,
                       username: User.username_from_auth_info(auth.info),
-                      profile_attributes: { firstname: auth.info.first_name,
-                                            surname: auth.info.last_name }
+                      profile_attributes: { firstname: first_name, surname: last_name }
       )
       user.skip_confirmation!
     end
