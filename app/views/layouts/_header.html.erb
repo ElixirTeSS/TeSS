@@ -62,14 +62,42 @@
           <%= link_to "Log out", destroy_user_session_path, :method => :delete,
                       :data => { :confirm => 'Are you sure you want to log out?' } %>
         <% else %>
-          <% if Rails.application.secrets.oidc[:client_id].blank? %>
-            <%= link_to "Log in", new_user_session_path %>
-          <% else %>
-            <%= link_to 'Log in', user_oidc_omniauth_authorize_path, :method => :post %>
-          <% end %>
-          <% if TeSS::Config.site['registration'] %>
-            <%= link_to "Register", new_user_registration_path %>
-          <% end %>
+
+          <!-- log in methods -->
+          <div class='dropdown'>
+            <div class='btn btn-dark dropdown-toggle' type="button" data-toggle="dropdown"
+                 aria-haspopup="true" aria-expanded="true"
+                 style='margin: 0; padding: 0; background-color: #000; color: #eee; padding-right: 80px; font-size: small;'>
+              Log In
+              <span class="caret"></span>
+            </div>
+            <ul class='dropdown-menu' style='background-color: #000; color: #eee;'>
+              <% if !Rails.application.secrets.oidc[:client_id].blank? %>
+                <li class='dropdown-item'>
+                  <%= link_to Rails.application.secrets.oidc[:label], user_oidc_omniauth_authorize_path,
+                              :method => :post %>
+                </li>
+              <% end %>
+
+              <% if !Rails.application.secrets.oidc2[:client_id].blank? %>
+                <li class='dropdown-item'>
+                  <%= link_to Rails.application.secrets.oidc2[:label], user_oidc2_omniauth_authorize_path,
+                              :method => :post %>
+                </li>
+              <% end %>
+
+              <li class='dropdown-item'>
+                <%= link_to 'Administration', new_user_session_path %>
+              </li>
+
+              <% if TeSS::Config.site['registration'] %>
+                <li class='dropdown-item'>
+                  <%= link_to "Register", new_user_registration_path %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+
         <% end %>
       </div>
     </div>

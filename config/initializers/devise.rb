@@ -259,6 +259,8 @@ Devise.setup do |config|
   # When using OmniAuth, Devise cannot automatically set OmniAuth path,
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
+
+  # OpenID Connect configuration for AAF (Australia)
   unless Rails.application.secrets.oidc[:client_id].blank?
     config.omniauth :openid_connect, {
         name: :oidc,
@@ -272,8 +274,8 @@ Devise.setup do |config|
             identifier: Rails.application.secrets.oidc[:client_id],
             secret: Rails.application.secrets.oidc[:secret],
             redirect_uri: Rails.application.secrets.oidc[:redirect_uri],
-            scheme: 'https',
             host: Rails.application.secrets.oidc[:host],
+            scheme: 'https',
             port: 443,
             authorization_endpoint: '/providers/op/authorize',
             token_endpoint: '/providers/op/token',
@@ -282,4 +284,30 @@ Devise.setup do |config|
         }
     }
   end
+
+  # OpenID Connect configuration for Tuakiri (New Zealand)
+  unless Rails.application.secrets.oidc2[:client_id].blank?
+    config.omniauth :openid_connect, {
+      name: :oidc2,
+      issuer: Rails.application.secrets.oidc2[:issuer],
+      scope: [:openid, :email, :profile],
+      response_type: 'code',                                 # default is 'code'
+      discovery: true,                                       # default is false
+      send_nonce: true,
+      client_signing_alg: :RS256,
+      client_options: {
+        identifier: Rails.application.secrets.oidc2[:client_id],
+        secret: Rails.application.secrets.oidc2[:secret],
+        redirect_uri: Rails.application.secrets.oidc2[:redirect_uri],
+        host: Rails.application.secrets.oidc2[:host],
+        scheme: 'https',
+        port: 443,
+        authorization_endpoint: '/Saml2/OIDC/authorization',
+        token_endpoint: '/OIDC/token',
+        userinfo_endpoint: '/OIDC/userinfo',
+        jwks_uri: '/OIDC/jwks',
+      }
+    }
+  end
+
 end
