@@ -2,6 +2,18 @@
 The sections below refer to the release tags for this repository:
 
 ---
+## [Version 1.3.2](https://github.com/nrmay/TeSS/releases/tag/v1.3.2)
+
+Deployed: *TBA*
+
+Theme: *Post-Launch Updates*
+
+- Updates:
+  - [Add New Zealand access federation](https://github.com/nrmay/TeSS/issues/258)
+  - [User Profile: remove surplus button](https://github.com/nrmay/TeSS/issues/259)
+  - [Supporter Orgs: add missing logos](https://github.com/nrmay/TeSS/issues/242)
+
+---
 ## [Version 1.3.1](https://github.com/nrmay/TeSS/releases/tag/v1.3.1)
 
 Deployed: *10<sup>th</sup> October, 2021*
