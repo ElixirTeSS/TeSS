@@ -1,5 +1,7 @@
 language: ruby
 
+dist: focal
+
 branches:
   only:
   - master
@@ -10,8 +12,6 @@ addons:
   postgresql: "9.4"
 
 before_install:
-  - sudo apt update
-  - sudo apt install openssl
   - gem install bundler -v '~> 2.2.27'
 
 before_script:
