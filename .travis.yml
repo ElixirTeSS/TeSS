@@ -1,6 +1,6 @@
 language: ruby
 
-dist: focal
+dist: bionic
 
 branches:
   only:
