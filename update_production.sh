@@ -11,7 +11,9 @@ sudo sh ./scripts/pgsql_backup.sh postgres tess_$ENV ./shared/backups --exclude-
 
 # rebuild rails environment
 git pull origin master
-bundle install --deployment
+bundle config set --local deployment 'true'
+bundle config set --local path 'vendor/bundle'
+bundle install
 bundle exec rake db:migrate RAILS_ENV="$ENV"
 bundle exec rake assets:clean RAILS_ENV="$ENV"
 bundle exec rake assets:precompile RAILS_ENV="$ENV"

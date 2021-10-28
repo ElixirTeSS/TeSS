@@ -6,19 +6,27 @@
     <div class="row">
       <div class="col-md-6">
         <% if resource_class.omniauth_providers.any? %>
-          <% if devise_mapping.omniauthable? %>
-            <% resource_class.omniauth_providers.each do |provider| %>
-              <% if provider.to_s.downcase == 'oidc' -%>
-                <div class="h4">Institutional Login</div>
-                <p>Use the button below to log in via your Australian or New Zealand institution.</p>
-                <%= link_to image_tag("dresa/aaf_service_223x54.png"), omniauth_authorize_path(resource_name, provider),
-                            method: :post -%>
-              <% else -%>
+          <% if devise_mapping.omniauthable? -%>
+            <div class="h4">Institutional Login</div>
+            <p>Use the buttons below to log in via your Australian or New Zealand institution.</p>
+            <% resource_class.omniauth_providers.each do |provider| -%>
+              <% if provider.to_s.downcase == 'oidc' %>
+                <!-- oidc is AAF -->
+                <%= link_to image_tag('dresa/aaf_service_223x54.png', height: '42px'),
+                            omniauth_authorize_path(resource_name, provider),
+                            method: :post %>
+              <% elsif provider.to_s.downcase == 'oidc2' %>
+                <!-- oidc2 is Tuakiri  -->
+                <%= link_to 'Log in with Tuakiri (NZ)',
+                            omniauth_authorize_path(resource_name, provider),
+                            method: :post, class: 'btn btn-info' -%>
+              <% else %>
+                <!-- other configured provider -->
                 <%= link_to "Log in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider),
-                            method: :post, class: 'btn btn-info' %>
+                            method: :post, class: 'btn btn-info' -%>
               <% end -%>
             <% end -%>
-          <% end %>
+          <% end -%>
           <hr/>
         <% end %>
 

@@ -3,12 +3,12 @@
 
     <div class="row">
       <div class="col-md-3 col-sm-4">
+        <%= link_to 'Terms of Use', '/DReSA-Terms-of-use.pdf', target: '_blank' %>
+        |
         <%= link_to 'User Manual', '/DReSA-User-Manual.pdf', target: '_blank' %><br/>
-        <%= mail_to(TeSS::Config.contact_email, 'Contact us') %><br/>
+        <%= link_to 'Video Guides', 'http://videos.dresa.org.au', target: '_blank' %><br/>
         <%= link_to 'Privacy', privacy_path %><br/>
-        <!-- %= link_to 'Add your resources to ' + TeSS::Config.site['title_short'],
-                    registering_resources_path, target: '_blank' %><br/ -->
-        <%= link_to 'Funding & acknowledgements', us_path(anchor: 'funding') %><br/>
+        <%= mail_to(TeSS::Config.contact_email, 'Contact us') %><br/>
         <%= link_to "Source code [ version: #{app_version_text} ]",
                     "#{TeSS::Config.site['repository']}/blob/master/README.md", target: '_blank' %>
       </div>
@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <div class="row hidden-sm hidden-xs" style="margin-bottom: 0;">
+    <div class="row hidden-sm hidden-xs no-gutters" style="margin-bottom: 0;">
       <div class="col-md-12 supported-by">
         <%= render :partial => 'layouts/dresa_supported_by' %>
       </div>

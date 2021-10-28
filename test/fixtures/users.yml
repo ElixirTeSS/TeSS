@@ -78,6 +78,7 @@ banned_user:
   role: user
   authentication_token: <%= Devise.friendly_token %>
 
+
 shadowbanned_user:
   username: Chad O'Band
   email: 'sbanned@notarealdomain.org'
@@ -117,6 +118,7 @@ trainer_user:
   confirmed_at: <%= Time.zone.now %>
   role: user
   authentication_token: <%= Devise.friendly_token %>
+  provider: oidc
 
 private_user:
   username: 'StevieN'
@@ -125,3 +127,14 @@ private_user:
   confirmed_at: <%= Time.zone.now %>
   role: user
   authentication_token: <%= Devise.friendly_token %>
+  provider: oidc
+
+existing_tuakiri_user:
+  username: 'HoraceNewman'
+  email: 'horace.newman@some.domain.org'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'private') %>
+  confirmed_at: <%= Time.zone.now %>
+  role: user
+  authentication_token: <%= Devise.friendly_token %>
+  provider: oidc2
+

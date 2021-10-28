@@ -1,12 +1,23 @@
 language: ruby
 
+dist: bionic
+
+branches:
+  only:
+  - master
+
 cache: bundler
 
 addons:
   postgresql: "9.4"
 
+services:
+  - postgresql
+
 before_install:
-  - gem install bundler -v '~> 2.2.16'
+  - sudo apt update
+  - sudo apt install openssl
+  - gem install bundler -v '~> 2.2.27'
 
 before_script:
   - cp config/tess.example.yml config/tess.yml

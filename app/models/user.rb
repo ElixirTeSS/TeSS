@@ -38,6 +38,8 @@ class User < ApplicationRecord
            class_name: '::PublicActivity::Activity',
            as: :owner
 
+  has_and_belongs_to_many :editables, class_name: "ContentProvider"
+
   before_create :set_default_role, :set_default_profile
   before_create :skip_email_confirmation_for_non_production
   before_update :skip_email_reconfirmation_for_non_production
@@ -161,23 +163,37 @@ class User < ApplicationRecord
     # TODO: Decide what to do about users who have an account but authenticate later on via Elixir AAI.
     # TODO: The code below will update their account to note the Elixir auth. but leave their password intact;
     # TODO: is this what we should be doing?
-    #user = User.where(:provider => auth.provider, :uid => auth.uid).first
-    # `auth.info` fields: email, first_name, gender, image, last_name, name, nickname, phone, urls
-    user = User.where(uid: auth.uid, provider: auth.provider).first ||
-      User.where(email: auth.info.email).first
+
+    # find by provider and { uid or email}
+    users = User.where(provider: auth.provider, uid: auth.uid)
+    if users.nil? or users.size <= 0
+      users = User.where(provider: auth.provider, email: auth.info.email)
+    end
+
+    # get first user
+    user = users.first
+
     if user
+      # update provider and uid if present
       if user.provider.nil? and user.uid.nil?
         user.uid = auth.uid
         user.provider = auth.provider
         user.save
       end
     else
+      # set name components
+      first_name = auth.info.first_name
+      first_name ||= auth.info.given_name
+      last_name = auth.info.last_name
+      last_name ||= auth.info.family_name
+
+      # create user
+      username = User.username_from_auth_info(auth.info)
       user = User.new(provider: auth.provider,
                       uid: auth.uid,
                       email: auth.info.email,
-                      username: User.username_from_auth_info(auth.info),
-                      profile_attributes: { firstname: auth.info.first_name,
-                                            surname: auth.info.last_name }
+                      username: username,
+                      profile_attributes: { firstname: first_name, surname: last_name },
       )
       user.skip_confirmation!
     end
@@ -240,6 +256,16 @@ class User < ApplicationRecord
     CREATED_RESOURCE_TYPES.reduce([]) { |a, t| a + send(t) }
   end
 
+  def get_editable_providers
+    result = self.editables
+    ContentProvider.all.each do |prov|
+      if !result.include?(prov) and prov.user == self
+        result << prov
+      end
+    end
+    result.sort_by { |obj| obj.title }
+  end
+
   private
 
   def reassign_owner
@@ -277,4 +303,5 @@ class User < ApplicationRecord
       false
     end
   end
+
 end
