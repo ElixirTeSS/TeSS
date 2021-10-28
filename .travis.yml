@@ -11,6 +11,9 @@ cache: bundler
 addons:
   postgresql: "9.4"
 
+services:
+  - postgresql
+
 before_install:
   - gem install bundler -v '~> 2.2.27'
 
