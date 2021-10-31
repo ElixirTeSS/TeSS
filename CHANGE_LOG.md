@@ -4,7 +4,7 @@ The sections below refer to the release tags for this repository:
 ---
 ## [Version 1.3.2](https://github.com/nrmay/TeSS/releases/tag/v1.3.2)
 
-Deployed: *TBA*
+Deployed: *31<sup>st</sup> October, 202*
 
 Theme: *Post-Launch Updates*
 
