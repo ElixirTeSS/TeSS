@@ -1,6 +1,6 @@
-version: 3.8
+version: 3.7
 services:
-  tess:
+  backend:
     container_name: tess
     build:
       context: .
@@ -8,6 +8,7 @@ services:
     restart: unless-stopped
     depends_on:
       - db
+      - pgadmin
     ports:
       - '3000:3000'
   db:
