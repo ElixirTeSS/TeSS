@@ -137,7 +137,7 @@ source 'https://rails-assets.org' do
 end
 
 group :test do
-  gem 'minitest', '5.14.1'
+  gem 'minitest', '5.14.4'
   gem 'fakeredis', git: 'https://github.com/artygus/fakeredis/', ref: 'f68bd4f'
   gem 'rails-controller-testing'
 end

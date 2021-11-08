@@ -11,9 +11,6 @@
 /log/*
 !/log/.keep
 /tmp
-config/secrets.yml
-config/sunspot.yml
-config/tess.yml
 tmp/
 solr/test/
 solr/pids/
@@ -26,3 +23,4 @@ public/sitemaps/*
 public/system
 .idea/*
 coverage
+.env
