@@ -41,8 +41,6 @@ gem 'friendly_id', '~> 5.2.4'
 
 gem 'sunspot_rails', '~> 2.5.0'
 
-gem 'sunspot_solr', '= 2.5.0'
-
 gem 'progress_bar', '~> 1.1.0'
 
 gem 'activerecord-session_store'
@@ -157,6 +155,7 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   #gem 'spring'
   gem 'listen'
+  gem 'puma'
 end
 
 group :production do
