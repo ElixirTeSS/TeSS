@@ -1,0 +1,61 @@
+version: '3.8'
+services:
+  app:
+    container_name: ${PREFIX}-app
+    build:
+      context: .
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - solr
+    ports:
+      - '3000:3000'
+  db:
+    container_name: ${PREFIX}-db
+    logging:
+      driver: none
+    image: postgres
+    restart: always
+    env_file:
+      - .env
+    environment:
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: ${DEVELOPMENT_DB}
+      POSTGRES_USER: ${DEVELOPMENT_DB_USER}
+      POSTGRES_PASSWORD: ${DEVELOPMENT_DB_PASSWORD}
+    ports:
+      - '5432:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  pgadmin4:
+    container_name: ${PREFIX}-pgadmin
+    logging:
+      driver: none
+    image: dpage/pgadmin4:latest
+    restart: always
+    env_file:
+      - .env
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${DEVELOPMENT_DB_USER}@${DEVELOPMENT_DB_USER}.com
+      PGADMIN_DEFAULT_PASSWORD: ${DEVELOPMENT_DB_PASSWORD}
+      PGADMIN_LISTEN_PORT: 80
+    ports:
+      - '8080:80'
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+  solr:
+    container_name: ${PREFIX}-solr
+    image: solr:8
+    ports:
+      - '8983:8983'
+    volumes:
+      - solr-data:/var/solr
+    command:
+      - solr-precreate
+      - development
+volumes:
+  db-data:
+  pgadmin-data:
+  solr-data:

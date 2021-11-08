@@ -1,12 +1,26 @@
-FROM ruby:3.0
+#use ruby base image
+FROM ruby:3
 
+# set work dir
 WORKDIR /code
 
-COPY Gemfile Gemfile.lock ./
-RUN gem install ruby-debug-ide
-RUN bundle update
+# install dependencies
+RUN apt update && apt install libpq-dev imagemagick nodejs -y
+
+# copy gemfile
+COPY Gemfile .
+
+# install gems
 RUN bundle install
 
+# add degug gem
+RUN gem install ruby-debug-ide
+
+# copy main app (don't copy lock file - .dockerignore)
 COPY . .
 
-CMD ["./bin/rails", "server"]
+# expose port
+EXPOSE 3000
+
+# run rails server, need bind
+CMD bundle exec rails server -b 0.0.0.0
