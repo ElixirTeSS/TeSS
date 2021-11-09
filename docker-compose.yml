@@ -52,9 +52,11 @@ services:
       - '8983:8983'
     volumes:
       - solr-data:/var/solr
+      - ./solr:/opt/solr/server/solr/configsets/development
     command:
       - solr-precreate
       - development
+      - /opt/solr/server/solr/configsets/development
 volumes:
   db-data:
   pgadmin-data:
