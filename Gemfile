@@ -21,7 +21,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'therubyracer'#, platforms: :ruby
 
 # CRUD of resources via a UI
-gem 'rails_admin', '~> 2.0.0'
+gem 'rails_admin'
 gem 'haml'
 
 # Authentication
@@ -92,15 +92,6 @@ gem 'jquery-simplecolorpicker-rails'
 # For getting date of materials for the home page
 gem 'by_star', git: 'git://github.com/radar/by_star'
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-
-# Use Unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
 gem 'handlebars_assets'
 
 gem 'kt-paperclip', '~> 7.0.0'
@@ -147,6 +138,8 @@ group :development, :test do
   gem 'simplecov'
   gem 'rubocop'
   gem 'codacy-coverage', :require => false
+  gem 'ruby-debug-ide'
+  gem 'debase'
 end
 
 group :development do

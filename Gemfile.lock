@@ -145,6 +145,9 @@ GEM
     crack (0.4.5)
       rexml
     crass (1.0.6)
+    debase (0.2.4.1)
+      debase-ruby_core_source (>= 0.10.2)
+    debase-ruby_core_source (0.10.12)
     devise (4.8.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -403,7 +406,7 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.4.2)
       loofah (~> 2.3)
-    rails_admin (2.0.2)
+    rails_admin (2.2.1)
       activemodel-serializers-xml (>= 1.0)
       builder (~> 3.1)
       haml (>= 4.0, < 6)
@@ -513,6 +516,8 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.13.0)
       parser (>= 3.0.1.1)
+    ruby-debug-ide (0.7.3)
+      rake (>= 0.8.1)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
     sass (3.7.4)
@@ -663,6 +668,7 @@ DEPENDENCIES
   by_star!
   byebug
   codacy-coverage
+  debase
   devise
   dynamic_sitemaps!
   fakeredis!
@@ -699,11 +705,12 @@ DEPENDENCIES
   rails-assets-markdown-it (~> 7.0.1)!
   rails-assets-moment (~> 2.15.0)!
   rails-controller-testing
-  rails_admin (~> 2.0.0)
+  rails_admin
   recaptcha
   redcarpet (~> 3.4.0)
   redis
   rubocop
+  ruby-debug-ide
   sass-rails (~> 5.0)
   sdoc (~> 1.1.0)
   sidekiq
