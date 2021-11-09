@@ -24,9 +24,9 @@ services:
       - .env
     environment:
       PGDATA: /var/lib/postgresql/data
-      POSTGRES_DB: ${DEVELOPMENT_DB}
-      POSTGRES_USER: ${DEVELOPMENT_DB_USER}
-      POSTGRES_PASSWORD: ${DEVELOPMENT_DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - '5432:5432'
     volumes:
@@ -40,8 +40,8 @@ services:
     env_file:
       - .env
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${DEVELOPMENT_DB_USER}@${DEVELOPMENT_DB_USER}.com
-      PGADMIN_DEFAULT_PASSWORD: ${DEVELOPMENT_DB_PASSWORD}
+      PGADMIN_DEFAULT_EMAIL: ${DB_USER}@${DB_USER}.com
+      PGADMIN_DEFAULT_PASSWORD: ${DB_PASSWORD}
       PGADMIN_LISTEN_PORT: 80
     ports:
       - '8080:80'
