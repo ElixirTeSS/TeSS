@@ -8,7 +8,7 @@ WORKDIR /code
 RUN apt update && apt install libpq-dev imagemagick nodejs -y
 
 # copy gemfile
-COPY Gemfile .
+COPY Gemfile Gemfile.lock ./
 
 # install gems
 RUN bundle install
@@ -16,11 +16,8 @@ RUN bundle install
 # add degug gem
 RUN gem install ruby-debug-ide
 
-# copy main app (don't copy lock file - .dockerignore)
-COPY . .
-
 # expose port
 EXPOSE 3000
 
-# run rails server, need bind
+# run rails server, need bind for docker
 CMD bundle exec rails server -b 0.0.0.0

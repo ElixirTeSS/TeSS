@@ -12,6 +12,8 @@ services:
       - solr
     ports:
       - '3000:3000'
+    volumes:
+      - .:/code
   db:
     container_name: ${PREFIX}-db
     logging:
