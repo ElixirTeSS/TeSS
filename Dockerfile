@@ -16,6 +16,11 @@ RUN bundle install
 # add degug gem
 RUN gem install ruby-debug-ide
 
+# CLean up server.pid
+COPY entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
+
 # expose port
 EXPOSE 3000
 
