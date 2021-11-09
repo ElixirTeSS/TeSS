@@ -46,6 +46,18 @@ TeSS is accessible at the following URL:
 
 http://localhost:3000
 
+## Testing
+
+Tests will run against tess_test by default
+
+Prepare the test database:
+
+    docker exec -it tess-app bash -c "bundle exec rake db:test:prepare RAILS_ENV=test"
+
+Run the tests:
+
+    docker exec -it tess-app bash -c "bundle exec rake test RAILS_RNV=test"
+
 # Debugging with Docker
 
 TODO: Add Docker debugging instructions
