@@ -25,6 +25,7 @@ jobs:
           POSTGRES_PASSWORD: awesome_secure_password
     steps: 
       - checkout
+      - run: gem install bundler -v '~> 2.2.27'
       - run:
           name: Which bundler?
           command: bundle -v
