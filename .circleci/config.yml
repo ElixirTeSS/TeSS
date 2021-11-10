@@ -6,7 +6,6 @@ version: 2.1
 # See: https://circleci.com/docs/2.0/orb-intro/
 orbs:
   ruby: circleci/ruby@0.1.2
-  node: circleci/node@2.0.2
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
@@ -27,6 +26,7 @@ jobs:
     steps: 
       - checkout
       - run: gem install bundler -v '~> 2.2.27'
+      - run: sudo apt-get install nodejs
       - run:
           name: Which bundler?
           command: bundle -v
