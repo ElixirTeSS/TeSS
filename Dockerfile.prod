@@ -2,7 +2,7 @@
 FROM ruby:3
 
 #set rails env
-ENV RAILS_ENV=development
+ENV RAILS_ENV production
 
 # set work dir
 WORKDIR /code
@@ -16,13 +16,13 @@ COPY Gemfile Gemfile.lock ./
 # install gems
 RUN bundle install
 
-# add degug gem
-RUN gem install ruby-debug-ide
-
 # Clean up server.pid
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
+
+# copy files
+COPY . .
 
 # expose port
 EXPOSE 3000
