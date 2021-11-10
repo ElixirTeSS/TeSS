@@ -3,9 +3,10 @@
 [ELIXIR's](https://www.elixir-europe.org/) Training e-Support Service using Ruby on Rails.
 
 [![Actions Status](https://github.com/ElixirTeSS/TeSS/workflows/Test/badge.svg)](https://github.com/ElixirTeSS/TeSS/actions)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/d42e5e2fbcd64bd3af07090ec2626aa7)](https://www.codacy.com/gh/ElixirTeSS/TeSS/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ElixirTeSS/TeSS&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/d42e5e2fbcd64bd3af07090ec2626aa7)](https://www.codacy.com/gh/ElixirTeSS/TeSS/dashboard?utm_source=github.com&utm_medium=referral&utm_content=ElixirTeSS/TeSS&utm_campaign=Badge_Grade)
 [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/d42e5e2fbcd64bd3af07090ec2626aa7)](https://www.codacy.com/gh/ElixirTeSS/TeSS/dashboard?utm_source=github.com&utm_medium=referral&utm_content=ElixirTeSS/TeSS&utm_campaign=Badge_Coverage)
-# Prerequisites
+
+## Prerequisites
 
 In order to run TeSS, you need to have the following prerequisites installed.
 
@@ -17,33 +18,33 @@ These prerequisites a re out of scope for this document but you can find more in
 - [Git](https://git-scm.com/)
 - [Docker](https://www.docker.com/)
 
-# Quick Setup (Docker)
+## Quick Setup (Docker)
 
 This guide is designed to get you up and running with as few commands as possible.
 
-## Clone the repository and change directory
+### Clone the repository and change directory
 
     git clone https://github.com/ElixirTeSS/TeSS.git && cd TeSS
 
-## Create .env file
+### Create .env file
 
 Although this file will work out of the box, it is recommended that you update it with your own values (especially the password!).
 
     cp env.sample .env
 
-## Compose Up
+### Compose Up
 
     docker-compose up -d
 
-## Setup the database (migrations + seed data + create admin user)
+### Setup the database (migrations + seed data + create admin user)
 
     docker exec -it tess-app bash -c "bundle exec rake db:setup"
 
-## _Optional_: pgAdmin Setup
+### _Optional_: pgAdmin Setup
 
 If you want to use pgAdmin, you will need to add the database to your pgAdmin installation. You need to use the name of the database container along withe the DB_NAME, DB_USERNAME and DB_PASSWORD environment variables in your .env file.
 
-## Access TeSS
+### Access TeSS
 
 TeSS is accessible at the following URL:
 
@@ -61,11 +62,11 @@ Run the tests:
 
     docker exec -it tess-app bash -c "bundle exec rake test RAILS_RNV=test"
 
-# Debugging with Docker
+## Debugging with Docker
 
 TODO: Add Docker debugging instructions
 
-# Basic API
+## Basic API
 
 A record can be viewed as json by appending .json, for example:
 
@@ -95,13 +96,13 @@ Structure the JSON thus:
 A bundle install and rake db:migrate, followed by saving the user as mentioned above, should be enough to get this
 working.
 
-# Rake tasks
+## Rake tasks
 
 To find suggestions of EDAM topics for materials, you can run this rake task. This requires redis and sidekiq to be running as it will add jobs to a queue. It uses BioPortal Annotator web service against the materials description to create suggestions
 
     bundle exec rake tess:add_topic_suggestions
 
-# Live deployment
+## Live deployment
 
 Although designed for CentOS, this document can be followed quite closely to set up a Rails app to work with Apache and Passenger:
 
@@ -139,11 +140,11 @@ Restart your Web server.
 
 ---
 
-# Legacy
+## Legacy
 
 All the information below is considered old, but is left in place for people not using docker as it is still possible to run TeSS on a local machine.
 
-# Setup
+## Setup
 
 Below is an example guide to help you set up TeSS in development mode. More comprehensive guides on installing
 Ruby, Rails, RVM, bundler, postgres, etc. are available elsewhere.
