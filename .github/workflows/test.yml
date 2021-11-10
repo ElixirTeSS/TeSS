@@ -30,9 +30,9 @@ jobs:
         name: Bundle install
       - run: bundle exec rake db:test:prepare && bundle exec rake test
         name: Run tests
-      - name: Codacy Coverage Reporter
-      uses: codacy/codacy-coverage-reporter-action@v1.1.0
-      with:
-        # API project token to retrieve your remote Codacy configuration for the project being analyzed
-        project-token: ${secrets.CODACY_PROJECT_TOKEN}
-        api-token: ${secrets.CODACY_API_TOKEN}
+      - uses: codacy/codacy-coverage-reporter-action@v1.1.0
+        name: Codacy Coverage Reporter
+        with:
+          # API project token to retrieve your remote Codacy configuration for the project being analyzed
+          project-token: ${secrets.CODACY_PROJECT_TOKEN}
+          api-token: ${secrets.CODACY_API_TOKEN}
