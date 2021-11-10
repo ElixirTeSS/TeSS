@@ -1,0 +1,32 @@
+name: Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      DB_HOST: localhost
+      DB_NAME: tess
+      DB_USER: tess
+      DB_PASSWORD: password
+      SECRET_BASE_KEY: test_key
+    steps:
+    - uses: harmon758/postgresql-action@v1
+      with:
+        postgresql db: test
+        postgresql user: tess
+        postgresql password: password
+      name: Set up database
+
+    - uses: actions/checkout@v2
+      name: Set up Ruby
+    
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.0'
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      name: Bundle install
+    - run: bundle exec rake
+      name: Run tests
