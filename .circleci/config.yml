@@ -21,7 +21,7 @@ jobs:
       - image: postgres:12
         environment: 
           POSTGRES_USER: test_user 
-          POSTGRES_DB: test_test
+          POSTGRES_DB: travis_ci_test
           POSTGRES_PASSWORD: awesome_secure_password
     steps: 
       - checkout
@@ -32,7 +32,6 @@ jobs:
       - ruby/bundle-install
       - run: cp config/tess.example.yml config/tess.yml
       - run: cp config/secrets.travis.yml config/secrets.yml
-      - run: psql -c 'create database travis_ci_test;' -U postgres
       - run: bundle exec rake db:setup
       - run: bundle exed rake test
 
