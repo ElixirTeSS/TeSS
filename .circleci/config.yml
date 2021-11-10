@@ -27,7 +27,7 @@ jobs:
     steps: 
       - checkout
       - run: gem install bundler -v '~> 2.2.27'
-      - run: npm install
+      #- run: npm install
       - run:
           name: Which bundler?
           command: bundle -v
