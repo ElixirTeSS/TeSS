@@ -2,6 +2,8 @@
 
 [ELIXIR's](https://www.elixir-europe.org/) Training e-Support Service using Ruby on Rails.
 
+[![Actions Status](https://github.com/ElixirTeSS/TeSS/workflows/Test/badge.svg)](https://github.com/ElixirTeSS/TeSS/actions)
+
 # Prerequisites
 
 In order to run TeSS, you need to have the following prerequisites installed.
