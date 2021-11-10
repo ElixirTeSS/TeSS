@@ -35,4 +35,3 @@ jobs:
         name: Codacy Coverage Reporter
         with:
           project-token: ${{secrets.CODACY_PROJECT_TOKEN}}
-          coverage-report: coverage/lcov/code.lcov
