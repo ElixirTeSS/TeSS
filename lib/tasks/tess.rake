@@ -131,7 +131,32 @@ namespace :tess do
       print '.'
     end
     puts " Done"
-
   end
+
+  desc 'run generic ingestion process'
+  task automated_ingestion: :environment do
+    # TODO: set log file
+    log_path = TeSS::Config.ingestion['logfile']
+    log_file = File.open(log_path,'w')
+    log_file.puts 'Task: automated_ingestion'
+    start = Time.now
+    log_file.puts '   Started at... ' + start.strftime("%Y-%m-%d %H:%M:%s")
+
+    # TODO: get config file
+    begin
+      config_file = Rails.application.config_for(:ingestion)
+      Scraper.new(log_file, config_file).run
+    rescue Exception => e
+      log_file.puts('   Run Scraper failed with: ' + e.message)
+    end
+
+    # TODO: wrap up
+    finish = Time.now
+    log_file.puts '   Finished at.. ' + finish.strftime("%Y-%m-%d %H:%M:%s")
+    log_file.puts "   Time taken was #{(1000 * (finish.to_f - start.to_f)).round(3)} ms"
+    log_file.puts 'Done.'
+    log_file.close
+  end
+
 
 end

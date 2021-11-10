@@ -46,6 +46,17 @@ else
   end
 end
 
+# Process ingestions
+if !schedules['ingestions'].nil?
+  every :"#{schedules['ingestions']['every']}", at: "#{schedules['ingestions']['at']}" do
+    rake "tess:automated_ingestion"
+  end
+else
+  every :day, at: '3am' do
+    rake "tess:automated_ingestion"
+  end
+end
+
 # run database backups
 if !schedules['backups'].nil?
   every :"#{schedules['backups']['every']}", at: "#{schedules['backups']['at']}" do
