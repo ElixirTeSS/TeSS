@@ -28,5 +28,5 @@ jobs:
           ruby-version: '3.0'
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
         name: Bundle install
-      - run: bundle exec rake
+      - run: bundle exec rake db:test:prepare && bundle exec rake test
         name: Run tests
