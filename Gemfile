@@ -136,8 +136,8 @@ group :development, :test do
   gem 'webmock', '~> 3.4.2'
   gem 'byebug'
   gem 'simplecov'
+  gem 'simplecov-lcov'
   gem 'rubocop'
-  gem 'codacy-coverage', :require => false
   gem 'ruby-debug-ide'
   gem 'debase'
 end

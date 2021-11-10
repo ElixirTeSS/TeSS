@@ -33,6 +33,5 @@ jobs:
       - uses: codacy/codacy-coverage-reporter-action@v1.1.0
         name: Codacy Coverage Reporter
         with:
-          # API project token to retrieve your remote Codacy configuration for the project being analyzed
           project-token: ${{secrets.CODACY_PROJECT_TOKEN}}
-          api-token: ${{secrets.CODACY_API_TOKEN}}
+          coverage-report: coverage/lcov/code.lcov
