@@ -26,7 +26,7 @@ jobs:
     steps: 
       - checkout
       - run: gem install bundler -v '~> 2.2.27'
-      - run: sudo apt-get install nodejs
+      - run: npm install
       - run:
           name: Which bundler?
           command: bundle -v
