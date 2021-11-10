@@ -1,18 +1,11 @@
-name: Ruby
+name: Test
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        ruby-version: ['2.6', '2.7', '3.0']
     env:
       DB_HOST: localhost
       DB_NAME: tess
@@ -32,8 +25,8 @@ jobs:
     
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: ${{ matrix.ruby-version }}
+        ruby-version: '3.0'
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-      name: Bundel install
+      name: Bundle install
     - run: bundle exec rake
       name: Run tests
