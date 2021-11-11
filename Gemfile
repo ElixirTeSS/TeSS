@@ -126,20 +126,19 @@ source 'https://rails-assets.org' do
 end
 
 group :test do
-  gem 'minitest', '5.14.4'
   gem 'fakeredis', git: 'https://github.com/artygus/fakeredis/', ref: 'f68bd4f'
+  gem 'minitest', '5.14.4'
   gem 'rails-controller-testing'
 end
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'webmock', '~> 3.4.2'
   gem 'byebug'
+  gem 'debase'
   gem 'simplecov'
   gem 'simplecov-lcov'
   gem 'rubocop'
   gem 'ruby-debug-ide'
-  gem 'debase'
+  gem 'webmock', '~> 3.4.2'
 end
 
 group :development do
@@ -152,5 +151,5 @@ group :development do
 end
 
 group :production do
-  gem 'passenger', '~> 5.1.11'
+  gem 'passenger'
 end
