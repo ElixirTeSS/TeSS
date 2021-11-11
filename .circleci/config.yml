@@ -27,16 +27,20 @@ jobs:
     steps: 
       - checkout
       - run: gem install bundler -v '~> 2.2.27'
-      - run: bundle -v
       - ruby/bundle-install
-      - node/install-packages
-      - run: cp config/tess.example.yml config/tess.yml
-      - run: cp config/secrets.travis.yml config/secrets.yml
-      - run: ruby --version
-      - run: rails --version
-      - run: npm --version
-      - run: bundle exec rake db:setup
-      - run: bundle exed rake test
+      - run:
+        name: check versions
+        command: 
+          ruby --version
+          bundle --version
+          rails --version
+      - run: 
+        name: TeSS tests
+        command: 
+          cp config/tess.example.yml config/tess.yml
+          cp config/secrets.travis.yml config/secrets.yml
+          bundle exec rake db:setup
+          bundle exed rake test
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
