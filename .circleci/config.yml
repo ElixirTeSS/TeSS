@@ -26,14 +26,14 @@ jobs:
           POSTGRES_PASSWORD: awesome_secure_password
     steps: 
       - checkout
-      - run: gem install bundler -v '~> 2.2.27'
-      - ruby/bundle-install
       - run:
-          name: check versions
+          name: install gems
           command: |
+            pwd;
+            gem install bundler -v '~> 2.2.27'
+            bundle install;
             ruby --version;
             bundle --version;
-            pwd;
             rails --version;
       - run:
           name: TeSS tests
