@@ -33,6 +33,7 @@ jobs:
           command: |
             ruby --version;
             bundle --version;
+            pwd;
             rails --version;
       - run:
           name: TeSS tests
