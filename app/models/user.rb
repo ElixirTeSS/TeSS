@@ -1,5 +1,4 @@
 class User < ApplicationRecord
-  
   include PublicActivity::Common
 
   acts_as_token_authenticatable
@@ -50,8 +49,6 @@ class User < ApplicationRecord
          :omniauthable, :authentication_keys => [:login]
 
   validates_uniqueness_of :username, :case_sensitive => false
-
-
 
   validate :consents_to_processing, on: :create, unless: ->(user) { user.using_omniauth? || User.current_user.try(:is_admin?) }
 
