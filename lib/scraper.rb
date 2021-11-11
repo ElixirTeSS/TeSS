@@ -1,11 +1,10 @@
 module Scraper
-  def init (log_file, config_file)
-    @log_file = log_file
-    @config_file = config_file
-  end
 
-  def run
-
+  def self.run (log_file)
+    log_file.puts "   Scraper.run: start"
+    config = TeSS::Config.ingestion
+    log_file.puts "      ingestion file = #{config[:name]}"
+    log_file.puts "   Scraper.run: finish"
   end
 
 

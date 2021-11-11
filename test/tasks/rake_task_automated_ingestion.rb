@@ -7,15 +7,36 @@ class RakeTasksAutomatedIngestion < ActiveSupport::TestCase
 
   def setup
     TeSS::Application.load_tasks if Rake::Task.tasks.empty?
-    @log_path = 'log/ingestions_test.log'
-    File.delete(@log_path) if File.exists?(@log_path)
+    puts "config = #{TeSS::Config.ingestion}"
+    assert_equal 'production', TeSS::Config.ingestion[:name]
   end
 
-  test 'without configuration file' do
-    assert !File.exists?(@log_path)
+  test 'default configuration file' do
+    # set config file
+    logfile = override_config 'test_ingestion.yml'
+    assert !File.exist?(logfile)
+    assert_equal 'test', TeSS::Config.ingestion[:name]
+
+    # run task
     Rake::Task['tess:automated_ingestion'].invoke
-    assert File.exists?(@log_path)
-    assert File.readlines(@log_path).grep(/Could not load configuration. No such file/)
+
+    # check logfile
+    assert File.exist?(logfile)
+    assert File.readlines(logfile).grep(/ingestion file = test/).size > 0
+  end
+
+  private
+
+  def override_config (config_file)
+    # switch configuration
+    test_config_file = File.join(Rails.root, 'test', 'config', config_file)
+    test_ingest = YAML.safe_load(File.read(test_config_file)).deep_symbolize_keys!
+    TeSS::Config.ingestion = test_ingest
+
+    # clear log file
+    logfile = File.join(Rails.root, TeSS::Config.ingestion[:logfile] )
+    File.delete(logfile) if !logfile.nil? and File.exist?(logfile)
+    return logfile
   end
 
 end
