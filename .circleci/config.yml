@@ -27,13 +27,15 @@ jobs:
     steps: 
       - checkout
       - run: gem install bundler -v '~> 2.2.27'
-      #- run: npm install
       - run:
           name: Which bundler?
           command: bundle -v
       - ruby/bundle-install
       - run: cp config/tess.example.yml config/tess.yml
       - run: cp config/secrets.travis.yml config/secrets.yml
+      - run: npm --version
+      - run: ruby --version
+      - run: rails --version
       - run: bundle exec rake db:setup
       - run: bundle exed rake test
 
