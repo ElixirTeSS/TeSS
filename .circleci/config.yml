@@ -36,6 +36,7 @@ jobs:
             bundle --version;
             rails --version;
             rake --version;
+            node --version;
       - run:
           name: TeSS tests
           command: |
