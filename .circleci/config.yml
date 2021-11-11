@@ -15,9 +15,8 @@ jobs:
           RAILS_ENV: test
       - image: postgres:12
         environment: 
-          POSTGRES_USER: test_user 
-          POSTGRES_DB: travis_ci_test
-          POSTGRES_PASSWORD: awesome_secure_password
+          POSTGRES_USER: root 
+          POSTGRES_DB: circle-test_test
     steps: 
       - checkout
       - run:
@@ -36,8 +35,8 @@ jobs:
           command: |
             pwd;
             cp config/tess.example.yml config/tess.yml;
-            cp config/secrets.travis.yml config/secrets.yml;
-            rake db:setup;
+            cp config/secrets.circle.yml config/secrets.yml;
+            rake db:setup RAILS_ENV=test;
             rake test;
 
 # Invoke jobs via workflows
