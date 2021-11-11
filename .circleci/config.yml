@@ -35,13 +35,15 @@ jobs:
             ruby --version;
             bundle --version;
             rails --version;
+            rake --version;
       - run:
           name: TeSS tests
           command: |
+            pwd;
             cp config/tess.example.yml config/tess.yml;
             cp config/secrets.travis.yml config/secrets.yml;
-            bundle exec rake db:setup;
-            bundle exed rake test;
+            rake db:setup;
+            rake test;
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
