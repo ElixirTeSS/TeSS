@@ -32,14 +32,11 @@ jobs:
             rake --version;
             node --version;
       - run:
-          name: TeSS tests
+          name: TeSS tests and coverage reporting
           command: |
             pwd;
             cp config/tess.example.yml config/tess.yml;
             cp config/secrets.circle.yml config/secrets.yml;
             rake db:setup RAILS_ENV=test;
             rake test;
-      - run:
-          name: Push to Codacy
-          command: |
-            bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r report.xml
+            bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r report.xml;         
