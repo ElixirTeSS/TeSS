@@ -1,2 +1,13 @@
 name: test
 logfile: log/ingestion.test.log
+username: ingestor
+sources:
+  - provider: dummy_provider            # content provider's slug - not found
+    url: https://app.com/event.csv      # the root URL required to access the source
+    method: csv                         # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+  - provider: another_portal_provider   # content provider's slug
+    url: https://app.com/event.csv      # the root URL required to access the source
+    method: csv                         # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+
