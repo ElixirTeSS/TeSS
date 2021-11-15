@@ -2,7 +2,7 @@ name: production
 logfile: log/ingestion.log
 username: scraper
 sources:
-  - provider:             # content provider's slug
+  - provider: ''          # content provider's title
     url:  https://...     # the root URL required to access the source
     method:               # one of 'csv', 'api', 'html'
     resource_type:        # event or material
