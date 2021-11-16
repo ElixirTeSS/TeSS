@@ -32,18 +32,12 @@ jobs:
             rake --version;
             node --version;
       - run:
-          name: TeSS tests
+          name: TeSS tests and coverage reporting
           command: |
             pwd;
             cp config/tess.example.yml config/tess.yml;
             cp config/secrets.circle.yml config/secrets.yml;
             rake db:setup RAILS_ENV=test;
             rake test;
-
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
-#workflows:
-  # sample: # This is the name of the workflow, feel free to change it to better match your workflow.
-    # Inside the workflow, you define the jobs you want to run.
-    #jobs:
-    #  - build
+            ls -l;
+          # bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r report.xml;         
