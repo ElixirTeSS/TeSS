@@ -1,0 +1,4 @@
+Title,URL,Description,Keywords,Contact,Licence,Status
+My First Material,https://app.com/materials/material1.html,This is the first materials that we have created and shared.,"""book,first,free,""",support@app.com,CC-BY-4.0,active
+Another Material,https://app.com/materials/material2.html,This is an second draft that is no longer required.,"""book,second,""",support@app.com,CC-BY-4.0,archived
+The Final Draft,https://app.com/materials/material3.html,The next and 'final' draft.,"""book,final,free,""",support@app.com,notspecified,development

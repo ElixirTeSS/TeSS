@@ -61,8 +61,8 @@ class ActiveSupport::TestCase
   end
 
   def mock_ingestions
-    events_file = File.read("#{Rails.root}/test/fixtures/files/events.csv")
-    materials_file = File.read("#{Rails.root}/test/fixtures/files/materials.csv")
+    events_file = File.read(File.join(Rails.root,'test','fixtures','files','events.csv'))
+    materials_file = File.read(File.join(Rails.root,'test','fixtures','files','materials.csv'))
     WebMock.stub_request(:get, 'https://app.com/events.csv').
       to_return(:status => 200, :headers => {}, :body => events_file)
     WebMock.stub_request(:get, 'https://app.com/materials.csv').

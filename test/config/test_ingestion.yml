@@ -10,3 +10,7 @@ sources:
     url: https://app.com/events.csv     # the root URL required to access the source
     method: csv                         # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
+  - provider: 'Another Portal Provider' # content provider's title
+    url: https://app.com/materials.csv  # the root URL required to access the source
+    method: csv                         # one of 'csv', 'api', 'html'
+    resource_type: material             # event or material

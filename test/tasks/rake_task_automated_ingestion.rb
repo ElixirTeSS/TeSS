@@ -163,8 +163,29 @@ class RakeTasksAutomatedIngestion < ActiveSupport::TestCase
     assert !logfile_contains(logfile, valid_parameter), 'Unexpected error for parameter: ' + valid_parameter
     valid_parameter = 'Resource type is invalid: event'
     assert !logfile_contains(logfile, valid_parameter), 'Unexpected error for parameter: ' + valid_parameter
+  end
+
+  test 'check valid csv files processed' do
+    # set config file
+    config_file = 'test_ingestion.yml'
+    logfile = override_config config_file
+    assert_equal 'test', TeSS::Config.ingestion[:name]
+
+    # run task
+    Rake::Task['tess:automated_ingestion'].invoke
+
+    # check success messages
+    message = 'Source URL[https://app.com/events.csv] resources ingested = 3'
+    assert logfile_contains(logfile, message), 'Message not found: ' + message
+    message = 'Source URL[https://app.com/materials.csv] resources ingested = 3'
+    assert logfile_contains(logfile, message), 'Message not found: ' + message
+    message = 'Sources processed = 3'
+    assert logfile_contains(logfile, message), 'Message not found: ' + message
+    message = 'Scraper.run: finish'
+    assert logfile_contains(logfile, message), 'Message not found: ' + message
 
   end
+
 
   private
 

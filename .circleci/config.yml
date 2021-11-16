@@ -37,6 +37,7 @@ jobs:
             pwd;
             cp config/tess.example.yml config/tess.yml;
             cp config/secrets.circle.yml config/secrets.yml;
+            cp config/ingestion.example.yml config/ingestion.yml;
             rake db:setup RAILS_ENV=test;
             rake test;
             ls -l;
