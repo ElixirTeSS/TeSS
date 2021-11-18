@@ -42,4 +42,4 @@ jobs:
       - run:
           name: Submit Codacy report
           command: |
-            bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage/lcov/app.lcov;         
+            bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage/lcov/TeSS.lcov;         
