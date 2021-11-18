@@ -39,5 +39,5 @@ jobs:
             cp config/secrets.circle.yml config/secrets.yml;
             rake db:setup RAILS_ENV=test;
             rake test;
-            ls -l;
+            ls -l ./coverage;
             bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r report.xml;         
