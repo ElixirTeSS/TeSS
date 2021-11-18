@@ -11,6 +11,8 @@ class RakeTasksAutomatedIngestion < ActiveSupport::TestCase
     Rake::Task['tess:automated_ingestion'].reenable
     override_config 'test_ingestion_example.yml'
     assert_equal 'production', TeSS::Config.ingestion[:name]
+    TeSS::Config.dictionaries['eligibility'] = 'eligibility_dresa.yml'
+    EligibilityDictionary.instance.reload
   end
 
   test 'default configuration file' do
@@ -149,6 +151,8 @@ class RakeTasksAutomatedIngestion < ActiveSupport::TestCase
     Rake::Task['tess:automated_ingestion'].invoke
 
     # check validation errors
+    error_message = 'Provider not found: Dummy Provider'
+    assert logfile_contains(logfile, error_message), 'Error message not found: ' + error_message
     error_message = 'URL not accessible: https://dummy.com/events.csv'
     assert logfile_contains(logfile, error_message), 'Error message not found: ' + error_message
     error_message = 'Method is invalid: xtc'
@@ -156,13 +160,6 @@ class RakeTasksAutomatedIngestion < ActiveSupport::TestCase
     error_message = 'Resource type is invalid: workflow'
     assert logfile_contains(logfile, error_message), 'Error message not found: ' + error_message
 
-    # check validation successes
-    valid_parameter = 'https://app.com/events.csv'
-    assert !logfile_contains(logfile, valid_parameter), 'Unexpected error for parameter: ' + valid_parameter
-    valid_parameter = 'Method is invalid: csv'
-    assert !logfile_contains(logfile, valid_parameter), 'Unexpected error for parameter: ' + valid_parameter
-    valid_parameter = 'Resource type is invalid: event'
-    assert !logfile_contains(logfile, valid_parameter), 'Unexpected error for parameter: ' + valid_parameter
   end
 
   test 'check valid csv files processed' do
@@ -175,17 +172,18 @@ class RakeTasksAutomatedIngestion < ActiveSupport::TestCase
     Rake::Task['tess:automated_ingestion'].invoke
 
     # check success messages
-    message = 'Source URL[https://app.com/events.csv] resources ingested = 3'
-    assert logfile_contains(logfile, message), 'Message not found: ' + message
-    message = 'Source URL[https://app.com/materials.csv] resources ingested = 3'
+    message = 'Validation passed!'
     assert logfile_contains(logfile, message), 'Message not found: ' + message
     message = 'Sources processed = 3'
     assert logfile_contains(logfile, message), 'Message not found: ' + message
     message = 'Scraper.run: finish'
     assert logfile_contains(logfile, message), 'Message not found: ' + message
+    message = 'events extracted = 3'
+    assert logfile_contains(logfile, message), 'Message not found: ' + message
+    message = 'IngestorEventCsv: events added\[3\] updated\[0\] rejected\[0\]'
+    assert logfile_contains(logfile, message), 'Message not found: ' + message
 
   end
-
 
   private
 

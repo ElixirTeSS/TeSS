@@ -1,7 +1,5 @@
-require 'ingestors/ingestor'
-require 'ingestors/ingestor_csv_event'
-require 'ingestors/ingestor_csv_material'
-
+require 'ingestors/ingestor_event_csv'
+require 'ingestors/ingestor_material_csv'
 
 class IngestorFactory
   @@methods = ['csv',]
@@ -11,9 +9,9 @@ class IngestorFactory
     if is_method_valid?(method) and is_resource_valid?(resource)
       case [method, resource]
       when ['csv', 'event']
-        IngestorCsvEvent.new
+        IngestorEventCsv.new
       when ['csv', 'material']
-        IngestorCsvMaterial.new
+        IngestorMaterialCsv.new
       else
         raise "Ingestor not yet implemented for method[#{method}] and resource[#{resource}]"
       end

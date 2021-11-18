@@ -1,5 +1,6 @@
 name: test
 logfile: log/ingestion.test.log
+loglevel: 0
 username: ingestor
 sources:
   - provider: 'Dummy Provider'          # content provider's title - not found

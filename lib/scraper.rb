@@ -5,6 +5,7 @@ module Scraper
 
   @default_role = 'scraper_user'
   @log_file = ''
+  @log_level = 0
 
   @messages = {
     scraper: 'Scraper.run: ',
@@ -27,6 +28,10 @@ module Scraper
 
     config = TeSS::Config.ingestion
     log "ingestion file = #{config[:name]}", 1
+    @log_level = config[:loglevel].to_i unless config[:loglevel].nil?
+    log "log level = #{@log_level}", 1
+
+    # check user
     user = getUser(config[:username])
     if user.role.nil? or user.role.name != @default_role
       log @messages[:invalid] + @messages[:bad_role], 1
@@ -38,25 +43,25 @@ module Scraper
     if config[:sources] and config[:sources].size > 0
       config[:sources].each do |source|
         processed += 1
+        log '', 1
         log @messages[:processing] + processed.to_s, 1
         if validate_source(source)
           log @messages[:valid_source], 2
-          ingestor = IngestorFactory.get_ingestor source[:method], source[:resource_type]
-          provider = getProvider(source[:provider])
-          # TODO: read input
-          log 'Ingestor: ' + ingestor.class.name + ': read...', 2
           begin
-            ingestor.read source[:url]
-            # TODO: write resource
+            ingestor = IngestorFactory.get_ingestor source[:method], source[:resource_type]
+            provider = getProvider(source[:provider])
+            log 'Ingestor: ' + ingestor.class.name + ': read...', 2
+            read = ingestor.read source[:url]
             log 'Ingestor: ' + ingestor.class.name + ': write...', 2
-            ingestor.write user, provider
+            ingested = ingestor.write user, provider
+            log "Source URL[#{source[:url]}] resources ingested[#{ingested}] and rejected[#{read - ingested}].", 2
           rescue Exception => e
-            log 'Process ingestor failed with: ' + e.message, 2
+            log 'Ingestor: ' + ingestor.class.name + ': failed with: ' + e.message, 2
           end
         end
       end
     end
-
+    log '', 1
     log @messages[:processed] + processed.to_s, 1
 
     # --- finished
@@ -101,8 +106,11 @@ module Scraper
   end
 
   def self.log(message, level)
-    level.nil? ? prepend = "" : prepend = " " * (2 * level)
-    @log_file.puts ("   " + prepend + message)
+    if @log_level == 0 or @log_level.to_i >= level.to_i
+      tab = 3
+      level.nil? ? prepend = "" : prepend = " " * (tab * level)
+      @log_file.puts ("   " + prepend + message)
+    end
   end
 
   def self.getUser (username)
