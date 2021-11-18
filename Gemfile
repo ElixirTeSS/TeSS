@@ -169,7 +169,7 @@ end
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
-  gem 'codacy-coverage-reporter', :require => false
+  # gem 'codacy-coverage', :require => false
   gem 'rubocop'
   gem 'simplecov'
   gem 'webmock', '~> 3.4.2'
