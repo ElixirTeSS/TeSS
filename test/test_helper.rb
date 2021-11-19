@@ -67,6 +67,7 @@ class ActiveSupport::TestCase
       to_return(:status => 200, :headers => {}, :body => events_file)
     WebMock.stub_request(:get, 'https://app.com/materials.csv').
       to_return(:status => 200, :headers => {}, :body => materials_file)
+    WebMock.stub_request(:get, 'https://app.com/events/event3.html').to_return(:status => 200)
     WebMock.stub_request(:get, 'https://dummy.com/events.csv').to_return(:status => 404)
   end
 
