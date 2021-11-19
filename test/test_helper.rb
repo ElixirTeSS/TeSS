@@ -1,10 +1,10 @@
 require 'simplecov'
-require 'codacy-coverage'
-Codacy::Reporter.start
+require 'simplecov-lcov'
+
+SimpleCov::Formatter::LcovFormatter.config.report_with_single_file = true
 SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new([
-                                                                  SimpleCov::Formatter::HTMLFormatter,
-                                                                  Codacy::Formatter,
-                                                                ])
+                            SimpleCov::Formatter::HTMLFormatter,
+                            SimpleCov::Formatter::LcovFormatter, ])
 SimpleCov.start 'rails'
 
 ENV['RAILS_ENV'] ||= 'test'

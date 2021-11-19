@@ -40,5 +40,7 @@ jobs:
             cp config/ingestion.example.yml config/ingestion.yml;
             rake db:setup RAILS_ENV=test;
             rake test;
-            ls -l;
-          # bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r report.xml;         
+      - run:
+          name: Submit Codacy report
+          command: |
+            bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage/lcov/TeSS.lcov;         
