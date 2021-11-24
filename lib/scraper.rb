@@ -53,8 +53,8 @@ module Scraper
             log 'Ingestor: ' + ingestor.class.name + ': read...', 2
             read = ingestor.read source[:url]
             log 'Ingestor: ' + ingestor.class.name + ': write...', 2
-            ingested = ingestor.write user, provider
-            log "Source URL[#{source[:url]}] resources ingested[#{ingested}] and rejected[#{read - ingested}].", 2
+            written = ingestor.write user, provider
+            log "Source URL[#{source[:url]}] resources read[#{read}] and written[#{written}].", 2
           rescue Exception => e
             log 'Ingestor: ' + ingestor.class.name + ': failed with: ' + e.message, 2
           end

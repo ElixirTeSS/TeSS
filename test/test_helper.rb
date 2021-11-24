@@ -69,6 +69,8 @@ class ActiveSupport::TestCase
       to_return(:status => 200, :headers => {}, :body => materials_file)
     WebMock.stub_request(:get, 'https://app.com/events/event3.html').to_return(:status => 200)
     WebMock.stub_request(:get, 'https://dummy.com/events.csv').to_return(:status => 404)
+    WebMock.stub_request(:get, 'https://app.com/materials/material3.html').to_return(:status => 200)
+    WebMock.stub_request(:get, 'https://dummy.com/materials.csv').to_return(:status => 404)
   end
 
   def mock_biotools
@@ -81,6 +83,26 @@ class ActiveSupport::TestCase
     nominatim_file = File.read("#{Rails.root}/test/fixtures/files/nominatim.json")
     WebMock.stub_request(:get, /nominatim.openstreetmap.org/).
       to_return(:status => 200, :headers => {}, :body => nominatim_file)
+  end
+
+  # helper methods for ingestion tests
+  def override_config (config_file)
+    # switch configuration
+    test_config_file = File.join(Rails.root, 'test', 'config', config_file)
+    TeSS::Config.ingestion = YAML.safe_load(File.read(test_config_file)).deep_symbolize_keys!
+
+    # clear log file
+    logfile = File.join(Rails.root, TeSS::Config.ingestion[:logfile])
+    File.delete(logfile) if !logfile.nil? and File.exist?(logfile)
+    return logfile
+  end
+
+  def check_task_finished (logfile)
+    logfile_contains logfile, 'Scraper.run: finish'
+  end
+
+  def logfile_contains(logfile, message)
+    File.exist?(logfile) ? File.readlines(logfile).grep(Regexp.new message.encode(Encoding::UTF_8)).size > 0 : false
   end
 
   # This should probably live somewhere else

@@ -36,7 +36,7 @@ class IngestorEvent < Ingestor
 
       else
         # update and save matched event
-        matched = overwrite_event_fields matched_events.first, event
+        matched = overwrite_fields matched_events.first, event
         matched.scraper_record = true
         matched.last_scraped = DateTime.now
         if valid_event? matched
@@ -47,14 +47,15 @@ class IngestorEvent < Ingestor
       end
 
     end
+    written = (added + updated)
     Scraper.log self.class.name +
-                  ": events added[#{added}] updated[#{updated}] rejected[#{processed - (added + updated)}]", 3
-    return processed
+                  ": events added[#{added}] updated[#{updated}] rejected[#{processed - written}]", 3
+    return written
   end
 
-  def overwrite_event_fields (old_event, new_event)
+  def overwrite_fields (old_event, new_event)
     # overwrite unlocked attributes
-    old_event.url = new_event.url                             unless old_event.field_locked? :url
+    # []title, url, provider] not changed, as they are used for matching
     old_event.description = new_event.description             unless old_event.field_locked? :description
     old_event.start = new_event.start                         unless old_event.field_locked? :start
     old_event.end = new_event.end                             unless old_event.field_locked? :end
