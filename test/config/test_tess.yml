@@ -22,7 +22,6 @@ site:
   gmaps_api_key: ''
   registration: true
 mailer:
-  delivery_method: smtp
   location: '/usr/sbin/sendmail'
   arguments: '-i -t'
 questionnaire:

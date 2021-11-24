@@ -29,45 +29,80 @@ class ActiveSupport::TestCase
   # Mock remote images so paperclip doesn't break:
   def mock_images
     WebMock.stub_request(:any, /http\:\/\/example\.com\/(.+)\.png/).to_return(
-        status: 200, body: File.read(File.join(Rails.root, 'test/fixtures/files/image.png')), headers: { content_type: 'image/png' }
+      status: 200, body: File.read(File.join(Rails.root, 'test/fixtures/files/image.png')),
+      headers: { content_type: 'image/png' }
     )
 
     WebMock.stub_request(:any, "http://image.host/another_image.png").to_return(
-        status: 200, body: File.read(File.join(Rails.root, 'test/fixtures/files/another_image.png')), headers: { content_type: 'image/png' }
+      status: 200, body: File.read(File.join(Rails.root, 'test/fixtures/files/another_image.png')),
+      headers: { content_type: 'image/png' }
     )
 
     WebMock.stub_request(:any, "http://malicious.host/image.png").to_return(
-        status: 200, body: File.read(File.join(Rails.root, 'test/fixtures/files/bad.js')), headers: { content_type: 'image/png' }
+      status: 200, body: File.read(File.join(Rails.root, 'test/fixtures/files/bad.js')), headers: { content_type: 'image/png' }
     )
 
     WebMock.stub_request(:any, "http://text.host/text.txt").to_return(
-        status: 200, body: File.read(File.join(Rails.root, 'test/fixtures/files/text.txt')), headers: { content_type: 'text/plain' }
+      status: 200, body: File.read(File.join(Rails.root, 'test/fixtures/files/text.txt')), headers: { content_type: 'text/plain' }
     )
 
     WebMock.stub_request(:any, "http://404.host/image.png").to_return(status: 404)
 
     WebMock.stub_request(:get, "https://bio.tools/api/tool?q=Training%20Material%20Example").
-        with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
-        to_return(:status => 200, :body => "", :headers => {})
+      with(:headers => { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent' => 'Ruby' }).
+      to_return(:status => 200, :body => "", :headers => {})
 
     WebMock.stub_request(:get, "https://bio.tools/api/tool?q=Material%20with%20suggestions").
-        with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
-        to_return(:status => 200, :body => "", :headers => {})
+      with(:headers => { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent' => 'Ruby' }).
+      to_return(:status => 200, :body => "", :headers => {})
 
     WebMock.stub_request(:get, 'https://orcid.org/000-0002-1825-0097x').to_return(status: 404)
 
   end
 
+  def mock_ingestions
+    events_file = File.read(File.join(Rails.root,'test','fixtures','files','events.csv'))
+    materials_file = File.read(File.join(Rails.root,'test','fixtures','files','materials.csv'))
+    WebMock.stub_request(:get, 'https://app.com/events.csv').
+      to_return(:status => 200, :headers => {}, :body => events_file)
+    WebMock.stub_request(:get, 'https://app.com/materials.csv').
+      to_return(:status => 200, :headers => {}, :body => materials_file)
+    WebMock.stub_request(:get, 'https://app.com/events/event3.html').to_return(:status => 200)
+    WebMock.stub_request(:get, 'https://dummy.com/events.csv').to_return(:status => 404)
+    WebMock.stub_request(:get, 'https://app.com/materials/material3.html').to_return(:status => 200)
+    WebMock.stub_request(:get, 'https://dummy.com/materials.csv').to_return(:status => 404)
+  end
+
   def mock_biotools
     biotools_file = File.read("#{Rails.root}/test/fixtures/files/annotation.json")
     WebMock.stub_request(:get, /data.bioontology.org/).
-      to_return(:status => 200, :headers => {},  :body => biotools_file)
+      to_return(:status => 200, :headers => {}, :body => biotools_file)
   end
 
   def mock_nominatim
     nominatim_file = File.read("#{Rails.root}/test/fixtures/files/nominatim.json")
     WebMock.stub_request(:get, /nominatim.openstreetmap.org/).
-        to_return(:status => 200, :headers => {}, :body => nominatim_file)
+      to_return(:status => 200, :headers => {}, :body => nominatim_file)
+  end
+
+  # helper methods for ingestion tests
+  def override_config (config_file)
+    # switch configuration
+    test_config_file = File.join(Rails.root, 'test', 'config', config_file)
+    TeSS::Config.ingestion = YAML.safe_load(File.read(test_config_file)).deep_symbolize_keys!
+
+    # clear log file
+    logfile = File.join(Rails.root, TeSS::Config.ingestion[:logfile])
+    File.delete(logfile) if !logfile.nil? and File.exist?(logfile)
+    return logfile
+  end
+
+  def check_task_finished (logfile)
+    logfile_contains logfile, 'Scraper.run: finish'
+  end
+
+  def logfile_contains(logfile, message)
+    File.exist?(logfile) ? File.readlines(logfile).grep(Regexp.new message.encode(Encoding::UTF_8)).size > 0 : false
   end
 
   # This should probably live somewhere else
@@ -140,7 +175,11 @@ class Object
   def blockless_stub name, val_or_callable, *block_args
     new_name = "__minitest_stub__#{name}"
 
-    metaclass = class << self; self; end
+    metaclass =
+
+      class << self
+        self;
+      end
 
     if respond_to? name and not methods.map(&:to_s).include? name.to_s then
       metaclass.send :define_method, name do |*args|
