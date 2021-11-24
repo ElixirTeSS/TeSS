@@ -27,9 +27,35 @@ class RakeTasksEventIngestion < ActiveSupport::TestCase
     assert_equal 'test', TeSS::Config.ingestion[:name]
     material_count = Material.all.size
 
+    # check event doesn't exist
+    events = Event.where(title: 'Another Event', url: 'https://app.com/events/event3.html')
+    assert !events.nil?, "Pre-task: events search error."
+    assert_equal 0, events.size, "Pre-task: events search title[Another Event] found something"
+
     # run task
     # expect addited[1] updated[1] rejected[1]
     Rake::Task['tess:automated_ingestion'].invoke
+
+    # check event does exist
+    events = Event.where(title: 'Another Event', url: 'https://app.com/events/event3.html')
+    assert !events.nil?, "Post-task: events search error."
+    assert_equal 1, events.size, "Post-task: events search title[Another Event] found nothing"
+    event = events.first
+    assert !event.nil?
+    assert_equal 'Another Event', event.title
+    assert_equal 'https://app.com/events/event3.html', event.url
+    assert_equal 'Another Portal Provider', event.content_provider.title
+    assert_equal 'AEST', event.timezone
+    assert_equal 'Event Support', event.contact
+    assert_equal 'Another Content Provider', event.organizer
+    assert_equal 2, event.eligibility.size, "event eligibility size not matched!"
+    assert event.eligibility.include?('by_invitation')
+    assert_equal 2, event.host_institutions.size
+    assert event.host_institutions.include?('UoM')
+    assert !event.online
+    assert_equal 'Melbourne', event.city
+    assert_equal 'Australia', event.country
+    assert_equal '100 Lygon Street', event.venue
 
     # check logfile messages
     message = 'IngestorEventCsv: events extracted = 3'

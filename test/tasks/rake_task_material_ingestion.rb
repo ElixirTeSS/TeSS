@@ -26,9 +26,33 @@ class RakeTasksMaterialIngestion < ActiveSupport::TestCase
     assert_equal 'test', TeSS::Config.ingestion[:name]
     material_count = Material.all.size
 
+    # check materials don't exist
+    materials = Material.where(title: 'My First Material', url: 'https://app.com/materials/material1.html')
+    assert !materials.nil?, "Pre-task: Materials search error."
+    assert_equal 0, materials.size, "Pre-task: Materials search title[My First Material] found something"
+
     # run task
     # expect addited[1] updated[1] rejected[1]
     Rake::Task['tess:automated_ingestion'].invoke
+
+    # check material added successfully
+    materials = Material.where(title: 'My First Material', url: 'https://app.com/materials/material1.html')
+    assert !materials.nil?, "Post-task: Materials search error."
+    assert_equal 1, materials.size, "Post-task: materials search title[My First Material] found nothing"
+    material = materials.first
+    assert !material.nil?, "Post-task: first material from search title[My First Material] in nil."
+    assert_equal 'My First Material', material.title, "material title not matched!"
+    assert_equal 'https://app.com/materials/material1.html', material.url, "material url not matched!"
+    assert !material.content_provider.nil?, "material provider is nil."
+    assert_equal 'Another Portal Provider', material.content_provider.title, 'material provider not matched'
+    assert_equal 'This is the first materials that we have created and shared.', material.description,
+                 'material description not matched!'
+    assert !material.keywords.nil?, 'material keywords is nil'
+    assert_equal 3, material.keywords.size, 'material keywords count not matched.'
+    assert material.keywords.include?('first'), 'material keyword[first] missing.'
+    assert_equal 'support@app.com', material.contact, 'material contact not matched'
+    assert_equal 'CC-BY-4.0', material.licence, 'material licence not matched'
+    assert_equal 'active', material.status, 'material status not matched'
 
     # check logfile messages
     message = 'IngestorMaterialCsv: materials extracted = 3'
@@ -42,7 +66,6 @@ class RakeTasksMaterialIngestion < ActiveSupport::TestCase
     message = 'Scraper.run: finish'
     assert logfile_contains(logfile, message), 'Message not found: ' + message
   end
-
 
   test 'check ingestion and updating of material from csv file' do
     # set config file
