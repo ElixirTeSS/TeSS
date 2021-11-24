@@ -20,47 +20,27 @@ class IngestorEvent < Ingestor
     @events.each do |event|
       processed += 1
 
-      # check exists
+      # check for matched events
       matched_events = Event.where(title: event.title, url: event.url, content_provider: provider)
 
       if matched_events.nil? or matched_events.first.nil?
-        # set ingestion parameters
+        # set ingestion parameters and save new event
         event.user = user
         event.content_provider = provider
         event.scraper_record = true
         event.last_scraped = DateTime.now
-
-        # save new event
         if valid_event? event
           event.save!
           added += 1
         end
 
       else
-        # overwrite unlocked attributes
-        old_event = matched_events.first
-        old_event.locked_fields.nil? ? locked = [] : locked = old_event.locked_fields
-
-        old_event.url = event.url unless locked.include? :url
-        old_event.description = event.description unless locked.include? :description
-        old_event.start = event.start unless locked.include? :start
-        old_event.end = event.end unless locked.include? :end
-        old_event.timezone = event.timezone unless locked.include? :timezone
-        old_event.contact = event.contact unless locked.include? :contact
-        old_event.organizer = event.organizer unless locked.include? :organizer
-        old_event.eligibility = event.eligibility unless locked.include? :eligibility
-        old_event.host_institutions = event.host_institutions unless locked.include? :host_institutions
-        old_event.online = event.online unless locked.include? :online
-        old_event.city = event.city unless locked.include? :city
-        old_event.country = event.country unless locked.include? :country
-        old_event.venue = event.venue unless locked.include? :venue
-
-        # save updated event
-        # do not override user and provider
-        old_event.scraper_record = true
-        old_event.last_scraped = DateTime.now
-        if valid_event? old_event
-          old_event.save!
+        # update and save matched event
+        matched = overwrite_event_fields matched_events.first, event
+        matched.scraper_record = true
+        matched.last_scraped = DateTime.now
+        if valid_event? matched
+          matched.save!
           updated += 1
         end
 
@@ -70,6 +50,24 @@ class IngestorEvent < Ingestor
     Scraper.log self.class.name +
                   ": events added[#{added}] updated[#{updated}] rejected[#{processed - (added + updated)}]", 3
     return processed
+  end
+
+  def overwrite_event_fields (old_event, new_event)
+    # overwrite unlocked attributes
+    old_event.url = new_event.url                             unless old_event.field_locked? :url
+    old_event.description = new_event.description             unless old_event.field_locked? :description
+    old_event.start = new_event.start                         unless old_event.field_locked? :start
+    old_event.end = new_event.end                             unless old_event.field_locked? :end
+    old_event.timezone = new_event.timezone                   unless old_event.field_locked? :timezone
+    old_event.contact = new_event.contact                     unless old_event.field_locked? :contact
+    old_event.organizer = new_event.organizer                 unless old_event.field_locked? :organizer
+    old_event.eligibility = new_event.eligibility             unless old_event.field_locked? :eligibility
+    old_event.host_institutions = new_event.host_institutions unless old_event.field_locked? :host_institutions
+    old_event.online = new_event.online                       unless old_event.field_locked? :online
+    old_event.city = new_event.city                           unless old_event.field_locked? :city
+    old_event.country = new_event.country                     unless old_event.field_locked? :country
+    old_event.venue = new_event.venue                         unless old_event.field_locked? :venue
+    return old_event
   end
 
   def valid_event? (event)

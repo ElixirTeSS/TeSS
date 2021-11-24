@@ -202,14 +202,15 @@ class RakeTasksAutomatedIngestion < ActiveSupport::TestCase
 
     url = 'https://app.com/events/event3.html'
     title = 'Another Event'
+    description = 'default description'
     start_datetime = DateTime.now.getutc + 7
     end_datetime = start_datetime + 1
-    locked_fields = ['start', 'end', 'timezone', ]
+    locked_fields = ['start', 'timezone', 'description',]
 
-    params = {user: user, content_provider: provider, url: url, title: title, description: 'default description',
-              start: start_datetime, end: end_datetime, timezone: 'UTC', contact: 'dummy contact',
-              organizer: 'dummy organizer', online: true, city: '', country: '', venue: '',
-              eligibility: ['open_to_all',], host_institutions: ['UoLife'], locked_fields: locked_fields }
+    params = { user: user, content_provider: provider, url: url, title: title, description: description,
+               start: start_datetime, end: end_datetime, timezone: 'UTC', contact: 'dummy contact',
+               organizer: 'dummy organizer', online: true, city: '', country: '', venue: '',
+               eligibility: ['open_to_all',], host_institutions: ['UoLife'], locked_fields: locked_fields }
     event = Event.new(params)
     assert event.save!, 'Event not saved!'
     assert !event.nil?, 'Event not found!'
@@ -236,15 +237,19 @@ class RakeTasksAutomatedIngestion < ActiveSupport::TestCase
     assert_equal 'Event Support', updated.contact, "Updated contact not matched!"
     assert_equal 'Another Content Provider', updated.organizer, "Updated organizer not matched!"
     assert !updated.online, "Updated online not matched!"
+    assert_equal "20220315T160000".to_datetime, updated.end.to_datetime, "Updated end not matched!"
 
     # check locked fields not updated
+    assert_equal 3, updated.locked_fields.size, "Updated locked_fields count not matched!"
+    assert updated.field_locked?(:description), "Updated field (:description) not locked!"
     assert_equal 'UTC', updated.timezone, "Updated timezone has changed!"
+    assert_equal description, updated.description, "Updated description has changed!"
     # TODO: compare datetimes
-    # assert_equal start_datetime, updated.start.to_datetime, "Updated start has been changed!"
-    # assert_equal end_datetime, updated.end.to_datetime, "Updated end has been changed!"
+    format = "%Y.%m.%d %H:%M:%s"
+    assert_equal start_datetime.strftime(format), updated.start.to_datetime.strftime(format),
+                 "Updated start has been changed!"
 
   end
-
 
   private
 
