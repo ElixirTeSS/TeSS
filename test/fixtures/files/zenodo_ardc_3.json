@@ -1,0 +1,573 @@
+{
+  "aggregations": {
+    "access_right": {
+      "buckets": [
+        {
+          "doc_count": 107,
+          "key": "open"
+        }
+      ],
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0
+    },
+    "file_type": {
+      "buckets": [
+        {
+          "doc_count": 96,
+          "key": "pdf"
+        },
+        {
+          "doc_count": 6,
+          "key": "mp4"
+        },
+        {
+          "doc_count": 5,
+          "key": "zip"
+        },
+        {
+          "doc_count": 4,
+          "key": "pptx"
+        },
+        {
+          "doc_count": 1,
+          "key": "ods"
+        },
+        {
+          "doc_count": 1,
+          "key": "txt"
+        },
+        {
+          "doc_count": 1,
+          "key": "xlsx"
+        }
+      ],
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0
+    },
+    "keywords": {
+      "buckets": [
+        {
+          "doc_count": 36,
+          "key": "FAIR"
+        },
+        {
+          "doc_count": 33,
+          "key": "ARDC"
+        },
+        {
+          "doc_count": 31,
+          "key": "Infrastructure"
+        },
+        {
+          "doc_count": 30,
+          "key": "NCRIS"
+        },
+        {
+          "doc_count": 29,
+          "key": "Storage and Compute Summit"
+        },
+        {
+          "doc_count": 29,
+          "key": "eResearch"
+        },
+        {
+          "doc_count": 13,
+          "key": "training"
+        },
+        {
+          "doc_count": 10,
+          "key": "skills"
+        },
+        {
+          "doc_count": 9,
+          "key": "data skills"
+        },
+        {
+          "doc_count": 9,
+          "key": "research infrastructure"
+        }
+      ],
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 340
+    },
+    "type": {
+      "buckets": [
+        {
+          "doc_count": 60,
+          "key": "presentation",
+          "subtype": {
+            "buckets": [],
+            "doc_count_error_upper_bound": 0,
+            "sum_other_doc_count": 0
+          }
+        },
+        {
+          "doc_count": 25,
+          "key": "publication",
+          "subtype": {
+            "buckets": [
+              {
+                "doc_count": 15,
+                "key": "report"
+              },
+              {
+                "doc_count": 4,
+                "key": "article"
+              },
+              {
+                "doc_count": 3,
+                "key": "other"
+              },
+              {
+                "doc_count": 2,
+                "key": "book"
+              },
+              {
+                "doc_count": 1,
+                "key": "proposal"
+              }
+            ],
+            "doc_count_error_upper_bound": 0,
+            "sum_other_doc_count": 0
+          }
+        },
+        {
+          "doc_count": 10,
+          "key": "poster",
+          "subtype": {
+            "buckets": [],
+            "doc_count_error_upper_bound": 0,
+            "sum_other_doc_count": 0
+          }
+        },
+        {
+          "doc_count": 5,
+          "key": "video",
+          "subtype": {
+            "buckets": [],
+            "doc_count_error_upper_bound": 0,
+            "sum_other_doc_count": 0
+          }
+        },
+        {
+          "doc_count": 3,
+          "key": "lesson",
+          "subtype": {
+            "buckets": [],
+            "doc_count_error_upper_bound": 0,
+            "sum_other_doc_count": 0
+          }
+        },
+        {
+          "doc_count": 2,
+          "key": "other",
+          "subtype": {
+            "buckets": [],
+            "doc_count_error_upper_bound": 0,
+            "sum_other_doc_count": 0
+          }
+        },
+        {
+          "doc_count": 2,
+          "key": "software",
+          "subtype": {
+            "buckets": [],
+            "doc_count_error_upper_bound": 0,
+            "sum_other_doc_count": 0
+          }
+        }
+      ],
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0
+    }
+  },
+  "hits": {
+    "hits": [
+      {
+        "conceptdoi": "10.5281/zenodo.5035916",
+        "conceptrecid": "5035916",
+        "created": "2021-06-28T05:33:29.261352+00:00",
+        "doi": "10.5281/zenodo.5035917",
+        "files": [
+          {
+            "bucket": "1fcd0ee9-b0d8-4142-a240-72f992c650d0",
+            "checksum": "md5:c77f6d9574d88b190d17b0fe6375734b",
+            "key": "20210622-HeSANDA Design Phase information session.mp4",
+            "links": {
+              "self": "https://zenodo.org/api/files/1fcd0ee9-b0d8-4142-a240-72f992c650d0/20210622-HeSANDA%20Design%20Phase%20information%20session.mp4"
+            },
+            "size": 381220062,
+            "type": "mp4"
+          },
+          {
+            "bucket": "1fcd0ee9-b0d8-4142-a240-72f992c650d0",
+            "checksum": "md5:e6d6a67cafc1ea3a0369aa1701679ad6",
+            "key": "20210622-HeSANDA Design Phase information session.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/1fcd0ee9-b0d8-4142-a240-72f992c650d0/20210622-HeSANDA%20Design%20Phase%20information%20session.pdf"
+            },
+            "size": 1619284,
+            "type": "pdf"
+          }
+        ],
+        "id": 5035917,
+        "links": {
+          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5035917.svg",
+          "bucket": "https://zenodo.org/api/files/1fcd0ee9-b0d8-4142-a240-72f992c650d0",
+          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5035916.svg",
+          "conceptdoi": "https://doi.org/10.5281/zenodo.5035916",
+          "doi": "https://doi.org/10.5281/zenodo.5035917",
+          "html": "https://zenodo.org/record/5035917",
+          "latest": "https://zenodo.org/api/records/5035917",
+          "latest_html": "https://zenodo.org/record/5035917",
+          "self": "https://zenodo.org/api/records/5035917"
+        },
+        "metadata": {
+          "access_right": "open",
+          "access_right_category": "success",
+          "communities": [
+            {
+              "id": "ardc"
+            }
+          ],
+          "contributors": [],
+          "creators": [
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "Kang, Kristan",
+              "orcid": "0000-0002-2057-1033"
+            },
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "Williams, Rhys",
+              "orcid": "0000-0002-5327-406X"
+            }
+          ],
+          "description": "<p>This information session provides an introduction to the HeSANDA program, an overview of the Design Phase, and information for attendees about how they can be involved.</p>\n\n<p>You can watch the video on ARDC&#39;s YouTube channel:&nbsp;<a href=\"https://youtu.be/VROOXwUf9lI\">https://youtu.be/VROOXwUf9lI</a></p>",
+          "doi": "10.5281/zenodo.5035917",
+          "keywords": [
+            "HeSANDA"
+          ],
+          "license": {},
+          "publication_date": "2021-06-22",
+          "related_identifiers": [
+            {
+              "identifier": "10.5281/zenodo.5035916",
+              "relation": "isVersionOf",
+              "scheme": "doi"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "count": 1,
+                "index": 0,
+                "is_last": true,
+                "last_child": {
+                  "pid_type": "recid",
+                  "pid_value": "5035917"
+                },
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "5035916"
+                }
+              }
+            ]
+          },
+          "resource_type": {
+            "title": "Video/Audio",
+            "type": "video"
+          },
+          "title": "HeSANDA Design Phase information session"
+        },
+        "owners": [
+          82930
+        ],
+        "revision": 2,
+        "stats": {
+          "downloads": 46.0,
+          "unique_downloads": 36.0,
+          "unique_views": 66.0,
+          "version_downloads": 46.0,
+          "version_unique_downloads": 36.0,
+          "version_unique_views": 66.0,
+          "version_views": 73.0,
+          "version_volume": 2731692510.0,
+          "views": 73.0,
+          "volume": 2731692510.0
+        },
+        "updated": "2021-06-28T23:10:23.402954+00:00"
+      },
+      {
+        "conceptdoi": "10.5281/zenodo.5546630",
+        "conceptrecid": "5546630",
+        "created": "2021-10-03T22:59:26.088277+00:00",
+        "doi": "10.5281/zenodo.5546631",
+        "files": [
+          {
+            "bucket": "f8487991-90db-45f3-86e1-038963de639f",
+            "checksum": "md5:a2845d4e2ea220e80454aeeaebe7d404",
+            "key": "CAUL_ARDC_AAF webinar - ORCID  in Australia  (1).pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/f8487991-90db-45f3-86e1-038963de639f/CAUL_ARDC_AAF%20webinar%20-%20ORCID%20%20in%20Australia%20%20%281%29.pdf"
+            },
+            "size": 1069987,
+            "type": "pdf"
+          }
+        ],
+        "id": 5546631,
+        "links": {
+          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5546631.svg",
+          "bucket": "https://zenodo.org/api/files/f8487991-90db-45f3-86e1-038963de639f",
+          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5546630.svg",
+          "conceptdoi": "https://doi.org/10.5281/zenodo.5546630",
+          "doi": "https://doi.org/10.5281/zenodo.5546631",
+          "html": "https://zenodo.org/record/5546631",
+          "latest": "https://zenodo.org/api/records/5546631",
+          "latest_html": "https://zenodo.org/record/5546631",
+          "self": "https://zenodo.org/api/records/5546631"
+        },
+        "metadata": {
+          "access_right": "open",
+          "access_right_category": "success",
+          "communities": [
+            {
+              "id": "ardc"
+            }
+          ],
+          "creators": [
+            {
+              "affiliation": "Australian Access Federation",
+              "name": "Almeida, Melroy",
+              "orcid": "0000-0003-3522-7849"
+            }
+          ],
+          "description": "The description has also been updated!",
+          "doi": "10.5281/zenodo.5546631",
+          "keywords": [
+            "persistent identifiers",
+            "ORCID",
+            "PID",
+            "research infrastructure",
+            "Test"
+          ],
+          "language": "eng",
+          "license": {
+            "id": "CC-BY-4.0"
+          },
+          "publication_date": "2021-10-03",
+          "related_identifiers": [
+            {
+              "identifier": "10.5281/zenodo.5546630",
+              "relation": "isVersionOf",
+              "scheme": "doi"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "count": 1,
+                "index": 0,
+                "is_last": true,
+                "last_child": {
+                  "pid_type": "recid",
+                  "pid_value": "5546631"
+                },
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "5546630"
+                }
+              }
+            ]
+          },
+          "resource_type": {
+            "title": "Presentation",
+            "type": "presentation"
+          },
+          "title": "ORCID in Australia"
+        },
+        "owners": [
+          79740
+        ],
+        "revision": 3,
+        "stats": {
+          "downloads": 11.0,
+          "unique_downloads": 10.0,
+          "unique_views": 14.0,
+          "version_downloads": 11.0,
+          "version_unique_downloads": 10.0,
+          "version_unique_views": 14.0,
+          "version_views": 15.0,
+          "version_volume": 11769857.0,
+          "views": 15.0,
+          "volume": 11769857.0
+        },
+        "updated": "2021-11-03T05:00:18.622136+00:00"
+      },
+      {
+        "conceptdoi": "10.5281/zenodo.4817114",
+        "conceptrecid": "4817114",
+        "created": "2021-05-31T00:56:43.845442+00:00",
+        "doi": "10.5281/zenodo.4817188",
+        "files": [
+          {
+            "bucket": "7ccacca2-0e96-4147-bb34-547cf05e32c0",
+            "checksum": "md5:0e251cf6727a2316ad7b47f072ad61e1",
+            "key": "20210518_DMPs.mp4",
+            "links": {
+              "self": "https://zenodo.org/api/files/7ccacca2-0e96-4147-bb34-547cf05e32c0/20210518_DMPs.mp4"
+            },
+            "size": 2115116316,
+            "type": "mp4"
+          },
+          {
+            "bucket": "7ccacca2-0e96-4147-bb34-547cf05e32c0",
+            "checksum": "md5:d12e2c508a12548ee7c09d98b77ca044",
+            "key": "20210518_InfrastructureDMPs_slides.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/7ccacca2-0e96-4147-bb34-547cf05e32c0/20210518_InfrastructureDMPs_slides.pdf"
+            },
+            "size": 5951390,
+            "type": "pdf"
+          }
+        ],
+        "id": 4817188,
+        "links": {
+          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.4817188.svg",
+          "bucket": "https://zenodo.org/api/files/7ccacca2-0e96-4147-bb34-547cf05e32c0",
+          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.4817114.svg",
+          "conceptdoi": "https://doi.org/10.5281/zenodo.4817114",
+          "doi": "https://doi.org/10.5281/zenodo.4817188",
+          "html": "https://zenodo.org/record/4817188",
+          "latest": "https://zenodo.org/api/records/4817188",
+          "latest_html": "https://zenodo.org/record/4817188",
+          "self": "https://zenodo.org/api/records/4817188"
+        },
+        "metadata": {
+          "access_right": "open",
+          "access_right_category": "success",
+          "communities": [
+            {
+              "id": "ardc"
+            },
+            {
+              "id": "rda-related"
+            }
+          ],
+          "creators": [
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "Stokes, Liz",
+              "orcid": "0000-0002-2973-5647"
+            },
+            {
+              "affiliation": "Research Data Alliance",
+              "name": "Kethers, Stefanie",
+              "orcid": "0000-0002-1730-476X"
+            },
+            {
+              "affiliation": "University of Melbourne",
+              "name": "Neish, Peter",
+              "orcid": "0000-0002-7171-2334"
+            },
+            {
+              "affiliation": "Walter and Eliza Hall Institute",
+              "name": "Mosbergen, Rowland"
+            },
+            {
+              "affiliation": "California Digital Library, University of California",
+              "name": "Praetzellis, Maria",
+              "orcid": "0000-0001-5047-3090"
+            },
+            {
+              "affiliation": "California Digital Library, University of California",
+              "name": "Chodacki, John",
+              "orcid": "0000-0002-7378-2408"
+            },
+            {
+              "affiliation": "Queensland Cyber Infrastructure Foundation",
+              "name": "Brazzatti, Andrew",
+              "orcid": "0000-0003-1351-8522"
+            },
+            {
+              "affiliation": "Independent Consultant",
+              "name": "Sefton, Peter",
+              "orcid": "0000-0002-3545-944X"
+            },
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "Unsworth, Kathryn",
+              "orcid": "0000-0002-5407-9987"
+            }
+          ],
+          "description": "<p>The Research Data Aliance and ARDC&#39;s Data Management Planning Interest Group co-hosted a webinar on infrastructure and data management plans. Specific tools for managing DMPs, infrastructure that uses DMPs and research infrastructure that is provisioned by DMP infrastructure. Updates from the recent Research Data Alliance Virtual Plenary 17 will also be included. Confirmed speakers ARDC Facilitators Liz Stokes and Kathryn Unsworth Stefanie Kethers, Research Data Alliance Peter Neish, University of Melbourne Rowland Mosbergen, Walter and Elizabeth Hall Institute Maria Praetzellis (John Chodacki), University of California - DMP Tool Andrew Brazzatti, Queensland Cyber Infrastructure Fund - ReDBox Peter Sefton, University of Technology.</p>\n\n<p>A video of this presentation can be found on ARDC&#39;s YouTube channel:&nbsp;<a href=\"https://youtu.be/9l5D78J4ULo\">https://youtu.be/9l5D78J4ULo</a></p>",
+          "doi": "10.5281/zenodo.4817188",
+          "keywords": [
+            "DMP",
+            "Infrastructure",
+            "Data management plans",
+            "research support",
+            "persistent identifiers",
+            "machine actionable",
+            "research data management",
+            "research infrastructure"
+          ],
+          "license": {
+            "id": "CC-BY-4.0"
+          },
+          "publication_date": "2021-05-27",
+          "related_identifiers": [
+            {
+              "identifier": "10.5281/zenodo.4817114",
+              "relation": "isVersionOf",
+              "scheme": "doi"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "count": 2,
+                "index": 1,
+                "is_last": true,
+                "last_child": {
+                  "pid_type": "recid",
+                  "pid_value": "4817188"
+                },
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "4817114"
+                }
+              }
+            ]
+          },
+          "resource_type": {
+            "title": "Presentation",
+            "type": "presentation"
+          },
+          "title": "Infrastructure and Data Management Plans (DMPs)"
+        },
+        "owners": [
+          82930
+        ],
+        "revision": 4,
+        "stats": {
+          "downloads": 42.0,
+          "unique_downloads": 36.0,
+          "unique_views": 56.0,
+          "version_downloads": 64.0,
+          "version_unique_downloads": 55.0,
+          "version_unique_views": 78.0,
+          "version_views": 90.0,
+          "version_volume": 10926713590.0,
+          "views": 64.0,
+          "volume": 10795783010.0
+        },
+        "updated": "2021-06-14T00:34:40.957459+00:00"
+      }
+    ],
+    "total": 3
+  },
+  "links": {
+    "self": "https://zenodo.org/api/records/?sort=mostrecent&communities=ardc&page=1&size=10"
+  }
+}

@@ -128,6 +128,8 @@ GEM
       responders
       warden (~> 1.2.3)
     docile (1.4.0)
+    domain_name (0.5.20190701)
+      unf (>= 0.0.5, < 1.0.0)
     ebnf (1.2.0)
       rdf (~> 3.1)
       sxp (~> 1.1)
@@ -178,6 +180,9 @@ GEM
     hashie (4.1.0)
     highline (1.7.10)
     htmlentities (4.3.4)
+    http-accept (1.7.0)
+    http-cookie (1.0.4)
+      domain_name (~> 0.5)
     httparty (0.20.0)
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
@@ -298,6 +303,7 @@ GEM
     nested_form (0.3.2)
     net-http-persistent (4.0.1)
       connection_pool (~> 2.2)
+    netrc (0.11.0)
     nio4r (2.5.8)
     nokogiri (1.12.5-x86_64-linux)
       racc (~> 1.4)
@@ -476,6 +482,11 @@ GEM
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
+    rest-client (2.1.0)
+      http-accept (>= 1.7.0, < 2.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     rexml (3.2.5)
     rsolr (2.3.0)
       builder (>= 2.1.2)
@@ -596,6 +607,9 @@ GEM
       tzinfo (>= 1.0.0)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.8)
     unicode-display_width (2.1.0)
     unicode_utils (1.4.0)
     unicorn (6.0.0)
@@ -685,6 +699,7 @@ DEPENDENCIES
   recaptcha
   redcarpet (~> 3.5.1)
   redis (< 5.0.0)
+  rest-client
   rubocop
   sass-rails (~> 5.0)
   sdoc (>= 0.4.0)

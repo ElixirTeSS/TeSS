@@ -3,8 +3,8 @@ require 'simplecov-lcov'
 
 SimpleCov::Formatter::LcovFormatter.config.report_with_single_file = true
 SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new([
-                            SimpleCov::Formatter::HTMLFormatter,
-                            SimpleCov::Formatter::LcovFormatter, ])
+                                                                  SimpleCov::Formatter::HTMLFormatter,
+                                                                  SimpleCov::Formatter::LcovFormatter,])
 SimpleCov.start 'rails'
 
 ENV['RAILS_ENV'] ||= 'test'
@@ -61,8 +61,13 @@ class ActiveSupport::TestCase
   end
 
   def mock_ingestions
-    events_file = File.read(File.join(Rails.root,'test','fixtures','files','events.csv'))
-    materials_file = File.read(File.join(Rails.root,'test','fixtures','files','materials.csv'))
+    events_file = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'events.csv'))
+    materials_file = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'materials.csv'))
+    zenodo_ardc_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_ardc.json'))
+    zenodo_ardc_2_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_ardc_2.json'))
+    zenodo_ardc_3_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_ardc_3.json'))
+    zenodo_abt_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_abt.json'))
+
     WebMock.stub_request(:get, 'https://app.com/events.csv').
       to_return(:status => 200, :headers => {}, :body => events_file)
     WebMock.stub_request(:get, 'https://app.com/materials.csv').
@@ -71,6 +76,18 @@ class ActiveSupport::TestCase
     WebMock.stub_request(:get, 'https://dummy.com/events.csv').to_return(:status => 404)
     WebMock.stub_request(:get, 'https://app.com/materials/material3.html').to_return(:status => 200)
     WebMock.stub_request(:get, 'https://dummy.com/materials.csv').to_return(:status => 404)
+    WebMock.stub_request(:get, 'https://zenodo.org/api/records/?communities=ardc').
+      to_return(status: 200, headers: {}, body: zenodo_ardc_body)
+    WebMock.stub_request(:get, 'https://zenodo.org/api/records/?sort=mostrecent&communities=ardc&page=2&size=10').
+      to_return(status: 200, headers: {}, body: zenodo_ardc_2_body)
+    WebMock.stub_request(:get, 'https://zenodo.org/api/records/?communities=ardc-again').
+      to_return(status: 200, headers: {}, body: zenodo_ardc_3_body)
+    WebMock.stub_request(:get, 'https://zenodo.org/api/records/?communities=australianbiocommons-training').
+      to_return(status: 200, headers: {}, body: zenodo_abt_body)
+    WebMock.stub_request(:get, 'https://zenodo.org/api/records/?sort=mostrecent&ommunities=australianbiocommons-training&page=2&size=10').
+      to_return(status: 404)
+    WebMock.stub_request(:get, 'https://zenodo.org/api/records/?communities=dummy').
+      to_return(status: 404)
   end
 
   def mock_biotools

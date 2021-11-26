@@ -1,8 +1,9 @@
 require 'ingestors/ingestor_event_csv'
 require 'ingestors/ingestor_material_csv'
+require 'ingestors/ingestor_material_rest'
 
 class IngestorFactory
-  @@methods = ['csv',]
+  @@methods = ['csv', 'rest',]
   @@resources = ['event', 'material',]
 
   def self.get_ingestor (method, resource)
@@ -12,6 +13,8 @@ class IngestorFactory
         IngestorEventCsv.new
       when ['csv', 'material']
         IngestorMaterialCsv.new
+      when ['rest', 'material']
+        IngestorMaterialRest.new
       else
         raise "Ingestor not yet implemented for method[#{method}] and resource[#{resource}]"
       end
