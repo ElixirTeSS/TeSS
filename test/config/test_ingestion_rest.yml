@@ -15,3 +15,7 @@ sources:
     url: https://zenodo.org/api/records/?communities=australianbiocommons-training  # the root URL to access the source
     method: rest                        # one of 'csv', 'rest',
     resource_type: material             # event or material
+  - provider: 'Portal Provider'         # content provider's title
+    url: https://zenodo.org/api/records/?communities=ardc-again  # the root URL to access the source
+    method: rest                        # one of 'csv', 'rest'
+    resource_type: material             # event or material

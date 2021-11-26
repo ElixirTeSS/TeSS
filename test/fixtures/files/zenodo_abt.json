@@ -1705,6 +1705,6 @@
     "total": 10
   },
   "links": {
-    "self": "https://zenodo.org/api/records/?sort=mostrecent&amp;communities=australianbiocommons-training&amp;page=1&amp;size=10"
+    "self": "https://zenodo.org/api/records/?sort=mostrecent&communities=australianbiocommons-training&page=1&size=10"
   }
 }
