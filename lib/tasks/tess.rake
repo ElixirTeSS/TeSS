@@ -1,3 +1,5 @@
+require 'yaml'
+
 namespace :tess do
 
   task :remove_spam_activities, [:type] => [:environment] do |t, args|
@@ -137,7 +139,10 @@ namespace :tess do
   task automated_ingestion: :environment do
     #puts "task[automated_ingestion] start"
     begin
-      # TODO: set log file
+      config_file = File.join(Rails.root, 'config', 'ingestion.yml')
+      TeSS::Config.ingestion = YAML.safe_load(File.read(config_file)).deep_symbolize_keys!
+      raise  'Config.ingestion is nil' if TeSS::Config.ingestion.nil?
+      #  set log file
       log_path = File.join(Rails.root, TeSS::Config.ingestion[:logfile])
       #puts "task[automated_ingestion] log_path = #{log_path}"
       log_file = File.open(log_path, 'w')
@@ -151,7 +156,7 @@ namespace :tess do
         log_file.puts('   Run Scraper failed with: ' + e.message)
       end
 
-      # TODO: wrap up
+      # wrap up
       finish = Time.now
       log_file.puts '   Finished at.. ' + finish.strftime("%Y-%m-%d %H:%M:%s")
       log_file.puts "   Time taken was #{(1000 * (finish.to_f - start.to_f)).round(3)} ms"
