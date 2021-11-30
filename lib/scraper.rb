@@ -18,6 +18,7 @@ module Scraper
     url_not_accessible: 'URL not accessible: ',
     bad_method: 'Method is invalid: ',
     bad_resource: 'Resource type is invalid: ',
+    sources_size: 'Sources count = ',
   }
 
   def self.run (log_file)
@@ -41,6 +42,7 @@ module Scraper
     # process each source
     processed = 0
     if config[:sources] and config[:sources].size > 0
+      log @messages[:sources_size] + config[:sources].size.to_s, 1
       config[:sources].each do |source|
         processed += 1
         log '', 1
