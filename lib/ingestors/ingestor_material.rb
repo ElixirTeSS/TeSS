@@ -61,6 +61,8 @@ class IngestorMaterial < Ingestor
     old_material.contact = new_material.contact           unless old_material.field_locked? :contact
     old_material.licence = new_material.licence           unless old_material.field_locked? :licence
     old_material.status = new_material.status             unless old_material.field_locked? :status
+    old_material.authors = new_material.authors           unless old_material.field_locked? :authors
+    old_material.contributors = new_material.contributors unless old_material.field_locked? :contributors
     return old_material
   end
 
