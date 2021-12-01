@@ -3,7 +3,7 @@ The sections below refer to the release tags for this repository:
 
 ## [Version 1.3.3](https://github.com/nrmay/TeSS/releases/tag/v1.3.3)
 
-Deployed: *30<sup>th</sup> Nov, 2021*
+Deployed: *1<sup>st</sup> Dec, 2021*
 
 Theme: *Sustainability*
 
