@@ -36,8 +36,8 @@ class Event < ApplicationRecord
       text :venue
       string :city
       text :city
-      string :country
       text :country
+      string :country
       string :event_types, :multiple => true do
         EventTypeDictionary.instance.values_for_search(self.event_types)
       end
@@ -46,12 +46,12 @@ class Event < ApplicationRecord
       time :end
       time :created_at
       time :updated_at
-      string :content_provider do
+      text :content_provider do
         if !self.content_provider.nil?
           self.content_provider.title
         end
       end
-      text :content_provider do
+      string :content_provider do
         if !self.content_provider.nil?
           self.content_provider.title
         end
