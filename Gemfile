@@ -17,9 +17,6 @@ gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 
-# See https://github.com/rails/execjs#readme for more supported runtimes
-gem 'therubyracer'#, platforms: :ruby
-
 # CRUD of resources via a UI
 gem 'rails_admin'
 gem 'haml'
@@ -39,7 +36,8 @@ gem 'font-awesome-sass', '~> 4.7.0'
 
 gem 'friendly_id', '~> 5.2.4'
 
-gem 'sunspot_rails', '~> 2.5.0'
+# gem 'sunspot_rails', '~> 2.5.0'
+gem 'sunspot_rails', github: 'sunspot/sunspot', branch: 'master'
 
 gem 'progress_bar', '~> 1.1.0'
 
