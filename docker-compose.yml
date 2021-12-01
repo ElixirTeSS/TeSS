@@ -50,6 +50,7 @@ services:
   solr:
     container_name: ${PREFIX}-solr
     image: solr:8
+    restart: always
     ports:
       - '8983:8983'
     volumes:
@@ -59,7 +60,16 @@ services:
       - solr-precreate
       - development
       - /opt/solr/server/solr/configsets/development
+  redis:
+    container_name: ${PREFIX}-redis
+    image: redis:6
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis-data:/data
 volumes:
   db-data:
   pgadmin-data:
   solr-data:
+  redis-data:
