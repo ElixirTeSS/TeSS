@@ -1,5 +1,5 @@
 #use ruby base image
-FROM ruby:3
+FROM ruby:3.0.1
 
 #set rails env
 ENV RAILS_ENV=development
