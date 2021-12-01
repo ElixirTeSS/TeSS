@@ -1,7 +1,7 @@
 # Version Change Log
 The sections below refer to the release tags for this repository:
 
-## [Version 1.3.2](https://github.com/nrmay/TeSS/releases/tag/v1.3.2)
+## [Version 1.3.3](https://github.com/nrmay/TeSS/releases/tag/v1.3.3)
 
 Deployed: *30<sup>th</sup> Nov, 2021*
 
@@ -14,6 +14,7 @@ Theme: *Sustainability*
  
    
 - Links: 
+  - [DReSA Automated Ingestion Guide (v1.3.3)](public/DReSA-Ingestion-Guide.pdf)
   - [Circle CI dashboard](https://app.circleci.com/pipelines/github/nrmay/TeSS)
   - [Codacy dashboard](https://app.codacy.com/gh/nrmay/TeSS/dashboard)
 
