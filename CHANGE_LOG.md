@@ -1,10 +1,28 @@
 # Version Change Log
 The sections below refer to the release tags for this repository:
 
+## [Version 1.3.3](https://github.com/nrmay/TeSS/releases/tag/v1.3.3)
+
+Deployed: *1<sup>st</sup> Dec, 2021*
+
+Theme: *Sustainability*
+
+- Updates:
+  - [Auto-Ingestion: Pass 1 (CSV)](https://github.com/nrmay/TeSS/issues/144)
+  - [Auto-Ingestion: Pass 2 (Rest API)](https://github.com/nrmay/TeSS/issues/271)
+  - [CI: replace Travis-CI with CircleCI](https://github.com/nrmay/TeSS/274)
+ 
+   
+- Links: 
+  - [DReSA Automated Ingestion Guide (v1.3.3)](public/DReSA-Ingestion-Guide.pdf)
+  - [Circle CI dashboard](https://app.circleci.com/pipelines/github/nrmay/TeSS)
+  - [Codacy dashboard](https://app.codacy.com/gh/nrmay/TeSS/dashboard)
+
+
 ---
 ## [Version 1.3.2](https://github.com/nrmay/TeSS/releases/tag/v1.3.2)
 
-Deployed: *31<sup>st</sup> October, 202*
+Deployed: *31<sup>st</sup> October, 2021*
 
 Theme: *Post-Launch Updates*
 
