@@ -137,14 +137,16 @@ namespace :tess do
 
   desc 'run generic ingestion process'
   task automated_ingestion: :environment do
-    #puts "task[automated_ingestion] start"
+    # puts "task[automated_ingestion] start"
     begin
-      config_file = File.join(Rails.root, 'config', 'ingestion.yml')
-      TeSS::Config.ingestion = YAML.safe_load(File.read(config_file)).deep_symbolize_keys!
-      raise  'Config.ingestion is nil' if TeSS::Config.ingestion.nil?
+      if TeSS::Config.ingestion.nil?
+        config_file = File.join(Rails.root, 'config', 'ingestion.yml')
+        TeSS::Config.ingestion = YAML.safe_load(File.read(config_file)).deep_symbolize_keys!
+      end
+      raise 'Config.ingestion is nil' if TeSS::Config.ingestion.nil?
       #  set log file
       log_path = File.join(Rails.root, TeSS::Config.ingestion[:logfile])
-      #puts "task[automated_ingestion] log_path = #{log_path}"
+      # puts "task[automated_ingestion] log_path = #{log_path}"
       log_file = File.open(log_path, 'w')
       log_file.puts 'Task: automated_ingestion'
       start = Time.now
