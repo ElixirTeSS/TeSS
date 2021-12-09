@@ -1,6 +1,11 @@
 <div class="page-header">
-  <h2><%=t '.title', default: 'Users' %></h2>
+  <h2><%= t '.title', default: 'Users' %></h2>
 </div>
+
+<!-- Register button -->
+<%= link_to new_user_registration_path, class: 'btn btn-primary align-self-end' do %>
+  <i class="fa fa-plus-square"></i> Register user
+<% end %>
 
 <div class="search-results-count">
   <%= pluralize(User.count, 'total users') %>
@@ -10,8 +15,9 @@
 
 <ul class="masonry media-grid" style="margin-top: 15px;">
   <% @users.each do |user| %>
-      <%= render user %>
+    <%= render user %>
   <% end %>
 </ul>
 
 <%= render partial: "search/common/pagination_bar", locals: { resources: @users } %>
+

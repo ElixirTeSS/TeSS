@@ -47,13 +47,13 @@ class User < ApplicationRecord
   after_update :react_to_role_change
 
   # Include default devise modules. Others available are: :lockable, :timeoutable
-  if TeSS::Config.site['registration']
+  #if TeSS::Config.feature['registration']
     devise :database_authenticatable, :confirmable, :registerable, :recoverable, :rememberable, :trackable,
            :validatable, :omniauthable, :authentication_keys => [:login]
-  else
-    devise :database_authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable,
-           :omniauthable, :authentication_keys => [:login]
-  end
+  #else
+  #  devise :database_authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable,
+  #         :omniauthable, :authentication_keys => [:login]
+  #end
 
   validates :username,
             :presence => true,
