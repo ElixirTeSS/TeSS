@@ -1,6 +1,16 @@
 # Version Change Log
 The sections below refer to the release tags for this repository:
+## [Version 1.3.4](https://github.com/nrmay/TeSS/releases/tag/v1.3.4)
 
+Deployed: *TBA*
+
+Theme: *Wrapping Up*
+
+- Updates:
+  - [Auto-Ingestion: Fixes and Updates](https://github.com/nrmay/TeSS/issues/285)
+
+ 
+---
 ## [Version 1.3.3](https://github.com/nrmay/TeSS/releases/tag/v1.3.3)
 
 Deployed: *1<sup>st</sup> Dec, 2021*
