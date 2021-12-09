@@ -24,8 +24,8 @@ class IngestorMaterialCsv < IngestorMaterial
       material.contact = row['Contact']
       material.licence = row['Licence']
       material.status = row['Status']
-      material.authors = row['Authors'].split(/[;\s]/).reject(&:empty?).compact if row['Authors']
-      material.contributors = row['Contributors'].split(/[;\s]/).reject(&:empty?).compact if row['Contributors']
+      material.authors = row['Authors'].split(/[;]/).reject(&:empty?).compact if row['Authors']
+      material.contributors = row['Contributors'].split(/[;]/).reject(&:empty?).compact if row['Contributors']
 
       add_material(material)
       processed += 1
