@@ -41,6 +41,7 @@ default: &default
   feature:
     e-learnings: true
     events: true
+    invitation: true
     materials: true
     nodes: true
     packages: true
@@ -109,11 +110,12 @@ dresa: &dresa
   feature:
     e-learnings: false
     events: true
+    invitation: true
     materials: true
     nodes: false
     packages: true
     providers: true
-    registration: true
+    registration: false
     subscription: true
     trainers: true
     workflows: false

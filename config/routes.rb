@@ -28,10 +28,11 @@ Rails.application.routes.draw do
   post 'content_providers/check_exists' => 'content_providers#check_exists'
 
   #devise_for :users
-  # Use custom registrations controller that subclasses devise's
+  # Use custom invitations and registrations controllers that subclasses devise's
   if (ActiveRecord::Base.connection rescue false)
     devise_for :users, :controllers => {
       :registrations => 'tess_devise/registrations',
+      :invitations => 'tess_devise/invitations',
       :omniauth_callbacks => 'callbacks'
     }
   end

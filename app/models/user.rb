@@ -47,13 +47,13 @@ class User < ApplicationRecord
   after_update :react_to_role_change
 
   # Include default devise modules. Others available are: :lockable, :timeoutable
-  #if TeSS::Config.feature['registration']
-    devise :database_authenticatable, :confirmable, :registerable, :recoverable, :rememberable, :trackable,
+  if TeSS::Config.feature['registration']
+    devise :database_authenticatable, :confirmable, :registerable, :invitable, :recoverable, :rememberable, :trackable,
            :validatable, :omniauthable, :authentication_keys => [:login]
-  #else
-  #  devise :database_authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable,
-  #         :omniauthable, :authentication_keys => [:login]
-  #end
+  else
+    devise :database_authenticatable, :confirmable, :invitable, :recoverable, :rememberable, :trackable, :validatable,
+           :omniauthable, :authentication_keys => [:login]
+  end
 
   validates :username,
             :presence => true,
@@ -65,6 +65,8 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :profile
 
   attr_accessor :publicize_email
+
+  scope :visible, -> { where.not(id: User.get_default_user.id, username: nil) }
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup

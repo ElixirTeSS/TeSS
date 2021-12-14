@@ -127,6 +127,9 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    devise_invitable (2.0.5)
+      actionmailer (>= 5.0)
+      devise (>= 4.6)
     docile (1.4.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
@@ -656,6 +659,7 @@ DEPENDENCIES
   byebug
   country_select (<= 4.0.0)
   devise
+  devise_invitable (~> 2.0.5)
   dynamic_sitemaps!
   fakeredis
   font-awesome-sass (~> 4.7.0)

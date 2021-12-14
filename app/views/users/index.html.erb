@@ -3,12 +3,16 @@
 </div>
 
 <!-- Register button -->
-<%= link_to new_user_registration_path, class: 'btn btn-primary align-self-end' do %>
-  <i class="fa fa-plus-square"></i> Register user
+<% if TeSS::Config.feature['invitation'] %>
+  <% if current_user.try(:is_admin?) or current_user.try(:is_curator?) %>
+    <%= link_to new_user_invitation_path, class: 'btn btn-primary align-self-end' do %>
+      <i class="fa fa-plus-square"></i> Invite user
+    <% end %>
+  <% end %>
 <% end %>
 
 <div class="search-results-count">
-  <%= pluralize(User.count, 'total users') %>
+  <%= pluralize(User.visible.count, 'total users') %>
 </div>
 
 <%= render partial: "search/common/pagination_bar", locals: { resources: @users } %>

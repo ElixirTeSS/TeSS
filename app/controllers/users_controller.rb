@@ -16,7 +16,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.where.not(id: User.get_default_user.id).paginate(page: params[:page], per_page: 50)
+    @users =  User.visible.paginate(page: params[:page], per_page: 50)
 
     respond_to do |format|
       format.html
