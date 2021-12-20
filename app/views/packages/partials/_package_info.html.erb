@@ -9,8 +9,8 @@
       <%= title_with_privacy(package) %>
     </h5>
     <% unless package.description.blank? %>
-        <p class="minimise">
-          <%= package.description %>
+        <p class="minimise" style="word-break: normal; display: inline-block;">
+          <%= render_markdown package.description  %>
         </p>
     <% end %>
   </li>

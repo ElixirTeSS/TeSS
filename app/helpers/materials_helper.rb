@@ -52,8 +52,9 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
     TargetAudienceDictionary.instance.lookup_value(label, 'title')
   end
 
-  def display_attribute(resource, attribute) # resource e.g. <#Material> & symbol e.g. :target_audience
+  def display_attribute(resource, attribute, markdown=false ) # resource e.g. <#Material> & symbol e.g. :target_audience
     value = resource.send(attribute)
+    value = render_markdown(value) if markdown
     if value.blank? || value.try(:strip) == 'notspecified'
       string = "<p class=\"#{attribute}\">"
     else
@@ -62,4 +63,5 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
     end
     (string + '</p>').html_safe
   end
+
 end
