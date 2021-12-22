@@ -1,10 +1,12 @@
-<li class="masonry-brick media-item long">
-  <%= image_tag package.image.url(:media), :class=>"media-image listing_image" %>
+<div class="masonry-brick media-item long">
+  <%= image_tag package.image.url(:media), :class => "media-image listing_image" %>
   <h3 class="media-heading"><%= title_with_privacy(package) %></h3>
-  <p><%= package.description  %></p>
-  <%= link_to '', package, :class=>"media-view"%>
-</li>
-
+  <div class="text-justify" style="display: inline-block; word-break: normal;">
+    <%= render_markdown truncate(package.description, length: 300, separator: ' ') %>
+  </div>
+  <%= link_to '', package, :class => "media-view" %>
+  </li>
+</div>
 
 
 
