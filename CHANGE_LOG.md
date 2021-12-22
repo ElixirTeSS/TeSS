@@ -7,8 +7,9 @@ Deployed: *TBA*
 Theme: *Wrapping Up*
 
 - Updates:
+  - [Markdown fields: display formatting](https://github.com/nrmay/TeSS/issues/253)
   - [Auto-Ingestion: Fixes and Updates](https://github.com/nrmay/TeSS/issues/285)
-
+  - [Materials: Add Standard YouTube Licence](https://github.com/nrmay/TeSS/issues/289)
  
 ---
 ## [Version 1.3.3](https://github.com/nrmay/TeSS/releases/tag/v1.3.3)
