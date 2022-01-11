@@ -8,10 +8,10 @@ module HasLicence
     if TeSS::Config.solr_enabled
       # :nocov:
       searchable do
+        text :licence
         string :licence do
           LicenceDictionary.instance.lookup_value(self.licence, 'title')
         end
-        text :licence
       end
       # :nocov:
     end

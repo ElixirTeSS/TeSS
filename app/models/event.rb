@@ -29,13 +29,13 @@ class Event < ApplicationRecord
         title.downcase.gsub(/^(an?|the) /, '')
       end
       text :url
-      string :organizer
       text :organizer
+      string :organizer
       string :sponsors, :multiple => true
       string :venue
       text :venue
-      string :city
       text :city
+      string :city
       text :country
       string :country
       string :event_types, :multiple => true do
