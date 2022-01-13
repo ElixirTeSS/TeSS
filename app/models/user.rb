@@ -42,6 +42,7 @@ class User < ApplicationRecord
 
   before_create :set_default_role, :set_default_profile
   before_create :skip_email_confirmation_for_non_production
+  before_update :set_username_for_invitee
   before_update :skip_email_reconfirmation_for_non_production
   before_destroy :reassign_owner
   after_update :react_to_role_change
@@ -50,8 +51,11 @@ class User < ApplicationRecord
   if TeSS::Config.feature['registration']
     devise :database_authenticatable, :confirmable, :registerable, :invitable, :recoverable, :rememberable, :trackable,
            :validatable, :omniauthable, :authentication_keys => [:login]
+  elsif TeSS::Config.feature['invitation']
+    devise :database_authenticatable, :confirmable, :invitable, :recoverable, :rememberable, :trackable,
+           :validatable, :omniauthable, :authentication_keys => [:login]
   else
-    devise :database_authenticatable, :confirmable, :invitable, :recoverable, :rememberable, :trackable, :validatable,
+    devise :database_authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable,
            :omniauthable, :authentication_keys => [:login]
   end
 
@@ -66,7 +70,17 @@ class User < ApplicationRecord
 
   attr_accessor :publicize_email
 
-  scope :visible, -> { where.not(id: User.get_default_user.id, username: nil) }
+  # --- scopes
+  scope :non_default, -> { where.not(id: User.get_default_user.id) }
+
+  scope :invited, -> { where.not(invitation_token: nil) }
+
+  scope :invitees, -> { invited.where(invitation_accepted_at: nil) }
+
+  scope :accepteds, -> { invited.where.not(invitation_accepted_at: nil) }
+
+  scope :visible, -> { non_default.where(invitation_token: nil ).or(accepteds) }
+  # ---
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
@@ -268,6 +282,13 @@ class User < ApplicationRecord
     result.sort_by { |obj| obj.title }
   end
 
+  def get_inviter
+    unless invited_by_id.nil?
+      inviter = User.find_by_id(self.invited_by_id)
+      inviter.username
+    end
+  end
+
   private
 
   def reassign_owner
@@ -303,6 +324,12 @@ class User < ApplicationRecord
       errors.add(:base, "You must consent to #{TeSS::Config.site['title_short']} processing your data in order to register")
 
       false
+    end
+  end
+
+  def set_username_for_invitee
+    if self.username.nil? and !self.email.nil?
+      self.username = self.email
     end
   end
 

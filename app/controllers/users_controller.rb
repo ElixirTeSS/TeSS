@@ -25,6 +25,18 @@ class UsersController < ApplicationController
     end
   end
 
+  # GET/invitees
+  def invitees
+    if current_user.is_admin? or current_user.is_curator?
+      @users = User.invited
+      respond_to do |format|
+        format.html
+      end
+    else
+      redirect_to users_path
+    end
+  end
+
   # GET /users/1
   # GET /users/1.json
   def show

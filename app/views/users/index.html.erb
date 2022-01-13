@@ -5,9 +5,7 @@
 <!-- Register button -->
 <% if TeSS::Config.feature['invitation'] %>
   <% if current_user.try(:is_admin?) or current_user.try(:is_curator?) %>
-    <%= link_to new_user_invitation_path, class: 'btn btn-primary align-self-end' do %>
-      <i class="fa fa-plus-square"></i> Invite user
-    <% end %>
+    <%= link_to invitees_path, class: 'btn btn-primary align-self-end' do %>Invitees<% end %>
   <% end %>
 <% end %>
 

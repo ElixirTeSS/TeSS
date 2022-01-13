@@ -8,4 +8,9 @@ class TessDevise::InvitationsController < Devise::InvitationsController
     end
   end
 
+  def after_invite_path_for(resource)
+    invitees_path
+  end
+
+
 end

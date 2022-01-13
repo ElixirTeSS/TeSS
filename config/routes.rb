@@ -124,6 +124,10 @@ Rails.application.routes.draw do
     end
   end
 
+  if TeSS::Config.feature['invitation'] == true
+    get 'invitees' => 'users#invitees'
+  end
+
   resources :subscriptions, only: [:show, :index, :create, :destroy] do
     member do
       get 'unsubscribe'
