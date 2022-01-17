@@ -1,12 +1,7 @@
 <%# Black header %>
 <header class="elixir-top-header">
   <nav>
-    <div class="container">
-      <div class="pull-left">
-        <a href="http://www.elixir-europe.org/">
-          <%= image_tag('hub-logo.png', alt: 'ELIXIR Hub') %>
-        </a>
-      </div>
+    <div class="container"></div>
       <div class="user-options">
         <% if user_signed_in? %>
             <%= link_to current_user.username, user_path(current_user) %>
