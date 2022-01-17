@@ -708,6 +708,7 @@ a.delete-internal-resource {
   display: flex;
   flex-wrap: wrap; /* optional. only if you want the items to wrap */
   justify-content: center; /* for horizontal alignment */
+  border-radius: 0;
 }
 
 #gravatar_image {
@@ -988,4 +989,22 @@ input[type='checkbox'].field-lock + label:before,
 
 .aai-login {
   width: 120px;
+}
+
+.form-control {
+  border-radius: 0;
+}
+
+.input-group-addon {
+  border-radius: 0;
+}
+
+.pagination > li:first-child > a,
+.pagination > li:first-child > span {
+  border-radius: 0;
+}
+
+.pagination > li:last-child > a,
+.pagination > li:last-child > span {
+  border-radius: 0;
 }
