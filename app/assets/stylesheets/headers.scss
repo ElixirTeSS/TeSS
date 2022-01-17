@@ -27,9 +27,6 @@
       padding-top: 10px;
       padding-bottom: 10px;
       margin-right: 3px;
-      @media (min-width: $screen-md) {
-        border-radius: $nav-pills-border-radius;
-      }
     }
   }
 
@@ -40,17 +37,22 @@
   .navbar {
     margin-bottom: 0px;
   }
-
 }
 
 #search-box {
-  input { width: 100% }
+  input {
+    width: 100%;
+  }
 
   @media (min-width: $screen-md) and (max-width: $screen-md-max) {
-    input { width: 160px; }
+    input {
+      width: 160px;
+    }
   }
   @media (min-width: $screen-lg) {
-    input { width: 280px; }
+    input {
+      width: 280px;
+    }
   }
   /* The following is needed to make the search bar 100% wide between 'sm' and 'md' screen sizes */
   /* See: http://stackoverflow.com/a/24985419 */
@@ -66,4 +68,3 @@
     }
   }
 }
-
