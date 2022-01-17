@@ -22,7 +22,7 @@
   }
 }
 
-@mixin breakpoint-values($property, $xs, $sm:$xs, $md:$sm, $lg:$md) {
+@mixin breakpoint-values($property, $xs, $sm: $xs, $md: $sm, $lg: $md) {
   @include xs {
     #{$property}: $xs;
   }
@@ -48,7 +48,6 @@
 }
 
 @mixin floating-card {
-  box-shadow: 2px 2px 2px 0 #ccc;
   border: 1px solid #ccc;
   border-radius: 0;
 }
