@@ -1,8 +1,7 @@
-.elixir-black-header {
+.elixir-top-header {
   height: 35px;
   line-height: 35px;
-  background-color: #333333;
-  border-bottom: 1px solid #eeeeee;
+  background-color: $bgDefault;
 
   .user-options {
     float: right;
@@ -19,7 +18,7 @@
   }
 }
 
-.elixir-orange-header {
+.elixir-menu-header {
   background-color: $bgDefault;
   ul.navbar-nav {
     margin-top: 10px;
