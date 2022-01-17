@@ -42,10 +42,11 @@ class User < ApplicationRecord
 
   before_create :set_default_role, :set_default_profile
   before_create :skip_email_confirmation_for_non_production
-  before_update :set_username_for_invitee
   before_update :skip_email_reconfirmation_for_non_production
   before_destroy :reassign_owner
   after_update :react_to_role_change
+  before_save :set_username_for_invitee
+
 
   # Include default devise modules. Others available are: :lockable, :timeoutable
   if TeSS::Config.feature['registration']
@@ -328,7 +329,7 @@ class User < ApplicationRecord
   end
 
   def set_username_for_invitee
-    if self.username.nil? and !self.email.nil?
+    if !self.invitation_token.nil? and !self.email.nil? and self.username.nil?
       self.username = self.email
     end
   end
