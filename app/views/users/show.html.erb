@@ -94,7 +94,7 @@
               </p>
             <% end %>
 
-            <% if TeSS::Config.site['registration'] %>
+            <% if TeSS::Config.feature['registration'] %>
               <% if !current_user.nil? and current_user == @user %>
                 <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default center-block' %>
               <% end %>
@@ -114,7 +114,7 @@
           <!-- Current User functions -->
           <% if current_user == @user %>
             <!-- Registration Button -->
-            <% if TeSS::Config.site['registration'] %>
+            <% if TeSS::Config.feature['registration'] %>
               <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default' %>
             <% end %>
             <!-- Subscriptions Button -->

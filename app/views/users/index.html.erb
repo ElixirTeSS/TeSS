@@ -1,17 +1,25 @@
 <div class="page-header">
-  <h2><%=t '.title', default: 'Users' %></h2>
+  <h2><%= t '.title', default: 'Users' %></h2>
 </div>
 
+<!-- Register button -->
+<% if TeSS::Config.feature['invitation'] %>
+  <% if current_user.try(:is_admin?) or current_user.try(:is_curator?) %>
+    <%= link_to invitees_path, class: 'btn btn-primary align-self-end' do %>Invitees<% end %>
+  <% end %>
+<% end %>
+
 <div class="search-results-count">
-  <%= pluralize(User.count, 'total users') %>
+  <%= pluralize(User.visible.count, 'total users') %>
 </div>
 
 <%= render partial: "search/common/pagination_bar", locals: { resources: @users } %>
 
 <ul class="masonry media-grid" style="margin-top: 15px;">
   <% @users.each do |user| %>
-      <%= render user %>
+    <%= render user %>
   <% end %>
 </ul>
 
 <%= render partial: "search/common/pagination_bar", locals: { resources: @users } %>
+

@@ -20,7 +20,6 @@ default: &default
     repository: ''
     supported_by: ''
     widget_example: ''
-    registrations: true
   mailer:
     delivery_method: sendmail
     location: /usr/sbin/sendmail
@@ -42,11 +41,13 @@ default: &default
   feature:
     e-learnings: true
     events: true
+    invitation: true
     materials: true
     nodes: true
     packages: true
     providers: true
     subscription: true
+    registrations: true
     trainers: true
     workflows: true
     disabled: []
@@ -77,7 +78,6 @@ elixir: &elixir
     repository: 'https://github.com/ElixirTeSS/TeSS'
     supported_by: 'elixir_supported_by'
     widget_example: 'elixir_widget_example'
-    registration: true
   questionnaire:
     show: true
     message: 'Help TeSS by giving us your feedback:'
@@ -100,7 +100,6 @@ dresa: &dresa
     repository: 'https://github.com/nrmay/TeSS'
     supported_by: 'dresa_supported_by.erb'
     widget_example: 'elixir_widget_example'
-    registration: false
   gmaps:
     center:
       latitude: -30
@@ -111,10 +110,12 @@ dresa: &dresa
   feature:
     e-learnings: false
     events: true
+    invitation: true
     materials: true
     nodes: false
     packages: true
     providers: true
+    registration: false
     subscription: true
     trainers: true
     workflows: false
