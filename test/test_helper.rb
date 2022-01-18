@@ -105,6 +105,7 @@ class ActiveSupport::TestCase
   # helper methods for ingestion tests
   def override_config (config_file)
     # switch configuration
+    # puts "override_config with #{config_file}"
     test_config_file = File.join(Rails.root, 'test', 'config', config_file)
     TeSS::Config.ingestion = YAML.safe_load(File.read(test_config_file)).deep_symbolize_keys!
 

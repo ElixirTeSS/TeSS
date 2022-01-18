@@ -25,7 +25,7 @@ class RakeTasksAutomatedIngestion < ActiveSupport::TestCase
     Rake::Task['tess:automated_ingestion'].invoke
 
     # check logfile
-    assert File.exist?(logfile)
+    assert File.exist?(logfile), "logfile[#{logfile}] missing"
     assert logfile_contains(logfile, 'ingestion file = test')
   end
 
