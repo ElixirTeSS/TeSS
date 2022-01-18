@@ -1,4 +1,4 @@
-Title,URL,Description,Keywords,Contact,Licence,Status
-My First Material,https://app.com/materials/material1.html,"""This is the first materials that we have created and shared.""",book;first;free;,support@app.com,CC-BY-4.0,active
-Another Material,https://app.com/materials/material2.html,"""This is an second draft that is no longer required.""",book;second;,support@app.com,CC-BY-4.0,archived
-The Final Draft,https://app.com/materials/material3.html,"""The next and 'final' draft, with a description that includes single quotes and a comma.""",;book;final;free;;,support@app.com,notspecified,development
+Title,URL,Description,Keywords,Contact,Licence,Status,Authors,Contributors
+My First Material,https://app.com/materials/material1.html,"""This is the first materials that we have created and shared.""",book;first;free;,support@app.com,CC-BY-4.0,active,,Sam Smiths;
+Another Material,https://app.com/materials/material2.html,"""This is an second draft that is no longer required.""",book;second;,support@app.com,CC-BY-4.0,archived,Steven Smith;Sam Harpic;,
+The Final Draft,https://app.com/materials/material3.html,"""The next and 'final' draft, with a description that includes single quotes and a comma.""",;book;final;free;;,support@app.com,notspecified,development,,""
