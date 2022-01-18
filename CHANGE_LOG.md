@@ -4,12 +4,20 @@ The sections below refer to the release tags for this repository:
 
 Deployed: *TBA*
 
-Theme: *Wrapping Up*
+Theme: *Auto-ingestion Beta Testing*
+
+- Features:
+  - [Non-Access Federation login](https://github.com/nrmay/TeSS/issues/252)
+
 
 - Updates:
   - [Markdown fields: display formatting](https://github.com/nrmay/TeSS/issues/253)
-  - [Auto-Ingestion: Fixes and Updates](https://github.com/nrmay/TeSS/issues/285)
+  - [Auto-Ingestion: fixes and updates](https://github.com/nrmay/TeSS/issues/285)
   - [Materials: Add Standard YouTube Licence](https://github.com/nrmay/TeSS/issues/289)
+  
+
+- Fixes:
+  - [Registration Switch Refactor](https://github.com/nrmay/TeSS/issues/155)
  
 ---
 ## [Version 1.3.3](https://github.com/nrmay/TeSS/releases/tag/v1.3.3)
