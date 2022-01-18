@@ -90,7 +90,7 @@
                 <%= link_to 'Administration', new_user_session_path %>
               </li>
 
-              <% if TeSS::Config.site['registration'] %>
+              <% if TeSS::Config.feature['registration'] %>
                 <li class='dropdown-item'>
                   <%= link_to "Register", new_user_registration_path %>
                 </li>

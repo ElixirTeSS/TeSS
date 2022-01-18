@@ -20,7 +20,6 @@ site:
   supported_by: 'elixir_supported_by'
   widget_example: 'elixir_widget_example'
   gmaps_api_key: ''
-  registration: true
 mailer:
   location: '/usr/sbin/sendmail'
   arguments: '-i -t'
@@ -34,10 +33,12 @@ parent_org:
 feature:
   e-learnings: true
   events: true
+  invitation: true
   materials: true
   nodes: true
   packages: true
   providers: true
+  registration: true
   subscription: true
   trainers: true
   workflows: true

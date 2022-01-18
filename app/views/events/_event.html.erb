@@ -17,7 +17,9 @@
           <%= icon_for(:online, :small) %>
       <% end %>
   <% else %>
-    <p class="dont-break-out"><%= [event.city, event.country].reject { |field_value| field_value.blank? }.join(", ")%></p>
+    <p class="dont-break-out">
+      <%= [event.city, event.country].reject { |field_value| field_value.blank? }.join(", ")%>
+    </p>
   <% end %>
 
   <% if event.started? %>

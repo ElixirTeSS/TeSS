@@ -13,8 +13,8 @@
   <div class="dont-break-out">
     <p class></p>
     <div class="row" style='margin: 0;'>
-      <div class="text-justify">
-        <p><%= truncate trainer.description, length: 300, separator: ' ' %></p>
+      <div class="text-justify" style="display: inline; word-break: normal;">
+        <p><%= render_markdown truncate(trainer.description, length: 300, separator: ' ') %></p>
       </div>
       <div class='' style='margin-top: 6px;'>
         <%= display_attribute(trainer, :location) %>
