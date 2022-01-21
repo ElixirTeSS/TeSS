@@ -69,14 +69,13 @@ class ActiveSupport::TestCase
     zenodo_abt_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_abt.json'))
     elixir_ausbioc_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'response_1642570417380.json'))
 
+    # 200 - success
     WebMock.stub_request(:get, 'https://app.com/events.csv').
       to_return(:status => 200, :headers => {}, :body => events_file)
     WebMock.stub_request(:get, 'https://app.com/materials.csv').
       to_return(:status => 200, :headers => {}, :body => materials_file)
-    WebMock.stub_request(:get, 'https://app.com/events/event3.html').to_return(:status => 200)
-    WebMock.stub_request(:get, 'https://dummy.com/events.csv').to_return(:status => 404)
-    WebMock.stub_request(:get, 'https://app.com/materials/material3.html').to_return(:status => 200)
-    WebMock.stub_request(:get, 'https://dummy.com/materials.csv').to_return(:status => 404)
+    WebMock.stub_request(:get, 'https://app.com/events/event3.html').
+      to_return(:status => 200)
     WebMock.stub_request(:get, 'https://zenodo.org/api/records/?communities=ardc').
       to_return(status: 200, headers: {}, body: zenodo_ardc_body)
     WebMock.stub_request(:get, 'https://zenodo.org/api/records/?sort=mostrecent&communities=ardc&page=2&size=10').
@@ -89,6 +88,11 @@ class ActiveSupport::TestCase
           'https://tess.elixir-europe.org/events?include_expired=false&content_provider[]=Australian BioCommons').
       to_return(status: 200, headers: {}, body: elixir_ausbioc_body)
 
+    # 404 - not found
+    WebMock.stub_request(:get, 'https://dummy.com').to_return(:status => 404)
+    WebMock.stub_request(:get, 'https://dummy.com/events.csv').to_return(:status => 404)
+    WebMock.stub_request(:get, 'https://app.com/materials/material3.html').to_return(:status => 200)
+    WebMock.stub_request(:get, 'https://dummy.com/materials.csv').to_return(:status => 404)
     WebMock.stub_request(:get, 'https://zenodo.org/api/records/?sort=mostrecent&ommunities=australianbiocommons-training&page=2&size=10').
       to_return(status: 404)
     WebMock.stub_request(:get, 'https://zenodo.org/api/records/?communities=dummy').
