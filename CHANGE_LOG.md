@@ -14,6 +14,7 @@ Theme: *Auto-ingestion Beta Testing*
   - [Markdown fields: display formatting](https://github.com/nrmay/TeSS/issues/253)
   - [Auto-Ingestion: fixes and updates](https://github.com/nrmay/TeSS/issues/285)
   - [Materials: Add Standard YouTube Licence](https://github.com/nrmay/TeSS/issues/289)
+  - [Auto-Ingestion: Add Event REST ingestor](https://github.com/nrmay/TeSS/issues/294)
   
 
 - Fixes:
