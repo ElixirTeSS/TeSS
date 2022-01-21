@@ -19,3 +19,4 @@ sources:
     url: https://zenodo.org/api/records/?communities=ardc-again  # the root URL to access the source
     method: rest                        # one of 'csv', 'rest'
     resource_type: material             # event or material
+
