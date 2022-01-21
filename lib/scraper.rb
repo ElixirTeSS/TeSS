@@ -118,13 +118,22 @@ module Scraper
   def self.getUser (username)
     user = User.find_by_username(username)
     if user.nil?
-      user = User.new()
-      user.username = username
-      user.role = Role.find_by_name(@default_role)
-      user.password = SecureRandom.urlsafe_base64(8)
-      user.email = "#{username}@dresa.org.au"
-      user.processing_consent = '1'
-      user.save!
+      begin
+        user = User.new()
+        user.username = username
+        user.role = Role.find_by_name(@default_role)
+        user.password = SecureRandom.urlsafe_base64(8)
+        user.authentication_token = Devise.friendly_token
+        user.invitation_token = Devise.friendly_token
+        user.email = "#{username}@dresa.org.au"
+        user.processing_consent = '1'
+        user.save
+        log "User created: username[#{user.username}] role[#{user.role.name}]", 1
+      rescue Exception => e
+        log "User create failed with: #{e}", 1
+      end
+    else
+      log "User found: username[#{user.username}] role[#{user.role.name}]", 1
     end
     return user
   end

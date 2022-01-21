@@ -34,7 +34,7 @@ class RakeTaskEventRest < ActiveSupport::TestCase
     assert_equal 0, events.size, "Pre-task: events search title[Another Event] found something"
 
     # run task
-    # expect addited[1] updated[1] rejected[1]
+    # expect added[1] updated[1] rejected[1]
     Rake::Task['tess:automated_ingestion'].invoke
 
     # check event does exist
