@@ -124,7 +124,6 @@ module Scraper
         user.role = Role.find_by_name(@default_role)
         user.password = SecureRandom.urlsafe_base64(8)
         user.authentication_token = Devise.friendly_token
-        user.invitation_token = Devise.friendly_token
         user.email = "#{username}@dresa.org.au"
         user.processing_consent = '1'
         user.save
