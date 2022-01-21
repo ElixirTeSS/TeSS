@@ -55,19 +55,21 @@ class IngestorEvent < Ingestor
 
   def overwrite_fields (old_event, new_event)
     # overwrite unlocked attributes
-    # []title, url, provider] not changed, as they are used for matching
-    old_event.description = new_event.description             unless old_event.field_locked? :description
-    old_event.start = new_event.start                         unless old_event.field_locked? :start
-    old_event.end = new_event.end                             unless old_event.field_locked? :end
-    old_event.timezone = new_event.timezone                   unless old_event.field_locked? :timezone
-    old_event.contact = new_event.contact                     unless old_event.field_locked? :contact
-    old_event.organizer = new_event.organizer                 unless old_event.field_locked? :organizer
-    old_event.eligibility = new_event.eligibility             unless old_event.field_locked? :eligibility
+    # [title, url, provider] not changed, as they are used for matching
+    old_event.description = new_event.description unless old_event.field_locked? :description
+    old_event.start = new_event.start unless old_event.field_locked? :start
+    old_event.end = new_event.end unless old_event.field_locked? :end
+    old_event.timezone = new_event.timezone unless old_event.field_locked? :timezone
+    old_event.contact = new_event.contact unless old_event.field_locked? :contact
+    old_event.organizer = new_event.organizer unless old_event.field_locked? :organizer
+    old_event.eligibility = new_event.eligibility unless old_event.field_locked? :eligibility
     old_event.host_institutions = new_event.host_institutions unless old_event.field_locked? :host_institutions
-    old_event.online = new_event.online                       unless old_event.field_locked? :online
-    old_event.city = new_event.city                           unless old_event.field_locked? :city
-    old_event.country = new_event.country                     unless old_event.field_locked? :country
-    old_event.venue = new_event.venue                         unless old_event.field_locked? :venue
+    old_event.event_types = new_event.event_types unless old_event.field_locked? :event_types
+    old_event.keywords = new_event.keywords unless old_event.field_locked? :keywords
+    old_event.online = new_event.online unless old_event.field_locked? :online
+    old_event.city = new_event.city unless old_event.field_locked? :city
+    old_event.country = new_event.country unless old_event.field_locked? :country
+    old_event.venue = new_event.venue unless old_event.field_locked? :venue
     return old_event
   end
 
@@ -82,6 +84,30 @@ class IngestorEvent < Ingestor
     end
 
     return false
+  end
+
+  def convert_eligibility(input)
+    case input
+    when 'first_come_first_served'
+      'open_to_all'
+    when 'registration_of_interest'
+      'expression_of_interest'
+    when 'by_invitation'
+      'by_invitation'
+    else
+      nil
+    end
+  end
+
+  def convert_event_types(input)
+    case input
+    when 'meetings_and_conferences'
+      'meeting'
+    when 'workshops_and_courses'
+      'workshop'
+    else
+      nil
+    end
   end
 
 end

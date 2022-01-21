@@ -1,4 +1,5 @@
 require 'ingestors/ingestor_event_csv'
+require 'ingestors/ingestor_event_rest'
 require 'ingestors/ingestor_material_csv'
 require 'ingestors/ingestor_material_rest'
 
@@ -13,6 +14,8 @@ class IngestorFactory
         IngestorEventCsv.new
       when ['csv', 'material']
         IngestorMaterialCsv.new
+      when ['rest', 'event']
+        IngestorEventRest.new
       when ['rest', 'material']
         IngestorMaterialRest.new
       else
