@@ -67,6 +67,7 @@ class ActiveSupport::TestCase
     zenodo_ardc_2_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_ardc_2.json'))
     zenodo_ardc_3_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_ardc_3.json'))
     zenodo_abt_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_abt.json'))
+    elixir_ausbioc_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'response_1642570417380.json'))
 
     WebMock.stub_request(:get, 'https://app.com/events.csv').
       to_return(:status => 200, :headers => {}, :body => events_file)
@@ -84,6 +85,10 @@ class ActiveSupport::TestCase
       to_return(status: 200, headers: {}, body: zenodo_ardc_3_body)
     WebMock.stub_request(:get, 'https://zenodo.org/api/records/?communities=australianbiocommons-training').
       to_return(status: 200, headers: {}, body: zenodo_abt_body)
+    WebMock.stub_request(:get,
+          'https://tess.elixir-europe.org/events?include_expired=false&content_provider[]=Australian BioCommons').
+      to_return(status: 200, headers: {}, body: elixir_ausbioc_body)
+
     WebMock.stub_request(:get, 'https://zenodo.org/api/records/?sort=mostrecent&ommunities=australianbiocommons-training&page=2&size=10').
       to_return(status: 404)
     WebMock.stub_request(:get, 'https://zenodo.org/api/records/?communities=dummy').
@@ -105,6 +110,7 @@ class ActiveSupport::TestCase
   # helper methods for ingestion tests
   def override_config (config_file)
     # switch configuration
+    # puts "override_config with #{config_file}"
     test_config_file = File.join(Rails.root, 'test', 'config', config_file)
     TeSS::Config.ingestion = YAML.safe_load(File.read(test_config_file)).deep_symbolize_keys!
 

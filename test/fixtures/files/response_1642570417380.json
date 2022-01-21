@@ -1,0 +1,333 @@
+{
+  "data": [
+    {
+      "id": "48319",
+      "type": "events",
+      "attributes": {
+        "external-id": null,
+        "title": "WEBINAR: Establishing Gen3 to enable better human genome data sharing in Australia",
+        "subtitle": "",
+        "url": "https://www.biocommons.org.au/events/gen3-webinar",
+        "organizer": "Australian BioCommons",
+        "description": "Australian human genome initiatives are generating vast amounts of human genome data. There is a desire and need to share data across projects but researchers face significant infrastructural, technical and administrative barriers in achieving this. To efficiently share and distribute their genome data they need scalable services and infrastructure that: is easily administered; allows for the efficient data management; enables sharing and interoperability; and is aligned with global standards for human genome data sharing.\r\n\r\nAustralian BioCommons has brought together a team from[ Zero Childhood Cancer](https://www.zerochildhoodcancer.org.au/) (Zero), the[ University of Melbourne Centre for Cancer Research](https://mdhs.unimelb.edu.au/centre-for-cancer-research/home) (UMCCR),[ Australian Access Federation](https://aaf.edu.au/) and[ Melbourne Bioinformatics](https://www.melbournebioinformatics.org.au/) to explore the use of Gen3 technology. Establishing systems for easier management and sharing of their human genome data holdings is no simple task, and the group wants to ensure that other Australian providers and Institutions can benefit from their experience and easily deploy the same solution in the future.\r\n\r\n[Gen3](https://gen3.org/) is an open source software suite that makes use of private and public clouds to tackle the challenges of data management, interoperability, data sharing and analysis. It has been used in several very large NIH-funded projects that collectively house and describe data derived from hundreds of thousands of human samples (e.g.[ NCI Genomic Data Commons](https://gdc.cancer.gov/),[ BloodPAC](https://www.bloodpac.org/),[ BrainCommons](https://www.braincommons.org/),[ Kids First Data Commons](https://kidsfirstdrc.org/)).\r\n\r\nIn this webinar you’ll hear from UMCCR and Zero about their experiences and progress towards establishing Gen3 instances to better enable better human genome data sharing in Australia. They will outline the challenges and opportunities that have arisen through this Australian BioCommons project and demonstrate the capabilities of Gen3 for human genome research.\r\n\r\n**Date/time:** 16 February 2022 - 13:00-14:00 AEDT/ 12:00-13:00 AEST / 12:30 - 13:30 ACDT / 10:00-11:00 AWST\r\n\r\n**How to join:** This webinar is free to join but you must [register for a place](https://unimelb.zoom.us/webinar/register/WN_ZDfeLU_RT9CS9anotCpzZQ) in advance.",
+        "start": "2022-02-16T13:00:00.000Z",
+        "end": "2022-02-16T14:00:00.000Z",
+        "sponsors": [],
+        "venue": "Online",
+        "city": "",
+        "county": "",
+        "country": "Australia",
+        "postcode": "",
+        "latitude": "-24.776109",
+        "longitude": "134.755",
+        "source": "tess",
+        "slug": "webinar-establishing-gen3-to-enable-better-human-genome-data-sharing-in-australia",
+        "online": false,
+        "cost": null,
+        "for-profit": false,
+        "last-scraped": null,
+        "scraper-record": false,
+        "keywords": [
+          "Data sharing",
+          "Human genomics",
+          "Genomics",
+          "Clinical Bioinformatics",
+          "Clinical genomics"
+        ],
+        "event-types": [
+          "workshops_and_courses"
+        ],
+        "target-audience": [],
+        "capacity": 500,
+        "eligibility": [
+          "first_come_first_served"
+        ],
+        "contact": "Melissa Burke (melissa@biocommons.org.au)",
+        "host-institutions": [
+          "Australian Biocommons"
+        ],
+        "scientific-topics": [
+          {
+            "preferred-label": "Human genetics",
+            "uri": "http://edamontology.org/topic_3574"
+          },
+          {
+            "preferred-label": "Genomics",
+            "uri": "http://edamontology.org/topic_0622"
+          }
+        ],
+        "operations": [
+          {
+            "preferred-label": "Data handling",
+            "uri": "http://edamontology.org/operation_2409"
+          }
+        ],
+        "external-resources": [],
+        "created-at": "2021-12-13T00:51:27.175Z",
+        "updated-at": "2021-12-13T00:51:58.272Z"
+      },
+      "relationships": {
+        "user": {
+          "data": {
+            "id": "4292",
+            "type": "users"
+          }
+        },
+        "content-provider": {
+          "data": {
+            "id": "123",
+            "type": "content-providers"
+          }
+        },
+        "nodes": {
+          "data": []
+        }
+      },
+      "links": {
+        "self": "/events/webinar-establishing-gen3-to-enable-better-human-genome-data-sharing-in-australia",
+        "redirect": "/events/webinar-establishing-gen3-to-enable-better-human-genome-data-sharing-in-australia/redirect"
+      }
+    },
+    {
+      "id": "48318",
+      "type": "events",
+      "attributes": {
+        "external-id": null,
+        "title": "WORKSHOP: Introduction to Metabarcoding using Qiime2",
+        "subtitle": "",
+        "url": "https://www.biocommons.org.au/events/metabarcoding-qiime2",
+        "organizer": "Australian BioCommons",
+        "description": "Metabarcoding has revolutionized the study of biodiversity science. By combining DNA taxonomy with high-throughput DNA sequencing, it offers the potential to observe a larger diversity in the taxa within a single sample, rapidly expanding the scope of microbial analysis and generating high-quality biodiversity data. \r\n\r\nThis workshop will introduce the topic of metabarcoding and how you can use Qiime2 to analyse 16S data and gain simultaneous identification of all taxa within a sample. Qiime2 is a popular tool used to perform powerful microbiome analysis that can transform your raw data into publication quality visuals and statistics. In this workshop, using example 16S data from the shallow-water marine anemone _E. diaphana_, you will learn how to use this pipeline to run essential steps in microbial analysis including generating taxonomic assignments and phylogenic trees, and performing both alpha- and beta- diversity analysis. \r\n\r\n**Date/time:** 12 - 5pm AEDT/ 11 - 4pm AEST/ 11:30 - 4:30 ACDT/ 9am - 2pm AWST, Tuesday 22 February 2022\r\n\r\n**Lead Trainers:** Dr Ashley Dungan (School of Bioscience, University of Melbourne) and Dr Gayle Philip (Melbourne Bioinformatics)\r\n\r\n**Learning outcomes**\r\n\r\nBy the end of this workshop you should be able to:\r\n\r\n\r\n\r\n1. Understand data and metadata formats required for Qiime2\r\n2. Use Qiime2 to:\r\n    1. Create and interpret sequence quality data\r\n    2. Generate taxonomy reports/tables and phylogenic trees based on amplicon sequence variants\r\n    3. Compare Alpha and Beta data analysis\r\n    4. Develop publication quality graphics and statistics using 16S sequencing data\r\n3. Assess the results to determine the influence of genotype (an intrinsic factor) and environment (an extrinsic factor) on anemone-associated bacterial communities\r\n\r\n**Who the workshop is for**\r\n\r\nThis workshop is for researchers studying microbiomes as part of their projects.\r\n\r\nThe workshop will be conducted in a Unix environment so basic command line knowledge (e.g. logging in to a remote machine, navigating the directory structure and copy files between the computers) is a prerequisite\r\n\r\nYou should be familiar with the concepts of microbial analysis a however no previous experience with Qiime2 is required.\r\n\r\n**How to apply**\r\n\r\nThis workshop is free but participation is subject to application with selection.\r\n\r\nYou must be associated with an Australian organisation and provide an appropriate organisational email address for your application to be considered. \r\n\r\nApplications close 8 February 2022. Applications will be reviewed by the organising committee and  all applicants will be informed of the status of their application  Successful applicants will be provided with a Zoom meeting link closer to the date.\r\n\r\n**[Apply here](https://intro-qiime2.eventbrite.com.au/)**\r\n\r\nThis workshop is presented by the[ Australian BioCommons](https://www.biocommons.org.au/) and[ Melbourne Bioinformatics](https://www.melbournebioinformatics.org.au/) with the assistance of a network of facilitators from the national[ Bioinformatics Training Cooperative](https://www.biocommons.org.au/training-cooperative).\r\n\r\nTo hear when registrations open for other events, please[ subscribe](https://www.biocommons.org.au/subscribe) to the Australian BioCommons’ eNewsletter.",
+        "start": "2022-02-22T12:00:00.000Z",
+        "end": "2022-02-22T17:00:00.000Z",
+        "sponsors": [],
+        "venue": "Online",
+        "city": "",
+        "county": "",
+        "country": "Australia",
+        "postcode": "",
+        "latitude": "-24.776109",
+        "longitude": "134.755",
+        "source": "tess",
+        "slug": "workshop-introduction-to-metabarcoding-using-qiime2",
+        "online": false,
+        "cost": null,
+        "for-profit": false,
+        "last-scraped": null,
+        "scraper-record": false,
+        "keywords": [
+          "Metabarcoding",
+          "Metagenomics",
+          "Microbiome",
+          "Qiime2"
+        ],
+        "event-types": [
+          "workshops_and_courses"
+        ],
+        "target-audience": [],
+        "capacity": 50,
+        "eligibility": [
+          "registration_of_interest"
+        ],
+        "contact": "Melissa Burke (melissa@biocommons.org.au)",
+        "host-institutions": [
+          "Australian Biocommons"
+        ],
+        "scientific-topics": [
+          {
+            "preferred-label": "Metagenomic sequencing",
+            "uri": "http://edamontology.org/topic_3837"
+          },
+          {
+            "preferred-label": "Metagenomics",
+            "uri": "http://edamontology.org/topic_3174"
+          }
+        ],
+        "operations": [],
+        "external-resources": [],
+        "created-at": "2021-12-13T00:27:07.732Z",
+        "updated-at": "2021-12-13T00:27:07.732Z"
+      },
+      "relationships": {
+        "user": {
+          "data": {
+            "id": "4292",
+            "type": "users"
+          }
+        },
+        "content-provider": {
+          "data": {
+            "id": "123",
+            "type": "content-providers"
+          }
+        },
+        "nodes": {
+          "data": []
+        }
+      },
+      "links": {
+        "self": "/events/workshop-introduction-to-metabarcoding-using-qiime2",
+        "redirect": "/events/workshop-introduction-to-metabarcoding-using-qiime2/redirect"
+      }
+    }
+  ],
+  "links": {
+    "self": "/events?content_provider%5B%5D=Australian+BioCommons&include_expired=false"
+  },
+  "meta": {
+    "facets": {
+      "include-expired": [
+        "false"
+      ],
+      "content-provider": [
+        "Australian BioCommons"
+      ]
+    },
+    "available-facets": {
+      "scientific-topics": [
+        {
+          "value": "Genomics",
+          "count": 1
+        },
+        {
+          "value": "Human genetics",
+          "count": 1
+        },
+        {
+          "value": "Metagenomic sequencing",
+          "count": 1
+        },
+        {
+          "value": "Metagenomics",
+          "count": 1
+        }
+      ],
+      "operations": [
+        {
+          "value": "Data handling",
+          "count": 1
+        }
+      ],
+      "event-types": [
+        {
+          "value": "Workshops and courses",
+          "count": 2
+        }
+      ],
+      "online": [
+        {
+          "value": false,
+          "count": 2
+        }
+      ],
+      "country": [
+        {
+          "value": "Australia",
+          "count": 2
+        }
+      ],
+      "tools": [],
+      "organizer": [
+        {
+          "value": "Australian BioCommons",
+          "count": 2
+        }
+      ],
+      "city": [
+        {
+          "value": "",
+          "count": 2
+        }
+      ],
+      "sponsors": [],
+      "target-audience": [],
+      "keywords": [
+        {
+          "value": " Data sharing",
+          "count": 1
+        },
+        {
+          "value": "Clinical Bioinformatics",
+          "count": 1
+        },
+        {
+          "value": "Genomics",
+          "count": 1
+        },
+        {
+          "value": "Human genomics",
+          "count": 1
+        },
+        {
+          "value": "Metabarcoding",
+          "count": 1
+        },
+        {
+          "value": "Metagenomics",
+          "count": 1
+        },
+        {
+          "value": "Microbiome",
+          "count": 1
+        },
+        {
+          "value": "Qiime2",
+          "count": 1
+        },
+        {
+          "value": "clinical genomics",
+          "count": 1
+        }
+      ],
+      "venue": [
+        {
+          "value": "Online",
+          "count": 2
+        }
+      ],
+      "node": [],
+      "content-provider": [
+        {
+          "value": "PRACE",
+          "count": 3
+        },
+        {
+          "value": "VIB Bioinformatics Core",
+          "count": 3
+        },
+        {
+          "value": "Australian BioCommons",
+          "count": 2
+        },
+        {
+          "value": "CINECA PROJECT",
+          "count": 2
+        },
+        {
+          "value": "DTLS - Dutch Techcentre For Life Sciences",
+          "count": 1
+        },
+        {
+          "value": "ELIXIR-SI eLearning Platform (EeLP)",
+          "count": 1
+        },
+        {
+          "value": "Galaxy Project",
+          "count": 1
+        },
+        {
+          "value": "Galaxy Training",
+          "count": 1
+        }
+      ],
+      "user": [
+        {
+          "value": "AusBioCommons",
+          "count": 2
+        }
+      ]
+    },
+    "query": "",
+    "results-count": 2
+  }
+}

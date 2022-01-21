@@ -25,6 +25,7 @@ class RakeTasksMaterialIngestion < ActiveSupport::TestCase
     logfile = override_config config_file
     assert_equal 'test', TeSS::Config.ingestion[:name]
     material_count = Material.all.size
+    assert_equal 11, material_count, 'Pre-invoke: Material count not matched'
 
     # check materials don't exist
     materials = Material.where(title: 'My First Material', url: 'https://app.com/materials/material1.html')
@@ -36,6 +37,7 @@ class RakeTasksMaterialIngestion < ActiveSupport::TestCase
     Rake::Task['tess:automated_ingestion'].invoke
 
     # check material added successfully
+    assert_equal (material_count + 2), Material.all.size, 'Post-invoke: Material count not matched.'
     materials = Material.where(title: 'My First Material', url: 'https://app.com/materials/material1.html')
     assert !materials.nil?, "Post-task: Materials search error."
     assert_equal 1, materials.size, "Post-task: materials search title[My First Material] found nothing"
@@ -53,6 +55,10 @@ class RakeTasksMaterialIngestion < ActiveSupport::TestCase
     assert_equal 'support@app.com', material.contact, 'material contact not matched'
     assert_equal 'CC-BY-4.0', material.licence, 'material licence not matched'
     assert_equal 'active', material.status, 'material status not matched'
+    assert_equal 0, material.authors.size, 'material authors count not matched.'
+    assert_equal 1, material.contributors.size, 'material contributors count not matched.'
+    assert material.contributors.include?('Sam Smiths'), 'material contributor[Sam Smiths] missing.'
+    assert !material.contributors.include?('Wily Coyote'), 'material contributor[Wily Coyote] exists.'
 
     # check logfile messages
     message = 'IngestorMaterialCsv: materials extracted = 3'
@@ -95,7 +101,7 @@ class RakeTasksMaterialIngestion < ActiveSupport::TestCase
     assert material.save!, 'New material not saved!'
     assert !material.nil?, 'New material not found!'
 
-    assert_equal (material_count + 1), Material.all.size, "Pre-invoke: number of materials not matched!"
+    assert_equal (material_count + 1), Material.all.size, "Pre-invoke: number of materials not matched"
 
     # run task
     # expect addited[1] updated[1] rejected[1]
@@ -121,6 +127,10 @@ class RakeTasksMaterialIngestion < ActiveSupport::TestCase
     assert_equal 'CC-BY-4.0', updated.licence, "Updated licence not matched!"
     assert_equal 2, updated.keywords.size, "Updated keywords count not matched!"
     assert updated.keywords.include?('book'), "Updated keywords missing value!"
+    assert_equal 2, updated.authors.size, "Updated authors count not matched! ... #{updated.authors.inspect}"
+    assert updated.authors.include?('Steven Smith'), "Updated authors[Steven Smith] missing!"
+    assert updated.authors.include?('Sam Harpic'), "Updated authors[Sam Harpic] missing!"
+    assert_equal 0, updated.contributors.size, "Updated contributors count not matched!"
 
     # check locked fields not updated
     assert_equal 1, updated.locked_fields.size, "Updated locked_fields count not matched!"
