@@ -1,8 +1,8 @@
 name: production
-logfile: log/ingestion.log
+logfile: log/ingestion.example.log
 username: scraper
 sources:
-  - provider: ''          # content provider's title
-    url:  https://...     # the root URL required to access the source
-    method:               # one of 'csv', 'api', 'html'
-    resource_type:        # event or material
+  - provider: 'dummyP'        # content provider's title
+    url: 'https://dummy.com' # the root URL required to access the source
+    method: 'dummyM'          # one of 'csv', 'api', 'html'
+    resource_type: 'dummyR'   # event or material
