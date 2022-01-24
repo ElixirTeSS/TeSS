@@ -13,12 +13,12 @@ class IngestorEventRest < IngestorEvent
 
     begin
       # execute query
-      response = RestClient::Request.new(method: :get, url: CGI.unescape_html(url), verify_ssl: false).execute
+      response = query_elixir(url)
 
       if response.code == 200
         # format response
         results = JSON.parse(response.to_str)
-
+        
         # source translations
         processed = process_elixir(results['data'], results['meta'])
       end
@@ -34,12 +34,19 @@ class IngestorEventRest < IngestorEvent
 
   end
 
+  def query_elixir (url)
+    RestClient::Request.new(method: :get,
+                            url: CGI.unescape_html(url),
+                            verify_ssl: false,
+                            headers: { accept: 'application/vnd.api+json'} ).execute
+  end
+
   def process_elixir(data, meta)
     processed = 0
-    #puts ">>> results: data.size[#{data.size}] result-count[#{meta['results-count']}]"
+    puts ">>> results: data.size[#{data.size}] result-count[#{meta['results-count']}]"
 
     # extract materials from results
-    unless data.nil? and data.size < 1
+    unless data.nil? or data.size < 1
       data.each do |item|
         begin
           # create new event
