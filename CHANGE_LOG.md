@@ -2,7 +2,7 @@
 The sections below refer to the release tags for this repository:
 ## [Version 1.3.4](https://github.com/nrmay/TeSS/releases/tag/v1.3.4)
 
-Deployed: *TBA*
+Deployed: *31<sup>st</sup> Jan, 2022*
 
 Theme: *Auto-ingestion Beta Testing*
 
