@@ -386,6 +386,10 @@ en-AU:
       url: 'Preferred URL to direct people to your training material landing page.'
       version: 'Indicate the current version of the training material.'
   profile:
+    user:
+      disclaimer: >
+        Please, note that the following user details are publicly visible and so by updating these fields you are giving 
+        permission for us to share the information via your public user profile.
     trainer:
       gravitar:
         help: >
@@ -394,7 +398,7 @@ en-AU:
           platforms. To set-up a linked avatar, go to the Gravatar site:
         url: https://en.gravatar.com
       disclaimer: >
-        By clicking the box below you are giving permission for us to share the information in your profile
+        By clicking the box below you are giving permission for us to share the information in your trainer profile
         through a public search of registered trainers.
     hints:
       public: 'Select if you wish to publish your trainer profile.'
