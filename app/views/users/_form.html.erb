@@ -3,6 +3,11 @@
     <%= simple_form_for @user, html: { class: "form-horizontal profile" } do |user_f| %>
       <%= user_f.simple_fields_for :profile do |f| %>
 
+        <h3>User Details</h3>
+        <hr>
+
+        <p><i class="fa fa-exclamation-triangle"></i>&nbsp;<%= t 'profile.user.disclaimer' %></p>
+
         <%= render partial: 'common/error_summary', locals: { resource: @user.profile } %>
 
         <%= f.input :firstname, as: :string %>
@@ -26,6 +31,8 @@
         <% if policy(@user).change_role? %>
           <%= user_f.input :role_id, collection: Role.all, label_method: :title, include_blank: false %>
         <% end %>
+
+        <p><br/>
 
         <h3>Trainer Details</h3>
         <hr>
@@ -72,7 +79,7 @@
                           model_name: 'user[profile_attributes]',
                           title: t('profile.hints.social_media') %>
 
-        <p><%= t 'profile.trainer.disclaimer' %></p>
+        <p><i class="fa fa-exclamation-triangle"></i>&nbsp;<%= t 'profile.trainer.disclaimer' %></p>
 
         <%= f.input :public, label: 'Show in Registry of Trainers?',
                     input_html: { title: t('profile.hints.public') } %>
