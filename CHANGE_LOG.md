@@ -1,6 +1,29 @@
 # Version Change Log
 The sections below refer to the release tags for this repository:
+## [Version 1.3.4](https://github.com/nrmay/TeSS/releases/tag/v1.3.4)
 
+Deployed: *31<sup>st</sup> Jan, 2022*
+
+Theme: *Auto-ingestion Beta Testing*
+
+- Features:
+  - [Non-Access Federation login](https://github.com/nrmay/TeSS/issues/252)
+
+
+- Updates:
+  - [Edit Profile: accept ORCID id](https://github.com/nrmay/TeSS/issues/244)
+  - [Markdown fields: display formatting](https://github.com/nrmay/TeSS/issues/253)
+  - [Add Trainer Info text](https://github.com/nrmay/TeSS/issues/266)
+  - [Auto-Ingestion: fixes and updates](https://github.com/nrmay/TeSS/issues/285)
+  - [Materials: Add Standard YouTube Licence](https://github.com/nrmay/TeSS/issues/289)
+  - [Edit Profile: add public disclaimer](https://github.com/nrmay/TeSS/issues/292)
+  - [Auto-Ingestion: Add Event REST ingestor](https://github.com/nrmay/TeSS/issues/294)
+  
+
+- Fixes:
+  - [Registration Switch Refactor](https://github.com/nrmay/TeSS/issues/155)
+ 
+---
 ## [Version 1.3.3](https://github.com/nrmay/TeSS/releases/tag/v1.3.3)
 
 Deployed: *1<sup>st</sup> Dec, 2021*
