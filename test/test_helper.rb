@@ -56,8 +56,14 @@ class ActiveSupport::TestCase
       with(:headers => { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent' => 'Ruby' }).
       to_return(:status => 200, :body => "", :headers => {})
 
-    WebMock.stub_request(:get, 'https://orcid.org/000-0002-1825-0097x').to_return(status: 404)
 
+  end
+
+  def mock_orcids
+    WebMock.stub_request(:get, 'https://orcid.org/').to_return(status: 200)
+    WebMock.stub_request(:get, 'https://orcid.org/0000-0001-1234-0000').to_return(status: 200)
+    WebMock.stub_request(:get, 'https://orcid.org/0000-0001-1234-9999').to_return(status: 404)
+    WebMock.stub_request(:get, 'https://orcid.org/000-0002-1825-0097x').to_return(status: 404)
   end
 
   def mock_ingestions
@@ -95,8 +101,8 @@ class ActiveSupport::TestCase
     WebMock.stub_request(:get, 'https://dummy.com/materials.csv').to_return(:status => 404)
     WebMock.stub_request(:get, 'https://zenodo.org/api/records/?sort=mostrecent&ommunities=australianbiocommons-training&page=2&size=10').
       to_return(status: 404)
-    WebMock.stub_request(:get, 'https://zenodo.org/api/records/?communities=dummy').
-      to_return(status: 404)
+    WebMock.stub_request(:get, 'https://zenodo.org/api/records/?communities=dummy').to_return(:status => 404)
+
   end
 
   def mock_biotools
