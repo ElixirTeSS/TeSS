@@ -405,7 +405,7 @@ en-AU:
       description: 'For additional context, provide a textual description of your training experience.'
       email: 'Include your preferred email address.'
       website: 'Include a preferred URL for your professional profile.'
-      orcid: 'Include your ORCID URL'
+      orcid: 'Include your ORCID Id or full URL'
       image_url: ''
       location: 'The location where you are primarily based.'
       experience: 'Select your level of experience as a trainer.'
