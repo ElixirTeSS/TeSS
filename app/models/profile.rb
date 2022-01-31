@@ -65,12 +65,13 @@ class Profile < ApplicationRecord
     if !orcid.nil? && !orcid.blank?
       begin
         uri = URI.parse(self.orcid)
+        raise if uri.path.blank? or uri.path == '/'
         uri.path = '/' + uri.path unless uri.path.start_with? '/'
         uri.host = @@orcid_host
         uri.scheme = @@orcid_scheme
         self.orcid = uri.to_s
       rescue
-        errors.add(:orcid, "invalid domain")
+        errors.add(:orcid, "invalid id or URL")
       end
     end
   end

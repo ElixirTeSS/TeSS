@@ -5,6 +5,7 @@ class UsersControllerTest < ActionController::TestCase
 
   setup do
     mock_images
+    mock_orcids
     @user = users(:regular_user)
     @admin = users(:admin)
   end
@@ -258,6 +259,60 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal "Description can't be blank", profile.errors.full_messages_for(:description).first
 
   end
+
+  test 'check orcid urls' do
+    user = users(:trainer_user)
+    sign_in user
+
+    # check validation of invalid orcid
+    profile_new = { orcid: 'https://orcid.org/000-0002-1825-0097x' }
+    patch :update, params: { id: user, user: { profile_attributes: profile_new } }
+    assert_response :success
+    profile = assigns(:user).profile
+    assert_equal 1, profile.errors.full_messages_for(:orcid).size, 'invalid error count for: orcid'
+    assert_equal 'Orcid is not accessible', profile.errors.full_messages_for(:orcid).first
+
+    # check validation of valid orcid - id only
+    profile_new = { orcid: '0000-0001-1234-0000' }
+    patch :update, params: { id: user, user: { profile_attributes: profile_new } }
+    assert_redirected_to user_path(assigns(:user))
+    profile = assigns(:user).profile
+    assert_equal 0, profile.errors.full_messages_for(:orcid).size, 'invalid error count for: orcid'
+    assert_equal 'https://orcid.org/0000-0001-1234-0000', profile.orcid
+
+    # check validation of invalid orcid
+    profile_new = { orcid: 'https://orcid.org/0000-0001-1234-9999' }
+    patch :update, params: { id: user, user: { profile_attributes: profile_new } }
+    assert_response :success
+    profile = assigns(:user).profile
+    assert_equal 1, profile.errors.full_messages_for(:orcid).size, 'invalid error count for: orcid'
+    assert_equal 'Orcid is not accessible', profile.errors.full_messages_for(:orcid).first
+
+    # check validation of valid orcid - non-secure scheme
+    profile_new = { orcid: 'http://orcid.org/0000-0001-1234-0000' }
+    patch :update, params: { id: user, user: { profile_attributes: profile_new } }
+    assert_redirected_to user_path(assigns(:user))
+    profile = assigns(:user).profile
+    assert_equal 0, profile.errors.full_messages_for(:orcid).size, 'invalid error count for: orcid'
+    assert_equal 'https://orcid.org/0000-0001-1234-0000', profile.orcid
+
+    # check validation of invalid orcid - scheme and host only
+    profile_new = { orcid: 'https://orcid.org/' }
+    patch :update, params: { id: user, user: { profile_attributes: profile_new } }
+    assert_response :success
+    profile = assigns(:user).profile
+    assert_equal 1, profile.errors.full_messages_for(:orcid).size, 'invalid error count for: orcid'
+    assert_equal 'Orcid invalid id or URL', profile.errors.full_messages_for(:orcid).first
+
+    # check validation of blank orcid
+    profile_new = { orcid: '' }
+    patch :update, params: { id: user, user: { profile_attributes: profile_new } }
+    assert_redirected_to user_path(assigns(:user))
+    profile = assigns(:user).profile
+    assert_equal 0, profile.errors.full_messages_for(:orcid).size, 'invalid error count for: orcid'
+    assert profile.orcid.blank?
+  end
+
 
   test 'should not update trainer profile for invalid urls' do
     user = users(:trainer_user)
