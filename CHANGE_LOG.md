@@ -1,5 +1,15 @@
 # Version Change Log
 The sections below refer to the release tags for this repository:
+## [Version 1.3.5](https://github.com/nrmay/TeSS/releases/tag/v1.3.5)
+
+Deployed: *TBA*
+
+- Updates:
+  - [Content Provider: add contact email](https://github.com/nrmay/TeSS/issues/263)
+  - [Auto-Ingestion: material field updates](https://github.com/nrmay/TeSS/issues/305)
+
+
+---
 ## [Version 1.3.4](https://github.com/nrmay/TeSS/releases/tag/v1.3.4)
 
 Deployed: *31<sup>st</sup> Jan, 2022*
