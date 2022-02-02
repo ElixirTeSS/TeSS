@@ -11,14 +11,17 @@
     <div class="row">
       <%# ACTION BUTTONS %>
       <div class="content_action">
-        <%= link_to t('.back', :default => t("helpers.links.back")), content_providers_path, :class => 'btn btn-info' %>
+        <%= link_to t('.back', :default => t("helpers.links.back")),
+                    content_providers_path, :class => 'btn btn-info' %>
 
-        <%= render partial: 'common/identifiers_dot_org_button', locals: { resource: @content_provider } if TeSS::Config.identifiers_prefix %>
+        <%= render partial: 'common/identifiers_dot_org_button',
+                   locals: { resource: @content_provider } if TeSS::Config.identifiers_prefix %>
 
         <% if !current_user.nil? and policy(@content_provider).update? %>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_content_provider_path(@content_provider), :class => 'btn btn-primary' %>
         <% end %>
+
         <% if !current_user.nil? and policy(@content_provider).destroy? %>
           <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                       content_provider_path(@content_provider),
@@ -30,22 +33,31 @@
     </div>
 
     <div class="row">
-      <p><%= link_to(image_tag(@content_provider.image.url, :class => "medium-content-provider-logo"),
-                     @content_provider.url, :target => '_blank',
-                     :onclick => "getOutboundLink('#{@content_provider.url}'); return true;")
-      %></p>
+      <p>
+        <%= link_to(image_tag(@content_provider.image.url, :class => "medium-content-provider-logo"),
+                    @content_provider.url, :target => '_blank',
+                    :onclick => "getOutboundLink('#{@content_provider.url}'); return true;") %>
+      </p>
 
-      <p><%= link_to @content_provider.title, @content_provider.url, :class => "h5",
-                     :target => '_blank',
-                     :onclick => "getOutboundLink('#{@content_provider.url}'); return true;"
-      %></p>
+      <p>
+        <%= link_to @content_provider.title, @content_provider.url, :class => "h5",
+                    :target => '_blank',
+                    :onclick => "getOutboundLink('#{@content_provider.url}'); return true;" %>
+      </p>
 
+      <% unless @content_provider.contact.blank? %>
+        <p><strong>Contact:&nbsp;</strong><%= @content_provider.contact %></p>
+      <% end %>
 
       <% unless @content_provider.description.blank? %>
         <p class="minimise"><%= render_markdown @content_provider.description %></p>
       <% end %>
-      <%= render partial: 'content_providers/partials/content_provider_schemaorg', locals: { content_provider: @content_provider } %>
-      <%= render partial: 'content_providers/partials/twitter_card', locals: { content_provider: @content_provider } %>
+
+      <%= render partial: 'content_providers/partials/content_provider_schemaorg',
+                 locals: { content_provider: @content_provider } %>
+
+      <%= render partial: 'content_providers/partials/twitter_card',
+                 locals: { content_provider: @content_provider } %>
     </div>
 
     <div class="row">
