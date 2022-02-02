@@ -6,6 +6,8 @@
 
   <%= render partial: 'common/url_checker', locals: { f: f, url: content_providers_check_exists_path, title: '' } %>
 
+  <%= f.input :contact, as: :string %>
+
   <%= f.input :description, as: :markdown_area, input_html: { rows: '10' } %>
 
   <div class="form-group">
@@ -21,6 +23,7 @@
   <%= f.dropdown :approved_editors, options: get_list_of_user_names, label: 'Approved Editors' %>
 
   <%= f.multi_input :keywords %>
+
 
   <!-- Nodes: check feature enabled -->
   <% if TeSS::Config.feature['nodes'] %>
