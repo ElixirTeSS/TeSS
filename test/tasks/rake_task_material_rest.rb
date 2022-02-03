@@ -41,11 +41,13 @@ class RakeTasksMaterialIngestion < ActiveSupport::TestCase
     assert_equal 5, material.keywords.size, 'material keywords count not matched.'
     assert material.keywords.include?('machine learning'), 'material keyword[machine learning] missing.'
     assert material.keywords.include?('community of practice'), 'material keyword[community of practice] missing.'
-    assert_equal 'authors', material.contact, 'material contact not matched'
+    assert_equal material.content_provider.contact, material.contact, 'material contact not matched'
     assert_equal 'CC-BY-4.0', material.licence, 'material licence not matched'
     assert_equal 'active', material.status, 'material status not matched'
     assert_equal 1, material.authors.size, 'material authors count not matched.'
     assert material.authors.include?('Bonu, Tarun (orcid: 0000-0002-3910-3475)')
+    assert_equal '10.5281/zenodo.5711863', material.doi, 'material.doi not matched.'
+
 
     # check material with contributors
     material = get_zenodo_id( 5091260, 'How can software containers help your research?', 'Portal Provider')
@@ -54,6 +56,8 @@ class RakeTasksMaterialIngestion < ActiveSupport::TestCase
     assert_equal 6, material.contributors.size, 'material contributors count not matched!'
     assert material.contributors.include?('Martinez, Paula Andrea (type: ProjectLeader)'), 'material contributors[0] missing.'
     assert material.contributors.include?('The ARDC Communications Team (type: Editor)'), 'material contributors[2] missing.'
+    assert_equal '10.5281/zenodo.5091260', material.doi, 'material.doi not matched.'
+
 
     # check material with updated keywords
     material = get_zenodo_id( 5546631, 'ORCID in Australia', 'Portal Provider')
@@ -62,6 +66,8 @@ class RakeTasksMaterialIngestion < ActiveSupport::TestCase
     assert !material.keywords.nil?, 'material keywords is nil'
     assert_equal 5, material.keywords.size, 'material keywords count not matched.'
     assert material.keywords.include?('Test'), 'material keyword[Test] missing.'
+    assert_equal '10.5281/zenodo.5546631', material.doi, 'material.doi not matched.'
+
 
     # check material from another provider
     material = get_zenodo_id( 5068997, 'WEBINAR: Getting started with command line bioinformatics',
@@ -70,13 +76,14 @@ class RakeTasksMaterialIngestion < ActiveSupport::TestCase
     assert !material.keywords.nil?, 'material keywords is nil'
     assert_equal 5, material.keywords.size, 'material keywords count not matched.'
     assert material.keywords.include?('Bioinformatics'), 'material keyword[machine learning] missing.'
-    assert_equal 'authors', material.contact, 'material contact not matched'
+    assert_equal material.content_provider.contact, material.contact, 'material contact not matched'
     assert_equal 'CC-BY-4.0', material.licence, 'material licence not matched'
     assert_equal 'active', material.status, 'material status not matched'
     assert_equal 1, material.authors.size, 'material authors count not matched.'
-    assert material.authors.include?('Brandies, Parice (orcid: 0000-0003-1702-2938)'), 'materials.authors missing entry.'
+    assert material.authors.include?('Brandies, Parice (orcid: 0000-0003-1702-2938)'), 'material.authors missing entry.'
     assert_equal 1, material.contributors.size, 'material authors count not matched.'
-    assert material.contributors.include?('Hogg, Carolyn (type: Supervisor)'), 'materials.contributors missing entry.'
+    assert material.contributors.include?('Hogg, Carolyn (type: Supervisor)'), 'material.contributors missing entry.'
+    assert_equal '10.5281/zenodo.5068997', material.doi, 'material.doi not matched.'
 
     # check logfile messages
     message = 'Scraper.run: finish'
