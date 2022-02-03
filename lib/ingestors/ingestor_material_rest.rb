@@ -61,8 +61,8 @@ class IngestorMaterialRest < IngestorMaterial
     # copy values
     begin
       material = Material.new
-      material.contact = 'authors'
       material.status = 'active'
+      material.doi = input['doi'] unless  metadata['doi'].nil?
       material.authors = []
       material.contributors = []
       unless metadata.nil?

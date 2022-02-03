@@ -26,6 +26,7 @@ class IngestorMaterialCsv < IngestorMaterial
       material.status = row['Status']
       material.authors = row['Authors'].split(/[;]/).reject(&:empty?).compact if row['Authors']
       material.contributors = row['Contributors'].split(/[;]/).reject(&:empty?).compact if row['Contributors']
+      material.doi = row['DOI']
 
       add_material(material)
       processed += 1

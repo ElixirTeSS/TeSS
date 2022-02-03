@@ -29,6 +29,8 @@ class IngestorMaterial < Ingestor
         material.content_provider = provider
         material.scraper_record = true
         material.last_scraped = DateTime.now
+        matched = set_field_defaults material
+
         if valid_material? material
           material.save!
           added += 1
@@ -39,6 +41,8 @@ class IngestorMaterial < Ingestor
         matched = overwrite_fields matched_materials.first, material
         matched.scraper_record = true
         matched.last_scraped = DateTime.now
+        matched = set_field_defaults matched
+
         if valid_material? matched
           matched.save!
           updated += 1
@@ -53,6 +57,14 @@ class IngestorMaterial < Ingestor
     return written
   end
 
+  def set_field_defaults (material)
+    # contact
+    if material.contact.nil? or material.contact.blank?
+      material.contact = material.content_provider.contact
+    end
+    return material
+  end
+
   def overwrite_fields (old_material, new_material)
     # overwrite unlocked attributes
     # [title, url, provider] not changed as they are used for matching
@@ -63,6 +75,9 @@ class IngestorMaterial < Ingestor
     old_material.status = new_material.status             unless old_material.field_locked? :status
     old_material.authors = new_material.authors           unless old_material.field_locked? :authors
     old_material.contributors = new_material.contributors unless old_material.field_locked? :contributors
+    old_material.doi = new_material.doi                   unless old_material.field_locked? :doi
+
+    # return
     return old_material
   end
 
