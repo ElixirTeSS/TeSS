@@ -70,6 +70,13 @@ class IngestorEvent < Ingestor
     old_event.city = new_event.city unless old_event.field_locked? :city
     old_event.country = new_event.country unless old_event.field_locked? :country
     old_event.venue = new_event.venue unless old_event.field_locked? :venue
+
+    # default fields
+    if old_event.contact.nil? or old_event.contact.blank?
+      old_event.contact = old_event.content_provider.contact unless old_event.field_locked? :contact
+    end
+
+    # return
     return old_event
   end
 
