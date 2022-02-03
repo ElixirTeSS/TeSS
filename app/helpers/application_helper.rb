@@ -542,10 +542,10 @@ module ApplicationHelper
 
   def get_list_of_user_names
     user_list = []
-    User.all.each do |u|
+    User.visible.each do |u|
       u.full_name.blank? ? user_list << [u.username, u.username] : user_list << [u.full_name, u.username]
     end
-    return user_list
+    user_list.sort_by { |u| u.last }
   end
 
 end

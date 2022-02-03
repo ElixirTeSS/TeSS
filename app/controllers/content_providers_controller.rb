@@ -103,9 +103,10 @@ class ContentProvidersController < ApplicationController
       node = Node.find_by_name(params[:content_provider][:node_name])
       params[:content_provider][:node_id] = node.id unless node.blank?
     end
+
     params[:content_provider].delete :node_name
 
-    permitted = [:title, :url, :image, :image_url, :description, :id, :content_provider_type, :node_id,
+    permitted = [:title, :url, :image, :image_url, :description, :id, :content_provider_type, :node_id, :contact,
         {:keywords => []}, :remote_updated_date, :remote_created_date, { :approved_editors => [] },
         :local_updated_date, :remote_updated_date, :node_name, :user_id]
 
