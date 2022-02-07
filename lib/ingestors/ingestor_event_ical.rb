@@ -1,0 +1,2 @@
+class IngestorEventIcal
+end
