@@ -1,0 +1,32 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Pawsey Supercomputing Centre - ECPv5.1.4//NONSGML v1.0//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Pawsey Supercomputing Centre
+X-ORIGINAL-URL:https://pawsey.org.au
+X-WR-CALDESC:Events for Pawsey Supercomputing Centre
+BEGIN:VTIMEZONE
+TZID:Australia/Perth
+BEGIN:STANDARD
+TZOFFSETFROM:+0800
+TZOFFSETTO:+0800
+TZNAME:AWST
+DTSTART:20220101T000000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+DTSTART;TZID=Australia/Perth:20220211T094500
+DTEND;TZID=Australia/Perth:20220211T125000
+DTSTAMP:20220208T213237
+CREATED:20220124T055538Z
+LAST-MODIFIED:20220203T145719Z
+UID:17329-1644572700-1644583800@pawsey.org.au
+SUMMARY:Pawsey Intern Showcase 2022
+DESCRIPTION:The Pawsey Supercomputing Research Centre takes prides in its Summer Internship Program – working in partnership with bright students on challenging and interesting projects. \nLike last year\, this year’s Intern cohort more than doubled in size\, now at 47 Interns\, working with dozens of committed PIs and supervisors around the country. The Intern Mentor Program also continues to grow and change\, as does the range of trainings we immerse students in during Week 1 of the Program (and throughout). \nThis year’s Interns continue to astound – working creatively and effectively during the intensive ten-week program without having to step into the Centre. A virtual (and literal) success! \nTo view Intern posters and to hear about their projects and unique experiences\, join our online conference. \nWe  have a limited number of places available for this online conference. Advance registration is essential and once the session is full you will be put onto a waitlist.   Please be mindful of this and only register if you are going to attend.  Program details appear below. \nRegister here: \n\n                \n                        Name*\n                            \n                            \n                                                    First\n                                                    \n                                                \n                            \n                            \n                                                            Last\n                                                            \n                                                        \n                            \n                        Email*\n                            \n                        Association*Pawsey or Partner InternInternship PI or SupervisorNon-Intern ParticipantPlease select your Association to this event.Your Institution/Organisation*Would you like to become a Pawsey Friend?*A Pawsey Friend receives occasional newsletters with Pawsey-related updates ranging from events\, job opportunities\, training\, news and more.YesNoHow did you find out about this event?*\n                            \n          \n            \n            \n            \n            \n            \n            \n            \n            \n            \n        \n                        \n                         jQuery(document).bind('gform_post_render'\, function(event\, formId\, currentPage){if(formId == 181) {} } );jQuery(document).bind('gform_post_conditional_logic'\, function(event\, formId\, fields\, isInit){} ); jQuery(document).ready(function(){jQuery(document).trigger('gform_post_render'\, [181\, 1]) } ); \nNote: The Remo registration details will be sent to your email a couple of days before the event. \nDetails: \nDate: Friday 11 February 2022 \nTime: 9:45am-12:50 AWST / 12:45-3:50pm AEDT\, with the main presentation highlighted below. \n\n9:45am AWST / 12:45pm AEDT Join & familiarise yourself with the Remo platform\n10:00-10:10am AWST / 1:00-1:10pm AEDT Kickoff\n10:10-11:00am AWST / 1:10-2:00pm AEDT Posters & Presentation Viewing. People’s Choice Poster Voting.\n*11:00-11:50am AWST / 2:00-2:50pm AEDT Keynote Speakers\, Intern Mentors\, Poster Voting Announcements\n11:50am-12:50pm AWST / 2:50-3:50pm AEDT Additional Networking & Poster Viewing\n\nProblems Registering? If you have any difficulties with registering for the event\, please email us at: help@pawsey.org.au for assistance. \n
+URL:https://pawsey.org.au/event/pawsey-intern-showcase-2022/
+LOCATION:Online\, Virtual\, Australia
+CATEGORIES:Conference,Supercomputing,Webinar
+ATTACH;FMTTYPE=image/jpeg:https://pawsey.org.au/wp-content/uploads/2022/01/Intern-Group-Photo-Collage.jpg
+END:VEVENT
+END:VCALENDAR

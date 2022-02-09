@@ -1,0 +1,13 @@
+name: ical_event
+logfile: log/ingestion.ical.log
+loglevel: 0
+username: ingestor
+sources:
+  - provider: 'Another Portal Provider'        # content provider's title
+    url: 'https://missing.org/sitemap.xml'     # the root URL to access the source
+    method: ical                               # one of 'csv', 'ical' or 'rest'
+    resource_type: event                       # event or material
+  - provider: 'Another Portal Provider'        # content provider's title
+    url: 'https://app.com/events/sitemap.xml'  # the root URL to access the source
+    method: ical                               # one of 'csv', 'ical' or 'rest'
+    resource_type: event                       # event or material

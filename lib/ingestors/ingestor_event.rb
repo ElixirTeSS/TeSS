@@ -29,6 +29,7 @@ class IngestorEvent < Ingestor
         event.content_provider = provider
         event.scraper_record = true
         event.last_scraped = DateTime.now
+        event = set_field_defaults event
         if valid_event? event
           event.save!
           added += 1
@@ -37,6 +38,7 @@ class IngestorEvent < Ingestor
       else
         # update and save matched event
         matched = overwrite_fields matched_events.first, event
+        matched = set_field_defaults matched
         matched.scraper_record = true
         matched.last_scraped = DateTime.now
         if valid_event? matched
@@ -52,6 +54,8 @@ class IngestorEvent < Ingestor
                   ": events added[#{added}] updated[#{updated}] rejected[#{processed - written}]", 3
     return written
   end
+
+  private
 
   def overwrite_fields (old_event, new_event)
     # overwrite unlocked attributes
@@ -70,15 +74,33 @@ class IngestorEvent < Ingestor
     old_event.city = new_event.city unless old_event.field_locked? :city
     old_event.country = new_event.country unless old_event.field_locked? :country
     old_event.venue = new_event.venue unless old_event.field_locked? :venue
+  end
 
-    # default fields
-    if old_event.contact.nil? or old_event.contact.blank?
-      old_event.contact = old_event.content_provider.contact unless old_event.field_locked? :contact
+  def set_field_defaults (event)
+    # contact
+    if event.contact.nil? or event.contact.blank?
+      event.contact = event.content_provider.contact unless event.field_locked? :contact
+    end
+
+    # organizer
+    if event.organizer.nil? or event.organizer.blank?
+      event.organizer = event.content_provider.title unless event.field_locked? :organizer
+    end
+
+    # host institutions
+    if event.host_institutions.nil? or event.host_intstitutions.size < 1
+      event.host_institutions = [event.content_provider.title] unless event.field_locked? :host_institutions
+    end
+
+    # eligibility
+    if event.eligibility.nil? or event.eligibility.size < 1
+      event.eligibility = ['open_to_all'] unless event.field_locked? :eligibility
     end
 
     # return
-    return old_event
+    return event
   end
+
 
   def valid_event? (event)
     # check event attributes

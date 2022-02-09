@@ -74,6 +74,8 @@ class ActiveSupport::TestCase
     zenodo_ardc_3_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_ardc_3.json'))
     zenodo_abt_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_abt.json'))
     elixir_ausbioc_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'response_1642570417380.json'))
+    test_sitemap = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'Test-Sitemap.xml']))
+
 
     # 200 - success
     WebMock.stub_request(:get, 'https://app.com/events.csv').
@@ -93,6 +95,8 @@ class ActiveSupport::TestCase
     WebMock.stub_request(:get,
           'https://tess.elixir-europe.org/events?include_expired=false&content_provider[]=Australian BioCommons').
       to_return(status: 200, headers: {}, body: elixir_ausbioc_body)
+    WebMock.stub_request(:get, 'https://app.com/events/sitemap.xml').
+      to_return(status: 200, headers: {}, body: test_sitemap)
 
     # 404 - not found
     WebMock.stub_request(:get, 'https://dummy.com').to_return(:status => 404)
@@ -102,6 +106,7 @@ class ActiveSupport::TestCase
     WebMock.stub_request(:get, 'https://zenodo.org/api/records/?sort=mostrecent&ommunities=australianbiocommons-training&page=2&size=10').
       to_return(status: 404)
     WebMock.stub_request(:get, 'https://zenodo.org/api/records/?communities=dummy').to_return(:status => 404)
+    WebMock.stub_request(:get, 'https://missing.org/sitemap.xml').to_return(:status => 404)
 
   end
 
