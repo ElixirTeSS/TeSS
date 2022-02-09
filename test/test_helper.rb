@@ -56,7 +56,6 @@ class ActiveSupport::TestCase
       with(:headers => { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent' => 'Ruby' }).
       to_return(:status => 200, :body => "", :headers => {})
 
-
   end
 
   def mock_orcids
@@ -75,6 +74,14 @@ class ActiveSupport::TestCase
     zenodo_abt_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_abt.json'))
     elixir_ausbioc_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'response_1642570417380.json'))
     test_sitemap = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'Test-Sitemap.xml']))
+    pawsey_ical_1 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'ask-me-anything-porous-media-visualisation-and-lbpm.ics']))
+    pawsey_ical_2 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'experience-with-porting-and-scaling-codes-on-amd-gpus.ics']))
+    pawsey_ical_3 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'nvidia-cuquantum-session.ics']))
+    pawsey_ical_4 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'overview-of-high-performance-computing-resources-at-olcf.ics']))
+    pawsey_ical_5 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'pacer-seminar-computational-fluid-dynamics.ics']))
+    pawsey_ical_6 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'pacer-seminar-radio-astronomy.ics']))
+    pawsey_ical_7 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'pawsey-intern-showcase-2022.ics']))
+    pawsey_ical_8 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'pcon-embracing-new-solutions-for-in-situ-visualisation.ics']))
 
 
     # 200 - success
@@ -93,10 +100,27 @@ class ActiveSupport::TestCase
     WebMock.stub_request(:get, 'https://zenodo.org/api/records/?communities=australianbiocommons-training').
       to_return(status: 200, headers: {}, body: zenodo_abt_body)
     WebMock.stub_request(:get,
-          'https://tess.elixir-europe.org/events?include_expired=false&content_provider[]=Australian BioCommons').
+                         'https://tess.elixir-europe.org/events?include_expired=false&content_provider[]=Australian BioCommons').
       to_return(status: 200, headers: {}, body: elixir_ausbioc_body)
     WebMock.stub_request(:get, 'https://app.com/events/sitemap.xml').
       to_return(status: 200, headers: {}, body: test_sitemap)
+
+    WebMock.stub_request(:get, 'https://pawsey.org.au/event/ask-me-anything-porous-media-visualisation-and-lbpm/?ical=true').
+      to_return(status: 200, headers: {}, body: pawsey_ical_1)
+    WebMock.stub_request(:get, 'https://pawsey.org.au/event/experience-with-porting-and-scaling-codes-on-amd-gpus/?ical=true').
+      to_return(status: 200, headers: {}, body: pawsey_ical_2)
+    WebMock.stub_request(:get, 'https://pawsey.org.au/event/nvidia-cuquantum-session/?ical=true').
+      to_return(status: 200, headers: {}, body: pawsey_ical_3)
+    WebMock.stub_request(:get, 'https://pawsey.org.au/event/overview-of-high-performance-computing-resources-at-olcf/?ical=true').
+      to_return(status: 200, headers: {}, body: pawsey_ical_4)
+    WebMock.stub_request(:get, 'https://pawsey.org.au/event/pacer-seminar-computational-fluid-dynamics/?ical=true').
+      to_return(status: 200, headers: {}, body: pawsey_ical_5)
+    WebMock.stub_request(:get, 'https://pawsey.org.au/event/pacer-seminar-radio-astronomy/?ical=true').
+      to_return(status: 200, headers: {}, body: pawsey_ical_6)
+    WebMock.stub_request(:get, 'https://pawsey.org.au/event/pawsey-intern-showcase-2022/?ical=true').
+      to_return(status: 200, headers: {}, body: pawsey_ical_7)
+    WebMock.stub_request(:get, 'https://pawsey.org.au/event/pcon-embracing-new-solutions-for-in-situ-visualisation/?ical=true').
+      to_return(status: 200, headers: {}, body: pawsey_ical_8)
 
     # 404 - not found
     WebMock.stub_request(:get, 'https://dummy.com').to_return(:status => 404)
@@ -107,6 +131,7 @@ class ActiveSupport::TestCase
       to_return(status: 404)
     WebMock.stub_request(:get, 'https://zenodo.org/api/records/?communities=dummy').to_return(:status => 404)
     WebMock.stub_request(:get, 'https://missing.org/sitemap.xml').to_return(:status => 404)
+    WebMock.stub_request(:get, 'https://pawsey.org.au/events/?ical=true').to_return(:status => 404)
 
   end
 

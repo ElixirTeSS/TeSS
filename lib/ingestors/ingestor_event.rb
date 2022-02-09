@@ -88,8 +88,8 @@ class IngestorEvent < Ingestor
     end
 
     # host institutions
-    if event.host_institutions.nil? or event.host_intstitutions.size < 1
-      event.host_institutions = [event.content_provider.title] unless event.field_locked? :host_institutions
+    if event.host_institutions.nil? or event.host_institutions.size < 1
+      event.host_institutions = [event.content_provider.title.to_s] unless event.field_locked? :host_institutions
     end
 
     # eligibility
@@ -101,18 +101,23 @@ class IngestorEvent < Ingestor
     return event
   end
 
-
   def valid_event? (event)
-    # check event attributes
-    return true if event.valid?
+    # check valid
+    future = event.start > Time.now
+    valid = event.valid?
+    return true if valid and future
 
     # log error messages
     Scraper.log "Event title[#{event.title}] failed validation.", 4
-    event.errors.full_messages.each do |message|
-      Scraper.log "Event title[#{event.title}] error: " + message, 5
+    if !future
+      Scraper.log "Event title[#{event.title}] error: event start time has passed", 5
+    else
+      event.errors.full_messages.each do |message|
+        Scraper.log "Event title[#{event.title}] error: " + message, 5
+      end
     end
-
     return false
+
   end
 
   def convert_eligibility(input)
