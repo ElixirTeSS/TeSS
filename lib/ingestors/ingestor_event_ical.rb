@@ -73,7 +73,14 @@ class IngestorEventIcal < IngestorEvent
       event.start = calevent.dtstart
       event.end = calevent.dtend
       event.venue = calevent.location.to_s
-      event.online = true if calevent.location.downcase.include?('online')
+      if calevent.location.downcase.include?('online')
+        event.online = true
+      else
+        location = convert_location(calevent.location)
+        
+        event.city = location[:city]
+        event.country = location[:country]
+      end
       event.keywords = []
       if !calevent.categories.nil? and calevent.categories.size > 0
         calevent.categories.each { |item| event.keywords << item.to_s }

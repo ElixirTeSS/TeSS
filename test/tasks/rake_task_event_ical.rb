@@ -6,6 +6,7 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
 
   setup do
     mock_ingestions
+    mock_nominatim
     TeSS::Application.load_tasks if Rake::Task.tasks.empty?
     Rake::Task['tess:automated_ingestion'].reenable
     override_config 'test_ingestion_example.yml'
@@ -56,8 +57,11 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
     event_count = Event.all.size
     assert_equal 21, event_count, 'Pre-task: event count not matched.'
 
-    # run task
-    Rake::Task['tess:automated_ingestion'].invoke
+    # override time
+    freeze_time(stub_time=Time.new(2020)) do ||
+      # run task
+      Rake::Task['tess:automated_ingestion'].invoke
+    end
 
     # post task validation
     added = 4; updated = 2; rejected = 2;

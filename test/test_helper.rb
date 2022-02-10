@@ -24,6 +24,15 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
 
+  # override Time.now for testing calendars, etc.
+  def freeze_time(fixed_time=Time.now, &block)
+    Time.stub(:now, fixed_time) do
+      fixed_time.stub(:iso8601, fixed_time) do
+        block.call
+      end
+    end
+  end
+
   WebMock.disable_net_connect!(allow_localhost: true, allow: 'api.codacy.com')
 
   # Mock remote images so paperclip doesn't break:
@@ -99,8 +108,7 @@ class ActiveSupport::TestCase
       to_return(status: 200, headers: {}, body: zenodo_ardc_3_body)
     WebMock.stub_request(:get, 'https://zenodo.org/api/records/?communities=australianbiocommons-training').
       to_return(status: 200, headers: {}, body: zenodo_abt_body)
-    WebMock.stub_request(:get,
-                         'https://tess.elixir-europe.org/events?include_expired=false&content_provider[]=Australian BioCommons').
+    WebMock.stub_request(:get, 'https://tess.elixir-europe.org/events?include_expired=false&content_provider[]=Australian BioCommons').
       to_return(status: 200, headers: {}, body: elixir_ausbioc_body)
     WebMock.stub_request(:get, 'https://app.com/events/sitemap.xml').
       to_return(status: 200, headers: {}, body: test_sitemap)
@@ -132,7 +140,6 @@ class ActiveSupport::TestCase
     WebMock.stub_request(:get, 'https://zenodo.org/api/records/?communities=dummy').to_return(:status => 404)
     WebMock.stub_request(:get, 'https://missing.org/sitemap.xml').to_return(:status => 404)
     WebMock.stub_request(:get, 'https://pawsey.org.au/events/?ical=true').to_return(:status => 404)
-
   end
 
   def mock_biotools
@@ -142,15 +149,21 @@ class ActiveSupport::TestCase
   end
 
   def mock_nominatim
-    nominatim_file = File.read("#{Rails.root}/test/fixtures/files/nominatim.json")
+    nominatim_file = File.read(File.join(Rails.root, ['test', 'fixtures','files', 'nominatim.json'] ))
+    kensington_file = File.read(File.join(Rails.root,['test', 'fixtures', 'files', 'geocode_kensington.json'] ))
+
     WebMock.stub_request(:get, /nominatim.openstreetmap.org/).
       to_return(:status => 200, :headers => {}, :body => nominatim_file)
+
+    # geocoder overrides
+    Geocoder.configure(lookup: :test, ip_lookup: :test)
+    Geocoder::Lookup::Test.add_stub( "1 Bryce Avenue, Kensington, Western Australia, 6151, Australia", kensington_file )
+    Geocoder::Lookup::Test.add_stub( "Pawsey Supercomputing Centre, 1 Bryce Avenue, Kensington, Western Australia, 6151, Australia", [] )
   end
 
   # helper methods for ingestion tests
   def override_config (config_file)
     # switch configuration
-    # puts "override_config with #{config_file}"
     test_config_file = File.join(Rails.root, 'test', 'config', config_file)
     TeSS::Config.ingestion = YAML.safe_load(File.read(test_config_file)).deep_symbolize_keys!
 

@@ -144,5 +144,33 @@ class IngestorEvent < Ingestor
     end
   end
 
+  def convert_location(input)
+    #puts "convert_location(#{input})"
+    result = nil
+
+    # search for locations
+    locations = Geocoder.search(input)
+    if !locations.nil? and locations.size > 0
+      if !locations.first.nil? and !locations.first.address.nil?
+        result = locations.first.address
+      end
+    end
+
+    # check substring
+    if result.nil? or result['country'].nil?
+      stripped = strip_first_part input
+      result = convert_location(stripped.lstrip) if !stripped.nil? and stripped.size > 0
+    end
+
+    return result
+  end
+
+  def strip_first_part(input)
+    parts = input.split(',')
+    parts.shift
+    return parts.join(',') if parts.size > 0
+    return ''
+  end
+
 end
 
