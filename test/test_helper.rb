@@ -1,3 +1,4 @@
+require 'json'
 require 'simplecov'
 require 'simplecov-lcov'
 
@@ -157,8 +158,9 @@ class ActiveSupport::TestCase
 
     # geocoder overrides
     Geocoder.configure(lookup: :test, ip_lookup: :test)
-    Geocoder::Lookup::Test.add_stub( "1 Bryce Avenue, Kensington, Western Australia, 6151, Australia", kensington_file )
+    Geocoder::Lookup::Test.add_stub( "1 Bryce Avenue, Kensington, Western Australia, 6151, Australia", JSON.parse(kensington_file) )
     Geocoder::Lookup::Test.add_stub( "Pawsey Supercomputing Centre, 1 Bryce Avenue, Kensington, Western Australia, 6151, Australia", [] )
+    Geocoder::Lookup::Test.add_stub( "Australia", [{ "address"=>{ "country"=>"Australia", "country_code"=>"au"} }] )
   end
 
   # helper methods for ingestion tests

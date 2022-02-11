@@ -21,7 +21,9 @@ class IngestorEvent < Ingestor
       processed += 1
 
       # check for matched events
-      matched_events = Event.where(title: event.title, url: event.url, content_provider: provider)
+      matched_events = Event.where(title: event.title, url: event.url,
+                                   start: event.start,
+                                   content_provider: provider)
 
       if matched_events.nil? or matched_events.first.nil?
         # set ingestion parameters and save new event
@@ -152,6 +154,7 @@ class IngestorEvent < Ingestor
     locations = Geocoder.search(input)
     if !locations.nil? and locations.size > 0
       if !locations.first.nil? and !locations.first.address.nil?
+        #puts "address: #{locations.first.address.inspect}"
         result = locations.first.address
       end
     end

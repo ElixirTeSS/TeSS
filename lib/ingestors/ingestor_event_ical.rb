@@ -53,20 +53,20 @@ class IngestorEventIcal < IngestorEvent
     begin
       events = Icalendar::Event.parse(open(file_url).set_encoding('utf-8'))
       # process each event
-      events.each { |e| processed += 1 if process_event(e, url) }
+      events.each { |e| processed += 1 if process_event(e) }
     rescue Exception => e
       Scraper.log "process file url[#{file_url}] failed with: #{e.message}", 3
     end
     return processed
   end
 
-  def process_event(calevent, url)
+  def process_event(calevent)
 
     result = false
     begin
       # set fields
       event = Event.new
-      event.url = url.to_s
+      event.url = calevent.url.to_s
       event.title = calevent.summary.to_s
       event.description = calevent.description.to_s
       event.timezone = calevent.dtstart.ical_params['tzid']
@@ -77,13 +77,13 @@ class IngestorEventIcal < IngestorEvent
         event.online = true
       else
         location = convert_location(calevent.location)
-        
-        event.city = location[:city]
-        event.country = location[:country]
+        event.city = location['suburb'] unless location['suburb'].nil?
+        event.country = location['country'] unless location['country'].nil?
+        event.postcode = location['postcode'] unless location['postcode'].nil?
       end
       event.keywords = []
-      if !calevent.categories.nil? and calevent.categories.size > 0
-        calevent.categories.each { |item| event.keywords << item.to_s }
+      if !calevent.categories.nil? and !calevent.categories.first.nil?
+        calevent.categories.first.each { |item| event.keywords << item.to_s.lstrip }
       end
 
       # store event
