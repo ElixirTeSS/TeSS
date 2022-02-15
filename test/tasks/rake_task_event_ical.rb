@@ -19,6 +19,7 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
     LicenceDictionary.instance.reload
   end
 
+
   test 'sitemap not found' do
     # set config file
     config_file = 'test_ingestion_ical.yml'
@@ -32,6 +33,7 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
     # check logfile messages for source #1
     check_logfile logfile, 'Validation error: URL not accessible: https://missing.org/sitemap.xml'
   end
+
 
   test 'invalid source definition' do
     # set config file
@@ -48,19 +50,53 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
     assert logfile_contains(logfile, message), 'Message not found: ' + message
   end
 
+
   test 'ingest valid sitemap' do
     # set config file
     config_file = 'test_ingestion_ical.yml'
     logfile = override_config config_file
     assert_equal 'ical_event', TeSS::Config.ingestion[:name]
     event_count = Event.all.size
-    assert_equal 21, event_count, 'Pre-task: event count not matched.'
+    assert_equal 23, event_count, 'Pre-task: event count not matched.'
+    provider = content_providers :another_portal_provider
+    assert !provider.nil?, "Content Provider not found."
+    Time.zone = 'Australia/Perth'
+
+    # check two events to be updated
+    name = 'ical_event_1'
+    assert !events(name).nil?, "fixture[#{name}] not found"
+    title = 'P\'Con - Embracing new solutions for in-situ visualisation'
+    url = 'https://pawsey.org.au/event/pcon-embracing-new-solutions-for-in-situ-visualisation/'
+    event = check_event_exists title, url
+    assert !event.nil?, "event title[#{title}] not found"
+    assert !event.online, "event title[#{title}] online not matched"
+    assert_equal "Another Portal Provider", event.content_provider.title,
+                 "event title[#{title}] content provider not matched"
+
+    name = 'ical_event_2'
+    assert !events(name).nil?, "fixture[#{name}] not found"
+    title = 'PaCER Seminar: Computational Fluid Dynamics'
+    url = 'https://pawsey.org.au/event/pacer-seminar-computational-fluid-dynamics/'
+    event = check_event_exists title, url
+    assert !event.nil?, "event title[#{title}] not found"
+    assert !event.online, "event title[#{title}] online not matched"
+    assert_equal "Another Portal Provider", event.content_provider.title,
+                 "event title[#{title}] content provider not matched"
+    dtstart = Time.zone.parse '2022-06-15 10:00:00'
+
+    # check matches
+    matches = Event.where(title: title, url: url, start: dtstart,
+                          content_provider: provider)
+    assert !matches.nil?, "matches is nil"
+    assert_equal 1, matches.size, "matches size = #{matches.size}"
 
     # override time
     freeze_time(stub_time = Time.new(2019)) do ||
       # run task
       Rake::Task['tess:automated_ingestion'].invoke
     end
+
+    puts "Totals events[#{Event.all.size}] "
 
     # post task validation
     added = 4; updated = 2; rejected = 2;
@@ -70,43 +106,63 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
     check_logfile logfile, 'process file url\[https://pawsey.org.au/events/\?ical=true\] failed with: 404'
     # check rejected
     check_logfile logfile, 'Event title\[NVIDIA cuQuantum Session\] error: City can\'t be blank'
-    check_logfile logfile, 'Event title\[PaCER Seminar: Radio astronomy\] error: event start time has passed'
+    check_logfile logfile, 'Event title\[PaCER Seminar: Radio astronomy\] error: event has expired'
+
     # TODO: check added
-    event = check_event_exists 'Ask Me Anything: Porous media visualisation and LBPM',
-                                'https://pawsey.org.au/event/ask-me-anything-porous-media-visualisation-and-lbpm/'
+    title = 'Ask Me Anything: Porous media visualisation and LBPM'
+    event = check_event_exists title,'https://pawsey.org.au/event/ask-me-anything-porous-media-visualisation-and-lbpm/'
     assert event.online, "event title[#{event.title}] online not matched"
     assert (!event.keywords.nil? and event.keywords.size == 2), "event title[#{event.title}] keywords.size not matched"
-    puts "event.keywords: #{event.keywords.inspect}"
     assert event.keywords.include?("AMA"), "event title[#{event.title}] keyword[AMA] not found"
     assert event.keywords.include?('Visualisation'), "event title[#{event.title}] keyword[Visualisation] not found"
-    desc = "If you are working on Digital Rock Physics and interested in fluid flow behaviour in Porous Media\, " +
-      "this AMA is for you.  \nPlease join us to discuss Lattice Boltzmann Method for Porous Media (LBPM) " +
-      "and the opportunities for Pawsey researchers.  \nLBPM is one of the most complete derivatives of " +
-      "the Lattice Boltzmann Method (LBM) focusing on porous media providing computational as well as " +
-      "visualisation modules at a micro-scale. LBM is a well-known simulation tool in CFD\, producing highly " +
-      "reliable results.   \nLBPM:  \n\nfocuses on porous media at micro–scale \nis accurate  \n" +
-      "is scalable \nhas features integrated with upscaling tools/techniques in high demand in the oil and " +
-      "gas industry \nis capable of running simulation in CSG/CBM as extremely " +
-      "heterogeneous unconventional reservoirs rocks\nis free and open-source \n\n Is LBPM of interest " +
-      "to the research community working at scale? Join the discussion at this AMA\, and send your questions " +
-      "in advance via the registration form.   \n More information about LBPM: https://github.com/OPM/LBPM " +
-      " \nRegister here to join this AMA.\nBelow is a sample visualisation derived from open-source data " +
-      "\n\nhttps://pawsey.org.au/wp-content/uploads/2021/06/movie.mp4\n"
+
+    title = 'Pawsey Intern Showcase 2022'
+    event = check_event_exists title, 'https://pawsey.org.au/event/pawsey-intern-showcase-2022/'
+    desc = "The Pawsey Supercomputing Research Centre takes prides in its Summer Internship Program – " +
+      "working in partnership with bright students on challenging and interesting projects. \nLike last year, " +
+      "this year’s Intern cohort more than doubled in size, now at 47 Interns, working with dozens of committed PIs " +
+      "and supervisors around the country. The Intern Mentor Program also continues to grow and change, as does the " +
+      "range of trainings we immerse students in during Week 1 of the Program (and throughout)."
+    assert_equal desc.size, event.description.size, "event title[#{event.title}] description.size not matched"
     assert_equal desc, event.description, "event title[#{event.title}] description not matched"
+    assert_equal Time.zone.name , event.timezone.to_s,  "event title[#{event.title}] timezone not matched"
+    dtstart = Time.zone.parse('2022-02-11 09:45:00')
+    dtend = Time.zone.parse('2022-02-11 12:50:00')
+    assert_equal dtstart, event.start, "event title[#{event.title}] start not matched"
+    assert_equal dtend, event.end, "event title[#{event.title}] end not matched"
+
+    title = 'P\'Con - Experience with porting and scaling codes on AMD GPUs'
+    event = check_event_exists title, 'https://pawsey.org.au/event/experience-with-porting-and-scaling-codes-on-amd-gpus/'
+    assert event.online, "event title[#{title}] online not matched"
+
+    title = 'Overview of High Performance Computing Resources at OLCF'
+    event = check_event_exists title, 'https://pawsey.org.au/event/overview-of-high-performance-computing-resources-at-olcf/'
+    assert !event.online, "event title[#{title}] online not matched"
+    location = 'Pawsey Supercomputing Centre, 1 Bryce Avenue, Kensington, Western Australia, 6151, Australia'
+    assert_equal location, event.venue, "event title[#{title}] venue not matched"
+    assert_equal 'Kensington', event.city, "event title[#{title}] city not matched"
+    assert_equal '6151', event.postcode, "event title[#{title}] postcode not matched"
+    assert_equal 'Australia', event.country, "event title[#{title}] country not matched"
 
     # TODO: check updated
+    title = 'PaCER Seminar: Computational Fluid Dynamics'
+    event = check_event_exists title, 'https://pawsey.org.au/event/pacer-seminar-computational-fluid-dynamics/'
+
+    title = "P'Con - Embracing new solutions for in-situ visualisation"
+    event = check_event_exists title, 'https://pawsey.org.au/event/pcon-embracing-new-solutions-for-in-situ-visualisation/'
+
 
     # TODO: check totals
-    check_logfile logfile, "IngestorEventIcal: events added[#{added}] updated[#{updated}] rejected[#{rejected}]"
+    check_logfile logfile, 'IngestorEventIcal: events added\[4\] updated\[2\] rejected\[2\]'
     assert_equal event_count + added, Event.all.size, 'Post-task: event count not matched'
-
   end
 
   private
 
   def check_event_exists(title, url)
     events = Event.where(title: title, url: url)
-    assert (!events.nil? and events.size == 1), "event title[#{title}] not found"
+    assert (!events.nil? and events.size > 0), "event title[#{title}] not found"
+    assert events.size < 2, "event[#{title}] duplicates found = #{events.size}"
     return events.first
   end
 

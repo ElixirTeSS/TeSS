@@ -21,7 +21,8 @@ class IngestorEvent < Ingestor
       processed += 1
 
       # check for matched events
-      matched_events = Event.where(title: event.title, url: event.url,
+      matched_events = Event.where(title: event.title,
+                                   url: event.url,
                                    start: event.start,
                                    content_provider: provider)
 
@@ -61,9 +62,8 @@ class IngestorEvent < Ingestor
 
   def overwrite_fields (old_event, new_event)
     # overwrite unlocked attributes
-    # [title, url, provider] not changed, as they are used for matching
+    # [title, url, start, provider] not changed, as they are used for matching
     old_event.description = new_event.description unless old_event.field_locked? :description
-    old_event.start = new_event.start unless old_event.field_locked? :start
     old_event.end = new_event.end unless old_event.field_locked? :end
     old_event.timezone = new_event.timezone unless old_event.field_locked? :timezone
     old_event.contact = new_event.contact unless old_event.field_locked? :contact
@@ -76,6 +76,7 @@ class IngestorEvent < Ingestor
     old_event.city = new_event.city unless old_event.field_locked? :city
     old_event.country = new_event.country unless old_event.field_locked? :country
     old_event.venue = new_event.venue unless old_event.field_locked? :venue
+    return old_event
   end
 
   def set_field_defaults (event)
@@ -105,20 +106,17 @@ class IngestorEvent < Ingestor
 
   def valid_event? (event)
     # check valid
-    future = event.start > Time.now
-    valid = event.valid?
-    return true if valid and future
-
-    # log error messages
-    Scraper.log "Event title[#{event.title}] failed validation.", 4
-    if !future
-      Scraper.log "Event title[#{event.title}] error: event start time has passed", 5
+    if event.valid? and !event.expired?
+      return true
     else
+      # log error messages
+      Scraper.log "Event title[#{event.title}] failed validation.", 4
+      Scraper.log "Event title[#{event.title}] error: event has expired", 5 if event.expired?
       event.errors.full_messages.each do |message|
         Scraper.log "Event title[#{event.title}] error: " + message, 5
       end
+      return false
     end
-    return false
 
   end
 

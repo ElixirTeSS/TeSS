@@ -61,7 +61,6 @@ class IngestorEventIcal < IngestorEvent
   end
 
   def process_event(calevent)
-
     result = false
     begin
       # set fields
@@ -69,9 +68,16 @@ class IngestorEventIcal < IngestorEvent
       event.url = calevent.url.to_s
       event.title = calevent.summary.to_s
       event.description = calevent.description.to_s
-      event.timezone = calevent.dtstart.ical_params['tzid']
-      event.start = calevent.dtstart
       event.end = calevent.dtend
+      if !calevent.dtstart.nil?
+        dtstart = calevent.dtstart
+        event.start = dtstart
+        tzid = dtstart.ical_params['tzid']
+        if !tzid.nil? and tzid.size > 0
+          event.timezone = tzid.first.to_s
+        end
+      end
+
       event.venue = calevent.location.to_s
       if calevent.location.downcase.include?('online')
         event.online = true

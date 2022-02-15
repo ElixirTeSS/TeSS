@@ -404,3 +404,49 @@ training_event:
   timezone: Melbourne
   contact: MyContact
   eligibility: [ first_come_first_served ]
+
+ical_event_1:
+  title: P'Con - Embracing new solutions for in-situ visualisation
+  url: 'https://pawsey.org.au/event/pcon-embracing-new-solutions-for-in-situ-visualisation/'
+  subtitle: "an event to test calendar ingestion"
+  organizer: MyString
+  description: MyText
+  event_types: ["meetings_and_conferences"]
+  duration: '01:45'
+  start: 2021-12-08 12:30:00 +0800
+  end: 2021-12-08 14:30:00 +0800
+  sponsors: ["MyString"]
+  venue: 100, Lygon Street
+  city: Carlton
+  country: Australia
+  postcode: 3010
+  keywords: ["Keyword"]
+  user: trainer_user
+  content_provider: another_portal_provider
+  host_institutions: ["UoLife"]
+  timezone: Australia/Perth
+  contact: MyContact
+  eligibility: [ first_come_first_served ]
+
+ical_event_2:
+  title: "PaCER Seminar: Computational Fluid Dynamics"
+  url: 'https://pawsey.org.au/event/pacer-seminar-computational-fluid-dynamics/'
+  subtitle: "an event to test calendar ingestion"
+  organizer: MyString
+  description: MyText
+  event_types: ["meetings_and_conferences"]
+  duration: '01:45'
+  start: 2022-06-15 10:00:00 +0800
+  end: 2022-06-15 12:00:00 +0800
+  sponsors: ["MyString"]
+  venue: 100, Lygon Street
+  city: Carlton
+  country: Australia
+  postcode: 3010
+  keywords: ["Keyword"]
+  user: trainer_user
+  content_provider: another_portal_provider
+  host_institutions: ["UoLife"]
+  timezone: Australia/Perth
+  contact: MyContact
+  eligibility: [ open_to_all ]
