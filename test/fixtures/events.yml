@@ -414,7 +414,7 @@ ical_event_1:
   event_types: ["meetings_and_conferences"]
   duration: '01:45'
   start: 2021-12-08 12:30:00 +0800
-  end: 2021-12-08 14:30:00 +0800
+  end: 2021-12-08 13:30:00 +0800
   sponsors: ["MyString"]
   venue: 100, Lygon Street
   city: Carlton
@@ -449,4 +449,4 @@ ical_event_2:
   host_institutions: ["UoLife"]
   timezone: Australia/Perth
   contact: MyContact
-  eligibility: [ open_to_all ]
+  eligibility: [ first_come_first_served ]

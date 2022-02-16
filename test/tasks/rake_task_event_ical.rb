@@ -19,7 +19,6 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
     LicenceDictionary.instance.reload
   end
 
-
   test 'sitemap not found' do
     # set config file
     config_file = 'test_ingestion_ical.yml'
@@ -33,7 +32,6 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
     # check logfile messages for source #1
     check_logfile logfile, 'Validation error: URL not accessible: https://missing.org/sitemap.xml'
   end
-
 
   test 'invalid source definition' do
     # set config file
@@ -50,7 +48,6 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
     assert logfile_contains(logfile, message), 'Message not found: ' + message
   end
 
-
   test 'ingest valid sitemap' do
     # set config file
     config_file = 'test_ingestion_ical.yml'
@@ -64,14 +61,11 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
 
     # check two events to be updated
     name = 'ical_event_1'
-    assert !events(name).nil?, "fixture[#{name}] not found"
-    title = 'P\'Con - Embracing new solutions for in-situ visualisation'
-    url = 'https://pawsey.org.au/event/pcon-embracing-new-solutions-for-in-situ-visualisation/'
-    event = check_event_exists title, url
-    assert !event.nil?, "event title[#{title}] not found"
-    assert !event.online, "event title[#{title}] online not matched"
+    event = events(:ical_event_1)
+    refute event.nil?, "event[#{name}] not found"
+    refute event.online, "event[#{name}] online not matched"
     assert_equal "Another Portal Provider", event.content_provider.title,
-                 "event title[#{title}] content provider not matched"
+                 "event[#{name}] content provider not matched"
 
     name = 'ical_event_2'
     assert !events(name).nil?, "fixture[#{name}] not found"
@@ -96,8 +90,6 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
       Rake::Task['tess:automated_ingestion'].invoke
     end
 
-    puts "Totals events[#{Event.all.size}] "
-
     # post task validation
     added = 4; updated = 2; rejected = 2;
 
@@ -110,7 +102,7 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
 
     # TODO: check added
     title = 'Ask Me Anything: Porous media visualisation and LBPM'
-    event = check_event_exists title,'https://pawsey.org.au/event/ask-me-anything-porous-media-visualisation-and-lbpm/'
+    event = check_event_exists title, 'https://pawsey.org.au/event/ask-me-anything-porous-media-visualisation-and-lbpm/'
     assert event.online, "event title[#{event.title}] online not matched"
     assert (!event.keywords.nil? and event.keywords.size == 2), "event title[#{event.title}] keywords.size not matched"
     assert event.keywords.include?("AMA"), "event title[#{event.title}] keyword[AMA] not found"
@@ -125,7 +117,7 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
       "range of trainings we immerse students in during Week 1 of the Program (and throughout)."
     assert_equal desc.size, event.description.size, "event title[#{event.title}] description.size not matched"
     assert_equal desc, event.description, "event title[#{event.title}] description not matched"
-    assert_equal Time.zone.name , event.timezone.to_s,  "event title[#{event.title}] timezone not matched"
+    assert_equal Time.zone.name, event.timezone.to_s, "event title[#{event.title}] timezone not matched"
     dtstart = Time.zone.parse('2022-02-11 09:45:00')
     dtend = Time.zone.parse('2022-02-11 12:50:00')
     assert_equal dtstart, event.start, "event title[#{event.title}] start not matched"
@@ -147,14 +139,56 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
     # TODO: check updated
     title = 'PaCER Seminar: Computational Fluid Dynamics'
     event = check_event_exists title, 'https://pawsey.org.au/event/pacer-seminar-computational-fluid-dynamics/'
+    assert_equal Time.zone.parse('2022-06-15 11:00:00'), event.end, "event title[#{event.title}] updated end not matched"
+    assert event.description != 'MyText', "event title[#{event.title}] description not updated"
+    assert event.description.size > 100, "event title[#{event.title}] description too short"
+    assert event.online, "event title[#{event.title}] online not matched"
+    assert_equal 2, event.keywords.size, "event title[#{event.title}] keywords size not matched"
+    ['Supercomputing', 'Seminar'].each do |keyword|
+      assert event.keywords.include?(keyword), "event title[#{event.title}] keyword[#{keyword}] not found"
+    end
+    assert_equal 'Online, Virtual, Australia', event.venue, "event title[#{event.title}] venue not matched"
+    assert event.city.nil?, "event title[#{event.title}] city not matched"
+    assert event.postcode.nil?, "event title[#{event.title}] postcode not matched"
+    assert event.country.nil?, "event title[#{event.title}] country not matched"
 
     title = "P'Con - Embracing new solutions for in-situ visualisation"
     event = check_event_exists title, 'https://pawsey.org.au/event/pcon-embracing-new-solutions-for-in-situ-visualisation/'
-
+    assert event.online, "event title[#{event.title}] online not matched"
+    assert_equal 3, event.keywords.size, "event title[#{event.title}] keywords size not matched"
+    ['Supercomputing', 'Conference', 'Visualisation'].each do |keyword|
+      assert event.keywords.include?(keyword), "event title[#{event.title}] keyword[#{keyword}] not found"
+    end
+    assert_equal 'Online, Virtual, Australia', event.venue, "event title[#{event.title}] venue not matched"
+    assert event.postcode.nil?, "event title[#{event.title}] postcode not matched"
+    assert event.city.nil?, "event title[#{event.title}] city not matched"
+    assert event.country.nil?, "event title[#{event.title}] country not matched"
 
     # TODO: check totals
     check_logfile logfile, 'IngestorEventIcal: events added\[4\] updated\[2\] rejected\[2\]'
     assert_equal event_count + added, Event.all.size, 'Post-task: event count not matched'
+
+  end
+
+  test 'check single ical sources' do
+    # set config file
+    config_file = 'test_ingestion_ical_2.yml'
+    logfile = override_config config_file
+    assert_equal 'ical_events_2', TeSS::Config.ingestion[:name]
+    event_count = Event.all.size
+    assert_equal 23, event_count, 'Pre-task: event count not matched.'
+    provider = content_providers :another_portal_provider
+    assert !provider.nil?, "Content Provider not found."
+    Time.zone = 'Australia/Perth'
+
+    # override time
+    freeze_time(stub_time = Time.new(2019)) do ||
+      # run task
+      Rake::Task['tess:automated_ingestion'].invoke
+    end
+
+    assert_equal event_count + 1, Event.all.size, 'Post-task: event count not matched'
+
   end
 
   private

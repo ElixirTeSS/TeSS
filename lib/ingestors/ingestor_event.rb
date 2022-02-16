@@ -74,6 +74,7 @@ class IngestorEvent < Ingestor
     old_event.keywords = new_event.keywords unless old_event.field_locked? :keywords
     old_event.online = new_event.online unless old_event.field_locked? :online
     old_event.city = new_event.city unless old_event.field_locked? :city
+    old_event.postcode = new_event.postcode unless old_event.field_locked? :postcode
     old_event.country = new_event.country unless old_event.field_locked? :country
     old_event.venue = new_event.venue unless old_event.field_locked? :venue
     return old_event
