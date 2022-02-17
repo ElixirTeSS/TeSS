@@ -1,10 +1,11 @@
 require 'ingestors/ingestor_event_csv'
+require 'ingestors/ingestor_event_ical'
 require 'ingestors/ingestor_event_rest'
 require 'ingestors/ingestor_material_csv'
 require 'ingestors/ingestor_material_rest'
 
 class IngestorFactory
-  @@methods = ['csv', 'rest',]
+  @@methods = ['csv', 'ical', 'rest',]
   @@resources = ['event', 'material',]
 
   def self.get_ingestor (method, resource)
@@ -12,6 +13,8 @@ class IngestorFactory
       case [method, resource]
       when ['csv', 'event']
         IngestorEventCsv.new
+      when ['ical', 'event']
+        IngestorEventIcal.new
       when ['csv', 'material']
         IngestorMaterialCsv.new
       when ['rest', 'event']

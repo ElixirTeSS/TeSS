@@ -1,0 +1,32 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Pawsey Supercomputing Centre - ECPv5.1.4//NONSGML v1.0//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Pawsey Supercomputing Centre
+X-ORIGINAL-URL:https://pawsey.org.au
+X-WR-CALDESC:Events for Pawsey Supercomputing Centre
+BEGIN:VTIMEZONE
+TZID:Australia/Perth
+BEGIN:STANDARD
+TZOFFSETFROM:+0800
+TZOFFSETTO:+0800
+TZNAME:AWST
+DTSTART:20210101T000000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+DTSTART;TZID=Australia/Perth:20210705T100000
+DTEND;TZID=Australia/Perth:20210705T110000
+DTSTAMP:20220208T212805
+CREATED:20210608T020138Z
+LAST-MODIFIED:20210610T123551Z
+UID:16031-1625479200-1625482800@pawsey.org.au
+SUMMARY:Ask Me Anything: Porous media visualisation and LBPM
+DESCRIPTION:If you are working on Digital Rock Physics and interested in fluid flow behaviour in Porous Media\, this AMA is for you.  \nPlease join us to discuss Lattice Boltzmann Method for Porous Media (LBPM) and the opportunities for Pawsey researchers.  \nLBPM is one of the most complete derivatives of the Lattice Boltzmann Method (LBM) focusing on porous media providing computational as well as visualisation modules at a micro-scale. LBM is a well-known simulation tool in CFD\, producing highly reliable results.   \nLBPM:  \n\nfocuses on porous media at micro–scale \nis accurate  \nis scalable \nhas features integrated with upscaling tools/techniques in high demand in the oil and gas industry \nis capable of running simulation in CSG/CBM as extremely heterogeneous unconventional reservoirs rocks\nis free and open-source \n\n Is LBPM of interest to the research community working at scale? Join the discussion at this AMA\, and send your questions in advance via the registration form.   \n More information about LBPM: https://github.com/OPM/LBPM  \nRegister here to join this AMA.\nBelow is a sample visualisation derived from open-source data \n\nhttps://pawsey.org.au/wp-content/uploads/2021/06/movie.mp4\n
+URL:https://pawsey.org.au/event/ask-me-anything-porous-media-visualisation-and-lbpm/
+LOCATION:Online\, Virtual\, Australia
+CATEGORIES:AMA,Visualisation
+ATTACH;FMTTYPE=image/png:https://pawsey.org.au/wp-content/uploads/2021/06/porous-material.png
+END:VEVENT
+END:VCALENDAR
