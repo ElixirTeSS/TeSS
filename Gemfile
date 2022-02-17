@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2'
+gem 'rails', '~> 5.2.6.2'
 
 gem "bootsnap", ">= 1.1.0", require: false # New Rails 5.2 default gem
 
@@ -58,7 +58,7 @@ gem 'whenever', '~> 1.0.0'
 
 # These are required for Sidekiq, to look up scientific topics
 gem 'httparty'
-gem 'sidekiq'
+gem 'sidekiq', '~> 6.4.0'
 gem 'slim'
 
 # Use jquery as the JavaScript library
