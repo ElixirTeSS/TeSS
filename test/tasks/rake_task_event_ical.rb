@@ -56,7 +56,7 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
     event_count = Event.all.size
     assert_equal 23, event_count, 'Pre-task: event count not matched.'
     provider = content_providers :another_portal_provider
-    assert !provider.nil?, "Content Provider not found."
+    refute provider.nil?, "Content Provider not found."
     Time.zone = 'Australia/Perth'
 
     # check two events to be updated
@@ -68,12 +68,12 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
                  "event[#{name}] content provider not matched"
 
     name = 'ical_event_2'
-    assert !events(name).nil?, "fixture[#{name}] not found"
+    refute events(name).nil?, "fixture[#{name}] not found"
     title = 'PaCER Seminar: Computational Fluid Dynamics'
     url = 'https://pawsey.org.au/event/pacer-seminar-computational-fluid-dynamics/'
     event = check_event_exists title, url
-    assert !event.nil?, "event title[#{title}] not found"
-    assert !event.online, "event title[#{title}] online not matched"
+    refute event.nil?, "event title[#{title}] not found"
+    refute event.online, "event title[#{title}] online not matched"
     assert_equal "Another Portal Provider", event.content_provider.title,
                  "event title[#{title}] content provider not matched"
     dtstart = Time.zone.parse '2022-06-15 10:00:00'
@@ -81,7 +81,7 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
     # check matches
     matches = Event.where(title: title, url: url, start: dtstart,
                           content_provider: provider)
-    assert !matches.nil?, "matches is nil"
+    refute matches.nil?, "matches is nil"
     assert_equal 1, matches.size, "matches size = #{matches.size}"
 
     # override time
@@ -129,7 +129,7 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
 
     title = 'Overview of High Performance Computing Resources at OLCF'
     event = check_event_exists title, 'https://pawsey.org.au/event/overview-of-high-performance-computing-resources-at-olcf/'
-    assert !event.online, "event title[#{title}] online not matched"
+    refute event.online, "event title[#{title}] online not matched"
     location = 'Pawsey Supercomputing Centre, 1 Bryce Avenue, Kensington, Western Australia, 6151, Australia'
     assert_equal location, event.venue, "event title[#{title}] venue not matched"
     assert_equal 'Kensington', event.city, "event title[#{title}] city not matched"
@@ -178,7 +178,7 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
     event_count = Event.all.size
     assert_equal 23, event_count, 'Pre-task: event count not matched.'
     provider = content_providers :another_portal_provider
-    assert !provider.nil?, "Content Provider not found."
+    refute provider.nil?, "Content Provider not found."
     Time.zone = 'Australia/Perth'
 
     # override time
@@ -187,8 +187,10 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
       Rake::Task['tess:automated_ingestion'].invoke
     end
 
-    assert_equal event_count + 1, Event.all.size, 'Post-task: event count not matched'
-
+    assert_equal event_count, Event.all.size, 'Post-task: event count not matched'
+    assert check_logfile logfile, 'Event title\[Pawsey Intern Showcase 2021\] error: Description can\'t be blank'
+    assert check_logfile logfile, 'IngestorEventIcal: events added\[0\] updated\[0\] rejected\[1\]'
+    assert check_logfile logfile, 'IngestorEventIcal: events added\[0\] updated\[1\] rejected\[0\]'
   end
 
   private
