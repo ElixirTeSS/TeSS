@@ -1,0 +1,33 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Pawsey Supercomputing Centre - ECPv5.1.4//NONSGML v1.0//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Pawsey Supercomputing Centre
+X-ORIGINAL-URL:https://pawsey.org.au
+X-WR-CALDESC:Events for Pawsey Supercomputing Centre
+BEGIN:VTIMEZONE
+TZID:Australia/Perth
+BEGIN:STANDARD
+TZOFFSETFROM:+0800
+TZOFFSETTO:+0800
+TZNAME:AWST
+DTSTART:20200101T000000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+DTSTART;TZID=Australia/Perth:20200417T110000
+DTEND;TZID=Australia/Perth:20200417T120000
+DTSTAMP:20220207T064438
+CREATED:20181010T062119Z
+LAST-MODIFIED:20181010T062119Z
+UID:1393-1523962800-1523966400@pawsey.org.au
+SUMMARY:Overview of High Performance Computing Resources at OLCF
+DESCRIPTION:As part of the International GPU Hackathon\, a series of GPU experts will be visiting Perth from different coordinates. Pawsey is organising a series of talks by representatives from Oak Ridge National Laboratory\, ARM and the University of Illinois. \nTom Papatheodore from Oak Ridge National Laboratory (ORNL) will be giving an overview of their HPC resources at  Oak Ridge Leadership Computing Facility (OLCF). \nThe Oak Ridge Leadership Computing Facility was established at Oak Ridge National Laboratory to accelerate scientific discovery and engineering progress by providing world-leading computational performance and advanced data infrastructure. \nORNL’s supercomputing program has grown from humble beginnings to deliver some of the most powerful systems in the world\, including computing resources like Titan\, a Cray XK7 supercomputer\, and Eos\, a Cray XC30 cluster. \nTom’s presentation will be followed by a light lunch and opportunity to network. Please register your interest on the form below. Registration will close Sunday 15th April. \nAbout Tom Papatheodore:\nTom first joined ORNL as a postdoctoral researcher in the Scientific Computing Group in 2015\, where he worked as a developer of the astrophysics code FLASH. Afterwards\, he continued to work on-site at ORNL as a Solutions Architect for NVIDIA. In 2017\, Tom joined the User Assistance & Outreach group as an HPC User Support Specialist / Programmer. He received his PhD in physics from the University in Tennessee in 2015. His thesis work on Type Ia supernovae was based on simulations performed on OLCF resources (Titan). His interests are in computational astrophysics\, nucleosynthesis\, detonation theory\, GPU programming\, and teaching HPC skills to others. \nRegister your interest below:\n
+URL:https://pawsey.org.au/event/overview-of-high-performance-computing-resources-at-olcf/
+LOCATION:Pawsey Supercomputing Centre\, 1 Bryce Avenue\, Kensington\, Western Australia\, 6151\, Australia
+CATEGORIES:Seminar,Supercomputing
+GEO:-31.9923217;115.8826537
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Pawsey Supercomputing Centre 1 Bryce Avenue Kensington Western Australia 6151 Australia;X-APPLE-RADIUS=500;X-TITLE=1 Bryce Avenue:geo:115.8826537,-31.9923217
+END:VEVENT
+END:VCALENDAR
