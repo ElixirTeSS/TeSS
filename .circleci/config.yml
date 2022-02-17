@@ -8,7 +8,7 @@ jobs:
   build:  
     working_directory: '~/TeSS'
     docker: 
-      - image: circleci/ruby:2.5.8-node
+      - image: cimg/ruby:2.5.8-node
         environment: 
           PGHOST: localhost
           PGUSER: TeSS
