@@ -30,7 +30,11 @@ jobs:
             bundle --version;
             rails --version;
             rake --version;
-            node --version;
+
+      - run:
+          name: install ImageMagick
+          command: |
+            sudo apt-get update && sudo apt-get install -y ImageMagick
       - run:
           name: TeSS tests and coverage reporting
           command: |
