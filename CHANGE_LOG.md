@@ -6,7 +6,13 @@ Deployed: *TBA*
 
 - Updates:
   - [Content Provider: add contact email](https://github.com/nrmay/TeSS/issues/263)
+  - [Auto-Ingestion: iCalendar ingestion](https://github.com/nrmay/TeSS/issues/272)
   - [Auto-Ingestion: material field updates](https://github.com/nrmay/TeSS/issues/305)
+
+
+- Fixes:
+  - [Security: upgrade rails and sidekiq](https://github.com/nrmay/TeSS/issues/309)
+  - [CircleCI: update image](https://github.com/nrmay/TeSS/issues/310)
 
 
 ---
