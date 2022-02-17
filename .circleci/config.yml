@@ -34,7 +34,7 @@ jobs:
       - run:
           name: install ImageMagick
           command: |
-            sudo apt-get update && sudo apt-get install -y ImageMagick
+            sudo apt-get update && sudo apt-get install -y imagemagick
       - run:
           name: TeSS tests and coverage reporting
           command: |
