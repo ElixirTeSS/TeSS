@@ -35,6 +35,18 @@
         switchCostFields($('.event_cost_basis option:selected').val());
     })
 
+    $("#vocab-tree").vocab_widget({
+        mode: 'tree',
+        endpoint: 'https://vocabs.ardc.edu.au/apps/vocab_widget/proxy/',
+        repository: 'anzsrc-for'
+    }).on('treeselect.vocab.ands', function (event) {
+            var target = $(event.target);
+            var data = target.data('vocab');
+            alert('You clicked ' + data.label + '\r\n<' + data.about + '>');
+        });
+
+    $('#vocab-button').tooltip()
+
 </script>
 
 <%= simple_form_for @event, html: { id: 'event_form' } do |f| %>
@@ -116,6 +128,15 @@
 
   <!-- Field: Keywords -->
   <%= f.multi_input :keywords, errors: @event.errors[:keywords], title: t('events.hints.keywords') %>
+
+  <!-- Field: Codes -->
+  <p><strong>ANZSRC Codes</strong></p>
+
+  <button id="vocab-button" type="button" class="btn btn-secondary"
+          data-toggle="tooltip" data-placement="right" title="Add Code" >
+    <div id="vocab-tree"></div>
+  </button>
+  <br/>
 
   <!-- Field: Target Audience -->
   <%= f.multi_input :target_audience, errors: @event.errors[:target_audience], title: t('events.hints.targets') %>
