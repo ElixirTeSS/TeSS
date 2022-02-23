@@ -43,7 +43,6 @@ class IngestorEventRest < IngestorEvent
 
   def process_elixir(data, meta)
     processed = 0
-    puts ">>> results: data.size[#{data.size}] result-count[#{meta['results-count']}]"
 
     # extract materials from results
     unless data.nil? or data.size < 1
