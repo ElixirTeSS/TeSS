@@ -56,6 +56,7 @@ class Event < ApplicationRecord
         EligibilityDictionary.instance.values_for_search(self.eligibility)
       end
       string :keywords, :multiple => true
+      string :fields, :multiple => true
       time :start
       time :end
       time :created_at

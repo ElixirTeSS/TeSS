@@ -334,6 +334,20 @@ module ApplicationHelper
         @template.label_tag(field_id, '', title: 'Lock this field to prevent it being overwritten when automated scrapers are run')
     end
 
+    def tree(name, options = {})
+      # TODO: set existing
+      existing = { }
+      @template.render(partial: 'common/tree', locals: { field_name: name, f: self,
+                                                         model_name: options[:model_name],
+                                                         resource: object,
+                                                         existing: existing,
+                                                         field_label: options[:label],
+                                                         required: options[:required],
+                                                         errors: options[:errors],
+                                                         title: options[:title] })
+
+    end
+
     def dropdown(name, options = {})
       existing_values = object.send(name.to_sym)
       existing = options[:options].select { |label, value| existing_values.include?(value) }

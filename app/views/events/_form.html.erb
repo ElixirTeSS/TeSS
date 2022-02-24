@@ -129,14 +129,8 @@
   <!-- Field: Keywords -->
   <%= f.multi_input :keywords, errors: @event.errors[:keywords], title: t('events.hints.keywords') %>
 
-  <!-- Field: Codes -->
-  <p><strong>ANZSRC Codes</strong></p>
-
-  <button id="vocab-button" type="button" class="btn btn-secondary"
-          data-toggle="tooltip" data-placement="right" title="Add Code" >
-    <div id="vocab-tree"></div>
-  </button>
-  <br/>
+  <!-- Field: Fields -->
+  <%= f.tree :fields, errors: @event.errors[:fields], title: t('events.hints.fields') %>
 
   <!-- Field: Target Audience -->
   <%= f.multi_input :target_audience, errors: @event.errors[:target_audience], title: t('events.hints.targets') %>

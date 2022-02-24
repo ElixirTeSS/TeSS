@@ -1,0 +1,83 @@
+<%#
+PARAMETERS:
+    f           - the form
+    resources   - the object you wish to modify, e.g. Event id: 99.
+    field_label - the label shown in the view above the field.
+    field_name  - the name of the form field, e.g. "fields"
+    existing    - existing values
+    source      - the source div id
+
+Example Usage
+    render partial: 'common/tree',
+           locals: { f: f,
+                    resource: @event,
+                    field_label: 'FoR Codes',
+                    field_name: 'fields',
+                    existing: @event.fields
+                    source: 'vocab-tree'
+            }
+%>
+
+<%
+  model_name ||= resource.class.name.underscore # e.g. event
+  existing ||= resource.send(field_name.pluralize)
+
+  # show the required label?
+  required ||= false
+
+  # name for the toggle button, default is 'Add <field_name>'
+  field_label ||= field_name.capitalize unless field_name.blank?
+
+  # set dropdown button
+  dropdown_toggle_button_name ||= ''
+  if dropdown_toggle_button_name.blank?
+    dropdown_toggle_button_name = "Add #{field_name.to_s.sub(/_ids?\z/, '').humanize}"
+  end
+
+  # check error count
+  errors ||= []
+
+  # check title
+  title ||= ''
+
+%>
+
+<div class="form-group<%= 'has-error' if errors.size > 0 %>">
+  <% if required %>
+    <label class="control-label string required">
+      <abbr title="required">*</abbr>
+    </label>
+  <% end %>
+
+  <%= f.label field_label, class: 'control-label' %>
+  <%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
+  <%= f.error field_name.to_sym %>
+
+  <div data-field="<%= field_name %>" data-model="<%= model_name %>" title='<%= title %>'>
+    <%# display existing ones %>
+    <ul class="<%= field_name %>">
+      <%# have one empty one so something is always passed when the event listener triggers %>
+      <input name="<%= model_name %>[<%= field_name %>][]" value="" type="hidden"/>
+      <% existing.each do |r| %>
+        <li>
+          <%= r[0] %>
+          <input type="hidden" data-field="<%= field_name %>" name="<%= model_name %>[<%= field_name %>][]" value="<%= r[1] %>"/>
+          <input type="button" value="<%= "&times;".html_safe %>" class="dropdown-option-delete"
+                 data-field="<%= field_name %>" data-model='<%= model_name %>'
+                 data-value="<%= r[1] %>" data-name="<%= r[0] %>"/>
+        </li>
+      <% end %>
+    </ul>
+
+    <div class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <%= dropdown_toggle_button_name %>
+        <span class="caret"></span>
+      </button>
+      <div class="dropdown-menu">
+        <div id="vocab-tree"></div>
+      </div>
+    </div>
+  </div>
+
+</div>

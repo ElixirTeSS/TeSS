@@ -332,6 +332,7 @@ en-AU:
       eligibility: 'Who can attend the training event?'
       end: 'When does the event end?'
       event_type: 'Select the most appropriate event type for the training event.'
+      fields: 'Select Fields of Research to better classify your event.'
       hosts: ''
       keywords: "Provide words or terms that clearly identify the training event's topics."
       materials: 'Add any training materials that are associated with the training event.'
