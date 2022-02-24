@@ -77,6 +77,7 @@ class ActiveSupport::TestCase
 
   def mock_ingestions
     events_file = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'events.csv'))
+    events_nci_file = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'events_NCI.csv'))
     materials_file = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'materials.csv'))
     zenodo_ardc_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_ardc.json'))
     zenodo_ardc_2_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_ardc_2.json'))
@@ -98,6 +99,8 @@ class ActiveSupport::TestCase
     # 200 - success
     WebMock.stub_request(:get, 'https://app.com/events.csv').
       to_return(:status => 200, :headers => {}, :body => events_file)
+    WebMock.stub_request(:get, 'https://raw.githubusercontent.com/nci900/NCI_feed_to_DReSA/master/event_NCI.csv').
+      to_return(:status => 200, :headers => {}, :body => events_nci_file)
     WebMock.stub_request(:get, 'https://app.com/materials.csv').
       to_return(:status => 200, :headers => {}, :body => materials_file)
     WebMock.stub_request(:get, 'https://app.com/events/event3.html').
