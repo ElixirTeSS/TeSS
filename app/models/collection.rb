@@ -1,13 +1,13 @@
-class Package < ApplicationRecord
+class Collection < ApplicationRecord
   include PublicActivity::Model
   include LogParameterChanges
   include Searchable
   include HasFriendlyId
 
-  has_many :package_materials
-  has_many :package_events
-  has_many :materials, through: :package_materials
-  has_many :events, through: :package_events
+  has_many :collection_materials
+  has_many :collection_events
+  has_many :materials, through: :collection_materials
+  has_many :events, through: :collection_events
 
   #has_one :owner, foreign_key: "id", class_name: "User"
   belongs_to :user
@@ -21,7 +21,7 @@ class Package < ApplicationRecord
   clean_array_fields(:keywords)
   update_suggestions(:keywords)
 
-  has_image(placeholder: 'placeholder-package.png')
+  has_image(placeholder: 'placeholder-collection.png')
 
   if TeSS::Config.solr_enabled
     # :nocov:
@@ -47,7 +47,7 @@ class Package < ApplicationRecord
     # :nocov:
   end
 
-  #Overwrites a packages materials and events.
+  #Overwrites a collections materials and events.
   #[] or nil will delete
   def update_resources_by_id(materials=[], events=[])
     self.update_attribute('materials', materials.uniq.collect{|materials| Material.find_by_id(materials)}.compact) if materials
