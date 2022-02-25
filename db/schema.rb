@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_14_084942) do
+ActiveRecord::Schema.define(version: 2022_02_25_101512) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,24 @@ ActiveRecord::Schema.define(version: 2019_08_14_084942) do
     t.string "resource_type"
     t.index ["resource_type", "resource_id"], name: "index_collaborations_on_resource_type_and_resource_id"
     t.index ["user_id"], name: "index_collaborations_on_user_id"
+  end
+
+  create_table "collections", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.text "image_url"
+    t.boolean "public", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.string "slug"
+    t.string "keywords", default: [], array: true
+    t.string "image_file_name"
+    t.string "image_content_type"
+    t.integer "image_file_size"
+    t.datetime "image_updated_at"
+    t.index ["slug"], name: "index_collections_on_slug", unique: true
+    t.index ["user_id"], name: "index_collections_on_user_id"
   end
 
   create_table "content_providers", force: :cascade do |t|
@@ -263,24 +281,6 @@ ActiveRecord::Schema.define(version: 2019_08_14_084942) do
     t.index ["package_id"], name: "index_package_materials_on_package_id"
   end
 
-  create_table "packages", force: :cascade do |t|
-    t.string "title"
-    t.text "description"
-    t.text "image_url"
-    t.boolean "public", default: true
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "user_id"
-    t.string "slug"
-    t.string "keywords", default: [], array: true
-    t.string "image_file_name"
-    t.string "image_content_type"
-    t.integer "image_file_size"
-    t.datetime "image_updated_at"
-    t.index ["slug"], name: "index_packages_on_slug", unique: true
-    t.index ["user_id"], name: "index_packages_on_user_id"
-  end
-
   create_table "profiles", force: :cascade do |t|
     t.text "firstname"
     t.text "surname"
@@ -424,6 +424,7 @@ ActiveRecord::Schema.define(version: 2019_08_14_084942) do
   add_foreign_key "bans", "users"
   add_foreign_key "bans", "users", column: "banner_id"
   add_foreign_key "collaborations", "users"
+  add_foreign_key "collections", "users"
   add_foreign_key "content_providers", "nodes"
   add_foreign_key "content_providers", "users"
   add_foreign_key "event_materials", "events"
@@ -433,7 +434,6 @@ ActiveRecord::Schema.define(version: 2019_08_14_084942) do
   add_foreign_key "materials", "users"
   add_foreign_key "node_links", "nodes"
   add_foreign_key "nodes", "users"
-  add_foreign_key "packages", "users"
   add_foreign_key "staff_members", "nodes"
   add_foreign_key "stars", "users"
   add_foreign_key "subscriptions", "users"
