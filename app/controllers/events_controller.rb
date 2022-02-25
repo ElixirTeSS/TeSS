@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_packages, :add_term, :reject_term,
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_collections, :add_term, :reject_term,
                                    :redirect, :report, :update_report, :add_data, :reject_data]
   before_action :set_breadcrumbs
   before_action :disable_pagination, only: :index, if: lambda { |controller| controller.request.format.ics? or controller.request.format.csv? }
@@ -133,22 +133,22 @@ class EventsController < ApplicationController
     end
   end
 
-  # POST /events/1/update_packages
-  # POST /events/1/update_packages.json
-  def update_packages
-    # Go through each selected package
+  # POST /events/1/update_collections
+  # POST /events/1/update_collections.json
+  def update_collections
+    # Go through each selected collection
     # and update its resources to include this one.
-    # Go through each other package
-    packages = params[:event][:package_ids].select{|p| !p.blank?}
-    packages = packages.collect{|package| Package.find_by_id(package)}
-    packages_to_remove = @event.packages - packages
-    packages.each do |package|
-      package.update_resources_by_id(nil, (package.events + [@event.id]).uniq)
+    # Go through each other collection
+    collections = params[:event][:collection_ids].select{|p| !p.blank?}
+    collections = collections.collect{|collection| collection.find_by_id(collection)}
+    collections_to_remove = @event.collections - collections
+    collections.each do |collection|
+      collection.update_resources_by_id(nil, (collection.events + [@event.id]).uniq)
     end
-    packages_to_remove.each do |package|
-      package.update_resources_by_id(nil, (package.events.collect{|x| x.id} - [@event.id]).uniq)
+    collections_to_remove.each do |collection|
+      collection.update_resources_by_id(nil, (collection.events.collect{|x| x.id} - [@event.id]).uniq)
     end
-    flash[:notice] = "Event has been included in #{pluralize(packages.count, 'package')}"
+    flash[:notice] = "Event has been included in #{pluralize(collections.count, 'collection')}"
     redirect_to @event
   end
 
@@ -175,7 +175,7 @@ class EventsController < ApplicationController
                                   {:operation_uris => []}, {:event_types => []},
                                   {:keywords => []}, :start, :end, { sponsors: [] }, :online, :for_profit, :venue,
                                   :city, :county, :country, :postcode, :latitude, :longitude, :timezone,
-                                  :content_provider_id, {:package_ids => []}, {:node_ids => []}, {:node_names => []},
+                                  :content_provider_id, {:collection_ids => []}, {:node_ids => []}, {:node_names => []},
                                   {:target_audience => []}, {:eligibility => []},
                                   {:host_institutions => []}, :capacity, :contact,
                                   external_resources_attributes: [:id, :url, :title, :_destroy], material_ids: [],
