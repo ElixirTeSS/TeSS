@@ -1,0 +1,70 @@
+<div class="wrapper collapsing-wrapper">
+  <%# SIDEBAR %>
+  <div class="collapsing-sidebar" id="sidebar">
+    <%= render :partial => "collections/partials/collection_info", :locals => {:collection => @collection} %>
+  </div>
+  <div id="content">
+    <div class="row">
+      <div class="content_action">
+        <%= link_to t('.back', :default => t("helpers.links.back")),
+                    collections_path, :class => 'btn btn-info' %>
+        <% if !current_user.nil? and policy(@collection).update? %>
+            <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                        edit_collection_path(@collection), :class => 'btn btn-primary' %>
+        <% end %>
+        <% if !current_user.nil? and policy(@collection).destroy? %>
+            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                        collection_path(@collection),
+                        :method => 'delete',
+                        :data => {:confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?'))},
+                        :class => 'btn btn-danger' %>
+        <% end %>
+      </div>
+    </div>
+    <div class="row">
+      <ul class="nav nav-tabs">
+        <%= tab('Materials', icon_class_for_model('materials'), 'materials', active: @collection.materials.any? || @collection.events.none?,
+                disabled: { check: @collection.materials.none?, message: 'No associated training materials' },
+                count: @collection.materials.count) %>
+
+        <%= tab('Events', icon_class_for_model('events'), 'events', active: @collection.materials.none? && @collection.events.any?,
+                disabled: { check: @collection.events.none?, message: 'No associated events' },
+                count: @collection.events.count) %>
+
+        <%= tab('Activity log', icon_class_for_model('activity_logs'), 'activity_log',
+                disabled: { check: @collection.activities.none?, message: 'No activities recorded' }) %>
+      </ul>
+    </div>
+
+    <div class="tab-content">
+      <div id="materials" class="tab-pane fade <%= 'in active' if @collection.materials.any? || @collection.events.none? %>">
+        <div class="row">
+          <div class="search-results-count">
+            <%= pluralize(@collection.materials.count, 'training material') %> found
+          </div>
+          <% @collection.materials.each do |material| %>
+              <%= render material %>
+          <% end %>
+        </div>
+      </div>
+      <div id="events" class="tab-pane fade <%= 'in active' if @collection.materials.none? && @collection.events.any? %>">
+        <div class="row">
+          <div class="search-results-count">
+            <%= pluralize(@collection.events.count, 'event') %> found
+          </div>
+          <% unless @collection.events.count == 0 %>
+              <div class="masonry media-grid">
+                <% @collection.events.each do |event| %>
+                    <%= render event %>
+                <% end %>
+              </div>
+          <% end %>
+        </div>
+      </div>
+      <div id="activity_log" class="tab-pane fade" data-activity-path="<%= collection_activities_path(@collection) -%>">
+        <%= image_tag('ajax-loader.gif') %>
+      </div>
+    </div>
+  </div>
+</div>
+
