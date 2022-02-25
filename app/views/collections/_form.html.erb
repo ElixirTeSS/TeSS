@@ -1,6 +1,6 @@
-<%= simple_form_for @Collection, html: { class: 'content_provider', multipart: true } do |f| %>
+<%= simple_form_for @collection, html: { class: 'content_provider', multipart: true } do |f| %>
 
-    <%= render partial: 'common/error_summary', locals: { resource: @Collection } %>
+    <%= render partial: 'common/error_summary', locals: { resource: @collection } %>
 
     <%= f.input :title %>
 

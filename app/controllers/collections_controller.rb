@@ -69,7 +69,7 @@ class CollectionsController < ApplicationController
     @collection.create_activity :destroy, owner: current_user
     @collection.destroy
     respond_to do |format|
-      format.html { redirect_to Collections_url, notice: 'Collection was successfully destroyed.' }
+      format.html { redirect_to collections_url, notice: 'Collection was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
