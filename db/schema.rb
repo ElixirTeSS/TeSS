@@ -51,6 +51,26 @@ ActiveRecord::Schema.define(version: 2022_02_25_101512) do
     t.index ["user_id"], name: "index_collaborations_on_user_id"
   end
 
+  create_table "collection_events", id: false, force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "package_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "id"
+    t.index ["event_id"], name: "index_collection_events_on_event_id"
+    t.index ["package_id"], name: "index_collection_events_on_package_id"
+  end
+
+  create_table "collection_materials", id: false, force: :cascade do |t|
+    t.integer "material_id"
+    t.integer "package_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "id"
+    t.index ["material_id"], name: "index_collection_materials_on_material_id"
+    t.index ["package_id"], name: "index_collection_materials_on_package_id"
+  end
+
   create_table "collections", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -259,26 +279,6 @@ ActiveRecord::Schema.define(version: 2022_02_25_101512) do
     t.index ["field"], name: "index_ontology_term_links_on_field"
     t.index ["resource_type", "resource_id"], name: "index_ontology_term_links_on_resource_type_and_resource_id"
     t.index ["term_uri"], name: "index_ontology_term_links_on_term_uri"
-  end
-
-  create_table "package_events", id: false, force: :cascade do |t|
-    t.integer "event_id"
-    t.integer "package_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "id"
-    t.index ["event_id"], name: "index_package_events_on_event_id"
-    t.index ["package_id"], name: "index_package_events_on_package_id"
-  end
-
-  create_table "package_materials", id: false, force: :cascade do |t|
-    t.integer "material_id"
-    t.integer "package_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "id"
-    t.index ["material_id"], name: "index_package_materials_on_material_id"
-    t.index ["package_id"], name: "index_package_materials_on_package_id"
   end
 
   create_table "profiles", force: :cascade do |t|
