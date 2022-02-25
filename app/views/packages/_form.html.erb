@@ -22,7 +22,7 @@
     <%= f.autocompleter :events %>
 
     <div class="form-group actions">
-      <%= f.submit ( f.object.new_record? ? "Create" : "Update") + " package", :class => 'btn btn-primary' %>
+      <%= f.submit ( f.object.new_record? ? "Create" : "Update") + " collection", :class => 'btn btn-primary' %>
       <%= link_to 'Back', packages_path, :class=>"btn btn-info" %>
       <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                   packages_path, :class => 'btn btn-default' %>

@@ -8,10 +8,10 @@
   <div id="content">
     <div class="row">
       <%= link_to new_package_path, :class=>"btn btn-primary" do %>
-          <i class="fa fa-plus-square"></i> Create package
+          <i class="fa fa-plus-square"></i> Create collection
       <% end %>
       <div class="pull-right">
-        <%= info_button('What are packages in TeSS?') do %>
+        <%= info_button('What are collections in TeSS?') do %>
             <%= render_markdown(PackagesHelper::PACKAGES_INFO) %>
         <% end %>
       </div>
