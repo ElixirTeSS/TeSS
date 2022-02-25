@@ -120,7 +120,8 @@ class Event < ApplicationRecord
   validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true }
   #validates :duration, format: { with: /\A[0-9][0-9]:[0-5][0-9]\z/, message: "must be in format HH:MM" }, allow_blank: true
   validate :allowed_url
-  clean_array_fields(:keywords, :event_types, :target_audience, :eligibility, :host_institutions, :sponsors)
+  clean_array_fields(:keywords, :fields, :event_types, :target_audience,
+                     :eligibility, :host_institutions, :sponsors)
   update_suggestions(:keywords, :target_audience, :host_institutions)
 
   # These fields should not been shown to users unless they have sufficient privileges
@@ -191,7 +192,7 @@ class Event < ApplicationRecord
 
   def self.facet_fields
     field_list = %w( online event_types venue city country organizer target_audience keywords eligibility
-                     content_provider user )
+                     content_provider user fields )
     field_list.append('operations') unless TeSS::Config.feature['disabled'].include? 'operations'
     field_list.append('scientific_topics') unless TeSS::Config.feature['disabled'].include? 'topics'
     field_list.append('sponsors') unless TeSS::Config.feature['disabled'].include? 'sponsors'

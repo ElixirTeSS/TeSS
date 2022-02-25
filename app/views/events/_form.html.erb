@@ -33,19 +33,7 @@
 
     $(document).on('ready turbolinks:load', function () {
         switchCostFields($('.event_cost_basis option:selected').val());
-    })
-
-    $("#vocab-tree").vocab_widget({
-        mode: 'tree',
-        endpoint: 'https://vocabs.ardc.edu.au/apps/vocab_widget/proxy/',
-        repository: 'anzsrc-for'
-    }).on('treeselect.vocab.ands', function (event) {
-            var target = $(event.target);
-            var data = target.data('vocab');
-            alert('You clicked ' + data.label + '\r\n<' + data.about + '>');
-        });
-
-    $('#vocab-button').tooltip()
+    });
 
 </script>
 
@@ -81,6 +69,13 @@
   <%= f.input :description, as: :markdown_area, input_html: { rows: '5', title: t('events.hints.description') },
               field_lock: true %>
 
+  <!-- Field: Fields -->
+  <%= f.tree :fields, errors: @event.errors[:fields],
+             title: t('events.hints.fields'),
+             field_name: 'fields',
+             field_label: 'Fields of Research',
+             button_label: 'FoRs' %>
+
   <!-- Field: URL -->
   <%= render partial: 'common/url_checker',
              locals: { f: f, url: events_check_exists_path, title: t('events.hints.url') } %>
@@ -113,8 +108,12 @@
               input_html: { title: t('events.hints.timezone') } %>
 
   <!-- Field: Eligibility -->
-  <%= f.dropdown :eligibility, options: EligibilityDictionary.instance.options_for_select, label: 'Eligibility',
-                 required: true, errors: @event.errors[:eligibility], title: t('events.hints.eligibility') %>
+  <%= f.dropdown :eligibility,
+                 options: EligibilityDictionary.instance.options_for_select,
+                 label: 'Eligibility',
+                 required: true,
+                 errors: @event.errors[:eligibility],
+                 title: t('events.hints.eligibility') %>
 
   <!-- Field: Organiser -->
   <%= f.input :organizer, field_lock: true, label: 'Organiser', input_html: { title: t('events.hints.organizer') } %>
@@ -127,10 +126,8 @@
                     title: t('events.hints.hosts') %>
 
   <!-- Field: Keywords -->
-  <%= f.multi_input :keywords, errors: @event.errors[:keywords], title: t('events.hints.keywords') %>
-
-  <!-- Field: Fields -->
-  <%= f.tree :fields, errors: @event.errors[:fields], title: t('events.hints.fields') %>
+  <%= f.multi_input :keywords, errors: @event.errors[:keywords],
+                    title: t('events.hints.keywords') %>
 
   <!-- Field: Target Audience -->
   <%= f.multi_input :target_audience, errors: @event.errors[:target_audience], title: t('events.hints.targets') %>

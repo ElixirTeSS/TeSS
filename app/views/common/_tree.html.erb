@@ -11,14 +11,39 @@ Example Usage
     render partial: 'common/tree',
            locals: { f: f,
                     resource: @event,
-                    field_label: 'FoR Codes',
+                    button_label: 'Fields',
+                    field_label: 'Fields',
                     field_name: 'fields',
-                    existing: @event.fields
+                    existing: @event.fields,
                     source: 'vocab-tree'
             }
 %>
 
+<script>
+    // initialize the tree
+    $("#vocab-tree").vocab_widget({
+        mode: 'tree',
+        endpoint: 'https://vocabs.ardc.edu.au/apps/vocab_widget/proxy/',
+        repository: 'anzsrc-for'
+    });
+
+    // show in tooltip
+    $('#vocab-button').tooltip()
+
+    // select item
+    $("#vocab-tree").on('treeselect.vocab.ands', function (event) {
+        var data = $(event.target).data('vocab')
+
+        if (data.label !== '') {
+            var field_name = $("#vocab-tree").attr('data-field');
+            var model_name = $("#vocab-tree").attr('data-model');
+            add_selected_dropdown_item(model_name, field_name, data.label, data.label);
+        }
+    })
+</script>
+
 <%
+  field_name ||= ''
   model_name ||= resource.class.name.underscore # e.g. event
   existing ||= resource.send(field_name.pluralize)
 
@@ -29,9 +54,9 @@ Example Usage
   field_label ||= field_name.capitalize unless field_name.blank?
 
   # set dropdown button
-  dropdown_toggle_button_name ||= ''
-  if dropdown_toggle_button_name.blank?
-    dropdown_toggle_button_name = "Add #{field_name.to_s.sub(/_ids?\z/, '').humanize}"
+  button_label ||= ''
+  if button_label.blank?
+    button_label = "Add #{field_name.to_s.sub(/_ids?\z/, '').humanize}"
   end
 
   # check error count
@@ -53,16 +78,21 @@ Example Usage
   <%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
   <%= f.error field_name.to_sym %>
 
-  <div data-field="<%= field_name %>" data-model="<%= model_name %>" title='<%= title %>'>
+  <div data-field="<%= field_name %>"
+       data-model="<%= model_name %>"
+       title='<%= title %>'>
     <%# display existing ones %>
     <ul class="<%= field_name %>">
-      <%# have one empty one so something is always passed when the event listener triggers %>
+      <%# have one empty so at least one is passed when the event listener triggers %>
       <input name="<%= model_name %>[<%= field_name %>][]" value="" type="hidden"/>
       <% existing.each do |r| %>
         <li>
           <%= r[0] %>
-          <input type="hidden" data-field="<%= field_name %>" name="<%= model_name %>[<%= field_name %>][]" value="<%= r[1] %>"/>
-          <input type="button" value="<%= "&times;".html_safe %>" class="dropdown-option-delete"
+          <input type="hidden" data-field="<%= field_name %>"
+                 name="<%= model_name %>[<%= field_name %>][]"
+                 value="<%= r[1] %>"/>
+          <input type="button" value="<%= "&times;".html_safe %>"
+                 class="dropdown-option-delete"
                  data-field="<%= field_name %>" data-model='<%= model_name %>'
                  data-value="<%= r[1] %>" data-name="<%= r[0] %>"/>
         </li>
@@ -70,14 +100,19 @@ Example Usage
     </ul>
 
     <div class="dropdown">
-      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        <%= dropdown_toggle_button_name %>
+      <button class="btn btn-default dropdown-toggle" type="button"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <%= button_label %>
         <span class="caret"></span>
       </button>
       <div class="dropdown-menu">
-        <div id="vocab-tree"></div>
+        <div id="vocab-tree"
+             data-field="<%= field_name %>"
+             data-model="<%= model_name %>">
+        </div>
       </div>
     </div>
+
   </div>
 
 </div>
