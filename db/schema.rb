@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_25_101512) do
+ActiveRecord::Schema.define(version: 2022_02_25_150608) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,22 +53,22 @@ ActiveRecord::Schema.define(version: 2022_02_25_101512) do
 
   create_table "collection_events", id: false, force: :cascade do |t|
     t.integer "event_id"
-    t.integer "package_id"
+    t.integer "collection_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "id"
+    t.index ["collection_id"], name: "index_collection_events_on_collection_id"
     t.index ["event_id"], name: "index_collection_events_on_event_id"
-    t.index ["package_id"], name: "index_collection_events_on_package_id"
   end
 
   create_table "collection_materials", id: false, force: :cascade do |t|
     t.integer "material_id"
-    t.integer "package_id"
+    t.integer "collection_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "id"
+    t.index ["collection_id"], name: "index_collection_materials_on_collection_id"
     t.index ["material_id"], name: "index_collection_materials_on_material_id"
-    t.index ["package_id"], name: "index_collection_materials_on_package_id"
   end
 
   create_table "collections", force: :cascade do |t|
