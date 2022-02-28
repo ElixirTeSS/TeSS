@@ -1,4 +1,4 @@
-<div itemscope itemtype="http://schema.org/CreativeWork">
+<div itemscope itemtype="http://schema.org/TrainingMaterial">
   <%= content_tag :span, material.title, {itemprop: 'name', content: material.title, class: 'schemaorg-element'} %>
   <%= content_tag :span, material.url, {itemprop: 'url', content: material.url, class: 'schemaorg-element'} %>
   <%= content_tag :span, material_url(material), {itemprop: 'sameAs', content: material_url(material), class: 'schemaorg-element' } %>
@@ -26,11 +26,9 @@
 
   <%  if material.scientific_topics and not material.scientific_topics.empty? %>
       <% material.scientific_topics.each do |scientific_topic| %>
-        <%= content_tag 'span', scientific_topic.preferred_label,
-                        {itemprop: 'genre',
-                         content: scientific_topic.preferred_label,
-                         class: 'schemaorg-element'
-                        } %>
+        <span itemscope itemprop='about' itemtype="http://schema.org/DefinedTerm">
+            <%= content_tag 'span', scientific_topic.uri, {itemprop: 'name', content: scientific_topic.uri, class: 'schemaorg-element'} %>
+        </span>
       <% end %>
   <% end %>
 
