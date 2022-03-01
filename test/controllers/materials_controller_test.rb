@@ -621,41 +621,41 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_response 401
   end
 
-  test 'should add material to multiple packages' do
+  test 'should add material to multiple collections' do
     sign_in @material.user
-    package1 = packages(:one)
-    package1_material_count = package1.materials.count
-    package2 = packages(:two)
-    @material.packages = []
+    collection1 = collections(:one)
+    collection1_material_count = collection1.materials.count
+    collection2 = collections(:two)
+    @material.collections = []
     @material.save!
-    assert_difference('@material.packages.count', 2) do
-      post :update_packages, params: {
+    assert_difference('@material.collections.count', 2) do
+      post :update_collections, params: {
           id: @material.id,
           material: {
-              package_ids: [package1.id, package2.id]
+              collection_ids: [collection1.id, collection2.id]
           }
       }
     end
-    assert_in_delta(package1.materials.count, package1_material_count, 1)
+    assert_in_delta(collection1.materials.count, collection1_material_count, 1)
   end
 
-  test 'should remove material from packages' do
+  test 'should remove material from collections' do
     sign_in @material.user
-    package1 = packages(:one)
-    package1_material_count = package1.materials.count
-    package2 = packages(:two)
-    @material.packages << [package1, package2]
+    collection1 = collections(:one)
+    collection1_material_count = collection1.materials.count
+    collection2 = collections(:two)
+    @material.collections << [collection1, collection2]
     @material.save
 
-    assert_difference('@material.packages.count', -2) do
-      post :update_packages, params: {
+    assert_difference('@material.collections.count', -2) do
+      post :update_collections, params: {
           id: @material.id,
           material: {
-              package_ids: ['']
+              collection_ids: ['']
           }
       }
     end
-    assert_in_delta(package1.materials.count, package1_material_count, 1)
+    assert_in_delta(collection1.materials.count, collection1_material_count, 1)
   end
 
   test 'should add external resource to material' do
