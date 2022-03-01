@@ -73,25 +73,25 @@ class CollectionsControllerTest < ActionController::TestCase
   end
 
   #CREATE TEST
-  test 'should create collections for user' do
+  test 'should create collection for user' do
     sign_in users(:regular_user)
     assert_difference('Collection.count') do
-      post :create, params: { collections: { title: @collection.title, image_url: @collection.image_url, description: @collection.description } }
+      post :create, params: { collection: { title: @collection.title, image_url: @collection.image_url, description: @collection.description } }
     end
-    assert_redirected_to collections_path(assigns(:collections))
+    assert_redirected_to collection_path(assigns(:collection))
   end
 
-  test 'should create collections for admin' do
+  test 'should create collection for admin' do
     sign_in users(:admin)
     assert_difference('Collection.count') do
-      post :create, params: { collections: { title: @collection.title, image_url: @collection.image_url, description: @collection.description } }
+      post :create, params: { collection: { title: @collection.title, image_url: @collection.image_url, description: @collection.description } }
     end
-    assert_redirected_to collections_path(assigns(:collections))
+    assert_redirected_to collection_path(assigns(:collection))
   end
 
-  test 'should not create collections for non-logged in user' do
+  test 'should not create collection for non-logged in user' do
     assert_no_difference('Collection.count') do
-      post :create, params: { collections: { title: @collection.title, image_url: @collection.image_url, description: @collection.description } }
+      post :create, params: { collection: { title: @collection.title, image_url: @collection.image_url, description: @collection.description } }
     end
     assert_redirected_to new_user_session_path
   end
@@ -100,20 +100,20 @@ class CollectionsControllerTest < ActionController::TestCase
   test 'should show collections' do
     get :show, params: { id: @collection }
     assert_response :success
-    assert assigns(:collections)
+    assert assigns(:collection)
   end
 
   test 'should show collections as json' do
     get :show, params: { id: @collection, format: :json }
     assert_response :success
-    assert assigns(:collections)
+    assert assigns(:collection)
   end
 
   #UPDATE TEST
   test 'should update collections' do
     sign_in @collection.user
-    patch :update, params: { id: @collection, collections: @updated_collection }
-    assert_redirected_to collections_path(assigns(:collections))
+    patch :update, params: { id: @collection, collection: @updated_collection }
+    assert_redirected_to collection_path(assigns(:collection))
   end
 
   #DESTROY TEST
@@ -122,7 +122,7 @@ class CollectionsControllerTest < ActionController::TestCase
     assert_difference('Collection.count', -1) do
       delete :destroy, params: { id: @collection }
     end
-    assert_redirected_to collectiond_path
+    assert_redirected_to collections_path
   end
 
   test 'should destroy collections when administrator' do
@@ -130,7 +130,7 @@ class CollectionsControllerTest < ActionController::TestCase
     assert_difference('Collection.count', -1) do
       delete :destroy, params: { id: @collection }
     end
-    assert_redirected_to collectiond_path
+    assert_redirected_to collections_path
   end
 
   test 'should not destroy collections not owned by user' do
@@ -153,7 +153,7 @@ class CollectionsControllerTest < ActionController::TestCase
     end
   end
 
-  test 'breadcrumbs for showing collections' do
+  test 'breadcrumbs for showing collection' do
     get :show, params: { :id => @collection }
     assert_response :success
     assert_select 'div.breadcrumbs', :text => /Home/, :count => 1 do
@@ -165,7 +165,7 @@ class CollectionsControllerTest < ActionController::TestCase
     end
   end
 
-  test 'breadcrumbs for editing collections' do
+  test 'breadcrumbs for editing collection' do
     sign_in users(:admin)
     get :edit, params: { id: @collection }
     assert_response :success
@@ -175,13 +175,13 @@ class CollectionsControllerTest < ActionController::TestCase
         assert_select 'a[href=?]', collections_url, :count => 1
       end
       assert_select 'li', :text => /#{@collection.title}/, :count => 1 do
-        assert_select 'a[href=?]', collections_url(@collection), :count => 1
+        assert_select 'a[href=?]', collection_url(@collection), :count => 1
       end
       assert_select 'li[class=active]', :text => /Edit/, :count => 1
     end
   end
 
-  test 'breadcrumbs for creating new collections' do
+  test 'breadcrumbs for creating new collection' do
     sign_in users(:regular_user)
     get :new
     assert_response :success
@@ -195,7 +195,7 @@ class CollectionsControllerTest < ActionController::TestCase
   end
 
   #OTHER CONTENT
-  test 'collections has correct tabs' do
+  test 'collection has correct tabs' do
     get :show, params: { :id => @collection }
     assert_response :success
     assert_select 'ul.nav-tabs' do
@@ -214,95 +214,95 @@ class CollectionsControllerTest < ActionController::TestCase
     end
   end
 
-  test 'collections has correct layout' do
+  test 'collection has correct layout' do
     get :show, params: { :id => @collection }
     assert_response :success
     assert_select 'div.search-results-count', :count => 2 #Has results
     assert_select 'a.btn-info', :text => 'Back', :count => 1 #No Edit
     #Should not show when not logged in
-    assert_select 'a.btn-primary[href=?]', edit_collections_path(@collection), :count => 0 #No Edit
-    assert_select 'a.btn-danger[href=?]', collections_path(@collection), :count => 0 #No Edit
+    assert_select 'a.btn-primary[href=?]', edit_collection_path(@collection), :count => 0 #No Edit
+    assert_select 'a.btn-danger[href=?]', collection_path(@collection), :count => 0 #No Edit
 
   end
 
   test 'do not show action buttons when not owner or admin' do
     sign_in users(:another_regular_user)
     get :show, params: { :id => @collection }
-    assert_select 'a.btn-primary[href=?]', edit_collections_path(@collection), :count => 0 #No Edit
-    assert_select 'a.btn-danger[href=?]', collections_path(@collection), :count => 0 #No Edit
+    assert_select 'a.btn-primary[href=?]', edit_collection_path(@collection), :count => 0 #No Edit
+    assert_select 'a.btn-danger[href=?]', collection_path(@collection), :count => 0 #No Edit
   end
 
   test 'show action buttons when owner' do
     sign_in @collection.user
     get :show, params: { :id => @collection }
-    assert_select 'a.btn-primary[href=?]', edit_collections_path(@collection), :count => 1
-    assert_select 'a.btn-danger[href=?]', collections_path(@collection), :text => 'Delete', :count => 1
+    assert_select 'a.btn-primary[href=?]', edit_collection_path(@collection), :count => 1
+    assert_select 'a.btn-danger[href=?]', collection_path(@collection), :text => 'Delete', :count => 1
   end
 
   test 'show action buttons when admin' do
     sign_in users(:admin)
     get :show, params: { :id => @collection }
-    assert_select 'a.btn-primary[href=?]', edit_collections_path(@collection), :count => 1
-    assert_select 'a.btn-danger[href=?]', collections_path(@collection), :text => 'Delete', :count => 1
+    assert_select 'a.btn-primary[href=?]', edit_collection_path(@collection), :count => 1
+    assert_select 'a.btn-danger[href=?]', collection_path(@collection), :text => 'Delete', :count => 1
   end
 
   #API Actions
-  test "should remove materials from collections" do
+  test "should remove materials from collection" do
     sign_in users(:regular_user)
     collections = collections(:with_resources)
     collections.materials = [materials(:biojs), materials(:interpro)]
     collections.save!
     assert_difference('collections.materials.count', -2) do
-      patch :update, params: { collections: { material_ids: [''] }, id: collections.id }
+      patch :update, params: { collection: { material_ids: [''] }, id: collections.id }
     end
   end     
   
-  test "should add events to collections" do
+  test "should add events to collection" do
     sign_in users(:regular_user)
     assert_difference('@collection.events.count', +2) do
-      patch :update, params: { collections: { event_ids: [events(:one), events(:two)]}, id: @collection.id }
+      patch :update, params: { collection: { event_ids: [events(:one), events(:two)]}, id: @collection.id }
     end
   end
   
-  test "should remove events from collections" do
+  test "should remove events from collection" do
     sign_in users(:regular_user)
     collections = collections(:with_resources)
     collections.events = [events(:one), events(:two)]
     collections.save!
     assert_difference('collections.events.count', -2) do
-      patch :update, params: { collections: { event_ids: ['']}, id: collections.id }
+      patch :update, params: { collection: { event_ids: ['']}, id: collections.id }
     end
   end
 
-  test 'should not allow access to private collections' do
-    get :show, params: { id: collections(:secret_collections) }
+  test 'should not allow access to private collection' do
+    get :show, params: { id: collections(:secret_collection) }
     assert_response :forbidden
   end
 
-  test 'should allow access to private collections if privileged' do
+  test 'should allow access to private collection if privileged' do
     sign_in users(:regular_user)
-    get :show, params: { id: collections(:secret_collections) }
+    get :show, params: { id: collections(:secret_collection) }
     assert_response :success
   end
 
   test 'should hide private collections from index' do
     get :index
     assert_response :success
-    assert_not_includes assigns(:collections).map(&:id), collections(:secret_collections).id
+    assert_not_includes assigns(:collections).map(&:id), collections(:secret_collection).id
   end
 
   test 'should not hide private collections from index from collections owner' do
     sign_in users(:regular_user)
     get :index
     assert_response :success
-    assert_includes assigns(:collections).map(&:id), collections(:secret_collections).id
+    assert_includes assigns(:collections).map(&:id), collections(:secret_collection).id
   end
 
   test 'should not hide private collections from index from admin' do
     sign_in users(:admin)
     get :index
     assert_response :success
-    assert_includes assigns(:collections).map(&:id), collections(:secret_collections).id
+    assert_includes assigns(:collections).map(&:id), collections(:secret_collection).id
   end
 
 end

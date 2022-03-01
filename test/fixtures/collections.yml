@@ -21,7 +21,7 @@ with_resources:
   public: true
   user: regular_user
 
-secret_package:
+secret_collection:
   title: This Collection Is Secret
   description: MyText
   public: false
