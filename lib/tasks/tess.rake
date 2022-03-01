@@ -82,7 +82,7 @@ namespace :tess do
   task download_images: :environment do
     ActiveRecord::Base.record_timestamps = false
     begin
-      [Package, ContentProvider, StaffMember].each do |klass|
+      [Collection, ContentProvider, StaffMember].each do |klass|
         downloadable = klass.all.select { |o| !o.image_url.blank? && !o.image? }
         if downloadable.length > 0
           puts "Downloading #{downloadable.length} images for #{klass.name}s"
