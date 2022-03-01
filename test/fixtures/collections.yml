@@ -3,26 +3,26 @@
 one:
   title: Dot Slash Configure
   description: MyText
-  image_url: http://example.com/package.png
+  image_url: http://example.com/collection.png
   public: true
   user: regular_user
 
 two:
-  title: This Package Is Big
+  title: This Collection Is Big
   description: MyText
-  image_url: http://example.com/package.png
+  image_url: http://example.com/collection.png
   public: true
   user: regular_user
 
 with_resources:
-  title: But My Package Is Bigger
+  title: But My Collection Is Bigger
   description: text
-  image_url: http://example.com/package.png
+  image_url: http://example.com/collection.png
   public: true
   user: regular_user
 
 secret_package:
-  title: This Package Is Secret
+  title: This Collection Is Secret
   description: MyText
   public: false
   user: regular_user
