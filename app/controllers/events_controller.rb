@@ -140,7 +140,7 @@ class EventsController < ApplicationController
     # and update its resources to include this one.
     # Go through each other collection
     collections = params[:event][:collection_ids].select{|p| !p.blank?}
-    collections = collections.collect{|collection| collection.find_by_id(collection)}
+    collections = collections.collect{|collection| Collection.find_by_id(collection)}
     collections_to_remove = @event.collections - collections
     collections.each do |collection|
       collection.update_resources_by_id(nil, (collection.events + [@event.id]).uniq)
