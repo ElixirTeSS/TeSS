@@ -52,7 +52,6 @@ class IngestorEventCsv < IngestorEvent
 
   def process_description (input)
     convert_description(input.gsub!('"', '')) unless input.nil?
-
   end
 
   def process_eligibility (input)

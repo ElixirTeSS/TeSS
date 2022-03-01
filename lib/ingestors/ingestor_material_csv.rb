@@ -19,7 +19,7 @@ class IngestorMaterialCsv < IngestorMaterial
       material = Material.new
       material.title = row['Title']
       material.url = row['URL']
-      material.description = row['Description'].gsub!('"', '')
+      material.description = process_description(row['Description'])
       material.keywords = row['Keywords'].split(/[;\s]/).reject(&:empty?).compact
       material.contact = row['Contact']
       material.licence = row['Licence']
@@ -33,6 +33,12 @@ class IngestorMaterialCsv < IngestorMaterial
     end
     Scraper.log self.class.name + ': materials extracted = ' + processed.to_s, 3
     return processed
+  end
+
+  private
+
+  def process_description (input)
+    convert_description(input.gsub!('"', '')) unless input.nil?
   end
 
 end
