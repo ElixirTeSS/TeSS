@@ -289,15 +289,13 @@ class Event < ApplicationRecord
 
   # Ticket #423
   def check_country_name
-    if !self.country
-      return
-    end
-    if self.country.respond_to?(:parameterize)
+    if self.country and self.country.respond_to?(:parameterize)
       text = self.country.parameterize.underscore.humanize.downcase
       if COUNTRY_SYNONYMS[text]
         self.country = COUNTRY_SYNONYMS[text]
       end
     end
+    return true
   end
 
   def reported?
@@ -371,6 +369,9 @@ class Event < ApplicationRecord
       raise e unless Rails.env.production?
       puts "Redis error: #{e.message}"
     end
+
+    # return true to enable error messages
+    return true
   end
 
   # Check the external Geocoder API (currently Nominatim) for coordinates

@@ -1,3 +1,4 @@
+require 'json'
 require 'simplecov'
 require 'simplecov-lcov'
 
@@ -23,6 +24,15 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+
+  # override Time.now for testing calendars, etc.
+  def freeze_time(fixed_time=Time.now, &block)
+    Time.stub(:now, fixed_time) do
+      fixed_time.stub(:iso8601, fixed_time) do
+        block.call
+      end
+    end
+  end
 
   WebMock.disable_net_connect!(allow_localhost: true, allow: 'api.codacy.com')
 
@@ -56,7 +66,6 @@ class ActiveSupport::TestCase
       with(:headers => { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent' => 'Ruby' }).
       to_return(:status => 200, :body => "", :headers => {})
 
-
   end
 
   def mock_orcids
@@ -68,16 +77,30 @@ class ActiveSupport::TestCase
 
   def mock_ingestions
     events_file = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'events.csv'))
+    events_nci_file = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'events_NCI.csv'))
     materials_file = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'materials.csv'))
     zenodo_ardc_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_ardc.json'))
     zenodo_ardc_2_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_ardc_2.json'))
     zenodo_ardc_3_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_ardc_3.json'))
     zenodo_abt_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_abt.json'))
     elixir_ausbioc_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'response_1642570417380.json'))
+    test_sitemap = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'Test-Sitemap.xml']))
+    pawsey_ical_1 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'ask-me-anything-porous-media-visualisation-and-lbpm.ics']))
+    pawsey_ical_2 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'experience-with-porting-and-scaling-codes-on-amd-gpus.ics']))
+    pawsey_ical_3 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'nvidia-cuquantum-session.ics']))
+    pawsey_ical_4 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'overview-of-high-performance-computing-resources-at-olcf.ics']))
+    pawsey_ical_5 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'pacer-seminar-computational-fluid-dynamics.ics']))
+    pawsey_ical_6 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'pacer-seminar-radio-astronomy.ics']))
+    pawsey_ical_7 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'pawsey-intern-showcase-2022.ics']))
+    pawsey_ical_8 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'pcon-embracing-new-solutions-for-in-situ-visualisation.ics']))
+    pawsey_ical_9 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'pawsey-intern-showcase-2021.ics']))
+
 
     # 200 - success
     WebMock.stub_request(:get, 'https://app.com/events.csv').
       to_return(:status => 200, :headers => {}, :body => events_file)
+    WebMock.stub_request(:get, 'https://raw.githubusercontent.com/nci900/NCI_feed_to_DReSA/master/event_NCI.csv').
+      to_return(:status => 200, :headers => {}, :body => events_nci_file)
     WebMock.stub_request(:get, 'https://app.com/materials.csv').
       to_return(:status => 200, :headers => {}, :body => materials_file)
     WebMock.stub_request(:get, 'https://app.com/events/event3.html').
@@ -90,9 +113,29 @@ class ActiveSupport::TestCase
       to_return(status: 200, headers: {}, body: zenodo_ardc_3_body)
     WebMock.stub_request(:get, 'https://zenodo.org/api/records/?communities=australianbiocommons-training').
       to_return(status: 200, headers: {}, body: zenodo_abt_body)
-    WebMock.stub_request(:get,
-          'https://tess.elixir-europe.org/events?include_expired=false&content_provider[]=Australian BioCommons').
+    WebMock.stub_request(:get, 'https://tess.elixir-europe.org/events?include_expired=false&content_provider[]=Australian BioCommons').
       to_return(status: 200, headers: {}, body: elixir_ausbioc_body)
+    WebMock.stub_request(:get, 'https://app.com/events/sitemap.xml').
+      to_return(status: 200, headers: {}, body: test_sitemap)
+
+    WebMock.stub_request(:get, 'https://pawsey.org.au/event/ask-me-anything-porous-media-visualisation-and-lbpm/?ical=true').
+      to_return(status: 200, headers: {}, body: pawsey_ical_1)
+    WebMock.stub_request(:get, 'https://pawsey.org.au/event/experience-with-porting-and-scaling-codes-on-amd-gpus/?ical=true').
+      to_return(status: 200, headers: {}, body: pawsey_ical_2)
+    WebMock.stub_request(:get, 'https://pawsey.org.au/event/nvidia-cuquantum-session/?ical=true').
+      to_return(status: 200, headers: {}, body: pawsey_ical_3)
+    WebMock.stub_request(:get, 'https://pawsey.org.au/event/overview-of-high-performance-computing-resources-at-olcf/?ical=true').
+      to_return(status: 200, headers: {}, body: pawsey_ical_4)
+    WebMock.stub_request(:get, 'https://pawsey.org.au/event/pacer-seminar-computational-fluid-dynamics/?ical=true').
+      to_return(status: 200, headers: {}, body: pawsey_ical_5)
+    WebMock.stub_request(:get, 'https://pawsey.org.au/event/pacer-seminar-radio-astronomy/?ical=true').
+      to_return(status: 200, headers: {}, body: pawsey_ical_6)
+    WebMock.stub_request(:get, 'https://pawsey.org.au/event/pawsey-intern-showcase-2022/?ical=true').
+      to_return(status: 200, headers: {}, body: pawsey_ical_7)
+    WebMock.stub_request(:get, 'https://pawsey.org.au/event/pcon-embracing-new-solutions-for-in-situ-visualisation/?ical=true').
+      to_return(status: 200, headers: {}, body: pawsey_ical_8)
+    WebMock.stub_request(:get, 'https://pawsey.org.au/event/pawsey-intern-showcase-2021/?ical=true').
+      to_return(status: 200, headers: {}, body: pawsey_ical_9)
 
     # 404 - not found
     WebMock.stub_request(:get, 'https://dummy.com').to_return(:status => 404)
@@ -102,7 +145,8 @@ class ActiveSupport::TestCase
     WebMock.stub_request(:get, 'https://zenodo.org/api/records/?sort=mostrecent&ommunities=australianbiocommons-training&page=2&size=10').
       to_return(status: 404)
     WebMock.stub_request(:get, 'https://zenodo.org/api/records/?communities=dummy').to_return(:status => 404)
-
+    WebMock.stub_request(:get, 'https://missing.org/sitemap.xml').to_return(:status => 404)
+    WebMock.stub_request(:get, 'https://pawsey.org.au/events/?ical=true').to_return(:status => 404)
   end
 
   def mock_biotools
@@ -112,15 +156,22 @@ class ActiveSupport::TestCase
   end
 
   def mock_nominatim
-    nominatim_file = File.read("#{Rails.root}/test/fixtures/files/nominatim.json")
+    nominatim_file = File.read(File.join(Rails.root, ['test', 'fixtures','files', 'nominatim.json'] ))
+    kensington_file = File.read(File.join(Rails.root,['test', 'fixtures', 'files', 'geocode_kensington.json'] ))
+
     WebMock.stub_request(:get, /nominatim.openstreetmap.org/).
       to_return(:status => 200, :headers => {}, :body => nominatim_file)
+
+    # geocoder overrides
+    Geocoder.configure(lookup: :test, ip_lookup: :test)
+    Geocoder::Lookup::Test.add_stub( "1 Bryce Avenue, Kensington, Western Australia, 6151, Australia", JSON.parse(kensington_file) )
+    Geocoder::Lookup::Test.add_stub( "Pawsey Supercomputing Centre, 1 Bryce Avenue, Kensington, Western Australia, 6151, Australia", [] )
+    Geocoder::Lookup::Test.add_stub( "Australia", [{ "address"=>{ "country"=>"Australia", "country_code"=>"au"} }] )
   end
 
   # helper methods for ingestion tests
   def override_config (config_file)
     # switch configuration
-    # puts "override_config with #{config_file}"
     test_config_file = File.join(Rails.root, 'test', 'config', config_file)
     TeSS::Config.ingestion = YAML.safe_load(File.read(test_config_file)).deep_symbolize_keys!
 

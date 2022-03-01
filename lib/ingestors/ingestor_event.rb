@@ -21,7 +21,10 @@ class IngestorEvent < Ingestor
       processed += 1
 
       # check for matched events
-      matched_events = Event.where(title: event.title, url: event.url, content_provider: provider)
+      matched_events = Event.where(title: event.title,
+                                   url: event.url,
+                                   start: event.start,
+                                   content_provider: provider)
 
       if matched_events.nil? or matched_events.first.nil?
         # set ingestion parameters and save new event
@@ -29,6 +32,7 @@ class IngestorEvent < Ingestor
         event.content_provider = provider
         event.scraper_record = true
         event.last_scraped = DateTime.now
+        event = set_field_defaults event
         if valid_event? event
           event.save!
           added += 1
@@ -37,6 +41,7 @@ class IngestorEvent < Ingestor
       else
         # update and save matched event
         matched = overwrite_fields matched_events.first, event
+        matched = set_field_defaults matched
         matched.scraper_record = true
         matched.last_scraped = DateTime.now
         if valid_event? matched
@@ -53,11 +58,12 @@ class IngestorEvent < Ingestor
     return written
   end
 
+  private
+
   def overwrite_fields (old_event, new_event)
     # overwrite unlocked attributes
-    # [title, url, provider] not changed, as they are used for matching
+    # [title, url, start, provider] not changed, as they are used for matching
     old_event.description = new_event.description unless old_event.field_locked? :description
-    old_event.start = new_event.start unless old_event.field_locked? :start
     old_event.end = new_event.end unless old_event.field_locked? :end
     old_event.timezone = new_event.timezone unless old_event.field_locked? :timezone
     old_event.contact = new_event.contact unless old_event.field_locked? :contact
@@ -68,29 +74,51 @@ class IngestorEvent < Ingestor
     old_event.keywords = new_event.keywords unless old_event.field_locked? :keywords
     old_event.online = new_event.online unless old_event.field_locked? :online
     old_event.city = new_event.city unless old_event.field_locked? :city
+    old_event.postcode = new_event.postcode unless old_event.field_locked? :postcode
     old_event.country = new_event.country unless old_event.field_locked? :country
     old_event.venue = new_event.venue unless old_event.field_locked? :venue
-
-    # default fields
-    if old_event.contact.nil? or old_event.contact.blank?
-      old_event.contact = old_event.content_provider.contact unless old_event.field_locked? :contact
-    end
-
-    # return
     return old_event
   end
 
-  def valid_event? (event)
-    # check event attributes
-    return true if event.valid?
-
-    # log error messages
-    Scraper.log "Event title[#{event.title}] failed validation.", 4
-    event.errors.full_messages.each do |message|
-      Scraper.log "Event title[#{event.title}] error: " + message, 5
+  def set_field_defaults (event)
+    # contact
+    if event.contact.nil? or event.contact.blank?
+      event.contact = event.content_provider.contact unless event.field_locked? :contact
     end
 
-    return false
+    # organizer
+    if event.organizer.nil? or event.organizer.blank?
+      event.organizer = event.content_provider.title unless event.field_locked? :organizer
+    end
+
+    # host institutions
+    if event.host_institutions.nil? or event.host_institutions.size < 1
+      event.host_institutions = [event.content_provider.title.to_s] unless event.field_locked? :host_institutions
+    end
+
+    # eligibility
+    if event.eligibility.nil? or event.eligibility.size < 1
+      event.eligibility = ['open_to_all'] unless event.field_locked? :eligibility
+    end
+
+    # return
+    return event
+  end
+
+  def valid_event? (event)
+    # check valid
+    if event.valid? and !event.expired?
+      return true
+    else
+      # log error messages
+      Scraper.log "Event title[#{event.title}] failed validation.", 4
+      Scraper.log "Event title[#{event.title}] error: event has expired", 5 if event.expired?
+      event.errors.full_messages.each do |message|
+        Scraper.log "Event title[#{event.title}] error: " + message, 5
+      end
+      return false
+    end
+
   end
 
   def convert_eligibility(input)
@@ -115,6 +143,35 @@ class IngestorEvent < Ingestor
     else
       nil
     end
+  end
+
+  def convert_location(input)
+    #puts "convert_location(#{input})"
+    result = nil
+
+    # search for locations
+    locations = Geocoder.search(input)
+    if !locations.nil? and locations.size > 0
+      if !locations.first.nil? and !locations.first.address.nil?
+        #puts "address: #{locations.first.address.inspect}"
+        result = locations.first.address
+      end
+    end
+
+    # check substring
+    if result.nil? or result['country'].nil?
+      stripped = strip_first_part input
+      result = convert_location(stripped.lstrip) if !stripped.nil? and stripped.size > 0
+    end
+
+    return result
+  end
+
+  def strip_first_part(input)
+    parts = input.split(',')
+    parts.shift
+    return parts.join(',') if parts.size > 0
+    return ''
   end
 
 end

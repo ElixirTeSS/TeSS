@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2'
+gem 'rails', '~> 5.2.6.2'
 
 gem "bootsnap", ">= 1.1.0", require: false # New Rails 5.2 default gem
 
@@ -20,7 +20,7 @@ gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
-gem 'therubyracer'#, platforms: :ruby
+#gem 'therubyracer'#, platforms: :ruby
 
 # CRUD of resources via a UI
 gem 'rails_admin'
@@ -32,7 +32,7 @@ gem 'omniauth_openid_connect'
 gem 'devise_invitable', '~> 2.0.5'
 
 # Activity logging
-gem 'public_activity', '~> 1.6.1'
+gem 'public_activity', '~> 1.6.4', git: 'https://github.com/chaps-io/public_activity', tag: 'v1.6.4'
 
 gem 'simple_token_authentication', '~> 1.0'
 
@@ -58,7 +58,7 @@ gem 'whenever', '~> 1.0.0'
 
 # These are required for Sidekiq, to look up scientific topics
 gem 'httparty'
-gem 'sidekiq'
+gem 'sidekiq', '~> 6.4.0'
 gem 'slim'
 
 # Use jquery as the JavaScript library
@@ -108,7 +108,7 @@ gem 'by_star', '~> 2.2.1' #, git: 'git://github.com/radar/by_star.git', tag: 'v2
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use Unicorn as the app server
-gem 'unicorn'
+#gem 'unicorn'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -156,6 +156,9 @@ gem 'iso_country_codes'
 # for rest client
 gem 'rest-client'
 
+# for converting html to markdown
+gem 'reverse_markdown'
+
 source 'https://rails-assets.org' do
   gem 'rails-assets-clipboard', '~> 1.5.12'
   gem 'rails-assets-devbridge-autocomplete', '~> 1.2.26'
@@ -187,6 +190,8 @@ group :development do
   gem 'web-console'
 end
 
-#group :production do
-#  gem 'passenger', '~> 5.1.11'
-#end
+group :production do
+  gem 'therubyracer'
+  gem 'unicorn'
+  #gem 'passenger', '~> 5.1.11'
+end
