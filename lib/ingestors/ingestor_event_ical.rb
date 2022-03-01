@@ -67,7 +67,7 @@ class IngestorEventIcal < IngestorEvent
       event = Event.new
       event.url = calevent.url.to_s
       event.title = calevent.summary.to_s
-      event.description = calevent.description.to_s
+      event.description = convert_description(calevent.description.to_s)
       event.end = calevent.dtend
       if !calevent.dtstart.nil?
         dtstart = calevent.dtstart

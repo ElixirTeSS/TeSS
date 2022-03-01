@@ -1,4 +1,15 @@
 GIT
+  remote: https://github.com/chaps-io/public_activity
+  revision: 13dde4e0c8ccc7f8e43c52e30bf75cb2972e873b
+  tag: v1.6.4
+  specs:
+    public_activity (1.6.4)
+      actionpack (>= 3.0.0)
+      activerecord (>= 3.0)
+      i18n (>= 0.5.0)
+      railties (>= 3.0.0)
+
+GIT
   remote: https://github.com/lassebunk/dynamic_sitemaps.git
   revision: 37beeba143e8202218ee814056231b0e6974bafb
   branch: master
@@ -346,11 +357,6 @@ GEM
     progress_bar (1.1.0)
       highline (~> 1.6)
       options (~> 2.3.0)
-    public_activity (1.6.4)
-      actionpack (>= 3.0.0)
-      activerecord (>= 3.0)
-      i18n (>= 0.5.0)
-      railties (>= 3.0.0)
     public_suffix (4.0.6)
     pundit (1.1.0)
       activesupport (>= 3.0.0)
@@ -490,6 +496,8 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
+    reverse_markdown (2.1.1)
+      nokogiri
     rexml (3.2.5)
     rsolr (2.3.0)
       builder (>= 2.1.2)
@@ -687,7 +695,7 @@ DEPENDENCIES
   pg
   private_address_check
   progress_bar (~> 1.1.0)
-  public_activity (~> 1.6.1)
+  public_activity (~> 1.6.4)!
   pundit (~> 1.1.0)
   rack-cors
   rails (~> 5.2.6.2)
@@ -704,6 +712,7 @@ DEPENDENCIES
   redcarpet (~> 3.5.1)
   redis (< 5.0.0)
   rest-client
+  reverse_markdown
   rubocop
   sass-rails (~> 5.0)
   sdoc (>= 0.4.0)
