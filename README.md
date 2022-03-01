@@ -56,11 +56,11 @@ Tests will run against tess_test by default
 
 Prepare the test database:
 
-    docker exec -it tess-app bash -c "bundle exec rake db:test:prepare RAILS_ENV=test"
+    docker exec -it tess-app bash -c "RAILS_ENV=test bundle exec rake db:test:prepare"
 
 Run the tests:
 
-    docker exec -it tess-app bash -c "bundle exec rake test RAILS_RNV=test"
+    docker exec -it tess-app bash -c "RAILS_ENV=test bundle exec rake test"
 
 ## Debugging with Docker
 
@@ -138,7 +138,7 @@ The first time and each time a css or js file is updated:
 
 Restart your Web server.
 
-* * *
+---
 
 ## Legacy
 
