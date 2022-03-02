@@ -4,7 +4,7 @@ default: &default
   pool: 5
   username: <%= Rails.application.secrets[:database][:username] %>
   password: <%= Rails.application.secrets[:database][:password] %>
-  host: <%= ENV["DB_HOST"] %>
+  host: <%= Rails.application.secrets[:database][:host] %>
 
 development:
   <<: *default
