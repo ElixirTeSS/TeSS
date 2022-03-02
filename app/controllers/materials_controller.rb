@@ -146,7 +146,7 @@ class MaterialsController < ApplicationController
                                      { :package_ids => [] }, { :keywords => [] }, { :resource_type => [] },
                                      { :scientific_topic_names => [] }, { :scientific_topic_uris => [] },
                                      { :operation_names => [] }, { :operation_uris => [] },
-                                     { :node_ids => [] }, { :node_names => [] },
+                                     { :node_ids => [] }, { :node_names => [] }, { :fields => [] },
                                      external_resources_attributes: [:id, :url, :title, :_destroy],
                                      event_ids: [], locked_fields: [])
   end
