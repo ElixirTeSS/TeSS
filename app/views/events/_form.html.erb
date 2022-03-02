@@ -1,19 +1,4 @@
 <script>
-    /* $(function () {
-                if (<%=@event.online?%>) {
-            $('.address_content').hide();
-        }
-    })/*
-
-    /* $(document).on('change', '.location', function () {
-        console.log(this.value)
-        if (this.value == 'true') {
-            $('.address_content').hide()
-        } else {
-            $('.address_content').show()
-        }
-    })*/
-
     function switchCostFields(option) {
         //alert('selected = ' + option)
         if (!option || option == 'free' || option == '') {
@@ -69,13 +54,6 @@
   <%= f.input :description, as: :markdown_area, input_html: { rows: '5', title: t('events.hints.description') },
               field_lock: true %>
 
-  <!-- Field: Fields -->
-  <%= f.tree :fields, errors: @event.errors[:fields],
-             title: t('events.hints.fields'),
-             field_name: 'fields',
-             field_label: 'Fields of Research',
-             button_label: 'FoRs' %>
-
   <!-- Field: URL -->
   <%= render partial: 'common/url_checker',
              locals: { f: f, url: events_check_exists_path, title: t('events.hints.url') } %>
@@ -128,6 +106,15 @@
   <!-- Field: Keywords -->
   <%= f.multi_input :keywords, errors: @event.errors[:keywords],
                     title: t('events.hints.keywords') %>
+
+  <!-- Field: Fields -->
+  <%= render partial: 'common/tree',
+             locals: { f: f,
+                       resource: @event,
+                       field_name: 'fields',
+                       field_label: 'Fields of Research',
+                       button_label: 'FoR Codes',
+                       title: t('events.hints.fields') } %>
 
   <!-- Field: Target Audience -->
   <%= f.multi_input :target_audience, errors: @event.errors[:target_audience], title: t('events.hints.targets') %>

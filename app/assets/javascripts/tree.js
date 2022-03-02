@@ -1,5 +1,6 @@
 // initialize the vocab tree
 function initialize_vocab_tree(element) {
+    //alert('executing initialize_vocab_tree...')
     element.vocab_widget({
         mode: 'tree',
         endpoint: 'https://vocabs.ardc.edu.au/apps/vocab_widget/proxy/',

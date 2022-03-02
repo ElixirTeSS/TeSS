@@ -1,22 +1,21 @@
 <%#
 PARAMETERS:
-    f           - the form
-    resources   - the object you wish to modify, e.g. Event id: 99.
-    field_label - the label shown in the view above the field.
-    field_name  - the name of the form field, e.g. "fields"
-    existing    - existing values
-    source      - the source div id
+    f            - the form
+    resources    - the object you wish to modify, e.g. Event id: 99.
+    field_name   - the name of the form field, e.g. "fields"
+    field_label  - the label shown in the view above the field.
+    button_label - the label to show on the button.
+    existing     - existing values
+    required     - is a value required?
 
 Example Usage
     render partial: 'common/tree',
            locals: { f: f,
                     resource: @event,
-                    button_label: 'Fields',
-                    field_label: 'Fields',
                     field_name: 'fields',
-                    existing: @event.fields,
-                    source: 'vocab-tree'
-            }
+                    field_label: 'Fields',
+                    button_label: 'Fields',
+                    required: false }
 %>
 
 <script>
@@ -27,9 +26,9 @@ Example Usage
 
 
 <%
-  field_name ||= ''
   model_name ||= resource.class.name.underscore # e.g. event
-  existing ||= resource.send(field_name.pluralize)
+  field_name ||= ''
+  existing ||= resource.send(field_name)
 
   # show the required label?
   required ||= false
@@ -44,11 +43,10 @@ Example Usage
   end
 
   # check error count
-  errors ||= []
+  errors ||= resource.errors[field_name]
 
   # check title
   title ||= ''
-
 %>
 
 <div class="form-group<%= 'has-error' if errors.size > 0 %>">
@@ -71,14 +69,14 @@ Example Usage
       <input name="<%= model_name %>[<%= field_name %>][]" value="" type="hidden"/>
       <% existing.each do |r| %>
         <li>
-          <%= r[0] %>
+          <%= r %>
           <input type="hidden" data-field="<%= field_name %>"
                  name="<%= model_name %>[<%= field_name %>][]"
-                 value="<%= r[1] %>"/>
+                 value="<%= r %>"/>
           <input type="button" value="<%= "&times;".html_safe %>"
                  class="dropdown-option-delete"
                  data-field="<%= field_name %>" data-model='<%= model_name %>'
-                 data-value="<%= r[1] %>" data-name="<%= r[0] %>"/>
+                 data-value="<%= r %>" data-name="<%= r %>"/>
         </li>
       <% end %>
     </ul>
@@ -91,12 +89,11 @@ Example Usage
       </button>
       <div class="dropdown-menu">
         <div id="vocab-tree"
-             data-field="<%= field_name %>"
-             data-model="<%= model_name %>">
+             data-model="<%= model_name %>"
+             data-field="<%= field_name %>">
         </div>
       </div>
     </div>
-
   </div>
 
 </div>
