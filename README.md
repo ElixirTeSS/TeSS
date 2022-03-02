@@ -67,6 +67,7 @@ Run specific test:
     docker exec -it tess-app bash -c "RAILS_ENV=test ruby -I test test/controllers/about_controller_test.rb -n test_should_get_first_about_page"
 
 ## Solr
+
 To force Solr to reindex all documents, you can run the following command:
 
     docker exec -it tess-app bash -c "bundle exec rake sunspot:reindex"
@@ -74,6 +75,12 @@ To force Solr to reindex all documents, you can run the following command:
 ## Debugging with Docker
 
 TODO: Add Docker debugging instructions
+
+## Production
+
+The production deployment is configured in the `docker-compose-prod.yml` file.
+
+    docker-compose -f docker-compose-prod.yml up -d
 
 ## Basic API
 
