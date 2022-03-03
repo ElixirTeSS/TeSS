@@ -108,9 +108,9 @@ class Material < ApplicationRecord
   end
 
   def self.facet_fields
-    field_list = %w( keywords fields licence target_audience authors
-                     contributors resource_type related_resources
-                      content_provider  user)
+    field_list = %w( content_provider keywords fields licence target_audience
+                     authors contributors resource_type related_resources
+                     user )
     field_list.append('operations') unless TeSS::Config.feature['disabled'].include? 'operations'
     field_list.append('scientific_topics') unless TeSS::Config.feature['disabled'].include? 'topics'
     field_list.append('standard_database_or_policy') unless TeSS::Config.feature['disabled'].include? 'fairshare'

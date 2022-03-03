@@ -37,6 +37,7 @@ class Profile < ApplicationRecord
       end
       string :expertise_academic, multiple: true
       string :expertise_technical, multiple: true
+      string :fields, :multiple => true
       string :interest, multiple: true
       string :activity, multiple: true
       string :language, multiple: true

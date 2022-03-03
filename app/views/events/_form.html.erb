@@ -19,7 +19,6 @@
     $(document).on('ready turbolinks:load', function () {
         switchCostFields($('.event_cost_basis option:selected').val());
     });
-
 </script>
 
 <%= simple_form_for @event, html: { id: 'event_form' } do |f| %>

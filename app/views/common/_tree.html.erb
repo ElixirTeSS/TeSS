@@ -17,13 +17,11 @@ Example Usage
                     button_label: 'Fields',
                     required: false }
 %>
-
 <script>
-    $(document).on('turbolinks:load', function () {
-        initialize_vocab_tree($('#vocab-tree'))
+    $(document).on('ready turbolinks:load', function () {
+        initialize_vocab_tree();
     });
 </script>
-
 
 <%
   model_name ||= resource.class.name.underscore # e.g. event
@@ -90,7 +88,8 @@ Example Usage
       <div class="dropdown-menu">
         <div id="vocab-tree"
              data-model="<%= model_name %>"
-             data-field="<%= field_name %>">
+             data-field="<%= field_name %>"
+             data-turbolinks-permanent>
         </div>
       </div>
     </div>

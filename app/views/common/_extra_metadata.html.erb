@@ -27,7 +27,6 @@
 <% end -%>
 
 <% if resource.class.name.downcase == 'event' -%>
-  <%= display_attribute(resource, :fields) { |values| values.join(', ') } %>
   <%= display_attribute(resource, :target_audience) { |values| values.join(', ') } %>
   <%= display_attribute(resource, :difficulty_level) { |value| difficulty_name_for_abbreviation(value) } %>
 <% end %>

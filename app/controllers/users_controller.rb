@@ -135,9 +135,11 @@ class UsersController < ApplicationController
 
   def user_params
     allowed_parameters = [:email, :username, :password, {
-      profile_attributes: [:firstname, :surname, :email, :website, :public, :description, :location, :orcid,
-                           :experience, { :expertise_academic => [] }, { :expertise_technical => [] },
-                           { :interest => [] }, { :activity => [] }, { :language => [] }, { :social_media => [] }
+      profile_attributes: [:firstname, :surname, :email, :website, :public,
+                           :description, :location, :orcid, :experience,
+                           { :expertise_academic => [] }, { :expertise_technical => [] },
+                           { :interest => [] }, { :activity => [] }, { :language => [] },
+                           { :fields => [] }, { :social_media => [] }
       ] }]
     allowed_parameters << :role_id if policy(@user).change_role?
     params.require(:user).permit(allowed_parameters)
