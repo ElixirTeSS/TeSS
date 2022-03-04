@@ -3,7 +3,7 @@ module Edam
     include Singleton
 
     def initialize
-      super('EDAM_1.25.owl', Edam::Term)
+      super('EDAM_unstable.owl', Edam::Term)
     end
 
     def all_topics
