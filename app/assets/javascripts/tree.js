@@ -11,20 +11,6 @@ function initializeVocabTree() {
     }
 }
 
-// add selected processing
-function addSelectedTreeItem(modelName, fieldName, value, name) {
-    var parentName = '.' + fieldName;
-    if (isDuplicateSelection(parentName, value) === false) {
-        var newItem = HandlebarsTemplates["dropdowns/item"]({
-            field_name: fieldName,
-            model_name: modelName,
-            value: value,
-            name: name
-        })
-        $(newItem).appendTo(parentName);
-    }
-}
-
 // check to see if value has already been selected
 function isDuplicateSelection(parentName, value) {
     var result = false;
@@ -32,18 +18,32 @@ function isDuplicateSelection(parentName, value) {
     var children = parent.children();
     if (children && children.length > 0) {
         for (let i in children) {
-            var child = children[i];
-            if (child && child.tagName == "LI" && child.innerText) {
-                //console.log('innerText[' + child.innerText + ']')
-                if (child.innerText.trim() == value.trim()) {
+            if (children[i]
+                && children[i].tagName === "LI"
+                && children[i].innerText) {
+                if (children[i].innerText.trim() === value.trim()) {
                     result = true;
                     break;
                 }
             }
         }
     }
-    return result
-}
+    return result;
+};
+
+// add selected processing
+function addSelectedTreeItem(modelName, fieldName, dataValue, dataName) {
+    var parentName = "." + fieldName;
+    if (isDuplicateSelection(parentName, dataValue) === false) {
+        var newItem = HandlebarsTemplates["dropdowns/item"]({
+            field_name: fieldName,
+            model_name: modelName,
+            value: dataValue,
+            name: dataName
+        })
+        $(newItem).appendTo(parentName);
+    }
+};
 
 // add an event listener
 document.addEventListener("turbolinks:load", function () {
