@@ -5,12 +5,6 @@ class UsersController < ApplicationController
   prepend_before_action :init_user, only: [:new, :create]
   before_action :set_breadcrumbs
 
-  #
-  # # Skip the parent's before_action, which is defined only on some methods
-  # skip_before_action :authenticate_user!
-  # # and define it on all methods
-  # before_action :authenticate_user!
-
   include ActionView::Helpers::TextHelper
 
   # GET /users

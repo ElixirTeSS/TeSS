@@ -12,6 +12,7 @@ Example Usage
     render partial: 'common/tree',
            locals: { f: f,
                     resource: @event,
+                    model_name: 'event',
                     field_name: 'fields',
                     field_label: 'Fields',
                     button_label: 'Fields',
@@ -23,29 +24,15 @@ Example Usage
     });
 </script>
 
-<%
-  model_name ||= resource.class.name.underscore # e.g. event
-  field_name ||= ''
-  existing ||= resource.send(field_name)
-
-  # show the required label?
-  required ||= false
-
-  # name for the toggle button, default is 'Add <field_name>'
-  field_label ||= field_name.capitalize unless field_name.blank?
-
-  # set dropdown button
-  button_label ||= ''
-  if button_label.blank?
-    button_label = "Add #{field_name.to_s.sub(/_ids?\z/, '').humanize}"
-  end
-
-  # check error count
-  errors ||= resource.errors[field_name]
-
-  # check title
-  title ||= ''
-%>
+<% model_name ||= resource.class.name.underscore # e.g. event %>
+<% field_name ||= '' %>
+<% existing ||= resource.send(field_name) %>
+<% required ||= false %>
+<% field_label ||= field_name.capitalize unless field_name.blank? %>
+<% button_label ||= '' %>
+<% button_label = "Add #{field_name.to_s.sub(/_ids?\z/, '').humanize}" if button_label.blank? %>
+<% errors ||= resource.errors[field_name] %>
+<% title ||= '' %>
 
 <div class="form-group<%= 'has-error' if errors.size > 0 %>">
   <% if required %>
