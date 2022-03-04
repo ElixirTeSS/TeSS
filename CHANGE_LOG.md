@@ -2,7 +2,7 @@
 The sections below refer to the release tags for this repository:
 ## [Version 1.3.5](https://github.com/nrmay/TeSS/releases/tag/v1.3.5)
 
-Deployed: *TBA*
+Deployed: *4<sup>th</sup> March, 2022*
 
 - Features:
   - [Fields of Research: add codes to resources](https://github.com/nrmay/TeSS/issues/69)
@@ -23,7 +23,7 @@ Deployed: *TBA*
 ---
 ## [Version 1.3.4](https://github.com/nrmay/TeSS/releases/tag/v1.3.4)
 
-Deployed: *31<sup>st</sup> Jan, 2022*
+Deployed: *31<sup>st</sup> January, 2022*
 
 Theme: *Auto-ingestion Beta Testing*
 
@@ -47,7 +47,7 @@ Theme: *Auto-ingestion Beta Testing*
 ---
 ## [Version 1.3.3](https://github.com/nrmay/TeSS/releases/tag/v1.3.3)
 
-Deployed: *1<sup>st</sup> Dec, 2021*
+Deployed: *1<sup>st</sup> December, 2021*
 
 Theme: *Sustainability*
 
