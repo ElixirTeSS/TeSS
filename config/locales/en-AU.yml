@@ -332,6 +332,7 @@ en-AU:
       eligibility: 'Who can attend the training event?'
       end: 'When does the event end?'
       event_type: 'Select the most appropriate event type for the training event.'
+      fields: 'Select Fields of Research to better classify your event.'
       hosts: ''
       keywords: "Provide words or terms that clearly identify the training event's topics."
       materials: 'Add any training materials that are associated with the training event.'
@@ -363,7 +364,7 @@ en-AU:
       difficulty: 'Indicate the learners expected level of competency in the topic covered by the material.'
       doi: 'Include a DOI if one exists for the training material.'
       events: ''
-      for_codes: 'Indicate which Fields of Research (FoR) codes your training material covers.'
+      fields: 'Select Fields of Research to better classify your material.'
       keywords: "Provide words or terms that clearly identify the training material's topics."
       licence: 'Select the licence for the training material.'
       objectives: >
@@ -410,6 +411,7 @@ en-AU:
       location: 'The location where you are primarily based.'
       experience: 'Select your level of experience as a trainer.'
       expertise_academic: 'Terms and phrases that describe your academic expertise.'
+      fields: 'Select Fields of Research to better classify your training experience.'
       expertise_technical: 'Terms and phrases that describe your technical expertise.'
       language: 'Include languages in which you are fluent.'
       interest: 'Add keyword(s) to identify your main areas of interest.'

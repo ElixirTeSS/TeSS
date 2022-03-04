@@ -223,6 +223,12 @@
                 <%= @event.keywords.join(', ') %></p>
             <% end %>
 
+            <!-- Field: keywords -->
+            <% unless @event.fields.empty? %>
+              <p><strong>Fields:</strong>
+                <%= @event.fields.join(', ') %></p>
+            <% end %>
+
             <!-- Field: target audience -->
             <% unless @event.target_audience.empty? %>
               <strong>Target audience:</strong>
@@ -291,8 +297,6 @@
                 <% end %>
               </p>
             <% end %>
-
-            <!-- Field: content provider -->
 
             <!-- Field: material -->
             <% if @event.materials.any? %>

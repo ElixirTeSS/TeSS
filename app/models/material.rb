@@ -46,6 +46,7 @@ class Material < ApplicationRecord
       end
       string :target_audience, :multiple => true
       string :keywords, :multiple => true
+      string :fields, :multiple => true
       string :resource_type, :multiple => true
       string :difficulty_level do
         DifficultyDictionary.instance.lookup_value(self.difficulty_level, 'title')
@@ -96,17 +97,20 @@ class Material < ApplicationRecord
 
   validates :difficulty_level, controlled_vocabulary: { dictionary: DifficultyDictionary.instance }
 
-  clean_array_fields(:keywords, :contributors, :authors, :target_audience, :resource_type, :subsets)
+  clean_array_fields(:keywords, :fields, :contributors, :authors,
+                     :target_audience, :resource_type, :subsets)
 
-  update_suggestions(:keywords, :contributors, :authors, :target_audience, :resource_type)
+  update_suggestions(:keywords, :contributors, :authors, :target_audience,
+                     :resource_type)
 
   def description= desc
     super(Rails::Html::FullSanitizer.new.sanitize(desc))
   end
 
   def self.facet_fields
-    field_list = %w( keywords licence target_audience authors contributors resource_type related_resources
-                      content_provider  user)
+    field_list = %w( content_provider keywords fields licence target_audience
+                     authors contributors resource_type related_resources
+                     user )
     field_list.append('operations') unless TeSS::Config.feature['disabled'].include? 'operations'
     field_list.append('scientific_topics') unless TeSS::Config.feature['disabled'].include? 'topics'
     field_list.append('standard_database_or_policy') unless TeSS::Config.feature['disabled'].include? 'fairshare'

@@ -1,0 +1,85 @@
+<%#
+PARAMETERS:
+    f            - the form
+    resources    - the object you wish to modify, e.g. Event id: 99.
+    field_name   - the name of the form field, e.g. "fields"
+    field_label  - the label shown in the view above the field.
+    button_label - the label to show on the button.
+    existing     - existing values
+    required     - is a value required?
+
+Example Usage
+    render partial: 'common/tree',
+           locals: { f: f,
+                    resource: @event,
+                    model_name: 'event',
+                    field_name: 'fields',
+                    field_label: 'Fields',
+                    button_label: 'Fields',
+                    required: false }
+%>
+<script>
+    $(document).on('ready turbolinks:load', function () {
+        initializeVocabTree();
+    });
+</script>
+
+<% model_name ||= resource.class.name.underscore # e.g. event %>
+<% field_name ||= '' %>
+<% existing ||= resource.send(field_name) %>
+<% required ||= false %>
+<% field_label ||= field_name.capitalize unless field_name.blank? %>
+<% button_label ||= '' %>
+<% button_label = "Add #{field_name.to_s.sub(/_ids?\z/, '').humanize}" if button_label.blank? %>
+<% errors ||= resource.errors[field_name] %>
+<% title ||= '' %>
+
+<div class="form-group<%= 'has-error' if errors.size > 0 %>">
+  <% if required %>
+    <label class="control-label string required">
+      <abbr title="required">*</abbr>
+    </label>
+  <% end %>
+
+  <%= f.label field_label, class: 'control-label' %>
+  <%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
+  <%= f.error field_name.to_sym %>
+
+  <div data-field="<%= field_name %>"
+       data-model="<%= model_name %>"
+       title='<%= title %>'>
+    <%# display existing ones %>
+    <ul class="<%= field_name %>">
+      <%# have one empty so at least one is passed when the event listener triggers %>
+      <input name="<%= model_name %>[<%= field_name %>][]" value="" type="hidden"/>
+      <% existing.each do |r| %>
+        <li>
+          <%= r %>
+          <input type="hidden" data-field="<%= field_name %>"
+                 name="<%= model_name %>[<%= field_name %>][]"
+                 value="<%= r %>"/>
+          <input type="button" value="<%= "&times;".html_safe %>"
+                 class="dropdown-option-delete"
+                 data-field="<%= field_name %>" data-model='<%= model_name %>'
+                 data-value="<%= r %>" data-name="<%= r %>"/>
+        </li>
+      <% end %>
+    </ul>
+
+    <div class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <%= button_label %>
+        <span class="caret"></span>
+      </button>
+      <div class="dropdown-menu">
+        <div id="vocab-tree"
+             data-model="<%= model_name %>"
+             data-field="<%= field_name %>"
+             data-turbolinks-permanent>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,19 +1,4 @@
 <script>
-    /* $(function () {
-                if (<%=@event.online?%>) {
-            $('.address_content').hide();
-        }
-    })/*
-
-    /* $(document).on('change', '.location', function () {
-        console.log(this.value)
-        if (this.value == 'true') {
-            $('.address_content').hide()
-        } else {
-            $('.address_content').show()
-        }
-    })*/
-
     function switchCostFields(option) {
         //alert('selected = ' + option)
         if (!option || option == 'free' || option == '') {
@@ -33,8 +18,7 @@
 
     $(document).on('ready turbolinks:load', function () {
         switchCostFields($('.event_cost_basis option:selected').val());
-    })
-
+    });
 </script>
 
 <%= simple_form_for @event, html: { id: 'event_form' } do |f| %>
@@ -101,8 +85,12 @@
               input_html: { title: t('events.hints.timezone') } %>
 
   <!-- Field: Eligibility -->
-  <%= f.dropdown :eligibility, options: EligibilityDictionary.instance.options_for_select, label: 'Eligibility',
-                 required: true, errors: @event.errors[:eligibility], title: t('events.hints.eligibility') %>
+  <%= f.dropdown :eligibility,
+                 options: EligibilityDictionary.instance.options_for_select,
+                 label: 'Eligibility',
+                 required: true,
+                 errors: @event.errors[:eligibility],
+                 title: t('events.hints.eligibility') %>
 
   <!-- Field: Organiser -->
   <%= f.input :organizer, field_lock: true, label: 'Organiser', input_html: { title: t('events.hints.organizer') } %>
@@ -115,7 +103,17 @@
                     title: t('events.hints.hosts') %>
 
   <!-- Field: Keywords -->
-  <%= f.multi_input :keywords, errors: @event.errors[:keywords], title: t('events.hints.keywords') %>
+  <%= f.multi_input :keywords, errors: @event.errors[:keywords],
+                    title: t('events.hints.keywords') %>
+
+  <!-- Field: Fields -->
+  <%= render partial: 'common/tree',
+             locals: { f: f,
+                       resource: @event,
+                       field_name: 'fields',
+                       field_label: 'Fields of Research',
+                       button_label: 'FoR Codes',
+                       title: t('events.hints.fields') } %>
 
   <!-- Field: Target Audience -->
   <%= f.multi_input :target_audience, errors: @event.errors[:target_audience], title: t('events.hints.targets') %>
