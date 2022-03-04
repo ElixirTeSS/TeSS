@@ -79,6 +79,15 @@
   <hr/>
   <h4>Optional</h4>
 
+  <!-- Field: Fields -->
+  <%= render partial: 'common/tree',
+             locals: { f: f,
+                       resource: @material,
+                       field_name: 'fields',
+                       field_label: 'Fields of Research',
+                       button_label: 'FoR Codes',
+                       title: t('materials.hints.fields') } %>
+
   <!-- Field: Dates -->
   <%= f.input :date_modified, as: :date_picker, field_lock: true, input_html: { title: t('materials.hints.date_modified') } %>
   <%= f.input :date_published, as: :date_picker, field_lock: true, input_html: { title: t('materials.hints.date_published') } %>

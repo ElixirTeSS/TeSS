@@ -18,10 +18,18 @@ class Trainer < Profile
       text :full_name
       text :description
       text :location
-      text :expertise_technical do  expertise_technical.to_s end
-      text :expertise_academic do expertise_academic.to_s end
-      text :interest do interest.to_s end
-      text :activity do activity.to_s end
+      text :expertise_technical do
+        expertise_technical.to_s
+      end
+      text :expertise_academic do
+        expertise_academic.to_s
+      end
+      text :interest do
+        interest.to_s
+      end
+      text :activity do
+        activity.to_s
+      end
       text :language do
         langs = []
         language.each { |key| langs << language_label_by_key(key) }
@@ -42,6 +50,7 @@ class Trainer < Profile
       end
       string :expertise_academic, multiple: true
       string :expertise_technical, multiple: true
+      string :fields, multiple: true
       string :interest, multiple: true
       string :activity, multiple: true
       string :language, multiple: true do
@@ -55,7 +64,8 @@ class Trainer < Profile
   end
 
   def self.facet_fields
-    field_list = %w( location experience expertise_academic expertise_technical interest activity language )
+    field_list = %w( location experience expertise_academic expertise_technical
+                     fields interest activity language )
   end
 
   def should_generate_new_friendly_id?

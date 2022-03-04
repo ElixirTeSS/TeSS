@@ -11,6 +11,7 @@
 <h4>Additional information</h4>
 
 <% if resource.class.name.downcase == 'material' -%>
+  <%= display_attribute(resource, :fields) { |values| values.join(', ') } %>
   <%= display_attribute(resource, :target_audience) { |values| values.map { |x| target_audience_title_for_label(x) }.join(', ') } %>
   <%= display_attribute(resource, :resource_type) { |values| values.map { |x| material_type_title_for_label(x) }.join(', ') } %>
   <%= display_attribute(resource, :other_types) %>
