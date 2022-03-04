@@ -78,6 +78,11 @@ TODO: Add Docker debugging instructions
 
 ## Production
 
+//TODO: Add assest pre compile details
+// Uglifier.new(harmony: true)
+//bundle exec rake assets:precompile RAILS_ENV=production
+
+
 The production deployment is configured in the `docker-compose-prod.yml` file.
 
     docker-compose -f docker-compose-prod.yml up -d
