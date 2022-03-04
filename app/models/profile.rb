@@ -7,7 +7,8 @@ class Profile < ApplicationRecord
   validates :firstname, :surname, :description, presence: true, if: :public?
   validates :website, :orcid, url: true, http_url: true, allow_blank: true
   after_validation :check_public
-  clean_array_fields(:expertise_academic, :expertise_technical, :interest, :activity, :language, :social_media)
+  clean_array_fields(:expertise_academic, :expertise_technical, :fields,
+                     :interest, :activity, :language, :social_media)
   update_suggestions(:expertise_technical, :interest)
 
   extend FriendlyId
@@ -37,6 +38,7 @@ class Profile < ApplicationRecord
       end
       string :expertise_academic, multiple: true
       string :expertise_technical, multiple: true
+      string :fields, :multiple => true
       string :interest, multiple: true
       string :activity, multiple: true
       string :language, multiple: true

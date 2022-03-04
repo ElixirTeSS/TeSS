@@ -44,7 +44,6 @@
         <% end %>
       </div>
 
-
       <!-- Field:  description -->
       <p> <%= display_attribute(@trainer, :description) %></p>
 
@@ -55,6 +54,7 @@
         <%= display_attribute(@trainer, :experience) %>
         <%= display_attribute(@trainer, :expertise_academic) { |values| values.join(', ') } %>
         <%= display_attribute(@trainer, :expertise_technical) { |values| values.join(', ') } %>
+        <%= display_attribute(@trainer, :fields) { |values| values.join(', ') } %>
         <%= display_attribute(@trainer, :interest) { |values| values.join(', ') } %>
         <%= display_attribute(@trainer, :activity) { |values| values.join(', ') } %>
         <%= display_attribute(@trainer, :language) do |values|

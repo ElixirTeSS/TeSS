@@ -49,11 +49,6 @@
                        label: 'Languages Spoken', model_name: 'user[profile_attributes]',
                        errors: @user.profile.errors[:language], title: t('profile.hints.language') %>
 
-        <!--%= f.multi_input :language, label: 'Languages spoken',
-                          errors: @user.profile.errors[:language],
-                          model_name: 'user[profile_attributes]',
-                          title: t('profile.hints.language') %-->
-
         <%= f.multi_input :expertise_academic, label: 'Academic expertise',
                           errors: @user.profile.errors[:expertise_academic],
                           model_name: 'user[profile_attributes]',
@@ -63,6 +58,17 @@
                           errors: @user.profile.errors[:expertise_technical],
                           model_name: 'user[profile_attributes]',
                           title: t('profile.hints.expertise_technical') %>
+
+        <!-- Field: Fields -->
+        <%= render partial: 'common/tree',
+                   locals: { f: f,
+                             resource: @user.profile,
+                             model_name: 'user[profile_attributes]',
+                             field_name: 'fields',
+                             field_label: 'Fields of Research',
+                             button_label: 'FoR Codes',
+                             title: t('profile.hints.fields') } %>
+
 
         <%= f.multi_input :interest, label: 'Interests',
                           errors: @user.profile.errors[:interest],

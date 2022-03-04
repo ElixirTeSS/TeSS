@@ -5,12 +5,6 @@ class UsersController < ApplicationController
   prepend_before_action :init_user, only: [:new, :create]
   before_action :set_breadcrumbs
 
-  #
-  # # Skip the parent's before_action, which is defined only on some methods
-  # skip_before_action :authenticate_user!
-  # # and define it on all methods
-  # before_action :authenticate_user!
-
   include ActionView::Helpers::TextHelper
 
   # GET /users
@@ -135,9 +129,11 @@ class UsersController < ApplicationController
 
   def user_params
     allowed_parameters = [:email, :username, :password, {
-      profile_attributes: [:firstname, :surname, :email, :website, :public, :description, :location, :orcid,
-                           :experience, { :expertise_academic => [] }, { :expertise_technical => [] },
-                           { :interest => [] }, { :activity => [] }, { :language => [] }, { :social_media => [] }
+      profile_attributes: [:firstname, :surname, :email, :website, :public,
+                           :description, :location, :orcid, :experience,
+                           { :expertise_academic => [] }, { :expertise_technical => [] },
+                           { :interest => [] }, { :activity => [] }, { :language => [] },
+                           { :fields => [] }, { :social_media => [] }
       ] }]
     allowed_parameters << :role_id if policy(@user).change_role?
     params.require(:user).permit(allowed_parameters)

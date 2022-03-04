@@ -38,10 +38,11 @@ class TrainersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def trainer_params
-    params.require(:trainer).permit(:id, :firstname, :surname, :website, :orcid, :email, :public, :description,
+    params.require(:trainer).permit(:id, :firstname, :surname, :website,
+                                    :orcid, :email, :public, :description,
                                     :location, :experience, { :language => [] }, { :expertise_academic => [] },
                                     { :expertise_technical => [] }, { :interest => [] }, { :activity => [] },
-                                    { :social_media => [] })
+                                    { :fields => [] }, { :social_media => [] })
   end
 
 end
