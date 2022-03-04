@@ -4,6 +4,10 @@ The sections below refer to the release tags for this repository:
 
 Deployed: *TBA*
 
+- Features:
+  - [Fields of Research: add codes to resources](https://github.com/nrmay/TeSS/issues/69)
+
+
 - Updates:
   - [Content Provider: add contact email](https://github.com/nrmay/TeSS/issues/263)
   - [Auto-Ingestion: iCalendar ingestion](https://github.com/nrmay/TeSS/issues/272)
