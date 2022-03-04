@@ -56,15 +56,36 @@ Tests will run against tess_test by default
 
 Prepare the test database:
 
-    docker exec -it tess-app bash -c "bundle exec rake db:test:prepare RAILS_ENV=test"
+    docker exec -it tess-app bash -c "RAILS_ENV=test bundle exec rake db:test:prepare"
 
 Run the tests:
 
-    docker exec -it tess-app bash -c "bundle exec rake test RAILS_RNV=test"
+    docker exec -it tess-app bash -c "RAILS_ENV=test bundle exec rake test"
+
+Run specific test:
+
+    docker exec -it tess-app bash -c "RAILS_ENV=test ruby -I test test/controllers/about_controller_test.rb -n test_should_get_first_about_page"
+
+## Solr
+
+To force Solr to reindex all documents, you can run the following command:
+
+    docker exec -it tess-app bash -c "bundle exec rake sunspot:reindex"
 
 ## Debugging with Docker
 
 TODO: Add Docker debugging instructions
+
+## Production
+
+//TODO: Add assest pre compile details
+// Uglifier.new(harmony: true)
+//bundle exec rake assets:precompile RAILS_ENV=production
+
+
+The production deployment is configured in the `docker-compose-prod.yml` file.
+
+    docker-compose -f docker-compose-prod.yml up -d
 
 ## Basic API
 
@@ -138,7 +159,7 @@ The first time and each time a css or js file is updated:
 
 Restart your Web server.
 
-* * *
+---
 
 ## Legacy
 
