@@ -1,5 +1,20 @@
 # Version Change Log
 The sections below refer to the release tags for this repository:
+## [Version 1.3.6](https://github.com/nrmay/TeSS/releases/tag/v1.3.6)
+
+Deployed: *TBA*
+
+- Features:
+  - [TBA](https://github.com/nrmay/TeSS/issues/999)
+
+
+- Updates:
+
+
+- Fixes:
+
+
+---
 ## [Version 1.3.5](https://github.com/nrmay/TeSS/releases/tag/v1.3.5)
 
 Deployed: *4<sup>th</sup> March, 2022*
