@@ -78,12 +78,7 @@ TODO: Add Docker debugging instructions
 
 ## Production
 
-//TODO: Add assest pre compile details
-// Uglifier.new(harmony: true)
-//bundle exec rake assets:precompile RAILS_ENV=production
-
-
-The production deployment is configured in the `docker-compose-prod.yml` file.
+The production deployment is configured in the `docker-compose-prod.yml` file. There is also a separte entrypoint (`enrtypoint-prod.sh`) that will run the DB migratuions, precompile assets and reindex SOLR.
 
     docker-compose -f docker-compose-prod.yml up -d
 
