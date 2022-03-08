@@ -19,6 +19,7 @@ module Scraper
     bad_method: 'Method is invalid: ',
     bad_resource: 'Resource type is invalid: ',
     sources_size: 'Sources count = ',
+    bad_source_id: 'Source id invalid: ',
   }
 
   def self.run (log_file)
@@ -77,6 +78,11 @@ module Scraper
     # get provider
     if getProvider(source[:provider]).nil?
       log @messages[:invalid] + @messages[:provider_not_found] + source[:provider].to_s, 2
+      result = false
+    end
+    # check id
+    if source[:id].nil? || source[:id].is_a?(Integer) == false
+      log @messages[:invalid] + @messages[:bad_source_id] + source[:id], 2
       result = false
     end
     # check url
