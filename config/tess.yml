@@ -1,7 +1,7 @@
 default: &default
-  base_url: <%= ENV("BASE_URL") %>
-  contact_email: <%= ENV("CONTACT_EMAIL") %>
-  sender_email: <%= ENV("SENDER_EMAIL") %>
+  base_url: <%= ENV.fetch("BASE_URL") %>
+  contact_email: <%= ENV.fetch("CONTACT_EMAIL") %>
+  sender_email: <%= ENV.fetch("SENDER_EMAIL") %>
   solr_enabled: true
   announcement_message:
   prevent_robot_indexing: false
