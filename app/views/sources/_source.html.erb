@@ -1,0 +1,14 @@
+<div class="masonry-brick media-item long">
+  <h3 class="media-heading"><%= title_with_privacy(source) %></h3>
+  <div class="text-justify" style="display: inline-block; word-break: normal;">
+    <%= source.content_provider.title %>
+  </div>
+  <div class="text-justify" style="display: inline-block; word-break: normal;">
+    <%= source.url %>
+  </div>
+  <div class="text-justify" style="display: inline-block; word-break: normal;">
+    <%= "method: #{source.method}, type: #{source.resource_type}" %>
+  </div>
+  <%= link_to '', package, :class => "media-view" %>
+  </li>
+</div>

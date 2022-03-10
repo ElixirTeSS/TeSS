@@ -11,6 +11,11 @@
     <div class="row">
       <%# ACTION BUTTONS %>
       <div class="content_action">
+        <%= link_to sources_path(content_provider: @content_provider),
+                    class: 'btn btn-primary align-self-end' do %>
+          Ingestion Sources
+        <% end %>
+
         <%= link_to t('.back', :default => t("helpers.links.back")),
                     content_providers_path, :class => 'btn btn-info' %>
 

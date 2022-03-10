@@ -1,0 +1,3 @@
+class SourcePolicy < ScrapedResourcePolicy
+
+end

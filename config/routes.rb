@@ -53,6 +53,8 @@ Rails.application.routes.draw do
     resource :ban, only: [:create, :new, :destroy]
   end
 
+  resources :sources, concerns: :activities
+
   if TeSS::Config.feature['trainers'] == true
     resources :trainers, only: [:show, :index]
   end

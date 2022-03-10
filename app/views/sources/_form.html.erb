@@ -1,0 +1,23 @@
+<%= simple_form_for @source, html: { class: 'source', multipart: true } do |f| %>
+
+  <%= render partial: 'common/error_summary', locals: { resource: @source } %>
+
+  <p>Provider: <%= @content_provider %></p>
+
+  <%= render partial: 'common/url_checker', locals: { f: f, url: content_providers_check_exists_path, title: '' } %>
+
+  <%= f.dropdown :method, options: source_methods_options_for_select,
+                 label: 'Ingestion Methods'   %>
+
+  <%= f.dropdown :resource_type, options: source_resources_options_for_select,
+                 label: 'Resource Type'  %>
+
+  <div class="form-group actions">
+    <%= f.submit (f.object.new_record? ? "Create" : "Update") + " source",
+                 :class => 'btn btn-primary' %>
+    <%= link_to 'Back', packages_path, :class => "btn btn-info" %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                packages_path, :class => 'btn btn-default' %>
+  </div>
+
+<% end %>

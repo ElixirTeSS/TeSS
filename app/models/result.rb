@@ -5,13 +5,12 @@ class Result < ApplicationRecord
   if TeSS::Config.solr_enabled
     # :nocov:
     searchable do
-      datetime :finished
+      time :finished_at
       string :source do
         self.source.try(:url)
       end
     end
     # :nocov:
   end
-
 
 end
