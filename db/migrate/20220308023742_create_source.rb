@@ -2,10 +2,12 @@ class CreateSource < ActiveRecord::Migration[5.2]
   def change
     create_table :sources do |t|
       t.references :content_provider, foreign_key: true
+      t.references :user, foreign_key: true
       t.datetime :created_at
       t.string :url
       t.string :method
       t.string :resource_type
+      t.integer :user_id
     end
 
     create_table :results do |t|

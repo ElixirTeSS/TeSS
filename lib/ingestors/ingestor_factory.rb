@@ -5,8 +5,8 @@ require 'ingestors/ingestor_material_csv'
 require 'ingestors/ingestor_material_rest'
 
 class IngestorFactory
-  @@methods = ['csv', 'ical', 'rest',]
-  @@resources = ['event', 'material',]
+  @@methods = { 'csv': 'CSV File', 'ical': 'iCalendars', 'rest': 'REST API' }
+  @@resources = { 'event': 'Events', 'material': 'Materials' }
 
   def self.get_ingestor (method, resource)
     if is_method_valid?(method) and is_resource_valid?(resource)
@@ -30,11 +30,23 @@ class IngestorFactory
   end
 
   def self.is_method_valid? (method)
-    @@methods.include? method
+    @@methods.has_key? method
   end
 
   def self.is_resource_valid? (resource)
-    @@resources.include? resource
+    @@resources.has_key? resource
+  end
+
+  def self.method_for_select
+    @@methods.map do |key, value|
+      [value, key, '']
+    end
+  end
+
+  def self.resources_for_select
+    @@resources.map do |key, value|
+      [value, key, '']
+    end
   end
 
 end

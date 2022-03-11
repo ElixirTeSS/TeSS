@@ -7,11 +7,11 @@ module SourcesHelper
   # Returns an array of two-element arrays of licences ready to be used in options_for_select()
   # for generating option/select tags
   def source_methods_options_for_select
-    IngestorFactory.@@methods
+    IngestorFactory.method_for_select
   end
 
   def source_resources_options_for_select
-    IngestorFactory.@@resource_types
+    IngestorFactory.resources_for_select
   end
 
 end

@@ -1,14 +1,14 @@
 class SourcesController < ApplicationController
 
   before_action :set_source, only: [:show, :edit, :update, :destroy]
+  before_action :set_content_provider, only: [:index, :new, :create]
   before_action :set_breadcrumbs
 
-  # include SearchableIndex
+  include SearchableIndex
 
   # GET /sources
   # GET /sources.json
   def index
-    @content_provider = params[:content_provider]
     if @content_provider.nil?
       @sources = Source.all
     else
@@ -43,17 +43,38 @@ class SourcesController < ApplicationController
   def create
     authorize Source
     @source = Source.new(source_params)
+    @source.created_at = Time.now
     @source.user = current_user
 
     respond_to do |format|
       if @source.save
         @source.create_activity :create, owner: current_user
         current_user.sources << @source
+        puts "Source save succeeded!"
         format.html { redirect_to @source, notice: 'Source was successfully created.' }
         format.json { render :show, status: :created, location: @source }
       else
+        puts "Source save failed!"
         format.html { render :new }
         format.json { render json: @source.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # POST /sources/check_exists
+  # POST /sources/check_exists.json
+  def check_exists
+    @source = Source.check_exists(source_params)
+
+    if @source
+      respond_to do |format|
+        format.html { redirect_to @source }
+        format.json { render :show, location: @source }
+      end
+    else
+      respond_to do |format|
+        format.html { render :nothing => true, :status => 200, :content_type => 'text/html' }
+        format.json { render json: {}, :status => 200, :content_type => 'application/json' }
       end
     end
   end
@@ -74,11 +95,11 @@ class SourcesController < ApplicationController
     end
   end
 
-  # DELETE /packages/1
-  # DELETE /packages/1.json
+  # DELETE /sources/1
+  # DELETE /sources/1.json
   def destroy
     authorize @source
-    @source.create_activity :destroy, owner: current_user
+    #@source.create_activity :destroy, owner: current_user
     @source.destroy
     respond_to do |format|
       format.html { redirect_to sources_url, notice: 'Source was successfully destroyed.' }
@@ -87,6 +108,18 @@ class SourcesController < ApplicationController
   end
 
   private
+
+  def set_content_provider
+    @content_provider = nil
+    slug = params[:content_provider]
+    @content_provider = ContentProvider.find_by_slug(slug) unless slug.nil?
+    if @content_provider.nil?
+      id = params[:content_provider_id]
+      @content_provider = ContentProvider.find(id) unless id.nil?
+    end
+    @content_provider
+  end
+
 
   # Use callbacks to share common setup or constraints between actions.
   def set_source

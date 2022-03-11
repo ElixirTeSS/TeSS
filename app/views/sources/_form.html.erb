@@ -2,22 +2,35 @@
 
   <%= render partial: 'common/error_summary', locals: { resource: @source } %>
 
-  <p>Provider: <%= @content_provider %></p>
+  <% if @content_provider.nil? %>
+    <%= f.input :content_provider_id,
+                collection: current_user.get_editable_providers,
+                label_method: :title,
+                value_method: :id,
+                include_blank: false %>
+  <% else %>
+    <h4>Provider: <%= @content_provider.title %></h4>
+    <%= f.hidden_field :content_provider_id, value: @content_provider.id %>
+  <% end %>
 
-  <%= render partial: 'common/url_checker', locals: { f: f, url: content_providers_check_exists_path, title: '' } %>
+  <%= render partial: 'common/url_checker',
+             locals: { f: f, url: sources_check_exists_path, title: '' } %>
 
-  <%= f.dropdown :method, options: source_methods_options_for_select,
-                 label: 'Ingestion Methods'   %>
+  <%= f.input :method, label: 'Ingestion Method',
+              collection: source_methods_options_for_select,
+              include_blank: false %>
 
-  <%= f.dropdown :resource_type, options: source_resources_options_for_select,
-                 label: 'Resource Type'  %>
+  <%= f.input :resource_type, label: 'Resource Type',
+              collection: source_resources_options_for_select,
+              include_blank: false %>
 
   <div class="form-group actions">
     <%= f.submit (f.object.new_record? ? "Create" : "Update") + " source",
                  :class => 'btn btn-primary' %>
-    <%= link_to 'Back', packages_path, :class => "btn btn-info" %>
+    <%= link_to 'Back', sources_path(content_provider: @content_provider),
+                :class => "btn btn-info" %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                packages_path, :class => 'btn btn-default' %>
+                sources_path, :class => 'btn btn-default' %>
   </div>
 
 <% end %>

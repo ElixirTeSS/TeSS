@@ -334,7 +334,7 @@ ActiveRecord::Schema.define(version: 2022_03_08_023742) do
 
   create_table "results", force: :cascade do |t|
     t.bigint "source_id"
-    t.datetime "finished"
+    t.datetime "finished_at"
     t.string "filename"
     t.integer "records_read"
     t.integer "records_written"
@@ -360,11 +360,13 @@ ActiveRecord::Schema.define(version: 2022_03_08_023742) do
 
   create_table "sources", force: :cascade do |t|
     t.bigint "content_provider_id"
-    t.integer "identifier"
+    t.integer "user_id"
+    t.datetime "created_at"
     t.string "url"
     t.string "method"
     t.string "resource_type"
     t.index ["content_provider_id"], name: "index_sources_on_content_provider_id"
+    t.index ["user_id"], name: "index_sources_on_user_id"
   end
 
   create_table "staff_members", force: :cascade do |t|
@@ -504,6 +506,7 @@ ActiveRecord::Schema.define(version: 2022_03_08_023742) do
   add_foreign_key "packages", "users"
   add_foreign_key "results", "sources"
   add_foreign_key "sources", "content_providers"
+  add_foreign_key "sources", "users"
   add_foreign_key "staff_members", "nodes"
   add_foreign_key "stars", "users"
   add_foreign_key "subscriptions", "users"

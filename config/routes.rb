@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   post 'materials/check_exists' => 'materials#check_exists'
   post 'events/check_exists' => 'events#check_exists'
   post 'content_providers/check_exists' => 'content_providers#check_exists'
+  post 'sources/check_exists' => 'sources#check_exists'
 
   #devise_for :users
   # Use custom invitations and registrations controllers that subclasses devise's
