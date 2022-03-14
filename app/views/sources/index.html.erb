@@ -1,10 +1,10 @@
 <div class="wrapper">
-  <!-- % if TeSS::Config.solr_enabled %>
+ <% if TeSS::Config.solr_enabled %>
     <div id="sidebar" class="popout-sidebar">
-      < %= render partial: "search/common/facet_sidebar",
-                 locals: { resources: @source_results, resource_type: Source } %>
+      <%= render partial: "search/common/facet_sidebar",
+                 locals: { resources: @sources_results, resource_type: Source } %>
     </div>
-  < % end % -->
+  <% end %>
 
   <div id="content">
     <div class="row">
@@ -20,28 +20,20 @@
         <% end %>
       </div>
     </div>
-    <div class="row">
 
-      <% unless @content_provider.nil? %>
-        <h4>Provider: <%= @content_provider.title %></h4>
-      <% end %>
-      <h4><%= "#{pluralize(@sources.size, 'source', plural: 'sources')} found" %></h4>
-
-    </div>
-
-    <!-- % if TeSS::Config.solr_enabled %>
+    <% if TeSS::Config.solr_enabled %>
       <div class="row">
-        < %= render partial: "search/common/search_box",
+        <%= render partial: "search/common/search_box",
                    locals: { resource_path: sources_path } %>
         <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
           <i class="fa fa-filter"></i> Filters
         </button>
-        < %= render partial: "search/common/search_info",
+        <%= render partial: "search/common/search_info",
                    locals: { resources: @sources_results, resource_type: 'source' } %>
-        < %= render partial: "search/common/search_filters",
+        <%= render partial: "search/common/search_filters",
                    locals: { resources: @sources_results } %>
       </div>
-    < % end % -->
+    <% end %>
 
     <!-- %= render partial: "search/common/pagination_bar", locals: { resources: @sources } % -->
     <hr>

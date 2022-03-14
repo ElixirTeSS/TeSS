@@ -10,7 +10,7 @@
   <div id="content">
     <div class="row">
       <div class="content_action pull-left">
-        <%= link_to sources_path(content_provider: @content_provider),
+        <%= link_to sources_path(content_provider: @content_provider.title),
                     class: 'btn btn-primary align-self-end' do %>
           Ingestion Sources
         <% end %>

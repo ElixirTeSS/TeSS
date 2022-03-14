@@ -8,7 +8,7 @@ class Source < ApplicationRecord
   belongs_to :content_provider
   has_many :results, :dependent => :destroy
 
-  validates :created_at, :method, :resource_type, presence: true
+  validates :url, :method, :resource_type, presence: true
   validates :url, url: true
   validate :check_method_resource_combo
 
@@ -31,7 +31,7 @@ class Source < ApplicationRecord
   end
 
   def source_params
-    permitted = [:created_at, :url, :method, :resource_type, :content_provider]
+    permitted = [:created_at, :url, :method, :resource_type, :content_provider_id]
     params.require(:source).permit(permitted)
   end
 
@@ -51,12 +51,16 @@ class Source < ApplicationRecord
   end
 
   def check_method_resource_combo
-    puts "method: #{method}, resource_type: #{resource_type}"
+    unless IngestorFactory.is_method_valid? method
+      errors.add :method, 'invalid method'
+    end
+    unless IngestorFactory.is_resource_valid? resource_type
+      errors.add :resource_type, 'invalid resource type'
+    end
     begin
-      IngestorFactory.get_ingestor(method, resource_type)
-      true
+      IngestorFactory.get_ingestor method, resource_type
     rescue Exception => e
-      errors.add(:resource_type, e.message)
+      errors.add(:resource_type, 'invalid method and resource type combination')
     end
   end
 

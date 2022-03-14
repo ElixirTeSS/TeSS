@@ -9,11 +9,7 @@ class SourcesController < ApplicationController
   # GET /sources
   # GET /sources.json
   def index
-    if @content_provider.nil?
-      @sources = Source.all
-    else
-      @sources = Source.where(content_provider: @content_provider)
-    end
+    authorize Source
     respond_to do |format|
       format.html
       format.json
@@ -50,11 +46,9 @@ class SourcesController < ApplicationController
       if @source.save
         @source.create_activity :create, owner: current_user
         current_user.sources << @source
-        puts "Source save succeeded!"
         format.html { redirect_to @source, notice: 'Source was successfully created.' }
         format.json { render :show, status: :created, location: @source }
       else
-        puts "Source save failed!"
         format.html { render :new }
         format.json { render json: @source.errors, status: :unprocessable_entity }
       end
@@ -85,7 +79,6 @@ class SourcesController < ApplicationController
     authorize @source
     respond_to do |format|
       if @source.update(source_params)
-        @source.create_activity(:update, owner: current_user) if @source.log_update_activity?
         format.html { redirect_to @source, notice: 'Source was successfully updated.' }
         format.json { render :show, status: :ok, location: @source }
       else
@@ -99,7 +92,6 @@ class SourcesController < ApplicationController
   # DELETE /sources/1.json
   def destroy
     authorize @source
-    #@source.create_activity :destroy, owner: current_user
     @source.destroy
     respond_to do |format|
       format.html { redirect_to sources_url, notice: 'Source was successfully destroyed.' }
@@ -123,12 +115,12 @@ class SourcesController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_source
-    @source = Source.friendly.find(params[:id])
+    @source = Source.find(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def source_params
-    params.require(:source).permit(:content_provider, :created_at,
+    params.require(:source).permit(:content_provider_id, :created_at,
                                    :url, :method, :resource_type)
   end
 

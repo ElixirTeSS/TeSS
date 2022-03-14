@@ -29,12 +29,12 @@ class IngestorFactory
     end
   end
 
-  def self.is_method_valid? (method)
-    @@methods.has_key? method
+  def self.is_method_valid? (input)
+    @@methods.has_key? input.to_sym
   end
 
-  def self.is_resource_valid? (resource)
-    @@resources.has_key? resource
+  def self.is_resource_valid? (input)
+    @@resources.has_key? input.to_sym
   end
 
   def self.method_for_select
@@ -47,6 +47,14 @@ class IngestorFactory
     @@resources.map do |key, value|
       [value, key, '']
     end
+  end
+
+  def self.get_method_value (input)
+    @@methods.fetch input.to_sym
+  end
+
+  def self.get_resource_value (input)
+    @@resources.fetch input.to_sym
   end
 
 end
