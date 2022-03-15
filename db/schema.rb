@@ -332,16 +332,6 @@ ActiveRecord::Schema.define(version: 2022_03_08_023742) do
     t.index ["slug"], name: "index_profiles_on_slug", unique: true
   end
 
-  create_table "results", force: :cascade do |t|
-    t.bigint "source_id"
-    t.datetime "finished_at"
-    t.string "filename"
-    t.integer "records_read"
-    t.integer "records_written"
-    t.integer "log_level"
-    t.index ["source_id"], name: "index_results_on_source_id"
-  end
-
   create_table "roles", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -362,9 +352,16 @@ ActiveRecord::Schema.define(version: 2022_03_08_023742) do
     t.bigint "content_provider_id"
     t.integer "user_id"
     t.datetime "created_at"
+    t.datetime "finished_at"
     t.string "url"
     t.string "method"
     t.string "resource_type"
+    t.integer "records_read"
+    t.integer "records_written"
+    t.integer "resources_added"
+    t.integer "resources_updated"
+    t.integer "resources_rejected"
+    t.text "log"
     t.index ["content_provider_id"], name: "index_sources_on_content_provider_id"
     t.index ["user_id"], name: "index_sources_on_user_id"
   end
@@ -504,7 +501,6 @@ ActiveRecord::Schema.define(version: 2022_03_08_023742) do
   add_foreign_key "node_links", "nodes"
   add_foreign_key "nodes", "users"
   add_foreign_key "packages", "users"
-  add_foreign_key "results", "sources"
   add_foreign_key "sources", "content_providers"
   add_foreign_key "sources", "users"
   add_foreign_key "staff_members", "nodes"

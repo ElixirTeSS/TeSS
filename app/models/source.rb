@@ -6,7 +6,6 @@ class Source < ApplicationRecord
 
   belongs_to :user
   belongs_to :content_provider
-  has_many :results, :dependent => :destroy
 
   validates :url, :method, :resource_type, presence: true
   validates :url, url: true
@@ -19,6 +18,7 @@ class Source < ApplicationRecord
         url.downcase
       end
       time :created_at
+      time :finished_at
       string :url
       string :method
       string :resource_type
