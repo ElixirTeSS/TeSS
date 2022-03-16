@@ -112,7 +112,6 @@ class SourcesController < ApplicationController
     @content_provider
   end
 
-
   # Use callbacks to share common setup or constraints between actions.
   def set_source
     @source = Source.find(params[:id])
@@ -121,7 +120,10 @@ class SourcesController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def source_params
     params.require(:source).permit(:content_provider_id, :created_at,
-                                   :url, :method, :resource_type)
+                                   :url, :method, :resource_type, :finished_at,
+                                   :records_read, :records_written,
+                                   :resources_added, :resources_updated,
+                                   :resources_rejected, :log )
   end
 
 end

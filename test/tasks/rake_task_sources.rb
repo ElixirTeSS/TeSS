@@ -36,11 +36,11 @@ class RakeTasksEventCSVIngestion < ActiveSupport::TestCase
 
     # check an entry
     title = 'Introduction to Gadi'
-    url = 'https://opus.nci.org.au/display/Help/Introduciton+to+Gadi
+    url = 'https://opus.nci.org.au/display/Help/Introduciton+to+Gadi'
     event = Event.where(title: title, url: url)
     refute event.nil?, "Event title[#{title}] not found"
     description = 'Introduction to Gadi '
-    assert description, event.description, "Event title[#{title}] not matched"
+    assert_equal description, event.description, "Event title[#{title}] not matched"
 
     # check logfile messages
     message = 'IngestorEventCsv: events extracted = 14'
