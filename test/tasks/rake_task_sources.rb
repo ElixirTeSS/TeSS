@@ -20,9 +20,9 @@ class RakeTasksEventCSVIngestion < ActiveSupport::TestCase
 
   test 'check ingestion and validation of events from csv file' do
     # set config file
-    config_file = 'test_ingestion_csv.yml'
+    config_file = 'test_ingestion_sources.yml'
     logfile = override_config config_file
-    assert_equal 'test', TeSS::Config.ingestion[:name]
+    assert_equal 'sources', TeSS::Config.ingestion[:name]
 
     # override time
     freeze_time(stub_time = Time.new(2021)) do ||
@@ -31,27 +31,10 @@ class RakeTasksEventCSVIngestion < ActiveSupport::TestCase
     end
 
     # check logfile message
-    message = 'IngestorEventCsv: failed with: Illegal quoting'
-    refute logfile_contains(logfile, message), 'Message found: ' + message
-
-    # check an entry
-    title = 'Introduction to Gadi'
-    url = 'https://opus.nci.org.au/display/Help/Introduciton+to+Gadi'
-    event = Event.where(title: title, url: url)
-    refute event.nil?, "Event title[#{title}] not found"
-    description = 'Introduction to Gadi '
-    assert_equal description, event.description, "Event title[#{title}] not matched"
-
-    # check logfile messages
-    message = 'IngestorEventCsv: events extracted = 14'
-    assert logfile_contains(logfile, message), 'Message not found: ' + message
-    message = 'IngestorEventCsv: events added\[14\] updated\[0\] rejected\[0\]'
-    assert logfile_contains(logfile, message), 'Message not found: ' + message
-    url = 'https://raw.githubusercontent.com/nci900/NCI_feed_to_DReSA/master/event_NCI.csv'
-    message = 'resources read\[14\] and written\[14\]'
-    assert logfile_contains(logfile, message), 'Message not found: ' + message
-    message = 'Scraper.run: finish'
-    assert logfile_contains(logfile, message), 'Message not found: ' + message
+    message = 'Sources processed = 6'
+    assert logfile_contains(logfile, message), 'Message found: ' + message
   end
+
+
 
 end

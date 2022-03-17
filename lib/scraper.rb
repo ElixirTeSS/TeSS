@@ -20,6 +20,7 @@ module Scraper
     bad_resource: 'Resource type is invalid: ',
     sources_size: 'Sources count = ',
     bad_source_id: 'Source id invalid: ',
+    bad_source_save: 'Source save failed with: ',
   }
 
   def self.run (log_file)
@@ -40,8 +41,9 @@ module Scraper
       errors += 1
     end
 
-    # process each source
     processed = 0
+
+    # process sources in config file
     if config[:sources] and config[:sources].size > 0
       log @messages[:sources_size] + config[:sources].size.to_s, 1
       config[:sources].each do |source|
@@ -51,12 +53,12 @@ module Scraper
         if validate_source(source)
           log @messages[:valid_source], 2
           begin
+            provider = ContentProvider.find_by_title source[:provider]
             ingestor = IngestorFactory.get_ingestor source[:method], source[:resource_type]
-            provider = getProvider(source[:provider])
-            log 'Ingestor: ' + ingestor.class.name + ': read...', 2
             read = ingestor.read source[:url]
-            log 'Ingestor: ' + ingestor.class.name + ': write...', 2
             written = ingestor.write user, provider
+            log 'Ingestor: ' + ingestor.class.name + ': read...', 2
+            log 'Ingestor: ' + ingestor.class.name + ': write...', 2
             log "Source URL[#{source[:url]}] resources read[#{read}] and written[#{written}].", 2
           rescue Exception => e
             log 'Ingestor: ' + ingestor.class.name + ': failed with: ' + e.message, 2
@@ -64,6 +66,41 @@ module Scraper
         end
       end
     end
+
+    # process sources online
+    if Source.all
+      Source.all.each do |source|
+        begin
+          processed += 1
+          log @messages[:processing] + processed.to_s, 1
+          output = "### Processing Ingestion Source<br />"
+          if validate_source source
+            log @messages[:valid_source], 2
+            output.concat "**Provider:** #{source.content_provider.title}<br />"
+            puts "source.url = #{source.url}"
+            output.concat "     **URL:** #{source.url}<br />"
+            output.concat "  **Method:** #{IngestorFactory.get_method_value source.method}<br />"
+            output.concat "**Resource:** #{IngestorFactory.get_resource_value source.resource_type}<br />"
+            ingestor = IngestorFactory.get_ingestor source.method, source.resource_type
+            source.records_read = ingestor.read source.url
+            source.records_written = ingestor.write user, source.content_provider
+          end
+        rescue Exception => e
+          output.concat "**Failed with:** #{e.message}<br />"
+          log 'Ingestor: ' + ingestor.class.name + ': failed with: ' + e.message, 2
+        ensure
+          source.finished_at = Time.now
+          output.concat "**Finished at:** #{source.finished_at.strftime '%H:%M on %A, %d %B %Y (UTC)'}<br />"
+          source.log = output
+          begin
+            source.save!
+          rescue Exception => e
+            log @messages[:bad_source_save] + e.message, 2
+          end
+        end
+      end
+    end
+
     log '', 1
     log @messages[:processed] + processed.to_s, 1
 
@@ -73,43 +110,92 @@ module Scraper
 
   private
 
-  def self.validate_source(source)
+  def self.validate_source(input)
     result = true
-    # get provider
-    if getProvider(source[:provider]).nil?
-      log @messages[:invalid] + @messages[:provider_not_found] + source[:provider].to_s, 2
+
+    if input.is_a? Source
+      # validate online source
+      result = false unless validate_provider(input.content_provider)
+      result = false unless validate_url(input.url)
+      result = false unless validate_method(input.method)
+      result = false unless validate_resource(input.resource_type)
+    elsif input.is_a? Hash
+      # validate config file source
+      result = false unless validate_id(input[:id])
+      result = false unless validate_provider(input[:provider])
+      result = false unless validate_url(input[:url])
+      result = false unless validate_method(input[:method])
+      result = false unless validate_resource(input[:resource_type])
+    else
+      # invalid unexpected source
       result = false
+      log @messages[:invalid] + "source is a #{input.class}", 2
     end
+
+    # return
+    return result
+  end
+
+  def self.input_to_s(input)
+    input.nil? ? '' : input.to_s
+  end
+
+  def self.validate_id(input)
+    result = true
     # check id
-    if source[:id].nil? || source[:id].is_a?(Integer) == false
-      log @messages[:invalid] + @messages[:bad_source_id] + source[:id], 2
+    if input.nil? || input.is_a?(Integer) == false
+      log @messages[:invalid] + @messages[:bad_source_id] + input_to_s(input), 2
       result = false
     end
-    # check url
+    return result
+  end
+
+  def self.validate_provider(input)
+    result = true
+    if input.is_a? ContentProvider
+      provider = input
+    else
+      provider = ContentProvider.find_by_title(input) unless input.nil?
+    end
+    if provider.nil?
+      log @messages[:invalid] + @messages[:provider_not_found] + input_to_s(input), 2
+      result = false
+    end
+    return result
+  end
+
+  def self.validate_url(input)
+    result = true
     begin
-      response = Net::HTTP.get_response(URI.parse(source[:url]))
+      response = Net::HTTP.get_response(URI.parse(input))
       case response
       when Net::HTTPSuccess then true
       when Net::HTTPOK then true
       else raise 'Invalid URL'
       end
     rescue
-      log @messages[:invalid] + @messages[:url_not_accessible] + source[:url].to_s, 2
+      log @messages[:invalid] + @messages[:url_not_accessible] + input_to_s(input), 2
       result = false
     end
+    return result
+  end
+
+  def self.validate_method(input)
+    result = true
     # check method
-    if source[:method].nil? or !IngestorFactory.is_method_valid? source[:method]
-      log @messages[:invalid] + @messages[:bad_method] + source[:method], 2
+    if input.nil? or !IngestorFactory.is_method_valid? input
+      log @messages[:invalid] + @messages[:bad_method] + input_to_s(input), 2
       result = false
     end
+    return result
+  end
 
-    # check resource type
-    if source[:resource_type].nil? or !IngestorFactory.is_resource_valid? source[:resource_type]
-      log @messages[:invalid] + @messages[:bad_resource] + source[:resource_type], 2
+  def self.validate_resource(input)
+    result = true
+    if input.nil? or !IngestorFactory.is_resource_valid? input
+      log @messages[:invalid] + @messages[:bad_resource] + input_to_s(input), 2
       result = false
     end
-
-    # return
     return result
   end
 
@@ -141,10 +227,6 @@ module Scraper
       log "User found: username[#{user.username}] role[#{user.role.name}]", 1
     end
     return user
-  end
-
-  def self.getProvider (title)
-    provider = ContentProvider.find_by_title(title)
   end
 
 end
