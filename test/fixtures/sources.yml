@@ -23,7 +23,7 @@ third_source:
   user: admin
 
 fourth_source:
-  content_provider: portal_provider           # content provider's title
+  content_provider: portal_provider   # content provider's title
   url: https://zenodo.org/api/records/?communities=ardc  # the root URL to access the source
   method: rest                        # one of 'csv', 'rest'
   resource_type: material             # event or material
@@ -40,7 +40,7 @@ fifth_source:
 
 sixth_source:
   content_provider: another_portal_provider # content provider's title
-  url: 'https://tess.elixir-europe.org/events?include_expired=false&content_provider[]=Australian BioCommons'
+  url: 'https://tess.elixir-europe.org/events?include_expired=false&content_provider[]=Australian%20BioCommons'
   method: rest                        # one of 'csv', 'rest'
   resource_type: event                # event or material
   created_at: 2018-06-23 13:09:00

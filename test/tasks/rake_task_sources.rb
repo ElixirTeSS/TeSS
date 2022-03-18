@@ -24,17 +24,20 @@ class RakeTasksEventCSVIngestion < ActiveSupport::TestCase
     logfile = override_config config_file
     assert_equal 'sources', TeSS::Config.ingestion[:name]
 
-    # override time
-    freeze_time(stub_time = Time.new(2021)) do ||
-      # run task
-      Rake::Task['tess:automated_ingestion'].invoke
+    assert_difference 'Event.count', 19 do
+      # override time
+      freeze_time(stub_time = Time.new(2021)) do ||
+        # run task
+        Rake::Task['tess:automated_ingestion'].invoke
+      end
     end
 
     # check logfile message
     message = 'Sources processed = 6'
     assert logfile_contains(logfile, message), 'Message found: ' + message
+
+    # check updated source records
+    # TODO: check output
   end
-
-
 
 end

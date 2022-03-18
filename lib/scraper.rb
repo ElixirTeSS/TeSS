@@ -53,13 +53,27 @@ module Scraper
         if validate_source(source)
           log @messages[:valid_source], 2
           begin
+            # get provider
             provider = ContentProvider.find_by_title source[:provider]
+
+            # get ingestor
             ingestor = IngestorFactory.get_ingestor source[:method], source[:resource_type]
-            read = ingestor.read source[:url]
-            written = ingestor.write user, provider
-            log 'Ingestor: ' + ingestor.class.name + ': read...', 2
-            log 'Ingestor: ' + ingestor.class.name + ': write...', 2
-            log "Source URL[#{source[:url]}] resources read[#{read}] and written[#{written}].", 2
+
+            # read records
+            read, messages = ingestor.read source[:url]
+            unless messages.nil? or messages.empty?
+              log "Ingestor: #{ingestor.class.name}: read messages", 2
+              messages.each { |m| log("#{m}", 3)}
+            end
+
+
+            # write resources
+            processed, added, updated, messages = ingestor.write user, provider
+            unless messages.nil? or messages.empty?
+              log "Ingestor: #{ingestor.class.name}: write messages", 2
+              messages.each { |m| log("#{m}", 3)}
+            end
+            log "Source URL[#{source[:url]}] resources read[#{read}] and written[#{(added + updated)}].", 2
           rescue Exception => e
             log 'Ingestor: ' + ingestor.class.name + ': failed with: ' + e.message, 2
           end
@@ -72,18 +86,36 @@ module Scraper
       Source.all.each do |source|
         begin
           processed += 1
+          log '', 1
           log @messages[:processing] + processed.to_s, 1
           output = "### Processing Ingestion Source<br />"
           if validate_source source
             log @messages[:valid_source], 2
             output.concat "**Provider:** #{source.content_provider.title}<br />"
-            puts "source.url = #{source.url}"
             output.concat "     **URL:** #{source.url}<br />"
             output.concat "  **Method:** #{IngestorFactory.get_method_value source.method}<br />"
             output.concat "**Resource:** #{IngestorFactory.get_resource_value source.resource_type}<br />"
+
+            # get ingestor
             ingestor = IngestorFactory.get_ingestor source.method, source.resource_type
-            source.records_read = ingestor.read source.url
-            source.records_written = ingestor.write user, source.content_provider
+
+            # read resources
+            source.records_read, messages = ingestor.read source.url
+            unless messages.nil? or messages.empty?
+              output.concat " **Input Process:**<br />" unless message.nil?
+              messages.each { |m| output.concat "- #{m}"}
+            end
+            # write resources
+            total, added, updated, messages = ingestor.write user, source.content_provider
+            source.records_written = (added + updated)
+            source.resources_added = added
+            source.resources_updated = updated
+            source.resources_rejected = (total - (added + updated))
+            unless messages.nil? or messages.empty?
+              output.concat "**Output Process:**<br />"
+              messages.each { |m| output.concat "- #{m}" }
+            end
+            log "Source URL[#{source.url}] resources read[#{source.records_read}] and written[#{source.records_written}].", 2
           end
         rescue Exception => e
           output.concat "**Failed with:** #{e.message}<br />"
