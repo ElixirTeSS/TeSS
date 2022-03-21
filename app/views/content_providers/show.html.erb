@@ -5,12 +5,18 @@
   <%# SIDEBAR %>
   <div class="collapsing-sidebar" id="sidebar">
     <%= render :partial => "content_providers/partials/content_provider_sidebar",
-               :locals => { :content_provider => @content_provider } %>
+               :locals => { content_provider: @content_provider } %>
   </div>
   <div id="content">
     <div class="row">
-      <%# ACTION BUTTONS %>
-      <div class="content_action">
+      <div class="content_action pull-left">
+        <%= link_to sources_path(content_provider: @content_provider.title),
+                    class: 'btn btn-primary align-self-end' do %>
+          Ingestion Sources
+        <% end %>
+      </div>
+
+      <div class="content_action pull-right">
         <%= link_to t('.back', :default => t("helpers.links.back")),
                     content_providers_path, :class => 'btn btn-info' %>
 

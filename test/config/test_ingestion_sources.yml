@@ -1,0 +1,5 @@
+name: sources                         # ingestion configuration
+logfile: log/ingestion.sources.log    # full log file
+loglevel: 0                           # all messages
+username: ingestor                    # scraper user
+sources:                              # use online sources only

@@ -23,45 +23,59 @@ class IngestorEventIcal < IngestorEvent
   private
 
   def process_sitemap url
-    #puts "process_sitemap: #{url}"
     processed = 0
+    messages = []
     # find urls for individual icalendar files
     begin
       sitemap = Nokogiri::XML.parse(open(url))
       locs = sitemap.xpath('/ns:urlset/ns:url/ns:loc', {
         'ns' => 'http://www.sitemaps.org/schemas/sitemap/0.9'
       })
-      locs.each { |loc| processed += process_icalendar(loc.text) }
+      locs.each do |loc|
+        icals_processed, ical_messages = process_icalendar(loc.text)
+        processed += icals_processed
+        messages << ical_messages
+      end
     rescue Exception => e
-      Scraper.log("Extract from sitemap[#{url}] failed with: #{e}", 2)
+      messages << "Extract from sitemap[#{url}] failed with: #{e}"
     end
 
-    return processed
+    # finished
+    return processed, messages
   end
 
   def process_icalendar url
-    #puts "process_icalendar: #{url}"
     # process individual ics file
     processed = 0
+    messages = []
     query = '?ical=true'
 
-    # append query  (if required)
-    file_url = url
-    file_url << query unless url.to_s.downcase.ends_with? query
-
-    # process file
     begin
+      # append query  (if required)
+      file_url = url
+      file_url << query unless url.to_s.downcase.ends_with? query
+
+      # process file
       events = Icalendar::Event.parse(open(file_url).set_encoding('utf-8'))
+
       # process each event
-      events.each { |e| processed += 1 if process_event(e) }
+      events.each do |e|
+        result, event_messages = process_event(e)
+        processed += 1 if result
+        messages += event_messages
+      end
     rescue Exception => e
-      Scraper.log "process file url[#{file_url}] failed with: #{e.message}", 3
+      messages << "Process file url[#{file_url}] failed with: #{e.message}"
     end
-    return processed
+
+    # finished
+    return processed, messages
   end
 
   def process_event(calevent)
-    result = false
+    processed = 0
+    messages = []
+
     begin
       # set fields
       event = Event.new
@@ -96,12 +110,12 @@ class IngestorEventIcal < IngestorEvent
 
       # store event
       @events << event
-      result = true
+      processed += 1
     rescue Exception => e
-      Scraper.log "process_event failed with: #{e.message}", 3
+      messages << "Process iCalendar failed with: #{e.message}"
     end
 
-    return result
+    return processed, messages
   end
 
 end
