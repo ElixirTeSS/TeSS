@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_02_063557) do
+ActiveRecord::Schema.define(version: 2022_03_08_023742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -348,6 +348,24 @@ ActiveRecord::Schema.define(version: 2022_03_02_063557) do
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
+  create_table "sources", force: :cascade do |t|
+    t.bigint "content_provider_id"
+    t.integer "user_id"
+    t.datetime "created_at"
+    t.datetime "finished_at"
+    t.string "url"
+    t.string "method"
+    t.string "resource_type"
+    t.integer "records_read"
+    t.integer "records_written"
+    t.integer "resources_added"
+    t.integer "resources_updated"
+    t.integer "resources_rejected"
+    t.text "log"
+    t.index ["content_provider_id"], name: "index_sources_on_content_provider_id"
+    t.index ["user_id"], name: "index_sources_on_user_id"
+  end
+
   create_table "staff_members", force: :cascade do |t|
     t.string "name"
     t.string "role"
@@ -483,6 +501,8 @@ ActiveRecord::Schema.define(version: 2022_03_02_063557) do
   add_foreign_key "node_links", "nodes"
   add_foreign_key "nodes", "users"
   add_foreign_key "packages", "users"
+  add_foreign_key "sources", "content_providers"
+  add_foreign_key "sources", "users"
   add_foreign_key "staff_members", "nodes"
   add_foreign_key "stars", "users"
   add_foreign_key "subscriptions", "users"

@@ -48,6 +48,12 @@ module ApplicationHelper
     nil
   end
 
+  def resource_type_icon(record, size = nil)
+    unless record.resource_type.nil?
+      "<span class='missing-icon pull-right'>#{icon_for(record.resource_type.to_sym, size)}</span>".html_safe
+    end
+  end
+
   def hide_failing(record)
     if current_user && current_user.is_admin?
       return false
@@ -336,7 +342,7 @@ module ApplicationHelper
 
     def tree(name, options = {})
       # TODO: set existing
-      existing = { }
+      existing = {}
       @template.render(partial: 'common/tree', locals: { field_name: name, f: self,
                                                          model_name: options[:model_name],
                                                          resource: object,
@@ -533,12 +539,12 @@ module ApplicationHelper
     I18nData.languages.each do |lang|
       if lang and !lang.empty?
         value = lang[1]
-          key = lang[0]
+        key = lang[0]
         #Rails.logger.debug "language: key[#{key}] value[#{value}]"
         if priority and !priority.empty? and priority.include?(key)
-          priors << [value,key]
+          priors << [value, key]
         else
-          others << [value,key]
+          others << [value, key]
         end
       end
     end

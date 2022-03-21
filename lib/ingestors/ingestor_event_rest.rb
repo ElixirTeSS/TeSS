@@ -10,6 +10,7 @@ class IngestorEventRest < IngestorEvent
 
   def read(url)
     processed = 0
+    messages = []
 
     begin
       # execute query
@@ -20,17 +21,16 @@ class IngestorEventRest < IngestorEvent
         results = JSON.parse(response.to_str)
         
         # source translations
-        processed = process_elixir(results['data'], results['meta'])
+        elixir_processed, elixir_messages = process_elixir(results['data'], results['meta'])
+        processed += elixir_processed
+        messages += elixir_messages
       end
-
     rescue Exception => e
-      Scraper.log self.class.name + ': failed with: ' + e.message, 3
+      messages << "#{self.class.name} failed with: #{e.message}"
     end
 
-    # log processed count
-    Scraper.log self.class.name + ': events extracted = ' + processed.to_s, 3
-
-    return processed
+    # finished
+    return processed, messages
 
   end
 
@@ -43,6 +43,7 @@ class IngestorEventRest < IngestorEvent
 
   def process_elixir(data, meta)
     processed = 0
+    messages = []
 
     # extract materials from results
     unless data.nil? or data.size < 1
@@ -92,14 +93,14 @@ class IngestorEventRest < IngestorEvent
 
           # add event to events array
           add_event(event)
+          processed += 1
         rescue Exception => e
-          Scraper.log self.class.name + 'Extract event fields failed with: ' + e.message, 4
+          messages << "Extract event fields failed with: #{e.message}"
         end
-        processed += 1
       end
-
     end
 
-    return processed
+    # finished
+    return processed, messages
   end
 end

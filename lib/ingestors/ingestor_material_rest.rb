@@ -10,17 +10,15 @@ class IngestorMaterialRest < IngestorMaterial
 
   def read (url)
     processed = 0
+    messages = []
 
     # paged query
     next_page = url
 
     begin
-
+      # process each page
       while !next_page.nil?
-
-        #puts "next_page = " + CGI.unescape_html(next_page).inspect
         response = RestClient::Request.new(method: :get, url: CGI.unescape_html(next_page), verify_ssl: false).execute
-
         if response.code == 200
           # format response
           results = JSON.parse(response.to_str)
@@ -29,8 +27,9 @@ class IngestorMaterialRest < IngestorMaterial
           unless results['hits'].nil? and results['hits']['hits'].nil?
             hits = results['hits']['hits']
             hits.each do |item|
-              process_material item
-              processed += 1
+              mats_processed, mats_messages = process_material item
+              processed += mats_processed
+              messages += mats_messages
             end
           end
         else
@@ -42,18 +41,18 @@ class IngestorMaterialRest < IngestorMaterial
         next_page = results['links']['next'] unless results['links'].nil? or results['links']['next'].nil?
         next_page = nil if next_page == old_page
       end
-
     rescue Exception => e
-      Scraper.log self.class.name + ': failed with: ' + e.message, 3
+      messages << "#{self.class.name} failed with: #{e.message}"
     end
 
-    # log processed count
-    Scraper.log self.class.name + ': materials extracted = ' + processed.to_s, 3
-
-    return processed
+    # finished
+    return processed, messages
   end
 
   def process_material(input)
+    processed = 0
+    messages = []
+
     # map top-level tags
     metadata = input['metadata']
     links = input['links']
@@ -87,10 +86,17 @@ class IngestorMaterialRest < IngestorMaterial
       if !links.nil?
         material.url = links['html'] unless links['html'].nil?
       end
+
+      # add material to array
       add_material(material)
+      processed += 1
     rescue Exception => e
-      Scraper.log self.class.name + 'Extract material fields failed with: ' + e.message, 4
+      messages << "#{self.class.name} extract material fields failed with: #{e.message}"
     end
+
+    # finished
+    return processed, messages
   end
+
 
 end

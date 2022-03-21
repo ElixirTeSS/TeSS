@@ -10,42 +10,43 @@ class IngestorEventCsv < IngestorEvent
 
   def read (url)
     processed = 0
+    messages = []
 
     # parse csv file to table
     begin
+      # parse csv as table
       web_contents = open(url).read
-      table = CSV.parse(web_contents, headers: true)
-    rescue CSV::MalformedCSVError => mce
-      puts "parse table failed with: #{mce.message}"
-      raise mce
-    end
+      table = CSV.parse web_contents, headers: true
 
-    # process each row
-    table.each do |row|
-      # copy values
-      event = Event.new
-      event.title = row['Title']
-      event.url = row['URL']
-      event.description = process_description row['Description']
-      event.start = row['Start']
-      event.end = row['End']
-      event.timezone = row['Timezone']
-      event.contact = row['Contact']
-      event.organizer = row['Organizer']
-      event.eligibility = process_eligibility row['Eligibility']
-      event.host_institutions = process_host_institutions row['Host Institutions']
-      event.online = row['Online']
-      event.city = row['City']
-      event.country = row['Country']
-      event.venue = row['Venue']
+      # process each row
+      table.each do |row|
+        # copy values
+        event = Event.new
+        event.title = row['Title']
+        event.url = row['URL']
+        event.description = process_description row['Description']
+        event.start = row['Start']
+        event.end = row['End']
+        event.timezone = row['Timezone']
+        event.contact = row['Contact']
+        event.organizer = row['Organizer']
+        event.eligibility = process_eligibility row['Eligibility']
+        event.host_institutions = process_host_institutions row['Host Institutions']
+        event.online = row['Online']
+        event.city = row['City']
+        event.country = row['Country']
+        event.venue = row['Venue']
 
-      unless event.title.nil? or event.url.nil?
-        add_event(event)
+        # add to array
+        add_event event
         processed += 1
       end
+    rescue CSV::MalformedCSVError => mce
+      messages << "parse table failed with: #{mce.message}"
     end
-    Scraper.log self.class.name + ': events extracted = ' + processed.to_s, 3
-    return processed
+
+    # finished
+    return processed, messages
   end
 
   private

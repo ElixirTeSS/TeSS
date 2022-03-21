@@ -167,7 +167,5 @@ namespace :tess do
     rescue Exception => e
       puts "task[automated_ingestion] failed with #{e.message}"
     end
-    #puts "task[automated_ingestion] end"
   end
-
 end

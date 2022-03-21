@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   post 'materials/check_exists' => 'materials#check_exists'
   post 'events/check_exists' => 'events#check_exists'
   post 'content_providers/check_exists' => 'content_providers#check_exists'
+  post 'sources/check_exists' => 'sources#check_exists'
 
   #devise_for :users
   # Use custom invitations and registrations controllers that subclasses devise's
@@ -52,6 +53,8 @@ Rails.application.routes.draw do
   resources :users do
     resource :ban, only: [:create, :new, :destroy]
   end
+
+  resources :sources, concerns: :activities
 
   if TeSS::Config.feature['trainers'] == true
     resources :trainers, only: [:show, :index]

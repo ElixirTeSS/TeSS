@@ -46,6 +46,11 @@
               <i class="fa fa-users fa-lg"></i>
             <% end %>
           <% end %>
+          <% if current_user.is_curator? || current_user.is_admin? %>
+            <%= link_to sources_path, :title => 'View ingestion sources' do %>
+              <i class="fa fa-cloud-download fa-lg"></i>
+            <% end %>
+          <% end %>
           <% if current_user.is_admin? %>
             <%= link_to rails_admin_path, :title => 'View the administrator console' do %>
               <i class="fa fa-cog fa-lg"></i>

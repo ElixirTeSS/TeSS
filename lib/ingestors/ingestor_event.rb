@@ -15,11 +15,11 @@ class IngestorEvent < Ingestor
 
   def write (user, provider)
     processed = 0
+    messages = []
     updated = 0
     added = 0
-    @events.each do |event|
-      processed += 1
 
+    @events.each do |event|
       # check for matched events
       matched_events = Event.where(title: event.title,
                                    url: event.url,
@@ -33,29 +33,47 @@ class IngestorEvent < Ingestor
         event.scraper_record = true
         event.last_scraped = DateTime.now
         event = set_field_defaults event
-        if valid_event? event
+
+        # check event status
+        if event.valid?
           event.save!
           added += 1
+        elsif event.expired?
+          messages << "Event has expired: #{event.title}"
+        else
+          messages << "Event failed validation: #{event.title}"
+          event.errors.full_messages.each do |message|
+            messages << "Error: " + message
+          end
         end
-
       else
         # update and save matched event
         matched = overwrite_fields matched_events.first, event
         matched = set_field_defaults matched
         matched.scraper_record = true
         matched.last_scraped = DateTime.now
-        if valid_event? matched
+
+        # check validity
+        if matched.valid?
           matched.save!
           updated += 1
+        elsif matched.expired?
+          messages << "Event[#{matched.title}] failed validation: event has expired."
+        else
+          messages << "Event[#{matched.title}] failed validation:"
+          matched.errors.full_messages.each do |message|
+            messages << "Error: " + message
+          end
         end
-
       end
 
+      # finished processing event
+      processed += 1
     end
-    written = (added + updated)
-    Scraper.log self.class.name +
-                  ": events added[#{added}] updated[#{updated}] rejected[#{processed - written}]", 3
-    return written
+
+    # finished
+    messages << "#{self.class.name}: events added[#{added}] updated[#{updated}] rejected[#{processed - (added + updated)}]"
+    return processed, added, updated, messages
   end
 
   private
@@ -105,23 +123,7 @@ class IngestorEvent < Ingestor
     return event
   end
 
-  def valid_event? (event)
-    # check valid
-    if event.valid? and !event.expired?
-      return true
-    else
-      # log error messages
-      Scraper.log "Event title[#{event.title}] failed validation.", 4
-      Scraper.log "Event title[#{event.title}] error: event has expired", 5 if event.expired?
-      event.errors.full_messages.each do |message|
-        Scraper.log "Event title[#{event.title}] error: " + message, 5
-      end
-      return false
-    end
-
-  end
-
-  def convert_eligibility(input)
+   def convert_eligibility(input)
     case input
     when 'first_come_first_served'
       'open_to_all'
