@@ -5,7 +5,7 @@ The sections below refer to the release tags for this repository:
 Deployed: *TBA*
 
 - Features:
-  - [TBA](https://github.com/nrmay/TeSS/issues/999)
+  - [Automated Ingestion: manage sources online](https://github.com/nrmay/TeSS/issues/308)
 
 
 - Updates:
