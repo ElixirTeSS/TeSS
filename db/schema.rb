@@ -318,13 +318,13 @@ ActiveRecord::Schema.define(version: 2022_03_08_023742) do
     t.string "slug"
     t.boolean "public", default: false
     t.text "description"
-    t.string "expertise_academic", default: [], array: true
-    t.string "expertise_technical", default: [], array: true
     t.text "location"
     t.string "orcid"
     t.string "experience"
-    t.text "interest", default: [], array: true
-    t.text "activity", default: [], array: true
+    t.string "expertise_academic", default: [], array: true
+    t.string "expertise_technical", default: [], array: true
+    t.string "interest", default: [], array: true
+    t.string "activity", default: [], array: true
     t.string "language", default: [], array: true
     t.string "social_media", default: [], array: true
     t.string "type", default: "Profile"
@@ -441,7 +441,7 @@ ActiveRecord::Schema.define(version: 2022_03_08_023742) do
     t.integer "invitations_count", default: 0
     t.index ["authentication_token"], name: "index_users_on_authentication_token"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
-    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["email"], name: "index_users_on_email"
     t.index ["identity_url"], name: "index_users_on_identity_url", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
     t.index ["invited_by_id"], name: "index_users_on_invited_by_id"

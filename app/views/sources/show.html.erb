@@ -10,9 +10,7 @@
 
     <div class="row">
       <div class="content_action">
-        <%= link_to 'Back',
-                    sources_path(content_provider: @source.content_provider.title),
-                    :class => "btn btn-info" %>
+        <%= link_to 'Back', sources_path, :class => "btn btn-info" %>
 
         <% if !current_user.nil? and policy(@source).update? %>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),

@@ -67,7 +67,7 @@ class IngestorMaterial < Ingestor
     end
 
     # finished
-    messages << "#{self.class.name}: materials added[#{added}] updated[#{updated}] rejected[#{processed - (added + updated)}]"
+    messages << "materials added[#{added}] updated[#{updated}] rejected[#{processed - (added + updated)}]"
     return processed, added, updated, messages
   end
 

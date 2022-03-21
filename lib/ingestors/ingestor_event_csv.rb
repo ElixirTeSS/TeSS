@@ -38,11 +38,18 @@ class IngestorEventCsv < IngestorEvent
         event.venue = row['Venue']
 
         # add to array
-        add_event event
+        if event.title.nil?
+          messages << "row found with no title"
+        else
+          add_event event
+        end
+
         processed += 1
       end
     rescue CSV::MalformedCSVError => mce
       messages << "parse table failed with: #{mce.message}"
+    rescue Exception => e
+      messages << "parse table failed with: #{e.message}"
     end
 
     # finished

@@ -19,51 +19,57 @@ class IngestorEvent < Ingestor
     updated = 0
     added = 0
 
-    @events.each do |event|
-      # check for matched events
-      matched_events = Event.where(title: event.title,
-                                   url: event.url,
-                                   start: event.start,
-                                   content_provider: provider)
+    unless @events.nil? or @events.empty?
+      @events.each do |event|
+        # check for matched events
+        begin
+          matched_events = Event.where(title: event.title,
+                                       url: event.url,
+                                       start: event.start,
+                                       content_provider: provider)
 
-      if matched_events.nil? or matched_events.first.nil?
-        # set ingestion parameters and save new event
-        event.user = user
-        event.content_provider = provider
-        event.scraper_record = true
-        event.last_scraped = DateTime.now
-        event = set_field_defaults event
+          if matched_events.nil? or matched_events.first.nil?
+            # set ingestion parameters and save new event
+            event.user = user
+            event.content_provider = provider
+            event.scraper_record = true
+            event.last_scraped = DateTime.now
+            event = set_field_defaults event
 
-        # check event status
-        if event.valid?
-          event.save!
-          added += 1
-        elsif event.expired?
-          messages << "Event has expired: #{event.title}"
-        else
-          messages << "Event failed validation: #{event.title}"
-          event.errors.full_messages.each do |message|
-            messages << "Error: " + message
+            # check event status
+            if event.valid?
+              event.save!
+              added += 1
+            elsif event.expired?
+              messages << "Event has expired: #{event.title}"
+            else
+              messages << "Event failed validation: #{event.title}"
+              event.errors.full_messages.each do |m|
+                messages << "Error: #{m}"
+              end
+            end
+          else
+            # update and save matched event
+            matched = overwrite_fields matched_events.first, event
+            matched = set_field_defaults matched
+            matched.scraper_record = true
+            matched.last_scraped = DateTime.now
+
+            # check validity
+            if matched.valid?
+              matched.save!
+              updated += 1
+            elsif matched.expired?
+              messages << "Event has expired: #{matched.title}"
+            else
+              messages << "Event failed validation: #{matched.title}"
+              matched.errors.full_messages.each do |m|
+                messages << "Error: #{m}"
+              end
+            end
           end
-        end
-      else
-        # update and save matched event
-        matched = overwrite_fields matched_events.first, event
-        matched = set_field_defaults matched
-        matched.scraper_record = true
-        matched.last_scraped = DateTime.now
-
-        # check validity
-        if matched.valid?
-          matched.save!
-          updated += 1
-        elsif matched.expired?
-          messages << "Event[#{matched.title}] failed validation: event has expired."
-        else
-          messages << "Event[#{matched.title}] failed validation:"
-          matched.errors.full_messages.each do |message|
-            messages << "Error: " + message
-          end
+        rescue Exception => e
+          messages << "#{self.class.name}: write events failed with: #{e.message}"
         end
       end
 
@@ -72,7 +78,7 @@ class IngestorEvent < Ingestor
     end
 
     # finished
-    messages << "#{self.class.name}: events added[#{added}] updated[#{updated}] rejected[#{processed - (added + updated)}]"
+    messages << "events added[#{added}] updated[#{updated}] rejected[#{processed - (added + updated)}]"
     return processed, added, updated, messages
   end
 
@@ -123,7 +129,7 @@ class IngestorEvent < Ingestor
     return event
   end
 
-   def convert_eligibility(input)
+  def convert_eligibility(input)
     case input
     when 'first_come_first_served'
       'open_to_all'

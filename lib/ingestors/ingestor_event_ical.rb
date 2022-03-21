@@ -11,13 +11,16 @@ class IngestorEventIcal < IngestorEvent
   end
 
   def read (url)
+    processed = 0
+    messages = []
     unless url.nil?
       if url.to_s.downcase.end_with? 'sitemap.xml'
-        process_sitemap url
+        processed, messages = process_sitemap url
       else
-        process_icalendar url
+        processed, messages = process_icalendar url
       end
     end
+    return processed, messages
   end
 
   private
@@ -34,10 +37,10 @@ class IngestorEventIcal < IngestorEvent
       locs.each do |loc|
         icals_processed, ical_messages = process_icalendar(loc.text)
         processed += icals_processed
-        messages << ical_messages
+        messages += ical_messages
       end
     rescue Exception => e
-      messages << "Extract from sitemap[#{url}] failed with: #{e}"
+      messages << "Extract from sitemap[#{url}] failed with: #{e.message}"
     end
 
     # finished
@@ -60,10 +63,11 @@ class IngestorEventIcal < IngestorEvent
 
       # process each event
       events.each do |e|
-        result, event_messages = process_event(e)
-        processed += 1 if result
+        events_processed, event_messages = process_event(e)
+        processed += events_processed
         messages += event_messages
       end
+
     rescue Exception => e
       messages << "Process file url[#{file_url}] failed with: #{e.message}"
     end
@@ -104,8 +108,12 @@ class IngestorEventIcal < IngestorEvent
         event.postcode = location['postcode'] unless location['postcode'].nil?
       end
       event.keywords = []
-      if !calevent.categories.nil? and !calevent.categories.first.nil?
-        calevent.categories.first.each { |item| event.keywords << item.to_s.lstrip }
+      unless calevent.categories.nil? or calevent.categories.first.nil?
+        if calevent.categories.first.kind_of?(Array)
+          calevent.categories.first.each { |item| event.keywords << item.to_s.lstrip }
+        else
+          event.keywords << calevent.categories.to_s.lstrip
+        end
       end
 
       # store event
