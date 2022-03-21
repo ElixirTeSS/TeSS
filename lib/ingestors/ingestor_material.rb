@@ -40,7 +40,7 @@ class IngestorMaterial < Ingestor
           material.save!
           added += 1
         else
-          messages << "Material[#{material.title}] failed validation."
+          messages << "Material failed validation: #{material.title}"
           material.errors.full_messages.each do |m|
             messages << "Error: " + m
           end
@@ -58,7 +58,7 @@ class IngestorMaterial < Ingestor
           matched.save!
           updated += 1
         else
-          messages << "Material[#{matched.title}] failed validation."
+          messages << "Material failed validation: #{matched.title}"
           matched.errors.full_messages.each do |m|
             messages << "Error: " + m
           end

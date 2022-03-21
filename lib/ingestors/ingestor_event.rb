@@ -39,9 +39,9 @@ class IngestorEvent < Ingestor
           event.save!
           added += 1
         elsif event.expired?
-          messages << "Event[#{event.title}] failed validation: event has expired."
+          messages << "Event has expired: #{event.title}"
         else
-          messages << "Event[#{event.title}] failed validation:"
+          messages << "Event failed validation: #{event.title}"
           event.errors.full_messages.each do |message|
             messages << "Error: " + message
           end

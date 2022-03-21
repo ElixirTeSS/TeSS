@@ -113,7 +113,7 @@ module Scraper
             source.resources_rejected = (total - (added + updated))
             unless messages.nil? or messages.empty?
               output.concat "**Output Process:**<br />"
-              messages.each { |m| output.concat "- #{m}" }
+              messages.each { |m| output.concat "- #{m}<br />" }
             end
             log "Source URL[#{source.url}] resources read[#{source.records_read}] and written[#{source.records_written}].", 2
           end
