@@ -59,6 +59,15 @@
                 <%= @source.created_at.strftime('%H:%M on %A, %d %B %Y (UTC)') %>
               </p>
 
+              <p><strong>
+                Source is
+                <% if @source.enabled %>
+                  <span style='color: green;'>Enabled</span>
+                <% else %>
+                  <span style='color: red;'>Disabled</span>
+                <% end %>
+              </strong></p>
+
               <hr/>
 
               <%# Show details of last run %>
@@ -110,7 +119,7 @@
                 <div class="col-md-9">
                   <h4>Output</h4>
                   <div class="panel-body"
-                    style="width: 100%; height: 300px ;overflow-y: scroll">
+                       style="width: 100%; height: 300px ;overflow-y: scroll">
                     <%= render_markdown(@source.log.html_safe) %>
                   </div>
                 </div>

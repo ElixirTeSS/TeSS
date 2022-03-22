@@ -162,6 +162,7 @@ module Scraper
 
     if input.is_a? Source
       # validate online source
+      result = false unless !input.enabled.nil? and input.enabled
       result = false unless validate_provider(input.content_provider)
       result = false unless validate_url(input.url)
       result = false unless validate_method(input.method)

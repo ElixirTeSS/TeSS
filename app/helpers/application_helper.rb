@@ -26,7 +26,9 @@ module ApplicationHelper
     material: { icon: 'fa-book', message: 'This is a training material' },
     suggestion: { icon: 'fa-commenting-o', message: 'This record has one or more suggested scientific topics' },
     private: { icon: 'fa-eye-slash', message: 'This resource is private' },
-    missing: { icon: 'fa-chain-broken', message: 'This resource has been offline for over three days' }
+    missing: { icon: 'fa-chain-broken', message: 'This resource has been offline for over three days' },
+    check: { icon: 'fa-check', message: 'This resource is enabled' },
+    cross: { icon: 'fa-times', message: 'This resource has been disabled' },
   }.freeze
 
   def scrape_status_icon(record, size = nil)
@@ -51,6 +53,16 @@ module ApplicationHelper
   def resource_type_icon(record, size = nil)
     unless record.resource_type.nil?
       "<span class='missing-icon pull-right'>#{icon_for(record.resource_type.to_sym, size)}</span>".html_safe
+    end
+  end
+
+  def enabled_icon(record, size = nil)
+    unless record.nil? or record.enabled.nil?
+      if record.enabled
+        "<span class='missing-icon pull-right'>#{icon_for(:check, size)}</span>".html_safe
+      else
+        "<span class='missing-icon pull-right'>#{icon_for(:cross, size)}</span>".html_safe
+      end
     end
   end
 
