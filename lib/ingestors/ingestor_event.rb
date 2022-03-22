@@ -45,15 +45,12 @@ class IngestorEvent < Ingestor
         rescue Exception => e
           @messages << "#{self.class.name}: write events failed with: #{e.message}"
         end
-
-        # finished processing event
-        @processed += 1
       end
     end
 
     # finished
     @messages << "events processed[#{@processed}] added[#{@added}] updated[#{@updated}] rejected[#{@rejected}]"
-    return processed, added, updated
+    return
   end
 
   private

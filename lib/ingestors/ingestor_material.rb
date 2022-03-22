@@ -31,46 +31,39 @@ class IngestorMaterial < Ingestor
           material = set_field_defaults material
           material.last_scraped = DateTime.now
           material.scraper_record = true
-
-          # check validity
-          if material.valid?
-            material.save!
-            @added += 1
-          else
-            @rejected += 1
-            @messages << "Material failed validation: #{material.title}"
-            material.errors.full_messages.each do |m|
-              @messages << "Error: #{m}"
-            end
-          end
-
+          save_valid_material material
         else
           # update and save matched material
           matched = overwrite_fields matched_materials.first, material
           matched = set_field_defaults matched
           matched.last_scraped = DateTime.now
           matched.scraper_record = true
-
-          # check validity
-          if matched.valid?
-            matched.save!
-            @updated += 1
-          else
-            @rejected += 1
-            @messages << "Material failed validation: #{matched.title}"
-            matched.errors.full_messages.each do |m|
-              @messages << "Error: #{m}"
-            end
-          end
+          save_valid_material matched
         end
       end
     end
+
     # finished
     @messages << "materials processed[#{@processed}] added[#{@added}] updated[#{@updated}] rejected[#{@rejected}]"
     return
   end
 
-  def set_field_defaults (material)
+  private
+
+  def save_valid_material(material)
+    if material.valid?
+      material.save!
+      @added += 1
+    else
+      @rejected += 1
+      @messages << "Material failed validation: #{material.title}"
+      material.errors.full_messages.each do |m|
+        @messages << "Error: #{m}"
+      end
+    end
+  end
+
+  def set_field_defaults(material)
     # contact
     if material.contact.nil? or material.contact.blank?
       material.contact = material.content_provider.contact
