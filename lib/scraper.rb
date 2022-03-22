@@ -61,21 +61,23 @@ module Scraper
             ingestor = IngestorFactory.get_ingestor source[:method], source[:resource_type]
 
             # read records
-            read, messages = ingestor.read source[:url]
-            unless messages.nil? or messages.empty?
+            ingestor.read source[:url]
+            unless ingestor.messages.nil? or ingestor.messages.empty?
               log "Ingestor: #{ingestor.class}: read messages", 2
-              messages.each { |m| log("#{m}", 3)}
+              ingestor.messages.each { |m| log("#{m}", 3) }
+              ingestor.messages.clear
             end
 
             # write resources
-            processed, added, updated, messages = ingestor.write user, provider
-            unless messages.nil? or messages.empty?
+            ingestor.write user, provider
+            unless ingestor.messages.nil? or ingestor.messages.empty?
               log "Ingestor: #{ingestor.class}: write messages", 2
-              messages.each { |m| log("#{m}", 3)}
+              ingestor.messages.each { |m| log("#{m}", 3) }
+              ingestor.messages.clear
             end
 
             # finished up ingestor
-            log "Source URL[#{source[:url]}] resources read[#{read}] and written[#{(added + updated)}].", 2
+            log "Source URL[#{source[:url]}] resources read[#{ingestor.ingested}] and written[#{(ingestor.added + ingestor.updated)}].", 2
           rescue Exception => e0
             log "Scraper failed with: #{e0.message}", 2
           end
@@ -103,25 +105,29 @@ module Scraper
             ingestor = IngestorFactory.get_ingestor source.method, source.resource_type
 
             # read records
-            source.records_read, messages = ingestor.read(source.url)
-            unless messages.nil? or messages.empty?
+            ingestor.read(source.url)
+            unless ingestor.messages.nil? or ingestor.messages.empty?
               output.concat "<br />"
               output.concat "**Input Process:**<br />"
-              messages.each { |m| output.concat "-  #{m}<br />"}
+              ingestor.messages.each { |m| output.concat "-  #{m}<br />" }
+              ingestor.messages.clear
             end
 
             # write resources
-            total, added, updated, messages = ingestor.write(user, source.content_provider)
-
-            source.records_written = (added + updated)
-            source.resources_added = added
-            source.resources_updated = updated
-            source.resources_rejected = (total - (added + updated))
-            unless messages.nil? or messages.empty?
+            ingestor.write(user, source.content_provider)
+            unless ingestor.messages.nil? or ingestor.messages.empty?
               output.concat "<br />"
               output.concat "**Output Process:**<br />"
-              messages.each { |m| output.concat "-  #{m}<br />" }
+              ingestor.messages.each { |m| output.concat "-  #{m}<br />" }
+              ingestor.messages.clear
             end
+
+            # update source
+            source.records_read = ingestor.ingested
+            source.records_written = (ingestor.added + ingestor.updated)
+            source.resources_added = ingestor.added
+            source.resources_updated = ingestor.updated
+            source.resources_rejected = ingestor.rejected
             log "Source URL[#{source.url}] resources read[#{source.records_read}] and written[#{source.records_written}].", 2
           end
         rescue Exception => e1

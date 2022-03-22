@@ -11,23 +11,18 @@ class IngestorEventIcal < IngestorEvent
   end
 
   def read (url)
-    processed = 0
-    messages = []
     unless url.nil?
       if url.to_s.downcase.end_with? 'sitemap.xml'
-        processed, messages = process_sitemap url
+        process_sitemap url
       else
-        processed, messages = process_icalendar url
+        process_icalendar url
       end
     end
-    return processed, messages
   end
 
   private
 
-  def process_sitemap url
-    processed = 0
-    messages = []
+  def process_sitemap(url)
     # find urls for individual icalendar files
     begin
       sitemap = Nokogiri::XML.parse(open(url))
@@ -35,22 +30,18 @@ class IngestorEventIcal < IngestorEvent
         'ns' => 'http://www.sitemaps.org/schemas/sitemap/0.9'
       })
       locs.each do |loc|
-        icals_processed, ical_messages = process_icalendar(loc.text)
-        processed += icals_processed
-        messages += ical_messages
+        process_icalendar(loc.text)
       end
     rescue Exception => e
-      messages << "Extract from sitemap[#{url}] failed with: #{e.message}"
+      @messages << "Extract from sitemap[#{url}] failed with: #{e.message}"
     end
 
     # finished
-    return processed, messages
+    return
   end
 
-  def process_icalendar url
+  def process_icalendar(url)
     # process individual ics file
-    processed = 0
-    messages = []
     query = '?ical=true'
 
     begin
@@ -63,23 +54,18 @@ class IngestorEventIcal < IngestorEvent
 
       # process each event
       events.each do |e|
-        events_processed, event_messages = process_event(e)
-        processed += events_processed
-        messages += event_messages
+        process_event(e)
       end
 
     rescue Exception => e
-      messages << "Process file url[#{file_url}] failed with: #{e.message}"
+      @messages << "Process file url[#{file_url}] failed with: #{e.message}"
     end
 
     # finished
-    return processed, messages
+    return
   end
 
   def process_event(calevent)
-    processed = 0
-    messages = []
-
     begin
       # set fields
       event = Event.new
@@ -118,12 +104,13 @@ class IngestorEventIcal < IngestorEvent
 
       # store event
       @events << event
-      processed += 1
+      @ingested += 1
     rescue Exception => e
-      messages << "Process iCalendar failed with: #{e.message}"
+      @messages << "Process iCalendar failed with: #{e.message}"
     end
 
-    return processed, messages
+    # finished
+    return
   end
 
 end

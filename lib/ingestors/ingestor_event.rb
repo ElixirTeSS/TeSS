@@ -14,13 +14,11 @@ class IngestorEvent < Ingestor
   end
 
   def write (user, provider)
-    processed = 0
-    messages = []
-    updated = 0
-    added = 0
-
     unless @events.nil? or @events.empty?
+      # process each event
       @events.each do |event|
+        @processed += 1
+
         # check for matched events
         begin
           matched_events = Event.where(title: event.title,
@@ -35,54 +33,46 @@ class IngestorEvent < Ingestor
             event.scraper_record = true
             event.last_scraped = DateTime.now
             event = set_field_defaults event
-
-            # check event status
-            if event.valid?
-              event.save!
-              added += 1
-            elsif event.expired?
-              messages << "Event has expired: #{event.title}"
-            else
-              messages << "Event failed validation: #{event.title}"
-              event.errors.full_messages.each do |m|
-                messages << "Error: #{m}"
-              end
-            end
+            save_valid_event event
           else
             # update and save matched event
             matched = overwrite_fields matched_events.first, event
             matched = set_field_defaults matched
             matched.scraper_record = true
             matched.last_scraped = DateTime.now
-
-            # check validity
-            if matched.valid?
-              matched.save!
-              updated += 1
-            elsif matched.expired?
-              messages << "Event has expired: #{matched.title}"
-            else
-              messages << "Event failed validation: #{matched.title}"
-              matched.errors.full_messages.each do |m|
-                messages << "Error: #{m}"
-              end
-            end
+            save_valid_event matched
           end
         rescue Exception => e
-          messages << "#{self.class.name}: write events failed with: #{e.message}"
+          @messages << "#{self.class.name}: write events failed with: #{e.message}"
         end
-      end
 
-      # finished processing event
-      processed += 1
+        # finished processing event
+        @processed += 1
+      end
     end
 
     # finished
-    messages << "events added[#{added}] updated[#{updated}] rejected[#{processed - (added + updated)}]"
-    return processed, added, updated, messages
+    @messages << "events processed[#{@processed}] added[#{@added}] updated[#{@updated}] rejected[#{@rejected}]"
+    return processed, added, updated
   end
 
   private
+
+  def save_valid_event(event)
+    if event.valid?
+      event.save!
+      @added += 1
+    elsif event.expired?
+      @rejected += 1
+      @messages << "Event has expired: #{event.title}"
+    else
+      @rejected += 1
+      @messages << "Event failed validation: #{event.title}"
+      event.errors.full_messages.each do |m|
+        @messages << "Error: #{m}"
+      end
+    end
+  end
 
   def overwrite_fields (old_event, new_event)
     # overwrite unlocked attributes

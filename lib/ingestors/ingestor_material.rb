@@ -14,61 +14,60 @@ class IngestorMaterial < Ingestor
   end
 
   def write (user, provider)
-    processed = 0
-    updated = 0
-    added = 0
-    messages = []
+    unless @materials.nil? or @materials.empty?
+      # process each material
+      @materials.each do |material|
+        @processed += 1
 
-    @materials.each do |material|
-      processed += 1
+        # check for matched materials
+        matched_materials = Material.where(title: material.title,
+                                           url: material.url,
+                                           content_provider: provider)
 
-      # check for matched materials
-      matched_materials = Material.where(title: material.title,
-                                         url: material.url,
-                                         content_provider: provider)
+        if matched_materials.nil? or matched_materials.first.nil?
+          # set ingestion parameters and save new event
+          material.user = user
+          material.content_provider = provider
+          material = set_field_defaults material
+          material.last_scraped = DateTime.now
+          material.scraper_record = true
 
-      if matched_materials.nil? or matched_materials.first.nil?
-        # set ingestion parameters and save new event
-        material.user = user
-        material.content_provider = provider
-        material = set_field_defaults material
-        material.last_scraped = DateTime.now
-        material.scraper_record = true
-
-        # check validity
-        if material.valid?
-          material.save!
-          added += 1
-        else
-          messages << "Material failed validation: #{material.title}"
-          material.errors.full_messages.each do |m|
-            messages << "Error: " + m
+          # check validity
+          if material.valid?
+            material.save!
+            @added += 1
+          else
+            @rejected += 1
+            @messages << "Material failed validation: #{material.title}"
+            material.errors.full_messages.each do |m|
+              @messages << "Error: #{m}"
+            end
           end
-        end
 
-      else
-        # update and save matched material
-        matched = overwrite_fields matched_materials.first, material
-        matched = set_field_defaults matched
-        matched.last_scraped = DateTime.now
-        matched.scraper_record = true
-
-        # check validity
-        if matched.valid?
-          matched.save!
-          updated += 1
         else
-          messages << "Material failed validation: #{matched.title}"
-          matched.errors.full_messages.each do |m|
-            messages << "Error: " + m
+          # update and save matched material
+          matched = overwrite_fields matched_materials.first, material
+          matched = set_field_defaults matched
+          matched.last_scraped = DateTime.now
+          matched.scraper_record = true
+
+          # check validity
+          if matched.valid?
+            matched.save!
+            @updated += 1
+          else
+            @rejected += 1
+            @messages << "Material failed validation: #{matched.title}"
+            matched.errors.full_messages.each do |m|
+              @messages << "Error: #{m}"
+            end
           end
         end
       end
     end
-
     # finished
-    messages << "materials added[#{added}] updated[#{updated}] rejected[#{processed - (added + updated)}]"
-    return processed, added, updated, messages
+    @messages << "materials processed[#{@processed}] added[#{@added}] updated[#{@updated}] rejected[#{@rejected}]"
+    return
   end
 
   def set_field_defaults (material)

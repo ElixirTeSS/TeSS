@@ -9,9 +9,6 @@ class IngestorMaterialCsv < IngestorMaterial
   end
 
   def read (url)
-    processed = 0
-    messages = []
-
     begin
       # parse table
       web_contents = open(url).read
@@ -32,16 +29,16 @@ class IngestorMaterialCsv < IngestorMaterial
         material.contributors = row['Contributors'].split(/[;]/).reject(&:empty?).compact if row['Contributors']
         material.doi = row['DOI']
 
-        # add to array
+        # add to
         add_material material
-        processed += 1
+        @ingested += 1
       end
     rescue CSV::MalformedCSVError => mce
-      messages << "parse table failed with: #{mce.message}"
+      @messages << "parse table failed with: #{mce.message}"
     end
 
     # finished
-    return processed, messages
+    return processed
   end
 
   private
