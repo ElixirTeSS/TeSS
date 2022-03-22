@@ -9,9 +9,6 @@ class IngestorEventRest < IngestorEvent
   end
 
   def read(url)
-    processed = 0
-    messages = []
-
     begin
       # execute query
       response = query_elixir(url)
@@ -21,17 +18,14 @@ class IngestorEventRest < IngestorEvent
         results = JSON.parse(response.to_str)
         
         # source translations
-        elixir_processed, elixir_messages = process_elixir(results['data'], results['meta'])
-        processed += elixir_processed
-        messages += elixir_messages
+        process_elixir(results['data'], results['meta'])
       end
     rescue Exception => e
-      messages << "#{self.class.name} failed with: #{e.message}"
+      @messages << "#{self.class.name} failed with: #{e.message}"
     end
 
     # finished
-    return processed, messages
-
+    return
   end
 
   def query_elixir (url)
@@ -42,9 +36,6 @@ class IngestorEventRest < IngestorEvent
   end
 
   def process_elixir(data, meta)
-    processed = 0
-    messages = []
-
     # extract materials from results
     unless data.nil? or data.size < 1
       data.each do |item|
@@ -93,14 +84,14 @@ class IngestorEventRest < IngestorEvent
 
           # add event to events array
           add_event(event)
-          processed += 1
+          @ingested += 1
         rescue Exception => e
-          messages << "Extract event fields failed with: #{e.message}"
+          @messages << "Extract event fields failed with: #{e.message}"
         end
       end
     end
 
     # finished
-    return processed, messages
+    return
   end
 end

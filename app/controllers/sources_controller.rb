@@ -123,7 +123,7 @@ class SourcesController < ApplicationController
                                    :url, :method, :resource_type, :finished_at,
                                    :records_read, :records_written,
                                    :resources_added, :resources_updated,
-                                   :resources_rejected, :log )
+                                   :resources_rejected, :log, :enabled )
   end
 
 end

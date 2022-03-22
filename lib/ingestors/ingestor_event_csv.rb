@@ -9,9 +9,6 @@ class IngestorEventCsv < IngestorEvent
   end
 
   def read (url)
-    processed = 0
-    messages = []
-
     # parse csv file to table
     begin
       # parse csv as table
@@ -38,15 +35,21 @@ class IngestorEventCsv < IngestorEvent
         event.venue = row['Venue']
 
         # add to array
-        add_event event
-        processed += 1
+        if event.title.nil?
+          @messages << "row found with no title"
+        else
+          add_event event
+          @ingested += 1
+        end
       end
     rescue CSV::MalformedCSVError => mce
-      messages << "parse table failed with: #{mce.message}"
+      @messages << "parse table failed with: #{mce.message}"
+    rescue Exception => e
+      @messages << "parse table failed with: #{e.message}"
     end
 
     # finished
-    return processed, messages
+    return
   end
 
   private

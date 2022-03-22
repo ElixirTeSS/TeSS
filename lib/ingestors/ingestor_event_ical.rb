@@ -22,9 +22,7 @@ class IngestorEventIcal < IngestorEvent
 
   private
 
-  def process_sitemap url
-    processed = 0
-    messages = []
+  def process_sitemap(url)
     # find urls for individual icalendar files
     begin
       sitemap = Nokogiri::XML.parse(open(url))
@@ -32,22 +30,18 @@ class IngestorEventIcal < IngestorEvent
         'ns' => 'http://www.sitemaps.org/schemas/sitemap/0.9'
       })
       locs.each do |loc|
-        icals_processed, ical_messages = process_icalendar(loc.text)
-        processed += icals_processed
-        messages << ical_messages
+        process_icalendar(loc.text)
       end
     rescue Exception => e
-      messages << "Extract from sitemap[#{url}] failed with: #{e}"
+      @messages << "Extract from sitemap[#{url}] failed with: #{e.message}"
     end
 
     # finished
-    return processed, messages
+    return
   end
 
-  def process_icalendar url
+  def process_icalendar(url)
     # process individual ics file
-    processed = 0
-    messages = []
     query = '?ical=true'
 
     begin
@@ -60,22 +54,18 @@ class IngestorEventIcal < IngestorEvent
 
       # process each event
       events.each do |e|
-        result, event_messages = process_event(e)
-        processed += 1 if result
-        messages += event_messages
+        process_event(e)
       end
+
     rescue Exception => e
-      messages << "Process file url[#{file_url}] failed with: #{e.message}"
+      @messages << "Process file url[#{file_url}] failed with: #{e.message}"
     end
 
     # finished
-    return processed, messages
+    return
   end
 
   def process_event(calevent)
-    processed = 0
-    messages = []
-
     begin
       # set fields
       event = Event.new
@@ -104,18 +94,23 @@ class IngestorEventIcal < IngestorEvent
         event.postcode = location['postcode'] unless location['postcode'].nil?
       end
       event.keywords = []
-      if !calevent.categories.nil? and !calevent.categories.first.nil?
-        calevent.categories.first.each { |item| event.keywords << item.to_s.lstrip }
+      unless calevent.categories.nil? or calevent.categories.first.nil?
+        if calevent.categories.first.kind_of?(Array)
+          calevent.categories.first.each { |item| event.keywords << item.to_s.lstrip }
+        else
+          event.keywords << calevent.categories.to_s.lstrip
+        end
       end
 
       # store event
       @events << event
-      processed += 1
+      @ingested += 1
     rescue Exception => e
-      messages << "Process iCalendar failed with: #{e.message}"
+      @messages << "Process iCalendar failed with: #{e.message}"
     end
 
-    return processed, messages
+    # finished
+    return
   end
 
 end
