@@ -140,10 +140,12 @@ module Scraper
           output.concat "**Finished at:** #{source.finished_at.strftime '%H:%M on %A, %d %B %Y (UTC)'}<br />"
           source.log = output
           begin
-            source.save!
+            # only update enabled sources
+            source.save! unless source.enabled.nil? or !source.enabled
           rescue Exception => e2
             log @messages[:bad_source_save] + e2.message, 2
           end
+
         end
       end
     end
