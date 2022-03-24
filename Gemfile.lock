@@ -150,6 +150,8 @@ GEM
     equivalent-xml (0.6.0)
       nokogiri (>= 1.4.3)
     erubi (1.10.0)
+    eventbrite_sdk (3.6.0)
+      rest-client (~> 2.0)
     execjs (2.8.1)
     fakeredis (0.8.0)
       redis (~> 4.1)
@@ -670,6 +672,7 @@ DEPENDENCIES
   devise
   devise_invitable (~> 2.0.5)
   dynamic_sitemaps!
+  eventbrite_sdk
   fakeredis
   font-awesome-sass (~> 4.7.0)
   friendly_id (~> 5.2.4)

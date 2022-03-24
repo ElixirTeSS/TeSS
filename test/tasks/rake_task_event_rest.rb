@@ -19,7 +19,7 @@ class RakeTaskEventRest < ActiveSupport::TestCase
     LicenceDictionary.instance.reload
   end
 
-  test 'check ingestion and validation of events from rest source' do
+  test 'check ingestion event from TeSS Elixir-Europe source' do
     # set config file
     config_file = 'test_ingestion_rest_event.yml'
     logfile = override_config config_file
@@ -72,16 +72,17 @@ class RakeTaskEventRest < ActiveSupport::TestCase
     assert_equal other_url, event.url
     # check additional fields
 
-
     # check logfile messages
-    message = 'IngestorEventRest: events extracted = 2'
-    assert logfile_contains(logfile, message), 'Message not found: ' + message
-    message = 'IngestorEventRest: events added\[2\] updated\[0\] rejected\[0\]'
+    message = 'events processed\[2\] added\[2\] updated\[0\] rejected\[0\]'
     assert logfile_contains(logfile, message), 'Message not found: ' + message
     message = 'Source URL\[https://tess.elixir-europe.org/events\?include_expired=false\&content_provider\[\]=Australian BioCommons\] resources read\[2\] and written\[2\]'
     assert logfile_contains(logfile, message), 'Message not found: ' + message
     message = 'Scraper.run: finish'
     assert logfile_contains(logfile, message), 'Message not found: ' + message
+  end
+
+  test 'test ingestion of event from Eventbrite source' do
+
   end
 
 end

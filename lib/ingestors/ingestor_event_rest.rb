@@ -6,20 +6,45 @@ class IngestorEventRest < IngestorEvent
 
   def initialize
     super
+
+    @REST_SOURCES = [
+      { url: 'https://tess.elixir-europe.org/',
+        query: method(:query_elixir),
+        process: method(:process_elixir) },
+      { url: 'https://www.eventbriteapi.com/v3/',
+        query: method(:query_eventbrite),
+        process: method(:process_eventbrite) }
+    ]
+
   end
 
   def read(url)
     begin
-      # execute query
-      response = query_elixir(url)
+      query = nil
+      process = nil
 
-      if response.code == 200
-        # format response
-        results = JSON.parse(response.to_str)
-        
-        # source translations
-        process_elixir(results['data'], results['meta'])
+      # get the rest source
+      @REST_SOURCES.each do |source|
+        if url.starts_with? source[:url]
+          query = source[:query]
+          process = source[:process]
+        end
       end
+
+      # abort if no source found for url
+      if query.nil? or process.nil?
+        raise "REST source not found for URL: #{url}"
+      end
+
+      # execute query
+      response = query.call url
+
+      # process response
+      if response.code == 200
+        results = JSON.parse(response.to_str)
+        process.call results
+      end
+
     rescue Exception => e
       @messages << "#{self.class.name} failed with: #{e.message}"
     end
@@ -28,14 +53,23 @@ class IngestorEventRest < IngestorEvent
     return
   end
 
-  def query_elixir (url)
+  def query_eventbrite(url)
+    raise 'method not yet implemented'
+  end
+
+  def query_elixir(url)
     RestClient::Request.new(method: :get,
                             url: CGI.unescape_html(url),
                             verify_ssl: false,
-                            headers: { accept: 'application/vnd.api+json'} ).execute
+                            headers: { accept: 'application/vnd.api+json' }).execute
   end
 
-  def process_elixir(data, meta)
+  def process_eventbrite(data)
+    raise 'method not yet implemented'
+  end
+
+  def process_elixir(results)
+    data = results['data']
     # extract materials from results
     unless data.nil? or data.size < 1
       data.each do |item|
