@@ -9,9 +9,6 @@ class IngestorMaterialRest < IngestorMaterial
   end
 
   def read (url)
-    processed = 0
-    messages = []
-
     # paged query
     next_page = url
 
@@ -27,9 +24,7 @@ class IngestorMaterialRest < IngestorMaterial
           unless results['hits'].nil? and results['hits']['hits'].nil?
             hits = results['hits']['hits']
             hits.each do |item|
-              mats_processed, mats_messages = process_material item
-              processed += mats_processed
-              messages += mats_messages
+              process_material(item)
             end
           end
         else
@@ -42,17 +37,14 @@ class IngestorMaterialRest < IngestorMaterial
         next_page = nil if next_page == old_page
       end
     rescue Exception => e
-      messages << "#{self.class.name} failed with: #{e.message}"
+      @messages << "#{self.class.name} failed with: #{e.message}"
     end
 
     # finished
-    return processed, messages
+    return
   end
 
   def process_material(input)
-    processed = 0
-    messages = []
-
     # map top-level tags
     metadata = input['metadata']
     links = input['links']
@@ -88,14 +80,14 @@ class IngestorMaterialRest < IngestorMaterial
       end
 
       # add material to array
-      add_material(material)
-      processed += 1
+      add_material material
+      @ingested += 1
     rescue Exception => e
-      messages << "#{self.class.name} extract material fields failed with: #{e.message}"
+      @messages << "#{self.class.name} extract material fields failed with: #{e.message}"
     end
 
     # finished
-    return processed, messages
+    return
   end
 
 

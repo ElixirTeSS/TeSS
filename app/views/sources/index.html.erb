@@ -1,5 +1,5 @@
 <div class="wrapper">
- <% if TeSS::Config.solr_enabled %>
+  <% if TeSS::Config.solr_enabled %>
     <div id="sidebar" class="popout-sidebar">
       <%= render partial: "search/common/facet_sidebar",
                  locals: { resources: @sources_results, resource_type: Source } %>
@@ -9,9 +9,11 @@
   <div id="content">
     <div class="row">
       <div class="content_action pull-left">
-        <%= link_to new_source_path(content_provider: @content_provider),
-                    class: 'btn btn-primary' do %>
-          <i class="fa fa-plus-square"></i> Create source
+        <% if !current_user.nil? and (current_user.is_curator? or current_user.is_admin?) %>
+          <%= link_to new_source_path(content_provider: @content_provider),
+                      class: 'btn btn-primary' do %>
+            <i class="fa fa-plus-square"></i> Create source
+          <% end %>
         <% end %>
       </div>
       <div class="content_action pull-right">

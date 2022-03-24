@@ -48,7 +48,6 @@ class User < ApplicationRecord
   after_update :react_to_role_change
   before_save :set_username_for_invitee
 
-
   # Include default devise modules. Others available are: :lockable, :timeoutable
   if TeSS::Config.feature['registration']
     devise :database_authenticatable, :confirmable, :registerable, :invitable, :recoverable, :rememberable, :trackable,
@@ -81,7 +80,7 @@ class User < ApplicationRecord
 
   scope :accepteds, -> { invited.where.not(invitation_accepted_at: nil) }
 
-  scope :visible, -> { non_default.where(invitation_token: nil ).or(accepteds) }
+  scope :visible, -> { non_default.where(invitation_token: nil).or(accepteds) }
   # ---
 
   def self.find_for_database_authentication(warden_conditions)
@@ -277,8 +276,10 @@ class User < ApplicationRecord
   def get_editable_providers
     result = self.editables
     ContentProvider.all.each do |prov|
-      if !result.include?(prov) and prov.user == self
-        result << prov
+      if !result.include?(prov)
+        if prov.user == self or self.is_admin? or self.is_curator?
+          result << prov
+        end
       end
     end
     result.sort_by { |obj| obj.title }

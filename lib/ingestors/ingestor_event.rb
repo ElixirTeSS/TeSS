@@ -14,69 +14,62 @@ class IngestorEvent < Ingestor
   end
 
   def write (user, provider)
-    processed = 0
-    messages = []
-    updated = 0
-    added = 0
+    unless @events.nil? or @events.empty?
+      # process each event
+      @events.each do |event|
+        @processed += 1
 
-    @events.each do |event|
-      # check for matched events
-      matched_events = Event.where(title: event.title,
-                                   url: event.url,
-                                   start: event.start,
-                                   content_provider: provider)
+        # check for matched events
+        begin
+          matched_events = Event.where(title: event.title,
+                                       url: event.url,
+                                       start: event.start,
+                                       content_provider: provider)
 
-      if matched_events.nil? or matched_events.first.nil?
-        # set ingestion parameters and save new event
-        event.user = user
-        event.content_provider = provider
-        event.scraper_record = true
-        event.last_scraped = DateTime.now
-        event = set_field_defaults event
-
-        # check event status
-        if event.valid?
-          event.save!
-          added += 1
-        elsif event.expired?
-          messages << "Event has expired: #{event.title}"
-        else
-          messages << "Event failed validation: #{event.title}"
-          event.errors.full_messages.each do |message|
-            messages << "Error: " + message
+          if matched_events.nil? or matched_events.first.nil?
+            # set ingestion parameters and save new event
+            event.user = user
+            event.content_provider = provider
+            event.scraper_record = true
+            event.last_scraped = DateTime.now
+            event = set_field_defaults event
+            save_valid_event event
+          else
+            # update and save matched event
+            matched = overwrite_fields matched_events.first, event
+            matched = set_field_defaults matched
+            matched.scraper_record = true
+            matched.last_scraped = DateTime.now
+            save_valid_event matched
           end
-        end
-      else
-        # update and save matched event
-        matched = overwrite_fields matched_events.first, event
-        matched = set_field_defaults matched
-        matched.scraper_record = true
-        matched.last_scraped = DateTime.now
-
-        # check validity
-        if matched.valid?
-          matched.save!
-          updated += 1
-        elsif matched.expired?
-          messages << "Event[#{matched.title}] failed validation: event has expired."
-        else
-          messages << "Event[#{matched.title}] failed validation:"
-          matched.errors.full_messages.each do |message|
-            messages << "Error: " + message
-          end
+        rescue Exception => e
+          @messages << "#{self.class.name}: write events failed with: #{e.message}"
         end
       end
-
-      # finished processing event
-      processed += 1
     end
 
     # finished
-    messages << "#{self.class.name}: events added[#{added}] updated[#{updated}] rejected[#{processed - (added + updated)}]"
-    return processed, added, updated, messages
+    @messages << "events processed[#{@processed}] added[#{@added}] updated[#{@updated}] rejected[#{@rejected}]"
+    return
   end
 
   private
+
+  def save_valid_event(event)
+    if event.valid?
+      event.save!
+      @added += 1
+    elsif event.expired?
+      @rejected += 1
+      @messages << "Event has expired: #{event.title}"
+    else
+      @rejected += 1
+      @messages << "Event failed validation: #{event.title}"
+      event.errors.full_messages.each do |m|
+        @messages << "Error: #{m}"
+      end
+    end
+  end
 
   def overwrite_fields (old_event, new_event)
     # overwrite unlocked attributes
@@ -123,7 +116,7 @@ class IngestorEvent < Ingestor
     return event
   end
 
-   def convert_eligibility(input)
+  def convert_eligibility(input)
     case input
     when 'first_come_first_served'
       'open_to_all'

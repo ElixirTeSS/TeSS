@@ -26,17 +26,19 @@ class Source < ApplicationRecord
         self.content_provider.try(:title)
       end
       integer :user_id
+      boolean :enabled
     end
     # :nocov:
   end
 
   def source_params
-    permitted = [:created_at, :url, :method, :resource_type, :content_provider_id]
+    permitted = [:created_at, :url, :method, :resource_type, :enabled,
+                 :content_provider_id]
     params.require(:source).permit(permitted)
   end
 
   def self.facet_fields
-    %w( content_provider method resource_type )
+    %w( content_provider method resource_type enabled )
   end
 
   def self.check_exists(source_params)

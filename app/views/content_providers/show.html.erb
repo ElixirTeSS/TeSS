@@ -9,12 +9,14 @@
   </div>
   <div id="content">
     <div class="row">
-      <div class="content_action pull-left">
-        <%= link_to sources_path(content_provider: @content_provider.title),
-                    class: 'btn btn-primary align-self-end' do %>
-          Ingestion Sources
-        <% end %>
-      </div>
+      <% if !current_user.nil? and policy(@content_provider).update? %>
+        <div class="content_action pull-left">
+          <%= link_to sources_path(content_provider: @content_provider.title),
+                      class: 'btn btn-primary align-self-end' do %>
+            Ingestion Sources
+          <% end %>
+        </div>
+      <% end %>
 
       <div class="content_action pull-right">
         <%= link_to t('.back', :default => t("helpers.links.back")),
