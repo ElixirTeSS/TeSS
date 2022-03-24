@@ -208,6 +208,7 @@ GEM
     iso_country_codes (0.7.8)
     jbuilder (2.11.2)
       activesupport (>= 5.0.0)
+    jquery-qtip2-wrapper-rails (3.0.3)
     jquery-rails (4.4.0)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -681,6 +682,7 @@ DEPENDENCIES
   icalendar (~> 2.4.1)
   iso_country_codes
   jbuilder
+  jquery-qtip2-wrapper-rails
   jquery-rails
   jquery-simplecolorpicker-rails
   jquery-turbolinks
@@ -738,4 +740,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   2.2.27
+   2.3.8
