@@ -12,7 +12,7 @@ Deployed: *TBA*
 
 
 - Fixes:
-
+  - [DateTime and ARDC Vocabulary widgets: JavaScript not working](https://github.com/nrmay/TeSS/issues/331)
 
 ---
 ## [Version 1.3.5](https://github.com/nrmay/TeSS/releases/tag/v1.3.5)
