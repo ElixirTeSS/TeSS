@@ -82,6 +82,7 @@ class ActiveSupport::TestCase
     zenodo_ardc_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_ardc.json'))
     zenodo_ardc_2_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_ardc_2.json'))
     zenodo_ardc_3_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_ardc_3.json'))
+    eventbrite_ardc_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'eventbrite_ardc.json'))
     zenodo_abt_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_abt.json'))
     elixir_ausbioc_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'response_1642570417380.json'))
     test_sitemap = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'Test-Sitemap.xml']))
@@ -136,6 +137,9 @@ class ActiveSupport::TestCase
       to_return(status: 200, headers: {}, body: pawsey_ical_8)
     WebMock.stub_request(:get, 'https://pawsey.org.au/event/pawsey-intern-showcase-2021/?ical=true').
       to_return(status: 200, headers: {}, body: pawsey_ical_9)
+    WebMock.stub_request(:get,
+                         'https://www.eventbriteapi.com/v3/organizations/australian-research-data-commons-14317910674/events/').
+      to_return(status: 200, headers: {}, body: ardc_eventbrite)
 
     # 404 - not found
     WebMock.stub_request(:get, 'https://dummy.com').to_return(:status => 404)

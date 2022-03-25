@@ -22,7 +22,9 @@ class RakeTasksAutomatedIngestion < ActiveSupport::TestCase
     assert_equal 'test', TeSS::Config.ingestion[:name]
 
     # run task
-    Rake::Task['tess:automated_ingestion'].invoke
+    freeze_time(stub_time = Time.new(2019)) do ||
+      Rake::Task['tess:automated_ingestion'].invoke
+    end
 
     # check logfile
     assert File.exist?(logfile), "logfile[#{logfile}] missing"
@@ -39,7 +41,9 @@ class RakeTasksAutomatedIngestion < ActiveSupport::TestCase
     assert user.nil?
 
     # run task
-    Rake::Task['tess:automated_ingestion'].invoke
+    freeze_time(stub_time = Time.new(2019)) do ||
+      Rake::Task['tess:automated_ingestion'].invoke
+    end
 
     # check user exists
     user = User.find_by_username(TeSS::Config.ingestion[:username])
@@ -60,7 +64,9 @@ class RakeTasksAutomatedIngestion < ActiveSupport::TestCase
     assert_equal 'registered_user', user.role.name
 
     # run task
-    Rake::Task['tess:automated_ingestion'].invoke
+    freeze_time(stub_time = Time.new(2019)) do ||
+      Rake::Task['tess:automated_ingestion'].invoke
+    end
 
     # check ingestion config rejected: bad user role
     assert File.exist?(logfile)
@@ -77,7 +83,9 @@ class RakeTasksAutomatedIngestion < ActiveSupport::TestCase
     assert user.nil?
 
     # run task
-    Rake::Task['tess:automated_ingestion'].invoke
+    freeze_time(stub_time = Time.new(2019)) do ||
+      Rake::Task['tess:automated_ingestion'].invoke
+    end
 
     # check user exists
     user = User.find_by_username(TeSS::Config.ingestion[:username])
@@ -95,7 +103,10 @@ class RakeTasksAutomatedIngestion < ActiveSupport::TestCase
     assert TeSS::Config.ingestion[:sources].size > 0, "[#{config_file}] sources is empty!"
 
     # run task
-    Rake::Task['tess:automated_ingestion'].invoke
+    freeze_time(stub_time = Time.new(2019)) do ||
+      Rake::Task['tess:automated_ingestion'].invoke
+    end
+
     assert check_task_finished(logfile)
   end
 
@@ -114,7 +125,10 @@ class RakeTasksAutomatedIngestion < ActiveSupport::TestCase
     assert provider.nil?
 
     # run task
-    Rake::Task['tess:automated_ingestion'].invoke
+    freeze_time(stub_time = Time.new(2019)) do ||
+      Rake::Task['tess:automated_ingestion'].invoke
+    end
+
     assert check_task_finished(logfile)
     error_message = 'Validation error: Provider not found: ' + title.to_s
     assert logfile_contains(logfile, error_message), "Error message '#{error_message}' not found in logfile!"
@@ -135,7 +149,10 @@ class RakeTasksAutomatedIngestion < ActiveSupport::TestCase
     assert !provider.nil?, "Provider title[#{title}] not found!"
 
     # run task
-    Rake::Task['tess:automated_ingestion'].invoke
+    freeze_time(stub_time = Time.new(2019)) do ||
+      Rake::Task['tess:automated_ingestion'].invoke
+    end
+
     assert check_task_finished(logfile)
     error_message = 'Provider not found: ' + title.to_s
     assert !logfile_contains(logfile, error_message), "Unexpected error message: #{error_message}"
@@ -148,7 +165,9 @@ class RakeTasksAutomatedIngestion < ActiveSupport::TestCase
     assert_equal 'test', TeSS::Config.ingestion[:name]
 
     # run task
-    Rake::Task['tess:automated_ingestion'].invoke
+    freeze_time(stub_time = Time.new(2019)) do ||
+      Rake::Task['tess:automated_ingestion'].invoke
+    end
 
     # check validation errors
     error_message = 'Provider not found: Dummy Provider'
@@ -159,8 +178,6 @@ class RakeTasksAutomatedIngestion < ActiveSupport::TestCase
     assert logfile_contains(logfile, error_message), 'Error message not found: ' + error_message
     error_message = 'Resource type is invalid: workflow'
     assert logfile_contains(logfile, error_message), 'Error message not found: ' + error_message
-
   end
-
 
 end

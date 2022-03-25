@@ -7,12 +7,10 @@ class IngestorEventRest < IngestorEvent
   def initialize
     super
 
-    @REST_SOURCES = [
+    @RestSources = [
       { url: 'https://tess.elixir-europe.org/',
-        query: method(:query_elixir),
         process: method(:process_elixir) },
       { url: 'https://www.eventbriteapi.com/v3/',
-        query: method(:query_eventbrite),
         process: method(:process_eventbrite) }
     ]
 
@@ -24,26 +22,17 @@ class IngestorEventRest < IngestorEvent
       process = nil
 
       # get the rest source
-      @REST_SOURCES.each do |source|
+      @RestSources.each do |source|
         if url.starts_with? source[:url]
-          query = source[:query]
           process = source[:process]
         end
       end
 
       # abort if no source found for url
-      if query.nil? or process.nil?
-        raise "REST source not found for URL: #{url}"
-      end
+      raise "REST source not found for URL: #{url}" if process.nil?
 
-      # execute query
-      response = query.call url
-
-      # process response
-      if response.code == 200
-        results = JSON.parse(response.to_str)
-        process.call results
-      end
+      # process url
+      process.call(url)
 
     rescue Exception => e
       @messages << "#{self.class.name} failed with: #{e.message}"
@@ -53,23 +42,42 @@ class IngestorEventRest < IngestorEvent
     return
   end
 
-  def query_eventbrite(url)
-    raise 'method not yet implemented'
+  private
+
+  def process_eventbrite(url)
+    puts "process[#{__method__.to_s}] for url[#{url}]"
+    begin
+      # get authorization parameters
+      #user = Rails.application.secrets.eventbrite_api_v3[:user]
+      token = Rails.application.secrets.eventbrite_api_v3[:token]
+      raise 'missing user token' if token.nil?
+
+      # format query
+      organisation = url.split('/').last unless url.nil? or url.split('/').empty?
+      puts "organisation = #{organisation}"
+
+      # TODO: implement query and response processing
+
+    rescue Exception => e
+      @messages << "#{self.class} failed with: #{e.message}"
+    end
+
+    # finished
   end
 
-  def query_elixir(url)
-    RestClient::Request.new(method: :get,
+  def process_elixir(url)
+    puts "process[#{__method__.to_s}] for url[#{url}]"
+    # execute request
+    response = RestClient::Request.new(method: :get,
                             url: CGI.unescape_html(url),
                             verify_ssl: false,
                             headers: { accept: 'application/vnd.api+json' }).execute
-  end
 
-  def process_eventbrite(data)
-    raise 'method not yet implemented'
-  end
-
-  def process_elixir(results)
+    # check response
+    raise "invalid response code: #{response.code}" unless response.code == 200
+    results = JSON.parse(response.to_str)
     data = results['data']
+
     # extract materials from results
     unless data.nil? or data.size < 1
       data.each do |item|

@@ -5,7 +5,6 @@ require 'test_helper'
 class RakeTaskEventRest < ActiveSupport::TestCase
 
   setup do
-    #puts "setup..."
     mock_ingestions
     TeSS::Application.load_tasks if Rake::Task.tasks.empty?
     Rake::Task['tess:automated_ingestion'].reenable
@@ -24,7 +23,6 @@ class RakeTaskEventRest < ActiveSupport::TestCase
     config_file = 'test_ingestion_rest_event.yml'
     logfile = override_config config_file
     assert_equal 'rest_event', TeSS::Config.ingestion[:name]
-    event_count = Event.all.size
 
     # check event doesn't
     new_title = 'WORKSHOP: Introduction to Metabarcoding using Qiime2'
@@ -34,8 +32,9 @@ class RakeTaskEventRest < ActiveSupport::TestCase
     assert_equal 0, events.size, "Pre-task: events search title[Another Event] found something"
 
     # run task
-    # expect added[1] updated[1] rejected[1]
-    Rake::Task['tess:automated_ingestion'].invoke
+    freeze_time(stub_time = Time.new(2019)) do ||
+      Rake::Task['tess:automated_ingestion'].invoke
+    end
 
     # check event does exist
     events = Event.where(title: new_title, url: new_url)
@@ -45,6 +44,7 @@ class RakeTaskEventRest < ActiveSupport::TestCase
     assert !event.nil?
     assert_equal new_title, event.title
     assert_equal new_url, event.url
+
     # check other fields
     assert_equal 'Another Portal Provider', event.content_provider.title
     assert_equal 'UTC', event.timezone
@@ -70,7 +70,6 @@ class RakeTaskEventRest < ActiveSupport::TestCase
     assert !event.nil?
     assert_equal other_title, event.title
     assert_equal other_url, event.url
-    # check additional fields
 
     # check logfile messages
     message = 'events processed\[2\] added\[2\] updated\[0\] rejected\[0\]'
@@ -82,6 +81,21 @@ class RakeTaskEventRest < ActiveSupport::TestCase
   end
 
   test 'test ingestion of event from Eventbrite source' do
+    # set config file
+    config_file = 'test_ingestion_rest_eventbrite.yml'
+    logfile = override_config config_file
+    assert_equal 'rest_eventbrite', TeSS::Config.ingestion[:name]
+
+    # run task
+    assert_difference 'Event.count', 1 do
+      freeze_time(stub_time = Time.new(2019)) do ||
+        Rake::Task['tess:automated_ingestion'].invoke
+      end
+    end
+
+    # TODO: check ingested events
+
+    # TODO: check logfile messages
 
   end
 
