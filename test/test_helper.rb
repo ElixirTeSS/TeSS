@@ -137,8 +137,9 @@ class ActiveSupport::TestCase
       to_return(status: 200, headers: {}, body: pawsey_ical_8)
     WebMock.stub_request(:get, 'https://pawsey.org.au/event/pawsey-intern-showcase-2021/?ical=true').
       to_return(status: 200, headers: {}, body: pawsey_ical_9)
-    WebMock.stub_request(:get,
-                         'https://www.eventbriteapi.com/v3/organizations/australian-research-data-commons-14317910674/events/').
+    WebMock.stub_request(:get,'https://www.eventbriteapi.com/v3/organizations/34338661734/').
+      to_return(status: 200, headers: {}, body: eventbrite_ardc_body)
+    WebMock.stub_request(:get,'https://www.eventbriteapi.com/v3/organizations/34338661734').
       to_return(status: 200, headers: {}, body: eventbrite_ardc_body)
 
     # 404 - not found

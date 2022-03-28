@@ -5,6 +5,6 @@ username: ingestor
 sources:
   - id: 1
     provider: 'Portal Provider' # content provider's title
-    url: 'https://www.eventbriteapi.com/v3/organizations/australian-research-data-commons-14317910674/events/'  # the root URL to access the source
+    url: 'https://www.eventbriteapi.com/v3/organizations/34338661734'  # the root URL to access the source
     method: rest                        # one of 'csv', 'rest'
     resource_type: event                # event or material

@@ -45,33 +45,41 @@ class IngestorEventRest < IngestorEvent
   private
 
   def process_eventbrite(url)
-    puts "process[#{__method__.to_s}] for url[#{url}]"
+
+    raise "method[#{__method__}] not yet implemented"
+
+=begin
     begin
-      # get authorization parameters
-      #user = Rails.application.secrets.eventbrite_api_v3[:user]
-      token = Rails.application.secrets.eventbrite_api_v3[:token]
-      raise 'missing user token' if token.nil?
+          # get authorization parameters
+          user = Rails.application.secrets.eventbrite_api_v3[:user]
+          mytoken = Rails.application.secrets.eventbrite_api_v3[:token]
+          raise 'missing user token' if mytoken.nil?
+          EventbriteSDK.token = mytoken
 
-      # format query
-      organisation = url.split('/').last unless url.nil? or url.split('/').empty?
-      puts "organisation = #{organisation}"
+          # format query
+          org_id = url.split('/').last unless url.nil? or url.split('/').empty?
+          puts "org_id = #{org_id}"
 
-      # TODO: implement query and response processing
-
+          # implement query and response processing
+          organiser = EventbriteSDK::Organization.retrieve(id: org_id)
+          events = organiser.upcoming_events
+          puts "events.count = #{events.size}" unless events.nil?
     rescue Exception => e
       @messages << "#{self.class} failed with: #{e.message}"
     end
+
+=end
 
     # finished
   end
 
   def process_elixir(url)
-    puts "process[#{__method__.to_s}] for url[#{url}]"
+    #puts "process[#{__method__.to_s}] for url[#{url}]"
     # execute request
     response = RestClient::Request.new(method: :get,
-                            url: CGI.unescape_html(url),
-                            verify_ssl: false,
-                            headers: { accept: 'application/vnd.api+json' }).execute
+                                       url: CGI.unescape_html(url),
+                                       verify_ssl: false,
+                                       headers: { accept: 'application/vnd.api+json' }).execute
 
     # check response
     raise "invalid response code: #{response.code}" unless response.code == 200
