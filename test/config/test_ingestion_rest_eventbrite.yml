@@ -1,0 +1,10 @@
+name: rest_eventbrite
+logfile: log/ingestion.eventbrite.log
+loglevel: 0
+username: ingestor
+sources:
+  - id: 1
+    provider: 'Portal Provider' # content provider's title
+    url: 'https://www.eventbriteapi.com/v3/organizations/34338661734'  # the root URL to access the source
+    method: rest                        # one of 'csv', 'rest'
+    resource_type: event                # event or material

@@ -5,7 +5,6 @@ require 'test_helper'
 class RakeTasksMaterialIngestion < ActiveSupport::TestCase
 
   setup do
-    #puts "setup..."
     mock_ingestions
     TeSS::Application.load_tasks if Rake::Task.tasks.empty?
     Rake::Task['tess:automated_ingestion'].reenable
@@ -21,7 +20,7 @@ class RakeTasksMaterialIngestion < ActiveSupport::TestCase
 
   teardown do
     # delete materials
-    delete_material'My First Material', 'https://app.com/materials/material1.html'
+    delete_material 'My First Material', 'https://app.com/materials/material1.html'
     delete_material 'Another Material', 'https://app.com/materials/material2.html'
   end
 
@@ -30,23 +29,18 @@ class RakeTasksMaterialIngestion < ActiveSupport::TestCase
     config_file = 'test_ingestion.yml'
     logfile = override_config config_file
     assert_equal 'test', TeSS::Config.ingestion[:name]
-    material_count = 11
-    assert_equal material_count, Material.all.size,
-                 'Pre-invoke: Material count not matched.'
 
-    # run  - expect added[2] updated[0] rejected[1]
-    Rake::Task['tess:automated_ingestion'].invoke
-
-    # check totals
-    assert_equal (material_count + 2), Material.all.size,
-                 'Post-invoke: Material count not matched.'
+    assert_difference 'Material.count', 2 do
+      freeze_time(stub_time = Time.new(2022)) do ||
+        # run  - expect added[2] updated[0] rejected[1]
+        Rake::Task['tess:automated_ingestion'].invoke
+      end
+    end
 
     # check logfile messages
-    message = 'IngestorMaterialCsv: materials extracted = 3'
-    assert logfile_contains(logfile, message), 'Message not found: ' + message
     message = 'Licence must be specified'
     assert logfile_contains(logfile, message), 'Message not found: ' + message
-    message = 'IngestorMaterialCsv: materials added\[2\] updated\[0\] rejected\[1\]'
+    message = 'materials processed\[3\] added\[2\] updated\[0\] rejected\[1\]'
     assert logfile_contains(logfile, message), 'Message not found: ' + message
     message = 'Source URL\[https://app.com/materials.csv\] resources read\[3\] and written\[2\]'
     assert logfile_contains(logfile, message), 'Message not found: ' + message
@@ -70,8 +64,10 @@ class RakeTasksMaterialIngestion < ActiveSupport::TestCase
     assert !materials.nil?, "Pre-task: Materials search error."
     assert_equal 0, materials.size, "Pre-task: Materials search title[#{title}] found something"
 
-    # run task - expect added[2] updated[0] rejected[1]
-    Rake::Task['tess:automated_ingestion'].invoke
+    freeze_time(stub_time = Time.new(2022)) do ||
+      # run task - expect added[2] updated[0] rejected[1]
+      Rake::Task['tess:automated_ingestion'].invoke
+    end
 
     # check material added successfully
     assert_equal (material_count + 2), Material.all.size, 'Post-invoke: Material count not matched.'
@@ -116,8 +112,10 @@ class RakeTasksMaterialIngestion < ActiveSupport::TestCase
     assert !materials.nil?, "Pre-task: Materials search error."
     assert_equal 0, materials.size, "Pre-task: Materials search title[#{title}] found!"
 
-    # run task - expect added[2] updated[0] rejected[1]
-    Rake::Task['tess:automated_ingestion'].invoke
+    freeze_time(stub_time = Time.new(2022)) do ||
+      # run task - expect added[2] updated[0] rejected[1]
+      Rake::Task['tess:automated_ingestion'].invoke
+    end
 
     # check material added successfully
     assert_equal (material_count + 2), Material.all.size, 'Post-invoke: Material count not matched.'
@@ -137,7 +135,6 @@ class RakeTasksMaterialIngestion < ActiveSupport::TestCase
     config_file = 'test_ingestion.yml'
     logfile = override_config config_file
     assert_equal 'test', TeSS::Config.ingestion[:name]
-    material_count = Material.all.size
 
     # create event
     username = 'Dale'
@@ -153,19 +150,21 @@ class RakeTasksMaterialIngestion < ActiveSupport::TestCase
     description = 'default description'
     locked_fields = ['description',]
 
-    params = { user: user, content_provider: provider, url: url, title: title, description: description,
-               keywords: ['Man', 'Woman', 'Person', 'Computer', 'Window',], contact: 'Dummy Contact',
-               licence: 'GPL-3.0', status: ['development',], locked_fields: locked_fields }
-    material = Material.new(params)
-    assert material.save!, 'New material not saved!'
-    assert !material.nil?, 'New material not found!'
+    assert_difference 'Material.count', 1 do
+      params = { user: user, content_provider: provider, url: url, title: title, description: description,
+                 keywords: ['Man', 'Woman', 'Person', 'Computer', 'Window',], contact: 'Dummy Contact',
+                 licence: 'GPL-3.0', status: ['development',], locked_fields: locked_fields }
+      material = Material.new(params)
+      assert material.save!, 'New material not saved!'
+      assert !material.nil?, 'New material not found!'
+    end
 
-    assert_equal (material_count + 1), Material.all.size, "Pre-invoke: number of materials not matched"
-
-    # run task - expect added[1] updated[1] rejected[1]
-    Rake::Task['tess:automated_ingestion'].invoke
-
-    assert_equal (material_count + 2), Material.all.size, "Post-invoke: number of materials not matched!"
+    assert_difference 'Material.count', 1 do
+      freeze_time(stub_time = Time.new(2022)) do ||
+        # run task - expect added[1] updated[1] rejected[1]
+        Rake::Task['tess:automated_ingestion'].invoke
+      end
+    end
 
     # get event (again)
     materials = Material.where(title: title, url: url, content_provider: provider)
@@ -196,9 +195,7 @@ class RakeTasksMaterialIngestion < ActiveSupport::TestCase
     assert_equal description, updated.description, "Updated description has changed!"
 
     # check logfile messages
-    message = 'IngestorMaterialCsv: materials extracted = 3'
-    assert logfile_contains(logfile, message), 'Message not found: ' + message
-    message = 'IngestorMaterialCsv: materials added\[1\] updated\[1\] rejected\[1\]'
+    message = 'materials processed\[3\] added\[1\] updated\[1\] rejected\[1\]'
     assert logfile_contains(logfile, message), 'Message not found: ' + message
     message = 'Source URL\[https://app.com/materials.csv\] resources read\[3\] and written\[2\]'
     assert logfile_contains(logfile, message), 'Message not found: ' + message

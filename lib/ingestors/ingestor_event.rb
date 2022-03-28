@@ -33,14 +33,14 @@ class IngestorEvent < Ingestor
             event.scraper_record = true
             event.last_scraped = DateTime.now
             event = set_field_defaults event
-            save_valid_event event
+            save_valid_event event, false
           else
             # update and save matched event
             matched = overwrite_fields matched_events.first, event
             matched = set_field_defaults matched
             matched.scraper_record = true
             matched.last_scraped = DateTime.now
-            save_valid_event matched
+            save_valid_event matched, true
           end
         rescue Exception => e
           @messages << "#{self.class.name}: write events failed with: #{e.message}"
@@ -55,17 +55,17 @@ class IngestorEvent < Ingestor
 
   private
 
-  def save_valid_event(event)
-    if event.valid?
-      event.save!
-      @added += 1
-    elsif event.expired?
+  def save_valid_event(resource, matched)
+    if resource.valid?
+      resource.save!
+      matched ? @updated += 1 : @added += 1
+    elsif resource.expired?
       @rejected += 1
-      @messages << "Event has expired: #{event.title}"
+      @messages << "Event has expired: #{resource.title}"
     else
       @rejected += 1
-      @messages << "Event failed validation: #{event.title}"
-      event.errors.full_messages.each do |m|
+      @messages << "Event failed validation: #{resource.title}"
+      resource.errors.full_messages.each do |m|
         @messages << "Error: #{m}"
       end
     end

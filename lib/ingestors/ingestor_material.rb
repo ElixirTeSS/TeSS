@@ -31,14 +31,14 @@ class IngestorMaterial < Ingestor
           material = set_field_defaults material
           material.last_scraped = DateTime.now
           material.scraper_record = true
-          save_valid_material material
+          save_valid_material material, false
         else
           # update and save matched material
           matched = overwrite_fields matched_materials.first, material
           matched = set_field_defaults matched
           matched.last_scraped = DateTime.now
           matched.scraper_record = true
-          save_valid_material matched
+          save_valid_material matched, true
         end
       end
     end
@@ -50,14 +50,14 @@ class IngestorMaterial < Ingestor
 
   private
 
-  def save_valid_material(material)
-    if material.valid?
-      material.save!
-      @added += 1
+  def save_valid_material(resource, matched)
+    if resource.valid?
+      resource.save!
+      matched ? @updated += 1 : @added += 1
     else
       @rejected += 1
-      @messages << "Material failed validation: #{material.title}"
-      material.errors.full_messages.each do |m|
+      @messages << "Material failed validation: #{resource.title}"
+      resource.errors.full_messages.each do |m|
         @messages << "Error: #{m}"
       end
     end
