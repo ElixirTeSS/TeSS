@@ -101,7 +101,7 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
     check_logfile logfile, 'Event title\[NVIDIA cuQuantum Session\] error: City can\'t be blank'
     check_logfile logfile, 'Event title\[PaCER Seminar: Radio astronomy\] error: event has expired'
 
-    # TODO: check added
+    # check added
     title = 'Ask Me Anything: Porous media visualisation and LBPM'
     event = check_event_exists title, 'https://pawsey.org.au/event/ask-me-anything-porous-media-visualisation-and-lbpm/'
     assert event.online, "event title[#{event.title}] online not matched"
@@ -176,22 +176,33 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
     config_file = 'test_ingestion_ical_2.yml'
     logfile = override_config config_file
     assert_equal 'ical_events_2', TeSS::Config.ingestion[:name]
-    event_count = Event.all.size
-    assert_equal 23, event_count, 'Pre-task: event count not matched.'
+    assert_equal 23, Event.all.size, 'Pre-task: event count not matched.'
     provider = content_providers :another_portal_provider
     refute provider.nil?, "Content Provider not found."
     Time.zone = 'Australia/Perth'
 
     # override time
-    freeze_time(stub_time = Time.new(2019)) do ||
-      # run task
-      Rake::Task['tess:automated_ingestion'].invoke
+    assert_no_difference 'Event.count'do
+      freeze_time(stub_time = Time.new(2019)) do ||
+        # run task
+        Rake::Task['tess:automated_ingestion'].invoke
+      end
+
+      # get updated
+      title = 'P\'Con - Embracing new solutions for in-situ visualisation'
+      url = 'https://pawsey.org.au/event/pcon-embracing-new-solutions-for-in-situ-visualisation/'
+      event = check_event_exists title, url
+      assert_equal 3, event.keywords.size
+      ['Supercomputing', 'Conference', 'Visualisation'].each do |keyword|
+        assert event.keywords.include?(keyword), "event title[#{event.title}] keyword[#{keyword}] not found"
+      end
     end
 
-    assert_equal event_count, Event.all.size, 'Post-task: event count not matched'
-    assert check_logfile logfile, 'Event title\[Pawsey Intern Showcase 2021\] error: Description can\'t be blank'
-    assert check_logfile logfile, 'IngestorEventIcal: events added\[0\] updated\[0\] rejected\[1\]'
-    assert check_logfile logfile, 'IngestorEventIcal: events added\[0\] updated\[1\] rejected\[0\]'
+    # check logfile
+    assert check_logfile logfile, 'Event failed validation: Pawsey Intern Showcase 2021'
+    assert check_logfile logfile, 'Error: Description can\'t be blank'
+    assert check_logfile logfile, 'events processed\[1\] added\[0\] updated\[0\] rejected\[1\]'
+    assert check_logfile logfile, 'events processed\[1\] added\[0\] updated\[1\] rejected\[0\]'
   end
 
   private

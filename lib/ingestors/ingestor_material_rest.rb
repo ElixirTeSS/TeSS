@@ -24,7 +24,7 @@ class IngestorMaterialRest < IngestorMaterial
           unless results['hits'].nil? and results['hits']['hits'].nil?
             hits = results['hits']['hits']
             hits.each do |item|
-              process_material(item)
+              process_material item
             end
           end
         else
@@ -44,6 +44,8 @@ class IngestorMaterialRest < IngestorMaterial
     return
   end
 
+  private
+
   def process_material(input)
     # map top-level tags
     metadata = input['metadata']
@@ -58,7 +60,7 @@ class IngestorMaterialRest < IngestorMaterial
       material.contributors = []
       unless metadata.nil?
         material.title = metadata['title'] unless metadata['title'].nil?
-        material.description = CGI.unescape(metadata['description']) unless metadata['description'].nil?
+        material.description = process_description metadata['description']
         material.keywords = metadata['keywords'] unless metadata['keywords'].nil?
         material.licence = metadata['license']['id'] unless metadata['license'].nil? or metadata['license']['id'].nil?
         unless metadata['creators'].nil?
@@ -90,5 +92,9 @@ class IngestorMaterialRest < IngestorMaterial
     return
   end
 
+  def process_description(input)
+    return nil if input.nil?
+    return CGI.unescape input
+  end
 
 end

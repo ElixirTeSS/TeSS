@@ -28,11 +28,9 @@ class Ingestor
   end
 
   def convert_description (input)
-    stripped = ActionController::Base.helpers.strip_tags(result)
-    converted = ReverseMarkdown.convert(result)
-    stripped != input ? result = converted : result = input
-    result = result.gsub( /\\n/ ,'<br />')
-    return result
+    return input if input.nil?
+    return input if input == ActionController::Base.helpers.strip_tags(input)
+    return ReverseMarkdown.convert(input)
   end
 
 end

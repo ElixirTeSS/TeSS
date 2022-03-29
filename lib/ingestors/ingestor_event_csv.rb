@@ -20,15 +20,15 @@ class IngestorEventCsv < IngestorEvent
         # copy values
         event = Event.new
         event.title = row['Title']
-        event.url = row['URL'].strip
+        event.url = row['URL'].strip unless row['URL'].nil?
         event.description = process_description row['Description']
         event.start = row['Start']
         event.end = row['End']
         event.timezone = row['Timezone']
         event.contact = row['Contact']
         event.organizer = row['Organizer']
-        event.eligibility = process_eligibility row['Eligibility']
-        event.host_institutions = process_host_institutions row['Host Institutions']
+        event.eligibility = process_array row['Eligibility']
+        event.host_institutions = process_array row['Host Institutions']
         event.online = row['Online']
         event.city = row['City']
         event.country = row['Country']
@@ -55,14 +55,10 @@ class IngestorEventCsv < IngestorEvent
   private
 
   def process_description (input)
-    convert_description(input.gsub!('"', '')) unless input.nil?
+    convert_description(input.gsub('"', '')) unless input.nil?
   end
 
-  def process_eligibility (input)
-    input.split(/[;\s]/).reject(&:empty?).compact unless input.nil?
-  end
-
-  def process_host_institutions (input)
+  def process_array (input)
     input.split(/[;\s]/).reject(&:empty?).compact unless input.nil?
   end
 
