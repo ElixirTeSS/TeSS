@@ -6,20 +6,34 @@ class IngestorEventRest < IngestorEvent
 
   def initialize
     super
+
+    @RestSources = [
+      { url: 'https://tess.elixir-europe.org/',
+        process: method(:process_elixir) },
+      { url: 'https://www.eventbriteapi.com/v3/',
+        process: method(:process_eventbrite) }
+    ]
+
   end
 
   def read(url)
     begin
-      # execute query
-      response = query_elixir(url)
+      query = nil
+      process = nil
 
-      if response.code == 200
-        # format response
-        results = JSON.parse(response.to_str)
-        
-        # source translations
-        process_elixir(results['data'], results['meta'])
+      # get the rest source
+      @RestSources.each do |source|
+        if url.starts_with? source[:url]
+          process = source[:process]
+        end
       end
+
+      # abort if no source found for url
+      raise "REST source not found for URL: #{url}" if process.nil?
+
+      # process url
+      process.call(url)
+
     rescue Exception => e
       @messages << "#{self.class.name} failed with: #{e.message}"
     end
@@ -28,14 +42,50 @@ class IngestorEventRest < IngestorEvent
     return
   end
 
-  def query_elixir (url)
-    RestClient::Request.new(method: :get,
-                            url: CGI.unescape_html(url),
-                            verify_ssl: false,
-                            headers: { accept: 'application/vnd.api+json'} ).execute
+  private
+
+  def process_eventbrite(url)
+
+    raise "method[#{__method__}] not yet implemented"
+
+=begin
+    begin
+          # get authorization parameters
+          user = Rails.application.secrets.eventbrite_api_v3[:user]
+          mytoken = Rails.application.secrets.eventbrite_api_v3[:token]
+          raise 'missing user token' if mytoken.nil?
+          EventbriteSDK.token = mytoken
+
+          # format query
+          org_id = url.split('/').last unless url.nil? or url.split('/').empty?
+          puts "org_id = #{org_id}"
+
+          # implement query and response processing
+          organiser = EventbriteSDK::Organization.retrieve(id: org_id)
+          events = organiser.upcoming_events
+          puts "events.count = #{events.size}" unless events.nil?
+    rescue Exception => e
+      @messages << "#{self.class} failed with: #{e.message}"
+    end
+
+=end
+
+    # finished
   end
 
-  def process_elixir(data, meta)
+  def process_elixir(url)
+    #puts "process[#{__method__.to_s}] for url[#{url}]"
+    # execute request
+    response = RestClient::Request.new(method: :get,
+                                       url: CGI.unescape_html(url),
+                                       verify_ssl: false,
+                                       headers: { accept: 'application/vnd.api+json' }).execute
+
+    # check response
+    raise "invalid response code: #{response.code}" unless response.code == 200
+    results = JSON.parse(response.to_str)
+    data = results['data']
+
     # extract materials from results
     unless data.nil? or data.size < 1
       data.each do |item|

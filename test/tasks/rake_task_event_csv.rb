@@ -5,7 +5,6 @@ require 'test_helper'
 class RakeTasksEventCSVIngestion < ActiveSupport::TestCase
 
   setup do
-    #puts "setup..."
     mock_ingestions
     TeSS::Application.load_tasks if Rake::Task.tasks.empty?
     Rake::Task['tess:automated_ingestion'].reenable
@@ -37,16 +36,16 @@ class RakeTasksEventCSVIngestion < ActiveSupport::TestCase
 
     # check an entry
     title = 'Introduction to Gadi'
-    url = 'https://opus.nci.org.au/display/Help/Introduciton+to+Gadi
-    event = Event.where(title: title, url: url)
-    refute event.nil?, "Event title[#{title}] not found"
-    description = 'Introduction to Gadi '
-    assert description, event.description, "Event title[#{title}] not matched"
+    url = 'https://opus.nci.org.au/display/Help/Introduction+to+Gadi'
+    description = 'Introduction to Gadi is designed for new users, or users that want a refresher on the basics of Gadi.'
+    events = Event.where(title: title)
+    refute events.nil?, "No events found for title[#{title}] url[#{url}] not found"
+    event = events.first
+    assert_equal description, event.description, "Event title[#{title}] not matched"
+    assert_equal url, event.url
 
     # check logfile messages
-    message = 'IngestorEventCsv: events extracted = 14'
-    assert logfile_contains(logfile, message), 'Message not found: ' + message
-    message = 'IngestorEventCsv: events added\[14\] updated\[0\] rejected\[0\]'
+    message = 'events processed\[14\] added\[14\] updated\[0\] rejected\[0\]'
     assert logfile_contains(logfile, message), 'Message not found: ' + message
     url = 'https://raw.githubusercontent.com/nci900/NCI_feed_to_DReSA/master/event_NCI.csv'
     message = 'resources read\[14\] and written\[14\]'
