@@ -96,6 +96,7 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
     # check individual events
     # check not found
     check_logfile logfile, 'process file url\[https://pawsey.org.au/events/\?ical=true\] failed with: 404'
+
     # check rejected
     check_logfile logfile, 'Event title\[NVIDIA cuQuantum Session\] error: City can\'t be blank'
     check_logfile logfile, 'Event title\[PaCER Seminar: Radio astronomy\] error: event has expired'

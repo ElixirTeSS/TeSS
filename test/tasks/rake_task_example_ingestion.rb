@@ -19,7 +19,6 @@ class RakeTaskExampleIngestion < ActiveSupport::TestCase
     LicenceDictionary.instance.reload
   end
 
-
   test 'validate example ingestion file' do
     # set config file
     config_file = 'test_ingestion_example.yml'
@@ -30,7 +29,9 @@ class RakeTaskExampleIngestion < ActiveSupport::TestCase
     assert_equal 'scraper', TeSS::Config.ingestion[:username]
 
     # run task
-    Rake::Task['tess:automated_ingestion'].invoke
+    freeze_time(stub_time = Time.new(2019)) do ||
+      Rake::Task['tess:automated_ingestion'].invoke
+    end
 
     # check logfile messages
     message = 'User created: username\[scraper\] role\[scraper_user\]'
@@ -49,6 +50,5 @@ class RakeTaskExampleIngestion < ActiveSupport::TestCase
     assert logfile_contains(logfile, message), 'Message not found: ' + message
 
   end
-
 
 end

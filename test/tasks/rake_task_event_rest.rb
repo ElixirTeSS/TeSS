@@ -5,7 +5,6 @@ require 'test_helper'
 class RakeTaskEventRest < ActiveSupport::TestCase
 
   setup do
-    #puts "setup..."
     mock_ingestions
     TeSS::Application.load_tasks if Rake::Task.tasks.empty?
     Rake::Task['tess:automated_ingestion'].reenable
@@ -19,12 +18,11 @@ class RakeTaskEventRest < ActiveSupport::TestCase
     LicenceDictionary.instance.reload
   end
 
-  test 'check ingestion and validation of events from rest source' do
+  test 'check ingestion event from TeSS Elixir-Europe source' do
     # set config file
     config_file = 'test_ingestion_rest_event.yml'
     logfile = override_config config_file
     assert_equal 'rest_event', TeSS::Config.ingestion[:name]
-    event_count = Event.all.size
 
     # check event doesn't
     new_title = 'WORKSHOP: Introduction to Metabarcoding using Qiime2'
@@ -34,8 +32,9 @@ class RakeTaskEventRest < ActiveSupport::TestCase
     assert_equal 0, events.size, "Pre-task: events search title[Another Event] found something"
 
     # run task
-    # expect added[1] updated[1] rejected[1]
-    Rake::Task['tess:automated_ingestion'].invoke
+    freeze_time(stub_time = Time.new(2019)) do ||
+      Rake::Task['tess:automated_ingestion'].invoke
+    end
 
     # check event does exist
     events = Event.where(title: new_title, url: new_url)
@@ -45,6 +44,7 @@ class RakeTaskEventRest < ActiveSupport::TestCase
     assert !event.nil?
     assert_equal new_title, event.title
     assert_equal new_url, event.url
+
     # check other fields
     assert_equal 'Another Portal Provider', event.content_provider.title
     assert_equal 'UTC', event.timezone
@@ -70,18 +70,36 @@ class RakeTaskEventRest < ActiveSupport::TestCase
     assert !event.nil?
     assert_equal other_title, event.title
     assert_equal other_url, event.url
-    # check additional fields
-
 
     # check logfile messages
-    message = 'IngestorEventRest: events extracted = 2'
-    assert logfile_contains(logfile, message), 'Message not found: ' + message
-    message = 'IngestorEventRest: events added\[2\] updated\[0\] rejected\[0\]'
+    message = 'events processed\[2\] added\[2\] updated\[0\] rejected\[0\]'
     assert logfile_contains(logfile, message), 'Message not found: ' + message
     message = 'Source URL\[https://tess.elixir-europe.org/events\?include_expired=false\&content_provider\[\]=Australian BioCommons\] resources read\[2\] and written\[2\]'
     assert logfile_contains(logfile, message), 'Message not found: ' + message
     message = 'Scraper.run: finish'
     assert logfile_contains(logfile, message), 'Message not found: ' + message
+  end
+
+  test 'test ingestion of event from Eventbrite source' do
+    # set config file
+    config_file = 'test_ingestion_rest_eventbrite.yml'
+    logfile = override_config config_file
+    assert_equal 'rest_eventbrite', TeSS::Config.ingestion[:name]
+
+=begin
+    # run task
+      assert_difference 'Event.count', 1 do
+      freeze_time(stub_time = Time.new(2019)) do ||
+        Rake::Task['tess:automated_ingestion'].invoke
+      end
+
+      # TODO: check ingested events
+
+      end
+=end
+
+    # TODO: check logfile messages
+
   end
 
 end
