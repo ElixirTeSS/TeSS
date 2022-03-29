@@ -45,3 +45,11 @@ sixth_source:
   resource_type: event                # event or material
   created_at: 2018-06-23 13:09:00
   user: admin
+
+pawsey_source:
+  content_provider: portal_provider
+  url: 'https://pawsey.org.au/event/eoi-1-day-introduction-to-amd-gpus-amd-instinct-architecture-and-rocm/?ical=true'
+  method: ical
+  resource_type: event
+  created_at: 2018-06-23 13:09:19
+  user: admin

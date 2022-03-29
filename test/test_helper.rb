@@ -95,6 +95,7 @@ class ActiveSupport::TestCase
     pawsey_ical_7 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'pawsey-intern-showcase-2022.ics']))
     pawsey_ical_8 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'pcon-embracing-new-solutions-for-in-situ-visualisation.ics']))
     pawsey_ical_9 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'pawsey-intern-showcase-2021.ics']))
+    pawsey_ical_a = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'pawsey-supercomputing-centre-5cd096b58d0.ics']))
 
 
     # 200 - success
@@ -137,6 +138,8 @@ class ActiveSupport::TestCase
       to_return(status: 200, headers: {}, body: pawsey_ical_8)
     WebMock.stub_request(:get, 'https://pawsey.org.au/event/pawsey-intern-showcase-2021/?ical=true').
       to_return(status: 200, headers: {}, body: pawsey_ical_9)
+    WebMock.stub_request(:get, 'https://pawsey.org.au/event/eoi-1-day-introduction-to-amd-gpus-amd-instinct-architecture-and-rocm/?ical=true').
+      to_return(status: 200, headers: {}, body: pawsey_ical_a)
     WebMock.stub_request(:get,'https://www.eventbriteapi.com/v3/organizations/34338661734/').
       to_return(status: 200, headers: {}, body: eventbrite_ardc_body)
     WebMock.stub_request(:get,'https://www.eventbriteapi.com/v3/organizations/34338661734').
