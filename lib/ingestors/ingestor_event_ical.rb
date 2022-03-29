@@ -72,7 +72,7 @@ class IngestorEventIcal < IngestorEvent
       event = Event.new
       event.url = calevent.url.to_s
       event.title = calevent.summary.to_s
-      event.description = convert_description(calevent.description.to_s)
+      event.description = process_description calevent.description
 
       puts "\n\ncalevent.description = #{calevent.description}"
       puts "\n\n...        converted = #{event.description}"
@@ -116,6 +116,11 @@ class IngestorEventIcal < IngestorEvent
 
     # finished
     return
+  end
+
+  def process_description(input)
+    return input if input.nil?
+    return convert_description(input.to_s.gsub(/\R/, '<br />'))
   end
 
 end

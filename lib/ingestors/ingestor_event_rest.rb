@@ -96,8 +96,8 @@ class IngestorEventRest < IngestorEvent
           # extract event details from
           attr = item['attributes']
           event.title = attr['title']
-          event.url = attr['url']
-          event.description = convert_description(attr['description'])
+          event.url = attr['url'].strip unless attr['url'].nil?
+          event.description = convert_description attr['description']
           event.start = attr['start']
           event.end = attr['end']
           event.timezone = 'UTC'
