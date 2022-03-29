@@ -66,16 +66,16 @@ class IngestorEventIcal < IngestorEvent
   end
 
   def process_event(calevent)
-    puts "calevent: #{calevent.inspect}"
+    #puts "calevent: #{calevent.inspect}"
     begin
       # set fields
       event = Event.new
       event.url = calevent.url.to_s
       event.title = calevent.summary.to_s
-      event.description = convert_description(calevent.description.to_s)
+      event.description = process_description calevent.description
 
-      puts "\n\ncalevent.description = #{calevent.description}"
-      puts "\n\n...        converted = #{event.description}"
+      #puts "\n\ncalevent.description = #{calevent.description}"
+      #puts "\n\n...        converted = #{event.description}"
 
       event.end = calevent.dtend
       if !calevent.dtstart.nil?
@@ -100,10 +100,13 @@ class IngestorEventIcal < IngestorEvent
       end
       event.keywords = []
       unless calevent.categories.nil? or calevent.categories.first.nil?
-        if calevent.categories.first.kind_of?(Array)
-          calevent.categories.first.each { |item| event.keywords << item.to_s.lstrip }
+        cats = calevent.categories.first
+        if cats.kind_of?(Icalendar::Values::Array)
+          cats.each do |item|
+            event.keywords << item.to_s.lstrip
+          end
         else
-          event.keywords << calevent.categories.to_s.lstrip
+          event.keywords << cats.to_s.strip
         end
       end
 
@@ -116,6 +119,11 @@ class IngestorEventIcal < IngestorEvent
 
     # finished
     return
+  end
+
+  def process_description(input)
+    return input if input.nil?
+    return convert_description(input.to_s.gsub(/\R/, '<br />'))
   end
 
 end

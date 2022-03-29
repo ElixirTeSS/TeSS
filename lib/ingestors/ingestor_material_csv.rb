@@ -19,14 +19,14 @@ class IngestorMaterialCsv < IngestorMaterial
         # copy values
         material = Material.new
         material.title = row['Title']
-        material.url = row['URL']
-        material.description = process_description(row['Description'])
-        material.keywords = row['Keywords'].split(/[;\s]/).reject(&:empty?).compact
+        material.url = row['URL'].strip unless row['URL'].nil?
+        material.description = process_description row['Description']
+        material.keywords = process_array row['Keywords']
         material.contact = row['Contact']
         material.licence = row['Licence']
         material.status = row['Status']
-        material.authors = row['Authors'].split(/[;]/).reject(&:empty?).compact if row['Authors']
-        material.contributors = row['Contributors'].split(/[;]/).reject(&:empty?).compact if row['Contributors']
+        material.authors = process_array row['Authors']
+        material.contributors = process_array row['Contributors']
         material.doi = row['DOI']
 
         # add to
@@ -44,7 +44,11 @@ class IngestorMaterialCsv < IngestorMaterial
   private
 
   def process_description (input)
-    convert_description(input.gsub!('"', '')) unless input.nil?
+    convert_description(input.gsub('"', '')) unless input.nil?
+  end
+
+  def process_array (input)
+    input.split(/[;\s]/).reject(&:empty?).compact unless input.nil?
   end
 
 end
