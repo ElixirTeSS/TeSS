@@ -66,12 +66,17 @@ class IngestorEventIcal < IngestorEvent
   end
 
   def process_event(calevent)
+    puts "calevent: #{calevent.inspect}"
     begin
       # set fields
       event = Event.new
       event.url = calevent.url.to_s
       event.title = calevent.summary.to_s
       event.description = convert_description(calevent.description.to_s)
+
+      puts "\n\ncalevent.description = #{calevent.description}"
+      puts "\n\n...        converted = #{event.description}"
+
       event.end = calevent.dtend
       if !calevent.dtstart.nil?
         dtstart = calevent.dtstart

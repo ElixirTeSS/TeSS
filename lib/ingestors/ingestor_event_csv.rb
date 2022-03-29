@@ -20,7 +20,7 @@ class IngestorEventCsv < IngestorEvent
         # copy values
         event = Event.new
         event.title = row['Title']
-        event.url = row['URL']
+        event.url = row['URL'].strip
         event.description = process_description row['Description']
         event.start = row['Start']
         event.end = row['End']
