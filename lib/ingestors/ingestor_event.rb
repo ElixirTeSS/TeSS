@@ -170,4 +170,3 @@ class IngestorEvent < Ingestor
   end
 
 end
-
