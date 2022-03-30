@@ -28,6 +28,8 @@ class LicenceDictionaryTest < ActiveSupport::TestCase
            "'licence_that_will_never_exist' should not be among licences"
     assert (dic.licence_names.include? "Apache Software License 2.0"),
            "'Apache Software License 2.0' should be among the licence names"
+    assert (dic.licence_names.include? "All Rights Reserved"),
+           "'All Rights Reserved' should be among the licence names"
     assert_equal "http://www.opensource.org/licenses/Apache-2.0", dic.lookup("Apache-2.0")['url'],
                  "'http://www.opensource.org/licenses/Apache-2.0' should be among the licence names"
 
