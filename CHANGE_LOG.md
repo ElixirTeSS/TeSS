@@ -9,8 +9,9 @@ Deployed: *31<sup>st</sup> March, 2022*
 
 
 - Updates:
-  - [Material Types: add types and add section to User Manual](https://github.com/nrmay/TeSS/issues/330)
   - [Automated Ingestion: add optional fields to CSV](https://github.com/nrmay/TeSS/issues/324)
+  - [Material Types: add types and add section to User Manual](https://github.com/nrmay/TeSS/issues/330)
+  - [Material Licences: add 'All Rights Reserved'](https://github.com/nrmay/TeSS/issues/335)
 
 
 - Fixes:
