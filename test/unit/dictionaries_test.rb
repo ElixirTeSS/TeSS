@@ -44,7 +44,8 @@ class DictionariesTest < ActiveSupport::TestCase
     assert_equal 'Learning Activity', dic.lookup(key)['title'], "#{key}: title not matched"
     key = 'rubric'
     assert_not_nil dic.lookup(key), "#{key}: key not found"
-    assert_equal '', dic.lookup(key)['description'], "#{key}: description not matched"
+    assert_equal 'A scoring guide used to evaluate performance.',
+                 dic.lookup(key)['description'], "#{key}: description not matched"
   end
 
   test "check material status dictionary" do
