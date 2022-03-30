@@ -2,17 +2,19 @@
 The sections below refer to the release tags for this repository:
 ## [Version 1.3.6](https://github.com/nrmay/TeSS/releases/tag/v1.3.6)
 
-Deployed: *TBA*
+Deployed: *31<sup>st</sup> March, 2022*
 
 - Features:
   - [Automated Ingestion: manage sources online](https://github.com/nrmay/TeSS/issues/308)
 
 
 - Updates:
+  - [Automated Ingestion: add optional fields to CSV](https://github.com/nrmay/TeSS/issues/324)
 
 
 - Fixes:
   - [DateTime and ARDC Vocabulary widgets: JavaScript not working](https://github.com/nrmay/TeSS/issues/331)
+
 
 ---
 ## [Version 1.3.5](https://github.com/nrmay/TeSS/releases/tag/v1.3.5)
