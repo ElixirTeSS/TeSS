@@ -1,11 +1,4 @@
 GIT
-  remote: git://github.com/radar/by_star
-  revision: f3412a7ffb015df7ced6aa662a53a53e081611a0
-  specs:
-    by_star (4.0.0)
-      activesupport (>= 3.2.0)
-
-GIT
   remote: https://github.com/artygus/fakeredis/
   revision: f68bd4f8d2b87c6445b9166447c1752c6236d63b
   ref: f68bd4f
@@ -19,6 +12,13 @@ GIT
   branch: master
   specs:
     dynamic_sitemaps (2.0.0)
+
+GIT
+  remote: https://github.com/radar/by_star
+  revision: d7811c0c50f30262b4862b384c50f22f36e54f07
+  specs:
+    by_star (4.0.0)
+      activesupport (>= 3.2.0)
 
 GIT
   remote: https://github.com/sunspot/sunspot.git
