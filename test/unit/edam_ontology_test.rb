@@ -57,8 +57,8 @@ class EdamOntologyTest < ActiveSupport::TestCase
 
     assert_equal 'Proteins', term.parent.label
     assert_equal 'Computational biology', term.parent.parent.label
-    assert_equal 'Topic', term.parent.parent.parent.label
-    assert_nil term.parent.parent.parent.parent
+    assert_equal 'Topic', term.parent.parent.parent.parent.label
+    assert_nil term.parent.parent.parent.parent.parent
   end
 
   test 'should lookup deprecated term' do
