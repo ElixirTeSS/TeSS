@@ -10,7 +10,7 @@ module HasImage
   module ClassMethods
 
     def has_image(placeholder:)
-      has_attached_file :image, styles: { medium: "150x150>" }, default_url: placeholder
+      has_attached_file :image, styles: { media: "150x150>" }, default_url: placeholder
 
       validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
       validates :image_url, url: true, allow_blank: true
