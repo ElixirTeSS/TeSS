@@ -72,6 +72,24 @@ To force Solr to reindex all documents, you can run the following command:
 
     docker exec -it tess-app bash -c "bundle exec rake sunspot:reindex"
 
+## Development Commands
+
+Update the Gemfile.lock
+
+    docker run --rm --workdir /code --mount src="$(pwd)",target=/code,type=bind -it ruby:`cut -b 6- .ruby-version` bundle install
+
+Update all Gems
+
+    docker run --rm --workdir /code --mount src="$(pwd)",target=/code,type=bind -it ruby:`cut -b 6- .ruby-version` bundle update --all
+
+Update specific Gem
+
+    docker run --rm --workdir /code --mount src="$(pwd)",target=/code,type=bind -it ruby:`cut -b 6- .ruby-version` bundle update <GEM>
+
+Rebuild the tess-app image when composing up. You will need to do this if you update the Gemfile or Gemfile.lock file.
+
+    docker-compose up -d --build
+
 ## Debugging with Docker
 
 TODO: Add Docker debugging instructions
