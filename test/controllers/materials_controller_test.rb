@@ -765,7 +765,7 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   test 'find scientific topic that is a narrow synonym of parameter' do
-    narrow_topic = Edam::Ontology.instance.lookup('http://edamontology.org/topic_3557')
+    narrow_topic = Edam::Ontology.instance.lookup('http://edamontology.org/topic_3957')
     topics = narrow_topic.has_narrow_synonym
     @material.scientific_topic_names = topics
     assert_equal [narrow_topic], @material.scientific_topics
