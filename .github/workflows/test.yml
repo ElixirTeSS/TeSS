@@ -12,6 +12,9 @@ jobs:
       DB_USER: tess
       DB_PASSWORD: password
       SECRET_BASE_KEY: test_key
+      BASE_URL: http://localhost:3000
+      CONTACT_EMAIL: email@email.com
+      SENDER_EMAIL: email@email.com
     steps:
       - uses: harmon758/postgresql-action@v1
         with:
