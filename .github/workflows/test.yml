@@ -25,8 +25,7 @@ jobs:
 
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.0'
-          bundler-cache: false # runs 'bundle install' and caches installed gems automatically
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
         name: Bundle install
       - run: bundle exec rake db:test:prepare && bundle exec rake test
         name: Run tests
