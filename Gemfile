@@ -24,6 +24,7 @@ gem 'haml'
 # Authentication
 gem 'devise'
 gem 'omniauth_openid_connect'
+gem "omniauth-rails_csrf_protection"
 
 # Activity logging
 gem 'public_activity', '~> 1.6.1'

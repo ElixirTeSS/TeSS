@@ -339,6 +339,9 @@ GEM
       hashie (>= 3.4.6)
       rack (>= 1.6.2, < 3)
       rack-protection
+    omniauth-rails_csrf_protection (1.0.1)
+      actionpack (>= 4.2)
+      omniauth (~> 2.0)
     omniauth_openid_connect (0.4.0)
       addressable (~> 2.5)
       omniauth (>= 1.9, < 3)
@@ -691,6 +694,7 @@ DEPENDENCIES
   listen
   lunchy
   minitest (= 5.14.4)
+  omniauth-rails_csrf_protection
   omniauth_openid_connect
   passenger
   pg
