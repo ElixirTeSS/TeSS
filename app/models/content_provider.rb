@@ -41,12 +41,12 @@ class ContentProvider < ApplicationRecord
       end
       text :description
       string :keywords, :multiple => true
-      string :node, :multiple => true do
+      text :node do
         unless self.node.blank?
           self.node.name
         end
       end
-      text :node do
+      string :node, :multiple => true do
         unless self.node.blank?
           self.node.name
         end

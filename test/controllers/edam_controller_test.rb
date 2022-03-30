@@ -8,7 +8,7 @@ class EdamControllerTest < ActionController::TestCase
     assert_response :success
 
     res = JSON.parse(response.body)
-    assert_equal 1, res.length
+    assert_equal 2, res.length
     assert_includes res.map { |t| t['preferred_label'] }, 'Metabolomics'
   end
 
@@ -17,7 +17,7 @@ class EdamControllerTest < ActionController::TestCase
     assert_response :success
 
     res = JSON.parse(response.body)
-    assert_equal 2, res.length
+    assert_equal 3, res.length
     assert_includes res.map { |t| t['preferred_label'] }, 'Metabolic network modelling'
   end
 
@@ -26,7 +26,7 @@ class EdamControllerTest < ActionController::TestCase
     assert_response :success
 
     res = JSON.parse(response.body)
-    assert_equal 14, res.length
+    assert_equal 17, res.length
     labels = res.map { |t| t['preferred_label'] }
     uris = res.map { |t| t['uri'] }
     assert_includes labels, 'RNA splicing'
@@ -38,7 +38,7 @@ class EdamControllerTest < ActionController::TestCase
     get :terms, params: { filter: 'data', format: :json }
     assert_response :success
     res = JSON.parse(response.body)
-    assert_equal 16, res.length
+    assert_equal 17, res.length
     assert_includes res.map { |t| t['preferred_label'] }, 'Database management'
 
     get :terms, params: { filter: 'xylophone', format: :json }
@@ -49,15 +49,15 @@ class EdamControllerTest < ActionController::TestCase
     get :terms, params: { filter: 'data', format: :json }
     assert_response :success
     res = JSON.parse(response.body)
-    assert_equal 16, res.length
+    assert_equal 17, res.length
     assert_includes res.map { |t| t['preferred_label'] }, 'Database management'
   end
 
   test 'should filter out deprecated terms' do
-    # <EDAM::Term @ontology=EDAM::OldOntology, @uri=http://edamontology.org/operation_0467, label: Protein secondary structure prediction (integrated)>
-    # <EDAM::Term @ontology=EDAM::OldOntology, @uri=http://edamontology.org/operation_0421, label: Protein folding site prediction>
-    # <EDAM::Term @ontology=EDAM::OldOntology, @uri=http://edamontology.org/operation_3088, label: Protein property calculation (from sequence)>
-    # <EDAM::Term @ontology=EDAM::OldOntology, @uri=http://edamontology.org/operation_2506, label: Protein sequence alignment analysis>
+    # <Edam::Term @ontology=Edam::OldOntology, @uri=http://edamontology.org/operation_0467, label: Protein secondary structure prediction (integrated)>
+    # <Edam::Term @ontology=Edam::OldOntology, @uri=http://edamontology.org/operation_0421, label: Protein folding site prediction>
+    # <Edam::Term @ontology=Edam::OldOntology, @uri=http://edamontology.org/operation_3088, label: Protein property calculation (from sequence)>
+    # <Edam::Term @ontology=Edam::OldOntology, @uri=http://edamontology.org/operation_2506, label: Protein sequence alignment analysis>
     deprecated_protein_operation_uris = %w(
     http://edamontology.org/operation_0467
     http://edamontology.org/operation_0421
@@ -65,9 +65,9 @@ class EdamControllerTest < ActionController::TestCase
     http://edamontology.org/operation_2506)
 
     deprecated_protein_operation_uris.each do |uri|
-      term = EDAM::Ontology.instance.lookup(uri)
-      assert term, "#{uri} should be present in EDAM ontology"
-      assert term.deprecated?, "#{uri} should be flagged as deprecated in EDAM ontology"
+      term = Edam::Ontology.instance.lookup(uri)
+      assert term, "#{uri} should be present in Edam ontology"
+      assert term.deprecated?, "#{uri} should be flagged as deprecated in Edam ontology"
     end
 
     get :operations, params: { filter: 'Protein ', format: :json }

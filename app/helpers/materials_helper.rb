@@ -30,7 +30,7 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
   end
 
   def scientific_topic_names_for_autocomplete
-    EDAM::Ontology.instance.all_topics.map(&:preferred_label)
+    Edam::Ontology.instance.all_topics.map(&:preferred_label)
   end
 
   def display_attribute(resource, attribute) # resource e.g. <#Material> & symbol e.g. :target_audience

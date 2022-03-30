@@ -29,15 +29,15 @@ class Event < ApplicationRecord
         title.downcase.gsub(/^(an?|the) /, '')
       end
       text :url
-      string :organizer
       text :organizer
+      string :organizer
       string :sponsors, :multiple => true
       string :venue
       text :venue
-      string :city
       text :city
-      string :country
+      string :city
       text :country
+      string :country
       string :event_types, :multiple => true do
         EventTypeDictionary.instance.values_for_search(self.event_types)
       end
@@ -46,12 +46,12 @@ class Event < ApplicationRecord
       time :end
       time :created_at
       time :updated_at
-      string :content_provider do
+      text :content_provider do
         if !self.content_provider.nil?
           self.content_provider.title
         end
       end
-      text :content_provider do
+      string :content_provider do
         if !self.content_provider.nil?
           self.content_provider.title
         end
@@ -90,8 +90,8 @@ class Event < ApplicationRecord
   belongs_to :user
   has_one :edit_suggestion, as: :suggestible, dependent: :destroy
   has_one :link_monitor, as: :lcheck, dependent: :destroy
-  has_many :package_events
-  has_many :packages, through: :package_events
+  has_many :collection_events
+  has_many :collections, through: :collection_events
   has_many :event_materials, dependent: :destroy
   has_many :materials, through: :event_materials
   has_many :widget_logs, as: :resource
@@ -332,8 +332,8 @@ class Event < ApplicationRecord
     location = self.address
 
     begin
-      redis = Redis.new
-      if redis.exists(location)
+      redis = Redis.new(url: ENV['REDIS_URL'])
+      if redis.exists?(location)
         self.latitude, self.longitude = JSON.parse(redis.get(location))
         Rails.logger.info("Re-using: #{location}")
       end
@@ -354,7 +354,7 @@ class Event < ApplicationRecord
       self.latitude = result[:lat]
       self.longitude = result[:lon]
       begin
-        redis = Redis.new
+        redis = Redis.new(url: ENV['REDIS_URL'])
         redis.set(location, [self.latitude, self.longitude].to_json)
       rescue Redis::RuntimeError => e
         raise e unless Rails.env.production?
@@ -373,7 +373,7 @@ class Event < ApplicationRecord
     location = address
 
     begin
-      redis = Redis.new
+      redis = Redis.new(url: ENV['REDIS_URL'])
       last_geocode = redis.get('last_geocode') || Time.now
 
       run_at = [last_geocode.to_i, Time.now.to_i].max + NOMINATIM_DELAY

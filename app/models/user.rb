@@ -1,7 +1,4 @@
 class User < ApplicationRecord
-
-  include ActionView::Helpers::ApplicationHelper
-
   include PublicActivity::Common
 
   acts_as_token_authenticatable
@@ -26,7 +23,7 @@ class User < ApplicationRecord
   has_one :profile, inverse_of: :user, dependent: :destroy
   CREATED_RESOURCE_TYPES = [:events, :materials, :workflows, :content_providers]
   has_many :materials
-  has_many :packages, dependent: :destroy
+  has_many :collections, dependent: :destroy
   has_many :workflows, dependent: :destroy
   has_many :content_providers
   has_many :events
@@ -51,10 +48,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, :authentication_keys => [:login]
 
-  validates :username,
-            :presence => true,
-            :case_sensitive => false,
-            :uniqueness => true
+  validates_uniqueness_of :username, :case_sensitive => false
 
   validate :consents_to_processing, on: :create, unless: ->(user) { user.using_omniauth? || User.current_user.try(:is_admin?) }
 
@@ -119,7 +113,7 @@ class User < ApplicationRecord
   end
 
   def self.get_default_user
-    where(role_id: Role.fetch('default_user').id).first_or_create!(username: 'default_user',
+    User.default_scoped.where(role_id: Role.fetch('default_user').id).first_or_create!(username: 'default_user',
                                                                    email: TeSS::Config.contact_email,
                                                                    password: SecureRandom.base64,
                                                                    processing_consent: '1')

@@ -36,7 +36,7 @@ class SubscriptionTest < ActiveSupport::TestCase
     sub = user.subscriptions.build(frequency: 'qwerty', subscribable_type: 'Event')
     assert_nil sub.frequency
     refute sub.valid?
-    assert sub.errors.keys.include?(:frequency)
+    assert sub.errors.attribute_names.include?(:frequency)
   end
 
   test 'validates subscribable type' do
@@ -47,11 +47,11 @@ class SubscriptionTest < ActiveSupport::TestCase
 
     sub = user.subscriptions.build(frequency: :daily, subscribable_type: 'Role')
     refute sub.valid?
-    assert sub.errors.keys.include?(:subscribable_type)
+    assert sub.errors.attribute_names.include?(:subscribable_type)
 
     sub = user.subscriptions.build(frequency: :daily)
     refute sub.valid?
-    assert sub.errors.keys.include?(:subscribable_type)
+    assert sub.errors.attribute_names.include?(:subscribable_type)
   end
 
   test 'can generate and verify unsubscribe code' do

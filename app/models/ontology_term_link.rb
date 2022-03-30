@@ -6,6 +6,6 @@ class OntologyTermLink < ApplicationRecord
   end
 
   def ontology
-    EDAM::Ontology.instance
+    Edam::Ontology.instance
   end
 end

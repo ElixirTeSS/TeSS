@@ -22,7 +22,7 @@ module HasOntologyTerms
   end
 
   module ClassMethods
-    def has_ontology_terms(association_name, ontology: EDAM::Ontology.instance, branch: :_) # :_ is essentially a wildcard, meaning it will match any branch.
+    def has_ontology_terms(association_name, ontology: Edam::Ontology.instance, branch: :_) # :_ is essentially a wildcard, meaning it will match any branch.
       method = association_name.to_s
       singular = association_name.to_s.singularize
       links_method = "#{singular}_links"

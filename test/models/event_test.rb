@@ -178,8 +178,8 @@ class EventTest < ActiveSupport::TestCase
     # Via terms
     e.scientific_topic_links.clear
 
-    proteins_term = EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0078')
-    chromosomes_term = EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0624')
+    proteins_term = Edam::Ontology.instance.lookup('http://edamontology.org/topic_0078')
+    chromosomes_term = Edam::Ontology.instance.lookup('http://edamontology.org/topic_0624')
 
     assert_difference('OntologyTermLink.count', 2) do
       e.scientific_topics = [proteins_term, chromosomes_term, proteins_term, chromosomes_term]

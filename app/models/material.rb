@@ -26,30 +26,30 @@ class Material < ApplicationRecord
       text :long_description
       text :short_description
       text :doi
-      string :authors, :multiple => true
       text :authors
+      string :authors, :multiple => true
       string :scientific_topics, :multiple => true do
         self.scientific_topic_names
       end
       string :operations, :multiple => true do
         self.operation_names
       end
-      string :target_audience, :multiple => true
       text :target_audience
-      string :keywords, :multiple => true
+      string :target_audience, :multiple => true
       text :keywords
-      string :resource_type, :multiple => true
+      string :keywords, :multiple => true
       text :resource_type
+      string :resource_type, :multiple => true
+      text :difficulty_level
       string :difficulty_level do
         DifficultyDictionary.instance.lookup_value(self.difficulty_level, 'title')
       end
-      text :difficulty_level
-      string :contributors, :multiple => true
       text :contributors
-      string :content_provider do
+      string :contributors, :multiple => true
+      text :content_provider do
         self.content_provider.try(:title)
       end
-      text :content_provider do
+      string :content_provider do
         self.content_provider.try(:title)
       end
       string :node, multiple: true do
@@ -72,8 +72,8 @@ class Material < ApplicationRecord
   # has_one :owner, foreign_key: "id", class_name: "User"
   belongs_to :user
   has_one :link_monitor, as: :lcheck, dependent: :destroy
-  has_many :package_materials
-  has_many :packages, through: :package_materials
+  has_many :collection_materials
+  has_many :collections, through: :collection_materials
   has_many :event_materials, dependent: :destroy
   has_many :events, through: :event_materials
 

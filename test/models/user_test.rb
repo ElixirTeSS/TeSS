@@ -159,7 +159,7 @@ class UserTest < ActiveSupport::TestCase
     User.current_user = admin
 
     assert_difference('PublicActivity::Activity.count', 1) do
-      assert user.update_attributes(role_id: new_role.id)
+      assert user.update(role_id: new_role.id)
     end
 
     assert_equal roles(:admin), user.reload.role

@@ -15,7 +15,7 @@ class GeocodingWorker
 
     redis = Redis.new
 
-    if redis.exists(location)
+    if redis.exists?(location)
       event.geocoding_cache_lookup
     else
       event.geocoding_api_lookup

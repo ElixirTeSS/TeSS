@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  app:
+    container_name: ${PREFIX}-app
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - solr
+    network_mode: host
+  solr:
+    container_name: ${PREFIX}-solr
+    image: solr:8
+    restart: always
+    ports:
+      - '8984:8983'
+    volumes:
+      - solr-data:/var/solr
+      - ./solr:/opt/solr/server/solr/configsets/production
+    command:
+      - solr-precreate
+      - production
+      - /opt/solr/server/solr/configsets/production
+  redis:
+    container_name: ${PREFIX}-redis
+    image: redis:6
+    restart: always
+    ports:
+      - '6380:6379'
+    volumes:
+      - redis-data:/data
+volumes:
+  solr-data:
+  redis-data:

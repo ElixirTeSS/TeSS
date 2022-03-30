@@ -23,7 +23,7 @@ class EditSuggestionTest < ActiveSupport::TestCase
   test 'should add an operation by uri' do
     resource = materials(:good_material)
     suggestion = resource.build_edit_suggestion
-    term = EDAM::Ontology.instance.lookup('http://edamontology.org/operation_2931')
+    term = Edam::Ontology.instance.lookup('http://edamontology.org/operation_2931')
     suggestion.operations = [term]
     suggestion.save!
 
@@ -37,7 +37,7 @@ class EditSuggestionTest < ActiveSupport::TestCase
   test 'should not add unsupported field' do
     resource = materials(:good_material)
     suggestion = resource.create_edit_suggestion
-    term = EDAM::Ontology.instance.lookup('http://edamontology.org/operation_2931')
+    term = Edam::Ontology.instance.lookup('http://edamontology.org/operation_2931')
     suggestion.ontology_term_links.create!(term_uri: term.uri, field: 'bananas')
 
     assert_no_difference(-> { resource.reload.ontology_term_links.count }) do
@@ -49,7 +49,7 @@ class EditSuggestionTest < ActiveSupport::TestCase
     suggestion = edit_suggestions(:one)
 
     assert_no_difference(-> { suggestion.scientific_topics.count }) do
-      suggestion.reject_suggestion('scientific_topics', EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0078'))
+      suggestion.reject_suggestion('scientific_topics', Edam::Ontology.instance.lookup('http://edamontology.org/topic_0078'))
     end
   end
 
@@ -59,7 +59,7 @@ class EditSuggestionTest < ActiveSupport::TestCase
 
     assert_no_difference(-> { suggestion.scientific_topics.count }) do
       assert_no_difference(-> { resource.scientific_topics.count }) do
-        suggestion.accept_suggestion('scientific_topics', EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0078'))
+        suggestion.accept_suggestion('scientific_topics', Edam::Ontology.instance.lookup('http://edamontology.org/topic_0078'))
       end
     end
   end

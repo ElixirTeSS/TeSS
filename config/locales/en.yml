@@ -16,23 +16,18 @@
 #
 # This would use the information in config/locales/es.yml.
 #
+# The following keys must be escaped otherwise they will not be retrieved by
+# the default I18n backend:
+#
+# true, false, on, off, yes, no
+#
+# Instead, surround them with single quotes.
+#
+# en:
+#   'true': 'foo'
+#
 # To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
+# available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  pundit:
-    default: 'You are not authorised to perform this action.'
-    material_policy:
-    event_policy:
-  activerecord:
-    attributes:
-      content_provider:
-        url: 'URL'
-      event:
-        url: 'URL'
-      material:
-        doi: 'DOI'
-        url: 'URL'
-      profile:
-        firstname: 'First name'
-        surname: 'Last name'
+  hello: "Hello world"

@@ -553,41 +553,41 @@ class EventsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test 'should add event to multiple packages' do
+  test 'should add event to multiple collections' do
     sign_in @event.user
-    package1 = packages(:one)
-    package1_event_count = package1.events.count
-    package2 = packages(:two)
-    @event.packages = []
+    collection1 = collections(:one)
+    collection1_event_count = collection1.events.count
+    collection2 = collections(:two)
+    @event.collections = []
     @event.save!
-    assert_difference('@event.packages.count', 2) do
-      patch :update_packages, params: {
+    assert_difference('@event.collections.count', 2) do
+      patch :update_collections, params: {
           id: @event.id,
           event: {
-              package_ids: [package1.id, package2.id]
+              collection_ids: [collection1.id, collection2.id]
           }
       }
     end
-    assert_in_delta(package1.events.count, package1_event_count, 1)
+    assert_in_delta(collection1.events.count, collection1_event_count, 1)
   end
 
-  test 'should remove event from packages' do
+  test 'should remove event from collections' do
     sign_in @event.user
-    package1 = packages(:one)
-    package1_event_count = package1.events.count
-    package2 = packages(:two)
-    @event.packages << [package1, package2]
+    collection1 = collections(:one)
+    collection1_event_count = collection1.events.count
+    collection2 = collections(:two)
+    @event.collections << [collection1, collection2]
     @event.save
 
-    assert_difference('@event.packages.count', -2) do
-      patch :update_packages, params: {
+    assert_difference('@event.collections.count', -2) do
+      patch :update_collections, params: {
           id: @event.id,
           event: {
-              package_ids: ['']
+              collection_ids: ['']
           }
       }
     end
-    assert_in_delta(package1.events.count, package1_event_count, 1)
+    assert_in_delta(collection1.events.count, collection1_event_count, 1)
   end
 
   test 'should provide an ics file' do
@@ -607,7 +607,7 @@ class EventsControllerTest < ActionController::TestCase
   test 'should provide a csv file' do
     get :index, params: { format: :csv }
     assert_response :success
-    assert_equal 'text/csv', @response.content_type
+    assert_equal 'text/csv; charset=utf-8', @response.content_type
     csv_events = CSV.parse(@response.body)
     assert_equal csv_events.first, ["Title", "Organizer", "Start", "End", "ContentProvider"]
   end

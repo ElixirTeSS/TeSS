@@ -2,15 +2,15 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_14_084942) do
+ActiveRecord::Schema.define(version: 2022_02_25_150608) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,44 @@ ActiveRecord::Schema.define(version: 2019_08_14_084942) do
     t.string "resource_type"
     t.index ["resource_type", "resource_id"], name: "index_collaborations_on_resource_type_and_resource_id"
     t.index ["user_id"], name: "index_collaborations_on_user_id"
+  end
+
+  create_table "collection_events", id: false, force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "collection_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "id"
+    t.index ["collection_id"], name: "index_collection_events_on_collection_id"
+    t.index ["event_id"], name: "index_collection_events_on_event_id"
+  end
+
+  create_table "collection_materials", id: false, force: :cascade do |t|
+    t.integer "material_id"
+    t.integer "collection_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "id"
+    t.index ["collection_id"], name: "index_collection_materials_on_collection_id"
+    t.index ["material_id"], name: "index_collection_materials_on_material_id"
+  end
+
+  create_table "collections", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.text "image_url"
+    t.boolean "public", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.string "slug"
+    t.string "keywords", default: [], array: true
+    t.string "image_file_name"
+    t.string "image_content_type"
+    t.integer "image_file_size"
+    t.datetime "image_updated_at"
+    t.index ["slug"], name: "index_collections_on_slug", unique: true
+    t.index ["user_id"], name: "index_collections_on_user_id"
   end
 
   create_table "content_providers", force: :cascade do |t|
@@ -243,44 +281,6 @@ ActiveRecord::Schema.define(version: 2019_08_14_084942) do
     t.index ["term_uri"], name: "index_ontology_term_links_on_term_uri"
   end
 
-  create_table "package_events", id: false, force: :cascade do |t|
-    t.integer "event_id"
-    t.integer "package_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "id"
-    t.index ["event_id"], name: "index_package_events_on_event_id"
-    t.index ["package_id"], name: "index_package_events_on_package_id"
-  end
-
-  create_table "package_materials", id: false, force: :cascade do |t|
-    t.integer "material_id"
-    t.integer "package_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "id"
-    t.index ["material_id"], name: "index_package_materials_on_material_id"
-    t.index ["package_id"], name: "index_package_materials_on_package_id"
-  end
-
-  create_table "packages", force: :cascade do |t|
-    t.string "title"
-    t.text "description"
-    t.text "image_url"
-    t.boolean "public", default: true
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "user_id"
-    t.string "slug"
-    t.string "keywords", default: [], array: true
-    t.string "image_file_name"
-    t.string "image_content_type"
-    t.integer "image_file_size"
-    t.datetime "image_updated_at"
-    t.index ["slug"], name: "index_packages_on_slug", unique: true
-    t.index ["user_id"], name: "index_packages_on_user_id"
-  end
-
   create_table "profiles", force: :cascade do |t|
     t.text "firstname"
     t.text "surname"
@@ -424,6 +424,7 @@ ActiveRecord::Schema.define(version: 2019_08_14_084942) do
   add_foreign_key "bans", "users"
   add_foreign_key "bans", "users", column: "banner_id"
   add_foreign_key "collaborations", "users"
+  add_foreign_key "collections", "users"
   add_foreign_key "content_providers", "nodes"
   add_foreign_key "content_providers", "users"
   add_foreign_key "event_materials", "events"
@@ -433,7 +434,6 @@ ActiveRecord::Schema.define(version: 2019_08_14_084942) do
   add_foreign_key "materials", "users"
   add_foreign_key "node_links", "nodes"
   add_foreign_key "nodes", "users"
-  add_foreign_key "packages", "users"
   add_foreign_key "staff_members", "nodes"
   add_foreign_key "stars", "users"
   add_foreign_key "subscriptions", "users"

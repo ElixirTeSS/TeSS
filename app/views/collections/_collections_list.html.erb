@@ -1,0 +1,13 @@
+<% collections = resource.collections.visible_by(current_user) %>
+
+<div class="row">
+  <% if collections.blank? %>
+      <%= empty_tag(:p, "This #{resource.class.name.humanize} is currently not included in any collections.", "padding-top: 10px;") %>
+  <% else %>
+      <ul class="masonry media-grid">
+        <% collections.each do |collection| %>
+            <%= render :partial => "collections/collection", :locals => {:collection => collection} %>
+        <% end %>
+      </ul>
+  <% end %>
+</div>

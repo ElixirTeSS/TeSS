@@ -1,0 +1,30 @@
+<%= simple_form_for @collection, html: { class: 'content_provider', multipart: true } do |f| %>
+
+    <%= render partial: 'common/error_summary', locals: { resource: @collection } %>
+
+    <%= f.input :title %>
+
+    <%= f.input :description, as: :markdown_area, input_html: { rows: '10' } %>
+
+    <div class="form-group">
+      <%= render partial: 'common/image_form', locals: { form: f } %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :public, :class=>"checkbox inline" %>
+      <%= f.check_box :public %>
+    </div>
+
+    <%= f.multi_input :keywords %>
+
+    <%= f.autocompleter :materials %>
+
+    <%= f.autocompleter :events %>
+
+    <div class="form-group actions">
+      <%= f.submit ( f.object.new_record? ? "Create" : "Update") + " collection", :class => 'btn btn-primary' %>
+      <%= link_to 'Back', collections_path, :class=>"btn btn-info" %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                  collections_path, :class => 'btn btn-default' %>
+    </div>
+<% end %>

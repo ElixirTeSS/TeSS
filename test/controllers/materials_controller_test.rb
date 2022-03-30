@@ -621,41 +621,41 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_response 401
   end
 
-  test 'should add material to multiple packages' do
+  test 'should add material to multiple collections' do
     sign_in @material.user
-    package1 = packages(:one)
-    package1_material_count = package1.materials.count
-    package2 = packages(:two)
-    @material.packages = []
+    collection1 = collections(:one)
+    collection1_material_count = collection1.materials.count
+    collection2 = collections(:two)
+    @material.collections = []
     @material.save!
-    assert_difference('@material.packages.count', 2) do
-      post :update_packages, params: {
+    assert_difference('@material.collections.count', 2) do
+      post :update_collections, params: {
           id: @material.id,
           material: {
-              package_ids: [package1.id, package2.id]
+              collection_ids: [collection1.id, collection2.id]
           }
       }
     end
-    assert_in_delta(package1.materials.count, package1_material_count, 1)
+    assert_in_delta(collection1.materials.count, collection1_material_count, 1)
   end
 
-  test 'should remove material from packages' do
+  test 'should remove material from collections' do
     sign_in @material.user
-    package1 = packages(:one)
-    package1_material_count = package1.materials.count
-    package2 = packages(:two)
-    @material.packages << [package1, package2]
+    collection1 = collections(:one)
+    collection1_material_count = collection1.materials.count
+    collection2 = collections(:two)
+    @material.collections << [collection1, collection2]
     @material.save
 
-    assert_difference('@material.packages.count', -2) do
-      post :update_packages, params: {
+    assert_difference('@material.collections.count', -2) do
+      post :update_collections, params: {
           id: @material.id,
           material: {
-              package_ids: ['']
+              collection_ids: ['']
           }
       }
     end
-    assert_in_delta(package1.materials.count, package1_material_count, 1)
+    assert_in_delta(collection1.materials.count, collection1_material_count, 1)
   end
 
   test 'should add external resource to material' do
@@ -742,15 +742,15 @@ class MaterialsControllerTest < ActionController::TestCase
         end
 =end
   test 'finds multiple preferred labels' do
-    topic_one = EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0154')
-    topic_two = EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0078')
+    topic_one = Edam::Ontology.instance.lookup('http://edamontology.org/topic_0154')
+    topic_two = Edam::Ontology.instance.lookup('http://edamontology.org/topic_0078')
     topics = [topic_one.preferred_label, topic_two.preferred_label]
     @material.scientific_topic_names = topics
     assert_not_empty @material.scientific_topics
     assert_equal [topic_one, topic_two], @material.scientific_topics
   end
   test 'finds single preferred label' do
-    topic_one = EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0154')
+    topic_one = Edam::Ontology.instance.lookup('http://edamontology.org/topic_0154')
     topics = topic_one.preferred_label
     @material.scientific_topic_names = topics
     assert_not_empty @material.scientific_topics
@@ -758,14 +758,14 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   test 'find scientific topic that has an exact synonym of parameter' do
-    synonym_topic = EDAM::Ontology.instance.lookup('http://edamontology.org/topic_0092')
+    synonym_topic = Edam::Ontology.instance.lookup('http://edamontology.org/topic_0092')
     topics = synonym_topic.has_exact_synonym
     @material.scientific_topic_names = topics
     assert_equal [synonym_topic], @material.scientific_topics
   end
 
   test 'find scientific topic that is a narrow synonym of parameter' do
-    narrow_topic = EDAM::Ontology.instance.lookup('http://edamontology.org/topic_3557')
+    narrow_topic = Edam::Ontology.instance.lookup('http://edamontology.org/topic_3957')
     topics = narrow_topic.has_narrow_synonym
     @material.scientific_topic_names = topics
     assert_equal [narrow_topic], @material.scientific_topics

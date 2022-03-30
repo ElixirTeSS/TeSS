@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      DB_HOST: localhost
+      DB_NAME: tess
+      DB_USER: tess
+      DB_PASSWORD: password
+      SECRET_BASE_KEY: test_key
+      BASE_URL: http://localhost:3000
+      CONTACT_EMAIL: email@email.com
+      SENDER_EMAIL: email@email.com
+    steps:
+      - uses: harmon758/postgresql-action@v1
+        with:
+          postgresql db: '${DB_NAME}_test'
+          postgresql user: ${DB_USER}
+          postgresql password: ${DB_PASSWORD}
+        name: Set up database
+
+      - uses: actions/checkout@v2
+        name: Set up Ruby
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+        name: Bundle install
+      - run: bundle exec rake db:test:prepare && bundle exec rake test
+        name: Run tests
+      - uses: codacy/codacy-coverage-reporter-action@v1.1.0
+        name: Codacy Coverage Reporter
+        with:
+          project-token: ${{secrets.CODACY_PROJECT_TOKEN}}

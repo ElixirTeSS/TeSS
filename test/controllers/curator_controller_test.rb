@@ -7,7 +7,7 @@ class CuratorControllerTest < ActionController::TestCase
     sign_in users(:curator)
     e1 = add_topic_suggestions(events(:one), ['Genomics', 'Animals'])
     e2 = add_topic_suggestions(materials(:good_material), ['Biology', 'Proteins'])
-    add_topic_activity(materials(:good_material), EDAM::Ontology.instance.lookup_by_name('Proteins'), users(:curator))
+    add_topic_activity(materials(:good_material), Edam::Ontology.instance.lookup_by_name('Proteins'), users(:curator))
 
     get :topic_suggestions
 
@@ -104,8 +104,8 @@ class CuratorControllerTest < ActionController::TestCase
 
     sign_in admin
     User.current_user = admin # This is needed to set the correct "owner" on the activity logs
-    assert approved.update_attributes(role_id: Role.approved.id)
-    assert rejected.update_attributes(role_id: Role.rejected.id)
+    assert approved.update(role_id: Role.approved.id)
+    assert rejected.update(role_id: Role.rejected.id)
 
     get :users
 

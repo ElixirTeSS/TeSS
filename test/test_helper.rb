@@ -1,11 +1,19 @@
 require 'simplecov'
-require 'codacy-coverage'
-Codacy::Reporter.start
+require 'simplecov-lcov'
+
+SimpleCov::Formatter::LcovFormatter.config.report_with_single_file = true
+
 SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new([
-                                                                    SimpleCov::Formatter::HTMLFormatter,
-                                                                    Codacy::Formatter,
-                                                                ])
-SimpleCov.start 'rails'
+  SimpleCov::Formatter::HTMLFormatter,
+  SimpleCov::Formatter::LcovFormatter
+])
+
+SimpleCov.start do
+  add_filter '.gems'
+  add_filter 'pkg'
+  add_filter 'spec'
+  add_filter 'vendor'
+end
 
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
@@ -15,7 +23,10 @@ require 'minitest/mock'
 require 'fakeredis/minitest'
 
 class ActiveSupport::TestCase
-
+  def setup
+    redis = Redis.new
+    redis.flushdb
+  end
   # WARNING: Do not be tempted to include Devise TestHelpers here (e.g. include Devise::TestHelpers)
   # It must be included in each controller it is needed in or unit tests will break.
 

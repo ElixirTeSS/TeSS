@@ -68,7 +68,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :packages, concerns: :activities
+  resources :collections, concerns: :activities
 
   resources :workflows, concerns: [:collaboratable, :activities] do
     member do
@@ -113,8 +113,8 @@ Rails.application.routes.draw do
   post 'stars' => 'stars#create'
   delete 'stars' => 'stars#destroy'
 
-  post 'materials/:id/update_packages' => 'materials#update_packages'
-  post 'events/:id/update_packages' => 'events#update_packages'
+  post 'materials/:id/update_collections' => 'materials#update_collections'
+  post 'events/:id/update_collections' => 'events#update_collections'
 
   get 'search' => 'search#index'
   get 'test_url' => 'application#test_url'

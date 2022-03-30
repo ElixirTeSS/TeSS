@@ -21,10 +21,10 @@ Variable that should be available
   <% resources.facets.select { |f| f.rows.any? }.each do |facet| %>
       <% if IGNORED_FILTERS.include?(facet.field_name.to_s)   %>
       <% elsif facet.field_name == :online %>
-          <%= render partial: 'search/common/facet_sidebar_boolean_filter.html.erb',
+          <%= render partial: 'search/common/facet_sidebar_boolean_filter',
                      locals: { facet: facet, resources: resources } %>
       <% else %>
-          <%= render partial: 'search/common/facet_sidebar_filter.html.erb',
+          <%= render partial: 'search/common/facet_sidebar_filter',
                      locals: { facet: facet, resources: resources } %>
       <% end %>
   <% end %>
