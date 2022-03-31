@@ -1,5 +1,24 @@
 # Version Change Log
 The sections below refer to the release tags for this repository:
+## [Version 1.4.0](https://github.com/nrmay/TeSS/releases/tag/v1.4.0)
+
+Deployed: *1<sup>st</sup> April, 2022*
+
+- Features:
+  - [Automated Ingestion: manage sources online](https://github.com/nrmay/TeSS/issues/308)
+
+
+- Updates:
+  - [Automated Ingestion: add optional fields to CSV](https://github.com/nrmay/TeSS/issues/324)
+  - [Material Types: add types and add section to User Manual](https://github.com/nrmay/TeSS/issues/330)
+  - [Material Licences: add 'All Rights Reserved'](https://github.com/nrmay/TeSS/issues/335)
+
+
+- Fixes:
+  - [DateTime and ARDC Vocabulary widgets: JavaScript not working](https://github.com/nrmay/TeSS/issues/331)
+
+
+---
 ## [Version 1.3.5](https://github.com/nrmay/TeSS/releases/tag/v1.3.5)
 
 Deployed: *4<sup>th</sup> March, 2022*
