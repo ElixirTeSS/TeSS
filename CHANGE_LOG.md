@@ -1,8 +1,8 @@
 # Version Change Log
 The sections below refer to the release tags for this repository:
-## [Version 1.3.6](https://github.com/nrmay/TeSS/releases/tag/v1.3.6)
+## [Version 1.4.0](https://github.com/nrmay/TeSS/releases/tag/v1.4.0)
 
-Deployed: *31<sup>st</sup> March, 2022*
+Deployed: *1<sup>st</sup> April, 2022*
 
 - Features:
   - [Automated Ingestion: manage sources online](https://github.com/nrmay/TeSS/issues/308)
