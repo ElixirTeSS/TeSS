@@ -18,16 +18,29 @@ class IngestorMaterialCsv < IngestorMaterial
       table.each do |row|
         # copy values
         material = Material.new
-        material.title = row['Title']
-        material.url = row['URL'].strip unless row['URL'].nil?
-        material.description = process_description row['Description']
-        material.keywords = process_array row['Keywords']
-        material.contact = row['Contact']
-        material.licence = row['Licence']
-        material.status = row['Status']
-        material.authors = process_array row['Authors']
-        material.contributors = process_array row['Contributors']
-        material.doi = row['DOI']
+        material.title = get_column row, 'Title'
+        material.url = process_url row, 'URL'
+        material.description = process_description row, 'Description'
+        material.keywords = process_array row, 'Keywords'
+        material.contact = get_column row, 'Contact'
+        material.licence = get_column row, 'Licence'
+        material.status = get_column row, 'Status'
+
+        # copy optional values
+        material.doi = get_column row, 'DOI'
+        material.version = get_column row, 'Version'
+        material.date_published = get_column row, 'Published'
+        material.date_modified = get_column row, 'Modified'
+        material.difficulty_level = process_competency row, 'Competency'
+        material.authors = process_array row, 'Authors'
+        material.contributors = process_array row, 'Contributors'
+        material.fields = process_array row, 'Fields'
+        material.target_audience = process_array row, 'Audiences'
+        material.resource_type = process_array row, 'Types'
+        material.other_types = get_column row, 'Other Types'
+        material.learning_objectives = process_description row, 'Objectives'
+        material.prerequisites = process_description row, 'Prerequisites'
+        material.syllabus = process_description row, 'Syllabus'
 
         # add to
         add_material material
@@ -43,12 +56,28 @@ class IngestorMaterialCsv < IngestorMaterial
 
   private
 
-  def process_description (input)
-    convert_description(input.gsub('"', '')) unless input.nil?
+  def process_competency(row,header)
+    row[header].nil? ? 'notspecified' : row[header]
   end
 
-  def process_array (input)
-    input.split(/[;\s]/).reject(&:empty?).compact unless input.nil?
+  def process_url(row, header)
+    row[header].to_s.strip unless row[header].nil?
   end
 
+  def process_description (row, header)
+    return nil if row[header].nil?
+    desc = row[header]
+    desc.gsub!(/""/, '"')
+    desc.gsub!(/\A""|""\Z/, '')
+    desc.gsub!(/\A"|"\Z/, '')
+    convert_description desc
+  end
+
+  def process_array (row, header)
+    row[header].split(/[;]/).reject(&:empty?).compact unless row[header].nil?
+  end
+
+  def get_column(row, header)
+    row[header] unless row[header].nil?
+  end
 end

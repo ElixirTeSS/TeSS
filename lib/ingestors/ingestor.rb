@@ -30,7 +30,7 @@ class Ingestor
   def convert_description (input)
     return input if input.nil?
     return input if input == ActionController::Base.helpers.strip_tags(input)
-    return ReverseMarkdown.convert(input)
+    return ReverseMarkdown.convert(input, tag_border: '').strip
   end
 
 end
