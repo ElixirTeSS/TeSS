@@ -239,26 +239,4 @@ class DictionariesTest < ActiveSupport::TestCase
                "trainer experience (none) description was found"
   end
 
-  private
-
-  def reset_dictionaries
-    # reset default dictionary files
-    @dictionaries['difficulty'] = DifficultyDictionary::DEFAULT_FILE
-    @dictionaries['eligibility'] = EligibilityDictionary::DEFAULT_FILE
-    @dictionaries['event_types'] = EventTypeDictionary::DEFAULT_FILE
-    @dictionaries['cost_basis'] = CostBasisDictionary::DEFAULT_FILE
-    @dictionaries['material_type'] = MaterialTypeDictionary::DEFAULT_FILE
-    @dictionaries['material_status'] = MaterialStatusDictionary::DEFAULT_FILE
-    @dictionaries['target_audience'] = TargetAudienceDictionary::DEFAULT_FILE
-    @dictionaries['trainer_experience'] = TrainerExperienceDictionary::DEFAULT_FILE
-    DifficultyDictionary.instance.reload
-    EligibilityDictionary.instance.reload
-    EventTypeDictionary.instance.reload
-    CostBasisDictionary.instance.reload
-    MaterialTypeDictionary.instance.reload
-    MaterialStatusDictionary.instance.reload
-    TargetAudienceDictionary.instance.reload
-    TrainerExperienceDictionary.instance.reload
-  end
-
 end
