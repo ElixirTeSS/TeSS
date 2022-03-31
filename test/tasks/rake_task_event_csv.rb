@@ -50,8 +50,7 @@ class RakeTasksEventCSVIngestion < ActiveSupport::TestCase
 
   test 'check ingestion of event attributes from csv file' do
     # set config file
-    config_file = 'test_ingestion_csv.yml'
-    logfile = override_config config_file
+    override_config 'test_ingestion_csv.yml'
     assert_equal 'test', TeSS::Config.ingestion[:name]
 
     assert_difference 'Event.count', 14 do
