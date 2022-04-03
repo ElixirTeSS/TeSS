@@ -166,4 +166,42 @@ namespace :tess do
       puts "task[automated_ingestion] failed with #{e.message}"
     end
   end
+
+  desc 'check and update time zones'
+  task check_timezones: :environment do
+    puts "Task: check_timezones - start"
+    overrides = { 'AEDT' => 'Sydney',
+                  'AEST' => 'Sydney' }
+    begin
+      messages = []
+      processed = 0
+      unchanged = 0
+      updated = 0
+      failed = 0
+      Event.all.each do |event|
+        processed += 1
+        pre_tz = event.timezone
+        event.check_timezone
+        event.timezone = overrides[event.timezone] if overrides.keys.include? event.timezone
+        if event.save
+          unless event.timezone == pre_tz
+            updated += 1
+            messages << "event[#{event.title}] updated to timezone[#{event.timezone}]"
+          else
+            unchanged += 1
+          end
+        else
+          failed += 1
+          messages << "event[#{event.slug}] update failed: timezone = #{event.timezone}"
+          event.errors.full_messages.each { |m| messages << "   #{m}" }
+        end
+      end
+    rescue Exception => e
+      messages << "task tess:check_timezones failed with: #{e.message}"
+    end
+    messages.each { |m| puts m }
+    puts "Task: check_timezones - processed[#{processed}] unchanged[#{unchanged}] updated[#{updated}] failed[#{failed}]"
+    puts "Task: check_timezones - finished."
+  end
+
 end

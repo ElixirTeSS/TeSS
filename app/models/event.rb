@@ -16,6 +16,7 @@ class Event < ApplicationRecord
   include IdentifiersDotOrg
   include HasFriendlyId
 
+  before_validation :check_timezone # set to standard key
   before_save :check_country_name # :set_default_times
   before_save :geocoding_cache_lookup, if: :address_will_change?
   after_save :enqueue_geocoding_worker, if: :address_changed?
@@ -120,6 +121,7 @@ class Event < ApplicationRecord
   validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true }
   #validates :duration, format: { with: /\A[0-9][0-9]:[0-5][0-9]\z/, message: "must be in format HH:MM" }, allow_blank: true
   validate :allowed_url
+  validate :validate_timezone
   clean_array_fields(:keywords, :fields, :event_types, :target_audience,
                      :eligibility, :host_institutions, :sponsors)
   update_suggestions(:keywords, :target_audience, :host_institutions)
@@ -290,6 +292,35 @@ class Event < ApplicationRecord
     where('events.end < ?', Time.now).where.not(end: nil)
   end
 
+  def check_timezone
+    begin
+      tz_key = find_timezone_key self.timezone
+      self.timezone = tz_key unless tz_key.nil? or tz_key == self.timezone
+    rescue Exception => e
+      # ignore error
+    end
+    return
+  end
+
+  def find_timezone_key(name)
+    return name if name.nil?
+
+    # check name vs ActiveSupport
+    timezones = ActiveSupport::TimeZone::MAPPING
+    return name if timezones.keys.include? name
+    return timezones.key(name) unless timezones.key(name).nil?
+
+    # check for linked zones in TZInfo
+    tzinfo = TZInfo::Timezone.get(name)
+    if tzinfo.nil? and tzinfo.kind_of? TZInfo::LinkedTimezone
+      # repeat search with canonical timezone identifier
+      return find_timezone_key tzinfo.canonical_zone.identifier
+    end
+
+    # otherwise
+    return nil
+  end
+
   # Ticket #423
   def check_country_name
     if self.country and self.country.respond_to?(:parameterize)
@@ -432,6 +463,12 @@ class Event < ApplicationRecord
   end
 
   private
+
+  def validate_timezone
+    unless ActiveSupport::TimeZone::MAPPING.keys.include? self.timezone
+      errors.add(:timezone, 'not found and cannot be linked to a valid timezone')
+    end
+  end
 
   def allowed_url
     disallowed = (TeSS::Config.blocked_domains || []).any? do |regex|
