@@ -61,6 +61,13 @@ class RakeTasksEventCSVIngestion < ActiveSupport::TestCase
       end
     end
 
+    # check timezone transtation - Australia/Sydney -> Sydney
+    title = 'Data Manipulation and Visualisation in Python'
+    url = 'https://opus.nci.org.au/display/Help/NCI+Training+and+Educational+Events'
+    event = get_event title, url
+    refute_nil event
+    assert_equal 'Sydney',event.timezone
+
     # check an entry
     title = 'Introduction to Gadi'
     url = 'https://opus.nci.org.au/display/Help/Introduction+to+Gadi'
@@ -74,7 +81,7 @@ class RakeTasksEventCSVIngestion < ActiveSupport::TestCase
     assert_equal description, event.description, "Event title[#{title}] not matched"
     assert_equal DateTime.new(2022, 3, 3, 14, 00, 00), event.start
     assert_equal DateTime.new(2022, 3, 3, 15, 30, 00), event.end
-    assert_equal 'Australia/Canberra', event.timezone
+    assert_equal 'Sydney', event.timezone
     assert_equal 'training.nci@anu.edu.au', event.contact
     assert_equal 'NCI', event.organizer
     check_array event.eligibility, ['by_invitation'], ['open_to_all']
