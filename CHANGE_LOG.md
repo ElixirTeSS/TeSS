@@ -1,5 +1,13 @@
 # Version Change Log
 The sections below refer to the release tags for this repository:
+## [Version 1.4.1](https://github.com/nrmay/TeSS/releases/tag/v1.4.1)
+
+Deployed: *3<sup>rd</sup> April, 2022*
+
+- Fixes:
+  - [Event Timezones: validate and update keys](https://github.com/nrmay/TeSS/issues/338)
+
+
 ## [Version 1.4.0](https://github.com/nrmay/TeSS/releases/tag/v1.4.0)
 
 Deployed: *1<sup>st</sup> April, 2022*
