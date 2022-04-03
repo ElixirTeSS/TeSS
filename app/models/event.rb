@@ -295,23 +295,26 @@ class Event < ApplicationRecord
   def check_timezone
     begin
       tz_key = find_timezone_key self.timezone
-      #puts "tzkey[#{tz_key}] for timezone[#{self.timezone}]"
-      self.timezone = tz_key unless tz_key.nil?
+      self.timezone = tz_key unless tz_key.nil? or tz_key == self.timezone
     rescue Exception => e
-      puts "check timezone failed with: #{e.message}"
+      # ignore error
     end
+    return
   end
 
   def find_timezone_key(name)
-    return nil if name.nil?
+    return name if name.nil?
+
+    # check name vs ActiveSupport
     timezones = ActiveSupport::TimeZone::MAPPING
     return name if timezones.keys.include? name
     return timezones.key(name) unless timezones.key(name).nil?
-    # query tzinfo
+
+    # check for linked zones in TZInfo
     tzinfo = TZInfo::Timezone.get(name)
-    if tzinfo.kind_of? TZInfo::LinkedTimezone
-      # repeat search with canonical timezon
-      return find_timezone_key(tzinfo.canonical_zone.identifier)
+    if tzinfo.nil? and tzinfo.kind_of? TZInfo::LinkedTimezone
+      # repeat search with canonical timezone identifier
+      return find_timezone_key tzinfo.canonical_zone.identifier
     end
 
     # otherwise
@@ -463,7 +466,7 @@ class Event < ApplicationRecord
 
   def validate_timezone
     unless ActiveSupport::TimeZone::MAPPING.keys.include? self.timezone
-      errors.add(:timezone, ' not found and cannot be linked to a valid timezone')
+      errors.add(:timezone, 'not found and cannot be linked to a valid timezone')
     end
   end
 
