@@ -68,7 +68,7 @@ month_long_event:
   keywords: ["Keyword"]
   user: regular_user
   host_institutions: ["MyHost"]
-  timezone: MyTZ
+  timezone: UTC
   contact: MyContact
   eligibility: [ registration_of_interest ]
 
@@ -96,7 +96,7 @@ iann_event:
   user: regular_user
   content_provider: iann
   host_institutions: ["MyHost"]
-  timezone: MyTZ
+  timezone: UTC
   contact: MyContact
   eligibility: [ registration_of_interest ]
 
@@ -107,7 +107,7 @@ scraper_user_event:
   user: scraper_user
   content_provider: goblet
   host_institutions: ["MyHost"]
-  timezone: MyTZ
+  timezone: UTC
   contact: MyContact
   eligibility: [ registration_of_interest ]
   start: 2016-12-12 10:00:00
@@ -125,7 +125,7 @@ event_with_external_resource:
   user: scraper_user
   content_provider: goblet
   host_institutions: ["MyHost"]
-  timezone: MyTZ
+  timezone: UTC
   contact: MyContact
   eligibility: [ registration_of_interest ]
   start: 2016-12-12 10:00:00
@@ -143,7 +143,7 @@ event_with_no_start:
   user: scraper_user
   content_provider: goblet
   host_institutions: ["MyHost"]
-  timezone: MyTZ
+  timezone: UTC
   contact: MyContact
   eligibility: [ registration_of_interest ]
   end: 2016-12-12 12:00:00
@@ -161,7 +161,7 @@ event_with_no_end:
   content_provider: goblet
   start: 2016-11-22
   host_institutions: ["MyHost"]
-  timezone: MyTZ
+  timezone: UTC
   contact: MyContact
   eligibility: [ registration_of_interest ]
   venue: MyHall
@@ -179,7 +179,7 @@ online_event_with_no_end:
   start: 2016-11-22 14:00
   online: true
   host_institutions: ["MyHost"]
-  timezone: MyTZ
+  timezone: UTC
   contact: MyContact
   eligibility: [ registration_of_interest ]
   venue: MyHall
@@ -197,7 +197,7 @@ organisation_event:
   start: 2016-12-12 10:00:00
   end: 2016-12-12 12:00:00
   host_institutions: ["MyHost"]
-  timezone: MyTZ
+  timezone: UTC
   contact: MyContact
   eligibility: [ registration_of_interest ]
   venue: MyHall
@@ -235,7 +235,7 @@ dodgy_country_event:
   end: 2016-12-12 12:00:00
   country: üK
   host_institutions: ["MyHost"]
-  timezone: MyTZ
+  timezone: London
   contact: MyContact
   eligibility: [ registration_of_interest ]
   venue: MyHall
@@ -289,7 +289,7 @@ another_event_with_report:
   end: 2016-12-12 12:00:00
   funding: Raffle
   host_institutions: ["MyHost"]
-  timezone: MyTZ
+  timezone: UTC
   contact: MyContact
   eligibility: [ registration_of_interest ]
   venue: MyHall
@@ -355,7 +355,7 @@ kilburn:
   postcode: M13 9PL
   user: regular_user
   host_institutions: ["MyHost"]
-  timezone: GMT
+  timezone: Europe/London
   contact: MyContact
   eligibility: [ registration_of_interest ]
   organizer: "The Organizer"
