@@ -19,7 +19,7 @@ class Ingestor
   attr_reader :rejected
 
   # methods
-  def read (url)
+  def read (url, token)
     raise 'Method not yet implemented'
   end
 

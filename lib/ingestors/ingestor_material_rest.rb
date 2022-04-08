@@ -8,7 +8,7 @@ class IngestorMaterialRest < IngestorMaterial
     super
   end
 
-  def read (url)
+  def read (url, token)
     # paged query
     next_page = url
 

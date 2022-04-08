@@ -53,3 +53,12 @@ pawsey_source:
   resource_type: event
   created_at: 2018-06-23 13:09:19
   user: admin
+
+eventbrite_source:
+  content_provider: portal_provider
+  url: 'https://www.eventbriteapi.com/v3/organizations/34338661734'
+  method: rest
+  resource_type: event
+  token: 'YXAKB2UNBVO7FV5SJHQA'
+  created_at: 2018-06-23 13:09:19
+  user: admin

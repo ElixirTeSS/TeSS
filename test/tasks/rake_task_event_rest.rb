@@ -86,17 +86,21 @@ class RakeTaskEventRest < ActiveSupport::TestCase
     logfile = override_config config_file
     assert_equal 'rest_eventbrite', TeSS::Config.ingestion[:name]
 
-=begin
+    # enable source
+    source = sources :eventbrite_source
+    refute_nil source
+    source.enabled = true
+    assert source.save
+
     # run task
-      assert_difference 'Event.count', 1 do
+    assert_difference 'Event.count', 1 do
       freeze_time(stub_time = Time.new(2019)) do ||
         Rake::Task['tess:automated_ingestion'].invoke
       end
 
       # TODO: check ingested events
 
-      end
-=end
+    end
 
     # TODO: check logfile messages
 

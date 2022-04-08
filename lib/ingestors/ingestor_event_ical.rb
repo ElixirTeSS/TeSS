@@ -10,7 +10,7 @@ class IngestorEventIcal < IngestorEvent
     super
   end
 
-  def read (url)
+  def read (url, token)
     unless url.nil?
       if url.to_s.downcase.end_with? 'sitemap.xml'
         process_sitemap url
