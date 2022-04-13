@@ -96,9 +96,27 @@ TODO: Add Docker debugging instructions
 
 ## Production
 
-The production deployment is configured in the `docker-compose-prod.yml` file. There is also a separte entrypoint (`enrtypoint-prod.sh`) that will run the DB migratuions, precompile assets and reindex SOLR.
+The production deployment is configured in the `docker-compose-prod.yml` file.
 
     docker-compose -f docker-compose-prod.yml up -d
+
+### Other production tasks
+
+Run initial DB setup (new DB only!):
+
+    docker exec -it tess-production-app bash -c "bundle exec rake db:setup"
+
+Run DB migrations:
+
+    docker exec -it tess-production-app bash -c "bundle exec rake db:migrate"
+
+Precompile the assests:
+
+    docker exec -it tess-production-app bash -c "bundle exec rake assets:clean && bundle exec rake assets:precompile"
+
+Reindex Solr
+
+    docker exec -it tess-production-app bash -c "bundle exec rake sunspot:solr:reindex"
 
 ## Basic API
 
