@@ -5,20 +5,59 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.prod
+    image: ${PREFIX}-app
     restart: always
     env_file:
-      - .env
+      - .env-production
     depends_on:
+      - db
       - solr
-    network_mode: host
+      - redis
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/code
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.tess.tls=true
+      - traefik.http.routers.tess.tls.certresolver=myresolver
+      - traefik.http.routers.tess.rule=Host(`${HOSTNAME}`)
+      - traefik.http.routers.tess.entrypoints=websecure
+  db:
+    container_name: ${PREFIX}-db
+    logging:
+      driver: none
+    image: postgres
+    restart: always
+    env_file:
+      - .env-production
+    environment:
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: ${DB_NAME}_production
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./docker-volumes/db:/var/lib/postgresql/data
+  initializer:
+    image: alpine
+    container_name: solr-initializer
+    restart: 'no'
+    entrypoint: |
+      /bin/sh -c "chown 8983:8983 /var/solr"
+    volumes:
+      - ./docker-volumes/solr:/var/solr
   solr:
     container_name: ${PREFIX}-solr
     image: solr:8
     restart: always
+    depends_on:
+      - initializer
     ports:
-      - '8984:8983'
+      - '8983:8983'
     volumes:
-      - solr-data:/var/solr
+      - ./docker-volumes/solr:/var/solr
       - ./solr:/opt/solr/server/solr/configsets/production
     command:
       - solr-precreate
@@ -29,9 +68,28 @@ services:
     image: redis:6
     restart: always
     ports:
-      - '6380:6379'
+      - '6379:6379'
     volumes:
-      - redis-data:/data
-volumes:
-  solr-data:
-  redis-data:
+      - ./docker-volumes/redis:/data
+  traefik:
+    container_name: ${PREFIX}-traefik
+    image: traefik:v2.6
+    command:
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.webinsecure.address=:80
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.webinsecure.http.redirections.entrypoint.to=websecure
+      - --entrypoints.webinsecure.http.redirections.entrypoint.scheme=https
+      - --certificatesresolvers.myresolver.acme.email=${CONTACT_EMAIL}
+      - --certificatesresolvers.myresolver.acme.storage=acme.json
+      - --certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=webinsecure
+      - --certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./docker-volumes/letsencrypt:/etc/traefik/acme
