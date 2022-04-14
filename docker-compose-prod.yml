@@ -92,7 +92,7 @@ services:
     container_name: initializer
     restart: 'no'
     entrypoint: |
-      /bin/sh -c "chown 8983:8983 /var/solr && chmod 600 /acme.json"
+      /bin/sh -c "chown 8983:8983 /var/solr && touch /acme.json && chmod 600 /acme.json"
     volumes:
       - ./docker-volumes/solr:/var/solr
       - ./docker-volumes/letsencrypt/acme.json:/acme.json
