@@ -78,7 +78,7 @@ services:
       - --entrypoints.webinsecure.http.redirections.entrypoint.to=websecure
       - --entrypoints.webinsecure.http.redirections.entrypoint.scheme=https
       - --certificatesresolvers.myresolver.acme.email=${CONTACT_EMAIL}
-      - --certificatesresolvers.myresolver.acme.storage=acme.json
+      - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
       - --certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=webinsecure
     ports:
       - 80:80
@@ -86,13 +86,12 @@ services:
       - 8080:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./docker-volumes/letsencrypt.acme.json:/acme.json
+      - ./docker-volumes/letsencrypt:/letsencrypt
   initializer:
     image: alpine
     container_name: initializer
     restart: 'no'
     entrypoint: |
-      /bin/sh -c "chown 8983:8983 /var/solr && touch /acme.json && chmod 600 /acme.json"
+      /bin/sh -c "chown 8983:8983 /var/solr"
     volumes:
       - ./docker-volumes/solr:/var/solr
-      - ./docker-volumes/letsencrypt/acme.json:/acme.json
