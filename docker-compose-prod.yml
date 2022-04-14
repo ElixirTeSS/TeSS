@@ -40,14 +40,6 @@ services:
       - '5432:5432'
     volumes:
       - ./docker-volumes/db:/var/lib/postgresql/data
-  initializer:
-    image: alpine
-    container_name: solr-initializer
-    restart: 'no'
-    entrypoint: |
-      /bin/sh -c "chown 8983:8983 /var/solr"
-    volumes:
-      - ./docker-volumes/solr:/var/solr
   solr:
     container_name: ${PREFIX}-solr
     image: solr:8
@@ -74,6 +66,9 @@ services:
   traefik:
     container_name: ${PREFIX}-traefik
     image: traefik:v2.6
+    restart: always
+    depends_on:
+      - initializer
     command:
       - --api.insecure=true
       - --providers.docker=true
@@ -85,11 +80,19 @@ services:
       - --certificatesresolvers.myresolver.acme.email=${CONTACT_EMAIL}
       - --certificatesresolvers.myresolver.acme.storage=acme.json
       - --certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=webinsecure
-      - --certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
     ports:
       - 80:80
       - 443:443
       - 8080:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./docker-volumes/letsencrypt:/etc/traefik/acme
+      - ./docker-volumes/letsencrypt.acme.json:/acme.json
+  initializer:
+    image: alpine
+    container_name: solr
+    restart: 'no'
+    entrypoint: |
+      /bin/sh -c "chown 8983:8983 /var/solr && chmod 600 /acme.json"
+    volumes:
+      - ./docker-volumes/solr:/var/solr
+      - ./docker-volumes/letsencrypt/acme.json:/acme.json
