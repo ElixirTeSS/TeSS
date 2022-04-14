@@ -2,7 +2,7 @@
 FROM ruby:3.0.1
 
 #set rails env
-ENV RAILS_ENV production
+ENV RAILS_ENV=production
 
 # set work dir
 WORKDIR /code
@@ -19,10 +19,7 @@ RUN bundle install
 # Clean up server.pid
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint-prod.sh"]
-
-# copy files
-COPY . .
+ENTRYPOINT ["entrypoint.sh"]
 
 # expose port
 EXPOSE 3000
