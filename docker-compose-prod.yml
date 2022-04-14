@@ -89,7 +89,7 @@ services:
       - ./docker-volumes/letsencrypt.acme.json:/acme.json
   initializer:
     image: alpine
-    container_name: solr
+    container_name: initializer
     restart: 'no'
     entrypoint: |
       /bin/sh -c "chown 8983:8983 /var/solr && chmod 600 /acme.json"
