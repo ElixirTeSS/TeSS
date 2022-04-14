@@ -16,4 +16,4 @@ test:
 
 production:
   <<: *default
-  database: <%= Rails.application.secrets[:database][:name] %>
+  database: <%= Rails.application.secrets[:database][:name] %>_production
