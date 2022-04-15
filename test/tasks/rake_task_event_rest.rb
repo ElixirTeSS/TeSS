@@ -89,21 +89,26 @@ class RakeTaskEventRest < ActiveSupport::TestCase
     # enable source
     source = sources :eventbrite_source
     refute_nil source
+    refute_nil source.token
+    # set enabled
     source.enabled = true
     assert source.save
 
-    # run task
-    assert_difference 'Event.count', 1 do
-      freeze_time(stub_time = Time.new(2019)) do ||
+    assert_difference 'Event.count', 13 do
+      # run task
+      freeze_time(stub_time = Time.new(2022, 01, 01)) do ||
         Rake::Task['tess:automated_ingestion'].invoke
       end
-
-      # TODO: check ingested events
-
     end
 
-    # TODO: check logfile messages
+    # TODO: check ingested events
 
+
+    # check logfile messages
+    message = 'Source URL\[https://www.eventbriteapi.com/v3/organizations/34338661734\] resources read\[13\] and written\[13\]'
+    assert logfile_contains(logfile, message), 'Message not found: ' + message
+    message = 'Scraper.run: finish'
+    assert logfile_contains(logfile, message), 'Message not found: ' + message
   end
 
 end

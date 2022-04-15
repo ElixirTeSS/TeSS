@@ -8,3 +8,4 @@ sources:
     url: https://raw.githubusercontent.com/nci900/NCI_feed_to_DReSA/master/event_NCI.csv
     method: csv                         # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
+    enabled: true

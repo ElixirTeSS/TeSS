@@ -7,3 +7,4 @@ sources:
     url: 'https://dummy.com' # the root URL required to access the source
     method: 'dummyM'          # one of 'csv', 'api', 'html'
     resource_type: 'dummyR'   # event or material
+    enabled: true

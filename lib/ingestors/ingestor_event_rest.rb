@@ -8,16 +8,20 @@ class IngestorEventRest < IngestorEvent
     super
 
     @RestSources = [
-      { url: 'https://tess.elixir-europe.org/',
+      { name: 'ElixirTeSS',
+        url: 'https://tess.elixir-europe.org/',
         process: method(:process_elixir) },
-      { url: 'https://www.eventbriteapi.com/v3/',
+      { name: 'Eventbrite API v3',
+        url: 'https://www.eventbriteapi.com/v3/',
         process: method(:process_eventbrite) }
     ]
-    # cache object responses
+
+    # cached API object responses
     @eventbrite_objects = {}
   end
 
   def read(url, token)
+    @messages << "#{self.class.name}.#{__method__} url[#{url}] token[#{token}]"
     begin
       process = nil
 
@@ -45,10 +49,10 @@ class IngestorEventRest < IngestorEvent
   private
 
   def process_eventbrite(url, token)
-    puts "process_eventbrite: url[#{url}] token[#{token}]"
     records_read = 0
     records_draft = 0
     records_expired = 0
+    records_completed = 0
 
     begin
       # initialise next_page
@@ -60,11 +64,11 @@ class IngestorEventRest < IngestorEvent
 
         # check next page
         next_page = nil
-        pagination = results[:pagination]
+        pagination = results['pagination']
         begin
-          unless pagination.nil? or pagination[:has_more_items].nil? or pagination[:page_number].nil?
-            if pagination[:has_more_items]
-              page = pagination[:page_number].to_i
+          unless pagination.nil? or pagination['has_more_items'].nil? or pagination['page_number'].nil?
+            if pagination['has_more_items']
+              page = pagination['page_number'].to_i
               next_page = "#{url}/events/?page=#{page + 1}&token=#{token}"
             end
           end
@@ -73,84 +77,92 @@ class IngestorEventRest < IngestorEvent
         end
 
         # check events
-        events = results[:events]
+        events = results['events']
         unless events.nil? or events.empty?
           events.each do |item|
             records_read += 1
+            unless item['status'].nil?
+              # check status
+              case item['status']
+              when 'draft'
+                records_draft += 1
+              when 'completed'
+                records_completed += 1
+              when 'live'
+                # create new event
+                event = Event.new
 
-            if !item['status'].nil? and item['status'] == 'draft'
-              records_draft += 1
-            else
-              # create new event
-              event = Event.new
+                # check for expired
+                event.timezone = item['start']['timezone']
+                event.start = item['start']['local']
+                event.end = item['end']['local']
+                if event.expired?
+                  records_expired += 1
+                else
+                  # set required attributes
+                  event.title = item['name']['text'] unless item['name'].nil?
+                  event.url = item['url']
+                  event.description = convert_description item['description']['html'] unless item['description'].nil?
+                  if item['online_event'].nil? or item['online_event'] == false
+                    event.online = false
+                  else
+                    event.online = true
+                  end
 
-              # check for expired
-              event.timezone = item['start']['timezone']
-              event.start = item['start']['local']
-              event.end = item['end']['local']
-              if event.expired?
-                records_expired += 1
+                  # organizer
+                  organizer = get_eventbrite_organizer item['organizer_id'], token
+                  event.organizer = organizer['name'] unless organizer.nil?
+
+                  # address fields
+                  venue = get_eventbrite_venue item['venue_id'], token
+                  unless venue.nil? or venue['address'].nil?
+                    address = venue['address']
+                    event.venue = "#{address['address_1']}, #{address['address_2']}"
+                    event.city = address['city']
+                    event.country = address['country']
+                    event.postcode = address['postal_code']
+                    event.latitude = address['latitude']
+                    event.longitude = address['longitude']
+                  end
+
+                  # set optional attributes
+                  event.keywords = []
+                  category = get_eventbrite_category item['category_id'], token
+                  subcategory = get_eventbrite_subcategory(
+                    item['subcategory_id'], item['category_id'], token)
+                  event.keywords << category['name'] unless category.nil?
+                  event.keywords << subcategory['name'] unless subcategory.nil?
+
+                  unless item['capacity'].nil? or item['capacity'] == 'null'
+                    event.capacity = item['capacity'].to_i
+                  end
+
+                  event.event_types = []
+                  format = get_eventbrite_format item['format_id'], token
+                  unless format.nil?
+                    type = convert_event_types format['short_name']
+                    event.event_types << type unless type.nil?
+                  end
+
+                  if item['invite_only'].nil? or !item['invite_only']
+                    event.eligibility = 'open_to_all'
+                  else
+                    event.eligibility = 'by_invitation'
+                  end
+
+                  if item['is_free'].nil? or !item['is_free']
+                    event.cost_basis = 'charge'
+                    event.cost_currency = item['currency']
+                  else
+                    event.cost_basis = 'free'
+                  end
+
+                  # add event to events array
+                  add_event(event)
+                  @ingested += 1
+                end
               else
-                # set required attributes
-                event.title = item['name']['text']
-                event.url = item['url']
-                event.description = convert_description item['description']['html']
-                if item['online_event'].nil? or !item['online_event']
-                  event.online = false
-                else
-                  event.online = true
-                end
-
-                # organizer
-                organizer = get_eventbrite_organizer item['organizer_id'], token
-                event.organizer = organizer['name'] unless organizer.nil?
-
-                # address fields
-                venue = get_eventbrite_venue item['venue_id'], token
-                unless venue.nil? and venue['address'].nil?
-                  address = venue['address']
-                  event.venue = "#{address['address_1']}, #{address['address_2']}"
-                  event.city = address['city']
-                  event.country = address['country']
-                  event.postcode = address['postal_code']
-                  event.latitude = address['latitude']
-                  event.longitude = address['longitude']
-                end
-
-                # set optional attributes
-                event.keywords = []
-                category = get_eventbrite_category item['category_id'], token
-                subcategory = get_eventbrite_subcategory(
-                  item['subcategory_id'], item['category_id'], token)
-                event.keywords << category['name'] unless category.nil?
-                event.keywords << subcategory['name'] unless subcategory.nil?
-
-                unless item['capacity'].nil? or item['capacity'] == 'null'
-                  event.capacity = item['capacity'].to_i
-                end
-                event.event_types = []
-                format = get_eventbrite_format item['format_id'], token
-                unless format.nil?
-                  type = convert_event_types format['short_name']
-                  event.event_types << type unless type.nil?
-                end
-
-                if item['invite_only'].nil? or !item['invite_only']
-                  event.eligibility = 'open_to_all'
-                else
-                  event.eligibility = 'by_invitation'
-                end
-
-                if item['is_free'].nil? or !item['is_free']
-                  event.cost_basis = 'charge'
-                  event.cost_currency = item['currency']
-                else
-                  event.cost_basis = 'free'
-                end
-
-                # add event to events array
-                add_event(event)
-                @ingested += 1
+                # unknown status
               end
             end
           rescue Exception => e
@@ -159,12 +171,13 @@ class IngestorEventRest < IngestorEvent
         end
       end
 
-      @messages << "Eventbrite records read[#{records_read}] draft[#{records_draft}] expired[#{records_expired}]"
+      @messages << "Eventbrite events read[#{records_read}] draft[#{records_draft}] expired[#{records_expired}] completed[#{records_completed}]"
     rescue Exception => e
       @messages << "#{self.class} failed with: #{e.message}"
     end
 
     # finished
+    return
   end
 
   def get_eventbrite_format(id, token)
@@ -175,7 +188,7 @@ class IngestorEventRest < IngestorEvent
     # populate cache if empty
     if @eventbrite_objects[:formats].empty?
       begin
-        url = "https://www.eventbriteapi.com/formats/?token=#{token}"
+        url = "https://www.eventbriteapi.com/v3/formats/?token=#{token}"
         response = get_JSON_response url
         unless response.nil? or response['formats'].nil? or !response['formats'].kind_of? Array
           response['formats'].each do |format|
@@ -207,7 +220,7 @@ class IngestorEventRest < IngestorEvent
     unless @eventbrite_objects[:venues].keys.include? id
       begin
         # get from query and add to cache if found
-        url = "https://www.eventbriteapi.com/venues/#{id}/?token=#{token}"
+        url = "https://www.eventbriteapi.com/v3/venues/#{id}/?token=#{token}"
         venue = get_JSON_response url
         @eventbrite_objects[:venues][id] = venue unless venue.nil?
       rescue Exception => e
@@ -231,7 +244,7 @@ class IngestorEventRest < IngestorEvent
       begin
         # initialise pagination
         has_more_items = true
-        url = "https://www.eventbriteapi.com/categories/?token=#{token}"
+        url = "https://www.eventbriteapi.com/v3/categories/?token=#{token}"
 
         # query until no more pages
         while has_more_items
@@ -255,7 +268,7 @@ class IngestorEventRest < IngestorEvent
             unless pagination.nil?
               has_more_items = pagination['has_more_items']
               page_number = pagination['page_number'] + 1
-              url = "https://www.eventbriteapi.com/categories/?page=#{page_number}&token=#{token}"
+              url = "https://www.eventbriteapi.com/v3/categories/?page=#{page_number}&token=#{token}"
             end
           end
         end
@@ -315,7 +328,7 @@ class IngestorEventRest < IngestorEvent
     unless @eventbrite_objects[:organizers].keys.include? id
       begin
         # get from query and add to cache if found
-        url = "https://www.eventbriteapi.com/organizers/#{id}/?token=#{token}"
+        url = "https://www.eventbriteapi.com/v3/organizers/#{id}/?token=#{token}"
         organizer = get_JSON_response url
         @eventbrite_objects[:organizers][id] = organizer unless organizer.nil?
       rescue Exception => e

@@ -1,0 +1,48 @@
+{
+  "description": {
+    "text": null,
+    "html": "<p><\/p>"
+  },
+  "long_description": {
+    "text": null,
+    "html": "<p><\/p>"
+  },
+  "follow_status": {
+    "followed_by_you": true,
+    "followed_at": "2021-02-04 21:29:29+00:00",
+    "num_followers": 268
+  },
+  "resource_uri": "https://www.eventbriteapi.com/v3/organizers/14317910674/",
+  "_type": "organizer",
+  "id": "14317910674",
+  "name": "Australian Research Data Commons",
+  "url": "https://www.eventbrite.com.au/o/australian-research-data-commons-14317910674",
+  "vanity_url": "http://ardc.eventbrite.com",
+  "num_past_events": 0,
+  "num_future_events": 0,
+  "website": "https://ardc.edu.au/",
+  "twitter": "ARDC_AU",
+  "organization_id": "34338661734",
+  "disable_marketing_opt_in": false,
+  "logo_id": "124983681",
+  "logo": {
+    "crop_mask": {
+      "top_left": {
+        "x": 0,
+        "y": 0
+      },
+      "width": 1080,
+      "height": 1080
+    },
+    "original": {
+      "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F124983681%2F34338661734%2F1%2Foriginal.20210203-020015?auto=format%2Ccompress&q=75&sharp=10&s=a255795a0965e991e77113c53df2ef52",
+      "width": 1080,
+      "height": 1080
+    },
+    "id": "124983681",
+    "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F124983681%2F34338661734%2F1%2Foriginal.20210203-020015?h=200&w=200&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C0%2C1080%2C1080&s=4a5ba60151f8a46a9a6441de236d731f",
+    "aspect_ratio": "1",
+    "edge_color": "#ffffff",
+    "edge_color_set": true
+  }
+}

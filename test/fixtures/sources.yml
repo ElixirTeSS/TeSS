@@ -3,6 +3,7 @@ first_source:
   url: https://app.com/events.csv     # the root URL required to access the source
   method: csv                         # one of 'csv', 'api', 'html'
   resource_type: event                # event or material
+  enabled: false
   created_at: 2018-11-23 00:00:00
   user: curator
 
@@ -11,6 +12,7 @@ second_source:
   url: https://app.com/materials.csv  # the root URL required to access the source
   method: csv                         # one of 'csv', 'api', 'html'
   resource_type: material             # event or material
+  enabled: false
   created_at: 2019-01-20 12:00:00
   user: admin
 
@@ -19,6 +21,7 @@ third_source:
   url: https://raw.githubusercontent.com/nci900/NCI_feed_to_DReSA/master/event_NCI.csv
   method: csv                         # one of 'csv', 'api', 'html'
   resource_type: event                # event or material
+  enabled: false
   created_at: 2018-06-23 23:59:59
   user: admin
 
@@ -27,6 +30,7 @@ fourth_source:
   url: https://zenodo.org/api/records/?communities=ardc  # the root URL to access the source
   method: rest                        # one of 'csv', 'rest'
   resource_type: material             # event or material
+  enabled: false
   created_at: 2020-12-31 20:00:0
   user: admin
 
@@ -35,6 +39,7 @@ fifth_source:
   url: 'https://pawsey.org.au/event/pcon-embracing-new-solutions-for-in-situ-visualisation/?ical=true'
   method: ical                        # one of 'csv', 'ical' or 'rest'
   resource_type: event               # event or material
+  enabled: false
   created_at: 2018-06-23 13:09:19
   user: admin
 
@@ -43,6 +48,7 @@ sixth_source:
   url: 'https://tess.elixir-europe.org/events?include_expired=false&content_provider[]=Australian%20BioCommons'
   method: rest                        # one of 'csv', 'rest'
   resource_type: event                # event or material
+  enabled: false
   created_at: 2018-06-23 13:09:00
   user: admin
 
@@ -51,6 +57,7 @@ pawsey_source:
   url: 'https://pawsey.org.au/event/eoi-1-day-introduction-to-amd-gpus-amd-instinct-architecture-and-rocm/?ical=true'
   method: ical
   resource_type: event
+  enabled: false
   created_at: 2018-06-23 13:09:19
   user: admin
 
@@ -60,5 +67,6 @@ eventbrite_source:
   method: rest
   resource_type: event
   token: 'YXAKB2UNBVO7FV5SJHQA'
+  enabled: false
   created_at: 2018-06-23 13:09:19
   user: admin
