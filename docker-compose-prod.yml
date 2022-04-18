@@ -27,7 +27,7 @@ services:
     container_name: ${PREFIX}-db
     logging:
       driver: none
-    image: postgres
+    image: postgres:14.2
     restart: always
     env_file:
       - .env-production
@@ -40,6 +40,20 @@ services:
       - '5432:5432'
     volumes:
       - db-data:/var/lib/postgresql/data
+  dbbackups:
+    image: kartoza/pg-backup:14-3.1
+    volumes:
+      - db-backups:/backups
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASS: ${DB_PASSWORD}
+      DBLIST: ${DB_NAME}_production
+      REMOVE_BEFORE: 7
+    restart: on-failure
+    depends_on:
+      db:
+        condition: service_healthy
   solr:
     container_name: ${PREFIX}-solr
     image: solr:8
@@ -85,6 +99,7 @@ services:
       - letsencrypt-data:/letsencrypt
 volumes:
   db-data:
+  db-backups:
   solr-data:
   redis-data:
   letsencrypt-data:
