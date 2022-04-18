@@ -52,8 +52,7 @@ services:
       REMOVE_BEFORE: 7
     restart: on-failure
     depends_on:
-      db:
-        condition: service_healthy
+      - db
   solr:
     container_name: ${PREFIX}-solr
     image: solr:8
