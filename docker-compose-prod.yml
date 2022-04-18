@@ -44,8 +44,6 @@ services:
     container_name: ${PREFIX}-solr
     image: solr:8
     restart: always
-    depends_on:
-      - initializer
     ports:
       - '8983:8983'
     volumes:
@@ -67,8 +65,6 @@ services:
     container_name: ${PREFIX}-traefik
     image: traefik:v2.6
     restart: always
-    depends_on:
-      - initializer
     command:
       - --api.insecure=true
       - --providers.docker=true
@@ -87,14 +83,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - letsencrypt-data:/letsencrypt
-  initializer:
-    image: alpine
-    container_name: initializer
-    restart: 'no'
-    entrypoint: |
-      /bin/sh -c "chown 8983:8983 /var/solr"
-    volumes:
-      - solr-data:/var/solr
 volumes:
   db-data:
   solr-data:
