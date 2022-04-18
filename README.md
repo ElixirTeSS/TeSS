@@ -98,7 +98,7 @@ TODO: Add Docker debugging instructions
 
 The production deployment is configured in the `docker-compose-prod.yml` file.
 
-    docker-compose -f docker-compose-prod.yml up -d
+    docker-compose -f docker-compose-prod.yml --env-file .env-production up -d --build
 
 ### Other production tasks
 
