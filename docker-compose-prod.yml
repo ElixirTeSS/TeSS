@@ -39,7 +39,7 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - ./docker-volumes/db:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data
   solr:
     container_name: ${PREFIX}-solr
     image: solr:8
@@ -49,7 +49,7 @@ services:
     ports:
       - '8983:8983'
     volumes:
-      - ./docker-volumes/solr:/var/solr
+      - solr-data:/var/solr
       - ./solr:/opt/solr/server/solr/configsets/production
     command:
       - solr-precreate
@@ -62,7 +62,7 @@ services:
     ports:
       - '6379:6379'
     volumes:
-      - ./docker-volumes/redis:/data
+      - redis-data:/data
   traefik:
     container_name: ${PREFIX}-traefik
     image: traefik:v2.6
@@ -86,7 +86,7 @@ services:
       - 8080:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./docker-volumes/letsencrypt:/letsencrypt
+      - letsencrypt-data:/letsencrypt
   initializer:
     image: alpine
     container_name: initializer
@@ -94,4 +94,9 @@ services:
     entrypoint: |
       /bin/sh -c "chown 8983:8983 /var/solr"
     volumes:
-      - ./docker-volumes/solr:/var/solr
+      - solr-data:/var/solr
+volumes:
+  db-data:
+  solr-data:
+  redis-data:
+  letsencrypt-data:
