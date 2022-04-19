@@ -117,7 +117,9 @@ class IngestorEventRest < IngestorEvent
                   venue = get_eventbrite_venue item['venue_id'], token
                   unless venue.nil? or venue['address'].nil?
                     address = venue['address']
-                    event.venue = "#{address['address_1']}, #{address['address_2']}"
+                    venue = address['address_1']
+                    venue += (', ' + address['address_2']) unless address['address_2'].blank?
+                    event.venue = venue
                     event.city = address['city']
                     event.country = address['country']
                     event.postcode = address['postal_code']

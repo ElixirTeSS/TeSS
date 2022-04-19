@@ -101,14 +101,133 @@ class RakeTaskEventRest < ActiveSupport::TestCase
       end
     end
 
-    # TODO: check ingested events
+    # check ingested event
+    # eventbrite.id: 293623976217
+    # timezone: "Australia/Perth", start: "2022-04-11T12:00:00", end: "2022-04-11T13:00:00"
+    # status: live
+    title = 'The Institutional Underpinnings Draft RDM Framework - Universities'
+    url = 'https://www.eventbrite.com.au/e/the-institutional-underpinnings-draft-rdm-framework-universities-tickets-293623976217'
+    desc = 'Learn about progress in the Institutional Underpinnings program and find out about how to give feedback on the draft framework.'
+    event = get_event nil, title, url
+    refute_nil event
+    assert_equal desc, event.description
+    assert_equal 'ARDC', event.organizer # organizer.name ARDC
+    assert_empty event.event_types # format.name other
+    assert_equal 'Perth', event.timezone
+    assert_equal Time.new(2022, 04, 11, 12, 00, 00), event.start
+    assert_equal Time.new(2022, 04, 11, 13, 00, 00), event.end
+    assert_equal 300, event.capacity
+    assert event.online
+    assert_equal 'free', event.cost_basis
+    assert_nil event.cost_currency # as cost_basis is free
+    assert_empty event.keywords
+    assert_nil event.venue
 
+    # check completed event
+    # eventbrite.id: 291075754417
+    # status: completed
+    title = 'The Institutional Underpinnings Draft RDM Framework - Universities'
+    url = 'https://www.eventbrite.com.au/e/getting-started-with-nectar-research-cloud-training-tickets-291075754417'
+    event = get_event nil, title, url
+    assert_nil event
+
+    # check draft event
+    # eventbrite.id: 294940824947
+    # status: draft
+    title = 'TEST TEMPLATE TO COPY FOR ARDC EVENTS'
+    url = 'https://www.eventbrite.com.au/e/test-template-to-copy-for-ardc-events-tickets-294940824947'
+    event = get_event nil, title, url
+    assert_nil event
+
+    # check ingested event
+    # eventbrite.id: 298980718377
+    # category: 101 = Business & Professional
+    # timezone: Australia/Sydney, start: 2022-05-03T13:30:00, end: 2022-05-03T15:00:00
+    title = 'Sharing Sensitive and Identifiable Human Data'
+    url = 'https://www.eventbrite.com.au/e/sharing-sensitive-and-identifiable-human-data-tickets-298980718377'
+    desc = 'The ARDC Leadership Series is a new event series providing decision makers with an opportunity to work through big data challenges.'
+    event = get_event nil, title, url
+    refute_nil event
+    assert_equal desc, event.description
+    assert_equal 'Australian Research Data Commons', event.organizer
+    assert_equal 'Sydney', event.timezone
+    assert_equal Time.new(2022, 05, 03, 13, 30, 0), event.start
+    assert_equal Time.new(2022, 05, 03, 15, 0, 0), event.end
+    refute event.online
+    assert_equal 'free', event.cost_basis
+    assert_equal 'UNSW', event.venue
+    assert_equal 'Sydney', event.city
+    assert_equal 'Australia', event.country
+    assert_equal '2052', event.postcode
+    refute_empty event.event_types
+    assert_equal 1, event.event_types.size
+    assert_includes event.event_types, 'conference'
+    refute_empty event.keywords
+    assert_equal 2, event.keywords.size
+    assert_includes event.keywords, 'Business & Professional'
+    assert_includes event.keywords, 'Other'
+    refute_includes event.keywords, 'Dummy'
+
+    # check ingested event
+    # eventbrite.id: 315896965327
+    # category: 102 / 2004 = Science & Technology / High Tech
+    # timezone: Australia/Sydney, start: 2022-06-01T13:00:00, end: 2022-06-01T15:00:00
+    title = 'Getting Started with Nectar Research Cloud Training'
+    url = 'https://www.eventbrite.com.au/e/getting-started-with-nectar-research-cloud-training-tickets-315896965327'
+    desc = 'Learn the basics of using the **ARDC Nectar Cloud** for your research.'
+    event = get_event nil, title, url
+    refute_nil event
+    assert_equal desc, event.description
+    assert_equal 'Australian Research Data Commons', event.organizer
+    assert_equal 'Sydney', event.timezone
+    assert_equal Time.new(2022, 06, 01, 13, 00, 0), event.start
+    assert_equal Time.new(2022, 06, 01, 15, 0, 0), event.end
+    assert_equal 10, event.capacity
+    assert event.online
+    assert_equal 2, event.keywords.size
+    assert_includes event.keywords, 'Science & Technology'
+    assert_includes event.keywords, 'High Tech'
+
+    # check ingested event
+    # eventbrite.id: 298980718377
+    # category: 101 = Business & Professional
+    # timezone: Australia/Sydney, start: 2022-05-03T13:30:00, end: 2022-05-03T15:00:00
+    title = 'Sharing Sensitive and Identifiable Human Data'
+    url = 'https://www.eventbrite.com.au/e/sharing-sensitive-and-identifiable-human-data-tickets-298980718377'
+    desc = 'The ARDC Leadership Series is a new event series providing decision makers with an opportunity to work through big data challenges.'
+    event = get_event nil, title, url
+    refute_nil event
+    assert_equal desc, event.description
+    assert_equal 'Australian Research Data Commons', event.organizer
+    assert_equal 'Sydney', event.timezone
+    assert_equal Time.new(2022, 05, 03, 13, 30, 0), event.start
+    assert_equal Time.new(2022, 05, 03, 15, 0, 0), event.end
+
+    # check source
+    sources = Source.where(url: 'https://www.eventbriteapi.com/v3/organizations/34338661734')
+    refute_nil sources
+    refute_empty sources
+    source = sources.first
+    refute_nil source
+    refute_nil source.log
+    message = 'Eventbrite events read[68] draft[2] expired[0] completed[53]'
+    assert_includes source.log, message
 
     # check logfile messages
     message = 'Source URL\[https://www.eventbriteapi.com/v3/organizations/34338661734\] resources read\[13\] and written\[13\]'
     assert logfile_contains(logfile, message), 'Message not found: ' + message
     message = 'Scraper.run: finish'
     assert logfile_contains(logfile, message), 'Message not found: ' + message
+  end
+
+  private
+
+  def get_event(id, title, url)
+    return Event.find(id) unless id.nil?
+    unless title.nil? or url.nil?
+      events = Event.where(title: title, url: url)
+      return events.first unless events.nil? or events.empty?
+    end
   end
 
 end
