@@ -32,7 +32,3 @@ jobs:
         name: Bundle install
       - run: bundle exec rake db:test:prepare && bundle exec rake test
         name: Run tests
-      - uses: codacy/codacy-coverage-reporter-action@v1.1.0
-        name: Codacy Coverage Reporter
-        with:
-          project-token: ${{secrets.CODACY_PROJECT_TOKEN}}
