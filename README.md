@@ -3,8 +3,6 @@
 [ELIXIR's](https://www.elixir-europe.org/) Training e-Support Service using Ruby on Rails.
 
 [![Actions Status](https://github.com/ElixirTeSS/TeSS/workflows/Test/badge.svg)](https://github.com/ElixirTeSS/TeSS/actions)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/d42e5e2fbcd64bd3af07090ec2626aa7)](https://www.codacy.com/gh/ElixirTeSS/TeSS/dashboard?utm_source=github.com&utm_medium=referral&utm_content=ElixirTeSS/TeSS&utm_campaign=Badge_Grade)
-[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/d42e5e2fbcd64bd3af07090ec2626aa7)](https://www.codacy.com/gh/ElixirTeSS/TeSS/dashboard?utm_source=github.com&utm_medium=referral&utm_content=ElixirTeSS/TeSS&utm_campaign=Badge_Coverage)
 
 ## Prerequisites
 
