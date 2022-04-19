@@ -178,6 +178,8 @@ class ActiveSupport::TestCase
       to_return(status: 200, headers: {}, body: eventbrite_ardc_body)
     WebMock.stub_request(:get,'https://www.eventbriteapi.com/v3/organizations/34338661734/events/?page=2&token=YXAKB2UNBVO7FV5SJHQA').
       to_return(status: 200, headers: {}, body: eventbrite_ardc_2_body)
+    WebMock.stub_request(:get,'https://www.eventbriteapi.com/v3/organizations/34338661734/events/?status=live&token=YXAKB2UNBVO7FV5SJHQA').
+      to_return(status: 200, headers: {}, body: eventbrite_ardc_2_body)
     WebMock.stub_request(:get, 'https://www.eventbriteapi.com/v3/organizers/14317910674/?token=YXAKB2UNBVO7FV5SJHQA').
       to_return(status: 200, headers: {}, body: eventbrite_organizer_14317910674 )
     WebMock.stub_request(:get, 'https://www.eventbriteapi.com/v3/organizers/8082048069/?token=YXAKB2UNBVO7FV5SJHQA').
