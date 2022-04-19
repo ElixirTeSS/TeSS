@@ -8,3 +8,4 @@ sources:
     url: 'https://tess.elixir-europe.org/events?include_expired=false&content_provider[]=Australian BioCommons'  # the root URL to access the source
     method: rest                        # one of 'csv', 'rest'
     resource_type: event                # event or material
+    enabled: true

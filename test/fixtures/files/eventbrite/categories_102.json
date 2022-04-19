@@ -1,0 +1,59 @@
+{
+  "resource_uri": "https://www.eventbriteapi.com/v3/categories/102/",
+  "id": "102",
+  "name": "Science & Technology",
+  "name_localized": "Science & Technology",
+  "short_name": "Science & Tech",
+  "short_name_localized": "Science & Tech",
+  "subcategories": [
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/subcategories/2001/",
+      "id": "2001",
+      "name": "Medicine",
+      "name_localized": "Medicine"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/subcategories/2002/",
+      "id": "2002",
+      "name": "Science",
+      "name_localized": "Science"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/subcategories/2003/",
+      "id": "2003",
+      "name": "Biotech",
+      "name_localized": "Biotech"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/subcategories/2004/",
+      "id": "2004",
+      "name": "High Tech",
+      "name_localized": "High Tech"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/subcategories/2005/",
+      "id": "2005",
+      "name": "Mobile",
+      "name_localized": "Mobile"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/subcategories/2006/",
+      "id": "2006",
+      "name": "Social Media",
+      "name_localized": "Social Media"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/subcategories/2007/",
+      "id": "2007",
+      "name": "Robotics",
+      "name_localized": "Robotics"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/subcategories/2999/",
+      "id": "2999",
+      "name": "Other",
+      "name_localized": "Other"
+    }
+  ],
+  "locale": "en_US"
+}

@@ -33,7 +33,7 @@ class Source < ApplicationRecord
 
   def source_params
     permitted = [:created_at, :url, :method, :resource_type, :enabled,
-                 :content_provider_id]
+                 :content_provider_id, :token ]
     params.require(:source).permit(permitted)
   end
 

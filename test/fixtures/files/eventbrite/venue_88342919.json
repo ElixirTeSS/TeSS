@@ -1,0 +1,25 @@
+{
+  "address": {
+    "address_1": "UNSW",
+    "address_2": "",
+    "city": "Sydney",
+    "region": "NSW",
+    "postal_code": "2052",
+    "country": "AU",
+    "latitude": "-33.864497",
+    "longitude": "151.2099443",
+    "localized_address_display": "UNSW, Sydney, NSW 2052",
+    "localized_area_display": "Sydney, NSW",
+    "localized_multi_line_address_display": [
+      "UNSW",
+      "Sydney, NSW 2052"
+    ]
+  },
+  "resource_uri": "https://www.eventbriteapi.com/v3/venues/88342919/",
+  "id": "88342919",
+  "age_restriction": null,
+  "capacity": null,
+  "name": "In-person or Online",
+  "latitude": "-33.864497",
+  "longitude": "151.2099443"
+}

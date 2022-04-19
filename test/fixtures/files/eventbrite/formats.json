@@ -1,0 +1,165 @@
+{
+  "locale": "en_US",
+  "formats": [
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/formats/1/",
+      "id": "1",
+      "name": "Conference",
+      "name_localized": "Conference",
+      "short_name": "Conference",
+      "short_name_localized": "Conference"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/formats/2/",
+      "id": "2",
+      "name": "Seminar or Talk",
+      "name_localized": "Seminar or Talk",
+      "short_name": "Seminar",
+      "short_name_localized": "Seminar"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/formats/3/",
+      "id": "3",
+      "name": "Tradeshow, Consumer Show, or Expo",
+      "name_localized": "Tradeshow, Consumer Show, or Expo",
+      "short_name": "Expo",
+      "short_name_localized": "Expo"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/formats/4/",
+      "id": "4",
+      "name": "Convention",
+      "name_localized": "Convention",
+      "short_name": "Convention",
+      "short_name_localized": "Convention"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/formats/5/",
+      "id": "5",
+      "name": "Festival or Fair",
+      "name_localized": "Festival or Fair",
+      "short_name": "Festival",
+      "short_name_localized": "Festival"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/formats/6/",
+      "id": "6",
+      "name": "Concert or Performance",
+      "name_localized": "Concert or Performance",
+      "short_name": "Performance",
+      "short_name_localized": "Performance"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/formats/7/",
+      "id": "7",
+      "name": "Screening",
+      "name_localized": "Screening",
+      "short_name": "Screening",
+      "short_name_localized": "Screening"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/formats/8/",
+      "id": "8",
+      "name": "Dinner or Gala",
+      "name_localized": "Dinner or Gala",
+      "short_name": "Gala",
+      "short_name_localized": "Gala"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/formats/9/",
+      "id": "9",
+      "name": "Class, Training, or Workshop",
+      "name_localized": "Class, Training, or Workshop",
+      "short_name": "Class",
+      "short_name_localized": "Class"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/formats/10/",
+      "id": "10",
+      "name": "Meeting or Networking Event",
+      "name_localized": "Meeting or Networking Event",
+      "short_name": "Networking",
+      "short_name_localized": "Networking"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/formats/11/",
+      "id": "11",
+      "name": "Party or Social Gathering",
+      "name_localized": "Party or Social Gathering",
+      "short_name": "Party",
+      "short_name_localized": "Party"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/formats/12/",
+      "id": "12",
+      "name": "Rally",
+      "name_localized": "Rally",
+      "short_name": "Rally",
+      "short_name_localized": "Rally"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/formats/13/",
+      "id": "13",
+      "name": "Tournament",
+      "name_localized": "Tournament",
+      "short_name": "Tournament",
+      "short_name_localized": "Tournament"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/formats/14/",
+      "id": "14",
+      "name": "Game or Competition",
+      "name_localized": "Game or Competition",
+      "short_name": "Game",
+      "short_name_localized": "Game"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/formats/15/",
+      "id": "15",
+      "name": "Race or Endurance Event",
+      "name_localized": "Race or Endurance Event",
+      "short_name": "Race",
+      "short_name_localized": "Race"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/formats/16/",
+      "id": "16",
+      "name": "Tour",
+      "name_localized": "Tour",
+      "short_name": "Tour",
+      "short_name_localized": "Tour"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/formats/17/",
+      "id": "17",
+      "name": "Attraction",
+      "name_localized": "Attraction",
+      "short_name": "Attraction",
+      "short_name_localized": "Attraction"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/formats/18/",
+      "id": "18",
+      "name": "Camp, Trip, or Retreat",
+      "name_localized": "Camp, Trip, or Retreat",
+      "short_name": "Retreat",
+      "short_name_localized": "Retreat"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/formats/19/",
+      "id": "19",
+      "name": "Appearance or Signing",
+      "name_localized": "Appearance or Signing",
+      "short_name": "Appearance",
+      "short_name_localized": "Appearance"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/formats/100/",
+      "id": "100",
+      "name": "Other",
+      "name_localized": "Other",
+      "short_name": "Other",
+      "short_name_localized": "Other"
+    }
+  ]
+}

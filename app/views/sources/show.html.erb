@@ -55,10 +55,19 @@
                 <%= IngestorFactory.get_resource_value @source.resource_type %>
               </p>
 
+              <!-- Field: created at -->
               <p><strong>Created at:&nbsp;</strong>
                 <%= @source.created_at.strftime('%H:%M on %A, %d %B %Y (UTC)') %>
               </p>
 
+              <!-- Field: token -->
+              <% if !current_user.nil? and (current_user.is_curator? or current_user.is_admin?) %>
+                <p><strong>Token:</strong>
+                  <%= @source.token %>
+                </p>
+              <% end %>
+
+              <!-- Field: enabled -->
               <p><strong>
                 Source is
                 <% if @source.enabled %>
