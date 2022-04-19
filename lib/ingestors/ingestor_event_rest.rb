@@ -20,8 +20,8 @@ class IngestorEventRest < IngestorEvent
     @eventbrite_objects = {}
   end
 
-  def read(url, token)
-    @messages << "#{self.class.name}.#{__method__} url[#{url}] token[#{token}]"
+  def read(url)
+    @messages << "#{self.class.name}.#{__method__} url[#{url}] token[#{@token}]"
     begin
       process = nil
 
@@ -36,7 +36,7 @@ class IngestorEventRest < IngestorEvent
       raise "REST source not found for URL: #{url}" if process.nil?
 
       # process url
-      process.call(url, token)
+      process.call(url)
 
     rescue Exception => e
       @messages << "#{self.class.name} failed with: #{e.message}"
@@ -48,7 +48,7 @@ class IngestorEventRest < IngestorEvent
 
   private
 
-  def process_eventbrite(url, token)
+  def process_eventbrite(url)
     records_read = 0
     records_draft = 0
     records_expired = 0
@@ -56,7 +56,7 @@ class IngestorEventRest < IngestorEvent
 
     begin
       # initialise next_page
-      next_page = "#{url}/events/?token=#{token}"
+      next_page = "#{url}/events/?token=#{@token}"
 
       while next_page
         # execute REST request
@@ -69,7 +69,7 @@ class IngestorEventRest < IngestorEvent
           unless pagination.nil? or pagination['has_more_items'].nil? or pagination['page_number'].nil?
             if pagination['has_more_items']
               page = pagination['page_number'].to_i
-              next_page = "#{url}/events/?page=#{page + 1}&token=#{token}"
+              next_page = "#{url}/events/?page=#{page + 1}&token=#{@token}"
             end
           end
         rescue Exception => e
@@ -110,11 +110,11 @@ class IngestorEventRest < IngestorEvent
                   end
 
                   # organizer
-                  organizer = get_eventbrite_organizer item['organizer_id'], token
+                  organizer = get_eventbrite_organizer item['organizer_id']
                   event.organizer = organizer['name'] unless organizer.nil?
 
                   # address fields
-                  venue = get_eventbrite_venue item['venue_id'], token
+                  venue = get_eventbrite_venue item['venue_id']
                   unless venue.nil? or venue['address'].nil?
                     address = venue['address']
                     venue = address['address_1']
@@ -129,9 +129,9 @@ class IngestorEventRest < IngestorEvent
 
                   # set optional attributes
                   event.keywords = []
-                  category = get_eventbrite_category item['category_id'], token
+                  category = get_eventbrite_category item['category_id']
                   subcategory = get_eventbrite_subcategory(
-                    item['subcategory_id'], item['category_id'], token)
+                    item['subcategory_id'], item['category_id'])
                   event.keywords << category['name'] unless category.nil?
                   event.keywords << subcategory['name'] unless subcategory.nil?
 
@@ -140,7 +140,7 @@ class IngestorEventRest < IngestorEvent
                   end
 
                   event.event_types = []
-                  format = get_eventbrite_format item['format_id'], token
+                  format = get_eventbrite_format item['format_id']
                   unless format.nil?
                     type = convert_event_types format['short_name']
                     event.event_types << type unless type.nil?
@@ -164,7 +164,7 @@ class IngestorEventRest < IngestorEvent
                   @ingested += 1
                 end
               else
-                # unknown status
+                @messages << "Extract event failed with unhandled status: #{item['status']}"
               end
             end
           rescue Exception => e
@@ -182,7 +182,7 @@ class IngestorEventRest < IngestorEvent
     return
   end
 
-  def get_eventbrite_format(id, token)
+  def get_eventbrite_format(id)
     # fields: resource_uri, id, name, name_localized, short_name, short_name_localized
     # initialise cache
     @eventbrite_objects[:formats] = {} if @eventbrite_objects[:formats].nil?
@@ -190,7 +190,7 @@ class IngestorEventRest < IngestorEvent
     # populate cache if empty
     if @eventbrite_objects[:formats].empty?
       begin
-        url = "https://www.eventbriteapi.com/v3/formats/?token=#{token}"
+        url = "https://www.eventbriteapi.com/v3/formats/?token=#{@token}"
         response = get_JSON_response url
         unless response.nil? or response['formats'].nil? or !response['formats'].kind_of? Array
           response['formats'].each do |format|
@@ -207,7 +207,7 @@ class IngestorEventRest < IngestorEvent
     @eventbrite_objects[:formats][id]
   end
 
-  def get_eventbrite_venue(id, token)
+  def get_eventbrite_venue(id)
     # fields: resource_uri, id, age_restriction, capacity, name,latitude,
     #         longitude, address (address_1, address_2, city, region,
     #                             postal_code, country)
@@ -222,7 +222,7 @@ class IngestorEventRest < IngestorEvent
     unless @eventbrite_objects[:venues].keys.include? id
       begin
         # get from query and add to cache if found
-        url = "https://www.eventbriteapi.com/v3/venues/#{id}/?token=#{token}"
+        url = "https://www.eventbriteapi.com/v3/venues/#{id}/?token=#{@token}"
         venue = get_JSON_response url
         @eventbrite_objects[:venues][id] = venue unless venue.nil?
       rescue Exception => e
@@ -234,7 +234,7 @@ class IngestorEventRest < IngestorEvent
     @eventbrite_objects[:venues][id]
   end
 
-  def get_eventbrite_category(id, token)
+  def get_eventbrite_category(id)
     # initialize cache
     @eventbrite_objects[:categories] = {} if @eventbrite_objects[:categories].nil?
 
@@ -246,7 +246,7 @@ class IngestorEventRest < IngestorEvent
       begin
         # initialise pagination
         has_more_items = true
-        url = "https://www.eventbriteapi.com/v3/categories/?token=#{token}"
+        url = "https://www.eventbriteapi.com/v3/categories/?token=#{@token}"
 
         # query until no more pages
         while has_more_items
@@ -283,8 +283,8 @@ class IngestorEventRest < IngestorEvent
     @eventbrite_objects[:categories][id]
   end
 
-  def get_eventbrite_subcategory(id, category_id, token)
-    category = get_eventbrite_category category_id, token
+  def get_eventbrite_subcategory(id, category_id)
+    category = get_eventbrite_category category_id
 
     # abort on bad input
     return nil if category.nil? or id.nil? or id == 'null'
@@ -295,7 +295,7 @@ class IngestorEventRest < IngestorEvent
     if subcategories.nil?
       # populate subcategories
       begin
-        url = "#{category['resource_uri']}?token=#{token}"
+        url = "#{category['resource_uri']}?token=#{@token}"
         response = get_JSON_response url
         unless response.nil?
           # updated cached category
@@ -316,7 +316,7 @@ class IngestorEventRest < IngestorEvent
     nil
   end
 
-  def get_eventbrite_organizer(id, token)
+  def get_eventbrite_organizer(id)
     # fields: description (text, html), long_description (text, html),
     #         resource_uri, id, name, url, etc.
 
@@ -330,7 +330,7 @@ class IngestorEventRest < IngestorEvent
     unless @eventbrite_objects[:organizers].keys.include? id
       begin
         # get from query and add to cache if found
-        url = "https://www.eventbriteapi.com/v3/organizers/#{id}/?token=#{token}"
+        url = "https://www.eventbriteapi.com/v3/organizers/#{id}/?token=#{@token}"
         organizer = get_JSON_response url
         @eventbrite_objects[:organizers][id] = organizer unless organizer.nil?
       rescue Exception => e
@@ -342,7 +342,7 @@ class IngestorEventRest < IngestorEvent
     @eventbrite_objects[:organizers][id]
   end
 
-  def process_elixir(url, token)
+  def process_elixir(url)
     # execute REST request
     results = get_JSON_response url
     data = results['data']

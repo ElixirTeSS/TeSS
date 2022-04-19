@@ -8,7 +8,7 @@ class IngestorEventCsv < IngestorEvent
     super
   end
 
-  def read (url, token)
+  def read (url)
     # parse csv file to table
     begin
       # parse csv as table

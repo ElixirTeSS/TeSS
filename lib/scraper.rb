@@ -62,8 +62,11 @@ module Scraper
             # get ingestor
             ingestor = IngestorFactory.get_ingestor source[:method], source[:resource_type]
 
+            # set token
+            ingestor.token = source[:token]
+
             # read records
-            ingestor.read source[:url], source[:token]
+            ingestor.read source[:url]
             unless ingestor.messages.nil? or ingestor.messages.empty?
               log "Ingestor: #{ingestor.class}: read messages", 2
               ingestor.messages.each { |m| log("#{m}", 3) }
@@ -106,8 +109,11 @@ module Scraper
             # get ingestor
             ingestor = IngestorFactory.get_ingestor source.method, source.resource_type
 
+            # set token
+            ingestor.token = source.token
+
             # read records
-            ingestor.read(source.url, source.token)
+            ingestor.read source.url
             unless ingestor.messages.nil? or ingestor.messages.empty?
               output.concat "<br />"
               output.concat "**Input Process:**<br />"

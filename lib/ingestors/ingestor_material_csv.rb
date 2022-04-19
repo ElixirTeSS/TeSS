@@ -8,7 +8,7 @@ class IngestorMaterialCsv < IngestorMaterial
     super
   end
 
-  def read (url, token)
+  def read (url)
     begin
       # parse table
       web_contents = open(url).read

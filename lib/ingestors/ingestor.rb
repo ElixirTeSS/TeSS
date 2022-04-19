@@ -8,6 +8,7 @@ class Ingestor
     @added = 0
     @updated = 0
     @rejected = 0
+    @token = ''
   end
 
   # accessor methods
@@ -17,9 +18,10 @@ class Ingestor
   attr_reader :added
   attr_reader :updated
   attr_reader :rejected
+  attr_accessor :token
 
   # methods
-  def read (url, token)
+  def read (url)
     raise 'Method not yet implemented'
   end
 
