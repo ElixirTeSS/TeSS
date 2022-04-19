@@ -42,7 +42,10 @@ class RakeTaskEventRest < ActiveSupport::TestCase
     assert_equal 1, events.size, "Post-task: events search title[Another Event] found nothing"
     event = events.first
     assert !event.nil?
+    assert_respond_to event, :title
+    #noinspection RubyNilAnalysis
     assert_equal new_title, event.title
+    assert_respond_to event, :url
     assert_equal new_url, event.url
 
     # check other fields
@@ -68,6 +71,7 @@ class RakeTaskEventRest < ActiveSupport::TestCase
     assert_equal 1, events.size, "Post-task: other event search title[#{other_title}] found nothing"
     event = events.first
     assert !event.nil?
+    #noinspection RubyNilAnalysis
     assert_equal other_title, event.title
     assert_equal other_url, event.url
 
@@ -209,6 +213,8 @@ class RakeTaskEventRest < ActiveSupport::TestCase
     refute_empty sources
     source = sources.first
     refute_nil source
+    assert_respond_to source, :log
+    #noinspection RubyNilAnalysis
     refute_nil source.log
     message = 'Eventbrite events read[68] draft[2] expired[0] completed[53]'
     assert_includes source.log, message
