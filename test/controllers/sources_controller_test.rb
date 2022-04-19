@@ -41,7 +41,7 @@ class SourcesControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     assert_not_empty assigns(:sources), 'sources is empty'
-    assert_equal 7, sources.size, 'sources size not matched'
+    assert_equal 8, sources.size, 'sources size not matched'
   end
 
   test 'registered should get index with solr enabled' do

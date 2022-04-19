@@ -121,7 +121,7 @@ class SourcesController < ApplicationController
   def source_params
     params.require(:source).permit(:content_provider_id, :created_at,
                                    :url, :method, :resource_type, :finished_at,
-                                   :records_read, :records_written,
+                                   :records_read, :records_written, :token,
                                    :resources_added, :resources_updated,
                                    :resources_rejected, :log, :enabled )
   end

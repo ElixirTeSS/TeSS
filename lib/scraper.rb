@@ -20,7 +20,9 @@ module Scraper
     bad_resource: 'Resource type is invalid: ',
     sources_size: 'Sources count = ',
     bad_source_id: 'Source id invalid: ',
-    bad_source_save: 'Source save failed with: '
+    bad_source_save: 'Source save failed with: ',
+    bad_source_enabled: 'Source enabled flag invalid: ',
+    not_source_enabled: 'Source not enabled.',
   }
 
   def self.run (log_file)
@@ -59,6 +61,9 @@ module Scraper
 
             # get ingestor
             ingestor = IngestorFactory.get_ingestor source[:method], source[:resource_type]
+
+            # set token
+            ingestor.token = source[:token]
 
             # read records
             ingestor.read source[:url]
@@ -104,8 +109,11 @@ module Scraper
             # get ingestor
             ingestor = IngestorFactory.get_ingestor source.method, source.resource_type
 
+            # set token
+            ingestor.token = source.token
+
             # read records
-            ingestor.read(source.url)
+            ingestor.read source.url
             unless ingestor.messages.nil? or ingestor.messages.empty?
               output.concat "<br />"
               output.concat "**Input Process:**<br />"
@@ -164,18 +172,19 @@ module Scraper
 
     if input.is_a? Source
       # validate online source
-      result = false unless !input.enabled.nil? and input.enabled
+      result = false unless validate_enabled(input.enabled)
       result = false unless validate_provider(input.content_provider)
-      result = false unless validate_url(input.url)
       result = false unless validate_method(input.method)
       result = false unless validate_resource(input.resource_type)
+      result = false unless validate_url(input.url, input.token)
     elsif input.is_a? Hash
       # validate config file source
       result = false unless validate_id(input[:id])
+      result = false unless validate_enabled(input[:enabled])
       result = false unless validate_provider(input[:provider])
-      result = false unless validate_url(input[:url])
       result = false unless validate_method(input[:method])
       result = false unless validate_resource(input[:resource_type])
+      result = false unless validate_url(input[:url], input[:token])
     else
       # invalid unexpected source
       result = false
@@ -188,6 +197,18 @@ module Scraper
 
   def self.input_to_s(input)
     input.nil? ? '' : input.to_s
+  end
+
+  def self.validate_enabled(input)
+    if input.nil? and not [true, false].include?(input)
+      log @messages[:invalid] + @messages[:bad_source_enabled] + input_to_s(input), 2
+      return false
+    end
+    if !input.nil? and input == false
+      log @messages[:invalid] + @messages[:not_source_enabled], 2
+      return false
+    end
+    true
   end
 
   def self.validate_id(input)
@@ -214,10 +235,16 @@ module Scraper
     return result
   end
 
-  def self.validate_url(input)
+  def self.validate_url(input, token)
     result = true
+    eventbrite_api = 'https://www.eventbriteapi.com/v3/'
     begin
-      response = Net::HTTP.get_response(URI.parse(input))
+      if input.starts_with?(eventbrite_api) and not token.nil?
+        response = Net::HTTP.get_response(URI.parse(input + '/events/?token=' + token))
+      else
+        response = Net::HTTP.get_response(URI.parse(input))
+      end
+
       case response
       when Net::HTTPSuccess then true
       when Net::HTTPOK then true

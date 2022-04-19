@@ -130,7 +130,13 @@ class IngestorEvent < Ingestor
   end
 
   def convert_event_types(input)
-    case input
+    case input.downcase
+    when 'conference'
+      'conference'
+    when 'class'
+      'workshop'
+    when 'networking'
+      'meeting'
     when 'meetings_and_conferences'
       'meeting'
     when 'workshops_and_courses'

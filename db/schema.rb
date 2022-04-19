@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_22_033200) do
+ActiveRecord::Schema.define(version: 2022_04_08_025744) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -363,6 +363,7 @@ ActiveRecord::Schema.define(version: 2022_03_22_033200) do
     t.integer "resources_rejected"
     t.text "log"
     t.boolean "enabled"
+    t.string "token"
     t.index ["content_provider_id"], name: "index_sources_on_content_provider_id"
     t.index ["user_id"], name: "index_sources_on_user_id"
   end

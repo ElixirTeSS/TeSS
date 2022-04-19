@@ -8,17 +8,21 @@ class IngestorEventRest < IngestorEvent
     super
 
     @RestSources = [
-      { url: 'https://tess.elixir-europe.org/',
+      { name: 'ElixirTeSS',
+        url: 'https://tess.elixir-europe.org/',
         process: method(:process_elixir) },
-      { url: 'https://www.eventbriteapi.com/v3/',
+      { name: 'Eventbrite API v3',
+        url: 'https://www.eventbriteapi.com/v3/',
         process: method(:process_eventbrite) }
     ]
 
+    # cached API object responses
+    @eventbrite_objects = {}
   end
 
   def read(url)
+    @messages << "#{self.class.name}.#{__method__} url[#{url}] token[#{@token}]"
     begin
-      query = nil
       process = nil
 
       # get the rest source
@@ -45,45 +49,305 @@ class IngestorEventRest < IngestorEvent
   private
 
   def process_eventbrite(url)
+    records_read = 0
+    records_draft = 0
+    records_expired = 0
+    records_completed = 0
 
-    raise "method[#{__method__}] not yet implemented"
-
-=begin
     begin
-          # get authorization parameters
-          user = Rails.application.secrets.eventbrite_api_v3[:user]
-          mytoken = Rails.application.secrets.eventbrite_api_v3[:token]
-          raise 'missing user token' if mytoken.nil?
-          EventbriteSDK.token = mytoken
+      # initialise next_page
+      next_page = "#{url}/events/?token=#{@token}"
 
-          # format query
-          org_id = url.split('/').last unless url.nil? or url.split('/').empty?
-          puts "org_id = #{org_id}"
+      while next_page
+        # execute REST request
+        results = get_JSON_response next_page
 
-          # implement query and response processing
-          organiser = EventbriteSDK::Organization.retrieve(id: org_id)
-          events = organiser.upcoming_events
-          puts "events.count = #{events.size}" unless events.nil?
+        # check next page
+        next_page = nil
+        pagination = results['pagination']
+        begin
+          unless pagination.nil? or pagination['has_more_items'].nil? or pagination['page_number'].nil?
+            if pagination['has_more_items']
+              page = pagination['page_number'].to_i
+              next_page = "#{url}/events/?page=#{page + 1}&token=#{@token}"
+            end
+          end
+        rescue Exception => e
+          puts "format next_page failed with: #{e.message}"
+        end
+
+        # check events
+        events = results['events']
+        unless events.nil? or events.empty?
+          events.each do |item|
+            records_read += 1
+            unless item['status'].nil?
+              # check status
+              case item['status']
+              when 'draft'
+                records_draft += 1
+              when 'completed'
+                records_completed += 1
+              when 'live'
+                # create new event
+                event = Event.new
+
+                # check for expired
+                event.timezone = item['start']['timezone']
+                event.start = item['start']['local']
+                event.end = item['end']['local']
+                if event.expired?
+                  records_expired += 1
+                else
+                  # set required attributes
+                  event.title = item['name']['text'] unless item['name'].nil?
+                  event.url = item['url']
+                  event.description = convert_description item['description']['html'] unless item['description'].nil?
+                  if item['online_event'].nil? or item['online_event'] == false
+                    event.online = false
+                  else
+                    event.online = true
+                  end
+
+                  # organizer
+                  organizer = get_eventbrite_organizer item['organizer_id']
+                  event.organizer = organizer['name'] unless organizer.nil?
+
+                  # address fields
+                  venue = get_eventbrite_venue item['venue_id']
+                  unless venue.nil? or venue['address'].nil?
+                    address = venue['address']
+                    venue = address['address_1']
+                    venue += (', ' + address['address_2']) unless address['address_2'].blank?
+                    event.venue = venue
+                    event.city = address['city']
+                    event.country = address['country']
+                    event.postcode = address['postal_code']
+                    event.latitude = address['latitude']
+                    event.longitude = address['longitude']
+                  end
+
+                  # set optional attributes
+                  event.keywords = []
+                  category = get_eventbrite_category item['category_id']
+                  subcategory = get_eventbrite_subcategory(
+                    item['subcategory_id'], item['category_id'])
+                  event.keywords << category['name'] unless category.nil?
+                  event.keywords << subcategory['name'] unless subcategory.nil?
+
+                  unless item['capacity'].nil? or item['capacity'] == 'null'
+                    event.capacity = item['capacity'].to_i
+                  end
+
+                  event.event_types = []
+                  format = get_eventbrite_format item['format_id']
+                  unless format.nil?
+                    type = convert_event_types format['short_name']
+                    event.event_types << type unless type.nil?
+                  end
+
+                  if item['invite_only'].nil? or !item['invite_only']
+                    event.eligibility = 'open_to_all'
+                  else
+                    event.eligibility = 'by_invitation'
+                  end
+
+                  if item['is_free'].nil? or !item['is_free']
+                    event.cost_basis = 'charge'
+                    event.cost_currency = item['currency']
+                  else
+                    event.cost_basis = 'free'
+                  end
+
+                  # add event to events array
+                  add_event(event)
+                  @ingested += 1
+                end
+              else
+                @messages << "Extract event failed with unhandled status: #{item['status']}"
+              end
+            end
+          rescue Exception => e
+            @messages << "Extract event fields failed with: #{e.message}"
+          end
+        end
+      end
+
+      @messages << "Eventbrite events read[#{records_read}] draft[#{records_draft}] expired[#{records_expired}] completed[#{records_completed}]"
     rescue Exception => e
       @messages << "#{self.class} failed with: #{e.message}"
     end
 
-=end
+    # finished
+    return
+  end
+
+  def get_eventbrite_format(id)
+    # initialise cache
+    @eventbrite_objects[:formats] = {} if @eventbrite_objects[:formats].nil?
+
+    # populate cache if empty
+    populate_eventbrite_formats if @eventbrite_objects[:formats].empty?
+
+    # return result
+    @eventbrite_objects[:formats][id]
+  end
+
+  def populate_eventbrite_formats
+    begin
+      # get formats from Eventbrite
+      url = "https://www.eventbriteapi.com/v3/formats/?token=#{@token}"
+      response = get_JSON_response url
+      # process formats
+      response['formats'].each do |format|
+        # add each item to the cache
+        @eventbrite_objects[:formats][format['id']] = format
+      end
+    rescue Exception => e
+      @messages << "populate Eventbrite formats failed with: #{e.message}"
+    end
+  end
+
+  def get_eventbrite_venue(id)
+    # abort on bad input
+    return nil if id.nil? or id == 'null'
+
+    # initialize cache
+    @eventbrite_objects[:venues] = {} if @eventbrite_objects[:venues].nil?
+
+    # id not in cache
+    unless @eventbrite_objects[:venues].keys.include? id
+      add_eventbrite_venue id
+    end
+
+    # return from cache
+    @eventbrite_objects[:venues][id]
+  end
+
+  def add_eventbrite_venue(id)
+    begin
+      # get from query and add to cache if found
+      url = "https://www.eventbriteapi.com/v3/venues/#{id}/?token=#{@token}"
+      venue = get_JSON_response url
+      @eventbrite_objects[:venues][id] = venue unless venue.nil?
+    rescue Exception => e
+      @messages << "get Eventbrite Venue failed with: #{e.message}"
+    end
+  end
+
+  def get_eventbrite_category(id)
+    # abort on bad input
+    return nil if id.nil? or id == 'null'
+
+    # initialize cache
+    @eventbrite_objects[:categories] = {} if @eventbrite_objects[:categories].nil?
+
+    # populate cache
+    if @eventbrite_objects[:categories].empty?
+      populate_eventbrite_categories
+    end
 
     # finished
+    @eventbrite_objects[:categories][id]
+  end
+
+  def populate_eventbrite_categories
+    begin
+      # initialise pagination
+      has_more_items = true
+      url = "https://www.eventbriteapi.com/v3/categories/?token=#{@token}"
+
+      # query until no more pages
+      while has_more_items
+        # infinite loop guard
+        has_more_items = false
+
+        # execute query
+        response = get_JSON_response url
+
+        # process categories
+        cats = response['categories']
+        unless cats.nil? or !cats.kind_of? Array
+          cats.each do |cat|
+            @eventbrite_objects[:categories][cat['id']] = cat
+          end
+        end
+
+        # check for next page
+        pagination = response['pagination']
+        unless pagination.nil?
+          has_more_items = pagination['has_more_items']
+          page_number = pagination['page_number'] + 1
+          url = "https://www.eventbriteapi.com/v3/categories/?page=#{page_number}&token=#{token}"
+        end
+      end
+    rescue Exception => e
+      @messages << "get Eventbrite format failed with: #{e.message}"
+    end
+  end
+
+  def get_eventbrite_subcategory(id, category_id)
+    category = get_eventbrite_category category_id
+
+    # abort on bad input
+    return nil if category.nil? or id.nil? or id == 'null'
+
+    # get subcategories
+    subcategories = category['subcategories']
+
+    if subcategories.nil?
+      # populate subcategories
+      begin
+        url = "#{category['resource_uri']}?token=#{@token}"
+        response = get_JSON_response url
+        unless response.nil?
+          # updated cached category
+          @eventbrite_objects[:categories][id] = response
+          subcategories = response['subcategories']
+        end
+      rescue Exception => e
+        @messages << "get Eventbrite subcategory failed with: #{e.message}"
+      end
+    end
+
+    # check for subcategory
+    unless subcategories.nil? and !subcategories.kind_of?(Array)
+      subcategories.each { |sub| return sub if sub['id'] == id }
+    end
+
+    # not found
+    nil
+  end
+
+  def get_eventbrite_organizer(id)
+    # fields: description (text, html), long_description (text, html),
+    #         resource_uri, id, name, url, etc.
+
+    # initialize cache
+    @eventbrite_objects[:organizers] = {} if @eventbrite_objects[:organizers].nil?
+
+    # abort on bad input
+    return nil if id.nil? or id == 'null'
+
+    # not in cache
+    unless @eventbrite_objects[:organizers].keys.include? id
+      begin
+        # get from query and add to cache if found
+        url = "https://www.eventbriteapi.com/v3/organizers/#{id}/?token=#{@token}"
+        organizer = get_JSON_response url
+        @eventbrite_objects[:organizers][id] = organizer unless organizer.nil?
+      rescue Exception => e
+        @messages << "get Eventbrite Venue failed with: #{e.message}"
+      end
+    end
+
+    # return from cache
+    @eventbrite_objects[:organizers][id]
   end
 
   def process_elixir(url)
-    #puts "process[#{__method__.to_s}] for url[#{url}]"
-    # execute request
-    response = RestClient::Request.new(method: :get,
-                                       url: CGI.unescape_html(url),
-                                       verify_ssl: false,
-                                       headers: { accept: 'application/vnd.api+json' }).execute
-
-    # check response
-    raise "invalid response code: #{response.code}" unless response.code == 200
-    results = JSON.parse(response.to_str)
+    # execute REST request
+    results = get_JSON_response url
     data = results['data']
 
     # extract materials from results
@@ -140,8 +404,16 @@ class IngestorEventRest < IngestorEvent
         end
       end
     end
-
-    # finished
-    return
   end
+
+  def get_JSON_response(url)
+    response = RestClient::Request.new(method: :get,
+                                       url: CGI.unescape_html(url),
+                                       verify_ssl: false,
+                                       headers: { accept: 'application/vnd.api+json' }).execute
+    # check response
+    raise "invalid response code: #{response.code}" unless response.code == 200
+    JSON.parse(response.to_str)
+  end
+
 end
