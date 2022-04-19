@@ -32,7 +32,7 @@ class RakeTaskEventRest < ActiveSupport::TestCase
     assert_equal 0, events.size, "Pre-task: events search title[Another Event] found something"
 
     # run task
-    freeze_time(stub_time = Time.new(2019)) do ||
+    freeze_time(Time.new(2019)) do ||
       Rake::Task['tess:automated_ingestion'].invoke
     end
 
@@ -100,7 +100,7 @@ class RakeTaskEventRest < ActiveSupport::TestCase
 
     assert_difference 'Event.count', 13 do
       # run task
-      freeze_time(stub_time = Time.new(2022, 01, 01)) do ||
+      freeze_time(Time.new(2022, 01, 01)) do ||
         Rake::Task['tess:automated_ingestion'].invoke
       end
     end

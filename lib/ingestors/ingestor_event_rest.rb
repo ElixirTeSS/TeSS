@@ -183,104 +183,107 @@ class IngestorEventRest < IngestorEvent
   end
 
   def get_eventbrite_format(id)
-    # fields: resource_uri, id, name, name_localized, short_name, short_name_localized
     # initialise cache
     @eventbrite_objects[:formats] = {} if @eventbrite_objects[:formats].nil?
 
     # populate cache if empty
-    if @eventbrite_objects[:formats].empty?
-      begin
-        url = "https://www.eventbriteapi.com/v3/formats/?token=#{@token}"
-        response = get_JSON_response url
-        unless response.nil? or response['formats'].nil? or !response['formats'].kind_of? Array
-          response['formats'].each do |format|
-            # add each item to the cache
-            @eventbrite_objects[:formats][format['id']] = format
-          end
-        end
-      rescue Exception => e
-        @messages << "get Eventbrite format failed with: #{e.message}"
-      end
-    end
+    populate_eventbrite_formats if @eventbrite_objects[:formats].empty?
 
     # return result
     @eventbrite_objects[:formats][id]
   end
 
+  def populate_eventbrite_formats
+    begin
+      # get formats from Eventbrite
+      url = "https://www.eventbriteapi.com/v3/formats/?token=#{@token}"
+      response = get_JSON_response url
+      # process formats
+      response['formats'].each do |format|
+        # add each item to the cache
+        @eventbrite_objects[:formats][format['id']] = format
+      end
+    rescue Exception => e
+      @messages << "populate Eventbrite formats failed with: #{e.message}"
+    end
+  end
+
   def get_eventbrite_venue(id)
-    # fields: resource_uri, id, age_restriction, capacity, name,latitude,
-    #         longitude, address (address_1, address_2, city, region,
-    #                             postal_code, country)
+    # abort on bad input
+    return nil if id.nil? or id == 'null'
 
     # initialize cache
     @eventbrite_objects[:venues] = {} if @eventbrite_objects[:venues].nil?
 
-    # abort on bad input
-    return nil if id.nil? or id == 'null'
-
-    # not in cache
+    # id not in cache
     unless @eventbrite_objects[:venues].keys.include? id
-      begin
-        # get from query and add to cache if found
-        url = "https://www.eventbriteapi.com/v3/venues/#{id}/?token=#{@token}"
-        venue = get_JSON_response url
-        @eventbrite_objects[:venues][id] = venue unless venue.nil?
-      rescue Exception => e
-        @messages << "get Eventbrite Venue failed with: #{e.message}"
-      end
+      add_eventbrite_venue id
     end
 
     # return from cache
     @eventbrite_objects[:venues][id]
   end
 
-  def get_eventbrite_category(id)
-    # initialize cache
-    @eventbrite_objects[:categories] = {} if @eventbrite_objects[:categories].nil?
+  def add_eventbrite_venue(id)
+    begin
+      # get from query and add to cache if found
+      url = "https://www.eventbriteapi.com/v3/venues/#{id}/?token=#{@token}"
+      venue = get_JSON_response url
+      @eventbrite_objects[:venues][id] = venue unless venue.nil?
+    rescue Exception => e
+      @messages << "get Eventbrite Venue failed with: #{e.message}"
+    end
+  end
 
+  def get_eventbrite_category(id)
     # abort on bad input
     return nil if id.nil? or id == 'null'
 
+    # initialize cache
+    @eventbrite_objects[:categories] = {} if @eventbrite_objects[:categories].nil?
+
     # populate cache
     if @eventbrite_objects[:categories].empty?
-      begin
-        # initialise pagination
-        has_more_items = true
-        url = "https://www.eventbriteapi.com/v3/categories/?token=#{@token}"
-
-        # query until no more pages
-        while has_more_items
-          # infinite loop guard
-          has_more_items = false
-
-          # execute query
-          response = get_JSON_response url
-          unless response.nil?
-            cats = response['categories']
-            pagination = response['pagination']
-
-            # process categories
-            unless cats.nil? or !cats.kind_of? Array
-              cats.each do |cat|
-                @eventbrite_objects[:categories][cat['id']] = cat
-              end
-            end
-
-            # check for next page
-            unless pagination.nil?
-              has_more_items = pagination['has_more_items']
-              page_number = pagination['page_number'] + 1
-              url = "https://www.eventbriteapi.com/v3/categories/?page=#{page_number}&token=#{token}"
-            end
-          end
-        end
-      rescue Exception => e
-        @messages << "get Eventbrite format failed with: #{e.message}"
-      end
+      populate_eventbrite_categories
     end
 
     # finished
     @eventbrite_objects[:categories][id]
+  end
+
+  def populate_eventbrite_categories
+    begin
+      # initialise pagination
+      has_more_items = true
+      url = "https://www.eventbriteapi.com/v3/categories/?token=#{@token}"
+
+      # query until no more pages
+      while has_more_items
+        # infinite loop guard
+        has_more_items = false
+
+        # execute query
+        response = get_JSON_response url
+
+        # process categories
+        cats = response['categories']
+        unless cats.nil? or !cats.kind_of? Array
+          cats.each do |cat|
+            @eventbrite_objects[:categories][cat['id']] = cat
+          end
+        end
+
+        # check for next page
+        pagination = response['pagination']
+        unless pagination.nil?
+          has_more_items = pagination['has_more_items']
+          page_number = pagination['page_number'] + 1
+          url = "https://www.eventbriteapi.com/v3/categories/?page=#{page_number}&token=#{token}"
+        end
+      end
+    rescue Exception => e
+      @messages << "get Eventbrite format failed with: #{e.message}"
+    end
   end
 
   def get_eventbrite_subcategory(id, category_id)
