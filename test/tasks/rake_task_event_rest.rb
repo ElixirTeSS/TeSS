@@ -216,7 +216,7 @@ class RakeTaskEventRest < ActiveSupport::TestCase
     assert_respond_to source, :log
     #noinspection RubyNilAnalysis
     refute_nil source.log
-    message = 'Eventbrite events read[68] draft[2] expired[0] completed[53]'
+    message = 'Eventbrite events ingestor: records read[18] inactive[5] expired[0]'
     assert_includes source.log, message
 
     # check logfile messages
