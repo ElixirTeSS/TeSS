@@ -76,7 +76,7 @@ gem 'validate_url', '~> 1.0.2'
 gem 'simple_form'
 
 # Gem for rendering Markdown
-gem 'redcarpet', '~> 3.4.0'
+gem 'redcarpet', '~> 3.5.1'
 
 # Gem for paginating search results
 gem 'will_paginate'

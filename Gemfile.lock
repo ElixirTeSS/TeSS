@@ -508,7 +508,7 @@ GEM
     rdoc (6.3.3)
     recaptcha (5.8.1)
       json
-    redcarpet (3.4.0)
+    redcarpet (3.5.1)
     redis (4.6.0)
     regexp_parser (2.1.1)
     remotipart (1.4.4)
@@ -713,7 +713,7 @@ DEPENDENCIES
   rails-controller-testing
   rails_admin
   recaptcha
-  redcarpet (~> 3.4.0)
+  redcarpet (~> 3.5.1)
   redis
   rubocop
   ruby-debug-ide
