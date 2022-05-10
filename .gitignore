@@ -27,3 +27,5 @@ coverage
 .env-production
 letsencrypt
 docker-volumes
+
+/config/master.key
