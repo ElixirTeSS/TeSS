@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get 'edam/terms' => 'edam#terms'
   get 'edam/topics' => 'edam#topics'
   get 'edam/operations' => 'edam#operations'
+  get 't4fs/terms' => 't4fs#terms'
 
   resources :workflows
 

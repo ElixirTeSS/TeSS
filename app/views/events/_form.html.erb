@@ -67,6 +67,9 @@
     <%= f.autocompleter :operations, url: edam_operations_path, template: 'autocompleter/term',
                         id_field: :uri, label_field: :preferred_label %>
 
+    <%= f.autocompleter :fair_terms, url: t4fs_terms_path, template: 'autocompleter/term',
+                        id_field: :uri, label_field: :preferred_label %>
+
     <%= f.multi_input :keywords %>
 
     <%= f.multi_input :target_audience %>

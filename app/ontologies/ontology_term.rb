@@ -13,7 +13,7 @@ class OntologyTerm
   end
 
   def label
-    data[RDF::RDFS.label].first.try(:value)
+    data[RDF::RDFS.label]&.first&.value
   end
 
   def ==(other)

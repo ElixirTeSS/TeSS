@@ -98,6 +98,7 @@ class Event < ApplicationRecord
 
   has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
   has_ontology_terms(:operations, branch: OBO_EDAM.operations)
+  has_ontology_terms(:fair_terms)
 
   validates :title, :url, presence: true
   validates :capacity, numericality: true, allow_blank: true

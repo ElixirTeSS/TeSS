@@ -17,8 +17,8 @@ class Ontology
     if @query_cache[predicate].key?(object)
       @query_cache[predicate][object]
     else
-      results = graph.query([:u, predicate, object])
-      @query_cache[predicate][object] = results.map { |result| lookup(result.subject) }
+      results = graph.query([:u, predicate, object]).uniq(&:subject)
+      @query_cache[predicate][object] = results.map { |result| lookup(result.subject) }.compact
     end
   end
 
