@@ -1,51 +1,3 @@
-<%# Black header %>
-<nav class="questionnaire">
-  <div class="container">
-    <div class="text-center">
-      <div>Help TeSS by giving us your feedback: <%=link_to "https://goo.gl/forms/jsVC70q6oN8FsGWR2", "https://goo.gl/forms/jsVC70q6oN8FsGWR2", target: "_blank" %> </div>
-    </div>
-  </div>
-</nav>
-
-<header class="elixir-black-header">
-  <nav>
-    <div class="container">
-      <div class="pull-left">
-        <a href="http://www.elixir-europe.org/">
-          <%= image_tag('hub-logo.png', alt: 'ELIXIR Hub') %>
-        </a>
-      </div>
-      <div class="user-options">
-        <% if user_signed_in? %>
-            <%= link_to current_user.username, user_path(current_user) %>
-            <%= link_to stars_path, title: 'View stars' do %>
-                <i class="fa fa-star fa-lg"></i>
-            <% end %>
-            <% if current_user.is_curator? || current_user.is_admin? %>
-                <%= link_to users_path, :title => 'View users' do %>
-                    <i class="fa fa-users fa-lg"></i>
-                <% end %>
-            <% end %>
-            <% if current_user.is_admin? %>
-                <%= link_to rails_admin_path, :title => 'View the administrator console' do %>
-                    <i class="fa fa-cog fa-lg"></i>
-                <% end %>
-            <% end %>
-            <% if current_user.is_curator? || current_user.is_admin? %>
-                <%= link_to curate_topic_suggestions_path, :title => 'Assign scientific topics to TeSS resources' do %>
-                    <i class="fa fa-briefcase fa-lg"></i>
-                <% end %>
-            <% end %>
-            <%= link_to "Log out", destroy_user_session_path, :method => :delete, :data => {:confirm => 'Are you sure you want to log out?'} %>
-        <% else %>
-            <%= link_to "Log in", new_user_session_path %>
-            <%= link_to "Register", new_user_registration_path %>
-        <% end %>
-      </div>
-    </div>
-  </nav>
-</header>
-
 <%# Orange header %>
 <header class="elixir-orange-header">
   <nav class="navbar navbar-default">
@@ -76,12 +28,39 @@
         <%= menu_group do %>
           <%= menu_item "Events", events_path %>
           <%= menu_item "Materials", materials_path %>
-          <%= menu_item "e-Learning", elearning_materials_path %>
-          <%= menu_item "Workflows", workflows_path %>
-          <%= menu_item "Collections", collections_path %>
-          <%= menu_item "Providers", content_providers_path %>
+          <%#= menu_item "e-Learning", elearning_materials_path %>
+          <%#= menu_item "Workflows", workflows_path %>
+          <%#= menu_item "Collections", collections_path %>
+          <%#= menu_item "Providers", content_providers_path %>
           <%= menu_item "About", about_path %>
         <% end %>
+        <div class="user-options">
+          <% if user_signed_in? %>
+              <%= link_to current_user.username, user_path(current_user) %>
+              <%= link_to stars_path, title: 'View stars' do %>
+                  <i class="fa fa-star fa-lg"></i>
+              <% end %>
+              <% if current_user.is_curator? || current_user.is_admin? %>
+                  <%= link_to users_path, :title => 'View users' do %>
+                      <i class="fa fa-users fa-lg"></i>
+                  <% end %>
+              <% end %>
+              <% if current_user.is_admin? %>
+                  <%= link_to rails_admin_path, :title => 'View the administrator console' do %>
+                      <i class="fa fa-cog fa-lg"></i>
+                  <% end %>
+              <% end %>
+              <% if current_user.is_curator? || current_user.is_admin? %>
+                  <%= link_to curate_topic_suggestions_path, :title => 'Assign scientific topics to TeSS resources' do %>
+                      <i class="fa fa-briefcase fa-lg"></i>
+                  <% end %>
+              <% end %>
+              <%= link_to "Log out", destroy_user_session_path, :method => :delete, :data => {:confirm => 'Are you sure you want to log out?'} %>
+          <% else %>
+              <%= link_to "Log in", new_user_session_path %>
+              <%= link_to "Register", new_user_registration_path %>
+          <% end %>
+        </div>
       </div>
     </div>
   </nav>
