@@ -2,7 +2,6 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-3 col-xs-8">
-        <strong>Version: </strong><%= app_version_text -%><br />
         <%= mail_to(TeSS::Config.contact_email, 'Contact us') %><br/>
         <%= link_to "Add your training resources to #{TeSS::Config.site['title_short']}", registering_resources_path, target: '_blank'  %><br/>
         <%= link_to 'Source code', TeSS::Config.site['repository'], target: '_blank' %><br/>
