@@ -6,10 +6,7 @@ body {
   line-height: 18px;
 }
 
-p,
-ol,
-ul,
-td {
+p, ol, ul, td {
   font-family: verdana, arial, helvetica, sans-serif;
   font-size: 13px;
   line-height: 18px;
@@ -22,8 +19,7 @@ pre {
 }
 
 div {
-  &.field,
-  &.actions {
+  &.field, &.actions {
     margin-bottom: 10px;
   }
 }
