@@ -1,6 +1,6 @@
 class User < ApplicationRecord
 
-  include ActionView::Helpers::ApplicationHelper
+  include ActionView::Helpers
   include PublicActivity::Common
 
   acts_as_token_authenticatable
@@ -62,7 +62,6 @@ class User < ApplicationRecord
 
   validates :username,
             :presence => true,
-            :case_sensitive => false,
             :uniqueness => true
 
   validate :consents_to_processing, on: :create, unless: ->(user) { user.using_omniauth? || User.current_user.try(:is_admin?) }
