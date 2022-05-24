@@ -1,0 +1,72 @@
+assessment:
+  title: Assessment Item
+  description: 'Student-facing question or prompt that measures understanding of a topic or idea.'
+case-study:
+  title: Case Study
+  description: 'Report describing actually occurring events or scenarios which are used to illustrate scientific or academic principles.'
+infographic:
+  title: Diagram/Illustration/Infographic
+  description: 'Visual media, such as pictures, graphics, diagrams, figures, illustrations, charts, and maps.'
+full-course:
+  title: Full Course
+  description: 'A service of units and lessons used to teach the skills and knowledge required by its curriculum.'
+game:
+  title: Game
+  description: 'A game designed with an educational purpose.'
+handout:
+  title: Handout
+  description: 'A document that provides information, usually to accompany another type of event or material.'
+interactive:
+  title: Interactive
+  description: 'A visual tool with which students can move items around, enter variables, or answer questions.'
+activity:
+  title: Learning Activity
+  description: 'Activities designed to enhance the conditions for learning.'
+lecture:
+  title: Lecture Notes
+  description: 'Instructor-created notes to support student understanding or lectures.'
+lesson:
+  title: Lesson
+  description: 'Lessons organize content within a course and may cover one or more concepts or topics.'
+lesson-plan:
+  title: Lesson Plan
+  description: 'A description of a course of instruction, created for teachers.'
+module:
+  title: Module
+  description: 'Modules organize content within a course; may cover one or more concepts or topics.'
+presentation:
+  title: Presentation
+  description: 'A presentation conveys information from a speaker to an audience, such as a demonstration or a speech.'
+quiz:
+  title: Quiz
+  description: 'A test of knowledge on a particular topic.'
+reading:
+  title: Reading
+  description: 'The body of a printed work, which includes reading passages.'
+simulation:
+  title: Simulation
+  description: 'An imitation of a physical process over time.'
+guide:
+  title: Student Guide
+  description: 'A supplement to a course, created for students, that provides additional content and tutorial instructions for a specific course or topic.'
+rubric:
+  title: Rubric
+  description: 'A scoring guide used to evaluate performance.'
+syllabus:
+  title: Syllabus
+  description: 'An outline of the contents and requirements of a course.'
+strategy:
+  title: Teaching/Learning Strategy
+  description: 'Method or strategy to facilitate effective teaching and learning.'
+tutorial:
+  title: Tutorial
+  description: 'Is a training method that is more interactive and specific that a lecture, often aiming to teach by examples.'
+unit:
+  title: Unit of Study
+  description: 'A plan of instruction on a particular concept; it contains multiple lessons that are related.'
+video:
+  title: Video Lecture
+  description: 'A video lesson or lecture which presents educational material for a topic.'
+other:
+  title: Other
+  description: 'Please, include more information below...'

@@ -1,0 +1,147 @@
+<div class="wrapper collapsing-wrapper">
+
+  <%# SIDEBAR %>
+  <div class="collapsing-sidebar" id="sidebar">
+    <%= render :partial => "content_providers/partials/content_provider_info",
+               :locals => { :content_provider => @source.content_provider } %>
+  </div>
+
+  <div id="content">
+
+    <div class="row">
+      <div class="content_action">
+        <%= link_to 'Back', sources_path, :class => "btn btn-info" %>
+
+        <% if !current_user.nil? and policy(@source).update? %>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_source_path(@source), :class => 'btn btn-primary' %>
+        <% end %>
+
+        <% if !current_user.nil? and policy(@source).destroy? %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      source_path(@source),
+                      :method => 'delete',
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-danger' %>
+        <% end %>
+        <a href="<%= @source.url %>" target="_blank" class="btn btn-success">
+          <span class="fa fa-external-link"></span>
+          View URL</a>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+          <div class="row">
+            <div class="text-justify">
+
+              <h4>Source Details</h4>
+
+              <!-- Field: URL -->
+              <p>
+              <div class="url-wrap">
+                <strong>URL:&nbsp;</strong><%= @source.url %>
+              </div>
+              </p>
+
+              <!-- Field: method -->
+              <p><strong>Method:&nbsp;</strong>
+                <%= IngestorFactory.get_method_value @source.method %>
+              </p>
+
+              <!-- Field: resource type -->
+              <p><strong>Resource Type:&nbsp;</strong>
+                <%= IngestorFactory.get_resource_value @source.resource_type %>
+              </p>
+
+              <!-- Field: created at -->
+              <p><strong>Created at:&nbsp;</strong>
+                <%= @source.created_at.strftime('%H:%M on %A, %d %B %Y (UTC)') %>
+              </p>
+
+              <!-- Field: token -->
+              <% if !current_user.nil? and (current_user.is_curator? or current_user.is_admin?) %>
+                <p><strong>Token:</strong>
+                  <%= @source.token %>
+                </p>
+              <% end %>
+
+              <!-- Field: enabled -->
+              <p><strong>
+                Source is
+                <% if @source.enabled %>
+                  <span style='color: green;'>Enabled</span>
+                <% else %>
+                  <span style='color: red;'>Disabled</span>
+                <% end %>
+              </strong></p>
+
+              <hr/>
+
+              <%# Show details of last run %>
+              <div class="col-md-3">
+                <h4>Last Run</h4>
+                <% if @source.finished_at.nil? %>
+                  <p><strong>No results found</strong></p>
+                <% else %>
+                  <p><strong>Finished at:</strong></p>
+                  <p><strong>Time:</strong>
+                    <%= @source.finished_at.strftime('%H:%M (UTC)') %>
+                  </p>
+                  <p><strong>Date:</strong>
+                    <%= @source.finished_at.strftime('%a, %d %B %Y') %>
+                  </p>
+                  <table class="table">
+                    <thead>
+                    <tr>
+                      <th scope="col">Records</th>
+                      <th scope="col">Count</th>
+                    </tr>
+                    </thead>
+                    <tr>
+                      <th scope="row">read</th>
+                      <td><%= @source.records_read %></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">written</th>
+                      <td><%= @source.records_written %></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">added</th>
+                      <td><%= @source.resources_added %></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">updated</th>
+                      <td><%= @source.resources_updated %></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">rejected</th>
+                      <td><%= @source.resources_rejected %></td>
+                    </tr>
+                  </table>
+                <% end %>
+              </div>
+
+              <%# Show details of log %>
+              <% unless @source.log.nil? %>
+                <div class="col-md-9">
+                  <h4>Output</h4>
+                  <div class="panel-body"
+                       style="width: 100%; height: 300px ;overflow-y: scroll">
+                    <%= render_markdown(@source.log.html_safe) %>
+                  </div>
+                </div>
+              <% end %>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+

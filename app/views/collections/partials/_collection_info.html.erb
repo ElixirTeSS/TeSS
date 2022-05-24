@@ -9,8 +9,8 @@
       <%= title_with_privacy(collection) %>
     </h5>
     <% unless collection.description.blank? %>
-        <p class="minimise">
-          <%= collection.description %>
+        <p class="minimise" style="word-break: normal; display: inline-block;">
+          <%= render_markdown collection.description  %>
         </p>
     <% end %>
   </li>

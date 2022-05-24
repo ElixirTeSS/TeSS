@@ -1,0 +1,17 @@
+name: ical_events_2
+logfile: log/ingestion.ical.2.log
+loglevel: 0
+username: ingestor
+sources:
+  - id: 1
+    provider: 'Another Portal Provider'        # content provider's title
+    url: 'https://pawsey.org.au/event/pawsey-intern-showcase-2021/?ical=true'
+    method: ical                               # one of 'csv', 'ical' or 'rest'
+    resource_type: event                       # event or material
+    enabled: true
+  - id: 2
+    provider: 'Another Portal Provider'        # content provider's title
+    url: 'https://pawsey.org.au/event/pcon-embracing-new-solutions-for-in-situ-visualisation/?ical=true'
+    method: ical                               # one of 'csv', 'ical' or 'rest'
+    resource_type: event                       # event or material
+    enabled: true

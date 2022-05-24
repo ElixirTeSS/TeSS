@@ -1,3 +1,4 @@
+# The concern for searchable index
 module SearchableIndex
   extend ActiveSupport::Concern
 

@@ -1,0 +1,9 @@
+active:
+  title: Active
+  description: The material is in active use.
+development:
+  title: Under development
+  description: The material is under development.
+archived:
+  title: Archived
+  description: The material has been archived.

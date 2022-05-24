@@ -109,13 +109,13 @@ function setEvents(map, events) {
         }
     }
     for (var key in pins) {
-        console.log("KEY: " + key);
+        // console.log("KEY: " + key);
         var content = "";
         var count = pins[key].length;
         var title = count + ' event(s) at ' + pins[key][0][0] + ", " + pins[key][0][1];
         var position = {lat: pins[key][0][0], lng: pins[key][0][1]};
         pins[key].forEach(function(event) {
-            console.log("EVENT: " + event[2]);
+            // console.log("EVENT: " + event[2]);
             content += event[2] + "<br/>"
         });
         var infowindow = new google.maps.InfoWindow({content: content});
@@ -164,7 +164,7 @@ function showAllEvents() {
         $('#map-count').text(events_shown);
         loadedMapScript = true;
     }).fail(function (error) {
-        console.log("Error: " + error);
+        // console.log("Error: " + error);
     });
 }
 

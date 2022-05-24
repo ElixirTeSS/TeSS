@@ -11,7 +11,12 @@ class CurationMailerTest < ActionMailer::TestCase
     @user = users(:unverified_user)
     @material = @user.materials.create!(title: 'Unverified Material',
                                         url: 'http://example.com/shady-event',
-                                        short_description: '123')
+                                        description: '123',
+                                        licence: 'Fair',
+                                        doi: 'https://doi.org/10.1200/RSE.2020.123',
+                                        keywords: ['unverified', 'user', 'material'],
+                                        contact: 'main contact',
+                                        status: 'active')
   end
 
   teardown do
@@ -29,7 +34,7 @@ class CurationMailerTest < ActionMailer::TestCase
 
     assert_equal [TeSS::Config.sender_email], email.from
     assert_equal admin_emails, email.to
-    assert_equal "TeSS user \"#{@user.name}\" requires approval", email.subject
+    assert_equal "#{TeSS::Config.site['title_short']} user \"#{@user.name}\" requires approval", email.subject
 
     body = email.text_part.body.to_s
 
@@ -51,7 +56,7 @@ class CurationMailerTest < ActionMailer::TestCase
 
     assert_equal [TeSS::Config.sender_email], email.from
     assert_equal admin_emails, email.to
-    assert_equal "TeSS user \"#{@user.name}\" requires approval", email.subject
+    assert_equal "#{TeSS::Config.site['title_short']} user \"#{@user.name}\" requires approval", email.subject
 
     html = email.html_part.body.to_s
 

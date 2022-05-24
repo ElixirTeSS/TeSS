@@ -1,0 +1,23 @@
+name: test
+logfile: log/ingestion.test.log
+loglevel: 0
+username: ingestor
+sources:
+  - id: 1
+    provider: 'Dummy Provider'          # content provider's title - not found
+    url: https://dummy.com/events.csv   # the root URL required to access the source
+    method: xtc                         # one of 'csv', 'api', 'html'
+    resource_type: workflow             # event or material
+    enabled: true
+  - id: 2
+    provider: 'Another Portal Provider' # content provider's title
+    url: https://app.com/events.csv     # the root URL required to access the source
+    method: csv                         # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
+  - id: 3
+    provider: 'Another Portal Provider' # content provider's title
+    url: https://app.com/materials.csv  # the root URL required to access the source
+    method: csv                         # one of 'csv', 'api', 'html'
+    resource_type: material             # event or material
+    enabled: true

@@ -11,8 +11,8 @@
           <i class="fa fa-plus-square"></i> Create collection
       <% end %>
       <div class="pull-right">
-        <%= info_button('What are collections in TeSS?') do %>
-            <%= render_markdown(CollectionsHelper::COLLECTIONS_INFO) %>
+        <%= info_button("What are collections in #{TeSS::Config.site['title_short']}?") do %>
+          <%= render_markdown(CollectionsHelper::COLLECTIONS_INFO) %>
         <% end %>
       </div>
     </div>

@@ -1,0 +1,31 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Pawsey Supercomputing Centre - ECPv5.1.4//NONSGML v1.0//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Pawsey Supercomputing Centre
+X-ORIGINAL-URL:https://pawsey.org.au
+X-WR-CALDESC:Events for Pawsey Supercomputing Centre
+BEGIN:VTIMEZONE
+TZID:Australia/Perth
+BEGIN:STANDARD
+TZOFFSETFROM:+0800
+TZOFFSETTO:+0800
+TZNAME:AWST
+DTSTART:20210101T000000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+DTSTART;TZID=Australia/Perth:20210702T090000
+DTEND;TZID=Australia/Perth:20210702T100000
+DTSTAMP:20220208T213039
+CREATED:20210615T031753Z
+LAST-MODIFIED:20210615T031753Z
+UID:16193-1625216400-1625220000@pawsey.org.au
+SUMMARY:NVIDIA cuQuantum Session
+DESCRIPTION:Speakers: Tom Gibbs\, Manager\, Developer Relations\, NVIDIA; and Shinya Morino\, Senior Solutions Architect\, NVIDIA \nNVIDIA cuQuantum is an SDK of optimized libraries and tools for accelerating quantum computing workflows. Developers can use cuQuantum to speed up quantum circuit simulations based on state vector\, density matrix\, and tensor network methods by orders of magnitude. The cuQuantum SDK will become the foundational element across quantum circuit simulations. Early work suggests cuQuantum will be able to deliver orders of magnitude speedups for all the major gate-based simulation methods researchers use today. \nThe research community – including academia\, laboratories\, and private industry – are all using simulators to help design and verify algorithms to run on quantum computers.  \nThis session will introduce NVIDIA cuQuantum and showcase accelerated quantum circuit simulation results based on industry estimations\, extrapolations\, and benchmarks on real-world computers like ORNL’s Summit\, and NVIDIA’s Selene\, and reference collaborations with numerous industry partners.  \nThis technical session is targeted to both academia researchers interested in the field of quantum computing\, but also private industry working on developing tools for quantum circuit simulations. \nPlease complete the form below to register:\n\n
+URL:https://pawsey.org.au/event/nvidia-cuquantum-session/
+LOCATION:Australia
+CATEGORIES:Training,Workshop
+END:VEVENT
+END:VCALENDAR

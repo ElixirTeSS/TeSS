@@ -1,8 +1,9 @@
+# The controller for actions related to searchable models
 class SearchController < ApplicationController
 
   before_action :set_breadcrumbs
 
-  SEARCH_MODELS = %w(Material User Event Collection ContentProvider Workflow).freeze
+  SEARCH_MODELS = %w( Event Material Collection ContentProvider Trainer User ).freeze
 
   # GET /searches
   # GET /searches.json

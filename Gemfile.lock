@@ -7,6 +7,17 @@ GIT
       redis (~> 4.1)
 
 GIT
+  remote: https://github.com/chaps-io/public_activity
+  revision: 13dde4e0c8ccc7f8e43c52e30bf75cb2972e873b
+  tag: v1.6.4
+  specs:
+    public_activity (1.6.4)
+      actionpack (>= 3.0.0)
+      activerecord (>= 3.0)
+      i18n (>= 0.5.0)
+      railties (>= 3.0.0)
+
+GIT
   remote: https://github.com/lassebunk/dynamic_sitemaps.git
   revision: 37beeba143e8202218ee814056231b0e6974bafb
   branch: master
@@ -86,9 +97,9 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
-    active_model_serializers (0.10.12)
-      actionpack (>= 4.1, < 6.2)
-      activemodel (>= 4.1, < 6.2)
+    active_model_serializers (0.10.13)
+      actionpack (>= 4.1, < 7.1)
+      activemodel (>= 4.1, < 7.1)
       case_transform (>= 0.2)
       jsonapi-renderer (>= 0.1.1.beta1, < 0.3)
     activejob (6.1.5.1)
@@ -137,8 +148,8 @@ GEM
     bcrypt (3.1.16)
     bindata (2.4.10)
     bindex (0.8.1)
-    bootsnap (1.9.3)
-      msgpack (~> 1.0)
+    bootsnap (1.11.1)
+      msgpack (~> 1.2)
     bootstrap-datepicker-rails (1.6.4.1)
       railties (>= 3.0)
     bootstrap-sass (3.4.1)
@@ -152,6 +163,13 @@ GEM
     climate_control (0.2.0)
     concurrent-ruby (1.1.10)
     connection_pool (2.2.5)
+    countries (3.1.0)
+      i18n_data (~> 0.11.0)
+      sixarm_ruby_unaccent (~> 1.1)
+      unicode_utils (~> 1.4)
+    country_select (4.0.0)
+      countries (~> 3.0)
+      sort_alphabetical (~> 1.0)
     crack (0.4.5)
       rexml
     crass (1.0.6)
@@ -164,7 +182,12 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    devise_invitable (2.0.6)
+      actionmailer (>= 5.0)
+      devise (>= 4.6)
     docile (1.4.0)
+    domain_name (0.5.20190701)
+      unf (>= 0.0.5, < 1.0.0)
     ebnf (2.2.1)
       amazing_print (~> 1.2)
       htmlentities (~> 4.3)
@@ -175,6 +198,8 @@ GEM
     equivalent-xml (0.6.0)
       nokogiri (>= 1.4.3)
     erubi (1.10.0)
+    eventbrite_sdk (3.6.0)
+      rest-client (~> 2.0)
     execjs (2.8.1)
     faraday (1.8.0)
       faraday-em_http (~> 1.0)
@@ -217,15 +242,21 @@ GEM
     hashie (5.0.0)
     highline (1.7.10)
     htmlentities (4.3.4)
+    http-accept (1.7.0)
+    http-cookie (1.0.4)
+      domain_name (~> 0.5)
     httparty (0.20.0)
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
     httpclient (2.8.3)
     i18n (1.10.0)
       concurrent-ruby (~> 1.0)
+    i18n_data (0.11.0)
     icalendar (2.4.1)
+    iso_country_codes (0.7.8)
     jbuilder (2.11.3)
       activesupport (>= 5.0.0)
+    jquery-qtip2-wrapper-rails (3.0.3)
     jquery-rails (4.4.0)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -266,6 +297,7 @@ GEM
       activerecord
       kaminari-core (= 1.2.1)
     kaminari-core (1.2.1)
+    kgio (2.11.4)
     kt-paperclip (7.0.1)
       activemodel (>= 4.2.0)
       activesupport (>= 4.2.0)
@@ -310,7 +342,7 @@ GEM
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     logger (1.4.4)
-    loofah (2.17.0)
+    loofah (2.18.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     lunchy (0.10.4)
@@ -324,15 +356,25 @@ GEM
     mini_mime (1.1.2)
     mini_portile2 (2.8.0)
     minitest (5.14.4)
-    msgpack (1.4.2)
+    monetize (1.12.0)
+      money (~> 6.12)
+    money (6.16.0)
+      i18n (>= 0.6.4, <= 2)
+    money-rails (1.15.0)
+      activesupport (>= 3.0)
+      monetize (~> 1.9)
+      money (~> 6.13)
+      railties (>= 3.0)
+    msgpack (1.5.1)
     multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
     nested_form (0.3.2)
     net-http-persistent (4.0.1)
       connection_pool (~> 2.2)
+    netrc (0.11.0)
     nio4r (2.5.8)
-    nokogiri (1.13.5)
+    nokogiri (1.13.6)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     omniauth (2.0.4)
@@ -370,11 +412,6 @@ GEM
     progress_bar (1.1.0)
       highline (~> 1.6)
       options (~> 2.3.0)
-    public_activity (1.6.4)
-      actionpack (>= 3.0.0)
-      activerecord (>= 3.0)
-      i18n (>= 0.5.0)
-      railties (>= 3.0.0)
     public_suffix (4.0.6)
     puma (5.6.4)
       nio4r (~> 2.0)
@@ -421,6 +458,9 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.4.2)
       loofah (~> 2.3)
+    rails-i18n (7.0.3)
+      i18n (>= 0.7, < 2)
+      railties (>= 6.0.0, < 8)
     rails_admin (2.2.1)
       activemodel-serializers-xml (>= 1.0)
       builder (~> 3.1)
@@ -440,6 +480,7 @@ GEM
       rake (>= 12.2)
       thor (~> 1.0)
     rainbow (3.0.0)
+    raindrops (0.20.0)
     rake (13.0.6)
     rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
@@ -515,6 +556,13 @@ GEM
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
+    rest-client (2.1.0)
+      http-accept (>= 1.7.0, < 2.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
+    reverse_markdown (2.1.1)
+      nokogiri
     rexml (3.2.5)
     rsolr (2.3.0)
       builder (>= 2.1.2)
@@ -588,9 +636,12 @@ GEM
     simplecov-html (0.12.3)
     simplecov-lcov (0.8.0)
     simplecov_json_formatter (0.1.3)
+    sixarm_ruby_unaccent (1.2.0)
     slim (4.1.0)
       temple (>= 0.7.6, < 0.9)
       tilt (>= 2.0.6, < 2.1)
+    sort_alphabetical (1.1.0)
+      unicode_utils (>= 1.2.2)
     sparql (3.1.8)
       builder (~> 3.2)
       ebnf (~> 2.1)
@@ -629,10 +680,19 @@ GEM
     turbolinks-source (5.2.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
+    tzinfo-data (1.2022.1)
+      tzinfo (>= 1.0.0)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.8.1)
     unicode-display_width (2.1.0)
     unicode-types (1.7.0)
+    unicode_utils (1.4.0)
+    unicorn (6.1.0)
+      kgio (~> 2.6)
+      raindrops (~> 0.7)
     validate_email (0.1.6)
       activemodel (>= 3.0)
       mail (>= 2.2.5)
@@ -665,17 +725,20 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_model_serializers
+  active_model_serializers (~> 0.10.13)
   activerecord-session_store
   auto_strip_attributes (~> 2.0)
-  bootsnap (>= 1.1.0)
+  bootsnap (>= 1.4.4)
   bootstrap-datepicker-rails (~> 1.6.4.1)
   bootstrap-sass (>= 3.4.1)
   by_star!
   byebug
+  country_select (<= 4.0.0)
   debase
   devise
+  devise_invitable (~> 2.0.5)
   dynamic_sitemaps!
+  eventbrite_sdk
   fakeredis!
   font-awesome-sass (~> 4.7.0)
   friendly_id (~> 5.2.4)
@@ -684,23 +747,28 @@ DEPENDENCIES
   haml
   handlebars_assets
   httparty
+  i18n_data
   icalendar (~> 2.4.1)
+  iso_country_codes
   jbuilder
+  jquery-qtip2-wrapper-rails
   jquery-rails
   jquery-simplecolorpicker-rails
   jquery-turbolinks
+  json (>= 2.3.0)
   kt-paperclip (~> 7.0.0)
   linkeddata
   listen
   lunchy
   minitest (= 5.14.4)
+  money-rails
   omniauth-rails_csrf_protection
   omniauth_openid_connect
   passenger
   pg
   private_address_check
   progress_bar (~> 1.1.0)
-  public_activity (~> 1.6.1)
+  public_activity (~> 1.6.4)!
   puma
   pundit (~> 1.1.0)
   rack-cors
@@ -711,15 +779,19 @@ DEPENDENCIES
   rails-assets-markdown-it (~> 7.0.1)!
   rails-assets-moment (~> 2.15.0)!
   rails-controller-testing
+  rails-i18n
   rails_admin
+  rdoc (>= 6.3.1)
   recaptcha
   redcarpet (~> 3.5.1)
-  redis
+  redis (< 5.0.0)
+  rest-client
+  reverse_markdown
   rubocop
   ruby-debug-ide
   sass-rails (~> 5.0)
-  sdoc (~> 1.1.0)
-  sidekiq
+  sdoc (>= 1.1.0)
+  sidekiq (~> 6.4.0)
   simple_form
   simple_token_authentication (~> 1.0)
   simplecov
@@ -728,11 +800,14 @@ DEPENDENCIES
   sunspot_rails!
   time_diff
   turbolinks
+  tzinfo
+  tzinfo-data
   uglifier (>= 1.3.0)
+  unicorn
   validate_url (~> 1.0.2)
   web-console
   webmock (~> 3.4.2)
-  whenever
+  whenever (~> 1.0.0)
   will_paginate
 
 BUNDLED WITH

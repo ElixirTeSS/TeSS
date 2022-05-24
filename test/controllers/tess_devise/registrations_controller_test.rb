@@ -9,35 +9,20 @@ module TessDevise
       request.env['devise.mapping'] = Devise.mappings[:user]
     end
 
-    test 'should not register user' do
-      assert_no_difference('User.count') do
-        post :create, params: {
-          user: {
-            username: 'mileyfan1997',
-            email: 'h4nn4hm0nt4n4@example.com',
-            password: '12345678',
-            password_confirmation: '12345678',
-            processing_consent: '1'
-          }
-        }
-      end
-
-    end
-
     test 'should register user' do
-      # assert_difference('User.count') do
-      #   post :create, params: {
-      #       user: {
-      #           username: 'mileyfan1997',
-      #           email: 'h4nn4hm0nt4n4@example.com',
-      #           password: '12345678',
-      #           password_confirmation: '12345678',
-      #           processing_consent: '1'
-      #       }
-      #   }
-      # end
-      #
-      # assert_redirected_to root_path
+       assert_difference('User.count') do
+         post :create, params: {
+             user: {
+                 username: 'mileyfan1997',
+                 email: 'h4nn4hm0nt4n4@example.com',
+                 password: '12345678',
+                 password_confirmation: '12345678',
+                 processing_consent: '1'
+             }
+         }
+       end
+
+       assert_redirected_to root_path
     end
 
     test 'should not register user when passwords do not match' do
@@ -70,17 +55,17 @@ module TessDevise
     end
 
     test 'should not register user when no consent given' do
-      # assert_no_difference('User.count') do
-      #   post :create, params: {
-      #       user: {
-      #           username: 'mileyfan1997',
-      #           email: 'h4nn4hm0nt4n4@example.com',
-      #           password: '12345678',
-      #           password_confirmation: '12345678' }
-      #   }
-      # end
-      #
-      # assert assigns(:user).errors[:base].first.include?('processing')
+       assert_no_difference('User.count') do
+         post :create, params: {
+             user: {
+                 username: 'mileyfan1997',
+                 email: 'h4nn4hm0nt4n4@example.com',
+                 password: '12345678',
+                 password_confirmation: '12345678' }
+         }
+       end
+
+       assert assigns(:user).errors[:base].first.include?('processing')
     end
 
     test 'should redirect to user page after changing password' do
@@ -130,8 +115,8 @@ module TessDevise
       assert_redirected_to new_user_session_path
     end
 
-    test 'should update username for AAI user without requiring current password' do
-      user = users(:existing_aai_user)
+    test 'should update username for AAF user without requiring current password' do
+      user = users(:existing_aaf_user)
       sign_in user
 
       assert user.using_omniauth?

@@ -5,38 +5,40 @@
     <%= missing_icon(resource) if current_user and current_user.is_admin? %>
   </p>
 
-  <div class="row" style="margin: 0px;">
-    <div class="col-md-1">
+  <div class="row">
+    <div class="col-md-1" style="padding-left: 0;">
       <div class="resource_type_icon">
         <% if resource.class == Event %>
-          <%= icon_for(:event, :large) %>
+          <%= image_tag("dresa/Training_Blue_Default.png", height: "40px", alt: "Event") %>
         <% elsif resource.class == Material %>
-          <%= icon_for(:material, :large) %>
+          <%= image_tag("dresa/Training_Materials_Blue_Default.png", height: "40px", alt: "Material") %>
+        <% elsif resource.class == Package %>
+          <%= image_tag("dresa/Training_Packages_Blue_Default.png", height: "40px", alt: "Package") %>
         <% end %>
       </div>
     </div>
     <div class="col-md-10 latest_resource_description">
-      <% if resource.respond_to? 'short_description' %>
-        <%= truncate(resource.short_description, length: 300, separator: ' ') %>
-      <% else %>
-        <%= truncate(resource.description, length: 300, separator: ' ') %>
+      <% if resource.respond_to? 'description' %>
+        <%= render_markdown truncate(resource.description, length: 300, separator: ' ') %>
       <% end %>
     </div>
     <div class="col-md-1 pull-right">
       <% if resource.content_provider %>
-        <%= link_to resource.content_provider, :class=>"pull-right" do %>
+        <%= link_to resource.content_provider, :class => "pull-right" do %>
           <%= image_tag(resource.content_provider.image.url, :class => "small-content-provider-logo") %>
         <% end %>
       <% end %>
     </div>
 
   </div>
-  <div class="row">
-    <%= display_attribute(resource, :scientific_topics){|values|
-      values.map{|x| "<span class=\"scientific_topic\">#{x.preferred_label.to_s}</span>"}.join(', ')
-    } %>
+  <% if !TeSS::Config.feature['disabled'].include? 'topics' %>
+    <div class="row">
+      <%= display_attribute(resource, :scientific_topics) { |values|
+        values.map { |x| "<span class=\"scientific_topic\">#{x.preferred_label.to_s}</span>" }.join(', ')
+      } %>
 
-    <%= display_attribute(resource, :keywords){|values| values.join(', ')} if resource.keywords.any? %>
-    <%= yield %>
-  </div>
+      <%= display_attribute(resource, :keywords) { |values| values.join(', ') } if resource.keywords.any? %>
+      <%= yield %>
+    </div>
+  <% end %>
 </div>

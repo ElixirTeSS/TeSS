@@ -1,5 +1,5 @@
-.breakdown-score{
-  background-color: #eeeeee;
+.breakdown-score {
+  background-color: #eee;
   padding: 9px;
   margin: 5px;
 }
@@ -10,14 +10,14 @@
   align-items: center;
 }
 
-.score-desc{
+.score-desc {
   height: 80px;
   display: flex;
   align-items: center;
 }
 
-.score-box{
-  background-color: #eeeeea;
+.score-box {
+  background-color: #eee;
   padding: 10px;
   margin: 10px;
 }
@@ -31,9 +31,9 @@ ul.recent-approvals {
     padding-bottom: 5px;
     margin-bottom: 5px;
     border-bottom: 1px solid #ccc;
+
     &:last-child {
       border-bottom: none;
     }
   }
-
 }

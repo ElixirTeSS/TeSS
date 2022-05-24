@@ -1,0 +1,20 @@
+<div itemscope itemtype="http://schema.org/Person">
+  <%= content_tag :span, trainer.surname, { itemprop: 'familyName', content: trainer.surname, class: 'schemaorg-element' } %>
+  <%= content_tag :span, trainer.firstname, { itemprop: 'givenName', content: trainer.firstname, class: 'schemaorg-element' } %>
+  <%= content_tag :span, trainer.email, { itemprop: 'email', content: trainer.email, class: 'schemaorg-element' } %>
+  <%= content_tag :span, trainer.location, { itemprop: 'workLocation', content: trainer.location, class: 'schemaorg-element' } %>
+  <% if trainer.description and not trainer.description.empty? %>
+    <%= content_tag :span, trainer.description, { itemprop: 'description', content: trainer.description, class: 'schemaorg-element' } %>
+  <% end %>
+  <% if trainer.language and not trainer.language.empty? %>
+    <% langs = []
+       trainer.language.each { |key| langs << language_label_by_key(key) }
+    %>
+    <%= content_tag 'span', langs, { itemprop: 'knowsLanguage', content: langs, class: 'schemaorg-element' } %>
+  <% end %>
+  <%= content_tag :span, trainer.website, { itemprop: 'url', content: trainer.website, class: 'schemaorg-element' } %>
+  <%= content_tag :span, trainer.orcid, { itemprop: 'identifier', content: trainer.orcid, class: 'schemaorg-element' } %>
+  <% if trainer.image_url and not trainer.image_url.empty? %>
+    <%= content_tag :span, trainer.image_url, { itemprop: 'image', content: trainer.image_url, class: 'shemaorg-element' } %>
+  <% end %>
+</div>

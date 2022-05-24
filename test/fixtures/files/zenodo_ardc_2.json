@@ -1,0 +1,1114 @@
+{
+  "aggregations": {
+    "access_right": {
+      "buckets": [
+        {
+          "doc_count": 107,
+          "key": "open"
+        }
+      ],
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0
+    },
+    "file_type": {
+      "buckets": [
+        {
+          "doc_count": 96,
+          "key": "pdf"
+        },
+        {
+          "doc_count": 6,
+          "key": "mp4"
+        },
+        {
+          "doc_count": 5,
+          "key": "zip"
+        },
+        {
+          "doc_count": 4,
+          "key": "pptx"
+        },
+        {
+          "doc_count": 1,
+          "key": "ods"
+        },
+        {
+          "doc_count": 1,
+          "key": "txt"
+        },
+        {
+          "doc_count": 1,
+          "key": "xlsx"
+        }
+      ],
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0
+    },
+    "keywords": {
+      "buckets": [
+        {
+          "doc_count": 36,
+          "key": "FAIR"
+        },
+        {
+          "doc_count": 33,
+          "key": "ARDC"
+        },
+        {
+          "doc_count": 31,
+          "key": "Infrastructure"
+        },
+        {
+          "doc_count": 30,
+          "key": "NCRIS"
+        },
+        {
+          "doc_count": 29,
+          "key": "Storage and Compute Summit"
+        },
+        {
+          "doc_count": 29,
+          "key": "eResearch"
+        },
+        {
+          "doc_count": 13,
+          "key": "training"
+        },
+        {
+          "doc_count": 10,
+          "key": "skills"
+        },
+        {
+          "doc_count": 9,
+          "key": "data skills"
+        },
+        {
+          "doc_count": 9,
+          "key": "research infrastructure"
+        }
+      ],
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 340
+    },
+    "type": {
+      "buckets": [
+        {
+          "doc_count": 60,
+          "key": "presentation",
+          "subtype": {
+            "buckets": [],
+            "doc_count_error_upper_bound": 0,
+            "sum_other_doc_count": 0
+          }
+        },
+        {
+          "doc_count": 25,
+          "key": "publication",
+          "subtype": {
+            "buckets": [
+              {
+                "doc_count": 15,
+                "key": "report"
+              },
+              {
+                "doc_count": 4,
+                "key": "article"
+              },
+              {
+                "doc_count": 3,
+                "key": "other"
+              },
+              {
+                "doc_count": 2,
+                "key": "book"
+              },
+              {
+                "doc_count": 1,
+                "key": "proposal"
+              }
+            ],
+            "doc_count_error_upper_bound": 0,
+            "sum_other_doc_count": 0
+          }
+        },
+        {
+          "doc_count": 10,
+          "key": "poster",
+          "subtype": {
+            "buckets": [],
+            "doc_count_error_upper_bound": 0,
+            "sum_other_doc_count": 0
+          }
+        },
+        {
+          "doc_count": 5,
+          "key": "video",
+          "subtype": {
+            "buckets": [],
+            "doc_count_error_upper_bound": 0,
+            "sum_other_doc_count": 0
+          }
+        },
+        {
+          "doc_count": 3,
+          "key": "lesson",
+          "subtype": {
+            "buckets": [],
+            "doc_count_error_upper_bound": 0,
+            "sum_other_doc_count": 0
+          }
+        },
+        {
+          "doc_count": 2,
+          "key": "other",
+          "subtype": {
+            "buckets": [],
+            "doc_count_error_upper_bound": 0,
+            "sum_other_doc_count": 0
+          }
+        },
+        {
+          "doc_count": 2,
+          "key": "software",
+          "subtype": {
+            "buckets": [],
+            "doc_count_error_upper_bound": 0,
+            "sum_other_doc_count": 0
+          }
+        }
+      ],
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0
+    }
+  },
+  "hits": {
+    "hits": [
+      {
+        "conceptdoi": "10.5281/zenodo.5003933",
+        "conceptrecid": "5003933",
+        "created": "2021-08-26T22:49:53.694439+00:00",
+        "doi": "10.5281/zenodo.5276003",
+        "files": [
+          {
+            "bucket": "fa0b679d-2df8-4a73-ac68-238ba95062f9",
+            "checksum": "md5:33e2040662cf5526306a3d4ddcfb3ccc",
+            "key": "Training Materials Checklist v1.1.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/fa0b679d-2df8-4a73-ac68-238ba95062f9/Training%20Materials%20Checklist%20v1.1.pdf"
+            },
+            "size": 1367635,
+            "type": "pdf"
+          }
+        ],
+        "id": 5276003,
+        "links": {
+          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5276003.svg",
+          "bucket": "https://zenodo.org/api/files/fa0b679d-2df8-4a73-ac68-238ba95062f9",
+          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5003933.svg",
+          "conceptdoi": "https://doi.org/10.5281/zenodo.5003933",
+          "doi": "https://doi.org/10.5281/zenodo.5276003",
+          "html": "https://zenodo.org/record/5276003",
+          "latest": "https://zenodo.org/api/records/5276003",
+          "latest_html": "https://zenodo.org/record/5276003",
+          "self": "https://zenodo.org/api/records/5276003"
+        },
+        "metadata": {
+          "access_right": "open",
+          "access_right_category": "success",
+          "communities": [
+            {
+              "id": "ardc"
+            }
+          ],
+          "creators": [
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "Martinez, Paula Andrea",
+              "orcid": "0000-0002-8990-1985"
+            },
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "Unsworth, Kathryn",
+              "orcid": "0000-0002-5407-9987"
+            }
+          ],
+          "description": "<p>The ARDC Training Materials Metadata Checklist aims to support learning designers, training materials creators, trainers and national training infrastructure providers to capture key information and apply appropriate mechanisms to enable sharing and reuse of their training materials</p>",
+          "doi": "10.5281/zenodo.5276003",
+          "keywords": [
+            "checklist",
+            "Training materials",
+            "FAIR",
+            "standard",
+            "requirements",
+            "metadata"
+          ],
+          "language": "eng",
+          "license": {
+            "id": "CC-BY-4.0"
+          },
+          "notes": "The ARDC is a transformational initiative that enables Australian research community and industry access to nationally significant, leading edge data intensive eInfrastructure, platforms, skills and collections of high-quality data. The purpose of the ARDC is to provide Australian researchers with competitive advantage through data, providing access to leading edge eResearch collections, tools, infrastructure and services. Its mission is to accelerate research and innovation by driving excellence in the creation, analysis and retention of high-quality data assets.",
+          "publication_date": "2021-06-30",
+          "references": [
+            "Garcia et al. (2020). Ten simple rules for making training materials FAIR. https://doi.org/10.1371/journal.pcbi.1007854"
+          ],
+          "related_identifiers": [
+            {
+              "identifier": "10.1371/journal.pcbi.1007854",
+              "relation": "references",
+              "resource_type": "publication-article",
+              "scheme": "doi"
+            },
+            {
+              "identifier": "10.5281/zenodo.5003933",
+              "relation": "isVersionOf",
+              "scheme": "doi"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "count": 2,
+                "index": 1,
+                "is_last": true,
+                "last_child": {
+                  "pid_type": "recid",
+                  "pid_value": "5276003"
+                },
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "5003933"
+                }
+              }
+            ]
+          },
+          "resource_type": {
+            "subtype": "proposal",
+            "title": "Proposal",
+            "type": "publication"
+          },
+          "title": "ARDC Training Materials Metadata Checklist v1.1",
+          "version": "1.1"
+        },
+        "owners": [
+          82930
+        ],
+        "revision": 2,
+        "stats": {
+          "downloads": 48.0,
+          "unique_downloads": 44.0,
+          "unique_views": 52.0,
+          "version_downloads": 159.0,
+          "version_unique_downloads": 144.0,
+          "version_unique_views": 174.0,
+          "version_views": 214.0,
+          "version_volume": 249677154.0,
+          "views": 69.0,
+          "volume": 65646480.0
+        },
+        "updated": "2021-08-27T01:48:28.043477+00:00"
+      },
+      {
+        "conceptdoi": "10.5281/zenodo.5275822",
+        "conceptrecid": "5275822",
+        "created": "2021-08-26T22:18:32.710771+00:00",
+        "doi": "10.5281/zenodo.5275823",
+        "files": [
+          {
+            "bucket": "7fc4c42e-2ef7-4107-b79d-ca4116ad3868",
+            "checksum": "md5:e485f3447ca9e3a82b2d9ccdb87a2ba8",
+            "key": "HeSANDA initiative_Consultation Summary V1.0.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/7fc4c42e-2ef7-4107-b79d-ca4116ad3868/HeSANDA%20initiative_Consultation%20Summary%20V1.0.pdf"
+            },
+            "size": 494081,
+            "type": "pdf"
+          }
+        ],
+        "id": 5275823,
+        "links": {
+          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5275823.svg",
+          "bucket": "https://zenodo.org/api/files/7fc4c42e-2ef7-4107-b79d-ca4116ad3868",
+          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5275822.svg",
+          "conceptdoi": "https://doi.org/10.5281/zenodo.5275822",
+          "doi": "https://doi.org/10.5281/zenodo.5275823",
+          "html": "https://zenodo.org/record/5275823",
+          "latest": "https://zenodo.org/api/records/5275823",
+          "latest_html": "https://zenodo.org/record/5275823",
+          "self": "https://zenodo.org/api/records/5275823"
+        },
+        "metadata": {
+          "access_right": "open",
+          "access_right_category": "success",
+          "communities": [
+            {
+              "id": "ardc"
+            }
+          ],
+          "creators": [
+            {
+              "affiliation": "Australian Clinical Trials Alliance (ACTA)",
+              "name": "Evans, Alison",
+              "orcid": "0000-0001-9998-4289"
+            },
+            {
+              "affiliation": "Australian Clinical Trials Alliance (ACTA)",
+              "name": "Henwood, Jen"
+            },
+            {
+              "affiliation": "Australian Clinical Trials Alliance (ACTA)",
+              "name": "Nemeh, Fiona",
+              "orcid": "0000-0001-9412-1732"
+            }
+          ],
+          "description": "<p>HeSANDA Stakeholder Consultation Project: Summary of consultation feedback.</p>",
+          "doi": "10.5281/zenodo.5275823",
+          "keywords": [
+            "Secondary health data",
+            "clinical trials",
+            "consultation"
+          ],
+          "license": {
+            "id": "CC-BY-4.0"
+          },
+          "publication_date": "2021-08-12",
+          "related_identifiers": [
+            {
+              "identifier": "10.5281/zenodo.5275822",
+              "relation": "isVersionOf",
+              "scheme": "doi"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "count": 1,
+                "index": 0,
+                "is_last": true,
+                "last_child": {
+                  "pid_type": "recid",
+                  "pid_value": "5275823"
+                },
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "5275822"
+                }
+              }
+            ]
+          },
+          "resource_type": {
+            "subtype": "report",
+            "title": "Report",
+            "type": "publication"
+          },
+          "title": "HeSANDA Stakeholder Consultation Report"
+        },
+        "owners": [
+          82930
+        ],
+        "revision": 2,
+        "stats": {
+          "downloads": 70.0,
+          "unique_downloads": 62.0,
+          "unique_views": 90.0,
+          "version_downloads": 70.0,
+          "version_unique_downloads": 62.0,
+          "version_unique_views": 90.0,
+          "version_views": 94.0,
+          "version_volume": 34585670.0,
+          "views": 94.0,
+          "volume": 34585670.0
+        },
+        "updated": "2021-08-27T01:48:27.481029+00:00"
+      },
+      {
+        "conceptdoi": "10.5281/zenodo.5194258",
+        "conceptrecid": "5194258",
+        "created": "2021-08-13T03:24:32.019929+00:00",
+        "doi": "10.5281/zenodo.5194259",
+        "files": [
+          {
+            "bucket": "c8cc4c00-d66c-475f-a60c-7c585ad2ed3c",
+            "checksum": "md5:dc8126b477cbab28c206a5f7816d28f9",
+            "key": "National PID Infrastructure (Australia) - Natasha Simons.pptx",
+            "links": {
+              "self": "https://zenodo.org/api/files/c8cc4c00-d66c-475f-a60c-7c585ad2ed3c/National%20PID%20Infrastructure%20%28Australia%29%20-%20Natasha%20Simons.pptx"
+            },
+            "size": 7209908,
+            "type": "pptx"
+          }
+        ],
+        "id": 5194259,
+        "links": {
+          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5194259.svg",
+          "bucket": "https://zenodo.org/api/files/c8cc4c00-d66c-475f-a60c-7c585ad2ed3c",
+          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5194258.svg",
+          "conceptdoi": "https://doi.org/10.5281/zenodo.5194258",
+          "doi": "https://doi.org/10.5281/zenodo.5194259",
+          "html": "https://zenodo.org/record/5194259",
+          "latest": "https://zenodo.org/api/records/5194259",
+          "latest_html": "https://zenodo.org/record/5194259",
+          "self": "https://zenodo.org/api/records/5194259"
+        },
+        "metadata": {
+          "access_right": "open",
+          "access_right_category": "success",
+          "communities": [
+            {
+              "id": "ardc"
+            }
+          ],
+          "creators": [
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "Natasha Simons",
+              "orcid": "0000-0003-0635-1998"
+            }
+          ],
+          "description": "<p>Presentation&nbsp;for a 12 August 2021 webinar on <strong>ORCID, DOIs and return on investment for research infrastructure </strong>co-sponsored by the Council of Australian University Librarians (CAUL), Australian Research Data Commons (ARDC) and Australian Access Federation (AAF).&nbsp;</p>\n\n<p>Description of webinar from registration page:</p>\n\n<p>Did you know that use of&nbsp;<a href=\"https://ardc.edu.au/resources/working-with-data/citation-identifiers/\">persistent identifiers</a>&nbsp;(such as ORCID and DOIs) can result in significant savings for the research sector, savings that could be channelled back into research?&nbsp;</p>\n\n<p>A June 2021&nbsp;<a href=\"http://doi.org/10.5281/zenodo.4772627\">report&nbsp;</a>by MoreBrains Cooperative for Jisc UK found significant savings based on current levels of PID adoption and that investment in PID integration could generate an estimated net saving of &pound;5.67M over the course of five years if PID adoption targets are met. These savings will only expand once other &lsquo;priority PIDs&rsquo; are equally well adopted, according to the report. Not only can investment in PIDs save time through efficiency gains, it can produce more accurate reporting and provide more meaningful metrics. According to report author, Josh Brown, &ldquo;Investment in PIDs will also lead to improved, evidence-based decision-making by institutions, funders, and policy makers which, while less tangible and difficult to estimate, is likely to be significant&rdquo;.</p>\n\n<p>Sounds too good to be true? We invite you to join us at a collaborative webinar co-sponsored by CAUL, ARDC and AAF where we will unpack the UK report with author&nbsp;<a href=\"https://orcid.org/0000-0002-8689-4935\">Josh Brown</a>&nbsp;(<a href=\"https://www.morebrainsconsulting.coop/\">MoreBrains Coop</a>erative) and talk about how Australia might achieve similar benefits through adoption of &lsquo;priority PIDs&rsquo; with&nbsp;<a href=\"https://orcid.org/0000-0003-0635-1998\">Natasha Simons</a>&nbsp;(<a href=\"https://ardc.edu.au/\">ARDC</a>) and&nbsp;<a href=\"https://orcid.org/0000-0003-3522-7849\">Melroy Almeida</a>&nbsp;(<a href=\"https://aaf.edu.au/orcid/\">AAF ORCID Consortium</a>). The webinar will be moderated by&nbsp;<a href=\"https://orcid.org/0000-0002-0365-112X\">Simon Huggard</a>&nbsp;(<a href=\"https://www.caul.edu.au/\">CAUL</a>), Chair of the Australian ORCID Advisory Group.</p>\n\n<p><strong>Background&nbsp;</strong></p>\n\n<p>The use of Persistent Identifiers (PIDs) in research outputs is critical because they provide identification of and connection between research objects and entities such as researchers, funders, organisations, articles, datasets, software, and samples. This enables better attribution and discovery of research and lays the foundation for better tracking of research impact. The ARDC&rsquo;s suite of PID services, combined with those available through the AAF led Australian ORCID Consortium, form the backbone of enabling FAIR research outputs via PIDs in Australia.</p>",
+          "doi": "10.5281/zenodo.5194259",
+          "keywords": [
+            "persistent identifiers",
+            "policy",
+            "research infrastructure",
+            "cost benefit",
+            "PID"
+          ],
+          "language": "eng",
+          "license": {
+            "id": "CC-BY-4.0"
+          },
+          "publication_date": "2021-08-13",
+          "related_identifiers": [
+            {
+              "identifier": "10.5281/zenodo.5194258",
+              "relation": "isVersionOf",
+              "scheme": "doi"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "count": 1,
+                "index": 0,
+                "is_last": true,
+                "last_child": {
+                  "pid_type": "recid",
+                  "pid_value": "5194259"
+                },
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "5194258"
+                }
+              }
+            ]
+          },
+          "resource_type": {
+            "title": "Presentation",
+            "type": "presentation"
+          },
+          "title": "National Identifier Infrastructure - Australia"
+        },
+        "owners": [
+          72975
+        ],
+        "revision": 3,
+        "stats": {
+          "downloads": 12.0,
+          "unique_downloads": 11.0,
+          "unique_views": 28.0,
+          "version_downloads": 12.0,
+          "version_unique_downloads": 11.0,
+          "version_unique_views": 28.0,
+          "version_views": 31.0,
+          "version_volume": 86518896.0,
+          "views": 31.0,
+          "volume": 86518896.0
+        },
+        "updated": "2021-08-16T22:53:49.544677+00:00"
+      },
+      {
+        "conceptdoi": "10.5281/zenodo.5091259",
+        "conceptrecid": "5091259",
+        "created": "2021-07-26T07:09:14.640836+00:00",
+        "doi": "10.5281/zenodo.5091260",
+        "files": [
+          {
+            "bucket": "40e17f21-8dd5-4008-a62b-1eb88c2eba65",
+            "checksum": "md5:d7cf1f3ea0837dfe74579572de0a45e6",
+            "key": "ARDC__How-can-software-containers-help-your-research.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/40e17f21-8dd5-4008-a62b-1eb88c2eba65/ARDC__How-can-software-containers-help-your-research.pdf"
+            },
+            "size": 123261,
+            "type": "pdf"
+          }
+        ],
+        "id": 5091260,
+        "links": {
+          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5091260.svg",
+          "bucket": "https://zenodo.org/api/files/40e17f21-8dd5-4008-a62b-1eb88c2eba65",
+          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5091259.svg",
+          "conceptdoi": "https://doi.org/10.5281/zenodo.5091259",
+          "doi": "https://doi.org/10.5281/zenodo.5091260",
+          "html": "https://zenodo.org/record/5091260",
+          "latest": "https://zenodo.org/api/records/5091260",
+          "latest_html": "https://zenodo.org/record/5091260",
+          "self": "https://zenodo.org/api/records/5091260"
+        },
+        "metadata": {
+          "access_right": "open",
+          "access_right_category": "success",
+          "communities": [
+            {
+              "id": "ardc"
+            }
+          ],
+          "contributors": [
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "Martinez, Paula Andrea",
+              "type": "ProjectLeader"
+            },
+            {
+              "affiliation": "Camera Libre",
+              "name": "Sam Muirhead",
+              "type": "Producer"
+            },
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "The ARDC Communications Team",
+              "type": "Editor"
+            },
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "The ARDC Skills and Workforce Development Team",
+              "type": "ProjectMember"
+            },
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "The ARDC eResearch Infrastructure & Services",
+              "type": "ProjectMember"
+            },
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "The ARDC Nectar Cloud Services team",
+              "type": "ProjectMember"
+            }
+          ],
+          "creators": [
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "Australian Research Data Commons"
+            }
+          ],
+          "description": "<p>This video explains software containers to a research audience. It is an introduction to why containers are beneficial for research. These benefits are standardisation, portability, reliability and reproducibility.&nbsp;</p>\n\n<p>Software Containers in research are a solution that addresses the challenge of a replicable computational environment and supports reproducibility of research results. Understanding the concept of software containers enables researchers to better communicate their research needs with their colleagues and other researchers using and developing containers.</p>\n\n<p><strong>Watch the video here: <a href=\"https://www.youtube.com/watch?v=HelrQnm3v4g\">https://www.youtube.com/watch?v=HelrQnm3v4g</a></strong></p>\n\n<p>If you want to share this video please use this:</p>\n\n<p>Australian Research Data Commons, 2021. <em>How can software containers help your research?</em>. [video] Available at: <a href=\"https://www.youtube.com/watch?v=HelrQnm3v4g\">https://www.youtube.com/watch?v=HelrQnm3v4g</a>&nbsp;DOI: <a href=\"http://doi.org/10.5281/zenodo.5091260\">http://doi.org/10.5281/zenodo.5091260</a> [Accessed dd Month YYYY].</p>",
+          "doi": "10.5281/zenodo.5091260",
+          "keywords": [
+            "containers",
+            "software",
+            "research",
+            "reproducibility",
+            "RSE",
+            "standard",
+            "agility",
+            "portable",
+            "reusable",
+            "code",
+            "application",
+            "reproducible",
+            "standardisation",
+            "package",
+            "system",
+            "cloud",
+            "server",
+            "version",
+            "reliability",
+            "program",
+            "collaborator",
+            "ARDC_AU"
+          ],
+          "language": "eng",
+          "license": {
+            "id": "CC-BY-4.0"
+          },
+          "notes": "The ARDC is a transformational initiative that enables Australian research community and industry access to nationally significant, leading edge data intensive eInfrastructure, platforms, skills and collections of high-quality data. The purpose of the ARDC is to provide Australian researchers with competitive advantage through data, providing access to leading edge eResearch collections, tools, infrastructure and services. Its mission is to accelerate research and innovation by driving excellence in the creation, analysis and retention of high-quality data assets.",
+          "publication_date": "2021-07-26",
+          "related_identifiers": [
+            {
+              "identifier": "https://www.youtube.com/watch?v=HelrQnm3v4g",
+              "relation": "isSupplementTo",
+              "resource_type": "video",
+              "scheme": "url"
+            },
+            {
+              "identifier": "10.5281/zenodo.5091259",
+              "relation": "isVersionOf",
+              "scheme": "doi"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "count": 1,
+                "index": 0,
+                "is_last": true,
+                "last_child": {
+                  "pid_type": "recid",
+                  "pid_value": "5091260"
+                },
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "5091259"
+                }
+              }
+            ]
+          },
+          "resource_type": {
+            "title": "Video/Audio",
+            "type": "video"
+          },
+          "title": "How can software containers help your research?"
+        },
+        "owners": [
+          82930
+        ],
+        "revision": 1,
+        "stats": {
+          "downloads": 84.0,
+          "unique_downloads": 80.0,
+          "unique_views": 113.0,
+          "version_downloads": 84.0,
+          "version_unique_downloads": 80.0,
+          "version_unique_views": 113.0,
+          "version_views": 125.0,
+          "version_volume": 10353924.0,
+          "views": 125.0,
+          "volume": 10353924.0
+        },
+        "updated": "2021-07-26T07:09:15.501327+00:00"
+      },
+      {
+        "conceptdoi": "10.5281/zenodo.4414979",
+        "conceptrecid": "4414979",
+        "created": "2021-07-13T02:48:21.341865+00:00",
+        "doi": "10.5281/zenodo.5094034",
+        "files": [
+          {
+            "bucket": "2a39b441-ca2f-4992-99d3-b29e58e71783",
+            "checksum": "md5:263fda482117e2c968925cb0d1e88caf",
+            "key": "au-research/FAIR-data-101-training-v3.0.zip",
+            "links": {
+              "self": "https://zenodo.org/api/files/2a39b441-ca2f-4992-99d3-b29e58e71783/au-research/FAIR-data-101-training-v3.0.zip"
+            },
+            "size": 20411104,
+            "type": "zip"
+          }
+        ],
+        "id": 5094034,
+        "links": {
+          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5094034.svg",
+          "bucket": "https://zenodo.org/api/files/2a39b441-ca2f-4992-99d3-b29e58e71783",
+          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.4414979.svg",
+          "conceptdoi": "https://doi.org/10.5281/zenodo.4414979",
+          "doi": "https://doi.org/10.5281/zenodo.5094034",
+          "html": "https://zenodo.org/record/5094034",
+          "latest": "https://zenodo.org/api/records/5094034",
+          "latest_html": "https://zenodo.org/record/5094034",
+          "self": "https://zenodo.org/api/records/5094034"
+        },
+        "metadata": {
+          "access_right": "open",
+          "access_right_category": "success",
+          "communities": [
+            {
+              "id": "ardc"
+            }
+          ],
+          "creators": [
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "Stokes, Liz",
+              "orcid": "0000-0002-2973-5647"
+            },
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "Liffers, Matthias",
+              "orcid": "0000-0002-3639-2080"
+            },
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "Burton, Nichola",
+              "orcid": "0000-0003-4470-4846"
+            },
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "Martinez, Paula A.",
+              "orcid": "0000-0002-8990-1985"
+            },
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "Simons, Natasha",
+              "orcid": "0000-0003-0635-1998"
+            },
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "Russell, Keith",
+              "orcid": "0000-0001-5390-2719"
+            },
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "McCafferty, Siobhann",
+              "orcid": "0000-0002-2491-0995"
+            },
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "Ferrers, Richard",
+              "orcid": "0000-0002-2923-9889"
+            },
+            {
+              "affiliation": "Australian Data Archive",
+              "name": "McEachern, Steve",
+              "orcid": "0000-0001-7848-4912"
+            },
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "Barlow, Melanie",
+              "orcid": "0000-0002-3956-5784"
+            },
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "Brady, Catherine",
+              "orcid": "0000-0002-7919-7592"
+            },
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "Brownlee, Rowan",
+              "orcid": "0000-0002-1955-1262"
+            },
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "Honeyman, Tom",
+              "orcid": "0000-0001-9448-4023"
+            },
+            {
+              "affiliation": "The University of Melbourne",
+              "name": "Quiroga, Maria del Mar",
+              "orcid": "0000-0002-8943-2808"
+            }
+          ],
+          "description": "<p>FAIR Data 101 v3.0 is a self-guided course covering the FAIR Data principles</p>\n\n<p>The FAIR Data 101 virtual course was designed and delivered by the ARDC Skilled Workforce Program twice in 2020 and has now been reworked as a self-guided course.</p>\n\n<p>The course structure was based on &#39;FAIR Data in the Scholarly Communications Lifecycle&#39;, run by Natasha Simons at the FORCE11 Scholarly Communications Institute. These training materials are hosted on GitHub.</p>",
+          "doi": "10.5281/zenodo.5094034",
+          "keywords": [
+            "training materials",
+            "FAIR data",
+            "video",
+            "webinar",
+            "activities",
+            "quiz",
+            "FAIR",
+            "research data management"
+          ],
+          "language": "eng",
+          "license": {
+            "id": "CC-BY-4.0"
+          },
+          "notes": "This version adds instructor guidelines and extra resources.\n\nThe ARDC is a transformational initiative that enables Australian research community and industry access to nationally significant, leading edge data intensive eInfrastructure, platforms, skills and collections of high-quality data. The purpose of the ARDC is to provide Australian researchers with competitive advantage through data, providing access to leading edge eResearch collections, tools, infrastructure and services. Its mission is to accelerate research and innovation by driving excellence in the creation, analysis and retention of high-quality data assets.",
+          "publication_date": "2021-07-13",
+          "related_identifiers": [
+            {
+              "identifier": "https://github.com/au-research/FAIR-data-101-training/tree/v3.0",
+              "relation": "isSupplementTo",
+              "scheme": "url"
+            },
+            {
+              "identifier": "10.5281/zenodo.4414979",
+              "relation": "isVersionOf",
+              "scheme": "doi"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "count": 2,
+                "index": 1,
+                "is_last": true,
+                "last_child": {
+                  "pid_type": "recid",
+                  "pid_value": "5094034"
+                },
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "4414979"
+                }
+              }
+            ]
+          },
+          "resource_type": {
+            "title": "Lesson",
+            "type": "lesson"
+          },
+          "title": "ARDC FAIR Data 101 self-guided",
+          "version": "v3.0"
+        },
+        "owners": [
+          82930
+        ],
+        "revision": 3,
+        "stats": {
+          "downloads": 13.0,
+          "unique_downloads": 13.0,
+          "unique_views": 85.0,
+          "version_downloads": 26.0,
+          "version_unique_downloads": 25.0,
+          "version_unique_views": 316.0,
+          "version_views": 364.0,
+          "version_volume": 530560641.0,
+          "views": 95.0,
+          "volume": 265344352.0
+        },
+        "updated": "2021-07-21T03:56:00.890213+00:00"
+      },
+      {
+        "conceptdoi": "10.5281/zenodo.5091716",
+        "conceptrecid": "5091716",
+        "created": "2021-07-12T11:03:20.254037+00:00",
+        "doi": "10.5281/zenodo.5091717",
+        "files": [
+          {
+            "bucket": "f626910a-7ad9-4944-9afe-2b00050e0a49",
+            "checksum": "md5:94edbee6e811b91a9f1fe634470c4a0e",
+            "key": "SCG_slide-deck-notes.txt",
+            "links": {
+              "self": "https://zenodo.org/api/files/f626910a-7ad9-4944-9afe-2b00050e0a49/SCG_slide-deck-notes.txt"
+            },
+            "size": 10290,
+            "type": "txt"
+          },
+          {
+            "bucket": "f626910a-7ad9-4944-9afe-2b00050e0a49",
+            "checksum": "md5:46c7c17f2d7cbed65d3e2b4d7aeb486b",
+            "key": "SCG_slide-deck.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/f626910a-7ad9-4944-9afe-2b00050e0a49/SCG_slide-deck.pdf"
+            },
+            "size": 1643732,
+            "type": "pdf"
+          }
+        ],
+        "id": 5091717,
+        "links": {
+          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5091717.svg",
+          "bucket": "https://zenodo.org/api/files/f626910a-7ad9-4944-9afe-2b00050e0a49",
+          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5091716.svg",
+          "conceptdoi": "https://doi.org/10.5281/zenodo.5091716",
+          "doi": "https://doi.org/10.5281/zenodo.5091717",
+          "html": "https://zenodo.org/record/5091717",
+          "latest": "https://zenodo.org/api/records/5091717",
+          "latest_html": "https://zenodo.org/record/5091717",
+          "self": "https://zenodo.org/api/records/5091717"
+        },
+        "metadata": {
+          "access_right": "open",
+          "access_right_category": "success",
+          "communities": [
+            {
+              "id": "ardc"
+            }
+          ],
+          "contributors": [
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "Martinez, Paula Andrea",
+              "orcid": "0000-0002-8990-1985",
+              "type": "ProjectLeader"
+            }
+          ],
+          "creators": [
+            {
+              "affiliation": "Australian Research Data Commons",
+              "name": "Liffers, Matthias",
+              "orcid": "0000-0002-3639-2080"
+            }
+          ],
+          "description": "<p>A short presentation for reuse includes speaker notes.</p>\n\n<p>Making software citable using a code repository, an&nbsp;ORCID and a licence.</p>",
+          "doi": "10.5281/zenodo.5091717",
+          "keywords": [
+            "Software citation",
+            "Software publishing",
+            "Software registries",
+            "Software Repositories",
+            "research Software"
+          ],
+          "language": "eng",
+          "license": {
+            "id": "CC-BY-4.0"
+          },
+          "notes": "The ARDC is a transformational initiative that enables Australian research community and industry access to nationally significant, leading edge data intensive eInfrastructure, platforms, skills and collections of high-quality data. The purpose of the ARDC is to provide Australian researchers with competitive advantage through data, providing access to leading edge eResearch collections, tools, infrastructure and services. Its mission is to accelerate research and innovation by driving excellence in the creation, analysis and retention of high-quality data assets.",
+          "publication_date": "2021-07-12",
+          "related_identifiers": [
+            {
+              "identifier": "10.5281/zenodo.5003989",
+              "relation": "isSupplementTo",
+              "scheme": "doi"
+            },
+            {
+              "identifier": "10.5281/zenodo.5091716",
+              "relation": "isVersionOf",
+              "scheme": "doi"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "count": 1,
+                "index": 0,
+                "is_last": true,
+                "last_child": {
+                  "pid_type": "recid",
+                  "pid_value": "5091717"
+                },
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "5091716"
+                }
+              }
+            ]
+          },
+          "resource_type": {
+            "title": "Presentation",
+            "type": "presentation"
+          },
+          "title": "Software publishing, licensing, and citation"
+        },
+        "owners": [
+          82930
+        ],
+        "revision": 3,
+        "stats": {
+          "downloads": 72.0,
+          "unique_downloads": 58.0,
+          "unique_views": 79.0,
+          "version_downloads": 72.0,
+          "version_unique_downloads": 58.0,
+          "version_unique_views": 79.0,
+          "version_views": 84.0,
+          "version_volume": 111814936.0,
+          "views": 84.0,
+          "volume": 111814936.0
+        },
+        "updated": "2021-07-21T03:41:31.625694+00:00"
+      },
+      {
+        "conceptdoi": "10.5281/zenodo.5039511",
+        "conceptrecid": "5039511",
+        "created": "2021-06-28T23:26:37.182331+00:00",
+        "doi": "10.5281/zenodo.5039512",
+        "files": [
+          {
+            "bucket": "75ce35da-ca96-4524-aa99-0cb3f0e8d480",
+            "checksum": "md5:89e3c04c7b5bc595ed44e5545187a0d1",
+            "key": "ARDC PID services review FINAL.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/75ce35da-ca96-4524-aa99-0cb3f0e8d480/ARDC%20PID%20services%20review%20FINAL.pdf"
+            },
+            "size": 1078359,
+            "type": "pdf"
+          }
+        ],
+        "id": 5039512,
+        "links": {
+          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5039512.svg",
+          "bucket": "https://zenodo.org/api/files/75ce35da-ca96-4524-aa99-0cb3f0e8d480",
+          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5039511.svg",
+          "conceptdoi": "https://doi.org/10.5281/zenodo.5039511",
+          "doi": "https://doi.org/10.5281/zenodo.5039512",
+          "html": "https://zenodo.org/record/5039512",
+          "latest": "https://zenodo.org/api/records/5039512",
+          "latest_html": "https://zenodo.org/record/5039512",
+          "self": "https://zenodo.org/api/records/5039512"
+        },
+        "metadata": {
+          "access_right": "open",
+          "access_right_category": "success",
+          "communities": [
+            {
+              "id": "ardc"
+            }
+          ],
+          "creators": [
+            {
+              "affiliation": "MoreBrains Cooperative",
+              "name": "Brown, Josh",
+              "orcid": "0000-0002-8689-4935"
+            }
+          ],
+          "description": "<p>This review was commissioned in 2019 by ARDC&rsquo;s Director of Data and Services. The remit was to evaluate ARDC&rsquo;s current persistent identifier (PID) portfolio, and to recommend future business planning and development activities for the component PIDs and services within it.</p>\n\n<p>Research was conducted from September 2019 to February 2020. Landscape analyses were complemented by interviews with ARDC staff and partners, PID providers, and domain experts. While each PID chosen for review was evaluated individually, an agreed set of overarching principles was chosen to ensure consistency and clarity of purpose across the review (See page 13). While the individual review documents were under preparation, regular meetings with the ARDC team helped to shape the structure and context for this synthesis report.</p>\n\n<p>The review includes PIDs for people, organisations, data, physical samples, instruments and projects including ORCID, ROR, DOI, IGSN, Handle and RAiD, among others.</p>\n\n<p>The initial analysis confirmed that PIDs are a key dependency for many ARDC services, and PIDs are adopted and used throughout the research lifecycle. The FAIR data principles are a significant driver for ARDC&rsquo;s PIDs agenda (and widespread adoption of PIDs more generally).</p>",
+          "doi": "10.5281/zenodo.5039512",
+          "keywords": [
+            "persistent identifiers",
+            "PIDs",
+            "strategy"
+          ],
+          "language": "eng",
+          "license": {
+            "id": "CC-BY-4.0"
+          },
+          "publication_date": "2020-04-23",
+          "related_identifiers": [
+            {
+              "identifier": "10.5281/zenodo.5039511",
+              "relation": "isVersionOf",
+              "scheme": "doi"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "count": 1,
+                "index": 0,
+                "is_last": true,
+                "last_child": {
+                  "pid_type": "recid",
+                  "pid_value": "5039512"
+                },
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "5039511"
+                }
+              }
+            ]
+          },
+          "resource_type": {
+            "subtype": "report",
+            "title": "Report",
+            "type": "publication"
+          },
+          "title": "ARDC Persistent Identifier (PID) Portfolio Review",
+          "version": "2.0"
+        },
+        "owners": [
+          72975
+        ],
+        "revision": 3,
+        "stats": {
+          "downloads": 129.0,
+          "unique_downloads": 120.0,
+          "unique_views": 147.0,
+          "version_downloads": 129.0,
+          "version_unique_downloads": 120.0,
+          "version_unique_views": 147.0,
+          "version_views": 155.0,
+          "version_volume": 139108311.0,
+          "views": 155.0,
+          "volume": 139108311.0
+        },
+        "updated": "2021-06-29T01:48:18.507399+00:00"
+      }
+    ],
+    "total": 17
+  },
+  "links": {
+    "prev": "https://zenodo.org/api/records/?sort=mostrecent&communities=ardc&page=1&size=10",
+    "self": "https://zenodo.org/api/records/?sort=mostrecent&communities=ardc&page=2&size=10"
+  }
+}

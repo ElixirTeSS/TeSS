@@ -12,10 +12,18 @@ host host_with_port
 sitemap :site do
   url root_url, last_mod: Time.now, change_freq: 'daily', priority: 1.0
   url about_url, change_freq: 'weekly', priority: 0.4
-  url materials_url, last_mod: Time.now, change_freq: 'daily', priority: 0.7
-  url events_url, last_mod: Time.now, change_freq: 'daily', priority: 0.7
-  url workflows_url, last_mod: Time.now, change_freq: 'daily', priority: 0.6
-  url content_providers_url, last_mod: Time.now, change_freq: 'weekly', priority: 0.4
+  if TeSS::Config.feature['materials']
+    url materials_url, last_mod: Time.now, change_freq: 'daily', priority: 0.7
+  end
+  if TeSS::Config.feature['events']
+    url events_url, last_mod: Time.now, change_freq: 'daily', priority: 0.7
+  end
+  if TeSS::Config.feature['workflows']
+    url workflows_url, last_mod: Time.now, change_freq: 'daily', priority: 0.6
+  end
+  if TeSS::Config.feature['providers']
+    url content_providers_url, last_mod: Time.now, change_freq: 'weekly', priority: 0.4
+  end
 end
 
 # You can have multiple sitemaps like the above – just make sure their names are different.
@@ -26,10 +34,10 @@ end
 #
 #   sitemap_for Page.scoped
 
-sitemap_for Material
-sitemap_for Event
-sitemap_for Workflow
-sitemap_for ContentProvider
+sitemap_for Material if TeSS::Config.feature['materials']
+sitemap_for Event if TeSS::Config.feature['events']
+sitemap_for ContentProvider if TeSS::Config.feature['providers']
+sitemap_for Workflow if TeSS::Config.feature['workflows']
 
 # For products with special sitemap name and priority, and link to comments:
 #

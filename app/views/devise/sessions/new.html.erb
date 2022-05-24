@@ -5,20 +5,47 @@
     </div>
     <div class="row">
       <div class="col-md-6">
-        <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-            <%= f.input :login, label: 'Email or username', autofocus: true %>
-
-            <%= f.input :password, input_html: { autocomplete: 'off' } %>
-
-            <% if devise_mapping.rememberable? -%>
-                <%= f.input :remember_me, as: :boolean %>
+        <% if resource_class.omniauth_providers.any? %>
+          <% if devise_mapping.omniauthable? -%>
+            <div class="h4">Institutional Login</div>
+            <p>Use the buttons below to log in via your Australian or New Zealand institution.</p>
+            <% resource_class.omniauth_providers.each do |provider| -%>
+              <% if provider.to_s.downcase == 'oidc' %>
+                <!-- oidc is AAF -->
+                <%= link_to image_tag('dresa/aaf_service_223x54.png', height: '42px'),
+                            omniauth_authorize_path(resource_name, provider),
+                            method: :post %>
+              <% elsif provider.to_s.downcase == 'oidc2' %>
+                <!-- oidc2 is Tuakiri  -->
+                <%= link_to 'Log in with Tuakiri (NZ)',
+                            omniauth_authorize_path(resource_name, provider),
+                            method: :post, class: 'btn btn-info' -%>
+              <% elsif provider.to_s.downcase == 'elixir_aai' -%>
+                <%= link_to image_tag("login-button-orange.png", class: 'aai-login'),
+                            omniauth_authorize_path(resource_name, provider),
+                            method: :post -%>
+              <% else %>
+                <!-- other configured provider -->
+                <%= link_to "Log in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider),
+                            method: :post, class: 'btn btn-info' -%>
+              <% end -%>
             <% end -%>
-
-            <div class="actions">
-              <%= f.submit "Log in", :class => 'btn btn-primary'%>
-            </div>
+          <% end -%>
+          <hr/>
         <% end %>
-        <%= render "devise/shared/links" %>
+
+        <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+          <div class="h4">Administrator Login</div>
+          <%= f.input :login, label: 'Email or username', autofocus: true %>
+          <%= f.input :password, input_html: { autocomplete: 'off' } %>
+          <% if devise_mapping.rememberable? -%>
+            <%= f.input :remember_me, as: :boolean %>
+          <% end -%>
+          <div class="actions">
+            <%= f.submit "Log in", :class => 'btn btn-primary' %>
+          </div>
+        <% end %>
+        <!--%= render "devise/shared/links" %-->
       </div>
     </div>
   </div>

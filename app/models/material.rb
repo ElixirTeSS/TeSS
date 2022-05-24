@@ -18,15 +18,25 @@ class Material < ApplicationRecord
   if TeSS::Config.solr_enabled
     # :nocov:
     searchable do
+      # full text search fields
       text :title
-      string :title
+      text :description
+      text :contact
+      text :doi
+      text :authors
+      text :contributors
+      text :target_audience
+      text :keywords
+      text :resource_type
+      text :content_provider do
+        self.content_provider.try(:title)
+      end
+      # sort title
       string :sort_title do
         title.downcase.gsub(/^(an?|the) /, '')
       end
-      text :long_description
-      text :short_description
-      text :doi
-      text :authors
+      # other fields
+      string :title
       string :authors, :multiple => true
       string :scientific_topics, :multiple => true do
         self.scientific_topic_names
@@ -34,21 +44,14 @@ class Material < ApplicationRecord
       string :operations, :multiple => true do
         self.operation_names
       end
-      text :target_audience
       string :target_audience, :multiple => true
-      text :keywords
       string :keywords, :multiple => true
-      text :resource_type
+      string :fields, :multiple => true
       string :resource_type, :multiple => true
-      text :difficulty_level
       string :difficulty_level do
         DifficultyDictionary.instance.lookup_value(self.difficulty_level, 'title')
       end
-      text :contributors
       string :contributors, :multiple => true
-      text :content_provider do
-        self.content_provider.try(:title)
-      end
       string :content_provider do
         self.content_provider.try(:title)
       end
@@ -82,29 +85,38 @@ class Material < ApplicationRecord
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
-  auto_strip_attributes :title, :short_description, :long_description, :url, :squish => false
+  auto_strip_attributes :title, :description, :url, :squish => false
 
-  validates :title, :short_description, :url, presence: true
+  validates :title, :description, :keywords, :url, :licence, :status, :contact, presence: true
 
   validates :url, url: true
 
+  validates :licence, exclusion: { in: ['notspecified'], message: 'must be specified' }
+
+  validates :other_types, presence: true, if: Proc.new { |m| m.resource_type.include?('other') }
+
   validates :difficulty_level, controlled_vocabulary: { dictionary: DifficultyDictionary.instance }
 
-  clean_array_fields(:keywords, :contributors, :authors, :target_audience, :resource_type)
+  clean_array_fields(:keywords, :fields, :contributors, :authors,
+                     :target_audience, :resource_type, :subsets)
 
-  update_suggestions(:keywords, :contributors, :authors, :target_audience, :resource_type)
+  update_suggestions(:keywords, :contributors, :authors, :target_audience,
+                     :resource_type)
 
-  def short_description= desc
-    super(Rails::Html::FullSanitizer.new.sanitize(desc))
-  end
-
-  def long_description= desc
+  def description= desc
     super(Rails::Html::FullSanitizer.new.sanitize(desc))
   end
 
   def self.facet_fields
-    %w( scientific_topics operations tools standard_database_or_policy target_audience keywords difficulty_level
-        authors related_resources contributors licence node content_provider user resource_type)
+    field_list = %w( content_provider keywords fields licence target_audience
+                     authors contributors resource_type related_resources
+                     user )
+    field_list.append('operations') unless TeSS::Config.feature['disabled'].include? 'operations'
+    field_list.append('scientific_topics') unless TeSS::Config.feature['disabled'].include? 'topics'
+    field_list.append('standard_database_or_policy') unless TeSS::Config.feature['disabled'].include? 'fairshare'
+    field_list.append('tools') unless TeSS::Config.feature['disabled'].include? 'biotools'
+    field_list.append('node') if TeSS::Config.feature['nodes']
+    return field_list
   end
 
   def self.check_exists(material_params)
@@ -117,7 +129,7 @@ class Material < ApplicationRecord
 
     if given_material.content_provider.present? && given_material.title.present?
       material ||= self.where(content_provider_id: given_material.content_provider_id,
-                                   title: given_material.title).last
+                              title: given_material.title).last
     end
 
     material

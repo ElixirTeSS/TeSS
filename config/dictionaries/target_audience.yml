@@ -1,0 +1,24 @@
+ugrad:
+  title: Undergraduate
+  description: 'Undergraduates students, including honours'
+masters:
+  title: Masters student
+  description: 'Masters by coursework students'
+mbr:
+  title: MBR student
+  description: 'Higher degree research (Masters by Research) students.'
+phd:
+  title: PhD student
+  description: 'Higher degree research (PhD) students.'
+ecr:
+  title: Post-doc / Fellow
+  description: 'Early career researchers and research fellows.'
+researcher:
+  title: Academic
+  description: 'Academics and other researchers'
+support:
+  title: Professional (research-related)
+  description: 'Professionals in research related roles'
+professional:
+  title: Professional (other)
+  description: 'Professionals in non-research related roles'

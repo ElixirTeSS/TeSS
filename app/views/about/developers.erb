@@ -1,169 +1,127 @@
-
-  <div class="wrapper">
+<div class="wrapper">
 
   <div id="sidebar" class="popout-sidebar">
-    <%= render :partial => 'about_nav', locals: {show: 'developers'} %>
+    <%= render :partial => 'about_nav', locals: { show: 'developers' } %>
   </div>
 
   <div id="content" class="">
     <div class="about-block">
-      <%= render :partial => 'links', :locals => {'show': 'developer'} %>
+      <%= render :partial => 'links', :locals => { 'show': 'developer' } %>
+
       <!-- ABOUT TESS DATA -->
       <div class="row">
         <div class="odd-about-block">
           <div id='code_and_data' class="h3">For Developers</div>
 
-          TeSS is committed to the FAIR principles: making data findable, accessible, interoperable and re-usable.
-          As such, all content in TeSS is available under the CC BY 4.0 licence, and can be accessed through our API
-          and widgets. The TeSS codebase is also available to re-use under the BSD Licence, and can be found on GitHub.
+          <%== raw t 'developer.license' %>
 
           <div class="row">
             <div class="col-lg-5 5 open-access-box">
               <div class="h2 licence-title">Software</div>
               <div class="open-access-location">
-                <%= link_to 'https://github.com/ElixirTeSS/TeSS', target: '_blank' do %>
-                    <div class="register-condition-graphic">
-                      <%= image_tag 'about/GitHub-Mark-64px.png', class: "" %>
-                    </div>
-                    <div class="register-condition">The source code for TeSS is available on GitHub</div>
+                <%= link_to TeSS::Config.site['repository'], target: '_blank' do %>
+                  <div class="register-condition-graphic">
+                    <%= image_tag 'about/GitHub-Mark-64px.png', class: "" %>
+                  </div>
+                  <div class="register-condition">The source code for <%= TeSS::Config.site['title_short'] %>
+                    is available on GitHub
+                  </div>
                 <% end %>
               </div>
               <div class="open-access-licence">
-                <%= link_to 'https://github.com/ElixirTeSS/TeSS/blob/master/LICENSE', target: '_blank' do %>
-                    <div class="register-condition-graphic"><i class="fa fa-code licence-logo"></i></div>
-                    <div class="register-condition">It is available under the BSD-3 licence</div>
+                <%= link_to TeSS::Config.site['repository'] + '/blob/master/LICENSE', target: '_blank' do %>
+                  <div class="register-condition-graphic"><i class="fa fa-code licence-logo"></i></div>
+                  <div class="register-condition">Source code is available under the
+                    <%== raw t 'developer.code_license' %> license
+                  </div>
                 <% end %>
               </div>
             </div>
-              <div class="col-lg-5 open-access-box">
-                <div class="h2 licence-title">Data</div>
-                  <%= link_to developers_path(:anchor => 'api') do %>
-                    <div class="open-access-location">
-                      <div class="register-condition-graphic"><i class="fa fa-plug licence-logo"></i></div>
-                      <div class="register-condition">Data in TeSS can be accessed via our API</div>
-                    </div>
-                  <% end %>
-                <div class="open-access-licence">
-                  <div class="register-condition-graphic"><i class="fa fa-database licence-logo"></i></div>
-                  <%= link_to 'https://creativecommons.org/licenses/by/4.0/', target: '_blank' do %>
-                  <div class="register-condition">Data are made available under the Creative Commons CC-BY 4.0 licence</div>
-                  <% end %>
+            <div class="col-lg-5 open-access-box">
+              <div class="h2 licence-title">Data</div>
+              <%= link_to developers_path(:anchor => 'api') do %>
+                <div class="open-access-location">
+                  <div class="register-condition-graphic"><i class="fa fa-plug licence-logo"></i></div>
+                  <div class="register-condition">
+                    Data in <%= TeSS::Config.site['title_short'] %> can be accessed via our API
+                  </div>
                 </div>
+              <% end %>
+              <div class="open-access-licence">
+                <div class="register-condition-graphic"><i class="fa fa-database licence-logo"></i></div>
+                <%= link_to 'https://creativecommons.org/licenses/by/4.0/', target: '_blank' do %>
+                  <div class="register-condition">Data are made available under the
+                    <%== raw t 'developer.data_license' %> license
+                  </div>
+                <% end %>
               </div>
-              </div>
+            </div>
+          </div>
         </div>
       </div>
+
+      <!-- Widgets -->
       <div class="row">
         <div class="even-about-block">
           <div class="h3" id="widgets">Widgets</div>
-            <p>
-                Widgets are chunks of javascript code that can be copied into website source code to display TeSS content.
-                There are several different styles and functionalities available from our configurable widget suite.
-                Widgets can be used to enhance your site and offer your community lists of relevant events or training
-                resources.
-              </p>
-                <p><%= link_to 'https://elixirtess.github.io/TeSS_widgets/', class: 'btn btn-primary', target: '_blank' do %>
-                  View Our Available Widgets
-                  <% end %></p>
-              <p>
-                Below is a live example of the TeSS Maps widget.
-              </p>
-
-        <hr/>
-
-<link rel="stylesheet" property="stylesheet" href="https://elixirtess.github.io/TeSS_widgets/css/tess-widget.css"/>
-  <div id="tess-widget-google-map" class="tess-widget tess-widget-google-map"></div>
-  <script>
-  function initTeSSWidgets() {
-      TessWidget.Events(document.getElementById('tess-widget-google-map'),
-          'GoogleMap',
-          {
-              opts: {
-                  apiKey: 'AIzaSyAtxeshmu-95V4KZWyDklhhO-UNqNQQJKo' // Get your own API key!
-              },
-              params: {
-                  country: [
-                      'United Kingdom', 'Spain', 'Portugal', 'France', 'Belgium', 'Ireland', 'Estonia', 'Finland',
-                      'Germany', 'Austria', 'Italy', 'Hungary', 'Czech Republic', 'Estonia', 'Denmark',
-                       'Greece','Luxembourg', 'The Netherlands', 'Switzerland', 'Norway', 'Sweden', 'Slovenia'
-                  ],
-                  pageSize: 500
-              }
-          });
-  }
-  </script>
-  <script async="" defer="" src="https://elixirtess.github.io/TeSS_widgets/js/tess-widget-standalone.js" onload="initTeSSWidgets()"></script>
-
-
-
-
-
-
-        <hr>
-        <p>
-        If you do decide to include our widgets on your website, we have a mailing list you can join to keep
-        informed about any service disruptions, required updates, or new features
-        </p>
-          <p><%= link_to 'https://groups.google.com/forum/#!forum/tess-widgets-user-group', class: 'btn btn-primary', target: '_blank' do %>
-                <i class="fa fa-envelope"></i> Join the widgets mailing list
-          <% end %></p>
-
+          <p><%== raw t 'developer.widgets' %></p>
+          <p><%= link_to t('developer.widgets_available'), class: 'btn btn-primary', target: '_blank' do %>
+              View Our Available Widgets
+            <% end %></p>
+          <%= render :partial => 'about/' + TeSS::Config.site['widget_example'] %>
+          <%== raw t 'developer.widgets_mailing' %>
         </div>
       </div>
 
+      <!-- API -->
       <div class="row">
         <div class="odd-about-block">
-          <div class="h4" id="api">API </div>
-
-          <span style="float:right">
-                      </span>
+          <div class="h4" id="api">API</div>
           <span>
-            <p>TeSS has a fully functioning <a href="http://jsonapi.org/" target="_blank">JSON API</a>. You can
-              explore our JSON-API by appending .json_api to the end of the URL of most pages (excluding parameters).
-              For example:</p>
-            <p><code>
-               <a href="https://tess.elixir-europe.org/materials.json_api?scientific_topics=RNA-Seq">
-                 https://tess.elixir-europe.org/materials.json_api?scientific_topics=RNA-Seq </a>
-            </code></p>
-            <p><code>
-               <a href="https://tess.elixir-europe.org/events.json_api">
-                               https://tess.elixir-europe.org/events.json_api </a>
-            </code></p>
-            <p><code>
-               <a href="https://tess.elixir-europe.org/events/data-fairification-for-data-stewards.json_api">
-                  https://tess.elixir-europe.org/events/data-fairification-for-data-stewards.json_api
-           </a>
-            </code></p>
-            <p><code>
-               <a href="https://tess.elixir-europe.org/content_providers.json_api">
-                               https://tess.elixir-europe.org/content_providers.json_api </a>
-            </code></p>
-            <p><code>
-               <a href="https://tess.elixir-europe.org/workflows.json_api">
-                               https://tess.elixir-europe.org/workflows.json_api </a>
-            </code></p>
+            <p><%= TeSS::Config.site['title_short'] %> has a fully functioning
+              <a href="http://jsonapi.org/" target="_blank">JSON API</a>.
+              You can explore our JSON-API by appending .json_api to the end of the URL of most pages
+              (excluding parameters). For example:</p>
 
-            <p>
-              The full documentation for our JSON API with interactive examples can be found in our
-              <%= link_to 'Swagger Hub Documentation', 'https://app.swaggerhub.com/apis/fbacall/TeSS-JSON-API/0.2.0' %>
-            </p>
-            <p>
-              <%= link_to 'https://app.swaggerhub.com/apis/fbacall/TeSS-JSON-API/0.2.0', class: 'btn btn-primary', target: '_blank' do %>
-              View our API on SwaggerHub
-              <%= image_tag 'swagger.png', size: "20x20"%>
-              <% end %>
+            <!-- Events -->
+            <% if TeSS::Config.feature['events'] %>
+            <p><code>
+               <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_1' %>">
+                 <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_1' %></a>
+            </code></p>
+            <% end %>
 
-            </p>
-            <p>
-              We recommend using our JSON API, but if you have already begun using our old API technical information
-              can still be found on our <a href="https://app.swaggerhub.com/api/njall/TeSS/1.0.0/">here</a>.
-            </p>
+            <!-- Materials -->
+            <% if TeSS::Config.feature['materials'] %>
+            <p><code>
+               <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_3' %>">
+                 <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_3' %> </a>
+            </code></p>
+            <% end %>
+
+            <!-- Providers -->
+            <% if TeSS::Config.feature['providers'] %>
+            <p><code>
+               <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_4' %>">
+                               <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_4' %> </a>
+            </code></p>
+            <% end %>
+
+            <!-- Workflows -->
+            <% if TeSS::Config.feature['workflows'] %>
+            <p><code>
+               <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_5' %>">
+                               <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_5' %> </a>
+            </code></p>
+            <% end %>
+
+            <%== raw t 'developer.swaggerhub' -%>
            </span>
         </div>
-        </div>
       </div>
-      <%= render :partial => 'links', :locals => {'show': 'developer'} %>
     </div>
+    <%= render :partial => 'links', :locals => { 'show': 'developer' } %>
   </div>
+</div>
 </div>
 </body>

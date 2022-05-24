@@ -1,3 +1,4 @@
+# The helper for Nodes classes
 module NodesHelper
 
   NODES_INFO = "ELIXIR is a pan-European research infrastructure consisting of the Hub and a number of, primarily,national nodes that provide services to their local communities.\n\n"+

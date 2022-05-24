@@ -1,1 +1,1 @@
-IGNORED_FILTERS = %w{venue user}
+IGNORED_FILTERS = %w{ user }

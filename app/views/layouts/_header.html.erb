@@ -1,85 +1,172 @@
-<%# Black header %>
-<nav class="questionnaire">
-  <div class="container">
-    <div class="text-center">
-      <div>Help TeSS by giving us your feedback: <%=link_to "https://goo.gl/forms/jsVC70q6oN8FsGWR2", "https://goo.gl/forms/jsVC70q6oN8FsGWR2", target: "_blank" %> </div>
+<%# questionnaire header -%>
+<% if defined? TeSS::Config.questionnaire['show'] and
+  !TeSS::Config.questionnaire['show'].blank? and
+  TeSS::Config.questionnaire['show'] %>
+  <nav class="questionnaire">
+    <div class="container">
+      <div class="text-center">
+        <div><%= TeSS::Config.questionnaire['message'] || "" %>
+          <%= link_to TeSS::Config.questionnaire['url'], TeSS::Config.questionnaire['url'], target: "_blank" %>
+        </div>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
+<% end %>
 
-<header class="elixir-black-header">
+<%# top header -%>
+<header class="top-header">
   <nav>
     <div class="container">
-      <div class="pull-left">
-        <a href="http://www.elixir-europe.org/">
-          <%= image_tag('hub-logo.png', alt: 'ELIXIR Hub') %>
-        </a>
-      </div>
+
+      <%# Parent Organization -%>
+      <% if defined? TeSS::Config.parent_org['url'] and !TeSS::Config.parent_org['url'].blank? %>
+        <div class="pull-left">
+          <a href=<%= TeSS::Config.parent_org['url'] %>>
+            <%= image_tag(TeSS::Config.parent_org['image'], alt: TeSS::Config.parent_org['name']) %>
+          </a>
+        </div>
+      <% end %>
+
+      <%# Server Name -%>
+      <% if defined? TeSS::Config.site['title'] and !TeSS::Config.site['title'].blank? %>
+        <div class="col-md-5 server-name hidden-sm hidden-xs">
+          <%= TeSS::Config.site['title'].html_safe %>
+        </div>
+      <% end %>
+
+      <%# User Options -%>
       <div class="user-options">
         <% if user_signed_in? %>
-            <%= link_to current_user.username, user_path(current_user) %>
-            <%= link_to stars_path, title: 'View stars' do %>
-                <i class="fa fa-star fa-lg"></i>
+          <%= link_to current_user.username, user_path(current_user) %>
+          <%= link_to stars_path, title: 'View stars' do %>
+            <i class="fa fa-star fa-lg"></i>
+          <% end %>
+          <% if current_user.is_curator? || current_user.is_admin? %>
+            <%= link_to users_path, :title => 'View users' do %>
+              <i class="fa fa-users fa-lg"></i>
             <% end %>
-            <% if current_user.is_curator? || current_user.is_admin? %>
-                <%= link_to users_path, :title => 'View users' do %>
-                    <i class="fa fa-users fa-lg"></i>
-                <% end %>
+          <% end %>
+          <% if current_user.is_curator? || current_user.is_admin? %>
+            <%= link_to sources_path, :title => 'View ingestion sources' do %>
+              <i class="fa fa-cloud-download fa-lg"></i>
             <% end %>
-            <% if current_user.is_admin? %>
-                <%= link_to rails_admin_path, :title => 'View the administrator console' do %>
-                    <i class="fa fa-cog fa-lg"></i>
-                <% end %>
+          <% end %>
+          <% if current_user.is_admin? %>
+            <%= link_to rails_admin_path, :title => 'View the administrator console' do %>
+              <i class="fa fa-cog fa-lg"></i>
             <% end %>
-            <% if current_user.is_curator? || current_user.is_admin? %>
-                <%= link_to curate_topic_suggestions_path, :title => 'Assign scientific topics to TeSS resources' do %>
-                    <i class="fa fa-briefcase fa-lg"></i>
-                <% end %>
+          <% end %>
+          <% if current_user.is_curator? || current_user.is_admin? %>
+            <% if !TeSS::Config.feature['disabled'].include? 'topics' %>
+              <%= link_to curate_topic_suggestions_path,
+                          :title => "Assign scientific topics to #{TeSS::Config.site['title_short']} resources" do %>
+                <i class="fa fa-briefcase fa-lg"></i>
+              <% end %>
             <% end %>
-            <%= link_to "Log out", destroy_user_session_path, :method => :delete, :data => {:confirm => 'Are you sure you want to log out?'} %>
+          <% end %>
+          <%= link_to "Log out", destroy_user_session_path, :method => :delete,
+                      :data => { :confirm => 'Are you sure you want to log out?' } %>
         <% else %>
-            <%= link_to "Log in", new_user_session_path %>
-            <%= link_to "Register", new_user_registration_path %>
+
+          <!-- log in methods -->
+          <div class='dropdown'>
+            <div class='btn btn-dark dropdown-toggle' type="button" data-toggle="dropdown"
+                 aria-haspopup="true" aria-expanded="true"
+                 style='margin: 0; padding: 0; background-color: #000; color: #eee; padding-right: 80px; font-size: small;'>
+              Log In
+              <span class="caret"></span>
+            </div>
+            <ul class='dropdown-menu' style='background-color: #000; color: #eee;'>
+              <% if !Rails.application.secrets.oidc[:client_id].blank? %>
+                <li class='dropdown-item'>
+                  <%= link_to Rails.application.secrets.oidc[:label], user_oidc_omniauth_authorize_path,
+                              :method => :post %>
+                </li>
+              <% end %>
+
+              <% if !Rails.application.secrets.oidc2[:client_id].blank? %>
+                <li class='dropdown-item'>
+                  <%= link_to Rails.application.secrets.oidc2[:label], user_oidc2_omniauth_authorize_path,
+                              :method => :post %>
+                </li>
+              <% end %>
+
+              <li class='dropdown-item'>
+                <%= link_to 'Administration', new_user_session_path %>
+              </li>
+
+              <% if TeSS::Config.feature['registration'] %>
+                <li class='dropdown-item'>
+                  <%= link_to "Register", new_user_registration_path %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+
         <% end %>
       </div>
     </div>
   </nav>
 </header>
 
-<%# Orange header %>
-<header class="elixir-orange-header">
+<%# navbar header -%>
+<header class="second-header">
   <nav class="navbar navbar-default">
     <div class="container">
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#orange-navbar-collapse" aria-expanded="false">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                data-target="#orange-navbar-collapse" aria-expanded="false">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="/">
-          <%= image_tag "ELIXIR_TeSS_logo_white-80px-height.png", :alt => "Training eSupport System", :style => 'height: 60px;' %>
-        </a>
+        <% if defined? TeSS::Config.site['logo'] and !TeSS::Config.site['logo'].blank? %>
+          <a class="navbar-brand" href="/">
+            <%= image_tag(TeSS::Config.site['logo'], :alt => TeSS::Config.site['logo_alt'],
+                          :style => 'height: 50px; margin-top: 3px;') %>
+          </a>
+        <% end %>
       </div>
 
       <div class="collapse navbar-collapse" id="orange-navbar-collapse">
         <% unless @hide_search_box %>
-            <%= form_tag search_path, id: 'search-box', method: :get, class: "navbar-form navbar-right", role: "search" do %>
-                <div class="input-group">
-                  <input type="text" class="form-control" name='q' placeholder="Search training..."/>
-                  <div class="input-group-btn">
-                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                  </div>
-                </div>
-            <% end %>
+          <%= form_tag search_path, id: 'search-box', method: :get, class: "navbar-form navbar-right",
+                       role: "search" do %>
+            <div class="input-group">
+              <input type="text" class="form-control" name='q'
+                     placeholder="Search <%= TeSS::Config.site['title_short'] %>..."/>
+              <div class="input-group-btn">
+                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+              </div>
+            </div>
+          <% end %>
         <% end %>
         <%= menu_group do %>
-          <%= menu_item "Events", events_path %>
-          <%= menu_item "Materials", materials_path %>
-          <%= menu_item "e-Learning", elearning_materials_path %>
-          <%= menu_item "Workflows", workflows_path %>
-          <%= menu_item "Collections", collections_path %>
-          <%= menu_item "Providers", content_providers_path %>
+          <% if TeSS::Config.feature['events'] == true %>
+            <%= menu_item "Events", events_path %>
+          <% end %>
+          <% if TeSS::Config.feature['materials'] == true %>
+            <%= menu_item "Materials", materials_path %>
+          <% end %>
+          <% if TeSS::Config.feature['e-learnings'] == true %>
+            <%= menu_item "e-Learning", elearning_materials_path %>
+          <% end %>
+          <% if TeSS::Config.feature['worflows'] == true %>
+            <%= menu_item "Workflows", workflows_path %>
+          <% end %>
+          <% if TeSS::Config.feature['collections'] == true %>
+            <%= menu_item "Collections", collections_path %>
+          <% end %>
+          <% if TeSS::Config.feature['providers'] == true %>
+            <%= menu_item "Providers", content_providers_path %>
+          <% end %>
+          <% if TeSS::Config.feature['trainers'] == true %>
+            <%= menu_item "Trainers", trainers_path %>
+          <% end %>
+          <% if TeSS::Config.feature['nodes'] == true %>
+            <%= menu_item "Nodes", nodes_path %>
+          <% end %>
           <%= menu_item "About", about_path %>
         <% end %>
       </div>
@@ -87,17 +174,18 @@
   </nav>
 </header>
 
+<%# announcement header -%>
 <div class="container-fluid" id="header-container">
   <% if defined? TeSS::Config.announcement_message and !TeSS::Config.announcement_message.blank? %>
-      <div class="alert alert-danger fade in" id="front-page-announcement">
-        <button class="close" data-dismiss="alert" aria-label="close">&times;</button>
-        <%= TeSS::Config.announcement_message.html_safe %>
-      </div>
+    <div class="alert alert-danger fade in" id="front-page-announcement">
+      <button class="close" data-dismiss="alert" aria-label="close">&times;</button>
+      <%= TeSS::Config.announcement_message.html_safe %>
+    </div>
   <% end %>
 
-  <% if !defined? @skip_flash_messages_in_header or !@skip_flash_messages_in_header%>
-      <div id="flash-container">
-        <%= flash_messages %>
-      </div>
+  <% if !defined? @skip_flash_messages_in_header or !@skip_flash_messages_in_header %>
+    <div id="flash-container">
+      <%= flash_messages %>
+    </div>
   <% end %>
 </div>

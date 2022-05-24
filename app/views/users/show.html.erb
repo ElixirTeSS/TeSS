@@ -10,80 +10,96 @@
         <div class="row">
           <div class="col-xs-4 col-md-12">
             <div id="gravatar_image">
-              <%= image_tag @user.gravatar_url, :class=>'medium-content-provider-logo' %>
+              <%= image_tag @user.gravatar_url, :class => 'medium-content-provider-logo' %>
             </div>
           </div>
           <div class="col-xs-8 col-md-12">
             <p>
               <strong>First name</strong><br/>
               <% if @user.profile.firstname.blank? %>
-                  <span class="empty">None specified</span>
+                <span class="empty">None specified</span>
               <% else %>
-                  <%= @user.profile.firstname %>
+                <%= @user.profile.firstname %>
               <% end %>
             </p>
 
             <p>
               <strong>Surname</strong><br/>
               <% if @user.profile.surname.blank? %>
-                  <span class="empty">None specified</span>
+                <span class="empty">None specified</span>
               <% else %>
-                  <%= @user.profile.surname %>
+                <%= @user.profile.surname %>
               <% end %>
             </p>
 
 
             <p>
               <strong>Public email</strong><br/>
-            <% if @user.profile.email.blank? %>
+              <% if @user.profile.email.blank? %>
                 <span class="empty">None specified</span>
-            <% else %>
+              <% else %>
                 <%= mail_to @user.profile.email %>
-            <% end %>
+              <% end %>
             </p>
 
             <p>
               <strong><%= model_class.human_attribute_name(:website) %></strong><br/>
               <% if @user.profile.website.blank? %>
-                  <span class="empty">None specified</span>
+                <span class="empty">None specified</span>
               <% else %>
-                  <%= link_to @user.profile.website, @user.profile.website, rel: 'nofollow' %>
+                <%= link_to @user.profile.website, @user.profile.website, rel: 'nofollow', target: '_blank' %>
               <% end %>
             </p>
 
-            <% if !current_user.nil? and current_user == @user %>
-                <div class="row">
-                  <%= link_to t('.edit', :default => 'Edit profile'), edit_user_path(@user), :class => 'btn btn-primary center-block' %>
-                </div>
-            <% end %>
+            <p>
+              <strong>ORCID</strong><br/>
+              <% if @user.profile.orcid.blank? %>
+                <span class="empty">None specified</span>
+              <% else %>
+                <%= link_to @user.profile.orcid, @user.profile.orcid, rel: 'nofollow', target: '_blank' %>
+              <% end %>
+            </p>
+
+            <p>
+              <strong>Included in Registry of Trainers:</strong>
+              <% if @user.profile.public? %>
+                <span style="color: green;">Yes</span>
+              <% else %>
+                <span style="color: red;">No</span>
+              <% end %>
+            </p>
+            
           </div>
         </div>
       </li>
       <li><h4 class="nav-heading">Account details</h4></li>
       <li style="padding: 10px 10px;">
         <div class="row">
-        <div class="col-xs-12">
-          <p>
-            <strong>Role</strong><br/>
-            <%= @user.role.title %>
-          </p>
+          <div class="col-xs-12">
+            <p>
+              <strong>Role</strong><br/>
+              <%= @user.role.title %>
+            </p>
 
-          <% if !current_user.nil? and current_user == @user %>
+            <% if !current_user.nil? and current_user == @user %>
               <p>
                 <strong>Account email</strong><br/>
                 <%= @user.email %>
               </p>
 
               <p>
-                <strong>Authentication token</strong><span class="empty" style="font-style: italic;"> (keep it secret)</span><br/>
+                <strong>Authentication token</strong><br/>
+                <span class="empty" style="font-style: italic;">(keep it secret)</span><br/>
                 <%= @user.authentication_token %>
               </p>
-          <% end %>
+            <% end %>
 
-          <% if !current_user.nil? and current_user == @user %>
-              <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default center-block' %>
-          <% end %>
-        </div>
+            <% if TeSS::Config.feature['registration'] %>
+              <% if !current_user.nil? and current_user == @user %>
+                <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default center-block' %>
+              <% end %>
+            <% end %>
+          </div>
         </div>
       </li>
     </ul>
@@ -93,23 +109,30 @@
     <div class="row">
       <div class="content_action">
         <% if !current_user.nil? and policy(@user).update? %>
-            <%= link_to t('.edit', :default => 'Edit profile'), edit_user_path(@user), :class => 'btn btn-primary' %>
+          <%= link_to t('.edit', :default => 'Edit profile'), edit_user_path(@user), :class => 'btn btn-primary' %>
 
-            <% if current_user == @user %>
-                <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default' %>
-
-                <%= link_to "Manage subscriptions", subscriptions_path, :class => 'btn btn-default' %>
+          <!-- Current User functions -->
+          <% if current_user == @user %>
+            <!-- Registration Button -->
+            <% if TeSS::Config.feature['registration'] %>
+              <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default' %>
             <% end %>
-
-            <% if current_user.try(:is_admin?) %>
-                <% if @user.banned? %>
-                    <%= link_to 'Remove ban', user_ban_path(@user),
-                                data: { confirm: 'Are you sure you want to remove this ban?.' },
-                                method: :delete, class: 'btn btn-danger' %>
-                <% else %>
-                    <%= link_to 'Ban', new_user_ban_path(@user), class: 'btn btn-danger' %>
-                <% end %>
+            <!-- Subscriptions Button -->
+            <% if TeSS::Config.feature['subscription'] %>
+              <%= link_to "Manage subscriptions", subscriptions_path, :class => 'btn btn-default' %>
             <% end %>
+          <% end %>
+
+          <!-- Admin User functions -->
+          <% if current_user.try(:is_admin?) %>
+            <% if @user.banned? %>
+              <%= link_to 'Remove ban', user_ban_path(@user),
+                          data: { confirm: 'Are you sure you want to remove this ban?.' },
+                          method: :delete, class: 'btn btn-danger' %>
+            <% else %>
+              <%= link_to 'Ban', new_user_ban_path(@user), class: 'btn btn-danger' %>
+            <% end %>
+          <% end %>
         <% end %>
       </div>
     </div>
@@ -122,72 +145,118 @@
       <% past_events = @user.events.finished %>
       <% events = upcoming_events.limit(resource_limit) %>
       <% workflows = @user.workflows.visible_by(current_user) %>
+      <% packages = @user.packages.limit(resource_limit) %>
 
       <ul class="nav nav-tabs">
-        <%= tab('Materials', icon_class_for_model('materials'), 'materials', active: true,
-                disabled: { check: materials.none?, message: 'No registered training materials' },
-                count: @user.materials.count) %>
 
-        <%= tab('Events', icon_class_for_model('events'), 'events',
-                disabled: { check: @user.events.count.zero?, message: 'No registered events' },
-                count: @user.events.count) %>
+        <!-- Tab: Events -->
+        <% if TeSS::Config.feature['events'] %>
+          <%= tab('Events', icon_class_for_model('events'), 'events', active: true,
+                  disabled: { check: @user.events.count.zero?, message: 'No registered events' },
+                  count: @user.events.count) %>
+        <% end %>
 
-        <%= tab('Workflows', icon_class_for_model('workflows'), 'workflows',
-                disabled: { check: workflows.none?, message: 'No workflows' },
-                count: workflows.count) %>
+        <!-- Tab: Materials -->
+        <% if TeSS::Config.feature['materials'] %>
+          <%= tab('Materials', icon_class_for_model('materials'), 'materials',
+                  disabled: { check: materials.none?, message: 'No registered training materials' },
+                  count: @user.materials.count) %>
+        <% end %>
+
+        <!-- Tab: Packages -->
+        <% if TeSS::Config.feature['packages'] %>
+          <%= tab('Packages', icon_class_for_model('packages'), 'packages',
+                  disabled: { check: packages.none?, message: 'No registered packages' },
+                  count: @user.packages.count) %>
+        <% end %>
+
+        <!-- Tab: Workflows -->
+        <% if TeSS::Config.feature['workflows'] %>
+          <%= tab('Workflows', icon_class_for_model('workflows'), 'workflows',
+                  disabled: { check: workflows.none?, message: 'No workflows' },
+                  count: workflows.count) %>
+        <% end %>
       </ul>
 
       <div class="tab-content">
-        <div id="materials" class="tab-pane fade in active">
-          <div class="row">
-            <div class="search-results-count">
-              <%= (materials.count > 0 ? "Showing" : "Found") + " #{pluralize(materials.count, "material")}#{(@user.materials.count > resource_limit) ? " out of #{@user.materials.count}" : ''}." %>
-              <%= link_to('View all results.', materials_path(user: @user.username)) if (@user.materials.count > resource_limit) %>
-            </div>
 
-            <% materials.each do |material| %>
-                <%= render material %>
-            <% end %>
-          </div>
-        </div>
-        <div id="events" class="tab-pane fade">
-          <div class="row">
-            <div class="search-results-count">
-              <%= (upcoming_events.count > 0 ? "Showing" : "Found") + " #{pluralize(events.count, "upcoming event")}#{(upcoming_events.count > resource_limit) ? " out of #{upcoming_events.count}" : ''}." %>
-              <%= "Found #{pluralize(past_events.count, "past event")}." %>
-            </div>
-            <ul>
-              <% if upcoming_events.count > resource_limit %>
-                <li><%= link_to('View all upcoming events', events_path(user: @user.username)) %></li>
-              <% end %>
-              <% if past_events.count > 0 %>
-                <li><%= link_to('View all events', events_path(user: @user.username, include_expired: true)) %></li>
-              <% end %>
-            </ul>
-            <% if events.count > 0 %>
+        <!-- Tab: Events -->
+        <% if TeSS::Config.feature['events'] %>
+          <div id="events" class="tab-pane fade in active">
+            <div class="row">
+              <div class="search-results-count">
+                <%= (upcoming_events.count > 0 ? "Showing" : "Found") + " #{pluralize(events.count, "upcoming event")}#{(upcoming_events.count > resource_limit) ? " out of #{upcoming_events.count}" : ''}." %>
+                <%= "Found #{pluralize(past_events.count, "past event")}." %>
+              </div>
+              <ul>
+                <% if upcoming_events.count > resource_limit %>
+                  <li><%= link_to('View all upcoming events', events_path(user: @user.username)) %></li>
+                <% end %>
+                <% if past_events.count > 0 %>
+                  <li><%= link_to('View all events', events_path(user: @user.username, include_expired: true)) %></li>
+                <% end %>
+              </ul>
+              <% if events.count > 0 %>
                 <ul class="masonry media-grid" style="margin-top: 15px;">
                   <% events.each do |event| %>
-                      <%= render event %>
+                    <%= render event %>
                   <% end %>
                 </ul>
-            <% end %>
-          </div>
-        </div>
-        <div id="workflows" class="tab-pane fade">
-          <div class="row">
-            <div class="search-results-count">
-              <%= pluralize(workflows.count, 'workflow') %> found
+              <% end %>
             </div>
-            <% if workflows.any? %>
+          </div>
+        <% end %>
+
+        <!-- Tab: Materials -->
+        <% if TeSS::Config.feature['materials'] %>
+          <div id="materials" class="tab-pane fade">
+            <div class="row">
+              <div class="search-results-count">
+                <%= (materials.count > 0 ? "Showing" : "Found") + " #{pluralize(materials.count, "material")}#{(@user.materials.count > resource_limit) ? " out of #{@user.materials.count}" : ''}." %>
+                <%= link_to('View all results.', materials_path(user: @user.username)) if (@user.materials.count > resource_limit) %>
+              </div>
+              <% materials.each do |material| %>
+                <%= render material %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- Tab: Packages -->
+        <% if TeSS::Config.feature['packages'] %>
+          <div id="packages" class="tab-pane fade">
+            <div class="row">
+              <div class="search-results-count">
+                <%= (packages.count > 0 ? "Showing" : "Found") + " #{pluralize(packages.count, "package")}#{(@user.packages.count > resource_limit) ? " out of #{@user.packages.count}" : ''}." %>
+                <%= link_to('View all results.', packages(user: @user.username)) if (@user.packages.count > resource_limit) %>
+              </div>
+              <% packages.each do |package| %>
+                <%= render package %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- Tab: Workflows -->
+        <% if TeSS::Config.feature['workflows'] %>
+          <div id="workflows" class="tab-pane fade">
+            <div class="row">
+              <div class="search-results-count">
+                <%= pluralize(workflows.count, 'workflow') %> found
+              </div>
+              <% if workflows.any? %>
                 <ul class="masonry media-grid" style="margin-top: 15px;">
                   <% workflows.each do |workflow| %>
-                      <%= render workflow %>
+                    <%= render workflow %>
                   <% end %>
                 </ul>
-            <% end %>
+              <% end %>
+            </div>
           </div>
-        </div>
-      </div>
+        <% end %>
+
+      </div> <!-- end tab-content -->
+
     </div>
   </div>
 </div>

@@ -26,6 +26,12 @@ module TeSS
     end
 
     config.tess = config_for(:tess)
+
+    # locales
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
+    config.i18n.available_locales = [:en, :'en-AU', :'en-EU']
+    config.i18n.default_locale = :en
+    config.i18n.locale = config.tess['site']['theme'] || config.i18n.default_locale
   end
 
   Config = OpenStruct.new(Rails.configuration.tess)

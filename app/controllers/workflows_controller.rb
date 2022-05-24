@@ -1,3 +1,4 @@
+# The controller for actions related to the Workflows model
 class WorkflowsController < ApplicationController
 
   layout 'application'

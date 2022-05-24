@@ -7,3 +7,49 @@ blocked_domains:
   - !ruby/regexp '/bad-domain\.example/'
 identifiers_url: "http://example.com/identifiers/"
 identifiers_prefix: banana
+site:
+  title: 'Digital Research Skills Australasia'
+  title_short: 'DReSA'
+  favicon: ''
+  logo: ''
+  logo_alt: ''
+  logo_open_graph: ''
+  logo_email: ''
+  theme: 'en'
+  repository: ''
+  supported_by: 'elixir_supported_by'
+  widget_example: 'elixir_widget_example'
+  gmaps_api_key: ''
+mailer:
+  location: '/usr/sbin/sendmail'
+  arguments: '-i -t'
+questionnaire:
+  show: true
+  message: ''
+  url: ''
+parent_org:
+  name: ''
+  url: ''
+feature:
+  e-learnings: true
+  events: true
+  invitation: true
+  materials: true
+  nodes: true
+  packages: true
+  providers: true
+  registration: true
+  subscription: true
+  trainers: true
+  workflows: true
+  disabled: []
+dictionaries:
+  difficulty: 'difficulty.yml'
+  eligibility: 'eligibility.yml'
+  event_types: 'event_types.yml'
+  cost_basis: 'cost_basis.yml'
+  licences: 'licences_dresa.yml'
+  material_status: 'material_status.yml'
+  material_type: 'material_type.yml'
+  target_audience: 'target_audience.yml'
+  trainer_experience: 'trainer_experience.yml'

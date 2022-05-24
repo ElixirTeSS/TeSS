@@ -9,16 +9,16 @@
         </div>
       </div>
       <div class="col-md-10 latest_suggestion_description">
-        <%=  sugestion.material.short_description %>
+        <%=  sugestion.material.description %>
       </div>
     </div>
     <div class="row">
       <%= suggestion.scientific_topics {|values| values.map{|x| x.preferred_label}.join(', ')}-%>
       <% days = ((Time.now - suggestion.created_at) / 1.day).to_i %>
       <% if days == 0 %>
-        <div class="days_ago_text">Added to TeSS today </div>
+        <div class="days_ago_text">Added to <%= TeSS::Config.site['title_short'] %> today </div>
       <% else %>
-        <div class="days_ago_text">Added to TeSS <%= pluralize(days, "day") %> ago</div>
+        <div class="days_ago_text">Added to <%= TeSS::Config.site['title_short'] %> <%= pluralize(days, "day") %> ago</div>
       <% end %>
     </div>
   </div>

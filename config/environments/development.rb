@@ -31,10 +31,37 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options)
   config.active_storage.service = :local
 
-  # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  # action mailer smtp settings
+  if TeSS::Config.mailer['delivery_method'] == 'smtp'
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = Rails.application.secrets[:smtp] if Rails.application.secrets.key?(:smtp)
+  end
+
+  # action mailer sendmail settings
+  if TeSS::Config.mailer['delivery_method'] == 'sendmail'
+    config.action_mailer.delivery_method = :sendmail
+    config.action_mailer.perform_deliveries = true
+    config.action_mailer.default_options = {
+      from: TeSS::Config.sender_email
+    }
+    #config.action_mailer.sendmail_settings = {
+    #  location: TeSS::Config.mailer['location'],
+    #  arguments: TeSS::Config.mailer['arguments']
+    #}
+  end
+
+  # action mailer other options
   config.action_mailer.perform_caching = false
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.asset_host = TeSS::Config.base_url
+  config.action_mailer.default_url_options = {
+    host: URI.parse(TeSS::Config.base_url).host,
+    port: URI.parse(TeSS::Config.base_url).port,
+    protocol: URI.parse(TeSS::Config.base_url).scheme
+  }
+
+  # console whitelisted ip addresses
+  config.web_console.whitelisted_ips = '1.120.119.251'
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
@@ -59,4 +86,9 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  # Allow iFrame to work
+  config.action_dispatch.default_headers = {
+    'X-Frame-Options' => 'SAMEORIGIN'
+  }
 end

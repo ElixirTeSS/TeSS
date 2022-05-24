@@ -1,0 +1,18 @@
+webinar:
+  title: Webinar
+  description:
+workshop:
+  title: Workshop
+  description:
+conference:
+  title: Conference
+  description:
+meeting:
+  title: Meeting
+  description:
+hackathon:
+  title: Hackathon
+  description:
+dropin:
+  title: Drop-in session or hackyhour
+  description:

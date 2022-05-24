@@ -173,9 +173,9 @@ definitions:
       url:
         type: string
         description: The URL where the actual material can be found.
-      short_description:
+      description:
         type: string
-        description: A succinct description of what the training material is about. 
+        description: A description of what the training material is about.
       doi:
         type: string
         description: The DOI of the material (if it has one).
@@ -195,9 +195,6 @@ definitions:
         type: string
         format: date
         description: The date the material was last updated on TeSS
-      long_description:
-        type: string
-        description: A longer, more indepth explanation of the content of the training material.
       target_audience:
         type: array
         items:

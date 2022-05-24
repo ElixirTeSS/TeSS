@@ -4,43 +4,70 @@
 <div class="wrapper collapsing-wrapper">
   <%# SIDEBAR %>
   <div class="collapsing-sidebar" id="sidebar">
-    <%= render :partial => "content_providers/partials/content_provider_sidebar", :locals => {:content_provider => @content_provider} %>
+    <%= render :partial => "content_providers/partials/content_provider_sidebar",
+               :locals => { content_provider: @content_provider } %>
   </div>
   <div id="content">
     <div class="row">
-      <%# ACTION BUTTONS %>
-      <div class="content_action">
-        <%= link_to t('.back', :default => t("helpers.links.back")), content_providers_path, :class => 'btn btn-info' %>
+      <% if !current_user.nil? and policy(@content_provider).update? %>
+        <div class="content_action pull-left">
+          <%= link_to sources_path(content_provider: @content_provider.title),
+                      class: 'btn btn-primary align-self-end' do %>
+            Ingestion Sources
+          <% end %>
+        </div>
+      <% end %>
 
-        <%= render partial: 'common/identifiers_dot_org_button', locals: { resource: @content_provider } if TeSS::Config.identifiers_prefix %>
+      <div class="content_action pull-right">
+        <%= link_to t('.back', :default => t("helpers.links.back")),
+                    content_providers_path, :class => 'btn btn-info' %>
+
+        <%= render partial: 'common/identifiers_dot_org_button',
+                   locals: { resource: @content_provider } if TeSS::Config.identifiers_prefix %>
 
         <% if !current_user.nil? and policy(@content_provider).update? %>
-            <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                        edit_content_provider_path(@content_provider), :class => 'btn btn-primary' %>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_content_provider_path(@content_provider), :class => 'btn btn-primary' %>
         <% end %>
+
         <% if !current_user.nil? and policy(@content_provider).destroy? %>
-            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                        content_provider_path(@content_provider),
-                        :method => 'delete',
-                        :data => {:confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?'))},
-                        :class => 'btn btn-danger' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      content_provider_path(@content_provider),
+                      :method => 'delete',
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-danger' %>
         <% end %>
       </div>
     </div>
+
     <div class="row">
       <p>
-        <%= link_to(image_tag(@content_provider.image.url, :class => "medium-content-provider-logo"), @content_provider.url, :target => @content_provider.url) %>
+        <%= link_to(image_tag(@content_provider.image.url, :class => "medium-content-provider-logo"),
+                    @content_provider.url, :target => '_blank',
+                    :onclick => "getOutboundLink('#{@content_provider.url}'); return true;") %>
       </p>
+
       <p>
-        <%= link_to @content_provider.title, @content_provider.url, :class => "h5", :target => @content_provider.url %>
+        <%= link_to @content_provider.title, @content_provider.url, :class => "h5",
+                    :target => '_blank',
+                    :onclick => "getOutboundLink('#{@content_provider.url}'); return true;" %>
       </p>
-      <% unless @content_provider.description.blank? %>
-          <p class="minimise">
-            <%= render_markdown @content_provider.description %>
-          </p>
+
+      <% unless @content_provider.contact.blank? %>
+        <p><strong>Contact:&nbsp;</strong><%= @content_provider.contact %></p>
       <% end %>
-      <%= render partial: 'content_providers/partials/content_provider_schemaorg', locals: { content_provider: @content_provider } %>
+
+      <% unless @content_provider.description.blank? %>
+        <p class="minimise"><%= render_markdown @content_provider.description %></p>
+      <% end %>
+
+      <%= render partial: 'content_providers/partials/content_provider_schemaorg',
+                 locals: { content_provider: @content_provider } %>
+
+      <%= render partial: 'content_providers/partials/twitter_card',
+                 locals: { content_provider: @content_provider } %>
     </div>
+
     <div class="row">
       <ul class="nav nav-tabs">
         <%= tab('Materials', icon_class_for_model('materials'), 'materials', active: materials.any? || events.none?,
@@ -67,7 +94,7 @@
             </div>
 
             <% materials.each do |material| %>
-                <%= render material %>
+              <%= render material %>
             <% end %>
           </div>
         </div>
@@ -86,11 +113,11 @@
                 <%= link_to('View all results.', events_path(content_provider: @content_provider.title, include_expired: true)) if (upcoming_events.count > 30 || past_events.count > 0) %>
               </div>
               <% if upcoming_events.count > 0 %>
-                  <ul class="masonry media-grid" style="margin-top: 15px;">
-                    <% upcoming_events.each do |upcoming_event| %>
-                        <%= render upcoming_event %>
-                    <% end %>
-                  </ul>
+                <ul class="masonry media-grid" style="margin-top: 15px;">
+                  <% upcoming_events.each do |upcoming_event| %>
+                    <%= render upcoming_event %>
+                  <% end %>
+                </ul>
               <% end %>
             </div>
           </div>

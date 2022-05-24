@@ -1,0 +1,15 @@
+none:
+  title: 'None'
+  description: 'No experience as a trainer'
+beginner:
+  title: '< 2 years'
+  description: 'Less than 2 years as a trainer'
+competant:
+  title: '2-5 years'
+  description: 'Between 2 and 5 years'
+experienced:
+  title: '6-10 years'
+  description: 'Between 6 and 10 years'
+expert:
+  title: '10+ years'
+  description: 'More than 10 years'

@@ -1,0 +1,32 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Pawsey Supercomputing Centre - ECPv5.1.4//NONSGML v1.0//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Pawsey Supercomputing Centre
+X-ORIGINAL-URL:https://pawsey.org.au
+X-WR-CALDESC:Events for Pawsey Supercomputing Centre
+BEGIN:VTIMEZONE
+TZID:Australia/Perth
+BEGIN:STANDARD
+TZOFFSETFROM:+0800
+TZOFFSETTO:+0800
+TZNAME:AWST
+DTSTART:20220101T000000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+DTSTART;TZID=Australia/Perth:20210211T094500
+DTEND;TZID=Australia/Perth:20210211T125000
+DTSTAMP:20220208T213237
+CREATED:20220124T055538Z
+LAST-MODIFIED:20220203T145719Z
+UID:17329-1644572700-1644583800@pawsey.org.au
+SUMMARY:Pawsey Intern Showcase 2021
+DESCRIPTION:
+URL:https://pawsey.org.au/event/pawsey-intern-showcase-2021/
+LOCATION:Online\, Virtual\, Australia
+CATEGORIES:Conference,Supercomputing,Webinar
+ATTACH;FMTTYPE=image/jpeg:https://pawsey.org.au/wp-content/uploads/2022/01/Intern-Group-Photo-Collage.jpg
+END:VEVENT
+END:VCALENDAR

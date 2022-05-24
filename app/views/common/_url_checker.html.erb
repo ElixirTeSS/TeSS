@@ -1,5 +1,6 @@
 <% opts = {} %>
 <% opts['data-url-check'] = url if f.object.new_record? %>
+<% opts['title'] = title unless title.nil? %>
 
 <div class="form-group">
   <%= f.input :url, as: :string, hint: ' ', field_lock: f.object.respond_to?(:locked_fields), input_html: opts %>

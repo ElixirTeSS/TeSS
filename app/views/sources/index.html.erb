@@ -1,0 +1,46 @@
+<div class="wrapper">
+  <% if TeSS::Config.solr_enabled %>
+    <div id="sidebar" class="popout-sidebar">
+      <%= render partial: "search/common/facet_sidebar",
+                 locals: { resources: @sources_results, resource_type: Source } %>
+    </div>
+  <% end %>
+
+  <div id="content">
+    <div class="row">
+      <div class="content_action pull-left">
+        <% if !current_user.nil? and (current_user.is_curator? or current_user.is_admin?) %>
+          <%= link_to new_source_path(content_provider: @content_provider),
+                      class: 'btn btn-primary' do %>
+            <i class="fa fa-plus-square"></i> Create source
+          <% end %>
+        <% end %>
+      </div>
+      <div class="content_action pull-right">
+        <% if @content_provider %>
+          <%= link_to 'Back', @content_provider, class: 'btn btn-info' %>
+        <% end %>
+      </div>
+    </div>
+
+    <% if TeSS::Config.solr_enabled %>
+      <div class="row">
+        <%= render partial: "search/common/search_box",
+                   locals: { resource_path: sources_path } %>
+        <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
+          <i class="fa fa-filter"></i> Filters
+        </button>
+        <%= render partial: "search/common/search_info",
+                   locals: { resources: @sources_results, resource_type: 'source' } %>
+        <%= render partial: "search/common/search_filters",
+                   locals: { resources: @sources_results } %>
+      </div>
+    <% end %>
+
+    <!-- %= render partial: "search/common/pagination_bar", locals: { resources: @sources } % -->
+    <hr>
+    <%= render partial: 'common/masonry_grid', locals: { objects: @sources } %>
+
+  </div>
+
+</div>

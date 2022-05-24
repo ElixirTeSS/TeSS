@@ -1,0 +1,14 @@
+<% content_for :og_header do %>
+  <% # event twitter meta tags -%>
+  <%= tag(:meta, name: "twitter:card",        content: 'summary') %>
+  <%= tag(:meta, name: "twitter:site",        content: TeSS::Config.site['title_short']) %>
+  <%= tag(:meta, name: "twitter:creator",     content: TeSS::Config.twitter_handle) %>
+  <%= tag(:meta, name: "twitter:image",       content: asset_url(content_provider.image.url)) %>
+  <%= tag(:meta, name: "twitter:title",       content: content_provider.title) %>
+  <%= tag(:meta, name: "twitter:description", content: content_provider.description) %>
+  <% # event OpenGraph meta tags -%>
+  <%= tag(:meta, property: "og:url",          content: request.original_url) %>
+  <%= tag(:meta, property: "og:image",        content: asset_url(content_provider.image.url)) %>
+  <%= tag(:meta, property: "og:title",        content: content_provider.title) %>
+  <%= tag(:meta, property: "og:description",  content: content_provider.description) %>
+<% end %>

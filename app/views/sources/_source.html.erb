@@ -1,0 +1,16 @@
+<div class="masonry-brick media-item long">
+  <h3 class="media-heading">
+    <%= get_source_title source %>
+    <%= resource_type_icon source %>
+    <%= enabled_icon source %>
+  </h3>
+  <div class="url-wrap">
+    URL: <%= source.url %>
+  </div>
+  <% unless source.finished_at.nil? %>
+    <div class="text-justify" style="word-break: normal;">
+      Finished at: <%= source.finished_at.strftime('%H:%M on %A, %d %B %Y (UTC)') %>
+    </div>
+  <% end %>
+  <%= link_to '', source, :class => "media-view" %>
+</div>

@@ -1,15 +1,17 @@
 <div class="wrapper">
-
   <div id="sidebar" class="popout-sidebar">
-    <%= render :partial => 'about_nav', locals: {show: 'us'} %>
+    <%= render :partial => 'about_nav', locals: { show: 'us' } %>
   </div>
 
   <div id="content" class="">
     <div class="about-block">
-      <%= render :partial => 'links', :locals => {'show': 'about'} %>
+      <%= render :partial => 'links', :locals => { 'show': 'about' } %>
+
+      <% @feature_count = 0 %>
+
       <!-- TeSS Club-->
       <div class="row">
-        <div class="odd-about-block">
+        <div class="<%= next_about_block(@feature_count += 1) %>">
           <div id='tess-club' class="h3">TeSS Club</div>
           <div class="sub-about-block">
             <p>Fortnightly meetings, hackathons, shared activities, open priority setting, open contribution to unite the community.</p>
@@ -18,58 +20,21 @@
           </div>
         </div>
       </div>
+
       <!-- CONTACT-->
       <div class="row">
-        <div class="even-about-block">
+        <div class="<%= next_about_block(@feature_count += 1) %>">
           <div id='contact' class="h3">Contact</div>
           <div class="sub-about-block">
-            <%#= render :partial => "common/contact_form"%>
-            For enquiries, information, or assistance; contact the TeSS support desk at <br> <a href="mailto:tess-support@googlegroups.com">tess-support@googlegroups.com</a>
+            <%== raw t 'us.contact' %>
           </div>
         </div>
       </div>
 
-      <!-- THE TEAM-->
-      <section id="team">
-      <div class="row">
-        <div class="odd-about-block">
-          <div id='team' class="h3">The Team</div>
-          <div class="h4">Leadership</div>
-          <ul>
-            <li>Carole Goble</li>
-            <li>Hedi Peterson</li>
-            <li>Alexia Cardona</li>
-          </ul>
-
-          <div class="h4">Project Management</div>
-          <ul>
-            <li>Chris Child</li>
-          </ul>
-
-          <div class="h4">Software Engineering</div>
-          <ul>
-            <li>Chris Child</li>
-          </ul>
-
-          <div class="h4">Past Members</div>
-          <ul>
-            <li>Aleksandra Nenadic - Project Manager</li>
-            <li>Aleksandra Pawlik - Project Manager</li>
-            <li>Teresa K. Attwood - Leadership</li>
-            <li>Susanna-Assunta Sansone - Leadership</li>
-            <li>Niall Beard - Project Management/Software Engineering</li>
-            <li>Finn Bacall - Software Engineering</li>
-            <li>Milo Thurston - Software Engineering</li>
-          </ul>
-        </div>
-      </div>
-      </section>
-
-
       <!-- FUNDING-->
       <section id="funding">
         <div class="row">
-          <div class="even-about-block">
+          <div class="<%= next_about_block(@feature_count += 1) %>">
             <div id='funding' class="h3">Funding</div>
             <p>European Commission, Horizon 2020 Research Infrastructures programme (ELIXIR-EXCELERATE, <a href="https://cordis.europa.eu/project/rcn/198519_en.html" target="_blank">grant agreement number 676559</a>);</p>
             <p>ELIXIR Implementation Study (Registry Integration from a User Perspective);</p>
@@ -90,8 +55,21 @@
                      <%= image_tag('bbsrc-logo.png', {class: "funding-logo"}) %>
                  <% end %>
                 </p>
+          </div>
+        </div>
+      </section>
 
-
+      <!-- THE TEAM-->
+      <section id="team">
+        <div class="row">
+          <div class="<%= next_about_block(@feature_count += 1) %>">
+            <div id='team' class="h3">The Team</div>
+            <%== raw t 'us.team.description' %>
+            <%== raw t 'us.team.develop' %>
+            <%== raw t 'us.team.working' %>
+            <%== raw t 'us.team.partner' %>
+            <%= render :partial => 'about/partner_orgs' %>
+            <%== raw t 'us.team.guidance' %>
           </div>
         </div>
       </section>
@@ -99,23 +77,16 @@
       <!-- ACKNOWLEDGEMENTS-->
       <section id="acknowledgements">
         <div class="row">
-          <div class="odd-about-block">
+          <div class="<%= next_about_block(@feature_count += 1) %>">
             <div id='acknowledgments' class="h3">Acknowledgements</div>
-
-            <p>The TeSS team would like to acknowledge the help of a number of groups and individuals, and thank them
-              for useful discussions, feedback and assistance in developing TeSS - to name but a few:</p>
-            <ul>
-              <li>ELIXIR technical staff and coordinators from the Hub, in particular Rafael Jimenez, Martin Cook and Premysl Velek</li>
-              <li>The ELIXIR Training Coordinators group, particularly Celia van Gelder, Patricia Palagi and Gabriella Rustici</li>
-              <li>The UK structural bioinformatics group, particularly Christine Orengo </li>
-            </ul>
+            <%== raw t 'us.acknowledge' %>
           </div>
         </div>
       </section>
-      
+
       <!-- Cite -->
       <div class="row">
-        <div class="even-about-block">
+        <div class="<%= next_about_block(@feature_count += 1) %>">
           <div id='cite' class="h3">Cite Us</div>
           <div class="sub-about-block">
             Niall Beard, Finn Bacall, Aleksandra Nenadic, Milo Thurston, Carole A Goble, Susanna-Assunta Sansone, Teresa K Attwood, TeSS: a platform for discovering life-science training opportunities, Bioinformatics, Volume 36, Issue 10, 15 May 2020, Pages 3290-3291, <a href="https://doi.org/10.1093/bioinformatics/btaa047">https://doi.org/10.1093/bioinformatics/btaa047</a>
@@ -123,15 +94,7 @@
         </div>
       </div>
 
-      <!-- PUBLICATIONS --><!--
-      <div class="row">
-        <div class="odd-about-block">
-          <div id='publications' class="h3">Publications</div>
-          ...
-        </div>
-      </div>-->
-
     </div>
-    <%= render :partial => 'links', :locals => {'show': 'about'} %>
+    <%= render :partial => 'links', :locals => { 'show': 'about' } %>
   </div>
 </div>

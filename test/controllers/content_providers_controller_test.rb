@@ -10,8 +10,9 @@ class ContentProvidersControllerTest < ActionController::TestCase
     #@content_provider.user_id = u.id
     #@content_provider.save!
     @updated_content_provider = {
-        title: 'New title',
-        short_description: 'New description'
+      title: 'New title',
+      description: 'New description',
+      contact: 'New contact'
     }
   end
 
@@ -96,7 +97,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_path
   end
 
-    #logged in but insufficient permissions = ERROR
+  #logged in but insufficient permissions = ERROR
   test 'should get edit for content provider owner' do
     sign_in @content_provider.user
     get :edit, params: { id: @content_provider }
@@ -117,7 +118,6 @@ class ContentProvidersControllerTest < ActionController::TestCase
   end
 
   test 'should not get edit page for non-owner user' do
-    #Administrator = SUCCESS
     sign_in users(:another_regular_user)
     get :edit, params: { id: @content_provider }
     assert :forbidden
@@ -127,7 +127,11 @@ class ContentProvidersControllerTest < ActionController::TestCase
   test 'should create content provider for user' do
     sign_in users(:regular_user)
     assert_difference('ContentProvider.count') do
-      post :create, params: { content_provider: {description: @content_provider.description, image_url: @content_provider.image_url, title: @content_provider.title, url: @content_provider.url } }
+      post :create, params: { content_provider: {
+        title: @content_provider.title,
+        url: @content_provider.url,
+        image_url: @content_provider.image_url,
+        description: @content_provider.description } }
     end
     assert_redirected_to content_provider_path(assigns(:content_provider))
   end
@@ -135,14 +139,22 @@ class ContentProvidersControllerTest < ActionController::TestCase
   test 'should create content provider for admin' do
     sign_in users(:admin)
     assert_difference('ContentProvider.count') do
-      post :create, params: { content_provider: { title: @content_provider.title, url: @content_provider.url, image_url: @content_provider.image_url, description: @content_provider.description } }
+      post :create, params: { content_provider: {
+        title: @content_provider.title,
+        url: @content_provider.url,
+        image_url: @content_provider.image_url,
+        description: @content_provider.description } }
     end
     assert_redirected_to content_provider_path(assigns(:content_provider))
   end
 
   test 'should not create content provider for non-logged in user' do
     assert_no_difference('ContentProvider.count') do
-      post :create, params: { content_provider: { title: @content_provider.title, url: @content_provider.url, image_url: @content_provider.image_url, description: @content_provider.description } }
+      post :create, params: { content_provider: {
+        title: @content_provider.title,
+        url: @content_provider.url,
+        image_url: @content_provider.image_url,
+        description: @content_provider.description } }
     end
     assert_redirected_to new_user_session_path
   end
@@ -177,7 +189,6 @@ class ContentProvidersControllerTest < ActionController::TestCase
   #UPDATE TEST
   test 'should update content provider' do
     sign_in @content_provider.user
-    # patch :update, params: { id: @content_provider, content_provider: { doi: @content_provider.doi,  remote_created_date: @content_provider.remote_created_date,  remote_updated_date: @content_provider.remote_updated_date, short_description: @content_provider.short_description, title: @content_provider.title, url: @content_provider.url } }
     patch :update, params: { id: @content_provider, content_provider: @updated_content_provider }
     assert_redirected_to content_provider_path(assigns(:content_provider))
   end
@@ -221,7 +232,6 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_redirected_to content_providers_path
   end
 
-
   test 'should not destroy content provider not owned by user' do
     sign_in users(:another_regular_user)
     assert_no_difference('ContentProvider.count') do
@@ -229,7 +239,6 @@ class ContentProvidersControllerTest < ActionController::TestCase
     end
     assert_response :forbidden
   end
-
 
   #CONTENT TESTS
   #BREADCRUMBS
@@ -387,14 +396,22 @@ class ContentProvidersControllerTest < ActionController::TestCase
 
   test 'should not list unverified events on content provider' do
     bad_user = users(:unverified_user)
-    bad_material = bad_user.materials.build(title: 'bla', url: 'http://example.com/spam', short_description: '123',
+    bad_material = bad_user.materials.build(title: 'bla', url: 'http://example.com/spam', description: '123',
+                                            doi: 'https://doi.org/10.1080/exa.2021.011', licence: 'Fair',
+                                            keywords: %w{ bad material user }, status: 'active',
+                                            contact: 'bad contact',
                                             content_provider: @content_provider)
     assert bad_material.user_requires_approval?
     bad_material.save!
 
     good_user = users(:regular_user)
-    good_material = good_user.materials.build(title: 'h', url: 'http://example.com/good-stuff', short_description: '456',
-                                              content_provider: @content_provider)
+    good_material = good_user.materials.build(title: 'h', url: 'http://example.com/good-stuff',
+                                              description: '456', licence: 'Fair',
+                                              doi: 'https://doi.org/10.1080/exa.2021.011',
+                                              keywords: %w{ good material user },
+                                              contact: 'good contact',
+                                              content_provider: @content_provider,
+                                              status: 'development')
     refute good_material.user_requires_approval?
     good_material.save!
 
@@ -431,7 +448,6 @@ class ContentProvidersControllerTest < ActionController::TestCase
         assert_equal(response.body,'[]')
         end
 =end
-
 
 end
 

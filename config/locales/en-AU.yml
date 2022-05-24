@@ -1,0 +1,421 @@
+en-AU:
+  pundit:
+    default: 'You are not authorised to perform this action.'
+    material_policy:
+    event_policy:
+  activerecord:
+    errors:
+      models:
+        material:
+          attributes:
+            url:
+              url: 'is not valid'
+    attributes:
+      content_provider:
+        url: 'URL'
+      event:
+        url: 'URL'
+      material:
+        doi: 'DOI'
+        url: 'URL'
+      profile:
+        firstname: 'First name'
+        surname: 'Last name'
+  home:
+    welcome: "Welcome to Digital Research Skills Australasia (DReSA)"
+    subtitle: "Browsing, discovering and organising digital research events and training resources, collected from Australasian providers."
+    events_message: "Browse and discover training events from across Australasia."
+    materials_message: "Browse and discover training materials from Australasian providers."
+    workflows_message: "Create training workflows to visualise learning steps and link to resources specific to your training needs."
+    providers_message: "Browse and discover Australasian training providers who contribute events and materials to DReSA."
+    trainers_message: "Browse and discover Australasian trainers for digital research skills."
+  footer:
+    funded_by: >
+      <p>DReSA has received investments from the
+      <a href='https://www.pawsey.org.au/' target='_blank'>Pawsey Supercomputing Research Centre (Pawsey)</a> and the
+      <a href='https://www.ardc.edu.au/' target='_blank'>Australian Research Data Commons (ARDC)</a>.</p>
+      <p>Pawsey and ARDC are funded by the National Collaborative Research Infrastructure Strategy (NCRIS).</p>
+    acknowledgement: >
+      We acknowledge and pay respects to the Elders and Traditional Owners of the lands on which our partner
+      organisations stand.
+  about:
+    registry: >
+      <p>DReSA makes it easier for learners, trainers, and training providers to find digital research skills-focused
+      educational events and resources.</p>
+      <p>Through DReSA, its creators seek to: <ul>
+      <li>Lift Australasian researchers' capabilities and skills by improving the findability of events and resources</li>
+      <li>Build national, collaborative, training partnerships</li>
+      <li>Strategically leverage trainers' and learners' time and resources</li>
+      </ul></p>
+      <p>DReSA began as a grassroots movement among trainers and training providers in Australia and New Zealand to improve
+      the discoverability of training. After scoping the landscape for similar solutions, the Working Group located
+      ELIXIR's TeSS platform. From there, began a truly collaborative, global partnership with ELIXIR and an exchange
+      of, not only the infrastructure that underlies TeSS, but also the ideas, support and encouragement.</p>
+    events: >
+      <p>Events in DReSA are defined as face-to-face or online training opportunities that have set start and end times.
+      These primarily take the form of workshops, courses, webinars, etc.</p>
+      <p>DReSA also collects information about conferences, meetings, and hackathons, as these may also provide
+      opportunities for learning.</p>
+    nominatim: "<a href='https://wiki.openstreetmap.org/wiki/Nominatim', target='_blank'>Nominatim</a>"
+    materials: >
+      Materials in DReSA are defined as training resources that can be accessed at any time. These may be in
+      a variety of different formats, including online tutorials, videos, PowerPoint presentations, and so on.
+    workflows: ''
+    learning_paths: ''
+    concept_maps: ''
+    resources: ''
+    subscribe: >
+      DReSA also provides a subscription feature to help users to stay informed about training events of interest to
+      them. The service may be customised by selecting the relevant filters, and initiated via the subscribe button.
+      Users may choose to receive email notifications about upcoming events, or have them automatically added to their
+      preferred calendar application.
+    widgets: >
+      providers, institutions and organizations may readily import information, about relevant events and materials, to
+      their site using widgets. Alternatively, they can create custom feeds using our API.
+  developer:
+    license: >
+      DReSA is committed to the FAIR principles: making data findable, accessible, interoperable and re-usable.
+      As such, all data in DReSA is available under the CC BY 4.0 licence, and can be accessed through our API
+      and widgets. The DReSA codebase is also available on <a href="https://github.com/nrmay/TeSS/"
+      target="_blank">GitHub</a> for re-use under the BSD Licence.
+    code_license: >
+      <a href="https://github.com/nrmay/TeSS/blob/master/LICENSE", target="_blank">BSE 3-Clause</a>
+    data_license: >
+      <a href="https://creativecommons.org/licenses/by/4.0/", target="_blank">Creative Commons CC-BY 4.0</a>
+    gmaps_countries: >
+      'Australia', 'New Zealand'
+    widgets: >
+      DReSA events and materials can be displayed on your website using widgets.
+      There are several different styles and functionalities available from our configurable widget suite.
+      The javascript code and documentation about using these widgets is available in our detailed documentation guide.
+    widgets_available: "https://nrmay.github.io/TeSS_widgets/"
+    widgets_mailing: >
+      <p>If you do decide to include our widgets on your website, we have a mailing list you can join to keep informed
+        about any service disruptions, required updates, or new features</p>
+      <p><a href="https://groups.google.com/forum/#!forum/tess-widgets-user-group",
+            class="btn btn-primary", target="_blank" >
+            <i class="fa fa-envelope"></i> Join the widgets mailing list</a></p>
+    api_example_1: "/events.json_api"
+    api_example_2: ""
+    api_example_3: "/materials.json_api"
+    api_example_4: "/content_providers.json_api"
+    api_example_5: "/workflows.json_api"
+    swaggerhub: >
+      <p>The full documentation for our JSON API with interactive examples can be found in our
+        <a href="https://app.swaggerhub.com/apis/fbacall/TeSS-JSON-API/0.2.0", target="_blank">
+          Swagger Hub Documentation</a>
+      </p>
+      <p><a href="https://app.swaggerhub.com/apis/fbacall/TeSS-JSON-API/0.2.0", class="btn btn-primary", target="_blank">
+        View our API on SwaggerHub <img src="/assets/swagger.png", width="20" height="20"></a></p>
+      <p>We recommend using our JSON API, but if you have already begun using our old API technical information
+        can still be found on our <a href="https://app.swaggerhub.com/api/njall/TeSS/1.0.0/">here</a>.</p>
+  us:
+    tess_club: >
+      <p>Fortnightly meetings, hackathons, shared activities, open priority setting, open contribution to unite the
+      community.</p><p>The TeSS Club runs fortnightly at 9:00 GMT / 10:00 CET Friday.</p><p>For all the details please
+      visit the <a href="https://elixirtess.github.io/about/">TeSS Club Website</a>.</p>
+    contact: >
+      For enquiries, information, or assistance; contact the DReSA support desk at:
+      <a href="mailto:support@dresa.edu.au">support@dresa.edu.au</a>
+    team:
+      description: >
+        <p>The idea for a training registry and calendar had been bubbling away for some time. Seen by trainers and
+        training providers as a challenge to tackle, DReSA was born out of the need to improve the discoverability of
+        training. The Working Group formed at the ARDC Skills Summit 2020, as a result of active participation,
+        collaboration and a common objective. A key first step was to scan the landscape for similar solutions, with
+        the Working Group identifying ELIXIR's TeSS platform as a likely exemplar. From there began a truly
+        collaborative and global partnership with ELIXIR and an exchange of the infrastructure that underlies TeSS, and
+        also ideas, support and encouragement.</p>
+      develop: >
+        <div class="h4">Software Engineering & Project Management</div>
+        <ul><li>Nick May (Contractor)</li></ul><br/>
+      working: >
+        <div class="h4">Working Group Members</div>
+        <div class="h5">Product Owners</div>
+        <ul>
+        <li>Anastasios Papaioannou (Intersect Australia)</li>
+        <li>Ann Backhaus (Pawsey Supercomputing Research Centre)</li>
+        <li>Kathryn Unsworth (Australian Research Data Commons - ARDC)</li>
+        <li>Melissa Burke (Australian BioCommons)</li>
+        </ul>
+        <div class="h5">Core Members</div>
+        <ul>
+        <li>Christina Street (Commonwealth Scientific and Industrial Research Organisation - CSIRO)</li>
+        <li>Christopher McAvaney (Deakin University)</li>
+        <li>Darya Vanichkina (University of Sydney, Sydney Informatics Hub)</li>
+        <li>Jingbo Wang (National Computational Infrastructure - NCI)</li>
+        <li>Jon Symon (University of Newcastle)</li>
+        <li>Kay Steel (Federation University)</li>
+        <li>Kiowa Scott (Monash University)</li>
+        <li>Mark Crowe (Queensland Cyber Infrastructure Foundation - QCIF)</li>
+        <li>Mortaza Rezae (Australian Space Data Analysis Facility, ASDAF)</li>
+        <li>Nick Hamilton (University of Queensland, QCIF)</li>
+        <li>Phillippa Bourke (University of Sydney)</li>
+        <li>Titus Tang (Monash University, Data Science and AI Platform)</li>
+        </ul><br/>
+      partner: '<div class="h4">Partner Organisations</div><br/>'
+      guidance: >
+        <div class="h4">Additional Guidance</div>
+        <ul>
+        <li>Angus White (DCC UK)</li>
+        <li>Chris Child (ELIXIR TeSS)</li>
+        <li>Iryna Kuchma (IEFL)</li>
+        </ul>
+    funding: >
+      <p>DReSA received investments from the
+      <a href="https://pawsey.org.au" target="_blank">Pawsey Supercomputing Research Centre (Pawsey)</a> and the
+      <a href="https://ardc.edu.au" target="_blank">Australian Research Data Commons (ARDC)</a>.</p>
+      <p> Pawsey and ARDC are funded by the National Collaborative Research Infrastructure Strategy (NCRIS).</p>
+    acknowledge: >
+      <p>The DReSA team would like to acknowledge the help of a number of groups and individuals, and thank them
+         for useful discussions, feedback and assistance in developing the DReSA portal:</p>
+      <ul>
+        <li>Members of the ARDC National Training Registry Working Group</li>
+        <li>Attendees of eResearch and Data Skills conferences</li>
+        <li><a href="https://tess.elixir-europe.org/" target="_blank">ELIXIR's Training Platform</a> and
+            <a href="https://elixirtess.github.ioi/about/" target="_blank">TeSS community</a></li>
+        <li><a href="https://www.dcc.ac.uk/" target="_blank">The Digital Curation Centre</a></li>
+        <li><a href="https://eosc-portal.eu/" target="_blank">The European Open Science Cloud</a></li>
+      </ul>
+  register:
+    resources: >
+      <p>Adding events to DReSA make them easier to find for learners, trainers and other training providers.
+      This can help attract bigger audiences and increase the reach and impact of your events.</p>
+    methods: >
+      <p>To add an event to DReSA:<ol>
+      <li>Create a user profile, by logging in using the Australian Access Federation (AAF)</li>
+      <li>And either:<ul>
+      <li>Use our form to register events <a href="#manual">manually</a>, or</li>
+      <li>Contact us to develop an <a href="#automatic">automatic registration</a> solution.</li>
+      </ul></li></ol></p>
+      <p>Events added to DReSA must be related to digital research skills and must take place, or be open to
+      researchers, in the Australasian region.</p>
+    automatic: >
+      <p>The DReSA team can provide various automated scraping solutions for adding your events to the website.
+      Scrapers are based on the extraction of structured metadata from existing websites.</p>
+      <p>If those solutions are not applicable, you can contact the DReSA team to discuss potential, alternative
+      solutions. This option is particularly useful if you regularly add many events to DReSA.</p>
+      <p>For more information on automatically registering events in DReSA, refer to the
+      <a href="https://github.com/nrmay/TeSS_scrapers/" target="_blank">DReSA Scrapers</a> repository.<p>
+    auto_condition_1: "Contains more than 3 resources"
+    auto_condition_2: "Has some structured data"
+    auto_condition_3: "Is relevant to life scientists"
+    structured: >
+      <p>To register resources in TeSS automatically, our scrapers need to be able to extract data from target
+      websites reliably. To this end, it is helpful if these websites include some structured data.</p>
+      <p>The following are examples of the kinds of structured data that we can work with. If your website contains one
+      or more of these, and satisfies the criteria above, contact us and we will create a scraper.</p>
+      <p>If your website includes no structured data, and you’d like your resources added to TeSS, we recommend using
+      <a href="http://bioschemas.org" target="_blank">Bioschemas</a> to structure your site.</p>
+    schema: >
+      <p><a href='http://schema.org', target='_blank'>Schema.org</a> is a project run by a consortiumof search engines.
+      Schema.org has created an extensive library of simple, lightweight schemas that web-masters can use to explicitly
+      define their websites content in order to improve search engine visibility and interoperability.</p>
+      <p>For events, you can use the <a target='_blank', href='http://schema.org/Event'>schema.org Event type</a>; and
+      for training materials: <a target='_blank', href='http://schema.org/CreativeWork'>schema.org CreativeWork Type</a>
+      </p><p>The schemas provided by schema.org are convoluted, and lack some important training-specific fields.
+      As such, a life science community group, called <a target='_blank', href='http://bioschemas.org'>Bioschemas</a>,
+      has created schema.org extensions with life science-specific vocabularies, which add additional fields relevant
+      to the discipline.</p>
+      <p>The Bioschemas group is producing tools, documents and training to facilitate adoption of standard metadata
+      mark-up.</p>
+    bioschema_events: >
+      <a target='_blank', class='btn btn-primary', href='http://bioschemas.org/specifications/Event/specification/'>
+      View Events Bioschema</a>
+    bioschema_materials: >
+      <a target='_blank', class='btn btn-primary',
+      href='http://bioschemas.org/specifications/TrainingMaterial/specification/'>
+      View Materials Bioschema</a>
+    schema_example_1: >
+      <a target='_blank', class='btn btn-success',
+      href='https://search.google.com/structured-data/testing-tool#url=https%3A%2F%2Fwww.france-bioinformatique.fr%2Fen%2Fevenements_upcoming'>
+      French Institute of Bioinformatics</a>
+    schema_example_2: >
+      <a target='_blank', class='btn btn-success',
+      href='https://search.google.com/structured-data/testing-tool#url=https%3A%2F%2Fwww.sib.swiss%2Ftraining%2Fupcoming-training-events'>
+      Swiss Institute Bioinformatics</a>
+    schema_example_3: ""
+    api: >
+      <p>Application Programming Interfaces, or APIs, typically have endpoint URLs that, when accessed, return raw,
+      unstyled data in a common exchange format, such as XML or JSON.</p>
+      <p>If your website has an API that programmatically displays data for your training or event content, the TeSS
+      team can write an API client to interface with it.</p>
+    api_example_1: >
+      <a target='_blank', class='btn btn-success',
+      href='https://www.training.cam.ac.uk/api/v1/provider/BIOINFO/programmes?fetch=events.sessions,events.topics&format=json'>
+      University of Cambridge</a>
+    api_example_2: >
+      <a target='_blank', class='btn btn-success', href='https://www.dtls.nl/courses/feed/?filter_course=active'>
+      Dutch Techcentre for Lifesciences</a>
+    api_example_3: ""
+    calendar: >
+      <p>Many organisations use calendar applications to organise and display their events.
+      These may be custom-made or, more likely, utilise applications like Google Calendar. Calendar applications
+      maintain an underlying file for event storage and retrieval, typically in the .ics format.</p>
+      <p>If your website has a calendar application, the TeSS team can write a scraper to extract from it the date,
+      location and event descriptions, and upload the data to TeSS.</p>
+    calendar_example_1: >
+      <a target='_blank', class='btn btn-success', href='https://nbis.se/training/events.html'>NBIS</a>
+    calendar_example_2: >
+      <a target='_blank', class='btn btn-success', href='https://software-carpentry.org/workshops/'>
+      Software Carpentry</a>
+    calendar_example_3: ""
+    other_types: >
+      <ul><li><b>RSS Feed</b>: an RSS feed is a type of news format. Many websites have such feeds, which list recent
+      posts in a standard format. We can write scripts to parse this format;</li>
+      <li><b>Git Repository:</b> a git repository is a directory containing files that can be edited collaboratively.
+      If you are using GitHub (or similar) to develop your training resources, and/or use GitHub Pages to render them,
+      we can write a script that clones the repository and extracts resource information. We may ask you to create a
+      metadata file in YAML format to help us extract the metadata;</li>
+      <li><b>SOLR server (or similar):</b> a SOLR server is a search engine that many sites use for their internal
+      search functionality. If you have a publicly accessible SOLR server, we can write a script to interface with it;
+      </li>
+      <li><b>Other:</b> if you have training metadata in another structured format (e.g., an XML or JSON dump, a CSV
+      file, a YAML file, or other format), we would be happy to write a script to parse it.</li></ul>
+    advice: >
+      If your website contains any of the above, or you'd like advice about annotating with Bioschemas, you can contact
+      us via e-mail at <a href="mailto:support@tess.elixir-europe.org">support@tess.elixir-europe.org</a>
+    manual: >
+      <p>Resources may be added manually to DReSA.</p>
+      <p><ol><li>Create a user profile, by logging in using AAF.</li>
+      <li>Click either the <em>Register Event</em> button or the <em>Register Material</em> button to register your
+      training events or training materials, respectively.</li></ol></p>
+  privacy:
+    registration: >
+      <p>Registration with DReSA is build upon Australian Access Federation (AAF) authentication. When you register,
+      the AAF Display Name will be visible at the top of the page.</p>
+      <ul>
+      <li>DReSA delegates authentication to your identity provider (IdP). You can view which attributes are shared with
+      DReSA by your IdP by using the <a href="https://validator.aaf.edu.au/" target="_blank">AAF Validator</a> service.
+      </li>
+      <li>The e-mail address that you provide as a contact for an event or resource will be visible when a user views
+      that event/resource.</li>
+      </ul>
+    personal: >
+      You may additionally provide a profile, containing your name, a public email address, website link and avatar.
+      This information is publicly available to all users.
+    resources: >
+      The details of any training materials and events that you register will be publicly visible and searchable.
+    server: >
+      When you browse DReSA, the server automatically records logs of which pages you access, when you accessed them,
+      and your IP address. These logs are used to fix errors and are not shared with any third parties.
+    analytics: >
+      DReSA uses Google Analytics to track how users are discovering DReSA and interacting with the service.
+      The information gathered includes which pages you visited, which search terms lead you to DReSA and information
+      about your web browser. No personally identifiable information is sent to Google.
+    retention: >
+      The information that you enter into DReSA is retained by DReSA until you choose to remove it or the DReSA service
+      ceases to exist.
+    code: >
+      DReSA adheres to the <a href='https://www.oaic.gov.au/privacy/the-privacy-act/' target='_blank'>
+      Australian Privacy Act 1988</a>, which is the principal piece of Australian legislation protecting the handling
+      of personal information about individuals (<a href='https://www.ag.gov.au/rights-and-protections/privacy'
+      target='_blank'>https://www.ag.gov.au/rights-and-protections/privacy</a>).
+    controller: "The data controller for DReSA is TBA."
+    post: ''
+  providers:
+    info: >
+      Content providers are entities (such as academic institutions, non-profit organisations, portals etc.) that
+      provide training materials of relevance to digital research skills.
+  events:
+    hints:
+      address: 'Where is this event being held?'
+      capacity: >
+        Provide the total number (cap) of individuals that can attend the training event.
+        Leave blank if there is no limit.
+      contact: ''
+      cost_basis: 'Select the basis by which costs, if any, are applied.'
+      cost_value: 'Input the cost of the training event.'
+      cost_currency: 'Select the currency associated with the cost.'
+      description: 'Provide a textual description of the training event, for additional context.'
+      duration: 'In hours and minutes (HH:MM), how long will your training event run?'
+      eligibility: 'Who can attend the training event?'
+      end: 'When does the event end?'
+      event_type: 'Select the most appropriate event type for the training event.'
+      fields: 'Select Fields of Research to better classify your event.'
+      hosts: ''
+      keywords: "Provide words or terms that clearly identify the training event's topics."
+      materials: 'Add any training materials that are associated with the training event.'
+      objectives: 'What knowledge, skills, or abilities should your audience gain from completing the training?'
+      organizer: ''
+      prerequisites: 'What understanding or knowledge does the audience need to have covered before the training event?'
+      recognition: 'Provide a description of any qualifications, awards, certificates, diplomas, or other
+        educational credentials that will be awarded on successful completion of the training event.'
+      requirements: 'Indicate the technical requirements needed to participate in the training event.'
+      start: 'When does the event start?'
+      subtitle: 'Include a subtitle to add context for your intended audience.'
+      targets: 'Indicate the type of audience for which the training event is intended.'
+      topics: 'Select the Fields of Research (FoR) codes that the training covers.'
+      timezone: 'Select the appropriate timezone'
+      title: 'Add a title for your training event.'
+      url: 'Enter a valid URL for the event landing page.'
+  materials:
+    hints:
+      authors: >
+        Add individuals and organisations involved in the preparation, creation or presentation of the published work.
+      contact: >
+        Include the first name, last name and contact details of the person or organisation that can be contacted about
+        the training material.
+      contributors: 'Add individual and organisations that contributed to the training material.'
+      date_created: 'Add the date that the training material was created.'
+      date_modified: 'Add the date that the training material was last modified.'
+      date_published: 'Add the date that the training material was published.'
+      description: 'Provide a textual description of your training material, for additional context.'
+      difficulty: 'Indicate the learners expected level of competency in the topic covered by the material.'
+      doi: 'Include a DOI if one exists for the training material.'
+      events: ''
+      fields: 'Select Fields of Research to better classify your material.'
+      keywords: "Provide words or terms that clearly identify the training material's topics."
+      licence: 'Select the licence for the training material.'
+      objectives: >
+        Describe the knowledge, skills or abilities that students should acquire throught the completion or use of the
+        training material.
+      other_types: 'Enter the types of resources that are not included on the above list.'
+      part_of: 'Describe the larger service of training to which this material belongs.'
+      prerequisites: >
+        What prior understanding or knowledge does your audience need to have on the topics covered in the training
+        material?
+      providers: ''
+      resources: 'Are there any external resources that relate to the is training material?'
+      status: 'Indicate the current status of the training material.'
+      subsets: 'Add identifier URLs or DOIs for each subset of the training material.'
+      syllabus: 'Describe the syllabus or provide and overview of the topics covered.'
+      targets: 'Indicate the type of audience intended to use your training material.'
+      time: 'What is the estimated time it takes to work through this resource in hours?'
+      title: 'Add a title for your training material.'
+      type: 'Select the type of resource that best matches the training material. '
+      url: 'Preferred URL to direct people to your training material landing page.'
+      version: 'Indicate the current version of the training material.'
+  profile:
+    user:
+      disclaimer: >
+        Please, note that the following user details are publicly visible and so by updating these fields you are giving 
+        permission for us to share the information via your public user profile.
+    trainer:
+      gravitar:
+        help: >
+          The image displayed with your profile is the Gravatar image associated with the provided contact email address.
+          Gravatar provides a way to link an avatar to an email address so that it can be used across sites and
+          platforms. To set-up a linked avatar, go to the Gravatar site:
+        url: https://en.gravatar.com
+      disclaimer: >
+        By clicking the box below you are giving permission for us to share the information in your trainer profile
+        through a public search of registered trainers.
+    hints:
+      public: 'Select if you wish to publish your trainer profile.'
+      description: 'For additional context, provide a textual description of your training experience.'
+      email: 'Include your preferred email address.'
+      website: 'Include a preferred URL for your professional profile.'
+      orcid: 'Include your ORCID Id or full URL'
+      image_url: ''
+      location: 'The location where you are primarily based.'
+      experience: 'Select your level of experience as a trainer.'
+      expertise_academic: 'Terms and phrases that describe your academic expertise.'
+      fields: 'Select Fields of Research to better classify your training experience.'
+      expertise_technical: 'Terms and phrases that describe your technical expertise.'
+      language: 'Include languages in which you are fluent.'
+      interest: 'Add keyword(s) to identify your main areas of interest.'
+      activity: 'Include any global connections or activities that relate to your skills and training work.'
+      social_media: 'Links or handles for your social media profiles.'
+
+

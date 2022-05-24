@@ -8,4 +8,8 @@ class EventPolicy < ScrapedResourcePolicy
     manage?
   end
 
+  def clone?
+    manage?
+  end
+
 end

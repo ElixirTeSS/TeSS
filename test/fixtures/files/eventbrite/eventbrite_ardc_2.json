@@ -1,0 +1,1475 @@
+{
+  "pagination": {
+    "object_count": 68,
+    "page_number": 2,
+    "page_size": 50,
+    "page_count": 2,
+    "has_more_items": false
+  },
+  "events": [
+    {
+      "name": {
+        "text": "Getting Started with Nectar Research Cloud Training",
+        "html": "Getting Started with Nectar Research Cloud Training"
+      },
+      "description": {
+        "text": "Learn the basics of using the Nectar Cloud for your research.",
+        "html": "Learn the basics of using the Nectar Cloud for your research."
+      },
+      "url": "https://www.eventbrite.com.au/e/getting-started-with-nectar-research-cloud-training-tickets-291075754417",
+      "vanity_url": "https://intronectarapr5.eventbrite.com.au",
+      "start": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-04-05T14:00:00",
+        "utc": "2022-04-05T04:00:00Z"
+      },
+      "end": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-04-05T16:00:00",
+        "utc": "2022-04-05T06:00:00Z"
+      },
+      "organization_id": "34338661734",
+      "created": "2022-03-04T03:05:10Z",
+      "changed": "2022-04-05T20:59:17Z",
+      "published": "2022-03-04T03:09:09Z",
+      "capacity": 10,
+      "capacity_is_custom": false,
+      "status": "completed",
+      "currency": "AUD",
+      "listed": true,
+      "shareable": true,
+      "invite_only": false,
+      "online_event": true,
+      "show_remaining": false,
+      "tx_time_limit": 480,
+      "hide_start_date": false,
+      "hide_end_date": false,
+      "locale": "en_AU",
+      "is_locked": false,
+      "privacy_setting": "unlocked",
+      "is_series": false,
+      "is_series_parent": false,
+      "inventory_type": "limited",
+      "is_reserved_seating": false,
+      "show_pick_a_seat": false,
+      "show_seatmap_thumbnail": false,
+      "show_colors_in_seatmap_thumbnail": false,
+      "source": "coyote",
+      "is_free": true,
+      "version": null,
+      "summary": "Learn the basics of using the Nectar Cloud for your research.",
+      "facebook_event_id": null,
+      "logo_id": "240869039",
+      "organizer_id": "14317910674",
+      "venue_id": null,
+      "category_id": "102",
+      "subcategory_id": "2004",
+      "format_id": null,
+      "id": "291075754417",
+      "resource_uri": "https://www.eventbriteapi.com/v3/events/291075754417/",
+      "is_externally_ticketed": false,
+      "logo": {
+        "crop_mask": {
+          "top_left": {
+            "x": 0,
+            "y": 37
+          },
+          "width": 1200,
+          "height": 600
+        },
+        "original": {
+          "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F240869039%2F34338661734%2F1%2Foriginal.20211108-031305?auto=format%2Ccompress&q=75&sharp=10&s=d234567816ad659452f28e9a44f20a90",
+          "width": 1200,
+          "height": 675
+        },
+        "id": "240869039",
+        "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F240869039%2F34338661734%2F1%2Foriginal.20211108-031305?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C37%2C1200%2C600&s=d802d3e7857660dfcfc42c4fc70702a1",
+        "aspect_ratio": "2",
+        "edge_color": "#5e5d5a",
+        "edge_color_set": true
+      }
+    },
+    {
+      "name": {
+        "text": "Australian Sensitive Data IG: Linked sensitive data – a beginners guide",
+        "html": "Australian Sensitive Data IG: Linked sensitive data – a beginners guide"
+      },
+      "description": {
+        "text": "Meeting 19 of the Australian Sensitive Data Interest Group",
+        "html": "Meeting 19 of the Australian Sensitive Data Interest Group"
+      },
+      "url": "https://www.eventbrite.com.au/e/australian-sensitive-data-ig-linked-sensitive-data-a-beginners-guide-tickets-309317225147",
+      "start": {
+        "timezone": "Australia/Perth",
+        "local": "2022-04-06T10:00:00",
+        "utc": "2022-04-06T02:00:00Z"
+      },
+      "end": {
+        "timezone": "Australia/Perth",
+        "local": "2022-04-06T11:00:00",
+        "utc": "2022-04-06T03:00:00Z"
+      },
+      "organization_id": "34338661734",
+      "created": "2022-03-29T08:01:32Z",
+      "changed": "2022-04-06T11:55:47Z",
+      "published": "2022-03-29T08:10:16Z",
+      "capacity": 300,
+      "capacity_is_custom": false,
+      "status": "completed",
+      "currency": "AUD",
+      "listed": true,
+      "shareable": true,
+      "invite_only": false,
+      "online_event": true,
+      "show_remaining": false,
+      "tx_time_limit": 480,
+      "hide_start_date": false,
+      "hide_end_date": false,
+      "locale": "en_AU",
+      "is_locked": false,
+      "privacy_setting": "unlocked",
+      "is_series": false,
+      "is_series_parent": false,
+      "inventory_type": "limited",
+      "is_reserved_seating": false,
+      "show_pick_a_seat": false,
+      "show_seatmap_thumbnail": false,
+      "show_colors_in_seatmap_thumbnail": false,
+      "source": "coyote",
+      "is_free": true,
+      "version": null,
+      "summary": "Meeting 19 of the Australian Sensitive Data Interest Group",
+      "facebook_event_id": null,
+      "logo_id": "256303939",
+      "organizer_id": "14317910674",
+      "venue_id": null,
+      "category_id": null,
+      "subcategory_id": null,
+      "format_id": null,
+      "id": "309317225147",
+      "resource_uri": "https://www.eventbriteapi.com/v3/events/309317225147/",
+      "is_externally_ticketed": false,
+      "logo": {
+        "crop_mask": {
+          "top_left": {
+            "x": 560,
+            "y": 0
+          },
+          "width": 1600,
+          "height": 800
+        },
+        "original": {
+          "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F256303939%2F34338661734%2F1%2Foriginal.20210114-023720?auto=format%2Ccompress&q=75&sharp=10&s=33d12d9b9a68aa20e1e07ed5003793b3",
+          "width": 2160,
+          "height": 800
+        },
+        "id": "256303939",
+        "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F256303939%2F34338661734%2F1%2Foriginal.20210114-023720?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=560%2C0%2C1600%2C800&s=0ed8ed79ce17a26fbd5262f764c68cae",
+        "aspect_ratio": "2",
+        "edge_color": "#1f1f1f",
+        "edge_color_set": true
+      }
+    },
+    {
+      "name": {
+        "text": "Bushfire Data Commons Forum",
+        "html": "Bushfire Data Commons Forum"
+      },
+      "description": {
+        "text": "Presentations followed by discussions on the topics of Fire history data , Fuel data, Data sharing framework and Fire behaviour modelling",
+        "html": "Presentations followed by discussions on the topics of Fire history data , Fuel data, Data sharing framework and Fire behaviour modelling"
+      },
+      "url": "https://www.eventbrite.com.au/e/bushfire-data-commons-forum-tickets-279370995167",
+      "start": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-04-07T14:00:00",
+        "utc": "2022-04-07T04:00:00Z"
+      },
+      "end": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-04-07T16:00:00",
+        "utc": "2022-04-07T06:00:00Z"
+      },
+      "organization_id": "34338661734",
+      "created": "2022-02-27T08:16:42Z",
+      "changed": "2022-04-07T21:14:29Z",
+      "published": "2022-02-27T08:35:48Z",
+      "capacity": 200,
+      "capacity_is_custom": false,
+      "status": "completed",
+      "currency": "AUD",
+      "listed": true,
+      "shareable": true,
+      "invite_only": false,
+      "online_event": true,
+      "show_remaining": false,
+      "tx_time_limit": 480,
+      "hide_start_date": false,
+      "hide_end_date": false,
+      "locale": "en_AU",
+      "is_locked": false,
+      "privacy_setting": "unlocked",
+      "is_series": false,
+      "is_series_parent": false,
+      "inventory_type": "limited",
+      "is_reserved_seating": false,
+      "show_pick_a_seat": false,
+      "show_seatmap_thumbnail": false,
+      "show_colors_in_seatmap_thumbnail": false,
+      "source": "coyote",
+      "is_free": true,
+      "version": null,
+      "summary": "Presentations followed by discussions on the topics of Fire history data , Fuel data, Data sharing framework and Fire behaviour modelling",
+      "facebook_event_id": null,
+      "logo_id": "237407309",
+      "organizer_id": "14317910674",
+      "venue_id": null,
+      "category_id": "101",
+      "subcategory_id": null,
+      "format_id": "10",
+      "id": "279370995167",
+      "resource_uri": "https://www.eventbriteapi.com/v3/events/279370995167/",
+      "is_externally_ticketed": false,
+      "logo": {
+        "crop_mask": {
+          "top_left": {
+            "x": 0,
+            "y": 0
+          },
+          "width": 1850,
+          "height": 925
+        },
+        "original": {
+          "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F237407309%2F34338661734%2F1%2Foriginal.20220227-081812?auto=format%2Ccompress&q=75&sharp=10&s=f1ac05f0e63e18dffdea86c9e6c9c13e",
+          "width": 1850,
+          "height": 1231
+        },
+        "id": "237407309",
+        "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F237407309%2F34338661734%2F1%2Foriginal.20220227-081812?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C0%2C1850%2C925&s=a6e2ab517e3b4d56d43ffa86fd71d82e",
+        "aspect_ratio": "2",
+        "edge_color": "#23242a",
+        "edge_color_set": true
+      }
+    },
+    {
+      "name": {
+        "text": "The Institutional Underpinnings Draft RDM Framework - Universities",
+        "html": "The Institutional Underpinnings Draft RDM Framework - Universities"
+      },
+      "description": {
+        "text": "Learn about progress in the Institutional Underpinnings program and find out about how to give feedback on the draft framework.",
+        "html": "Learn about progress in the Institutional Underpinnings program and find out about how to give feedback on the draft framework."
+      },
+      "url": "https://www.eventbrite.com.au/e/the-institutional-underpinnings-draft-rdm-framework-universities-tickets-293623976217",
+      "start": {
+        "timezone": "Australia/Perth",
+        "local": "2022-04-11T12:00:00",
+        "utc": "2022-04-11T04:00:00Z"
+      },
+      "end": {
+        "timezone": "Australia/Perth",
+        "local": "2022-04-11T13:00:00",
+        "utc": "2022-04-11T05:00:00Z"
+      },
+      "organization_id": "34338661734",
+      "created": "2022-03-09T06:45:05Z",
+      "changed": "2022-03-31T06:32:24Z",
+      "published": "2022-03-31T06:32:24Z",
+      "capacity": 300,
+      "capacity_is_custom": false,
+      "status": "live",
+      "currency": "AUD",
+      "listed": true,
+      "shareable": true,
+      "invite_only": false,
+      "online_event": true,
+      "show_remaining": false,
+      "tx_time_limit": 480,
+      "hide_start_date": false,
+      "hide_end_date": false,
+      "locale": "en_AU",
+      "is_locked": false,
+      "privacy_setting": "unlocked",
+      "is_series": false,
+      "is_series_parent": false,
+      "inventory_type": "limited",
+      "is_reserved_seating": false,
+      "show_pick_a_seat": false,
+      "show_seatmap_thumbnail": false,
+      "show_colors_in_seatmap_thumbnail": false,
+      "source": "coyote",
+      "is_free": true,
+      "version": null,
+      "summary": "Learn about progress in the Institutional Underpinnings program and find out about how to give feedback on the draft framework.",
+      "facebook_event_id": null,
+      "logo_id": "252825279",
+      "organizer_id": "8082048069",
+      "venue_id": null,
+      "category_id": null,
+      "subcategory_id": null,
+      "format_id": "100",
+      "id": "293623976217",
+      "resource_uri": "https://www.eventbriteapi.com/v3/events/293623976217/",
+      "is_externally_ticketed": false,
+      "logo": {
+        "crop_mask": {
+          "top_left": {
+            "x": 0,
+            "y": 37
+          },
+          "width": 1200,
+          "height": 600
+        },
+        "original": {
+          "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F252825279%2F34338661734%2F1%2Foriginal.20220323-070439?auto=format%2Ccompress&q=75&sharp=10&s=34bf73f1dac631d310ff735c682994af",
+          "width": 1200,
+          "height": 675
+        },
+        "id": "252825279",
+        "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F252825279%2F34338661734%2F1%2Foriginal.20220323-070439?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C37%2C1200%2C600&s=df3966d72a70029f465dd441473c4079",
+        "aspect_ratio": "2",
+        "edge_color": "#498396",
+        "edge_color_set": true
+      }
+    },
+    {
+      "name": {
+        "text": "Getting Started with Nectar Research Cloud Training",
+        "html": "Getting Started with Nectar Research Cloud Training"
+      },
+      "description": {
+        "text": "Learn the basics of using the  ARDC Nectar Cloud for your research.",
+        "html": "Learn the basics of using the  ARDC Nectar Cloud for your research."
+      },
+      "url": "https://www.eventbrite.com.au/e/getting-started-with-nectar-research-cloud-training-tickets-291080308037",
+      "vanity_url": "https://introapr12.eventbrite.com.au",
+      "start": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-04-12T13:00:00",
+        "utc": "2022-04-12T03:00:00Z"
+      },
+      "end": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-04-12T15:00:00",
+        "utc": "2022-04-12T05:00:00Z"
+      },
+      "organization_id": "34338661734",
+      "created": "2022-03-04T03:10:58Z",
+      "changed": "2022-03-21T05:32:48Z",
+      "published": "2022-03-04T03:12:29Z",
+      "capacity": 10,
+      "capacity_is_custom": false,
+      "status": "live",
+      "currency": "AUD",
+      "listed": true,
+      "shareable": true,
+      "invite_only": false,
+      "online_event": true,
+      "show_remaining": false,
+      "tx_time_limit": 480,
+      "hide_start_date": false,
+      "hide_end_date": false,
+      "locale": "en_AU",
+      "is_locked": false,
+      "privacy_setting": "unlocked",
+      "is_series": false,
+      "is_series_parent": false,
+      "inventory_type": "limited",
+      "is_reserved_seating": false,
+      "show_pick_a_seat": false,
+      "show_seatmap_thumbnail": false,
+      "show_colors_in_seatmap_thumbnail": false,
+      "source": "coyote",
+      "is_free": true,
+      "version": null,
+      "summary": "Learn the basics of using the  ARDC Nectar Cloud for your research.",
+      "facebook_event_id": null,
+      "logo_id": "240871029",
+      "organizer_id": "14317910674",
+      "venue_id": null,
+      "category_id": "102",
+      "subcategory_id": "2004",
+      "format_id": null,
+      "id": "291080308037",
+      "resource_uri": "https://www.eventbriteapi.com/v3/events/291080308037/",
+      "is_externally_ticketed": false,
+      "logo": {
+        "crop_mask": {
+          "top_left": {
+            "x": 0,
+            "y": 37
+          },
+          "width": 1200,
+          "height": 600
+        },
+        "original": {
+          "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F240871029%2F34338661734%2F1%2Foriginal.20211108-031305?auto=format%2Ccompress&q=75&sharp=10&s=9b6cafcdd6355aed57161708561917f5",
+          "width": 1200,
+          "height": 675
+        },
+        "id": "240871029",
+        "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F240871029%2F34338661734%2F1%2Foriginal.20211108-031305?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C37%2C1200%2C600&s=4aa84dd773d4211f76d7c1a9934458e1",
+        "aspect_ratio": "2",
+        "edge_color": "#5e5d5a",
+        "edge_color_set": true
+      }
+    },
+    {
+      "name": {
+        "text": "Aligned RDM Training with Local Context - Project Consultation",
+        "html": "Aligned RDM Training with Local Context - Project Consultation"
+      },
+      "description": {
+        "text": "Consultation Information Session: Principles Aligned Institutionally-Contextualised (PAI-C) Training Project (Institutional Underpinnings)",
+        "html": "Consultation Information Session: Principles Aligned Institutionally-Contextualised (PAI-C) Training Project (Institutional Underpinnings)"
+      },
+      "url": "https://www.eventbrite.com.au/e/aligned-rdm-training-with-local-context-project-consultation-tickets-309255691097",
+      "start": {
+        "timezone": "Australia/Perth",
+        "local": "2022-04-13T10:00:00",
+        "utc": "2022-04-13T02:00:00Z"
+      },
+      "end": {
+        "timezone": "Australia/Perth",
+        "local": "2022-04-13T11:00:00",
+        "utc": "2022-04-13T03:00:00Z"
+      },
+      "organization_id": "34338661734",
+      "created": "2022-03-29T07:11:07Z",
+      "changed": "2022-04-01T01:22:15Z",
+      "published": "2022-04-01T01:22:15Z",
+      "capacity": 100,
+      "capacity_is_custom": false,
+      "status": "live",
+      "currency": "AUD",
+      "listed": false,
+      "shareable": false,
+      "invite_only": false,
+      "online_event": true,
+      "show_remaining": false,
+      "tx_time_limit": 480,
+      "hide_start_date": false,
+      "hide_end_date": false,
+      "locale": "en_AU",
+      "is_locked": false,
+      "privacy_setting": "unlocked",
+      "is_series": false,
+      "is_series_parent": false,
+      "inventory_type": "limited",
+      "is_reserved_seating": false,
+      "show_pick_a_seat": false,
+      "show_seatmap_thumbnail": false,
+      "show_colors_in_seatmap_thumbnail": false,
+      "source": "coyote",
+      "is_free": true,
+      "version": null,
+      "summary": "Consultation Information Session: Principles Aligned Institutionally-Contextualised (PAI-C) Training Project (Institutional Underpinnings)",
+      "facebook_event_id": null,
+      "logo_id": "256289919",
+      "organizer_id": "14317910674",
+      "venue_id": null,
+      "category_id": null,
+      "subcategory_id": null,
+      "format_id": null,
+      "id": "309255691097",
+      "resource_uri": "https://www.eventbriteapi.com/v3/events/309255691097/",
+      "is_externally_ticketed": false,
+      "logo": {
+        "crop_mask": {
+          "top_left": {
+            "x": 560,
+            "y": 0
+          },
+          "width": 1600,
+          "height": 800
+        },
+        "original": {
+          "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F256289919%2F34338661734%2F1%2Foriginal.20210114-023720?auto=format%2Ccompress&q=75&sharp=10&s=d6026f73c7ed17440e742300894454c7",
+          "width": 2160,
+          "height": 800
+        },
+        "id": "256289919",
+        "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F256289919%2F34338661734%2F1%2Foriginal.20210114-023720?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=560%2C0%2C1600%2C800&s=90164c443d385c117e5b57a17522ded1",
+        "aspect_ratio": "2",
+        "edge_color": "#1f1f1f",
+        "edge_color_set": true
+      }
+    },
+    {
+      "name": {
+        "text": "Using Containers on the ARDC Nectar Research Cloud",
+        "html": "Using Containers on the ARDC Nectar Research Cloud"
+      },
+      "description": {
+        "text": "Learn the fundamentals of using and managing Containers on the ARDC Nectar Research Cloud",
+        "html": "Learn the fundamentals of using and managing Containers on the ARDC Nectar Research Cloud"
+      },
+      "url": "https://www.eventbrite.com.au/e/using-containers-on-the-ardc-nectar-research-cloud-tickets-296471222407",
+      "vanity_url": "https://containers13apr.eventbrite.com.au",
+      "start": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-04-13T14:00:00",
+        "utc": "2022-04-13T04:00:00Z"
+      },
+      "end": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-04-13T16:00:00",
+        "utc": "2022-04-13T06:00:00Z"
+      },
+      "organization_id": "34338661734",
+      "created": "2022-03-14T06:23:59Z",
+      "changed": "2022-03-22T23:53:19Z",
+      "published": "2022-03-14T06:38:33Z",
+      "capacity": 10,
+      "capacity_is_custom": false,
+      "status": "live",
+      "currency": "AUD",
+      "listed": true,
+      "shareable": true,
+      "invite_only": false,
+      "online_event": true,
+      "show_remaining": false,
+      "tx_time_limit": 480,
+      "hide_start_date": false,
+      "hide_end_date": false,
+      "locale": "en_AU",
+      "is_locked": false,
+      "privacy_setting": "unlocked",
+      "is_series": false,
+      "is_series_parent": false,
+      "inventory_type": "limited",
+      "is_reserved_seating": false,
+      "show_pick_a_seat": false,
+      "show_seatmap_thumbnail": false,
+      "show_colors_in_seatmap_thumbnail": false,
+      "source": "coyote",
+      "is_free": true,
+      "version": null,
+      "summary": "Learn the fundamentals of using and managing Containers on the ARDC Nectar Research Cloud",
+      "facebook_event_id": null,
+      "logo_id": "252640629",
+      "organizer_id": "14317910674",
+      "venue_id": null,
+      "category_id": "102",
+      "subcategory_id": "2004",
+      "format_id": null,
+      "id": "296471222407",
+      "resource_uri": "https://www.eventbriteapi.com/v3/events/296471222407/",
+      "is_externally_ticketed": false,
+      "logo": {
+        "crop_mask": {
+          "top_left": {
+            "x": 0,
+            "y": 43
+          },
+          "width": 1200,
+          "height": 600
+        },
+        "original": {
+          "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F252640629%2F34338661734%2F1%2Foriginal.20220322-224942?auto=format%2Ccompress&q=75&sharp=10&s=6fb53d591f01c98e51e0faaf4ddd5a50",
+          "width": 1200,
+          "height": 675
+        },
+        "id": "252640629",
+        "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F252640629%2F34338661734%2F1%2Foriginal.20220322-224942?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C43%2C1200%2C600&s=5d2eb3ed542d64d903c946a56bbd25e6",
+        "aspect_ratio": "2",
+        "edge_color": "#323031",
+        "edge_color_set": true
+      }
+    },
+    {
+      "name": {
+        "text": "TEST TEMPLATE TO COPY FOR ARDC EVENTS",
+        "html": "TEST TEMPLATE TO COPY FOR ARDC EVENTS"
+      },
+      "description": {
+        "text": "ADD EVENT SUMMARY",
+        "html": "ADD EVENT SUMMARY"
+      },
+      "url": "https://www.eventbrite.com.au/e/test-template-to-copy-for-ardc-events-tickets-294940824947",
+      "start": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-04-20T19:00:00",
+        "utc": "2022-04-20T09:00:00Z"
+      },
+      "end": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-07-02T22:00:00",
+        "utc": "2022-07-02T12:00:00Z"
+      },
+      "organization_id": "34338661734",
+      "created": "2022-03-10T23:57:19Z",
+      "changed": "2022-03-10T23:57:22Z",
+      "capacity": 50,
+      "capacity_is_custom": false,
+      "status": "draft",
+      "currency": "AUD",
+      "listed": false,
+      "shareable": false,
+      "invite_only": false,
+      "online_event": true,
+      "show_remaining": false,
+      "tx_time_limit": 480,
+      "hide_start_date": false,
+      "hide_end_date": false,
+      "locale": "en_AU",
+      "is_locked": false,
+      "privacy_setting": "unlocked",
+      "is_series": false,
+      "is_series_parent": false,
+      "inventory_type": "limited",
+      "is_reserved_seating": false,
+      "show_pick_a_seat": false,
+      "show_seatmap_thumbnail": false,
+      "show_colors_in_seatmap_thumbnail": false,
+      "source": "coyote",
+      "is_free": true,
+      "version": null,
+      "summary": "ADD EVENT SUMMARY",
+      "facebook_event_id": null,
+      "logo_id": "245323299",
+      "organizer_id": "14317910674",
+      "venue_id": null,
+      "category_id": null,
+      "subcategory_id": null,
+      "format_id": null,
+      "id": "294940824947",
+      "resource_uri": "https://www.eventbriteapi.com/v3/events/294940824947/",
+      "is_externally_ticketed": false,
+      "logo": {
+        "crop_mask": {
+          "top_left": {
+            "x": 560,
+            "y": 0
+          },
+          "width": 1600,
+          "height": 800
+        },
+        "original": {
+          "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F245323299%2F34338661734%2F1%2Foriginal.20210114-023720?auto=format%2Ccompress&q=75&sharp=10&s=f2e0e340834b8a04e8583b490ac4d503",
+          "width": 2160,
+          "height": 800
+        },
+        "id": "245323299",
+        "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F245323299%2F34338661734%2F1%2Foriginal.20210114-023720?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=560%2C0%2C1600%2C800&s=76663d2cb036ac71d308b9e512c65d95",
+        "aspect_ratio": "2",
+        "edge_color": "#1f1f1f",
+        "edge_color_set": true
+      }
+    },
+    {
+      "name": {
+        "text": "The Institutional Underpinnings Draft RDM Framework - Non-Uni Research",
+        "html": "The Institutional Underpinnings Draft RDM Framework - Non-Uni Research"
+      },
+      "description": {
+        "text": "Learn about progress in the Institutional Underpinnings program and find out about how to give feedback on the draft framework.",
+        "html": "Learn about progress in the Institutional Underpinnings program and find out about how to give feedback on the draft framework."
+      },
+      "url": "https://www.eventbrite.com.au/e/the-institutional-underpinnings-draft-rdm-framework-non-uni-research-tickets-304498060897",
+      "start": {
+        "timezone": "Australia/Perth",
+        "local": "2022-04-28T12:00:00",
+        "utc": "2022-04-28T04:00:00Z"
+      },
+      "end": {
+        "timezone": "Australia/Perth",
+        "local": "2022-04-28T13:00:00",
+        "utc": "2022-04-28T05:00:00Z"
+      },
+      "organization_id": "34338661734",
+      "created": "2022-03-23T05:56:06Z",
+      "changed": "2022-03-31T06:37:14Z",
+      "published": "2022-03-31T06:37:14Z",
+      "capacity": 300,
+      "capacity_is_custom": false,
+      "status": "live",
+      "currency": "AUD",
+      "listed": true,
+      "shareable": true,
+      "invite_only": false,
+      "online_event": true,
+      "show_remaining": false,
+      "tx_time_limit": 480,
+      "hide_start_date": false,
+      "hide_end_date": false,
+      "locale": "en_AU",
+      "is_locked": false,
+      "privacy_setting": "unlocked",
+      "is_series": false,
+      "is_series_parent": false,
+      "inventory_type": "limited",
+      "is_reserved_seating": false,
+      "show_pick_a_seat": false,
+      "show_seatmap_thumbnail": false,
+      "show_colors_in_seatmap_thumbnail": false,
+      "source": "coyote",
+      "is_free": true,
+      "version": null,
+      "summary": "Learn about progress in the Institutional Underpinnings program and find out about how to give feedback on the draft framework.",
+      "facebook_event_id": null,
+      "logo_id": "253590419",
+      "organizer_id": "8082048069",
+      "venue_id": null,
+      "category_id": null,
+      "subcategory_id": null,
+      "format_id": "100",
+      "id": "304498060897",
+      "resource_uri": "https://www.eventbriteapi.com/v3/events/304498060897/",
+      "is_externally_ticketed": false,
+      "logo": {
+        "crop_mask": {
+          "top_left": {
+            "x": 0,
+            "y": 43
+          },
+          "width": 1200,
+          "height": 600
+        },
+        "original": {
+          "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F253590419%2F34338661734%2F1%2Foriginal.20220324-063645?auto=format%2Ccompress&q=75&sharp=10&s=b2ae9fc19012a6091ba9c3da66c9ac6b",
+          "width": 1200,
+          "height": 675
+        },
+        "id": "253590419",
+        "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F253590419%2F34338661734%2F1%2Foriginal.20220324-063645?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C43%2C1200%2C600&s=f4e1219ef906366a5c4e3d2bb0400e8e",
+        "aspect_ratio": "2",
+        "edge_color": "#4b8394",
+        "edge_color_set": true
+      }
+    },
+    {
+      "name": {
+        "text": "Sharing Sensitive and Identifiable Human Data",
+        "html": "Sharing Sensitive and Identifiable Human Data"
+      },
+      "description": {
+        "text": "The ARDC Leadership Series is a new event series providing decision makers with an opportunity to work through big data challenges.",
+        "html": "The ARDC Leadership Series is a new event series providing decision makers with an opportunity to work through big data challenges."
+      },
+      "url": "https://www.eventbrite.com.au/e/sharing-sensitive-and-identifiable-human-data-tickets-298980718377",
+      "start": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-05-03T13:30:00",
+        "utc": "2022-05-03T03:30:00Z"
+      },
+      "end": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-05-03T15:00:00",
+        "utc": "2022-05-03T05:00:00Z"
+      },
+      "organization_id": "34338661734",
+      "created": "2022-03-16T06:08:23Z",
+      "changed": "2022-04-07T05:02:57Z",
+      "published": "2022-03-17T03:23:07Z",
+      "capacity": 345,
+      "capacity_is_custom": false,
+      "status": "live",
+      "currency": "AUD",
+      "listed": true,
+      "shareable": true,
+      "invite_only": false,
+      "online_event": false,
+      "show_remaining": false,
+      "tx_time_limit": 480,
+      "hide_start_date": false,
+      "hide_end_date": false,
+      "locale": "en_AU",
+      "is_locked": false,
+      "privacy_setting": "unlocked",
+      "is_series": false,
+      "is_series_parent": false,
+      "inventory_type": "limited",
+      "is_reserved_seating": false,
+      "show_pick_a_seat": false,
+      "show_seatmap_thumbnail": false,
+      "show_colors_in_seatmap_thumbnail": false,
+      "source": "coyote",
+      "is_free": true,
+      "version": null,
+      "summary": "The ARDC Leadership Series is a new event series providing decision makers with an opportunity to work through big data challenges.",
+      "facebook_event_id": null,
+      "logo_id": "257819919",
+      "organizer_id": "14317910674",
+      "venue_id": "88342919",
+      "category_id": "101",
+      "subcategory_id": "1999",
+      "format_id": "1",
+      "id": "298980718377",
+      "resource_uri": "https://www.eventbriteapi.com/v3/events/298980718377/",
+      "is_externally_ticketed": false,
+      "logo": {
+        "crop_mask": {
+          "top_left": {
+            "x": 0,
+            "y": 37
+          },
+          "width": 1200,
+          "height": 600
+        },
+        "original": {
+          "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F257819919%2F34338661734%2F1%2Foriginal.20220331-032113?auto=format%2Ccompress&q=75&sharp=10&s=1dd7dafa32bb37ff7dc7bb1a4fd729cd",
+          "width": 1200,
+          "height": 675
+        },
+        "id": "257819919",
+        "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F257819919%2F34338661734%2F1%2Foriginal.20220331-032113?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C37%2C1200%2C600&s=e720d19afae051db119180a8dd162e13",
+        "aspect_ratio": "2",
+        "edge_color": "#e6e6e6",
+        "edge_color_set": true
+      }
+    },
+    {
+      "name": {
+        "text": "The Institutional Underpinnings Draft RDM Framework - Infrastructure",
+        "html": "The Institutional Underpinnings Draft RDM Framework - Infrastructure"
+      },
+      "description": {
+        "text": "Learn about progress in the Institutional Underpinnings program and find out about how to give feedback on the draft framework.",
+        "html": "Learn about progress in the Institutional Underpinnings program and find out about how to give feedback on the draft framework."
+      },
+      "url": "https://www.eventbrite.com.au/e/the-institutional-underpinnings-draft-rdm-framework-infrastructure-tickets-293625912007",
+      "start": {
+        "timezone": "Australia/Perth",
+        "local": "2022-05-04T12:00:00",
+        "utc": "2022-05-04T04:00:00Z"
+      },
+      "end": {
+        "timezone": "Australia/Perth",
+        "local": "2022-05-04T13:00:00",
+        "utc": "2022-05-04T05:00:00Z"
+      },
+      "organization_id": "34338661734",
+      "created": "2022-03-09T06:55:00Z",
+      "changed": "2022-04-01T01:19:09Z",
+      "published": "2022-04-01T01:19:09Z",
+      "capacity": 300,
+      "capacity_is_custom": false,
+      "status": "live",
+      "currency": "AUD",
+      "listed": true,
+      "shareable": true,
+      "invite_only": false,
+      "online_event": true,
+      "show_remaining": false,
+      "tx_time_limit": 480,
+      "hide_start_date": false,
+      "hide_end_date": false,
+      "locale": "en_AU",
+      "is_locked": false,
+      "privacy_setting": "unlocked",
+      "is_series": false,
+      "is_series_parent": false,
+      "inventory_type": "limited",
+      "is_reserved_seating": false,
+      "show_pick_a_seat": false,
+      "show_seatmap_thumbnail": false,
+      "show_colors_in_seatmap_thumbnail": false,
+      "source": "coyote",
+      "is_free": true,
+      "version": null,
+      "summary": "Learn about progress in the Institutional Underpinnings program and find out about how to give feedback on the draft framework.",
+      "facebook_event_id": null,
+      "logo_id": "252827659",
+      "organizer_id": "8082048069",
+      "venue_id": null,
+      "category_id": null,
+      "subcategory_id": null,
+      "format_id": "100",
+      "id": "293625912007",
+      "resource_uri": "https://www.eventbriteapi.com/v3/events/293625912007/",
+      "is_externally_ticketed": false,
+      "logo": {
+        "crop_mask": {
+          "top_left": {
+            "x": 0,
+            "y": 37
+          },
+          "width": 1200,
+          "height": 600
+        },
+        "original": {
+          "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F252827659%2F34338661734%2F1%2Foriginal.20220323-071442?auto=format%2Ccompress&q=75&sharp=10&s=0bef55616aae8fb1d267e6dcb4f4be8f",
+          "width": 1200,
+          "height": 675
+        },
+        "id": "252827659",
+        "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F252827659%2F34338661734%2F1%2Foriginal.20220323-071442?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C37%2C1200%2C600&s=6b3290bc9e6e8264dc6976edf43088da",
+        "aspect_ratio": "2",
+        "edge_color": "#4a8395",
+        "edge_color_set": true
+      }
+    },
+    {
+      "name": {
+        "text": "TEMPLATE SD IG EVENT",
+        "html": "TEMPLATE SD IG EVENT"
+      },
+      "description": {
+        "text": "()",
+        "html": "()"
+      },
+      "url": "https://www.eventbrite.com.au/e/template-sd-ig-event-tickets-309269341927",
+      "start": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-05-08T12:00:00",
+        "utc": "2022-05-08T02:00:00Z"
+      },
+      "end": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-05-08T13:00:00",
+        "utc": "2022-05-08T03:00:00Z"
+      },
+      "organization_id": "34338661734",
+      "created": "2022-03-29T07:43:30Z",
+      "changed": "2022-03-29T07:56:57Z",
+      "capacity": 300,
+      "capacity_is_custom": false,
+      "status": "draft",
+      "currency": "AUD",
+      "listed": true,
+      "shareable": true,
+      "invite_only": false,
+      "online_event": true,
+      "show_remaining": false,
+      "tx_time_limit": 480,
+      "hide_start_date": false,
+      "hide_end_date": false,
+      "locale": "en_AU",
+      "is_locked": false,
+      "privacy_setting": "unlocked",
+      "is_series": false,
+      "is_series_parent": false,
+      "inventory_type": "limited",
+      "is_reserved_seating": false,
+      "show_pick_a_seat": false,
+      "show_seatmap_thumbnail": false,
+      "show_colors_in_seatmap_thumbnail": false,
+      "source": "coyote",
+      "is_free": true,
+      "version": null,
+      "summary": "()",
+      "facebook_event_id": null,
+      "logo_id": "256298489",
+      "organizer_id": "14317910674",
+      "venue_id": null,
+      "category_id": null,
+      "subcategory_id": null,
+      "format_id": null,
+      "id": "309269341927",
+      "resource_uri": "https://www.eventbriteapi.com/v3/events/309269341927/",
+      "is_externally_ticketed": false,
+      "logo": {
+        "crop_mask": {
+          "top_left": {
+            "x": 560,
+            "y": 0
+          },
+          "width": 1600,
+          "height": 800
+        },
+        "original": {
+          "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F256298489%2F34338661734%2F1%2Foriginal.20210114-023720?auto=format%2Ccompress&q=75&sharp=10&s=06dd2ff2890b15eb66172d0e62053485",
+          "width": 2160,
+          "height": 800
+        },
+        "id": "256298489",
+        "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F256298489%2F34338661734%2F1%2Foriginal.20210114-023720?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=560%2C0%2C1600%2C800&s=454c413e396cecb3bc1d49ef22b074a0",
+        "aspect_ratio": "2",
+        "edge_color": "#1f1f1f",
+        "edge_color_set": true
+      }
+    },
+    {
+      "name": {
+        "text": "The Institutional Underpinnings Draft RDM Framework - General",
+        "html": "The Institutional Underpinnings Draft RDM Framework - General"
+      },
+      "description": {
+        "text": "Learn about progress in the Institutional Underpinnings program and find out about how to give feedback on the draft framework.",
+        "html": "Learn about progress in the Institutional Underpinnings program and find out about how to give feedback on the draft framework."
+      },
+      "url": "https://www.eventbrite.com.au/e/the-institutional-underpinnings-draft-rdm-framework-general-tickets-293626965157",
+      "start": {
+        "timezone": "Australia/Perth",
+        "local": "2022-05-11T12:00:00",
+        "utc": "2022-05-11T04:00:00Z"
+      },
+      "end": {
+        "timezone": "Australia/Perth",
+        "local": "2022-05-11T13:00:00",
+        "utc": "2022-05-11T05:00:00Z"
+      },
+      "organization_id": "34338661734",
+      "created": "2022-03-09T07:01:26Z",
+      "changed": "2022-04-01T01:20:53Z",
+      "published": "2022-04-01T01:20:50Z",
+      "capacity": 300,
+      "capacity_is_custom": false,
+      "status": "live",
+      "currency": "AUD",
+      "listed": true,
+      "shareable": true,
+      "invite_only": false,
+      "online_event": true,
+      "show_remaining": false,
+      "tx_time_limit": 480,
+      "hide_start_date": false,
+      "hide_end_date": false,
+      "locale": "en_AU",
+      "is_locked": false,
+      "privacy_setting": "unlocked",
+      "is_series": false,
+      "is_series_parent": false,
+      "inventory_type": "limited",
+      "is_reserved_seating": false,
+      "show_pick_a_seat": false,
+      "show_seatmap_thumbnail": false,
+      "show_colors_in_seatmap_thumbnail": false,
+      "source": "coyote",
+      "is_free": true,
+      "version": null,
+      "summary": "Learn about progress in the Institutional Underpinnings program and find out about how to give feedback on the draft framework.",
+      "facebook_event_id": null,
+      "logo_id": "252828289",
+      "organizer_id": "8082048069",
+      "venue_id": null,
+      "category_id": null,
+      "subcategory_id": null,
+      "format_id": "100",
+      "id": "293626965157",
+      "resource_uri": "https://www.eventbriteapi.com/v3/events/293626965157/",
+      "is_externally_ticketed": false,
+      "logo": {
+        "crop_mask": {
+          "top_left": {
+            "x": 0,
+            "y": 37
+          },
+          "width": 1200,
+          "height": 600
+        },
+        "original": {
+          "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F252828289%2F34338661734%2F1%2Foriginal.20220323-071819?auto=format%2Ccompress&q=75&sharp=10&s=07fa06ade4e328e529d28f6c9fb6cab2",
+          "width": 1200,
+          "height": 675
+        },
+        "id": "252828289",
+        "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F252828289%2F34338661734%2F1%2Foriginal.20220323-071819?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C37%2C1200%2C600&s=66c27154230840772a2635234640721d",
+        "aspect_ratio": "2",
+        "edge_color": "#498396",
+        "edge_color_set": true
+      }
+    },
+    {
+      "name": {
+        "text": "Getting Started with Nectar Research Cloud Training",
+        "html": "Getting Started with Nectar Research Cloud Training"
+      },
+      "description": {
+        "text": "Learn the basics of using the  ARDC Nectar Cloud for your research.",
+        "html": "Learn the basics of using the  ARDC Nectar Cloud for your research."
+      },
+      "url": "https://www.eventbrite.com.au/e/getting-started-with-nectar-research-cloud-training-tickets-315887968417",
+      "vanity_url": "https://intromay11.eventbrite.com.au",
+      "start": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-05-11T14:00:00",
+        "utc": "2022-05-11T04:00:00Z"
+      },
+      "end": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-05-11T16:00:00",
+        "utc": "2022-05-11T06:00:00Z"
+      },
+      "organization_id": "34338661734",
+      "created": "2022-04-07T03:14:11Z",
+      "changed": "2022-04-07T03:35:00Z",
+      "published": "2022-04-07T03:16:09Z",
+      "capacity": 10,
+      "capacity_is_custom": false,
+      "status": "live",
+      "currency": "AUD",
+      "listed": true,
+      "shareable": true,
+      "invite_only": false,
+      "online_event": true,
+      "show_remaining": false,
+      "tx_time_limit": 480,
+      "hide_start_date": false,
+      "hide_end_date": false,
+      "locale": "en_AU",
+      "is_locked": false,
+      "privacy_setting": "unlocked",
+      "is_series": false,
+      "is_series_parent": false,
+      "inventory_type": "limited",
+      "is_reserved_seating": false,
+      "show_pick_a_seat": false,
+      "show_seatmap_thumbnail": false,
+      "show_colors_in_seatmap_thumbnail": false,
+      "source": "coyote",
+      "is_free": true,
+      "version": null,
+      "summary": "Learn the basics of using the  ARDC Nectar Cloud for your research.",
+      "facebook_event_id": null,
+      "logo_id": "262276929",
+      "organizer_id": "14317910674",
+      "venue_id": null,
+      "category_id": "102",
+      "subcategory_id": "2004",
+      "format_id": null,
+      "id": "315887968417",
+      "resource_uri": "https://www.eventbriteapi.com/v3/events/315887968417/",
+      "is_externally_ticketed": false,
+      "logo": {
+        "crop_mask": {
+          "top_left": {
+            "x": 0,
+            "y": 37
+          },
+          "width": 1200,
+          "height": 600
+        },
+        "original": {
+          "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F262276929%2F34338661734%2F1%2Foriginal.20211108-031305?auto=format%2Ccompress&q=75&sharp=10&s=98e8a6c7c15fbd7d5e24c4c85769b776",
+          "width": 1200,
+          "height": 675
+        },
+        "id": "262276929",
+        "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F262276929%2F34338661734%2F1%2Foriginal.20211108-031305?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C37%2C1200%2C600&s=47635379abfb0fe5ef9288dc9716d8fb",
+        "aspect_ratio": "2",
+        "edge_color": "#5e5d5a",
+        "edge_color_set": true
+      }
+    },
+    {
+      "name": {
+        "text": "Getting Started with Nectar Research Cloud Training",
+        "html": "Getting Started with Nectar Research Cloud Training"
+      },
+      "description": {
+        "text": "Learn the basics of using the  ARDC Nectar Cloud for your research.",
+        "html": "Learn the basics of using the  ARDC Nectar Cloud for your research."
+      },
+      "url": "https://www.eventbrite.com.au/e/getting-started-with-nectar-research-cloud-training-tickets-315889553157",
+      "vanity_url": "https://intromay20.eventbrite.com.au",
+      "start": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-05-20T13:00:00",
+        "utc": "2022-05-20T03:00:00Z"
+      },
+      "end": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-05-20T15:00:00",
+        "utc": "2022-05-20T05:00:00Z"
+      },
+      "organization_id": "34338661734",
+      "created": "2022-04-07T03:17:59Z",
+      "changed": "2022-04-07T03:37:50Z",
+      "published": "2022-04-07T03:26:06Z",
+      "capacity": 10,
+      "capacity_is_custom": false,
+      "status": "live",
+      "currency": "AUD",
+      "listed": true,
+      "shareable": true,
+      "invite_only": false,
+      "online_event": true,
+      "show_remaining": false,
+      "tx_time_limit": 480,
+      "hide_start_date": false,
+      "hide_end_date": false,
+      "locale": "en_AU",
+      "is_locked": false,
+      "privacy_setting": "unlocked",
+      "is_series": false,
+      "is_series_parent": false,
+      "inventory_type": "limited",
+      "is_reserved_seating": false,
+      "show_pick_a_seat": false,
+      "show_seatmap_thumbnail": false,
+      "show_colors_in_seatmap_thumbnail": false,
+      "source": "coyote",
+      "is_free": true,
+      "version": null,
+      "summary": "Learn the basics of using the  ARDC Nectar Cloud for your research.",
+      "facebook_event_id": null,
+      "logo_id": "262278339",
+      "organizer_id": "14317910674",
+      "venue_id": null,
+      "category_id": "102",
+      "subcategory_id": "2004",
+      "format_id": null,
+      "id": "315889553157",
+      "resource_uri": "https://www.eventbriteapi.com/v3/events/315889553157/",
+      "is_externally_ticketed": false,
+      "logo": {
+        "crop_mask": {
+          "top_left": {
+            "x": 0,
+            "y": 37
+          },
+          "width": 1200,
+          "height": 600
+        },
+        "original": {
+          "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F262278339%2F34338661734%2F1%2Foriginal.20211108-031305?auto=format%2Ccompress&q=75&sharp=10&s=49203f8a27ae07463e9ad86090e55ff5",
+          "width": 1200,
+          "height": 675
+        },
+        "id": "262278339",
+        "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F262278339%2F34338661734%2F1%2Foriginal.20211108-031305?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C37%2C1200%2C600&s=3b29563633e33ca55267d55723e90f04",
+        "aspect_ratio": "2",
+        "edge_color": "#5e5d5a",
+        "edge_color_set": true
+      }
+    },
+    {
+      "name": {
+        "text": "Nectar Cloud Basic Security Training",
+        "html": "Nectar Cloud Basic Security Training"
+      },
+      "description": {
+        "text": "Learn the some of the ideal practices required to keep your projects & instances secure.",
+        "html": "Learn the some of the ideal practices required to keep your projects &amp; instances secure."
+      },
+      "url": "https://www.eventbrite.com.au/e/nectar-cloud-basic-security-training-tickets-315900546037",
+      "vanity_url": "https://security30may.eventbrite.com.au",
+      "start": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-05-30T13:00:00",
+        "utc": "2022-05-30T03:00:00Z"
+      },
+      "end": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-05-30T14:00:00",
+        "utc": "2022-05-30T04:00:00Z"
+      },
+      "organization_id": "34338661734",
+      "created": "2022-04-07T03:56:28Z",
+      "changed": "2022-04-07T03:59:32Z",
+      "published": "2022-04-07T03:59:32Z",
+      "capacity": 20,
+      "capacity_is_custom": false,
+      "status": "live",
+      "currency": "AUD",
+      "listed": true,
+      "shareable": true,
+      "invite_only": false,
+      "online_event": true,
+      "show_remaining": false,
+      "tx_time_limit": 480,
+      "hide_start_date": false,
+      "hide_end_date": false,
+      "locale": "en_AU",
+      "is_locked": false,
+      "privacy_setting": "unlocked",
+      "is_series": false,
+      "is_series_parent": false,
+      "inventory_type": "limited",
+      "is_reserved_seating": false,
+      "show_pick_a_seat": false,
+      "show_seatmap_thumbnail": false,
+      "show_colors_in_seatmap_thumbnail": false,
+      "source": "coyote",
+      "is_free": true,
+      "version": null,
+      "summary": "Learn the some of the ideal practices required to keep your projects & instances secure.",
+      "facebook_event_id": null,
+      "logo_id": "262291899",
+      "organizer_id": "14317910674",
+      "venue_id": null,
+      "category_id": null,
+      "subcategory_id": null,
+      "format_id": null,
+      "id": "315900546037",
+      "resource_uri": "https://www.eventbriteapi.com/v3/events/315900546037/",
+      "is_externally_ticketed": false,
+      "logo": {
+        "crop_mask": {
+          "top_left": {
+            "x": 560,
+            "y": 0
+          },
+          "width": 1600,
+          "height": 800
+        },
+        "original": {
+          "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F262291899%2F34338661734%2F1%2Foriginal.20210114-023720?auto=format%2Ccompress&q=75&sharp=10&s=6b9179f7198afad029978fa7d4897fbd",
+          "width": 2160,
+          "height": 800
+        },
+        "id": "262291899",
+        "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F262291899%2F34338661734%2F1%2Foriginal.20210114-023720?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=560%2C0%2C1600%2C800&s=25d6c3da88981c1ec4d7fc432f77cf4e",
+        "aspect_ratio": "2",
+        "edge_color": "#1f1f1f",
+        "edge_color_set": true
+      }
+    },
+    {
+      "name": {
+        "text": "Getting Started with Nectar Research Cloud Training",
+        "html": "Getting Started with Nectar Research Cloud Training"
+      },
+      "description": {
+        "text": "Learn the basics of using the  ARDC Nectar Cloud for your research.",
+        "html": "Learn the basics of using the  <strong>ARDC Nectar Cloud</strong> for your research."
+      },
+      "url": "https://www.eventbrite.com.au/e/getting-started-with-nectar-research-cloud-training-tickets-315896965327",
+      "vanity_url": "https://introjune1.eventbrite.com.au",
+      "start": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-06-01T13:00:00",
+        "utc": "2022-06-01T03:00:00Z"
+      },
+      "end": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-06-01T15:00:00",
+        "utc": "2022-06-01T05:00:00Z"
+      },
+      "organization_id": "34338661734",
+      "created": "2022-04-07T03:40:40Z",
+      "changed": "2022-04-07T03:52:08Z",
+      "published": "2022-04-07T03:42:20Z",
+      "capacity": 10,
+      "capacity_is_custom": false,
+      "status": "live",
+      "currency": "AUD",
+      "listed": true,
+      "shareable": true,
+      "invite_only": false,
+      "online_event": true,
+      "show_remaining": false,
+      "tx_time_limit": 480,
+      "hide_start_date": false,
+      "hide_end_date": false,
+      "locale": "en_AU",
+      "is_locked": false,
+      "privacy_setting": "unlocked",
+      "is_series": false,
+      "is_series_parent": false,
+      "inventory_type": "limited",
+      "is_reserved_seating": false,
+      "show_pick_a_seat": false,
+      "show_seatmap_thumbnail": false,
+      "show_colors_in_seatmap_thumbnail": false,
+      "source": "coyote",
+      "is_free": true,
+      "version": null,
+      "summary": "Learn the basics of using the  ARDC Nectar Cloud for your research.",
+      "facebook_event_id": null,
+      "logo_id": "262286439",
+      "organizer_id": "14317910674",
+      "venue_id": null,
+      "category_id": "102",
+      "subcategory_id": "2004",
+      "format_id": null,
+      "id": "315896965327",
+      "resource_uri": "https://www.eventbriteapi.com/v3/events/315896965327/",
+      "is_externally_ticketed": false,
+      "logo": {
+        "crop_mask": {
+          "top_left": {
+            "x": 0,
+            "y": 37
+          },
+          "width": 1200,
+          "height": 600
+        },
+        "original": {
+          "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F262286439%2F34338661734%2F1%2Foriginal.20211108-031305?auto=format%2Ccompress&q=75&sharp=10&s=43894abf18570027126756f10cfcece9",
+          "width": 1200,
+          "height": 675
+        },
+        "id": "262286439",
+        "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F262286439%2F34338661734%2F1%2Foriginal.20211108-031305?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C37%2C1200%2C600&s=717348966af9149e243f446ae65db940",
+        "aspect_ratio": "2",
+        "edge_color": "#5e5d5a",
+        "edge_color_set": true
+      }
+    },
+    {
+      "name": {
+        "text": "Getting Started with Nectar Research Cloud Training",
+        "html": "Getting Started with Nectar Research Cloud Training"
+      },
+      "description": {
+        "text": "Learn the basics of using the  ARDC Nectar Cloud for your research.",
+        "html": "Learn the basics of using the  ARDC Nectar Cloud for your research."
+      },
+      "url": "https://www.eventbrite.com.au/e/getting-started-with-nectar-research-cloud-training-tickets-315897547067",
+      "vanity_url": "https://introjune29.eventbrite.com.au",
+      "start": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-06-29T14:00:00",
+        "utc": "2022-06-29T04:00:00Z"
+      },
+      "end": {
+        "timezone": "Australia/Sydney",
+        "local": "2022-06-29T16:00:00",
+        "utc": "2022-06-29T06:00:00Z"
+      },
+      "organization_id": "34338661734",
+      "created": "2022-04-07T03:44:15Z",
+      "changed": "2022-04-07T03:53:08Z",
+      "published": "2022-04-07T03:51:00Z",
+      "capacity": 10,
+      "capacity_is_custom": false,
+      "status": "live",
+      "currency": "AUD",
+      "listed": true,
+      "shareable": true,
+      "invite_only": false,
+      "online_event": true,
+      "show_remaining": false,
+      "tx_time_limit": 480,
+      "hide_start_date": false,
+      "hide_end_date": false,
+      "locale": "en_AU",
+      "is_locked": false,
+      "privacy_setting": "unlocked",
+      "is_series": false,
+      "is_series_parent": false,
+      "inventory_type": "limited",
+      "is_reserved_seating": false,
+      "show_pick_a_seat": false,
+      "show_seatmap_thumbnail": false,
+      "show_colors_in_seatmap_thumbnail": false,
+      "source": "coyote",
+      "is_free": true,
+      "version": null,
+      "summary": "Learn the basics of using the  ARDC Nectar Cloud for your research.",
+      "facebook_event_id": null,
+      "logo_id": "262287869",
+      "organizer_id": "14317910674",
+      "venue_id": null,
+      "category_id": "102",
+      "subcategory_id": "2004",
+      "format_id": null,
+      "id": "315897547067",
+      "resource_uri": "https://www.eventbriteapi.com/v3/events/315897547067/",
+      "is_externally_ticketed": false,
+      "logo": {
+        "crop_mask": {
+          "top_left": {
+            "x": 0,
+            "y": 37
+          },
+          "width": 1200,
+          "height": 600
+        },
+        "original": {
+          "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F262287869%2F34338661734%2F1%2Foriginal.20211108-031305?auto=format%2Ccompress&q=75&sharp=10&s=b9ecd1cafaf952114eee1f67fd4d6ea5",
+          "width": 1200,
+          "height": 675
+        },
+        "id": "262287869",
+        "url": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F262287869%2F34338661734%2F1%2Foriginal.20211108-031305?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C37%2C1200%2C600&s=27dde8bccc907b6f3c8625c40e6e2415",
+        "aspect_ratio": "2",
+        "edge_color": "#5e5d5a",
+        "edge_color_set": true
+      }
+    }
+  ]
+}

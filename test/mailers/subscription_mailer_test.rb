@@ -27,7 +27,8 @@ class SubscriptionMailerTest < ActionMailer::TestCase
 
     assert_equal [TeSS::Config.sender_email], email.from
     assert_equal [sub.user.email], email.to
-    assert_equal 'TeSS weekly digest - 2 new materials matching your criteria', email.subject
+    assert_equal "#{TeSS::Config.site['title_short']} weekly digest - 2 new materials matching your criteria",
+                 email.subject
     body = email.text_part.body.to_s
 
     assert body.include?(m1.title), 'Expected first material title to appear in email body'
@@ -54,7 +55,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
 
     assert_equal [TeSS::Config.sender_email], email.from
     assert_equal [sub.user.email], email.to
-    assert_equal "TeSS weekly digest - #{e.length} new events matching your criteria", email.subject
+    assert_equal "#{TeSS::Config.site['title_short']} weekly digest - #{e.length} new events matching your criteria", email.subject
 
     html = email.html_part.body.to_s
 

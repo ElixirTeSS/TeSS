@@ -1,62 +1,63 @@
 <div itemscope itemtype="http://schema.org/CreativeWork">
-  <%= content_tag :span, material.title, {itemprop: 'name', content: material.title, class: 'schemaorg-element'} %>
-  <%= content_tag :span, material.url, {itemprop: 'url', content: material.url, class: 'schemaorg-element'} %>
-  <%= content_tag :span, material_url(material), {itemprop: 'sameAs', content: material_url(material), class: 'schemaorg-element' } %>
-  <%= content_tag :span, material.short_description, {itemprop: 'description', content: material.short_description, class: 'schemaorg-element'} if material.short_description and not material.short_description.empty? %>
-
-  <%  if material.authors and not material.authors.empty? %>
-      <% material.authors.each do |author| %>
+  <%= content_tag :span, material.title, { itemprop: 'name', content: material.title, class: 'schemaorg-element' } %>
+  <%= content_tag :span, material.url, { itemprop: 'url', content: material.url, class: 'schemaorg-element' } %>
+  <%= content_tag :span, material_url(material), { itemprop: 'sameAs', content: material_url(material), class: 'schemaorg-element' } %>
+  <% if material.contact and not material.contact.empty? %>
+    <%= content_tag :span, material.contact, { itemprop: 'contact', content: material.contact, class: 'schemaorg-element' } %>
+  <% end %>
+  <% if material.authors and not material.authors.empty? %>
+    <% material.authors.each do |author| %>
         <span itemscope itemprop='author' itemtype="http://schema.org/Person">
-            <%= content_tag 'span', author, {itemprop: 'name', content: author, class: 'schemaorg-element'} %>
+            <%= content_tag 'span', author, { itemprop: 'name', content: author, class: 'schemaorg-element' } %>
         </span>
-      <% end %>
+    <% end %>
   <% end %>
 
-  <%  if material.contributors and not material.contributors.empty? %>
-      <% material.contributors.each do |contributor| %>
+  <% if material.contributors and not material.contributors.empty? %>
+    <% material.contributors.each do |contributor| %>
         <span itemscope itemprop='contributor' itemtype="http://schema.org/Person">
             <%= content_tag 'span', contributor,
-                            {itemprop: 'name',
-                             content: contributor,
-                             class: 'schemaorg-element'
+                            { itemprop: 'name',
+                              content: contributor,
+                              class: 'schemaorg-element'
                             } %>
         </span>
-      <% end %>
+    <% end %>
   <% end %>
 
-  <%  if material.scientific_topics and not material.scientific_topics.empty? %>
-      <% material.scientific_topics.each do |scientific_topic| %>
-        <%= content_tag 'span', scientific_topic.preferred_label,
-                        {itemprop: 'genre',
-                         content: scientific_topic.preferred_label,
-                         class: 'schemaorg-element'
-                        } %>
-      <% end %>
+  <% if material.scientific_topics and not material.scientific_topics.empty? %>
+    <% material.scientific_topics.each do |scientific_topic| %>
+      <%= content_tag 'span', scientific_topic.preferred_label,
+                      { itemprop: 'genre',
+                        content: scientific_topic.preferred_label,
+                        class: 'schemaorg-element'
+                      } %>
+    <% end %>
   <% end %>
 
-  <%  if material.keywords and not material.keywords.empty? %>
-      <% keywords = material.keywords.join(', ') %>
-      <%= content_tag 'span', keywords, {itemprop: 'keywords', content: keywords, class: 'schemaorg-element'} %>
+  <% if material.keywords and not material.keywords.empty? %>
+    <% keywords = material.keywords.join(', ') %>
+    <%= content_tag 'span', keywords, { itemprop: 'keywords', content: keywords, class: 'schemaorg-element' } %>
   <% end %>
 
-  <%  if material.target_audience and not material.target_audience.empty? %>
-      <% material.target_audience.each do |target_audience| %>
+  <% if material.target_audience and not material.target_audience.empty? %>
+    <% material.target_audience.each do |target_audience| %>
         <span itemscope itemprop='audience' itemtype="http://schema.org/PeopleAudience">
             <%= content_tag 'span', target_audience,
-                            {itemprop: 'name',
-                             content: target_audience,
-                             class: 'schemaorg-element'
+                            { itemprop: 'name',
+                              content: target_audience,
+                              class: 'schemaorg-element'
                             } %>
         </span>
-      <% end %>
+    <% end %>
   <% end %>
 
   <%= content_tag 'span', material.remote_created_date,
-                  {itemprop: 'dateCreated',
-                   content: material.remote_created_date,
-                   class: 'schemaorg-element'} if material.remote_created_date and not material.remote_created_date.to_s.empty? %>
+                  { itemprop: 'dateCreated',
+                    content: material.remote_created_date,
+                    class: 'schemaorg-element' } if material.remote_created_date and not material.remote_created_date.to_s.empty? %>
   <%= content_tag 'span', material.remote_updated_date,
-                  {itemprop: 'dateModified',
-                   content: material.remote_updated_date,
-                   class: 'schemaorg-element'} if material.remote_updated_date and not material.remote_updated_date.to_s.empty? %>
+                  { itemprop: 'dateModified',
+                    content: material.remote_updated_date,
+                    class: 'schemaorg-element' } if material.remote_updated_date and not material.remote_updated_date.to_s.empty? %>
 </div>

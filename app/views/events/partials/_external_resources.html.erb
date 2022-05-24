@@ -1,0 +1,29 @@
+<div class="form-group" id="external-resources">
+  <%= f.label :external_resources %>
+  <%= f.field_lock :external_resources %>
+
+  <div id="external-resources-list">
+    <% @event.external_resources.each_with_index do |external_resource, index| %>
+      <%= render partial: 'common/external_resource_form',
+                 locals: { form_name: 'event', index: index, external_resource: external_resource } %>
+    <% end %>
+  </div>
+
+  <!-- Fairshare: check disabled -->
+  <% if !TeSS::Config.feature['disabled'].include? 'fairshare' %>
+    <div class="row">
+      <%= render :partial => 'common/fairsharing_suggestions', :locals => { :title_element => 'material_title' } %>
+    </div>
+  <% end %>
+
+  <!-- BioTools: check disabled -->
+  <% if !TeSS::Config.feature['disabled'].include? 'biotools' %>
+    <div class="row">
+      <%= render partial: 'common/biotools_suggestions', locals: { title_element: 'event_title' } %>
+    </div>
+  <% end %>
+
+  <a href="#" id="add-external-resource-btn" class="btn btn-info">
+    <i class="fa fa-plus"></i> Add external resource
+  </a>
+</div>

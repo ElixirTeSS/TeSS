@@ -1,0 +1,75 @@
+<div class="wrapper collapsing-wrapper">
+
+  <div id="content">
+
+    <div class="row">
+      <div class="content_action">
+        <%= link_to t('.back', :default => t("helpers.links.back")), :back, :class => 'btn btn-info' %>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <p>
+      <div id="gravatar_image">
+        <%= image_tag @trainer.user.gravatar_url,
+                      :class => 'medium-trainer-logo hidden-lg hidden-md' %>
+        <%= image_tag @trainer.user.gravatar_url,
+                      :class => 'large-trainer-logo hidden-sm hidden-xs' %>
+      </div>
+      </p>
+
+      <div class="text-justify">
+        <!-- Field: full name -->
+        <h2>
+          <%= t 'profile.full_name', :default => @trainer.full_name %>
+        </h2>
+        <!-- Field: website -->
+        <% if !@trainer.website.nil? and !@trainer.website.blank? %>
+          <p>
+          <div class="url-wrap">
+            <%= link_to @trainer.website, @trainer.website, :class => 'h5', :target => "_blank",
+                        :onclick => "getOutboundLink('#{@trainer.website}'); return true;" %>
+          </div>
+          </p>
+        <% end %>
+        <!-- Field: orcid -->
+        <% if !@trainer.orcid.nil? and !@trainer.orcid.blank? %>
+          <p>
+          <div class="url-wrap">
+            <%= link_to @trainer.orcid, @trainer.orcid, :class => 'h5', :target => "_blank",
+                        :onclick => "getOutboundLink('#{@trainer.orcid}'); return true;" %>
+          </div>
+          </p>
+        <% end %>
+      </div>
+
+      <!-- Field:  description -->
+      <p> <%= display_attribute(@trainer, :description) %></p>
+
+      <!-- Field: other fields -->
+      <div class="dont-break-out">
+        <%= display_attribute(@trainer, :email) %>
+        <%= display_attribute(@trainer, :location) %>
+        <%= display_attribute(@trainer, :experience) %>
+        <%= display_attribute(@trainer, :expertise_academic) { |values| values.join(', ') } %>
+        <%= display_attribute(@trainer, :expertise_technical) { |values| values.join(', ') } %>
+        <%= display_attribute(@trainer, :fields) { |values| values.join(', ') } %>
+        <%= display_attribute(@trainer, :interest) { |values| values.join(', ') } %>
+        <%= display_attribute(@trainer, :activity) { |values| values.join(', ') } %>
+        <%= display_attribute(@trainer, :language) do |values|
+          labels = []
+          values.each { |value| labels << language_label_by_key(value) }
+          labels.join(', ')
+        end %>
+        <%= display_attribute(@trainer, :social_media) { |values| values.join(', ') } %>
+
+        <!-- Other metadata -->
+        <%= render :partial => 'trainers/partials/twitter_card', :locals => { :trainer => @trainer } %>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

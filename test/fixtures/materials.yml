@@ -1,68 +1,153 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 good_material:
+  user: regular_user
   title: Training Material Example
   url: http://training.com/trainers/1359023
-  short_description: This is a Training Material produced by an example organization
+  description: This is a Training Material produced by an example organization
   doi: http://dx.doi.ac.uk/2q3093032
-  remote_updated_date: 2015-09-25
-  remote_created_date: 2015-09-25
-  user: regular_user
-  content_provider: goblet
   resource_type: ['Lecture']
   licence: CC-BY-4.0
-  difficulty_level: intermediate
+  contact: 'default contact'
+  keywords: ['good']
+  content_provider: goblet
+  status: active
+  remote_updated_date: 2015-09-25
+  remote_created_date: 2015-09-25
 
 bad_material:
   title: Bad Training Material Example
   url: Not really a valid URL.com
-  short_description: THis is the short descriptiopn
+  description: THis is the short descriptiopn
   doi: not really a doi.
+  licence: ''
+  keywords: []
+  contact: ''
+  status: ''
+  content_provider: goblet
   remote_updated_date: 2015-09-25
   remote_created_date: 2015-09-25
-  content_provider: goblet
 
 biojs:
   title: BioJS
   url: http://www.mygoblet.org//training-portal/materials/biojs
-  short_description: BioJS is a library of graphical components easy to reuse to represent biological information
+  description: BioJS is a library of graphical components easy to reuse to represent biological information
+  doi: http://doi.org/10.1109/SEAA.2009.59
+  licence: CC-BY-4.0
+  contact: 'BioJS support'
+  keywords: ['biological','graphical']
   content_provider: goblet
+  status: active
 
 interpro:
   title: InterPro
   url: http://www.mygoblet.org//training-portal/materials/interpro-introduction
-  short_description: 'This presentation introduces the background to the InterPro database: what it is, where it came from, and what was the vision behind its creation'
+  description: >
+    This presentation introduces the background to the InterPro database:
+    what it is, where it came from, and what was the vision behind its creation
+  doi: http://doi.org/10.1109/SEAA.2009.59
+  licence: CC-BY-4.0
+  contact: 'InterPro support'
+  keywords: ['InterPro','graphical']
+  status: active
 
 prints:
   title: 'PRINTS: A protein family database with a difference'
   url: http://www.mygoblet.org//training-portal/materials/prints-protein-family-database-difference
-  short_description: 'A presentation designed to introduce the concept of protein family analysis and characterisation using motif-based methods, with a particular focus on protein fingerprinting.'
+  description: >
+    A presentation designed to introduce the concept of protein family analysis and characterisation using motif-based
+    methods, with a particular focus on protein fingerprinting.
+  doi: http://doi.org/10.1109/SEAA.2009.59
+  licence: CC-BY-4.0
+  contact: 'prints'
+  keywords: ['protein','prints']
+  status: active
 
 scraper_user_material:
+  user: scraper_user
   title: material owned by scraper'
   url: http://myurl.com
-  short_description: 'this is my material'
-  user: scraper_user
+  description: 'this is my material'
+  doi: http://doi.org/10.1109/SEAA.2009.59
+  licence: CC-BY-4.0
+  contact: 'scraper'
+  keywords: ['owned','by','scraper']
   content_provider: goblet
+  status: development
 
 material_with_external_resource:
+  user: regular_user
   title: External Resource Material
   url: http://myurl.com/123
-  short_description: 'this is my material'
-  user: regular_user
+  description: 'this is my material'
+  doi: http://doi.org/10.1109/SEAA.2009.59
+  licence: CC-BY-4.0
+  contact: 'try someone else'
+  keywords: ['external','resource']
   content_provider: goblet
+  status: archived
 
 material_with_suggestions:
+  user: regular_user
   title: Material with suggestions
   url: http://training.com/suggestions
-  short_description: This is a Training Material with suggestions
-  user: regular_user
+  description: This is a Training Material with suggestions
+  doi: http://doi.org/10.1109/SEAA.2009.59
+  licence: CC-BY-4.0
+  contact: 'suggested contact'
+  keywords: ['suggestions']
   content_provider: goblet
+  status: active
 
 failing_material:
+  user: regular_user
   title: Failing Material
   url: http://training.com/404
-  short_description: This is a Training Material with a dodgy URL
-  user: regular_user
+  description: This is a Training Material with a dodgy URL
+  doi: http://doi.org/10.1109/SEAA.2009.59
+  licence: CC-BY-4.0
+  contact: 'none'
+  keywords: ['biological','graphical']
   content_provider: goblet
+  status: ''
 
+material_with_optionals:
+  user: regular_user
+  title: Training Material with All Optionals
+  url: https://training.com/material/023
+  description: This is a Training Material produced by an example organization
+  doi: http://dx.doi.ac.uk/2q3093032
+  licence: CC-BY-4.0
+  contact: 'default contact'
+  keywords: ['material','with','optionals']
+  content_provider: goblet
+  events: [ kilburn, two ]
+  target_audience: [ 'HDR', 'ECR' ]
+  resource_type: ['Quiz', 'Presentation' ]
+  other_types: 'Podcast'
+  version: 1.0.3
+  status: development
+  date_created: 2021-07-12
+  date_modified: 2021-07-13
+  date_published: 2021-07-14
+  subsets: [ 'https://training.com/material/023/part-one', 'https://training.com/material/023/part-two' ]
+  authors: [ 'Nicolai Tesla', 'Thomas Edison' ]
+  contributors: [ 'Dr Dre' ]
+  prerequisites: 'None'
+  syllabus: '1. Overview\  2. The main part\  3. Summing up'
+  learning_objectives: 'Understand the new materials model'
+
+training_material:
+  user: trainer_user
+  title: Training Material Example 2
+  url: http://training.com/trainers/2
+  description: This is a Training Material produced by an example organization
+  doi: http://dx.doi.ac.uk/2q3093032
+  resource_type: ['Lecture']
+  licence: CC-BY-4.0
+  contact: 'default contact'
+  keywords: ['good']
+  content_provider: goblet
+  status: active
+  remote_updated_date: 2015-09-25
+  remote_created_date: 2015-09-25

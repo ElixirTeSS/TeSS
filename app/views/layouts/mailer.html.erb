@@ -8,7 +8,9 @@
 
 <br/><br/>
 <%= link_to(root_url) do %>
-    <%= image_tag('ELIXIR_TeSS_logo_normal-80px-height.png', alt: 'TeSS logo', title: 'Visit TeSS') %>
+    <%= image_tag(TeSS::Config.site['logo_email'], alt: TeSS::Config.site['title_short'], 
+         title: "Visit #{TeSS::Config.site['title_short']}",
+         style: 'height: 100px;', target: '_blank' ) %>
 <% end %>
 
 </body>

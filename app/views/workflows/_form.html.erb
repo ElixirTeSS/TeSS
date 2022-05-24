@@ -1,88 +1,90 @@
 <%= simple_form_for(@workflow) do |f| %>
-    <div class="row">
-      <div class="col-md-4 col-md-push-8">
-        <%= render :partial => 'workflows/partials/general_workflow_info' %>
+  <div class="row">
+    <div class="col-md-4 col-md-push-8">
+      <%= render :partial => 'workflows/partials/general_workflow_info' %>
+    </div>
+    <div class="col-md-8 col-md-pull-4">
+      <h3>Metadata</h3>
+
+      <%= render partial: 'common/error_summary', locals: { resource: @workflow } %>
+
+      <%= f.input :title %>
+
+      <div class="form-group">
+        <%= f.label :description %>
+        <%= f.markdown_area :description, :class => 'form-control', :rows => '5' %>
       </div>
-      <div class="col-md-8 col-md-pull-4">
-        <h3>Metadata</h3>
 
-        <%= render partial: 'common/error_summary', locals: { resource: @workflow } %>
+      <%= collapsible_panel('Extra metadata', 'extra-metadata') do %>
+        <div class="form-group">
+          <%= f.label :doi, "DOI" %>
+          <%= f.text_field :doi, :class => 'form-control' %>
+        </div>
 
-        <%= f.input :title %>
+        <% if !TeSS::Config.feature['disabled'].include? 'topics' %>
+          <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term',
+                              id_field: :uri, label_field: :preferred_label %>
+        <% end %>
+
+        <%= f.multi_input :keywords %>
+
+        <%= f.multi_input :target_audience %>
 
         <div class="form-group">
-          <%= f.label :description %>
-          <%= f.markdown_area :description, :class => 'form-control', :rows => '5' %>
+          <%= f.label :difficulty_level %>
+          <%= f.select(:difficulty_level,
+                       options_for_select(difficulty_options_for_select, @workflow.difficulty_level.blank? ? "notspecified" : @workflow.difficulty_level), {},
+                       class: "form-control")
+          %>
         </div>
 
-        <%= collapsible_panel('Extra metadata', 'extra-metadata') do %>
-            <div class="form-group">
-              <%= f.label :doi, "DOI" %>
-              <%= f.text_field :doi, :class => 'form-control' %>
-            </div>
+        <div class="form-group">
+          <%= f.label :licence %>
+          <%= f.select(:licence,
+                       options_for_select(licence_options_for_select, @workflow.licence.blank? ? "notspecified" : @workflow.licence), {},
+                       class: "form-control")
+          %>
+        </div>
 
-            <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term',
-                                id_field: :uri, label_field: :preferred_label %>
+        <%= f.multi_input :authors, suggestions: people_suggestions %>
 
-            <%= f.multi_input :keywords %>
+        <%= f.multi_input :contributors, suggestions: people_suggestions %>
+      <% end %>
 
-            <%= f.multi_input :target_audience %>
+      <%= f.input :hide_child_nodes,
+                  hint: 'Ticking this box will hide child nodes from the diagram until their parent node is clicked.' %>
 
-            <div class="form-group">
-              <%= f.label :difficulty_level %>
-              <%= f.select(:difficulty_level,
-                           options_for_select(difficulty_options_for_select, @workflow.difficulty_level.blank? ? "notspecified" : @workflow.difficulty_level), {},
-                           class: "form-control")
-              %>
-            </div>
+      <%= f.input :public,
+                  hint: "Un-ticking this box will hide this workflow from anyone who isn't the creator or a collaborator." %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group actions">
+        <%= f.submit "Save workflow", class: 'btn btn-primary workflow-form-submit' %>
+        <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                    @workflow.new_record? ? workflows_path : workflow_path(@workflow), :class => 'btn btn-default' %>
+      </div>
 
-            <div class="form-group">
-              <%= f.label :licence %>
-              <%= f.select(:licence,
-                           options_for_select(licence_options_for_select, @workflow.licence.blank? ? "notspecified" : @workflow.licence), {},
-                           class: "form-control")
-              %>
-            </div>
+      <h3>Diagram</h3>
+      <%= f.hidden_field :workflow_content %>
 
-            <%= f.multi_input :authors, suggestions: people_suggestions %>
+      <% content_for :sidebar_title do %>
+        <span class="muted">Nothing selected</span>
+      <% end %>
+      <%= render partial: 'workflows/workflow_diagram', locals: { workflow: @workflow, editable: true } %>
 
-            <%= f.multi_input :contributors, suggestions: people_suggestions %>
-        <% end %>
-
-        <%= f.input :hide_child_nodes,
-                    hint: 'Ticking this box will hide child nodes from the diagram until their parent node is clicked.' %>
-
-        <%= f.input :public,
-                    hint: "Un-ticking this box will hide this workflow from anyone who isn't the creator or a collaborator." %>
+      <div class="form-group actions">
+        <%= f.submit "Save workflow", class: 'btn btn-primary workflow-form-submit' %>
+        <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                    @workflow.new_record? ? workflows_path : workflow_path(@workflow), :class => 'btn btn-default' %>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="form-group actions">
-          <%= f.submit "Save workflow", class: 'btn btn-primary workflow-form-submit' %>
-          <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                      @workflow.new_record? ? workflows_path : workflow_path(@workflow), :class => 'btn btn-default' %>
-        </div>
-
-        <h3>Diagram</h3>
-        <%= f.hidden_field :workflow_content  %>
-
-        <% content_for :sidebar_title do %>
-            <span class="muted">Nothing selected</span>
-        <% end %>
-        <%= render partial: 'workflows/workflow_diagram', locals: { workflow:  @workflow, editable: true } %>
-
-        <div class="form-group actions">
-          <%= f.submit "Save workflow", class: 'btn btn-primary workflow-form-submit' %>
-          <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                      @workflow.new_record? ? workflows_path : workflow_path(@workflow), :class => 'btn btn-default' %>
-        </div>
-      </div>
-    </div>
+  </div>
 <% end %>
 
 <script>
-  Workflows.formSubmitted = false;
-  $(window).unbind('turbolinks:before-visit', Workflows.promptBeforeLeaving);
-  $(window).bind('turbolinks:before-visit', Workflows.promptBeforeLeaving);
+    Workflows.formSubmitted = false;
+    $(window).unbind('turbolinks:before-visit', Workflows.promptBeforeLeaving);
+    $(window).bind('turbolinks:before-visit', Workflows.promptBeforeLeaving);
 </script>

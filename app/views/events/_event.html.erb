@@ -1,7 +1,8 @@
+<% eclass ||= "long" if defined?(list) && !list.nil? && list -%>
 <% if tooltip_titles(event).empty? -%>
-<li class="masonry-brick media-item" -%>
+<li class="masonry-brick media-item">
 <% else -%>
-<li class="masonry-brick media-item" data-toggle="tooltip" data-placement="auto" title="<%= tooltip_titles(event) -%>">
+<li class="masonry-brick media-item <%= eclass %>" data-toggle="tooltip" data-placement="auto" title="<%= tooltip_titles(event) -%>">
 <% end -%>
   <div id="event-title">
   <h3 class="media-heading dont-break-out" style="display: inline;">
@@ -16,10 +17,10 @@
           <%= icon_for(:online, :small) %>
       <% end %>
   <% else %>
-    <p class="dont-break-out"><%= [event.city, event.country].reject { |field_value| field_value.blank? }.join(", ")%></p>
+    <p class="dont-break-out">
+      <%= [event.city, event.country].reject { |field_value| field_value.blank? }.join(", ")%>
+    </p>
   <% end %>
-
-
 
   <% if event.started? %>
       <%= content_tag(:span, :class=>'pull-right gap') do %>
@@ -30,14 +31,10 @@
           <%= icon_for(:expired, :small) %>
       <% end %>
   <% end %>
-  <% if event.for_profit? %>
-      <%= content_tag(:span, :class=>'pull-right gap') do %>
-          <%= icon_for(:for_profit, :small) %>
-      <% end %>
-  <% end %>
+
   <% if event.has_node? -%>
     <%= content_tag(:span, :class=>'pull-right gap') do %>
-        <%= image_tag 'elixir_logo_orange.png',
+        <%= image_tag 'elixir/elixir_logo_orange.png',
                       :alt => 'Elixir node event',
                       :title => 'Elixir node event',
                       :style => 'height: 20px;' %>

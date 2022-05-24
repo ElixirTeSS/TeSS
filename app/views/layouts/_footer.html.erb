@@ -1,40 +1,33 @@
 <footer class="footer">
   <div class="container">
+
     <div class="row">
-      <div class="col-sm-3 col-xs-8">
-        <strong>Version: </strong><%= app_version_text -%><br />
+      <div class="col-md-3 col-sm-4">
+        <%= link_to 'Terms of Use', '/DReSA-Terms-of-use.pdf', target: '_blank' %>
+        |
+        <%= link_to 'User Manual', '/DReSA-User-Manual.pdf', target: '_blank' %><br/>
+        <%= link_to 'Video Guides', 'http://videos.dresa.org.au', target: '_blank' %><br/>
+        <%= link_to 'Privacy', privacy_path %><br/>
         <%= mail_to(TeSS::Config.contact_email, 'Contact us') %><br/>
-        <%= link_to 'Add your training resources to TeSS', registering_resources_path, target: '_blank'  %><br/>
-        <%= link_to 'Source code', 'https://github.com/ElixirTeSS/TeSS', target: '_blank' %><br/>
-        <%= link_to 'Funding & acknowledgements', us_path(anchor: 'funding'), target: '_blank' %><br/>
-        <%= link_to 'Privacy', privacy_path, target: '_blank' %>
+        <%= link_to "Source code [ version: #{app_version_text} ]",
+                    "#{TeSS::Config.site['repository']}/blob/master/README.md", target: '_blank' %>
       </div>
-      <div class="col-sm-9 col-xs-4">
-        <div class="col-sm-7">
-          <%= link_to 'http://www.elixir-europe.org/excelerate', class: 'footer-logo hidden-xs', target: '_blank' do %>
-            <%= image_tag('excelerate-logo.png') %>
-          <% end %>
-          <%= link_to 'http://www.bbsrc.ac.uk/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1', class: 'footer-logo hidden-xs', target: '_blank' do %>
-            <%= image_tag('bbsrc-logo.png') %>
-          <% end %>
-        </div>
-        <div class="col-sm-5 text-right">
-          <%= link_to 'http://www.oerc.ox.ac.uk/', class: 'footer-logo hidden-xs', target: '_blank' do %>
-            <%= image_tag('oxford_logo.jpg') %>
-          <% end %>
-          <%= link_to 'http://www.manchester.ac.uk/', class: 'footer-logo hidden-xs', target: '_blank' do %>
-            <%= image_tag('manchester_logo.png') %>
-          <% end %>
-          <%= link_to 'http://elixir-uk.org/', class: 'footer-logo', target: '_blank' do %>
-            <%= image_tag('ELIXIR_UK_logo_orange.png') %>
-          <% end %>
-        </div>
-        <div class="col-md-12 eu-notice hidden-xs">
-          <%= image_tag('eu_flag.svg') %>
-          TeSS is supported by ELIXIR through the <a href="http://www.elixir-europe.org/excelerate" target="_blank">ELIXIR-EXCELERATE grant</a>,
-          which is funded by the European Union Horizon 2020 program under grant agreement <a href="https://cordis.europa.eu/project/rcn/198519_en.html" target="_blank">676559</a>.
-        </div>
+      <div class="col-md-9 hidden-sm hidden-xs">
+        <%= render :partial => 'layouts/dresa_funded_by' %>
       </div>
     </div>
+
+    <div class="row hidden-sm hidden-xs no-gutters" style="margin-bottom: 0;">
+      <div class="col-md-12 supported-by">
+        <%= render :partial => 'layouts/dresa_supported_by' %>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 0;">
+      <div class="col-md-12 ack-country">
+        <%= raw t 'footer.acknowledgement' %>
+      </div>
+    </div>
+
   </div>
 </footer>

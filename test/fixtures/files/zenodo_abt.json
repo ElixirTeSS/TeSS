@@ -1,0 +1,1710 @@
+{
+  "aggregations": {
+    "access_right": {
+      "buckets": [
+        {
+          "doc_count": 10,
+          "key": "open"
+        }
+      ],
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0
+    },
+    "file_type": {
+      "buckets": [
+        {
+          "doc_count": 10,
+          "key": "pdf"
+        },
+        {
+          "doc_count": 4,
+          "key": "pptx"
+        }
+      ],
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0
+    },
+    "keywords": {
+      "buckets": [
+        {
+          "doc_count": 6,
+          "key": "Bioinformatics"
+        },
+        {
+          "doc_count": 2,
+          "key": "Computational Biology"
+        },
+        {
+          "doc_count": 2,
+          "key": "Genomics"
+        },
+        {
+          "doc_count": 2,
+          "key": "HPC"
+        },
+        {
+          "doc_count": 2,
+          "key": "NCMAS"
+        },
+        {
+          "doc_count": 2,
+          "key": "Phylogenetics"
+        },
+        {
+          "doc_count": 2,
+          "key": "Phylogeny"
+        },
+        {
+          "doc_count": 2,
+          "key": "Target capture sequencing"
+        },
+        {
+          "doc_count": 1,
+          "key": "Bash"
+        },
+        {
+          "doc_count": 1,
+          "key": "Cloud computing"
+        }
+      ],
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 27
+    },
+    "type": {
+      "buckets": [
+        {
+          "doc_count": 10,
+          "key": "other",
+          "subtype": {
+            "buckets": [],
+            "doc_count_error_upper_bound": 0,
+            "sum_other_doc_count": 0
+          }
+        }
+      ],
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0
+    }
+  },
+  "hits": {
+    "hits": [
+      {
+        "conceptdoi": "10.5281/zenodo.5717579",
+        "conceptrecid": "5717579",
+        "created": "2021-11-22T05:12:05.915884+00:00",
+        "doi": "10.5281/zenodo.5717580",
+        "files": [
+          {
+            "bucket": "db196cbf-82cd-4175-b94a-a0682d8f2960",
+            "checksum": "md5:7079378b2f4493a42e15cc8e8f46193f",
+            "key": "Event metadata.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/db196cbf-82cd-4175-b94a-a0682d8f2960/Event%20metadata.pdf"
+            },
+            "size": 102779,
+            "type": "pdf"
+          },
+          {
+            "bucket": "db196cbf-82cd-4175-b94a-a0682d8f2960",
+            "checksum": "md5:e352e58b3d413cbe011691ff60b8f863",
+            "key": "Index of training materials.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/db196cbf-82cd-4175-b94a-a0682d8f2960/Index%20of%20training%20materials.pdf"
+            },
+            "size": 94630,
+            "type": "pdf"
+          },
+          {
+            "bucket": "db196cbf-82cd-4175-b94a-a0682d8f2960",
+            "checksum": "md5:6ff335078fa316b192f7b7eded889905",
+            "key": "Introduction to KBase - Australian BioCommons Webinar.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/db196cbf-82cd-4175-b94a-a0682d8f2960/Introduction%20to%20KBase%20-%20Australian%20BioCommons%20Webinar.pdf"
+            },
+            "size": 1567070,
+            "type": "pdf"
+          },
+          {
+            "bucket": "db196cbf-82cd-4175-b94a-a0682d8f2960",
+            "checksum": "md5:5d4aba8f95af860d9c4c0664fd448a5f",
+            "key": "Q&amp;A for Australian BioCommons KBase Webinar.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/db196cbf-82cd-4175-b94a-a0682d8f2960/Q%26A%20for%20Australian%20BioCommons%20KBase%20Webinar.pdf"
+            },
+            "size": 139316,
+            "type": "pdf"
+          }
+        ],
+        "id": 5717580,
+        "links": {
+          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5717580.svg",
+          "bucket": "https://zenodo.org/api/files/db196cbf-82cd-4175-b94a-a0682d8f2960",
+          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5717579.svg",
+          "conceptdoi": "https://doi.org/10.5281/zenodo.5717579",
+          "doi": "https://doi.org/10.5281/zenodo.5717580",
+          "html": "https://zenodo.org/record/5717580",
+          "latest": "https://zenodo.org/api/records/5717580",
+          "latest_html": "https://zenodo.org/record/5717580",
+          "self": "https://zenodo.org/api/records/5717580"
+        },
+        "metadata": {
+          "access_right": "open",
+          "access_right_category": "success",
+          "communities": [
+            {
+              "id": "australianbiocommons-training"
+            }
+          ],
+          "creators": [
+            {
+              "affiliation": "KBase",
+              "name": "Dow, Ellen",
+              "orcid": "0000-0002-2079-0260"
+            },
+            {
+              "affiliation": "KBase",
+              "name": "Wood-Charlson, Elisha",
+              "orcid": "0000-0001-9557-7715"
+            }
+          ],
+          "description": "&lt;p&gt;This record includes training materials associated with the Australian BioCommons webinar &amp;lsquo;KBase - A knowledge base for systems biology&amp;rsquo;. This webinar took place on 22 September 2021.&lt;/p&gt;\n\n&lt;p&gt;&lt;em&gt;&lt;strong&gt;Event description&lt;/strong&gt;&lt;/em&gt;&amp;nbsp;&lt;/p&gt;\n\n&lt;p&gt;Developed for bench biologists and bioinformaticians, The Department of Energy Systems Biology Knowledgebase (&lt;a href=\"https://www.kbase.us/\"&gt;KBase&lt;/a&gt;) is a free, open source, software and data science platform designed to meet the grand challenge of systems biology: predicting and designing biological function.&lt;/p&gt;\n\n&lt;p&gt;This webinar will provide an overview of the KBase mission and user community, as well as a tour of the online platform and basic functionality. You&amp;rsquo;ll learn how KBase can support your research: Upload data, run analysis tools (Apps), share your analysis with collaborators, and publish your data and reproducible workflows. We&amp;rsquo;ll highlight a brand new feature that enables users to link environment and measurement data to sequencing data. You&amp;rsquo;ll also find out how KBase supports findable, accessible, interoperable, and reusable (FAIR) research by providing open, reproducible, shareable bioinformatics workflows.&lt;/p&gt;\n\n&lt;p&gt;Materials are shared under a Creative Commons Attribution 4.0 International agreement unless otherwise specified and were current at the time of the event.&lt;/p&gt;\n\n&lt;p&gt;&lt;em&gt;&lt;strong&gt;Files and materials included in this record:&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;\n\n&lt;ul&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Event metadata (PDF): Information about the event including, description, event URL, learning objectives, prerequisites, technical requirements etc.&lt;/p&gt;\n\t&lt;/li&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Index of training materials (PDF): List and description of all materials associated with this event including the name, format, location and a brief description of each file.&lt;/p&gt;\n\t&lt;/li&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Q&amp;amp;A for Australian BioCommons KBase Webinar [PDF]: Document containing answers to questions asked during the webinar and links to additional resources&lt;/p&gt;\n\t&lt;/li&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Introduction to KBase: Australian BioCommons Webinar [PDF]: Slides presented during the webinar&lt;/p&gt;\n\t&lt;/li&gt;\n&lt;/ul&gt;\n\n&lt;p&gt;&lt;em&gt;&lt;strong&gt;Materials shared elsewhere:&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;\n\n&lt;p&gt;A recording of the webinar is available on the Australian BioCommons YouTube Channel:&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://youtu.be/tJ94i9gOJfU\"&gt;https://youtu.be/tJ94i9gOJfU&lt;/a&gt;&lt;/p&gt;\n\n&lt;p&gt;The slides are also available as Google slides:&amp;nbsp;&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://tinyurl.com/KBase-webinar-slides\"&gt;https://tinyurl.com/KBase-webinar-slides&lt;/a&gt;&lt;/p&gt;",
+          "doi": "10.5281/zenodo.5717580",
+          "keywords": [
+            "Systems Biology",
+            "FAIR Research",
+            "Open Source Software",
+            "Metagenomics",
+            "Microbiology"
+          ],
+          "language": "eng",
+          "license": {
+            "id": "CC-BY-4.0"
+          },
+          "publication_date": "2021-09-22",
+          "related_identifiers": [
+            {
+              "identifier": "10.5281/zenodo.5717579",
+              "relation": "isVersionOf",
+              "scheme": "doi"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "count": 1,
+                "index": 0,
+                "is_last": true,
+                "last_child": {
+                  "pid_type": "recid",
+                  "pid_value": "5717580"
+                },
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "5717579"
+                }
+              }
+            ]
+          },
+          "resource_type": {
+            "title": "Other",
+            "type": "other"
+          },
+          "subjects": [
+            {
+              "identifier": "http://edamontology.org/topic_2259",
+              "scheme": "url",
+              "term": "Systems Biology"
+            },
+            {
+              "identifier": "http://edamontology.org/topic_3174",
+              "scheme": "url",
+              "term": "Metagenomics"
+            }
+          ],
+          "title": "WEBINAR: KBase - A knowledge base for systems biology"
+        },
+        "owners": [
+          111635
+        ],
+        "revision": 1,
+        "stats": {
+          "downloads": 7.0,
+          "unique_downloads": 7.0,
+          "unique_views": 8.0,
+          "version_downloads": 7.0,
+          "version_unique_downloads": 7.0,
+          "version_unique_views": 8.0,
+          "version_views": 8.0,
+          "version_volume": 719453.0,
+          "views": 8.0,
+          "volume": 719453.0
+        },
+        "updated": "2021-11-22T05:12:06.989260+00:00"
+      },
+      {
+        "conceptdoi": "10.5281/zenodo.5239682",
+        "conceptrecid": "5239682",
+        "created": "2021-08-24T02:08:26.601807+00:00",
+        "doi": "10.5281/zenodo.5240578",
+        "files": [
+          {
+            "bucket": "e0b9eece-6c6a-4645-8f28-d8818de1753c",
+            "checksum": "md5:920d7296a2f9d30d176a44e01b864c3f",
+            "key": "Australian research computing resources cheat sheet.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/e0b9eece-6c6a-4645-8f28-d8818de1753c/Australian%20research%20computing%20resources%20cheat%20sheet.pdf"
+            },
+            "size": 102878,
+            "type": "pdf"
+          },
+          {
+            "bucket": "e0b9eece-6c6a-4645-8f28-d8818de1753c",
+            "checksum": "md5:6e7990c5724d2ddcef5bfcec3e7d203c",
+            "key": "Event metadata .pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/e0b9eece-6c6a-4645-8f28-d8818de1753c/Event%20metadata%20.pdf"
+            },
+            "size": 159391,
+            "type": "pdf"
+          },
+          {
+            "bucket": "e0b9eece-6c6a-4645-8f28-d8818de1753c",
+            "checksum": "md5:060776f66df3ec7aa5462b7bd2f39e68",
+            "key": "Index of training materials.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/e0b9eece-6c6a-4645-8f28-d8818de1753c/Index%20of%20training%20materials.pdf"
+            },
+            "size": 91861,
+            "type": "pdf"
+          },
+          {
+            "bucket": "e0b9eece-6c6a-4645-8f28-d8818de1753c",
+            "checksum": "md5:b6932f09374bfe91f605498985b07e9c",
+            "key": "Where to go when your bioinformatics outgrows your compute - slides .pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/e0b9eece-6c6a-4645-8f28-d8818de1753c/Where%20to%20go%20when%20your%20bioinformatics%20outgrows%20your%20compute%20-%20slides%20.pdf"
+            },
+            "size": 5297442,
+            "type": "pdf"
+          },
+          {
+            "bucket": "e0b9eece-6c6a-4645-8f28-d8818de1753c",
+            "checksum": "md5:4ca054aa4b5843a688d6fd4a3c403cba",
+            "key": "Where to go when your bioinformatics outgrows your compute - slides.pptx",
+            "links": {
+              "self": "https://zenodo.org/api/files/e0b9eece-6c6a-4645-8f28-d8818de1753c/Where%20to%20go%20when%20your%20bioinformatics%20outgrows%20your%20compute%20-%20slides.pptx"
+            },
+            "size": 14687759,
+            "type": "pptx"
+          }
+        ],
+        "id": 5240578,
+        "links": {
+          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5240578.svg",
+          "bucket": "https://zenodo.org/api/files/e0b9eece-6c6a-4645-8f28-d8818de1753c",
+          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5239682.svg",
+          "conceptdoi": "https://doi.org/10.5281/zenodo.5239682",
+          "doi": "https://doi.org/10.5281/zenodo.5240578",
+          "html": "https://zenodo.org/record/5240578",
+          "latest": "https://zenodo.org/api/records/5240578",
+          "latest_html": "https://zenodo.org/record/5240578",
+          "self": "https://zenodo.org/api/records/5240578"
+        },
+        "metadata": {
+          "access_right": "open",
+          "access_right_category": "success",
+          "communities": [
+            {
+              "id": "australianbiocommons-training"
+            }
+          ],
+          "creators": [
+            {
+              "affiliation": "Sydney Informatics Hub",
+              "name": "Samaha, Georgina",
+              "orcid": "0000-0003-0419-1476"
+            },
+            {
+              "affiliation": "Sydney Informatics Hub",
+              "name": "Chew, Tracy",
+              "orcid": "0000-0001-9529-7705"
+            },
+            {
+              "affiliation": "Sydney Informatics Hub",
+              "name": "Sadsad, Rosemarie",
+              "orcid": "0000-0003-2488-953X"
+            },
+            {
+              "affiliation": "ARDC",
+              "name": "Coddington, Paul",
+              "orcid": "0000-0003-1336-9686"
+            },
+            {
+              "affiliation": "Melbourne Bioinformatics",
+              "name": "Gladman, Simon",
+              "orcid": "0000-0002-6100-4385"
+            },
+            {
+              "affiliation": "NCI",
+              "name": "Edberg, Roger"
+            },
+            {
+              "affiliation": "NCI",
+              "name": "Shaikh, Javed"
+            },
+            {
+              "affiliation": "Pawsey Supercomputing Centre",
+              "name": "Cytowski, Maciej",
+              "orcid": "0000-0002-0007-0979"
+            }
+          ],
+          "description": "&lt;p&gt;This record includes training materials associated with the Australian BioCommons webinar &amp;lsquo;Where to go when your bioinformatics outgrows your compute&amp;rsquo;. This webinar took place on 19 August 2021.&lt;/p&gt;\n\n&lt;p&gt;Bioinformatics analyses are often complex, requiring multiple software tools and specialised compute resources. &amp;ldquo;I don&amp;rsquo;t know what compute resources I will need&amp;rdquo;, &amp;ldquo;My analysis won&amp;rsquo;t run and I don&amp;rsquo;t know why&amp;rdquo; and &amp;quot;Just getting it to work&amp;quot; are common pain points for researchers. In this webinar, you will learn how to understand the compute requirements for your bioinformatics workflows. You will also hear about ways of accessing compute that suits your needs as an Australian researcher, including Galaxy Australia, cloud and high-performance computing services offered by the Australian Research Data Commons, the National Compute Infrastructure (NCI) and Pawsey.&amp;nbsp; We also describe bioinformatics and computing support services available to Australian researchers.&amp;nbsp;&lt;/p&gt;\n\n&lt;p&gt;This webinar was jointly organised with the Sydney Informatics Hub at the University of Sydney.&lt;/p&gt;\n\n&lt;p&gt;Materials are shared under a Creative Commons Attribution 4.0 International agreement unless otherwise specified and were current at the time of the event.&lt;/p&gt;\n\n&lt;p&gt;&lt;em&gt;&lt;strong&gt;Files and materials included in this record:&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;\n\n&lt;ul&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Event metadata (PDF): Information about the event including, description, event URL, learning objectives, prerequisites, technical requirements etc.&lt;/p&gt;\n\t&lt;/li&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Index of training materials (PDF): List and description of all materials associated with this event including the name, format, location and a brief description of each file.&lt;/p&gt;\n\t&lt;/li&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Where to go when your bioinformatics outgrows your compute - slides (PDF and PPTX): Slides presented during the webinar&lt;/p&gt;\n\t&lt;/li&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Australian research computing resources cheat sheet (PDF): A list of resources and useful links mentioned during the webinar.&lt;/p&gt;\n\t&lt;/li&gt;\n&lt;/ul&gt;\n\n&lt;p&gt;&lt;em&gt;&lt;strong&gt;Materials shared elsewhere:&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;\n\n&lt;p&gt;A recording of the webinar is available on the Australian BioCommons YouTube Channel:&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://youtu.be/hNTbngSc-W0\"&gt;https://youtu.be/hNTbngSc-W0&lt;/a&gt;&lt;/p&gt;",
+          "doi": "10.5281/zenodo.5240578",
+          "keywords": [
+            "Computational Biology",
+            "Bioinformatics",
+            "High performance computing",
+            "HPC",
+            "Galaxy Australia",
+            "Nectar Research Cloud",
+            "Pawsey Supercomputing Centre",
+            "NCI",
+            "NCMAS",
+            "Cloud computing"
+          ],
+          "language": "eng",
+          "license": {
+            "id": "CC-BY-4.0"
+          },
+          "notes": "Version 2: The formatting of the cheat sheet PDF was updated.",
+          "publication_date": "2021-08-23",
+          "related_identifiers": [
+            {
+              "identifier": "https://www.biocommons.org.au/events/ncmas",
+              "relation": "isReferencedBy",
+              "resource_type": "other",
+              "scheme": "url"
+            },
+            {
+              "identifier": "10.5281/zenodo.5239682",
+              "relation": "isVersionOf",
+              "scheme": "doi"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "count": 2,
+                "index": 1,
+                "is_last": true,
+                "last_child": {
+                  "pid_type": "recid",
+                  "pid_value": "5240578"
+                },
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "5239682"
+                }
+              }
+            ]
+          },
+          "resource_type": {
+            "title": "Other",
+            "type": "other"
+          },
+          "subjects": [
+            {
+              "identifier": "http://edamontology.org/topic_3307",
+              "scheme": "url",
+              "term": "Computational Biology"
+            },
+            {
+              "identifier": "http://edamontology.org/topic_3316",
+              "scheme": "url",
+              "term": "Computer Science"
+            },
+            {
+              "identifier": "http://edamontology.org/topic_0091",
+              "scheme": "url",
+              "term": "Bioinformatics"
+            }
+          ],
+          "title": "WEBINAR: Where to go when your bioinformatics outgrows your compute",
+          "version": "2"
+        },
+        "owners": [
+          111635
+        ],
+        "revision": 2,
+        "stats": {
+          "downloads": 76.0,
+          "unique_downloads": 40.0,
+          "unique_views": 74.0,
+          "version_downloads": 93.0,
+          "version_unique_downloads": 45.0,
+          "version_unique_views": 82.0,
+          "version_views": 94.0,
+          "version_volume": 188877733.0,
+          "views": 82.0,
+          "volume": 137089972.0
+        },
+        "updated": "2021-08-24T02:15:43.319993+00:00"
+      },
+      {
+        "conceptdoi": "10.5281/zenodo.5239882",
+        "conceptrecid": "5239882",
+        "created": "2021-08-24T01:10:09.494641+00:00",
+        "doi": "10.5281/zenodo.5239883",
+        "files": [
+          {
+            "bucket": "a40cbd67-456f-44a1-8a0f-371292f4188c",
+            "checksum": "md5:c00c9ab793e3c1c9039ddb7e088fd0e0",
+            "key": "Event metadata.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/a40cbd67-456f-44a1-8a0f-371292f4188c/Event%20metadata.pdf"
+            },
+            "size": 104821,
+            "type": "pdf"
+          },
+          {
+            "bucket": "a40cbd67-456f-44a1-8a0f-371292f4188c",
+            "checksum": "md5:08bb0732418d0d132b5f37a9758801c5",
+            "key": "High performance bioinformatics submitting your best NCMAS application - slides.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/a40cbd67-456f-44a1-8a0f-371292f4188c/High%20performance%20bioinformatics%20submitting%20your%20best%20NCMAS%20application%20-%20slides.pdf"
+            },
+            "size": 2203963,
+            "type": "pdf"
+          },
+          {
+            "bucket": "a40cbd67-456f-44a1-8a0f-371292f4188c",
+            "checksum": "md5:0f80e0113bf35fb062f2b0c2e4b1323c",
+            "key": "High performance bioinformatics submitting your best NCMAS application - slides.pptx",
+            "links": {
+              "self": "https://zenodo.org/api/files/a40cbd67-456f-44a1-8a0f-371292f4188c/High%20performance%20bioinformatics%20submitting%20your%20best%20NCMAS%20application%20-%20slides.pptx"
+            },
+            "size": 7267775,
+            "type": "pptx"
+          },
+          {
+            "bucket": "a40cbd67-456f-44a1-8a0f-371292f4188c",
+            "checksum": "md5:bbcccbe556324c69b44761f884039c5d",
+            "key": "Index of training materials.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/a40cbd67-456f-44a1-8a0f-371292f4188c/Index%20of%20training%20materials.pdf"
+            },
+            "size": 91749,
+            "type": "pdf"
+          }
+        ],
+        "id": 5239883,
+        "links": {
+          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5239883.svg",
+          "bucket": "https://zenodo.org/api/files/a40cbd67-456f-44a1-8a0f-371292f4188c",
+          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5239882.svg",
+          "conceptdoi": "https://doi.org/10.5281/zenodo.5239882",
+          "doi": "https://doi.org/10.5281/zenodo.5239883",
+          "html": "https://zenodo.org/record/5239883",
+          "latest": "https://zenodo.org/api/records/5239883",
+          "latest_html": "https://zenodo.org/record/5239883",
+          "self": "https://zenodo.org/api/records/5239883"
+        },
+        "metadata": {
+          "access_right": "open",
+          "access_right_category": "success",
+          "communities": [
+            {
+              "id": "australianbiocommons-training"
+            }
+          ],
+          "creators": [
+            {
+              "affiliation": "Sydney Informatics Hub",
+              "name": "Samaha, Georgina",
+              "orcid": "0000-0003-0419-1476"
+            },
+            {
+              "affiliation": "Sydney Informatics Hub",
+              "name": "Chew, Tracy",
+              "orcid": "0000-0001-9529-7705"
+            }
+          ],
+          "description": "&lt;p&gt;This record includes training materials associated with the Australian BioCommons webinar &amp;lsquo;High performance bioinformatics: submitting your best NCMAS application&amp;rsquo;. This webinar took place on 20 August 2021.&lt;/p&gt;\n\n&lt;p&gt;Bioinformaticians are increasingly turning to specialised compute infrastructure and efficient, scalable workflows as their research becomes more data intensive. Australian researchers that require extensive compute resources to process large datasets can apply for access to national high performance computing facilities (e.g. Pawsey and NCI) to power their research through the National Computational Merit Allocation Scheme (NCMAS). NCMAS is a competitive, merit-based scheme and requires applicants to carefully consider how the compute infrastructure and workflows will be applied.&amp;nbsp;&lt;/p&gt;\n\n&lt;p&gt;This webinar provides life science researchers with insights into what makes a strong NCMAS application, with a focus on the technical assessment, and how to design and present effective and efficient bioinformatic workflows for the various national compute facilities. It will be followed by a short Q&amp;amp;A session.&lt;/p&gt;\n\n&lt;p&gt;Materials are shared under a Creative Commons Attribution 4.0 International agreement unless otherwise specified and were current at the time of the event.&lt;/p&gt;\n\n&lt;p&gt;&lt;em&gt;&lt;strong&gt;Files and materials included in this record:&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;\n\n&lt;ul&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Event metadata (PDF): Information about the event including, description, event URL, learning objectives, prerequisites, technical requirements etc.&lt;/p&gt;\n\t&lt;/li&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Index of training materials (PDF): List and description of all materials associated with this event including the name, format, location and a brief description of each file.&lt;/p&gt;\n\t&lt;/li&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;High performance bioinformatics: submitting your best NCMAS application - slides (PDF and PPTX): Slides presented during the webinar&lt;/p&gt;\n\t&lt;/li&gt;\n&lt;/ul&gt;\n\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\n\n&lt;p&gt;&lt;em&gt;&lt;strong&gt;Materials shared elsewhere:&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;\n\n&lt;p&gt;A recording of the webinar is available on the Australian BioCommons YouTube Channel:&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://youtu.be/HeFGjguwS0Y\"&gt;https://youtu.be/HeFGjguwS0Y&lt;/a&gt;&lt;/p&gt;",
+          "doi": "10.5281/zenodo.5239883",
+          "keywords": [
+            "Computational Biology",
+            "Bioinformatics",
+            "High Performance Computing",
+            "HPC",
+            "NCMAS"
+          ],
+          "language": "eng",
+          "license": {
+            "id": "CC-BY-4.0"
+          },
+          "publication_date": "2021-08-24",
+          "related_identifiers": [
+            {
+              "identifier": "https://www.biocommons.org.au/events/compute-resources",
+              "relation": "isReferencedBy",
+              "resource_type": "other",
+              "scheme": "url"
+            },
+            {
+              "identifier": "10.5281/zenodo.5239882",
+              "relation": "isVersionOf",
+              "scheme": "doi"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "count": 1,
+                "index": 0,
+                "is_last": true,
+                "last_child": {
+                  "pid_type": "recid",
+                  "pid_value": "5239883"
+                },
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "5239882"
+                }
+              }
+            ]
+          },
+          "resource_type": {
+            "title": "Other",
+            "type": "other"
+          },
+          "subjects": [
+            {
+              "identifier": "http://edamontology.org/topic_3307",
+              "scheme": "url",
+              "term": "Computational Biology"
+            },
+            {
+              "identifier": "http://edamontology.org/topic_0091",
+              "scheme": "url",
+              "term": "Bioinformatics"
+            },
+            {
+              "identifier": "http://edamontology.org/topic_3316",
+              "scheme": "url",
+              "term": "Computer Science"
+            }
+          ],
+          "title": "WEBINAR: High performance bioinformatics: submitting your best NCMAS application"
+        },
+        "owners": [
+          111635
+        ],
+        "revision": 1,
+        "stats": {
+          "downloads": 55.0,
+          "unique_downloads": 34.0,
+          "unique_views": 72.0,
+          "version_downloads": 55.0,
+          "version_unique_downloads": 34.0,
+          "version_unique_views": 72.0,
+          "version_views": 75.0,
+          "version_volume": 54477503.0,
+          "views": 75.0,
+          "volume": 54477503.0
+        },
+        "updated": "2021-08-24T01:10:10.554584+00:00"
+      },
+      {
+        "conceptdoi": "10.5281/zenodo.5214276",
+        "conceptrecid": "5214276",
+        "created": "2021-08-18T01:35:33.956855+00:00",
+        "doi": "10.5281/zenodo.5214277",
+        "files": [
+          {
+            "bucket": "e422a1b9-3c24-4fb9-9e4d-f295de0dc458",
+            "checksum": "md5:2f6449a52ee950c1ff38149252ac1807",
+            "key": "Event metadata.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/e422a1b9-3c24-4fb9-9e4d-f295de0dc458/Event%20metadata.pdf"
+            },
+            "size": 103421,
+            "type": "pdf"
+          },
+          {
+            "bucket": "e422a1b9-3c24-4fb9-9e4d-f295de0dc458",
+            "checksum": "md5:3903f9aeb0fb7ac036509e64f80d6e07",
+            "key": "Getting started with R - slides.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/e422a1b9-3c24-4fb9-9e4d-f295de0dc458/Getting%20started%20with%20R%20-%20slides.pdf"
+            },
+            "size": 14722271,
+            "type": "pdf"
+          },
+          {
+            "bucket": "e422a1b9-3c24-4fb9-9e4d-f295de0dc458",
+            "checksum": "md5:012af76b086d009601e438d946f27db0",
+            "key": "Index of training materials.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/e422a1b9-3c24-4fb9-9e4d-f295de0dc458/Index%20of%20training%20materials.pdf"
+            },
+            "size": 101352,
+            "type": "pdf"
+          }
+        ],
+        "id": 5214277,
+        "links": {
+          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5214277.svg",
+          "bucket": "https://zenodo.org/api/files/e422a1b9-3c24-4fb9-9e4d-f295de0dc458",
+          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5214276.svg",
+          "conceptdoi": "https://doi.org/10.5281/zenodo.5214276",
+          "doi": "https://doi.org/10.5281/zenodo.5214277",
+          "html": "https://zenodo.org/record/5214277",
+          "latest": "https://zenodo.org/api/records/5214277",
+          "latest_html": "https://zenodo.org/record/5214277",
+          "self": "https://zenodo.org/api/records/5214277"
+        },
+        "metadata": {
+          "access_right": "open",
+          "access_right_category": "success",
+          "communities": [
+            {
+              "id": "australianbiocommons-training"
+            }
+          ],
+          "creators": [
+            {
+              "affiliation": "Harry Perkins Institute of Medical Research",
+              "name": "Freytag, Saskia",
+              "orcid": "0000-0002-2185-7068"
+            }
+          ],
+          "description": "&lt;p&gt;This record includes training materials associated with the Australian BioCommons webinar &amp;lsquo;Getting started with R&amp;rsquo;. This webinar took place on 16 August 2021.&lt;/p&gt;\n\n&lt;p&gt;Data analysis skills are now central to most biological experiments. While Excel can cover some of your data analysis needs, it is not always the best choice, particularly for large and complex datasets.&lt;/p&gt;\n\n&lt;p&gt;R is an open-source software and programming language that enables data exploration, statistical analysis visualisation and more. While it is the tool of choice for data analysis, getting started can be a little daunting for those without a background in statistics.&lt;/p&gt;\n\n&lt;p&gt;In this webinar Saskia Freytag, an R user with over a decade of experience and member of the&lt;a href=\"https://www.bioconductor.org/about/community-advisory-board/\"&gt; Bioconductor Community Advisory Board&lt;/a&gt;, will walk you through their hints and tips for getting started with R and data analysis. She&amp;rsquo;ll cover topics like&lt;a href=\"https://www.rstudio.com/\"&gt; R Studio&lt;/a&gt; and why you need it, where to get help, basic data manipulation, visualisations and extending R with libraries. The webinar will be followed by a short Q&amp;amp;A session&lt;/p&gt;\n\n&lt;p&gt;Materials are shared under a Creative Commons Attribution 4.0 International agreement unless otherwise specified and were current at the time of the event.&lt;/p&gt;\n\n&lt;p&gt;&lt;strong&gt;Files and materials included in this record:&lt;/strong&gt;&lt;/p&gt;\n\n&lt;ul&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Event metadata (PDF): Information about the event including, description, event URL, learning objectives, prerequisites, technical requirements etc.&lt;/p&gt;\n\t&lt;/li&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Index of training materials (PDF): List and description of all materials associated with this event including the name, format, location and a brief description of each file.&lt;/p&gt;\n\t&lt;/li&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Getting started with R - slides (PDF): Slides used in the presentation&lt;/p&gt;\n\t&lt;/li&gt;\n&lt;/ul&gt;\n\n&lt;p&gt;&lt;strong&gt;Materials shared elsewhere:&lt;/strong&gt;&lt;/p&gt;\n\n&lt;p&gt;A recording of the webinar is available on the Australian BioCommons YouTube Channel:&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://youtu.be/JS7yZw7bnX8\"&gt;https://youtu.be/JS7yZw7bnX8&lt;/a&gt;&lt;/p&gt;",
+          "doi": "10.5281/zenodo.5214277",
+          "keywords": [
+            "R statistical software",
+            "R studio",
+            "Tidyverse",
+            "Bioinformatics",
+            "Data analysis"
+          ],
+          "language": "eng",
+          "license": {
+            "id": "CC-BY-4.0"
+          },
+          "publication_date": "2021-08-18",
+          "related_identifiers": [
+            {
+              "identifier": "10.5281/zenodo.5214276",
+              "relation": "isVersionOf",
+              "scheme": "doi"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "count": 1,
+                "index": 0,
+                "is_last": true,
+                "last_child": {
+                  "pid_type": "recid",
+                  "pid_value": "5214277"
+                },
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "5214276"
+                }
+              }
+            ]
+          },
+          "resource_type": {
+            "title": "Other",
+            "type": "other"
+          },
+          "subjects": [
+            {
+              "identifier": "http://edamontology.org/operation_2945",
+              "scheme": "url",
+              "term": "Analysis"
+            }
+          ],
+          "title": "WEBINAR: Getting started with R"
+        },
+        "owners": [
+          111635
+        ],
+        "revision": 1,
+        "stats": {
+          "downloads": 178.0,
+          "unique_downloads": 92.0,
+          "unique_views": 122.0,
+          "version_downloads": 178.0,
+          "version_unique_downloads": 92.0,
+          "version_unique_views": 122.0,
+          "version_views": 124.0,
+          "version_volume": 720066151.0,
+          "views": 124.0,
+          "volume": 720066151.0
+        },
+        "updated": "2021-08-18T01:35:34.899446+00:00"
+      },
+      {
+        "conceptdoi": "10.5281/zenodo.5126082",
+        "conceptrecid": "5126082",
+        "created": "2021-07-23T05:22:36.532269+00:00",
+        "doi": "10.5281/zenodo.5126083",
+        "files": [
+          {
+            "bucket": "a1f7811a-4f11-4daf-8502-f1e8b04e10f5",
+            "checksum": "md5:4e76b9bbe886c80c8950515231fa5512",
+            "key": "Event metadata.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/a1f7811a-4f11-4daf-8502-f1e8b04e10f5/Event%20metadata.pdf"
+            },
+            "size": 104558,
+            "type": "pdf"
+          },
+          {
+            "bucket": "a1f7811a-4f11-4daf-8502-f1e8b04e10f5",
+            "checksum": "md5:1986778b5fdb4ec17e8b5d778ecfe177",
+            "key": "Index of training materials.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/a1f7811a-4f11-4daf-8502-f1e8b04e10f5/Index%20of%20training%20materials.pdf"
+            },
+            "size": 103449,
+            "type": "pdf"
+          },
+          {
+            "bucket": "a1f7811a-4f11-4daf-8502-f1e8b04e10f5",
+            "checksum": "md5:e4e379acb8523f5c1c77b4b646c9d400",
+            "key": "Phosphomatics -slides.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/a1f7811a-4f11-4daf-8502-f1e8b04e10f5/Phosphomatics%20-slides.pdf"
+            },
+            "size": 5702350,
+            "type": "pdf"
+          },
+          {
+            "bucket": "a1f7811a-4f11-4daf-8502-f1e8b04e10f5",
+            "checksum": "md5:62a15ebab2405a8794afcdda7604c3aa",
+            "key": "Phosphomatics -slides.pptx",
+            "links": {
+              "self": "https://zenodo.org/api/files/a1f7811a-4f11-4daf-8502-f1e8b04e10f5/Phosphomatics%20-slides.pptx"
+            },
+            "size": 7759712,
+            "type": "pptx"
+          }
+        ],
+        "id": 5126083,
+        "links": {
+          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5126083.svg",
+          "bucket": "https://zenodo.org/api/files/a1f7811a-4f11-4daf-8502-f1e8b04e10f5",
+          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5126082.svg",
+          "conceptdoi": "https://doi.org/10.5281/zenodo.5126082",
+          "doi": "https://doi.org/10.5281/zenodo.5126083",
+          "html": "https://zenodo.org/record/5126083",
+          "latest": "https://zenodo.org/api/records/5126083",
+          "latest_html": "https://zenodo.org/record/5126083",
+          "self": "https://zenodo.org/api/records/5126083"
+        },
+        "metadata": {
+          "access_right": "open",
+          "access_right_category": "success",
+          "communities": [
+            {
+              "id": "australianbiocommons-training"
+            }
+          ],
+          "creators": [
+            {
+              "affiliation": "University of Melbourne",
+              "name": "Leeming, Michael",
+              "orcid": "0000-0001-8981-0701"
+            }
+          ],
+          "description": "&lt;p&gt;This record includes training materials associated with the Australian BioCommons webinar&amp;nbsp; &amp;lsquo;Making sense of phosphoproteomics data with Phosphomatics&amp;rsquo;. This webinar took place on 2 June 2021.&lt;/p&gt;\n\n&lt;p&gt;Mass spectrometry-based phosphoproteomics is one of the most powerful tools available for investigating the detailed molecular events that occur in response to cellular stimuli. Experiments can routinely detect and quantify thousands of phosphorylated peptides, and interpreting this data, and extracting biological meaning, remains challenging.&amp;nbsp;&lt;/p&gt;\n\n&lt;p&gt;This webinar provides an overview of the phosphoproteomics data analysis website, &lt;a href=\"https://phosphomatics.com/\"&gt;Phosphomatics&lt;/a&gt;, that incorporates a suite of tools and resources for statistical and functional analysis that aim to simplify the process of extracting meaningful insights from experimental results.&lt;/p&gt;\n\n&lt;p&gt;Phosphomatics can natively import search and quantitation results from major search engines including MaxQuant and Proteome Discoverer and employs intuitive &amp;lsquo;wizards&amp;rsquo; to guide users through data preprocessing routines such as filtering, normalization and transformation. A graphical platform of interactive univariate and multivariate analysis features is provided that allow subgroups of the uploaded data containing phosphosites of statistical interest to be created and interrogated through further functional analysis. A range of databases have been integrated that, for example, provide ligand and inhibitor information for key proteins or highlight key modification sites known to be involved in functional state regulation. At each step, published literature is natively incorporated along with a &amp;lsquo;bibliography builder&amp;rsquo; that allows references of interest to be assembled and exported in various formats. Taken together, these expanded features aim to provide a &amp;lsquo;one-stop-shop&amp;rsquo; for phosphoproteomics data analysis.&lt;/p&gt;\n\n&lt;p&gt;The webinar is followed by a short Q&amp;amp;A session.&lt;/p&gt;\n\n&lt;p&gt;Materials are shared under a Creative Commons Attribution 4.0 International agreement unless otherwise specified and were current at the time of the event.&lt;/p&gt;\n\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\n\n&lt;p&gt;&lt;strong&gt;Files and materials included in this record:&lt;/strong&gt;&lt;/p&gt;\n\n&lt;ul&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Event metadata (PDF): Information about the event including, description, event URL, learning objectives, prerequisites, technical requirements etc.&lt;/p&gt;\n\t&lt;/li&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Index of training materials (PDF): List and description of all materials associated with this event including the name, format, location and a brief description of each file.&lt;/p&gt;\n\t&lt;/li&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Phosphomatics -slides&amp;nbsp; (PDF and PPTX): Slides used in the presentation&lt;/p&gt;\n\t&lt;/li&gt;\n&lt;/ul&gt;\n\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\n\n&lt;p&gt;&lt;strong&gt;Materials shared elsewhere:&lt;/strong&gt;&lt;/p&gt;\n\n&lt;p&gt;A recording of the webinar is available on the Australian BioCommons YouTube Channel:&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://youtu.be/_WpeL5t2DSI\"&gt;https://youtu.be/_WpeL5t2DSI&lt;/a&gt;&lt;/p&gt;",
+          "doi": "10.5281/zenodo.5126083",
+          "keywords": [
+            "Phosphoproteomics",
+            "Proteomics",
+            "Mass spectrometry"
+          ],
+          "license": {
+            "id": "CC-BY-4.0"
+          },
+          "publication_date": "2021-07-23",
+          "related_identifiers": [
+            {
+              "identifier": "https://phosphomatics.com/",
+              "relation": "describes",
+              "resource_type": "software",
+              "scheme": "url"
+            },
+            {
+              "identifier": "10.5281/zenodo.5126082",
+              "relation": "isVersionOf",
+              "scheme": "doi"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "count": 1,
+                "index": 0,
+                "is_last": true,
+                "last_child": {
+                  "pid_type": "recid",
+                  "pid_value": "5126083"
+                },
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "5126082"
+                }
+              }
+            ]
+          },
+          "resource_type": {
+            "title": "Other",
+            "type": "other"
+          },
+          "subjects": [
+            {
+              "identifier": "http://edamontology.org/topic_0121",
+              "scheme": "url",
+              "term": "Proteomics"
+            },
+            {
+              "identifier": "http://edamontology.org/data_2536",
+              "scheme": "url",
+              "term": "Mass spectrometry data"
+            }
+          ],
+          "title": "WEBINAR: Making sense of phosphoproteomics data with Phosphomatics"
+        },
+        "owners": [
+          111635
+        ],
+        "revision": 1,
+        "stats": {
+          "downloads": 31.0,
+          "unique_downloads": 16.0,
+          "unique_views": 24.0,
+          "version_downloads": 31.0,
+          "version_unique_downloads": 16.0,
+          "version_unique_views": 24.0,
+          "version_views": 24.0,
+          "version_volume": 67443121.0,
+          "views": 24.0,
+          "volume": 67443121.0
+        },
+        "updated": "2021-07-23T05:22:37.409001+00:00"
+      },
+      {
+        "conceptdoi": "10.5281/zenodo.5117941",
+        "conceptrecid": "5117941",
+        "created": "2021-07-22T01:59:53.862372+00:00",
+        "doi": "10.5281/zenodo.5121004",
+        "files": [
+          {
+            "bucket": "6d3f5f0a-73c3-4cdf-9ec6-93964d98d143",
+            "checksum": "md5:b2a5b5c612fda3b58c3e5c0ff24efd46",
+            "key": "Event metadata.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/6d3f5f0a-73c3-4cdf-9ec6-93964d98d143/Event%20metadata.pdf"
+            },
+            "size": 100199,
+            "type": "pdf"
+          },
+          {
+            "bucket": "6d3f5f0a-73c3-4cdf-9ec6-93964d98d143",
+            "checksum": "md5:f0c12b405b115ec09144796597ed6f20",
+            "key": "Getting Started with Deep Learning - Slides.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/6d3f5f0a-73c3-4cdf-9ec6-93964d98d143/Getting%20Started%20with%20Deep%20Learning%20-%20Slides.pdf"
+            },
+            "size": 1380607,
+            "type": "pdf"
+          },
+          {
+            "bucket": "6d3f5f0a-73c3-4cdf-9ec6-93964d98d143",
+            "checksum": "md5:c944f58773e4082aa55114c169359987",
+            "key": "Index of training materials.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/6d3f5f0a-73c3-4cdf-9ec6-93964d98d143/Index%20of%20training%20materials.pdf"
+            },
+            "size": 101080,
+            "type": "pdf"
+          }
+        ],
+        "id": 5121004,
+        "links": {
+          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5121004.svg",
+          "bucket": "https://zenodo.org/api/files/6d3f5f0a-73c3-4cdf-9ec6-93964d98d143",
+          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5117941.svg",
+          "conceptdoi": "https://doi.org/10.5281/zenodo.5117941",
+          "doi": "https://doi.org/10.5281/zenodo.5121004",
+          "html": "https://zenodo.org/record/5121004",
+          "latest": "https://zenodo.org/api/records/5121004",
+          "latest_html": "https://zenodo.org/record/5121004",
+          "self": "https://zenodo.org/api/records/5121004"
+        },
+        "metadata": {
+          "access_right": "open",
+          "access_right_category": "success",
+          "communities": [
+            {
+              "id": "australianbiocommons-training"
+            }
+          ],
+          "creators": [
+            {
+              "affiliation": "Monash University",
+              "name": "Tang, Titus",
+              "orcid": "0000-0001-7496-1152"
+            }
+          ],
+          "description": "&lt;p&gt;This record includes training materials associated with the Australian BioCommons webinar&amp;nbsp; &amp;lsquo;Getting started with deep learning&amp;rsquo;. This webinar took place on 21 July 2021.&lt;/p&gt;\n\n&lt;p&gt;Are you wondering what deep learning is and how it might be useful in your research? This high level overview introduces deep learning &amp;lsquo;in a nutshell&amp;rsquo; and provides tips on which concepts and skills you will need to know to build a deep learning application. The presentation also provides pointers to various resources you can use to get started in deep learning.&lt;/p&gt;\n\n&lt;p&gt;The webinar is followed by a short Q&amp;amp;A session.&lt;/p&gt;\n\n&lt;p&gt;Materials are shared under a Creative Commons Attribution 4.0 International agreement unless otherwise specified and were current at the time of the event.&lt;/p&gt;\n\n&lt;p&gt;&lt;strong&gt;Files and materials included in this record:&lt;/strong&gt;&lt;/p&gt;\n\n&lt;ul&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Event metadata (PDF): Information about the event including, description, event URL, learning objectives, prerequisites, technical requirements etc.&lt;/p&gt;\n\t&lt;/li&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Index of training materials (PDF): List and description of all materials associated with this event including the name, format, location and a brief description of each file.&lt;/p&gt;\n\t&lt;/li&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Getting Started with Deep Learning - Slides (PDF): Slides used in the presentation&lt;/p&gt;\n\t&lt;/li&gt;\n&lt;/ul&gt;\n\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\n\n&lt;p&gt;&lt;strong&gt;Materials shared elsewhere:&lt;/strong&gt;&lt;/p&gt;\n\n&lt;p&gt;A recording of the webinar is available on the Australian BioCommons YouTube Channel:&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://youtu.be/I1TmpnZUuiQ\"&gt;https://youtu.be/I1TmpnZUuiQ&lt;/a&gt;&lt;/p&gt;",
+          "doi": "10.5281/zenodo.5121004",
+          "keywords": [
+            "Deep learning",
+            "Neural networks",
+            "Machine learning"
+          ],
+          "language": "eng",
+          "license": {
+            "id": "CC-BY-4.0"
+          },
+          "notes": "The 'Index of training materials' was updated to include reference to the YouTube recording of the webinar.\nThe link to the YouTube recording was added to the description.\nTitus Tang's ORCID was added to the record.",
+          "publication_date": "2021-07-20",
+          "related_identifiers": [
+            {
+              "identifier": "10.5281/zenodo.5117941",
+              "relation": "isVersionOf",
+              "scheme": "doi"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "count": 2,
+                "index": 1,
+                "is_last": true,
+                "last_child": {
+                  "pid_type": "recid",
+                  "pid_value": "5121004"
+                },
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "5117941"
+                }
+              }
+            ]
+          },
+          "resource_type": {
+            "title": "Other",
+            "type": "other"
+          },
+          "subjects": [
+            {
+              "identifier": "http://edamontology.org/topic_3474",
+              "scheme": "url",
+              "term": "Machine learning"
+            }
+          ],
+          "title": "WEBINAR: Getting started with deep learning",
+          "version": "2"
+        },
+        "owners": [
+          111635
+        ],
+        "revision": 2,
+        "stats": {
+          "downloads": 121.0,
+          "unique_downloads": 68.0,
+          "unique_views": 98.0,
+          "version_downloads": 283.0,
+          "version_unique_downloads": 158.0,
+          "version_unique_views": 189.0,
+          "version_views": 204.0,
+          "version_volume": 130701256.0,
+          "views": 102.0,
+          "volume": 50548653.0
+        },
+        "updated": "2021-07-22T02:00:38.599698+00:00"
+      },
+      {
+        "conceptdoi": "10.5281/zenodo.5105012",
+        "conceptrecid": "5105012",
+        "created": "2021-07-15T00:51:22.008047+00:00",
+        "doi": "10.5281/zenodo.5105013",
+        "files": [
+          {
+            "bucket": "c38aea5b-5bc6-4e56-9319-5c8ef7c1a5a3",
+            "checksum": "md5:3fcf4a5ac84848acc561b78c03cae903",
+            "key": "Event metadata.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/c38aea5b-5bc6-4e56-9319-5c8ef7c1a5a3/Event%20metadata.pdf"
+            },
+            "size": 104201,
+            "type": "pdf"
+          },
+          {
+            "bucket": "c38aea5b-5bc6-4e56-9319-5c8ef7c1a5a3",
+            "checksum": "md5:d09dcf8f286733034bd858ab13dabf64",
+            "key": "Index of training materials.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/c38aea5b-5bc6-4e56-9319-5c8ef7c1a5a3/Index%20of%20training%20materials.pdf"
+            },
+            "size": 90631,
+            "type": "pdf"
+          },
+          {
+            "bucket": "c38aea5b-5bc6-4e56-9319-5c8ef7c1a5a3",
+            "checksum": "md5:0a99fec76bb705b7118ac5dd2f5042b0",
+            "key": "Nauheimer_hybphaser_slides.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/c38aea5b-5bc6-4e56-9319-5c8ef7c1a5a3/Nauheimer_hybphaser_slides.pdf"
+            },
+            "size": 3324582,
+            "type": "pdf"
+          }
+        ],
+        "id": 5105013,
+        "links": {
+          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5105013.svg",
+          "bucket": "https://zenodo.org/api/files/c38aea5b-5bc6-4e56-9319-5c8ef7c1a5a3",
+          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5105012.svg",
+          "conceptdoi": "https://doi.org/10.5281/zenodo.5105012",
+          "doi": "https://doi.org/10.5281/zenodo.5105013",
+          "html": "https://zenodo.org/record/5105013",
+          "latest": "https://zenodo.org/api/records/5105013",
+          "latest_html": "https://zenodo.org/record/5105013",
+          "self": "https://zenodo.org/api/records/5105013"
+        },
+        "metadata": {
+          "access_right": "open",
+          "access_right_category": "success",
+          "communities": [
+            {
+              "id": "australianbiocommons-training"
+            }
+          ],
+          "creators": [
+            {
+              "affiliation": "Australian Tropical Herbarium",
+              "name": "Nauheimer, Lars",
+              "orcid": "0000-0002-2847-0966"
+            }
+          ],
+          "description": "&lt;p&gt;This record includes training materials associated with the Australian BioCommons webinar &amp;lsquo;Detection of and phasing of hybrid accessions in a target capture dataset&amp;rsquo;. This webinar took place on 10 June 2021.&lt;/p&gt;\n\n&lt;p&gt;Hybridisation plays an important role in evolution, leading to the exchange of genes between species and, in some cases, generate new lineages. The use of molecular methods has revealed the frequency and importance of reticulation events is higher than previously thought and this insight continues with the ongoing development of phylogenomic methods that allow novel insights into the role and extent of hybridisation. Hybrids notoriously provide challenges for the reconstruction of evolutionary relationships, as they contain conflicting genetic information from their divergent parental lineages. However, this also provides the opportunity to gain insights into the origin of hybrids (including autopolyploids).&lt;/p&gt;\n\n&lt;p&gt;This webinar explores some of the challenges and opportunities that occur when hybrids are included in a target capture sequence dataset. In particular, it describes the impact of hybrid accessions on sequence assembly and phylogenetic analysis and further explores how the information of the conflicting phylogenetic signal can be used to detect and resolve hybrid accessions. The webinar&amp;nbsp;showcases a novel bioinformatic workflow, &lt;a href=\"https://www.biorxiv.org/content/10.1101/2020.10.27.354589v2\"&gt;HybPhaser&lt;/a&gt;, that can be used to detect and phase hybrids in target capture datasets and will provide the theoretical background and concepts behind the workflow.&lt;/p&gt;\n\n&lt;p&gt;This webinar is part of a series of webinars and workshops developed by the &lt;a href=\"https://www.genomicsforaustralianplants.com/\"&gt;Genomics for Australian Plants (GAP) Initiative&lt;/a&gt; that focuses on the analysis of target capture sequence data. In addition to two public webinars, the GAP bioinformatics working group is offering training workshops in the use of newly developed and existing scripts in an integrated workflow to participants in the 2021 virtual Australasian Systematic Botany Society Conference.&lt;/p&gt;\n\n&lt;p&gt;The materials are shared under a Creative Commons 4.0 International agreement unless otherwise specified and were current at the time of the event.&lt;/p&gt;\n\n&lt;p&gt;&lt;strong&gt;Files and materials included in this record:&lt;/strong&gt;&lt;/p&gt;\n\n&lt;ul&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Event metadata (PDF): Information about the event including, description, event URL, learning objectives, prerequisites, technical requirements etc.&lt;/p&gt;\n\t&lt;/li&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Index of training materials (PDF): List and description of all materials associated with this event including the name, format, location and a brief description of each file.&lt;/p&gt;\n\t&lt;/li&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Nauheimer_hybphaser_slides (PDF): Slides presented during the webinar&lt;/p&gt;\n\t&lt;/li&gt;\n&lt;/ul&gt;\n\n&lt;p&gt;&lt;strong&gt;Materials shared elsewhere:&lt;/strong&gt;&lt;br&gt;\nA recording of the webinar is available on the Australian BioCommons YouTube Channel: &lt;a href=\"https://youtu.be/japXwTAhA5U\"&gt;https://youtu.be/japXwTAhA5U&lt;/a&gt;&lt;/p&gt;",
+          "doi": "10.5281/zenodo.5105013",
+          "keywords": [
+            "Phylogenetics",
+            "Bioinformatics",
+            "Phylogeny",
+            "Genomics",
+            "Target capture sequencing"
+          ],
+          "language": "eng",
+          "license": {
+            "id": "CC-BY-4.0"
+          },
+          "publication_date": "2021-07-15",
+          "references": [
+            "Abbott, R., D. Albach, S. Ansell, J. W. Arntzen, S. J. E. Baird, N. Bierne, J. Boughman, et al. 2013. Hybridization and speciation. Journal of Evolutionary Biology26: 229\u2013246.",
+            "Andermann, T., A. M. Fernandes, U. Olsson, M. T\u00f6pel, B. Pfeil, B. Oxelman, A. Aleixo, et al. 2019. Allele phasing greatly improves the phylogenetic utility of ultraconservedelements. Systematic Biology68: 32\u201346.",
+            "Barker, M. S., N. Arrigo, A. E. Baniaga, Z. Li, and D. A. Levin. 2016. On the relative abundance of autopolyploidsand allopolyploids. New Phytologist210: 391\u2013398.",
+            "Jiao, Y., N. J. Wickett, S. Ayyampalayam, A. S. Chanderbali, L. Landherr, P. E. Ralph, L. P. Tomsho, et al. 2011. Ancestral polyploidy in seed plants and angiosperms. Nature473: 97\u2013100.",
+            "Johnson, M. G., E. M. Gardner, Y. Liu, R. Medina, B. Goffinet, A. J. Shaw, N. J. C. Zerega, and N. J. Wickett. 2016. HybPiper: Extracting coding sequence and introns for phylogenetics from high-throughput sequencing reads using target enrichment. Applications in Plant Sciences4: 1600016.",
+            "Kates, H. R., M. G. Johnson, E. M. Gardner, N. J. C. Zerega, and N. J. Wickett. 2018. Allele phasing has minimal impact on phylogenetic reconstruction from targeted nuclear gene sequences in a case study of Artocarpus. American Journal of Botany105: 404\u2013416.",
+            "Mallet, J. 2005. Hybridization as an invasion of the genome. Trends in Ecology &amp; Evolution20: 229\u2013237.",
+            "Paun, O., F. Forest, M. F. Fay, and M. W. Chase. 2009. Hybrid speciation in angiosperms: parental divergence drives ploidy. New Phytologist182: 507\u2013518.",
+            "Peer, Y. V. de, E. Mizrachi, and K. Marchal. 2017. The evolutionary significance of polyploidy. Nature Reviews Genetics18: 411\u2013424.",
+            "Sang, T., and D. Zhang. 1999. Reconstructing hybrid speciation using sequences of low copy nuclear genes: hybrid origins of fivePaeoniaspecies based on adhgene phylogenies. Systematic Botany24: 148\u2013163.",
+            "Soltis, D. E., C. J. Visger, D. B. Marchant, and P. S. Soltis. 2016. Polyploidy: Pitfalls and paths to a paradigm. American Journal of Botany103: 1146\u20131166.",
+            "Tiley, G. P., A. A. Crowl, P. S. Manos, E. B. Sessa, C. Sol\u00eds-Lemus, A. D. Yoder, and J. G. Burleigh. 2021. Phasing Alleles Improves Network Inference with Allopolyploids. Evolutionary Biology."
+          ],
+          "related_identifiers": [
+            {
+              "identifier": "10.1101/2020.10.27.354589",
+              "relation": "cites",
+              "resource_type": "publication-article",
+              "scheme": "doi"
+            },
+            {
+              "identifier": "10.5281/zenodo.5105012",
+              "relation": "isVersionOf",
+              "scheme": "doi"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "count": 1,
+                "index": 0,
+                "is_last": true,
+                "last_child": {
+                  "pid_type": "recid",
+                  "pid_value": "5105013"
+                },
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "5105012"
+                }
+              }
+            ]
+          },
+          "resource_type": {
+            "title": "Other",
+            "type": "other"
+          },
+          "subjects": [
+            {
+              "identifier": "http://edamontology.org/topic_3293",
+              "scheme": "url",
+              "term": "Phylogenetics"
+            },
+            {
+              "identifier": "http://edamontology.org/topic_0091",
+              "scheme": "url",
+              "term": "Bioinformatics"
+            },
+            {
+              "identifier": "http://edamontology.org/topic_0084",
+              "scheme": "url",
+              "term": "Phylogeny"
+            },
+            {
+              "identifier": "http://edamontology.org/topic_0622",
+              "scheme": "url",
+              "term": "Genomics"
+            }
+          ],
+          "title": "WEBINAR: Detection of and phasing of hybrid accessions in a target capture dataset"
+        },
+        "owners": [
+          111635
+        ],
+        "revision": 1,
+        "stats": {
+          "downloads": 46.0,
+          "unique_downloads": 41.0,
+          "unique_views": 56.0,
+          "version_downloads": 46.0,
+          "version_unique_downloads": 41.0,
+          "version_unique_views": 56.0,
+          "version_views": 67.0,
+          "version_volume": 14440819.0,
+          "views": 67.0,
+          "volume": 14440819.0
+        },
+        "updated": "2021-07-15T00:51:23.019749+00:00"
+      },
+      {
+        "conceptdoi": "10.5281/zenodo.5104997",
+        "conceptrecid": "5104997",
+        "created": "2021-07-15T00:27:47.810048+00:00",
+        "doi": "10.5281/zenodo.5104998",
+        "files": [
+          {
+            "bucket": "91ad31f2-07c6-4c8f-ac2f-4845d7208477",
+            "checksum": "md5:66e544c047a0b8f5a3729391a2696c36",
+            "key": "Event metadata.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/91ad31f2-07c6-4c8f-ac2f-4845d7208477/Event%20metadata.pdf"
+            },
+            "size": 105363,
+            "type": "pdf"
+          },
+          {
+            "bucket": "91ad31f2-07c6-4c8f-ac2f-4845d7208477",
+            "checksum": "md5:51464e239240f08ca02b801db830a440",
+            "key": "Index of training materials.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/91ad31f2-07c6-4c8f-ac2f-4845d7208477/Index%20of%20training%20materials.pdf"
+            },
+            "size": 90882,
+            "type": "pdf"
+          },
+          {
+            "bucket": "91ad31f2-07c6-4c8f-ac2f-4845d7208477",
+            "checksum": "md5:0e7402bab16a57da635da51f39393323",
+            "key": "Schmidt-Lebuhn - paralogy lineage sorting reticulation-slides.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/91ad31f2-07c6-4c8f-ac2f-4845d7208477/Schmidt-Lebuhn%20-%20paralogy%20lineage%20sorting%20reticulation-slides.pdf"
+            },
+            "size": 8996206,
+            "type": "pdf"
+          }
+        ],
+        "id": 5104998,
+        "links": {
+          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5104998.svg",
+          "bucket": "https://zenodo.org/api/files/91ad31f2-07c6-4c8f-ac2f-4845d7208477",
+          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5104997.svg",
+          "conceptdoi": "https://doi.org/10.5281/zenodo.5104997",
+          "doi": "https://doi.org/10.5281/zenodo.5104998",
+          "html": "https://zenodo.org/record/5104998",
+          "latest": "https://zenodo.org/api/records/5104998",
+          "latest_html": "https://zenodo.org/record/5104998",
+          "self": "https://zenodo.org/api/records/5104998"
+        },
+        "metadata": {
+          "access_right": "open",
+          "access_right_category": "success",
+          "communities": [
+            {
+              "id": "australianbiocommons-training"
+            }
+          ],
+          "creators": [
+            {
+              "affiliation": "CSIRO",
+              "name": "Schmidt-Lebuhn, Alexander",
+              "orcid": "0000-0002-7402-8941"
+            }
+          ],
+          "description": "&lt;p&gt;This record includes training materials associated with the Australian BioCommons webinar &amp;lsquo;Conflict in multi-gene datasets: why it happens and what to do about it - deep coalescence, paralogy and reticulation&amp;rsquo;. This webinar took place on 20 May 2021.&lt;/p&gt;\n\n&lt;p&gt;Multi-gene datasets used in phylogenetic analyses, such as those produced by the sequence capture or target enrichment used in the&lt;a href=\"https://www.genomicsforaustralianplants.com/phylogenomics/\"&gt; Genomics for Australian Plants: Australian Angiosperm Tree of Life project&lt;/a&gt;, often show discordance between individual gene trees and between gene and species trees. This webinar explores three different forms of discordance: deep coalescence, paralogy, and reticulation. In each case, it considers underlying biological processes, how discordance presents in the data, and what bioinformatic or phylogenetic approaches and tools are available to address these challenges. It covers&amp;nbsp;&lt;a href=\"https://academic.oup.com/mbe/article/31/11/3081/2925722\"&gt;Yang and Smith paralogy resolution&lt;/a&gt; and general information on options for phylogenetic analysis.&lt;/p&gt;\n\n&lt;p&gt;This webinar is part of a series of webinars and workshops developed by the &lt;a href=\"https://www.genomicsforaustralianplants.com/\"&gt;Genomics for Australian Plants (GAP) Initiative&lt;/a&gt; that focused&amp;nbsp;on the analysis of target capture sequence data. In addition to two public webinars, the GAP bioinformatics working group is offering training workshops in the use of newly developed and existing scripts in an integrated workflow to participants in the 2021 virtual Australasian Systematic Botany Society Conference.&lt;/p&gt;\n\n&lt;p&gt;The materials are shared under a Creative Commons 4.0 International agreement unless otherwise specified and were current at the time of the event.&lt;/p&gt;\n\n&lt;p&gt;&lt;strong&gt;Files and materials included in this record:&lt;/strong&gt;&lt;/p&gt;\n\n&lt;ul&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Event metadata (PDF): Information about the event including, description, event URL, learning objectives, prerequisites, technical requirements etc.&lt;/p&gt;\n\t&lt;/li&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Index of training materials (PDF): List and description of all materials associated with this event including the name, format, location and a brief description of each file.&lt;/p&gt;\n\t&lt;/li&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Schmidt-Lebuhn - paralogy lineage sorting reticulation - slides (PDF): Slides presented during the webinar&lt;/p&gt;\n\t&lt;/li&gt;\n&lt;/ul&gt;\n\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\n\n&lt;p&gt;&lt;strong&gt;Materials shared elsewhere:&lt;/strong&gt;&lt;/p&gt;\n\n&lt;p&gt;A recording of the webinar is available on the Australian BioCommons YouTube Channel: &lt;a href=\"https://youtu.be/1bw81q898z8\"&gt;https://youtu.be/1bw81q898z8&lt;/a&gt;&lt;/p&gt;",
+          "doi": "10.5281/zenodo.5104998",
+          "keywords": [
+            "Phylogenetics",
+            "Bioinformatics",
+            "Phylogeny",
+            "Genomics",
+            "Target capture sequencing"
+          ],
+          "language": "eng",
+          "license": {
+            "id": "CC-BY-4.0"
+          },
+          "publication_date": "2021-07-15",
+          "references": [
+            "Altenhoff AM, Dessimoz C, 2012. Inferring Orthology and Paralogy, pp. 259-279 in: Maria Anisimova (ed.), Evolutionary Genomics: Statistical and Computational Methods, Volume 1,Methods in Molecular Biology, vol. 855, Springer. https://people.inf.ethz.ch/adriaal/orthology-bookchapter.pdf",
+            "Barker MS, Arrigo N, Baniaga AE, Li Z, Levin DA, 2016. On the relative abundance of autopolyploids and allopolyploids. New Phytologist 210: 391\u2013398. https://doi.org/10.1111/nph.13698",
+            "Folk RA, Soltis PS, Soltis DE, Guralnick R, 2018. New prospects in the detection and comparative analysis of hybridization in the tree of life. Amer. J. Bot. 105: 364-375. https://doi.org/10.1002/ajb2.1018",
+            "Maddison WP, 1997. Gene trees in species trees. Syst. Biol. 46: 523-536. https://doi.org/10.1093/sysbio/46.3.523",
+            "Nakhleh L, 2013. Computational approaches to species phylogeny inference and gene tree reconciliation. Trends in Ecology &amp; Evolution 28: 719-728. https://doi.org/10.1016/j.tree.2013.09.004",
+            "Payseur, B. A., and L. H. Rieseberg. 2016. A genomic perspective on hybridization and speciation. Molecular Ecology 25: 2337\u20132360. https://doi.org/10.1111/mec.13557",
+            "Peer YV de, Mizrachi E, Marchal K. 2017. The evolutionary significance of polyploidy. Nature Reviews Genetics 18: 411\u2013424. http://dx.doi.org/10.1038/nrg.2017.26",
+            "Smith ML, Hahn MW, 2020. New approaches for inferring phylogenies in the presence of paralogs. Trends in Genetics 1721. https://doi.org/10.1016/j.tig.2020.08.012",
+            "Stegemann S, Keuthe M, Greiner S, Bock R, 2012. Horizontal transfer of chloroplast genomes between plant species. Proc. Natl. Acad. Sci. 109: 2434\u20132438. https://doi.org/10.1073/pnas.1114076109",
+            "Flouri T, Jiao X, Rannala B, Yang Z, 2020. A Bayesian implementation of the multispecies coalescent model with introgression for phylogenomic analysis. Mol. Biol. Evol. 37: 1211-1223. https://doi.org/10.1093/molbev/msz296",
+            "Heled J, Drummond AJ, 2010. Bayesian inference of species trees from multilocus data. Mol. Biol. Evol. 27: 570-580. https://doi.org/10.1093/molbev/msp274",
+            "Johnson MG, et al., 2019. A universal probe set for targeted sequencing of 353 nuclear genes from any flowering plant designed using k-medoids clustering. Syst. Biol. 68: 594-606. https://doi.org/10.1093/sysbio/syy086",
+            "Joly S, McLenachan PA, Lockhart PJ, 2009. A statistical approach for distinguishing hybridization and incomplete lineage sorting. Amer. Nat. 174: E54-E70. https://doi.org/10.1086/600082",
+            "Morel B, Schade P, Lutteropp S, Williams TA, Sz\u2002ll\u0151si GJ, Stamatakis A, 2021. SpeciesRax: A tool for maximum likelihood species tree inference from gene family trees under duplication, transfer, and loss. https://doi.org/10.1101/2021.03.29.437460",
+            "Nauheimer L, Weigner N, Joyce E, Crayn D, Clarke C, Nargar K, 2020. HybPhaser: a workflow for the detection and phasing of hybrids in target capture datasets. BioRxiv. https://doi.org/10.1101/2020.10.27.354589",
+            "Sol\u2002s-Lemus C, An\u2002 C, 2016. Inferring phylogenetic networks with maximum pseudolikelihood under incomplete lineage sorting. PLoS Genetics 12: e1005896. https://doi.org/10.1371/journal.pgen.1005896",
+            "Yang Y, Smith SA, 2014. Orthology inference in nonmodel organisms using transcriptomes and low-coverage genomes: improving accuracy and matrix occupancy for phylogenomics. Mol. Biol. Evol. 31: 3081\u20133092. https://doi.org/10.1093/molbev/msu245",
+            "Zhang C, Rabiee M, Sayyari E, Mirarab S, 2018. ASTRAL-III: polynomial time species tree reconstruction from partially resolved gene trees. BMC Bioinformatics 19: 153. https://doi.org/10.1186/s12859-018-2129-y"
+          ],
+          "related_identifiers": [
+            {
+              "identifier": "10.5281/zenodo.5104997",
+              "relation": "isVersionOf",
+              "scheme": "doi"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "count": 1,
+                "index": 0,
+                "is_last": true,
+                "last_child": {
+                  "pid_type": "recid",
+                  "pid_value": "5104998"
+                },
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "5104997"
+                }
+              }
+            ]
+          },
+          "resource_type": {
+            "title": "Other",
+            "type": "other"
+          },
+          "subjects": [
+            {
+              "identifier": "http://edamontology.org/topic_3293",
+              "scheme": "url",
+              "term": "Phylogenetics"
+            },
+            {
+              "identifier": "http://edamontology.org/topic_0091",
+              "scheme": "url",
+              "term": "Bioinformatics"
+            },
+            {
+              "identifier": "http://edamontology.org/topic_0084",
+              "scheme": "url",
+              "term": "Phylogeny"
+            },
+            {
+              "identifier": "http://edamontology.org/topic_0622",
+              "scheme": "url",
+              "term": "Genomics"
+            }
+          ],
+          "title": "WEBINAR: Conflict in multi-gene datasets: why it happens and what to do about it - deep coalescence, paralogy and reticulation"
+        },
+        "owners": [
+          111635
+        ],
+        "revision": 1,
+        "stats": {
+          "downloads": 17.0,
+          "unique_downloads": 12.0,
+          "unique_views": 21.0,
+          "version_downloads": 17.0,
+          "version_unique_downloads": 12.0,
+          "version_unique_views": 21.0,
+          "version_views": 21.0,
+          "version_volume": 19558376.0,
+          "views": 21.0,
+          "volume": 19558376.0
+        },
+        "updated": "2021-07-15T00:27:48.628603+00:00"
+      },
+      {
+        "conceptdoi": "10.5281/zenodo.5076667",
+        "conceptrecid": "5076667",
+        "created": "2021-07-07T00:49:51.210937+00:00",
+        "doi": "10.5281/zenodo.5076668",
+        "files": [
+          {
+            "bucket": "c9b0917e-e90f-4987-905a-91c0b302d347",
+            "checksum": "md5:41544be92048dc27df8411069abcec4a",
+            "key": "Event metadata.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/c9b0917e-e90f-4987-905a-91c0b302d347/Event%20metadata.pdf"
+            },
+            "size": 113383,
+            "type": "pdf"
+          },
+          {
+            "bucket": "c9b0917e-e90f-4987-905a-91c0b302d347",
+            "checksum": "md5:20dcc149fb2db61a963c25e732d85453",
+            "key": "Index of training materials.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/c9b0917e-e90f-4987-905a-91c0b302d347/Index%20of%20training%20materials.pdf"
+            },
+            "size": 95233,
+            "type": "pdf"
+          },
+          {
+            "bucket": "c9b0917e-e90f-4987-905a-91c0b302d347",
+            "checksum": "md5:26ae63679801f9a7cb8d9038a112e7a8",
+            "key": "Schedule.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/c9b0917e-e90f-4987-905a-91c0b302d347/Schedule.pdf"
+            },
+            "size": 99273,
+            "type": "pdf"
+          },
+          {
+            "bucket": "c9b0917e-e90f-4987-905a-91c0b302d347",
+            "checksum": "md5:3605a816c09e74054973d1e7e17a4a96",
+            "key": "Variant calling - humans, animals, plants - slides.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/c9b0917e-e90f-4987-905a-91c0b302d347/Variant%20calling%20-%20humans%2C%20animals%2C%20plants%20-%20slides.pdf"
+            },
+            "size": 4695319,
+            "type": "pdf"
+          },
+          {
+            "bucket": "c9b0917e-e90f-4987-905a-91c0b302d347",
+            "checksum": "md5:ffd77d3e4f30ef72beb8f6e96f611170",
+            "key": "Variant calling - humans, animals, plants - slides.pptx",
+            "links": {
+              "self": "https://zenodo.org/api/files/c9b0917e-e90f-4987-905a-91c0b302d347/Variant%20calling%20-%20humans%2C%20animals%2C%20plants%20-%20slides.pptx"
+            },
+            "size": 6686520,
+            "type": "pptx"
+          }
+        ],
+        "id": 5076668,
+        "links": {
+          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5076668.svg",
+          "bucket": "https://zenodo.org/api/files/c9b0917e-e90f-4987-905a-91c0b302d347",
+          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5076667.svg",
+          "conceptdoi": "https://doi.org/10.5281/zenodo.5076667",
+          "doi": "https://doi.org/10.5281/zenodo.5076668",
+          "html": "https://zenodo.org/record/5076668",
+          "latest": "https://zenodo.org/api/records/5076668",
+          "latest_html": "https://zenodo.org/record/5076668",
+          "self": "https://zenodo.org/api/records/5076668"
+        },
+        "metadata": {
+          "access_right": "open",
+          "access_right_category": "success",
+          "communities": [
+            {
+              "id": "australianbiocommons-training"
+            }
+          ],
+          "creators": [
+            {
+              "affiliation": "QCIF Bioinformatics",
+              "name": "Price, Gareth",
+              "orcid": "0000-0003-2439-8650"
+            }
+          ],
+          "description": "&lt;p&gt;This record includes training materials associated with the Australian BioCommons workshop &amp;lsquo;Variant calling in humans, animals and plants with Galaxy&amp;rsquo;. This workshop took place on 25 May 2021.&lt;/p&gt;\n\n&lt;p&gt;Variant calling in polyploid organisms, including humans, plants and animals, can help determine single or multi-variant contributors to a phenotype. Further, sexual reproduction (as compared to asexual) combines variants in a novel manner; this can be used to determine previously unknown variant - phenotype combinations but also to track lineage and lineage associated traits (GWAS studies), that all rely on highly accurate variant calling. The ability to confidently call variants in polyploid organisms is highly dependent on the balance between the frequency of variant observations against the background of non-variant observations, and even further compounded when one considers multi-variant positions within the genome. These are some of the challenges that will be explored in the workshop.&lt;/p&gt;\n\n&lt;p&gt;In this online workshop we focused on the tools and workflows available for variant calling in polyploid organisms in Galaxy Australia. The workshop provided opportunities for hands-on experience using Freebayes for variant calling and SnpEff and GEMINI for variant annotation. The workshop made use of data from a case study on diagnosing a genetic disease however the tools and workflows are equally applicable to other polyploid organisms and biological questions.&lt;/p&gt;\n\n&lt;p&gt;Access to all of the tools covered in this workshop was via&lt;a href=\"https://usegalaxy.org.au/\"&gt; Galaxy Australia&lt;/a&gt;, an online platform for biological research that allows people to use computational data analysis tools and workflows without the need for programming experience.&lt;/p&gt;\n\n&lt;p&gt;The materials are shared under a Creative Commons 4.0 International agreement unless otherwise specified and were current at the time of the event.&lt;br&gt;\n&amp;nbsp;&lt;/p&gt;\n\n&lt;p&gt;&lt;em&gt;&lt;strong&gt;Files and materials included in this record:&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;\n\n&lt;ul&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Event metadata (PDF): Information about the event including, description, event URL, learning objectives, prerequisites, technical requirements etc.&lt;/p&gt;\n\t&lt;/li&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Index of training materials (PDF): List and description of all materials associated with this event including the name, format, location and a brief description of each file.&lt;/p&gt;\n\t&lt;/li&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Schedule (PDF): schedule for the workshop&lt;/p&gt;\n\t&lt;/li&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Variant calling - humans, animals, plants - slides (PPTX and PDF): slides used in the workshop&lt;/p&gt;\n\t&lt;/li&gt;\n&lt;/ul&gt;\n\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\n\n&lt;p&gt;&lt;em&gt;&lt;strong&gt;Materials shared elsewhere:&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;\n\n&lt;p&gt;The tutorial used in this workshop is available via the &lt;a href=\"https://training.galaxyproject.org/\"&gt;Galaxy Training Network&lt;/a&gt;.&lt;/p&gt;\n\n&lt;p&gt;&lt;br&gt;\nWolfgang Maier, B&amp;eacute;r&amp;eacute;nice Batut, Torsten Houwaart, Anika Erxleben, Bj&amp;ouml;rn Gr&amp;uuml;ning, 2021 Exome sequencing data analysis for diagnosing a genetic disease (Galaxy Training Materials). &lt;a href=\"https://training.galaxyproject.org/training-material/topics/variant-analysis/tutorials/exome-seq/tutorial.html\"&gt;https://training.galaxyproject.org/training-material/topics/variant-analysis/tutorials/exome-seq/tutorial.html&lt;/a&gt; Online; accessed 25 May 2021&lt;/p&gt;",
+          "doi": "10.5281/zenodo.5076668",
+          "keywords": [
+            "Variant calling",
+            "Genetic Variation Analysis",
+            "SNP annotation"
+          ],
+          "language": "eng",
+          "license": {
+            "id": "CC-BY-4.0"
+          },
+          "publication_date": "2021-07-07",
+          "references": [
+            "Wolfgang Maier, B\u00e9r\u00e9nice Batut, Torsten Houwaart, Anika Erxleben, Bj\u00f6rn Gr\u00fcning, 2021 Exome sequencing data analysis for diagnosing a genetic disease (Galaxy Training Materials). https://training.galaxyproject.org/training-material/topics/variant-analysis/tutorials/exome-seq/tutorial.html Online; accessed 25 May 2021",
+            "Wellcome Genome Campus, 2021. Achievements and uniqueness. https://www.wellcomegenomecampus.org/scienceandinnovation/achievements-uniqueness/ Online; accessed 25 May 2021.",
+            "Miller, N.A., Farrow, E.G., Gibson, M. et al. A 26-hour system of highly sensitive whole genome sequencing for emergency management of genetic diseases. Genome Med 7, 100 (2015). https://doi.org/10.1186/s13073-015-0221-8",
+            "Illumina. 2017. An introduction to Next-Generation Sequencing Technology. https://www.illumina.com/content/dam/illumina-marketing/documents/products/illumina_sequencing_introduction.pdf Online; accessed 25 May 2021.",
+            "Mardis, E. R. 2012. Applying next-generation sequencing to pancreatic cancer treatment. Nat. Rev. Gastroenterol. Hepatol. doi:10.1038/nrgastro.2012.126",
+            "Jose Carbonell-Caballero, Roberto Alonso, Victoria Iba\u00f1ez, Javier Terol, Manuel Talon, Joaquin Dopazo, A Phylogenetic Analysis of 34 Chloroplast Genomes Elucidates the Relationships between Wild and Domestic Species within the Genus Citrus, Molecular Biology and Evolution, Volume 32, Issue 8, August 2015, Pages 2015\u20132035, https://doi.org/10.1093/molbev/msv082",
+            "Freebayes 2021. freebayes, a haplotype-based variant detector: user manual and guide. Version 13 February 2021. https://github.com/freebayes/freebayes/blob/master/README.md Online, accessed 25 May 2021",
+            "Kulawiec, M., Owens, K. &amp; Singh, K. 2009. mtDNA G10398A variant in African-American women with breast cancer provides resistance to apoptosis and promotes metastasis in mice. J Hum Genet 54, 647\u2013654. https://doi.org/10.1038/jhg.2009.89",
+            "Wikipedia. 2021. Pile up format. https://en.wikipedia.org/wiki/Pileup_format Online, accessed 25 May 2021.",
+            "The Pevsner Laboratory. SNP Trio. http://pevsnerlab.kennedykrieger.org/php/?q=node/85 Online, accessed 25 May 2021.",
+            "Richards, S., Aziz, N., Bale, S. et al. 2015.  Standards and guidelines for the interpretation of sequence variants: a joint consensus recommendation of the American College of Medical Genetics and Genomics and the Association for Molecular Pathology. Genet Med 17, 405\u2013423. https://doi.org/10.1038/gim.2015.30"
+          ],
+          "related_identifiers": [
+            {
+              "identifier": "https://training.galaxyproject.org/training-material/topics/variant-analysis/tutorials/exome-seq/tutorial.html",
+              "relation": "requires",
+              "resource_type": "lesson",
+              "scheme": "url"
+            },
+            {
+              "identifier": "10.5281/zenodo.5076667",
+              "relation": "isVersionOf",
+              "scheme": "doi"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "count": 1,
+                "index": 0,
+                "is_last": true,
+                "last_child": {
+                  "pid_type": "recid",
+                  "pid_value": "5076668"
+                },
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "5076667"
+                }
+              }
+            ]
+          },
+          "resource_type": {
+            "title": "Other",
+            "type": "other"
+          },
+          "subjects": [
+            {
+              "identifier": "http://edamontology.org/operation_3227",
+              "scheme": "url",
+              "term": "Variant calling"
+            },
+            {
+              "identifier": "http://edamontology.org/operation_3197",
+              "scheme": "url",
+              "term": "Genetic variation analysis"
+            },
+            {
+              "identifier": "http://edamontology.org/operation_3661",
+              "scheme": "url",
+              "term": "SNP annotation"
+            }
+          ],
+          "title": "WORKSHOP: Variant calling in humans, animals and plants with Galaxy"
+        },
+        "owners": [
+          111635
+        ],
+        "revision": 3,
+        "stats": {
+          "downloads": 44.0,
+          "unique_downloads": 32.0,
+          "unique_views": 50.0,
+          "version_downloads": 44.0,
+          "version_unique_downloads": 32.0,
+          "version_unique_views": 50.0,
+          "version_views": 56.0,
+          "version_volume": 55279258.0,
+          "views": 56.0,
+          "volume": 55279258.0
+        },
+        "updated": "2021-07-15T00:16:55.388905+00:00"
+      },
+      {
+        "conceptdoi": "10.5281/zenodo.5068996",
+        "conceptrecid": "5068996",
+        "created": "2021-07-04T23:31:41.203625+00:00",
+        "doi": "10.5281/zenodo.5068997",
+        "files": [
+          {
+            "bucket": "64085c32-76e1-41af-94c0-921d25b16af0",
+            "checksum": "md5:1cc8d7a986c3d2df610d52bc08a355ef",
+            "key": "Event metadata.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/64085c32-76e1-41af-94c0-921d25b16af0/Event%20metadata.pdf"
+            },
+            "size": 53580,
+            "type": "pdf"
+          },
+          {
+            "bucket": "64085c32-76e1-41af-94c0-921d25b16af0",
+            "checksum": "md5:977791238f6a6f5392f95d0788ac3b30",
+            "key": "Getting started with command line bioinformatics - slides.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/64085c32-76e1-41af-94c0-921d25b16af0/Getting%20started%20with%20command%20line%20bioinformatics%20-%20slides.pdf"
+            },
+            "size": 4328259,
+            "type": "pdf"
+          },
+          {
+            "bucket": "64085c32-76e1-41af-94c0-921d25b16af0",
+            "checksum": "md5:1edcb51352b1d20f2fe0f340d77c8edc",
+            "key": "Index of training materials.pdf",
+            "links": {
+              "self": "https://zenodo.org/api/files/64085c32-76e1-41af-94c0-921d25b16af0/Index%20of%20training%20materials.pdf"
+            },
+            "size": 42419,
+            "type": "pdf"
+          }
+        ],
+        "id": 5068997,
+        "links": {
+          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5068997.svg",
+          "bucket": "https://zenodo.org/api/files/64085c32-76e1-41af-94c0-921d25b16af0",
+          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5068996.svg",
+          "conceptdoi": "https://doi.org/10.5281/zenodo.5068996",
+          "doi": "https://doi.org/10.5281/zenodo.5068997",
+          "html": "https://zenodo.org/record/5068997",
+          "latest": "https://zenodo.org/api/records/5068997",
+          "latest_html": "https://zenodo.org/record/5068997",
+          "self": "https://zenodo.org/api/records/5068997"
+        },
+        "metadata": {
+          "access_right": "open",
+          "access_right_category": "success",
+          "communities": [
+            {
+              "id": "australianbiocommons-training"
+            }
+          ],
+          "contributors": [
+            {
+              "name": "Hogg, Carolyn",
+              "orcid": "0000-0002-6328-398X",
+              "type": "Supervisor"
+            }
+          ],
+          "creators": [
+            {
+              "affiliation": "University of Sydney",
+              "name": "Brandies, Parice",
+              "orcid": "0000-0003-1702-2938"
+            }
+          ],
+          "description": "&lt;p&gt;This record includes training materials associated with the Australian BioCommons webinar &amp;lsquo;Getting started with command line bioinformatics&amp;rsquo;. This webinar took place on 22 June 2021.&amp;nbsp;&lt;/p&gt;\n\n&lt;p&gt;Bioinformatics skills are in demand like never before and biologists are stepping up to the challenge of learning to analyse large and ever growing datasets. Learning how to use the command line can open up many options for data analysis but getting started can be a little daunting for those without a background in computer science.&lt;/p&gt;\n\n&lt;p&gt;Parice Brandies and Carolyn Hogg have recently put together &lt;a href=\"https://doi.org/10.1371/journal.pcbi.1008645\"&gt;ten simple rules for getting started with command-line bioinformatic&lt;/a&gt;&lt;a href=\"https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1008645\"&gt;s&lt;/a&gt; to help biologists begin their computational journeys. In this webinar Parice walks you through their hints and tips for getting started with the command line. She covers topics like learning tech speak, evaluating your data and workflows, assessing computational requirements, computing options, the basics of software installation, curating and testing scripts, a bit of bash and keeping good records. The webinar will be followed by a short Q&amp;amp;A session.&lt;/p&gt;\n\n&lt;p&gt;The slides were created by Parice Brandies and are based on the publication &amp;lsquo;Ten simple rules for getting started with command-line bioinformatics&amp;rsquo; (&lt;a href=\"https://doi.org/10.1371/journal.pcbi.1008645\"&gt;https://doi.org/10.1371/journal.pcbi.1008645&lt;/a&gt;). The slides are&amp;nbsp;shared under a Creative Commons Attribution 4.0 International unless otherwise specified and were current at the time of the webinar.&lt;/p&gt;\n\n&lt;p&gt;&lt;em&gt;&lt;strong&gt;Files and materials included in this record:&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;\n\n&lt;ul&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Event metadata (PDF): Information about the event including, description, event URL, learning objectives, prerequisites, technical requirements etc.&lt;/p&gt;\n\t&lt;/li&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Index of training materials (PDF): List and description of all materials associated with this event including the name, format, location and a brief description of each file.&lt;/p&gt;\n\t&lt;/li&gt;\n\t&lt;li&gt;\n\t&lt;p&gt;Getting started with command line bioinformatics - slides (PDF): Slides presented during the webinar&lt;/p&gt;\n\t&lt;/li&gt;\n&lt;/ul&gt;\n\n&lt;p&gt;&lt;em&gt;&lt;strong&gt;Materials shared elsewhere:&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;\n\n&lt;p&gt;A recording of the webinar is available on the Australian BioCommons YouTube Channel&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://youtu.be/p7pA4OLB2X4\"&gt;https://youtu.be/p7pA4OLB2X4&lt;/a&gt;&lt;/p&gt;",
+          "doi": "10.5281/zenodo.5068997",
+          "keywords": [
+            "Bioinformatics",
+            "Command line",
+            "Workflows",
+            "Bash",
+            "Computational biology"
+          ],
+          "language": "eng",
+          "license": {
+            "id": "CC-BY-4.0"
+          },
+          "publication_date": "2021-07-04",
+          "references": [
+            "Brandies PA, Hogg CJ (2021) Ten simple rules for getting started with command-line bioinformatics. PLoS Comput Biol 17(2): e1008645. https://doi.org/10.1371/journal.pcbi.1008645"
+          ],
+          "related_identifiers": [
+            {
+              "identifier": "10.1371/journal.pcbi.1008645",
+              "relation": "describes",
+              "resource_type": "publication-article",
+              "scheme": "doi"
+            },
+            {
+              "identifier": "10.5281/zenodo.5068996",
+              "relation": "isVersionOf",
+              "scheme": "doi"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "count": 1,
+                "index": 0,
+                "is_last": true,
+                "last_child": {
+                  "pid_type": "recid",
+                  "pid_value": "5068997"
+                },
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "5068996"
+                }
+              }
+            ]
+          },
+          "resource_type": {
+            "title": "Other",
+            "type": "other"
+          },
+          "subjects": [
+            {
+              "identifier": "http://edamontology.org/topic_0091",
+              "scheme": "url",
+              "term": "Bioinformatics"
+            },
+            {
+              "identifier": "http://edamontology.org/topic_0769",
+              "scheme": "url",
+              "term": "Workflows"
+            }
+          ],
+          "title": "WEBINAR: Getting started with command line bioinformatics"
+        },
+        "owners": [
+          111635
+        ],
+        "revision": 1,
+        "stats": {
+          "downloads": 90.0,
+          "unique_downloads": 58.0,
+          "unique_views": 82.0,
+          "version_downloads": 90.0,
+          "version_unique_downloads": 58.0,
+          "version_unique_views": 82.0,
+          "version_views": 86.0,
+          "version_volume": 81677134.0,
+          "views": 86.0,
+          "volume": 81677134.0
+        },
+        "updated": "2021-07-04T23:31:42.025118+00:00"
+      }
+    ],
+    "total": 10
+  },
+  "links": {
+    "self": "https://zenodo.org/api/records/?sort=mostrecent&communities=australianbiocommons-training&page=1&size=10"
+  }
+}

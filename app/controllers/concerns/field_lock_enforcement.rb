@@ -1,3 +1,4 @@
+# The module for enforcement of field locks
 module FieldLockEnforcement
   extend ActiveSupport::Concern
 

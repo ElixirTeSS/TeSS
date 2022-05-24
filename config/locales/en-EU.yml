@@ -1,0 +1,304 @@
+en-EU:
+  pundit:
+    default: 'You are not authorised to perform this action.'
+    material_policy:
+    event_policy:
+  activerecord:
+    attributes:
+      content_provider:
+        url: 'URL'
+      event:
+        url: 'URL'
+      material:
+        doi: 'DOI'
+        url: 'URL'
+      profile:
+        firstname: 'First name'
+        surname: 'Last name'
+  about:
+    registry: >
+      One of the goals of <a href='https://elixir-europe.org', target='_blank'>Elixir</a>
+      (Europe's distributed infrastructure for life-science data) is to train research scientists to better use
+      available computational infrastructures to address critical research questions. This requires access both to
+      face-to-face training opportunities and to disparate training materials and resources, currently dispersed
+      across Europe.
+      </p><p>
+      TeSS is ELIXIR's training platform, providing a one-stop shop for trainers and trainees to discover
+      online information and content, including training materials, events and interactive tutorials.
+      For ELIXIR Nodes, TeSS provides opportunities to promote training events and news, and to contribute
+      to a growing catalogue of materials; for trainers, the portal offers an environment for sharing materials
+      and event information; for trainees, it offers a convenient gateway via which to identify relevant training
+      events and resources, and to perform specific, guided analysis tasks via customised training workflows
+    events: >
+      Events in TeSS are defined as face-to-face or online training opportunities that have set start and end times.
+      These primarily take the form of workshops, courses, webinars, etc.; but TeSS also collects information about
+      conferences, meetings and hackathons, as these may also provide opportunities for learning.
+      </p><p>
+      A significant portion of TeSS' initial content was contributed by the progenitor event-announcement platform,
+      <a href="https://www.ncbi.nlm.nih.gov/pubmed/23742982" target="_blank">iAnn.pro</a>.
+    nominatim: "<a href='https://wiki.openstreetmap.org/wiki/Nominatim', target='_blank'>Nominatim</a>"
+    materials: >
+      Materials in TeSS are defined as training resources that can be accessed at any time. These may be in
+      a variety of different formats, including online tutorials, videos, PowerPoint presentations, and so on.
+    workflows: >
+      New to TeSS are graphical training tools termed 'Training Workflows'.
+      Three main types of workflow are in development: Educational Resources, Learning Pathways and Concept Maps.
+      These encapsulate different types of, and/or approaches to, training, at different levels of granularity,
+      within easy-to-use visual displays.
+    learning_paths: >
+      In order to advance their skills, trainees need to embark on a path, or developmental trajectory.
+      To facilitate this journey, learning paths aim to structure, within simple visual workflows, the set of
+      relevant training resources that trainees need to study in order to accomplish their learning objectives.
+      Learning paths are being developed by ELIXIR TeSS, ELIXIR-NL and ELIXIR UK.
+    concept_maps: >
+      ELIXIR has developed several registries that contain and promote a variety of resources that users can
+      exploit: training resources in TeSS; software tools in
+      <a href="https://bio.tools" target="_blank">bio.tools</a>; databases, standards and policies in
+      <a href="https://fairsharing.org" target="_blank">FAIRsharing</a>. Concept maps provide visual overviews
+      of typical data-analysis pipelines, surfacing the relevant tools and databases from these registries,
+      and showing how they fit together. Concept maps are being developed by ELIXIR TeSS, ELIXIR-EE and ELIXIR-BE.
+    resources: >
+      In this type of workflow, trainees are introduced to various practical tasks, linked to associated
+      online tools and/or databases, within self-contained modules. Each module includes
+      i) succinct statements of teaching goals and learning outcomes, to convey to trainees what they will be able to do
+      on completion of the module;
+      ii) a series of questions or ‘Reflections’ to provoke critical thinking about the tasks that have been completed;
+      iii) additional background information and further reading to help support learning and enquiry; and
+      iv) multiple choice quiz questions to evaluate understanding at the end.
+      Educational Resources for introductory sequence and structural bioinformatics are currently being developed by
+      ELIXIR TeSS, ELIXIR-UK and the UK Structural Bioinformatics group (via the FunPDBe project).
+    subscribe: >
+      TeSS also provides a subscription feature to help users to stay informed about courses, workshops and
+      conferences of interest to them. The service may be customised by selecting the relevant filters, and
+      initiated via the subscribe button. Users may choose to receive email notifications about upcoming
+      events, or have them automatically added to their preferred calendar application.
+    widgets: >
+      data, organisations may readily import information about relevant events and materials to their site using widgets,
+      or may create custom feeds using our API.
+  developer:
+    license: >
+      TeSS is committed to the FAIR principles: making data findable, accessible, interoperable and re-usable.
+      As such, all content in TeSS is available under the CC BY 4.0 licence, and can be accessed through our API
+      and widgets. The TeSS codebase is also available to re-use under the BSD Licence, and can be found on GitHub.
+    code_license: >
+      <a href="https://github.com/nrmay/TeSS/blob/master/LICENSE", target="_blank">BSE 3-Clause</a>
+    data_license: >
+      <a href="https://creativecommons.org/licenses/by/4.0/", target="_blank">Creative Commons CC-BY 4.0</a>
+    gmaps_countries: >
+      'United Kingdom', 'Spain', 'Portugal', 'France', 'Belgium', 'Ireland', 'Estonia', 'Finland',
+      'Germany', 'Austria', 'Italy', 'Hungary', 'Czech Republic', 'Estonia', 'Denmark',
+      'Greece', 'Luxembourg', 'The Netherlands', 'Switzerland', 'Norway', 'Sweden', 'Slovenia'
+    widgets: >
+      Widgets are chunks of javascript code that can be copied into website source code to display TeSS content.
+      There are several different styles and functionalities available from our configurable widget suite.
+      Widgets can be used to enhance your site and offer your community lists of relevant events or training resources.
+    widgets_available: "https://elixirtess.github.io/TeSS_Widgets/"
+    widgets_mailing: >
+      <p>If you do decide to include our widgets on your website, we have a mailing list you can join to keep informed
+        about any service disruptions, required updates, or new features</p>
+      <p><a href="https://groups.google.com/forum/#!forum/tess-widgets-user-group",
+            class="btn btn-primary", target="_blank" >
+            <i class="fa fa-envelope"></i> Join the widgets mailing list</a></p>
+    api_example_1: "/events.json_api"
+    api_example_2: "/events/data-fairification-for-data-stewards.json_api"
+    api_example_3: "/materials.json_api?scientific_topics=RNA-Seq"
+    api_example_4: "/content_providers.json_api"
+    api_example_5: "/workflows.json_api"
+    swaggerhub: >
+      <p>The full documentation for our JSON API with interactive examples can be found in our
+        <a href="https://app.swaggerhub.com/apis/fbacall/TeSS-JSON-API/0.2.0", target="_blank">
+          Swagger Hub Documentation</a>
+      </p>
+      <p><a href="https://app.swaggerhub.com/apis/fbacall/TeSS-JSON-API/0.2.0", class="btn btn-primary", target="_blank">
+        View our API on SwaggerHub <img src="/assets/swagger.png", width="20" height="20"></a></p>
+      <p>We recommend using our JSON API, but if you have already begun using our old API technical information
+        can still be found on our <a href="https://app.swaggerhub.com/api/njall/TeSS/1.0.0/">here</a>.</p>
+  us:
+    tess_club: >
+      <p>Fortnightly meetings, hackathons, shared activities, open priority setting, open contribution to unite the
+      community.</p><p>The TeSS Club runs fortnightly at 9:00 GMT / 10:00 CET Friday.</p><p>For all the details please
+      visit the <a href="https://elixirtess.github.io/about/">TeSS Club Website</a>.</p>
+    contact: >
+      For enquiries, information, or assistance; contact the TeSS support desk at <br>
+      <a href="mailto:tess-support@googlegroups.com">tess-support@googlegroups.com</a>
+    team: >
+      <div class="h4">Leadership</div>
+      <ul><li>Carole Goble</li><li>Hedi Peterson</li><li>Alexia Cardona</li></ul>
+      <div class="h4">Project Management</div>
+      <ul><li>Chris Child</li></ul>
+      <div class="h4">Software Engineering</div>
+      <ul><li>Chris Child</li></ul>
+      <div class="h4">Past Members</div>
+      <ul>
+        <li>Aleksandra Nenadic - Project Manager</li>
+        <li>Aleksandra Pawlik - Project Manager</li>
+        <li>Teresa K. Attwood - Leadership</li>
+        <li>Susanna-Assunta Sansone - Leadership</li>
+        <li>Niall Beard - Project Management/Software Engineering</li>
+        <li>Finn Bacall - Software Engineering</li>
+        <li>Milo Thurston - Software Engineering</li>
+      </ul>
+    funding: >
+      <p>European Commission, Horizon 2020 Research Infrastructures programme (ELIXIR-EXCELERATE,
+      <a href="https://cordis.europa.eu/project/rcn/198519_en.html" target="_blank">grant agreement number 676559</a>);</p>
+      <p>ELIXIR Implementation Study (Registry Integration from a User Perspective);</p>
+      <p>ELIXIR Implementation Study (Learning Paths).</p>
+      <p>BBSRC UK (Delivering ELIXIR-UK grant, grant agreement numbers
+        <a href="https://bbsrc.ukri.org/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1"
+          target="_blank">BB/L005050/1</a> &amp;
+        <a href="https://bbsrc.ukri.org/research/grants-search/AwardDetails/?FundingReference=BB/L005069/1"
+          target="_blank">BB/L005069/1</a>
+        ).
+      </p>
+      <p>
+      <a href="https://cordis.europa.eu/project/rcn/198519_en.html", target="_blank" >
+        <img src="/assets/eu_flag.svg" class="funding-logo" >
+      </a>
+      <a href="http://www.elixir-europe.org/excelerate", target="_blank" >
+          <img src="/assets/excelerate-logo.png", class="funding-logo" >
+      </a>
+      <a href="https://bbsrc.ukri.org/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1",
+          target="_blank" >
+          <img src="/assets/elixir_logo_orange.png", class="funding-logo" >
+      </a>
+      <a href="https://bbsrc.ukri.org/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1",
+          target="_blank" >
+          <img src="/assets/bbsrc-logo.png", class="funding-logo" >
+      </a>
+      </p>
+    acknowledge: >
+      <p>The TeSS team would like to acknowledge the help of a number of groups and individuals, and thank them
+         for useful discussions, feedback and assistance in developing TeSS - to name but a few:</p>
+       <ul>
+          <li>ELIXIR technical staff and coordinators from the Hub,
+            in particular Rafael Jimenez, Martin Cook and Premysl Velek</li>
+          <li>The ELIXIR Training Coordinators group, particularly Celia van Gelder, Patricia Palagi and Gabriella Rustici
+            </li>
+          <li>The UK structural bioinformatics group, particularly Christine Orengo</li>
+        </ul>
+  register:
+    resources: >
+      <p>Training resources (events and materials) may be added to TeSS to reach bigger audiences, increase impact and
+      bolster event attendance. Registering events and training materials makes them more findable in a variety ways
+      to various user bases.</p>
+    methods: >
+      <p>There are two ways to register training materials or events for display in TeSS:
+      <ol><li>Arrange for an <a href="#automatic">automatic registration</a> solution;</li>
+      <li>Use our form to register them <a href="#manual">manually</a>.</li></ol></p>
+    automatic: >
+      The TeSS team can write scripts ('scrapers') to automatically register resources from target websites.
+      The scrapers run each night, adding any new resources to TeSS or updating any that have changed.
+      We can write a scraper to include your resources in TeSS, if your site:
+    auto_condition_1: "Contains more than 3 resources"
+    auto_condition_2: "Has some structured data"
+    auto_condition_3: "Is relevant to life scientists"
+    structured: >
+      <p>To register resources in TeSS automatically, our scrapers need to be able to extract data from target
+      websites reliably. To this end, it is helpful if these websites include some structured data.</p>
+      <p>The following are examples of the kinds of structured data that we can work with. If your website contains one or
+      more of these, and satisfies the criteria above, contact us and we will create a scraper.</p>
+      <p>If your website includes no structured data, and you’d like your resources added to TeSS, werecommend using
+      <a href="http://bioschemas.org" target="_blank">Bioschemas</a> to structure your site.</p>
+    schema: >
+      <p><a href='http://schema.org', target='_blank'>Schema.org</a> is a project run by a consortiumof search engines.
+      Schema.org has created an extensive library of simple, lightweight schemas that web-masters can use to explicitly
+      define their websites content in order to improve search engine visibility and interoperability.</p>
+      <p>For events, you can use the <a target='_blank', href='http://schema.org/Event'>schema.org Event type</a>; and
+      for training materials: <a target='_blank', href='http://schema.org/CreativeWork'>schema.org CreativeWork Type</a>
+      </p><p>The schemas provided by schema.org are convoluted, and lack some important training-specific fields.
+      As such, a life science community group, called <a target='_blank', href='http://bioschemas.org'>Bioschemas</a>,
+      has created schema.org extensions with life science-specific vocabularies, which add additional fields relevant
+      to the discipline.</p>
+      <p>The Bioschemas group is producing tools, documents and training to facilitate adoption of standard metadata
+      mark-up.</p>
+    bioschema_events: >
+      <a target='_blank', class='btn btn-primary', href='http://bioschemas.org/specifications/Event/specification/'>
+      View Events Biochema</a>
+    bioschema_materials: >
+      <a target='_blank', class='btn btn-primary',
+      href='http://bioschemas.org/specifications/TrainingMaterial/specification/'>
+      View Materials Bioschema</a>
+    schema_example_1: >
+      <a target='_blank', class='btn btn-success',
+      href='https://search.google.com/structured-data/testing-tool#url=https%3A%2F%2Fwww.france-bioinformatique.fr%2Fen%2Fevenements_upcoming'>
+      French Institute of Bioinformatics</a>
+    schema_example_2: >
+      <a target='_blank', class='btn btn-success',
+      href='https://search.google.com/structured-data/testing-tool#url=https%3A%2F%2Fwww.sib.swiss%2Ftraining%2Fupcoming-training-events'>
+      Swiss Institute Bioinformatics</a>
+    schema_example_3: ""
+    api: >
+      <p>Application Programming Interfaces, or APIs, typically have endpoint URLs that, when accessed, return raw,
+      unstyled data in a common exchange format, such as XML or JSON.</p>
+      <p>If your website has an API that programmatically displays data for your training or event content, the TeSS
+      team can write an API client to interface with it.</p>
+    api_example_1: >
+      <a target='_blank', class='btn btn-success',
+      href='https://www.training.cam.ac.uk/api/v1/provider/BIOINFO/programmes?fetch=events.sessions,events.topics&format=json'>
+      University of Cambridge</a>
+    api_example_2: >
+      <a target='_blank', class='btn btn-success', href='https://www.dtls.nl/courses/feed/?filter_course=active'>
+      Dutch Techcentre for Lifesciences</a>
+    api_example_3: ""
+    calendar: >
+      <p>Many organisations use calendar applications to organise and display their events.
+      These may be custom-made or, more likely, utilise applications like Google Calendar. Calendar applications
+      maintain an underlying file for event storage and retrieval, typically in the .ics format.</p>
+      <p>If your website has a calendar application, the TeSS team can write a scraper to extract from it the date,
+      location and event descriptions, and upload the data to TeSS.</p>
+    calendar_example_1: >
+      <a target='_blank', class='btn btn-success', href='https://nbis.se/training/events.html'>NBIS</a>
+    calendar_example_2: >
+      <a target='_blank', class='btn btn-success', href='https://software-carpentry.org/workshops/'>
+      Software Carpentry</a>
+    calendar_example_3: ""
+    other_types: >
+      <ul><li><b>RSS Feed</b>: an RSS feed is a type of news format. Many websites have such feeds, which list recent
+      posts in a standard format. We can write scripts to parse this format;</li>
+      <li><b>Git Repository:</b> a git repository is a directory containing files that can be edited collaboratively.
+      If you are using GitHub (or similar) to develop your training resources, and/or use GitHub Pages to render them,
+      we can write a script that clones the repository and extracts resource information. We may ask you to create a
+      metadata file in YAML format to help us extract the metadata;</li>
+      <li><b>SOLR server (or similar):</b> a SOLR server is a search engine that many sites use for their internal
+      search functionality. If you have a publicly accessible SOLR server, we can write a script to interface with it;
+      </li>
+      <li><b>Other:</b> if you have training metadata in another structured format (e.g., an XML or JSON dump, a CSV
+      file, a YAML file, or other format), we would be happy to write a script to parse it.</li></ul>
+    advice: >
+      If your website contains any of the above, or you'd like advice about annotating with Bioschemas, you can contact
+      us via e-mail at <a href="mailto:support@tess.elixir-europe.org">support@tess.elixir-europe.org</a>
+    manual: >
+      <p>Resources may be added manually to TeSS.</p>
+      <p>To do so, first register for a free account. Members of ELIXIR can use ELIXIR AAI to register and login.</p>
+      <p>Once registered and logged in, the 'register event' and 'register material' buttons will become visible on the
+      events and materials tabs. Alternatively click here:</p>
+  home:
+    welcome: "Welcome to TeSS: Elixir's Trailing Portal"
+    subtitle: "Browsing, discovering and organising life sciences training resources, aggregated from ELIXIR nodes and 3<sup>rd</sup>-party providers."
+    events_message: "Discover the latest training events and news from ELIXIR nodes and 3<sup>rd</sup>-party providers."
+    materials_message: "Browse the catalogue of training materials offered by ELIXIR nodes and 3<sup>rd</sup>-party providers."
+    workflows_message: "Create training workflows to visualise learning steps and link to resources specific to your training needs."
+    providers_message: "Browse training providers to discover training resources they offer and follow links to their materials and courses."
+  privacy:
+    registration: |
+      <p>When you register with TeSS we ask for a username, password and email address.</p>
+      <ul>
+      <li>Your username is used for authentication and attribution. This information is publicly visible, e.g. when a user views a resource you have created.</li>
+      <li>Your password is stored as a cryptographically-secure hash and is not publicly visible.</li>
+      <li>Your email address is used to confirm your identity and for use when requesting your password to be reset. This email address is not publicly visible, but you may specify an additional public email address (see below).</li>
+      </ul>
+    personal: "You may additionally provide a profile, containing your name, a public email address, website link and avatar. This information is publicly available to all users."
+    resources: "The details of any training materials and events that you register will be publicly visible and searchable. Any workflows and packages created can be opted to be made private, in which case only you, any collaborators you specify, and the TeSS administrators will be able to view and search for them."
+    server: "When you browse TeSS, the server automatically records logs of which pages you access, when you accessed them, and your IP address. These logs are used to fix errors and are not shared with any third parties. Sensitive information (such as passwords) is automatically stripped out."
+    analytics: "TeSS uses Google Analytics to track how users are discovering TeSS and interacting with the service. The information gathered includes which pages you visited, which search terms lead you to TeSS and information about your web browser. No personally identifiable information is sent to Google."
+    retention: " Your information will be retained by TeSS until you choose to remove it, you delete your account, or the TeSS service ceases to exist."
+    code: "TeSS adheres to the <a href='https://wiki.refeds.org/display/CODE/Code+of+Conduct+for+Service+Providers'> GÉANT Data Protection Code of Conduct for Service Providers in EU/EEA </a>"
+    controller: "The data controller for TeSS is The University of Manchester."
+    post: "<strong>The TeSS Team</strong><br/>Room 1.17 c/o School of Computer Science,<br/>Kilburn Building,<br/>Oxford Road,<br/>Manchester,<br/>M13 9PL"
+  providers:
+    info: >
+      Content providers are entities (such as academic institutions, non-profit organisations, portals etc.) that
+      provide training materials of relevance to life sciences and ELIXIR.
+
+
+
