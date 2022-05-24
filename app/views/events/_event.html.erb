@@ -31,7 +31,11 @@
           <%= icon_for(:expired, :small) %>
       <% end %>
   <% end %>
-
+  <% if event.for_profit? %>
+      <%= content_tag(:span, :class=>'pull-right gap') do %>
+          <%= icon_for(:for_profit, :small) %>
+      <% end %>
+  <% end %>
   <% if event.has_node? -%>
     <%= content_tag(:span, :class=>'pull-right gap') do %>
         <%= image_tag 'elixir/elixir_logo_orange.png',

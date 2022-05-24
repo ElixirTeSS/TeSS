@@ -65,97 +65,66 @@
   <div id="content">
     <% if TeSS::Config.solr_enabled %>
       <div class="row">
-        <!-- Register button -->
-        <%= link_to new_event_path, class: 'btn btn-primary' do %>
-          <i class="fa fa-plus-square"></i> Register event
-        <% end %>
-        <!-- Check subscription feature -->
-        <% if TeSS::Config.feature['subscription'] %>
-          <%= render partial: 'subscriptions/subscribe_button', locals: { type: 'Event' } %>
-        <% end %>
-        <!-- Info -->
-        <div class="pull-right">
-          <%= info_button('What are events in ' + TeSS::Config.site['title_short'] + '?') do %>
-            <%= render_markdown(EventsHelper::EVENTS_INFO) %>
-          <% end %>
-        </div>
-      </div>
+        <div class='pull-left'>
+            <%= link_to new_event_path, class: 'btn btn-primary' do %>
+              <i class="fa fa-plus-square"></i> Register event
+            <% end %>
+            <%= render partial: 'subscriptions/subscribe_button', locals: { type: 'Event' } %>
+            <%= info_button('') do %>
+                <%= render_markdown(EventsHelper::EVENTS_INFO) %>
+            <% end %>
 
-      <div class="row">
-        <%= render partial: "search/common/search_box", locals: { resource_path: events_path } %>
-        <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
-          <i class="fa fa-filter"></i> Filters
-        </button>
-        <% include_expired = @facet_params.delete('include_expired') %>
-        <% if include_expired %>
-          <% button_params = search_and_facet_params %>
-          <% button_params.delete(:include_expired) %>
-          <% button_text = "Hide" %>
-        <% else %>
-          <% button_text = "Show" %>
-          <% button_params = search_and_facet_params.merge(include_expired: true) %>
-        <% end %>
-        <%= link_to button_params, class: 'btn btn-default' do %>
-          <i class="fa fa-hourglass-end"></i> <%= button_text %> past events
-        <% end %>
-      </div>
-      <div class="row">
-        <%= render partial: "search/common/search_info", locals: { resources: @events_results, resource_type: 'event' } %>
-        <%= render partial: "search/common/search_filters", locals: { resources: @events_results } %>
-      </div>
+            <% include_expired = @facet_params.delete('include_expired') %>
+            <% if include_expired %>
+                <% button_params = search_and_facet_params %>
+                <% button_params.delete(:include_expired) %>
+                <% button_text = "Hide" %>
+            <% else %>
+                <% button_text = "Show" %>
+                <% button_params = search_and_facet_params.merge(include_expired: true) %>
+            <% end %>
+            <%= link_to button_params, class: 'btn btn-default' do %>
+                <i class="fa fa-hourglass-end"></i> <%= button_text %> past events
+            <% end %>
+          </div>
+          <%= render partial: "search/common/search_box", locals: { resource_path: events_path } %>
+        </div>
     <% end %>
 
     <%# ACTUAL RESULTS LIST %>
     <% unless @events.blank? %>
-      <ul class="nav nav-tabs">
-
-
-        <%= tab('List', 'fa fa-list', 'home', active: true) %>
-
-        <%= tab('Grid', 'fa fa-table', 'grid', active: false) %>
-
-        <%= tab('Map', 'fa fa-globe', 'map',
-                disabled: { check: (search_and_facet_params[:online] == 'true'),
-                            message: 'Only showing online events.' }) %>
-
-      </ul>
-
-      <div class="tab-content">
-
-        <div id="home" class="tab-pane fade in active">
-          <% if TeSS::Config.solr_enabled %>
-            <div class="row">
-              <%= render partial: "search/common/sort_by",
-                         locals: { resource: @events,
-                                   extras: [['Earliest', 'early'], ['Latest', 'late']] } %>
-            </div>
-          <% end %>
-          <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
-          <ul class="masonry media-grid" style="margin-top: 15px;">
-            <% @events.each do |event| %>
-              <%= render partial: 'events/event', locals: { event: event, list: true} %>
-            <% end %>
-          </ul>
-          <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
+      <div class="row">
+        <ul class="nav nav-tabs col-md-3">
+          <%= tab('Grid', 'fa fa-table', 'home', active: true) %>
+          <%= tab('Map', 'fa fa-globe', 'map',
+                  disabled: { check: (search_and_facet_params[:online] == 'true'),
+                              message: 'Only showing online events.' }) %>
+        </ul>
+        <div class='col-md-6'>
+          <%= render partial: "search/common/search_filters", locals: { resources: @events_results } %>
         </div>
-
-        <div id="grid" class="tab-pane fade in">
-          <% if TeSS::Config.solr_enabled %>
-            <div class="row">
-              <%= render partial: "search/common/sort_by",
-                         locals: { resource: @events,
-                                   extras: [['Earliest', 'early'], ['Latest', 'late']] } %>
-            </div>
-          <% end %>
-          <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
-          <ul class="masonry media-grid" style="margin-top: 15px;">
-            <% @events.each do |event| %>
-              <%= render event %>
-            <% end %>
-          </ul>
-
-          <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
+        <div class='pull-right'>
+            <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
+              <i class="fa fa-filter"></i> Filters
+            </button>
+            <%= render partial: "search/common/sort_by",
+                        locals: { resource: @events,
+                                  extras: [['Earliest', 'early'], ['Latest', 'late']] } %>
         </div>
+      </div>
+
+        <div class="tab-content">
+          <div id="home" class="tab-pane fade in active">
+            <% if TeSS::Config.solr_enabled %>
+            <% end %>
+
+            <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
+
+            <ul class="masonry media-grid" style="margin-top: 15px;">
+              <% @events.each do |event| %>
+                  <%= render event %>
+              <% end %>
+            </ul>
 
         <div id="map" class="tab-pane fade">
           <div id="map-count" class="search-results-count"></div>
