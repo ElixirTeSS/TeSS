@@ -47,11 +47,11 @@ body {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: $footer-bg; // #ddd;
-  color: white;
+  background-color: $footer-bg;
+  color: $footer-text;
 
   a {
-    color: white;
+    color: $footer-text;
     background-color: transparent;
     text-decoration: none;
   }
