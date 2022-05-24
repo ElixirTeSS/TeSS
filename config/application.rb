@@ -34,5 +34,5 @@ module TeSS
     config.i18n.locale = config.tess['site']['theme'] || config.i18n.default_locale
   end
 
-  Config = OpenStruct.new(Rails.configuration.tess)
+  Config = OpenStruct.new(Rails.configuration.tess.with_indifferent_access)
 end
