@@ -71,8 +71,8 @@ elixir: &elixir
   site:
     title: 'TeSS (Training eSupport System)'
     title_short: TeSS
-    favicon: favicon.png
-    logo: ELIXIR_TeSS_logo_white-80px-height.png
+    favicon: elixir/favicon.png
+    logo: elixir/ELIXIR_TeSS_logo_white-80px-height.png
     logo_alt: 'Training eSupport System'
     theme: 'en-EU'
     repository: 'https://github.com/ElixirTeSS/TeSS'

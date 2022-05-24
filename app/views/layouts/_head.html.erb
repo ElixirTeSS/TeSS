@@ -3,10 +3,8 @@
   <title><%= site_title %></title>
   <%= stylesheet_link_tag 'application', integrity: true, media: 'all', 'data-turbolinks-track' => true %>
 
-  <% if defined? TeSS::Config.site['favicon'] and !TeSS::Config.site['title'].blank? %>
+  <% if TeSS::Config.site['favicon'] %>
     <%= favicon_link_tag(TeSS::Config.site['favicon'], :type => 'image/png') %>
-  <% else %>
-    <%= favicon_link_tag('favicon.png', :type => 'image/png') %>
   <% end %>
 
   <%= javascript_include_tag 'application', integrity: true, 'data-turbolinks-track' => true %>
