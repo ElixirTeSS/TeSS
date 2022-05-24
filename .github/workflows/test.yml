@@ -33,5 +33,6 @@ jobs:
       - run: |
           cp config/tess.example.yml config/tess.yml
           cp config/secrets.github.yml config/secrets.yml
+          cp config/ingestion.example.yml config/ingestion.yml
       - run: bundle exec rake db:test:prepare && bundle exec rails test
         name: Run tests
