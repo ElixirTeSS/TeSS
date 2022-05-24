@@ -5,7 +5,6 @@ class SourceTest < ActiveSupport::TestCase
   setup do
     @user = users :scraper_user
     assert_not_nil @user
-    @time_format = '%H:%M on %A, %d %B %Y (UTC)'
   end
 
   test 'scraper user can update source' do
@@ -40,9 +39,7 @@ class SourceTest < ActiveSupport::TestCase
     refute updated.nil?, 'updated source is nil'
     assert_equal output, updated.log, 'updated log not matched'
     refute updated.finished_at.nil?, 'updated finished_at is nil'
-    assert_equal finished.strftime(@time_format),
-                 updated.finished_at.strftime(@time_format),
-                 'updated finished_at not matched'
+    assert_in_delta finished, updated.finished_at, 0.001, 'updated finished_at not matched'
     assert_equal 100, source.records_read, 'updated records read not matched'
   end
 

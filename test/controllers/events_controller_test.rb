@@ -216,14 +216,14 @@ class EventsControllerTest < ActionController::TestCase
     get :show, params: { id: @event }
     assert_response :success
     assert assigns(:event)
-    assert_equal "text/html", response.content_type, 'response content_type not matched.'
+    assert_equal "text/html; charset=utf-8", response.content_type, 'response content_type not matched.'
   end
 
   test 'should show all-day event' do
     get :show, params: { id: events(:two) }
     assert_response :success
     assert assigns(:event)
-    assert_equal "text/html", response.content_type, 'response content_type not matched.'
+    assert_equal "text/html; charset=utf-8", response.content_type, 'response content_type not matched.'
   end
 
   test 'should show event as json' do
@@ -251,7 +251,7 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal @event.title, body['data']['attributes']['title']
     assert_equal @event.scientific_topic_uris.first, body['data']['attributes']['scientific-topics'].first['uri']
     assert_equal event_path(assigns(:event)), body['data']['links']['self']
-    assert_equal "application/vnd.api+json", response.content_type, 'response content_type not matched.'
+    assert_equal "application/vnd.api+json; charset=utf-8", response.content_type, 'response content_type not matched.'
   end
 
   #UPDATE TEST

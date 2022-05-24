@@ -279,7 +279,7 @@ class MaterialsControllerTest < ActionController::TestCase
       }
     }
     assert_response :success
-    assert_equal 'application/json', response.content_type, 'response content type not matched'
+    assert_equal 'application/json; charset=utf-8', response.content_type, 'response content type not matched'
 
     # required attributes
     assert_equal test_title, JSON.parse(response.body)['title'], 'title not matched.'
