@@ -30,9 +30,11 @@ jobs:
         with:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
         name: Bundle install
-      - run: |
+      - name: Configure and initialize database
+        run: |
           cp config/tess.example.yml config/tess.yml
           cp config/secrets.github.yml config/secrets.yml
           cp config/ingestion.example.yml config/ingestion.yml
-      - run: bundle exec rake db:test:prepare && bundle exec rails test
+          bundle exec rake db:test:prepare
+      - run: bundle exec rails test
         name: Run tests
