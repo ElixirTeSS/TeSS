@@ -13,8 +13,6 @@ services:
       - db
       - solr
       - redis
-    ports:
-      - '3000:3000'
     volumes:
       - .:/code
     labels:
@@ -36,8 +34,6 @@ services:
       POSTGRES_DB: ${DB_NAME}_production
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - '5432:5432'
     volumes:
       - db-data:/var/lib/postgresql/data
   dbbackups:
@@ -58,8 +54,6 @@ services:
     container_name: ${PREFIX}-solr
     image: solr:8
     restart: always
-    ports:
-      - '8983:8983'
     volumes:
       - solr-data:/var/solr
       - ./solr:/opt/solr/server/solr/configsets/production
@@ -71,8 +65,6 @@ services:
     container_name: ${PREFIX}-redis
     image: redis:6
     restart: always
-    ports:
-      - '6379:6379'
     volumes:
       - redis-data:/data
   traefik:
