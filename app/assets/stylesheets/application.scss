@@ -25,12 +25,6 @@
 @import "jquery.simplecolorpicker";
 @import "eonasdan-bootstrap-datetimepicker";
 
-// define font faces
-@font-face {
-  font-family: 'Montserrat';
-  src: 'Montserrat-Regular.ttf';
-}
-
 // Sticky but not fixed footer
 // http://cbracco.me/css-sticky-footer-effect/
 html {
@@ -47,13 +41,13 @@ body {
 }
 
 .footer {
-  border-top: solid 3px $dresa-green;
+  border-top: solid 3px $footer-border;
   margin-top: 0;
   position: absolute;
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: $dresa-blue; // #ddd;
+  background-color: $footer-bg; // #ddd;
   color: white;
 
   a {
@@ -97,7 +91,7 @@ body {
 }
 
 .ack-country {
-  border-top: 2px solid $dresa-green;
+  border-top: 2px solid $footer-border;
   margin-top: 0;
   padding-top: 0.5em;
   text-align: center;
@@ -130,7 +124,7 @@ body {
 .partner-logo {
   img {
     margin: 0 0 12px 0;
-    border-right: 1px solid $dresa-green;
+    border-right: 1px solid $footer-border;
     padding: 0 12px;
     height: 45px;
   }
@@ -529,6 +523,10 @@ accronym {
   border: none;
 }
 
+.dropdown-toggle {
+  cursor: pointer;
+}
+
 .dropdown-option {
   cursor: pointer;
 
@@ -836,7 +834,7 @@ a.delete-internal-resource {
 }
 
 .btn-elixir {
-  @include button-variant(white, $elixir-orange, white);
+  @include button-variant(white, #f47d20, white);
 
   background-image: image-url('elixir_white_small.png');
   background-repeat: no-repeat;
@@ -1115,7 +1113,8 @@ input[type=checkbox].field-lock + label:before,
 }
 
 .questionnaire {
-  background-color: $dresa-green;
+  background-color: $state-info-bg;
+  color: $state-info-text;
 }
 
 .aai-login {

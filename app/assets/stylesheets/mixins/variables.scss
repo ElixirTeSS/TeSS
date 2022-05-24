@@ -1,27 +1,3 @@
-/* Elixir brand colours */
-$elixir-orange: #f47d20;
-$elixir-grey: #484848;
-$elixir-blue: #005472;
-$elixir-green: #bebf32;
-
-/* DReSA brand colours */
-$dresa-purple: #6a57a5;
-$dresa-blue: #19224e;
-$dresa-green: #00b8b6;
-
-/* TeSS colours */
-$bgDefault: $dresa-blue;
-$bgHighlight: darken($bgDefault, 10%);
-$colDefault: #ffe6d1;
-$colHover: #333;
-$colHover2: #eee;
-
-$grey-blue: #8ca0a6;
-
-$blue: $dresa-blue; // #206b82;
-$blue2: #085871; /* unused? */
-$blue3: #064559; /* unused? */
-
 /* Bootstrap variable tweaks */
 
 /* For reference, see:
@@ -29,28 +5,8 @@ $blue3: #064559; /* unused? */
 
 /* ### Pre-load tweaks. Anything that will effect Bootstrap's derived variables needs to be declared here */
 
-$link-color: $blue;
-$link-hover-color: lighten($link-color, 10%);
-$link-hover-decoration: none;
-
-$btn-primary-bg: $blue;
-
-$pagination-color: $blue;
-$pagination-active-bg: $blue;
-$pagination-active-border: $blue;
-
-$navbar-height: 60px;
-$navbar-default-bg: $bgDefault;
-$navbar-default-border: transparent;
-$navbar-default-link-active-bg: $bgHighlight;
-$navbar-default-link-hover-bg: $bgHighlight;
-$navbar-default-link-color: $dresa-green; // $colDefault;
-$navbar-default-link-active-color: lighten($navbar-default-link-color, 30%);
-$navbar-default-link-hover-color: lighten($navbar-default-link-color, 40%);
-
-$navbar-default-toggle-hover-bg: $bgHighlight;
-$navbar-default-toggle-icon-bar-bg: $colHover2;
-$navbar-default-toggle-border-color: $bgHighlight;
+/* Copy and edit the default theme to style TeSS, then replace the @import below with the path to your theme */
+@import "../themes/default";
 
 /* ### End pre-load tweaks */
 @import "bootstrap/variables";

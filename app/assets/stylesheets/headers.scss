@@ -1,14 +1,14 @@
 .top-header {
   height: 35px;
   line-height: 35px;
-  background-color: black; // #333;
-  border-bottom: 2px solid $dresa-green; // #eee;
+  background-color: $top-header-bg;
+  color: $top-header-text;
+  border-bottom: 2px solid $top-header-border;
 
   .server-name {
     float: left;
     display: inline-block;
     margin-left: 1em;
-    color: #eee;
     font-style: bold;
   }
 
@@ -19,12 +19,16 @@
       display: block;
       float: left;
       padding: 0 10px;
-      color: #eee;
+      color: $top-header-text;
 
       &:hover {
-        color: #333;
-        background: #eee;
+        color: $top-header-hover-text !important;
+        background: $top-header-hover-bg;
       }
+    }
+
+    .dropdown-menu {
+      background: $top-header-bg;
     }
   }
 }
