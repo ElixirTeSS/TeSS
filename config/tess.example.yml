@@ -44,7 +44,7 @@ default: &default
     invitation: true
     materials: true
     nodes: true
-    collections: true
+    packages: true
     providers: true
     subscription: true
     registrations: true
@@ -52,7 +52,7 @@ default: &default
     workflows: true
     disabled: []
   placeholder:
-    collection: 'placeholder-package.png'
+    package: 'placeholder-package.png'
     provider: 'placeholder-organization.png'
     group: 'placeholder-group.png'
     person: 'placeholder-person.png'
@@ -113,7 +113,7 @@ dresa: &dresa
     invitation: true
     materials: true
     nodes: false
-    collection: true
+    packages: true
     providers: true
     registration: false
     subscription: true
@@ -121,7 +121,7 @@ dresa: &dresa
     workflows: false
     disabled: ['county', 'operations', 'sponsors', 'materials', 'topics', 'fairshare', 'biotools']
   placeholder:
-    collection: 'Training_Packages@4x.png'
+    package: 'Training_Packages@4x.png'
     provider: 'Training_Providers@4x.png'
     group: 'placeholder-group.png'
     person: 'placeholder-person.png'
