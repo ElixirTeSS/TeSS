@@ -1,0 +1,146 @@
+default: &default
+  base_url: <%= ENV.fetch("BASE_URL") %>
+  contact_email: <%= ENV.fetch("CONTACT_EMAIL") %>
+  sender_email: <%= ENV.fetch("SENDER_EMAIL") %>
+  twitter_handle: '@handle'
+  solr_enabled: true
+  announcement_message:
+  prevent_robot_indexing: false
+  blocked_domains:
+    - !ruby/regexp '/bad-domain\.example/'
+  site:
+    title: ''
+    title_short: ''
+    favicon: ''
+    logo: ''
+    logo_alt: ''
+    logo_open_graph: ''
+    logo_email: ''
+    theme: 'en'
+    repository: ''
+    supported_by: ''
+    widget_example: ''
+  mailer:
+    delivery_method: sendmail
+    location: /usr/sbin/sendmail
+    arguments: '-i -t'
+  gmaps:
+    center:
+      latitude: 53.4674583
+      longitude: -2.233948899999973
+    zoom:
+      latitude: 3
+      longitude: 13
+  questionnaire:
+    show: false
+    message: ''
+    url: ''
+  parent_org:
+    name: ''
+    url: ''
+  feature:
+    e-learnings: true
+    events: true
+    invitation: true
+    materials: true
+    nodes: true
+    packages: true
+    providers: true
+    subscription: true
+    registrations: true
+    trainers: true
+    workflows: true
+    disabled: []
+  placeholder:
+    package: 'placeholder-package.png'
+    provider: 'placeholder-organization.png'
+    group: 'placeholder-group.png'
+    person: 'placeholder-person.png'
+  dictionaries:
+    cost_basis: 'cost_basis.yml'
+    difficulty: 'difficulty.yml'
+    eligibility: 'eligibility.yml'
+    event_types: 'event_types.yml'
+    licences: 'licences.yml'
+    material_status: 'material_status.yml'
+    material_type: 'material_type.yml'
+    target_audience: 'target_audience.yml'
+    trainer_experience: 'trainer_experience.yml'
+
+elixir: &elixir
+  site:
+    title: 'TeSS (Training eSupport System)'
+    title_short: TeSS
+    favicon: elixir/favicon.png
+    logo: elixir/ELIXIR_TeSS_logo_white-80px-height.png
+    logo_alt: 'Training eSupport System'
+    theme: 'en-EU'
+    repository: 'https://github.com/ElixirTeSS/TeSS'
+    supported_by: 'elixir_supported_by'
+    widget_example: 'elixir_widget_example'
+  questionnaire:
+    show: true
+    message: 'Help TeSS by giving us your feedback:'
+    url: 'https://goo.gl/forms/jsVC70q6oN8FsGWR2'
+  parent_org:
+    name: 'ELIXIR Hub'
+    image: hub-logo.png
+    url: 'http://www.elixir-europe.org'
+
+dresa: &dresa
+  site:
+    title: 'Digital Research Skills Australia (DReSA)'
+    title_short: 'DReSA'
+    favicon: 'dresa/DReSA_favicon.ico'
+    logo: 'dresa/DReSA_logo_long_dark.png'
+    logo_alt: 'Digital Research Skills Australasia'
+    logo_open_graph: 'dresa/DReSA_Symbol.png'
+    logo_email: 'dresa/DReSA_Extended_Default.png'
+    theme: 'en-AU'
+    repository: 'https://github.com/nrmay/TeSS'
+    supported_by: 'dresa_supported_by.erb'
+    widget_example: 'elixir_widget_example'
+  gmaps:
+    center:
+      latitude: -30
+      longitude: 150
+    zoom:
+      latitude: 3
+      longitude: 10
+  feature:
+    e-learnings: false
+    events: true
+    invitation: true
+    materials: true
+    nodes: false
+    packages: true
+    providers: true
+    registration: false
+    subscription: true
+    trainers: true
+    workflows: false
+    disabled: ['county', 'operations', 'sponsors', 'materials', 'topics', 'fairshare', 'biotools']
+  placeholder:
+    package: 'Training_Packages@4x.png'
+    provider: 'Training_Providers@4x.png'
+    group: 'placeholder-group.png'
+    person: 'placeholder-person.png'
+  dictionaries:
+    cost_basis: 'cost_basis.yml'
+    difficulty: 'difficulty_dresa.yml'
+    eligibility: 'eligibility_dresa.yml'
+    event_types: 'event_types_dresa.yml'
+    licences: 'licences_dresa.yml'
+    material_status: 'material_status.yml'
+    material_type: 'material_type.yml'
+    target_audience: 'target_audience.yml'
+    trainer_experience: 'trainer_experience.yml'
+
+development:
+  <<: *default
+
+production:
+  <<: *default
+
+test:
+  <<: *default

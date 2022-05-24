@@ -13,8 +13,6 @@ services:
       - db
       - solr
       - redis
-    volumes:
-      - .:/code
     labels:
       - traefik.enable=true
       - traefik.http.routers.tess.tls=true

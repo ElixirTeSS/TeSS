@@ -13,6 +13,12 @@ RUN apt update && apt install libpq-dev imagemagick nodejs -y
 # copy gemfile
 COPY Gemfile Gemfile.lock ./
 
+# copy code
+COPY . .
+
+# copy configs
+COPY docker/tess.yml docker/secrets.yml ./config/
+
 # install gems
 RUN bundle install
 
