@@ -8,7 +8,6 @@ class CreateSource < ActiveRecord::Migration[5.2]
       t.string :url
       t.string :method
       t.string :resource_type
-      t.integer :user_id
       t.integer :records_read
       t.integer :records_written
       t.integer :resources_added
