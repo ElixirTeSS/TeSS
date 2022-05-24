@@ -1,33 +1,34 @@
+# The controller for actions related to the Collection model
 class CollectionsController < ApplicationController
   before_action :set_collection, only: [:show, :edit, :update, :destroy]
   before_action :set_breadcrumbs
 
   include SearchableIndex
 
-  # GET /Collections
-  # GET /Collections.json
+  # GET /collections
+  # GET /collections.json
   def index
   end
 
-  # GET /Collections/1
-  # GET /Collections/1.json
+  # GET /collections/1
+  # GET /collections/1.json
   def show
     authorize @collection
   end
 
-  # GET /Collections/new
+  # GET /collections/new
   def new
     authorize Collection
     @collection = Collection.new
   end
 
-  # GET /Collections/1/edit
+  # GET /collections/1/edit
   def edit
     authorize @collection
   end
 
-  # POST /Collections
-  # POST /Collections.json
+  # POST /collections
+  # POST /collections.json
   def create
     authorize Collection
     @collection = Collection.new(collection_params)
@@ -46,8 +47,8 @@ class CollectionsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /Collections/1
-  # PATCH/PUT /Collections/1.json
+  # PATCH/PUT /collections/1
+  # PATCH/PUT /collections/1.json
   def update
     authorize @collection
     respond_to do |format|
@@ -62,8 +63,8 @@ class CollectionsController < ApplicationController
     end
   end
 
-  # DELETE /Collections/1
-  # DELETE /Collections/1.json
+  # DELETE /collections/1
+  # DELETE /collections/1.json
   def destroy
     authorize @collection
     @collection.create_activity :destroy, owner: current_user
@@ -77,12 +78,12 @@ class CollectionsController < ApplicationController
   private
 
   # Use callbacks to share common setup or constraints between actions.
-    def set_collection
-      @collection = Collection.friendly.find(params[:id])
-    end
+  def set_collection
+    @collection = Collection.friendly.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def collection_params
-      params.require(:collection).permit(:title, :description, :image, :image_url, :public, {:keywords => []}, {:material_ids => []}, {:event_ids => []})
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def collection_params
+    params.require(:collection).permit(:title, :description, :image, :image_url, :public, {:keywords => []}, {:material_ids => []}, {:event_ids => []})
+  end
 end

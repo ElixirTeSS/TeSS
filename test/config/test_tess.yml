@@ -36,7 +36,7 @@ feature:
   invitation: true
   materials: true
   nodes: true
-  packages: true
+  collections: true
   providers: true
   registration: true
   subscription: true

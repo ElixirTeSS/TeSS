@@ -12,7 +12,7 @@ class StaticController < ApplicationController
       enabled = []
       enabled.append(Event) if TeSS::Config.feature['events']
       enabled.append(Material) if TeSS::Config.feature['materials']
-      enabled.append(Package) if TeSS::Config.feature['packages']
+      enabled.append(Collection) if TeSS::Config.feature['collections']
       enabled.each do |resource|
         @resources += resource.search_and_filter(nil, '', { 'max_age' => '1 month' },
                                                  sort_by: 'new', per_page: 5).results

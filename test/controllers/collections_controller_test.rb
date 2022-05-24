@@ -6,9 +6,12 @@ class CollectionsControllerTest < ActionController::TestCase
   setup do
     mock_images
     @collection = collections(:one)
+    #u = users(:regular_user)
+    #@collection.user_id = u.id
+    #@collection.save!
     @updated_collection = {
-        title: 'New title',
-        short_description: 'New description'
+      title: 'New title',
+      description: 'New description'
     }
   end
   #INDEX TESTS
@@ -51,15 +54,15 @@ class CollectionsControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_path
   end
 
-    #logged in but insufficient permissions = ERROR
-  test 'should get edit for collections owner' do
+  #logged in but insufficient permissions = ERROR
+  test 'should get edit for collection owner' do
     sign_in @collection.user
     get :edit, params: { id: @collection }
     assert_response :success
   end
 
   test 'should get edit for admin' do
-    #Owner of collections logged in = SUCCESS
+    #Owner of collection logged in = SUCCESS
     sign_in users(:admin)
     get :edit, params: { id: @collection }
     assert_response :success
@@ -97,27 +100,27 @@ class CollectionsControllerTest < ActionController::TestCase
   end
 
   #SHOW TEST
-  test 'should show collections' do
+  test 'should show collection' do
     get :show, params: { id: @collection }
     assert_response :success
     assert assigns(:collection)
   end
 
-  test 'should show collections as json' do
+  test 'should show collection as json' do
     get :show, params: { id: @collection, format: :json }
     assert_response :success
     assert assigns(:collection)
   end
 
   #UPDATE TEST
-  test 'should update collections' do
+  test 'should update collection' do
     sign_in @collection.user
     patch :update, params: { id: @collection, collection: @updated_collection }
     assert_redirected_to collection_path(assigns(:collection))
   end
 
   #DESTROY TEST
-  test 'should destroy collections owned by user' do
+  test 'should destroy collection owned by user' do
     sign_in @collection.user
     assert_difference('Collection.count', -1) do
       delete :destroy, params: { id: @collection }
@@ -125,7 +128,7 @@ class CollectionsControllerTest < ActionController::TestCase
     assert_redirected_to collections_path
   end
 
-  test 'should destroy collections when administrator' do
+  test 'should destroy collection when administrator' do
     sign_in users(:admin)
     assert_difference('Collection.count', -1) do
       delete :destroy, params: { id: @collection }
@@ -133,7 +136,7 @@ class CollectionsControllerTest < ActionController::TestCase
     assert_redirected_to collections_path
   end
 
-  test 'should not destroy collections not owned by user' do
+  test 'should not destroy collection not owned by user' do
     sign_in users(:another_regular_user)
     assert_no_difference('Collection.count') do
       delete :destroy, params: { id: @collection }
@@ -199,7 +202,7 @@ class CollectionsControllerTest < ActionController::TestCase
     get :show, params: { :id => @collection }
     assert_response :success
     assert_select 'ul.nav-tabs' do
-      assert_select 'li.disabled', :count => 3 # This collections has no events, materials or activity
+      assert_select 'li.disabled', :count => 3 # This collection has no events, materials or activity
     end
 
     collections(:with_resources).materials << materials(:good_material)
@@ -249,37 +252,37 @@ class CollectionsControllerTest < ActionController::TestCase
   #API Actions
   test "should remove materials from collection" do
     sign_in users(:regular_user)
-    collections = collections(:with_resources)
-    collections.materials = [materials(:biojs), materials(:interpro)]
-    collections.save!
-    assert_difference('collections.materials.count', -2) do
-      patch :update, params: { collection: { material_ids: [''] }, id: collections.id }
+    collection = collections(:with_resources)
+    collection.materials = [materials(:biojs), materials(:interpro)]
+    collection.save!
+    assert_difference('collection.materials.count', -2) do
+      patch :update, params: { collection: { material_ids: [''] }, id: collection.id }
     end
-  end     
-  
+  end
+
   test "should add events to collection" do
     sign_in users(:regular_user)
     assert_difference('@collection.events.count', +2) do
       patch :update, params: { collection: { event_ids: [events(:one), events(:two)]}, id: @collection.id }
     end
   end
-  
+
   test "should remove events from collection" do
     sign_in users(:regular_user)
-    collections = collections(:with_resources)
-    collections.events = [events(:one), events(:two)]
-    collections.save!
-    assert_difference('collections.events.count', -2) do
-      patch :update, params: { collection: { event_ids: ['']}, id: collections.id }
+    collection = collections(:with_resources)
+    collection.events = [events(:one), events(:two)]
+    collection.save!
+    assert_difference('collection.events.count', -2) do
+      patch :update, params: { collection: { event_ids: ['']}, id: collection.id }
     end
   end
 
-  test 'should not allow access to private collection' do
+  test 'should not allow access to private collections' do
     get :show, params: { id: collections(:secret_collection) }
     assert_response :forbidden
   end
 
-  test 'should allow access to private collection if privileged' do
+  test 'should allow access to private collections if privileged' do
     sign_in users(:regular_user)
     get :show, params: { id: collections(:secret_collection) }
     assert_response :success
@@ -291,7 +294,7 @@ class CollectionsControllerTest < ActionController::TestCase
     assert_not_includes assigns(:collections).map(&:id), collections(:secret_collection).id
   end
 
-  test 'should not hide private collections from index from collections owner' do
+  test 'should not hide private collections from index from collection owner' do
     sign_in users(:regular_user)
     get :index
     assert_response :success

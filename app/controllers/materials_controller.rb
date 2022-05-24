@@ -116,7 +116,7 @@ class MaterialsController < ApplicationController
     # and update its resources to include this material.
     # Go through each other collection that is not selected and remove this material from it.
     collections = params[:material][:collection_ids].select { |p| !p.blank? }
-    collections = collections.collect { |collection| Package.find_by_id(collection) }
+    collections = collections.collect { |collection| Collection.find_by_id(collection) }
     collections_to_remove = @material.collections - collections
     collections.each do |collection|
       collection.update_resources_by_id((collection.materials + [@material.id]).uniq, nil)

@@ -2,7 +2,7 @@
 swagger: '2.0'
 info:
   title: TeSS API
-  description: Access, search and filter through collection of training materials, events, packages, and workflows in TeSS. 
+  description: Access, search and filter through collection of training materials, events, collections, and workflows in TeSS.
   version: "1.0.0"
 # the domain of the service
 host: tess.elixir-uk.org

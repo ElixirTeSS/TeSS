@@ -145,7 +145,7 @@
       <% past_events = @user.events.finished %>
       <% events = upcoming_events.limit(resource_limit) %>
       <% workflows = @user.workflows.visible_by(current_user) %>
-      <% packages = @user.packages.limit(resource_limit) %>
+      <% collections = @user.collections.limit(resource_limit) %>
 
       <ul class="nav nav-tabs">
 
@@ -163,11 +163,11 @@
                   count: @user.materials.count) %>
         <% end %>
 
-        <!-- Tab: Packages -->
-        <% if TeSS::Config.feature['packages'] %>
-          <%= tab('Packages', icon_class_for_model('packages'), 'packages',
-                  disabled: { check: packages.none?, message: 'No registered packages' },
-                  count: @user.packages.count) %>
+        <!-- Tab: Collections -->
+        <% if TeSS::Config.feature['collections'] %>
+          <%= tab('Collections', icon_class_for_model('collections'), 'collections',
+                  disabled: { check: collections.none?, message: 'No registered collections' },
+                  count: @user.collections.count) %>
         <% end %>
 
         <!-- Tab: Workflows -->
@@ -222,16 +222,16 @@
           </div>
         <% end %>
 
-        <!-- Tab: Packages -->
-        <% if TeSS::Config.feature['packages'] %>
-          <div id="packages" class="tab-pane fade">
+        <!-- Tab: Collections -->
+        <% if TeSS::Config.feature['collections'] %>
+          <div id="collections" class="tab-pane fade">
             <div class="row">
               <div class="search-results-count">
-                <%= (packages.count > 0 ? "Showing" : "Found") + " #{pluralize(packages.count, "package")}#{(@user.packages.count > resource_limit) ? " out of #{@user.packages.count}" : ''}." %>
-                <%= link_to('View all results.', packages(user: @user.username)) if (@user.packages.count > resource_limit) %>
+                <%= (collections.count > 0 ? "Showing" : "Found") + " #{pluralize(collections.count, "collection")}#{(@user.collections.count > resource_limit) ? " out of #{@user.collections.count}" : ''}." %>
+                <%= link_to('View all results.', collections(user: @user.username)) if (@user.collections.count > resource_limit) %>
               </div>
-              <% packages.each do |package| %>
-                <%= render package %>
+              <% collections.each do |collection| %>
+                <%= render collection %>
               <% end %>
             </div>
           </div>
