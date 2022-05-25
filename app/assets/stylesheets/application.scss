@@ -1092,10 +1092,9 @@ input[type=checkbox].field-lock + label:before,
 
 .list-card {
   @include floating-card;
-  width: 45%;
   margin: 0 10px 10px 0;
   position: relative;
-  display: inline-block;
+  display: block;
   padding: 10px 15px;
 
   .list-card-heading {
