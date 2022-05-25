@@ -47,7 +47,7 @@ default: &default
     collections: true
     providers: true
     subscription: true
-    registrations: true
+    registration: true
     trainers: true
     workflows: true
     disabled: []
@@ -121,8 +121,8 @@ dresa: &dresa
     workflows: false
     disabled: ['county', 'operations', 'sponsors', 'materials', 'topics', 'fairshare', 'biotools']
   placeholder:
-    collection: 'Training_Packages@4x.png'
-    provider: 'Training_Providers@4x.png'
+    collection: 'dresa/Training_Packages@4x.png'
+    provider: 'dresa/Training_Providers@4x.png'
     group: 'placeholder-group.png'
     person: 'placeholder-person.png'
   dictionaries:

@@ -25,7 +25,7 @@ module TeSS
       end
     end
 
-    config.tess = config_for(:tess)
+    config.tess = config_for(Rails.env.test? ? Pathname.new(Rails.root).join('test', 'config', 'test_tess.yml') : :tess)
 
     # locales
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'overrides', '**', '*.{rb,yml}')] unless Rails.env.test?

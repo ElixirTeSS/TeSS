@@ -12,12 +12,12 @@ class ConfigTest < ActiveSupport::TestCase
 
   test 'site title should not be nil' do
     assert_not_nil TeSS::Config.site['title']
-    assert_equal 'Digital Research Skills Australasia', TeSS::Config.site['title']
+    assert_equal 'TeSS Test Instance', TeSS::Config.site['title']
   end
 
   test 'site title short should not be nil' do
     assert_not_nil TeSS::Config.site['title_short']
-    assert_equal 'DReSA', TeSS::Config.site['title_short']
+    assert_equal 'TTI', TeSS::Config.site['title_short']
   end
 
 end
