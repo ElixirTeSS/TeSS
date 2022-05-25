@@ -1,5 +1,4 @@
 require 'net/http'
-require 'ingestors/ingestor_factory'
 
 module Scraper
 
@@ -60,7 +59,7 @@ module Scraper
             provider = ContentProvider.find_by_title source[:provider]
 
             # get ingestor
-            ingestor = IngestorFactory.get_ingestor source[:method], source[:resource_type]
+            ingestor = Ingestors::IngestorFactory.get_ingestor source[:method], source[:resource_type]
 
             # set token
             ingestor.token = source[:token]
@@ -103,11 +102,11 @@ module Scraper
             output.concat "<br />"
             output.concat "**Provider:** #{source.content_provider.title}<br />"
             output.concat "<span style='url-wrap'>**URL:** #{source.url}</span><br />"
-            output.concat "**Method:** #{IngestorFactory.get_method_value source.method}<br />"
-            output.concat "**Resource:** #{IngestorFactory.get_resource_value source.resource_type}<br />"
+            output.concat "**Method:** #{Ingestors::IngestorFactory.get_method_value source.method}<br />"
+            output.concat "**Resource:** #{Ingestors::IngestorFactory.get_resource_value source.resource_type}<br />"
 
             # get ingestor
-            ingestor = IngestorFactory.get_ingestor source.method, source.resource_type
+            ingestor = Ingestors::IngestorFactory.get_ingestor source.method, source.resource_type
 
             # set token
             ingestor.token = source.token
@@ -260,7 +259,7 @@ module Scraper
   def self.validate_method(input)
     result = true
     # check method
-    if input.nil? or !IngestorFactory.is_method_valid? input
+    if input.nil? or !Ingestors::IngestorFactory.is_method_valid? input
       log @messages[:invalid] + @messages[:bad_method] + input_to_s(input), 2
       result = false
     end
@@ -269,7 +268,7 @@ module Scraper
 
   def self.validate_resource(input)
     result = true
-    if input.nil? or !IngestorFactory.is_resource_valid? input
+    if input.nil? or !Ingestors::IngestorFactory.is_resource_valid? input
       log @messages[:invalid] + @messages[:bad_resource] + input_to_s(input), 2
       result = false
     end

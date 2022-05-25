@@ -47,12 +47,12 @@
 
               <!-- Field: method -->
               <p><strong>Method:&nbsp;</strong>
-                <%= IngestorFactory.get_method_value @source.method %>
+                <%= Ingestors::IngestorFactory.get_method_value @source.method %>
               </p>
 
               <!-- Field: resource type -->
               <p><strong>Resource Type:&nbsp;</strong>
-                <%= IngestorFactory.get_resource_value @source.resource_type %>
+                <%= Ingestors::IngestorFactory.get_resource_value @source.resource_type %>
               </p>
 
               <!-- Field: created at -->

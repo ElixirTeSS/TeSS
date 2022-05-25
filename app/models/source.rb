@@ -1,5 +1,3 @@
-require 'ingestors/ingestor_factory'
-
 class Source < ApplicationRecord
   include PublicActivity::Model
   include Searchable
@@ -53,14 +51,14 @@ class Source < ApplicationRecord
   end
 
   def check_method_resource_combo
-    unless IngestorFactory.is_method_valid? method
+    unless Ingestors::IngestorFactory.is_method_valid? method
       errors.add :method, 'invalid method'
     end
-    unless IngestorFactory.is_resource_valid? resource_type
+    unless Ingestors::IngestorFactory.is_resource_valid? resource_type
       errors.add :resource_type, 'invalid resource type'
     end
     begin
-      IngestorFactory.get_ingestor method, resource_type
+      Ingestors::IngestorFactory.get_ingestor method, resource_type
     rescue Exception => e
       errors.add(:resource_type, 'invalid method and resource type combination')
     end
