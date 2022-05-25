@@ -6,6 +6,7 @@ class OmniauthTest < ActionDispatch::IntegrationTest
     OmniAuth.config.test_mode = true
     OmniAuth.config.mock_auth[:oidc] = nil
     OmniAuth.config.mock_auth[:oidc2] = nil
+    OmniAuth.config.mock_auth[:elixir_aai] = nil
     # request.env["devise.mapping"] = Devise.mappings[:user]
     # request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:elixir_aai]
   end
@@ -251,6 +252,48 @@ class OmniauthTest < ActionDispatch::IntegrationTest
     # check redirect to sign in page
     assert_equal "/users/sign_in", path
     assert_equal 'Login failed: Email has already been taken', flash[:notice]
+  end
+
+  test 'ELIXIR AAI authentication redirects new users to edit profile page' do
+    OmniAuth.config.mock_auth[:elixir_aai] = OmniAuth::AuthHash.new(
+      {
+        provider: 'elixir_aai',
+        uid: '0123456789abcdcef',
+        info: {
+          email: 'aai@example.com',
+          nickname: 'aai_user',
+          first_name: 'AAI',
+          last_name: 'User'
+        }
+      })
+
+    post '/users/auth/elixir_aai'
+
+    follow_redirect! # OmniAuth redirect
+    follow_redirect! # CallbacksController edit profile redirect
+
+    assert_equal "/users/aai_user/edit", path
+    assert_select '.user-options > a:first', 'aai_user'
+    assert_select '#user_profile_attributes_firstname[value=?]', 'AAI'
+    assert_select '#user_profile_attributes_surname[value=?]', 'User'
+  end
+
+  test 'cannot authenticate with undefined provider' do
+    OmniAuth.config.mock_auth[:not_a_real_provider] = OmniAuth::AuthHash.new(
+      {
+        provider: 'not_a_real_provider',
+        uid: '0123456789abcdcef',
+        info: {
+          email: 'aai@example.com',
+          nickname: 'aai_user',
+          first_name: 'AAI',
+          last_name: 'User'
+        }
+      })
+
+    assert_raises(ActionController::RoutingError) do
+      post '/users/auth/not_a_real_provider'
+    end
   end
 
 end

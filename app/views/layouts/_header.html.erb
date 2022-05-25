@@ -1,7 +1,5 @@
 <%# questionnaire header -%>
-<% if defined? TeSS::Config.questionnaire['show'] and
-  !TeSS::Config.questionnaire['show'].blank? and
-  TeSS::Config.questionnaire['show'] %>
+<% if TeSS::Config.dig('questionnaire', 'show') %>
   <nav class="questionnaire">
     <div class="container">
       <div class="text-center">
@@ -67,45 +65,32 @@
           <%= link_to "Log out", destroy_user_session_path, :method => :delete,
                       :data => { :confirm => 'Are you sure you want to log out?' } %>
         <% else %>
-          <!-- log in methods -->
-          <% if Rails.application.secrets.oidc[:client_id].blank? && Rails.application.secrets.oidc2[:client_id].blank? %>
-            <%= link_to "Log in", new_user_session_path %>
-            <%= link_to "Register", new_user_registration_path if TeSS::Config.feature['registration'] %>
-          <% else %>
-            <div class='dropdown' style="padding-right: 80px">
-              <div class='dropdown-toggle' type="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="true">
-                Log In
-                <span class="caret"></span>
-              </div>
-              <ul class='dropdown-menu'>
-                <% if !Rails.application.secrets.oidc[:client_id].blank? %>
-                  <li class='dropdown-item'>
-                    <%= link_to Rails.application.secrets.oidc[:label], user_oidc_omniauth_authorize_path,
-                                :method => :post %>
-                  </li>
-                <% end %>
-
-                <% if !Rails.application.secrets.oidc2[:client_id].blank? %>
-                  <li class='dropdown-item'>
-                    <%= link_to Rails.application.secrets.oidc2[:label], user_oidc2_omniauth_authorize_path,
-                                :method => :post %>
-                  </li>
-                <% end %>
-
-                <li class='dropdown-item'>
-                  <%= link_to 'Administration', new_user_session_path %>
-                </li>
-
-                <% if TeSS::Config.feature['registration'] %>
-                  <li class='dropdown-item'>
-                    <%= link_to "Register", new_user_registration_path %>
-                  </li>
-                <% end %>
-              </ul>
+          <div class='dropdown' style="padding-right: 80px">
+            <div class='dropdown-toggle' type="button" data-toggle="dropdown"
+                 aria-haspopup="true" aria-expanded="true">
+              Log In
+              <span class="caret"></span>
             </div>
-          <% end %>
+            <ul class='dropdown-menu'>
+              <% Devise.omniauth_configs.each do |provider, config| -%>
+                <li class='dropdown-item'>
+                  <%= link_to "Log in with #{t("authentication.omniauth.providers.#{provider}", default: provider.to_s.titleize)}",
+                              omniauth_authorize_path('user', provider), method: :post %>
+                </li>
+              <% end %>
 
+              <li class='dropdown-item'>
+                <%= link_to t('authentication.password.title'), new_user_session_path %>
+              </li>
+
+              <% if TeSS::Config.feature['registration'] %>
+                <li role="presentation" class="divider"></li>
+                <li class='dropdown-item'>
+                  <%= link_to "Register", new_user_registration_path %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
         <% end %>
       </div>
     </div>

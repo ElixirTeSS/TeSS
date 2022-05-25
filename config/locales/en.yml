@@ -405,3 +405,14 @@ en:
       interest: 'Add keyword(s) to identify your main areas of interest.'
       activity: 'Include any global connections or activities that relate to your skills and training work.'
       social_media: 'Links or handles for your social media profiles.'
+  authentication:
+    password:
+      title: Login
+      description: ''
+    omniauth:
+      title: Institutional Login
+      description: ''
+      providers:
+        elixir_aai: LS Login
+        oidc: AAF (Australia)
+        oidc2: Tuakiri (NZ)

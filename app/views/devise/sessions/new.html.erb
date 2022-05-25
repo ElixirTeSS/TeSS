@@ -7,27 +7,16 @@
       <div class="col-md-6">
         <% if resource_class.omniauth_providers.any? %>
           <% if devise_mapping.omniauthable? -%>
-            <div class="h4">Institutional Login</div>
-            <p>Use the buttons below to log in via your Australian or New Zealand institution.</p>
-            <% resource_class.omniauth_providers.each do |provider| -%>
-              <% if provider.to_s.downcase == 'oidc' %>
-                <!-- oidc is AAF -->
-                <%= link_to image_tag('dresa/aaf_service_223x54.png', height: '42px'),
-                            omniauth_authorize_path(resource_name, provider),
-                            method: :post %>
-              <% elsif provider.to_s.downcase == 'oidc2' %>
-                <!-- oidc2 is Tuakiri  -->
-                <%= link_to 'Log in with Tuakiri (NZ)',
-                            omniauth_authorize_path(resource_name, provider),
-                            method: :post, class: 'btn btn-info' -%>
-              <% elsif provider.to_s.downcase == 'elixir_aai' -%>
-                <%= link_to image_tag("login-button-orange.png", class: 'aai-login'),
-                            omniauth_authorize_path(resource_name, provider),
-                            method: :post -%>
-              <% else %>
-                <!-- other configured provider -->
-                <%= link_to "Log in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider),
-                            method: :post, class: 'btn btn-info' -%>
+            <div class="h4"><%= t('authentication.omniauth.title') %></div>
+            <p><%= t('authentication.omniauth.description') %></p>
+            <% Devise.omniauth_configs.each do |provider, config| -%>
+              <%= link_to(omniauth_authorize_path(resource_name, provider), method: :post,
+                          class: config.options[:logo] ? '' : 'btn btn-info') do %>
+                <% if config.options[:logo] %>
+                  <%= image_tag(config.options[:logo], class: "omniauth-logo omniauth-#{provider}") %>
+                <% else %>
+                  <%= "Log in with #{t("authentication.omniauth.providers.#{provider}", default: provider.to_s.titleize)}" %>
+                <% end %>
               <% end -%>
             <% end -%>
           <% end -%>
@@ -35,7 +24,8 @@
         <% end %>
 
         <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-          <div class="h4">Administrator Login</div>
+          <div class="h4"><%= t('authentication.password.title') %></div>
+          <p><%= t('authentication.password.description') %></p>
           <%= f.input :login, label: 'Email or username', autofocus: true %>
           <%= f.input :password, input_html: { autocomplete: 'off' } %>
           <% if devise_mapping.rememberable? -%>

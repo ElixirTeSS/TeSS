@@ -295,3 +295,13 @@ en:
       target='_blank'>https://www.ag.gov.au/rights-and-protections/privacy</a>).
     controller: "The data controller for DReSA is TBA."
     post: ''
+  authentication:
+    password:
+      title: Administrator Login
+      description: ''
+    omniauth:
+      title: Institutional Login
+      description: 'Use the buttons below to log in via your Australian or New Zealand institution.'
+      providers:
+        oidc: AAF (Australia)
+        oidc2: Tuakiri (NZ)

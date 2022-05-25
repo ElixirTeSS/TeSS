@@ -15,9 +15,12 @@
   .user-options {
     float: right;
 
-    a {
+    &> a {
       display: block;
       float: left;
+    }
+
+    a {
       padding: 0 10px;
       color: $top-header-text;
 

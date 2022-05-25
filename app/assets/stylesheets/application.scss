@@ -1111,7 +1111,10 @@ input[type=checkbox].field-lock + label:before,
   color: $state-info-text;
 }
 
-.aai-login {
+.omniauth-elixir_aai {
   width: 120px;
 }
 
+.omniauth-oidc {
+  height: 42px;
+}
