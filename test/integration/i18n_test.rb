@@ -1,19 +1,19 @@
 require 'test_helper'
 
-class I18n_Test < ActionDispatch::IntegrationTest
+class I18nTest < ActionDispatch::IntegrationTest
 
   setup do
-    I18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
-    I18n.available_locales = [:en, :'en-AU', :'en-EU']
-    I18n.default_locale = :en
+    @original_load_path = I18n.load_path
+    apply_overrides
     @user = users(:regular_user)
   end
 
   teardown do
-    I18n.locale = :en
+    reset_translations
   end
 
   test 'can log in with email address' do
+    reset_translations
     get '/users/sign_in'
     post '/users/sign_in', params: { 'user[login]' => @user.email, 'user[password]' => 'hello' }
 
@@ -22,16 +22,14 @@ class I18n_Test < ActionDispatch::IntegrationTest
   end
 
   test 'can log in with email address (en-AU)' do
-    I18n.locale = :'en-AU'
     get '/users/sign_in'
     post '/users/sign_in', params: { 'user[login]' => @user.email, 'user[password]' => 'hello' }
 
     follow_redirect!
-    assert_equal 'Logged in successfully.', flash[:notice]
+    assert_equal 'Logged in successfully!!!', flash[:notice]
   end
 
   test 'can logout (en-AU)' do
-    I18n.locale = :'en-AU'
     get '/users/sign_in'
     post '/users/sign_in', params: { 'user[login]' => @user.email, 'user[password]' => 'hello' }
 
@@ -40,5 +38,15 @@ class I18n_Test < ActionDispatch::IntegrationTest
     assert_equal 'Logged out successfully.', flash[:notice]
   end
 
+  private
 
+  def apply_overrides
+    I18n.load_path += Dir[Rails.root.join('test', 'config', 'translation_override.en.yml')]
+    I18n.backend.load_translations
+  end
+
+  def reset_translations
+    I18n.load_path = @original_load_path
+    I18n.backend.load_translations
+  end
 end

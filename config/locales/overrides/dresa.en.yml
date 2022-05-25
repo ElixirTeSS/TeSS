@@ -1,26 +1,7 @@
-en-AU:
-  pundit:
-    default: 'You are not authorised to perform this action.'
-    material_policy:
-    event_policy:
-  activerecord:
-    errors:
-      models:
-        material:
-          attributes:
-            url:
-              url: 'is not valid'
-    attributes:
-      content_provider:
-        url: 'URL'
-      event:
-        url: 'URL'
-      material:
-        doi: 'DOI'
-        url: 'URL'
-      profile:
-        firstname: 'First name'
-        surname: 'Last name'
+en:
+  devise:
+    failure:
+      unauthenticated: "You need to log in before continuing."
   home:
     welcome: "Welcome to Digital Research Skills Australasia (DReSA)"
     subtitle: "Browsing, discovering and organising digital research events and training resources, collected from Australasian providers."
@@ -177,6 +158,7 @@ en-AU:
         <li><a href="https://www.dcc.ac.uk/" target="_blank">The Digital Curation Centre</a></li>
         <li><a href="https://eosc-portal.eu/" target="_blank">The European Open Science Cloud</a></li>
       </ul>
+    cite: 'Citation pending'
   register:
     resources: >
       <p>Adding events to DReSA make them easier to find for learners, trainers and other training providers.
@@ -313,109 +295,3 @@ en-AU:
       target='_blank'>https://www.ag.gov.au/rights-and-protections/privacy</a>).
     controller: "The data controller for DReSA is TBA."
     post: ''
-  providers:
-    info: >
-      Content providers are entities (such as academic institutions, non-profit organisations, portals etc.) that
-      provide training materials of relevance to digital research skills.
-  events:
-    hints:
-      address: 'Where is this event being held?'
-      capacity: >
-        Provide the total number (cap) of individuals that can attend the training event.
-        Leave blank if there is no limit.
-      contact: ''
-      cost_basis: 'Select the basis by which costs, if any, are applied.'
-      cost_value: 'Input the cost of the training event.'
-      cost_currency: 'Select the currency associated with the cost.'
-      description: 'Provide a textual description of the training event, for additional context.'
-      duration: 'In hours and minutes (HH:MM), how long will your training event run?'
-      eligibility: 'Who can attend the training event?'
-      end: 'When does the event end?'
-      event_type: 'Select the most appropriate event type for the training event.'
-      fields: 'Select Fields of Research to better classify your event.'
-      hosts: ''
-      keywords: "Provide words or terms that clearly identify the training event's topics."
-      materials: 'Add any training materials that are associated with the training event.'
-      objectives: 'What knowledge, skills, or abilities should your audience gain from completing the training?'
-      organizer: ''
-      prerequisites: 'What understanding or knowledge does the audience need to have covered before the training event?'
-      recognition: 'Provide a description of any qualifications, awards, certificates, diplomas, or other
-        educational credentials that will be awarded on successful completion of the training event.'
-      requirements: 'Indicate the technical requirements needed to participate in the training event.'
-      start: 'When does the event start?'
-      subtitle: 'Include a subtitle to add context for your intended audience.'
-      targets: 'Indicate the type of audience for which the training event is intended.'
-      topics: 'Select the Fields of Research (FoR) codes that the training covers.'
-      timezone: 'Select the appropriate timezone'
-      title: 'Add a title for your training event.'
-      url: 'Enter a valid URL for the event landing page.'
-  materials:
-    hints:
-      authors: >
-        Add individuals and organisations involved in the preparation, creation or presentation of the published work.
-      contact: >
-        Include the first name, last name and contact details of the person or organisation that can be contacted about
-        the training material.
-      contributors: 'Add individual and organisations that contributed to the training material.'
-      date_created: 'Add the date that the training material was created.'
-      date_modified: 'Add the date that the training material was last modified.'
-      date_published: 'Add the date that the training material was published.'
-      description: 'Provide a textual description of your training material, for additional context.'
-      difficulty: 'Indicate the learners expected level of competency in the topic covered by the material.'
-      doi: 'Include a DOI if one exists for the training material.'
-      events: ''
-      fields: 'Select Fields of Research to better classify your material.'
-      keywords: "Provide words or terms that clearly identify the training material's topics."
-      licence: 'Select the licence for the training material.'
-      objectives: >
-        Describe the knowledge, skills or abilities that students should acquire throught the completion or use of the
-        training material.
-      other_types: 'Enter the types of resources that are not included on the above list.'
-      part_of: 'Describe the larger service of training to which this material belongs.'
-      prerequisites: >
-        What prior understanding or knowledge does your audience need to have on the topics covered in the training
-        material?
-      providers: ''
-      resources: 'Are there any external resources that relate to the is training material?'
-      status: 'Indicate the current status of the training material.'
-      subsets: 'Add identifier URLs or DOIs for each subset of the training material.'
-      syllabus: 'Describe the syllabus or provide and overview of the topics covered.'
-      targets: 'Indicate the type of audience intended to use your training material.'
-      time: 'What is the estimated time it takes to work through this resource in hours?'
-      title: 'Add a title for your training material.'
-      type: 'Select the type of resource that best matches the training material. '
-      url: 'Preferred URL to direct people to your training material landing page.'
-      version: 'Indicate the current version of the training material.'
-  profile:
-    user:
-      disclaimer: >
-        Please, note that the following user details are publicly visible and so by updating these fields you are giving 
-        permission for us to share the information via your public user profile.
-    trainer:
-      gravitar:
-        help: >
-          The image displayed with your profile is the Gravatar image associated with the provided contact email address.
-          Gravatar provides a way to link an avatar to an email address so that it can be used across sites and
-          platforms. To set-up a linked avatar, go to the Gravatar site:
-        url: https://en.gravatar.com
-      disclaimer: >
-        By clicking the box below you are giving permission for us to share the information in your trainer profile
-        through a public search of registered trainers.
-    hints:
-      public: 'Select if you wish to publish your trainer profile.'
-      description: 'For additional context, provide a textual description of your training experience.'
-      email: 'Include your preferred email address.'
-      website: 'Include a preferred URL for your professional profile.'
-      orcid: 'Include your ORCID Id or full URL'
-      image_url: ''
-      location: 'The location where you are primarily based.'
-      experience: 'Select your level of experience as a trainer.'
-      expertise_academic: 'Terms and phrases that describe your academic expertise.'
-      fields: 'Select Fields of Research to better classify your training experience.'
-      expertise_technical: 'Terms and phrases that describe your technical expertise.'
-      language: 'Include languages in which you are fluent.'
-      interest: 'Add keyword(s) to identify your main areas of interest.'
-      activity: 'Include any global connections or activities that relate to your skills and training work.'
-      social_media: 'Links or handles for your social media profiles.'
-
-
