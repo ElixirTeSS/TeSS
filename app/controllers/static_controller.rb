@@ -19,23 +19,6 @@ class StaticController < ApplicationController
       end
     end
 
-    # count the home features switched on and set the width
-    home_keys = %w[ events materials providers trainers workflows ]
-    home_features = TeSS::Config.feature.select {|k,v| home_keys.include? k}
-    on_features = home_features.select {|k,v| v == true}
-
-    case on_features.size
-    when 2
-      @liclass = "pair"
-      @icon_height = 320
-    when 3
-      @liclass = "triple"
-      @icon_height = 240
-    else
-      @liclass = "quad"
-      @icon_height = 180
-    end
-
     @resources = @resources.sort_by(&:created_at).reverse
   end
 end
