@@ -580,6 +580,7 @@ module ApplicationHelper
     user_list.sort_by { |u| u.last }
   end
 
+  def providers_path
+    content_providers_path
+  end
 end
-
-

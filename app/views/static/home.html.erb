@@ -43,64 +43,18 @@
 
 <%# Feature buttons %>
 <ul class="featureblocks">
-  <% if TeSS::Config.feature['events'] == true %>
-    <li>
-      <%= link_to events_path do %>
-        <div>
-          <h2>Events</h2>
-          <%= image_tag("dresa/Training_Default.png", alt: "Events") %>
-        </div>
-      <% end %>
-      <p><%== raw t 'home.events_message' %></p>
-    </li>
-  <% end %>
-
-  <% if TeSS::Config.feature['materials'] == true %>
-    <li>
-      <%= link_to materials_path do %>
-        <div>
-          <h2>Materials</h2>
-          <%= image_tag("dresa/Training_Materials_Default.png", alt: "Materials") %>
-        </div>
-      <% end %>
-      <p><%== raw t 'home.materials_message' %></p>
-    </li>
-  <% end %>
-
-  <% if TeSS::Config.feature['workflows'] == true %>
-    <li>
-      <%= link_to workflows_path do %>
-        <div>
-          <h2>Workflows</h2>
-          <%= image_tag("workflows.png", alt: "Workflows") %>
-        </div>
-      <% end %>
-      <p><%== raw t 'home.workflows_message' %></p>
-    </li>
-  <% end %>
-
-  <% if TeSS::Config.feature['providers'] == true %>
-    <li>
-      <%= link_to content_providers_path do %>
-        <div>
-          <h2>Providers</h2>
-          <%= image_tag("dresa/Training_Providers_Default.png", alt: "Providers") %>
-        </div>
+  <% ['events', 'materials', 'workflows', 'providers', 'trainers'].each do |feature| %>
+    <% if TeSS::Config.feature[feature] == true %>
+      <li>
+        <%= link_to polymorphic_path(feature) do %>
+          <div>
+            <h2><%= feature.titleize %></h2>
+            <%= image_tag(asset_path("features/#{feature}"), alt: feature.titleize) %>
+          </div>
+        <% end %>
+        <p><%== raw t "home.#{feature}_message" %></p>
+      </li>
     <% end %>
-      <p><%== raw t 'home.providers_message' %></p>
-    </li>
-  <% end %>
-
-  <% if TeSS::Config.feature['trainers'] == true %>
-    <li>
-      <%= link_to trainers_path do %>
-      <div>
-        <h2>Trainers</h2>
-        <%= image_tag("dresa/Trainers_Default.png", alt: "Trainers") %>
-      </div>
-      <% end %>
-      <p><%== raw t 'home.trainers_message' %></p>
-    </li>
   <% end %>
 </ul>
 
