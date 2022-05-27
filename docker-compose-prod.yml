@@ -19,6 +19,8 @@ services:
       - traefik.http.routers.tess.tls.certresolver=myresolver
       - traefik.http.routers.tess.rule=Host(`${HOSTNAME}`)
       - traefik.http.routers.tess.entrypoints=websecure
+    volumes:
+      - uploads:/code/public/system
   db:
     container_name: ${PREFIX}-db
     logging:
@@ -93,3 +95,4 @@ volumes:
   solr-data:
   redis-data:
   letsencrypt-data:
+  uploads:
