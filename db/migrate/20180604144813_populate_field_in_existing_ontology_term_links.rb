@@ -1,4 +1,4 @@
-class OntologyTermLink < ActiveRecord::Base; end
+class OntologyTermLink < ApplicationRecord; end
 
 class PopulateFieldInExistingOntologyTermLinks < ActiveRecord::Migration[4.2]
   def change
