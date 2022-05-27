@@ -19,9 +19,9 @@
       <%# Parent Organization -%>
       <% if defined? TeSS::Config.parent_org['url'] and !TeSS::Config.parent_org['url'].blank? %>
         <div class="pull-left">
-          <a href=<%= TeSS::Config.parent_org['url'] %>>
+          <%= link_to TeSS::Config.parent_org['url'] do %>
             <%= image_tag(TeSS::Config.parent_org['image'], alt: TeSS::Config.parent_org['name']) %>
-          </a>
+          <% end %>
         </div>
       <% end %>
 

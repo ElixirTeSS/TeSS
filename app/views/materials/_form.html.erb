@@ -80,13 +80,15 @@
   <h4>Optional</h4>
 
   <!-- Field: Fields -->
-  <%= render partial: 'common/tree',
-             locals: { f: f,
-                       resource: @material,
-                       field_name: 'fields',
-                       field_label: 'Fields of Research',
-                       button_label: 'FoR Codes',
-                       title: t('materials.hints.fields') } %>
+  <% if !TeSS::Config.feature['disabled'].include? 'fields' %>
+    <%= render partial: 'common/tree',
+               locals: { f: f,
+                         resource: @material,
+                         field_name: 'fields',
+                         field_label: 'Fields of Research',
+                         button_label: 'FoR Codes',
+                         title: t('materials.hints.fields') } %>
+  <% end %>
 
   <!-- Field: Dates -->
   <%= f.input :date_modified, as: :date_picker, field_lock: true, input_html: { title: t('materials.hints.date_modified') } %>
@@ -97,10 +99,14 @@
                  errors: @material.errors[:material_types], title: t('materials.hints.type') %>
 
   <!-- Field: Other Types -->
-  <%= f.input :other_types, input_html: { title: t('materials.hints.other_types') }, field_lock: true %>
+  <% if !TeSS::Config.feature['disabled'].include? 'other_types' %>
+    <%= f.input :other_types, input_html: { title: t('materials.hints.other_types') }, field_lock: true %>
+  <% end %>
 
   <!-- Field: Subsets -->
-  <%= f.multi_input :subsets, title: t('materials.hints.subsets') %>
+  <% if !TeSS::Config.feature['disabled'].include? 'subsets' %>
+    <%= f.multi_input :subsets, title: t('materials.hints.subsets') %>
+  <% end %>
 
   <!-- Field: Scientific Topics -->
   <% if !TeSS::Config.feature['disabled'].include? 'topics' %>
@@ -109,8 +115,10 @@
   <% end %>
 
   <!-- Field: Syllabus -->
-  <%= f.input :syllabus, as: :markdown_area, field_lock: true,
-              input_html: { rows: '3', title: t('materials.hints.syllabus') } %>
+  <% if !TeSS::Config.feature['disabled'].include? 'syllabus' %>
+    <%= f.input :syllabus, as: :markdown_area, field_lock: true,
+                input_html: { rows: '3', title: t('materials.hints.syllabus') } %>
+  <% end %>
 
   <!-- Field: External Resources -->
   <div class="form-group" id="external-resources">

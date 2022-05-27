@@ -48,6 +48,7 @@ default: &default
     providers: true
     subscription: true
     registration: true
+    sources: true
     trainers: true
     workflows: true
     disabled: []
@@ -115,11 +116,12 @@ dresa: &dresa
     nodes: false
     collections: true
     providers: true
-    registration: false
+    registration: true
     subscription: true
     trainers: true
     workflows: false
-    disabled: ['county', 'operations', 'sponsors', 'materials', 'topics', 'fairshare', 'biotools']
+    sources: true
+    disabled: ['county', 'operations', 'sponsors', 'topics', 'fairshare', 'biotools', 'other_types', 'fields', 'syllabus', 'subsets']
   placeholder:
     collection: 'dresa/Training_Packages@4x.png'
     provider: 'dresa/Training_Providers@4x.png'

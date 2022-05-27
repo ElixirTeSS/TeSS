@@ -9,7 +9,7 @@
   </div>
   <div id="content">
     <div class="row">
-      <% if !current_user.nil? and policy(@content_provider).update? %>
+      <% if !current_user.nil? and policy(@content_provider).update? and TeSS::Config.feature['sources'] %>
         <div class="content_action pull-left">
           <%= link_to sources_path(content_provider: @content_provider.title),
                       class: 'btn btn-primary align-self-end' do %>
