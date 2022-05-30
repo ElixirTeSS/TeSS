@@ -16,7 +16,7 @@ These prerequisites a re out of scope for this document but you can find more in
 - [Git](https://git-scm.com/)
 - [Docker](https://www.docker.com/)
 
-## Quick Setup (Docker)
+## Quick Setup (Docker, development)
 
 This guide is designed to get you up and running with as few commands as possible.
 
@@ -94,27 +94,37 @@ TODO: Add Docker debugging instructions
 
 ## Production
 
+First setup your production configuration by creating and editing the `.env-production` file
+
+    cp env.sample .env-production
+    sed s/SECRET_BASE_KEY=.*/SECRET_BASE_KEY=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32`/ -i .env-production
+    sed s/DB_PASSWORD=.*/DB_PASSWORD=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16`/ -i .env-production
+    sed s/RAILS_ENV=development/RAILS_ENV=production/ -i .env-production
+
+You should replace all placeholders, and not use the same email for `CONTACT` and `ADMIN`.
+
 The production deployment is configured in the `docker-compose-prod.yml` file.
 
+    export HOSTNAME=your.url.com
     docker-compose -f docker-compose-prod.yml --env-file .env-production up -d --build
 
 ### Other production tasks
 
 Run initial DB setup (new DB only!):
 
-    docker exec -it tess-production-app bash -c "bundle exec rake db:setup"
+    docker exec -it tess-app bash -c "bundle exec rake db:setup"
 
 Run DB migrations:
 
-    docker exec -it tess-production-app bash -c "bundle exec rake db:migrate"
+    docker exec -it tess-app bash -c "bundle exec rake db:migrate"
 
 Precompile the assests:
 
-    docker exec -it tess-production-app bash -c "bundle exec rake assets:clean && bundle exec rake assets:precompile"
+    docker exec -it tess-app bash -c "bundle exec rake assets:clean && bundle exec rake assets:precompile"
 
 Reindex Solr
 
-    docker exec -it tess-production-app bash -c "bundle exec rake sunspot:solr:reindex"
+    docker exec -it tess-app bash -c "bundle exec rake sunspot:solr:reindex"
 
 ## Basic API
 
