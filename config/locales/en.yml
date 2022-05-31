@@ -3,15 +3,11 @@ en:
     default: 'You are not authorised to perform this action.'
     material_policy:
     event_policy:
+  attributes:
+    url: 'URL'
+    doi: 'DOI'
   activerecord:
     attributes:
-      content_provider:
-        url: 'URL'
-      event:
-        url: 'URL'
-      material:
-        doi: 'DOI'
-        url: 'URL'
       profile:
         firstname: 'First name'
         surname: 'Last name'
