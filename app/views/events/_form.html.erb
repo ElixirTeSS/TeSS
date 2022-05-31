@@ -79,9 +79,7 @@
   </div>
 
   <!-- Field: Timezone -->
-  <% australasian_time_zones = ActiveSupport::TimeZone.country_zones('AU').concat(
-    ActiveSupport::TimeZone.country_zones('NZ')) %>
-  <%= f.input :timezone, as: :time_zone, field_lock: true, priority: australasian_time_zones,
+  <%= f.input :timezone, as: :time_zone, field_lock: true, priority: priority_time_zones,
               input_html: { title: t('events.hints.timezone') } %>
 
   <!-- Field: Eligibility -->
@@ -146,7 +144,7 @@
   <div class="form-group">
     <%= f.input :cost_basis, collection: CostBasisDictionary.instance.options_for_select,
                 prompt: 'Select a cost basis...', input_html: { title: t('events.hints.cost_basis') } %>
-    <%= f.input :cost_currency, collection: currency_collection(['AUD', 'NZD']), value_method: :second,
+    <%= f.input :cost_currency, collection: currency_collection, value_method: :second,
                 prompt: 'Select the currency...', input_html: { title: t('events.hints.cost_currency') } %>
     <%= f.input :cost_value, as: :decimal, label: 'Cost', input_html: { title: t('events.hints.cost_value'), min: '0' } %>
   </div>

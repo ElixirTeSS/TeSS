@@ -32,6 +32,12 @@ module ApplicationHelper
     cross: { icon: 'fa-times', message: 'This resource has been disabled' },
   }.freeze
 
+  # Timezones that have priority in the timezone selection menu. Using ISO 3166-1 Alpha2 code.
+  PRIORITY_TIME_ZONES = ['AU', 'NZ']
+
+  # Currencies that have priority in the currency selection menu. Using ISO 4217 code.
+  PRIORITY_CURRENCIES = ['AUD', 'NZK']
+
   def scrape_status_icon(record, size = nil)
     if !record.last_scraped.nil? && record.scraper_record
       if record.stale?
@@ -481,7 +487,7 @@ module ApplicationHelper
     end
   end
 
-  def currency_collection(priority)
+  def currency_collection(priority = priority_currencies)
     priors = []
     others = []
     Money::Currency.table.each do |key, value|
@@ -583,5 +589,15 @@ module ApplicationHelper
 
   def providers_path
     content_providers_path
+  end
+
+  def priority_time_zones
+    ApplicationHelper::PRIORITY_TIME_ZONES.flat_map do |code|
+      ActiveSupport::TimeZone.country_zones(code)
+    end
+  end
+
+  def priority_currencies
+    PRIORITY_CURRENCIES
   end
 end
