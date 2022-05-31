@@ -36,7 +36,7 @@ module Scraper
     log "log level = #{@log_level}", 1
 
     # check user
-    user = getUser(config[:username])
+    user = get_user(config[:username])
     if user.role.nil? or user.role.name != @default_role
       log @messages[:invalid] + @messages[:bad_role], 1
       errors += 1
@@ -283,16 +283,16 @@ module Scraper
     end
   end
 
-  def self.getUser (username)
+  def self.get_user (username)
     user = User.find_by_username(username)
     if user.nil?
       begin
-        user = User.new()
+        user = User.new
         user.username = username
         user.role = Role.find_by_name(@default_role)
         user.password = SecureRandom.urlsafe_base64(8)
         user.authentication_token = Devise.friendly_token
-        user.email = "#{username}@dresa.org.au"
+        user.email = "#{username}@#{URI.parse(TeSS::Config.base_url).host}"
         user.processing_consent = '1'
         user.save
         log "User created: username[#{user.username}] role[#{user.role.name}]", 1
