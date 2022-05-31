@@ -3,15 +3,13 @@ class SearchController < ApplicationController
 
   before_action :set_breadcrumbs
 
-  SEARCH_MODELS = %w( Event Material Collection ContentProvider Trainer User ).freeze
-
   # GET /searches
   # GET /searches.json
   def index
     @results = {}
 
     if TeSS::Config.solr_enabled
-      SEARCH_MODELS.each do |model_name|
+      search_models.each do |model_name|
         model = model_name.constantize
         @results[model_name.underscore.pluralize.to_sym] = Sunspot.search(model) do
           fulltext search_params
@@ -48,5 +46,16 @@ class SearchController < ApplicationController
 
   def search_params
     params[:q]
+  end
+
+  def search_models
+    return @_models if @_models
+    @_models = ['User']
+    @_models << 'Event' if TeSS::Config.feature['events']
+    @_models << 'Material' if TeSS::Config.feature['materials']
+    @_models << 'Collection' if TeSS::Config.feature['collections']
+    @_models << 'ContentProvider' if TeSS::Config.feature['providers']
+    @_models << 'Trainer' if TeSS::Config.feature['trainers']
+    @_models
   end
 end
