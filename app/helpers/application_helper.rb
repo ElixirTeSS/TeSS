@@ -24,6 +24,7 @@ module ApplicationHelper
     not_scraped_recently: { icon: 'fa-exclamation-circle', message: 'This record has not been updated since %SUB%' },
     event: { icon: 'fa-calendar', message: 'This is a training event' },
     material: { icon: 'fa-book', message: 'This is a training material' },
+    collection: { icon: 'fa-folder-open', message: 'This is a collection' },
     suggestion: { icon: 'fa-commenting-o', message: 'This record has one or more suggested scientific topics' },
     private: { icon: 'fa-eye-slash', message: 'This resource is private' },
     missing: { icon: 'fa-chain-broken', message: 'This resource has been offline for over three days' },
