@@ -26,18 +26,21 @@ class Workflow < ApplicationRecord
       text :node_descriptions do
         node_index('description')
       end
-      string :authors, :multiple => true
       text :authors
+      string :authors, :multiple => true
       string :scientific_topics, :multiple => true do
         self.scientific_topic_names
       end
+      text :target_audience
       string :target_audience, :multiple => true
+      text :keywords
       string :keywords, :multiple => true
+      text :difficulty_level
       string :difficulty_level do
         DifficultyDictionary.instance.lookup_value(self.difficulty_level, 'title')
       end
-      string :contributors, :multiple => true
       text :contributors
+      string :contributors, :multiple => true
 
       integer :user_id
       boolean :public
