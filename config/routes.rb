@@ -119,17 +119,7 @@ Rails.application.routes.draw do
   end
 
   if TeSS::Config.feature['e-learnings'] == true
-    resources :elearning_materials, concerns: :activities do
-      member do
-        post :reject_term
-        post :reject_data
-        post :add_term
-        post :add_data
-      end
-      collection do
-        get 'count'
-      end
-    end
+    get 'elearning_materials' => 'materials#index', defaults: { 'resource_type' => Material::ELEARNING_TYPE }
   end
 
   if TeSS::Config.feature['invitation'] == true
