@@ -32,13 +32,10 @@ class Workflow < ApplicationRecord
         self.scientific_topic_names
       end
       string :target_audience, :multiple => true
-      text :target_audience
       string :keywords, :multiple => true
-      text :keywords
       string :difficulty_level do
         DifficultyDictionary.instance.lookup_value(self.difficulty_level, 'title')
       end
-      text :difficulty_level
       string :contributors, :multiple => true
       text :contributors
 
