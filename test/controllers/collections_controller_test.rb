@@ -6,9 +6,6 @@ class CollectionsControllerTest < ActionController::TestCase
   setup do
     mock_images
     @collection = collections(:one)
-    #u = users(:regular_user)
-    #@collection.user_id = u.id
-    #@collection.save!
     @updated_collection = {
       title: 'New title',
       description: 'New description'
@@ -308,4 +305,33 @@ class CollectionsControllerTest < ActionController::TestCase
     assert_includes assigns(:collections).map(&:id), collections(:secret_collection).id
   end
 
+  test 'should log changes when updating a collection' do
+    sign_in @collection.user
+    assert @collection.save
+    @collection.activities.destroy_all
+
+    # 3 = 2 for parameters + 1 for update
+    assert_difference('PublicActivity::Activity.count', 3) do
+      patch :update, params: { id: @collection, collection: @updated_collection }
+    end
+
+    assert_equal 1, @collection.activities.where(key: 'collection.update').count
+    assert_equal 2, @collection.activities.where(key: 'collection.update_parameter').count
+
+    parameters = @collection.activities.where(key: 'collection.update_parameter').map(&:parameters)
+    title_activity = parameters.detect { |p| p[:attr] == 'title' }
+    description_activity = parameters.detect { |p| p[:attr] == 'description' }
+
+    assert_equal 'New title', title_activity[:new_val]
+    assert_equal 'New description', description_activity[:new_val]
+
+    old_controller = @controller
+    @controller = ActivitiesController.new
+
+    get :index, params: { collection_id: @collection }, xhr: true
+
+    assert_select '.activity', count: 4 # +1 because they are wrapped in a .activity div for some reason...
+
+    @controller = old_controller
+  end
 end

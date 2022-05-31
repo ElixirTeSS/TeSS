@@ -19,6 +19,7 @@ services:
       - traefik.http.routers.tess.tls.certresolver=myresolver
       - traefik.http.routers.tess.rule=Host(`${HOSTNAME}`)
       - traefik.http.routers.tess.entrypoints=websecure
+      - traefik.http.services.tess.loadbalancer.server.port=3000
     volumes:
       - uploads:/code/public/system
   db:
@@ -71,8 +72,9 @@ services:
     container_name: ${PREFIX}-traefik
     image: traefik:v2.6
     restart: always
+    env_file:
+      - .env-production
     command:
-      - --api.insecure=true
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
       - --entrypoints.webinsecure.address=:80
@@ -85,7 +87,6 @@ services:
     ports:
       - 80:80
       - 443:443
-      - 8080:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - letsencrypt-data:/letsencrypt
