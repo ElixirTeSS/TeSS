@@ -32,65 +32,67 @@
           <%= user_f.input :role_id, collection: Role.all, label_method: :title, include_blank: false %>
         <% end %>
 
-        <p><br/>
+        <% if TeSS::Config.feature['trainers'] %>
+          <p><br/>
 
-        <h3>Trainer Details</h3>
-        <hr>
+          <h3>Trainer Details</h3>
+          <hr>
 
-        <%= f.input :description, label: 'Summary', input_html: { title: t('profile.hints.description') } %>
+          <%= f.input :description, label: 'Summary', input_html: { title: t('profile.hints.description') } %>
 
-        <%= f.input :location, input_html: { title: t('profile.hints.location') } %>
+          <%= f.input :location, input_html: { title: t('profile.hints.location') } %>
 
-        <%= f.input :experience, collection: TrainerExperienceDictionary.instance.options_for_select,
-                    label: 'Training Experience', prompt: 'Select a level of experience...',
-                    input_html: { title: t('profile.hints.experience') } %>
+          <%= f.input :experience, collection: TrainerExperienceDictionary.instance.options_for_select,
+                      label: 'Training Experience', prompt: 'Select a level of experience...',
+                      input_html: { title: t('profile.hints.experience') } %>
 
-        <%= f.dropdown :language, options: language_options_for_select(['EN', 'MI']),
-                       label: 'Languages Spoken', model_name: 'user[profile_attributes]',
-                       errors: @user.profile.errors[:language], title: t('profile.hints.language') %>
+          <%= f.dropdown :language, options: language_options_for_select(['EN', 'MI']),
+                         label: 'Languages Spoken', model_name: 'user[profile_attributes]',
+                         errors: @user.profile.errors[:language], title: t('profile.hints.language') %>
 
-        <%= f.multi_input :expertise_academic, label: 'Academic expertise',
-                          errors: @user.profile.errors[:expertise_academic],
-                          model_name: 'user[profile_attributes]',
-                          title: t('profile.hints.expertise_academic') %>
+          <%= f.multi_input :expertise_academic, label: 'Academic expertise',
+                            errors: @user.profile.errors[:expertise_academic],
+                            model_name: 'user[profile_attributes]',
+                            title: t('profile.hints.expertise_academic') %>
 
-        <%= f.multi_input :expertise_technical, label: 'Technical expertise',
-                          errors: @user.profile.errors[:expertise_technical],
-                          model_name: 'user[profile_attributes]',
-                          title: t('profile.hints.expertise_technical') %>
+          <%= f.multi_input :expertise_technical, label: 'Technical expertise',
+                            errors: @user.profile.errors[:expertise_technical],
+                            model_name: 'user[profile_attributes]',
+                            title: t('profile.hints.expertise_technical') %>
 
-        <!-- Field: Fields -->
-        <%= render partial: 'common/tree',
-                   locals: { f: f,
-                             resource: @user.profile,
-                             model_name: 'user[profile_attributes]',
-                             field_name: 'fields',
-                             field_label: 'Fields of Research',
-                             button_label: 'FoR Codes',
-                             title: t('profile.hints.fields') } %>
-
-
-        <%= f.multi_input :interest, label: 'Interests',
-                          errors: @user.profile.errors[:interest],
-                          model_name: 'user[profile_attributes]',
-                          title: t('profile.hints.interest') %>
-
-        <%= f.multi_input :activity, label: 'Activities',
-                          errors: @user.profile.errors[:activity],
-                          model_name: 'user[profile_attributes]',
-                          title: t('profile.hints.activity') %>
-
-        <%= f.multi_input :social_media, label: 'Social media links',
-                          errors: @user.profile.errors[:social_media],
-                          model_name: 'user[profile_attributes]',
-                          title: t('profile.hints.social_media') %>
-
-        <p><i class="fa fa-exclamation-triangle"></i>&nbsp;<%= t 'profile.trainer.disclaimer' %></p>
-
-        <%= f.input :public, label: 'Show in Registry of Trainers?',
-                    input_html: { title: t('profile.hints.public') } %>
+          <!-- Field: Fields -->
+          <%= render partial: 'common/tree',
+                     locals: { f: f,
+                               resource: @user.profile,
+                               model_name: 'user[profile_attributes]',
+                               field_name: 'fields',
+                               field_label: 'Fields of Research',
+                               button_label: 'FoR Codes',
+                               title: t('profile.hints.fields') } %>
 
 
+          <%= f.multi_input :interest, label: 'Interests',
+                            errors: @user.profile.errors[:interest],
+                            model_name: 'user[profile_attributes]',
+                            title: t('profile.hints.interest') %>
+
+          <%= f.multi_input :activity, label: 'Activities',
+                            errors: @user.profile.errors[:activity],
+                            model_name: 'user[profile_attributes]',
+                            title: t('profile.hints.activity') %>
+
+          <%= f.multi_input :social_media, label: 'Social media links',
+                            errors: @user.profile.errors[:social_media],
+                            model_name: 'user[profile_attributes]',
+                            title: t('profile.hints.social_media') %>
+
+          <p><i class="fa fa-exclamation-triangle"></i>&nbsp;<%= t 'profile.trainer.disclaimer' %></p>
+
+          <%= f.input :public, label: 'Show in Registry of Trainers?',
+                      input_html: { title: t('profile.hints.public') } %>
+
+
+        <% end %>
       <% end %>
 
       <div class="form-group">

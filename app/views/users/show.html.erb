@@ -60,14 +60,16 @@
               <% end %>
             </p>
 
-            <p>
-              <strong>Included in Registry of Trainers:</strong>
-              <% if @user.profile.public? %>
-                <span style="color: green;">Yes</span>
-              <% else %>
-                <span style="color: red;">No</span>
-              <% end %>
-            </p>
+            <% if TeSS::Config.feature['trainers'] %>
+              <p>
+                <strong>Included in Registry of Trainers:</strong>
+                <% if @user.profile.public? %>
+                  <span style="color: green;">Yes</span>
+                <% else %>
+                  <span style="color: red;">No</span>
+                <% end %>
+              </p>
+            <% end %>
             
           </div>
         </div>
