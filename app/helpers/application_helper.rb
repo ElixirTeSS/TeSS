@@ -32,7 +32,10 @@ module ApplicationHelper
     cross: { icon: 'fa-times', message: 'This resource has been disabled' },
   }.freeze
 
-  # Timezones that have priority in the timezone selection menu. Using ISO 3166-1 Alpha2 code.
+  # Countries that have priority in the country selection menu. Using ISO 3166-1 Alpha2 code.
+  PRIORITY_COUNTRIES = ['AU', 'NZ']
+
+  # Country timezones that have priority in the timezone selection menu. Using ISO 3166-1 Alpha2 country code.
   PRIORITY_TIME_ZONES = ['AU', 'NZ']
 
   # Currencies that have priority in the currency selection menu. Using ISO 4217 code.
@@ -591,8 +594,12 @@ module ApplicationHelper
     content_providers_path
   end
 
+  def priority_countries
+    PRIORITY_COUNTRIES
+  end
+
   def priority_time_zones
-    ApplicationHelper::PRIORITY_TIME_ZONES.flat_map do |code|
+    PRIORITY_TIME_ZONES.flat_map do |code|
       ActiveSupport::TimeZone.country_zones(code)
     end
   end
