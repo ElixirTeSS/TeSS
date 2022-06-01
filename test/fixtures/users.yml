@@ -138,3 +138,11 @@ existing_tuakiri_user:
   authentication_token: <%= Devise.friendly_token %>
   provider: oidc2
 
+existing_aai_user:
+  username: 'existing_aai_user'
+  email: 'elslu@example.com'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'private') %>
+  confirmed_at: <%= Time.zone.now %>
+  provider: elixir_aai
+  uid: 1234
+

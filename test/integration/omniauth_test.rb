@@ -278,6 +278,110 @@ class OmniauthTest < ActionDispatch::IntegrationTest
     assert_select '#user_profile_attributes_surname[value=?]', 'User'
   end
 
+  test 'ELIXIR AAI authentication redirects existing users to home page' do
+    user = users(:existing_aai_user)
+    OmniAuth.config.mock_auth[:elixir_aai] = OmniAuth::AuthHash.new(
+      {
+        provider: 'elixir_aai',
+        uid: user.uid,
+        info: {
+          email: user.email,
+          nickname: user.username,
+        }
+      })
+
+    post '/users/auth/elixir_aai'
+
+    follow_redirect! # OmniAuth redirect
+    follow_redirect! # CallbacksController sign_in_and_redirect
+
+    assert_equal '/', path
+    assert_select '.user-options > a:first', user.username
+  end
+
+  test 'Registering via ELIXIR AAI does not duplicate existing usernames' do
+    existing_user = users(:regular_user)
+
+    OmniAuth.config.mock_auth[:elixir_aai] = OmniAuth::AuthHash.new(
+      {
+        provider: 'elixir_aai',
+        uid: '0123456789abcdcef',
+        info: {
+          email: 'aai@example.com',
+          nickname: existing_user.username,
+          first_name: 'AAI',
+          last_name: 'User'
+        }
+      })
+
+    post '/users/auth/elixir_aai'
+
+    follow_redirect!
+    follow_redirect!
+
+    expected_username = "#{existing_user.username}1" # Adds 1 to end of name!
+
+    assert_equal "/users/#{expected_username.downcase}/edit", path
+    assert_select '.user-options > a:first', expected_username
+  end
+
+  test 'ELIXIR AAI authentication requires POST' do
+    OmniAuth.config.mock_auth[:elixir_aai] = OmniAuth::AuthHash.new(
+      {
+        provider: 'elixir_aai',
+        uid: '0123456789abcdcef',
+        info: {
+          email: 'aai@example.com',
+          nickname: 'aai_user',
+          first_name: 'AAI',
+          last_name: 'User'
+        }
+      })
+
+    get '/users/auth/elixir_aai'
+
+    assert_response :not_found
+  end
+
+  test 'Can log in through ELIXIR AAI with multiple email addresses' do
+    user = users(:existing_aai_user)
+    OmniAuth.config.mock_auth[:elixir_aai] = OmniAuth::AuthHash.new(
+      {
+        provider: 'elixir_aai',
+        uid: user.uid,
+        info: {
+          email: user.email,
+          nickname: user.username,
+        }
+      })
+
+    post '/users/auth/elixir_aai'
+
+    follow_redirect! # OmniAuth redirect
+    follow_redirect! # CallbacksController sign_in_and_redirect
+
+    assert_equal '/', path
+    assert_select '.user-options > a:first', user.username
+
+    OmniAuth.config.mock_auth[:elixir_aai] = OmniAuth::AuthHash.new(
+      {
+        provider: 'elixir_aai',
+        uid: user.uid,
+        info: {
+          email: "blablablablalbal@emaildomain.golf",
+          nickname: "bieberfan1997",
+        }
+      })
+
+    post '/users/auth/elixir_aai'
+
+    follow_redirect! # OmniAuth redirect
+    follow_redirect! # CallbacksController sign_in_and_redirect
+
+    assert_equal '/', path
+    assert_select '.user-options > a:first', user.username
+  end
+
   test 'cannot authenticate with undefined provider' do
     OmniAuth.config.mock_auth[:not_a_real_provider] = OmniAuth::AuthHash.new(
       {
