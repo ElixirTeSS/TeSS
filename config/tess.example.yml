@@ -16,7 +16,6 @@ default: &default
     logo_alt: ''
     logo_open_graph: ''
     logo_email: ''
-    theme: 'en'
     repository: ''
     supported_by: ''
     widget_example: ''
