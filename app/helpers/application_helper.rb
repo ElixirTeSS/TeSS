@@ -35,6 +35,9 @@ module ApplicationHelper
   # Countries that have priority in the country selection menu. Using ISO 3166-1 Alpha2 code.
   PRIORITY_COUNTRIES = ['AU', 'NZ']
 
+  # Languages that have priority in the trainer language selection menu. Using ISO 639-1 Alpha2 code.
+  PRIORITY_LANGUAGES = ['EN', 'MI']
+
   # Country timezones that have priority in the timezone selection menu. Using ISO 3166-1 Alpha2 country code.
   PRIORITY_TIME_ZONES = ['AU', 'NZ']
 
@@ -554,7 +557,7 @@ module ApplicationHelper
     return failed
   end
 
-  def language_options_for_select(priority)
+  def language_options_for_select(priority = priority_languages)
     priors = []
     others = []
 
@@ -596,6 +599,10 @@ module ApplicationHelper
 
   def priority_countries
     PRIORITY_COUNTRIES
+  end
+
+  def priority_languages
+    PRIORITY_LANGUAGES
   end
 
   def priority_time_zones

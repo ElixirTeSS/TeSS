@@ -46,7 +46,7 @@
                       label: 'Training Experience', prompt: 'Select a level of experience...',
                       input_html: { title: t('profile.hints.experience') } %>
 
-          <%= f.dropdown :language, options: language_options_for_select(['EN', 'MI']),
+          <%= f.dropdown :language, options: language_options_for_select,
                          label: 'Languages Spoken', model_name: 'user[profile_attributes]',
                          errors: @user.profile.errors[:language], title: t('profile.hints.language') %>
 
