@@ -30,21 +30,13 @@
 
         <%= f.multi_input :target_audience %>
 
-        <div class="form-group">
-          <%= f.label :difficulty_level %>
-          <%= f.select(:difficulty_level,
-                       options_for_select(difficulty_options_for_select, @workflow.difficulty_level.blank? ? "notspecified" : @workflow.difficulty_level), {},
-                       class: "form-control")
-          %>
-        </div>
+        <%= f.input :difficulty_level, collection: difficulty_options_for_select,
+                    selected: @workflow.difficulty_level.blank? ? "notspecified" : @workflow.difficulty_level,
+                    errors: @workflow.errors[:difficulty_level] %>
 
-        <div class="form-group">
-          <%= f.label :licence %>
-          <%= f.select(:licence,
-                       options_for_select(licence_options_for_select, @workflow.licence.blank? ? "notspecified" : @workflow.licence), {},
-                       class: "form-control")
-          %>
-        </div>
+        <%= f.input :licence, collection: licence_options_for_select,
+                    selected: @workflow.licence.blank? ? "notspecified" : @workflow.licence,
+                    errors: @workflow.errors[:licence] %>
 
         <%= f.multi_input :authors, suggestions: people_suggestions %>
 
