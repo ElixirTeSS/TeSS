@@ -1273,4 +1273,34 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_select '.identifiers-button'
     assert_select '#identifiers-link[value=?]', "http://example.com/identifiers/banana:m#{@material.id}"
   end
+
+  test 'should not add extra subset on error' do
+    title = 'Test Material with errors'
+    url = 'https://dresa.org.au/test-material-with-errors/'
+    desc = 'No description'
+    keywords = %w{ test materials with errors }
+    subsets = %w{ part-one part-two }
+    assert_equal 2, subsets.size, 'before: subsets items count not matched'
+
+    # create material without 3 required fields
+    sign_in users(:regular_user)
+    assert_no_difference('Material.count') do
+      post :create, params: {
+        material: {
+          title: title,
+          url: url,
+          description: desc,
+          keywords: keywords,
+          subsets: subsets
+        }
+      }
+
+      assert_response :success
+      material = assigns(:material)
+      assert_equal 3, material.errors.size, 'invalid number of errors'
+      assert_not_nil material.subsets, 'subsets is nil'
+      assert_equal 2, material.subsets.size, 'after: subsets items count not matched'
+    end
+
+  end
 end

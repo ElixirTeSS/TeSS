@@ -10,16 +10,16 @@
   <!-- Field: Title -->
   <%= f.input :title, as: :string, field_lock: true, input_html: { title: t('materials.hints.title') } %>
 
-  <!-- Field: URL -->
-  <%= render partial: 'common/url_checker',
-             locals: { f: f, url: materials_check_exists_path, title: t('materials.hints.url') } %>
-
   <!-- Field: Description -->
   <%= f.input :description, as: :markdown_area, field_lock: true, label: 'Description',
               input_html: { rows: '5', title: t('materials.hints.description') } %>
 
   <!-- Field: Keywords -->
-  <%= f.multi_input :keywords, title: t('materials.hints.keywords') %>
+  <%= f.multi_input :keywords, required: true, title: t('materials.hints.keywords') %>
+
+  <!-- Field: URL -->
+  <%= render partial: 'common/url_checker',
+             locals: { f: f, url: materials_check_exists_path, title: t('materials.hints.url') } %>
 
   <!-- Field: Licence -->
   <%= f.input :licence, collection: licence_options_for_select, input_html: { title: t('materials.hints.licence') },
@@ -57,8 +57,8 @@
   <%= f.autocompleter :events, input_html: { title: t('materials.hints.events') } %>
 
   <!-- Field: Target Audience -->
-  <%= f.multi_input :target_audience, label: 'Target audiences', errors: @material.errors[:target_audience],
-                    title: t('events.hints.targets') %>
+  <%= f.dropdown :target_audience, options: TargetAudienceDictionary.instance.options_for_select, label: 'Target audiences',
+                 errors: @material.errors[:target_audience], title: t('events.hints.targets') %>
 
   <!-- Field: Prerequisites -->
   <%= f.input :prerequisites, as: :markdown_area, field_lock: true,
@@ -95,8 +95,8 @@
   <%= f.input :date_published, as: :date_picker, field_lock: true, input_html: { title: t('materials.hints.date_published') } %>
 
   <!-- Field: Resource Type -->
-  <%= f.multi_input :resource_type, label: 'Resource types', errors: @material.errors[:material_types],
-                    title: t('events.hints.type') %>
+  <%= f.dropdown :resource_type, options: MaterialTypeDictionary.instance.options_for_select, label: 'Resource types',
+                 errors: @material.errors[:material_types], title: t('materials.hints.type') %>
 
   <!-- Field: Other Types -->
   <% if !TeSS::Config.feature['disabled'].include? 'other_types' %>

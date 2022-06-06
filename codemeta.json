@@ -1,0 +1,25 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "identifier": "TeSS",
+  "description": "Browsing, discovering and organising life sciences training resources, aggregated from Australasian providers.",
+  "name": "DReSA - Digitial Research Skills Australasia",
+  "codeRepository": "https://github.com/nrmay/TeSS",
+  "issueTracker": "https://github.com/nrmay/TeSS/issues",
+  "license": "https://opensource.org/licenses/BSD-3-Clause",
+  "version": "1.0",
+  "author": [
+
+  ],
+  "contIntegration": "https://travis-ci.org/nrmay/TeSS",
+  "developmentStatus": "active",
+  "downloadUrl": "https://github.com/nrmay/TeSS/archive/master.zip",
+  "keywords": [
+    "training",
+    "software"
+  ],
+  "softwareVersion":"1.0",
+  "dateCreated":"2015-09-25",
+  "datePublished":"2021-07-01",
+  "programmingLanguage": "Ruby"
+}

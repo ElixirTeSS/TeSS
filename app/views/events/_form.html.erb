@@ -49,13 +49,13 @@
   <!-- Field: Sub-title -->
   <%= f.input :subtitle, field_lock: true, input_html: { title: t('events.hints.subtitle') } %>
 
-  <!-- Field: URL -->
-  <%= render partial: 'common/url_checker',
-             locals: { f: f, url: events_check_exists_path, title: t('events.hints.url') } %>
-
   <!-- Field: Description -->
   <%= f.input :description, as: :markdown_area, input_html: { rows: '5', title: t('events.hints.description') },
               field_lock: true %>
+
+  <!-- Field: URL -->
+  <%= render partial: 'common/url_checker',
+             locals: { f: f, url: events_check_exists_path, title: t('events.hints.url') } %>
 
   <!-- Field: Start -->
   <%= f.input :start, as: :datetime_picker, field_lock: true, input_html: { title: t('events.hints.start') } %>
@@ -86,6 +86,7 @@
   <%= f.dropdown :eligibility,
                  options: EligibilityDictionary.instance.options_for_select,
                  label: 'Eligibility',
+                 required: true,
                  errors: @event.errors[:eligibility],
                  title: t('events.hints.eligibility') %>
 
@@ -96,7 +97,7 @@
   <%= f.input :contact, input_html: { rows: '5', title: t('events.hints.contact') }, field_lock: true %>
 
   <!-- Field: Host Institutions -->
-  <%= f.multi_input :host_institutions, errors: @event.errors[:host_institutions],
+  <%= f.multi_input :host_institutions, required: true, errors: @event.errors[:host_institutions],
                     title: t('events.hints.hosts') %>
 
   <!-- Field: Keywords -->
@@ -119,12 +120,6 @@
   <% if !TeSS::Config.feature['disabled'].include? 'topics' %>
     <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term', label: 'Topics',
                         id_field: :uri, label_field: :preferred_label, input_html: { title: t('events.hints.topics') } %>
-  <% end %>
-
-  <!-- Operations: check disabled -->
-  <% if !TeSS::Config.feature['disabled'].include? 'operations' %>
-    <%= f.autocompleter :operations, url: edam_operations_path, template: 'autocompleter/term',
-                        id_field: :uri, label_field: :preferred_label %>
   <% end %>
 
   <!-- Field: Capacity -->
@@ -171,6 +166,12 @@
   <% if TeSS::Config.feature['nodes'] %>
     <%= f.dropdown :node_ids, options: format_for_dropdown(Node.order(:name).all), label: 'Nodes',
                    errors: @event.errors[:node_ids] %>
+  <% end %>
+
+  <!-- Operations: check disabled -->
+  <% if !TeSS::Config.feature['disabled'].include? 'operations' %>
+    <%= f.autocompleter :operations, url: edam_operations_path, template: 'autocompleter/term',
+                        id_field: :uri, label_field: :preferred_label %>
   <% end %>
 
   <!-- Sponsors: check disabled -->

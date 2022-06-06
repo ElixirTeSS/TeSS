@@ -75,6 +75,36 @@ class EventTest < ActiveSupport::TestCase
 
   end
 
+  test 'set default end time' do
+    time = Time.zone.parse('2016-11-22')
+    e = events(:event_with_no_end)
+    assert_equal e.start, time
+    assert_nil e.end
+    e.save()
+    # end time is now mandatory
+    assert !e.errors[:end].empty?
+    assert e.errors[:end].size == 1
+    assert_equal e.errors[:end][0].to_s, "can't be blank"
+
+    #assert_equal e.start, time + 9.hours
+    #assert_equal e.end, time + 17.hours
+  end
+
+  test 'set default online end time' do
+    time = Time.zone.parse('2016-11-22 14:00')
+    e = events(:online_event_with_no_end)
+    assert_equal e.start, time
+    assert_nil e.end
+    e.save()
+    # end time is now mandatory
+    assert !e.errors[:end].empty?
+    assert e.errors[:end].size == 1
+    assert_equal e.errors[:end][0].to_s, "can't be blank"
+
+    #assert_equal e.start, time
+    #assert_equal e.end, time + 1.hours
+  end
+
   test 'lower precedence content provider does not overwrite' do
     e = events(:organisation_event)
 

@@ -109,7 +109,10 @@ class Event < ApplicationRecord
   has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
   has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 
-  validates :title, :url, presence: true
+  validates :title, :url, :start, :end, :organizer, :description, :host_institutions, :timezone, :contact, :eligibility,
+            presence: true
+  # validates :venue, :city, :country, :postcode, :presence => true, :unless => :online?
+  validates :city, :country, :presence => true, :unless => :online?
   validates :capacity, numericality: { greater_than_or_equal_to: 1 }, allow_blank: true
   validates :cost_value, numericality: { greater_than: 0 }, allow_blank: true
   validates :event_types, controlled_vocabulary: { dictionary: EventTypeDictionary.instance }
@@ -126,7 +129,9 @@ class Event < ApplicationRecord
   # These fields should not been shown to users unless they have sufficient privileges
   SENSITIVE_FIELDS = [:funding, :attendee_count, :applicant_count, :trainer_count, :feedback, :notes]
 
-  ADDRESS_FIELDS = [:venue, :city, :county, :country, :postcode]
+  # remove county field
+  #ADDRESS_FIELDS = [:venue, :city, :county, :country, :postcode]
+  ADDRESS_FIELDS = [:venue, :city, :country, :postcode]
 
   COUNTRY_SYNONYMS = JSON.parse(File.read(File.join(Rails.root, 'config', 'data', 'country_synonyms.json')))
 

@@ -87,9 +87,11 @@ class Material < ApplicationRecord
   # e.g. "James     Bond  " => "James Bond"
   auto_strip_attributes :title, :description, :url, :squish => false
 
-  validates :title, :description, :url, presence: true
+  validates :title, :description, :keywords, :url, :licence, :status, :contact, presence: true
 
   validates :url, url: true
+
+  validates :licence, exclusion: { in: ['notspecified'], message: 'must be specified' }
 
   validates :other_types, presence: true, if: Proc.new { |m| m.resource_type.include?('other') }
 
