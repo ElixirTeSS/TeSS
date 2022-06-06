@@ -33,16 +33,16 @@ module ApplicationHelper
   }.freeze
 
   # Countries that have priority in the country selection menu. Using ISO 3166-1 Alpha2 code.
-  PRIORITY_COUNTRIES = ['AU', 'NZ']
+  PRIORITY_COUNTRIES = []
 
   # Languages that have priority in the trainer language selection menu. Using ISO 639-1 Alpha2 code.
-  PRIORITY_LANGUAGES = ['EN', 'MI']
+  PRIORITY_LANGUAGES = ['EN']
 
   # Country timezones that have priority in the timezone selection menu. Using ISO 3166-1 Alpha2 country code.
-  PRIORITY_TIME_ZONES = ['AU', 'NZ']
+  PRIORITY_TIME_ZONES = ['NL', 'GB']
 
   # Currencies that have priority in the currency selection menu. Using ISO 4217 code.
-  PRIORITY_CURRENCIES = ['AUD', 'NZK']
+  PRIORITY_CURRENCIES = ['EUR', 'GBP']
 
   def scrape_status_icon(record, size = nil)
     if !record.last_scraped.nil? && record.scraper_record

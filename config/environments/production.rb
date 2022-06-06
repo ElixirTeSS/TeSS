@@ -67,7 +67,7 @@ Rails.application.configure do
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "te_ss_#{Rails.env}"
   config.active_job.queue_adapter     = :sidekiq
-  config.active_job.queue_name_prefix = "dresa_#{Rails.env}"
+  config.active_job.queue_name_prefix = "tess_#{Rails.env}"
   config.active_job.queue_name_delimiter = '.'
 
   # action mailer smtp settings

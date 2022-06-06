@@ -8,12 +8,8 @@
   <div class="row">
     <div class="col-md-1" style="padding-left: 0;">
       <div class="resource_type_icon">
-        <% if resource.class == Event %>
-          <%= image_tag("dresa/Training_Blue_Default.png", height: "40px", alt: "Event") %>
-        <% elsif resource.class == Material %>
-          <%= image_tag("dresa/Training_Materials_Blue_Default.png", height: "40px", alt: "Material") %>
-        <% elsif resource.class == Collection %>
-          <%= image_tag("dresa/Training_Packages_Blue_Default.png", height: "40px", alt: "Package") %>
+        <% if [Event, Material, Collection].include?(resource.class) %>
+          <%= icon_for(resource.class.name.underscore.to_sym, 'large') %>
         <% end %>
       </div>
     </div>

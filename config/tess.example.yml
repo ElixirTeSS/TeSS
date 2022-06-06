@@ -9,16 +9,16 @@ default: &default
   blocked_domains:
     - !ruby/regexp '/bad-domain\.example/'
   site:
-    title: ''
-    title_short: ''
-    favicon: ''
-    logo: ''
-    logo_alt: ''
+    title: 'TeSS (Training eSupport System)'
+    title_short: TeSS
+    favicon: elixir/favicon.png
+    logo: elixir/ELIXIR_TeSS_logo_white-80px-height.png
+    logo_alt: 'Training eSupport System'
     logo_open_graph: ''
     logo_email: ''
-    repository: ''
-    supported_by: ''
-    widget_example: ''
+    repository: 'https://github.com/ElixirTeSS/TeSS'
+    supported_by: 'elixir_supported_by'
+    widget_example: 'elixir_widget_example'
   mailer:
     delivery_method: sendmail
     location: /usr/sbin/sendmail
@@ -35,9 +35,9 @@ default: &default
     message: ''
     url: ''
   parent_org:
-    name: ''
-    image: ''
-    url: ''
+    name: 'ELIXIR Hub'
+    image: elixir/hub-logo.png
+    url: 'http://www.elixir-europe.org'
   feature:
     e-learnings: true
     events: true
@@ -63,76 +63,6 @@ default: &default
     eligibility: 'eligibility.yml'
     event_types: 'event_types.yml'
     licences: 'licences.yml'
-    material_status: 'material_status.yml'
-    material_type: 'material_type.yml'
-    target_audience: 'target_audience.yml'
-    trainer_experience: 'trainer_experience.yml'
-
-elixir: &elixir
-  site:
-    title: 'TeSS (Training eSupport System)'
-    title_short: TeSS
-    favicon: elixir/favicon.png
-    logo: elixir/ELIXIR_TeSS_logo_white-80px-height.png
-    logo_alt: 'Training eSupport System'
-    theme: 'en-EU'
-    repository: 'https://github.com/ElixirTeSS/TeSS'
-    supported_by: 'elixir_supported_by'
-    widget_example: 'elixir_widget_example'
-  questionnaire:
-    show: true
-    message: 'Help TeSS by giving us your feedback:'
-    url: 'https://goo.gl/forms/jsVC70q6oN8FsGWR2'
-  parent_org:
-    name: 'ELIXIR Hub'
-    image: elixir/hub-logo.png
-    url: 'http://www.elixir-europe.org'
-
-dresa: &dresa
-  site:
-    title: 'Digital Research Skills Australia (DReSA)'
-    title_short: 'DReSA'
-    favicon: 'dresa/DReSA_favicon.ico'
-    logo: 'dresa/DReSA_logo_long_dark.png'
-    logo_alt: 'Digital Research Skills Australasia'
-    logo_open_graph: 'dresa/DReSA_Symbol.png'
-    logo_email: 'dresa/DReSA_Extended_Default.png'
-    theme: 'en-AU'
-    repository: 'https://github.com/nrmay/TeSS'
-    supported_by: 'dresa_supported_by.erb'
-    widget_example: 'elixir_widget_example'
-  gmaps:
-    center:
-      latitude: -30
-      longitude: 150
-    zoom:
-      latitude: 3
-      longitude: 10
-  feature:
-    e-learnings: false
-    events: true
-    invitation: true
-    materials: true
-    nodes: false
-    collections: true
-    providers: true
-    registration: true
-    subscription: true
-    trainers: true
-    workflows: false
-    sources: true
-    disabled: ['county', 'operations', 'sponsors', 'topics', 'fairshare', 'biotools', 'other_types', 'fields', 'syllabus', 'subsets']
-  placeholder:
-    collection: 'dresa/Training_Packages@4x.png'
-    provider: 'dresa/Training_Providers@4x.png'
-    group: 'placeholder-group.png'
-    person: 'placeholder-person.png'
-  dictionaries:
-    cost_basis: 'cost_basis.yml'
-    difficulty: 'difficulty_dresa.yml'
-    eligibility: 'eligibility_dresa.yml'
-    event_types: 'event_types_dresa.yml'
-    licences: 'licences_dresa.yml'
     material_status: 'material_status.yml'
     material_type: 'material_type.yml'
     target_audience: 'target_audience.yml'
