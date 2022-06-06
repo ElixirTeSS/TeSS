@@ -36,6 +36,7 @@ default: &default
     url: ''
   parent_org:
     name: ''
+    image: ''
     url: ''
   feature:
     e-learnings: true
@@ -84,7 +85,7 @@ elixir: &elixir
     url: 'https://goo.gl/forms/jsVC70q6oN8FsGWR2'
   parent_org:
     name: 'ELIXIR Hub'
-    image: hub-logo.png
+    image: elixir/hub-logo.png
     url: 'http://www.elixir-europe.org'
 
 dresa: &dresa
