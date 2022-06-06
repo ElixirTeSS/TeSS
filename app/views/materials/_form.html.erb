@@ -80,7 +80,7 @@
   <h4>Optional</h4>
 
   <!-- Field: Fields -->
-  <% if !TeSS::Config.feature['disabled'].include? 'fields' %>
+  <% if !TeSS::Config.feature['disabled'].include? 'fields_of_research' %>
     <%= render partial: 'common/tree',
                locals: { f: f,
                          resource: @material,

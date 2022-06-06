@@ -61,14 +61,16 @@
                             title: t('profile.hints.expertise_technical') %>
 
           <!-- Field: Fields -->
-          <%= render partial: 'common/tree',
-                     locals: { f: f,
-                               resource: @user.profile,
-                               model_name: 'user[profile_attributes]',
-                               field_name: 'fields',
-                               field_label: 'Fields of Research',
-                               button_label: 'FoR Codes',
-                               title: t('profile.hints.fields') } %>
+          <% if !TeSS::Config.feature['disabled'].include? 'fields_of_research' %>
+            <%= render partial: 'common/tree',
+                       locals: { f: f,
+                                 resource: @user.profile,
+                                 model_name: 'user[profile_attributes]',
+                                 field_name: 'fields',
+                                 field_label: 'Fields of Research',
+                                 button_label: 'FoR Codes',
+                                 title: t('profile.hints.fields') } %>
+          <% end %>
 
 
           <%= f.multi_input :interest, label: 'Interests',
