@@ -281,6 +281,7 @@ en:
     materials_message: "Browse the catalogue of training materials offered by ELIXIR nodes and 3<sup>rd</sup>-party providers."
     workflows_message: "Create training workflows to visualise learning steps and link to resources specific to your training needs."
     providers_message: "Browse training providers to discover training resources they offer and follow links to their materials and courses."
+    trainers_message: "Browse a directory of trainers based on their skills and expertise."
   privacy:
     registration: |
       <p>When you register with TeSS we ask for a username, password and email address.</p>
