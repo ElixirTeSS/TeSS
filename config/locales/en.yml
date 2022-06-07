@@ -275,7 +275,7 @@ en:
       <p>Once registered and logged in, the 'register event' and 'register material' buttons will become visible on the
       events and materials tabs. Alternatively click here:</p>
   home:
-    welcome: "Welcome to TeSS: Elixir's Trailing Portal"
+    welcome: "Welcome to TeSS: Elixir's Training Portal"
     subtitle: "Browsing, discovering and organising life sciences training resources, aggregated from ELIXIR nodes and 3<sup>rd</sup>-party providers."
     events_message: "Discover the latest training events and news from ELIXIR nodes and 3<sup>rd</sup>-party providers."
     materials_message: "Browse the catalogue of training materials offered by ELIXIR nodes and 3<sup>rd</sup>-party providers."
