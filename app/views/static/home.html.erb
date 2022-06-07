@@ -49,7 +49,7 @@
         <%= link_to polymorphic_path(feature) do %>
           <div>
             <h2><%= feature.titleize %></h2>
-            <%= image_tag(asset_path("features/#{feature}"), alt: feature.titleize) %>
+            <%= image_tag(asset_path("features/#{feature}.png"), alt: feature.titleize) %>
           </div>
         <% end %>
         <p><%== raw t "home.#{feature}_message" %></p>
