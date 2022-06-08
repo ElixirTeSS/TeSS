@@ -16,6 +16,9 @@ RUN bundle check || bundle install
 # copy code
 COPY . .
 
+# precompile assets
+RUN bundle exec rake assets:precompile
+
 ENTRYPOINT ["docker/entrypoint.sh"]
 
 # expose port
