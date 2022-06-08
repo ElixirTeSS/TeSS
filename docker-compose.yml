@@ -33,21 +33,6 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - db-data:/var/lib/postgresql/data
-  pgadmin4:
-    container_name: ${PREFIX}-pgadmin
-    logging:
-      driver: none
-    image: dpage/pgadmin4:latest
-    restart: always
-    env_file: .env
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${DB_USER}@${DB_USER}.com
-      PGADMIN_DEFAULT_PASSWORD: ${DB_PASSWORD}
-      PGADMIN_LISTEN_PORT: 80
-    ports:
-      - '8080:80'
-    volumes:
-      - pgadmin-data:/var/lib/pgadmin
   solr:
     container_name: ${PREFIX}-solr
     image: solr:8
@@ -84,7 +69,6 @@ services:
     entrypoint: ./docker/sidekiq_entrypoint.sh
 volumes:
   db-data:
-  pgadmin-data:
   solr-data:
   redis-data:
   gem_cache:
