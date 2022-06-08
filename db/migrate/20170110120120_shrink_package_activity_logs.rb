@@ -1,7 +1,7 @@
 class ShrinkPackageActivityLogs < ActiveRecord::Migration[4.2]
   def up
     Material
-    Package
+    Collection
 
     PublicActivity::Activity.transaction do
       PublicActivity::Activity.where(key: 'package.add_material').each do |activity|
@@ -26,7 +26,7 @@ class ShrinkPackageActivityLogs < ActiveRecord::Migration[4.2]
 
   def down
     Material
-    Package
+    Collection
 
     PublicActivity::Activity.transaction do
       PublicActivity::Activity.where(key: 'package.add_material').each do |activity|

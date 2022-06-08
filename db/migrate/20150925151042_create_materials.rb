@@ -8,7 +8,6 @@ class CreateMaterials < ActiveRecord::Migration[4.2]
       t.date :remote_updated_date
       t.date :remote_created_date
       t.date :local_updated_date
-      t.date :remote_updated_date
 
       t.timestamps null: false
     end
