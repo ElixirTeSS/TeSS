@@ -34,4 +34,6 @@ module TeSS
   end
 
   Config = OpenStruct.new(Rails.configuration.tess.with_indifferent_access)
+
+  Config.redis_url = TeSS::Config.redis_url
 end
