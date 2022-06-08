@@ -5,8 +5,7 @@ services:
     build:
       context: .
     restart: unless-stopped
-    env_file:
-      - .env
+    env_file: .env
     depends_on:
       - db
       - solr
@@ -22,10 +21,9 @@ services:
     container_name: ${PREFIX}-db
     logging:
       driver: none
-    image: postgres
+    image: postgres:14.2
     restart: always
-    env_file:
-      - .env
+    env_file: .env
     environment:
       PGDATA: /var/lib/postgresql/data
       POSTGRES_DB: ${DB_NAME}
@@ -39,8 +37,7 @@ services:
       driver: none
     image: dpage/pgadmin4:latest
     restart: always
-    env_file:
-      - .env
+    env_file: .env
     environment:
       PGADMIN_DEFAULT_EMAIL: ${DB_USER}@${DB_USER}.com
       PGADMIN_DEFAULT_PASSWORD: ${DB_PASSWORD}

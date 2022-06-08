@@ -4,11 +4,9 @@ services:
     container_name: ${PREFIX}-app
     build:
       context: .
-      dockerfile: Dockerfile.prod
     image: ${PREFIX}-app
     restart: always
-    env_file:
-      - .env-production
+    env_file: .env
     depends_on:
       - db
       - solr
@@ -22,17 +20,22 @@ services:
       - traefik.http.services.tess.loadbalancer.server.port=3000
     volumes:
       - uploads:/code/public/system
+      - ./config/tess.yml:/code/config/tess.yml
+      - ./config/secrets.yml:/code/config/secrets.yml
+    environment:
+      RAILS_ENV: production
+      RAILS_SERVE_STATIC_FILES: 'true'
+      RAILS_LOG_TO_STDOUT: 'true'
   db:
     container_name: ${PREFIX}-db
     logging:
       driver: none
     image: postgres:14.2
     restart: always
-    env_file:
-      - .env-production
+    env_file: .env
     environment:
       PGDATA: /var/lib/postgresql/data
-      POSTGRES_DB: ${DB_NAME}_production
+      POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
@@ -46,7 +49,7 @@ services:
       - POSTGRES_HOST=db
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASS=${DB_PASSWORD}
-      - DBLIST=${DB_NAME}_production
+      - DBLIST=${DB_NAME}
       - REMOVE_BEFORE=7
     restart: on-failure
     depends_on:
@@ -60,7 +63,7 @@ services:
       - ./solr:/opt/solr/server/solr/configsets/production
     command:
       - solr-precreate
-      - production
+      - tess
       - /opt/solr/server/solr/configsets/production
   redis:
     container_name: ${PREFIX}-redis
@@ -72,8 +75,7 @@ services:
     container_name: ${PREFIX}-traefik
     image: traefik:v2.6
     restart: always
-    env_file:
-      - .env-production
+    env_file: .env
     command:
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
@@ -90,6 +92,22 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - letsencrypt-data:/letsencrypt
+  sidekiq:
+    container_name: ${PREFIX}-sidekiq
+    build:
+      context: .
+    depends_on:
+      - app
+      - db
+      - redis
+    volumes:
+      - uploads:/code/public/system
+      - ./config/tess.yml:/code/config/tess.yml
+      - ./config/secrets.yml:/code/config/secrets.yml
+    env_file: .env
+    environment:
+      RAILS_ENV: production
+    entrypoint: ./docker/sidekiq_entrypoint.sh
 volumes:
   db-data:
   db-backups:
