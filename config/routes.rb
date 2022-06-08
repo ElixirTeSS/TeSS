@@ -30,18 +30,11 @@ Rails.application.routes.draw do
 
   #devise_for :users
   # Use custom invitations and registrations controllers that subclasses devise's
-  use_db = begin
-             User.table_exists?
-           rescue StandardError
-             false
-           end
-  if use_db
-    devise_for :users, :controllers => {
-      :registrations => 'tess_devise/registrations',
-      :invitations => 'tess_devise/invitations',
-      :omniauth_callbacks => 'callbacks'
-    }
-  end
+  devise_for :users, :controllers => {
+    :registrations => 'tess_devise/registrations',
+    :invitations => 'tess_devise/invitations',
+    :omniauth_callbacks => 'callbacks'
+  }
   #Redirect to users index page after devise user account update
   # as :user do
   #   get 'users', :to => 'users#index', :as => :user_root
