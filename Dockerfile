@@ -1,9 +1,6 @@
 #use ruby base image
 FROM ruby:3.0.1
 
-#set rails env
-ENV RAILS_ENV=development
-
 # set work dir
 WORKDIR /code
 
@@ -14,15 +11,12 @@ RUN apt update && apt install libpq-dev imagemagick nodejs -y
 COPY Gemfile Gemfile.lock ./
 
 # install gems
-RUN bundle install
+RUN bundle check || bundle install
 
-# add degug gem
-RUN gem install ruby-debug-ide
+# copy code
+COPY . .
 
-# Clean up server.pid
-COPY entrypoint.sh /usr/bin/
-RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["docker/entrypoint.sh"]
 
 # expose port
 EXPOSE 3000
