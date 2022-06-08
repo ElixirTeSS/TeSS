@@ -3,18 +3,18 @@ production:
     hostname: localhost
     port: 8983
     log_level: WARNING
-    path: /solr/default
+    path: /solr/tess_production
 
 development:
   solr:
     hostname: localhost
-    port: 8982
+    port: 8983
     log_level: INFO
-    path: /solr/development
+    path: /solr/tess_development
 
 test:
   solr:
     hostname: localhost
-    port: 8981
+    port: 8983
     log_level: WARNING
-    path: /solr/test
+    path: /solr/tess_test
