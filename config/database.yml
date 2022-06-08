@@ -7,11 +7,17 @@ default: &default
   username: <%= ENV.fetch("DB_USER") { Rails.application.secrets[:database][:username] } %>
   password: <%= ENV.fetch("DB_PASSWORD") { Rails.application.secrets[:database][:password] } %>
 
+<% if Rails.env.development? %>
 development:
   <<: *default
+<% end %>
 
+<% if Rails.env.test? %>
 test:
   <<: *default
+<% end %>
 
+<% if Rails.env.production? %>
 production:
   <<: *default
+<% end %>
