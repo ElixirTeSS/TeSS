@@ -43,7 +43,7 @@ Create TeSS configuration files:
 
 ### Setup the database (migrations + seed data + create admin user)
 
-    docker-compose run app bundle exec rake db:setup
+    docker-compose exec app bundle exec rake db:setup
 
 ### Access TeSS
 
@@ -59,21 +59,21 @@ TODO
 
 To force Solr to reindex all documents, you can run the following command:
 
-    docker-compose run app bundle exec rake sunspot:reindex
+    docker-compose exec app bundle exec rake sunspot:reindex
 
 ### Additional development commands
 
 Update the Gemfile.lock
 
-    docker-compose run app bundle install
+    docker-compose exec app bundle install
 
 Update all Gems
 
-    docker-compose run app bundle update --all
+    docker-compose exec app bundle update --all
 
 Update specific Gem
 
-    docker-compose run app bundle update <gem>
+    docker-compose exec app bundle update <gem>
 
 Rebuild the tess-app image when composing up.
 
@@ -110,16 +110,16 @@ The production deployment is configured in the `docker-compose-prod.yml` file.
 
 Run initial database setup:
 
-    docker-compose run app bundle exec rake db:setup
+    docker-compose exec app bundle exec rake db:setup
 
 Run database migrations:
 
-    docker-compose run app bundle exec rake db:migrate
+    docker-compose exec app bundle exec rake db:migrate
 
 Precompile the assets, necessary if any CSS/JS/images are changed after building the image:
 
-    docker-compose run app bundle exec rake assets:clean && bundle exec rake assets:precompile
+    docker-compose exec app bundle exec rake assets:clean && bundle exec rake assets:precompile
 
 Reindex Solr:
 
-    docker-compose run app bundle exec rake sunspot:reindex
+    docker-compose exec app bundle exec rake sunspot:reindex
