@@ -18,7 +18,7 @@
       <% end %>
       <!-- Info -->
       <div class="pull-right">
-        <% if @facet_params[:resource_type] == Material::ELEARNING_TYPE %>
+        <% if @facet_params[:resource_type] == 'e-learning' %>
           <%= info_button("What are e-learning materials in #{TeSS::Config.site['title_short']}?") do %>
             <%= render_markdown(MaterialsHelper::ELEARNING_MATERIALS_INFO) %>
           <% end %>

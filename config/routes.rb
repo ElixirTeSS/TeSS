@@ -119,7 +119,7 @@ Rails.application.routes.draw do
   end
 
   if TeSS::Config.feature['e-learnings'] == true
-    get 'elearning_materials' => 'materials#index', defaults: { 'resource_type' => Material::ELEARNING_TYPE }
+    get 'elearning_materials' => 'materials#index', defaults: { 'resource_type' => 'e-learning' }
   end
 
   if TeSS::Config.feature['invitation'] == true

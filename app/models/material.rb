@@ -1,8 +1,6 @@
 require 'rails/html/sanitizer'
 
 class Material < ApplicationRecord
-  ELEARNING_TYPE = 'e-learning'
-
   include PublicActivity::Common
   include LogParameterChanges
   include HasAssociatedNodes
