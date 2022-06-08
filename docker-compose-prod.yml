@@ -4,6 +4,7 @@ services:
     container_name: ${PREFIX}-app
     build:
       context: .
+      dockerfile: Dockerfile
     image: ${PREFIX}-app
     restart: always
     env_file: .env
@@ -94,8 +95,7 @@ services:
       - letsencrypt-data:/letsencrypt
   sidekiq:
     container_name: ${PREFIX}-sidekiq
-    build:
-      context: .
+    image: ${PREFIX}-app
     depends_on:
       - app
       - db

@@ -4,6 +4,8 @@ services:
     container_name: ${PREFIX}-app
     build:
       context: .
+      dockerfile: Dockerfile
+    image: ${PREFIX}-app
     restart: unless-stopped
     env_file: .env
     depends_on:
@@ -67,8 +69,7 @@ services:
       - redis-data:/data
   sidekiq:
     container_name: ${PREFIX}-sidekiq
-    build:
-      context: .
+    image: ${PREFIX}-app
     depends_on:
       - app
       - db
