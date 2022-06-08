@@ -5,7 +5,7 @@ FROM ruby:3.0.1
 WORKDIR /code
 
 # install dependencies
-RUN apt update && apt install libpq-dev imagemagick nodejs -y
+RUN apt-get update && apt-get install libpq-dev imagemagick nodejs -y
 
 # copy gemfile
 COPY Gemfile Gemfile.lock ./
