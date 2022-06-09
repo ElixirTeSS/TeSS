@@ -9,10 +9,11 @@ In order to run TeSS, you need to have the following prerequisites installed.
 - Git
 - Docker and Docker Compose
 
-These prerequisites a re out of scope for this document but you can find more information about them at the following links:
+These prerequisites are out of scope for this document but you can find more information about them at the following links:
 
 - [Git](https://git-scm.com/)
 - [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
 
 ## Development
 
