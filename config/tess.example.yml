@@ -39,19 +39,20 @@ default: &default
     image: elixir/hub-logo.png
     url: 'http://www.elixir-europe.org'
   feature:
-    e-learnings: true
+    e-learnings: false
     events: true
-    invitation: true
+    invitation: false
     materials: true
-    nodes: true
+    nodes: false
     collections: true
     providers: true
     subscription: true
     registration: true
-    sources: true
-    trainers: true
+    sources: false
+    trainers: false
     workflows: true
-    disabled: []
+    # Possible features to disable: biotools, topics, operations, sponsors, fairshare, county, fields_of_research, other_types, subsets, syllabus
+    disabled: ['fields_of_research', 'other_types', 'subsets', 'syllabus']
   placeholder:
     collection: 'placeholder-collection.png'
     provider: 'placeholder-organization.png'
