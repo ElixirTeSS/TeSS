@@ -104,13 +104,15 @@
                     title: t('events.hints.keywords') %>
 
   <!-- Field: Fields -->
-  <%= render partial: 'common/tree',
-             locals: { f: f,
-                       resource: @event,
-                       field_name: 'fields',
-                       field_label: 'Fields of Research',
-                       button_label: 'FoR Codes',
-                       title: t('events.hints.fields') } %>
+  <% if !TeSS::Config.feature['disabled'].include? 'ardc_fields_of_research' %>
+    <%= render partial: 'common/ardc_vocab_tree',
+               locals: { f: f,
+                         resource: @event,
+                         field_name: 'fields',
+                         field_label: 'Fields of Research',
+                         button_label: 'FoR Codes',
+                         title: t('events.hints.fields') } %>
+  <% end %>
 
   <!-- Field: Target Audience -->
   <%= f.multi_input :target_audience, errors: @event.errors[:target_audience], title: t('events.hints.targets') %>

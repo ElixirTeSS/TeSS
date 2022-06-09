@@ -61,8 +61,8 @@
                             title: t('profile.hints.expertise_technical') %>
 
           <!-- Field: Fields -->
-          <% if !TeSS::Config.feature['disabled'].include? 'fields_of_research' %>
-            <%= render partial: 'common/tree',
+          <% if !TeSS::Config.feature['disabled'].include? 'ardc_fields_of_research' %>
+            <%= render partial: 'common/ardc_vocab_tree',
                        locals: { f: f,
                                  resource: @user.profile,
                                  model_name: 'user[profile_attributes]',

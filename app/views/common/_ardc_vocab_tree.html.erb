@@ -9,7 +9,7 @@ PARAMETERS:
     required     - is a value required?
 
 Example Usage
-    render partial: 'common/tree',
+    render partial: 'common/ardc_vocab_tree',
            locals: { f: f,
                     resource: @event,
                     model_name: 'event',
@@ -20,7 +20,7 @@ Example Usage
 %>
 <script>
     $(document).on('ready turbolinks:load', function () {
-        initializeVocabTree();
+        ARDCVocabs.initializeVocabTree();
     });
 </script>
 
