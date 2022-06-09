@@ -21,8 +21,12 @@ set :bkup_script, "#{path}/scripts/pgsql_backup.sh"
 set :bkup_folder, "#{path}/shared/backups"
 
 # set log file
+FileUtils.mkdir_p("#{path}/shared/log")
 set :log_folder, "#{path}/shared/log"
-set :output, "#{log_folder}/cron.log"
+FileUtils.touch("#{log_folder}/cron.log")
+unless ENV["RAILS_LOG_TO_STDOUT"]
+  set :output, "#{log_folder}/cron.log"
+end
 
 # Generate a new sitemap...
 if !schedules['sitemap'].nil?
