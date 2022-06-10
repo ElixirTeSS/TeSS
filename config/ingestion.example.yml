@@ -1,3 +1,11 @@
 name: production
 logfile: log/ingestion.log
+loglevel: 0
 username: scraper
+sources:
+  - id: 1
+    provider: 'eventbrite'              # content provider's title
+    url: https://www.eventbrite.nl/     # the root URL required to access the source
+    method: html                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
