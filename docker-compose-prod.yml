@@ -12,21 +12,16 @@ services:
       - db
       - solr
       - redis
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.tess.tls=true
-      - traefik.http.routers.tess.tls.certresolver=myresolver
-      - traefik.http.routers.tess.rule=Host(`${HOSTNAME}`)
-      - traefik.http.routers.tess.entrypoints=websecure
-      - traefik.http.services.tess.loadbalancer.server.port=3000
+    ports:
+      - '3000:3000'
     volumes:
       - uploads:/code/public/system
       - ./config/tess.yml:/code/config/tess.yml
       - ./config/secrets.yml:/code/config/secrets.yml
     environment:
       RAILS_ENV: production
-      RAILS_SERVE_STATIC_FILES: 'true'
       RAILS_LOG_TO_STDOUT: 'true'
+      RAILS_SERVE_STATIC_FILES: 'true'
   db:
     container_name: ${PREFIX}-db
     logging:
@@ -41,20 +36,6 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - db-data:/var/lib/postgresql/data
-  dbbackups:
-    container_name: ${PREFIX}-dbbackups
-    image: kartoza/pg-backup:14-3.1
-    volumes:
-      - db-backups:/backups
-    environment:
-      - POSTGRES_HOST=db
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASS=${DB_PASSWORD}
-      - DBLIST=${DB_NAME}
-      - REMOVE_BEFORE=7
-    restart: on-failure
-    depends_on:
-      - db
   solr:
     container_name: ${PREFIX}-solr
     image: solr:8
@@ -72,27 +53,6 @@ services:
     restart: always
     volumes:
       - redis-data:/data
-  traefik:
-    container_name: ${PREFIX}-traefik
-    image: traefik:v2.6
-    restart: always
-    env_file: .env
-    command:
-      - --providers.docker=true
-      - --providers.docker.exposedbydefault=false
-      - --entrypoints.webinsecure.address=:80
-      - --entrypoints.websecure.address=:443
-      - --entrypoints.webinsecure.http.redirections.entrypoint.to=websecure
-      - --entrypoints.webinsecure.http.redirections.entrypoint.scheme=https
-      - --certificatesresolvers.myresolver.acme.email=${CONTACT_EMAIL}
-      - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
-      - --certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=webinsecure
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - letsencrypt-data:/letsencrypt
   sidekiq:
     container_name: ${PREFIX}-sidekiq
     image: ${PREFIX}-app
@@ -108,10 +68,23 @@ services:
     environment:
       RAILS_ENV: production
     entrypoint: ./docker/sidekiq_entrypoint.sh
+  dbbackups:
+    container_name: ${PREFIX}-dbbackups
+    image: kartoza/pg-backup:14-3.1
+    volumes:
+      - db-backups:/backups
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASS=${DB_PASSWORD}
+      - DBLIST=${DB_NAME}
+      - REMOVE_BEFORE=7
+    restart: on-failure
+    depends_on:
+      - db
 volumes:
   db-data:
   db-backups:
   solr-data:
   redis-data:
-  letsencrypt-data:
   uploads:

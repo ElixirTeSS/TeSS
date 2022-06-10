@@ -94,7 +94,7 @@ Create the `.env` file:
     sed s/DB_PASSWORD=.*/DB_PASSWORD=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16`/ -i .env
     sed s/ADMIN_PASSWORD=.*/ADMIN_PASSWORD=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16`/ -i .env
 
-Make sure to also set `HOSTNAME`, `CONTACT_EMAIL`, `ADMIN_EMAIL` and `ADMIN_USERNAME`.
+Make sure to also set `ADMIN_EMAIL` and `ADMIN_USERNAME` (please note `admin` is not available as a username).
 
 Setup the TeSS configuration files: 
 
