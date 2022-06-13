@@ -1,3 +1,6 @@
+open_to_all:
+  title: Open to all
+  description: No restrictions on eligibility
 first_come_first_served:
   title: First come first served
   description: Registrations will be accepted in the order received

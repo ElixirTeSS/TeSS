@@ -13,11 +13,15 @@ module Ingestors
           process: method(:process_elixir) },
         { name: 'Eventbrite API v3',
           url: 'https://www.eventbriteapi.com/v3/',
-          process: method(:process_eventbrite) }
+          process: method(:process_eventbrite) },
+        { name: 'VU Amsterdam',
+          url: 'https://vu-nl.libcal.com/',
+          process: method(:process_vu) },
       ]
 
       # cached API object responses
       @eventbrite_objects = {}
+      @VU_objects = {}
     end
 
     def read(url)
@@ -38,7 +42,7 @@ module Ingestors
         process.call(url)
 
       rescue Exception => e
-        @messages << "#{self.class.name} failed with: #{e.message}"
+        @messages << "#{self.class.name} failed with: #{e.message} #{e.backtrace}"
       end
 
       # finished
@@ -396,6 +400,73 @@ module Ingestors
             @ingested += 1
           rescue Exception => e
             @messages << "Extract event fields failed with: #{e.message}"
+          end
+        end
+      end
+    end
+
+    def process_vu(url)
+      # execute REST request
+      results = get_JSON_response url
+      data = results.to_h['results']
+
+      # extract materials from results
+      unless data.nil? or data.size < 1
+        data.each do |item|
+          begin
+            # create new event
+            event = Event.new
+
+            # extract event details from
+            attr = item
+            puts attr.keys
+            event.title = attr['title']
+            event.url = attr['url'].strip unless attr['url'].nil?
+            event.organizer = attr['org']
+            event.description = convert_description attr['description']
+            event.start = attr['startdt']
+            event.end = attr['enddt']
+            event.venue = attr['location']
+            event.city = 'Amsterdam'
+            event.country = 'The Netherlands'
+            event.source = 'VU'
+            event.online = attr['online_event']
+            event.contact = attr['orgurl']
+            event.timezone = 'Amsterdam'
+
+            # array fields
+            event.keywords = []
+            attr['categories_arr'].each { |category| event.keywords << category['name'] } unless attr['categories'].nil?
+
+            event.event_types = []
+            unless attr['event_types'].nil?
+              attr['event_types'].each do |key|
+                value = convert_event_types(key)
+                event.event_types << value unless value.nil?
+              end
+            end
+
+            event.target_audience = []
+            attr['audiences'].each { |audience| event.keywords << audience.name } unless attr['audience'].nil?
+
+            event.host_institutions = []
+            attr['host-institutions'].each { |host| event.host_institutions << host } unless attr['host-institutions'].nil?
+
+            # dictionary fields
+            event.eligibility = []
+            unless attr['eligibility'].nil?
+              attr['eligibility'].each do |key|
+                value = convert_eligibility(key)
+                event.eligibility << value unless value.nil?
+              end
+            end
+
+            # add event to events array
+            add_event(event)
+            @ingested += 1
+          rescue Exception => e
+           @messages << "Extract event fields failed with: #{e.message}"
+           raise e if true
           end
         end
       end
