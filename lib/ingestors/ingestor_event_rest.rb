@@ -1,5 +1,7 @@
 require 'open-uri'
 require 'csv'
+require 'nokogiri'
+require 'active_support/core_ext/hash'
 
 module Ingestors
   class IngestorEventRest < IngestorEvent
@@ -17,6 +19,9 @@ module Ingestors
         { name: 'VU Amsterdam',
           url: 'https://vu-nl.libcal.com/',
           process: method(:process_vu) },
+        { name: 'surf',
+          url: 'https://www.surf.nl/sitemap.xml',
+          process: method(:process_surf) },
       ]
 
       # cached API object responses
@@ -467,6 +472,45 @@ module Ingestors
           rescue Exception => e
            @messages << "Extract event fields failed with: #{e.message}"
            raise e if true
+          end
+        end
+      end
+    end
+
+    def process_surf(url)
+      Hash.from_xml(Nokogiri::XML(URI.open(url)).to_s)['sitemapindex']['sitemap'].each do |page|
+        puts page['loc']
+        Hash.from_xml(Nokogiri::XML(URI.open(page['loc'])).to_s)['urlset']['url'].each do |event_page|
+          if event_page['loc'].include?('/en/agenda/')
+            sleep(1)
+            puts event_page['loc']
+            data_json = Nokogiri::HTML5.parse(URI.open(event_page['loc'])).css('script[type="application/ld+json"]')
+            if data_json.length > 0
+              data = JSON.parse(data_json.first.text)
+              begin
+                # create new event
+                event = Event.new
+
+                # extract event details from
+                attr = data['@graph'].first
+                event.title = attr['name']
+                event.url = attr['url'].strip unless attr['url'].nil?
+                event.description = convert_description attr['description']
+                event.start = attr['startDate']
+                event.end = attr['endDate']
+                event.venue = attr['location']
+                event.source = 'SURF'
+                event.online = true
+                event.timezone = 'Amsterdam'
+
+                # add event to events array
+                add_event(event)
+                @ingested += 1
+              rescue Exception => e
+              @messages << "Extract event fields failed with: #{e.message}"
+              raise e if true
+              end
+            end
           end
         end
       end

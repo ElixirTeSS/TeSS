@@ -23,3 +23,9 @@ sources:
     resource_type: event                # event or material
     token: 'CIUPWOVRJPMUU3FCXCP7'
     enabled: true
+  - id: 4
+    provider: 'surf'              # content provider's title
+    url: https://www.surf.nl/sitemap.xml     # the root URL required to access the source
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
