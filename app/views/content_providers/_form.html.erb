@@ -20,10 +20,11 @@
     <%= f.input :user_id, label: 'Owner', collection: User.all %>
   <% end %>
 
-  <%= f.dropdown :approved_editors, options: get_list_of_user_names, label: 'Approved Editors' %>
+  <% if !TeSS::Config.feature['disabled'].include? 'approved_editors' %>
+    <%= f.dropdown :approved_editors, options: get_list_of_user_names, label: 'Approved Editors' %>
+  <% end %>
 
   <%= f.multi_input :keywords %>
-
 
   <!-- Nodes: check feature enabled -->
   <% if TeSS::Config.feature['nodes'] %>
