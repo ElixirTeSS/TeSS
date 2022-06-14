@@ -2,20 +2,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= site_title %></title>
   <%= stylesheet_link_tag 'application', integrity: true, media: 'all', 'data-turbolinks-track' => true %>
-  <%= favicon_link_tag('favicon.png', :type => 'image/png') %>
+
+  <% if TeSS::Config.site['favicon'] %>
+    <%= favicon_link_tag(TeSS::Config.site['favicon'], :type => 'image/png') %>
+  <% end %>
+
   <%= javascript_include_tag 'application', integrity: true, 'data-turbolinks-track' => true %>
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.secrets.google_maps_api_key -%>&libraries=places"></script>
+  <% unless Rails.application.secrets.google_maps_api_key.blank? %>
+    <%= javascript_tag src: "https://maps.googleapis.com/maps/api/js?key=#{Rails.application.secrets.google_maps_api_key}&libraries=places" %>
+  <% end %>
+
   <%# signup_js.html_safe -%>
   <%= csrf_meta_tags %>
   <% if TeSS::Config.prevent_robot_indexing %>
-      <meta name="robots" content="noindex">
+    <meta name="robots" content="noindex">
   <% end -%>
-  <% if Rails.application.secrets.google_analytics_code %>
-      <%= render 'layouts/google_analytics' %>
+
+  <% if Rails.application.secrets.google_analytics_code && Rails.env.production? %>
+    <%= render 'layouts/google_analytics' %>
   <% end %>
+
   <% if content_for? :og_header %>
-      <%= yield :og_header %>
+    <%= yield :og_header %>
   <% else %>
-      <%= render :partial => 'common/default_og' %>
+    <%= render :partial => 'common/default_og' %>
   <% end %>
 </head>

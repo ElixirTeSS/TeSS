@@ -1,0 +1,38 @@
+<div class="page-header">
+  <h2><%= t '.title', default: 'Invited Users' %></h2>
+</div>
+
+<div id="content">
+  <div class="row">
+    <div class="content_action">
+      <!-- buttons -->
+      <%= link_to new_user_invitation_path, class: 'btn btn-primary' do %>
+        <i class="fa fa-envelope-square"></i> Invite User by Email
+      <% end %>
+
+      <%= link_to users_path, class: 'btn btn-info align-self-end' do %>
+        Back
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row">
+    <table class="table">
+      <thead>
+      <th scope="col">Email</th>
+      <th scope="col">Last Sent at</th>
+      <th scope="col">Sent by</th>
+      </thead>
+      <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.email %></td>
+          <td><%= user.invitation_sent_at %></td>
+          <td><%= user.get_inviter %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+

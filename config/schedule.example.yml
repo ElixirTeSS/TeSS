@@ -1,0 +1,16 @@
+# set timing attributes for scheduled tasks
+sitemap:
+  every: day
+  at: '1am'
+subscriptions:
+  every: day
+  at: '2am'
+ingestions:
+  every: day
+  at: '3am'
+backups:
+  every: saturday
+  at: '12:30am'
+logrotate:
+  every: day
+  at: '11pm'

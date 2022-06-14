@@ -1,130 +1,192 @@
 <script>
-    $(function(){
-        if (<%=@event.online?%>){
-            $('.address_content').hide()
+    function switchCostFields(option) {
+        //alert('selected = ' + option)
+        if (!option || option == 'free' || option == '') {
+            $('.event_cost_currency').hide()
+            $('.event_cost_value').hide()
+            $('#event_cost_currency').val("")
+            $('#event_cost_value').val("")
+        } else {
+            $('.event_cost_currency').show()
+            $('.event_cost_value').show()
         }
-    })
-  $(document).on('change', '.location', function(){
-      console.log(this.value)
-      if (this.value == 'true'){
-          $('.address_content').hide()
-      } else {
-          $('.address_content').show()
-      }
-  })
+    }
 
+    $(document).on('change', '.event_cost_basis', function () {
+        switchCostFields($('.event_cost_basis option:selected').val());
+    });
+
+    $(document).on('ready turbolinks:load', function () {
+        switchCostFields($('.event_cost_basis option:selected').val());
+    });
 </script>
-<%= simple_form_for @event, html: { id: 'event_form' }  do |f| %>
 
-    <%= render partial: 'common/error_summary', locals: { resource: @event } %>
+<%= simple_form_for @event, html: { id: 'event_form' } do |f| %>
 
-    <div class="form-group">
-      <%= label_tag('type')%> <br/>
-      <div class="btn-group" data-toggle="buttons">
-        <label class="btn btn-default <%= 'active' unless @event.online? %>">
-          <%= f.radio_button 'online', 'false', class: 'location', checked: !@event.online?, autocomplete: 'off' %>
-          <%= icon_for(:face_to_face, :small)%> Face-to-face
-        </label>
-        <label class="btn btn-default <%= 'active' if @event.online? %>">
-          <%= f.radio_button 'online', 'true', class: 'location', checked: @event.online?, autocomplete: 'off' %>
-          <i class="fa fa-desktop" aria-hidden="true" id="online-symbol"></i> Online
-        </label>
-      </div>
+  <%= render partial: 'common/error_summary', locals: { resource: @event } %>
+
+  <!-- Field: Online? -->
+  <div class="form-group">
+    <%= label_tag('type') %> <br/>
+    <div class="btn-group" data-toggle="buttons">
+      <label class="btn btn-default <%= 'active' unless @event.online? %>">
+        <%= f.radio_button 'online', 'false', class: 'location', checked: !@event.online?, autocomplete: 'off' %>
+        <%= icon_for(:face_to_face, :small) %> Face-to-face
+      </label>
+      <label class="btn btn-default <%= 'active' if @event.online? %>">
+        <%= f.radio_button 'online', 'true', class: 'location', checked: @event.online?, autocomplete: 'off' %>
+        <i class="fa fa-desktop" aria-hidden="true" id="online-symbol"></i> Online
+      </label>
     </div>
+  </div>
 
-    <%# Necessary to allow removal of all field locks %>
-    <%= hidden_field_tag 'event[locked_fields][]', '' %>
+  <%# Necessary to allow removal of all field locks %>
+  <%= hidden_field_tag 'event[locked_fields][]', '' %>
 
-    <%= f.input :title, as: :string, field_lock: true %>
+  <!-- Field: Title -->
+  <%= f.input :title, as: :string, field_lock: true, input_html: { title: t('events.hints.title') } %>
 
-    <%= f.input :subtitle, field_lock: true %>
+  <!-- Field: Sub-title -->
+  <%= f.input :subtitle, field_lock: true, input_html: { title: t('events.hints.subtitle') } %>
 
-    <%= render partial: 'common/url_checker', locals: { f: f, url: events_check_exists_path } %>
+  <!-- Field: URL -->
+  <%= render partial: 'common/url_checker',
+             locals: { f: f, url: events_check_exists_path, title: t('events.hints.url') } %>
 
-    <%= f.input :start, as: :datetime_picker, field_lock: true %>
+  <!-- Field: Description -->
+  <%= f.input :description, as: :markdown_area, input_html: { rows: '5', title: t('events.hints.description') },
+              field_lock: true %>
 
-    <%= f.input :end, as: :datetime_picker, field_lock: true %>
+  <!-- Field: Start -->
+  <%= f.input :start, as: :datetime_picker, field_lock: true, input_html: { title: t('events.hints.start') } %>
 
-    <div class="address_content">
-      <%= render partial: 'events/partials/address_finder', locals: { f: f } %>
-    </div>
+  <!-- Field: End -->
+  <%= f.input :end, as: :datetime_picker, field_lock: true, input_html: { title: t('events.hints.end') } %>
 
-    <%= f.input :organizer, field_lock: true %>
+  <!-- Field: Duration -->
+  <%= f.input :duration, as: :string, input_html: { title: t('events.hints.duration') } %>
 
-    <%= f.input :content_provider_id, label: 'Content provider (where the event metadata is obtained from)',
-                collection: ContentProvider.all, label_method: :title, value_method: :id, include_blank: true,
-                field_lock: true %>
+  <!-- Field: Prerequisites -->
+  <%= f.input :prerequisites, as: :markdown_area, input_html: { rows: '3', title: t('events.hints.prerequisites') } %>
 
-    <%= f.dropdown :node_ids, options: format_for_dropdown(Node.order(:name).all), label: 'Nodes' %>
+  <!-- Field: Learning Objectives-->
+  <%= f.input :learning_objectives, as: :markdown_area, input_html: { rows: '3', title: t('events.hints.objectives') },
+              field_lock: true %>
 
-    <%= f.input :description, as: :markdown_area, input_html: { rows: '10' }, field_lock: true %>
+  <!-- Field: Location -->
+  <div class="address_content">
+    <%= render partial: 'events/partials/address_finder', locals: { f: f } %>
+  </div>
 
-    <%= f.dropdown :event_types, options: EventTypeDictionary.instance.options_for_select, label: 'Event type' %>
+  <!-- Field: Timezone -->
+  <%= f.input :timezone, as: :time_zone, field_lock: true, priority: priority_time_zones,
+              input_html: { title: t('events.hints.timezone') } %>
 
-    <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term',
-                        id_field: :uri, label_field: :preferred_label %>
+  <!-- Field: Eligibility -->
+  <%= f.dropdown :eligibility,
+                 options: EligibilityDictionary.instance.options_for_select,
+                 label: 'Eligibility',
+                 errors: @event.errors[:eligibility],
+                 title: t('events.hints.eligibility') %>
 
+  <!-- Field: Organiser -->
+  <%= f.input :organizer, field_lock: true, label: 'Organiser', input_html: { title: t('events.hints.organizer') } %>
+
+  <!-- Field: Contact -->
+  <%= f.input :contact, input_html: { rows: '5', title: t('events.hints.contact') }, field_lock: true %>
+
+  <!-- Field: Host Institutions -->
+  <%= f.multi_input :host_institutions, errors: @event.errors[:host_institutions],
+                    title: t('events.hints.hosts') %>
+
+  <!-- Field: Keywords -->
+  <%= f.multi_input :keywords, errors: @event.errors[:keywords],
+                    title: t('events.hints.keywords') %>
+
+  <!-- Field: Fields -->
+  <% if !TeSS::Config.feature['disabled'].include? 'ardc_fields_of_research' %>
+    <%= render partial: 'common/ardc_vocab_tree',
+               locals: { f: f,
+                         resource: @event,
+                         field_name: 'fields',
+                         field_label: 'Fields of Research',
+                         button_label: 'FoR Codes',
+                         title: t('events.hints.fields') } %>
+  <% end %>
+
+  <!-- Field: Target Audience -->
+  <%= f.multi_input :target_audience, errors: @event.errors[:target_audience], title: t('events.hints.targets') %>
+
+  <!-- Field: Topics -->
+  <% if !TeSS::Config.feature['disabled'].include? 'topics' %>
+    <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term', label: 'Topics',
+                        id_field: :uri, label_field: :preferred_label, input_html: { title: t('events.hints.topics') } %>
+  <% end %>
+
+  <!-- Operations: check disabled -->
+  <% if !TeSS::Config.feature['disabled'].include? 'operations' %>
     <%= f.autocompleter :operations, url: edam_operations_path, template: 'autocompleter/term',
                         id_field: :uri, label_field: :preferred_label %>
+  <% end %>
 
-    <%= f.multi_input :keywords %>
+  <!-- Field: Capacity -->
+  <%= f.input :capacity, as: :integer, field_lock: true,
+              input_html: { title: t('events.hints.capacity'), min: '0' } %>
 
-    <%= f.multi_input :target_audience %>
+  <!-- Field: Event Type -->
+  <%= f.dropdown :event_types, options: EventTypeDictionary.instance.options_for_select, label: 'Event type',
+                 errors: @event.errors[:event_types], title: t('events.hints.event_type') %>
 
-    <%= f.multi_input :host_institutions %>
+  <!-- Field: Technology Requirements -->
+  <%= f.input :tech_requirements, as: :markdown_area, input_html: { rows: '3', title: t('events.hints.requirements') } %>
 
-    <%= f.multi_input :sponsors %>
+  <!-- Field: Credit or Recognition -->
+  <%= f.input :recognition, as: :string, field_lock: true, label: 'Credit or Recognition of Attendance',
+              input_html: { title: t('events.hints.recognition') } %>
 
-    <%# TODO: add autocomplete to this field %>
-    <%= f.input :timezone, field_lock: true %>
+  <!-- Field: External Resources -->
+  <%= render partial: 'events/partials/external_resources', locals: { f: f } %>
 
-    <%= f.input :contact, input_html: { rows: '5' }, field_lock: true %>
+  <!-- Field: Costs -->
+  <div class="form-group">
+    <%= f.input :cost_basis, collection: CostBasisDictionary.instance.options_for_select,
+                prompt: 'Select a cost basis...', input_html: { title: t('events.hints.cost_basis') } %>
+    <%= f.input :cost_currency, collection: currency_collection, value_method: :second,
+                prompt: 'Select the currency...', input_html: { title: t('events.hints.cost_currency') } %>
+    <%= f.input :cost_value, as: :decimal, label: 'Cost', input_html: { title: t('events.hints.cost_value'), min: '0' } %>
+  </div>
 
-    <%= f.input :capacity, field_lock: true %>
+  <!-- Field: Content Provider -->
+  <%= f.input :content_provider_id, label: 'Content provider (where the event metadata is obtained from)',
+              collection: current_user.get_editable_providers, label_method: :title, value_method: :id, include_blank: true,
+              field_lock: true %>
 
-    <%= f.dropdown :eligibility, options: EligibilityDictionary.instance.options_for_select, label: 'Eligibility' %>
+  <!-- Field: Materials -->
+  <%= f.internal_resource :materials %>
+  <div class="row">
+    <%= render partial: 'common/materials_suggestions', locals: { title_element: 'event_title' } %>
+  </div>
 
-    <div class="form-group">
-      <%= f.label 'for_profit' %> <%= icon_for(:for_profit, :small) %><%= f.field_lock :for_profit %>
-      <%= f.check_box :for_profit %>
-    </div>
+  <!-- Fields: that need to be check for enabled/disabled -->
 
-    <%= f.internal_resource :materials %>
+  <!-- Nodes: check feature enabled -->
+  <% if TeSS::Config.feature['nodes'] %>
+    <%= f.dropdown :node_ids, options: format_for_dropdown(Node.order(:name).all), label: 'Nodes',
+                   errors: @event.errors[:node_ids] %>
+  <% end %>
 
-    <div class="row">
-      <%= render partial: 'common/materials_suggestions', locals: { title_element: 'event_title' } %>
-    </div>
+  <!-- Sponsors: check disabled -->
+  <% if !TeSS::Config.feature['disabled'].include? 'sponsors' %>
+    <%= f.multi_input :sponsors, errors: @event.errors[:sponsors] %>
+  <% end %>
 
-    <div class="form-group" id="external-resources">
-      <%= f.label :external_resources %>
-      <%= f.field_lock :external_resources %>
 
-      <div id="external-resources-list">
-        <% @event.external_resources.each_with_index do |external_resource, index| %>
-            <%= render partial: 'common/external_resource_form',
-                       locals: { form_name: 'event', index: index, external_resource: external_resource } %>
-        <% end %>
-      </div>
-
-      <div class="row">
-        <%= render :partial => 'common/fairsharing_suggestions', :locals => {:title_element => 'material_title'} %>
-      </div>
-
-      <div class="row">
-        <%= render partial: 'common/biotools_suggestions', locals: { title_element: 'event_title' } %>
-      </div>
-
-      <a href="#" id="add-external-resource-btn" class="btn btn-info">
-        <i class="fa fa-plus"></i> Add external resource
-      </a>
-    </div>
-
-    <div class="form-group">
-      <%= f.submit ( f.object.new_record? ? "Add" : "Update") + " event", :class => 'btn btn-primary' %>
-      <%= link_to 'Back', :back, :class=>"btn btn-info" %>
-      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                  :back, :class => 'btn btn-default' %>
-    </div>
+  <div class="form-group">
+    <%= f.submit (f.object.new_record? ? "Add" : "Update") + " event", :class => 'btn btn-primary' %>
+    <%= link_to 'Back', :back, :class => "btn btn-info" %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                :back, :class => 'btn btn-default' %>
+  </div>
 <% end %>
 
 <div id="external-resource-template" style="display: none">

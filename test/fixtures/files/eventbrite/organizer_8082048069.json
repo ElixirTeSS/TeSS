@@ -1,0 +1,28 @@
+{
+  "description": {
+    "text": "The Australian Research Data Commons (ARDC) is a transformational initiative that enables Australian research community and industry access to nationally significant, leading edge data intensive eInfrastructure, platforms, skills and collections of high-quality data.",
+    "html": "<p>The Australian Research Data Commons (ARDC) is a transformational initiative that enables Australian research community and industry access to nationally significant, leading edge data intensive eInfrastructure, platforms, skills and collections of high-quality data.<\/p>"
+  },
+  "long_description": {
+    "text": null,
+    "html": "<p><\/p>"
+  },
+  "follow_status": {
+    "followed_by_you": false,
+    "followed_at": null,
+    "num_followers": 16
+  },
+  "resource_uri": "https://www.eventbriteapi.com/v3/organizers/8082048069/",
+  "_type": "organizer",
+  "id": "8082048069",
+  "name": "ARDC",
+  "url": "https://www.eventbrite.com.au/o/ardc-8082048069",
+  "num_past_events": 0,
+  "num_future_events": 0,
+  "website": "https://ardc.edu.au/",
+  "twitter": "ARDC_AU",
+  "organization_id": "34338661734",
+  "disable_marketing_opt_in": false,
+  "logo_id": null,
+  "logo": null
+}

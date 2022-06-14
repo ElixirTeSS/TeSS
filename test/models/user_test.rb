@@ -190,4 +190,28 @@ class UserTest < ActiveSupport::TestCase
     assert_includes User.with_role('unverified_user', 'registered_user'), users(:regular_user)
     assert_includes User.with_role('unverified_user', 'registered_user'), users(:unverified_user)
   end
+
+  test 'autocompleting users' do
+    user = users(:regular_user)
+    another = users(:another_regular_user)
+    basic = users(:basic_user)
+
+    # Should match on username
+    assert_includes User.with_query('Bo'), user
+    assert_not_includes User.with_query('Bo'), another
+    assert_includes User.with_query('Bob'), user
+    assert_not_includes User.with_query('Boba'), user
+
+    # Should match on first name
+    assert_includes User.with_query('Regi'), user
+    assert_not_includes User.with_query('Regi'), another
+    assert_includes User.with_query('Ant'), another
+
+    # Should match on last name
+    assert_includes User.with_query('User'), user
+
+    # Should be chainable (so can exclude unverified users)
+    assert_includes User.with_query('basic'), basic
+    assert_not_includes User.with_role('registered_user').with_query('basic'), basic
+  end
 end

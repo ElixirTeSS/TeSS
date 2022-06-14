@@ -1,3 +1,4 @@
+# The concern for searchable index
 module SearchableIndex
   extend ActiveSupport::Concern
 
@@ -33,17 +34,9 @@ module SearchableIndex
 
   def set_params
     # If the model uses an alias, use that for the search instead
-    if defined? controller_name.classify.constantize.alias
-      @model = controller_name.classify.constantize.alias.constantize
-    else
-      @model = controller_name.classify.constantize
-    end
+    @model = controller_name.classify.constantize
 
     @facet_params = params.permit(*@model.facet_keys_with_multiple).to_h
-    # Add any preexisting filters from the model
-    if defined? controller_name.classify.constantize.filter
-      @facet_params = @facet_params.merge(controller_name.classify.constantize.filter)
-    end
     @search_params = params[:q] || ''
     @sort_by = params[:sort].blank? ? 'default' : params[:sort]
   end

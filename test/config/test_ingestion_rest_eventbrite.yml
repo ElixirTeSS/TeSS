@@ -1,0 +1,5 @@
+name: rest_eventbrite
+logfile: log/ingestion.eventbrite.log
+loglevel: 0
+username: ingestor
+sources:

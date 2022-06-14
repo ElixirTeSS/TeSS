@@ -1,0 +1,29 @@
+language: ruby
+
+dist: bionic
+
+branches:
+  only:
+  - master
+
+cache: bundler
+
+addons:
+  postgresql: "9.4"
+
+services:
+  - postgresql
+
+before_install:
+  - sudo apt update
+  - sudo apt install openssl
+  - gem install bundler -v '~> 2.2.27'
+
+before_script:
+  - cp config/tess.example.yml config/tess.yml
+  - cp config/secrets.travis.yml config/secrets.yml
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - bundle exec rake db:setup
+  
+after_success:
+  - bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r report.xml

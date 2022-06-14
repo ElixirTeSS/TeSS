@@ -4,11 +4,10 @@ services:
     container_name: ${PREFIX}-app
     build:
       context: .
-      dockerfile: Dockerfile.prod
+      dockerfile: Dockerfile
     image: ${PREFIX}-app
     restart: always
-    env_file:
-      - .env-production
+    env_file: .env
     depends_on:
       - db
       - solr
@@ -16,31 +15,59 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      - .:/code
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.tess.tls=true
-      - traefik.http.routers.tess.tls.certresolver=myresolver
-      - traefik.http.routers.tess.rule=Host(`${HOSTNAME}`)
-      - traefik.http.routers.tess.entrypoints=websecure
-      - traefik.http.services.tess.loadbalancer.server.port=3000
+      - uploads:/code/public/system
+      - ./config/tess.yml:/code/config/tess.yml
+      - ./config/secrets.yml:/code/config/secrets.yml
+    environment:
+      RAILS_ENV: production
+      RAILS_LOG_TO_STDOUT: 'true'
+      RAILS_SERVE_STATIC_FILES: 'true'
   db:
     container_name: ${PREFIX}-db
     logging:
       driver: none
     image: postgres:14.2
     restart: always
-    env_file:
-      - .env-production
+    env_file: .env
     environment:
       PGDATA: /var/lib/postgresql/data
-      POSTGRES_DB: ${DB_NAME}_production
+      POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - '5432:5432'
     volumes:
       - db-data:/var/lib/postgresql/data
+  solr:
+    container_name: ${PREFIX}-solr
+    image: solr:8
+    restart: always
+    volumes:
+      - solr-data:/var/solr
+      - ./solr:/opt/solr/server/solr/configsets/production
+    command:
+      - solr-precreate
+      - tess
+      - /opt/solr/server/solr/configsets/production
+  redis:
+    container_name: ${PREFIX}-redis
+    image: redis:6
+    restart: always
+    volumes:
+      - redis-data:/data
+  sidekiq:
+    container_name: ${PREFIX}-sidekiq
+    image: ${PREFIX}-app
+    depends_on:
+      - app
+      - db
+      - redis
+    volumes:
+      - uploads:/code/public/system
+      - ./config/tess.yml:/code/config/tess.yml
+      - ./config/secrets.yml:/code/config/secrets.yml
+    env_file: .env
+    environment:
+      RAILS_ENV: production
+    entrypoint: ./docker/sidekiq_entrypoint.sh
   dbbackups:
     container_name: ${PREFIX}-dbbackups
     image: kartoza/pg-backup:14-3.1
@@ -50,57 +77,14 @@ services:
       - POSTGRES_HOST=db
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASS=${DB_PASSWORD}
-      - DBLIST=${DB_NAME}_production
+      - DBLIST=${DB_NAME}
       - REMOVE_BEFORE=7
     restart: on-failure
     depends_on:
       - db
-  solr:
-    container_name: ${PREFIX}-solr
-    image: solr:8
-    restart: always
-    ports:
-      - '8983:8983'
-    volumes:
-      - solr-data:/var/solr
-      - ./solr:/opt/solr/server/solr/configsets/production
-    command:
-      - solr-precreate
-      - production
-      - /opt/solr/server/solr/configsets/production
-  redis:
-    container_name: ${PREFIX}-redis
-    image: redis:6
-    restart: always
-    ports:
-      - '6379:6379'
-    volumes:
-      - redis-data:/data
-  traefik:
-    container_name: ${PREFIX}-traefik
-    image: traefik:v2.6
-    restart: always
-    env_file:
-      - .env-production
-    command:
-      - --providers.docker=true
-      - --providers.docker.exposedbydefault=false
-      - --entrypoints.webinsecure.address=:80
-      - --entrypoints.websecure.address=:443
-      - --entrypoints.webinsecure.http.redirections.entrypoint.to=websecure
-      - --entrypoints.webinsecure.http.redirections.entrypoint.scheme=https
-      - --certificatesresolvers.myresolver.acme.email=${CONTACT_EMAIL}
-      - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
-      - --certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=webinsecure
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - letsencrypt-data:/letsencrypt
 volumes:
   db-data:
   db-backups:
   solr-data:
   redis-data:
-  letsencrypt-data:
+  uploads:

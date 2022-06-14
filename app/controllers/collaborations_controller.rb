@@ -1,3 +1,4 @@
+# The controller for actions related to the Collaborations model
 class CollaborationsController < ApplicationController
 
   before_action :get_resource

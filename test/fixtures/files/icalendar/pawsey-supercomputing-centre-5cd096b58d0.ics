@@ -1,0 +1,31 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Pawsey Supercomputing Centre - ECPv5.1.4//NONSGML v1.0//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Pawsey Supercomputing Centre
+X-ORIGINAL-URL:https://pawsey.org.au
+X-WR-CALDESC:Events for Pawsey Supercomputing Centre
+BEGIN:VTIMEZONE
+TZID:Australia/Perth
+BEGIN:STANDARD
+TZOFFSETFROM:+0800
+TZOFFSETTO:+0800
+TZNAME:AWST
+DTSTART:20220101T000000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+DTSTART;TZID=Australia/Perth:20220404T093000
+DTEND;TZID=Australia/Perth:20220404T160000
+DTSTAMP:20220323T042804
+CREATED:20220317T064139Z
+LAST-MODIFIED:20220322T080855Z
+UID:17701-1649064600-1649088000@pawsey.org.au
+SUMMARY:EoI 1-Day Introduction to AMD GPUs (AMD Instinct Architecture and ROCm)
+DESCRIPTION:This is a hands-on\, online event. Places are limited so register only if you plan to attend.\n\nJoin AMD Specialists to learn about AMD Instinct GPUs and ROCm toolchain\, including HIP basics. The training focuses on both HPC and AI ML using containers from both AMD’s Github ROCm source repository and the New AMD Infinity Hub.\n\nAgenda:  \n\nOverview of MI200 (AMD Instinct Architecture and Introduction to ROCm)\nCourse Part 1 (2Hrs) + 1 Hr Extended Lab time. – AI / ML FOCUS\n\nSystem Setup and ROCm installation\nBasic ROCm tools including ROCm Debugger\nTensorFlow installation and benchmarking\nPyTorch installation and benchmarking\nMulti-GPU scaling\nMachine Learning models deployable and benchmarks\n\nCourse Part 2 (2Hrs) + 1 Hr Extended Lab time – HPC FOCUS\n\nROCm HPC and ML Docker Containers\nHPC Job Scheduler and Monitoring\nMath Libraries\nCommunication Libraries for Multi-GPU Scale-out\nCUDA to HIP – Tools and Examples\nGPU Performance Profiling\nHPC Benchmarking with Examples\n\n\n\nThis training includes exercises / labs for those who want to experiment with the AMD Accelerator Cloud. \nAttendee limit: 8 individuals. Each student will have a dedicated AMD GPU (MI100) during the training. \nPlease register only if you plan to attend. \nRegister here.\n\n                \n                        \n                            2022-04-04 EoI 1-Day Introduction to AMD GPUs (AMD Instinct Architecture and ROCm)\n                        \n                        Name*\n                            \n                            \n                                                    First\n                                                    \n                                                \n                            \n                            \n                                                            Last\n                                                            \n                                                        \n                            \n                        Institutional Email*\n                            \n                        Association*PaCER ProjectNon-PaCER Project (Pawsey User)Non-Pawsey UserPlease select your project type.Your Institution/Organisation*Would you like to become a Pawsey Friend?*A Pawsey Friend receives occasional newsletters with Pawsey-related updates ranging from events\, job opportunities\, training\, news and more.YesNoHow did you find out about this event?*Pawsey Friends newsletterPawsey TweetPawsey LinkedInYour colleagueOther newsletterDReSA (dresa.org.au)CAPTCHA\n                            \n          \n            \n            \n            \n            \n            \n            \n            \n            \n            \n        \n                        \n                         jQuery(document).bind('gform_post_render'\, function(event\, formId\, currentPage){if(formId == 184) {} } );jQuery(document).bind('gform_post_conditional_logic'\, function(event\, formId\, fields\, isInit){} ); jQuery(document).ready(function(){jQuery(document).trigger('gform_post_render'\, [184\, 1]) } ); \n
+URL:https://pawsey.org.au/event/eoi-1-day-introduction-to-amd-gpus-amd-instinct-architecture-and-rocm/
+LOCATION:Online\, Virtual\, Australia
+CATEGORIES:Supercomputing,Training,Webinar,Workshop
+END:VEVENT
+END:VCALENDAR

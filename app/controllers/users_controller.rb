@@ -1,24 +1,35 @@
+# The controller for actions related to the Users model
 class UsersController < ApplicationController
 
   prepend_before_action :set_user, only: [:show, :edit, :update, :destroy, :change_token]
   prepend_before_action :init_user, only: [:new, :create]
   before_action :set_breadcrumbs
 
-  #
-  # # Skip the parent's before_action, which is defined only on some methods
-  # skip_before_action :authenticate_user!
-  # # and define it on all methods
-  # before_action :authenticate_user!
+  include ActionView::Helpers::TextHelper
 
   # GET /users
   # GET /users.json
   def index
-    @users = User.where.not(id: User.get_default_user.id).paginate(page: params[:page], per_page: 50)
+    @users = User.visible
+    @users = @users.with_query(params[:q]) if params[:q].present?
+    @users = @users.paginate(page: params[:page], per_page: 50)
 
     respond_to do |format|
       format.html
       format.json
       format.json_api { render(json: @users, links: { self: users_path }) }
+    end
+  end
+
+  # GET/invitees
+  def invitees
+    if current_user.is_admin? or current_user.is_curator?
+      @users = User.invited
+      respond_to do |format|
+        format.html
+      end
+    else
+      redirect_to users_path
     end
   end
 
@@ -88,7 +99,7 @@ class UsersController < ApplicationController
     @user.create_activity :destroy, owner: current_user
     @user.destroy
     respond_to do |format|
-      format.html { redirect_to users_path, notice: 'User was successfully destroyed.' }  # Devise is also doing redirection here
+      format.html { redirect_to users_path, notice: 'User was successfully destroyed.' } # Devise is also doing redirection here
       format.json { head :no_content }
     end
   end
@@ -119,7 +130,13 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    allowed_parameters = [:email, :username, :password, { profile_attributes: [:firstname, :surname, :email, :website] }]
+    allowed_parameters = [:email, :username, :password, {
+      profile_attributes: [:firstname, :surname, :email, :website, :public,
+                           :description, :location, :orcid, :experience,
+                           { :expertise_academic => [] }, { :expertise_technical => [] },
+                           { :interest => [] }, { :activity => [] }, { :language => [] },
+                           { :fields => [] }, { :social_media => [] }
+      ] }]
     allowed_parameters << :role_id if policy(@user).change_role?
     params.require(:user).permit(allowed_parameters)
   end

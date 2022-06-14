@@ -1,9 +1,10 @@
 <%= info_box('Locking fields') do %>
-    <p>Much of the content in TeSS is retrieved and kept up-to-date via automated scrapers that pull information
-      from public web pages and APIs in regular intervals.</p>
+    <p>Much of the content in <%= TeSS::Config.site['title_short'] %> is retrieved and kept up-to-date via automated
+      scrapers that pull information from public web pages and APIs in regular intervals.</p>
 
-    <p>To prevent TeSS from overwriting a field you have changed, click the
-      <i class="fa fa-unlock field-lock-example-open" aria-hidden="true"></i> icon to lock the field.</p>
+    <p>To prevent <%= TeSS::Config.site['title_short'] %> from overwriting a field you have changed,
+      click the <i class="fa fa-unlock field-lock-example-open" aria-hidden="true"></i> icon to lock the field.</p>
 
-    <p>Fields marked as <i class="fa fa-lock field-lock-example-locked" aria-hidden="true"></i> will not be overwritten.</p>
+    <p>Fields marked as <i class="fa fa-lock field-lock-example-locked" aria-hidden="true"></i> will not be overwritten.
+    </p>
 <% end %>

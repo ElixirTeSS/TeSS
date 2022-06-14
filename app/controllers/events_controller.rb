@@ -1,5 +1,8 @@
+require 'tzinfo'
+
+# The controller for actions related to the Events model
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :update_collections, :add_term, :reject_term,
+  before_action :set_event, only: [:show, :edit, :clone, :update, :destroy, :update_collections, :add_term, :reject_term,
                                    :redirect, :report, :update_report, :add_data, :reject_data]
   before_action :set_breadcrumbs
   before_action :disable_pagination, only: :index, if: lambda { |controller| controller.request.format.ics? or controller.request.format.csv? }
@@ -29,7 +32,7 @@ class EventsController < ApplicationController
       format.json
       format.json_api { render json: @event }
       format.html
-      format.ics { send_data @event.to_ical, type: 'text/calendar', disposition: 'attachment', filename: "#{@event.slug}.ics"  }
+      format.ics { send_data @event.to_ical, type: 'text/calendar', disposition: 'attachment', filename: "#{@event.slug}.ics" }
     end
   end
 
@@ -38,6 +41,15 @@ class EventsController < ApplicationController
     authorize Event
     @event = Event.new(start: DateTime.now.change(hour: 9),
                        end: DateTime.now.change(hour: 17))
+  end
+
+  # GET /events/1/clone
+  def clone
+    authorize @event
+    @event = @event.dup
+    @event.id = nil
+    @event.url = nil
+    render :template => 'events/new'
   end
 
   # GET /events/1/edit
@@ -139,14 +151,14 @@ class EventsController < ApplicationController
     # Go through each selected collection
     # and update its resources to include this one.
     # Go through each other collection
-    collections = params[:event][:collection_ids].select{|p| !p.blank?}
-    collections = collections.collect{|collection| Collection.find_by_id(collection)}
+    collections = params[:event][:collection_ids].select { |p| !p.blank? }
+    collections = collections.collect { |collection| Collection.find_by_id(collection) }
     collections_to_remove = @event.collections - collections
     collections.each do |collection|
       collection.update_resources_by_id(nil, (collection.events + [@event.id]).uniq)
     end
     collections_to_remove.each do |collection|
-      collection.update_resources_by_id(nil, (collection.events.collect{|x| x.id} - [@event.id]).uniq)
+      collection.update_resources_by_id(nil, (collection.events.collect { |x| x.id } - [@event.id]).uniq)
     end
     flash[:notice] = "Event has been included in #{pluralize(collections.count, 'collection')}"
     redirect_to @event
@@ -169,15 +181,15 @@ class EventsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def event_params
-    params.require(:event).permit(:external_id, :title, :subtitle, :url, :organizer, :last_scraped,
-                                  :scraper_record, :description, {:scientific_topic_names => []},
-                                  {:scientific_topic_uris => []}, {:operation_names => []},
-                                  {:operation_uris => []}, {:event_types => []},
-                                  {:keywords => []}, :start, :end, { sponsors: [] }, :online, :for_profit, :venue,
-                                  :city, :county, :country, :postcode, :latitude, :longitude, :timezone,
-                                  :content_provider_id, {:collection_ids => []}, {:node_ids => []}, {:node_names => []},
-                                  {:target_audience => []}, {:eligibility => []},
-                                  {:host_institutions => []}, :capacity, :contact,
+    params.require(:event).permit(:external_id, :title, :subtitle, :url, :organizer, :last_scraped, :scraper_record,
+                                  :description, { :scientific_topic_names => [] }, { :scientific_topic_uris => [] },
+                                  { :operation_names => [] }, { :operation_uris => [] }, { :event_types => [] },
+                                  { :keywords => [] }, { :fields => [] }, :start, :end, :duration, { sponsors: [] },
+                                  :online, :venue, :city, :county, :country, :postcode, :latitude, :longitude,
+                                  :timezone, :content_provider_id, { :collection_ids => [] }, { :node_ids => [] },
+                                  { :node_names => [] }, { :target_audience => [] }, { :eligibility => [] },
+                                  { :host_institutions => [] }, :capacity, :contact, :recognition, :learning_objectives,
+                                  :prerequisites, :tech_requirements, :cost_basis, :cost_value, :cost_currency,
                                   external_resources_attributes: [:id, :url, :title, :_destroy], material_ids: [],
                                   locked_fields: [])
   end

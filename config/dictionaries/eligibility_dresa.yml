@@ -1,0 +1,12 @@
+open_to_all:
+  title: Open to all
+  description: No restrictions on eligibility
+host_institution:
+  title: Host institutions
+  description: Only open to members of the host institutions
+expression_of_interest:
+  title: Expression of interest
+  description: The organisers will select successful registrants from a list of interested parties
+by_invitation:
+  title: By invitation
+  description: Only invited parties may register (this option may be used on its own or in conjunction with either of the others by specifying both values, e.g. for an event where people are individually invited but only the first X will be able to register)

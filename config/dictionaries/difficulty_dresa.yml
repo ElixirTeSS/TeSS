@@ -1,0 +1,15 @@
+notspecified:
+  title: Not specified
+  description: Difficulty level not specified
+awareness:
+  title: Awareness
+  description: This resource provides an introduction or overview of a topic.
+beginner:
+  title: Beginner
+  description: The lowest level of difficulty; this content is suitable for beginners on the topic.
+intermediate:
+  title: Intermediate
+  description: Intermediate level of difficulty; suitable for people who already have some knowledge of the topic.
+advanced:
+  title: Advanced
+  description: A high level of difficulty; this content is suitable for people who have a substantial knowledge of the topic.

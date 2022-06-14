@@ -2,18 +2,22 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: <%= Rails.application.secrets[:database][:username] %>
-  password: <%= Rails.application.secrets[:database][:password] %>
-  host: <%= Rails.application.secrets[:database][:host] %>
+  host: <%= ENV.fetch("DB_HOST") { Rails.application.secrets[:database][:host] } %>
+  database: <%= ENV.fetch("DB_NAME") { Rails.application.secrets[:database][:name] } %>
+  username: <%= ENV.fetch("DB_USER") { Rails.application.secrets[:database][:username] } %>
+  password: <%= ENV.fetch("DB_PASSWORD") { Rails.application.secrets[:database][:password] } %>
 
+<% if Rails.env.development? %>
 development:
   <<: *default
-  database: <%= Rails.application.secrets[:database][:name] %>_development
+<% end %>
 
+<% if Rails.env.test? %>
 test:
   <<: *default
-  database: <%= Rails.application.secrets[:database][:name] %>_test
+<% end %>
 
+<% if Rails.env.production? %>
 production:
   <<: *default
-  database: <%= Rails.application.secrets[:database][:name] %>_production
+<% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_25_150608) do
+ActiveRecord::Schema.define(version: 2022_05_27_141304) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,9 +105,18 @@ ActiveRecord::Schema.define(version: 2022_02_25_150608) do
     t.string "image_content_type"
     t.integer "image_file_size"
     t.datetime "image_updated_at"
+    t.string "contact"
     t.index ["node_id"], name: "index_content_providers_on_node_id"
     t.index ["slug"], name: "index_content_providers_on_slug", unique: true
     t.index ["user_id"], name: "index_content_providers_on_user_id"
+  end
+
+  create_table "content_providers_users", id: false, force: :cascade do |t|
+    t.bigint "content_provider_id"
+    t.bigint "user_id"
+    t.index ["content_provider_id", "user_id"], name: "provider_user_unique", unique: true
+    t.index ["content_provider_id"], name: "index_content_providers_users_on_content_provider_id"
+    t.index ["user_id"], name: "index_content_providers_users_on_user_id"
   end
 
   create_table "edit_suggestions", force: :cascade do |t|
@@ -152,8 +161,6 @@ ActiveRecord::Schema.define(version: 2022_02_25_150608) do
     t.integer "content_provider_id"
     t.integer "user_id"
     t.boolean "online", default: false
-    t.text "cost"
-    t.boolean "for_profit", default: false
     t.date "last_scraped"
     t.boolean "scraper_record", default: false
     t.string "keywords", default: [], array: true
@@ -171,8 +178,15 @@ ActiveRecord::Schema.define(version: 2022_02_25_150608) do
     t.string "feedback"
     t.text "notes"
     t.integer "nominatim_count", default: 0
-    t.index ["cost"], name: "index_events_on_cost"
-    t.index ["for_profit"], name: "index_events_on_for_profit"
+    t.string "duration"
+    t.text "recognition"
+    t.text "learning_objectives"
+    t.text "prerequisites"
+    t.text "tech_requirements"
+    t.string "cost_basis"
+    t.decimal "cost_value"
+    t.string "cost_currency"
+    t.string "fields", default: [], array: true
     t.index ["online"], name: "index_events_on_online"
     t.index ["slug"], name: "index_events_on_slug", unique: true
     t.index ["user_id"], name: "index_events_on_user_id"
@@ -221,13 +235,12 @@ ActiveRecord::Schema.define(version: 2022_02_25_150608) do
   create_table "materials", force: :cascade do |t|
     t.text "title"
     t.string "url"
-    t.string "short_description"
     t.string "doi"
     t.date "remote_updated_date"
     t.date "remote_created_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "long_description"
+    t.text "description"
     t.string "target_audience", default: [], array: true
     t.string "authors", default: [], array: true
     t.string "contributors", default: [], array: true
@@ -241,6 +254,18 @@ ActiveRecord::Schema.define(version: 2022_02_25_150608) do
     t.text "keyword"
     t.string "resource_type", default: [], array: true
     t.string "keywords", default: [], array: true
+    t.string "other_types"
+    t.date "date_created"
+    t.date "date_modified"
+    t.date "date_published"
+    t.text "prerequisites"
+    t.string "version"
+    t.string "status"
+    t.text "syllabus"
+    t.string "subsets", default: [], array: true
+    t.text "contact"
+    t.text "learning_objectives"
+    t.string "fields", default: [], array: true
     t.index ["content_provider_id"], name: "index_materials_on_content_provider_id"
     t.index ["slug"], name: "index_materials_on_slug", unique: true
     t.index ["user_id"], name: "index_materials_on_user_id"
@@ -291,6 +316,19 @@ ActiveRecord::Schema.define(version: 2022_02_25_150608) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.string "slug"
+    t.boolean "public", default: false
+    t.text "description"
+    t.text "location"
+    t.string "orcid"
+    t.string "experience"
+    t.string "expertise_academic", default: [], array: true
+    t.string "expertise_technical", default: [], array: true
+    t.string "interest", default: [], array: true
+    t.string "activity", default: [], array: true
+    t.string "language", default: [], array: true
+    t.string "social_media", default: [], array: true
+    t.string "type", default: "Profile"
+    t.string "fields", default: [], array: true
     t.index ["slug"], name: "index_profiles_on_slug", unique: true
   end
 
@@ -308,6 +346,26 @@ ActiveRecord::Schema.define(version: 2022_02_25_150608) do
     t.datetime "updated_at"
     t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
+  end
+
+  create_table "sources", force: :cascade do |t|
+    t.bigint "content_provider_id"
+    t.bigint "user_id"
+    t.datetime "created_at"
+    t.datetime "finished_at"
+    t.string "url"
+    t.string "method"
+    t.string "resource_type"
+    t.integer "records_read"
+    t.integer "records_written"
+    t.integer "resources_added"
+    t.integer "resources_updated"
+    t.integer "resources_rejected"
+    t.text "log"
+    t.boolean "enabled"
+    t.string "token"
+    t.index ["content_provider_id"], name: "index_sources_on_content_provider_id"
+    t.index ["user_id"], name: "index_sources_on_user_id"
   end
 
   create_table "staff_members", force: :cascade do |t|
@@ -375,10 +433,21 @@ ActiveRecord::Schema.define(version: 2022_02_25_150608) do
     t.string "provider"
     t.string "uid"
     t.string "identity_url"
+    t.string "invitation_token"
+    t.datetime "invitation_created_at"
+    t.datetime "invitation_sent_at"
+    t.datetime "invitation_accepted_at"
+    t.integer "invitation_limit"
+    t.string "invited_by_type"
+    t.bigint "invited_by_id"
+    t.integer "invitations_count", default: 0
     t.index ["authentication_token"], name: "index_users_on_authentication_token"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["identity_url"], name: "index_users_on_identity_url", unique: true
+    t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
+    t.index ["invited_by_id"], name: "index_users_on_invited_by_id"
+    t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["role_id"], name: "index_users_on_role_id"
     t.index ["slug"], name: "index_users_on_slug", unique: true
@@ -434,6 +503,8 @@ ActiveRecord::Schema.define(version: 2022_02_25_150608) do
   add_foreign_key "materials", "users"
   add_foreign_key "node_links", "nodes"
   add_foreign_key "nodes", "users"
+  add_foreign_key "sources", "content_providers"
+  add_foreign_key "sources", "users"
   add_foreign_key "staff_members", "nodes"
   add_foreign_key "stars", "users"
   add_foreign_key "subscriptions", "users"

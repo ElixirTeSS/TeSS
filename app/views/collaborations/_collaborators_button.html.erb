@@ -47,13 +47,21 @@
     $('#collaborators-modal-add-btn').click(Collaborations.add);
 
     $('#collaborators-modal-add').autocomplete({
-      lookup: $.map(<%= render(partial: 'users/list.json.jbuilder', locals: { users: User.all }).html_safe -%>, function(dataItem) {
-        var ob = { value: dataItem.username, data: dataItem.id };
-        if (dataItem.firstname) {
-          ob.value = ob.value + ' (' + dataItem.firstname + ' ' + dataItem.surname + ')';
-        }
-        return ob;
-      }),
+      lookup: function (query, done) {
+          $.ajax({
+              url: "<%= users_path(q: '-query-') %>".replace('-query-', query),
+              dataType: 'json',
+              success : function(data) {
+                  done({ suggestions: data.map(function (dataItem) {
+                          var ob = { value: dataItem.username, data: dataItem.id };
+                          if (dataItem.firstname) {
+                              ob.value = ob.value + ' (' + dataItem.firstname + ' ' + dataItem.surname + ')';
+                          }
+                          return ob;
+                      })});
+               }
+          });
+      },
       onSelect: function (suggestion) {
         $('#collaborators-modal-add-id').val(suggestion.data);
         $('#collaborators-modal-add-btn').removeClass('disabled');

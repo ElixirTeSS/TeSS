@@ -1,54 +1,16 @@
-/* Elixir brand colours */
-$elixir-orange: #f47d20;
-$elixir-grey: #484848;
-$elixir-blue: #005472;
-$elixir-green: #bebf32;
-
-/* TeSS colours */
-$bgDefault: $elixir-orange;
-$bgHighlight: darken($bgDefault, 10%);
-$colDefault: #ffe6d1;
-$colHover: #333333;
-$colHover2: #eeeeee;
-
-$grey-blue: #8CA0A6;
-
-$blue: #206B82;
-$blue2: #085871; /* unused? */
-$blue3: #064559; /* unused? */
-
 /* Bootstrap variable tweaks */
+
 /* For reference, see:
      https://github.com/twbs/bootstrap-sass/blob/3.2-stable/assets/stylesheets/bootstrap/_variables.scss */
 
 /* ### Pre-load tweaks. Anything that will effect Bootstrap's derived variables needs to be declared here */
 
-$link-color: $blue;
-$link-hover-color: lighten($link-color, 10%);
-$link-hover-decoration: none;
-
-$btn-primary-bg: $blue;
-
-$pagination-color: $blue;
-$pagination-active-bg: $blue;
-$pagination-active-border: $blue;
-
-$navbar-height: 60px;
-$navbar-default-bg: $bgDefault;
-$navbar-default-border: transparent;
-$navbar-default-link-active-bg: $bgHighlight;
-$navbar-default-link-hover-bg: $bgHighlight;
-$navbar-default-link-color: $colDefault;
-$navbar-default-link-active-color: lighten($navbar-default-link-color, 30%);
-$navbar-default-link-hover-color: lighten($navbar-default-link-color, 40%);
-
-$navbar-default-toggle-hover-bg: $bgHighlight;
-$navbar-default-toggle-icon-bar-bg: $colHover2;
-$navbar-default-toggle-border-color: $bgHighlight;
-
+/* Copy and edit the default theme to style TeSS, then replace the @import below with the path to your theme */
+@import "../themes/default";
 
 /* ### End pre-load tweaks */
 @import "bootstrap/variables";
+
 /* ### Post-load tweaks. Anything dependant on Bootstrap's variables needs to be declared below here */
 
 /* collapse navbar on md and smaller screens */

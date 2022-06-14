@@ -8,7 +8,6 @@ class CreateNodes < ActiveRecord::Migration[4.2]
       t.string :institutions, array: true
       t.string :trc
       t.string :trc_email
-      t.string :trc
       t.string :staff, array: true
       t.string :twitter
       t.string :carousel_images, array: true

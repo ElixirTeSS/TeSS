@@ -55,11 +55,11 @@ curator:
   confirmed_at: <%= Time.zone.now %>
   role: curator
 
-existing_aai_user:
-  username: 'existing_aai_user'
+existing_aaf_user:
+  username: 'existing_aaf_user'
   email: 'eau@example.com'
   confirmed_at: <%= Time.zone.now %>
-  provider: elixir_aai
+  provider: oidc
   uid: 1234
 
 email_address_user:
@@ -77,6 +77,7 @@ banned_user:
   confirmed_at: <%= Time.zone.now %>
   role: user
   authentication_token: <%= Devise.friendly_token %>
+
 
 shadowbanned_user:
   username: Chad O'Band
@@ -109,3 +110,39 @@ shadowbanned_unverified_user:
   confirmed_at: <%= Time.zone.now %>
   role: unverified_user
   authentication_token: <%= Devise.friendly_token %>
+
+trainer_user:
+  username: 'SteveT'
+  email: 'steve_trainer@notarealdomain.org'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'trainer') %>
+  confirmed_at: <%= Time.zone.now %>
+  role: user
+  authentication_token: <%= Devise.friendly_token %>
+  provider: oidc
+
+private_user:
+  username: 'StevieN'
+  email: 'stevie_nix@notarealdomain.org'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'private') %>
+  confirmed_at: <%= Time.zone.now %>
+  role: user
+  authentication_token: <%= Devise.friendly_token %>
+  provider: oidc
+
+existing_tuakiri_user:
+  username: 'HoraceNewman'
+  email: 'horace.newman@some.domain.org'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'private') %>
+  confirmed_at: <%= Time.zone.now %>
+  role: user
+  authentication_token: <%= Devise.friendly_token %>
+  provider: oidc2
+
+existing_aai_user:
+  username: 'existing_aai_user'
+  email: 'elslu@example.com'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'private') %>
+  confirmed_at: <%= Time.zone.now %>
+  provider: elixir_aai
+  uid: 1234
+

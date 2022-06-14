@@ -1,11 +1,6 @@
 name: CI
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [ master ]
+on: [push, pull_request]
 
 jobs:
   test:
@@ -16,9 +11,7 @@ jobs:
       DB_USER: tess
       DB_PASSWORD: password
       SECRET_BASE_KEY: test_key
-      BASE_URL: http://localhost:3000
-      CONTACT_EMAIL: email@email.com
-      SENDER_EMAIL: email@email.com
+      RAILS_ENV: test
     steps:
       - uses: harmon758/postgresql-action@v1
         with:
@@ -34,5 +27,11 @@ jobs:
         with:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
         name: Bundle install
-      - run: bundle exec rake db:test:prepare && bundle exec rake test
+      - name: Configure and initialize database
+        run: |
+          cp config/tess.example.yml config/tess.yml
+          cp config/secrets.github.yml config/secrets.yml
+          cp config/ingestion.example.yml config/ingestion.yml
+          bundle exec rake db:test:prepare
+      - run: bundle exec rails test
         name: Run tests

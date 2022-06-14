@@ -16,41 +16,52 @@ class Event < ApplicationRecord
   include IdentifiersDotOrg
   include HasFriendlyId
 
-  before_save :set_default_times, :check_country_name
+  before_validation :check_timezone # set to standard key
+  before_save :check_country_name # :set_default_times
   before_save :geocoding_cache_lookup, if: :address_will_change?
   after_save :enqueue_geocoding_worker, if: :address_changed?
 
   if TeSS::Config.solr_enabled
     # :nocov:
     searchable do
+      # full text search fields
       text :title
-      string :title
-      string :sort_title do
-        title.downcase.gsub(/^(an?|the) /, '')
-      end
+      text :keywords
       text :url
       text :organizer
-      string :organizer
-      string :sponsors, :multiple => true
-      string :venue
       text :venue
       text :city
-      string :city
       text :country
-      string :country
-      string :event_types, :multiple => true do
-        EventTypeDictionary.instance.values_for_search(self.event_types)
-      end
-      string :keywords, :multiple => true
-      time :start
-      time :end
-      time :created_at
-      time :updated_at
+      text :host_institutions
+      text :timezone
       text :content_provider do
         if !self.content_provider.nil?
           self.content_provider.title
         end
       end
+      # sort title
+      string :sort_title do
+        title.downcase.gsub(/^(an?|the) /, '')
+      end
+      # other fields
+      string :title
+      string :organizer
+      string :sponsors, :multiple => true
+      string :venue
+      string :city
+      string :country
+      string :event_types, :multiple => true do
+        EventTypeDictionary.instance.values_for_search(self.event_types)
+      end
+      string :eligibility, :multiple => true do
+        EligibilityDictionary.instance.values_for_search(self.eligibility)
+      end
+      string :keywords, :multiple => true
+      string :fields, :multiple => true
+      time :start
+      time :end
+      time :created_at
+      time :updated_at
       string :content_provider do
         if !self.content_provider.nil?
           self.content_provider.title
@@ -67,9 +78,7 @@ class Event < ApplicationRecord
       end
       string :target_audience, multiple: true
       boolean :online
-      text :host_institutions
       time :last_scraped
-      text :timezone
       string :user do
         if self.user
           self.user.username
@@ -79,6 +88,7 @@ class Event < ApplicationRecord
       boolean :failing do
         failing?
       end
+      string :cost_basis
 =begin TODO: SOLR has a LatLonType to do geospatial searching. Have a look at that
       location :latitutde
       location :longitude
@@ -100,14 +110,17 @@ class Event < ApplicationRecord
   has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 
   validates :title, :url, presence: true
-  validates :capacity, numericality: true, allow_blank: true
+  validates :capacity, numericality: { greater_than_or_equal_to: 1 }, allow_blank: true
+  validates :cost_value, numericality: { greater_than: 0 }, allow_blank: true
   validates :event_types, controlled_vocabulary: { dictionary: EventTypeDictionary.instance }
   validates :eligibility, controlled_vocabulary: { dictionary: EligibilityDictionary.instance }
   validates :latitude, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90, allow_nil: true }
-  validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true  }
+  validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true }
+  #validates :duration, format: { with: /\A[0-9][0-9]:[0-5][0-9]\z/, message: "must be in format HH:MM" }, allow_blank: true
   validate :allowed_url
-
-  clean_array_fields(:keywords, :event_types, :target_audience, :eligibility, :host_institutions, :sponsors)
+  validate :validate_timezone
+  clean_array_fields(:keywords, :fields, :event_types, :target_audience,
+                     :eligibility, :host_institutions, :sponsors)
   update_suggestions(:keywords, :target_audience, :host_institutions)
 
   # These fields should not been shown to users unless they have sufficient privileges
@@ -120,27 +133,24 @@ class Event < ApplicationRecord
   NOMINATIM_DELAY = 1.minute
   NOMINATIM_MAX_ATTEMPTS = 3
 
-  #Generated Event:
-  # external_id:string
-  # title:string
-  # subtitle:string
-  # url:string
-  # organizer:string
-  # description:text
-  # event_types:text
-  # start:datetime
-  # end:datetime
-  # sponsor:string
-  # venue:text
-  # city:string
-  # county:string
-  # country:string
-  # postcode:string
-  # latitude:double
-  # longitude:double
-
   def description= desc
     super(Rails::Html::FullSanitizer.new.sanitize(desc))
+  end
+
+  def start_utc
+    return convert_local_to_utc self.start
+  end
+
+  def end_utc
+    return convert_local_to_utc self.end
+  end
+
+  def start_local
+    return set_to_local self.start
+  end
+
+  def end_local
+    return set_to_local self.end
   end
 
   def upcoming?
@@ -178,25 +188,34 @@ class Event < ApplicationRecord
   end
 
   def self.facet_fields
-    %w( scientific_topics operations event_types online country tools organizer city sponsors target_audience keywords
-        venue node content_provider user )
+    field_list = %w( content_provider keywords scientific_topics operations tools fields online event_types
+                     venue city country organizer sponsors target_audience eligibility user )
+
+    field_list.delete('operations') if TeSS::Config.feature['disabled'].include? 'operations'
+    field_list.delete('scientific_topics') if TeSS::Config.feature['disabled'].include? 'topics'
+    field_list.delete('sponsors') if TeSS::Config.feature['disabled'].include? 'sponsors'
+    field_list.delete('tools') if TeSS::Config.feature['disabled'].include? 'biotools'
+    field_list.delete('fields') if TeSS::Config.feature['disabled'].include? 'ardc_fields_of_research'
+    field_list.delete('node') unless TeSS::Config.feature['nodes']
+
+    field_list
   end
 
   def to_csv_event
-      if self.organizer.class == String
-        organizer = self.organizer.tr(',',' ')
-      elsif self.organizer.class == Array
-        organizer = self.organizer.join(' | ').gsub(',',' and ')
-      else
-        organizer = nil
-      end
-      cp = self.content_provider.title unless self.content_provider.nil?
+    if self.organizer.class == String
+      organizer = self.organizer.tr(',', ' ')
+    elsif self.organizer.class == Array
+      organizer = self.organizer.join(' | ').gsub(',', ' and ')
+    else
+      organizer = nil
+    end
+    cp = self.content_provider.title unless self.content_provider.nil?
 
-      [self.title.tr(',',' '),
-              organizer,
-              self.start.strftime("%d %b %Y"),
-              self.end.strftime("%d %b %Y"),
-              cp]
+    [self.title.tr(',', ' '),
+     organizer,
+     self.start.strftime("%d %b %Y"),
+     self.end.strftime("%d %b %Y"),
+     cp]
   end
 
   def to_ical
@@ -207,22 +226,32 @@ class Event < ApplicationRecord
 
   def to_ical_event
     Icalendar::Event.new.tap do |ical_event|
-      ical_event.dtstart     = Icalendar::Values::Date.new(self.start) unless self.start.blank?
-      ical_event.dtend       = Icalendar::Values::Date.new(self.end) unless self.end.blank?
-      ical_event.summary     = self.title
+      if self.start && self.end
+        if self.all_day?
+          ical_event.dtstart = Icalendar::Values::Date.new(self.start, tzid: 'UTC') unless self.start.blank?
+          ical_event.dtend = Icalendar::Values::Date.new(self.end.tomorrow, tzid: 'UTC') unless self.end.blank?
+        else
+          ical_event.dtstart = Icalendar::Values::DateTime.new(self.start_utc, tzid: 'UTC') unless self.start.blank?
+          ical_event.dtend = Icalendar::Values::DateTime.new(self.end_utc, tzid: 'UTC') unless self.end.blank?
+        end
+
+      end
+      ical_event.summary = self.title
       ical_event.description = self.description
-      ical_event.location    = self.venue unless self.venue.blank?
+      ical_event.location = self.venue unless self.venue.blank?
     end
   end
 
   def show_map?
-    !self.online? &&
+    #!self.online? &&
     ((self.latitude.present? && self.longitude.present?) ||
-        (self.suggested_latitude.present? && self.suggested_longitude.present?))
+      (self.suggested_latitude.present? && self.suggested_longitude.present?))
   end
 
   def all_day?
-    self.start && self.end && (self.start == self.start.midnight) || (self.end == self.end.midnight)
+    self.start && self.end &&
+      (self.start == self.start.midnight) &&
+      (self.end.hour == 23) && (self.end.min == 59)
   end
 
   # Ticket #375.
@@ -260,17 +289,44 @@ class Event < ApplicationRecord
     where('events.end < ?', Time.now).where.not(end: nil)
   end
 
+  def check_timezone
+    begin
+      tz_key = find_timezone_key self.timezone
+      self.timezone = tz_key unless tz_key.nil? or tz_key == self.timezone
+    rescue Exception => e
+      # ignore error
+    end
+    return
+  end
+
+  def find_timezone_key(name)
+    return name if name.nil?
+
+    # check name vs ActiveSupport
+    timezones = ActiveSupport::TimeZone::MAPPING
+    return name if timezones.keys.include? name
+    return timezones.key(name) unless timezones.key(name).nil?
+
+    # check for linked zones in TZInfo
+    tzinfo = TZInfo::Timezone.get(name)
+    if tzinfo.nil? and tzinfo.kind_of? TZInfo::LinkedTimezone
+      # repeat search with canonical timezone identifier
+      return find_timezone_key tzinfo.canonical_zone.identifier
+    end
+
+    # otherwise
+    return nil
+  end
+
   # Ticket #423
   def check_country_name
-    if !self.country
-      return
-    end
-    if self.country.respond_to?(:parameterize)
+    if self.country and self.country.respond_to?(:parameterize)
       text = self.country.parameterize.underscore.humanize.downcase
       if COUNTRY_SYNONYMS[text]
         self.country = COUNTRY_SYNONYMS[text]
       end
     end
+    return true
   end
 
   def reported?
@@ -332,15 +388,18 @@ class Event < ApplicationRecord
     location = self.address
 
     begin
-      redis = Redis.new(url: ENV['REDIS_URL'])
+      redis = Redis.new(url: TeSS::Config.redis_url)
       if redis.exists?(location)
         self.latitude, self.longitude = JSON.parse(redis.get(location))
         Rails.logger.info("Re-using: #{location}")
       end
-    rescue Redis::RuntimeError => e
+    rescue Redis::BaseError => e
       raise e unless Rails.env.production?
       puts "Redis error: #{e.message}"
     end
+
+    # return true to enable error messages
+    return true
   end
 
   # Check the external Geocoder API (currently Nominatim) for coordinates
@@ -348,15 +407,15 @@ class Event < ApplicationRecord
     location = self.address
 
     #result = Geocoder.search(location).first
-    args = {postalcode: postcode, city: city, county: county, country: country, format: 'json'}
+    args = { postalcode: postcode, city: city, county: county, country: country, format: 'json' }
     result = nominatim_lookup(args)
     if result
       self.latitude = result[:lat]
       self.longitude = result[:lon]
       begin
-        redis = Redis.new(url: ENV['REDIS_URL'])
+        redis = Redis.new(url: TeSS::Config.redis_url)
         redis.set(location, [self.latitude, self.longitude].to_json)
-      rescue Redis::RuntimeError => e
+      rescue Redis::BaseError => e
         raise e unless Rails.env.production?
         puts "Redis error: #{e.message}"
       end
@@ -368,12 +427,14 @@ class Event < ApplicationRecord
   # If no latitude or longitude, create a GeocodingWorker to find them.
   # This should run a minute after the last one is set to run (last run time stored by Redis).
   def enqueue_geocoding_worker
-    return if (latitude.present? && longitude.present?) || (address.blank? && postcode.blank?) || nominatim_count >= NOMINATIM_MAX_ATTEMPTS
+    return if (latitude.present? && longitude.present?) ||
+      (address.blank? && postcode.blank?) ||
+      nominatim_count >= NOMINATIM_MAX_ATTEMPTS
 
     location = address
 
     begin
-      redis = Redis.new(url: ENV['REDIS_URL'])
+      redis = Redis.new(url: TeSS::Config.redis_url)
       last_geocode = redis.get('last_geocode') || Time.now
 
       run_at = [last_geocode.to_i, Time.now.to_i].max + NOMINATIM_DELAY
@@ -381,7 +442,7 @@ class Event < ApplicationRecord
       # submit event_id, and locations to worker.
       redis.set('last_geocode', run_at)
       GeocodingWorker.perform_at(run_at, [id, location])
-    rescue Redis::RuntimeError => e
+    rescue Redis::BaseError => e
       raise e unless Rails.env.production?
       puts "Redis error: #{e.message}"
     end
@@ -395,8 +456,13 @@ class Event < ApplicationRecord
     (JSON.parse response.body, symbolize_names: true)[0]
   end
 
-
   private
+
+  def validate_timezone
+    unless ActiveSupport::TimeZone::MAPPING.keys.include? self.timezone
+      errors.add(:timezone, 'not found and cannot be linked to a valid timezone')
+    end
+  end
 
   def allowed_url
     disallowed = (TeSS::Config.blocked_domains || []).any? do |regex|
@@ -405,6 +471,22 @@ class Event < ApplicationRecord
 
     if disallowed
       errors.add(:url, 'not valid')
+    end
+  end
+
+  def convert_local_to_utc(datetime)
+    begin
+      return set_to_local(datetime).in_time_zone('UTC')
+    rescue
+      return datetime
+    end
+  end
+
+  def set_to_local(datetime)
+    begin
+      return datetime.asctime.in_time_zone(self.timezone)
+    rescue
+      return datetime
     end
   end
 

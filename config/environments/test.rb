@@ -47,13 +47,11 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
   config.action_mailer.asset_host = TeSS::Config.base_url
+
+  ingestion_file = File.join(Rails.root, 'config', 'ingestion.yml')
+  TeSS::Config.ingestion = YAML.safe_load(File.read(ingestion_file)).deep_symbolize_keys!
 end
 
-# Override secrets/config with test configuration from test/config
-test_tess = YAML.safe_load(File.read(File.join(Rails.root, 'test', 'config', 'test_tess.yml')), [Regexp])
-test_tess.each do |key, value|
-  TeSS::Config[key] = value
-end
-
+# Override secrets with test configuration from test/config
 test_secrets = YAML.safe_load(File.read(File.join(Rails.root, 'test', 'config', 'test_secrets.yml'))).deep_symbolize_keys!
 Rails.application.secrets.merge!(test_secrets)

@@ -1,9 +1,72 @@
-base_url: http://localhost:3000
-contact_email: test@example.com
-sender_email: no-reply@example.com
-solr_enabled: false
-default_role: registered_user
-blocked_domains:
-  - !ruby/regexp '/bad-domain\.example/'
-identifiers_url: "http://example.com/identifiers/"
-identifiers_prefix: banana
+test:
+  base_url: http://localhost:3000
+  contact_email: test@example.com
+  sender_email: no-reply@example.com
+  solr_enabled: false
+  default_role: registered_user
+  twitter_handle: '@handle'
+  announcement_message:
+  prevent_robot_indexing: false
+  blocked_domains:
+    - !ruby/regexp '/bad-domain\.example/'
+  identifiers_url: "http://example.com/identifiers/"
+  identifiers_prefix: banana
+  site:
+    title: 'TeSS Test Instance'
+    title_short: 'TTI'
+    favicon: ''
+    logo: ''
+    logo_alt: ''
+    logo_open_graph: ''
+    logo_email: ''
+    theme: 'en'
+    repository: ''
+    supported_by: 'elixir_supported_by'
+    widget_example: 'elixir_widget_example'
+    gmaps_api_key: ''
+  mailer:
+    delivery_method: sendmail
+    location: /usr/sbin/sendmail
+    arguments: '-i -t'
+  gmaps:
+    center:
+      latitude: 53.4674583
+      longitude: -2.233948899999973
+    zoom:
+      latitude: 3
+      longitude: 13
+  questionnaire:
+    show: true
+    message: ''
+    url: ''
+  parent_org:
+    name: ''
+    url: ''
+  feature:
+    e-learnings: true
+    events: true
+    invitation: true
+    materials: true
+    nodes: true
+    collections: true
+    providers: true
+    registration: true
+    subscription: true
+    trainers: true
+    workflows: true
+    disabled: []
+  placeholder:
+    collection: 'placeholder-collection.png'
+    provider: 'placeholder-organization.png'
+    group: 'placeholder-group.png'
+    person: 'placeholder-person.png'
+  dictionaries:
+    cost_basis: 'cost_basis.yml'
+    difficulty: 'difficulty.yml'
+    eligibility: 'eligibility.yml'
+    event_types: 'event_types.yml'
+    licences: 'licences.yml'
+    material_status: 'material_status.yml'
+    material_type: 'material_type.yml'
+    target_audience: 'target_audience.yml'
+    trainer_experience: 'trainer_experience.yml'

@@ -11,7 +11,9 @@ Rails.application.routes.draw do
   get 'edam/topics' => 'edam#topics'
   get 'edam/operations' => 'edam#operations'
 
-  resources :workflows
+  if TeSS::Config.feature['workflows'] == true
+    resources :workflows
+  end
 
   #get 'static/home'
   get 'about' => 'about#tess', as: 'about'
@@ -19,20 +21,23 @@ Rails.application.routes.draw do
   get 'about/developers' => 'about#developers', as: 'developers'
   get 'about/us' => 'about#us', as: 'us'
 
-
   get 'privacy' => 'static#privacy', as: 'privacy'
 
   post 'materials/check_exists' => 'materials#check_exists'
   post 'events/check_exists' => 'events#check_exists'
   post 'content_providers/check_exists' => 'content_providers#check_exists'
+  post 'sources/check_exists' => 'sources#check_exists'
 
   #devise_for :users
-  # Use custom registrations controller that subclasses devise's
-  devise_for :users, controllers: {
-    registrations: 'tess_devise/registrations',
-    omniauth_callbacks: 'callbacks'
-  }
-  # Redirect to users index page after devise user account update
+  # Use custom invitations and registrations controllers that subclasses devise's
+  unless defined?(::Rake::SprocketsTask)
+    devise_for :users, :controllers => {
+      :registrations => 'tess_devise/registrations',
+      :invitations => 'tess_devise/invitations',
+      :omniauth_callbacks => 'callbacks'
+    }
+  end
+  #Redirect to users index page after devise user account update
   # as :user do
   #   get 'users', :to => 'users#index', :as => :user_root
   # end
@@ -49,56 +54,71 @@ Rails.application.routes.draw do
     resource :ban, only: [:create, :new, :destroy]
   end
 
-  resources :nodes, concerns: :activities
+  resources :sources, concerns: :activities
 
-  resources :events, concerns: :activities do
-    collection do
-      get 'count'
-    end
-    member do
-      get 'redirect'
-      post 'add_term'
-      post 'add_data'
-      post 'reject_term'
-      post 'reject_data'
-      get 'report'
-      patch 'report', to: 'events#update_report'
+  if TeSS::Config.feature['trainers'] == true
+    resources :trainers, only: [:show, :index]
+  end
+
+  if TeSS::Config.feature['nodes'] == true
+    resources :nodes, concerns: :activities
+  end
+
+  if TeSS::Config.feature['events'] == true
+    resources :events, concerns: :activities do
+      collection do
+        get 'count'
+      end
+      member do
+        get 'redirect'
+        post 'add_term'
+        post 'add_data'
+        post 'reject_term'
+        post 'reject_data'
+        get 'report'
+        patch 'report', to: 'events#update_report'
+        get 'clone', to: 'events#clone'
+      end
     end
   end
 
-  resources :collections, concerns: :activities
+  if TeSS::Config.feature['collections'] == true
+    resources :collections, concerns: :activities
+  end
 
-  resources :workflows, concerns: [:collaboratable, :activities] do
-    member do
-      get 'fork'
-      get 'embed'
+  if TeSS::Config.feature['workflows'] == true
+    resources :workflows, concerns: [:collaboratable, :activities] do
+      member do
+        get 'fork'
+        get 'embed'
+      end
     end
   end
 
-  resources :content_providers, concerns: :activities
+  if TeSS::Config.feature['providers'] == true
+    resources :content_providers, concerns: :activities
+  end
 
-  resources :materials, concerns: :activities do
-    member do
-      post :reject_term
-      post :reject_data
-      post :add_term
-      post :add_data
-    end
-    collection do
-      get 'count'
+  if TeSS::Config.feature['materials'] == true
+    resources :materials, concerns: :activities do
+      member do
+        post :reject_term
+        post :reject_data
+        post :add_term
+        post :add_data
+      end
+      collection do
+        get 'count'
+      end
     end
   end
 
-  resources :elearning_materials, concerns: :activities do
-    member do
-      post :reject_term
-      post :reject_data
-      post :add_term
-      post :add_data
-    end
-    collection do
-      get 'count'
-    end
+  if TeSS::Config.feature['e-learnings'] == true
+    get 'elearning_materials' => 'materials#index', defaults: { 'resource_type' => 'e-learning' }
+  end
+
+  if TeSS::Config.feature['invitation'] == true
+    get 'invitees' => 'users#invitees'
   end
 
   resources :subscriptions, only: [:show, :index, :create, :destroy] do
@@ -132,13 +152,6 @@ Rails.application.routes.draw do
   end
 
   get 'resolve/:prefix:type:id' => 'resolution#resolve', constraints: { prefix: /(.+\:)?/, type: /[a-zA-Z]/, id: /\d+/ }
-
-=begin
-  authenticate :user do
-    resources :materials, only: [:new, :create, :edit, :update, :destroy]
-  end
-  resources :materials, only: [:index, :show]
-=end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

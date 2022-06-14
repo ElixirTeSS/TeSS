@@ -6,17 +6,21 @@ class EventsControllerTest < ActionController::TestCase
   include Devise::Test::ControllerHelpers
 
   setup do
+    mock_images
     @event = events(:one)
     u = users(:regular_user)
     @event.user = u
     @event.save!
     @updated_event = {
-        title: 'New title',
-        short_description: 'New description'
+      title: 'New title',
+      description: 'New description'
     }
     @failing_event = events(:failing_event)
     @failing_event.title = 'Fail!'
     @monitor = @failing_event.create_link_monitor(url: @failing_event.url, code: 404, fail_count: 5)
+    @mandatory_fields = { online: true, start: @event.start, end: @event.end, organizer: @event.organizer,
+                          host_institutions: @event.host_institutions, timezone: @event.timezone,
+                          contact: @event.contact, eligibility: @event.eligibility }
   end
 
   #Tests
@@ -126,7 +130,7 @@ class EventsControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_path
   end
 
-    #logged in but insufficient permissions = ERROR
+  #logged in but insufficient permissions = ERROR
   test 'should get edit for event owner' do
     sign_in @event.user
     get :edit, params: { id: @event }
@@ -156,32 +160,53 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test 'should not get edit page for non-owner user' do
-    #Administrator = SUCCESS
     sign_in users(:another_regular_user)
     get :edit, params: { id: @event }
     assert :forbidden
   end
 
+  test 'should get edit page for approved editor' do
+    # add to approved editors and check
+    @event.content_provider.add_editor users(:another_regular_user)
+    sign_in users(:another_regular_user)
+    get :edit, params: { id: @event }
+    assert_response :success
+  end
+
   #CREATE TEST
-  test 'should create event for user' do
+  test 'should create online event for user' do
     sign_in users(:regular_user)
     assert_difference('Event.count') do
-      post :create, params: { event: {description: @event.description, title: @event.title, url: @event.url } }
+      # Create event with all mandatory fields
+      post :create, params: { event: { description: @event.description, title: @event.title, url: @event.url,
+                                       duration: @event.duration, recognition: @event.recognition,
+                                       learning_objectives: @event.learning_objectives
+      }.merge(@mandatory_fields) }
     end
     assert_redirected_to event_path(assigns(:event))
+    # check new fields: migration 5.2
+    assert_not_nil assigns(:event), "event is nil"
+    assert_not_nil assigns(:event).duration, "duration is nil"
+    assert_equal @event.duration, assigns(:event).duration, "duration not matched"
+    assert_not_nil assigns(:event).recognition, "recognition is nil"
+    assert_equal @event.recognition, assigns(:event).recognition, "recognition not matched"
+    assert_not_nil assigns(:event).learning_objectives, "learning objectives is nil"
+    assert_equal @event.learning_objectives, assigns(:event).learning_objectives, "learning objectives not matched"
   end
 
   test 'should create event for admin' do
     sign_in users(:admin)
     assert_difference('Event.count') do
-      post :create, params: { event: {description: @event.description, title: @event.title, url: @event.url } }
+      post :create, params: { event: { description: @event.description, title: @event.title, url: @event.url
+      }.merge(@mandatory_fields) }
     end
     assert_redirected_to event_path(assigns(:event))
   end
 
   test 'should not create event for non-logged in user' do
     assert_no_difference('Event.count') do
-      post :create, params: { event: {description: @event.description, title: @event.title, url: @event.url } }
+      post :create, params: { event: { description: @event.description, title: @event.title, url: @event.url
+      }.merge(@mandatory_fields) }
     end
     assert_redirected_to new_user_session_path
   end
@@ -191,12 +216,14 @@ class EventsControllerTest < ActionController::TestCase
     get :show, params: { id: @event }
     assert_response :success
     assert assigns(:event)
+    assert_equal "text/html; charset=utf-8", response.content_type, 'response content_type not matched.'
   end
 
   test 'should show all-day event' do
     get :show, params: { id: events(:two) }
     assert_response :success
     assert assigns(:event)
+    assert_equal "text/html; charset=utf-8", response.content_type, 'response content_type not matched.'
   end
 
   test 'should show event as json' do
@@ -224,20 +251,20 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal @event.title, body['data']['attributes']['title']
     assert_equal @event.scientific_topic_uris.first, body['data']['attributes']['scientific-topics'].first['uri']
     assert_equal event_path(assigns(:event)), body['data']['links']['self']
+    assert_equal "application/vnd.api+json; charset=utf-8", response.content_type, 'response content_type not matched.'
   end
 
   #UPDATE TEST
   test 'should update event' do
     sign_in @event.user
-    # patch :update, id: @event, event: { doi: @event.doi,  remote_created_date: @event.remote_created_date,  remote_updated_date: @event.remote_updated_date, short_description: @event.short_description, title: @event.title, url: @event.url }
-    patch :update, params: { id: @event, event: @updated_event}
+    patch :update, params: { id: @event, event: @updated_event }
     assert_redirected_to event_path(assigns(:event))
   end
 
   test 'should update event if curator' do
     sign_in users(:curator)
     assert_not_equal @event.user, users(:curator)
-    patch :update, params: { id: @event, event: @updated_event}
+    patch :update, params: { id: @event, event: @updated_event }
     assert_redirected_to event_path(assigns(:event))
   end
 
@@ -250,7 +277,7 @@ class EventsControllerTest < ActionController::TestCase
 
     sign_in user
 
-    patch :update, params: { id: event, event: @updated_event}
+    patch :update, params: { id: event, event: @updated_event }
 
     assert_redirected_to event_path(assigns(:event))
   end
@@ -258,11 +285,11 @@ class EventsControllerTest < ActionController::TestCase
   test 'should not update event if not owner or curator etc.' do
     sign_in users(:collaborative_user)
     assert_not_equal @event.user, users(:collaborative_user)
-    patch :update, params: { id: @event, event: @updated_event}
+    patch :update, params: { id: @event, event: @updated_event }
     assert_response :forbidden
   end
 
-  #DESTROY TEST
+  #DESTROY TESTS
   test 'should destroy event owned by user' do
     sign_in @event.user
     assert_difference('Event.count', -1) do
@@ -298,6 +325,16 @@ class EventsControllerTest < ActionController::TestCase
     assert_redirected_to events_path
   end
 
+
+  test 'should destroy event when approved editor' do
+    @event.content_provider.add_editor users(:another_regular_user)
+    sign_in users(:another_regular_user)
+    assert_difference('Event.count', -1) do
+      delete :destroy, params: { id: @event }
+    end
+    assert_redirected_to events_path
+  end
+
   test 'should not destroy event not owned by user' do
     sign_in users(:another_regular_user)
     assert_no_difference('Event.count') do
@@ -305,6 +342,7 @@ class EventsControllerTest < ActionController::TestCase
     end
     assert_response :forbidden
   end
+
 
 
   #CONTENT TESTS
@@ -398,6 +436,14 @@ class EventsControllerTest < ActionController::TestCase
     assert_select 'a.btn-danger[href=?]', event_path(@event), :text => 'Delete', :count => 1
   end
 
+  test 'should show action buttons when approved editor' do
+    @event.content_provider.add_editor users(:another_regular_user)
+    sign_in users(:another_regular_user)
+    get :show, params: { id: @event }
+    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 1
+    assert_select 'a.btn-danger[href=?]', event_path(@event), :text => 'Delete', :count => 1
+  end
+
   test 'should show action buttons when admin' do
     sign_in users(:admin)
     get :show, params: { id: @event }
@@ -425,7 +471,6 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal '{}', response.body
   end
 
-
   test 'should find existing event by url' do
     post :check_exists, params: { format: :json, event: { title: 'whatever',
                                                           url: @event.url,
@@ -446,7 +491,6 @@ class EventsControllerTest < ActionController::TestCase
     assert_response :success
     assert_equal '{}', response.body
   end
-
 
   # TODO: SOLR tests will not run on TRAVIS. Explore stratergy for testing solr
 =begin
@@ -476,14 +520,10 @@ class EventsControllerTest < ActionController::TestCase
     assert scraper_user
     assert_difference('Event.count') do
       post :create, params: {
-          user_token: scraper_user.authentication_token,
-          user_email: scraper_user.email,
-          event: {
-              title: event_title,
-              url: 'http://horse.com',
-              short_description: 'All about horses'
-          },
-          format: 'json'
+        user_token: scraper_user.authentication_token,
+        user_email: scraper_user.email,
+        event: { title: event_title, url: 'http://horse.com', description: 'All about horses' }.merge(@mandatory_fields),
+        format: 'json'
       }
     end
     assert_equal event_title, JSON.parse(response.body)['title']
@@ -496,19 +536,18 @@ class EventsControllerTest < ActionController::TestCase
 
     assert_no_difference('Event.count') do
       post :create, params: {
-          user_token: 'made up authentication token',
-          user_email: scraper_user.email,
-          event: {
-              title: 'event_title',
-              url: 'http://horse.com',
-              description: 'All about horses'
-          },
-          format: 'json'
+        user_token: 'made up authentication token',
+        user_email: scraper_user.email,
+        event: {
+          title: 'event_title',
+          url: 'http://horse.com',
+          description: 'All about horses'
+        },
+        format: 'json'
       }
     end
     assert_response 401
   end
-
 
   test 'should update existing event through API' do
     user = users(:scraper_user)
@@ -517,15 +556,15 @@ class EventsControllerTest < ActionController::TestCase
     new_title = "totally new title"
     assert_no_difference('Event.count') do
       patch :update, params: {
-          user_token: user.authentication_token,
-          user_email: user.email,
-          event: {
-              title: new_title,
-              url: event.url,
-              description: event.description
-          },
-          id: event.id,
-          format: 'json'
+        user_token: user.authentication_token,
+        user_email: user.email,
+        event: {
+          title: new_title,
+          url: event.url,
+          description: event.description
+        },
+        id: event.id,
+        format: 'json'
       }
     end
     assert_not_equal event.title, JSON.parse(response.body)['title']
@@ -539,15 +578,15 @@ class EventsControllerTest < ActionController::TestCase
     new_title = "totally new title"
     assert_no_difference('Event.count') do
       patch :update, params: {
-          user_token: user.authentication_token,
-          user_email: user.email,
-          event: {
-              title: new_title,
-              url: event.url,
-              description: event.description
-          },
-          id: event.id,
-          format: 'json'
+        user_token: user.authentication_token,
+        user_email: user.email,
+        event: {
+          title: new_title,
+          url: event.url,
+          description: event.description
+        },
+        id: event.id,
+        format: 'json'
       }
     end
     assert_response :success
@@ -562,10 +601,10 @@ class EventsControllerTest < ActionController::TestCase
     @event.save!
     assert_difference('@event.collections.count', 2) do
       patch :update_collections, params: {
-          id: @event.id,
-          event: {
-              collection_ids: [collection1.id, collection2.id]
-          }
+        id: @event.id,
+        event: {
+          collection_ids: [collection1.id, collection2.id]
+        }
       }
     end
     assert_in_delta(collection1.events.count, collection1_event_count, 1)
@@ -581,10 +620,10 @@ class EventsControllerTest < ActionController::TestCase
 
     assert_difference('@event.collections.count', -2) do
       patch :update_collections, params: {
-          id: @event.id,
-          event: {
-              collection_ids: ['']
-          }
+        id: @event.id,
+        event: {
+          collection_ids: ['']
+        }
       }
     end
     assert_in_delta(collection1.events.count, collection1_event_count, 1)
@@ -599,9 +638,26 @@ class EventsControllerTest < ActionController::TestCase
 
     assert_equal @event.title, cal_event.summary
     assert_equal @event.description, cal_event.description
-    # Need to call .to_s, or Ruby thinks these two dates are not equal despite looking the same
-    assert_equal @event.start.to_date.to_s, cal_event.dtstart.to_s
-    assert_equal @event.end.to_date.to_s, cal_event.dtend.to_s
+    assert !@event.all_day?, 'not an all day event'
+    # Need to call .to_f, or Ruby thinks these two dates are not equal despite looking the same
+    assert_equal @event.start.to_datetime.to_f, cal_event.dtstart.to_f
+    assert_equal @event.end.to_datetime.to_f, cal_event.dtend.to_f
+  end
+
+  test 'calendar export should be set to utc dates' do
+    # get the event
+    local = events(:calendar_event)
+
+    # get the icalendar content
+    get :show, params: { format: :ics, id: local.id }
+    assert_response :success
+    assert_equal 'text/calendar', @response.content_type
+    cal_event =Icalendar::Calendar.parse(@response.body).first.events.first
+
+    # check the calendar event
+    assert_equal local.title, cal_event.summary
+    assert_equal local.start_utc, cal_event.dtstart
+    assert_equal local.end_utc, cal_event.dtend
   end
 
   test 'should provide a csv file' do
@@ -617,13 +673,13 @@ class EventsControllerTest < ActionController::TestCase
 
     assert_difference('ExternalResource.count', 1) do
       patch :update, params: {
-          id: @event,
-          event: {
-              title: 'New title',
-              description: 'New description',
-              url: 'http://new.url.com',
-              external_resources_attributes: { "1" => { title: 'Cool link', url: 'https://tess.elixir-uk.org/', _destroy: '0' } }
-          }
+        id: @event,
+        event: {
+          title: 'New title',
+          description: 'New description',
+          url: 'http://new.url.com',
+          external_resources_attributes: { "1" => { title: 'Cool link', url: 'https://tess.elixir-uk.org/', _destroy: '0' } }
+        }
       }
     end
 
@@ -640,13 +696,13 @@ class EventsControllerTest < ActionController::TestCase
 
     assert_difference('ExternalResource.count', -1) do
       patch :update, params: {
-          id: event,
-          event: {
-              title: 'New title',
-              description: 'New description',
-              url: 'http://new.url.com',
-              external_resources_attributes: { "0" => { id: resource.id, _destroy: '1' } }
-          }
+        id: event,
+        event: {
+          title: 'New title',
+          description: 'New description',
+          url: 'http://new.url.com',
+          external_resources_attributes: { "0" => { id: resource.id, _destroy: '1' } }
+        }
       }
     end
 
@@ -661,14 +717,14 @@ class EventsControllerTest < ActionController::TestCase
 
     assert_no_difference('ExternalResource.count') do
       patch :update, params: {
-          id: event,
-          event: {
-              title: 'New title',
-              description: 'New description',
-              url: 'http://new.url.com',
-              external_resources_attributes: { "1" => { id: resource.id, title: 'Cool link',
-                                                        url: 'http://www.reddit.com', _destroy: '0' } }
-          }
+        id: event,
+        event: {
+          title: 'New title',
+          description: 'New description',
+          url: 'http://new.url.com',
+          external_resources_attributes: { "1" => { id: resource.id, title: 'Cool link',
+                                                    url: 'http://www.reddit.com', _destroy: '0' } }
+        }
       }
     end
 
@@ -682,11 +738,11 @@ class EventsControllerTest < ActionController::TestCase
 
     assert_difference('Event.count', 1) do
       post :create, params: {
-          event: {
-              description: '<b>hi</b><script>alert("hi!");</script>',
-              title: 'Dirty Event',
-              url: 'http://www.example.com/events/dirty'
-          }
+        event: {
+          description: '<b>hi</b><script>alert("hi!");</script>',
+          title: 'Dirty Event',
+          url: 'http://www.example.com/events/dirty'
+        }.merge(@mandatory_fields)
       }
     end
 
@@ -699,11 +755,12 @@ class EventsControllerTest < ActionController::TestCase
 
     assert_difference('Event.count') do
       post :create, params: {
-          event: {
-              title: @event.title,
-              url: @event.url,
-              node_names: [nodes(:westeros).name, nodes(:good).name]
-          }
+        event: {
+          title: @event.title,
+          url: @event.url,
+          description: @event.description,
+          node_names: [nodes(:westeros).name, nodes(:good).name]
+        }.merge(@mandatory_fields)
       }
     end
 
@@ -735,14 +792,14 @@ class EventsControllerTest < ActionController::TestCase
 
     assert_no_difference('Event.count') do
       patch :update, params: { user_token: user.authentication_token,
-                      user_email: user.email,
-                      event: {
-                          title: 'new title',
-                          url: event.url,
-                          description: 'new description'
-                      },
-                      id: event.id,
-                      format: 'json' }
+                               user_email: user.email,
+                               event: {
+                                 title: 'new title',
+                                 url: event.url,
+                                 description: 'new description'
+                               },
+                               id: event.id,
+                               format: 'json' }
     end
 
     parsed_response = JSON.parse(response.body)
@@ -755,7 +812,7 @@ class EventsControllerTest < ActionController::TestCase
     @event.save!
 
     sign_in @event.user
-    patch :update, params: {id: @event, event: { title: 'new title' } }
+    patch :update, params: { id: @event, event: { title: 'new title' } }
     assert_redirected_to event_path(assigns(:event))
 
     assert_equal 'new title', assigns(:event).title

@@ -21,7 +21,7 @@ class Collection < ApplicationRecord
   clean_array_fields(:keywords)
   update_suggestions(:keywords)
 
-  has_image(placeholder: 'placeholder-collection.png')
+  has_image(placeholder: TeSS::Config.placeholder['collection'])
 
   if TeSS::Config.solr_enabled
     # :nocov:
@@ -43,6 +43,8 @@ class Collection < ApplicationRecord
 
       integer :user_id
       boolean :public
+      time :created_at
+      time :updated_at
     end
     # :nocov:
   end
@@ -55,7 +57,7 @@ class Collection < ApplicationRecord
   end
 
   def self.facet_fields
-    %w( user keywords )
+    %w( keywords user )
   end
 
   def self.visible_by(user)
@@ -67,5 +69,19 @@ class Collection < ApplicationRecord
       where(public: true)
     end
   end
+
+  # implement methods to allow processing as resource
+  def last_scraped
+    return nil
+  end
+
+  def content_provider
+    return nil
+  end
+
+  def scientific_topics
+    return nil
+  end
+
 
 end

@@ -115,6 +115,7 @@ module Searchable
             without(:failing, true)
           end
         end
+
       end
     end
   end

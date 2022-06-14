@@ -1,3 +1,4 @@
+# The controller for actions related to the Ban model
 class BansController < ApplicationController
 
   before_action :get_user

@@ -1,3 +1,4 @@
+# The controller for actions related to the Content Providers model
 class ContentProvidersController < ApplicationController
   before_action :set_content_provider, only: [:show, :edit, :update, :destroy]
   before_action :set_breadcrumbs
@@ -27,6 +28,7 @@ class ContentProvidersController < ApplicationController
 
   def edit
     authorize @content_provider
+    @editor_usernames
   end
 
   # POST /events/check_exists
@@ -101,10 +103,11 @@ class ContentProvidersController < ApplicationController
       node = Node.find_by_name(params[:content_provider][:node_name])
       params[:content_provider][:node_id] = node.id unless node.blank?
     end
+
     params[:content_provider].delete :node_name
 
-    permitted = [:title, :url, :image, :image_url, :description, :id, :content_provider_type, :node_id,
-        {:keywords => []}, :remote_updated_date, :remote_created_date,
+    permitted = [:title, :url, :image, :image_url, :description, :id, :content_provider_type, :node_id, :contact,
+        {:keywords => []}, :remote_updated_date, :remote_created_date, { :approved_editors => [] },
         :local_updated_date, :remote_updated_date, :node_name, :user_id]
 
     permitted.delete(:user_id) unless current_user && current_user.is_admin?

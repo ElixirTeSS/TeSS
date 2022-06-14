@@ -11,6 +11,10 @@
 /log/*
 !/log/.keep
 /tmp
+config/secrets.yml
+config/sunspot.yml
+config/tess.yml
+config/ingestion.yml
 tmp/
 solr/test/
 solr/pids/
@@ -29,3 +33,6 @@ letsencrypt
 docker-volumes
 
 /config/master.key
+
+shared
+vendor/bundle

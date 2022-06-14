@@ -1,3 +1,4 @@
+# The helper for devise classes
 module DeviseHelper
   def devise_error_messages!(title = nil)
     title ||= I18n.t("errors.messages.not_saved",

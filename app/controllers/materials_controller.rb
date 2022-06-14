@@ -1,3 +1,4 @@
+# The controller for actions related to the Materials model
 class MaterialsController < ApplicationController
   before_action :set_material, only: [:show, :edit, :update, :destroy, :update_collections, :add_term, :reject_term]
   before_action :set_breadcrumbs
@@ -51,7 +52,6 @@ class MaterialsController < ApplicationController
     if @material
       respond_to do |format|
         format.html { redirect_to @material }
-        #format.json { render json: @material }
         format.json { render :show, location: @material }
       end
     else
@@ -115,39 +115,41 @@ class MaterialsController < ApplicationController
     # Go through each selected collection
     # and update its resources to include this material.
     # Go through each other collection that is not selected and remove this material from it.
-    collections = params[:material][:collection_ids].select{|p| !p.blank?}
-    collections = collections.collect{|collection| Collection.find_by_id(collection)}
+    collections = params[:material][:collection_ids].select { |p| !p.blank? }
+    collections = collections.collect { |collection| Collection.find_by_id(collection) }
     collections_to_remove = @material.collections - collections
     collections.each do |collection|
       collection.update_resources_by_id((collection.materials + [@material.id]).uniq, nil)
     end
     collections_to_remove.each do |collection|
-      collection.update_resources_by_id((collection.materials.collect{|x| x.id} - [@material.id]).uniq, nil)
+      collection.update_resources_by_id((collection.materials.collect { |x| x.id } - [@material.id]).uniq, nil)
     end
     flash[:notice] = "Material has been included in #{pluralize(collections.count, 'collection')}"
     redirect_to @material
   end
 
   private
+
   # Use callbacks to share common setup or constraints between actions.
   def set_material
     @material = Material.friendly.find(params[:id])
   end
 
-
   # Never trust parameters from the scary internet, only allow the white list through.
   def material_params
-    params.require(:material).permit(:id, :title, :url, :short_description, :long_description, :doi,:last_scraped, :scraper_record,
-                                     :remote_created_date,  :remote_updated_date, {:collection_ids => []},
-                                     :content_provider_id, {:keywords => []}, {:resource_type => []},
-                                     {:scientific_topic_names => []}, {:scientific_topic_uris => []},
-                                     {:operation_names => []}, {:operation_uris => []},
-                                     :licence, :difficulty_level, {:contributors => []},
-                                     {:authors => []}, {:target_audience => []}, {:node_ids => []}, {:node_names => []},
-                                     external_resources_attributes: [:id, :url, :title, :_destroy], event_ids: [],
-                                     locked_fields: [])
+    params.require(:material).permit(:id, :title, :url, :contact, :description, :short_description,
+                                     :long_description, :doi, :licence,
+                                     :last_scraped, :scraper_record, :remote_created_date, :remote_updated_date,
+                                     :content_provider_id, :difficulty_level, :version, :status,
+                                     :date_created, :date_modified, :date_published, :other_types,
+                                     :prerequisites, :syllabus, :learning_objectives, { :subsets => [] },
+                                     { :contributors => [] }, { :authors => [] }, { :target_audience => [] },
+                                     { :collection_ids => [] }, { :keywords => [] }, { :resource_type => [] },
+                                     { :scientific_topic_names => [] }, { :scientific_topic_uris => [] },
+                                     { :operation_names => [] }, { :operation_uris => [] },
+                                     { :node_ids => [] }, { :node_names => [] }, { :fields => [] },
+                                     external_resources_attributes: [:id, :url, :title, :_destroy],
+                                     event_ids: [], locked_fields: [])
   end
-
-
 
 end
