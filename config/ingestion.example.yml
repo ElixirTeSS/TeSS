@@ -4,15 +4,22 @@ loglevel: 0
 username: scraper
 sources:
   - id: 1
-    provider: 'eventbrite'              # content provider's title
-    url: https://www.eventbrite.nl/     # the root URL required to access the source
-    method: html                        # one of 'csv', 'api', 'html'
+    provider: 'VU'              # content provider's title
+    url: 'https://vu-nl.libcal.com/ajax/calendar/list?c=7052&date=0000-00-00&perpage=48&page=1&audience=&cats=&camps=&inc=0'     # the root URL required to access the source
+    method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     enabled: true
   - id: 2
-    provider: 'VU'              # content provider's title
-    url: 'https://vu-nl.libcal.com/ajax/calendar/list?c=7052&date=0000-00-00&perpage=48&page=1&audience=&cats=&camps=&inc=0'     # the root URL required to access the source
-    method: api                        # one of 'csv', 'api', 'html'
+    provider: 'eventbrite'              # content provider's title
+    url: https://www.eventbriteapi.com/v3/organizers/8536296706     # the root URL required to access the source
+    method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
+    token: 'CIUPWOVRJPMUU3FCXCP7'
     enabled: true
-
+  - id: 3
+    provider: 'eventbrite'              # content provider's title
+    url: https://www.eventbriteapi.com/v3/organizers/34021342943     # the root URL required to access the source
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    token: 'CIUPWOVRJPMUU3FCXCP7'
+    enabled: true

@@ -58,7 +58,8 @@ module Ingestors
 
       begin
         # initialise next_page
-        next_page = "#{url}/events/?status=live&token=#{@token}"
+        # next_page = "#{url}/events/?status=live&token=#{@token}"
+        next_page = "#{url}/events/?token=#{@token}"
 
         while next_page
           # execute REST request
@@ -419,7 +420,6 @@ module Ingestors
 
             # extract event details from
             attr = item
-            puts attr.keys
             event.title = attr['title']
             event.url = attr['url'].strip unless attr['url'].nil?
             event.organizer = attr['org']
