@@ -1,40 +1,9 @@
-<% if Rails.env.production? %>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=<%= Rails.application.secrets.google_analytics_code %>"></script>
-  <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+<script async src="https://www.googletagmanager.com/gtag/js?id=<%= Rails.application.secrets.google_analytics_code %>"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-      gtag('config', '<%= Rails.application.secrets.google_analytics_code %>');
-  </script>
-  <script>
-      /**
-       * Function that captures a click on an outbound link in Analytics.
-       * This function takes a valid URL string as an argument, and uses that URL string
-       * as the event label. Setting the transport method to 'beacon' lets the hit be sent
-       * using 'navigator.sendBeacon' in browser that support it.
-       */
-      var captureOutboundLink = function(url) {
-          ga('send', 'event', 'outbound', 'click', url, {
-              'transport': 'beacon',
-              'hitCallback': function(){document.location = url;}
-          });
-      }
-  </script>
-  <script>
-      /**
-       * Function that registers a click on an outbound link in Analytics.
-       * This function takes a valid URL string as an argument, and uses that URL string
-       * as the event label. Setting the transport method to 'beacon' lets the hit be sent
-       * using 'navigator.sendBeacon' in browser that support it.
-       */
-      var getOutboundLink = function(url) {
-          gtag('event', 'click', {
-              'event_category': 'outbound',
-              'event_label': url,
-              'transport_type': 'beacon',
-              'event_callback': function(){document.location = href;}
-          });
-      }
-  </script>
-<% end %>
+    gtag('config', '<%= Rails.application.secrets.google_analytics_code %>');
+    window.captureClicks = true;
+</script>

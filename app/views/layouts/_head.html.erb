@@ -18,9 +18,8 @@
     <meta name="robots" content="noindex">
   <% end -%>
 
-  <% if Rails.application.secrets.google_analytics_code %>
+  <% if Rails.application.secrets.google_analytics_code && Rails.env.production? %>
     <%= render 'layouts/google_analytics' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   <% end %>
 
   <% if content_for? :og_header %>
