@@ -105,6 +105,15 @@ class Material < ApplicationRecord
     super(Rails::Html::FullSanitizer.new.sanitize(desc))
   end
 
+  def short_description= desc
+    self.description = desc unless @_long_description_set
+  end
+
+  def long_description= desc
+    @_long_description_set = true
+    self.description = desc
+  end
+
   def self.facet_fields
     field_list = %w( scientific_topics operations tools standard_database_or_policy content_provider keywords
                      fields licence target_audience authors contributors resource_type related_resources user )
