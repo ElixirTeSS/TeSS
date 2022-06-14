@@ -268,6 +268,11 @@ class User < ApplicationRecord
     joins(:activities_as_owner).where(activities: { key: CREATED_RESOURCE_TYPES.map { |t| "#{t.to_s.singularize}.create" } }).distinct
   end
 
+  def self.with_query(query)
+    joins(:profile).where('username LIKE :query or profiles.firstname LIKE :query or profiles.surname LIKE :query',
+                          query: "#{query}%")
+  end
+
   def created_resources
     CREATED_RESOURCE_TYPES.reduce([]) { |a, t| a + send(t) }
   end
