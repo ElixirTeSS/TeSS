@@ -29,3 +29,10 @@ sources:
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     enabled: true
+  - id: 5
+    provider: 'dans'              # content provider's title
+    url: https://dans.knaw.nl/en/agenda/?filter=true&page=     # the root URL required to access the source
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
+

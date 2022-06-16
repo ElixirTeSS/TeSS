@@ -22,6 +22,9 @@ module Ingestors
         { name: 'surf',
           url: 'https://www.surf.nl/sitemap.xml',
           process: method(:process_surf) },
+        { name: 'dans',
+          url: 'https://dans.knaw.nl/en/agenda/',
+          process: method(:process_dans) },
       ]
 
       # cached API object responses
@@ -479,11 +482,9 @@ module Ingestors
 
     def process_surf(url)
       Hash.from_xml(Nokogiri::XML(URI.open(url)).to_s)['sitemapindex']['sitemap'].each do |page|
-        puts page['loc']
         Hash.from_xml(Nokogiri::XML(URI.open(page['loc'])).to_s)['urlset']['url'].each do |event_page|
           if event_page['loc'].include?('/en/agenda/')
             sleep(1)
-            puts event_page['loc']
             data_json = Nokogiri::HTML5.parse(URI.open(event_page['loc'])).css('script[type="application/ld+json"]')
             if data_json.length > 0
               data = JSON.parse(data_json.first.text)
@@ -507,10 +508,63 @@ module Ingestors
                 add_event(event)
                 @ingested += 1
               rescue Exception => e
-              @messages << "Extract event fields failed with: #{e.message}"
-              raise e if true
+                @messages << "Extract event fields failed with: #{e.message}"
+                raise e if true
               end
             end
+          end
+        end
+      end
+    end
+
+    def process_dans(url)
+      [1,2,3,4].each do |i|
+        sleep(1)
+        event_page = Nokogiri::HTML5.parse(URI.open(url + i.to_s)).css("div[id='nieuws_item_section']")
+        event_page.each do |event_data|
+          begin
+            event = Event.new
+
+            # dates
+            dates = event_data.css("div[id='nieuws_image_date_row']").css("p").css("span")
+            event.start = dates[0].children.to_s.to_time
+            if dates.length == 2
+              event.end = dates[1].children.to_s.to_time
+            end
+
+            data = event_data.css("div[id='nieuws_content_row']").css("div")[0].css("div")[0]
+            event.title = data.css("div[id='agenda_titel']").css("h3")[0].children
+
+            event.keywords = []
+            data.css("div[id='cat_nieuws_item']").css('p').css('span').each do |key|
+              value = key.children
+              event.keywords << value unless value.nil?
+            end
+            data.css("div[id='tag_nieuws']").css('p').css('span').each do |key|
+              value = key.children
+              event.keywords << value unless value.nil?
+            end
+
+            # event.event_types = []
+            # data.css("div[id='tag_nieuws']").css('p').css('span').each do |key|
+            #   value = key.children
+            #   event.event_types << value unless value.nil?
+            # end
+
+            # puts data.css("p[class='dmach-acf-value dmach-acf-video-container']")[0].children.to_s
+            event.description = data.css("p[class='dmach-acf-value dmach-acf-video-container']")[0].children.to_s
+
+            # puts data.css("a[id$='_link']")[0]['href'].to_s
+            event.url = data.css("a[id$='_link']")[0]['href'].to_s
+
+            event.source = 'DANS'
+            event.timezone = 'Amsterdam'
+
+            add_event(event)
+            @ingested += 1
+          rescue Exception => e
+            @messages << "Extract event fields failed with: #{e.message}"
+            raise e if true
           end
         end
       end
