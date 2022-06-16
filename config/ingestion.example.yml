@@ -35,4 +35,9 @@ sources:
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     enabled: true
-
+  - id: 6
+    provider: 'DTLS'              # content provider's title
+    url: https://www.dtls.nl/events/      # the root URL required to access the source
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true

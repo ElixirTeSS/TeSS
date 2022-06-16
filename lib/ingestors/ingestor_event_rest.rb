@@ -25,6 +25,9 @@ module Ingestors
         { name: 'dans',
           url: 'https://dans.knaw.nl/en/agenda/',
           process: method(:process_dans) },
+        { name: 'DTLS',
+          url: 'https://www.dtls.nl/events/',
+          process: method(:process_dtls) },
       ]
 
       # cached API object responses
@@ -566,6 +569,70 @@ module Ingestors
             @messages << "Extract event fields failed with: #{e.message}"
             raise e if true
           end
+        end
+      end
+    end
+
+    def process_dtls(url)
+      docs =  Nokogiri::XML(URI.open(url + 'feed')).xpath('//item')
+      docs.each do |event_item|
+        begin
+          event = Event.new
+          event.event_types = [:workshops_and_courses]
+          event_item.element_children.each do |element|
+            case element.name
+              when 'title'
+                event.title = element.text
+                puts element.text
+              when 'link'
+                #Use GUID field as probably more stable
+                #event.url = element.text
+              when 'creator'
+                #event.creator = element.text
+                # no creator field. Not sure needs one
+              when 'guid'
+                event.url = element.text
+                puts element.text
+              when 'description'
+                event.description = element.text
+                puts element.text
+              when 'location'
+                event.venue = element.text
+                puts element.text
+                loc = element.text.split(',')
+                event.city = loc.first.strip
+                event.country = loc.last.strip
+              when 'provider'
+                event.organizer = element.text
+                puts element.text
+              when 'startdate'
+                event.start = element.text.to_s.to_time
+                puts element.text.to_s.to_time
+              when 'enddate'
+                event.end = element.text.to_s.to_time
+                puts element.text.to_s.to_time
+              when 'latitude'
+                event.latitude = element.text
+                puts element.text
+              when 'longitude'
+                event.longitude = element.text
+                puts element.text
+              when 'pubDate'
+                # Not really needed
+              else
+                #chuck away
+            end
+          end
+          if event.end.nil?
+            event.end = event.start
+          end
+          event.source = 'DTLS'
+          event.timezone = 'Amsterdam'
+          add_event(event)
+          @ingested += 1
+        rescue Exception => e
+          @messages << "Extract event fields failed with: #{e.message}"
+          raise e if true
         end
       end
     end
