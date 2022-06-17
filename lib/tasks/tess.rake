@@ -135,6 +135,32 @@ namespace :tess do
     puts " Done"
   end
 
+  desc 'create ContentProviders objects for all scrapers'
+  task seed_content_providers: :environment do
+    if TeSS::Config.ingestion.nil?
+      config_file = File.join(Rails.root, 'config', 'ingestion.yml')
+      TeSS::Config.ingestion = YAML.safe_load(File.read(config_file)).deep_symbolize_keys!
+    end
+    config = TeSS::Config.ingestion
+
+    User.all.each do |user|
+      if user.is_admin?
+        admin_user = user
+        break
+      end
+    end
+
+    config[:sources].each do |source|
+      if ContentProvider.find_by(title: source[:provider]).nil?
+        ContentProvider.create(
+          title: source[:provider],
+          url: source[:url],
+          user_id: admin_user.id,
+        )
+      end
+    end
+  end
+
   desc 'run generic ingestion process'
   task automated_ingestion: :environment do
     begin
