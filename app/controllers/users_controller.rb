@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   prepend_before_action :set_user, only: [:show, :edit, :update, :destroy, :change_token]
   prepend_before_action :init_user, only: [:new, :create]
   before_action :set_breadcrumbs
-  before_filter :authenticate_user!
+  # before_filter :authenticate_user!
 
   include ActionView::Helpers::TextHelper
 
