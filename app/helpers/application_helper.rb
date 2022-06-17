@@ -439,7 +439,6 @@ module ApplicationHelper
       "#{controller_name.humanize} - "
     else
       ''
-      #end + "TeSS (Training eSupport System)"
     end + TeSS::Config.site['title']
   end
 

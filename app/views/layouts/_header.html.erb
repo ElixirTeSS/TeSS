@@ -11,6 +11,7 @@
   </nav>
 <% end %>
 
+<% if !TeSS::Config.dig('header', 'single') %>
 <%# top header -%>
 <header class="top-header">
   <nav>
@@ -98,6 +99,7 @@
     </div>
   </nav>
 </header>
+<% end %>
 
 <%# navbar header -%>
 <header class="second-header">
@@ -158,6 +160,35 @@
             <%= menu_item "Nodes", nodes_path %>
           <% end %>
           <%= menu_item "About", about_path %>
+        <% end %>
+        <% if TeSS::Config.dig('header', 'single') %>
+        <div class="user-options">
+          <% if user_signed_in? %>
+              <%= link_to current_user.username, user_path(current_user) %>
+              <%= link_to stars_path, title: 'View stars' do %>
+                  <i class="fa fa-star fa-lg"></i>
+              <% end %>
+              <% if current_user.is_curator? || current_user.is_admin? %>
+                  <%= link_to users_path, :title => 'View users' do %>
+                      <i class="fa fa-users fa-lg"></i>
+                  <% end %>
+              <% end %>
+              <% if current_user.is_admin? %>
+                  <%= link_to rails_admin_path, :title => 'View the administrator console' do %>
+                      <i class="fa fa-cog fa-lg"></i>
+                  <% end %>
+              <% end %>
+              <% if current_user.is_curator? || current_user.is_admin? %>
+                  <%= link_to curate_topic_suggestions_path, :title => 'Assign scientific topics to TeSS resources' do %>
+                      <i class="fa fa-briefcase fa-lg"></i>
+                  <% end %>
+              <% end %>
+              <%= link_to "Log out", destroy_user_session_path, :method => :delete, :data => {:confirm => 'Are you sure you want to log out?'} %>
+          <% else %>
+              <%= link_to "Log in", new_user_session_path %>
+              <%= link_to "Register", new_user_registration_path %>
+          <% end %>
+        </div>
         <% end %>
       </div>
     </div>

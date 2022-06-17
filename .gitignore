@@ -36,3 +36,5 @@ docker-volumes
 
 shared
 vendor/bundle
+
+TeSS.code-workspace

@@ -9,14 +9,14 @@ default: &default
   blocked_domains:
     - !ruby/regexp '/bad-domain\.example/'
   site:
-    title: 'TeSS (Training eSupport System)'
-    title_short: TeSS
-    favicon: elixir/favicon.png
-    logo: elixir/ELIXIR_TeSS_logo_white-80px-height.png
-    logo_alt: 'Training eSupport System'
+    title: 'Taxila'
+    title_short: Taxila
+    favicon: taxila/favicon.png
+    logo: taxila/taxila_text.svg
+    logo_alt: 'Taxila'
     logo_open_graph: ''
     logo_email: ''
-    repository: 'https://github.com/ElixirTeSS/TeSS'
+    repository: 'https://github.com/DaanVanVugt/Taxila'
     supported_by: 'elixir_supported_by'
     widget_example: 'elixir_widget_example'
   mailer:
@@ -39,7 +39,7 @@ default: &default
     image: elixir/hub-logo.png
     url: 'http://www.elixir-europe.org'
   header:
-    single: false
+    single: true
   feature:
     e-learnings: false
     events: true
