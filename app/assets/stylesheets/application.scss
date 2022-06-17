@@ -838,7 +838,7 @@ a.delete-internal-resource {
 }
 
 .btn-elixir {
-  @include button-variant(white, $elixir-green, white);
+  @include button-variant(white, $taxila-green, white);
   background-image: image-url('elixir_white_small.png');
   background-repeat: no-repeat;
   background-position: 7px 7px;
