@@ -114,12 +114,24 @@
         <% if defined? TeSS::Config.site['logo'] and !TeSS::Config.site['logo'].blank? %>
           <a class="navbar-brand" href="/">
             <%= image_tag(TeSS::Config.site['logo'], :alt => TeSS::Config.site['logo_alt'],
-                          :style => 'height: 50px; margin-top: 3px;') %>
+                          :style => 'height: 40px; margin-top: 10px;') %>
           </a>
         <% end %>
       </div>
 
       <div class="collapse navbar-collapse" id="orange-navbar-collapse">
+        <% unless @hide_search_box %>
+          <%= form_tag search_path, id: 'search-box', method: :get, class: "navbar-form navbar-right",
+                       role: "search" do %>
+            <div class="input-group">
+              <input type="text" class="form-control" name='q'
+                     placeholder="Search <%= TeSS::Config.site['title_short'] %>..."/>
+              <div class="input-group-btn">
+                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
         <%= menu_group do %>
           <% if TeSS::Config.feature['events'] == true %>
             <%= menu_item "Events", events_path %>
@@ -147,43 +159,6 @@
           <% end %>
           <%= menu_item "About", about_path %>
         <% end %>
-        <% unless @hide_search_box %>
-            <%= form_tag search_path, id: 'search-box', method: :get, class: "navbar-form navbar-left", role: "search" do %>
-                <div class="input-group">
-                  <input type="text" class="form-control" name='q' placeholder="Search training..."/>
-                  <div class="input-group-btn">
-                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                  </div>
-                </div>
-            <% end %>
-        <% end %>
-        <div class="user-options">
-          <% if user_signed_in? %>
-              <%= link_to current_user.username, user_path(current_user) %>
-              <%= link_to stars_path, title: 'View stars' do %>
-                  <i class="fa fa-star fa-lg"></i>
-              <% end %>
-              <% if current_user.is_curator? || current_user.is_admin? %>
-                  <%= link_to users_path, :title => 'View users' do %>
-                      <i class="fa fa-users fa-lg"></i>
-                  <% end %>
-              <% end %>
-              <% if current_user.is_admin? %>
-                  <%= link_to rails_admin_path, :title => 'View the administrator console' do %>
-                      <i class="fa fa-cog fa-lg"></i>
-                  <% end %>
-              <% end %>
-              <% if current_user.is_curator? || current_user.is_admin? %>
-                  <%= link_to curate_topic_suggestions_path, :title => 'Assign scientific topics to TeSS resources' do %>
-                      <i class="fa fa-briefcase fa-lg"></i>
-                  <% end %>
-              <% end %>
-              <%= link_to "Log out", destroy_user_session_path, :method => :delete, :data => {:confirm => 'Are you sure you want to log out?'} %>
-          <% else %>
-              <%= link_to "Log in", new_user_session_path %>
-              <%= link_to "Register", new_user_registration_path %>
-          <% end %>
-        </div>
       </div>
     </div>
   </nav>
