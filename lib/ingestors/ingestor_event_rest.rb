@@ -455,7 +455,7 @@ module Ingestors
             end
 
             event.target_audience = []
-            attr['audiences']&.each { |audience| event.keywords << audience.name }
+            attr['audiences']&.each { |audience| event.keywords << audience['name'] }
 
             event.host_institutions = []
             attr['host-institutions']&.each { |host| event.host_institutions << host }

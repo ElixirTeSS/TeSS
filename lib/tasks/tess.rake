@@ -143,12 +143,7 @@ namespace :tess do
     end
     config = TeSS::Config.ingestion
 
-    User.all.each do |user|
-      if user.is_admin?
-        admin_user = user
-        break
-      end
-    end
+    admin_user = User.all.select{|user| user.is_admin?}.first
 
     config[:sources].each do |source|
       if ContentProvider.find_by(title: source[:provider]).nil?
