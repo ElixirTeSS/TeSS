@@ -1,0 +1,48 @@
+/* Taxila brand colours, from https://paletton.com/#uid=62n0u0kdsmD5nxk9nr5gFiVlIfa */
+$taxila-green: #90A861;
+$taxila-purple: #925576;
+$taxila-purple2: #7A3A5D;
+$contrast: $taxila-purple;
+$contrast2: $taxila-purple2;
+
+/* TeSS colours */
+$brand-primary: $taxila-purple;
+$bgDefault: $taxila-green;
+$bgHighlight: darken($bgDefault, 10%);
+$colDefault: white;
+$colHover: #333333;
+$colHover2: #eeeeee;
+
+
+$link-color: $contrast;
+$link-hover-color: lighten($link-color, 10%);
+$link-hover-decoration: none;
+
+$btn-primary-bg: $contrast;
+
+$pagination-color: $contrast;
+$pagination-active-bg: $contrast;
+$pagination-active-border: $contrast;
+
+$navbar-height: 60px;
+$navbar-default-bg: $bgDefault;
+$navbar-default-border: transparent;
+$navbar-default-link-active-bg: $bgHighlight;
+$navbar-default-link-hover-bg: $bgHighlight;
+$navbar-default-link-color: $colDefault;
+$navbar-default-link-active-color: lighten($navbar-default-link-color, 30%);
+$navbar-default-link-hover-color: lighten($navbar-default-link-color, 40%);
+
+$navbar-default-toggle-hover-bg: $bgHighlight;
+$navbar-default-toggle-icon-bar-bg: $colHover2;
+$navbar-default-toggle-border-color: $bgHighlight;
+
+$top-header-bg: #333;
+$top-header-border: #eee;
+$top-header-text: #eee;
+$top-header-hover-text: #333;
+$top-header-hover-bg: #eee;
+
+$footer-bg: #ddd;
+$footer-border: transparent;
+$footer-text: #333;
