@@ -19,7 +19,7 @@ Globals
            end %></b>:
     <% if value.is_a?(Array) %>
       <% value.each_with_index do |val, j| %>
-              <span class="active-filters">
+              <span class="active-filters pull-left">
                 <%= remove_filter_link(category, val, { :class => "label label-default filter-button" }) %>
                 <% if j < value.size - 1 %>
                   or
