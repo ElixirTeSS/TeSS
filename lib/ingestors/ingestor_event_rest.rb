@@ -69,8 +69,7 @@ module Ingestors
 
       begin
         # initialise next_page
-        # next_page = "#{url}/events/?status=live&token=#{@token}"
-        next_page = "#{url}/events/?token=#{@token}"
+        next_page = "#{url}/events/?status=live&token=#{@token}"
 
         while next_page
           # execute REST request
@@ -431,45 +430,41 @@ module Ingestors
 
             # extract event details from
             attr = item
-            event.title = attr['title']
-            event.url = attr['url'].strip unless attr['url'].nil?
-            event.organizer = attr['org']
-            event.description = convert_description attr['description']
-            event.start = attr['startdt']
-            event.end = attr['enddt']
-            event.venue = attr['location']
+            event.title = attr.fetch('title', '')
+            event.url = attr.fetch('url', '')&.strip
+            event.organizer = attr.fetch('org', '')
+            event.description = convert_description attr.fetch('description', '')
+            event.start = attr.fetch('startdt', '')
+            event.end = attr.fetch('enddt', '')
+            event.venue = attr.fetch('location', '')
             event.city = 'Amsterdam'
             event.country = 'The Netherlands'
             event.source = 'VU'
-            event.online = attr['online_event']
-            event.contact = attr['orgurl']
+            event.online = attr.fetch('online_event', '')
+            event.contact = attr.fetch('orgurl', '')
             event.timezone = 'Amsterdam'
 
             # array fields
             event.keywords = []
-            attr['categories_arr'].each { |category| event.keywords << category['name'] } unless attr['categories'].nil?
+            attr['categories_arr']&.each { |category| event.keywords << category['name'] }
 
             event.event_types = []
-            unless attr['event_types'].nil?
-              attr['event_types'].each do |key|
-                value = convert_event_types(key)
-                event.event_types << value unless value.nil?
-              end
+            attr['event_types']&.each do |key|
+              value = convert_event_types(key)
+              event.event_types << value unless value.nil?
             end
 
             event.target_audience = []
-            attr['audiences'].each { |audience| event.keywords << audience.name } unless attr['audience'].nil?
+            attr['audiences']&.each { |audience| event.keywords << audience.name }
 
             event.host_institutions = []
-            attr['host-institutions'].each { |host| event.host_institutions << host } unless attr['host-institutions'].nil?
+            attr['host-institutions']&.each { |host| event.host_institutions << host }
 
             # dictionary fields
             event.eligibility = []
-            unless attr['eligibility'].nil?
-              attr['eligibility'].each do |key|
-                value = convert_eligibility(key)
-                event.eligibility << value unless value.nil?
-              end
+            attr['eligibility']&.each do |key|
+              value = convert_eligibility(key)
+              event.eligibility << value unless value.nil?
             end
 
             # add event to events array
@@ -477,7 +472,6 @@ module Ingestors
             @ingested += 1
           rescue Exception => e
            @messages << "Extract event fields failed with: #{e.message}"
-           raise e if true
           end
         end
       end
@@ -498,7 +492,7 @@ module Ingestors
                 # extract event details from
                 attr = data['@graph'].first
                 event.title = attr['name']
-                event.url = attr['url'].strip unless attr['url'].nil?
+                event.url = attr['url']&.strip
                 event.description = convert_description attr['description']
                 event.start = attr['startDate']
                 event.end = attr['endDate']
@@ -512,7 +506,6 @@ module Ingestors
                 @ingested += 1
               rescue Exception => e
                 @messages << "Extract event fields failed with: #{e.message}"
-                raise e if true
               end
             end
           end
@@ -521,7 +514,7 @@ module Ingestors
     end
 
     def process_dans(url)
-      [1,2,3,4].each do |i|
+      4.times.each do |i| # always check the first 4 pages, # of pages could be increased if needed
         sleep(1)
         event_page = Nokogiri::HTML5.parse(URI.open(url + i.to_s)).css("div[id='nieuws_item_section']")
         event_page.each do |event_data|
@@ -548,16 +541,8 @@ module Ingestors
               event.keywords << value unless value.nil?
             end
 
-            # event.event_types = []
-            # data.css("div[id='tag_nieuws']").css('p').css('span').each do |key|
-            #   value = key.children
-            #   event.event_types << value unless value.nil?
-            # end
-
-            # puts data.css("p[class='dmach-acf-value dmach-acf-video-container']")[0].children.to_s
             event.description = data.css("p[class='dmach-acf-value dmach-acf-video-container']")[0].children.to_s
 
-            # puts data.css("a[id$='_link']")[0]['href'].to_s
             event.url = data.css("a[id$='_link']")[0]['href'].to_s
 
             event.source = 'DANS'
@@ -567,7 +552,6 @@ module Ingestors
             @ingested += 1
           rescue Exception => e
             @messages << "Extract event fields failed with: #{e.message}"
-            raise e if true
           end
         end
       end
@@ -583,7 +567,6 @@ module Ingestors
             case element.name
               when 'title'
                 event.title = element.text
-                puts element.text
               when 'link'
                 #Use GUID field as probably more stable
                 #event.url = element.text
@@ -592,31 +575,23 @@ module Ingestors
                 # no creator field. Not sure needs one
               when 'guid'
                 event.url = element.text
-                puts element.text
               when 'description'
                 event.description = element.text
-                puts element.text
               when 'location'
                 event.venue = element.text
-                puts element.text
                 loc = element.text.split(',')
                 event.city = loc.first.strip
                 event.country = loc.last.strip
               when 'provider'
                 event.organizer = element.text
-                puts element.text
               when 'startdate'
                 event.start = element.text.to_s.to_time
-                puts element.text.to_s.to_time
               when 'enddate'
                 event.end = element.text.to_s.to_time
-                puts element.text.to_s.to_time
               when 'latitude'
                 event.latitude = element.text
-                puts element.text
               when 'longitude'
                 event.longitude = element.text
-                puts element.text
               when 'pubDate'
                 # Not really needed
               else
@@ -632,7 +607,6 @@ module Ingestors
           @ingested += 1
         rescue Exception => e
           @messages << "Extract event fields failed with: #{e.message}"
-          raise e if true
         end
       end
     end

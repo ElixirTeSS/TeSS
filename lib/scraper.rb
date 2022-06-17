@@ -84,7 +84,6 @@ module Scraper
             log "Source URL[#{source[:url]}] resources read[#{ingestor.ingested}] and written[#{(ingestor.added + ingestor.updated)}].", 2
           rescue Exception => e0
             log "Scraper failed with: #{e0.message}", 2
-            raise e0 if true
           end
         end
       end
