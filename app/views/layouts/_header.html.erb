@@ -11,6 +11,7 @@
   </nav>
 <% end %>
 
+<% if !TeSS::Config.dig('header', 'single') %>
 <%# top header -%>
 <header class="top-header">
   <nav>
@@ -98,6 +99,7 @@
     </div>
   </nav>
 </header>
+<% end %>
 
 <%# navbar header -%>
 <header class="second-header">
@@ -159,6 +161,7 @@
           <% end %>
           <%= menu_item "About", about_path %>
         <% end %>
+        <% if TeSS::Config.dig('header', 'single') %>
         <div class="user-options">
           <% if user_signed_in? %>
               <%= link_to current_user.username, user_path(current_user) %>
@@ -186,6 +189,7 @@
               <%= link_to "Register", new_user_registration_path %>
           <% end %>
         </div>
+        <% end %>
       </div>
     </div>
   </nav>

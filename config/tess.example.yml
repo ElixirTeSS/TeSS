@@ -38,6 +38,8 @@ default: &default
     name: 'ELIXIR Hub'
     image: elixir/hub-logo.png
     url: 'http://www.elixir-europe.org'
+  header:
+    single: false
   feature:
     e-learnings: false
     events: true
