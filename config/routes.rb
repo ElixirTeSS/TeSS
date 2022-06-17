@@ -30,7 +30,9 @@ Rails.application.routes.draw do
 
   #devise_for :users
   # Use custom invitations and registrations controllers that subclasses devise's
-  unless defined?(::Rake::SprocketsTask)
+  # Devise will try to connect to the DB at initialization, which we don't want
+  # to happen when precompiling assets in the docker build script.
+  unless Rake.try(:application)&.top_level_tasks&.include? 'assets:precompile'
     devise_for :users, :controllers => {
       :registrations => 'tess_devise/registrations',
       :invitations => 'tess_devise/invitations',
