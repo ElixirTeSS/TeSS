@@ -1,3 +1,42 @@
 name: production
 logfile: log/ingestion.log
 username: scraper
+sources:
+  - id: 1
+    provider: 'VU'              # content provider's title
+    url: 'https://vu-nl.libcal.com/ajax/calendar/list?c=7052&date=0000-00-00&perpage=48&page=1&audience=&cats=&camps=&inc=0'     # the root URL required to access the source
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
+  - id: 2
+    provider: 'eventbrite'              # content provider's title
+    url: https://www.eventbriteapi.com/v3/organizers/8536296706     # the root URL required to access the source
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    token: '*INSERT_EVENTBRITE_TOKEN*'  # get an API Key at https://www.eventbrite.com/platform/
+    enabled: true
+  - id: 3
+    provider: 'eventbrite'              # content provider's title
+    url: https://www.eventbriteapi.com/v3/organizers/34021342943     # the root URL required to access the source
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    token: '*INSERT_EVENTBRITE_TOKEN*'  # get an API Key at https://www.eventbrite.com/platform/
+    enabled: true
+  - id: 4
+    provider: 'surf'              # content provider's title
+    url: https://www.surf.nl/sitemap.xml     # the root URL required to access the source
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
+  - id: 5
+    provider: 'dans'              # content provider's title
+    url: https://dans.knaw.nl/en/agenda/?filter=true&page=     # the root URL required to access the source
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
+  - id: 6
+    provider: 'DTLS'              # content provider's title
+    url: https://www.dtls.nl/events/      # the root URL required to access the source
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true

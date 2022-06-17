@@ -1,5 +1,7 @@
 require 'open-uri'
 require 'csv'
+require 'nokogiri'
+require 'active_support/core_ext/hash'
 
 module Ingestors
   class IngestorEventRest < IngestorEvent
@@ -13,11 +15,24 @@ module Ingestors
           process: method(:process_elixir) },
         { name: 'Eventbrite API v3',
           url: 'https://www.eventbriteapi.com/v3/',
-          process: method(:process_eventbrite) }
+          process: method(:process_eventbrite) },
+        { name: 'VU Amsterdam',
+          url: 'https://vu-nl.libcal.com/',
+          process: method(:process_vu) },
+        { name: 'surf',
+          url: 'https://www.surf.nl/sitemap.xml',
+          process: method(:process_surf) },
+        { name: 'dans',
+          url: 'https://dans.knaw.nl/en/agenda/',
+          process: method(:process_dans) },
+        { name: 'DTLS',
+          url: 'https://www.dtls.nl/events/',
+          process: method(:process_dtls) },
       ]
 
       # cached API object responses
       @eventbrite_objects = {}
+      @VU_objects = {}
     end
 
     def read(url)
@@ -38,7 +53,7 @@ module Ingestors
         process.call(url)
 
       rescue Exception => e
-        @messages << "#{self.class.name} failed with: #{e.message}"
+        @messages << "#{self.class.name} failed with: #{e.message} #{e.backtrace}"
       end
 
       # finished
@@ -397,6 +412,201 @@ module Ingestors
           rescue Exception => e
             @messages << "Extract event fields failed with: #{e.message}"
           end
+        end
+      end
+    end
+
+    def process_vu(url)
+      # execute REST request
+      results = get_JSON_response url
+      data = results.to_h['results']
+
+      # extract materials from results
+      unless data.nil? or data.size < 1
+        data.each do |item|
+          begin
+            # create new event
+            event = Event.new
+
+            # extract event details from
+            attr = item
+            event.title = attr.fetch('title', '')
+            event.url = attr.fetch('url', '')&.strip
+            event.organizer = attr.fetch('org', '')
+            event.description = convert_description attr.fetch('description', '')
+            event.start = attr.fetch('startdt', '')
+            event.end = attr.fetch('enddt', '')
+            event.venue = attr.fetch('location', '')
+            event.city = 'Amsterdam'
+            event.country = 'The Netherlands'
+            event.source = 'VU'
+            event.online = attr.fetch('online_event', '')
+            event.contact = attr.fetch('orgurl', '')
+            event.timezone = 'Amsterdam'
+
+            # array fields
+            event.keywords = []
+            attr['categories_arr']&.each { |category| event.keywords << category['name'] }
+
+            event.event_types = []
+            attr['event_types']&.each do |key|
+              value = convert_event_types(key)
+              event.event_types << value unless value.nil?
+            end
+
+            event.target_audience = []
+            attr['audiences']&.each { |audience| event.keywords << audience['name'] }
+
+            event.host_institutions = []
+            attr['host-institutions']&.each { |host| event.host_institutions << host }
+
+            # dictionary fields
+            event.eligibility = []
+            attr['eligibility']&.each do |key|
+              value = convert_eligibility(key)
+              event.eligibility << value unless value.nil?
+            end
+
+            # add event to events array
+            add_event(event)
+            @ingested += 1
+          rescue Exception => e
+           @messages << "Extract event fields failed with: #{e.message}"
+          end
+        end
+      end
+    end
+
+    def process_surf(url)
+      Hash.from_xml(Nokogiri::XML(URI.open(url)).to_s)['sitemapindex']['sitemap'].each do |page|
+        Hash.from_xml(Nokogiri::XML(URI.open(page['loc'])).to_s)['urlset']['url'].each do |event_page|
+          if event_page['loc'].include?('/en/agenda/')
+            sleep(1)
+            data_json = Nokogiri::HTML5.parse(URI.open(event_page['loc'])).css('script[type="application/ld+json"]')
+            if data_json.length > 0
+              data = JSON.parse(data_json.first.text)
+              begin
+                # create new event
+                event = Event.new
+
+                # extract event details from
+                attr = data['@graph'].first
+                event.title = attr['name']
+                event.url = attr['url']&.strip
+                event.description = convert_description attr['description']
+                event.start = attr['startDate']
+                event.end = attr['endDate']
+                event.venue = attr['location']
+                event.source = 'SURF'
+                event.online = true
+                event.timezone = 'Amsterdam'
+
+                # add event to events array
+                add_event(event)
+                @ingested += 1
+              rescue Exception => e
+                @messages << "Extract event fields failed with: #{e.message}"
+              end
+            end
+          end
+        end
+      end
+    end
+
+    def process_dans(url)
+      4.times.each do |i| # always check the first 4 pages, # of pages could be increased if needed
+        sleep(1)
+        event_page = Nokogiri::HTML5.parse(URI.open(url + i.to_s)).css("div[id='nieuws_item_section']")
+        event_page.each do |event_data|
+          begin
+            event = Event.new
+
+            # dates
+            dates = event_data.css("div[id='nieuws_image_date_row']").css("p").css("span")
+            event.start = dates[0].children.to_s.to_time
+            if dates.length == 2
+              event.end = dates[1].children.to_s.to_time
+            end
+
+            data = event_data.css("div[id='nieuws_content_row']").css("div")[0].css("div")[0]
+            event.title = data.css("div[id='agenda_titel']").css("h3")[0].children
+
+            event.keywords = []
+            data.css("div[id='cat_nieuws_item']").css('p').css('span').each do |key|
+              value = key.children
+              event.keywords << value unless value.nil?
+            end
+            data.css("div[id='tag_nieuws']").css('p').css('span').each do |key|
+              value = key.children
+              event.keywords << value unless value.nil?
+            end
+
+            event.description = data.css("p[class='dmach-acf-value dmach-acf-video-container']")[0].children.to_s
+
+            event.url = data.css("a[id$='_link']")[0]['href'].to_s
+
+            event.source = 'DANS'
+            event.timezone = 'Amsterdam'
+
+            add_event(event)
+            @ingested += 1
+          rescue Exception => e
+            @messages << "Extract event fields failed with: #{e.message}"
+          end
+        end
+      end
+    end
+
+    def process_dtls(url)
+      docs =  Nokogiri::XML(URI.open(url + 'feed')).xpath('//item')
+      docs.each do |event_item|
+        begin
+          event = Event.new
+          event.event_types = [:workshops_and_courses]
+          event_item.element_children.each do |element|
+            case element.name
+              when 'title'
+                event.title = element.text
+              when 'link'
+                #Use GUID field as probably more stable
+                #event.url = element.text
+              when 'creator'
+                #event.creator = element.text
+                # no creator field. Not sure needs one
+              when 'guid'
+                event.url = element.text
+              when 'description'
+                event.description = element.text
+              when 'location'
+                event.venue = element.text
+                loc = element.text.split(',')
+                event.city = loc.first.strip
+                event.country = loc.last.strip
+              when 'provider'
+                event.organizer = element.text
+              when 'startdate'
+                event.start = element.text.to_s.to_time
+              when 'enddate'
+                event.end = element.text.to_s.to_time
+              when 'latitude'
+                event.latitude = element.text
+              when 'longitude'
+                event.longitude = element.text
+              when 'pubDate'
+                # Not really needed
+              else
+                #chuck away
+            end
+          end
+          if event.end.nil?
+            event.end = event.start
+          end
+          event.source = 'DTLS'
+          event.timezone = 'Amsterdam'
+          add_event(event)
+          @ingested += 1
+        rescue Exception => e
+          @messages << "Extract event fields failed with: #{e.message}"
         end
       end
     end
