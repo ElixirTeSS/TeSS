@@ -9,14 +9,14 @@ sources:
     resource_type: event                # event or material
     enabled: true
   - id: 2
-    provider: 'eventbrite'              # content provider's title
+    provider: 'Digital Skills Programme'              # content provider's title
     url: https://www.eventbriteapi.com/v3/organizers/8536296706     # the root URL required to access the source
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     token: '*INSERT_EVENTBRITE_TOKEN*'  # get an API Key at https://www.eventbrite.com/platform/
     enabled: true
   - id: 3
-    provider: 'eventbrite'              # content provider's title
+    provider: 'eScience Center'              # content provider's title
     url: https://www.eventbriteapi.com/v3/organizers/34021342943     # the root URL required to access the source
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
