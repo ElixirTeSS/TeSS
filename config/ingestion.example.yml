@@ -23,13 +23,13 @@ sources:
     token: '*INSERT_EVENTBRITE_TOKEN*'  # get an API Key at https://www.eventbrite.com/platform/
     enabled: true
   - id: 4
-    provider: 'surf'              # content provider's title
+    provider: 'SURF'              # content provider's title
     url: https://www.surf.nl/sitemap.xml     # the root URL required to access the source
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     enabled: true
   - id: 5
-    provider: 'dans'              # content provider's title
+    provider: 'DANS'              # content provider's title
     url: https://dans.knaw.nl/en/agenda/?filter=true&page=     # the root URL required to access the source
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
