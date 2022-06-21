@@ -1,0 +1,8 @@
+<li data-id="{{ item.id }}">
+    <input type="hidden" name="{{ prefix }}[]" value="{{ item.username }}" />
+    {{ item.username }}
+    {{#if item.firstname}}
+    ({{ item.firstname }} {{ item.surname }})
+    {{/if}}
+    <a href="#" class="delete-list-item">&times;</a>
+</li>

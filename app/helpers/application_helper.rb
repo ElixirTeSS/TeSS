@@ -384,7 +384,10 @@ module ApplicationHelper
       @template.render(partial: 'common/autocompleter', locals: { field_name: name, f: self, url: url,
                                                                   template: options[:template],
                                                                   id_field: options[:id_field] || :id,
-                                                                  label_field: options[:label_field] || :title })
+                                                                  label_field: options[:label_field] || :title,
+                                                                  form_field_name: options[:form_field_name],
+                                                                  existing_items_method: options[:existing_items_method],
+                                                                  transform_function: options[:transform_function] })
     end
 
     def internal_resource(name, options = {})

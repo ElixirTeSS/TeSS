@@ -1,11 +1,14 @@
 <% model_name = f.object.class.name.underscore %>
-<% form_field_name = "#{model_name}[#{field_name.to_s.singularize}_#{id_field.to_s}s]" %>
+<% form_field_name ||= "#{model_name}[#{field_name.to_s.singularize}_#{id_field.to_s}s]" %>
 <% template ||= nil %>
+<% transform_function ||= nil %>
+<% existing_items_method ||= field_name %>
 <% data = { role: 'autocompleter-group', url: url, prefix: form_field_name,
             'label-field' => label_field.to_s,
             'id-field' => id_field.to_s } %>
 <% data[:template] = template if template %>
-<% json = f.object.send(field_name).map do |r|
+<% data['transform-function'] = transform_function if transform_function %>
+<% json = f.object.send(existing_items_method).map do |r|
   { item: { id_field => r.send(id_field), label_field => r.send(label_field) },
     prefix: form_field_name }
   end.to_json %>

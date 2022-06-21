@@ -31,6 +31,7 @@
 //= require clipboard
 //= require url_checker
 //= require ardc_vocab_widget_v2
+//= require autocompleters
 //= require_tree ./templates
 //= require_tree .
 //= require_self
@@ -144,55 +145,7 @@ document.addEventListener("turbolinks:load", function() {
 
     // Autocompleters ("app/views/common/_autocompleter.html.erb")
     $("[data-role='autocompleter-group']").each(function () {
-        var existingValues = JSON.parse($(this).find('[data-role="autocompleter-existing"]').html()) || [];
-        var listElement = $(this).find('[data-role="autocompleter-list"]');
-        var inputElement = $(this).find('[data-role="autocompleter-input"]');
-        var url = $(this).data("url");
-        var prefix = $(this).data("prefix");
-        var labelField = $(this).data("labelField") || "title";
-        var idField = $(this).data("idField") || "id";
-        var templateName = $(this).data("template") || "autocompleter/resource";
-
-        // Render the existing associations on page load
-        if (!listElement.children("li").length) {
-            for (var i = 0; i < existingValues.length; i++) {
-                listElement.append(HandlebarsTemplates[templateName](existingValues[i]));
-            }
-        }
-
-        inputElement.autocomplete({
-            serviceUrl: url,
-            dataType: 'json',
-            deferRequestBy: 300, // Wait 300ms before submitting to stop search being flooded
-            paramName: 'q',
-            transformResult: function(response) {
-                return {
-                    suggestions: $.map(response, function(item) {
-                        return { value: item[labelField], data: item[idField], item: item };
-                    })
-                };
-            },
-            onSelect: function (suggestion) {
-                // Don't add duplicates
-                if (!$("[data-id='" + suggestion.data + "']", listElement).length) {
-                    var obj = { item: suggestion.item };
-                    if (prefix) {
-                        obj.prefix = prefix;
-                    }
-
-                    listElement.append(HandlebarsTemplates[templateName](obj));
-                }
-
-                $(this).val('').focus();
-            },
-            onSearchStart: function (query) {
-                query.q = query.q + '*';
-                inputElement.addClass('loading');
-            },
-            onSearchComplete: function () {
-                inputElement.removeClass('loading');
-            }
-        });
+        Autocompleters.create(this);
     });
 
     var setStarButtonState = function (button) {
