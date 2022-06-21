@@ -25,8 +25,11 @@ module Ingestors
         { name: 'DANS',
           url: 'https://dans.knaw.nl/en/agenda/',
           process: method(:process_dans) },
-        { name: 'DTLS',
+        { name: 'DTL',
           url: 'https://www.dtls.nl/events/',
+          process: method(:process_dtls) },
+        { name: 'DTL',
+          url: 'https://www.dtls.nl/courses/',
           process: method(:process_dtls) },
       ]
 
