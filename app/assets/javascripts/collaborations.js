@@ -27,6 +27,8 @@ var Collaborations = {
                 Collaborations.displayEmptyText();
             }
         });
+
+        return false;
     },
 
     add: function () {
@@ -44,6 +46,8 @@ var Collaborations = {
                     Collaborations.displayEmptyText();
                 }
             });
+
+            return false;
         }
     },
 
