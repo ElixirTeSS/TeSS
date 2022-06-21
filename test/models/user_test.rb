@@ -197,6 +197,9 @@ class UserTest < ActiveSupport::TestCase
     basic = users(:basic_user)
 
     # Should match on username
+    assert_includes User.with_query('bo'), user
+    assert_includes User.with_query('BO'), user
+    assert_includes User.with_query('bO'), user
     assert_includes User.with_query('Bo'), user
     assert_not_includes User.with_query('Bo'), another
     assert_includes User.with_query('Bob'), user

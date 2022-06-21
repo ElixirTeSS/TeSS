@@ -269,8 +269,8 @@ class User < ApplicationRecord
   end
 
   def self.with_query(query)
-    joins(:profile).where('username LIKE :query or profiles.firstname LIKE :query or profiles.surname LIKE :query',
-                          query: "#{query}%")
+    joins(:profile).where('lower(username) LIKE :query or lower(profiles.firstname) LIKE :query or lower(profiles.surname) LIKE :query',
+                          query: "#{query.downcase}%")
   end
 
   def created_resources
