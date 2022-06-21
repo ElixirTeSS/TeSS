@@ -496,7 +496,11 @@ module Ingestors
                 event.description = convert_description attr['description']
                 event.start = attr['startDate']
                 event.end = attr['endDate']
-                event.venue = attr['location']
+                if attr['location'].is_a?(Array)
+                  event.venue = attr['location'].join(' - ')
+                else
+                  event.venue = attr['location']
+                end
                 event.source = 'SURF'
                 event.online = true
                 event.timezone = 'Amsterdam'
