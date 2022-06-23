@@ -13,7 +13,9 @@
   data['on-add'] = transform_function if transform_function
   data['on-remove'] = transform_function if transform_function
   json = Array(f.object.send(existing_items_method)).map do |r|
-    { item: { id_field => r.send(id_field), label_field => r.send(label_field) },
+    { item: { id: r.send(id_field),
+              id_field => r.send(id_field),
+              label_field => r.send(label_field) },
       prefix: form_field_name }
   end.to_json
 
@@ -30,10 +32,8 @@
   <%= content_tag(:div, data: data) do %>
       <%= content_tag :script, json.html_safe, type: 'application/json', data: { role: 'autocompleter-existing' } %>
 
-      <% unless singleton %>
-        <%# This blank association is needed to trigger the delete when all associations are removed %>
-        <input type="hidden" name="<%= form_field_name -%>[]" value="" />
-      <% end %>
+      <%# This blank association is needed to trigger the delete when all associations are removed %>
+      <input type="hidden" name="<%= form_field_name + (singleton ? '' : '[]')-%>" value="" />
 
       <ul data-role="autocompleter-list">
         <%# Populated via javascript from the JSON above %>

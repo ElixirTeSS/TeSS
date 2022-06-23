@@ -144,9 +144,10 @@ document.addEventListener("turbolinks:load", function() {
     new Clipboard(".clipboard-btn");
 
     // Autocompleters ("app/views/common/_autocompleter.html.erb")
-    $("[data-role='autocompleter-group']").each(function () {
-        Autocompleters.create(this);
-    });
+    Autocompleters.init();
+
+    // Collaborations ("app/views/collaborations/_collaborators_button.html.erb")
+    Collaborations.init();
 
     var setStarButtonState = function (button) {
         if (button.data('starred')) {
@@ -211,7 +212,7 @@ $(document).on('click', '.delete-list-item', function () {
 });
 
 $(document).on('click', '.clear-autocompleter-singleton', function () {
-    var wrapper = $(this).parents('[data-role="autocompleter-list"]').parent();
+    var wrapper = $(this).parents('[data-role="autocompleter-group"]');
     $(this).parents('li').remove();
     $('[data-role="autocompleter-input"]', wrapper).show();
     return false;
