@@ -192,4 +192,27 @@ class EditorTest < ActiveSupport::TestCase
     assert !provider.editors.include?(private_user)
   end
 
+  test 'reassigning resources works for resources without content provider set' do
+    trainer = users :trainer_user
+    provider = content_providers :goblet
+    event = events :training_event
+    provider.add_editor(trainer)
+
+    another_event = Event.create!(user: trainer, title: 'New event', timezone: 'UTC', url: 'http://example.com', online: true)
+    assert_nil another_event.content_provider
+
+    # remove editor
+    provider.remove_editor(trainer)
+    assert !provider.editors.include?(trainer),
+           "trainer[#{trainer.username}] still in provider[#{provider.title}].editors"
+    assert !trainer.editables.include?(provider),
+           "trainer[#{trainer.username}] can still edit provider[#{provider.title}]"
+
+    # check reassignments
+    event.reload
+    another_event.reload
+    assert_nil another_event.content_provider
+    assert_equal trainer, another_event.user
+    assert_equal provider.user, event.user
+  end
 end
