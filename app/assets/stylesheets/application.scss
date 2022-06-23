@@ -996,8 +996,12 @@ input[type=checkbox].field-lock + label:before,
 }
 
 .about-resource-icon {
-  padding: 35px 10px;
+  padding: 35px 0;
   text-align: center;
+  img {
+    width: 100%;
+    height: auto;
+  }
 }
 
 .register-condition {
