@@ -32,6 +32,7 @@
 //= require url_checker
 //= require ardc_vocab_widget_v2
 //= require autocompleters
+//= require map_search
 //= require_tree ./templates
 //= require_tree .
 //= require_self
@@ -148,6 +149,12 @@ document.addEventListener("turbolinks:load", function() {
 
     // Collaborations ("app/views/collaborations/_collaborators_button.html.erb")
     Collaborations.init();
+
+    // Address finder ("app/views/events/partials/_address_finder.html.erb")
+    MapSearch.init();
+
+    // Event map
+    Map.init();
 
     var setStarButtonState = function (button) {
         if (button.data('starred')) {

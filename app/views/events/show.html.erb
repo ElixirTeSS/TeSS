@@ -80,43 +80,17 @@
 
             <p class="dont-break-out">
               <% if @event.show_map? %>
-              <div id="map" class="google-map"></div>
-              <script type="text/javascript">
-                  var actualLocation = {
-                      lat: <%= @event.latitude || 'null' %>,
-                      lng: <%= @event.longitude || 'null' %>
-                  };
-                  var suggestedLocation = {
-                      lat: <%= @event.suggested_latitude || 'null' %>,
-                      lng: <%= @event.suggested_longitude || 'null' %>
-                  };
-
-                  // Create a map object and specify the DOM element for display.
-                  var map = new google.maps.Map(document.getElementById('map'), {
-                      center: suggestedLocation.lat ? suggestedLocation : actualLocation,
-                      scrollwheel: true,
-                      zoom: 13,
-                      maxZoom: 15,
-                  });
-
-                  if (actualLocation.lat) {
-                      new google.maps.Marker({
-                          map: map,
-                          position: actualLocation,
-                          title: '<%= @event.title %>'
-                      });
-                  }
-
-                  if (suggestedLocation.lat) {
-                      new google.maps.Marker({
-                          map: map,
-                          position: suggestedLocation,
-                          title: 'Suggested Location',
-                          icon: '<%= image_url('suggestion.png') -%>'
-                      });
-                  }
-              </script>
-            <% end %>
+                <%= content_tag(:div, 'Loading map...', id: 'map', class: 'google-map', data: {
+                  'map-latitude': @event.latitude,
+                  'map-longitude': @event.longitude,
+                  'map-suggested-latitude': @event.suggested_latitude,
+                  'map-suggested-longitude': @event.suggested_longitude,
+                  'map-marker-title': @event.title,
+                  'map-suggested-marker-image': image_url('suggestion.png'),
+                  'test1': true,
+                  'test2': false
+                }) %>
+              <% end %>
 
             <!-- Field: description -->
             <% if @event.description and !@event.description.blank? %>

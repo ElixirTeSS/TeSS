@@ -1,15 +1,11 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= site_title %></title>
+  <%= favicon_link_tag(TeSS::Config.site['favicon'], type: 'image/png') if TeSS::Config.site['favicon'] %>
   <%= stylesheet_link_tag 'application', integrity: true, media: 'all', 'data-turbolinks-track' => true %>
-
-  <% if TeSS::Config.site['favicon'] %>
-    <%= favicon_link_tag(TeSS::Config.site['favicon'], :type => 'image/png') %>
-  <% end %>
-
   <%= javascript_include_tag 'application', integrity: true, 'data-turbolinks-track' => true %>
   <% unless Rails.application.secrets.google_maps_api_key.blank? %>
-    <%= javascript_tag src: "https://maps.googleapis.com/maps/api/js?key=#{Rails.application.secrets.google_maps_api_key}&libraries=places" %>
+    <%= javascript_include_tag("https://maps.googleapis.com/maps/api/js?key=#{Rails.application.secrets.google_maps_api_key}&libraries=places") %>
   <% end %>
 
   <%# signup_js.html_safe -%>

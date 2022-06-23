@@ -243,7 +243,7 @@ class Event < ApplicationRecord
   end
 
   def show_map?
-    #!self.online? &&
+    Rails.application.secrets.google_maps_api_key.present? && #!self.online? &&
     ((self.latitude.present? && self.longitude.present?) ||
       (self.suggested_latitude.present? && self.suggested_longitude.present?))
   end

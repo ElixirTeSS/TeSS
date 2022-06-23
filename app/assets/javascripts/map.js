@@ -1,8 +1,49 @@
+var Map = {
+    init: function () {
+        var element = $('.google-map');
+
+        if (element.length) {
+            var actualLocation = {
+                lat: parseFloat(element.data('mapLatitude')),
+                lng: parseFloat(element.data('mapLongitude'))
+            };
+
+            var suggestedLocation = {
+                lat: parseFloat(element.data('mapSuggestedLatitude')),
+                lng: parseFloat(element.data('mapSuggestedLongitude'))
+            };
+
+            // Create a map object and specify the DOM element for display.
+            var map = new google.maps.Map(element[0], {
+                center: suggestedLocation.lat ? suggestedLocation : actualLocation,
+                scrollwheel: true,
+                zoom: 13,
+                maxZoom: 15,
+            });
+
+            if (actualLocation.lat) {
+                new google.maps.Marker({
+                    map: map,
+                    position: actualLocation,
+                    title: element.data('mapMarkerTitle')
+                });
+            }
+
+            if (suggestedLocation.lat) {
+                new google.maps.Marker({
+                    map: map,
+                    position: suggestedLocation,
+                    title: 'Suggested Location',
+                    icon: element.data('mapSuggestedMarkerImage')
+                });
+            }
+        }
+    }
+}
 
 var loadedMapScript = false;
 var map;
 var count;
-
 
 function plotEvents(events){
     var infowindow = new google.maps.InfoWindow({content: content});
