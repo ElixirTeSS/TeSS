@@ -45,6 +45,7 @@ module ApplicationHelper
   PRIORITY_CURRENCIES = ['EUR', 'GBP']
 
   def scrape_status_icon(record, size = nil)
+    return unless record.respond_to?(:last_scraped)
     if !record.last_scraped.nil? && record.scraper_record
       if record.stale?
         message = ICONS[:not_scraped_recently][:message].gsub(/%SUB%/, record.last_scraped.to_s)

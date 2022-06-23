@@ -19,7 +19,7 @@
       <% end %>
     </div>
     <div class="col-md-1 pull-right">
-      <% if resource.content_provider %>
+      <% if resource.respond_to?(:content_provider) && resource.content_provider %>
         <%= link_to resource.content_provider, :class => "pull-right" do %>
           <%= image_tag(resource.content_provider.image.url, :class => "small-content-provider-logo") %>
         <% end %>
