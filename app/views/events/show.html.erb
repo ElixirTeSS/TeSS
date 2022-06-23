@@ -279,20 +279,19 @@
             <% end %>
 
             <!-- Field: cost info -->
-            <% if @event.cost_basis and !@event.cost_basis.nil? and !@event.cost_basis.blank? and
-              !CostBasisDictionary.instance.lookup(@event.cost_basis).nil? %>
+            <% if @event.cost_basis.present? && CostBasisDictionary.instance.lookup(@event.cost_basis) %>
               <p>
                 <strong>Cost Basis:</strong>
                 <%= CostBasisDictionary.instance.lookup(@event.cost_basis)[:title] %>
               </p>
             <% end %>
 
-            <% if @event.cost_value %>
+            <% if @event.cost_value.present? %>
               <p>
                 <strong>Cost:</strong>
                 <%= currency_symbol_by_iso_code @event.cost_currency %>
                 <%= @event.cost_value %>
-                <% if @event.cost_currency %>
+                <% if @event.cost_currency.present? %>
                   (<%= @event.cost_currency %>)
                 <% end %>
               </p>
