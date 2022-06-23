@@ -210,6 +210,13 @@ $(document).on('click', '.delete-list-item', function () {
     return false;
 });
 
+$(document).on('click', '.clear-autocompleter-singleton', function () {
+    var wrapper = $(this).parents('[data-role="autocompleter-list"]').parent();
+    $(this).parents('li').remove();
+    $('[data-role="autocompleter-input"]', wrapper).show();
+    return false;
+});
+
 $(document).on('shown.bs.tab', '[href="#activity_log"]', function () {
     var tabPane = $('#activity_log');
 

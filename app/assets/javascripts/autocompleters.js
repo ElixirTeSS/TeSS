@@ -7,7 +7,8 @@ var Autocompleters = {
                     if (item.firstname) {
                         name = name + ' (' + item.firstname + ' ' + item.surname + ')';
                     }
-                    return {value: name, data: item.id, item: item};
+                    item.name = name;
+                    return { value: name, data: item.id, item: item };
                 })
             }
         }
@@ -21,7 +22,8 @@ var Autocompleters = {
         var prefix = $(element).data("prefix");
         var labelField = $(element).data("labelField") || "title";
         var idField = $(element).data("idField") || "id";
-        var templateName = $(element).data("template") || "autocompleter/resource";
+        var singleton = $(element).data("singleton") || false;
+        var templateName = $(element).data("template") || (singleton ? "autocompleter/singleton_resource" : "autocompleter/resource");
         var transformFunction;
         if ($(element).data("transformFunction")) {
             transformFunction = Autocompleters.transformFunctions[$(element).data("transformFunction")];
@@ -39,6 +41,10 @@ var Autocompleters = {
         if (!listElement.children("li").length) {
             for (var i = 0; i < existingValues.length; i++) {
                 listElement.append(HandlebarsTemplates[templateName](existingValues[i]));
+            }
+
+            if (singleton && existingValues.length) {
+                inputElement.hide();
             }
         }
 
@@ -59,6 +65,9 @@ var Autocompleters = {
                     }
 
                     listElement.append(HandlebarsTemplates[templateName](obj));
+                    if (singleton) {
+                        inputElement.hide();
+                    }
                 }
 
                 $(this).val('').focus();

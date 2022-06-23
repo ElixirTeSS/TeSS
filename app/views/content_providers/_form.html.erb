@@ -17,7 +17,9 @@
   <%= f.input :content_provider_type, label: 'Type', collection: ContentProvider::PROVIDER_TYPE, include_blank: false %>
 
   <% if current_user.is_admin? %>
-    <%= f.input :user_id, label: 'Owner', collection: User.all %>
+    <%= f.autocompleter :user, url: users_path, transform_function: 'users', template: 'autocompleter/content_provider_owner',
+                        singleton: true,
+                        label_field: :name %>
   <% end %>
 
   <% if !TeSS::Config.feature['disabled'].include? 'approved_editors' %>
@@ -42,37 +44,3 @@
                 content_providers_path, class: 'btn btn-default' %>
   </div>
 <% end %>
-
-<script>
-    document.addEventListener("turbolinks:load", function() {
-        $('.collaboration-list').on('click', '.delete-collaboration', Collaborations.delete);
-        $('#collaborators-modal').on('show.bs.modal', Collaborations.fetch);
-        $('#collaborators-modal-add-btn').click(Collaborations.add);
-
-        $('#collaborators-modal-add').autocomplete({
-            lookup: function (query, done) {
-                $.ajax({
-                    url: "<%= users_path(q: '-query-') %>".replace('-query-', query),
-                    dataType: 'json',
-                    success : function(data) {
-                        done({ suggestions: data.map(function (dataItem) {
-                                var ob = { value: dataItem.username, data: dataItem.id };
-                                if (dataItem.firstname) {
-                                    ob.value = ob.value + ' (' + dataItem.firstname + ' ' + dataItem.surname + ')';
-                                }
-                                return ob;
-                            })});
-                    }
-                });
-            },
-            onSelect: function (suggestion) {
-                $('#collaborators-modal-add-id').val(suggestion.data);
-                $('#collaborators-modal-add-btn').removeClass('disabled');
-            },
-            onInvalidateSelection: function () {
-                $('#collaborators-modal-add-id').val('');
-                $('#collaborators-modal-add-btn').addClass('disabled');
-            }
-        });
-    });
-</script>

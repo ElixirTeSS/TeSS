@@ -387,7 +387,9 @@ module ApplicationHelper
                                                                   label_field: options[:label_field] || :title,
                                                                   form_field_name: options[:form_field_name],
                                                                   existing_items_method: options[:existing_items_method],
-                                                                  transform_function: options[:transform_function] })
+                                                                  transform_function: options[:transform_function],
+                                                                  singleton: options[:singleton],
+      })
     end
 
     def internal_resource(name, options = {})

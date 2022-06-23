@@ -1,29 +1,45 @@
-<% model_name = f.object.class.name.underscore %>
-<% form_field_name ||= "#{model_name}[#{field_name.to_s.singularize}_#{id_field.to_s}s]" %>
-<% template ||= nil %>
-<% transform_function ||= nil %>
-<% existing_items_method ||= field_name %>
-<% data = { role: 'autocompleter-group', url: url, prefix: form_field_name,
-            'label-field' => label_field.to_s,
-            'id-field' => id_field.to_s } %>
-<% data[:template] = template if template %>
-<% data['transform-function'] = transform_function if transform_function %>
-<% json = f.object.send(existing_items_method).map do |r|
-  { item: { id_field => r.send(id_field), label_field => r.send(label_field) },
-    prefix: form_field_name }
-  end.to_json %>
+<%
+  model_name = f.object.class.name.underscore
+  form_field_name ||= "#{model_name}[#{field_name.to_s.singularize}_#{id_field.to_s}#{singleton ? '' : 's'}]"
+  template ||= nil
+  transform_function ||= nil
+  existing_items_method ||= field_name
+  data = { role: 'autocompleter-group', url: url, prefix: form_field_name,
+           'label-field' => label_field.to_s,
+           'id-field' => id_field.to_s }
+  data[:template] = template if template
+  data[:singleton] = singleton unless singleton.nil?
+  data['transform-function'] = transform_function if transform_function
+  data['on-add'] = transform_function if transform_function
+  data['on-remove'] = transform_function if transform_function
+  json = Array(f.object.send(existing_items_method)).map do |r|
+    { item: { id_field => r.send(id_field), label_field => r.send(label_field) },
+      prefix: form_field_name }
+  end.to_json
+
+  placeholder_text = if singleton
+                       "Select #{f.object.class.human_attribute_name(field_name).singularize.downcase}"
+                     else
+                       "Add a new #{f.object.class.human_attribute_name(field_name).singularize.downcase}"
+                     end
+%>
 
 <div class="form-group">
   <%= f.label field_name %><%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
 
   <%= content_tag(:div, data: data) do %>
       <%= content_tag :script, json.html_safe, type: 'application/json', data: { role: 'autocompleter-existing' } %>
-      <%# This blank association is needed to trigger the delete when all associations are removed %>
-      <input type="hidden" name="<%= form_field_name -%>[]" value="" />
+
+      <% unless singleton %>
+        <%# This blank association is needed to trigger the delete when all associations are removed %>
+        <input type="hidden" name="<%= form_field_name -%>[]" value="" />
+      <% end %>
 
       <ul data-role="autocompleter-list">
         <%# Populated via javascript from the JSON above %>
       </ul>
-      <input type="text" data-role="autocompleter-input" autocomplete="off" class="form-control" placeholder="Add a new <%= field_name.to_s.humanize(capitalize: false).singularize -%>...">
+
+      <input type="text" data-role="autocompleter-input" autocomplete="off" class="form-control"
+             placeholder="<%= placeholder_text %>">
   <% end %>
 </div>
