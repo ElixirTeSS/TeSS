@@ -605,4 +605,12 @@ module ApplicationHelper
   def priority_currencies
     PRIORITY_CURRENCIES
   end
+
+  def about_nav_link(title, path, anchor)
+    if current_page?(path)
+      link_to(title, "##{anchor}")
+    else
+      link_to(title, "#{path}##{anchor}")
+    end
+  end
 end

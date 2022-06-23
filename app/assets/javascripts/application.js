@@ -189,18 +189,14 @@ document.addEventListener("turbolinks:load", function() {
         })
     });
 
-    // TODO: Try to get scrollspy to work. Something is preventing it from triggering
-    $('.about-block').scrollspy({
+    $('body').scrollspy({
         target: '.about-page-menu',
         offset: 40
     });
 
     $('.about-page-menu').affix({
         offset: {
-            top: 100,
-            bottom: function () {
-                return (this.bottom = $('.footer').outerHeight(true))
-            }
+            top: 100
         }
     });
 
