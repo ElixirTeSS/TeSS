@@ -262,7 +262,7 @@ module ApplicationHelper
   end
 
   def info_button(title, &block)
-    button_tag(type: 'button', class: 'btn btn-default has-popover',
+    content_tag(:a, tabindex: 0, class: 'btn btn-default has-popover',
                data: { toggle: 'popover', placement: 'bottom', trigger: 'focus',
                        title: title, html: true, content: capture(&block) }) do
       "<i class='fa fa-info-circle'></i> <span class='hidden-xs'>#{title}</span>".html_safe
