@@ -153,8 +153,11 @@ document.addEventListener("turbolinks:load", function() {
     // Address finder ("app/views/events/partials/_address_finder.html.erb")
     MapSearch.init();
 
-    // Event map
+    // Map on event show page
     Map.init();
+
+    // Map on event index page
+    EventsMap.init();
 
     var setStarButtonState = function (button) {
         if (button.data('starred')) {
