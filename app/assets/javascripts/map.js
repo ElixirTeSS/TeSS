@@ -1,9 +1,9 @@
 var Map = {
     init: function () {
         // Map on event show page
-        var element = $('.google-map');
+        var element = $('div.google-map');
 
-        if (element.length) {
+        if (element.length && element.data('mapLatitude')) {
             var actualLocation = {
                 lat: parseFloat(element.data('mapLatitude')),
                 lng: parseFloat(element.data('mapLongitude'))

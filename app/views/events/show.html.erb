@@ -79,16 +79,7 @@
             </div>
 
             <p class="dont-break-out">
-              <% if @event.show_map? %>
-                <%= content_tag(:div, 'Loading map...', id: 'map', class: 'google-map', data: {
-                  'map-latitude': @event.latitude,
-                  'map-longitude': @event.longitude,
-                  'map-suggested-latitude': @event.suggested_latitude,
-                  'map-suggested-longitude': @event.suggested_longitude,
-                  'map-marker-title': @event.title,
-                  'map-suggested-marker-image': image_url('suggestion.png')
-                }) %>
-              <% end %>
+              <%= google_maps_javascript_api_tag(@event) if @event.show_map? %>
 
             <!-- Field: description -->
             <% if @event.description and !@event.description.blank? %>
