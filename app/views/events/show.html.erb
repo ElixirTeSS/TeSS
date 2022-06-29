@@ -78,41 +78,41 @@
                              :onclick => "getOutboundLink('#{@event.url}'); return true;" %></p>
             </div>
 
-            <p class="dont-break-out">
+            <div>
               <%= google_maps_javascript_api_tag(@event) if @event.show_map? %>
 
-            <!-- Field: description -->
-            <% if @event.description and !@event.description.blank? %>
-              <strong>Description:</strong>
-              <div class="text-justify">
-                <%= render_markdown @event.description %>
-              </div>
-            <% end %>
+              <!-- Field: description -->
+              <% if @event.description and !@event.description.blank? %>
+                <strong>Description:</strong>
+                <div class="text-justify">
+                  <%= render_markdown @event.description %>
+                </div>
+              <% end %>
 
-            <!-- Field: start and end -->
-            <% if @event.start and !@event.start.blank? %>
-              <p><strong>Start:</strong>
-                <%= @event.start.strftime('%A, %d %B %Y @ %H:%M') %></p>
-            <% end %>
-            <% if @event.end and !@event.end.blank? %>
-              <p><strong>End:</strong>
-                <%= @event.end.strftime('%A, %d %B %Y @ %H:%M') %></p>
-            <% end %>
+              <!-- Field: start and end -->
+              <% if @event.start and !@event.start.blank? %>
+                <p><strong>Start:</strong>
+                  <%= @event.start.strftime('%A, %d %B %Y @ %H:%M') %></p>
+              <% end %>
+              <% if @event.end and !@event.end.blank? %>
+                <p><strong>End:</strong>
+                  <%= @event.end.strftime('%A, %d %B %Y @ %H:%M') %></p>
+              <% end %>
 
-            <!-- Field: duration -->
-            <% if @event.duration and !@event.duration.blank? %>
-              <p><strong>Duration:</strong>
-                <%= @event.duration %></p>
-            <% end %>
+              <!-- Field: duration -->
+              <% if @event.duration and !@event.duration.blank? %>
+                <p><strong>Duration:</strong>
+                  <%= @event.duration %></p>
+              <% end %>
 
-            <!-- Field: timezone -->
-            <% if @event.timezone and !@event.timezone.blank? %>
-              <p><strong>Timezone:</strong>
-                <%= @event.timezone %></p>
-            <% end %>
+              <!-- Field: timezone -->
+              <% if @event.timezone and !@event.timezone.blank? %>
+                <p><strong>Timezone:</strong>
+                  <%= @event.timezone %></p>
+              <% end %>
 
-            <!-- Field: address -->
-            <!--% unless @event.online? %-->
+              <!-- Field: address -->
+              <!--% unless @event.online? %-->
               <% if @event.venue and !@event.venue.blank? %>
                 <p><strong>Venue:</strong>
                   <%= @event.venue %></p>
@@ -134,175 +134,176 @@
                   &nbsp;<strong>Postcode:&nbsp;</strong><%= @event.postcode %>
                 <% end %>
               </p>
-            <!-- % end % -->
+              <!-- % end % -->
 
-            <!-- Field: prerequisites -->
-            <% if @event.prerequisites and !@event.prerequisites.blank? %>
-              <strong>Prerequisites:</strong>
-              <div class="text-justify">
-                <%= render_markdown @event.prerequisites %>
-              </div>
-            <% end %>
+              <!-- Field: prerequisites -->
+              <% if @event.prerequisites and !@event.prerequisites.blank? %>
+                <strong>Prerequisites:</strong>
+                <div class="text-justify">
+                  <%= render_markdown @event.prerequisites %>
+                </div>
+              <% end %>
 
-            <!-- Field: learning objectives -->
-            <% if @event.learning_objectives and !@event.learning_objectives.blank? %>
-              <strong>Learning Objectives:</strong>
-              <div class="text-justify">
-                <%= render_markdown @event.learning_objectives %>
-              </div>
-            <% end %>
+              <!-- Field: learning objectives -->
+              <% if @event.learning_objectives and !@event.learning_objectives.blank? %>
+                <strong>Learning Objectives:</strong>
+                <div class="text-justify">
+                  <%= render_markdown @event.learning_objectives %>
+                </div>
+              <% end %>
 
-            <!-- Field: eligibility -->
-            <% if @event.eligibility.any? %>
-              <strong>Eligibility:</strong>
-              <ul>
-                <% @event.eligibility.each do |e| %>
-                  <li><%= EligibilityDictionary.instance.lookup_value(e, 'title') %></li>
-                <% end %>
-              </ul>
-            <% end %>
-
-            <!-- Field: organizer -->
-            <% if @event.organizer and !@event.organizer.blank? %>
-              <p><strong>Organiser:</strong>
-                <%= @event.organizer %></p>
-            <% end %>
-
-            <!-- Field: contact -->
-            <% if @event.contact and !@event.contact.blank? %>
-              <p><strong>Contact:</strong>
-                <%= @event.contact %></p>
-            <% end %>
-
-            <!-- Field: host institutions -->
-            <% if @event.host_institutions.any? %>
-              <p><strong>Host institution:</strong>
-                <%= @event.host_institutions.join(', ') %></p>
-            <% end %>
-
-            <!-- Field: keywords -->
-            <% unless @event.keywords.empty? %>
-              <p><strong>Keywords:</strong>
-                <%= @event.keywords.join(', ') %></p>
-            <% end %>
-
-            <!-- Field: keywords -->
-            <% unless @event.fields.empty? %>
-              <p><strong>Fields:</strong>
-                <%= @event.fields.join(', ') %></p>
-            <% end %>
-
-            <!-- Field: target audience -->
-            <% unless @event.target_audience.empty? %>
-              <strong>Target audience:</strong>
-              <ul>
-                <% @event.target_audience.each do |ta| %>
-                  <li><%= ta %></li>
-                <% end %>
-              </ul>
-            <% end %>
-
-            <!-- Field: capacity -->
-            <% if @event.capacity and !@event.capacity.blank? %>
-              <p><strong>Capacity:</strong>
-                <%= @event.capacity %></p>
-            <% end %>
-
-            <!-- Field: event types -->
-            <% if @event.event_types.any? %>
-              <strong>Event type:</strong>
-              <ul>
-                <% @event.event_types.each do |t| %>
-                  <li><%= EventTypeDictionary.instance.lookup_value(t, 'title') %></li>
-                <% end %>
-              </ul>
-            <% end %>
-
-            <!-- Field: tech requirements -->
-            <% if @event.tech_requirements and !@event.tech_requirements.blank? %>
-              <strong>Tech Requirements:</strong>
-              <div class="text-justify">
-                <%= render_markdown @event.tech_requirements %>
-              </div>
-            <% end %>
-
-            <!-- Field: recognition -->
-            <% if @event.recognition and !@event.recognition.blank? %>
-              <p>
-                <strong>Credit / Recognition:</strong>
-                <%= @event.recognition %>
-              </p>
-            <% end %>
-
-            <!-- Field: external resources -->
-            <% if @event.external_resources.any? %>
-              <b>External resources: </b>
-              <%= render partial: 'common/external_resources_list',
-                         locals: { external_resources: @event.external_resources } %>
-            <% end %>
-
-            <!-- Field: cost info -->
-            <% if @event.cost_basis.present? && CostBasisDictionary.instance.lookup(@event.cost_basis) %>
-              <p>
-                <strong>Cost Basis:</strong>
-                <%= CostBasisDictionary.instance.lookup(@event.cost_basis)[:title] %>
-              </p>
-            <% end %>
-
-            <% if @event.cost_value.present? %>
-              <p>
-                <strong>Cost:</strong>
-                <%= currency_symbol_by_iso_code @event.cost_currency %>
-                <%= @event.cost_value %>
-                <% if @event.cost_currency.present? %>
-                  (<%= @event.cost_currency %>)
-                <% end %>
-              </p>
-            <% end %>
-
-            <!-- Field: material -->
-            <% if @event.materials.any? %>
-              <div>
-                <b>Related training materials: </b>
+              <!-- Field: eligibility -->
+              <% if @event.eligibility.any? %>
+                <strong>Eligibility:</strong>
                 <ul>
-                  <% @event.materials.each do |material| %>
-                    <li><%= link_to material.title, material %></li>
+                  <% @event.eligibility.each do |e| %>
+                    <li><%= EligibilityDictionary.instance.lookup_value(e, 'title') %></li>
                   <% end %>
                 </ul>
-              </div>
-            <% end %>
+              <% end %>
 
-            <!-- uncategorized -->
+              <!-- Field: organizer -->
+              <% if @event.organizer and !@event.organizer.blank? %>
+                <p><strong>Organiser:</strong>
+                  <%= @event.organizer %></p>
+              <% end %>
 
-            <% if @event.sponsors.any? %>
-              <p><strong>Sponsors:</strong>
-                <%= @event.sponsors.join(', ') %></p>
-            <% end %>
+              <!-- Field: contact -->
+              <% if @event.contact and !@event.contact.blank? %>
+                <p><strong>Contact:</strong>
+                  <%= @event.contact %></p>
+              <% end %>
 
-            <% unless @event.scientific_topics.empty? %>
-              <p>
-                <strong>Scientific topic:</strong>
-                <%= @event.scientific_topic_names.join(', ') %>
-              </p>
-            <% end %>
+              <!-- Field: host institutions -->
+              <% if @event.host_institutions.any? %>
+                <p><strong>Host institution:</strong>
+                  <%= @event.host_institutions.join(', ') %></p>
+              <% end %>
 
-            <% unless @event.operations.empty? %>
-              <p>
-                <strong>Operations:</strong>
-                <%= @event.operation_names.join(', ') %>
-              </p>
-            <% end %>
+              <!-- Field: keywords -->
+              <% unless @event.keywords.empty? %>
+                <p><strong>Keywords:</strong>
+                  <%= @event.keywords.join(', ') %></p>
+              <% end %>
 
-            <%= render :partial => 'events/partials/event_schemaorg', :locals => { :event => @event } %>
-            <%= render :partial => 'events/partials/twitter_card', :locals => { :event => @event } %>
+              <!-- Field: keywords -->
+              <% unless @event.fields.empty? %>
+                <p><strong>Fields:</strong>
+                  <%= @event.fields.join(', ') %></p>
+              <% end %>
 
-            <%= render partial: 'events/report' if policy(@event).view_report? %>
+              <!-- Field: target audience -->
+              <% unless @event.target_audience.empty? %>
+                <strong>Target audience:</strong>
+                <ul>
+                  <% @event.target_audience.each do |ta| %>
+                    <li><%= ta %></li>
+                  <% end %>
+                </ul>
+              <% end %>
 
-            <% if policy(@event).update? && @event.edit_suggestion %>
-              <%= render partial: 'common/approve_term_suggestions',
-                         locals: { suggestion: @event.edit_suggestion } %>
-            <% end %>
+              <!-- Field: capacity -->
+              <% if @event.capacity and !@event.capacity.blank? %>
+                <p><strong>Capacity:</strong>
+                  <%= @event.capacity %></p>
+              <% end %>
 
+              <!-- Field: event types -->
+              <% if @event.event_types.any? %>
+                <strong>Event type:</strong>
+                <ul>
+                  <% @event.event_types.each do |t| %>
+                    <li><%= EventTypeDictionary.instance.lookup_value(t, 'title') %></li>
+                  <% end %>
+                </ul>
+              <% end %>
+
+              <!-- Field: tech requirements -->
+              <% if @event.tech_requirements and !@event.tech_requirements.blank? %>
+                <strong>Tech Requirements:</strong>
+                <div class="text-justify">
+                  <%= render_markdown @event.tech_requirements %>
+                </div>
+              <% end %>
+
+              <!-- Field: recognition -->
+              <% if @event.recognition and !@event.recognition.blank? %>
+                <p>
+                  <strong>Credit / Recognition:</strong>
+                  <%= @event.recognition %>
+                </p>
+              <% end %>
+
+              <!-- Field: external resources -->
+              <% if @event.external_resources.any? %>
+                <b>External resources: </b>
+                <%= render partial: 'common/external_resources_list',
+                           locals: { external_resources: @event.external_resources } %>
+              <% end %>
+
+              <!-- Field: cost info -->
+              <% if @event.cost_basis.present? && CostBasisDictionary.instance.lookup(@event.cost_basis) %>
+                <p>
+                  <strong>Cost Basis:</strong>
+                  <%= CostBasisDictionary.instance.lookup(@event.cost_basis)[:title] %>
+                </p>
+              <% end %>
+
+              <% if @event.cost_value.present? %>
+                <p>
+                  <strong>Cost:</strong>
+                  <%= currency_symbol_by_iso_code @event.cost_currency %>
+                  <%= @event.cost_value %>
+                  <% if @event.cost_currency.present? %>
+                    (<%= @event.cost_currency %>)
+                  <% end %>
+                </p>
+              <% end %>
+
+              <!-- Field: material -->
+              <% if @event.materials.any? %>
+                <div>
+                  <b>Related training materials: </b>
+                  <ul>
+                    <% @event.materials.each do |material| %>
+                      <li><%= link_to material.title, material %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              <% end %>
+
+              <!-- uncategorized -->
+
+              <% if @event.sponsors.any? %>
+                <p><strong>Sponsors:</strong>
+                  <%= @event.sponsors.join(', ') %></p>
+              <% end %>
+
+              <% unless @event.scientific_topics.empty? %>
+                <p>
+                  <strong>Scientific topic:</strong>
+                  <%= @event.scientific_topic_names.join(', ') %>
+                </p>
+              <% end %>
+
+              <% unless @event.operations.empty? %>
+                <p>
+                  <strong>Operations:</strong>
+                  <%= @event.operation_names.join(', ') %>
+                </p>
+              <% end %>
+
+              <%= render :partial => 'events/partials/event_schemaorg', :locals => { :event => @event } %>
+              <%= render :partial => 'events/partials/twitter_card', :locals => { :event => @event } %>
+
+              <%= render partial: 'events/report' if policy(@event).view_report? %>
+
+              <% if policy(@event).update? && @event.edit_suggestion %>
+                <%= render partial: 'common/approve_term_suggestions',
+                           locals: { suggestion: @event.edit_suggestion } %>
+              <% end %>
+
+            </div>
           </div>
         </div>
 
