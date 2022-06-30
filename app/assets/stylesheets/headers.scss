@@ -1,3 +1,29 @@
+.unified-header {
+  background-color: $unified-header-bg;
+
+  .navbar-brand {
+    height: auto;
+  }
+
+  .navbar-nav {
+    float: right;
+    margin-top: 18px;
+
+    li {
+      a {
+        color: $dark-color;
+        padding-top: 10px;
+        padding-bottom: 10px;
+
+        &:hover {
+          color: $accent-color;
+          background-color: transparent;
+        }
+      }
+    }
+  }
+}
+
 .top-header {
   height: 35px;
   line-height: 35px;
