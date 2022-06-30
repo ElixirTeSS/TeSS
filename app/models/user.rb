@@ -327,7 +327,7 @@ class User < ApplicationRecord
   end
 
   def consents_to_processing
-    unless processing_consent
+    if processing_consent=="0"
       errors.add(:base, "You must consent to #{TeSS::Config.site['title_short']} processing your data in order to register")
 
       false
