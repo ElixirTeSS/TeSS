@@ -109,6 +109,8 @@ class Event < ApplicationRecord
   has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
   has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 
+  has_many :stars,  as: :resource, dependent: :destroy
+
   validates :title, :url, presence: true
   validates :capacity, numericality: { greater_than_or_equal_to: 1 }, allow_blank: true
   validates :cost_value, numericality: { greater_than: 0 }, allow_blank: true
