@@ -83,6 +83,8 @@ class Material < ApplicationRecord
   has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
   has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 
+  has_many :stars,  as: :resource, dependent: :destroy
+  
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
   auto_strip_attributes :title, :description, :url, :squish => false
