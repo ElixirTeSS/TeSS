@@ -1,14 +1,26 @@
 # TeSS
 
+[![Actions Status](https://github.com/ElixirTeSS/TeSS/workflows/Test/badge.svg)](https://github.com/ElixirTeSS/TeSS/actions)
+
 [ELIXIR's](https://www.elixir-europe.org/) Training e-Support Service using Ruby on Rails.
 
-[![Actions Status](https://github.com/ElixirTeSS/TeSS/workflows/Test/badge.svg)](https://github.com/ElixirTeSS/TeSS/actions)
+TeSS makes use of the following services to function:
+- PostgreSQL - Database
+- Solr - Search
+- Sidekiq - Asynchronous tasks
+- Redis - Caching
+- Nominatim - Geocoding
+- Google Maps API - Maps and address autocompletion
 
 ## Installation
 
-Using docker: see [here](docs/docker.md)
+Docker: see [here](docs/docker.md)
 
 Native: see [here](docs/install.md)
+
+## Customization
+
+See [here](docs/customization.md) for an overview of how you can customize your TeSS deployment.
 
 ## Basic API
 
@@ -17,7 +29,7 @@ A record can be viewed as json by appending .json, for example:
     http://localhost:3000/materials.json
     http://localhost:3000/materials/1.json
 
-The materials controller has been made token authenticable, so it is possible for a user with an auth token to post
+The materials controller has been made token authenticatable, so it is possible for a user with an auth token to post
 to it. To generate the auth token the user model must first be saved.
 
 To create a material by posting, post to this URL:
@@ -32,7 +44,7 @@ Structure the JSON thus:
         "material": {
             "title": "API example",
             "url": "http://example.com",
-            "short_description": "This API is fun and easy",
+            "description": "This API is fun and easy",
             "doi": "Put some stuff in here"
         }
     }
@@ -45,42 +57,3 @@ working.
 To find suggestions of EDAM topics for materials, you can run this rake task. This requires redis and sidekiq to be running as it will add jobs to a queue. It uses BioPortal Annotator web service against the materials description to create suggestions
 
     bundle exec rake tess:add_topic_suggestions
-
-## Live deployment
-
-Although designed for CentOS, this document can be followed quite closely to set up a Rails app to work with Apache and Passenger:
-
-    https://www.digitalocean.com/community/tutorials/how-to-setup-a-rails-4-app-with-apache-and-passenger-on-centos-6
-
-To set up TeSS in production, do:
-
-    bundle exec rake db:setup RAILS_ENV=production
-
-which will do db:create, db:schema:load, db:seed. If you want the DB dropped as well:
-
-    bundle exec rake db:reset RAILS_ENV=production
-
-...which will do db:drop, db:setup
-
-    unset XDG_RUNTIME_DIR
-
-(may need setting in ~/.profile or similar if rails console moans about permissions.)
-
-Delete all from Solr if need be and reindex it:
-
-    curl http://localhost:8983/solr/update?commit=true -d  '<delete><query>*:*</query></delete>'
-
-    bundle exec rake sunspot:solr:reindex RAILS_ENV=production
-
-Create an admin user and assign it appropriate 'admin' role bu looking up that role in console in model Role (default roles should be created automatically).
-
-The first time and each time a css or js file is updated:
-
-    bundle exec rake assets:clean RAILS_ENV=production
-
-    bundle exec rake assets:precompile RAILS_ENV=production
-
-Restart your Web server.
-
----
-
