@@ -18,6 +18,12 @@ class User < ApplicationRecord
     searchable do
       text :username
       text :email
+      boolean :unverified do
+        unverified_or_rejected?
+      end
+      boolean :shadowbanned do
+        shadowbanned?
+      end
     end
     # :nocov:
   end
@@ -65,7 +71,7 @@ class User < ApplicationRecord
             :uniqueness => true
 
   validate :consents_to_processing, on: :create, unless: ->(user) { user.using_omniauth? || User.current_user.try(:is_admin?) }
-  
+
   accepts_nested_attributes_for :profile
 
   attr_accessor :publicize_email
@@ -79,7 +85,7 @@ class User < ApplicationRecord
 
   scope :accepteds, -> { invited.where.not(invitation_accepted_at: nil) }
 
-  scope :visible, -> { non_default.where(invitation_token: nil).or(accepteds) }
+  scope :visible, -> { not_banned.non_default.verified.where(invitation_token: nil).or(accepteds) }
   # ---
 
   def self.find_for_database_authentication(warden_conditions)
@@ -234,6 +240,10 @@ class User < ApplicationRecord
     joins(:ban).where(bans: { shadow: true })
   end
 
+  def self.not_banned
+    left_outer_joins(:ban).where(bans: { id: nil })
+  end
+
   def using_omniauth?
     provider.present? && uid.present?
   end
@@ -294,6 +304,14 @@ class User < ApplicationRecord
       inviter = User.find_by_id(self.invited_by_id)
       inviter.username
     end
+  end
+
+  def self.verified
+    where.not(role_id: [Role.rejected, Role.unverified])
+  end
+
+  def unverified_or_rejected?
+    has_role?(Role.rejected.name) || has_role?(Role.unverified.name)
   end
 
   private
