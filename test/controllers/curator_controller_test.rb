@@ -21,12 +21,14 @@ class CuratorControllerTest < ActionController::TestCase
     sign_in users(:admin)
     e1 = add_topic_suggestions(events(:one), ['Genomics', 'Animals'])
     e2 = add_topic_suggestions(materials(:good_material), ['Biology'])
+    e3 = add_topic_suggestions(workflows(:one), ['Proteins'])
 
     get :topic_suggestions
 
     assert_response :success
     assert_includes assigns(:suggestions), e1
     assert_includes assigns(:suggestions), e2
+    assert_includes assigns(:suggestions), e3
   end
 
   test 'should not get topic suggestions if regular user' do
@@ -118,7 +120,6 @@ class CuratorControllerTest < ActionController::TestCase
     assert_select '#recent-user-curation-activity ul li', text: /#{rejected.name}\s+was\s+rejected\s+by\s+#{admin.username}/
   end
 
-
   private
 
   def add_topic_suggestions(resource, topic_names = [])
@@ -139,5 +140,4 @@ class CuratorControllerTest < ActionController::TestCase
                              recipient: resource.user,
                              parameters: log_params
   end
-
 end

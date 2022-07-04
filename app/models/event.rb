@@ -109,6 +109,8 @@ class Event < ApplicationRecord
   has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
   has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 
+  has_many :stars,  as: :resource, dependent: :destroy
+
   validates :title, :url, presence: true
   validates :capacity, numericality: { greater_than_or_equal_to: 1 }, allow_blank: true
   validates :cost_value, numericality: { greater_than: 0 }, allow_blank: true
@@ -243,7 +245,7 @@ class Event < ApplicationRecord
   end
 
   def show_map?
-    #!self.online? &&
+    Rails.application.secrets.google_maps_api_key.present? && #!self.online? &&
     ((self.latitude.present? && self.longitude.present?) ||
       (self.suggested_latitude.present? && self.suggested_longitude.present?))
   end

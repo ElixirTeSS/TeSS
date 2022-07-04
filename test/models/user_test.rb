@@ -56,6 +56,16 @@ class UserTest < ActiveSupport::TestCase
     assert_not user.save, 'Saved user with invalid e-mail address'
   end
 
+  test "should not save user with nil processing consent" do
+    user = User.new(@user_params.merge(processing_consent: nil))
+    assert_not user.save, 'Saved user with nil processing_consent address field'
+  end
+
+  test "should not save user with processing consent equal to 0" do
+    user = User.new(@user_params.merge(processing_consent: '0'))
+    assert_not user.save, 'Saved user with processing_consent address field equal to "0"'
+  end  
+  
   test "should not save with nil password" do
     user = User.new(@user_params.merge(password: nil))
     assert user.password_required?
@@ -197,6 +207,9 @@ class UserTest < ActiveSupport::TestCase
     basic = users(:basic_user)
 
     # Should match on username
+    assert_includes User.with_query('bo'), user
+    assert_includes User.with_query('BO'), user
+    assert_includes User.with_query('bO'), user
     assert_includes User.with_query('Bo'), user
     assert_not_includes User.with_query('Bo'), another
     assert_includes User.with_query('Bob'), user

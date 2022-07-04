@@ -45,6 +45,7 @@ module ApplicationHelper
   PRIORITY_CURRENCIES = ['EUR', 'GBP']
 
   def scrape_status_icon(record, size = nil)
+    return unless record.respond_to?(:last_scraped)
     if !record.last_scraped.nil? && record.scraper_record
       if record.stale?
         message = ICONS[:not_scraped_recently][:message].gsub(/%SUB%/, record.last_scraped.to_s)
@@ -261,7 +262,7 @@ module ApplicationHelper
   end
 
   def info_button(title, &block)
-    button_tag(type: 'button', class: 'btn btn-default has-popover',
+    content_tag(:a, tabindex: 0, class: 'btn btn-default has-popover',
                data: { toggle: 'popover', placement: 'bottom', trigger: 'focus',
                        title: title, html: true, content: capture(&block) }) do
       "<i class='fa fa-info-circle'></i> <span class='hidden-xs'>#{title}</span>".html_safe
@@ -384,7 +385,12 @@ module ApplicationHelper
       @template.render(partial: 'common/autocompleter', locals: { field_name: name, f: self, url: url,
                                                                   template: options[:template],
                                                                   id_field: options[:id_field] || :id,
-                                                                  label_field: options[:label_field] || :title })
+                                                                  label_field: options[:label_field] || :title,
+                                                                  form_field_name: options[:form_field_name],
+                                                                  existing_items_method: options[:existing_items_method],
+                                                                  transform_function: options[:transform_function],
+                                                                  singleton: options[:singleton],
+      })
     end
 
     def internal_resource(name, options = {})
@@ -599,5 +605,13 @@ module ApplicationHelper
 
   def priority_currencies
     PRIORITY_CURRENCIES
+  end
+
+  def about_nav_link(title, path, anchor)
+    if current_page?(path)
+      link_to(title, "##{anchor}")
+    else
+      link_to(title, "#{path}##{anchor}")
+    end
   end
 end

@@ -1273,4 +1273,29 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_select '.identifiers-button'
     assert_select '#identifiers-link[value=?]', "http://example.com/identifiers/banana:m#{@material.id}"
   end
+
+  test 'should support legacy clients using short_description and long_description' do
+    scraper_user = users(:scraper_user)
+    material_title = 'horse'
+    assert_difference('Material.count') do
+      post :create, params: {
+        user_token: scraper_user.authentication_token,
+        user_email: scraper_user.email,
+        material: {
+          title: material_title,
+          url: 'http://horse.com',
+          short_description: 'I love horses',
+          long_description: 'I really love horses',
+          contact: 'default contact',
+          doi: 'https://doi.org/10.1001/RSE.2.190',
+          licence: 'CC-BY-4.0',
+          keywords: ['scraped', 'through', 'api'],
+          status: 'active'
+        },
+        format: 'json'
+      }
+    end
+
+    assert_equal 'I really love horses', JSON.parse(response.body)['description']
+  end
 end

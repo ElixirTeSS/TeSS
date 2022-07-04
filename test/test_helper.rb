@@ -28,6 +28,11 @@ class ActiveSupport::TestCase
     redis = Redis.new
     redis.flushdb
   end
+
+  def teardown
+    User.current_user = nil
+  end
+
   # WARNING: Do not be tempted to include Devise TestHelpers here (e.g. include Devise::TestHelpers)
   # It must be included in each controller it is needed in or unit tests will break.
 

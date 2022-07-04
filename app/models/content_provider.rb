@@ -123,19 +123,15 @@ class ContentProvider < ApplicationRecord
       editor.editables.reload
 
       # transfer events to the provider's user
-      editor.events.each do |event|
-        if event.content_provider.id == id
-          event.user = user
-          event.save!
-        end
+      editor.events.where(content_provider_id: id).find_each do |event|
+        event.user = user
+        event.save!
       end
 
       # transfer materials to the provider's user
-      editor.materials.each do |material|
-        if material.content_provider.id == id
-          material.user = user
-          material.save!
-        end
+      editor.materials.where(content_provider_id: id).find_each do |material|
+        material.user = user
+        material.save!
       end
       editor.reload
       editor.save!
