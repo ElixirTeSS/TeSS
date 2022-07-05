@@ -29,7 +29,10 @@ module Ingestors
           url: 'https://dans.knaw.nl/en/agenda/',
           process: method(:process_dans) },
         { name: 'DTL',
-          url: 'https://www.dtls.nl/',
+          url: 'https://www.dtls.nl/events/',
+          process: method(:process_dtls) },
+        { name: 'DTL',
+          url: 'https://www.dtls.nl/courses/',
           process: method(:process_dtls) },
       ]
 
@@ -57,6 +60,7 @@ module Ingestors
 
       rescue Exception => e
         @messages << "#{self.class.name} failed with: #{e.message} #{e.backtrace}"
+        Sentry.capture_exception(e)
       end
 
       # finished
@@ -90,6 +94,7 @@ module Ingestors
             end
           rescue Exception => e
             puts "format next_page failed with: #{e.message}"
+            Sentry.capture_exception(e)
           end
 
           # check events
@@ -177,11 +182,13 @@ module Ingestors
               end
             rescue Exception => e
               @messages << "Extract event fields failed with: #{e.message}"
+              Sentry.capture_exception(e)
             end
           end
         end
       rescue Exception => e
         @messages << "#{self.class} failed with: #{e.message}"
+        Sentry.capture_exception(e)
       end
 
       # finished
@@ -212,6 +219,7 @@ module Ingestors
         end
       rescue Exception => e
         @messages << "populate Eventbrite formats failed with: #{e.message}"
+        Sentry.capture_exception(e)
       end
     end
 
@@ -239,6 +247,7 @@ module Ingestors
         @eventbrite_objects[:venues][id] = venue unless venue.nil?
       rescue Exception => e
         @messages << "get Eventbrite Venue failed with: #{e.message}"
+        Sentry.capture_exception(e)
       end
     end
 
@@ -290,6 +299,7 @@ module Ingestors
         end
       rescue Exception => e
         @messages << "get Eventbrite format failed with: #{e.message}"
+        Sentry.capture_exception(e)
       end
     end
 
@@ -326,6 +336,7 @@ module Ingestors
         subcategories = response['subcategories']
       rescue Exception => e
         @messages << "get Eventbrite subcategory failed with: #{e.message}"
+        Sentry.capture_exception(e)
       end
       return subcategories
     end
@@ -355,6 +366,7 @@ module Ingestors
         @eventbrite_objects[:organizers][id] = organizer unless organizer.nil?
       rescue Exception => e
         @messages << "get Eventbrite Venue failed with: #{e.message}"
+        Sentry.capture_exception(e)
       end
     end
 
@@ -414,6 +426,7 @@ module Ingestors
             @ingested += 1
           rescue Exception => e
             @messages << "Extract event fields failed with: #{e.message}"
+            Sentry.capture_exception(e)
           end
         end
       end
@@ -474,7 +487,8 @@ module Ingestors
             add_event(event)
             @ingested += 1
           rescue Exception => e
-           @messages << "Extract event fields failed with: #{e.message}"
+            @messages << "Extract event fields failed with: #{e.message}"
+            Sentry.capture_exception(e)
           end
         end
       end
@@ -513,6 +527,7 @@ module Ingestors
                 @ingested += 1
               rescue Exception => e
                 @messages << "Extract event fields failed with: #{e.message}"
+                Sentry.capture_exception(e)
               end
             end
           end
@@ -559,6 +574,7 @@ module Ingestors
             @ingested += 1
           rescue Exception => e
             @messages << "Extract event fields failed with: #{e.message}"
+            Sentry.capture_exception(e)
           end
         end
       end
@@ -606,16 +622,17 @@ module Ingestors
                   #chuck away
               end
             end
-            if event.end.nil?
-              event.end = event.start
-            end
-            event.source = 'DTL'
-            event.timezone = 'Amsterdam'
-            add_event(event)
-            @ingested += 1
-          rescue Exception => e
-            @messages << "Extract event fields failed with: #{e.message}"
           end
+          if event.end.nil?
+            event.end = event.start
+          end
+          event.source = 'DTLS'
+          event.timezone = 'Amsterdam'
+          add_event(event)
+          @ingested += 1
+        rescue Exception => e
+          @messages << "Extract event fields failed with: #{e.message}"
+          Sentry.capture_exception(e)
         end
       end
     end

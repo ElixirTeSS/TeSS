@@ -84,6 +84,7 @@ module Scraper
             log "Source URL[#{source[:url]}] resources read[#{ingestor.ingested}] and written[#{(ingestor.added + ingestor.updated)}].", 2
           rescue Exception => e0
             log "Scraper failed with: #{e0.message}", 2
+            Sentry.capture_exception(e0)
           end
         end
       end
@@ -141,6 +142,7 @@ module Scraper
           output.concat "<br />"
           output.concat "**Failed with:** #{e1.message}<br />"
           log "Ingestor: #{ingestor.class} failed with: #{e1.message}", 2
+          Sentry.capture_exception(e1)
         ensure
           source.finished_at = Time.now
           output.concat "<br />"
@@ -151,6 +153,7 @@ module Scraper
             source.save! unless source.enabled.nil? or !source.enabled
           rescue Exception => e2
             log @messages[:bad_source_save] + e2.message, 2
+            Sentry.capture_exception(e2)
           end
 
         end

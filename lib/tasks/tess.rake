@@ -176,6 +176,7 @@ namespace :tess do
         Scraper.run(log_file)
       rescue Exception => e
         log_file.puts('   Run Scraper failed with: ' + e.message)
+        Sentry.capture_exception(e)
       end
 
       # wrap up
@@ -186,6 +187,7 @@ namespace :tess do
       log_file.close
     rescue Exception => e
       puts "task[automated_ingestion] failed with #{e.message}"
+      Sentry.capture_exception(e)
     end
   end
 
