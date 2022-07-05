@@ -1,4 +1,7 @@
 class ContentProvider < ApplicationRecord
+  # The order of these determines which providers have precedence when scraping.
+  # Low -> High
+  PROVIDER_TYPE = ['Portal', 'Organisation', 'Project']
 
   include PublicActivity::Common
   include LogParameterChanges
@@ -33,11 +36,10 @@ class ContentProvider < ApplicationRecord
   # Validate the URL is in correct format via valid_url gem
   validates :url, url: true
 
+  validates :content_provider_type, presence: true, inclusion: { in: PROVIDER_TYPE }
+
   clean_array_fields(:keywords, :approved_editors)
 
-  # The order of these determines which providers have precedence when scraping.
-  # Low -> High
-  PROVIDER_TYPE = ['Portal', 'Organisation', 'Project']
   has_image(placeholder: TeSS::Config.placeholder['provider'])
 
   if TeSS::Config.solr_enabled
