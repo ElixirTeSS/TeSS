@@ -13,7 +13,10 @@ module Ingestors
         { name: 'ElixirTeSS',
           url: 'https://tess.elixir-europe.org/',
           process: method(:process_elixir) },
-        { name: 'Eventbrite',
+        { name: 'Digital Skills Programme',
+          url: 'https://www.eventbriteapi.com/v3/',
+          process: method(:process_eventbrite) },
+        { name: 'eScience Center',
           url: 'https://www.eventbriteapi.com/v3/',
           process: method(:process_eventbrite) },
         { name: 'VU Amsterdam',
@@ -26,10 +29,7 @@ module Ingestors
           url: 'https://dans.knaw.nl/en/agenda/',
           process: method(:process_dans) },
         { name: 'DTL',
-          url: 'https://www.dtls.nl/events/',
-          process: method(:process_dtls) },
-        { name: 'DTL',
-          url: 'https://www.dtls.nl/courses/',
+          url: 'https://www.dtls.nl/',
           process: method(:process_dtls) },
       ]
 
@@ -565,55 +565,57 @@ module Ingestors
     end
 
     def process_dtls(url)
-      docs =  Nokogiri::XML(URI.open(url + 'feed')).xpath('//item')
-      docs.each do |event_item|
-        begin
-          event = Event.new
-          event.event_types = [:workshops_and_courses]
-          event_item.element_children.each do |element|
-            case element.name
-              when 'title'
-                event.title = element.text
-              when 'link'
-                #Use GUID field as probably more stable
-                #event.url = element.text
-              when 'creator'
-                #event.creator = element.text
-                # no creator field. Not sure needs one
-              when 'guid'
-                event.url = element.text
-              when 'description'
-                event.description = element.text
-              when 'location'
-                event.venue = element.text
-                loc = element.text.split(',')
-                event.city = loc.first.strip
-                event.country = loc.last.strip
-              when 'provider'
-                event.organizer = element.text
-              when 'startdate'
-                event.start = element.text.to_s.to_time
-              when 'enddate'
-                event.end = element.text.to_s.to_time
-              when 'latitude'
-                event.latitude = element.text
-              when 'longitude'
-                event.longitude = element.text
-              when 'pubDate'
-                # Not really needed
-              else
-                #chuck away
+      ['courses/', 'events/'].each do |url_suffix|
+        docs =  Nokogiri::XML(URI.open(url + url_suffix + 'feed')).xpath('//item')
+        docs.each do |event_item|
+          begin
+            event = Event.new
+            event.event_types = [:workshops_and_courses]
+            event_item.element_children.each do |element|
+              case element.name
+                when 'title'
+                  event.title = element.text
+                when 'link'
+                  #Use GUID field as probably more stable
+                  #event.url = element.text
+                when 'creator'
+                  #event.creator = element.text
+                  # no creator field. Not sure needs one
+                when 'guid'
+                  event.url = element.text
+                when 'description'
+                  event.description = element.text
+                when 'location'
+                  event.venue = element.text
+                  loc = element.text.split(',')
+                  event.city = loc.first.strip
+                  event.country = loc.last.strip
+                when 'provider'
+                  event.organizer = element.text
+                when 'startdate'
+                  event.start = element.text.to_s.to_time
+                when 'enddate'
+                  event.end = element.text.to_s.to_time
+                when 'latitude'
+                  event.latitude = element.text
+                when 'longitude'
+                  event.longitude = element.text
+                when 'pubDate'
+                  # Not really needed
+                else
+                  #chuck away
+              end
             end
+            if event.end.nil?
+              event.end = event.start
+            end
+            event.source = 'DTL'
+            event.timezone = 'Amsterdam'
+            add_event(event)
+            @ingested += 1
+          rescue Exception => e
+            @messages << "Extract event fields failed with: #{e.message}"
           end
-          if event.end.nil?
-            event.end = event.start
-          end
-          event.source = 'DTLS'
-          event.timezone = 'Amsterdam'
-          add_event(event)
-          @ingested += 1
-        rescue Exception => e
-          @messages << "Extract event fields failed with: #{e.message}"
         end
       end
     end

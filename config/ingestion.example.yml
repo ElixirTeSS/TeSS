@@ -3,7 +3,7 @@ logfile: log/ingestion.log
 username: scraper
 sources:
   - id: 1
-    provider: 'VU'              # content provider's title
+    provider: 'VU Amsterdam'              # content provider's title
     url: 'https://vu-nl.libcal.com/ajax/calendar/list?c=7052&date=0000-00-00&perpage=48&page=1&audience=&cats=&camps=&inc=0'     # the root URL required to access the source
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
@@ -36,13 +36,7 @@ sources:
     enabled: true
   - id: 6
     provider: 'DTL'              # content provider's title
-    url: https://www.dtls.nl/events/      # the root URL required to access the source
-    method: rest                        # one of 'csv', 'api', 'html'
-    resource_type: event                # event or material
-    enabled: true
-  - id: 7
-    provider: 'DTL'              # content provider's title
-    url: https://www.dtls.nl/courses/      # the root URL required to access the source
+    url: https://www.dtls.nl/      # the root URL required to access the source
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     enabled: true
