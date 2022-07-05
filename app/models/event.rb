@@ -461,7 +461,8 @@ class Event < ApplicationRecord
   private
 
   def validate_timezone
-    unless ActiveSupport::TimeZone::MAPPING.keys.include? self.timezone
+    return unless timezone.present?
+    unless ActiveSupport::TimeZone::MAPPING.keys.include?(timezone)
       errors.add(:timezone, 'not found and cannot be linked to a valid timezone')
     end
   end

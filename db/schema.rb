@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_05_143256) do
+ActiveRecord::Schema.define(version: 2022_07_05_151258) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -171,7 +171,7 @@ ActiveRecord::Schema.define(version: 2022_07_05_143256) do
     t.string "eligibility", default: [], array: true
     t.text "contact"
     t.string "host_institutions", default: [], array: true
-    t.string "timezone", default: "UTC"
+    t.string "timezone"
     t.string "funding"
     t.integer "attendee_count"
     t.integer "applicant_count"

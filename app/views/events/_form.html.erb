@@ -63,6 +63,10 @@
   <!-- Field: End -->
   <%= f.input :end, as: :datetime_picker, field_lock: true, input_html: { title: t('events.hints.end') } %>
 
+  <!-- Field: Timezone -->
+  <%= f.input :timezone, as: :time_zone, field_lock: true, priority: priority_time_zones,
+              input_html: { title: t('events.hints.timezone') } %>
+
   <!-- Field: Duration -->
   <%= f.input :duration, as: :string, input_html: { title: t('events.hints.duration') } %>
 
@@ -77,10 +81,6 @@
   <div class="address_content">
     <%= render partial: 'events/partials/address_finder', locals: { f: f } %>
   </div>
-
-  <!-- Field: Timezone -->
-  <%= f.input :timezone, as: :time_zone, field_lock: true, priority: priority_time_zones,
-              input_html: { title: t('events.hints.timezone') } %>
 
   <!-- Field: Eligibility -->
   <%= f.dropdown :eligibility,

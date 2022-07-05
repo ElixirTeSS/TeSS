@@ -395,7 +395,19 @@ class EventTest < ActiveSupport::TestCase
         assert_equal 1, e.errors[:duration].size, "expected validation error of #{t[:dvalue]}: " + e.errors[:duration].to_s
       end
     end
-
   end
 
+  test 'validates timezone if present' do
+    event = Event.new(title: 'An event', url: 'https://myevent.com', timezone: 'UTC', user: users(:regular_user))
+    assert event.valid?
+
+    event.timezone = '123'
+    refute event.valid?
+
+    event.timezone = nil
+    assert event.valid?
+
+    event.timezone = ''
+    assert event.valid?
+  end
 end
