@@ -570,7 +570,7 @@ module Ingestors
         docs.each do |event_item|
           begin
             event = Event.new
-            event.event_types = [:workshops_and_courses]
+            event.event_types = [url_suffix.chomp('/')]
             event_item.element_children.each do |element|
               case element.name
                 when 'title'
