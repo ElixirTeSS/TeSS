@@ -8,7 +8,7 @@
         'map-latitude': f.object.latitude || TeSS::Config.gmaps['center']['latitude'],
         'map-longitude': f.object.longitude || TeSS::Config.gmaps['center']['longitude'],
         'map-zoom': f.object.latitude.blank? || f.object.longitude.blank? ? TeSS::Config.gmaps['zoom']['latitude'] : TeSS::Config.gmaps['zoom']['longitude'],
-        'map-show-marker': f.object.new_record? || f.object.online? || f.object.latitude.blank? || f.object.longitude.blank?
+        'map-show-marker': !(f.object.new_record? || f.object.online? || f.object.latitude.blank? || f.object.longitude.blank?)
     }) do %>
     Loading map...
     <% end %>
