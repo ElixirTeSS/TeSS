@@ -38,9 +38,9 @@ Create TeSS configuration files:
 
 `tess.yml` is used to configure features and branding of your TeSS instance. `secrets.yml` is used to hold API keys etc.
 
-Create docker image:
+Create docker image where $PREFIX is the name of the app:
 
-    docker build -t taxila-app .
+    docker build -t $PREFIX-app .
 
 ### Start services
 
