@@ -108,7 +108,7 @@ module Ingestors
 
       # eligibility
       if event.eligibility.nil? or event.eligibility.size < 1
-        event.eligibility = ['open_to_all'] unless event.field_locked? :eligibility
+        event.eligibility = ['first_come_first_served'] unless event.field_locked? :eligibility
       end
 
       # return
