@@ -38,6 +38,10 @@ Create TeSS configuration files:
 
 `tess.yml` is used to configure features and branding of your TeSS instance. `secrets.yml` is used to hold API keys etc.
 
+Create docker image:
+
+    docker build -t app .
+
 ### Start services
 
     docker-compose up -d
