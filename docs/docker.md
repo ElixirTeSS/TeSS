@@ -40,7 +40,7 @@ Create TeSS configuration files:
 
 Create docker image:
 
-    docker build -t app .
+    docker build -t taxila-app .
 
 ### Start services
 
