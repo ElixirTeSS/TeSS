@@ -31,6 +31,11 @@ module TeSS
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'overrides', '**', '*.{rb,yml}')] unless Rails.env.test?
     config.i18n.available_locales = [:en]
     config.i18n.default_locale = :en
+
+    config.active_record.yaml_column_permitted_classes = [
+      Symbol, Date, Time, ActiveSupport::TimeWithZone, ActiveSupport::TimeZone,
+      ActiveSupport::HashWithIndifferentAccess, BigDecimal
+    ]
   end
 
   Config = OpenStruct.new(Rails.configuration.tess.with_indifferent_access)
