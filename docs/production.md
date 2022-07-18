@@ -95,7 +95,7 @@ the following command. This can take some time, so be patient
 
     bundle exec rake assets:precompile
 
-#### Apache configuration
+## Configure Apache
 
 Switch back to a user with `sudo` access.
 
@@ -154,13 +154,7 @@ you can do so by running (as the `tess` user)
 
 We would strongly recommend using [Lets Encrypt](https://letsencrypt.org/) for free SSL certificates.
 
-### Setting up the services
-
-The following steps show how to setup delayed_job and
-soffice to run as a service, and automatically start and shutdown when you
-restart the server. Apache Solr should already be setup from following the [Setting up Solr](setting-up-solr) instructions.
-
-## Solr
+## Install Solr
 
 TeSS uses Apache Solr to power its search and filtering system.
 
@@ -172,14 +166,12 @@ If not, you can switch using the following command:
 
     sudo update-alternatives --config java
 
-### Install
-
 Run the following commands to download and install solr into /opt/, and have it run as a "service" that will start on boot.
 
     cd /opt
-    sudo wget https://downloads.apache.org/lucene/solr/8.11.1/solr-8.11.1.tgz
-    sudo tar xzf solr-8.11.1.tgz solr-8.11.1/bin/install_solr_service.sh --strip-components=2
-    sudo bash ./install_solr_service.sh solr-8.11.1.tgz
+    sudo wget https://downloads.apache.org/lucene/solr/8.11.2/solr-8.11.2.tgz
+    sudo tar xzf solr-8.11.2.tgz solr-8.11.2/bin/install_solr_service.sh --strip-components=2
+    sudo bash ./install_solr_service.sh solr-8.11.2.tgz
 
 ### Starting/stopping solr
 
@@ -197,6 +189,7 @@ By default, solr should be running at localhost:8983
 
 Next, create a collection for TeSS to use (assuming TeSS is checked out at `/home/tess/TeSS`):
 
-    sudo su - solr -c "/opt/solr/bin/solr create -c tess_prod -d /home/tess/TeSS/solr/conf"
+    sudo su - solr -c "/opt/solr/bin/solr create -c tess_production -d /home/tess/TeSS/solr/conf"
 
-`tess_prod` here is the collection name, which should match what is configured in your `config/sunspot.yml`.
+`tess_production` here is the collection name, which should match what is configured in your `config/sunspot.yml` 
+under the `path` parameter, following `/solr/`.

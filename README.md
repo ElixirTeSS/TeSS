@@ -14,23 +14,71 @@ TeSS makes use of the following services to function:
 
 ## Installation
 
-Docker: see [here](docs/docker.md)
+### Development
+TeSS can either be installed using [Docker](docs/docker.md#Development), or [natively](docs/install.md) on an Ubuntu-like OS 
+(some Mac OSX guidance also provided).
 
-Native: see [here](docs/install.md)
+### Production
+
+To run TeSS in production, see either the [Docker guide](docs/docker.md#Production), 
+or the [Ubuntu-like OS guide](docs/production.md).
 
 ## Customization
 
 See [here](docs/customization.md) for an overview of how you can customize your TeSS deployment.
 
-## Basic API
+## API
 
-A record can be viewed as json by appending .json, for example:
+TeSS has 2 JSON APIs, a newer [JSON-API](https://jsonapi.org/) conformant API that is currently read-only, 
+and a legacy API that supports both read and write, but only for Events and Materials.
+
+### Authentication
+
+Both APIs use token authentication. You can see/change your API token from your TeSS profile page.
+
+You can pass your credentials either using HTTP headers:
+```
+X-User-Email lisa@example.com
+X-User-Token 65gONMyVZXXkgnksghzB  
+```
+
+or in your request:
+
+```json
+{
+  "user_token" : "lisa@example.com",
+  "user_email" : "65gONMyVZXXkgnksghzB",
+  "material": {
+    "title": "API example",
+    ...
+  }
+}
+```
+
+### JSON-API
+
+A read-only API conforming to the [JSON-API](https://jsonapi.org/) specification.
+Currently supports viewing, browsing, searching and filtering across Events, Materials, Workflows, Providers and Users.
+
+[Click here to view documentation](https://tess.elixir-europe.org/api) 
+
+A record can be viewed through this API by appending `.json_api` to the URL, for example:
+
+    http://localhost:3000/materials.json_api
+    http://localhost:3000/materials/1.json_api
+
+### Legacy API
+
+A simple read/write API supporting Events and Materials.
+  
+[Click here to view documentation](https://tess.elixir-europe.org/api/legacy)
+
+A record can be viewed as json by appending `.json` to the URL, for example:
 
     http://localhost:3000/materials.json
     http://localhost:3000/materials/1.json
 
-The materials controller has been made token authenticatable, so it is possible for a user with an auth token to post
-to it. To generate the auth token the user model must first be saved.
+#### Example
 
 To create a material by posting, post to this URL:
 
@@ -48,12 +96,3 @@ Structure the JSON thus:
             "doi": "Put some stuff in here"
         }
     }
-
-A bundle install and rake db:migrate, followed by saving the user as mentioned above, should be enough to get this
-working.
-
-## Rake tasks
-
-To find suggestions of EDAM topics for materials, you can run this rake task. This requires redis and sidekiq to be running as it will add jobs to a queue. It uses BioPortal Annotator web service against the materials description to create suggestions
-
-    bundle exec rake tess:add_topic_suggestions
