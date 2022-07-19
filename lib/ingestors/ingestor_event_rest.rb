@@ -16,7 +16,7 @@ module Ingestors
         { name: 'Digital Skills Programme',
           url: 'https://www.eventbriteapi.com/v3/',
           process: method(:process_eventbrite) },
-        { name: 'eScience Center',
+        { name: 'NL eScienceCenter',
           url: 'https://www.eventbriteapi.com/v3/',
           process: method(:process_eventbrite) },
         { name: 'VU Amsterdam',
