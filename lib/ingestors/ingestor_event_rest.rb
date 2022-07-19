@@ -442,7 +442,7 @@ module Ingestors
             event.venue = attr.fetch('location', '')
             event.city = 'Amsterdam'
             event.country = 'The Netherlands'
-            event.source = 'VU'
+            event.source = 'VU Amsterdam'
             event.online = attr.fetch('online_event', '')
             event.contact = attr.fetch('orgurl', '')
             event.timezone = 'Amsterdam'
