@@ -8,6 +8,8 @@ en:
     doi: 'DOI'
   activerecord:
     attributes:
+      content_provider:
+        user: Owner
       profile:
         firstname: 'First name'
         surname: 'Last name'

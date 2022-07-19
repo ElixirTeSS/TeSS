@@ -83,6 +83,8 @@ class Material < ApplicationRecord
   has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
   has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 
+  has_many :stars,  as: :resource, dependent: :destroy
+  
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
   auto_strip_attributes :title, :description, :url, :squish => false
@@ -107,16 +109,27 @@ class Material < ApplicationRecord
     super(Rails::Html::FullSanitizer.new.sanitize(desc))
   end
 
+  def short_description= desc
+    self.description = desc unless @_long_description_set
+  end
+
+  def long_description= desc
+    @_long_description_set = true
+    self.description = desc
+  end
+
   def self.facet_fields
-    field_list = %w( content_provider keywords fields licence target_audience
-                     authors contributors resource_type related_resources
-                     user )
-    field_list.append('operations') unless TeSS::Config.feature['disabled'].include? 'operations'
-    field_list.append('scientific_topics') unless TeSS::Config.feature['disabled'].include? 'topics'
-    field_list.append('standard_database_or_policy') unless TeSS::Config.feature['disabled'].include? 'fairshare'
-    field_list.append('tools') unless TeSS::Config.feature['disabled'].include? 'biotools'
-    field_list.append('node') if TeSS::Config.feature['nodes']
-    return field_list
+    field_list = %w( scientific_topics operations tools standard_database_or_policy content_provider keywords
+                     fields licence target_audience authors contributors resource_type related_resources user )
+
+    field_list.delete('operations') if TeSS::Config.feature['disabled'].include? 'operations'
+    field_list.delete('scientific_topics') if TeSS::Config.feature['disabled'].include? 'topics'
+    field_list.delete('standard_database_or_policy') if TeSS::Config.feature['disabled'].include? 'fairshare'
+    field_list.delete('tools') if TeSS::Config.feature['disabled'].include? 'biotools'
+    field_list.delete('fields') if TeSS::Config.feature['disabled'].include? 'ardc_fields_of_research'
+    field_list.delete('node') unless TeSS::Config.feature['nodes']
+
+    field_list
   end
 
   def self.check_exists(material_params)

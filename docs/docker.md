@@ -94,7 +94,7 @@ Create the `.env` file:
     sed s/DB_PASSWORD=.*/DB_PASSWORD=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16`/ -i .env
     sed s/ADMIN_PASSWORD=.*/ADMIN_PASSWORD=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16`/ -i .env
 
-Make sure to also set `HOSTNAME`, `CONTACT_EMAIL`, `ADMIN_EMAIL` and `ADMIN_USERNAME`.
+Make sure to also set `ADMIN_EMAIL` and `ADMIN_USERNAME` (please note `admin` is not available as a username).
 
 Setup the TeSS configuration files: 
 
@@ -105,22 +105,24 @@ Setup the TeSS configuration files:
 
 The production deployment is configured in the `docker-compose-prod.yml` file.
 
-    docker-compose -f docker-compose-prod.yml up -d
+Start services:
 
-### Other production tasks
+    docker-compose -f docker-compose-prod.yml up -d
 
 Run initial database setup:
 
-    docker-compose exec app bundle exec rake db:setup
+    docker-compose -f docker-compose-prod.yml exec app bundle exec rake db:setup DISABLE_DATABASE_ENVIRONMENT_CHECK=1
+
+### Other production tasks
 
 Run database migrations:
 
-    docker-compose exec app bundle exec rake db:migrate
+    docker-compose -f docker-compose-prod.yml exec app bundle exec rake db:migrate
 
 Precompile the assets, necessary if any CSS/JS/images are changed after building the image:
 
-    docker-compose exec app bundle exec rake assets:clean && bundle exec rake assets:precompile
+    docker-compose -f docker-compose-prod.yml exec app bundle exec rake assets:clean && bundle exec rake assets:precompile
 
 Reindex Solr:
 
-    docker-compose exec app bundle exec rake sunspot:reindex
+    docker-compose -f docker-compose-prod.yml exec app bundle exec rake sunspot:reindex

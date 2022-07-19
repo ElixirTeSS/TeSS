@@ -24,6 +24,8 @@
 @import "cytoscape-panzoom";
 @import "jquery.simplecolorpicker";
 @import "eonasdan-bootstrap-datetimepicker";
+@import "ardc_vocab_widget_v2";
+@import "jquery.qtip.min";
 
 // Sticky but not fixed footer
 // http://cbracco.me/css-sticky-footer-effect/
@@ -172,6 +174,7 @@ div.wrapper {
 #content {
   padding: 15px;
   flex-grow: 1;
+  overflow: hidden;
 }
 
 #sidebar {
@@ -768,10 +771,7 @@ sup {
   padding: 0 5px;
 }
 
-.dropdown-option-delete,
-a.delete-list-item,
-a.delete-collaboration,
-a.delete-internal-resource {
+.delete-icon {
   vertical-align: middle;
   color: $brand-danger;
   font-weight: bold;
@@ -997,8 +997,12 @@ input[type=checkbox].field-lock + label:before,
 }
 
 .about-resource-icon {
-  padding: 35px 10px;
+  padding: 35px 0;
   text-align: center;
+  img {
+    width: 100%;
+    height: auto;
+  }
 }
 
 .register-condition {
@@ -1038,15 +1042,15 @@ input[type=checkbox].field-lock + label:before,
 }
 
 /* all links */
-.about-page-menu .nav > li > a {
-  color: #616161;
+.about-page-menu li.about-page-category > a {
   padding: 10px 20px;
   font-size: 16px;
   font-weight: 400;
 }
 
 /* nested links */
-.about-page-menu .nav .nav > li > a {
+.about-page-menu li > a {
+  color: #616161;
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 30px;
@@ -1116,4 +1120,10 @@ input[type=checkbox].field-lock + label:before,
 
 .omniauth-oidc {
   height: 42px;
+}
+
+.affix {
+  width: 280px;
+  border-right: 1px solid #ccc;
+  top: 0;
 }

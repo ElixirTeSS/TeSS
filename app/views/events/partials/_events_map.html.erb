@@ -1,31 +1,5 @@
-<div style="width: 100%; height: 750px; margin-top: 10px; display: none" id="map-canvas"></div>
+<div style="width: 100%; height: 750px; margin-top: 10px; display: none" id="map-canvas" data-role="events-map"
+     data-url="<%= events_path(search_and_facet_params.merge(format: :json_api, per_page: 5000)) -%>"></div>
 <div id='map-loading-screen'>
   <%= image_tag('ajax-loader2.gif') %>
 </div>
-
-<script>
-function initializeMap() {
-    $('#map-canvas').hide();
-    $('#map-notice').hide();
-    $('#map-loading-screen').fadeIn();
-
-    $.ajax({
-        type: 'GET',
-        url: '<%= events_url(search_and_facet_params.merge(format: :json_api, per_page: 5000)).html_safe -%>',
-        dataType: 'json',
-    }).done(function (res) {
-        plotEvents(res.data)
-    }).fail(function (error) {
-        console.log("Error: " + error);
-    });
-
-    var mapOptions = {
-        maxZoom: 15,
-        center: new google.maps.LatLng(0, 0)
-    };
-
-    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-
-    loadedMapScript = true;
-}
-</script>

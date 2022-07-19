@@ -11,7 +11,7 @@ class CuratorController < ApplicationController
   end
 
   def topic_suggestions
-    @suggestions = EditSuggestion.all
+    @suggestions = EditSuggestion.all.select { |e| e.suggestible }
     @leaderboard = {}
     CURATION_ACTIONS.each do |curator_action|
       action_count = action_count_for(curator_action)

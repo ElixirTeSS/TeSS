@@ -10,7 +10,9 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users =  User.visible.paginate(page: params[:page], per_page: 50)
+    @users = User.visible
+    @users = @users.with_query(params[:q].chomp('*')) if params[:q].present?
+    @users = @users.paginate(page: params[:page], per_page: 50)
 
     respond_to do |format|
       format.html

@@ -51,8 +51,10 @@ default: &default
     sources: false
     trainers: false
     workflows: true
-    # Possible features to disable: biotools, topics, operations, sponsors, fairshare, county, fields_of_research, other_types, subsets, syllabus
-    disabled: ['fields_of_research', 'other_types', 'subsets', 'syllabus']
+    # Possible features to disable:
+    #  biotools, topics, operations, sponsors, fairshare, county, ardc_fields_of_research,
+    #  other_types, subsets, syllabus, approved_editors address_finder
+    disabled: ['ardc_fields_of_research', 'other_types', 'subsets', 'syllabus', 'approved_editors']
   placeholder:
     collection: 'placeholder-collection.png'
     provider: 'placeholder-organization.png'

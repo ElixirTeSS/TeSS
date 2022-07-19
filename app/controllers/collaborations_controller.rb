@@ -18,7 +18,7 @@ class CollaborationsController < ApplicationController
   end
 
   def index
-    @collaborations = @resource.collaborations
+    @collaborations = @resource.collaborations.order(id: 'asc')
 
     respond_with(@collaborations)
   end

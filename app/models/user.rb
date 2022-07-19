@@ -65,7 +65,7 @@ class User < ApplicationRecord
             :uniqueness => true
 
   validate :consents_to_processing, on: :create, unless: ->(user) { user.using_omniauth? || User.current_user.try(:is_admin?) }
-
+  
   accepts_nested_attributes_for :profile
 
   attr_accessor :publicize_email
@@ -268,6 +268,11 @@ class User < ApplicationRecord
     joins(:activities_as_owner).where(activities: { key: CREATED_RESOURCE_TYPES.map { |t| "#{t.to_s.singularize}.create" } }).distinct
   end
 
+  def self.with_query(query)
+    joins(:profile).where('lower(username) LIKE :query or lower(profiles.firstname) LIKE :query or lower(profiles.surname) LIKE :query',
+                          query: "#{query.downcase}%")
+  end
+
   def created_resources
     CREATED_RESOURCE_TYPES.reduce([]) { |a, t| a + send(t) }
   end
@@ -322,7 +327,7 @@ class User < ApplicationRecord
   end
 
   def consents_to_processing
-    unless processing_consent
+    if processing_consent!="1"
       errors.add(:base, "You must consent to #{TeSS::Config.site['title_short']} processing your data in order to register")
 
       false

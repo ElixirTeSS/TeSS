@@ -392,4 +392,11 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal true, profile.public
   end
 
+  test 'should be able to filter user index with a query' do
+    get :index, params: { q: 'Reg' }
+
+    assert_response :success
+    assert assigns(:users).include?(users(:regular_user))
+    refute assigns(:users).include?(users(:another_regular_user))
+  end
 end

@@ -105,6 +105,7 @@ class Event < ApplicationRecord
   has_many :event_materials, dependent: :destroy
   has_many :materials, through: :event_materials
   has_many :widget_logs, as: :resource
+  has_many :stars,  as: :resource, dependent: :destroy
 
   has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
   has_ontology_terms(:operations, branch: OBO_EDAM.operations)
@@ -113,6 +114,8 @@ class Event < ApplicationRecord
             presence: true
   # validates :venue, :city, :country, :postcode, :presence => true, :unless => :online?
   validates :city, :country, :presence => true, :unless => :online?
+
+  validates :title, :url, presence: true
   validates :capacity, numericality: { greater_than_or_equal_to: 1 }, allow_blank: true
   validates :cost_value, numericality: { greater_than: 0 }, allow_blank: true
   validates :event_types, controlled_vocabulary: { dictionary: EventTypeDictionary.instance }
@@ -193,15 +196,17 @@ class Event < ApplicationRecord
   end
 
   def self.facet_fields
-    field_list = %w( content_provider keywords fields online event_types
-                     venue city country organizer target_audience eligibility
-                     user )
-    field_list.append('operations') unless TeSS::Config.feature['disabled'].include? 'operations'
-    field_list.append('scientific_topics') unless TeSS::Config.feature['disabled'].include? 'topics'
-    field_list.append('sponsors') unless TeSS::Config.feature['disabled'].include? 'sponsors'
-    field_list.append('tools') unless TeSS::Config.feature['disabled'].include? 'biotools'
-    field_list.append('node') if TeSS::Config.feature['nodes']
-    return field_list
+    field_list = %w( content_provider keywords scientific_topics operations tools fields online event_types
+                     venue city country organizer sponsors target_audience eligibility user )
+
+    field_list.delete('operations') if TeSS::Config.feature['disabled'].include? 'operations'
+    field_list.delete('scientific_topics') if TeSS::Config.feature['disabled'].include? 'topics'
+    field_list.delete('sponsors') if TeSS::Config.feature['disabled'].include? 'sponsors'
+    field_list.delete('tools') if TeSS::Config.feature['disabled'].include? 'biotools'
+    field_list.delete('fields') if TeSS::Config.feature['disabled'].include? 'ardc_fields_of_research'
+    field_list.delete('node') unless TeSS::Config.feature['nodes']
+
+    field_list
   end
 
   def to_csv_event
@@ -246,7 +251,7 @@ class Event < ApplicationRecord
   end
 
   def show_map?
-    #!self.online? &&
+    Rails.application.secrets.google_maps_api_key.present? && #!self.online? &&
     ((self.latitude.present? && self.longitude.present?) ||
       (self.suggested_latitude.present? && self.suggested_longitude.present?))
   end
@@ -462,7 +467,8 @@ class Event < ApplicationRecord
   private
 
   def validate_timezone
-    unless ActiveSupport::TimeZone::MAPPING.keys.include? self.timezone
+    return unless timezone.present?
+    unless ActiveSupport::TimeZone::MAPPING.keys.include?(timezone)
       errors.add(:timezone, 'not found and cannot be linked to a valid timezone')
     end
   end
