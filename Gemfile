@@ -161,6 +161,12 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-moment', '~> 2.15.0'
 end
 
+group :test do
+  gem 'fakeredis', git: 'https://github.com/artygus/fakeredis/', ref: 'f68bd4f'
+  gem 'minitest', '5.14.4'
+  gem 'rails-controller-testing'
+end
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -183,8 +189,7 @@ group :development do
   gem 'binding_of_caller'
 end
 
-group :test do
-  gem 'fakeredis', git: 'https://github.com/artygus/fakeredis/', ref: 'f68bd4f'
-  gem 'minitest', '5.14.4'
-  gem 'rails-controller-testing'
+group :production do
+  gem 'unicorn'
+  gem 'passenger'
 end

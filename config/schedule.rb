@@ -14,6 +14,20 @@ ensure
   schedules ||= {}
 end
 
+# check input parameters
+set(:db_user, 'tess_user') if !defined?(db_user)
+set :db_name, "tess_#{environment}"
+set :bkup_script, "#{path}/scripts/pgsql_backup.sh"
+set :bkup_folder, "#{path}/shared/backups"
+
+# set log file
+FileUtils.mkdir_p("#{path}/shared/log")
+set :log_folder, "#{path}/shared/log"
+FileUtils.touch("#{log_folder}/cron.log")
+unless ENV["RAILS_LOG_TO_STDOUT"]
+  set :output, "#{log_folder}/cron.log"
+end
+
 # Generate a new sitemap...
 if !schedules['sitemap'].nil?
   every :"#{schedules['sitemap']['every']}", at: "#{schedules['sitemap']['at']}" do
@@ -44,5 +58,27 @@ if !schedules['ingestions'].nil?
 else
   every :day, at: '3am' do
     rake "tess:automated_ingestion"
+  end
+end
+
+# run database backups
+if !schedules['backups'].nil?
+  every :"#{schedules['backups']['every']}", at: "#{schedules['backups']['at']}" do
+    command "#{bkup_script} #{db_user} #{db_name} #{bkup_folder} --exclude-schema=audit"
+  end
+else
+  every :saturday, at: '12:30am' do
+    command "#{bkup_script} #{db_user} #{db_name} #{bkup_folder} --exclude-schema=audit"
+  end
+end
+
+# run log rotation
+if !schedules['logrotate'].nil?
+  every :"#{schedules['logrotate']['every']}", at: "#{schedules['logrotate']['at']}" do
+    command "/usr/sbin/logrotate -f #{path}/config/logrotate.conf -s #{log_folder}/logrotate.log"
+  end
+else
+  every :day, at: '11pm' do
+    command "/usr/sbin/logrotate -f #{path}/config/logrotate.conf -s #{log_folder}/logrotate.log"
   end
 end
