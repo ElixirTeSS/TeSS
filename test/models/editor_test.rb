@@ -198,7 +198,10 @@ class EditorTest < ActiveSupport::TestCase
     event = events :training_event
     provider.add_editor(trainer)
 
-    another_event = Event.create!(user: trainer, title: 'New event', timezone: 'UTC', url: 'http://example.com', online: true)
+    another_event = Event.create!(user: trainer, title: 'New event', timezone: 'UTC', url: 'http://example.com',
+                                  online: true, description: '123', contact: 'Someone', host_institutions: ['Somewhere'],
+                                  eligibility: [:first_come_first_served], organizer: 'Some people',
+                                  start: 3.days.ago, end: 3.days.from_now)
     assert_nil another_event.content_provider
 
     # remove editor

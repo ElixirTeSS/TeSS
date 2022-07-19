@@ -427,17 +427,18 @@ class EventTest < ActiveSupport::TestCase
     end
   end
 
-  test 'validates timezone if present' do
-    event = Event.new(title: 'An event', url: 'https://myevent.com', timezone: 'UTC', user: users(:regular_user))
+  test 'validates timezone' do
+    event = Event.new({ title: 'An event', description: '123', url: 'https://myevent.com', timezone: 'UTC',
+                        user: users(:regular_user), online: true }.merge(@mandatory))
     assert event.valid?
 
     event.timezone = '123'
     refute event.valid?
 
     event.timezone = nil
-    assert event.valid?
+    refute event.valid?
 
     event.timezone = ''
-    assert event.valid?
+    refute event.valid?
   end
 end
