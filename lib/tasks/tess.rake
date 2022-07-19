@@ -150,6 +150,7 @@ namespace :tess do
         ContentProvider.create(
           title: source[:provider],
           url: source[:url],
+          image_url: source[:image_url],
           user_id: admin_user.id,
         )
       end

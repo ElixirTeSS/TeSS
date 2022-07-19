@@ -5,12 +5,14 @@ sources:
   - id: 1
     provider: 'VU Amsterdam'              # content provider's title
     url: 'https://vu-nl.libcal.com/ajax/calendar/list?c=7052&date=0000-00-00&perpage=48&page=1&audience=&cats=&camps=&inc=0'     # the root URL required to access the source
+    image_url: https://media.academictransfer.com/derivatives/logos/vu-en-wide/38086b6a978ee25949905b8c968a103a.png
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     enabled: true
   - id: 2
     provider: 'Digital Skills Programme'              # content provider's title
     url: https://www.eventbriteapi.com/v3/organizers/8536296706     # the root URL required to access the source
+    image_url: https://www.rd-alliance.org/system/files/styles/responsive/private/netherlands-escience-center-logo-RGB.png?itok=dFl21J8y
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     token: '*INSERT_EVENTBRITE_TOKEN*'  # get an API Key at https://www.eventbrite.com/platform/
@@ -18,6 +20,7 @@ sources:
   - id: 3
     provider: 'eScience Center'              # content provider's title
     url: https://www.eventbriteapi.com/v3/organizers/34021342943     # the root URL required to access the source
+    image_url: https://www.rd-alliance.org/system/files/styles/responsive/private/netherlands-escience-center-logo-RGB.png?itok=dFl21J8y
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     token: '*INSERT_EVENTBRITE_TOKEN*'  # get an API Key at https://www.eventbrite.com/platform/
@@ -25,18 +28,21 @@ sources:
   - id: 4
     provider: 'SURF'              # content provider's title
     url: https://www.surf.nl/sitemap.xml     # the root URL required to access the source
+    image_url: https://www.surf.nl/themes/surf/logo.svg
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     enabled: true
   - id: 5
     provider: 'DANS'              # content provider's title
     url: https://dans.knaw.nl/en/agenda/?filter=true&page=     # the root URL required to access the source
+    image_url: https://easy.dans.knaw.nl/ui/images/lay-out/logo_dans.png
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     enabled: true
   - id: 6
     provider: 'DTL'              # content provider's title
     url: https://www.dtls.nl/      # the root URL required to access the source
+    image_url: https://www.dtls.nl/wp-content/uploads/2021/08/dtl-logo-1.png
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     enabled: true
