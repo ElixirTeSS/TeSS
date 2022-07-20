@@ -14,7 +14,7 @@
         <div class="<%= next_about_block(@feature_count += 1) %>">
           <div id='tess-club' class="h3">TeSS Club</div>
           <div class="sub-about-block">
-            <%== raw t 'us.tess_club' %>
+            <%== I18n.t('us.tess_club', site: TeSS::Config.site['title_short']) %>
           </div>
         </div>
       </div>

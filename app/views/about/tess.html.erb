@@ -13,7 +13,7 @@
       <div class="row">
 
         <div id='trainingregistry' class="h3">The <%== TeSS::Config.site['title'] %></div>
-        <p><%== I18n.t('about.registry', prefix: 'hi') %></p>
+        <p><%== I18n.t('about.registry', site: TeSS::Config.site['title_short']) %></p>
 
         <!-- EVENTS-->
 
@@ -27,7 +27,7 @@
             </div>
             <div class="col-lg-10 about-resource">
               <div id='events' class="h4">Events</div>
-              <p><%== raw t 'about.events' %></p>
+              <p><%== I18n.t('about.events', site: TeSS::Config.site['title_short']) %></p>
               <p>
                 <%= TeSS::Config.site['title_short'] %> collects event information
                 from <%= Event.all.collect { |x| x.content_provider_id }.uniq.count %>
@@ -104,7 +104,7 @@
             <div class="row">
               <div class="col-lg-12">
                 <div id='subscribe' class="h3">Subscribe</div>
-                <p><%== raw t 'about.subscribe' %></p>
+                <p><%== I18n.t('about.subscribe', site: TeSS::Config.site['title_short']) %></p>
                 <p>The <%= link_to 'subscriptions manager', subscriptions_path %> page may be used to change the
                   frequency
                   of, or to remove, subscriptions.</p>
