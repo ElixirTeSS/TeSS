@@ -239,22 +239,20 @@ class EventTest < ActiveSupport::TestCase
   end
 
   test 'blocks disallowed domain' do
-    parameters = @mandatory.merge({ user: users(:regular_user), title: 'Bad event', url: 'bad-domain.example/event',
+    parameters = @mandatory.merge({ user: users(:regular_user), title: 'Bad event', url: 'https://bad-domain.example/event',
                                     online: true })
     event = Event.new(parameters)
 
     refute event.save
-
-    assert_equal ['not valid'], event.errors[:url]
+    assert event.errors.added?(:url, 'not valid')
   end
 
   test 'does not block non-disallowed(?!) domain' do
-    parameters = @mandatory.merge({ user: users(:regular_user), title: 'Good event', url: 'good-domain.example/event',
+    parameters = @mandatory.merge({ user: users(:regular_user), title: 'Good event', url: 'http://good-domain.example/event',
                                     description: "event for does not block non-disallowed domain", online: true })
     event = Event.new(parameters)
 
     assert event.save
-
     assert event.errors[:url].empty?
   end
 
@@ -263,7 +261,7 @@ class EventTest < ActiveSupport::TestCase
     begin
       TeSS::Config.blocked_domains = nil
       assert_nothing_raised do
-        parameters = @mandatory.merge({ user: users(:regular_user), title: 'Bad event', url: 'bad-domain.example/event',
+        parameters = @mandatory.merge({ user: users(:regular_user), title: 'Bad event', url: 'https://bad-domain.example/event',
                                         description: "event for does not throw error when blocked domains list is blank",
                                         online: true })
         Event.create!(parameters)
@@ -403,11 +401,43 @@ class EventTest < ActiveSupport::TestCase
 
     event.timezone = '123'
     refute event.valid?
+    assert event.errors.added?(:timezone, 'not found and cannot be linked to a valid timezone')
 
     event.timezone = nil
     assert event.valid?
 
     event.timezone = ''
     assert event.valid?
+  end
+
+  test 'validates URL format' do
+    event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user))
+
+    refute event.valid?
+    assert event.errors.added?(:url, :blank)
+
+    event.url = '123'
+    refute event.valid?
+    assert event.errors.added?(:url, :url, value: '123')
+
+    event.url = '/relative'
+    refute event.valid?
+    assert event.errors.added?(:url, :url, value: '/relative')
+
+    event.url = 'git://something.git'
+    refute event.valid?
+    assert event.errors.added?(:url, :url, value: 'git://something.git')
+
+    event.url = 'http://http-website.com/mat'
+    assert event.valid?
+    refute event.errors.added?(:url, :url, value: 'http://http-website.com/mat')
+
+    event.url = 'https://https-website.com/mat'
+    assert event.valid?
+    refute event.errors.added?(:url, :url, value: 'https://https-website.com/mat')
+
+    event.url = 'ftp://something/something'
+    refute event.valid?
+    assert event.errors.added?(:url, :url, value: 'ftp://something/something')
   end
 end

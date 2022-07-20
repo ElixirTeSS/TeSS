@@ -112,6 +112,7 @@ class Event < ApplicationRecord
   has_many :stars,  as: :resource, dependent: :destroy
 
   validates :title, :url, presence: true
+  validates :url, url: true
   validates :capacity, numericality: { greater_than_or_equal_to: 1 }, allow_blank: true
   validates :cost_value, numericality: { greater_than: 0 }, allow_blank: true
   validates :event_types, controlled_vocabulary: { dictionary: EventTypeDictionary.instance }
