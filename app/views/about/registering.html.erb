@@ -11,7 +11,7 @@
       <!-- REGISTERING CONTENT IN TESS -->
       <div class="row">
         <div id='how' class="h3">Registering Resources in <%= TeSS::Config.site['title_short'] %></div>
-        <%= raw t 'register.resources' %>
+        <%= I18n.t('register.resources', site: TeSS::Config.site['title_short']) %>
 
         <div class="row">
           <div class="col-md-3 motivation_box">
@@ -50,14 +50,14 @@
             <div class="include-where-text">Be seen in search results more owing to our search-engine optimisation</div>
           </div>
         </div>
-        <%== raw t 'register.methods' %>
+        <%== I18n.t('register.methods', site: TeSS::Config.site['title_short']) %>
       </div>
 
       <!-- AUTOMATIC REGISTRATION -->
       <div class="row">
         <div class="odd-about-block">
           <div id='automatic' class="h4">Automatic Registration</div>
-          <p><%== raw t 'register.automatic' %></p>
+          <p><%== I18n.t('register.automatic', site: TeSS::Config.site['title_short']) %></p>
           <!--
           <div class="row">
             <div class="col-md-3 motivation_box">
@@ -77,7 +77,7 @@
 
           <!-- STRUCTURED DATA ->
           <div class="h5">Structured Data Types</div>
-          <%== raw t 'register.structured' %>
+          <%== I18n.t('register.structured', site: TeSS::Config.site['title_short']) %>
           -->
 
           <!-- BIOSCHEMAS ->
@@ -111,7 +111,7 @@
             <div id='api' class="h6">API</div>
             <div class="row">
               <div class="col-lg-9">
-                <%== raw t 'register.api' %>
+                <%== I18n.t('register.api', site: TeSS::Config.site['title_short']) %>
                 <hr>
                 <b>Examples of sites with APIs included in <%= TeSS::Config.site['title_short'] %></b>
                 <div class="data-type-examples">
@@ -132,7 +132,7 @@
             <div id='calendar' class="h6">Calendar</div>
             <div class="row">
               <div class="col-lg-9">
-                <%== raw t 'register.calendar' %>
+                <%== I18n.t('register.calendar', site: TeSS::Config.site['title_short']) %>
                 <hr>
                 <b>Examples of calendar files parsed by <%= TeSS::Config.site['title_short'] %></b>
                 <div class="data-type-examples">
@@ -169,7 +169,7 @@
       <div class="row">
         <div class="even-about-block">
           <div id='manual' class="h4">Manual Registration</div>
-          <%== raw t 'register.manual' %>
+          <%== I18n.t('register.manual', site: TeSS::Config.site['title_short']) %>
           <p>
             <%= link_to new_event_path, class: 'btn btn-primary', target: '_blank' do %>
               <i class="fa fa-plus-square"></i> Register event
