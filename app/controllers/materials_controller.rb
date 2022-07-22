@@ -15,9 +15,9 @@ class MaterialsController < ApplicationController
 
   def index
     respond_to do |format|
+      format.html
       format.json
       format.json_api { render({ json: @materials }.merge(api_collection_properties)) }
-      format.html
     end
   end
 
@@ -27,9 +27,9 @@ class MaterialsController < ApplicationController
   # TODO: In any case, it breaks various tests.
   def show
     respond_to do |format|
+      format.html
       format.json
       format.json_api { render json: @material }
-      format.html
     end
   end
 
