@@ -34,10 +34,10 @@ end
 #
 #   sitemap_for Page.scoped
 
-sitemap_for Material if TeSS::Config.feature['materials']
-sitemap_for Event if TeSS::Config.feature['events']
+sitemap_for Material.from_verified_users if TeSS::Config.feature['materials']
+sitemap_for Event.from_verified_users if TeSS::Config.feature['events']
 sitemap_for ContentProvider if TeSS::Config.feature['providers']
-sitemap_for Workflow if TeSS::Config.feature['workflows']
+sitemap_for Workflow.from_verified_users.visible_by(nil) if TeSS::Config.feature['workflows']
 
 # For products with special sitemap name and priority, and link to comments:
 #
@@ -63,4 +63,4 @@ sitemap_for Workflow if TeSS::Config.feature['workflows']
 # Ping search engines after sitemap generation:
 #
 
-ping_with "#{base_url.scheme}://#{host}/sitemap.xml"
+ping_with "#{base_url.scheme}://#{host}/sitemap.xml" if Rails.env.production?
