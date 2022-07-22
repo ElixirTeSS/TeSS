@@ -16,14 +16,15 @@ git pull
 bundle install --deployment
 bundle exec rake db:migrate
 bundle exec rake sunspot:solr:reindex
-bundle exec rake assets:cleans
+bundle exec rake assets:clean
 bundle exec rake assets:precompile
 bundle exec rake tmp:clear
 # update scheduled tasks
-whenever --update-crontab --set environment="$ENV"
+bundle exec whenever --update-crontab --set environment="$ENV"
 
-# restart services
+# restart application
 touch tmp/restart.txt
-pkill -f sidekiq
-bundle exec sidekiq -d -e "$ENV" -L /tmp/sidekiq.log
+
+# restart sidekiq
+systemctl --user restart sidekiq
 

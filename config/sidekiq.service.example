@@ -1,0 +1,52 @@
+# Example config for running sidekiq via systemd.
+#
+# Assumes TeSS is installed at `/home/tess/tess-app` and system-wide RVM is used with an alias `tess`.
+# Tweak to your needs.
+# Copy to: ~/.config/systemd/user/sidekiq.service
+# And enable using:
+#     systemctl --user daemon-reload
+#     systemctl --user enable sidekiq.service
+
+[Unit]
+Description=sidekiq
+After=syslog.target network.target
+
+[Service]
+# notify can be used only after Sidekiq 6.0.6
+# if the version is under 6.0.6, use Type=simple
+Type=notify
+WatchdogSec=10
+
+WorkingDirectory=/home/tess/tess-app
+
+# If you use rbenv:
+# ExecStart=/bin/bash -lc 'exec /home/deploy/.rbenv/shims/bundle exec sidekiq -e production'
+# If you use the system's ruby:
+# ExecStart=/usr/local/bin/bundle exec sidekiq -e production
+# If you use rvm in production without gemset and your ruby version is 2.6.5
+# ExecStart=/home/deploy/.rvm/gems/ruby-2.6.5/wrappers/bundle exec sidekiq -e production
+# If you use rvm in production with gemset and your ruby version is 2.6.5
+# ExecStart=/home/deploy/.rvm/gems/ruby-2.6.5@gemset-name/wrappers/bundle exec sidekiq -e production
+# If you use rvm in production with gemset and ruby version/gemset is specified in .ruby-version,
+# .ruby-gemsetor or .rvmrc file in the working directory
+# ExecStart=/home/deploy/.rvm/bin/rvm in /path/to/your/app/current do bundle exec sidekiq -e production
+ExecStart=/usr/local/rvm/wrappers/tess/bundle exec sidekiq -e production
+ExecReload=/usr/bin/kill -TSTP $MAINPID
+
+# Greatly reduce Ruby memory fragmentation and heap usage
+# https://www.mikeperham.com/2018/04/25/taming-rails-memory-bloat/
+Environment=MALLOC_ARENA_MAX=2
+
+# if we crash, restart
+RestartSec=1
+Restart=on-failure
+
+# output goes to /var/log/syslog
+StandardOutput=syslog
+StandardError=syslog
+
+# This will default to "bundler" if we don't specify it
+SyslogIdentifier=sidekiq
+
+[Install]
+WantedBy=default.target
