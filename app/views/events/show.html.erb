@@ -82,7 +82,7 @@
               <%= google_maps_javascript_api_tag(@event) if @event.show_map? %>
 
               <!-- Field: description -->
-              <% if @event.description and !@event.description.blank? %>
+              <% if @event.description.present? %>
                 <strong>Description:</strong>
                 <div class="text-justify">
                   <%= render_markdown @event.description %>
@@ -90,54 +90,56 @@
               <% end %>
 
               <!-- Field: start and end -->
-              <% if @event.start and !@event.start.blank? %>
+              <% if @event.start.present? %>
                 <p><strong>Start:</strong>
                   <%= @event.start.strftime('%A, %d %B %Y @ %H:%M') %></p>
               <% end %>
-              <% if @event.end and !@event.end.blank? %>
+              <% if @event.end.present? %>
                 <p><strong>End:</strong>
                   <%= @event.end.strftime('%A, %d %B %Y @ %H:%M') %></p>
               <% end %>
 
               <!-- Field: duration -->
-              <% if @event.duration and !@event.duration.blank? %>
+              <% if @event.duration.present? %>
                 <p><strong>Duration:</strong>
                   <%= @event.duration %></p>
               <% end %>
 
               <!-- Field: timezone -->
-              <% if @event.timezone and !@event.timezone.blank? %>
+              <% if @event.timezone.present? %>
                 <p><strong>Timezone:</strong>
                   <%= @event.timezone %></p>
               <% end %>
 
               <!-- Field: address -->
               <!--% unless @event.online? %-->
-              <% if @event.venue and !@event.venue.blank? %>
+              <% if @event.venue.present? %>
                 <p><strong>Venue:</strong>
                   <%= @event.venue %></p>
               <% end %>
-              <p>
-                <% if @event.city and !@event.city.blank? %>
-                  <strong>City:&nbsp;</strong><%= @event.city %>
-                <% end %>
+              <% if @event.city.present? %>
+                <p><strong>City:</strong>
+                  <%= @event.city %></p>
+              <% end %>
 
-                <% if @event.county and !@event.county.blank? %>
-                  &nbsp;<strong>County:&nbsp;</strong><%= @event.county %>
-                <% end %>
+              <% if @event.county.present? %>
+                <p><strong>County:</strong>
+                  <%= @event.county %></p>
+              <% end %>
 
-                <% if @event.country and !@event.country.blank? %>
-                  &nbsp;<strong>Country:&nbsp;</strong><%= @event.country %>
-                <% end %>
+              <% if @event.country.present? %>
+                <p><strong>Country:</strong>
+                  <%= @event.country %></p>
+              <% end %>
 
-                <% if @event.postcode and !@event.postcode.blank? %>
-                  &nbsp;<strong>Postcode:&nbsp;</strong><%= @event.postcode %>
-                <% end %>
-              </p>
+              <% if @event.postcode.present? %>
+                <p><strong>Postcode:</strong>
+                  <%= @event.postcode %></p>
+              <% end %>
               <!-- % end % -->
 
               <!-- Field: prerequisites -->
-              <% if @event.prerequisites and !@event.prerequisites.blank? %>
+              <% if @event.prerequisites.present? %>
                 <strong>Prerequisites:</strong>
                 <div class="text-justify">
                   <%= render_markdown @event.prerequisites %>
@@ -145,7 +147,7 @@
               <% end %>
 
               <!-- Field: learning objectives -->
-              <% if @event.learning_objectives and !@event.learning_objectives.blank? %>
+              <% if @event.learning_objectives.present? %>
                 <strong>Learning Objectives:</strong>
                 <div class="text-justify">
                   <%= render_markdown @event.learning_objectives %>
@@ -163,13 +165,13 @@
               <% end %>
 
               <!-- Field: organizer -->
-              <% if @event.organizer and !@event.organizer.blank? %>
+              <% if @event.organizer.present? %>
                 <p><strong>Organiser:</strong>
                   <%= @event.organizer %></p>
               <% end %>
 
               <!-- Field: contact -->
-              <% if @event.contact and !@event.contact.blank? %>
+              <% if @event.contact.present? %>
                 <p><strong>Contact:</strong>
                   <%= @event.contact %></p>
               <% end %>
@@ -203,7 +205,7 @@
               <% end %>
 
               <!-- Field: capacity -->
-              <% if @event.capacity and !@event.capacity.blank? %>
+              <% if @event.capacity.present? %>
                 <p><strong>Capacity:</strong>
                   <%= @event.capacity %></p>
               <% end %>
@@ -219,7 +221,7 @@
               <% end %>
 
               <!-- Field: tech requirements -->
-              <% if @event.tech_requirements and !@event.tech_requirements.blank? %>
+              <% if @event.tech_requirements.present? %>
                 <strong>Tech Requirements:</strong>
                 <div class="text-justify">
                   <%= render_markdown @event.tech_requirements %>
@@ -227,7 +229,7 @@
               <% end %>
 
               <!-- Field: recognition -->
-              <% if @event.recognition and !@event.recognition.blank? %>
+              <% if @event.recognition.present? %>
                 <p>
                   <strong>Credit / Recognition:</strong>
                   <%= @event.recognition %>
@@ -310,7 +312,6 @@
         <div id="activity_log" class="tab-pane fade" data-activity-path="<%= event_activities_path(@event) -%>">
           <%= image_tag('ajax-loader.gif') %>
         </div>
-
       </div>
     </div>
   </div>
