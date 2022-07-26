@@ -141,22 +141,6 @@ en:
           target="_blank">BB/L005069/1</a>
         ).
       </p>
-      <p>
-      <a href="https://cordis.europa.eu/project/rcn/198519_en.html", target="_blank" >
-        <img src="/assets/elixir/eu_flag.svg" class="funding-logo" >
-      </a>
-      <a href="http://www.elixir-europe.org/excelerate", target="_blank" >
-          <img src="/assets/elixir/excelerate-logo.png", class="funding-logo" >
-      </a>
-      <a href="https://bbsrc.ukri.org/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1",
-          target="_blank" >
-          <img src="/assets/elixir/elixir_logo_orange.png", class="funding-logo" >
-      </a>
-      <a href="https://bbsrc.ukri.org/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1",
-          target="_blank" >
-          <img src="/assets/elixir/bbsrc-logo.png", class="funding-logo" >
-      </a>
-      </p>
     acknowledge: >
       <p>The TeSS team would like to acknowledge the help of a number of groups and individuals, and thank them
          for useful discussions, feedback and assistance in developing TeSS - to name but a few:</p>
