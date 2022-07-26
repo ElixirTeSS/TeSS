@@ -2,6 +2,7 @@ require 'test_helper'
 
 class CollectionsControllerTest < ActionController::TestCase
   include Devise::Test::ControllerHelpers
+  include ActiveJob::TestHelper
 
   setup do
     mock_images
