@@ -273,7 +273,7 @@ en:
       us via e-mail at <a href="mailto:support@tess.elixir-europe.org">support@tess.elixir-europe.org</a>
     manual: >
       <p>Resources may be added manually to TeSS.</p>
-      <p>To do so, first register for a free account. Members of ELIXIR can use ELIXIR AAI to register and login.</p>
+      <p>To do so, first register for a free account. Members of academic institutions may be able to log-in via LS-Login.</p>
       <p>Once registered and logged in, the 'register event' and 'register material' buttons will become visible on the
       events and materials tabs. Alternatively click here:</p>
   home:
