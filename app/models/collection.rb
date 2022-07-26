@@ -4,6 +4,7 @@ class Collection < ApplicationRecord
   include Searchable
   include HasFriendlyId
   include CurationQueue
+  include Collaboratable
 
   has_many :collection_materials
   has_many :collection_events
@@ -65,7 +66,9 @@ class Collection < ApplicationRecord
     if user && user.is_admin?
       all
     elsif user
-      where("#{self.table_name}.public = ? OR #{self.table_name}.user_id = ?", true, user)
+      references(:collaborations).includes(:collaborations).
+        where("#{self.table_name}.public = :public OR #{self.table_name}.user_id = :user OR collaborations.user_id = :user",
+              public: true, user: user)
     else
       where(public: true)
     end

@@ -363,4 +363,24 @@ class CollectionsControllerTest < ActionController::TestCase
     @collection.reload
   end
 
+  test 'should allow collaborator to edit' do
+    user = users(:another_regular_user)
+    @collection.collaborators << user
+    sign_in user
+
+    assert_difference('CollectionEvent.count', 2) do
+      patch :update, params: { collection: { event_ids: [events(:one), events(:two)]}, id: @collection.id }
+    end
+    assert_redirected_to collection_path(assigns(:collection))
+  end
+
+  test 'should not allow non-collaborator to edit' do
+    user = users(:another_regular_user)
+    sign_in user
+
+    assert_no_difference('CollectionEvent.count') do
+      patch :update, params: { collection: { event_ids: [events(:one), events(:two)]}, id: @collection.id }
+    end
+    assert_response :forbidden
+  end
 end
