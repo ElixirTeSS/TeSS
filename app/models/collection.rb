@@ -3,6 +3,7 @@ class Collection < ApplicationRecord
   include LogParameterChanges
   include Searchable
   include HasFriendlyId
+  include CurationQueue
 
   has_many :collection_materials
   has_many :collection_events
@@ -27,11 +28,11 @@ class Collection < ApplicationRecord
     # :nocov:
     searchable do
       text :title
+      text :description
       string :title
       string :sort_title do
         title.downcase.gsub(/^(an?|the) /, '')
       end
-      text :description
       string :user do
         self.user.username.to_s unless self.user.blank?
       end

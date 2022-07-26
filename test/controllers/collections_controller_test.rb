@@ -334,4 +334,32 @@ class CollectionsControllerTest < ActionController::TestCase
 
     @controller = old_controller
   end
+
+  test 'should trigger notification when unverified user creates collection' do
+    sign_in users(:unverified_user)
+
+    assert_enqueued_jobs 1 do
+      assert_difference('Collection.count') do
+        post :create, params: { collection: { title: 'Second collection' } }
+      end
+    end
+
+    assert_redirected_to collection_path(assigns(:collection))
+    @collection.reload
+  end
+
+  test 'should not trigger notification if unverified user already created content' do
+    sign_in users(:unverified_user)
+    users(:unverified_user).collections.create!(title: 'First collection')
+
+    assert_enqueued_jobs 0 do
+      assert_difference('Collection.count') do
+        post :create, params: { collection: { title: 'Second collection' } }
+      end
+    end
+
+    assert_redirected_to collection_path(assigns(:collection))
+    @collection.reload
+  end
+
 end
