@@ -48,13 +48,6 @@ en:
       To facilitate this journey, learning paths aim to structure, within simple visual workflows, the set of
       relevant training resources that trainees need to study in order to accomplish their learning objectives.
       Learning paths are being developed by ELIXIR TeSS, ELIXIR-NL and ELIXIR UK.
-    concept_maps: >
-      ELIXIR has developed several registries that contain and promote a variety of resources that users can
-      exploit: training resources in TeSS; software tools in
-      <a href="https://bio.tools" target="_blank">bio.tools</a>; databases, standards and policies in
-      <a href="https://fairsharing.org" target="_blank">FAIRsharing</a>. Concept maps provide visual overviews
-      of typical data-analysis pipelines, surfacing the relevant tools and databases from these registries,
-      and showing how they fit together. Concept maps are being developed by ELIXIR TeSS, ELIXIR-EE and ELIXIR-BE.
     resources: >
       In this type of workflow, trainees are introduced to various practical tasks, linked to associated
       online tools and/or databases, within self-contained modules. Each module includes
