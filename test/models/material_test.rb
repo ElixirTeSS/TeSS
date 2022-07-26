@@ -431,4 +431,36 @@ class MaterialTest < ActiveSupport::TestCase
                                 status: 'archived')
     refute_match(/\A\d+\Z/, material.friendly_id)
   end
+
+
+  test 'validates URL format' do
+    material = Material.new(title: 'Test', description: 'desc', user: users(:regular_user))
+
+    refute material.valid?
+    assert material.errors.added?(:url, :blank)
+
+    material.url = '123'
+    refute material.valid?
+    assert material.errors.added?(:url, :url, value: '123')
+
+    material.url = '/relative'
+    refute material.valid?
+    assert material.errors.added?(:url, :url, value: '/relative')
+
+    material.url = 'git://something.git'
+    refute material.valid?
+    assert material.errors.added?(:url, :url, value: 'git://something.git')
+
+    material.url = 'http://http-website.com/mat'
+    assert material.valid?
+    refute material.errors.added?(:url, :url, value: 'http://http-website.com/mat')
+
+    material.url = 'https://https-website.com/mat'
+    assert material.valid?
+    refute material.errors.added?(:url, :url, value: 'https://https-website.com/mat')
+
+    material.url = 'ftp://something/something'
+    refute material.valid?
+    assert material.errors.added?(:url, :url, value: 'ftp://something/something')
+  end
 end

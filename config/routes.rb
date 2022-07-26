@@ -85,7 +85,7 @@ Rails.application.routes.draw do
   end
 
   if TeSS::Config.feature['collections'] == true
-    resources :collections, concerns: :activities
+    resources :collections, concerns: [:collaboratable, :activities]
   end
 
   if TeSS::Config.feature['workflows'] == true

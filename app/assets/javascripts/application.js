@@ -29,10 +29,7 @@
 //= require eonasdan-bootstrap-datetimepicker
 //= require devbridge-autocomplete
 //= require clipboard
-//= require url_checker
 //= require ardc_vocab_widget_v2
-//= require autocompleters
-//= require map_search
 //= require_tree ./templates
 //= require_tree .
 //= require_self
@@ -81,23 +78,6 @@ function reposition_tiles(container, tileClass){
 }
 
 document.addEventListener("turbolinks:load", function() {
-    // Show the tab associated with the window location hash (e.g. "#packages")
-    if (window.location.hash) {
-        var tab = $('ul.nav a[href="' + window.location.hash + '"]');
-        if (tab.length) {
-            // This terrible hack gets around the fact that event handlers in view templates get bound after the
-            // `tab.tab('show')` executes, so nothing happens.
-            setTimeout(function () { tab.tab("show"); }, 50);
-        }
-    }
-
-    // Store the open tab in the window location hash
-    $(".nav-tabs a").on("shown.bs.tab", function(e) {
-        var scrollPos = $("html").scrollTop() || $("body").scrollTop();
-        window.location.hash = this.hash;
-        $("html,body").scrollTop(scrollPos);
-    });
-
     // Disabled tabs
     $(".nav-tabs li a[data-toggle='tooltip']").tooltip();
     $(".nav-tabs li.disabled a").click(function (e) { e.preventDefault(); return false });

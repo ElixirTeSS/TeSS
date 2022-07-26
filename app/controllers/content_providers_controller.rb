@@ -28,7 +28,6 @@ class ContentProvidersController < ApplicationController
 
   def edit
     authorize @content_provider
-    @editor_usernames
   end
 
   # POST /events/check_exists

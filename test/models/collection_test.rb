@@ -14,4 +14,34 @@ class CollectionTest < ActiveSupport::TestCase
     assert_includes Collection.visible_by(users(:admin)), collections(:one)
   end
 
+  test 'user_requires_approval?' do
+    user = users(:unverified_user)
+
+    first_collection = user.collections.build(title: 'bla')
+    assert first_collection.user_requires_approval?
+    assert first_collection.from_unverified_or_rejected?
+    first_collection.save!
+
+    second_collection = user.collections.build(title: 'bla')
+    refute second_collection.user_requires_approval?
+  end
+
+  test 'from_unverified_or_rejected?' do
+    user = users(:unverified_user)
+
+    first_collection = user.collections.create!(title: 'bla')
+    assert first_collection.from_unverified_or_rejected?
+
+    user.role = Role.rejected
+    user.save!
+
+    second_collection = user.collections.create(title: 'bla')
+    assert second_collection.from_unverified_or_rejected?
+
+    user.role = Role.approved
+    user.save!
+
+    third_collection = user.collections.create(title: 'bla')
+    refute third_collection.from_unverified_or_rejected?
+  end
 end

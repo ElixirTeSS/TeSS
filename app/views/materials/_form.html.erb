@@ -33,10 +33,6 @@
   <!-- Field: Contact -->
   <%= f.input :contact, input_html: { rows: '5', title: t('materials.hints.contact') }, field_lock: true %>
 
-
-  <hr/>
-  <h4>Recommended</h4>
-
   <!-- Field: DOI -->
   <%= f.input :doi, field_lock: true, input_html: { title: t('materials.hints.doi') } %>
 
@@ -75,9 +71,6 @@
 
   <!-- Field: Date Created -->
   <%= f.input :date_created, as: :date_picker, field_lock: true, input_html: { title: t('materials.hints.date_created') } %>
-
-  <hr/>
-  <h4>Optional</h4>
 
   <!-- Field: Fields -->
   <% if !TeSS::Config.feature['disabled'].include? 'ardc_fields_of_research' %>

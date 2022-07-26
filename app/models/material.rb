@@ -90,11 +90,8 @@ class Material < ApplicationRecord
   auto_strip_attributes :title, :description, :url, :squish => false
 
   validates :title, :description, :url, presence: true
-
   validates :url, url: true
-
   validates :other_types, presence: true, if: Proc.new { |m| m.resource_type.include?('other') }
-
   validates :difficulty_level, controlled_vocabulary: { dictionary: DifficultyDictionary.instance }
 
   clean_array_fields(:keywords, :fields, :contributors, :authors,
