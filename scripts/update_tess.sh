@@ -1,12 +1,12 @@
 #!/bin/sh
 
-#    echo "Usage: update.sh <development | production>"
+#    echo "Usage: update_tess.sh <development | production>"
 #    exit 0
 if [ -z $1 ]
 then
   ENV=$1
 else
-  ENV="development"
+  ENV="production"
 fi
 
 export RAILS_ENV=$ENV
