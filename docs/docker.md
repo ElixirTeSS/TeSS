@@ -1,6 +1,6 @@
 # Docker
 
-TeSS can be run using Docker for development and in production.
+TeSS can be run using Docker for [development](#development) and in [production](#production).
 
 ## Prerequisites
 
