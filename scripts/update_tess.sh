@@ -4,9 +4,9 @@
 #    exit 0
 if [ -z $1 ]
 then
-  ENV=$1
-else
   ENV="production"
+else
+  ENV=$1
 fi
 
 export RAILS_ENV=$ENV
