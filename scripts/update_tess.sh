@@ -15,7 +15,6 @@ export RAILS_ENV=$ENV
 git pull
 bundle install --deployment
 bundle exec rake db:migrate
-bundle exec rake sunspot:solr:reindex
 bundle exec rake assets:clean
 bundle exec rake assets:precompile
 bundle exec rake tmp:clear
