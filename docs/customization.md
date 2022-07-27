@@ -46,4 +46,6 @@ In that file, you add any strings you want to override, for example:
       welcome: Welcome to my new training portal!
 ```
 
+Files in the `overrides` directory will be automatically loaded, except when in the Rails `test` environment. 
+
 Read more about Rails' internationalization here: https://guides.rubyonrails.org/i18n.html

@@ -154,6 +154,9 @@ you can do so by running (as the `tess` user)
 
 We would strongly recommend using [Lets Encrypt](https://letsencrypt.org/) for free SSL certificates.
 
+Certbot is a commandline tool can be used to request an SSL certificate and automatically configure Apache.
+[See this guide for more information](https://certbot.eff.org/instructions?ws=apache&os=ubuntufocal).
+
 ## Install Solr
 
 TeSS uses Apache Solr to power its search and filtering system.
@@ -166,7 +169,7 @@ If not, you can switch using the following command:
 
     sudo update-alternatives --config java
 
-Run the following commands to download and install solr into /opt/, and have it run as a "service" that will start on boot.
+Run the following commands to download and install solr into /opt/, and have it run as a service that will start on boot.
 
     cd /opt
     sudo wget https://downloads.apache.org/lucene/solr/8.11.2/solr-8.11.2.tgz
@@ -193,3 +196,36 @@ Next, create a collection for TeSS to use (assuming TeSS is checked out at `/hom
 
 `tess_production` here is the collection name, which should match what is configured in your `config/sunspot.yml` 
 under the `path` parameter, following `/solr/`.
+
+## Configure Sidekiq
+
+Sidekiq, which runs asynchronous tasks in TeSS, needs to be configured to run as a service. An example systemd 
+service configuration is provided at `config/sidekiq.service.example`.
+
+Run the following commands as your TeSS application user (e.g. `tess`).
+
+Copy the example config file to the user's systemd directory: 
+
+    mkdir -p ~/.config/systemd/user
+    cp config/sidekiq.service.example ~/.config/systemd/user/sidekiq.service
+
+Then open it in your editor and change the `WorkingDirectory` field to your TeSS install directory, and the `ExecStart`
+field if you are using a different RVM alias than what is suggested in this guide.
+
+In order to run systemctl via `su`, you may need to add the following env vars. To add them to your `.bash_profile` so 
+they are set on login, use the following commands:
+
+    touch .bash_profile
+    echo 'export XDG_RUNTIME_DIR="/run/user/$UID"' >> .bash_profile
+    echo 'export DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus"' >> .bash_profile
+
+and then restart your SSH/su session.
+
+You should then be able to enable the Sidekiq service:
+
+    systemctl --user daemon-reload
+    systemctl --user enable sidekiq.service
+
+You can then start/stop/restart Sidekiq using the following:
+
+    systemctl --user {start,stop,restart} sidekiq
