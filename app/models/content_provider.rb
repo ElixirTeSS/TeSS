@@ -87,7 +87,7 @@ class ContentProvider < ApplicationRecord
   end
 
   def precedence
-    PROVIDER_TYPE.index(content_provider_type)
+    PROVIDER_TYPE.index(content_provider_type) || 0
   end
 
   def self.check_exists(content_provider_params)
