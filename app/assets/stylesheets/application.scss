@@ -405,18 +405,21 @@ ul.unstyled {
 
 .tiny-content-provider-logo {
   max-width: 32px;
+  min-width: 16px;
   border-radius: 2px;
   padding-left: 5px;
 }
 
 .small-content-provider-logo {
   max-width: 64px;
+  min-width: 32px;
   border-radius: 4px;
   padding-left: 10px;
 }
 
 .medium-content-provider-logo {
   max-width: 98%;
+  min-width: 120px;
   //border-radius: 5px;
   margin: 0 10px 0 0;
 }
@@ -753,6 +756,10 @@ sup {
   margin-bottom: 20px;
   border: 1px solid #e3e3e3;
   border-radius: 4px;
+}
+
+.resource-type-icon {
+  text-align: center;
 }
 
 .info-icon {
