@@ -10,7 +10,7 @@
 <% end %>
 
 <div class="search-results-count">
-  <%= pluralize(User.visible.count, 'total users') %>
+  <%= pluralize(@users.count, 'user') %>
 </div>
 
 <%= render partial: "search/common/pagination_bar", locals: { resources: @users } %>
