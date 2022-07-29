@@ -19,25 +19,25 @@ en:
       face-to-face training opportunities and to disparate training materials and resources, currently dispersed
       across Europe.
       </p><p>
-      TeSS is ELIXIR's training platform, providing a one-stop shop for trainers and trainees to discover
+      %{site} is ELIXIR's training platform, providing a one-stop shop for trainers and trainees to discover
       online information and content, including training materials, events and interactive tutorials.
-      For ELIXIR Nodes, TeSS provides opportunities to promote training events and news, and to contribute
+      For ELIXIR Nodes, %{site} provides opportunities to promote training events and news, and to contribute
       to a growing catalogue of materials; for trainers, the portal offers an environment for sharing materials
       and event information; for trainees, it offers a convenient gateway via which to identify relevant training
       events and resources, and to perform specific, guided analysis tasks via customised training workflows
     events: >
-      Events in TeSS are defined as face-to-face or online training opportunities that have set start and end times.
-      These primarily take the form of workshops, courses, webinars, etc.; but TeSS also collects information about
+      Events in %{site} are defined as face-to-face or online training opportunities that have set start and end times.
+      These primarily take the form of workshops, courses, webinars, etc.; but %{site} also collects information about
       conferences, meetings and hackathons, as these may also provide opportunities for learning.
       </p><p>
-      A significant portion of TeSS' initial content was contributed by the progenitor event-announcement platform,
+      A significant portion of %{site}' initial content was contributed by the progenitor event-announcement platform,
       <a href="https://www.ncbi.nlm.nih.gov/pubmed/23742982" target="_blank">iAnn.pro</a>.
     nominatim: "<a href='https://wiki.openstreetmap.org/wiki/Nominatim', target='_blank'>Nominatim</a>"
     materials: >
-      Materials in TeSS are defined as training resources that can be accessed at any time. These may be in
+      Materials in %{site} are defined as training resources that can be accessed at any time. These may be in
       a variety of different formats, including online tutorials, videos, PowerPoint presentations, and so on.
     workflows: >
-      New to TeSS are graphical training tools termed 'Training Workflows'.
+      New to %{site} are graphical training tools termed 'Training Workflows'.
       Three main types of workflow are in development: Educational Resources, Learning Pathways and Concept Maps.
       These encapsulate different types of, and/or approaches to, training, at different levels of granularity,
       within easy-to-use visual displays.
@@ -45,14 +45,14 @@ en:
       In order to advance their skills, trainees need to embark on a path, or developmental trajectory.
       To facilitate this journey, learning paths aim to structure, within simple visual workflows, the set of
       relevant training resources that trainees need to study in order to accomplish their learning objectives.
-      Learning paths are being developed by ELIXIR TeSS, ELIXIR-NL and ELIXIR UK.
+      Learning paths are being developed by ELIXIR %{site}, ELIXIR-NL and ELIXIR UK.
     concept_maps: >
       ELIXIR has developed several registries that contain and promote a variety of resources that users can
-      exploit: training resources in TeSS; software tools in
+      exploit: training resources in %{site}; software tools in
       <a href="https://bio.tools" target="_blank">bio.tools</a>; databases, standards and policies in
       <a href="https://fairsharing.org" target="_blank">FAIRsharing</a>. Concept maps provide visual overviews
       of typical data-analysis pipelines, surfacing the relevant tools and databases from these registries,
-      and showing how they fit together. Concept maps are being developed by ELIXIR TeSS, ELIXIR-EE and ELIXIR-BE.
+      and showing how they fit together. Concept maps are being developed by ELIXIR %{site}, ELIXIR-EE and ELIXIR-BE.
     resources: >
       In this type of workflow, trainees are introduced to various practical tasks, linked to associated
       online tools and/or databases, within self-contained modules. Each module includes
@@ -62,9 +62,9 @@ en:
       iii) additional background information and further reading to help support learning and enquiry; and
       iv) multiple choice quiz questions to evaluate understanding at the end.
       Educational Resources for introductory sequence and structural bioinformatics are currently being developed by
-      ELIXIR TeSS, ELIXIR-UK and the UK Structural Bioinformatics group (via the FunPDBe project).
+      ELIXIR %{site}, ELIXIR-UK and the UK Structural Bioinformatics group (via the FunPDBe project).
     subscribe: >
-      TeSS also provides a subscription feature to help users to stay informed about courses, workshops and
+      %{site} also provides a subscription feature to help users to stay informed about courses, workshops and
       conferences of interest to them. The service may be customised by selecting the relevant filters, and
       initiated via the subscribe button. Users may choose to receive email notifications about upcoming
       events, or have them automatically added to their preferred calendar application.
@@ -73,9 +73,9 @@ en:
       or may create custom feeds using our API.
   developer:
     license: >
-      TeSS is committed to the FAIR principles: making data findable, accessible, interoperable and re-usable.
-      As such, all content in TeSS is available under the CC BY 4.0 licence, and can be accessed through our API
-      and widgets. The TeSS codebase is also available to re-use under the BSD Licence, and can be found on GitHub.
+      %{site} is committed to the FAIR principles: making data findable, accessible, interoperable and re-usable.
+      As such, all content in %{site} is available under the CC BY 4.0 licence, and can be accessed through our API
+      and widgets. The %{site} codebase is also available to re-use under the BSD Licence, and can be found on GitHub.
     code_license: >
       <a href="https://github.com/nrmay/TeSS/blob/master/LICENSE", target="_blank">BSE 3-Clause</a>
     data_license: >
@@ -85,7 +85,7 @@ en:
       'Germany', 'Austria', 'Italy', 'Hungary', 'Czech Republic', 'Estonia', 'Denmark',
       'Greece', 'Luxembourg', 'The Netherlands', 'Switzerland', 'Norway', 'Sweden', 'Slovenia'
     widgets: >
-      Widgets are chunks of javascript code that can be copied into website source code to display TeSS content.
+      Widgets are chunks of javascript code that can be copied into website source code to display %{site} content.
       There are several different styles and functionalities available from our configurable widget suite.
       Widgets can be used to enhance your site and offer your community lists of relevant events or training resources.
     widgets_available: "https://elixirtess.github.io/TeSS_Widgets/"
@@ -112,11 +112,11 @@ en:
   us:
     tess_club: >
       <p>Fortnightly meetings, hackathons, shared activities, open priority setting, open contribution to unite the
-      community.</p><p>The TeSS Club runs fortnightly at 9:00 GMT / 10:00 CET Friday.</p><p>For all the details please
-      visit the <a href="https://elixirtess.github.io/about/">TeSS Club Website</a>.</p>
+      community.</p><p>The %{site} Club runs fortnightly at 9:00 GMT / 10:00 CET Friday.</p><p>For all the details please
+      visit the <a href="https://elixirtess.github.io/about/">%{site} Club Website</a>.</p>
     contact: >
-      For enquiries, information, or assistance; contact the TeSS support desk at <br>
-      <a href="mailto:taxila@surf.nl">taxila@surf.nl</a>
+      For enquiries, information, or assistance; contact the %{site} support desk at <br>
+      <a href="mailto:tess-support@googlegroups.com">tess-support@googlegroups.com</a>
     team: >
       <div class="h4">Leadership</div>
       <ul><li>Carole Goble</li><li>Hedi Peterson</li><li>Alexia Cardona</li></ul>
@@ -163,8 +163,8 @@ en:
       </a>
       </p>
     acknowledge: >
-      <p>The TeSS team would like to acknowledge the help of a number of groups and individuals, and thank them
-         for useful discussions, feedback and assistance in developing TeSS - to name but a few:</p>
+      <p>The %{site} team would like to acknowledge the help of a number of groups and individuals, and thank them
+         for useful discussions, feedback and assistance in developing %{site} - to name but a few:</p>
        <ul>
           <li>ELIXIR technical staff and coordinators from the Hub,
             in particular Rafael Jimenez, Martin Cook and Premysl Velek</li>
@@ -180,26 +180,26 @@ en:
 
   register:
     resources: >
-      <p>Training resources (events and materials) may be added to TeSS to reach bigger audiences, increase impact and
+      <p>Training resources (events and materials) may be added to %{site} to reach bigger audiences, increase impact and
       bolster event attendance. Registering events and training materials makes them more findable in a variety ways
       to various user bases.</p>
     methods: >
-      <p>There are two ways to register training materials or events for display in TeSS:
+      <p>There are two ways to register training materials or events for display in %{site}:
       <ol><li>Arrange for an <a href="#automatic">automatic registration</a> solution;</li>
       <li>Use our form to register them <a href="#manual">manually</a>.</li></ol></p>
     automatic: >
-      The TeSS team can write scripts ('scrapers') to automatically register resources from target websites.
-      The scrapers run each night, adding any new resources to TeSS or updating any that have changed.
-      We can write a scraper to include your resources in TeSS, if your site:
+      The %{site} team can write scripts ('scrapers') to automatically register resources from target websites.
+      The scrapers run each night, adding any new resources to %{site} or updating any that have changed.
+      We can write a scraper to include your resources in %{site}, if your site:
     auto_condition_1: "Contains more than 3 resources"
     auto_condition_2: "Has some structured data"
     auto_condition_3: "Is relevant to life scientists"
     structured: >
-      <p>To register resources in TeSS automatically, our scrapers need to be able to extract data from target
+      <p>To register resources in %{site} automatically, our scrapers need to be able to extract data from target
       websites reliably. To this end, it is helpful if these websites include some structured data.</p>
       <p>The following are examples of the kinds of structured data that we can work with. If your website contains one or
       more of these, and satisfies the criteria above, contact us and we will create a scraper.</p>
-      <p>If your website includes no structured data, and you’d like your resources added to TeSS, werecommend using
+      <p>If your website includes no structured data, and you’d like your resources added to %{site}, werecommend using
       <a href="http://bioschemas.org" target="_blank">Bioschemas</a> to structure your site.</p>
     schema: >
       <p><a href='http://schema.org', target='_blank'>Schema.org</a> is a project run by a consortiumof search engines.
@@ -232,7 +232,7 @@ en:
     api: >
       <p>Application Programming Interfaces, or APIs, typically have endpoint URLs that, when accessed, return raw,
       unstyled data in a common exchange format, such as XML or JSON.</p>
-      <p>If your website has an API that programmatically displays data for your training or event content, the TeSS
+      <p>If your website has an API that programmatically displays data for your training or event content, the %{site}
       team can write an API client to interface with it.</p>
     api_example_1: >
       <a target='_blank', class='btn btn-success',
@@ -246,8 +246,8 @@ en:
       <p>Many organisations use calendar applications to organise and display their events.
       These may be custom-made or, more likely, utilise applications like Google Calendar. Calendar applications
       maintain an underlying file for event storage and retrieval, typically in the .ics format.</p>
-      <p>If your website has a calendar application, the TeSS team can write a scraper to extract from it the date,
-      location and event descriptions, and upload the data to TeSS.</p>
+      <p>If your website has a calendar application, the %{site} team can write a scraper to extract from it the date,
+      location and event descriptions, and upload the data to %{site}.</p>
     calendar_example_1: >
       <a target='_blank', class='btn btn-success', href='https://nbis.se/training/events.html'>NBIS</a>
     calendar_example_2: >
@@ -270,12 +270,12 @@ en:
       If your website contains any of the above, or you'd like advice about annotating with Bioschemas, you can contact
       us via e-mail at <a href="mailto:support@tess.elixir-europe.org">support@tess.elixir-europe.org</a>
     manual: >
-      <p>Resources may be added manually to TeSS.</p>
+      <p>Resources may be added manually to %{site}.</p>
       <p>To do so, first register for a free account. Members of ELIXIR can use ELIXIR AAI to register and login.</p>
       <p>Once registered and logged in, the 'register event' and 'register material' buttons will become visible on the
       events and materials tabs. Alternatively click here:</p>
   home:
-    welcome: "Welcome to TeSS: Elixir's Training Portal"
+    welcome: "Welcome to %{site}: Elixir's Training Portal"
     subtitle: "Browsing, discovering and organising life sciences training resources, aggregated from ELIXIR nodes and 3<sup>rd</sup>-party providers."
     events_message: "Discover the latest training events and news from ELIXIR nodes and 3<sup>rd</sup>-party providers."
     materials_message: "Browse the catalogue of training materials offered by ELIXIR nodes and 3<sup>rd</sup>-party providers."
@@ -284,20 +284,20 @@ en:
     trainers_message: "Browse a directory of trainers based on their skills and expertise."
   privacy:
     registration: |
-      <p>When you register with TeSS we ask for a username, password and email address.</p>
+      <p>When you register with %{site} we ask for a username, password and email address.</p>
       <ul>
       <li>Your username is used for authentication and attribution. This information is publicly visible, e.g. when a user views a resource you have created.</li>
       <li>Your password is stored as a cryptographically-secure hash and is not publicly visible.</li>
       <li>Your email address is used to confirm your identity and for use when requesting your password to be reset. This email address is not publicly visible, but you may specify an additional public email address (see below).</li>
       </ul>
     personal: "You may additionally provide a profile, containing your name, a public email address, website link and avatar. This information is publicly available to all users."
-    resources: "The details of any training materials and events that you register will be publicly visible and searchable. Any workflows and packages created can be opted to be made private, in which case only you, any collaborators you specify, and the TeSS administrators will be able to view and search for them."
-    server: "When you browse TeSS, the server automatically records logs of which pages you access, when you accessed them, and your IP address. These logs are used to fix errors and are not shared with any third parties. Sensitive information (such as passwords) is automatically stripped out."
-    analytics: "TeSS uses Google Analytics to track how users are discovering TeSS and interacting with the service. The information gathered includes which pages you visited, which search terms lead you to TeSS and information about your web browser. No personally identifiable information is sent to Google."
-    retention: " Your information will be retained by TeSS until you choose to remove it, you delete your account, or the TeSS service ceases to exist."
-    code: "TeSS adheres to the <a href='https://wiki.refeds.org/display/CODE/Code+of+Conduct+for+Service+Providers'> GÉANT Data Protection Code of Conduct for Service Providers in EU/EEA </a>"
-    controller: "The data controller for TeSS is The University of Manchester."
-    post: "<strong>The TeSS Team</strong><br/>Room 1.17 c/o School of Computer Science,<br/>Kilburn Building,<br/>Oxford Road,<br/>Manchester,<br/>M13 9PL"
+    resources: "The details of any training materials and events that you register will be publicly visible and searchable. Any workflows and packages created can be opted to be made private, in which case only you, any collaborators you specify, and the %{site} administrators will be able to view and search for them."
+    server: "When you browse %{site}, the server automatically records logs of which pages you access, when you accessed them, and your IP address. These logs are used to fix errors and are not shared with any third parties. Sensitive information (such as passwords) is automatically stripped out."
+    analytics: "%{site} uses Google Analytics to track how users are discovering %{site} and interacting with the service. The information gathered includes which pages you visited, which search terms lead you to %{site} and information about your web browser. No personally identifiable information is sent to Google."
+    retention: " Your information will be retained by %{site} until you choose to remove it, you delete your account, or the %{site} service ceases to exist."
+    code: "%{site} adheres to the <a href='https://wiki.refeds.org/display/CODE/Code+of+Conduct+for+Service+Providers'> GÉANT Data Protection Code of Conduct for Service Providers in EU/EEA </a>"
+    controller: "The data controller for %{site} is The University of Manchester."
+    post: "<strong>The %{site} Team</strong><br/>Room 1.17 c/o School of Computer Science,<br/>Kilburn Building,<br/>Oxford Road,<br/>Manchester,<br/>M13 9PL"
   providers:
     info: >
       Content providers are entities (such as academic institutions, non-profit organisations, portals etc.) that

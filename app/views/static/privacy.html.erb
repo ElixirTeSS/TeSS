@@ -4,35 +4,35 @@
   <h3>Information Submitted</h3>
 
   <h4>Registration</h4>
-  <%== raw t 'privacy.registration' %>
+  <%== I18n.t('privacy.registration', site: TeSS::Config.site['title_short']) %>
 
   <h4>Additional Personal Information</h4>
   <p><%== raw t 'privacy.personal' %></p>
 
   <h4>Creation of <%= TeSS::Config.site['title_short'] %> Resources</h4>
-  <p><%== raw t 'privacy.resources' %></p>
+  <p><%== I18n.t('privacy.resources', site: TeSS::Config.site['title_short']) %></p>
 
   <h3>Information Automatically Collected</h3>
 
   <h4>Server Logs</h4>
-  <p><%== raw t 'privacy.server' %></p>
+  <p><%== I18n.t('privacy.server', site: TeSS::Config.site['title_short']) %></p>
 
   <h4>Analytics</h4>
-  <p><%== raw t 'privacy.analytics' %></p>
+  <p><%== I18n.t('privacy.analytics', site: TeSS::Config.site['title_short']) %></p>
 
   <h3>Information Retention</h3>
-  <p><%== raw t 'privacy.retention' %></p>
+  <p><%== I18n.t('privacy.retention', site: TeSS::Config.site['title_short']) %></p>
 
   <h3>Code of Conduct</h3>
-  <p><%== raw t 'privacy.code' %></p>
+  <p><%== I18n.t('privacy.code', site: TeSS::Config.site['title_short']) %></p>
 
   <h3>Data Controller</h3>
-  <p><%== raw t 'privacy.controller' %></p>
+  <p><%== I18n.t('privacy.controller', site: TeSS::Config.site['title_short']) %></p>
   <em>For any enquiries or requests, please contact:</em><br/>
   <strong>Email:</strong> <%= mail_to(TeSS::Config.contact_email, TeSS::Config.contact_email) -%><br/>
   <% if !t('privacy.post').blank? %>
     <strong>Post:</strong>
 
-    <address><%== raw t 'privacy.post' %></address>
+    <address><%== I18n.t('privacy.post', site: TeSS::Config.site['title_short']) %></address>
   <% end %>
 </div>

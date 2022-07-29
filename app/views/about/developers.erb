@@ -13,7 +13,7 @@
         <div class="odd-about-block">
           <div id='code_and_data' class="h3">For Developers</div>
 
-          <%== raw t 'developer.license' %>
+          <%== I18n.t('developer.license', site: TeSS::Config.site['title_short']) %>
 
           <div class="row">
             <div class="col-lg-5 5 open-access-box">
@@ -64,7 +64,7 @@
       <div class="row">
         <div class="even-about-block">
           <div class="h3" id="widgets">Widgets</div>
-          <p><%== raw t 'developer.widgets' %></p>
+          <p><%== I18n.t('developer.widgets', site: TeSS::Config.site['title_short']) %></p>
           <p><%= link_to t('developer.widgets_available'), class: 'btn btn-primary', target: '_blank' do %>
               View Our Available Widgets
             <% end %></p>
