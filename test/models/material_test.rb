@@ -221,7 +221,7 @@ class MaterialTest < ActiveSupport::TestCase
     assert_includes m.node_names, nodes(:westeros).name
   end
 
-  test 'can set licence either using key or URL' do
+  test 'can set licence either using key, URL or SPDX URL' do
     m = materials(:good_material)
 
     m.licence = 'CC-BY-4.0'
@@ -231,6 +231,14 @@ class MaterialTest < ActiveSupport::TestCase
     m.licence = 'https://creativecommons.org/licenses/by-sa/4.0/'
     assert m.valid?
     assert_equal 'CC-BY-SA-4.0', m.licence
+
+    m.licence = 'https://spdx.org/licenses/BSD-4-Clause-Shortened.html'
+    assert m.valid?
+    assert_equal 'BSD-4-Clause-Shortened', m.licence
+
+    m.licence = 'https://spdx.org/licenses/MIT.json'
+    assert m.valid?
+    assert_equal 'MIT', m.licence
 
     m.licence = 'https://not.a.real.licence.golf'
     refute m.valid?
