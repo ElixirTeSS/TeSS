@@ -77,9 +77,9 @@ module Searchable
         paginate page: page, per_page: per_page unless page.nil?
 
         Facets.special.each do |facet_title|
-          if Facets.applicable?(facet_title, name)
+          if Facets.applicable?(facet_title, self)
             facet_value = Facets.process(facet_title, selected_facets[facet_title])
-            Facets.send(facet_title.to_sym, self, facet_value)
+            Facets.send(facet_title.to_sym, self, facet_value, user)
           end
         end
 
@@ -95,18 +95,6 @@ module Searchable
 
         facet_fields.each do |ff|
           facet ff, exclude: active_facets[ff]
-        end
-
-        if method_defined?(:user_requires_approval?)
-          # Hide shadowbanned users' events, except from other shadowbanned users and administrators
-          unless user && (user.shadowbanned? || user.is_admin?)
-            without(:shadowbanned, true)
-          end
-
-          # Hide unverified/rejected users' things, except from curators and admins
-          unless user && (user.is_curator? || user.is_admin?)
-            without(:unverified, true)
-          end
         end
 
         # Hide records the urls of which are failing

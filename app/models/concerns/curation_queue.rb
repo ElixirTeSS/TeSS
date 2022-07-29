@@ -30,7 +30,7 @@ module CurationQueue
   end
 
   def from_unverified_or_rejected?
-    user.has_role?(Role.rejected.name) || user.has_role?(Role.unverified.name)
+    user.unverified_or_rejected?
   end
 
   def from_shadowbanned?
