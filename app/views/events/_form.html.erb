@@ -25,6 +25,26 @@
 
   <%= render partial: 'common/error_summary', locals: { resource: @event } %>
 
+  <%# Necessary to allow removal of all field locks %>
+  <%= hidden_field_tag 'event[locked_fields][]', '' %>
+
+  <!-- Field: Title -->
+  <%= f.input :title, as: :string, field_lock: true, input_html: { title: t('events.hints.title') } %>
+
+  <!-- Field: Description -->
+  <%= f.input :description, as: :markdown_area, input_html: { rows: '5', title: t('events.hints.description') },
+              field_lock: true %>
+
+  <!-- Field: URL -->
+  <%= render partial: 'common/url_checker',
+             locals: { f: f, url: events_check_exists_path, title: t('events.hints.url') } %>
+
+  <!-- Field: Start -->
+  <%= f.input :start, as: :datetime_picker, field_lock: true, input_html: { title: t('events.hints.start') } %>
+
+  <!-- Field: End -->
+  <%= f.input :end, as: :datetime_picker, field_lock: true, input_html: { title: t('events.hints.end') } %>
+
   <!-- Field: Online? -->
   <div class="form-group">
     <%= label_tag('type') %> <br/>
@@ -40,144 +60,127 @@
     </div>
   </div>
 
-  <%# Necessary to allow removal of all field locks %>
-  <%= hidden_field_tag 'event[locked_fields][]', '' %>
-
-  <!-- Field: Title -->
-  <%= f.input :title, as: :string, field_lock: true, input_html: { title: t('events.hints.title') } %>
-
-  <!-- Field: Sub-title -->
-  <%= f.input :subtitle, field_lock: true, input_html: { title: t('events.hints.subtitle') } %>
-
-  <!-- Field: URL -->
-  <%= render partial: 'common/url_checker',
-             locals: { f: f, url: events_check_exists_path, title: t('events.hints.url') } %>
-
-  <!-- Field: Description -->
-  <%= f.input :description, as: :markdown_area, input_html: { rows: '5', title: t('events.hints.description') },
-              field_lock: true %>
-
-  <!-- Field: Start -->
-  <%= f.input :start, as: :datetime_picker, field_lock: true, input_html: { title: t('events.hints.start') } %>
-
-  <!-- Field: End -->
-  <%= f.input :end, as: :datetime_picker, field_lock: true, input_html: { title: t('events.hints.end') } %>
-
-  <!-- Field: Duration -->
-  <%= f.input :duration, as: :string, input_html: { title: t('events.hints.duration') } %>
-
-  <!-- Field: Prerequisites -->
-  <%= f.input :prerequisites, as: :markdown_area, input_html: { rows: '3', title: t('events.hints.prerequisites') } %>
-
-  <!-- Field: Learning Objectives-->
-  <%= f.input :learning_objectives, as: :markdown_area, input_html: { rows: '3', title: t('events.hints.objectives') },
-              field_lock: true %>
-
   <!-- Field: Location -->
   <div class="address_content">
     <%= render partial: 'events/partials/address_finder', locals: { f: f } %>
   </div>
 
-  <!-- Field: Timezone -->
-  <%= f.input :timezone, as: :time_zone, field_lock: true, priority: priority_time_zones,
-              input_html: { title: t('events.hints.timezone') } %>
-
-  <!-- Field: Eligibility -->
-  <%= f.dropdown :eligibility,
-                 options: EligibilityDictionary.instance.options_for_select,
-                 label: 'Eligibility',
-                 errors: @event.errors[:eligibility],
-                 title: t('events.hints.eligibility') %>
-
-  <!-- Field: Organiser -->
-  <%= f.input :organizer, field_lock: true, label: 'Organiser', input_html: { title: t('events.hints.organizer') } %>
-
-  <!-- Field: Contact -->
-  <%= f.input :contact, input_html: { rows: '5', title: t('events.hints.contact') }, field_lock: true %>
-
-  <!-- Field: Host Institutions -->
-  <%= f.multi_input :host_institutions, errors: @event.errors[:host_institutions],
-                    title: t('events.hints.hosts') %>
-
   <!-- Field: Keywords -->
   <%= f.multi_input :keywords, errors: @event.errors[:keywords],
                     title: t('events.hints.keywords') %>
-
-  <!-- Field: Fields -->
-  <% if !TeSS::Config.feature['disabled'].include? 'ardc_fields_of_research' %>
-    <%= render partial: 'common/ardc_vocab_tree',
-               locals: { f: f,
-                         resource: @event,
-                         field_name: 'fields',
-                         field_label: 'Fields of Research',
-                         button_label: 'FoR Codes',
-                         title: t('events.hints.fields') } %>
-  <% end %>
-
-  <!-- Field: Target Audience -->
-  <%= f.multi_input :target_audience, errors: @event.errors[:target_audience], title: t('events.hints.targets') %>
-
-  <!-- Field: Topics -->
-  <% if !TeSS::Config.feature['disabled'].include? 'topics' %>
-    <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term', label: 'Topics',
-                        id_field: :uri, label_field: :preferred_label, input_html: { title: t('events.hints.topics') } %>
-  <% end %>
-
-  <!-- Operations: check disabled -->
-  <% if !TeSS::Config.feature['disabled'].include? 'operations' %>
-    <%= f.autocompleter :operations, url: edam_operations_path, template: 'autocompleter/term',
-                        id_field: :uri, label_field: :preferred_label %>
-  <% end %>
-
-  <!-- Field: Capacity -->
-  <%= f.input :capacity, as: :integer, field_lock: true,
-              input_html: { title: t('events.hints.capacity'), min: '0' } %>
-
-  <!-- Field: Event Type -->
-  <%= f.dropdown :event_types, options: EventTypeDictionary.instance.options_for_select, label: 'Event type',
-                 errors: @event.errors[:event_types], title: t('events.hints.event_type') %>
-
-  <!-- Field: Technology Requirements -->
-  <%= f.input :tech_requirements, as: :markdown_area, input_html: { rows: '3', title: t('events.hints.requirements') } %>
-
-  <!-- Field: Credit or Recognition -->
-  <%= f.input :recognition, as: :string, field_lock: true, label: 'Credit or Recognition of Attendance',
-              input_html: { title: t('events.hints.recognition') } %>
-
-  <!-- Field: External Resources -->
-  <%= render partial: 'events/partials/external_resources', locals: { f: f } %>
-
-  <!-- Field: Costs -->
-  <div class="form-group">
-    <%= f.input :cost_basis, collection: CostBasisDictionary.instance.options_for_select,
-                prompt: 'Select a cost basis...', input_html: { title: t('events.hints.cost_basis') } %>
-    <%= f.input :cost_currency, collection: currency_collection, value_method: :second,
-                prompt: 'Select the currency...', input_html: { title: t('events.hints.cost_currency') } %>
-    <%= f.input :cost_value, as: :decimal, label: 'Cost', input_html: { title: t('events.hints.cost_value'), min: '0' } %>
-  </div>
 
   <!-- Field: Content Provider -->
   <%= f.input :content_provider_id, label: 'Content provider (where the event metadata is obtained from)',
               collection: current_user.get_editable_providers, label_method: :title, value_method: :id, include_blank: true,
               field_lock: true %>
 
-  <!-- Field: Materials -->
-  <%= f.internal_resource :materials %>
-  <div class="row">
-    <%= render partial: 'common/materials_suggestions', locals: { title_element: 'event_title' } %>
-  </div>
+  <%= collapsible_panel('Extra Settings', 'extra_settings') do %>
 
-  <!-- Fields: that need to be check for enabled/disabled -->
+    <!-- Field: Sub-title -->
+    <%= f.input :subtitle, field_lock: true, input_html: { title: t('events.hints.subtitle') } %>
 
-  <!-- Nodes: check feature enabled -->
-  <% if TeSS::Config.feature['nodes'] %>
-    <%= f.dropdown :node_ids, options: format_for_dropdown(Node.order(:name).all), label: 'Nodes',
-                   errors: @event.errors[:node_ids] %>
-  <% end %>
+    <!-- Field: Organiser -->
+    <%= f.input :organizer, field_lock: true, label: 'Organiser', input_html: { title: t('events.hints.organizer') } %>
 
-  <!-- Sponsors: check disabled -->
-  <% if !TeSS::Config.feature['disabled'].include? 'sponsors' %>
-    <%= f.multi_input :sponsors, errors: @event.errors[:sponsors] %>
+    <!-- Nodes: check feature enabled -->
+    <% if TeSS::Config.feature['nodes'] %>
+      <%= f.dropdown :node_ids, options: format_for_dropdown(Node.order(:name).all), label: 'Nodes',
+                    errors: @event.errors[:node_ids] %>
+    <% end %>
+
+    <!-- Field: Event Type -->
+    <%= f.dropdown :event_types, options: EventTypeDictionary.instance.options_for_select, label: 'Event type',
+                  errors: @event.errors[:event_types], title: t('events.hints.event_type') %>
+
+    <!-- Field: Topics -->
+    <% if !TeSS::Config.feature['disabled'].include? 'topics' %>
+      <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term', label: 'Topics',
+                          id_field: :uri, label_field: :preferred_label, input_html: { title: t('events.hints.topics') } %>
+    <% end %>
+
+    <!-- Operations: check disabled -->
+    <% if !TeSS::Config.feature['disabled'].include? 'operations' %>
+      <%= f.autocompleter :operations, url: edam_operations_path, template: 'autocompleter/term',
+                          id_field: :uri, label_field: :preferred_label %>
+    <% end %>
+
+    <!-- Field: Target Audience -->
+    <%= f.multi_input :target_audience, errors: @event.errors[:target_audience], title: t('events.hints.targets') %>
+
+    <!-- Field: Host Institutions -->
+    <%= f.multi_input :host_institutions, errors: @event.errors[:host_institutions],
+                      title: t('events.hints.hosts') %>
+
+    <!-- Sponsors: check disabled -->
+    <% if !TeSS::Config.feature['disabled'].include? 'sponsors' %>
+      <%= f.multi_input :sponsors, errors: @event.errors[:sponsors] %>
+
+    <!-- Field: Timezone -->
+    <%= f.input :timezone, as: :time_zone, field_lock: true, priority: priority_time_zones,
+                input_html: { title: t('events.hints.timezone') } %>
+
+    <!-- Field: Contact -->
+    <%= f.input :contact, input_html: { rows: '5', title: t('events.hints.contact') }, field_lock: true %>
+
+    <!-- Field: Capacity -->
+    <%= f.input :capacity, as: :integer, field_lock: true,
+                input_html: { title: t('events.hints.capacity'), min: '0' } %>
+
+    <!-- Field: Eligibility -->
+    <%= f.dropdown :eligibility,
+                  options: EligibilityDictionary.instance.options_for_select,
+                  label: 'Eligibility',
+                  errors: @event.errors[:eligibility],
+                  title: t('events.hints.eligibility') %>
+
+    <!-- Field: Materials -->
+    <%= f.internal_resource :materials %>
+    <div class="row">
+      <%= render partial: 'common/materials_suggestions', locals: { title_element: 'event_title' } %>
+    </div>
+
+    <!-- Field: Duration -->
+    <%= f.input :duration, as: :string, input_html: { title: t('events.hints.duration') } %>
+
+    <!-- Field: Prerequisites -->
+    <%= f.input :prerequisites, as: :markdown_area, input_html: { rows: '3', title: t('events.hints.prerequisites') } %>
+
+    <!-- Field: Learning Objectives-->
+    <%= f.input :learning_objectives, as: :markdown_area, input_html: { rows: '3', title: t('events.hints.objectives') },
+                field_lock: true %>
+
+    <!-- Field: Fields -->
+    <% if !TeSS::Config.feature['disabled'].include? 'ardc_fields_of_research' %>
+      <%= render partial: 'common/ardc_vocab_tree',
+                locals: { f: f,
+                          resource: @event,
+                          field_name: 'fields',
+                          field_label: 'Fields of Research',
+                          button_label: 'FoR Codes',
+                          title: t('events.hints.fields') } %>
+    <% end %>
+
+    <!-- Field: Technology Requirements -->
+    <%= f.input :tech_requirements, as: :markdown_area, input_html: { rows: '3', title: t('events.hints.requirements') } %>
+
+    <!-- Field: Credit or Recognition -->
+    <%= f.input :recognition, as: :string, field_lock: true, label: 'Credit or Recognition of Attendance',
+                input_html: { title: t('events.hints.recognition') } %>
+
+    <!-- Field: External Resources -->
+    <%= render partial: 'events/partials/external_resources', locals: { f: f } %>
+
+    <!-- Field: Costs -->
+    <div class="form-group">
+      <%= f.input :cost_basis, collection: CostBasisDictionary.instance.options_for_select,
+                  prompt: 'Select a cost basis...', input_html: { title: t('events.hints.cost_basis') } %>
+      <%= f.input :cost_currency, collection: currency_collection, value_method: :second,
+                  prompt: 'Select the currency...', input_html: { title: t('events.hints.cost_currency') } %>
+      <%= f.input :cost_value, as: :decimal, label: 'Cost', input_html: { title: t('events.hints.cost_value'), min: '0' } %>
+    </div>
+
+    <!-- Fields: that need to be check for enabled/disabled -->
+    <% end %>
   <% end %>
 
 
