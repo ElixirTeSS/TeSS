@@ -43,6 +43,7 @@ module Ingestors
             end
           rescue Exception => e
             @messages << "#{self.class.name}: write events failed with: #{e.message}"
+            Sentry.capture_exception(e)
           end
         end
       end
@@ -66,6 +67,7 @@ module Ingestors
         @messages << "Event failed validation: #{resource.title}"
         resource.errors.full_messages.each do |m|
           @messages << "Error: #{m}"
+          Sentry.capture_message("Error: #{m}")
         end
       end
     end

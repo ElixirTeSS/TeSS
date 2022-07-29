@@ -60,6 +60,10 @@ gem 'httparty'
 gem 'sidekiq', '~> 6.4.0'
 gem 'slim'
 
+# Sentry
+gem 'sentry-rails'
+gem 'sentry-ruby'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 gem 'jquery-qtip2-wrapper-rails'
