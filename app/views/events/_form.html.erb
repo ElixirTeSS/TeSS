@@ -70,7 +70,7 @@
                     title: t('events.hints.keywords') %>
 
   <!-- Field: Content Provider -->
-  <%= f.input :content_provider_id, label: 'Content provider (where the event metadata is obtained from)',
+  <%= f.input :content_provider_id, label: 'Event found at',
               collection: current_user.get_editable_providers, label_method: :title, value_method: :id, include_blank: true,
               field_lock: true %>
 
