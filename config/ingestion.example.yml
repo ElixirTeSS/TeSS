@@ -46,3 +46,10 @@ sources:
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     enabled: true
+  - id: 7
+    provider: 'UvA'              # content provider's title
+    url: https://www.uva.nl/_restapi/list-json?uuid=def191e0-f85f-4ba0-b618-ee6d16f36db4&mount=13a4adcb-039a-4e99-b085-e9d91c8c7dc1     # the root URL required to access the source
+    image_url: https://www.dtls.nl/wp-content/uploads/2021/08/dtl-logo-1.png
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
