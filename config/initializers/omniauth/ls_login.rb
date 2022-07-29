@@ -1,7 +1,7 @@
 # OpenID Connect configuration for LS Login nee Elixir AAI
 unless Rails.application.secrets.dig(:elixir_aai, :client_id).blank?
   Devise.omniauth :openid_connect, {
-    logo: 'elixir/login-button-orange.png',
+    logo: 'ls-login.png',
     name: :elixir_aai,
     scope: [:openid, :email, :profile],
     response_type: 'code',

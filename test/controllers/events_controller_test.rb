@@ -1268,4 +1268,25 @@ class EventsControllerTest < ActionController::TestCase
       assert_select 'li.disabled a[href=?]', '#map', count: 1
     end
   end
+
+  test 'should hide map tab if disabled' do
+    disabled = TeSS::Config.feature['disabled'].dup
+
+    get :index
+    assert_response :success
+    assert_select '#content .nav-tabs' do
+      assert_select 'li a[href=?]', '#map', count: 1
+    end
+
+    TeSS::Config.feature['disabled'] |= ['events_map']
+
+    get :index
+    assert_response :success
+    assert_select '#content .nav-tabs' do
+      assert_select 'li a[href=?]', '#map', count: 0
+    end
+
+  ensure
+    TeSS::Config.feature['disabled'] = disabled
+  end
 end

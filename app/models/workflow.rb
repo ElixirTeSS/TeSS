@@ -54,6 +54,8 @@ class Workflow < ApplicationRecord
 
   has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
 
+  has_many :stars,  as: :resource, dependent: :destroy
+  
   validates :title, presence: true
   validates :difficulty_level, controlled_vocabulary: { dictionary: DifficultyDictionary.instance }
 

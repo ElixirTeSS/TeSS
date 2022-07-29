@@ -109,7 +109,10 @@ class Event < ApplicationRecord
   has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
   has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 
+  has_many :stars,  as: :resource, dependent: :destroy
+
   validates :title, :url, presence: true
+  validates :url, url: true
   validates :capacity, numericality: { greater_than_or_equal_to: 1 }, allow_blank: true
   validates :cost_value, numericality: { greater_than: 0 }, allow_blank: true
   validates :event_types, controlled_vocabulary: { dictionary: EventTypeDictionary.instance }
@@ -117,8 +120,10 @@ class Event < ApplicationRecord
   validates :latitude, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90, allow_nil: true }
   validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true }
   #validates :duration, format: { with: /\A[0-9][0-9]:[0-5][0-9]\z/, message: "must be in format HH:MM" }, allow_blank: true
+  validates :timezone, inclusion: { in: ActiveSupport::TimeZone::MAPPING.keys,
+                                    message: 'not found and cannot be linked to a valid timezone',
+                                    allow_blank: true }
   validate :allowed_url
-  validate :validate_timezone
   clean_array_fields(:keywords, :fields, :event_types, :target_audience,
                      :eligibility, :host_institutions, :sponsors)
   update_suggestions(:keywords, :target_audience, :host_institutions)
@@ -243,7 +248,7 @@ class Event < ApplicationRecord
   end
 
   def show_map?
-    #!self.online? &&
+    Rails.application.secrets.google_maps_api_key.present? && #!self.online? &&
     ((self.latitude.present? && self.longitude.present?) ||
       (self.suggested_latitude.present? && self.suggested_longitude.present?))
   end
@@ -457,12 +462,6 @@ class Event < ApplicationRecord
   end
 
   private
-
-  def validate_timezone
-    unless ActiveSupport::TimeZone::MAPPING.keys.include? self.timezone
-      errors.add(:timezone, 'not found and cannot be linked to a valid timezone')
-    end
-  end
 
   def allowed_url
     disallowed = (TeSS::Config.blocked_domains || []).any? do |regex|

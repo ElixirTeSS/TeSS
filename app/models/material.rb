@@ -83,16 +83,15 @@ class Material < ApplicationRecord
   has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
   has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 
+  has_many :stars,  as: :resource, dependent: :destroy
+  
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
   auto_strip_attributes :title, :description, :url, :squish => false
 
   validates :title, :description, :url, presence: true
-
   validates :url, url: true
-
   validates :other_types, presence: true, if: Proc.new { |m| m.resource_type.include?('other') }
-
   validates :difficulty_level, controlled_vocabulary: { dictionary: DifficultyDictionary.instance }
 
   clean_array_fields(:keywords, :fields, :contributors, :authors,
@@ -103,6 +102,15 @@ class Material < ApplicationRecord
 
   def description= desc
     super(Rails::Html::FullSanitizer.new.sanitize(desc))
+  end
+
+  def short_description= desc
+    self.description = desc unless @_long_description_set
+  end
+
+  def long_description= desc
+    @_long_description_set = true
+    self.description = desc
   end
 
   def self.facet_fields

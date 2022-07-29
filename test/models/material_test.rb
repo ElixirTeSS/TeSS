@@ -221,7 +221,7 @@ class MaterialTest < ActiveSupport::TestCase
     assert_includes m.node_names, nodes(:westeros).name
   end
 
-  test 'can set licence either using key or URL' do
+  test 'can set licence either using key, URL or SPDX URL' do
     m = materials(:good_material)
 
     m.licence = 'CC-BY-4.0'
@@ -231,6 +231,14 @@ class MaterialTest < ActiveSupport::TestCase
     m.licence = 'https://creativecommons.org/licenses/by-sa/4.0/'
     assert m.valid?
     assert_equal 'CC-BY-SA-4.0', m.licence
+
+    m.licence = 'https://spdx.org/licenses/BSD-4-Clause-Shortened.html'
+    assert m.valid?
+    assert_equal 'BSD-4-Clause-Shortened', m.licence
+
+    m.licence = 'https://spdx.org/licenses/MIT.json'
+    assert m.valid?
+    assert_equal 'MIT', m.licence
 
     m.licence = 'https://not.a.real.licence.golf'
     refute m.valid?
@@ -430,5 +438,37 @@ class MaterialTest < ActiveSupport::TestCase
                                 user: @user,
                                 status: 'archived')
     refute_match(/\A\d+\Z/, material.friendly_id)
+  end
+
+
+  test 'validates URL format' do
+    material = Material.new(title: 'Test', description: 'desc', user: users(:regular_user))
+
+    refute material.valid?
+    assert material.errors.added?(:url, :blank)
+
+    material.url = '123'
+    refute material.valid?
+    assert material.errors.added?(:url, :url, value: '123')
+
+    material.url = '/relative'
+    refute material.valid?
+    assert material.errors.added?(:url, :url, value: '/relative')
+
+    material.url = 'git://something.git'
+    refute material.valid?
+    assert material.errors.added?(:url, :url, value: 'git://something.git')
+
+    material.url = 'http://http-website.com/mat'
+    assert material.valid?
+    refute material.errors.added?(:url, :url, value: 'http://http-website.com/mat')
+
+    material.url = 'https://https-website.com/mat'
+    assert material.valid?
+    refute material.errors.added?(:url, :url, value: 'https://https-website.com/mat')
+
+    material.url = 'ftp://something/something'
+    refute material.valid?
+    assert material.errors.added?(:url, :url, value: 'ftp://something/something')
   end
 end

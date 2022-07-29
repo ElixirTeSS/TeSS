@@ -2,6 +2,7 @@ require 'test_helper'
 
 class CollectionsControllerTest < ActionController::TestCase
   include Devise::Test::ControllerHelpers
+  include ActiveJob::TestHelper
 
   setup do
     mock_images
@@ -333,5 +334,53 @@ class CollectionsControllerTest < ActionController::TestCase
     assert_select '.activity', count: 4 # +1 because they are wrapped in a .activity div for some reason...
 
     @controller = old_controller
+  end
+
+  test 'should trigger notification when unverified user creates collection' do
+    sign_in users(:unverified_user)
+
+    assert_enqueued_jobs 1 do
+      assert_difference('Collection.count') do
+        post :create, params: { collection: { title: 'Second collection' } }
+      end
+    end
+
+    assert_redirected_to collection_path(assigns(:collection))
+    @collection.reload
+  end
+
+  test 'should not trigger notification if unverified user already created content' do
+    sign_in users(:unverified_user)
+    users(:unverified_user).collections.create!(title: 'First collection')
+
+    assert_enqueued_jobs 0 do
+      assert_difference('Collection.count') do
+        post :create, params: { collection: { title: 'Second collection' } }
+      end
+    end
+
+    assert_redirected_to collection_path(assigns(:collection))
+    @collection.reload
+  end
+
+  test 'should allow collaborator to edit' do
+    user = users(:another_regular_user)
+    @collection.collaborators << user
+    sign_in user
+
+    assert_difference('CollectionEvent.count', 2) do
+      patch :update, params: { collection: { event_ids: [events(:one), events(:two)]}, id: @collection.id }
+    end
+    assert_redirected_to collection_path(assigns(:collection))
+  end
+
+  test 'should not allow non-collaborator to edit' do
+    user = users(:another_regular_user)
+    sign_in user
+
+    assert_no_difference('CollectionEvent.count') do
+      patch :update, params: { collection: { event_ids: [events(:one), events(:two)]}, id: @collection.id }
+    end
+    assert_response :forbidden
   end
 end

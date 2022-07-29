@@ -11,7 +11,7 @@ class CuratorController < ApplicationController
   end
 
   def topic_suggestions
-    @suggestions = EditSuggestion.all
+    @suggestions = EditSuggestion.all.select { |e| e.suggestible }
     @leaderboard = {}
     CURATION_ACTIONS.each do |curator_action|
       action_count = action_count_for(curator_action)
@@ -38,7 +38,7 @@ class CuratorController < ApplicationController
     @role ||= Role.fetch('unverified_user')
     @users = User.with_role(@role).order('created_at DESC')
     if params[:with_content]
-      @users = @users.includes(:events, :materials, :workflows, :content_providers).with_created_resources
+      @users = @users.includes(*User::CREATED_RESOURCE_TYPES).with_created_resources
     end
 
     @users = @users.paginate(page: params[:page], per_page: params[:per_page] || 100)

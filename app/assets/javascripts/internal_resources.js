@@ -69,7 +69,7 @@ var InternalResources = {
             '<input type="hidden" name="event[material_ids][]" value="' + obj.attr('id') + '" />' +
             '<div class="alert alert-info">' +
             obj.data('title') +
-            '<a href="#" class="delete-internal-resource pull-right" style="text-decoration: none;" ' +
+            '<a href="#" class="delete-internal-resource delete-icon pull-right" style="text-decoration: none;" ' +
             'onclick="delete_internal_resource(\'material_internal_resource_' + obj.attr('id') + '\')">' +
             '× </a></div></div>';
         $('#materials-list').append(new_element);

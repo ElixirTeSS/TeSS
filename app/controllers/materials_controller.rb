@@ -15,9 +15,9 @@ class MaterialsController < ApplicationController
 
   def index
     respond_to do |format|
+      format.html
       format.json
       format.json_api { render({ json: @materials }.merge(api_collection_properties)) }
-      format.html
     end
   end
 
@@ -27,9 +27,9 @@ class MaterialsController < ApplicationController
   # TODO: In any case, it breaks various tests.
   def show
     respond_to do |format|
+      format.html
       format.json
       format.json_api { render json: @material }
-      format.html
     end
   end
 
@@ -137,7 +137,8 @@ class MaterialsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def material_params
-    params.require(:material).permit(:id, :title, :url, :contact, :description, :doi, :licence,
+    params.require(:material).permit(:id, :title, :url, :contact, :description, :short_description,
+                                     :long_description, :doi, :licence,
                                      :last_scraped, :scraper_record, :remote_created_date, :remote_updated_date,
                                      :content_provider_id, :difficulty_level, :version, :status,
                                      :date_created, :date_modified, :date_published, :other_types,

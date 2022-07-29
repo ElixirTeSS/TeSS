@@ -1,60 +1,3 @@
-<script>
-    document.addEventListener("turbolinks:load", function () {
-
-        /* Set all filter links to include the anchor */
-        var addTabToFilters = function (tab) {
-            if (tab) {
-                $(function () {
-                    $('.active-filters a').attr('href', function (_, oldHref) {
-                        oldHref = oldHref.replace(/\#(.*)/g, "#" + tab);
-                        if (oldHref.indexOf('#') == -1)
-                            oldHref += "#" + tab;
-                        return oldHref;
-                    })
-                    $('.nav-item a').attr('href', function (_, oldHref) {
-                        oldHref = oldHref.replace(/\#(.*)/g, "#" + tab);
-                        if (oldHref.indexOf('#') == -1)
-                            oldHref += "#" + tab;
-                        return oldHref;
-                    });
-                });
-            }
-        };
-
-        var getTab = function () {
-            var tab = window.location.hash;
-            if (tab) {
-                return tab.substring(1) /* stip hash */
-            } else {
-                return ''
-            }
-        };
-
-        addTabToFilters(getTab());
-
-
-        var loadedMapScript = false;
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-            /*Load map script only once when event tab is selected
-            *
-            * if (e.target.id == 'caltab'){
-                if (!loadedCalendarScript){
-                  $.getScript('https://www.gstatic.com/charts/loader.js', function(){drawChart()});
-                }
-             }
-             */
-            if (e.target.href.endsWith('#map')) {
-                if (!loadedMapScript) {
-                    initializeMap();
-                }
-                addTabToFilters('map');
-            } else {
-                addTabToFilters('grid');
-            }
-        })
-    })
-</script>
-
 <div class="wrapper">
   <% if TeSS::Config.solr_enabled %>
     <div id="sidebar" class="popout-sidebar">
@@ -108,16 +51,13 @@
     <%# ACTUAL RESULTS LIST %>
     <% unless @events.blank? %>
       <ul class="nav nav-tabs">
-
-
         <%= tab('List', 'fa fa-list', 'home', active: true) %>
-
         <%= tab('Grid', 'fa fa-table', 'grid', active: false) %>
-
-        <%= tab('Map', 'fa fa-globe', 'map',
-                disabled: { check: (search_and_facet_params[:online] == 'true'),
-                            message: 'Only showing online events.' }) %>
-
+        <% if !TeSS::Config.feature['disabled'].include? 'events_map' %>
+          <%= tab('Map', 'fa fa-globe', 'map',
+                  disabled: { check: (search_and_facet_params[:online] == 'true'),
+                              message: 'Only showing online events.' }) %>
+        <% end %>
       </ul>
 
       <div class="tab-content">
@@ -157,18 +97,19 @@
           <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
         </div>
 
-        <div id="map" class="tab-pane fade">
-          <div id="map-count" class="search-results-count"></div>
-          <div id="map-content">
-            <%= render partial: 'events/partials/events_map' %>
-            <p id="map-notice" class="help-block">
-              Note, this map only displays events that have geolocation information in
-              <%= TeSS::Config.site['title_short'] %>.<br>
-              For the complete list of events in <%= TeSS::Config.site['title_short'] %>, click the grid tab.
-            </p>
+        <% if !TeSS::Config.feature['disabled'].include? 'events_map' %>
+          <div id="map" class="tab-pane fade">
+            <div id="map-count" class="search-results-count"></div>
+            <div id="map-content">
+              <%= render partial: 'events/partials/events_map' %>
+              <p id="map-notice" class="help-block">
+                Note, this map only displays events that have geolocation information in
+                <%= TeSS::Config.site['title_short'] %>.<br>
+                For the complete list of events in <%= TeSS::Config.site['title_short'] %>, click the grid tab.
+              </p>
+            </div>
           </div>
-        </div>
-
+        <% end %>
       </div>
     <% end %>
   </div>

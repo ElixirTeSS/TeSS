@@ -3,52 +3,44 @@
 
   <!-- WHAT IS TESS -->
   <ul class="nav nav-stacked">
-    <li class="<%= show_active(show, 'home') %>">
+    <li class="about-page-category <%= show_active(show, 'home') %>">
       <%= link_to 'What is ' + TeSS::Config.site['title_short'] + '?', about_path %>
     </li>
-    <ul class="nav nav-stacked">
-      <li><%= link_to 'What we catalogue', about_path(:anchor => 'events') %></li>
-      <li><%= link_to 'Subscribing to notifications', about_path(:anchor => 'subscribe') %></li>
-      <li><%= link_to 'Widgets & API', about_path(:anchor => 'widget') %></li>
-    </ul>
+    <li><%= about_nav_link('What we catalogue', about_path, 'events') %></li>
+    <li><%= about_nav_link('Subscribing to notifications', about_path, 'subscribe') %></li>
+    <li><%= about_nav_link('Widgets & API', about_path, 'widget') %></li>
   </ul>
 
   <!-- REGISTERING YOUR RESOURCES -->
   <ul class="nav nav-stacked">
-    <li class="<%= show_active(show, 'registering') %>">
+    <li class="about-page-category <%= show_active(show, 'registering') %>">
       <%= link_to 'Registering Content', registering_resources_path %>
     </li>
-    <ul class="nav nav-stacked">
-      <li><%= link_to 'Automatic Registration', registering_resources_path(:anchor => 'automatic') %></li>
-      <li><%= link_to 'Manual Registration', registering_resources_path(:anchor => 'manual') %></li>
-    </ul>
+    <li><%= about_nav_link('Automatic Registration', registering_resources_path, 'automatic') %></li>
+    <li><%= about_nav_link('Manual Registration', registering_resources_path, 'manual') %></li>
   </ul>
 
 
   <!-- DEVELOPERS -->
   <ul class="nav nav-stacked">
-    <li class="<%= show_active(show, 'developers') %>">
+    <li class="about-page-category <%= show_active(show, 'developers') %>">
       <%= link_to 'Developers', developers_path %>
     </li>
-    <ul class="nav nav-stacked">
-      <li><%= link_to 'Code and Data', developers_path(:anchor => 'code_and_data') %></li>
-      <li><%= link_to 'Widgets', developers_path(:anchor => 'widgets') %></li>
-      <li><%= link_to 'API', developers_path(:anchor => 'api') %></li>
-    </ul>
+    <li><%= about_nav_link('Code and Data', developers_path, 'code_and_data') %></li>
+    <li><%= about_nav_link('Widgets', developers_path, 'widgets') %></li>
+    <li><%= about_nav_link('API', developers_path, 'api') %></li>
   </ul>
 
   <!-- ABOUT US -->
   <ul class="nav nav-stacked">
-    <li class="<%= show_active(show, 'us') %>">
+    <li class="about-page-category <%= show_active(show, 'us') %>">
       <%= link_to 'About Us', us_path %>
     </li>
-    <ul class="nav nav-stacked">
-      <li><%= link_to 'TeSS Club', us_path(:anchor => 'tess-club') %></li>
-      <li><%= link_to 'Contact', us_path(:anchor => 'contact') %></li>
-      <li><%= link_to 'The Team', us_path(:anchor => 'team') %></li>
-      <li><%= link_to 'Funding', us_path(:anchor => 'funding') %></li>
-      <li><%= link_to 'Acknowledgements', us_path(:anchor => 'acknowledgments') %></li>
-      <li><%= link_to 'Cite Us', us_path(:anchor => 'cite') %></li>
-    </ul>
+    <li><%= about_nav_link('TeSS Club', us_path, 'tess-club') %></li>
+    <li><%= about_nav_link('Contact', us_path, 'contact') %></li>
+    <li><%= about_nav_link('The Team', us_path, 'team') %></li>
+    <li><%= about_nav_link('Funding', us_path, 'funding') %></li>
+    <li><%= about_nav_link('Acknowledgements', us_path, 'acknowledgments') %></li>
+    <li><%= about_nav_link('Cite Us', us_path, 'cite') %></li>
   </ul>
 </nav>

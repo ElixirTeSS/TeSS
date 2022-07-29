@@ -1,5 +1,5 @@
 var Fairsharing = {
-    baseUrl: 'https://fairsharing.org',
+    baseUrl: 'https://legacy.fairsharing.org',
     titleElement: function() {
         return $('#' + $('#title_element').val())
     },

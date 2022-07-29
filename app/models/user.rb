@@ -23,7 +23,7 @@ class User < ApplicationRecord
   end
 
   has_one :profile, inverse_of: :user, dependent: :destroy
-  CREATED_RESOURCE_TYPES = [:events, :materials, :workflows, :content_providers, :sources]
+  CREATED_RESOURCE_TYPES = [:events, :materials, :workflows, :content_providers, :sources, :collections]
   has_many :materials
   has_many :collections, dependent: :destroy
   has_many :workflows, dependent: :destroy
@@ -65,7 +65,7 @@ class User < ApplicationRecord
             :uniqueness => true
 
   validate :consents_to_processing, on: :create, unless: ->(user) { user.using_omniauth? || User.current_user.try(:is_admin?) }
-
+  
   accepts_nested_attributes_for :profile
 
   attr_accessor :publicize_email
@@ -269,8 +269,8 @@ class User < ApplicationRecord
   end
 
   def self.with_query(query)
-    joins(:profile).where('username LIKE :query or profiles.firstname LIKE :query or profiles.surname LIKE :query',
-                          query: "#{query}%")
+    joins(:profile).where('lower(username) LIKE :query or lower(profiles.firstname) LIKE :query or lower(profiles.surname) LIKE :query',
+                          query: "#{query.downcase}%")
   end
 
   def created_resources
@@ -327,7 +327,7 @@ class User < ApplicationRecord
   end
 
   def consents_to_processing
-    unless processing_consent
+    if processing_consent!="1"
       errors.add(:base, "You must consent to #{TeSS::Config.site['title_short']} processing your data in order to register")
 
       false

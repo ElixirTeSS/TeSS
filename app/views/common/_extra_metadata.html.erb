@@ -18,9 +18,9 @@
   <%= display_attribute(resource, :version) %>
   <%= display_attribute(resource, :status) { |value| material_status_title_for_label(value) } %>
   <%= display_attribute(resource, :subsets) { |values| values.join(', ') } %>
-  <%= display_attribute(resource, :prerequisites, markdown=true) %>
-  <%= display_attribute(resource, :syllabus, markdown=true) %>
-  <%= display_attribute(resource, :learning_objectives, markdown=true) %>
+  <%= display_attribute(resource, :prerequisites, markdown: true) %>
+  <%= display_attribute(resource, :syllabus, markdown: true) %>
+  <%= display_attribute(resource, :learning_objectives, markdown: true) %>
   <%= display_attribute(resource, :date_created) %>
   <%= display_attribute(resource, :date_modified) %>
   <%= display_attribute(resource, :date_published) %>

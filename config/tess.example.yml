@@ -53,7 +53,7 @@ default: &default
     workflows: true
     # Possible features to disable:
     #  biotools, topics, operations, sponsors, fairshare, county, ardc_fields_of_research,
-    #  other_types, subsets, syllabus, approved_editors
+    #  other_types, subsets, syllabus, approved_editors address_finder
     disabled: ['ardc_fields_of_research', 'other_types', 'subsets', 'syllabus', 'approved_editors']
   placeholder:
     collection: 'placeholder-collection.png'
@@ -65,11 +65,14 @@ default: &default
     difficulty: 'difficulty.yml'
     eligibility: 'eligibility.yml'
     event_types: 'event_types.yml'
-    licences: 'licences.yml'
+    licences: 'spdx.yml'
     material_status: 'material_status.yml'
     material_type: 'material_type.yml'
     target_audience: 'target_audience.yml'
     trainer_experience: 'trainer_experience.yml'
+  funders:
+#    - url: https://example.com/your-funders-website
+#      logo: foo.png
 
 development:
   <<: *default
