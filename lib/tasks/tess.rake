@@ -206,7 +206,7 @@ namespace :tess do
 
   desc 'Fetch and convert SPDX licenses from GitHub'
   task fetch_spdx: :environment do
-    old_licenses = YAML.load(File.read(File.join(Rails.root, 'config', 'dictionaries', 'licences.yml')))
+    old_licenses = YAML.load(File.read(File.join(Rails.root, 'config', 'dictionaries', 'licences_old.yml')))
     url = 'https://raw.githubusercontent.com/spdx/license-list-data/master/json/licenses.json'
     json = URI.open(url).read
     hash = JSON.parse(json)
@@ -226,6 +226,6 @@ namespace :tess do
       end
     end
 
-    File.write(File.join(Rails.root, 'config', 'dictionaries', 'spdx.yml'), transformed.to_yaml)
+    File.write(File.join(Rails.root, 'config', 'dictionaries', 'licences.yml'), transformed.to_yaml)
   end
 end

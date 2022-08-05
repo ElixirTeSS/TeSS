@@ -5,7 +5,7 @@
 # https://github.com/seek4science/seek/blob/master/lib/seek/image_file_dictionary.rb
 class LicenceDictionary < Dictionary
 
-  DEFAULT_FILE = 'spdx.yml'
+  DEFAULT_FILE = 'licences.yml'
 
   def licence_abbreviations
     @abbrvs ||= @dictionary.keys

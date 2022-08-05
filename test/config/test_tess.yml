@@ -65,7 +65,7 @@ test:
     difficulty: 'difficulty.yml'
     eligibility: 'eligibility.yml'
     event_types: 'event_types.yml'
-    licences: 'spdx.yml'
+    licences: 'licences.yml'
     material_status: 'material_status.yml'
     material_type: 'material_type.yml'
     target_audience: 'target_audience.yml'
