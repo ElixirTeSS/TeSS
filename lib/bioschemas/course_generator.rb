@@ -17,7 +17,7 @@ module Bioschemas
       event.scientific_topics.map { |t| term(t) }
     }
     property :hasCourseInstance, -> (event) {
-      [Bioschemas::CourseInstanceGenerator.new(event).generate]
+      [Bioschemas::CourseInstanceGenerator.new(event).generate.except('@id')]
     }
   end
 end

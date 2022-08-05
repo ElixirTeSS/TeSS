@@ -14,7 +14,9 @@ module Bioschemas
         'addressLocality' => event.city,
         'addressRegion' => event.county,
         'addressCountry' => event.country,
-        'postalCode' => event.postcode
+        'postalCode' => event.postcode,
+        'latitude' => event.latitude,
+        'longitude' => event.longitude
       }.compact
     }, condition: -> (event) { event.venue.present? || event.city.present? || event.county.present? ||
       event.country.present? || event.postcode.present? }

@@ -462,9 +462,11 @@ class Event < ApplicationRecord
   end
 
   def to_bioschemas
-    markup = [Bioschemas::EventGenerator.new(self)]
-    markup << Bioschemas::CourseGenerator.new(self) if event_types.include?('workshops_and_courses')
-    markup
+    if event_types.include?('workshops_and_courses')
+      [Bioschemas::CourseGenerator.new(self)]
+    else
+      [Bioschemas::EventGenerator.new(self)]
+    end
   end
 
   private

@@ -23,6 +23,7 @@ module Bioschemas
         LicenceDictionary.instance.lookup_value(material.licence, 'url') ||
         material.licence
     }
-    property :educationalLevel, :difficulty_level
+    property :educationalLevel, :difficulty_level,
+             condition: -> (event) { event.difficulty_level != 'notspecified' }
   end
 end

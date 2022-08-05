@@ -136,6 +136,9 @@ material_with_optionals:
   prerequisites: 'None'
   syllabus: '1. Overview\  2. The main part\  3. Summing up'
   learning_objectives: 'Understand the new materials model'
+  difficulty_level: intermediate
+  remote_created_date: 2021-07-12
+  remote_updated_date: 2021-07-13
 
 training_material:
   user: trainer_user

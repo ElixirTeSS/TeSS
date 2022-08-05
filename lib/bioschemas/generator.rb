@@ -12,7 +12,7 @@ module Bioschemas
 
     def generate
       template = {
-        '@context' => 'http:/schema.org',
+        '@context' => 'http://schema.org',
         '@id' => routes.polymorphic_url(resource),
         '@type' => self.class.type
       }
