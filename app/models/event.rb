@@ -461,6 +461,12 @@ class Event < ApplicationRecord
     (JSON.parse response.body, symbolize_names: true)[0]
   end
 
+  def to_bioschemas
+    markup = [Bioschemas::EventGenerator.new(self)]
+    markup << Bioschemas::CourseGenerator.new(self) if event_types.include?('workshops_and_courses')
+    markup
+  end
+
   private
 
   def allowed_url
@@ -488,5 +494,4 @@ class Event < ApplicationRecord
       return datetime
     end
   end
-
 end

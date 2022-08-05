@@ -6,6 +6,10 @@ module Edam
       super('EDAM_unstable.owl', Edam::Term)
     end
 
+    def uri
+      'http://edamontology.org'
+    end
+
     def all_topics
       find_by(OBO.inSubset, OBO_EDAM.topics)
     end

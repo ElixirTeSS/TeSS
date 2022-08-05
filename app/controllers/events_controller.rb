@@ -15,6 +15,7 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
+    @bioschemas = @events.flat_map(&:to_bioschemas)
     respond_to do |format|
       format.html
       format.json
@@ -28,6 +29,7 @@ class EventsController < ApplicationController
   # GET /events/1.json
   # GET /events/1.ics
   def show
+    @bioschemas = @event.to_bioschemas
     respond_to do |format|
       format.html
       format.json

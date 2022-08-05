@@ -41,4 +41,12 @@ module TeSS
   Config = OpenStruct.new(Rails.configuration.tess.with_indifferent_access)
 
   Config.redis_url = TeSS::Config.redis_url
+
+  tess_base_uri = URI.parse(TeSS::Config.base_url)
+  Rails.application.default_url_options = {
+    host: tess_base_uri.host,
+    port: tess_base_uri.port,
+    protocol: tess_base_uri.scheme,
+    script_name: (Rails.application.config.relative_url_root || '/')
+  }
 end
