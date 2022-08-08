@@ -140,4 +140,8 @@ class Material < ApplicationRecord
 
     material
   end
+
+  def to_bioschemas
+    [Bioschemas::LearningResourceGenerator.new(self)]
+  end
 end

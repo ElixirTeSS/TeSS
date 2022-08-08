@@ -239,7 +239,6 @@
 
               <%= display_attribute(@event, :operations) { |values| values.map { |x| x.preferred_label }.join(', ') } %>
 
-              <%= render :partial => 'events/partials/event_schemaorg', :locals => { :event => @event } %>
               <%= render :partial => 'events/partials/twitter_card', :locals => { :event => @event } %>
 
               <%= render partial: 'events/report' if policy(@event).view_report? %>
