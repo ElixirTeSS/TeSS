@@ -156,9 +156,8 @@
 
   <!-- Sponsors: check disabled -->
   <% if !TeSS::Config.feature['disabled'].include? 'sponsors' %>
-    <%= f.multi_input :sponsors, errors: @event.errors[:sponsors] %>
+    <%= f.multi_input :sponsors, errors: @event.errors[:sponsors], hint: t('events.hints.sponsors') %>
   <% end %>
-
 
   <div class="form-group">
     <%= f.submit (f.object.new_record? ? "Add" : "Update") + " event", :class => 'btn btn-primary' %>

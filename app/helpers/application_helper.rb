@@ -412,7 +412,8 @@ module ApplicationHelper
                                                                    required: options[:required],
                                                                    label: options[:label],
                                                                    errors: options[:errors],
-                                                                   title: options[:title] })
+                                                                   title: options[:title],
+                                                                   hint: options[:hint]})
     end
   end
 

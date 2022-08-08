@@ -306,6 +306,7 @@ en:
       recognition: 'Provide a description of any qualifications, awards, certificates, diplomas, or other
         educational credentials that will be awarded on successful completion of the training event.'
       requirements: 'Indicate the technical requirements needed to participate in the training event.'
+      sponsors: 'Who sponsored, or funded the event?'
       start: 'When does the event start?'
       subtitle: 'Include a subtitle to add context for your intended audience.'
       targets: 'Indicate the type of audience for which the training event is intended.'
