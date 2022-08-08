@@ -13,6 +13,8 @@ en:
       profile:
         firstname: 'First name'
         surname: 'Last name'
+      event:
+        county: Region
   about:
     registry: >
       One of the goals of <a href='https://elixir-europe.org', target='_blank'>Elixir</a>
