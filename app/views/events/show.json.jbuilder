@@ -1,5 +1,5 @@
 fields = [:id, :external_id, :title, :subtitle, :url, :organizer, :description, :start, :end, :sponsors, :venue, :city,
-          :country, :postcode, :latitude, :longitude, :created_at, :updated_at, :source, :slug, :content_provider_id,
+          :county, :country, :postcode, :latitude, :longitude, :created_at, :updated_at, :source, :slug, :content_provider_id,
           :user_id, :online, :last_scraped, :scraper_record, :keywords, :event_types, :target_audience, :capacity,
           :eligibility, :contact, :host_institutions, :cost_basis, :cost_value, :fields ]
 
