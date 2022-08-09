@@ -10,8 +10,6 @@
   data[:template] = template if template
   data[:singleton] = singleton unless singleton.nil?
   data['transform-function'] = transform_function if transform_function
-  data['on-add'] = transform_function if transform_function
-  data['on-remove'] = transform_function if transform_function
   json = Array(f.object.send(existing_items_method)).map do |r|
     { item: { id: r.send(id_field),
               id_field => r.send(id_field),
