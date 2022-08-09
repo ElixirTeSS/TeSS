@@ -30,10 +30,7 @@ default: &default
     zoom:
       latitude: 3
       longitude: 13
-  questionnaire:
-    show: false
-    message: ''
-    url: ''
+  header_notice: # HTML to display above the header
   parent_org:
     name: 'ELIXIR Hub'
     image: elixir/hub-logo.png
