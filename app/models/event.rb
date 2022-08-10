@@ -104,6 +104,7 @@ class Event < ApplicationRecord
   has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 
   validates :title, :url, presence: true
+  validates :url, url: true
   validates :capacity, numericality: { greater_than_or_equal_to: 1 }, allow_blank: true
   validates :cost_value, numericality: { greater_than: 0 }, allow_blank: true
   validates :event_types, controlled_vocabulary: { dictionary: EventTypeDictionary.instance }
@@ -440,9 +441,9 @@ class Event < ApplicationRecord
   private
 
   def validate_timezone
-    unless ActiveSupport::TimeZone::MAPPING.keys.include? self.timezone
-      errors.add(:timezone, 'not found and cannot be linked to a valid timezone')
-    end
+    return if timezone.blank?
+
+    errors.add(:timezone, 'not found and cannot be linked to a valid timezone') unless ActiveSupport::TimeZone::MAPPING.keys.include? timezone
   end
 
   def allowed_url
@@ -464,5 +465,4 @@ class Event < ApplicationRecord
   rescue StandardError
     datetime
   end
-
 end
