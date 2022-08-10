@@ -28,10 +28,7 @@ module Ingestors
           url: 'https://dans.knaw.nl/en/agenda/',
           process: method(:process_dans) },
         { name: 'DTL',
-          url: 'https://www.dtls.nl/events/',
-          process: method(:process_dtls) },
-        { name: 'DTL',
-          url: 'https://www.dtls.nl/courses/',
+          url: 'https://www.dtls.nl/',
           process: method(:process_dtls) },
         { name: 'UvA',
           url: 'https://www.uva.nl/_restapi/list-json',
@@ -639,7 +636,7 @@ module Ingestors
             end
           end
           event.end = event.start if event.end.nil?
-          event.source = 'DTLS'
+          event.source = 'DTL'
           event.timezone = 'Amsterdam'
           add_event(event)
           @ingested += 1
