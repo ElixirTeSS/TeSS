@@ -620,9 +620,9 @@ module Ingestors
                 event.country = loc.last.strip
               when 'provider'
                 event.organizer = element.text
-              when 'startdate'
+              when 'startdate', 'courseDate'
                 event.start = element.text.to_s.to_time
-              when 'enddate'
+              when 'enddate', 'courseEndDate'
                 event.end = element.text.to_s.to_time
               when 'latitude'
                 event.latitude = element.text
