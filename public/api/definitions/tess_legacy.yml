@@ -329,9 +329,9 @@ definitions:
       url:
         type: string
         description: The API URL of the material within TeSS e.g. https://tess.elixir-europe.org/materials/3-day-hands-on-ngs-workshop.json - Go here to find out more about this particular material.
-      short_description:
+      description:
         type: string
-        description: This should be a short description of the training material. Lengths vary but on average it is around 2-3 sentences.
+        description: This should be a description of the training material
       doi:
         type: string
         description: This is the DOI of the material where it can be permanently referenced
@@ -355,12 +355,9 @@ definitions:
       url:
         type: string
         description: The URL where the actual material can be found.
-      short_description:
+      description:
         type: string
-        description: A succinct description of what the training material is about.
-      long_description:
-        type: string
-        description: A longer, more indepth explanation of the content of the training material.
+        description: A description of what the training material is about.
       doi:
         type: string
         description: The DOI of the material (if it has one).
