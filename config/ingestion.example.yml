@@ -53,3 +53,10 @@ sources:
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     enabled: true
+  - id: 8
+    provider: 'WUR'              # content provider's title
+    url: https://www.wur.nl/nl/Resources/RSS/Agenda.htm     # the root URL required to access the source
+    image_url: https://www.wur.nl/upload/854757ab-168f-46d7-b415-f8b501eebaa5_WUR_RGB_standard_2021-site.svg
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true

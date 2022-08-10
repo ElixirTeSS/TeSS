@@ -30,6 +30,9 @@ module Ingestors
         { name: 'DTL',
           url: 'https://www.dtls.nl/',
           process: method(:process_dtls) },
+        { name: 'WUR',
+          url: 'https://www.wur.nl/',
+          process: method(:process_wur) },
         { name: 'UvA',
           url: 'https://www.uva.nl/_restapi/list-json',
           process: method(:process_uva) }
@@ -604,11 +607,11 @@ module Ingestors
               when 'title'
                 event.title = element.text
               when 'link'
-              # Use GUID field as probably more stable
-              # event.url = element.text
+                # Use GUID field as probably more stable
+                # event.url = element.text
               when 'creator'
-              # event.creator = element.text
-              # no creator field. Not sure needs one
+                # event.creator = element.text
+                # no creator field. Not sure needs one
               when 'guid'
                 event.url = element.text
               when 'description'
@@ -629,7 +632,7 @@ module Ingestors
               when 'longitude'
                 event.longitude = element.text
               when 'pubDate'
-              # Not really needed
+                # Not really needed
               else
                 # chuck away
               end
@@ -644,6 +647,56 @@ module Ingestors
           @messages << "Extract event fields failed with: #{e.message}"
           Sentry.capture_exception(e)
         end
+      end
+    end
+
+    def process_wur(url)
+      docs = Nokogiri::XML(URI.open(url).xpath('//item'))
+      docs.each do |event_item|
+        begin
+          event = Event.new
+          event.event_types = ['workshops_and_courses']
+          event_item.element_children.each do |element|
+            case element.name
+            when 'title'
+              event.title = element.text
+            when 'link'
+              event.url = element.text
+            when 'creator'
+              # event.creator = element.text
+              # no creator field. Not sure needs one
+            when 'description'
+              event.description = element.text
+            when 'location'
+              event.venue = element.text
+              loc = element.text.split(',')
+              event.city = loc.first.strip
+              event.country = loc.last.strip
+            when 'provider'
+              event.organizer = element.text
+            when 'startdate', 'courseDate'
+              event.start = element.text.to_s.to_time
+            when 'enddate', 'courseEndDate'
+              event.end = element.text.to_s.to_time
+            when 'latitude'
+              event.latitude = element.text
+            when 'longitude'
+              event.longitude = element.text
+            when 'pubDate'
+              # Not really needed
+            else
+              # chuck away
+            end
+          end
+        end
+        event.end = event.start if event.end.nil?
+        event.source = 'WUR'
+        event.timezone = 'Amsterdam'
+        add_event(event)
+        @ingested += 1
+      rescue Exception => e
+        @messages << "Extract event fields failed with: #{e.message}"
+        Sentry.capture_exception(e)
       end
     end
 
