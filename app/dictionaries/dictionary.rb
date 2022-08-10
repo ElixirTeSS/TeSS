@@ -1,6 +1,7 @@
 # Base dictionary class
 class Dictionary
   include Singleton
+  include TrigramSimilarity
 
   def initialize
     @dictionary = load_dictionary
@@ -14,9 +15,28 @@ class Dictionary
     @dictionary[id]
   end
 
+  # Find by id, or by case-insensitive fuzzy matching
+  def best_match(id)
+    return id if @dictionary.has_key? id
+
+    best_score = 0
+    best_key = nil
+
+    @dictionary.each do |k, v|
+      v.fetch('match', []).append(k).each do |option|
+        score = similarity(id, option)
+        if score > best_score
+          best_key = k
+          best_score = score
+        end
+      end
+    end
+    return best_key if best_score > 0.3
+  end
+
   # Returns an array: [id, values]
   def lookup_by(key, value)
-    @dictionary.select { |id, values| values[key] == value }.to_a.flatten
+    @dictionary.select { |_id, values| values[key] == value }.to_a.flatten
   end
 
   # Find the value for the given key, for the given entry.
@@ -32,11 +52,11 @@ class Dictionary
   end
 
   def options_for_select(existing = nil)
-    if existing
-      d = @dictionary.select { |key, value| existing.include?(key) }
-    else
-      d = @dictionary
-    end
+    d = if existing
+          @dictionary.select { |key, _value| existing.include?(key) }
+        else
+          @dictionary
+        end
 
     d.map do |key, value|
       if value['description'].nil?
@@ -48,7 +68,11 @@ class Dictionary
   end
 
   def values_for_search(keys)
-    @dictionary.select { |key, value| keys.include?(key) }.map { |key, value| value['title'] }
+    @dictionary.select { |key, _value| keys.include?(key) }.map { |_key, value| value['title'] }
+  end
+
+  def keys
+    @dictionary.keys
   end
 
   private
@@ -60,10 +84,10 @@ class Dictionary
   def get_file_path(config_file, default_file)
     begin
       result = File.join(Rails.root, 'config', 'dictionaries', TeSS::Config.dictionaries[config_file])
-      raise 'file not found' if !File.file?(result)
-    rescue
+      raise 'file not found' unless File.file?(result)
+    rescue StandardError
       result = File.join(Rails.root, 'config', 'dictionaries', default_file)
     end
-    return result
+    result
   end
 end
