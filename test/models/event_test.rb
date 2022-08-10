@@ -2,7 +2,6 @@ require 'test_helper'
 require 'sidekiq/testing'
 
 class EventTest < ActiveSupport::TestCase
-
   setup do
     @event = events(:one)
     @mandatory = { start: @event.start, end: @event.end, organizer: @event.organizer,
@@ -37,6 +36,7 @@ class EventTest < ActiveSupport::TestCase
     e.event_types = ['warehouse rave']
     e.eligibility = ['cool dudes only']
 
+    e.valid?
     refute e.save
     assert_equal 2, e.errors.count
     assert_equal ['contained invalid terms: warehouse rave'], e.errors[:event_types]
@@ -67,12 +67,11 @@ class EventTest < ActiveSupport::TestCase
   test 'set default start time' do
     e = events(:event_with_no_start)
     assert_nil e.start
-    e.save()
+    e.save
     assert_nil e.start
     e.start = '2016-11-22'
-    e.save()
+    e.save
     assert_equal 0, e.start.hour
-
   end
 
   test 'lower precedence content provider does not overwrite' do
@@ -118,7 +117,7 @@ class EventTest < ActiveSupport::TestCase
   test 'destroys redundant scientific topic links' do
     e = events(:scraper_user_event)
 
-    e.scientific_topic_names = ['Proteins', 'Chromosomes']
+    e.scientific_topic_names = %w[Proteins Chromosomes]
     e.save!
     assert_equal 2, e.scientific_topics.count
 
@@ -133,13 +132,13 @@ class EventTest < ActiveSupport::TestCase
 
     # Via names
     assert_difference('OntologyTermLink.count', 2) do
-      e.scientific_topic_names = ['Proteins', 'Chromosomes', 'Proteins', 'Chromosomes']
+      e.scientific_topic_names = %w[Proteins Chromosomes Proteins Chromosomes]
       e.save!
       assert_equal 2, e.scientific_topics.count
     end
 
     assert_no_difference('OntologyTermLink.count') do
-      e.scientific_topic_names = ['Proteins', 'Chromosomes']
+      e.scientific_topic_names = %w[Proteins Chromosomes]
       e.save!
       assert_equal 2, e.scientific_topics.count
     end
@@ -180,7 +179,7 @@ class EventTest < ActiveSupport::TestCase
 
     # All three
     assert_no_difference('OntologyTermLink.count') do
-      e.scientific_topic_names = ['Proteins', 'Chromosomes']
+      e.scientific_topic_names = %w[Proteins Chromosomes]
       e.save!
     end
 
@@ -213,7 +212,6 @@ class EventTest < ActiveSupport::TestCase
     event = events(:one)
     material = materials(:good_material)
     event.materials << material
-
 
     assert_difference('EventMaterial.count', -1) do
       assert_difference('Event.count', -1) do
@@ -249,7 +247,7 @@ class EventTest < ActiveSupport::TestCase
 
   test 'does not block non-disallowed(?!) domain' do
     parameters = @mandatory.merge({ user: users(:regular_user), title: 'Good event', url: 'http://good-domain.example/event',
-                                    description: "event for does not block non-disallowed domain", online: true })
+                                    description: 'event for does not block non-disallowed domain', online: true })
     event = Event.new(parameters)
 
     assert event.save
@@ -262,7 +260,7 @@ class EventTest < ActiveSupport::TestCase
       TeSS::Config.blocked_domains = nil
       assert_nothing_raised do
         parameters = @mandatory.merge({ user: users(:regular_user), title: 'Bad event', url: 'https://bad-domain.example/event',
-                                        description: "event for does not throw error when blocked domains list is blank",
+                                        description: 'event for does not throw error when blocked domains list is blank',
                                         online: true })
         Event.create!(parameters)
       end
@@ -274,9 +272,8 @@ class EventTest < ActiveSupport::TestCase
   test 'enqueues a geocoding worker after creating an event' do
     assert_difference('GeocodingWorker.jobs.size', 1) do
       parameters = @mandatory.merge({ user: users(:regular_user), title: 'New event', url: 'http://example.com',
-                                      online: false, description: "event to test enqueing of geocoding worker",
-                                      venue: 'A place', city: 'Manchester', country: 'UK', postcode: 'M16 0TH'
-                                    })
+                                      online: false, description: 'event to test enqueing of geocoding worker',
+                                      venue: 'A place', city: 'Manchester', country: 'UK', postcode: 'M16 0TH' })
       event = Event.create(parameters)
       assert event.errors[:url].empty?
       refute event.address.blank?
@@ -315,7 +312,7 @@ class EventTest < ActiveSupport::TestCase
     refute event.postcode.blank?
     refute event.latitude.present?
     refute event.longitude.present?
-    assert_operator event.nominatim_count, :<, Event::NOMINATIM_MAX_ATTEMPTS, "nominatim count too high"
+    assert_operator event.nominatim_count, :<, Event::NOMINATIM_MAX_ATTEMPTS, 'nominatim count too high'
 
     assert_no_difference('GeocodingWorker.jobs.size') do
       event.save!
@@ -324,7 +321,7 @@ class EventTest < ActiveSupport::TestCase
 
   test 'does not enqueue a geocoding worker if the address is cached' do
     parameters = @mandatory.merge({ user: users(:regular_user), title: 'New event', url: 'http://example.com',
-                                    online: false, description: "event for geocoding enqueue test",
+                                    online: false, description: 'event for geocoding enqueue test',
                                     venue: 'A place', city: 'Manchester',
                                     country: @event.country, postcode: @event.postcode })
     event = Event.new(parameters)
@@ -341,52 +338,52 @@ class EventTest < ActiveSupport::TestCase
   end
 
   test 'can set a valid duration for event' do
-    valid_duration = "01:15"
+    valid_duration = '01:15'
     e = events(:one)
     e.duration = valid_duration
-    e.save()
-    assert_equal 0, e.errors[:duration].size, "unexpected validation error: " + e.errors[:duration].to_s
+    e.save
+    assert_equal 0, e.errors[:duration].size, 'unexpected validation error: ' + e.errors[:duration].to_s
   end
 
   test 'cannot set an invalid duration for event' do
-    invalid_duration = "One hour 99 minutes"
+    invalid_duration = 'One hour 99 minutes'
     e = events(:one)
     e.duration = invalid_duration
-    e.save()
+    e.save
     # issue 172 - changed duration to allow free text
-    assert_equal 0, e.errors[:duration].size, "unexpected number of validation errors: " + e.errors[:duration].size.to_s
+    assert_equal 0, e.errors[:duration].size, 'unexpected number of validation errors: ' + e.errors[:duration].size.to_s
     # assert_equal "must be in format HH:MM", e.errors[:duration][0]
   end
 
   test 'can set an duration for event longer than one day' do
-    valid_duration = "25:00"
+    valid_duration = '25:00'
     e = events(:one)
     e.duration = valid_duration
-    e.save()
-    assert_equal 0, e.errors[:duration].size, "unexpected validation error: " + e.errors[:duration].to_s
+    e.save
+    assert_equal 0, e.errors[:duration].size, 'unexpected validation error: ' + e.errors[:duration].to_s
   end
 
   test 'duration validation boundary testing' do
     # issue 172 - changed duration to allow free text
     durations = [
-      {dvalue: '00:00', passed: true },
-      {dvalue: '99:00', passed: true },
-      {dvalue: '99:59', passed: true },
-      {dvalue: '00:59', passed: true },
-      {dvalue: '23:30', passed: true },
-      {dvalue: '', passed: true },
-      {dvalue: '-00:00', passed: true },
-      {dvalue: '9:9', passed: true },
-      {dvalue: '100:00', passed: true },
-      {dvalue: '00:60', passed: true },
-      {dvalue: '00:99', passed: true }
+      { dvalue: '00:00', passed: true },
+      { dvalue: '99:00', passed: true },
+      { dvalue: '99:59', passed: true },
+      { dvalue: '00:59', passed: true },
+      { dvalue: '23:30', passed: true },
+      { dvalue: '', passed: true },
+      { dvalue: '-00:00', passed: true },
+      { dvalue: '9:9', passed: true },
+      { dvalue: '100:00', passed: true },
+      { dvalue: '00:60', passed: true },
+      { dvalue: '00:99', passed: true }
     ]
 
     e = events(:one)
     durations.each do |t|
-      #puts "\n testing value[#{t[:dvalue]}] passed[#{t[:passed]}]"
+      # puts "\n testing value[#{t[:dvalue]}] passed[#{t[:passed]}]"
       e.duration = t[:dvalue]
-      e.save()
+      e.save
       if t[:passed]
         assert_equal 0, e.errors[:duration].size, "unexpected validation error of #{t[:dvalue]}: " + e.errors[:duration].to_s
       else
@@ -439,5 +436,21 @@ class EventTest < ActiveSupport::TestCase
     event.url = 'ftp://something/something'
     refute event.valid?
     assert event.errors.added?(:url, :url, value: 'ftp://something/something')
+  end
+
+  test 'fuzzy-matches event types according to dictionary' do
+    event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user), url: 'https://https-website.com/mat')
+    assert event.valid?
+
+    eligibility = EligibilityDictionary.instance.keys.first
+    # ensure a ~50% match
+    event.eligibility = [eligibility[0..(eligibility.length / 2)]]
+    assert event.valid?
+    assert_equal [eligibility], event.eligibility
+
+    event_type = EventTypeDictionary.instance.keys.first
+    event.event_types = [event_type[0..(event_type.length / 2)]]
+    assert event.valid?
+    assert_equal [event_type], event.event_types
   end
 end

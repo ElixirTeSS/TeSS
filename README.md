@@ -46,8 +46,8 @@ or in your request:
 
 ```json
 {
-  "user_token" : "lisa@example.com",
-  "user_email" : "65gONMyVZXXkgnksghzB",
+  "user_email" : "lisa@example.com",
+  "user_token" : "65gONMyVZXXkgnksghzB",  
   "material": {
     "title": "API example",
     ...
