@@ -651,8 +651,8 @@ module Ingestors
     end
 
     def process_wur(url)
-      docs = Nokogiri::XML(URI.open(url).xpath('//item'))
-      docs.each do |event_item|
+      docs = Nokogiri::XML(URI.open(url)).xpath('//item')
+      docs.slice(0, 5).each do |event_item|
         begin
           event = Event.new
           event.event_types = ['workshops_and_courses']
@@ -662,6 +662,8 @@ module Ingestors
               event.title = element.text
             when 'link'
               event.url = element.text
+              # only include events which have this in their path
+              next unless event.url.include?('activity') || event.url.include?('Research-Results')
             when 'creator'
               # event.creator = element.text
               # no creator field. Not sure needs one
@@ -692,6 +694,15 @@ module Ingestors
         event.end = event.start if event.end.nil?
         event.source = 'WUR'
         event.timezone = 'Amsterdam'
+
+        # Now fetch the page to get the event date (until it is added to the RSS feed)
+        unless event.start and !event.url.starts_with('https://')
+          # should we do more against data exfiltration? URI.open is a known hazard
+          page = Nokogiri::XML(URI.open(event.url))
+          event.start = page.xpath('//th[.="Date"]').first&.parent&.xpath('td')&.last&.text&.strip&.to_time
+          # in this case also grab the venue
+          event.venue = page.xpath('//th[.="Venue"]').first&.parent&.xpath('td')&.last&.text
+        end
         add_event(event)
         @ingested += 1
       rescue Exception => e

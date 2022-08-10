@@ -55,8 +55,8 @@ sources:
     enabled: true
   - id: 8
     provider: 'WUR'              # content provider's title
-    url: https://www.wur.nl/nl/Resources/RSS/Agenda.htm     # the root URL required to access the source
-    image_url: https://www.wur.nl/upload/854757ab-168f-46d7-b415-f8b501eebaa5_WUR_RGB_standard_2021-site.svg
+    url: https://www.wur.nl/en/Resources-1/RSS/Calendar.htm
+    image_url: https://www.wur.nl/upload_mm/0/0/f/0135c3f5-b5b6-4fd4-a8da-47b5bea83e6b_WUR%20logo_642d7aa9_670x127.png
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     enabled: true
