@@ -24,10 +24,10 @@ module FuzzyDictionaryMatch
       self.class.fields_to_match.each do |field, dictionary|
         if self[field].instance_of? Array
           self[field].map! do |n|
-            dictionary.best_match(n)
+            dictionary.best_match(n) || n
           end
         else
-          self[field] = dictionary.best_match(self[field])
+          self[field] = dictionary.best_match(self[field]) || self[field]
         end
       end
     end
