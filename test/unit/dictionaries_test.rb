@@ -125,10 +125,26 @@ class DictionariesTest < ActiveSupport::TestCase
                  'event type (receptions_and_networking) title not matched'
     assert_nil dic.lookup('workshops_and_courses')['description'],
                'event type (workshops_and_courses) description was found'
+  end
 
+  test 'check fuzzy matching' do
+    # keys by default:
+    # - workshops_and_courses
+    # - receptions_and_networking
+    # - meetings_and_conferences
+    # - awards_and_prizegivings
+    dic = EventTypeDictionary.instance
     assert_equal 'workshops_and_courses', dic.best_match('workshops_and_courses')
     assert_equal 'workshops_and_courses', dic.best_match('workshops')
+    # once we start adding 'match' modifiers to the default EventTypeDictionary
+    # the below tests may start to fail
+    assert_nil dic.best_match('course')
     assert_nil dic.best_match('work')
+    assert_nil dic.best_match('wine tasting')
+    assert_nil dic.best_match('mooc')
+    assert_nil dic.best_match('ceremony')
+    assert_nil dic.best_match('networking drink')
+    assert_nil dic.best_match('e-learning')
   end
 
   test 'check alternate event_type dictionary' do

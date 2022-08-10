@@ -393,65 +393,66 @@ class EventTest < ActiveSupport::TestCase
       end
     end
 
-  test 'validates timezone if present' do
-    event = Event.new(title: 'An event', url: 'https://myevent.com', timezone: 'UTC', user: users(:regular_user))
-    assert event.valid?
+    test 'validates timezone if present' do
+      event = Event.new(title: 'An event', url: 'https://myevent.com', timezone: 'UTC', user: users(:regular_user))
+      assert event.valid?
 
-    event.timezone = '123'
-    refute event.valid?
-    assert event.errors.added?(:timezone, 'not found and cannot be linked to a valid timezone')
+      event.timezone = '123'
+      refute event.valid?
+      assert event.errors.added?(:timezone, 'not found and cannot be linked to a valid timezone')
 
-    event.timezone = nil
-    assert event.valid?
+      event.timezone = nil
+      assert event.valid?
 
-    event.timezone = ''
-    assert event.valid?
-  end
+      event.timezone = ''
+      assert event.valid?
+    end
 
-  test 'validates URL format' do
-    event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user))
+    test 'validates URL format' do
+      event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user))
 
-    refute event.valid?
-    assert event.errors.added?(:url, :blank)
+      refute event.valid?
+      assert event.errors.added?(:url, :blank)
 
-    event.url = '123'
-    refute event.valid?
-    assert event.errors.added?(:url, :url, value: '123')
+      event.url = '123'
+      refute event.valid?
+      assert event.errors.added?(:url, :url, value: '123')
 
-    event.url = '/relative'
-    refute event.valid?
-    assert event.errors.added?(:url, :url, value: '/relative')
+      event.url = '/relative'
+      refute event.valid?
+      assert event.errors.added?(:url, :url, value: '/relative')
 
-    event.url = 'git://something.git'
-    refute event.valid?
-    assert event.errors.added?(:url, :url, value: 'git://something.git')
+      event.url = 'git://something.git'
+      refute event.valid?
+      assert event.errors.added?(:url, :url, value: 'git://something.git')
 
-    event.url = 'http://http-website.com/mat'
-    assert event.valid?
-    refute event.errors.added?(:url, :url, value: 'http://http-website.com/mat')
+      event.url = 'http://http-website.com/mat'
+      assert event.valid?
+      refute event.errors.added?(:url, :url, value: 'http://http-website.com/mat')
 
-    event.url = 'https://https-website.com/mat'
-    assert event.valid?
-    refute event.errors.added?(:url, :url, value: 'https://https-website.com/mat')
+      event.url = 'https://https-website.com/mat'
+      assert event.valid?
+      refute event.errors.added?(:url, :url, value: 'https://https-website.com/mat')
 
-    event.url = 'ftp://something/something'
-    refute event.valid?
-    assert event.errors.added?(:url, :url, value: 'ftp://something/something')
-  end
+      event.url = 'ftp://something/something'
+      refute event.valid?
+      assert event.errors.added?(:url, :url, value: 'ftp://something/something')
+    end
 
-  test 'fuzzy-matches event types according to dictionary' do
-    event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user), url: 'https://https-website.com/mat')
-    assert event.valid?
+    test 'fuzzy-matches event types according to dictionary' do
+      event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user), url: 'https://https-website.com/mat')
+      assert event.valid?
 
-    eligibility = EligibilityDictionary.instance.keys.first
-    # ensure a ~50% match
-    event.eligibility = [eligibility[0..(eligibility.length / 2)]]
-    assert event.valid?
-    assert_equal [eligibility], event.eligibility
+      eligibility = EligibilityDictionary.instance.keys.first
+      # ensure a ~50% match
+      event.eligibility = [eligibility[0..(eligibility.length / 2)]]
+      assert event.valid?
+      assert_equal [eligibility], event.eligibility
 
-    event_type = EventTypeDictionary.instance.keys.first
-    event.event_types = [event_type[0..(event_type.length / 2)]]
-    assert event.valid?
-    assert_equal [event_type], event.event_types
+      event_type = EventTypeDictionary.instance.keys.first
+      event.event_types = [event_type[0..(event_type.length / 2)]]
+      assert event.valid?
+      assert_equal [event_type], event.event_types
+    end
   end
 end
