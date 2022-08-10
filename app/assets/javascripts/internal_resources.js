@@ -108,7 +108,7 @@ var InternalResources = {
                 var iconclass = "fa-list-alt";
             }
             $('#materials-results').append('' +
-                '<div id="' + item.id + '" class="col-md-12 col-sm-12 bounding-box" data-toggle=\"tooltip\" data-placement=\"top\" aria-hidden=\"true\" title=\"' + item.attributes['short-description'] + '\">' +
+                '<div id="' + item.id + '" class="col-md-12 col-sm-12 bounding-box" data-toggle=\"tooltip\" data-placement=\"top\" aria-hidden=\"true\" title=\"' + item.attributes['description'] + '\">' +
                 '<h4>' +
                 '<i class="fa ' +  iconclass + '"></i> ' +
                 '<a href="' + url + item.id + '" target="_blank">' +
