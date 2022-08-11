@@ -199,15 +199,16 @@ under the `path` parameter, following `/solr/`.
 
 ## Configure Sidekiq
 
-Sidekiq, which runs asynchronous tasks in TeSS, needs to be configured to run as a service. An example systemd 
-service configuration is provided at `config/sidekiq.service.example`.
+Sidekiq, which runs asynchronous tasks in TeSS, needs to be configured to run as a service. 
+Examples of Systemd and Upstart service configurations are provided under `config/sidekiq/`. 
+In this example we will use Systemd.
 
 Run the following commands as your TeSS application user (e.g. `tess`).
 
 Copy the example config file to the user's systemd directory: 
 
     mkdir -p ~/.config/systemd/user
-    cp config/sidekiq.service.example ~/.config/systemd/user/sidekiq.service
+    cp config/sidekiq/systemd/sidekiq.service.example ~/.config/systemd/user/sidekiq.service
 
 Then open it in your editor and change the `WorkingDirectory` field to your TeSS install directory, and the `ExecStart`
 field if you are using a different RVM alias than what is suggested in this guide.
