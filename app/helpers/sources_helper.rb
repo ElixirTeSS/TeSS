@@ -11,10 +11,4 @@ module SourcesHelper
   def source_resources_options_for_select
     Ingestors::IngestorFactory.resources_for_select
   end
-
-  def get_source_title source
-    result = source.content_provider.title + ": " +
-      Ingestors::IngestorFactory.get_method_value(source.method)
-  end
-
 end
