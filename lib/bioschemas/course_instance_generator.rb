@@ -6,7 +6,7 @@ module Bioschemas
 
     property :startDate, :start
     property :endDate, :end
-    property :organizer, -> (event) { { '@type' => 'Organization', name: event.organizer } if event.organizer }
+    property :organizer, -> (event) { { '@type' => 'Organization', name: event.organizer } if event.organizer.present? }
     property :location, -> (event) {
       {
         '@type' => 'PostalAddress',
