@@ -9,7 +9,7 @@
         <%= content_provider.keywords.join(', ') %>
       </li>
   <% end %>
-  <% unless content_provider.node.blank? %>
+  <% unless content_provider.node.blank? || !TeSS::Config.feature['nodes'] %>
       <li><h4 class="nav-heading">ELIXIR node</h4></li>
       <li style="padding: 7px 20px;">
         <p>
