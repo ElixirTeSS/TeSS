@@ -6,6 +6,10 @@ module Bioschemas
       'Thing'
     end
 
+    def self.bioschemas_profile
+      nil
+    end
+
     def initialize(resource)
       @resource = resource
     end
@@ -16,6 +20,13 @@ module Bioschemas
         '@id' => routes.polymorphic_url(resource),
         '@type' => self.class.type
       }
+
+      if self.class.bioschemas_profile
+        template['dct:conformsTo'] = {
+          '@type' => 'CreativeWork',
+          '@id' => self.class.bioschemas_profile
+        }
+      end
 
       properties.each do |prop, opts|
         attr_or_proc = opts[:attr]

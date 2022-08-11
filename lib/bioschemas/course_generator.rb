@@ -4,6 +4,10 @@ module Bioschemas
       'Course'
     end
 
+    def self.bioschemas_profile
+      'https://bioschemas.org/profiles/Course/0.9-DRAFT-2020_12_08'
+    end
+
     property :name, :title
     property :alternateName, :subtitle
     property :url, :url

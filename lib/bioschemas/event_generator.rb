@@ -4,6 +4,10 @@ module Bioschemas
       'Event'
     end
 
+    def self.bioschemas_profile
+      'https://bioschemas.org/profiles/Event/0.2-DRAFT-2019_06_14'
+    end
+
     property :name, :title
     property :alternateName, :subtitle
     property :url, :url
@@ -25,8 +29,8 @@ module Bioschemas
       }.compact
     }, condition: -> (event) { event.venue.present? || event.city.present? || event.county.present? ||
       event.country.present? || event.postcode.present? }
-    # property :hostInstitution, :host_institutions # Does not seem to be a valid Schema/Bioschemas property
-    # property :contact, :contact
+    property :hostInstitution, :host_institutions
+    property :contact, :contact
     property :funder, -> (event) {
       event.sponsors.map { |sponsor| { '@type' => 'Organization', 'name' => sponsor } }
     }
@@ -34,8 +38,8 @@ module Bioschemas
       event.target_audience.map { |audience| { '@type' => 'Audience', 'audienceType' => audience } }
     }
     property :maximumAttendeeCapacity, :capacity
-    # property :event_types, event.event_types
-    # property :eligibility, event.eligibility
+    property :event_types, :event_types
+    property :eligibility, :eligibility
     property :about, -> (event) {
       event.scientific_topics.map { |t| term(t) }
     }

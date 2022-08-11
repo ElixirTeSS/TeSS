@@ -4,6 +4,10 @@ module Bioschemas
       'CourseInstance'
     end
 
+    def self.bioschemas_profile
+      'https://bioschemas.org/profiles/Course/0.9-DRAFT-2020_12_08'
+    end
+
     property :startDate, :start
     property :endDate, :end
     property :organizer, -> (event) { { '@type' => 'Organization', name: event.organizer } if event.organizer.present? }

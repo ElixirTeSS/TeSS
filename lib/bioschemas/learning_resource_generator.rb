@@ -4,6 +4,10 @@ module Bioschemas
       'LearningResource'
     end
 
+    def self.bioschemas_profile
+      'https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE'
+    end
+
     property :name, :title
     property :url, :url
     property :description, :description
