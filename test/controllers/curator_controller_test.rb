@@ -185,7 +185,8 @@ class CuratorControllerTest < ActionController::TestCase
     end
 
     [event, material, workflow, collection, provider, source].each do |resource|
-      assert_select '.curate-user a[href=?]', @controller.polymorphic_path(resource), "#{@controller.polymorphic_path(resource)} not found!, \nBody:\n#{response.body}"
+      assert_select '.curate-user a[href=?]', @controller.polymorphic_path(resource), { text: resource.title },
+                    "#{@controller.polymorphic_path(resource)} not found!, \nBody:\n#{response.body}"
     end
   end
 
