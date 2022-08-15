@@ -702,6 +702,7 @@ module Ingestors
           event.start = page.xpath('//th[.="Date"]').first&.parent&.xpath('td')&.last&.text&.strip&.to_time
           # in this case also grab the venue
           event.venue = page.xpath('//th[.="Venue"]').first&.parent&.xpath('td')&.last&.text
+          sleep 1
         end
         add_event(event)
         @ingested += 1
