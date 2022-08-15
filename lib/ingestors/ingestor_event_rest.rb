@@ -695,10 +695,6 @@ module Ingestors
             end
           end
         end
-        event.end = event.start if event.end.nil?
-        event.source = 'WUR'
-        event.timezone = 'Amsterdam'
-
         # Now fetch the page to get the event date (until it is added to the RSS feed)
         unless event.start and !event.url.starts_with('https://')
           # should we do more against data exfiltration? URI.open is a known hazard
@@ -708,6 +704,11 @@ module Ingestors
           event.venue = page.xpath('//th[.="Venue"]').first&.parent&.xpath('td')&.last&.text
           sleep 1
         end
+
+        event.end = event.start if event.end.nil?
+        event.source = 'WUR'
+        event.timezone = 'Amsterdam'
+
         add_event(event)
         @ingested += 1
       rescue Exception => e
