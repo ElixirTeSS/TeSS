@@ -652,7 +652,7 @@ module Ingestors
 
     def process_wur(url)
       docs = Nokogiri::XML(URI.open(url)).xpath('//item')
-      docs.slice(0, 5).each do |event_item|
+      docs.each do |event_item|
         begin
           event = Event.new
           event.event_types = ['workshops_and_courses']
