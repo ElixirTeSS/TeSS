@@ -60,3 +60,14 @@ sources:
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     enabled: true
+  - id: 9
+    provider: 'UU'              # content provider's title
+    # dutch below
+    #url: 'https://www.uu.nl/events.rss?category-containers=4043,1916692,1916689,174593' # only 'workshops, masterclasses', 'lezingen', 'cursusses, trainingen' en 'congressen, symposia'
+    url: 'https://www.uu.nl/events.rss?category-containers=4293,4295,4296,4301' # only 'workshops, masterclasses', 'lezingen', 'cursusses, trainingen' en 'congressen, symposia'
+    # for english, use 4293,4295,4296,4301
+    # url: '
+    image_url: https://shape-project.org/part/uu_logo_en_cmyk.png/@@images/207be984-353c-4c0d-a8e4-333893e4086d.png
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
