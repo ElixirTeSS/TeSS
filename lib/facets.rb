@@ -50,7 +50,7 @@ module Facets
         end
 
         # Hide unverified/rejected users' things, except from curators and admins
-        unless user && (user.is_curator? || (user.is_admin? && value))
+        unless user && ((user.is_curator? || user.is_admin?) && value)
           without(:unverified, true)
         end
       end
