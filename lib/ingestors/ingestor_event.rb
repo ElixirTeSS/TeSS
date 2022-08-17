@@ -53,6 +53,79 @@ module Ingestors
       return
     end
 
+    # flexible parser for dates
+    # expect dates in pretty much freeform format and try to make something out of them
+    # returns start, end
+    #
+    # EXAMPLES:
+    # Thursday 22 september 2022 till saturday 24 september 2022 
+    # 3-7 october 2022
+    # 21 and 22 september 2022
+    # tuesday 20 september 2022
+    # thursday, 15 september 2022, 15:00 - 16:00 CEST (13:00 - 14:00 UTC)
+    # thursday 8 september, 13:00 - 17:00
+    # 6 october 2022 | 9:00-12:00 GMT-3/13:00-16:00 CEST | online
+    # 10 october 2022 till 11 october 2022 
+    # 2-3 november 2022 | online
+    # donderdag 17 november 2022, location
+    # 5-6 december 2022 - location
+    # 22 september
+
+    # here we have looked at something like https://github.com/adzap/timeliness
+    # or https://github.com/mojombo/chronic
+    # but without great success.
+    def parse_dates(input, timezone=nil)
+      Time.use_zone(timezone) do
+        # try to split on 'till', 'and' and '-'
+        parts = input.gsub(/\(.*\)/, '').split(/and|till|-/)
+        if parts.length > 1
+          start = endt = nil
+
+          begin
+            start = Time.zone.parse(parts.first)
+          rescue ArgumentError
+          end
+          begin
+            # pretend it is 'start' now to make time-only work
+            Timecop.freeze(start) do
+              endt = Time.zone.parse(parts.second) if parts.second
+            end
+          rescue ArgumentError
+          end
+
+          # if one of the two failed to parse, find a numeric component
+          # and replace it from the original in the other part
+          if endt && !start || parts.first.length < 7
+            begin
+              start = Time.zone.parse(parts.second.sub(/[0-9:]+/, parts.first)) # or are days 0-based?
+            rescue ArgumentError
+            end
+          end
+          if start && !endt
+            begin
+              endt = Time.zone.parse(parts.first.sub(/[0-9:]+/, parts.second))
+            rescue ArgumentError
+            end
+          end
+        else
+          start = endt = Time.zone.parse(input)
+        end
+
+        # if no end date given, use the start date
+        endt ||= start
+
+        return [start&.to_datetime, endt&.to_datetime]
+      end
+    end
+
+    def parse_start_date(input, timezone=nil)
+      parse_dates(input, timezone).first
+    end
+
+    def parse_end_date(input, timezone=nil)
+      parse_dates(input, timezone).last
+    end
+
     private
 
     def save_valid_event(resource, matched)
@@ -175,6 +248,5 @@ module Ingestors
       return parts.join(',') if parts.size > 0
       return ''
     end
-
   end
 end

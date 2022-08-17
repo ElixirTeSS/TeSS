@@ -691,6 +691,7 @@ GEM
     time_diff (0.3.0)
       activesupport
       i18n
+    timecop (0.9.5)
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
@@ -819,6 +820,7 @@ DEPENDENCIES
   slim
   sunspot_rails!
   time_diff
+  timecop (~> 0.9.5)
   turbolinks
   tzinfo
   tzinfo-data
