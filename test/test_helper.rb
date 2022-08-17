@@ -60,10 +60,8 @@ class ActiveSupport::TestCase
 
   # override Time.now for testing calendars, etc.
   def freeze_time(fixed_time=Time.now, &block)
-    Time.stub(:now, fixed_time) do
-      fixed_time.stub(:iso8601, fixed_time) do
-        block.call
-      end
+    Timecop.freeze(fixed_time) do
+      block.call
     end
   end
 

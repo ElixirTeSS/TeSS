@@ -71,3 +71,11 @@ sources:
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     enabled: true
+  - id: 10
+    provider: 'NWO'              # content provider's title
+    # dutch below
+    url: https://www.nwo.nl/en/meetings?page=0
+    image_url: https://dmp.nwo.nl/assets/nwo/logo-7350782753e5f8a47e154a793b66c02dddb8693292a1c76d99bb2e70b42e807d.png
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
