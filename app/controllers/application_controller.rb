@@ -80,14 +80,16 @@ class ApplicationController < ActionController::Base
 
   def job_status
     begin
-      job = SidekiqStatus::Container.load(params[:id])
+      status = Sidekiq::Status::status(params[:id])
 
-      respond_to do |format|
-        format.json { render json: { status: job.status } }
-      end
-    rescue SidekiqStatus::Container::StatusNotFound
-      respond_to do |format|
-        format.json { render json: { status: 'not-found' }, status: 404 }
+      if status.present?
+        respond_to do |format|
+          format.json { render json: { status: status } }
+        end
+      else
+        respond_to do |format|
+          format.json { render json: { status: 'not-found' }, status: 404 }
+        end
       end
     end
   end

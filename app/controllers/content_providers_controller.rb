@@ -117,8 +117,8 @@ class ContentProvidersController < ApplicationController
   def scraper_results
     yaml = File.read(File.join(Rails.root, 'tmp', "scrape_#{params[:job_id]}.yml"))
     data = YAML.load(yaml)
-    @events = data[:events].map { |e| @content_provider.events.build(e) }
-    @materials = data[:materials].map { |m| @content_provider.materials.build(m) }
+    @events = data[:events].map { |e| @content_provider.events.build(e.merge(user_id: current_user.id)) }
+    @materials = data[:materials].map { |m| @content_provider.materials.build(m.merge(user_id: current_user.id)) }
 
     render partial: 'content_providers/scraper_results'
   end

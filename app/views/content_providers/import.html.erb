@@ -96,7 +96,7 @@
               } else if (data.status === 'working') {
                 $('#scrape-status').text('Working');
                 setTimeout(checkStatus, 2000);
-              } else if (data.status === 'waiting') {
+              } else if (data.status === 'queued') {
                 $('#scrape-status').text('Waiting for job to begin');
                 setTimeout(checkStatus, 2000);
               } else {
