@@ -1,4 +1,4 @@
-require File.expand_path('../boot', __FILE__)
+require_relative 'boot'
 
 require 'rails/all'
 
@@ -8,37 +8,45 @@ Bundler.require(*Rails.groups)
 
 module TeSS
   class Application < Rails::Application
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 6.0
+
     # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
+    # Application configuration can go into files in config/initializers
+    # -- all .rb files in that directory are automatically loaded after loading
+    # the framework and any gems in your application.
 
-    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
-    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
-    # config.time_zone = 'Central Time (US & Canada)'
+    config.eager_load_paths << Rails.root.join('lib')
 
-    # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    # config.i18n.default_locale = :de
-
-    # Do not swallow errors in after_commit/after_rollback callbacks.
-    config.active_record.raise_in_transactional_callbacks = true
-
-    #Include lib/** files (lib directory and all subdirectories)
-    config.autoload_paths += Dir["#{Rails.root}/lib/**/"]
-
-    # Route exceptions to the application router vs. default
-    config.exceptions_app = self.routes
-
-    # Enable CORS
-    config.middleware.insert_before 0, 'Rack::Cors' do
+    config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins '*'
         resource '*', headers: :any, methods: [:get, :post, :options]
       end
     end
 
-    config.tess = config_for(:tess)
+    config.tess = config_for(Rails.env.test? ? Pathname.new(Rails.root).join('test', 'config', 'test_tess.yml') : :tess)
+
+    # locales
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'overrides', '**', '*.{rb,yml}')] unless Rails.env.test?
+    config.i18n.available_locales = [:en]
+    config.i18n.default_locale = :en
+
+    config.active_record.yaml_column_permitted_classes = [
+      Symbol, Date, Time, ActiveSupport::TimeWithZone, ActiveSupport::TimeZone,
+      ActiveSupport::HashWithIndifferentAccess, BigDecimal
+    ]
   end
 
-  Config = OpenStruct.new(Rails.configuration.tess)
+  Config = OpenStruct.new(Rails.configuration.tess.with_indifferent_access)
+
+  Config.redis_url = TeSS::Config.redis_url
+
+  tess_base_uri = URI.parse(TeSS::Config.base_url)
+  Rails.application.default_url_options = {
+    host: tess_base_uri.host,
+    port: tess_base_uri.port,
+    protocol: tess_base_uri.scheme,
+    script_name: (Rails.application.config.relative_url_root || '/')
+  }
 end

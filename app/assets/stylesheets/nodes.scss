@@ -3,16 +3,18 @@ div.staff-form {
 
   .staff-member-fields {
     padding: 10px;
+
     @media (min-width: $screen-md) {
       width: 33%;
       float: left;
       padding-right: 20px;
     }
+
     margin: 10px 0;
     border-bottom: 1px solid #ddd;
 
     .delete-staff-member {
-      @include button-variant($btn-danger-color, $btn-danger-bg, $btn-danger-border)
+      @include button-variant($btn-danger-color, $btn-danger-bg, $btn-danger-border);
     }
 
     &.pending-delete {

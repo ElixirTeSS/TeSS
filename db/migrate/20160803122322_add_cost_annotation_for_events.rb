@@ -1,4 +1,4 @@
-class AddCostAnnotationForEvents < ActiveRecord::Migration
+class AddCostAnnotationForEvents < ActiveRecord::Migration[4.2]
   def up
     add_column :events, :cost, :text
     add_index :events, :cost

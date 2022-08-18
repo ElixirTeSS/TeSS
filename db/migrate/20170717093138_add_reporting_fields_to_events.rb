@@ -1,4 +1,4 @@
-class AddReportingFieldsToEvents < ActiveRecord::Migration
+class AddReportingFieldsToEvents < ActiveRecord::Migration[4.2]
   def change
     add_column :events, :funding, :string
     add_column :events, :attendee_count, :integer

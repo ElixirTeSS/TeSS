@@ -1,0 +1,32 @@
+<%= collapsible_panel('Suggested training materials to associate with this resource', 'internal-resources-box-materials') do %>
+
+<input type="hidden" id='title_element' value="<%=title_element%>">
+
+<div class="input-group">
+    <input type="text" class="form-control" id="materials_query"
+           placeholder="Search <%= TeSS::Config.site['title_short'] %> materials"/>
+    <div class="input-group-btn">
+      <span class="btn btn-default" id="search_materials" onclick="InternalResources.search('materials')">
+        <i class="fa fa-search"></i></span>
+    </div>
+</div>
+
+
+<div class="row bounding-box">
+  <div class="materials-suggestions-header">
+  <div>Click the <i class="fa fa-plus-square-o"></i> button to add a material as an external resource.</div>
+  </div>
+
+  <div id="materials-next" style="display: none;">1</div>
+  <div id="materials-previous" style="display: none;">0</div>
+
+  <div id="materials-results">
+  </div>
+  <br>
+
+  <div class="load-more-results">
+    <i id="next-materials-button" class="btn btn-primary pull-right" style="display: none;">Load more results</i>
+    <i id="prev-materials-button" class="btn btn-primary pull-left" style="display: none;">Show previous results</i>
+  </div>
+</div>
+<% end %>

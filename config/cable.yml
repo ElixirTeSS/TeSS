@@ -1,0 +1,10 @@
+development:
+  adapter: async
+
+test:
+  adapter: async
+
+production:
+  adapter: redis
+  url: <%= TeSS::Config.redis_url %>
+  channel_prefix: tess_production

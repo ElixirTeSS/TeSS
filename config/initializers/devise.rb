@@ -101,6 +101,55 @@ Devise.setup do |config|
   # Setup a pepper to generate the encrypted password.
   # config.pepper = '09ac760832bce03ad2613914ed87bb70b46e8b8dce024ea5fde82106ad403bb71bf636a02c3bb012687228e0584ff7d25baa7a19cfb3b86a0c96b30bd53e0d3b'
 
+  # ==> Configuration for :invitable
+  # The period the generated invitation token is valid.
+  # After this period, the invited resource won't be able to accept the invitation.
+  # When invite_for is 0 (the default), the invitation won't expire.
+  config.invite_for = 2.weeks
+
+  # Number of invitations users can send.
+  # - If invitation_limit is nil, there is no limit for invitations, users can
+  # send unlimited invitations, invitation_limit column is not used.
+  # - If invitation_limit is 0, users can't send invitations by default.
+  # - If invitation_limit n > 0, users can send n invitations.
+  # You can change invitation_limit column for some users so they can send more
+  # or less invitations, even with global invitation_limit = 0
+  # Default: nil
+  # config.invitation_limit = 5
+
+  # The key to be used to check existing users when sending an invitation
+  # and the regexp used to test it when validate_on_invite is not set.
+  # config.invite_key = { email: /\A[^@]+@[^@]+\z/ }
+  # config.invite_key = { email: /\A[^@]+@[^@]+\z/, username: nil }
+
+  # Ensure that invited record is valid.
+  # The invitation won't be sent if this check fails.
+  # Default: false
+  # config.validate_on_invite = true
+
+  # Resend invitation if user with invited status is invited again
+  # Default: true
+  # config.resend_invitation = false
+
+  # The class name of the inviting model. If this is nil,
+  # the #invited_by association is declared to be polymorphic.
+  # Default: nil
+  # config.invited_by_class_name = 'User'
+
+  # The foreign key to the inviting model (if invited_by_class_name is set)
+  # Default: :invited_by_id
+  # config.invited_by_foreign_key = :invited_by_id
+
+  # The column name used for counter_cache column. If this is nil,
+  # the #invited_by association is declared without counter_cache.
+  # Default: nil
+  # config.invited_by_counter_cache = :invitations_count
+
+  # Auto-login after the user accepts the invite. If this is false,
+  # the user will need to manually log in after accepting the invite.
+  # Default: true
+  # config.allow_insecure_sign_in_after_accept = false
+
   # ==> Configuration for :confirmable
   # A period that the user is allowed to access the website even without
   # confirming their account. For instance, if set to 2.days, the user will be
@@ -138,7 +187,7 @@ Devise.setup do |config|
 
   # Options to be passed to the created cookie. For instance, you can set
   # secure: true in order to force SSL only cookies.
-  # config.rememberable_options = {}
+  config.rememberable_options = { secure: Rails.env.production? }
 
   # ==> Configuration for :validatable
   # Range for password length.
@@ -259,29 +308,4 @@ Devise.setup do |config|
   # When using OmniAuth, Devise cannot automatically set OmniAuth path,
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
-  unless Rails.application.secrets.elixir_aai['client_id'].blank?
-    config.omniauth :openid_connect, {
-        name: :elixir_aai,
-        scope: [:openid, :email, :profile],
-        response_type: 'code',
-        issuer: 'https://login.elixir-czech.org/oidc/',
-        discovery: false,
-        send_nonce: true,
-        client_signing_alg: :RS256,
-        client_jwk_signing_key: '{"keys":[{"kty":"RSA","e":"AQAB","kid":"rsa1","alg":"RS256","n":"yUt09EkKGW30jpggX1PYqrxuUw4Fo7a_uMiNvmy8CwBLfo-BgaI35Qi-ke_Dz9784CmNXjlIzNPFq-DUi-8pBDGAJ5hznfEoQI2TDzdiG7uIART4AEpLo9xCKrL1al37jrDmvgk98gbumnHsWKQb7KFRKHpIBvNVQ6v-z3nOQZ-fl1552S750ZSIfTXWXqlZohLVE9K8JwsM9i9z7h5EBU2cJkxPbFoZEs6zGMFEOohiAA99Nm7cW_3m3dCn-Nm5TJadEt_xR08b2GXhcg-tAC7qoBthpDFnUOrLbwvNWQIyE-Mch-z4-5LVTfElOGRem2tZaqYcMG_mY6EBra8pUw"}]}',
-        client_options: {
-            identifier: Rails.application.secrets.elixir_aai['client_id'],
-            secret: Rails.application.secrets.elixir_aai['secret'],
-            # Wish I could use the url helper for this! (user_elixir_aai_omniauth_callback_url)
-            redirect_uri: "#{TeSS::Config.base_url.chomp('/')}/users/auth/elixir_aai/callback",
-            scheme: 'https',
-            host: 'login.elixir-czech.org',
-            port: 443,
-            authorization_endpoint: '/oidc/authorize',
-            token_endpoint: '/oidc/token',
-            userinfo_endpoint: '/oidc/userinfo',
-            jwks_uri: '/oidc/jwk',
-        }
-    }
-  end
 end

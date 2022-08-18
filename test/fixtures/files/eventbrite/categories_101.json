@@ -1,0 +1,83 @@
+{
+  "resource_uri": "https://www.eventbriteapi.com/v3/categories/101/",
+  "id": "101",
+  "name": "Business & Professional",
+  "name_localized": "Business & Professional",
+  "short_name": "Business",
+  "short_name_localized": "Business",
+  "subcategories": [
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/subcategories/1001/",
+      "id": "1001",
+      "name": "Startups & Small Business",
+      "name_localized": "Startups & Small Business"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/subcategories/1002/",
+      "id": "1002",
+      "name": "Finance",
+      "name_localized": "Finance"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/subcategories/1003/",
+      "id": "1003",
+      "name": "Environment & Sustainability",
+      "name_localized": "Environment & Sustainability"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/subcategories/1004/",
+      "id": "1004",
+      "name": "Educators",
+      "name_localized": "Educators"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/subcategories/1005/",
+      "id": "1005",
+      "name": "Real Estate",
+      "name_localized": "Real Estate"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/subcategories/1006/",
+      "id": "1006",
+      "name": "Non Profit & NGOs",
+      "name_localized": "Non Profit & NGOs"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/subcategories/1007/",
+      "id": "1007",
+      "name": "Sales & Marketing",
+      "name_localized": "Sales & Marketing"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/subcategories/1008/",
+      "id": "1008",
+      "name": "Media",
+      "name_localized": "Media"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/subcategories/1009/",
+      "id": "1009",
+      "name": "Design",
+      "name_localized": "Design"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/subcategories/1010/",
+      "id": "1010",
+      "name": "Career",
+      "name_localized": "Career"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/subcategories/1011/",
+      "id": "1011",
+      "name": "Investment",
+      "name_localized": "Investment"
+    },
+    {
+      "resource_uri": "https://www.eventbriteapi.com/v3/subcategories/1999/",
+      "id": "1999",
+      "name": "Other",
+      "name_localized": "Other"
+    }
+  ],
+  "locale": "en_US"
+}

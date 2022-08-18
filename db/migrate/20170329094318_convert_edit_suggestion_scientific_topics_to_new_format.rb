@@ -1,11 +1,11 @@
 class ScientificTopic < ActiveRecord::Base; end
 
-class EditSuggestion < ActiveRecord::Base
+class EditSuggestion < ApplicationRecord
   has_and_belongs_to_many :scientific_topics_old, class_name: 'ScientificTopic',
                           join_table: 'edit_suggestions_scientific_topics'
 end
 
-class ConvertEditSuggestionScientificTopicsToNewFormat < ActiveRecord::Migration
+class ConvertEditSuggestionScientificTopicsToNewFormat < ActiveRecord::Migration[4.2]
   def up
     puts 'Creating ScientificTopicLinks for EditSuggestions'
     EditSuggestion.all.each do |es|

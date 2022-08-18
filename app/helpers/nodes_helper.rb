@@ -1,3 +1,4 @@
+# The helper for Nodes classes
 module NodesHelper
 
   NODES_INFO = "ELIXIR is a pan-European research infrastructure consisting of the Hub and a number of, primarily,national nodes that provide services to their local communities.\n\n"+
@@ -26,7 +27,7 @@ module NodesHelper
   end
 
   def country_flag(country_code, options = {})
-    image_tag "nodes/flags/#{country_code}", options
+    image_tag "nodes/flags/#{country_code}.png", options
   end
 
   def countries_options_for_select

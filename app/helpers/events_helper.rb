@@ -1,25 +1,35 @@
+# The helper for Events classes
 module EventsHelper
 
-  EVENTS_INFO = "An event in TeSS is a link to a single training event sourced by a provider along with description and other meta information (e.g. date, location, audience, ontological categorization, keywords, etc.).\n\n"+
-
-      "TeSS harvests training events automatically, including descriptions and other relevant meta-data made available by providers.\n\n"+
-
-      "If your website contains training events that you wish to include in TeSS, please contact the TeSS team (<a href='mailto:#{TeSS::Config.contact_email}'>#{TeSS::Config.contact_email}</a>) for further details."
-
-
+  EVENTS_INFO = "An event in #{TeSS::Config.site['title_short']} is a link to a single training event sourced by a\
+  provider along with description and other meta information (e.g. date, location, audience, ontological\
+  categorization, keywords, etc.).\n\n\
+  Training events can be added manually or automatically harvested from a provider's website.\n\n\
+  If your website contains training events that you wish to include in #{TeSS::Config.site['title_short']},\
+  please contact the support team (<a href='mailto:#{TeSS::Config.contact_email}'>#{TeSS::Config.contact_email}</a>)\
+  for further details.".freeze
 
   def google_calendar_export_url(event)
+
     if event.all_day?
-      dates = "#{event.start.strftime('%Y%m%d')}/#{event.end.tomorrow.strftime('%Y%m%d')}" # Need to add 1 day for all day events apparently
+      # Need to add 1 day for all day events apparently
+      dates = "#{event.start.strftime('%Y%m%d')}/#{event.end.tomorrow.strftime('%Y%m%d')}"
     else
-      dates = "#{event.start.strftime('%Y%m%dT%H%M00Z')}/#{event.end.strftime('%Y%m%dT%H%M00Z')}"
+      dates = "#{event.start_utc.strftime('%Y%m%dT%H%M00Z')}/#{event.end_utc.strftime('%Y%m%dT%H%M00Z')}"
+    end
+
+    if event.online?
+      location = 'Online'
+    else
+      location = [event.venue, event.city, event.country].join(', ')
     end
 
     event_params = {
         text: event.title,
         dates: dates,
+        ctz: event.timezone,
         details: "#{event_url(event)}",
-        location: [event.venue, event.city, event.country].join(', '),
+        location: location,
         sf: true,
         output: 'xml'
     }
@@ -50,5 +60,25 @@ module EventsHelper
         end
       end
     end
+  end
+
+  def google_maps_embed_api_tag(event)
+    src = 'https://www.google.com/maps/embed/v1/place' +
+      "?key=#{Rails.application.secrets.google_maps_api_key}" +
+      "&q=#{event.latitude},#{event.longitude}"
+
+    content_tag(:iframe, '', width: 400, height: 250, frameborder: 0, style: 'border: 0', class: 'google-map',
+                    src: src, allowfullscreen: true)
+  end
+
+  def google_maps_javascript_api_tag(event)
+    content_tag(:div, 'Loading map...', id: 'map', class: 'google-map', data: {
+      'map-latitude': event.latitude,
+      'map-longitude': event.longitude,
+      'map-suggested-latitude': event.suggested_latitude,
+      'map-suggested-longitude': event.suggested_longitude,
+      'map-marker-title': event.title,
+      'map-suggested-marker-image': image_url('suggestion.png')
+    })
   end
 end

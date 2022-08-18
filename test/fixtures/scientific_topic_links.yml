@@ -1,8 +1,0 @@
-
-term_one:
-  resource: one (EditSuggestion)
-  term_uri: "http://edamontology.org/topic_3168"
-
-term_two:
-  resource: one (EditSuggestion)
-  term_uri: "http://edamontology.org/topic_0199"

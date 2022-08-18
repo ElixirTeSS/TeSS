@@ -1,10 +1,11 @@
+# The controller for actions related to the Workflows model
 class WorkflowsController < ApplicationController
 
   layout 'application'
 
   before_action :set_workflow, only: [:show, :edit, :update, :destroy, :fork, :embed]
   before_action :set_breadcrumbs
-  after_filter :allow_embedding, only: [:embed]
+  after_action :allow_embedding, only: [:embed]
 
   include SearchableIndex
 

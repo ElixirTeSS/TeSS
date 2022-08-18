@@ -1,0 +1,25 @@
+
+term_one:
+  resource: one (EditSuggestion)
+  term_uri: "http://edamontology.org/topic_3168"
+  field: scientific_topics
+
+term_two:
+  resource: one (EditSuggestion)
+  term_uri: "http://edamontology.org/topic_0199"
+  field: scientific_topics
+
+course_event_term_one:
+  resource: course_event (Event)
+  term_uri: "http://edamontology.org/topic_3168"
+  field: scientific_topics
+
+course_event_term_two:
+  resource: course_event (Event)
+  term_uri: "http://edamontology.org/topic_0199"
+  field: scientific_topics
+
+material_with_optionals_term:
+  resource: material_with_optionals (Material)
+  term_uri: "http://edamontology.org/topic_3172"
+  field: scientific_topics

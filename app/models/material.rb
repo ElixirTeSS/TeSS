@@ -1,9 +1,7 @@
 require 'rails/html/sanitizer'
 
-class Material < ActiveRecord::Base
-
+class Material < ApplicationRecord
   include PublicActivity::Common
-  include HasScientificTopics
   include LogParameterChanges
   include HasAssociatedNodes
   include HasExternalResources
@@ -12,43 +10,47 @@ class Material < ActiveRecord::Base
   include LockableFields
   include Scrapable
   include Searchable
-
-
-  extend FriendlyId
-  friendly_id :title, use: :slugged
+  include CurationQueue
+  include HasSuggestions
+  include IdentifiersDotOrg
+  include HasFriendlyId
+  include HasDifficultyLevel
 
   if TeSS::Config.solr_enabled
     # :nocov:
     searchable do
+      # full text search fields
       text :title
-      string :title
+      text :description
+      text :contact
+      text :doi
+      text :authors
+      text :contributors
+      text :target_audience
+      text :keywords
+      text :resource_type
+      text :content_provider do
+        self.content_provider.try(:title)
+      end
+      # sort title
       string :sort_title do
         title.downcase.gsub(/^(an?|the) /, '')
       end
-      text :long_description
-      text :short_description
-      text :doi
+      # other fields
+      string :title
       string :authors, :multiple => true
-      text :authors
       string :scientific_topics, :multiple => true do
         self.scientific_topic_names
       end
+      string :operations, :multiple => true do
+        self.operation_names
+      end
       string :target_audience, :multiple => true
-      text :target_audience
       string :keywords, :multiple => true
-      text :keywords
+      string :fields, :multiple => true
       string :resource_type, :multiple => true
-      text :resource_type
-      string :difficulty_level do
-        Tess::DifficultyDictionary.instance.lookup_value(self.difficulty_level, 'title')
-      end
-      text :difficulty_level
       string :contributors, :multiple => true
-      text :contributors
       string :content_provider do
-        self.content_provider.try(:title)
-      end
-      text :content_provider do
         self.content_provider.try(:title)
       end
       string :node, multiple: true do
@@ -57,6 +59,9 @@ class Material < ActiveRecord::Base
       time :updated_at
       time :created_at
       time :last_scraped
+      boolean :failing do
+        failing?
+      end
       string :user do
         user.username if user
       end
@@ -67,43 +72,63 @@ class Material < ActiveRecord::Base
 
   # has_one :owner, foreign_key: "id", class_name: "User"
   belongs_to :user
-  has_one :edit_suggestion, as: :suggestible, dependent: :destroy
-  has_many :package_materials
-  has_many :packages, through: :package_materials
+  has_one :link_monitor, as: :lcheck, dependent: :destroy
+  has_many :collection_materials
+  has_many :collections, through: :collection_materials
   has_many :event_materials, dependent: :destroy
   has_many :events, through: :event_materials
 
+  has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
+  has_ontology_terms(:operations, branch: OBO_EDAM.operations)
+
+  has_many :stars,  as: :resource, dependent: :destroy
+  
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
-  auto_strip_attributes :title, :short_description, :long_description, :url, :squish => false
+  auto_strip_attributes :title, :description, :url, :squish => false
 
-  validates :title, :short_description, :url, presence: true
-
+  validates :title, :description, :url, presence: true
   validates :url, url: true
+  validates :other_types, presence: true, if: Proc.new { |m| m.resource_type.include?('other') }
 
-  validates :difficulty_level, controlled_vocabulary: { dictionary: Tess::DifficultyDictionary.instance }
+  clean_array_fields(:keywords, :fields, :contributors, :authors,
+                     :target_audience, :resource_type, :subsets)
 
-  clean_array_fields(:keywords, :contributors, :authors, :target_audience, :resource_type)
+  update_suggestions(:keywords, :contributors, :authors, :target_audience,
+                     :resource_type)
 
-  update_suggestions(:keywords, :contributors, :authors, :target_audience, :resource_type)
+  def description= desc
+    super(Rails::Html::FullSanitizer.new.sanitize(desc))
+  end
 
   attr_accessor :include_in_create
 
   def short_description= desc
-    super(Rails::Html::FullSanitizer.new.sanitize(desc))
+    self.description = desc unless @_long_description_set
   end
 
   def long_description= desc
-    super(Rails::Html::FullSanitizer.new.sanitize(desc))
+    @_long_description_set = true
+    self.description = desc
   end
 
   def self.facet_fields
-    %w( scientific_topics tools standard_database_or_policy target_audience keywords difficulty_level
-        authors related_resources contributors licence node content_provider user resource_type)
+    field_list = %w(scientific_topics operations tools standard_database_or_policy content_provider keywords
+                    difficulty_level fields licence target_audience authors contributors resource_type
+                    related_resources user)
+
+    field_list.delete('operations') if TeSS::Config.feature['disabled'].include? 'operations'
+    field_list.delete('scientific_topics') if TeSS::Config.feature['disabled'].include? 'topics'
+    field_list.delete('standard_database_or_policy') if TeSS::Config.feature['disabled'].include? 'fairshare'
+    field_list.delete('tools') if TeSS::Config.feature['disabled'].include? 'biotools'
+    field_list.delete('fields') if TeSS::Config.feature['disabled'].include? 'ardc_fields_of_research'
+    field_list.delete('node') unless TeSS::Config.feature['nodes']
+
+    field_list
   end
 
   def self.check_exists(material_params)
-    given_material = material_params.is_a?(Hash) ? self.new(material_params) : material_params
+    given_material = material_params.is_a?(Material) ? material_params : new(material_params)
     material = nil
 
     if given_material.url.present?
@@ -112,9 +137,13 @@ class Material < ActiveRecord::Base
 
     if given_material.content_provider.present? && given_material.title.present?
       material ||= self.where(content_provider_id: given_material.content_provider_id,
-                                   title: given_material.title).last
+                              title: given_material.title).last
     end
 
     material
+  end
+
+  def to_bioschemas
+    [Bioschemas::LearningResourceGenerator.new(self)]
   end
 end

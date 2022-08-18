@@ -11,7 +11,7 @@
  * Creates a new input box for free text fields as a child of the field_name div
  */
 
-$(document).ready(function(){
+document.addEventListener("turbolinks:load", function() {
     // Multi-inputs ("app/views/common/multiple_inputs.html.erb")
     $('[data-role="multi-input"]').each(function () {
         var existing = JSON.parse($(this).find('[data-role="multi-input-existing"]').html()) || [];
@@ -54,13 +54,16 @@ $(document).ready(function(){
         });
 
         // Render the existing associations on page load
-        for (var i = 0; i < existing.length; i++) {
-            listElement.append(HandlebarsTemplates['multi_input/field']({ prefix: prefix, value: existing[i]}));
+        if (!listElement.children('.multiple-list-item').length) {
+            for (var i = 0; i < existing.length; i++) {
+                listElement.append(HandlebarsTemplates['multi_input/field']({ prefix: prefix, value: existing[i]}));
+            }
         }
     });
 
     /* User deletes a free text field such as keyword, author or contributor */
     $(document.body).on('click', '.multiple-input-delete', function (e) {
         $(this).parents('.multiple-list-item').remove();
+        return false;
     });
 });

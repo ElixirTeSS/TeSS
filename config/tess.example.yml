@@ -2,11 +2,74 @@ default: &default
   base_url: http://localhost:3000
   contact_email: contact@example.com
   sender_email: no-reply@localhost
+  twitter_handle: '@handle'
   solr_enabled: true
   announcement_message:
   prevent_robot_indexing: false
   blocked_domains:
     - !ruby/regexp '/bad-domain\.example/'
+  site:
+    title: 'TeSS (Training eSupport System)'
+    title_short: TeSS
+    favicon: elixir/favicon.png
+    logo: elixir/ELIXIR_TeSS_logo_white-80px-height.png
+    logo_alt: 'Training eSupport System'
+    logo_open_graph: ''
+    logo_email: ''
+    repository: 'https://github.com/ElixirTeSS/TeSS'
+    supported_by: 'elixir_supported_by'
+    widget_example: 'elixir_widget_example'
+  mailer:
+    delivery_method: sendmail
+    location: /usr/sbin/sendmail
+    arguments: '-i -t'
+  gmaps:
+    center:
+      latitude: 53.4674583
+      longitude: -2.233948899999973
+    zoom:
+      latitude: 3
+      longitude: 13
+  header_notice: # HTML to display above the header
+  parent_org:
+    name: 'ELIXIR Hub'
+    image: elixir/hub-logo.png
+    url: 'http://www.elixir-europe.org'
+  feature:
+    e-learnings: false
+    events: true
+    invitation: false
+    materials: true
+    nodes: false
+    collections: true
+    providers: true
+    subscription: true
+    registration: true
+    sources: false
+    trainers: false
+    workflows: true
+    # Possible features to disable:
+    #  biotools, topics, operations, sponsors, fairshare, county, ardc_fields_of_research,
+    #  other_types, subsets, syllabus, approved_editors address_finder
+    disabled: ['ardc_fields_of_research', 'other_types', 'subsets', 'syllabus', 'approved_editors']
+  placeholder:
+    collection: 'placeholder-collection.png'
+    provider: 'placeholder-organization.png'
+    group: 'placeholder-group.png'
+    person: 'placeholder-person.png'
+  dictionaries:
+    cost_basis: 'cost_basis.yml'
+    difficulty: 'difficulty.yml'
+    eligibility: 'eligibility.yml'
+    event_types: 'event_types.yml'
+    licences: 'licences.yml'
+    material_status: 'material_status.yml'
+    material_type: 'material_type.yml'
+    target_audience: 'target_audience.yml'
+    trainer_experience: 'trainer_experience.yml'
+  funders:
+#    - url: https://example.com/your-funders-website
+#      logo: foo.png
 
 development:
   <<: *default

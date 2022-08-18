@@ -1,5 +1,5 @@
 var Fairsharing = {
-    baseUrl: 'https://fairsharing.org',
+    baseUrl: 'https://legacy.fairsharing.org',
     titleElement: function() {
         return $('#' + $('#title_element').val())
     },
@@ -18,7 +18,7 @@ var Fairsharing = {
         }
     },
     allTypeURL: function() {
-        return Fairsharing.baseUrl + '/api/all/summary';
+        return Fairsharing.baseUrl + '/api/all/summary/';
     },
     websiteBaseURL: function(){
         return Fairsharing.baseUrl;
@@ -34,7 +34,7 @@ var Fairsharing = {
             Fairsharing.queryAPI(next);
         } else {
             /* display nice "we're out of stuff" message here */
-            console.log("No next URL found!");
+            // console.log("No next URL found!");
         }
     },
     prevPage: function(){
@@ -44,6 +44,7 @@ var Fairsharing = {
             Fairsharing.queryAPI(prev);
         } else {
             /* display nice "we're out of stuff" message here */
+            // console.log("We're out of stuff!");
         }
     },
     queryAPI: function(api_url){
@@ -59,7 +60,7 @@ var Fairsharing = {
                     Fairsharing.displayRecords(result);
                 },
                 error: function (error) {
-                    console.log("Error querying FAIRsharing: " + error);
+                    // console.log("Error querying FAIRsharing: " + JSON.stringify(error));
                 }
         });
     },
@@ -118,7 +119,7 @@ var Fairsharing = {
                 'title="click to associate ' + item.name + ' with this resource"' +
                 'data-title="' + item.name + '" data-url="' + url + '"/>' +
                 '</h4>' +
-                '<span>' + item.description + '</span>' +
+                '<span>' + truncateWithEllipses(item.description, 500)  + '</span>' +
                 '<div class="external-links">' +
                 '<a class="btn btn-warning" target="_blank" href="' + Fairsharing.websiteBaseURL() + '/' + id +'">' +
                 'View ' + item.name + ' on FAIRsharing ' +
@@ -126,7 +127,7 @@ var Fairsharing = {
                 '</div>' +
                 '</div>');
         });
-        $('#next-tools-button').attr('data-next', json.next);
+        $('#next-bs-button').attr('data-next', json.next);
     },
     copyTitleAndSearch: function(){
         $('#fairsharing_query').val(Fairsharing.titleElement().val());
@@ -180,7 +181,7 @@ var Fairsharing = {
                 );
             },
             error: function (error) {
-                console.log("Error querying FAIRsharing: " + error);
+                // console.log("Error querying FAIRsharing: " + error);
             }
         });
 
@@ -195,17 +196,27 @@ var delay = (function(){
     };
 })();
 
-$(document).ready(function () {
+document.addEventListener("turbolinks:load", function() {
     $('.loading_image').hide();
     $('#next-bs-button').click(Fairsharing.nextPage);
     $('#prev-bs-button').click(Fairsharing.prevPage);
-    $('#fairsharing_query').keyup(function() {
-        delay(function(){
-            Fairsharing.search();
-        }, 1000 );
+    $('#fairsharing_query').on({
+        keyup: function () {
+            delay(function () {
+                Fairsharing.search();
+            }, 1000);
+        },
+        keydown: function search(e) {
+            if (e.keyCode === 13) {
+                Fairsharing.search();
+                e.preventDefault();
+                return false;
+            }
+        }
     });
     $('#search_fairsharing').click(Fairsharing.search);
     $('#fairsharing-results').on('click','.associate-tool', Fairsharing.associateTool);
     $('#external-resources').on('change', '.delete-external-resource-btn input.destroy-attribute', ExternalResources.delete);
     Fairsharing.titleElement().blur(Fairsharing.copyTitleAndSearch);
 });
+

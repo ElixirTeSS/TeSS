@@ -2,7 +2,7 @@
 
 one:
   external_id: MyString1
-  title: MyString
+  title: "event one"
   subtitle: MyString
   url: http://example.com/cool-event
   organizer: MyString
@@ -10,7 +10,7 @@ one:
   event_types: ["workshops_and_courses"]
   start: 2015-11-23 10:16:33
   end: 2015-11-23 10:16:33
-  sponsor: MyString
+  sponsors: ["MyString"]
   venue: MyText
   city: MyString
   county: MyString
@@ -21,18 +21,26 @@ one:
   keywords: ["Keyword"]
   user: regular_user
   content_provider: goblet
+  host_institutions: ["MyHost"]
+  contact: MyContact
+  eligibility: [ first_come_first_served ]
+  timezone: UTC
+  duration: '00:00'
+  learning_objectives: "There are none."
+  recognition: "Yup. You attended the workshop."
 
 two:
   external_id: MyString2
-  title: MyString
+  title: "event two"
   subtitle: MyString
   url: http://example.com/a-different-event
   organizer: MyString
   description: MyText
   event_types: ["meetings_and_conferences"]
+  duration: '23:59'
   start: 2015-11-23 00:00:00
   end: 2015-11-24 00:00:00
-  sponsor: MyString
+  sponsors: ["MyString"]
   venue: MyText
   city: MyString
   county: MyString
@@ -42,6 +50,10 @@ two:
   longitude:
   keywords: ["Keyword"]
   user: regular_user
+  host_institutions: ["MyHost"]
+  timezone: UTC
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
 
 month_long_event:
   title: Month-long event
@@ -50,11 +62,15 @@ month_long_event:
   event_types: ["meetings_and_conferences"]
   start: 2015-11-23 10:16:33
   end: 2015-12-23 10:16:33
-  sponsor: Bill Gates
+  sponsors: ["Bill Gates"]
   city: New York
   country: USA
   keywords: ["Keyword"]
   user: regular_user
+  host_institutions: ["MyHost"]
+  timezone: UTC
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
 
 year_long_event:
   title: Year-long event
@@ -63,12 +79,15 @@ year_long_event:
   event_types: ["meetings_and_conferences"]
   start: 2015-11-23 10:16:33
   end: 2016-12-23 10:16:33
-  sponsor: Bill Gates
+  sponsors: ["Bill Gates"]
   city: New York
   country: USA
   keywords: ["Keyword"]
   user: regular_user
-
+  host_institutions: ["MyHost"]
+  timezone: US/Eastern
+  contact: MyContact
+  eligibility: [ by_invitation ]
 
 iann_event:
   title: iAnn event
@@ -76,6 +95,10 @@ iann_event:
   description: 'this is an iann event'
   user: regular_user
   content_provider: iann
+  host_institutions: ["MyHost"]
+  timezone: UTC
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
 
 scraper_user_event:
   title: material owned by scraper'
@@ -83,6 +106,17 @@ scraper_user_event:
   description: 'this is my material'
   user: scraper_user
   content_provider: goblet
+  host_institutions: ["MyHost"]
+  timezone: UTC
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  start: 2016-12-12 10:00:00
+  end: 2016-12-12 12:00:00
+  venue: MyHall
+  city: Somewhere Awesome
+  country: BigCountry
+  postcode: 1010
+  organizer: AnOrganizer
 
 event_with_external_resource:
   title: External Resource Event
@@ -90,6 +124,17 @@ event_with_external_resource:
   description: 'this is my material'
   user: scraper_user
   content_provider: goblet
+  host_institutions: ["MyHost"]
+  timezone: UTC
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  start: 2016-12-12 10:00:00
+  end: 2016-12-12 12:00:00
+  venue: MyHall
+  city: Somewhere Awesome
+  country: BigCountry
+  postcode: 1010
+  organizer: AnOrganizer
 
 event_with_no_start:
   title: No Start Time
@@ -97,6 +142,16 @@ event_with_no_start:
   description: 'Fun stuff, indeed!'
   user: scraper_user
   content_provider: goblet
+  host_institutions: ["MyHost"]
+  timezone: UTC
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  end: 2016-12-12 12:00:00
+  venue: MyHall
+  city: Somewhere Awesome
+  country: BigCountry
+  postcode: 1010
+  organizer: AnOrganizer
 
 event_with_no_end:
   title: No End Time
@@ -105,6 +160,15 @@ event_with_no_end:
   user: scraper_user
   content_provider: goblet
   start: 2016-11-22
+  host_institutions: ["MyHost"]
+  timezone: UTC
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  venue: MyHall
+  city: Somewhere Awesome
+  country: BigCountry
+  postcode: 1010
+  organizer: AnOrganizer
 
 online_event_with_no_end:
   title: No End Time
@@ -114,6 +178,15 @@ online_event_with_no_end:
   content_provider: goblet
   start: 2016-11-22 14:00
   online: true
+  host_institutions: ["MyHost"]
+  timezone: UTC
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  venue: MyHall
+  city: Somewhere Awesome
+  country: BigCountry
+  postcode: 1010
+  organizer: AnOrganizer
 
 organisation_event:
   title: Fun Training Day
@@ -123,8 +196,18 @@ organisation_event:
   content_provider: organisation_provider
   start: 2016-12-12 10:00:00
   end: 2016-12-12 12:00:00
+  host_institutions: ["MyHost"]
+  timezone: UTC
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  venue: MyHall
+  city: Somewhere Awesome
+  country: BigCountry
+  postcode: 1010
+  organizer: AnOrganizer
 
 portal_event:
+  online: false
   title: Awesome Training Day
   url: http://content-provider.portal/event
   description: 'Such Bioinformatics, many DNA, very Protein. Wow!'
@@ -132,7 +215,15 @@ portal_event:
   content_provider: portal_provider
   start: 2016-12-12 10:00:00
   end: 2016-12-12 12:00:00
-  city: Somewhere Awesome
+  host_institutions: ["MyHost"]
+  timezone: UTC
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  venue: "Birmingham City Hall"
+  city: "Birmingham"
+  country: "United Kingdom"
+  postcode: "B1 1BB"
+  organizer: AnOrganizer
 
 dodgy_country_event:
   title: Fun Training Day
@@ -143,6 +234,14 @@ dodgy_country_event:
   start: 2016-12-12 10:00:00
   end: 2016-12-12 12:00:00
   country: üK
+  host_institutions: ["MyHost"]
+  timezone: London
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  venue: MyHall
+  city: Somewhere Awesome
+  postcode: 1010
+  organizer: AnOrganizer
 
 no_description_event:
   title: All you need to know is in the title
@@ -151,16 +250,35 @@ no_description_event:
   content_provider: goblet
   start: 2016-12-12 10:00:00
   end: 2016-12-12 12:00:00
+  host_institutions: ["MyHost"]
+  timezone: Australia/Melbourne
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  venue: MyHall
+  city: Melbourne
+  country: Australia
+  postcode: 3000
+  organizer: AnOrganizer
 
 event_with_report:
   title: This event happened
   url: http://content-provider.org/event-with-report
+  description: "An event with a report"
   user: regular_user
   content_provider: goblet
   start: 2016-12-12 10:00:00
   end: 2016-12-12 12:00:00
   funding: Fidget spinner sales
   attendee_count: 1
+  host_institutions: ["MyHost"]
+  timezone: Australia/Sydney
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  venue: MyHall
+  city: Sydney
+  country: AU
+  postcode: 1000
+  organizer: AnOrganizer
 
 another_event_with_report:
   title: This event happened
@@ -170,6 +288,15 @@ another_event_with_report:
   start: 2016-12-12 10:00:00
   end: 2016-12-12 12:00:00
   funding: Raffle
+  host_institutions: ["MyHost"]
+  timezone: UTC
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  venue: MyHall
+  city: Somewhere Awesome
+  country: BigCountry
+  postcode: 1010
+  organizer: AnOrganizer
 
 shadowbanned_event:
   external_id: MyString1
@@ -181,7 +308,7 @@ shadowbanned_event:
   event_types: ["workshops_and_courses"]
   start: 2018-11-23 10:16:33
   end: 2018-11-23 10:16:33
-  sponsor: MyString
+  sponsors: ["MyString"]
   venue: MyText
   city: MyString
   county: MyString
@@ -191,3 +318,165 @@ shadowbanned_event:
   longitude: -2.233949
   keywords: ["Predatory"]
   user: shadowbanned_user
+  host_institutions: ["MyHost"]
+  timezone: UTC
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+
+failing_event:
+  title: Collision With Iceberg
+  url: http://white-star.com/frc
+  description: 'Women and children first'
+  user: scraper_user
+  content_provider: portal_provider
+  start: 1914-04-14 23:40:00
+  end: 1914-04-15 02:20:00
+  host_institutions: ["MyHost"]
+  timezone: GMT
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  venue: Kilburn Building
+  city: Manchester
+  county: Greater Manchester
+  country: United Kingdom
+  postcode: M13 9PL
+
+kilburn:
+  title: Kilburn Event
+  url: http://example.com/kilburn-party
+  description: Fun!
+  event_types: ["meetings_and_conferences"]
+  start: 2019-11-23 00:00:00
+  end: 2019-11-24 00:00:00
+  venue: Kilburn Building
+  city: Manchester
+  county: Greater Manchester
+  country: United Kingdom
+  postcode: M13 9PL
+  user: regular_user
+  host_institutions: ["MyHost"]
+  timezone: Europe/London
+  contact: MyContact
+  eligibility: [ registration_of_interest ]
+  organizer: "The Organizer"
+
+calendar_event:
+  title: "calendar event"
+  subtitle: "an event to test calendar exports"
+  url: http://microsoft.com
+  organizer: MyString
+  description: MyText
+  event_types: ["meetings_and_conferences"]
+  duration: '01:45'
+  start: 2021-09-20 23:15:00
+  end: 2021-09-21 01:00:00
+  sponsors: ["MyString"]
+  venue: 100, Lygon Street
+  city: Carlton
+  country: Australia
+  postcode: 3010
+  keywords: ["Keyword"]
+  user: regular_user
+  host_institutions: ["UoLife"]
+  timezone: Melbourne
+  contact: MyContact
+  eligibility: [ first_come_first_served ]
+
+training_event:
+  title: "calendar event"
+  subtitle: "an event to test calendar exports"
+  url: http://microsoft.com
+  organizer: EventsCo
+  description: MyText
+  event_types: ["meetings_and_conferences"]
+  duration: '01:45'
+  start: 2021-09-20 23:15:00
+  end: 2021-09-21 01:00:00
+  sponsors: ["FundingCorp"]
+  venue: 100, Lygon Street
+  city: Carlton
+  country: Australia
+  postcode: 3010
+  latitude: -37.80475509993125
+  longitude: 144.96627433866243
+  keywords: ["Keyword"]
+  user: trainer_user
+  content_provider: goblet
+  host_institutions: ["UoLife"]
+  timezone: Melbourne
+  contact: MyContact
+  eligibility: [ first_come_first_served ]
+
+ical_event_1:
+  title: P'Con - Embracing new solutions for in-situ visualisation
+  url: 'https://pawsey.org.au/event/pcon-embracing-new-solutions-for-in-situ-visualisation/'
+  subtitle: "an event to test calendar ingestion"
+  organizer: MyString
+  description: MyText
+  event_types: ["meetings_and_conferences"]
+  duration: '01:45'
+  start: 2021-12-08 12:30:00 +0800
+  end: 2021-12-08 13:30:00 +0800
+  sponsors: ["MyString"]
+  venue: 100, Lygon Street
+  city: Carlton
+  country: Australia
+  postcode: 3010
+  keywords: ["Keyword"]
+  user: trainer_user
+  content_provider: another_portal_provider
+  host_institutions: ["UoLife"]
+  timezone: Australia/Perth
+  contact: MyContact
+  eligibility: [ first_come_first_served ]
+
+ical_event_2:
+  title: "PaCER Seminar: Computational Fluid Dynamics"
+  url: 'https://pawsey.org.au/event/pacer-seminar-computational-fluid-dynamics/'
+  subtitle: "an event to test calendar ingestion"
+  organizer: MyString
+  description: MyText
+  event_types: ["meetings_and_conferences"]
+  duration: '01:45'
+  start: 2022-06-15 10:00:00 +0800
+  end: 2022-06-15 12:00:00 +0800
+  sponsors: ["MyString"]
+  venue: 100, Lygon Street
+  city: Carlton
+  country: Australia
+  postcode: 3010
+  keywords: ["Keyword"]
+  user: trainer_user
+  content_provider: another_portal_provider
+  host_institutions: ["UoLife"]
+  timezone: Australia/Perth
+  contact: MyContact
+  eligibility: [ first_come_first_served ]
+
+course_event:
+  title: Summer Course on Learning Stuff
+  subtitle: Expand your horizons
+  url: http://example.com/cool-course-summer
+  organizer: CourseCo
+  description: Learn lots of stuff!
+  event_types: [ "workshops_and_courses" ]
+  start: 2015-08-23 10:16:33
+  end: 2015-08-24 18:07:46
+  sponsors: ['Amazon', 'GitHub', 'Google']
+  venue: Kilburn Building
+  city: Manchester
+  county: Greater Manchester
+  country: United Kingdom
+  postcode: M13 9PL
+  latitude: 53.467458
+  longitude: -2.233949
+  keywords: ['Ruby', 'Javascript']
+  user: regular_user
+  content_provider: goblet
+  host_institutions: ["University of Manchester"]
+  contact: MyContact
+  eligibility: [ first_come_first_served ]
+  timezone: UTC
+  learning_objectives: "There are none."
+  recognition: "Yup. You attended the workshop."
+  target_audience: ['Everyone!']

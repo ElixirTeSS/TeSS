@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   concern :collaboratable do
     resources :collaborations, only: [:create, :destroy, :index, :show]
   end
@@ -12,22 +11,34 @@ Rails.application.routes.draw do
   get 'edam/topics' => 'edam#topics'
   get 'edam/operations' => 'edam#operations'
 
-  resources :workflows
+  if TeSS::Config.feature['workflows'] == true
+    resources :workflows
+  end
 
   #get 'static/home'
-  get 'about' => 'static#about', as: 'about'
+  get 'about' => 'about#tess', as: 'about'
+  get 'about/registering' => 'about#registering', as: 'registering_resources'
+  get 'about/developers' => 'about#developers', as: 'developers'
+  get 'about/us' => 'about#us', as: 'us'
+
   get 'privacy' => 'static#privacy', as: 'privacy'
 
   post 'materials/check_exists' => 'materials#check_exists'
   post 'events/check_exists' => 'events#check_exists'
   post 'content_providers/check_exists' => 'content_providers#check_exists'
+  post 'sources/check_exists' => 'sources#check_exists'
 
   #devise_for :users
-  # Use custom registrations controller that subclasses devise's
-  devise_for :users, :controllers => {
+  # Use custom invitations and registrations controllers that subclasses devise's
+  # Devise will try to connect to the DB at initialization, which we don't want
+  # to happen when precompiling assets in the docker build script.
+  unless Rake.try(:application)&.top_level_tasks&.include? 'assets:precompile'
+    devise_for :users, :controllers => {
       :registrations => 'tess_devise/registrations',
+      :invitations => 'tess_devise/invitations',
       :omniauth_callbacks => 'callbacks'
-  }
+    }
+  end
   #Redirect to users index page after devise user account update
   # as :user do
   #   get 'users', :to => 'users#index', :as => :user_root
@@ -45,51 +56,78 @@ Rails.application.routes.draw do
     resource :ban, only: [:create, :new, :destroy]
   end
 
-  resources :nodes, concerns: :activities
+  resources :sources, concerns: :activities
 
-  resources :events, concerns: :activities do
-    collection do
-      get 'count'
-    end
-    member do
-      get 'redirect'
-      post 'add_topic'
-      post 'add_data'
-      post 'reject_topic'
-      post 'reject_data'
-      get 'report'
-      patch 'report', to: 'events#update_report'
+  if TeSS::Config.feature['trainers'] == true
+    resources :trainers, only: [:show, :index]
+  end
+
+  if TeSS::Config.feature['nodes'] == true
+    resources :nodes, concerns: :activities
+  end
+
+  if TeSS::Config.feature['events'] == true
+    resources :events, concerns: :activities do
+      collection do
+        get 'count'
+      end
+      member do
+        get 'redirect'
+        post 'add_term'
+        post 'add_data'
+        post 'reject_term'
+        post 'reject_data'
+        get 'report'
+        patch 'report', to: 'events#update_report'
+        get 'clone', to: 'events#clone'
+      end
     end
   end
 
-  resources :packages, concerns: :activities
+  if TeSS::Config.feature['collections'] == true
+    resources :collections, concerns: [:collaboratable, :activities]
+  end
 
-  resources :workflows, concerns: [:collaboratable, :activities] do
-    member do
-      get 'fork'
-      get 'embed'
+  if TeSS::Config.feature['workflows'] == true
+    resources :workflows, concerns: [:collaboratable, :activities] do
+      member do
+        get 'fork'
+        get 'embed'
+      end
     end
   end
 
-  resources :content_providers, concerns: :activities do
-    member do
-      get 'import'
-      get 'scraper_results'
-      post 'import', to: 'content_providers#scrape'
-      post 'bulk_create'
+  if TeSS::Config.feature['providers'] == true
+    resources :content_providers, concerns: :activities do
+      member do
+        get 'import'
+        get 'scraper_results'
+        post 'import', to: 'content_providers#scrape'
+        post 'bulk_create'
+      end
     end
   end
 
-  resources :materials, concerns: :activities do
-    member do
-      post :reject_topic
-      post :reject_data
-      post :add_topic
-      post :add_data
+  if TeSS::Config.feature['materials'] == true
+    resources :materials, concerns: :activities do
+      member do
+        post :reject_term
+        post :reject_data
+        post :add_term
+        post :add_data
+      end
+      collection do
+        get 'count'
+      end
     end
-    collection do
-      get 'count'
-    end
+  end
+
+  if TeSS::Config.feature['e-learnings'] == true
+    get 'elearning_materials' => 'materials#index', defaults: { 'resource_type' => 'e-learning' }
+  end
+
+  if TeSS::Config.feature['invitation'] == true
+    get 'invitees' => 'users#invitees'
   end
 
   resources :subscriptions, only: [:show, :index, :create, :destroy] do
@@ -102,8 +140,8 @@ Rails.application.routes.draw do
   post 'stars' => 'stars#create'
   delete 'stars' => 'stars#destroy'
 
-  post 'materials/:id/update_packages' => 'materials#update_packages'
-  post 'events/:id/update_packages' => 'events#update_packages'
+  post 'materials/:id/update_collections' => 'materials#update_collections'
+  post 'events/:id/update_collections' => 'events#update_collections'
 
   get 'search' => 'search#index'
   get 'test_url' => 'application#test_url'
@@ -115,21 +153,15 @@ Rails.application.routes.draw do
   end
 
   get 'curate/topic_suggestions' => 'curator#topic_suggestions'
+  get 'curate/users' => 'curator#users'
   get 'curate' => 'curator#index'
-
 
   require 'sidekiq/web'
   authenticate :user, lambda { |u| u.is_admin? } do
     mount Sidekiq::Web, at: '/sidekiq'
   end
 
-
-=begin
-  authenticate :user do
-    resources :materials, only: [:new, :create, :edit, :update, :destroy]
-  end
-  resources :materials, only: [:index, :show]
-=end
+  get 'resolve/:prefix:type:id' => 'resolution#resolve', constraints: { prefix: /(.+\:)?/, type: /[a-zA-Z]/, id: /\d+/ }
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

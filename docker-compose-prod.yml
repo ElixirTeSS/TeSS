@@ -1,0 +1,90 @@
+version: '3.8'
+services:
+  app:
+    container_name: ${PREFIX}-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ${PREFIX}-app
+    restart: always
+    env_file: .env
+    depends_on:
+      - db
+      - solr
+      - redis
+    ports:
+      - '3000:3000'
+    volumes:
+      - uploads:/code/public/system
+      - ./config/tess.yml:/code/config/tess.yml
+      - ./config/secrets.yml:/code/config/secrets.yml
+    environment:
+      RAILS_ENV: production
+      RAILS_LOG_TO_STDOUT: 'true'
+      RAILS_SERVE_STATIC_FILES: 'true'
+  db:
+    container_name: ${PREFIX}-db
+    logging:
+      driver: none
+    image: postgres:14.2
+    restart: always
+    env_file: .env
+    environment:
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  solr:
+    container_name: ${PREFIX}-solr
+    image: solr:8
+    restart: always
+    volumes:
+      - solr-data:/var/solr
+      - ./solr:/opt/solr/server/solr/configsets/production
+    command:
+      - solr-precreate
+      - tess
+      - /opt/solr/server/solr/configsets/production
+  redis:
+    container_name: ${PREFIX}-redis
+    image: redis:6
+    restart: always
+    volumes:
+      - redis-data:/data
+  sidekiq:
+    container_name: ${PREFIX}-sidekiq
+    image: ${PREFIX}-app
+    depends_on:
+      - app
+      - db
+      - redis
+    volumes:
+      - uploads:/code/public/system
+      - ./config/tess.yml:/code/config/tess.yml
+      - ./config/secrets.yml:/code/config/secrets.yml
+    env_file: .env
+    environment:
+      RAILS_ENV: production
+    entrypoint: ./docker/sidekiq_entrypoint.sh
+  dbbackups:
+    container_name: ${PREFIX}-dbbackups
+    image: kartoza/pg-backup:14-3.1
+    volumes:
+      - db-backups:/backups
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASS=${DB_PASSWORD}
+      - DBLIST=${DB_NAME}
+      - REMOVE_BEFORE=7
+    restart: on-failure
+    depends_on:
+      - db
+volumes:
+  db-data:
+  db-backups:
+  solr-data:
+  redis-data:
+  uploads:

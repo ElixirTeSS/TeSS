@@ -1,0 +1,15 @@
+You are receiving this automated email because you are a curator of TeSS.
+
+<%= @user.name %> has registered an account on TeSS and created the following <%= pluralize(@resources.count, 'resource') -%>:
+<% @resources.each do |resource| -%>
+  * <%= resource.title %> - <%= url_for(resource) %>
+    URL: <%= resource.respond_to?(:url) ? resource.url : 'n/a'-%>
+
+<% end -%>
+
+This user's resources are currently hidden. As a curator, you can decide whether to:
+"Approve" - Mark this user as safe, un-hiding their existing and future content.
+"Reject" - Mark this user as a spammer, preventing them from creating further content on TeSS.
+
+To approve or reject this user, please visit:
+<%= curate_users_url(with_content: true) %>

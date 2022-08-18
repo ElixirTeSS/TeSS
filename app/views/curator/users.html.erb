@@ -1,0 +1,133 @@
+<% filter_params = {} %>
+<% filter_params[:role] = params[:role] if params.key?(:role) %>
+<% filter_params[:with_content] = params[:with_content] if params.key?(:with_content) %>
+
+<div class="page-header">
+  <h2>
+    <% if current_user.is_admin? %>
+      <div class="pull-right form-inline">
+        <select id="role_id" onchange="window.location = '<%= url_for(filter_params.merge(role: '_ROLE_')) -%>'.replace('_ROLE_', $(this).val());" autocomplete="off" class="form-control" style="width: 15em">
+          <%= role_options(@role) %>
+        </select>
+        <div class="checkbox btn btn-default<%= ' active' if params[:with_content] -%>" title="Only show users who have created content.">
+          <%= label_tag do %>
+            <%= check_box_tag :with_content, true, params[:with_content], autocomplete: 'off',
+                              data: { url: url_for(params[:with_content] ? filter_params.except(:with_content) : filter_params.merge({ with_content: true })) },
+                              onchange: "window.location = $(this).data('url');" %>
+            with content?
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+    Curate Users
+  </h2>
+</div>
+
+<div class="col-sm-4 col-sm-push-8">
+  <div class="panel panel-default" id="recent-user-curation-activity">
+    <div class="panel-heading">Recent Curation Activity</div>
+    <div class="panel-body">
+      <% activities = recent_approvals %>
+      <% if activities.any? %>
+        <ul class="recent-approvals">
+          <% activities.each do |activity| %>
+            <li>
+              <strong><%= link_to activity.trackable.name, activity.trackable, target: '_blank' -%></strong> was
+              <%= approval_message(activity.parameters[:new]) -%> by <%= activity.owner.try(:username) -%>
+              <%= time_ago_in_words(activity.created_at) -%> ago.
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <span class="muted">No recent approvals/rejections.</span>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-8 col-sm-pull-4">
+  <% if @users.any? %>
+    <%= render partial: "search/common/pagination_bar", locals: { resources: @users } %>
+
+    <% @users.each do |user| %>
+      <div class="panel panel-default curate-user">
+        <div class="panel-heading">
+          <%= link_to user.name, user, target: :_blank %>
+
+          <% if user.banned? %>
+            <span class="text-danger">(<%= user.shadowbanned? ? 'shadowbanned' : 'banned'-%>)</span>
+          <% end %>
+
+          <div class="pull-right curate-user-buttons" data-action-url="<%= user_path(user) -%>">
+            <%= link_to('Approve', '#', class: 'btn btn-xs btn-success', 'data-role-id' => Role.approved.id ) %>
+            <%= link_to('Reject', '#', class: 'btn btn-xs btn-danger', 'data-role-id' => Role.rejected.id ) %>
+          </div>
+        </div>
+        <div class="panel-body">
+          <i>Registered <%= time_ago_in_words(user.created_at) -%> ago</i><br/>
+
+          <strong>Public email:</strong>
+          <% if user.profile.email.blank? %>
+            <span class="empty">None specified</span>
+          <% else %>
+            <%= mail_to user.profile.email %>
+          <% end %><br/>
+
+          <strong><%= User.human_attribute_name(:website) %>:</strong>
+          <% if user.profile.website.blank? %>
+            <span class="empty">None specified</span>
+          <% else %>
+            <%= link_to user.profile.website, user.profile.website, rel: 'nofollow' %>
+          <% end %><br/>
+
+          <% User::CREATED_RESOURCE_TYPES.each do |type| %>
+            <% count = user.send(type).count %>
+            <% if count > 0 %>
+              <% resources = user.send(type).last(3) %>
+              <strong><%= resources.first.class.model_name.human -%></strong>
+              <ul>
+                <% resources.each do |resource| %>
+                  <li>
+                    <%= link_to resource.title, resource, target: :_blank %>
+                    <% if resource.respond_to?(:url) %>
+                      <br/>
+                      URL: <%= link_to resource.url, resource.url, target: :_blank, rel: 'nofollow' -%>
+                    <% end %>
+                  </li>
+                <% end %>
+              </ul>
+              <% if count > 3 %>
+                <%= link_to "See all #{pluralize(count, resources.first.class.model_name.human)}", polymorphic_path(type, user: user.username), target: :_blank -%><br/>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <%= render partial: "search/common/pagination_bar", locals: { resources: @users } %>
+  <% else %>
+    Could not find any <%= @role.title.downcase.pluralize-%> requiring approval. Another curator may have already taken action.
+  <% end %>
+</div>
+
+<script>
+    $('.curate-user-buttons .btn').click(function () {
+        var url = $(this).parents('.curate-user-buttons').data('actionUrl');
+        var panel = $(this).parents('.curate-user');
+
+        $.ajax({
+            url: url,
+            method: 'PUT',
+            dataType: 'script',
+            data: { user: { role_id: $(this).data('roleId') } }
+        }).done(function () {
+            panel.fadeOut();
+        }).fail(function (e) {
+            console.log(e);
+            alert('An error occurred while attempting to curate the user.');
+        });
+
+        return false;
+    });
+</script>

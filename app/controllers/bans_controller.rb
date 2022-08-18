@@ -1,7 +1,8 @@
+# The controller for actions related to the Ban model
 class BansController < ApplicationController
 
-  before_filter :get_user
-  before_filter :auth
+  before_action :get_user
+  before_action :auth
   before_action :set_breadcrumbs
 
   def create

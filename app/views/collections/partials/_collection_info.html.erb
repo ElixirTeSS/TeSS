@@ -1,0 +1,31 @@
+<ul class="unstyled nav-simple">
+  <%# collection  %>
+  <li><h4 class="nav-heading">Collection</h4></li>
+  <li style="padding: 7px 20px;">
+    <p>
+      <%= (image_tag(collection.image.url, :class => "medium-content-provider-logo")) %>
+    </p>
+    <h5>
+      <%= title_with_privacy(collection) %>
+    </h5>
+    <% unless collection.description.blank? %>
+        <p class="minimise" style="word-break: normal; display: inline-block;">
+          <%= render_markdown collection.description  %>
+        </p>
+    <% end %>
+  </li>
+  <li><h4 class="nav-heading">Owner</h4></li>
+  <li style="padding: 7px 20px;">
+    <%= collection.user.name %>
+  </li>
+  <li><h4 class="nav-heading">Keywords</h4></li>
+  <li style="padding: 7px 20px;">
+    <% if not collection.keywords.blank? %>
+        <% collection.keywords.each do |keyword| %>
+            <span class="keyword-pill"><%= keyword %></span>
+        <% end %>
+    <% else %>
+        <p class="empty">None</p>
+    <% end %>
+  </li>
+</ul>

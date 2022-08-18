@@ -1,4 +1,4 @@
-class CreateExternalResources < ActiveRecord::Migration
+class CreateExternalResources < ActiveRecord::Migration[4.2]
   def change
     create_table :external_resources do |t|
       t.references :material, index: true, foreign_key: true

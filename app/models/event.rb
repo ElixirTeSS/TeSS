@@ -2,109 +2,132 @@ require 'icalendar'
 require 'rails/html/sanitizer'
 require 'redis'
 
-class Event < ActiveRecord::Base
+class Event < ApplicationRecord
   include PublicActivity::Common
   include LogParameterChanges
   include HasAssociatedNodes
-  include HasScientificTopics
   include HasExternalResources
   include HasContentProvider
   include LockableFields
   include Scrapable
   include Searchable
+  include CurationQueue
+  include HasSuggestions
+  include IdentifiersDotOrg
+  include HasFriendlyId
+  include FuzzyDictionaryMatch
 
-  before_save :set_default_times, :check_country_name
-  before_save :geocoding_cache_lookup, if: :address_changed?
+  before_validation :check_timezone # set to standard key
+  before_save :check_country_name # :set_default_times
+  before_save :geocoding_cache_lookup, if: :address_will_change?
   after_save :enqueue_geocoding_worker, if: :address_changed?
-
-  extend FriendlyId
-  friendly_id :title, use: :slugged
 
   if TeSS::Config.solr_enabled
     # :nocov:
     searchable do
+      # full text search fields
       text :title
-      string :title
+      text :keywords
+      text :url
+      text :organizer
+      text :venue
+      text :city
+      text :country
+      text :host_institutions
+      text :timezone
+      text :content_provider do
+        content_provider.title unless content_provider.nil?
+      end
+      # sort title
       string :sort_title do
         title.downcase.gsub(/^(an?|the) /, '')
       end
-      text :url
+      # other fields
+      string :title
       string :organizer
-      text :organizer
-      string :sponsor
-      text :sponsor
+      string :sponsors, multiple: true
       string :venue
-      text :venue
       string :city
-      text :city
       string :country
-      text :country
-      string :event_types, :multiple => true do
-        Tess::EventTypeDictionary.instance.values_for_search(self.event_types)
+      string :event_types, multiple: true do
+        EventTypeDictionary.instance.values_for_search(event_types)
       end
-      string :keywords, :multiple => true
+      string :eligibility, multiple: true do
+        EligibilityDictionary.instance.values_for_search(eligibility)
+      end
+      string :keywords, multiple: true
+      string :fields, multiple: true
       time :start
       time :end
       time :created_at
       time :updated_at
       string :content_provider do
-        if !self.content_provider.nil?
-          self.content_provider.title
-        end
-      end
-      text :content_provider do
-        if !self.content_provider.nil?
-          self.content_provider.title
-        end
+        content_provider.title unless content_provider.nil?
       end
       string :node, multiple: true do
-        self.associated_nodes.map(&:name)
+        associated_nodes.map(&:name)
       end
-      string :scientific_topics, :multiple => true do
-        self.scientific_topic_names
+      string :scientific_topics, multiple: true do
+        scientific_topic_names
+      end
+      string :operations, multiple: true do
+        operation_names
       end
       string :target_audience, multiple: true
       boolean :online
-      text :host_institutions
       time :last_scraped
-      text :timezone
       string :user do
-        if self.user
-          self.user.username
-        end
+        user.username if user
       end
       integer :user_id # Used for shadowbans
-=begin TODO: SOLR has a LatLonType to do geospatial searching. Have a look at that
-      location :latitutde
-      location :longitude
-=end
+      boolean :failing do
+        failing?
+      end
+      string :cost_basis
+      # TODO: SOLR has a LatLonType to do geospatial searching. Have a look at that
+      #       location :latitutde
+      #       location :longitude
     end
     # :nocov:
   end
 
   belongs_to :user
   has_one :edit_suggestion, as: :suggestible, dependent: :destroy
-  has_many :package_events
-  has_many :packages, through: :package_events
+  has_one :link_monitor, as: :lcheck, dependent: :destroy
+  has_many :collection_events
+  has_many :collections, through: :collection_events
   has_many :event_materials, dependent: :destroy
   has_many :materials, through: :event_materials
   has_many :widget_logs, as: :resource
 
-  validates :title, :url, presence: true
-  validates :capacity, numericality: true, allow_blank: true
-  validates :event_types, controlled_vocabulary: { dictionary: Tess::EventTypeDictionary.instance }
-  validates :eligibility, controlled_vocabulary: { dictionary: Tess::EligibilityDictionary.instance }
-  validates :latitude, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90, allow_nil: true }
-  validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true  }
-  validate :allowed_url
+  has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
+  has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 
-  clean_array_fields(:keywords, :event_types, :target_audience, :eligibility, :host_institutions)
+  has_many :stars,  as: :resource, dependent: :destroy
+
+  validates :title, :url, presence: true
+  validates :url, url: true
+  validates :capacity, numericality: { greater_than_or_equal_to: 1 }, allow_blank: true
+  validates :cost_value, numericality: { greater_than: 0 }, allow_blank: true
+  validates :event_types, controlled_vocabulary: { dictionary: EventTypeDictionary.instance }
+  validates :eligibility, controlled_vocabulary: { dictionary: EligibilityDictionary.instance }
+  validates :latitude, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90, allow_nil: true }
+  validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true }
+  # validates :duration, format: { with: /\A[0-9][0-9]:[0-5][0-9]\z/, message: "must be in format HH:MM" }, allow_blank: true
+  validates :timezone, inclusion: { in: ActiveSupport::TimeZone::MAPPING.keys,
+                                    message: 'not found and cannot be linked to a valid timezone',
+                                    allow_blank: true }
+  validate :allowed_url
+  clean_array_fields(:keywords, :fields, :event_types, :target_audience,
+                     :eligibility, :host_institutions, :sponsors)
   update_suggestions(:keywords, :target_audience, :host_institutions)
+  fuzzy_dictionary_match(event_types: EventTypeDictionary.instance,
+                         eligibility: EligibilityDictionary.instance)
 
   # These fields should not been shown to users unless they have sufficient privileges
-  SENSITIVE_FIELDS = [:funding, :attendee_count, :applicant_count, :trainer_count, :feedback, :notes]
+  SENSITIVE_FIELDS = %i[funding attendee_count applicant_count trainer_count feedback notes]
 
-  ADDRESS_FIELDS = [:venue, :city, :county, :country, :postcode]
+  ADDRESS_FIELDS = %i[venue city county country postcode]
 
   COUNTRY_SYNONYMS = JSON.parse(File.read(File.join(Rails.root, 'config', 'data', 'country_synonyms.json')))
 
@@ -132,80 +155,108 @@ class Event < ActiveRecord::Base
   # latitude:double
   # longitude:double
 
-  def description= desc
+  def description=(desc)
     super(Rails::Html::FullSanitizer.new.sanitize(desc))
+  end
+
+  def start_utc
+    convert_local_to_utc start
+  end
+
+  def end_utc
+    convert_local_to_utc self.end
+  end
+
+  def start_local
+    set_to_local start
+  end
+
+  def end_local
+    set_to_local self.end
   end
 
   def upcoming?
     # Handle nil for start date
-    if self.start.blank?
-      return true
+    if start.blank?
+      true
     else
-      return (Time.now < self.start)
+      (Time.now < start)
     end
   end
 
   def started?
-    if self.start and self.end
-      return (Time.now > self.start and Time.now < self.end)
+    if start and self.end
+      (Time.now > start and Time.now < self.end)
     else
-      return false
+      false
     end
   end
 
   def expired?
     if self.end
-      return Time.now > self.end
+      Time.now > self.end
     else
-      return false
+      false
     end
   end
 
   def has_node?
-    if self.content_provider
-      if self.content_provider.node_id
-        return true
-      end
-    end
-    return false
+    return true if content_provider && content_provider.node_id
+
+    false
   end
 
   def self.facet_fields
-    %w( scientific_topics event_types online country tools organizer city sponsor target_audience keywords
-        venue node content_provider user )
+    field_list = %w[ content_provider keywords scientific_topics operations tools fields online event_types
+                     venue city country organizer sponsors target_audience eligibility user ]
+
+    field_list.delete('operations') if TeSS::Config.feature['disabled'].include? 'operations'
+    field_list.delete('scientific_topics') if TeSS::Config.feature['disabled'].include? 'topics'
+    field_list.delete('sponsors') if TeSS::Config.feature['disabled'].include? 'sponsors'
+    field_list.delete('tools') if TeSS::Config.feature['disabled'].include? 'biotools'
+    field_list.delete('fields') if TeSS::Config.feature['disabled'].include? 'ardc_fields_of_research'
+    field_list.delete('node') unless TeSS::Config.feature['nodes']
+
+    field_list
   end
 
   def to_csv_event
-      if self.organizer.class == String
-        organizer = self.organizer.tr(',',' ')
-      elsif self.organizer.class == Array
-        organizer = self.organizer.join(' | ').gsub(',',' and ')
-      else
-        organizer = nil
-      end
-      cp = self.content_provider.title unless self.content_provider.nil?
+    organizer = if self.organizer.instance_of?(String)
+                  self.organizer.tr(',', ' ')
+                elsif self.organizer.instance_of?(Array)
+                  self.organizer.join(' | ').gsub(',', ' and ')
+                end
+    cp = content_provider.title unless content_provider.nil?
 
-      [self.title.tr(',',' '),
-              organizer,
-              self.start.strftime("%d %b %Y"),
-              self.end.strftime("%d %b %Y"),
-              cp]
+    [title.tr(',', ' '),
+     organizer,
+     start.strftime('%d %b %Y'),
+     self.end.strftime('%d %b %Y'),
+     cp]
   end
 
   def to_ical
     cal = Icalendar::Calendar.new
-    cal.add_event(self.to_ical_event)
+    cal.add_event(to_ical_event)
     cal.to_ical
   end
 
   def to_ical_event
     Icalendar::Event.new.tap do |ical_event|
-      ical_event.dtstart     = Icalendar::Values::Date.new(self.start) unless self.start.blank?
-      ical_event.dtend       = Icalendar::Values::Date.new(self.end) unless self.end.blank?
-      ical_event.summary     = self.title
-      ical_event.description = self.description
-      ical_event.location    = self.venue unless self.venue.blank?
-      ical_event.url         = self.url
+      if start && self.end
+        if all_day?
+          ical_event.dtstart = Icalendar::Values::Date.new(start, tzid: 'UTC') unless start.blank?
+          ical_event.dtend = Icalendar::Values::Date.new(self.end.tomorrow, tzid: 'UTC') unless self.end.blank?
+        else
+          ical_event.dtstart = Icalendar::Values::DateTime.new(start_utc, tzid: 'UTC') unless start.blank?
+          ical_event.dtend = Icalendar::Values::DateTime.new(end_utc, tzid: 'UTC') unless self.end.blank?
+        end
+
+      end
+      ical_event.summary = title
+      ical_event.description = description
+      ical_event.location = venue unless venue.blank?
+      ical_event.url = url
     end
   end
 
@@ -225,13 +276,15 @@ class Event < ActiveRecord::Base
   end
 
   def show_map?
-    !self.online? &&
-    ((self.latitude.present? && self.longitude.present?) ||
-        (self.suggested_latitude.present? && self.suggested_longitude.present?))
+    Rails.application.secrets.google_maps_api_key.present? && # !self.online? &&
+      ((latitude.present? && longitude.present?) ||
+        (suggested_latitude.present? && suggested_longitude.present?))
   end
 
   def all_day?
-    self.start && self.end && (self.start == self.start.midnight) || (self.end == self.end.midnight)
+    start && self.end &&
+      (start == start.midnight) &&
+      (self.end.hour == 23) && (self.end.min == 59)
   end
 
   # Ticket #375.
@@ -239,26 +292,21 @@ class Event < ActiveRecord::Base
   # Default end at 17:00 same day otherwise.
   # Default start time 9am.
   def set_default_times
-    if !self.start
-      return
-    end
+    return unless start
 
-    if self.start.hour == 0 # hour set to 0 if not otherwise defined...
-      self.start = self.start + 9.hours
-    end
+    self.start = start + 9.hours if start.hour == 0 # hour set to 0 if not otherwise defined...
 
-    if !self.end
-      if self.online?
-        self.end = self.start + 1.hour
+    unless self.end
+      if online?
+        self.end = start + 1.hour
       else
-        diff = 17 - self.start.hour
-        self.end = self.start + diff.hours
+        diff = 17 - start.hour
+        self.end = start + diff.hours
       end
     end
     # TODO: Set timezone for online events. Where to get it from, though?
     # TODO: Check events form to add timezone autocomplete.
     # Get timezones from: https://timezonedb.com/download
-
   end
 
   def self.not_finished
@@ -269,124 +317,173 @@ class Event < ActiveRecord::Base
     where('events.end < ?', Time.now).where.not(end: nil)
   end
 
+  def check_timezone
+    begin
+      tz_key = find_timezone_key timezone
+      self.timezone = tz_key unless tz_key.nil? or tz_key == timezone
+    rescue Exception => e
+      # ignore error
+    end
+    nil
+  end
+
+  def find_timezone_key(name)
+    return name if name.nil?
+
+    # check name vs ActiveSupport
+    timezones = ActiveSupport::TimeZone::MAPPING
+    return name if timezones.keys.include? name
+    return timezones.key(name) unless timezones.key(name).nil?
+
+    # check for linked zones in TZInfo
+    tzinfo = TZInfo::Timezone.get(name)
+    if tzinfo.nil? and tzinfo.is_a? TZInfo::LinkedTimezone
+      # repeat search with canonical timezone identifier
+      return find_timezone_key tzinfo.canonical_zone.identifier
+    end
+
+    # otherwise
+    nil
+  end
+
   # Ticket #423
   def check_country_name
-    if !self.country
-      return
+    if country and country.respond_to?(:parameterize)
+      text = country.parameterize.underscore.humanize.downcase
+      self.country = COUNTRY_SYNONYMS[text] if COUNTRY_SYNONYMS[text]
     end
-    if self.country.respond_to?(:parameterize)
-      text = self.country.parameterize.underscore.humanize.downcase
-      if COUNTRY_SYNONYMS[text]
-        self.country = COUNTRY_SYNONYMS[text]
-      end
-    end
+    true
   end
 
   def reported?
-    SENSITIVE_FIELDS.any? { |f| self.send(f).present? }
+    SENSITIVE_FIELDS.any? { |f| send(f).present? }
   end
 
   def self.check_exists(event_params)
-    given_event = event_params.is_a?(Hash) ? self.new(event_params) : event_params
+    given_event = event_params.is_a?(Event) ? event_params : new(event_params)
     event = nil
 
-    if given_event.url.present?
-      event = self.find_by_url(given_event.url)
-    end
+    event = find_by_url(given_event.url) if given_event.url.present?
 
     if given_event.content_provider_id.present? && given_event.title.present? && given_event.start.present?
-      event ||= self.where(content_provider_id: given_event.content_provider_id, title: given_event.title, start: given_event.start).last
+      event ||= where(content_provider_id: given_event.content_provider_id, title: given_event.title, start: given_event.start).last
     end
 
     event
   end
 
   def suggested_latitude
-    if self.edit_suggestion && self.edit_suggestion.data_fields['geographic_coordinates']
-      self.edit_suggestion.data_fields['geographic_coordinates'][0]
-    end
+    edit_suggestion.data_fields['geographic_coordinates'][0] if edit_suggestion && edit_suggestion.data_fields['geographic_coordinates']
   end
 
   def suggested_longitude
-    if self.edit_suggestion && self.edit_suggestion.data_fields['geographic_coordinates']
-      self.edit_suggestion.data_fields['geographic_coordinates'][1]
-    end
+    edit_suggestion.data_fields['geographic_coordinates'][1] if edit_suggestion && edit_suggestion.data_fields['geographic_coordinates']
   end
 
   def geographic_coordinates
-    [self.latitude, self.longitude]
+    [latitude, longitude]
   end
 
   def geographic_coordinates=(coords)
     self.latitude = coords[0]
     self.longitude = coords[1]
 
-    self.geographic_coordinates
+    geographic_coordinates
   end
 
   def address
-    ADDRESS_FIELDS.map { |field| self.send(field) }.reject(&:blank?).join(', ')
+    ADDRESS_FIELDS.map { |field| send(field) }.reject(&:blank?).join(', ')
+  end
+
+  def address_will_change?
+    ADDRESS_FIELDS.any? { |field| changes.keys.include?(field.to_s) }
   end
 
   def address_changed?
-    ADDRESS_FIELDS.any? { |field| self.changed.include?(field.to_s) }
+    ADDRESS_FIELDS.any? { |field| previous_changes.keys.include?(field.to_s) }
   end
 
   # Check the Redis cache for coordinates
   def geocoding_cache_lookup
-    location = self.address
+    location = address
 
     begin
-      redis = Redis.new
-      if redis.exists(location)
+      redis = Redis.new(url: TeSS::Config.redis_url)
+      if redis.exists?(location)
         self.latitude, self.longitude = JSON.parse(redis.get(location))
         Rails.logger.info("Re-using: #{location}")
       end
-    rescue Redis::RuntimeError => e
+    rescue Redis::BaseError => e
       raise e unless Rails.env.production?
+
       puts "Redis error: #{e.message}"
     end
+
+    # return true to enable error messages
+    true
   end
 
   # Check the external Geocoder API (currently Nominatim) for coordinates
   def geocoding_api_lookup
-    location = self.address
+    location = address
 
-    result = Geocoder.search(location).first
+    # result = Geocoder.search(location).first
+    args = { postalcode: postcode, city: city, county: county, country: country, format: 'json' }
+    result = nominatim_lookup(args)
     if result
-      self.latitude = result.latitude
-      self.longitude = result.longitude
+      self.latitude = result[:lat]
+      self.longitude = result[:lon]
       begin
-        redis = Redis.new
-        redis.set(location, [self.latitude, self.longitude].to_json)
-      rescue Redis::RuntimeError => e
+        redis = Redis.new(url: TeSS::Config.redis_url)
+        redis.set(location, [latitude, longitude].to_json)
+      rescue Redis::BaseError => e
         raise e unless Rails.env.production?
+
         puts "Redis error: #{e.message}"
       end
     else
-      self.update_column(:nominatim_count, self.nominatim_count + 1)
+      update_column(:nominatim_count, nominatim_count + 1)
     end
   end
 
   # If no latitude or longitude, create a GeocodingWorker to find them.
   # This should run a minute after the last one is set to run (last run time stored by Redis).
   def enqueue_geocoding_worker
-    return if (self.latitude.present? && self.longitude.present?) || self.address.blank? || self.nominatim_count >= NOMINATIM_MAX_ATTEMPTS
+    return if (latitude.present? && longitude.present?) ||
+              (address.blank? && postcode.blank?) ||
+              nominatim_count >= NOMINATIM_MAX_ATTEMPTS
 
-    location = self.address
+    location = address
 
     begin
-      redis = Redis.new
+      redis = Redis.new(url: TeSS::Config.redis_url)
       last_geocode = redis.get('last_geocode') || Time.now
 
       run_at = [last_geocode.to_i, Time.now.to_i].max + NOMINATIM_DELAY
 
       # submit event_id, and locations to worker.
       redis.set('last_geocode', run_at)
-      GeocodingWorker.perform_at(run_at, [self.id, location])
-    rescue Redis::RuntimeError => e
+      GeocodingWorker.perform_at(run_at, [id, location])
+    rescue Redis::BaseError => e
       raise e unless Rails.env.production?
+
       puts "Redis error: #{e.message}"
+    end
+  end
+
+  def nominatim_lookup(args)
+    url = 'https://nominatim.openstreetmap.org/search.php'
+    response = HTTParty.get(url,
+                            query: args,
+                            headers: { 'User-Agent' => "Elixir TeSS <#{TeSS::Config.contact_email}>" })
+    (JSON.parse response.body, symbolize_names: true)[0]
+  end
+
+  def to_bioschemas
+    if event_types.include?('workshops_and_courses')
+      [Bioschemas::CourseGenerator.new(self)]
+    else
+      [Bioschemas::EventGenerator.new(self)]
     end
   end
 
@@ -394,12 +491,21 @@ class Event < ActiveRecord::Base
 
   def allowed_url
     disallowed = (TeSS::Config.blocked_domains || []).any? do |regex|
-      self.url =~ regex
+      url =~ regex
     end
 
-    if disallowed
-      errors.add(:url, 'not valid')
-    end
+    errors.add(:url, 'not valid') if disallowed
   end
 
+  def convert_local_to_utc(datetime)
+    set_to_local(datetime).in_time_zone('UTC')
+  rescue StandardError
+    datetime
+  end
+
+  def set_to_local(datetime)
+    datetime.asctime.in_time_zone(timezone)
+  rescue StandardError
+    datetime
+  end
 end

@@ -1,32 +1,52 @@
-.elixir-black-header {
+.top-header {
   height: 35px;
   line-height: 35px;
-  background-color: #333333;
-  border-bottom: 1px solid #eeeeee;
+  background-color: $top-header-bg;
+  color: $top-header-text;
+  border-bottom: 2px solid $top-header-border;
+
+  .server-name {
+    float: left;
+    display: inline-block;
+    margin-left: 1em;
+    font-style: bold;
+  }
 
   .user-options {
     float: right;
-    a {
+
+    &> a {
       display: block;
       float: left;
+    }
+
+    a {
       padding: 0 10px;
-      color: #eee;
+      color: $top-header-text;
+
       &:hover {
-        color: #333;
-        background: #eee;
+        color: $top-header-hover-text !important;
+        background: $top-header-hover-bg;
       }
+    }
+
+    .dropdown-menu {
+      background: $top-header-bg;
     }
   }
 }
 
-.elixir-orange-header {
+.second-header {
   background-color: $bgDefault;
+
   ul.navbar-nav {
     margin-top: 10px;
+
     li > a {
       padding-top: 10px;
       padding-bottom: 10px;
       margin-right: 3px;
+      color: white;
       @media (min-width: $screen-md) {
         border-radius: $nav-pills-border-radius;
       }
@@ -38,32 +58,41 @@
   }
 
   .navbar {
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
-
 }
 
 #search-box {
-  input { width: 100% }
+  input {
+    width: 100%;
+  }
 
   @media (min-width: $screen-md) and (max-width: $screen-md-max) {
-    input { width: 160px; }
+    input {
+      width: 78px;
+    }
   }
+
   @media (min-width: $screen-lg) {
-    input { width: 280px; }
+    input {
+      width: 240px;
+    }
   }
+
   /* The following is needed to make the search bar 100% wide between 'sm' and 'md' screen sizes */
+
   /* See: http://stackoverflow.com/a/24985419 */
   @media (min-width: $screen-sm) and (max-width: $screen-sm-max) {
     .input-group {
       width: 100%;
+
       .input-group-btn {
         width: 32px;
       }
+
       .form-control {
         width: 100%;
       }
     }
   }
 }
-

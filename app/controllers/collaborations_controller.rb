@@ -1,7 +1,8 @@
+# The controller for actions related to the Collaborations model
 class CollaborationsController < ApplicationController
 
-  before_filter :get_resource
-  before_filter :authorize_resource
+  before_action :get_resource
+  before_action :authorize_resource
 
   respond_to :json
 
@@ -17,7 +18,7 @@ class CollaborationsController < ApplicationController
   end
 
   def index
-    @collaborations = @resource.collaborations
+    @collaborations = @resource.collaborations.order(id: 'asc')
 
     respond_with(@collaborations)
   end

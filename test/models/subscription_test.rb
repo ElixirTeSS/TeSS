@@ -36,7 +36,7 @@ class SubscriptionTest < ActiveSupport::TestCase
     sub = user.subscriptions.build(frequency: 'qwerty', subscribable_type: 'Event')
     assert_nil sub.frequency
     refute sub.valid?
-    assert sub.errors.keys.include?(:frequency)
+    assert sub.errors.attribute_names.include?(:frequency)
   end
 
   test 'validates subscribable type' do
@@ -47,11 +47,11 @@ class SubscriptionTest < ActiveSupport::TestCase
 
     sub = user.subscriptions.build(frequency: :daily, subscribable_type: 'Role')
     refute sub.valid?
-    assert sub.errors.keys.include?(:subscribable_type)
+    assert sub.errors.attribute_names.include?(:subscribable_type)
 
     sub = user.subscriptions.build(frequency: :daily)
     refute sub.valid?
-    assert sub.errors.keys.include?(:subscribable_type)
+    assert sub.errors.attribute_names.include?(:subscribable_type)
   end
 
   test 'can generate and verify unsubscribe code' do
@@ -110,6 +110,26 @@ class SubscriptionTest < ActiveSupport::TestCase
     assert_includes due, monthly_sub
   end
 
+  test '24-hour subscription is due slightly before 24 hours' do
+    # To prevent "mis-alignment" with daily cronjob.
+    sub = Subscription.new(frequency: :daily, user: users(:regular_user), query: 'test', subscribable_type: 'Material',
+                           last_checked_at: 60.minutes.ago)
+    sub.save!
+    refute sub.due?
+
+    sub.update_column(:last_checked_at, 21.hours.ago)
+    refute sub.due?
+
+    sub.update_column(:last_checked_at, (24.hours - 10.minutes).ago)
+    assert sub.due?
+
+    sub.update_column(:last_checked_at, (24.hours + 10.minutes).ago)
+    assert sub.due?
+
+    sub.update_column(:last_checked_at, 27.hours.ago)
+    assert sub.due?
+  end
+
   test 'processes subscription and sends email' do
     sub = subscriptions(:daily_subscription)
 
@@ -145,4 +165,14 @@ class SubscriptionTest < ActiveSupport::TestCase
     ActionMailer::Base.deliveries.clear
   end
 
+  test 'facets with max age' do
+    sub = subscriptions(:daily_subscription)
+    assert_equal({ type: ['fruit', 'veg'], max_age: '24 hours' }.with_indifferent_access, sub.facets_with_max_age)
+
+    sub = subscriptions(:monthly_subscription)
+    assert_equal({ type: ['fruit', 'veg'], max_age: '1 month' }.with_indifferent_access, sub.facets_with_max_age)
+
+    sub = subscriptions(:event_subscription)
+    assert_equal({ times: ["good", "great"], max_age: '1 week' }.with_indifferent_access, sub.facets_with_max_age)
+  end
 end

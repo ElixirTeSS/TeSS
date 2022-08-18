@@ -217,8 +217,8 @@ var Workflows = {
                     ontologyTerms: Workflows.ontologyTerms.fetch()
                 },
                 position: {
-                    x: parseInt($('#node-modal-form-x').val()),
-                    y: parseInt($('#node-modal-form-y').val())
+                    x: parseInt($("#node-modal-form-x").val(), 10),
+                    y: parseInt($("#node-modal-form-y").val(), 10)
                 }
             };
         }
@@ -469,7 +469,7 @@ var Workflows = {
     }
 };
 
-$(document).ready(function () {
+document.addEventListener("turbolinks:load", function() {
     var wfJsonElement = $('#workflow-content-json');
     var cytoscapeElement = $('#cy');
     var editable = cytoscapeElement.data('editable');

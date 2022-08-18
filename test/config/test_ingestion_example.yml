@@ -1,0 +1,10 @@
+name: production
+logfile: log/ingestion.example.log
+username: scraper
+sources:
+  - id: 1
+    provider: 'dummyP'        # content provider's title
+    url: 'https://dummy.com' # the root URL required to access the source
+    method: 'dummyM'          # one of 'csv', 'api', 'html'
+    resource_type: 'dummyR'   # event or material
+    enabled: true

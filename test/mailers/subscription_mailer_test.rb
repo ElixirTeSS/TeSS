@@ -8,6 +8,8 @@ class SubscriptionMailerTest < ActionMailer::TestCase
   setup do
     @url_opts = Rails.application.routes.default_url_options
     Rails.application.routes.default_url_options = Rails.application.config.action_mailer.default_url_options
+    # Avoids queued emails affecting `assert_email` counts. See: https://github.com/ElixirTeSS/TeSS/issues/719
+    perform_enqueued_jobs
   end
 
   teardown do
@@ -27,7 +29,8 @@ class SubscriptionMailerTest < ActionMailer::TestCase
 
     assert_equal [TeSS::Config.sender_email], email.from
     assert_equal [sub.user.email], email.to
-    assert_equal 'TeSS weekly digest - 2 new materials matching your criteria', email.subject
+    assert_equal "#{TeSS::Config.site['title_short']} weekly digest - 2 new materials matching your criteria",
+                 email.subject
     body = email.text_part.body.to_s
 
     assert body.include?(m1.title), 'Expected first material title to appear in email body'
@@ -54,7 +57,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
 
     assert_equal [TeSS::Config.sender_email], email.from
     assert_equal [sub.user.email], email.to
-    assert_equal "TeSS weekly digest - #{e.length} new events matching your criteria", email.subject
+    assert_equal "#{TeSS::Config.site['title_short']} weekly digest - #{e.length} new events matching your criteria", email.subject
 
     html = email.html_part.body.to_s
 

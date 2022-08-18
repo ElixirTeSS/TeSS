@@ -1,4 +1,7 @@
-class Subscription < ActiveRecord::Base
+class Subscription < ApplicationRecord
+  CHECK_WINDOW = 1.hour # Window to add to subscription period to avoid synchronization issues with cronjob to process
+                        # subscriptions.
+                        # e.g. A window of 1 hour will make a daily subscription "due" 23 hours after it was last checked.
 
   FREQUENCY = [
       { key: :daily, id: 1, period: 1.day, title: '24 hours' }.with_indifferent_access,
@@ -34,7 +37,11 @@ class Subscription < ActiveRecord::Base
   def digest
     type = subscribable_type.constantize
 
-    type.search_and_filter(user, query, facets.merge(max_age: period).with_indifferent_access, per_page: 15).results
+    type.search_and_filter(user, query, facets_with_max_age, per_page: 15).results
+  end
+
+  def facets_with_max_age
+    facets.merge(max_age: max_age).with_indifferent_access
   end
 
   def period
@@ -42,7 +49,7 @@ class Subscription < ActiveRecord::Base
   end
 
   def due?
-    last_checked_at < (Time.now - period)
+    last_checked_at < (period - CHECK_WINDOW).ago
   end
 
   def check
@@ -67,7 +74,15 @@ class Subscription < ActiveRecord::Base
     where(clause)
   end
 
+  def reset_due
+    update_attribute(:last_checked_at, Time.now - (2 * period))
+  end
+
   private
+
+  def max_age
+    FREQUENCY.detect { |f| f[:id] == self[:frequency] }[:title]
+  end
 
   def valid_subscribable_type
     begin
@@ -88,4 +103,5 @@ class Subscription < ActiveRecord::Base
   def set_last_checked_at
     self.last_checked_at = Time.now
   end
+
 end

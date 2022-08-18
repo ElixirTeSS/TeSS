@@ -1,0 +1,7 @@
+
+<div class="quick-links">
+<%= link_to 'What is ' + TeSS::Config.site['title_short'] + '?', about_path, :class => "#{'selected-tab' if show=='tess'}"%>
+| <%= link_to 'How to Register', registering_resources_path, :class => "#{'selected-tab' if show=='registering'}"%>
+| <%= link_to 'Developers Guide', developers_path, :class => "#{'selected-tab' if show=='developer'}"%>
+| <%= link_to 'About us', us_path, :class => "#{'selected-tab' if show=='about'}"%>
+</div>

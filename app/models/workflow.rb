@@ -1,15 +1,15 @@
-class Workflow < ActiveRecord::Base
+class Workflow < ApplicationRecord
 
   include PublicActivity::Common
-  include HasScientificTopics
   include Collaboratable
   include LogParameterChanges
   include HasLicence
   include Searchable
-
-
-  extend FriendlyId
-  friendly_id :title, use: :slugged
+  include HasSuggestions
+  include IdentifiersDotOrg
+  include HasFriendlyId
+  include CurationQueue
+  include HasDifficultyLevel
 
   if TeSS::Config.solr_enabled
     # :nocov:
@@ -27,21 +27,17 @@ class Workflow < ActiveRecord::Base
       text :node_descriptions do
         node_index('description')
       end
-      string :authors, :multiple => true
       text :authors
+      string :authors, :multiple => true
       string :scientific_topics, :multiple => true do
         self.scientific_topic_names
       end
-      string :target_audience, :multiple => true
       text :target_audience
-      string :keywords, :multiple => true
+      string :target_audience, :multiple => true
       text :keywords
-      string :difficulty_level do
-        Tess::DifficultyDictionary.instance.lookup_value(self.difficulty_level, 'title')
-      end
-      text :difficulty_level
-      string :contributors, :multiple => true
+      string :keywords, :multiple => true
       text :contributors
+      string :contributors, :multiple => true
 
       integer :user_id
       boolean :public
@@ -52,10 +48,12 @@ class Workflow < ActiveRecord::Base
 
   # has_one :owner, foreign_key: "id", class_name: "User"
   belongs_to :user
-  has_one :edit_suggestion, as: :suggestible, dependent: :destroy
 
+  has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
+
+  has_many :stars,  as: :resource, dependent: :destroy
+  
   validates :title, presence: true
-  validates :difficulty_level, controlled_vocabulary: { dictionary: Tess::DifficultyDictionary.instance }
 
   clean_array_fields(:keywords, :contributors, :authors, :target_audience)
 
@@ -74,11 +72,15 @@ class Workflow < ActiveRecord::Base
     end
   end
 
+  def workflow_content= content
+    super(content.is_a?(String) ? JSON.parse(content) : content)
+  end
+
   private
 
   def log_diagram_modification
-    if workflow_content_changed?
-      old_nodes = workflow_content_was['nodes'] || []
+    if saved_change_to_workflow_content?
+      old_nodes = workflow_content_before_last_save['nodes'] || []
       old_node_ids = old_nodes.map { |n| n['data']['id'] }
       current_nodes = workflow_content['nodes'] || []
       current_node_ids = current_nodes.map { |n| n['data']['id'] }
@@ -89,7 +91,7 @@ class Workflow < ActiveRecord::Base
 
       # Resolve the actual nodes from the IDs
       added_nodes = added_node_ids.map { |i| workflow_content['nodes'].detect { |n| n['data']['id'] == i } }
-      removed_nodes = removed_node_ids.map { |i| workflow_content_was['nodes'].detect { |n| n['data']['id'] == i } }
+      removed_nodes = removed_node_ids.map { |i| workflow_content_before_last_save['nodes'].detect { |n| n['data']['id'] == i } }
       modified_nodes = modified_node_ids.map { |i| workflow_content['nodes'].detect { |n| n['data']['id'] == i } }
 
       if added_node_ids.any? || removed_node_ids.any? || modified_node_ids.any?

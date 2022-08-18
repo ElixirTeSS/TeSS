@@ -1,3 +1,5 @@
+require 'yaml'
+
 namespace :tess do
 
   task :remove_spam_activities, [:type] => [:environment] do |t, args|
@@ -33,7 +35,7 @@ namespace :tess do
           activities.to_a.unshift(nil).reverse.each_cons(2) do |newer, older|
             if newer && older
               if newer.parameters[:new_val].length == older.parameters[:new_val].length &&
-                  newer.parameters[:new_val].sort == older.parameters[:new_val].sort
+                newer.parameters[:new_val].sort == older.parameters[:new_val].sort
                 newer.destroy
                 deleted_count += 1
               end
@@ -48,8 +50,8 @@ namespace :tess do
           # Have to do this very awkward query due to `update_parameter` activities being created separately from
           # `update` activities and not necessarily at the same time!
           if record.activities.where(key: "#{type.name.underscore}.update_parameter").
-              where('id < ?', activity.id).
-              where('created_at > ?', (activity.created_at - 2.seconds)).none?
+            where('id < ?', activity.id).
+            where('created_at > ?', (activity.created_at - 2.seconds)).none?
             activity.destroy
             deleted_count += 1
           end
@@ -82,7 +84,7 @@ namespace :tess do
   task download_images: :environment do
     ActiveRecord::Base.record_timestamps = false
     begin
-      [Package, ContentProvider, StaffMember].each do |klass|
+      [Collection, ContentProvider, StaffMember].each do |klass|
         downloadable = klass.all.select { |o| !o.image_url.blank? && !o.image? }
         if downloadable.length > 0
           puts "Downloading #{downloadable.length} images for #{klass.name}s"
@@ -108,20 +110,122 @@ namespace :tess do
 
   task expire_sessions: :environment do
     max_age = Devise.remember_for
-    puts "Deleting sessions older than #{max_age.inspect}"
-    deleted = ActiveRecord::SessionStore::Session.delete_all(['updated_at < ?', max_age.ago])
+    puts "Deleting sessions older than #{max_age.inspect} at #{Time.now}:"
+    deleted = ActiveRecord::SessionStore::Session.where('updated_at < ?', max_age.ago).delete_all
     puts "Deleted #{deleted} sessions"
   end
 
   task process_subscriptions: :environment do
     subs = Subscription.due
-    puts "Processing #{subs.count} subscriptions:"
+    puts "Processing #{subs.count} subscriptions at #{Time.now}: "
     subs.each do |sub|
       sub.process
       print '.'
     end
-    puts
-    puts "Done"
+    puts " Done"
   end
 
+  task reset_subscriptions: :environment do
+    subs = Subscription.all
+    puts "Resetting #{subs.count} subscriptions at #{Time.now}:"
+    subs.each do |sub|
+      sub.reset_due
+      print '.'
+    end
+    puts " Done"
+  end
+
+  desc 'run generic ingestion process'
+  task automated_ingestion: :environment do
+    begin
+      if TeSS::Config.ingestion.nil?
+        config_file = File.join(Rails.root, 'config', 'ingestion.yml')
+        TeSS::Config.ingestion = YAML.safe_load(File.read(config_file)).deep_symbolize_keys!
+      end
+      raise 'Config.ingestion is nil' if TeSS::Config.ingestion.nil?
+      #  set log file
+      log_path = File.join(Rails.root, TeSS::Config.ingestion[:logfile])
+      log_file = File.open(log_path, 'w')
+      log_file.puts 'Task: automated_ingestion'
+      start = Time.now
+      log_file.puts '   Started at... ' + start.strftime("%Y-%m-%d %H:%M:%s")
+
+      begin
+        Scraper.run(log_file)
+      rescue Exception => e
+        log_file.puts('   Run Scraper failed with: ' + e.message)
+      end
+
+      # wrap up
+      finish = Time.now
+      log_file.puts '   Finished at.. ' + finish.strftime("%Y-%m-%d %H:%M:%s")
+      log_file.puts "   Time taken was #{(1000 * (finish.to_f - start.to_f)).round(3)} ms"
+      log_file.puts 'Done.'
+      log_file.close
+    rescue Exception => e
+      puts "task[automated_ingestion] failed with #{e.message}"
+    end
+  end
+
+  desc 'check and update time zones'
+  task check_timezones: :environment do
+    puts "Task: check_timezones - start"
+    overrides = { 'AEDT' => 'Sydney',
+                  'AEST' => 'Sydney' }
+    begin
+      messages = []
+      processed = 0
+      unchanged = 0
+      updated = 0
+      failed = 0
+      Event.all.each do |event|
+        processed += 1
+        pre_tz = event.timezone
+        event.check_timezone
+        event.timezone = overrides[event.timezone] if overrides.keys.include? event.timezone
+        if event.save
+          unless event.timezone == pre_tz
+            updated += 1
+            messages << "event[#{event.title}] updated to timezone[#{event.timezone}]"
+          else
+            unchanged += 1
+          end
+        else
+          failed += 1
+          messages << "event[#{event.slug}] update failed: timezone = #{event.timezone}"
+          event.errors.full_messages.each { |m| messages << "   #{m}" }
+        end
+      end
+    rescue Exception => e
+      messages << "task tess:check_timezones failed with: #{e.message}"
+    end
+    messages.each { |m| puts m }
+    puts "Task: check_timezones - processed[#{processed}] unchanged[#{unchanged}] updated[#{updated}] failed[#{failed}]"
+    puts "Task: check_timezones - finished."
+  end
+
+  desc 'Fetch and convert SPDX licenses from GitHub'
+  task fetch_spdx: :environment do
+    old_licenses = YAML.load(File.read(File.join(Rails.root, 'config', 'dictionaries', 'licences_old.yml')))
+    url = 'https://raw.githubusercontent.com/spdx/license-list-data/master/json/licenses.json'
+    json = URI.open(url).read
+    hash = JSON.parse(json)
+    transformed = {
+      'notspecified' => {
+        'title' => 'License Not Specified'
+      }
+    }
+    hash['licenses'].each do |license|
+      id = license.delete('licenseId')
+      license['title'] = license.delete('name')
+      transformed[id] = license.transform_keys(&:underscore)
+      # Supplement with URLs from old licences dictionary
+      old_url = old_licenses.dig(id, 'url')
+      unless old_url.blank? || transformed[id]['see_also'].include?(old_url)
+        transformed[id]['see_also'] << old_url
+      end
+    end
+
+    File.write(File.join(Rails.root, 'config', 'dictionaries', 'licences.yml'), transformed.to_yaml)
+  end
 end

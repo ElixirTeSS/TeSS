@@ -1,0 +1,127 @@
+<div class="wrapper">
+
+  <div id="sidebar" class="popout-sidebar">
+    <%= render :partial => 'about_nav', locals: { show: 'developers' } %>
+  </div>
+
+  <div id="content" class="">
+    <div class="about-block">
+      <%= render :partial => 'links', :locals => { 'show': 'developer' } %>
+
+      <!-- ABOUT TESS DATA -->
+      <div class="row">
+        <div class="odd-about-block">
+          <div id='code_and_data' class="h3">For Developers</div>
+
+          <%== raw t 'developer.license' %>
+
+          <div class="row">
+            <div class="col-lg-5 5 open-access-box">
+              <div class="h2 licence-title">Software</div>
+              <div class="open-access-location">
+                <%= link_to TeSS::Config.site['repository'], target: '_blank' do %>
+                  <div class="register-condition-graphic">
+                    <%= image_tag 'about/GitHub-Mark-64px.png', class: "" %>
+                  </div>
+                  <div class="register-condition">The source code for <%= TeSS::Config.site['title_short'] %>
+                    is available on GitHub
+                  </div>
+                <% end %>
+              </div>
+              <div class="open-access-licence">
+                <%= link_to TeSS::Config.site['repository'] + '/blob/master/LICENSE', target: '_blank' do %>
+                  <div class="register-condition-graphic"><i class="fa fa-code licence-logo"></i></div>
+                  <div class="register-condition">Source code is available under the
+                    <%== raw t 'developer.code_license' %> license
+                  </div>
+                <% end %>
+              </div>
+            </div>
+            <div class="col-lg-5 open-access-box">
+              <div class="h2 licence-title">Data</div>
+              <%= link_to developers_path(:anchor => 'api') do %>
+                <div class="open-access-location">
+                  <div class="register-condition-graphic"><i class="fa fa-plug licence-logo"></i></div>
+                  <div class="register-condition">
+                    Data in <%= TeSS::Config.site['title_short'] %> can be accessed via our API
+                  </div>
+                </div>
+              <% end %>
+              <div class="open-access-licence">
+                <div class="register-condition-graphic"><i class="fa fa-database licence-logo"></i></div>
+                <%= link_to 'https://creativecommons.org/licenses/by/4.0/', target: '_blank' do %>
+                  <div class="register-condition">Data are made available under the
+                    <%== raw t 'developer.data_license' %> license
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Widgets -->
+      <div class="row">
+        <div class="even-about-block">
+          <div class="h3" id="widgets">Widgets</div>
+          <p><%== raw t 'developer.widgets' %></p>
+          <p><%= link_to t('developer.widgets_available'), class: 'btn btn-primary', target: '_blank' do %>
+              View Our Available Widgets
+            <% end %></p>
+          <%= render :partial => 'about/' + TeSS::Config.site['widget_example'] %>
+          <%== raw t 'developer.widgets_mailing' %>
+        </div>
+      </div>
+
+      <!-- API -->
+      <div class="row">
+        <div class="odd-about-block">
+          <div class="h4" id="api">API</div>
+          <span>
+            <p><%= TeSS::Config.site['title_short'] %> has a fully functioning
+              <a href="http://jsonapi.org/" target="_blank">JSON API</a>.
+              You can explore our JSON-API by appending .json_api to the end of the URL of most pages
+              (excluding parameters). For example:</p>
+
+            <!-- Events -->
+            <% if TeSS::Config.feature['events'] %>
+            <p><code>
+               <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_1' %>">
+                 <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_1' %></a>
+            </code></p>
+            <% end %>
+
+            <!-- Materials -->
+            <% if TeSS::Config.feature['materials'] %>
+            <p><code>
+               <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_3' %>">
+                 <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_3' %> </a>
+            </code></p>
+            <% end %>
+
+            <!-- Providers -->
+            <% if TeSS::Config.feature['providers'] %>
+            <p><code>
+               <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_4' %>">
+                               <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_4' %> </a>
+            </code></p>
+            <% end %>
+
+            <!-- Workflows -->
+            <% if TeSS::Config.feature['workflows'] %>
+            <p><code>
+               <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_5' %>">
+                               <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_5' %> </a>
+            </code></p>
+            <% end %>
+
+            <%== raw t 'developer.swaggerhub' -%>
+           </span>
+        </div>
+      </div>
+    </div>
+    <%= render :partial => 'links', :locals => { 'show': 'developer' } %>
+  </div>
+</div>
+</div>
+</body>

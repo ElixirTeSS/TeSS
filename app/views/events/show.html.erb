@@ -1,7 +1,8 @@
 <div class="wrapper collapsing-wrapper">
-  <!-- SIDEBAR -->
+  <%# SIDEBAR %>
   <div class="collapsing-sidebar" id="sidebar">
-    <%= render :partial => "content_providers/partials/content_provider_info", :locals => {:content_provider => @event.content_provider} %>
+    <%= render :partial => "content_providers/partials/content_provider_info",
+               :locals => { :content_provider => @event.content_provider } %>
     <%= render partial: "nodes/partials/associated_node_info", locals: { associated_nodes: @event.associated_nodes } %>
     <%= render(partial: 'users/partials/user_info', locals: { user: @event.user }) if current_user.try(:is_admin?) %>
   </div>
@@ -10,45 +11,47 @@
       <%= star_button(@event) if user_signed_in? %>
 
       <div class="content_action">
-        <%= link_to t('.back', :default => t("helpers.links.back")),
-                    :back, :class => 'btn btn-info'  %>
+        <%= link_to t('.back', :default => t("helpers.links.back")), :back, :class => 'btn btn-info' %>
+        <%= render partial: 'common/identifiers_dot_org_button', locals: { resource: @event } if TeSS::Config.identifiers_prefix %>
         <% if @event.start && @event.end %>
-            <div class="btn-group">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Add to calendar <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu">
-                <li>
-                  <%= link_to google_calendar_export_url(@event) do %>
-                      <i class="fa fa-google"></i> Google Calendar
-                  <% end %>
-                </li>
-                <li>
-                  <%= link_to event_path(@event, format: :ics) do %>
-                      <i class="<%= icon_class_for_model('events') -%>"></i> Save event (.ics file)
-                  <% end %>
-                </li>
-              </ul>
-            </div>
+          <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Add to calendar <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <%= link_to google_calendar_export_url(@event), target: '_blank' do %>
+                  <i class="fa fa-google"></i> Google Calendar
+                <% end %>
+              </li>
+              <li>
+                <%= link_to event_path(@event, format: :ics) do %>
+                  <i class="<%= icon_class_for_model('events') -%>"></i> Save event (.ics file)
+                <% end %>
+              </li>
+            </ul>
+          </div>
         <% end %>
         <% if !current_user.nil? and policy(@event).update? %>
-            <%= link_to 'Edit', edit_event_path(@event), :class=>"btn btn-primary" %>
+          <%= link_to 'Edit', edit_event_path(@event), :class => "btn btn-primary" %>
+          <%= link_to 'Clone', clone_event_path(@event), :class => "btn btn-primary" %>
         <% end %>
         <% if !current_user.nil? and policy(@event).destroy? %>
-            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                        event_path(@event),
-                        :method => 'delete',
-                        :data => { :confirm => t('.confirm', :default => t("helpers.l inks.confirm", :default => 'Are you sure?')) },
-                        :class => 'btn btn-danger' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      event_path(@event),
+                      :method => 'delete',
+                      :data => { :confirm => t('.confirm', :default => t("helpers.l inks.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-danger' %>
         <% end %>
-        <a href="<%= @event.url %>" target="_blank" class="btn btn-success"><span class="fa fa-external-link"></span> View event</a>
+        <a href="<%= @event.url %>" target="_blank" class="btn btn-success"><span class="fa fa-external-link"></span>
+          View event</a>
       </div>
     </div>
 
     <div class="row">
+
       <ul class="nav nav-tabs">
         <%= tab('Event', icon_class_for_model('events'), 'home', active: true) %>
-
         <%= tab('Activity log', icon_class_for_model('activity_logs'), 'activity_log',
                 disabled: { check: @event.activities.none?, message: 'No activities recorded' }) %>
       </ul>
@@ -60,193 +63,195 @@
               <%= render :partial => 'events/partials/icon_info' %>
               <h2>
                 <% if @event.has_node? -%>
-                    <%= image_tag 'elixir_logo_orange.png',
-                                  :alt => 'Elixir node event',
-                                  :title => 'Elixir node event',
-                                  :style => 'height: 40px;' %>
+                  <%= image_tag 'elixir/elixir_logo_orange.png',
+                                :alt => 'Elixir node event',
+                                :title => 'Elixir node event',
+                                :style => 'height: 40px;' %>
                 <% end -%>
                 <%= @event.title %>
+                <%= missing_icon(@event, 'large') if current_user and current_user.is_admin? %>
                 <%= scrape_status_icon(@event, 'large') if current_user and current_user.is_admin? %>
                 <%= suggestion_icon(@event, 'large') if current_user and current_user.is_admin? -%>
               </h2>
-              <p><%= link_to @event.url, @event.url, :class =>'h5', :target => "_blank" %></p>
+              <p><%= @event.subtitle %></p>
+              <p><%= link_to @event.url, @event.url, :class => 'h5', :target => "_blank",
+                             :onclick => "getOutboundLink('#{@event.url}'); return true;" %></p>
             </div>
 
             <div>
-              <% if @event.show_map? %>
-                  <div id="map" class="google-map"></div>
-                  <script type="text/javascript">
-                    var actualLocation = { lat: <%= @event.latitude || 'null' %>, lng: <%= @event.longitude || 'null' %> };
-                    var suggestedLocation = { lat: <%= @event.suggested_latitude || 'null' %>, lng: <%= @event.suggested_longitude || 'null' %> };
+              <%= google_maps_javascript_api_tag(@event) if @event.show_map? %>
 
-                    // Create a map object and specify the DOM element for display.
-                    var map = new google.maps.Map(document.getElementById('map'), {
-                      center: suggestedLocation.lat ? suggestedLocation : actualLocation,
-                      scrollwheel: true,
-                      zoom: 13
-                    });
-
-                    if (actualLocation.lat) {
-                      new google.maps.Marker({
-                        map: map,
-                        position: actualLocation,
-                        title: '<%= @event.title %>'
-                      });
-                    }
-
-                    if (suggestedLocation.lat) {
-                      new google.maps.Marker({
-                        map: map,
-                        position: suggestedLocation,
-                        title: 'Suggested Location',
-                        icon: '<%= image_url('suggestion.png') -%>'
-                      });
-                    }
-                  </script>
+              <!-- Field: description -->
+              <% if @event.description.present? %>
+                <strong>Description:</strong>
+                <div class="text-justify">
+                  <%= render_markdown @event.description %>
+                </div>
               <% end %>
 
-              <% if @event.organizer and !@event.organizer.blank? %>
-                  <p><strong>Organizer:</strong>
-                    <%= @event.organizer %></p>
+              <!-- Field: start and end -->
+              <% if @event.start.present? %>
+                <p><strong>Start:</strong>
+                  <%= @event.start.strftime('%A, %d %B %Y @ %H:%M') %></p>
+              <% end %>
+              <% if @event.end.present? %>
+                <p><strong>End:</strong>
+                  <%= @event.end.strftime('%A, %d %B %Y @ %H:%M') %></p>
               <% end %>
 
-              <% if @event.host_institutions.any? %>
-                  <p><strong>Host institution:</strong>
-                    <%= @event.host_institutions.join(', ') %></p>
+              <!-- Field: duration -->
+              <%= display_attribute(@event, :duration) %>
+
+              <!-- Field: timezone -->
+              <%= display_attribute(@event, :timezone) %>
+
+              <!-- Field: address -->
+              <!--% unless @event.online? %-->
+              <%= display_attribute(@event, :venue) %>
+              <%= display_attribute(@event, :city) %>
+              <%= display_attribute(@event, :county) %>
+              <%= display_attribute(@event, :country) %>
+              <%= display_attribute(@event, :postcode) %>
+              <!-- % end % -->
+
+              <!-- Field: prerequisites -->
+              <% if @event.prerequisites.present? %>
+                <strong>Prerequisites:</strong>
+                <div class="text-justify">
+                  <%= render_markdown @event.prerequisites %>
+                </div>
               <% end %>
 
-              <% if @event.start and !@event.start.blank? %>
-                  <p><strong>Start:</strong>
-                    <%= @event.start.strftime('%A, %d %B %Y @ %H:%M') %></p>
+              <!-- Field: learning objectives -->
+              <% if @event.learning_objectives.present? %>
+                <strong>Learning Objectives:</strong>
+                <div class="text-justify">
+                  <%= render_markdown @event.learning_objectives %>
+                </div>
               <% end %>
 
-              <% if @event.end and !@event.end.blank? %>
-                  <p><strong>End:</strong>
-                    <%= @event.end.strftime('%A, %d %B %Y @ %H:%M') %></p>
-              <% end %>
-
-              <% if @event.timezone and !@event.timezone.blank? %>
-                  <p><strong>Timezone:</strong>
-                    <%= @event.timezone %></p>
-              <% end %>
-
-              <% if @event.sponsor and !@event.sponsor.blank? %>
-                  <p><strong>Sponsor:</strong>
-                    <%= @event.sponsor %></p>
-              <% end %>
-
-              <% if @event.contact and !@event.contact.blank? %>
-                  <p><strong>Contact:</strong>
-                    <%= @event.contact %></p>
-              <% end %>
-
-              <% unless @event.online? %>
-                  <% if @event.venue and !@event.venue.blank? %>
-                      <p><strong>Venue:</strong>
-                        <%= @event.venue %></p>
-                  <% end %>
-
-                  <% if @event.city and !@event.city.blank? %>
-                      <p><strong>City:</strong>
-                        <%= @event.city %></p>
-                  <% end %>
-
-                  <% if @event.county and !@event.county.blank? %>
-                      <p><strong>County:</strong>
-                        <%= @event.county %></p>
-                  <% end %>
-
-                  <% if @event.country and !@event.country.blank? %>
-                      <p><strong>Country:</strong>
-                        <%= @event.country %></p>
-                  <% end %>
-
-                  <% if @event.postcode and !@event.postcode.blank? %>
-                      <p><strong>Postcode:</strong>
-                        <%= @event.postcode %></p>
-                  <% end %>
-              <% end %>
-
-              <% unless @event.scientific_topics.empty? %>
-                  <p>
-                    <strong>Scientific topic:</strong>
-                    <%= @event.scientific_topic_names.join(', ')%>
-                  </p>
-              <% end %>
-
-              <% unless @event.target_audience.empty? %>
-                  <strong>Target audience:</strong>
-                  <ul>
-                    <% @event.target_audience.each do |ta| %>
-                        <li><%= ta %></li>
-                    <% end %>
-                  </ul>
-              <% end %>
-
-              <% if @event.description and !@event.description.blank? %>
-                  <strong>Description:</strong>
-                  <div class="text-justify">
-                    <%= render_markdown @event.description %>
-                  </div>
-              <% end %>
-
-              <% if @event.event_types.any? %>
-                  <strong>Event type:</strong>
-                  <ul>
-                    <% @event.event_types.each do |t| %>
-                        <li><%= Tess::EventTypeDictionary.instance.lookup_value(t, 'title') %></li>
-                    <% end %>
-                  </ul>
-              <% end %>
-
-              <% if @event.capacity and !@event.capacity.blank? %>
-                  <p><strong>Capacity:</strong>
-                    <%= @event.capacity %></p>
-              <% end %>
-
+              <!-- Field: eligibility -->
               <% if @event.eligibility.any? %>
-                  <strong>Eligibility:</strong>
+                <strong>Eligibility:</strong>
+                <ul>
+                  <% @event.eligibility.each do |e| %>
+                    <li><%= EligibilityDictionary.instance.lookup_value(e, 'title') %></li>
+                  <% end %>
+                </ul>
+              <% end %>
+
+              <!-- Field: organizer -->
+              <%= display_attribute(@event, :organizer) %>
+
+              <!-- Field: contact -->
+              <%= display_attribute(@event, :contact) %>
+
+              <!-- Field: host institutions -->
+              <%= display_attribute(@event, :host_institutions) { |values| values.join(', ') } %>
+
+              <!-- Field: keywords -->
+              <%= display_attribute(@event, :keywords) { |values| values.join(', ') } %>
+
+              <!-- Field: fields -->
+              <%= display_attribute(@event, :fields) { |values| values.join(', ') } %>
+
+              <!-- Field: target audience -->
+              <% unless @event.target_audience.empty? %>
+                <strong>Target audience:</strong>
+                <ul>
+                  <% @event.target_audience.each do |ta| %>
+                    <li><%= ta %></li>
+                  <% end %>
+                </ul>
+              <% end %>
+
+              <!-- Field: capacity -->
+              <%= display_attribute(@event, :capacity) %>
+
+              <!-- Field: event types -->
+              <% if @event.event_types.any? %>
+                <strong>Event type:</strong>
+                <ul>
+                  <% @event.event_types.each do |t| %>
+                    <li><%= EventTypeDictionary.instance.lookup_value(t, 'title') %></li>
+                  <% end %>
+                </ul>
+              <% end %>
+
+              <!-- Field: tech requirements -->
+              <% if @event.tech_requirements.present? %>
+                <strong>Tech Requirements:</strong>
+                <div class="text-justify">
+                  <%= render_markdown @event.tech_requirements %>
+                </div>
+              <% end %>
+
+              <!-- Field: recognition -->
+              <% if @event.recognition.present? %>
+                <p>
+                  <strong>Credit / Recognition:</strong>
+                  <%= @event.recognition %>
+                </p>
+              <% end %>
+
+              <!-- Field: external resources -->
+              <% if @event.external_resources.any? %>
+                <b>External resources: </b>
+                <%= render partial: 'common/external_resources_list',
+                           locals: { external_resources: @event.external_resources } %>
+              <% end %>
+
+              <!-- Field: cost info -->
+              <% if @event.cost_basis.present? && CostBasisDictionary.instance.lookup(@event.cost_basis) %>
+                <p>
+                  <strong>Cost Basis:</strong>
+                  <%= CostBasisDictionary.instance.lookup(@event.cost_basis)[:title] %>
+                </p>
+              <% end %>
+
+              <% if @event.cost_value.present? %>
+                <p>
+                  <strong>Cost:</strong>
+                  <%= currency_symbol_by_iso_code @event.cost_currency %>
+                  <%= @event.cost_value %>
+                  <% if @event.cost_currency.present? %>
+                    (<%= @event.cost_currency %>)
+                  <% end %>
+                </p>
+              <% end %>
+
+              <!-- Field: material -->
+              <% if @event.materials.any? %>
+                <div>
+                  <b>Related training materials: </b>
                   <ul>
-                    <% @event.eligibility.each do |e| %>
-                        <li><%= Tess::EligibilityDictionary.instance.lookup_value(e, 'title') %></li>
+                    <% @event.materials.each do |material| %>
+                      <li><%= link_to material.title, material %></li>
                     <% end %>
                   </ul>
+                </div>
               <% end %>
 
-              <% unless @event.keywords.empty? %>
-                  <p><strong>Keywords:</strong>
-                    <%= @event.keywords.join(', ')%></p>
-              <% end %>
+              <!-- uncategorized -->
+              <%= display_attribute(@event, :sponsors) { |values| values.join(', ') } %>
 
-              <% if @event.materials.any? %>
-                  <div>
-                    <b>Related training materials: </b>
-                    <ul>
-                      <% @event.materials.each do |material| %>
-                          <li><%= link_to material.title, material %></li>
-                      <% end %>
-                    </ul>
-                  </div>
-              <% end %>
+              <%= display_attribute(@event, :scientific_topics) { |values| values.map { |x| x.preferred_label }.join(', ') } %>
 
-              <% if @event.external_resources.any? %>
-                  <b>External resources: </b>
-                  <%= render partial: 'common/external_resources_list', locals: { external_resources: @event.external_resources } %>
-              <% end %>
+              <%= display_attribute(@event, :operations) { |values| values.map { |x| x.preferred_label }.join(', ') } %>
 
-              <%= render :partial => 'events/partials/event_schemaorg', :locals => {:event => @event} %>
-              <%= render :partial => 'events/partials/twitter_card', :locals => {:event => @event} %>
+              <%= render :partial => 'events/partials/twitter_card', :locals => { :event => @event } %>
 
               <%= render partial: 'events/report' if policy(@event).view_report? %>
 
-              <% unless @event.edit_suggestion.nil? || (@event.edit_suggestion.scientific_topics.empty? &&
-                  !@event.edit_suggestion.data) || current_user.nil? || !policy(@event).update? %>
-                  <%= render partial: 'common/approve_topic_suggestions', locals: { suggestion: @event.edit_suggestion } %>
+              <% if policy(@event).update? && @event.edit_suggestion %>
+                <%= render partial: 'common/approve_term_suggestions',
+                           locals: { suggestion: @event.edit_suggestion } %>
               <% end %>
 
             </div>
           </div>
         </div>
+
         <div id="activity_log" class="tab-pane fade" data-activity-path="<%= event_activities_path(@event) -%>">
           <%= image_tag('ajax-loader.gif') %>
         </div>

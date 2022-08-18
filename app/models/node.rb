@@ -1,9 +1,8 @@
-class Node < ActiveRecord::Base
+class Node < ApplicationRecord
 
   include PublicActivity::Common
   include LogParameterChanges
   include Searchable
-
 
   extend FriendlyId
   friendly_id :name, use: :slugged
@@ -41,6 +40,7 @@ class Node < ActiveRecord::Base
       end
       string :member_status
       time :updated_at
+      integer :user_id # Used for shadowbans
     end
     # :nocov:
   end
@@ -51,8 +51,8 @@ class Node < ActiveRecord::Base
   def self.load_from_hash(hash, verbose: false)
     hash["nodes"].map do |node_data|
       node = Node.find_or_initialize_by(name: node_data["name"])
-      puts "#{node.new_record? ? 'Creating' : 'Updating'}: #{node_data["name"]}" if verbose
-      staff_data = node_data.delete("staff")
+      puts "#{node.new_record? ? 'Creating' : 'Updating'}: #{node_data['name']}" if verbose
+      staff_data = node_data.delete('staff')
       node.attributes = node_data
       node.user ||= User.get_default_user
 
@@ -62,9 +62,9 @@ class Node < ActiveRecord::Base
       end
 
       if node.save
-        puts "Success" if verbose
+        puts 'Success' if verbose
       elsif verbose
-        puts "Failure:"
+        puts 'Failure:'
         node.errors.full_messages.each { |msg|  puts " * #{msg}" }
       end
       puts if verbose

@@ -6,6 +6,7 @@
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")),
                     :back, :class => 'btn btn-info' %>
+        <%= render partial: 'common/identifiers_dot_org_button', locals: { resource: @workflow } if TeSS::Config.identifiers_prefix %>
         <% if @workflow.public? %>
             <%= render partial: 'workflows/embed_button' %>
         <% end %>

@@ -1,3 +1,4 @@
+# The concern for searchable index
 module SearchableIndex
   extend ActiveSupport::Concern
 
@@ -17,8 +18,8 @@ module SearchableIndex
 
   def fetch_resources
     if TeSS::Config.solr_enabled
-      page = page_param.blank? ? 1 : page_param
-      per_page = per_page_param.blank? ? 30 : per_page_param
+      page = page_param.blank? ? 1 : page_param.to_i
+      per_page = per_page_param.blank? ? 30 : per_page_param.to_i
 
       @search_results = @model.search_and_filter(current_user, @search_params, @facet_params,
                                     page: page, per_page: per_page, sort_by: @sort_by)
@@ -32,16 +33,22 @@ module SearchableIndex
   end
 
   def set_params
+    # If the model uses an alias, use that for the search instead
     @model = controller_name.classify.constantize
-    @facet_params = @model.send(:facet_params, params).permit!
+
+    @facet_params = params.permit(*@model.facet_keys_with_multiple).to_h
     @search_params = params[:q] || ''
     @sort_by = params[:sort].blank? ? 'default' : params[:sort]
   end
 
   def api_collection_properties
+    links = {
+        self: polymorphic_path(@model, search_and_facet_params)
+    }
     if TeSS::Config.solr_enabled
       # Transform facets so value is always an array
-      facets = Hash[@facet_params.map { |key, value| [key, Array(value)] }]
+      facets = @facet_params.to_h
+      facets.each { |key, value| facets[key] = Array(value) }
 
       available_facets = Hash[@search_results.facets.map do |f|
         [
@@ -50,17 +57,22 @@ module SearchableIndex
         ]
       end]
       total = @search_results.total
+
+      res = @index_resources
+      p = search_and_facet_params
+      links[:first] = polymorphic_path(@model, p.merge(page_number: 1)) if res.current_page != 1
+      links[:prev] = polymorphic_path(@model, p.merge(page_number: res.previous_page)) if res.previous_page
+      links[:next] = polymorphic_path(@model, p.merge(page_number: res.next_page)) if res.next_page
+      links[:last] = polymorphic_path(@model, p.merge(page_number: res.total_pages)) if res.current_page != res.total_pages
     else
       facets = {}
       available_facets = {}
       total = @index_resources.count
     end
 
+
     {
-        links: {
-            # This gets overridden (by something in ActiveModelSerializers)when the collection has multiple pages
-            self: polymorphic_path(@model, params.slice(:q, *@model.facet_fields))
-        },
+        links: links,
         meta: {
             facets: facets,
             available_facets: available_facets,
@@ -71,10 +83,18 @@ module SearchableIndex
   end
 
   def page_param
-    params[:page] || params[:page_number]
+    pagination_params[:page] || pagination_params[:page_number]
   end
 
   def per_page_param
-    params[:per_page] || params[:page_size]
+    pagination_params[:per_page] || pagination_params[:page_size]
+  end
+
+  def pagination_params
+    params.permit(:page, :page_number, :per_page, :page_size)
+  end
+
+  def search_and_facet_params
+    params.permit(*(@model.search_and_facet_keys | [:page_size, :page_number, :page, :per_page]))
   end
 end

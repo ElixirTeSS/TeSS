@@ -1,0 +1,77 @@
+version: '3.8'
+services:
+  app:
+    container_name: ${PREFIX}-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ${PREFIX}-app
+    restart: unless-stopped
+    env_file: .env
+    depends_on:
+      - db
+      - solr
+      - redis
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/code
+      - gem_cache:/usr/local/bundle/gems
+      - node_modules:/app/node_modules
+    environment:
+      RAILS_ENV: development
+      RAILS_LOG_TO_STDOUT: 'true'
+  db:
+    container_name: ${PREFIX}-db
+    logging:
+      driver: none
+    image: postgres:14.2
+    restart: always
+    env_file: .env
+    environment:
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  solr:
+    container_name: ${PREFIX}-solr
+    image: solr:8
+    restart: always
+    volumes:
+      - solr-data:/var/solr
+      - ./solr:/opt/solr/server/solr/configsets/development
+    command:
+      - solr-precreate
+      - tess
+      - /opt/solr/server/solr/configsets/development
+    ports:
+      - '8984:8983'
+  redis:
+    container_name: ${PREFIX}-redis
+    image: redis:6
+    restart: always
+    volumes:
+      - redis-data:/data
+  sidekiq:
+    container_name: ${PREFIX}-sidekiq
+    image: ${PREFIX}-app
+    depends_on:
+      - app
+      - db
+      - redis
+    volumes:
+      - .:/code
+      - gem_cache:/usr/local/bundle/gems
+      - node_modules:/app/node_modules
+    env_file: .env
+    environment:
+      RAILS_ENV: development
+    entrypoint: ./docker/sidekiq_entrypoint.sh
+volumes:
+  db-data:
+  solr-data:
+  redis-data:
+  gem_cache:
+  node_modules:

@@ -1,18 +1,24 @@
+# The controller for actions related to home page
 class StaticController < ApplicationController
 
   skip_before_action :authenticate_user!, :authenticate_user_from_token!
-
-  def about; end
 
   def privacy; end
 
   def home
     @hide_search_box = true
     @resources = []
-    [Event, Material].each do |resource|
-      @resources << resource.between_times(Time.zone.now - 2.week, Time.zone.now).limit(5)
+    if TeSS::Config.solr_enabled
+      enabled = []
+      enabled.append(Event) if TeSS::Config.feature['events']
+      enabled.append(Material) if TeSS::Config.feature['materials']
+      enabled.append(Collection) if TeSS::Config.feature['collections']
+      enabled.each do |resource|
+        @resources += resource.search_and_filter(nil, '', { 'max_age' => '1 month' },
+                                                 sort_by: 'new', per_page: 5).results
+      end
     end
-    @resources.flatten! if @resources.any?
-    @resources.sort_by! { |x| x.created_at }.reverse!
+
+    @resources = @resources.sort_by(&:created_at).reverse
   end
 end

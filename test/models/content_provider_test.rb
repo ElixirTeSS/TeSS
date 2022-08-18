@@ -29,4 +29,40 @@ class ContentProviderTest < ActiveSupport::TestCase
     assert content_provider.node == nodes(:good)
   end
 
+  test 'should have contact' do
+    # not added
+    assert !content_providers(:organisation_provider).nil?
+    assert content_providers(:organisation_provider).contact.nil?
+
+    # blank
+    assert !content_providers(:project_provider).nil?
+    assert !content_providers(:project_provider).contact.nil?
+    assert content_providers(:project_provider).contact.blank?
+
+    # just email
+    assert !content_providers(:another_portal_provider).nil?
+    assert !content_providers(:another_portal_provider).contact.nil?
+    assert_equal 'user@provider.portal',
+                 content_providers(:another_portal_provider).contact
+
+    # name and email
+    assert !content_providers(:portal_provider).nil?
+    assert !content_providers(:portal_provider).contact.nil?
+    assert_equal 'Jim (jim@provider.portal)',
+                 content_providers(:portal_provider).contact
+
+  end
+
+  test 'should validate content provider type' do
+    content_provider = ContentProvider.new(title: 'New Provider',
+                                           url: 'https://website.internet',
+                                           user: users(:regular_user),
+                                           content_provider_type: 'Something')
+    refute content_provider.valid?
+    assert content_provider.errors.added?(:content_provider_type, :inclusion, value: 'Something')
+
+    content_provider.content_provider_type = 'Organisation'
+    assert content_provider.valid?
+  end
+
 end

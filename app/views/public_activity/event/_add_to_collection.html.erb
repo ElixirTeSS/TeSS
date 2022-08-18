@@ -1,0 +1,12 @@
+<% if !activity.parameters.empty? %>
+    <i class="fa fa-pencil-square-o"></i>
+
+    <% if activity.owner %>
+        <%= link_to activity.owner.username, activity.owner %>
+    <% end %>
+
+    added to collection
+    <%= link_to activity.parameters[:collection_title], collection_path(activity.parameters[:collection_id]) %>to
+    at
+    <%= activity.created_at -%>.
+<% end %>

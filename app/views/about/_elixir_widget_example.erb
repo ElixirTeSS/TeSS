@@ -1,0 +1,31 @@
+<p>  Below is a live example of the TeSS Maps widget.</p>
+
+<hr/>
+
+<link rel="stylesheet" property="stylesheet" href="https://elixirtess.github.io/TeSS_widgets/css/tess-widget.css"/>
+
+<div id="tess-widget-google-map" class="tess-widget tess-widget-google-map">
+
+  <script>
+      function initTeSSWidgets() {
+          TessWidget.Events(document.getElementById('tess-widget-google-map'),
+              'GoogleMap',
+              {
+                  opts: {
+                      apiKey: <%= Rails.application.secrets.google_maps_api_key %> // Get your own API key!
+                  },
+                  params: {
+                      country: [<%== raw t 'developer.gmaps_countries' %>],
+                      pageSize: 500
+                  }
+              });
+      }
+  </script>
+
+  <script async="" defer="" src="https://elixirtess.github.io/TeSS_widgets/js/tess-widget-standalone.js"
+          onload="initTeSSWidgets()">
+  </script>
+
+</div>
+
+<hr>

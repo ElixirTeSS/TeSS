@@ -1,4 +1,4 @@
-class MakeEditSuggestionPolymorphic < ActiveRecord::Migration
+class MakeEditSuggestionPolymorphic < ActiveRecord::Migration[4.2]
   def up
     add_reference :materials, :suggestible, polymorphic: true
     add_reference :events, :suggestible, polymorphic: true

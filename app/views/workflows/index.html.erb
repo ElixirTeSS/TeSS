@@ -7,11 +7,11 @@
 
   <div id="content">
     <div class="row">
-      <%= link_to new_workflow_path, class: "btn btn-primary" do %>
-          <i class="fa fa-plus-square"></i> Create workflow
+      <%= link_to new_workflow_path, class: 'btn btn-primary' do %>
+        <i class="fa fa-plus-square"></i> Create workflow
       <% end %>
       <div class="pull-right">
-        <%= info_button('What are workflows in TeSS?') do %>
+        <%= info_button("What are workflows in #{TeSS::Config.site['title_short']}?") do %>
             <%= render_markdown(WorkflowsHelper::WORKFLOWS_INFO) %>
         <% end %>
       </div>

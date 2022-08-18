@@ -1,0 +1,37 @@
+<div class="wrapper">
+  <% if TeSS::Config.solr_enabled %>
+      <div id="sidebar" class="popout-sidebar">
+        <%= render partial: "search/common/facet_sidebar", locals:  { resources: @collections_results, resource_type: Collection } %>
+      </div>
+  <% end %>
+
+  <div id="content">
+    <div class="row">
+      <%= link_to new_collection_path, :class=>"btn btn-primary" do %>
+          <i class="fa fa-plus-square"></i> Create collection
+      <% end %>
+      <div class="pull-right">
+        <%= info_button("What are collections in #{TeSS::Config.site['title_short']}?") do %>
+          <%= render_markdown(CollectionsHelper::COLLECTIONS_INFO) %>
+        <% end %>
+      </div>
+    </div>
+
+    <% if TeSS::Config.solr_enabled %>
+        <div class="row">
+          <%= render partial: "search/common/search_box", locals: { resource_path: collections_path } %>
+          <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
+            <i class="fa fa-filter"></i> Filters
+          </button>
+          <%= render partial: "search/common/search_info", locals: { resources: @collections_results, resource_type: 'collection' } %>
+          <%= render partial: "search/common/search_filters", locals: { resources: @collections_results } %>
+        </div>
+    <% end %>
+
+    <%= render partial: "search/common/pagination_bar", locals: { resources: @collections } %>
+
+    <hr>
+
+    <%= render partial: 'common/masonry_grid', locals: { objects: @collections } %>
+  </div>
+</div>

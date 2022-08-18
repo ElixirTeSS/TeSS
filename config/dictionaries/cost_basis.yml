@@ -1,0 +1,9 @@
+free:
+  title: Free to all
+  description: This event is free for all participants
+hosts:
+  title: Cost to non-members
+  description: This event is only free for participants from host institutions and members of the provider organization.
+charge:
+  title: Cost incurred by all
+  description: This event has an associated charge for participants.

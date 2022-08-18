@@ -1,0 +1,10 @@
+name: dummy
+logfile: log/ingestion.bad.log
+username: Bob
+sources:
+  - id: 1
+    provider: 'Dummy Provider'            # content provider's title - not found
+    url: https://app.com/event.csv      # the root URL required to access the source
+    method: csv                         # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true

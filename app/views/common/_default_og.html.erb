@@ -1,7 +1,12 @@
-<%= tag(:meta, name: "twitter:card", content: 'summary') %>
-<%= tag(:meta, name: "twitter:site", content: '@ElixirTeSS') %>
-<%= tag(:meta, name: "twitter:creator", content: '@ElixirTeSS') %>
-<%= tag(:meta, property: "og:url", content: request.original_url) %>
-<%= tag(:meta, property: "og:title", content: "TeSS Training eSupport System" ) %>
-<%= tag(:meta, property: "og:description", content: "Browse, discover and organise Life science training resources aggregated from ELIXIR nodes and other providers" ) %>
-<%= tag(:meta, property: "og:image", content: asset_url("ELIXIR_TeSS_logo_normal.png") ) %>
+<% # default twitter meta tags -%>
+<%= tag(:meta, name: "twitter:card",        content: 'summary_large_image') %>
+<%= tag(:meta, name: "twitter:site",        content: TeSS::Config.site['title_short']) %>
+<%= tag(:meta, name: "twitter:creator",     content: TeSS::Config.twitter_handle) %>
+<%= tag(:meta, name: "twitter:image",       content: asset_url(TeSS::Config.site['logo']) ) %>
+<%= tag(:meta, name: "twitter:title",       content: TeSS::Config.site['title']) %>
+<%= tag(:meta, name: "twitter:description", content: t('home.subtitle') ) %>
+<% # default OpenGraph meta tags -%>
+<%= tag(:meta, property: "og:url",          content: request.original_url) %>
+<%= tag(:meta, property: "og:image",        content: asset_url(TeSS::Config.site['logo_open_graph']) ) %>
+<%= tag(:meta, property: "og:title",        content: TeSS::Config.site['title']) %>
+<%= tag(:meta, property: "og:description",  content: t('home.subtitle') ) %>

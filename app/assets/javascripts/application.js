@@ -29,7 +29,7 @@
 //= require eonasdan-bootstrap-datetimepicker
 //= require devbridge-autocomplete
 //= require clipboard
-//= require url_checker
+//= require ardc_vocab_widget_v2
 //= require_tree ./templates
 //= require_tree .
 //= require_self
@@ -41,134 +41,103 @@ function updateURLParameter(url, param, paramVal){
     var baseURL = tempArray[0];
     var additionalURL = tempArray[1];
     var temp = "";
+
     if (additionalURL) {
         tempArray = additionalURL.split("&");
-        for (i=0; i<tempArray.length; i++){
-            if(tempArray[i].split('=')[0] != param){
+        for (var i=0; i<tempArray.length; i++){
+            if(tempArray[i].split("=")[0] != param){
                 newAdditionalURL += temp + tempArray[i];
                 temp = "&";
             }
         }
     }
-    var rows_txt = temp + "" + param + "=" + paramVal;
-    return baseURL + "?" + newAdditionalURL + rows_txt;
+    var rowsTxt = temp + "" + param + "=" + paramVal;
+    return baseURL + "?" + newAdditionalURL + rowsTxt;
 }
 
 function redirect_to_sort_url(){
     window.location.replace(
         updateURLParameter(
             window.location.href,
-            'sort',
-            $('#sort').find(":selected").val()
+            "sort",
+            $("#sort").find(":selected").val()
         )
-    )
+    );
 }
 
-function reposition_tiles(container, tile_class){
-    var $container = $('.' + container);
+function reposition_tiles(container, tileClass){
+    var $container = $("." + container);
     
     $container.imagesLoaded(function () {
         $container.masonry({
             // options...
-            itemSelector: '.' + tile_class,
+            itemSelector: "." + tileClass,
             columnWidth: 20
         });
     });
 }
 
-$(document).ready(function () {
-    // Show the tab associated with the window location hash (e.g. "#packages")
-    if (window.location.hash) {
-        var tab = $('ul.nav a[href="' + window.location.hash + '"]');
-        if (tab.length) {
-            tab.tab('show');
-        }
-    }
-
-    // Store the open tab in the window location hash
-    $('.nav-tabs a').on("shown.bs.tab", function(e) {
-        window.location.hash = this.hash;
-    });
-
+document.addEventListener("turbolinks:load", function() {
     // Disabled tabs
-    $('.nav-tabs li a[data-toggle="tooltip"]').tooltip();
-    $('.nav-tabs li.disabled a').click(function (e) { e.preventDefault(); return false });
+    $(".nav-tabs li a[data-toggle='tooltip']").tooltip();
+    $(".nav-tabs li.disabled a").click(function (e) { e.preventDefault(); return false });
 
     // Datetime pickers
-    $(function () {
-        $('[data-datetimepicker]').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm',
-            sideBySide: true
-        });
+    $("[data-datetimepicker]").datetimepicker({
+        format: "YYYY-MM-DD HH:mm",
+        sideBySide: true
     });
 
-    $(document).on('click', '.delete-list-item', function () {
-        $(this).parents('li').remove();
-        return false;
+    // Date pickers
+    $("[data-datepicker]").datetimepicker({
+        format: "YYYY-MM-DD"
+    });
+
+
+    // On events form, if start date > end date, update the end date.
+    $("#event_form").on("dp.change", function (e) {
+        // Really awkward way of doing it
+        if ($(e.target).find("#event_start").length) {
+            var startPicker = $("#event_start").parents("[data-datetimepicker]").data("DateTimePicker");
+            var endPicker = $("#event_end").parents("[data-datetimepicker]").data("DateTimePicker");
+            var endDate = endPicker.date();
+            var startDate = startPicker.date();
+            if (startDate > endDate) {
+                endDate = endDate.set({
+                    "year": startDate.year(),
+                    "month": startDate.month(),
+                    "date": startDate.date()
+                });
+                endPicker.date(endDate);
+            }
+        }
     });
 
     // Masonry
-    $('.nav-tabs a').on("shown.bs.tab", function(e) {
+    $(".nav-tabs a").on("shown.bs.tab", function(e) {
         reposition_tiles('masonry', 'masonry-brick');
     });
-    $(window).on('orientationchange', function() {
-        reposition_tiles('masonry', 'masonry-brick');
+    $(window).on("orientationchange", function() {
+        reposition_tiles("masonry", "masonry-brick");
     });
-    reposition_tiles('masonry', 'masonry-brick');
+    reposition_tiles("masonry", "masonry-brick");
 
-
-    new Clipboard('.clipboard-btn');
+    new Clipboard(".clipboard-btn");
 
     // Autocompleters ("app/views/common/_autocompleter.html.erb")
-    $('[data-role="autocompleter-group"]').each(function () {
-        var existingValues = JSON.parse($(this).find('[data-role="autocompleter-existing"]').html()) || [];
-        var listElement = $(this).find('[data-role="autocompleter-list"]');
-        var inputElement = $(this).find('[data-role="autocompleter-input"]');
-        var url = $(this).data('url');
-        var prefix = $(this).data('prefix');
-        var labelField = $(this).data('labelField') || 'title';
-        var idField = $(this).data('idField') || 'id';
-        var templateName = $(this).data('template') || 'autocompleter/resource';
+    Autocompleters.init();
 
-        // Render the existing associations on page load
-        for (var i = 0; i < existingValues.length; i++) {
-            listElement.append(HandlebarsTemplates[templateName](existingValues[i]));
-        }
+    // Collaborations ("app/views/collaborations/_collaborators_button.html.erb")
+    Collaborations.init();
 
-        inputElement.autocomplete({
-            serviceUrl: url,
-            dataType: 'json',
-            deferRequestBy: 300, // Wait 300ms before submitting to stop search being flooded
-            paramName: 'q',
-            transformResult: function(response) {
-                return {
-                    suggestions: $.map(response, function(item) {
-                        return { value: item[labelField], data: item[idField], item: item };
-                    })
-                };
-            },
-            onSelect: function (suggestion) {
-                // Don't add duplicates
-                if (!$("[data-id='" + suggestion.data + "']", listElement).length) {
-                    var obj = { item: suggestion.item };
-                    if (prefix) {
-                        obj.prefix = prefix;
-                    }
+    // Address finder ("app/views/events/partials/_address_finder.html.erb")
+    MapSearch.init();
 
-                    listElement.append(HandlebarsTemplates[templateName](obj));
-                }
+    // Map on event show page
+    Map.init();
 
-                $(this).val('').focus();
-            },
-            onSearchStart: function (query) {
-                query.q = query.q + '*';
-                inputElement.addClass('loading');
-            },
-            onSearchComplete: function () {
-                inputElement.removeClass('loading');
-            }
-        });
-    });
+    // Map on event index page
+    EventsMap.init();
 
     var setStarButtonState = function (button) {
         if (button.data('starred')) {
@@ -203,14 +172,63 @@ $(document).ready(function () {
         })
     });
 
-    $(document).on('shown.bs.tab', '[href="#activity_log"]', function () {
-        var tabPane = $('#activity_log');
+    $('body').scrollspy({
+        target: '.about-page-menu',
+        offset: 40
+    });
 
-        $.ajax({
-            url: tabPane.data('activityPath'),
-            success: function (data) {
-                tabPane.html(data);
-            }
-        });
+    $('.about-page-menu').affix({
+        offset: {
+            top: 100
+        }
+    });
+
+    $("a[rel~=popover], .has-popover").popover();
+    $("a[rel~=tooltip], .has-tooltip").tooltip();
+});
+
+function truncateWithEllipses(text, max)
+{
+    return text.substr(0,max-1)+(text.length>max?'&hellip;':'');
+}
+
+$(document).on('click', '.delete-list-item', function () {
+    $(this).parents('li').remove();
+    return false;
+});
+
+$(document).on('click', '.clear-autocompleter-singleton', function () {
+    var wrapper = $(this).parents('[data-role="autocompleter-group"]');
+    $(this).parents('li').remove();
+    $('[data-role="autocompleter-input"]', wrapper).show();
+    return false;
+});
+
+$(document).on('shown.bs.tab', '[href="#activity_log"]', function () {
+    var tabPane = $('#activity_log');
+
+    $.ajax({
+        url: tabPane.data('activityPath'),
+        success: function (data) {
+            tabPane.html(data);
+        }
     });
 });
+
+/**
+ * Function that registers a click on an outbound link in Analytics.
+ * This function takes a valid URL string as an argument, and uses that URL string
+ * as the event label. Setting the transport method to 'beacon' lets the hit be sent
+ * using 'navigator.sendBeacon' in browser that support it.
+ */
+var getOutboundLink = function(url) {
+    if (!window.captureClicks) {
+        return;
+    }
+    gtag('event', 'click', {
+        'event_category': 'outbound',
+        'event_label': url,
+        'transport_type': 'beacon',
+        'event_callback': function() {} // Not needed
+    });
+}

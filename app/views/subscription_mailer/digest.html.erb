@@ -7,36 +7,38 @@ Dear <%= @user.profile.firstname || @user.username %>,<br/>
 
 <ul>
   <% if @subscription.query -%>
-      <li>
-        <strong>Search terms:</strong>
-        <em><%= @subscription.query %></em>
-      </li>
+    <li>
+      <strong>Search terms:</strong>
+      <em><%= @subscription.query %></em>
+    </li>
   <% end -%>
   <% if @subscription.facets.present? %>
-      <% @subscription.facets.each do |facet, values| %>
-          <li>
-            <strong><%= facet.humanize %>:</strong>
-            <%= Array(values).to_sentence(last_word_connector: ', or ', two_words_connector: ' or ') -%>
-          </li>
-      <% end %>
+    <% @subscription.facets.each do |facet, values| %>
+      <li>
+        <strong><%= facet.humanize %>:</strong>
+        <%= Array(values).to_sentence(last_word_connector: ', or ', two_words_connector: ' or ') -%>
+      </li>
+    <% end %>
   <% end %>
 </ul>
 
 <p>
   There <%= @digest.total_count == 1 ? 'has' : 'have' -%> been
-  <%= pluralize(@digest.total_count, "new #{@subscription.subscribable_type.downcase}") -%> registered in TeSS:
+  <%= pluralize(@digest.total_count, "new #{@subscription.subscribable_type.downcase}") -%>
+  registered in <%= TeSS::Config.site['title_short'] %>:
 </p>
 <%= render partial: @subscription.subscribable_type.downcase.pluralize, locals: { digest: @digest } %>
 
 <p>
   <% if @digest.count < @digest.total_count %>
-      ...and <%= pluralize(@digest.total_count - @digest.count, 'other') -%><br/>
+    ...and <%= pluralize(@digest.total_count - @digest.count, 'other') -%><br/>
   <% end %>
-  <%= link_to("View all results on TeSS", subscription_results_url(@subscription)) %>
+  <%= link_to("View all results on #{TeSS::Config.site['title_short']}", subscription_results_url(@subscription)) %>
 </p>
 
 <hr/>
 
 <small>
-  To cancel this subscription, <%= link_to('click here', unsubscribe_subscription_url(@subscription, code: @subscription.unsubscribe_code)) %>.
+  To cancel this subscription,
+  <%= link_to('click here', unsubscribe_subscription_url(@subscription, code: @subscription.unsubscribe_code)) %>.
 </small>

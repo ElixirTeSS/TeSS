@@ -1,6 +1,7 @@
 require 'private_address_check'
 require 'private_address_check/tcpsocket_ext'
 
+# The controller for actions related to the core application
 class ApplicationController < ActionController::Base
   include BreadCrumbs
   include PublicActivity::StoreController
@@ -12,7 +13,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   # Should allow token authentication for API calls
-  acts_as_token_authentication_handler_for User, except: [:index, :show, :embed, :check_exists, :handle_error, :count, :redirect] #only: [:new, :create, :edit, :update, :destroy]
+  acts_as_token_authentication_handler_for User, except: [:index, :show, :embed, :check_exists, :handle_error, :count,
+                                                          :redirect] #only: [:new, :create, :edit, :update, :destroy]
 
   # User auth should be required in the web interface as well; it's here rather than in routes so that it
   # doesn't override the token auth, above.
@@ -20,37 +22,42 @@ class ApplicationController < ActionController::Base
   before_action :set_current_user
 
   # Should prevent forgery errors for JSON posts.
-  skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
+  skip_before_action :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
 
   # Do some access control - see policies folder for individual policies on models
   include Pundit
-  protect_from_forgery
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def pundit_user
-    CurrentContext.new(current_user, request)
+    Pundit::CurrentContext.new(current_user, request)
   end
 
-  def handle_error(status_code = '500')
-    status_code = params[:status_code] || status_code # params[:status_code] comes from routes for 500, 503, 422 and 404 errors
-    @skip_flash_messages_in_header = true
-    if status_code == '500'
-      flash[:alert] = 'Our apologies - your request caused an error (status code: 500 Server Error).'
-    elsif status_code == '503'
-      flash[:alert] = 'Our apologies - the server is temporarily down or unavailable due to maintenance (status code: 503 Service Unavailable).'
-    elsif status_code == '422'
-      flash[:alert] = 'The request you sent was well-formed but the change you wanted was rejected (status code: 422 Unprocessable Entity).'
-    elsif status_code == '404'
-      flash[:alert] = 'The requested page could not be found - you may have mistyped the address or the page may have moved (status code: 404 Not Found).'
+  def handle_error(status_code = 500, message = nil)
+    status_code = (params[:status_code] || status_code) # params[:status_code] comes from routes for 500, 503, 422 and 404 errors
+    if status_code.is_a?(Symbol) # Convert :forbidden, :not_found, etc. to 403, 404 etc.
+      status_code = Rack::Utils::SYMBOL_TO_STATUS_CODE[status_code] || status_code
     end
-    respond_to do |format|
-      format.html  { render 'static/error.html',
-                            :status => status_code}
+    status_code = status_code.to_i
+    @skip_flash_messages_in_header = true
 
-      # format.json  { head status }
-      format.json { render :json => flash,
-                           :status => status_code}
+    if message.blank?
+      case status_code
+      when 500
+        message = 'Our apologies - your request caused an error (status code: 500 Server Error).'
+      when 503
+        message = 'Our apologies - the server is temporarily down or unavailable due to maintenance (status code: 503 Service Unavailable).'
+      when 422
+        message = 'The request you sent was well-formed but the change you wanted was rejected (status code: 422 Unprocessable Entity).'
+      when 404
+        message = 'The requested page could not be found - you may have mistyped the address or the page may have moved (status code: 404 Not Found).'
+      end
+    end
+
+    flash[:alert] = message
+    respond_to do |format|
+      format.html  { render 'static/error', status: status_code}
+      format.json { render json: { error: { message: message, code: status_code } }, status: status_code }
     end
   end
 
@@ -89,8 +96,7 @@ class ApplicationController < ActionController::Base
 
   def user_not_authorized(exception)
     policy_name = exception.policy.class.to_s.underscore
-    flash[:alert] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
-    handle_error(:forbidden)
+    handle_error(:forbidden, t("#{policy_name}.#{exception.query}", scope: 'pundit', default: :default))
   end
 
   def set_current_user
@@ -100,9 +106,13 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:username, :email, :password, :password_confirmation, :remember_me, :publicize_email) }
+    devise_parameter_sanitizer.permit(:sign_up) do |u| u.permit(:username, :email, :password, :password_confirmation,
+                                                                :remember_me, :publicize_email, :processing_consent)
+    end
     devise_parameter_sanitizer.permit(:sign_in) { |u| u.permit(:login, :username, :email, :password, :remember_me) }
-    devise_parameter_sanitizer.permit(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
+    devise_parameter_sanitizer.permit(:account_update) do |u| u.permit(:username, :email, :password,
+                                                                       :password_confirmation, :current_password)
+    end
   end
 
   def allow_embedding

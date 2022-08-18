@@ -14,7 +14,7 @@
     <div class="row">
       <h3>Displaying all <%= pluralize @suggestions.count, 'topic suggestion' %></h3>
       <div class="pull-right">
-        <%= info_button('How to curate topics in TeSS') do %>
+        <%= info_button("How to curate topics in #{TeSS::Config.site['title_short']}") do %>
             <%= render_markdown(MaterialsHelper::TOPICS_INFO) %>
         <% end %>
       </div>
@@ -22,7 +22,7 @@
     <% @suggestions.each do |suggestion| %>
         <% resource = suggestion.suggestible %>
         <%= render layout: 'common/mixed_resources', locals: {resource: resource} do%>
-        <%= render partial: 'common/approve_topic_suggestions', locals: { suggestion: suggestion } %>
+        <%= render partial: 'common/approve_term_suggestions', locals: { suggestion: suggestion } %>
         <% end %>
     <% end %>
 

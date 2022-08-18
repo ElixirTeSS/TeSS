@@ -1,7 +1,12 @@
+# The helper for searches
 module SearchHelper
 
+  def search_and_facet_params
+    params.permit(*@model.search_and_facet_keys)
+  end
+
   def filter_link name, value, count, title = nil, html_options={}, &block
-    parameters = params.dup
+    parameters = search_and_facet_params
     title ||= (title || truncate(value.to_s, length: 30))
 
     #if there's already a filter of the same facet type, create/add to an array
@@ -24,7 +29,7 @@ module SearchHelper
   end
 
   def remove_filter_link name, value, html_options={}, title=nil, &block
-    parameters = params.dup
+    parameters = search_and_facet_params
     title ||= (title || truncate(value.to_s, length: 30))
 
     #delete a filter from an array or delete the whole facet if it is the only one
@@ -62,6 +67,7 @@ module SearchHelper
 
   def neatly_printed_date_range(start, finish = nil)
     return 'No date given' if start.blank? && finish.blank?
+    return 'No start date' if !start
 
     if finish
       out = ''

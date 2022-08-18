@@ -1,18 +1,13 @@
 class ApplicationSerializer < ActiveModel::Serializer
-
   include Rails.application.routes.url_helpers
   include Pundit
 
-  # def _meta
-  #   {}
-  # end
-
-  def _links
-    { self: polymorphic_path(object) }
+  def scientific_topics
+    ontology_terms(:scientific_topics)
   end
 
-  def scientific_topics
-    object.scientific_topics.map { |t| { preferred_label: t.preferred_label, uri: t.uri } }
+  def operations
+    ontology_terms(:operations)
   end
 
   def external_resources
@@ -29,7 +24,12 @@ class ApplicationSerializer < ActiveModel::Serializer
   private
 
   def pundit_user
-    CurrentContext.new(current_user, @request)
+    Pundit::CurrentContext.new(current_user, @request)
   end
 
+  def ontology_terms(type)
+    object.send(type).map { |t| { preferred_label: t.preferred_label, uri: t.uri } }
+  end
+
+  link(:self) { polymorphic_path(object) }
 end

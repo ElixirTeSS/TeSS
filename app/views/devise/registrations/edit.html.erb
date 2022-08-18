@@ -21,8 +21,10 @@
 
           <%= f.input :password_confirmation, input_html: { autocomplete: 'off' } %>
 
-          <%= f.input :current_password, input_html: { autocomplete: 'off' }, required: true,
-                      hint: "We need your current password to confirm changes." %>
+          <% unless resource.using_omniauth? %>
+            <%= f.input :current_password, input_html: { autocomplete: 'off' }, required: true,
+                        hint: "We need your current password to confirm changes." %>
+          <% end %>
 
           <div class="actions">
             <%= f.submit "Update", :class => 'btn btn-primary' %>

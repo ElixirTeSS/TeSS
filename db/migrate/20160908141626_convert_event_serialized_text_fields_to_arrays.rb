@@ -1,6 +1,6 @@
 require 'yaml'
 
-class ConvertEventSerializedTextFieldsToArrays < ActiveRecord::Migration
+class ConvertEventSerializedTextFieldsToArrays < ActiveRecord::Migration[4.2]
   def up
     # Add new columns
     add_column :events, :keywords2, :string, array: true, default: []

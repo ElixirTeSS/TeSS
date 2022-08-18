@@ -1,8 +1,7 @@
-class User < ActiveRecord::Base
-  include ActionView::Helpers::ApplicationHelper
+class User < ApplicationRecord
 
+  include ActionView::Helpers
   include PublicActivity::Common
-
 
   acts_as_token_authenticatable
   include Gravtastic
@@ -12,60 +11,94 @@ class User < ActiveRecord::Base
   friendly_id :username, use: :slugged
 
   attr_accessor :login
+  attr_accessor :processing_consent
 
   if TeSS::Config.solr_enabled
     # :nocov:
     searchable do
       text :username
       text :email
+      boolean :unverified do
+        unverified_or_rejected?
+      end
+      boolean :shadowbanned do
+        shadowbanned?
+      end
     end
     # :nocov:
   end
 
   has_one :profile, inverse_of: :user, dependent: :destroy
+  CREATED_RESOURCE_TYPES = [:events, :materials, :workflows, :content_providers, :sources, :collections]
   has_many :materials
-  has_many :packages, dependent: :destroy
+  has_many :collections, dependent: :destroy
   has_many :workflows, dependent: :destroy
   has_many :content_providers
   has_many :events
   has_many :nodes
-  belongs_to :role
+  has_many :sources
+  belongs_to :role, optional: true
   has_many :subscriptions, dependent: :destroy
   has_many :stars, dependent: :destroy
-  has_one :ban
+  has_one :ban, dependent: :destroy, inverse_of: :user
+  has_many :activities_as_owner,
+           class_name: '::PublicActivity::Activity',
+           as: :owner
 
-  before_create :set_registered_user_role, :set_default_profile
+  has_and_belongs_to_many :editables, class_name: "ContentProvider"
+
+  before_create :set_default_role, :set_default_profile
   before_create :skip_email_confirmation_for_non_production
   before_update :skip_email_reconfirmation_for_non_production
-
   before_destroy :reassign_owner
+  after_update :react_to_role_change
+  before_save :set_username_for_invitee
 
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable, :confirmable,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, :authentication_keys => [:login]
+  # Include default devise modules. Others available are: :lockable, :timeoutable
+  if TeSS::Config.feature['registration']
+    devise :database_authenticatable, :confirmable, :registerable, :invitable, :recoverable, :rememberable, :trackable,
+           :validatable, :omniauthable, :authentication_keys => [:login]
+  elsif TeSS::Config.feature['invitation']
+    devise :database_authenticatable, :confirmable, :invitable, :recoverable, :rememberable, :trackable,
+           :validatable, :omniauthable, :authentication_keys => [:login]
+  else
+    devise :database_authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable,
+           :omniauthable, :authentication_keys => [:login]
+  end
 
   validates :username,
             :presence => true,
-            :case_sensitive => false,
             :uniqueness => true
+
+  validate :consents_to_processing, on: :create, unless: ->(user) { user.using_omniauth? || User.current_user.try(:is_admin?) }
 
   accepts_nested_attributes_for :profile
 
   attr_accessor :publicize_email
 
+  # --- scopes
+  scope :non_default, -> { where.not(id: User.get_default_user.id) }
+
+  scope :invited, -> { where.not(invitation_token: nil) }
+
+  scope :invitees, -> { invited.where(invitation_accepted_at: nil) }
+
+  scope :accepteds, -> { invited.where.not(invitation_accepted_at: nil) }
+
+  scope :visible, -> { not_banned.non_default.verified.where(invitation_token: nil).or(accepteds) }
+  # ---
+
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
-      where(conditions.to_h).where(["lower(username) = :value OR lower(email) = :value", {:value => login.downcase}]).first
+      where(conditions.to_h).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
     else
       where(conditions.to_h).first
     end
   end
 
-  def set_registered_user_role
-    self.role ||= Role.fetch('registered_user')
+  def set_default_role
+    self.role ||= Role.fetch(TeSS::Config.default_role || 'registered_user')
   end
 
   def set_default_profile
@@ -73,7 +106,7 @@ class User < ActiveRecord::Base
     self.profile.email = (email || unconfirmed_email) if (publicize_email.to_s == '1')
   end
 
- # Check if user has a particular role
+  # Check if user has a particular role
   def has_role?(role)
     self.role && self.role.name == role.to_s
   end
@@ -112,9 +145,10 @@ class User < ActiveRecord::Base
   end
 
   def self.get_default_user
-    where(role_id: Role.fetch('default_user').id).first_or_create(username: 'default_user',
-                                                                  email: TeSS::Config.contact_email,
-                                                                  password: SecureRandom.base64)
+    User.default_scoped.where(role_id: Role.fetch('default_user').id).first_or_create!(username: 'default_user',
+                                                                   email: TeSS::Config.contact_email,
+                                                                   password: SecureRandom.base64,
+                                                                   processing_consent: '1')
   end
 
   def name
@@ -151,24 +185,37 @@ class User < ActiveRecord::Base
     # TODO: Decide what to do about users who have an account but authenticate later on via Elixir AAI.
     # TODO: The code below will update their account to note the Elixir auth. but leave their password intact;
     # TODO: is this what we should be doing?
-    #user = User.where(:provider => auth.provider, :uid => auth.uid).first
-    # `auth.info` fields: email, first_name, gender, image, last_name, name, nickname, phone, urls
-    user = User.where(:email => auth.info.email ).first
+
+    # find by provider and { uid or email}
+    users = User.where(provider: auth.provider, uid: auth.uid)
+    if users.nil? or users.size <= 0
+      users = User.where(provider: auth.provider, email: auth.info.email)
+    end
+
+    # get first user
+    user = users.first
+
     if user
+      # update provider and uid if present
       if user.provider.nil? and user.uid.nil?
         user.uid = auth.uid
         user.provider = auth.provider
         user.save
       end
     else
-      # Generate a unique username. Usernames provided by AAI may already be in use.
+      # set name components
+      first_name = auth.info.first_name
+      first_name ||= auth.info.given_name
+      last_name = auth.info.last_name
+      last_name ||= auth.info.family_name
+
+      # create user
+      username = User.username_from_auth_info(auth.info)
       user = User.new(provider: auth.provider,
                       uid: auth.uid,
                       email: auth.info.email,
-                      username: User.unique_username(auth.info.nickname || auth.info.openid || 'user'),
-                      password: Devise.friendly_token[0,20],
-                      profile_attributes: { firstname: auth.info.first_name,
-                                            surname: auth.info.last_name }
+                      username: username,
+                      profile_attributes: { firstname: first_name, surname: last_name },
       )
       user.skip_confirmation!
     end
@@ -193,6 +240,80 @@ class User < ActiveRecord::Base
     joins(:ban).where(bans: { shadow: true })
   end
 
+  def self.not_banned
+    left_outer_joins(:ban).where(bans: { id: nil })
+  end
+
+  def using_omniauth?
+    provider.present? && uid.present?
+  end
+
+  def password_required?
+    if using_omniauth?
+      false
+    else
+      super
+    end
+  end
+
+  # Generate a unique username. Usernames provided by AAI may already be in use.
+  def self.username_from_auth_info(auth_info)
+    user_name = auth_info.nickname
+    user_name ||= auth_info.openid
+    user_name ||= auth_info.email.split('@').first if auth_info.email
+    user_name ||= 'user'
+
+    User.unique_username(user_name)
+  end
+
+  def self.with_role(*roles)
+    joins(:role).where(roles: { name: Array(roles).map { |role| role.is_a?(Role) ? role.name : role } })
+  end
+
+  def self.unbanned
+    joins('LEFT OUTER JOIN "bans" on "bans"."user_id" = "users"."id"').where(bans: { id: nil })
+  end
+
+  def self.with_created_resources
+    joins(:activities_as_owner).where(activities: { key: CREATED_RESOURCE_TYPES.map { |t| "#{t.to_s.singularize}.create" } }).distinct
+  end
+
+  def self.with_query(query)
+    joins(:profile).where('lower(username) LIKE :query or lower(profiles.firstname) LIKE :query or lower(profiles.surname) LIKE :query',
+                          query: "#{query.downcase}%")
+  end
+
+  def created_resources
+    CREATED_RESOURCE_TYPES.reduce([]) { |a, t| a + send(t) }
+  end
+
+  def get_editable_providers
+    result = self.editables
+    ContentProvider.all.each do |prov|
+      if !result.include?(prov)
+        if prov.user == self or self.is_admin? or self.is_curator?
+          result << prov
+        end
+      end
+    end
+    result.sort_by { |obj| obj.title }
+  end
+
+  def get_inviter
+    unless invited_by_id.nil?
+      inviter = User.find_by_id(self.invited_by_id)
+      inviter.username
+    end
+  end
+
+  def self.verified
+    where.not(role_id: [Role.rejected, Role.unverified])
+  end
+
+  def unverified_or_rejected?
+    has_role?(Role.rejected.name) || has_role?(Role.unverified.name)
+  end
+
   private
 
   def reassign_owner
@@ -209,9 +330,32 @@ class User < ActiveRecord::Base
     #   node.update_attribute(:user_id, get_default_user.id)
     # end
     default_user = User.get_default_user
-    self.materials.each{|x| x.update_attribute(:user, default_user) } if self.materials.any?
-    self.events.each{|x| x.update_attribute(:user, default_user) } if self.events.any?
-    self.content_providers.each{|x| x.update_attribute(:user, default_user)} if self.content_providers.any?
-    self.nodes.each{|x| x.update_attribute(:user, default_user)} if self.nodes.any?
+    self.materials.each { |x| x.update_attribute(:user, default_user) } if self.materials.any?
+    self.events.each { |x| x.update_attribute(:user, default_user) } if self.events.any?
+    self.content_providers.each { |x| x.update_attribute(:user, default_user) } if self.content_providers.any?
+    self.nodes.each { |x| x.update_attribute(:user, default_user) } if self.nodes.any?
   end
+
+  def react_to_role_change
+    if saved_change_to_role_id?
+      create_activity(:change_role, owner: User.current_user, parameters: { old: role_id_before_last_save,
+                                                                            new: role_id })
+      Sunspot.index(created_resources.to_a) if TeSS::Config.solr_enabled
+    end
+  end
+
+  def consents_to_processing
+    if processing_consent!="1"
+      errors.add(:base, "You must consent to #{TeSS::Config.site['title_short']} processing your data in order to register")
+
+      false
+    end
+  end
+
+  def set_username_for_invitee
+    if !self.invitation_token.nil? and !self.email.nil? and self.username.nil?
+      self.username = self.email
+    end
+  end
+
 end

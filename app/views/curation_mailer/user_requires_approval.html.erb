@@ -1,0 +1,26 @@
+<p>
+  You are receiving this automated email because you are a curator of TeSS.
+</p>
+
+<p>
+  <%= @user.name %> has registered an account on TeSS and created the following <%= pluralize(@resources.count, 'resource') -%>:
+</p>
+
+<ul>
+  <% @resources.each do |resource| -%>
+    <li>
+      <%= link_to resource.title, resource %><br/>
+      <% if resource.respond_to?(:url) %>URL: <%= link_to resource.url, resource.url -%><% end %>
+    </li>
+  <% end -%>
+</ul>
+
+<p>
+  This user's resources are currently hidden. As a curator, you can decide whether to:
+</p>
+<ul>
+  <li><b>Approve</b> - Mark this user as safe, un-hiding their existing and future content.</li>
+  <li><b>Reject</b> - Mark this user as a spammer, preventing them from creating further content on TeSS.</li>
+</ul>
+
+<%= link_to('Click here to approve or reject this user', curate_users_url(with_content: true)) %>

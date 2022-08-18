@@ -1,4 +1,4 @@
-class CreateEvents < ActiveRecord::Migration
+class CreateEvents < ActiveRecord::Migration[4.2]
   def change
     create_table :events do |t|
       t.string :external_id
@@ -17,8 +17,8 @@ class CreateEvents < ActiveRecord::Migration
       t.string :county
       t.string :country
       t.string :postcode
-      t.decimal :latitude, {:precision=>10, :scale=>6}
-      t.decimal :longitude, {:precision=>10, :scale=>6}
+      t.decimal :latitude, precision: 10, scale: 6
+      t.decimal :longitude, precision: 10, scale: 6
 
       t.timestamps null: false
     end

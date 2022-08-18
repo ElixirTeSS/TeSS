@@ -1,4 +1,4 @@
-class AddDescTopicsAudienceKeywordsToMaterials < ActiveRecord::Migration
+class AddDescTopicsAudienceKeywordsToMaterials < ActiveRecord::Migration[4.2]
   def change
     add_column :materials, :long_description, :text
     add_column :materials, :target_audience, :string, array: true, default: []

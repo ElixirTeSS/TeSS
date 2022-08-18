@@ -1,21 +1,25 @@
 /*
  * Breakpoint specific:
  */
+
 @mixin xs {
   @media (max-width: $screen-xs-max) {
     @content;
   }
 }
+
 @mixin sm {
   @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
     @content;
   }
 }
+
 @mixin md {
   @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
     @content;
   }
 }
+
 @mixin lg {
   @media (min-width: $screen-lg-min) {
     @content;
@@ -23,15 +27,19 @@
 }
 
 @mixin breakpoint-values($property, $xs, $sm:$xs, $md:$sm, $lg:$md) {
+
   @include xs {
     #{$property}: $xs;
   }
+
   @include sm {
     #{$property}: $sm;
   }
+
   @include md {
     #{$property}: $md;
   }
+
   @include lg {
     #{$property}: $lg;
   }
@@ -45,4 +53,10 @@
   &:hover {
     color: lighten($brand-danger, 10%);
   }
+}
+
+@mixin floating-card {
+  box-shadow: 2px 2px 2px 0 #ccc;
+  border: 1px solid #ccc;
+  border-radius: 0;
 }

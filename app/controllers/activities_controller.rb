@@ -1,9 +1,10 @@
+# The controller for actions related to the Activities model
 class ActivitiesController < ApplicationController
 
   before_action :set_resource, only: [:index]
   before_action :set_breadcrumbs
 
-  MODELS = %w( content_provider material package event node workflow ).freeze
+  MODELS = %w[content_provider material collection event node workflow].freeze
 
   def index
     if request.xhr?

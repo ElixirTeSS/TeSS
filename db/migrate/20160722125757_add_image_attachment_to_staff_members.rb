@@ -1,4 +1,4 @@
-class AddImageAttachmentToStaffMembers < ActiveRecord::Migration
+class AddImageAttachmentToStaffMembers < ActiveRecord::Migration[4.2]
   def change
     add_attachment :staff_members, :image
   end

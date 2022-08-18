@@ -14,7 +14,8 @@
 // "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"
 @import "jquery-ui";
 @import "bootstrap-sprockets";
-@import "mixins/variables"; // *** Colour changes can be done here! ***
+@import "mixins/variables";
+// *** Colour changes can be done here! ***
 @import "bootstrap";
 @import "font-awesome-sprockets";
 @import "font-awesome";
@@ -23,6 +24,8 @@
 @import "cytoscape-panzoom";
 @import "jquery.simplecolorpicker";
 @import "eonasdan-bootstrap-datetimepicker";
+@import "ardc_vocab_widget_v2";
+@import "jquery.qtip.min";
 
 // Sticky but not fixed footer
 // http://cbracco.me/css-sticky-footer-effect/
@@ -35,27 +38,110 @@ body {
   min-width: 320px;
   position: relative;
   margin: 0;
-  padding-bottom: 150px;
+  padding-bottom: 215px;
   min-height: 100%;
 }
 
 .footer {
-  padding: 0;
+  border-top: solid 3px $footer-border;
+  margin-top: 0;
   position: absolute;
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: #ddd;
+  background-color: $footer-bg;
+  color: $footer-text;
+
+  a {
+    color: $footer-text;
+    background-color: transparent;
+    text-decoration: none;
+  }
+
+  h5, h6 {
+    font-weight: bold;
+  }
+
+  .container {
+    padding: 0;
+  }
+
   .footer-logo {
-    margin: 0 5px;
-    img { height: 48px; }
+    img {
+      margin-left: 12px;
+      margin-bottom: 12px;
+      height: 30px;
+    }
+  }
+
+  .footer-logo-lg {
+    img {
+      height: 106px;
+    }
+  }
+
+  .eu-notice {
+    padding-top: 10px;
+    overflow: auto;
+
+    img {
+      float: left;
+      margin: 0 8px;
+      height: 39px;
+    }
+  }
+}
+
+.ack-country {
+  border-top: 2px solid $footer-border;
+  margin-top: 0;
+  padding-top: 0.5em;
+  text-align: center;
+}
+
+.supported-by {
+  margin-bottom: 0;
+  text-align: center;
+  vertical-align: middle;
+  font-size: x-small;
+  line-height: 1.2;
+}
+
+.funder-text {
+  padding-top: 1em;
+  p {
+    font-size: xx-small;
+    vertical-align: bottom;
+    line-height: 1.25;
+  }
+}
+
+.funder-logo {
+  img {
+    padding: 1em 1em 0 0;
+    height: 60px;
+  }
+}
+
+.partner-logo {
+  img {
+    margin: 0 0 12px 0;
+    border-right: 1px solid $footer-border;
+    padding: 0 12px;
+    height: 45px;
+  }
+}
+
+.partner-logos .partner-logo:last-child {
+  img {
+    border-right: none;
   }
 }
 
 div.wrapper {
   *zoom: 1;
-  background-color: #FFF;
-  border: 1px solid #cccccc;
+  background-color: #fff;
+  border: 1px solid #ccc;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
@@ -80,18 +166,20 @@ div.wrapper {
   }
 }
 
-#main-container, #header-container {
+#main-container,
+#header-container {
   max-width: 1200px;
 }
 
 #content {
   padding: 15px;
   flex-grow: 1;
+  overflow: hidden;
 }
 
 #sidebar {
   width: 280px;
-  border-right: 1px solid #cccccc;
+  border-right: 1px solid #ccc;
   padding: 0;
   flex-shrink: 0;
 
@@ -107,10 +195,13 @@ div.wrapper {
       position: absolute;
       z-index: 10;
       background: white;
-      border-bottom: 1px solid #cccccc;
+      border-bottom: 1px solid #ccc;
       box-shadow: 2px 2px 3px 0 #999;
       display: none;
-      &.open { display: block; }
+
+      &.open {
+        display: block;
+      }
     }
   }
 
@@ -124,21 +215,27 @@ div.wrapper {
   }
 
   table tr td a {
-    color: #000000;
+    color: #000;
     padding: 3px;
     text-decoration: none;
   }
 
   table tr td a:hover {
-    background-color: #B0C3C9;
-    color: #ffffff;
+    background-color: #b0c3c9;
+    color: #fff;
     padding: 3px;
     text-decoration: none;
   }
 }
 
+.facet-select {
+  border-radius: 0;
+  border-width: 1px 0;
+}
+
 #sidebar-toggle {
   display: none;
+
   @media (max-width: $screen-md-min) {
     display: inline;
   }
@@ -146,6 +243,7 @@ div.wrapper {
 
 #sidebar-header {
   display: none;
+
   @media (max-width: $screen-md-min) {
     display: block;
   }
@@ -155,7 +253,7 @@ div.wrapper {
   width: 100%;
 }
 
-.profile{
+.profile {
   margin-bottom: 30px;
 }
 
@@ -163,47 +261,47 @@ div.wrapper {
 .breadcrumbs {
   margin-top: 5px;
 }
+
 .breadcrumb {
   margin-bottom: 10px;
 }
 
 // Style for empty results etc.
 .empty {
-  color: #aaaaaa;
+  color: #aaa;
   font-style: italic;
 }
 
 // Override Bootstrap's alert
 .alert {
-  margin-bottom: 0px;
+  margin-bottom: 0;
   margin-top: 5px;
 }
 
 // Bootstrap's row
 .row {
-  margin: 10px 0px 10px 0px;
+  margin: 10px 0 10px 0;
   //padding: 0px 0px 10px 0px;  // Do not add padding to the row - messes up sidebar etc.
 }
 
 // From https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/
 .dont-break-out {
-
   /* These are technically the same, but use both */
   overflow-wrap: break-word;
   word-wrap: break-word;
-
   -ms-word-break: break-all;
+
   /* This is the dangerous one in WebKit, as it breaks things wherever */
   word-break: break-all;
+
   /* Instead use this non-standard one: */
- // word-break: break-word;
+  // word-break: break-word;
 
   /* Adds a hyphen where the word breaks, if supported (No Blink) */
   -ms-hyphens: auto;
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
-
 }
 
 .wide .media-item {
@@ -217,28 +315,29 @@ div.wrapper {
 
 // Modified from CKAN - for sidebar facets
 ul.unstyled {
-  margin-left: 0px;
+  margin-left: 0;
   list-style: outside none none;
-  padding-left: 0px;
+  padding-left: 0;
 }
 
 .nav-simple {
-  margin: 0px;
+  margin: 0;
   list-style: outside none none;
-  padding-bottom: 0px;
+  padding-bottom: 0;
 }
 
 .nav-simple > li {
-  padding: 0px;
-  border-bottom: 1px dotted #DDD;
+  padding: 0;
+  border-bottom: 1px dotted #ddd;
 }
 
 .nav-simple > li:last-of-type {
-  border-bottom: 0px none;
+  border-bottom: 0 none;
 }
 
 .nav-item {
   padding: 7px 20px;
+  width: 100%;
 }
 
 .nav-item > a {
@@ -261,12 +360,12 @@ ul.unstyled {
 
 .nav-item.active > a {
   position: relative;
-  color: #ffffff;
+  color: #fff;
   background-color: $grey-blue;
 }
 
 .nav-item.active > a:hover {
-  color: #ffffff;
+  color: #fff;
   background-color: $blue;
 }
 
@@ -275,18 +374,18 @@ ul.unstyled {
 // Facet's title
 .nav-heading {
   padding: 10px;
-  background-color: #F6F6F6;
-  margin: 0px;
+  background-color: #f6f6f6;
+  margin: 0;
 }
 
 .nav-heading-darker {
-  background-color:#dddddd;
+  background-color: #ddd;
   padding: 10px;
-  margin: 0px 0px 5px 0px;
+  margin: 0 0 5px 0;
 }
 
 .filter-button {
-  color: #ffffff;
+  color: #fff;
   background-color: $grey-blue;
 
   &:hover {
@@ -306,20 +405,41 @@ ul.unstyled {
 
 .tiny-content-provider-logo {
   max-width: 32px;
+  min-width: 16px;
   border-radius: 2px;
   padding-left: 5px;
 }
 
 .small-content-provider-logo {
   max-width: 64px;
+  min-width: 32px;
   border-radius: 4px;
   padding-left: 10px;
 }
 
 .medium-content-provider-logo {
   max-width: 98%;
+  min-width: 120px;
   //border-radius: 5px;
-  margin: 0px 10px 0px 0px;
+  margin: 0 10px 0 0;
+}
+
+.small-trainer-logo {
+  max-width: 80px;
+  border-radius: 4px;
+  padding-left: 10px;
+}
+
+.medium-trainer-logo {
+  max-width: 160px;
+  border-radius: 4px;
+  padding-left: 0;
+}
+
+.large-trainer-logo {
+  max-width: 240px;
+  border-radius: 4px;
+  padding-left: 0;
 }
 
 .search-results-count {
@@ -361,11 +481,12 @@ ul.unstyled {
   content: "\e114"; /* adjust as needed, taken from bootstrap.css */
 }
 
-.panel-body {
-  padding-bottom: 0px;
-}
-
-.h1, .h2, .h3, .h4, .h5, .h6 {
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
   color: #337ab7;
 }
 
@@ -376,13 +497,14 @@ ul.unstyled {
 }
 
 // Fix for simple form issue: http://stackoverflow.com/questions/6748446/rails-simple-form-gives-dots-under-stars-for-required-fields-better-way-to-remo
-abbr, accronym {
-  border-bottom: 0px !important;
+ibbr,
+accronym {
+  border-bottom: 0 !important;
 }
 
-/*try adding !important  after 0px if doesn't work*/
+/* try adding !important  after 0px if doesn't work */
 
-//Multiple input list on forms with + button to add more input fields dynamically
+// Multiple input list on forms with + button to add more input fields dynamically
 .multiple-input-list {
   display: flex;
   flex-wrap: wrap;
@@ -390,7 +512,7 @@ abbr, accronym {
 
 .multiple-list-item {
   padding: 3px;
-  margin: 3px 3px 3px 0px;
+  margin: 3px 3px 3px 0;
   background-color: whitesmoke;
   border-radius: 4px;
   width: 43%;
@@ -404,7 +526,11 @@ abbr, accronym {
 
 .multiple-input-delete {
   background: none;
-  border: none
+  border: none;
+}
+
+.dropdown-toggle {
+  cursor: pointer;
 }
 
 .dropdown-option {
@@ -417,14 +543,14 @@ abbr, accronym {
 
 .dropdown-option-delete {
   background: none;
-  border: none
+  border: none;
 }
 
 .info-block {
   color: #005d7a;
   float: right;
   font-size: 20px;
-  margin: 0px;
+  margin: 0;
   width: 28px;
 }
 
@@ -444,7 +570,7 @@ abbr, accronym {
 }
 
 .keyword-pill {
-  color: #ffffff;
+  color: #fff;
   background-color: $grey-blue;
   margin-bottom: 5px;
   display: inline-block;
@@ -482,30 +608,40 @@ ul.featureblocks {
   padding: 10px 0;
   margin: 0 -10px;
   list-style: none;
-  overflow: auto;
+  display: flex;
+  flex-wrap: wrap;
 
   li {
-    float: left;
-    width: 25%;
+    flex: 1;
     padding: 0 12px;
     border-right: 1px dotted #ccc;
+    min-width: 120px;
+
+    img {
+      max-height: 320px;
+      max-width: 100%;
+      height: 120px;
+    }
+
     &:last-child {
       border: none;
     }
+
     @media (max-width: $screen-md) {
-      width: 50%;
       border-right: none;
       margin-bottom: 10px;
     }
+
     h2 {
       margin-top: 10px;
       font-size: 20px;
       line-height: 24px;
-      font-weight: normal
     }
+
     a {
       color: #444;
     }
+
     p {
       margin: 5px 0;
     }
@@ -513,26 +649,39 @@ ul.featureblocks {
 }
 
 .searchbox {
-  width: 85%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 20px;
-  margin-bottom: 5px;
-  padding: 20px;
-  background-color: #efefef;
-  position: relative;
-  box-shadow: 0 0 5px #333;
-  -webkit-box-shadow: 0 0 5px #333;
-  -moz-box-shadow: 0 0 5px #333;
-  -webkit-border-radius: 3px !important;
-  -moz-border-radius: 3px !important;
-  border-radius: 3px !important;
   text-align: center;
-}
+  margin-top: 10px;
+  margin-bottom: 30px;
 
-.homepage #sb-search {
-  background-color: transparent;
-  padding: 0;
+  form {
+    padding-right: 10px;
+    background-color: #fff;
+    text-align: center;
+    line-height: 2;
+    font-size: large;
+    margin: auto;
+    max-width: 800px;
+    border: 1px solid #ccc;
+
+    .searchbox-wrapper {
+      display: flex;
+    }
+
+    .searchbox-field {
+      border: none;
+      background: transparent;
+      padding: 15px 15px 15px 25px;
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .searchbox-btn {
+      border: none;
+      background: transparent;
+      padding: 5px 15px;
+      flex-shrink: 0;
+    }
+  }
 }
 
 sup {
@@ -542,9 +691,9 @@ sup {
 }
 
 .announcement {
-  color: #333333;
-  border: 1px solid #DDD;
-  background: #FFFFCC;
+  color: #333;
+  border: 1px solid #ddd;
+  background: #ffc;
   padding: 0.3em 0.6em;
   margin-bottom: 1em;
   line-height: 1.7;
@@ -556,17 +705,18 @@ sup {
   text-align: center;
 }
 
-#flash-container{
+#flash-container {
   text-align: center;
 }
 
 .schemaorg-element {
-  display: none
+  display: none;
 }
 
 .responsive-search-box {
   float: right;
   width: 300px;
+
   @include xs {
     float: none;
     width: 100%;
@@ -577,9 +727,10 @@ sup {
 .info-box {
   .info-box-header {
     padding: 10px;
-    background-color: #F6F6F6;
+    background-color: #f6f6f6;
     border-radius: 4px;
   }
+
   .info-box-content {
     margin-top: 10px;
   }
@@ -607,21 +758,27 @@ sup {
   border-radius: 4px;
 }
 
-.info-icon{
+.resource-type-icon {
+  text-align: center;
+}
+
+.info-icon {
   font-size: 24px;
 }
-.info-icon-small{
+
+.info-icon-small {
   font-size: 16px;
 }
-.info-icon-large{
+
+.info-icon-large {
   font-size: 48px;
 }
 
 .gap {
-  padding: 0px 5px;
+  padding: 0 5px;
 }
 
-.dropdown-option-delete, a.delete-list-item, a.delete-collaboration {
+.delete-icon {
   vertical-align: middle;
   color: $brand-danger;
   font-weight: bold;
@@ -632,29 +789,39 @@ sup {
   }
 }
 
-.tool-suggestions-header{
+.tool-suggestions-header {
   margin-bottom: 20px;
 }
+
 .external-links {
   margin-top: 10px;
 }
 
-.fresh-icon{
+.fresh-icon {
   color: green;
 }
 
-.stale-icon{
+.stale-icon {
   color: orangered;
+  padding: 2px;
 }
 
-.days_ago_text{
+.missing-icon {
+  color: orangered;
+  padding: 2px;
+}
+
+.days_ago_text {
   color: grey;
   font-style: italic;
 }
 
 .latest_resource_description {
+  /*
   min-width: 500px;
   min-height: 20px;
+  */
+  word-wrap: break-word;
 }
 
 .pagination {
@@ -668,8 +835,9 @@ sup {
 }
 
 .btn-elixir {
-  @include button-variant(white, $elixir-orange, white);
-  background-image: url('elixir_white_small.png');
+  @include button-variant(white, #f47d20, white);
+
+  background-image: image-url('elixir_white_small.png');
   background-repeat: no-repeat;
   background-position: 7px 7px;
   padding-left: 32px;
@@ -683,12 +851,12 @@ div.legal-block {
 }
 
 input.loading {
-  background: url('ajax-loader.gif') no-repeat right center;
+  background: image-url('ajax-loader.gif') no-repeat right center;
 }
 
 .btn.loading {
   padding-right: 24px;
-  background: url('ajax-loader.gif') no-repeat right center;
+  background: image-url('ajax-loader.gif') no-repeat right center;
 }
 
 .url-wrap {
@@ -728,12 +896,14 @@ input[type=checkbox].field-lock:checked + label:before {
   content: "\f023";
 }
 
-input[type=checkbox].field-lock:checked + label:before, .field-lock-example-locked {
+input[type=checkbox].field-lock:checked + label:before,
+.field-lock-example-locked {
   color: $brand-success;
   font-size: 110%;
 }
 
-input[type=checkbox].field-lock + label:before, .field-lock-example-open {
+input[type=checkbox].field-lock + label:before,
+.field-lock-example-open {
   color: $brand-warning;
   font-size: 110%;
 }
@@ -758,6 +928,211 @@ input[type=checkbox].field-lock + label:before, .field-lock-example-open {
       margin: 1em 0;
     }
   }
+}
+
+.video_frame {
+  padding: 20px 0;
+  width: 560px;
+  height: 345px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.include-where {
+  font-size: 160%;
+  text-align: center;
+  margin: 10px;
+}
+
+.include-where-graphic {
+  width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.motivation_box {
+  margin: 20px;
+}
+
+.include-where-text {
+  text-align: center;
+}
+
+.widgets_guide {
+  width: 80%;
+}
+
+.about-icons {
+  font-size: 10em;
+  color: gray;
+}
+
+.about-block {
+  padding: 10px 30px;
+}
+
+.odd-about-block {
+  padding: 20px;
+  background-color: #ededed;
+  border-radius: 5px;
+}
+
+.even-about-block {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+}
+
+.sub-about-block {
+  background-color: white;
+  padding: 12px;
+  margin: 10px;
+  border-radius: 10px;
+}
+
+.about-resource {
+  padding: 0 50px;
+}
+
+.licence-title {
+  text-align: center;
+}
+
+.licence-logo {
+  font-size: 5em;
+  color: gray;
+}
+
+.about-resource-icon {
+  padding: 35px 0;
+  text-align: center;
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.register-condition {
+  font-size: medium;
+  text-align: center;
+}
+
+.register-condition-graphic {
+  text-align: center;
+  width: 150px;
+  margin: auto;
+  padding: 20px 0;
+}
+
+.struct_data_type_logo {
+  max-width: 100px;
+  padding: 20px 0;
+}
+
+.data-type-examples {
+  padding-top: 20px;
+}
+
+.open-access-box {
+  background-color: white;
+  border-radius: 10px;
+  margin: 0 20px;
+  padding: 15px 5px;
+}
+
+.open-access-licence {
+  //width: 250px;
+}
+
+.open-access-location {
+  //width: 250px;
+}
+
+/* all links */
+.about-page-menu li.about-page-category > a {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+/* nested links */
+.about-page-menu li > a {
+  color: #616161;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 30px;
+  font-size: 12px;
+}
+
+.about-page-menu .nav > .active > a {
+  background-color: #f0f0f0;
+}
+
+.user_processing_consent {
+  @include alert-variant($alert-info-bg, $alert-info-border, $alert-info-text);
+
+  padding: 0 10px;
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+
+  a {
+    text-decoration: underline;
+  }
+}
+
+.quick-links {
+  width: 80%;
+  text-align: center;
+  margin-left: 10%;
+}
+
+.selected-tab {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.term_suggestions .dropdown-backdrop {
+  display: none;
+}
+
+.funding-logo {
+  width: 100px;
+  margin: 15px;
+}
+
+.list-card {
+  @include floating-card;
+  margin: 0 10px 10px 0;
+  position: relative;
+  display: block;
+  padding: 10px 15px;
+
+  .list-card-heading {
+    display: block;
+    padding: 5px 0;
+    font-size: 16px;
+    line-height: 1.3;
+  }
+}
+
+.header-notice {
+  background-color: $state-info-bg;
+  color: $state-info-text;
+}
+
+.omniauth-elixir_aai {
+  width: 240px;
+}
+
+.omniauth-oidc {
+  height: 42px;
+}
+
+.affix {
+  width: 280px;
+  border-right: 1px solid #ccc;
+  top: 0;
 }
 
 .bulk-import-row {

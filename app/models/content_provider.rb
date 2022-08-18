@@ -1,17 +1,29 @@
-class ContentProvider < ActiveRecord::Base
+class ContentProvider < ApplicationRecord
+  # The order of these determines which providers have precedence when scraping.
+  # Low -> High
+  PROVIDER_TYPE = ['Portal', 'Organisation', 'Project']
 
   include PublicActivity::Common
   include LogParameterChanges
   include Searchable
-
-  extend FriendlyId
-  friendly_id :title, use: :slugged
+  include IdentifiersDotOrg
+  include HasFriendlyId
+  include CurationQueue
 
   has_many :materials, :dependent => :destroy
   has_many :events, :dependent => :destroy
+  has_many :sources, :dependent => :destroy
 
   belongs_to :user
-  belongs_to :node
+  belongs_to :node, optional: true
+
+  has_and_belongs_to_many :editors, class_name: "User"
+
+  attribute :approved_editors, :string, array: true
+  attribute :contact, :string
+
+  #has_many :content_provider_users
+  #has_many :editors, through: :users, source: :user, inverse_of: :providers
 
   delegate :name, to: :node, prefix: true, allow_nil: true
 
@@ -24,29 +36,27 @@ class ContentProvider < ActiveRecord::Base
   # Validate the URL is in correct format via valid_url gem
   validates :url, url: true
 
-  clean_array_fields(:keywords)
+  validates :content_provider_type, presence: true, inclusion: { in: PROVIDER_TYPE }
 
-  # The order of these determines which providers have precedence when scraping.
-  # Low -> High
-  PROVIDER_TYPE = ['Portal', 'Organisation', 'Project']
-  has_image(placeholder: "/assets/placeholder-organization.png")
+  clean_array_fields(:keywords, :approved_editors)
+
+  has_image(placeholder: TeSS::Config.placeholder['provider'])
 
   if TeSS::Config.solr_enabled
     # :nocov:
     searchable do
+      # full text fields
       text :title
-      string :title
+      text :description
+      text :keywords
+      # sort title
       string :sort_title do
         title.downcase.gsub(/^(an?|the) /, '')
       end
-      text :description
+      # other fields
+      string :title
       string :keywords, :multiple => true
       string :node, :multiple => true do
-        unless self.node.blank?
-          self.node.name
-        end
-      end
-      text :node do
         unless self.node.blank?
           self.node.name
         end
@@ -60,6 +70,7 @@ class ContentProvider < ActiveRecord::Base
         end
       end
       integer :user_id # Used for shadowbans
+      time :updated_at
     end
     # :nocov:
   end
@@ -76,7 +87,7 @@ class ContentProvider < ActiveRecord::Base
   end
 
   def precedence
-    PROVIDER_TYPE.index(content_provider_type)
+    PROVIDER_TYPE.index(content_provider_type) || 0
   end
 
   def self.check_exists(content_provider_params)
@@ -93,4 +104,63 @@ class ContentProvider < ActiveRecord::Base
 
     content_provider
   end
+
+  def self.identifiers_dot_org_key
+    'p'
+  end
+
+  def add_editor(editor)
+    if !editor.nil? and !editors.include?(editor) and !user.nil? and user.id != editor.id
+      editors << editor
+      save!
+      editor.editables.reload
+    end
+  end
+
+  def remove_editor(editor)
+    if !editor.nil? and editors.include?(editor)
+      # remove from array
+      editors.delete(editor)
+      save!
+      editor.editables.reload
+
+      # transfer events to the provider's user
+      editor.events.where(content_provider_id: id).find_each do |event|
+        event.user = user
+        event.save!
+      end
+
+      # transfer materials to the provider's user
+      editor.materials.where(content_provider_id: id).find_each do |material|
+        material.user = user
+        material.save!
+      end
+      editor.reload
+      editor.save!
+    end
+
+  end
+
+  def approved_editors
+    result = []
+    editors.each { |editor| result << editor.username }
+    #puts "get approved_editors: found #{result.size} editors"
+    return result
+  end
+
+  def approved_editors= values
+    #puts "set approved_editors: user count #{values.size}"
+    editors_list = []
+    values.each do |item|
+      if !item.nil? and !item.blank?
+        list_user = User.find_by_username(item)
+        editors_list << list_user if !list_user.nil?
+      end
+    end
+    # add missing
+    editors_list.each { |item| add_editor(item) if !editors.include?(item) }
+    # remove old
+    editors.each { |item| remove_editor(item) if !editors_list.include?(item) }
+  end
+
 end

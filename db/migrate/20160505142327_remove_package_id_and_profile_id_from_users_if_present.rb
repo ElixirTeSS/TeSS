@@ -1,4 +1,4 @@
-class RemovePackageIdAndProfileIdFromUsersIfPresent < ActiveRecord::Migration
+class RemovePackageIdAndProfileIdFromUsersIfPresent < ActiveRecord::Migration[4.2]
   def up
     if column_exists? :users, :package_id
       remove_column :users, :package_id

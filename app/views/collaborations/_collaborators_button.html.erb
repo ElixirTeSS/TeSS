@@ -3,7 +3,8 @@
     <i class="fa fa-users" aria-hidden="true"></i> Collaborators
 <% end %>
 
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="collaborators-modal-title" id="collaborators-modal" data-url="<%= polymorphic_path([resource, :collaborations]) -%>">
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="collaborators-modal-title" id="collaborators-modal"
+     data-url="<%= polymorphic_path([resource, :collaborations]) -%>" data-query-url="<%= users_path(q: '-query-') %>">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -16,21 +17,19 @@
       </div>
 
       <div class="modal-body">
-        <h4>Current collaborators:</h4>
+        <h4>
+          Current collaborators:
+          <%= info_button('What are collaborators?', class: 'pull-right btn-xs') do %>
+            Collaborators are other <%= TeSS::Config.site['title_short'] %> users who can edit this <%= resource.model_name.human %>. Only
+            the <%= resource.model_name.human %> owner can add and remove collaborators.
+          <% end %>
+        </h4>
         <ul class="collaboration-list">
           Loading
           <%# Content inserted via javascript (see: collaborations.js %>
         </ul>
 
-        <div class="input-group">
-          <input type="text" autocomplete="off" class="form-control" id="collaborators-modal-add" placeholder="Add a new collaborator...">
-          <input type="hidden" id="collaborators-modal-add-id">
-          <span class="input-group-btn">
-            <a href="#" class="btn btn-default disabled" type="button" id="collaborators-modal-add-btn">
-              Add
-            </a>
-          </span>
-        </div>
+        <input type="text" autocomplete="off" class="form-control" id="collaborators-modal-add" placeholder="Add a new collaborator...">
       </div>
 
       <div class="modal-footer">
@@ -39,29 +38,3 @@
     </div>
   </div>
 </div>
-
-<script>
-  $(document).ready(function () {
-    $('.collaboration-list').on('click', '.delete-collaboration', Collaborations.delete);
-    $('#collaborators-modal').on('show.bs.modal', Collaborations.fetch);
-    $('#collaborators-modal-add-btn').click(Collaborations.add);
-
-    $('#collaborators-modal-add').autocomplete({
-      lookup: $.map(<%= render(partial: 'users/list.json.jbuilder', locals: { users: User.all }).html_safe -%>, function(dataItem) {
-        var ob = { value: dataItem.username, data: dataItem.id };
-        if (dataItem.firstname) {
-          ob.value = ob.value + ' (' + dataItem.firstname + ' ' + dataItem.surname + ')';
-        }
-        return ob;
-      }),
-      onSelect: function (suggestion) {
-        $('#collaborators-modal-add-id').val(suggestion.data);
-        $('#collaborators-modal-add-btn').removeClass('disabled');
-      },
-      onInvalidateSelection: function () {
-        $('#collaborators-modal-add-id').val('');
-        $('#collaborators-modal-add-btn').addClass('disabled');
-      }
-    });
-  });
-</script>

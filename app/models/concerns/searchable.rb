@@ -1,15 +1,22 @@
 module Searchable
-
   # Associations that are used on the index pages. Eager load them to prevent N+1 queries.
-  EAGER_LOADABLE = [:content_provider, :scientific_topic_links, :edit_suggestion, :materials, :events,
+  EAGER_LOADABLE = [:content_provider, :ontology_term_links, :edit_suggestion, :materials, :events,
                     :training_coordinators].freeze
 
   extend ActiveSupport::Concern
 
   class_methods do
-    # Extract all the facet parameters
-    def facet_params(params)
-      params.slice(*(facet_fields | Tess::Facets.special))
+    def facet_keys
+      @facet_keys ||= (facet_fields | Facets.special) # Memoize things like this so we don't have to recompute in each request.
+    end
+
+    # Allows multiple of the same param, i.e. operations=bla foo operations[]=foo&operations[]=bar
+    def facet_keys_with_multiple
+      @facet_keys_with_multiple ||= (facet_keys | facet_keys.map { |key| { key => [] } })
+    end
+
+    def search_and_facet_keys
+      @search_and_facet_keys ||= ([:q] | facet_keys_with_multiple)
     end
 
     def search_and_filter(user, search_params = '', selected_facets = {}, page: 1, sort_by: nil, per_page: 30)
@@ -20,7 +27,7 @@ module Searchable
         # Disjunction clause
         active_facets = {}
 
-        normal_facets = selected_facets.except(*Tess::Facets.special)
+        normal_facets = selected_facets.except(*Facets.special)
 
         any do
           # Set all facets
@@ -28,7 +35,7 @@ module Searchable
             any do # Conjunction clause
               # Add to array that get executed lower down
               active_facets[facet_title] ||= []
-              val = Tess::Facets.process(facet_title, facet_value)
+              val = Facets.process(facet_title, facet_value)
               active_facets[facet_title] << with(facet_title, val)
             end
           end
@@ -60,17 +67,19 @@ module Searchable
               order_by(:start, :asc)
             when 'ContentProvider'
               order_by(:count, :desc)
+            when 'Material'
+              order_by(:created_at, :desc)
             else
               order_by(:sort_title, :asc)
           end
         end
 
-        paginate page: page, per_page: per_page if !page.nil? && (page != '1')
+        paginate page: page, per_page: per_page unless page.nil?
 
-        Tess::Facets.special.each do |facet_title|
-          if Tess::Facets.applicable?(facet_title, name)
-            facet_value = Tess::Facets.process(facet_title, selected_facets[facet_title])
-            Tess::Facets.send(facet_title.to_sym, self, facet_value)
+        Facets.special.each do |facet_title|
+          if Facets.applicable?(facet_title, self)
+            facet_value = Facets.process(facet_title, selected_facets[facet_title])
+            Facets.send(facet_title.to_sym, self, facet_value, user)
           end
         end
 
@@ -88,11 +97,22 @@ module Searchable
           facet ff, exclude: active_facets[ff]
         end
 
-        # Hide shadowbanned users' events, except from other shadowbanned users and administrators
-        unless user && (user.shadowbanned? || user.is_admin?)
-          without(:user_id, User.shadowbanned.pluck(:id))
+        # Hide records the urls of which are failing
+        if method_defined?(:link_monitor)
+          unless user && user.is_admin?
+            without(:failing, true)
+          end
         end
+
       end
     end
+  end
+
+  def failing?
+    if respond_to?(:link_monitor)
+      return false if link_monitor.nil?
+      return link_monitor.failing?
+    end
+    false
   end
 end

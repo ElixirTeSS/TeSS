@@ -18,7 +18,7 @@
 %>
 <%= select_tag '', options_for_select(predefined_colours), id: 'simple-colour-picker' %>
 <script>
-  $(document).ready(function () {
+  document.addEventListener("turbolinks:load", function() {
     $('#simple-colour-picker').simplecolorpicker();
 
     $('#simple-colour-picker').on('change', function (e) {

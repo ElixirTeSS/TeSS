@@ -1,0 +1,32 @@
+<%= link_to '#', class: 'btn btn-default identifiers-button',
+            data: { toggle: 'modal', target: '#identifiers-modal'} do %>
+<!--  <i class="fa fa-circle" aria-hidden="true"></i> -->
+  Cite
+<% end %>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="identifiers-modal-title" id="identifiers-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="identifiers-modal-title">Cite via Identifiers.org</h4>
+      </div>
+
+      <div class="modal-body">
+        <label for="identifiers-link">Cite this <%= resource.class.name.titleize -%></label>
+        <div class="input-group input-group-lg">
+          <input id="identifiers-link" type="text" class="form-control" value="<%= resource.identifiers_dot_org_url -%>" readonly>
+          <span class="input-group-btn">
+            <button class="btn btn-default clipboard-btn" type="button" data-clipboard-target="#identifiers-link" title="Click to copy">
+              <i class="fa fa-clipboard" aria-hidden="true"></i>
+            </button>
+          </span>
+        </div>
+        <p class="help-block">
+          The URL can be resolved by identifiers.org to refer back to this <%= resource.class.name.titleize -%>.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

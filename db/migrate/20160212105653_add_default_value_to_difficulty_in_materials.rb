@@ -1,4 +1,4 @@
-class AddDefaultValueToDifficultyInMaterials < ActiveRecord::Migration
+class AddDefaultValueToDifficultyInMaterials < ActiveRecord::Migration[4.2]
   def change
     change_column_default :materials, :difficulty_level, 'notspecified'
     Material.find_each do |material|

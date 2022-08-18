@@ -1,0 +1,198 @@
+<div class="wrapper">
+
+  <div id="sidebar" class="popout-sidebar">
+    <%= render :partial => 'about_nav', locals: { show: 'registering' } %>
+  </div>
+
+  <div id="content" class="">
+    <div class="about-block">
+      <%= render :partial => 'links', :locals => { 'show': 'registering' } %>
+
+      <!-- REGISTERING CONTENT IN TESS -->
+      <div class="row">
+        <div id='how' class="h3">Registering Resources in <%= TeSS::Config.site['title_short'] %></div>
+        <%= raw t 'register.resources' %>
+
+        <div class="row">
+          <div class="col-md-3 motivation_box">
+            <div class="include-where">&hellip; in <%= TeSS::Config.site['title_short'] %>
+            </div>
+            <div class="include-where-graphic">
+              <%= image_tag 'about/events_listing.png', size: "200x200" %>
+            </div>
+            <div class="include-where-text">
+              Be seen by thousands of visitors to our site
+            </div>
+          </div>
+          <div class="col-md-3 motivation_box">
+            <div class="include-where">&hellip; embedded in other sites</div>
+            <!--
+            <div class="include-where-graphic">
+              <-%= image_tag 'about/widgets_adopters.png', size: "200x200" %>
+            </div>
+            -->
+            <div class="include-where-text">
+              <div style="text-align: left;">
+                <p>By registering your event it will be:</p>
+                <p>Listed on <%= TeSS::Config.site['title_short'] %></p>
+                <p>Promoted on other sites that use our widgets</p>
+                <p>Appear in more search results because of our search-engine optimisation</p>
+              </div>
+              Be seen across all the websites that display site resources through our <a href="developers#widgets">
+              widgets</a>.
+            </div>
+          </div>
+          <div class="col-md-3 motivation_box">
+            <div class="include-where">&hellip; in search engines</div>
+            <div class="include-where-graphic">
+              <%= image_tag 'about/search_results.png', size: "200x100" %>
+            </div>
+            <div class="include-where-text">Be seen in search results more owing to our search-engine optimisation</div>
+          </div>
+        </div>
+        <%== raw t 'register.methods' %>
+      </div>
+
+      <!-- AUTOMATIC REGISTRATION -->
+      <div class="row">
+        <div class="odd-about-block">
+          <div id='automatic' class="h4">Automatic Registration</div>
+          <p><%== raw t 'register.automatic' %></p>
+          <!--
+          <div class="row">
+            <div class="col-md-3 motivation_box">
+              <div class="register-condition-graphic"><i class="fa fa-ellipsis-h about-icons"></i></div>
+              <div class="register-condition"><%== raw t 'register.auto_condition_1' %></div>
+            </div>
+            <div class="col-md-3 motivation_box">
+              <div class="register-condition-graphic"><i class="fa fa-code about-icons"></i></div>
+              <div class="register-condition"><%== raw t 'register.auto_condition_2' %></div>
+            </div>
+            <div class="col-md-3 motivation_box">
+              <div class="register-condition-graphic"><i class="fa fa-flask about-icons"></i></div>
+              <div class="register-condition"><%== raw t 'register.auto_condition_3' %></div>
+            </div>
+          </div>
+          -->
+
+          <!-- STRUCTURED DATA ->
+          <div class="h5">Structured Data Types</div>
+          <%== raw t 'register.structured' %>
+          -->
+
+          <!-- BIOSCHEMAS ->
+          <div class="sub-about-block">
+            <div id='bioschemas' class="h6">Schema.org / Bioschemas</div>
+            <div class="row">
+              <div class="col-lg-9">
+                <%== raw t 'register.schema' %>
+                <p>
+                  <%== raw t 'register.bioschema_events' %>
+                  <%== raw t 'register.bioschema_materials' %>
+                </p>
+                <hr>
+                <b>Examples of sites using Bioschemas parsed by <%= TeSS::Config.site['title_short'] %></b>
+                <div class="data-type-examples">
+                  <%== raw t 'register.schema_example_1' %>
+                  <%== raw t 'register.schema_example_2' %>
+                  <%== raw t 'register.schema_example_3' %>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <%= image_tag 'about/bioschemas.png', class: "struct_data_type_logo" %>
+                <%= image_tag 'about/schema-org-logo.png', class: "struct_data_type_logo" %>
+              </div>
+            </div>
+          </div>
+          -->
+
+          <!-- API ->
+          <div class="sub-about-block">
+            <div id='api' class="h6">API</div>
+            <div class="row">
+              <div class="col-lg-9">
+                <%== raw t 'register.api' %>
+                <hr>
+                <b>Examples of sites with APIs included in <%= TeSS::Config.site['title_short'] %></b>
+                <div class="data-type-examples">
+                  <%== raw t 'register.api_example_1' %>
+                  <%== raw t 'register.api_example_2' %>
+                  <%== raw t 'register.api_example_3' %>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <i class="fa fa-plug about-icons struct_data_type_logo"></i>
+              </div>
+            </div>
+          </div>
+          -->
+
+          <!-- CALENDAR ->
+          <div class="sub-about-block">
+            <div id='calendar' class="h6">Calendar</div>
+            <div class="row">
+              <div class="col-lg-9">
+                <%== raw t 'register.calendar' %>
+                <hr>
+                <b>Examples of calendar files parsed by <%= TeSS::Config.site['title_short'] %></b>
+                <div class="data-type-examples">
+                  <%== raw t 'register.calendar_example_1' %>
+                  <%== raw t 'register.calendar_example_2' %>
+                  <%== raw t 'register.calendar_example_3' %>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <i class="fa fa-calendar about-icons struct_data_type_logo"></i>
+              </div>
+            </div>
+          </div>
+          -->
+
+          <!-- OTHER ->
+          <div class="sub-about-block">
+            <div id='other' class="h6">Other types</div>
+            <%== raw t 'register.other_types' %>
+          </div>
+          -->
+
+          <!--  CONTACT US ->
+          <div class="sub-about-block">
+            <%#= render :partial => "common/contact_form"%>
+            <%== raw t 'register.advice' %>
+          </div>
+          -->
+
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="even-about-block">
+          <div id='manual' class="h4">Manual Registration</div>
+          <%== raw t 'register.manual' %>
+          <p>
+            <%= link_to new_event_path, class: 'btn btn-primary', target: '_blank' do %>
+              <i class="fa fa-plus-square"></i> Register event
+            <% end %>
+            <%= link_to new_material_path, class: 'btn btn-primary', target: '_blank' do %>
+              <i class="fa fa-plus-square"></i> Register material
+            <% end %>
+          </p>
+          <p>
+            If you have resources that change frequently, we recommended that you establish an
+            <a href="#automatic">automatic registration</a> solution.
+          </p>
+        </div>
+
+
+        <!--
+        <div id='include' class="h3">How TeSS works</div>
+        <%= image_tag 'about/tess_architecture.png', class: "widgets_guide" %>
+      </div>
+      -->
+      </div>
+      <%= render :partial => 'links', :locals => { 'show': 'registering' } %>
+
+    </div>
+  </div>
+</div>

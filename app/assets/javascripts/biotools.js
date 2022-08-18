@@ -19,8 +19,12 @@ var Biotools = {
         return Biotools.baseUrl + '/tool';
     },
     search: function(){
-        $('#biotools-results').empty();
-        Biotools.queryAPI(Biotools.apiBaseURL() + '?' + Biotools.queryParameter() + '&' + Biotools.sortParameter());
+        clearTimeout(Biotools._searchTimeout);
+
+        Biotools._searchTimeout = setTimeout(function () {
+            $('#biotools-results').empty();
+            Biotools.queryAPI(Biotools.apiBaseURL() + '?' + Biotools.queryParameter() + '&' + Biotools.sortParameter());
+        }, 500);
     },
     nextPage: function(){
         var next_page = $(event.target).attr('data-next');
@@ -33,7 +37,7 @@ var Biotools = {
     queryAPI: function(api_url){
         $.get(api_url, function (json) {
             Biotools.displayTools(json);
-        });
+        }, 'json');
     },
     associateTool: function(event){
         obj = $(event.target);
@@ -43,13 +47,13 @@ var Biotools = {
     displayTools: function(json){
         var items = json.list;
         $.each(items, function (index, item) {
-            var url = Biotools.websiteBaseURL() + '/' + item.id;
+            var url = Biotools.websiteBaseURL() + '/' + item.biotoolsID;
             var types = '';
             $.each(item.toolType, function(index, ttype){
                 types = types + '<span class="label label-info">' + ttype + '</span>\n';
             });
             $('#biotools-results').append('' +
-                '<div id="' + item.id + '" class="col-md-12 col-sm-12 bounding-box" data-toggle=\"tooltip\" data-placement=\"top\" aria-hidden=\"true\" title=\"' + item.description + '\">' +
+                '<div id="' + item.biotoolsID + '" class="col-md-12 col-sm-12 bounding-box" data-toggle=\"tooltip\" data-placement=\"top\" aria-hidden=\"true\" title=\"' + item.description + '\">' +
                 '<h4>' +
                     '<i class="fa fa-wrench"></i> ' +
                     '<a href="' + url + '">' +
@@ -57,13 +61,13 @@ var Biotools = {
                             item.name +
                         '</span>' +
                     '</a>' +
-                    ' <i id="' + item.id + '" ' +
+                    ' <i id="' + item.biotoolsID + '" ' +
                     'class="fa fa-plus-square-o associate-tool"/ ' +
                     'title="click to associate ' + item.name + ' with this resource"' +
                     'data-title="' + item.name + '" data-url="' + url + '"/>' +
                 '</h4>' +
                 '<p>' + types + '</p>' +
-                '<span>' + item.description + '</span>' +
+                '<span>' + truncateWithEllipses(item.description, 600) + '</span>' +
                     '<div class="external-links">' +
                         '<a class="btn btn-warning" target="_blank" href="' + Biotools.websiteBaseURL() + '/' + item.id +'">' +
                         'View ' + item.name + ' on bio.tools ' +
@@ -83,7 +87,7 @@ var Biotools = {
                 var res = {};
                 res['topics'] = [];
                 $.each(data.topic, function(index, topic){
-                    console.log(topic)
+                    // console.log(topic)
                     res['topics'].push('<a href="' + topic.uri +'" class="label label-default filter-button">' + topic.term + '</a>');
                 });
                 $('#tool-topics-' + id).html('<div>' + res['topics'].join(' ') + '</div>')
@@ -92,8 +96,7 @@ var Biotools = {
             })
     },
     displayFullTool: function(api, id){
-        var json = $.get(api, function(json) {
-            var json_object = json;
+        var json = $.get(api, function(json_object) {
             $('#' + id + '-desc').text(json_object.description);
             $('#' + id + '-resource-type-icon').addClass('fa-wrench').removeClass('fa-external-link');
             $.each(json_object.toolType, function(index, ttype){
@@ -116,16 +119,16 @@ var Biotools = {
                     'View the ' + json_object.name + ' homepage ' +
                     '<i class="fa fa-external-link"/></a>' +
                     '</a>' +
-                    '<a class="btn btn-warning external-button" target="_blank" href="' + Biotools.websiteBaseURL() + '/' + json_object.id +'">' +
+                    '<a class="btn btn-warning external-button" target="_blank" href="' + Biotools.websiteBaseURL() + '/' + json_object.biotoolsID +'">' +
                     'View ' + json_object.name + ' on bio.tools ' +
                     '<i class="fa fa-external-link"/></a>' +
                 '</div>'
             );
-        });
+        }, 'json');
     }
 };
 
-$(document).ready(function () {
+document.addEventListener("turbolinks:load", function() {
     $('#next-tools-button').click(Biotools.nextPage);
     $('#tool_query').keyup(Biotools.search);
     $('#search_tools').click(Biotools.search);
