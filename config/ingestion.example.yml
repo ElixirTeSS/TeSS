@@ -64,7 +64,7 @@ sources:
     provider: 'UU'              # content provider's title
     # dutch below
     #url: 'https://www.uu.nl/events.rss?category-containers=4043,1916692,1916689,174593' # only 'workshops, masterclasses', 'lezingen', 'cursusses, trainingen' en 'congressen, symposia'
-    url: 'https://www.uu.nl/events.rss?category-containers=4293,4295,4296,4301' # only 'workshops, masterclasses', 'lezingen', 'cursusses, trainingen' en 'congressen, symposia'
+    url: 'https://www.uu.nl/events.rss?category-containers=4293,4295,4296,4301,2162490' # only 'workshops, masterclasses', 'lezingen', 'cursusses, trainingen' en 'congressen, symposia', en library
     # for english, use 4293,4295,4296,4301
     # url: '
     image_url: https://shape-project.org/part/uu_logo_en_cmyk.png/@@images/207be984-353c-4c0d-a8e4-333893e4086d.png
@@ -76,6 +76,13 @@ sources:
     # dutch below
     url: https://www.nwo.nl/en/meetings
     image_url: https://dmp.nwo.nl/assets/nwo/logo-7350782753e5f8a47e154a793b66c02dddb8693292a1c76d99bb2e70b42e807d.png
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
+  - id: 11
+    provider: 'EUR'              # content provider's title
+    url: 'https://eur-nl.libcal.com/ajax/calendar/list?c=-1&date=0000-00-00&perpage=48&page=1&audience=&cats=&camps=&inc=0'     # the root URL required to access the source
+    image_url: https://lcimages-eu.s3.amazonaws.com/data/headers/4011/EUR_Library_banner3_colour_resized_height.png
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     enabled: true
