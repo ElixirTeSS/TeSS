@@ -21,7 +21,10 @@ module Ingestors
           process: method(:process_eventbrite) },
         { name: 'VU Amsterdam',
           url: 'https://vu-nl.libcal.com/',
-          process: method(:process_vu) },
+          process: method(:process_libcal) },
+        { name: 'EUR',
+          url: 'https://eur-nl.libcal.com/',
+          process: method(:process_libcal) },
         { name: 'SURF',
           url: 'https://www.surf.nl/sitemap.xml',
           process: method(:process_surf) },
@@ -419,7 +422,7 @@ module Ingestors
       end
     end
 
-    def process_vu(url)
+    def process_libcal(url)
       # execute REST request
       results = get_JSON_response url
       data = results.to_h['results']
@@ -439,9 +442,15 @@ module Ingestors
           event.start = attr.fetch('startdt', '')
           event.end = attr.fetch('enddt', '')
           event.venue = attr.fetch('location', '')
-          event.city = 'Amsterdam'
-          event.country = 'The Netherlands'
-          event.source = 'VU Amsterdam'
+          if url.starts_with? 'https://vu-nl.libcal.com'
+            event.city = 'Amsterdam'
+            event.country = 'The Netherlands'
+            event.source = 'VU Amsterdam'
+          elsif url.starts_with? 'https://eur-nl.libcal.com'
+            event.city = 'Rotterdam'
+            event.country = 'The Netherlands'
+            event.source = 'EUR'
+          end
           event.online = attr.fetch('online_event', '')
           event.contact = attr.fetch('orgurl', '')
           event.timezone = 'Amsterdam'

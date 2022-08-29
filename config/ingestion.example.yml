@@ -79,3 +79,10 @@ sources:
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     enabled: true
+  - id: 11
+    provider: 'EUR'              # content provider's title
+    url: 'https://eur-nl.libcal.com/ajax/calendar/list?c=-1&date=0000-00-00&perpage=48&page=1&audience=&cats=&camps=&inc=0'     # the root URL required to access the source
+    image_url: https://lcimages-eu.s3.amazonaws.com/data/headers/4011/EUR_Library_banner3_colour_resized_height.png
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
