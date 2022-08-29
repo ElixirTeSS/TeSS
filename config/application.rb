@@ -31,6 +31,9 @@ module TeSS
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'overrides', '**', '*.{rb,yml}')] unless Rails.env.test?
     config.i18n.available_locales = [:en]
     config.i18n.default_locale = :en
+
+    # Workaround for https://stackoverflow.com/questions/72970170/upgrading-to-rails-6-1-6-1-causes-psychdisallowedclass-tried-to-load-unspecif
+    config.active_record.yaml_column_permitted_classes = [Symbol]
   end
 
   Config = OpenStruct.new(Rails.configuration.tess.with_indifferent_access)
