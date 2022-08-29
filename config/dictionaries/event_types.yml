@@ -4,5 +4,10 @@ meetings_and_conferences:
   title: Meetings and conferences
 receptions_and_networking:
   title: Receptions and networking
+  match: 
+    - fair coffee
+    - reproducibilitea
 workshops_and_courses:
   title: Workshops and courses
+  match:
+    - fair for qualitative data
