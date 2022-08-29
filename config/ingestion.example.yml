@@ -86,3 +86,10 @@ sources:
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     enabled: true
+  - id: 12
+    provider: 'OSCM'              # content provider's title
+    url: https://www.openscience-maastricht.nl/events/
+    image_url: https://www.openscience-maastricht.nl/wp-content/uploads/2020/06/Logo-OSCMaastricht_web.png
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
