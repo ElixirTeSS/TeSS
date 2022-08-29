@@ -33,7 +33,7 @@ module TeSS
     config.i18n.default_locale = :en
 
     # Workaround for https://stackoverflow.com/questions/72970170/upgrading-to-rails-6-1-6-1-causes-psychdisallowedclass-tried-to-load-unspecif
-    config.active_record.yaml_column_permitted_classes = [Symbol]
+    config.active_record.yaml_column_permitted_classes = [Symbol, ActiveSupport::TimeWithZone]
   end
 
   Config = OpenStruct.new(Rails.configuration.tess.with_indifferent_access)

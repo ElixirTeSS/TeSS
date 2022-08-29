@@ -741,6 +741,7 @@ module Ingestors
         4296 => 'lectures',
         4295 => 'training',
         4293 => 'congresses, symposia',
+        2162490 => 'workshops, masterclasses', # not really sure what this should be
         # nl
         4043 => 'workshops, masterclasses',
         1_916_692 => 'lectures', # lezingen, debatten,
