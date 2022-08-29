@@ -13,7 +13,7 @@ module Ingestors
         { name: 'ElixirTeSS',
           url: 'https://tess.elixir-europe.org/',
           process: method(:process_elixir) },
-        { name: 'Digital Skills Programme',
+        { name: 'NLeSC Digital Skills Programme',
           url: 'https://www.eventbriteapi.com/v3/',
           process: method(:process_eventbrite) },
         { name: 'NL eScienceCenter',
