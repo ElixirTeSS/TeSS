@@ -100,3 +100,15 @@ sources:
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     enabled: true
+  - id: 14
+    provider: 'University of Twente'              # content provider's title
+    url: https://www.utwente.nl/en/events/?categories=417878
+    # categories: festivals: 417884, ceremonial events: 417871, outside the UT: 417888, phd & orations: 417875,
+    # conferences: 417877, studium generale: 417879, study orientation: 417881, culture: 417835, 
+    # sports: 417837, alumni meetings: 417886, lectures: 417878
+    # found at https://www.utwente.nl/en/events/
+    # do a POST to this url with content-type application/json to get nicely formatted data
+    image_url: https://www.eduopinions.com/wp-content/uploads/2017/09/University-of-Twente-logo.png
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
