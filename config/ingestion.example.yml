@@ -93,3 +93,10 @@ sources:
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     enabled: true
+  - id: 13
+    provider: 'Universiteit Leiden'              # content provider's title
+    url: https://www.library.universiteitleiden.nl/events
+    image_url: https://www.library.universiteitleiden.nl/ul2common/images/zegel.png
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
