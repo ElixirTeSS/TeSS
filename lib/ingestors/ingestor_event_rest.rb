@@ -49,6 +49,9 @@ module Ingestors
         { name: 'Universiteit Leiden',
           url: 'https://www.library.universiteitleiden.nl/events',
           process: method(:process_leiden) },
+        { name: 'University of Twente',
+          url: 'https://www.utwente.nl/en/events',
+          process: method(:process_utwente) },
         { name: 'UvA',
           url: 'https://www.uva.nl/_restapi/list-json',
           process: method(:process_uva) }
@@ -958,11 +961,45 @@ module Ingestors
       end
     end
 
-    def get_JSON_response(url, accept_params = 'application/json')
-      response = RestClient::Request.new(method: :get,
-                                         url: CGI.unescape_html(url),
-                                         verify_ssl: false,
-                                         headers: { accept: accept_params }).execute
+    def process_utwente(url)
+      response = get_JSON_response(url, method: :post, referrer: url,
+        headers: {
+          content_type: :json,
+          accept: :json
+        },
+        payload: {
+          id: 1,
+          method: 'GetItems',
+          # there may be an issue with multiple categories here...
+          params: [{ categories: url.split('=').last }]
+        }.to_json)
+      
+      response['result']['items'].each do |item|
+        event = Event.new
+
+        event.title = item['title']
+        event.url = item['link']
+        event.start, event.end = parse_dates(item['dateformatted'])
+        event.venue = item['location']
+
+        event.keywords = item['tags'].map{ |t| t['tag'] }
+        event.description = convert_description item['description']
+        event.timezone = 'Amsterdam'
+        event.organizer = 'University of Twente'
+        event.source = 'University of Twente'
+        add_event(event)
+        @ingested += 1
+      rescue Exception => e
+        @messages << "Extract event fields failed with: #{e.message}"
+        Sentry.capture_exception(e)
+      end
+    end
+
+    def get_JSON_response(url, accept_params = 'application/json', **kwargs)
+      response = RestClient::Request.new({ method: :get,
+                                           url: CGI.unescape_html(url),
+                                           verify_ssl: false,
+                                           headers: { accept: accept_params } }.merge(kwargs)).execute
       # check response
       raise "invalid response code: #{response.code}" unless response.code == 200
 
