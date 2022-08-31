@@ -112,3 +112,10 @@ sources:
     method: rest                        # one of 'csv', 'api', 'html'
     resource_type: event                # event or material
     enabled: true
+  - id: 15
+    provider: 'Maastricht University'              # content provider's title
+    url: 'https://library.maastrichtuniversity.nl/events/'
+    image_url: https://library.maastrichtuniversity.nl/wp-content/uploads/UM_Logo_OnlineLibrary2021_groot1.png
+    method: rest                        # one of 'csv', 'api', 'html'
+    resource_type: event                # event or material
+    enabled: true
