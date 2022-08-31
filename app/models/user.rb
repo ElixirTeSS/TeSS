@@ -288,15 +288,12 @@ class User < ApplicationRecord
   end
 
   def get_editable_providers
-    result = self.editables
-    ContentProvider.all.each do |prov|
-      if !result.include?(prov)
-        if prov.user == self or self.is_admin? or self.is_curator?
-          result << prov
-        end
-      end
+    relation = ContentProvider.order(:title)
+    if is_admin? || is_curator?
+      relation.all
+    else
+      relation.find(content_provider_ids | editable_ids)
     end
-    result.sort_by { |obj| obj.title }
   end
 
   def get_inviter
