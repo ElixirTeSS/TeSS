@@ -11,3 +11,4 @@ workshops_and_courses:
   title: Workshops and courses
   match:
     - fair for qualitative data
+    - advanced workshop
