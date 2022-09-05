@@ -1,15 +1,40 @@
 <div class="wrapper collapsing-wrapper">
-  <%# SIDEBAR %>
-  <div class="collapsing-sidebar" id="sidebar">
-    <%= render :partial => "content_providers/partials/content_provider_info", :locals => {:content_provider => @material.content_provider} %>
-    <%= render partial: "nodes/partials/associated_node_info", locals: { associated_nodes: @material.associated_nodes } %>
-  </div>
   <div id="content">
+    
     <div class="row">
-      <%= star_button(@material) if user_signed_in? %>
+      <ul class="nav nav-tabs">
+        <%= tab('Material', icon_class_for_model('materials'), 'home', active: true) %>
+
+        <%= tab('Activity log', icon_class_for_model('activity_logs'), 'activity_log',
+                disabled: { check: @material.activities.none?, message: 'No activities recorded' }) %>
+      </ul>
+
+      <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+          <div class="row">
+            <div class="text-justify">
+              <!-- Field: title -->
+              <div class="sub-heading"><%= display_attribute_no_label(@material, :resource_type) { |values| values.join(', ') } %></div>
+              <h2 class="mt-0">
+                <%=t '.title', :default => @material.title %>
+                <%= scrape_status_icon(@material, 'large') if current_user and current_user.is_admin? %>
+                <%= missing_icon(@material, 'large') if current_user and current_user.is_admin? %>
+                <%= suggestion_icon(@material, 'large') if current_user and current_user.is_admin? -%>
+              </h2>
+
+              <!-- Field: URL -->
+              <p>
+                <div class="url-wrap">
+                  <%= link_to @material.url, :target => "_blank", :onclick => "getOutboundLink('#{@material.url}'); return true;" do %>
+                    <%= @material.url %><i class="icon icon-md arrow-top-right-icon"></i>
+                  <% end %>
+                </div>
+              </p>
+
+              <div class="row">
 
       <div class="content_action">
-        <%= link_to t('.back', :default => t("helpers.links.back")), :back, :class => 'btn btn-info'  %>
+        <%= star_button(@material) if user_signed_in? %>
 
         <%= render partial: 'common/identifiers_dot_org_button', locals: { resource: @material } if TeSS::Config.identifiers_prefix %>
 
@@ -25,36 +50,8 @@
                         :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                         :class => 'btn btn-danger' %>
         <% end %>
-        <a href="<%= @material.url %>" target="_blank" class="btn btn-success"><span class="fa fa-external-link"></span> View material</a>
       </div>
     </div>
-    <div class="row">
-      <ul class="nav nav-tabs">
-        <%= tab('Material', icon_class_for_model('materials'), 'home', active: true) %>
-
-        <%= tab('Activity log', icon_class_for_model('activity_logs'), 'activity_log',
-                disabled: { check: @material.activities.none?, message: 'No activities recorded' }) %>
-      </ul>
-
-      <div class="tab-content">
-        <div id="home" class="tab-pane fade in active">
-          <div class="row">
-            <div class="text-justify">
-              <!-- Field: title -->
-              <h2>
-                <%=t '.title', :default => @material.title %>
-                <%= scrape_status_icon(@material, 'large') if current_user and current_user.is_admin? %>
-                <%= missing_icon(@material, 'large') if current_user and current_user.is_admin? %>
-                <%= suggestion_icon(@material, 'large') if current_user and current_user.is_admin? -%>
-              </h2>
-
-              <!-- Field: URL -->
-              <p>
-                <div class="url-wrap">
-                  <%= link_to @material.url, @material.url, :class =>'h5', :target => "_blank",
-                              :onclick => "getOutboundLink('#{@material.url}'); return true;" %>
-                </div>
-              </p>
 
               <!-- Field: long description -->
               <p><%= render_markdown @material.description %></p>
@@ -103,5 +100,10 @@
         </div>
       </div>
     </div>
+  </div>
+  <%# SIDEBAR %>
+  <div class="collapsing-sidebar" id="sidebar">
+    <%= render :partial => "content_providers/partials/content_provider_info", :locals => {:content_provider => @material.content_provider} %>
+    <%= render partial: "nodes/partials/associated_node_info", locals: { associated_nodes: @material.associated_nodes } %>
   </div>
 </div>

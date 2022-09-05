@@ -52,16 +52,40 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
     TargetAudienceDictionary.instance.lookup_value(label, 'title')
   end
 
+  def display_difficulty_level(resource)
+    value = resource.send("difficulty_level")
+    if value == 'beginner'
+      "• " + value
+    elsif value == 'intermediate'
+      "•• " + value
+    elsif value == 'advanced'
+      "••• " + value
+    else
+      ""
+    end
+  end
+
   def display_attribute(resource, attribute, markdown: false) # resource e.g. <#Material> & symbol e.g. :target_audience
     value = resource.send(attribute)
     value = render_markdown(value) if markdown
     if value.blank? || value.try(:strip) == 'notspecified'
-      string = "<p class=\"#{attribute}\">"
+      string = "<p class=\"#{attribute} no-spacing\">"
     else
-      string = "<p class=\"#{attribute}\"><b> #{resource.class.human_attribute_name(attribute)}: </b>"
+      string = "<p class=\"#{attribute} no-spacing\"><span class='text-primary'> #{resource.class.human_attribute_name(attribute)}: </span>"
       string << (block_given? ? yield(value) : value.to_s)
     end
     (string + '</p>').html_safe
   end
 
+  def display_attribute_no_label(resource, attribute, markdown: false)
+    value = resource.send(attribute)
+    value = render_markdown(value) if markdown
+    if value.blank? || value.try(:strip) == 'notspecified'
+      string = "<p class=\"#{attribute}\">"
+    else
+      string = "<p class=\"#{attribute}\">"
+      string << (block_given? ? yield(value) : value.to_s)
+    end
+    (string + '</p>').html_safe
+  end
 end

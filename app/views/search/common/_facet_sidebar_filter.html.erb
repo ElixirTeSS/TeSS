@@ -6,11 +6,11 @@
 <% facet_field = facet.field_name.to_s %>
 <% facet_rows = facet.rows.reject { |f| f.value.to_s.blank? || f.count < 1 } %>
 
-
+<div class="sidebar-group mt-4">
 <% if facet_rows.any? %>
   <%# Title %>
   <li>
-    <h4 class="nav-heading">
+    <h4 class="nav-heading"><span class="icon icon-lg icon-greyscale filter-icon"></span>
       <%= case facet_field
           when 'user'
             'Owner'
@@ -53,3 +53,4 @@
     </li>
   <% end %>
 <% end %>
+</div>

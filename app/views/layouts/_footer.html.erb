@@ -1,17 +1,46 @@
 <footer class="footer">
   <div class="container">
     <div class="row">
-      <div class="col-sm-3 col-xs-8">
-        <strong>Version: </strong><%= app_version_text -%><br />
-        <%= mail_to(TeSS::Config.contact_email, 'Contact us') %><br/>
-        <%= link_to "Add your training resources to #{TeSS::Config.site['title_short']}", registering_resources_path, target: '_blank'  %><br/>
-        <%= link_to 'Source code', TeSS::Config.site['repository'], target: '_blank' %><br/>
-        <%= link_to 'Funding & acknowledgements', us_path(anchor: 'funding'), target: '_blank' %><br/>
-        <%= link_to 'Privacy', privacy_path, target: '_blank' %>
+
+        <div class="col-sm-6">
+
+          <div class="footer-logo footer-item">
+            <%= image_tag(TeSS::Config.site['logo'], :alt => TeSS::Config.site['logo_alt']) %>
+          </div>
+
+          <div class="footer-item">
+            <%= mail_to(TeSS::Config.contact_email) %><br/>
+          </div>
+
+          <div class="footer-item" style="margin-top: 25px;">
+            <input type="button" value="Contribute" class="btn btn-primary" />
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="footer-item version">
+            <strong>Version: </strong><%= app_version_text -%><br />
+          </div>
+
+          <div class="footer-item">
+            <%= link_to "Add your training resources to #{TeSS::Config.site['title_short']}", registering_resources_path, target: '_blank'  %>
+          </div>
+          <div class="footer-item">
+            <%= link_to 'Source code', TeSS::Config.site['repository'], target: '_blank' %>
+          </div>
+          <div class="footer-item">
+            <%= link_to 'Funding & acknowledgements', us_path(anchor: 'funding'), target: '_blank' %>
+          </div>
+          <div class="footer-item">
+            <%= link_to 'Privacy', privacy_path, target: '_blank' %>
+          </div>
+        </div>
+
+      <div class="col-sm-12">
+        <hr>
       </div>
-      <div class="col-sm-9 col-xs-4">
+
         <%= render :partial => 'layouts/supported_by' %>
-      </div>
     </div>
   </div>
 </footer>

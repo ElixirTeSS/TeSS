@@ -38,6 +38,20 @@
 //= require_self
 //= require turbolinks
 
+function toggleDefinition(el) {
+    var sign = $(el).html();
+
+    if (sign === '+') {
+        $(el).parent().addClass('text-primary');
+        $(el).text('–')
+        $(el).parent().parent().next().show(300);
+    } else {
+        $(el).text('+')
+        $(el).parent().removeClass('text-primary');
+        $(el).parent().parent().next().hide(300);
+    }
+}
+
 function updateURLParameter(url, param, paramVal){
     var newAdditionalURL = "";
     var tempArray = url.split("?");
@@ -161,9 +175,9 @@ document.addEventListener("turbolinks:load", function() {
 
     var setStarButtonState = function (button) {
         if (button.data('starred')) {
-            button.html("<i class='fa fa-star'> </i> Un-star");
+            button.html("<i class='icon icon-h3 star-primary-fill-icon'> </i>");
         } else {
-            button.html("<i class='fa fa-star-o'> </i> Star");
+            button.html("<i class='icon icon-h3 star-primary-icon'> </i>");
         }
     };
 

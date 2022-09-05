@@ -1,23 +1,19 @@
 <div class="wrapper">
 
-  <div id="sidebar" class="popout-sidebar">
-    <%= render :partial => 'about_nav', locals: { show: 'developers' } %>
-  </div>
-
   <div id="content" class="">
     <div class="about-block">
-      <%= render :partial => 'links', :locals => { 'show': 'developer' } %>
+      <%#= render :partial => 'links', :locals => { 'show': 'developer' } %>
 
       <!-- ABOUT TESS DATA -->
       <div class="row">
-        <div class="odd-about-block">
-          <div id='code_and_data' class="h3">For Developers</div>
+        <div>
+          <h2 id='code_and_data'>For Developers</h2>
+          <br>
 
           <%== raw t 'developer.license' %>
-
           <div class="row">
             <div class="col-lg-5 5 open-access-box">
-              <div class="h2 licence-title">Software</div>
+              <div class="h3 licence-title">Software</div>
               <div class="open-access-location">
                 <%= link_to TeSS::Config.site['repository'], target: '_blank' do %>
                   <div class="register-condition-graphic">
@@ -38,7 +34,7 @@
               </div>
             </div>
             <div class="col-lg-5 open-access-box">
-              <div class="h2 licence-title">Data</div>
+              <div class="h3 licence-title">Data</div>
               <%= link_to developers_path(:anchor => 'api') do %>
                 <div class="open-access-location">
                   <div class="register-condition-graphic"><i class="fa fa-plug licence-logo"></i></div>
@@ -76,7 +72,7 @@
       <!-- API -->
       <div class="row">
         <div class="odd-about-block">
-          <div class="h4" id="api">API</div>
+          <div class="h3" id="api">API</div>
           <span>
             <p><%= TeSS::Config.site['title_short'] %> has a fully functioning
               <a href="http://jsonapi.org/" target="_blank">JSON API</a>.
@@ -120,7 +116,12 @@
         </div>
       </div>
     </div>
+    <hr>
     <%= render :partial => 'links', :locals => { 'show': 'developer' } %>
+  </div>
+
+  <div id="sidebar" class="popout-sidebar">
+    <%= render :partial => 'about_nav', locals: { show: 'developers' } %>
   </div>
 </div>
 </div>

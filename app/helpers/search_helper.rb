@@ -50,7 +50,7 @@ module SearchHelper
       if block_given?
         yield
       else
-      "#{title}&nbsp;<i class='glyphicon glyphicon-remove'></i>".html_safe
+      "#{title}&nbsp;<i class='pull-right glyphicon glyphicon-remove'></i>".html_safe
       end
     end
   end

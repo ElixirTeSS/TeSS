@@ -1,13 +1,9 @@
 <div class="wrapper collapsing-wrapper">
   <%# SIDEBAR %>
-  <div class="collapsing-sidebar" id="sidebar">
-    <%= render :partial => "collections/partials/collection_info", :locals => {:collection => @collection} %>
-  </div>
+
   <div id="content">
     <div class="row">
       <div class="content_action">
-        <%= link_to t('.back', :default => t("helpers.links.back")),
-                    collections_path, :class => 'btn btn-info' %>
         <% if !current_user.nil? and policy(@collection).update? %>
             <%= link_to t('.edit', :default => t("helpers.links.edit")),
                         edit_collection_path(@collection), :class => 'btn btn-primary' %>
@@ -66,6 +62,10 @@
         <%= image_tag('ajax-loader.gif') %>
       </div>
     </div>
+  </div>
+
+  <div class="collapsing-sidebar" id="sidebar">
+    <%= render :partial => "collections/partials/collection_info", :locals => {:collection => @collection} %>
   </div>
 </div>
 

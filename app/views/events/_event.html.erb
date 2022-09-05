@@ -4,18 +4,28 @@
 <% else -%>
 <li class="masonry-brick media-item <%= eclass %>" data-toggle="tooltip" data-placement="auto" title="<%= tooltip_titles(event) -%>">
 <% end -%>
-  <div id="event-title">
-  <h3 class="media-heading dont-break-out" style="display: inline;">
+
+<% if event.event_types.any? %>
+  <% event.event_types.each do |t| %>
+    <div class="sub-heading"><%= EventTypeDictionary.instance.lookup_value(t, 'title') %></div>
+  <% end %>
+<% end %>
+
+  <div id="event-title" class="masonry-brick-heading">
+    <h4>
+<!--    TODO: hybrid events-->
+    <% if event.online? %>
+        <i class="icon icon-h4 virtual-event-icon"></i>
+      <% else %>
+        <i class="icon icon-h4 onsite-event-icon"></i>
+    <% end %>
     <%= event.title %>
-  </h3>
+    </h4>
     <%= missing_icon(event) if current_user and current_user.is_admin? %>
     <%= scrape_status_icon(event) if current_user and current_user.is_admin? %>
   </div>
   <p><%= neatly_printed_date_range(event.start, event.end) %></p>
   <% if event.online? %>
-      <%= content_tag(:span, :class=>'pull-right gap') do %>
-          <%= icon_for(:online, :small) %>
-      <% end %>
   <% else %>
     <p class="dont-break-out">
       <%= [event.city, event.country].reject { |field_value| field_value.blank? }.join(", ")%>
@@ -46,5 +56,7 @@
   <% if policy(event).update? && event.edit_suggestion %>
       <%= render partial: 'common/approve_term_suggestions', locals: { suggestion: event.edit_suggestion } %>
   <% end %>
+
+  <%= display_attribute(event, :keywords) { |values| values.join(', ') } %>
 </li>
 

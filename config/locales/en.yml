@@ -79,7 +79,7 @@ en:
       As such, all content in TeSS is available under the CC BY 4.0 licence, and can be accessed through our API
       and widgets. The TeSS codebase is also available to re-use under the BSD Licence, and can be found on GitHub.
     code_license: >
-      <a href="https://github.com/nrmay/TeSS/blob/master/LICENSE", target="_blank">BSE 3-Clause</a>
+      <a href="https://github.com/nrmay/TeSS/blob/master/LICENSE", target="_blank">BSD 3-Clause</a>
     data_license: >
       <a href="https://creativecommons.org/licenses/by/4.0/", target="_blank">Creative Commons CC-BY 4.0</a>
     gmaps_countries: >
@@ -277,13 +277,24 @@ en:
       <p>Once registered and logged in, the 'register event' and 'register material' buttons will become visible on the
       events and materials tabs. Alternatively click here:</p>
   home:
-    welcome: "Welcome to TeSS: Elixir's Training Portal"
-    subtitle: "Browsing, discovering and organising life sciences training resources, aggregated from ELIXIR nodes and 3<sup>rd</sup>-party providers."
+    welcome: |
+      How can <span class="text-primary">TeSS</span> help you?
+    subtitle: |
+      Search the portal for courses, events, videos, presentations, learning pathways, handbooks...<br>
+      All types of resources at all levels for leveraging <span class="text-primary">computational resources in the life sciences</span>.
     events_message: "Discover the latest training events and news from ELIXIR nodes and 3<sup>rd</sup>-party providers."
     materials_message: "Browse the catalogue of training materials offered by ELIXIR nodes and 3<sup>rd</sup>-party providers."
     workflows_message: "Create training workflows to visualise learning steps and link to resources specific to your training needs."
     providers_message: "Browse training providers to discover training resources they offer and follow links to their materials and courses."
     trainers_message: "Browse a directory of trainers based on their skills and expertise."
+    nonprofit_title: "Non-profit and free to use"
+    nonprofit_description: "No costs associated, and funded through national and EU funds"
+    sustainable_title: "Sustainable"
+    sustainable_description: "Open-source code that is here to stay"
+    expert_title: "By experts, for experts"
+    expert_description: "Built by an international community of experts"
+    ls_title: "Life sciences focused"
+    ls_description: "For the entire life sciences workforce"
   privacy:
     registration: |
       <p>When you register with TeSS we ask for a username, password and email address.</p>

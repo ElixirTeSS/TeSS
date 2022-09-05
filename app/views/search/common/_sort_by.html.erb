@@ -20,14 +20,13 @@ e.g.
     <% options.reverse! %>
 <% end %>
 
-<form class="form-inline pull-right">
-  <div class="form-group">
-    <div class="input-group">
-      <span class="input-group-addon"><i title="Sort by" class="fa fa-sort-amount-asc" aria-hidden="true"></i></span>
-      <%= select_tag(:sort, options_for_select(
-          options, @sort_by),
-                     :onchange => "redirect_to_sort_url()", :class => "form-control")
-      %>
-    </div>
-  </div>
-</form>
+<div class="sidebar-group">
+<ul class="unstyled nav-simple">
+  <li><h4 class="nav-heading"><span class="icon icon-lg icon-greyscale sort-icon"></span> Sort</h4></li>
+
+        <%= select_tag(:sort, options_for_select(
+            options, @sort_by),
+                       :onchange => "redirect_to_sort_url()", :class => "form-control facet-select")
+        %>
+</ul>
+</div>

@@ -1,64 +1,9 @@
-// Inherited defaults
-
-/* Elixir brand colours */
-$elixir-orange: #f47d20;
-$elixir-grey: #484848;
-$elixir-blue: #005472;
-$elixir-green: #bebf32;
-
-/* TeSS colours */
-$bgDefault: $elixir-orange;
-$bgHighlight: darken($bgDefault, 10%);
-$colDefault: #ffe6d1;
-$colHover: #333;
-$colHover2: #eee;
-
-$grey-blue: #8ca0a6;
-
-$blue: #206b82;
-$blue2: #085871; /* unused? */
-$blue3: #064559; /* unused? */
-
-
-$link-color: $blue;
-$link-hover-color: lighten($link-color, 10%);
-$link-hover-decoration: none;
-
-$btn-primary-bg: $blue;
-
-$pagination-color: $blue;
-$pagination-active-bg: $blue;
-$pagination-active-border: $blue;
-
-$navbar-height: 60px;
-$navbar-default-bg: $bgDefault;
-$navbar-default-border: transparent;
-$navbar-default-link-active-bg: $bgHighlight;
-$navbar-default-link-hover-bg: $bgHighlight;
-$navbar-default-link-color: $colDefault;
-$navbar-default-link-active-color: lighten($navbar-default-link-color, 30%);
-$navbar-default-link-hover-color: lighten($navbar-default-link-color, 40%);
-
-$navbar-default-toggle-hover-bg: $bgHighlight;
-$navbar-default-toggle-icon-bar-bg: $colHover2;
-$navbar-default-toggle-border-color: $bgHighlight;
-
-$top-header-bg: #333;
-$top-header-border: #eee;
-$top-header-text: #eee;
-$top-header-hover-text: #333;
-$top-header-hover-bg: #eee;
-
-$footer-bg: #ddd;
-$footer-border: transparent;
-$footer-text: #333;
-
-// Modern theme
-
 // Global
-@import url('https://fonts.googleapis.com/css?family=Lato&subset=latin');
+//<link href="https://fonts.googleapis.com/css?family=Roboto:thin&display=swap" rel="stylesheet">
+
+@import url('https://fonts.googleapis.com/css?family=Lato');
+@import url('https://fonts.googleapis.com/css?family=Lato:thin');
 $font-family-base: 'Lato', sans-serif;
-$font-size-base: 16px;
 
 // Colors
 $primary-color: #023452;
@@ -75,5 +20,46 @@ $light-60-color: rgba(244, 247, 251, 0.6);
 $light-30-color: rgba(244, 247, 251, 0.3);
 $light-05-color: rgba(244, 247, 251, 0.05);
 
+// Font sizes
+$font-size-base: 16px;
+$font-size-large: 20px;
+$font-size-small: 12px;
+
+// Extended font sizes
+$font-size-xs: 8px;
+$font-size-xxs: 4px;
+
+// Headings
+$font-size-h1: 58px;
+$font-size-h2: 44px;
+$font-size-h3: 32px;
+$font-size-h4: 24px;
+
+
 // Header
 $unified-header-bg: transparent;
+
+
+
+// Footer
+$footer-bg: $dark-05-color;
+$footer-border: transparent;
+$footer-text: $dark-color;
+$footer-border-radius: 50px;
+$footer-padding-top: 75px;
+
+$brand-primary:  #047EAA;
+
+$padding-base-vertical:     10px;
+$padding-base-horizontal:   15px;
+
+// Breadcrump
+$breadcrumb-bg: transparent;
+$breadcrumb-separator: "/";
+$breadcrumb-color: $dark-color !default;
+$breadcrumb-active-color: $dark-color !default;
+
+// Links
+$link-color: $accent-color;
+$link-hover-color: darken(rgb(244, 125, 33), 15%);
+

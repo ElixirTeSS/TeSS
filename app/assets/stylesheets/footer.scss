@@ -1,0 +1,128 @@
+.footer {
+  border-top-left-radius: $footer-border-radius;
+  border-top-right-radius: $footer-border-radius;
+  border-top: solid 3px $footer-border;
+  margin-top: 0;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: $footer-bg;
+  color: $footer-text;
+  padding-top: $footer-padding-top;
+
+  @media (max-width: $screen-sm) {
+    padding-top: 0;
+  }
+
+  hr {
+    border-color: $primary-color;
+  }
+
+  a {
+    color: $footer-text;
+    background-color: transparent;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  h5, h6 {
+    font-weight: bold;
+  }
+
+  .footer-item {
+    margin: 6px;
+
+    a {
+      color: $dark-60-color;
+    }
+  }
+
+  .container {
+    padding: 0;
+  }
+
+  .footer-logo {
+    img {
+      margin-left: 6px;
+      margin-right: 6px;
+      margin-bottom: 12px;
+      height: 50px;
+    }
+
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .footer-logo-lg {
+    img {
+      height: 100px;
+    }
+  }
+
+  .eu-notice {
+    font-size: small;
+
+    img {
+      float: left;
+      margin: 0 8px;
+      height: 50px;
+    }
+  }
+}
+
+.version {
+  margin-bottom: 25px;
+}
+
+.ack-country {
+  border-top: 2px solid $footer-border;
+  margin-top: 0;
+  padding-top: 0.5em;
+  text-align: center;
+}
+
+.supported-by {
+  margin-bottom: 0;
+  text-align: center;
+  vertical-align: middle;
+  font-size: x-small;
+  line-height: 1.2;
+}
+
+.funder-text {
+  padding-top: 1em;
+  p {
+    font-size: xx-small;
+    vertical-align: bottom;
+    line-height: 1.25;
+  }
+}
+
+.funder-logo {
+  img {
+    padding: 1em 1em 0 0;
+    height: 60px;
+  }
+}
+
+.partner-logo {
+  img {
+    margin: 0 0 12px 0;
+    border-right: 1px solid $footer-border;
+    padding: 0 12px;
+    height: 45px;
+  }
+}
+
+.partner-logos .partner-logo:last-child {
+  img {
+    border-right: none;
+  }
+}

@@ -2,17 +2,14 @@
 
   <% @feature_count = 0 %>
 
-  <div id="sidebar" class="popout-sidebar">
-    <%= render :partial => 'about_nav', locals: { show: 'home' } %>
-  </div>
-
   <div id="content">
     <div class="about-block">
-      <%= render :partial => 'links', :locals => { 'show': 'tess' } %>
+      <%#= render :partial => 'links', :locals => { 'show': 'tess' } %>
 
       <div class="row">
 
-        <div id='trainingregistry' class="h3">The <%== TeSS::Config.site['title'] %></div>
+        <h2 id='trainingregistry'>The <%== TeSS::Config.site['title'] %></h2>
+        <br>
         <p><%== raw t 'about.registry' %></p>
 
         <!-- EVENTS-->
@@ -21,8 +18,8 @@
           <div class="row <%= next_about_block(@feature_count += 1) %>">
             <div class="col-lg-2 about-resource-icon">
               <%= link_to events_path do %>
-                <%= image_tag('features/events.png', height: "120px", alt: "Events") %>
-                <p>Discover Events</p>
+                <%= image_tag('modern/icons/events-icon.svg', height: "65px", alt: "Events") %>
+<!--                <p>Discover Events</p>-->
               <% end %>
             </div>
             <div class="col-lg-10 about-resource">
@@ -34,7 +31,14 @@
                 content providers, supplementing the data with geolocation information found using
                 <%== raw t 'about.nominatim' %>.
               </p>
+
+              <%= link_to events_path do %>
+                <br>
+                <p>Discover Events →</p>
+              <% end %>
             </div>
+
+
           </div>
         <% end %>
 
@@ -44,8 +48,8 @@
           <div class="row <%= next_about_block(@feature_count += 1) %>">
             <div class="col-lg-2 about-resource-icon">
               <%= link_to materials_path do %>
-                <%= image_tag('features/materials.png', height: "120px", alt: "Events") %>
-                <p>Discover Materials</p>
+                <%= image_tag('modern/icons/materials-icon.svg', height: "65px", alt: "Events") %>
+<!--                <p>Discover Materials</p>-->
               <% end %>
             </div>
 
@@ -56,6 +60,11 @@
               <p><%= TeSS::Config.site['title_short'] %> collects materials from
                 <%= Material.all.collect { |x| x.content_provider_id }.uniq.count %>
                 content providers.</p>
+
+              <%= link_to materials_path do %>
+                <br>
+                <p>Discover Materials →</p>
+              <% end %>
             </div>
           </div>
         <% end %>
@@ -64,34 +73,40 @@
 
         <% if TeSS::Config.feature['workflows'] == true %>
           <div class="row <%= next_about_block(@feature_count += 1) %>">
-            <div class="row">
               <div class="col-lg-2 about-resource-icon">
                 <%= link_to workflows_path do %>
-                  <%= image_tag('features/workflows.png', height: "120px", alt: "Events") %>
-                  <p>Discover Workflows</p>
+                  <%= image_tag('modern/icons/workflows-icon.svg', height: "65px", alt: "Events") %>
+<!--                  <p>Discover Workflows</p>-->
                 <% end %>
               </div>
 
-              <div class="col-lg-10 about-resource">
+              <div class="col-lg-12 about-resource">
                 <div id='workflows' class="h4">Training Workflows</div>
                 <p><%== raw t 'about.workflows' %></p>
               </div>
-            </div>
 
+            <div class="sub-about-block-wrap">
             <!-- INDIVIDUAL WORKFLOW TYPES-->
             <div class="sub-about-block">
-              <div class="h5">Learning Paths</div>
+              <div class="h3">Learning Paths</div>
               <p><%== raw t 'about.learning_paths' %></p>
             </div>
 
             <div class="sub-about-block">
-              <div class="h5">Concept Maps</div>
+              <div class="h3">Concept Maps</div>
               <p><%== raw t 'about.concept_maps' %></p>
             </div>
 
             <div class="sub-about-block">
-              <div class="h5">Educational Resource</div>
+              <div class="h3">Educational Resource</div>
               <p><%== raw t 'about.resources' %></p>
+            </div>
+
+              <%= link_to workflows_path do %>
+                <br>
+                <p>Discover Workflows →</p>
+              <% end %>
+
             </div>
 
           </div>
@@ -101,7 +116,7 @@
 
         <% if TeSS::Config.feature['subscription'] %>
           <div class="row <%= next_about_block(@feature_count += 1) %>">
-            <div class="row">
+            <div class="row" style="padding: 0 15px;">
               <div class="col-lg-12">
                 <div id='subscribe' class="h3">Subscribe</div>
                 <p><%== raw t 'about.subscribe' %></p>
@@ -117,7 +132,7 @@
         <!-- WIDGET & API -->
 
         <div class="row <%= next_about_block(@feature_count += 1) %>">
-          <div class="row">
+          <div class="row"  style="padding: 0 15px;">
             <div class="col-lg-12">
               <div id='widget' class="h3">Widgets & API</div>
               <p>To access <%= TeSS::Config.site['title_short'] %> data, <%== raw t 'about.widgets' %></p>
@@ -129,7 +144,14 @@
 
       </div>
 
+      <hr>
+
       <%= render :partial => 'links', :locals => { 'show': 'tess' } %>
     </div>
   </div>
+
+  <div id="sidebar" class="popout-sidebar">
+    <%= render :partial => 'about_nav', locals: { show: 'home' } %>
+  </div>
+
 </div>

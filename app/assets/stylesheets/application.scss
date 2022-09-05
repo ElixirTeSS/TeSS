@@ -38,116 +38,49 @@ body {
   min-width: 320px;
   position: relative;
   margin: 0;
-  padding-bottom: 215px;
+  padding-bottom: 500px;
   min-height: 100%;
 }
 
-.footer {
-  border-top: solid 3px $footer-border;
-  margin-top: 0;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: $footer-bg;
-  color: $footer-text;
-
-  a {
-    color: $footer-text;
-    background-color: transparent;
-    text-decoration: none;
-  }
-
-  h5, h6 {
-    font-weight: bold;
-  }
-
-  .container {
-    padding: 0;
-  }
-
-  .footer-logo {
-    img {
-      margin-left: 12px;
-      margin-bottom: 12px;
-      height: 30px;
-    }
-  }
-
-  .footer-logo-lg {
-    img {
-      height: 106px;
-    }
-  }
-
-  .eu-notice {
-    padding-top: 10px;
-    overflow: auto;
-
-    img {
-      float: left;
-      margin: 0 8px;
-      height: 39px;
-    }
-  }
+h1 {
+  font-weight: 900;
 }
 
-.ack-country {
-  border-top: 2px solid $footer-border;
-  margin-top: 0;
-  padding-top: 0.5em;
-  text-align: center;
+h2, h3, h4, h5, h6 {
+  font-weight: 700;
 }
 
-.supported-by {
-  margin-bottom: 0;
-  text-align: center;
-  vertical-align: middle;
-  font-size: x-small;
-  line-height: 1.2;
-}
+.sub-heading {
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 24px;
+  text-transform: uppercase;
 
-.funder-text {
-  padding-top: 1em;
   p {
-    font-size: xx-small;
-    vertical-align: bottom;
-    line-height: 1.25;
+    margin: 0;
   }
 }
 
-.funder-logo {
-  img {
-    padding: 1em 1em 0 0;
-    height: 60px;
-  }
+section {
+  padding: 50px 0;
 }
 
-.partner-logo {
-  img {
-    margin: 0 0 12px 0;
-    border-right: 1px solid $footer-border;
-    padding: 0 12px;
-    height: 45px;
-  }
+.module-heading {
+  margin: 50px 0;
 }
 
-.partner-logos .partner-logo:last-child {
-  img {
-    border-right: none;
+a.btn-icon {
+  &:hover {
+    filter: brightness(90%);
+  }
+  &:active {
+    -webkit-box-shadow: none;
+    box-shadow: none;
   }
 }
 
 div.wrapper {
   *zoom: 1;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
-  -moz-box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
-  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
   margin-bottom: 20px;
   display: flex;
 
@@ -179,9 +112,15 @@ div.wrapper {
 
 #sidebar {
   width: 280px;
-  border-right: 1px solid #ccc;
   padding: 0;
+  padding-top: 50px;
   flex-shrink: 0;
+
+  .sidebar-group {
+    background: #FFFFFF;
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.03);
+    border-radius: 6px;
+  }
 
   &.collapsing-sidebar {
     @media (max-width: $screen-md-min) {
@@ -192,11 +131,12 @@ div.wrapper {
 
   &.popout-sidebar {
     @media (max-width: $screen-md-min) {
+      padding: 0;
+      width: calc(100% - 30px);
       position: absolute;
       z-index: 10;
       background: white;
       border-bottom: 1px solid #ccc;
-      box-shadow: 2px 2px 3px 0 #999;
       display: none;
 
       &.open {
@@ -257,14 +197,31 @@ div.wrapper {
   margin-bottom: 30px;
 }
 
-// Bootstrap's breadcrumbs
-.breadcrumbs {
-  margin-top: 5px;
+a {
+  text-decoration: underline;
 }
 
-.breadcrumb {
-  margin-bottom: 10px;
+li > a {
+  text-decoration: none;
 }
+
+a.btn {
+  text-decoration: none;
+}
+
+.active-filters > a {
+  text-decoration: none;
+}
+
+.breadcrumb li > a {
+  text-decoration: underline;
+}
+
+.nav-tabs a {
+  color: $brand-primary;
+}
+
+
 
 // Style for empty results etc.
 .empty {
@@ -326,13 +283,19 @@ ul.unstyled {
   padding-bottom: 0;
 }
 
-.nav-simple > li {
+.nav-simple li {
   padding: 0;
-  border-bottom: 1px dotted #ddd;
 }
 
-.nav-simple > li:last-of-type {
+.nav-simple li:last-of-type {
   border-bottom: 0 none;
+}
+
+.nav-simple {
+  .form-control {
+    border: 0;
+    box-shadow: none;
+  }
 }
 
 .nav-item {
@@ -341,14 +304,9 @@ ul.unstyled {
 }
 
 .nav-item > a {
-  //padding-left: 15px;
-  //padding-right: 15px;
   position: relative;
   display: block;
   color: #333;
-  //font-size: 14px;
-  //line-height: 20px;
-  //margin: -7px -25px;
   padding: 7px 20px;
   text-decoration: none;
 }
@@ -360,37 +318,29 @@ ul.unstyled {
 
 .nav-item.active > a {
   position: relative;
-  color: #fff;
-  background-color: $grey-blue;
+  color: $secondary-color
 }
 
-.nav-item.active > a:hover {
-  color: #fff;
-  background-color: $blue;
-}
 
+.active-filters {
+  .pull-right {
+    float: none !important;
+    margin-left: 5px;
+  }
+}
 // End CKAN's sidebar facets
 
 // Facet's title
 .nav-heading {
   padding: 10px;
-  background-color: #f6f6f6;
+  //background-color: #f6f6f6;
   margin: 0;
 }
 
 .nav-heading-darker {
-  background-color: #ddd;
+  background-color: #f6f6f6;
   padding: 10px;
   margin: 0 0 5px 0;
-}
-
-.filter-button {
-  color: #fff;
-  background-color: $grey-blue;
-
-  &:hover {
-    background-color: $blue !important;
-  }
 }
 
 .facet-count {
@@ -440,8 +390,7 @@ ul.unstyled {
 }
 
 .search-results-count {
-  font-size: medium;
-  font-weight: bold;
+  font-size: $font-size-small;
   margin-top: 5px;
   padding-top: 5px;
   padding-bottom: 10px;
@@ -478,20 +427,6 @@ ul.unstyled {
   content: "\e114"; /* adjust as needed, taken from bootstrap.css */
 }
 
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6 {
-  color: #337ab7;
-}
-
-.content_action {
-  float: right;
-  margin-top: -5px;
-  margin-right: -7px;
-}
 
 // Fix for simple form issue: http://stackoverflow.com/questions/6748446/rails-simple-form-gives-dots-under-stars-for-required-fields-better-way-to-remo
 ibbr,
@@ -528,6 +463,7 @@ accronym {
 
 .dropdown-toggle {
   cursor: pointer;
+  //padding: $padding-base-horizontal $padding-base-vertical;
 }
 
 .dropdown-option {
@@ -536,6 +472,10 @@ accronym {
   &:hover {
     background: $dropdown-link-hover-bg;
   }
+}
+
+.dropdown-menu {
+  padding: $padding-base-vertical $padding-base-horizontal;
 }
 
 .dropdown-option-delete {
@@ -564,11 +504,12 @@ accronym {
 // Override margin for boostrap-s page-header
 .page-header {
   margin: 20px 0 20px;
+  border: none;
+  padding: 0;
 }
 
 .keyword-pill {
   color: #fff;
-  background-color: $grey-blue;
   margin-bottom: 5px;
   display: inline-block;
   font-weight: normal;
@@ -601,86 +542,6 @@ accronym {
   //justify-content: center; /* Optional, to align inner flex-items horizontally within the column  */
 }
 
-ul.featureblocks {
-  padding: 10px 0;
-  margin: 0 -10px;
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-
-  li {
-    flex: 1;
-    padding: 0 12px;
-    border-right: 1px dotted #ccc;
-    min-width: 120px;
-
-    img {
-      max-height: 320px;
-      max-width: 100%;
-      height: 120px;
-    }
-
-    &:last-child {
-      border: none;
-    }
-
-    @media (max-width: $screen-md) {
-      border-right: none;
-      margin-bottom: 10px;
-    }
-
-    h2 {
-      margin-top: 10px;
-      font-size: 20px;
-      line-height: 24px;
-    }
-
-    a {
-      color: #444;
-    }
-
-    p {
-      margin: 5px 0;
-    }
-  }
-}
-
-.searchbox {
-  text-align: center;
-  margin-top: 10px;
-  margin-bottom: 30px;
-
-  form {
-    padding-right: 10px;
-    background-color: #fff;
-    text-align: center;
-    line-height: 2;
-    font-size: large;
-    margin: auto;
-    max-width: 800px;
-    border: 1px solid #ccc;
-
-    .searchbox-wrapper {
-      display: flex;
-    }
-
-    .searchbox-field {
-      border: none;
-      background: transparent;
-      padding: 15px 15px 15px 25px;
-      flex: 1;
-      min-width: 220px;
-    }
-
-    .searchbox-btn {
-      border: none;
-      background: transparent;
-      padding: 5px 15px;
-      flex-shrink: 0;
-    }
-  }
-}
-
 sup {
   vertical-align: top;
   position: relative;
@@ -710,14 +571,47 @@ sup {
   display: none;
 }
 
-.responsive-search-box {
-  float: right;
-  width: 300px;
+.searchbox-sm {
+  width: 500px;
 
-  @include xs {
-    float: none;
-    width: 100%;
-    margin-bottom: 10px;
+  form {
+    padding-right: 10px;
+    text-align: center;
+    line-height: 2;
+    margin: auto;
+    max-width: 800px;
+
+    border: none;
+    border-radius: 50px;
+    background-color: #F4F4F4;
+
+    .searchbox-wrapper {
+      display: flex;
+    }
+
+    .searchbox-field {
+      border: none;
+      box-shadow: none;
+      outline: 0 none;
+      background: transparent;
+      padding: 5px 5px 5px 15px;
+      flex: 1;
+      min-width: 220px;
+      border-radius: 100px;
+    }
+
+    .searchbox-btn {
+      border: none;
+      background-color: transparent;
+      opacity: 0.5;
+      box-shadow: none;
+      padding: 8px 8px 0px 8px;
+      flex-shrink: 0;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
   }
 }
 
@@ -836,6 +730,10 @@ sup {
   padding-left: 32px;
   cursor: pointer;
   vertical-align: middle;
+}
+
+.btn-primary {
+  @include button-variant($light-color, $accent-color, $light-color);
 }
 
 div.legal-block {
@@ -1099,13 +997,35 @@ input[type=checkbox].field-lock + label:before,
   margin: 0 10px 10px 0;
   position: relative;
   display: block;
-  padding: 10px 15px;
+  padding: 30px;
+
+  h4 {
+    margin: 0;
+  }
 
   .list-card-heading {
     display: block;
     padding: 5px 0;
-    font-size: 16px;
     line-height: 1.3;
+
+    color: $secondary-color;
+
+      &:hover {
+        color: #005d7a;
+      }
+  }
+}
+
+.masonry-brick {
+  padding: 30px;
+
+  .masonry-brick-heading {
+    display: block;
+    padding: 5px 0;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 1.3;
+    color: $secondary-color;
   }
 }
 
@@ -1126,4 +1046,51 @@ input[type=checkbox].field-lock + label:before,
   width: 280px;
   border-right: 1px solid #ccc;
   top: 0;
+  z-index: 5;
+}
+
+.pagination {
+
+  li {
+    span, a {
+      border: none !important;
+      border-radius: 6px;
+      padding: 5px 10px;
+    }
+  }
+
+  li.prev, li.next {
+    span, a {
+      color: transparent !important;
+      width: 30px;
+      height: 35px;
+      overflow: hidden;
+      background-size: 14px;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
+
+  li.prev {
+    span, a {
+      background-image: url(modern/icons/chevron-left-icon.svg);
+    }
+  }
+
+  li.next {
+    span, a {
+      background-image: url(modern/icons/chevron-right-icon.svg);
+    }
+
+  }
+
+  li.disabled {
+    filter: grayscale(1);
+  }
+
+}
+
+// minor fix of the icon's alignment
+.glyphicon-remove {
+  top: 3px;
 }

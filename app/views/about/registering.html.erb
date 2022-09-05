@@ -1,16 +1,13 @@
 <div class="wrapper">
 
-  <div id="sidebar" class="popout-sidebar">
-    <%= render :partial => 'about_nav', locals: { show: 'registering' } %>
-  </div>
-
   <div id="content" class="">
     <div class="about-block">
-      <%= render :partial => 'links', :locals => { 'show': 'registering' } %>
+      <%#= render :partial => 'links', :locals => { 'show': 'registering' } %>
 
       <!-- REGISTERING CONTENT IN TESS -->
       <div class="row">
-        <div id='how' class="h3">Registering Resources in <%= TeSS::Config.site['title_short'] %></div>
+        <h2 id='how'>Registering Resources in <%= TeSS::Config.site['title_short'] %></h2>
+        <br>
         <%= raw t 'register.resources' %>
 
         <div class="row">
@@ -191,8 +188,14 @@
       </div>
       -->
       </div>
+      <hr>
       <%= render :partial => 'links', :locals => { 'show': 'registering' } %>
 
     </div>
+  </div>
+
+
+  <div id="sidebar" class="popout-sidebar">
+    <%= render :partial => 'about_nav', locals: { show: 'registering' } %>
   </div>
 </div>

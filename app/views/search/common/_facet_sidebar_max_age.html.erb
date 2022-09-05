@@ -1,28 +1,30 @@
-<li><h4 class="nav-heading">Date Added</h4></li>
-<%
-  selected = nil
-  opts = [[nil, '']]
-  opts += Subscription::FREQUENCY.map { |f| [f[:title], f[:title]] }
-  opts.map! do |age, text|
-    new_params = search_and_facet_params
-    if age
-      new_params[:max_age] = age
-      text = "In the last #{text}"
-    else
-      new_params.delete(:max_age)
-      text = 'Anytime'
+<div class="sidebar-group mt-4">
+  <li><h4 class="nav-heading"><span class="icon icon-lg icon-greyscale events-icon"></span></span> Date added</h4></li>
+  <%
+    selected = nil
+    opts = [[nil, '']]
+    opts += Subscription::FREQUENCY.map { |f| [f[:title], f[:title]] }
+    opts.map! do |age, text|
+      new_params = search_and_facet_params
+      if age
+        new_params[:max_age] = age
+        text = "In the last #{text}"
+      else
+        new_params.delete(:max_age)
+        text = 'Anytime'
+      end
+      url = url_for(new_params)
+      selected = url if age == params[:max_age]
+
+      [text, url]
     end
-    url = url_for(new_params)
-    selected = url if age == params[:max_age]
 
-    [text, url]
-  end
+    blank_params = search_and_facet_params
+    blank_params.delete(:max_age)
+  %>
 
-  blank_params = search_and_facet_params
-  blank_params.delete(:max_age)
-%>
-
-<%= select_tag 'max_age', options_for_select(opts, selected), id: 'max-age-select', class: 'form-control facet-select' %>
+    <%= select_tag 'max_age', options_for_select(opts, selected), id: 'max-age-select', class: 'form-control facet-select' %>
+</div>
 
 <script>
   $('#max-age-select').change(function () {
