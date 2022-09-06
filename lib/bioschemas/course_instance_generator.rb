@@ -5,7 +5,7 @@ module Bioschemas
     end
 
     def self.bioschemas_profile
-      'https://bioschemas.org/profiles/Course/0.9-DRAFT-2020_12_08'
+      'https://bioschemas.org/profiles/CourseInstance/0.9-DRAFT'
     end
 
     property :startDate, :start
