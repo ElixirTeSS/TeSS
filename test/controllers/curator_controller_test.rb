@@ -124,11 +124,6 @@ class CuratorControllerTest < ActionController::TestCase
     sign_in users(:admin)
     new_user = users(:unverified_user)
 
-    get :users, params: { with_content: true }
-
-    assert_response :success
-    assert_not_includes assigns(:users), new_user
-
     event = nil
     material = nil
     workflow = nil
@@ -178,6 +173,8 @@ class CuratorControllerTest < ActionController::TestCase
     get :users, params: { with_content: true }
 
     assert_response :success
+    assert_includes assigns(:users), new_user
+    assert_select '.panel-heading a[href=?]', @controller.user_path(new_user), text: new_user.username
 
     User::CREATED_RESOURCE_TYPES.each do |type|
       klass = type.to_s.classify.constantize
@@ -188,7 +185,8 @@ class CuratorControllerTest < ActionController::TestCase
     end
 
     [event, material, workflow, collection, provider, source].each do |resource|
-      assert_select '.curate-user a[href=?]', @controller.polymorphic_path(resource)
+      assert_select '.curate-user a[href=?]', @controller.polymorphic_path(resource), { text: resource.title },
+                    "#{@controller.polymorphic_path(resource)} not found!, \nBody:\n#{response.body}"
     end
   end
 
