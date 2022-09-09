@@ -85,11 +85,24 @@ Rails.application.routes.draw do
   end
 
   if TeSS::Config.feature['collections'] == true
-    resources :collections, concerns: [:collaboratable, :activities]
+    resources :collections, concerns: %i[collaboratable activities] do
+      # in the future it could be considered to expand this to multiple collections
+      # at the same view, in a kind of matrix-view, useful for people who manage several
+      # collections.
+      member do
+        %w[events materials].each do |item|
+          next unless TeSS::Config.feature[item]
+
+          get "curate_#{item}", to: 'collections#curate', defaults: { type: item.classify }
+          post "add_#{item.singularize}", to: 'collections#add_item', defaults: { type: item.classify }
+          post "remove_#{item.singularize}", to: 'collections#remove_item', defaults: { type: item.classify }
+        end
+      end
+    end
   end
 
   if TeSS::Config.feature['workflows'] == true
-    resources :workflows, concerns: [:collaboratable, :activities] do
+    resources :workflows, concerns: %i[collaboratable activities] do
       member do
         get 'fork'
         get 'embed'

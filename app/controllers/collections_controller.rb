@@ -1,6 +1,6 @@
 # The controller for actions related to the Collection model
 class CollectionsController < ApplicationController
-  before_action :set_collection, only: [:show, :edit, :update, :destroy]
+  before_action :set_collection, only: %i[show edit curate add_item remove_item update destroy]
   before_action :set_breadcrumbs
 
   include SearchableIndex
@@ -25,6 +25,16 @@ class CollectionsController < ApplicationController
   # GET /collections/1/edit
   def edit
     authorize @collection
+  end
+
+  # GET /collections/1/curate_#{type}?since=#{DateTime}
+  def curate
+    authorize @collection
+
+    # the default date range is given by the highest created_at date of the collection
+    since = params[:since] || @collection.send(item_type.tolower...).maximum(:created_at)
+    # should we use a policy_scope on the items?
+    @items = item_type.constantize.where('created_at > ?', since)
   end
 
   # POST /collections
@@ -85,5 +95,20 @@ class CollectionsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def collection_params
     params.require(:collection).permit(:title, :description, :image, :image_url, :public, {:keywords => []}, {:material_ids => []}, {:event_ids => []})
+  end
+
+  def item_type
+    if allowed_item_types.include? params[:type]
+      params[:type]
+    else
+      allowed_item_types.first || raise(ActiveRecord::RecordNotFound)
+    end
+  end
+
+  def allowed_item_types
+    allowed = []
+    allowed << 'Event' if TeSS::feature['events']
+    allowed << 'Material' if TeSS::feature['materials']
+    allowed
   end
 end
