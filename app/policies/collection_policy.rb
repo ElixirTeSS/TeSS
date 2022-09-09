@@ -8,6 +8,10 @@ class CollectionPolicy < ResourcePolicy
     @record.public? || manage?
   end
 
+  def curate?
+    update?
+  end
+
   class Scope < Scope
     def resolve
       Collection.visible_by(@user)

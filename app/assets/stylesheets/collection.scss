@@ -1,0 +1,14 @@
+.collection_curation_table {
+  border-spacing: 0;
+
+  td {
+    padding: 1px 5px 1px 0 !important;
+  }
+  label {
+    display: block;
+    margin-bottom: 0;
+    font-weight: normal;
+    height: 36px; /* This is a little hacky, but hard to get the label full-height otherwise */
+    cursor: pointer;
+  }
+}

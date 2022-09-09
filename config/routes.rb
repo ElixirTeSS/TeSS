@@ -91,11 +91,7 @@ Rails.application.routes.draw do
       # collections.
       member do
         %w[events materials].each do |item|
-          next unless TeSS::Config.feature[item]
-
-          get "curate_#{item}", to: 'collections#curate', defaults: { type: item.classify }
-          post "add_#{item.singularize}", to: 'collections#add_item', defaults: { type: item.classify }
-          post "remove_#{item.singularize}", to: 'collections#remove_item', defaults: { type: item.classify }
+          get "curate_#{item}", to: 'collections#curate', defaults: { type: item.classify } if TeSS::Config.feature[item]
         end
       end
     end

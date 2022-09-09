@@ -44,7 +44,6 @@ class Collection < ApplicationRecord
       end
 
       integer :user_id
-      integer :collaborator_ids
       boolean :public
       time :created_at
       time :updated_at

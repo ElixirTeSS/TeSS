@@ -32,9 +32,9 @@ class CollectionsController < ApplicationController
     authorize @collection
 
     # the default date range is given by the highest created_at date of the collection
-    since = params[:since] || @collection.send(item_type.tolower...).maximum(:created_at)
-    # should we use a policy_scope on the items?
-    @items = item_type.constantize.where('created_at > ?', since)
+    @item_class = item_class
+    since = params[:since] || @collection.send(@item_class.table_name).maximum(:created_at) || Time.at(0)
+    @items = @item_class.where('created_at > ?', since).order('created_at ASC')
   end
 
   # POST /collections
@@ -97,18 +97,16 @@ class CollectionsController < ApplicationController
     params.require(:collection).permit(:title, :description, :image, :image_url, :public, {:keywords => []}, {:material_ids => []}, {:event_ids => []})
   end
 
-  def item_type
-    if allowed_item_types.include? params[:type]
-      params[:type]
-    else
-      allowed_item_types.first || raise(ActiveRecord::RecordNotFound)
-    end
+  def item_class
+    raise ActiveRecord::RecordNotFound unless allowed_item_types.include? params[:type]
+
+    params[:type].constantize
   end
 
   def allowed_item_types
     allowed = []
-    allowed << 'Event' if TeSS::feature['events']
-    allowed << 'Material' if TeSS::feature['materials']
+    allowed << 'Event' if TeSS::Config.feature['events']
+    allowed << 'Material' if TeSS::Config.feature['materials']
     allowed
   end
 end

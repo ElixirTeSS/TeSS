@@ -1,0 +1,43 @@
+<%- model_class = Collection -%>
+<div class="row wrapper">
+  <div class="col-md-12">
+    <div class="page-header">
+      <%= page_title(t('.title', :default => [:'helpers.titles.curate', 'Curate %{type} in %{model} %{title}'], type: @item_class.table_name, model: model_class.model_name.human.titleize.downcase, title: @collection.title)) %>
+    </div>
+    <%= form_for @collection do |f| %>
+      <%= hidden_field_tag "collection[#{@item_class.table_name.singularize}_ids]", "" %>
+      <table class="table table-striped table-hover collection_curation_table">
+        <thead>
+          <tr>
+            <th></th>
+            <%- item_fields(@item_class).each do |field| -%>
+              <th><%= field.to_s.titleize %></th>
+            <%- end %>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+        <% @items.each do |item| %>
+          <%- input_name = "collection[#{@item_class.table_name.singularize}_ids][]" -%>
+          <%- id = "item_#{item.id}" %>
+          <tr>
+            <td>
+              <%= label_tag id do %>
+                <input id="item_<%= item.id %>" type="checkbox" name="<%= input_name %>" value="<%= item.id %>" selected="<%= @collection.send("#{@item_class.table_name.singularize}_ids").include? item.id %>" />
+              <% end %>
+            </td>
+              <%- item_fields(@item_class).each do |field| -%>
+                <td><label for="<%= id %>"><%= [item.send(field)].flatten.join(', ') %></label></td>
+              <% end %>
+              <td><%= link_to 'link', item %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+
+      <div class="form-group actions">
+        <%= f.submit class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </div>
+</div>
