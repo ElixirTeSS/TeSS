@@ -683,7 +683,11 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal 'application/rss+xml; charset=utf-8', @response.content_type
     require 'rss'
     rss_events = RSS::Parser.parse(@response.body)
-    assert_equal "#{@event.title} - #{@event.organizer}", rss_events.first.title
+    # there will be several events in the RSS feed, ordered as SOLR has output them
+    # which varies during our tests.
+    # find the one which will be first
+    assert_equal Event.count, rss_events.items.count
+    assert Event.find_by(title: rss_events.items.first.title.split('-').first.strip).present?
   end
 
   test 'should add external resource to event' do
