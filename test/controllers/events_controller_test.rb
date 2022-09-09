@@ -65,6 +65,15 @@ class EventsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:events)
   end
 
+  test 'should get index as RSS' do
+    @event.scientific_topic_uris = ['http://edamontology.org/topic_0654']
+    @event.save!
+
+    get :index, params: { format: :rss }
+    assert_response :success
+    assert_not_nil assigns(:events)
+  end
+
   test 'should get index as json-api' do
     @event.scientific_topic_uris = ['http://edamontology.org/topic_0654']
     @event.save!
@@ -666,6 +675,15 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal 'text/csv; charset=utf-8', @response.content_type
     csv_events = CSV.parse(@response.body)
     assert_equal csv_events.first, ["Title", "Organizer", "Start", "End", "ContentProvider"]
+  end
+
+  test 'should provide an RSS file' do
+    get :index, params: { format: :rss }
+    assert_response :success
+    assert_equal 'application/rss+xml; charset=utf-8', @response.content_type
+    require 'rss'
+    rss_events = RSS::Parser.parse(@response.body)
+    assert_equal "#{@event.title} - #{@event.organizer}", rss_events.first.title
   end
 
   test 'should add external resource to event' do
