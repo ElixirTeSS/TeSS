@@ -48,9 +48,9 @@ module EventsHelper
   end
 
   def rss_from_collection(events)
-    require "rss"
+    require 'rss'
 
-    rss = RSS::Maker.make("0.91") do |maker|
+    RSS::Maker.make('0.91') do |maker|
       # see https://www.rssboard.org/rss-0-9-1-netscape
       # required fields
       maker.channel.description = "#{TeSS::Config.site['title_short']} #{describe_event_filters}"
@@ -69,13 +69,11 @@ module EventsHelper
       events.each do |event|
         maker.items.new_item do |item|
           # required fields
-          item.title = event.title
+          item.title = "#{event.title} - #{event.organizer}"
           item.link = event_url(event)
 
           # optional fields
           item.description = event.description
-
-          # TODO: show the organiser?
 
           # we should think about our RSS feed updating rules. If a line of the event description
           # changes, do we repost it? I don't think so.

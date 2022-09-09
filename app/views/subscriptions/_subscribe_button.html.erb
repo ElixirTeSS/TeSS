@@ -1,27 +1,39 @@
 <%
   show_email_sub = true
   show_calendar_sub = (type == 'Event')
+  show_rss_sub = (type == 'Event')
 %>
 
-<% if show_calendar_sub || show_email_sub %>
+<% if show_calendar_sub || show_email_sub || show_rss_sub %>
   <div class="btn-group">
     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       Subscribe <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
       <% if show_email_sub %>
-          <li>
-            <a href="#" data-toggle="modal" data-target="#subscribe-email-modal">
-              <i class="fa fa-envelope-o"></i> Subscribe via email
-            </a>
-          </li>
+        <li>
+          <a href="#" data-toggle="modal" data-target="#subscribe-email-modal">
+            <i class="fa fa-envelope-o"></i> Subscribe via email
+          </a>
+        </li>
       <% end %>
       <% if show_calendar_sub %>
-          <li>
-            <a href="#" data-toggle="modal" data-target="#subscribe-calendar-modal">
-              <i class="fa fa-calendar-o"></i> Add to calendar
-            </a>
-          </li>
+        <li>
+          <a href="#" data-toggle="modal" data-target="#subscribe-calendar-modal">
+            <i class="fa fa-calendar-o"></i> Add to calendar
+          </a>
+        </li>
+      <% end %>
+      <% if show_rss_sub %>
+        <% rss_url = url_for(request.params.merge(format: :rss)) %>
+        <li>
+          <%= link_to rss_url do %>
+            <i class="fa fa-rss"></i> Subscribe to RSS feed
+          <% end %>
+        </li>
+        <% content_for :extra_head do %>
+          <link rel="alternate" type="application/rss+xml" title="Events RSS feed" href="<%= rss_url %>" />
+        <% end %>
       <% end %>
     </ul>
   </div>
