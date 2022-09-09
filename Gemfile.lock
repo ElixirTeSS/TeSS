@@ -571,6 +571,8 @@ GEM
     rsolr (2.3.0)
       builder (>= 2.1.2)
       faraday (>= 0.9.0)
+    rss (0.2.9)
+      rexml
     rubocop (1.23.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
@@ -790,6 +792,7 @@ DEPENDENCIES
   redis (< 5.0.0)
   rest-client
   reverse_markdown
+  rss
   rubocop
   ruby-debug-ide
   sass-rails (~> 5.0)

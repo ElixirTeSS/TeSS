@@ -47,6 +47,54 @@ module EventsHelper
     cal.to_ical
   end
 
+  def rss_from_collection(events)
+    require "rss"
+
+    rss = RSS::Maker.make("0.91") do |maker|
+      # see https://www.rssboard.org/rss-0-9-1-netscape
+      # required fields
+      maker.channel.description = "#{TeSS::Config.site['title_short']} #{describe_event_filters}"
+      maker.channel.language = 'en'
+      maker.channel.title = "#{TeSS::Config.site['title']} Event Feed"
+      maker.channel.link = controller.request.url
+
+      # optional fields
+      # maker.channel.image = # to add later
+      maker.channel.lastBuildDate = events.map(&:updated_at).max&.to_s
+      maker.channel.webMaster = TeSS::Config.contact_email
+      maker.channel.managingEditor = TeSS::Config.contact_email
+      maker.image.url = image_url(TeSS::Config.site['logo'])
+      maker.image.title = TeSS::Config.site['logo_alt']
+
+      events.each do |event|
+        maker.items.new_item do |item|
+          # required fields
+          item.title = event.title
+          item.link = event_url(event)
+
+          # optional fields
+          item.description = event.description
+
+          # TODO: show the organiser?
+
+          # we should think about our RSS feed updating rules. If a line of the event description
+          # changes, do we repost it? I don't think so.
+          # also this field is not in the specification...
+          item.updated = event.updated_at.to_s
+        end
+      end
+    end
+  end
+
+  def describe_event_filters
+    parts = controller.request.url.split('?')
+    if parts.second
+      "Events filtered: #{parts.second&.gsub('&', ', ')}"
+    else
+      'Events'
+    end
+  end
+
   def csv_column_names
     return %w(Title Organizer Start End ContentProvider)
   end
