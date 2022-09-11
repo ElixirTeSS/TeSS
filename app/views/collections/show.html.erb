@@ -8,6 +8,9 @@
             <%= link_to t('.edit', :default => t("helpers.links.edit")),
                         edit_collection_path(@collection), :class => 'btn btn-primary' %>
         <% end %>
+        <% if !current_user.nil? and policy(@collection).manage? %>
+          <%= render partial: 'collaborations/collaborators_button', locals: { resource: @collection } %>
+        <% end %>
         <% if !current_user.nil? and policy(@collection).destroy? %>
             <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                         collection_path(@collection),

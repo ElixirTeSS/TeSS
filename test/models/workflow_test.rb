@@ -83,4 +83,21 @@ class WorkflowTest < ActiveSupport::TestCase
     assert_equal users(:another_regular_user), fork.user
   end
 
+  test 'can set difficulty level by title or id' do
+    workflow = workflows(:two)
+
+    workflow.difficulty_level = 'Beginner'
+    workflow.valid?
+    assert workflow.valid?
+    assert_equal 'beginner', workflow.difficulty_level
+
+    workflow.difficulty_level = 'intermediate'
+    assert workflow.valid?
+    assert_equal 'intermediate', workflow.difficulty_level
+
+    workflow.difficulty_level = 'something'
+    refute workflow.valid?
+    assert_equal 'something', workflow.difficulty_level
+    assert workflow.errors.added?(:difficulty_level, 'must be a controlled vocabulary term')
+  end
 end

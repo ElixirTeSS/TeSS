@@ -13,6 +13,8 @@ en:
       profile:
         firstname: 'First name'
         surname: 'Last name'
+      event:
+        county: Region
   about:
     registry: >
       One of the goals of <a href='https://elixir-europe.org', target='_blank'>Elixir</a>
@@ -48,13 +50,6 @@ en:
       To facilitate this journey, learning paths aim to structure, within simple visual workflows, the set of
       relevant training resources that trainees need to study in order to accomplish their learning objectives.
       Learning paths are being developed by ELIXIR TeSS, ELIXIR-NL and ELIXIR UK.
-    concept_maps: >
-      ELIXIR has developed several registries that contain and promote a variety of resources that users can
-      exploit: training resources in TeSS; software tools in
-      <a href="https://bio.tools" target="_blank">bio.tools</a>; databases, standards and policies in
-      <a href="https://fairsharing.org" target="_blank">FAIRsharing</a>. Concept maps provide visual overviews
-      of typical data-analysis pipelines, surfacing the relevant tools and databases from these registries,
-      and showing how they fit together. Concept maps are being developed by ELIXIR TeSS, ELIXIR-EE and ELIXIR-BE.
     resources: >
       In this type of workflow, trainees are introduced to various practical tasks, linked to associated
       online tools and/or databases, within self-contained modules. Each module includes
@@ -147,22 +142,6 @@ en:
         <a href="https://bbsrc.ukri.org/research/grants-search/AwardDetails/?FundingReference=BB/L005069/1"
           target="_blank">BB/L005069/1</a>
         ).
-      </p>
-      <p>
-      <a href="https://cordis.europa.eu/project/rcn/198519_en.html", target="_blank" >
-        <img src="/assets/elixir/eu_flag.svg" class="funding-logo" >
-      </a>
-      <a href="http://www.elixir-europe.org/excelerate", target="_blank" >
-          <img src="/assets/elixir/excelerate-logo.png", class="funding-logo" >
-      </a>
-      <a href="https://bbsrc.ukri.org/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1",
-          target="_blank" >
-          <img src="/assets/elixir/elixir_logo_orange.png", class="funding-logo" >
-      </a>
-      <a href="https://bbsrc.ukri.org/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1",
-          target="_blank" >
-          <img src="/assets/elixir/bbsrc-logo.png", class="funding-logo" >
-      </a>
       </p>
     acknowledge: >
       <p>The TeSS team would like to acknowledge the help of a number of groups and individuals, and thank them
@@ -273,7 +252,7 @@ en:
       us via e-mail at <a href="mailto:support@tess.elixir-europe.org">support@tess.elixir-europe.org</a>
     manual: >
       <p>Resources may be added manually to TeSS.</p>
-      <p>To do so, first register for a free account. Members of ELIXIR can use ELIXIR AAI to register and login.</p>
+      <p>To do so, first register for a free account. Members of academic institutions may be able to log-in via LS-Login.</p>
       <p>Once registered and logged in, the 'register event' and 'register material' buttons will become visible on the
       events and materials tabs. Alternatively click here:</p>
   home:
@@ -340,6 +319,7 @@ en:
       recognition: 'Provide a description of any qualifications, awards, certificates, diplomas, or other
         educational credentials that will be awarded on successful completion of the training event.'
       requirements: 'Indicate the technical requirements needed to participate in the training event.'
+      sponsors: 'Who sponsored, or funded the event?'
       start: 'When does the event start?'
       subtitle: 'Include a subtitle to add context for your intended audience.'
       targets: 'Indicate the type of audience for which the training event is intended.'

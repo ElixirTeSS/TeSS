@@ -25,7 +25,8 @@
               <!-- Field: URL -->
               <p>
                 <div class="url-wrap">
-                  <%= link_to @material.url, :target => "_blank", :onclick => "getOutboundLink('#{@material.url}'); return true;" do %>
+                  <%= link_to @material.url, :target => "_blank",
+                              :onclick => "getOutboundLink('#{@material.url}'); return true;" do %>
                     <%= @material.url %><i class="icon icon-md arrow-top-right-icon"></i>
                   <% end %>
                 </div>
@@ -54,12 +55,12 @@
     </div>
 
               <!-- Field: long description -->
-              <p><%= render_markdown @material.description %></p>
-
+              <div class="text-justify">
+                <%= render_markdown @material.description %>
+              </div>
             </div>
 
-            <div class="dont-break-out">
-
+            <div>
               <!-- Other metadata -->
               <%= render partial: 'common/extra_metadata', locals: { resource: @material } %>
 
@@ -90,7 +91,6 @@
                 <% end %>
               </div>
 
-              <%= render :partial => 'materials/partials/material_schemaorg', :locals => {:material => @material} %>
               <%= render :partial => 'materials/partials/twitter_card', :locals => {:material => @material} %>
             </div>
           </div>

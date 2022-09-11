@@ -52,11 +52,13 @@ class Ontology
   private
 
   def parse
-    reader = RDF::Reader.for(:rdfxml).new(File.open(path))
+    Rails.cache.fetch("ontology/#{@filename}") do
+      Rails.logger.info("Loading ontology: #{@filename}")
+      reader = RDF::Reader.for(:rdfxml).new(File.open(path))
 
-    Rails.logger.info("Loading ontology: #{@filename}")
-    RDF::Graph.new.tap do |graph|
-      graph << reader
+      RDF::Graph.new.tap do |graph|
+        graph << reader
+      end
     end
   end
 

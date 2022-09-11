@@ -17,6 +17,8 @@ class CurationMailerTest < ActionMailer::TestCase
                                         keywords: ['unverified', 'user', 'material'],
                                         contact: 'main contact',
                                         status: 'active')
+    # Avoids queued emails affecting `assert_email` counts. See: https://github.com/ElixirTeSS/TeSS/issues/719
+    perform_enqueued_jobs
   end
 
   teardown do

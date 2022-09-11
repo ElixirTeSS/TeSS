@@ -23,4 +23,12 @@
   <% else %>
     <%= render :partial => 'common/default_og' %>
   <% end %>
+
+  <% if @bioschemas.present? %>
+    <% @bioschemas.each do |data| %>
+      <script type="application/ld+json">
+        <%= raw data.to_json %>
+      </script>
+    <% end %>
+  <% end %>
 </head>

@@ -15,10 +15,11 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
+    @bioschemas = @events.flat_map(&:to_bioschemas)
     respond_to do |format|
+      format.html
       format.json
       format.json_api { render({ json: @events }.merge(api_collection_properties)) }
-      format.html
       format.csv
       format.ics
     end
@@ -28,10 +29,11 @@ class EventsController < ApplicationController
   # GET /events/1.json
   # GET /events/1.ics
   def show
+    @bioschemas = @event.to_bioschemas
     respond_to do |format|
+      format.html
       format.json
       format.json_api { render json: @event }
-      format.html
       format.ics { send_data @event.to_ical, type: 'text/calendar', disposition: 'attachment', filename: "#{@event.slug}.ics" }
     end
   end

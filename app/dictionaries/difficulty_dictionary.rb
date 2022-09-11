@@ -6,7 +6,7 @@ class DifficultyDictionary < Dictionary
   private
 
   def dictionary_filepath
-    get_file_path'difficulty', DEFAULT_FILE
+    get_file_path 'difficulty', DEFAULT_FILE
   end
 
 end

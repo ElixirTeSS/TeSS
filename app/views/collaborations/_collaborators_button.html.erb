@@ -17,7 +17,13 @@
       </div>
 
       <div class="modal-body">
-        <h4>Current collaborators:</h4>
+        <h4>
+          Current collaborators:
+          <%= info_button('What are collaborators?', class: 'pull-right btn-xs') do %>
+            Collaborators are other <%= TeSS::Config.site['title_short'] %> users who can edit this <%= resource.model_name.human %>. Only
+            the <%= resource.model_name.human %> owner can add and remove collaborators.
+          <% end %>
+        </h4>
         <ul class="collaboration-list">
           Loading
           <%# Content inserted via javascript (see: collaborations.js %>

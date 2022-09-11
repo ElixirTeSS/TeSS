@@ -35,6 +35,15 @@
             </div>
             <div class="sub-about-block">
               <%== raw t 'us.funding' %>
+              <% if TeSS::Config.funders.present? %>
+                <p>
+                  <% TeSS::Config.funders.each do |funder| %>
+                    <%= link_to(funder['url'], target: :_blank) do %>
+                      <%= image_tag(funder['logo'], class: 'funding-logo') %>
+                    <% end %>
+                  <% end %>
+                </p>
+              <% end %>
             </div>
           </div>
         </div>

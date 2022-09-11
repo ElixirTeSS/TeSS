@@ -23,14 +23,14 @@ class SearchController < ApplicationController
             end
           end
 
-          if model.attribute_method?(:user_requires_approval?)
+          if model_name == 'User' || model.attribute_method?(:user_requires_approval?)
             # TODO: Fix this duplication!
-            # Hide shadowbanned users' events, except from other shadowbanned users and administrators
+            # Hide shadowbanned users and their content from other shadowbanned users and administrators
             unless current_user && (current_user.shadowbanned? || current_user.is_admin?)
               without(:shadowbanned, true)
             end
 
-            # Hide unverified users' things, except from curators and admins
+            # Hide unverified users and their content from other shadowbanned users and administrators
             unless current_user && (current_user.is_curator? || current_user.is_admin?)
               without(:unverified, true)
             end

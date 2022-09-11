@@ -1,29 +1,49 @@
-<li><h4 class="nav-heading">Last Checked</h4></li>
-<%
-  selected = nil
-  opts = [[nil, ''], [1, '1 day'], [3, '3 days'], [7, '1 week'], [30, '1 month']].map do |days, text|
-    new_params = search_and_facet_params
-    if days
-      new_params[:days_since_scrape] = days
-      text = "More than #{text} ago"
-    else
-      new_params.delete(:days_since_scrape)
-      text = "Anytime"
+<% if resource_type.method_defined?(:last_scraped) %>
+  <li><h4 class="nav-heading">Last Checked</h4></li>
+  <%
+    selected = nil
+    opts = [[nil, ''], [1, '1 day'], [3, '3 days'], [7, '1 week'], [30, '1 month']].map do |days, text|
+      new_params = search_and_facet_params
+      if days
+        new_params[:days_since_scrape] = days
+        text = "More than #{text} ago"
+      else
+        new_params.delete(:days_since_scrape)
+        text = "Anytime"
+      end
+      url = url_for(new_params)
+      selected = url if days == params[:days_since_scrape].to_i
+
+      [text, url]
     end
-    url = url_for(new_params)
-    selected = url if days == params[:days_since_scrape].to_i
 
-    [text, url]
-  end
+    blank_params = search_and_facet_params
+    blank_params.delete(:days_since_scrape)
+  %>
 
-  blank_params = search_and_facet_params
-  blank_params.delete(:days_since_scrape)
-%>
+  <%= select_tag 'days_since_scrape', options_for_select(opts, selected), id: 'last-scraped-select', class: 'form-control facet-select' %>
+<% end %>
 
-<%= select_tag 'days_since_scrape', options_for_select(opts, selected), id: 'curation-select', class: 'form-control facet-select' %>
+<% if resource_type.method_defined?(:user_requires_approval?) %>
+  <li><h4 class="nav-heading">Hidden Items</h4></li>
+
+  <% if @facet_params.include?(:include_hidden)  %>
+    <%= remove_filter_link(:include_hidden, 'true') do %>
+      <li class="nav-item">
+        <input type="checkbox" checked> Show hidden items </input>
+      </li>
+    <% end %>
+  <% else %>
+    <%= filter_link(:include_hidden, 'true', '-') do %>
+      <li class="nav-item active">
+        <input type="checkbox"> Show hidden items </input>
+      </li>
+    <% end %>
+  <% end %>
+<% end %>
 
 <script>
-  $('#curation-select').change(function () {
-    window.location = $(this).val();
-  });
+    $('#last-scraped-select').change(function () {
+        window.location = $(this).val();
+    });
 </script>

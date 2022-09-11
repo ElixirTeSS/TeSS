@@ -14,6 +14,7 @@ class Material < ApplicationRecord
   include HasSuggestions
   include IdentifiersDotOrg
   include HasFriendlyId
+  include HasDifficultyLevel
 
   if TeSS::Config.solr_enabled
     # :nocov:
@@ -48,9 +49,6 @@ class Material < ApplicationRecord
       string :keywords, :multiple => true
       string :fields, :multiple => true
       string :resource_type, :multiple => true
-      string :difficulty_level do
-        DifficultyDictionary.instance.lookup_value(self.difficulty_level, 'title')
-      end
       string :contributors, :multiple => true
       string :content_provider do
         self.content_provider.try(:title)
@@ -83,17 +81,15 @@ class Material < ApplicationRecord
   has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
   has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 
+  has_many :stars,  as: :resource, dependent: :destroy
+  
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
   auto_strip_attributes :title, :description, :url, :squish => false
 
   validates :title, :description, :url, presence: true
-
   validates :url, url: true
-
   validates :other_types, presence: true, if: Proc.new { |m| m.resource_type.include?('other') }
-
-  validates :difficulty_level, controlled_vocabulary: { dictionary: DifficultyDictionary.instance }
 
   clean_array_fields(:keywords, :fields, :contributors, :authors,
                      :target_audience, :resource_type, :subsets)
@@ -115,8 +111,9 @@ class Material < ApplicationRecord
   end
 
   def self.facet_fields
-    field_list = %w( scientific_topics operations tools standard_database_or_policy content_provider keywords
-                     fields licence target_audience authors contributors resource_type related_resources user )
+    field_list = %w(scientific_topics operations tools standard_database_or_policy content_provider keywords
+                    difficulty_level fields licence target_audience authors contributors resource_type
+                    related_resources user)
 
     field_list.delete('operations') if TeSS::Config.feature['disabled'].include? 'operations'
     field_list.delete('scientific_topics') if TeSS::Config.feature['disabled'].include? 'topics'
@@ -142,5 +139,9 @@ class Material < ApplicationRecord
     end
 
     material
+  end
+
+  def to_bioschemas
+    [Bioschemas::LearningResourceGenerator.new(self)]
   end
 end

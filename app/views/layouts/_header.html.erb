@@ -1,3 +1,14 @@
+<%# header notice -%>
+<% if TeSS::Config.header_notice&.strip.present? %>
+  <nav class="header-notice">
+    <div class="container">
+      <div class="text-center">
+        <%= raw TeSS::Config.header_notice %>
+      </div>
+    </div>
+  </nav>
+<% end %>
+
 <%# top header -%>
 <header class="unified-header">
   <nav>

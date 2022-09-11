@@ -41,15 +41,15 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
   end
 
   def material_status_title_for_label(label)
-    MaterialStatusDictionary.instance.lookup_value(label, 'title')
+    MaterialStatusDictionary.instance.lookup_value(label, 'title') || label
   end
 
   def material_type_title_for_label(label)
-    MaterialTypeDictionary.instance.lookup_value(label, 'title')
+    MaterialTypeDictionary.instance.lookup_value(label, 'title') || label
   end
 
   def target_audience_title_for_label(label)
-    TargetAudienceDictionary.instance.lookup_value(label, 'title')
+    TargetAudienceDictionary.instance.lookup_value(label, 'title') || label
   end
 
   def display_difficulty_level(resource)

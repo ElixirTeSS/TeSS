@@ -1,26 +1,3 @@
-<script>
-    function switchCostFields(option) {
-        //alert('selected = ' + option)
-        if (!option || option == 'free' || option == '') {
-            $('.event_cost_currency').hide()
-            $('.event_cost_value').hide()
-            $('#event_cost_currency').val("")
-            $('#event_cost_value').val("")
-        } else {
-            $('.event_cost_currency').show()
-            $('.event_cost_value').show()
-        }
-    }
-
-    $(document).on('change', '.event_cost_basis', function () {
-        switchCostFields($('.event_cost_basis option:selected').val());
-    });
-
-    $(document).on('ready turbolinks:load', function () {
-        switchCostFields($('.event_cost_basis option:selected').val());
-    });
-</script>
-
 <%= simple_form_for @event, html: { id: 'event_form' } do |f| %>
 
   <%= render partial: 'common/error_summary', locals: { resource: @event } %>
@@ -30,11 +7,13 @@
     <%= label_tag('type') %> <br/>
     <div class="btn-group" data-toggle="buttons">
       <label class="btn btn-default <%= 'active' unless @event.online? %>">
-        <%= f.radio_button 'online', 'false', class: 'location', checked: !@event.online?, autocomplete: 'off' %>
+        <%= f.radio_button 'online', 'false', class: 'location', data: { role: 'online-switch' },
+                           checked: !@event.online?, autocomplete: 'off' %>
         <%= icon_for(:face_to_face, :small) %> Face-to-face
       </label>
       <label class="btn btn-default <%= 'active' if @event.online? %>">
-        <%= f.radio_button 'online', 'true', class: 'location', checked: @event.online?, autocomplete: 'off' %>
+        <%= f.radio_button 'online', 'true', class: 'location', data: { role: 'online-switch' },
+                           checked: @event.online?, autocomplete: 'off' %>
         <i class="fa fa-desktop" aria-hidden="true" id="online-symbol"></i> Online
       </label>
     </div>
@@ -63,6 +42,10 @@
   <!-- Field: End -->
   <%= f.input :end, as: :datetime_picker, field_lock: true, input_html: { title: t('events.hints.end') } %>
 
+  <!-- Field: Timezone -->
+  <%= f.input :timezone, as: :time_zone, field_lock: true, priority: priority_time_zones,
+              input_html: { title: t('events.hints.timezone') } %>
+
   <!-- Field: Duration -->
   <%= f.input :duration, as: :string, input_html: { title: t('events.hints.duration') } %>
 
@@ -77,10 +60,6 @@
   <div class="address_content">
     <%= render partial: 'events/partials/address_finder', locals: { f: f } %>
   </div>
-
-  <!-- Field: Timezone -->
-  <%= f.input :timezone, as: :time_zone, field_lock: true, priority: priority_time_zones,
-              input_html: { title: t('events.hints.timezone') } %>
 
   <!-- Field: Eligibility -->
   <%= f.dropdown :eligibility,
@@ -177,9 +156,8 @@
 
   <!-- Sponsors: check disabled -->
   <% if !TeSS::Config.feature['disabled'].include? 'sponsors' %>
-    <%= f.multi_input :sponsors, errors: @event.errors[:sponsors] %>
+    <%= f.multi_input :sponsors, errors: @event.errors[:sponsors], hint: t('events.hints.sponsors') %>
   <% end %>
-
 
   <div class="form-group">
     <%= f.submit (f.object.new_record? ? "Add" : "Update") + " event", :class => 'btn btn-primary' %>

@@ -18,6 +18,6 @@ Node.load_from_hash(hash, verbose: false)
 # Admin User
 puts "\nSeeding admin user"
 u = User.find_or_initialize_by(username: ENV["ADMIN_USERNAME"], role: Role.find_by_name('admin'))
-u.update!(email: ENV["ADMIN_EMAIL"], password: ENV["ADMIN_PASSWORD"], processing_consent: 1) unless u.persisted?
+u.update!(email: ENV["ADMIN_EMAIL"], password: ENV["ADMIN_PASSWORD"], processing_consent: "1") unless u.persisted?
 
 puts "Done"

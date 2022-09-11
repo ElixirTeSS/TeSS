@@ -31,9 +31,22 @@ module TeSS
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'overrides', '**', '*.{rb,yml}')] unless Rails.env.test?
     config.i18n.available_locales = [:en]
     config.i18n.default_locale = :en
+
+    config.active_record.yaml_column_permitted_classes = [
+      Symbol, Date, Time, ActiveSupport::TimeWithZone, ActiveSupport::TimeZone,
+      ActiveSupport::HashWithIndifferentAccess, BigDecimal
+    ]
   end
 
   Config = OpenStruct.new(Rails.configuration.tess.with_indifferent_access)
 
   Config.redis_url = TeSS::Config.redis_url
+
+  tess_base_uri = URI.parse(TeSS::Config.base_url)
+  Rails.application.default_url_options = {
+    host: tess_base_uri.host,
+    port: tess_base_uri.port,
+    protocol: tess_base_uri.scheme,
+    script_name: (Rails.application.config.relative_url_root || '/')
+  }
 end
