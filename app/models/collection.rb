@@ -97,6 +97,8 @@ class Collection < ApplicationRecord
   private
 
   def index_items
+    return unless TeSS::Config.solr_enabled
+
     materials.each(&:solr_index)
     events.each(&:solr_index)
   end

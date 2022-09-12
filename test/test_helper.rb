@@ -27,8 +27,6 @@ class ActiveSupport::TestCase
   def setup
     redis = Redis.new
     redis.flushdb
-
-    Sunspot.session = Sunspot::Rails::StubSessionProxy.new(original_session)
   end
 
   def teardown
