@@ -7,6 +7,12 @@ class CollectionMaterial < ApplicationRecord
   self.primary_key = 'id'
 
   after_save :log_activity
+  after_create do
+    material.solr_index
+  end
+  after_destroy do
+    material.solr_index
+  end
 
   def log_activity
     self.collection.create_activity(:add_material, owner: User.current_user,

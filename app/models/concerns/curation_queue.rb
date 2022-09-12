@@ -30,6 +30,8 @@ module CurationQueue
   end
 
   def from_unverified_or_rejected?
+    return true unless user
+
     user.unverified_or_rejected?
   end
 
