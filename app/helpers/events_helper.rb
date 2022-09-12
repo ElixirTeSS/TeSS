@@ -86,9 +86,8 @@ module EventsHelper
   end
 
   def describe_event_filters
-    parts = controller.request.url.split('?')
-    if parts.second
-      "Events filtered: #{parts.second&.gsub('&', ', ')}"
+    if search_and_facet_params
+      "Events filtered: #{search_and_facet_params.map{ |k,v| "#{k}=#{v}" }.join(', ') }"
     else
       'Events'
     end
