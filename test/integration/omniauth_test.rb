@@ -361,7 +361,7 @@ class OmniauthTest < ActionDispatch::IntegrationTest
     follow_redirect! # CallbacksController sign_in_and_redirect
 
     assert_equal '/', path
-    assert_select '.user-options > a:first', user.username
+    assert_select '.user-options a.btn-primary', user.username
 
     OmniAuth.config.mock_auth[:elixir_aai] = OmniAuth::AuthHash.new(
       {

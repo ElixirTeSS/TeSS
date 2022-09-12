@@ -578,7 +578,7 @@ class MaterialsControllerTest < ActionController::TestCase
     get :show, params: { id: @material }
     assert_response :success
     assert_select 'h2', :text => @material.title #Has Title
-    assert_select 'a.h5[href=?]', @material.url #Has plain written URL
+    assert_select '.page-header a[href=?]', @material.url #Has plain written URL
     #assert_select 'a.btn-info[href=?]', materials_path, :count => 1 #Back button
     assert_select 'a.btn-success', :text => "View material", :count => 1 do
       assert_select 'a[href=?]', @material.url, :count => 1 #View Material button
