@@ -33,8 +33,8 @@ class CollectionsController < ApplicationController
 
     # the default date range is given by the highest created_at date of the collection
     @item_class = item_class
-    since = params[:since] || @collection.send(@item_class.table_name).maximum(:created_at) || Time.at(0)
-    @items = @item_class.where('created_at > ?', since).order('created_at ASC')
+    @since = params[:since]&.to_date || @collection.send(@item_class.table_name).maximum(:created_at) || Time.at(0)
+    @items = @item_class.where('created_at >= ?', @since).order('created_at ASC')
   end
 
   # PATCH/PUT /collections/1/curate_#{type}
@@ -48,6 +48,9 @@ class CollectionsController < ApplicationController
         format.html { redirect_to @collection, notice: 'Collection was successfully updated.' }
         format.json { render :show, status: :ok, location: @collection }
       else
+        @item_class = item_class
+        @since = @item_class.find(params[:reviewed_item_ids].last).created_at
+        @items = @item_class.where('created_at >= ?', @since).order('created_at ASC')
         format.html { render :curate }
         format.json { render json: @collection.errors, status: :unprocessable_entity }
       end
@@ -141,8 +144,8 @@ class CollectionsController < ApplicationController
   # since we have not checked all items we have to do a little work
   # to add and remove only those that were checked now.
   def update_collection_items!
-    selected_ids = Set.new(params[:item_ids])
-    unselected_ids = Set.new(params[:reviewed_item_ids]) - selected_ids
+    selected_ids = Set.new(params[:item_ids]&.map(&:to_i))
+    unselected_ids = Set.new(params[:reviewed_item_ids]&.map(&:to_i)) - selected_ids
     fk_name = "#{item_class.name.downcase}_id"
 
     # remove unselected ones, if any exist
@@ -150,7 +153,8 @@ class CollectionsController < ApplicationController
     collection_item_class.where(collection_id: @collection.id, fk_name => unselected_ids).destroy_all
 
     # find out which ones to add
-    to_add = selected_ids - collection_item_class.where(collection_id: @collection.id, fk_name => selected_ids).pluck(fk_name)
+    existing = Set.new(collection_item_class.where(collection_id: @collection.id, fk_name => selected_ids).pluck(fk_name))
+    to_add = selected_ids - existing
     collection_item_class.create!(to_add.map{ |id| { fk_name => id, collection_id: @collection.id } })
     # the after_save callback will probably still add a bunch of activities, so we can't avoid individual queries just yet.
   end

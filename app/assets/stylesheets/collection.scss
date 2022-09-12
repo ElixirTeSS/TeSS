@@ -8,7 +8,7 @@
     display: block;
     margin-bottom: 0;
     font-weight: normal;
-    height: 36px; /* This is a little hacky, but hard to get the label full-height otherwise */
+    min-height: 36px; /* This is a little hacky, but hard to get the label full-height otherwise */
     cursor: pointer;
   }
 }

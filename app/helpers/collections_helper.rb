@@ -9,9 +9,9 @@ module CollectionsHelper
   def item_fields(item_class)
     case item_class.name
     when "Event"
-      %i[title organizer event_types start country city eligibility]
+      %i[title organizer event_types start country city eligibility created_at]
     when "Material"
-      %i[title target_audience status]
+      %i[title target_audience status created_at]
     else
       []
     end
