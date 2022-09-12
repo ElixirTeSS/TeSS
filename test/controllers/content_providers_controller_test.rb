@@ -311,7 +311,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_select 'a[href=?]', @content_provider.url, :count => 2 do
       assert_select 'img[src=?]', ActionController::Base.helpers.asset_path(@content_provider.image.url), :count => 1
     end
-    assert_select 'a.btn-info[href=?]', content_providers_path, :count => 1 #Back button
+    # assert_select 'a.btn-info[href=?]', content_providers_path, :count => 1 #Back button
     #Should not show when not logged in
     assert_select 'a.btn-primary[href=?]', edit_content_provider_path(@content_provider), :count => 0 #No Edit
     assert_select 'a.btn-danger[href=?]', content_provider_path(@content_provider), :count => 0 #No Edit

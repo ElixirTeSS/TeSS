@@ -412,11 +412,11 @@ class EventsControllerTest < ActionController::TestCase
     get :show, params: { id: @event }
     assert_response :success
     assert_select 'h2', :text => @event.title #Has Title
-    assert_select 'a.h5[href=?]', @event.url #Has plain written URL
+    assert_select '.page-header > a[href=?]', @event.url #Has plain written URL
     #assert_select 'a.btn-info[href=?]', events_path, :count => 1 #Back button
-    assert_select 'a.btn-success', :text => "View event", :count => 1 do
-      assert_select 'a[href=?]', @event.url, :count => 1 #View event button
-    end
+    # assert_select 'a.btn-success', :text => "View event", :count => 1 do
+    #   assert_select 'a[href=?]', @event.url, :count => 1 #View event button
+    # end
     #Should not show when not logged in
     assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 0 #No Edit
     assert_select 'a.btn-danger[href=?]', event_path(@event), :count => 0 #No Edit

@@ -219,7 +219,7 @@ class CollectionsControllerTest < ActionController::TestCase
     get :show, params: { :id => @collection }
     assert_response :success
     assert_select 'div.search-results-count', :count => 2 #Has results
-    assert_select 'a.btn-info', :text => 'Back', :count => 1 #No Edit
+    # assert_select 'a.btn-info', :text => 'Back', :count => 1 #No Edit
     #Should not show when not logged in
     assert_select 'a.btn-primary[href=?]', edit_collection_path(@collection), :count => 0 #No Edit
     assert_select 'a.btn-danger[href=?]', collection_path(@collection), :count => 0 #No Edit

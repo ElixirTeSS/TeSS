@@ -30,7 +30,7 @@ class OmniauthTest < ActionDispatch::IntegrationTest
     follow_redirect! # CallbacksController edit profile redirect
 
     assert_equal "/users/aaf_user/edit", path
-    assert_select '.user-options > a:first', 'aaf_user'
+    assert_select '.user-options > a.btn-primary', 'aaf_user'
     assert_select '#user_profile_attributes_firstname[value=?]', 'AAF'
     assert_select '#user_profile_attributes_surname[value=?]', 'User'
   end
@@ -53,7 +53,7 @@ class OmniauthTest < ActionDispatch::IntegrationTest
     follow_redirect! # CallbacksController sign_in_and_redirect
 
     assert_equal '/', path
-    assert_select '.user-options > a:first', user.username
+    assert_select '.user-options > a.btn-primary', user.username
   end
 
   test 'Registering via AAF does not duplicate existing usernames' do
@@ -154,7 +154,7 @@ class OmniauthTest < ActionDispatch::IntegrationTest
     follow_redirect! # CallbacksController sign_in_and_redirect
 
     assert_equal '/', path
-    assert_select '.user-options > a:first', user.username
+    assert_select '.user-options > a.btn-primary', user.username
 
     OmniAuth.config.mock_auth[:oidc] = OmniAuth::AuthHash.new(
       {
@@ -172,7 +172,7 @@ class OmniauthTest < ActionDispatch::IntegrationTest
     follow_redirect! # CallbacksController sign_in_and_redirect
 
     assert_equal '/', path
-    assert_select '.user-options > a:first', user.username
+    assert_select '.user-options > a.btn-primary', user.username
   end
 
   test 'Tuakiri authentication redirects existing users to home page' do
@@ -193,7 +193,7 @@ class OmniauthTest < ActionDispatch::IntegrationTest
     follow_redirect! # CallbacksController sign_in_and_redirect
 
     assert_equal '/', path
-    assert_select '.user-options > a:first', user.username
+    assert_select '.user-options > a.btn-primary', user.username
   end
 
   test 'Registering via Tuakiri does not duplicate existing AAF username' do
@@ -273,7 +273,7 @@ class OmniauthTest < ActionDispatch::IntegrationTest
     follow_redirect! # CallbacksController edit profile redirect
 
     assert_equal "/users/aai_user/edit", path
-    assert_select '.user-options > a:first', 'aai_user'
+    assert_select '.user-options > a.btn-primary', 'aai_user'
     assert_select '#user_profile_attributes_firstname[value=?]', 'AAI'
     assert_select '#user_profile_attributes_surname[value=?]', 'User'
   end
@@ -296,7 +296,7 @@ class OmniauthTest < ActionDispatch::IntegrationTest
     follow_redirect! # CallbacksController sign_in_and_redirect
 
     assert_equal '/', path
-    assert_select '.user-options > a:first', user.username
+    assert_select '.user-options > a.btn-primary', user.username
   end
 
   test 'Registering via ELIXIR AAI does not duplicate existing usernames' do
@@ -322,7 +322,7 @@ class OmniauthTest < ActionDispatch::IntegrationTest
     expected_username = "#{existing_user.username}1" # Adds 1 to end of name!
 
     assert_equal "/users/#{expected_username.downcase}/edit", path
-    assert_select '.user-options > a:first', expected_username
+    assert_select '.user-options > a.btn-primary', expected_username
   end
 
   test 'ELIXIR AAI authentication requires POST' do

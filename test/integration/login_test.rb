@@ -7,7 +7,7 @@ class LoginTest < ActionDispatch::IntegrationTest
     post '/users/sign_in', params: { 'user[login]' => identifier, 'user[password]' => password }
     follow_redirect!
     assert_equal '/', path
-    assert_select '.user-options > a:first', username
+    assert_select '.user-options > a.btn-primary', username
     assert_equal 'Logged in successfully.', flash[:notice]
   end
 
