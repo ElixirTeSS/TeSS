@@ -1,4 +1,7 @@
 # The helper for Events classes
+
+require 'rss'
+
 module EventsHelper
 
   EVENTS_INFO = "An event in #{TeSS::Config.site['title_short']} is a link to a single training event sourced by a\
@@ -48,8 +51,6 @@ module EventsHelper
   end
 
   def rss_from_collection(events)
-    require 'rss'
-
     RSS::Maker.make('0.91') do |maker|
       # see https://www.rssboard.org/rss-0-9-1-netscape
       # required fields

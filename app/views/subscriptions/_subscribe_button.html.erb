@@ -25,7 +25,7 @@
         </li>
       <% end %>
       <% if show_rss_sub %>
-        <% rss_url = url_for(request.params.merge(format: :rss)) %>
+        <% rss_url = url_for(search_and_facet_params.merge(format: :rss)) %>
         <li>
           <%= link_to rss_url do %>
             <i class="fa fa-rss"></i> Subscribe to RSS feed
