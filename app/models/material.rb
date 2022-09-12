@@ -66,6 +66,9 @@ class Material < ApplicationRecord
         user.username if user
       end
       integer :user_id # Used for shadowbans
+      string :collections, multiple: true do
+        collections.where(public: true).map(&:title)
+      end
     end
     # :nocov:
   end
@@ -113,7 +116,7 @@ class Material < ApplicationRecord
   def self.facet_fields
     field_list = %w(scientific_topics operations tools standard_database_or_policy content_provider keywords
                     difficulty_level fields licence target_audience authors contributors resource_type
-                    related_resources user)
+                    related_resources user collections)
 
     field_list.delete('operations') if TeSS::Config.feature['disabled'].include? 'operations'
     field_list.delete('scientific_topics') if TeSS::Config.feature['disabled'].include? 'topics'
@@ -121,6 +124,7 @@ class Material < ApplicationRecord
     field_list.delete('tools') if TeSS::Config.feature['disabled'].include? 'biotools'
     field_list.delete('fields') if TeSS::Config.feature['disabled'].include? 'ardc_fields_of_research'
     field_list.delete('node') unless TeSS::Config.feature['nodes']
+    field_list.delete('collections') unless TeSS::Config.feature['collections']
 
     field_list
   end
