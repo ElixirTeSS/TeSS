@@ -138,7 +138,7 @@ class CollectionsController < ApplicationController
       return CollectionMaterial if TeSS::Config.feature['materials']
     end
 
-    raise ActiveRecord::AccessDenied
+    raise Pundit::NotAuthorizedError
   end
 
   # since we have not checked all items we have to do a little work
