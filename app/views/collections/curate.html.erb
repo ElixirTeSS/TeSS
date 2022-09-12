@@ -2,9 +2,9 @@
 <div class="row wrapper">
   <div class="col-md-12">
     <div class="page-header row">
-      <%= page_title(t('.title', :default => [:'helpers.titles.curate', 'Curate %{type} in %{model} %{title}'], type: @item_class.table_name, model: model_class.model_name.human.titleize.downcase, title: @collection.title), class: 'col-md-9') %>
-      <div class="col-md-3" style="margin-top: 25px;">
-        <%= label_tag :since, t('.new_items_since', count: @items.length) %>
+      <%= page_title(t('.title', :default => [:'helpers.titles.curate', 'Curate %{type} in %{model} %{title}'], type: @item_class.table_name, model: model_class.model_name.human.titleize.downcase, title: @collection.title), class: 'col-md-8') %>
+      <div class="col-md-4" style="margin-top: 25px;">
+        <%= label_tag :since, t('.new_items_since', default: ['%{count} new items since'], count: @items.length) %>
         <input id="since" type="date" value="<%= @since.strftime('%Y-%m-%d') %>" pattern="\d{4}-\d{2}-\d{2}" onchange="window.location.search='?since='+this.value;" />
       </div>
     </div>
@@ -14,7 +14,7 @@
           <tr>
             <th></th>
             <%- item_fields(@item_class).each do |field| -%>
-              <th><%= field.to_s.titleize %></th>
+              <th><%= t field %></th>
             <%- end %>
             <th></th>
           </tr>
@@ -32,7 +32,7 @@
               <%- item_fields(@item_class).each do |field| -%>
                 <td><label for="<%= id %>"><%= [item.send(field)].flatten.join(', ') %></label></td>
               <% end %>
-              <td><%= link_to 'link', item %></td>
+              <td><%= link_to t('.link', default: [:'helpers.titles.link']), item %></td>
           </tr>
         <% end %>
         </tbody>
