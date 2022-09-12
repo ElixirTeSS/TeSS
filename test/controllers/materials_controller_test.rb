@@ -580,9 +580,9 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_select 'h2', :text => @material.title #Has Title
     assert_select '.url-wrap a[href=?]', @material.url #Has plain written URL
     #assert_select 'a.btn-info[href=?]', materials_path, :count => 1 #Back button
-    assert_select 'a.btn-success', :text => "View material", :count => 1 do
-      assert_select 'a[href=?]', @material.url, :count => 1 #View Material button
-    end
+    # assert_select 'a.btn-success', :text => "View material", :count => 1 do
+    #   assert_select 'a[href=?]', @material.url, :count => 1 #View Material button
+    # end
     #Should not show when not logged in
     assert_select 'a.btn-primary[href=?]', edit_material_path(@material), :count => 0 #No Edit
     assert_select 'a.btn-danger[href=?]', material_path(@material), :count => 0 #No Edit
