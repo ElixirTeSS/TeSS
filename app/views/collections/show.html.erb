@@ -8,6 +8,14 @@
       <div class="content_action">
         <%= link_to t('.back', :default => t("helpers.links.back")),
                     collections_path, :class => 'btn btn-info' %>
+        <% if !current_user.nil? and policy(@collection).curate? and TeSS::Config.feature['events'] %>
+            <%= link_to t('.curate_events', :default => t("helpers.links.events")),
+                        curate_events_collection_path(@collection), :class => 'btn btn-primary' %>
+        <% end %>
+        <% if !current_user.nil? and policy(@collection).curate? and TeSS::Config.feature['materials'] %>
+            <%= link_to t('.curate_materials', :default => t("helpers.links.materials")),
+                        curate_materials_collection_path(@collection), :class => 'btn btn-primary' %>
+        <% end %>
         <% if !current_user.nil? and policy(@collection).update? %>
             <%= link_to t('.edit', :default => t("helpers.links.edit")),
                         edit_collection_path(@collection), :class => 'btn btn-primary' %>

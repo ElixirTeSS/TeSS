@@ -91,7 +91,10 @@ Rails.application.routes.draw do
       # collections.
       member do
         %w[events materials].each do |item|
-          get "curate_#{item}", to: 'collections#curate', defaults: { type: item.classify } if TeSS::Config.feature[item]
+          return unless TeSS::Config.feature[item]
+
+          get "curate_#{item}", to: 'collections#curate', defaults: { type: item.classify }
+          patch "curate_#{item}", to: 'collections#update_curation', defaults: { type: item.classify}
         end
       end
     end

@@ -12,6 +12,10 @@ class CollectionPolicy < ResourcePolicy
     update?
   end
 
+  def update_curation?
+    curate?
+  end
+
   class Scope < Scope
     def resolve
       Collection.visible_by(@user)

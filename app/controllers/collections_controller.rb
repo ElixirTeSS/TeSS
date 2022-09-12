@@ -1,6 +1,6 @@
 # The controller for actions related to the Collection model
 class CollectionsController < ApplicationController
-  before_action :set_collection, only: %i[show edit curate add_item remove_item update destroy]
+  before_action :set_collection, only: %i[show edit curate update_curation add_item remove_item update destroy]
   before_action :set_breadcrumbs
 
   include SearchableIndex
@@ -35,6 +35,23 @@ class CollectionsController < ApplicationController
     @item_class = item_class
     since = params[:since] || @collection.send(@item_class.table_name).maximum(:created_at) || Time.at(0)
     @items = @item_class.where('created_at > ?', since).order('created_at ASC')
+  end
+
+  # PATCH/PUT /collections/1/curate_#{type}
+  def update_curation
+    # We need a separate method since we only also need to remove deselected items.
+    authorize @collection
+
+    respond_to do |format|
+      if update_collection_items!
+        @collection.create_activity(:update, owner: current_user) if @collection.log_update_activity?
+        format.html { redirect_to @collection, notice: 'Collection was successfully updated.' }
+        format.json { render :show, status: :ok, location: @collection }
+      else
+        format.html { render :curate }
+        format.json { render json: @collection.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # POST /collections
@@ -97,16 +114,44 @@ class CollectionsController < ApplicationController
     params.require(:collection).permit(:title, :description, :image, :image_url, :public, {:keywords => []}, {:material_ids => []}, {:event_ids => []})
   end
 
+  # once associations are properly set up to use polymorphic items
+  # these can be removed.
   def item_class
-    raise ActiveRecord::RecordNotFound unless allowed_item_types.include? params[:type]
+    case params[:type]
+    when 'Event'
+      return Event if TeSS::Config.feature['events']
+    when 'Material'
+      return Material if TeSS::Config.feature['materials']
+    end
 
-    params[:type].constantize
+    raise ActiveRecord::AccessDenied
   end
 
-  def allowed_item_types
-    allowed = []
-    allowed << 'Event' if TeSS::Config.feature['events']
-    allowed << 'Material' if TeSS::Config.feature['materials']
-    allowed
+  def collection_item_class
+    case params[:type]
+    when 'Event'
+      return CollectionEvent if TeSS::Config.feature['events']
+    when 'Material'
+      return CollectionMaterial if TeSS::Config.feature['materials']
+    end
+
+    raise ActiveRecord::AccessDenied
+  end
+
+  # since we have not checked all items we have to do a little work
+  # to add and remove only those that were checked now.
+  def update_collection_items!
+    selected_ids = Set.new(params[:item_ids])
+    unselected_ids = Set.new(params[:reviewed_item_ids]) - selected_ids
+    fk_name = "#{item_class.name.downcase}_id"
+
+    # remove unselected ones, if any exist
+    # one query per item, due to callbacks.
+    collection_item_class.where(collection_id: @collection.id, fk_name => unselected_ids).destroy_all
+
+    # find out which ones to add
+    to_add = selected_ids - collection_item_class.where(collection_id: @collection.id, fk_name => selected_ids).pluck(fk_name)
+    collection_item_class.create!(to_add.map{ |id| { fk_name => id, collection_id: @collection.id } })
+    # the after_save callback will probably still add a bunch of activities, so we can't avoid individual queries just yet.
   end
 end

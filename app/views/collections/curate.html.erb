@@ -4,8 +4,7 @@
     <div class="page-header">
       <%= page_title(t('.title', :default => [:'helpers.titles.curate', 'Curate %{type} in %{model} %{title}'], type: @item_class.table_name, model: model_class.model_name.human.titleize.downcase, title: @collection.title)) %>
     </div>
-    <%= form_for @collection do |f| %>
-      <%= hidden_field_tag "collection[#{@item_class.table_name.singularize}_ids]", "" %>
+    <%= form_with url: request.url, local: true, method: :patch do |f| %>
       <table class="table table-striped table-hover collection_curation_table">
         <thead>
           <tr>
@@ -18,12 +17,12 @@
         </thead>
         <tbody>
         <% @items.each do |item| %>
-          <%- input_name = "collection[#{@item_class.table_name.singularize}_ids][]" -%>
           <%- id = "item_#{item.id}" %>
           <tr>
             <td>
               <%= label_tag id do %>
-                <input id="item_<%= item.id %>" type="checkbox" name="<%= input_name %>" value="<%= item.id %>" selected="<%= @collection.send("#{@item_class.table_name.singularize}_ids").include? item.id %>" />
+                <%= hidden_field_tag "reviewed_item_ids[]", item.id %>
+                <input id="item_<%= item.id %>" type="checkbox" name="item_ids[]" value="<%= item.id %>" selected="<%= @collection.send("#{@item_class.table_name.singularize}_ids").include? item.id %>" />
               <% end %>
             </td>
               <%- item_fields(@item_class).each do |field| -%>
