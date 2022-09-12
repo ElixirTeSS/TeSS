@@ -47,6 +47,7 @@ class Collection < ApplicationRecord
       boolean :public
       time :created_at
       time :updated_at
+      integer :collaborator_ids, multiple: true
     end
     # :nocov:
   end
