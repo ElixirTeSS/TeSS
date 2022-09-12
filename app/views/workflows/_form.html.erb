@@ -1,4 +1,4 @@
-<%= simple_form_for(@workflow) do |f| %>
+<%= simple_form_for(@workflow, html: { class: 'prevent-enter-submit' }) do |f| %>
   <div class="row">
     <div class="col-md-4 col-md-push-8">
       <%= render :partial => 'workflows/partials/general_workflow_info' %>

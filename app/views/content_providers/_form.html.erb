@@ -1,4 +1,4 @@
-<%= simple_form_for @content_provider, html: { class: "content_provider", multipart: true } do |f| %>
+<%= simple_form_for @content_provider, html: { class: 'prevent-enter-submit', multipart: true } do |f| %>
 
   <%= render partial: 'common/error_summary', locals: { resource: @content_provider } %>
 
