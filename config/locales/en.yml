@@ -74,9 +74,9 @@ en:
       As such, all content in TeSS is available under the CC BY 4.0 licence, and can be accessed through our API
       and widgets. The TeSS codebase is also available to re-use under the BSD Licence, and can be found on GitHub.
     code_license: >
-      <a href="https://github.com/nrmay/TeSS/blob/master/LICENSE", target="_blank">BSD 3-Clause</a>
+      <a href="https://github.com/nrmay/TeSS/blob/master/LICENSE", target="_blank">BSD 3-Clause<i class="icon icon-md arrow-top-right-icon"></i></a>
     data_license: >
-      <a href="https://creativecommons.org/licenses/by/4.0/", target="_blank">Creative Commons CC-BY 4.0</a>
+      <a href="https://creativecommons.org/licenses/by/4.0/", target="_blank">Creative Commons CC-BY 4.0<i class="icon icon-md arrow-top-right-icon"></i></a>
     gmaps_countries: >
       'United Kingdom', 'Spain', 'Portugal', 'France', 'Belgium', 'Ireland', 'Estonia', 'Finland',
       'Germany', 'Austria', 'Italy', 'Hungary', 'Czech Republic', 'Estonia', 'Denmark',
@@ -100,17 +100,17 @@ en:
     swaggerhub: >
       <p>The full documentation for our JSON API with interactive examples can be found in our
         <a href="https://app.swaggerhub.com/apis/fbacall/TeSS-JSON-API/0.2.0", target="_blank">
-          Swagger Hub Documentation</a>
+          Swagger Hub Documentation<i class="icon icon-md arrow-top-right-icon"></i></a>
       </p>
       <p><a href="https://app.swaggerhub.com/apis/fbacall/TeSS-JSON-API/0.2.0", class="btn btn-primary", target="_blank">
         View our API on SwaggerHub <img src="/assets/swagger.png", width="20" height="20"></a></p>
       <p>We recommend using our JSON API, but if you have already begun using our old API technical information
-        can still be found on our <a href="https://app.swaggerhub.com/api/njall/TeSS/1.0.0/">here</a>.</p>
+        can still be found on our <a href="https://app.swaggerhub.com/api/njall/TeSS/1.0.0/">here<i class="icon icon-md arrow-top-right-icon"></i></a>.</p>
   us:
     tess_club: >
       <p>Fortnightly meetings, hackathons, shared activities, open priority setting, open contribution to unite the
       community.</p><p>The TeSS Club runs fortnightly at 9:00 GMT / 10:00 CET Friday.</p><p>For all the details please
-      visit the <a href="https://elixirtess.github.io/about/">TeSS Club Website</a>.</p>
+      visit the <a href="https://elixirtess.github.io/about/">TeSS Club Website<i class="icon icon-md arrow-top-right-icon"></i></a>.</p>
     contact: >
       For enquiries, information, or assistance; contact the TeSS support desk at <br>
       <a href="mailto:tess-support@googlegroups.com">tess-support@googlegroups.com</a>

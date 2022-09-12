@@ -161,7 +161,6 @@ ActiveRecord::Schema.define(version: 2022_07_25_143205) do
     t.integer "content_provider_id"
     t.integer "user_id"
     t.boolean "online", default: false
-    t.decimal "cost_value"
     t.date "last_scraped"
     t.boolean "scraper_record", default: false
     t.string "keywords", default: [], array: true
@@ -185,6 +184,7 @@ ActiveRecord::Schema.define(version: 2022_07_25_143205) do
     t.text "prerequisites"
     t.text "tech_requirements"
     t.string "cost_basis"
+    t.decimal "cost_value"
     t.string "cost_currency"
     t.string "fields", default: [], array: true
     t.index ["online"], name: "index_events_on_online"

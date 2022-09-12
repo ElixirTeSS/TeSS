@@ -4,7 +4,10 @@
 
   <div id="content">
     <div class="about-block">
-      <%#= render :partial => 'links', :locals => { 'show': 'tess' } %>
+
+      <div class="breadcrumb">
+        <%= render :partial => 'links', :locals => { 'show': 'tess' } %>
+      </div>
 
       <div class="row">
 
@@ -34,7 +37,7 @@
 
               <%= link_to events_path do %>
                 <br>
-                <p>Discover Events →</p>
+                <p>Discover Events <i class="icon icon-sm arrow-right-icon"></i></p>
               <% end %>
             </div>
 
@@ -63,7 +66,7 @@
 
               <%= link_to materials_path do %>
                 <br>
-                <p>Discover Materials →</p>
+                <p>Discover Materials <i class="icon icon-sm arrow-right-icon"></i></p>
               <% end %>
             </div>
           </div>
@@ -99,7 +102,7 @@
 
               <%= link_to workflows_path do %>
                 <br>
-                <p>Discover Workflows →</p>
+                <p>Discover Workflows <i class="icon icon-sm arrow-right-icon"></i></p>
               <% end %>
 
             </div>

@@ -21,13 +21,13 @@
 <% if @facet_params.include?(facet_field)  %>
     <%= remove_filter_link(:online, 'true') do %>
         <li class="nav-item">
-          <input type="checkbox" checked> Show all events </input>
+          <input type="checkbox" class="mr-2" checked>Show all events </input>
         </li>
     <% end %>
 <% else %>
     <%= filter_link(:online, 'true', facet.count) do %>
         <li class="nav-item active">
-          <input type="checkbox"> Only show online events </input>
+          <input type="checkbox" class="mr-2">Only show online events </input>
         </li>
     <% end %>
 <% end %>
