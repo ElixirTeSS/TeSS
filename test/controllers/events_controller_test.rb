@@ -690,6 +690,18 @@ class EventsControllerTest < ActionController::TestCase
     assert Event.find_by(title: rss_events.items.first.title.split('-').first.strip).present?
   end
 
+  test 'should include parameters in RSS file' do
+    get :index, params: { format: :rss, include_expired: true }
+    assert_response :success
+    assert_equal 'application/rss+xml; charset=utf-8', @response.content_type
+    require 'rss'
+    rss_events = RSS::Parser.parse(@response.body)
+    assert_equal Event.count, rss_events.items.count
+
+    assert_includes rss_events.channel.description, 'include_expired: true'
+  end
+
+
   test 'should add external resource to event' do
     sign_in @event.user
 

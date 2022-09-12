@@ -87,7 +87,7 @@ module EventsHelper
 
   def describe_event_filters
     if search_and_facet_params
-      "Events filtered: #{search_and_facet_params.map{ |k,v| "#{k}=#{v}" }.join(', ') }"
+      "Events filtered: #{search_and_facet_params.to_h.map { |k, v| "#{k}: #{v}" }.join(', ')}"
     else
       'Events'
     end
