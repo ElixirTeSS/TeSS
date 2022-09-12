@@ -73,6 +73,34 @@ class CollectionsControllerTest < ActionController::TestCase
     assert :forbidden
   end
 
+  #CURATE TESTS
+  test 'should not get curation page for not logged in users' do
+    #Not logged in = Redirect to login
+    get :curate, params: { id: @collection, type: 'Event' }
+    assert_redirected_to new_user_session_path
+  end
+
+  test 'should get curate for collection owner' do
+    sign_in @collection.user
+    get :curate, params: { id: @collection, type: 'Event' }
+    assert_response :success
+  end
+
+  test 'should get curate for admin' do
+    #Owner of collection logged in = SUCCESS
+    sign_in users(:admin)
+    get :curate, params: { id: @collection, type: 'Event' }
+    assert_response :success
+  end
+
+  test 'should not get curate page for non-owner user' do
+    #Administrator = SUCCESS
+    sign_in users(:another_regular_user)
+    get :curate, params: { id: @collection, type: 'Event' }
+    assert :forbidden
+  end
+
+
   #CREATE TEST
   test 'should create collection for user' do
     sign_in users(:regular_user)
@@ -114,6 +142,23 @@ class CollectionsControllerTest < ActionController::TestCase
   test 'should update collection' do
     sign_in @collection.user
     patch :update, params: { id: @collection, collection: @updated_collection }
+    assert_redirected_to collection_path(assigns(:collection))
+  end
+
+  #UPDATE_CURATE TEST
+  test 'should add and remove elements' do
+    sign_in @collection.user
+    @collection.events << events(:one)
+    assert_equal [events(:one).id], @collection.reload.event_ids
+
+    patch :update_curation, params: {
+      type: 'Event',
+      id: @collection,
+      reviewed_item_ids: [events(:one).id, events(:two).id],
+      item_ids: [events(:two).id]
+    }
+
+    assert_equal [events(:two).id], @collection.reload.event_ids
     assert_redirected_to collection_path(assigns(:collection))
   end
 
