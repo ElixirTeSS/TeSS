@@ -20,6 +20,6 @@ class CollectionEvent < ApplicationRecord
   private
 
   def solr_index
-    material.solr_index if TeSS::Config.solr_enabled
+    event.solr_index if TeSS::Config.solr_enabled
   end
 end
