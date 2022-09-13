@@ -85,7 +85,7 @@ en:
       Widgets are chunks of javascript code that can be copied into website source code to display TeSS content.
       There are several different styles and functionalities available from our configurable widget suite.
       Widgets can be used to enhance your site and offer your community lists of relevant events or training resources.
-    widgets_available: "https://elixirtess.github.io/TeSS_Widgets/"
+    widgets_available: "https://elixirtess.github.io/TeSS_widgets/"
     widgets_mailing: >
       <p>If you do decide to include our widgets on your website, we have a mailing list you can join to keep informed
         about any service disruptions, required updates, or new features</p>
@@ -180,10 +180,10 @@ en:
       websites reliably. To this end, it is helpful if these websites include some structured data.</p>
       <p>The following are examples of the kinds of structured data that we can work with. If your website contains one or
       more of these, and satisfies the criteria above, contact us and we will create a scraper.</p>
-      <p>If your website includes no structured data, and you’d like your resources added to TeSS, werecommend using
+      <p>If your website includes no structured data, and you’d like your resources added to TeSS, we recommend using
       <a href="http://bioschemas.org" target="_blank">Bioschemas</a> to structure your site.</p>
     schema: >
-      <p><a href='http://schema.org', target='_blank'>Schema.org</a> is a project run by a consortiumof search engines.
+      <p><a href='http://schema.org', target='_blank'>Schema.org</a> is a project run by a consortium of search engines.
       Schema.org has created an extensive library of simple, lightweight schemas that web-masters can use to explicitly
       define their websites content in order to improve search engine visibility and interoperability.</p>
       <p>For events, you can use the <a target='_blank', href='http://schema.org/Event'>schema.org Event type</a>; and
@@ -211,8 +211,8 @@ en:
       Swiss Institute Bioinformatics</a>
     schema_example_3: ""
     api: >
-      <p>Application Programming Interfaces, or APIs, typically have endpoint URLs that, when accessed, return raw,
-      unstyled data in a common exchange format, such as XML or JSON.</p>
+      <p>Application Programming Interfaces, or APIs, typically have endpoint URLs that, when accessed, return data in a
+      common exchange format, such as XML or JSON.</p>
       <p>If your website has an API that programmatically displays data for your training or event content, the TeSS
       team can write an API client to interface with it.</p>
     api_example_1: >
