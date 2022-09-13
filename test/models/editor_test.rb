@@ -217,34 +217,77 @@ class EditorTest < ActiveSupport::TestCase
   end
 
   test 'get_editable_providers' do
-    curator = users(:curator)
-    admin = users(:admin)
-    owner = users(:another_regular_user)
-    editor = users(:collaborative_user)
-    provider = content_providers(:goblet)
-    provider2 = content_providers(:iann)
-    provider3 = owner.content_providers.create!(title: 'Something', url: 'https://website.internet')
-    provider.editors << editor
+    option = TeSS::Config.restrict_content_provider_selection
+    begin
+      TeSS::Config.restrict_content_provider_selection = true
+      curator = users(:curator)
+      admin = users(:admin)
+      owner = users(:another_regular_user)
+      editor = users(:collaborative_user)
+      provider = content_providers(:goblet)
+      provider2 = content_providers(:iann)
+      provider3 = owner.content_providers.create!(title: 'Something', url: 'https://website.internet')
+      provider.editors << editor
 
-    # Curator
-    assert_includes curator.get_editable_providers, provider
-    assert_includes curator.get_editable_providers, provider2
-    assert_includes curator.get_editable_providers, provider3
+      # Curator
+      assert_includes curator.get_editable_providers, provider
+      assert_includes curator.get_editable_providers, provider2
+      assert_includes curator.get_editable_providers, provider3
 
-    # Admin
-    assert_includes admin.get_editable_providers, provider
-    assert_includes admin.get_editable_providers, provider2
-    assert_includes admin.get_editable_providers, provider3
+      # Admin
+      assert_includes admin.get_editable_providers, provider
+      assert_includes admin.get_editable_providers, provider2
+      assert_includes admin.get_editable_providers, provider3
 
-    # ContentProvider owner
-    assert_not_includes owner.get_editable_providers, provider
-    assert_not_includes owner.get_editable_providers, provider2
-    assert_includes owner.get_editable_providers, provider3
+      # ContentProvider owner
+      assert_not_includes owner.get_editable_providers, provider
+      assert_not_includes owner.get_editable_providers, provider2
+      assert_includes owner.get_editable_providers, provider3
 
-    # Editor
-    assert_includes editor.get_editable_providers, provider
-    assert_not_includes editor.get_editable_providers, provider2
-    assert_not_includes editor.get_editable_providers, provider3
+      # Editor
+      assert_includes editor.get_editable_providers, provider
+      assert_not_includes editor.get_editable_providers, provider2
+      assert_not_includes editor.get_editable_providers, provider3
+    ensure
+      TeSS::Config.restrict_content_provider_selection = option
+    end
+  end
+
+  test 'get_editable_providers with unrestricted provider selection' do
+    option = TeSS::Config.restrict_content_provider_selection
+    begin
+      TeSS::Config.restrict_content_provider_selection = false
+      curator = users(:curator)
+      admin = users(:admin)
+      owner = users(:another_regular_user)
+      editor = users(:collaborative_user)
+      provider = content_providers(:goblet)
+      provider2 = content_providers(:iann)
+      provider3 = owner.content_providers.create!(title: 'Something', url: 'https://website.internet')
+      provider.editors << editor
+
+      # Curator
+      assert_includes curator.get_editable_providers, provider
+      assert_includes curator.get_editable_providers, provider2
+      assert_includes curator.get_editable_providers, provider3
+
+      # Admin
+      assert_includes admin.get_editable_providers, provider
+      assert_includes admin.get_editable_providers, provider2
+      assert_includes admin.get_editable_providers, provider3
+
+      # ContentProvider owner
+      assert_includes owner.get_editable_providers, provider
+      assert_includes owner.get_editable_providers, provider2
+      assert_includes owner.get_editable_providers, provider3
+
+      # Editor
+      assert_includes editor.get_editable_providers, provider
+      assert_includes editor.get_editable_providers, provider2
+      assert_includes editor.get_editable_providers, provider3
+    ensure
+      TeSS::Config.restrict_content_provider_selection = option
+    end
   end
 
   test 'get_editable_providers should not create records as a side-effect' do
