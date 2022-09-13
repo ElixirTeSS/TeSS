@@ -16,8 +16,8 @@ class Event < ApplicationRecord
   include IdentifiersDotOrg
   include HasFriendlyId
   include FuzzyDictionaryMatch
+  include WithTimezone
 
-  before_validation :check_timezone # set to standard key
   before_save :check_country_name # :set_default_times
   before_save :geocoding_cache_lookup, if: :address_will_change?
   after_save :enqueue_geocoding_worker, if: :address_changed?
@@ -117,9 +117,6 @@ class Event < ApplicationRecord
   validates :latitude, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90, allow_nil: true }
   validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true }
   # validates :duration, format: { with: /\A[0-9][0-9]:[0-5][0-9]\z/, message: "must be in format HH:MM" }, allow_blank: true
-  validates :timezone, inclusion: { in: ActiveSupport::TimeZone::MAPPING.keys,
-                                    message: 'not found and cannot be linked to a valid timezone',
-                                    allow_blank: true }
   validate :allowed_url
   clean_array_fields(:keywords, :fields, :event_types, :target_audience,
                      :eligibility, :host_institutions, :sponsors)
@@ -282,35 +279,6 @@ class Event < ApplicationRecord
 
   def self.finished
     where('events.end < ?', Time.now).where.not(end: nil)
-  end
-
-  def check_timezone
-    begin
-      tz_key = find_timezone_key timezone
-      self.timezone = tz_key unless tz_key.nil? or tz_key == timezone
-    rescue Exception => e
-      # ignore error
-    end
-    nil
-  end
-
-  def find_timezone_key(name)
-    return name if name.nil?
-
-    # check name vs ActiveSupport
-    timezones = ActiveSupport::TimeZone::MAPPING
-    return name if timezones.keys.include? name
-    return timezones.key(name) unless timezones.key(name).nil?
-
-    # check for linked zones in TZInfo
-    tzinfo = TZInfo::Timezone.get(name)
-    if tzinfo.nil? and tzinfo.is_a? TZInfo::LinkedTimezone
-      # repeat search with canonical timezone identifier
-      return find_timezone_key tzinfo.canonical_zone.identifier
-    end
-
-    # otherwise
-    nil
   end
 
   # Ticket #423
