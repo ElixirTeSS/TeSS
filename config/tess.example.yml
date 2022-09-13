@@ -12,7 +12,7 @@ default: &default
     title: 'TeSS (Training eSupport System)'
     title_short: TeSS
     favicon: elixir/favicon.png
-    logo: elixir/ELIXIR_TeSS_logo_white-80px-height.png
+    logo: elixir/elixir-tess.svg
     logo_alt: 'Training eSupport System'
     logo_open_graph: ''
     logo_email: ''
