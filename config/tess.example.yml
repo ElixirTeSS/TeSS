@@ -52,6 +52,7 @@ default: &default
     #  biotools, topics, operations, sponsors, fairshare, county, ardc_fields_of_research,
     #  other_types, subsets, syllabus, approved_editors address_finder
     disabled: ['ardc_fields_of_research', 'other_types', 'subsets', 'syllabus', 'approved_editors']
+  restrict_content_provider_selection: false
   placeholder:
     collection: 'placeholder-collection.png'
     provider: 'placeholder-organization.png'

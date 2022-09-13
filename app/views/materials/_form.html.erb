@@ -1,4 +1,4 @@
-<%= simple_form_for @material, :html => { :id => 'material_form' } do |f| %>
+<%= simple_form_for @material, html: { id: 'material_form', class: 'prevent-enter-submit' } do |f| %>
 
   <%= render partial: 'common/error_summary', locals: { resource: @material } %>
 

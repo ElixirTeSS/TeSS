@@ -289,7 +289,7 @@ class User < ApplicationRecord
 
   def get_editable_providers
     relation = ContentProvider.order(:title)
-    if is_admin? || is_curator?
+    if !TeSS::Config.restrict_content_provider_selection || is_admin? || is_curator?
       relation.all
     else
       relation.find(content_provider_ids | editable_ids)
