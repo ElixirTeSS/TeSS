@@ -1,19 +1,13 @@
 <div class="wrapper collapsing-wrapper">
-  <%# SIDEBAR %>
-  <div class="collapsing-sidebar" id="sidebar">
-    <%= render :partial => "nodes/partials/node_info", :locals => {:node => @node} %>
-  </div>
   <div id="content">
     <div class="row">
       <div>
-        <h2 style="margin-top: 0px;">
+        <h2>
           <%= image_tag get_image_url_for(@node), :class=>"media-image listing_image" %>
           <%=t '.title', :default => @node.name %>
         </h2>
       </div>
-      <div class="content_action" style="margin-top: -50px;">
-        <%= link_to t('.back', :default => t("helpers.links.back")),
-                    :back, :class => 'btn btn-info'  %>
+      <div class="content_action">
         <% if !current_user.nil? and policy(@node).update? %>
             <%= link_to t('.edit', :default => t("helpers.links.edit")),
                         edit_node_path(@node), :class => 'btn btn-primary' %>
@@ -26,7 +20,7 @@
                         :class => 'btn btn-danger' %>
         <% end %>
         <% unless @node.home_page.blank? %>
-            <a href="<%= @node.home_page %>" target="_blank" class="btn btn-success">
+            <a href="<%= @node.home_page %>" target="_blank" class="btn btn-default">
               <span class="fa fa-external-link"></span> View home page
             </a>
         <% end %>
@@ -95,5 +89,10 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <%# SIDEBAR %>
+  <div class="collapsing-sidebar" id="sidebar">
+    <%= render :partial => "nodes/partials/node_info", :locals => {:node => @node} %>
   </div>
 </div>

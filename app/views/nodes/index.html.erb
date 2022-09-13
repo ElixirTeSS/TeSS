@@ -1,12 +1,8 @@
 <div class="wrapper">
-  <% if TeSS::Config.solr_enabled %>
-      <div id="sidebar" class="popout-sidebar">
-        <%#= render partial: "nodes/partials/sidebar" %>
-        <%= render partial: "search/common/facet_sidebar", locals:  { resources: @nodes_results, resource_type: Node } %>
-      </div>
-  <% end %>
-
   <div id="content">
+    <div class="row">
+      <h2>Nodes</h2>
+    </div>
     <div class="row">
       <% if policy(:node).create? %>
         <%= link_to new_node_path, class: 'btn btn-primary' do %>
@@ -37,4 +33,11 @@
 
     <%= render partial: 'common/masonry_grid', locals: { objects: @nodes } %>
   </div>
+
+  <% if TeSS::Config.solr_enabled %>
+    <div id="sidebar" class="popout-sidebar">
+      <%#= render partial: "nodes/partials/sidebar" %>
+      <%= render partial: "search/common/facet_sidebar", locals:  { resources: @nodes_results, resource_type: Node } %>
+    </div>
+  <% end %>
 </div>

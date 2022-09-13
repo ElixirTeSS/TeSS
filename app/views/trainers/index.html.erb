@@ -1,12 +1,9 @@
 <div class="wrapper">
-  <% if TeSS::Config.solr_enabled %>
-    <div id="sidebar" class="popout-sidebar">
-      <%= render partial: "search/common/facet_sidebar",
-                 locals: { resources: @trainers_results, resource_type: Trainer } %>
-    </div>
-  <% end %>
-
   <div id="content">
+    <div class="row">
+      <h2>Trainers</h2>
+    </div>
+
     <div class="row">
       <!-- Info -->
       <div class="pull-right">
@@ -42,4 +39,11 @@
     <%= render partial: "search/common/pagination_bar", locals: { resources: @trainers } %>
 
   </div>
+
+  <% if TeSS::Config.solr_enabled %>
+    <div id="sidebar" class="popout-sidebar">
+      <%= render partial: "search/common/facet_sidebar",
+                 locals: { resources: @trainers_results, resource_type: Trainer } %>
+    </div>
+  <% end %>
 </div>
