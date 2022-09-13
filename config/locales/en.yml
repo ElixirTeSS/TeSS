@@ -15,6 +15,11 @@ en:
         surname: 'Last name'
       event:
         county: Region
+  faq:
+    - q: Question 1
+      a: Answer 1
+    - q: Question 2
+      a: Answer 2
   about:
     registry: >
       One of the goals of <a href='https://elixir-europe.org', target='_blank'>Elixir</a>
