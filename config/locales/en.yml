@@ -183,24 +183,31 @@ en:
       <p>If your website includes no structured data, and you’d like your resources added to TeSS, we recommend using
       <a href="http://bioschemas.org" target="_blank">Bioschemas</a> to structure your site.</p>
     schema: >
-      <p><a href='http://schema.org', target='_blank'>Schema.org</a> is a project run by a consortium of search engines.
-      Schema.org has created an extensive library of simple, lightweight schemas that web-masters can use to explicitly
-      define their websites content in order to improve search engine visibility and interoperability.</p>
-      <p>For events, you can use the <a target='_blank', href='http://schema.org/Event'>schema.org Event type</a>; and
-      for training materials: <a target='_blank', href='http://schema.org/CreativeWork'>schema.org CreativeWork Type</a>
-      </p><p>The schemas provided by schema.org are convoluted, and lack some important training-specific fields.
-      As such, a life science community group, called <a target='_blank', href='http://bioschemas.org'>Bioschemas</a>,
-      has created schema.org extensions with life science-specific vocabularies, which add additional fields relevant
-      to the discipline.</p>
-      <p>The Bioschemas group is producing tools, documents and training to facilitate adoption of standard metadata
-      mark-up.</p>
-    bioschema_events: >
-      <a target='_blank', class='btn btn-primary', href='http://bioschemas.org/specifications/Event/specification/'>
-      View Events Biochema</a>
-    bioschema_materials: >
-      <a target='_blank', class='btn btn-primary',
-      href='http://bioschemas.org/specifications/TrainingMaterial/specification/'>
-      View Materials Bioschema</a>
+      <p><a href='https://schema.org', target='_blank'>Schema.org</a> is a project run by a consortium of search engines.
+      Schema.org has created an extensive library of schemas that web-masters can use to explicitly
+      mark-up their websites content in order to improve search engine visibility and interoperability.</p>
+      </p><p><a target='_blank', href='https://bioschemas.org'>Bioschemas</a> is an initiative to supplement the work of
+      schema.org to help improve the findability of online resources in the life sciences.</p>
+      The two main activities of Bioschemas are:
+      <ul>
+      <li>Proposing new types and properties to Schema.org to allow for the description of life science resources.</li>
+      <li>Defining usage profiles over the Schema.org types that identify the essential properties to use in describing a resource.</li>
+      </ul>
+      <p>
+      TeSS currently supports the following profiles:<br/>
+      <strong>for events that are courses</strong>
+      <ul>
+      <li><a target='_blank', href='https://bioschemas.org/profiles/CourseInstance/0.9-DRAFT'>CourseInstance</a></li>
+      <li><a target='_blank', href='https://bioschemas.org/profiles/Course/0.10-DRAFT'>Course</a></li>
+      </ul>
+      <strong>for other events</strong>
+      <ul>
+      <li><a target='_blank', href='https://bioschemas.org/profiles/Event/0.2-DRAFT-2019_06_14'>Event</a></li>
+      </ul>
+      <strong>for training materials</strong>
+      <ul>
+      <li><a target='_blank', href='https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE'>TrainingMaterial</a></li>
+      </ul>
     schema_example_1: >
       <a target='_blank', class='btn btn-success',
       href='https://search.google.com/structured-data/testing-tool#url=https%3A%2F%2Fwww.france-bioinformatique.fr%2Fen%2Fevenements_upcoming'>
