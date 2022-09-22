@@ -23,12 +23,17 @@ en:
       to a growing catalogue of materials; for trainers, the portal offers an environment for sharing materials
       and event information; for trainees, it offers a convenient gateway via which to identify relevant training
       events and resources, and to perform specific, guided analysis tasks via customised training workflows.
+    history: >
+      <p>TeSS was originally developed as part of <a href='https://elixir-europe.org/' target='_blank'>ELIXIR</a>,
+      Europe's distributed infrastructure for life-science data. One of the goals of ELIXIR is to train research
+      scientists to better use available computational infrastructures to address critical research questions.
+      This requires access both to face-to-face training opportunities and to disparate training materials and resources,
+      currently dispersed across Europe.</p>
     events: >
       Events in TeSS are defined as face-to-face or online training opportunities that have set start and end times.
       These primarily take the form of workshops, courses, webinars, etc.; but TeSS also collects information about
       conferences, meetings and hackathons, as these may also provide opportunities for learning.
-      </p><p>
-    nominatim: "<a href='https://wiki.openstreetmap.org/wiki/Nominatim', target='_blank'>Nominatim</a>"
+    nominatim: "<a href='https://wiki.openstreetmap.org/wiki/Nominatim' target='_blank'>Nominatim</a>"
     materials: >
       Materials in TeSS are defined as training resources that can be accessed at any time. These may be in
       a variety of different formats, including online tutorials, videos, PowerPoint presentations, and so on.
@@ -208,7 +213,7 @@ en:
       <p>Once registered and logged in, the 'register event' and 'register material' buttons will become visible on the
       events and materials tabs. Alternatively click here:</p>
   home:
-    welcome: "Welcome to TeSS: Elixir's Training Portal"
+    welcome: "Welcome to TeSS: ELIXIR's Training Portal"
     subtitle: "Browsing, discovering and organising life sciences training resources, aggregated from ELIXIR nodes and 3<sup>rd</sup>-party providers."
     events_message: "Discover the latest training events and news from ELIXIR nodes and 3<sup>rd</sup>-party providers."
     materials_message: "Browse the catalogue of training materials offered by ELIXIR nodes and 3<sup>rd</sup>-party providers."
