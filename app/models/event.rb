@@ -438,7 +438,7 @@ class Event < ApplicationRecord
     url = 'https://nominatim.openstreetmap.org/search.php'
     response = HTTParty.get(url,
                             query: args,
-                            headers: { 'User-Agent' => "Elixir TeSS <#{TeSS::Config.contact_email}>" })
+                            headers: { 'User-Agent' => "ELIXIR TeSS <#{TeSS::Config.contact_email}>" })
     (JSON.parse response.body, symbolize_names: true)[0]
   end
 
