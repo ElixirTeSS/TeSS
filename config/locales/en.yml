@@ -233,8 +233,13 @@ en:
       <p>To register a source, click the "Sources" tab on your content provider page, or if you have not yet registered
       a content provider, click the button below.</p>
     advice: >
-      Contact <a href="mailto:%{contact_email}">%{contact_email}</a> to discuss how to register your content
-      automatically in TeSS.
+      <p><strong>If you have implemented Bioschemas markup on your website and would like your content to appear in TeSS, see
+      our "Bioschemas sources" repository for detailed information on how to proceed:</strong></p>
+      <p><a href='https://github.com/ElixirTeSS/bioschemas_sources#readme' class='btn btn-primary' target='_blank'>
+        <i class="fa fa-list"></i> TeSS Bioschemas Sources
+      </a></p>
+      <p>Alternatively, contact <a href="mailto:%{contact_email}">%{contact_email}</a> to discuss other methods of automatic
+      registration in TeSS.</p>
     manual: >
       <p>Resources may be added manually to TeSS.</p>
       <p>To do so, first register for a free account. Members of academic institutions may be able to log-in via LS-Login.</p>
