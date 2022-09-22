@@ -58,7 +58,7 @@
   <% end %>
 </ul>
 
-<% if @resources.length > 0 -%>
+<% if (@resources.length > 0 && TeSS::Config.feature['latest_content'] == true)-%>
   <div id="materials-title">
     <h3>Latest Content in <%= TeSS::Config.site['title_short'] %></h3>
   </div>
