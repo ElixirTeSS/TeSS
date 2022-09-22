@@ -17,25 +17,17 @@ en:
         county: Region
   about:
     registry: >
-      One of the goals of <a href='https://elixir-europe.org', target='_blank'>Elixir</a>
-      (Europe's distributed infrastructure for life-science data) is to train research scientists to better use
-      available computational infrastructures to address critical research questions. This requires access both to
-      face-to-face training opportunities and to disparate training materials and resources, currently dispersed
-      across Europe.
-      </p><p>
-      TeSS is ELIXIR's training platform, providing a one-stop shop for trainers and trainees to discover
+      TeSS is a platform that was developed to provide a one-stop shop for trainers and trainees to discover
       online information and content, including training materials, events and interactive tutorials.
-      For ELIXIR Nodes, TeSS provides opportunities to promote training events and news, and to contribute
+      For training providers, TeSS provides opportunities to promote training events and news, and to contribute
       to a growing catalogue of materials; for trainers, the portal offers an environment for sharing materials
       and event information; for trainees, it offers a convenient gateway via which to identify relevant training
-      events and resources, and to perform specific, guided analysis tasks via customised training workflows
+      events and resources, and to perform specific, guided analysis tasks via customised training workflows.
     events: >
       Events in TeSS are defined as face-to-face or online training opportunities that have set start and end times.
       These primarily take the form of workshops, courses, webinars, etc.; but TeSS also collects information about
       conferences, meetings and hackathons, as these may also provide opportunities for learning.
       </p><p>
-      A significant portion of TeSS' initial content was contributed by the progenitor event-announcement platform,
-      <a href="https://www.ncbi.nlm.nih.gov/pubmed/23742982" target="_blank">iAnn.pro</a>.
     nominatim: "<a href='https://wiki.openstreetmap.org/wiki/Nominatim', target='_blank'>Nominatim</a>"
     materials: >
       Materials in TeSS are defined as training resources that can be accessed at any time. These may be in
@@ -74,7 +66,7 @@ en:
       As such, all content in TeSS is available under the CC BY 4.0 licence, and can be accessed through our API
       and widgets. The TeSS codebase is also available to re-use under the BSD Licence, and can be found on GitHub.
     code_license: >
-      <a href="https://github.com/nrmay/TeSS/blob/master/LICENSE", target="_blank">BSE 3-Clause</a>
+      <a href="https://github.com/ElixirTeSS/TeSS/blob/master/LICENSE", target="_blank">BSD 3-Clause</a>
     data_license: >
       <a href="https://creativecommons.org/licenses/by/4.0/", target="_blank">Creative Commons CC-BY 4.0</a>
     gmaps_countries: >
@@ -86,30 +78,15 @@ en:
       There are several different styles and functionalities available from our configurable widget suite.
       Widgets can be used to enhance your site and offer your community lists of relevant events or training resources.
     widgets_available: "https://elixirtess.github.io/TeSS_widgets/"
-    widgets_mailing: >
-      <p>If you do decide to include our widgets on your website, we have a mailing list you can join to keep informed
-        about any service disruptions, required updates, or new features</p>
-      <p><a href="https://groups.google.com/forum/#!forum/tess-widgets-user-group",
-            class="btn btn-primary", target="_blank" >
-            <i class="fa fa-envelope"></i> Join the widgets mailing list</a></p>
     api_example_1: "/events.json_api"
     api_example_2: "/events/data-fairification-for-data-stewards.json_api"
     api_example_3: "/materials.json_api?scientific_topics=RNA-Seq"
     api_example_4: "/content_providers.json_api"
     api_example_5: "/workflows.json_api"
-    swaggerhub: >
-      <p>The full documentation for our JSON API with interactive examples can be found in our
-        <a href="https://app.swaggerhub.com/apis/fbacall/TeSS-JSON-API/0.2.0", target="_blank">
-          Swagger Hub Documentation</a>
-      </p>
-      <p><a href="https://app.swaggerhub.com/apis/fbacall/TeSS-JSON-API/0.2.0", class="btn btn-primary", target="_blank">
-        View our API on SwaggerHub <img src="/assets/swagger.png", width="20" height="20"></a></p>
-      <p>We recommend using our JSON API, but if you have already begun using our old API technical information
-        can still be found on our <a href="https://app.swaggerhub.com/api/njall/TeSS/1.0.0/">here</a>.</p>
   us:
     tess_club: >
-      <p>Fortnightly meetings, hackathons, shared activities, open priority setting, open contribution to unite the
-      community.</p><p>The TeSS Club runs fortnightly at 9:00 GMT / 10:00 CET Friday.</p><p>For all the details please
+      <p>Fortnightly meetings, hackathons, shared activities, open priority setting, open contribution to unite the TeSS
+      community.</p><p>For all the details please
       visit the <a href="https://elixirtess.github.io/about/">TeSS Club Website</a>.</p>
     contact: >
       For enquiries, information, or assistance; contact the TeSS support desk at <br>
@@ -118,9 +95,9 @@ en:
       <div class="h4">Leadership</div>
       <ul><li>Carole Goble</li><li>Hedi Peterson</li><li>Alexia Cardona</li></ul>
       <div class="h4">Project Management</div>
-      <ul><li>Chris Child</li></ul>
+      <ul><li>Munazah Andrabi</li></ul>
       <div class="h4">Software Engineering</div>
-      <ul><li>Chris Child</li></ul>
+      <ul><li>Finn Bacall</li></ul>
       <div class="h4">Past Members</div>
       <ul>
         <li>Aleksandra Nenadic - Project Manager</li>
@@ -128,8 +105,8 @@ en:
         <li>Teresa K. Attwood - Leadership</li>
         <li>Susanna-Assunta Sansone - Leadership</li>
         <li>Niall Beard - Project Management/Software Engineering</li>
-        <li>Finn Bacall - Software Engineering</li>
         <li>Milo Thurston - Software Engineering</li>
+        <li>Chris Child - Project Management/Software Engineering</li>
       </ul>
     funding: >
       <p>European Commission, Horizon 2020 Research Infrastructures programme (ELIXIR-EXCELERATE,
@@ -155,8 +132,8 @@ en:
         </ul>
     cite: >
       Niall Beard, Finn Bacall, Aleksandra Nenadic, Milo Thurston, Carole A Goble, Susanna-Assunta Sansone, Teresa K Attwood,
-      TeSS: a platform for discovering life-science training opportunities,
-      Bioinformatics, Volume 36, Issue 10, 15 May 2020, Pages 3290-3291,
+      <strong>TeSS: a platform for discovering life-science training opportunities</strong>,
+      <em>Bioinformatics</em>, Volume 36, Issue 10, 15 May 2020, Pages 3290-3291,
       <a href="https://doi.org/10.1093/bioinformatics/btaa047">https://doi.org/10.1093/bioinformatics/btaa047</a>
 
   register:
