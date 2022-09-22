@@ -30,7 +30,7 @@
               <p><%== raw t 'about.events' %></p>
               <p>
                 <%= TeSS::Config.site['title_short'] %> collects event information
-                from <%= Event.all.collect { |x| x.content_provider_id }.uniq.count %>
+                from <%= Event.distinct.count(:content_provider_id) %>
                 content providers, supplementing the data with geolocation information found using
                 <%== raw t 'about.nominatim' %>.
               </p>
@@ -54,7 +54,7 @@
               <p><%== raw t 'about.materials' %></p>
 
               <p><%= TeSS::Config.site['title_short'] %> collects materials from
-                <%= Material.all.collect { |x| x.content_provider_id }.uniq.count %>
+                <%= Material.distinct.count(:content_provider_id) %>
                 content providers.</p>
             </div>
           </div>
