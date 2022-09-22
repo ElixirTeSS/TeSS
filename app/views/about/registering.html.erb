@@ -58,21 +58,6 @@
         <div class="odd-about-block">
           <div id='automatic' class="h4">Automatic Registration</div>
           <p><%== raw t 'register.automatic' %></p>
-          <div class="row">
-            <div class="col-md-3 motivation_box">
-              <div class="register-condition-graphic"><i class="fa fa-ellipsis-h about-icons"></i></div>
-              <div class="register-condition"><%== raw t 'register.auto_condition_1' %></div>
-            </div>
-            <div class="col-md-3 motivation_box">
-              <div class="register-condition-graphic"><i class="fa fa-code about-icons"></i></div>
-              <div class="register-condition"><%== raw t 'register.auto_condition_2' %></div>
-            </div>
-            <div class="col-md-3 motivation_box">
-              <div class="register-condition-graphic"><i class="fa fa-flask about-icons"></i></div>
-              <div class="register-condition"><%== raw t 'register.auto_condition_3' %></div>
-            </div>
-          </div>
-
           <!-- STRUCTURED DATA -->
           <div class="h5">Structured Data Types</div>
           <%== raw t 'register.structured' %>
@@ -83,13 +68,6 @@
             <div class="row">
               <div class="col-lg-9">
                 <%== raw t 'register.schema' %>
-                <hr>
-                <b>Examples of sites using Bioschemas parsed by <%= TeSS::Config.site['title_short'] %></b>
-                <div class="data-type-examples">
-                  <%== raw t 'register.schema_example_1' %>
-                  <%== raw t 'register.schema_example_2' %>
-                  <%== raw t 'register.schema_example_3' %>
-                </div>
               </div>
               <div class="col-lg-3">
                 <%= image_tag 'about/bioschemas.png', class: "struct_data_type_logo" %>
@@ -102,17 +80,10 @@
           <div class="sub-about-block">
             <div id='api' class="h6">API</div>
             <div class="row">
-              <div class="col-lg-9">
+              <div class="col-lg-10">
                 <%== raw t 'register.api' %>
-                <hr>
-                <b>Examples of sites with APIs included in <%= TeSS::Config.site['title_short'] %></b>
-                <div class="data-type-examples">
-                  <%== raw t 'register.api_example_1' %>
-                  <%== raw t 'register.api_example_2' %>
-                  <%== raw t 'register.api_example_3' %>
-                </div>
               </div>
-              <div class="col-lg-3">
+              <div class="col-lg-2 text-center">
                 <i class="fa fa-plug about-icons struct_data_type_logo"></i>
               </div>
             </div>
@@ -122,17 +93,10 @@
           <div class="sub-about-block">
             <div id='calendar' class="h6">Calendar</div>
             <div class="row">
-              <div class="col-lg-9">
+              <div class="col-lg-10">
                 <%== raw t 'register.calendar' %>
-                <hr>
-                <b>Examples of calendar files parsed by <%= TeSS::Config.site['title_short'] %></b>
-                <div class="data-type-examples">
-                  <%== raw t 'register.calendar_example_1' %>
-                  <%== raw t 'register.calendar_example_2' %>
-                  <%== raw t 'register.calendar_example_3' %>
-                </div>
               </div>
-              <div class="col-lg-3">
+              <div class="col-lg-2 text-center">
                 <i class="fa fa-calendar about-icons struct_data_type_logo"></i>
               </div>
             </div>
@@ -147,7 +111,7 @@
           <!--  CONTACT US -->
           <div class="sub-about-block">
             <%#= render :partial => "common/contact_form"%>
-            <%== raw t 'register.advice' %>
+            <%== raw t('register.advice', contact_email: TeSS::Config.contact_email) %>
           </div>
         </div>
       </div>
@@ -165,21 +129,10 @@
               <i class="fa fa-plus-square"></i> Register material
             <% end %>
           </p>
-          <p>
-            If you have resources that change frequently, we recommended that you establish an
-            <a href="#automatic">automatic registration</a> solution.
-          </p>
         </div>
-
-
-        <!--
-        <div id='include' class="h3">How TeSS works</div>
-        <%= image_tag 'about/tess_architecture.png', class: "widgets_guide" %>
       </div>
-      -->
-      </div>
+
       <%= render :partial => 'links', :locals => { 'show': 'registering' } %>
-
     </div>
   </div>
 </div>

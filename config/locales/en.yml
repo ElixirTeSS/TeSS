@@ -169,18 +169,13 @@ en:
       <ol><li>Arrange for an <a href="#automatic">automatic registration</a> solution;</li>
       <li>Use our form to register them <a href="#manual">manually</a>.</li></ol></p>
     automatic: >
-      The TeSS team can write scripts ('scrapers') to automatically register resources from target websites.
-      The scrapers run each night, adding any new resources to TeSS or updating any that have changed.
-      We can write a scraper to include your resources in TeSS, if your site:
-    auto_condition_1: "Contains more than 3 resources"
-    auto_condition_2: "Has some structured data"
-    auto_condition_3: "Is relevant to life scientists"
+      TeSS features several options for automatically "harvesting" resources from external sources.
+      This can be helpful if you are maintaining a large collection of events and materials that changes frequently.
     structured: >
-      <p>To register resources in TeSS automatically, our scrapers need to be able to extract data from target
-      websites reliably. To this end, it is helpful if these websites include some structured data.</p>
-      <p>The following are examples of the kinds of structured data that we can work with. If your website contains one or
-      more of these, and satisfies the criteria above, contact us and we will create a scraper.</p>
-      <p>If your website includes no structured data, and you’d like your resources added to TeSS, we recommend using
+      <p>To register resources in TeSS automatically, we need to be able to extract data from target
+      sources reliably. To this end, it is helpful if the data is structured according to some kind of standard format.</p>
+      <p>The following are examples of the kinds of structured data that TeSS can work with.</p>
+      <p>If your website currently includes no structured data, and you’d like your resources added to TeSS, we recommend using
       <a href="http://bioschemas.org" target="_blank">Bioschemas</a> to structure your site.</p>
     schema: >
       <p><a href='https://schema.org', target='_blank'>Schema.org</a> is a project run by a consortium of search engines.
@@ -194,7 +189,7 @@ en:
       <li>Defining usage profiles over the Schema.org types that identify the essential properties to use in describing a resource.</li>
       </ul>
       <p>
-      TeSS currently supports the following profiles:<br/>
+      TeSS supports the following Bioschemas profiles:<br/>
       <strong>for events that are courses</strong>
       <ul>
       <li><a target='_blank', href='https://bioschemas.org/profiles/CourseInstance/0.9-DRAFT'>CourseInstance</a></li>
@@ -208,40 +203,16 @@ en:
       <ul>
       <li><a target='_blank', href='https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE'>TrainingMaterial</a></li>
       </ul>
-    schema_example_1: >
-      <a target='_blank', class='btn btn-success',
-      href='https://search.google.com/structured-data/testing-tool#url=https%3A%2F%2Fwww.france-bioinformatique.fr%2Fen%2Fevenements_upcoming'>
-      French Institute of Bioinformatics</a>
-    schema_example_2: >
-      <a target='_blank', class='btn btn-success',
-      href='https://search.google.com/structured-data/testing-tool#url=https%3A%2F%2Fwww.sib.swiss%2Ftraining%2Fupcoming-training-events'>
-      Swiss Institute Bioinformatics</a>
-    schema_example_3: ""
     api: >
       <p>Application Programming Interfaces, or APIs, typically have endpoint URLs that, when accessed, return data in a
       common exchange format, such as XML or JSON.</p>
       <p>If your website has an API that programmatically displays data for your training or event content, the TeSS
       team can write an API client to interface with it.</p>
-    api_example_1: >
-      <a target='_blank', class='btn btn-success',
-      href='https://www.training.cam.ac.uk/api/v1/provider/BIOINFO/programmes?fetch=events.sessions,events.topics&format=json'>
-      University of Cambridge</a>
-    api_example_2: >
-      <a target='_blank', class='btn btn-success', href='https://www.dtls.nl/courses/feed/?filter_course=active'>
-      Dutch Techcentre for Lifesciences</a>
-    api_example_3: ""
     calendar: >
       <p>Many organisations use calendar applications to organise and display their events.
       These may be custom-made or, more likely, utilise applications like Google Calendar. Calendar applications
-      maintain an underlying file for event storage and retrieval, typically in the .ics format.</p>
-      <p>If your website has a calendar application, the TeSS team can write a scraper to extract from it the date,
-      location and event descriptions, and upload the data to TeSS.</p>
-    calendar_example_1: >
-      <a target='_blank', class='btn btn-success', href='https://nbis.se/training/events.html'>NBIS</a>
-    calendar_example_2: >
-      <a target='_blank', class='btn btn-success', href='https://software-carpentry.org/workshops/'>
-      Software Carpentry</a>
-    calendar_example_3: ""
+      maintain an underlying file for event storage and retrieval, typically in the iCal (.ics) format.</p>
+      <p>TeSS can extract event descriptions, dates and locations from iCal files.</p>
     other_types: >
       <ul><li><b>RSS Feed</b>: an RSS feed is a type of news format. Many websites have such feeds, which list recent
       posts in a standard format. We can write scripts to parse this format;</li>
@@ -249,14 +220,11 @@ en:
       If you are using GitHub (or similar) to develop your training resources, and/or use GitHub Pages to render them,
       we can write a script that clones the repository and extracts resource information. We may ask you to create a
       metadata file in YAML format to help us extract the metadata;</li>
-      <li><b>SOLR server (or similar):</b> a SOLR server is a search engine that many sites use for their internal
-      search functionality. If you have a publicly accessible SOLR server, we can write a script to interface with it;
-      </li>
       <li><b>Other:</b> if you have training metadata in another structured format (e.g., an XML or JSON dump, a CSV
-      file, a YAML file, or other format), we would be happy to write a script to parse it.</li></ul>
+      file, a YAML file, or other format), it may be possible for the TeSS team to write a script to parse it.</li></ul>
     advice: >
-      If your website contains any of the above, or you'd like advice about annotating with Bioschemas, you can contact
-      us via e-mail at <a href="mailto:support@tess.elixir-europe.org">support@tess.elixir-europe.org</a>
+      Contact <a href="mailto:%{contact_email}">%{contact_email}</a> if you would like to have your content automatically
+      registered in TeSS.
     manual: >
       <p>Resources may be added manually to TeSS.</p>
       <p>To do so, first register for a free account. Members of academic institutions may be able to log-in via LS-Login.</p>
