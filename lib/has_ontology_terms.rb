@@ -53,7 +53,7 @@ module HasOntologyTerms
       end
 
       define_method "#{method}=" do |terms|
-        send("#{links_method}=", terms.uniq.map { |term| send(links_method).build(term_uri: term.uri) if term && term.uri }.compact)
+        send("#{links_method}=", terms.uniq.map { |term| send(links_method).build(term_uri: term.uri) if term.present? && term.uri }.compact)
       end
 
       # Names/Labels
