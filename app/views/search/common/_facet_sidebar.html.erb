@@ -12,8 +12,8 @@ Variable that should be available
 </h3>
 
 <ul class="unstyled nav-simple">
-  <% if current_user && (current_user.is_curator? || current_user.is_admin?) && resource_type.method_defined?(:last_scraped) %>
-    <%= render partial: 'search/common/facet_sidebar_curation' %>
+  <% if current_user && (current_user.is_curator? || current_user.is_admin?) %>
+    <%= render partial: 'search/common/facet_sidebar_curation', locals: { resource_type: resource_type } %>
   <% end %>
   <% if ['Event', 'Material'].include?(resource_type.name) %>
     <%= render partial: 'search/common/facet_sidebar_max_age' %>

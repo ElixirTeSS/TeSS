@@ -242,17 +242,15 @@ class EventTest < ActiveSupport::TestCase
     event = Event.new(parameters)
 
     refute event.save
-
-    assert_equal ['not valid'], event.errors[:url]
+    assert event.errors.added?(:url, 'not valid')
   end
 
   test 'does not block non-disallowed(?!) domain' do
-    parameters = @mandatory.merge({ user: users(:regular_user), title: 'Good event', url: 'https://good-domain.example/event',
+    parameters = @mandatory.merge({ user: users(:regular_user), title: 'Good event', url: 'http://good-domain.example/event',
                                     description: 'event for does not block non-disallowed domain', online: true })
     event = Event.new(parameters)
 
     assert event.save
-
     assert event.errors[:url].empty?
   end
 

@@ -29,6 +29,11 @@ class Source < ApplicationRecord
     # :nocov:
   end
 
+  # For compatibility with views that render arbitrary lists of user-creatable resources (e.g. curation page)
+  def title
+    "#{content_provider.title}: #{Ingestors::IngestorFactory.get_method_value(method)}"
+  end
+
   def source_params
     permitted = [:created_at, :url, :method, :resource_type, :enabled,
                  :content_provider_id, :token ]

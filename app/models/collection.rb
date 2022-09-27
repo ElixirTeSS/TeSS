@@ -3,6 +3,8 @@ class Collection < ApplicationRecord
   include LogParameterChanges
   include Searchable
   include HasFriendlyId
+  include CurationQueue
+  include Collaboratable
 
   has_many :collection_materials
   has_many :collection_events
@@ -27,11 +29,11 @@ class Collection < ApplicationRecord
     # :nocov:
     searchable do
       text :title
+      text :description
       string :title
       string :sort_title do
         title.downcase.gsub(/^(an?|the) /, '')
       end
-      text :description
       string :user do
         self.user.username.to_s unless self.user.blank?
       end
@@ -45,6 +47,7 @@ class Collection < ApplicationRecord
       boolean :public
       time :created_at
       time :updated_at
+      integer :collaborator_ids, multiple: true
     end
     # :nocov:
   end
@@ -64,7 +67,9 @@ class Collection < ApplicationRecord
     if user && user.is_admin?
       all
     elsif user
-      where("#{self.table_name}.public = ? OR #{self.table_name}.user_id = ?", true, user)
+      references(:collaborations).includes(:collaborations).
+        where("#{self.table_name}.public = :public OR #{self.table_name}.user_id = :user OR collaborations.user_id = :user",
+              public: true, user: user)
     else
       where(public: true)
     end

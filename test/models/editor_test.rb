@@ -192,4 +192,112 @@ class EditorTest < ActiveSupport::TestCase
     assert !provider.editors.include?(private_user)
   end
 
+  test 'reassigning resources works for resources without content provider set' do
+    trainer = users :trainer_user
+    provider = content_providers :goblet
+    event = events :training_event
+    provider.add_editor(trainer)
+
+    another_event = Event.create!(user: trainer, title: 'New event', timezone: 'UTC', url: 'http://example.com', online: true)
+    assert_nil another_event.content_provider
+
+    # remove editor
+    provider.remove_editor(trainer)
+    assert !provider.editors.include?(trainer),
+           "trainer[#{trainer.username}] still in provider[#{provider.title}].editors"
+    assert !trainer.editables.include?(provider),
+           "trainer[#{trainer.username}] can still edit provider[#{provider.title}]"
+
+    # check reassignments
+    event.reload
+    another_event.reload
+    assert_nil another_event.content_provider
+    assert_equal trainer, another_event.user
+    assert_equal provider.user, event.user
+  end
+
+  test 'get_editable_providers' do
+    option = TeSS::Config.restrict_content_provider_selection
+    begin
+      TeSS::Config.restrict_content_provider_selection = true
+      curator = users(:curator)
+      admin = users(:admin)
+      owner = users(:another_regular_user)
+      editor = users(:collaborative_user)
+      provider = content_providers(:goblet)
+      provider2 = content_providers(:iann)
+      provider3 = owner.content_providers.create!(title: 'Something', url: 'https://website.internet')
+      provider.editors << editor
+
+      # Curator
+      assert_includes curator.get_editable_providers, provider
+      assert_includes curator.get_editable_providers, provider2
+      assert_includes curator.get_editable_providers, provider3
+
+      # Admin
+      assert_includes admin.get_editable_providers, provider
+      assert_includes admin.get_editable_providers, provider2
+      assert_includes admin.get_editable_providers, provider3
+
+      # ContentProvider owner
+      assert_not_includes owner.get_editable_providers, provider
+      assert_not_includes owner.get_editable_providers, provider2
+      assert_includes owner.get_editable_providers, provider3
+
+      # Editor
+      assert_includes editor.get_editable_providers, provider
+      assert_not_includes editor.get_editable_providers, provider2
+      assert_not_includes editor.get_editable_providers, provider3
+    ensure
+      TeSS::Config.restrict_content_provider_selection = option
+    end
+  end
+
+  test 'get_editable_providers with unrestricted provider selection' do
+    option = TeSS::Config.restrict_content_provider_selection
+    begin
+      TeSS::Config.restrict_content_provider_selection = false
+      curator = users(:curator)
+      admin = users(:admin)
+      owner = users(:another_regular_user)
+      editor = users(:collaborative_user)
+      provider = content_providers(:goblet)
+      provider2 = content_providers(:iann)
+      provider3 = owner.content_providers.create!(title: 'Something', url: 'https://website.internet')
+      provider.editors << editor
+
+      # Curator
+      assert_includes curator.get_editable_providers, provider
+      assert_includes curator.get_editable_providers, provider2
+      assert_includes curator.get_editable_providers, provider3
+
+      # Admin
+      assert_includes admin.get_editable_providers, provider
+      assert_includes admin.get_editable_providers, provider2
+      assert_includes admin.get_editable_providers, provider3
+
+      # ContentProvider owner
+      assert_includes owner.get_editable_providers, provider
+      assert_includes owner.get_editable_providers, provider2
+      assert_includes owner.get_editable_providers, provider3
+
+      # Editor
+      assert_includes editor.get_editable_providers, provider
+      assert_includes editor.get_editable_providers, provider2
+      assert_includes editor.get_editable_providers, provider3
+    ensure
+      TeSS::Config.restrict_content_provider_selection = option
+    end
+  end
+
+  test 'get_editable_providers should not create records as a side-effect' do
+    provider = content_providers(:goblet)
+    curator = users(:curator)
+
+    assert_empty provider.editors
+    assert_no_difference(-> { provider.editors.count }) do
+      assert_includes curator.get_editable_providers, provider
+    end
+    assert_empty provider.reload.editors
+  end
 end

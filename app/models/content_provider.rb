@@ -1,4 +1,7 @@
 class ContentProvider < ApplicationRecord
+  # The order of these determines which providers have precedence when scraping.
+  # Low -> High
+  PROVIDER_TYPE = ['Portal', 'Organisation', 'Project']
 
   include PublicActivity::Common
   include LogParameterChanges
@@ -33,11 +36,10 @@ class ContentProvider < ApplicationRecord
   # Validate the URL is in correct format via valid_url gem
   validates :url, url: true
 
+  validates :content_provider_type, presence: true, inclusion: { in: PROVIDER_TYPE }
+
   clean_array_fields(:keywords, :approved_editors)
 
-  # The order of these determines which providers have precedence when scraping.
-  # Low -> High
-  PROVIDER_TYPE = ['Portal', 'Organisation', 'Project']
   has_image(placeholder: TeSS::Config.placeholder['provider'])
 
   if TeSS::Config.solr_enabled
@@ -85,7 +87,7 @@ class ContentProvider < ApplicationRecord
   end
 
   def precedence
-    PROVIDER_TYPE.index(content_provider_type)
+    PROVIDER_TYPE.index(content_provider_type) || 0
   end
 
   def self.check_exists(content_provider_params)
@@ -123,19 +125,15 @@ class ContentProvider < ApplicationRecord
       editor.editables.reload
 
       # transfer events to the provider's user
-      editor.events.each do |event|
-        if event.content_provider.id == id
-          event.user = user
-          event.save!
-        end
+      editor.events.where(content_provider_id: id).find_each do |event|
+        event.user = user
+        event.save!
       end
 
       # transfer materials to the provider's user
-      editor.materials.each do |material|
-        if material.content_provider.id == id
-          material.user = user
-          material.save!
-        end
+      editor.materials.where(content_provider_id: id).find_each do |material|
+        material.user = user
+        material.save!
       end
       editor.reload
       editor.save!

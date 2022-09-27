@@ -1,24 +1,84 @@
 # TeSS
 
+[![Actions Status](https://github.com/ElixirTeSS/TeSS/workflows/Test/badge.svg)](https://github.com/ElixirTeSS/TeSS/actions)
+
 [ELIXIR's](https://www.elixir-europe.org/) Training e-Support Service using Ruby on Rails.
 
-[![Actions Status](https://github.com/ElixirTeSS/TeSS/workflows/Test/badge.svg)](https://github.com/ElixirTeSS/TeSS/actions)
+TeSS makes use of the following services to function:
+- PostgreSQL - Database
+- Solr - Search
+- Sidekiq - Asynchronous tasks
+- Redis - Caching
+- Nominatim - Geocoding
+- Google Maps API - Maps and address autocompletion
 
 ## Installation
 
-Using docker: see [here](docs/docker.md)
+### Development
+TeSS can either be installed using [Docker](docs/docker.md#Development), or [natively](docs/install.md) on an Ubuntu-like OS 
+(some Mac OSX guidance also provided).
 
-Native: see [here](docs/install.md)
+### Production
 
-## Basic API
+To run TeSS in production, see either the [Docker guide](docs/docker.md#Production), 
+or the [Ubuntu-like OS guide](docs/production.md).
 
-A record can be viewed as json by appending .json, for example:
+## Customization
+
+See [here](docs/customization.md) for an overview of how you can customize your TeSS deployment.
+
+## API
+
+TeSS has 2 JSON APIs, a newer [JSON-API](https://jsonapi.org/) conformant API that is currently read-only, 
+and a legacy API that supports both read and write, but only for Events and Materials.
+
+### Authentication
+
+Both APIs use token authentication. You can see/change your API token from your TeSS profile page.
+
+You can pass your credentials either using HTTP headers:
+```
+X-User-Email lisa@example.com
+X-User-Token 65gONMyVZXXkgnksghzB  
+```
+
+or in your request:
+
+```json
+{
+  "user_email" : "lisa@example.com",
+  "user_token" : "65gONMyVZXXkgnksghzB",  
+  "material": {
+    "title": "API example",
+    ...
+  }
+}
+```
+
+### JSON-API
+
+A read-only API conforming to the [JSON-API](https://jsonapi.org/) specification.
+Currently supports viewing, browsing, searching and filtering across Events, Materials, Workflows, Providers and Users.
+
+[Click here to view documentation](https://tess.elixir-europe.org/api/json_api) 
+
+A record can be viewed through this API by appending `.json_api` to the URL, for example:
+
+    http://localhost:3000/materials.json_api
+    http://localhost:3000/materials/1.json_api
+
+### Legacy API
+
+A simple read/write API supporting Events and Materials.
+  
+[Click here to view documentation](https://tess.elixir-europe.org/api/legacy)
+
+A record can be viewed as json by appending `.json` to the URL, for example:
 
     http://localhost:3000/materials.json
     http://localhost:3000/materials/1.json
 
-The materials controller has been made token authenticable, so it is possible for a user with an auth token to post
-to it. To generate the auth token the user model must first be saved.
+#### Example
 
 To create a material by posting, post to this URL:
 
@@ -32,58 +92,10 @@ Structure the JSON thus:
         "material": {
             "title": "API example",
             "url": "http://example.com",
-            "short_description": "This API is fun and easy",
+            "description": "This API is fun and easy",
             "doi": "Put some stuff in here"
         }
     }
-
-A bundle install and rake db:migrate, followed by saving the user as mentioned above, should be enough to get this
-working.
-
-## Rake tasks
-
-To find suggestions of EDAM topics for materials, you can run this rake task. This requires redis and sidekiq to be running as it will add jobs to a queue. It uses BioPortal Annotator web service against the materials description to create suggestions
-
-    bundle exec rake tess:add_topic_suggestions
-
-## Live deployment
-
-Although designed for CentOS, this document can be followed quite closely to set up a Rails app to work with Apache and Passenger:
-
-    https://www.digitalocean.com/community/tutorials/how-to-setup-a-rails-4-app-with-apache-and-passenger-on-centos-6
-
-To set up TeSS in production, do:
-
-    bundle exec rake db:setup RAILS_ENV=production
-
-which will do db:create, db:schema:load, db:seed. If you want the DB dropped as well:
-
-    bundle exec rake db:reset RAILS_ENV=production
-
-...which will do db:drop, db:setup
-
-    unset XDG_RUNTIME_DIR
-
-(may need setting in ~/.profile or similar if rails console moans about permissions.)
-
-Delete all from Solr if need be and reindex it:
-
-    curl http://localhost:8983/solr/update?commit=true -d  '<delete><query>*:*</query></delete>'
-
-    bundle exec rake sunspot:solr:reindex RAILS_ENV=production
-
-Create an admin user and assign it appropriate 'admin' role bu looking up that role in console in model Role (default roles should be created automatically).
-
-The first time and each time a css or js file is updated:
-
-    bundle exec rake assets:clean RAILS_ENV=production
-
-    bundle exec rake assets:precompile RAILS_ENV=production
-
-Restart your Web server.
-
----
-
 ### Scraper documentation
 
 When running the scrapers a file ingestion.yml needs to exist with the structure as seen in ingestion.example.yml. A ContentProvider class object needs to exist in the db with the same name as the provider given in the sources list.  

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_27_141304) do
+ActiveRecord::Schema.define(version: 2022_07_25_143205) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -161,6 +161,7 @@ ActiveRecord::Schema.define(version: 2022_05_27_141304) do
     t.integer "content_provider_id"
     t.integer "user_id"
     t.boolean "online", default: false
+    t.decimal "cost_value"
     t.date "last_scraped"
     t.boolean "scraper_record", default: false
     t.string "keywords", default: [], array: true
@@ -184,7 +185,6 @@ ActiveRecord::Schema.define(version: 2022_05_27_141304) do
     t.text "prerequisites"
     t.text "tech_requirements"
     t.string "cost_basis"
-    t.decimal "cost_value"
     t.string "cost_currency"
     t.string "fields", default: [], array: true
     t.index ["online"], name: "index_events_on_online"

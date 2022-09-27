@@ -29,7 +29,6 @@
 //= require eonasdan-bootstrap-datetimepicker
 //= require devbridge-autocomplete
 //= require clipboard
-//= require url_checker
 //= require ardc_vocab_widget_v2
 //= require_tree ./templates
 //= require_tree .
@@ -79,23 +78,6 @@ function reposition_tiles(container, tileClass){
 }
 
 document.addEventListener("turbolinks:load", function() {
-    // Show the tab associated with the window location hash (e.g. "#packages")
-    if (window.location.hash) {
-        var tab = $('ul.nav a[href="' + window.location.hash + '"]');
-        if (tab.length) {
-            // This terrible hack gets around the fact that event handlers in view templates get bound after the
-            // `tab.tab('show')` executes, so nothing happens.
-            setTimeout(function () { tab.tab("show"); }, 50);
-        }
-    }
-
-    // Store the open tab in the window location hash
-    $(".nav-tabs a").on("shown.bs.tab", function(e) {
-        var scrollPos = $("html").scrollTop() || $("body").scrollTop();
-        window.location.hash = this.hash;
-        $("html,body").scrollTop(scrollPos);
-    });
-
     // Disabled tabs
     $(".nav-tabs li a[data-toggle='tooltip']").tooltip();
     $(".nav-tabs li.disabled a").click(function (e) { e.preventDefault(); return false });
@@ -143,57 +125,19 @@ document.addEventListener("turbolinks:load", function() {
     new Clipboard(".clipboard-btn");
 
     // Autocompleters ("app/views/common/_autocompleter.html.erb")
-    $("[data-role='autocompleter-group']").each(function () {
-        var existingValues = JSON.parse($(this).find('[data-role="autocompleter-existing"]').html()) || [];
-        var listElement = $(this).find('[data-role="autocompleter-list"]');
-        var inputElement = $(this).find('[data-role="autocompleter-input"]');
-        var url = $(this).data("url");
-        var prefix = $(this).data("prefix");
-        var labelField = $(this).data("labelField") || "title";
-        var idField = $(this).data("idField") || "id";
-        var templateName = $(this).data("template") || "autocompleter/resource";
+    Autocompleters.init();
 
-        // Render the existing associations on page load
-        if (!listElement.children("li").length) {
-            for (var i = 0; i < existingValues.length; i++) {
-                listElement.append(HandlebarsTemplates[templateName](existingValues[i]));
-            }
-        }
+    // Collaborations ("app/views/collaborations/_collaborators_button.html.erb")
+    Collaborations.init();
 
-        inputElement.autocomplete({
-            serviceUrl: url,
-            dataType: 'json',
-            deferRequestBy: 300, // Wait 300ms before submitting to stop search being flooded
-            paramName: 'q',
-            transformResult: function(response) {
-                return {
-                    suggestions: $.map(response, function(item) {
-                        return { value: item[labelField], data: item[idField], item: item };
-                    })
-                };
-            },
-            onSelect: function (suggestion) {
-                // Don't add duplicates
-                if (!$("[data-id='" + suggestion.data + "']", listElement).length) {
-                    var obj = { item: suggestion.item };
-                    if (prefix) {
-                        obj.prefix = prefix;
-                    }
+    // Address finder ("app/views/events/partials/_address_finder.html.erb")
+    MapSearch.init();
 
-                    listElement.append(HandlebarsTemplates[templateName](obj));
-                }
+    // Map on event show page
+    Map.init();
 
-                $(this).val('').focus();
-            },
-            onSearchStart: function (query) {
-                query.q = query.q + '*';
-                inputElement.addClass('loading');
-            },
-            onSearchComplete: function () {
-                inputElement.removeClass('loading');
-            }
-        });
-    });
+    // Map on event index page
+    EventsMap.init();
 
     var setStarButtonState = function (button) {
         if (button.data('starred')) {
@@ -228,23 +172,26 @@ document.addEventListener("turbolinks:load", function() {
         })
     });
 
-    // TODO: Try to get scrollspy to work. Something is preventing it from triggering
-    $('.about-block').scrollspy({
+    $('body').scrollspy({
         target: '.about-page-menu',
         offset: 40
     });
 
     $('.about-page-menu').affix({
         offset: {
-            top: 100,
-            bottom: function () {
-                return (this.bottom = $('.footer').outerHeight(true))
-            }
+            top: 100
         }
     });
 
     $("a[rel~=popover], .has-popover").popover();
     $("a[rel~=tooltip], .has-tooltip").tooltip();
+
+    // Prevent form being un-intentionally submitted when enter key is pressed in a text field.
+    $(document).on('keydown', 'form.prevent-enter-submit :input:not(textarea):not(:submit)', function(event) {
+        if (event.keyCode === 13) {
+            return false;
+        }
+    });
 });
 
 function truncateWithEllipses(text, max)
@@ -254,6 +201,13 @@ function truncateWithEllipses(text, max)
 
 $(document).on('click', '.delete-list-item', function () {
     $(this).parents('li').remove();
+    return false;
+});
+
+$(document).on('click', '.clear-autocompleter-singleton', function () {
+    var wrapper = $(this).parents('[data-role="autocompleter-group"]');
+    $(this).parents('li').remove();
+    $('[data-role="autocompleter-input"]', wrapper).show();
     return false;
 });
 
