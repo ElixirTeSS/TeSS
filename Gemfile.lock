@@ -610,6 +610,11 @@ GEM
     scanf (1.0.0)
     sdoc (1.1.0)
       rdoc (>= 5.0)
+    sentry-rails (5.4.2)
+      railties (>= 5.0)
+      sentry-ruby (~> 5.4.2)
+    sentry-ruby (5.4.2)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
     shacl (0.3.0)
       json-ld (~> 3.2)
       rdf (~> 3.2, >= 3.2.8)
@@ -682,6 +687,7 @@ GEM
     time_diff (0.3.0)
       activesupport
       i18n
+    timecop (0.9.5)
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
@@ -761,6 +767,7 @@ DEPENDENCIES
   jquery-rails
   jquery-simplecolorpicker-rails
   jquery-turbolinks
+  jquery-ui-rails
   json (>= 2.3.0)
   kt-paperclip (~> 7.0.0)
   linkeddata
@@ -777,7 +784,7 @@ DEPENDENCIES
   puma
   pundit (~> 1.1.0)
   rack-cors
-  rails (~> 6.0)
+  rails (= 6.1.6.1)
   rails-assets-clipboard (~> 1.5.12)!
   rails-assets-devbridge-autocomplete (~> 1.2.26)!
   rails-assets-eonasdan-bootstrap-datetimepicker (~> 4.17.42)!
@@ -789,7 +796,7 @@ DEPENDENCIES
   rdoc (>= 6.3.1)
   recaptcha
   redcarpet (~> 3.5.1)
-  redis (< 5.0.0)
+  redis (< 4.8.0)
   rest-client
   reverse_markdown
   rss
@@ -797,7 +804,9 @@ DEPENDENCIES
   ruby-debug-ide
   sass-rails (~> 5.0)
   sdoc (>= 1.1.0)
-  sidekiq (~> 6.4.0)
+  sentry-rails
+  sentry-ruby
+  sidekiq
   simple_form
   simple_token_authentication (~> 1.0)
   simplecov
@@ -805,6 +814,7 @@ DEPENDENCIES
   slim
   sunspot_rails!
   time_diff
+  timecop (~> 0.9.5)
   turbolinks
   tzinfo
   tzinfo-data
