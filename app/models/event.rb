@@ -155,12 +155,8 @@ class Event < ApplicationRecord
   end
 
   def upcoming?
-    # Handle nil for start date
-    if start.blank?
-      true
-    else
-      (Time.now < start)
-    end
+    # Should this be a scope instead?
+    Time.now < (self.end || self.start || 1.day.from_now) # handle empty end, start dates
   end
 
   def started?
