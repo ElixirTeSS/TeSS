@@ -9,6 +9,7 @@ class Workflow < ApplicationRecord
   include IdentifiersDotOrg
   include HasFriendlyId
   include CurationQueue
+  include HasDifficultyLevel
 
   if TeSS::Config.solr_enabled
     # :nocov:
@@ -35,10 +36,6 @@ class Workflow < ApplicationRecord
       string :target_audience, :multiple => true
       text :keywords
       string :keywords, :multiple => true
-      text :difficulty_level
-      string :difficulty_level do
-        DifficultyDictionary.instance.lookup_value(self.difficulty_level, 'title')
-      end
       text :contributors
       string :contributors, :multiple => true
 
@@ -54,8 +51,9 @@ class Workflow < ApplicationRecord
 
   has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
 
+  has_many :stars,  as: :resource, dependent: :destroy
+  
   validates :title, presence: true
-  validates :difficulty_level, controlled_vocabulary: { dictionary: DifficultyDictionary.instance }
 
   clean_array_fields(:keywords, :contributors, :authors, :target_audience)
 

@@ -69,7 +69,7 @@ var InternalResources = {
             '<input type="hidden" name="event[material_ids][]" value="' + obj.attr('id') + '" />' +
             '<div class="alert alert-info">' +
             obj.data('title') +
-            '<a href="#" class="delete-internal-resource pull-right" style="text-decoration: none;" ' +
+            '<a href="#" class="delete-internal-resource delete-icon pull-right" style="text-decoration: none;" ' +
             'onclick="delete_internal_resource(\'material_internal_resource_' + obj.attr('id') + '\')">' +
             '× </a></div></div>';
         $('#materials-list').append(new_element);
@@ -108,7 +108,7 @@ var InternalResources = {
                 var iconclass = "fa-list-alt";
             }
             $('#materials-results').append('' +
-                '<div id="' + item.id + '" class="col-md-12 col-sm-12 bounding-box" data-toggle=\"tooltip\" data-placement=\"top\" aria-hidden=\"true\" title=\"' + item.attributes['short-description'] + '\">' +
+                '<div id="' + item.id + '" class="col-md-12 col-sm-12 bounding-box" data-toggle=\"tooltip\" data-placement=\"top\" aria-hidden=\"true\" title=\"' + item.attributes['description'] + '\">' +
                 '<h4>' +
                 '<i class="fa ' +  iconclass + '"></i> ' +
                 '<a href="' + url + item.id + '" target="_blank">' +

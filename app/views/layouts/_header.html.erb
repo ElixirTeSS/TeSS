@@ -1,11 +1,9 @@
-<%# questionnaire header -%>
-<% if TeSS::Config.dig('questionnaire', 'show') %>
-  <nav class="questionnaire">
+<%# header notice -%>
+<% if TeSS::Config.header_notice&.strip.present? %>
+  <nav class="header-notice">
     <div class="container">
       <div class="text-center">
-        <div><%= TeSS::Config.questionnaire['message'] || "" %>
-          <%= link_to TeSS::Config.questionnaire['url'], TeSS::Config.questionnaire['url'], target: "_blank" %>
-        </div>
+        <%= raw TeSS::Config.header_notice %>
       </div>
     </div>
   </nav>

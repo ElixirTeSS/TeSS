@@ -18,12 +18,18 @@ class User < ApplicationRecord
     searchable do
       text :username
       text :email
+      boolean :unverified do
+        unverified_or_rejected?
+      end
+      boolean :shadowbanned do
+        shadowbanned?
+      end
     end
     # :nocov:
   end
 
   has_one :profile, inverse_of: :user, dependent: :destroy
-  CREATED_RESOURCE_TYPES = [:events, :materials, :workflows, :content_providers, :sources]
+  CREATED_RESOURCE_TYPES = [:events, :materials, :workflows, :content_providers, :sources, :collections]
   has_many :materials
   has_many :collections, dependent: :destroy
   has_many :workflows, dependent: :destroy
@@ -79,7 +85,7 @@ class User < ApplicationRecord
 
   scope :accepteds, -> { invited.where.not(invitation_accepted_at: nil) }
 
-  scope :visible, -> { non_default.where(invitation_token: nil).or(accepteds) }
+  scope :visible, -> { not_banned.non_default.verified.where(invitation_token: nil).or(accepteds) }
   # ---
 
   def self.find_for_database_authentication(warden_conditions)
@@ -234,6 +240,10 @@ class User < ApplicationRecord
     joins(:ban).where(bans: { shadow: true })
   end
 
+  def self.not_banned
+    left_outer_joins(:ban).where(bans: { id: nil })
+  end
+
   def using_omniauth?
     provider.present? && uid.present?
   end
@@ -269,8 +279,8 @@ class User < ApplicationRecord
   end
 
   def self.with_query(query)
-    joins(:profile).where('username LIKE :query or profiles.firstname LIKE :query or profiles.surname LIKE :query',
-                          query: "#{query}%")
+    joins(:profile).where('lower(username) LIKE :query or lower(profiles.firstname) LIKE :query or lower(profiles.surname) LIKE :query',
+                          query: "#{query.downcase}%")
   end
 
   def created_resources
@@ -278,15 +288,12 @@ class User < ApplicationRecord
   end
 
   def get_editable_providers
-    result = self.editables
-    ContentProvider.all.each do |prov|
-      if !result.include?(prov)
-        if prov.user == self or self.is_admin? or self.is_curator?
-          result << prov
-        end
-      end
+    relation = ContentProvider.order(:title)
+    if !TeSS::Config.restrict_content_provider_selection || is_admin? || is_curator?
+      relation.all
+    else
+      relation.find(content_provider_ids | editable_ids)
     end
-    result.sort_by { |obj| obj.title }
   end
 
   def get_inviter
@@ -294,6 +301,14 @@ class User < ApplicationRecord
       inviter = User.find_by_id(self.invited_by_id)
       inviter.username
     end
+  end
+
+  def self.verified
+    where.not(role_id: [Role.rejected, Role.unverified])
+  end
+
+  def unverified_or_rejected?
+    has_role?(Role.rejected.name) || has_role?(Role.unverified.name)
   end
 
   private
@@ -327,7 +342,7 @@ class User < ApplicationRecord
   end
 
   def consents_to_processing
-    unless processing_consent
+    if processing_consent!="1"
       errors.add(:base, "You must consent to #{TeSS::Config.site['title_short']} processing your data in order to register")
 
       false

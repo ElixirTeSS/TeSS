@@ -9,7 +9,7 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
 
 %>
 
-<% label ||= field_name.to_s.humanize %>
+<% label ||= f.object.class.human_attribute_name(field_name) %>
 <% model_name ||= f.object.class.name.underscore %>
 <% form_field_name = "#{model_name}[#{field_name.to_s}]" %>
 <% existing = f.object.send(field_name.to_sym) %>
@@ -17,6 +17,7 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
 <% required ||= false   # is a value required %>
 <% errors ||= []        # check error count %>
 <% title ||= ''         # check title defined %>
+<% hint ||= nil %>
 
 <div class="form-group<%= ' has-error' if errors.size > 0 %>" title='<%= title %>'>
   <% if required %>
@@ -27,6 +28,8 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
 
   <%= f.label field_name.to_sym, label, class: 'control-label' %>
   <%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
+
+  <%= content_tag(:p, hint, class: 'help-block') if hint %>
 
   <%= content_tag(:div, data: { role: 'multi-input', prefix: form_field_name }) do %>
     <%# This blank association is needed to trigger the delete when all associations are removed %>

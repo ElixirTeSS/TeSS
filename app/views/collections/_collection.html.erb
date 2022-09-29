@@ -1,10 +1,8 @@
 <li class="masonry-brick media-item ">
   <%= image_tag collection.image.url(:media), :class=>"media-image listing_image" %>
   <h3 class="media-heading"><%= title_with_privacy(collection) %></h3>
-  <p><%= collection.description  %></p>
+  <div class="text-justify" style="word-break: normal; display: inline-block;">
+    <%= render_markdown truncate(collection.description, length: 300, separator: ' ') %>
+  </div>
   <%= link_to '', collection, :class=>"media-view"%>
 </li>
-
-
-
-

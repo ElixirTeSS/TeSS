@@ -1,6 +1,6 @@
 # Docker
 
-TeSS can be run using Docker for development and in production.
+TeSS can be run using Docker for [development](#development) and in [production](#production).
 
 ## Prerequisites
 
@@ -109,22 +109,24 @@ Setup the TeSS configuration files:
 
 The production deployment is configured in the `docker-compose-prod.yml` file.
 
-    docker-compose -f docker-compose-prod.yml up -d
+Start services:
 
-### Other production tasks
+    docker-compose -f docker-compose-prod.yml up -d
 
 Run initial database setup:
 
-    docker-compose exec app bundle exec rake db:setup
+    docker-compose -f docker-compose-prod.yml exec app bundle exec rake db:setup DISABLE_DATABASE_ENVIRONMENT_CHECK=1
+
+### Other production tasks
 
 Run database migrations:
 
-    docker-compose exec app bundle exec rake db:migrate
+    docker-compose -f docker-compose-prod.yml exec app bundle exec rake db:migrate
 
 Precompile the assets, necessary if any CSS/JS/images are changed after building the image:
 
-    docker-compose exec app bundle exec rake assets:clean && bundle exec rake assets:precompile
+    docker-compose -f docker-compose-prod.yml exec app bundle exec rake assets:clean && bundle exec rake assets:precompile
 
 Reindex Solr:
 
-    docker-compose exec app bundle exec rake sunspot:reindex
+    docker-compose -f docker-compose-prod.yml exec app bundle exec rake sunspot:reindex

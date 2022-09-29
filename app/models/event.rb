@@ -103,6 +103,8 @@ class Event < ApplicationRecord
   has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
   has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 
+  has_many :stars,  as: :resource, dependent: :destroy
+
   validates :title, :url, presence: true
   validates :url, url: true
   validates :capacity, numericality: { greater_than_or_equal_to: 1 }, allow_blank: true
@@ -112,8 +114,10 @@ class Event < ApplicationRecord
   validates :latitude, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90, allow_nil: true }
   validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true }
   # validates :duration, format: { with: /\A[0-9][0-9]:[0-5][0-9]\z/, message: "must be in format HH:MM" }, allow_blank: true
+  validates :timezone, inclusion: { in: ActiveSupport::TimeZone::MAPPING.keys,
+                                    message: 'not found and cannot be linked to a valid timezone',
+                                    allow_blank: true }
   validate :allowed_url
-  validate :validate_timezone
   clean_array_fields(:keywords, :fields, :event_types, :target_audience,
                      :eligibility, :host_institutions, :sponsors)
   update_suggestions(:keywords, :target_audience, :host_institutions)
@@ -434,17 +438,19 @@ class Event < ApplicationRecord
     url = 'https://nominatim.openstreetmap.org/search.php'
     response = HTTParty.get(url,
                             query: args,
-                            headers: { 'User-Agent' => "Elixir TeSS <#{TeSS::Config.contact_email}>" })
+                            headers: { 'User-Agent' => "ELIXIR TeSS <#{TeSS::Config.contact_email}>" })
     (JSON.parse response.body, symbolize_names: true)[0]
   end
 
-  private
-
-  def validate_timezone
-    return if timezone.blank?
-
-    errors.add(:timezone, 'not found and cannot be linked to a valid timezone') unless ActiveSupport::TimeZone::MAPPING.keys.include? timezone
+  def to_bioschemas
+    if event_types.include?('workshops_and_courses')
+      [Bioschemas::CourseGenerator.new(self)]
+    else
+      [Bioschemas::EventGenerator.new(self)]
+    end
   end
+
+  private
 
   def allowed_url
     disallowed = (TeSS::Config.blocked_domains || []).any? do |regex|

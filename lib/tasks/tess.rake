@@ -228,4 +228,28 @@ namespace :tess do
     puts "Task: check_timezones - finished."
   end
 
+  desc 'Fetch and convert SPDX licenses from GitHub'
+  task fetch_spdx: :environment do
+    old_licenses = YAML.load(File.read(File.join(Rails.root, 'config', 'dictionaries', 'licences_old.yml')))
+    url = 'https://raw.githubusercontent.com/spdx/license-list-data/master/json/licenses.json'
+    json = URI.open(url).read
+    hash = JSON.parse(json)
+    transformed = {
+      'notspecified' => {
+        'title' => 'License Not Specified'
+      }
+    }
+    hash['licenses'].each do |license|
+      id = license.delete('licenseId')
+      license['title'] = license.delete('name')
+      transformed[id] = license.transform_keys(&:underscore)
+      # Supplement with URLs from old licences dictionary
+      old_url = old_licenses.dig(id, 'url')
+      unless old_url.blank? || transformed[id]['see_also'].include?(old_url)
+        transformed[id]['see_also'] << old_url
+      end
+    end
+
+    File.write(File.join(Rails.root, 'config', 'dictionaries', 'licences.yml'), transformed.to_yaml)
+  end
 end

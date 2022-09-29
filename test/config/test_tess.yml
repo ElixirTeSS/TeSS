@@ -1,5 +1,5 @@
 test:
-  base_url: http://localhost:3000
+  base_url: http://www.example.com
   contact_email: test@example.com
   sender_email: no-reply@example.com
   solr_enabled: false
@@ -35,10 +35,7 @@ test:
     zoom:
       latitude: 3
       longitude: 13
-  questionnaire:
-    show: true
-    message: ''
-    url: ''
+  header_notice:
   parent_org:
     name: ''
     url: ''

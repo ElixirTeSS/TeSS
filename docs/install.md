@@ -1,7 +1,7 @@
 # Install
 
-The following guide is for installing TeSS natively (without Docker) on an Ubuntu-like OS. Some notes on installing under
-Mac OSX are also provided.
+The following guide is for installing TeSS natively (without Docker) on an Ubuntu-like OS. 
+Some notes on installing under Mac OSX are also provided.
 
 ## Setup
 
@@ -41,10 +41,9 @@ Clone the TeSS source code via git:
 ### RVM and Ruby
 
 It is typically recommended to install Ruby with RVM. With RVM, you can specify the version of Ruby you want
-installed, plus a whole lot more (e.g. gemsets). Full installation instructions for RVM are [available online](http://rvm.io/rvm/install/).
+installed. Full installation instructions for RVM are [available online](http://rvm.io/rvm/install/).
 
-TeSS was developed using Ruby 2.7.1 and we recommend using version 2.7.1 or higher. To install TeSS' current version of ruby and create a gemset, you
-can do something like the following:
+To install TeSS' current version of ruby and create a gemset, you can do something like the following:
 
     rvm install `cat .ruby-version`
 
@@ -74,15 +73,19 @@ Install postgres and add a postgres user called 'tess_user' for the use by the T
 Make sure tess_user is either the owner of the TeSS database (to be created in the next step), or is a superuser.
 Otherwise, you may run into some issues when running and managing the TeSS app.
 
-Normally you'd start postgres with something like (passing the path to your database with -D):
+On Mac OS X, normally you'd start postgres with something like (passing the path to your database with -D):
 
     pg_ctl -D ~/Postgresql/data/ start
+
+### Create the database owner
 
 From command prompt:
 
     createuser --superuser tess_user
 
 _(Note: You may need to run the above, and following commands as the `postgres` user: `sudo su - postgres`)_
+
+### Set the database owner's password and permissions
 
 Connect to your postgres database console as database admin 'postgres' (modify to suit your postgres database installation):
 
@@ -140,11 +143,11 @@ By default, solr should be running at localhost:8983
 
 ### Create a "collection"
 
-Next, create a collection for TeSS to use (assuming TeSS is installed at `/home/tess/TeSS`):
+Next, create a collection for TeSS to use (assuming TeSS is checked out at `/home/tess/TeSS`):
 
-    sudo su - solr -c "/opt/solr/bin/solr create -c tess_development -d /home/tess/TeSS/solr/conf"
+    sudo su - solr -c "/opt/solr/bin/solr create -c tess -d /home/tess/TeSS/solr/conf"
 
-`tess_development` here is the collection name, which should match what is configured in your `config/sunspot.yml`.
+`tess` here is the collection name, which should match what is configured in your `config/sunspot.yml`.
 
 ### Re-indexing
 
@@ -223,3 +226,43 @@ Then go to the applications Rails console:
 Find the user and assign them the administrative role. This can be completed by running this (where myemail@domain.co is the email address you used to register with):
 
     2.2.6 :001 > User.find_by_email('myemail@domain.co').update(role: Role.find_by_name('admin'))
+
+## Production
+
+Although designed for CentOS, this document can be followed quite closely to set up a Rails app to work with Apache and Passenger:
+
+    https://www.digitalocean.com/community/tutorials/how-to-setup-a-rails-4-app-with-apache-and-passenger-on-centos-6
+
+To set up TeSS in production, do:
+
+    bundle exec rake db:setup RAILS_ENV=production
+
+which will do db:create, db:schema:load, db:seed. If you want the DB dropped as well:
+
+    bundle exec rake db:reset RAILS_ENV=production
+
+...which will do db:drop, db:setup
+
+    unset XDG_RUNTIME_DIR
+
+(may need setting in ~/.profile or similar if rails console moans about permissions.)
+
+Delete all from Solr if need be and reindex it:
+
+    curl http://localhost:8983/solr/update?commit=true -d  '<delete><query>*:*</query></delete>'
+
+    bundle exec rake sunspot:solr:reindex RAILS_ENV=production
+
+Create an admin user and assign it appropriate 'admin' role bu looking up that role in console in model Role (default roles should be created automatically).
+
+The first time and each time a css or js file is updated:
+
+    bundle exec rake assets:clean RAILS_ENV=production
+
+    bundle exec rake assets:precompile RAILS_ENV=production
+
+Restart your Web server.
+
+---
+
+****

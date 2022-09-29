@@ -1,4 +1,7 @@
 # The helper for Events classes
+
+require 'rss'
+
 module EventsHelper
 
   EVENTS_INFO = "An event in #{TeSS::Config.site['title_short']} is a link to a single training event sourced by a\
@@ -47,6 +50,49 @@ module EventsHelper
     cal.to_ical
   end
 
+  def rss_from_collection(events)
+    RSS::Maker.make('0.91') do |maker|
+      # see https://www.rssboard.org/rss-0-9-1-netscape
+      # required fields
+      maker.channel.description = "#{TeSS::Config.site['title_short']} #{describe_event_filters}"
+      maker.channel.language = 'en'
+      maker.channel.title = "#{TeSS::Config.site['title']} Event Feed"
+      maker.channel.link = controller.request.url
+
+      # optional fields
+      # maker.channel.image = # to add later
+      maker.channel.lastBuildDate = events.map(&:updated_at).max&.to_s
+      maker.channel.webMaster = TeSS::Config.contact_email
+      maker.channel.managingEditor = TeSS::Config.contact_email
+      maker.image.url = image_url(TeSS::Config.site['logo'])
+      maker.image.title = TeSS::Config.site['logo_alt']
+
+      events.each do |event|
+        maker.items.new_item do |item|
+          # required fields
+          item.title = "#{event.title} - #{event.organizer}"
+          item.link = event_url(event)
+
+          # optional fields
+          item.description = event.description
+
+          # we should think about our RSS feed updating rules. If a line of the event description
+          # changes, do we repost it? I don't think so.
+          # also this field is not in the specification...
+          item.updated = event.updated_at.to_s
+        end
+      end
+    end
+  end
+
+  def describe_event_filters
+    if search_and_facet_params
+      "Events filtered: #{search_and_facet_params.to_h.map { |k, v| "#{k}: #{v}" }.join(', ')}"
+    else
+      'Events'
+    end
+  end
+
   def csv_column_names
     return %w(Title Organizer Start End ContentProvider)
   end
@@ -60,5 +106,25 @@ module EventsHelper
         end
       end
     end
+  end
+
+  def google_maps_embed_api_tag(event)
+    src = 'https://www.google.com/maps/embed/v1/place' +
+      "?key=#{Rails.application.secrets.google_maps_api_key}" +
+      "&q=#{event.latitude},#{event.longitude}"
+
+    content_tag(:iframe, '', width: 400, height: 250, frameborder: 0, style: 'border: 0', class: 'google-map',
+                    src: src, allowfullscreen: true)
+  end
+
+  def google_maps_javascript_api_tag(event)
+    content_tag(:div, 'Loading map...', id: 'map', class: 'google-map', data: {
+      'map-latitude': event.latitude,
+      'map-longitude': event.longitude,
+      'map-suggested-latitude': event.suggested_latitude,
+      'map-suggested-longitude': event.suggested_longitude,
+      'map-marker-title': event.title,
+      'map-suggested-marker-image': image_url('suggestion.png')
+    })
   end
 end

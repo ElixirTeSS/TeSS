@@ -53,4 +53,16 @@ class ContentProviderTest < ActiveSupport::TestCase
 
   end
 
+  test 'should validate content provider type' do
+    content_provider = ContentProvider.new(title: 'New Provider',
+                                           url: 'https://website.internet',
+                                           user: users(:regular_user),
+                                           content_provider_type: 'Something')
+    refute content_provider.valid?
+    assert content_provider.errors.added?(:content_provider_type, :inclusion, value: 'Something')
+
+    content_provider.content_provider_type = 'Organisation'
+    assert content_provider.valid?
+  end
+
 end

@@ -14,10 +14,11 @@ class MaterialsController < ApplicationController
   # GET /materials.json?q=queryparam
 
   def index
+    @bioschemas = @materials.flat_map(&:to_bioschemas)
     respond_to do |format|
+      format.html
       format.json
       format.json_api { render({ json: @materials }.merge(api_collection_properties)) }
-      format.html
     end
   end
 
@@ -26,10 +27,11 @@ class MaterialsController < ApplicationController
   # TODO: This is probably not a good way of concealing an individual record from a user.
   # TODO: In any case, it breaks various tests.
   def show
+    @bioschemas = @material.to_bioschemas
     respond_to do |format|
+      format.html
       format.json
       format.json_api { render json: @material }
-      format.html
     end
   end
 

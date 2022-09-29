@@ -62,7 +62,7 @@ render :partial => 'common/dropdown',
           <li>
             <%= r[0] %>
             <input type="hidden" data-field="<%= field_name %>" name="<%= model_name %>[<%= field_name %>][]" value="<%= r[1] %>" />
-            <input type="button" value="<%= "&times;".html_safe %>" class="dropdown-option-delete"
+            <input type="button" value="<%= "&times;".html_safe %>" class="dropdown-option-delete delete-icon"
                    data-field="<%= field_name %>" data-model='<%= model_name %>'
                    data-value="<%= r[1] %>" data-name="<%= r[0] %>" />
           </li>

@@ -1,4 +1,4 @@
-<%= simple_form_for @content_provider, html: { class: "content_provider", multipart: true } do |f| %>
+<%= simple_form_for @content_provider, html: { class: 'prevent-enter-submit', multipart: true } do |f| %>
 
   <%= render partial: 'common/error_summary', locals: { resource: @content_provider } %>
 
@@ -17,11 +17,17 @@
   <%= f.input :content_provider_type, label: 'Type', collection: ContentProvider::PROVIDER_TYPE, include_blank: false %>
 
   <% if current_user.is_admin? %>
-    <%= f.input :user_id, label: 'Owner', collection: User.all %>
+    <%= f.autocompleter :user, url: users_path, transform_function: 'users', template: 'autocompleter/content_provider_owner',
+                        singleton: true,
+                        label_field: :name %>
   <% end %>
 
   <% if !TeSS::Config.feature['disabled'].include? 'approved_editors' %>
-    <%= f.dropdown :approved_editors, options: get_list_of_user_names, label: 'Approved Editors' %>
+    <%= f.autocompleter :approved_editors, url: users_path, transform_function: 'users', template: 'autocompleter/user',
+                        form_field_name: 'content_provider[approved_editors]',
+                        label_field: :name,
+                        id_field: :username,
+                        existing_items_method: :editors %>
   <% end %>
 
   <%= f.multi_input :keywords %>

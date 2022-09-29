@@ -5,7 +5,7 @@ class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :clone, :update, :destroy, :update_collections, :add_term, :reject_term,
                                    :redirect, :report, :update_report, :add_data, :reject_data]
   before_action :set_breadcrumbs
-  before_action :disable_pagination, only: :index, if: lambda { |controller| controller.request.format.ics? or controller.request.format.csv? }
+  before_action :disable_pagination, only: :index, if: lambda { |controller| controller.request.format.ics? or controller.request.format.csv? or controller.request.format.rss? }
 
   include SearchableIndex
   include ActionView::Helpers::TextHelper
@@ -15,12 +15,14 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
+    @bioschemas = @events.flat_map(&:to_bioschemas)
     respond_to do |format|
+      format.html
       format.json
       format.json_api { render({ json: @events }.merge(api_collection_properties)) }
-      format.html
       format.csv
       format.ics
+      format.rss
     end
   end
 
@@ -28,10 +30,11 @@ class EventsController < ApplicationController
   # GET /events/1.json
   # GET /events/1.ics
   def show
+    @bioschemas = @event.to_bioschemas
     respond_to do |format|
+      format.html
       format.json
       format.json_api { render json: @event }
-      format.html
       format.ics { send_data @event.to_ical, type: 'text/calendar', disposition: 'attachment', filename: "#{@event.slug}.ics" }
     end
   end

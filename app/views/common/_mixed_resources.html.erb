@@ -6,22 +6,22 @@
   </p>
 
   <div class="row">
-    <div class="col-md-1" style="padding-left: 0;">
-      <div class="resource_type_icon">
+    <div class="col-md-1">
+      <div class="resource-type-icon">
         <% if [Event, Material, Collection].include?(resource.class) %>
           <%= icon_for(resource.class.name.underscore.to_sym, 'large') %>
         <% end %>
       </div>
     </div>
-    <div class="col-md-10 latest_resource_description">
+    <div class="col-md-9 latest_resource_description">
       <% if resource.respond_to? 'description' %>
         <%= render_markdown truncate(resource.description, length: 300, separator: ' ') %>
       <% end %>
     </div>
-    <div class="col-md-1 pull-right">
-      <% if resource.content_provider %>
-        <%= link_to resource.content_provider, :class => "pull-right" do %>
-          <%= image_tag(resource.content_provider.image.url, :class => "small-content-provider-logo") %>
+    <div class="col-md-2">
+      <% if resource.respond_to?(:content_provider) && resource.content_provider %>
+        <%= link_to resource.content_provider, class: "pull-right" do %>
+          <%= image_tag(resource.content_provider.image.url, class: "medium-content-provider-logo") %>
         <% end %>
       <% end %>
     </div>

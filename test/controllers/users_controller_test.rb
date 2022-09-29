@@ -399,4 +399,15 @@ class UsersControllerTest < ActionController::TestCase
     assert assigns(:users).include?(users(:regular_user))
     refute assigns(:users).include?(users(:another_regular_user))
   end
+
+  test 'should not show banned or unverified/basic users in index' do
+    get :index
+    assert_response :success
+    all_users = assigns(:users).to_a
+    assert users(:shadowbanned_user).banned?
+    assert_not_includes all_users, users(:shadowbanned_user)
+    assert_not_includes all_users, users(:unverified_user)
+    assert_not_includes all_users, users(:basic_user)
+    assert_includes all_users, users(:regular_user)
+  end
 end
