@@ -53,7 +53,7 @@
 
             <div class="col-lg-10 about-resource">
               <div id='materials' class="h4">Materials</div>
-              <p><%== raw t 'about.materials' %></p>
+              <p><%== raw t 'about.materials', site: TeSS::Config.site['title_short'] %></p>
 
               <p><%= TeSS::Config.site['title_short'] %> collects materials from
                 <%= Material.distinct.count(:content_provider_id) %>
@@ -76,19 +76,19 @@
 
               <div class="col-lg-10 about-resource">
                 <div id='workflows' class="h4">Training Workflows</div>
-                <p><%== raw t 'about.workflows' %></p>
+                <p><%== raw t 'about.workflows', site: TeSS::Config.site['title_short'] %></p>
               </div>
             </div>
 
             <!-- INDIVIDUAL WORKFLOW TYPES-->
             <div class="sub-about-block">
               <div class="h5">Learning Paths</div>
-              <p><%== raw t 'about.learning_paths' %></p>
+              <p><%== raw t 'about.learning_paths', site: TeSS::Config.site['title_short'] %></p>
             </div>
 
             <div class="sub-about-block">
               <div class="h5">Educational Resource</div>
-              <p><%== raw t 'about.resources' %></p>
+              <p><%== raw t 'about.resources', site: TeSS::Config.site['title_short'] %></p>
             </div>
 
           </div>

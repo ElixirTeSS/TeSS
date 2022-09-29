@@ -38,3 +38,4 @@ shared
 vendor/bundle
 
 TeSS.code-workspace
+.DS_store
