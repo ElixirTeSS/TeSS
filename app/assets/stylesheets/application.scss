@@ -1068,7 +1068,7 @@ input[type=checkbox].field-lock + label:before,
     }
   }
 
-  li.prev, li.next {
+  li.prev, li.next, li.first, li.last {
     span, a {
       color: transparent !important;
       width: 30px;
@@ -1090,7 +1090,18 @@ input[type=checkbox].field-lock + label:before,
     span, a {
       background-image: url(modern/icons/chevron-right-icon.svg);
     }
+  }
 
+  li.first {
+    span, a {
+      background-image: url(modern/icons/double-left-icon.svg);
+    }
+  }
+
+  li.last {
+    span, a {
+      background-image: url(modern/icons/double-right-icon.svg);
+    }
   }
 
   li.disabled {
