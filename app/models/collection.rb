@@ -77,16 +77,14 @@ class Collection < ApplicationRecord
 
   # implement methods to allow processing as resource
   def last_scraped
-    return nil
+    nil
   end
 
   def content_provider
-    return nil
+    nil
   end
 
   def scientific_topics
-    return nil
+    []
   end
-
-
 end
