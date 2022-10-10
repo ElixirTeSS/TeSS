@@ -117,13 +117,7 @@ class User < ApplicationRecord
 
   # Check if user is owner of a resource
   def is_owner?(resource)
-    return false if resource.nil?
-    return false if !resource.respond_to?("user".to_sym)
-    if self == resource.user
-      return true
-    else
-      return false
-    end
+    resource&.respond_to?(:user) && resource.user == self
   end
 
   def is_curator?
