@@ -55,7 +55,7 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
   def display_attribute(resource, attribute, markdown: false) # resource e.g. <#Material> & symbol e.g. :target_audience
     value = resource.send(attribute)
     value = render_markdown(value) if markdown
-    value = yield(value) if block_given?
+    value = yield(value) if block_given? && value.present?
     string = "<p class=\"#{attribute}\">"
     unless value.blank? || value.try(:strip) == 'License Not Specified'
       string << "<b> #{resource.class.human_attribute_name(attribute)}: </b> #{value}"
