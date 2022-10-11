@@ -77,7 +77,7 @@ class User < ApplicationRecord
   attr_accessor :publicize_email
 
   # --- scopes
-  scope :non_default, -> { where.not(id: User.get_default_user.id) }
+  scope :non_default, -> { where.not(role_id: Role.fetch('default_user').id) }
 
   scope :invited, -> { where.not(invitation_token: nil) }
 
