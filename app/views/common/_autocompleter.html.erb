@@ -3,6 +3,7 @@
   form_field_name ||= "#{model_name}[#{field_name.to_s.singularize}_#{id_field.to_s}#{singleton ? '' : 's'}]"
   template ||= nil
   transform_function ||= nil
+  group_by ||= nil
   existing_items_method ||= field_name
   data = { role: 'autocompleter-group', url: url, prefix: form_field_name,
            'label-field' => label_field.to_s,
@@ -10,6 +11,7 @@
   data[:template] = template if template
   data[:singleton] = singleton unless singleton.nil?
   data['transform-function'] = transform_function if transform_function
+  data['group-by'] = group_by if group_by
   json = Array(f.object.send(existing_items_method)).map do |r|
     { item: { id: r.send(id_field),
               id_field => r.send(id_field),

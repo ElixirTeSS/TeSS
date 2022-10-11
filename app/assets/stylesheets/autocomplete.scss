@@ -5,7 +5,7 @@
 }
 
 .autocomplete-suggestion {
-  padding: 2px 5px;
+  padding: 2px 5px 2px 10px;
   white-space: nowrap;
   overflow: hidden;
   cursor: pointer;
@@ -21,10 +21,17 @@
 }
 
 .autocomplete-group {
-  padding: 2px 5px;
+  padding: 5px 5px;
+  background: #eee;
 }
 
 .autocomplete-group strong {
   display: block;
-  border-bottom: 1px solid #000;
+  color: inherit;
+  font-weight: bold;
+}
+
+.autocomplete-hint {
+  color: #999;
+  padding-left: 1em;
 }

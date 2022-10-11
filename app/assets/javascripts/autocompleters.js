@@ -1,9 +1,36 @@
 var Autocompleters = {
+    formatResultWithHint: function (suggestion, currentValue) {
+        var result = $.Autocomplete.formatResult(suggestion, currentValue);
+
+        if (suggestion.data && suggestion.data.hint) {
+            result += '<span class="autocomplete-hint">' + suggestion.data.hint + '</span>';
+        }
+
+        return result;
+    },
     transformFunctions: {
         default: function (response, config) {
             return {
                 suggestions: $.map(response, function(item) {
-                    return { value: item[config.labelField], data: item[config.idField], item: item };
+                    return { value: item[config.labelField], data: { id: item[config.idField], item: item } };
+                })
+            };
+        },
+        events: function (response, config) {
+            var today = new Date();
+            return {
+                suggestions: $.map(response, function(item) {
+                    var group;
+                    if (item.end && new Date(item.end) < today) {
+                        group = 'Past';
+                    } else {
+                        group = 'Upcoming';
+                    }
+                    var hint = null;
+                    if (item.start) {
+                        hint = item.start.substr(0,10);
+                    }
+                    return { value: item[config.labelField], data: { id: item[config.idField], group: group, item: item, hint: hint } };
                 })
             };
         },
@@ -15,7 +42,7 @@ var Autocompleters = {
                         name = name + " (" + item.firstname + " " + item.surname + ")";
                     }
                     item.name = name;
-                    return { value: name, data: item[config.idField], item: item };
+                    return { value: name, data: { id: item[config.idField], item: item } };
                 })
             };
         }
@@ -32,6 +59,7 @@ var Autocompleters = {
             var labelField = $(element).data("labelField") || "title";
             var idField = $(element).data("idField") || "id";
             var singleton = $(element).data("singleton") || false;
+            var groupBy = $(element).data("groupBy") || false;
             var templateName = $(element).data("template") ||
                 (singleton ? "autocompleter/singleton_resource" : "autocompleter/resource");
             var transformFunction = Autocompleters.transformFunctions[$(element).data("transformFunction") || "default"];
@@ -52,13 +80,16 @@ var Autocompleters = {
                 dataType: "json",
                 deferRequestBy: 300, // Wait 300ms before submitting to stop search being flooded
                 paramName: "q",
+                groupBy: groupBy,
+                formatResult: Autocompleters.formatResultWithHint,
                 transformResult: function(response) {
                     return transformFunction(response, { labelField: labelField, idField: idField });
                 },
                 onSelect: function (suggestion) {
                     // Don't add duplicates
-                    if (!$("[data-id='" + suggestion.data + "']", listElement).length) {
-                        var obj = { item: suggestion.item };
+                    var id = suggestion.data.id;
+                    if (!$("[data-id='" + id + "']", listElement).length) {
+                        var obj = { item: suggestion.data.item };
                         if (prefix) {
                             obj.prefix = prefix;
                         }
@@ -72,7 +103,6 @@ var Autocompleters = {
                     $(this).val('').focus();
                 },
                 onSearchStart: function (query) {
-                    query.q = query.q + "*";
                     inputElement.addClass("loading");
                 },
                 onSearchComplete: function () {
