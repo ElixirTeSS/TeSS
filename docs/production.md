@@ -227,6 +227,10 @@ You should then be able to enable the Sidekiq service:
     systemctl --user daemon-reload
     systemctl --user enable sidekiq.service
 
+If this doesn't work, you may need to first enable "linger" on the `tess` user, as a sudoer:
+
+    sudo loginctl enable-linger tess
+
 You can then start/stop/restart Sidekiq using the following:
 
     systemctl --user {start,stop,restart} sidekiq
