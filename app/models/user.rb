@@ -1,11 +1,11 @@
 class User < ApplicationRecord
 
-  include ActionView::Helpers
   include PublicActivity::Common
 
   acts_as_token_authenticatable
   include Gravtastic
   gravtastic :secure => true, :size => 250
+  has_image(placeholder: TeSS::Config.placeholder['person'])
 
   extend FriendlyId
   friendly_id :username, use: :slugged
@@ -311,6 +311,15 @@ class User < ApplicationRecord
     has_role?(Role.rejected.name) || has_role?(Role.unverified.name)
   end
 
+  # Override the gravatar URL to first check for a locally uploaded image
+  def avatar_url(image_params={}, gravatar_params={})
+    if image.present?
+      image.url(**image_params)
+    else
+      gravatar_url(**gravatar_params)
+    end
+  end
+
   private
 
   def reassign_owner
@@ -354,5 +363,4 @@ class User < ApplicationRecord
       self.username = self.email
     end
   end
-
 end

@@ -318,7 +318,7 @@ en:
     trainer:
       gravitar:
         help: >
-          The image displayed with your profile is the Gravatar image associated with the provided contact email address.
+          The image displayed with your profile is the Gravatar image associated with the provided contact email address, unless you upload another image above.
           Gravatar provides a way to link an avatar to an email address so that it can be used across sites and
           platforms. To set-up a linked avatar, go to the Gravatar site:
         url: https://en.gravatar.com

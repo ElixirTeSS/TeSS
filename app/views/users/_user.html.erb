@@ -1,5 +1,5 @@
 <li class="masonry-brick media-item">
-  <%= image_tag user.gravatar_url, size: "40" %>
+  <%= image_tag user.avatar_url, size: "40" %>
   <h4 class="dont-break-out"><%= user.username %></h4>
   <% if !user.profile.nil? %>
     <%= user.profile.full_name %>
