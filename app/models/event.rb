@@ -154,11 +154,6 @@ class Event < ApplicationRecord
     set_to_local self.end
   end
 
-  def upcoming?
-    # Should this be a scope instead?
-    Time.now < (self.end || self.start || 1.day.from_now) # handle empty end, start dates
-  end
-
   def started?
     if start and self.end
       (Time.now > start and Time.now < self.end)
