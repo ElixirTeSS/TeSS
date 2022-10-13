@@ -154,15 +154,6 @@ class Event < ApplicationRecord
     set_to_local self.end
   end
 
-  def upcoming?
-    # Handle nil for start date
-    if start.blank?
-      true
-    else
-      (Time.now < start)
-    end
-  end
-
   def started?
     if start and self.end
       (Time.now > start and Time.now < self.end)
