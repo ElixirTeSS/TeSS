@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_25_143205) do
+ActiveRecord::Schema.define(version: 2022_10_13_122226) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -306,6 +306,44 @@ ActiveRecord::Schema.define(version: 2022_07_25_143205) do
     t.index ["term_uri"], name: "index_ontology_term_links_on_term_uri"
   end
 
+  create_table "package_events", id: false, force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "package_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "id"
+    t.index ["event_id"], name: "index_package_events_on_event_id"
+    t.index ["package_id"], name: "index_package_events_on_package_id"
+  end
+
+  create_table "package_materials", id: false, force: :cascade do |t|
+    t.integer "material_id"
+    t.integer "package_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "id"
+    t.index ["material_id"], name: "index_package_materials_on_material_id"
+    t.index ["package_id"], name: "index_package_materials_on_package_id"
+  end
+
+  create_table "packages", id: :serial, force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.text "image_url"
+    t.boolean "public", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.string "slug"
+    t.string "keywords", default: [], array: true
+    t.string "image_file_name"
+    t.string "image_content_type"
+    t.bigint "image_file_size"
+    t.datetime "image_updated_at"
+    t.index ["slug"], name: "index_packages_on_slug", unique: true
+    t.index ["user_id"], name: "index_packages_on_user_id"
+  end
+
   create_table "profiles", force: :cascade do |t|
     t.text "firstname"
     t.text "surname"
@@ -337,6 +375,14 @@ ActiveRecord::Schema.define(version: 2022_07_25_143205) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "title"
+  end
+
+  create_table "scientific_topic_links", id: :serial, force: :cascade do |t|
+    t.string "resource_type"
+    t.integer "resource_id"
+    t.string "term_uri"
+    t.index ["resource_type", "resource_id"], name: "index_scientific_topic_links_on_resource_type_and_resource_id"
+    t.index ["term_uri"], name: "index_scientific_topic_links_on_term_uri"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -441,6 +487,11 @@ ActiveRecord::Schema.define(version: 2022_07_25_143205) do
     t.string "invited_by_type"
     t.bigint "invited_by_id"
     t.integer "invitations_count", default: 0
+    t.text "image_url"
+    t.string "image_file_name"
+    t.string "image_content_type"
+    t.bigint "image_file_size"
+    t.datetime "image_updated_at"
     t.index ["authentication_token"], name: "index_users_on_authentication_token"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true

@@ -130,7 +130,7 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    allowed_parameters = [:email, :username, :password, {
+    allowed_parameters = [:email, :username, :password, :image, :image_url, {
       profile_attributes: [:firstname, :surname, :email, :website, :public,
                            :description, :location, :orcid, :experience,
                            { :expertise_academic => [] }, { :expertise_technical => [] },
