@@ -125,9 +125,9 @@ If not, you can switch using the following command:
 Run the following commands to download and install solr into /opt/, and have it run as a "service" that will start on boot.
 
     cd /opt
-    sudo wget https://downloads.apache.org/lucene/solr/8.11.1/solr-8.11.1.tgz
-    sudo tar xzf solr-8.11.1.tgz solr-8.11.1/bin/install_solr_service.sh --strip-components=2
-    sudo bash ./install_solr_service.sh solr-8.11.1.tgz
+    sudo wget https://downloads.apache.org/lucene/solr/8.11.2/solr-8.11.2.tgz
+    sudo tar xzf solr-8.11.2.tgz solr-8.11.2/bin/install_solr_service.sh --strip-components=2
+    sudo bash ./install_solr_service.sh solr-8.11.2.tgz
 
 ### Starting/stopping solr
 
@@ -178,11 +178,8 @@ And to run sidekiq to process async jobs:
 From the app's root directory, create several config files by copying the example files.
 
     cp config/tess.example.yml config/tess.yml
-
     cp config/sunspot.example.yml config/sunspot.yml
-
     cp config/secrets.example.yml config/secrets.yml
-
     cp config/ingestion.example.yml config/ingestion.yml
 
 Edit config/secrets.yml to configure the database name, user and password defined above.

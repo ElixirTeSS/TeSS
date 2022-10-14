@@ -86,6 +86,95 @@ having to change any configuration files.
 
     bundle install --deployment
 
+## Set up database
+
+Switch over to the `postgres` user:
+
+    sudo su - postgres
+
+Create a postgres user to own the database:
+
+    createuser tess_user
+
+Open up the postgres console:
+
+    psql
+
+In the postgres console, set a password for the user:
+
+    postgres=# \password tess_user
+
+...and grant it a privilege to create databases:_
+
+    postgres=# ALTER USER tess_user CREATEDB;
+
+## Install Solr
+
+TeSS uses Apache Solr to power its search and filtering system.
+
+Double check you are using Java 11:
+
+    java -version
+
+If not, you can switch using the following command:
+
+    sudo update-alternatives --config java
+
+Run the following commands to download and install solr into /opt/, and have it run as a service that will start on boot.
+
+    cd /opt
+    sudo wget https://downloads.apache.org/lucene/solr/8.11.2/solr-8.11.2.tgz
+    sudo tar xzf solr-8.11.2.tgz solr-8.11.2/bin/install_solr_service.sh --strip-components=2
+    sudo bash ./install_solr_service.sh solr-8.11.2.tgz
+
+### Starting/stopping solr
+
+Make sure solr is started using:
+
+    sudo service solr start
+
+If you need to stop it for whatever reason, run:
+
+    sudo service solr stop
+
+By default, solr should be running at localhost:8983
+
+### Create a solr "collection"
+
+Next, create a collection for TeSS to use (assuming TeSS is checked out at `/home/tess/TeSS`):
+
+    sudo su - solr -c "/opt/solr/bin/solr create -c tess_production -d /home/tess/TeSS/solr/conf"
+
+`tess_production` here is the collection name, which should match what is configured in your `config/sunspot.yml`
+under the `path` parameter, following `/solr/`.
+
+## Configure TeSS
+
+Switch back to the `tess` user.
+
+From the app's root directory, create several config files by copying the example files.
+
+    cp config/tess.example.yml config/tess.yml
+    cp config/sunspot.example.yml config/sunspot.yml
+    cp config/secrets.example.yml config/secrets.yml
+    cp config/ingestion.example.yml config/ingestion.yml
+
+Edit config/secrets.yml to configure the database user and password defined above.
+
+Edit config/secrets.yml to configure the app's secret_key_base which you can generate with:
+
+    bundle exec rake secret
+
+Create the databases:
+
+    RAILS_ENV=production bundle exec rake db:create
+
+Create the database structure and load in seed data:
+
+_Note: Ensure you have started Solr before running this command!_
+
+    RAILS_ENV=production bundle exec rake db:setup
+
 ## Compile assets
 
 Assets - such as images, javascript and stylesheets, need to be precompiled -
@@ -157,46 +246,6 @@ We would strongly recommend using [Lets Encrypt](https://letsencrypt.org/) for f
 Certbot is a commandline tool can be used to request an SSL certificate and automatically configure Apache.
 [See this guide for more information](https://certbot.eff.org/instructions?ws=apache&os=ubuntufocal).
 
-## Install Solr
-
-TeSS uses Apache Solr to power its search and filtering system.
-
-Double check you are using Java 11:
-
-    java -version
-
-If not, you can switch using the following command:
-
-    sudo update-alternatives --config java
-
-Run the following commands to download and install solr into /opt/, and have it run as a service that will start on boot.
-
-    cd /opt
-    sudo wget https://downloads.apache.org/lucene/solr/8.11.2/solr-8.11.2.tgz
-    sudo tar xzf solr-8.11.2.tgz solr-8.11.2/bin/install_solr_service.sh --strip-components=2
-    sudo bash ./install_solr_service.sh solr-8.11.2.tgz
-
-### Starting/stopping solr
-
-Make sure solr is started using:
-
-    sudo service solr start
-
-If you need to stop it for whatever reason, run:
-
-    sudo service solr stop
-
-By default, solr should be running at localhost:8983
-
-### Create a "collection"
-
-Next, create a collection for TeSS to use (assuming TeSS is checked out at `/home/tess/TeSS`):
-
-    sudo su - solr -c "/opt/solr/bin/solr create -c tess_production -d /home/tess/TeSS/solr/conf"
-
-`tess_production` here is the collection name, which should match what is configured in your `config/sunspot.yml` 
-under the `path` parameter, following `/solr/`.
-
 ## Configure Sidekiq
 
 Sidekiq, which runs asynchronous tasks in TeSS, needs to be configured to run as a service. 
@@ -222,7 +271,7 @@ they are set on login, use the following commands:
 
 and then restart your SSH/su session.
 
-You should then be able to enable the Sidekiq service:
+You should then be able to enable the Sidekiq service (as the `tess` user):
 
     systemctl --user daemon-reload
     systemctl --user enable sidekiq.service
