@@ -1,0 +1,23 @@
+a {
+  text-decoration: underline;
+}
+
+li > a {
+  text-decoration: none;
+}
+
+a.btn {
+  text-decoration: none;
+}
+
+.active-filters > a {
+  text-decoration: none;
+}
+
+.breadcrumb li > a {
+  text-decoration: underline;
+}
+
+.nav-tabs a {
+  color: $brand-primary;
+}
