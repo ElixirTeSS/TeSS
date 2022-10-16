@@ -95,7 +95,7 @@
 
           <!-- Field: description -->
           <% if @event.description.present? %>
-            <div class="text-justify">
+            <div class="description">
               <%= render_markdown @event.description %>
             </div>
           <% end %>
@@ -132,7 +132,7 @@
           <!-- Field: prerequisites -->
           <% if @event.prerequisites.present? %>
             <strong class="text-primary">Prerequisites:</strong>
-            <div class="text-justify">
+            <div>
               <%= render_markdown @event.prerequisites %>
             </div>
           <% end %>
@@ -140,7 +140,7 @@
           <!-- Field: learning objectives -->
           <% if @event.learning_objectives.present? %>
             <strong class="text-primary">Learning Objectives:</strong>
-            <div class="text-justify">
+            <div>
               <%= render_markdown @event.learning_objectives %>
             </div>
           <% end %>
@@ -186,7 +186,7 @@
           <!-- Field: tech requirements -->
           <% if @event.tech_requirements.present? %>
             <strong class="text-primary">Tech Requirements:</strong>
-            <div class="text-justify">
+            <div>
               <%= render_markdown @event.tech_requirements %>
             </div>
           <% end %>

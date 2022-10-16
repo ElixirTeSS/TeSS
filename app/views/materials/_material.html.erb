@@ -7,19 +7,19 @@
       <%= scrape_status_icon(material) if current_user and current_user.is_admin? -%>
       <%= missing_icon(material) if current_user and current_user.is_admin? -%>
       <%= suggestion_icon(material) if current_user and current_user.is_admin? -%>
-    <div class="text-justify" style="word-break: normal; display: inline-block;">
+    <div style="word-break: normal; display: inline-block;">
       <%= render_markdown truncate(material.description, length: 300, separator: ' ') %>
     </div>
     <div class="row no-spacing">
       <% if controller_name != 'content_providers' %>
         <div class="col-md-9 no-spacing">
-          <%= display_attribute(material, :scientific_topics) { |values| values.map { |x| x.preferred_label }.join(', ') } %>
-          <%= display_attribute(material, :operations) { |values| values.map { |x| x.preferred_label }.join(', ') } %>
+          <%#= display_attribute(material, :scientific_topics) { |values| values.map { |x| x.preferred_label }.join(', ') } %>
+          <%#= display_attribute(material, :operations) { |values| values.map { |x| x.preferred_label }.join(', ') } %>
           <%= display_attribute(material, :keywords) { |values| values.join(', ') } %>
 
-          <% if policy(material).update? && material.edit_suggestion %>
-            <%= render partial: 'common/approve_term_suggestions', locals: { suggestion: material.edit_suggestion } %>
-          <% end %>
+          <%# if policy(material).update? && material.edit_suggestion %>
+            <%#= render partial: 'common/approve_term_suggestions', locals: { suggestion: material.edit_suggestion } %>
+          <%# end %>
         </div>
         <div class="col-md-3 no-spacing">
           <% if material.content_provider %>

@@ -12,7 +12,7 @@
       <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
           <div class="row">
-            <div class="text-justify">
+            <div>
               <!-- Field: title -->
               <div class="sub-heading"><%= display_attribute_no_label(@material, :resource_type) { |values| values.join(', ') } %></div>
               <h2 class="mt-0">
@@ -55,7 +55,7 @@
     </div>
 
               <!-- Field: long description -->
-              <div class="text-justify">
+              <div class="description">
                 <%= render_markdown @material.description %>
               </div>
             </div>
