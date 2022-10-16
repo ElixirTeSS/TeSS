@@ -51,7 +51,7 @@ h2, h3, h4, h5, h6 {
 }
 
 .sub-heading {
-  font-weight: 300;
+  font-weight: lighter;
   font-size: 20px;
   line-height: 24px;
   text-transform: uppercase;
@@ -114,6 +114,7 @@ div.wrapper {
   width: 280px;
   padding: 0;
   padding-top: 50px;
+  padding-left: 16px;
   flex-shrink: 0;
 
   .sidebar-group {
@@ -196,34 +197,6 @@ div.wrapper {
 .profile {
   margin-bottom: 30px;
 }
-
-// FIXME: move bootstrap fixes to a different file
-
-a {
-  text-decoration: underline;
-}
-
-li > a {
-  text-decoration: none;
-}
-
-a.btn {
-  text-decoration: none;
-}
-
-.active-filters > a {
-  text-decoration: none;
-}
-
-.breadcrumb li > a {
-  text-decoration: underline;
-}
-
-.nav-tabs a {
-  color: $brand-primary;
-}
-
-
 
 // Style for empty results etc.
 .empty {
@@ -370,9 +343,8 @@ ul.unstyled {
 }
 
 .medium-content-provider-logo {
-  max-width: 98%;
-  min-width: 120px;
-  //border-radius: 5px;
+  max-width: 50%;
+  min-width: 100px;
   margin: 0 10px 0 0;
 }
 
@@ -1017,11 +989,8 @@ input[type=checkbox].field-lock + label:before,
     padding: 5px 0;
     line-height: 1.3;
 
-    color: $secondary-color;
-
-      &:hover {
-        color: #005d7a;
-      }
+    color: $primary-color;
+    text-decoration: none;
   }
 }
 
