@@ -51,7 +51,7 @@
     <% unless @events.blank? %>
       <ul class="nav nav-tabs">
         <%= tab('List', 'fa fa-list', 'home', active: true) %>
-        <%= tab('Grid', 'fa fa-table', 'grid', active: false) %>
+        <%#= tab('Grid', 'fa fa-table', 'grid', active: false) %>
         <% if !TeSS::Config.feature['disabled'].include? 'events_map' %>
           <%= tab('Map', 'fa fa-globe', 'map',
                   disabled: { check: (search_and_facet_params[:online] == 'true'),
