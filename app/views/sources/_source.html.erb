@@ -8,7 +8,7 @@
     URL: <%= source.url %>
   </div>
   <% unless source.finished_at.nil? %>
-    <div class="text-justify" style="word-break: normal;">
+    <div style="word-break: break-word;">
       Finished at: <%= source.finished_at.strftime('%H:%M on %A, %d %B %Y (UTC)') %>
     </div>
   <% end %>

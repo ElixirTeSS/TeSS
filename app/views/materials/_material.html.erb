@@ -7,7 +7,7 @@
       <%= scrape_status_icon(material) if current_user and current_user.is_admin? -%>
       <%= missing_icon(material) if current_user and current_user.is_admin? -%>
       <%= suggestion_icon(material) if current_user and current_user.is_admin? -%>
-    <div style="word-break: normal; display: inline-block;">
+    <div style="word-break: break-word; display: inline-block;">
       <%= render_markdown truncate(material.description, length: 300, separator: ' ') %>
     </div>
     <div class="row no-spacing">
