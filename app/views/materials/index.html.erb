@@ -42,12 +42,20 @@
       </div>
     <% end %>
 
+    <div class="tab-content">
+
+      <div id="home" class="tab-pane fade in active">
     <%= render partial: "search/common/pagination_bar", locals: { resources: @materials } %>
 
 
+    <ul class="masonry media-grid" style="margin-top: 15px;">
     <%= render @materials %>
+    </ul>
 
     <%= render partial: "search/common/pagination_bar", locals: { resources: @materials } %>
+
+      </div>
+    </div>
 
   </div>
 
