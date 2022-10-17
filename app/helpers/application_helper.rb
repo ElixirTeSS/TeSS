@@ -206,8 +206,8 @@ module ApplicationHelper
   }.freeze
 
   def get_image_url_for(resource)
-    if resource.is_a?(Node) && File.exist?("#{Rails.root}/app/assets/images/nodes/logos/#{resource.country_code}.png")
-      "nodes/logos/#{resource.country_code}.png"
+    if resource.is_a?(Node) && File.exist?("#{Rails.root}/app/assets/images/nodes/logos_svg/#{resource.country_code}.svg")
+      "nodes/logos_svg/#{resource.country_code}.svg"
     elsif !resource.respond_to?(:image?) || !resource.image?
       DEFAULT_IMAGE_FOR_MODEL.fetch(resource.class.name, TeSS::Config.placeholder['group'])
     else

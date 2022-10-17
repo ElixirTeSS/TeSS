@@ -22,7 +22,7 @@
     <% end %>
     <% training_coordinators = node.staff.training_coordinators %>
     <p>
-      <b><%= 'Training coordinator'.pluralize(training_coordinators.count) -%>: </b>
+      <strong class="text-primary"><%= 'Training coordinator'.pluralize(training_coordinators.count) -%>: </strong>
       <%= node_staff_list(training_coordinators, false) %>
     </p>
 
