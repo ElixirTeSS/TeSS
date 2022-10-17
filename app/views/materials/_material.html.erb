@@ -23,17 +23,19 @@
         </div>
         <div class="col-md-3 no-spacing">
           <% if material.content_provider %>
-            <%= link_to material.content_provider, :class => "pull-right" do %>
-              <%= image_tag(material.content_provider.image.url, :class => "small-content-provider-logo") %>
+            <div class="to-bottom">
+            <%= link_to material.content_provider, :class => "pull-right bottom-left" do %>
+              <%= image_tag(material.content_provider.image.url, :class => "medium-content-provider-logo") %>
             <% end %>
+            </div>
           <% end %>
           <%# TODO Add node logo as well, if material's provider  belongs to a node %>
         </div>
       <% else %>
         <div class="col-md-12 no-spacing">
-          <%= display_attribute(material, :scientific_topics) { |values| values.map { |x| x.preferred_label }.join(', ') } %>
+          <%#= display_attribute(material, :scientific_topics) { |values| values.map { |x| x.preferred_label }.join(', ') } %>
           <%= display_attribute(material, :keywords) { |values| values.join(', ') } %>
-          <%= display_attribute(material, :resource_type) { |values| values.join(', ') } %>
+          <%#= display_attribute(material, :resource_type) { |values| values.join(', ') } %>
         </div>
       <% end %>
     </div>

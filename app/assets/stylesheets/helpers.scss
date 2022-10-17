@@ -2,6 +2,12 @@
   text-transform: uppercase;
 }
 
+.bottom-left {
+  display: flex;
+  justify-content: end;
+  align-content: flex-end;
+}
+
 .font-size-lg {
   font-size: $font-size-large;
 }
