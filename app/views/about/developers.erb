@@ -63,8 +63,9 @@
           <p><%= link_to t('developer.widgets_available'), class: 'btn btn-primary', target: '_blank' do %>
               View Our Available Widgets
             <% end %></p>
-          <%= render :partial => 'about/' + TeSS::Config.site['widget_example'] %>
-          <%== raw t 'developer.widgets_mailing' %>
+          <% if TeSS::Config.site['widget_example'].present? %>
+            <%= render :partial => 'about/' + TeSS::Config.site['widget_example'] %>
+          <% end %>
         </div>
       </div>
 
@@ -72,46 +73,60 @@
       <div class="row">
         <div class="odd-about-block">
           <div class="h3" id="api">API</div>
-          <span>
             <p><%= TeSS::Config.site['title_short'] %> has a fully functioning
               <a href="http://jsonapi.org/" target="_blank">JSON API<i class="icon icon-md arrow-top-right-icon"></i></a>.
               You can explore our JSON-API by appending .json_api to the end of the URL of most pages
               (excluding parameters). For example:</p>
 
-            <!-- Events -->
-            <% if TeSS::Config.feature['events'] %>
+          <!-- Events -->
+          <% if TeSS::Config.feature['events'] %>
             <p><code>
-               <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_1' %>">
-                 <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_1' %></a>
+              <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_1' %>">
+                <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_1' %></a>
             </code></p>
-            <% end %>
+          <% end %>
 
-            <!-- Materials -->
-            <% if TeSS::Config.feature['materials'] %>
+          <!-- Materials -->
+          <% if TeSS::Config.feature['materials'] %>
             <p><code>
-               <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_3' %>">
-                 <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_3' %> </a>
+              <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_3' %>">
+                <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_3' %> </a>
             </code></p>
-            <% end %>
+          <% end %>
 
-            <!-- Providers -->
-            <% if TeSS::Config.feature['providers'] %>
+          <!-- Providers -->
+          <% if TeSS::Config.feature['providers'] %>
             <p><code>
-               <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_4' %>">
-                               <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_4' %> </a>
+              <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_4' %>">
+                <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_4' %> </a>
             </code></p>
-            <% end %>
+          <% end %>
 
-            <!-- Workflows -->
-            <% if TeSS::Config.feature['workflows'] %>
+          <!-- Workflows -->
+          <% if TeSS::Config.feature['workflows'] %>
             <p><code>
-               <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_5' %>">
-                               <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_5' %> </a>
+              <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_5' %>">
+                <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_5' %> </a>
             </code></p>
-            <% end %>
+          <% end %>
 
-            <%== raw t 'developer.swaggerhub' -%>
-           </span>
+          <p>
+            The full documentation for the <%= TeSS::Config.site['title_short'] %> JSON API can be found here:
+          </p>
+          <p>
+            <%= link_to(asset_path('api/json_api', skip_pipeline: true), class: 'btn btn-primary', target: :_blank) do %>
+              <i class="fa fa-file"></i> View our JSON-API documentation
+            <% end %>
+          </p>
+          <p>
+            We recommend using the JSON API, but if you have already begun using our old API, technical information
+            can still be found here:
+          </p>
+          <p>
+            <%= link_to(asset_path('api/legacy', skip_pipeline: true), class: 'btn btn-default', target: :_blank) do %>
+              <i class="fa fa-file"></i> View our legacy API documentation
+            <% end %>
+          </p>
         </div>
       </div>
     </div>
@@ -125,3 +140,4 @@
 </div>
 </div>
 </body>
+

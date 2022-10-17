@@ -10,7 +10,7 @@ namespace :tess do
 
     types.each do |type|
       deleted_count = 0
-      records = (type == Event) ? type.all.select(&:upcoming?) : type.all
+      records = (type == Event) ? type.all.not_finished : type.all
       puts "Looking at #{records.count} #{type.name.pluralize}:"
       records.each do |record|
         ##########

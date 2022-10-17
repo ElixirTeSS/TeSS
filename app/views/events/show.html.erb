@@ -265,6 +265,7 @@
   </div>
 </div>
 </div>
+</div>
 
   <%# SIDEBAR %>
   <div class="collapsing-sidebar" id="sidebar" style="margin-top: 105px;">
@@ -273,4 +274,3 @@
     <%= render partial: "nodes/partials/associated_node_info", locals: { associated_nodes: @event.associated_nodes } %>
     <%= render(partial: 'users/partials/user_info', locals: { user: @event.user }) if current_user.try(:is_admin?) %>
   </div>
-</div>

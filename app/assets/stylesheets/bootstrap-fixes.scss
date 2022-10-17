@@ -21,3 +21,55 @@ a.btn {
 .nav-tabs a {
   color: $secondary-color;
 }
+
+.pagination {
+
+  li {
+    span, a {
+      border: none !important;
+      border-radius: 6px;
+      padding: 5px 10px;
+    }
+  }
+
+  li.prev, li.next, li.first, li.last {
+    span, a {
+      color: transparent !important;
+      width: 30px;
+      height: 35px;
+      overflow: hidden;
+      background-size: 14px;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
+
+  li.prev {
+    span, a {
+      background-image: image-url("modern/icons/chevron-left-icon.svg");
+    }
+  }
+
+  li.next {
+    span, a {
+      background-image: image-url("modern/icons/chevron-right-icon.svg");
+    }
+  }
+
+  li.first {
+    span, a {
+      background-image: image-url("modern/icons/double-left-icon.svg");
+    }
+  }
+
+  li.last {
+    span, a {
+      background-image: image-url("modern/icons/double-right-icon.svg");
+    }
+  }
+
+  li.disabled {
+    filter: grayscale(1);
+  }
+
+}

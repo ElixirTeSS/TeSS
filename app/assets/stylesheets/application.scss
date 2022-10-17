@@ -835,7 +835,7 @@ input[type=checkbox].field-lock + label:before,
 }
 
 .about-icons {
-  font-size: 10em;
+  font-size: 6em;
   color: gray;
 }
 
@@ -1027,57 +1027,6 @@ input[type=checkbox].field-lock + label:before,
   z-index: 5;
 }
 
-.pagination {
-
-  li {
-    span, a {
-      border: none !important;
-      border-radius: 6px;
-      padding: 5px 10px;
-    }
-  }
-
-  li.prev, li.next, li.first, li.last {
-    span, a {
-      color: transparent !important;
-      width: 30px;
-      height: 35px;
-      overflow: hidden;
-      background-size: 14px;
-      background-repeat: no-repeat;
-      background-position: center;
-    }
-  }
-
-  li.prev {
-    span, a {
-      background-image: url(modern/icons/chevron-left-icon.svg);
-    }
-  }
-
-  li.next {
-    span, a {
-      background-image: url(modern/icons/chevron-right-icon.svg);
-    }
-  }
-
-  li.first {
-    span, a {
-      background-image: url(modern/icons/double-left-icon.svg);
-    }
-  }
-
-  li.last {
-    span, a {
-      background-image: url(modern/icons/double-right-icon.svg);
-    }
-  }
-
-  li.disabled {
-    filter: grayscale(1);
-  }
-
-}
 
 // minor fix of the icon's alignment
 .glyphicon-remove {

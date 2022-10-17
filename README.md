@@ -60,7 +60,7 @@ or in your request:
 A read-only API conforming to the [JSON-API](https://jsonapi.org/) specification.
 Currently supports viewing, browsing, searching and filtering across Events, Materials, Workflows, Providers and Users.
 
-[Click here to view documentation](https://tess.elixir-europe.org/api) 
+[Click here to view documentation](https://tess.elixir-europe.org/api/json_api) 
 
 A record can be viewed through this API by appending `.json_api` to the URL, for example:
 
