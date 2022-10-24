@@ -83,7 +83,7 @@
           <% User::CREATED_RESOURCE_TYPES.each do |type| %>
             <% count = user.send(type).count %>
             <% if count > 0 %>
-              <% resources = user.send(type).last(3) %>
+              <% resources = user.send(type).order(created_at: :desc).first(3) %>
               <strong><%= resources.first.class.model_name.human -%></strong>
               <ul>
                 <% resources.each do |resource| %>

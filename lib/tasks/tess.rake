@@ -213,7 +213,22 @@ namespace :tess do
     transformed = {
       'notspecified' => {
         'title' => 'License Not Specified'
-      }
+      },
+      'other-at' => {
+        'title' => "Other (Attribution)"
+      },
+      'other-closed' => {
+        'title' => "Other (Not Open)"
+      },
+      'other-nc' => {
+        'title' => "Other (Non-Commercial)"
+      },
+      'other-open' => {
+        'title' => "Other (Open)"
+      },
+      'other-pd' => {
+        'title' => "Other (Public Domain)"
+      },
     }
     hash['licenses'].each do |license|
       id = license.delete('licenseId')

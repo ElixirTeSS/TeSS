@@ -50,7 +50,11 @@
   <%= f.multi_input :contributors, suggestions: people_suggestions, title: t('materials.hints.contributors') %>
 
   <!-- Field: Events -->
-  <%= f.autocompleter :events, input_html: { title: t('materials.hints.events') } %>
+  <%= f.autocompleter :events, input_html: { title: t('materials.hints.events') },
+                                             url: events_path(include_expired: true, sort: 'late'),
+                                             group_by: 'group',
+                                             transform_function: 'events'
+  %>
 
   <!-- Field: Target Audience -->
   <%= f.multi_input :target_audience, label: 'Target audiences', errors: @material.errors[:target_audience],

@@ -19,7 +19,11 @@
 
     <%= f.autocompleter :materials %>
 
-    <%= f.autocompleter :events %>
+    <%= f.autocompleter :events,
+                        url: events_path(include_expired: true, sort: 'late'),
+                        group_by: 'group',
+                        transform_function: 'events'
+    %>
 
     <div class="form-group actions">
       <%= f.submit ( f.object.new_record? ? "Create" : "Update") + " collection", :class => 'btn btn-primary' %>
