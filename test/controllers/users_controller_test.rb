@@ -410,4 +410,28 @@ class UsersControllerTest < ActionController::TestCase
     assert_not_includes all_users, users(:basic_user)
     assert_includes all_users, users(:regular_user)
   end
+
+  test 'should get invitees if feature enabled' do
+    features = TeSS::Config.feature.dup
+    TeSS::Config.feature['invitation'] = true
+    sign_in @admin
+
+    get :invitees
+
+    assert_response :success
+  ensure
+    TeSS::Config.feature = features
+  end
+
+  test 'should not get invitees if feature disabled' do
+    features = TeSS::Config.feature.dup
+    TeSS::Config.feature['invitation'] = false
+    sign_in @admin
+
+    assert_raises(ActionController::RoutingError) do
+      get :invitees
+    end
+  ensure
+    TeSS::Config.feature = features
+  end
 end

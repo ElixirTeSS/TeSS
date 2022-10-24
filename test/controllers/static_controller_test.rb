@@ -10,7 +10,7 @@ class StaticControllerTest < ActionController::TestCase
   end
 
   test 'should show tabs for enabled features' do
-    features = TeSS::Config.feature
+    features = TeSS::Config.feature.dup
 
     TeSS::Config.feature['events'] = true
     TeSS::Config.feature['materials'] = true
@@ -39,7 +39,7 @@ class StaticControllerTest < ActionController::TestCase
   end
 
   test 'should not show tabs for disabled features' do
-    features = TeSS::Config.feature
+    features = TeSS::Config.feature.dup
 
     TeSS::Config.feature['events'] = false
     TeSS::Config.feature['materials'] = false
