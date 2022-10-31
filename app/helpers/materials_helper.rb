@@ -71,7 +71,7 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
     if value.blank? || value.try(:strip) == 'notspecified'
       string = "<p class=\"#{attribute} no-spacing\">"
     else
-      string = "<p class=\"#{attribute} no-spacing\"><span class='text-primary'> #{resource.class.human_attribute_name(attribute)}: </span>"
+      string = "<p class=\"#{attribute} no-spacing\"><strong class='text-primary'> #{resource.class.human_attribute_name(attribute)}: </strong>"
       string << (block_given? ? yield(value) : value.to_s)
     end
     (string + '</p>').html_safe
