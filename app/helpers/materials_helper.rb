@@ -72,13 +72,13 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
     string = "<p class=\"#{attribute}#{show_label ? ' no-spacing' : ''}\">"
     unless value.blank? || value.try(:strip) == 'License Not Specified'
       string << "<strong class='text-primary'> #{resource.class.human_attribute_name(attribute)}: </strong>" if show_label
-      string << value
+      string << value.to_s
     end
     string << '</p>'
     string.html_safe
   end
 
-  def display_attribute_no_label(resource, attribute, markdown: false) # resource e.g. <#Material> & symbol e.g. :target_audience
-    display_attribute(resource, attribute, markdown: markdown, show_label: false)
+  def display_attribute_no_label(resource, attribute, markdown: false, &block) # resource e.g. <#Material> & symbol e.g. :target_audience
+    display_attribute(resource, attribute, markdown: markdown, show_label: false, &block)
   end
 end
