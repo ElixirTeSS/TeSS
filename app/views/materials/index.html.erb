@@ -1,4 +1,13 @@
 <div class="wrapper">
+  <% if TeSS::Config.solr_enabled %>
+    <div id="sidebar" class="popout-sidebar mr-4">
+      <div class="row">
+        <%= render partial: "search/common/facet_sidebar",
+                   locals: { resources: @materials_results, resource_type: Material } %>
+      </div>
+    </div>
+  <% end %>
+
   <div id="content">
     <div class="row">
 
@@ -59,12 +68,4 @@
 
   </div>
 
-  <% if TeSS::Config.solr_enabled %>
-    <div id="sidebar" class="popout-sidebar">
-      <div class="row">
-      <%= render partial: "search/common/facet_sidebar",
-                 locals: { resources: @materials_results, resource_type: Material } %>
-      </div>
-    </div>
-  <% end %>
 </div>

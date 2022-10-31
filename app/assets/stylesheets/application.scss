@@ -1056,3 +1056,12 @@ input[type=checkbox].field-lock + label:before,
     font-size: 12px;
   }
 }
+
+.filter-heading {
+  cursor: pointer;
+  color: $primary-color;
+}
+
+.filter-heading-active {
+  color: $secondary-color;
+}

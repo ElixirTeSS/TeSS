@@ -10,7 +10,7 @@
 <% if facet_rows.any? %>
   <%# Title %>
   <li>
-    <h4 class="nav-heading"><span class="icon icon-lg icon-greyscale filter-icon"></span>
+    <h4 class="nav-heading filter-heading"><span class="icon icon-lg icon-greyscale filter-icon"></span>
       <%= case facet_field
           when 'user'
             'Owner'
@@ -19,6 +19,8 @@
           else
             facet_field.humanize.singularize
           end -%>
+
+      <div class="pull-right filter-expand"><i class="icon icon-md expand-icon"></i></div>
     </h4>
   </li>
 
@@ -27,18 +29,18 @@
     <%# if there's a facet already selected %>
     <% if @facet_params.include?(facet_field) && Array.wrap(@facet_params[facet_field]).include?(facet.value.to_s) %>
       <li class="nav-item active
-        <% if index >= 9 -%><%= facet_field -%>-expanding
+        <% if index >= 0 -%><%= facet_field -%>-expanding
         <% end -%>"
-          <% if index >= 9 -%>style="display: none;"
+          <% if index >= 0 -%>style="display: none;"
       <% end -%>
       >
         <%= remove_filter_link(facet_field, facet.value.to_s) %>
       </li>
     <% else %>
       <li class="nav-item
-        <% if index >= 9 -%><%= facet_field -%>-expanding
+        <% if index >= 0 -%><%= facet_field -%>-expanding
         <% end -%>"
-          <% if index >= 9 -%>style="display: none;"
+          <% if index >= 0 -%>style="display: none;"
       <% end -%>>
         <%= filter_link(facet_field, facet.value.to_s, facet.count) %>
       </li>
