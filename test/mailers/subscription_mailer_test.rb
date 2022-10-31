@@ -10,6 +10,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     Rails.application.routes.default_url_options = Rails.application.config.action_mailer.default_url_options
     # Avoids queued emails affecting `assert_email` counts. See: https://github.com/ElixirTeSS/TeSS/issues/719
     perform_enqueued_jobs
+    ActionMailer::Base.deliveries.clear
   end
 
   teardown do
