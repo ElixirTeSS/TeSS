@@ -21,7 +21,7 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
   # Returns an array of two-element arrays of licences ready to be used in options_for_select() for generating option/select tags
   # [['Licence 1 full name','Licence 1 abbreviation'], ['Licence 2 full name','Licence 2 abbreviation'], ...]
   def licence_options_for_select
-    LicenceDictionary.instance.options_for_select
+    LicenceDictionary.instance.options_for_select.sort_by { |x| x[0] }
   end
 
   def licence_name_for_abbreviation(licence)
@@ -65,27 +65,20 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
     end
   end
 
-  def display_attribute(resource, attribute, markdown: false) # resource e.g. <#Material> & symbol e.g. :target_audience
+  def display_attribute(resource, attribute, show_label: true, markdown: false) # resource e.g. <#Material> & symbol e.g. :target_audience
     value = resource.send(attribute)
     value = render_markdown(value) if markdown
-    if value.blank? || value.try(:strip) == 'notspecified'
-      string = "<p class=\"#{attribute} no-spacing\">"
-    else
-      string = "<p class=\"#{attribute} no-spacing\"><strong class='text-primary'> #{resource.class.human_attribute_name(attribute)}: </strong>"
-      string << (block_given? ? yield(value) : value.to_s)
+    value = yield(value) if block_given? && value.present?
+    string = "<p class=\"#{attribute}#{show_label ? ' no-spacing' : ''}\">"
+    unless value.blank? || value.try(:strip) == 'License Not Specified'
+      string << "<strong class='text-primary'> #{resource.class.human_attribute_name(attribute)}: </strong>" if show_label
+      string << value
     end
-    (string + '</p>').html_safe
+    string << '</p>'
+    string.html_safe
   end
 
-  def display_attribute_no_label(resource, attribute, markdown: false)
-    value = resource.send(attribute)
-    value = render_markdown(value) if markdown
-    if value.blank? || value.try(:strip) == 'notspecified'
-      string = "<p class=\"#{attribute}\">"
-    else
-      string = "<p class=\"#{attribute}\">"
-      string << (block_given? ? yield(value) : value.to_s)
-    end
-    (string + '</p>').html_safe
+  def display_attribute_no_label(resource, attribute, markdown: false) # resource e.g. <#Material> & symbol e.g. :target_audience
+    display_attribute(resource, attribute, markdown: markdown, show_label: false)
   end
 end

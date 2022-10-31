@@ -2,6 +2,7 @@ require 'tzinfo'
 
 # The controller for actions related to the Events model
 class EventsController < ApplicationController
+  before_action :feature_enabled?
   before_action :set_event, only: [:show, :edit, :clone, :update, :destroy, :update_collections, :add_term, :reject_term,
                                    :redirect, :report, :update_report, :add_data, :reject_data]
   before_action :set_breadcrumbs

@@ -64,6 +64,16 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_equal content_providers_path, body['links']['self']
   end
 
+  test 'should not get index if feature disabled' do
+    features = TeSS::Config.feature.dup
+    TeSS::Config.feature['providers'] = false
+    assert_raises(ActionController::RoutingError) do
+      get :index
+    end
+  ensure
+    TeSS::Config.feature = features
+  end
+
   #NEW TESTS
   test 'should get new' do
     sign_in users(:regular_user)

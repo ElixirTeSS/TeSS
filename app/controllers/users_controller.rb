@@ -1,6 +1,6 @@
 # The controller for actions related to the Users model
 class UsersController < ApplicationController
-
+  before_action -> { feature_enabled?('invitation') }, only: [:invitees]
   prepend_before_action :set_user, only: [:show, :edit, :update, :destroy, :change_token]
   prepend_before_action :init_user, only: [:new, :create]
   before_action :set_breadcrumbs
@@ -141,4 +141,7 @@ class UsersController < ApplicationController
     params.require(:user).permit(allowed_parameters)
   end
 
+  def invitees_enabled?
+    feature_enabled?('invitation')
+  end
 end

@@ -391,6 +391,7 @@ module ApplicationHelper
                                                                   form_field_name: options[:form_field_name],
                                                                   existing_items_method: options[:existing_items_method],
                                                                   transform_function: options[:transform_function],
+                                                                  group_by: options[:group_by],
                                                                   singleton: options[:singleton],
       })
     end
