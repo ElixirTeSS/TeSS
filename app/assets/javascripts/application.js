@@ -67,7 +67,7 @@ function redirect_to_sort_url(){
 
 function reposition_tiles(container, tileClass){
     var $container = $("." + container);
-    
+
     $container.imagesLoaded(function () {
         $container.masonry({
             // options...
@@ -192,6 +192,8 @@ document.addEventListener("turbolinks:load", function() {
             return false;
         }
     });
+
+    Nodes.init();
 });
 
 function truncateWithEllipses(text, max)
