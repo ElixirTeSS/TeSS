@@ -264,7 +264,7 @@ class Event < ApplicationRecord
   end
 
   def self.not_finished
-    where('events.end > ?', Time.now).where.not(end: nil)
+    where('events.end > ? OR events.end IS NULL', Time.now)
   end
 
   def self.finished
