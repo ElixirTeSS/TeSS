@@ -307,7 +307,7 @@ en:
       targets: 'Indicate the type of audience intended to use your training material.'
       time: 'What is the estimated time it takes to work through this resource in hours?'
       title: 'Add a title for your training material.'
-      type: 'Select the type of resource that best matches the training material. '
+      resource_type: 'Select the type of resource that best matches the training material. '
       url: 'Preferred URL to direct people to your training material landing page.'
       version: 'Indicate the current version of the training material.'
   profile:
