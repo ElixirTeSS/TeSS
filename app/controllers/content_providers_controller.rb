@@ -1,5 +1,6 @@
 # The controller for actions related to the Content Providers model
 class ContentProvidersController < ApplicationController
+  before_action -> { feature_enabled?('providers') }
   before_action :set_content_provider, only: [:show, :edit, :update, :destroy, :import, :scrape, :scraper_results, :bulk_create]
   before_action :set_breadcrumbs
 

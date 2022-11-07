@@ -11,10 +11,6 @@ Rails.application.routes.draw do
   get 'edam/topics' => 'edam#topics'
   get 'edam/operations' => 'edam#operations'
 
-  if TeSS::Config.feature['workflows'] == true
-    resources :workflows
-  end
-
   #get 'static/home'
   get 'about' => 'about#tess', as: 'about'
   get 'about/registering' => 'about#registering', as: 'registering_resources'
@@ -58,77 +54,59 @@ Rails.application.routes.draw do
 
   resources :sources, concerns: :activities
 
-  if TeSS::Config.feature['trainers'] == true
-    resources :trainers, only: [:show, :index]
-  end
+  resources :trainers, only: [:show, :index]
 
-  if TeSS::Config.feature['nodes'] == true
-    resources :nodes, concerns: :activities
-  end
+  resources :nodes, concerns: :activities
 
-  if TeSS::Config.feature['events'] == true
-    resources :events, concerns: :activities do
-      collection do
-        get 'count'
-      end
-      member do
-        get 'redirect'
-        post 'add_term'
-        post 'add_data'
-        post 'reject_term'
-        post 'reject_data'
-        get 'report'
-        patch 'report', to: 'events#update_report'
-        get 'clone', to: 'events#clone'
-      end
+  resources :events, concerns: :activities do
+    collection do
+      get 'count'
+    end
+    member do
+      get 'redirect'
+      post 'add_term'
+      post 'add_data'
+      post 'reject_term'
+      post 'reject_data'
+      get 'report'
+      patch 'report', to: 'events#update_report'
+      get 'clone', to: 'events#clone'
     end
   end
 
-  if TeSS::Config.feature['collections'] == true
-    resources :collections, concerns: [:collaboratable, :activities]
-  end
+  resources :collections, concerns: [:collaboratable, :activities]
 
-  if TeSS::Config.feature['workflows'] == true
-    resources :workflows, concerns: [:collaboratable, :activities] do
-      member do
-        get 'fork'
-        get 'embed'
-      end
+  resources :workflows, concerns: [:collaboratable, :activities] do
+    member do
+      get 'fork'
+      get 'embed'
     end
   end
 
-  if TeSS::Config.feature['providers'] == true
-    resources :content_providers, concerns: :activities do
-      member do
-        get 'import'
-        get 'scraper_results'
-        post 'import', to: 'content_providers#scrape'
-        post 'bulk_create'
-      end
+  resources :content_providers, concerns: :activities do
+    member do
+      get 'import'
+      get 'scraper_results'
+      post 'import', to: 'content_providers#scrape'
+      post 'bulk_create'
     end
   end
 
-  if TeSS::Config.feature['materials'] == true
-    resources :materials, concerns: :activities do
-      member do
-        post :reject_term
-        post :reject_data
-        post :add_term
-        post :add_data
-      end
-      collection do
-        get 'count'
-      end
+  resources :materials, concerns: :activities do
+    member do
+      post :reject_term
+      post :reject_data
+      post :add_term
+      post :add_data
+    end
+    collection do
+      get 'count'
     end
   end
 
-  if TeSS::Config.feature['e-learnings'] == true
-    get 'elearning_materials' => 'materials#index', defaults: { 'resource_type' => 'e-learning' }
-  end
+  get 'elearning_materials' => 'materials#index', defaults: { 'resource_type' => 'e-learning' }
 
-  if TeSS::Config.feature['invitation'] == true
-    get 'invitees' => 'users#invitees'
-  end
+  get 'invitees' => 'users#invitees'
 
   resources :subscriptions, only: [:show, :index, :create, :destroy] do
     member do

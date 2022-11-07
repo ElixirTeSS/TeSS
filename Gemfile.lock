@@ -389,7 +389,7 @@ GEM
       connection_pool (~> 2.2)
     netrc (0.11.0)
     nio4r (2.5.8)
-    nokogiri (1.13.8)
+    nokogiri (1.13.9)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     numerizer (0.1.1)
@@ -581,6 +581,8 @@ GEM
     rsolr (2.3.0)
       builder (>= 2.1.2)
       faraday (>= 0.9.0)
+    rss (0.2.9)
+      rexml
     rubocop (1.23.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
@@ -803,6 +805,7 @@ DEPENDENCIES
   redis (< 5.0.0)
   rest-client
   reverse_markdown
+  rss
   rubocop
   ruby-debug-ide
   sass-rails (~> 5.0)

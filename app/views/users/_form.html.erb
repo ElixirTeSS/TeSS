@@ -18,6 +18,10 @@
 
         <%= f.input :orcid, as: :string, label: 'ORCID', input_html: { title: t('profile.hints.orcid') } %>
 
+        <div class="form-group">
+          <%= render partial: 'common/image_form', locals: { form: user_f } %>
+        </div>
+
         <%= f.input :email, as: :string, label: 'Contact email address',
                     input_html: { title: t('profile.hints.email') } %>
 

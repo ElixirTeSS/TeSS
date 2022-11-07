@@ -102,13 +102,13 @@
               <%= "in active" if materials.none? && events.any? %>
           ">
           <div class="row">
-            <% upcoming_events = events.select(&:upcoming?) %>
-            <% past_events = events.select(&:expired?) %>
+            <% upcoming_events = events.not_finished %>
+            <% past_events = events.finished %>
 
             <div class="row">
               <% limited_events = upcoming_events.count > 30 ? upcoming_events.first(30) : upcoming_events %>
               <div class="search-results-count">
-                <%= (upcoming_events.count > 0 ? "Showing" : "Found") + " #{pluralize(limited_events.count, "upcoming event")}#{(upcoming_events.count > 30) ? " out of #{upcoming_events.count}" : ''}." %>
+                <%= (upcoming_events.count > 0 ? "Showing" : "Found") + " #{pluralize(limited_events.count, "event")}#{(upcoming_events.count > 30) ? " out of #{upcoming_events.count}" : ''}." %>
                 <%= "Found #{pluralize(past_events.count, "past event")}." %>
                 <%= link_to('View all results.', events_path(content_provider: @content_provider.title, include_expired: true)) if (upcoming_events.count > 30 || past_events.count > 0) %>
               </div>

@@ -31,4 +31,6 @@
       </script>
     <% end %>
   <% end %>
+
+  <%= yield :extra_head if content_for? :extra_head %>
 </head>

@@ -17,6 +17,7 @@ class OntologyTerm
   end
 
   def ==(other)
+    return super unless other.is_a?(OntologyTerm)
     uri == other.uri
   end
 

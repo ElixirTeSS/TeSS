@@ -2,10 +2,11 @@ require 'tzinfo'
 
 # The controller for actions related to the Events model
 class EventsController < ApplicationController
+  before_action :feature_enabled?
   before_action :set_event, only: [:show, :edit, :clone, :update, :destroy, :update_collections, :add_term, :reject_term,
                                    :redirect, :report, :update_report, :add_data, :reject_data]
   before_action :set_breadcrumbs
-  before_action :disable_pagination, only: :index, if: lambda { |controller| controller.request.format.ics? or controller.request.format.csv? }
+  before_action :disable_pagination, only: :index, if: lambda { |controller| controller.request.format.ics? or controller.request.format.csv? or controller.request.format.rss? }
 
   include SearchableIndex
   include ActionView::Helpers::TextHelper
@@ -22,6 +23,7 @@ class EventsController < ApplicationController
       format.json_api { render({ json: @events }.merge(api_collection_properties)) }
       format.csv
       format.ics
+      format.rss
     end
   end
 

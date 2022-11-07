@@ -67,7 +67,7 @@ function redirect_to_sort_url(){
 
 function reposition_tiles(container, tileClass){
     var $container = $("." + container);
-    
+
     $container.imagesLoaded(function () {
         $container.masonry({
             // options...
@@ -185,6 +185,15 @@ document.addEventListener("turbolinks:load", function() {
 
     $("a[rel~=popover], .has-popover").popover();
     $("a[rel~=tooltip], .has-tooltip").tooltip();
+
+    // Prevent form being un-intentionally submitted when enter key is pressed in a text field.
+    $(document).on('keydown', 'form.prevent-enter-submit :input:not(textarea):not(:submit)', function(event) {
+        if (event.keyCode === 13) {
+            return false;
+        }
+    });
+
+    Nodes.init();
 });
 
 function truncateWithEllipses(text, max)

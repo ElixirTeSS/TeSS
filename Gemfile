@@ -111,6 +111,8 @@ gem 'kt-paperclip', '~> 7.0.0'
 
 gem 'icalendar', '~> 2.4.1'
 
+gem 'rss'
+
 gem 'bootstrap-datepicker-rails', '~> 1.6.4.1'
 
 gem 'rack-cors', require: 'rack/cors'

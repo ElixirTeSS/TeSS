@@ -175,15 +175,6 @@ class Event < ApplicationRecord
     set_to_local self.end
   end
 
-  def upcoming?
-    # Handle nil for start date
-    if start.blank?
-      true
-    else
-      (Time.now < start)
-    end
-  end
-
   def started?
     if start and self.end
       (Time.now > start and Time.now < self.end)
@@ -310,7 +301,7 @@ class Event < ApplicationRecord
   end
 
   def self.not_finished
-    where('events.end > ?', Time.now).where.not(end: nil)
+    where('events.end > ? OR events.end IS NULL', Time.now)
   end
 
   def self.finished
@@ -475,7 +466,7 @@ class Event < ApplicationRecord
     url = 'https://nominatim.openstreetmap.org/search.php'
     response = HTTParty.get(url,
                             query: args,
-                            headers: { 'User-Agent' => "Elixir TeSS <#{TeSS::Config.contact_email}>" })
+                            headers: { 'User-Agent' => "ELIXIR TeSS <#{TeSS::Config.contact_email}>" })
     (JSON.parse response.body, symbolize_names: true)[0]
   end
 

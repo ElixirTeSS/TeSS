@@ -96,6 +96,12 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def feature_enabled?(feature = controller_name)
+    if TeSS::Config.feature.key?(feature) && !TeSS::Config.feature[feature]
+      raise ActionController::RoutingError.new('Feature not enabled')
+    end
+  end
+
   def user_not_authorized(exception)
     policy_name = exception.policy.class.to_s.underscore
     handle_error(:forbidden, t("#{policy_name}.#{exception.query}", scope: 'pundit', default: :default))

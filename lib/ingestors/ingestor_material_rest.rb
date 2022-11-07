@@ -94,7 +94,8 @@ module Ingestors
 
     def process_description(input)
       return nil if input.nil?
-      return CGI.unescape input
+      input = CGI.unescape(input)
+      convert_description(input)
     end
 
   end

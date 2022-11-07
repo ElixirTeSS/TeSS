@@ -25,19 +25,18 @@ const Nodes = {
                 parent.removeClass('pending-delete');
             }
         }
+    },
+    init: function () {
+        $('[data-role="add-node-staff-button"]').each(function () {
+            var template = $(this).next('[data-role="add-node-staff-template"]');
+            // Store the template's HTML on this DOM object
+            $(this).data('template', template.html());
+            // Delete the template from the DOM, don't need anymore.
+            template.remove();
+            // Bind click event
+            $(this).click(Nodes.addStaff);
+        });
+
+        $('#staff-list').on('change', '[data-role="delete-node-staff-button"]', Nodes.removeStaff);
     }
 };
-
-$(function () {
-    $('[data-role="add-node-staff-button"]').each(function () {
-        var template = $(this).next('[data-role="add-node-staff-template"]');
-        // Store the template's HTML on this DOM object
-        $(this).data('template', template.html());
-        // Delete the template from the DOM, don't need anymore.
-        template.remove();
-        // Bind click event
-        $(this).click(Nodes.addStaff);
-    });
-
-    $('#staff-list').on('change', '[data-role="delete-node-staff-button"]', Nodes.removeStaff);
-});

@@ -1,5 +1,6 @@
 # The controller for actions related to the Materials model
 class MaterialsController < ApplicationController
+  before_action :feature_enabled?
   before_action :set_material, only: [:show, :edit, :update, :destroy, :update_collections, :add_term, :reject_term]
   before_action :set_breadcrumbs
 

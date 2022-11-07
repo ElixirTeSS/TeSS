@@ -1,5 +1,6 @@
 require 'test_helper'
 require 'icalendar'
+require 'rss'
 
 class EventsControllerTest < ActionController::TestCase
 
@@ -61,6 +62,15 @@ class EventsControllerTest < ActionController::TestCase
     @event.save!
 
     get :index, params: { format: :ics }
+    assert_response :success
+    assert_not_nil assigns(:events)
+  end
+
+  test 'should get index as RSS' do
+    @event.scientific_topic_uris = ['http://edamontology.org/topic_0654']
+    @event.save!
+
+    get :index, params: { format: :rss }
     assert_response :success
     assert_not_nil assigns(:events)
   end
@@ -667,6 +677,30 @@ class EventsControllerTest < ActionController::TestCase
     csv_events = CSV.parse(@response.body)
     assert_equal csv_events.first, ["Title", "Organizer", "Start", "End", "ContentProvider"]
   end
+
+  test 'should provide an RSS file' do
+    get :index, params: { format: :rss }
+    assert_response :success
+    assert_equal 'application/rss+xml; charset=utf-8', @response.content_type
+    rss_events = RSS::Parser.parse(@response.body)
+    # there will be several events in the RSS feed, ordered as SOLR has output them
+    # which varies during our tests.
+    # find the one which will be first
+    assert_equal Event.count, rss_events.items.count
+    assert Event.friendly.find(rss_events.items.first.link.split('/').last.strip)
+  end
+
+  test 'should include parameters in RSS file' do
+    get :index, params: { format: :rss, include_expired: true }
+    assert_response :success
+    assert_equal 'application/rss+xml; charset=utf-8', @response.content_type
+    require 'rss'
+    rss_events = RSS::Parser.parse(@response.body)
+    assert_equal Event.count, rss_events.items.count
+
+    assert_includes rss_events.channel.description, 'include_expired: true'
+  end
+
 
   test 'should add external resource to event' do
     sign_in @event.user

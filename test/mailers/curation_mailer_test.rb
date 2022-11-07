@@ -68,4 +68,19 @@ class CurationMailerTest < ActionMailer::TestCase
 
     assert html.include?(curate_users_url), 'Expected curation link'
   end
+
+  test 'can set mailer headers in config' do
+    mailer_settings = TeSS::Config.mailer
+    TeSS::Config.mailer['headers'] = { 'Sender' => 'mail.sender@example.com', 'X-Something' => 'yes' }
+    email = CurationMailer.user_requires_approval(@user)
+
+    email_headers = {}
+    email.header.fields.each { |f| email_headers[f.name] = f.value }
+
+    assert_equal 'no-reply@example.com', email_headers['From']
+    assert_equal 'mail.sender@example.com', email_headers['Sender']
+    assert_equal 'yes', email_headers['X-Something']
+  ensure
+    TeSS::Config.mailer = mailer_settings
+  end
 end
