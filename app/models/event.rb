@@ -136,25 +136,6 @@ class Event < ApplicationRecord
 
   attr_accessor :include_in_create
 
-  #Generated Event:
-  # external_id:string
-  # title:string
-  # subtitle:string
-  # url:string
-  # organizer:string
-  # description:text
-  # event_types:text
-  # start:datetime
-  # end:datetime
-  # sponsor:string
-  # venue:text
-  # city:string
-  # county:string
-  # country:string
-  # postcode:string
-  # latitude:double
-  # longitude:double
-
   def description=(desc)
     super(Rails::Html::FullSanitizer.new.sanitize(desc))
   end
