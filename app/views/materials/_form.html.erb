@@ -92,8 +92,8 @@
   <%= f.input :date_published, as: :date_picker, field_lock: true, input_html: { title: t('materials.hints.date_published') } %>
 
   <!-- Field: Resource Type -->
-  <%= f.multi_input :resource_type, label: 'Resource types', errors: @material.errors[:material_types],
-                    title: t('events.hints.type') %>
+  <%= f.multi_input :resource_type, label: 'Resource types', errors: @material.errors[:resource_type],
+                    title: t('materials.hints.resource_type') %>
 
   <!-- Field: Other Types -->
   <% if !TeSS::Config.feature['disabled'].include? 'other_types' %>

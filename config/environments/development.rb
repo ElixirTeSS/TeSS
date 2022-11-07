@@ -60,9 +60,6 @@ Rails.application.configure do
     protocol: URI.parse(TeSS::Config.base_url).scheme
   }
 
-  # console whitelisted ip addresses
-  config.web_console.whitelisted_ips = '1.120.119.251'
-
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
@@ -81,7 +78,7 @@ Rails.application.configure do
   config.assets.quiet = true
 
   # Raises error for missing translations
-  # config.action_view.raise_on_missing_translations = true
+  config.i18n.raise_on_missing_translations = true
 
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
