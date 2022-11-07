@@ -3,7 +3,7 @@ module Edam
     include Singleton
 
     def initialize
-      super('EDAM_unstable.owl', Edam::Term)
+      super('EDAM_unstable-1.26_dev.owl', Edam::Term)
     end
 
     def uri
