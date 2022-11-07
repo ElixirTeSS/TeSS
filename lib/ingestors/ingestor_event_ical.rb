@@ -5,12 +5,11 @@ require 'tzinfo'
 
 module Ingestors
   class IngestorEventIcal < IngestorEvent
-
     def initialize
       super
     end
 
-    def read (url)
+    def read(url)
       unless url.nil?
         if url.to_s.downcase.end_with? 'sitemap.xml'
           process_sitemap url
@@ -27,8 +26,8 @@ module Ingestors
       begin
         sitemap = Nokogiri::XML.parse(open(url))
         locs = sitemap.xpath('/ns:urlset/ns:url/ns:loc', {
-          'ns' => 'http://www.sitemaps.org/schemas/sitemap/0.9'
-        })
+                               'ns' => 'http://www.sitemaps.org/schemas/sitemap/0.9'
+                             })
         locs.each do |loc|
           process_icalendar(loc.text)
         end
@@ -37,7 +36,7 @@ module Ingestors
       end
 
       # finished
-      return
+      nil
     end
 
     def process_icalendar(url)
@@ -56,17 +55,16 @@ module Ingestors
         events.each do |e|
           process_event(e)
         end
-
       rescue Exception => e
         @messages << "Process file url[#{file_url}] failed with: #{e.message}"
       end
 
       # finished
-      return
+      nil
     end
 
     def process_event(calevent)
-      #puts "calevent: #{calevent.inspect}"
+      # puts "calevent: #{calevent.inspect}"
       begin
         # set fields
         event = Event.new
@@ -74,17 +72,15 @@ module Ingestors
         event.title = calevent.summary.to_s
         event.description = process_description calevent.description
 
-        #puts "\n\ncalevent.description = #{calevent.description}"
-        #puts "\n\n...        converted = #{event.description}"
+        # puts "\n\ncalevent.description = #{calevent.description}"
+        # puts "\n\n...        converted = #{event.description}"
 
         event.end = calevent.dtend
-        if !calevent.dtstart.nil?
+        unless calevent.dtstart.nil?
           dtstart = calevent.dtstart
           event.start = dtstart
           tzid = dtstart.ical_params['tzid']
-          if !tzid.nil? and tzid.size > 0
-            event.timezone = tzid.first.to_s
-          end
+          event.timezone = tzid.first.to_s if !tzid.nil? and tzid.size > 0
         end
 
         event.venue = calevent.location.to_s
@@ -101,7 +97,7 @@ module Ingestors
         event.keywords = []
         unless calevent.categories.nil? or calevent.categories.first.nil?
           cats = calevent.categories.first
-          if cats.kind_of?(Icalendar::Values::Array)
+          if cats.is_a?(Icalendar::Values::Array)
             cats.each do |item|
               event.keywords << item.to_s.lstrip
             end
@@ -118,13 +114,13 @@ module Ingestors
       end
 
       # finished
-      return
+      nil
     end
 
     def process_description(input)
       return input if input.nil?
-      return convert_description(input.to_s.gsub(/\R/, '<br />'))
-    end
 
+      convert_description(input.to_s.gsub(/\R/, '<br />'))
+    end
   end
 end

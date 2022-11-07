@@ -3,18 +3,18 @@ module Ingestors
     @@methods = { 'csv': 'CSV File', 'ical': 'iCalendars', 'rest': 'REST API' }
     @@resources = { 'event': 'Events', 'material': 'Materials' }
 
-    def self.get_ingestor (method, resource)
+    def self.get_ingestor(method, resource)
       if is_method_valid?(method) and is_resource_valid?(resource)
         case [method, resource]
-        when ['csv', 'event']
+        when %w[csv event]
           IngestorEventCsv.new
-        when ['ical', 'event']
+        when %w[ical event]
           IngestorEventIcal.new
-        when ['csv', 'material']
+        when %w[csv material]
           IngestorMaterialCsv.new
-        when ['rest', 'event']
+        when %w[rest event]
           IngestorEventRest.new
-        when ['rest', 'material']
+        when %w[rest material]
           IngestorMaterialRest.new
         else
           raise "Ingestor not yet implemented for method[#{method}] and resource[#{resource}]"
@@ -24,11 +24,11 @@ module Ingestors
       end
     end
 
-    def self.is_method_valid? (input)
+    def self.is_method_valid?(input)
       @@methods.has_key? input.to_sym
     end
 
-    def self.is_resource_valid? (input)
+    def self.is_resource_valid?(input)
       @@resources.has_key? input.to_sym
     end
 
@@ -44,13 +44,12 @@ module Ingestors
       end
     end
 
-    def self.get_method_value (input)
+    def self.get_method_value(input)
       @@methods.fetch input.to_sym
     end
 
-    def self.get_resource_value (input)
+    def self.get_resource_value(input)
       @@resources.fetch input.to_sym
     end
-
   end
 end

@@ -1,18 +1,17 @@
 module Ingestors
   class IngestorMaterial < Ingestor
-
-    @materials = Array.new
+    @materials = []
 
     def initialize
       super
       @materials = []
     end
 
-    def add_material (material)
-      @materials << material if !material.nil?
+    def add_material(material)
+      @materials << material unless material.nil?
     end
 
-    def write (user, provider)
+    def write(user, provider)
       unless @materials.nil? or @materials.empty?
         # process each material
         @materials.each do |material|
@@ -44,7 +43,7 @@ module Ingestors
 
       # finished
       @messages << "materials processed[#{@processed}] added[#{@added}] updated[#{@updated}] rejected[#{@rejected}]"
-      return
+      nil
     end
 
     private
@@ -64,13 +63,11 @@ module Ingestors
 
     def set_field_defaults(material)
       # contact
-      if material.contact.nil? or material.contact.blank?
-        material.contact = material.content_provider.contact
-      end
-      return material
+      material.contact = material.content_provider.contact if material.contact.nil? or material.contact.blank?
+      material
     end
 
-    def overwrite_fields (old_material, new_material)
+    def overwrite_fields(old_material, new_material)
       # overwrite unlocked attributes
       # [title, url, provider] not changed as they are used for matching
       old_material.description = new_material.description unless old_material.field_locked? :description
@@ -83,8 +80,7 @@ module Ingestors
       old_material.doi = new_material.doi unless old_material.field_locked? :doi
 
       # return
-      return old_material
+      old_material
     end
-
   end
 end

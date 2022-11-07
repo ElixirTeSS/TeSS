@@ -2,12 +2,11 @@ require 'open-uri'
 require 'csv'
 module Ingestors
   class IngestorEventCsv < IngestorEvent
-
     def initialize
       super
     end
 
-    def read (url)
+    def read(url)
       # parse csv file to table
       begin
         # parse csv as table
@@ -20,7 +19,7 @@ module Ingestors
           event = Event.new
           event.title = get_column row, 'Title'
           event.url = process_url row, 'URL'
-          event.description = process_description row ,'Description'
+          event.description = process_description row, 'Description'
           event.start = get_column row, 'Start'
           event.end = get_column row, 'End'
           event.timezone = get_column row, 'Timezone'
@@ -52,23 +51,20 @@ module Ingestors
 
           # add to array
           if event.title.nil?
-            @messages << "row found with no title"
+            @messages << 'row found with no title'
           else
             add_event event
             @ingested += 1
           end
         end
-      rescue CSV::MalformedCSVError => mce
-        @messages << "parse table failed with: #{mce.message}"
+      rescue CSV::MalformedCSVError => e
+        @messages << "parse table failed with: #{e.message}"
       rescue Exception => e
         @messages << "parse table failed with: #{e.message}"
       end
 
       # finished
-      return
+      nil
     end
-
-    private
-
   end
 end

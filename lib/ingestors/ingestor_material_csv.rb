@@ -2,12 +2,11 @@ require 'open-uri'
 require 'csv'
 module Ingestors
   class IngestorMaterialCsv < IngestorMaterial
-
     def initialize
       super
     end
 
-    def read (url)
+    def read(url)
       begin
         # parse table
         web_contents = open(url).read
@@ -45,19 +44,18 @@ module Ingestors
           add_material material
           @ingested += 1
         end
-      rescue CSV::MalformedCSVError => mce
-        @messages << "parse table failed with: #{mce.message}"
+      rescue CSV::MalformedCSVError => e
+        @messages << "parse table failed with: #{e.message}"
       end
 
       # finished
-      return processed
+      processed
     end
 
     private
 
-    def process_competency(row,header)
+    def process_competency(row, header)
       row[header].nil? ? 'notspecified' : row[header]
     end
-
   end
 end

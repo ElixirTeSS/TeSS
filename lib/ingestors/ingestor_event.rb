@@ -1,18 +1,17 @@
 module Ingestors
   class IngestorEvent < Ingestor
-
-    @events = Array.new
+    @events = []
 
     def initialize
       super
       @events = []
     end
 
-    def add_event (event)
-      @events << event if !event.nil?
+    def add_event(event)
+      @events << event unless event.nil?
     end
 
-    def write (user, provider)
+    def write(user, provider)
       unless @events.nil? or @events.empty?
         # process each event
         @events.each do |event|
@@ -49,7 +48,7 @@ module Ingestors
 
       # finished
       @messages << "events processed[#{@processed}] added[#{@added}] updated[#{@updated}] rejected[#{@rejected}]"
-      return
+      nil
     end
 
     private
@@ -70,7 +69,7 @@ module Ingestors
       end
     end
 
-    def overwrite_fields (old_event, new_event)
+    def overwrite_fields(old_event, new_event)
       # overwrite unlocked attributes
       # [title, url, start, provider] not changed, as they are used for matching
       old_event.description = new_event.description unless old_event.field_locked? :description
@@ -87,32 +86,24 @@ module Ingestors
       old_event.postcode = new_event.postcode unless old_event.field_locked? :postcode
       old_event.country = new_event.country unless old_event.field_locked? :country
       old_event.venue = new_event.venue unless old_event.field_locked? :venue
-      return old_event
+      old_event
     end
 
-    def set_field_defaults (event)
+    def set_field_defaults(event)
       # contact
-      if event.contact.nil? or event.contact.blank?
-        event.contact = event.content_provider.contact unless event.field_locked? :contact
-      end
+      event.contact = event.content_provider.contact if (event.contact.nil? or event.contact.blank?) && !(event.field_locked? :contact)
 
       # organizer
-      if event.organizer.nil? or event.organizer.blank?
-        event.organizer = event.content_provider.title unless event.field_locked? :organizer
-      end
+      event.organizer = event.content_provider.title if (event.organizer.nil? or event.organizer.blank?) && !(event.field_locked? :organizer)
 
       # host institutions
-      if event.host_institutions.nil? or event.host_institutions.size < 1
-        event.host_institutions = [event.content_provider.title.to_s] unless event.field_locked? :host_institutions
-      end
+      event.host_institutions = [event.content_provider.title.to_s] if (event.host_institutions.nil? or event.host_institutions.size < 1) && !(event.field_locked? :host_institutions)
 
       # eligibility
-      if event.eligibility.nil? or event.eligibility.size < 1
-        event.eligibility = ['open_to_all'] unless event.field_locked? :eligibility
-      end
+      event.eligibility = ['open_to_all'] if (event.eligibility.nil? or event.eligibility.size < 1) && !(event.field_locked? :eligibility)
 
       # return
-      return event
+      event
     end
 
     def convert_eligibility(input)
@@ -123,8 +114,6 @@ module Ingestors
         'expression_of_interest'
       when 'by_invitation'
         'by_invitation'
-      else
-        nil
       end
     end
 
@@ -140,22 +129,18 @@ module Ingestors
         'meeting'
       when 'workshops_and_courses'
         'workshop'
-      else
-        nil
       end
     end
 
     def convert_location(input)
-      #puts "convert_location(#{input})"
+      # puts "convert_location(#{input})"
       result = nil
 
       # search for locations
       locations = Geocoder.search(input)
-      if !locations.nil? and locations.size > 0
-        if !locations.first.nil? and !locations.first.address.nil?
-          #puts "address: #{locations.first.address.inspect}"
-          result = locations.first.address
-        end
+      if !locations.nil? and locations.size > 0 && (!locations.first.nil? and !locations.first.address.nil?)
+        # puts "address: #{locations.first.address.inspect}"
+        result = locations.first.address
       end
 
       # check substring
@@ -164,15 +149,13 @@ module Ingestors
         result = convert_location(stripped.lstrip) if !stripped.nil? and stripped.size > 0
       end
 
-      return result
+      result
     end
 
     def strip_first_part(input)
       parts = input.split(',')
       parts.shift
-      return parts.join(',') if parts.size > 0
-      return ''
+      parts.join(',')
     end
-
   end
 end
