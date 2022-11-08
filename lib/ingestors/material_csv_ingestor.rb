@@ -16,7 +16,7 @@ module Ingestors
     def read(url)
       begin
         # parse table
-        web_contents = open(url).read
+        web_contents = URI.open(url).read
         table = CSV.parse(web_contents, headers: true)
 
         # process each row

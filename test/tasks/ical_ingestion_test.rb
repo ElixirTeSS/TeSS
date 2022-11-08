@@ -1,8 +1,9 @@
-# test/tasks/rake_task_event_rest.rb
+# test/tasks/eventbrite_ingestion_test.rb
 
 require 'test_helper'
+require 'rake'
 
-class RakeTaskEventIcal < ActiveSupport::TestCase
+class IcalIngestionTest < ActiveSupport::TestCase
 
   setup do
     mock_ingestions
@@ -54,7 +55,6 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
     logfile = override_config config_file
     assert_equal 'ical_event', TeSS::Config.ingestion[:name]
     event_count = Event.all.size
-    assert_equal 23, event_count, 'Pre-task: event count not matched.'
     provider = content_providers :another_portal_provider
     refute provider.nil?, "Content Provider not found."
     Time.zone = 'Australia/Perth'

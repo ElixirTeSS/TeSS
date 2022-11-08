@@ -1,8 +1,9 @@
-# test/tasks/rake_task_automated_ingestion.rb
+# test/tasks/automated_ingestion_test.rb
 
 require 'test_helper'
+require 'rake'
 
-class RakeTasksAutomatedIngestion < ActiveSupport::TestCase
+class AutomatedIngestionTest < ActiveSupport::TestCase
 
   setup do
     #puts "setup..."
@@ -129,6 +130,8 @@ class RakeTasksAutomatedIngestion < ActiveSupport::TestCase
       Rake::Task['tess:automated_ingestion'].invoke
     end
 
+    pp File.read(logfile)
+
     assert check_task_finished(logfile)
     error_message = 'Validation error: Provider not found: ' + title.to_s
     assert logfile_contains(logfile, error_message), "Error message '#{error_message}' not found in logfile!"
@@ -154,7 +157,7 @@ class RakeTasksAutomatedIngestion < ActiveSupport::TestCase
     end
 
     assert check_task_finished(logfile)
-    error_message = 'Provider not found: ' + title.to_s
+    error_message = 'Content provider must exist: ' + title.to_s
     assert !logfile_contains(logfile, error_message), "Unexpected error message: #{error_message}"
   end
 
@@ -175,8 +178,6 @@ class RakeTasksAutomatedIngestion < ActiveSupport::TestCase
     error_message = 'URL not accessible: https://dummy.com/events.csv'
     assert logfile_contains(logfile, error_message), 'Error message not found: ' + error_message
     error_message = 'Method is invalid: xtc'
-    assert logfile_contains(logfile, error_message), 'Error message not found: ' + error_message
-    error_message = 'Resource type is invalid: workflow'
     assert logfile_contains(logfile, error_message), 'Error message not found: ' + error_message
   end
 

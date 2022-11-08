@@ -1,8 +1,9 @@
-# test/tasks/rake_task_event_rest.rb
+# test/tasks/eventbrite_ingestion_test.rb
 
 require 'test_helper'
+require 'rake'
 
-class RakeTaskEventRest < ActiveSupport::TestCase
+class EventbriteIngestionTest < ActiveSupport::TestCase
 
   setup do
     mock_ingestions

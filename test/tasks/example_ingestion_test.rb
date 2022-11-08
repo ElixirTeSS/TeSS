@@ -1,8 +1,9 @@
-# test/tasks/rake_task_event_rest.rb
+# test/tasks/eventbrite_ingestion_test.rb
 
 require 'test_helper'
+require 'rake'
 
-class RakeTaskExampleIngestion < ActiveSupport::TestCase
+class ExampleIngestion < ActiveSupport::TestCase
 
   setup do
     #puts "setup..."
@@ -41,9 +42,6 @@ class RakeTaskExampleIngestion < ActiveSupport::TestCase
     assert logfile_contains(logfile, message), 'Message not found: ' + message
 
     message = 'Validation error: Method is invalid: dummyM'
-    assert logfile_contains(logfile, message), 'Message not found: ' + message
-
-    message = 'Validation error: Resource type is invalid: dummyR'
     assert logfile_contains(logfile, message), 'Message not found: ' + message
 
     message = 'Validation error: URL not accessible: https://dummy.com'

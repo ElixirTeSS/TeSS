@@ -1,8 +1,9 @@
-# test/tasks/rake_task_event_ingestion.rb
+# test/tasks/event_ingestion_test.rb
 
 require 'test_helper'
+require 'rake'
 
-class RakeTasksEventCSVIngestion < ActiveSupport::TestCase
+class EventCSVIngestionTest < ActiveSupport::TestCase
 
   setup do
     mock_ingestions

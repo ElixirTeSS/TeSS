@@ -153,7 +153,8 @@ namespace :tess do
       begin
         Scraper.run(log_file)
       rescue Exception => e
-        log_file.puts('   Run Scraper failed with: ' + e.message)
+        log_file.puts("   Run Scraper failed with: #{e.message}")
+        log_file.puts("       #{e.backtrace[0]}")
       end
 
       # wrap up

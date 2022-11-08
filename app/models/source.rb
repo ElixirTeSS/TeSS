@@ -57,8 +57,9 @@ class Source < ApplicationRecord
   end
 
   def check_method
-    if ingestor_class.nil?
-      errors.add :method, 'invalid method'
+    c = ingestor_class rescue nil
+    if c.nil?
+      errors.add(:method, 'is invalid')
     end
   end
 end

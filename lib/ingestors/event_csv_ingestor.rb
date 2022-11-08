@@ -17,7 +17,7 @@ module Ingestors
       # parse csv file to table
       begin
         # parse csv as table
-        web_contents = open(url).read
+        web_contents = URI.open(url).read
         table = CSV.parse(web_contents, headers: true)
 
         # process each row

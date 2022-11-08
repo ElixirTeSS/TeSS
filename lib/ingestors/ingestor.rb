@@ -24,6 +24,10 @@ module Ingestors
       raise NotImplementedError
     end
 
+    def config
+      self.class.config
+    end
+
     # methods
     def read(_url)
       raise NotImplementedError

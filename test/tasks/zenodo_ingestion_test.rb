@@ -1,8 +1,9 @@
-# test/tasks/rake_task_material_ingestion.rb
+# test/tasks/material_csv_ingestion_test.rb
 
 require 'test_helper'
+require 'rake'
 
-class RakeTasksMaterialIngestion < ActiveSupport::TestCase
+class ZenodoIngestionTest < ActiveSupport::TestCase
 
   setup do
     #puts "setup..."

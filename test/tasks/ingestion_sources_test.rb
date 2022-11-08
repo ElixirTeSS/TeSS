@@ -1,8 +1,9 @@
-# test/tasks/rake_task_sources.rb
+# test/tasks/ingestion_sources_test.rb
 
 require 'test_helper'
+require 'rake'
 
-class RakeTasksEventCSVIngestion < ActiveSupport::TestCase
+class IngestionSourcesTest < ActiveSupport::TestCase
 
   setup do
     mock_ingestions
@@ -45,7 +46,6 @@ class RakeTasksEventCSVIngestion < ActiveSupport::TestCase
     # check updated source records
     source = get_source_from_url 'https://app.com/materials.csv'
     assert_equal 'csv', source.method
-    assert_equal 'material', source.resource_type
     refute source.finished_at.nil?
     assert_stats_equal source, 3,2,2, 0, 1
     refute source.log.nil?
@@ -53,7 +53,6 @@ class RakeTasksEventCSVIngestion < ActiveSupport::TestCase
 
     source = get_source_from_url 'https://pawsey.org.au/event/pcon-embracing-new-solutions-for-in-situ-visualisation/?ical=true'
     assert_equal 'ical', source.method
-    assert_equal 'event', source.resource_type
     refute source.finished_at.nil?
     assert_stats_equal source, 1,1, 0,1,0
     refute source.log.nil?
@@ -61,7 +60,6 @@ class RakeTasksEventCSVIngestion < ActiveSupport::TestCase
 
     source = get_source_from_url 'https://raw.githubusercontent.com/nci900/NCI_feed_to_DReSA/master/event_NCI.csv'
     assert_equal 'csv', source.method
-    assert_equal 'event', source.resource_type
     refute source.finished_at.nil?
     assert_stats_equal source, 14, 14, 14, 0, 0
     refute source.log.nil?

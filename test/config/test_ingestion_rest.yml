@@ -6,25 +6,21 @@ sources:
   - id: 1
     provider: 'Portal Provider'         # content provider's title
     url: https://zenodo.org/api/records/?communities=ardc  # the root URL to access the source
-    method: rest                        # one of 'csv', 'rest'
-    resource_type: material             # event or material
+    method: zenodo                        # one of 'csv', 'rest'
     enabled: true
   - id: 2
     provider: 'Portal Provider'         # content provider's title
     url: https://zenodo.org/api/records/?communities=dummy  # the root URL to access the source
-    method: rest                        # one of 'csv', 'rest',
-    resource_type: material             # event or material
+    method: zenodo                        # one of 'csv', 'rest',
     enabled: true
   - id: 3
     provider: 'Another Portal Provider' # content provider's title
     url: https://zenodo.org/api/records/?communities=australianbiocommons-training  # the root URL to access the source
-    method: rest                        # one of 'csv', 'rest',
-    resource_type: material             # event or material
+    method: zenodo                        # one of 'csv', 'rest',
     enabled: true
   - id: 4
     provider: 'Portal Provider'         # content provider's title
     url: https://zenodo.org/api/records/?communities=ardc-again  # the root URL to access the source
-    method: rest                        # one of 'csv', 'rest'
-    resource_type: material             # event or material
+    method: zenodo                        # one of 'csv', 'rest'
     enabled: true
 

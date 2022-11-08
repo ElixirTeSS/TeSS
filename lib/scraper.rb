@@ -1,6 +1,24 @@
 require 'net/http'
 
 module Scraper
+  # Class to represent a ingestion source loaded from ingestion.yml
+  class ConfigSource < Source
+    before_save -> { throw :abort } # Prevent saving to database
+    validate :provider_exists
+    attr_reader :provider
+
+    def provider=(title)
+      @provider = title
+      self.content_provider = ContentProvider.find_by(title: @provider)
+    end
+
+    def provider_exists
+      unless self.content_provider
+        errors.add(:provider, 'not found')
+        errors.delete(:content_provider)
+      end
+    end
+  end
 
   @default_role = 'scraper_user'
   @log_file = ''
@@ -13,18 +31,13 @@ module Scraper
     invalid: 'Validation error: ',
     valid_source: 'Validation passed!',
     bad_role: 'User has invalid role',
-    provider_not_found: 'Provider not found: ',
     url_not_accessible: 'URL not accessible: ',
-    bad_method: 'Method is invalid: ',
-    bad_resource: 'Resource type is invalid: ',
     sources_size: 'Sources count = ',
-    bad_source_id: 'Source id invalid: ',
     bad_source_save: 'Source save failed with: ',
-    bad_source_enabled: 'Source enabled flag invalid: ',
-    not_source_enabled: 'Source not enabled.',
+    not_source_enabled: 'Source not enabled.'
   }
 
-  def self.run (log_file)
+  def self.run(log_file)
     @log_file = log_file
     log @messages[:scraper] + 'start', 0
     errors = 0
@@ -44,61 +57,22 @@ module Scraper
 
     processed = 0
 
-    # process sources in config file
-    if config[:sources] and config[:sources].size > 0
-      log @messages[:sources_size] + config[:sources].size.to_s, 1
-      config[:sources].each do |source|
+    data_sources = {
+      config: (config[:sources] || []).map { |c| Scraper::ConfigSource.new(c.merge(user: user)) },
+      database: Source.find_each
+    }
+
+    data_sources.each do |key, sources|
+      log '', 1
+      log @messages[:sources_size] + sources.size.to_s + " (from #{key})", 1
+      sources.each do |source|
+        output = '<ins>**Processing Ingestion Source**</ins><br />'
         processed += 1
         log '', 1
         log @messages[:processing] + processed.to_s, 1
         if validate_source(source)
           log @messages[:valid_source], 2
-
-          begin
-            # get provider
-            provider = ContentProvider.find_by_title source[:provider]
-
-            # get ingestor
-            ingestor = Ingestors::IngestorFactory.get_ingestor(source[:method])
-
-            # set token
-            ingestor.token = source[:token]
-
-            # read records
-            ingestor.read source[:url]
-            unless ingestor.messages.nil? or ingestor.messages.empty?
-              log "Ingestor: #{ingestor.class}: read messages", 2
-              ingestor.messages.each { |m| log("#{m}", 3) }
-              ingestor.messages.clear
-            end
-
-            # write resources
-            ingestor.write user, provider
-            unless ingestor.messages.nil? or ingestor.messages.empty?
-              log "Ingestor: #{ingestor.class}: write messages", 2
-              ingestor.messages.each { |m| log("#{m}", 3) }
-              ingestor.messages.clear
-            end
-
-            # finished up ingestor
-            log "Source URL[#{source[:url]}] resources read[#{ingestor.ingested}] and written[#{(ingestor.added + ingestor.updated)}].", 2
-          rescue Exception => e0
-            log "Scraper failed with: #{e0.message}", 2
-          end
-        end
-      end
-    end
-
-    # process sources online
-    Source.find_each do |source|
-      begin
-        processed += 1
-        log '', 1
-        log @messages[:processing] + processed.to_s, 1
-        output = "<ins>**Processing Ingestion Source**</ins><br />"
-        if validate_source source
-          log @messages[:valid_source], 2
-          output.concat "<br />"
+          output.concat '<br />'
           output.concat "**Provider:** #{source.content_provider.title}<br />"
           output.concat "<span style='url-wrap'>**URL:** #{source.url}</span><br />"
           output.concat "**Method:** #{source.ingestor_title}<br />"
@@ -110,10 +84,10 @@ module Scraper
           ingestor.token = source.token
 
           # read records
-          ingestor.read source.url
+          ingestor.read(source.url)
           unless ingestor.messages.nil? or ingestor.messages.empty?
-            output.concat "<br />"
-            output.concat "**Input Process:**<br />"
+            output.concat '<br />'
+            output.concat '**Input Process:**<br />'
             ingestor.messages.each { |m| output.concat "-  #{m}<br />" }
             ingestor.messages.clear
           end
@@ -121,8 +95,8 @@ module Scraper
           # write resources
           ingestor.write(user, source.content_provider)
           unless ingestor.messages.nil? or ingestor.messages.empty?
-            output.concat "<br />"
-            output.concat "**Output Process:**<br />"
+            output.concat '<br />'
+            output.concat '**Output Process:**<br />'
             ingestor.messages.each { |m| output.concat "-  #{m}<br />" }
             ingestor.messages.clear
           end
@@ -133,24 +107,26 @@ module Scraper
           source.resources_added = ingestor.added
           source.resources_updated = ingestor.updated
           source.resources_rejected = ingestor.rejected
-          log "Source URL[#{source.url}] resources read[#{source.records_read}] and written[#{source.records_written}].", 2
+          log "Source URL[#{source.url}] resources read[#{source.records_read}]" +
+                ", added[#{source.resources_added}]" +
+                ", updated[#{source.resources_updated}]" +
+                ", rejected[#{source.resources_rejected}]", 2
         end
-      rescue Exception => e1
-        output.concat "<br />"
-        output.concat "**Failed with:** #{e1.message}<br />"
-        log "Ingestor: #{ingestor.class} failed with: #{e1.message}", 2
+      rescue StandardError => e
+        output.concat '<br />'
+        output.concat "**Failed with:** #{e.message}<br />"
+        log "Ingestor: #{ingestor.class} failed with: #{e.message}\t#{e.backtrace[0]}", 2
       ensure
         source.finished_at = Time.now
-        output.concat "<br />"
+        output.concat '<br />'
         output.concat "**Finished at:** #{source.finished_at.strftime '%H:%M on %A, %d %B %Y (UTC)'}<br />"
         source.log = output
         begin
           # only update enabled sources
-          source.save! if source.enabled
-        rescue Exception => e2
-          log @messages[:bad_source_save] + e2.message, 2
+          source.save! if source.enabled && !source.is_a?(Scraper::ConfigSource)
+        rescue StandardError => e
+          log @messages[:bad_source_save] + e.message, 2
         end
-
       end
     end
 
@@ -161,74 +137,21 @@ module Scraper
     log @messages[:scraper] + 'finish', 0
   end
 
-  private
+  def self.validate_source(source)
+    valid = source.valid?
 
-  def self.validate_source(input)
-    result = true
-
-    if input.is_a? Source
-      # validate online source
-      result = false unless validate_enabled(input.enabled)
-      result = false unless validate_provider(input.content_provider)
-      result = false unless validate_method(input.method)
-      result = false unless validate_resource(input.resource_type)
-      result = false unless validate_url(input.url, input.token)
-    elsif input.is_a? Hash
-      # validate config file source
-      result = false unless validate_id(input[:id])
-      result = false unless validate_enabled(input[:enabled])
-      result = false unless validate_provider(input[:provider])
-      result = false unless validate_method(input[:method])
-      result = false unless validate_resource(input[:resource_type])
-      result = false unless validate_url(input[:url], input[:token])
-    else
-      # invalid unexpected source
-      result = false
-      log @messages[:invalid] + "source is a #{input.class}", 2
+    unless valid
+      source.errors.each do |error|
+        log "#{@messages[:invalid]}#{error.full_message}: #{source.send(error.attribute)}", 2
+      end
     end
+    valid_url = validate_url(source.url, source.token)
 
-    # return
-    return result
+    valid && valid_url
   end
 
   def self.input_to_s(input)
     input.nil? ? '' : input.to_s
-  end
-
-  def self.validate_enabled(input)
-    if input.nil? and not [true, false].include?(input)
-      log @messages[:invalid] + @messages[:bad_source_enabled] + input_to_s(input), 2
-      return false
-    end
-    if !input.nil? and input == false
-      log @messages[:invalid] + @messages[:not_source_enabled], 2
-      return false
-    end
-    true
-  end
-
-  def self.validate_id(input)
-    result = true
-    # check id
-    if input.nil? || input.is_a?(Integer) == false
-      log @messages[:invalid] + @messages[:bad_source_id] + input_to_s(input), 2
-      result = false
-    end
-    return result
-  end
-
-  def self.validate_provider(input)
-    result = true
-    if input.is_a? ContentProvider
-      provider = input
-    else
-      provider = ContentProvider.find_by_title(input) unless input.nil?
-    end
-    if provider.nil?
-      log @messages[:invalid] + @messages[:provider_not_found] + input_to_s(input), 2
-      result = false
-    end
-    return result
   end
 
   def self.validate_url(input, token)
@@ -253,25 +176,15 @@ module Scraper
     return result
   end
 
-  def self.validate_method(input)
-    result = true
-    # check method
-    if input.nil? or !Ingestors::IngestorFactory.fetch_ingestor_config(input)
-      log @messages[:invalid] + @messages[:bad_method] + input_to_s(input), 2
-      result = false
-    end
-    return result
-  end
-
   def self.log(message, level)
     if @log_level == 0 or @log_level.to_i >= level.to_i
       tab = 3
-      level.nil? ? prepend = "" : prepend = " " * (tab * level)
-      @log_file.puts ("   " + prepend + message)
+      prepend = level.nil? ? '' : ' ' * (tab * level)
+      @log_file.puts('   ' + prepend + message)
     end
   end
 
-  def self.get_user (username)
+  def self.get_user(username)
     user = User.find_by_username(username)
     if user.nil?
       begin
@@ -290,7 +203,6 @@ module Scraper
     else
       log "User found: username[#{user.username}] role[#{user.role.name}]", 1
     end
-    return user
+    user
   end
-
 end

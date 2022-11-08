@@ -20,9 +20,9 @@ module Ingestors
     def self.get_ingestor(method)
       config = fetch_ingestor_config(method)
       if config
-        return config[:ingestor]
+        return config[:ingestor].new
       else
-        raise "Invalid method [#{method}]"
+        raise "Invalid method: [#{method}]"
       end
     end
 
