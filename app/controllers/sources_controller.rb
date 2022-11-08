@@ -120,7 +120,7 @@ class SourcesController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def source_params
     params.require(:source).permit(:content_provider_id, :created_at,
-                                   :url, :method, :resource_type, :finished_at,
+                                   :url, :method, :finished_at,
                                    :records_read, :records_written, :token,
                                    :resources_added, :resources_updated,
                                    :resources_rejected, :log, :enabled )

@@ -1,17 +1,10 @@
 module Ingestors
-  class IngestorMaterial < Ingestor
-    @materials = []
-
-    def initialize
-      super
-      @materials = []
-    end
-
+  module MaterialIngestion
     def add_material(material)
       @materials << material unless material.nil?
     end
 
-    def write(user, provider)
+    def write_materials(user, provider)
       unless @materials.nil? or @materials.empty?
         # process each material
         @materials.each do |material|
@@ -32,7 +25,7 @@ module Ingestors
             save_valid_material material, false
           else
             # update and save matched material
-            matched = overwrite_fields matched_materials.first, material
+            matched = overwrite_material_fields matched_materials.first, material
             matched = set_field_defaults matched
             matched.last_scraped = DateTime.now
             matched.scraper_record = true
@@ -67,7 +60,7 @@ module Ingestors
       material
     end
 
-    def overwrite_fields(old_material, new_material)
+    def overwrite_material_fields(old_material, new_material)
       # overwrite unlocked attributes
       # [title, url, provider] not changed as they are used for matching
       old_material.description = new_material.description unless old_material.field_locked? :description

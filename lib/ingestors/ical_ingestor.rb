@@ -4,9 +4,13 @@ require 'open-uri'
 require 'tzinfo'
 
 module Ingestors
-  class IngestorEventIcal < IngestorEvent
-    def initialize
-      super
+  class IcalIngestor < Ingestor
+    def self.config
+      {
+        key: 'ical',
+        title: 'iCalendar',
+        category: :events
+      }
     end
 
     def read(url)

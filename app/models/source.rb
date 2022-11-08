@@ -5,9 +5,9 @@ class Source < ApplicationRecord
   belongs_to :user
   belongs_to :content_provider
 
-  validates :url, :method, :resource_type, presence: true
+  validates :url, :method, presence: true
   validates :url, url: true
-  validate :check_method_resource_combo
+  validate :check_method
 
   if TeSS::Config.solr_enabled
     # :nocov:
@@ -18,8 +18,7 @@ class Source < ApplicationRecord
       time :created_at
       time :finished_at
       string :url
-      string :method
-      string :resource_type
+      string :ingestor_title
       string :content_provider do
         self.content_provider.try(:title)
       end
@@ -31,13 +30,15 @@ class Source < ApplicationRecord
 
   # For compatibility with views that render arbitrary lists of user-creatable resources (e.g. curation page)
   def title
-    "#{content_provider.title}: #{Ingestors::IngestorFactory.get_method_value(method)}"
+    "#{content_provider.title}: #{ingestor_title}"
   end
 
-  def source_params
-    permitted = [:created_at, :url, :method, :resource_type, :enabled,
-                 :content_provider_id, :token ]
-    params.require(:source).permit(permitted)
+  def ingestor_title
+    ingestor_class.config[:title]
+  end
+
+  def ingestor_class
+    Ingestors::IngestorFactory.get_ingestor(method)
   end
 
   def self.facet_fields
@@ -55,18 +56,9 @@ class Source < ApplicationRecord
     source
   end
 
-  def check_method_resource_combo
-    unless Ingestors::IngestorFactory.is_method_valid? method
+  def check_method
+    if ingestor_class.nil?
       errors.add :method, 'invalid method'
     end
-    unless Ingestors::IngestorFactory.is_resource_valid? resource_type
-      errors.add :resource_type, 'invalid resource type'
-    end
-    begin
-      Ingestors::IngestorFactory.get_ingestor method, resource_type
-    rescue Exception => e
-      errors.add(:resource_type, 'invalid method and resource type combination')
-    end
   end
-
 end

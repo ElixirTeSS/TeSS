@@ -57,7 +57,7 @@ class RakeTasksEventCSVIngestion < ActiveSupport::TestCase
     refute source.finished_at.nil?
     assert_stats_equal source, 1,1, 0,1,0
     refute source.log.nil?
-    assert source.log.include? "- IngestorEventIcal: events added[0] updated[1] rejected[0]<br />"
+    assert source.log.include? "- IcalIngestor: events added[0] updated[1] rejected[0]<br />"
 
     source = get_source_from_url 'https://raw.githubusercontent.com/nci900/NCI_feed_to_DReSA/master/event_NCI.csv'
     assert_equal 'csv', source.method

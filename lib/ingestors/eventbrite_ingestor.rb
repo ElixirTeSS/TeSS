@@ -2,37 +2,24 @@ require 'open-uri'
 require 'csv'
 
 module Ingestors
-  class IngestorEventRest < IngestorEvent
+  class EventbriteIngestor < Ingestor
+    def self.config
+      {
+        key: 'eventbrite',
+        title: 'Eventbrite REST API',
+        category: :events
+      }
+    end
+
     def initialize
       super
-
-      @RestSources = [
-        { name: 'ElixirTeSS',
-          url: 'https://tess.elixir-europe.org/',
-          process: method(:process_elixir) },
-        { name: 'Eventbrite API v3',
-          url: 'https://www.eventbriteapi.com/v3/',
-          process: method(:process_eventbrite) }
-      ]
-
-      # cached API object responses
       @eventbrite_objects = {}
     end
 
     def read(url)
       begin
-        process = nil
-
-        # get the rest source
-        @RestSources.each do |source|
-          process = source[:process] if url.starts_with? source[:url]
-        end
-
-        # abort if no source found for url
-        raise "REST source not found for URL: #{url}" if process.nil?
-
         # process url
-        process.call(url)
+        process_eventbrite(url)
       rescue Exception => e
         @messages << "#{self.class.name} failed with: #{e.message}"
       end
@@ -54,7 +41,7 @@ module Ingestors
 
         while next_page
           # execute REST request
-          results = get_JSON_response next_page
+          results = get_json_response next_page
 
           # check next page
           next_page = nil
@@ -178,7 +165,7 @@ module Ingestors
     def populate_eventbrite_formats
       # get formats from Eventbrite
       url = "https://www.eventbriteapi.com/v3/formats/?token=#{@token}"
-      response = get_JSON_response url
+      response = get_json_response url
       # process formats
       response['formats'].each do |format|
         # add each item to the cache
@@ -205,7 +192,7 @@ module Ingestors
     def add_eventbrite_venue(id)
       # get from query and add to cache if found
       url = "https://www.eventbriteapi.com/v3/venues/#{id}/?token=#{@token}"
-      venue = get_JSON_response url
+      venue = get_json_response url
       @eventbrite_objects[:venues][id] = venue unless venue.nil?
     rescue Exception => e
       @messages << "get Eventbrite Venue failed with: #{e.message}"
@@ -236,7 +223,7 @@ module Ingestors
         has_more_items = false
 
         # execute query
-        response = get_JSON_response url
+        response = get_json_response url
 
         # process categories
         cats = response['categories']
@@ -285,7 +272,7 @@ module Ingestors
       subcategories = nil
       begin
         url = "#{category['resource_uri']}?token=#{@token}"
-        response = get_JSON_response url
+        response = get_json_response url
         # updated cached category
         @eventbrite_objects[:categories][id] = response
         subcategories = response['subcategories']
@@ -312,73 +299,14 @@ module Ingestors
     def populate_eventbrite_organizer(id)
       # get from query and add to cache if found
       url = "https://www.eventbriteapi.com/v3/organizers/#{id}/?token=#{@token}"
-      organizer = get_JSON_response url
+      organizer = get_json_response url
       # add to cache
       @eventbrite_objects[:organizers][id] = organizer unless organizer.nil?
     rescue Exception => e
       @messages << "get Eventbrite Venue failed with: #{e.message}"
     end
 
-    def process_elixir(url)
-      # execute REST request
-      results = get_JSON_response url, 'application/vnd.api+json'
-      data = results['data']
-
-      # extract materials from results
-      unless data.nil? or data.size < 1
-        data.each do |item|
-          # create new event
-          event = Event.new
-
-          # extract event details from
-          attr = item['attributes']
-          event.title = attr['title']
-          event.url = attr['url'].strip unless attr['url'].nil?
-          event.description = convert_description attr['description']
-          event.start = attr['start']
-          event.end = attr['end']
-          event.timezone = 'UTC'
-          event.contact = attr['contact']
-          event.organizer = attr['organizer']
-          event.online = attr['online']
-          event.city = attr['city']
-          event.country = attr['country']
-          event.venue = attr['venue']
-          event.online = true if attr['venue'] == 'Online'
-
-          # array fields
-          event.keywords = []
-          attr['keywords'].each { |keyword| event.keywords << keyword } unless attr['keywords'].nil?
-
-          event.host_institutions = []
-          attr['host-institutions'].each { |host| event.host_institutions << host } unless attr['host-institutions'].nil?
-
-          # dictionary fields
-          event.eligibility = []
-          unless attr['eligibility'].nil?
-            attr['eligibility'].each do |key|
-              value = convert_eligibility(key)
-              event.eligibility << value unless value.nil?
-            end
-          end
-          event.event_types = []
-          unless attr['event_types'].nil?
-            attr['event_types'].each do |key|
-              value = convert_event_types(key)
-              event.event_types << value unless value.nil?
-            end
-          end
-
-          # add event to events array
-          add_event(event)
-          @ingested += 1
-        rescue Exception => e
-          @messages << "Extract event fields failed with: #{e.message}"
-        end
-      end
-    end
-
-    def get_JSON_response(url, accept_params = 'application/json')
+    def get_json_response(url, accept_params = 'application/json')
       response = RestClient::Request.new(method: :get,
                                          url: CGI.unescape_html(url),
                                          verify_ssl: false,

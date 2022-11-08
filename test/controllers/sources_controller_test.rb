@@ -16,7 +16,6 @@ class SourcesControllerTest < ActionController::TestCase
         url: @new_url,
         content_provider_id: @source.content_provider,
         method: @source.method,
-        resource_type: @source.resource_type,
       }
     }
     @update_params = {
@@ -47,13 +46,11 @@ class SourcesControllerTest < ActionController::TestCase
   test 'registered should get index with solr enabled' do
     begin
       TeSS::Config.solr_enabled = true
-      method = 'csv'
-      resource_type = 'event'
-      mock_search = MockSearch.new(Source.where(method: method,
-                                                resource_type: resource_type))
+      method = 'event_csv'
+      mock_search = MockSearch.new(Source.where(method: method))
       sign_in users(:regular_user)
       Source.stub(:search_and_filter, mock_search) do
-        get :index, params: { method: method, resource_type: resource_type }
+        get :index, params: { method: method }
         assert_response :success
         assert_not_empty assigns(:sources)
         assert_equal 2, assigns(:sources).size, 'provider'

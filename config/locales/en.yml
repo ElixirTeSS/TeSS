@@ -352,3 +352,8 @@ en:
         elixir_aai: LS Login
         oidc: AAF (Australia)
         oidc2: Tuakiri (NZ)
+  ingestion:
+    categories:
+      events: 'Events'
+      materials: 'Materials'
+      any: 'Any'

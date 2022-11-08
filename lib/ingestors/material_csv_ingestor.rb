@@ -1,9 +1,16 @@
 require 'open-uri'
 require 'csv'
+
 module Ingestors
-  class IngestorMaterialCsv < IngestorMaterial
-    def initialize
-      super
+  class MaterialCsvIngestor < Ingestor
+    include CsvIngestion
+
+    def self.config
+      {
+        key: 'material_csv',
+        title: 'CSV File',
+        category: :materials
+      }
     end
 
     def read(url)

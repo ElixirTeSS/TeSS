@@ -1,7 +1,9 @@
 module Ingestors
   class Ingestor
+    include EventIngestion
+    include MaterialIngestion
+
     def initialize
-      super
       @messages = []
       @ingested = 0
       @processed = 0
@@ -9,6 +11,8 @@ module Ingestors
       @updated = 0
       @rejected = 0
       @token = ''
+      @events = []
+      @materials = []
     end
 
     # accessor methods
@@ -16,13 +20,18 @@ module Ingestors
     attr_reader :ingested, :processed, :added, :updated, :rejected
     attr_accessor :token
 
-    # methods
-    def read(_url)
-      raise 'Method not yet implemented'
+    def self.config
+      raise NotImplementedError
     end
 
-    def write(_user, _provider)
-      raise 'Method not yet implemented'
+    # methods
+    def read(_url)
+      raise NotImplementedError
+    end
+
+    def write(user, provider)
+      write_events(user, provider)
+      write_materials(user, provider)
     end
 
     def convert_description(input)
@@ -32,26 +41,15 @@ module Ingestors
       ReverseMarkdown.convert(input, tag_border: '').strip
     end
 
-    def process_url(row, header)
-      row[header].to_s.lstrip unless row[header].nil?
-    end
+    def get_json_response(url, accept_params = 'application/json')
+      response = RestClient::Request.new(method: :get,
+                                         url: CGI.unescape_html(url),
+                                         verify_ssl: false,
+                                         headers: { accept: accept_params }).execute
+      # check response
+      raise "invalid response code: #{response.code}" unless response.code == 200
 
-    def process_description(row, header)
-      return nil if row[header].nil?
-
-      desc = row[header]
-      desc.gsub!(/""/, '"')
-      desc.gsub!(/\A""|""\Z/, '')
-      desc.gsub!(/\A"|"\Z/, '')
-      convert_description desc
-    end
-
-    def process_array(row, header)
-      row[header].to_s.lstrip.split(/;/).reject(&:empty?).compact unless row[header].nil?
-    end
-
-    def get_column(row, header)
-      row[header].to_s.lstrip unless row[header].nil?
+      JSON.parse(response.to_str)
     end
   end
 end

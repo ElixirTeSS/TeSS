@@ -1,17 +1,10 @@
 module Ingestors
-  class IngestorEvent < Ingestor
-    @events = []
-
-    def initialize
-      super
-      @events = []
-    end
-
+  module EventIngestion
     def add_event(event)
       @events << event unless event.nil?
     end
 
-    def write(user, provider)
+    def write_events(user, provider)
       unless @events.nil? or @events.empty?
         # process each event
         @events.each do |event|
@@ -30,12 +23,12 @@ module Ingestors
               event.content_provider = provider
               event.scraper_record = true
               event.last_scraped = DateTime.now
-              event = set_field_defaults event
+              event = set_event_field_defaults event
               save_valid_event event, false
             else
               # update and save matched event
-              matched = overwrite_fields matched_events.first, event
-              matched = set_field_defaults matched
+              matched = overwrite_event_fields matched_events.first, event
+              matched = set_event_field_defaults matched
               matched.scraper_record = true
               matched.last_scraped = DateTime.now
               save_valid_event matched, true
@@ -69,7 +62,7 @@ module Ingestors
       end
     end
 
-    def overwrite_fields(old_event, new_event)
+    def overwrite_event_fields(old_event, new_event)
       # overwrite unlocked attributes
       # [title, url, start, provider] not changed, as they are used for matching
       old_event.description = new_event.description unless old_event.field_locked? :description
@@ -89,7 +82,7 @@ module Ingestors
       old_event
     end
 
-    def set_field_defaults(event)
+    def set_event_field_defaults(event)
       # contact
       event.contact = event.content_provider.contact if (event.contact.nil? or event.contact.blank?) && !(event.field_locked? :contact)
 

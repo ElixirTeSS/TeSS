@@ -2,9 +2,13 @@ require 'rest-client'
 require 'json'
 
 module Ingestors
-  class IngestorMaterialRest < IngestorMaterial
-    def initialize
-      super
+  class ZenodoIngestor < Ingestor
+    def self.config
+      {
+        key: 'zenodo',
+        title: 'Zenodo API',
+        category: :materials
+      }
     end
 
     def read(url)

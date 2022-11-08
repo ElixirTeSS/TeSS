@@ -1,55 +1,41 @@
 module Ingestors
   class IngestorFactory
-    @@methods = { 'csv': 'CSV File', 'ical': 'iCalendars', 'rest': 'REST API' }
-    @@resources = { 'event': 'Events', 'material': 'Materials' }
+    def self.ingestors
+      [
+        Ingestors::EventCsvIngestor,
+        Ingestors::MaterialCsvIngestor,
+        Ingestors::IcalIngestor,
+        Ingestors::EventbriteIngestor,
+        Ingestors::TessEventIngestor,
+        Ingestors::ZenodoIngestor
+      ]
+    end
 
-    def self.get_ingestor(method, resource)
-      if is_method_valid?(method) and is_resource_valid?(resource)
-        case [method, resource]
-        when %w[csv event]
-          IngestorEventCsv.new
-        when %w[ical event]
-          IngestorEventIcal.new
-        when %w[csv material]
-          IngestorMaterialCsv.new
-        when %w[rest event]
-          IngestorEventRest.new
-        when %w[rest material]
-          IngestorMaterialRest.new
-        else
-          raise "Ingestor not yet implemented for method[#{method}] and resource[#{resource}]"
-        end
+    def self.ingestor_config
+      @ingestor_config ||= ingestors.map do |i|
+        i.config.merge(ingestor: i)
+      end
+    end
+
+    def self.get_ingestor(method)
+      config = fetch_ingestor_config(method)
+      if config
+        return config[:ingestor]
       else
-        raise "Invalid method[#{method}] or resource[#{resource}]"
+        raise "Invalid method [#{method}]"
       end
     end
 
-    def self.is_method_valid?(input)
-      @@methods.has_key? input.to_sym
+    def self.fetch_ingestor_config(key)
+      ingestor_config.detect { |c| c[:key] == key }
     end
 
-    def self.is_resource_valid?(input)
-      @@resources.has_key? input.to_sym
-    end
-
-    def self.method_for_select
-      @@methods.map do |key, value|
-        [value, key, '']
-      end
-    end
-
-    def self.resources_for_select
-      @@resources.map do |key, value|
-        [value, key, '']
-      end
+    def self.grouped_options
+      @grouped_options ||= ingestor_config.group_by { |c| c[:category] || :any }
     end
 
     def self.get_method_value(input)
-      @@methods.fetch input.to_sym
-    end
-
-    def self.get_resource_value(input)
-      @@resources.fetch input.to_sym
+      METHODS.fetch input.to_sym
     end
   end
 end

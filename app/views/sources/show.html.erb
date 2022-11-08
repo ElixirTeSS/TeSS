@@ -39,20 +39,13 @@
               <h4>Source Details</h4>
 
               <!-- Field: URL -->
-              <p>
               <div class="url-wrap">
                 <strong>URL:&nbsp;</strong><%= @source.url %>
               </div>
-              </p>
 
               <!-- Field: method -->
               <p><strong>Method:&nbsp;</strong>
-                <%= Ingestors::IngestorFactory.get_method_value @source.method %>
-              </p>
-
-              <!-- Field: resource type -->
-              <p><strong>Resource Type:&nbsp;</strong>
-                <%= Ingestors::IngestorFactory.get_resource_value @source.resource_type %>
+                <%= @source.ingestor_title %>
               </p>
 
               <!-- Field: created at -->

@@ -59,7 +59,7 @@ module Scraper
             provider = ContentProvider.find_by_title source[:provider]
 
             # get ingestor
-            ingestor = Ingestors::IngestorFactory.get_ingestor source[:method], source[:resource_type]
+            ingestor = Ingestors::IngestorFactory.get_ingestor(source[:method])
 
             # set token
             ingestor.token = source[:token]
@@ -90,70 +90,67 @@ module Scraper
     end
 
     # process sources online
-    if Source.all
-      Source.all.each do |source|
-        begin
-          processed += 1
-          log '', 1
-          log @messages[:processing] + processed.to_s, 1
-          output = "<ins>**Processing Ingestion Source**</ins><br />"
-          if validate_source source
-            log @messages[:valid_source], 2
+    Source.find_each do |source|
+      begin
+        processed += 1
+        log '', 1
+        log @messages[:processing] + processed.to_s, 1
+        output = "<ins>**Processing Ingestion Source**</ins><br />"
+        if validate_source source
+          log @messages[:valid_source], 2
+          output.concat "<br />"
+          output.concat "**Provider:** #{source.content_provider.title}<br />"
+          output.concat "<span style='url-wrap'>**URL:** #{source.url}</span><br />"
+          output.concat "**Method:** #{source.ingestor_title}<br />"
+
+          # get ingestor
+          ingestor = Ingestors::IngestorFactory.get_ingestor(source.method)
+
+          # set token
+          ingestor.token = source.token
+
+          # read records
+          ingestor.read source.url
+          unless ingestor.messages.nil? or ingestor.messages.empty?
             output.concat "<br />"
-            output.concat "**Provider:** #{source.content_provider.title}<br />"
-            output.concat "<span style='url-wrap'>**URL:** #{source.url}</span><br />"
-            output.concat "**Method:** #{Ingestors::IngestorFactory.get_method_value source.method}<br />"
-            output.concat "**Resource:** #{Ingestors::IngestorFactory.get_resource_value source.resource_type}<br />"
-
-            # get ingestor
-            ingestor = Ingestors::IngestorFactory.get_ingestor source.method, source.resource_type
-
-            # set token
-            ingestor.token = source.token
-
-            # read records
-            ingestor.read source.url
-            unless ingestor.messages.nil? or ingestor.messages.empty?
-              output.concat "<br />"
-              output.concat "**Input Process:**<br />"
-              ingestor.messages.each { |m| output.concat "-  #{m}<br />" }
-              ingestor.messages.clear
-            end
-
-            # write resources
-            ingestor.write(user, source.content_provider)
-            unless ingestor.messages.nil? or ingestor.messages.empty?
-              output.concat "<br />"
-              output.concat "**Output Process:**<br />"
-              ingestor.messages.each { |m| output.concat "-  #{m}<br />" }
-              ingestor.messages.clear
-            end
-
-            # update source
-            source.records_read = ingestor.ingested
-            source.records_written = (ingestor.added + ingestor.updated)
-            source.resources_added = ingestor.added
-            source.resources_updated = ingestor.updated
-            source.resources_rejected = ingestor.rejected
-            log "Source URL[#{source.url}] resources read[#{source.records_read}] and written[#{source.records_written}].", 2
-          end
-        rescue Exception => e1
-          output.concat "<br />"
-          output.concat "**Failed with:** #{e1.message}<br />"
-          log "Ingestor: #{ingestor.class} failed with: #{e1.message}", 2
-        ensure
-          source.finished_at = Time.now
-          output.concat "<br />"
-          output.concat "**Finished at:** #{source.finished_at.strftime '%H:%M on %A, %d %B %Y (UTC)'}<br />"
-          source.log = output
-          begin
-            # only update enabled sources
-            source.save! unless source.enabled.nil? or !source.enabled
-          rescue Exception => e2
-            log @messages[:bad_source_save] + e2.message, 2
+            output.concat "**Input Process:**<br />"
+            ingestor.messages.each { |m| output.concat "-  #{m}<br />" }
+            ingestor.messages.clear
           end
 
+          # write resources
+          ingestor.write(user, source.content_provider)
+          unless ingestor.messages.nil? or ingestor.messages.empty?
+            output.concat "<br />"
+            output.concat "**Output Process:**<br />"
+            ingestor.messages.each { |m| output.concat "-  #{m}<br />" }
+            ingestor.messages.clear
+          end
+
+          # update source
+          source.records_read = ingestor.ingested
+          source.records_written = (ingestor.added + ingestor.updated)
+          source.resources_added = ingestor.added
+          source.resources_updated = ingestor.updated
+          source.resources_rejected = ingestor.rejected
+          log "Source URL[#{source.url}] resources read[#{source.records_read}] and written[#{source.records_written}].", 2
         end
+      rescue Exception => e1
+        output.concat "<br />"
+        output.concat "**Failed with:** #{e1.message}<br />"
+        log "Ingestor: #{ingestor.class} failed with: #{e1.message}", 2
+      ensure
+        source.finished_at = Time.now
+        output.concat "<br />"
+        output.concat "**Finished at:** #{source.finished_at.strftime '%H:%M on %A, %d %B %Y (UTC)'}<br />"
+        source.log = output
+        begin
+          # only update enabled sources
+          source.save! if source.enabled
+        rescue Exception => e2
+          log @messages[:bad_source_save] + e2.message, 2
+        end
+
       end
     end
 
@@ -259,17 +256,8 @@ module Scraper
   def self.validate_method(input)
     result = true
     # check method
-    if input.nil? or !Ingestors::IngestorFactory.is_method_valid? input
+    if input.nil? or !Ingestors::IngestorFactory.fetch_ingestor_config(input)
       log @messages[:invalid] + @messages[:bad_method] + input_to_s(input), 2
-      result = false
-    end
-    return result
-  end
-
-  def self.validate_resource(input)
-    result = true
-    if input.nil? or !Ingestors::IngestorFactory.is_resource_valid? input
-      log @messages[:invalid] + @messages[:bad_resource] + input_to_s(input), 2
       result = false
     end
     return result

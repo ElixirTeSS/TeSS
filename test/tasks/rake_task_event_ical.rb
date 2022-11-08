@@ -166,7 +166,7 @@ class RakeTaskEventIcal < ActiveSupport::TestCase
     assert event.country.nil?, "event title[#{event.title}] country not matched"
 
     # TODO: check totals
-    check_logfile logfile, 'IngestorEventIcal: events added\[4\] updated\[2\] rejected\[2\]'
+    check_logfile logfile, 'IcalIngestor: events added\[4\] updated\[2\] rejected\[2\]'
     assert_equal event_count + added, Event.all.size, 'Post-task: event count not matched'
 
   end

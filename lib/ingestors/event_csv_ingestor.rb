@@ -1,9 +1,16 @@
 require 'open-uri'
 require 'csv'
+
 module Ingestors
-  class IngestorEventCsv < IngestorEvent
-    def initialize
-      super
+  class EventCsvIngestor < Ingestor
+    include CsvIngestion
+
+    def self.config
+      {
+        key: 'event_csv',
+        title: 'CSV File',
+        category: :events
+      }
     end
 
     def read(url)
@@ -11,7 +18,7 @@ module Ingestors
       begin
         # parse csv as table
         web_contents = open(url).read
-        table = CSV.parse web_contents, headers: true
+        table = CSV.parse(web_contents, headers: true)
 
         # process each row
         table.each do |row|
@@ -53,7 +60,7 @@ module Ingestors
           if event.title.nil?
             @messages << 'row found with no title'
           else
-            add_event event
+            add_event(event)
             @ingested += 1
           end
         end
