@@ -6,7 +6,6 @@ require 'rake'
 class AutomatedIngestionTest < ActiveSupport::TestCase
 
   setup do
-    skip 'Broken'
     #puts "setup..."
     mock_ingestions
     TeSS::Application.load_tasks if Rake::Task.tasks.empty?
@@ -130,8 +129,6 @@ class AutomatedIngestionTest < ActiveSupport::TestCase
     freeze_time(stub_time = Time.new(2019)) do ||
       Rake::Task['tess:automated_ingestion'].invoke
     end
-
-    pp File.read(logfile)
 
     assert check_task_finished(logfile)
     error_message = 'Validation error: Provider not found: ' + title.to_s
