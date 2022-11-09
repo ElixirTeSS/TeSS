@@ -234,6 +234,8 @@ module ApplicationHelper
       'fa fa-sitemap'
     when 'nodes'
       'fa fa-share-alt'
+    when 'sources'
+      'fa fa-cloud-download'
     else
       'fa fa-folder-open'
     end

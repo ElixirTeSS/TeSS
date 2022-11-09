@@ -11,4 +11,19 @@ module SourcesHelper
 
     opts
   end
+
+  def source_enabled_badge(enabled)
+    content_tag(:span, enabled ? 'Enabled' : 'Disabled', class: "label label-#{enabled ? 'success' : 'danger'}")
+  end
+
+  def source_approval_badge(status)
+    case status
+    when :not_approved
+      content_tag(:span, t("sources.approval_status.#{status}"), class: 'label label-danger')
+    when :approval_requested
+      content_tag(:span, t("sources.approval_status.#{status}"), class: 'label label-warning')
+    when :approved
+      content_tag(:span, t("sources.approval_status.#{status}"), class: 'label label-success')
+    end
+  end
 end

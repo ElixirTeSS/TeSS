@@ -43,5 +43,81 @@ class SourceTest < ActiveSupport::TestCase
     assert_equal 100, source.records_read, 'updated records read not matched'
   end
 
+  test 'can get enabled sources' do
+    sources = Source.enabled
+    assert_includes sources, sources(:enabled_source)
+    assert_not_includes sources, sources(:first_source)
+    assert_not_includes sources, sources(:second_source)
+  end
 
+  test 'can get approved sources' do
+    sources = Source.approved
+    assert_includes sources, sources(:first_source)
+    assert_not_includes sources, sources(:unapproved_source)
+    assert_not_includes sources, sources(:approval_requested_source)
+  end
+
+  test 'can get approval-requested sources' do
+    sources = Source.approval_requested
+    assert_not_includes sources, sources(:first_source)
+    assert_not_includes sources, sources(:unapproved_source)
+    assert_includes sources, sources(:approval_requested_source)
+  end
+
+  test 'source approval status is set to not_approved by default if regular user' do
+    assert TeSS::Config.feature['source_approval']
+    User.current_user = users(:regular_user)
+    source = Source.new(content_provider: content_providers(:portal_provider),
+                        url: 'https://website.org',
+                        method: 'bioschemas',
+                        user: User.current_user)
+    assert source.save
+    assert_equal :not_approved, source.approval_status
+  end
+
+  test 'source approval status is set to approved by default if admin' do
+    assert TeSS::Config.feature['source_approval']
+    User.current_user = users(:admin)
+    source = Source.new(content_provider: content_providers(:portal_provider),
+                        url: 'https://website.org',
+                        method: 'bioschemas',
+                        user: User.current_user)
+    assert source.save
+    assert_equal :approved, source.approval_status
+  end
+
+
+  test 'source approval status is set to approved by default if source_approval disabled' do
+    features = TeSS::Config.feature.dup
+    TeSS::Config.feature['source_approval'] = false
+    refute TeSS::Config.feature['source_approval']
+    User.current_user = users(:regular_user)
+    source = Source.new(content_provider: content_providers(:portal_provider),
+                        url: 'https://website.org',
+                        method: 'bioschemas',
+                        user: User.current_user)
+    assert source.save
+    assert_equal :approved, source.approval_status
+  ensure
+    TeSS::Config.feature = features
+  end
+
+  test 'changes to approval status are logged' do
+    source = sources(:unapproved_source)
+    admin = users(:admin)
+    User.current_user = admin
+
+    assert_equal :not_approved, source.approval_status
+
+    assert_difference('PublicActivity::Activity.count', 1) do
+      assert source.update(approval_status: 'approved')
+    end
+
+    activity = source.activities.last
+    assert_equal admin, activity.owner
+    assert_equal source, activity.trackable
+    assert_equal 'source.approval_status_changed', activity.key
+    assert_equal 'not_approved', activity.parameters[:old]
+    assert_equal 'approved', activity.parameters[:new]
+  end
 end

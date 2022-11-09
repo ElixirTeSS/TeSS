@@ -38,6 +38,7 @@ module Scraper
   }
 
   def self.run(log_file)
+    start_time = Time.now
     @log_file = log_file
     log @messages[:scraper] + 'start', 0
     errors = 0
@@ -118,8 +119,10 @@ module Scraper
         log "Ingestor: #{ingestor.class} failed with: #{e.message}\t#{e.backtrace[0]}", 2
       ensure
         source.finished_at = Time.now
+        run_time = source.finished_at - start_time
         output.concat '<br />'
         output.concat "**Finished at:** #{source.finished_at.strftime '%H:%M on %A, %d %B %Y (UTC)'}<br />"
+        output.concat "**Run time:** #{run_time.round(2)}s<br />"
         source.log = output
         begin
           # only update enabled sources

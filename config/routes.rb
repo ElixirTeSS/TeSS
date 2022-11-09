@@ -83,7 +83,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :content_providers, concerns: :activities
+  resources :content_providers, concerns: :activities do
+    resources :sources, only: [:new, :create]
+  end
 
   resources :materials, concerns: :activities do
     member do

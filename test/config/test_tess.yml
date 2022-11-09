@@ -51,6 +51,9 @@ test:
     subscription: true
     trainers: true
     workflows: true
+    sources: true
+    source_approval: true
+    user_source_creation: true
     disabled: []
   placeholder:
     collection: 'placeholder-collection.png'

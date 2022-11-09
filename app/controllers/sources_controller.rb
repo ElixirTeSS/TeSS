@@ -1,7 +1,8 @@
 class SourcesController < ApplicationController
 
   before_action :set_source, only: [:show, :edit, :update, :destroy]
-  before_action :set_content_provider, only: [:index, :new, :create]
+  before_action :set_content_provider
+  before_action :set_content_provider_for_admin, only: [:create, :update]
   before_action :set_breadcrumbs
 
   include SearchableIndex
@@ -38,8 +39,7 @@ class SourcesController < ApplicationController
   # POST /sources.json
   def create
     authorize Source
-    @source = Source.new(source_params)
-    @source.created_at = Time.now
+    @source = @content_provider.sources.build(source_params)
     @source.user = current_user
 
     respond_to do |format|
@@ -101,15 +101,18 @@ class SourcesController < ApplicationController
 
   private
 
-  def set_content_provider
-    @content_provider = nil
-    slug = params[:content_provider]
-    @content_provider = ContentProvider.find_by_slug(slug) unless slug.nil?
-    if @content_provider.nil?
-      id = params[:content_provider_id]
-      @content_provider = ContentProvider.find(id) unless id.nil?
+  def set_content_provider_for_admin
+    if policy(Source).administration?
+      @content_provider ||= ContentProvider.friendly.find_by_id(source_params[:content_provider_id])
     end
-    @content_provider
+  end
+
+  def set_content_provider
+    @content_provider ||= ContentProvider.friendly.find_by_id(params[:content_provider_id])
+    unless policy(Source).administration? && ['index', 'create', 'new'].include?(action_name)
+      raise ActiveRecord::RecordNotFound unless @content_provider
+      authorize @content_provider, :manage?
+    end
   end
 
   # Use callbacks to share common setup or constraints between actions.
@@ -119,11 +122,21 @@ class SourcesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def source_params
-    params.require(:source).permit(:content_provider_id, :created_at,
-                                   :url, :method, :finished_at,
-                                   :records_read, :records_written, :token,
-                                   :resources_added, :resources_updated,
-                                   :resources_rejected, :log, :enabled )
+    permitted = [:url, :method, :token, :enabled]
+    permitted << :approval_status if policy(Source).approve?
+    permitted << :content_provider_id if policy(Source).index?
+
+    params.require(:source).permit(permitted)
+  end
+
+  def set_breadcrumbs
+    if @content_provider
+      add_base_breadcrumbs('content_providers')
+      add_show_breadcrumb(@content_provider)
+      add_breadcrumb 'New Source', new_content_provider_source_path(@content_provider)
+    else
+      super
+    end
   end
 
 end

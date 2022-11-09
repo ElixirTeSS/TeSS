@@ -39,17 +39,18 @@
               <h4>Source Details</h4>
 
               <!-- Field: URL -->
-              <div class="url-wrap">
-                <strong>URL:&nbsp;</strong><%= @source.url %>
-              </div>
+              <p class="url-wrap">
+                <strong>URL:</strong>
+                <%= link_to @source.url, @source.url, target: :_blank, rel: :noopener %>
+              </p>
 
               <!-- Field: method -->
-              <p><strong>Method:&nbsp;</strong>
+              <p><strong>Method:</strong>
                 <%= @source.ingestor_title %>
               </p>
 
               <!-- Field: created at -->
-              <p><strong>Created at:&nbsp;</strong>
+              <p><strong>Created at:</strong>
                 <%= @source.created_at.strftime('%H:%M on %A, %d %B %Y (UTC)') %>
               </p>
 
@@ -61,14 +62,17 @@
               <% end %>
 
               <!-- Field: enabled -->
-              <p><strong>
-                Source is
-                <% if @source.enabled %>
-                  <span style='color: green;'>Enabled</span>
-                <% else %>
-                  <span style='color: red;'>Disabled</span>
-                <% end %>
-              </strong></p>
+              <p>
+                <strong>Source is:</strong>
+                <%= source_enabled_badge(@source.enabled) %>
+              </p>
+
+              <% if TeSS::Config.feature['source_approval'] %>
+                <p>
+                  <strong>Approval status:</strong>
+                  <%= source_approval_badge(@source.approval_status) %>
+                </p>
+              <% end %>
 
               <hr/>
 

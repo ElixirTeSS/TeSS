@@ -1,16 +1,12 @@
-<%= simple_form_for @source, html: { class: 'source', multipart: true } do |f| %>
-
+<%= simple_form_for (@content_provider ? [@content_provider, @source] : @source), html: { class: 'source', multipart: true } do |f| %>
   <%= render partial: 'common/error_summary', locals: { resource: @source } %>
 
-  <% if @content_provider.nil? %>
+  <% unless @content_provider %>
     <%= f.input :content_provider_id,
                 collection: current_user.get_editable_providers,
                 label_method: :title,
                 value_method: :id,
                 include_blank: false %>
-  <% else %>
-    <h4>Provider: <%= @content_provider.title %></h4>
-    <%= f.hidden_field :content_provider_id, value: @content_provider.id %>
   <% end %>
 
   <%= render partial: 'common/url_checker',

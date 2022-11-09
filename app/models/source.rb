@@ -1,4 +1,12 @@
 class Source < ApplicationRecord
+  APPROVAL_STATUS = {
+    0 => :not_approved,
+    1 => :requested,
+    2 => :approved
+  }.freeze
+
+  APPROVAL_STATUS_CODES = APPROVAL_STATUS.invert.freeze
+
   include PublicActivity::Model
   include Searchable
 
@@ -7,7 +15,11 @@ class Source < ApplicationRecord
 
   validates :url, :method, presence: true
   validates :url, url: true
+  validates :approval_status, inclusion: { in: APPROVAL_STATUS.values }
   validate :check_method
+
+  before_save :set_approval_status
+  after_update :log_approval_status_change
 
   if TeSS::Config.solr_enabled
     # :nocov:
@@ -23,6 +35,9 @@ class Source < ApplicationRecord
       end
       string :content_provider do
         self.content_provider.try(:title)
+      end
+      string :approval_status do
+        I18n.t("sources.approval_status.#{approval_status}")
       end
       integer :user_id
       boolean :enabled
@@ -44,7 +59,7 @@ class Source < ApplicationRecord
   end
 
   def self.facet_fields
-    %w( content_provider method enabled )
+    %w( content_provider method enabled approval_status )
   end
 
   def self.check_exists(source_params)
@@ -58,10 +73,49 @@ class Source < ApplicationRecord
     source
   end
 
+  def self.enabled
+    where(enabled: true)
+  end
+
   def check_method
     c = ingestor_class rescue nil
     if c.nil?
       errors.add(:method, 'is invalid')
+    end
+  end
+
+  def self.approved
+    where(approval_status: APPROVAL_STATUS_CODES[:approved])
+  end
+
+  def self.approval_requested
+    where(approval_status: APPROVAL_STATUS_CODES[:requested])
+  end
+
+  def approval_status
+    APPROVAL_STATUS[super] || APPROVAL_STATUS[0]
+  end
+
+  def approval_status=(key)
+    super(APPROVAL_STATUS_CODES[key.to_sym])
+  end
+
+  private
+
+  def set_approval_status
+    if TeSS::Config.feature['source_approval'] && !User.current_user&.is_admin?
+      self.approval_status = :not_approved
+    else
+      self.approval_status = :approved
+    end
+  end
+
+  def log_approval_status_change
+    if saved_change_to_approval_status?
+      old = (APPROVAL_STATUS[approval_status_before_last_save.to_i] || APPROVAL_STATUS[0]).to_s
+      new = approval_status.to_s
+      create_activity(:approval_status_changed, owner: User.current_user,
+                      parameters: { old: old, new: new })
     end
   end
 end

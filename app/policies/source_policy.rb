@@ -1,26 +1,42 @@
-class SourcePolicy < ApplicationPolicy
-
+class SourcePolicy < ResourcePolicy
   def show?
-    @user && !@user.role.blank?
+    manage?
   end
 
   def manage?
-    @user && (
-      @user.has_role?(:curator) ||
-      @user.has_role?(:admin) ||
-      @user.has_role?(:scraper_user))
+    if TeSS::Config.feature['source_approval']
+      super
+    else
+      administration?
+    end
   end
 
   def index?
-    show?
-  end
-
-  def new?
-    manage?
+    administration?
   end
 
   def create?
-    manage?
+    if TeSS::Config.feature['source_approval']
+      super
+    else
+      administration?
+    end
   end
 
+  def approve?
+    @user && @user.has_role?(:admin)
+  end
+
+  def administration? # Can edit sources for any content provider
+    curators_and_admin
+  end
+
+  private
+
+  def curators_and_admin
+    @user && (
+      @user.has_role?(:curator) ||
+        @user.has_role?(:admin) ||
+        @user.has_role?(:scraper_user))
+  end
 end

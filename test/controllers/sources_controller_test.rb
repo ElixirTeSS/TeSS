@@ -251,4 +251,15 @@ class SourcesControllerTest < ActionController::TestCase
     end
   end
 
+  test 'admin can view general source index' do
+    sign_in users(:admin)
+    get :index
+    assert_response :success
+  end
+
+  test 'regular user cannot view general source index' do
+    sign_in users(:regular_user)
+    get :index
+    assert_response :forbidden
+  end
 end

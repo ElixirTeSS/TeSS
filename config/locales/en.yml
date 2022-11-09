@@ -357,3 +357,8 @@ en:
       events: 'Events'
       materials: 'Materials'
       any: 'Any'
+  sources:
+    approval_status:
+      not_approved: Not approved
+      requested: Approval requested
+      approved: Approved
