@@ -55,8 +55,6 @@ module Ingestors
     end
 
     def set_material_defaults(material)
-      # contact
-      material.contact = material.content_provider.contact if material.contact.nil? or material.contact.blank?
       material
     end
 

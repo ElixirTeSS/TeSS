@@ -83,46 +83,15 @@ module Ingestors
     end
 
     def set_event_field_defaults(event)
-      # contact
-      event.contact = event.content_provider.contact if (event.contact.nil? or event.contact.blank?) && !(event.field_locked? :contact)
-
-      # organizer
-      event.organizer = event.content_provider.title if (event.organizer.nil? or event.organizer.blank?) && !(event.field_locked? :organizer)
-
-      # host institutions
-      event.host_institutions = [event.content_provider.title.to_s] if (event.host_institutions.nil? or event.host_institutions.size < 1) && !(event.field_locked? :host_institutions)
-
-      # eligibility
-      event.eligibility = ['open_to_all'] if (event.eligibility.nil? or event.eligibility.size < 1) && !(event.field_locked? :eligibility)
-
-      # return
       event
     end
 
     def convert_eligibility(input)
-      case input
-      when 'first_come_first_served'
-        'open_to_all'
-      when 'registration_of_interest'
-        'expression_of_interest'
-      when 'by_invitation'
-        'by_invitation'
-      end
+      input
     end
 
     def convert_event_types(input)
-      case input.downcase
-      when 'conference'
-        'conference'
-      when 'class'
-        'workshop'
-      when 'networking'
-        'meeting'
-      when 'meetings_and_conferences'
-        'meeting'
-      when 'workshops_and_courses'
-        'workshop'
-      end
+      input
     end
 
     def convert_location(input)
