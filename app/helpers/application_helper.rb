@@ -73,7 +73,7 @@ module ApplicationHelper
   def enabled_icon(record, size = nil)
     unless record.nil? or record.enabled.nil?
       if record.enabled
-        "<span class='missing-icon pull-right'>#{icon_for(:check, size)}</span>".html_safe
+        "<span class='fresh-icon pull-right'>#{icon_for(:check, size)}</span>".html_safe
       else
         "<span class='missing-icon pull-right'>#{icon_for(:cross, size)}</span>".html_safe
       end
