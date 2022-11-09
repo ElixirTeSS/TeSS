@@ -317,23 +317,10 @@ class User < ApplicationRecord
   private
 
   def reassign_owner
-    # Material.where(:user => self).each do |material|
-    #   material.update_attribute(:user, get_default_user)
-    # end
-    # Event.where(:user => self).each do |event|
-    #   event.update_attribute(:user_id, get_default_user.id)
-    # end
-    # ContentProvider.where(:user => self).each do |content_provider|
-    #   content_provider.update_attribute(:user_id, get_default_user.id)
-    # end
-    # Node.where(:user => self).each do |node|
-    #   node.update_attribute(:user_id, get_default_user.id)
-    # end
     default_user = User.get_default_user
-    self.materials.each { |x| x.update_attribute(:user, default_user) } if self.materials.any?
-    self.events.each { |x| x.update_attribute(:user, default_user) } if self.events.any?
-    self.content_providers.each { |x| x.update_attribute(:user, default_user) } if self.content_providers.any?
-    self.nodes.each { |x| x.update_attribute(:user, default_user) } if self.nodes.any?
+    [materials, events, content_providers, nodes, sources].each do |type|
+      type.find_each { |x| x.update_attribute(:user, default_user) }
+    end
   end
 
   def react_to_role_change
