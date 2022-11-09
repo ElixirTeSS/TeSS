@@ -19,14 +19,14 @@ module Ingestors
             # set ingestion parameters and save new event
             material.user = user
             material.content_provider = provider
-            material = set_field_defaults material
+            material = set_material_defaults material
             material.last_scraped = DateTime.now
             material.scraper_record = true
             save_valid_material material, false
           else
             # update and save matched material
             matched = overwrite_material_fields matched_materials.first, material
-            matched = set_field_defaults matched
+            matched = set_material_defaults matched
             matched.last_scraped = DateTime.now
             matched.scraper_record = true
             save_valid_material matched, true
@@ -54,7 +54,7 @@ module Ingestors
       end
     end
 
-    def set_field_defaults(material)
+    def set_material_defaults(material)
       # contact
       material.contact = material.content_provider.contact if material.contact.nil? or material.contact.blank?
       material
