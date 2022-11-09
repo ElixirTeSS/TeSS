@@ -18,7 +18,9 @@ class Source < ApplicationRecord
       time :created_at
       time :finished_at
       string :url
-      string :ingestor_title
+      string :method do
+        ingestor_title
+      end
       string :content_provider do
         self.content_provider.try(:title)
       end
@@ -42,7 +44,7 @@ class Source < ApplicationRecord
   end
 
   def self.facet_fields
-    %w( content_provider method resource_type enabled )
+    %w( content_provider method enabled )
   end
 
   def self.check_exists(source_params)
