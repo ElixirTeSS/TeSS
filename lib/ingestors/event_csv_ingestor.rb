@@ -61,7 +61,6 @@ module Ingestors
             @messages << 'row found with no title'
           else
             add_event(event)
-            @ingested += 1
           end
         end
       rescue CSV::MalformedCSVError => e

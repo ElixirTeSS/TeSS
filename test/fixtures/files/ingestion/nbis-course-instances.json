@@ -1,0 +1,719 @@
+[
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "https://uppsala.instructure.com/courses/75565",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "Neural Networks and Deep Learning",
+    "description": "This course will give an introduction to the concept of Neural Networks (NN) and Deep Learning. Topics covered will include: NN building blocks, including concepts such as neurons, activation functions, loss functions, gradient descent and back-propagation; Convolutional Neural Networks; Recursive Neural Networks; Autoencoders; and best practices when designing NNs,",
+    "courseMode": ["onsite", "synchronous", "full-time"],
+    "image": "",
+    "url": "https://uppsala.instructure.com/courses/75565",
+    "announcement": "https://www.scilifelab.se/event/nbis-elixir-se-tools-for-reproducible-research-online-2/",
+    "startDate": "2023-03-20T00:00:00",
+    "endDate": "2023-03-24T00:00:00",
+    "location": {
+      "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "SciLifeLab Uppsala - Navet, Husargatan 3",
+        "addressLocality": "Uppsala",
+        "addressCountry": "Sweden"
+      }
+    },
+    "maximumAttendeeCapacity": "25"
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "https://uppsala.instructure.com/courses/73110",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "Tools for Reproducible Research",
+    "description": "One of the key principles of proper scientific procedure is the act of repeating an experiment or analysis and being able to reach similar conclusions. Published research based on computational analysis, e.g. bioinformatics or computational biology, have often suffered from incomplete method descriptions (e.g. list of used software versions); unavailable raw data; and incomplete, undocumented and/or unavailable code. This essentially prevents any possibility of attempting to reproduce the results of such studies. The term “reproducible research” has been used to describe the idea that a scientific publication based on computational analysis should be distributed along with all the raw data and metadata used in the study, all the code and/or computational notebooks needed to produce results from the raw data, and the computational environment or a complete description thereof. Reproducible research not only leads to proper scientific conduct but also provides other researchers the access to build upon previous work. Most importantly, the person setting up a reproducible research project will quickly realize the immediate personal benefits: an organized and structured way of working. The person that most often has to reproduce your own analysis is your future self!",
+    "courseMode": ["online", "synchronous", "full-time"],
+    "image": "",
+    "url": "https://uppsala.instructure.com/courses/73110",
+    "announcement": "https://www.scilifelab.se/event/nbis-elixir-se-tools-for-reproducible-research-online-2/",
+    "startDate": "2022-11-21T00:00:00",
+    "endDate": "2022-11-25T00:00:00",
+    "location": {
+      "@type": "VirtualLocation",
+      "description": "The connection details are available only to participants."
+    }
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "UPPMAX Programming Formalisms",
+    "description": "This course aims to give life scientists, bioinformaticians, and other scientists with some experience in programming and scripting an understanding of the underlying principles of software development, design, and programming. The course aims to strengthen the understanding of more advanced programming concepts, ability to produce more reusable scripts through modular programming and to enable a better understanding of how to evaluate a script or programs performance. We will cover an introduction to Algorithms and Data structures, Programming Paradigms especially structured and object oriented programming and to give a overview of other paradigms like functional programming. Modular development and (code) reusability, testing and optimisation. The modules will cover theory with bridging practical examples and applications to enhance the theoretical understanding of the principles.",
+    "courseMode": ["online", "synchronous", "full-time"],
+    "image": "",
+    "url": "https://www.uppmax.uu.se/support/courses-and-workshops/programming-formalisms/",
+    "startDate": "2022-10-24T00:00:00",
+    "endDate": "2022-10-28T00:00:00",
+    "location": {
+      "@type": "VirtualLocation",
+      "description": "The connection details are available only to participants."
+    }
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "https://uppsala.instructure.com/courses/70626",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "Epigenomics Data Analysis: from Bulk to Single Cell",
+    "description": "This workshop aims to introduce the best practice bioinformatics methods for processing, analyses, visualisation and integration of epigenomics and functional genomics data.",
+    "courseMode": ["online", "synchronous", "full-time"],
+    "image": "",
+    "url": "https://uppsala.instructure.com/courses/70626",
+    "announcement": "https://www.scilifelab.se/event/epigenomics-data-analysis-from-bulk-to-single-cell-online-2/",
+    "startDate": "2022-10-24T00:00:00",
+    "endDate": "2022-10-28T00:00:00",
+    "location": {
+      "@type": "VirtualLocation",
+      "description": "The connection details are available only to participants."
+    },
+    "maximumAttendeeCapacity": "30"
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "https://uppsala.instructure.com/courses/71987",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "Introduction to Data Management Practices",
+    "description": "This course will introduce important aspects of Research Data Management through a series of lectures and hands-on computer exercises. The course is intended for researchers that want to take the first steps towards a more systematic and reproducible approach to analysing and managing research data.",
+    "courseMode": ["onsite", "synchronous", "full-time"],
+    "image": "",
+    "url": "https://uppsala.instructure.com/courses/71987",
+    "announcement": "https://www.scilifelab.se/event/introduction-to-data-management-practices-3/",
+    "startDate": "2022-10-11T00:00:00",
+    "endDate": "2022-10-13T00:00:00",
+    "location": {
+      "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "SciLifeLab - Air&Fire, Tomtebodavägen 23 A",
+        "addressLocality": "Solna",
+        "addressRegion": "Stockholm",
+        "addressCountry": "Sweden"
+      }
+    },
+    "maximumAttendeeCapacity": "25"
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "https://uppsala.instructure.com/courses/71521",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "Python programming with applications to bioinformatics",
+    "description": "This course provides a practical introduction to the writing of Python programs for the complete novice. Participants are led through the core aspects of Python illustrated by a series of example programs. Upon completion of the course, attentive participants will be able to write simple Python programs from scratch and to customize more complex code to fit their needs.",
+    "courseMode": ["online", "synchronous", "full-time"],
+    "image": "",
+    "url": "https://uppsala.instructure.com/courses/71521",
+    "announcement": "https://www.scilifelab.se/event/python-programming-with-applications-to-bioinformatics/",
+    "startDate": "2022-10-10T00:00:00",
+    "endDate": "2022-10-14T00:00:00",
+    "location": {
+      "@type": "VirtualLocation",
+      "description": "The connection details are available only to participants."
+    }
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "https://uppsala.instructure.com/courses/69792",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "Introduction to bioinformatics using NGS data",
+    "description": "This intense one-week workshop provides an introduction to the analysis of next generation sequencing data. Lectures on the theory of concepts will be paired with practical computational exercises in the Linux environment. The practical exercises will focus on data from the Illumina platform, but we will discuss other sequencing platforms and the advantages and challenges to using their data during the lectures.",
+    "courseMode": ["“onsite”", "synchronous", "full-time"],
+    "image": "",
+    "url": "https://uppsala.instructure.com/courses/69792",
+    "announcement": "https://www.scilifelab.se/event/introduction-to-bioinformatics-using-ngs-data/",
+    "startDate": "2022-09-26T00:00:00",
+    "endDate": "2022-09-30T00:00:00",
+    "location": {
+      "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "SciLifeLab Uppsala - Navet, Husargatan 3",
+        "addressLocality": "Uppsala",
+        "addressCountry": "Sweden"
+      }
+    }
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "https://uppsala.instructure.com/courses/70535",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "Introduction to Biostatistics and Machine Learning",
+    "description": "The course is geared towards life scientists wanting to be able to understand and use basic statistical methods. It would also suit those already applying biostatistical methods but have never got a chance to reflect on and truly grasp the basic statistical concepts, such as the commonly misinterpreted p-value.",
+    "courseMode": ["“onsite”", "synchronous", "full-time"],
+    "image": "",
+    "url": "https://uppsala.instructure.com/courses/70535",
+    "announcement": "https://www.scilifelab.se/event/introduction-to-biostatistics-and-machine-learning/",
+    "startDate": "2022-09-12T00:00:00",
+    "endDate": "2022-09-16T00:00:00",
+    "location": {
+      "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "SciLifeLab Uppsala - Navet, Husargatan 3",
+        "addressLocality": "Uppsala",
+        "addressCountry": "Sweden"
+      }
+    }
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "https://uppsala.instructure.com/courses/70024",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "Snakemake BYOC (bring-your-own-code) workshop",
+    "description": "The NBIS Tools for reproducible research course is held twice a year and provides an introduction into Snakemake and a tutorial to learn how to use Snakemake. This Snakemake BYOC (bring-your-own-code) workshop provides a follow-up to that introduction. Here, participants will get support from experienced bioinformaticians to A) convert their data analysis from a programming language such as bash, R or python into a Snakemake workflow, or B) apply more advanced techniques to their existing Snakemake workflows.",
+    "courseMode": ["online", "synchronous", "full-time"],
+    "image": "",
+    "url": "https://uppsala.instructure.com/courses/70024",
+    "announcement": "https://www.scilifelab.se/event/snakemake-byoc-bring-your-own-code-workshop-online-2/",
+    "startDate": "2022-08-31T00:00:00",
+    "endDate": "2022-09-02T00:00:00",
+    "location": {
+      "@type": "VirtualLocation",
+      "description": "The connection details are available only to participants."
+    }
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "https://uppsala.instructure.com/courses/58516",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "Spatial omics data analysis",
+    "description": "This workshop provides resources to advanced tools for analysis of spatial datasets via a series of online lectures and computer practicals.",
+    "courseMode": ["online", "synchronous", "full-time"],
+    "image": "",
+    "url": "https://uppsala.instructure.com/courses/58516",
+    "announcement": "https://www.scilifelab.se/event/spatial-omics-data-analysis/",
+    "startDate": "2022-08-29T00:00:00",
+    "endDate": "2022-09-02T00:00:00",
+    "location": {
+      "@type": "VirtualLocation",
+      "description": "The connection details are available only to participants."
+    },
+    "maximumAttendeeCapacity": "32"
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "https://nbisweden.github.io/workshop-RaukR-2206/",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "RaukR, Advanced R for Bioinformatics",
+    "description": "In Life Science and Bioinformatics, R is increasingly being used to transform and analyse data, perform statistical analysis and produce publication-ready visualisations. This workshop will focus on advanced R functionality, to increase the participants skillset and understanding of what is possible to do today.",
+    "courseMode": ["online", "synchronous", "full-time"],
+    "image": "/assets/img/RaukR_2022s.png",
+    "url": "https://nbisweden.github.io/workshop-RaukR-2206/",
+    "announcement": "https://www.scilifelab.se/event/raukr-advanced-r-for-bioinformatics-workshop/",
+    "startDate": "2022-06-13T00:00:00",
+    "endDate": "2022-06-17T00:00:00",
+    "location": {
+      "@type": "VirtualLocation",
+      "description": "The connection details are available only to participants."
+    },
+    "maximumAttendeeCapacity": "30"
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "https://uppsala.instructure.com/courses/63952",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "Nordic ELIXIR-GOBLET Train-the-Trainer",
+    "description": "This course offers guidance, ideas and tips for designing training/teaching, development and delivery on training activities, all based on research-driven educational principles.",
+    "courseMode": ["online", "synchronous", "full-time"],
+    "image": "",
+    "url": "https://uppsala.instructure.com/courses/63952",
+    "announcement": "https://www.scilifelab.se/event/nordic-elixir-goblet-train-the-trainer-online/",
+    "startDate": "2022-05-10T00:00:00",
+    "endDate": "2022-05-13T00:00:00",
+    "location": {
+      "@type": "VirtualLocation",
+      "description": "The connection details are available only to participants."
+    },
+    "maximumAttendeeCapacity": "20"
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "https://uppsala.instructure.com/courses/46547",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "Workshop on Data Visualization in R",
+    "description": "This course aims to help researchers to visualize their data in different ways using R. This course will also aim to show researchers how they can make publication grade figures using R. A part of this course is also about making interactive plots that the researchers can view and share in a web-server to make interactive visualizations of the data.",
+    "courseMode": ["onsite", "synchronous", "full-time"],
+    "image": "",
+    "url": "https://uppsala.instructure.com/courses/46547",
+    "announcement": "https://www.scilifelab.se/event/workshop-on-data-visualization-in-r-lund/",
+    "startDate": "2022-04-27T00:00:00",
+    "endDate": "2022-04-29T00:00:00",
+    "location": {
+      "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Biologihuset - Retina D227, Sölvegatan 35 ",
+        "addressLocality": "Lund",
+        "addressCountry": "Sweden"
+      }
+    },
+    "maximumAttendeeCapacity": "25"
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "https://uppsala.instructure.com/courses/58267",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "NBIS/ELIXIR-SE Tools for Reproducible Research",
+    "description": "One of the key principles of proper scientific procedure is the act of repeating an experiment or analysis and being able to reach similar conclusions. Published research based on computational analysis, e.g. bioinformatics or computational biology, have often suffered from incomplete method descriptions (e.g. list of used software versions); unavailable raw data; and incomplete, undocumented and/or unavailable code. This essentially prevents any possibility of attempting to reproduce the results of such studies. The term “reproducible research” has been used to describe the idea that a scientific publication based on computational analysis should be distributed along with all the raw data and metadata used in the study, all the code and/or computational notebooks needed to produce results from the raw data, and the computational environment or a complete description thereof. Reproducible research not only leads to proper scientific conduct but also provides other researchers the access to build upon previous work. Most importantly, the person setting up a reproducible research project will quickly realize the immediate personal benefits: an organized and structured way of working. The person that most often has to reproduce your own analysis is your future self!",
+    "courseMode": ["online", "synchronous", "full-time"],
+    "image": "",
+    "url": "https://uppsala.instructure.com/courses/58267",
+    "announcement": "https://www.scilifelab.se/event/nbis-elixir-se-tools-for-reproducible-research-online/",
+    "startDate": "2022-04-25T00:00:00",
+    "endDate": "2022-04-29T00:00:00",
+    "location": {
+      "@type": "VirtualLocation",
+      "description": "The connection details are available only to participants."
+    },
+    "maximumAttendeeCapacity": "20"
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "https://uppsala.instructure.com/courses/58273",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "Introduction to Data Management Practices",
+    "description": "This course will introduce important aspects of Research Data Management through a series of lectures and hands-on computer exercises. The course is intended for researchers that want to take the first steps towards a more systematic and reproducible approach to analysing and managing research data.",
+    "courseMode": ["onsite", "synchronous", "full-time"],
+    "image": "",
+    "url": "https://uppsala.instructure.com/courses/58273",
+    "announcement": "https://www.scilifelab.se/event/introduction-to-data-management-practices-2/",
+    "startDate": "2022-04-05T00:00:00",
+    "endDate": "2022-04-07T00:00:00",
+    "location": {
+      "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "SciLifeLab Uppsala - Navet, Husargatan 3",
+        "addressLocality": "Uppsala",
+        "addressCountry": "Sweden"
+      }
+    },
+    "maximumAttendeeCapacity": "25"
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "https://uppsala.instructure.com/courses/58211",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "Introduction to Bioinformatics using NGS data",
+    "description": "This course will introduce important aspects of Research Data Management through a series of lectures and hands-on computer exercises. The course is intended for researchers that want to take the first steps towards a more systematic and reproducible approach to analysing and managing research data.s",
+    "courseMode": ["online", "synchronous", "full-time"],
+    "image": "",
+    "url": "https://uppsala.instructure.com/courses/58211",
+    "announcement": "https://www.scilifelab.se/event/introduction-to-bioinformatics-using-ngs-data-online-3/",
+    "startDate": "2022-03-28T00:00:00",
+    "endDate": "2022-04-01T00:00:00",
+    "location": {
+      "@type": "VirtualLocation",
+      "description": "The connection details are available only to participants."
+    }
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "https://uppsala.instructure.com/courses/52011",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "Single cell RNA-seq data analysis",
+    "description": "This workshop will introduce the best practice bioinformatics methods for processing and analyses of single cell RNA-seq data via a series of online lectures and computer practicals. The total course duration is 45 hours, including the online lectures (15 hours) to be watched in advance and practical workshop that will be held on site in Stockholm (30 hours). The practical session is divided into both analysis overview and a Bring-Your-Own-Data (BYOD) day.",
+    "courseMode": ["onsite", "synchronous", "full-time"],
+    "image": "",
+    "url": "https://uppsala.instructure.com/courses/52011",
+    "announcement": "https://www.scilifelab.se/event/single-cell-rna-seq-data-analysis/",
+    "startDate": "2022-02-02T00:00:00",
+    "endDate": "2022-02-04T00:00:00",
+    "location": {
+      "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "SciLifeLab - Air&Fire, Tomtebodavägen 23 A",
+        "addressLocality": "Solna",
+        "addressRegion": "Stockholm",
+        "addressCountry": "Sweden"
+      }
+    },
+    "maximumAttendeeCapacity": "25"
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "https://uppsala.instructure.com/courses/47910",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "NBIS workshop in Neural Nets and Deep Learning",
+    "description": "This course will give an introduction to the concept of Neural Networks (NN) and Deep Learning.",
+    "courseMode": ["onsite", "synchronous", "full-time"],
+    "image": "",
+    "url": "https://uppsala.instructure.com/courses/47910",
+    "announcement": "https://www.scilifelab.se/event/nbis-workshop-in-neural-nets-and-deep-learning/",
+    "startDate": "2022-01-17T00:00:00",
+    "endDate": "2022-01-21T00:00:00",
+    "location": {
+      "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "SciLifeLab Uppsala - Navet, Husargatan 3",
+        "addressLocality": "Uppsala",
+        "addressCountry": "Sweden"
+      }
+    },
+    "maximumAttendeeCapacity": "25"
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "FAIR principles in life science research practice",
+    "description": "This online workshop will showcase how to put the FAIR principles into practice and is specifically designed to cater to life science researchers at all career stages. It is organised by SciLifeLab Data Centre and NBIS and include international speakers, presenters from the SciLifeLab community and optional hands-on exercises guided by experts from NBIS and SciLifeLab Data Centre.",
+    "courseMode": ["online", "synchronous", "full-time"],
+    "image": "",
+    "url": "",
+    "announcement": "https://www.scilifelab.se/event/fair-principles-in-life-science-research-practice/",
+    "startDate": "2021-12-09T00:00:00",
+    "endDate": "2021-12-09T00:00:00",
+    "location": {
+      "@type": "VirtualLocation",
+      "description": "The connection details are available only to participants."
+    }
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "Introduction to bioinformatics using NGS data",
+    "description": "This intense one-week workshop provides an introduction to the analysis of next generation sequencing data. Lectures on the theory of concepts will be paired with practical computational exercises in the Linux environment. The practical exercises will focus on data from the Illumina platform, but we will discuss other sequencing platforms and the advantages and challenges to using their data during the lectures.",
+    "courseMode": ["online", "synchronous", "full-time"],
+    "image": "",
+    "url": "",
+    "announcement": "https://www.scilifelab.se/event/introduction-to-bioinformatics-using-ngs-data-online-2/",
+    "startDate": "2021-11-22T00:00:00",
+    "endDate": "2021-11-26T00:00:00",
+    "location": {
+      "@type": "VirtualLocation",
+      "description": "The connection details are available only to participants."
+    }
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "https://uppsala.instructure.com/courses/51980",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "ELIXIR Tools for Reproducible Research",
+    "description": "One of the key principles of proper scientific procedure is the act of repeating an experiment or analysis and being able to reach similar conclusions. Published research based on computational analysis, e.g. bioinformatics or computational biology, have often suffered from incomplete method descriptions (e.g. list of used software versions); unavailable raw data; and incomplete, undocumented and/or unavailable code. This essentially prevents any possibility of attempting to reproduce the results of such studies. The term “reproducible research” has been used to describe the idea that a scientific publication based on computational analysis should be distributed along with all the raw data and metadata used in the study, all the code and/or computational notebooks needed to produce results from the raw data, and the computational environment or a complete description thereof. Reproducible research not only leads to proper scientific conduct but also provides other researchers the access to build upon previous work. Most importantly, the person setting up a reproducible research project will quickly realize the immediate personal benefits: an organized and structured way of working. The person that most often has to reproduce your own analysis is your future self!",
+    "courseMode": ["online", "synchronous", "full-time"],
+    "image": "",
+    "url": "https://uppsala.instructure.com/courses/51980",
+    "announcement": "https://www.scilifelab.se/event/elixir-tools-for-reproducible-research-online/",
+    "startDate": "2021-11-15T00:00:00",
+    "endDate": "2021-11-19T00:00:00",
+    "location": {
+      "@type": "VirtualLocation",
+      "description": "The connection details are available only to participants."
+    },
+    "maximumAttendeeCapacity": "20"
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "RNA-seq data analysis",
+    "description": "This workshop will introduce the best practice bioinformatics methods for processing and analyses of RNA-seq data via a series of  online lectures and computer practicals.",
+    "courseMode": ["online", "synchronous", "full-time"],
+    "image": "",
+    "url": "",
+    "announcement": "https://www.scilifelab.se/event/rna-seq-data-analysis-online/",
+    "startDate": "2021-11-15T00:00:00",
+    "endDate": "2021-11-19T00:00:00",
+    "location": {
+      "@type": "VirtualLocation",
+      "description": "The connection details are available only to participants."
+    },
+    "maximumAttendeeCapacity": "20"
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "Epigenomics Data Analysis: from Bulk to Single Cell",
+    "description": "This workshop aims to introduce the best practice bioinformatics methods for processing, analyses and integration of epigenomics and functional genomics data.",
+    "courseMode": ["online", "synchronous", "full-time"],
+    "image": "",
+    "url": "",
+    "announcement": "https://www.scilifelab.se/event/epigenomics-data-analysis-from-bulk-to-single-cell-online/",
+    "startDate": "2021-10-25T00:00:00",
+    "endDate": "2021-10-29T00:00:00",
+    "location": {
+      "@type": "VirtualLocation",
+      "description": "The connection details are available only to participants."
+    }
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "Python programming with applications to bioinformatics",
+    "description": "This course provides a practical introduction to the writing of Python programs for the complete novice. Participants are led through the core aspects of Python illustrated by a series of example programs. Upon completion of the course, attentive participants will be able to write simple Python programs from scratch and to customize more complex code to fit their needs.",
+    "courseMode": ["online", "synchronous", "full-time"],
+    "image": "https://www.svgrepo.com/show/331553/python-package-index.svg",
+    "url": "",
+    "announcement": "https://www.scilifelab.se/event/python-programming-with-applications-to-bioinformatics-online/",
+    "startDate": "2021-10-18T00:00:00",
+    "endDate": "2021-10-22T00:00:00",
+    "location": {
+      "@type": "VirtualLocation",
+      "description": "The connection details are available only to participants."
+    }
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "https://uppsala.instructure.com/courses/52280",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "Introduction to Data Management practices",
+    "description": "",
+    "courseMode": ["online", "synchronous", "full-time"],
+    "image": "",
+    "url": "https://uppsala.instructure.com/courses/52280",
+    "announcement": "",
+    "startDate": "2021-10-12T00:00:00",
+    "endDate": "2021-10-14T00:00:00",
+    "location": {
+      "@type": "VirtualLocation",
+      "description": "The connection details are available only to participants."
+    }
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "https://uppsala.instructure.com/courses/51998",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "Introduction to biostatistics and machine learning",
+    "description": "The course is geared towards life scientists wanting to be able to understand and use basic statistical methods. It would also suit those already applying biostatistical methods but have never got a chance to reflect on and truly grasp the basic statistical concepts, such as the commonly misinterpreted p-value.",
+    "courseMode": ["online", "synchronous", "full-time"],
+    "image": "",
+    "url": "https://uppsala.instructure.com/courses/51998",
+    "announcement": "https://www.scilifelab.se/event/introduction-to-biostatistics-and-machine-learning-online/",
+    "startDate": "2021-10-04T00:00:00",
+    "endDate": "2021-10-08T00:00:00",
+    "location": {
+      "@type": "VirtualLocation",
+      "description": "The connection details are available only to participants."
+    },
+    "maximumAttendeeCapacity": "25"
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "https://uppsala.instructure.com/courses/52153",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "Snakemake BYOC (bring-your-own-code) workshop",
+    "description": "As data analysis projects grow and change over time, it gets increasingly difficult to keep track of how the different parts of the data analysis fit together. Workflow management systems such as Snakemake can be used to set up, perform and monitor defined sequences of computational tasks (“workflows”), thereby making data analyses reproducible and scalable. Snakemake was developed in the bioinformatics community and has some features that make it particularly well suited for bioinformatics workflows. The NBIS Tools for reproducible research course is held twice a year and provides an introduction into Snakemake and a tutorial to learn how to use Snakemake. This Snakemake BYOC (bring-your-own-code) workshop provides a follow-up to that introduction. Here, participants will get support from experienced bioinformaticians to A) convert their data analysis from a programming language such as bash, R or python into a Snakemake workflow, or B) apply more advanced techniques to their existing Snakemake workflows.",
+    "courseMode": ["online", "synchronous", "full-time"],
+    "image": "https://avatars.githubusercontent.com/u/33450111?s=200&v=4",
+    "url": "https://uppsala.instructure.com/courses/52153",
+    "announcement": "https://www.scilifelab.se/event/snakemake-byoc-bring-your-own-code-workshop-online/",
+    "startDate": "2021-09-29T00:00:00",
+    "endDate": "2021-10-01T00:00:00",
+    "location": {
+      "@type": "VirtualLocation",
+      "description": "The connection details are available only to participants."
+    },
+    "maximumAttendeeCapacity": "16"
+  },
+  {
+    "startDate": "2021-09-10T00:00:00",
+    "endDate": "2021-09-10T00:00:00",
+    "announcement": "https://www.scilifelab.se/event/big-talks-2/",
+    "image": "https://sysbiochalmers.github.io/Human-GEM-guide/img/metabolic_atlas_logo.svg",
+    "name": "BiG Talks – Metabolic Atlas: genome-scale metabolic models for easy browsing and analysis"
+  },
+  {
+    "startDate": "2021-09-08T00:00:00",
+    "endDate": "2021-09-08T00:00:00",
+    "announcement": "https://www.scilifelab.se/event/big-talks-1/",
+    "image": "https://raw.githubusercontent.com/NBISweden/workshop_omics_integration/4e671c568438d4b4dac0b3bdaa8ccd770964456e/session_intro/F4.large.jpg",
+    "name": "BiG Talks – Network based analysis of 1002 GWAS study defines a pleiotropy map of human cell biology"
+  },
+  {
+    "startDate": "2021-09-10T00:00:00",
+    "endDate": "2021-09-10T00:00:00",
+    "announcement": "https://www.scilifelab.se/event/big-talks-3/",
+    "image": "https://version11.string-db.org/images/string_logo_2015.png",
+    "name": "BiG Talks – Network-based integration and visualization of large-scale data"
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "Workshop on Plotting in R",
+    "description": "This course aims to help researchers to visualize their data in different ways using R. This course will also aim to show researchers how they can make publication grade figures using R. A part of this course is also about making interactive plots that the researchers can view and share in a web-server to make interactive visualizations of the data.",
+    "courseMode": ["online", "synchronous", "full-time"],
+    "image": "https://www.svgrepo.com/show/306639/r.svg",
+    "url": "",
+    "announcement": "https://www.scilifelab.se/event/workshop-on-plotting-in-r-online/",
+    "startDate": "2021-09-08T00:00:00",
+    "endDate": "2021-09-09T00:00:00",
+    "location": {
+      "@type": "VirtualLocation",
+      "description": "The connection details are available only to participants."
+    },
+    "maximumAttendeeCapacity": "25"
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "https://uppsala.instructure.com/courses/52162",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "ELIXIR Omics Integration and Systems Biology",
+    "description": "The aim of this workshop is to provide an integrated view of data-driven hypothesis generation through biological network analysis, constraint-based modelling, and supervised and unsupervised integration methods. A general description of different methods for analysing different omics data (e.g. transcriptomics and genomics) will be presented with some of the lectures discussing key methods and pitfalls in their integration. The techniques will be discussed in terms of their rationale and applicability. The course will also include hands-on sessions and several seminars by invited speakers.",
+    "courseMode": ["online", "synchronous", "full-time"],
+    "image": "",
+    "url": "https://uppsala.instructure.com/courses/52162",
+    "announcement": "https://www.scilifelab.se/event/elixir-omics-integration-and-systems-biology-online/",
+    "startDate": "2021-09-06T00:00:00",
+    "endDate": "2021-09-10T00:00:00",
+    "location": {
+      "@type": "VirtualLocation",
+      "description": "The connection details are available only to participants."
+    },
+    "maximumAttendeeCapacity": "25"
+  }
+]

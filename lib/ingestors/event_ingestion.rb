@@ -8,7 +8,7 @@ module Ingestors
       unless @events.nil? or @events.empty?
         # process each event
         @events.each do |event|
-          @processed += 1
+          @stats[:events][:processed] += 1
 
           # check for matched events
           begin
@@ -40,7 +40,6 @@ module Ingestors
       end
 
       # finished
-      @messages << "events processed[#{@processed}] added[#{@added}] updated[#{@updated}] rejected[#{@rejected}]"
       nil
     end
 
@@ -49,12 +48,9 @@ module Ingestors
     def save_valid_event(resource, matched)
       if resource.valid?
         resource.save!
-        matched ? @updated += 1 : @added += 1
-      elsif resource.expired?
-        @rejected += 1
-        @messages << "Event has expired: #{resource.title}"
+        @stats[:events][matched ? :updated : :added] += 1
       else
-        @rejected += 1
+        @stats[:events][:rejected] += 1
         @messages << "Event failed validation: #{resource.title}"
         resource.errors.full_messages.each do |m|
           @messages << "Error: #{m}"

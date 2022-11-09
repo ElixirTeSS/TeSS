@@ -7,7 +7,8 @@ module Ingestors
         Ingestors::IcalIngestor,
         Ingestors::EventbriteIngestor,
         Ingestors::TessEventIngestor,
-        Ingestors::ZenodoIngestor
+        Ingestors::ZenodoIngestor,
+        Ingestors::BioschemasIngestor
       ]
     end
 

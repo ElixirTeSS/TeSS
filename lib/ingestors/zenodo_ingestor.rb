@@ -84,7 +84,6 @@ module Ingestors
 
         # add material to array
         add_material material
-        @ingested += 1
       rescue Exception => e
         @messages << "#{self.class.name} extract material fields failed with: #{e.message}"
       end

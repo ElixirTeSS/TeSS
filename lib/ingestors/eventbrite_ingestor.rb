@@ -135,7 +135,6 @@ module Ingestors
 
                 # add event to events array
                 add_event(event)
-                @ingested += 1
               end
             end
           rescue Exception => e

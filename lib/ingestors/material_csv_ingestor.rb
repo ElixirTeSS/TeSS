@@ -49,7 +49,6 @@ module Ingestors
 
           # add to
           add_material material
-          @ingested += 1
         end
       rescue CSV::MalformedCSVError => e
         @messages << "parse table failed with: #{e.message}"

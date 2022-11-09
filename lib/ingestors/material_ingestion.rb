@@ -8,7 +8,7 @@ module Ingestors
       unless @materials.nil? or @materials.empty?
         # process each material
         @materials.each do |material|
-          @processed += 1
+          @stats[:materials][:processed] += 1
 
           # check for matched materials
           matched_materials = Material.where(title: material.title,
@@ -35,7 +35,6 @@ module Ingestors
       end
 
       # finished
-      @messages << "materials processed[#{@processed}] added[#{@added}] updated[#{@updated}] rejected[#{@rejected}]"
       nil
     end
 
@@ -44,9 +43,9 @@ module Ingestors
     def save_valid_material(resource, matched)
       if resource.valid?
         resource.save!
-        matched ? @updated += 1 : @added += 1
+        @stats[:materials][matched ? :updated : :added] += 1
       else
-        @rejected += 1
+        @stats[:events][:rejected] += 1
         @messages << "Material failed validation: #{resource.title}"
         resource.errors.full_messages.each do |m|
           @messages << "Error: #{m}"

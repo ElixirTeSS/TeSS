@@ -120,6 +120,9 @@ gem 'recaptcha', require: 'recaptcha/rails'
 
 gem 'linkeddata'
 
+gem 'tess_rdf_extractors', git: 'https://github.com/ElixirTeSS/TeSS_RDF_Extractors'
+gem 'sitemap-parser', '~> 0.5.6'
+
 # Used for lat/lon rake task
 gem 'geocoder'
 gem 'redis', '< 5.0.0'

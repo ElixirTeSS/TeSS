@@ -1,0 +1,2127 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Galaxy 101</title>
+        
+            <script async defer data-domain="training.galaxyproject.org" src="https://plausible.galaxyproject.eu/js/plausible.js"></script>
+
+        
+        <link rel="stylesheet" href="/training-material/assets/css/bootstrap.min.css?v=3">
+        <link rel="stylesheet" href="/training-material/assets/css/bootstrap-toc.min.css">
+        <link rel="stylesheet" href="/training-material/assets/css/main.css?v=2">
+        <script src="https://kit.fontawesome.com/67b3f98409.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="/training-material/assets/css/academicons.css">
+        <link rel="stylesheet" href="/training-material/assets/css/syntax_highlighting.css">
+        <link rel="shortcut icon" href="/training-material/favicon.ico" type="image/x-icon" />
+        <link rel="alternate" type="application/atom+xml" href="/training-material/feed.xml" />
+        <link rel="canonical" href="https://training.galaxyproject.org/training-material/topics/introduction/tutorials/galaxy-intro-101/tutorial.html" />
+        <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />
+
+        <meta name="DC.identifier" content="https://github.com/galaxyproject/training-material" />
+<meta name="DC.type" content="text" />
+<meta name="DC.title" content="Galaxy 101" />
+<meta name="DC.publisher" content="Galaxy Training Network" />
+<meta name="DC.date" content="2022-10-18 14:23:35 +0000" />
+<meta name="DC.creator" content="Saskia Hiltemann" />
+<meta name="DC.creator" content="Nicola Soranzo" />
+<meta name="DC.creator" content="Clemens Blank" />
+<meta name="DC.creator" content="Anton Nekrutenko" />
+<meta name="DC.creator" content="Björn Grüning" />
+<meta name="DC.creator" content="Anne Pajon" />
+<meta name="DC.creator" content="Helena Rasche" />
+
+        
+        
+        
+        
+        
+        <meta name="description" content="Galaxy is a scientific workflow, data integration, and da..." />
+        <meta property="og:site_name" content="Galaxy Training Network" />
+        <meta property="og:title" content="Galaxy Training: Galaxy 101" />
+        <meta property="og:description" content="Galaxy is a scientific workflow, data integration, and da..." />
+        <meta property="og:image" content="/training-material/assets/images/GTNLogo1000.png" />
+
+    </head>
+    <body data-spy="scroll" data-target="#toc">
+        <header>
+    <nav class="navbar navbar-expand-md navbar-dark" aria-label="Site Navigation">
+        <div class="container">
+            <a class="navbar-brand" href="/training-material/">
+                <img src="/training-material/assets/images/GTN-60px.png" height="30" alt="Galaxy Training Network logo">
+                Galaxy Training!
+            </a>
+
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#top-navbar" aria-controls="top-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="top-navbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        
+                        <a class="nav-link" href="/training-material/topics/introduction" title="Go back to list of tutorials">
+                            <i class="far fa-folder" aria-hidden="true"></i> Introduction to Galaxy Analyses
+                        </a>
+                        
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Languages">
+                            <i class="fas fa-language" aria-hidden="true"></i><span class="visually-hidden">language</span> Languages
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            
+                              <strong class="dropdown-header">Automatic Translations</strong>
+            
+            <a class="dropdown-item" href="https://translate.google.com/translate?hl=jp&sl=en&tl=fr&u=https%3A%2F%2Ftraining.galaxyproject.org/topics/introduction/tutorials/galaxy-intro-101/tutorial.html&edit-text=&act=url">
+                            Français
+                            </a>
+                            
+            <a class="dropdown-item" href="https://translate.google.com/translate?hl=jp&sl=en&tl=ja&u=https%3A%2F%2Ftraining.galaxyproject.org/topics/introduction/tutorials/galaxy-intro-101/tutorial.html&edit-text=&act=url">
+                            日本語
+                            </a>
+                            
+            <a class="dropdown-item" href="https://translate.google.com/translate?hl=jp&sl=en&tl=es&u=https%3A%2F%2Ftraining.galaxyproject.org/topics/introduction/tutorials/galaxy-intro-101/tutorial.html&edit-text=&act=url">
+                            Español
+                            </a>
+                            
+            <a class="dropdown-item" href="https://translate.google.com/translate?hl=jp&sl=en&tl=pt&u=https%3A%2F%2Ftraining.galaxyproject.org/topics/introduction/tutorials/galaxy-intro-101/tutorial.html&edit-text=&act=url">
+                            Português
+                            </a>
+                            
+            <a class="dropdown-item" href="https://translate.google.com/translate?hl=jp&sl=en&tl=ar&u=https%3A%2F%2Ftraining.galaxyproject.org/topics/introduction/tutorials/galaxy-intro-101/tutorial.html&edit-text=&act=url">
+                            العربية
+                            </a>
+                            
+                            <a class="dropdown-item" href="https://translate.google.com/translate?hl=jp&sl=en&tl=&u=https%3A%2F%2Ftraining.galaxyproject.org/topics/introduction/tutorials/galaxy-intro-101/tutorial.html&edit-text=&act=url" title="">
+                            And more!
+                            </a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown">
+    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Help">
+        <i class="far fa-question-circle" aria-hidden="true"></i><span class="visually-hidden">help</span> Help
+    </a>
+    <div class="dropdown-menu dropdown-menu-right">
+        <!-- disable Tess for now
+        <form method="get" action="https://tess.elixir-europe.org/materials">
+            <input type="text" id="search" name="q" value="" style="margin-left: 0.5em;/*! border-radius: 0px; */">
+            <input type="hidden" value="Galaxy Training" name="content_provider">
+            <input type="submit" value="Search on TeSS" style="width: 92%;border-radius: 0px;margin: 0.5em;background: #f47d20;border: 0px;padding: 0.25em;" class="">
+        </form>
+        -->
+
+        <a class="dropdown-item" href="/training-material/faq" title="Check our FAQs">
+           <i class="far fa-question-circle" aria-hidden="true"></i><span class="visually-hidden">question</span> FAQs
+        </a>
+        
+        <a class="dropdown-item" href="/training-material/topics/introduction/faqs/" title="Check our FAQs for the Introduction to Galaxy Analyses topic">
+           <i class="far fa-question-circle" aria-hidden="true"></i><span class="visually-hidden">question</span> Topic FAQs
+        </a>
+        
+        <a class="dropdown-item" href="https://help.galaxyproject.org/" title="Discuss on Galaxy Help">
+            <i class="far fa-comments" aria-hidden="true"></i><span class="visually-hidden">feedback</span> Galaxy Help Forum
+        </a>
+        <a class="dropdown-item" href="https://gitter.im/Galaxy-Training-Network/Lobby" title="Discuss on gitter">
+           <i class="fab fa-gitter" aria-hidden="true"></i><span class="visually-hidden">gitter</span> Discuss on Gitter
+        </a>
+    </div>
+</li>
+
+
+                    <li class="nav-item dropdown">
+    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Extras">
+        <i class="far fa-star" aria-hidden="true"></i><span class="visually-hidden">galaxy-star</span> Extras
+    </a>
+    <div class="dropdown-menu dropdown-menu-right">
+
+        
+        <a class="dropdown-item" href="https://github.com/galaxyproject/training-material/edit/main/topics/introduction/tutorials/galaxy-intro-101/tutorial.md" title="Edit on GitHub">
+          <i class="fab fa-github" aria-hidden="true"></i><span class="visually-hidden">github</span> Edit on GitHub
+        </a>
+
+        <a class="dropdown-item" href="/training-material/stats.html" title="Show view statistics about this repository">
+            <i class="fas fa-chart-bar" aria-hidden="true"></i><span class="visually-hidden">galaxy-barchart</span> GTN statistics
+        </a>
+
+        <a class="dropdown-item" href="https://plausible.galaxyproject.eu/training.galaxyproject.org?period=12mo&page=/training-material/topics/introduction/tutorials/galaxy-intro-101/tutorial.html" title="Show view statistics of this page">
+            <i class="fas fa-chart-bar" aria-hidden="true"></i><span class="visually-hidden">galaxy-barchart</span> Page Metrics
+        </a>
+
+        <!-- link to feedback -->
+        
+            
+            
+                <a class="dropdown-item" href="/training-material/feedback.html" title="Show feedback statistics about this repository">
+                    <i class="fas fa-chart-bar" aria-hidden="true"></i><span class="visually-hidden">galaxy-barchart</span> GTN feedback
+                </a>
+            
+        
+
+        <div class="dropdown-item">
+            <div>
+                <i class="fas fa-palette" aria-hidden="true"></i><span class="visually-hidden">gtn-theme</span> Theme
+            </div>
+
+            <div id="theme-selector" data-toggle="buttons">
+                <label data-value="default" class="btn btn-secondary">
+                    <input type="radio" name="options" id="default" autocomplete="off"> Default
+                </label>
+                <label data-value="night" class="btn btn-secondary">
+                    <input type="radio" name="options" id="night" autocomplete="off"> Night
+                </label>
+                <label data-value="midnight" class="btn btn-secondary">
+                    <input type="radio" name="options" id="midnight" autocomplete="off"> Midnight
+                </label>
+                <label data-value="rainbow" class="btn btn-secondary">
+                    <input type="radio" name="options" id="rainbow" autocomplete="off"> Rainbow
+                </label>
+                <label data-value="progress" class="btn btn-secondary">
+                    <input type="radio" name="options" id="progress" autocomplete="off">🏳️‍🌈
+                </label>
+                <label data-value="halloween" class="btn btn-secondary">
+                    <input type="radio" name="options" id="halloween" autocomplete="off"> 🎃
+                </label>
+                <label data-value="straya" class="btn btn-secondary">
+                    <input type="radio" name="options" id="downunder" autocomplete="off"> 🇦🇺
+                </label>
+            </div>
+
+        </div>
+
+        <div class="dropdown-item">
+            <div>
+                <i class="fas fa-history" aria-hidden="true"></i><span class="visually-hidden">galaxy-rulebuilder-history</span> Previous Versions
+            </div>
+
+            <div id="archive-selector">
+            
+                <a class="btn btn-warning" href="https://training.galaxyproject.org/archive/2022-11-01/topics/introduction/tutorials/galaxy-intro-101/tutorial.html" title="Version 2022-11-01">2022-11-01</a>
+            
+                <a class="btn btn-warning" href="https://training.galaxyproject.org/archive/2022-10-01/topics/introduction/tutorials/galaxy-intro-101/tutorial.html" title="Version 2022-10-01">2022-10-01</a>
+            
+                <a class="btn btn-warning" href="https://training.galaxyproject.org/archive/2022-09-01/topics/introduction/tutorials/galaxy-intro-101/tutorial.html" title="Version 2022-09-01">2022-09-01</a>
+            
+                <a class="btn btn-warning" href="https://training.galaxyproject.org/archive/" title="Older Versions">Older Versions</a>
+            </div>
+
+        </div>
+
+    </div>
+</li>
+
+
+                    <!-- Search bar-->
+                    <li class="nav-item">
+                      <div id="navbarSupportedContent" role="search">
+                        <!-- Search form -->
+                        <form class="form-inline mr-auto" method="GET" action="/training-material/search">
+                          <i class="fas fa-search nav-link" aria-hidden="true"></i>
+                          <div class="md-form mb-2">
+                            <input name="query" class="form-control nicer" type="text" placeholder="Search Tutorials" aria-label="Search">
+                          </div>
+                        </form>
+                      </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+        <div class="container main-content" role="main">
+        
+
+
+
+
+
+
+
+
+
+
+
+<!-- Gitter -->
+
+
+
+
+<script>
+  ((window.gitter = {}).chat = {}).options = {
+  room: 'Galaxy-Training-Network/Lobby'
+  };
+</script>
+<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+
+<script type="application/ld+json">
+    
+
+
+{
+  "@context": "http://schema.org",
+  "@type": "LearningResource",
+  "http://purl.org/dc/terms/conformsTo": {
+    "@id": "https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE",
+    "@type": "CreativeWork"
+  },
+  "audience": {
+    "@type": "EducationalAudience",
+    "educationalRole": "Students"
+  },
+  "citation": {
+    "@type": "CreativeWork",
+    "name": "Community-Driven Data Analysis Training for Biology",
+    "url": "https://doi.org/10.1016/j.cels.2018.05.012"
+  },
+  "copyrightHolder": {
+    "@type": "Organization",
+    "email": "galaxytrainingnetwork@gmail.com",
+    "name": "Galaxy Training Network",
+    "url": "https://galaxyproject.org/teach/gtn/"
+  },
+  "dateModified": "2022-10-18 14:23:35 +0000",
+  "discussionUrl": "https://gitter.im/Galaxy-Training-Network/Lobby",
+  "headline": "Galaxy 101",
+  "interactivityType": "mixed",
+  "isAccessibleForFree": true,
+  "isFamilyFriendly": true,
+  "license": "https://spdx.org/licenses/CC-BY-4.0.html",
+  "producer": {
+    "@type": "Organization",
+    "email": "galaxytrainingnetwork@gmail.com",
+    "name": "Galaxy Training Network",
+    "url": "https://galaxyproject.org/teach/gtn/"
+  },
+  "provider": {
+    "@type": "Organization",
+    "email": "galaxytrainingnetwork@gmail.com",
+    "name": "Galaxy Training Network",
+    "url": "https://galaxyproject.org/teach/gtn/"
+  },
+  "sourceOrganization": {
+    "@type": "Organization",
+    "email": "galaxytrainingnetwork@gmail.com",
+    "name": "Galaxy Training Network",
+    "url": "https://galaxyproject.org/teach/gtn/"
+  },
+  "identifier": "https://github.com/galaxyproject/training-material",
+  "accessMode": [
+    "textual",
+    "visual"
+  ],
+  "accessModeSufficient": [
+    "textual",
+    "visual"
+  ],
+  "accessibilityControl": [
+    "fullKeyboardControl",
+    "fullMouseControl"
+  ],
+  "accessibilityFeature": [
+    "alternativeText",
+    "tableOfContents"
+  ],
+  "accessibilitySummary": "The text aims to be as accessible as possible. Image descriptions will vary per tutorial, from images being completely inaccessible, to images with good descriptions for non-visual users.",
+  "isPartOf": {
+    "@type": "CreativeWork",
+    "name": "Introduction to Galaxy Analyses",
+    "description": "Galaxy is a scientific workflow, data integration, and data and analysis persistence and publishing platform that aims to make computational biology accessible to research scientists that do not have computer programming experience. ",
+    "url": "https://training.galaxyproject.org/training-material/topics/introduction/"
+  },
+  "learningResourceType": "hands-on tutorial",
+  "name": "Hands-on for 'Galaxy 101' tutorial",
+  "url": "https://training.galaxyproject.org/training-material/topics/introduction/tutorials/galaxy-intro-101/tutorial.html",
+  "timeRequired": "PT1H",
+  "keywords": "introduction",
+  "description": "The questions this  addresses are:\n - Which coding exon has the highest number of single nucleotide polymorphisms (SNPs) on human chromosome 22?\n\n\nThe objectives are:\n - Familiarize yourself with the basics of Galaxy\n - Learn how to obtain data from external sources\n - Learn how to run tools\n - Learn how histories work\n - Learn how to create a workflow\n - Learn how to share your work\n\n",
+  "inLanguage": {
+    "@type": "Language",
+    "name": "English",
+    "alternateName": "en"
+  },
+  "author": [
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "http://purl.org/dc/terms/conformsTo": {
+        "@id": "https://bioschemas.org/profiles/Person/0.2-DRAFT-2019_07_19",
+        "@type": "Person"
+      },
+      "url": "https://training.galaxyproject.org/training-material/hall-of-fame/shiltemann/",
+      "mainEntityOfPage": "https://training.galaxyproject.org/training-material/hall-of-fame/shiltemann/",
+      "name": "Saskia Hiltemann",
+      "image": "https://avatars.githubusercontent.com/shiltemann",
+      "description": "Researcher at Erasmus Medical Center",
+      "memberOf": [
+        {
+          "@type": "Organization",
+          "email": "galaxytrainingnetwork@gmail.com",
+          "name": "Galaxy Training Network",
+          "url": "https://galaxyproject.org/teach/gtn/"
+        }
+      ],
+      "identifier": "https://orcid.org/0000-0003-3803-468X",
+      "orcid": "https://orcid.org/0000-0003-3803-468X"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "http://purl.org/dc/terms/conformsTo": {
+        "@id": "https://bioschemas.org/profiles/Person/0.2-DRAFT-2019_07_19",
+        "@type": "Person"
+      },
+      "url": "https://training.galaxyproject.org/training-material/hall-of-fame/nsoranzo/",
+      "mainEntityOfPage": "https://training.galaxyproject.org/training-material/hall-of-fame/nsoranzo/",
+      "name": "Nicola Soranzo",
+      "image": "https://avatars.githubusercontent.com/nsoranzo",
+      "description": "A contributor to the GTN project.",
+      "memberOf": [
+        {
+          "@type": "Organization",
+          "email": "galaxytrainingnetwork@gmail.com",
+          "name": "Galaxy Training Network",
+          "url": "https://galaxyproject.org/teach/gtn/"
+        }
+      ],
+      "identifier": "https://orcid.org/0000-0003-3627-5340",
+      "orcid": "https://orcid.org/0000-0003-3627-5340"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "http://purl.org/dc/terms/conformsTo": {
+        "@id": "https://bioschemas.org/profiles/Person/0.2-DRAFT-2019_07_19",
+        "@type": "Person"
+      },
+      "url": "https://training.galaxyproject.org/training-material/hall-of-fame/blankclemens/",
+      "mainEntityOfPage": "https://training.galaxyproject.org/training-material/hall-of-fame/blankclemens/",
+      "name": "Clemens Blank",
+      "image": "https://avatars.githubusercontent.com/blankclemens",
+      "description": "A contributor to the GTN project.",
+      "memberOf": [
+        {
+          "@type": "Organization",
+          "email": "galaxytrainingnetwork@gmail.com",
+          "name": "Galaxy Training Network",
+          "url": "https://galaxyproject.org/teach/gtn/"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "http://purl.org/dc/terms/conformsTo": {
+        "@id": "https://bioschemas.org/profiles/Person/0.2-DRAFT-2019_07_19",
+        "@type": "Person"
+      },
+      "url": "https://training.galaxyproject.org/training-material/hall-of-fame/nekrut/",
+      "mainEntityOfPage": "https://training.galaxyproject.org/training-material/hall-of-fame/nekrut/",
+      "name": "Anton Nekrutenko",
+      "image": "https://avatars.githubusercontent.com/nekrut",
+      "description": "A contributor to the GTN project.",
+      "memberOf": [
+        {
+          "@type": "Organization",
+          "email": "galaxytrainingnetwork@gmail.com",
+          "name": "Galaxy Training Network",
+          "url": "https://galaxyproject.org/teach/gtn/"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "http://purl.org/dc/terms/conformsTo": {
+        "@id": "https://bioschemas.org/profiles/Person/0.2-DRAFT-2019_07_19",
+        "@type": "Person"
+      },
+      "url": "https://training.galaxyproject.org/training-material/hall-of-fame/bgruening/",
+      "mainEntityOfPage": "https://training.galaxyproject.org/training-material/hall-of-fame/bgruening/",
+      "name": "Björn Grüning",
+      "image": "https://avatars.githubusercontent.com/bgruening",
+      "description": "A contributor to the GTN project.",
+      "memberOf": [
+        {
+          "@type": "Organization",
+          "email": "galaxytrainingnetwork@gmail.com",
+          "name": "Galaxy Training Network",
+          "url": "https://galaxyproject.org/teach/gtn/"
+        }
+      ],
+      "identifier": "https://orcid.org/0000-0002-3079-6586",
+      "orcid": "https://orcid.org/0000-0002-3079-6586"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "http://purl.org/dc/terms/conformsTo": {
+        "@id": "https://bioschemas.org/profiles/Person/0.2-DRAFT-2019_07_19",
+        "@type": "Person"
+      },
+      "url": "https://training.galaxyproject.org/training-material/hall-of-fame/pajanne/",
+      "mainEntityOfPage": "https://training.galaxyproject.org/training-material/hall-of-fame/pajanne/",
+      "name": "Anne Pajon",
+      "image": "https://avatars.githubusercontent.com/pajanne",
+      "description": "A contributor to the GTN project.",
+      "memberOf": [
+        {
+          "@type": "Organization",
+          "email": "galaxytrainingnetwork@gmail.com",
+          "name": "Galaxy Training Network",
+          "url": "https://galaxyproject.org/teach/gtn/"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "http://purl.org/dc/terms/conformsTo": {
+        "@id": "https://bioschemas.org/profiles/Person/0.2-DRAFT-2019_07_19",
+        "@type": "Person"
+      },
+      "url": "https://training.galaxyproject.org/training-material/hall-of-fame/hexylena/",
+      "mainEntityOfPage": "https://training.galaxyproject.org/training-material/hall-of-fame/hexylena/",
+      "name": "Helena Rasche",
+      "image": "https://avatars.githubusercontent.com/hexylena",
+      "description": "A contributor to the GTN project.",
+      "memberOf": [
+        {
+          "@type": "Organization",
+          "email": "galaxytrainingnetwork@gmail.com",
+          "name": "Galaxy Training Network",
+          "url": "https://galaxyproject.org/teach/gtn/"
+        }
+      ],
+      "identifier": "https://orcid.org/0000-0001-9760-8992",
+      "orcid": "https://orcid.org/0000-0001-9760-8992"
+    }
+  ],
+  "contributor": [
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "http://purl.org/dc/terms/conformsTo": {
+        "@id": "https://bioschemas.org/profiles/Person/0.2-DRAFT-2019_07_19",
+        "@type": "Person"
+      },
+      "url": "https://training.galaxyproject.org/training-material/hall-of-fame/shiltemann/",
+      "mainEntityOfPage": "https://training.galaxyproject.org/training-material/hall-of-fame/shiltemann/",
+      "name": "Saskia Hiltemann",
+      "image": "https://avatars.githubusercontent.com/shiltemann",
+      "description": "Researcher at Erasmus Medical Center",
+      "memberOf": [
+        {
+          "@type": "Organization",
+          "email": "galaxytrainingnetwork@gmail.com",
+          "name": "Galaxy Training Network",
+          "url": "https://galaxyproject.org/teach/gtn/"
+        }
+      ],
+      "identifier": "https://orcid.org/0000-0003-3803-468X",
+      "orcid": "https://orcid.org/0000-0003-3803-468X"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "http://purl.org/dc/terms/conformsTo": {
+        "@id": "https://bioschemas.org/profiles/Person/0.2-DRAFT-2019_07_19",
+        "@type": "Person"
+      },
+      "url": "https://training.galaxyproject.org/training-material/hall-of-fame/nsoranzo/",
+      "mainEntityOfPage": "https://training.galaxyproject.org/training-material/hall-of-fame/nsoranzo/",
+      "name": "Nicola Soranzo",
+      "image": "https://avatars.githubusercontent.com/nsoranzo",
+      "description": "A contributor to the GTN project.",
+      "memberOf": [
+        {
+          "@type": "Organization",
+          "email": "galaxytrainingnetwork@gmail.com",
+          "name": "Galaxy Training Network",
+          "url": "https://galaxyproject.org/teach/gtn/"
+        }
+      ],
+      "identifier": "https://orcid.org/0000-0003-3627-5340",
+      "orcid": "https://orcid.org/0000-0003-3627-5340"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "http://purl.org/dc/terms/conformsTo": {
+        "@id": "https://bioschemas.org/profiles/Person/0.2-DRAFT-2019_07_19",
+        "@type": "Person"
+      },
+      "url": "https://training.galaxyproject.org/training-material/hall-of-fame/blankclemens/",
+      "mainEntityOfPage": "https://training.galaxyproject.org/training-material/hall-of-fame/blankclemens/",
+      "name": "Clemens Blank",
+      "image": "https://avatars.githubusercontent.com/blankclemens",
+      "description": "A contributor to the GTN project.",
+      "memberOf": [
+        {
+          "@type": "Organization",
+          "email": "galaxytrainingnetwork@gmail.com",
+          "name": "Galaxy Training Network",
+          "url": "https://galaxyproject.org/teach/gtn/"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "http://purl.org/dc/terms/conformsTo": {
+        "@id": "https://bioschemas.org/profiles/Person/0.2-DRAFT-2019_07_19",
+        "@type": "Person"
+      },
+      "url": "https://training.galaxyproject.org/training-material/hall-of-fame/nekrut/",
+      "mainEntityOfPage": "https://training.galaxyproject.org/training-material/hall-of-fame/nekrut/",
+      "name": "Anton Nekrutenko",
+      "image": "https://avatars.githubusercontent.com/nekrut",
+      "description": "A contributor to the GTN project.",
+      "memberOf": [
+        {
+          "@type": "Organization",
+          "email": "galaxytrainingnetwork@gmail.com",
+          "name": "Galaxy Training Network",
+          "url": "https://galaxyproject.org/teach/gtn/"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "http://purl.org/dc/terms/conformsTo": {
+        "@id": "https://bioschemas.org/profiles/Person/0.2-DRAFT-2019_07_19",
+        "@type": "Person"
+      },
+      "url": "https://training.galaxyproject.org/training-material/hall-of-fame/bgruening/",
+      "mainEntityOfPage": "https://training.galaxyproject.org/training-material/hall-of-fame/bgruening/",
+      "name": "Björn Grüning",
+      "image": "https://avatars.githubusercontent.com/bgruening",
+      "description": "A contributor to the GTN project.",
+      "memberOf": [
+        {
+          "@type": "Organization",
+          "email": "galaxytrainingnetwork@gmail.com",
+          "name": "Galaxy Training Network",
+          "url": "https://galaxyproject.org/teach/gtn/"
+        }
+      ],
+      "identifier": "https://orcid.org/0000-0002-3079-6586",
+      "orcid": "https://orcid.org/0000-0002-3079-6586"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "http://purl.org/dc/terms/conformsTo": {
+        "@id": "https://bioschemas.org/profiles/Person/0.2-DRAFT-2019_07_19",
+        "@type": "Person"
+      },
+      "url": "https://training.galaxyproject.org/training-material/hall-of-fame/pajanne/",
+      "mainEntityOfPage": "https://training.galaxyproject.org/training-material/hall-of-fame/pajanne/",
+      "name": "Anne Pajon",
+      "image": "https://avatars.githubusercontent.com/pajanne",
+      "description": "A contributor to the GTN project.",
+      "memberOf": [
+        {
+          "@type": "Organization",
+          "email": "galaxytrainingnetwork@gmail.com",
+          "name": "Galaxy Training Network",
+          "url": "https://galaxyproject.org/teach/gtn/"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "http://purl.org/dc/terms/conformsTo": {
+        "@id": "https://bioschemas.org/profiles/Person/0.2-DRAFT-2019_07_19",
+        "@type": "Person"
+      },
+      "url": "https://training.galaxyproject.org/training-material/hall-of-fame/hexylena/",
+      "mainEntityOfPage": "https://training.galaxyproject.org/training-material/hall-of-fame/hexylena/",
+      "name": "Helena Rasche",
+      "image": "https://avatars.githubusercontent.com/hexylena",
+      "description": "A contributor to the GTN project.",
+      "memberOf": [
+        {
+          "@type": "Organization",
+          "email": "galaxytrainingnetwork@gmail.com",
+          "name": "Galaxy Training Network",
+          "url": "https://galaxyproject.org/teach/gtn/"
+        }
+      ],
+      "identifier": "https://orcid.org/0000-0001-9760-8992",
+      "orcid": "https://orcid.org/0000-0001-9760-8992"
+    }
+  ],
+  "about": [
+    {
+      "@type": "CreativeWork",
+      "name": "Introduction to Galaxy Analyses",
+      "description": "Galaxy is a scientific workflow, data integration, and data and analysis persistence and publishing platform that aims to make computational biology accessible to research scientists that do not have computer programming experience. ",
+      "url": "https://training.galaxyproject.org/training-material/topics/introduction/"
+    }
+  ],
+  "educationalLevel": "Beginner"
+}
+</script>
+
+<section class="tutorial topic-introduction">
+    <h1 data-toc-skip>Galaxy 101</h1>
+    
+
+    <div markdown="0">
+
+	<div class="contributors-line">
+		Authors: 
+<a href="/training-material/hall-of-fame/shiltemann/" class="contributor-badge contributor-shiltemann"><img src="/training-material/assets/images/orcid.png" alt="orcid logo"/><img src="https://avatars.githubusercontent.com/shiltemann?s=27" alt="Avatar">Saskia Hiltemann</a>
+
+
+
+<a href="/training-material/hall-of-fame/nsoranzo/" class="contributor-badge contributor-nsoranzo"><img src="/training-material/assets/images/orcid.png" alt="orcid logo"/><img src="https://avatars.githubusercontent.com/nsoranzo?s=27" alt="Avatar">Nicola Soranzo</a>
+
+
+
+<a href="/training-material/hall-of-fame/blankclemens/" class="contributor-badge contributor-blankclemens"><img src="https://avatars.githubusercontent.com/blankclemens?s=27" alt="Avatar">Clemens Blank</a>
+
+
+
+<a href="/training-material/hall-of-fame/nekrut/" class="contributor-badge contributor-nekrut"><img src="https://avatars.githubusercontent.com/nekrut?s=27" alt="Avatar">Anton Nekrutenko</a>
+
+
+
+<a href="/training-material/hall-of-fame/bgruening/" class="contributor-badge contributor-bgruening"><img src="/training-material/assets/images/orcid.png" alt="orcid logo"/><img src="https://avatars.githubusercontent.com/bgruening?s=27" alt="Avatar">Björn Grüning</a>
+
+
+
+<a href="/training-material/hall-of-fame/pajanne/" class="contributor-badge contributor-pajanne"><img src="https://avatars.githubusercontent.com/pajanne?s=27" alt="Avatar">Anne Pajon</a>
+
+
+
+<a href="/training-material/hall-of-fame/hexylena/" class="contributor-badge contributor-hexylena"><img src="/training-material/assets/images/orcid.png" alt="orcid logo"/><img src="https://avatars.githubusercontent.com/hexylena?s=27" alt="Avatar">Helena Rasche</a>
+
+
+
+	</div>
+
+</div>
+
+
+    <blockquote class="overview">
+        <div class="box-title" aria-label="overview box">Overview</div>
+        
+        <img alt="Creative Commons License" class="float-right" style="border-width:0; display: inline-block; margin:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" aria-hidden="true" />
+        
+        <strong><i class="far fa-question-circle" aria-hidden="true"></i> Questions:</strong>
+        <ul>
+        
+        <li><p>Which coding exon has the highest number of single nucleotide polymorphisms (SNPs) on human chromosome 22?</p>
+</li>
+        
+        </ul>
+
+        <strong><i class="fas fa-bullseye" aria-hidden="true"></i> Objectives: </strong>
+        <ul>
+        
+        <li><p>Familiarize yourself with the basics of Galaxy</p>
+</li>
+        
+        <li><p>Learn how to obtain data from external sources</p>
+</li>
+        
+        <li><p>Learn how to run tools</p>
+</li>
+        
+        <li><p>Learn how histories work</p>
+</li>
+        
+        <li><p>Learn how to create a workflow</p>
+</li>
+        
+        <li><p>Learn how to share your work</p>
+</li>
+        
+        </ul>
+
+        
+
+        
+        <div><strong><i class="fas fa-hourglass-half" aria-hidden="true"></i> Time estimation:</strong> 1 hour</div>
+        
+
+        
+        <div><strong><i class="fas fa-graduation-cap" aria-hidden="true"></i> Level: </strong>
+        
+
+
+ Introductory <span class="visually-hidden">Introductory</span>
+<span class="level introductory" title="Introductory Tutorial">
+  <i class="fas fa-graduation-cap" aria-hidden="true"></i> <i class="fas fa-graduation-cap" aria-hidden="true"></i> <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+</span>
+
+</div>
+        
+
+        
+        
+
+        
+        <div id="supporting-materials"><strong><i class="fa fa-external-link" aria-hidden="true"></i> Supporting Materials:</strong></div>
+        <ul class="supporting_material">
+            
+                <li class="btn btn-default supporting_material"><a href="/training-material/topics/introduction/slides/introduction.html" title="Topic Overview slides">
+                    <i class="fab fa-slideshare" aria-hidden="true"></i> Topic Overview slides
+                </a></li>
+            
+
+            
+                <li class="btn btn-default supporting_material">
+
+
+<a class="btn btn-default topic-icon" title="Zenodo datasets used in this tutorial" href="https://doi.org/10.5281/zenodo.4104428">
+    <i class="far fa-copy" aria-hidden="true"></i> Datasets
+</a>
+
+</li>
+            
+
+            
+                <li class="btn btn-default supporting_material">
+
+
+    <a class="btn btn-default topic-icon" href="/training-material/topics/introduction/tutorials/galaxy-intro-101/workflows/" title="Workflows" alt="Galaxy 101 workflows">
+        <i class="fas fa-share-alt" aria-hidden="true"></i> Workflows
+    </a>
+
+</li>
+            
+
+            
+
+            
+
+            
+            
+            
+                 <li class="btn btn-default supporting_material">
+    <a class="topic-icon" href="/training-material/topics/introduction/tutorials/galaxy-intro-101/faqs/" title="Frequently Asked Questions" alt="Tutorial FAQs">
+        <i class="far fa-question-circle" aria-hidden="true"></i> FAQs
+    </a>
+  </li>
+
+
+            
+
+            <!-- Check the GTN Video Library for recordings of this tutorial or associated slides -->
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <li class="btn btn-default supporting_material">
+    <a href="#" class="btn btn-default dropdown-toggle topic-icon" data-toggle="dropdown" aria-expanded="false" title="Latest recordings of this tutorial in the GTN Video Library">
+        <i class="fas fa-video" aria-hidden="true"></i><span class="visually-hidden">video</span>&nbsp;Recordings
+    </a>
+    <ul class="dropdown-menu">
+        
+        
+
+        
+        
+        
+
+        <li>
+            <a class="dropdown-item" href="https://gallantries.github.io/video-library/videos/introduction/galaxy-intro-101/tutorial" title="View GTN Video Library for this Tutorial">
+                <i class="fas fa-video" aria-hidden="true"></i><span class="visually-hidden">video</span> Tutorial (July 2021)
+            </a>
+        </li>
+        
+        
+        
+        
+    </ul>
+   </li>
+   
+
+
+
+            
+                <li class="btn btn-default supporting_material">
+
+
+    <a href="#" class="btn btn-default dropdown-toggle topic-icon" data-toggle="dropdown" aria-expanded="false" title="Where to run the tutorial">
+        <i class="fas fa-globe" aria-hidden="true"></i><span class="visually-hidden">instances</span>&nbsp;Available on these Galaxies 
+    </a>
+    <ul class="dropdown-menu">
+    
+        <li>
+            <a class="dropdown-item" href="https://github.com/galaxyproject/training-material/tree/main/topics/introduction/docker" title="Docker image for this tutorial">
+                <i class="fab fa-docker" aria-hidden="true"></i><span class="visually-hidden">docker_image</span> Docker image
+            </a>
+        </li>
+    
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <a class="dropdown-item" href="https://clipseq.usegalaxy.eu/" title="CLIP-Explorer">
+            CLIP-Explorer
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <a class="dropdown-item" href="https://africa.usegalaxy.eu/" title="Galaxy Africa">
+            Galaxy Africa
+        </a>
+        
+    
+        
+        <a class="dropdown-item" href="https://india.usegalaxy.eu/" title="Galaxy India">
+            Galaxy India
+        </a>
+        
+    
+        
+    
+        
+        <a class="dropdown-item" href="https://test.galaxyproject.org/" title="Galaxy Test">
+            Galaxy Test
+        </a>
+        
+    
+        
+    
+        
+        <a class="dropdown-item" href="https://galaxy.mesocentre.uca.fr" title="Galaxy@AuBi">
+            Galaxy@AuBi
+        </a>
+        
+    
+        
+        <a class="dropdown-item" href="https://galaxy.genouest.org" title="Galaxy@GenOuest">
+            Galaxy@GenOuest
+        </a>
+        
+    
+        
+    
+        
+        <a class="dropdown-item" href="https://galaxytrakr.org/" title="GalaxyTrakr">
+            GalaxyTrakr
+        </a>
+        
+    
+        
+    
+        
+    
+        
+        <a class="dropdown-item" href="https://hicexplorer.usegalaxy.eu" title="HiCExplorer">
+            HiCExplorer
+        </a>
+        
+    
+        
+        <a class="dropdown-item" href="https://humancellatlas.usegalaxy.eu/" title="Human Cell Atlas">
+            Human Cell Atlas
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <a class="dropdown-item" href="https://metagenomics.usegalaxy.eu/" title="Metagenomics">
+            Metagenomics
+        </a>
+        
+    
+        
+    
+        
+    
+        
+        <a class="dropdown-item" href="https://nanopore.usegalaxy.eu/" title="NanoGalaxy">
+            NanoGalaxy
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <a class="dropdown-item" href="https://plants.usegalaxy.eu/" title="Plant Anaylsis Workbench">
+            Plant Anaylsis Workbench
+        </a>
+        
+    
+        
+    
+        
+    
+        
+        <a class="dropdown-item" href="https://singlecell.usegalaxy.eu/" title="Single Cell Omics workbench">
+            Single Cell Omics workbench
+        </a>
+        
+    
+        
+        <a class="dropdown-item" href="https://streetscience.usegalaxy.eu/" title="Street Science">
+            Street Science
+        </a>
+        
+    
+        
+        <a class="dropdown-item" href="https://usegalaxy.be/" title="UseGalaxy.be">
+            UseGalaxy.be
+        </a>
+        
+    
+        
+        <a class="dropdown-item" href="https://usegalaxy.eu" title="UseGalaxy.eu">
+            UseGalaxy.eu
+        </a>
+        
+    
+        
+        <a class="dropdown-item" href="https://usegalaxy.fr/" title="UseGalaxy.fr">
+            UseGalaxy.fr
+        </a>
+        
+    
+        
+        <a class="dropdown-item" href="https://usegalaxy.no/" title="UseGalaxy.no">
+            UseGalaxy.no
+        </a>
+        
+    
+        
+        <a class="dropdown-item" href="https://usegalaxy.org" title="UseGalaxy.org (Main)">
+            UseGalaxy.org (Main)
+        </a>
+        
+    
+        
+        <a class="dropdown-item" href="https://usegalaxy.org.au" title="UseGalaxy.org.au">
+            UseGalaxy.org.au
+        </a>
+        
+    
+        
+    
+        
+    
+        
+        <a class="dropdown-item" href="https://virology.usegalaxy.eu/" title="Virology">
+            Virology
+        </a>
+        
+    
+        
+    
+    </ul>
+
+
+</li>
+            
+        </ul>
+        
+
+        <div><strong><i class="far fa-calendar" aria-hidden="true"></i> Last modification:</strong> Oct 18, 2022 </div>
+        <div><strong><i class="fas fa-balance-scale" aria-hidden="true"></i> License:</strong>
+            
+            <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Tutorial Content is licensed under Creative Commons Attribution 4.0 International License</a>
+            
+            <a rel="license" href="https://github.com/galaxyproject/training-material/blob/main/LICENSE.md">The GTN Framework is licensed under MIT</a>
+        </div>
+    </blockquote>
+
+    <div class="container">
+        <div class="row">
+            <!-- sidebar, which will move to the top on a small screen -->
+            <div class="col-sm-2">
+                <nav id="toc" data-toggle="toc" class="sticky-top" aria-label="Table of Contents"></nav>
+            </div>
+            <div class="col-sm-10">
+                 
+
+                <h1 id="introduction">Introduction</h1>
+
+<p>This tutorial aims to familiarize you with the <span class="notranslate">Galaxy</span> user interface. It will teach you how to perform basic tasks such as importing data, running tools, working with histories, creating workflows, and sharing your work.</p>
+
+<!--SNIPPET-->
+<blockquote class="comment">  <div id="comment-results-may-vary" class="box-title" aria-label="comment box: Results may vary"><i class="far fa-comment-dots" aria-hidden="true"></i><span class="visually-hidden"></span> Comment: Results may vary</div>  <p>Your results may be slightly different from the ones presented in this tutorial due to differing versions of tools, reference data, exte<span class="notranslate">rna</span>l databases, or because of stochastic processes in the algorithms.</p></blockquote>
+
+<blockquote class="agenda">
+  <div id="agenda" class="box-title" aria-label="agenda box: ">Agenda</div>
+
+  <p>In this tutorial, we will:</p>
+
+<ol id="markdown-toc">
+  <li><a href="#introduction" id="markdown-toc-introduction">Introduction</a></li>
+  <li><a href="#setting-the-stage-exons-and-snps" id="markdown-toc-setting-the-stage-exons-and-snps">Setting the stage: Exons and SNPs</a>    <ol>
+      <li><a href="#locating-exons" id="markdown-toc-locating-exons">Locating Exons</a></li>
+    </ol>
+  </li>
+  <li><a href="#analysis" id="markdown-toc-analysis">Analysis</a>    <ol>
+      <li><a href="#find-exons-with-the-most-snps" id="markdown-toc-find-exons-with-the-most-snps">Find exons with the most SNPs</a></li>
+      <li><a href="#count-the-number-of-snps-per-exon" id="markdown-toc-count-the-number-of-snps-per-exon">Count the number of SNPs per exon</a></li>
+      <li><a href="#sort-the-exons-by-snps-count" id="markdown-toc-sort-the-exons-by-snps-count">Sort the exons by SNPs count</a></li>
+      <li><a href="#select-the-top-five-exons" id="markdown-toc-select-the-top-five-exons">Select the top five exons</a></li>
+      <li><a href="#recovering-exon-info" id="markdown-toc-recovering-exon-info">Recovering exon info</a></li>
+      <li><a href="#displaying-data-in-ucsc-genome-browser" id="markdown-toc-displaying-data-in-ucsc-genome-browser">Displaying data in UCSC genome browser</a></li>
+    </ol>
+  </li>
+  <li><a href="#galaxy-management" id="markdown-toc-galaxy-management"><span class="notranslate">Galaxy</span> management</a>    <ol>
+      <li><a href="#convert-your-analysis-history-into-a-workflow" id="markdown-toc-convert-your-analysis-history-into-a-workflow">Convert your analysis history into a <span class="notranslate">workflow</span></a></li>
+      <li><a href="#the-workflow-editor" id="markdown-toc-the-workflow-editor">The <span class="notranslate">workflow</span> editor</a></li>
+      <li><a href="#run-workflow-on-different-data" id="markdown-toc-run-workflow-on-different-data">Run <span class="notranslate">workflow</span> on different data</a></li>
+      <li><a href="#share-your-work" id="markdown-toc-share-your-work">Share your work</a></li>
+    </ol>
+  </li>
+  <li><a href="#conclusion" id="markdown-toc-conclusion">Conclusion</a></li>
+</ol>
+
+</blockquote>
+
+<h1 id="setting-the-stage-exons-and-snps">Setting the stage: Exons and SNPs</h1>
+
+<p>We start with the question: In human chromosome 22, which exon has the highest number of single nucleotide polymorphisms (SNPs)?</p>
+
+<blockquote class="comment">
+  <div id="comment-background" class="box-title" aria-label="comment box: Background"><i class="far fa-comment-dots" aria-hidden="true"></i><span class="visually-hidden"></span> Comment: Background</div>
+  <p>Not everyone has the same background and that’s ok! You may have studied different organisms with different gene models, or you may not be familiar with the biological aspect at all. The biological background is not necessary for following this tutorial, we just like to provide research context for any tutorial. Here are brief explanations of some of the concepts mentioned in this tutorial:</p>
+
+  <ul>
+    <li><strong>Nucleotides</strong> are the A, C, T, and Gs that make up <span class="notranslate">DNA</span>.</li>
+    <li><strong>Chromosomes</strong> can be thought of as a very long piece of <span class="notranslate">DNA</span> (string of A, C, T, Gs) Some organisms have chromosomes, in this tutorial we will use Human chromosome number 22.</li>
+    <li><strong>Features</strong> are regions of the chromosome that are interesting for one reason or another. Some examples of features include genes, terminators, transcription start sites, and repeat regions.</li>
+    <li><strong>Genes</strong> are one kind of interesting feature, a region that will be <a href="https://en.wikipedia.org/wiki/Transcription_(biology)">transcribed</a> into <span class="notranslate">RNA</span> before being <a href="https://en.wikipedia.org/wiki/Translation_(biology)">translated</a> into proteins.</li>
+    <li>
+      <p><strong>Exons</strong> are fundamental components of <a href="https://en.wikipedia.org/wiki/Eukaryote">eukaryotic</a> <a href="https://en.wikipedia.org/wiki/Gene#Structure_and_function">genes</a>. A typical eukaryotic gene contains numerous <em>exons</em> separated by <em>introns</em>. An entire gene containing both exons and introns is <em>transcribed</em> into a pre-messenger <span class="notranslate">RNA</span> or pre-m<span class="notranslate">RNA</span>. During maturation introns are excised from the pre-m<span class="notranslate">RNA</span> in a process called <em><a href="https://www.nature.com/scitable/topicpage/rna-splicing-introns-exons-and-spliceosome-12375/">splicing</a></em>.  A mature messenger <span class="notranslate">RNA</span>, or simply m<span class="notranslate">RNA</span>, is then <em>translated</em> into protein during the process of <em>translation</em>.</p>
+
+      <figure id="figure-1"><img src="../../images/DNA_exons_introns.png" alt="Eukaryotic gene model. " loading="lazy" /><figcaption><span class="figcaption-prefix">Figure 1:</span> An original piece of <span class="notranslate">DNA</span> containing introns and exons has the introns cut out before the exons are joined together to form the m<span class="notranslate">RNA</span>. (Image from <a href="https://commons.wikimedia.org/wiki/File:DNA_exons_introns.gif">WikiMedia</a>, under the Public Domain)</figcaption></figure>
+    </li>
+  </ul>
+
+  <p><strong>SNP</strong> is an abbreviation for <a href="https://en.wikipedia.org/wiki/Single-nucleotide_polymorphism">single-nucleotide polymorphism</a>. It is pronounced as “snip”. SNPs are single nucleotide differences between a sequenced individual compared to some reference sequence; where one individual might have an A, another could have a C in that position. Databases of SNPs have been created for many organisms and they include any single nucleotide deviation from the reference sequence which appears in some percentage of the population (e.g. &gt;1%). These are often especially interesting to geneticists as the causes of certain inheritable diseases.</p>
+</blockquote>
+
+<p>You may be familiar with the <a href="https://genome.ucsc.edu/">UCSC Genome Browser</a> or another resource like it, and know that you can find the data there.
+But even with your data in hand, you still have the question: “how do I actually compute this?” There is really a straightforward answer: <strong><span class="notranslate">Galaxy</span></strong>. So let’s try it…</p>
+
+<p>Browse to your favorite <a href="https://galaxyproject.org/use/"><span class="notranslate">Galaxy</span> instance</a> and log in or register.</p>
+
+<!--SNIPPET-->
+<blockquote class="tip">  <div id="tip-how-do-i-create-an-account-on-a-public-galaxy-instance" class="box-title"><button type="button" aria-controls="tip-how-do-i-create-an-account-on-a-public-galaxy-instance-contents" aria-expanded="true" aria-label="Toggle tip box: How do I create an account on a public Galaxy instance?"><i class="far fa-lightbulb" aria-hidden="true"></i><span class="visually-hidden"></span> Tip: How do I create an account on a public <span class="notranslate">Galaxy</span> instance?<span role="button" class="fold-unfold fa fa-minus-square"></span></button></div>  <ol>  <li>    <p>To create an account at any public <span class="notranslate">Galaxy</span> instance, choose your server from the available <a href="https://galaxyproject.org/use/">list of <span class="notranslate">Galaxy</span> Platform</a>.</p>    <p>There are 3 main public <span class="notranslate">Galaxy</span> servers: <a href="https://usegalaxy.org/">Use<span class="notranslate">Galaxy</span>.org</a>, <a href="https://usegalaxy.eu/">Use<span class="notranslate">Galaxy</span>.eu</a>, and <a href="https://usegalaxy.org.au/">Use<span class="notranslate">Galaxy</span>.org.au</a>.</p>  </li>  <li>    <p>Click on <strong>“Login or Register”</strong> in the masthead on the server.</p>    <p><img src="/training-material/faqs/galaxy/images/login_register.png" alt="Login or Register on the top panel" /></p>  </li>  <li>Click on <strong>Register here</strong> and fill in the required information.</li>  <li>Click on the <strong>Create</strong> button, your account is successfully created.</li>  <li>Check for a <strong>Confirmation Email</strong> in the email you used for account creation.</li>  <li>Click on the <strong>Email confirmation link</strong> to fully activate your account.</li></ol></blockquote>
+
+<p>The <span class="notranslate">Galaxy</span> interface consists of three main parts:</p>
+
+<ol>
+  <li>The available <strong>Tools</strong> are listed on the left</li>
+  <li>The <strong>Central Panel</strong> will let you run analyses and view outputs</li>
+  <li>Your analysis <strong>History</strong> is recorded on the right</li>
+</ol>
+
+<blockquote class="comment">
+  <figure id="figure-2"><img src="../../images/galaxy_interface.svg" alt="Galaxy interface screenshot showing History panel on the right, tools panel on the left, and main panel in the center. " loading="lazy" /><figcaption><span class="figcaption-prefix">Figure 2:</span> Galactic triptych: the three panels of <span class="notranslate">Galaxy</span> interface: <em>Tools</em>, <em>Center Panel</em>, and <em>History</em></figcaption></figure>
+</blockquote>
+
+<p>When you start <span class="notranslate">Galaxy</span> for very first time, your history will be empty. Let’s add some data to it.</p>
+
+<blockquote class="notranslate hands_on">
+  <div id="hands-on-create-history" class="box-title" aria-label="hands-on box: Create history"><i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"></span> Hands-on: Create history</div>
+
+  <ol>
+    <li>
+      <p>Make sure you start from an empty analysis history.</p>
+
+      <!--SNIPPET-->
+      <blockquote class="tip">  <div id="tip-creating-a-new-history" class="box-title"><button type="button" aria-controls="tip-creating-a-new-history-contents" aria-expanded="true" aria-label="Toggle tip box: Creating a new history"><i class="far fa-lightbulb" aria-hidden="true"></i><span class="visually-hidden"></span> Tip: Creating a new history<span role="button" class="fold-unfold fa fa-minus-square"></span></button></div>  <p>Click the <i class="fas fa-plus" aria-hidden="true"></i><span class="visually-hidden">new-history</span> icon at the top of the history panel.</p>  <p>If the <i class="fas fa-plus" aria-hidden="true"></i><span class="visually-hidden">new-history</span> is missing:</p>  <ol>  <li>Click on the <i class="fas fa-cog" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-gear</span> icon (<strong>History options</strong>) on the top of the history panel</li>  <li>Select the option <strong>Create New</strong> from the menu</li></ol></blockquote>
+    </li>
+    <li>
+      <p><strong>Rename your history</strong> to be meaningful and easy to find. You can do this by clicking on the title of the history (which by default is <em>Unnamed history</em>) and typing <strong><span class="notranslate">Galaxy</span> 101</strong> as the name. Do  not forget to hit the <kbd>Enter</kbd> key on your keyboard to save it.</p>
+
+      <p><img src="../../../../shared/images/rename_history.png" alt="Rename the history. " loading="lazy" /></p>
+    </li>
+  </ol>
+
+</blockquote>
+
+<h2 id="locating-exons">Locating Exons</h2>
+
+<p>First we need to get some data into our history. You can upload files from your computer, or <span class="notranslate">Galaxy</span> can also fetch data directly from exte<span class="notranslate">rna</span>l sources. We know UCSC has exon locations for humans and we can use <span class="notranslate">Galaxy</span> to import the data for chromosome 22, directly from the UCSC table browser.</p>
+
+<blockquote class="notranslate hands_on">
+  <div id="hands-on-upload-snps-and-exons" class="box-title" aria-label="hands-on box: Upload SNPs and Exons"><i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"></span> Hands-on: Upload SNPs and Exons</div>
+  <ol>
+    <li>
+      <p>At the top of the <strong>Tools</strong> panel (on the left), click <i class="fas fa-upload" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-upload</span> <strong>Upload Data</strong></p>
+
+      <p><img src="../../images/upload-data.png" alt="upload data button. " loading="lazy" /></p>
+
+      <p>This brings up a box:</p>
+
+      <p><img src="../../images/upload-box.png" alt="filebox. " loading="lazy" /></p>
+    </li>
+    <li>
+      <p>Click <strong>Paste/Fetch data</strong> and paste in the following URLs in the box that appears.</p>
+
+      <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://zenodo.org/record/4104428/files/UCSC-hg38-chr22-Coding-Exons.<span class="notranslate">bed</span>
+https://zenodo.org/record/4104428/files/UCSC-hg38-chr22-dbSNP153-Whole-Gene-SNPs.<span class="notranslate">bed</span>
+</code></pre></div>      </div>
+    </li>
+    <li>
+      <p>Click <strong>Start</strong>, and then <strong>Close</strong></p>
+    </li>
+    <li>
+      <p>When they are ready, <strong>rename</strong> <i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-pencil</span> the datasets to <code class="language-plaintext highlighter-rouge">Exons</code> and <code class="language-plaintext highlighter-rouge">SNPs</code>, respectively.</p>
+
+      <!--SNIPPET-->
+      <blockquote class="tip">  <div id="tip-renaming-a-dataset" class="box-title"><button type="button" aria-controls="tip-renaming-a-dataset-contents" aria-expanded="true" aria-label="Toggle tip box: Renaming a dataset"><i class="far fa-lightbulb" aria-hidden="true"></i><span class="visually-hidden"></span> Tip: Renaming a dataset<span role="button" class="fold-unfold fa fa-minus-square"></span></button></div>  <ul>  <li>Click on the <i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-pencil</span> <strong>pencil icon</strong> for the dataset to edit its attributes</li>  <li>In the central panel, change the <strong>Name</strong> field</li>  <li>Click the <strong>Save</strong> button</li></ul></blockquote>
+    </li>
+  </ol>
+
+</blockquote>
+
+<p>For this tutorial, we made the input datasets available on Zenodo for you. However, these datasets can also obtained directly from UCSC, without leaving <span class="notranslate">Galaxy</span>.
+Below we describe how you can do this, but it is not necessary for this tutorial. Note that since the data in UCSC is updated frequently, you might get slightly different results in the rest of this tutorial if you use these files.</p>
+
+<blockquote class="comment">
+  <div id="comment" class="box-title" aria-label="comment box: "><i class="far fa-comment-dots" aria-hidden="true"></i><span class="visually-hidden"></span> Comment</div>
+  <p>In order to get the datasets from the UCSC server, you need to have an account in an instance.</p>
+</blockquote>
+
+<blockquote class="tip">
+  <div id="tip-optional-obtaining-the-data-directly-from-ucsc" class="box-title"><button type="button" aria-controls="tip-optional-obtaining-the-data-directly-from-ucsc-contents" aria-expanded="true" aria-label="Toggle tip box: Optional: Obtaining the Data directly from UCSC"><i class="far fa-lightbulb" aria-hidden="true"></i><span class="visually-hidden"></span> Tip: Optional: Obtaining the Data directly from UCSC<span role="button" class="fold-unfold fa fa-minus-square"></span></button></div>
+
+  <p>This tool works a bit differently than most <span class="notranslate">Galaxy</span> tools, but if you wish to obtain the newest data from UCSC, you can do that as follows:</p>
+
+  <blockquote class="notranslate hands_on">
+    <div id="hands-on-obtaining-exons-from-ucsc" class="box-title" aria-label="hands-on box: Obtaining Exons from UCSC"><i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"></span> Hands-on: Obtaining Exons from UCSC</div>
+
+    <ol>
+      <li>
+        <p><strong>UCSC Main</strong> <i class="fas fa-wrench" aria-hidden="true"></i><span class="visually-hidden">tool</span> table browser:</p>
+
+        <p>In the tool menu, navigate to <code class="language-plaintext highlighter-rouge">Get Data -&gt; UCSC Main table browser</code></p>
+
+        <p><img src="../../images/101_01.png" alt="`UCSC Main table browser` menu entry. " loading="lazy" /></p>
+
+        <p>You will be taken to the <strong>UCSC table browser</strong>, which looks something like this:</p>
+
+        <p><img src="../../images/101_02.png" alt="`UCSC table browser` tool, first screen for exons. " loading="lazy" /></p>
+
+        <p>Now set the following parameters:</p>
+        <ul>
+          <li><em>“clade”</em>: <code class="language-plaintext highlighter-rouge">Mammal</code></li>
+          <li><em>“genome”</em>: <code class="language-plaintext highlighter-rouge">Human</code></li>
+          <li><em>“assembly”</em>: <code class="language-plaintext highlighter-rouge">Dec. 2013 (GRCh38/hg38)</code></li>
+          <li><em>“group”</em>: <code class="language-plaintext highlighter-rouge">Genes and Gene Predictions</code></li>
+          <li><em>“track”</em>: <code class="language-plaintext highlighter-rouge">GENCODE v36</code> (or a more recent version)</li>
+          <li><em>“table”</em>: <code class="language-plaintext highlighter-rouge">knownGene</code></li>
+          <li><i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden">param-text</span> <em>“region”</em> should be changed to <code class="language-plaintext highlighter-rouge">position</code> with value <code class="language-plaintext highlighter-rouge">chr22</code></li>
+          <li><em>“output format”</em> should be changed to <code class="language-plaintext highlighter-rouge"><span class="notranslate">BED</span> - browser extensible data</code></li>
+          <li><i class="far fa-check-square" aria-hidden="true"></i><span class="visually-hidden">param-check</span> <em>“Send output to”</em> should have the option <code class="language-plaintext highlighter-rouge"><span class="notranslate">Galaxy</span></code> checked</li>
+        </ul>
+
+        <blockquote class="comment">
+          <div id="comment-1" class="box-title" aria-label="comment box: "><i class="far fa-comment-dots" aria-hidden="true"></i><span class="visually-hidden"></span> Comment</div>
+          <p>If the <em>“table”</em> drop down menu does not show the <code class="language-plaintext highlighter-rouge">knownGene</code> option. Set <em>“group”</em> to <code class="language-plaintext highlighter-rouge">All tables</code> and scroll down.</p>
+        </blockquote>
+      </li>
+      <li>
+        <p>Click on the <strong>get output</strong> button and you will see the next screen:</p>
+
+        <p><img src="../../images/101_03.png" alt="`UCSC table browser` tool, second screen for exons. " loading="lazy" /></p>
+
+        <p>Change <strong>Create one <span class="notranslate">BED</span> record per</strong> to <code class="language-plaintext highlighter-rouge">Coding Exons</code> and then click on the <strong>Send query to <span class="notranslate">Galaxy</span></strong> button.</p>
+
+        <blockquote class="comment">
+          <div id="comment-2" class="box-title" aria-label="comment box: "><i class="far fa-comment-dots" aria-hidden="true"></i><span class="visually-hidden"></span> Comment</div>
+          <p>After this you will see your first history item in <span class="notranslate">Galaxy</span>’s right panel. It will go through
+the gray (preparing/queued) and yellow (running) states to become green (success):</p>
+
+          <p><img src="../../images/101_04.png" alt="`UCSC Main on Human: knownGene` dataset is green. " loading="lazy" /></p>
+
+          <p>You might need to login to <span class="notranslate">Galaxy</span> again.</p>
+        </blockquote>
+      </li>
+      <li>
+        <p>When the dataset is green, click on the <i class="far fa-eye" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-eye</span> (eye) icon to <strong>view the contents</strong> of the file. It should look something like this:</p>
+
+        <p><img src="../../images/101_exons.png" alt="Contents of the `UCSC Main on Human: knownGene` dataset. " loading="lazy" /></p>
+
+        <p>Each line represents an exon, the first three columns are the genomic location, and the fourth column contains the name of the exon.</p>
+      </li>
+      <li>
+        <p>Let’s rename our dataset to something more recognizable.</p>
+        <ul>
+          <li>Click on the <i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-pencil</span> <strong>pencil icon</strong> for the dataset to edit its attributes</li>
+          <li>In the central panel, change the <strong>Name</strong> field to <code class="language-plaintext highlighter-rouge">Exons</code></li>
+          <li>Click the <strong>Save</strong> button</li>
+        </ul>
+
+        <p>Your history should now look something like this:</p>
+
+        <p><img src="../../images/101_rename.png" alt="Rename dataset to `Exons`. " loading="lazy" /></p>
+      </li>
+    </ol>
+  </blockquote>
+
+  <p>We now have information about the exon locations, but our original question was which exon contains the largest number of SNPs, so let’s get some information about SNP locations from UCSC as well:</p>
+
+  <blockquote class="notranslate hands_on">
+    <div id="hands-on-obtaining-snps-from-ucsc" class="box-title" aria-label="hands-on box: Obtaining SNPs from UCSC"><i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"></span> Hands-on: Obtaining SNPs from UCSC</div>
+    <p>Again open the <code class="language-plaintext highlighter-rouge">UCSC Main table browser</code> tool and set the following parameters</p>
+
+    <ol>
+      <li><strong>UCSC Main</strong> <i class="fas fa-wrench" aria-hidden="true"></i><span class="visually-hidden">tool</span> table browser:
+        <ul>
+          <li><em>“group”</em> should be changed to <code class="language-plaintext highlighter-rouge">Variation</code></li>
+          <li><i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden">param-text</span> <em>“region”</em> should be changed again to <code class="language-plaintext highlighter-rouge">position</code> with value <code class="language-plaintext highlighter-rouge">chr22</code></li>
+          <li><em>“output format”</em> should be changed again to <code class="language-plaintext highlighter-rouge"><span class="notranslate">BED</span> - browser extensible data</code></li>
+        </ul>
+
+        <p><img src="../../images/101_06.png" alt="`UCSC table browser` tool, first screen for SNPs. " loading="lazy" /></p>
+
+        <p>The <em>“track”</em> setting shows the version of the SNP database to get. In this example it is version 151, but you may select the latest one. Your results may vary slightly from the ones in this tutorial when you select a different version, but in general it is a good idea to select the latest version, as this will contain the most up-to-date SNP information.</p>
+      </li>
+      <li>
+        <p>Click on the <strong>get output</strong> button to find a form similar to this:</p>
+
+        <p><img src="../../images/101_07.png" alt="`UCSC table browser` tool, second screen for SNPs. " loading="lazy" /></p>
+
+        <p>Make sure that <em>“Create one <span class="notranslate">BED</span> record per”</em> is set to <code class="language-plaintext highlighter-rouge">Whole Gene</code> (Whole Gene here really means Whole Feature), and click on <strong>Send query to <span class="notranslate">Galaxy</span></strong>. A second item will appear in your analysis history.</p>
+      </li>
+      <li>Now <strong>rename</strong> <i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-pencil</span> your new dataset to <code class="language-plaintext highlighter-rouge">SNPs</code> so we can easily remember what the file contains.</li>
+    </ol>
+
+  </blockquote>
+
+</blockquote>
+
+<h1 id="analysis">Analysis</h1>
+
+<h2 id="find-exons-with-the-most-snps">Find exons with the most SNPs</h2>
+
+<p>Our objective is to find which exon contains the most SNPs. Therefore we have to intersect the file with the exon locations with the file containing the SNP locations (here “intersect” is just a fancy word for printing SNPs and exons that overlap side-by-side).</p>
+
+<blockquote class="comment">
+  <div id="comment-search-bar" class="box-title" aria-label="comment box: Search bar"><i class="far fa-comment-dots" aria-hidden="true"></i><span class="visually-hidden"></span> Comment: Search bar</div>
+
+  <p>Different <span class="notranslate">Galaxy</span> servers may have tools available under different sections, therefore it is often useful to use the <strong>search bar</strong> at the top of the tool panel to find your tool.</p>
+
+  <p>Additionally different servers may have multiple, similarly named tools which accomplish similar functions. For these tutorials, you should select precisely the one that is described. However, in your real analyses, you’ll need to search among the various options to find the one that works for you.</p>
+
+</blockquote>
+
+<blockquote class="notranslate hands_on">
+  <div id="hands-on-finding-exons" class="box-title" aria-label="hands-on box: Finding Exons"><i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"></span> Hands-on: Finding Exons</div>
+
+  <p>To find intersection we will be using <code class="language-plaintext highlighter-rouge">intersect intervals</code> tool from <a href="https://bedtools.readthedocs.io/en/latest/content/overview.html"><span class="notranslate">BED</span>Tools</a> package.</p>
+
+  <ol>
+    <li>
+      <p><span class="tool" data-tool="toolshed.g2.bx.psu.edu/repos/iuc/bedtools/bedtools_intersectbed/2.30.0" title="Tested with toolshed.g2.bx.psu.edu/repos/iuc/bedtools/bedtools_intersectbed/2.30.0"><strong><span class="notranslate">bed</span>tools intersect intervals</strong> <i class="fas fa-wrench" aria-hidden="true"></i><i aria-hidden="true" class="fas fa-cog"></i><span class="visually-hidden">Tool: <span class="notranslate">toolshed</span>.g2.bx.psu.edu/repos/iuc/<span class="notranslate">bed</span>tools/<span class="notranslate">bed</span>tools_intersectbed/2.30.0</span></span>  the intervals of two datasets side-by-side:</p>
+
+      <p>Enter the word <code class="language-plaintext highlighter-rouge">intersect</code> in the search bar of the tool panel, and select the
+tool named <code class="language-plaintext highlighter-rouge"><span class="notranslate">bed</span>tools Intersect intervals</code></p>
+
+      <ul>
+        <li><em>“File A to intersect with B”</em>: Select <code class="language-plaintext highlighter-rouge">Exons</code></li>
+        <li><em>“Combined or separate output files”</em>: Select <code class="language-plaintext highlighter-rouge">One output file per 'input B' file"</code></li>
+        <li><em>“File B to intersect with A”</em>: <code class="language-plaintext highlighter-rouge">SNPs</code></li>
+        <li><em>“What should be written to the output file?”</em>: <code class="language-plaintext highlighter-rouge">Write the original entry in B for each overlap...</code>, which means that only matches are included in the output (i.e. only exons with SNPs in it and only SNPs that fall in exons)</li>
+      </ul>
+    </li>
+  </ol>
+
+  <p>The interface of the tool should look like this:</p>
+
+  <p><img src="../../images/101_bed_intersect_interface.png" alt="Bedtool intersect interval interface. " loading="lazy" /></p>
+
+  <blockquote class="tip">
+    <div id="tip-how-do-i-use-this-tool" class="box-title"><button type="button" aria-controls="tip-how-do-i-use-this-tool-contents" aria-expanded="true" aria-label="Toggle tip box: How do I use this tool?"><i class="far fa-lightbulb" aria-hidden="true"></i><span class="visually-hidden"></span> Tip: How do I use this tool?<span role="button" class="fold-unfold fa fa-minus-square"></span></button></div>
+    <p>All <span class="notranslate">Galaxy</span> tools include documentation. If you scroll down on this page, you will find the help of the tool.</p>
+  </blockquote>
+
+  <ol>
+    <li>Click <strong>Execute</strong></li>
+    <li>Wait for the job to finish</li>
+    <li>
+      <p>View the resulting file (with the <i class="far fa-eye" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-eye</span> (eye) icon). If everything went okay, you should see a file that looks similar to this:</p>
+
+      <p><img src="../../images/101_joined.png" alt="Contents of the `Join` output dataset. " loading="lazy" /></p>
+
+      <p>Here column 4 contains exon IDs (e.g., <code class="language-plaintext highlighter-rouge">ENST00000252835.5_cds_0_0_chr22_15528159_f</code>) and column 10 lists SNP IDs (e.g., <code class="language-plaintext highlighter-rouge">rs9617249</code>) Remember that variations are possible due to using different versions of UCSC databases: as long as you have similar looking columns you did everything right!</p>
+    </li>
+  </ol>
+
+  <blockquote class="comment">
+    <div id="comment-if-things-didn-t-work" class="box-title" aria-label="comment box: If things didn't work..."><i class="far fa-comment-dots" aria-hidden="true"></i><span class="visually-hidden"></span> Comment: If things didn't work...</div>
+
+    <p>Did the Intersect tool error with a memory failure? Or is this step executing for a long time? Most likely a setting was missed when extracting the data from the UCSC Table Browser. Try again, double checking that:</p>
+
+    <ul>
+      <li>For both SNP and EXON: <em>“region”</em> is actually changed to <code class="language-plaintext highlighter-rouge">position</code> with value <code class="language-plaintext highlighter-rouge">chr22</code></li>
+      <li>For EXON: <em>“Create one <span class="notranslate">BED</span> record per”</em> <code class="language-plaintext highlighter-rouge">Coding Exons</code> is selected (<em>not</em> <code class="language-plaintext highlighter-rouge">Whole Gene</code> as for the SNP data)</li>
+      <li>Carefully inspect the remaining Table Browser settings if these two most common reasons for problems were correct in your tool executions</li>
+    </ul>
+  </blockquote>
+
+</blockquote>
+
+<p>Let’s take a look at this dataset. The first six columns correspond to the exons, and the last six columns correspond to the SNPs. Column 4 contains the exon IDs, and column 10 contains the SNP IDs. In our screenshot you see that the first lines in the file all have the same exon ID but different SNP IDs, meaning these lines represent different SNPs that all overlap the same exon.</p>
+
+<blockquote class="question">
+  <div id="question" class="box-title" aria-label="question box: "><i class="far fa-question-circle" aria-hidden="true"></i><span class="visually-hidden"></span> Question</div>
+  <p>For the first 3 exons in your file, what is the number of SNPs that fall into that exon?</p>
+
+  <blockquote class="solution">
+    <div id="solution" class="box-title"><button type="button" aria-controls="solution-contents" aria-expanded="true" aria-label="Toggle solution box: "><i class="far fa-eye" aria-hidden="true"></i><span class="visually-hidden"></span> Solution<span role="button" class="fold-unfold fa fa-minus-square"></span></button></div>
+    <p>At the time of writing, for hg38/GENCODE v29, joined with “Common dbSNPs(153)”, using <kbd>ctrl-f</kbd> (<kbd>cmd-f</kbd> on Mac OS) to look for how many times each is used:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Gene</th>
+          <th>Occurences</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code class="language-plaintext highlighter-rouge">ENST00000252835.5_cds_0_0_chr22_15528159_f</code></td>
+          <td>2</td>
+        </tr>
+        <tr>
+          <td><code class="language-plaintext highlighter-rouge">ENST00000643195.1_cds_0_0_chr22_15528192_f</code></td>
+          <td>2</td>
+        </tr>
+        <tr>
+          <td><code class="language-plaintext highlighter-rouge">ENST00000343518.11_cds_0_0_chr22_15690078_f</code></td>
+          <td>4</td>
+        </tr>
+      </tbody>
+    </table>
+  </blockquote>
+</blockquote>
+
+<h2 id="count-the-number-of-snps-per-exon">Count the number of SNPs per exon</h2>
+
+<p>Since each line in our file represents a single overlap between SNP and exon, we can find the total number of SNPs in an exon, simply by counting the number of lines that have the same exon ID. However, to be more “proper” we will instead count the number of unique SNP IDs per exon. So let’s do this for all the exons in our file:</p>
+
+<blockquote class="notranslate hands_on">
+  <div id="hands-on-counting-snps" class="box-title" aria-label="hands-on box: Counting SNPs"><i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"></span> Hands-on: Counting SNPs</div>
+
+  <ol>
+    <li>
+      <p><span class="tool" data-tool="toolshed.g2.bx.psu.edu/repos/iuc/datamash_ops/datamash_ops/1.1.0" title="Tested with toolshed.g2.bx.psu.edu/repos/iuc/datamash_ops/datamash_ops/1.1.0"><strong>Datamash</strong> <i class="fas fa-wrench" aria-hidden="true"></i><i aria-hidden="true" class="fas fa-cog"></i><span class="visually-hidden">Tool: <span class="notranslate">toolshed</span>.g2.bx.psu.edu/repos/iuc/datamash_ops/datamash_ops/1.1.0</span></span>  (operations on tabular data):</p>
+
+      <ul>
+        <li><em>“Input tabular dataset”</em>: select the output dataset from <strong><span class="notranslate">bed</span>tools intersect intervals</strong> <i class="fas fa-wrench" aria-hidden="true"></i><span class="visually-hidden">tool</span></li>
+        <li><em>“Group by fields”</em>: <code class="language-plaintext highlighter-rouge">Column: 4</code> (the column with the exon IDs)</li>
+      </ul>
+
+      <p><img src="../../images/101_datamash_1.png" alt="Datamash tool interface. " loading="lazy" /></p>
+
+      <ul>
+        <li>Scroll tool interface down to <em>“Operation to perform on each group”</em>
+          <ul>
+            <li><em>“Type”</em>: <code class="language-plaintext highlighter-rouge">Count Unique values</code></li>
+            <li><em>“On column”</em>: <code class="language-plaintext highlighter-rouge">Column: 10</code> (this column contains SNPs ids like <code class="language-plaintext highlighter-rouge">rs2236639</code>. This we will count occurrences of unique SNP ids for each exon)</li>
+          </ul>
+        </li>
+      </ul>
+
+      <p><img src="../../images/101_datamash_2.png" alt="Operation to perform on each group. " loading="lazy" /></p>
+    </li>
+    <li>
+      <p>Click <strong>Execute</strong>. Your new output dataset will look something like this:</p>
+
+      <p><img src="../../images/101_14.png" alt="Contents of the `Group` output dataset. " loading="lazy" /></p>
+    </li>
+  </ol>
+
+</blockquote>
+
+<p>This file contains only two columns. The first contains the exon IDs, and the second the number of times that exon ID appeared in the file - in other words, how many SNPs were present in that exon.</p>
+
+<blockquote class="question">
+  <div id="question-1" class="box-title" aria-label="question box: "><i class="far fa-question-circle" aria-hidden="true"></i><span class="visually-hidden"></span> Question</div>
+  <p>How many exons are there in total in your file?</p>
+
+  <blockquote class="solution">
+    <div id="solution-1" class="box-title"><button type="button" aria-controls="solution-1-contents" aria-expanded="true" aria-label="Toggle solution box: "><i class="far fa-eye" aria-hidden="true"></i><span class="visually-hidden"></span> Solution<span role="button" class="fold-unfold fa fa-minus-square"></span></button></div>
+    <p>Each line now represents a different exon, so you can see the answer to this when you expand the history item, as in the image above. The exact number you see for your dataset may be slightly different due to the updates to the exon and SNPs information in UCSC. In our case the dataset contains 4,242 lines, which is equal to the number of exons overlapped by at least one SNP.</p>
+
+  </blockquote>
+</blockquote>
+
+<h2 id="sort-the-exons-by-snps-count">Sort the exons by SNPs count</h2>
+
+<p>Now that we have a list of all exons, and the number of SNPs they contain, we would like to know which exon has the <em>highest number</em> of SNPs. We can do this by sorting the file on the second column.</p>
+
+<blockquote class="notranslate hands_on">
+  <div id="hands-on-sorting" class="box-title" aria-label="hands-on box: Sorting"><i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"></span> Hands-on: Sorting</div>
+
+  <ol>
+    <li>
+      <p><span class="tool" data-tool="sort1" title="Tested with sort1"><strong>Sort</strong> <i class="fas fa-wrench" aria-hidden="true"></i><i aria-hidden="true" class="fas fa-cog"></i><span class="visually-hidden">Tool: sort1</span></span>  data in ascending or descending order:</p>
+
+      <ul>
+        <li><em>“Sort Dataset”</em>: Output from <strong>Datamash</strong> <i class="fas fa-wrench" aria-hidden="true"></i><span class="visually-hidden">tool</span></li>
+        <li><em>“on column”</em>: <code class="language-plaintext highlighter-rouge">Column: 2</code></li>
+        <li><em>“with flavor”</em>: <code class="language-plaintext highlighter-rouge">Numerical sort</code></li>
+        <li><em>“everything in”</em>: <code class="language-plaintext highlighter-rouge">Descending order</code></li>
+      </ul>
+    </li>
+    <li>
+      <p>Click <strong>Execute</strong></p>
+    </li>
+    <li>
+      <p>Examine the output file.</p>
+
+      <p><img src="../../images/101_16.png" alt="Contents of the `Sort` output dataset. " loading="lazy" /></p>
+
+      <p>The file should look similar to before sorting, but now the exons with the highest number of SNPs are at the top.</p>
+    </li>
+  </ol>
+</blockquote>
+
+<blockquote class="question">
+  <div id="question-2" class="box-title" aria-label="question box: "><i class="far fa-question-circle" aria-hidden="true"></i><span class="visually-hidden"></span> Question</div>
+  <p>Which exon has the highest number of SNPs in your file?</p>
+
+  <blockquote class="solution">
+    <div id="solution-2" class="box-title"><button type="button" aria-controls="solution-2-contents" aria-expanded="true" aria-label="Toggle solution box: "><i class="far fa-eye" aria-hidden="true"></i><span class="visually-hidden"></span> Solution<span role="button" class="fold-unfold fa fa-minus-square"></span></button></div>
+    <p>When this tutorial was last updated, <code class="language-plaintext highlighter-rouge">ENST00000253255.7_cds_0_0_chr22_46256561_r</code> had 27 SNPs.
+Keep in mind this may depend on your settings when getting the data from UCSC.</p>
+  </blockquote>
+</blockquote>
+
+<h2 id="select-the-top-five-exons">Select the top five exons</h2>
+
+<p>Let’s say we want a list with just the top-5 exons with highest number of SNPs.</p>
+
+<blockquote class="notranslate hands_on">
+  <div id="hands-on-select-first" class="box-title" aria-label="hands-on box: Select first"><i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"></span> Hands-on: Select first</div>
+
+  <ol>
+    <li>
+      <p><span class="tool" data-tool="toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_head_tool/1.1.0" title="Tested with toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_head_tool/1.1.0"><strong>Select first</strong> <i class="fas fa-wrench" aria-hidden="true"></i><i aria-hidden="true" class="fas fa-cog"></i><span class="visually-hidden">Tool: <span class="notranslate">toolshed</span>.g2.bx.psu.edu/repos/bgruening/text_processing/tp_head_tool/1.1.0</span></span>  lines from a dataset (head):</p>
+
+      <ul>
+        <li><em>“File to select”</em>: The output from <strong>Sort</strong> <i class="fas fa-wrench" aria-hidden="true"></i><span class="visually-hidden">tool</span></li>
+        <li>“<em>Operation</em>”: <code class="language-plaintext highlighter-rouge">Keep first lines</code></li>
+        <li><em>“Number of lines”</em>: <code class="language-plaintext highlighter-rouge">5</code></li>
+      </ul>
+    </li>
+    <li>
+      <p>Click <strong>Execute</strong></p>
+    </li>
+    <li>
+      <p>Examine the output file, this should contain only the first 5 lines of the previous dataset.</p>
+    </li>
+  </ol>
+
+</blockquote>
+
+<h2 id="recovering-exon-info">Recovering exon info</h2>
+
+<p>Congratulations! You have now determined which exons on chromosome 22 have the highest number of SNPs, but what else can we learn about them? One way to learn more about a genetic location is to view it in a genome browser. However, in the process of getting our answer, we have lost information about the location of these exons on the chromosome. But fear not, <span class="notranslate">Galaxy</span> saves all of your data, so we can recover this information quite easily.</p>
+
+<blockquote class="notranslate hands_on">
+  <div id="hands-on-compare-two-datasets" class="box-title" aria-label="hands-on box: Compare two Datasets"><i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"></span> Hands-on: Compare two Datasets</div>
+
+  <ol>
+    <li>
+      <p><span class="tool" data-tool="comp1" title="Tested with comp1"><strong>Compare two Datasets</strong> <i class="fas fa-wrench" aria-hidden="true"></i><i aria-hidden="true" class="fas fa-cog"></i><span class="visually-hidden">Tool: comp1</span></span>  to find common or distinct rows:</p>
+
+      <ul>
+        <li><em>“Compare”</em>: <code class="language-plaintext highlighter-rouge">Exons</code></li>
+        <li><em>“Using column”</em>: <code class="language-plaintext highlighter-rouge">Column: 4</code></li>
+        <li><em>“against”</em>: the output from <strong>Select first</strong> <i class="fas fa-wrench" aria-hidden="true"></i><span class="visually-hidden">tool</span></li>
+        <li><em>“and column”</em>: <code class="language-plaintext highlighter-rouge">Column: 1</code></li>
+        <li><em>“to find”</em>: <code class="language-plaintext highlighter-rouge">Matching rows of 1st dataset</code></li>
+      </ul>
+    </li>
+    <li>Click <strong>Execute</strong></li>
+    <li>
+      <p>Examine your output file. It should contain the locations of your top 5 exons:</p>
+
+      <p><img src="../../images/101_19.png" alt="Contents of the `Compare two Datasets` output dataset. " loading="lazy" /></p>
+    </li>
+  </ol>
+</blockquote>
+
+<h2 id="displaying-data-in-ucsc-genome-browser">Displaying data in UCSC genome browser</h2>
+
+<p>A good way to learn about these exons is to look at their genomic surrounding. This can be done by using genome browsers. <span class="notranslate">Galaxy</span> can launch a genome browser such as IGV on your local machine, and it can connect to online genome browsers as well. An example of such an online genome browser is the UCSC genome browser.</p>
+
+<blockquote class="notranslate hands_on">
+  <div id="hands-on-ucsc-genome-browser" class="box-title" aria-label="hands-on box: UCSC genome browser"><i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"></span> Hands-on: UCSC genome browser</div>
+
+  <ol>
+    <li>
+      <p>First, check that the <strong>database</strong> of your latest history dataset is <code class="language-plaintext highlighter-rouge">hg38</code>. If not, click on the <i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-pencil</span> pencil icon and modify the <strong>Database/Build:</strong> field to <code class="language-plaintext highlighter-rouge">Human Dec. 2013 (GRCh38/hg38) (hg38)</code>.</p>
+
+      <!--SNIPPET-->
+      <blockquote class="tip">  <div id="tip-changing-database-build-dbkey" class="box-title"><button type="button" aria-controls="tip-changing-database-build-dbkey-contents" aria-expanded="true" aria-label="Toggle tip box: Changing database/build (dbkey)"><i class="far fa-lightbulb" aria-hidden="true"></i><span class="visually-hidden"></span> Tip: Changing database/build (dbkey)<span role="button" class="fold-unfold fa fa-minus-square"></span></button></div>  <ul>  <li>Click on the <i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-pencil</span> <strong>pencil icon</strong> for the dataset to edit its attributes</li>  <li>In the central panel, change the <strong>Database/Build</strong> field</li>  <li>Select your desired database key from the dropdown list: <code class="language-plaintext highlighter-rouge">hg38</code></li>  <li>Click the <strong>Save</strong> button</li></ul></blockquote>
+    </li>
+    <li>
+      <p>Second, check that the <strong>format</strong> of your latest history dataset is <code class="language-plaintext highlighter-rouge"><span class="notranslate">bed</span></code>. If not, click on the <i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-pencil</span> pencil icon and modify the <strong>Datatype</strong> field to <code class="language-plaintext highlighter-rouge"><span class="notranslate">bed</span></code>.</p>
+
+      <!--SNIPPET-->
+      <blockquote class="tip">  <div id="tip-changing-the-datatype" class="box-title"><button type="button" aria-controls="tip-changing-the-datatype-contents" aria-expanded="true" aria-label="Toggle tip box: Changing the datatype"><i class="far fa-lightbulb" aria-hidden="true"></i><span class="visually-hidden"></span> Tip: Changing the datatype<span role="button" class="fold-unfold fa fa-minus-square"></span></button></div>  <ul>  <li>Click on the <i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-pencil</span> <strong>pencil icon</strong> for the dataset to edit its attributes</li>  <li>In the central panel, click on the <i class="fas fa-database" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-chart-select-data</span> <strong>Datatypes</strong> tab on the top</li>  <li>Select <code class="language-plaintext highlighter-rouge"><span class="notranslate">bed</span></code>    <ul>      <li>tip: you can start typing the datatype into the field to filter the dropdown menu</li>    </ul>  </li>  <li>Click the <strong>Save</strong> button</li></ul></blockquote>
+    </li>
+    <li>
+      <p>To <strong>visualize the data in UCSC genome browser</strong>, click on <code class="language-plaintext highlighter-rouge">display at UCSC main</code> option visible when you expand the history item.</p>
+
+      <p><img src="../../images/101_displayucsc.png" alt="`display at UCSC main` link. " loading="lazy" /></p>
+
+      <p>This will upload the data to UCSC as custom track. To see your data look at the <code class="language-plaintext highlighter-rouge">User Track</code> near the top. You can enter the coordinates of one of your exons at the top to jump to that location.</p>
+
+      <p><img src="../../images/101_21.png" alt="`User Track` shown in the UCSC genome browser. " loading="lazy" /></p>
+    </li>
+  </ol>
+</blockquote>
+
+<p>UCSC provides a large number of tracks that can help you get a sense of your genomic area, it contains common SNPs, repeats, genes, and much more (scroll down to find all possible tracks).</p>
+
+<h1 id="galaxy-management"><span class="notranslate">Galaxy</span> management</h1>
+
+<p>In <span class="notranslate">Galaxy</span> your analyses live in histories such as your current one. Histories can be very large, and you can have as many histories as you want. You can control your histories (switching, copying, sharing, creating a fresh history, etc.) in the <i class="fas fa-cog" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-gear</span> <strong>History Options</strong> menu on the top of the history panel:</p>
+
+<p><img src="../../images/history_options_menu.png" alt="History options menu. " loading="lazy" /></p>
+
+<p>If you create a new history, your current history does not disappear. If you would like to list all of your histories just use the <i class="fas fa-columns" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-columns</span> Multi-history view:</p>
+
+<p><img src="../../images/101_history-overview.png" alt="Overview of histories with their datasets. " loading="lazy" /></p>
+
+<p>Here you can:</p>
+<ul>
+  <li>switch between different histories,</li>
+  <li>delete a history,</li>
+  <li>purge it (i.e. permanently delete it, this action cannot be reversed)</li>
+  <li>copy histories</li>
+  <li>copy datasets between histories (by dragging and dropping)</li>
+</ul>
+
+<p>You can always return to your analysis view by clicking on Home icon <i class="fas fa-home" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-home</span> (<strong>Analyze Data</strong> on older versions of <span class="notranslate">Galaxy</span>) in the top menu bar.</p>
+
+<h2 id="convert-your-analysis-history-into-a-workflow">Convert your analysis history into a <span class="notranslate">workflow</span></h2>
+
+<p>When you look carefully at your history, you can see that it contains all the steps of our analysis, from the beginning to the end. By building this history we have actually built a complete record of our analysis with <span class="notranslate">Galaxy</span> preserving all parameter settings applied at every step. But when you receive new data, or a new report is requested, it would be tedious to do each step over again. Wouldn’t it be nice to just convert this history into a <span class="notranslate">workflow</span> that we will be able to execute again and again?</p>
+
+<p><span class="notranslate">Galaxy</span> makes this very easy with the <code class="language-plaintext highlighter-rouge">Extract <span class="notranslate">workflow</span></code> option. This means any time you want to build a <span class="notranslate">workflow</span>, you can just perform the steps once manually, and then convert it to a <span class="notranslate">workflow</span>, so that next time it will be a lot less work to do the same analysis.</p>
+
+<blockquote class="notranslate hands_on">
+  <div id="hands-on-extract-workflow" class="box-title" aria-label="hands-on box: Extract workflow"><i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"></span> Hands-on: Extract <span class="notranslate">workflow</span></div>
+
+  <ol>
+    <li>
+      <p><strong>Clean up</strong> your history: remove any failed (red) jobs from your history by clicking on the <i class="fas fa-times" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-cross</span> button.</p>
+
+      <p>This will make the creation of the <span class="notranslate">workflow</span> easier.</p>
+    </li>
+    <li>
+      <p>Click on <i class="fas fa-cog" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-gear</span> (<strong>History options</strong>) at the top of your history panel and select <strong>Extract <span class="notranslate">workflow</span></strong>.</p>
+
+      <p><img src="../../images/history_menu_extract_workflow.png" alt="`Extract Workflow` entry in the history options menu. " loading="lazy" /></p>
+
+      <p>The central panel will show the content of the history in reverse order (oldest on top), and you will be able to choose which steps to include in the <span class="notranslate">workflow</span>.</p>
+
+      <p><img src="../../images/101_25.png" alt="Selection of steps for `Extract Workflow` from history. " loading="lazy" /></p>
+    </li>
+    <li>
+      <p>Replace the <strong><span class="notranslate">Workflow</span> name</strong> to something more descriptive, for example <code class="language-plaintext highlighter-rouge">Find exons with the highest number of features</code>.</p>
+
+      <p>While we created this <span class="notranslate">workflow</span> initially to analyse SNPs, if we had similarly formatted datasets we could use this <span class="notranslate">workflow</span> to find different features.</p>
+    </li>
+    <li>
+      <p>If there are any steps that shouldn’t be included in the <span class="notranslate">workflow</span>, you can <strong>uncheck</strong> them in the first column of boxes.</p>
+    </li>
+    <li>
+      <p>Click on the <strong>Create <span class="notranslate">Workflow</span></strong> button near the top.</p>
+
+      <p>You will get a message that the <span class="notranslate">workflow</span> was created. But where did it go?</p>
+    </li>
+    <li>
+      <p>Click on <strong><span class="notranslate">Workflow</span></strong> in the top menu of <span class="notranslate">Galaxy</span>. Here you have a list of all your workflows. Your newly created <span class="notranslate">workflow</span> should be listed at the top:</p>
+
+      <p><img src="../../images/101_26.png" alt="`Your workflows` list. " loading="lazy" /></p>
+    </li>
+  </ol>
+</blockquote>
+
+<h2 id="the-workflow-editor">The <span class="notranslate">workflow</span> editor</h2>
+
+<p>We can examine the <span class="notranslate">workflow</span> in <span class="notranslate">Galaxy</span>’s <span class="notranslate">workflow</span> editor. Here you can view/change the parameter settings of each step, add and remove tools, and connect an output from one tool to the input of another, all in an easy and graphical manner. You can also use this editor to build workflows from scratch.</p>
+
+<blockquote class="notranslate hands_on">
+  <div id="hands-on-extract-workflow-1" class="box-title" aria-label="hands-on box: Extract workflow"><i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"></span> Hands-on: Extract <span class="notranslate">workflow</span></div>
+
+  <ol>
+    <li>
+      <p>Click on the triangle to the right of your <span class="notranslate">workflow</span> name.</p>
+
+      <p><img src="../../images/101_27.png" alt="`Edit` option in the menu for the latest workflow. " loading="lazy" /></p>
+    </li>
+    <li>
+      <p>Select <strong>Edit</strong> to launch the <span class="notranslate">workflow</span> editor. You should see something like this:</p>
+
+      <p><img src="../../images/101_28.png" alt="Workflow editor. " loading="lazy" /></p>
+
+      <p>When you click on a <span class="notranslate">workflow</span> step, you will get a view of all the parameter settings for that tool on the right-hand side of your screen.</p>
+
+      <!--SNIPPET-->
+      <blockquote class="tip">  <div id="tip-hiding-intermediate-steps" class="box-title"><button type="button" aria-controls="tip-hiding-intermediate-steps-contents" aria-expanded="true" aria-label="Toggle tip box: Hiding intermediate steps"><i class="far fa-lightbulb" aria-hidden="true"></i><span class="visually-hidden"></span> Tip: Hiding intermediate steps<span role="button" class="fold-unfold fa fa-minus-square"></span></button></div>  <p>When a <span class="notranslate">workflow</span> is executed, the user is usually primarily interested in the final product and not in all intermediate steps.By default all the outputs of a <span class="notranslate">workflow</span> will be shown, but we can explicitly tell <span class="notranslate">Galaxy</span> which outputs to show and which to hide for a given <span class="notranslate">workflow</span>.This behaviour is controlled by the little checkbox in front of every output dataset:</p>  <p><img src="/training-material/shared/images/workflow_editor_mark_output.png" alt="Asterisk for `out_file1` in the `Select First` tool" /></p></blockquote>
+    </li>
+    <li>
+      <p>Re-arrange the boxes so you can clearly see the data flow. The default automatic layout hides some of the connections due to overlapping and box placement.</p>
+    </li>
+    <li>
+      <p>Make sure the  <strong>check boxes</strong> for <code class="language-plaintext highlighter-rouge">out_file1</code> in the <code class="language-plaintext highlighter-rouge">Select First</code> and <code class="language-plaintext highlighter-rouge">Compare two Datasets</code> tools are selected. Make sure that everything else is not selected.</p>
+
+      <p>Now, when we run the <span class="notranslate">workflow</span>, we will only see the final two outputs, i.e. the table with the top-5 exons and their SNP counts, and the file with exons ready for viewing in a genome browser.</p>
+    </li>
+    <li>
+      <p>The box named <code class="language-plaintext highlighter-rouge">Exons</code> is named ok, but we want to change <code class="language-plaintext highlighter-rouge">SNPs</code> since this <span class="notranslate">workflow</span> is not specific to SNPs</p>
+
+      <ul>
+        <li><strong>Click</strong> on the box corresponding to the <code class="language-plaintext highlighter-rouge">SNPs</code> input dataset</li>
+        <li>change the <strong>Label</strong> to <code class="language-plaintext highlighter-rouge">Features</code> on the right-hand side of your screen.</li>
+      </ul>
+    </li>
+    <li>
+      <p>Let’s also <strong>rename the outputs</strong>:</p>
+
+      <ul>
+        <li>Click on the <code class="language-plaintext highlighter-rouge">Select first</code> tool in the <span class="notranslate">workflow</span> editor</li>
+        <li>In the menu on the right click on <code class="language-plaintext highlighter-rouge">Configure Output: 'out_file1'</code>
+          <ul>
+            <li>Under <code class="language-plaintext highlighter-rouge">Rename dataset</code>, and enter a descriptive name for the output dataset like <code class="language-plaintext highlighter-rouge">Top 5 exon IDs</code></li>
+          </ul>
+        </li>
+      </ul>
+
+      <p><img src="../../images/101_34.png" alt="Rename the output of the `Select first` tool step. " loading="lazy" /></p>
+    </li>
+    <li>
+      <p><strong>Repeat</strong> this for the output of the <code class="language-plaintext highlighter-rouge">Compare two Datasets</code> tool, naming it <code class="language-plaintext highlighter-rouge">Top 5 exons</code></p>
+    </li>
+    <li>
+      <p><strong>Save your <span class="notranslate">workflow</span></strong> (important!) by clicking on the <i class="far fa-save" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-save</span> icon at the top right of the screen.</p>
+    </li>
+    <li>
+      <p><strong>Return</strong> to the analysis view by clicking on the Home icon <i class="fas fa-home" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-home</span> (or <strong>Analyze Data</strong> on older versions of <span class="notranslate">Galaxy</span>) at the top menu bar.</p>
+    </li>
+  </ol>
+
+</blockquote>
+
+<blockquote class="comment">
+  <div id="comment-3" class="box-title" aria-label="comment box: "><i class="far fa-comment-dots" aria-hidden="true"></i><span class="visually-hidden"></span> Comment</div>
+  <p>We could <strong>validate</strong> our newly built <span class="notranslate">workflow</span> by running it on the same input datasets that we used at the start of this tutorial, in order to make sure we do obtain the same results.</p>
+</blockquote>
+
+<h2 id="run-workflow-on-different-data">Run <span class="notranslate">workflow</span> on different data</h2>
+
+<p>Now that we have built our <span class="notranslate">workflow</span>, let’s use it on some different data. For example, let’s find out which exons have the highest number of repeat elements.</p>
+
+<blockquote class="notranslate hands_on">
+  <div id="hands-on-run-workflow" class="box-title" aria-label="hands-on box: Run workflow"><i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"></span> Hands-on: Run <span class="notranslate">workflow</span></div>
+
+  <ol>
+    <li>
+      <p>Create a <strong>new history</strong> and give it a name.</p>
+
+      <!--SNIPPET-->
+      <blockquote class="tip">  <div id="tip-creating-a-new-history-1" class="box-title"><button type="button" aria-controls="tip-creating-a-new-history-1-contents" aria-expanded="true" aria-label="Toggle tip box: Creating a new history"><i class="far fa-lightbulb" aria-hidden="true"></i><span class="visually-hidden"></span> Tip: Creating a new history<span role="button" class="fold-unfold fa fa-minus-square"></span></button></div>  <p>Click the <i class="fas fa-plus" aria-hidden="true"></i><span class="visually-hidden">new-history</span> icon at the top of the history panel.</p>  <p>If the <i class="fas fa-plus" aria-hidden="true"></i><span class="visually-hidden">new-history</span> is missing:</p>  <ol>  <li>Click on the <i class="fas fa-cog" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-gear</span> icon (<strong>History options</strong>) on the top of the history panel</li>  <li>Select the option <strong>Create New</strong> from the menu</li></ol></blockquote>
+    </li>
+    <li>
+      <p>We will need the list of exons again. We don’t have to get this from UCSC again, we can just <strong>copy</strong> it from our previous history. The easiest way to do this is to go to the <i class="fas fa-columns" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-columns</span> history overview. Here you can just drag and drop datasets from one history to another.</p>
+
+      <p><img src="../../images/copying_data.gif" alt="Drag and drop of `Exons` dataset in the history overview. " loading="lazy" /></p>
+    </li>
+    <li>
+      <p>Click the Home icon <i class="fas fa-home" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-home</span> (or <strong>Analyze Data</strong> on older <span class="notranslate">Galaxy</span> versions) at the top to return to the main analysis window</p>
+    </li>
+    <li>
+      <p><span class="tool" data-tool="upload1" title="Tested with upload1"><strong>Upload Data</strong> <i class="fas fa-wrench" aria-hidden="true"></i><i aria-hidden="true" class="fas fa-cog"></i><span class="visually-hidden">Tool: upload1</span></span>  the Repeats file from <a href="https://doi.org/10.5281/zenodo.4104428">Zenodo</a></p>
+
+      <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://zenodo.org/record/4104428/files/UCSC-hg38-chr22-Repeats.<span class="notranslate">bed</span>
+</code></pre></div>      </div>
+
+      <!--SNIPPET-->
+      <blockquote class="tip">  <div id="tip-importing-via-links" class="box-title"><button type="button" aria-controls="tip-importing-via-links-contents" aria-expanded="true" aria-label="Toggle tip box: Importing via links"><i class="far fa-lightbulb" aria-hidden="true"></i><span class="visually-hidden"></span> Tip: Importing via links<span role="button" class="fold-unfold fa fa-minus-square"></span></button></div>  <ul>  <li>Copy the link location</li>  <li>    <p>Open the <span class="notranslate">Galaxy</span> Upload Manager (<i class="fas fa-upload" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-upload</span> on the top-right of the tool panel)</p>  </li>  <li>Select <strong>Paste/Fetch Data</strong></li>  <li>    <p>Paste the link into the text field</p>  </li>  <li>    <p>Press <strong>Start</strong></p>  </li>  <li><strong>Close</strong> the window</li></ul></blockquote>
+
+      <blockquote class="tip">
+        <div id="tip-obtaining-the-data-from-ucsc" class="box-title"><button type="button" aria-controls="tip-obtaining-the-data-from-ucsc-contents" aria-expanded="true" aria-label="Toggle tip box: Obtaining the Data from UCSC"><i class="far fa-lightbulb" aria-hidden="true"></i><span class="visually-hidden"></span> Tip: Obtaining the Data from UCSC<span role="button" class="fold-unfold fa fa-minus-square"></span></button></div>
+
+        <p>Again, for reproducibility we obtain the data from Zenodo ensuring that the results will never change, allowing us to do good science! However if you wish to obtain UCSC data:</p>
+
+        <blockquote class="notranslate hands_on">
+          <div id="hands-on-obtaining-exons-from-ucsc-1" class="box-title" aria-label="hands-on box: Obtaining Exons from UCSC"><i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"></span> Hands-on: Obtaining Exons from UCSC</div>
+
+          <ol>
+            <li>
+              <p><strong>UCSC Main</strong> <i class="fas fa-wrench" aria-hidden="true"></i><span class="visually-hidden">tool</span> table browser:</p>
+
+              <p>In the tool menu, navigate to <code class="language-plaintext highlighter-rouge">Get Data -&gt; UCSC Main - table browser</code></p>
+
+              <p>Now set the following parameters:</p>
+              <ul>
+                <li><em>“clade”</em>: <code class="language-plaintext highlighter-rouge">Mammal</code></li>
+                <li><em>“genome”</em>: <code class="language-plaintext highlighter-rouge">Human</code></li>
+                <li><em>“assembly”</em>: <code class="language-plaintext highlighter-rouge">Dec. 2013 (GRCh38/hg38)</code></li>
+                <li><em>“group”</em>: <code class="language-plaintext highlighter-rouge">Repeats</code></li>
+                <li><i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden">param-text</span> <em>“region”</em> should be changed to <code class="language-plaintext highlighter-rouge">position</code> with value <code class="language-plaintext highlighter-rouge">chr22</code></li>
+                <li><em>“output format”</em> should be changed to <code class="language-plaintext highlighter-rouge"><span class="notranslate">BED</span> - browser extensible data</code></li>
+                <li><i class="far fa-check-square" aria-hidden="true"></i><span class="visually-hidden">param-check</span> <em>“Send output to”</em> should have the option <code class="language-plaintext highlighter-rouge"><span class="notranslate">Galaxy</span></code> checked</li>
+              </ul>
+            </li>
+          </ol>
+
+          <p>Click on <strong>get output</strong> and then <strong>Send query to <span class="notranslate">Galaxy</span></strong> on the next screen.</p>
+        </blockquote>
+      </blockquote>
+    </li>
+    <li>
+      <p><strong>Rename</strong> <i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-pencil</span> the dataset to <code class="language-plaintext highlighter-rouge">Repeats</code></p>
+    </li>
+    <li>
+      <p>Open the <strong><span class="notranslate">workflow</span> menu</strong> (top menu bar). Find the <span class="notranslate">workflow</span> you made in the previous section, and select the option <code class="language-plaintext highlighter-rouge">Run</code>.</p>
+
+      <p><img src="../../images/101_37.png" alt="`Run` option in the workflow menu. " loading="lazy" /></p>
+
+      <!--SNIPPET-->
+      <blockquote class="tip">  <div id="tip-running-a-workflow" class="box-title"><button type="button" aria-controls="tip-running-a-workflow-contents" aria-expanded="true" aria-label="Toggle tip box: Running a workflow"><i class="far fa-lightbulb" aria-hidden="true"></i><span class="visually-hidden"></span> Tip: Running a <span class="notranslate">workflow</span><span role="button" class="fold-unfold fa fa-minus-square"></span></button></div>  <ul>  <li>Click on <em><span class="notranslate">Workflow</span></em> on the top menu bar of <span class="notranslate">Galaxy</span>. You will see a list of all your workflows.</li>  <li>Click on the <i class="fas fa-play" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">workflow</span>-run</span> (<em>Run <span class="notranslate">workflow</span></em>) button next to your <span class="notranslate">workflow</span></li>  <li>Configure the <span class="notranslate">workflow</span> as needed</li>  <li>Click the <strong>Run <span class="notranslate">Workflow</span></strong> button at the top-right of the screen</li>  <li>You may have to refresh your history to see the queued jobs</li></ul></blockquote>
+
+      <p>The central panel will change to allow you to configure and launch the <span class="notranslate">workflow</span>.</p>
+    </li>
+    <li>Select appropriate datasets for the inputs as shown below, then scroll down and click <code class="language-plaintext highlighter-rouge">Run <span class="notranslate">workflow</span></code>.
+      <ul>
+        <li>Select <code class="language-plaintext highlighter-rouge">Expand to full <span class="notranslate">workflow</span> form</code></li>
+        <li><i class="far fa-file" aria-hidden="true"></i><span class="visually-hidden">param-file</span> <em>“Exons”</em>: the <code class="language-plaintext highlighter-rouge">Exons</code> file you copied from our previous history</li>
+        <li><i class="far fa-file" aria-hidden="true"></i><span class="visually-hidden">param-file</span> <em>“Features”</em>: the <code class="language-plaintext highlighter-rouge">Repeats</code> file we downloaded from UCSC</li>
+      </ul>
+
+      <p><img src="../../images/101_38.png" alt="Settings for running the workflow. " loading="lazy" /></p>
+
+      <blockquote class="comment">
+        <div id="comment-potential-workflow-issues" class="box-title" aria-label="comment box: Potential workflow issues"><i class="far fa-comment-dots" aria-hidden="true"></i><span class="visually-hidden"></span> Comment: Potential <span class="notranslate">workflow</span> issues</div>
+
+        <ul>
+          <li><span class="notranslate">Galaxy</span> validates the <span class="notranslate">workflow</span> inputs to ensure they’re correct. It may show a validation error at the start, until you select <code class="language-plaintext highlighter-rouge">Exons</code> for the Exons input, and your repeats for the Features input.</li>
+          <li>If you see an “Invalid column choice” error, you need to specify which column you want to use. If you have to type the column number, you need to type just the number e.g. <code class="language-plaintext highlighter-rouge">4</code> (not <code class="language-plaintext highlighter-rouge">Column 4</code> or anything else).</li>
+        </ul>
+      </blockquote>
+    </li>
+    <li>
+      <p>Once the <span class="notranslate">workflow</span> has started, you will initially be able to see all its steps, but the unimportant intermediates will disappear after they complete successfully:</p>
+
+      <p><img src="../../images/101_39.png" alt="Datasets appearing in the history. " loading="lazy" /></p>
+    </li>
+  </ol>
+</blockquote>
+
+<blockquote class="comment">
+  <div id="comment-unhiding-hidden-datasets" class="box-title" aria-label="comment box: Unhiding hidden datasets"><i class="far fa-comment-dots" aria-hidden="true"></i><span class="visually-hidden"></span> Comment: Unhiding hidden datasets</div>
+  <p>Because most intermediate steps of the <span class="notranslate">workflow</span> were hidden, once it is finished you will only see the final two datasets. If we want to view the intermediate files after all, you can click the “## hidden” just below the history’s name.</p>
+</blockquote>
+
+<blockquote class="question">
+  <div id="question-3" class="box-title" aria-label="question box: "><i class="far fa-question-circle" aria-hidden="true"></i><span class="visually-hidden"></span> Question</div>
+  <p>Which exon had the highest number of repeats? How many repeats were there?</p>
+</blockquote>
+
+<h2 id="share-your-work">Share your work</h2>
+
+<p>One of the most important features of <span class="notranslate">Galaxy</span> comes at the end of an analysis. When you have published striking findings, it is important that other researchers are able to reproduce your in-silico experiment. <span class="notranslate">Galaxy</span> enables users to easily share their workflows and histories with others.</p>
+
+<p>To share a history, click on the <i class="fas fa-cog" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-gear</span> icon in the history panel and select <code class="language-plaintext highlighter-rouge">Share or Publish</code>. On this page you can do 3 things:</p>
+
+<ol>
+  <li><strong>Make History Accessible via Link</strong>. This generates a link that you can give out to others. Anybody with this link will be able to view your history.</li>
+  <li><strong>Make History Accessible and Publish</strong>. This will not only create a link, but will also publish your history. This means your history will be listed under <code class="language-plaintext highlighter-rouge">Shared Data → Histories</code> in the top menu.</li>
+  <li><strong>Share with a user</strong>. This will share the history only with specific users on the <span class="notranslate">Galaxy</span> instance.</li>
+</ol>
+
+<blockquote class="comment">
+  <div id="comment-permissions" class="box-title" aria-label="comment box: Permissions"><i class="far fa-comment-dots" aria-hidden="true"></i><span class="visually-hidden"></span> Comment: Permissions</div>
+  <p>Different servers have different default permission settings. Some servers create all of your datasets completely private to you, while others make them accessible if you know the secret ID.</p>
+
+  <p>Be sure to select <strong>Also make all objects within the History accessible</strong> whenever you make a history accessible via link, otherwise whomever you send your link to might not be able to see your history.</p>
+</blockquote>
+
+<blockquote class="notranslate hands_on">
+  <div id="hands-on-share-history-and-workflow" class="box-title" aria-label="hands-on box: Share history and workflow"><i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden"></span> Hands-on: Share history and <span class="notranslate">workflow</span></div>
+
+  <ol>
+    <li>Share one of your histories with your neighbour.</li>
+    <li>See if you can do the same with your <span class="notranslate">workflow</span>!</li>
+    <li>Find the history and/or <span class="notranslate">workflow</span> shared by your neighbour. Histories shared with specific users can be accessed by those users in their <i class="fas fa-cog" aria-hidden="true"></i><span class="visually-hidden"><span class="notranslate">galaxy</span>-gear</span> history menu under <code class="language-plaintext highlighter-rouge">Histories shared with me</code>.</li>
+  </ol>
+</blockquote>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p><i class="fas fa-trophy" aria-hidden="true"></i><span class="visually-hidden">trophy</span> Well done! You have just performed your first analysis in <span class="notranslate">Galaxy</span>. You also created a <span class="notranslate">workflow</span> from your analysis so you can easily repeat the exact same analysis on other datasets. Additionally you shared your results and methods with others.</p>
+
+
+                
+                <blockquote class="key_points">
+                    <div class="box-title" aria-label="key-points box"><i class="fas fa-key" aria-hidden="true"></i> Key points</div>
+                    <ul>
+                        
+                        <li><p>Galaxy provides an easy-to-use graphical user interface for often complex command-line tools</p>
+</li>
+                        
+                        <li><p>Galaxy keeps a full record of your analysis in a history</p>
+</li>
+                        
+                        <li><p>Workflows enable you to repeat your analysis on different data</p>
+</li>
+                        
+                        <li><p>Galaxy can connect to external sources for data import and visualization purposes</p>
+</li>
+                        
+                        <li><p>Galaxy provides ways to share your results and methods with others</p>
+</li>
+                        
+                    </ul>
+                </blockquote>
+                
+
+                <h1>Frequently Asked Questions</h1>
+                Have questions about this tutorial? Check out the <a href="faqs/">tutorial FAQ page</a> or the  <a href="/training-material/topics/introduction/faqs/">FAQ page for the Introduction to Galaxy Analyses topic</a> to see if your question is listed there.
+                If not, please ask your question on the <a href="https://gitter.im/Galaxy-Training-Network/Lobby">GTN Gitter Channel</a> or the
+                <a href="https://help.galaxyproject.org">Galaxy Help Forum</a>
+
+                
+
+                
+
+
+                
+
+                
+
+                <h1>Feedback</h1>
+                <p class="text-muted">Did you use this material as an instructor? Feel free to give us feedback on <a href="https://github.com/galaxyproject/training-material/issues/1452">how it went</a>.
+                <br>Did you use this material as a learner or student? Click the form below to leave feedback.<i class="fas fa-hand-point-down"></i>
+                </p>
+
+                <div id="feedback-button">
+                    <img src="/training-material/shared/images/feedback.png" title="Click to activate" alt="Click here to load Google feedback frame" />
+                </div>
+                <div id="feedback-form">
+                </div>
+                <script type="text/javascript">
+                    (function (window, document) {
+                        function onDocumentReady(fn) {
+                            if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+                                fn();
+                            } else {
+                                document.addEventListener('DOMContentLoaded', fn);
+                            }
+                        }
+
+                        onDocumentReady(function () {
+                            $("#feedback-button").click(function(evt){
+                                var e = $(evt.target)
+                                e.hide();
+
+                                $("#feedback-form").html(`
+                                    <iframe id="feedback-google" class="google-form" src="https://docs.google.com/forms/d/e/1FAIpQLSd4VZptFTQ03kHkMz0JyW9b6_S8geU5KjNE_tLM0dixT3ZQmA/viewform?embedded=true&entry.1235803833=Galaxy 101 (Introduction to Galaxy Analyses)">Loading...</iframe>
+                                `)
+                            })
+                        });
+                    })(window, document);
+                </script>
+
+                <h1>Citing this Tutorial</h1>
+                <p>
+                    <ol>
+                        <li id="citation-text">
+                            Saskia Hiltemann, Nicola Soranzo, Clemens Blank, Anton Nekrutenko, Björn Grüning, Anne Pajon, Helena Rasche,  <b>Galaxy 101 (Galaxy Training Materials)</b>. <a href="https://training.galaxyproject.org/training-material/topics/introduction/tutorials/galaxy-intro-101/tutorial.html">https://training.galaxyproject.org/training-material/topics/introduction/tutorials/galaxy-intro-101/tutorial.html</a> Online; accessed TODAY
+                        </li>
+                        <li>
+                        Batut et al., 2018 <b>Community-Driven Data Analysis Training for Biology</b> Cell Systems <a href="https://doi.org/10.1016%2Fj.cels.2018.05.012">10.1016/j.cels.2018.05.012</a>
+                        </li>
+                    </ol>
+                </p>
+
+                <!-- collapsible boxcontaining the BibTeX-formatted citation -->
+                <blockquote class="details">
+
+                  <div id="citation-bibtex" class="box-title">
+                    <button type="button" aria-controls="citation-bibtex" aria-expanded="false" aria-label="Toggle details box: BibTeX for citing this tutorial">
+                      <i class="fas fa-info-circle" aria-hidden="true"></i>
+                      <span class="visually-hidden"></span> BibTeX<span role="button" class="fold-unfold fa fa-minus-square" aria-hidden="true"></span>
+                    </button>
+                   </div>
+                   <p style="display: none;">
+
+                   <div class="highlighter-rouge"><div class="highlight"><pre class="highlight">
+
+
+<code id="citation-code">@misc{introduction-galaxy-intro-101,
+author = "Saskia Hiltemann and Nicola Soranzo and Clemens Blank and Anton Nekrutenko and Björn Grüning and Anne Pajon and Helena Rasche",
+title = "Galaxy 101 (Galaxy Training Materials)",
+year = "",
+month = "",
+day = ""
+url = "\url{https://training.galaxyproject.org/training-material/topics/introduction/tutorials/galaxy-intro-101/tutorial.html}",
+note = "[Online; accessed TODAY]"
+}
+@article{Batut_2018,
+    doi = {10.1016/j.cels.2018.05.012},
+    url = {https://doi.org/10.1016%2Fj.cels.2018.05.012},
+    year = 2018,
+    month = {jun},
+    publisher = {Elsevier {BV}},
+    volume = {6},
+    number = {6},
+    pages = {752--758.e1},
+    author = {B{\'{e}}r{\'{e}}nice Batut and Saskia Hiltemann and Andrea Bagnacani and Dannon Baker and Vivek Bhardwaj and Clemens Blank and Anthony Bretaudeau and Loraine Brillet-Gu{\'{e}}guen and Martin {\v{C}}ech and John Chilton and Dave Clements and Olivia Doppelt-Azeroual and Anika Erxleben and Mallory Ann Freeberg and Simon Gladman and Youri Hoogstrate and Hans-Rudolf Hotz and Torsten Houwaart and Pratik Jagtap and Delphine Larivi{\`{e}}re and Gildas Le Corguill{\'{e}} and Thomas Manke and Fabien Mareuil and Fidel Ram{\'{\i}}rez and Devon Ryan and Florian Christoph Sigloch and Nicola Soranzo and Joachim Wolff and Pavankumar Videm and Markus Wolfien and Aisanjiang Wubuli and Dilmurat Yusuf and James Taylor and Rolf Backofen and Anton Nekrutenko and Björn Grüning},
+    title = {Community-Driven Data Analysis Training for Biology},
+    journal = {Cell Systems}
+}</code>
+                   </pre></div></div>
+                   </p>
+                </blockquote>
+
+                
+
+
+<script type="text/javascript">
+// update the date on load, or leave fallback of 'today'
+d = new Date();
+document.getElementById("citation-code").innerHTML = document.getElementById("citation-code").innerHTML.replace("TODAY", d.toDateString());
+document.getElementById("citation-text").innerHTML = document.getElementById("citation-text").innerHTML.replace("TODAY", d.toDateString());
+</script>
+
+                <i class="far fa-thumbs-up" aria-hidden="true"></i> Congratulations on successfully completing this tutorial!
+
+                
+
+                
+
+            </div>
+        </div>
+    </div>
+</section>
+<br/>
+<br/>
+<br/>
+
+        </div>
+        
+        <script type="text/javascript" src="/training-material/assets/js/jquery.slim.min.js"></script>
+        <script type="text/javascript" src="/training-material/assets/js/popper.min.js"></script>
+        <script type="text/javascript" src="/training-material/assets/js/bootstrap.min.js?v=3"></script>
+        <script type="text/javascript" src="/training-material/assets/js/details-element-polyfill.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/javascript" src="/training-material/assets/js/bootstrap-toc.min.js"></script>
+        <script type="text/javascript" src="/training-material/assets/js/main.js"></script>
+        <script type="text/javascript" src="/training-material/assets/js/theme.js"></script>
+
+        <script type="text/javascript" src="/training-material/assets/js/clipboard.min.js"></script>
+        <script type="text/javascript">
+        var snippets=document.querySelectorAll('div.highlight');
+        [].forEach.call(snippets,function(snippet){
+            snippet.firstChild.insertAdjacentHTML('beforebegin','<button class="btn btn-light" data-clipboard-snippet><i class="fa fa-copy"></i>&nbsp;Copy</button>');
+        });
+
+        var clipboardSnippets=new ClipboardJS('[data-clipboard-snippet]',{
+            target:function(trigger){return trigger.nextElementSibling;
+        }});
+        </script>
+        
+
+        <script type="text/javascript">
+            if(window.location.hostname === "galaxyproject.github.io") {
+                // Redirect
+                var redirect = "https://training.galaxyproject.org" + window.location.pathname + window.location.search;
+                $('div.container.main-content').prepend("<div class='alert alert-warning'><strong>Note: </strong>This content has a new home at <a href=\"" + redirect + "\">" + redirect + "</a>, which you will be redirected to in 5 seconds.</div>");
+
+                window.setTimeout(function(){
+                    window.location.href = redirect;
+                }, 5000)
+
+            }
+        </script>
+    </body>
+</html>

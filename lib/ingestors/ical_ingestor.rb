@@ -112,7 +112,6 @@ module Ingestors
 
         # store event
         @events << event
-        @ingested += 1
       rescue Exception => e
         @messages << "Process iCalendar failed with: #{e.message}"
       end
