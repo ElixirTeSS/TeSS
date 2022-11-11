@@ -31,6 +31,12 @@
     </div>
 
     <div class="row">
+      <ul class="nav nav-tabs">
+        <%= tab('Source', icon_class_for_model('source'), 'home', active: true) %>
+        <%= tab('Activity log', icon_class_for_model('activity_logs'), 'activity_log',
+                disabled: { check: @source.activities.none?, message: 'No activities recorded' }) %>
+      </ul>
+
       <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
           <div class="row">
@@ -135,7 +141,9 @@
 
           </div>
         </div>
-
+        <div id="activity_log" class="tab-pane fade" data-activity-path="<%= source_activities_path(@source) -%>">
+          <%= image_tag('ajax-loader.gif') %>
+        </div>
       </div>
     </div>
 

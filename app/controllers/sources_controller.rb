@@ -76,7 +76,7 @@ class SourcesController < ApplicationController
     authorize @source
     respond_to do |format|
       if @source.update(source_params)
-        @source.create_activity(:update, owner: current_user) if @content_provider.log_update_activity?
+        @source.create_activity(:update, owner: current_user) if @source.log_update_activity?
         format.html { redirect_to @source, notice: 'Source was successfully updated.' }
         format.json { render :show, status: :ok, location: @source }
       else
