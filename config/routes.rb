@@ -91,7 +91,12 @@ Rails.application.routes.draw do
     resources :sources, except: [:index]
   end
 
-  resources :sources, except: [:new, :create]
+  resources :sources, except: [:new, :create], concerns: :activities do
+    member do
+      get :test_results
+      post :test
+    end
+  end
 
   resources :materials, concerns: :activities do
     member do

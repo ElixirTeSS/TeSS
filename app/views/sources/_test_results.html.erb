@@ -1,0 +1,72 @@
+<% sample_size ||= 3 %>
+
+<h2>Results</h2>
+<strong>Run time:</strong><%= test_results[:run_time].round(2) %>s
+<% unless test_results[:messages].blank? %>
+  <h3>Log</h3>
+  <pre>
+  <%= test_results[:messages].join("\n") %>
+</pre>
+<% end %>
+
+<% ['events', 'materials'].each do |type| %>
+  <% resources = test_results[type.to_sym] || [] %>
+  <% klass = type.singularize.capitalize.constantize %>
+
+  <%= content_tag(:div, id: type, class: 'scraper-typed-results') do %>
+    <h3><%= pluralize(resources.count, type.singularize) %> found</h3>
+    <% if resources.length > 0 %>
+      <h4>Samples:</h4>
+    <% end %>
+    <% resources.sample(sample_size).each do |resource_params| %>
+      <% resource = type.singularize.capitalize.constantize.new(resource_params) %>
+      <% existing = klass.check_exists(resource) %>
+      <div class="bulk-import-row<%= ' new' unless existing -%>">
+        <div class="row">
+          <div class="col-sm-6">
+            <strong><%= resource.title %></strong>
+            <br/>
+            <% if type == 'events' %>
+              <%= neatly_printed_date_range(resource.start, resource.end) %>
+            <% end %>
+          </div>
+          <div class="col-sm-6">
+            <% if resource.url %>
+              <%= link_to(resource.url, resource.url, target: :_blank) %>
+            <% else %>
+              <span class="muted">No URL</span>
+            <% end %>
+          </div>
+          <% unless existing.nil? %>
+            <div class="col-sm-12 bg-warning text-warning">
+              <i class="fa fa-exclamation-triangle"></i> Already registered: <%= link_to(existing.title, existing, target: :_blank) %>
+            </div>
+          <% end %>
+          <% unless resource.valid? %>
+            <div class="col-sm-12 bg-danger text-danger">
+              <i class="fa fa-exclamation-circle"></i> Errors:
+              <%= resource.errors.full_messages.join(', ') %>
+            </div>
+          <% end %>
+        </div>
+        <div class="row more-info-section clearfix">
+          <details>
+            <summary>
+              <a class="btn btn-default btn-xs more-info-btn">Details</a>
+            </summary>
+            <div class="row">
+              <% resource.attributes.select { |k,v| v.present? }.each do |attr, value| %>
+                <div class="col-sm-6">
+                  <strong><%= resource.class.human_attribute_name(attr)-%>:</strong> <%= value %>
+                </div>
+              <% end %>
+            </div>
+          </details>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+
+  <hr/>
+
+<% end %>

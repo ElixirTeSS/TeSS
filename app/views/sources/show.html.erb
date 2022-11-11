@@ -33,6 +33,7 @@
     <div class="row">
       <ul class="nav nav-tabs">
         <%= tab('Source', icon_class_for_model('source'), 'home', active: true) %>
+        <%= tab('Testing', icon_class_for_model('testing'), 'testing') %>
         <%= tab('Activity log', icon_class_for_model('activity_logs'), 'activity_log',
                 disabled: { check: @source.activities.none?, message: 'No activities recorded' }) %>
       </ul>
@@ -139,6 +140,11 @@
 
             </div>
 
+          </div>
+        </div>
+        <div id="testing" class="tab-pane">
+          <div class="row">
+            <%= render partial: 'sources/test' %>
           </div>
         </div>
         <div id="activity_log" class="tab-pane fade" data-activity-path="<%= source_activities_path(@source) -%>">

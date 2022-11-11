@@ -1,5 +1,6 @@
 class Source < ApplicationRecord
   include LogParameterChanges
+  include HasTestJob
 
   APPROVAL_STATUS = {
     0 => :not_approved,

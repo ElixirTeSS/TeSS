@@ -1,5 +1,5 @@
 class SourcesController < ApplicationController
-  before_action :set_source, only: [:show, :edit, :update, :destroy]
+  before_action :set_source, only: [:show, :edit, :update, :destroy, :test, :test_results]
   before_action :set_content_provider, except: :index
   before_action :set_breadcrumbs
 
@@ -96,6 +96,26 @@ class SourcesController < ApplicationController
       format.html { redirect_to policy(Source).index? ? sources_path : content_provider_path(@content_provider),
                                 notice: 'Source was successfully deleted.' }
       format.json { head :no_content }
+    end
+  end
+
+  def test
+    authorize Source, :manage?
+    job_id = SourceTestWorker.perform_async(@source.id)
+    @source.test_job_id = job_id
+
+    respond_to do |format|
+      format.json { render json: { id: job_id }}
+    end
+  end
+
+  def test_results
+    authorize Source, :manage?
+    test_results = @source.test_results
+    if test_results.nil?
+      head :not_found
+    else
+      render partial: 'sources/test_results', object: test_results
     end
   end
 

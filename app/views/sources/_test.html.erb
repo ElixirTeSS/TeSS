@@ -1,0 +1,98 @@
+<% unless @source.test_in_progress? %>
+  <%= button_tag('Test', id: 'test-btn', class: 'btn btn-primary') %>
+<% end %>
+
+<div class="text-info">
+  <%= image_tag('ajax-loader.gif', id: 'test-spinner', style: 'display: none') %>
+  <span id="test-status"></span>
+</div>
+
+<div class="text-danger" id="test-errors"></div>
+
+<div id="test-results">
+  <% results = @source.test_results %>
+  <% if results %>
+    <%= render partial: 'sources/test_results', object: results %>
+  <% end %>
+</div>
+
+<script>
+    var spinner = $('#test-spinner');
+    var checkStatus = function (jobId) {
+        $.ajax({
+            dataType: 'json',
+            url: '/job_status',
+            data: { id: jobId },
+            success: function (data) {
+                if (data.status === 'complete') {
+                    $('#test-status').text('Fetching results');
+                    $.ajax({
+                        dataType: 'html',
+                        url: '<%= test_results_source_path(@source) %>',
+                        success: function (html) {
+                            $('#test-status').text('');
+                            $('#test-results').html(html);
+                        },
+                        error: function (data) {
+                            console.log('error', data);
+                            $('#test-status').text('');
+                            $('#test-errors').text('There was a problem rendering the results. ' + data.responseText);
+                        },
+                        complete: function () {
+                            spinner.hide();
+                        }
+                    });
+                } else if (data.status === 'working') {
+                    $('#test-status').text('Working');
+                    setTimeout(function () { checkStatus(jobId) }, 2000);
+                } else if (data.status === 'queued') {
+                    $('#test-status').text('Waiting for job to begin');
+                    setTimeout(function () { checkStatus(jobId) }, 2000);
+                } else {
+                    console.log('bad job response', data);
+                    $('#test-status').text('');
+                    $('#test-errors').text('There was a problem testing the ingestor. Please check the URL is correct and the appropriate method is selected. Job ' + data.status);
+                    spinner.hide();
+                }
+            },
+            error: function (data) {
+                console.log('error', data);
+                $('#test-status').text('');
+                $('#test-errors').text('There was a problem getting the job status');
+                spinner.hide();
+            }
+        });
+    };
+
+    $('#test-btn').click(function () {
+        $('#test-errors').text('');
+        $('#test-status').text('Submitting job');
+
+        spinner.show();
+
+        $.ajax({
+            dataType: 'json',
+            url: '<%= test_source_path(@source) %>',
+            method: 'POST',
+            success: function (data) {
+                var jobId = data.id;
+                $('#test-status').text('Waiting for status');
+
+                checkStatus(jobId);
+            },
+            error: function (data) {
+                console.log('error', data);
+                $('#test-status').text('');
+                $('#test-errors').text('There was a problem creating the test job: ' + data.responseText);
+                spinner.hide();
+            }
+        });
+
+        return false;
+    });
+
+    <% if @source.test_in_progress? %>
+      checkStatus(<%= @source.test_job_id -%>);
+    <% end %>
+</script>
+
