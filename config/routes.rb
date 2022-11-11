@@ -82,6 +82,12 @@ Rails.application.routes.draw do
   end
 
   resources :content_providers, concerns: :activities do
+    member do
+      get 'import'
+      get 'scraper_results'
+      post 'import', to: 'content_providers#scrape'
+      post 'bulk_create'
+    end
     resources :sources, except: [:index]
   end
 
@@ -118,6 +124,7 @@ Rails.application.routes.draw do
 
   get 'search' => 'search#index'
   get 'test_url' => 'application#test_url'
+  get 'job_status' => 'application#job_status'
 
   # error pages
   %w( 404 422 500 503 ).each do |code|

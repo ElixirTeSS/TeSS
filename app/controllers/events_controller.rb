@@ -176,6 +176,18 @@ class EventsController < ApplicationController
     redirect_to @event.url
   end
 
+  PERMITTED_EVENT_PARAMS = [:external_id, :title, :subtitle, :url, :organizer, :last_scraped, :scraper_record,
+                            :description, { :scientific_topic_names => [] }, { :scientific_topic_uris => [] },
+                            { :operation_names => [] }, { :operation_uris => [] }, { :event_types => [] },
+                            { :keywords => [] }, { :fields => [] }, :start, :end, :duration, { sponsors: [] },
+                            :online, :venue, :city, :county, :country, :postcode, :latitude, :longitude,
+                            :timezone, :content_provider_id, { :collection_ids => [] }, { :node_ids => [] },
+                            { :node_names => [] }, { :target_audience => [] }, { :eligibility => [] },
+                            { :host_institutions => [] }, :capacity, :contact, :recognition, :learning_objectives,
+                            :prerequisites, :tech_requirements, :cost_basis, :cost_value, :cost_currency,
+                            external_resources_attributes: [:id, :url, :title, :_destroy], material_ids: [],
+                            locked_fields: []]
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -184,18 +196,9 @@ class EventsController < ApplicationController
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
+
   def event_params
-    params.require(:event).permit(:external_id, :title, :subtitle, :url, :organizer, :last_scraped, :scraper_record,
-                                  :description, { :scientific_topic_names => [] }, { :scientific_topic_uris => [] },
-                                  { :operation_names => [] }, { :operation_uris => [] }, { :event_types => [] },
-                                  { :keywords => [] }, { :fields => [] }, :start, :end, :duration, { sponsors: [] },
-                                  :online, :venue, :city, :county, :country, :postcode, :latitude, :longitude,
-                                  :timezone, :content_provider_id, { :collection_ids => [] }, { :node_ids => [] },
-                                  { :node_names => [] }, { :target_audience => [] }, { :eligibility => [] },
-                                  { :host_institutions => [] }, :capacity, :contact, :recognition, :learning_objectives,
-                                  :prerequisites, :tech_requirements, :cost_basis, :cost_value, :cost_currency,
-                                  external_resources_attributes: [:id, :url, :title, :_destroy], material_ids: [],
-                                  locked_fields: [])
+    params.require(:event).permit(PERMITTED_EVENT_PARAMS)
   end
 
   def event_report_params

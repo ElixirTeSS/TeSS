@@ -134,6 +134,8 @@ class Event < ApplicationRecord
   NOMINATIM_DELAY = 1.minute
   NOMINATIM_MAX_ATTEMPTS = 3
 
+  attr_accessor :include_in_create
+
   def description=(desc)
     super(Rails::Html::FullSanitizer.new.sanitize(desc))
   end
@@ -226,6 +228,22 @@ class Event < ApplicationRecord
       ical_event.summary = title
       ical_event.description = description
       ical_event.location = venue unless venue.blank?
+      ical_event.url = url
+    end
+  end
+
+  def self.from_ical(calendar)
+    calendar.events.map do |ical_event|
+      Event.new.tap do |event|
+        event.start       = ical_event.dtstart.to_datetime unless ical_event.dtstart.blank?
+        event.end         = ical_event.dtend.to_datetime unless ical_event.dtend.blank?
+        event.title       = ical_event.summary.try(:to_s)
+        event.description = ical_event.description.try(:to_s)
+        event.venue       = ical_event.location.try(:to_s)
+        event.latitude    = ical_event.geo.first.to_f unless ical_event.geo.blank?
+        event.longitude   = ical_event.geo.last.to_f unless ical_event.geo.blank?
+        event.url         = ical_event.url.try(:to_s)
+      end
     end
   end
 
@@ -314,7 +332,7 @@ class Event < ApplicationRecord
   end
 
   def self.check_exists(event_params)
-    given_event = new(event_params)
+    given_event = event_params.is_a?(Event) ? event_params : new(event_params)
     event = nil
 
     event = find_by_url(given_event.url) if given_event.url.present?

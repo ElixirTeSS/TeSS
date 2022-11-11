@@ -1,0 +1,155 @@
+<div class="page-header">
+  <%= page_title 'Import' %>
+</div>
+
+<div class="form-inline">
+  <div class="form-group">
+    <%= text_field_tag(:url, params[:url], placeholder: 'Enter URL here', size: 100, class: 'form-control') %>
+  </div>
+
+  <div class="form-group">
+    <%= select_tag(:format, options_for_select([['JSON-LD', 'jsonld'],['RDFa', 'rdfa'],['iCal / ICS', 'ics']], params[:format]), class: 'form-control') %>
+  </div>
+
+  <%= button_tag('Go', id: 'import-btn', class: 'btn btn-primary') %>
+</div>
+
+<div class="text-info">
+  <%= image_tag('ajax-loader.gif', id: 'import-spinner', style: 'display: none') %>
+  <span id="scrape-status"></span>
+</div>
+<div class="text-danger" id="scrape-errors"></div>
+
+<div id="scraper-results"></div>
+
+<script>
+  var updateBulkCreateButton = function () {
+    var button = $('#bulk-create-btn');
+    var selectedEvents = $('#events .bulk-import-checkbox:checked').length;
+    var selectedMaterials = $('#materials .bulk-import-checkbox:checked').length;
+
+    if (!selectedEvents && !selectedMaterials) {
+      button.val('Nothing selected');
+      button.addClass('disabled');
+    } else {
+      var text = 'Create ';
+      if (selectedEvents) {
+        text += ('' + selectedEvents + ' events');
+        if (selectedMaterials) {
+          text += ' and ';
+        }
+      }
+      if (selectedMaterials) {
+        text += ('' + selectedMaterials + ' materials');
+      }
+      button.val(text);
+      button.removeClass('disabled');
+    }
+  };
+
+  $('#import-btn').click(function () {
+    $('#scrape-errors').text('');
+    $('#scrape-status').text('Submitting job');
+    var input = $('#url');
+    var spinner = $('#import-spinner');
+
+    spinner.show();
+
+    $.ajax({
+      dataType: 'json',
+      url: '<%= import_content_provider_path(@content_provider) %>',
+      data: {
+        url: $('#url').val(),
+        page_format: $('#format').val()
+      },
+      method: 'POST',
+      success: function (data) {
+        var jobId = data.id;
+        $('#scrape-status').text('Waiting for status');
+
+        var checkStatus = function () {
+          $.ajax({
+            dataType: 'json',
+            url: '/job_status',
+            data: { id: jobId },
+            success: function (data) {
+              if (data.status === 'complete') {
+                $('#scrape-status').text('Fetching results');
+                $.ajax({
+                  dataType: 'html',
+                  url: '<%= scraper_results_content_provider_path(@content_provider) %>',
+                  data: { job_id: jobId },
+                  success: function (html) {
+                    $('#scrape-status').text('');
+                    $('#scraper-results').html(html);
+                    updateBulkCreateButton();
+                  },
+                  error: function (data) {
+                    console.log('error', data);
+                    $('#scrape-status').text('');
+                    $('#scrape-errors').text('There was a problem rendering the results. ' + data.responseText);
+                  },
+                  complete: function () {
+                    spinner.hide();
+                  }
+                });
+              } else if (data.status === 'working') {
+                $('#scrape-status').text('Working');
+                setTimeout(checkStatus, 2000);
+              } else if (data.status === 'queued') {
+                $('#scrape-status').text('Waiting for job to begin');
+                setTimeout(checkStatus, 2000);
+              } else {
+                console.log('bad job response', data);
+                $('#scrape-status').text('');
+                $('#scrape-errors').text('There was a problem importing from the given URL. Please check the URL is correct and the appropriate format is selected. Job ' + data.status);
+                spinner.hide();
+              }
+            },
+            error: function (data) {
+              console.log('error', data);
+              $('#scrape-status').text('');
+              $('#scrape-errors').text('There was a problem getting the job status');
+              spinner.hide();
+            }
+          });
+        };
+
+        checkStatus();
+      },
+      error: function (data) {
+        console.log('error', data);
+        $('#scrape-status').text('');
+        $('#scrape-errors').text('There was a problem creating the import job: ' + data.responseText);
+        spinner.hide();
+      }
+    });
+
+    return false;
+  });
+
+  $('#scraper-results').on('click', '.more-info-btn', function () {
+    $(this).parents('.bulk-import-row').find('.more-info-section').slideToggle();
+    return false;
+  });
+
+  $('#scraper-results').on('click', '.select-new-btn', function () {
+      $(this).parents('.scraper-typed-results').find('.bulk-import-row.new .bulk-import-checkbox').prop('checked', true);
+      updateBulkCreateButton();
+      return false;
+  });
+
+  $('#scraper-results').on('click', '.select-all-btn', function () {
+    $(this).parents('.scraper-typed-results').find('.bulk-import-checkbox').prop('checked', true);
+    updateBulkCreateButton();
+    return false;
+  });
+
+  $('#scraper-results').on('click', '.clear-btn', function () {
+    $(this).parents('.scraper-typed-results').find('.bulk-import-checkbox').prop('checked', false);
+    updateBulkCreateButton();
+    return false;
+  });
+
+  $('#scraper-results').on('change', '.bulk-import-checkbox', updateBulkCreateButton);
+</script>

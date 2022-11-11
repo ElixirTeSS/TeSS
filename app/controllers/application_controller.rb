@@ -78,6 +78,22 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def job_status
+    begin
+      status = Sidekiq::Status::status(params[:id])
+
+      if status.present?
+        respond_to do |format|
+          format.json { render json: { status: status } }
+        end
+      else
+        respond_to do |format|
+          format.json { render json: { status: 'not-found' }, status: 404 }
+        end
+      end
+    end
+  end
+
   private
 
   def feature_enabled?(feature = controller_name)
