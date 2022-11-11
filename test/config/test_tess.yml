@@ -53,6 +53,8 @@ test:
     workflows: true
     sources: true
     user_source_creation: true
+    edit_suggestions: true
+    geocoding: true
     disabled: []
   placeholder:
     collection: 'placeholder-collection.png'

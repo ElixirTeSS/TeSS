@@ -421,6 +421,7 @@ class Event < ApplicationRecord
   # If no latitude or longitude, create a GeocodingWorker to find them.
   # This should run a minute after the last one is set to run (last run time stored by Redis).
   def enqueue_geocoding_worker
+    return unless TeSS::Config.feature['geocoding']
     return if (latitude.present? && longitude.present?) ||
               (address.blank? && postcode.blank?) ||
               nominatim_count >= NOMINATIM_MAX_ATTEMPTS

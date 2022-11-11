@@ -49,6 +49,8 @@ default: &default
     workflows: true
     sources: false
     user_source_creation: true
+    edit_suggestions: false
+    geocoding: false
     # Possible features to disable:
     #  biotools, topics, operations, sponsors, fairshare, county, ardc_fields_of_research,
     #  other_types, subsets, syllabus, approved_editors address_finder
