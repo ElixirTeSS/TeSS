@@ -1,4 +1,6 @@
 class Source < ApplicationRecord
+  include LogParameterChanges
+
   APPROVAL_STATUS = {
     0 => :not_approved,
     1 => :requested,
@@ -100,10 +102,14 @@ class Source < ApplicationRecord
     super(APPROVAL_STATUS_CODES[key.to_sym])
   end
 
+  def approved?
+    approval_status == :approved
+  end
+
   private
 
   def set_approval_status
-    if TeSS::Config.feature['source_approval'] && !User.current_user&.is_admin?
+    if TeSS::Config.feature['user_source_creation'] && !User.current_user&.is_admin?
       self.approval_status = :not_approved
     else
       self.approval_status = :approved

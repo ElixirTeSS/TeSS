@@ -52,8 +52,6 @@ Rails.application.routes.draw do
     resource :ban, only: [:create, :new, :destroy]
   end
 
-  resources :sources, concerns: :activities
-
   resources :trainers, only: [:show, :index]
 
   resources :nodes, concerns: :activities
@@ -84,8 +82,10 @@ Rails.application.routes.draw do
   end
 
   resources :content_providers, concerns: :activities do
-    resources :sources, only: [:new, :create]
+    resources :sources, except: [:index]
   end
+
+  resources :sources, except: [:new, :create]
 
   resources :materials, concerns: :activities do
     member do

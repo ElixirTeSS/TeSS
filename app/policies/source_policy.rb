@@ -1,10 +1,10 @@
-class SourcePolicy < ResourcePolicy
+class SourcePolicy < ScrapedResourcePolicy
   def show?
     manage?
   end
 
   def manage?
-    if TeSS::Config.feature['source_approval']
+    if TeSS::Config.feature['user_source_creation']
       super
     else
       administration?
@@ -16,7 +16,7 @@ class SourcePolicy < ResourcePolicy
   end
 
   def create?
-    if TeSS::Config.feature['source_approval']
+    if TeSS::Config.feature['user_source_creation']
       super
     else
       administration?

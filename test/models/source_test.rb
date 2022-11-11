@@ -65,7 +65,7 @@ class SourceTest < ActiveSupport::TestCase
   end
 
   test 'source approval status is set to not_approved by default if regular user' do
-    assert TeSS::Config.feature['source_approval']
+    assert TeSS::Config.feature['user_source_creation']
     User.current_user = users(:regular_user)
     source = Source.new(content_provider: content_providers(:portal_provider),
                         url: 'https://website.org',
@@ -76,7 +76,7 @@ class SourceTest < ActiveSupport::TestCase
   end
 
   test 'source approval status is set to approved by default if admin' do
-    assert TeSS::Config.feature['source_approval']
+    assert TeSS::Config.feature['user_source_creation']
     User.current_user = users(:admin)
     source = Source.new(content_provider: content_providers(:portal_provider),
                         url: 'https://website.org',
@@ -89,8 +89,8 @@ class SourceTest < ActiveSupport::TestCase
 
   test 'source approval status is set to approved by default if source_approval disabled' do
     features = TeSS::Config.feature.dup
-    TeSS::Config.feature['source_approval'] = false
-    refute TeSS::Config.feature['source_approval']
+    TeSS::Config.feature['user_source_creation'] = false
+    refute TeSS::Config.feature['user_source_creation']
     User.current_user = users(:regular_user)
     source = Source.new(content_provider: content_providers(:portal_provider),
                         url: 'https://website.org',
@@ -109,7 +109,7 @@ class SourceTest < ActiveSupport::TestCase
 
     assert_equal :not_approved, source.approval_status
 
-    assert_difference('PublicActivity::Activity.count', 1) do
+    assert_difference('PublicActivity::Activity.count', 2) do # approval status change + parameter change are logged
       assert source.update(approval_status: 'approved')
     end
 

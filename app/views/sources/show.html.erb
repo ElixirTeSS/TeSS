@@ -67,7 +67,7 @@
                 <%= source_enabled_badge(@source.enabled) %>
               </p>
 
-              <% if TeSS::Config.feature['source_approval'] %>
+              <% if TeSS::Config.feature['user_source_creation'] %>
                 <p>
                   <strong>Approval status:</strong>
                   <%= source_approval_badge(@source.approval_status) %>

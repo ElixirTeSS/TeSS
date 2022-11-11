@@ -70,7 +70,7 @@
                 disabled: { check: events.none?, message: 'No associated events' },
                 count: events.count) %>
 
-        <% if TeSS::Config.feature['source_approval'] && policy(@content_provider).update? %>
+        <% if TeSS::Config.feature['user_source_creation'] && policy(@content_provider).update? %>
           <%= tab('Sources', icon_class_for_model('sources'), 'sources', count: sources.count) %>
         <% end %>
 

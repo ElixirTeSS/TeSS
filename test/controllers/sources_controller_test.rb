@@ -7,25 +7,20 @@ class SourcesControllerTest < ActionController::TestCase
 
   setup do
     mock_ingestions
-    @user = users :regular_user
-    assert_not_nil @user, "regular user is nil"
-    @source = sources :first_source
+    @user = users(:regular_user)
+    @source = sources(:first_source)
     @new_url = 'https://new.source.loc/sitemap.xml'
+
     @source_params = {
+      content_provider_id: @source.content_provider,
       source: {
         url: @new_url,
-        content_provider_id: @source.content_provider,
-        method: @source.method,
+        method: 'event_csv'
       }
     }
+
     @update_params = {
-      finished_at: Time.now,
-      records_read: 99,
-      records_written: 96,
-      resources_added: 9,
-      resources_updated: 87,
-      resources_rejected: 3,
-      log: "Source processed successfully!"
+      method: 'bioschemas'
     }
   end
 
@@ -35,20 +30,25 @@ class SourcesControllerTest < ActionController::TestCase
     assert_response :forbidden
   end
 
-  test 'registered should get index' do
+  test 'regular user should not get index' do
     sign_in users(:regular_user)
+    get :index
+    assert_response :forbidden
+  end
+
+  test 'admin should get index' do
+    sign_in users(:admin)
     get :index
     assert_response :success
     assert_not_empty assigns(:sources), 'sources is empty'
-    assert_equal 8, sources.size, 'sources size not matched'
   end
 
-  test 'registered should get index with solr enabled' do
+  test 'admin should get index with solr enabled' do
     begin
       TeSS::Config.solr_enabled = true
       method = 'event_csv'
       mock_search = MockSearch.new(Source.where(method: method))
-      sign_in users(:regular_user)
+      sign_in users(:admin)
       Source.stub(:search_and_filter, mock_search) do
         get :index, params: { method: method }
         assert_response :success
@@ -80,25 +80,32 @@ class SourcesControllerTest < ActionController::TestCase
 
   # NEW Tests
   test 'public should not get new' do
-    get :new
+    get :new, params: { content_provider_id: content_providers(:goblet) }
     assert_redirected_to new_user_session_path
   end
 
-  test 'registered should not get new' do
+  test 'user should get new for their content provider' do
     sign_in users(:regular_user)
-    get :new
+    get :new, params: { content_provider_id: content_providers(:goblet) }
+    assert_response :success
+  end
+
+  test 'unaffiliated user should not get new' do
+    sign_in users(:another_regular_user)
+    get :new, params: { content_provider_id: content_providers(:goblet) }
     assert_response :forbidden
   end
 
+
   test 'curator user should get new' do
     sign_in users(:curator)
-    get :new
+    get :new, params: { content_provider_id: content_providers(:goblet) }
     assert_response :success
   end
 
   test 'admin should get new' do
     sign_in users(:admin)
-    get :new
+    get :new, params: { content_provider_id: content_providers(:goblet) }
     assert_response :success
   end
 
@@ -109,11 +116,17 @@ class SourcesControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_path
   end
 
-  test 'registered should not get edit' do
+  test 'user should not get edit for unowned source' do
     # Regular User = forbidden
-    sign_in users(:regular_user)
+    sign_in users(:another_regular_user)
     get :edit, params: { id: @source }
     assert_response :forbidden
+  end
+
+  test 'user should get edit for content provider-owned source' do
+    sign_in @user
+    get :edit, params: { id: @source }
+    assert_response :success
   end
 
   test 'admin should get edit' do
@@ -138,12 +151,23 @@ class SourcesControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_path
   end
 
-  test 'registered should not create source' do
-    sign_in users(:regular_user)
+  test 'unaffiliated user cannot create source for content provider' do
+    user = users(:another_regular_user)
+    sign_in user
+    refute_permitted SourcePolicy, user, :manage?, @source.content_provider
     assert_no_difference 'Source.count' do
       post :create, params: @source_params
     end
     assert_response :forbidden
+  end
+
+  test 'user can create source for their content provider' do
+    sign_in @user
+    assert_permitted SourcePolicy, @user, :manage?, @source.content_provider
+    assert_difference 'Source.count', 1 do
+      post :create, params: @source_params
+    end
+    assert_redirected_to source_path(assigns(:source))
   end
 
   test 'admin should create source' do
@@ -152,7 +176,6 @@ class SourcesControllerTest < ActionController::TestCase
       post :create, params: @source_params
     end
     assert_redirected_to source_path(assigns(:source))
-    @source.reload
   end
 
   test 'curator should create source' do
@@ -166,45 +189,44 @@ class SourcesControllerTest < ActionController::TestCase
 
   # UPDATE Tests
   test 'public should not update source' do
-    patch :update, params: {id: @source, source: @update_params }
+    patch :update, params: { id: @source, source: @update_params }
     assert_redirected_to new_user_session_path
   end
 
-  test 'registered should not update source' do
-    sign_in users(:regular_user)
+  test 'unaffiliated user should not update source' do
+    sign_in users(:another_regular_user)
     patch :update, params: { id: @source, source: @update_params }
     assert_response :forbidden
+  end
+
+  test 'user should update content provider-owned source' do
+    sign_in @user
+    patch :update, params: { id: @source, source: @update_params }
+    updated = assigns(:source)
+    assert updated
+    assert_equal 'bioschemas', updated.method
   end
 
   test 'curator should update source' do
     sign_in users(:curator)
     assert_no_difference 'Source.count' do
-      patch :update, params: {id: @source, source: @update_params } do
-        assert_redirected_to source_path(assigns(:source))
-        assert assigns(:source)
-      end
+      patch :update, params: { id: @source, source: @update_params }
+      assert_redirected_to source_path(assigns(:source))
     end
-
-    # check updated fields
-    updated = assigns :source
-    assert_not_nil updated, 'updated not found'
-    assert_not_nil updated.finished_at, 'finished at is nil'
-    assert_equal 99, updated.records_read, 'records read not matched'
-    assert_equal 96, updated.records_written, 'records written not matched'
-    assert_equal 9, updated.resources_added
-    assert_equal 87, updated.resources_updated
-    assert_equal 3, updated.resources_rejected
+    updated = assigns(:source)
+    assert updated
+    assert_equal 'bioschemas', updated.method
   end
 
   test 'admin should update source' do
     sign_in users(:admin)
     assert_no_difference 'Source.count' do
-      patch :update, params: {id: @source, source: @update_params }
+      patch :update, params: { id: @source, source: @update_params }
+      assert_redirected_to source_path(assigns(:source))
     end
-    assert_redirected_to source_path(assigns(:source))
-    assert assigns(:source)
-    updated = assigns :source
-    assert_equal @update_params[:log], updated.log
+    updated = assigns(:source)
+    assert updated
+    assert_equal 'bioschemas', updated.method
   end
 
   # DESTROY Tests
@@ -215,39 +237,42 @@ class SourcesControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_path
   end
 
-  test 'registered should not destroy source' do
-    sign_in users(:regular_user)
+  test 'user should destroy content provider-owned source' do
+    sign_in @user
+    assert_difference 'Source.count', -1 do
+      delete :destroy, params: { id: @source }
+      assert_redirected_to content_provider_path(@source.content_provider)
+      assert_equal 'Source was successfully deleted.', flash[:notice]
+    end
+  end
+
+  test 'unaffiliated user should not destroy source' do
+    sign_in users(:another_regular_user)
     assert_no_difference 'Source.count' do
-      delete :destroy, params: { id: sources(:third_source) } do
-        assert_response :forbidden
-      end
+      delete :destroy, params: { id: sources(:third_source) }
+      assert_response :forbidden
     end
   end
 
   test 'curator should destroy source' do
     sign_in users(:curator)
     assert_difference 'Source.count', -1 do
-      delete :destroy, params: { id: sources(:fourth_source) } do
-        assert_response :success
-        assert_select '@alert-success',
-                      { count: 1, text: 'Source was successfully deleted.' }
-      end
+      delete :destroy, params: { id: sources(:fourth_source) }
+      assert_redirected_to sources_path
+      assert_equal 'Source was successfully deleted.', flash[:notice]
     end
   end
 
   test 'admin should destroy source' do
     sign_in users(:admin)
     assert_difference 'Source.count', -2 do
-      post :destroy, params: { id: sources(:first_source) } do
-        assert_response :success
-        assert_select '@alert-success',
-                      { count: 1, text: 'Source was successfully deleted.' }
-      end
-      delete :destroy, params: { id: sources(:fifth_source) } do
-        assert_response :success
-        assert_select '@alert-success',
-                      { count: 1, text: 'Source was successfully deleted.' }
-      end
+      post :destroy, params: { id: sources(:first_source) }
+      assert_redirected_to sources_path
+      assert_equal 'Source was successfully deleted.', flash[:notice]
+
+      delete :destroy, params: { id: sources(:fifth_source) }
+      assert_redirected_to sources_path
+      assert_equal 'Source was successfully deleted.', flash[:notice]
     end
   end
 
@@ -261,5 +286,27 @@ class SourcesControllerTest < ActionController::TestCase
     sign_in users(:regular_user)
     get :index
     assert_response :forbidden
+  end
+
+  test 'admin can approve source' do
+    sign_in users(:admin)
+    source = sources(:unapproved_source)
+    refute source.approved?
+
+    patch :update, params: { id: source, source: { approval_status: 'approved' } }
+
+    assert_redirected_to source_path(assigns(:source))
+    assert source.reload.approved?
+  end
+
+  test 'regular user cannot approve source' do
+    sign_in @user
+    source = sources(:unapproved_source)
+    refute source.approved?
+
+    patch :update, params: { id: source, source: { approval_status: 'approved' } }
+
+    assert_redirected_to source_path(assigns(:source))
+    refute source.reload.approved?
   end
 end

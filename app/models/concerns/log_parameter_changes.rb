@@ -37,6 +37,7 @@ module LogParameterChanges
         end
       end
       parameters[:new_val] = self.send(changed_attribute)
+      parameters[:new_val] = parameters[:new_val].to_s if parameters[:new_val].is_a?(Symbol)
 
       self.create_activity :update_parameter, parameters: parameters
     end

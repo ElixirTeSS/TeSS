@@ -1,8 +1,6 @@
 class SourcesController < ApplicationController
-
   before_action :set_source, only: [:show, :edit, :update, :destroy]
-  before_action :set_content_provider
-  before_action :set_content_provider_for_admin, only: [:create, :update]
+  before_action :set_content_provider, except: :index
   before_action :set_breadcrumbs
 
   include SearchableIndex
@@ -27,7 +25,7 @@ class SourcesController < ApplicationController
   # GET /sources/new
   def new
     authorize Source
-    @source = Source.new
+    @source = @content_provider.sources.build
   end
 
   # GET /sources/1/edit
@@ -45,7 +43,6 @@ class SourcesController < ApplicationController
     respond_to do |format|
       if @source.save
         @source.create_activity :create, owner: current_user
-        current_user.sources << @source
         format.html { redirect_to @source, notice: 'Source was successfully created.' }
         format.json { render :show, status: :created, location: @source }
       else
@@ -79,6 +76,7 @@ class SourcesController < ApplicationController
     authorize @source
     respond_to do |format|
       if @source.update(source_params)
+        @source.create_activity(:update, owner: current_user) if @content_provider.log_update_activity?
         format.html { redirect_to @source, notice: 'Source was successfully updated.' }
         format.json { render :show, status: :ok, location: @source }
       else
@@ -92,32 +90,25 @@ class SourcesController < ApplicationController
   # DELETE /sources/1.json
   def destroy
     authorize @source
+    @source.create_activity :destroy, owner: current_user
     @source.destroy
     respond_to do |format|
-      format.html { redirect_to sources_url, notice: 'Source was successfully destroyed.' }
+      format.html { redirect_to policy(Source).index? ? sources_path : content_provider_path(@content_provider),
+                                notice: 'Source was successfully deleted.' }
       format.json { head :no_content }
     end
   end
 
   private
 
-  def set_content_provider_for_admin
-    if policy(Source).administration?
-      @content_provider ||= ContentProvider.friendly.find_by_id(source_params[:content_provider_id])
-    end
+  def set_source
+    @source = Source.find(params[:id])
   end
 
   def set_content_provider
-    @content_provider ||= ContentProvider.friendly.find_by_id(params[:content_provider_id])
-    unless policy(Source).administration? && ['index', 'create', 'new'].include?(action_name)
-      raise ActiveRecord::RecordNotFound unless @content_provider
-      authorize @content_provider, :manage?
-    end
-  end
-
-  # Use callbacks to share common setup or constraints between actions.
-  def set_source
-    @source = Source.find(params[:id])
+    @content_provider = @source.content_provider if @source
+    @content_provider ||= ContentProvider.friendly.find(params[:content_provider_id])
+    authorize @content_provider, :manage?
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
@@ -133,7 +124,14 @@ class SourcesController < ApplicationController
     if @content_provider
       add_base_breadcrumbs('content_providers')
       add_show_breadcrumb(@content_provider)
-      add_breadcrumb 'New Source', new_content_provider_source_path(@content_provider)
+      add_breadcrumb 'Sources'
+
+      if params[:id]
+        add_breadcrumb @source.title, content_provider_source_path(@content_provider, @source) if (@source && !@source.new_record?)
+        add_breadcrumb action_name.capitalize.humanize, request.path unless action_name == 'show'
+      elsif action_name != 'index'
+        add_breadcrumb action_name.capitalize.humanize, request.path
+      end
     else
       super
     end

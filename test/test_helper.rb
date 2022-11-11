@@ -264,6 +264,14 @@ class ActiveSupport::TestCase
     File.exist?(logfile) ? File.readlines(logfile).grep(Regexp.new message.encode(Encoding::UTF_8)).size > 0 : false
   end
 
+  def assert_permitted(policy, user, action, *opts)
+    policy.new(Pundit::CurrentContext.new(user, request), *opts).send(action)
+  end
+
+  def refute_permitted(*args)
+    !assert_permitted(*args)
+  end
+
   # This should probably live somewhere else
   class MockSearchResults < Array
     def initialize(collection)
