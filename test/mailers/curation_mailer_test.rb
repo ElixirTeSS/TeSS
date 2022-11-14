@@ -1,11 +1,8 @@
 require 'test_helper'
 
 class CurationMailerTest < ActionMailer::TestCase
-
-  # FB: Need to do the following for full URL helpers to work properly
-  include Rails.application.routes.url_helpers
-
   setup do
+    @routes = Rails.application.routes.url_helpers
     @url_opts = Rails.application.routes.default_url_options
     Rails.application.routes.default_url_options = Rails.application.config.action_mailer.default_url_options
     @user = users(:unverified_user)
@@ -41,10 +38,10 @@ class CurationMailerTest < ActionMailer::TestCase
     body = email.text_part.body.to_s
 
     assert body.include?(@material.title), 'Expected material title to appear in email body'
-    assert body.include?(material_url(@material)), 'Expected TeSS material URL to appear in email body'
+    assert body.include?(@routes.material_url(@material)), 'Expected TeSS material URL to appear in email body'
     assert body.include?(@material.url), 'Expected material URL to appear in email body'
 
-    assert body.include?(curate_users_url), 'Expected curation link'
+    assert body.include?(@routes.curate_users_url), 'Expected curation link'
   end
 
   test 'html user approval' do
@@ -63,10 +60,10 @@ class CurationMailerTest < ActionMailer::TestCase
     html = email.html_part.body.to_s
 
     assert html.include?(@material.title), 'Expected material title to appear in email body'
-    assert html.include?(material_url(@material)), 'Expected TeSS material URL to appear in email body'
+    assert html.include?(@routes.material_url(@material)), 'Expected TeSS material URL to appear in email body'
     assert html.include?(@material.url), 'Expected material URL to appear in email body'
 
-    assert html.include?(curate_users_url), 'Expected curation link'
+    assert html.include?(@routes.curate_users_url), 'Expected curation link'
   end
 
   test 'can set mailer headers in config' do
