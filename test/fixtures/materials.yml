@@ -154,3 +154,22 @@ training_material:
   status: active
   remote_updated_date: 2015-09-25
   remote_created_date: 2015-09-25
+
+youtube_video_material:
+  user: regular_user
+  title: 'RDMbites | REDCap: how to run data quality checks'
+  url: https://youtu.be/1T_2xMTQCv4
+  description: In this video, I will show you how to create and run data quality checks in REDCap.
+  licence: CC-BY-NC-4.0
+  contact: contact@elixir-uk.org
+  keywords:
+    - REDCap
+    - " sensitive data"
+  authors:
+    - Saskia Lawson-Tovey
+  contributors:
+    - Robert Andrews
+    - Munazah Andrabi
+  resource_type:
+    - Video
+  learning_objectives: In this video, I will show you how to create and run data quality checks in REDCap.

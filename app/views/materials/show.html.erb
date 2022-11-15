@@ -54,6 +54,8 @@
                             :onclick => "getOutboundLink('#{@material.url}'); return true;" %>
               </div>
 
+              <%= embed_youtube(@material) %>
+
               <!-- Field: long description -->
               <div class="text-justify">
                 <%= render_markdown @material.description %>
