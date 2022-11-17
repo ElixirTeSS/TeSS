@@ -11,6 +11,7 @@ class RendererTest < ActiveSupport::TestCase
     http://youtube.com/?vi=abcd1234_-z&feature=channel
     http://youtube.com/watch?v=abcd1234_-z&feature=channel
     http://youtube.com/watch?vi=abcd1234_-z&feature=channel
+    https://www.youtube.com/v/abcd1234_-z
     https://m.youtube.com/watch?v=abcd1234_-z
     https://www.youtube.com/watch?app=desktop&v=abcd1234_-z
     https://m.youtube.com/watch?app=desktop&v=abcd1234_-z).freeze
@@ -20,6 +21,8 @@ class RendererTest < ActiveSupport::TestCase
     http://elixir.be/abcd1234_-z&feature=channel
     http://www.youtube.biz/embed/abcd1234_-z?rel=0
     http://youtube.com/c/abcd1234_-z
+    http://badyoutube.com/watch?v=abcd1234_-z&feature=channel
+    https://www.youtube.com.baddomain/v/abcd1234_-z
     ftp://youtube.com/?v=abcd1234_-z).freeze
 
   setup do

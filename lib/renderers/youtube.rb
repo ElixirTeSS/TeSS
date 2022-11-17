@@ -1,5 +1,7 @@
 module Renderers
   class Youtube
+    VALID_HOSTS = %w[youtube.com youtu.be m.youtube.com www.youtube.com].freeze
+    VALID_SCHEMES = %w[http https].freeze
     TEMPLATE = %(<iframe width="560" height="315" src="https://www.youtube.com/embed/%{code}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>)
 
     def initialize(resource)
@@ -18,8 +20,7 @@ module Renderers
     def extract_video_code(url)
       return unless is_youtube_url?(url)
 
-      match = url.match(/[\?\&]v?\=([-_a-zA-Z0-9]+)/) ||
-        url.match(/[\?\&]vi?\=([-_a-zA-Z0-9]+)/) ||
+      match = url.match(/[\?\&]v[i]?\=([-_a-zA-Z0-9]+)/) ||
         url.match(/youtu\.be\/([-_a-zA-Z0-9]+)/) ||
         url.match(/\/v\/([-_a-zA-Z0-9]+)/) ||
         url.match(/\/embed\/([-_a-zA-Z0-9]+)/)
@@ -30,7 +31,7 @@ module Renderers
 
     def is_youtube_url?(url)
       parsed_url = URI.parse(url)
-      parsed_url.host.end_with?('youtube.com', 'youtu.be') && parsed_url.scheme =~ /(http|https)/
+      VALID_HOSTS.include?(parsed_url.host) && VALID_SCHEMES.include?(parsed_url.scheme)
     rescue
       false
     end
