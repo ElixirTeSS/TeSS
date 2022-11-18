@@ -86,7 +86,6 @@ class SourceTest < ActiveSupport::TestCase
     assert_equal :approved, source.approval_status
   end
 
-
   test 'source approval status is set to approved by default if source_approval disabled' do
     features = TeSS::Config.feature.dup
     TeSS::Config.feature['user_source_creation'] = false
@@ -109,7 +108,7 @@ class SourceTest < ActiveSupport::TestCase
 
     assert_equal :not_approved, source.approval_status
 
-    assert_difference('PublicActivity::Activity.count', 2) do # approval status change + parameter change are logged
+    assert_difference('PublicActivity::Activity.count', 1) do # approval status change
       assert source.update(approval_status: 'approved')
     end
 
@@ -119,5 +118,68 @@ class SourceTest < ActiveSupport::TestCase
     assert_equal 'source.approval_status_changed', activity.key
     assert_equal 'not_approved', activity.parameters[:old]
     assert_equal 'approved', activity.parameters[:new]
+  end
+
+  test 'updating essential source fields resets the approval status' do
+    source = sources(:first_source)
+    User.current_user = source.user
+
+    assert_equal :approved, source.approval_status
+
+    assert_difference('PublicActivity::Activity.count', 1) do
+      assert source.update(url: 'https://new-url.com')
+    end
+
+    assert_equal :not_approved, source.reload.approval_status
+  end
+
+  test 'updating essential source fields does not reset the approval status for admin' do
+    source = sources(:first_source)
+    admin = users(:admin)
+    User.current_user = admin
+
+    assert_equal :approved, source.approval_status
+
+    assert_difference('PublicActivity::Activity.count', 1) do
+      assert source.update(url: 'https://new-url.com')
+    end
+
+    assert_equal :approved, source.reload.approval_status
+  end
+
+  test 'updating non-essential source fields does not reset the approval status' do
+    source = sources(:first_source)
+    User.current_user = source.user
+
+    assert_equal :approved, source.approval_status
+
+    assert_difference('PublicActivity::Activity.count', 1) do
+      assert source.update(enabled: true)
+    end
+
+    assert_equal :approved, source.reload.approval_status
+  end
+
+  test 'status convenience methods' do
+    assert sources(:first_source).approved?
+    refute sources(:first_source).approval_requested?
+    refute sources(:first_source).not_approved?
+
+    refute sources(:approval_requested_source).approved?
+    assert sources(:approval_requested_source).approval_requested?
+    refute sources(:approval_requested_source).not_approved?
+
+    refute sources(:unapproved_source).approved?
+    refute sources(:unapproved_source).approval_requested?
+    assert sources(:unapproved_source).not_approved?
+  end
+
+  test 'request approval' do
+    source = sources(:unapproved_source)
+    refute source.approval_requested?
+
+    source.request_approval
+
+    assert source.reload.approval_requested?
   end
 end

@@ -95,6 +95,7 @@ Rails.application.routes.draw do
     member do
       get :test_results
       post :test
+      post :request_approval
     end
   end
 

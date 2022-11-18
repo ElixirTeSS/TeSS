@@ -1,6 +1,7 @@
 <div class="masonry-brick media-item long">
   <h3 class="media-heading">
     <%= source.title %>
+    <%= source_approval_badge(source.approval_status) %>
     <%= enabled_icon source %>
   </h3>
   <div class="url-wrap">

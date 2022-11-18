@@ -1,0 +1,11 @@
+You are receiving this automated email because you are a curator of TeSS.
+
+<%= @user.name %> (<%= url_for(@user) %>) has requested approval of an ingestion source:
+
+  "<%= @source.title %>" - <%= url_for(@source) %>
+  Content Provider: <%= @source.content_provider.title %> - <%= url_for(@source.content_provider) %>
+  Method: <%= @source.ingestor_title %>
+  URL: <%= @source.url %>
+
+To approve this source, please visit:
+<%= source_url(@source) %>

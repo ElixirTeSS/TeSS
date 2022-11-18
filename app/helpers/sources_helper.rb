@@ -12,6 +12,10 @@ module SourcesHelper
     opts
   end
 
+  def approval_options_for_select
+    Source::APPROVAL_STATUS.values.map { |status| [t("sources.approval_status.#{status}"), status] }
+  end
+
   def source_enabled_badge(enabled)
     content_tag(:span, enabled ? 'Enabled' : 'Disabled', class: "label label-#{enabled ? 'success' : 'danger'}")
   end
@@ -20,7 +24,7 @@ module SourcesHelper
     case status
     when :not_approved
       content_tag(:span, t("sources.approval_status.#{status}"), class: 'label label-danger')
-    when :approval_requested
+    when :requested
       content_tag(:span, t("sources.approval_status.#{status}"), class: 'label label-warning')
     when :approved
       content_tag(:span, t("sources.approval_status.#{status}"), class: 'label label-success')

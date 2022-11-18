@@ -1,6 +1,6 @@
 <% events = @content_provider.events.from_verified_users %>
 <% materials = @content_provider.materials.from_verified_users %>
-<% sources = @content_provider.sources %>
+<% sources = @content_provider.sources.order(enabled: :desc, finished_at: :desc) %>
 
 <div class="wrapper collapsing-wrapper">
   <%# SIDEBAR %>

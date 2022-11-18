@@ -22,15 +22,22 @@
   <%= f.input :token, label: 'Authentication Token' %>
 
   <div class="form-group">
-    <%= f.label :enabled, :class=>"checkbox inline" %>
+    <%= f.label :enabled, class: 'checkbox inline' %>
     <%= f.check_box :enabled %>
   </div>
 
+  <% if policy(@source).approve? %>
+    <%= f.input :approval_status,
+                label: 'Approval Status',
+                collection: approval_options_for_select,
+                include_blank: false %>
+  <% end %>
+
   <div class="form-group actions">
     <%= f.submit (f.object.new_record? ? "Create" : "Update") + " source",
-                 :class => 'btn btn-primary' %>
-    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                sources_path, :class => 'btn btn-default' %>
+                 class: 'btn btn-primary' %>
+    <%= link_to t('.cancel', default: t("helpers.links.cancel")),
+                sources_path, class: 'btn btn-default' %>
   </div>
 
 <% end %>

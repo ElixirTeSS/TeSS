@@ -21,8 +21,9 @@ class Source < ApplicationRecord
   validates :approval_status, inclusion: { in: APPROVAL_STATUS.values }
   validate :check_method
 
-  before_save :set_approval_status
-  after_update :log_approval_status_change
+  before_create :set_approval_status
+  before_update :reset_approval_status
+  before_save :log_approval_status_change
 
   if TeSS::Config.solr_enabled
     # :nocov:
@@ -103,8 +104,22 @@ class Source < ApplicationRecord
     super(APPROVAL_STATUS_CODES[key.to_sym])
   end
 
+  def not_approved?
+    approval_status == :not_approved
+  end
+
   def approved?
     approval_status == :approved
+  end
+
+  def approval_requested?
+    approval_status == :requested
+  end
+
+  def request_approval
+    self.approval_status = :requested
+    save!
+    CurationMailer.source_requires_approval(self, User.current_user).deliver_later
   end
 
   private
@@ -117,8 +132,16 @@ class Source < ApplicationRecord
     end
   end
 
+  def reset_approval_status
+    if TeSS::Config.feature['user_source_creation'] && !User.current_user&.is_admin?
+      if method_changed? || url_changed?
+        self.approval_status = :not_approved
+      end
+    end
+  end
+
   def log_approval_status_change
-    if saved_change_to_approval_status?
+    if approval_status_changed?
       old = (APPROVAL_STATUS[approval_status_before_last_save.to_i] || APPROVAL_STATUS[0]).to_s
       new = approval_status.to_s
       create_activity(:approval_status_changed, owner: User.current_user,

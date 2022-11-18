@@ -1,5 +1,5 @@
 class SourcesController < ApplicationController
-  before_action :set_source, only: [:show, :edit, :update, :destroy, :test, :test_results]
+  before_action :set_source, except: [:index, :new, :create]
   before_action :set_content_provider, except: :index
   before_action :set_breadcrumbs
 
@@ -100,7 +100,7 @@ class SourcesController < ApplicationController
   end
 
   def test
-    authorize Source, :manage?
+    authorize @source, :manage?
     job_id = SourceTestWorker.perform_async(@source.id)
     @source.test_job_id = job_id
 
@@ -110,12 +110,29 @@ class SourcesController < ApplicationController
   end
 
   def test_results
-    authorize Source, :manage?
+    authorize @source, :manage?
     test_results = @source.test_results
     if test_results.nil?
       head :not_found
     else
       render partial: 'sources/test_results', object: test_results
+    end
+  end
+
+  def request_approval
+    authorize @source
+
+    if @source.approval_requested?
+      flash[:error] = 'Approval request has already been submitted.'
+    elsif @source.approved?
+      flash[:error] = 'Already approved.'
+    else
+      @source.request_approval
+      flash[:notice] = 'Approval request was sent successfully.'
+    end
+
+    respond_to do |format|
+      format.html { redirect_to @source }
     end
   end
 

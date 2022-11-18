@@ -4,6 +4,7 @@ class SourcesControllerTest < ActionController::TestCase
 
   include Devise::Test::ControllerHelpers
   include ActiveJob::TestHelper
+  include ActionMailer::TestHelper
 
   setup do
     mock_ingestions
@@ -22,6 +23,8 @@ class SourcesControllerTest < ActionController::TestCase
     @update_params = {
       method: 'bioschemas'
     }
+
+    @test_results = { events: [], materials: [], messages: [], run_time: 120 }
   end
 
   # INDEX Tests
@@ -129,6 +132,33 @@ class SourcesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'user should get edit for approved source' do
+    source = sources(:first_source)
+    user = source.user
+    sign_in user
+    assert source.approved?
+    get :edit, params: { id: source }
+    assert_response :success
+    assert_select 'div.alert.alert-warning', text: /If this source is modified/
+  end
+
+  test 'user should not get edit for source with approval requested' do
+    source = sources(:approval_requested_source)
+    user = source.user
+    sign_in user
+    get :edit, params: { id: source }
+    assert_response :forbidden
+  end
+
+  test 'user should get edit for unapproved source' do
+    source = sources(:unapproved_source)
+    user = source.user
+    sign_in user
+    get :edit, params: { id: source }
+    assert_response :success
+    assert_select 'div.alert.alert-warning', text: /If this source is modified.+/, count: 0
+  end
+
   test 'admin should get edit' do
     # Owner of material logged in = SUCCESS
     sign_in users(:admin)
@@ -154,7 +184,7 @@ class SourcesControllerTest < ActionController::TestCase
   test 'unaffiliated user cannot create source for content provider' do
     user = users(:another_regular_user)
     sign_in user
-    refute_permitted SourcePolicy, user, :manage?, @source.content_provider
+    refute_permitted SourcePolicy, user, :create?, Source
     assert_no_difference 'Source.count' do
       post :create, params: @source_params
     end
@@ -163,7 +193,7 @@ class SourcesControllerTest < ActionController::TestCase
 
   test 'user can create source for their content provider' do
     sign_in @user
-    assert_permitted SourcePolicy, @user, :manage?, @source.content_provider
+    assert_permitted SourcePolicy, @user, :create?, Source
     assert_difference 'Source.count', 1 do
       post :create, params: @source_params
     end
@@ -184,7 +214,6 @@ class SourcesControllerTest < ActionController::TestCase
       post :create, params: @source_params
     end
     assert_redirected_to source_path(assigns(:source))
-    @source.reload
   end
 
   # UPDATE Tests
@@ -199,12 +228,35 @@ class SourcesControllerTest < ActionController::TestCase
     assert_response :forbidden
   end
 
-  test 'user should update content provider-owned source' do
+  test 'user should update content provider-owned source, but approval status is reset' do
     sign_in @user
+    assert @source.approved?
     patch :update, params: { id: @source, source: @update_params }
     updated = assigns(:source)
     assert updated
+    assert updated.not_approved?
     assert_equal 'bioschemas', updated.method
+  end
+
+  test 'user cannot update source with approval requested' do
+    source = sources(:approval_requested_source)
+    user = source.user
+    sign_in user
+    assert source.approval_requested?
+    patch :update, params: { id: source, source: @update_params }
+    assert source.reload.approval_requested?
+    assert_response :forbidden
+  end
+
+  test 'user can update unapproved source' do
+    source = sources(:unapproved_source)
+    user = source.user
+    sign_in user
+    assert source.not_approved?
+    patch :update, params: { id: source, source: @update_params }
+    updated = assigns(:source)
+    assert updated
+    assert updated.not_approved?
   end
 
   test 'curator should update source' do
@@ -237,11 +289,35 @@ class SourcesControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_path
   end
 
-  test 'user should destroy content provider-owned source' do
+  test 'user can destroy approved, content provider-owned source' do
     sign_in @user
+    assert @source.approved?
     assert_difference 'Source.count', -1 do
       delete :destroy, params: { id: @source }
       assert_redirected_to content_provider_path(@source.content_provider)
+      assert_equal 'Source was successfully deleted.', flash[:notice]
+    end
+  end
+
+  test 'user cannot destroy source with approval requested' do
+    source = sources(:approval_requested_source)
+    user = source.user
+    sign_in user
+    assert source.approval_requested?
+    assert_no_difference 'Source.count' do
+      delete :destroy, params: { id: source }
+      assert_response :forbidden
+    end
+  end
+
+  test 'user can destroy unapproved source' do
+    source = sources(:unapproved_source)
+    user = source.user
+    sign_in user
+    assert source.not_approved?
+    assert_difference 'Source.count', -1 do
+      delete :destroy, params: { id: source }
+      assert_redirected_to content_provider_path(source.content_provider)
       assert_equal 'Source was successfully deleted.', flash[:notice]
     end
   end
@@ -308,5 +384,127 @@ class SourcesControllerTest < ActionController::TestCase
 
     assert_redirected_to source_path(assigns(:source))
     refute source.reload.approved?
+  end
+
+  test 'user can run tests' do
+    source = sources(:unapproved_source)
+    user = source.user
+    sign_in user
+
+    post :test, params: { id: source, format: :json }
+
+    assert_response :success
+    assert JSON.parse(response.body)['id'].present?
+  end
+
+  test 'unaffiliated user cannot run tests' do
+    source = sources(:unapproved_source)
+    user = users(:another_regular_user)
+    sign_in user
+
+    post :test, params: { id: source, format: :json }
+
+    assert_response :forbidden
+    assert JSON.parse(response.body)['error'].present?
+  end
+
+  test 'user can get test results' do
+    source = sources(:unapproved_source)
+    user = source.user
+    sign_in user
+    source.test_results = @test_results
+    assert source.test_results
+
+    get :test_results, params: { id: source }, xhr: true
+
+    assert_response :success
+    assert_select 'h2', text: 'Results'
+  ensure
+    path = source.send(:test_results_path)
+    FileUtils.rm(path) if File.exist?(path)
+  end
+
+  test 'unaffiliated user cannot get test results' do
+    source = sources(:unapproved_source)
+    user = users(:another_regular_user)
+    sign_in user
+    source.test_results = @test_results
+    assert source.test_results
+
+    get :test_results, params: { id: source }, xhr: true
+
+    assert_response :forbidden
+  ensure
+    path = source.send(:test_results_path)
+    FileUtils.rm(path) if File.exist?(path)
+  end
+
+  test 'user cannot get test results if they do not exist' do
+    source = sources(:unapproved_source)
+    user = source.user
+    sign_in user
+    refute source.test_results
+
+    get :test_results, params: { id: source }, xhr: true
+
+    assert_response :not_found
+  end
+
+  test 'user can request approval' do
+    source = sources(:unapproved_source)
+    user = source.user
+    sign_in user
+    refute source.approval_requested?
+
+    assert_enqueued_email_with(CurationMailer, :source_requires_approval, args: [source, user]) do
+      post :request_approval, params: { id: source }
+
+      assert_redirected_to source
+    end
+
+    assert source.reload.approval_requested?
+  end
+
+  test 'user cannot request approval if already requested' do
+    source = sources(:approval_requested_source)
+    user = source.user
+    sign_in user
+    assert source.approval_requested?
+
+    assert_no_enqueued_emails do
+      post :request_approval, params: { id: source }
+
+      assert_redirected_to source
+      assert_includes flash[:error], 'already'
+    end
+  end
+
+  test 'user cannot request approval if already approved' do
+    source = sources(:first_source)
+    user = source.user
+    sign_in user
+    assert source.approved?
+
+    assert_no_enqueued_emails do
+      post :request_approval, params: { id: source }
+
+      assert_redirected_to source
+      assert_includes flash[:error], 'approved'
+    end
+  end
+
+  test 'unaffiliated user cannot request approval' do
+    source = sources(:unapproved_source)
+    user = users(:another_regular_user)
+    sign_in user
+    refute source.approval_requested?
+
+    assert_no_enqueued_emails do
+      post :request_approval, params: { id: source }
+
+      assert_response :forbidden
+    end
+
+    refute source.reload.approval_requested?
   end
 end

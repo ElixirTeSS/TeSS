@@ -8,6 +8,12 @@
       <%= render :partial => "sources/partials/general_source_info" %>
     </div>
     <div class="col-md-8 col-md-pull-4">
+      <% unless @source.not_approved? && !policy(@source).approve? %>
+        <div class="alert alert-warning">
+          If this source is modified, approval will need to be requested again.
+        </div>
+      <% end %>
+
       <%= render :partial => 'form' %>
     </div>
   </div>
