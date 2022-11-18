@@ -6,10 +6,9 @@ class Collection < ApplicationRecord
   include CurationQueue
   include Collaboratable
 
-  has_many :collection_materials
-  has_many :collection_events
-  has_many :materials, through: :collection_materials
-  has_many :events, through: :collection_events
+  has_many :items, -> { order(:order) }, class_name: 'CollectionItem', inverse_of: :collection, dependent: :destroy
+  has_many :events, through: :items, source: :resource, source_type: 'Event', inverse_of: :collections
+  has_many :materials, through: :items, source: :resource, source_type: 'Material', inverse_of: :collections
 
   #has_one :owner, foreign_key: "id", class_name: "User"
   belongs_to :user
