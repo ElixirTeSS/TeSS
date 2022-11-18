@@ -175,11 +175,21 @@ class SourceTest < ActiveSupport::TestCase
   end
 
   test 'request approval' do
+    user = users(:regular_user)
+    User.current_user = user
     source = sources(:unapproved_source)
     refute source.approval_requested?
 
-    source.request_approval
+    assert_difference('PublicActivity::Activity.count', 1) do # approval status change
+      source.request_approval
+    end
 
     assert source.reload.approval_requested?
+    activity = source.activities.last
+    assert_equal user, activity.owner
+    assert_equal source, activity.trackable
+    assert_equal 'source.approval_status_changed', activity.key
+    assert_equal 'not_approved', activity.parameters[:old]
+    assert_equal 'requested', activity.parameters[:new]
   end
 end
