@@ -63,4 +63,12 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
     (string + '</p>').html_safe
   end
 
+  def embed_youtube(material)
+    renderer = Renderers::Youtube.new(material)
+    return unless renderer.can_render?
+    content_tag(:div, class: 'embedded-content') do
+      renderer.render_content.html_safe
+    end
+  end
+
 end

@@ -25,3 +25,8 @@ fairsharing:
   source: material_with_external_resource (Material)
   url: https://fairsharing.org/bsg-p123456
   title: Share Fairing
+
+redcap:
+  source: youtube_video_material (Material)
+  title: REDCap
+  url: https://bio.tools/tool/redcap
