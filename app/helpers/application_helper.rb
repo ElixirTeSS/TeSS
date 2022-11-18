@@ -236,6 +236,8 @@ module ApplicationHelper
       'fa fa-share-alt'
     when 'sources'
       'fa fa-cloud-download'
+    when 'testing'
+      'fa fa-flask'
     else
       'fa fa-folder-open'
     end

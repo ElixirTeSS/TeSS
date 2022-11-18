@@ -1137,4 +1137,12 @@ input[type=checkbox].field-lock + label:before,
 
 .bulk-import-row {
   border-bottom: 1px solid #ccc;
+  .scraped-metadata p {
+    margin: 0;
+  }
+}
+
+.test-controls {
+  padding: 10px;
+  display: inline-block;
 }

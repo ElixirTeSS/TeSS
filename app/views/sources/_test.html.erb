@@ -1,10 +1,10 @@
-<% unless @source.test_in_progress? %>
-  <%= button_tag('Test', id: 'test-btn', class: 'btn btn-primary') %>
+<%= link_to('#', id: 'test-btn', class: 'btn btn-primary') do %>
+  <i class="fa fa-play"></i> Test Source
 <% end %>
 
-<div class="text-info">
-  <%= image_tag('ajax-loader.gif', id: 'test-spinner', style: 'display: none') %>
+<div class="test-controls">
   <span id="test-status"></span>
+  <%= image_tag('ajax-loader.gif', id: 'test-spinner', style: 'display: none') %>
 </div>
 
 <div class="text-danger" id="test-errors"></div>
@@ -19,6 +19,7 @@
 <script>
     var spinner = $('#test-spinner');
     var checkStatus = function (jobId) {
+        spinner.show();
         $.ajax({
             dataType: 'json',
             url: '/job_status',
@@ -32,6 +33,7 @@
                         success: function (html) {
                             $('#test-status').text('');
                             $('#test-results').html(html);
+                            $('#test-btn').removeClass('disabled');
                         },
                         error: function (data) {
                             console.log('error', data);
@@ -43,10 +45,10 @@
                         }
                     });
                 } else if (data.status === 'working') {
-                    $('#test-status').text('Working');
+                    $('#test-status').text('Running test');
                     setTimeout(function () { checkStatus(jobId) }, 2000);
                 } else if (data.status === 'queued') {
-                    $('#test-status').text('Waiting for job to begin');
+                    $('#test-status').text('Waiting for test to begin');
                     setTimeout(function () { checkStatus(jobId) }, 2000);
                 } else {
                     console.log('bad job response', data);
@@ -65,10 +67,12 @@
     };
 
     $('#test-btn').click(function () {
+        if ($('#test-btn').hasClass('disabled')) {
+            return false;
+        }
+
         $('#test-errors').text('');
         $('#test-status').text('Submitting job');
-
-        spinner.show();
 
         $.ajax({
             dataType: 'json',
@@ -92,7 +96,8 @@
     });
 
     <% if @source.test_in_progress? %>
-      checkStatus(<%= @source.test_job_id -%>);
+      $('#test-btn').addClass('disabled');
+      checkStatus("<%= @source.test_job_id -%>");
     <% end %>
 </script>
 
