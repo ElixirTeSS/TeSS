@@ -1,41 +1,34 @@
 class ConvertCollectionItems < ActiveRecord::Migration[6.1]
-  def up
-    conn = ActiveRecord::Base.connection
+  class CollectionEvent < ActiveRecord::Base; end
+  class CollectionMaterial < ActiveRecord::Base; end
+  class CollectionItem < ActiveRecord::Base; end
 
-    conn.select_all('SELECT * FROM collection_events').each do |ce|
-      values = [ce['collection_id'],
-                conn.quote('Event'),
-                ce['event_id'],
-                conn.quote(ce['created_at']),
-                conn.quote(ce['updated_at'])]
-      conn.execute("INSERT INTO collection_items (collection_id, resource_type, resource_id, created_at, updated_at) VALUES (#{values.join(', ')})")
+  def up
+    CollectionEvent.all.each do |i|
+      CollectionItem.where(collection_id: i.collection_id,
+                           resource_type: 'Event',
+                           resource_id: i.event_id).first_or_create!(updated_at: i.updated_at,
+                                                                     created_at: i.created_at)
     end
 
-    conn.select_all('SELECT * FROM collection_materials').each do |cm|
-      values = [cm['collection_id'],
-                conn.quote('Material'),
-                cm['material_id'],
-                conn.quote(cm['created_at']),
-                conn.quote(cm['updated_at'])]
-      conn.execute("INSERT INTO collection_items (collection_id, resource_type, resource_id, created_at, updated_at) VALUES (#{values.join(', ')})")
+    CollectionMaterial.all.each do |i|
+      CollectionItem.where(collection_id: i.collection_id,
+                           resource_type: 'Material',
+                           resource_id: i.material_id).first_or_create!(updated_at: i.updated_at,
+                                                                        created_at: i.created_at)
     end
   end
 
   def down
-    conn = ActiveRecord::Base.connection
-
-    conn.select_all('SELECT * FROM collection_items').each do |ci|
-      values = [ci['resource_id'],
-                ci['collection_id'],
-                conn.quote(ci['created_at']),
-                conn.quote(ci['updated_at'])]
-      if ci['resource_type'] == 'Event'
-        conn.execute("INSERT INTO collection_events (event_id, collection_id, created_at, updated_at) VALUES (#{values.join(', ')})")
-      elsif ci['resource_type'] == 'Material'
-        conn.execute("INSERT INTO collection_materials (material_id, collection_id, created_at, updated_at) VALUES (#{values.join(', ')})")
-      else
-        # Cannot convert
-      end
+    CollectionItem.where(resource_type: 'Event').find_each do |i|
+      CollectionEvent.where(collection_id: i.collection_id,
+                            event_id: i.resource_id).first_or_create!(updated_at: i.updated_at,
+                                                                      created_at: i.created_at)
+    end
+    CollectionItem.where(resource_type: 'Material').find_each do |i|
+      CollectionMaterial.where(collection_id: i.collection_id,
+                               material_id: i.resource_id).first_or_create!(updated_at: i.updated_at,
+                                                                            created_at: i.created_at)
     end
   end
 end
