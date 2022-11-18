@@ -27,9 +27,11 @@
       <% existing = klass.check_exists(resource) %>
       <div class="list-card bulk-import-row<%= ' new' unless existing -%>">
         <h4>
-          <%= link_to(existing, target: :_blank, class: 'btn btn-xs btn-default pull-right') do %>
-            Current <%= TeSS::Config.site['title_short'] %> entry
-            <span class="fa fa-external-link"></span>
+          <% if existing %>
+            <%= link_to(existing, target: :_blank, class: 'btn btn-xs btn-default pull-right') do %>
+              Current <%= TeSS::Config.site['title_short'] %> entry
+              <span class="fa fa-external-link"></span>
+            <% end %>
           <% end %>
           <%= resource.title %>
         </h4>
