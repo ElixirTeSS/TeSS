@@ -1,14 +1,14 @@
-<%= display_attribute(resource, :doi) %>
-<%= display_attribute(resource, :licence) { |value| licence_name_for_abbreviation(value) } %>
+<% hide_title ||= false %>
 
-<% if resource.class.name.downcase != 'workflow' -%>
-  <%= display_attribute(resource, :contact) %>
-<% end %>
-
+<%= display_attribute(resource, :doi) if resource.respond_to?(:doi) %>
+<%= display_attribute(resource, :licence) { |value| licence_name_for_abbreviation(value) } if resource.respond_to?(:license) %>
+<%= display_attribute(resource, :contact) if resource.respond_to?(:contact) %>
 <%= display_attribute(resource, :keywords) { |values| values.join(', ') } %>
 
-<hr />
-<h4>Additional information</h4>
+<% unless hide_title %>
+  <hr />
+  <h4>Additional information</h4>
+<% end %>
 
 <% if resource.class.name.downcase == 'material' -%>
   <%= display_attribute(resource, :fields) { |values| values.join(', ') } %>
@@ -27,14 +27,47 @@
 <% end -%>
 
 <% if resource.class.name.downcase == 'event' -%>
-  <%= display_attribute(resource, :target_audience) { |values| values.join(', ') } %>
-  <%= display_attribute(resource, :difficulty_level) { |value| difficulty_name_for_abbreviation(value) } %>
+  <%= display_attribute(resource, :venue) %>
+  <%= display_attribute(resource, :city) %>
+  <%= display_attribute(resource, :county) %>
+  <%= display_attribute(resource, :country) %>
+  <%= display_attribute(resource, :postcode) %>
+
+  <%= display_attribute(resource, :prerequisites, markdown: true) %>
+  <%= display_attribute(resource, :learning_objectives, markdown: true) %>
+  <%= display_attribute(resource, :eligibility) { |e| EligibilityDictionary.instance.lookup_value(e, 'title') } %>
+
+  <%= display_attribute(resource, :organizer) %>
+  <%= display_attribute(resource, :host_institutions) { |values| values.join(', ') } %>
+  <%= display_attribute(resource, :fields) { |values| values.join(', ') } %>
+
+  <%= display_attribute(resource, :eligibility, list: true) { |e| EligibilityDictionary.instance.lookup_value(e, 'title') } %>
+  <%= display_attribute(resource, :target_audience) { |values| values.map { |x| target_audience_title_for_label(x) }.join(', ') } %>
+  <%= display_attribute(resource, :capacity) %>
+  <%= display_attribute(resource, :event_types, list: true) { |t| EventTypeDictionary.instance.lookup_value(t, 'title') } %>
+  <%= display_attribute(resource, :tech_requirements, markdown: true) %>
+  <%= display_attribute(resource, :recognition, title: 'Credit / Recognition') %>
+
+  <%= display_attribute(resource, :cost_basis) { |c| CostBasisDictionary.instance.lookup_value(c, 'title') } %>
+
+  <% if resource.cost_value.present? %>
+    <p>
+      <b>Cost:</b>
+      <%= currency_symbol_by_iso_code resource.cost_currency %>
+      <%= resource.cost_value %>
+      <% if resource.cost_currency.present? %>
+        (<%= resource.cost_currency %>)
+      <% end %>
+    </p>
+  <% end %>
+
+  <%= display_attribute(resource, :sponsors) { |values| values.join(', ') } %>
 <% end %>
 
-<%= display_attribute(resource, :authors) { |values| values.join(', ') } %>
-<%= display_attribute(resource, :contributors) { |values| values.join(', ') } %>
-<%= display_attribute(resource, :remote_created_date) %>
-<%= display_attribute(resource, :remote_updated_date) %>
+<%= display_attribute(resource, :authors) { |values| values.join(', ') } if resource.respond_to?(:authors) %>
+<%= display_attribute(resource, :contributors) { |values| values.join(', ') } if resource.respond_to?(:contributors) %>
+<%= display_attribute(resource, :remote_created_date) if resource.respond_to?(:remote_created_date) %>
+<%= display_attribute(resource, :remote_updated_date) if resource.respond_to?(:remote_updated_date) %>
 <%= display_attribute(resource, :scientific_topics) { |values| values.map { |x| x.preferred_label }.join(', ') } %>
 
 <% if resource.respond_to?(:operations) -%>

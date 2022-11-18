@@ -52,13 +52,22 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
     TargetAudienceDictionary.instance.lookup_value(label, 'title') || label
   end
 
-  def display_attribute(resource, attribute, markdown: false) # resource e.g. <#Material> & symbol e.g. :target_audience
+  def display_attribute(resource, attribute, title: nil, markdown: false, list: false)
     value = resource.send(attribute)
     value = render_markdown(value) if markdown
-    value = yield(value) if block_given? && value.present?
+    value = yield(value) if block_given? && value.present? && !list
     string = "<p class=\"#{attribute}\">"
-    unless value.blank? || value.try(:strip) == 'License Not Specified'
-      string << "<b> #{resource.class.human_attribute_name(attribute)}: </b> #{value}"
+    if value.present? && value.try(:strip) != 'License Not Specified'
+      string << "<b> #{title || resource.class.human_attribute_name(attribute)}: </b>"
+      if list
+        string << "<ul>"
+        value.each do |v|
+          string << "<li>#{block_given? ? yield(v) : v}</li>"
+        end
+        string << "</ul>"
+      else
+        string << "#{value}"
+      end
     end
     (string + '</p>').html_safe
   end
