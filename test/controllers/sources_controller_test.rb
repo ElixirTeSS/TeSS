@@ -24,7 +24,7 @@ class SourcesControllerTest < ActionController::TestCase
       method: 'bioschemas'
     }
 
-    @test_results = { events: [], materials: [], messages: [], run_time: 120 }
+    @test_results = { events: [], materials: [], messages: [], run_time: 120, finished_at: Time.now }
   end
 
   # INDEX Tests
@@ -418,7 +418,7 @@ class SourcesControllerTest < ActionController::TestCase
     get :test_results, params: { id: source }, xhr: true
 
     assert_response :success
-    assert_select 'h2', text: 'Results'
+    assert_select 'h4', text: 'Last Test Results'
   ensure
     path = source.send(:test_results_path)
     FileUtils.rm(path) if File.exist?(path)

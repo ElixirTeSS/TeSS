@@ -22,8 +22,8 @@ class Source < ApplicationRecord
   validate :check_method
 
   before_create :set_approval_status
-  before_update :reset_approval_status
   before_update :log_approval_status_change
+  before_update :reset_approval_status
 
   if TeSS::Config.solr_enabled
     # :nocov:
