@@ -94,8 +94,8 @@ class Event < ApplicationRecord
   belongs_to :user
   has_one :edit_suggestion, as: :suggestible, dependent: :destroy
   has_one :link_monitor, as: :lcheck, dependent: :destroy
-  has_many :collection_events
-  has_many :collections, through: :collection_events
+  has_many :collection_items, as: :resource
+  has_many :collections, through: :collection_items
   has_many :event_materials, dependent: :destroy
   has_many :materials, through: :event_materials
   has_many :widget_logs, as: :resource

@@ -73,8 +73,8 @@ class Material < ApplicationRecord
   # has_one :owner, foreign_key: "id", class_name: "User"
   belongs_to :user
   has_one :link_monitor, as: :lcheck, dependent: :destroy
-  has_many :collection_materials
-  has_many :collections, through: :collection_materials
+  has_many :collection_items, as: :resource
+  has_many :collections, through: :collection_items
   has_many :event_materials, dependent: :destroy
   has_many :events, through: :event_materials
 

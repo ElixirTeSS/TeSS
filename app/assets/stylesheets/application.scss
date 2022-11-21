@@ -1135,6 +1135,16 @@ input[type=checkbox].field-lock + label:before,
   top: 0;
 }
 
+.embedded-content {
+  margin: 2em auto;
+
+  iframe {
+    display: block;
+    margin: auto;
+  }
+}
+
+
 .bulk-import-row {
   border-bottom: 1px solid #ccc;
   .scraped-metadata p {

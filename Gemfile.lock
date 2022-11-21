@@ -14,17 +14,6 @@ GIT
       redis (~> 4.1)
 
 GIT
-  remote: https://github.com/chaps-io/public_activity
-  revision: 13dde4e0c8ccc7f8e43c52e30bf75cb2972e873b
-  tag: v1.6.4
-  specs:
-    public_activity (1.6.4)
-      actionpack (>= 3.0.0)
-      activerecord (>= 3.0)
-      i18n (>= 0.5.0)
-      railties (>= 3.0.0)
-
-GIT
   remote: https://github.com/lassebunk/dynamic_sitemaps.git
   revision: 37beeba143e8202218ee814056231b0e6974bafb
   branch: master
@@ -430,6 +419,11 @@ GEM
       options (~> 2.3.0)
     psych (4.0.6)
       stringio
+    public_activity (1.6.4)
+      actionpack (>= 3.0.0)
+      activerecord (>= 3.0)
+      i18n (>= 0.5.0)
+      railties (>= 3.0.0)
     public_suffix (5.0.0)
     puma (5.6.4)
       nio4r (~> 2.0)
@@ -802,7 +796,7 @@ DEPENDENCIES
   pg
   private_address_check
   progress_bar (~> 1.1.0)
-  public_activity (~> 1.6.4)!
+  public_activity (~> 1.6.4)
   puma
   pundit (~> 1.1.0)
   rack-cors
