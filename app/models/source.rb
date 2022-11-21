@@ -23,7 +23,7 @@ class Source < ApplicationRecord
 
   before_create :set_approval_status
   before_update :reset_approval_status
-  before_save :log_approval_status_change
+  before_update :log_approval_status_change
 
   if TeSS::Config.solr_enabled
     # :nocov:
@@ -144,8 +144,7 @@ class Source < ApplicationRecord
     if approval_status_changed?
       old = (APPROVAL_STATUS[approval_status_before_last_save.to_i] || APPROVAL_STATUS[0]).to_s
       new = approval_status.to_s
-      create_activity(:approval_status_changed, owner: User.current_user,
-                      parameters: { old: old, new: new })
+      create_activity(:approval_status_changed, owner: User.current_user, parameters: { old: old, new: new })
     end
   end
 end
