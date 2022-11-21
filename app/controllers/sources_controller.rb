@@ -1,6 +1,6 @@
 class SourcesController < ApplicationController
-  before_action :set_source, except: [:index, :new, :create]
-  before_action :set_content_provider, except: :index
+  before_action :set_source, except: [:index, :new, :create, :check_exists]
+  before_action :set_content_provider, except: [:index, :check_exists]
   before_action :set_breadcrumbs
 
   include SearchableIndex
