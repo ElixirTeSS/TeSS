@@ -253,15 +253,19 @@ class CollectionsControllerTest < ActionController::TestCase
     collection = collections(:with_resources)
     collection.materials = [materials(:biojs), materials(:interpro)]
     collection.save!
-    assert_difference('collection.materials.count', -2) do
-      patch :update, params: { collection: { material_ids: [''] }, id: collection.id }
+    assert_difference('CollectionItem.count', -2) do
+      assert_difference('collection.materials.count', -2) do
+        patch :update, params: { collection: { material_ids: [''] }, id: collection.id }
+      end
     end
   end
 
   test "should add events to collection" do
     sign_in users(:regular_user)
-    assert_difference('@collection.events.count', +2) do
-      patch :update, params: { collection: { event_ids: [events(:one), events(:two)]}, id: @collection.id }
+    assert_difference('CollectionItem.count', 2) do
+      assert_difference('@collection.events.count', 2) do
+        patch :update, params: { collection: { event_ids: [events(:one), events(:two)]}, id: @collection.id }
+      end
     end
   end
 
@@ -270,8 +274,10 @@ class CollectionsControllerTest < ActionController::TestCase
     collection = collections(:with_resources)
     collection.events = [events(:one), events(:two)]
     collection.save!
-    assert_difference('collection.events.count', -2) do
-      patch :update, params: { collection: { event_ids: ['']}, id: collection.id }
+    assert_difference('CollectionItem.count', -2) do
+      assert_difference('collection.events.count', -2) do
+        patch :update, params: { collection: { event_ids: ['']}, id: collection.id }
+      end
     end
   end
 
@@ -368,7 +374,7 @@ class CollectionsControllerTest < ActionController::TestCase
     @collection.collaborators << user
     sign_in user
 
-    assert_difference('CollectionEvent.count', 2) do
+    assert_difference('CollectionItem.count', 2) do
       patch :update, params: { collection: { event_ids: [events(:one), events(:two)]}, id: @collection.id }
     end
     assert_redirected_to collection_path(assigns(:collection))
@@ -378,7 +384,7 @@ class CollectionsControllerTest < ActionController::TestCase
     user = users(:another_regular_user)
     sign_in user
 
-    assert_no_difference('CollectionEvent.count') do
+    assert_no_difference('CollectionItem.count') do
       patch :update, params: { collection: { event_ids: [events(:one), events(:two)]}, id: @collection.id }
     end
     assert_response :forbidden

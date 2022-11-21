@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_13_122226) do
+ActiveRecord::Schema.define(version: 2022_11_17_181538) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,24 +51,16 @@ ActiveRecord::Schema.define(version: 2022_10_13_122226) do
     t.index ["user_id"], name: "index_collaborations_on_user_id"
   end
 
-  create_table "collection_events", id: false, force: :cascade do |t|
-    t.integer "event_id"
-    t.integer "collection_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "id"
-    t.index ["collection_id"], name: "index_collection_events_on_collection_id"
-    t.index ["event_id"], name: "index_collection_events_on_event_id"
-  end
-
-  create_table "collection_materials", id: false, force: :cascade do |t|
-    t.integer "material_id"
-    t.integer "collection_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "id"
-    t.index ["collection_id"], name: "index_collection_materials_on_collection_id"
-    t.index ["material_id"], name: "index_collection_materials_on_material_id"
+  create_table "collection_items", force: :cascade do |t|
+    t.bigint "collection_id"
+    t.string "resource_type"
+    t.bigint "resource_id"
+    t.text "comment"
+    t.integer "order"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["collection_id"], name: "index_collection_items_on_collection_id"
+    t.index ["resource_type", "resource_id"], name: "index_collection_items_on_resource"
   end
 
   create_table "collections", force: :cascade do |t|
