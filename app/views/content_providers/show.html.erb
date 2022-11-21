@@ -94,9 +94,7 @@
             <% end %>
           </div>
         </div>
-        <div id="events" class="tab-pane fade
-              <%= "in active" if materials.none? && events.any? %>
-          ">
+        <div id="events" class="tab-pane fade <%= "in active" if materials.none? && events.any? %>">
           <div class="row">
             <% upcoming_events = events.not_finished %>
             <% past_events = events.finished %>
@@ -119,7 +117,7 @@
           </div>
         </div>
         <% if policy(@content_provider).update? && TeSS::Config.feature['sources'] %>
-          <p id="sources" class="tab-pane fade">
+          <div id="sources" class="tab-pane fade">
             <% if policy(Source).new? %>
               <p>
                 <%= link_to new_content_provider_source_path(@content_provider), class: 'btn btn-primary' do %>
