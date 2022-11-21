@@ -1,7 +1,6 @@
 const Sources = {
     checkStatus: function (jobId) {
         const spinner = $('#test-spinner');
-        spinner.show();
         $.ajax({
             dataType: 'json',
             url: $('#test-btn').data('jobStatusUrl'),
@@ -14,7 +13,7 @@ const Sources = {
                         url: $('#test-results').data('resultsUrl'),
                         success: function (html) {
                             $('#test-status').text('');
-                            $('#test-results').html(html);
+                            $('#test-results').hide().html(html).fadeIn();
                             $('#test-btn').removeClass('disabled');
                         },
                         error: function (data) {
@@ -32,10 +31,13 @@ const Sources = {
                 } else if (data.status === 'queued') {
                     $('#test-status').text('Waiting for test to begin');
                     setTimeout(function () { Sources.checkStatus(jobId) }, 2000);
+                } else if (data.status === 'retrying') {
+                    $('#test-status').text('A problem occurred, retrying');
+                    setTimeout(function () { Sources.checkStatus(jobId) }, 2000);
                 } else {
                     console.log('bad job response', data);
                     $('#test-status').text('');
-                    $('#test-errors').text('There was a problem testing the ingestor. Please check the URL is correct and the appropriate method is selected. Job ' + data.status);
+                    $('#test-errors').text('There was a problem testing the source. Please check the URL is correct and the appropriate method is selected. Job ' + data.status).show();
                     spinner.hide();
                 }
             },
@@ -54,6 +56,8 @@ const Sources = {
             return false;
         }
 
+        btn.addClass('disabled');
+        $('#test-spinner').show();
         $('#test-errors').hide().text('');
         $('#test-status').text('Submitting job');
 
@@ -81,6 +85,8 @@ const Sources = {
         btn.click(Sources.startTest)
         if (btn.data('testJobId')) {
             Sources.checkStatus(btn.data('testJobId'));
+            $('#test-spinner').show();
+            btn.addClass('disabled');
         }
     }
 };

@@ -290,7 +290,7 @@ module ApplicationHelper
     content_tag(:div, class: 'panel panel-default') do
       content_tag(:div, class: 'panel-heading') do
         content_tag(:h4, class: 'panel-title') do
-          link_to("##{id}", 'data-toggle' => 'collapse') do
+          link_to("##{id}", 'data-toggle' => 'collapse', class: 'collapsible-panel-link') do
             (title + ' <i class="fa fa-caret-down" aria-hidden="true"></i>').html_safe
           end
         end

@@ -12,9 +12,13 @@
 
 <div class="alert alert-danger" id="test-errors" style="display: none"></div>
 
+<hr/>
+
 <div id="test-results" data-results-url="<%= test_results_source_path(@source) -%>">
   <% results = @source.test_results %>
   <% if results %>
     <%= render partial: 'sources/test_results', object: results %>
+  <% else %>
+    <span class="muted">No test results available</span>
   <% end %>
 </div>

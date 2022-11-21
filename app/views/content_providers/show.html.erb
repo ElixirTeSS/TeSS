@@ -119,11 +119,11 @@
         <% if policy(@content_provider).update? && TeSS::Config.feature['sources'] %>
           <div id="sources" class="tab-pane fade">
             <% if policy(Source).new? %>
-              <p>
+              <div class="row">
                 <%= link_to new_content_provider_source_path(@content_provider), class: 'btn btn-primary' do %>
                   <i class="fa fa-plus-square"></i> Add source
                 <% end %>
-              </p>
+              </div>
             <% end %>
             <div class="row">
               <%= render partial: 'common/masonry_grid', locals: { objects: sources } %>

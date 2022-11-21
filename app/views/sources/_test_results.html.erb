@@ -1,26 +1,31 @@
 <% sample_size ||= 20 %>
 
-<h2>Results</h2>
-<strong>Run time:</strong> <%= test_results[:run_time].round(2) %>s
+<h4>Last Test Results</h4>
+<p>
+  <strong>Finished:</strong> <%= time_ago_in_words(test_results[:finished_at]) %> ago
+  (<%= test_results[:finished_at]&.strftime('%A, %d %B %Y @ %H:%M') %>)
+</p>
+<p>
+  <strong>Run time:</strong> <%= test_results[:run_time]&.round(2) || '?' %>s
+</p>
 <% unless test_results[:messages].blank? %>
-  <h3>Log</h3>
-  <pre>
-  <%= test_results[:messages].join("\n") %>
-</pre>
+  <h5>Log</h5>
+  <%= content_tag(:pre, test_results[:messages].join("\n"), style: 'max-height: 20pc; overflow-y: scroll;') %>
 <% end %>
 
+<h5>Resources found:</h5>
+<% results_count = 0 %>
 <% ['events', 'materials'].each do |type| %>
   <% resources = test_results[type.to_sym] || [] %>
+  <% results_count += resources.count %>
   <% klass = type.singularize.capitalize.constantize %>
   <% sample = resources.sample(sample_size) %>
+  <% next if resources.none? %>
 
-  <%= content_tag(:div, id: type, class: 'scraper-typed-results') do %>
-    <h3>
-      <%= pluralize(resources.count, type.singularize) %> found
-      <% if sample.count < resources.count %>
-        - showing <%= pluralize(sample.count, 'sample') %>
-      <% end %>
-    </h3>
+  <%= collapsible_panel(pluralize(resources.count, type.singularize), type) do %>
+    <% if sample.count < resources.count %>
+      Showing <%= pluralize(sample.count, 'sample') %>
+    <% end %>
     <% sample.each do |resource_params| %>
       <% resource = type.singularize.capitalize.constantize.new(resource_params.merge(user: User.get_default_user,
                                                                                       content_provider: @content_provider)) %>
@@ -55,7 +60,7 @@
       </div>
     <% end %>
   <% end %>
-
-  <hr/>
-
+<% end %>
+<% if results_count == 0 %>
+  <span class="muted">No resources were found</span>
 <% end %>

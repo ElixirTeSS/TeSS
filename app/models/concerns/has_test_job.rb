@@ -21,6 +21,7 @@ module HasTestJob
     file = test_results_path
     if File.exist?(file)
       YAML.load(File.read(file),
+                aliases: true,
                 permitted_classes: Rails.application.config.active_record.yaml_column_permitted_classes)
     else
       nil

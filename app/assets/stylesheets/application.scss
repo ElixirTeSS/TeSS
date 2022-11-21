@@ -1146,3 +1146,7 @@ input[type=checkbox].field-lock + label:before,
   padding: 10px;
   display: inline-block;
 }
+
+.collapsible-panel-link {
+  display: block;
+}
