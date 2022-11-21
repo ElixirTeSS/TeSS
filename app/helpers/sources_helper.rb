@@ -9,7 +9,7 @@ module SourcesHelper
       opts << [t("ingestion.categories.#{category}"), configs.map { |c| [c[:title], c[:key], ''] }]
     end
 
-    opts
+    opts.sort_by { |o| o[0] }
   end
 
   def approval_options_for_select
