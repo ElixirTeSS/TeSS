@@ -16,7 +16,6 @@ module Ingestors
                                              content_provider: provider)
 
           if matched_materials.nil? or matched_materials.first.nil?
-            # set ingestion parameters and save new event
             material.user = user
             material.content_provider = provider
             material = set_material_defaults material
@@ -45,7 +44,7 @@ module Ingestors
         resource.save!
         @stats[:materials][matched ? :updated : :added] += 1
       else
-        @stats[:events][:rejected] += 1
+        @stats[:materials][:rejected] += 1
         @messages << "Material failed validation: #{resource.title}"
         resource.errors.full_messages.each do |m|
           @messages << "Error: #{m}"
