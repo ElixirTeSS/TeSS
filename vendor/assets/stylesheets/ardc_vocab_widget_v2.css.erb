@@ -61,9 +61,9 @@ ul.vocab_tree, ul.vocab_tree ul { list-style:none;margin:0px;padding:0px;width:1
 ul.vocab_tree ul { padding-left:1em}
 ul.vocab_tree  li { cursor: pointer; clear:both;}
 ul.vocab_tree li > ins { cursor: pointer; height: 16px; width: 16px; position: relative; display: block; float:left; padding-right:0.2em; background-repeat: no-repeat;}
-ul.vocab_tree li.tree_closed > ins { background-image: url("../img/d.png"); background-position: -54px 0px;}
-ul.vocab_tree li.tree_open > ins { background-image: url("../img/d.png"); background-position: -72px 0px;}
-ul.vocab_tree li.tree_leaf > ins { background-image: url("../img/d.png"); background-position: -37px 0px;}
+ul.vocab_tree li.tree_closed > ins { background-image: url("<%= asset_path('ardc_vocab_widget_images.png') %>"); background-position: -54px 0px;}
+ul.vocab_tree li.tree_open > ins { background-image: url("<%= asset_path('ardc_vocab_widget_images.png') %>"); background-position: -72px 0px;}
+ul.vocab_tree li.tree_leaf > ins { background-image: url("<%= asset_path('ardc_vocab_widget_images.png') %>"); background-position: -37px 0px;}
 ul.vocab_tree li.tree_empty > ins { cursor: default}
 ul.vocab_tree li.tree_empty { color: #999;  }
 /**

@@ -81,4 +81,12 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
   def display_attribute_no_label(resource, attribute, markdown: false, &block) # resource e.g. <#Material> & symbol e.g. :target_audience
     display_attribute(resource, attribute, markdown: markdown, show_label: false, &block)
   end
+
+  def embed_youtube(material)
+    renderer = Renderers::Youtube.new(material)
+    return unless renderer.can_render?
+    content_tag(:div, class: 'embedded-content') do
+      renderer.render_content.html_safe
+    end
+  end
 end

@@ -70,7 +70,7 @@ module EventsHelper
       events.each do |event|
         maker.items.new_item do |item|
           # required fields
-          item.title = "#{event.title} - #{event.organizer}"
+          item.title = [event.title, event.organizer.presence].compact.join(' - ')
           item.link = event_url(event)
 
           # optional fields

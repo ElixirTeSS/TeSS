@@ -1065,3 +1065,12 @@ input[type=checkbox].field-lock + label:before,
 .filter-heading-active {
   color: $secondary-color;
 }
+
+.embedded-content {
+  margin: 2em auto;
+
+  iframe {
+    display: block;
+    margin: auto;
+  }
+}

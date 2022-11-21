@@ -1,5 +1,6 @@
 require 'test_helper'
 require 'icalendar'
+require 'rss'
 
 class EventsControllerTest < ActionController::TestCase
 
@@ -681,13 +682,12 @@ class EventsControllerTest < ActionController::TestCase
     get :index, params: { format: :rss }
     assert_response :success
     assert_equal 'application/rss+xml; charset=utf-8', @response.content_type
-    require 'rss'
     rss_events = RSS::Parser.parse(@response.body)
     # there will be several events in the RSS feed, ordered as SOLR has output them
     # which varies during our tests.
     # find the one which will be first
     assert_equal Event.count, rss_events.items.count
-    assert Event.find_by(title: rss_events.items.first.title.split('-').first.strip).present?
+    assert Event.friendly.find(rss_events.items.first.link.split('/').last.strip)
   end
 
   test 'should include parameters in RSS file' do

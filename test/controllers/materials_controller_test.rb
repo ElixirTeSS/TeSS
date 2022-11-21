@@ -1298,4 +1298,20 @@ class MaterialsControllerTest < ActionController::TestCase
 
     assert_equal 'I really love horses', JSON.parse(response.body)['description']
   end
+
+  test 'can render embedded youtube video' do
+    sign_in users(:regular_user)
+    get :show, params: { id: materials(:youtube_video_material) }
+    assert_response :success
+
+    assert_select 'div.embedded-content iframe[src=?]', 'https://www.youtube.com/embed/1T_2xMTQCv4'
+  end
+
+  test 'no embedded content section if not available' do
+    sign_in users(:regular_user)
+    get :show, params: { id: materials(:good_material) }
+    assert_response :success
+
+    assert_select 'div.embedded-content', count: 0
+  end
 end
