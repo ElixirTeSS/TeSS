@@ -315,5 +315,18 @@ module Ingestors
 
       JSON.parse(response.to_str)
     end
+
+    def convert_event_types(input)
+      case input.downcase
+      when 'conference', 'retreat'
+        'meetings_and_conferences'
+      when 'class', 'seminar'
+        'workshops_and_courses'
+      when 'networking', 'expo', 'convention'
+        'receptions_and_networking'
+      else
+        super
+      end
+    end
   end
 end

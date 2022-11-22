@@ -83,11 +83,11 @@ module Ingestors
     end
 
     def convert_eligibility(input)
-      input
+      EligibilityDictionary.instance.lookup_value(input, 'title')
     end
 
     def convert_event_types(input)
-      input
+      EventTypeDictionary.instance.lookup_value(input, 'title')
     end
 
     def convert_location(input)

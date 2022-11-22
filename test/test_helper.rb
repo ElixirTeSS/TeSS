@@ -63,6 +63,44 @@ class ActiveSupport::TestCase
     TrainerExperienceDictionary.instance.reload
   end
 
+  class DresaEventTypeDictionary < ::EventTypeDictionary
+    def dictionary_filepath
+      Rails.root.join('config', 'dictionaries', 'event_types_dresa.yml')
+    end
+  end
+
+  class DresaEligibilityDictionary < ::EligibilityDictionary
+    def dictionary_filepath
+      Rails.root.join('config', 'dictionaries', 'eligibility_dresa.yml')
+    end
+  end
+
+  class DresaLicenceDictionary < ::LicenceDictionary
+    def dictionary_filepath
+      Rails.root.join('config', 'dictionaries', 'licences_dresa.yml')
+    end
+  end
+
+  def self.dresa_dictionaries
+    # Cache to prevent loading for every test
+    @dresa_dictionaries ||= {
+      event_types: DresaEventTypeDictionary.instance,
+      eligibility: DresaEligibilityDictionary.instance,
+      licenses: DresaLicenceDictionary.instance
+    }
+  end
+
+  def with_dresa_dictionaries(&block)
+    self.class.dresa_dictionaries # Ensure dictionaries are loaded dictionaries before stubbing to prevent infinite loop
+    EventTypeDictionary.stub(:instance, -> { self.class.dresa_dictionaries[:event_types] }) do
+      EligibilityDictionary.stub(:instance, -> { self.class.dresa_dictionaries[:eligibility] }) do
+        LicenceDictionary.stub(:instance, -> { self.class.dresa_dictionaries[:licenses] }) do
+          block.call
+        end
+      end
+    end
+  end
+
   # override Time.now for testing calendars, etc.
   def freeze_time(fixed_time=Time.now, &block)
     Time.stub(:now, fixed_time) do
@@ -261,7 +299,8 @@ class ActiveSupport::TestCase
   end
 
   def logfile_contains(logfile, message)
-    File.exist?(logfile) ? File.readlines(logfile).grep(Regexp.new message.encode(Encoding::UTF_8)).size > 0 : false
+    return false unless File.exist?(logfile)
+    File.readlines(logfile).any? { |l| message.is_a?(Regexp) ? l.match(message) : l.include?(message) }
   end
 
   def assert_permitted(policy, user, action, *opts)
