@@ -121,8 +121,8 @@ class Event < ApplicationRecord
   clean_array_fields(:keywords, :fields, :event_types, :target_audience,
                      :eligibility, :host_institutions, :sponsors)
   update_suggestions(:keywords, :target_audience, :host_institutions)
-  fuzzy_dictionary_match(event_types: EventTypeDictionary.instance,
-                         eligibility: EligibilityDictionary.instance)
+  fuzzy_dictionary_match(event_types: 'EventTypeDictionary',
+                         eligibility: 'EligibilityDictionary')
 
   # These fields should not been shown to users unless they have sufficient privileges
   SENSITIVE_FIELDS = %i[funding attendee_count applicant_count trainer_count feedback notes]
