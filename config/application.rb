@@ -42,6 +42,9 @@ module TeSS
 
   Config.redis_url = TeSS::Config.redis_url
 
+  config_file = File.join(Rails.root, 'config', 'ingestion.yml')
+  Config.ingestion = YAML.safe_load(File.read(config_file)).deep_symbolize_keys! if File.exist?(config_file)
+
   tess_base_uri = URI.parse(TeSS::Config.base_url)
   Rails.application.default_url_options = {
     host: tess_base_uri.host,

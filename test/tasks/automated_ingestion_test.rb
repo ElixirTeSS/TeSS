@@ -12,8 +12,13 @@ class AutomatedIngestionTest < ActiveSupport::TestCase
     Rake::Task['tess:automated_ingestion'].reenable
     override_config 'test_ingestion_example.yml'
     assert_equal 'production', TeSS::Config.ingestion[:name]
-    TeSS::Config.dictionaries['eligibility'] = 'eligibility_dresa.yml'
-    EligibilityDictionary.instance.reload
+    Source.delete_all
+  end
+
+  def run
+    with_dresa_dictionaries do
+      super
+    end
   end
 
   test 'default configuration file' do
