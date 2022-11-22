@@ -299,8 +299,13 @@ class ActiveSupport::TestCase
   end
 
   def logfile_contains(logfile, message)
-    return false unless File.exist?(logfile)
-    File.readlines(logfile).any? { |l| message.is_a?(Regexp) ? l.match(message) : l.include?(message) }
+    if logfile.is_a?(IO)
+      logfile.rewind
+      logfile.readlines.any? { |l| message.is_a?(Regexp) ? l.match(message) : l.include?(message) }
+    else
+      return false unless File.exist?(logfile)
+      File.readlines(logfile).any? { |l| message.is_a?(Regexp) ? l.match(message) : l.include?(message) }
+    end
   end
 
   def assert_permitted(policy, user, action, *opts)

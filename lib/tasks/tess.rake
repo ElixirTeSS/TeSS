@@ -137,7 +137,9 @@ namespace :tess do
 
   desc 'run generic ingestion process'
   task automated_ingestion: :environment do
-    log = Scraper.run
+    scraper = Scraper.new
+    scraper.run
+    log = scraper.log_file
     log.close
     puts "Finished successfully, output written to: #{log.path}"
   end

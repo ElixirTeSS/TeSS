@@ -22,26 +22,24 @@ class Scraper
     end
   end
 
-  attr_reader :log_file
+  attr_reader :log_file, :name, :username, :sources
 
-  def self.run(config = TeSS::Config.ingestion, log_file: nil)
-    if log_file.nil?
-      log_path = Rails.root.join(config[:logfile])
-      log_file = log_path.open('w+')
-    end
+  def initialize(config = TeSS::Config.ingestion, log_file: nil)
+    config = config.reverse_merge({
+      name: nil,
+      logfile: nil,
+      loglevel: 0,
+      default_role: 'scraper_user',
+      username: nil,
+      sources: []
+    })
 
-    scraper = new(**config.merge(logfile: log_file))
-    scraper.run
-    scraper.log_file
-  end
-
-  def initialize(name: nil, logfile: nil, loglevel: 0, default_role: 'scraper_user', username: nil, sources: [])
-    @name = name
-    @log_file = logfile
-    @log_level = loglevel
-    @default_role = default_role
-    @username = username
-    @sources = sources
+    @name = config[:name]
+    @log_file = log_file || Rails.root.join(config[:logfile]).open('w+')
+    @log_level = config[:loglevel]
+    @default_role = config[:default_role]
+    @username = config[:username]
+    @sources = config[:sources]
   end
 
   def run
