@@ -109,8 +109,8 @@ class Event < ApplicationRecord
   validates :url, url: true
   validates :capacity, numericality: { greater_than_or_equal_to: 1 }, allow_blank: true
   validates :cost_value, numericality: { greater_than: 0 }, allow_blank: true
-  validates :event_types, controlled_vocabulary: { dictionary: EventTypeDictionary.instance }
-  validates :eligibility, controlled_vocabulary: { dictionary: EligibilityDictionary.instance }
+  validates :event_types, controlled_vocabulary: { dictionary: 'EventTypeDictionary' }
+  validates :eligibility, controlled_vocabulary: { dictionary: 'EligibilityDictionary' }
   validates :latitude, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90, allow_nil: true }
   validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true }
   # validates :duration, format: { with: /\A[0-9][0-9]:[0-5][0-9]\z/, message: "must be in format HH:MM" }, allow_blank: true

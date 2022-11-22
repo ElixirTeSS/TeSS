@@ -3,7 +3,7 @@ module HasLicence
   extend ActiveSupport::Concern
 
   included do
-    validates :licence, controlled_vocabulary: { dictionary: LicenceDictionary.instance }
+    validates :licence, controlled_vocabulary: { dictionary: 'LicenceDictionary' }
 
     if TeSS::Config.solr_enabled
       # :nocov:

@@ -3,7 +3,7 @@ module HasDifficultyLevel
   extend ActiveSupport::Concern
 
   included do
-    validates :difficulty_level, controlled_vocabulary: { dictionary: DifficultyDictionary.instance }
+    validates :difficulty_level, controlled_vocabulary: { dictionary: 'DifficultyDictionary' }
 
     if TeSS::Config.solr_enabled
       # :nocov:
