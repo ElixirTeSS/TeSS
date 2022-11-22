@@ -362,3 +362,15 @@ en:
       not_approved: Not approved
       requested: Approval requested
       approved: Approved
+  scraper:
+    messages:
+      status: 'Scraper.run: %{status}'
+      processing: 'Processing source: %{source}'
+      processed: 'Sources processed = %{processed}'
+      invalid: 'Validation error: %{error_message}'
+      valid_source: 'Validation passed!'
+      bad_role: 'User has invalid role'
+      url_not_accessible: 'URL not accessible'
+      sources_size: 'Sources count = %{sources_size}'
+      bad_source_save: 'Source save failed with: %{error_message}'
+      not_source_enabled: 'Source not enabled.'

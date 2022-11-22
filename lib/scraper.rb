@@ -1,6 +1,8 @@
 require 'net/http'
 
 class Scraper
+  include I18n::Base
+
   # Class to represent a ingestion source loaded from ingestion.yml
   class ConfigSource < Source
     before_save -> { throw :abort } # Prevent saving to database
@@ -40,19 +42,6 @@ class Scraper
     @default_role = default_role
     @username = username
     @sources = sources
-
-    @messages = {
-      scraper: 'Scraper.run: ',
-      processing: 'Processing source: ',
-      processed: 'Sources processed = ',
-      invalid: 'Validation error: ',
-      valid_source: 'Validation passed!',
-      bad_role: 'User has invalid role',
-      url_not_accessible: 'URL not accessible: ',
-      sources_size: 'Sources count = ',
-      bad_source_save: 'Source save failed with: ',
-      not_source_enabled: 'Source not enabled.'
-    }
   end
 
   def run
@@ -60,7 +49,7 @@ class Scraper
       start = Time.now
       log 'Task: automated_ingestion', 0
       log '   Started at... ' + start.strftime("%Y-%m-%d %H:%M:%s"), 0
-      log @messages[:scraper] + 'start', 0
+      log t('scraper.messages.status', status: 'start'), 0
       errors = 0
       # --- started
 
@@ -70,7 +59,7 @@ class Scraper
       # check user
       user = get_user
       if user.role.nil? or user.role.name != @default_role
-        log @messages[:invalid] + @messages[:bad_role], 1
+        log t('scraper.messages.invalid', error_message: t('scraper.messages.bad_role')), 1
       end
 
       processed = 0
@@ -83,14 +72,14 @@ class Scraper
       data_sources.each do |key, sources|
         source_start = Time.now
         log '', 1
-        log @messages[:sources_size] + sources.size.to_s + " (from #{key})", 1
+        log t('scraper.messages.sources_size', sources_size: sources.size) + " (from #{key})", 1
         sources.each do |source|
           output = '<ins>**Processing Ingestion Source**</ins><br />'
           processed += 1
           log '', 1
-          log @messages[:processing] + processed.to_s, 1
+          log t('scraper.messages.processing', source: processed.to_s), 1
           if validate_source(source)
-            log @messages[:valid_source], 2
+            log t('scraper.messages.valid_source'), 2
             output.concat '<br />'
             output.concat "**Provider:** #{source.content_provider.title}<br />"
             output.concat "<span style='url-wrap'>**URL:** #{source.url}</span><br />"
@@ -146,16 +135,16 @@ class Scraper
             # only update enabled sources
             source.save! if source.enabled && !source.is_a?(Scraper::ConfigSource)
           rescue StandardError => e
-            log @messages[:bad_source_save] + e.message, 2
+            log t('scraper.messages.bad_source_save', error_message: e.message), 2
           end
         end
       end
 
       log '', 1
-      log @messages[:processed] + processed.to_s, 1
+      log t('scraper.messages.processed', processed: processed), 1
 
       # --- finished
-      log @messages[:scraper] + 'finish', 0
+      log t('scraper.messages.status', status: 'finish'), 0
 
     rescue Exception => e
       log "   Run Scraper failed with: #{e.message}", 0
@@ -178,16 +167,12 @@ class Scraper
 
     unless valid
       source.errors.each do |error|
-        log "#{@messages[:invalid]}#{error.full_message}: #{source.send(error.attribute)}", 2
+        log t('scraper.messages.invalid', error_message: "#{error.full_message}: #{source.send(error.attribute)}"), 2
       end
     end
     valid_url = validate_url(source.url, source.token)
 
     valid && valid_url
-  end
-
-  def input_to_s(input)
-    input.nil? ? '' : input.to_s
   end
 
   def validate_url(input, token)
@@ -206,7 +191,7 @@ class Scraper
       else raise 'Invalid URL'
       end
     rescue
-      log @messages[:invalid] + @messages[:url_not_accessible] + input_to_s(input), 2
+      log t('scraper.messages.invalid', error_message: "#{t('scraper.messages.url_not_accessible')}: #{input}"), 2
       result = false
     end
 
