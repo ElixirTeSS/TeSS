@@ -22,7 +22,7 @@ module Ingestors
         # process each row
         table.each do |row|
           # copy values
-          material = Material.new
+          material = OpenStruct.new
           material.title = get_column row, 'Title'
           material.url = process_url row, 'URL'
           material.description = process_description row, 'Description'

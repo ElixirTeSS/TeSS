@@ -33,7 +33,7 @@ module Ingestors
       unless data.nil? or data.size < 1
         data.each do |item|
           # create new event
-          event = Event.new
+          event = OpenStruct.new
 
           # extract event details from
           attr = item['attributes']

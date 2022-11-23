@@ -65,7 +65,7 @@ module Ingestors
               records_inactive += 1
             else
               # create new event
-              event = Event.new
+              event = OpenStruct.new
 
               # check for expired
               event.timezone = item['start']['timezone']

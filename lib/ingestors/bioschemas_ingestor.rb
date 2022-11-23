@@ -65,11 +65,11 @@ module Ingestors
       end
 
       deduplicate(provider_events).each do |event_params|
-        add_event(Event.new(event_params))
+        add_event(event_params)
       end
 
       deduplicate(provider_materials).each do |material_params|
-        add_material(Material.new(material_params))
+        add_material(material_params)
       end
     end
 

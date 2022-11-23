@@ -34,10 +34,15 @@ module Ingestors
     end
 
     def write(user, provider)
-      write_events(user, provider)
-      @messages << "events processed[#{stats[:events][:processed]}] added[#{stats[:events][:added]}] updated[#{stats[:events][:updated]}] rejected[#{stats[:events][:rejected]}]"
-      write_materials(user, provider)
-      @messages << "materials processed[#{stats[:materials][:processed]}] added[#{stats[:materials][:added]}] updated[#{stats[:materials][:updated]}] rejected[#{stats[:materials][:rejected]}]"
+      write_resources(Event, @events, user, provider)
+      @messages << stats_summary(:events)
+      write_resources(Material, @materials, user, provider)
+      @messages << stats_summary(:materials)
+    end
+
+
+    def stats_summary(type)
+      "#{type} " << [:processed, :added, :updated, :rejected].map { |key| "#{key}[#{stats[type][key]}]" }.join(' ')
     end
 
     def open_url(url)
@@ -104,6 +109,52 @@ module Ingestors
       resource.last_scraped = DateTime.now
 
       resource
+    end
+
+    def write_resources(type, resources, user, provider)
+      resources.each_with_index do |resource, i|
+        key = type.model_name.collection.to_sym
+        @stats[key][:processed] += 1
+
+        # check for matched events
+        resource.user_id ||= user.id
+        resource.content_provider_id ||= provider.id
+        existing_resource = type.check_exists(resource.to_h)
+
+        update = existing_resource && existing_resource.content_provider == provider
+        if update
+          resource = update_resource(existing_resource, resource.to_h)
+        else
+          resource = type.new(resource.to_h)
+        end
+
+        resource = set_resource_defaults(resource)
+        if resource.valid?
+          resource.save!
+          @stats[key][update ? :updated : :added] += 1
+        else
+          @stats[key][:rejected] += 1
+          @messages << "#{type.model_name.human} failed validation: #{resource.title}"
+          resource.errors.full_messages.each do |m|
+            @messages << "Error: #{m}"
+          end
+        end
+
+        resources[i] = resource
+      end
+    end
+
+    private
+
+    def update_resource(existing_resource, fields)
+      # overwrite unlocked attributes
+      locked_fields = existing_resource.locked_fields
+
+      (fields.except(:content_provider_id, :user_id)).each do |attr, value|
+        existing_resource.send("#{attr}=", value) unless locked_fields.include?(attr)
+      end
+
+      existing_resource
     end
   end
 end

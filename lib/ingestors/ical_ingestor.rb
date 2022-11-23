@@ -71,7 +71,7 @@ module Ingestors
       # puts "calevent: #{calevent.inspect}"
       begin
         # set fields
-        event = Event.new
+        event = OpenStruct.new
         event.url = calevent.url.to_s
         event.title = calevent.summary.to_s
         event.description = process_description calevent.description
@@ -92,6 +92,7 @@ module Ingestors
           event.online = true
           event.city = nil
           event.postcode = nil
+          event.country = nil
         else
           location = convert_location(calevent.location)
           event.city = location['suburb'] unless location['suburb'].nil?

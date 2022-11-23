@@ -23,7 +23,7 @@ module Ingestors
         # process each row
         table.each do |row|
           # copy values
-          event = Event.new
+          event = OpenStruct.new
           event.title = get_column row, 'Title'
           event.url = process_url row, 'URL'
           event.description = process_description row, 'Description'

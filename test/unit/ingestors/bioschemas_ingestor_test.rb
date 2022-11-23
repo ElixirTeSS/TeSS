@@ -12,12 +12,12 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     @ingestor.read('https://website.org/courseinstances.json')
     assert_equal 23, @ingestor.events.count
     assert_equal 0, @ingestor.materials.count
-    sample = @ingestor.events.detect { |e| e.title == 'Neural Networks and Deep Learning' }
 
     assert_difference('Event.count', 23) do
       @ingestor.write(@user, @content_provider)
     end
 
+    sample = @ingestor.events.detect { |e| e.title == 'Neural Networks and Deep Learning' }
     assert sample.persisted?
     assert_equal "https://uppsala.instructure.com/courses/75565", sample.url
     assert_includes sample.description, "This course will give an introduction to the concept of Neural Networks"
@@ -43,7 +43,6 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     @ingestor.read('https://training.galaxyproject.org/sitemap.xml')
     assert_equal 0, @ingestor.events.count
     assert_equal 3, @ingestor.materials.count
-    sample = @ingestor.materials.detect { |e| e.title == "Introduction to 'Introduction to Galaxy Analyses'" }
 
     assert_difference('Material.count', 3) do
       @ingestor.write(@user, @content_provider)
@@ -53,6 +52,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     assert_equal 0, @ingestor.stats[:materials][:updated]
     assert_equal 0, @ingestor.stats[:materials][:rejected]
 
+    sample = @ingestor.materials.detect { |e| e.title == "Introduction to 'Introduction to Galaxy Analyses'" }
     assert sample.persisted?
     assert_equal "https://training.galaxyproject.org/training-material/topics/introduction/slides/introduction.html",  sample.url
     assert_equal "Slides for Introduction to Galaxy Analyses", sample.description
@@ -93,7 +93,6 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     @ingestor.read('https://website.org/courseinstances.json')
     assert_equal 1, @ingestor.events.count
     assert_equal 0, @ingestor.materials.count
-    added_event = @ingestor.events.detect { |e| e.title == 'Summer Course on Learning Stuff 2' }
 
     assert_difference('Event.count', 1) do
       @ingestor.write(@user, @content_provider)
@@ -103,6 +102,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     assert_equal 0, @ingestor.stats[:events][:updated]
     assert_equal 0, @ingestor.stats[:events][:rejected]
 
+    added_event = @ingestor.events.detect { |e| e.title == 'Summer Course on Learning Stuff 2' }
     assert added_event.persisted?
     assert_equal @content_provider, added_event.content_provider
 

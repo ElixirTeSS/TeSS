@@ -56,7 +56,7 @@ module Ingestors
 
       # copy values
       begin
-        material = Material.new
+        material = OpenStruct.new
         material.status = 'active'
         material.doi = input['doi'] unless metadata['doi'].nil?
         material.authors = []
