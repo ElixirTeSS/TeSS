@@ -25,11 +25,11 @@
         </li>
       <% end %>
       <% if show_rss_sub %>
-        <% rss_url = url_for(search_and_facet_params.merge(format: :rss)) %>
+        <% rss_url = url_for(search_and_facet_params.merge(format: :rss, only_path: false)) %>
         <li>
-          <%= link_to rss_url do %>
+          <a href="#" data-toggle="modal" data-target="#subscribe-rss-modal">
             <i class="fa fa-rss"></i> Subscribe to RSS feed
-          <% end %>
+          </a>
         </li>
         <% content_for :extra_head do %>
           <link rel="alternate" type="application/rss+xml" title="Events RSS feed" href="<%= rss_url %>" />
@@ -64,4 +64,5 @@
   <% end %>
 
   <%= render partial: 'subscriptions/subscribe_to_calendar_modal' if show_calendar_sub %>
+  <%= render partial: 'subscriptions/subscribe_to_rss_modal', locals: { url: rss_url } if show_rss_sub %>
 <% end %>

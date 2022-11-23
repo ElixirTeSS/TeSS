@@ -1,0 +1,28 @@
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="subscribe-modal-title" id="subscribe-rss-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="subscribe-modal-title">Subscribe to Filter</h4>
+      </div>
+
+      <div class="modal-body">
+        <label for="rss-link">URL</label>
+        <div class="input-group input-group-lg">
+          <input id="rss-link" type="text" class="form-control" value="<%= url %>" readonly>
+          <span class="input-group-btn">
+            <button class="btn btn-default clipboard-btn" type="button" data-clipboard-target="#rss-link" title="Click to copy">
+              <i class="fa fa-clipboard" aria-hidden="true"></i>
+            </button>
+          </span>
+        </div>
+        <h3>Importing into RSS reader</h3>
+        <p>
+        Import the <%= link_to url do %>feed URL<% end %> into your RSS reader to keep up to date with new events matching your filters.
+        For more information about RSS, see <%= link_to 'this page', 'https://rss.com/blog/how-do-rss-feeds-work/' %>.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
