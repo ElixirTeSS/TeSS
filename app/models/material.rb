@@ -101,8 +101,6 @@ class Material < ApplicationRecord
     super(Rails::Html::FullSanitizer.new.sanitize(desc))
   end
 
-  attr_accessor :include_in_create
-
   def short_description= desc
     self.description = desc unless @_long_description_set
   end

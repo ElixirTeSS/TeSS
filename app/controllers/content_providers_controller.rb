@@ -1,7 +1,7 @@
 # The controller for actions related to the Content Providers model
 class ContentProvidersController < ApplicationController
   before_action -> { feature_enabled?('providers') }
-  before_action :set_content_provider, only: [:show, :edit, :update, :destroy, :import, :scrape, :scraper_results, :bulk_create]
+  before_action :set_content_provider, only: [:show, :edit, :update, :destroy]
   before_action :set_breadcrumbs
 
   include SearchableIndex
@@ -90,40 +90,6 @@ class ContentProvidersController < ApplicationController
     end
   end
 
-  def import
-
-  end
-
-  def bulk_create
-    @events = []
-    @materials = []
-
-    (bulk_import_params[:events] || []).select { |_,e| e[:include_in_create] == '1'}.each do |_, event|
-      @events << @content_provider.events.create(event)
-    end
-
-    (bulk_import_params[:materials] || []).select { |_, m| m[:include_in_create] == '1'}.each do |_, material|
-      @materials << @content_provider.materials.create(material)
-    end
-  end
-
-  def scrape
-    job_id = ScraperWorker.perform_async(params[:url], params[:page_format])
-
-    respond_to do |format|
-      format.json { render json: { id: job_id }}
-    end
-  end
-
-  def scraper_results
-    yaml = File.read(File.join(Rails.root, 'tmp', "scrape_#{params[:job_id]}.yml"))
-    data = YAML.load(yaml)
-    @events = data[:events].map { |e| @content_provider.events.build(e.merge(user_id: current_user.id)) }
-    @materials = data[:materials].map { |m| @content_provider.materials.build(m.merge(user_id: current_user.id)) }
-
-    render partial: 'content_providers/scraper_results'
-  end
-
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_content_provider
@@ -147,12 +113,5 @@ class ContentProvidersController < ApplicationController
     permitted.delete(:user_id) unless current_user && current_user.is_admin?
 
     params.require(:content_provider).permit(permitted)
-  end
-
-  def bulk_import_params
-    params.require(:content_provider).permit(
-        events: EventsController::PERMITTED_EVENT_PARAMS + [:include_in_create],
-        materials: MaterialsController::PERMITTED_MATERIAL_PARAMS + [:include_in_create]
-    )
   end
 end

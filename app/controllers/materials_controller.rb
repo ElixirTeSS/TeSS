@@ -131,27 +131,28 @@ class MaterialsController < ApplicationController
     redirect_to @material
   end
 
-  PERMITTED_MATERIAL_PARAMS = [:id, :title, :url, :contact, :description, :short_description,
-                               :long_description, :doi, :licence,
-                               :last_scraped, :scraper_record, :remote_created_date, :remote_updated_date,
-                               :content_provider_id, :difficulty_level, :version, :status,
-                               :date_created, :date_modified, :date_published, :other_types,
-                               :prerequisites, :syllabus, :learning_objectives, { :subsets => [] },
-                               { :contributors => [] }, { :authors => [] }, { :target_audience => [] },
-                               { :collection_ids => [] }, { :keywords => [] }, { :resource_type => [] },
-                               { :scientific_topic_names => [] }, { :scientific_topic_uris => [] },
-                               { :operation_names => [] }, { :operation_uris => [] },
-                               { :node_ids => [] }, { :node_names => [] }, { :fields => [] },
-                               external_resources_attributes: [:id, :url, :title, :_destroy],
-                               event_ids: [], locked_fields: []]
-
   private
+
   # Use callbacks to share common setup or constraints between actions.
   def set_material
     @material = Material.friendly.find(params[:id])
   end
 
+  # Never trust parameters from the scary internet, only allow the white list through.
   def material_params
-    params.require(:material).permit(PERMITTED_MATERIAL_PARAMS)
+    params.require(:material).permit(:id, :title, :url, :contact, :description, :short_description,
+                                     :long_description, :doi, :licence,
+                                     :last_scraped, :scraper_record, :remote_created_date, :remote_updated_date,
+                                     :content_provider_id, :difficulty_level, :version, :status,
+                                     :date_created, :date_modified, :date_published, :other_types,
+                                     :prerequisites, :syllabus, :learning_objectives, { :subsets => [] },
+                                     { :contributors => [] }, { :authors => [] }, { :target_audience => [] },
+                                     { :collection_ids => [] }, { :keywords => [] }, { :resource_type => [] },
+                                     { :scientific_topic_names => [] }, { :scientific_topic_uris => [] },
+                                     { :operation_names => [] }, { :operation_uris => [] },
+                                     { :node_ids => [] }, { :node_names => [] }, { :fields => [] },
+                                     external_resources_attributes: [:id, :url, :title, :_destroy],
+                                     event_ids: [], locked_fields: [])
   end
+
 end

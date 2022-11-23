@@ -82,12 +82,6 @@ Rails.application.routes.draw do
   end
 
   resources :content_providers, concerns: :activities do
-    member do
-      get 'import'
-      get 'scraper_results'
-      post 'import', to: 'content_providers#scrape'
-      post 'bulk_create'
-    end
     resources :sources, except: [:index]
   end
 
