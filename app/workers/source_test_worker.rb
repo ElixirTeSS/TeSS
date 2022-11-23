@@ -9,25 +9,30 @@ class SourceTestWorker
   def perform(source_id)
     source = Source.find_by_id(source_id)
     return unless source
-    ingestor = Ingestors::IngestorFactory.get_ingestor(source.method)
-    ingestor.token = source.token
-
+    results = {
+      events: [],
+      materials: [],
+      messages: []
+    }
     start_time = Time.now
     exception = nil
     begin
+      ingestor = Ingestors::IngestorFactory.get_ingestor(source.method)
+      ingestor.token = source.token
       ingestor.read(source.url)
+      results = {
+        events: ingestor.events.map { |r| r.to_h },
+        materials: ingestor.materials.map { |r| r.to_h },
+        messages: ingestor.messages,
+      }
     rescue StandardError => e
-      ingestor.messages << "Ingestor encountered an unexpected error"
+      results[:messages] << "Ingestor encountered an unexpected error"
       exception = e
     end
-    source.test_results = {
-      # This is a mega hack because serializing resources as YAML is a pain
-      events: ingestor.events.map { |r| r.attributes },
-      materials: ingestor.materials.map { |r| r.attributes },
-      messages: ingestor.messages,
-      run_time: Time.now - start_time,
-      finished_at: Time.now
-    }
+
+    results[:run_time] = Time.now - start_time
+    results[:finished_at] = Time.now
+    source.test_results = results
 
     raise exception if exception
   end
