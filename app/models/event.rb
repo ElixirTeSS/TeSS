@@ -335,10 +335,14 @@ class Event < ApplicationRecord
     given_event = event_params.is_a?(Event) ? event_params : new(event_params)
     event = nil
 
-    event = find_by_url(given_event.url) if given_event.url.present?
+    provider_id = given_event.content_provider_id || given_event.content_provider&.id
 
-    if given_event.content_provider_id.present? && given_event.title.present? && given_event.start.present?
-      event ||= where(content_provider_id: given_event.content_provider_id, title: given_event.title, start: given_event.start).last
+    if given_event.url.present?
+      event = where(url: given_event.url).last
+    end
+
+    if provider_id.present? && given_event.title.present? && given_event.start.present?
+      event ||= where(content_provider_id: provider_id, title: given_event.title, start: given_event.start).last
     end
 
     event

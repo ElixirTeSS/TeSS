@@ -39,7 +39,7 @@ class EventCsvIngestorTest < ActiveSupport::TestCase
 
     # check timezone transtation - Australia/Sydney -> Sydney
     title = 'Data Manipulation and Visualisation in Python'
-    url = 'https://opus.nci.org.au/display/Help/NCI+Training+and+Educational+Events'
+    url = 'https://opus.nci.org.au/display/Help/Data+Manipulation+and+Visualisation+in+Python'
     event = get_event title, url
     refute_nil event
     assert_equal 'Sydney',event.timezone

@@ -11,31 +11,18 @@ module Ingestors
           @stats[:events][:processed] += 1
 
           # check for matched events
-          begin
-            matched_events = Event.where(title: event.title,
-                                         url: event.url,
-                                         start: event.start,
-                                         content_provider: provider)
+          event.user ||= user
+          event.content_provider ||= provider
+          existing_event = Event.check_exists(event)
 
-            if matched_events.nil? or matched_events.first.nil?
-              # set ingestion parameters and save new event
-              event.user = user
-              event.content_provider = provider
-              event.scraper_record = true
-              event.last_scraped = DateTime.now
-              event = set_event_field_defaults event
-              save_valid_event event, false
-            else
-              # update and save matched event
-              matched = overwrite_event_fields matched_events.first, event
-              matched = set_event_field_defaults matched
-              matched.scraper_record = true
-              matched.last_scraped = DateTime.now
-              save_valid_event matched, true
-            end
-          rescue Exception => e
-            @messages << "#{self.class.name}: write events failed with: #{e.message}"
+          update = false
+          if existing_event && existing_event.content_provider == provider
+            update = true
+            event = overwrite_event_fields(existing_event, event)
           end
+
+          event = set_resource_defaults(event)
+          save_valid_event(event, update)
         end
       end
 
@@ -59,27 +46,13 @@ module Ingestors
     end
 
     def overwrite_event_fields(old_event, new_event)
-      # overwrite unlocked attributes
-      # [title, url, start, provider] not changed, as they are used for matching
-      old_event.description = new_event.description unless old_event.field_locked? :description
-      old_event.end = new_event.end unless old_event.field_locked? :end
-      old_event.timezone = new_event.timezone unless old_event.field_locked? :timezone
-      old_event.contact = new_event.contact unless old_event.field_locked? :contact
-      old_event.organizer = new_event.organizer unless old_event.field_locked? :organizer
-      old_event.eligibility = new_event.eligibility unless old_event.field_locked? :eligibility
-      old_event.host_institutions = new_event.host_institutions unless old_event.field_locked? :host_institutions
-      old_event.event_types = new_event.event_types unless old_event.field_locked? :event_types
-      old_event.keywords = new_event.keywords unless old_event.field_locked? :keywords
-      old_event.online = new_event.online unless old_event.field_locked? :online
-      old_event.city = new_event.city unless old_event.field_locked? :city
-      old_event.postcode = new_event.postcode unless old_event.field_locked? :postcode
-      old_event.country = new_event.country unless old_event.field_locked? :country
-      old_event.venue = new_event.venue unless old_event.field_locked? :venue
-      old_event
-    end
+      locked_fields = old_event.locked_fields
 
-    def set_event_field_defaults(event)
-      event
+      (new_event.changed - ['content_provider_id', 'user_id']).each do |attr|
+        old_event.send("#{attr}=", new_event.send(attr)) unless locked_fields.include?(attr.to_sym)
+      end
+
+      old_event
     end
 
     def convert_eligibility(input)
@@ -92,12 +65,6 @@ module Ingestors
 
     def convert_location(input)
       input
-    end
-
-    def strip_first_part(input)
-      parts = input.split(',')
-      parts.shift
-      parts.join(',')
     end
   end
 end

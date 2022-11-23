@@ -96,5 +96,14 @@ module Ingestors
     def rejected
       @stats.values.sum { |s| s[:rejected] }
     end
+
+    private
+
+    def set_resource_defaults(resource)
+      resource.scraper_record = true
+      resource.last_scraped = DateTime.now
+
+      resource
+    end
   end
 end

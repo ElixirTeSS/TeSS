@@ -10,26 +10,19 @@ module Ingestors
         @materials.each do |material|
           @stats[:materials][:processed] += 1
 
-          # check for matched materials
-          matched_materials = Material.where(title: material.title,
-                                             url: material.url,
-                                             content_provider: provider)
+          # check for matched events
+          material.user ||= user
+          material.content_provider ||= provider
+          existing_material = Material.check_exists(material)
 
-          if matched_materials.nil? or matched_materials.first.nil?
-            material.user = user
-            material.content_provider = provider
-            material = set_material_defaults material
-            material.last_scraped = DateTime.now
-            material.scraper_record = true
-            save_valid_material material, false
-          else
-            # update and save matched material
-            matched = overwrite_material_fields matched_materials.first, material
-            matched = set_material_defaults matched
-            matched.last_scraped = DateTime.now
-            matched.scraper_record = true
-            save_valid_material matched, true
+          update = false
+          if existing_material && existing_material.content_provider == provider
+            update = true
+            material = overwrite_material_fields(existing_material, material)
           end
+
+          material = set_resource_defaults(material)
+          save_valid_material(material, update)
         end
       end
 
@@ -52,23 +45,14 @@ module Ingestors
       end
     end
 
-    def set_material_defaults(material)
-      material
-    end
-
     def overwrite_material_fields(old_material, new_material)
       # overwrite unlocked attributes
-      # [title, url, provider] not changed as they are used for matching
-      old_material.description = new_material.description unless old_material.field_locked? :description
-      old_material.keywords = new_material.keywords unless old_material.field_locked? :keywords
-      old_material.contact = new_material.contact unless old_material.field_locked? :contact
-      old_material.licence = new_material.licence unless old_material.field_locked? :licence
-      old_material.status = new_material.status unless old_material.field_locked? :status
-      old_material.authors = new_material.authors unless old_material.field_locked? :authors
-      old_material.contributors = new_material.contributors unless old_material.field_locked? :contributors
-      old_material.doi = new_material.doi unless old_material.field_locked? :doi
+      locked_fields = old_material.locked_fields
 
-      # return
+      (new_material.changed - ['content_provider_id', 'user_id']).each do |attr|
+        old_material.send("#{attr}=", new_material.send(attr)) unless locked_fields.include?(attr)
+      end
+
       old_material
     end
   end

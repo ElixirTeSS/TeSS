@@ -49,6 +49,10 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
       @ingestor.write(@user, @content_provider)
     end
 
+    assert_equal 3, @ingestor.stats[:materials][:added]
+    assert_equal 0, @ingestor.stats[:materials][:updated]
+    assert_equal 0, @ingestor.stats[:materials][:rejected]
+
     assert sample.persisted?
     assert_equal "https://training.galaxyproject.org/training-material/topics/introduction/slides/introduction.html",  sample.url
     assert_equal "Slides for Introduction to Galaxy Analyses", sample.description
@@ -81,6 +85,52 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     assert_equal ["slides"], sample.resource_type
     assert_equal @content_provider, sample.content_provider
     assert_equal @user, sample.user
+  end
+
+  test 'do not overwrite other content providers event, even with same url' do
+    existing_event = events(:course_event)
+    mock_bioschemas('https://website.org/courseinstances.json', 'existing.json')
+    @ingestor.read('https://website.org/courseinstances.json')
+    assert_equal 1, @ingestor.events.count
+    assert_equal 0, @ingestor.materials.count
+    added_event = @ingestor.events.detect { |e| e.title == 'Summer Course on Learning Stuff 2' }
+
+    assert_difference('Event.count', 1) do
+      @ingestor.write(@user, @content_provider)
+    end
+
+    assert_equal 1, @ingestor.stats[:events][:added]
+    assert_equal 0, @ingestor.stats[:events][:updated]
+    assert_equal 0, @ingestor.stats[:events][:rejected]
+
+    assert added_event.persisted?
+    assert_equal @content_provider, added_event.content_provider
+
+    assert_not_equal existing_event.id, added_event.reload.id
+
+    assert_equal "Summer Course on Learning Stuff", existing_event.reload.title
+    assert_not_equal @content_provider, existing_event.content_provider
+  end
+
+  test 'do overwrite event with same url if same provider' do
+    existing_event = events(:course_event)
+    provider = existing_event.content_provider
+    mock_bioschemas('https://website.org/courseinstances.json', 'existing.json')
+    @ingestor.read('https://website.org/courseinstances.json')
+    assert_equal 1, @ingestor.events.count
+    assert_equal 0, @ingestor.materials.count
+    added_event = @ingestor.events.detect { |e| e.title == 'Summer Course on Learning Stuff 2' }
+    assert added_event
+
+    assert_no_difference('Event.count') do
+      @ingestor.write(@user, provider)
+    end
+
+    assert_equal 0, @ingestor.stats[:events][:added]
+    assert_equal 1, @ingestor.stats[:events][:updated]
+    assert_equal 0, @ingestor.stats[:events][:rejected]
+
+    assert_equal "Summer Course on Learning Stuff 2", Event.find(existing_event.id).reload.title
   end
 
   private
