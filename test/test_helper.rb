@@ -152,114 +152,53 @@ class ActiveSupport::TestCase
   end
 
   def mock_ingestions
-    events_file = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'events.csv'))
-    events_nci_file = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'events_NCI.csv'))
-    materials_file = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'materials.csv'))
-    zenodo_ardc_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_ardc.json'))
-    zenodo_ardc_2_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_ardc_2.json'))
-    zenodo_ardc_3_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_ardc_3.json'))
-    zenodo_abt_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'zenodo_abt.json'))
-    elixir_ausbioc_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'response_1642570417380.json'))
-    test_sitemap = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'Test-Sitemap.xml']))
-    pawsey_ical_1 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'ask-me-anything-porous-media-visualisation-and-lbpm.ics']))
-    pawsey_ical_2 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'experience-with-porting-and-scaling-codes-on-amd-gpus.ics']))
-    pawsey_ical_3 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'nvidia-cuquantum-session.ics']))
-    pawsey_ical_4 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'overview-of-high-performance-computing-resources-at-olcf.ics']))
-    pawsey_ical_5 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'pacer-seminar-computational-fluid-dynamics.ics']))
-    pawsey_ical_6 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'pacer-seminar-radio-astronomy.ics']))
-    pawsey_ical_7 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'pawsey-intern-showcase-2022.ics']))
-    pawsey_ical_8 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'pcon-embracing-new-solutions-for-in-situ-visualisation.ics']))
-    pawsey_ical_9 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'pawsey-intern-showcase-2021.ics']))
-    pawsey_ical_a = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'icalendar', 'pawsey-supercomputing-centre-5cd096b58d0.ics']))
+    [{ url: 'https://app.com/events.csv', filename: 'events.csv' },
+     { url: 'https://raw.githubusercontent.com/nci900/NCI_feed_to_DReSA/master/event_NCI.csv', filename: 'events_NCI.csv' },
+     { url: 'https://app.com/materials.csv', filename: 'materials.csv' },
+     { url: 'https://app.com/events/event3.html' },
+     { url: 'https://zenodo.org/api/records/?communities=ardc', filename: 'zenodo_ardc.json' },
+     { url: 'https://zenodo.org/api/records/?sort=mostrecent&communities=ardc&page=2&size=10', filename: 'zenodo_ardc_2.json' },
+     { url: 'https://zenodo.org/api/records/?communities=ardc-again', filename: 'zenodo_ardc_3.json' },
+     { url: 'https://zenodo.org/api/records/?communities=australianbiocommons-training', filename: 'zenodo_abt.json' },
+     { url: 'https://tess.elixir-europe.org/events?include_expired=false&content_provider[]=Australian BioCommons', filename: 'response_1642570417380.json' },
+     { url: 'https://app.com/events/sitemap.xml', filename: 'Test-Sitemap.xml' },
+     { url: 'https://pawsey.org.au/event/ask-me-anything-porous-media-visualisation-and-lbpm/?ical=true', filename: 'icalendar/ask-me-anything-porous-media-visualisation-and-lbpm.ics' },
+     { url: 'https://pawsey.org.au/event/experience-with-porting-and-scaling-codes-on-amd-gpus/?ical=true', filename: 'icalendar/experience-with-porting-and-scaling-codes-on-amd-gpus.ics' },
+     { url: 'https://pawsey.org.au/event/nvidia-cuquantum-session/?ical=true', filename: 'icalendar/nvidia-cuquantum-session.ics' },
+     { url: 'https://pawsey.org.au/event/overview-of-high-performance-computing-resources-at-olcf/?ical=true', filename: 'icalendar/overview-of-high-performance-computing-resources-at-olcf.ics' },
+     { url: 'https://pawsey.org.au/event/pacer-seminar-computational-fluid-dynamics/?ical=true', filename: 'icalendar/pacer-seminar-computational-fluid-dynamics.ics' },
+     { url: 'https://pawsey.org.au/event/pacer-seminar-radio-astronomy/?ical=true', filename: 'icalendar/pacer-seminar-radio-astronomy.ics' },
+     { url: 'https://pawsey.org.au/event/pawsey-intern-showcase-2022/?ical=true', filename: 'icalendar/pawsey-intern-showcase-2022.ics' },
+     { url: 'https://pawsey.org.au/event/pcon-embracing-new-solutions-for-in-situ-visualisation/?ical=true', filename: 'icalendar/pcon-embracing-new-solutions-for-in-situ-visualisation.ics' },
+     { url: 'https://pawsey.org.au/event/pawsey-intern-showcase-2021/?ical=true', filename: 'icalendar/pawsey-intern-showcase-2021.ics' },
+     { url: 'https://pawsey.org.au/event/eoi-1-day-introduction-to-amd-gpus-amd-instinct-architecture-and-rocm/?ical=true', filename: 'icalendar/pawsey-supercomputing-centre-5cd096b58d0.ics' },
+     { url: 'https://www.eventbriteapi.com/v3/organizations/34338661734/events/?token=YXAKB2UNBVO7FV5SJHQA', filename: 'eventbrite/eventbrite_ardc.json' },
+     { url: 'https://www.eventbriteapi.com/v3/organizations/34338661734/events/?page=2&token=YXAKB2UNBVO7FV5SJHQA', filename: 'eventbrite/eventbrite_ardc_2.json' },
+     { url: 'https://www.eventbriteapi.com/v3/organizations/34338661734/events/?status=live&token=YXAKB2UNBVO7FV5SJHQA', filename: 'eventbrite/eventbrite_ardc_2.json' },
+     { url: 'https://www.eventbriteapi.com/v3/organizers/14317910674/?token=YXAKB2UNBVO7FV5SJHQA', filename: 'eventbrite/organizer_14317910674.json' },
+     { url: 'https://www.eventbriteapi.com/v3/organizers/8082048069/?token=YXAKB2UNBVO7FV5SJHQA', filename: 'eventbrite/organizer_8082048069.json' },
+     { url: 'https://www.eventbriteapi.com/v3/venues/88342919/?token=YXAKB2UNBVO7FV5SJHQA', filename: 'eventbrite/venue_88342919.json' },
+     { url: 'https://www.eventbriteapi.com/v3/categories/?token=YXAKB2UNBVO7FV5SJHQA', filename: 'eventbrite/categories.json' },
+     { url: 'https://www.eventbriteapi.com/v3/categories/101/?token=YXAKB2UNBVO7FV5SJHQA', filename: 'eventbrite/categories_101.json' },
+     { url: 'https://www.eventbriteapi.com/v3/categories/102/?token=YXAKB2UNBVO7FV5SJHQA', filename: 'eventbrite/categories_102.json' },
+     { url: 'https://www.eventbriteapi.com/v3/formats/?token=YXAKB2UNBVO7FV5SJHQA', filename: 'eventbrite/formats.json' },
+     { url: 'https://dummy.com', status: 404 },
+     { url: 'https://dummy.com/events.csv', status: 404 },
+     { url: 'https://app.com/materials/material3.html' },
+     { url: 'https://dummy.com/materials.csv', status: 404 },
+     { url: 'https://zenodo.org/api/records/?sort=mostrecent&ommunities=australianbiocommons-training&page=2&size=10', status: 404 },
+     { url: 'https://zenodo.org/api/records/?communities=dummy', status: 404 },
+     { url: 'https://missing.org/sitemap.xml', status: 404 },
+     { url: 'https://pawsey.org.au/events/?ical=true', status: 404 },
+     { url: 'https://www.eventbriteapi.com/v3/organizations/34338661734', status: 404 }].each do |opts|
+      url = opts.delete(:url)
+      method = opts.delete(:method) || :get
+      opts[:body] = File.open(Rails.root.join( 'test', 'fixtures', 'files', 'ingestion', opts.delete(:filename))) if opts.key?(:filename)
+      opts[:status] ||= 200
+      opts[:headers] ||= {}
 
-    # eventbrite object files
-    eventbrite_ardc_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'eventbrite', 'eventbrite_ardc.json'))
-    eventbrite_ardc_2_body = File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'eventbrite', 'eventbrite_ardc_2.json'))
-    eventbrite_organizer_14317910674 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'eventbrite', 'organizer_14317910674.json']))
-    eventbrite_organizer_8082048069 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'eventbrite', 'organizer_8082048069.json']))
-    eventbrite_venue_88342919 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'eventbrite', 'venue_88342919.json']))
-    eventbrite_categories = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'eventbrite', 'categories.json']))
-    eventbrite_categories_101 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'eventbrite', 'categories_101.json']))
-    eventbrite_categories_102 = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'eventbrite', 'categories_102.json']))
-    eventbrite_formats = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'eventbrite', 'formats.json']))
-
-    # 200 - success
-    WebMock.stub_request(:get, 'https://app.com/events.csv').
-      to_return(:status => 200, :headers => {}, :body => events_file)
-    WebMock.stub_request(:get, 'https://raw.githubusercontent.com/nci900/NCI_feed_to_DReSA/master/event_NCI.csv').
-      to_return(:status => 200, :headers => {}, :body => events_nci_file)
-    WebMock.stub_request(:get, 'https://app.com/materials.csv').
-      to_return(:status => 200, :headers => {}, :body => materials_file)
-    WebMock.stub_request(:get, 'https://app.com/events/event3.html').
-      to_return(:status => 200)
-    WebMock.stub_request(:get, 'https://zenodo.org/api/records/?communities=ardc').
-      to_return(status: 200, headers: {}, body: zenodo_ardc_body)
-    WebMock.stub_request(:get, 'https://zenodo.org/api/records/?sort=mostrecent&communities=ardc&page=2&size=10').
-      to_return(status: 200, headers: {}, body: zenodo_ardc_2_body)
-    WebMock.stub_request(:get, 'https://zenodo.org/api/records/?communities=ardc-again').
-      to_return(status: 200, headers: {}, body: zenodo_ardc_3_body)
-    WebMock.stub_request(:get, 'https://zenodo.org/api/records/?communities=australianbiocommons-training').
-      to_return(status: 200, headers: {}, body: zenodo_abt_body)
-    WebMock.stub_request(:get, 'https://tess.elixir-europe.org/events?include_expired=false&content_provider[]=Australian BioCommons').
-      to_return(status: 200, headers: {}, body: elixir_ausbioc_body)
-    WebMock.stub_request(:get, 'https://app.com/events/sitemap.xml').
-      to_return(status: 200, headers: {}, body: test_sitemap)
-
-    WebMock.stub_request(:get, 'https://pawsey.org.au/event/ask-me-anything-porous-media-visualisation-and-lbpm/?ical=true').
-      to_return(status: 200, headers: {}, body: pawsey_ical_1)
-    WebMock.stub_request(:get, 'https://pawsey.org.au/event/experience-with-porting-and-scaling-codes-on-amd-gpus/?ical=true').
-      to_return(status: 200, headers: {}, body: pawsey_ical_2)
-    WebMock.stub_request(:get, 'https://pawsey.org.au/event/nvidia-cuquantum-session/?ical=true').
-      to_return(status: 200, headers: {}, body: pawsey_ical_3)
-    WebMock.stub_request(:get, 'https://pawsey.org.au/event/overview-of-high-performance-computing-resources-at-olcf/?ical=true').
-      to_return(status: 200, headers: {}, body: pawsey_ical_4)
-    WebMock.stub_request(:get, 'https://pawsey.org.au/event/pacer-seminar-computational-fluid-dynamics/?ical=true').
-      to_return(status: 200, headers: {}, body: pawsey_ical_5)
-    WebMock.stub_request(:get, 'https://pawsey.org.au/event/pacer-seminar-radio-astronomy/?ical=true').
-      to_return(status: 200, headers: {}, body: pawsey_ical_6)
-    WebMock.stub_request(:get, 'https://pawsey.org.au/event/pawsey-intern-showcase-2022/?ical=true').
-      to_return(status: 200, headers: {}, body: pawsey_ical_7)
-    WebMock.stub_request(:get, 'https://pawsey.org.au/event/pcon-embracing-new-solutions-for-in-situ-visualisation/?ical=true').
-      to_return(status: 200, headers: {}, body: pawsey_ical_8)
-    WebMock.stub_request(:get, 'https://pawsey.org.au/event/pawsey-intern-showcase-2021/?ical=true').
-      to_return(status: 200, headers: {}, body: pawsey_ical_9)
-    WebMock.stub_request(:get, 'https://pawsey.org.au/event/eoi-1-day-introduction-to-amd-gpus-amd-instinct-architecture-and-rocm/?ical=true').
-      to_return(status: 200, headers: {}, body: pawsey_ical_a)
-
-
-    # eventbrite objects
-    WebMock.stub_request(:get,'https://www.eventbriteapi.com/v3/organizations/34338661734/events/?token=YXAKB2UNBVO7FV5SJHQA').
-      to_return(status: 200, headers: {}, body: eventbrite_ardc_body)
-    WebMock.stub_request(:get,'https://www.eventbriteapi.com/v3/organizations/34338661734/events/?page=2&token=YXAKB2UNBVO7FV5SJHQA').
-      to_return(status: 200, headers: {}, body: eventbrite_ardc_2_body)
-    WebMock.stub_request(:get,'https://www.eventbriteapi.com/v3/organizations/34338661734/events/?status=live&token=YXAKB2UNBVO7FV5SJHQA').
-      to_return(status: 200, headers: {}, body: eventbrite_ardc_2_body)
-    WebMock.stub_request(:get, 'https://www.eventbriteapi.com/v3/organizers/14317910674/?token=YXAKB2UNBVO7FV5SJHQA').
-      to_return(status: 200, headers: {}, body: eventbrite_organizer_14317910674 )
-    WebMock.stub_request(:get, 'https://www.eventbriteapi.com/v3/organizers/8082048069/?token=YXAKB2UNBVO7FV5SJHQA').
-      to_return(status: 200, headers: {}, body: eventbrite_organizer_8082048069 )
-    WebMock.stub_request(:get, 'https://www.eventbriteapi.com/v3/venues/88342919/?token=YXAKB2UNBVO7FV5SJHQA').
-      to_return(status: 200, headers: {}, body: eventbrite_venue_88342919 )
-    WebMock.stub_request(:get, 'https://www.eventbriteapi.com/v3/categories/?token=YXAKB2UNBVO7FV5SJHQA').
-      to_return(status: 200, headers: {}, body: eventbrite_categories )
-    WebMock.stub_request(:get, 'https://www.eventbriteapi.com/v3/categories/101/?token=YXAKB2UNBVO7FV5SJHQA').
-      to_return(status: 200, headers: {}, body: eventbrite_categories_101 )
-    WebMock.stub_request(:get, 'https://www.eventbriteapi.com/v3/categories/102/?token=YXAKB2UNBVO7FV5SJHQA').
-      to_return(status: 200, headers: {}, body: eventbrite_categories_102 )
-    WebMock.stub_request(:get, 'https://www.eventbriteapi.com/v3/formats/?token=YXAKB2UNBVO7FV5SJHQA').
-      to_return(status: 200, headers: {}, body: eventbrite_formats )
-
-    # 404 - not found
-    WebMock.stub_request(:get, 'https://dummy.com').to_return(:status => 404)
-    WebMock.stub_request(:get, 'https://dummy.com/events.csv').to_return(:status => 404)
-    WebMock.stub_request(:get, 'https://app.com/materials/material3.html').to_return(:status => 200)
-    WebMock.stub_request(:get, 'https://dummy.com/materials.csv').to_return(:status => 404)
-    WebMock.stub_request(:get, 'https://zenodo.org/api/records/?sort=mostrecent&ommunities=australianbiocommons-training&page=2&size=10').
-      to_return(status: 404)
-    WebMock.stub_request(:get, 'https://zenodo.org/api/records/?communities=dummy').to_return(:status => 404)
-    WebMock.stub_request(:get, 'https://missing.org/sitemap.xml').to_return(:status => 404)
-    WebMock.stub_request(:get, 'https://pawsey.org.au/events/?ical=true').to_return(:status => 404)
-    WebMock.stub_request(:get, 'https://www.eventbriteapi.com/v3/organizations/34338661734').to_return(:status => 404)
+      WebMock.stub_request(method, url).to_return(opts)
+    end
   end
 
   def mock_biotools
@@ -280,32 +219,6 @@ class ActiveSupport::TestCase
     Geocoder::Lookup::Test.add_stub( "1 Bryce Avenue, Kensington, Western Australia, 6151, Australia", JSON.parse(kensington_file) )
     Geocoder::Lookup::Test.add_stub( "Pawsey Supercomputing Centre, 1 Bryce Avenue, Kensington, Western Australia, 6151, Australia", [] )
     Geocoder::Lookup::Test.add_stub( "Australia", [{ "address"=>{ "country"=>"Australia", "country_code"=>"au"} }] )
-  end
-
-  # helper methods for ingestion tests
-  def override_config (config_file)
-    # switch configuration
-    test_config_file = File.join(Rails.root, 'test', 'config', config_file)
-    TeSS::Config.ingestion = YAML.safe_load(File.read(test_config_file)).deep_symbolize_keys!
-
-    # clear log file
-    logfile = File.join(Rails.root, TeSS::Config.ingestion[:logfile])
-    File.delete(logfile) if !logfile.nil? and File.exist?(logfile)
-    return logfile
-  end
-
-  def check_task_finished (logfile)
-    logfile_contains logfile, 'Scraper.run: finish'
-  end
-
-  def logfile_contains(logfile, message)
-    if logfile.is_a?(IO)
-      logfile.rewind
-      logfile.readlines.any? { |l| message.is_a?(Regexp) ? l.match(message) : l.include?(message) }
-    else
-      return false unless File.exist?(logfile)
-      File.readlines(logfile).any? { |l| message.is_a?(Regexp) ? l.match(message) : l.include?(message) }
-    end
   end
 
   def assert_permitted(policy, user, action, *opts)

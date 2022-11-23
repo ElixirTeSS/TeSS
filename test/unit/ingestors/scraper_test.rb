@@ -187,6 +187,20 @@ class ScraperTest < ActiveSupport::TestCase
 
   private
 
+  def check_task_finished (logfile)
+    logfile_contains logfile, 'Scraper.run: finish'
+  end
+
+  def logfile_contains(logfile, message)
+    if logfile.is_a?(IO)
+      logfile.rewind
+      logfile.readlines.any? { |l| message.is_a?(Regexp) ? l.match(message) : l.include?(message) }
+    else
+      return false unless File.exist?(logfile)
+      File.readlines(logfile).any? { |l| message.is_a?(Regexp) ? l.match(message) : l.include?(message) }
+    end
+  end
+
   def load_scraper_config(config_file)
     test_config_file = File.join(Rails.root, 'test', 'config', config_file)
     YAML.safe_load(File.read(test_config_file)).deep_symbolize_keys!
