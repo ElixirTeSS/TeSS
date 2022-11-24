@@ -29,9 +29,10 @@ class Source < ApplicationRecord
     # :nocov:
     searchable do
       string :sort_title do
-        url.downcase
+        title
       end
       time :created_at
+      time :updated_at
       time :finished_at
       string :url
       string :method do
