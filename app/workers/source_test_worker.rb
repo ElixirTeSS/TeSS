@@ -4,7 +4,7 @@ require 'open-uri'
 class SourceTestWorker
   include Sidekiq::Worker
   include Sidekiq::Status::Worker # Note Sidekiq::Status here, so we can monitor job status
-  sidekiq_options retry: 2
+  sidekiq_options retry: 2, queue: :source_testing
 
   def perform(source_id)
     source = Source.find_by_id(source_id)
