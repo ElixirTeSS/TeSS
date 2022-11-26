@@ -192,4 +192,26 @@ class SourceTest < ActiveSupport::TestCase
     assert_equal 'not_approved', activity.parameters[:old]
     assert_equal 'requested', activity.parameters[:new]
   end
+
+  test 'validates method is allowed by user' do
+    user = users(:regular_user)
+    User.current_user = user
+    source = sources(:unapproved_source)
+
+    assert source.valid?
+    source.method = 'tess_event'
+    refute source.valid?
+    assert source.errors.added?(:method, :inclusion, value: 'tess_event')
+  end
+
+  test 'validates method is allowed by admin' do
+    user = users(:admin)
+    User.current_user = user
+    source = sources(:unapproved_source)
+
+    assert source.valid?
+    source.method = 'tess_event'
+    assert source.valid?
+    assert source.errors.empty?
+  end
 end

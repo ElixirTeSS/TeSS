@@ -185,11 +185,23 @@ en:
       <ul>
       <li><a target='_blank', href='https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE'>TrainingMaterial</a></li>
       </ul>
+    sitemap: >
+      <p>To help search engines (and TeSS) discover all the pages on a site that have Bioschemas markup, a
+      <a target='_blank', href='https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview'>sitemap</a>
+      should be used. Sitemaps are basically a directory listing of all the pages on your site.</p>
+
+      <p>Sitemaps are a well-established standard, and there should be sitemap libraries and plugins available for
+      whichever software you are using to provide your site.</p>
     api: >
       <p>Application Programming Interfaces, or APIs, typically have endpoint URLs that, when accessed, return data in a
-      common exchange format, such as XML or JSON.</p>
-      <p>If your website has an API that programmatically displays data for your training or event content, the TeSS
-      team can write an API client to interface with it.</p>
+      common exchange format, such as JSON.</p>
+      <p>TeSS currently supports the APIs for:
+      <ul>
+      <li><a target='_blank', href='https://eventbrite.com'>Eventbrite</a> - for events</li>
+      <li><a target='_blank', href='https://zenodo.com'>Zenodo</a> - for materials</li>
+      <li>Other TeSS instances - for events</li>
+      </ul>
+      </p>
     calendar: >
       <p>Many organisations use calendar applications to organise and display their events.
       These may be custom-made or, more likely, utilise applications like Google Calendar. Calendar applications
@@ -204,9 +216,17 @@ en:
       metadata file in YAML format to help us extract the metadata;</li>
       <li><b>Other:</b> if you have training metadata in another structured format (e.g., an XML or JSON dump, a CSV
       file, a YAML file, or other format), it may be possible for the TeSS team to write a script to parse it.</li></ul>
+    user_managed_sources: >
+      <p>Owners and editors of content providers in TeSS can register and manage <em>Sources</em> to be automatically
+      ingested. A source consists of a URL for TeSS to fetch, and an "ingestion method" - which hints to TeSS how the
+      contents of the URL should be processed.</p>
+      <p>Once registered, a source will need to be approved by an administrator before it is active, but can be tested
+      to see exactly what metadata TeSS can extract from the source.</p>
+      <p>To register a source, click the "Sources" tab on your content provider page, or if you have not yet registered
+      a content provider, click the button below.</p>
     advice: >
-      Contact <a href="mailto:%{contact_email}">%{contact_email}</a> if you would like to have your content automatically
-      registered in TeSS.
+      Contact <a href="mailto:%{contact_email}">%{contact_email}</a> to discuss how to register your content
+      automatically in TeSS.
     manual: >
       <p>Resources may be added manually to TeSS.</p>
       <p>To do so, first register for a free account. Members of academic institutions may be able to log-in via LS-Login.</p>
@@ -358,6 +378,14 @@ en:
       materials: 'Materials'
       any: 'Any'
   sources:
+    info:
+      approval_notice: This source will need to be approved by an administrator before being ingested.
+      reapproval_notice: If the source URL or ingestion method are changed, approval will need to be requested again.
+    hints:
+      url: 'The URL of the source to be ingested.'
+      method: 'The method used to ingest the contents of the source URL.'
+      token: Some ingestion methods require an authentication token, leave blank if you aren't sure.
+      enabled: Sources that are not enabled will not be ingested.
     approval_status:
       not_approved: Not approved
       requested: Approval requested

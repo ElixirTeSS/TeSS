@@ -91,6 +91,15 @@ class SourcesControllerTest < ActionController::TestCase
     sign_in users(:regular_user)
     get :new, params: { content_provider_id: content_providers(:goblet) }
     assert_response :success
+    assert_select 'div.alert.alert-info', text: /This source will need to be approved/
+  end
+
+  test 'user should not get new if user creation feature disabled' do
+    with_settings(feature: { user_source_creation: false }) do
+      sign_in users(:regular_user)
+      get :new, params: { content_provider_id: content_providers(:goblet) }
+      assert_response :forbidden
+    end
   end
 
   test 'unaffiliated user should not get new' do
@@ -98,7 +107,6 @@ class SourcesControllerTest < ActionController::TestCase
     get :new, params: { content_provider_id: content_providers(:goblet) }
     assert_response :forbidden
   end
-
 
   test 'curator user should get new' do
     sign_in users(:curator)
@@ -110,6 +118,31 @@ class SourcesControllerTest < ActionController::TestCase
     sign_in users(:admin)
     get :new, params: { content_provider_id: content_providers(:goblet) }
     assert_response :success
+    assert_select 'div.alert.alert-info', text: /This source will need to be approved/, count: 0
+  end
+
+  test 'user should only see enabled method options' do
+    with_settings(user_ingestion_methods: ['bioschemas']) do
+      sign_in users(:regular_user)
+      get :new, params: { content_provider_id: content_providers(:goblet) }
+      assert_response :success
+      assert_select '#source_method option[value=?]', 'tess_event', { count: 0 },
+                    "Should not show ingestion methods unavailable to user"
+      assert_select '#source_method option[value=?]', 'bioschemas', { count: 1 },
+                    "Should show ingestion methods available to user"
+    end
+  end
+
+  test 'admin should see all method options' do
+    with_settings(user_ingestion_methods: ['bioschemas']) do
+      sign_in users(:admin)
+      get :new, params: { content_provider_id: content_providers(:goblet) }
+      assert_response :success
+      assert_select '#source_method option[value=?]', 'tess_event', { count: 1 },
+                    "Should show all ingestion methods"
+      assert_select '#source_method option[value=?]', 'bioschemas', { count: 1 },
+                    "Should show all ingestion methods"
+    end
   end
 
   # EDIT Tests
@@ -139,7 +172,7 @@ class SourcesControllerTest < ActionController::TestCase
     assert source.approved?
     get :edit, params: { id: source }
     assert_response :success
-    assert_select 'div.alert.alert-warning', text: /If this source is modified/
+    assert_select 'div.alert.alert-warning', text: /If the source URL or ingestion method/
   end
 
   test 'user should not get edit for source with approval requested' do
@@ -156,14 +189,16 @@ class SourcesControllerTest < ActionController::TestCase
     sign_in user
     get :edit, params: { id: source }
     assert_response :success
-    assert_select 'div.alert.alert-warning', text: /If this source is modified.+/, count: 0
+    assert_select 'div.alert.alert-warning', text: /If the source URL or ingestion method/, count: 0
   end
 
   test 'admin should get edit' do
     # Owner of material logged in = SUCCESS
     sign_in users(:admin)
+    assert @source.approved?
     get :edit, params: { id: @source }
     assert_response :success
+    assert_select 'div.alert.alert-warning', text: /If the source URL or ingestion method/, count: 0
   end
 
   test 'curator should get edit' do
@@ -198,6 +233,16 @@ class SourcesControllerTest < ActionController::TestCase
       post :create, params: @source_params
     end
     assert_redirected_to source_path(assigns(:source))
+  end
+
+  test 'user cannot create source if user creation feature disabled' do
+    with_settings(feature: { user_source_creation: false }) do
+      sign_in @user
+      assert_no_difference 'Source.count' do
+        post :create, params: @source_params
+      end
+      assert_response :forbidden
+    end
   end
 
   test 'admin should create source' do
@@ -257,6 +302,27 @@ class SourcesControllerTest < ActionController::TestCase
     updated = assigns(:source)
     assert updated
     assert updated.not_approved?
+  end
+
+  test 'user cannot change approval status for source' do
+    source = sources(:unapproved_source)
+    user = source.user
+    sign_in user
+    assert source.not_approved?
+    patch :update, params: { id: source, source: { approval_status: 'approved' } }
+    updated = assigns(:source)
+    assert updated
+    assert updated.not_approved?
+  end
+
+  test 'admin can change approval status for source' do
+    source = sources(:unapproved_source)
+    sign_in users(:admin)
+    assert source.not_approved?
+    patch :update, params: { id: source, source: { approval_status: 'approved' } }
+    updated = assigns(:source)
+    assert updated
+    assert updated.approved?
   end
 
   test 'curator should update source' do

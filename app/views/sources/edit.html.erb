@@ -2,19 +2,17 @@
 <div class="row wrapper">
   <div class="col-md-12">
     <div class="page-header">
-      <%= page_title(t('.title', :default => [:'helpers.titles.edit', 'Edit %{model}'], :model => model_class.model_name.human.titleize.downcase)) %>
+      <%= page_title(t('.title', default: [:'helpers.titles.edit', 'Edit %{model}'], model: model_class.model_name.human.titleize.downcase)) %>
     </div>
     <div class="col-md-4 col-md-push-8">
-      <%= render :partial => "sources/partials/general_source_info" %>
+      <%= render partial: 'sources/partials/general_source_info' %>
     </div>
     <div class="col-md-8 col-md-pull-4">
-      <% unless @source.not_approved? && !policy(@source).approve? %>
-        <div class="alert alert-warning">
-          If this source is modified, approval will need to be requested again.
-        </div>
+      <% if @source.approved? && !policy(@source).approve? %>
+        <div class="alert alert-warning"><%= t('sources.info.reapproval_notice') %></div><br/>
       <% end %>
 
-      <%= render :partial => 'form' %>
+      <%= render partial: 'form' %>
     </div>
   </div>
 </div>

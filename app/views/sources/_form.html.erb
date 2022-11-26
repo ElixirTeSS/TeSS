@@ -10,21 +10,19 @@
   <% end %>
 
   <%= render partial: 'common/url_checker',
-             locals: { f: f, url: sources_check_exists_path, title: '' } %>
+             locals: { f: f, url: sources_check_exists_path, title: t('sources.hints.url') } %>
 
 
   <%= f.input :method, label: 'Ingestion Method',
+              hint: t('sources.hints.method'),
               as: :grouped_select,
               group_method: :last,
               collection: grouped_ingestor_options_for_select,
               include_blank: false %>
 
-  <%= f.input :token, label: 'Authentication Token' %>
+  <%= f.input :token, hint: t('sources.hints.token'), label: 'Authentication Token' %>
 
-  <div class="form-group">
-    <%= f.label :enabled, class: 'checkbox inline' %>
-    <%= f.check_box :enabled %>
-  </div>
+  <%= f.input :enabled, hint: t('sources.hints.enabled') %>
 
   <% if policy(@source).approve? %>
     <%= f.input :approval_status,

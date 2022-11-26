@@ -41,6 +41,15 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
 
+  # Temporarily change TeSS config for the duration of the block
+  def with_settings(settings, &block)
+    orig_config = TeSS::Config.to_h
+    settings.each { |k, v| TeSS::Config[k] = v }
+    block.call
+  ensure
+    orig_config.each { |k, v| TeSS::Config[k] = v }
+  end
+
   # reset dictionaries to their default values
   def reset_dictionaries
     dictionaries = TeSS::Config.dictionaries

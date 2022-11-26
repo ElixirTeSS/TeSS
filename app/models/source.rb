@@ -19,6 +19,7 @@ class Source < ApplicationRecord
   validates :url, :method, presence: true
   validates :url, url: true
   validates :approval_status, inclusion: { in: APPROVAL_STATUS.values }
+  validates :method, inclusion: { in: TeSS::Config.user_ingestion_methods }, unless: -> { User.current_user&.is_admin? }
   validate :check_method
 
   before_create :set_approval_status
@@ -123,10 +124,14 @@ class Source < ApplicationRecord
     CurationMailer.source_requires_approval(self, User.current_user).deliver_later
   end
 
+  def self.approval_required?
+    TeSS::Config.feature['user_source_creation'] && !User.current_user&.is_admin?
+  end
+
   private
 
   def set_approval_status
-    if TeSS::Config.feature['user_source_creation'] && !User.current_user&.is_admin?
+    if self.class.approval_required?
       self.approval_status = :not_approved
     else
       self.approval_status = :approved
@@ -134,7 +139,7 @@ class Source < ApplicationRecord
   end
 
   def reset_approval_status
-    if TeSS::Config.feature['user_source_creation'] && !User.current_user&.is_admin?
+    if self.class.approval_required?
       if method_changed? || url_changed?
         self.approval_status = :not_approved
       end

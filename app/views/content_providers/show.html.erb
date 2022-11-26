@@ -123,6 +123,11 @@
                 <%= link_to new_content_provider_source_path(@content_provider), class: 'btn btn-primary' do %>
                   <i class="fa fa-plus-square"></i> Add source
                 <% end %>
+                <div class="pull-right">
+                <%= info_button("What are sources?") do %>
+                  <%= render_markdown(SourcesHelper::SOURCES_INFO) %>
+                <% end %>
+                </div>
               </div>
             <% end %>
             <div class="row">
