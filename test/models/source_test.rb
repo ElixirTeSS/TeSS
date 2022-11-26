@@ -194,24 +194,28 @@ class SourceTest < ActiveSupport::TestCase
   end
 
   test 'validates method is allowed by user' do
-    user = users(:regular_user)
-    User.current_user = user
-    source = sources(:unapproved_source)
+    with_settings(user_ingestion_methods: ['bioschemas']) do
+      user = users(:regular_user)
+      User.current_user = user
+      source = sources(:unapproved_source)
 
-    assert source.valid?
-    source.method = 'tess_event'
-    refute source.valid?
-    assert source.errors.added?(:method, :inclusion, value: 'tess_event')
+      assert source.valid?
+      source.method = 'tess_event'
+      refute source.valid?
+      assert source.errors.added?(:method, :inclusion, value: 'tess_event')
+    end
   end
 
   test 'validates method is allowed by admin' do
-    user = users(:admin)
-    User.current_user = user
-    source = sources(:unapproved_source)
+    with_settings(user_ingestion_methods: ['bioschemas']) do
+      user = users(:admin)
+      User.current_user = user
+      source = sources(:unapproved_source)
 
-    assert source.valid?
-    source.method = 'tess_event'
-    assert source.valid?
-    assert source.errors.empty?
+      assert source.valid?
+      source.method = 'tess_event'
+      assert source.valid?
+      assert source.errors.empty?
+    end
   end
 end

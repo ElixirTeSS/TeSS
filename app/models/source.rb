@@ -19,7 +19,8 @@ class Source < ApplicationRecord
   validates :url, :method, presence: true
   validates :url, url: true
   validates :approval_status, inclusion: { in: APPROVAL_STATUS.values }
-  validates :method, inclusion: { in: TeSS::Config.user_ingestion_methods }, unless: -> { User.current_user&.is_admin? }
+  validates :method, inclusion: { in: -> (_) { TeSS::Config.user_ingestion_methods } },
+            unless: -> { User.current_user&.is_admin? }
   validate :check_method
 
   before_create :set_approval_status
