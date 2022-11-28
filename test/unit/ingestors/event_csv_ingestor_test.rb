@@ -18,7 +18,8 @@ class EventCsvIngestorTest < ActiveSupport::TestCase
     source = @content_provider.sources.build(
       url: 'https://raw.githubusercontent.com/nci900/NCI_feed_to_DReSA/master/event_NCI.csv',
       method: 'event_csv',
-      enabled: true)
+      enabled: true
+    )
 
     ingestor = Ingestors::EventCsvIngestor.new
 
@@ -35,14 +36,14 @@ class EventCsvIngestorTest < ActiveSupport::TestCase
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
-    assert_not_includes ingestor.messages, "EventCsvIngestor: failed with: Illegal quoting"
+    assert_not_includes ingestor.messages, 'EventCsvIngestor: failed with: Illegal quoting'
 
     # check timezone transtation - Australia/Sydney -> Sydney
     title = 'Data Manipulation and Visualisation in Python'
     url = 'https://opus.nci.org.au/display/Help/Data+Manipulation+and+Visualisation+in+Python'
     event = get_event title, url
     refute_nil event
-    assert_equal 'Sydney',event.timezone
+    assert_equal 'Sydney', event.timezone
 
     # check an entry
     title = 'Introduction to Gadi'
@@ -55,8 +56,8 @@ class EventCsvIngestorTest < ActiveSupport::TestCase
     assert_equal title, event.title
     assert_equal url, event.url
     assert_equal description, event.description, "Event title[#{title}] not matched"
-    assert_equal DateTime.new(2022, 3, 3, 14, 00, 00), event.start
-    assert_equal DateTime.new(2022, 3, 3, 15, 30, 00), event.end
+    assert_equal DateTime.new(2022, 3, 3, 14, 0, 0), event.start
+    assert_equal DateTime.new(2022, 3, 3, 15, 30, 0), event.end
     assert_equal 'Sydney', event.timezone
     assert_equal 'training.nci@anu.edu.au', event.contact
     assert_equal 'NCI', event.organizer
@@ -72,20 +73,20 @@ class EventCsvIngestorTest < ActiveSupport::TestCase
     assert_equal 'To infinity and beyond', event.subtitle
     assert_equal '1.3 hours', event.duration
     assert_equal 'None', event.recognition
-    check_array event.event_types, ['webinar', 'hackathon'], ['workshop']
+    check_array event.event_types, %w[webinar hackathon], ['workshop']
     assert_equal 'charge', event.cost_basis
     assert_equal 'AUD', event.cost_currency
     assert_equal 9.99, event.cost_value
     assert_equal 25, event.capacity
     check_array event.fields, ['BIOINFORMATICS', 'Software Engineering'], ['MATHEMATICS']
-    check_array event.keywords, ['Supercomputing','Gadi']
-    check_array event.target_audience, ['ecr','researcher', 'phd', 'mbr'], ['ugrad']
+    check_array event.keywords, %w[Supercomputing Gadi]
+    check_array event.target_audience, %w[ecr researcher phd mbr], ['ugrad']
     assert_equal 'To provide a basic intro to supercomputing on the **Gadi** system',
                  event.learning_objectives
     assert_equal "To get the most of this session, it would be good to have a basic awareness of:\n\n" +
-                   "- Supercomputing\n" + "- Bioinformatics\n" + "- Software Design",
+                 "- Supercomputing\n" + "- Bioinformatics\n" + '- Software Design',
                  event.prerequisites
-    assert_equal "There are no technical requirements.",
+    assert_equal 'There are no technical requirements.',
                  event.tech_requirements
   end
 
@@ -97,16 +98,16 @@ class EventCsvIngestorTest < ActiveSupport::TestCase
     assert_kind_of Array, collection
     assert_kind_of Array, values
     assert_equal collection.size, values.size
-    values.each { | item | assert_includes collection, item }
+    values.each { |item| assert_includes collection, item }
     exclusions.each { |item| refute_includes collection, item } unless exclusions.nil?
   end
 
   def get_event(title, url, provider = nil)
-    if provider.nil?
-      results = Event.where(title: title, url: url)
-    else
-      results = Event.where(title: title, url: url, content_provider: provider)
-    end
+    results = if provider.nil?
+                Event.where(title: title, url: url)
+              else
+                Event.where(title: title, url: url, content_provider: provider)
+              end
     results.nil? or results.empty? ? nil : results.first
   end
 end

@@ -44,8 +44,8 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
     assert_equal 'ARDC', event.organizer # organizer.name ARDC
     assert_empty event.event_types # format.name other
     assert_equal 'Perth', event.timezone
-    assert_equal Time.utc(2022, 04, 11, 12, 00, 00).to_s, event.start.to_s
-    assert_equal Time.utc(2022, 04, 11, 13, 00, 00).to_s, event.end.to_s
+    assert_equal Time.utc(2022, 4, 11, 12, 0, 0).to_s, event.start.to_s
+    assert_equal Time.utc(2022, 4, 11, 13, 0, 0).to_s, event.end.to_s
     assert_equal 300, event.capacity
     assert event.online
     assert_equal 'free', event.cost_basis
@@ -81,8 +81,8 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
     assert_equal desc, event.description
     assert_equal 'Australian Research Data Commons', event.organizer
     assert_equal 'Sydney', event.timezone
-    assert_equal Time.utc(2022, 05, 03, 13, 30, 0), event.start
-    assert_equal Time.utc(2022, 05, 03, 15, 0, 0), event.end
+    assert_equal Time.utc(2022, 5, 3, 13, 30, 0), event.start
+    assert_equal Time.utc(2022, 5, 3, 15, 0, 0), event.end
     refute event.online
     assert_equal 'free', event.cost_basis
     assert_equal 'UNSW', event.venue
@@ -110,8 +110,8 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
     assert_equal desc, event.description
     assert_equal 'Australian Research Data Commons', event.organizer
     assert_equal 'Sydney', event.timezone
-    assert_equal Time.utc(2022, 06, 01, 13, 00, 0), event.start
-    assert_equal Time.utc(2022, 06, 01, 15, 0, 0), event.end
+    assert_equal Time.utc(2022, 6, 1, 13, 0, 0), event.start
+    assert_equal Time.utc(2022, 6, 1, 15, 0, 0), event.end
     assert_equal 10, event.capacity
     assert event.online
     assert_equal 2, event.keywords.size
@@ -130,8 +130,8 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
     assert_equal desc, event.description
     assert_equal 'Australian Research Data Commons', event.organizer
     assert_equal 'Sydney', event.timezone
-    assert_equal Time.utc(2022, 05, 03, 13, 30, 0), event.start
-    assert_equal Time.utc(2022, 05, 03, 15, 0, 0), event.end
+    assert_equal Time.utc(2022, 5, 3, 13, 30, 0), event.start
+    assert_equal Time.utc(2022, 5, 3, 15, 0, 0), event.end
 
     # check source
     source = Source.where(url: 'https://www.eventbriteapi.com/v3/organizations/34338661734').first
@@ -142,6 +142,7 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
 
   def get_event(id, title, url)
     return Event.find(id) unless id.nil?
+
     unless title.nil? or url.nil?
       events = Event.where(title: title, url: url)
       return events.first unless events.nil? or events.empty?

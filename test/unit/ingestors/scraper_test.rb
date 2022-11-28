@@ -3,7 +3,6 @@
 require 'test_helper'
 
 class ScraperTest < ActiveSupport::TestCase
-
   setup do
     mock_ingestions
     Source.delete_all
@@ -187,7 +186,7 @@ class ScraperTest < ActiveSupport::TestCase
 
   private
 
-  def check_task_finished (logfile)
+  def check_task_finished(logfile)
     logfile_contains logfile, 'Scraper.run: finish'
   end
 
@@ -197,6 +196,7 @@ class ScraperTest < ActiveSupport::TestCase
       logfile.readlines.any? { |l| message.is_a?(Regexp) ? l.match(message) : l.include?(message) }
     else
       return false unless File.exist?(logfile)
+
       File.readlines(logfile).any? { |l| message.is_a?(Regexp) ? l.match(message) : l.include?(message) }
     end
   end

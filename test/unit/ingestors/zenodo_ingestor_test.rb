@@ -11,7 +11,8 @@ class ZenodoIngestorTest < ActiveSupport::TestCase
     source = @content_provider.sources.build(
       url: 'https://zenodo.org/api/records/?communities=ardc',
       method: 'zenodo',
-      enabled: true)
+      enabled: true
+    )
 
     ingestor = Ingestors::ZenodoIngestor.new
 
@@ -33,7 +34,7 @@ class ZenodoIngestorTest < ActiveSupport::TestCase
     assert_equal 0, ingestor.stats[:materials][:rejected]
 
     # check material added successfully
-    material = get_zenodo_id(5711863, 'ML4AU: Trainings, trainers and building an ML community', 'Portal Provider')
+    material = get_zenodo_id(5_711_863, 'ML4AU: Trainings, trainers and building an ML community', 'Portal Provider')
     assert !material.description.nil?, 'material description is nil!'
     assert !material.keywords.nil?, 'material keywords is nil'
     assert_equal 5, material.keywords.size, 'material keywords count not matched.'
@@ -46,7 +47,7 @@ class ZenodoIngestorTest < ActiveSupport::TestCase
     assert_equal '10.5281/zenodo.5711863', material.doi, 'material.doi not matched.'
 
     # check material with contributors
-    material = get_zenodo_id(5091260, 'How can software containers help your research?', 'Portal Provider')
+    material = get_zenodo_id(5_091_260, 'How can software containers help your research?', 'Portal Provider')
     assert !material.description.nil?, 'material description is nil!'
     assert !material.contributors.nil?, 'material keywords is nil'
     assert_equal 6, material.contributors.size, 'material contributors count not matched!'
@@ -64,10 +65,10 @@ class ZenodoIngestorTest < ActiveSupport::TestCase
     assert_equal 1, materials.size, "Post-task: materials search title[#{title}] found nothing"
     material = materials.first
     assert !material.nil?, "Post-task: first material from search title[#{title}] in nil."
-    assert_equal title, material.title, "material title not matched!"
-    assert_equal url, material.url, "material url not matched!"
-    assert !material.content_provider.nil?, "material provider is nil."
+    assert_equal title, material.title, 'material title not matched!'
+    assert_equal url, material.url, 'material url not matched!'
+    assert !material.content_provider.nil?, 'material provider is nil.'
     assert_equal provider, material.content_provider.title, 'material provider not matched'
-    return material
+    material
   end
 end

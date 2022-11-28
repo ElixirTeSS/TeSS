@@ -40,7 +40,6 @@ module Ingestors
       @messages << stats_summary(:materials)
     end
 
-
     def stats_summary(type)
       "#{type} " << [:processed, :added, :updated, :rejected].map { |key| "#{key}[#{stats[type][key]}]" }.join(' ')
     end
@@ -60,7 +59,7 @@ module Ingestors
         raise e
       rescue OpenURI::HTTPError => e
         @messages << "Couldn't open URL #{url}: #{e}"
-        return nil
+        nil
       end
     end
 
@@ -122,11 +121,11 @@ module Ingestors
         existing_resource = type.check_exists(resource.to_h)
 
         update = existing_resource && existing_resource.content_provider == provider
-        if update
-          resource = update_resource(existing_resource, resource.to_h)
-        else
-          resource = type.new(resource.to_h)
-        end
+        resource = if update
+                     update_resource(existing_resource, resource.to_h)
+                   else
+                     type.new(resource.to_h)
+                   end
 
         resource = set_resource_defaults(resource)
         if resource.valid?
@@ -144,13 +143,11 @@ module Ingestors
       end
     end
 
-    private
-
     def update_resource(existing_resource, fields)
       # overwrite unlocked attributes
       locked_fields = existing_resource.locked_fields
 
-      (fields.except(:content_provider_id, :user_id)).each do |attr, value|
+      fields.except(:content_provider_id, :user_id).each do |attr, value|
         existing_resource.send("#{attr}=", value) unless locked_fields.include?(attr)
       end
 

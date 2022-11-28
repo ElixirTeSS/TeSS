@@ -19,13 +19,13 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
 
     sample = @ingestor.events.detect { |e| e.title == 'Neural Networks and Deep Learning' }
     assert sample.persisted?
-    assert_equal "https://uppsala.instructure.com/courses/75565", sample.url
-    assert_includes sample.description, "This course will give an introduction to the concept of Neural Networks"
-    assert_equal "2023-03-20T00:00:00Z", sample.start.utc.iso8601
-    assert_equal "2023-03-24T00:00:00Z", sample.end.utc.iso8601
-    assert_equal "SciLifeLab Uppsala - Navet, Husargatan 3", sample.venue
-    assert_equal "Uppsala", sample.city
-    assert_equal "Sweden", sample.country
+    assert_equal 'https://uppsala.instructure.com/courses/75565', sample.url
+    assert_includes sample.description, 'This course will give an introduction to the concept of Neural Networks'
+    assert_equal '2023-03-20T00:00:00Z', sample.start.utc.iso8601
+    assert_equal '2023-03-24T00:00:00Z', sample.end.utc.iso8601
+    assert_equal 'SciLifeLab Uppsala - Navet, Husargatan 3', sample.venue
+    assert_equal 'Uppsala', sample.city
+    assert_equal 'Sweden', sample.country
     assert_equal @content_provider, sample.content_provider
     assert_equal @user, sample.user
     assert_equal 25, sample.capacity
@@ -54,35 +54,35 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
 
     sample = @ingestor.materials.detect { |e| e.title == "Introduction to 'Introduction to Galaxy Analyses'" }
     assert sample.persisted?
-    assert_equal "https://training.galaxyproject.org/training-material/topics/introduction/slides/introduction.html",  sample.url
-    assert_equal "Slides for Introduction to Galaxy Analyses", sample.description
-    assert_equal ["Students"], sample.target_audience
-    assert_equal ["Andrea Bagnacani",
-                  "Anne Fouilloux",
-                  "Anne Pajon",
-                  "Bérénice Batut",
-                  "Christopher Barnett",
-                  "Dave Clements",
-                  "Helena Rasche",
-                  "Michele Maroni",
-                  "Nadia Goué",
-                  "Nicola Soranzo",
-                  "Olha Nahorna",
-                  "Saskia Hiltemann"], sample.authors
-    assert_equal ["Andrea Bagnacani",
-                  "Anne Fouilloux",
-                  "Anne Pajon",
-                  "Bérénice Batut",
-                  "Christopher Barnett",
-                  "Dave Clements",
-                  "Helena Rasche",
-                  "Michele Maroni",
-                  "Nadia Goué",
-                  "Nicola Soranzo",
-                  "Olha Nahorna",
-                  "Saskia Hiltemann"], sample.contributors
-    assert_equal "CC-BY-4.0", sample.licence
-    assert_equal ["slides"], sample.resource_type
+    assert_equal 'https://training.galaxyproject.org/training-material/topics/introduction/slides/introduction.html', sample.url
+    assert_equal 'Slides for Introduction to Galaxy Analyses', sample.description
+    assert_equal ['Students'], sample.target_audience
+    assert_equal ['Andrea Bagnacani',
+                  'Anne Fouilloux',
+                  'Anne Pajon',
+                  'Bérénice Batut',
+                  'Christopher Barnett',
+                  'Dave Clements',
+                  'Helena Rasche',
+                  'Michele Maroni',
+                  'Nadia Goué',
+                  'Nicola Soranzo',
+                  'Olha Nahorna',
+                  'Saskia Hiltemann'], sample.authors
+    assert_equal ['Andrea Bagnacani',
+                  'Anne Fouilloux',
+                  'Anne Pajon',
+                  'Bérénice Batut',
+                  'Christopher Barnett',
+                  'Dave Clements',
+                  'Helena Rasche',
+                  'Michele Maroni',
+                  'Nadia Goué',
+                  'Nicola Soranzo',
+                  'Olha Nahorna',
+                  'Saskia Hiltemann'], sample.contributors
+    assert_equal 'CC-BY-4.0', sample.licence
+    assert_equal ['slides'], sample.resource_type
     assert_equal @content_provider, sample.content_provider
     assert_equal @user, sample.user
   end
@@ -108,7 +108,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
 
     assert_not_equal existing_event.id, added_event.reload.id
 
-    assert_equal "Summer Course on Learning Stuff", existing_event.reload.title
+    assert_equal 'Summer Course on Learning Stuff', existing_event.reload.title
     assert_not_equal @content_provider, existing_event.content_provider
   end
 
@@ -130,13 +130,13 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     assert_equal 1, @ingestor.stats[:events][:updated]
     assert_equal 0, @ingestor.stats[:events][:rejected]
 
-    assert_equal "Summer Course on Learning Stuff 2", Event.find(existing_event.id).reload.title
+    assert_equal 'Summer Course on Learning Stuff 2', Event.find(existing_event.id).reload.title
   end
 
   private
 
   def mock_bioschemas(url, filename)
     file = Rails.root.join('test', 'fixtures', 'files', 'ingestion', filename)
-    WebMock.stub_request(:get, url).to_return(status: 200, headers: {}, body: file.read )
+    WebMock.stub_request(:get, url).to_return(status: 200, headers: {}, body: file.read)
   end
 end

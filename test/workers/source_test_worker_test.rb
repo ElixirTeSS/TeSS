@@ -79,9 +79,7 @@ class SourceTestWorkerTest < ActiveSupport::TestCase
   test 'gracefully handle testing a source that does not exist' do
     Sidekiq::Testing.inline! do
       assert_nothing_raised do
-        Sidekiq::Testing.inline! do
-          SourceTestWorker.perform_async([Source.maximum(:id) + 100])
-        end
+        SourceTestWorker.perform_async([Source.maximum(:id) + 100])
       end
     end
   end

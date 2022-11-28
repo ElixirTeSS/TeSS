@@ -21,7 +21,7 @@ class IcalIngestorTest < ActiveSupport::TestCase
 
     assert ingestor.events.empty?
     assert ingestor.materials.empty?
-    assert_includes ingestor.messages, "Extract from sitemap[https://missing.org/sitemap.xml] failed with: 404 "
+    assert_includes ingestor.messages, 'Extract from sitemap[https://missing.org/sitemap.xml] failed with: 404 '
   end
 
   test 'ingest valid sitemap' do
@@ -35,7 +35,7 @@ class IcalIngestorTest < ActiveSupport::TestCase
     event = events(:ical_event_1)
     refute event.nil?, "event[#{name}] not found"
     refute event.online, "event[#{name}] online not matched"
-    assert_equal "Another Portal Provider", event.content_provider.title,
+    assert_equal 'Another Portal Provider', event.content_provider.title,
                  "event[#{name}] content provider not matched"
 
     name = 'ical_event_2'
@@ -45,7 +45,7 @@ class IcalIngestorTest < ActiveSupport::TestCase
     event = check_event_exists title, url
     refute event.nil?, "event title[#{title}] not found"
     refute event.online, "event title[#{title}] online not matched"
-    assert_equal "Another Portal Provider", event.content_provider.title,
+    assert_equal 'Another Portal Provider', event.content_provider.title,
                  "event title[#{title}] content provider not matched"
 
     assert_difference('Event.count', 4) do
@@ -66,10 +66,10 @@ class IcalIngestorTest < ActiveSupport::TestCase
     assert_includes ingestor.messages, "Process file url\[https://pawsey.org.au/events/\?ical=true\] failed with: 404 "
 
     # check rejected
-    event = ingestor.events.detect { |e| e.title == 'NVIDIA cuQuantum Session'}
+    event = ingestor.events.detect { |e| e.title == 'NVIDIA cuQuantum Session' }
     assert event
     assert event.errors.added?(:url, :url, value: '123')
-    event = ingestor.events.detect { |e| e.title == 'PaCER Seminar: Radio astronomy'}
+    event = ingestor.events.detect { |e| e.title == 'PaCER Seminar: Radio astronomy' }
     assert event
     assert event.errors.added?(:url, :blank)
 
@@ -78,7 +78,7 @@ class IcalIngestorTest < ActiveSupport::TestCase
     event = check_event_exists title, 'https://pawsey.org.au/event/ask-me-anything-porous-media-visualisation-and-lbpm/'
     assert event.online, "event title[#{event.title}] online not matched"
     assert (!event.keywords.nil? and event.keywords.size == 2), "event title[#{event.title}] keywords.size not matched"
-    assert event.keywords.include?("AMA"), "event title[#{event.title}] keyword[AMA] not found"
+    assert event.keywords.include?('AMA'), "event title[#{event.title}] keyword[AMA] not found"
     assert event.keywords.include?('Visualisation'), "event title[#{event.title}] keyword[Visualisation] not found"
 
     title = 'Pawsey Intern Showcase 2022'
@@ -111,7 +111,7 @@ class IcalIngestorTest < ActiveSupport::TestCase
     assert event.description.size > 100, "event title[#{event.title}] description too short"
     assert event.online, "event title[#{event.title}] online not matched"
     assert_equal 2, event.keywords.size, "event title[#{event.title}] keywords size not matched"
-    ['Supercomputing', 'Seminar'].each do |keyword|
+    %w[Supercomputing Seminar].each do |keyword|
       assert event.keywords.include?(keyword), "event title[#{event.title}] keyword[#{keyword}] not found"
     end
     assert_equal 'Online, Virtual, Australia', event.venue, "event title[#{event.title}] venue not matched"
@@ -123,7 +123,7 @@ class IcalIngestorTest < ActiveSupport::TestCase
     event = check_event_exists title, 'https://pawsey.org.au/event/pcon-embracing-new-solutions-for-in-situ-visualisation/'
     assert event.online, "event title[#{event.title}] online not matched"
     assert_equal 3, event.keywords.size, "event title[#{event.title}] keywords size not matched"
-    ['Supercomputing', 'Conference', 'Visualisation'].each do |keyword|
+    %w[Supercomputing Conference Visualisation].each do |keyword|
       assert event.keywords.include?(keyword), "event title[#{event.title}] keyword[#{keyword}] not found"
     end
     assert_equal 'Online, Virtual, Australia', event.venue, "event title[#{event.title}] venue not matched"
@@ -134,12 +134,13 @@ class IcalIngestorTest < ActiveSupport::TestCase
 
   test 'check single ical sources' do
     # override time
-    assert_no_difference 'Event.count'do
+    assert_no_difference 'Event.count' do
       freeze_time(stub_time = Time.new(2019)) do
         ingestor = Ingestors::IcalIngestor.new
         source = @content_provider.sources.build(
           url: 'https://pawsey.org.au/event/pcon-embracing-new-solutions-for-in-situ-visualisation/?ical=true',
-          method: 'ical', enabled: true)
+          method: 'ical', enabled: true
+        )
 
         ingestor.read(source.url)
         ingestor.write(@user, @content_provider)
@@ -153,7 +154,8 @@ class IcalIngestorTest < ActiveSupport::TestCase
         ingestor = Ingestors::IcalIngestor.new
         source = @content_provider.sources.build(
           url: 'https://pawsey.org.au/event/pawsey-intern-showcase-2021/?ical=true',
-          method: 'ical', enabled: true)
+          method: 'ical', enabled: true
+        )
 
         ingestor.read(source.url)
         ingestor.write(@user, @content_provider)
@@ -164,7 +166,7 @@ class IcalIngestorTest < ActiveSupport::TestCase
         assert_equal 0, ingestor.stats[:events][:updated]
         assert_equal 1, ingestor.stats[:events][:rejected]
 
-        event = ingestor.events.detect { |e| e.title == 'Pawsey Intern Showcase 2021'}
+        event = ingestor.events.detect { |e| e.title == 'Pawsey Intern Showcase 2021' }
         assert event
         assert event.errors.added?(:url, :blank)
       end
@@ -175,7 +177,7 @@ class IcalIngestorTest < ActiveSupport::TestCase
     url = 'https://pawsey.org.au/event/pcon-embracing-new-solutions-for-in-situ-visualisation/'
     event = check_event_exists title, url
     assert_equal 3, event.keywords.size
-    ['Supercomputing', 'Conference', 'Visualisation'].each do |keyword|
+    %w[Supercomputing Conference Visualisation].each do |keyword|
       assert event.keywords.include?(keyword), "event title[#{event.title}] keyword[#{keyword}] not found"
     end
   end
@@ -186,6 +188,6 @@ class IcalIngestorTest < ActiveSupport::TestCase
     events = Event.where(title: title, url: url)
     assert (!events.nil? and events.size > 0), "event title[#{title}] not found"
     assert events.size < 2, "event[#{title}] duplicates found = #{events.size}"
-    return events.first
+    events.first
   end
 end

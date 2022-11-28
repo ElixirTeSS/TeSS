@@ -16,23 +16,25 @@ module Ingestors
     def read(source_url)
       sitemap_regex = nil
       @verbose = false
-      if source_url.downcase.match?(/sitemap(.*)?.xml\Z/)
-        sources = SitemapParser.new(source_url, {
-          recurse: true,
-          url_regex: sitemap_regex,
-          headers: { 'User-Agent' => config[:user_agent] },
-        }).to_a.uniq.map(&:strip)
-      else
-        sources = [source_url]
-      end
+      sources = if source_url.downcase.match?(/sitemap(.*)?.xml\Z/)
+                  SitemapParser.new(source_url, {
+                                      recurse: true,
+                                      url_regex: sitemap_regex,
+                                      headers: { 'User-Agent' => config[:user_agent] }
+                                    }).to_a.uniq.map(&:strip)
+                else
+                  [source_url]
+                end
 
       provider_events = []
       provider_materials = []
       sources.each do |url|
         source = open_url(url)
         next unless source
+
         sample = source.read(256)&.strip
         next unless sample
+
         format = sample.start_with?('[') || sample.start_with?('{') ? :jsonld : :rdfa
         source.rewind
         source = source.read
@@ -76,6 +78,7 @@ module Ingestors
     # If duplicate resources have been extracted, prefer ones with the most metadata.
     def deduplicate(resources)
       return [] unless resources.any?
+
       puts "De-duplicating #{resources.count} resources" if verbose
       hash = {}
       scores = {}
@@ -87,12 +90,12 @@ module Ingestors
           # Replace the resource if this resource has a higher metadata score
           puts "    Duplicate! Comparing #{score} vs. #{scores[resource_url]}" if verbose
           if score > scores[resource_url]
-            puts "    Replacing resource" if verbose
+            puts '    Replacing resource' if verbose
             hash[resource_url] = resource
             scores[resource_url] = score
           end
         else
-          puts "    Not present, adding" if verbose
+          puts '    Not present, adding' if verbose
           hash[resource_url] = resource
           scores[resource_url] = metadata_score(resource)
         end

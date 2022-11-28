@@ -11,7 +11,8 @@ class TessEventIngestorTest < ActiveSupport::TestCase
     source = @content_provider.sources.build(
       url: 'https://tess.elixir-europe.org/events?include_expired=false&content_provider[]=Australian BioCommons',
       method: 'tess_event',
-      enabled: true)
+      enabled: true
+    )
 
     ingestor = Ingestors::TessEventIngestor.new
 
@@ -45,7 +46,7 @@ class TessEventIngestorTest < ActiveSupport::TestCase
     assert_equal 'UTC', event.timezone
     assert_equal 'Melissa Burke (melissa@biocommons.org.au)', event.contact
     assert_equal 'Australian BioCommons', event.organizer
-    assert_equal 1, event.eligibility.size, "event eligibility size not matched!"
+    assert_equal 1, event.eligibility.size, 'event eligibility size not matched!'
     assert event.eligibility.include?('registration_of_interest')
     assert_equal 1, event.host_institutions.size
     assert event.host_institutions.include?('Australian Biocommons')
@@ -59,11 +60,11 @@ class TessEventIngestorTest < ActiveSupport::TestCase
     other_title = 'WEBINAR: Establishing Gen3 to enable better human genome data sharing in Australia'
     other_url = 'https://www.biocommons.org.au/events/gen3-webinar'
     events = Event.where(title: other_title, url: other_url)
-    assert !events.nil?, "Post-task: other event search error."
+    assert !events.nil?, 'Post-task: other event search error.'
     assert_equal 1, events.size, "Post-task: other event search title[#{other_title}] found nothing"
     event = events.first
     assert !event.nil?
-    #noinspection RubyNilAnalysis
+    # noinspection RubyNilAnalysis
     assert_equal other_title, event.title
     assert_equal other_url, event.url
   end
