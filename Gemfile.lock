@@ -790,6 +790,7 @@ DEPENDENCIES
   rubocop
   ruby-debug-ide
   sass-rails (~> 5.0)
+  sassc-rails (~> 2.1.2)
   sdoc (>= 1.1.0)
   sidekiq (~> 6.4.0)
   simple_form
