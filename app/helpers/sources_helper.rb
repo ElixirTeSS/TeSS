@@ -40,7 +40,7 @@ module SourcesHelper
       TeSS::Config.user_ingestion_methods&.any?
 
     TeSS::Config.user_ingestion_methods.map do |key|
-      Ingestors::IngestorFactory.fetch_ingestor_config(key)[:title]
+      Ingestors::IngestorFactory.ingestor_config.dig(key, :title)
     end
   end
 end
