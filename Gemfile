@@ -159,8 +159,6 @@ gem 'reverse_markdown'
 # eventbrite api
 gem 'eventbrite_sdk'
 
-gem 'stringio', '3.0.1'
-
 source 'https://rails-assets.org' do
   gem 'rails-assets-clipboard', '~> 1.5.12'
   gem 'rails-assets-devbridge-autocomplete', '~> 1.2.26'

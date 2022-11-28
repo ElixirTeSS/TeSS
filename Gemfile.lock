@@ -828,7 +828,6 @@ DEPENDENCIES
   simplecov-lcov
   sitemap-parser (~> 0.5.6)
   slim
-  stringio (= 3.0.1)
   sunspot_rails!
   tess_rdf_extractors!
   time_diff
