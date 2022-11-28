@@ -1,7 +1,7 @@
 <% hide_title ||= false %>
 
 <%= display_attribute(resource, :doi) if resource.respond_to?(:doi) %>
-<%= display_attribute(resource, :licence) { |value| licence_name_for_abbreviation(value) } if resource.respond_to?(:license) %>
+<%= display_attribute(resource, :licence) { |value| licence_name_for_abbreviation(value) } if resource.respond_to?(:licence) %>
 <%= display_attribute(resource, :contact) if resource.respond_to?(:contact) %>
 <%= display_attribute(resource, :keywords) { |values| values.join(', ') } %>
 
@@ -10,7 +10,7 @@
   <h4>Additional information</h4>
 <% end %>
 
-<% if resource.class.name.downcase == 'material' -%>
+<% if resource.is_a?(Material) %>
   <%= display_attribute(resource, :fields) { |values| values.join(', ') } %>
   <%= display_attribute(resource, :target_audience) { |values| values.map { |x| target_audience_title_for_label(x) }.join(', ') } %>
   <%= display_attribute(resource, :resource_type) { |values| values.map { |x| material_type_title_for_label(x) }.join(', ') } %>
@@ -26,7 +26,7 @@
   <%= display_attribute(resource, :date_published) %>
 <% end -%>
 
-<% if resource.class.name.downcase == 'event' -%>
+<% if resource.is_a?(Event) %>
   <%= display_attribute(resource, :venue) %>
   <%= display_attribute(resource, :city) %>
   <%= display_attribute(resource, :county) %>
