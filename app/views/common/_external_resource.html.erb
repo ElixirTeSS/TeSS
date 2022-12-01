@@ -1,28 +1,18 @@
-<div id="fairsharing-api-key" style="display: none;"><%= Rails.application.secrets.fairsharing_api_key -%></div>
-<% if external_resource.is_tool? or external_resource.is_fairsharing? %>
-    <% if external_resource.is_tool? -%>
-      <% api_uri = external_resource.api_url_of_tool %>
-    <% elsif external_resource.is_fairsharing? -%>
-        <% api_uri = external_resource.api_url_of_fairsharing %>
-    <% end -%>
-    <% id = Digest::SHA256.hexdigest external_resource.url %>
-<% end %>
-
+<% if external_resource.is_tool? -%>
+  <% api_uri = external_resource.api_url_of_tool %>
+<% end -%>
+<% id = Digest::SHA256.hexdigest external_resource.url %>
 
 <div class="col-md-12 col-sm-12 bounding-box" data-api_uri="<%=api_uri || nil%>" data-id="<%=id || nil%>">
   <%= link_to(external_resource.url, target: :_blank) do %>
-      <h4>
-        <i class="fa fa-external-link" id="<%=id%>-resource-type-icon"></i>
-        <%= external_resource.title %>
-        <% if external_resource.is_fairsharing? -%>
+    <h4>
+      <i class="fa fa-external-link" id="<%=id%>-resource-type-icon"></i>
+      <%= external_resource.title %>
+      <% if external_resource.is_fairsharing? -%>
         <img src="<%= image_url('fairsharing-logo.svg')-%>" class="pull-right" alt="Link to FAIRsharing" width="100px"/>
-        <% end -%>
-        <%= missing_icon(external_resource, 'medium') if current_user and current_user.is_admin? %>
-        <!--
-        <p>API URI: <%= api_uri -%></p>
-        <p>URL: <%= external_resource.url -%></p>
-        -->
-      </h4>
+      <% end -%>
+      <%= missing_icon(external_resource, 'medium') if current_user&.is_admin? %>
+    </h4>
   <% end %>
 
   <% if api_uri %>
@@ -36,13 +26,7 @@
 </div>
 
 <% if api_uri %>
-    <% if external_resource.is_fairsharing? -%>
-      <script>
-         Fairsharing.displayFullTool('<%=api_uri%>', '<%=id%>');
-      </script>
-    <% else -%>
-      <script>
-         Biotools.displayFullTool('<%=api_uri%>', '<%=id%>');
-      </script>
-    <% end -%>
+  <script>
+      Biotools.displayFullTool('<%=api_uri%>', '<%=id%>');
+  </script>
 <% end %>

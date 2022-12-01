@@ -38,8 +38,8 @@ module Fairsharing
       path = "/search/fairsharing_records"
       params = {
         'q': query,
-        'page[number]': page,
-        'page[size]': per_page,
+        'page[number]': page.to_i,
+        'page[size]': per_page.to_i,
       }
       params['fairsharing_registry'] = type unless type.nil? || type == 'any'
 

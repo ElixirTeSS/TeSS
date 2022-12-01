@@ -194,6 +194,8 @@ document.addEventListener("turbolinks:load", function() {
     });
 
     Nodes.init();
+
+    Fairsharing.init();
 });
 
 function truncateWithEllipses(text, max)
