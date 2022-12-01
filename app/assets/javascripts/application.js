@@ -196,6 +196,8 @@ document.addEventListener("turbolinks:load", function() {
     Nodes.init();
 
     Fairsharing.init();
+
+    Biotools.init();
 });
 
 function truncateWithEllipses(text, max)

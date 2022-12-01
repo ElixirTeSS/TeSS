@@ -39,41 +39,23 @@ var Biotools = {
             Biotools.displayTools(json);
         }, 'json');
     },
-    associateTool: function(event){
-        obj = $(event.target);
+    associateTool: function () {
+        var obj = $(this);
         ExternalResources.add(obj.data('title'), obj.data('url'));
-        obj.parent().parent().fadeOut();
+        obj.parents('#biotools-results div').fadeOut();
     },
     displayTools: function(json){
         var items = json.list;
         $.each(items, function (index, item) {
-            var url = Biotools.websiteBaseURL() + '/' + item.biotoolsID;
-            var types = '';
-            $.each(item.toolType, function(index, ttype){
-                types = types + '<span class="label label-info">' + ttype + '</span>\n';
-            });
-            $('#biotools-results').append('' +
-                '<div id="' + item.biotoolsID + '" class="col-md-12 col-sm-12 bounding-box" data-toggle=\"tooltip\" data-placement=\"top\" aria-hidden=\"true\" title=\"' + item.description + '\">' +
-                '<h4>' +
-                    '<i class="fa fa-wrench"></i> ' +
-                    '<a href="' + url + '">' +
-                        '<span class="title">' +
-                            item.name +
-                        '</span>' +
-                    '</a>' +
-                    ' <i id="' + item.biotoolsID + '" ' +
-                    'class="fa fa-plus-square-o associate-tool"/ ' +
-                    'title="click to associate ' + item.name + ' with this resource"' +
-                    'data-title="' + item.name + '" data-url="' + url + '"/>' +
-                '</h4>' +
-                '<p>' + types + '</p>' +
-                '<span>' + truncateWithEllipses(item.description, 600) + '</span>' +
-                    '<div class="external-links">' +
-                        '<a class="btn btn-warning" target="_blank" href="' + Biotools.websiteBaseURL() + '/' + item.id +'">' +
-                        'View ' + item.name + ' on bio.tools ' +
-                        '<i class="fa fa-external-link"/></a>' +
-                    '</div>' +
-                '</div>');
+            $('#biotools-results').append(HandlebarsTemplates['external_resources/search_result']({
+                name: item.name,
+                url: Biotools.websiteBaseURL() + '/' + item.biotoolsID,
+                description: item.description,
+                truncatedDescription: truncateWithEllipses(item.description, 200),
+                labels: item.toolType,
+                siteName: 'bio.tools',
+                iconClass: 'fa fa-wrench'
+            }));
         });
         $('#next-tools-button').attr('data-next', json.next);
     },
@@ -117,28 +99,26 @@ var Biotools = {
                 '<div>' +
                     '<a class="btn btn-success external-button" target="_blank" href="' + json_object.homepage +'">' +
                     'View the ' + json_object.name + ' homepage ' +
-                    '<i class="fa fa-external-link"/></a>' +
+                    '<i class="fa fa-external-link"></i></a>' +
                     '</a>' +
                     '<a class="btn btn-warning external-button" target="_blank" href="' + Biotools.websiteBaseURL() + '/' + json_object.biotoolsID +'">' +
                     'View ' + json_object.name + ' on bio.tools ' +
-                    '<i class="fa fa-external-link"/></a>' +
+                    '<i class="fa fa-external-link"></i></a>' +
                 '</div>'
             );
         }, 'json');
+    },
+
+    init: function () {
+        $('#next-tools-button').click(Biotools.nextPage);
+        $('#tool_query').keyup(Biotools.search);
+        $('#search_tools').click(Biotools.search);
+        $('#biotools-results').on('click', '.associate-tool', Biotools.associateTool);
+        $('#external-resources').on('change', '.delete-external-resource-btn input.destroy-attribute', ExternalResources.delete);
+
+        if ($('#tool_query').length) {
+            Biotools.titleElement().keyup(Biotools.copyTitleAndSearch);
+            Biotools.copyTitleAndSearch();
+        }
     }
 };
-
-document.addEventListener("turbolinks:load", function() {
-    $('#next-tools-button').click(Biotools.nextPage);
-    $('#tool_query').keyup(Biotools.search);
-    $('#search_tools').click(Biotools.search);
-    $('#biotools-results').on('click','.associate-tool', Biotools.associateTool);
-    $('#external-resources').on('change', '.delete-external-resource-btn input.destroy-attribute', ExternalResources.delete);
-
-    if ($('#tool_query').length) {
-        Biotools.titleElement().keyup(Biotools.copyTitleAndSearch);
-        Biotools.copyTitleAndSearch();
-    }
-});
-
-

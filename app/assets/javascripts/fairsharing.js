@@ -55,9 +55,9 @@ var Fairsharing = {
         });
     },
     associateTool: function(event){
-        var obj = $(event.target);
+        var obj = $(this);
         ExternalResources.add(obj.data('title'), obj.data('url'));
-        obj.parent().parent().fadeOut();
+        obj.parents('#fairsharing-results div').fadeOut();
     },
     displayRecords: function(json){
         $('#loading-spinner').hide();
@@ -81,33 +81,21 @@ var Fairsharing = {
             var metadata = attributes.metadata;
             var iconclass;
             if (attributes.fairsharing_registry === 'Policy') {
-                iconclass = "fa-institution";
+                iconclass = "fa fa-institution";
             } else if (attributes.fairsharing_registry === 'Database') {
-                iconclass = "fa-database";
+                iconclass = "fa fa-database";
             } else {
-                iconclass = "fa-list-alt";
+                iconclass = "fa fa-list-alt";
             }
-            $('#fairsharing-results').append('' +
-                '<div class="col-md-12 col-sm-12 bounding-box" data-toggle=\"tooltip\" data-placement=\"top\" aria-hidden=\"true\" title=\"' + metadata.description + '\">' +
-                '<h4>' +
-                '<i class="fa ' +  iconclass + '"></i> ' +
-                '<a href="' + attributes.url + '">' +
-                '<span class="title">' +
-                metadata.name +
-                '</span>' +
-                '</a>' +
-                ' <i ' +
-                'class="fa fa-plus-square-o associate-tool"/ ' +
-                'title="click to associate ' + metadata.name + ' with this resource"' +
-                'data-title="' + metadata.name + '" data-url="' + attributes.url + '"/></i>' +
-                '</h4>' +
-                '<span>' + truncateWithEllipses(metadata.description, 200)  + '</span>' +
-                '<div class="external-links">' +
-                '<a class="btn btn-warning" target="_blank" href="' + attributes.url +'">' +
-                'View ' + metadata.name + ' on FAIRsharing ' +
-                '<i class="fa fa-external-link"></i></a>' +
-                '</div>' +
-                '</div>');
+
+            $('#fairsharing-results').append(HandlebarsTemplates['external_resources/search_result']({
+                name: metadata.name,
+                url: attributes.url,
+                description: metadata.description,
+                truncatedDescription: truncateWithEllipses(metadata.description, 200),
+                siteName: 'FAIRsharing',
+                iconClass: iconclass
+            }));
         });
         $('#next-bs-button').attr('data-next', json.next);
     },
