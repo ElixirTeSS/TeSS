@@ -14,6 +14,7 @@ gem 'lunchy'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
+gem 'sassc-rails', '~> 2.1.2'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -32,7 +33,7 @@ gem "omniauth-rails_csrf_protection"
 gem 'devise_invitable', '~> 2.0.5'
 
 # Activity logging
-gem 'public_activity', '~> 1.6.4', git: 'https://github.com/chaps-io/public_activity', tag: 'v1.6.4'
+gem 'public_activity', '~> 1.6.4'
 
 gem 'simple_token_authentication', '~> 1.0'
 

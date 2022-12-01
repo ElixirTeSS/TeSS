@@ -22,4 +22,16 @@
         </p>
       </li>
   <% end %>
+  <li><h4 class="nav-heading">Owner</h4></li>
+  <li style="padding: 7px 20px;">
+    <%= link_to content_provider.user.name, content_provider.user %>
+  </li>
+  <% if content_provider.editors.any? %>
+    <li><h4 class="nav-heading"><%= ContentProvider.human_attribute_name(:editors) %></h4></li>
+    <% content_provider.editors.each do |editor| %>
+      <li style="padding: 7px 20px;">
+        <%= link_to editor.name, editor %>
+      </li>
+    <% end %>
+  <% end %>
 </ul>
