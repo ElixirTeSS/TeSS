@@ -12,24 +12,13 @@ var Fairsharing = {
         return $('input[name="bs_types[]"]:checked').val();
     },
     search: function(){
+        $('#fairsharing-results').empty();
         Fairsharing.queryAPI(Fairsharing.queryParameter(), 1, Fairsharing.typeParameter());
     },
     nextPage: function(){
-        var next = $('#fairsharing-next').text();
-        if (next){
+        var next = $(this).data('page');
+        if (next) {
             Fairsharing.queryAPI(Fairsharing.queryParameter(), next, Fairsharing.typeParameter());
-        } else {
-            /* display nice "we're out of stuff" message here */
-            // console.log("No next URL found!");
-        }
-    },
-    prevPage: function(){
-        var prev = $('#fairsharing-previous').text();
-        if (prev){
-            Fairsharing.queryAPI(Fairsharing.queryParameter(), prev, Fairsharing.typeParameter());
-        } else {
-            /* display nice "we're out of stuff" message here */
-            // console.log("We're out of stuff!");
         }
     },
     queryAPI: function(query, page, type) {
@@ -46,7 +35,7 @@ var Fairsharing = {
                 Fairsharing.displayRecords(result);
             },
             error: function (error) {
-                // console.log("Error querying FAIRsharing: " + JSON.stringify(error));
+                console.log("Error querying FAIRsharing: " + JSON.stringify(error));
             },
             complete: function () {
                 $('#fairsharing-loading-spinner').hide();
@@ -59,21 +48,6 @@ var Fairsharing = {
         obj.parents('#fairsharing-results div').fadeOut();
     },
     displayRecords: function(json){
-        $('#fairsharing-results').empty();
-        var previous = json.prev_page;
-        var next = json.next_page;
-        if (previous) {
-            $('#fairsharing-previous').text(previous);
-            $('#prev-bs-button').show();
-        } else {
-            $('#prev-bs-button').hide();
-        }
-        if (next) {
-            $('#fairsharing-next').text(next);
-            $('#next-bs-button').show();
-        } else {
-            $('#next-bs-button').hide();
-        }
         json.results.forEach(function (item) {
             var attributes = item.attributes;
             var metadata = attributes.metadata;
@@ -95,7 +69,12 @@ var Fairsharing = {
                 iconClass: iconclass
             }));
         });
-        $('#next-bs-button').attr('data-next', json.next);
+
+        if (json.next_page) {
+            $('#next-bs-button').data('page', json.next_page).show();
+        } else {
+            $('#next-bs-button').hide();
+        }
     },
     copyTitleAndSearch: function(){
         $('#fairsharing_query').val(Fairsharing.titleElement().val());
@@ -111,7 +90,6 @@ var Fairsharing = {
         }();
 
         $('#next-bs-button').click(Fairsharing.nextPage);
-        $('#prev-bs-button').click(Fairsharing.prevPage);
         $('#fairsharing_query').on({
             keyup: function () {
                 delay(function () {
@@ -132,4 +110,3 @@ var Fairsharing = {
         Fairsharing.titleElement().blur(Fairsharing.copyTitleAndSearch);
     }
 };
-
