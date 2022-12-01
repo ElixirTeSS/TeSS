@@ -12,13 +12,11 @@ var Fairsharing = {
         return $('input[name="bs_types[]"]:checked').val();
     },
     search: function(){
-        $('#loading-spinner').show();
         Fairsharing.queryAPI(Fairsharing.queryParameter(), 1, Fairsharing.typeParameter());
     },
     nextPage: function(){
         var next = $('#fairsharing-next').text();
         if (next){
-            $('#loading-spinner').show();
             Fairsharing.queryAPI(Fairsharing.queryParameter(), next, Fairsharing.typeParameter());
         } else {
             /* display nice "we're out of stuff" message here */
@@ -28,7 +26,6 @@ var Fairsharing = {
     prevPage: function(){
         var prev = $('#fairsharing-previous').text();
         if (prev){
-            $('#loading-spinner').show();
             Fairsharing.queryAPI(Fairsharing.queryParameter(), prev, Fairsharing.typeParameter());
         } else {
             /* display nice "we're out of stuff" message here */
@@ -36,7 +33,7 @@ var Fairsharing = {
         }
     },
     queryAPI: function(query, page, type) {
-        $('#loading-spinner').show();
+        $('#fairsharing-loading-spinner').show();
         var data = { query: query };
         data['page'] = page || 1;
         data['type'] = type || 'any';
@@ -46,11 +43,13 @@ var Fairsharing = {
             type: 'GET',
             dataType: 'json',
             success: function (result) {
-                $('#loading-spinner').hide();
                 Fairsharing.displayRecords(result);
             },
             error: function (error) {
                 // console.log("Error querying FAIRsharing: " + JSON.stringify(error));
+            },
+            complete: function () {
+                $('#fairsharing-loading-spinner').hide();
             }
         });
     },
@@ -60,7 +59,6 @@ var Fairsharing = {
         obj.parents('#fairsharing-results div').fadeOut();
     },
     displayRecords: function(json){
-        $('#loading-spinner').hide();
         $('#fairsharing-results').empty();
         var previous = json.prev_page;
         var next = json.next_page;
@@ -110,9 +108,8 @@ var Fairsharing = {
                 clearTimeout (timer);
                 timer = setTimeout(callback, ms);
             };
-        };
+        }();
 
-        $('#loading-spinner').hide();
         $('#next-bs-button').click(Fairsharing.nextPage);
         $('#prev-bs-button').click(Fairsharing.prevPage);
         $('#fairsharing_query').on({

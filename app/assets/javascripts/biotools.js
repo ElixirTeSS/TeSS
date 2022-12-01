@@ -35,9 +35,21 @@ var Biotools = {
         }
     },
     queryAPI: function(api_url){
-        $.get(api_url, function (json) {
-            Biotools.displayTools(json);
-        }, 'json');
+        $('#biotools-loading-spinner').show();
+        $.ajax({
+            url: api_url,
+            type: 'GET',
+            dataType: 'json',
+            success: function (result) {
+                Biotools.displayTools(result);
+            },
+            error: function (error) {
+                // console.log("Error querying FAIRsharing: " + JSON.stringify(error));
+            },
+            complete: function () {
+                $('#biotools-loading-spinner').hide();
+            }
+        });
     },
     associateTool: function () {
         var obj = $(this);
@@ -110,8 +122,29 @@ var Biotools = {
     },
 
     init: function () {
+        var delay = function () {
+            var timer = 0;
+            return function(callback, ms){
+                clearTimeout (timer);
+                timer = setTimeout(callback, ms);
+            };
+        }();
+
         $('#next-tools-button').click(Biotools.nextPage);
-        $('#tool_query').keyup(Biotools.search);
+        $('#tool_query').on({
+            keyup: function () {
+                delay(function () {
+                    Biotools.search();
+                }, 300);
+            },
+            keydown: function search(e) {
+                if (e.keyCode === 13) {
+                    Biotools.search();
+                    e.preventDefault();
+                    return false;
+                }
+            }
+        });
         $('#search_tools').click(Biotools.search);
         $('#biotools-results').on('click', '.associate-tool', Biotools.associateTool);
         $('#external-resources').on('change', '.delete-external-resource-btn input.destroy-attribute', ExternalResources.delete);
