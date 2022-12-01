@@ -218,4 +218,31 @@ class SourceTest < ActiveSupport::TestCase
       assert source.errors.empty?
     end
   end
+
+  test 'logging results of ingestion does not create any activities' do
+    source = sources(:first_source)
+    User.current_user = source.user
+
+    assert_no_difference('PublicActivity::Activity.count') do
+      source.records_read = 3
+      source.records_written = 2
+      source.resources_added = 1
+      source.resources_updated = 1
+      source.resources_rejected = 1
+      source.log = 'test'
+      source.finished_at = Time.now
+      source.save!
+    end
+  end
+
+  test 'changing source metadata does create activities' do
+    source = sources(:first_source)
+    User.current_user = source.user
+
+    assert_difference('PublicActivity::Activity.count', 2) do
+      source.url = 'https://icalendars.golf/calendar123.ical'
+      source.method = 'ical'
+      source.save!
+    end
+  end
 end

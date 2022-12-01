@@ -154,4 +154,9 @@ class Source < ApplicationRecord
       create_activity(:approval_status_changed, owner: User.current_user, parameters: { old: old, new: new })
     end
   end
+
+  def loggable_changes
+    super - %w[approval_status log records_read records_written resources_added resources_updated resources_rejected
+               finished_at]
+  end
 end
