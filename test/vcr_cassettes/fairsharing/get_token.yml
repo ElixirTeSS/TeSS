@@ -1,0 +1,85 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.fairsharing.org/users/sign_in
+    body:
+      encoding: UTF-8
+      string: '{"user":{"login":"tess-test-bot","password":"abc123"}}'
+    headers:
+      Accept:
+      - "*/*"
+      User-Agent:
+      - rest-client/2.1.0 (linux x86_64) ruby/3.0.4p208
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '69'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Host:
+      - api.fairsharing.org
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Status:
+      - 200 OK
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Vary:
+      - Accept
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Authorization:
+      - Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyMjIxMDlhMi0wZWZkLTQ0Y2EtYTYzOC1jNjFmMWZmNmQxYjAiLCJzdWIiOiI4MjI0Iiwic2NwIjoidXNlciIsImF1ZCI6bnVsbCwiaWF0IjoxNjY5OTEwODM4LCJleHAiOjE2Njk5OTcyMzh9.Dv_E6JiyRSrvoOZMHZeQLiEbqYnsTR0qkyrKyWWqb80
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Xss-Protection:
+      - '0'
+      Maintenance:
+      - 'false'
+      X-Request-Id:
+      - 003ed6cf-50d6-40ae-bba4-384f2596c97e
+      X-Download-Options:
+      - noopen
+      Etag:
+      - W/"3d1cc5f9065f0a201ab0b2695e6b6630"
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Runtime:
+      - '0.117308'
+      X-Content-Type-Options:
+      - nosniff
+      Read-Only:
+      - 'false'
+      Date:
+      - Thu, 01 Dec 2022 16:07:18 GMT
+      Set-Cookie:
+      - rack.session=BAh7BkkiD3Nlc3Npb25faWQGOgZFVG86HVJhY2s6OlNlc3Npb246OlNlc3Npb25JZAY6D0BwdWJsaWNfaWRJIkVkZWU1ZTNjYWM3YjJiN2ExZGNlZjA4ODA3ZjhhNmIxNjZmMDQyMDQxYzI5YzRjMWJmYWY5OGVlNDg0NzgzNzM2BjsARg%3D%3D--349bdfaf65b6f5a40bd422e5a376ddf719e2b5e3;
+        path=/; HttpOnly
+      X-Powered-By:
+      - Phusion Passenger(R) 6.0.15
+      Server:
+      - nginx + Phusion Passenger(R) 6.0.15
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, POST, PUT, DELETE, OPTIONS, HEAD
+      Access-Control-Allow-Headers:
+      - DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,X-Client-Id,Authorization,Access-Control-Allow-Origin
+      Access-Control-Expose-Headers:
+      - Content-Length,Content-Range,Maintenance,Read-Only
+    body:
+      encoding: UTF-8
+      string: '{"success":true,"jwt":"eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyMjIxMDlhMi0wZWZkLTQ0Y2EtYTYzOC1jNjFmMWZmNmQxYjAiLCJzdWIiOiI4MjI0Iiwic2NwIjoidXNlciIsImF1ZCI6bnVsbCwiaWF0IjoxNjY5OTEwODM4LCJleHAiOjE2Njk5OTcyMzh9.Dv_E6JiyRSrvoOZMHZeQLiEbqYnsTR0qkyrKyWWqb80","username":"tess-production-bot","id":8224,"role":"user","profile_type":"none","watched_records":[],"is_curator":false,"is_super_curator":false,"third_party":false,"expiry":1669997238,"message":"Authentication
+        successful"}'
+  recorded_at: Thu, 01 Dec 2022 16:07:18 GMT
+recorded_with: VCR 6.1.0
