@@ -40,6 +40,8 @@
       padding: 8px 16px 0px 8px;
       flex-shrink: 0;
 
+      transition: $transition-time;
+
       &:hover {
         opacity: 1;
       }
@@ -99,13 +101,37 @@ ul.catalogue {
     padding: 0 12px;
     min-width: 250px;
 
-    border: 1px solid rgba(36, 37, 38, 0.2);
-    box-shadow: 0px 6px 10px rgba(36, 37, 38, 0.03);
-    border-radius: 8px;
+    //border: 1px solid rgba(36, 37, 38, 0.2);
+    //box-shadow: 0px 6px 10px rgba(36, 37, 38, 0.03);
+    //border-radius: 8px;
 
-    padding: 38px;
+    //padding: 38px;
     gap: 15px;
     margin: 15px;
+
+    .pseudolink {
+      color: $accent-color;
+      text-decoration: underline;
+    }
+
+    .link-overlay {
+      text-decoration: none;
+      color: $dark-color;
+      border: 1px solid rgba(36, 37, 38, 0.2);
+      box-shadow: 0px 6px 10px rgba(36, 37, 38, 0.03);
+      border-radius: 8px;
+      padding: 38px;
+      display: block;
+      transition: $transition-time;
+
+      &:hover, &:focus {
+        text-decoration: none;
+        color: $dark-color;
+        background-color: #e8f3f6;
+        border: 1px solid #e8f3f6;
+        box-shadow: none;
+      }
+    }
 
     @media (max-width: $screen-md-min) {
       width: 85%;
@@ -134,7 +160,14 @@ dl.faq {
     border: 1px solid rgba(36, 37, 38, 0.2);
     box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.03);
     border-radius: 8px;
-    padding: 10px 30px 20px;
+    padding: 5px 30px 20px;
+
+    &.opened {
+      border: 1px solid $secondary-color;
+      dt {
+        color: $secondary-color;
+      }
+    }
 
     dt {
       .expand {
@@ -228,6 +261,7 @@ ul.featureblocks {
           width: 150px;
           height: 150px;
           box-shadow: 0px 6px 10px rgba(36, 37, 38, 0.03);
+          border: 1px solid #fff;
           border-radius: 150px;
           margin: 15px;
           background-color: white;
@@ -235,6 +269,12 @@ ul.featureblocks {
           display: flex;
           align-items: center;
           justify-content: center;
+
+          &:hover, &:focus {
+            background-color: #e8f3f6;
+            border: 1px solid #e8f3f6;
+            box-shadow: none;
+          }
 
           img {
             width: 100px;
@@ -273,6 +313,6 @@ ul.featureblocks {
 
   .carousel-control.right, .carousel-control.left {
     background-image: none;
+    width: 30px;
   }
 }
-

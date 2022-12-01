@@ -39,12 +39,12 @@ function toggleDefinition(el) {
     var sign = $(el).html();
 
     if (sign === '+') {
-        $(el).parent().addClass('text-primary');
+        $(el).parent().parent().parent().addClass('opened');
         $(el).text('–')
         $(el).parent().parent().next().show(300);
     } else {
         $(el).text('+')
-        $(el).parent().removeClass('text-primary');
+        $(el).parent().parent().parent().removeClass('opened');
         $(el).parent().parent().next().hide(300);
     }
 }

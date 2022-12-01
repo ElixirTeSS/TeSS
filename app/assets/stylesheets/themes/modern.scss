@@ -10,6 +10,8 @@ $primary-color: #023452;
 $secondary-color: #047EAA;
 $accent-color: #F47D21;
 
+
+
 $dark-color: #242526;
 $dark-60-color: rgba(36, 37, 38, 0.6);
 $dark-30-color: rgba(36, 37, 38, 0.3);
@@ -21,9 +23,9 @@ $light-30-color: rgba(244, 247, 251, 0.3);
 $light-05-color: rgba(244, 247, 251, 0.05);
 
 // Font sizes
-$font-size-base: 16px;
-$font-size-large: 20px;
-$font-size-small: 12px;
+$font-size-base: 20px;
+$font-size-large: 22px;
+$font-size-small: 16px;
 
 // Extended font sizes
 $font-size-xs: 8px;
@@ -48,7 +50,7 @@ $footer-border-radius: 50px;
 $footer-padding-top: 75px;
 
 // TODO: check whether it's used somewhere
-$brand-primary:  #047EAA;
+//$brand-primary:  #047EAA;
 
 $padding-base-vertical:     10px;
 $padding-base-horizontal:   15px;
@@ -63,3 +65,13 @@ $breadcrumb-active-color: $dark-color !default;
 $link-color: $accent-color;
 $link-hover-color: darken(rgb(244, 125, 33), 15%);
 
+// buttons
+$btn-default-color: $accent-color;
+$btn-default-bg: transparent;
+$btn-default-border: $accent-color;
+
+
+$transition-time: 300ms;
+
+
+// for reference check https://github.com/pkp/bootstrap3/blob/main/bootstrap/less/variables.less

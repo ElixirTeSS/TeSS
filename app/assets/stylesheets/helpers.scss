@@ -29,6 +29,16 @@
   margin: 0 !important;
 }
 
+.no-link {
+  text-decoration: none;
+  color: inherit;
+
+  &:hover, &:active {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
 .m-0 {
   margin: 0 !important;
 }

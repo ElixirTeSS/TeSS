@@ -70,10 +70,13 @@ section {
 }
 
 a.btn-icon {
+  transition: 0s;
   &:hover {
-    filter: brightness(90%);
+    // this filter gives $secondary-color
+    filter: brightness(0) saturate(100%) invert(28%) sepia(93%) saturate(1217%) hue-rotate(168deg) brightness(102%) contrast(97%);
   }
   &:active {
+    filter: brightness(0) saturate(100%) invert(28%) sepia(93%) saturate(1217%) hue-rotate(168deg) brightness(102%) contrast(97%);
     -webkit-box-shadow: none;
     box-shadow: none;
   }
@@ -114,7 +117,7 @@ div.wrapper {
   width: 280px;
   padding: 0;
   padding-top: 50px;
-  padding-left: 8px;
+  margin-right: 100px;
   flex-shrink: 0;
 
   .sidebar-group {
@@ -167,6 +170,21 @@ div.wrapper {
     padding: 3px;
     text-decoration: none;
   }
+}
+
+.facet-sort-wrap {
+  position: relative;
+  margin-bottom: 80px;
+}
+
+.facet-sort {
+  padding-left: 36px;
+}
+
+.facet-sort-icon {
+  position: absolute;
+  top: 10px;
+  left: 10px;
 }
 
 .facet-select {
@@ -276,13 +294,14 @@ ul.unstyled {
 .nav-item {
   padding: 7px 20px;
   width: 100%;
+  font-size: $font-size-small;
 }
 
 .nav-item > a {
   position: relative;
   display: block;
   color: #333;
-  padding: 7px 20px;
+  padding: 7px 20px 7px 20px;
   text-decoration: none;
 }
 
@@ -293,7 +312,8 @@ ul.unstyled {
 
 .nav-item.active > a {
   position: relative;
-  color: $secondary-color
+  color: $secondary-color;
+  background-color: #eee;
 }
 
 
@@ -585,6 +605,8 @@ sup {
       padding: 8px 8px 0px 8px;
       flex-shrink: 0;
 
+      transition: $transition-time;
+
       &:hover {
         opacity: 1;
       }
@@ -703,7 +725,7 @@ sup {
 }
 
 .btn-elixir {
-  @include button-variant(white, #f47d20, white);
+  @include button-variant($light-color, $accent-color, $light-color);
 
   background-image: image-url('elixir_white_small.png');
   background-repeat: no-repeat;
@@ -711,10 +733,6 @@ sup {
   padding-left: 32px;
   cursor: pointer;
   vertical-align: middle;
-}
-
-.btn-primary {
-  @include button-variant($light-color, $accent-color, $light-color);
 }
 
 div.legal-block {
@@ -995,8 +1013,6 @@ input[type=checkbox].field-lock + label:before,
 }
 
 .masonry-brick {
-  padding: 30px;
-
   .masonry-brick-heading {
     display: block;
     padding: 5px 0;
@@ -1005,6 +1021,8 @@ input[type=checkbox].field-lock + label:before,
     line-height: 1.3;
     color: $primary-color;
   }
+
+  margin-bottom: 20px;
 }
 
 .header-notice {
@@ -1072,5 +1090,15 @@ input[type=checkbox].field-lock + label:before,
   iframe {
     display: block;
     margin: auto;
+  }
+}
+
+.expand-filters {
+  text-align: right;
+  padding: 7px 20px 7px 20px !important;
+  a {
+    font-size: $font-size-small;
+    color: $dark-60-color !important;
+    cursor: pointer;
   }
 }

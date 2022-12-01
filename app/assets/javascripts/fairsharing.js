@@ -168,17 +168,17 @@ var Fairsharing = {
                         '</span>'
                     );
                 });
-                $('#' + id + '-external-links').append(
-                    '<div>' +
-                        '<a class="btn btn-success external-button" target="_blank" href="' + json_object.homepage +'">' +
-                        'View the ' + json_object.name + ' homepage ' +
-                        '<i class="fa fa-external-link"/></a>' +
-                        '</a>' +
-                        '<a class="btn btn-warning external-button" target="_blank" href="' + Fairsharing.websiteBaseURL() + '/' + json_object[json_key] +'">' +
-                        'View ' + json_object.name + ' on FAIRsharing ' +
-                        '<i class="fa fa-external-link"/></a>' +
-                    '</div>'
-                );
+                // $('#' + id + '-external-links').append(
+                //     '<div>' +
+                //         '<a class="btn btn-success external-button" target="_blank" href="' + json_object.homepage +'">' +
+                //         'View the ' + json_object.name + ' homepage ' +
+                //         '<i class="fa fa-external-link"/></a>' +
+                //         '</a>' +
+                //         '<a class="btn btn-warning external-button" target="_blank" href="' + Fairsharing.websiteBaseURL() + '/' + json_object[json_key] +'">' +
+                //         'View ' + json_object.name + ' on FAIRsharing ' +
+                //         '<i class="fa fa-external-link"/></a>' +
+                //     '</div>'
+                // );
             },
             error: function (error) {
                 // console.log("Error querying FAIRsharing: " + error);

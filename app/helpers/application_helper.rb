@@ -267,7 +267,7 @@ module ApplicationHelper
     content_tag(:a, tabindex: 0, class: classes,
                data: { toggle: 'popover', placement: 'bottom', trigger: 'focus click',
                        title: title, html: true, content: capture(&block) }) do
-      "<i class='fa fa-info-circle'></i> <span class='hidden-xs'>#{title}</span>".html_safe
+      "<i class='icon icon-md info-icon'></i> <span class='hidden-xs'>#{title}</span>".html_safe
     end
   end
 
@@ -353,10 +353,10 @@ module ApplicationHelper
   ActionView::Helpers::FormBuilder.class_eval do
     def markdown_area(name, options = {})
       text_area(name, options) +
-        @template.content_tag(:p, class: 'help-block text-right') do
-          @template.image_tag('markdown_logo.png', width: 18) +
-            ' This field supports markdown, ' +
-            @template.link_to('click here for a reference on markdown syntax.',
+        @template.content_tag(:p, class: 'help-block') do
+          @template.image_tag('markdown_logo.png', width: 0) +
+            'This field supports markdown. Read more on ' +
+            @template.link_to('markdown syntax',
                               'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet', target: '_blank')
         end
     end
@@ -365,7 +365,7 @@ module ApplicationHelper
       field_name = "#{object.class.name.downcase}[locked_fields][]"
       field_id = "#{object.class.name.downcase}_locked_fields_#{name}"
       @template.check_box_tag(field_name, name.to_s, object.field_locked?(name), id: field_id, class: 'field-lock') +
-        @template.label_tag(field_id, '', title: 'Lock this field to prevent it being overwritten when automated scrapers are run')
+        @template.label_tag(field_id, '', class: 'field-lock-label', title: 'Lock this field to prevent it being overwritten when automated scrapers are run')
     end
 
     def dropdown(name, options = {})

@@ -10,7 +10,9 @@
 <% if facet_rows.any? %>
   <%# Title %>
   <li>
-    <h4 class="nav-heading filter-heading"><span class="icon icon-lg icon-greyscale filter-icon"></span>
+    <div class="nav-heading filter-heading"><span class="icon icon-md filter-icon"></span>
+
+      <span>
       <%= case facet_field
           when 'user'
             'Owner'
@@ -19,23 +21,31 @@
           else
             facet_field.humanize.singularize
           end -%>
+      </span>
 
       <div class="pull-right filter-expand"><i class="icon icon-md expand-icon"></i></div>
-    </h4>
+    </div>
   </li>
 
-  <%# Display all filter links %>
+    <%# Display all filter links - active first %>
+    <% facet_rows.each_with_index do |facet, index| %>
+      <%# if there's a facet already selected %>
+      <% if @facet_params.include?(facet_field) && Array.wrap(@facet_params[facet_field]).include?(facet.value.to_s) %>
+        <li class="nav-item active
+        <% if index >= 0 -%><%= facet_field -%>-expanding
+        <% end -%>"
+            <% if index >= 0 -%>style="display: none;"
+            <% end -%>
+            >
+          <%= remove_filter_link(facet_field, facet.value.to_s) %>
+        </li>
+      <% end %>
+    <% end %>
+
+  <%# Display all other filter links %>
   <% facet_rows.each_with_index do |facet, index| %>
     <%# if there's a facet already selected %>
     <% if @facet_params.include?(facet_field) && Array.wrap(@facet_params[facet_field]).include?(facet.value.to_s) %>
-      <li class="nav-item active
-        <% if index >= 0 -%><%= facet_field -%>-expanding
-        <% end -%>"
-          <% if index >= 0 -%>style="display: none;"
-      <% end -%>
-      >
-        <%= remove_filter_link(facet_field, facet.value.to_s) %>
-      </li>
     <% else %>
       <li class="nav-item
         <% if index >= 0 -%><%= facet_field -%>-expanding
@@ -47,12 +57,9 @@
     <% end %>
   <% end %>
 
-  <%# Display 'show/hide facet' link %>
-  <% unless resources.facet(facet_field).rows.count <= max_display %>
-    <li class="nav-item" style="padding: 10px 7px 10px 7px;"
-        onClick="toggleFacets('<%= facet_field -%>')">
-      <%= toggle_hidden_facet_link(facet_field) %>
+    <li class="expand-filters" style="display:none;">
+      <a href="#">Show N_FILTERS more</a>
     </li>
-  <% end %>
+
 <% end %>
 </div>

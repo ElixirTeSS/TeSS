@@ -1,9 +1,13 @@
-<li class="masonry-brick media-item ">
-  <div class="masonry-brick-heading">
-    <h4>
-      <%= title_with_privacy(workflow) %>
-    </h4>
+<li class="masonry-brick media-item long">
+  <a class="link-overlay" href="<%= workflow_path(workflow) %>">
+
+  <div>
+    <div class="masonry-brick-heading">
+      <h4>
+        <%= title_with_privacy(workflow) %>
+      </h4>
+    </div>
+    <p><%= render_markdown(truncate(workflow.description, length: 300, separator: ' ')) %></p>
   </div>
-  <p><%= render_markdown(truncate(workflow.description, length: 300, separator: ' ')) %></p>
-  <%= link_to '', workflow, :class=>"media-view"%>
+  </a>
 </li>

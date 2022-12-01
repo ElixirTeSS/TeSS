@@ -1,24 +1,28 @@
 <% cache(content_provider, expires_in: 6.hours) do %>
-  <li class="masonry-brick media-item ">
-    <%= image_tag content_provider.image.url, class: "media-image listing_image" %>
+  <li class="masonry-brick media-item long">
+    <a href="<%= content_provider_path(content_provider) %>" class="link-overlay">
 
-    <h4 class="mb-2 mt-3"><%= content_provider.title %></h4>
-    <p><%= truncate(content_provider.description, length: 100, separator: ' ') %></p>
+      <%= image_tag content_provider.image.url, class: "media-image listing_image" %>
 
-    <% if content_provider.materials.length > 0 %>
-      <div><strong><%= pluralize(content_provider.materials.length, 'training material') %></strong></div>
-    <% end %>
+      <h4 class="mb-2 mt-3"><%= content_provider.title %></h4>
+      <p><%= truncate(content_provider.description, length: 100, separator: ' ') %></p>
 
-    <% if content_provider.events.length > 0 %>
-      <div>
-        <strong><%= pluralize(content_provider.events.not_finished.length, 'event') %></strong>
-        <em>(<%= pluralize(content_provider.events.finished.length, 'past event') %>)</em>
-      </div>
-    <% end %>
+      <% if content_provider.materials.length > 0 %>
+        <div><strong><%= pluralize(content_provider.materials.length, 'training material') %></strong></div>
+      <% end %>
 
-    <%= link_to '', content_provider, :class => "media-view" %>
+      <% if content_provider.events.length > 0 %>
+        <div>
+          <strong><%= pluralize(content_provider.events.not_finished.length, 'event') %></strong>
+          <em>(<%= pluralize(content_provider.events.finished.length, 'past event') %>)</em>
+        </div>
+      <% end %>
 
-    <%= render partial: 'content_providers/partials/content_provider_schemaorg',
-               locals: { content_provider: content_provider } %>
+      <%#= link_to '', content_provider, :class => "media-view" %>
+
+      <%= render partial: 'content_providers/partials/content_provider_schemaorg',
+                 locals: { content_provider: content_provider } %>
+
+    </a>
   </li>
 <% end %>

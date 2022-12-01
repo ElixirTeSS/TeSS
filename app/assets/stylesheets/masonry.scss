@@ -33,13 +33,11 @@
     width: 95%;
   }
 
-  padding: 10px;
-  margin: 10px 0 0 10px;
   background-color: white;
 }
 
 .media-item.long {
-  width: 90%;
+  width: 100%;
 }
 
 .media-item span.count {
@@ -67,6 +65,25 @@
 
 .media-item:hover .media-edit {
   opacity: 1;
+}
+
+.link-overlay {
+  text-decoration: none;
+  color: $dark-color;
+  border: 1px solid rgba(36, 37, 38, 0.2);
+  box-shadow: 0px 6px 10px rgba(36, 37, 38, 0.03);
+  border-radius: 8px;
+  padding: 38px;
+  display: block;
+  transition: $transition-time;
+
+  &:hover, &:focus {
+    text-decoration: none;
+    color: $dark-color;
+    background-color: #e8f3f6;
+    border: 1px solid #e8f3f6;
+    box-shadow: none;
+  }
 }
 
 li.media-item {

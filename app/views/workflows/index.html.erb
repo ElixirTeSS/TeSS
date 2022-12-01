@@ -1,19 +1,25 @@
 <div class="wrapper">
 
+  <% if TeSS::Config.solr_enabled %>
+    <div id="sidebar" class="popout-sidebar">
+      <div class="row">
+        <%= render partial: "search/common/facet_sidebar", locals: {resources: @workflows_results, resource_type: Workflow} %>
+      </div>
+    </div>
+  <% end %>
+
   <div id="content">
     <div class="row">
 
       <h2>Workflows</h2>
     </div>
     <div class="row">
-      <%= link_to new_workflow_path, class: 'btn btn-primary' do %>
-        <i class="fa fa-plus-square"></i> Create workflow
+      <%= link_to new_workflow_path, class: 'btn btn-default' do %>
+        Create workflow
       <% end %>
-      <div class="pull-right">
-        <%= info_button("What are workflows in #{TeSS::Config.site['title_short']}?") do %>
+        <%= info_button("") do %>
             <%= render_markdown(WorkflowsHelper::WORKFLOWS_INFO) %>
         <% end %>
-      </div>
     </div>
 
 
@@ -32,19 +38,11 @@
 
     <%= render partial: "search/common/pagination_bar", locals: { resources: @workflows } %>
 
-    <hr>
-
     <%= render partial: 'common/masonry_grid', locals: { objects: @workflows } %>
 
     <%= render partial: "search/common/pagination_bar", locals: { resources: @workflows } %>
   </div>
 
-  <% if TeSS::Config.solr_enabled %>
-    <div id="sidebar" class="popout-sidebar">
-      <div class="row">
-      <%= render partial: "search/common/facet_sidebar", locals: {resources: @workflows_results, resource_type: Workflow} %>
-      </div>
-    </div>
-  <% end %>
+
 
 </div>

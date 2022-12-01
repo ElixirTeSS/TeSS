@@ -33,10 +33,12 @@
 
     li {
       a {
-        color: $dark-color;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        text-decoration: none;
+        &:not(.btn) {
+          color: $dark-color;
+          padding-top: 10px;
+          padding-bottom: 10px;
+          text-decoration: none;
+        }
 
         &:hover {
           color: $accent-color;
@@ -50,25 +52,6 @@
     .btn {
       margin-left:5px;
       margin-right: 5px;
-    }
-    a.btn-primary {
-      color: #F4F7FB;
-      background-color: #F47D21;
-      border-color: #F4F7FB;
-
-      &:hover {
-        color: #F4F7FB;
-        background-color: #d7640b;
-        border-color: #c7d6eb;
-      }
-    }
-    a.btn-default {
-      color: #F47D21;
-      border-color:  #F47D21;
-
-      &:hover {
-        filter: brightness(90%);
-      }
     }
     a.btn-icon {
       padding: 5px 0;

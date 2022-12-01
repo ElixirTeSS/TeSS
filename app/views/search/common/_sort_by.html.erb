@@ -22,11 +22,13 @@ e.g.
 
 <div class="sidebar-group">
 <ul class="unstyled nav-simple">
-  <li><h4 class="nav-heading"><span class="icon icon-lg icon-greyscale sort-icon"></span> Sort</h4></li>
+  <li><h3 class="nav-heading">Sort</h3></li>
 
+  <li class="facet-sort-wrap"><span class="icon icon-lg sort-icon facet-sort-icon" style="position: absolute"></span>
         <%= select_tag(:sort, options_for_select(
             options, @sort_by),
-                       :onchange => "redirect_to_sort_url()", :class => "form-control facet-select")
+                       :onchange => "redirect_to_sort_url()", :class => "form-control facet-select font-size-sm facet-sort")
         %>
+  </li>
 </ul>
 </div>

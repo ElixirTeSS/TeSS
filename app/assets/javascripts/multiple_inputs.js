@@ -11,6 +11,8 @@
  * Creates a new input box for free text fields as a child of the field_name div
  */
 
+// FIXME: check if there are no inputs left and show the button to add one?
+
 document.addEventListener("turbolinks:load", function() {
     // Multi-inputs ("app/views/common/multiple_inputs.html.erb")
     $('[data-role="multi-input"]').each(function () {

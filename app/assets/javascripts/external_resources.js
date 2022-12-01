@@ -31,6 +31,7 @@ var ExternalResources = {
 };
 
 document.addEventListener("turbolinks:load", function() {
+
     $('#external-resources')
         .on('click', '#add-external-resource-btn', ExternalResources.add)
         .on('change', '.delete-external-resource-btn input.destroy-attribute', ExternalResources.delete);

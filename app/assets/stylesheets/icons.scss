@@ -3,6 +3,7 @@
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
+  vertical-align: center;
 }
 
 .icon-xxs {
@@ -212,4 +213,8 @@
 
 .collapse-icon {
   background-image: image-url("modern/icons/collapse-icon.svg");
+}
+
+.info-icon {
+  background-image: image-url("modern/icons/info-icon.svg");
 }

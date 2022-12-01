@@ -1,4 +1,9 @@
 <div class="wrapper collapsing-wrapper">
+  <%# SIDEBAR %>
+  <div class="collapsing-sidebar" id="sidebar">
+    <%= render :partial => "nodes/partials/node_info", :locals => {:node => @node} %>
+  </div>
+
   <div id="content">
     <div class="row">
       <div>
@@ -91,8 +96,4 @@
     </div>
   </div>
 
-  <%# SIDEBAR %>
-  <div class="collapsing-sidebar" id="sidebar">
-    <%= render :partial => "nodes/partials/node_info", :locals => {:node => @node} %>
-  </div>
 </div>

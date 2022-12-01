@@ -11,7 +11,7 @@
 
 <div class="col-md-12 col-sm-12 bounding-box" data-api_uri="<%=api_uri || nil%>" data-id="<%=id || nil%>">
   <%= link_to(external_resource.url, target: :_blank) do %>
-      <h4>
+      <h5>
         <i class="fa fa-external-link" id="<%=id%>-resource-type-icon"></i>
         <%= external_resource.title %>
         <% if external_resource.is_fairsharing? -%>
@@ -22,7 +22,7 @@
         <p>API URI: <%= api_uri -%></p>
         <p>URL: <%= external_resource.url -%></p>
         -->
-      </h4>
+      </h5>
   <% end %>
 
   <% if api_uri %>

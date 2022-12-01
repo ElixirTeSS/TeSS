@@ -1,5 +1,5 @@
 <div class="sidebar-group mt-4">
-  <li><h4 class="nav-heading"><span class="icon icon-lg icon-greyscale events-icon"></span></span> Date added</h4></li>
+  <li><div class="nav-heading"><span class="icon icon-lg events-icon"></span></span> Date added</div></li>
   <%
     selected = nil
     opts = [[nil, '']]
@@ -23,7 +23,7 @@
     blank_params.delete(:max_age)
   %>
 
-    <%= select_tag 'max_age', options_for_select(opts, selected), id: 'max-age-select', class: 'form-control facet-select' %>
+    <%= select_tag 'max_age', options_for_select(opts, selected), id: 'max-age-select', class: 'form-control facet-select font-size-sm' %>
 </div>
 
 <script>

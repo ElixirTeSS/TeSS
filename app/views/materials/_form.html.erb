@@ -8,7 +8,7 @@
   <% # Required Fields    -%>
 
   <!-- Field: Title -->
-  <%= f.input :title, as: :string, field_lock: true, input_html: { title: t('materials.hints.title') } %>
+  <%= f.input :title, as: :string, field_lock: true, input_html: { title: t('materials.hints.title'), placeholder: t('materials.hints.title') } %>
 
   <!-- Field: URL -->
   <%= render partial: 'common/url_checker',
@@ -17,6 +17,20 @@
   <!-- Field: Description -->
   <%= f.input :description, as: :markdown_area, field_lock: true, label: 'Description',
               input_html: { rows: '5', title: t('materials.hints.description') } %>
+
+  <hr />
+
+  <!-- Field: Resource Type -->
+  <%= f.multi_input :resource_type, label: 'Resource types', errors: @material.errors[:material_types],
+                    title: t('events.hints.type') %>
+
+  <!-- Field: Scientific Topics -->
+  <% if !TeSS::Config.feature['disabled'].include? 'topics' %>
+    <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term',
+                        id_field: :uri, label_field: :preferred_label %>
+  <% end %>
+
+  <hr>
 
   <!-- Field: Keywords -->
   <%= f.multi_input :keywords, title: t('materials.hints.keywords') %>
@@ -49,13 +63,6 @@
   <!-- Field: Contributors -->
   <%= f.multi_input :contributors, suggestions: people_suggestions, title: t('materials.hints.contributors') %>
 
-  <!-- Field: Events -->
-  <%= f.autocompleter :events, input_html: { title: t('materials.hints.events') },
-                                             url: events_path(include_expired: true, sort: 'late'),
-                                             group_by: 'group',
-                                             transform_function: 'events'
-  %>
-
   <!-- Field: Target Audience -->
   <%= f.multi_input :target_audience, label: 'Target audiences', errors: @material.errors[:target_audience],
                     title: t('events.hints.targets') %>
@@ -76,24 +83,10 @@
   <!-- Field: Date Created -->
   <%= f.input :date_created, as: :date_picker, field_lock: true, input_html: { title: t('materials.hints.date_created') } %>
 
-  <!-- Field: Fields -->
-  <% if !TeSS::Config.feature['disabled'].include? 'ardc_fields_of_research' %>
-    <%= render partial: 'common/ardc_vocab_tree',
-               locals: { f: f,
-                         resource: @material,
-                         field_name: 'fields',
-                         field_label: 'Fields of Research',
-                         button_label: 'FoR Codes',
-                         title: t('materials.hints.fields') } %>
-  <% end %>
 
   <!-- Field: Dates -->
   <%= f.input :date_modified, as: :date_picker, field_lock: true, input_html: { title: t('materials.hints.date_modified') } %>
   <%= f.input :date_published, as: :date_picker, field_lock: true, input_html: { title: t('materials.hints.date_published') } %>
-
-  <!-- Field: Resource Type -->
-  <%= f.multi_input :resource_type, label: 'Resource types', errors: @material.errors[:resource_type],
-                    title: t('materials.hints.resource_type') %>
 
   <!-- Field: Other Types -->
   <% if !TeSS::Config.feature['disabled'].include? 'other_types' %>
@@ -105,16 +98,31 @@
     <%= f.multi_input :subsets, title: t('materials.hints.subsets') %>
   <% end %>
 
-  <!-- Field: Scientific Topics -->
-  <% if !TeSS::Config.feature['disabled'].include? 'topics' %>
-    <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term',
-                        id_field: :uri, label_field: :preferred_label %>
-  <% end %>
 
   <!-- Field: Syllabus -->
   <% if !TeSS::Config.feature['disabled'].include? 'syllabus' %>
     <%= f.input :syllabus, as: :markdown_area, field_lock: true,
                 input_html: { rows: '3', title: t('materials.hints.syllabus') } %>
+  <% end %>
+
+  <!-- Nodes: check feature enabled -->
+  <% if TeSS::Config.feature['nodes'] %>
+    <%= f.dropdown :node_ids, options: format_for_dropdown(Node.order(:name).all), label: 'Nodes' %>
+  <% end %>
+
+  <hr />
+
+  <!-- Field: Events -->
+  <%= f.autocompleter :events, input_html: { title: t('materials.hints.events') },
+                      url: events_path(include_expired: true, sort: 'late'),
+                      group_by: 'group',
+                      transform_function: 'events'
+  %>
+
+  <!-- Operations: check disabled -->
+  <% if !TeSS::Config.feature['disabled'].include? 'operations' %>
+    <%= f.autocompleter :operations, url: edam_operations_path, template: 'autocompleter/term',
+                        id_field: :uri, label_field: :preferred_label %>
   <% end %>
 
   <!-- Field: External Resources -->
@@ -131,38 +139,40 @@
 
     <!-- Fairshare: check disabled -->
     <% if !TeSS::Config.feature['disabled'].include? 'fairshare' %>
-      <div class="row">
+<!--      <div class="row">-->
         <%= render :partial => 'common/fairsharing_suggestions', :locals => { :title_element => 'material_title' } %>
-      </div>
+<!--      </div>-->
     <% end %>
 
     <!-- BioTools: check disabled -->
     <% if !TeSS::Config.feature['disabled'].include? 'biotools' %>
-      <div class="row">
+<!--      <div class="row">-->
         <%= render :partial => 'common/biotools_suggestions', :locals => { :title_element => 'material_title' } %>
-      </div>
+<!--      </div>-->
     <% end %>
 
-    <a href="#" id="add-external-resource-btn" class="btn btn-info">
-      <i class="fa fa-plus"></i> Add external resource
+    <a href="#" id="add-external-resource-btn" class="btn btn-icon">
+      <i class="icon icon-h4 plus-icon"></i>
     </a>
+    <span class="help-inline-block">Add manually if no results are found</span>
   </div>
 
-  <!-- Nodes: check feature enabled -->
-  <% if TeSS::Config.feature['nodes'] %>
-    <%= f.dropdown :node_ids, options: format_for_dropdown(Node.order(:name).all), label: 'Nodes' %>
+  <!-- Field: Fields -->
+  <% if !TeSS::Config.feature['disabled'].include? 'ardc_fields_of_research' %>
+    <%= render partial: 'common/ardc_vocab_tree',
+               locals: { f: f,
+                         resource: @material,
+                         field_name: 'fields',
+                         field_label: 'Fields of Research',
+                         button_label: 'FoR Codes',
+                         title: t('materials.hints.fields') } %>
   <% end %>
 
-  <!-- Operations: check disabled -->
-  <% if !TeSS::Config.feature['disabled'].include? 'operations' %>
-    <%= f.autocompleter :operations, url: edam_operations_path, template: 'autocompleter/term',
-                        id_field: :uri, label_field: :preferred_label %>
-  <% end %>
-
+  <hr>
   <!-- Form Buttons -->
   <div class="form-group">
-    <%= f.submit (f.object.new_record? ? "Register" : "Update") + " training material", :class => 'btn btn-primary' %>
-    <%= link_to 'Back', :back, :class => "btn btn-info" %>
+    <%= f.submit (f.object.new_record? ? "Register" : "Update") + " training material", :class => 'btn btn-primary mr-2' %>
+    <%= link_to 'Back', :back, :class => "btn btn-default mr-2" %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                 materials_path, :class => 'btn btn-default' %>
   </div>

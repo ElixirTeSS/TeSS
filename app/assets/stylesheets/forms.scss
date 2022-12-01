@@ -1,0 +1,169 @@
+.modern-form {
+  .page-header {
+    margin-bottom: 100px;
+  }
+
+  .col-md-8 {
+    padding: 0;
+  }
+
+  .field-lock, .field-lock-label {
+    // FIXME: hide lock buttons temporarily
+    display: none;
+  }
+
+  abbr {
+    text-decoration: none;
+  }
+
+  .input-group-btn {
+    .btn {
+      padding: 16px;
+    }
+  }
+
+  .panel-default .panel-title {
+    font-size: $font-size-small;
+  }
+
+  .bs-type-selectors {
+    ul {
+      padding-inline-start: 0px;
+      font-size: $font-size-small;
+    }
+  }
+
+  .tool-suggestions-header {
+    font-size: $font-size-small;
+    color: $dark-color;
+    //margin-bottom: 0;
+  }
+
+  .control-label, label {
+    font-size: $font-size-small;
+    color: $dark-color;
+    position: relative;
+    display: block;
+  }
+
+  input[type="text"], textarea {
+    border: 1px solid #8D8D8D;
+    border-radius: 8px;
+  }
+
+  .help-block {
+    font-size: $font-size-small;
+    color: $dark-color;
+  }
+
+  .help-inline-block {
+    font-size: $font-size-small;
+    color: $dark-color;
+    display: inline-block;
+  }
+
+  .form-control {
+    box-shadow: none;
+    padding: 16px;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #8D8D8D;
+  }
+
+  .input-group-addon {
+    border-radius: 8px;
+    border: 1px solid #8D8D8D;
+    border-right: none;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  .form-control:focus {
+    box-shadow: none;
+    border-color: #8ca0a6;
+    border: 1px solid $secondary-color;
+    outline: 1px solid $secondary-color;
+  }
+
+  .has-error {
+    .form-control {
+      border: 1px solid $accent-color;
+      outline: 1px solid $accent-color;
+
+    }
+
+    .control-label:after {
+      content: "";
+      display: block;
+      background: image-url("modern/icons/error-icon.svg") no-repeat;
+      background-size: cover;
+      width: 20px;
+      height: 20px;
+      float: left;
+      margin: 0 6px 0 0;
+      position: absolute;
+      z-index: 10;
+      top: 48px;
+      right: 10px;
+    }
+
+    .help-block {
+      color: $accent-color;
+    }
+  }
+
+  .panel {
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+
+  #next-tools-button {
+    margin-top: 0;
+  }
+
+  .delete-external-resource-btn {
+    display: inline;
+
+    &:hover {
+      // this filter gives $secondary-color
+      filter: brightness(0) saturate(100%) invert(28%) sepia(93%) saturate(1217%) hue-rotate(168deg) brightness(102%) contrast(97%);
+    }
+    &:active {
+      filter: brightness(0) saturate(100%) invert(28%) sepia(93%) saturate(1217%) hue-rotate(168deg) brightness(102%) contrast(97%);
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+  }
+
+  hr {
+    border-top: 1px solid #8D8D8D;
+  }
+
+  .multiple-list-item {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    white-space : nowrap;
+    margin-right: 5%;
+    width: 45%;
+    margin-bottom: 15px;
+  }
+
+  .multiple-input-item:first-child {
+    .multiple-input-delete {
+      display: none;
+    }
+  }
+
+  .multiple-input-delete {
+    position: absolute;
+    top: 7px;
+    right: 15%;
+  }
+
+
+  #biotools-results {
+    font-size: $font-size-small;
+  }
+}

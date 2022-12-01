@@ -51,6 +51,7 @@
     <% ['events', 'materials', 'workflows'].each do |feature| %>
       <% if TeSS::Config.feature[feature] == true %>
         <li>
+          <a class="link-overlay" href="<%= polymorphic_path(feature) %>">
             <div>
               <%= image_tag(asset_path("modern/icons/#{feature}-icon.svg"), alt: feature.titleize) %>
               <h3><%= feature.titleize %></h3>
@@ -58,9 +59,13 @@
 
           <p><%== raw t "home.#{feature}_message" %></p>
 
-          <%= link_to polymorphic_path(feature) do %>
-            Start browsing  &nbsp;<i class="icon icon-sm arrow-right-icon"></i>
-          <% end %>
+            <span>
+              <span class="pseudolink">
+                Start browsing
+              </span>&nbsp;<i class="icon icon-sm arrow-right-icon"></i>
+            </span>
+
+          </a>
         </li>
       <% end %>
     <% end %>

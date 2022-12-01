@@ -20,6 +20,9 @@ Variable that should be available
 <% end %>
 
 <ul class="unstyled nav-simple">
+  <li>
+    <h3>Filter<i class="icon icon-md clear-filters-icon pull-right"></i><span class="font-size-sm pull-right"><a class="no-link" href="#FIXME">clear filters</a></span></h3>
+  </li>
   <% if current_user && (current_user.is_curator? || current_user.is_admin?) %>
     <%= render partial: 'search/common/facet_sidebar_curation', locals: { resource_type: resource_type } %>
   <% end %>
@@ -29,6 +32,8 @@ Variable that should be available
   <% resources.facets.select { |f| f.rows.any? }.each do |facet| %>
       <% if IGNORED_FILTERS.include?(facet.field_name.to_s)   %>
       <% elsif facet.field_name == :online %>
+      <% elsif facet.field_name == :include_expired %>
+
 
       <% else %>
         <%= render partial: 'search/common/facet_sidebar_filter',
@@ -41,5 +46,21 @@ Variable that should be available
       <%= render partial: 'search/common/facet_sidebar_boolean_filter',
                  locals: { facet: facet, resources: resources } %>
     <% end %>
+
+  <% end %>
+
+  <% if ['Event'].include?(resource_type.name) %>
+    <!-- FIXME: show past events toggle using Ruby on Rails functionality, see _facet_sidebar_boolean_filter.html.erb -->
+    <div class="toggle-wrap">
+      <a href="#FIXME">
+          <li class="nav-item">
+            <label class="toggle">
+              <input type="checkbox">
+              <span class="slider round"></span>
+            </label>
+            Show expired events
+          </li>
+      </a>
+    </div>
   <% end %>
 </ul>

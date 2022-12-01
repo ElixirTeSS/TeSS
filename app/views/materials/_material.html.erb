@@ -1,4 +1,6 @@
 <li class="masonry-brick media-item list long">
+  <a href="<%= material_path(material) %>" class="link-overlay">
+
   <div class="sub-heading"><%= display_attribute_no_label(material, :resource_type) { |values| values.join(', ') } %></div>
 
   <div id="event-title" class="masonry-brick-heading">
@@ -26,9 +28,11 @@
         <div class="col-md-3 no-spacing">
           <% if material.content_provider %>
             <div class="to-bottom mt-3">
-            <%= link_to material.content_provider, :class => "pull-right bottom-left" do %>
-              <%= image_tag(material.content_provider.image.url, :class => "medium-content-provider-logo") %>
-            <% end %>
+            <%#= link_to material.content_provider, :class => "pull-right bottom-left" do %>
+              <div class="pull-right bottom-left">
+                <%= image_tag(material.content_provider.image.url, :class => "medium-content-provider-logo") %>
+              </div>
+            <%# end %>
             </div>
           <% end %>
           <%# TODO Add node logo as well, if material's provider  belongs to a node %>
@@ -42,6 +46,8 @@
       <% end %>
     </div>
   </div>
-  <%= link_to '', material, :class=>"media-view" %>
+
+
+  </a>
 </li>
 

@@ -1,4 +1,11 @@
 <div class="wrapper">
+  <% if TeSS::Config.solr_enabled %>
+    <div id="sidebar" class="popout-sidebar">
+      <%= render partial: "search/common/facet_sidebar",
+                 locals: { resources: @trainers_results, resource_type: Trainer } %>
+    </div>
+  <% end %>
+
   <div id="content">
     <div class="row">
       <h2>Trainers</h2>
@@ -6,11 +13,9 @@
 
     <div class="row">
       <!-- Info -->
-      <div class="pull-right">
-        <%= info_button('What are trainers are in ' + TeSS::Config.site['title_short'] + '?') do %>
+        <%= info_button('') do %>
           <%= render_markdown(TrainersHelper::TRAINERS_INFO) %>
         <% end %>
-      </div>
     </div>
 
     <% if TeSS::Config.solr_enabled %>
@@ -32,18 +37,11 @@
 
     <%= render partial: "search/common/pagination_bar", locals: { resources: @trainers } %>
 
-    <hr>
-
     <%= render @trainers %>
 
     <%= render partial: "search/common/pagination_bar", locals: { resources: @trainers } %>
 
   </div>
 
-  <% if TeSS::Config.solr_enabled %>
-    <div id="sidebar" class="popout-sidebar">
-      <%= render partial: "search/common/facet_sidebar",
-                 locals: { resources: @trainers_results, resource_type: Trainer } %>
-    </div>
-  <% end %>
+
 </div>

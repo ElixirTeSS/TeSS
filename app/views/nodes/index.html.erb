@@ -1,19 +1,24 @@
 <div class="wrapper">
+  <% if TeSS::Config.solr_enabled %>
+    <div id="sidebar" class="popout-sidebar">
+      <%#= render partial: "nodes/partials/sidebar" %>
+      <%= render partial: "search/common/facet_sidebar", locals:  { resources: @nodes_results, resource_type: Node } %>
+    </div>
+  <% end %>
+
   <div id="content">
     <div class="row">
       <h2>Nodes</h2>
     </div>
     <div class="row">
       <% if policy(:node).create? %>
-        <%= link_to new_node_path, class: 'btn btn-primary' do %>
-          <i class="fa fa-plus-square"></i> Create node
+        <%= link_to new_node_path, class: 'btn btn-default' do %>
+          Create node
         <% end %>
       <% end %>
-      <div class="pull-right">
-        <%= info_button('What are ELIXIR nodes?') do %>
+        <%= info_button('') do %>
             <%= render_markdown(NodesHelper::NODES_INFO) %>
         <% end %>
-      </div>
     </div>
 
     <% if TeSS::Config.solr_enabled %>
@@ -29,15 +34,7 @@
 
     <%= render partial: "search/common/pagination_bar", locals: { resources: @nodes } %>
 
-    <hr>
-
     <%= render partial: 'common/masonry_grid', locals: { objects: @nodes } %>
   </div>
 
-  <% if TeSS::Config.solr_enabled %>
-    <div id="sidebar" class="popout-sidebar">
-      <%#= render partial: "nodes/partials/sidebar" %>
-      <%= render partial: "search/common/facet_sidebar", locals:  { resources: @nodes_results, resource_type: Node } %>
-    </div>
-  <% end %>
 </div>
