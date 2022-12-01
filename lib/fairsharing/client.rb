@@ -1,37 +1,9 @@
 module Fairsharing
   class Client
-    class SearchResults < Array
-      attr_accessor :page, :first_page, :prev_page, :next_page, :last_page
-
-      def self.from_api_response(hash)
-        results = new(hash['data'])
-        hash['links'].each do |key, value|
-          value = value&.split('?')&.last
-          next unless value
-          page_number = Rack::Utils.parse_nested_query(value).dig('page', 'number')&.to_i
-          next unless page_number
-          case key
-          when 'self'
-            results.page = page_number
-          when 'first'
-            results.first_page = page_number
-          when 'prev'
-            results.prev_page = page_number
-          when 'next'
-            results.next_page = page_number
-          when 'last'
-            results.last_page = page_number
-          end
-        end
-        results
-      end
-    end
-
     REDIS_KEY = 'fairsharing:token'.freeze
 
     def initialize(base = 'https://api.fairsharing.org')
       @base = RestClient::Resource.new(base)
-      @redis = Redis.new(url: TeSS::Config.redis_url)
     end
 
     def search(query:, type: 'any', page: 1, per_page: 25)
@@ -43,7 +15,7 @@ module Fairsharing
       }
       params['fairsharing_registry'] = type unless type.nil? || type == 'any'
 
-      response = request(path, method: :post, body: '', params: params)
+      response = authenticated_request(path, method: :post, body: '', params: params)
       SearchResults.from_api_response(JSON.parse(response.body))
     end
 
@@ -61,16 +33,17 @@ module Fairsharing
     end
 
     def token
-      expiry = @redis.hget(REDIS_KEY, 'expiry')
-      t = @redis.hget(REDIS_KEY, 'token')
+      redis = Redis.new(url: TeSS::Config.redis_url)
+      expiry = redis.hget(REDIS_KEY, 'expiry')
+      t = redis.hget(REDIS_KEY, 'token')
       if t && expiry && !Time.at(expiry.to_i).past?
         t
       else
         response = get_token
         if response.code == 200
           payload = JSON.parse(response.body)
-          @redis.hset(REDIS_KEY, 'token', payload['jwt'])
-          @redis.hset(REDIS_KEY, 'expiry', payload['expiry'])
+          redis.hset(REDIS_KEY, 'token', payload['jwt'])
+          redis.hset(REDIS_KEY, 'expiry', payload['expiry'])
           return payload['jwt']
         end
       end
@@ -78,7 +51,7 @@ module Fairsharing
 
     private
 
-    def request(path, method: :get, body: nil, **opts)
+    def authenticated_request(path, method: :get, body: nil, **opts)
       t = token
 
       headers = {
