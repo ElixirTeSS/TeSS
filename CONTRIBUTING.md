@@ -1,14 +1,15 @@
 # Contributing to TeSS
 
-While TeSS was originally developed to serve as the training portal for [ELIXIR](https://www.elixir-europe.org/), it endeavours to be a generic training platform that can be easily customized and re-used in other communities.
+While TeSS was originally developed to serve as the training portal for [ELIXIR](https://www.elixir-europe.org/), it endeavours to be a generic training platform that can be easily customized and re-used in other communities. 
+To that end we welcome and encourage new contributors to get involved and help to shape and improve TeSS. This document discusses and explains different ways you can contribute to TeSS.
 
-## TeSS Club
+### TeSS Club
 
-If you are interested in TeSS or contributing to it, you may also want to join the [TeSS Club](https://elixirtess.github.io/about/) an open biweekly meeting to discuss the direction of TeSS development.
+If you are interested in TeSS or contributing to it, you may want to join the [TeSS Club](https://elixirtess.github.io/about/) - an open biweekly meeting to discuss TeSS and steer the direction of TeSS' development.
 
-## Before you begin
+## Before You Begin
 
-If you plan on making a change to TeSS' code or documentation, it's a good idea to open an issue, or comment on an existing issue to explain and discuss why. This makes the TeSS contributors and members of the community aware of what activities are taking place, and lets them offer insight and advice.
+If you plan on making a change to TeSS' code or documentation, it's a good idea to open an issue, or comment on an existing issue to explain and discuss why. This makes the TeSS contributors and members of the community aware of what activities are taking place, and gives them a chance to offer insight and advice.
 
 ### Contributor Agreement
 
@@ -20,27 +21,26 @@ When contributing to TeSS you are expected to follow the [Code of Conduct](CODE_
 
 ## How to Contribute
 
-If you decide to contribute to TeSS you will need a GitHub account and must be signed in as all contributions are managed by GitHub. But that does not mean that you have to be a software developer to make helpful and meaningful contributions. You can contribute to TeSS in various ways, including:
+If you decide to contribute to TeSS you will need to have registered, and been signed in to, a GitHub account - as all contributions are managed by GitHub. You do not have to be a software developer, however, to make helpful and meaningful contributions. You can contribute to TeSS in various ways, including:
+
 - [Bug reports and feature suggestions](#Bug-Reports-and-Feature-Suggestions)
 - [Commenting, voting and participating in discussions](#Commenting-and-Voting) on existing issues or proposed code changes and pull requests
 - [Contributing to TeSS code](#Contributions-to-Code)
 - [Contributing to TeSS documentation](#Contributions-to-Documentation)
 
-The following sections explain the these in more detail.
-
 
 # Bug Reports and Feature Suggestions
 
-If you notice a problem or a bug in TeSS, have an idea on something, or would like to see a new functionallity in TeSS, please submit a bug report or make a feature suggestion by creating a new issue on [TeSS issues page](https://github.com/ElixirTeSS/TeSS/issues).
+If you notice a problem or a bug in TeSS, have an idea on something, or would like to see a new feature or some functionality in TeSS, please submit a bug report or make a feature suggestion by creating a new issue on [TeSS issues page](https://github.com/ElixirTeSS/TeSS/issues).
 
-Before opening a new issue, check the list of opened issues first to see if there is already an existing report on the same subject. If so, consider adding your thoughts as a comment on the existing issue instead of starting a new one.
+Before opening a new issue, check the list of opened issues first to see if there is already an existing report on the same subject. If so, consider [adding your thoughts]((#Commenting-and-Voting)) to the existing issue instead of starting a new one.
 
 
 # Commenting and Voting
 
-We encourage contributors to comment and vote on any issues, discussions or pull requests that you feel are important - this is an opportunity to explain your point of view and discuss why certain changes are needed.
+We welcome people to comment and vote on any issues, discussions or pull requests that they feel are important - this is an opportunity to explain your point of view and discuss why certain changes are needed.
 
-Voting is done by commenting "+1" or "-1" or leaving a reaction (👍 for +1, 👎 for -1) on the original issue or pull request. Community votes are non-binding, but help gauge opinion when prioritizing work.
+Voting is done by leaving a reaction (👍 for +1, 👎 for -1) on an issue or pull request. Community votes on issues are used to help gauge opinion when prioritizing work, and votes on pull requests are taken into account by the core TeSS development team when deciding whether to accept it.
 
 
 # Contributions to Code
@@ -97,7 +97,7 @@ rubocop -a lib/my_code_that_i_wrote.rb
 
 Ensure your code is completely covered by test cases. Read through some existing tests to get an idea of how your code could be tested.
 
-TeSS has an extensive test suite and aims to have as close to 100% test coverage as possible. Run the existing TeSS test suite to check your change has not broken any existing code as:
+TeSS has an extensive test suite and aims to have as close to 100% test coverage as possible. Run the existing TeSS test suite to check your change has not broken any existing code:
 
 ```
 bundle exec rails test
@@ -117,13 +117,12 @@ You can always [rebase](https://docs.github.com/en/get-started/using-git/about-g
 
 ### Open a Pull Request
 
-Make sure that your feature branch is pushed to your fork of TeSS on GitHub and from it select your feature branch. Click the 'Pull Request' button and fill out the form. Make sure to include:
+Make sure that your feature branch is pushed to your fork of TeSS on GitHub and from it select your feature branch. Click the 'Pull Request' button and fill out the form. In the comment, make sure to include:
 - A brief summary of what changes were made.
-- Why the changes were made, with links to any issues.
+- Why the changes were made, with links to any relevant issues or discussions.
 - If appropriate, screenshots of the changes, or instructions on how the changes can be tried out.
-- The branch of TeSS where you want the changes to be merged back into.
 
-If your contribution is a work-in-progress, flag the pull request as being a "Draft".
+Also be sure to select the branch of TeSS where you want the changes to be merged back into, and if your contribution is a work-in-progress, flag the pull request as being a "Draft" (Click the arrow next to the "Create Pull Request" button).
 
 Your pull request should trigger a build that can be monitored on our [actions](https://github.com/ElixirTeSS/TeSS/actions) page. The core TeSS development team will also be notified, and a member of the team will review your Pull Request in a timely manner.
 
@@ -134,7 +133,7 @@ If you need to make additional code changes (in response to review comments, for
 
 # Contributions to Documentation
 
-TeSS has various levels of documentation that can be contributed to:
+TeSS has various levels of documentation that can also be contributed to:
 
 * [Technical documentation](https://github.com/ElixirTeSS/TeSS/tree/master/docs) - mostly related to how to install and configure TeSS (Markdown)
 * [API documentation](https://github.com/ElixirTeSS/TeSS/tree/master/public/api/definitions) - specifications on how TeSS APIs function, with some descriptions and guidance (Swagger 2.0 YAML)
@@ -145,4 +144,4 @@ Small changes can be made directly in GitHub. Simply open the relevant file, cli
 
 # Thank You
 
-Thank you very much for using or considering contributing to TeSS.
+Thank you for considering contributing to TeSS.
