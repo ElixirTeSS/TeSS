@@ -9,8 +9,12 @@ module EventsHelper
   categorization, keywords, etc.).\n\n\
   Training events can be added manually or automatically harvested from a provider's website.\n\n\
   If your website contains training events that you wish to include in #{TeSS::Config.site['title_short']},\
-  please contact the support team (<a href='mailto:#{TeSS::Config.contact_email}'>#{TeSS::Config.contact_email}</a>)\
-  for further details.".freeze
+  %{link}.".freeze
+
+  def events_info
+    EVENTS_INFO % { link: link_to('see here for here for details on automatic registration',
+                          registering_resources_path(anchor: 'automatic')) }
+  end
 
   def google_calendar_export_url(event)
 

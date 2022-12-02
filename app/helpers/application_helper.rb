@@ -73,7 +73,7 @@ module ApplicationHelper
   def enabled_icon(record, size = nil)
     unless record.nil? or record.enabled.nil?
       if record.enabled
-        "<span class='missing-icon pull-right'>#{icon_for(:check, size)}</span>".html_safe
+        "<span class='fresh-icon pull-right'>#{icon_for(:check, size)}</span>".html_safe
       else
         "<span class='missing-icon pull-right'>#{icon_for(:cross, size)}</span>".html_safe
       end
@@ -234,6 +234,10 @@ module ApplicationHelper
       'fa fa-sitemap'
     when 'nodes'
       'fa fa-share-alt'
+    when 'sources'
+      'fa fa-cloud-download'
+    when 'testing'
+      'fa fa-flask'
     else
       'fa fa-folder-open'
     end
@@ -286,7 +290,7 @@ module ApplicationHelper
     content_tag(:div, class: 'panel panel-default') do
       content_tag(:div, class: 'panel-heading') do
         content_tag(:h4, class: 'panel-title') do
-          link_to("##{id}", 'data-toggle' => 'collapse') do
+          link_to("##{id}", 'data-toggle' => 'collapse', class: 'collapsible-panel-link') do
             (title + ' <i class="fa fa-caret-down" aria-hidden="true"></i>').html_safe
           end
         end

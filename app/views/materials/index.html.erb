@@ -25,11 +25,11 @@
       <!-- Info -->
         <% if @facet_params[:resource_type] == 'e-learning' %>
           <%= info_button("") do %>
-            <%= render_markdown(MaterialsHelper::ELEARNING_MATERIALS_INFO) %>
+          <%= render_markdown(elearning_materials_info) %>
           <% end %>
         <% else %>
           <%= info_button("") do %>
-            <%= render_markdown(MaterialsHelper::MATERIALS_INFO) %>
+          <%= render_markdown(materials_info) %>
           <% end %>
         <% end %>
       </div>

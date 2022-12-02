@@ -1,26 +1,51 @@
-class SourcePolicy < ApplicationPolicy
-
+class SourcePolicy < ScrapedResourcePolicy
   def show?
-    @user && !@user.role.blank?
+    user_management? || administration?
   end
 
+  alias_method :orig_manage?, :manage?
   def manage?
-    @user && (
-      @user.has_role?(:curator) ||
-      @user.has_role?(:admin) ||
-      @user.has_role?(:scraper_user))
+    (user_management? && !@record.approval_requested?) || administration?
   end
 
   def index?
-    show?
-  end
-
-  def new?
-    manage?
+    administration?
   end
 
   def create?
-    manage?
+    if TeSS::Config.feature['user_source_creation']
+      super
+    else
+      administration?
+    end
   end
 
+  def approve?
+    @user && @user.has_role?(:admin)
+  end
+
+  def request_approval?
+    user_management?
+  end
+
+  private
+
+  def administration? # Can edit sources for any content provider
+    curators_and_admin
+  end
+
+  def user_management?
+    if TeSS::Config.feature['user_source_creation']
+      orig_manage?
+    else
+      false
+    end
+  end
+
+  def curators_and_admin
+    @user && (
+      @user.has_role?(:curator) ||
+        @user.has_role?(:admin) ||
+        @user.has_role?(:scraper_user))
+  end
 end

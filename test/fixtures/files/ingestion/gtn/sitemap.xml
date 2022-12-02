@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
+        xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>
+      https://training.galaxyproject.org/training-material/topics/introduction/slides/introduction.html
+    </loc>
+    <lastmod>2022-11-09T11:22:14+00:00</lastmod>
+  </url>
+  <url>
+    <loc>
+      https://training.galaxyproject.org/training-material/topics/introduction/tutorials/galaxy-intro-101/tutorial.html
+    </loc>
+    <lastmod>2022-11-09T11:22:14+00:00</lastmod>
+  </url>
+  <url>
+    <loc>
+      https://training.galaxyproject.org/training-material/topics/introduction/tutorials/galaxy-intro-strands/tutorial.html
+    </loc>
+    <lastmod>2022-11-09T11:22:14+00:00</lastmod>
+  </url>
+  <url>
+    <loc>
+      https://training.galaxyproject.org/page-with-no-bioschemas
+    </loc>
+    <lastmod>2022-11-09T11:22:14+00:00</lastmod>
+  </url>
+  <url>
+    <loc>
+      https://training.galaxyproject.org/page-with-no-bioschemas-2
+    </loc>
+    <lastmod>2022-11-09T11:22:14+00:00</lastmod>
+  </url>
+  <url>
+    <loc>
+      https://training.galaxyproject.org/404
+    </loc>
+    <lastmod>2022-11-09T11:22:14+00:00</lastmod>
+  </url>
+
+</urlset>

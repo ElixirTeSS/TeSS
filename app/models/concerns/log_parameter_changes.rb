@@ -2,7 +2,7 @@ module LogParameterChanges
 
   extend ActiveSupport::Concern
 
-  IGNORED_ATTRIBUTES = ['id', 'updated_at', 'workflow_content', 'last_scraped', 'remote_updated_date']
+  IGNORED_ATTRIBUTES = ['id', 'updated_at', 'last_scraped', 'remote_updated_date']
 
   included do
     after_update :log_parameter_changes
@@ -37,6 +37,7 @@ module LogParameterChanges
         end
       end
       parameters[:new_val] = self.send(changed_attribute)
+      parameters[:new_val] = parameters[:new_val].to_s if parameters[:new_val].is_a?(Symbol)
 
       self.create_activity :update_parameter, parameters: parameters
     end

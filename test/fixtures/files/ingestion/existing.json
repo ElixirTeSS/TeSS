@@ -1,0 +1,24 @@
+[
+  {
+    "@context": "https://schema.org/",
+    "@type": "CourseInstance",
+    "@id": "http://example.com/cool-course-summer",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "inLanguage": "en-GB",
+    "name": "Summer Course on Learning Stuff 2",
+    "description": "Learn lots of stuff!!!!!!!",
+    "url": "http://example.com/cool-course-summer",
+    "startDate": "2023-03-20T00:00:00",
+    "endDate": "2023-03-24T00:00:00",
+    "location": {
+      "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Kilburn Building"
+      }
+    }
+  }
+]

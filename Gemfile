@@ -59,6 +59,7 @@ gem 'whenever', '~> 1.0.0'
 # These are required for Sidekiq, to look up scientific topics
 gem 'httparty'
 gem 'sidekiq', '~> 6.4.0'
+gem 'sidekiq-status'
 gem 'slim'
 
 # Use jquery as the JavaScript library
@@ -120,6 +121,9 @@ gem 'rack-cors', require: 'rack/cors'
 gem 'recaptcha', require: 'recaptcha/rails'
 
 gem 'linkeddata'
+
+gem 'tess_rdf_extractors', git: 'https://github.com/ElixirTeSS/TeSS_RDF_Extractors'
+gem 'sitemap-parser', '~> 0.5.6'
 
 # Used for lat/lon rake task
 gem 'geocoder'

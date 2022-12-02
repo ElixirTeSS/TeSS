@@ -126,16 +126,17 @@ class Material < ApplicationRecord
   end
 
   def self.check_exists(material_params)
-    given_material = self.new(material_params)
+    given_material = material_params.is_a?(Material) ? material_params : new(material_params)
     material = nil
 
+    provider_id = given_material.content_provider_id || given_material.content_provider&.id
+
     if given_material.url.present?
-      material = self.find_by_url(given_material.url)
+      material = where(url: given_material.url).last
     end
 
-    if given_material.content_provider.present? && given_material.title.present?
-      material ||= self.where(content_provider_id: given_material.content_provider_id,
-                              title: given_material.title).last
+    if provider_id.present? && given_material.title.present?
+      material ||= where(content_provider_id: provider_id, title: given_material.title).last
     end
 
     material

@@ -63,7 +63,7 @@ class Collection < ApplicationRecord
   end
 
   def self.visible_by(user)
-    if user && user.is_admin?
+    if user&.is_admin?
       all
     elsif user
       references(:collaborations).includes(:collaborations).

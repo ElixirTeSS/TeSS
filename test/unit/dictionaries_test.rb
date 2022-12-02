@@ -255,4 +255,37 @@ class DictionariesTest < ActiveSupport::TestCase
     assert_equal 'Between 2 and 5 years', dic.lookup('competant')['description'],
                  'trainer experience (none) description was found'
   end
+
+  test 'override dictionaries' do
+    original_eligibility = EligibilityDictionary.instance.keys
+    original_event_types = EventTypeDictionary.instance.keys
+    original_licenses = LicenceDictionary.instance.keys
+    modified_eligibility = nil
+    modified_event_types = nil
+    modified_licenses = nil
+
+    assert_nil EligibilityDictionary.instance.lookup('expression_of_interest')
+    assert_nil EventTypeDictionary.instance.lookup('dropin')
+    assert_nil LicenceDictionary.instance.lookup('YouTube')
+
+    with_dresa_dictionaries do
+      modified_eligibility = EligibilityDictionary.instance.keys
+      modified_event_types = EventTypeDictionary.instance.keys
+      modified_licenses = LicenceDictionary.instance.keys
+
+      assert_not_equal original_eligibility, modified_eligibility
+      assert_not_equal original_event_types, modified_event_types
+      assert_not_equal original_licenses, modified_licenses
+      assert_equal 'Expression of interest', EligibilityDictionary.instance.lookup('expression_of_interest')['title']
+      assert_equal 'Drop-in session or hackyhour', EventTypeDictionary.instance.lookup('dropin')['title']
+      assert_equal 'Standard YouTube Licence', LicenceDictionary.instance.lookup('YouTube')['title']
+    end
+
+    assert_not_equal modified_eligibility, original_eligibility
+    assert_not_equal modified_event_types, original_event_types
+    assert_not_equal modified_licenses, original_licenses
+    assert_nil EligibilityDictionary.instance.lookup('expression_of_interest')
+    assert_nil EventTypeDictionary.instance.lookup('dropin')
+    assert_nil LicenceDictionary.instance.lookup('YouTube')
+  end
 end

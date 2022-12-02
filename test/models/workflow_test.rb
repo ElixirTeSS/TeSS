@@ -62,11 +62,15 @@ class WorkflowTest < ActiveSupport::TestCase
 
   test 'workflow diagram changes are logged' do
     workflow = workflows(:two)
+    # Saving here to ensure `slug` is set, otherwise it will get logged as a `update_parameter` activity later on
+    assert workflow.save
     removed_node = nil
 
-    assert_difference("PublicActivity::Activity.where(key: 'workflow.modify_diagram').count", 1) do
-      removed_node = workflow.workflow_content['nodes'].pop
-      workflow.save
+    assert_no_difference("PublicActivity::Activity.where(key: 'workflow.update_parameter').count") do
+      assert_difference("PublicActivity::Activity.where(key: 'workflow.modify_diagram').count", 1) do
+        removed_node = workflow.workflow_content['nodes'].pop
+        workflow.save
+      end
     end
 
     activity = workflow.activities.where(key: 'workflow.modify_diagram').last

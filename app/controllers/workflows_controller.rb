@@ -54,7 +54,6 @@ class WorkflowsController < ApplicationController
     respond_to do |format|
       if @workflow.save
         @workflow.create_activity :create, owner: current_user
-        look_for_topics(@workflow)
         format.html { redirect_to @workflow, notice: 'Workflow was successfully created.' }
         format.json { render :show, status: :created, location: @workflow }
       else

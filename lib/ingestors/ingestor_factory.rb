@@ -1,56 +1,38 @@
 module Ingestors
   class IngestorFactory
-    @@methods = { 'csv': 'CSV File', 'ical': 'iCalendars', 'rest': 'REST API' }
-    @@resources = { 'event': 'Events', 'material': 'Materials' }
+    def self.ingestors
+      [
+        Ingestors::EventCsvIngestor,
+        Ingestors::MaterialCsvIngestor,
+        Ingestors::IcalIngestor,
+        Ingestors::EventbriteIngestor,
+        Ingestors::TessEventIngestor,
+        Ingestors::ZenodoIngestor,
+        Ingestors::BioschemasIngestor
+      ]
+    end
 
-    def self.get_ingestor (method, resource)
-      if is_method_valid?(method) and is_resource_valid?(resource)
-        case [method, resource]
-        when ['csv', 'event']
-          IngestorEventCsv.new
-        when ['ical', 'event']
-          IngestorEventIcal.new
-        when ['csv', 'material']
-          IngestorMaterialCsv.new
-        when ['rest', 'event']
-          IngestorEventRest.new
-        when ['rest', 'material']
-          IngestorMaterialRest.new
-        else
-          raise "Ingestor not yet implemented for method[#{method}] and resource[#{resource}]"
-        end
+    def self.ingestor_config
+      @ingestor_config ||= ingestors.map do |i|
+        [i.config[:key], i.config.merge(ingestor: i)]
+      end.to_h
+    end
+
+    def self.get_ingestor(method)
+      config = ingestor_config[method]
+      if config
+        config[:ingestor].new
       else
-        raise "Invalid method[#{method}] or resource[#{resource}]"
+        raise "Invalid method: [#{method}]"
       end
     end
 
-    def self.is_method_valid? (input)
-      @@methods.has_key? input.to_sym
+    def self.grouped_options
+      @grouped_options ||= ingestor_config.values.group_by { |c| c[:category] || :any }
     end
 
-    def self.is_resource_valid? (input)
-      @@resources.has_key? input.to_sym
+    def self.get_method_value(input)
+      METHODS.fetch input.to_sym
     end
-
-    def self.method_for_select
-      @@methods.map do |key, value|
-        [value, key, '']
-      end
-    end
-
-    def self.resources_for_select
-      @@resources.map do |key, value|
-        [value, key, '']
-      end
-    end
-
-    def self.get_method_value (input)
-      @@methods.fetch input.to_sym
-    end
-
-    def self.get_resource_value (input)
-      @@resources.fetch input.to_sym
-    end
-
   end
 end

@@ -66,12 +66,18 @@
           <div class="sub-about-block">
             <div id='bioschemas' class="h6">Schema.org / Bioschemas</div>
             <div class="row">
-              <div class="col-lg-9">
+              <div class="col-lg-10">
                 <%== raw t 'register.schema' %>
               </div>
-              <div class="col-lg-3">
+              <div class="col-lg-2">
                 <%= image_tag 'about/bioschemas.png', class: "struct_data_type_logo" %>
-                <%= image_tag 'about/schema-org-logo.png', class: "struct_data_type_logo" %>
+              </div>
+            </div>
+
+            <div id='bioschemas' class="h6">Sitemaps</div>
+            <div class="row">
+              <div class="col-lg-12">
+                <%== raw t 'register.sitemap' %>
               </div>
             </div>
           </div>
@@ -102,20 +108,31 @@
             </div>
           </div>
 
-          <!-- OTHER -->
-          <div class="sub-about-block">
-            <div id='other' class="h6">Other types</div>
-            <%== raw t 'register.other_types' %>
-          </div>
-
           <!--  CONTACT US -->
-          <div class="sub-about-block">
+          <div>
             <%#= render :partial => "common/contact_form"%>
+            <% if user_creatable_ingestion_methods.any? %>
+              <div id='sources' class="h5">Sources</div>
+              <%== raw t('register.user_managed_sources') %>
+
+              <%= link_to new_content_provider_path, class: 'btn btn-primary', target: '_blank' do %>
+                <i class="fa fa-plus-square"></i> Register provider
+              <% end %><br/>
+
+              <div class="h6">Currently available user-managed ingestion methods:</div>
+              <ul>
+                <% user_creatable_ingestion_methods.each do |method| %>
+                  <li><%= method %></li>
+                <% end %>
+              </ul>
+
+              for other methods...
+            <% end %>
+            <div id='sources' class="h5">Contact Us</div>
             <%== raw t('register.advice', contact_email: TeSS::Config.contact_email) %>
           </div>
         </div>
       </div>
-
 
       <div class="row">
         <div class="even-about-block">

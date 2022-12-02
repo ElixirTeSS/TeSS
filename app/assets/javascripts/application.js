@@ -153,6 +153,9 @@ document.addEventListener("turbolinks:load", function() {
     // Map on event index page
     EventsMap.init();
 
+    // Testing section on source page
+    Sources.init();
+
     var setStarButtonState = function (button) {
         if (button.data('starred')) {
             button.html("<i class='icon icon-h3 star-primary-fill-icon'> </i>");
