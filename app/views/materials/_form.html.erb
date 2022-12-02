@@ -22,7 +22,7 @@
 
   <!-- Field: Resource Type -->
   <%= f.multi_input :resource_type, label: 'Resource types', errors: @material.errors[:material_types],
-                    title: t('events.hints.type') %>
+                    title: t('materials.hints.resource_type') %>
 
   <!-- Field: Scientific Topics -->
   <% if !TeSS::Config.feature['disabled'].include? 'topics' %>
