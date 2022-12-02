@@ -35,60 +35,10 @@
         <%# User Options -%>
         <ul class="user-options nav navbar-nav">
           <% if user_signed_in? %>
-            <li>
-              <%= link_to "Log out", destroy_user_session_path, :method => :delete, class: 'btn btn-default',
-                          :data => { :confirm => 'Are you sure you want to log out?' } %>
-            </li>
-
-            <li>
-              <%= link_to user_path(current_user),  title:  current_user.username, class: 'btn btn-primary' do %>
-                <%= current_user.username %>
-              <% end %>
-            </li>
-
-
-            <li>
-              <%= link_to stars_path, title: 'View stars', class: 'btn btn-link btn-icon' do %>
-                <i class="icon icon-h3 star-icon"></i>
-              <% end %>
-            </li>
-
-            <li>
-              <% if current_user.is_curator? || current_user.is_admin? %>
-                <%= link_to users_path, :title => 'View users' do %>
-                  <i class="fa fa-users fa-lg"></i>
-                <% end %>
-              <% end %>
-            </li>
-            <li>
-            <% if current_user.is_curator? || current_user.is_admin? %>
-              <% if TeSS::Config.feature['sources'] %>
-                <%= link_to sources_path, :title => 'View ingestion sources' do %>
-                  <i class="fa fa-cloud-download fa-lg"></i>
-                <% end %>
-              <% end %>
-            <% end %>
-            </li>
-            <li>
-              <% if current_user.is_admin? %>
-              <%= link_to rails_admin_path, :title => 'View the administrator console' do %>
-                <i class="fa fa-cog fa-lg"></i>
-              <% end %>
-            <% end %>
-            </li>
-            <li>
-            <% if current_user.is_curator? || current_user.is_admin? %>
-              <% if !TeSS::Config.feature['disabled'].include? 'topics' %>
-                <%= link_to curate_topic_suggestions_path,
-                            :title => "Assign scientific topics to #{TeSS::Config.site['title_short']} resources" do %>
-                  <i class="fa fa-briefcase fa-lg"></i>
-                <% end %>
-              <% end %>
-            <% end %>
-            </li>
+            <%= render partial: 'layouts/user_menu' %>
           <% else %>
             <div class='dropdown'>
-              <div class='dropdown-toggle btn btn-primary' type="button" data-toggle="dropdown"
+              <div class='dropdown-toggle btn btn-primary' data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="true">
                 Log In
                 <span class="caret"></span>

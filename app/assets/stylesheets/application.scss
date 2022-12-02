@@ -386,6 +386,13 @@ ul.unstyled {
   padding-left: 0;
 }
 
+.rounded-avatar {
+  object-fit: cover;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+}
+
 .search-results-count {
   font-size: $font-size-small;
   margin-top: 5px;
