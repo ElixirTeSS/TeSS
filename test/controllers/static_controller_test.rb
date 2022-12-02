@@ -27,7 +27,6 @@ class StaticControllerTest < ActionController::TestCase
       assert_select 'li a[href=?]', workflows_path
       assert_select 'li a[href=?]', events_path
       assert_select 'li a[href=?]', materials_path
-      assert_select 'li a[href=?]', elearning_materials_path
       assert_select 'li a[href=?]', workflows_path
       assert_select 'li a[href=?]', collections_path
       assert_select 'li a[href=?]', content_providers_path
@@ -56,7 +55,6 @@ class StaticControllerTest < ActionController::TestCase
       assert_select 'li a[href=?]', workflows_path, count: 0
       assert_select 'li a[href=?]', events_path, count: 0
       assert_select 'li a[href=?]', materials_path, count: 0
-      assert_select 'li a[href=?]', elearning_materials_path, count: 0
       assert_select 'li a[href=?]', workflows_path, count: 0
       assert_select 'li a[href=?]', collections_path, count: 0
       assert_select 'li a[href=?]', content_providers_path, count: 0
