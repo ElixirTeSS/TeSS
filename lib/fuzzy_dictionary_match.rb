@@ -21,15 +21,19 @@ module FuzzyDictionaryMatch
     private
 
     def match_fields
-      self.class.fields_to_match.each do |field, dictionary|
+      self.class.fields_to_match.each do |field, dictionary_name|
         if self[field].instance_of? Array
           self[field].map! do |n|
-            dictionary.best_match(n) || n
+            get_dictionary(dictionary_name).best_match(n) || n
           end
         else
-          self[field] = dictionary.best_match(self[field]) || self[field]
+          self[field] = get_dictionary(dictionary_name).best_match(self[field]) || self[field]
         end
       end
+    end
+
+    def get_dictionary(name)
+      name.constantize.instance
     end
   end
 end

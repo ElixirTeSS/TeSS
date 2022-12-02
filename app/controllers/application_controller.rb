@@ -78,6 +78,22 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def job_status
+    begin
+      status = Sidekiq::Status::status(params[:id])
+
+      if status.present?
+        respond_to do |format|
+          format.json { render json: { status: status } }
+        end
+      else
+        respond_to do |format|
+          format.json { render json: { status: 'not-found' }, status: 404 }
+        end
+      end
+    end
+  end
+
   private
 
   def feature_enabled?(feature = controller_name)
@@ -109,11 +125,5 @@ class ApplicationController < ActionController::Base
 
   def allow_embedding
     response.headers.delete 'X-Frame-Options'
-  end
-
-  def look_for_topics(suggestible)
-    if suggestible.scientific_topic_names.length == 0 and suggestible.edit_suggestion.nil?
-      EditSuggestionWorker.perform_in(1.second,[suggestible.id,suggestible.class.name])
-    end
   end
 end

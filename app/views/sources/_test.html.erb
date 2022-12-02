@@ -1,0 +1,24 @@
+<%= link_to('#', id: 'test-btn', class: 'btn btn-primary',
+            'data-test-job-id' => @source.test_in_progress? ? @source.test_job_id : nil,
+            'data-test-url' => test_source_path(@source),
+            'data-job-status-url' => job_status_path) do %>
+  <i class="fa fa-play"></i> Test Source
+<% end %>
+
+<div class="test-controls">
+  <span id="test-status"></span>
+  <%= image_tag('ajax-loader.gif', id: 'test-spinner', style: 'display: none') %>
+</div>
+
+<div class="alert alert-danger" id="test-errors" style="display: none"></div>
+
+<hr/>
+
+<div id="test-results" data-results-url="<%= test_results_source_path(@source) -%>">
+  <% results = @source.test_results %>
+  <% if results %>
+    <%= render partial: 'sources/test_results', object: results %>
+  <% else %>
+    <span class="muted">No test results available</span>
+  <% end %>
+</div>

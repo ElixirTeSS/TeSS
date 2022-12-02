@@ -19,7 +19,7 @@
         <!-- Info -->
         <div class="pull-right">
           <%= info_button('What are events in ' + TeSS::Config.site['title_short'] + '?') do %>
-            <%= render_markdown(EventsHelper::EVENTS_INFO) %>
+            <%= render_markdown(events_info) %>
           <% end %>
         </div>
       </div>

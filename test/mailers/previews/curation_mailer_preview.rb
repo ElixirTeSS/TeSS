@@ -4,4 +4,9 @@ class CurationMailerPreview < ActionMailer::Preview
     user = User.with_role('unverified_user').unbanned.last
     CurationMailer.user_requires_approval(user)
   end
+
+  def source_needs_approval
+    source = Source.first
+    CurationMailer.source_requires_approval(source, source.user)
+  end
 end

@@ -4,7 +4,7 @@ class ActivitiesController < ApplicationController
   before_action :set_resource, only: [:index]
   before_action :set_breadcrumbs
 
-  MODELS = %w[content_provider material collection event node workflow].freeze
+  MODELS = %w[content_provider material collection event node workflow source].freeze
 
   def index
     if request.xhr?
@@ -27,7 +27,7 @@ class ActivitiesController < ApplicationController
       parameter_name = model+'_id'
       if params.include?(parameter_name)
         resource_model = model.camelcase.constantize
-        @resource = resource_model.friendly.find(params[parameter_name])
+        @resource = (resource_model.respond_to?(:friendly) ? resource_model.friendly : resource_model).find(params[parameter_name])
       end
     end
   end

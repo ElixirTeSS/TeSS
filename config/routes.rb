@@ -52,8 +52,6 @@ Rails.application.routes.draw do
     resource :ban, only: [:create, :new, :destroy]
   end
 
-  resources :sources, concerns: :activities
-
   resources :trainers, only: [:show, :index]
 
   resources :nodes, concerns: :activities
@@ -83,7 +81,17 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :content_providers, concerns: :activities
+  resources :content_providers, concerns: :activities do
+    resources :sources, except: [:index]
+  end
+
+  resources :sources, except: [:new, :create], concerns: :activities do
+    member do
+      get :test_results
+      post :test
+      post :request_approval
+    end
+  end
 
   resources :materials, concerns: :activities do
     member do
@@ -116,6 +124,7 @@ Rails.application.routes.draw do
 
   get 'search' => 'search#index'
   get 'test_url' => 'application#test_url'
+  get 'job_status' => 'application#job_status'
 
   # error pages
   %w( 404 422 500 503 ).each do |code|

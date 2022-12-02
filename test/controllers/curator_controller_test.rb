@@ -164,7 +164,7 @@ class CuratorControllerTest < ActionController::TestCase
     end
 
     4.times do |i|
-      s = new_user.sources.create!(url: "https://sources.com/#{i}", method: 'csv', resource_type: 'event',
+      s = new_user.sources.create!(url: "https://sources.com/#{i}", method: 'event_csv',
                                    content_provider_id: provider.id)
       s.create_activity(:create, owner: new_user)
       source = s

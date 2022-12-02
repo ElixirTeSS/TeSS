@@ -1143,3 +1143,20 @@ input[type=checkbox].field-lock + label:before,
     margin: auto;
   }
 }
+
+
+.bulk-import-row {
+  border-bottom: 1px solid #ccc;
+  .scraped-metadata p {
+    margin: 0;
+  }
+}
+
+.test-controls {
+  padding: 10px;
+  display: inline-block;
+}
+
+.collapsible-panel-link {
+  display: block;
+}

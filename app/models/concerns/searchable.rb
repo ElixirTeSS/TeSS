@@ -57,6 +57,9 @@ module Searchable
             when 'new'
               # Sort by newest
               order_by(:created_at, :desc)
+            when 'finished'
+              # Sort by last finished
+              order_by(:finished_at, :desc)
             else
               order_by(:sort_title, sort_by.to_sym)
           end
@@ -83,7 +86,7 @@ module Searchable
           end
         end
 
-        if attribute_method?(:public) && !(user && user.is_admin?) # Find a better way of checking this
+        if attribute_method?(:public) && !user&.is_admin? # Find a better way of checking this
           any_of do
             with(:public, true)
             with(:user_id, user.id) if user
@@ -99,7 +102,7 @@ module Searchable
 
         # Hide records the urls of which are failing
         if method_defined?(:link_monitor)
-          unless user && user.is_admin?
+          unless user&.is_admin?
             without(:failing, true)
           end
         end
