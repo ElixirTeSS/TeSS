@@ -34,13 +34,17 @@ a.btn {
       border-radius: 6px;
       padding: 5px 10px;
     }
+
+    a:link, a:visited, a:hover, a:active {
+      color: $primary-color;
+    }
   }
 
   li.prev, li.next, li.first, li.last {
     span, a {
       color: transparent !important;
       width: 30px;
-      height: 35px;
+      height: 100%;
       overflow: hidden;
       background-size: 14px;
       background-repeat: no-repeat;
