@@ -5,6 +5,10 @@ module SearchHelper
     params.permit(*@model.search_and_facet_keys)
   end
 
+  def clear_filters_path
+    params.to_unsafe_h.except(*@model.search_and_facet_keys, :page)
+  end
+
   def filter_link name, value, count, title = nil, html_options={}, &block
     parameters = search_and_facet_params
     title ||= (title || truncate(value.to_s, length: 30))

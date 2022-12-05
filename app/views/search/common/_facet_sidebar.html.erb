@@ -21,7 +21,7 @@ Variable that should be available
 
 <ul class="unstyled nav-simple">
   <li>
-    <h3>Filter<i class="icon icon-md clear-filters-icon pull-right"></i><span class="font-size-sm pull-right"><a class="no-link" href="#FIXME">clear filters</a></span></h3>
+    <h3>Filter<i class="icon icon-md clear-filters-icon pull-right"></i><span class="font-size-sm pull-right"><%= link_to clear_filters_path, class: 'no-link' do %>clear filters<% end %></span></h3>
   </li>
   <% if current_user && (current_user.is_curator? || current_user.is_admin?) %>
     <%= render partial: 'search/common/facet_sidebar_curation', locals: { resource_type: resource_type } %>
@@ -50,17 +50,25 @@ Variable that should be available
   <% end %>
 
   <% if ['Event'].include?(resource_type.name) %>
-    <!-- FIXME: show past events toggle using Ruby on Rails functionality, see _facet_sidebar_boolean_filter.html.erb -->
+    <% include_expired = @facet_params.delete('include_expired') %>
+    <% if include_expired %>
+      <% button_params = search_and_facet_params %>
+      <% button_params.delete(:include_expired) %>
+      <% button_text = "Hide" %>
+    <% else %>
+      <% button_text = "Show" %>
+      <% button_params = search_and_facet_params.merge(include_expired: true) %>
+    <% end %>
     <div class="toggle-wrap">
-      <a href="#FIXME">
-          <li class="nav-item">
-            <label class="toggle">
-              <input type="checkbox">
-              <span class="slider round"></span>
-            </label>
-            Show expired events
-          </li>
-      </a>
+      <%= link_to button_params do %>
+        <li class="nav-item">
+          <label class="toggle">
+            <input type="checkbox"<%= ' checked' if include_expired -%>>
+            <span class="slider round"></span>
+          </label>
+          <%= button_text %> past events
+        </li>
+      <% end %>
     </div>
   <% end %>
 </ul>
