@@ -158,9 +158,9 @@ document.addEventListener("turbolinks:load", function() {
 
     var setStarButtonState = function (button) {
         if (button.data('starred')) {
-            button.html("<i class='icon icon-h3 star-primary-fill-icon'> </i>");
+            button.html("<i class='icon icon-h3 star-fill-icon'> </i>");
         } else {
-            button.html("<i class='icon icon-h3 star-primary-icon'> </i>");
+            button.html("<i class='icon icon-h3 star-icon'> </i>");
         }
     };
 
@@ -186,6 +186,8 @@ document.addEventListener("turbolinks:load", function() {
                     button.removeClass('loading');
                 }
             });
+
+            return false;
         })
     });
 
