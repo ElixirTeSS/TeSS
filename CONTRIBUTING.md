@@ -11,13 +11,19 @@ If you are interested in TeSS or contributing to it, you may want to join the [T
 
 If you plan on making a change to TeSS' code or documentation, it's a good idea to open an issue, or comment on an existing issue to explain and discuss why. This makes the TeSS contributors and members of the community aware of what activities are taking place, and gives them a chance to offer insight and advice.
 
+Any major changes should be first discussed at the [TeSS Club](https://elixirtess.github.io/about/) before being worked on.
+
 ### Contributor Agreement
 
-By contributing, you agree that we may redistribute your work under [our licence](LICENSE). In exchange, we will address your issues or assess your change proposals as promptly as we can, and help you become a member of our community.
+By contributing, you agree that we may redistribute your work under [our BSD 3-Clause licence](LICENSE). In exchange, we will address your issues or assess your change proposals as promptly as we can, and help you become a member of our community.
 
 ### Code of Conduct
 
 When contributing to TeSS you are expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md). Basically, this means that we are dedicated to providing a safe, inclusive and harassment-free environment for all.
+
+### Credit
+
+We maintain a [list of contributors to the TeSS codebase](CONTRIBUTORS.md). If you would like to be recognized on this list, please append your name and email address to the end of the `CONTRIBUTORS.md` file when submitting a pull request.
 
 ## How to Contribute
 
