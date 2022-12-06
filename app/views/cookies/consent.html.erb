@@ -1,0 +1,22 @@
+<h1>Cookie Consent</h1>
+
+<p>
+  <%= t('cookies.notice') %>
+  <%= t('cookies.google_analytics') if TeSS::Config.analytics_enabled %>
+</p>
+
+<p>
+  <%= link_to 'See our Privacy Policy for more information', privacy_path %>
+</p>
+
+<p>
+  <strong>You currently allow:</strong>
+  <% if @cookie_consent.level %>
+    <span id="cookie-consent-level"><%= t("cookies.levels.#{@cookie_consent.level}.explanation") %></span>
+  <% else %>
+    <span id="cookie-consent-level" class="muted"><%= t("cookies.no_consent") %></span>
+  <% end %>
+</p>
+
+<%= link_to t('cookies.levels.necessary.button'), cookies_consent_path(allow: 'necessary'), method: :post, class: 'btn btn-default' if TeSS::Config.analytics_enabled %>
+<%= link_to t('cookies.levels.all.button'), cookies_consent_path(allow: 'all'), method: :post, class: 'btn btn-default' %>

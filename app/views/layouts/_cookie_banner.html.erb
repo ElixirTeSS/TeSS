@@ -1,0 +1,21 @@
+<div id="cookie-banner">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-7">
+        <p>
+          <%= t('cookies.notice') %>
+          <%= t('cookies.google_analytics') if TeSS::Config.analytics_enabled %>
+        </p>
+        <p>You can modify your cookie preferences at any time <%= link_to 'here', cookies_consent_path %></p>
+        <p>
+          <%= link_to 'See our Privacy Policy for more information', privacy_path %>
+        </p>
+      </div>
+
+      <div class="col-lg-4 col-md-5 text-right">
+        <%= link_to t('cookies.levels.necessary.button'), cookies_consent_path(allow: 'necessary'), method: :post, class: 'btn btn-default' if TeSS::Config.analytics_enabled %>
+        <%= link_to t('cookies.levels.all.button'), cookies_consent_path(allow: 'all'), method: :post, class: 'btn btn-primary' %>
+      </div>
+    </div>
+  </div>
+</div>

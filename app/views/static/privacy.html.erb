@@ -17,8 +17,13 @@
   <h4>Server Logs</h4>
   <p><%== raw t 'privacy.server' %></p>
 
-  <h4>Analytics</h4>
-  <p><%== raw t 'privacy.analytics' %></p>
+  <h4>Cookies</h4>
+  <p><%== raw t 'privacy.cookies' %></p>
+
+  <% if TeSS::Config.analytics_enabled %>
+    <h4>Analytics</h4>
+    <p><%== raw t 'privacy.analytics' %></p>
+  <% end %>
 
   <h3>Information Retention</h3>
   <p><%== raw t 'privacy.retention' %></p>

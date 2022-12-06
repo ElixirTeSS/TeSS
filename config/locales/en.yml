@@ -251,6 +251,7 @@ en:
     personal: "You may additionally provide a profile, containing your name, a public email address, website link and avatar. This information is publicly available to all users."
     resources: "The details of any training materials and events that you register will be publicly visible and searchable. Any workflows and packages created can be opted to be made private, in which case only you, any collaborators you specify, and the TeSS administrators will be able to view and search for them."
     server: "When you browse TeSS, the server automatically records logs of which pages you access, when you accessed them, and your IP address. These logs are used to fix errors and are not shared with any third parties. Sensitive information (such as passwords) is automatically stripped out."
+    cookies: TeSS makes use of "strictly necessary cookies" for the site to function. These cookies are needed to establish your "session" with TeSS, which allows functionality such as user log-in, and secures against Cross Site Request Forgery (CSRF) attacks.
     analytics: "TeSS uses Google Analytics to track how users are discovering TeSS and interacting with the service. The information gathered includes which pages you visited, which search terms lead you to TeSS and information about your web browser. No personally identifiable information is sent to Google."
     retention: " Your information will be retained by TeSS until you choose to remove it, you delete your account, or the TeSS service ceases to exist."
     code: "TeSS adheres to the <a href='https://wiki.refeds.org/display/CODE/Code+of+Conduct+for+Service+Providers'> GÉANT Data Protection Code of Conduct for Service Providers in EU/EEA </a>"
@@ -402,3 +403,16 @@ en:
       sources_size: 'Sources count = %{sources_size}'
       bad_source_save: 'Source save failed with: %{error_message}'
       not_source_enabled: 'Source not enabled.'
+  cookies:
+    notice: TeSS makes use of some necessary cookies to function.
+    google_analytics: Additionally, we make use Google Analytics to discover how people are using TeSS in order to help us improve the service. To opt out of this, click the "Only allow necessary cookies" button.
+    necessary_cookies_btn: Only allow necessary cookies
+    all_cookies_btn: Allow all cookies
+    no_consent: No cookie consent provided
+    levels:
+      all:
+        button: Allow all cookies
+        explanation: All cookies, including cookies to gather analytics.
+      necessary:
+        button: Only allow necessary cookies
+        explanation: Only cookies necessary for TeSS to function, for example to provide user-authentication and forgery protection.
