@@ -64,15 +64,17 @@ module Fairsharing
       set_cached_token
 
       VCR.use_cassette('fairsharing/search_any_page_1') do
-        res = @client.search(query: 'test')
-        assert_equal 25, res.length
-        assert_equal 'FAIRsharing record for: Clusters of Orthologous Groups (COG) Analysis Ontology',
-                     res.last['attributes']['name']
-        assert_equal 1, res.page
-        assert_equal 2, res.next_page
-        assert_nil res.prev_page
-        assert_equal 1, res.first_page
-        assert_equal 73, res.last_page
+        travel_to(@token_issue_date) do
+          res = @client.search(query: 'test')
+          assert_equal 25, res.length
+          assert_equal 'FAIRsharing record for: Clusters of Orthologous Groups (COG) Analysis Ontology',
+                       res.last['attributes']['name']
+          assert_equal 1, res.page
+          assert_equal 2, res.next_page
+          assert_nil res.prev_page
+          assert_equal 1, res.first_page
+          assert_equal 73, res.last_page
+        end
       end
     end
 
@@ -80,15 +82,17 @@ module Fairsharing
       set_cached_token
 
       VCR.use_cassette('fairsharing/search_any_page_2') do
-        res = @client.search(query: 'test', page: 2)
-        assert_equal 25, res.length
-        assert_equal 'FAIRsharing record for: Logical Observation Identifier Names and Codes',
-                     res.last['attributes']['name']
-        assert_equal 2, res.page
-        assert_equal 3, res.next_page
-        assert_equal 1, res.prev_page
-        assert_equal 1, res.first_page
-        assert_equal 73, res.last_page
+        travel_to(@token_issue_date) do
+          res = @client.search(query: 'test', page: 2)
+          assert_equal 25, res.length
+          assert_equal 'FAIRsharing record for: Logical Observation Identifier Names and Codes',
+                       res.last['attributes']['name']
+          assert_equal 2, res.page
+          assert_equal 3, res.next_page
+          assert_equal 1, res.prev_page
+          assert_equal 1, res.first_page
+          assert_equal 73, res.last_page
+        end
       end
     end
 
@@ -96,14 +100,16 @@ module Fairsharing
       set_cached_token
 
       VCR.use_cassette('fairsharing/search_any_page_73') do
-        res = @client.search(query: 'test', page: 73)
-        assert_equal 21, res.length
-        assert_equal 'FAIRsharing record for: BioPortal', res.last['attributes']['name']
-        assert_equal 73, res.page
-        assert_nil res.next_page
-        assert_equal 72, res.prev_page
-        assert_equal 1, res.first_page
-        assert_equal 73, res.last_page
+        travel_to(@token_issue_date) do
+          res = @client.search(query: 'test', page: 73)
+          assert_equal 21, res.length
+          assert_equal 'FAIRsharing record for: BioPortal', res.last['attributes']['name']
+          assert_equal 73, res.page
+          assert_nil res.next_page
+          assert_equal 72, res.prev_page
+          assert_equal 1, res.first_page
+          assert_equal 73, res.last_page
+        end
       end
     end
 
@@ -111,27 +117,31 @@ module Fairsharing
       set_cached_token
 
       VCR.use_cassette('fairsharing/search_any_fairdom') do
-        res = @client.search(query: 'fairdom')
-        fairdomhub = res[0]
-        assert_equal 'FAIRDOMHub', fairdomhub['attributes']['metadata']['name']
-        assert_equal 'Database', fairdomhub['attributes']['fairsharing_registry']
-        fairdom_standards = res[1]
-        assert_equal 'FAIRDOM Community Standards', fairdom_standards['attributes']['metadata']['name']
-        assert_equal 'Collection', fairdom_standards['attributes']['fairsharing_registry']
-        types = res.map { |r| r['attributes']['fairsharing_registry'] }.uniq
-        assert types.length > 1
-        assert_equal 37, res.last_page
+        travel_to(@token_issue_date) do
+          res = @client.search(query: 'fairdom')
+          fairdomhub = res[0]
+          assert_equal 'FAIRDOMHub', fairdomhub['attributes']['metadata']['name']
+          assert_equal 'Database', fairdomhub['attributes']['fairsharing_registry']
+          fairdom_standards = res[1]
+          assert_equal 'FAIRDOM Community Standards', fairdom_standards['attributes']['metadata']['name']
+          assert_equal 'Collection', fairdom_standards['attributes']['fairsharing_registry']
+          types = res.map { |r| r['attributes']['fairsharing_registry'] }.uniq
+          assert types.length > 1
+          assert_equal 37, res.last_page
+        end
       end
 
       VCR.use_cassette('fairsharing/search_database_fairdom') do
-        res = @client.search(query: 'fairdom', type: 'database')
-        types = res.map { |r| r['attributes']['fairsharing_registry'] }.uniq
-        assert_equal ['Database'], types
-        fairdomhub = res[0]
-        assert_equal 'FAIRDOMHub', fairdomhub['attributes']['metadata']['name']
-        assert_equal 'Database', fairdomhub['attributes']['fairsharing_registry']
-        assert_not_equal 'FAIRDOM Community Standards', res[1]['attributes']['metadata']['name']
-        assert_equal 21, res.last_page
+        travel_to(@token_issue_date) do
+          res = @client.search(query: 'fairdom', type: 'database')
+          types = res.map { |r| r['attributes']['fairsharing_registry'] }.uniq
+          assert_equal ['Database'], types
+          fairdomhub = res[0]
+          assert_equal 'FAIRDOMHub', fairdomhub['attributes']['metadata']['name']
+          assert_equal 'Database', fairdomhub['attributes']['fairsharing_registry']
+          assert_not_equal 'FAIRDOM Community Standards', res[1]['attributes']['metadata']['name']
+          assert_equal 21, res.last_page
+        end
       end
     end
 
@@ -139,13 +149,15 @@ module Fairsharing
       set_cached_token
 
       VCR.use_cassette('fairsharing/search_junk') do
-        res = @client.search(query: 'fhdjsfoidsnvoinveoifsodfbsduoifbsduofsef')
-        assert_equal 0, res.length
-        assert_equal 1, res.page
-        assert_nil res.next_page
-        assert_nil res.prev_page
-        assert_equal 1, res.first_page
-        assert_equal 1, res.last_page
+        travel_to(@token_issue_date) do
+          res = @client.search(query: 'fhdjsfoidsnvoinveoifsodfbsduoifbsduofsef')
+          assert_equal 0, res.length
+          assert_equal 1, res.page
+          assert_nil res.next_page
+          assert_nil res.prev_page
+          assert_equal 1, res.first_page
+          assert_equal 1, res.last_page
+        end
       end
     end
 
