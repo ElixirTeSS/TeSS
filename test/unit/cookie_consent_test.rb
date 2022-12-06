@@ -1,11 +1,8 @@
 require 'test_helper'
 
 class CookieConsentTest < ActiveSupport::TestCase
-
   test 'should check if consent required?' do
     with_settings({ require_cookie_consent: false }) do
-      refute CookieConsent.required?
-
       cookie_consent = CookieConsent.new({})
       refute cookie_consent.required?
       assert cookie_consent.given?
@@ -15,8 +12,6 @@ class CookieConsentTest < ActiveSupport::TestCase
     end
 
     with_settings({ require_cookie_consent: true }) do
-      assert CookieConsent.required?
-
       cookie_consent = CookieConsent.new({})
       assert cookie_consent.required?
       refute cookie_consent.given?

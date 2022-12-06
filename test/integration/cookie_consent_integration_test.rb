@@ -5,7 +5,7 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
     with_settings({ require_cookie_consent: true }) do
       get root_path
 
-      assert_nil CookieConsent.new(session).level
+      assert_nil CookieConsent.new(cookies).level
       assert_select '#cookie-banner' do
         assert_select 'a.btn[href=?]', cookies_consent_path(allow: 'necessary'), count: 0
         assert_select 'a.btn[href=?]', cookies_consent_path(allow: 'all')

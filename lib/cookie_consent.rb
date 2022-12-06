@@ -1,16 +1,11 @@
 class CookieConsent
   LEVELS = %w(all necessary).freeze
 
-  def self.required?
-    TeSS::Config.require_cookie_consent
-  end
-
   def initialize(store)
     @store = store
   end
 
   def level= lvl
-    lvl = lvl.strip.downcase
     @store[:cookie_consent] = lvl if LEVELS.include?(lvl)
   end
 
@@ -21,7 +16,7 @@ class CookieConsent
   end
 
   def required?
-    self.class.required?
+    TeSS::Config.require_cookie_consent
   end
 
   def given?
