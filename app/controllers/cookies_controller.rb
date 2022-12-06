@@ -9,9 +9,11 @@ class CookiesController < ApplicationController
   end
 
   def set_consent
-    @cookie_consent.level = cookie_params[:allow]
-    unless @cookie_consent.level # Invalid option will be set to `nil`
-      flash[:error] = "Invalid consent option"
+    if cookie_params[:allow] == 'none'
+      @cookie_consent.revoke
+    else
+      @cookie_consent.options = cookie_params[:allow]
+      flash[:error] = 'Invalid cookie consent option provided' unless @cookie_consent.options.any?
     end
 
     respond_to do |format|

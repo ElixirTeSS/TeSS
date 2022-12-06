@@ -2,19 +2,18 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-7">
+        <%= render partial: 'common/cookie_info' %>
         <p>
-          <%= t('cookies.notice') %>
-          <%= t('cookies.google_analytics') if TeSS::Config.analytics_enabled %>
-        </p>
-        <p>You can modify your cookie preferences at any time <%= link_to 'here', cookies_consent_path %></p>
-        <p>
-          <%= link_to 'See our Privacy Policy for more information', privacy_path %>
+          You can modify your cookie preferences at any time <%= link_to 'here', cookies_consent_path %>,
+          or from the link in the footer.
         </p>
       </div>
 
       <div class="col-lg-4 col-md-5 text-right">
-        <%= link_to t('cookies.levels.necessary.button'), cookies_consent_path(allow: 'necessary'), method: :post, class: 'btn btn-default' if TeSS::Config.analytics_enabled %>
-        <%= link_to t('cookies.levels.all.button'), cookies_consent_path(allow: 'all'), method: :post, class: 'btn btn-primary' %>
+        <%= link_to t('cookies.buttons.necessary'), cookies_consent_path(allow: 'necessary'),
+                    method: :post, class: 'btn btn-default' %>
+        <%= link_to t('cookies.buttons.all'), cookies_consent_path(allow: CookieConsent::OPTIONS.join(',')),
+                    method: :post, class: 'btn btn-primary' if TeSS::Config.analytics_enabled %>
       </div>
     </div>
   </div>

@@ -404,15 +404,15 @@ en:
       bad_source_save: 'Source save failed with: %{error_message}'
       not_source_enabled: 'Source not enabled.'
   cookies:
-    notice: TeSS makes use of some necessary cookies to function.
-    google_analytics: Additionally, we make use Google Analytics to discover how people are using TeSS in order to help us improve the service. To opt out of this, click the "Only allow necessary cookies" button.
+    notice: TeSS makes use of some necessary cookies to provide its core functionality.
+    google_analytics: Additionally, we make use of Google Analytics to discover how people are using TeSS in order to help us improve the service. To opt out of this, choose the "Allow necessary cookies" option.
     necessary_cookies_btn: Only allow necessary cookies
     all_cookies_btn: Allow all cookies
     no_consent: No cookie consent provided
-    levels:
-      all:
-        button: Allow all cookies
-        explanation: All cookies, including cookies to gather analytics.
-      necessary:
-        button: Only allow necessary cookies
-        explanation: Only cookies necessary for TeSS to function, for example to provide user-authentication and forgery protection.
+    options:
+      tracking: Cookies required for Google Analytics, to help TeSS improve its service.
+      necessary: Cookies necessary for TeSS to function, for example to provide user-authentication and forgery protection.
+    buttons:
+      revoke: Revoke cookie consent
+      all: Allow all cookies
+      necessary: Allow necessary cookies

@@ -5,10 +5,10 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
     with_settings({ require_cookie_consent: true }) do
       get root_path
 
-      assert_nil CookieConsent.new(cookies).level
+      refute CookieConsent.new(cookies).given?
       assert_select '#cookie-banner' do
-        assert_select 'a.btn[href=?]', cookies_consent_path(allow: 'necessary'), count: 0
-        assert_select 'a.btn[href=?]', cookies_consent_path(allow: 'all')
+        assert_select 'a.btn[href=?]', cookies_consent_path(allow: 'necessary')
+        assert_select 'a.btn[href=?]', cookies_consent_path(allow: all_options), count: 0
       end
     end
   end
@@ -17,10 +17,10 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
     with_settings({ require_cookie_consent: true, analytics_enabled: true }) do
       get root_path
 
-      assert_nil CookieConsent.new(cookies).level
+      refute CookieConsent.new(cookies).given?
       assert_select '#cookie-banner' do
         assert_select 'a.btn[href=?]', cookies_consent_path(allow: 'necessary')
-        assert_select 'a.btn[href=?]', cookies_consent_path(allow: 'all')
+        assert_select 'a.btn[href=?]', cookies_consent_path(allow: all_options)
       end
     end
   end
@@ -29,19 +29,19 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
     with_settings({ require_cookie_consent: false }) do
       get root_path
 
-      assert_nil CookieConsent.new(cookies).level
+      assert_empty CookieConsent.new(cookies).options
       assert_select '#cookie-banner', count: 0
     end
   end
 
   test 'cookie consent banner not shown if already consented' do
     with_settings({ require_cookie_consent: true }) do
-      post cookies_consent_path, params: { allow: 'all' }
+      post cookies_consent_path, params: { allow: all_options }
 
       get root_path
 
       cookie_consent = CookieConsent.new(cookies)
-      assert_equal 'all', cookie_consent.level
+      assert_equal ['necessary', 'tracking'], cookie_consent.options
       assert cookie_consent.given?
       assert_select '#cookie-banner', count: 0
     end
@@ -53,14 +53,14 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
 
       get root_path
 
-      assert_equal 'necessary', CookieConsent.new(cookies).level
+      assert_equal ['necessary'], CookieConsent.new(cookies).options
       assert_select '#ga-script', count: 0
     end
   end
 
   test 'analytics code present if only all cookies allowed' do
     with_settings({ require_cookie_consent: true, analytics_enabled: true }) do
-      post cookies_consent_path, params: { allow: 'all' }
+      post cookies_consent_path, params: { allow: all_options }
 
       get root_path
 
@@ -76,7 +76,7 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
       get root_path
 
       cookie_consent = CookieConsent.new(cookies)
-      assert_equal 'necessary', cookie_consent.level
+      assert_equal ['necessary'], cookie_consent.options
       assert cookie_consent.allow_tracking?
       assert_select '#ga-script', count: 1
     end
@@ -89,22 +89,28 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
       assert_nil User.current_user
       assert_response :success
       assert_select '#cookie-consent-level', text: /No cookie consent/
+      assert_select 'a.btn[href=?]', cookies_consent_path(allow: 'none')
       assert_select 'a.btn[href=?]', cookies_consent_path(allow: 'necessary')
-      assert_select 'a.btn[href=?]', cookies_consent_path(allow: 'all')
+      assert_select 'a.btn[href=?]', cookies_consent_path(allow: all_options)
 
       post cookies_consent_path, params: { allow: 'necessary' }
+      follow_redirect!
+      assert_select '#flash-container .alert-danger', count: 0
 
       get cookies_consent_path
       assert_response :success
 
-      assert_select '#cookie-consent-level', text: /Only cookies necessary/
+      assert_select '#cookie-consent-level', text: /No cookie consent/, count: 0
+      assert_select '#cookie-consent-level li', text: /Cookies required for Google Analytics/, count: 0
+      assert_select '#cookie-consent-level li', text: /Cookies necessary/
 
-      post cookies_consent_path, params: { allow: 'all' }
+      post cookies_consent_path, params: { allow: all_options }
 
       get cookies_consent_path
       assert_response :success
 
-      assert_select '#cookie-consent-level', text: /All cookies/
+      assert_select '#cookie-consent-level li', text: /Cookies required for Google Analytics/
+      assert_select '#cookie-consent-level li', text: /Cookies necessary/
     end
   end
 
@@ -119,14 +125,59 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
       assert_response :success
       assert_select '#cookie-consent-level', text: /No cookie consent/
       assert_select 'a.btn[href=?]', cookies_consent_path(allow: 'necessary')
-      assert_select 'a.btn[href=?]', cookies_consent_path(allow: 'all')
+      assert_select 'a.btn[href=?]', cookies_consent_path(allow: all_options)
 
-      post cookies_consent_path, params: { allow: 'all' }
+      post cookies_consent_path, params: { allow: all_options }
 
       get cookies_consent_path
       assert_response :success
 
-      assert_select '#cookie-consent-level', text: /All cookies/
+      assert_select '#cookie-consent-level li', text: /Cookies required for Google Analytics/
+      assert_select '#cookie-consent-level li', text: /Cookies necessary/
     end
+  end
+
+  test 'setting invalid cookie preferences shows an error' do
+    with_settings({ require_cookie_consent: true }) do
+      post cookies_consent_path, params: { allow: 'banana sandwich' }
+
+      follow_redirect!
+
+      assert_select '#flash-container .alert-danger', text: /Invalid cookie consent option provided/
+    end
+  end
+
+  test 'revoke consent' do
+    with_settings({ require_cookie_consent: true, analytics_enabled: true }) do
+      post cookies_consent_path, params: { allow: 'necessary' }
+      follow_redirect!
+      assert_select '#flash-container .alert-danger', count: 0
+
+      get cookies_consent_path
+      assert_response :success
+
+      assert_select '#cookie-consent-level', text: /No cookie consent/, count: 0
+      assert_select '#cookie-consent-level li', text: /Cookies required for Google Analytics/, count: 0
+      assert_select '#cookie-consent-level li', text: /Cookies necessary/
+      assert_select '#cookie-banner', count: 0
+
+      post cookies_consent_path, params: { allow: 'none' }
+      follow_redirect!
+      assert_select '#flash-container .alert-danger', count: 0
+
+      get cookies_consent_path
+      assert_response :success
+
+      assert_select '#cookie-consent-level', text: /No cookie consent/
+      assert_select '#cookie-consent-level li', text: /Cookies required for Google Analytics/, count: 0
+      assert_select '#cookie-consent-level li', text: /Cookies necessary/, count: 0
+      assert_select '#cookie-banner'
+    end
+  end
+
+  private
+
+  def all_options
+    CookieConsent::OPTIONS.join(',')
   end
 end

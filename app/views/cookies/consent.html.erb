@@ -1,22 +1,37 @@
-<h1>Cookie Consent</h1>
+<div class="row">
+  <div class="col-md-8">
+    <h1>Cookie Consent</h1>
 
-<p>
-  <%= t('cookies.notice') %>
-  <%= t('cookies.google_analytics') if TeSS::Config.analytics_enabled %>
-</p>
+    <%= render partial: 'common/cookie_info' %>
 
-<p>
-  <%= link_to 'See our Privacy Policy for more information', privacy_path %>
-</p>
-
-<p>
-  <strong>You currently allow:</strong>
-  <% if @cookie_consent.level %>
-    <span id="cookie-consent-level"><%= t("cookies.levels.#{@cookie_consent.level}.explanation") %></span>
-  <% else %>
-    <span id="cookie-consent-level" class="muted"><%= t("cookies.no_consent") %></span>
-  <% end %>
-</p>
-
-<%= link_to t('cookies.levels.necessary.button'), cookies_consent_path(allow: 'necessary'), method: :post, class: 'btn btn-default' if TeSS::Config.analytics_enabled %>
-<%= link_to t('cookies.levels.all.button'), cookies_consent_path(allow: 'all'), method: :post, class: 'btn btn-default' %>
+    <div class="panel panel-default">
+      <div class="panel-heading">Cookie Preferences</div>
+      <div class="panel-body">
+        <h4>You currently allow</h4>
+        <% if @cookie_consent.options.any? %>
+          <ul id="cookie-consent-level">
+            <% @cookie_consent.options.each do |opt| %>
+              <li><%= t("cookies.options.#{opt}") %></li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p>
+            <span id="cookie-consent-level" class="muted"><%= t("cookies.no_consent") %></span>
+          </p>
+        <% end %>
+      </div>
+      <div class="panel-footer clearfix">
+        <div class="pull-left">
+          <%= link_to t('cookies.buttons.revoke'), cookies_consent_path(allow: 'none'), method: :post,
+                      class: 'btn btn-default' %>
+        </div>
+        <div class="pull-right">
+          <%= link_to t('cookies.buttons.necessary'), cookies_consent_path(allow: 'necessary'),
+                      method: :post, class: 'btn btn-default' %>
+          <%= link_to t('cookies.buttons.all'), cookies_consent_path(allow: CookieConsent::OPTIONS.join(',')),
+                      method: :post, class: 'btn btn-default' if TeSS::Config.analytics_enabled %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

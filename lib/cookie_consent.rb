@@ -1,18 +1,21 @@
 class CookieConsent
-  LEVELS = %w(all necessary).freeze
+  OPTIONS = %w(necessary tracking).freeze
 
   def initialize(store)
     @store = store
   end
 
-  def level= lvl
-    @store[:cookie_consent] = lvl if LEVELS.include?(lvl)
+  def options=(opts)
+    opts = opts.split(',').map(&:strip)
+    @store[:cookie_consent] = opts.join(',') unless opts.any? { |opt| !OPTIONS.include?(opt) }
   end
 
-  def level
-    lvl = @store[:cookie_consent]
-    return nil unless LEVELS.include?(lvl)
-    lvl
+  def options
+    (@store[:cookie_consent] || '').split(',').select { |opt| OPTIONS.include?(opt) }
+  end
+
+  def revoke
+    @store[:cookie_consent] = nil
   end
 
   def required?
@@ -20,18 +23,14 @@ class CookieConsent
   end
 
   def given?
-    !required? || level.present?
-  end
-
-  def allow_all?
-    !required? || level == 'all'
+    !required? || options.any?
   end
 
   def allow_tracking?
-    !required? || allow_all?
+    !required? || options.include?('tracking')
   end
 
   def allow_necessary?
-    !required? || allow_all? || level == 'necessary'
+    !required? || options.include?('necessary')
   end
 end
