@@ -627,6 +627,6 @@ module ApplicationHelper
   end
 
   def cookie_consent
-    @cookie_consent ||= CookieConsent.new(cookies)
+    CookieConsent.new(cookies)
   end
 end
