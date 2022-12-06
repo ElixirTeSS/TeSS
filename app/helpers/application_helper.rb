@@ -474,7 +474,10 @@ module ApplicationHelper
     star = current_user.stars.where(resource_id: resource.id, resource_type: resource.class.name).first
 
     link_to '', '#', class: 'btn btn-default',
-            data: { role: 'star-button', starred: !star.nil?, resource: { id: resource.id, type: resource.class.name } }
+            data: { role: 'star-button',
+                    starred: !star.nil?,
+                    resource: { id: resource.id, type: resource.class.name },
+                    url: stars_path }
   end
 
   def next_about_block(feature_count)

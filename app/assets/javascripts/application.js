@@ -162,7 +162,7 @@ document.addEventListener("turbolinks:load", function() {
             $.ajax({
                 method: starred ? 'DELETE' : 'POST',
                 dataType: 'json',
-                url: '/stars',
+                url: button.data('url'),
                 data: { star: { resource_id: resource.id, resource_type: resource.type } },
                 success: function () {
                     button.data('starred', !starred);

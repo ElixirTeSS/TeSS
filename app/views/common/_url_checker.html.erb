@@ -1,5 +1,6 @@
 <% opts = {} %>
 <% opts['data-url-check'] = url if f.object.new_record? %>
+<% opts['data-url-valid'] = test_url_path %>
 <% opts['title'] = title unless title.nil? %>
 
 <div class="form-group">

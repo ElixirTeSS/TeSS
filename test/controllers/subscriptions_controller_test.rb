@@ -53,6 +53,25 @@ class SubscriptionsControllerTest < ActionController::TestCase
     assert_redirected_to subscriptions_path
   end
 
+  class EvilExceptionThrower
+    def initialize
+      raise 'die!'
+    end
+  end
+
+  test 'should not constantize arbitrary class' do
+    sign_in users(:regular_user)
+
+    assert_no_difference('Subscription.count') do
+      assert_nothing_raised do
+        post :create, params: { subscription: { frequency: 'weekly', subscribable_type: 'EvilExceptionThrower' } }
+      end
+    end
+
+    assert_redirected_to subscriptions_path
+    assert_includes flash[:error], 'Subscribable type not valid'
+  end
+
   test 'should delete a subscription' do
     sign_in users(:regular_user)
     sub = subscriptions(:daily_subscription)
