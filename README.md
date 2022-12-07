@@ -4,7 +4,7 @@
 
 [ELIXIR's](https://www.elixir-europe.org/) **T**raining **e**-**S**upport **S**ervice - A Ruby on Rails application providing a portal for registering and discovering training events and materials.
 
-The TeSS code is open source and available under a [BSD 3-Clause license](LICENSE). You are free to [use it outside of ELIXIR](docs/customization.md), with minimal restrictions on its use and distribution. However, if you do create your own version/fork of TeSS, please consider [contributing](CONTRIBUTING.md) your changes back to the main TeSS codebase.
+The TeSS code is open source and available under a [BSD 3-Clause license](LICENSE). You are free to [use it outside of ELIXIR](docs/customization.md), with minimal restrictions on its use and distribution. If you do create your own version/fork of TeSS, we welcome and encourage [contributing](CONTRIBUTING.md) your changes back to the main TeSS codebase.
 
 ## Features
 
