@@ -186,7 +186,25 @@ document.addEventListener("turbolinks:load", function() {
         }
     });
 
-    $("a[rel~=popover], .has-popover").popover();
+    $('.has-popover').each(function () {
+        $(this).popover({
+            trigger: 'manual'
+        }).click(function (e) {
+            $(this).popover('toggle');
+            e.stopPropagation(); // Stops popover immediately closing from document click handler below.
+        }).on('inserted.bs.popover', function () {
+            $('.popover').click(function (e) {
+                // Prevent clicking the popover content from closing it.
+                // Skips the click event on the document, defined below.
+                e.stopPropagation();
+            })
+        })
+    });
+
+    $(document).click(function () {
+        $('.has-popover').popover('hide');
+    });
+
     $("a[rel~=tooltip], .has-tooltip").tooltip();
 
     // Prevent form being un-intentionally submitted when enter key is pressed in a text field.

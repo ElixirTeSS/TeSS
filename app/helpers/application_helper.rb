@@ -269,7 +269,7 @@ module ApplicationHelper
     classes = 'btn btn-default has-popover'
     classes << " #{opts[:class]}" if opts[:class]
     content_tag(:a, tabindex: 0, class: classes,
-               data: { toggle: 'popover', placement: 'bottom', trigger: 'focus click',
+               data: { toggle: 'popover', placement: 'bottom',
                        title: title, html: true, content: capture(&block) }) do
       "<i class='fa fa-info-circle'></i> <span class='hidden-xs'>#{title}</span>".html_safe
     end
