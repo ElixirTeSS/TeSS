@@ -87,7 +87,7 @@ In order to run and test your code, you will need to be able to run TeSS locally
 
 TeSS tries to follow the [Ruby Style Guide](https://github.com/rubocop/ruby-style-guide). We also make use of [rubocop](https://github.com/rubocop/rubocop), a Ruby static code analyzer and formatter that automatically checks and can enforce conformance to the [Ruby Style Guide](https://github.com/rubocop/ruby-style-guide).
 
-Your IDE may have rubocop integration. If if does not, you can run it manually form command line as:
+Your IDE may have rubocop integration. If if does not, you can run it manually from command line as:
 
 ```
 rubocop lib/my_code_that_i_wrote.rb
