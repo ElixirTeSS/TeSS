@@ -15,11 +15,30 @@
     padding: 5px 0 10px 0;
     width: 100%;
   }
-}
 
-.about-page-menu .nav > .active > a {
-  background-color: transparent;
-  color: $accent-color;
+  /* all links */
+  li.about-page-category > a {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  /* nested links */
+  li > a {
+    color: #616161;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 30px;
+  }
+
+  .nav > .active > a {
+    background-color: #f0f0f0;
+  }
+
+  .nav > .active > a {
+    background-color: transparent;
+    color: $accent-color;
+  }
 }
 
 .about-block {
