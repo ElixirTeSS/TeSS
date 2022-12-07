@@ -102,7 +102,7 @@ var Biotools = {
             $.each(json_object.topic, function(index, topic){
                 $('#' + id + '-topics').append(
                     '<span class="btn btn-default keyword-button">' +
-                    '<a href="' + topic.uri + '" target="_blank">' + topic.term + '</a>' +
+                    '<a href="' + topic.uri + '" target="_blank" rel="noopener">' + topic.term + '</a>' +
                     '</span>'
                 );
             });

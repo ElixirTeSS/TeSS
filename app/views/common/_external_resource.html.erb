@@ -4,7 +4,7 @@
 <% id = Digest::SHA256.hexdigest external_resource.url %>
 
 <div class="col-md-12 col-sm-12 bounding-box" data-api_uri="<%=api_uri || nil%>" data-id="<%=id || nil%>">
-  <%= link_to(external_resource.url, target: :_blank, rel: 'nofollow noopener') do %>
+  <%= link_to(external_resource.url, target: '_blank', rel: 'nofollow noopener') do %>
     <h4>
       <i class="fa fa-external-link" id="<%=id%>-resource-type-icon"></i>
       <%= external_resource.title %>

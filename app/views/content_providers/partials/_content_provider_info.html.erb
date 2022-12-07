@@ -44,13 +44,20 @@ Variable that should be available
         <p>
           <%# Link to either external content provider's page or to the content provider's object in TeSS,
           based on which controller/view is currenlty active %>
-          <% cp_url = (controller_name == 'content_providers') ? content_provider.url : (url_for content_provider) %>
-          <% cp_target = (controller_name == 'content_providers') ? '_blank' : '_self' %>
-          <%= link_to(image_tag(content_provider.image.url, :class => "medium-content-provider-logo"), cp_url, :target => cp_target) %>
+          <%
+            if controller_name == 'content_providers'
+              url = content_provider.url
+              url_opts = { target: '_blank', rel: 'noopener' }
+            else
+              url = content_provider
+              url_opts = {}
+            end
+          %>
+          <%= link_to(image_tag(content_provider.image.url, class: 'medium-content-provider-logo'), url, **url_opts) %>
         </p>
 
         <p>
-          <%= link_to content_provider.title, cp_url, :class => "h5", :target => cp_target %>
+          <%= link_to content_provider.title, url, class: 'h5', **url_opts %>
         </p>
         <% unless content_provider.description.blank? %>
             <p class="minimise">

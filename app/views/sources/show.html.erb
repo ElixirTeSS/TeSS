@@ -24,9 +24,9 @@
                       data: { confirm: t('.confirm', default: t("helpers.links.confirm", default: 'Are you sure?')) },
                       class: 'btn btn-danger' %>
         <% end %>
-        <a href="<%= @source.url %>" target="_blank" class="btn btn-success">
-          <span class="fa fa-external-link"></span>
-          View URL</a>
+        <%= link_to @source.url, class: 'btn btn-success', target: '_blank', rel: 'noopener' do %>
+          <span class="fa fa-external-link"></span> View URL
+        <% end %>
       </div>
     </div>
 
@@ -48,7 +48,7 @@
               <!-- Field: URL -->
               <p class="url-wrap">
                 <strong>URL:</strong>
-                <%= link_to @source.url, @source.url, target: :_blank, rel: :noopener %>
+                <%= link_to @source.url, @source.url, target: '_blank', rel: 'noopener' %>
               </p>
 
               <!-- Field: method -->
