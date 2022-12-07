@@ -8,7 +8,7 @@
       <div class="panel-heading">Cookie Preferences</div>
       <div class="panel-body">
         <h4>You currently allow</h4>
-        <% if @cookie_consent.options.any? %>
+        <% if @cookie_consent.given? %>
           <ul id="cookie-consent-level">
             <% @cookie_consent.options.each do |opt| %>
               <li><%= t("cookies.options.#{opt}") %></li>

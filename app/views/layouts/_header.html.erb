@@ -178,4 +178,4 @@
   <% end %>
 </div>
 
-<%= render(partial: 'layouts/cookie_banner') unless cookie_consent.given? %>
+<%= render(partial: 'layouts/cookie_banner') if cookie_consent.show_banner? %>

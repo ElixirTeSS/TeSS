@@ -5,7 +5,8 @@ class CookieConsentTest < ActiveSupport::TestCase
     with_settings({ require_cookie_consent: false }) do
       cookie_consent = CookieConsent.new({})
       refute cookie_consent.required?
-      assert cookie_consent.given?
+      refute cookie_consent.show_banner?
+      refute cookie_consent.given?
       assert cookie_consent.allow_tracking?
       assert cookie_consent.allow_necessary?
     end
@@ -13,30 +14,35 @@ class CookieConsentTest < ActiveSupport::TestCase
     with_settings({ require_cookie_consent: true }) do
       cookie_consent = CookieConsent.new({})
       assert cookie_consent.required?
+      assert cookie_consent.show_banner?
       refute cookie_consent.given?
       refute cookie_consent.allow_tracking?
       refute cookie_consent.allow_necessary?
 
       cookie_consent = CookieConsent.new({ cookie_consent: 'embedding,tracking,necessary' })
       assert cookie_consent.required?
+      refute cookie_consent.show_banner?
       assert cookie_consent.given?
       assert cookie_consent.allow_tracking?
       assert cookie_consent.allow_necessary?
 
       cookie_consent = CookieConsent.new({ cookie_consent: 'necessary' })
       assert cookie_consent.required?
+      refute cookie_consent.show_banner?
       assert cookie_consent.given?
       refute cookie_consent.allow_tracking?
       assert cookie_consent.allow_necessary?
 
       cookie_consent = CookieConsent.new({ cookie_consent: 'banana,necessary' })
       assert cookie_consent.required?
+      refute cookie_consent.show_banner?
       assert cookie_consent.given?
       refute cookie_consent.allow_tracking?
       assert cookie_consent.allow_necessary?
 
       cookie_consent = CookieConsent.new({ cookie_consent: 'banana,golf' })
       assert cookie_consent.required?
+      assert cookie_consent.show_banner?
       refute cookie_consent.given?
       refute cookie_consent.allow_tracking?
       refute cookie_consent.allow_necessary?

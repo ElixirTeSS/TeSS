@@ -5,7 +5,9 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
     with_settings({ require_cookie_consent: true }) do
       get root_path
 
-      refute CookieConsent.new(cookies).given?
+      cookie_consent = CookieConsent.new(cookies)
+      refute cookie_consent.given?
+      assert cookie_consent.show_banner?
       assert_select '#cookie-banner' do
         assert_select 'a.btn[href=?]', cookies_consent_path(allow: 'necessary')
         assert_select 'a.btn[href=?]', cookies_consent_path(allow: all_options), count: 0
@@ -17,7 +19,6 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
     with_settings({ require_cookie_consent: true, analytics_enabled: true }) do
       get root_path
 
-      refute CookieConsent.new(cookies).given?
       assert_select '#cookie-banner' do
         assert_select 'a.btn[href=?]', cookies_consent_path(allow: 'necessary')
         assert_select 'a.btn[href=?]', cookies_consent_path(allow: all_options)
@@ -29,7 +30,9 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
     with_settings({ require_cookie_consent: false }) do
       get root_path
 
-      assert_empty CookieConsent.new(cookies).options
+      cookie_consent = CookieConsent.new(cookies)
+      refute cookie_consent.given?
+      refute cookie_consent.show_banner?
       assert_select '#cookie-banner', count: 0
     end
   end
@@ -94,12 +97,13 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
       assert_select 'a.btn[href=?]', cookies_consent_path(allow: all_options)
 
       post cookies_consent_path, params: { allow: 'necessary' }
+
       follow_redirect!
       assert_select '#flash-container .alert-danger', count: 0
 
       get cookies_consent_path
-      assert_response :success
 
+      assert_response :success
       assert_select '#cookie-consent-level', text: /No cookie consent/, count: 0
       assert_select '#cookie-consent-level li', text: /Cookies required for Google Analytics/, count: 0
       assert_select '#cookie-consent-level li', text: /Cookies necessary/
@@ -107,8 +111,8 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
       post cookies_consent_path, params: { allow: all_options }
 
       get cookies_consent_path
-      assert_response :success
 
+      assert_response :success
       assert_select '#cookie-consent-level li', text: /Cookies required for Google Analytics/
       assert_select '#cookie-consent-level li', text: /Cookies necessary/
     end

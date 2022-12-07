@@ -23,7 +23,11 @@ class CookieConsent
   end
 
   def given?
-    !required? || options.any?
+    options.any?
+  end
+
+  def show_banner?
+    required? && !given?
   end
 
   def allow_tracking?
