@@ -1,0 +1,20 @@
+<div id="cookie-banner">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-7">
+        <%= render partial: 'common/cookie_info' %>
+        <p>
+          You can modify your cookie preferences at any time <%= link_to 'here', cookies_consent_path %>,
+          or from the link in the footer.
+        </p>
+      </div>
+
+      <div class="col-lg-4 col-md-5 text-right">
+        <%= link_to t('cookies.buttons.necessary'), cookies_consent_path(allow: 'necessary'),
+                    method: :post, class: 'btn btn-default' %>
+        <%= link_to t('cookies.buttons.all'), cookies_consent_path(allow: CookieConsent::OPTIONS.join(',')),
+                    method: :post, class: 'btn btn-primary' if TeSS::Config.analytics_enabled %>
+      </div>
+    </div>
+  </div>
+</div>

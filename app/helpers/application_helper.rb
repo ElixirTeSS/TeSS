@@ -625,4 +625,8 @@ module ApplicationHelper
       link_to(title, "#{path}##{anchor}")
     end
   end
+
+  def cookie_consent
+    CookieConsent.new(cookies)
+  end
 end

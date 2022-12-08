@@ -136,6 +136,8 @@ Rails.application.routes.draw do
   get 'curate' => 'curator#index'
 
   get 'fairsharing/search' => 'fairsharing#search'
+  get 'cookies/consent' => 'cookies#consent'
+  post 'cookies/consent' => 'cookies#set_consent'
 
   require 'sidekiq/web'
   authenticate :user, lambda { |u| u.is_admin? } do
