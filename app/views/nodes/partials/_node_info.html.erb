@@ -15,7 +15,9 @@
       <%= node.member_status %>
     </p>
     <% unless node.home_page.blank? %>
-        <p class="dont-break-out"><%= link_to node.home_page, node.home_page, :class =>'h5', :target => "_blank" %></p>
+        <p class="dont-break-out">
+          <%= link_to node.home_page, node.home_page, class: 'h5', target: '_blank', rel: 'noopener' %>
+        </p>
     <% end %>
     <% unless node.twitter.blank? %>
         <p><%= twitter_link node.twitter %></p>

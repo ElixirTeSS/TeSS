@@ -33,7 +33,7 @@ en:
       Events in TeSS are defined as face-to-face or online training opportunities that have set start and end times.
       These primarily take the form of workshops, courses, webinars, etc.; but TeSS also collects information about
       conferences, meetings and hackathons, as these may also provide opportunities for learning.
-    nominatim: "<a href='https://wiki.openstreetmap.org/wiki/Nominatim' target='_blank'>Nominatim</a>"
+    nominatim: "<a href='https://wiki.openstreetmap.org/wiki/Nominatim' target='_blank' rel='noopener'>Nominatim</a>"
     materials: >
       Materials in TeSS are defined as training resources that can be accessed at any time. These may be in
       a variety of different formats, including online tutorials, videos, PowerPoint presentations, and so on.
