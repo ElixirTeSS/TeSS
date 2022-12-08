@@ -769,9 +769,14 @@ input.loading {
   margin-right: auto;
 }
 
-.bs-type-selectors li {
-  display: inline-block;
-  padding: 5px;
+.bs-type-selectors ul {
+  display: inline;
+  padding: 0;
+
+  li {
+    display: inline;
+    padding: 10px;
+  }
 }
 
 input[type=checkbox].field-lock {
@@ -1124,4 +1129,17 @@ input[type=checkbox].field-lock + label:before,
 
 .collapsible-panel-link {
   display: block;
+}
+
+#cookie-banner {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding-top: 10px;
+  background-color: #eee;
+  z-index: 2;
+
+  .btn {
+    margin-bottom: 5px;
+  }
 }

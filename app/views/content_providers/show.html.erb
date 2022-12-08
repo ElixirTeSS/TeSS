@@ -113,17 +113,15 @@
 
     <div class="row">
       <p>
-        <%= link_to(image_tag(@content_provider.image.url, :class => "medium-content-provider-logo"),
-                    @content_provider.url, :target => '_blank',
-                    :onclick => "getOutboundLink('#{@content_provider.url}'); return true;") %>
+        <%= link_to(image_tag(@content_provider.image.url, class: 'medium-content-provider-logo'),
+                    @content_provider.url, target: '_blank', rel: 'noopener',
+                    onclick: "getOutboundLink('#{@content_provider.url}'); return true;") %>
       </p>
 
       <p>
-        <%= link_to @content_provider.url,
-                    :target => '_blank',
-                    :onclick => "getOutboundLink('#{@content_provider.url}'); return true;" do %>
-          <%= @content_provider.url %><i class="icon icon-md arrow-top-right-icon"></i>
-        <% end %>
+        <%= link_to @content_provider.title, @content_provider.url, class: 'h5',
+                    target: '_blank', rel: 'noopener',
+                    onclick: "getOutboundLink('#{@content_provider.url}'); return true;" %>
       </p>
 
       <% unless @content_provider.contact.blank? %>

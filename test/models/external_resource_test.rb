@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class ExternalResourceTest < ActiveSupport::TestCase
-
   test 'correctly identifiers a bio.tools external resource' do
     assert external_resources(:biotools).is_tool?
     refute external_resources(:biotools).is_fairsharing?
@@ -28,25 +27,4 @@ class ExternalResourceTest < ActiveSupport::TestCase
 
     assert_nil external_resources(:google).api_url_of_tool
   end
-
-  test 'get fairsharing API url' do
-    database = ExternalResource.new(url: 'https://fairsharing.org/biodbcore-123456')
-    assert_equal 'https://fairsharing.org/api/database/summary/biodbcore-123456', database.api_url_of_fairsharing
-    refute database.is_tool?
-    assert database.is_fairsharing?
-    refute database.is_generic_external_resource?
-
-    standard = ExternalResource.new(url: 'https://fairsharing.org/bsg-s123456')
-    assert_equal 'https://fairsharing.org/api/standard/summary/bsg-s123456', standard.api_url_of_fairsharing
-    refute standard.is_tool?
-    assert standard.is_fairsharing?
-    refute standard.is_generic_external_resource?
-
-    policy = ExternalResource.new(url: 'https://fairsharing.org/bsg-p123456')
-    assert_equal 'https://fairsharing.org/api/policy/summary/bsg-p123456', policy.api_url_of_fairsharing
-    refute policy.is_tool?
-    assert policy.is_fairsharing?
-    refute policy.is_generic_external_resource?
-  end
-
 end

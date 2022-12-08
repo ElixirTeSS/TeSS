@@ -1,0 +1,90 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.fairsharing.org/search/fairsharing_records?page%5Bnumber%5D=1&page%5Bsize%5D=25&q=fhdjsfoidsnvoinveoifsodfbsduoifbsduofsef
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      User-Agent:
+      - rest-client/2.1.0 (linux x86_64) ruby/3.0.4p208
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyMjIxMDlhMi0wZWZkLTQ0Y2EtYTYzOC1jNjFmMWZmNmQxYjAiLCJzdWIiOiI4MjI0Iiwic2NwIjoidXNlciIsImF1ZCI6bnVsbCwiaWF0IjoxNjY5OTEwODM4LCJleHAiOjE2Njk5OTcyMzh9.Dv_E6JiyRSrvoOZMHZeQLiEbqYnsTR0qkyrKyWWqb80
+      Content-Length:
+      - '0'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Host:
+      - api.fairsharing.org
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Status:
+      - 200 OK
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Vary:
+      - Accept
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Xss-Protection:
+      - '0'
+      Maintenance:
+      - 'false'
+      X-Request-Id:
+      - 98eb434d-f119-437d-ae5a-1af530d96743
+      X-Per-Page:
+      - '25'
+      X-Download-Options:
+      - noopen
+      Etag:
+      - W/"4ca4bc1c60cead005221f13a5d6a3ab3"
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Runtime:
+      - '0.137119'
+      X-Content-Type-Options:
+      - nosniff
+      X-Page:
+      - '1'
+      X-Total:
+      - '0'
+      Read-Only:
+      - 'false'
+      Date:
+      - Thu, 01 Dec 2022 17:47:15 GMT
+      Set-Cookie:
+      - rack.session=BAh7BkkiD3Nlc3Npb25faWQGOgZFVG86HVJhY2s6OlNlc3Npb246OlNlc3Npb25JZAY6D0BwdWJsaWNfaWRJIkVlNTMwMzkwYWI5MzZkZTIxM2VkMTEwMjBjYjIzYjcxM2IyZWM3NWYxOGNiYWM0M2RjMmExYjQ3MDI0Yjk1NjhlBjsARg%3D%3D--dd95ff8a87a7b8d4f7306f050d054a21fa8ed787;
+        path=/; HttpOnly
+      X-Powered-By:
+      - Phusion Passenger(R) 6.0.15
+      Server:
+      - nginx + Phusion Passenger(R) 6.0.15
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - GET, POST, PUT, DELETE, OPTIONS, HEAD
+      Access-Control-Allow-Headers:
+      - DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,X-Client-Id,Authorization,Access-Control-Allow-Origin
+      Access-Control-Expose-Headers:
+      - Content-Length,Content-Range,Maintenance,Read-Only
+    body:
+      encoding: UTF-8
+      string: '{"data":[],"links":{"self":"https://api.fairsharing.org/search/fairsharing_records?page%5Bnumber%5D=1\u0026page%5Bsize%5D=25\u0026q=fhdjsfoidsnvoinveoifsodfbsduoifbsduofsef","first":"https://api.fairsharing.org/search/fairsharing_records?page%5Bnumber%5D=1\u0026page%5Bsize%5D=25\u0026q=fhdjsfoidsnvoinveoifsodfbsduoifbsduofsef","prev":null,"next":null,"last":"https://api.fairsharing.org/search/fairsharing_records?page%5Bnumber%5D=1\u0026page%5Bsize%5D=25\u0026q=fhdjsfoidsnvoinveoifsodfbsduoifbsduofsef"}}'
+  recorded_at: Thu, 01 Dec 2022 17:47:15 GMT
+recorded_with: VCR 6.1.0

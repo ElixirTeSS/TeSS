@@ -34,6 +34,11 @@
           <div class="footer-item">
             <%= link_to 'Privacy', privacy_path, target: '_blank' %>
           </div>
+          <% if cookie_consent.required? %>
+            <div class="footer-item">
+              <%= link_to 'Cookie preferences', cookies_consent_path, target: '_blank' %>
+            </div>
+          <% end %>
 
           <div class="mt-4 eu-notice hidden-sm hidden-xs">
             <%= image_tag('elixir/eu_flag.svg') %>

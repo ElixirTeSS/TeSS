@@ -25,7 +25,7 @@
                         :class => 'btn btn-danger' %>
         <% end %>
         <% unless @node.home_page.blank? %>
-            <a href="<%= @node.home_page %>" target="_blank" class="btn btn-default">
+            <a href="<%= @node.home_page %>" target="_blank" rel="noopener" class="btn btn-default">
               <span class="fa fa-external-link"></span> View home page
             </a>
         <% end %>

@@ -6,6 +6,7 @@ default: &default
   solr_enabled: true
   announcement_message:
   prevent_robot_indexing: false
+  require_cookie_consent: true
   blocked_domains:
     - !ruby/regexp '/bad-domain\.example/'
   site:

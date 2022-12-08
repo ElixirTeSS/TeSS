@@ -5,6 +5,7 @@ var UrlChecker = {
         var type = $(this).attr('name').split('[')[0];
         body[type] = { url: input.val() };
         var checkExistsUrl = $(this).data('urlCheck');
+        var testValidUrl = $(this).data('urlValid');
         var url = input.val();
 
         $(this).addClass('loading');
@@ -24,7 +25,7 @@ var UrlChecker = {
 
                     input.removeClass('loading');
                 } else {
-                    UrlChecker.validUrl(input, url);
+                    UrlChecker.validUrl(input, url, testValidUrl);
                 }
             },
             complete: function () {
@@ -32,10 +33,10 @@ var UrlChecker = {
         });
     },
 
-    validUrl: function (input, url) {
+    validUrl: function (input, url, endpoint) {
         $.ajax({
             dataType: 'json',
-            url: '/test_url',
+            url: endpoint,
             data: { url: url },
             success: function (data) {
                 if (data.code === 200) {

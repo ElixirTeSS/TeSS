@@ -14,7 +14,7 @@
     <meta name="robots" content="noindex">
   <% end -%>
 
-  <% if Rails.application.secrets.google_analytics_code && Rails.env.production? %>
+  <% if TeSS::Config.analytics_enabled && cookie_consent.allow_tracking? %>
     <%= render 'layouts/google_analytics' %>
   <% end %>
 

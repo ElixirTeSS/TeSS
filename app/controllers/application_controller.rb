@@ -65,11 +65,17 @@ class ApplicationController < ActionController::Base
     body = {}
 
     begin
-      PrivateAddressCheck.only_public_connections do
-        res = HTTParty.get(params[:url], { timeout: 5 })
-        body = { code: res.code, message: res.message }
+      uri = URI.parse(params[:url]) rescue nil
+      if uri && (uri.scheme == 'http' || uri.scheme == 'https')
+        PrivateAddressCheck.only_public_connections do
+          res = HTTParty.get(uri.to_s, { timeout: 5 })
+          body = { code: res.code, message: res.message }
+        end
+      else
+        body = { message: 'Invalid URL - Make sure the URL starts with "https://" or "http://"' }
       end
-    rescue StandardError
+    rescue PrivateAddressCheck::PrivateConnectionAttemptedError, Net::OpenTimeout, SocketError, Errno::ECONNREFUSED,
+      Errno::EHOSTUNREACH
       body = { message: 'Could not access the given URL' }
     end
 

@@ -6,7 +6,7 @@
   </div>
 
   <div id="content">
-    
+
     <div class="row">
       <ul class="nav nav-tabs">
         <%= tab('Material', icon_class_for_model('materials'), 'home', active: true) %>
@@ -31,8 +31,8 @@
               <!-- Field: URL -->
               <p>
                 <div class="url-wrap">
-                  <%= link_to @material.url, :target => "_blank",
-                              :onclick => "getOutboundLink('#{@material.url}'); return true;" do %>
+                  <%= link_to @material.url, target: '_blank', rel: 'noopener',
+                              onclick: "getOutboundLink('#{@material.url}'); return true;" do %>
                     <%= @material.url %><i class="icon icon-md arrow-top-right-icon"></i>
                   <% end %>
                 </div>

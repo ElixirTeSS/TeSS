@@ -21,7 +21,7 @@
                     <%= image_tag 'about/GitHub-Mark-64px.png', class: "" %>
                   </div>
                   <div class="register-condition">The
-                    <%= link_to TeSS::Config.site['repository'], target: '_blank' do %>
+                    <%= link_to TeSS::Config.site['repository'], target: '_blank', rel: 'noopener' do %>
                       source code<i class="icon icon-md arrow-top-right-icon"></i><% end %>
                       for <%= TeSS::Config.site['title_short'] %>
                     is available on GitHub
@@ -60,7 +60,7 @@
         <div class="even-about-block">
           <div class="h3" id="widgets">Widgets</div>
           <p><%== raw t 'developer.widgets' %></p>
-          <p><%= link_to t('developer.widgets_available'), class: 'btn btn-primary', target: '_blank' do %>
+          <p><%= link_to t('developer.widgets_available'), class: 'btn btn-primary', target: '_blank', rel: 'noopener' do %>
               View Our Available Widgets
             <% end %></p>
           <% if TeSS::Config.site['widget_example'].present? %>
@@ -74,7 +74,7 @@
         <div class="odd-about-block">
           <div class="h3" id="api">API</div>
             <p><%= TeSS::Config.site['title_short'] %> has a fully functioning
-              <a href="http://jsonapi.org/" target="_blank">JSON API<i class="icon icon-md arrow-top-right-icon"></i></a>.
+              <a href="http://jsonapi.org/" target="_blank" rel="noopener">JSON API<i class="icon icon-md arrow-top-right-icon"></i></a>.
               You can explore our JSON-API by appending .json_api to the end of the URL of most pages
               (excluding parameters). For example:</p>
 
@@ -114,7 +114,7 @@
             The full documentation for the <%= TeSS::Config.site['title_short'] %> JSON API can be found here:
           </p>
           <p>
-            <%= link_to(asset_path('api/json_api', skip_pipeline: true), class: 'btn btn-primary', target: :_blank) do %>
+            <%= link_to(asset_path('api/json_api', skip_pipeline: true), class: 'btn btn-primary', target: '_blank') do %>
               <i class="fa fa-file"></i> View our JSON-API documentation
             <% end %>
           </p>
@@ -123,7 +123,7 @@
             can still be found here:
           </p>
           <p>
-            <%= link_to(asset_path('api/legacy', skip_pipeline: true), class: 'btn btn-default', target: :_blank) do %>
+            <%= link_to(asset_path('api/legacy', skip_pipeline: true), class: 'btn btn-default', target: '_blank') do %>
               <i class="fa fa-file"></i> View our legacy API documentation
             <% end %>
           </p>
