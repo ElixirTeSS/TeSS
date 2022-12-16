@@ -1,10 +1,10 @@
 <li class="masonry-brick media-item long">
   <a href="<%= node_path(node) %>" class="link-overlay">
-  <%= image_tag get_image_url_for(node), :class=>"media-image listing_image" %>
-  <h3 class="media-heading"><%= country_flag(node.country_code, class: 'small-flag') %> <%= node.name %></h3>
-  <p>
-    <strong class="text-primary"><%= 'Training coordinator'.pluralize(node.training_coordinators.length) -%>: </strong><br>
-    <%= node_staff_list(node.training_coordinators, false) %>
-  </p>
+    <%= image_tag get_image_url_for(node), class: "media-image listing_image" %>
+    <h4 class="mb-2 mt-3">
+      <%= country_flag(node.country_code, class: 'small-flag') %> <%= node.name %>
+    </h4>
+    <strong class="text-primary"><%= 'Training coordinator'.pluralize(node.training_coordinators.length) -%>: </strong>
+    <%= node_staff_list(node.training_coordinators, false, link: false) %>
   </a>
 </li>
