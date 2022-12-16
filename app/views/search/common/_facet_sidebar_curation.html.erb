@@ -25,20 +25,30 @@
 <% end %>
 
 <% if resource_type.method_defined?(:user_requires_approval?) %>
-  <li><h4 class="nav-heading">Hidden Items</h4></li>
-
   <% if @facet_params.include?(:include_hidden)  %>
-    <%= remove_filter_link(:include_hidden, 'true') do %>
-      <li class="nav-item">
-        <input type="checkbox" checked> Show hidden items </input>
-      </li>
-    <% end %>
+    <div class="toggle-wrap">
+      <%= remove_filter_link(:include_hidden, 'true') do %>
+        <li class="nav-item active">
+          <label class="toggle">
+            <input type="checkbox" checked>
+            <span class="slider round"></span>
+          </label>
+          Show hidden items
+        </li>
+      <% end %>
+    </div>
   <% else %>
-    <%= filter_link(:include_hidden, 'true', '-') do %>
-      <li class="nav-item active">
-        <input type="checkbox"> Show hidden items </input>
-      </li>
-    <% end %>
+    <div class="toggle-wrap">
+      <%= filter_link(:include_hidden, 'true', '-') do %>
+        <li class="nav-item">
+          <label class="toggle">
+            <input type="checkbox">
+            <span class="slider round"></span>
+          </label>
+          Show hidden items
+        </li>
+      <% end %>
+    </div>
   <% end %>
 <% end %>
 
