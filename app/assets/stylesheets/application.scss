@@ -52,7 +52,7 @@ h2, h3, h4, h5, h6 {
 
 .sub-heading {
   font-weight: lighter;
-  font-size: 20px;
+  font-size: $font-size-large;
   line-height: 24px;
   text-transform: uppercase;
 
@@ -294,7 +294,6 @@ ul.unstyled {
 .nav-item {
   padding: 7px 20px;
   width: 100%;
-  font-size: $font-size-small;
 }
 
 .nav-item > a {
@@ -344,7 +343,6 @@ ul.unstyled {
 }
 
 .show-page-description {
-  font-size: medium;
   padding: 50px 0;
 }
 
@@ -394,7 +392,6 @@ ul.unstyled {
 }
 
 .search-results-count {
-  font-size: $font-size-small;
   margin-top: 5px;
   padding-top: 5px;
   padding-bottom: 10px;
@@ -410,7 +407,6 @@ ul.unstyled {
 }
 
 .panel-default .panel-title {
-  font-size: 13px;
   color: #005d7a;
 }
 
@@ -487,14 +483,6 @@ accronym {
   border: none;
 }
 
-.info-block {
-  color: #005d7a;
-  float: right;
-  font-size: 20px;
-  margin: 0;
-  width: 28px;
-}
-
 /* The max width is dependant on the container (more info below) */
 .popover {
   max-width: 500px !important; /* Max Width of the popover (depending on the container!) */
@@ -510,27 +498,6 @@ accronym {
   margin: 20px 0 20px;
   border: none;
   padding: 0;
-}
-
-.keyword-pill {
-  color: #fff;
-  margin-bottom: 5px;
-  display: inline-block;
-  font-weight: normal;
-  text-align: center;
-  vertical-align: middle;
-  touch-action: manipulation;
-  background-image: none;
-  border: 1px solid transparent;
-  white-space: normal !important;
-  padding: 6px 12px;
-  font-size: 14px;
-  line-height: 1.42857143;
-  border-radius: 4px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }
 
 // Vertically aligned
@@ -609,7 +576,7 @@ sup {
       background-color: transparent;
       opacity: 0.5;
       box-shadow: none;
-      padding: 8px 8px 0px 8px;
+      padding: 8px 8px 8px 8px;
       flex-shrink: 0;
 
       transition: $transition-time;
@@ -824,7 +791,7 @@ input[type=checkbox].field-lock + label:before,
 
 #why-register {
   ul {
-    font-size: 120%;
+    font-size: $font-size-large;
 
     li {
       margin: 1em 0;
@@ -915,7 +882,6 @@ input[type=checkbox].field-lock + label:before,
 }
 
 .register-condition {
-  font-size: medium;
   text-align: center;
 }
 
@@ -1009,7 +975,7 @@ input[type=checkbox].field-lock + label:before,
     display: block;
     padding: 5px 0;
     font-weight: 700;
-    font-size: 24px;
+    font-size: $font-size-h4;
     line-height: 1.3;
     color: $primary-color;
   }
@@ -1051,11 +1017,16 @@ input[type=checkbox].field-lock + label:before,
   margin: 8px 0;
 
   h1, h2 {
-    font-size: $font-size-base;
+    font-size: $font-size-large;
+    padding-bottom: 8px;
     border-bottom: 1px solid #eee;
   }
+  h2 {
+    padding-bottom: 6px;
+  }
   h3, h4, h5, h6 {
-    font-size: $font-size-small;
+    font-size: $font-size-base;
+    padding-bottom: 4px;
   }
 }
 

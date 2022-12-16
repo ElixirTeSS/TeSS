@@ -23,24 +23,20 @@
   }
 
   .panel-default .panel-title {
-    font-size: $font-size-small;
   }
 
   .bs-type-selectors {
     ul {
       padding-inline-start: 0px;
-      font-size: $font-size-small;
     }
   }
 
   .tool-suggestions-header {
-    font-size: $font-size-small;
     color: $dark-color;
     //margin-bottom: 0;
   }
 
   .control-label, label {
-    font-size: $font-size-small;
     color: $dark-color;
     position: relative;
     display: block;
@@ -52,12 +48,10 @@
   }
 
   .help-block {
-    font-size: $font-size-small;
     color: $dark-color;
   }
 
   .help-inline-block {
-    font-size: $font-size-small;
     color: $dark-color;
     display: inline-block;
   }
@@ -164,6 +158,5 @@
 
 
   #biotools-results {
-    font-size: $font-size-small;
   }
 }

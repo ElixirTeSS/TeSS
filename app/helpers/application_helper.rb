@@ -129,7 +129,7 @@ module ApplicationHelper
 
   def flash_messages(_opts = {})
     flash.each do |msg_type, message|
-      concat(content_tag(:div, message, class: "alert #{bootstrap_class_for(msg_type)} fade in", style: 'font-size: 120%; font-weight: bold;') do
+      concat(content_tag(:div, message, class: "alert #{bootstrap_class_for(msg_type)} fade in") do
         concat content_tag(:button, '&times;'.html_safe, class: 'close', data: { dismiss: 'alert' }, 'aria-label' => 'close')
         concat message
       end)
@@ -281,7 +281,7 @@ module ApplicationHelper
 
   def info_box(title, &block)
     content_tag(:div, class: 'info-box') do
-      content_tag(:h4, raw('<i class="glyphicon glyphicon-info-sign"></i> ' + title), class: 'info-box-header') +
+      content_tag(:div, raw('<i class="glyphicon glyphicon-info-sign"></i> ' + title), class: 'info-box-header') +
         content_tag(:div, class: 'info-box-content', &block)
     end
   end

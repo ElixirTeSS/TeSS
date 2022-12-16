@@ -6,6 +6,7 @@
     width: 30px;
     height: 16px;
     top: 2px;
+    margin-right: 10px;
 }
 
 .toggle input {
@@ -61,7 +62,10 @@ input:checked + .slider:before {
     border-radius: 50%;
 }
 
-.toggle-wrap a {
+.toggle-wrap {
+  margin: 10px 0;
+  a {
     text-decoration: none;
     color: $dark-color;
+  }
 }

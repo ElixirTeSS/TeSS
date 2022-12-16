@@ -9,7 +9,7 @@
     padding-right: 10px;
     text-align: center;
     line-height: 2;
-    font-size: large;
+    font-size: $font-size-large;
     margin: auto;
     max-width: 800px;
 
@@ -37,7 +37,7 @@
       background-color: transparent;
       opacity: 0.5;
       box-shadow: none;
-      padding: 8px 16px 0px 8px;
+      padding: 8px 16px 8px 8px;
       flex-shrink: 0;
 
       transition: $transition-time;
@@ -232,7 +232,7 @@ ul.featureblocks {
 
     h2 {
       margin-top: 10px;
-      font-size: 20px;
+      font-size: $font-size-large;
       line-height: 24px;
     }
 
