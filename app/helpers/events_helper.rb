@@ -12,7 +12,7 @@ module EventsHelper
   %{link}.".freeze
 
   def events_info
-    EVENTS_INFO % { link: link_to('see here for here for details on automatic registration',
+    EVENTS_INFO % { link: link_to('see here for details on automatic registration',
                           registering_resources_path(anchor: 'automatic')) }
   end
 
