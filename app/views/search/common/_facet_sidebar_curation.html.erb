@@ -1,5 +1,5 @@
 <% if resource_type.method_defined?(:last_scraped) %>
-  <li><h4 class="nav-heading">Last Checked</h4></li>
+  <li><div class="nav-heading"><span class="icon icon-lg events-icon"></span> Last Checked</div></li>
   <%
     selected = nil
     opts = [[nil, ''], [1, '1 day'], [3, '3 days'], [7, '1 week'], [30, '1 month']].map do |days, text|
