@@ -3,67 +3,32 @@
 Variable that should be available
 - content_provider - content provider being displayed
 %>
-<script>
-  // From : http://stackoverflow.com/questions/11417544/truncate-paragraph-first-100-character-and-hide-rest-content-of-paragraph-to-sho
-  /*
-   Truncate paragraph's first 500 characters and hide rest then show/hide the rest with more/less links
-   */
-  jQuery(function () {
-
-    var minimized_elements = $('p.minimise');
-
-    minimized_elements.each(function () {
-      var t = $(this).text();
-      if (t.length < 500) return;
-
-      $(this).html(
-          t.slice(0, 500) + '<span>... </span><a href="#" class="more">Read more</a>' +
-          '<span style="display:none;">' + t.slice(500, t.length) + ' <a href="#" class="less">Read less</a></span>'
-      );
-    });
-
-    $('a.more', minimized_elements).click(function (event) {
-      event.preventDefault();
-      $(this).hide().prev().hide();
-      $(this).next().show();
-    });
-
-    $('a.less', minimized_elements).click(function (event) {
-      event.preventDefault();
-      $(this).parent().hide().prev().show().prev().show();
-    });
-
-  });
-</script>
-
-<ul class="unstyled nav-simple">
-  <% unless content_provider.blank? %>
-      <%# Content provider  %>
-      <li><h4 class="nav-heading">Content provider</h4></li>
-      <li style="padding: 7px 20px;">
-        <p>
-          <%# Link to either external content provider's page or to the content provider's object in TeSS,
+<% unless content_provider.blank? %>
+  <%# Content provider  %>
+  <h4 class="nav-heading">Content provider</h4>
+  <div class="nav-block">
+    <p>
+      <%# Link to either external content provider's page or to the content provider's object in TeSS,
           based on which controller/view is currenlty active %>
-          <%
-            if controller_name == 'content_providers'
-              url = content_provider.url
-              url_opts = { target: '_blank', rel: 'noopener' }
-            else
-              url = content_provider
-              url_opts = {}
-            end
-          %>
-          <%= link_to(image_tag(content_provider.image.url, class: 'medium-content-provider-logo'), url, **url_opts) %>
-        </p>
+      <%
+        if controller_name == 'content_providers'
+          url = content_provider.url
+          url_opts = { target: '_blank', rel: 'noopener' }
+        else
+          url = content_provider
+          url_opts = {}
+        end
+      %>
+      <%= link_to(image_tag(content_provider.image.url, class: 'medium-content-provider-logo'), url, **url_opts) %>
+    </p>
 
-        <p>
-          <%= link_to content_provider.title, url, class: 'h5', **url_opts %>
-        </p>
-        <% unless content_provider.description.blank? %>
-            <p class="minimise">
-              <%= content_provider.description %>
-            </p>
-        <% end %>
-      </li>
-  <% end %>
-</ul>
+    <p>
+      <%= link_to content_provider.title, url, class: 'h5', **url_opts %>
+    </p>
+    <% unless content_provider.description.blank? %>
+      <p class="minimise">
+        <%= content_provider.description %>
+      </p>
+    <% end %>
+  </div>
+<% end %>

@@ -235,6 +235,37 @@ document.addEventListener("turbolinks:load", function() {
     Fairsharing.init();
 
     Biotools.init();
+
+    // From : http://stackoverflow.com/questions/11417544/truncate-paragraph-first-100-character-and-hide-rest-content-of-paragraph-to-sho
+    /*
+     Truncate paragraph's first 500 characters and hide rest then show/hide the rest with more/less links
+     */
+    jQuery(function () {
+
+        var minimized_elements = $('p.minimise');
+
+        minimized_elements.each(function () {
+            var t = $(this).text();
+            if (t.length < 500) return;
+
+            $(this).html(
+                t.slice(0, 500) + '<span>... </span><a href="#" class="more">Read more</a>' +
+                '<span style="display:none;">' + t.slice(500, t.length) + ' <a href="#" class="less">Read less</a></span>'
+            );
+        });
+
+        $('a.more', minimized_elements).click(function (event) {
+            event.preventDefault();
+            $(this).hide().prev().hide();
+            $(this).next().show();
+        });
+
+        $('a.less', minimized_elements).click(function (event) {
+            event.preventDefault();
+            $(this).parent().hide().prev().show().prev().show();
+        });
+
+    });
 });
 
 function truncateWithEllipses(text, max)

@@ -4,107 +4,93 @@
 
   <%# SIDEBAR %>
   <div id="sidebar" class="collapsing-sidebar">
-    <ul class="unstyled nav-simple">
-      <li><h4 class="nav-heading">User <%= "#{@user.username}" %></h4></li>
-      <li style="padding: 10px 10px;">
-        <div class="row">
-          <div class="col-xs-4 col-md-12">
-            <div id="gravatar_image">
-              <%= image_tag @user.avatar_url, :class => 'medium-content-provider-logo' %>
-            </div>
-          </div>
-          <div class="col-xs-8 col-md-12">
-            <p>
-              <strong>First name</strong><br/>
-              <% if @user.profile.firstname.blank? %>
-                <span class="empty">None specified</span>
-              <% else %>
-                <%= @user.profile.firstname %>
-              <% end %>
-            </p>
+    <h4 class="nav-heading"><%= "#{@user.username}" %></h4>
+    <div class="nav-block">
+      <div id="gravatar_image">
+        <%= image_tag @user.avatar_url, :class => 'medium-content-provider-logo' %>
+      </div>
+      <p>
+        <strong>First name</strong><br/>
+        <% if @user.profile.firstname.blank? %>
+          <span class="empty">None specified</span>
+        <% else %>
+          <%= @user.profile.firstname %>
+        <% end %>
+      </p>
 
-            <p>
-              <strong>Surname</strong><br/>
-              <% if @user.profile.surname.blank? %>
-                <span class="empty">None specified</span>
-              <% else %>
-                <%= @user.profile.surname %>
-              <% end %>
-            </p>
+      <p>
+        <strong>Surname</strong><br/>
+        <% if @user.profile.surname.blank? %>
+          <span class="empty">None specified</span>
+        <% else %>
+          <%= @user.profile.surname %>
+        <% end %>
+      </p>
 
+      <p>
+        <strong>Public email</strong><br/>
+        <% if @user.profile.email.blank? %>
+          <span class="empty">None specified</span>
+        <% else %>
+          <%= mail_to @user.profile.email %>
+        <% end %>
+      </p>
 
-            <p>
-              <strong>Public email</strong><br/>
-              <% if @user.profile.email.blank? %>
-                <span class="empty">None specified</span>
-              <% else %>
-                <%= mail_to @user.profile.email %>
-              <% end %>
-            </p>
+      <p>
+        <strong><%= model_class.human_attribute_name(:website) %></strong><br/>
+        <% if @user.profile.website.blank? %>
+          <span class="empty">None specified</span>
+        <% else %>
+          <%= link_to @user.profile.website, @user.profile.website, rel: 'nofollow', target: '_blank' %>
+        <% end %>
+      </p>
 
-            <p>
-              <strong><%= model_class.human_attribute_name(:website) %></strong><br/>
-              <% if @user.profile.website.blank? %>
-                <span class="empty">None specified</span>
-              <% else %>
-                <%= link_to @user.profile.website, @user.profile.website, rel: 'nofollow', target: '_blank' %>
-              <% end %>
-            </p>
+      <p>
+        <strong>ORCID</strong><br/>
+        <% if @user.profile.orcid.blank? %>
+          <span class="empty">None specified</span>
+        <% else %>
+          <%= link_to @user.profile.orcid, @user.profile.orcid, rel: 'nofollow', target: '_blank' %>
+        <% end %>
+      </p>
 
-            <p>
-              <strong>ORCID</strong><br/>
-              <% if @user.profile.orcid.blank? %>
-                <span class="empty">None specified</span>
-              <% else %>
-                <%= link_to @user.profile.orcid, @user.profile.orcid, rel: 'nofollow', target: '_blank' %>
-              <% end %>
-            </p>
+      <% if TeSS::Config.feature['trainers'] %>
+        <p>
+          <strong>Included in Registry of Trainers:</strong>
+          <% if @user.profile.public? %>
+            <span style="color: green;">Yes</span>
+          <% else %>
+            <span style="color: red;">No</span>
+          <% end %>
+        </p>
+      <% end %>
+    </div>
+    <h4 class="nav-heading">Account details</h4>
+    <div class="nav-block">
+      <p>
+        <strong>Role</strong><br/>
+        <%= @user.role.title %>
+      </p>
 
-            <% if TeSS::Config.feature['trainers'] %>
-              <p>
-                <strong>Included in Registry of Trainers:</strong>
-                <% if @user.profile.public? %>
-                  <span style="color: green;">Yes</span>
-                <% else %>
-                  <span style="color: red;">No</span>
-                <% end %>
-              </p>
-            <% end %>
-            
-          </div>
-        </div>
-      </li>
-      <li><h4 class="nav-heading">Account details</h4></li>
-      <li style="padding: 10px 10px;">
-        <div class="row">
-          <div class="col-xs-12">
-            <p>
-              <strong>Role</strong><br/>
-              <%= @user.role.title %>
-            </p>
+      <% if !current_user.nil? and current_user == @user %>
+        <p>
+          <strong>Account email</strong><br/>
+          <%= @user.email %>
+        </p>
 
-            <% if !current_user.nil? and current_user == @user %>
-              <p>
-                <strong>Account email</strong><br/>
-                <%= @user.email %>
-              </p>
+        <p>
+          <strong>Authentication token</strong><br/>
+          <span class="empty" style="font-style: italic;">(keep it secret)</span><br/>
+          <%= @user.authentication_token %>
+        </p>
+      <% end %>
 
-              <p>
-                <strong>Authentication token</strong><br/>
-                <span class="empty" style="font-style: italic;">(keep it secret)</span><br/>
-                <%= @user.authentication_token %>
-              </p>
-            <% end %>
-
-            <% if TeSS::Config.feature['registration'] %>
-              <% if !current_user.nil? and current_user == @user %>
-                <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default center-block' %>
-              <% end %>
-            <% end %>
-          </div>
-        </div>
-      </li>
-    </ul>
+      <% if TeSS::Config.feature['registration'] %>
+        <% if !current_user.nil? and current_user == @user %>
+          <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default center-block' %>
+        <% end %>
+      <% end %>
+    </div>
   </div>
 
   <div id="content">

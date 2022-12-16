@@ -1,37 +1,35 @@
-<ul class="unstyled nav-simple">
-  <%# collection  %>
-  <li><h4 class="nav-heading">Collection</h4></li>
-  <li style="padding: 7px 20px;">
-    <p>
-      <%= (image_tag(collection.image.url, :class => "medium-content-provider-logo")) %>
+<%# collection  %>
+<h4 class="nav-heading">Collection</h4>
+<div class="nav-block">
+  <p>
+    <%= image_tag(collection.image.url, class: 'medium-content-provider-logo') %>
+  </p>
+  <h5>
+    <%= title_with_privacy(collection) %>
+  </h5>
+  <% unless collection.description.blank? %>
+    <p class="minimise">
+      <%= render_markdown collection.description  %>
     </p>
-    <h5>
-      <%= title_with_privacy(collection) %>
-    </h5>
-    <% unless collection.description.blank? %>
-        <p class="minimise" style="word-break: break-word; display: inline-block;">
-          <%= render_markdown collection.description  %>
-        </p>
-    <% end %>
-  </li>
-  <li><h4 class="nav-heading">Keywords</h4></li>
-  <li style="padding: 7px 20px;">
-    <% if collection.keywords.any? %>
-        <%= collection.keywords.join(', ') %>
-    <% else %>
-        <span class="empty">None</span>
-    <% end %>
-  </li>
-  <li><h4 class="nav-heading">Owner</h4></li>
-  <li style="padding: 7px 20px;">
-    <%= link_to collection.user.name, collection.user %>
-  </li>
-  <% if collection.collaborators.any? %>
-    <li><h4 class="nav-heading"><%= Collection.human_attribute_name(:collaborators) %></h4></li>
-    <% collection.collaborators.each do |collaborator| %>
-      <li style="padding: 7px 20px;">
-        <%= link_to collaborator.name, collaborator %>
-      </li>
-    <% end %>
   <% end %>
-</ul>
+</div>
+<h4 class="nav-heading">Keywords</h4>
+<div class="nav-block">
+  <% if collection.keywords.any? %>
+    <%= collection.keywords.join(', ') %>
+  <% else %>
+    <span class="empty">None</span>
+  <% end %>
+</div>
+<h4 class="nav-heading">Owner</h4>
+<div class="nav-block">
+  <%= link_to collection.user.name, collection.user %>
+</div>
+<% if collection.collaborators.any? %>
+  <h4 class="nav-heading"><%= Collection.human_attribute_name(:collaborators) %></h4>
+  <% collection.collaborators.each do |collaborator| %>
+    <div class="nav-block">
+      <%= link_to collaborator.name, collaborator %>
+    </div>
+  <% end %>
+<% end %>

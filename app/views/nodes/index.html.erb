@@ -1,7 +1,6 @@
 <div class="wrapper">
   <% if TeSS::Config.solr_enabled %>
     <div id="sidebar" class="popout-sidebar">
-      <%#= render partial: "nodes/partials/sidebar" %>
       <%= render partial: "search/common/facet_sidebar", locals:  { resources: @nodes_results, resource_type: Node } %>
     </div>
   <% end %>
