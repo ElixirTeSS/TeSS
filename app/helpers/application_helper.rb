@@ -49,19 +49,17 @@ module ApplicationHelper
     if !record.last_scraped.nil? && record.scraper_record
       if record.stale?
         message = ICONS[:not_scraped_recently][:message].gsub(/%SUB%/, record.last_scraped.to_s)
-        return "<span class='stale-icon pull-right'>#{icon_for(:not_scraped_recently, size, message: message)}</span>".html_safe
+        "<span class='stale-icon pull-right'>#{icon_for(:not_scraped_recently, size, message: message)}</span>".html_safe
       else
-        return "<span class='fresh-icon pull-right'>#{icon_for(:scraped_today, size)}</span>".html_safe
+        "<span class='fresh-icon pull-right'>#{icon_for(:scraped_today, size)}</span>".html_safe
       end
     end
-    nil
   end
 
   def missing_icon(record, size = nil)
     if record.failing?
-      return "<span class='missing-icon pull-right'>#{icon_for(:missing, size)}</span>".html_safe
+      "<span class='missing-icon pull-right'>#{icon_for(:missing, size)}</span>".html_safe
     end
-    nil
   end
 
   def resource_type_icon(record, size = nil)
@@ -80,20 +78,17 @@ module ApplicationHelper
     end
   end
 
-  def hide_failing(record)
-    if current_user && current_user.is_admin?
-      return false
-    else
-      if record.failing?
-        return true
-      end
-    end
-    false
-  end
-
   def suggestion_icon(record, size = nil)
     if record.edit_suggestion
-      return "<span class='fresh-icon pull-right' style='padding-right: 10px;'>#{icon_for(:suggestion, size)}</span>".html_safe
+      "<span class='fresh-icon pull-right'>#{icon_for(:suggestion, size)}</span>".html_safe
+    end
+  end
+
+  def event_status_icon(event, size = nil)
+    if event.started?
+      "<span class='event-started-icon pull-right'>#{icon_for(:started, size)}</span>".html_safe
+    elsif event.expired?
+      "<span class='event-expired-icon pull-right'>#{icon_for(:expired, size)}</span>".html_safe
     end
   end
 

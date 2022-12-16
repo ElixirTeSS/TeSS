@@ -4,13 +4,17 @@
   <div class="sub-heading"><%= display_attribute_no_label(material, :resource_type) { |values| values.join(', ') } %></div>
 
   <div id="event-title" class="masonry-brick-heading">
+    <div class="masonry-icons">
+      <% if current_user&.is_admin? %>
+        <%= missing_icon(material) %>
+        <%= scrape_status_icon(material) %>
+        <%= suggestion_icon(material) %>
+      <% end %>
+    </div>
     <h4><%= material.title %></h4>
   </div>
   <div class="font-size-lg"><%= display_difficulty_level(material) %></div>
   <div class="mt-2">
-      <%= scrape_status_icon(material) if current_user and current_user.is_admin? -%>
-      <%= missing_icon(material) if current_user and current_user.is_admin? -%>
-      <%= suggestion_icon(material) if current_user and current_user.is_admin? -%>
     <div style="word-break: break-word; display: inline-block;">
       <%= strip_tags render_markdown truncate(material.description, length: 300, separator: ' ') %>
     </div>

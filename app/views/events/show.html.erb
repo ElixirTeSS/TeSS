@@ -43,9 +43,12 @@
                 <% end %>
 
                 <%= @event.title %>
-                <%= missing_icon(@event, 'large') if current_user and current_user.is_admin? %>
-                <%= scrape_status_icon(@event, 'large') if current_user and current_user.is_admin? %>
-                <%= suggestion_icon(@event, 'large') if current_user and current_user.is_admin? -%>
+
+                <% if current_user&.is_admin? %>
+                  <%= missing_icon(@event, 'large') %>
+                  <%= scrape_status_icon(@event, 'large') %>
+                  <%= suggestion_icon(@event, 'large') -%>
+                <% end %>
               </h2>
               <p><%= @event.subtitle %></p>
               <!--          TODO: add css pseudoclass "a.external:after" with the icon-->
