@@ -17,6 +17,14 @@ $blue: #206b82;
 $blue2: #085871; /* unused? */
 $blue3: #064559; /* unused? */
 
+$accent-color: $elixir-orange;
+$primary-color: $blue;
+$secondary-color: #66afe9;
+$transition-time: 300ms;
+$light-color: #fff;
+$footer-border-radius: 0;
+$footer-padding-top: 10px;
+$unified-header-bg: #fff;
 
 $link-color: $blue;
 $link-hover-color: lighten($link-color, 10%);
@@ -40,12 +48,6 @@ $navbar-default-link-hover-color: lighten($navbar-default-link-color, 40%);
 $navbar-default-toggle-hover-bg: $bgHighlight;
 $navbar-default-toggle-icon-bar-bg: $colHover2;
 $navbar-default-toggle-border-color: $bgHighlight;
-
-$top-header-bg: #333;
-$top-header-border: #eee;
-$top-header-text: #eee;
-$top-header-hover-text: #333;
-$top-header-hover-bg: #eee;
 
 $footer-bg: #ddd;
 $footer-border: transparent;

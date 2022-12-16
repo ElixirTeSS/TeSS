@@ -11,23 +11,25 @@ $secondary-color: #047EAA;
 $accent-color: #F47D21;
 
 $dark-color: #242526;
-$dark-60-color: rgba(36, 37, 38, 0.6);
-$dark-30-color: rgba(36, 37, 38, 0.3);
-$dark-05-color: rgba(36, 37, 38, 0.05);
+$dark-60-color: #7b7c7c; // rgba(36, 37, 38, 0.6);
+$dark-30-color: #bcbdbd; // rgba(36, 37, 38, 0.3);
+$dark-05-color: #f3f4f4; // rgba(36, 37, 38, 0.05); // Unused
 
 $light-color: #F4F7FB;
-$light-60-color: rgba(244, 247, 251, 0.6);
-$light-30-color: rgba(244, 247, 251, 0.3);
-$light-05-color: rgba(244, 247, 251, 0.05);
+$light-60-color: rgba(244, 247, 251, 0.6); // Unused
+$light-30-color: rgba(244, 247, 251, 0.3); // Unused
+$light-05-color: rgba(244, 247, 251, 0.05); // Unused
+
+$gray-darker: $dark-color;
+$gray-dark: darken($dark-60-color, 25%);
+$gray: darken($dark-60-color, 10%);
+$gray-light: $dark-60-color;
+$gray-lighter: $dark-05-color; // Unused
 
 // Font sizes
 $font-size-base: 16px;
 $font-size-large: 18px;
 $font-size-small: 14px;
-
-// Extended font sizes
-$font-size-xs: 8px;
-$font-size-xxs: 4px;
 
 // Headings
 $headings-color: $primary-color;
@@ -51,7 +53,7 @@ $footer-padding-top: 75px;
 // TODO: check whether it's used somewhere
 //$brand-primary:  #047EAA;
 
-$padding-base-vertical:     10px;
+$padding-base-vertical:     8px;
 $padding-base-horizontal:   15px;
 
 // Breadcrump
@@ -69,8 +71,42 @@ $btn-default-color: $accent-color;
 $btn-default-bg: transparent;
 $btn-default-border: $accent-color;
 
+$btn-primary-color: $light-color;
+$btn-primary-bg: $accent-color;
+$btn-primary-border: $accent-color;
 
 $transition-time: 300ms;
 
+.btn-default:hover, .btn-default:active, .btn-default:focus {
+  color: $secondary-color !important;
+  background-color: #fff !important;
+  border-color: $secondary-color !important;
+
+  i {
+    filter: brightness(0) saturate(100%) invert(28%) sepia(93%) saturate(1217%) hue-rotate(168deg) brightness(102%) contrast(97%);
+  }
+}
+
+.btn-group.open {
+  .btn-default.dropdown-toggle {
+    color: $secondary-color !important;
+    background-color: #fff !important;
+    border-color: $secondary-color !important;
+  }
+}
+
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus {
+  color: $light-color !important;
+  background-color: $secondary-color !important;
+  border-color: $secondary-color !important;
+}
+
+.text-primary {
+  color: $secondary-color;
+}
+
+.nav-tabs a {
+  color: $secondary-color;
+}
 
 // for reference check https://github.com/pkp/bootstrap3/blob/main/bootstrap/less/variables.less

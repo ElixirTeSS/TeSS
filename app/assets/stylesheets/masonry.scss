@@ -69,8 +69,8 @@
 
 .link-overlay {
   text-decoration: none;
-  color: $dark-color;
-  border: 1px solid rgba(36, 37, 38, 0.2);
+  color: $gray-darker;
+  border: 1px solid #F4F4F4;
   box-shadow: 0px 6px 10px rgba(36, 37, 38, 0.03);
   border-radius: 8px;
   padding: 38px;
@@ -79,7 +79,7 @@
 
   &:hover, &:focus {
     text-decoration: none;
-    color: $dark-color;
+    color: $gray-darker;
     background-color: #e8f3f6;
     border: 1px solid #e8f3f6;
     box-shadow: none;

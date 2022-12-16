@@ -14,14 +14,6 @@ a.btn {
   text-decoration: none;
 }
 
-.breadcrumb li > a {
-  text-decoration: underline;
-}
-
-.nav-tabs a {
-  color: $secondary-color;
-}
-
 .pagination {
 
   li {
@@ -85,36 +77,4 @@ a {
 .btn {
   transition: $transition-time;
   border-radius: 6px;
-}
-
-.btn-default:hover, .btn-default:active, .btn-default:focus {
-  color: $secondary-color !important;
-  background-color: #fff !important;
-  border-color: $secondary-color !important;
-
-  i {
-    filter: brightness(0) saturate(100%) invert(28%) sepia(93%) saturate(1217%) hue-rotate(168deg) brightness(102%) contrast(97%);
-  }
-}
-
-.btn-group.open {
-  .btn-default.dropdown-toggle {
-    color: $secondary-color !important;
-    background-color: #fff !important;
-    border-color: $secondary-color !important;
-  }
-}
-
-.btn-primary {
-  @include button-variant($light-color, $accent-color, $accent-color);
-}
-
-.btn-primary:hover, .btn-primary:active, .btn-primary:focus {
-  color: $light-color !important;
-  background-color: $secondary-color !important;
-  border-color: $secondary-color !important;
-}
-
-.text-primary {
-  color: $secondary-color;
 }
