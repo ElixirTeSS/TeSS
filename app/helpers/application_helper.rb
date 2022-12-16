@@ -271,7 +271,7 @@ module ApplicationHelper
     content_tag(:a, tabindex: 0, class: classes,
                data: { toggle: 'popover', placement: 'bottom',
                        title: title, html: true, content: capture(&block) }) do
-      "<i class='icon icon-md info-icon'></i> <span class='hidden-xs'>#{title}</span>".html_safe
+      "<i class='icon icon-md information-icon'></i> <span class='hidden-xs'>#{title}</span>".html_safe
     end
   end
 
