@@ -1,4 +1,8 @@
 <div class="wrapper">
+  <div id="sidebar" class="popout-sidebar">
+    <%= render :partial => 'about_nav', locals: { show: 'us' } %>
+  </div>
+
   <section id="content" class="">
     <div class="about-block">
 
@@ -79,8 +83,4 @@
     <hr>
     <%= render :partial => 'links', :locals => { 'show': 'about' } %>
   </section>
-
-  <div id="sidebar" class="popout-sidebar">
-    <%= render :partial => 'about_nav', locals: { show: 'us' } %>
-  </div>
 </div>

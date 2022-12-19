@@ -1,5 +1,8 @@
 <div class="wrapper">
 
+  <div id="sidebar" class="popout-sidebar">
+    <%= render :partial => 'about_nav', locals: { show: 'registering' } %>
+  </div>
   <div id="content" class="">
     <div class="about-block">
 
@@ -153,8 +156,4 @@
     </div>
   </div>
 
-
-  <div id="sidebar" class="popout-sidebar">
-    <%= render :partial => 'about_nav', locals: { show: 'registering' } %>
-  </div>
 </div>

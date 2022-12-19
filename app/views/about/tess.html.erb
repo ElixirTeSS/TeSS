@@ -2,6 +2,10 @@
 
   <% @feature_count = 0 %>
 
+  <div id="sidebar" class="popout-sidebar">
+    <%= render :partial => 'about_nav', locals: { show: 'home' } %>
+  </div>
+
   <div id="content">
     <div class="about-block">
 
@@ -150,8 +154,5 @@
     </div>
   </div>
 
-  <div id="sidebar" class="popout-sidebar">
-    <%= render :partial => 'about_nav', locals: { show: 'home' } %>
-  </div>
 
 </div>
