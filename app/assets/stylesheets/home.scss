@@ -9,7 +9,7 @@
     padding-right: 10px;
     text-align: center;
     line-height: 2;
-    font-size: large;
+    font-size: $font-size-large;
     margin: auto;
     max-width: 800px;
 
@@ -37,7 +37,7 @@
       background-color: transparent;
       opacity: 0.5;
       box-shadow: none;
-      padding: 8px 16px 0px 8px;
+      padding: 8px 16px 8px 8px;
       flex-shrink: 0;
 
       transition: $transition-time;
@@ -110,27 +110,8 @@ ul.catalogue {
     margin: 15px;
 
     .pseudolink {
-      color: $accent-color;
+      color: $link-color;
       text-decoration: underline;
-    }
-
-    .link-overlay {
-      text-decoration: none;
-      color: $dark-color;
-      border: 1px solid rgba(36, 37, 38, 0.2);
-      box-shadow: 0px 6px 10px rgba(36, 37, 38, 0.03);
-      border-radius: 8px;
-      padding: 38px;
-      display: block;
-      transition: $transition-time;
-
-      &:hover, &:focus {
-        text-decoration: none;
-        color: $dark-color;
-        background-color: #e8f3f6;
-        border: 1px solid #e8f3f6;
-        box-shadow: none;
-      }
     }
 
     @media (max-width: $screen-md-min) {
@@ -192,6 +173,7 @@ ul.featureblocks {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
+  gap: 40px;
 
   flex-direction: row;
   align-content: flex-start;
@@ -207,10 +189,9 @@ ul.featureblocks {
   li {
     width: 35%;
     min-width: 200px;
-    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.03);
     border-radius: 8px;
-    padding: 38px;
-    gap: 15px;
+    padding: 20px;
 
     @media (max-width: $screen-md-min) {
       width: 85%;
@@ -232,7 +213,7 @@ ul.featureblocks {
 
     h2 {
       margin-top: 10px;
-      font-size: 20px;
+      font-size: $font-size-large;
       line-height: 24px;
     }
 
@@ -241,8 +222,8 @@ ul.featureblocks {
     }
 
     p {
-      margin: 5px 0;
-      margin-left: 60px;
+      margin: 5px 0 5px 60px;
+      color: #8D8D8D;
     }
   }
 }

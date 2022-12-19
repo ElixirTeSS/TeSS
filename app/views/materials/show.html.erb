@@ -1,12 +1,11 @@
 <div class="wrapper collapsing-wrapper">
-  <%# SIDEBAR %>
   <div class="collapsing-sidebar" id="sidebar">
-    <%= render :partial => "content_providers/partials/content_provider_info", :locals => {:content_provider => @material.content_provider} %>
-    <%= render partial: "nodes/partials/associated_node_info", locals: { associated_nodes: @material.associated_nodes } %>
+    <%= render partial: 'content_providers/partials/content_provider_info', locals: { content_provider: @material.content_provider } %>
+    <%= render partial: 'nodes/partials/associated_node_info', locals: { associated_nodes: @material.associated_nodes } %>
+    <%= render(partial: 'users/partials/user_info', locals: { user: @material.user }) if current_user.try(:is_admin?) %>
   </div>
 
   <div id="content">
-
     <div class="row">
       <ul class="nav nav-tabs">
         <%= tab('Material', icon_class_for_model('materials'), 'home', active: true) %>

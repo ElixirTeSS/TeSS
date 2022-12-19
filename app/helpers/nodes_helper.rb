@@ -14,12 +14,12 @@ module NodesHelper
     end
   end
 
-  def node_staff_list(staff, show_role = true)
+  def node_staff_list(staff, show_role = true, link: true)
     if staff.any?
       staff.map do |staff_member|
         text = "#{staff_member.name}"
         text += " (#{staff_member.role})" if show_role && !staff_member.role.blank?
-        !staff_member.email.blank? ? mail_to(staff_member.email, text) : text
+        !staff_member.email.blank? && link ? mail_to(staff_member.email, text) : text
       end.join(', ').html_safe
     else
       empty_tag(:span, 'none specified')

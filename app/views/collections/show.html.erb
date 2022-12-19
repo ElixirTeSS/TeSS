@@ -1,5 +1,7 @@
 <div class="wrapper collapsing-wrapper">
-  <%# SIDEBAR %>
+  <div class="collapsing-sidebar" id="sidebar">
+    <%= render partial: 'collections/partials/collection_info', locals: { collection: @collection } %>
+  </div>
 
   <div id="content">
     <div class="row">
@@ -65,10 +67,6 @@
         <%= image_tag('ajax-loader.gif') %>
       </div>
     </div>
-  </div>
-
-  <div class="collapsing-sidebar" id="sidebar">
-    <%= render :partial => "collections/partials/collection_info", :locals => {:collection => @collection} %>
   </div>
 </div>
 

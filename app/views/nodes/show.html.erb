@@ -1,18 +1,17 @@
 <div class="wrapper collapsing-wrapper">
   <%# SIDEBAR %>
   <div class="collapsing-sidebar" id="sidebar">
-    <%= render :partial => "nodes/partials/node_info", :locals => {:node => @node} %>
+    <%= render partial: 'nodes/partials/node_info', locals: { node: @node } %>
   </div>
 
   <div id="content">
     <div class="row">
-      <div>
-        <h2>
-          <%= image_tag get_image_url_for(@node), :class=>"media-image listing_image" %>
-          <%=t '.title', :default => @node.name %>
-        </h2>
-      </div>
       <div class="content_action">
+        <% unless @node.home_page.blank? %>
+            <a href="<%= @node.home_page %>" target="_blank" rel="noopener" class="btn btn-default">
+              <span class="fa fa-external-link"></span> View home page
+            </a>
+        <% end %>
         <% if !current_user.nil? and policy(@node).update? %>
             <%= link_to t('.edit', :default => t("helpers.links.edit")),
                         edit_node_path(@node), :class => 'btn btn-primary' %>
@@ -23,11 +22,6 @@
                         :method => 'delete',
                         :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                         :class => 'btn btn-danger' %>
-        <% end %>
-        <% unless @node.home_page.blank? %>
-            <a href="<%= @node.home_page %>" target="_blank" rel="noopener" class="btn btn-default">
-              <span class="fa fa-external-link"></span> View home page
-            </a>
         <% end %>
       </div>
     </div>

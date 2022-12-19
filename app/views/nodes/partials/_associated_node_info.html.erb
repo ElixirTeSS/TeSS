@@ -4,18 +4,17 @@ Variable that should be available
 - associated_nodes - an array (or AR collection) of nodes
 %>
 <% if TeSS::Config.feature['nodes'] %>
-  <ul class="unstyled nav-simple">
-    <% if associated_nodes.any? %>
-        <%# Content provider  %>
-        <li><h4 class="nav-heading"><%= 'Node'.pluralize(associated_nodes.count) %></h4></li>
-        <% associated_nodes.each do |node| %>
-            <li>
-              <%= link_to node, class: 'associated-node-link' do %>
-                  <%= image_tag(get_image_url_for(node), class: 'node-logo') %>
-                  <%= country_flag(node.country_code, class: 'small-flag') %> <%= node.name %>
-              <% end %>
-            </li>
+  <% if associated_nodes.any? %>
+    <%# Content provider  %>
+    <h4 class="nav-heading"><%= 'Node'.pluralize(associated_nodes.count) %></h4>
+
+    <% associated_nodes.each do |node| %>
+      <div class="nav-block">
+        <%= link_to node, class: 'associated-node-link' do %>
+          <%= image_tag(get_image_url_for(node), class: 'node-logo') %>
+          <%= country_flag(node.country_code, class: 'small-flag') %> <%= node.name %>
         <% end %>
+      </div>
     <% end %>
-  </ul>
+  <% end %>
 <% end %>

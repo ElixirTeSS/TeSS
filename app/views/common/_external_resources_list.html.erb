@@ -1,11 +1,7 @@
-
 <div class="row bounding-box external-resources-box ">
   <% external_resources.each do |external_resource| %>
-
-    <% unless hide_failing(external_resource) -%>
-    <%= render :partial => 'common/external_resource',
-               :locals => {:external_resource => external_resource} %>
+    <% unless external_resource.failing? & !current_user&.is_admin? -%>
+      <%= render partial: 'common/external_resource', object: external_resource %>
     <% end -%>
-
   <% end %>
 </div>

@@ -23,25 +23,21 @@
   }
 
   .panel-default .panel-title {
-    font-size: $font-size-small;
   }
 
   .bs-type-selectors {
     ul {
       padding-inline-start: 0px;
-      font-size: $font-size-small;
     }
   }
 
   .tool-suggestions-header {
-    font-size: $font-size-small;
-    color: $dark-color;
+    color: $gray-darker;
     //margin-bottom: 0;
   }
 
   .control-label, label {
-    font-size: $font-size-small;
-    color: $dark-color;
+    color: $gray-darker;
     position: relative;
     display: block;
   }
@@ -72,13 +68,11 @@
   }
 
   .help-block {
-    font-size: $font-size-small;
-    color: $dark-color;
+    color: $gray-darker;
   }
 
   .help-inline-block {
-    font-size: $font-size-small;
-    color: $dark-color;
+    color: $gray-darker;
     display: inline-block;
   }
 
@@ -100,7 +94,6 @@
 
   .form-control:focus {
     box-shadow: none;
-    border-color: #8ca0a6;
     border: 1px solid $secondary-color;
     outline: 1px solid $secondary-color;
   }
@@ -109,7 +102,6 @@
     .form-control {
       border: 1px solid $accent-color;
       outline: 1px solid $accent-color;
-
     }
 
     .control-label:after {
@@ -128,7 +120,7 @@
     }
 
     .help-block {
-      color: $accent-color;
+      color: $state-danger-text;
     }
   }
 
@@ -184,6 +176,5 @@
 
 
   #biotools-results {
-    font-size: $font-size-small;
   }
 }

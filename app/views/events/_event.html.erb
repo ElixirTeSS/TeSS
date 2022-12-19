@@ -14,6 +14,15 @@
 <% end %>
 
   <div id="event-title" class="masonry-brick-heading">
+    <div class="masonry-icons">
+      <% if current_user&.is_admin? %>
+        <%= missing_icon(event) %>
+        <%= scrape_status_icon(event) %>
+        <%= suggestion_icon(event) %>
+      <% end %>
+
+      <%= event_status_icon(event) %>
+    </div>
     <h4>
 <!--    TODO: hybrid events-->
     <% if event.online? %>
@@ -23,8 +32,6 @@
     <% end %>
     <%= event.title %>
     </h4>
-    <%= missing_icon(event) if current_user and current_user.is_admin? %>
-    <%= scrape_status_icon(event) if current_user and current_user.is_admin? %>
   </div>
   <p><%= neatly_printed_date_range(event.start, event.end) %></p>
   <% if event.online? %>
@@ -32,16 +39,6 @@
     <p class="dont-break-out">
       <%= [event.city, event.country].reject { |field_value| field_value.blank? }.join(", ")%>
     </p>
-  <% end %>
-
-  <% if event.started? %>
-      <%= content_tag(:span, :class=>'pull-right gap') do %>
-        <%= icon_for(:started, :small) %>
-      <% end %>
-  <% elsif event.expired? %>
-      <%= content_tag(:span, :class=>'pull-right gap') do %>
-          <%= icon_for(:expired, :small) %>
-      <% end %>
   <% end %>
 
   <% if event.has_node? -%>

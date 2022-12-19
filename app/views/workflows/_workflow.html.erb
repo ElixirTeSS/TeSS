@@ -3,6 +3,11 @@
 
   <div>
     <div class="masonry-brick-heading">
+      <div class="masonry-icons">
+        <% if current_user&.is_admin? %>
+          <%= suggestion_icon(workflow) %>
+        <% end %>
+      </div>
       <h4>
         <%= title_with_privacy(workflow) %>
       </h4>

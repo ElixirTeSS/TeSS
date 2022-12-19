@@ -19,12 +19,12 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
 
 
   def materials_info
-    MATERIALS_INFO % { link: link_to('see here for here for details on automatic registration',
+    MATERIALS_INFO % { link: link_to('see here for details on automatic registration',
                                   registering_resources_path(anchor: 'automatic')) }
   end
 
   def elearning_materials_info
-    ELEARNING_MATERIALS_INFO % { link: link_to('see here for here for details on automatic registration',
+    ELEARNING_MATERIALS_INFO % { link: link_to('see here for details on automatic registration',
                                   registering_resources_path(anchor: 'automatic')) }
   end
 
