@@ -5,13 +5,13 @@
         <%= star_button(@workflow) if user_signed_in? %>
         <%= render partial: 'common/identifiers_dot_org_button', locals: { resource: @workflow } if TeSS::Config.identifiers_prefix %>
         <% if @workflow.public? %>
-            <%= render partial: 'workflows/embed_button' %>
+          <%= render partial: 'workflows/embed_button' %>
         <% end %>
         <% unless current_user.nil? %>
-            <%= link_to 'Fork', fork_workflow_path(@workflow), :class => 'btn btn-default' %>
+          <%= link_to 'Fork', fork_workflow_path(@workflow), :class => 'btn btn-default' %>
         <% end %>
         <% if !current_user.nil? and policy(@workflow).manage? %>
-            <%= render partial: 'collaborations/collaborators_button', locals: { resource: @workflow } %>
+          <%= render partial: 'collaborations/collaborators_button', locals: { resource: @workflow } %>
         <% end %>
 
         <% if !current_user.nil? and policy(@workflow).update? %>
@@ -20,42 +20,30 @@
         <% end %>
 
         <% if !current_user.nil? and policy(@workflow).destroy? %>
-            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                        workflow_path(@workflow),
-                        :method => 'delete',
-                        :data => {:confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?'))},
-                        :class => 'btn btn-danger' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      workflow_path(@workflow),
+                      :method => 'delete',
+                      :data => {:confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?'))},
+                      :class => 'btn btn-danger' %>
         <% end %>
       </div>
     </div>
-    <div class="row">
-      <ul class="nav nav-tabs">
-        <%= tab('Workflow', icon_class_for_model('workflow'), 'workflow', active: true) %>
+    <div id="workflow">
+      <h2><%= t '.title', :default => title_with_privacy(@workflow) %></h2>
 
-        <%= tab('Activity log', icon_class_for_model('activity_logs'), 'activity_log',
-                disabled: { check: @workflow.activities.none?, message: 'No activities recorded' }) %>
-      </ul>
-    </div>
-    <div class="tab-content">
-      <div id="workflow" class="tab-pane fade in active">
-        <h2><%= t '.title', :default => title_with_privacy(@workflow) %></h2>
-
-        <% content_for :sidebar_title do %>
-            <i class="fa fa-sitemap"></i> <%= @workflow.title %>
+      <% content_for :sidebar_title do %>
+        <i class="fa fa-sitemap"></i> <%= @workflow.title %>
+      <% end %>
+      <% content_for :sidebar_description do %>
+        <% if @workflow.description.blank? %>
+          <p class="muted">No description provided</p>
+        <% else %>
+          <%= render_markdown(@workflow.description) %>
         <% end %>
-        <% content_for :sidebar_description do %>
-            <% if @workflow.description.blank? %>
-                <p class="muted">No description provided</p>
-            <% else %>
-                <%= render_markdown(@workflow.description) %>
-            <% end %>
-            <%= render partial: 'common/extra_metadata', locals: { resource: @workflow } %>
-        <% end %>
-        <%= render partial: 'workflows/workflow_diagram', locals: { workflow: @workflow } %>
-      </div>
-      <div id="activity_log" class="tab-pane fade" data-activity-path="<%= workflow_activities_path(@workflow) -%>">
-        <%= image_tag('ajax-loader.gif') %>
-      </div>
+        <%= render partial: 'common/extra_metadata', locals: { resource: @workflow } %>
+      <% end %>
+      <%= render partial: 'workflows/workflow_diagram', locals: { workflow: @workflow } %>
     </div>
+    <%= render partial: 'activities/activity_log_button', locals: { resource: @workflow } %>
   </div>
 </div>

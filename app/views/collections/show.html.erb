@@ -32,9 +32,6 @@
         <%= tab('Events', icon_class_for_model('events'), 'events', active: @collection.materials.none? && @collection.events.any?,
                 disabled: { check: @collection.events.none?, message: 'No associated events' },
                 count: @collection.events.count) %>
-
-        <%= tab('Activity log', icon_class_for_model('activity_logs'), 'activity_log',
-                disabled: { check: @collection.activities.none?, message: 'No activities recorded' }) %>
       </ul>
     </div>
 
@@ -63,10 +60,7 @@
           <% end %>
         </div>
       </div>
-      <div id="activity_log" class="tab-pane fade" data-activity-path="<%= collection_activities_path(@collection) -%>">
-        <%= image_tag('ajax-loader.gif') %>
-      </div>
+      <%= render partial: 'activities/activity_log_button', locals: { resource: @collection } %>
     </div>
   </div>
 </div>
-

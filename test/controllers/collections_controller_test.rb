@@ -200,7 +200,7 @@ class CollectionsControllerTest < ActionController::TestCase
     get :show, params: { :id => @collection }
     assert_response :success
     assert_select 'ul.nav-tabs' do
-      assert_select 'li.disabled', :count => 3 # This collection has no events, materials or activity
+      assert_select 'li.disabled', :count => 2 # This collection has no events, materials
     end
 
     collections(:with_resources).materials << materials(:good_material)
@@ -210,7 +210,7 @@ class CollectionsControllerTest < ActionController::TestCase
     assert_response :success
     assert_select 'ul.nav-tabs' do
       assert_select 'li' do
-        assert_select 'a[data-toggle="tab"]', :count => 3 # Events, Materials, Activity (added the resources)
+        assert_select 'a[data-toggle="tab"]', :count => 2 # Events, Materials
       end
     end
   end

@@ -310,7 +310,6 @@ class ContentProvidersControllerTest < ActionController::TestCase
       assert_select 'li' do
         assert_select 'a[data-toggle="tab"]', :count => 2 # Materials, Events
       end
-      assert_select 'li.disabled', :count => 1 # Activity
     end
   end
 

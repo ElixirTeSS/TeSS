@@ -564,15 +564,6 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   #OTHER CONTENT
-  test 'material has correct tabs' do
-    get :show, params: { id: @material }
-    assert_response :success
-    assert_select 'ul.nav-tabs' do
-      assert_select 'li' do
-        assert_select 'a[data-toggle="tab"]', :count => 2 # Material, Activity
-      end
-    end
-  end
 
   test 'material has correct layout' do
     get :show, params: { id: @material }

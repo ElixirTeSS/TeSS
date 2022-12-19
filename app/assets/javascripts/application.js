@@ -285,15 +285,27 @@ $(document).on('click', '.clear-autocompleter-singleton', function () {
     return false;
 });
 
-$(document).on('shown.bs.tab', '[href="#activity_log"]', function () {
-    var tabPane = $('#activity_log');
+$(document).on('click', '[href="#activity_log"]', function () {
+    const activityLog = $('#activity_log');
 
-    $.ajax({
-        url: tabPane.data('activityPath'),
-        success: function (data) {
-            tabPane.html(data);
+    if (activityLog.length) {
+        activityLog.toggle();
+        $(this).find('.expand-icon').addClass('collapse-icon').removeClass('expand-icon');
+        if (activityLog.is(':visible')) {
+            if (!activityLog.find('.activity').length) { // Only load once
+                $.ajax({
+                    url: activityLog.data('activityPath'),
+                    success: function (data) {
+                        activityLog.html(data);
+                    }
+                });
+            }
+        } else {
+            $(this).find('.collapse-icon').addClass('expand-icon').removeClass('collapse-icon');
         }
-    });
+    }
+
+    return false;
 });
 
 /**

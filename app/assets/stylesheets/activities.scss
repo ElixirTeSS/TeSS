@@ -8,3 +8,12 @@
     margin-left: 2em;
   }
 }
+
+.activity-log-button {
+  text-decoration: none;
+  color: $primary-color;
+  &:hover, &:active, &:focus {
+    color: $secondary-color;
+    text-decoration: none;
+  }
+}
