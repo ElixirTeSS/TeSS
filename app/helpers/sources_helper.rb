@@ -24,7 +24,7 @@ module SourcesHelper
   end
 
   def source_approval_badge(status)
-    case status
+    case status.to_sym
     when :not_approved
       content_tag(:span, t("sources.approval_status.#{status}"), class: 'label label-danger')
     when :requested
