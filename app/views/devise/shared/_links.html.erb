@@ -1,6 +1,6 @@
-<ul>
+<ul class="shared-links">
   <%- if controller_name != 'sessions' %>
-      <li><%= link_to "Log in", new_session_path(resource_name) %></li>
+      <li>Already on TeSS? <%= link_to "Log in", new_session_path(resource_name) %></li>
   <% end -%>
 
   <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
@@ -12,7 +12,7 @@
   <% end -%>
 
   <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
-      <li><%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %></li>
+      <li>Didn’t receive confirmation instructions? <%= link_to "Resend", new_confirmation_path(resource_name) %></li>
   <% end -%>
 
   <%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>

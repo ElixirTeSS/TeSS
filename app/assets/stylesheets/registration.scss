@@ -1,0 +1,52 @@
+.modern-form {
+    .user_processing_consent {
+        padding: 0;
+        background-color: transparent;
+        color: $dark-color;
+        border: none;
+    }
+
+    .separator {
+        text-align: center;
+        height: 1px;
+
+        span {
+            position: relative;
+            top: -53px;
+            padding: 10px 50px;
+            display: inline-block;
+            background-color: white;
+        }
+    }
+
+    .shared-links {
+        list-style: none;
+        text-align: center;
+
+        li {
+
+        }
+    }
+
+    .ls-login, .ls-register {
+        display: inline-block;
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+
+        height: 50px;
+        width: 200px;
+    }
+
+    .ls-login {
+        background-image: image-url("modern/logos/ls-login.svg");
+    }
+
+    .ls-register {
+        background-image: image-url("modern/logos/ls-register.svg");
+    }
+
+    .actions {
+        text-align: center;
+        margin: 50px 0;
+    }
+}

@@ -46,9 +46,29 @@
     display: block;
   }
 
+  label.boolean {
+    flex-flow: row wrap;
+    font-size: $font-size-base;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    input {
+      margin-right: 16px;
+      position: relative;
+    }
+  }
+
   input[type="text"], textarea {
     border: 1px solid #8D8D8D;
     border-radius: 8px;
+  }
+
+  input[type="checkbox"] {
+    margin-top: -1px;
+    height: 30px;
+    width: 30px;
+    border-radius: 4px;
   }
 
   .help-block {
