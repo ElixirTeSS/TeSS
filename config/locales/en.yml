@@ -441,3 +441,7 @@ en:
       revoke: Revoke cookie consent
       all: Allow all cookies
       necessary: Allow necessary cookies
+  facets:
+    categories:
+      user: Owner
+      organizer: Organiser
