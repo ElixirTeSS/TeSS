@@ -24,7 +24,7 @@ class CookiesController < ApplicationController
   private
 
   def set_cookie_consent_object
-    @cookie_consent = CookieConsent.new(cookies)
+    @cookie_consent = CookieConsent.new(cookies.permanent)
   end
 
   def cookie_params

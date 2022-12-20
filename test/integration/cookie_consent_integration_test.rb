@@ -179,6 +179,14 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'cookie consent cookie set with long expiry' do
+    with_settings({ require_cookie_consent: true }) do
+      post cookies_consent_path, params: { allow: all_options }
+    end
+
+    assert cookies.get_cookie('cookie_consent').expires > 1.year.from_now
+  end
+
   private
 
   def all_options
