@@ -149,7 +149,6 @@ GEM
     bootstrap-sass (3.4.1)
       autoprefixer-rails (>= 5.2.1)
       sassc (>= 2.0.0)
-    brakeman (5.4.0)
     builder (3.2.4)
     bundler-audit (0.9.1)
       bundler (>= 1.2.0, < 3)
@@ -780,7 +779,6 @@ DEPENDENCIES
   bootsnap (>= 1.4.4)
   bootstrap-datepicker-rails (~> 1.6.4.1)
   bootstrap-sass (>= 3.4.1)
-  brakeman
   bundler-audit
   by_star!
   byebug
