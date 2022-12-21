@@ -175,6 +175,8 @@ group :development, :test do
   gem 'rubocop'
   gem 'simplecov'
   gem 'simplecov-lcov', require: false
+  gem 'brakeman'
+  gem 'bundler-audit'
 end
 
 group :development do
