@@ -37,5 +37,20 @@ jobs:
           cp config/secrets.github.yml config/secrets.yml
           cp config/ingestion.example.yml config/ingestion.yml
           bundle exec rake db:test:prepare
-      - run: bundle exec rails test
-        name: Run tests
+      - name: Run tests
+        run: bundle exec rails test
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Security audit dependencies
+        run: bundler-audit --update
+      - name: Security audit application code
+        run: brakeman -q -w2
+      - name: Lint Ruby files
+        run: rubocop --parallel
