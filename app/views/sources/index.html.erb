@@ -7,30 +7,15 @@
   <% end %>
 
   <div id="content">
-    <div class="row">
-      <div class="content_action pull-right">
-        <% if @content_provider %>
-          <%= link_to 'Back', @content_provider, class: 'btn btn-info' %>
-        <% end %>
-      </div>
-    </div>
+    <% content_for :buttons do %>
+      <% if @content_provider %>
+        <%= link_to 'Back', @content_provider, class: 'btn btn-info' %>
+      <% end %>
+    <% end %>
 
     <% if TeSS::Config.solr_enabled %>
-      <div class="row">
-        <%= render partial: "search/common/search_box",
-                   locals: { resource_path: sources_path } %>
-        <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
-          <i class="fa fa-filter"></i> Filters
-        </button>
-      </div>
-      <div class="row">
-        <%= render partial: "search/common/sort_by",
-                   locals: { resources: @sources, extras: [['Most recent', 'new'], ['Last finished', 'finished']] } %>
-        <%= render partial: "search/common/search_info",
-                   locals: { resources: @sources_results, resource_type: 'source' } %>
-        <%= render partial: "search/common/search_filters",
-                   locals: { resources: @sources_results } %>
-      </div>
+      <%= render partial: "search/common/search_panel", locals: { resources: @sources_results,
+                                                                  resource_type: Source } %>
     <% end %>
 
     <!-- %= render partial: "search/common/pagination_bar", locals: { resources: @sources } % -->

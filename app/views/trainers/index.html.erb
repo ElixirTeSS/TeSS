@@ -10,29 +10,15 @@
     <div class="row">
       <h2>Trainers</h2>
     </div>
-
-    <div class="row">
-      <!-- Info -->
-        <%= info_button('') do %>
-          <%= render_markdown(TrainersHelper::TRAINERS_INFO) %>
-        <% end %>
-    </div>
+    <% content_for :buttons do %>
+      <%= info_button("What are trainers in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>
+        <%= render_markdown(TrainersHelper::TRAINERS_INFO) %>
+      <% end %>
+    <% end %>
 
     <% if TeSS::Config.solr_enabled %>
-      <div class="row">
-        <%= render partial: "search/common/search_box", locals: { resource_path: trainers_path } %>
-        <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
-          <i class="fa fa-filter"></i> Filters
-        </button>
-      </div>
-      <div class="row">
-        <%= render partial: "search/common/sort_by",
-                   locals: { resources: @trainers } %>
-        <%= render partial: "search/common/search_info",
-                   locals: { resources: @trainers_results, resource_type: 'trainer' } %>
-        <%= render partial: "search/common/search_filters",
-                   locals: { resources: @trainers_results } %>
-      </div>
+      <%= render partial: "search/common/search_panel", locals: { resources: @trainers_results,
+                                                                  resource_type: User } %>
     <% end %>
 
     <%= render partial: "search/common/pagination_bar", locals: { resources: @trainers } %>

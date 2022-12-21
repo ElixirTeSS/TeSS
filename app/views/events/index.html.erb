@@ -12,32 +12,21 @@
     <div class="row">
       <h2>Events</h2>
     </div>
+    <% content_for :buttons do %>
+      <!-- Register button -->
+      <%= link_to new_event_path, class: 'btn btn-primary' do %>
+        Register event
+      <% end %>
+      <!-- Info -->
+      <%= info_button("What are events in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>
+        <%= render_markdown(events_info) %>
+      <% end %>
+    <% end %>
+
     <% if TeSS::Config.solr_enabled %>
-      <div class="row">
-        <!-- Register button -->
-        <%= link_to new_event_path, class: 'btn btn-default' do %>
-          Register event
-        <% end %>
-        <!-- Check subscription feature -->
-        <% if TeSS::Config.feature['subscription'] %>
-          <%= render partial: 'subscriptions/subscribe_button', locals: { type: 'Event' } %>
-        <% end %>
-        <!-- Info -->
-          <%= info_button('') do %>
-            <%= render_markdown(events_info) %>
-          <% end %>
-      </div>
-
-      <div class="row">
-        <%= render partial: "search/common/search_box", locals: { resource_path: events_path } %>
-        <%= render partial: "search/common/search_info", locals: { resources: @events_results, resource_type: 'event' } %>
-        <%= render partial: "search/common/search_filters", locals: { resources: @events_results } %>
-
-        <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
-          <i class="icon icon-md icon-greyscale filter-icon"></i> Filters
-        </button>
-
-      </div>
+      <%= render partial: "search/common/search_panel", locals: { resources: @events_results,
+                                                                  resource_type: Event,
+                                                                  show_subscription_button: true } %>
     <% end %>
 
     <%# ACTUAL RESULTS LIST %>

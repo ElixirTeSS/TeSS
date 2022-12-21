@@ -3,12 +3,12 @@ Parameters
 - resource_path - the path to the route to perform the search e.g. materials_path, events_path or general search_path
 %>
 
-<% placeholder = "Search" + (params[:controller]=='search' ? '...' : " " + params[:controller].humanize(capitalize: false) + "...") %>
+<% placeholder = "Search#{' ' + params[:controller].humanize(capitalize: false) unless params[:controller] == 'search'}..." %>
 
 <div class="searchbox-sm">
-  <%= form_tag resource_path, :role=>"form", :method => :get, :enforce_utf8 => false do %>
+  <%= form_tag resource_path, role: 'form', method: :get, enforce_utf8: false do %>
     <div class="searchbox-wrapper">
-      <%= text_field_tag "q", params[:q], :class => 'searchbox-field', :placeholder => placeholder %>
+      <%= text_field_tag 'q', params[:q], class: 'searchbox-field', placeholder: placeholder %>
       <button type="submit" class="searchbox-btn">
         <i class="icon icon-h4 search-icon"></i>
       </button>

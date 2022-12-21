@@ -396,9 +396,10 @@ ul.unstyled {
 }
 
 .search-results-count {
-  margin-top: 5px;
+  margin-right: 5px;
   padding-top: 5px;
   padding-bottom: 10px;
+  display: inline-block
 }
 
 .welcome-text {
@@ -546,9 +547,15 @@ sup {
   display: none;
 }
 
-.searchbox-sm {
-  width: 500px;
+.search-panel {
+  padding-top: 5px;
 
+  .btn {
+    margin: 5px 0;
+  }
+}
+
+.searchbox-sm {
   form {
     padding-right: 10px;
     text-align: center;

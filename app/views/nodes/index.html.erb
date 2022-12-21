@@ -9,26 +9,20 @@
     <div class="row">
       <h2>Nodes</h2>
     </div>
-    <div class="row">
+    <% content_for :buttons do %>
       <% if policy(:node).create? %>
-        <%= link_to new_node_path, class: 'btn btn-default' do %>
+        <%= link_to new_node_path, class: 'btn btn-primary' do %>
           Create node
         <% end %>
       <% end %>
-        <%= info_button('') do %>
-            <%= render_markdown(NodesHelper::NODES_INFO) %>
-        <% end %>
-    </div>
+      <%= info_button("What are ELIXIR nodes?", hide_text: true) do %>
+        <%= render_markdown(NodesHelper::NODES_INFO) %>
+      <% end %>
+    <% end %>
 
     <% if TeSS::Config.solr_enabled %>
-        <div class="row">
-          <%= render partial: "search/common/search_box", locals: { resource_path: nodes_path } %>
-          <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
-            <i class="fa fa-filter"></i> Filters
-          </button>
-          <%= render partial: "search/common/search_info", locals: { resources: @nodes_results, resource_type: 'node' } %>
-          <%= render partial: "search/common/search_filters", locals: { resources: @nodes_results } %>
-        </div>
+      <%= render partial: "search/common/search_panel", locals: { resources: @nodes_results,
+                                                                  resource_type: Node } %>
     <% end %>
 
     <%= render partial: "search/common/pagination_bar", locals: { resources: @nodes } %>

@@ -11,13 +11,16 @@ Variable that should be available
   <button href="#" class="btn btn-link pull-right" id="sidebar-close"><i class="icon-lg icon cross-icon icon-invert"></i></button>
 </h3>
 
-<% if ['Event'].include?(resource_type.name) %>
-  <%= render partial: "search/common/sort_by",
-             locals: { resources: resource_type, extras: [['Most recent', 'new'], ['Earliest', 'early'], ['Latest', 'late']] } %>
-<% else %>
-  <%= render partial: "search/common/sort_by",
-             locals: { resources: resource_type, extras: [['Most recent', 'new']] } %>
-<% end %>
+<%
+  extras = if resource_type.name == 'Event'
+             [['Most recent', 'new'], ['Earliest', 'early'], ['Latest', 'late']]
+           elsif resource_type.name == 'Source'
+             [['Most recent', 'new'], ['Last finished', 'finished']]
+           else
+             [['Most recent', 'new']]
+           end %>
+
+<%= render partial: 'search/common/sort_by', locals: { resources: resource_type, extras: extras } %>
 
 <ul class="unstyled nav-simple">
   <li>

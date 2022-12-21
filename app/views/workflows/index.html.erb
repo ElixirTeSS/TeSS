@@ -10,31 +10,21 @@
 
   <div id="content">
     <div class="row">
-
       <h2>Workflows</h2>
     </div>
-    <div class="row">
-      <%= link_to new_workflow_path, class: 'btn btn-default' do %>
+    <% content_for :buttons do %>
+      <%= link_to new_workflow_path, class: 'btn btn-primary' do %>
         Create workflow
       <% end %>
-        <%= info_button("") do %>
-            <%= render_markdown(WorkflowsHelper::WORKFLOWS_INFO) %>
-        <% end %>
-    </div>
-
-
-    <% if false && TeSS::Config.solr_enabled %>
-        <div class="row">
-          <%= render partial: "search/common/search_box", locals: {resource_path: workflows_path} %>
-          <%= render partial: "search/common/search_info", locals: {resources: @workflows_results, resource_type: 'workflow'} %>
-        </div>
+      <%= info_button("What are workflows in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>
+        <%= render_markdown(WorkflowsHelper::WORKFLOWS_INFO) %>
+      <% end %>
     <% end %>
-    <div class="row">
-    <%= render partial: "search/common/search_filters", locals: {resources: @workflows_results} %>
-      <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
-        <i class="fa fa-filter"></i> Filters
-      </button>
-    </div>
+
+    <% if TeSS::Config.solr_enabled %>
+      <%= render partial: "search/common/search_panel", locals: { resources: @workflows_results,
+                                                                  resource_type: Workflow } %>
+    <% end %>
 
     <%= render partial: "search/common/pagination_bar", locals: { resources: @workflows } %>
 
