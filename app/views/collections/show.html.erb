@@ -41,9 +41,8 @@
           <div class="search-results-count">
             <%= pluralize(@collection.materials.count, 'training material') %> found
           </div>
-          <% @collection.materials.each do |material| %>
-              <%= render material %>
-          <% end %>
+
+          <%= render partial: 'common/masonry_grid', locals: { objects: @collection.materials } %>
         </div>
       </div>
       <div id="events" class="tab-pane fade <%= 'in active' if @collection.materials.none? && @collection.events.any? %>">
@@ -51,13 +50,8 @@
           <div class="search-results-count">
             <%= pluralize(@collection.events.count, 'event') %> found
           </div>
-          <% unless @collection.events.count == 0 %>
-              <div class="masonry media-grid">
-                <% @collection.events.each do |event| %>
-                    <%= render event %>
-                <% end %>
-              </div>
-          <% end %>
+
+          <%= render partial: 'common/masonry_grid', locals: { objects: @collection.events } %>
         </div>
       </div>
       <%= render partial: 'activities/activity_log_button', locals: { resource: @collection } %>

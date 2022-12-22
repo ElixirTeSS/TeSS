@@ -188,13 +188,8 @@
                   <li><%= link_to('View all events', events_path(user: @user.username, include_expired: true)) %></li>
                 <% end %>
               </ul>
-              <% if events.count > 0 %>
-                <ul class="masonry media-grid" style="margin-top: 15px;">
-                  <% events.each do |event| %>
-                    <%= render event %>
-                  <% end %>
-                </ul>
-              <% end %>
+
+              <%= render partial: 'common/masonry_grid', locals: { objects: events } %>
             </div>
           </div>
         <% end %>
@@ -207,10 +202,9 @@
                 <%= (materials.count > 0 ? "Showing" : "Found") + " #{pluralize(materials.count, "material")}#{(materials_count > resource_limit) ? " out of #{materials_count}" : ''}." %>
                 <%= link_to('View all results', materials_path(user: @user.username)) if (materials_count > resource_limit) %>
               </div>
-              <% materials.each do |material| %>
-                <%= render material %>
-              <% end %>
-            </div>
+
+              <%= render partial: 'common/masonry_grid', locals: { objects: materials } %>
+             </div>
           </div>
         <% end %>
 
@@ -222,9 +216,8 @@
                 <%= (collections.count > 0 ? "Showing" : "Found") + " #{pluralize(collections.count, "collection")}#{(collections_count > resource_limit) ? " out of #{collections_count}" : ''}." %>
                 <%= link_to('View all results', collections_path(user: @user.username)) if (collections_count > resource_limit) %>
               </div>
-              <% collections.each do |collection| %>
-                <%= render collection %>
-              <% end %>
+
+              <%= render partial: 'common/masonry_grid', locals: { objects: collections } %>
             </div>
           </div>
         <% end %>
@@ -237,13 +230,8 @@
                 <%= (workflows.count > 0 ? "Showing" : "Found") + " #{pluralize(workflows.count, "workflow")}#{(workflows_count > resource_limit) ? " out of #{workflows_count}" : ''}." %>
                 <%= link_to('View all results', workflows_path(user: @user.username)) if (workflows_count > resource_limit) %>
               </div>
-              <% if workflows.any? %>
-                <ul class="masonry media-grid" style="margin-top: 15px;">
-                  <% workflows.each do |workflow| %>
-                    <%= render workflow %>
-                  <% end %>
-                </ul>
-              <% end %>
+
+              <%= render partial: 'common/masonry_grid', locals: { objects: workflows } %>
             </div>
           </div>
         <% end %>

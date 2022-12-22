@@ -33,7 +33,6 @@
     <% unless @events.blank? %>
       <ul class="nav nav-tabs">
         <%= tab('List', 'fa fa-list', 'home', active: true) %>
-        <%#= tab('Grid', 'fa fa-table', 'grid', active: false) %>
         <% if !TeSS::Config.feature['disabled'].include? 'events_map' %>
           <%= tab('Map', 'fa fa-globe', 'map',
                   disabled: { check: (search_and_facet_params[:online] == 'true'),
@@ -42,27 +41,13 @@
       </ul>
 
       <div class="tab-content">
-
         <div id="home" class="tab-pane fade in active">
-
           <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
           <ul class="masonry media-grid" style="margin-top: 15px;">
             <% @events.each do |event| %>
               <%= render partial: 'events/event', locals: { event: event, list: true} %>
             <% end %>
           </ul>
-          <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
-        </div>
-
-        <div id="grid" class="tab-pane fade in">
-
-          <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
-          <ul class="masonry media-grid">
-            <% @events.each do |event| %>
-              <%= render event %>
-            <% end %>
-          </ul>
-
           <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
         </div>
 
