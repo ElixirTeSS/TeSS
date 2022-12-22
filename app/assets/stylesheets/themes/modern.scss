@@ -51,8 +51,7 @@ $footer-border-radius: 50px;
 $footer-padding-top: 75px;
 
 $brand-primary: $secondary-color;
-$brand-info: #a7d2e1;
-$brand-warning: lighten($accent-color, 25%);
+$brand-danger: #d9534f;
 
 $padding-base-vertical:     8px;
 $padding-base-horizontal:   15px;
@@ -75,6 +74,10 @@ $btn-default-border: $accent-color;
 $btn-primary-color: $light-color;
 $btn-primary-bg: $accent-color;
 $btn-primary-border: $accent-color;
+
+$btn-danger-color: $brand-danger;
+$btn-danger-bg: transparent;
+$btn-danger-border: $brand-danger;
 
 $transition-time: 300ms;
 

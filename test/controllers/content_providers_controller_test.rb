@@ -317,34 +317,34 @@ class ContentProvidersControllerTest < ActionController::TestCase
     get :show, params: { id: @content_provider }
     assert_response :success
     # assert_select 'h4.nav-heading', :text => /Content provider/
-    assert_select 'a[href=?]', @content_provider.url, :count => 2 do
-      assert_select 'img[src=?]', ActionController::Base.helpers.asset_path(@content_provider.image.url), :count => 1
+    assert_select 'a[href=?]', @content_provider.url do #
+      assert_select 'img[src=?]', ActionController::Base.helpers.asset_path(@content_provider.image.url), count: 1
     end
     # assert_select 'a.btn-info[href=?]', content_providers_path, :count => 1 #Back button
     #Should not show when not logged in
-    assert_select 'a.btn-primary[href=?]', edit_content_provider_path(@content_provider), :count => 0 #No Edit
-    assert_select 'a.btn-danger[href=?]', content_provider_path(@content_provider), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', edit_content_provider_path(@content_provider), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', content_provider_path(@content_provider), :count => 0 #No Edit
   end
 
   test 'do not show action buttons when not owner or admin' do
     sign_in users(:another_regular_user)
     get :show, params: { id: @content_provider }
-    assert_select 'a.btn-primary[href=?]', edit_content_provider_path(@content_provider), :count => 0 #No Edit
-    assert_select 'a.btn-danger[href=?]', content_provider_path(@content_provider), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', edit_content_provider_path(@content_provider), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', content_provider_path(@content_provider), :count => 0 #No Edit
   end
 
   test 'show action buttons when owner' do
     sign_in @content_provider.user
     get :show, params: { id: @content_provider }
-    assert_select 'a.btn-primary[href=?]', edit_content_provider_path(@content_provider), :count => 1
-    assert_select 'a.btn-danger[href=?]', content_provider_path(@content_provider), :text => 'Delete', :count => 1
+    assert_select 'a.btn[href=?]', edit_content_provider_path(@content_provider), :count => 1
+    assert_select 'a.btn[href=?]', content_provider_path(@content_provider), :text => 'Delete', :count => 1
   end
 
   test 'show action buttons when admin' do
     sign_in users(:admin)
     get :show, params: { id: @content_provider }
-    assert_select 'a.btn-primary[href=?]', edit_content_provider_path(@content_provider), :count => 1
-    assert_select 'a.btn-danger[href=?]', content_provider_path(@content_provider), :text => 'Delete', :count => 1
+    assert_select 'a.btn[href=?]', edit_content_provider_path(@content_provider), :count => 1
+    assert_select 'a.btn[href=?]', content_provider_path(@content_provider), :text => 'Delete', :count => 1
   end
 
   #API Actions

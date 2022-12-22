@@ -9,23 +9,15 @@
   </div>
 
   <div id="content">
-    <div class="row">
-      <div class="content_action">
+    <div class="content-actions">
+      <div class="content-viewer-actions">
+        <%= external_link_button 'View home page', @content_provider.url if @content_provider.url.present? %>
         <%= render partial: 'common/identifiers_dot_org_button',
                    locals: { resource: @content_provider } if TeSS::Config.identifiers_prefix %>
-
-        <% if !current_user.nil? and policy(@content_provider).update? %>
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_content_provider_path(@content_provider), :class => 'btn btn-primary' %>
-        <% end %>
-
-        <% if !current_user.nil? and policy(@content_provider).destroy? %>
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      content_provider_path(@content_provider),
-                      :method => 'delete',
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-danger' %>
-        <% end %>
+      </div>
+      <div class="content-manager-actions">
+        <%= edit_button(@content_provider) if policy(@content_provider).update? %>
+        <%= delete_button(@content_provider) if policy(@content_provider).destroy? %>
       </div>
     </div>
 

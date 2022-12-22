@@ -29,7 +29,7 @@
           <div class="actions">
             <%= f.submit "Update", :class => 'btn btn-primary' %>
             <%= link_to 'Regenerate authentication token', change_token_path(resource), :method => :patch,  :class => 'btn btn-info', data: { confirm: 'Are you sure want to regenerate your authentication token? Your previous authentication token will no longer work' }  %>
-            <%= link_to "Back", :back, :class => 'btn btn-default' %>
+            <%= link_to "Back", :back, class: 'btn btn-default' %>
           </div>
       <% end %>
 

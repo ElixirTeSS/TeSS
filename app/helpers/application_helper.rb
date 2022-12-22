@@ -471,10 +471,29 @@ module ApplicationHelper
     star = current_user.stars.where(resource_id: resource.id, resource_type: resource.class.name).first
 
     link_to '', '#', class: 'btn btn-icon',
+            title: "Star this #{resource.class.model_name.human}",
             data: { role: 'star-button',
                     starred: !star.nil?,
                     resource: { id: resource.id, type: resource.class.name },
                     url: stars_path }
+  end
+
+  def external_link_button(text, url, options = {})
+    options.reverse_merge!({ rel: 'noopener', target: '_blank', class: 'btn btn-primary' })
+    link_to((text + ' <i class="icon icon-md arrow-top-right-white-icon"></i>').html_safe, url, options)
+  end
+
+  def edit_button(resource, url: nil, text: nil)
+    url ||= polymorphic_path([:edit, resource])
+    text ||= t('.edit', default: t('helpers.links.edit'))
+    link_to text , url, class: 'btn btn-default'
+  end
+
+  def delete_button(resource, url: nil, text: nil, confirmation: nil)
+    url ||= resource
+    text ||= t('.destroy', default: t('helpers.links.destroy'))
+    confirmation ||= t('.confirm', default: t('helpers.links.confirm', default: 'Are you sure?'))
+    link_to text, url, method: 'delete', data: { confirm: confirmation }, class: 'btn btn-danger'
   end
 
   def next_about_block(feature_count)

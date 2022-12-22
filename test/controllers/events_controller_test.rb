@@ -412,43 +412,41 @@ class EventsControllerTest < ActionController::TestCase
     get :show, params: { id: @event }
     assert_response :success
     assert_select 'h2', :text => @event.title #Has Title
-    assert_select '.page-header a[href=?]', @event.url #Has plain written URL
-    #assert_select 'a.btn-info[href=?]', events_path, :count => 1 #Back button
-    # assert_select 'a.btn-success', :text => "View event", :count => 1 do
-    #   assert_select 'a[href=?]', @event.url, :count => 1 #View event button
-    # end
+    assert_select 'a.btn', text: 'View event', count: 1 do
+      assert_select 'a[href=?]', @event.url, count: 1
+    end
     #Should not show when not logged in
-    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 0 #No Edit
-    assert_select 'a.btn-danger[href=?]', event_path(@event), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', edit_event_path(@event), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', event_path(@event), :count => 0 #No Edit
   end
 
   test 'do not show action buttons when not owner or admin' do
     sign_in users(:another_regular_user)
     get :show, params: { id: @event }
-    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 0 #No Edit
-    assert_select 'a.btn-danger[href=?]', event_path(@event), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', edit_event_path(@event), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', event_path(@event), :count => 0 #No Edit
   end
 
   test 'should show action buttons when owner' do
     sign_in @event.user
     get :show, params: { id: @event }
-    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 1
-    assert_select 'a.btn-danger[href=?]', event_path(@event), :text => 'Delete', :count => 1
+    assert_select 'a.btn[href=?]', edit_event_path(@event), :count => 1
+    assert_select 'a.btn[href=?]', event_path(@event), :text => 'Delete', :count => 1
   end
 
   test 'should show action buttons when approved editor' do
     @event.content_provider.add_editor users(:another_regular_user)
     sign_in users(:another_regular_user)
     get :show, params: { id: @event }
-    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 1
-    assert_select 'a.btn-danger[href=?]', event_path(@event), :text => 'Delete', :count => 1
+    assert_select 'a.btn[href=?]', edit_event_path(@event), :count => 1
+    assert_select 'a.btn[href=?]', event_path(@event), :text => 'Delete', :count => 1
   end
 
   test 'should show action buttons when admin' do
     sign_in users(:admin)
     get :show, params: { id: @event }
-    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 1
-    assert_select 'a.btn-danger[href=?]', event_path(@event), :text => 'Delete', :count => 1
+    assert_select 'a.btn[href=?]', edit_event_path(@event), :count => 1
+    assert_select 'a.btn[href=?]', event_path(@event), :text => 'Delete', :count => 1
   end
 
   #API Actions

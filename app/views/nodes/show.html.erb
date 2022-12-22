@@ -5,24 +5,13 @@
   </div>
 
   <div id="content">
-    <div class="row">
-      <div class="content_action">
-        <% unless @node.home_page.blank? %>
-            <a href="<%= @node.home_page %>" target="_blank" rel="noopener" class="btn btn-default">
-              <span class="fa fa-external-link"></span> View home page
-            </a>
-        <% end %>
-        <% if !current_user.nil? and policy(@node).update? %>
-            <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                        edit_node_path(@node), :class => 'btn btn-primary' %>
-        <% end %>
-        <% if !current_user.nil? and policy(@node).destroy? %>
-            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                        node_path(@node),
-                        :method => 'delete',
-                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                        :class => 'btn btn-danger' %>
-        <% end %>
+    <div class="content-actions">
+      <div class="content-viewer-actions">
+        <%= external_link_button 'View home page', @node.home_page if @node.home_page.present? %>
+      </div>
+      <div class="content-manager-actions">
+        <%= edit_button(@node) if policy(@node).update? %>
+        <%= delete_button(@node) if policy(@node).destroy? %>
       </div>
     </div>
     <div class="row">

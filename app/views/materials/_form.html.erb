@@ -172,7 +172,7 @@
   <!-- Form Buttons -->
   <div class="form-group">
     <%= f.submit (f.object.new_record? ? "Register" : "Update") + " training material", :class => 'btn btn-primary mr-2' %>
-    <%= link_to 'Back', :back, :class => "btn btn-default mr-2" %>
+    <%= link_to 'Back', :back, class: "btn btn-default mr-2" %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                 materials_path, :class => 'btn btn-default' %>
   </div>

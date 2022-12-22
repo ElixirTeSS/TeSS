@@ -1094,3 +1094,25 @@ input[type=checkbox].field-lock + label:before,
     margin-bottom: 5px;
   }
 }
+
+.content-actions {
+  gap: 10px;
+  display: flex;
+
+  .content-viewer-actions > .btn,
+  .content-viewer-actions > .btn-group,
+  .content-manager-actions > .btn,
+  .content-manager-actions > .btn-group {
+    margin-top: 5px; /* So they have some vertical spacing when collapsed on small screens */
+  }
+
+  .content-viewer-actions {
+    flex-grow: 1;
+    text-align: left;
+  }
+
+  .content-manager-actions {
+    flex-grow: 1;
+    text-align: right;
+  }
+}

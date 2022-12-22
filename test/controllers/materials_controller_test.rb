@@ -569,43 +569,41 @@ class MaterialsControllerTest < ActionController::TestCase
     get :show, params: { id: @material }
     assert_response :success
     assert_select 'h2', :text => @material.title #Has Title
-    assert_select '.url-wrap a[href=?]', @material.url #Has plain written URL
-    #assert_select 'a.btn-info[href=?]', materials_path, :count => 1 #Back button
-    # assert_select 'a.btn-success', :text => "View material", :count => 1 do
-    #   assert_select 'a[href=?]', @material.url, :count => 1 #View Material button
-    # end
+    assert_select 'a.btn', text: 'View material', count: 1 do
+      assert_select 'a[href=?]', @material.url, count: 1
+    end
     #Should not show when not logged in
-    assert_select 'a.btn-primary[href=?]', edit_material_path(@material), :count => 0 #No Edit
-    assert_select 'a.btn-danger[href=?]', material_path(@material), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', edit_material_path(@material), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', material_path(@material), :count => 0 #No Edit
   end
 
   test 'do not show action buttons when not owner or admin' do
     sign_in users(:another_regular_user)
     get :show, params: { id: @material }
-    assert_select 'a.btn-primary[href=?]', edit_material_path(@material), :count => 0 #No Edit
-    assert_select 'a.btn-danger[href=?]', material_path(@material), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', edit_material_path(@material), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', material_path(@material), :count => 0 #No Edit
   end
 
   test 'show action buttons when owner' do
     sign_in users(:regular_user)
     get :show, params: { id: @material }
-    assert_select 'a.btn-primary[href=?]', edit_material_path(@material), :count => 1
-    assert_select 'a.btn-danger[href=?]', material_path(@material), :text => 'Delete', :count => 1
+    assert_select 'a.btn[href=?]', edit_material_path(@material), :count => 1
+    assert_select 'a.btn[href=?]', material_path(@material), :text => 'Delete', :count => 1
   end
 
   test 'show action buttons when admin' do
     sign_in users(:admin)
     get :show, params: { id: @material }
-    assert_select 'a.btn-primary[href=?]', edit_material_path(@material), :count => 1
-    assert_select 'a.btn-danger[href=?]', material_path(@material), :text => 'Delete', :count => 1
+    assert_select 'a.btn[href=?]', edit_material_path(@material), :count => 1
+    assert_select 'a.btn[href=?]', material_path(@material), :text => 'Delete', :count => 1
   end
 
   test 'show action buttons when approved editor' do
     @material.content_provider.add_editor users(:another_regular_user)
     sign_in users(:another_regular_user)
     get :show, params: { id: @material }
-    assert_select 'a.btn-primary[href=?]', edit_material_path(@material), :count => 1
-    assert_select 'a.btn-danger[href=?]', material_path(@material), :text => 'Delete', :count => 1
+    assert_select 'a.btn[href=?]', edit_material_path(@material), :count => 1
+    assert_select 'a.btn[href=?]', material_path(@material), :text => 'Delete', :count => 1
   end
 
   #API Actions

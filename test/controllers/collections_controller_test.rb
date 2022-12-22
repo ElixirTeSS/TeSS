@@ -221,30 +221,30 @@ class CollectionsControllerTest < ActionController::TestCase
     assert_select 'div.search-results-count', :count => 2 #Has results
     # assert_select 'a.btn-info', :text => 'Back', :count => 1 #No Edit
     #Should not show when not logged in
-    assert_select 'a.btn-primary[href=?]', edit_collection_path(@collection), :count => 0 #No Edit
-    assert_select 'a.btn-danger[href=?]', collection_path(@collection), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', edit_collection_path(@collection), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', collection_path(@collection), :count => 0 #No Edit
 
   end
 
   test 'do not show action buttons when not owner or admin' do
     sign_in users(:another_regular_user)
     get :show, params: { :id => @collection }
-    assert_select 'a.btn-primary[href=?]', edit_collection_path(@collection), :count => 0 #No Edit
-    assert_select 'a.btn-danger[href=?]', collection_path(@collection), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', edit_collection_path(@collection), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', collection_path(@collection), :count => 0 #No Edit
   end
 
   test 'show action buttons when owner' do
     sign_in @collection.user
     get :show, params: { :id => @collection }
-    assert_select 'a.btn-primary[href=?]', edit_collection_path(@collection), :count => 1
-    assert_select 'a.btn-danger[href=?]', collection_path(@collection), :text => 'Delete', :count => 1
+    assert_select 'a.btn[href=?]', edit_collection_path(@collection), :count => 1
+    assert_select 'a.btn[href=?]', collection_path(@collection), :text => 'Delete', :count => 1
   end
 
   test 'show action buttons when admin' do
     sign_in users(:admin)
     get :show, params: { :id => @collection }
-    assert_select 'a.btn-primary[href=?]', edit_collection_path(@collection), :count => 1
-    assert_select 'a.btn-danger[href=?]', collection_path(@collection), :text => 'Delete', :count => 1
+    assert_select 'a.btn[href=?]', edit_collection_path(@collection), :count => 1
+    assert_select 'a.btn[href=?]', collection_path(@collection), :text => 'Delete', :count => 1
   end
 
   #API Actions

@@ -94,32 +94,30 @@
   </div>
 
   <div id="content">
-    <div class="row">
-      <div class="content_action">
-        <% if !current_user.nil? and policy(@user).update? %>
-          <%= link_to t('.edit', :default => 'Edit profile'), edit_user_path(@user), :class => 'btn btn-primary' %>
-
-          <!-- Current User functions -->
-          <% if current_user == @user %>
-            <!-- Registration Button -->
-            <% if TeSS::Config.feature['registration'] %>
-              <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default' %>
-            <% end %>
-            <!-- Subscriptions Button -->
-            <% if TeSS::Config.feature['subscription'] %>
-              <%= link_to "Manage subscriptions", subscriptions_path, :class => 'btn btn-default' %>
-            <% end %>
+    <div class="content-actions">
+      <div class="content-viewer-actions"></div>
+      <div class="content-manager-actions">
+        <%= edit_button(@user, text: 'Edit profile') if policy(@user).update? %>
+        <!-- Current User functions -->
+        <% if current_user == @user %>
+          <!-- Registration Button -->
+          <% if TeSS::Config.feature['registration'] %>
+            <%= link_to "Manage account", edit_user_registration_path, class: 'btn btn-default' %>
           <% end %>
+          <!-- Subscriptions Button -->
+          <% if TeSS::Config.feature['subscription'] %>
+            <%= link_to "Manage subscriptions", subscriptions_path, class: 'btn btn-default' %>
+          <% end %>
+        <% end %>
 
-          <!-- Admin User functions -->
-          <% if current_user.try(:is_admin?) %>
-            <% if @user.banned? %>
-              <%= link_to 'Remove ban', user_ban_path(@user),
-                          data: { confirm: 'Are you sure you want to remove this ban?.' },
-                          method: :delete, class: 'btn btn-danger' %>
-            <% else %>
-              <%= link_to 'Ban', new_user_ban_path(@user), class: 'btn btn-danger' %>
-            <% end %>
+        <!-- Admin User functions -->
+        <% if current_user.try(:is_admin?) %>
+          <% if @user.banned? %>
+            <%= link_to 'Remove ban', user_ban_path(@user),
+                        data: { confirm: 'Are you sure you want to remove this ban?.' },
+                        method: :delete, class: 'btn btn-danger' %>
+          <% else %>
+            <%= link_to 'Ban', new_user_ban_path(@user), class: 'btn btn-danger' %>
           <% end %>
         <% end %>
       </div>

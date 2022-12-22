@@ -1,31 +1,16 @@
 <div class="wrapper collapsing-wrapper">
   <div id="content">
-    <div class="row">
-      <div class="content_action">
-        <%= star_button(@workflow) if user_signed_in? %>
+    <div class="content-actions">
+      <div class="content-viewer-actions">
         <%= render partial: 'common/identifiers_dot_org_button', locals: { resource: @workflow } if TeSS::Config.identifiers_prefix %>
-        <% if @workflow.public? %>
-          <%= render partial: 'workflows/embed_button' %>
-        <% end %>
-        <% unless current_user.nil? %>
-          <%= link_to 'Fork', fork_workflow_path(@workflow), :class => 'btn btn-default' %>
-        <% end %>
-        <% if !current_user.nil? and policy(@workflow).manage? %>
-          <%= render partial: 'collaborations/collaborators_button', locals: { resource: @workflow } %>
-        <% end %>
-
-        <% if !current_user.nil? and policy(@workflow).update? %>
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_workflow_path(@workflow), :class => 'btn btn-primary' %>
-        <% end %>
-
-        <% if !current_user.nil? and policy(@workflow).destroy? %>
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      workflow_path(@workflow),
-                      :method => 'delete',
-                      :data => {:confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?'))},
-                      :class => 'btn btn-danger' %>
-        <% end %>
+        <%= render partial: 'workflows/embed_button' if @workflow.public? %>
+        <%= star_button(@workflow) if user_signed_in? %>
+      </div>
+      <div class="content-manager-actions">
+        <%= link_to 'Fork', fork_workflow_path(@workflow), class: 'btn btn-default' unless current_user.nil? %>
+        <%= render partial: 'collaborations/collaborators_button', locals: { resource: @workflow } if policy(@workflow).manage? %>
+        <%= edit_button(@workflow) if policy(@workflow).update? %>
+        <%= delete_button(@workflow) if policy(@workflow).destroy? %>
       </div>
     </div>
     <div id="workflow">
