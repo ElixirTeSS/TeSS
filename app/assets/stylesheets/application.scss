@@ -550,7 +550,7 @@ sup {
 .search-panel {
   padding-top: 5px;
 
-  .btn {
+  .btn, .searchbox-sm {
     margin: 5px 0;
   }
 }
@@ -559,7 +559,6 @@ sup {
   form {
     padding-right: 10px;
     text-align: center;
-    line-height: 2;
     margin: auto;
     max-width: 800px;
 
