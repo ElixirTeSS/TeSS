@@ -29,4 +29,17 @@ class ActivitiesControllerTest < ActionController::TestCase
     assert_select '.sub-activity em', text: /Funding/, count: 1
   end
 
+  test 'should show approval status change activities for a source' do
+    source = sources(:first_source)
+    user = source.user
+    User.current_user = user
+
+    assert_difference('PublicActivity::Activity.count', 1) do
+      source.request_approval
+    end
+
+    get :index, params: { source_id: source }
+
+    assert_select '.activity span.label', text: 'Approval requested'
+  end
 end
