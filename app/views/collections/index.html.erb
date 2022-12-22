@@ -26,9 +26,9 @@
                                                                   resource_type: Collection } %>
     <% end %>
 
-    <%= render partial: "search/common/pagination_bar", locals: { resources: @collections } %>
-
     <%= render partial: 'common/masonry_grid', locals: { objects: @collections } %>
+
+    <%= render partial: 'search/common/pagination_bar', locals: { resources: @collections } %>
   </div>
 
 </div>

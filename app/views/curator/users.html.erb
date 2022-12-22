@@ -47,8 +47,6 @@
 
 <div class="col-sm-8 col-sm-pull-4">
   <% if @users.any? %>
-    <%= render partial: "search/common/pagination_bar", locals: { resources: @users } %>
-
     <% @users.each do |user| %>
       <div class="panel panel-default curate-user">
         <div class="panel-heading">
@@ -106,7 +104,7 @@
       </div>
     <% end %>
 
-    <%= render partial: "search/common/pagination_bar", locals: { resources: @users } %>
+    <%= render partial: 'search/common/pagination_bar', locals: { resources: @users } %>
   <% else %>
     Could not find any <%= @role.title.downcase.pluralize-%> requiring approval. Another curator may have already taken action.
   <% end %>

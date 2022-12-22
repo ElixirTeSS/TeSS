@@ -28,10 +28,9 @@
                                                                   resource_type: ContentProvider } %>
     <% end %>
 
-    <%= render partial: "search/common/pagination_bar",
-               locals: { resources: @content_providers } %>
-
     <%= render partial: 'common/masonry_grid', locals: { objects: @content_providers } %>
+
+    <%= render partial: 'search/common/pagination_bar', locals: { resources: @content_providers } %>
   </div>
 
 </div>

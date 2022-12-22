@@ -21,13 +21,8 @@
                                                                   resource_type: User } %>
     <% end %>
 
-    <%= render partial: "search/common/pagination_bar", locals: { resources: @trainers } %>
-
     <%= render @trainers %>
 
-    <%= render partial: "search/common/pagination_bar", locals: { resources: @trainers } %>
-
+    <%= render partial: 'search/common/pagination_bar', locals: { resources: @trainers } %>
   </div>
-
-
 </div>

@@ -25,9 +25,9 @@
                                                                   resource_type: Node } %>
     <% end %>
 
-    <%= render partial: "search/common/pagination_bar", locals: { resources: @nodes } %>
-
     <%= render partial: 'common/masonry_grid', locals: { objects: @nodes } %>
+
+    <%= render partial: 'search/common/pagination_bar', locals: { resources: @nodes } %>
   </div>
 
 </div>

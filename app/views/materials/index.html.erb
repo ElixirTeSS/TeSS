@@ -35,21 +35,8 @@
                                                                   show_subscription_button: true } %>
     <% end %>
 
-    <div class="tab-content">
+    <%= render partial: 'common/masonry_grid', locals: { objects: @materials } %>
 
-<!--      <div id="home" class="tab-pane fade in active">-->
-    <%= render partial: "search/common/pagination_bar", locals: { resources: @materials } %>
-
-
-    <ul class="masonry media-grid" style="margin-top: 15px;">
-    <%= render @materials %>
-    </ul>
-
-    <%= render partial: "search/common/pagination_bar", locals: { resources: @materials } %>
-
-<!--      </div>-->
-    </div>
-
+    <%= render partial: 'search/common/pagination_bar', locals: { resources: @materials } %>
   </div>
-
 </div>

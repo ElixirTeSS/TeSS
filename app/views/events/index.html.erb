@@ -42,12 +42,12 @@
 
       <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
-          <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
           <ul class="masonry media-grid" style="margin-top: 15px;">
             <% @events.each do |event| %>
               <%= render partial: 'events/event', locals: { event: event, list: true} %>
             <% end %>
           </ul>
+
           <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
         </div>
 
