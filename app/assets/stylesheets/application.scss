@@ -1098,6 +1098,7 @@ input[type=checkbox].field-lock + label:before,
 .content-actions {
   gap: 10px;
   display: flex;
+  width: 100%;
 
   .content-viewer-actions > .btn,
   .content-viewer-actions > .btn-group,
