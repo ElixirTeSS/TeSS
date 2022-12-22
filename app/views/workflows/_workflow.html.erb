@@ -12,7 +12,9 @@
         <%= title_with_privacy(workflow) %>
       </h4>
     </div>
-    <p><%= render_markdown(truncate(workflow.description, length: 300, separator: ' ')) %></p>
+    <div style="word-break: break-word; display: inline-block;">
+      <%= render_sanitized_markdown truncate(workflow.description, length: 300, separator: ' ') %>
+    </div>
   </div>
   </a>
 </li>

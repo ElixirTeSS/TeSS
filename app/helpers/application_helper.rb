@@ -142,6 +142,10 @@ module ApplicationHelper
     end
   end
 
+  def render_sanitized_markdown(markdown_text, options = {}, renderer_options = {})
+    sanitize(render_markdown(markdown_text, options, renderer_options), tags: %w(strong em b i p br ul li))
+  end
+
   # From twitter-bootstrap-rails gem for less:
   # https://github.com/seyhunak/twitter-bootstrap-rails/blob/master/app/helpers/navbar_helper.rb
   def menu_group(options = {}, &block)

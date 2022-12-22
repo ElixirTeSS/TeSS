@@ -3,7 +3,7 @@
   <a class="link-overlay" href="<%= collection_path(collection) %>">
     <h4><%= title_with_privacy(collection) %></h4>
     <div>
-      <%= render_markdown truncate(collection.description, length: 300, separator: ' ') %>
+      <%= render_sanitized_markdown truncate(collection.description, length: 300, separator: ' ') %>
     </div>
   </a>
 </li>
