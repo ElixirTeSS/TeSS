@@ -1073,6 +1073,17 @@ input[type=checkbox].field-lock + label:before,
   }
 }
 
+.users-list {
+  .masonry-brick {
+    img {
+      border-radius: 8px 0 0 8px;
+
+      float: left;
+      margin-right: 8px;
+    }
+  }
+}
+
 .test-controls {
   padding: 10px;
   display: inline-block;

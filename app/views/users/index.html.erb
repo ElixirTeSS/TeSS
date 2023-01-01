@@ -13,6 +13,8 @@
   <%= pluralize(@users.count, 'user') %>
 </div>
 
-<%= render partial: 'common/masonry_grid', locals: { objects: @users } %>
+<div class="users-list">
+  <%= render partial: 'common/masonry_grid', locals: { objects: @users } %>
+</div>
 
 <%= render partial: 'search/common/pagination_bar', locals: { resources: @users } %>

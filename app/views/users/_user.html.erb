@@ -1,8 +1,8 @@
 <li class="masonry-brick media-item">
-  <%= image_tag user.avatar_url, size: "40" %>
-  <h4 class="dont-break-out"><%= user.username %></h4>
+  <%= image_tag user.avatar_url, size: "100" %>
+  <h4><%= user.username %></h4>
   <% if !user.profile.nil? %>
-    <%= user.profile.full_name %>
+    <p><%= user.profile.full_name %></p>
   <% end %>
   <%= link_to '', user, :class=> "media-view" %>
 </li>
