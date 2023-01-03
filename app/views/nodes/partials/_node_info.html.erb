@@ -4,7 +4,7 @@
   <% if node.home_page.present? %>
     <p>
       <%= link_to node.home_page, class: 'h5', target: '_blank', rel: 'noopener' do %>
-        <%= image_tag(get_image_url_for(node), class: 'medium-content-provider-logo') %>
+        <%= image_tag(get_image_url_for(node), class: 'medium-avatar') %>
       <% end %>
     </p>
 
@@ -13,7 +13,7 @@
     </p>
   <% else %>
     <p>
-      <%= image_tag(get_image_url_for(node), class: 'medium-content-provider-logo') %>
+      <%= image_tag(get_image_url_for(node), class: 'medium-avatar') %>
     </p>
   <% end %>
 

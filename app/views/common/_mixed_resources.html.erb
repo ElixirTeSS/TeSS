@@ -21,7 +21,7 @@
     <div class="col-md-2">
       <% if resource.respond_to?(:content_provider) && resource.content_provider %>
         <%= link_to resource.content_provider, class: "pull-right" do %>
-          <%= image_tag(resource.content_provider.image.url, class: "medium-content-provider-logo") %>
+          <%= image_tag(resource.content_provider.image.url, class: "medium-avatar") %>
         <% end %>
       <% end %>
     </div>

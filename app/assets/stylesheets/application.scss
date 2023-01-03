@@ -115,9 +115,8 @@ div.wrapper {
 
 #sidebar {
   width: 280px;
-  padding: 0;
-  padding-top: 50px;
-  margin-right: 100px;
+  padding: 50px 15px 15px 15px;
+  margin-right: 80px;
   flex-shrink: 0;
 
   .sidebar-group {
@@ -350,21 +349,21 @@ ul.unstyled {
   padding: 50px 0;
 }
 
-.tiny-content-provider-logo {
+.tiny-avatar {
   max-width: 32px;
   min-width: 16px;
   border-radius: 2px;
   padding-left: 5px;
 }
 
-.small-content-provider-logo {
+.small-avatar {
   max-width: 64px;
   min-width: 32px;
   border-radius: 4px;
   padding-left: 10px;
 }
 
-.medium-content-provider-logo {
+.medium-avatar {
   max-width: 50%;
   min-width: 100px;
   margin: 0 10px 0 0;
