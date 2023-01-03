@@ -58,14 +58,14 @@
       </div>
 
       <div class="row">
-        <%= google_maps_javascript_api_tag(@event) if @event.show_map? %>
 
         <!-- Field: description -->
-        <% if @event.description.present? %>
-          <div class="description">
+        <div class="description">
+          <%= google_maps_javascript_api_tag(@event) if @event.show_map? %>
+          <% if @event.description.present? %>
             <%= render_markdown @event.description %>
-          </div>
-        <% end %>
+          <% end %>
+        </div>
 
         <!-- Field: start and end -->
         <%= display_attribute(@event, :start) { |t| t.strftime('%A, %d %B %Y @ %H:%M') }%>
