@@ -52,7 +52,7 @@ class Workflow < ApplicationRecord
   has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
 
   has_many :stars,  as: :resource, dependent: :destroy
-  
+
   validates :title, presence: true
 
   clean_array_fields(:keywords, :contributors, :authors, :target_audience)
@@ -119,7 +119,7 @@ class Workflow < ApplicationRecord
   end
 
   def self.visible_by(user)
-    if user && user.is_admin?
+    if user&.is_admin?
       all
     elsif user
       references(:collaborations).includes(:collaborations).
@@ -130,4 +130,7 @@ class Workflow < ApplicationRecord
     end
   end
 
+  def loggable_changes
+    super - %w[workflow_content]
+  end
 end

@@ -21,7 +21,7 @@ class SubscriptionsController < ApplicationController
     else
       flash[:error] = @subscription.errors.full_messages.join(", ")
       respond_to do |format|
-        format.html { redirect_to :back }
+        format.html { redirect_back(fallback_location: subscriptions_path) }
       end
     end
   end
@@ -55,9 +55,21 @@ class SubscriptionsController < ApplicationController
   private
 
   def subscription_params
-    subscribable_type = params[:subscription][:subscribable_type].constantize
+    type = subscribable_type
+    permitted_facets = type&.facet_fields || []
     p = params.require(:subscription).permit(:frequency, :subscribable_type)
-    p.merge(query: params[:q], facets: params.permit(*subscribable_type.facet_fields))
+    p.merge(query: params[:q], facets: params.permit(*permitted_facets))
+  end
+
+  def subscribable_type
+    case params[:subscription][:subscribable_type]
+    when 'Event'
+      Event
+    when 'Material'
+      Material
+    else
+      nil
+    end
   end
 
   def find_subscription

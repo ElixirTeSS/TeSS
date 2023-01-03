@@ -1,0 +1,15 @@
+<% type = activity.parameters[:resource_type].constantize %>
+
+<i class="fa fa-pencil-square-o"></i>
+
+<% if activity.owner %>
+    <%= link_to activity.owner.username, activity.owner %>
+<% end %>
+
+added <%= type.model_name.human.downcase %>
+<%= link_to activity.parameters[:resource_title], polymorphic_path(type.model_name.singular.to_sym,
+                                                                    id: activity.parameters[:resource_id]) %>
+to
+<%= link_to activity.trackable.title, activity.trackable %>
+at
+<%= activity.created_at -%>.

@@ -1,0 +1,16 @@
+<p>
+  You are receiving this automated email because you are a curator of TeSS.
+</p>
+
+<p>
+  <%= link_to @user.name, @user %> has requested approval of an ingestion source:
+</p>
+
+<p>
+  <%= link_to @source.title, @source %><br/>
+  <strong>Content Provider:</strong> <%= link_to @source.content_provider.title, @source.content_provider %><br/>
+  <strong>Method:</strong> <%= @source.ingestor_title %><br/>
+  <strong>URL:</strong> <%= @source.url %><br/>
+</p>
+
+<%= link_to('Click here to approve this source', source_url(@source)) %>

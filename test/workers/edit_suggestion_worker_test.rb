@@ -8,7 +8,7 @@ class EditSuggestionWorkerTest < ActiveSupport::TestCase
     mock_nominatim
   end
 
-  test 'Get suggestions for a material' do
+  test 'get suggestions for a material' do
     material = materials(:biojs)
 
     assert_nil material.edit_suggestion
@@ -27,7 +27,7 @@ class EditSuggestionWorkerTest < ActiveSupport::TestCase
     assert_includes material.edit_suggestion.scientific_topics.map(&:preferred_label), 'Molecular dynamics'
   end
 
-  test 'Get suggestions for an event' do
+  test 'get suggestions for an event' do
     event = events(:portal_event)
 
     assert_nil event.edit_suggestion
@@ -46,7 +46,7 @@ class EditSuggestionWorkerTest < ActiveSupport::TestCase
     assert_includes event.edit_suggestion.scientific_topics.map(&:preferred_label), 'Molecular dynamics'
   end
 
-  test 'Get suggestions for a workflow' do
+  test 'get suggestions for a workflow' do
     workflow = workflows(:two)
 
     assert_nil workflow.edit_suggestion
@@ -65,7 +65,7 @@ class EditSuggestionWorkerTest < ActiveSupport::TestCase
     assert_includes workflow.edit_suggestion.scientific_topics.map(&:preferred_label), 'Molecular dynamics'
   end
 
-  test "Don't get suggestions when description is blank" do
+  test "don't get suggestions when description is blank" do
     event = events(:no_description_event)
 
     assert_nil event.edit_suggestion
@@ -79,5 +79,15 @@ class EditSuggestionWorkerTest < ActiveSupport::TestCase
     event.reload
 
     assert_nil event.edit_suggestion
+  end
+
+  test 'gracefully handle getting suggestions for material that no longer exists' do
+    Sidekiq::Testing.inline! do
+      assert_no_difference('EditSuggestion.count') do
+        assert_nothing_raised do
+          EditSuggestionWorker.perform_async([Material.maximum(:id) + 1, 'Material'])
+        end
+      end
+    end
   end
 end

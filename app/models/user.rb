@@ -1,11 +1,11 @@
 class User < ApplicationRecord
 
-  include ActionView::Helpers
   include PublicActivity::Common
 
   acts_as_token_authenticatable
   include Gravtastic
   gravtastic :secure => true, :size => 250
+  has_image(placeholder: TeSS::Config.placeholder['person'])
 
   extend FriendlyId
   friendly_id :username, use: :slugged
@@ -77,7 +77,7 @@ class User < ApplicationRecord
   attr_accessor :publicize_email
 
   # --- scopes
-  scope :non_default, -> { where.not(id: User.get_default_user.id) }
+  scope :non_default, -> { where.not(role_id: Role.fetch('default_user').id) }
 
   scope :invited, -> { where.not(invitation_token: nil) }
 
@@ -117,13 +117,7 @@ class User < ApplicationRecord
 
   # Check if user is owner of a resource
   def is_owner?(resource)
-    return false if resource.nil?
-    return false if !resource.respond_to?("user".to_sym)
-    if self == resource.user
-      return true
-    else
-      return false
-    end
+    resource&.respond_to?(:user) && resource.user == self
   end
 
   def is_curator?
@@ -289,7 +283,7 @@ class User < ApplicationRecord
 
   def get_editable_providers
     relation = ContentProvider.order(:title)
-    if is_admin? || is_curator?
+    if !TeSS::Config.restrict_content_provider_selection || is_admin? || is_curator?
       relation.all
     else
       relation.find(content_provider_ids | editable_ids)
@@ -311,26 +305,22 @@ class User < ApplicationRecord
     has_role?(Role.rejected.name) || has_role?(Role.unverified.name)
   end
 
+  # Override the gravatar URL to first check for a locally uploaded image
+  def avatar_url(image_params={}, gravatar_params={})
+    if image.present?
+      image.url(**image_params)
+    else
+      gravatar_url(**gravatar_params)
+    end
+  end
+
   private
 
   def reassign_owner
-    # Material.where(:user => self).each do |material|
-    #   material.update_attribute(:user, get_default_user)
-    # end
-    # Event.where(:user => self).each do |event|
-    #   event.update_attribute(:user_id, get_default_user.id)
-    # end
-    # ContentProvider.where(:user => self).each do |content_provider|
-    #   content_provider.update_attribute(:user_id, get_default_user.id)
-    # end
-    # Node.where(:user => self).each do |node|
-    #   node.update_attribute(:user_id, get_default_user.id)
-    # end
     default_user = User.get_default_user
-    self.materials.each { |x| x.update_attribute(:user, default_user) } if self.materials.any?
-    self.events.each { |x| x.update_attribute(:user, default_user) } if self.events.any?
-    self.content_providers.each { |x| x.update_attribute(:user, default_user) } if self.content_providers.any?
-    self.nodes.each { |x| x.update_attribute(:user, default_user) } if self.nodes.any?
+    [materials, events, content_providers, nodes, sources].each do |type|
+      type.find_each { |x| x.update_attribute(:user, default_user) }
+    end
   end
 
   def react_to_role_change
@@ -354,5 +344,4 @@ class User < ApplicationRecord
       self.username = self.email
     end
   end
-
 end

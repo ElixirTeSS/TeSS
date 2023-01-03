@@ -15,7 +15,7 @@ var Collaborations = {
                 });
             },
             onSelect: function (suggestion) {
-                Collaborations.add(suggestion.data)
+                Collaborations.add(suggestion.data.id)
                 $(this).val('').focus();
             }
         });

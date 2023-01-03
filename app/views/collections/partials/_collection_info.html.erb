@@ -14,18 +14,26 @@
         </p>
     <% end %>
   </li>
-  <li><h4 class="nav-heading">Owner</h4></li>
-  <li style="padding: 7px 20px;">
-    <%= collection.user.name %>
-  </li>
   <li><h4 class="nav-heading">Keywords</h4></li>
   <li style="padding: 7px 20px;">
-    <% if not collection.keywords.blank? %>
+    <% if collection.keywords.any? %>
         <% collection.keywords.each do |keyword| %>
             <span class="keyword-pill"><%= keyword %></span>
         <% end %>
     <% else %>
-        <p class="empty">None</p>
+        <span class="empty">None</span>
     <% end %>
   </li>
+  <li><h4 class="nav-heading">Owner</h4></li>
+  <li style="padding: 7px 20px;">
+    <%= link_to collection.user.name, collection.user %>
+  </li>
+  <% if collection.collaborators.any? %>
+    <li><h4 class="nav-heading"><%= Collection.human_attribute_name(:collaborators) %></h4></li>
+    <% collection.collaborators.each do |collaborator| %>
+      <li style="padding: 7px 20px;">
+        <%= link_to collaborator.name, collaborator %>
+      </li>
+    <% end %>
+  <% end %>
 </ul>

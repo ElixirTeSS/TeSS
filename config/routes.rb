@@ -11,10 +11,6 @@ Rails.application.routes.draw do
   get 'edam/topics' => 'edam#topics'
   get 'edam/operations' => 'edam#operations'
 
-  if TeSS::Config.feature['workflows'] == true
-    resources :workflows
-  end
-
   #get 'static/home'
   get 'about' => 'about#tess', as: 'about'
   get 'about/registering' => 'about#registering', as: 'registering_resources'
@@ -56,84 +52,74 @@ Rails.application.routes.draw do
     resource :ban, only: [:create, :new, :destroy]
   end
 
-  resources :sources, concerns: :activities
+  resources :trainers, only: [:show, :index]
 
-  if TeSS::Config.feature['trainers'] == true
-    resources :trainers, only: [:show, :index]
+  resources :nodes, concerns: :activities
+
+  resources :events, concerns: :activities do
+    collection do
+      get 'count'
+    end
+    member do
+      get 'redirect'
+      post 'add_term'
+      post 'add_data'
+      post 'reject_term'
+      post 'reject_data'
+      get 'report'
+      patch 'report', to: 'events#update_report'
+      get 'clone', to: 'events#clone'
+    end
   end
 
-  if TeSS::Config.feature['nodes'] == true
-    resources :nodes, concerns: :activities
-  end
+  resources :collections, concerns: %i[collaboratable activities] do
+    # in the future it could be considered to expand this to multiple collections
+    # at the same view, in a kind of matrix-view, useful for people who manage several
+    # collections.
+    member do
+      %w[events materials].each do |item|
+        return unless TeSS::Config.feature[item]
 
-  if TeSS::Config.feature['events'] == true
-    resources :events, concerns: :activities do
-      collection do
-        get 'count'
-      end
-      member do
-        get 'redirect'
-        post 'add_term'
-        post 'add_data'
-        post 'reject_term'
-        post 'reject_data'
-        get 'report'
-        patch 'report', to: 'events#update_report'
-        get 'clone', to: 'events#clone'
+        get "curate_#{item}", to: 'collections#curate', defaults: { type: item.classify }
+        patch "curate_#{item}", to: 'collections#update_curation', defaults: { type: item.classify}
       end
     end
   end
 
-  if TeSS::Config.feature['collections'] == true
-    resources :collections, concerns: %i[collaboratable activities] do
-      # in the future it could be considered to expand this to multiple collections
-      # at the same view, in a kind of matrix-view, useful for people who manage several
-      # collections.
-      member do
-        %w[events materials].each do |item|
-          return unless TeSS::Config.feature[item]
-
-          get "curate_#{item}", to: 'collections#curate', defaults: { type: item.classify }
-          patch "curate_#{item}", to: 'collections#update_curation', defaults: { type: item.classify}
-        end
-      end
+  resources :workflows, concerns: %i[collaboratable activities] do
+    member do
+      get 'fork'
+      get 'embed'
     end
   end
 
-  if TeSS::Config.feature['workflows'] == true
-    resources :workflows, concerns: %i[collaboratable activities] do
-      member do
-        get 'fork'
-        get 'embed'
-      end
+  resources :content_providers, concerns: :activities do
+    resources :sources, except: [:index]
+  end
+
+  resources :sources, except: [:new, :create], concerns: :activities do
+    member do
+      get :test_results
+      post :test
+      post :request_approval
     end
   end
 
-  if TeSS::Config.feature['providers'] == true
-    resources :content_providers, concerns: :activities
-  end
-
-  if TeSS::Config.feature['materials'] == true
-    resources :materials, concerns: :activities do
-      member do
-        post :reject_term
-        post :reject_data
-        post :add_term
-        post :add_data
-      end
-      collection do
-        get 'count'
-      end
+  resources :materials, concerns: :activities do
+    member do
+      post :reject_term
+      post :reject_data
+      post :add_term
+      post :add_data
+    end
+    collection do
+      get 'count'
     end
   end
 
-  if TeSS::Config.feature['e-learnings'] == true
-    get 'elearning_materials' => 'materials#index', defaults: { 'resource_type' => 'e-learning' }
-  end
+  get 'elearning_materials' => 'materials#index', defaults: { 'resource_type' => 'e-learning' }
 
-  if TeSS::Config.feature['invitation'] == true
-    get 'invitees' => 'users#invitees'
-  end
+  get 'invitees' => 'users#invitees'
 
   resources :subscriptions, only: [:show, :index, :create, :destroy] do
     member do
@@ -150,6 +136,7 @@ Rails.application.routes.draw do
 
   get 'search' => 'search#index'
   get 'test_url' => 'application#test_url'
+  get 'job_status' => 'application#job_status'
 
   # error pages
   %w( 404 422 500 503 ).each do |code|
@@ -159,6 +146,10 @@ Rails.application.routes.draw do
   get 'curate/topic_suggestions' => 'curator#topic_suggestions'
   get 'curate/users' => 'curator#users'
   get 'curate' => 'curator#index'
+
+  get 'fairsharing/search' => 'fairsharing#search'
+  get 'cookies/consent' => 'cookies#consent'
+  post 'cookies/consent' => 'cookies#set_consent'
 
   require 'sidekiq/web'
   authenticate :user, lambda { |u| u.is_admin? } do

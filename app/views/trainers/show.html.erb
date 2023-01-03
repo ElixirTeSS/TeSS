@@ -12,9 +12,9 @@
 
       <p>
       <div id="gravatar_image">
-        <%= image_tag @trainer.user.gravatar_url,
+        <%= image_tag @trainer.user.avatar_url,
                       :class => 'medium-trainer-logo hidden-lg hidden-md' %>
-        <%= image_tag @trainer.user.gravatar_url,
+        <%= image_tag @trainer.user.avatar_url,
                       :class => 'large-trainer-logo hidden-sm hidden-xs' %>
       </div>
       </p>
@@ -28,7 +28,7 @@
         <% if !@trainer.website.nil? and !@trainer.website.blank? %>
           <p>
           <div class="url-wrap">
-            <%= link_to @trainer.website, @trainer.website, :class => 'h5', :target => "_blank",
+            <%= link_to @trainer.website, @trainer.website, class: 'h5', target: '_blank', rel: 'noopener',
                         :onclick => "getOutboundLink('#{@trainer.website}'); return true;" %>
           </div>
           </p>
@@ -37,8 +37,8 @@
         <% if !@trainer.orcid.nil? and !@trainer.orcid.blank? %>
           <p>
           <div class="url-wrap">
-            <%= link_to @trainer.orcid, @trainer.orcid, :class => 'h5', :target => "_blank",
-                        :onclick => "getOutboundLink('#{@trainer.orcid}'); return true;" %>
+            <%= link_to @trainer.orcid, @trainer.orcid, class: 'h5', target: '_blank', rel: 'noopener',
+                        onclick: "getOutboundLink('#{@trainer.orcid}'); return true;" %>
           </div>
           </p>
         <% end %>

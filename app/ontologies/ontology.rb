@@ -52,7 +52,7 @@ class Ontology
   private
 
   def parse
-    Rails.cache.fetch("ontology/#{@filename}") do
+    cache do
       Rails.logger.info("Loading ontology: #{@filename}")
       reader = RDF::Reader.for(:rdfxml).new(File.open(path))
 
@@ -62,7 +62,22 @@ class Ontology
     end
   end
 
+  def cache(&block)
+    filename = cache_path
+    if File.exist?(filename)
+      File.open(filename) { |f| Marshal.load(f.read) }
+    else
+      result = block.call
+      File.atomic_write(filename) { |f| f.write(Marshal.dump(result)) }
+      result
+    end
+  end
+
   def path
     File.join(Rails.root, 'config', 'ontologies', @filename)
+  end
+
+  def cache_path
+    "#{path}--linkeddata-#{Gem.loaded_specs["linkeddata"].version}.cache"
   end
 end

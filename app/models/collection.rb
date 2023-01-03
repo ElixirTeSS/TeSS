@@ -6,10 +6,9 @@ class Collection < ApplicationRecord
   include CurationQueue
   include Collaboratable
 
-  has_many :collection_materials
-  has_many :collection_events
-  has_many :materials, through: :collection_materials
-  has_many :events, through: :collection_events
+  has_many :items, -> { order(:order) }, class_name: 'CollectionItem', inverse_of: :collection, dependent: :destroy
+  has_many :events, through: :items, source: :resource, source_type: 'Event', inverse_of: :collections
+  has_many :materials, through: :items, source: :resource, source_type: 'Material', inverse_of: :collections
 
   #has_one :owner, foreign_key: "id", class_name: "User"
   belongs_to :user
@@ -54,6 +53,7 @@ class Collection < ApplicationRecord
       boolean :public
       time :created_at
       time :updated_at
+      integer :collaborator_ids, multiple: true
     end
     # :nocov:
   end
@@ -70,7 +70,7 @@ class Collection < ApplicationRecord
   end
 
   def self.visible_by(user)
-    if user && user.is_admin?
+    if user&.is_admin?
       all
     elsif user
       references(:collaborations).includes(:collaborations).
@@ -83,15 +83,15 @@ class Collection < ApplicationRecord
 
   # implement methods to allow processing as resource
   def last_scraped
-    return nil
+    nil
   end
 
   def content_provider
-    return nil
+    nil
   end
 
   def scientific_topics
-    return nil
+    []
   end
 
   private
@@ -99,7 +99,6 @@ class Collection < ApplicationRecord
   def index_items
     return unless TeSS::Config.solr_enabled
 
-    materials.each(&:solr_index)
-    events.each(&:solr_index)
+    items.each(&:solr_index)
   end
 end

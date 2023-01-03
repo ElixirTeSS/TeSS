@@ -7,7 +7,8 @@
         <%= link_to "Add your training resources to #{TeSS::Config.site['title_short']}", registering_resources_path, target: '_blank'  %><br/>
         <%= link_to 'Source code', TeSS::Config.site['repository'], target: '_blank' %><br/>
         <%= link_to 'Funding & acknowledgements', us_path(anchor: 'funding'), target: '_blank' %><br/>
-        <%= link_to 'Privacy', privacy_path, target: '_blank' %>
+        <%= link_to 'Privacy', privacy_path, target: '_blank' %><br/>
+        <%= link_to 'Cookie preferences', cookies_consent_path if cookie_consent.required? %>
       </div>
       <div class="col-sm-9 col-xs-4">
         <%= render :partial => 'layouts/supported_by' %>

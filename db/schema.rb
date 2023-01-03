@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_25_143205) do
+ActiveRecord::Schema.define(version: 2022_11_24_105520) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,24 +51,16 @@ ActiveRecord::Schema.define(version: 2022_07_25_143205) do
     t.index ["user_id"], name: "index_collaborations_on_user_id"
   end
 
-  create_table "collection_events", id: false, force: :cascade do |t|
-    t.integer "event_id"
-    t.integer "collection_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "id"
-    t.index ["collection_id"], name: "index_collection_events_on_collection_id"
-    t.index ["event_id"], name: "index_collection_events_on_event_id"
-  end
-
-  create_table "collection_materials", id: false, force: :cascade do |t|
-    t.integer "material_id"
-    t.integer "collection_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "id"
-    t.index ["collection_id"], name: "index_collection_materials_on_collection_id"
-    t.index ["material_id"], name: "index_collection_materials_on_material_id"
+  create_table "collection_items", force: :cascade do |t|
+    t.bigint "collection_id"
+    t.string "resource_type"
+    t.bigint "resource_id"
+    t.text "comment"
+    t.integer "order"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["collection_id"], name: "index_collection_items_on_collection_id"
+    t.index ["resource_type", "resource_id"], name: "index_collection_items_on_resource"
   end
 
   create_table "collections", force: :cascade do |t|
@@ -355,7 +347,6 @@ ActiveRecord::Schema.define(version: 2022_07_25_143205) do
     t.datetime "finished_at"
     t.string "url"
     t.string "method"
-    t.string "resource_type"
     t.integer "records_read"
     t.integer "records_written"
     t.integer "resources_added"
@@ -364,6 +355,8 @@ ActiveRecord::Schema.define(version: 2022_07_25_143205) do
     t.text "log"
     t.boolean "enabled"
     t.string "token"
+    t.integer "approval_status"
+    t.datetime "updated_at"
     t.index ["content_provider_id"], name: "index_sources_on_content_provider_id"
     t.index ["user_id"], name: "index_sources_on_user_id"
   end
@@ -441,6 +434,11 @@ ActiveRecord::Schema.define(version: 2022_07_25_143205) do
     t.string "invited_by_type"
     t.bigint "invited_by_id"
     t.integer "invitations_count", default: 0
+    t.text "image_url"
+    t.string "image_file_name"
+    t.string "image_content_type"
+    t.bigint "image_file_size"
+    t.datetime "image_updated_at"
     t.index ["authentication_token"], name: "index_users_on_authentication_token"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true

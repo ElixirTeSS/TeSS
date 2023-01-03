@@ -1,5 +1,6 @@
 # The controller for actions related to the Collection model
 class CollectionsController < ApplicationController
+  before_action :feature_enabled?
   before_action :set_collection, only: %i[show edit curate update_curation add_item remove_item update destroy]
   before_action :set_breadcrumbs
 
@@ -130,32 +131,25 @@ class CollectionsController < ApplicationController
     raise ActiveRecord::AccessDenied
   end
 
-  def collection_item_class
-    case params[:type]
-    when 'Event'
-      return CollectionEvent if TeSS::Config.feature['events']
-    when 'Material'
-      return CollectionMaterial if TeSS::Config.feature['materials']
-    end
-
-    raise Pundit::NotAuthorizedError
-  end
-
   # since we have not checked all items we have to do a little work
   # to add and remove only those that were checked now.
+  # may be able to write this in a nicer way using the magic of rails associations
   def update_collection_items!
     selected_ids = Set.new(params[:item_ids]&.map(&:to_i))
     unselected_ids = Set.new(params[:reviewed_item_ids]&.map(&:to_i)) - selected_ids
-    fk_name = "#{item_class.name.downcase}_id"
 
     # remove unselected ones, if any exist
     # one query per item, due to callbacks.
-    collection_item_class.where(collection_id: @collection.id, fk_name => unselected_ids).destroy_all
+    CollectionItem.where(collection_id: @collection.id,
+                         resource_id: unselected_ids,
+                         resource_type: item_class.name).destroy_all
 
     # find out which ones to add
-    existing = Set.new(collection_item_class.where(collection_id: @collection.id, fk_name => selected_ids).pluck(fk_name))
+    existing = Set.new(CollectionItem.where(collection_id: @collection.id,
+                                            resource_id: selected_ids,
+                                            resource_type: item_class.name).pluck(fk_name))
     to_add = selected_ids - existing
-    collection_item_class.create!(to_add.map{ |id| { fk_name => id, collection_id: @collection.id } })
+    CollectionItem.create!(to_add.map{ |id| { resource_id: id, resource_type: item_class.name, collection_id: @collection.id } })
     # the after_save callback will probably still add a bunch of activities, so we can't avoid individual queries just yet.
   end
 end

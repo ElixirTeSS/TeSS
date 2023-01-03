@@ -64,6 +64,16 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_equal content_providers_path, body['links']['self']
   end
 
+  test 'should not get index if feature disabled' do
+    features = TeSS::Config.feature.dup
+    TeSS::Config.feature['providers'] = false
+    assert_raises(ActionController::RoutingError) do
+      get :index
+    end
+  ensure
+    TeSS::Config.feature = features
+  end
+
   #NEW TESTS
   test 'should get new' do
     sign_in users(:regular_user)
@@ -430,24 +440,50 @@ class ContentProvidersControllerTest < ActionController::TestCase
   end
 
   # TODO: SOLR tests will not run on TRAVIS. Explore stratergy for testing solr
-=begin
-      test 'should display filters on index' do
-        get :index
-        assert_select 'h4.nav-heading', :text => /Content provider/, :count => 0
-        assert_select 'div.list-group-item', :count => ContentProvider.count
-      end
-      test 'should return matching content_providers' do
-        get 'index', :format => :json, :q => 'training'
-        assert_response :success
-        assert response.body.size > 0
-      end
+  #       test 'should display filters on index' do
+  #         get :index
+  #         assert_select 'h4.nav-heading', :text => /Content provider/, :count => 0
+  #         assert_select 'div.list-group-item', :count => ContentProvider.count
+  #       end
+  #       test 'should return matching content_providers' do
+  #         get 'index', :format => :json, :q => 'training'
+  #         assert_response :success
+  #         assert response.body.size > 0
+  #       end
+  #
+  #       test 'should return no matching content_providers' do
+  #         get 'index', :format => :json, :q => 'kdfsajfklasdjfljsdfljdsfjncvmn'
+  #         assert_response :success
+  #         assert_equal(response.body,'[]')
+  #         end
 
-      test 'should return no matching content_providers' do
-        get 'index', :format => :json, :q => 'kdfsajfklasdjfljsdfljdsfjncvmn'
-        assert_response :success
-        assert_equal(response.body,'[]')
-        end
-=end
+  # Event count on content provider page
+  test 'show consistent count on content provider page' do
+    sign_in users(:admin)
 
+    @content_provider.events.delete_all
+    # make sure this content provider has events in the past, future and without date
+    good_user = users(:admin)
+    past_event = good_user.events.build(title: 'past',
+                                        url: 'http://example.com/good-stuff',
+                                        end: 3.days.ago,
+                                        content_provider: @content_provider)
+    past_event.save!
+
+    future_event = good_user.events.build(title: 'future',
+                                          url: 'http://example.com/good-stuff',
+                                          end: 4.days.from_now,
+                                          content_provider: @content_provider)
+    future_event.save!
+
+    dateless_event = good_user.events.build(title: 'dateless',
+                                            url: 'http://example.com/good-stuff',
+                                            content_provider: @content_provider)
+    dateless_event.save!
+
+    get :show, params: { id: @content_provider }
+    assert_select 'a[href=?]', '#events', text: 'Events (3)'
+    # this is a bit fragile. may be nicer to use a regex if it breaks
+    assert_select 'div#events div.search-results-count', text: "Showing 2 events.\n                Found 1 past event.\n                View all results."
+  end
 end
-

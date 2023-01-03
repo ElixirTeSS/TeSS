@@ -1,15 +1,13 @@
 require 'test_helper'
 
 class SubscriptionMailerTest < ActionMailer::TestCase
-
-  # FB: Need to do the following for full URL helpers to work properly
-  include Rails.application.routes.url_helpers
-
   setup do
+    @routes = Rails.application.routes.url_helpers
     @url_opts = Rails.application.routes.default_url_options
     Rails.application.routes.default_url_options = Rails.application.config.action_mailer.default_url_options
     # Avoids queued emails affecting `assert_email` counts. See: https://github.com/ElixirTeSS/TeSS/issues/719
     perform_enqueued_jobs
+    ActionMailer::Base.deliveries.clear
   end
 
   teardown do
@@ -34,10 +32,10 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     body = email.text_part.body.to_s
 
     assert body.include?(m1.title), 'Expected first material title to appear in email body'
-    assert body.include?(material_url(m1)), 'Expected first material URL to appear in email body'
+    assert body.include?(@routes.material_url(m1)), 'Expected first material URL to appear in email body'
     assert body.include?(m2.title), 'Expected second material title to appear in email body'
-    assert body.include?(material_url(m2)), 'Expected second material URL to appear in email body'
-    assert body.include?(unsubscribe_subscription_url(sub, code: sub.unsubscribe_code)), 'Expected unsubscribe link'
+    assert body.include?(@routes.material_url(m2)), 'Expected second material URL to appear in email body'
+    assert body.include?(@routes.unsubscribe_subscription_url(sub, code: sub.unsubscribe_code)), 'Expected unsubscribe link'
   end
 
   test 'html event digest' do
@@ -62,9 +60,9 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     html = email.html_part.body.to_s
 
     e.each do |event|
-      assert html.include?(event_url(event)), "Event URL was missing from email: #{event_url(event)}"
+      assert html.include?(@routes.event_url(event)), "Event URL was missing from email: #{@routes.event_url(event)}"
     end
 
-    assert html.include?(unsubscribe_subscription_url(sub, code: sub.unsubscribe_code)), 'Expected unsubscribe link'
+    assert html.include?(@routes.unsubscribe_subscription_url(sub, code: sub.unsubscribe_code)), 'Expected unsubscribe link'
   end
 end

@@ -1,4 +1,4 @@
-<%= simple_form_for @material, :html => { :id => 'material_form' } do |f| %>
+<%= simple_form_for @material, html: { id: 'material_form', class: 'prevent-enter-submit' } do |f| %>
 
   <%= render partial: 'common/error_summary', locals: { resource: @material } %>
 
@@ -50,7 +50,11 @@
   <%= f.multi_input :contributors, suggestions: people_suggestions, title: t('materials.hints.contributors') %>
 
   <!-- Field: Events -->
-  <%= f.autocompleter :events, input_html: { title: t('materials.hints.events') } %>
+  <%= f.autocompleter :events, input_html: { title: t('materials.hints.events') },
+                                             url: events_path(include_expired: true, sort: 'late'),
+                                             group_by: 'group',
+                                             transform_function: 'events'
+  %>
 
   <!-- Field: Target Audience -->
   <%= f.multi_input :target_audience, label: 'Target audiences', errors: @material.errors[:target_audience],
@@ -88,8 +92,8 @@
   <%= f.input :date_published, as: :date_picker, field_lock: true, input_html: { title: t('materials.hints.date_published') } %>
 
   <!-- Field: Resource Type -->
-  <%= f.multi_input :resource_type, label: 'Resource types', errors: @material.errors[:material_types],
-                    title: t('events.hints.type') %>
+  <%= f.multi_input :resource_type, label: 'Resource types', errors: @material.errors[:resource_type],
+                    title: t('materials.hints.resource_type') %>
 
   <!-- Field: Other Types -->
   <% if !TeSS::Config.feature['disabled'].include? 'other_types' %>

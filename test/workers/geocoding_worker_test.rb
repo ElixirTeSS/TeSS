@@ -2,11 +2,7 @@ require 'test_helper'
 require 'sidekiq/testing'
 
 class GeocodingWorkerTest < ActiveSupport::TestCase
-
-  setup do
-  end
-
-  test 'Get coordinates for an event' do
+  test 'get coordinates for an event' do
     mock_nominatim
 
     event = events(:kilburn)
@@ -22,7 +18,7 @@ class GeocodingWorkerTest < ActiveSupport::TestCase
     assert_equal 0.34290, event.longitude.to_f.round(5)
   end
 
-  test 'Get coordinates for an event from cache' do
+  test 'get coordinates for an event from cache' do
     event = events(:kilburn)
     assert_nil event.latitude
     assert_nil event.longitude
@@ -37,5 +33,13 @@ class GeocodingWorkerTest < ActiveSupport::TestCase
     event.reload
     assert_equal 45, event.latitude
     assert_equal 45, event.longitude
+  end
+
+  test 'gracefully handle geocoding for event that no longer exists' do
+    Sidekiq::Testing.inline! do
+      assert_nothing_raised do
+        GeocodingWorker.perform_async([Event.maximum(:id) + 1, 'Somewhere'])
+      end
+    end
   end
 end

@@ -10,7 +10,7 @@ namespace :tess do
 
     types.each do |type|
       deleted_count = 0
-      records = (type == Event) ? type.all.select(&:upcoming?) : type.all
+      records = (type == Event) ? type.all.not_finished : type.all
       puts "Looking at #{records.count} #{type.name.pluralize}:"
       records.each do |record|
         ##########
@@ -137,34 +137,11 @@ namespace :tess do
 
   desc 'run generic ingestion process'
   task automated_ingestion: :environment do
-    begin
-      if TeSS::Config.ingestion.nil?
-        config_file = File.join(Rails.root, 'config', 'ingestion.yml')
-        TeSS::Config.ingestion = YAML.safe_load(File.read(config_file)).deep_symbolize_keys!
-      end
-      raise 'Config.ingestion is nil' if TeSS::Config.ingestion.nil?
-      #  set log file
-      log_path = File.join(Rails.root, TeSS::Config.ingestion[:logfile])
-      log_file = File.open(log_path, 'w')
-      log_file.puts 'Task: automated_ingestion'
-      start = Time.now
-      log_file.puts '   Started at... ' + start.strftime("%Y-%m-%d %H:%M:%s")
-
-      begin
-        Scraper.run(log_file)
-      rescue Exception => e
-        log_file.puts('   Run Scraper failed with: ' + e.message)
-      end
-
-      # wrap up
-      finish = Time.now
-      log_file.puts '   Finished at.. ' + finish.strftime("%Y-%m-%d %H:%M:%s")
-      log_file.puts "   Time taken was #{(1000 * (finish.to_f - start.to_f)).round(3)} ms"
-      log_file.puts 'Done.'
-      log_file.close
-    rescue Exception => e
-      puts "task[automated_ingestion] failed with #{e.message}"
-    end
+    scraper = Scraper.new
+    scraper.run
+    log = scraper.log_file
+    log.close
+    puts "Finished successfully, output written to: #{log.path}"
   end
 
   desc 'check and update time zones'
@@ -213,7 +190,22 @@ namespace :tess do
     transformed = {
       'notspecified' => {
         'title' => 'License Not Specified'
-      }
+      },
+      'other-at' => {
+        'title' => "Other (Attribution)"
+      },
+      'other-closed' => {
+        'title' => "Other (Not Open)"
+      },
+      'other-nc' => {
+        'title' => "Other (Non-Commercial)"
+      },
+      'other-open' => {
+        'title' => "Other (Open)"
+      },
+      'other-pd' => {
+        'title' => "Other (Public Domain)"
+      },
     }
     hash['licenses'].each do |license|
       id = license.delete('licenseId')

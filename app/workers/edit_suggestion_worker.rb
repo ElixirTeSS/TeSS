@@ -8,7 +8,11 @@ class EditSuggestionWorker
     logger.debug "ID: #{suggestible_id}"
     logger.debug "TYPE: #{suggestible_type}"
     # Run Sidekiq task to call the BioPortal annotator
-    suggestible = suggestible_type.constantize.find(suggestible_id)
+    suggestible = suggestible_type.constantize.find_by_id(suggestible_id)
+    unless suggestible
+      logger.debug "#{suggestible_type} #{suggestible_id} not found"
+      return
+    end
     logger.debug "OBJ: #{suggestible.inspect}"
 
     # Use long description if available, otherwise short.

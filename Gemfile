@@ -14,6 +14,7 @@ gem 'lunchy'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
+gem 'sassc-rails', '~> 2.1.2'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -32,7 +33,7 @@ gem "omniauth-rails_csrf_protection"
 gem 'devise_invitable', '~> 2.0.5'
 
 # Activity logging
-gem 'public_activity', '~> 1.6.4', git: 'https://github.com/chaps-io/public_activity', tag: 'v1.6.4'
+gem 'public_activity', '~> 1.6.4'
 
 gem 'simple_token_authentication', '~> 1.0'
 
@@ -58,6 +59,7 @@ gem 'whenever', '~> 1.0.0'
 # These are required for Sidekiq, to look up scientific topics
 gem 'httparty'
 gem 'sidekiq', '~> 6.4.0'
+gem 'sidekiq-status'
 gem 'slim'
 
 # Use jquery as the JavaScript library
@@ -110,6 +112,8 @@ gem 'kt-paperclip', '~> 7.0.0'
 
 gem 'icalendar', '~> 2.4.1'
 
+gem 'rss'
+
 gem 'bootstrap-datepicker-rails', '~> 1.6.4.1'
 
 gem 'rack-cors', require: 'rack/cors'
@@ -117,6 +121,9 @@ gem 'rack-cors', require: 'rack/cors'
 gem 'recaptcha', require: 'recaptcha/rails'
 
 gem 'linkeddata'
+
+gem 'tess_rdf_extractors', git: 'https://github.com/ElixirTeSS/TeSS_RDF_Extractors'
+gem 'sitemap-parser', '~> 0.5.6'
 
 # Used for lat/lon rake task
 gem 'geocoder'
@@ -169,7 +176,6 @@ group :development, :test do
   gem 'simplecov-lcov', require: false
   gem 'rubocop'
   gem 'ruby-debug-ide'
-  gem 'webmock', '~> 3.4.2'
 end
 
 group :development do
@@ -187,4 +193,6 @@ group :test do
   gem 'fakeredis', git: 'https://github.com/artygus/fakeredis/', ref: 'f68bd4f'
   gem 'minitest', '5.14.4'
   gem 'rails-controller-testing'
+  gem 'vcr', '~> 6.1.0'
+  gem 'webmock', '~> 3.18.1'
 end

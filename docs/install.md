@@ -125,9 +125,9 @@ If not, you can switch using the following command:
 Run the following commands to download and install solr into /opt/, and have it run as a "service" that will start on boot.
 
     cd /opt
-    sudo wget https://downloads.apache.org/lucene/solr/8.11.1/solr-8.11.1.tgz
-    sudo tar xzf solr-8.11.1.tgz solr-8.11.1/bin/install_solr_service.sh --strip-components=2
-    sudo bash ./install_solr_service.sh solr-8.11.1.tgz
+    sudo wget https://downloads.apache.org/lucene/solr/8.11.2/solr-8.11.2.tgz
+    sudo tar xzf solr-8.11.2.tgz solr-8.11.2/bin/install_solr_service.sh --strip-components=2
+    sudo bash ./install_solr_service.sh solr-8.11.2.tgz
 
 ### Starting/stopping solr
 
@@ -178,11 +178,8 @@ And to run sidekiq to process async jobs:
 From the app's root directory, create several config files by copying the example files.
 
     cp config/tess.example.yml config/tess.yml
-
     cp config/sunspot.example.yml config/sunspot.yml
-
     cp config/secrets.example.yml config/secrets.yml
-
     cp config/ingestion.example.yml config/ingestion.yml
 
 Edit config/secrets.yml to configure the database name, user and password defined above.
@@ -226,43 +223,3 @@ Then go to the applications Rails console:
 Find the user and assign them the administrative role. This can be completed by running this (where myemail@domain.co is the email address you used to register with):
 
     2.2.6 :001 > User.find_by_email('myemail@domain.co').update(role: Role.find_by_name('admin'))
-
-## Production
-
-Although designed for CentOS, this document can be followed quite closely to set up a Rails app to work with Apache and Passenger:
-
-    https://www.digitalocean.com/community/tutorials/how-to-setup-a-rails-4-app-with-apache-and-passenger-on-centos-6
-
-To set up TeSS in production, do:
-
-    bundle exec rake db:setup RAILS_ENV=production
-
-which will do db:create, db:schema:load, db:seed. If you want the DB dropped as well:
-
-    bundle exec rake db:reset RAILS_ENV=production
-
-...which will do db:drop, db:setup
-
-    unset XDG_RUNTIME_DIR
-
-(may need setting in ~/.profile or similar if rails console moans about permissions.)
-
-Delete all from Solr if need be and reindex it:
-
-    curl http://localhost:8983/solr/update?commit=true -d  '<delete><query>*:*</query></delete>'
-
-    bundle exec rake sunspot:solr:reindex RAILS_ENV=production
-
-Create an admin user and assign it appropriate 'admin' role bu looking up that role in console in model Role (default roles should be created automatically).
-
-The first time and each time a css or js file is updated:
-
-    bundle exec rake assets:clean RAILS_ENV=production
-
-    bundle exec rake assets:precompile RAILS_ENV=production
-
-Restart your Web server.
-
----
-
-****

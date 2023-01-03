@@ -97,8 +97,8 @@ class Event < ApplicationRecord
   belongs_to :user
   has_one :edit_suggestion, as: :suggestible, dependent: :destroy
   has_one :link_monitor, as: :lcheck, dependent: :destroy
-  has_many :collection_events
-  has_many :collections, through: :collection_events
+  has_many :collection_items, as: :resource
+  has_many :collections, through: :collection_items
   has_many :event_materials, dependent: :destroy
   has_many :materials, through: :event_materials
   has_many :widget_logs, as: :resource
@@ -112,8 +112,8 @@ class Event < ApplicationRecord
   validates :url, url: true
   validates :capacity, numericality: { greater_than_or_equal_to: 1 }, allow_blank: true
   validates :cost_value, numericality: { greater_than: 0 }, allow_blank: true
-  validates :event_types, controlled_vocabulary: { dictionary: EventTypeDictionary.instance }
-  validates :eligibility, controlled_vocabulary: { dictionary: EligibilityDictionary.instance }
+  validates :event_types, controlled_vocabulary: { dictionary: 'EventTypeDictionary' }
+  validates :eligibility, controlled_vocabulary: { dictionary: 'EligibilityDictionary' }
   validates :latitude, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90, allow_nil: true }
   validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true }
   # validates :duration, format: { with: /\A[0-9][0-9]:[0-5][0-9]\z/, message: "must be in format HH:MM" }, allow_blank: true
@@ -124,8 +124,8 @@ class Event < ApplicationRecord
   clean_array_fields(:keywords, :fields, :event_types, :target_audience,
                      :eligibility, :host_institutions, :sponsors)
   update_suggestions(:keywords, :target_audience, :host_institutions)
-  fuzzy_dictionary_match(event_types: EventTypeDictionary.instance,
-                         eligibility: EligibilityDictionary.instance)
+  fuzzy_dictionary_match(event_types: 'EventTypeDictionary',
+                         eligibility: 'EligibilityDictionary')
 
   # These fields should not been shown to users unless they have sufficient privileges
   SENSITIVE_FIELDS = %i[funding attendee_count applicant_count trainer_count feedback notes]
@@ -155,15 +155,6 @@ class Event < ApplicationRecord
 
   def end_local
     set_to_local self.end
-  end
-
-  def upcoming?
-    # Handle nil for start date
-    if start.blank?
-      true
-    else
-      (Time.now < start)
-    end
   end
 
   def started?
@@ -239,6 +230,7 @@ class Event < ApplicationRecord
       ical_event.summary = title
       ical_event.description = description
       ical_event.location = venue unless venue.blank?
+      ical_event.url = url
     end
   end
 
@@ -277,7 +269,7 @@ class Event < ApplicationRecord
   end
 
   def self.not_finished
-    where('events.end > ?', Time.now).where.not(end: nil)
+    where('events.end > ? OR events.end IS NULL', Time.now)
   end
 
   def self.finished
@@ -327,13 +319,17 @@ class Event < ApplicationRecord
   end
 
   def self.check_exists(event_params)
-    given_event = new(event_params)
+    given_event = event_params.is_a?(Event) ? event_params : new(event_params)
     event = nil
 
-    event = find_by_url(given_event.url) if given_event.url.present?
+    provider_id = given_event.content_provider_id || given_event.content_provider&.id
 
-    if given_event.content_provider_id.present? && given_event.title.present? && given_event.start.present?
-      event ||= where(content_provider_id: given_event.content_provider_id, title: given_event.title, start: given_event.start).last
+    if given_event.url.present?
+      event = where(url: given_event.url).last
+    end
+
+    if provider_id.present? && given_event.title.present? && given_event.start.present?
+      event ||= where(content_provider_id: provider_id, title: given_event.title, start: given_event.start).last
     end
 
     event
@@ -416,6 +412,7 @@ class Event < ApplicationRecord
   # If no latitude or longitude, create a GeocodingWorker to find them.
   # This should run a minute after the last one is set to run (last run time stored by Redis).
   def enqueue_geocoding_worker
+    return unless TeSS::Config.feature['geocoding']
     return if (latitude.present? && longitude.present?) ||
               (address.blank? && postcode.blank?) ||
               nominatim_count >= NOMINATIM_MAX_ATTEMPTS
@@ -442,7 +439,7 @@ class Event < ApplicationRecord
     url = 'https://nominatim.openstreetmap.org/search.php'
     response = HTTParty.get(url,
                             query: args,
-                            headers: { 'User-Agent' => "Elixir TeSS <#{TeSS::Config.contact_email}>" })
+                            headers: { 'User-Agent' => "ELIXIR TeSS <#{TeSS::Config.contact_email}>" })
     (JSON.parse response.body, symbolize_names: true)[0]
   end
 

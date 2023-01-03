@@ -1,4 +1,4 @@
-<%= simple_form_for @collection, html: { class: 'content_provider', multipart: true } do |f| %>
+<%= simple_form_for @collection, html: { class: 'prevent-enter-submit', multipart: true } do |f| %>
 
     <%= render partial: 'common/error_summary', locals: { resource: @collection } %>
 
@@ -19,7 +19,11 @@
 
     <%= f.autocompleter :materials %>
 
-    <%= f.autocompleter :events %>
+    <%= f.autocompleter :events,
+                        url: events_path(include_expired: true, sort: 'late'),
+                        group_by: 'group',
+                        transform_function: 'events'
+    %>
 
     <div class="form-group actions">
       <%= f.submit ( f.object.new_record? ? "Create" : "Update") + " collection", :class => 'btn btn-primary' %>

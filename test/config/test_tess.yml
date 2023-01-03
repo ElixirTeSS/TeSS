@@ -7,6 +7,7 @@ test:
   twitter_handle: '@handle'
   announcement_message:
   prevent_robot_indexing: false
+  require_cookie_consent: true
   blocked_domains:
     - !ruby/regexp '/bad-domain\.example/'
   identifiers_url: "http://example.com/identifiers/"
@@ -51,7 +52,12 @@ test:
     subscription: true
     trainers: true
     workflows: true
+    sources: true
+    user_source_creation: true
+    edit_suggestions: true
+    geocoding: true
     disabled: []
+  user_ingestion_methods: ["event_csv", "material_csv", "ical", "eventbrite", "tess_event", "zenodo", "bioschemas"]
   placeholder:
     collection: 'placeholder-collection.png'
     provider: 'placeholder-organization.png'

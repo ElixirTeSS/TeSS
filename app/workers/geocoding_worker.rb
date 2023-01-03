@@ -13,10 +13,14 @@ class GeocodingWorker
     event_id, location = arg_array
     #puts "GeocodingWorker.perform(#{event_id.to_s},#{location.to_s})"
 
-    event = Event.find(event_id)
+    event = Event.find_by_id(event_id)
+    unless event
+      logger.debug "Event #{event_id} not found"
+      return
+    end
 
     Redis.exists_returns_integer = true
-    redis = Redis.new
+    redis = Redis.new(url: TeSS::Config.redis_url)
 
     if redis.exists?(location)
       event.geocoding_cache_lookup

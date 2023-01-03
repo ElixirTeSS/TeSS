@@ -73,7 +73,7 @@ module ApplicationHelper
   def enabled_icon(record, size = nil)
     unless record.nil? or record.enabled.nil?
       if record.enabled
-        "<span class='missing-icon pull-right'>#{icon_for(:check, size)}</span>".html_safe
+        "<span class='fresh-icon pull-right'>#{icon_for(:check, size)}</span>".html_safe
       else
         "<span class='missing-icon pull-right'>#{icon_for(:cross, size)}</span>".html_safe
       end
@@ -140,7 +140,7 @@ module ApplicationHelper
   def render_markdown(markdown_text, options = {}, renderer_options = {})
     if markdown_text
       options.reverse_merge!(filter_html: true, tables: true, autolink: true)
-      renderer_options.reverse_merge!(hard_wrap: true, link_attributes: { target: '_blank' })
+      renderer_options.reverse_merge!(hard_wrap: true, link_attributes: { target: '_blank', rel: 'noopener' })
       Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(renderer_options), options).render(markdown_text).html_safe
     else
       ''
@@ -234,6 +234,10 @@ module ApplicationHelper
       'fa fa-sitemap'
     when 'nodes'
       'fa fa-share-alt'
+    when 'sources'
+      'fa fa-cloud-download'
+    when 'testing'
+      'fa fa-flask'
     else
       'fa fa-folder-open'
     end
@@ -256,7 +260,7 @@ module ApplicationHelper
   end
 
   def twitter_link(username)
-    link_to("http://twitter.com/#{username}", target: :_blank) do
+    link_to("http://twitter.com/#{username}", target: '_blank', rel: 'noopener') do
       "<i class='fa fa-twitter'></i> @#{username}".html_safe
     end
   end
@@ -265,7 +269,7 @@ module ApplicationHelper
     classes = 'btn btn-default has-popover'
     classes << " #{opts[:class]}" if opts[:class]
     content_tag(:a, tabindex: 0, class: classes,
-               data: { toggle: 'popover', placement: 'bottom', trigger: 'focus click',
+               data: { toggle: 'popover', placement: 'bottom',
                        title: title, html: true, content: capture(&block) }) do
       "<i class='fa fa-info-circle'></i> <span class='hidden-xs'>#{title}</span>".html_safe
     end
@@ -286,7 +290,7 @@ module ApplicationHelper
     content_tag(:div, class: 'panel panel-default') do
       content_tag(:div, class: 'panel-heading') do
         content_tag(:h4, class: 'panel-title') do
-          link_to("##{id}", 'data-toggle' => 'collapse') do
+          link_to("##{id}", 'data-toggle' => 'collapse', class: 'collapsible-panel-link') do
             (title + ' <i class="fa fa-caret-down" aria-hidden="true"></i>').html_safe
           end
         end
@@ -357,7 +361,8 @@ module ApplicationHelper
           @template.image_tag('markdown_logo.png', width: 18) +
             ' This field supports markdown, ' +
             @template.link_to('click here for a reference on markdown syntax.',
-                              'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet', target: '_blank')
+                              'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet', target: '_blank',
+                              rel: 'noopener')
         end
     end
 
@@ -391,6 +396,7 @@ module ApplicationHelper
                                                                   form_field_name: options[:form_field_name],
                                                                   existing_items_method: options[:existing_items_method],
                                                                   transform_function: options[:transform_function],
+                                                                  group_by: options[:group_by],
                                                                   singleton: options[:singleton],
       })
     end
@@ -469,7 +475,10 @@ module ApplicationHelper
     star = current_user.stars.where(resource_id: resource.id, resource_type: resource.class.name).first
 
     link_to '', '#', class: 'btn btn-default',
-            data: { role: 'star-button', starred: !star.nil?, resource: { id: resource.id, type: resource.class.name } }
+            data: { role: 'star-button',
+                    starred: !star.nil?,
+                    resource: { id: resource.id, type: resource.class.name },
+                    url: stars_path }
   end
 
   def next_about_block(feature_count)
@@ -616,5 +625,9 @@ module ApplicationHelper
     else
       link_to(title, "#{path}##{anchor}")
     end
+  end
+
+  def cookie_consent
+    CookieConsent.new(cookies.permanent)
   end
 end

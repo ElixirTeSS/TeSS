@@ -1,4 +1,4 @@
-<% resource_limit = 30 %>
+<% resource_limit = UsersHelper.user_profile_resource_limit %>
 <div class="wrapper collapsing-wrapper-tb">
   <%- model_class = Profile -%>
 
@@ -10,7 +10,7 @@
         <div class="row">
           <div class="col-xs-4 col-md-12">
             <div id="gravatar_image">
-              <%= image_tag @user.gravatar_url, :class => 'medium-content-provider-logo' %>
+              <%= image_tag @user.avatar_url, :class => 'medium-content-provider-logo' %>
             </div>
           </div>
           <div class="col-xs-8 col-md-12">
@@ -143,40 +143,44 @@
 
     <div class="row">
       <% materials = @user.materials.limit(resource_limit) %>
+      <% materials_count =  @user.materials.count %>
       <% upcoming_events = @user.events.not_finished %>
       <% past_events = @user.events.finished %>
       <% events = upcoming_events.limit(resource_limit) %>
-      <% workflows = @user.workflows.visible_by(current_user) %>
-      <% collections = @user.collections.limit(resource_limit) %>
+      <% events_count =  @user.events.count %>
+      <% workflows = @user.workflows.visible_by(current_user).limit(resource_limit) %>
+      <% workflows_count =  @user.workflows.visible_by(current_user).count %>
+      <% collections = @user.collections.visible_by(current_user).limit(resource_limit) %>
+      <% collections_count = @user.collections.visible_by(current_user).count %>
 
       <ul class="nav nav-tabs">
 
         <!-- Tab: Events -->
         <% if TeSS::Config.feature['events'] %>
           <%= tab('Events', icon_class_for_model('events'), 'events', active: true,
-                  disabled: { check: @user.events.count.zero?, message: 'No registered events' },
-                  count: @user.events.count) %>
+                  disabled: { check: events_count.zero?, message: 'No registered events' },
+                  count: events_count) %>
         <% end %>
 
         <!-- Tab: Materials -->
         <% if TeSS::Config.feature['materials'] %>
           <%= tab('Materials', icon_class_for_model('materials'), 'materials',
                   disabled: { check: materials.none?, message: 'No registered training materials' },
-                  count: @user.materials.count) %>
+                  count: materials_count) %>
         <% end %>
 
         <!-- Tab: Collections -->
         <% if TeSS::Config.feature['collections'] %>
           <%= tab('Collections', icon_class_for_model('collections'), 'collections',
                   disabled: { check: collections.none?, message: 'No registered collections' },
-                  count: @user.collections.count) %>
+                  count: collections_count) %>
         <% end %>
 
         <!-- Tab: Workflows -->
         <% if TeSS::Config.feature['workflows'] %>
           <%= tab('Workflows', icon_class_for_model('workflows'), 'workflows',
                   disabled: { check: workflows.none?, message: 'No workflows' },
-                  count: workflows.count) %>
+                  count: workflows_count) %>
         <% end %>
       </ul>
 
@@ -214,8 +218,8 @@
           <div id="materials" class="tab-pane fade">
             <div class="row">
               <div class="search-results-count">
-                <%= (materials.count > 0 ? "Showing" : "Found") + " #{pluralize(materials.count, "material")}#{(@user.materials.count > resource_limit) ? " out of #{@user.materials.count}" : ''}." %>
-                <%= link_to('View all results.', materials_path(user: @user.username)) if (@user.materials.count > resource_limit) %>
+                <%= (materials.count > 0 ? "Showing" : "Found") + " #{pluralize(materials.count, "material")}#{(materials_count > resource_limit) ? " out of #{materials_count}" : ''}." %>
+                <%= link_to('View all results', materials_path(user: @user.username)) if (materials_count > resource_limit) %>
               </div>
               <% materials.each do |material| %>
                 <%= render material %>
@@ -229,8 +233,8 @@
           <div id="collections" class="tab-pane fade">
             <div class="row">
               <div class="search-results-count">
-                <%= (collections.count > 0 ? "Showing" : "Found") + " #{pluralize(collections.count, "collection")}#{(@user.collections.count > resource_limit) ? " out of #{@user.collections.count}" : ''}." %>
-                <%= link_to('View all results.', collections(user: @user.username)) if (@user.collections.count > resource_limit) %>
+                <%= (collections.count > 0 ? "Showing" : "Found") + " #{pluralize(collections.count, "collection")}#{(collections_count > resource_limit) ? " out of #{collections_count}" : ''}." %>
+                <%= link_to('View all results', collections_path(user: @user.username)) if (collections_count > resource_limit) %>
               </div>
               <% collections.each do |collection| %>
                 <%= render collection %>
@@ -244,7 +248,8 @@
           <div id="workflows" class="tab-pane fade">
             <div class="row">
               <div class="search-results-count">
-                <%= pluralize(workflows.count, 'workflow') %> found
+                <%= (workflows.count > 0 ? "Showing" : "Found") + " #{pluralize(workflows.count, "workflow")}#{(workflows_count > resource_limit) ? " out of #{workflows_count}" : ''}." %>
+                <%= link_to('View all results', workflows_path(user: @user.username)) if (workflows_count > resource_limit) %>
               </div>
               <% if workflows.any? %>
                 <ul class="masonry media-grid" style="margin-top: 15px;">

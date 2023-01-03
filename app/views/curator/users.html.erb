@@ -52,7 +52,7 @@
     <% @users.each do |user| %>
       <div class="panel panel-default curate-user">
         <div class="panel-heading">
-          <%= link_to user.name, user, target: :_blank %>
+          <%= link_to user.name, user, target: '_blank' %>
 
           <% if user.banned? %>
             <span class="text-danger">(<%= user.shadowbanned? ? 'shadowbanned' : 'banned'-%>)</span>
@@ -83,21 +83,22 @@
           <% User::CREATED_RESOURCE_TYPES.each do |type| %>
             <% count = user.send(type).count %>
             <% if count > 0 %>
-              <% resources = user.send(type).last(3) %>
+              <% resources = user.send(type).order(created_at: :desc).first(3) %>
               <strong><%= resources.first.class.model_name.human -%></strong>
               <ul>
                 <% resources.each do |resource| %>
                   <li>
-                    <%= link_to resource.title, resource, target: :_blank %>
+                    <%= link_to resource.title, resource, target: '_blank' %>
                     <% if resource.respond_to?(:url) %>
                       <br/>
-                      URL: <%= link_to resource.url, resource.url, target: :_blank, rel: 'nofollow' -%>
+                      URL: <%= link_to resource.url, resource.url, target: '_blank', rel: 'nofollow noreferrer noopener' -%>
                     <% end %>
                   </li>
                 <% end %>
               </ul>
               <% if count > 3 %>
-                <%= link_to "See all #{pluralize(count, resources.first.class.model_name.human)}", polymorphic_path(type, user: user.username), target: :_blank -%><br/>
+                <%= link_to "See all #{pluralize(count, resources.first.class.model_name.human)}",
+                            polymorphic_path(type, user: user.username), target: '_blank' -%><br/>
               <% end %>
             <% end %>
           <% end %>

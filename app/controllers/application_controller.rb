@@ -65,11 +65,17 @@ class ApplicationController < ActionController::Base
     body = {}
 
     begin
-      PrivateAddressCheck.only_public_connections do
-        res = HTTParty.get(params[:url], { timeout: 5 })
-        body = { code: res.code, message: res.message }
+      uri = URI.parse(params[:url]) rescue nil
+      if uri && (uri.scheme == 'http' || uri.scheme == 'https')
+        PrivateAddressCheck.only_public_connections do
+          res = HTTParty.get(uri.to_s, { timeout: 5 })
+          body = { code: res.code, message: res.message }
+        end
+      else
+        body = { message: 'Invalid URL - Make sure the URL starts with "https://" or "http://"' }
       end
-    rescue StandardError
+    rescue PrivateAddressCheck::PrivateConnectionAttemptedError, Net::OpenTimeout, SocketError, Errno::ECONNREFUSED,
+      Errno::EHOSTUNREACH
       body = { message: 'Could not access the given URL' }
     end
 
@@ -78,7 +84,29 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def job_status
+    begin
+      status = Sidekiq::Status::status(params[:id])
+
+      if status.present?
+        respond_to do |format|
+          format.json { render json: { status: status } }
+        end
+      else
+        respond_to do |format|
+          format.json { render json: { status: 'not-found' }, status: 404 }
+        end
+      end
+    end
+  end
+
   private
+
+  def feature_enabled?(feature = controller_name)
+    if TeSS::Config.feature.key?(feature) && !TeSS::Config.feature[feature]
+      raise ActionController::RoutingError.new('Feature not enabled')
+    end
+  end
 
   def user_not_authorized(exception)
     policy_name = exception.policy.class.to_s.underscore
@@ -103,11 +131,5 @@ class ApplicationController < ActionController::Base
 
   def allow_embedding
     response.headers.delete 'X-Frame-Options'
-  end
-
-  def look_for_topics(suggestible)
-    if suggestible.scientific_topic_names.length == 0 and suggestible.edit_suggestion.nil?
-      EditSuggestionWorker.perform_in(1.second,[suggestible.id,suggestible.class.name])
-    end
   end
 end
