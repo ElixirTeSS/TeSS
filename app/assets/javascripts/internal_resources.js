@@ -123,7 +123,7 @@ var InternalResources = {
                 '</h4>' +
                 '<span>' + truncateWithEllipses(item.attributes['description'], 600) + '</span>' +
                 '<div class="external-links">' +
-                '<a class="btn btn-warning" target="_blank" href="' + url + item.id +'">' +
+                '<a class="btn btn-default" target="_blank" href="' + url + item.id +'">' +
                 'View ' + '<i class="fa fa-external-link"/></a>' +
                 '</div>' +
                 '</div>');
