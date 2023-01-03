@@ -178,9 +178,6 @@ GEM
     crack (0.4.5)
       rexml
     crass (1.0.6)
-    debase (0.2.4.1)
-      debase-ruby_core_source (>= 0.10.2)
-    debase-ruby_core_source (0.10.13)
     debug_inspector (1.1.0)
     devise (4.8.0)
       bcrypt (~> 3.0)
@@ -417,6 +414,12 @@ GEM
     progress_bar (1.1.0)
       highline (~> 1.6)
       options (~> 2.3.0)
+    pry (0.14.1)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
+    pry-byebug (3.10.1)
+      byebug (~> 11.0)
+      pry (>= 0.13, < 0.15)
     psych (4.0.6)
       stringio
     public_activity (1.6.4)
@@ -593,8 +596,6 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.13.0)
       parser (>= 3.0.1.1)
-    ruby-debug-ide (0.7.3)
-      rake (>= 0.8.1)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
     sass (3.7.4)
@@ -764,7 +765,6 @@ DEPENDENCIES
   by_star!
   byebug
   country_select (<= 4.0.0)
-  debase
   devise
   devise_invitable (~> 2.0.5)
   dynamic_sitemaps!
@@ -797,6 +797,7 @@ DEPENDENCIES
   pg
   private_address_check
   progress_bar (~> 1.1.0)
+  pry-byebug
   public_activity (~> 1.6.4)
   puma
   pundit (~> 1.1.0)
@@ -818,7 +819,6 @@ DEPENDENCIES
   reverse_markdown
   rss
   rubocop
-  ruby-debug-ide
   sass-rails (~> 5.0)
   sassc-rails (~> 2.1.2)
   sdoc (>= 1.1.0)
