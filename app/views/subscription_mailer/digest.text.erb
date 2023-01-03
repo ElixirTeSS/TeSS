@@ -22,6 +22,14 @@ There <%= @digest.total_count == 1 ? 'has' : 'have' -%> been <%= pluralize(@dige
 View all results on <%= TeSS::Config.site['title_short'] %>:
 <%= subscription_results_url(@subscription) %>
 
+
+<% if @collections&.any? %>
+Collections you might like to update:
+<% @collections.each do |collection| %>
+  <%= collection.title %>: <%= send("curate_#{@subscription.subscribable_type.downcase.pluralize}_collection_url", collection) %>
+<% end %>
+<% end %>
+
 ---------------------------------------------------------
 
 To cancel this subscription, visit the following link:
