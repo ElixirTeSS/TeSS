@@ -4,6 +4,11 @@ default: &default
   sender_email: no-reply@localhost
   twitter_handle: '@handle'
   solr_enabled: true
+  solr_facets:
+    # see `searchable` block in app/model/*.rb for names
+    # events: [content_provider, keywords, event_type, ...]
+    # materials:
+    # trainers:
   announcement_message:
   prevent_robot_indexing: false
   require_cookie_consent: true

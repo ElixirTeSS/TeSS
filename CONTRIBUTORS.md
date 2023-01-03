@@ -9,4 +9,4 @@ The following people have contributed to the TeSS codebase:
 * Aitor Apaolaza
 * Chris Child
 * Nick May
-* Daan van Vugt
+* Daan van Vugt <dvanvugt@ignitioncomputing.com>
