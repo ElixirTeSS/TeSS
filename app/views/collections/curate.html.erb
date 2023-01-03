@@ -14,7 +14,7 @@
           <tr>
             <th></th>
             <%- item_fields(@item_class).each do |field| -%>
-              <th><%= t field %></th>
+              <th><%= t field, default: field.to_s.titleize %></th>
             <%- end %>
             <th></th>
           </tr>
@@ -32,7 +32,7 @@
               <%- item_fields(@item_class).each do |field| -%>
                 <td><label for="<%= id %>"><%= [item.send(field)].flatten.join(', ') %></label></td>
               <% end %>
-              <td><%= link_to t('.link', default: [:'helpers.titles.link']), item %></td>
+              <td><%= link_to t('.link', default: [:'helpers.titles.link', 'Link']), item %></td>
           </tr>
         <% end %>
         </tbody>

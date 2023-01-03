@@ -147,7 +147,7 @@ class CollectionsController < ApplicationController
     # find out which ones to add
     existing = Set.new(CollectionItem.where(collection_id: @collection.id,
                                             resource_id: selected_ids,
-                                            resource_type: item_class.name).pluck(fk_name))
+                                            resource_type: item_class.name).pluck(:resource_id))
     to_add = selected_ids - existing
     CollectionItem.create!(to_add.map{ |id| { resource_id: id, resource_type: item_class.name, collection_id: @collection.id } })
     # the after_save callback will probably still add a bunch of activities, so we can't avoid individual queries just yet.

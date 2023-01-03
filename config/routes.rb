@@ -73,9 +73,6 @@ Rails.application.routes.draw do
   end
 
   resources :collections, concerns: %i[collaboratable activities] do
-    # in the future it could be considered to expand this to multiple collections
-    # at the same view, in a kind of matrix-view, useful for people who manage several
-    # collections.
     member do
       %w[events materials].each do |item|
         return unless TeSS::Config.feature[item]

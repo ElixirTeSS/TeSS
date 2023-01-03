@@ -6,25 +6,25 @@
   <div id="content">
     <div class="row">
       <div class="content_action">
-        <%= link_to t('.back', :default => t("helpers.links.back")),
+        <%= link_to t('.back', default: :'helpers.links.back'),
                     collections_path, :class => 'btn btn-info' %>
         <% if !current_user.nil? and policy(@collection).curate? and TeSS::Config.feature['events'] %>
-            <%= link_to t('.curate_events', :default => t("helpers.links.events")),
+            <%= link_to t('.curate_events', default: [:'helpers.links.events', 'events']),
                         curate_events_collection_path(@collection), :class => 'btn btn-primary' %>
         <% end %>
         <% if !current_user.nil? and policy(@collection).curate? and TeSS::Config.feature['materials'] %>
-            <%= link_to t('.curate_materials', :default => t("helpers.links.materials")),
+            <%= link_to t('.curate_materials', default: [:'helpers.links.materials', 'materials']),
                         curate_materials_collection_path(@collection), :class => 'btn btn-primary' %>
         <% end %>
         <% if !current_user.nil? and policy(@collection).update? %>
-            <%= link_to t('.edit', :default => t("helpers.links.edit")),
+            <%= link_to t('.edit', default: [:'helpers.links.edit', 'edit']),
                         edit_collection_path(@collection), :class => 'btn btn-primary' %>
         <% end %>
         <% if !current_user.nil? and policy(@collection).manage? %>
           <%= render partial: 'collaborations/collaborators_button', locals: { resource: @collection } %>
         <% end %>
         <% if !current_user.nil? and policy(@collection).destroy? %>
-            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+            <%= link_to t('.destroy', default: :'helpers.links.destroy'),
                         collection_path(@collection),
                         :method => 'delete',
                         :data => {:confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?'))},
