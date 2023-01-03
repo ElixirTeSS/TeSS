@@ -3,10 +3,10 @@
 </div>
 
 <!-- Register button -->
-<% if TeSS::Config.feature['invitation'] %>
-  <% if current_user.try(:is_admin?) or current_user.try(:is_curator?) %>
-    <%= link_to invitees_path, class: 'btn btn-primary align-self-end' do %>Invitees<% end %>
-  <% end %>
+<% if TeSS::Config.feature['invitation'] && (current_user.try(:is_admin?) || current_user.try(:is_curator?)) %>
+    <div class="row">
+      <%= link_to 'Invitees', invitees_path, class: 'btn btn-primary align-self-end' %>
+    </div>
 <% end %>
 
 <div class="search-results-count">
