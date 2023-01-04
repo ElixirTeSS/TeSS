@@ -9,9 +9,9 @@ IGNORED_FILTERS = %w[user].freeze
 
 # check the filter lists for correctness
 if TeSS::Config.solr_enabled
-  [Event, Material, Trainer].each do |klass|
-    unknown_facets = Set.new(TeSS::Config.solr_facets&.fetch(klass.table_name, [])) - klass.facet_keys
+  TeSS::Config.solr_facets.each_pair do |name, keys|
+    unknown_facets = Set.new(keys) - name.classify.constantize.facet_keys
 
-    raise "unknown facets defined for #{klass.name}: #{unknown_facets}" if unknown_facets.any?
+    raise "unknown facets defined for #{name}: #{unknown_facets}" if unknown_facets.any?
   end
 end
