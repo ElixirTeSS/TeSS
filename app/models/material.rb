@@ -54,7 +54,7 @@ class Material < ApplicationRecord
         self.content_provider.try(:title)
       end
       string :node, multiple: true do
-        self.associated_nodes.map(&:name)
+        self.associated_nodes.pluck(:name)
       end
       time :updated_at
       time :created_at

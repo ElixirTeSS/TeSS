@@ -75,10 +75,8 @@ Rails.application.routes.draw do
   resources :collections, concerns: %i[collaboratable activities] do
     member do
       %w[events materials].each do |item|
-        return unless TeSS::Config.feature[item]
-
         get "curate_#{item}", to: 'collections#curate', defaults: { type: item.classify }
-        patch "curate_#{item}", to: 'collections#update_curation', defaults: { type: item.classify}
+        patch "curate_#{item}", to: 'collections#update_curation', defaults: { type: item.classify }
       end
     end
   end

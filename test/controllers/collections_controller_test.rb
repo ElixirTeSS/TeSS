@@ -162,6 +162,23 @@ class CollectionsControllerTest < ActionController::TestCase
     assert_redirected_to collection_path(assigns(:collection))
   end
 
+  test 'should not create double CollectionItems' do
+    sign_in @collection.user
+    @collection.events << events(:one)
+    assert_equal [events(:one).id], @collection.reload.event_ids
+
+    patch :update_curation, params: {
+      type: 'Event',
+      id: @collection,
+      reviewed_item_ids: [events(:one).id, events(:two).id],
+      item_ids: [events(:one).id]
+    }
+
+    assert_equal [events(:one).id], @collection.reload.event_ids
+    assert_equal 1, @collection.items.count
+    assert_redirected_to collection_path(assigns(:collection))
+  end
+
   #DESTROY TEST
   test 'should destroy collection owned by user' do
     sign_in @collection.user

@@ -132,49 +132,37 @@ class CollectionsController < ApplicationController
     raise ActiveRecord::AccessDenied
   end
 
-  # since we have not checked all items we have to do a little work
-  # to add and remove only those that were checked now, with bulk queries
-  # for good performance.
+  # Delete the reviewed but unselected items (if they exist)
+  # There is no real performance hit with loading the model,
+  # since they need to be SOLR-indexed anyway.
+  # therefore we can skip doing the bulk inserts, and just use ActiveRecord.
+  # (could work around that with partial updates, but not necessary now)
   def update_collection_items!
-    # remove unselected ones, if any exist
-    CollectionItem.where(collection_id: @collection.id,
-                         resource_id: removed_collection_item_ids,
-                         resource_type: item_class.name).delete_all # no callbacks!
-
-    # bulk insert
-    max_order = @collection.items.maximum(:order) || 0
-    # https://www.bigbinary.com/blog/bulk-insert-support-in-rails-6#1-performing-bulk-inserts-by-skipping-duplicates
-    CollectionItem.insert_all!(newly_selected_collection_item_ids.map do |id|
-      max_order += 1
-      { resource_id: id,
-        resource_type: item_class.name,
-        collection_id: @collection.id,
-        order: max_order,
-        created_at: Time.zone.now,
-        updated_at: Time.zone.now }
-    end) # also no callbacks
-
-    # Now run a SOLR index on the added + removed entries
-    Sunspot.index! item_class.where(id: newly_selected_collection_item_ids + removed_collection_item_ids) if TeSS::Config.solr_enabled
-    true
+    collection_items.delete(items_to_remove)
+    collection_items << items_to_add
   end
 
-  def removed_collection_item_ids
-    reviewed_collection_item_ids - selected_collection_item_ids
+  def collection_items
+    @collection.send(item_class.table_name)
   end
 
-  def selected_collection_item_ids
-    Set.new(params[:item_ids]&.map(&:to_i))
+  # Find all items which were selected but are not yet in this collection
+  # Do this by taking the set of selected items, left joining them to the
+  # set of items in the collection, and only selecting those that were not found
+  def items_to_add
+    # See https://pganalyze.com/blog/active-record-subqueries-rails
+    # (could also be done with an anti-join pattern, but troublesome )
+    item_class.where(id: params[:item_ids])
+              .where('NOT EXISTS (:collection_items)',
+                     collection_items: collection_items.select('1'))
   end
 
-  def reviewed_collection_item_ids
-    Set.new(params[:reviewed_item_ids]&.map(&:to_i))
-  end
-
-  def newly_selected_collection_item_ids
-    selected_collection_item_ids - \
-      Set.new(CollectionItem.where(collection_id: @collection.id,
-                                   resource_id: selected_collection_item_ids,
-                                   resource_type: item_class.name).pluck(:resource_id))
+  # Find all items which were not selected but are in the collection
+  # so we can remove them.
+  def items_to_remove
+    item_class.where(id: params[:reviewed_item_ids])
+              .where.not(id: params[:item_ids])
+              .where('EXISTS (:collection_items)',
+                     collection_items: collection_items.select('1'))
   end
 end

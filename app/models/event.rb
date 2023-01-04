@@ -65,7 +65,7 @@ class Event < ApplicationRecord
         content_provider.title unless content_provider.nil?
       end
       string :node, multiple: true do
-        associated_nodes.map(&:name)
+        associated_nodes.pluck(:name)
       end
       string :scientific_topics, multiple: true do
         scientific_topic_names
@@ -88,7 +88,7 @@ class Event < ApplicationRecord
       #       location :latitutde
       #       location :longitude
       string :collections, multiple: true do
-        collections.where(public: true).map(&:title)
+        collections.where(public: true).pluck(:title)
       end
     end
     # :nocov:
