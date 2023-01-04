@@ -28,6 +28,8 @@ class CollectionItem < ApplicationRecord
   end
 
   def solr_index
-    item.solr_index if TeSS::Config.solr_enabled
+    # we should consider doing this in a background job if it turns out to be slow
+    # when curating large collections
+    resource.solr_index if TeSS::Config.solr_enabled
   end
 end
