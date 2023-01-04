@@ -72,9 +72,16 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :collections, concerns: [:collaboratable, :activities]
+  resources :collections, concerns: %i[collaboratable activities] do
+    member do
+      %w[events materials].each do |item|
+        get "curate_#{item}", to: 'collections#curate', defaults: { type: item.classify }
+        patch "curate_#{item}", to: 'collections#update_curation', defaults: { type: item.classify }
+      end
+    end
+  end
 
-  resources :workflows, concerns: [:collaboratable, :activities] do
+  resources :workflows, concerns: %i[collaboratable activities] do
     member do
       get 'fork'
       get 'embed'

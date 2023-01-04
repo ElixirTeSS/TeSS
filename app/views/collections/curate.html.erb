@@ -1,0 +1,50 @@
+<%- model_class = Collection -%>
+<div class="row wrapper">
+  <div class="col-md-12">
+    <div class="page-header row">
+      <%= page_title(t('.title', :default => [:'helpers.titles.curate', 'Curate %{type} in %{model} %{title}'], type: @item_class.table_name, model: model_class.model_name.human.titleize.downcase, title: @collection.title), class: 'col-md-8') %>
+      <div class="col-md-4" style="margin-top: 25px;">
+        <%= label_tag :since, t('.new_items_since', default: ['%{count} new items since'], count: @items.length) %>
+        <input id="since" type="date" value="<%= @since.strftime('%Y-%m-%d') %>" pattern="\d{4}-\d{2}-\d{2}" onchange="params = new URLSearchParams(window.location.search); params.set(since, this.value); window.location.search=params.toString();" />
+        <% if @item_class.name == "Event" %>
+          <%= label_tag :since, t('.show_past', default: ['show past events']) %>
+          <%= check_box_tag :past, true, @show_past.present?, onchange: "params = new URLSearchParams(window.location.search); this.checked ? params.set('past', true) : params.delete('past'); window.location.search = params.toString();" %> 
+        <% end %>
+      </div>
+    </div>
+    <%= form_with url: request.url, local: true, method: :patch do |f| %>
+      <table class="table table-striped table-hover collection_curation_table">
+        <thead>
+          <tr>
+            <th></th>
+            <%- item_fields(@item_class).each do |field| -%>
+              <th><%= t field, default: field.to_s.titleize %></th>
+            <%- end %>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+        <% @items.each do |item| %>
+          <%- id = "item_#{item.id}" %>
+          <tr>
+            <td>
+              <%= label_tag id do %>
+                <%= hidden_field_tag "reviewed_item_ids[]", item.id %>
+                <input id="item_<%= item.id %>" type="checkbox" name="item_ids[]" value="<%= item.id %>" <%= @collection.send("#{@item_class.table_name.singularize}_ids").include?(item.id) ? 'checked' : '' %> />
+              <% end %>
+            </td>
+              <%- item_fields(@item_class).each do |field| -%>
+                <td><label for="<%= id %>"><%= [item.send(field)].flatten.join(', ') %></label></td>
+              <% end %>
+              <td><%= link_to t('.link', default: [:'helpers.titles.link', 'Link']), item %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+
+      <div class="form-group actions">
+        <%= f.submit class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </div>
+</div>

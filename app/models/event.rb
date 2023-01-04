@@ -65,7 +65,7 @@ class Event < ApplicationRecord
         content_provider.title unless content_provider.nil?
       end
       string :node, multiple: true do
-        associated_nodes.map(&:name)
+        associated_nodes.pluck(:name)
       end
       string :scientific_topics, multiple: true do
         scientific_topic_names
@@ -87,6 +87,9 @@ class Event < ApplicationRecord
       # TODO: SOLR has a LatLonType to do geospatial searching. Have a look at that
       #       location :latitutde
       #       location :longitude
+      string :collections, multiple: true do
+        collections.where(public: true).pluck(:title)
+      end
     end
     # :nocov:
   end
@@ -175,7 +178,7 @@ class Event < ApplicationRecord
 
   def self.facet_fields
     field_list = %w[ content_provider keywords scientific_topics operations tools fields online event_types
-                     venue city country organizer sponsors target_audience eligibility user ]
+                     venue city country organizer sponsors target_audience eligibility user collections ]
 
     field_list.delete('operations') if TeSS::Config.feature['disabled'].include? 'operations'
     field_list.delete('scientific_topics') if TeSS::Config.feature['disabled'].include? 'topics'
@@ -183,6 +186,7 @@ class Event < ApplicationRecord
     field_list.delete('tools') if TeSS::Config.feature['disabled'].include? 'biotools'
     field_list.delete('fields') if TeSS::Config.feature['disabled'].include? 'ardc_fields_of_research'
     field_list.delete('node') unless TeSS::Config.feature['nodes']
+    field_list.delete('collections') unless TeSS::Config.feature['collections']
 
     field_list
   end
