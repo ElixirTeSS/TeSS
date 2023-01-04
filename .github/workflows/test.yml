@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: harmon758/postgresql-action@v1
         with:
-          postgresql db: '${DB_NAME}_test'
+          postgresql db: ${DB_NAME}
           postgresql user: ${DB_USER}
           postgresql password: ${DB_PASSWORD}
         name: Set up database
