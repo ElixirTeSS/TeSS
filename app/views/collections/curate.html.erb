@@ -5,7 +5,11 @@
       <%= page_title(t('.title', :default => [:'helpers.titles.curate', 'Curate %{type} in %{model} %{title}'], type: @item_class.table_name, model: model_class.model_name.human.titleize.downcase, title: @collection.title), class: 'col-md-8') %>
       <div class="col-md-4" style="margin-top: 25px;">
         <%= label_tag :since, t('.new_items_since', default: ['%{count} new items since'], count: @items.length) %>
-        <input id="since" type="date" value="<%= @since.strftime('%Y-%m-%d') %>" pattern="\d{4}-\d{2}-\d{2}" onchange="window.location.search='?since='+this.value;" />
+        <input id="since" type="date" value="<%= @since.strftime('%Y-%m-%d') %>" pattern="\d{4}-\d{2}-\d{2}" onchange="params = new URLSearchParams(window.location.search); params.set(since, this.value); window.location.search=params.toString();" />
+        <% if @item_class.name == "Event" %>
+          <%= label_tag :since, t('.show_past', default: ['show past events']) %>
+          <%= check_box_tag :past, true, @show_past.present?, onchange: "params = new URLSearchParams(window.location.search); this.checked ? params.set('past', true) : params.delete('past'); window.location.search = params.toString();" %> 
+        <% end %>
       </div>
     </div>
     <%= form_with url: request.url, local: true, method: :patch do |f| %>

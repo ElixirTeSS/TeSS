@@ -36,6 +36,8 @@ class CollectionsController < ApplicationController
     @item_class = item_class
     @since = params[:since]&.to_date || @collection.send(@item_class.table_name).maximum(:created_at) || Time.at(0)
     @items = @item_class.where('created_at >= ?', @since).order('created_at ASC')
+    # If we are looking at Events, only show those that have not yet ended unless params[:past] is set
+    @items = @items.where('"events"."end" > ?', Time.zone.now) unless (@show_past = params[:past]) || params[:type] != 'Event'
   end
 
   # PATCH/PUT /collections/1/curate_#{type}

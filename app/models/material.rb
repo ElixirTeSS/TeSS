@@ -67,7 +67,7 @@ class Material < ApplicationRecord
       end
       integer :user_id # Used for shadowbans
       string :collections, multiple: true do
-        collections.where(public: true).map(&:title)
+        collections.where(public: true).pluck(:title)
       end
     end
     # :nocov:
