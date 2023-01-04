@@ -30,12 +30,10 @@ module CurationQueue
   end
 
   def from_unverified_or_rejected?
-    return true unless user # no user set is about the same to me as an unverified user
-
     user.unverified_or_rejected?
   end
 
   def from_shadowbanned?
-    user&.shadowbanned?
+    user.shadowbanned?
   end
 end
