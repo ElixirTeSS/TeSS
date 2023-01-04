@@ -147,8 +147,6 @@ class CollectionsController < ApplicationController
   end
 
   # Find all items which were selected but are not yet in this collection
-  # Do this by taking the set of selected items, left joining them to the
-  # set of items in the collection, and only selecting those that were not found
   def items_to_add
     # See https://pganalyze.com/blog/active-record-subqueries-rails
     # (could also be done with an anti-join pattern, but troublesome )
@@ -158,7 +156,6 @@ class CollectionsController < ApplicationController
   end
 
   # Find all items which were not selected but are in the collection
-  # so we can remove them.
   def items_to_remove
     item_class.where(id: params[:reviewed_item_ids])
               .where.not(id: params[:item_ids])
