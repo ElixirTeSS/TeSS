@@ -1,4 +1,4 @@
-test:
+default: &default
   base_url: http://www.example.com
   contact_email: test@example.com
   sender_email: no-reply@example.com
@@ -73,3 +73,12 @@ test:
     material_type: 'material_type.yml'
     target_audience: 'target_audience.yml'
     trainer_experience: 'trainer_experience.yml'
+
+development:
+  <<: *default
+
+production:
+  <<: *default
+
+test:
+  <<: *default

@@ -29,7 +29,7 @@ jobs:
         name: Bundle install
       - name: Configure and initialize database
         run: |
-          cp config/tess.example.yml config/tess.yml
+          cp test/config/test_tess.yml config/tess.yml
           cp config/secrets.github.yml config/secrets.yml
           cp config/ingestion.example.yml config/ingestion.yml
           bundle exec rake db:test:prepare
