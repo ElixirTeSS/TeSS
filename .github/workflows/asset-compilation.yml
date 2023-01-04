@@ -1,0 +1,38 @@
+name: Asset compilation
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      DB_HOST: localhost
+      DB_NAME: tess
+      DB_USER: tess
+      DB_PASSWORD: password
+      SECRET_BASE_KEY: test_key
+      RAILS_ENV: production
+    steps:
+      - uses: harmon758/postgresql-action@v1
+        with:
+          postgresql db: '${DB_NAME}_production'
+          postgresql user: ${DB_USER}
+          postgresql password: ${DB_PASSWORD}
+        name: Set up database
+
+      - uses: actions/checkout@v3
+        name: Set up Ruby
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+        name: Bundle install
+      - name: Configure and initialize database
+        run: |
+          cp config/tess.example.yml config/tess.yml
+          cp config/secrets.github.yml config/secrets.yml
+          cp config/ingestion.example.yml config/ingestion.yml
+          bundle exec rake db:create
+          bundle exec rake db:setup
+      - run: bundle exec rake assets:precompile
+        name: Run asset compilation
