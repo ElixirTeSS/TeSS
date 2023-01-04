@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: harmon758/postgresql-action@v1
         with:
-          postgresql db: '${DB_NAME}_production'
+          postgresql db: ${DB_NAME}
           postgresql user: ${DB_USER}
           postgresql password: ${DB_PASSWORD}
         name: Set up database
@@ -32,7 +32,6 @@ jobs:
           cp config/tess.example.yml config/tess.yml
           cp config/secrets.github.yml config/secrets.yml
           cp config/ingestion.example.yml config/ingestion.yml
-          bundle exec rake db:create
           bundle exec rake db:setup
       - run: bundle exec rake assets:precompile
         name: Run asset compilation
