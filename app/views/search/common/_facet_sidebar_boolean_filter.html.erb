@@ -1,44 +1,27 @@
 <%# for things like 'online' or for_profit. Check the box sets it as false.  %>
 <% facet_field = facet.field_name.to_s %>
 
-<%# Title %>
-<li class="hide">
-<!--  FIXME: is it needed? -->
-  <h4 class="nav-heading">
-    <%= case facet_field
-        when 'user'
-          'Owner'
-        when 'organizer'
-          'Organiser'
-        else
-          facet_field.humanize.singularize
-        end -%>
-  </h4>
-</li>
-
-<% facet = facet.rows.first %>
-
 <%# Display all filter links %>
-  <div class="toggle-wrap mb-2">
+<div class="toggle-wrap mb-2">
   <% if @facet_params.include?(facet_field)  %>
-      <%= remove_filter_link(:online, 'true') do %>
-          <li class="nav-item">
-            <label class="toggle">
-              <input type="checkbox" checked>
-              <span class="slider round"></span>
-            </label>
-            Show all events
-          </li>
-      <% end %>
+    <%= remove_filter_link(facet.field_name, 'true') do %>
+      <li class="nav-item">
+        <label class="toggle">
+          <input type="checkbox" checked>
+          <span class="slider round"></span>
+        </label>
+        Show all events
+      </li>
+    <% end %>
   <% else %>
-      <%= filter_link(:online, 'true', facet.count) do %>
-          <li class="nav-item active">
-            <label class="toggle">
-              <input type="checkbox">
-              <span class="slider round"></span>
-            </label>
-            Only show online events
-          </li>
-      <% end %>
+    <%= filter_link(facet.field_name, 'true', facet.rows.first.count) do %>
+      <li class="nav-item active">
+        <label class="toggle">
+          <input type="checkbox">
+          <span class="slider round"></span>
+        </label>
+        Only show online events
+      </li>
+    <% end %>
   <% end %>
 </div>

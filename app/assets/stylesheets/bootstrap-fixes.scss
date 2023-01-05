@@ -78,3 +78,7 @@ a {
   transition: $transition-time;
   border-radius: 6px;
 }
+
+.btn-alternate {
+  @include button-variant($secondary-color, $btn-default-bg, $secondary-color);
+}

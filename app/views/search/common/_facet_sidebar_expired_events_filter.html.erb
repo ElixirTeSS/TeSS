@@ -1,0 +1,20 @@
+<% include_expired = @facet_params.delete('include_expired') %>
+<% if include_expired %>
+  <% button_params = search_and_facet_params %>
+  <% button_params.delete(:include_expired) %>
+  <% button_text = "Hide" %>
+<% else %>
+  <% button_text = "Show" %>
+  <% button_params = search_and_facet_params.merge(include_expired: true) %>
+<% end %>
+<div class="toggle-wrap">
+  <%= link_to button_params do %>
+    <li class="nav-item">
+      <label class="toggle">
+        <input type="checkbox"<%= ' checked' if include_expired -%>>
+        <span class="slider round"></span>
+      </label>
+      <%= button_text %> past events
+    </li>
+  <% end %>
+</div>
