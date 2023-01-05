@@ -8,7 +8,7 @@
 IGNORED_FILTERS = %w[user].freeze
 
 # check the filter lists for correctness
-if TeSS::Config.solr_enabled
+if TeSS::Config.solr_enabled && TeSS::Config.solr_facets.present?
   TeSS::Config.solr_facets.each_pair do |name, keys|
     unknown_facets = Set.new(keys) - name.classify.constantize.facet_keys
 
