@@ -1,4 +1,4 @@
-name: CI
+name: Asset compilation
 
 on: [push, pull_request]
 
@@ -11,7 +11,7 @@ jobs:
       DB_USER: tess
       DB_PASSWORD: password
       SECRET_BASE_KEY: test_key
-      RAILS_ENV: test
+      RAILS_ENV: production
     steps:
       - uses: harmon758/postgresql-action@v1
         with:
@@ -25,13 +25,13 @@ jobs:
 
       - uses: ruby/setup-ruby@v1
         with:
-          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+          bundler-cache: true
         name: Bundle install
       - name: Configure and initialize database
         run: |
           cp test/config/test_tess.yml config/tess.yml
           cp config/secrets.github.yml config/secrets.yml
           cp config/ingestion.example.yml config/ingestion.yml
-          bundle exec rake db:test:prepare
-      - run: bundle exec rails test
-        name: Run tests
+          bundle exec rake db:setup
+      - run: bundle exec rake assets:precompile
+        name: Run asset compilation
