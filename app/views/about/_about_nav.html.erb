@@ -1,9 +1,8 @@
 <!-- SIDEBAR -->
 <nav class="about-nav">
-
   <!-- WHAT IS TESS -->
-  <ul class="nav nav-stacked">
-    <li class="about-page-category <%= show_active(show, 'home') %>">
+  <ul class="nav nav-stacked <%= show_active(show, 'home') %>">
+    <li class="about-page-category">
       <%= link_to 'What is ' + TeSS::Config.site['title_short'] + '?', about_path %>
     </li>
     <li><%= about_nav_link('What we catalogue', about_path, 'events') %></li>
@@ -12,18 +11,17 @@
   </ul>
 
   <!-- REGISTERING YOUR RESOURCES -->
-  <ul class="nav nav-stacked">
-    <li class="about-page-category <%= show_active(show, 'registering') %>">
+  <ul class="nav nav-stacked <%= show_active(show, 'registering') %>">
+    <li class="about-page-category">
       <%= link_to 'Registering Content', registering_resources_path %>
     </li>
     <li><%= about_nav_link('Automatic Registration', registering_resources_path, 'automatic') %></li>
     <li><%= about_nav_link('Manual Registration', registering_resources_path, 'manual') %></li>
   </ul>
 
-
   <!-- DEVELOPERS -->
-  <ul class="nav nav-stacked">
-    <li class="about-page-category <%= show_active(show, 'developers') %>">
+  <ul class="nav nav-stacked <%= show_active(show, 'developers') %>">
+    <li class="about-page-category">
       <%= link_to 'Developers', developers_path %>
     </li>
     <li><%= about_nav_link('Code and Data', developers_path, 'code_and_data') %></li>
@@ -32,8 +30,8 @@
   </ul>
 
   <!-- ABOUT US -->
-  <ul class="nav nav-stacked">
-    <li class="about-page-category <%= show_active(show, 'us') %>">
+  <ul class="nav nav-stacked <%= show_active(show, 'us') %>">
+    <li class="about-page-category">
       <%= link_to 'About Us', us_path %>
     </li>
     <li><%= about_nav_link('TeSS Club', us_path, 'tess-club') %></li>

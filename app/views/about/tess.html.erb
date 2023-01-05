@@ -1,158 +1,131 @@
 <div class="wrapper">
-
-  <% @feature_count = 0 %>
-
   <div id="sidebar" class="popout-sidebar">
-    <%= render :partial => 'about_nav', locals: { show: 'home' } %>
+    <%= render partial: 'about_nav', locals: { show: 'home' } %>
   </div>
 
   <div id="content">
     <div class="about-block">
+      <h2><%== TeSS::Config.site['title'] %></h2>
+      <p><%== raw t 'about.registry' %></p>
 
-<!--      <div class="breadcrumb">-->
-        <%#= render :partial => 'links', :locals => { 'show': 'tess' } %>
-<!--      </div>-->
+      <p><%== raw t 'about.history' %></p>
 
-      <div class="row">
+      <% @feature_count = 0 %>
 
-        <h2 id='trainingregistry'>The <%== TeSS::Config.site['title'] %></h2>
-        <br>
-        <p><%== raw t 'about.registry' %></p>
-
-        <p><%== raw t 'about.history' %></p>
-
-        <!-- EVENTS-->
-
-        <% if TeSS::Config.feature['events'] == true %>
-          <div class="row <%= next_about_block(@feature_count += 1) %>">
-            <div class="col-lg-2 about-resource-icon">
-              <%= link_to events_path do %>
-                <%= image_tag('modern/icons/events-icon.svg', height: "65px", alt: "Events") %>
-<!--                <p>Discover Events</p>-->
-              <% end %>
-            </div>
-            <div class="col-lg-10 about-resource">
-              <div id='events' class="h4">Events</div>
-              <p><%== raw t 'about.events' %></p>
-              <p>
-                <%= TeSS::Config.site['title_short'] %> collects event information
-                from <%= Event.distinct.count(:content_provider_id) %>
-                content providers, supplementing the data with geolocation information found using
-                <%== raw t 'about.nominatim' %>.
-              </p>
-
-              <%= link_to events_path do %>
-                <br>
-                <p>Discover Events <i class="icon icon-sm arrow-right-icon"></i></p>
-              <% end %>
-            </div>
-
-
+      <!-- EVENTS-->
+      <% if TeSS::Config.feature['events'] == true %>
+        <div id="events" class="row <%= next_about_block(@feature_count += 1) %>">
+          <h3 class="col-lg-12">Events</h3>
+          <div class="col-lg-2 col-lg-push-10 about-resource-icon">
+            <%= image_tag('modern/icons/events-icon.svg', height: '65px', alt: 'Events') %>
           </div>
-        <% end %>
+          <div class="col-lg-10 col-lg-pull-2 about-resource">
+            <p><%== raw t 'about.events' %></p>
 
-        <!-- MATERIALS-->
+            <p>
+              <%= TeSS::Config.site['title_short'] %> collects event information
+              from <%= Event.distinct.count(:content_provider_id) %>
+              content providers, supplementing the data with geolocation information found using
+              <%== raw t 'about.nominatim' %>.
+            </p>
 
-        <% if TeSS::Config.feature['materials'] == true %>
-          <div class="row <%= next_about_block(@feature_count += 1) %>">
-            <div class="col-lg-2 about-resource-icon">
-              <%= link_to materials_path do %>
-                <%= image_tag('modern/icons/materials-icon.svg', height: "65px", alt: "Events") %>
-<!--                <p>Discover Materials</p>-->
-              <% end %>
-            </div>
+            <br/>
 
-            <div class="col-lg-10 about-resource">
-              <div id='materials' class="h4">Materials</div>
-              <p><%== raw t 'about.materials' %></p>
-
-              <p><%= TeSS::Config.site['title_short'] %> collects materials from
-                <%= Material.distinct.count(:content_provider_id) %>
-                content providers.</p>
-
-              <%= link_to materials_path do %>
-                <br>
-                <p>Discover Materials <i class="icon icon-sm arrow-right-icon"></i></p>
-              <% end %>
-            </div>
+            <%= link_to events_path do %>
+              Discover Events <i class="icon icon-sm arrow-right-icon"></i>
+            <% end %>
           </div>
-        <% end %>
+        </div>
+      <% end %>
 
-        <!-- WORKFLOWS -->
+      <!-- MATERIALS-->
+      <% if TeSS::Config.feature['materials'] == true %>
+        <div id="materials" class="row <%= next_about_block(@feature_count += 1) %>">
+          <h3 class="col-lg-12">Materials</h3>
 
-        <% if TeSS::Config.feature['workflows'] == true %>
-          <div class="row <%= next_about_block(@feature_count += 1) %>">
-              <div class="col-lg-2 about-resource-icon">
-                <%= link_to workflows_path do %>
-                  <%= image_tag('modern/icons/workflows-icon.svg', height: "65px", alt: "Events") %>
-<!--                  <p>Discover Workflows</p>-->
-                <% end %>
-              </div>
+          <div class="col-lg-2 col-lg-push-10 about-resource-icon">
+            <%= image_tag('modern/icons/materials-icon.svg', height: '65px', alt: 'Materials') %>
+          </div>
 
-              <div class="col-lg-12 about-resource">
-                <div id='workflows' class="h4">Training Workflows</div>
-                <p><%== raw t 'about.workflows' %></p>
-              </div>
+          <div class="col-lg-10 col-lg-pull-2 about-resource">
+            <p><%== raw t 'about.materials' %></p>
 
-            <div class="sub-about-block-wrap">
+            <p><%= TeSS::Config.site['title_short'] %> collects materials from
+              <%= Material.distinct.count(:content_provider_id) %>
+              content providers.
+            </p>
+
+            <br/>
+
+            <%= link_to materials_path do %>
+              Discover Materials <i class="icon icon-sm arrow-right-icon"></i>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- WORKFLOWS -->
+      <% if TeSS::Config.feature['workflows'] == true %>
+        <div id="workflows" class="row <%= next_about_block(@feature_count += 1) %>">
+          <h3 class="col-lg-12">Training Workflows</h3>
+          <div class="col-lg-2 col-lg-push-10 about-resource-icon">
+            <%= link_to workflows_path do %>
+              <%= image_tag('modern/icons/workflows-icon.svg', height: "65px", alt: "Workflows") %>
+              <!--                  <p>Discover Workflows</p>-->
+            <% end %>
+          </div>
+
+          <div class="col-lg-10 col-lg-pull-2 about-resource">
+            <p><%== raw t 'about.workflows' %></p>
+          </div>
+
+          <div class="col-lg-12">
             <!-- INDIVIDUAL WORKFLOW TYPES-->
             <div class="sub-about-block">
-              <div class="h3">Learning Paths</div>
+              <h4>Learning Paths</h4>
               <p><%== raw t 'about.learning_paths' %></p>
             </div>
 
             <div class="sub-about-block">
-              <div class="h3">Educational Resource</div>
+              <h4>Educational Resource</h4>
               <p><%== raw t 'about.resources' %></p>
             </div>
 
-              <%= link_to workflows_path do %>
-                <br>
-                <p>Discover Workflows <i class="icon icon-sm arrow-right-icon"></i></p>
-              <% end %>
+            <br/>
 
-            </div>
-
-          </div>
-        <% end %>
-
-        <!-- SUBSCRIBE-->
-
-        <% if TeSS::Config.feature['subscription'] %>
-          <div class="row <%= next_about_block(@feature_count += 1) %>">
-            <div class="row" style="padding: 0 15px;">
-              <div class="col-lg-12">
-                <div id='subscribe' class="h3">Subscribe</div>
-                <p><%== raw t 'about.subscribe' %></p>
-                <p>The <%= link_to 'subscriptions manager', subscriptions_path %> page may be used to change the
-                  frequency
-                  of, or to remove, subscriptions.</p>
-                <%= image_tag 'about/subscription.png', class: "widgets_guide" %>
-              </div>
-            </div>
-          </div>
-        <% end %>
-
-        <!-- WIDGET & API -->
-
-        <div class="row <%= next_about_block(@feature_count += 1) %>">
-          <div class="row"  style="padding: 0 15px;">
-            <div class="col-lg-12">
-              <div id='widget' class="h3">Widgets & API</div>
-              <p>To access <%= TeSS::Config.site['title_short'] %> data, <%== raw t 'about.widgets' %></p>
-              <%= link_to 'Learn more about Widgets', developers_path(:anchor => "widgets"), class: 'btn btn-primary' %>
-              <%= link_to 'Learn more about our API', developers_path(:anchor => "api"), class: 'btn btn-primary' %>
-            </div>
+            <%= link_to workflows_path do %>
+              Discover Workflows <i class="icon icon-sm arrow-right-icon"></i>
+            <% end %>
           </div>
         </div>
+      <% end %>
 
+      <!-- SUBSCRIBE-->
+      <% if TeSS::Config.feature['subscription'] %>
+        <div id="subscribe" class="row <%= next_about_block(@feature_count += 1) %>">
+          <div class="col-lg-12">
+            <h3>Subscribe</h3>
+            <p><%== raw t 'about.subscribe' %></p>
+            <p>The <%= link_to 'subscriptions manager', subscriptions_path %> page may be used to change the
+              frequency of, or to remove, subscriptions.</p>
+            <%= image_tag 'about/subscription.png', style: 'width: 80%' %>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- WIDGET & API -->
+      <div id="widget" class="row <%= next_about_block(@feature_count += 1) %>">
+        <div class="col-lg-12">
+          <h3>Widgets & API</h3>
+          <p><%== raw t 'about.widgets_and_api' %></p>
+          <%= link_to 'Learn more about Widgets', developers_path(anchor: 'widgets'), class: 'btn btn-primary' %>
+          <%= link_to 'Learn more about our API', developers_path(anchor: 'api'), class: 'btn btn-primary' %>
+        </div>
       </div>
-
-      <hr>
-
-      <%= render :partial => 'links', :locals => { 'show': 'tess' } %>
     </div>
+
+    <hr/>
+
+    <%= render partial: 'links', locals: { show: 'tess' } %>
   </div>
-
-
 </div>

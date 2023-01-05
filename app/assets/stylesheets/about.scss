@@ -1,65 +1,100 @@
 .about-nav {
   .nav-stacked {
     background: #FFFFFF;
-    box-shadow: 0px 6px 10px rgba(0,0,0,0.03);
+    box-shadow: 0 6px 10px rgba(0,0,0,0.03);
     border-radius: 6px;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
+
+    &.active {
+      li { display: block; }
+      .about-page-category a { color: $secondary-color !important; }
+    }
+
+    > li > a {
+      padding: 7px 15px;
+    }
   }
 
   .about-page-category {
-    font-size: $font-size-h3;
+    font-size: $font-size-h4;
+    display: block;
+    a {
+      color: $primary-color !important;
+    }
   }
 
   a {
-    color: $dark-color !important;
+    color: $gray !important;
   }
 }
 
 .about-block {
+  padding: 10px 30px;
+
   .odd-about-block, .even-about-block {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    background: #FFFFFF;
+    &>h1, &>h2, &>h3 {
+      margin-top: 0;
+    }
+
+    background: $panel-bg;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.03);
     border-radius: 8px;
-    margin: 35px 0px 0 0;
-  }
-  .sub-about-block-wrap {
-    padding: 0 35px;
-  }
-  .sub-about-block {
-    padding: 0;
-    margin: 0;
-    margin-top: 20px;
-  }
-
-  .about-resource {
-    padding: 0 35px;
-
-
-    .h4 {
-      font-family: 'Lato';
-      font-style: normal;
-      font-weight: 700;
-      line-height: 38px;
-
-      color: #023452;
+    margin: 35px 0 0 0;
+    padding: 20px;
+    &.row {
+      padding: 20px (20px - ($grid-gutter-width / 2));
     }
   }
-  h1, .h1, h2, .h2, h3, .h3 {
-    margin-top: 0;
+
+  .sub-about-block {
+    padding: 10px 15px;
+    margin-top: 10px;
+    border-radius: 10px;
   }
 
   .about-resource-icon {
-    padding: 0;
     text-align: center;
     margin-top: 15px;
+    img {
+      width: auto;
+    }
   }
 
-  .about-resource-icon img {
-    width: auto;
-    /* height: auto; */
+  .about-icon {
+    font-size: 5em;
+    color: $secondary-color;
+  }
+
+  .structured-data-graphic {
+    max-width: 100px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    float: right;
+  }
+
+  .motivation-box {
+    margin-top: 20px;
+    text-align: center;
+
+    .motivation-box-title {
+      font-size: $font-size-large;
+      text-align: center;
+      margin: 10px;
+      color: $primary-color;
+    }
+
+    .motivation-box-graphic {
+      height: 160px;
+      padding: 10px;
+    }
+
+    .motivation-box-graphic-small {
+      height: 80px;
+      padding: 10px;
+      &.about-icon {
+        font-size: 4em;
+      }
+    }
   }
 }
