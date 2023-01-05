@@ -85,6 +85,7 @@ ul.catalogue {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
+  gap: 15px;
 
   flex-direction: row;
   align-items: flex-start;
@@ -96,18 +97,11 @@ ul.catalogue {
     align-items: center;
   }
 
-  li {
-    width: 25%;
+  li.resource-type {
+    flex: 1;
     padding: 0 12px;
     min-width: 250px;
-
-    //border: 1px solid rgba(36, 37, 38, 0.2);
-    //box-shadow: 0px 6px 10px rgba(36, 37, 38, 0.03);
-    //border-radius: 8px;
-
-    //padding: 38px;
-    gap: 15px;
-    margin: 15px;
+    margin-bottom: 15px;
 
     .pseudolink {
       color: $link-color;
@@ -118,11 +112,19 @@ ul.catalogue {
       width: 85%;
     }
 
-    img {
-      margin-top: 10px;
-      max-width: 50px;
+    .resource-type-text {
+      min-height: 5em;
     }
 
+    .resource-type-title {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+      img {
+        margin-top: 10px;
+        max-width: 50px;
+      }
+    }
   }
 }
 
@@ -166,7 +168,7 @@ dl.faq {
   }
 }
 
-ul.featureblocks {
+ul.promo-blocks {
   padding: 10px 0;
   margin: 0 -10px;
   margin-top: 50px;

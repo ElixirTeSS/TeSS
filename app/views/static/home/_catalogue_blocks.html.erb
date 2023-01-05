@@ -1,0 +1,26 @@
+<section>
+  <h2 class="text-center">Browse the catalogue</h2>
+
+  <ul class="catalogue">
+    <% ['events', 'materials', 'workflows'].each do |feature| %>
+      <% if TeSS::Config.feature[feature] == true %>
+        <li class="resource-type">
+          <a class="link-overlay" href="<%= polymorphic_path(feature) %>">
+            <div class="resource-type-title">
+              <%= image_tag(asset_path("modern/icons/#{feature}-icon.svg"), alt: feature.titleize) %>
+              <h3><%= feature.titleize %></h3>
+            </div>
+
+            <div class="resource-type-text"><%== raw t "home.#{feature}_message" %></div>
+
+            <div class="resource-type-link">
+              <span class="pseudolink">
+                Start browsing
+              </span>&nbsp;<i class="icon icon-sm arrow-right-icon"></i>
+            </div>
+          </a>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+</section>
