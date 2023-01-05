@@ -9,6 +9,14 @@
         <% if policy(@collection).manage? %>
           <%= render partial: 'collaborations/collaborators_button', locals: { resource: @collection } %>
         <% end %>
+        <% if !current_user.nil? and policy(@collection).curate? and TeSS::Config.feature['events'] %>
+          <%= link_to t('.curate_events', default: [:'helpers.links.events', 'events']),
+                      curate_events_collection_path(@collection), :class => 'btn btn-default' %>
+        <% end %>
+        <% if !current_user.nil? and policy(@collection).curate? and TeSS::Config.feature['materials'] %>
+          <%= link_to t('.curate_materials', default: [:'helpers.links.materials', 'materials']),
+                      curate_materials_collection_path(@collection), :class => 'btn btn-default' %>
+        <% end %>
         <%= edit_button(@collection) if policy(@collection).update? %>
         <%= delete_button(@collection) if policy(@collection).destroy? %>
       </div>

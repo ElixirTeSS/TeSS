@@ -649,4 +649,13 @@ module ApplicationHelper
   def cookie_consent
     CookieConsent.new(cookies.permanent)
   end
+
+  def available_facets(resources)
+    if (selected_facets = TeSS::Config.solr_facets&.fetch(controller_name, nil))
+      indices = selected_facets.map { |name| resources.facets.index { |f| f.field_name.to_s == name } }.compact
+      resources.facets.values_at(*indices)
+    else
+      resources.facets
+    end.select { |f| f.rows.any? && !IGNORED_FILTERS.include?(f.field_name.to_s) }
+  end
 end
