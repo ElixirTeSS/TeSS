@@ -9,9 +9,9 @@ module SearchHelper
     params.to_unsafe_h.except(*@model.search_and_facet_keys, :page)
   end
 
-  def filter_link name, value, count, title = nil, html_options={}, &block
+  def filter_link(name, value, count, html_options = {}, &block)
     parameters = search_and_facet_params
-    title ||= (title || truncate(value.to_s, length: 30))
+    title ||= (html_options.delete(:title) || truncate(value.to_s, length: 50))
 
     #if there's already a filter of the same facet type, create/add to an array
     if parameters.include?(name)
@@ -25,16 +25,16 @@ module SearchHelper
 
     link_to parameters, html_options do
       if block_given?
-        yield
+        block.call
       else
-        title + content_tag(:span, "#{count}", class: 'facet-count')
+        content_tag(:span, title, class: 'facet-label') + content_tag(:span, "#{count}", class: 'facet-count')
       end
     end
   end
 
-  def remove_filter_link name, value, html_options={}, title=nil, &block
+  def remove_filter_link(name, value, html_options = {}, &block)
     parameters = search_and_facet_params
-    title ||= (title || truncate(value.to_s, length: 30))
+    title ||= (html_options.delete(:title) || truncate(value.to_s, length: 50))
 
     #delete a filter from an array or delete the whole facet if it is the only one
     if parameters.include?(name)
@@ -52,9 +52,9 @@ module SearchHelper
 
     link_to parameters, html_options do
       if block_given?
-        yield
+        block.call
       else
-      "#{title}&nbsp;<i class='pull-right glyphicon glyphicon-remove'></i>".html_safe
+        content_tag(:span, title, class: 'facet-label') + content_tag(:i, '', class: 'remove-facet-icon glyphicon glyphicon-remove')
       end
     end
   end

@@ -322,13 +322,6 @@ ul.unstyled {
   background-color: #eee;
 }
 
-
-.active-filters {
-  .pull-right {
-    float: none !important;
-    margin-left: 5px;
-  }
-}
 // End CKAN's sidebar facets
 
 // Facet's title
@@ -344,9 +337,30 @@ ul.unstyled {
   margin: 0 0 5px 0;
 }
 
-.facet-count {
-  float: right;
-  color: #999;
+.facet-option {
+  display: flex !important;
+
+  .facet-label {
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+  }
+
+  .facet-count, .remove-facet-icon {
+    flex-shrink: 0;
+    display: inline-block;
+  }
+  .facet-count {
+    color: #999;
+  }
+}
+
+.active-filters {
+  .remove-facet-icon {
+    margin-left: 5px;
+  }
 }
 
 .show-page-description {

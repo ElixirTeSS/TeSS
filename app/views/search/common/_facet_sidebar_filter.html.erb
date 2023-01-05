@@ -21,12 +21,12 @@
     <%# Display all filter links - active first %>
     <% active_facet_rows.each do |facet| %>
       <li class="nav-item active" style="display: none;">
-        <%= remove_filter_link(facet_field, facet.value.to_s) %>
+        <%= remove_filter_link(facet_field, facet.value.to_s, class: 'facet-option') %>
       </li>
     <% end %>
     <% other_facet_rows.each do |facet| %>
       <li class="nav-item" style="display: none;">
-        <%= filter_link(facet_field, facet.value.to_s, facet.count) %>
+        <%= filter_link(facet_field, facet.value.to_s, facet.count, class: 'facet-option') %>
       </li>
     <% end %>
 
