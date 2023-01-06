@@ -1,49 +1,15 @@
-<section>
+<section id="faq">
   <h2 class="text-center">Frequently asked questions</h2>
   <dl class="faq">
-    <div class="definition">
-      <dt>
-        <h3><div class="expand" onclick="toggleDefinition(this)">+</div>Who can register content in TeSS?</h3>
-      </dt>
-      <dd style="display: none;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam distinctio excepturi illum labore, laborum nemo nobis quisquam? Assumenda ducimus facilis magnam placeat, quidem repellat tempora totam ullam. Illo, magnam, quibusdam.</dd>
-    </div>
-
-    <div class="definition">
-      <dt>
-        <h3><div class="expand" onclick="toggleDefinition(this)">+</div>How do I register content in TeSS?</h3>
-      </dt>
-      <dd style="display: none;">
-        <p>You can register content in TeSS automatically or manually. </p>
-        <p>To add content manually, you will need to log in and fill in the registration form for either <a href="#">materials</a> or <a href="#">events</a>.</p>
-        <p>To add content manually, you will need to log in and fill in the registration form for either materials or events.</p>
-        <ol>
-          <li>To have more than three resources</li>
-          <li>To have structured data</li>
-          <li>To share resources relevant to the life sciences</li>
-        </ol>
-        <p>If you fulfil these three conditions, you can contact us to set up automation. If you are a developer, read our specification page for structured data prerequisites. </p>
-      </dd>
-    </div>
-
-    <div class="definition">
-      <dt>
-        <h3><div class="expand" onclick="toggleDefinition(this)">+</div>Why register content in TeSS?</h3>
-      </dt>
-      <dd style="display: none;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, consequuntur dicta facere inventore magni nostrum reiciendis soluta veniam veritatis voluptates. Autem commodi consequatur doloremque et eveniet facere laboriosam magni recusandae.</dd>
-    </div>
-
-    <div class="definition">
-      <dt>
-        <h3><div class="expand" onclick="toggleDefinition(this)">+</div>Can I display TeSS content on my organisation's website?</h3>
-      </dt>
-      <dd style="display: none;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi consequuntur dolorem doloremque dolorum eligendi, excepturi quos ratione. Accusamus adipisci amet, architecto eos esse eveniet expedita incidunt, magnam numquam sequi vel.</dd>
-    </div>
-
-    <div class="definition">
-      <dt>
-        <h3><div class="expand" onclick="toggleDefinition(this)">+</div>Can I subscribe to updates?</h3>
-      </dt>
-      <dd style="display: none;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi delectus doloremque enim ex, facilis harum illum inventore laboriosam minima neque odit officia qui quia quidem reprehenderit, sint veniam voluptates!</dd>
-    </div>
+    <% TeSS::Config.site.dig('home_page', 'faq').each do |key| %>
+      <div class="question">
+        <dt>
+          <h3><div class="expand">+</div><%= t("home.faq.#{key}.q") %></h3>
+        </dt>
+        <dd style="display: none;">
+          <%== raw t("home.faq.#{key}.a") %>
+        </dd>
+      </div>
+    <% end %>
   </dl>
 </section>

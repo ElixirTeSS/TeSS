@@ -35,20 +35,6 @@
 //= require_self
 //= require turbolinks
 
-function toggleDefinition(el) {
-    var sign = $(el).html();
-
-    if (sign === '+') {
-        $(el).parent().parent().parent().addClass('opened');
-        $(el).text('–')
-        $(el).parent().parent().next().show(300);
-    } else {
-        $(el).text('+')
-        $(el).parent().parent().parent().removeClass('opened');
-        $(el).parent().parent().next().hide(300);
-    }
-}
-
 function updateURLParameter(url, param, paramVal){
     var newAdditionalURL = "";
     var tempArray = url.split("?");
@@ -106,7 +92,6 @@ document.addEventListener("turbolinks:load", function() {
     $("[data-datepicker]").datetimepicker({
         format: "YYYY-MM-DD"
     });
-
 
     // On events form, if start date > end date, update the end date.
     $("#event_form").on("dp.change", function (e) {
@@ -265,6 +250,22 @@ document.addEventListener("turbolinks:load", function() {
             $(this).parent().hide().prev().show().prev().show();
         });
 
+    });
+
+    $('.faq .question dt').click(function () {
+        var button = $(this).find('.expand');
+        var sign = button.text();
+        var question = $(this).parent();
+
+        if (sign === '+') {
+            question.addClass('opened');
+            button.text('–')
+            question.find('dd').show(300);
+        } else {
+            button.text('+')
+            question.removeClass('opened');
+            question.find('dd').hide(300);
+        }
     });
 });
 

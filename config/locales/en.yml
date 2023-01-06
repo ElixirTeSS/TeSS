@@ -15,11 +15,6 @@ en:
         surname: 'Last name'
       event:
         county: Region
-  faq:
-    - q: Question 1
-      a: Answer 1
-    - q: Question 2
-      a: Answer 2
   about:
     registry: >
       TeSS is a platform that was developed to provide a one-stop shop for trainers and trainees to discover
@@ -255,19 +250,57 @@ en:
     subtitle: |
       Search the portal for courses, events, videos, presentations, learning pathways, handbooks...<br>
       All types of resources at all levels for leveraging <span class="text-primary">computational resources in the life sciences</span>.
-    events_message: "Discover the latest training events and news from ELIXIR nodes and 3<sup>rd</sup>-party providers."
-    materials_message: "Browse the catalogue of training materials offered by ELIXIR nodes and 3<sup>rd</sup>-party providers."
-    workflows_message: "Create training workflows to visualise learning steps and link to resources specific to your training needs."
-    providers_message: "Browse training providers to discover training resources they offer and follow links to their materials and courses."
-    trainers_message: "Browse a directory of trainers based on their skills and expertise."
-    nonprofit_title: "Non-profit and free to use"
-    nonprofit_description: "No costs associated, and funded through national and EU funds"
-    sustainable_title: "Sustainable"
-    sustainable_description: "Open-source code that is here to stay"
-    expert_title: "By life sciences professionals, for a life sciences workforce"
-    expert_description: "Built by an international community of life sciences professionals"
-    ls_title: "Life sciences focused"
-    ls_description: "For the entire life sciences workforce"
+    catalogue:
+      events: "Discover the latest training events and news from ELIXIR nodes and 3<sup>rd</sup>-party providers."
+      materials: "Browse the catalogue of training materials offered by ELIXIR nodes and 3<sup>rd</sup>-party providers."
+      workflows: "Create training workflows to visualise learning steps and link to resources specific to your training needs."
+      providers: "Browse training providers to discover training resources they offer and follow links to their materials and courses."
+      trainers: "Browse a directory of trainers based on their skills and expertise."
+    promo:
+      nonprofit:
+        title: "Non-profit and free to use"
+        description: "No costs associated, and funded through national and EU funds"
+      sustainable:
+        title: "Sustainable"
+        description: "Open-source code that is here to stay"
+      community:
+        title: "By life sciences professionals, for a life sciences workforce"
+        description: "Built by an international community of life sciences professionals"
+      domain:
+        title: "Life sciences focused"
+        description: "For the entire life sciences workforce"
+    faq:
+      who:
+        q: Who can register content in TeSS?
+        a: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam distinctio excepturi illum labore, laborum nemo nobis quisquam? Assumenda ducimus facilis magnam placeat, quidem repellat tempora totam ullam. Illo, magnam, quibusdam.
+      how:
+        q: How do I register content in TeSS?
+        a: |
+          <p>You can register content in TeSS automatically or manually. </p>
+          <p>To add content manually, you will need to log in and fill in the registration form for either materials or events.</p>
+          <ol>
+            <li>To have more than three resources</li>
+            <li>To have structured data</li>
+            <li>To share resources relevant to the life sciences</li>
+          </ol>
+          <p>If you fulfil these three conditions, you can contact us to set up automation. If you are a developer, read our specification page for structured data prerequisites. </p>
+      why:
+        q: Why register content in TeSS?
+        a: |
+          Registering training events and materials in TeSS makes them more findable in a variety ways to various user bases.
+
+          <p>Training in TeSS can be discovered...</p>
+          <ul>
+            <li><strong>in TeSS</strong>, by visitors browsing TeSS or subscribing to notifications.</li>
+            <li><strong>in search engine results</strong>, owing to our search-engine optimisation.</li>
+            <li><strong>through other websites</strong> that display TeSS content either using our embeddable widgets or our public API.</li>
+          </ul>
+      embed:
+        q: Can I display TeSS content on my organisation's website?
+        a: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam distinctio excepturi illum labore, laborum nemo nobis quisquam? Assumenda ducimus facilis magnam placeat, quidem repellat tempora totam ullam. Illo, magnam, quibusdam.
+      subscribe:
+        q: Can I subscribe to updates?
+        a: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam distinctio excepturi illum labore, laborum nemo nobis quisquam? Assumenda ducimus facilis magnam placeat, quidem repellat tempora totam ullam. Illo, magnam, quibusdam.
   privacy:
     registration: |
       <p>When you register with TeSS we ask for a username, password and email address.</p>
@@ -281,7 +314,7 @@ en:
     server: "When you browse TeSS, the server automatically records logs of which pages you access, when you accessed them, and your IP address. These logs are used to fix errors and are not shared with any third parties. Sensitive information (such as passwords) is automatically stripped out."
     cookies: TeSS makes use of "strictly necessary cookies" for the site to function. These cookies are needed to establish your "session" with TeSS, which allows functionality such as user log-in, and secures against Cross Site Request Forgery (CSRF) attacks.
     analytics: "TeSS uses Google Analytics to track how users are discovering TeSS and interacting with the service. The information gathered includes which pages you visited, which search terms lead you to TeSS and information about your web browser. No personally identifiable information is sent to Google."
-    retention: " Your information will be retained by TeSS until you choose to remove it, you delete your account, or the TeSS service ceases to exist."
+    retention: "Your information will be retained by TeSS until you choose to remove it, you delete your account, or the TeSS service ceases to exist."
     code: "TeSS adheres to the <a href='https://wiki.refeds.org/display/CODE/Code+of+Conduct+for+Service+Providers'> GÉANT Data Protection Code of Conduct for Service Providers in EU/EEA </a>"
     controller: "The data controller for TeSS is The University of Manchester."
     post: "<strong>The TeSS Team</strong><br/>Room 1.17 c/o School of Computer Science,<br/>Kilburn Building,<br/>Oxford Road,<br/>Manchester,<br/>M13 9PL"

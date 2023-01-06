@@ -85,40 +85,59 @@ ul.catalogue {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 10px;
 
   flex-direction: row;
   align-items: flex-start;
 
   justify-content: center;
 
-  @media (max-width: $screen-md-min) {
-    flex-direction: column-reverse;
-    align-items: center;
+  // Avoids visual awkwardness when 4 features are enabled and 3 appear on the top row, and 1 is wrapped under
+  &.catalogue-even {
+    li.resource-type {
+      @media (min-width: $screen-lg-min) {
+        flex-basis: 24%;
+      }
+      @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+        flex-basis: 48%;
+      }
+      .resource-type-text {
+        @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+          min-height: 4em;
+        }
+      }
+    }
   }
 
   li.resource-type {
     flex: 1;
+    flex-basis: 100%;
     padding: 0 12px;
-    min-width: 250px;
     margin-bottom: 15px;
+    min-width: 300px;
 
     .pseudolink {
       color: $link-color;
       text-decoration: underline;
     }
 
-    @media (max-width: $screen-md-min) {
-      width: 85%;
+    @media (min-width: $screen-lg-min) {
+      flex-basis: 0;
+    }
+
+    @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+      flex-basis: 31%;
     }
 
     .resource-type-text {
-      min-height: 5em;
+      @media (min-width: $screen-md-min) {
+        min-height: 7em;
+      }
     }
 
     .resource-type-title {
       display: flex;
-      gap: 20px;
+      gap: 10px;
       margin-bottom: 20px;
       img {
         margin-top: 10px;
@@ -134,10 +153,10 @@ dl.faq {
   margin: 0 -10px;
   list-style: none;
   justify-content: center;
-  flex-direction: column-reverse;
+  flex-direction: column;
   align-items: center;
 
-  .definition {
+  .question {
     width: 85%;
     margin-top: 20px;
     border: 1px solid rgba(36, 37, 38, 0.2);
@@ -153,10 +172,10 @@ dl.faq {
     }
 
     dt {
+      cursor: pointer;
       .expand {
         display: inline-block;
         font-weight: 800;
-        cursor: pointer;
         float: right;
       }
     }
