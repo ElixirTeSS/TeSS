@@ -16,14 +16,14 @@ gem 'lunchy'
 gem 'sass-rails', '~> 5.0'
 gem 'sassc-rails', '~> 2.1.2'
 
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
+# Use Terser as compressor for JavaScript assets
+gem 'terser'
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer'#, platforms: :ruby
 
 # CRUD of resources via a UI
-gem 'rails_admin'
+gem 'rails_admin', '~> 2.2.1'
 gem 'haml'
 
 # Authentication
