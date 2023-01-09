@@ -272,22 +272,19 @@ en:
     faq:
       who:
         q: Who can register content in TeSS?
-        a: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam distinctio excepturi illum labore, laborum nemo nobis quisquam? Assumenda ducimus facilis magnam placeat, quidem repellat tempora totam ullam. Illo, magnam, quibusdam.
+        a: >
+          <p>We welcome any training content relevant to people working in the life sciences and adjacent fields.</p>
       how:
         q: How do I register content in TeSS?
-        a: |
-          <p>You can register content in TeSS automatically or manually. </p>
+        a: >
+          <p>You can register content in TeSS automatically or manually.</p>
           <p>To add content manually, you will need to log in and fill in the registration form for either materials or events.</p>
-          <ol>
-            <li>To have more than three resources</li>
-            <li>To have structured data</li>
-            <li>To share resources relevant to the life sciences</li>
-          </ol>
-          <p>If you fulfil these three conditions, you can contact us to set up automation. If you are a developer, read our specification page for structured data prerequisites. </p>
+          <p>TeSS can also automatically register content from an external website, or other source on the web.</p>
+          <p><a href='about/registering'>See here for more information.</a></p>
       why:
         q: Why register content in TeSS?
-        a: |
-          Registering training events and materials in TeSS makes them more findable in a variety ways to various user bases.
+        a: >
+          <p>Registering training events and materials in TeSS makes them more findable in a variety ways to various user bases.</p>
 
           <p>Training in TeSS can be discovered...</p>
           <ul>
@@ -297,10 +294,19 @@ en:
           </ul>
       embed:
         q: Can I display TeSS content on my organisation's website?
-        a: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam distinctio excepturi illum labore, laborum nemo nobis quisquam? Assumenda ducimus facilis magnam placeat, quidem repellat tempora totam ullam. Illo, magnam, quibusdam.
+        a: >
+          <p>Yes, a selection of embeddable widgets are available to display training events and materials from TeSS in a variety of formats.</p>
+          <p><a href='https://elixirtess.github.io/TeSS_widgets/' target='_blank'>Click here to see examples of widgets and how to use them.</a></p>
       subscribe:
         q: Can I subscribe to updates?
-        a: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam distinctio excepturi illum labore, laborum nemo nobis quisquam? Assumenda ducimus facilis magnam placeat, quidem repellat tempora totam ullam. Illo, magnam, quibusdam.
+        a: >
+          <p>TeSS provides a customizable subscription service, letting you choose exactly what types of training you want to be notified about.</p>
+          <p>Choose how you would like receive updates:</p>
+          <ul>
+            <li><strong>Email</strong> - Daily, weekly or monthly emails containing a digest of new events or materials.</li>
+            <li><strong>Calendar</strong> - See new events directly to your online calendar.</li>
+            <li><strong>RSS feed</strong> - View new events in an RSS reader.</li>
+          </ul>
   privacy:
     registration: |
       <p>When you register with TeSS we ask for a username, password and email address.</p>

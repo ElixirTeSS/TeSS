@@ -30,8 +30,8 @@ default: &default
       provider_carousel: true
       # A list of content provider IDs to show in the front page carousel. Leave blank to show latest 5 (that have avatars set)
       featured_providers: # e.g. [123, 5, 10, 1]
-      faq: [who, how, why, embed, subscribe] # Questions/answers in config/en.yml: home > faq. Use empty array to hide section
-      promo_blocks: true
+      faq: # [who, how, why, embed, subscribe] # Questions/answers in config/en.yml: home > faq. Use empty array to hide section
+      promo_blocks: false
   mailer:
     delivery_method: sendmail
     location: /usr/sbin/sendmail
