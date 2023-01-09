@@ -36,6 +36,19 @@ Dear <%= @user.profile.firstname || @user.username %>,<br/>
   <%= link_to("View all results on #{TeSS::Config.site['title_short']}", subscription_results_url(@subscription)) %>
 </p>
 
+<% if @collections&.any? %>
+<p>
+  Collections you might like to update:
+</p>
+<ul>
+  <% @collections.each do |collection| %>
+    <li>
+      <%= link_to collection.title, send("curate_#{@subscription.subscribable_type.downcase.pluralize}_collection_url", collection) %>
+    </li>
+  <% end -%>
+</ul>
+<% end %>
+
 <hr/>
 
 <small>

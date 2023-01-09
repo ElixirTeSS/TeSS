@@ -36,6 +36,29 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     assert body.include?(m2.title), 'Expected second material title to appear in email body'
     assert body.include?(@routes.material_url(m2)), 'Expected second material URL to appear in email body'
     assert body.include?(@routes.unsubscribe_subscription_url(sub, code: sub.unsubscribe_code)), 'Expected unsubscribe link'
+    assert body.include? 'Collections' # regular_user is owner of some collections
+    assert body.include? collections(:one).title
+    assert body.include? @routes.curate_materials_collection_url(collections(:one))
+  end
+
+  test 'text digest with collaborating collections' do
+    # TODO: do not use fixture here but create new, so there are not so many collections
+    sub = subscriptions(:weekly_subscription)
+    m1 = materials(:good_material)
+    m2 = materials(:bad_material)
+    collaborating_collection = Collection.create!(title: 'collab', user: users(:admin))
+    collaborating_collection.collaborators << users(:regular_user)
+    digest = MockSearchResults.new([m1, m2])
+    email = SubscriptionMailer.digest(sub, digest)
+
+    assert_emails 1 do
+      email.deliver_now
+    end
+    
+    body = email.text_part.body.to_s
+    assert body.include? 'Collections'
+    assert body.include? collaborating_collection.title
+    assert body.include? @routes.curate_materials_collection_url(collaborating_collection)
   end
 
   test 'html event digest' do
@@ -64,5 +87,26 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     end
 
     assert html.include?(@routes.unsubscribe_subscription_url(sub, code: sub.unsubscribe_code)), 'Expected unsubscribe link'
+    assert_not html.include? 'Collections' # admin is not owner of some collections
+  end
+
+  test 'html digest with collaborating collections' do
+    # TODO: do not use fixture here but create new, so there are not so many collections
+    sub = subscriptions(:weekly_subscription)
+    m1 = materials(:good_material)
+    m2 = materials(:bad_material)
+    collaborating_collection = Collection.create!(title: 'collab', user: users(:regular_user))
+    collaborating_collection.collaborators << users(:admin)
+    digest = MockSearchResults.new([m1, m2])
+    email = SubscriptionMailer.digest(sub, digest)
+
+    assert_emails 1 do
+      email.deliver_now
+    end
+    
+    html = email.html_part.body.to_s
+    assert html.include? 'Collections' # regular_user is owner of some collections
+    assert html.include? collections(:one).title
+    assert html.include? @routes.curate_materials_collection_url(collaborating_collection)
   end
 end
