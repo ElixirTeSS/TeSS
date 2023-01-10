@@ -84,7 +84,7 @@ $link-hover-color: darken(rgb(244, 125, 33), 15%);
 
 // buttons
 $btn-default-color: $accent-color;
-$btn-default-bg: transparent;
+$btn-default-bg: #fff;
 $btn-default-border: $accent-color;
 
 $btn-primary-color: $light-color;
@@ -92,7 +92,7 @@ $btn-primary-bg: $accent-color;
 $btn-primary-border: $accent-color;
 
 $btn-danger-color: $brand-danger;
-$btn-danger-bg: transparent;
+$btn-danger-bg: #fff;
 $btn-danger-border: $brand-danger;
 
 $transition-time: 300ms;
