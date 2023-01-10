@@ -8,9 +8,9 @@
     <%= title_with_privacy(collection) %>
   </h5>
   <% unless collection.description.blank? %>
-    <p class="minimise">
+    <div class="tess-expandable markdown">
       <%= render_markdown collection.description  %>
-    </p>
+    </div>
   <% end %>
 </div>
 <h4 class="nav-heading">Keywords</h4>

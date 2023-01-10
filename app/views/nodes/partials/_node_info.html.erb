@@ -22,7 +22,7 @@
   <% end %>
 
   <% unless node.description.blank? %>
-    <p class="minimise"><%= node.description %></p>
+    <div class="tess-expandable markdown"><%= render_markdown node.description %></div>
   <% end %>
 </div>
 

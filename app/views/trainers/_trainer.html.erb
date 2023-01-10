@@ -10,7 +10,7 @@
     <p class></p>
     <div class="row" style='margin: 0;'>
       <div style="display: inline; word-break: break-word;">
-        <p><%= render_sanitized_markdown truncate(trainer.description, length: 300, separator: ' ') %></p>
+        <%= render_sanitized_markdown truncate(trainer.description, length: 300, separator: ' ') %>
       </div>
       <div class='' style='margin-top: 6px;'>
         <%= display_attribute(trainer, :location) %>

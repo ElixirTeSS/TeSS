@@ -26,9 +26,7 @@ Variable that should be available
       <%= link_to content_provider.title, url, class: 'h5', **url_opts %>
     </p>
     <% unless content_provider.description.blank? %>
-      <p class="minimise">
-        <%= content_provider.description %>
-      </p>
+      <div class="tess-expandable markdown"><%= render_markdown content_provider.description %></div>
     <% end %>
   </div>
 <% end %>

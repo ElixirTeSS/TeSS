@@ -923,7 +923,9 @@ input[type=checkbox].field-lock + label:before,
   padding: 18px;
   border-radius: 5px;
   margin: 8px 0;
+}
 
+.description, .markdown {
   h1, h2 {
     font-size: $font-size-large;
     padding-bottom: 8px;
@@ -1027,4 +1029,21 @@ input[type=checkbox].field-lock + label:before,
     flex-grow: 1;
     text-align: right;
   }
+}
+
+.tess-expandable {
+  transition: max-height 0.4s ease-in-out;
+  overflow-y: hidden;
+
+  &.tess-expandable-closed {
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  }
+
+  &.tess-expandable-open {
+    border-bottom: none;
+  }
+}
+
+.tess-expandable-btn {
+  cursor: pointer;
 }

@@ -221,35 +221,44 @@ document.addEventListener("turbolinks:load", function() {
 
     Biotools.init();
 
-    // From : http://stackoverflow.com/questions/11417544/truncate-paragraph-first-100-character-and-hide-rest-content-of-paragraph-to-sho
-    /*
-     Truncate paragraph's first 500 characters and hide rest then show/hide the rest with more/less links
-     */
-    jQuery(function () {
+    $('.tess-expandable').each(function () {
+        var limit = this.dataset.heightLimit || 300;
 
-        var minimized_elements = $('p.minimise');
+        if (this.clientHeight > limit) {
+            if (this.dataset.origHeight) { // Prevent double bind
+                return true;
+            }
+            this.dataset.origHeight = this.clientHeight;
+            this.style.maxHeight = '' + limit + 'px';
+            this.classList.add('tess-expandable-closed');
+            var btn = $('<a href="#" class="tess-expandable-btn">Show more</a>');
+            btn.insertAfter($(this));
+        }
+    });
 
-        minimized_elements.each(function () {
-            var t = $(this).text();
-            if (t.length < 500) return;
+    $(document).on('click', '.tess-expandable-btn', function (event) {
+        event.preventDefault();
+        var div = this.parentElement.querySelector('.tess-expandable');
+        var maxHeight = parseInt(div.dataset.origHeight) + 80;
+        var limit = parseInt(div.dataset.heightLimit || "300");
 
-            $(this).html(
-                t.slice(0, 500) + '<span>... </span><a href="#" class="more">Read more</a>' +
-                '<span style="display:none;">' + t.slice(500, t.length) + ' <a href="#" class="less">Read less</a></span>'
-            );
-        });
+        if (div.clientHeight < maxHeight && this.innerHTML !== 'Show less') {
+            var newHeight = div.clientHeight + limit;
+            if (newHeight > maxHeight) {
+                div.classList.add('tess-expandable-open');
+                div.classList.remove('tess-expandable-closed');
+                newHeight = maxHeight;
+                this.innerHTML = 'Show less';
+            }
+            div.style.maxHeight = '' + newHeight + 'px';
+        } else {
+            div.classList.remove('tess-expandable-open');
+            div.classList.add('tess-expandable-closed');
+            div.style.maxHeight = '' + limit + 'px';
+            this.innerHTML = 'Show more';
+        }
 
-        $('a.more', minimized_elements).click(function (event) {
-            event.preventDefault();
-            $(this).hide().prev().hide();
-            $(this).next().show();
-        });
-
-        $('a.less', minimized_elements).click(function (event) {
-            event.preventDefault();
-            $(this).parent().hide().prev().show().prev().show();
-        });
-
+        return false;
     });
 
     $('.faq .question dt').click(function () {
