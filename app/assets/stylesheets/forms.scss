@@ -151,27 +151,8 @@
     border-top: 1px solid #8D8D8D;
   }
 
-  .multiple-list-item {
-    background-color: transparent;
-    padding: 0;
-    margin: 0;
-    position: relative;
-    white-space : nowrap;
-    margin-right: 5%;
-    width: 45%;
-    margin-bottom: 15px;
-  }
-
-  .multiple-input-item:first-child {
-    .multiple-input-delete {
-      display: none;
-    }
-  }
-
-  .multiple-input-delete {
-    position: absolute;
-    top: 7px;
-    right: 15%;
+  .multiple-input-add {
+    padding: 16px;
   }
 
 

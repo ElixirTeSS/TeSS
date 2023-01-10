@@ -39,13 +39,11 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
 
     <div class="multiple-input-list" data-role="multi-input-list">
       <%# Populated via javascript from the JSON above %>
+      <a class="btn btn-icon multiple-input-add" data-role="multi-input-add" href="#" title="Add <%= label.singularize -%>">
+        <i class="icon icon-h4 plus-icon"></i>
+      </a>
     </div>
 
     <%= f.error field_name.to_sym %>
-
-    <%#= link_to('#', class: 'btn btn-icon', data: { role: 'multi-input-add' }) do %>
-<!--      <i class="icon icon-h4 plus-icon"></i>-->
-    <%# end %>
   <% end %>
-
 </div>

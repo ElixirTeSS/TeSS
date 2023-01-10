@@ -65,7 +65,7 @@ GEM
       nokogiri (~> 1.5)
       rack (>= 1.1)
     rails-assets-clipboard (1.5.16)
-    rails-assets-devbridge-autocomplete (1.2.27)
+    rails-assets-devbridge-autocomplete (1.4.9)
       rails-assets-jquery (>= 1.7)
     rails-assets-eonasdan-bootstrap-datetimepicker (4.17.47)
       rails-assets-jquery (>= 1.8.3)
@@ -804,7 +804,7 @@ DEPENDENCIES
   rack-cors
   rails (~> 6.0)
   rails-assets-clipboard (~> 1.5.12)!
-  rails-assets-devbridge-autocomplete (~> 1.2.26)!
+  rails-assets-devbridge-autocomplete (~> 1.4.9)!
   rails-assets-eonasdan-bootstrap-datetimepicker (~> 4.17.42)!
   rails-assets-markdown-it (~> 7.0.1)!
   rails-assets-moment (~> 2.15.0)!

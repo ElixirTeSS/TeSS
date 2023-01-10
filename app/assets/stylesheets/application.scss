@@ -460,27 +460,33 @@ accronym {
 
 // Multiple input list on forms with + button to add more input fields dynamically
 .multiple-input-list {
-  display: flex;
-  flex-wrap: wrap;
-}
+  //
+  //.multiple-input-add {
+  //  height: $input-height-base;
+  //}
 
-.multiple-list-item {
-  padding: 3px;
-  margin: 3px 3px 3px 0;
-  background-color: whitesmoke;
-  border-radius: 4px;
-  width: 43%;
-  display: inline;
-}
+  .multiple-list-item {
+    margin-bottom: 15px;
+    display: inline-block;
+    width: calc(100% - 60px);
 
-.multiple-input {
-  width: 85%;
-  display: inline;
-}
+    @media (min-width: $screen-sm-min) and (max-width: $screen-md-max) {
+      width: calc(50% - 30px);
+    }
 
-.multiple-input-delete {
-  background: none;
-  border: none;
+    @media (min-width: $screen-lg-min) {
+      width: calc(33% - 20px);
+    }
+
+    .multiple-input {
+      display: inline;
+      width: calc(100% - 50px);
+    }
+
+    .multiple-input-delete {
+      display: inline;
+    }
+  }
 }
 
 .dropdown-toggle {
