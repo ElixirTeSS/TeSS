@@ -73,8 +73,7 @@ document.addEventListener("turbolinks:load", function() {
 
         $(this).on('click', '[data-role="multi-input-add"]', function (e) {
             e.preventDefault();
-            var input = addItem(value);
-            nextItem.apply(input);
+            addItem('').focus();
         });
 
         $(this).on('keyup', '.multiple-list-item', function (e) {
