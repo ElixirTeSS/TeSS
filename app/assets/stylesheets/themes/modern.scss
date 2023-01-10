@@ -53,10 +53,26 @@ $footer-padding-top: 75px;
 $brand-primary: $secondary-color;
 $brand-danger: #d9534f;
 
-$padding-base-vertical:     8px;
-$padding-base-horizontal:   15px;
+$padding-base-vertical:     12px;
+$padding-base-horizontal:   16px;
 
-// Breadcrump
+$padding-large-vertical:    14px;
+$padding-large-horizontal:  18px;
+
+$padding-small-vertical:    5px;
+$padding-small-horizontal:  10px;
+
+$padding-xs-vertical:       1px;
+$padding-xs-horizontal:     5px;
+
+$border-radius-base:        8px;
+$border-radius-large:       10px;
+$border-radius-small:       4px;
+
+$input-border: $gray-light;
+$input-border-focus: $secondary-color;
+
+// Breadcrumb
 $breadcrumb-bg: transparent;
 $breadcrumb-separator: "/";
 $breadcrumb-color: $dark-color !default;

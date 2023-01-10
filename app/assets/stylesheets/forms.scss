@@ -1,132 +1,49 @@
-.modern-form {
-  .page-header {
-    margin-bottom: 100px;
+  .form-header {
+    margin-bottom: 50px;
   }
 
-  .col-md-8 {
-    padding: 0;
-  }
-
-  .field-lock, .field-lock-label {
-    // FIXME: hide lock buttons temporarily
-    display: none;
-  }
-
-  abbr {
+  label.required abbr {
     text-decoration: none;
   }
 
-  .input-group-btn {
-    .btn {
-      padding: 16px;
-    }
-  }
+  //label.boolean {
+  //  flex-flow: row wrap;
+  //  font-size: $font-size-base;
+  //  display: flex;
+  //  flex-wrap: wrap;
+  //  align-items: center;
+  //
+  //  input {
+  //    margin-right: 16px;
+  //    position: relative;
+  //  }
+  // }
 
-  .panel-default .panel-title {
-  }
 
-  .bs-type-selectors {
-    ul {
-      padding-inline-start: 0px;
-    }
-  }
-
-  .tool-suggestions-header {
-    color: $gray-darker;
-    //margin-bottom: 0;
-  }
-
-  .control-label, label {
-    color: $gray-darker;
-    position: relative;
-    display: block;
-  }
-
-  label.boolean {
-    flex-flow: row wrap;
-    font-size: $font-size-base;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-
-    input {
-      margin-right: 16px;
-      position: relative;
-    }
-  }
-
-  input[type="text"], textarea {
-    border: 1px solid #8D8D8D;
-    border-radius: 8px;
-  }
-
-  input[type="checkbox"] {
-    margin-top: -1px;
-    height: 30px;
-    width: 30px;
-    border-radius: 4px;
-  }
-
-  .help-block {
-    color: $gray-darker;
-  }
+  //input[type="checkbox"] {
+  //  margin-top: -1px;
+  //  height: 30px;
+  //  width: 30px;
+  //  border-radius: 4px;
+  //}
 
   .help-inline-block {
-    color: $gray-darker;
     display: inline-block;
   }
 
   .form-control {
-    box-shadow: none;
-    padding: 16px;
-    height: auto;
-    border-radius: 8px;
-    border: 1px solid #8D8D8D;
-  }
-
-  .input-group-addon {
-    border-radius: 8px;
-    border: 1px solid #8D8D8D;
-    border-right: none;
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0;
-  }
-
-  .form-control:focus {
-    box-shadow: none;
-    border: 1px solid $secondary-color;
-    outline: 1px solid $secondary-color;
+    box-shadow: none !important;
+    outline: none;
   }
 
   .has-error {
+    @include form-control-validation($accent-color, $accent-color, $state-danger-bg);
+
     .form-control {
-      border: 1px solid $accent-color;
-      outline: 1px solid $accent-color;
-    }
-
-    .control-label:after {
-      content: "";
-      display: block;
       background: image-url("modern/icons/error-icon.svg") no-repeat;
-      background-size: cover;
-      width: 20px;
-      height: 20px;
-      float: left;
-      margin: 0 6px 0 0;
-      position: absolute;
-      z-index: 10;
-      top: 48px;
-      right: 10px;
+      background-position: bottom 50% right 10px;
+      padding-right: 32px;
     }
-
-    .help-block {
-      color: $state-danger-text;
-    }
-  }
-
-  .panel {
-    margin-top: 16px;
-    margin-bottom: 16px;
   }
 
   #next-tools-button {
@@ -148,14 +65,5 @@
   }
 
   hr {
-    border-top: 1px solid #8D8D8D;
+    border-top: 1px solid $input-border;
   }
-
-  .multiple-input-add {
-    padding: 16px;
-  }
-
-
-  #biotools-results {
-  }
-}

@@ -442,19 +442,19 @@ accronym {
   .multiple-list-item {
     margin-bottom: 15px;
     display: inline-block;
-    width: calc(100% - 60px);
+    width: calc(100% - 72px);
 
     @media (min-width: $screen-sm-min) and (max-width: $screen-md-max) {
-      width: calc(50% - 30px);
+      width: calc(50% - 36px);
     }
 
     @media (min-width: $screen-lg-min) {
-      width: calc(33% - 20px);
+      width: calc(33% - 24px);
     }
 
     .multiple-input {
       display: inline;
-      width: calc(100% - 50px);
+      width: calc(100% - 60px);
     }
 
     .multiple-input-delete {
@@ -662,6 +662,7 @@ sup {
 
 .tool-suggestions-header {
   margin-bottom: 20px;
+  color: $gray-darker;
 }
 
 .external-links {
@@ -757,6 +758,7 @@ input.loading {
 .bs-type-selectors ul {
   display: inline;
   padding: 0;
+  padding-inline-start: 0;
 
   li {
     display: inline;
