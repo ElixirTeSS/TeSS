@@ -40,28 +40,28 @@
 }
 
 #workflow-status-bar {
-  line-height: 34px;
+  padding: 8px;
   //margin-bottom: 10px;
-  padding: 5px 10px;
   background: #efefef;
-  height: 46px;
+  border-radius: $border-radius-base;
+  overflow: auto;
 }
 
 #workflow-status-message {
   float: left;
   background-color: $alert-info-bg;
-  padding: 6px;
+  padding: $padding-base-vertical;
   border: 1px solid $alert-info-border;
-  border-radius: 4px;
   color: $alert-info-text;
+  border-radius: $border-radius-base;
 }
 
 #workflow-save-warning {
   float: left;
   background-color: $alert-warning-bg;
-  padding: 6px;
+  padding: $padding-base-vertical;
   border: 1px solid $alert-warning-border;
-  border-radius: 4px;
+  border-radius: $border-radius-base;
   color: $alert-warning-text;
   margin-right: 10px;
 }
@@ -149,6 +149,7 @@
 }
 
 #workflow-status-selected-node {
+  padding: $padding-base-vertical $padding-base-horizontal;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
