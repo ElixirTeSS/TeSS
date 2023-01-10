@@ -6,7 +6,7 @@ module NodesHelper
       "Select a node to find out more about its training events, training provision, staff and member institutions."
 
   def add_node_staff_button(form, target)
-    link_to('#', data: { role: 'add-node-staff-button', target: target }, class: 'btn btn-info') do
+    link_to('#', data: { role: 'add-node-staff-button', target: target }, class: 'btn btn-default') do
       '<i class="fa fa-plus"></i> Add staff'.html_safe
     end +
     content_tag(:div, style: 'display: none', data: { role: 'add-node-staff-template' }) do
