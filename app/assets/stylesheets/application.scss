@@ -424,32 +424,6 @@ ul.unstyled {
   text-align: center;
 }
 
-.panel-heading {
-  display: block;
-}
-
-.panel-default .panel-title {
-  color: #005d7a;
-}
-
-.panel-default .panel-title a {
-  text-decoration: none;
-  color: #005d7a;
-}
-
-.panel-heading .accordion-toggle:after {
-  /* symbol for "opening" panels */
-  font-family: 'Glyphicons Halflings'; /* essential for enabling glyphicon */
-  content: "\e113"; /* adjust as needed, taken from bootstrap.css */
-  float: right; /* adjust as needed */
-}
-
-.panel-heading .accordion-toggle.collapsed:after {
-  /* symbol for "collapsed" panels */
-  content: "\e114"; /* adjust as needed, taken from bootstrap.css */
-}
-
-
 // Fix for simple form issue: http://stackoverflow.com/questions/6748446/rails-simple-form-gives-dots-under-stars-for-required-fields-better-way-to-remo
 ibbr,
 accronym {
@@ -997,8 +971,25 @@ input[type=checkbox].field-lock + label:before,
   display: inline-block;
 }
 
-.collapsible-panel-link {
-  display: block;
+.collapsible-panel {
+  .collapsible-panel-link {
+    display: block;
+    cursor: pointer;
+
+    .panel-title:after {
+      /* symbol for "opening" panels */
+      font-family: 'Glyphicons Halflings'; /* essential for enabling glyphicon */
+      float: right; /* adjust as needed */
+      content: "\e113"; /* adjust as needed, taken from bootstrap.css */
+    }
+    &.collapsed {
+      @include border-bottom-radius(($panel-border-radius - 1));
+      .panel-title:after {
+        /* symbol for "collapsed" panels */
+        content: "\e114"; /* adjust as needed, taken from bootstrap.css */
+      }
+    }
+  }
 }
 
 #cookie-banner {
