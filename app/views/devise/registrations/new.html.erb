@@ -27,54 +27,54 @@
       <% else %>
         <div class="col-md-12">
           <div class="form-middle">
-          <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-            <%= devise_error_messages! %>
+            <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+              <%= devise_error_messages! %>
 
-            <%= f.input :username, autofocus: true %>
+              <%= f.input :username, autofocus: true %>
 
-            <%= f.input :email, required: true %>
+              <%= f.input :email, required: true %>
 
-            <%= f.input :publicize_email, as: :boolean, label: 'Make my email publicly visible' %>
+              <%= f.input :publicize_email, as: :boolean, label: 'Make my email publicly visible' %>
 
-            <%= f.input :password, required: true, input_html: { autocomplete: 'off' },
-                        hint: "(#{@minimum_password_length} characters minimum)" if @minimum_password_length %>
+              <%= f.input :password, required: true, input_html: { autocomplete: 'off' },
+                          hint: "(#{@minimum_password_length} characters minimum)" if @minimum_password_length %>
 
-            <%= f.input :password_confirmation, required: true, input_html: { autocomplete: 'off' } %>
+              <%= f.input :password_confirmation, required: true, input_html: { autocomplete: 'off' } %>
 
-            <% unless Rails.application.secrets.recaptcha[:sitekey].blank? -%>
-              <div class="form-group">
-                <%= recaptcha_tags ajax: true %>
+              <% unless Rails.application.secrets.recaptcha[:sitekey].blank? -%>
+                <div class="form-group">
+                  <%= recaptcha_tags ajax: true %>
+                </div>
+              <% end -%>
+
+              <%= f.input :processing_consent, as: :boolean, input_html: { autocomplete: 'off' },
+                          label: "I have read and understood the&nbsp;#{link_to('privacy policy', privacy_path, target: '_blank')} and consent to #{TeSS::Config.site['title_short']} processing my data.".html_safe %>
+              <div class="actions">
+                <%= f.submit "Register", :class => 'btn btn-primary' %>
               </div>
-            <% end -%>
+            <% end %>
 
-            <%= f.input :processing_consent, as: :boolean, input_html: { autocomplete: 'off' },
-                        label: "I have read and understood the&nbsp;#{link_to('privacy policy', privacy_path, target: '_blank')} and consent to #{TeSS::Config.site['title_short']} processing my data.".html_safe %>
-            <div class="actions">
-              <%= f.submit "Register", :class => 'btn btn-primary' %>
-            </div>
-          <% end %>
-
-
-          <hr>
-          <div class="separator"><span>or</span></div>
+            <hr/>
+            <div class="separator"><span>or</span></div>
 
             <div class="actions">
-              <span class="ls-login mr-2"></span>
-              <span class="ls-register ml-2 mr-2"></span>
+              <% if resource_class.omniauth_providers.any? && devise_mapping.omniauthable? %>
+                <%= render partial: 'devise/sessions/omniauth_options' %>
+              <% end %>
             </div>
 
-          <%= render "devise/shared/links" %>
+            <%= render "devise/shared/links" %>
 
           </div>
         </div>
-<!--        <div class="col-md-6" id="why-register">-->
-<!--          <h4>Registering on <%#= TeSS::Config.site['title_short'] -%> allows you to...</h4>-->
-<!--          <ul>-->
-<!--            <li>Subscribe to updates of upcoming events and new training materials in your fields of interest.</li>-->
-<!--            <li>Register your organization's training materials and events and increase their discoverability.</li>-->
-<!--            <li>Create training workflows to break down complex topics into separate steps.</li>-->
-<!--          </ul>-->
-<!--        </div>-->
+        <!--        <div class="col-md-6" id="why-register">-->
+        <!--          <h4>Registering on <%#= TeSS::Config.site['title_short'] -%> allows you to...</h4>-->
+        <!--          <ul>-->
+        <!--            <li>Subscribe to updates of upcoming events and new training materials in your fields of interest.</li>-->
+        <!--            <li>Register your organization's training materials and events and increase their discoverability.</li>-->
+        <!--            <li>Create training workflows to break down complex topics into separate steps.</li>-->
+        <!--          </ul>-->
+        <!--        </div>-->
       <% end %>
     </div>
   </div>

@@ -6,38 +6,27 @@
     <div class="row">
       <div class="col-md-12">
         <div class="form-middle">
-        <% if resource_class.omniauth_providers.any? %>
-          <% if devise_mapping.omniauthable? -%>
+          <% if resource_class.omniauth_providers.any? && devise_mapping.omniauthable? %>
             <div class="h4"><%= t('authentication.omniauth.title') %></div>
             <p><%= t('authentication.omniauth.description') %></p>
-            <% Devise.omniauth_configs.each do |provider, config| -%>
-              <%= link_to(omniauth_authorize_path(resource_name, provider), method: :post,
-                          class: config.options[:logo] ? '' : 'btn btn-default') do %>
-                <% if config.options[:logo] %>
-                  <%= image_tag(config.options[:logo], class: "omniauth-logo omniauth-#{provider}") %>
-                <% else %>
-                  <%= "Log in with #{t("authentication.omniauth.providers.#{provider}", default: provider.to_s.titleize)}" %>
-                <% end %>
-              <% end -%>
-            <% end -%>
-          <% end -%>
-          <hr/>
-        <% end %>
+            <%= render partial: 'devise/sessions/omniauth_options' %>
+            <hr/>
+          <% end %>
 
-        <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-          <div class="h4"><%= t('authentication.password.title') %></div>
-          <p><%= t('authentication.password.description') %></p>
-          <%= f.input :login, label: 'Email or username', autofocus: true %>
-          <%= f.input :password, input_html: { autocomplete: 'off' } %>
-          <% if devise_mapping.rememberable? -%>
-            <%= f.input :remember_me, as: :boolean %>
-          <% end -%>
-          <div class="actions">
-            <%= f.submit "Log in", :class => 'btn btn-primary' %>
-          </div>
-        <% end %>
-        <%= render "devise/shared/links" %>
-      </div>
+          <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+            <div class="h4"><%= t('authentication.password.title') %></div>
+            <p><%= t('authentication.password.description') %></p>
+            <%= f.input :login, label: 'Email or username', autofocus: true %>
+            <%= f.input :password, input_html: { autocomplete: 'off' } %>
+            <% if devise_mapping.rememberable? -%>
+              <%= f.input :remember_me, as: :boolean %>
+            <% end -%>
+            <div class="actions">
+              <%= f.submit "Log in", :class => 'btn btn-primary' %>
+            </div>
+          <% end %>
+          <%= render "devise/shared/links" %>
+        </div>
       </div>
     </div>
   </div>
