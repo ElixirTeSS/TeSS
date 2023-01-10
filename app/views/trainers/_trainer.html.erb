@@ -1,23 +1,15 @@
-<div class="list-card" style="width: 100%;">
+<li class="masonry-brick media-item long">
+  <a class="link-overlay" href="<%= trainer_path(trainer) %>">
+    <%= image_tag trainer.user.avatar_url, class: 'small-avatar pull-right' %>
 
-  <div class='col-md-1 pull-right' style='margin: 10px; padding: 0;'>
-    <%= image_tag trainer.user.avatar_url, class: 'small-trainer-logo', style: 'margin: 0; padding: 0;' %>
-  </div>
+    <h4><%= trainer.full_name %></h4>
 
-  <%= link_to(trainer.full_name, trainer, class: 'list-card-heading') %>
-
-  <div class="dont-break-out">
-    <p class></p>
-    <div class="row" style='margin: 0;'>
-      <div style="display: inline; word-break: break-word;">
-        <%= render_sanitized_markdown truncate(trainer.description, length: 300, separator: ' ') %>
-      </div>
-      <div class='' style='margin-top: 6px;'>
-        <%= display_attribute(trainer, :location) %>
-      </div>
+    <div class="dont-break-out">
+      <%= render_sanitized_markdown truncate(trainer.description, length: 300, separator: ' ') %>
     </div>
-  </div>
 
-  <%= render :partial => 'trainers/partials/trainer_schemaorg', :locals => { :trainer => trainer } %>
+    <%= display_attribute(trainer, :location) %>
 
-</div>
+    <%= render partial: 'trainers/partials/trainer_schemaorg', locals: { trainer: trainer } %>
+  </a>
+</li>

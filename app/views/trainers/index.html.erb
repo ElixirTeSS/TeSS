@@ -21,7 +21,7 @@
                                                                   resource_type: User } %>
     <% end %>
 
-    <%= render @trainers %>
+    <%= render partial: 'common/masonry_grid', locals: { objects: @trainers } %>
 
     <%= render partial: 'search/common/pagination_bar', locals: { resources: @trainers } %>
   </div>
