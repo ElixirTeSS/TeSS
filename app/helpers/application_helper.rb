@@ -398,14 +398,6 @@ module ApplicationHelper
       })
     end
 
-    def internal_resource(name, options = {})
-      url = options[:url] || @template.polymorphic_path(name)
-      @template.render(partial: 'common/internal_resource', locals: { field_name: name, f: self, url: url,
-                                                                      template: options[:template],
-                                                                      id_field: options[:id_field] || :id,
-                                                                      label_field: options[:label_field] || :title })
-    end
-
     def multi_input(name, options = {})
       suggestions = options[:suggestions] || AutocompleteManager.suggestions_array_for(name.to_s)
       @template.render(partial: 'common/multiple_input', locals: { field_name: name, f: self,
