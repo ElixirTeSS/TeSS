@@ -26,6 +26,9 @@
           <%= render_markdown(@workflow.description) %>
         <% end %>
         <%= render partial: 'common/extra_metadata', locals: { resource: @workflow } %>
+        <% if policy(@workflow).update? && @workflow.edit_suggestion %>
+          <%= render partial: 'common/approve_term_suggestions', locals: { suggestion: @workflow.edit_suggestion } %>
+        <% end %>
       <% end %>
       <%= render partial: 'workflows/workflow_diagram', locals: { workflow: @workflow } %>
     </div>

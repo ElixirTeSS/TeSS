@@ -1,13 +1,13 @@
 <div class="row wrapper">
   <div class="col-md-12">
-    <%= page_title 'Search results', class: 'module-heading' %>
+    <%= page_title 'Search results' %>
 
     <%# SEARCH BAR %>
-    <div class="row" style="padding-top: 10px;">
+    <div class="row">
       <%= render partial: 'search/common/search_box', locals: { resource_path: search_path } %>
     </div>
 
-    <div class="row" style="padding-top: 10px;">
+    <div class="row">
       <% if @results.blank? %>
           <p class="empty">No results found</p>
       <% else %>

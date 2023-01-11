@@ -1,0 +1,43 @@
+.account-form {
+  .page-header {
+    text-align: center;
+  }
+
+  .form-middle {
+    width: 70%;
+    margin: 100px auto 0;
+
+    @media only screen and (max-width: 992px) {
+      width: 100%;
+      margin: 0;
+    }
+  }
+
+  .separator {
+    text-align: center;
+    height: 1px;
+    border-top: 1px solid $input-border;
+
+    span {
+      width: 100px;
+      line-height: 30px;
+      height: 30px;
+      display: block;
+      background-color: white;
+      margin: -16px auto 0 auto;
+    }
+  }
+
+  .shared-links {
+    list-style: none;
+    text-align: center;
+    a {
+      text-decoration: underline;
+    }
+  }
+
+  .actions {
+    text-align: center;
+    margin: 50px 0;
+  }
+}

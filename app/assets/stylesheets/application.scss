@@ -211,14 +211,6 @@ div.wrapper {
   }
 }
 
-.workflow_image {
-  width: 100%;
-}
-
-.profile {
-  margin-bottom: 30px;
-}
-
 // Style for empty results etc.
 .empty {
   color: #aaa;
@@ -255,10 +247,6 @@ div.wrapper {
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
-}
-
-.wide .media-item {
-  width: 186px;
 }
 
 .listing_image {
@@ -331,12 +319,6 @@ ul.unstyled {
   margin: 0;
 }
 
-.nav-heading-darker {
-  background-color: #f6f6f6;
-  padding: 10px;
-  margin: 0 0 5px 0;
-}
-
 .facet-option {
   display: flex !important;
 
@@ -384,7 +366,7 @@ ul.unstyled {
 .medium-avatar {
   max-width: 50%;
   min-width: 100px;
-  margin: 0 10px 0 0;
+  margin: 0 10px 10px 0;
 }
 
 .small-trainer-logo {
@@ -419,16 +401,6 @@ ul.unstyled {
   display: inline-block
 }
 
-.welcome-text {
-  padding: 20px;
-  text-align: center;
-}
-
-// Fix for simple form issue: http://stackoverflow.com/questions/6748446/rails-simple-form-gives-dots-under-stars-for-required-fields-better-way-to-remo
-ibbr,
-accronym {
-  border-bottom: 0 !important;
-}
 
 /* try adding !important  after 0px if doesn't work */
 
@@ -500,19 +472,6 @@ accronym {
   margin: 20px 0 20px;
   border: none;
   padding: 0;
-}
-
-// Vertically aligned
-.vertical-align {
-  display: flex;
-  flex-direction: row;
-}
-
-.vertical-align > [class^="col-"],
-.vertical-align > [class*=" col-"] {
-  display: flex;
-  align-items: center; /* Align the flex-items vertically */
-  //justify-content: center; /* Optional, to align inner flex-items horizontally within the column  */
 }
 
 sup {
@@ -705,27 +664,6 @@ sup {
   min-height: 20px;
   */
   word-wrap: break-word;
-}
-
-.pagination {
-  display: flex;
-  flex-wrap: wrap; /* optional. only if you want the items to wrap */
-  justify-content: center; /* for horizontal alignment */
-}
-
-#gravatar_image {
-  margin-bottom: 10px;
-}
-
-.btn-elixir {
-  @include button-variant($light-color, $accent-color, $light-color);
-
-  background-image: image-url('elixir_white_small.png');
-  background-repeat: no-repeat;
-  background-position: 7px 7px;
-  padding-left: 32px;
-  cursor: pointer;
-  vertical-align: middle;
 }
 
 div.legal-block {
@@ -1026,4 +964,11 @@ input[type=checkbox].field-lock + label:before,
 
 .tess-expandable-btn {
   cursor: pointer;
+}
+
+div {
+  &.field,
+  &.actions {
+    margin-bottom: 10px;
+  }
 }
