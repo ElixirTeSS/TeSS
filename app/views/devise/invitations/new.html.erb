@@ -1,10 +1,8 @@
-<div class="page-header">
-  <h2><%= t "devise.invitations.new.header" %></h2>
-</div>
-
-<div id="content">
-
-  <div class="row">
+<div class="account-form">
+  <div class="page-header">
+    <%= page_title t('devise.invitations.new.header') %>
+  </div>
+  <div class="form-middle" id="content">
     <%= simple_form_for(resource, as: resource_name, url: invitation_path(resource_name), html: { method: :post }) do |f| %>
       <%= f.error_notification %>
       <% resource.class.invite_key_fields.each do |field| -%>
@@ -12,7 +10,7 @@
           <%= f.input field %>
         </div>
       <% end -%>
-      <div class="form-actions">
+      <div class="actions">
         <%= f.button :submit, t("devise.invitations.new.submit_button"), class: 'btn btn-primary'%>
         <%= link_to invitees_path, class: 'btn btn-default' do %>Cancel<% end %>
       </div>

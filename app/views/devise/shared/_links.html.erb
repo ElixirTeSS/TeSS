@@ -1,21 +1,21 @@
 <ul class="shared-links">
   <%- if controller_name != 'sessions' %>
-      <li>Already on TeSS? <%= link_to "Log in", new_session_path(resource_name) %></li>
+      <li>Already on TeSS? <%= link_to 'Log in', new_session_path(resource_name) %></li>
   <% end -%>
 
   <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
-      <li><%= link_to "Register", new_registration_path(resource_name) %></li>
+      <li>New to TeSS? <%= link_to 'Register', new_registration_path(resource_name) %></li>
   <% end -%>
 
   <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-      <li><%= link_to "Forgot your password?", new_password_path(resource_name) %></li>
+      <li>Forgot your password? <%= link_to 'Request a reset', new_password_path(resource_name) %></li>
   <% end -%>
 
   <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
-      <li>Didn’t receive confirmation instructions? <%= link_to "Resend", new_confirmation_path(resource_name) %></li>
+      <li>Didn’t receive confirmation instructions? <%= link_to 'Resend', new_confirmation_path(resource_name) %></li>
   <% end -%>
 
   <%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
-      <li><%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name) %></li>
+      <li>Didn't receive unlock instructions? <%= link_to 'Resend', new_unlock_path(resource_name) %></li>
   <% end -%>
 </ul>

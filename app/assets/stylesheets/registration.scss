@@ -1,13 +1,6 @@
-.registration-form {
+.account-form {
     .page-header {
       text-align: center;
-    }
-
-    .user_processing_consent {
-        padding: 0;
-        background-color: transparent;
-        color: $dark-color;
-        border: none;
     }
 
     .form-middle {
@@ -23,42 +16,24 @@
     .separator {
         text-align: center;
         height: 1px;
+        border-top: 1px solid $input-border;
 
         span {
-            position: relative;
-            top: -53px;
-            padding: 10px 50px;
-            display: inline-block;
+            width: 100px;
+            line-height: 30px;
+            height: 30px;
+            display: block;
             background-color: white;
+            margin: -16px auto 0 auto;
         }
     }
 
     .shared-links {
         list-style: none;
         text-align: center;
-
-        padding-inline-start: 0px;
-
-        li {
-
+        a {
+          text-decoration: underline;
         }
-    }
-
-    .ls-login, .ls-register {
-        display: inline-block;
-        background-size: 100% auto;
-        background-repeat: no-repeat;
-
-        height: 50px;
-        width: 200px;
-    }
-
-    .ls-login {
-        background-image: image-url("modern/logos/ls-login.svg");
-    }
-
-    .ls-register {
-        background-image: image-url("modern/logos/ls-register.svg");
     }
 
     .actions {

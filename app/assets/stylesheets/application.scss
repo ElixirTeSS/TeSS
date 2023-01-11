@@ -819,25 +819,6 @@ input[type=checkbox].field-lock + label:before,
   }
 }
 
-.user_processing_consent {
-  @include alert-variant($alert-info-bg, $alert-info-border, $alert-info-text);
-
-  padding: 0 10px;
-  border-radius: 4px;
-  border-style: solid;
-  border-width: 1px;
-
-  a {
-    text-decoration: underline;
-  }
-}
-
-.quick-links {
-  width: 80%;
-  text-align: center;
-  margin-left: 10%;
-}
-
 .selected-tab {
   color: inherit;
   text-decoration: underline;
@@ -999,7 +980,7 @@ input[type=checkbox].field-lock + label:before,
   bottom: 0;
   width: 100%;
   padding-top: 10px;
-  background-color: #eee;
+  background-color: #ddd;
   z-index: 2;
 
   .btn {

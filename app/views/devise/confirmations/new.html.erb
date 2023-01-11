@@ -1,8 +1,9 @@
-<div class="page-header">
-  <%= page_title 'Resend confirmation instructions' %>
-</div>
-<div class="col-md-6">
-  <%= simple_form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+<div class="account-form">
+  <div class="page-header">
+    <%= page_title 'Resend confirmation instructions' %>
+  </div>
+  <div class="form-middle">
+    <%= simple_form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
       <%= devise_error_messages!('There was a problem resending your confirmation instructions:') %>
 
       <%= f.input :email, autofocus: true,
@@ -11,7 +12,8 @@
       <div class="actions">
         <%= f.submit "Resend confirmation instructions",:class => 'btn btn-primary' %>
       </div>
-  <% end %>
+    <% end %>
 
-  <%= render "devise/shared/links" %>
+    <%= render "devise/shared/links" %>
+  </div>
 </div>
