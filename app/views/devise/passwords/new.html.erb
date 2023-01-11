@@ -4,7 +4,7 @@
   </div>
   <div class="form-middle">
     <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-      <%= devise_error_messages!('There was a problem resetting your password:') %>
+      <%= account_error_messages!('There was a problem resetting your password:') %>
 
       <%= f.input :email, autofocus: true %>
 

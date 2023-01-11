@@ -4,7 +4,7 @@
   </div>
   <div class="form-middle">
     <%= simple_form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
-      <%= devise_error_messages!('There was a problem resending your confirmation instructions:') %>
+      <%= account_error_messages!('There was a problem resending your confirmation instructions:') %>
 
       <%= f.input :email, autofocus: true,
                   input_html: { value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) } %>
