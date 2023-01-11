@@ -1,13 +1,17 @@
 div.staff-form {
-  @include clearfix;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
 
   .staff-member-fields {
-    padding: 10px;
+    width: 100%;
 
-    @media (min-width: $screen-md) {
-      width: 33%;
-      float: left;
-      padding-right: 20px;
+    @media (min-width: $screen-sm-min) and (max-width: $screen-md-max) {
+      width: 48%;
+    }
+
+    @media (min-width: $screen-lg-min) {
+      width: 31%;
     }
 
     margin: 10px 0;

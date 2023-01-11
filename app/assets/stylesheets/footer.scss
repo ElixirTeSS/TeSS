@@ -11,7 +11,7 @@
   color: $footer-text;
   padding-top: $footer-padding-top;
 
-  @media (max-width: $screen-sm) {
+  @media (max-width: $screen-md-max) {
     padding-top: 0;
   }
 

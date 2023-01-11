@@ -88,14 +88,14 @@ div.wrapper {
 
   &.collapsing-wrapper {
     // Divs that were arranged left -> right will collapse to bottom -> top
-    @media (max-width: $screen-md-min) {
+    @media (max-width: $screen-sm-max) {
       flex-direction: column-reverse;
     }
   }
 
   &.collapsing-wrapper-tb {
     // Opposite to above
-    @media (max-width: $screen-md-min) {
+    @media (max-width: $screen-sm-max) {
       flex-direction: column;
     }
   }
@@ -125,14 +125,14 @@ div.wrapper {
   }
 
   &.collapsing-sidebar {
-    @media (max-width: $screen-md-min) {
+    @media (max-width: $screen-sm-max) {
       width: 100%;
       border-right: none;
     }
   }
 
   &.popout-sidebar {
-    @media (max-width: $screen-md-min) {
+    @media (max-width: $screen-sm-max) {
       padding: 0;
       width: calc(100% - 30px);
       position: absolute;
@@ -198,7 +198,7 @@ div.wrapper {
 #sidebar-toggle {
   display: none;
 
-  @media (max-width: $screen-md-min) {
+  @media (max-width: $screen-sm-max) {
     display: inline;
   }
 }
@@ -206,7 +206,7 @@ div.wrapper {
 #sidebar-header {
   display: none;
 
-  @media (max-width: $screen-md-min) {
+  @media (max-width: $screen-sm-max) {
     display: block;
   }
 }

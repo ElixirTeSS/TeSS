@@ -206,7 +206,7 @@ ul.promo-blocks {
 
   justify-content: center;
 
-  @media (max-width: $screen-md-min) {
+  @media (max-width: $screen-sm-max) {
     flex-direction: column-reverse;
     align-items: center;
     align-content: center;
@@ -219,8 +219,10 @@ ul.promo-blocks {
     border-radius: 8px;
     padding: 20px;
 
-    @media (max-width: $screen-md-min) {
+    @media (max-width: $screen-sm-max) {
       width: 85%;
+      border-right: none;
+      margin-bottom: 10px;
     }
 
     img {
@@ -229,12 +231,6 @@ ul.promo-blocks {
       margin-right: 10px;
       margin-bottom: 10px;
       float: left;
-    }
-
-
-    @media (max-width: $screen-md) {
-      border-right: none;
-      margin-bottom: 10px;
     }
 
     h2 {
