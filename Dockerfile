@@ -1,5 +1,5 @@
 #use ruby base image
-FROM ruby:3.0.5
+FROM ruby:3.2.0
 
 # set work dir
 WORKDIR /code

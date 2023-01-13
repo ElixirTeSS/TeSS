@@ -8,7 +8,7 @@ module AutocompleteManager
 
   def self.suggestions_file_for(field_name, access='r')
     file_path = Rails.root.join('lib', 'assets', "#{field_name}_suggestions.txt").to_s
-    if !File.exists?(file_path)
+    unless File.exist?(file_path)
       a = File.open(file_path, 'w')
       a.close
     end

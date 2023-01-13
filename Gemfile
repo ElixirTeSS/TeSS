@@ -2,7 +2,9 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0'
+gem 'rails', '~> 7.0'
+
+gem 'sprockets-rails'
 
 gem 'bootsnap', '>= 1.4.4', require: false
 
@@ -33,7 +35,7 @@ gem "omniauth-rails_csrf_protection"
 gem 'devise_invitable', '~> 2.0.5'
 
 # Activity logging
-gem 'public_activity', '~> 1.6.4'
+gem 'public_activity', '~> 2.0.2'
 
 gem 'simple_token_authentication', '~> 1.0'
 
@@ -91,7 +93,7 @@ gem 'simple_form'
 gem 'country_select', '<= 4.0.0'
 
 # Gem for rendering Markdown
-gem 'redcarpet', '~> 3.5.1'
+gem 'redcarpet', git: 'https://github.com/vmg/redcarpet', ref: '50961ad78'
 
 # Gem for paginating search results
 gem 'will_paginate'
@@ -102,9 +104,6 @@ gem 'pundit', '~> 1.1.0'
 
 # Simple colour picker from a predefined list
 gem 'jquery-simplecolorpicker-rails'
-
-# For getting date of materials for the home page
-gem 'by_star', git: 'https://github.com/radar/by_star'
 
 gem 'handlebars_assets'
 
