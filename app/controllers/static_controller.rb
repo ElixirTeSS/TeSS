@@ -21,4 +21,6 @@ class StaticController < ApplicationController
 
     @resources = @resources.sort_by(&:created_at).reverse
   end
+
+  def showcase; end
 end

@@ -54,6 +54,9 @@ $footer-padding-top: 75px;
 
 $brand-primary: $secondary-color;
 $brand-danger: #d9534f;
+$brand-success: #04aa30;
+$brand-warning: #f0be3e;
+$brand-info: #7bbdd5;
 
 $padding-base-vertical:     12px;
 $padding-base-horizontal:   16px;
@@ -92,6 +95,18 @@ $btn-default-border: $accent-color;
 $btn-primary-color: $light-color;
 $btn-primary-bg: $accent-color;
 $btn-primary-border: $accent-color;
+
+$btn-info-color: $brand-info;
+$btn-info-bg: #fff;
+$btn-info-border: $brand-info;
+
+$btn-success-color: $brand-success;
+$btn-success-bg: #fff;
+$btn-success-border: $brand-success;
+
+$btn-warning-color: $brand-warning;
+$btn-warning-bg: #fff;
+$btn-warning-border: $brand-warning;
 
 $btn-danger-color: $brand-danger;
 $btn-danger-bg: #fff;
