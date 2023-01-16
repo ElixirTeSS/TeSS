@@ -88,36 +88,13 @@ var Biotools = {
             return res
         })
     },
-    displayFullTool: function(api, id){
-        $.get(api, function(json_object) {
-            $('#' + id + '-desc').text(json_object.description);
-            $('#' + id + '-resource-type-icon').addClass('fa-wrench').removeClass('fa-external-link');
-            $.each(json_object.toolType, function(index, ttype){
-                $('#' + id + '-types').append(
-                    '<span class="label label-info typelabel">' +
-                    ttype +
-                    '</span>'
-                );
-            });
-            $.each(json_object.topic, function(index, topic){
-                $('#' + id + '-topics').append(
-                    '<span class="btn btn-default keyword-button">' +
-                    '<a href="' + topic.uri + '" target="_blank" rel="noopener">' + topic.term + '</a>' +
-                    '</span>'
-                );
-            });
-            $('#' + id + '-external-links').append(
-                '<div>' +
-                '<a class="btn btn-default external-button" target="_blank" rel="noopener" href="' + json_object.homepage +'">' +
-                'View the ' + json_object.name + ' homepage ' +
-                '<i class="fa fa-external-link"></i></a>' +
-                '</a>' +
-                '<a class="btn btn-default external-button" target="_blank" rel="noopener" href="' + Biotools.websiteBaseURL() + '/' + json_object.biotoolsID +'">' +
-                'View ' + json_object.name + ' on bio.tools ' +
-                '<i class="fa fa-external-link"></i></a>' +
-                '</div>'
-            );
-        }, 'json');
+    displayFullTool: function (url, element){
+        var toolElement = $(element);
+        if (!toolElement.find('.biotools-info').length) {
+            $.get(url, function(response) {
+                toolElement.append(HandlebarsTemplates['external_resources/biotools_info'](response))
+            }, 'json');
+        }
     },
 
     init: function () {
@@ -147,6 +124,11 @@ var Biotools = {
         $('#search_tools').click(Biotools.search);
         $('#biotools-results').on('click', '.associate-tool', Biotools.associateTool);
         $('#external-resources').on('change', '.delete-external-resource-btn input.destroy-attribute', ExternalResources.delete);
+        $('[data-biotools-url]').each(function () {
+            Biotools.displayFullTool($(this).data('biotools-url'), this);
+        });
+
+
 
         if ($('#tool_query').length) {
             Biotools.titleElement().keyup(Biotools.copyTitleAndSearch);
