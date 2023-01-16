@@ -52,11 +52,28 @@ $footer-text: $dark-color;
 $footer-border-radius: 50px;
 $footer-padding-top: 75px;
 
-$brand-primary: $secondary-color;
+// Bootstrap variables
+$brand-primary: $accent-color;
 $brand-danger: #d9534f;
 $brand-success: #04aa30;
 $brand-warning: #f0be3e;
 $brand-info: #7bbdd5;
+
+$state-success-text: $brand-success;
+$state-success-bg: #caf9d6;
+$state-success-border: $state-success-bg;
+
+$state-info-text: darken($brand-info, 20%);
+$state-info-bg: #d3f0fb;
+$state-info-border: $state-info-bg;
+
+$state-warning-text: darken($brand-warning, 20%);
+$state-warning-bg: #fff6c6;
+$state-warning-border: $state-warning-bg;
+
+$state-danger-text: $brand-danger;
+$state-danger-bg: #ffe9e9;
+$state-danger-border: $state-danger-bg;
 
 $padding-base-vertical:     12px;
 $padding-base-horizontal:   16px;
@@ -87,7 +104,7 @@ $breadcrumb-active-color: $dark-color !default;
 $link-color: $accent-color;
 $link-hover-color: darken(rgb(244, 125, 33), 15%);
 
-// buttons
+// Buttons
 $btn-default-color: $accent-color;
 $btn-default-bg: #fff;
 $btn-default-border: $accent-color;
@@ -111,6 +128,14 @@ $btn-warning-border: $brand-warning;
 $btn-danger-color: $brand-danger;
 $btn-danger-bg: #fff;
 $btn-danger-border: $brand-danger;
+
+// Panels
+$panel-default-heading-bg: transparentize($secondary-color, 0.9);
+$panel-default-border: $panel-default-heading-bg;
+
+// Misc
+$label-default-bg: $secondary-color;
+$badge-bg: $accent-color;
 
 $transition-time: 300ms;
 

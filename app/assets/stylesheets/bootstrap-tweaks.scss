@@ -82,6 +82,6 @@ a {
   border-radius: 6px;
 }
 
-.btn-alternate {
+.btn-secondary {
   @include button-variant($secondary-color, $btn-default-bg, $secondary-color);
 }
