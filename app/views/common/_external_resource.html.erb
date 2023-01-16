@@ -5,7 +5,9 @@
       <i class="fa fa-external-link"></i>
       <%= external_resource.title %>
       <% if external_resource.is_fairsharing? -%>
-        <img src="<%= image_url('fairsharing-logo.svg')-%>" class="pull-right" alt="Link to FAIRsharing" width="100px"/>
+        <img src="<%= image_url('fairsharing-logo.svg')-%>" class="pull-right external-resource-logo" alt="FAIRsharing logo"/>
+      <% elsif external_resource.is_tool? -%>
+        <img src="<%= image_url('biotools-logo.png')-%>" class="pull-right external-resource-logo" alt="bio.tools logo"/>
       <% end -%>
       <%= missing_icon(external_resource, 'medium') if current_user&.is_admin? %>
     </h5>

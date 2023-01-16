@@ -76,23 +76,16 @@ var Biotools = {
         $('#tool_query').val(Biotools.titleElement().val());
         Biotools.search();
     },
-    displayToolInfo: function(id){
-        $.getJSON((Biotools.apiBaseURL() + '/' + id), function(data){
-            var res = {};
-            res['topics'] = [];
-            $.each(data.topic, function(index, topic) {
-                res['topics'].push('<a href="' + topic.uri +'" class="label label-default filter-button">' + topic.term + '</a>');
-            });
-            $('#tool-topics-' + id).html('<div>' + res['topics'].join(' ') + '</div>')
-            $('#tool-description-' + id).html(data.description)
-            return res
-        })
-    },
     displayFullTool: function (url, element){
         var toolElement = $(element);
         if (!toolElement.find('.biotools-info').length) {
-            $.get(url, function(response) {
-                toolElement.append(HandlebarsTemplates['external_resources/biotools_info'](response))
+            $.get(url, function(item) {
+                toolElement.append(HandlebarsTemplates['external_resources/biotools_info']({
+                        name: item.name,
+                        truncatedDescription: truncateWithEllipses(item.description, 200),
+                        labels: item.toolType
+                    }
+                ))
             }, 'json');
         }
     },
@@ -127,8 +120,6 @@ var Biotools = {
         $('[data-biotools-url]').each(function () {
             Biotools.displayFullTool($(this).data('biotools-url'), this);
         });
-
-
 
         if ($('#tool_query').length) {
             Biotools.titleElement().keyup(Biotools.copyTitleAndSearch);

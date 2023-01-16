@@ -251,24 +251,12 @@ var Workflows = {
                     e.cyTarget.data('html_description', MarkdownIt.render(e.cyTarget.data('description')));
                 }
 
-                var resources = e.cyTarget.data('associatedResources');
-                if (resources && resources.length > 0){
-                    for(var i = 0; i < resources.length; i++) {
-                        var resource = resources[i];
-                        var uri = URI.parse(resource.url);
-                        if (uri.hostname == 'bio.tools') {
-                            var id = uri.path.split('/')[2];
-                            Biotools.displayToolInfo(id);
-                            resource.id =id
-                        }
-                    }
-                }
-                e.cyTarget.data('associatedResources', resources);
-
                 $('#workflow-diagram-sidebar-title').html(e.cyTarget.data('name') || '<span class="muted">Untitled</span>')
                     .css('background-color', e.cyTarget.data('color'))
                     .css('color', e.cyTarget.data('font_color'));
                 $('#workflow-diagram-sidebar-desc').html(HandlebarsTemplates['workflows/sidebar_content'](e.cyTarget.data()));
+
+                Workflows.sidebar.fetchToolInfo(e.cyTarget.data('associatedResources'));
 
                 Workflows.storeLastSelection();
 
@@ -296,6 +284,22 @@ var Workflows = {
         clear: function () {
             var sidebar = $('#workflow-diagram-sidebar');
             sidebar.html(sidebar.data('initialState'));
+        },
+
+        fetchToolInfo: function (resources) {
+            if (resources && resources.length > 0) {
+                for (var i = 0; i < resources.length; i++) {
+                    var resource = resources[i];
+                    var uri = URI.parse(resource.url);
+                    if (uri.hostname === 'bio.tools') {
+                        var id = uri.path.split('/')[2];
+                        var container = $('.resourceCard a[href="' + resource.url +'"]').parent();
+                        if (container.length) {
+                            Biotools.displayFullTool(Biotools.apiBaseURL() + '/' + id, container);
+                        }
+                    }
+                }
+            }
         }
     },
 
