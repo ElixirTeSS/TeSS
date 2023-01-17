@@ -22,12 +22,6 @@ $light-60-color: rgba(244, 247, 251, 0.6); // Unused
 $light-30-color: rgba(244, 247, 251, 0.3); // Unused
 $light-05-color: rgba(244, 247, 251, 0.05); // Unused
 
-$gray-darker: $dark-color;
-$gray-dark: darken($dark-60-color, 25%);
-$gray: darken($dark-60-color, 10%);
-$gray-light: $dark-60-color;
-$gray-lighter: $dark-05-color; // Unused
-
 // Font sizes
 $font-size-base: 16px;
 $font-size-large: 18px;
@@ -40,10 +34,8 @@ $font-size-h2: 44px;
 $font-size-h3: 32px;
 $font-size-h4: 24px;
 
-
 // Header
 $unified-header-bg: transparent;
-
 
 // Footer
 $footer-bg: $dark-05-color;
@@ -52,12 +44,22 @@ $footer-text: $dark-color;
 $footer-border-radius: 50px;
 $footer-padding-top: 75px;
 
-// Bootstrap variables
+$transition-time: 300ms;
+
+// BOOTSTRAP VARIABLES
+
+// Colours
 $brand-primary: $accent-color;
 $brand-danger: #d9534f;
 $brand-success: #04aa30;
 $brand-warning: #f0be3e;
 $brand-info: #7bbdd5;
+
+$gray-darker: $dark-color;
+$gray-dark: darken($dark-60-color, 25%);
+$gray: darken($dark-60-color, 10%);
+$gray-light: $dark-60-color;
+$gray-lighter: $dark-05-color; // Unused
 
 $state-success-text: $brand-success;
 $state-success-bg: #caf9d6;
@@ -137,8 +139,6 @@ $panel-default-border: $panel-default-heading-bg;
 $label-default-bg: $secondary-color;
 $badge-bg: $accent-color;
 
-$transition-time: 300ms;
-
 .btn-default:hover, .btn-default:active, .btn-default:focus {
   color: $secondary-color !important;
   background-color: #fff !important;
@@ -164,11 +164,11 @@ $transition-time: 300ms;
 }
 
 .text-primary {
-  color: $secondary-color;
+  color: $secondary-color !important;
 }
 
 .nav-tabs a {
-  color: $secondary-color;
+  color: $secondary-color !important;
 }
 
 // for reference check https://github.com/pkp/bootstrap3/blob/main/bootstrap/less/variables.less
