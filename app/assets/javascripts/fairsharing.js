@@ -105,7 +105,7 @@ var Fairsharing = {
             }
         });
         $('#search_fairsharing').click(Fairsharing.search);
-        $('#fairsharing-results').on('click', '.associate-tool', Fairsharing.associateTool);
+        $('#fairsharing-results').on('click', '.associate-resource', Fairsharing.associateTool);
         $('#external-resources').on('change', '.delete-external-resource-btn input.destroy-attribute', ExternalResources.delete);
         Fairsharing.titleElement().blur(Fairsharing.copyTitleAndSearch);
     }

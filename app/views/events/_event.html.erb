@@ -1,62 +1,45 @@
-<% eclass ||= "long" if defined?(list) && !list.nil? && list -%>
-<% if tooltip_titles(event).empty? -%>
-<li class="masonry-brick media-item">
-<% else -%>
-<li class="masonry-brick media-item <%= eclass %>" data-toggle="tooltip" data-placement="auto" title="<%= tooltip_titles(event) -%>">
-<% end -%>
-
-<a href="<%= event_path(event) %>" class="link-overlay">
-
-<% if event.event_types.any? %>
-  <% event.event_types.each do |t| %>
-    <div class="sub-heading"><%= EventTypeDictionary.instance.lookup_value(t, 'title') %></div>
-  <% end %>
-<% end %>
-
-  <div class="masonry-brick-heading">
-    <div class="masonry-icons">
-      <% if current_user&.is_admin? %>
-        <%= missing_icon(event) %>
-        <%= scrape_status_icon(event) %>
-        <%= suggestion_icon(event) %>
+<li class="masonry-brick media-item<%= ' long' if defined?(list) && list -%>">
+  <%= link_to event, class: 'link-overlay' do %>
+    <% if event.event_types.any? %>
+      <% event.event_types.each do |t| %>
+        <div class="sub-heading"><%= EventTypeDictionary.instance.lookup_value(t, 'title') %></div>
       <% end %>
+    <% end %>
 
-      <%= event_status_icon(event) %>
+    <div class="masonry-brick-heading">
+      <div class="masonry-icons">
+        <% if current_user&.is_admin? %>
+          <%= missing_icon(event) %>
+          <%= scrape_status_icon(event) %>
+          <%= suggestion_icon(event) %>
+        <% end %>
+
+        <%= event_status_icon(event) %>
+      </div>
+      <h4>
+        <!--    TODO: hybrid events-->
+        <% if event.online? %>
+          <i class="icon icon-h4 virtual-event-icon"></i>
+        <% else %>
+          <i class="icon icon-h4 onsite-event-icon"></i>
+        <% end %>
+        <%= event.title %>
+      </h4>
     </div>
-    <h4>
-<!--    TODO: hybrid events-->
-    <% if event.online? %>
-        <i class="icon icon-h4 virtual-event-icon"></i>
-      <% else %>
-        <i class="icon icon-h4 onsite-event-icon"></i>
+
+    <p><%= neatly_printed_date_range(event.start, event.end) %></p>
+
+    <% unless event.online? %>
+      <% location = [event.city, event.country].reject { |field_value| field_value.blank? }.join(", ") %>
+      <% if location.present? %>
+        <p class="dont-break-out"><%= location %></p>
+      <% end %>
     <% end %>
-    <%= event.title %>
-    </h4>
-  </div>
-  <p><%= neatly_printed_date_range(event.start, event.end) %></p>
-  <% if event.online? %>
-  <% else %>
-    <p class="dont-break-out">
-      <%= [event.city, event.country].reject { |field_value| field_value.blank? }.join(", ")%>
-    </p>
+
+    <% if event.has_node? -%>
+      <%= image_tag 'elixir/elixir_logo_orange.png', alt: 'ELIXIR node event', title: 'ELIXIR node event', class: 'elixir-node-icon' %>
+    <% end -%>
+
+    <%= display_attribute(event, :keywords) { |values| values.join(', ') } %>
   <% end %>
-
-  <% if event.has_node? -%>
-    <%= content_tag(:span, :class=>'pull-right gap') do %>
-        <%= image_tag 'elixir/elixir_logo_orange.png',
-                      :alt => 'ELIXIR node event',
-                      :title => 'ELIXIR node event',
-                      :style => 'height: 20px;' %>
-    <% end %>
-  <% end -%>
-  <%#= link_to '', event, :class=>"media-view" %>
-
-  <% if policy(event).update? && event.edit_suggestion %>
-      <%= render partial: 'common/approve_term_suggestions', locals: { suggestion: event.edit_suggestion } %>
-  <% end %>
-
-  <%= display_attribute(event, :keywords) { |values| values.join(', ') } %>
-
-</a>
 </li>
-

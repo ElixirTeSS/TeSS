@@ -115,7 +115,7 @@ var Biotools = {
             }
         });
         $('#search_tools').click(Biotools.search);
-        $('#biotools-results').on('click', '.associate-tool', Biotools.associateTool);
+        $('#biotools-results').on('click', '.associate-resource', Biotools.associateTool);
         $('#external-resources').on('change', '.delete-external-resource-btn input.destroy-attribute', ExternalResources.delete);
         $('[data-biotools-url]').each(function () {
             Biotools.displayFullTool($(this).data('biotools-url'), this);

@@ -1,9 +1,9 @@
 <li class="masonry-brick media-item long">
-
-  <a class="link-overlay" href="<%= collection_path(collection) %>">
+  <%= link_to collection, class: 'link-overlay' do %>
     <h4><%= title_with_privacy(collection) %></h4>
-    <div>
+
+    <div class="markdown-description">
       <%= render_sanitized_markdown truncate(collection.description, length: 300, separator: ' ') %>
     </div>
-  </a>
+  <% end %>
 </li>

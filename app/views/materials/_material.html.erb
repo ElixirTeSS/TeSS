@@ -1,57 +1,40 @@
 <li class="masonry-brick media-item list long">
-  <a href="<%= material_path(material) %>" class="link-overlay">
+  <%= link_to material, class: 'link-overlay' do %>
+    <div class="sub-heading"><%= display_attribute_no_label(material, :resource_type) { |values| values.join(', ') } %></div>
 
-  <div class="sub-heading"><%= display_attribute_no_label(material, :resource_type) { |values| values.join(', ') } %></div>
-
-  <div class="masonry-brick-heading">
-    <div class="masonry-icons">
-      <% if current_user&.is_admin? %>
-        <%= missing_icon(material) %>
-        <%= scrape_status_icon(material) %>
-        <%= suggestion_icon(material) %>
-      <% end %>
+    <div class="masonry-brick-heading">
+      <div class="masonry-icons">
+        <% if current_user&.is_admin? %>
+          <%= missing_icon(material) %>
+          <%= scrape_status_icon(material) %>
+          <%= suggestion_icon(material) %>
+        <% end %>
+      </div>
+      <h4><%= material.title %></h4>
     </div>
-    <h4><%= material.title %></h4>
-  </div>
-  <div class="font-size-lg"><%= display_difficulty_level(material) %></div>
-  <div class="mt-2">
-    <div style="word-break: break-word; display: inline-block;" class="markdown-description">
+
+    <div class="font-size-lg"><%= display_difficulty_level(material) %></div>
+
+    <div class="markdown-description mt-2">
       <%= render_sanitized_markdown truncate(material.description, length: 300, separator: ' ') %>
     </div>
+
     <div class="row no-spacing">
-      <% if controller_name != 'content_providers' %>
-        <div class="col-md-9 no-spacing">
-          <%#= display_attribute(material, :scientific_topics) { |values| values.map { |x| x.preferred_label }.join(', ') } %>
-          <%#= display_attribute(material, :operations) { |values| values.map { |x| x.preferred_label }.join(', ') } %>
-          <%= display_attribute(material, :keywords) { |values| values.join(', ') } %>
+      <div class="col-md-9 no-spacing">
+        <%= display_attribute(material, :scientific_topics) { |values| values.map { |x| x.preferred_label }.join(', ') } %>
+        <%= display_attribute(material, :operations) { |values| values.map { |x| x.preferred_label }.join(', ') } %>
+        <%= display_attribute(material, :keywords) { |values| values.join(', ') } %>
+      </div>
 
-          <%# if policy(material).update? && material.edit_suggestion %>
-            <%#= render partial: 'common/approve_term_suggestions', locals: { suggestion: material.edit_suggestion } %>
-          <%# end %>
-        </div>
-        <div class="col-md-3 no-spacing">
-          <% if material.content_provider %>
-            <div class="to-bottom mt-3">
-            <%#= link_to material.content_provider, :class => "pull-right bottom-left" do %>
-              <div class="pull-right bottom-left">
-                <%= image_tag(material.content_provider.image.url, :class => "medium-avatar") %>
-              </div>
-            <%# end %>
-            </div>
-          <% end %>
-          <%# TODO Add node logo as well, if material's provider  belongs to a node %>
-        </div>
-      <% else %>
-        <div class="col-md-12 no-spacing">
-          <%#= display_attribute(material, :scientific_topics) { |values| values.map { |x| x.preferred_label }.join(', ') } %>
-          <%= display_attribute(material, :keywords) { |values| values.join(', ') } %>
-          <%#= display_attribute(material, :resource_type) { |values| values.join(', ') } %>
-        </div>
-      <% end %>
+      <div class="col-md-3 no-spacing">
+        <% if controller_name != 'content_providers' && material.content_provider %>
+          <%= image_tag(material.content_provider.image.url, class: 'medium-avatar pull-right mt-3') %>
+        <% end %>
+
+        <% if material.has_node? -%>
+          <%= image_tag 'elixir/elixir_logo_orange.png', alt: 'ELIXIR node event', title: 'ELIXIR node event', class: 'elixir-node-icon' %>
+        <% end -%>
+      </div>
     </div>
-  </div>
-
-
-  </a>
+  <% end %>
 </li>
-

@@ -102,22 +102,6 @@ module ApplicationHelper
     </i>".html_safe
   end
 
-  def tooltip_titles(event)
-    titles = []
-    types = [:started, :expired, :online]
-    types.each do |t|
-      titles << "#{ICONS[t][:message]}." if event.send("#{t}?")
-    end
-
-    if event.stale?
-      titles << "#{ICONS[:not_scraped_recently][:message].gsub(/%SUB%/, event.last_scraped.to_s)}."
-    else
-      titles << "#{ICONS[:scraped_today][:message]}."
-    end
-
-    titles.join(' &#13;').html_safe
-  end
-
   def bootstrap_class_for(flash_type)
     BOOTSTRAP_FLASH_MSG.fetch(flash_type.to_sym, 'alert-info')
   end

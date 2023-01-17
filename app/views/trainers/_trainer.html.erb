@@ -1,5 +1,5 @@
 <li class="masonry-brick media-item long">
-  <a class="link-overlay" href="<%= trainer_path(trainer) %>">
+  <%= link_to trainer_path(trainer), class: 'link-overlay' do %>
     <%= image_tag trainer.user.avatar_url, class: 'small-avatar pull-right' %>
 
     <h4><%= trainer.full_name %></h4>
@@ -11,5 +11,5 @@
     <%= display_attribute(trainer, :location) %>
 
     <%= render partial: 'trainers/partials/trainer_schemaorg', locals: { trainer: trainer } %>
-  </a>
+  <% end %>
 </li>

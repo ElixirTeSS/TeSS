@@ -1,7 +1,5 @@
 <li class="masonry-brick media-item long">
-  <a class="link-overlay" href="<%= workflow_path(workflow) %>">
-
-  <div>
+  <%= link_to workflow, class: 'link-overlay' do %>
     <div class="masonry-brick-heading">
       <div class="masonry-icons">
         <% if current_user&.is_admin? %>
@@ -12,9 +10,9 @@
         <%= title_with_privacy(workflow) %>
       </h4>
     </div>
-    <div style="word-break: break-word; display: inline-block;">
+
+    <div class="markdown-description">
       <%= render_sanitized_markdown truncate(workflow.description, length: 300, separator: ' ') %>
     </div>
-  </div>
-  </a>
+  <% end %>
 </li>
