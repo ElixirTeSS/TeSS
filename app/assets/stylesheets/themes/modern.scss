@@ -77,6 +77,7 @@ $state-danger-text: $brand-danger;
 $state-danger-bg: #ffe9e9;
 $state-danger-border: $state-danger-bg;
 
+// Spacing
 $padding-base-vertical:     12px;
 $padding-base-horizontal:   16px;
 
@@ -93,6 +94,7 @@ $border-radius-base:        8px;
 $border-radius-large:       10px;
 $border-radius-small:       4px;
 
+// Forms
 $input-border: $gray-light;
 $input-border-focus: $secondary-color;
 
@@ -101,6 +103,10 @@ $breadcrumb-bg: transparent;
 $breadcrumb-separator: "/";
 $breadcrumb-color: $dark-color !default;
 $breadcrumb-active-color: $dark-color !default;
+
+// Pagination
+$pagination-active-bg: $secondary-color;
+$pagination-active-border: $secondary-color;
 
 // Links
 $link-color: $accent-color;
