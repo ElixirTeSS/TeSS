@@ -51,9 +51,9 @@ $transition-time: 300ms;
 // Colours
 $brand-primary: $accent-color;
 $brand-danger: #d9534f;
-$brand-success: #04aa30;
+$brand-success: #129e37;
 $brand-warning: #f0be3e;
-$brand-info: #7bbdd5;
+$brand-info: #7bd5d1;
 
 $gray-darker: $dark-color;
 $gray-dark: darken($dark-60-color, 25%);
@@ -61,19 +61,19 @@ $gray: darken($dark-60-color, 10%);
 $gray-light: $dark-60-color;
 $gray-lighter: $dark-05-color; // Unused
 
-$state-success-text: $brand-success;
-$state-success-bg: #caf9d6;
+$state-success-text: darken($brand-success, 10%);
+$state-success-bg: #d5f5dd;
 $state-success-border: $state-success-bg;
 
-$state-info-text: darken($brand-info, 20%);
-$state-info-bg: #d3f0fb;
+$state-info-text: darken($brand-info, 35%);
+$state-info-bg: #d9f4f3;
 $state-info-border: $state-info-bg;
 
-$state-warning-text: darken($brand-warning, 20%);
+$state-warning-text: darken($brand-warning, 30%);
 $state-warning-bg: #fff6c6;
 $state-warning-border: $state-warning-bg;
 
-$state-danger-text: $brand-danger;
+$state-danger-text: darken($brand-danger, 20%);
 $state-danger-bg: #ffe9e9;
 $state-danger-border: $state-danger-bg;
 
