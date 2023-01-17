@@ -176,17 +176,6 @@ document.addEventListener("turbolinks:load", function() {
         })
     });
 
-    $('body').scrollspy({
-        target: '.about-page-menu',
-        offset: 40
-    });
-
-    $('.about-page-menu').affix({
-        offset: {
-            top: 100
-        }
-    });
-
     $('.has-popover').each(function () {
         $(this).popover({
             trigger: 'manual'

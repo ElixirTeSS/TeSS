@@ -805,14 +805,6 @@ input[type=checkbox].field-lock + label:before,
   height: 42px;
 }
 
-.affix {
-  width: 280px;
-  border-right: 1px solid #ccc;
-  top: 0;
-  z-index: 5;
-}
-
-
 // minor fix of the icon's alignment
 .glyphicon-remove {
   top: 3px;

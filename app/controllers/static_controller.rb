@@ -22,5 +22,7 @@ class StaticController < ApplicationController
     @resources = @resources.sort_by(&:created_at).reverse
   end
 
-  def showcase; end
+  def showcase
+    @container_class = 'showcase-container container-fluid'
+  end
 end
