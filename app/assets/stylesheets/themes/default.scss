@@ -24,7 +24,6 @@ $transition-time: 300ms;
 $light-color: #fff;
 $footer-border-radius: 0;
 $footer-padding-top: 10px;
-$unified-header-bg: #fff;
 
 $link-color: $blue;
 $link-hover-color: lighten($link-color, 10%);
@@ -44,6 +43,7 @@ $navbar-default-link-hover-bg: $bgHighlight;
 $navbar-default-link-color: $colDefault;
 $navbar-default-link-active-color: lighten($navbar-default-link-color, 30%);
 $navbar-default-link-hover-color: lighten($navbar-default-link-color, 40%);
+$navbar-border-radius: 0;
 
 $navbar-default-toggle-hover-bg: $bgHighlight;
 $navbar-default-toggle-icon-bar-bg: $colHover2;

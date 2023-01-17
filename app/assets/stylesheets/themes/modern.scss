@@ -34,9 +34,6 @@ $font-size-h2: 44px;
 $font-size-h3: 32px;
 $font-size-h4: 24px;
 
-// Header
-$unified-header-bg: transparent;
-
 // Footer
 $footer-bg: $dark-05-color;
 $footer-border: transparent;
@@ -97,6 +94,15 @@ $border-radius-small:       4px;
 // Forms
 $input-border: $gray-light;
 $input-border-focus: $secondary-color;
+
+// Navbar
+$navbar-height: 80px;
+$navbar-default-color: $gray-darker;
+$navbar-default-bg: transparent;
+$navbar-default-border: transparent;
+$navbar-default-link-color: $gray-darker;
+$navbar-default-link-hover-color: $accent-color;
+$navbar-default-link-active-color: $accent-color;
 
 // Breadcrumb
 $breadcrumb-bg: transparent;
@@ -177,4 +183,9 @@ $badge-bg: $accent-color;
   color: $secondary-color !important;
 }
 
-// for reference check https://github.com/pkp/bootstrap3/blob/main/bootstrap/less/variables.less
+.navbar-brand img {
+  max-height: 60px;
+}
+
+
+// for reference check https://github.com/twbs/bootstrap-sass/blob/v3.4.3/assets/stylesheets/bootstrap/_variables.scss

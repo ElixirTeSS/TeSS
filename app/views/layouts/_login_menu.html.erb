@@ -1,0 +1,24 @@
+<div class="dropdown">
+  <div class="dropdown-toggle btn btn-primary navbar-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    Log In <span class="caret"></span>
+  </div>
+  <ul class="dropdown-menu dropdown-menu-right">
+    <% Devise.omniauth_configs.each do |provider, config| -%>
+      <li class="dropdown-item">
+        <%= link_to "Log in with #{t("authentication.omniauth.providers.#{provider}", default: provider.to_s.titleize)}",
+                    omniauth_authorize_path('user', provider), method: :post %>
+      </li>
+    <% end %>
+
+    <li class="dropdown-item">
+      <%= link_to t('authentication.password.title'), new_user_session_path %>
+    </li>
+
+    <% if TeSS::Config.feature['registration'] %>
+      <li role="presentation" class="divider"></li>
+      <li class="dropdown-item">
+        <%= link_to "Register", new_user_registration_path %>
+      </li>
+    <% end %>
+  </ul>
+</div>

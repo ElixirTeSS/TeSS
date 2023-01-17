@@ -9,65 +9,36 @@
   </nav>
 <% end %>
 
-<%# top header -%>
 <header class="unified-header">
-  <nav>
+  <nav class="navbar navbar-default">
     <div class="container-fluid" id="header-container">
-      <% if defined? TeSS::Config.site['logo'] and !TeSS::Config.site['logo'].blank? %>
-        <a class="navbar-brand" href="/">
-          <%= image_tag(TeSS::Config.site['logo'], :alt => TeSS::Config.site['logo_alt']) %>
-        </a>
-      <% end %>
-
-
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                data-target="#orange-navbar-collapse" aria-expanded="false">
+                data-target="#navbar-collapse" aria-expanded="false">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
+        <% if defined? TeSS::Config.site['logo'] and !TeSS::Config.site['logo'].blank? %>
+          <a class="navbar-brand" href="/">
+            <%= image_tag(TeSS::Config.site['logo'], alt: TeSS::Config.site['logo_alt']) %>
+          </a>
+        <% end %>
       </div>
 
-      <div class="collapse navbar-collapse" id="orange-navbar-collapse">
-
+      <div class="collapse navbar-collapse" id="navbar-collapse">
         <%# User Options -%>
-        <ul class="user-options nav navbar-nav">
+        <div class="user-options navbar-nav navbar-right">
           <% if user_signed_in? %>
             <%= render partial: 'layouts/user_menu' %>
           <% else %>
-            <div class='dropdown'>
-              <div class='dropdown-toggle btn btn-primary' data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="true">
-                Log In
-                <span class="caret"></span>
-              </div>
-              <ul class='dropdown-menu'>
-                <% Devise.omniauth_configs.each do |provider, config| -%>
-                  <li class='dropdown-item'>
-                    <%= link_to "Log in with #{t("authentication.omniauth.providers.#{provider}", default: provider.to_s.titleize)}",
-                                omniauth_authorize_path('user', provider), method: :post %>
-                  </li>
-                <% end %>
-
-                <li class='dropdown-item'>
-                  <%= link_to t('authentication.password.title'), new_user_session_path %>
-                </li>
-
-                <% if TeSS::Config.feature['registration'] %>
-                  <li role="presentation" class="divider"></li>
-                  <li class='dropdown-item'>
-                    <%= link_to "Register", new_user_registration_path %>
-                  </li>
-                <% end %>
-              </ul>
-            </div>
+            <%= render partial: 'layouts/login_menu' %>
           <% end %>
-        </ul>
+        </div>
 
         <%# Menu -%>
-        <%= menu_group do %>
+        <%= menu_group(pull: 'right') do %>
           <%= menu_item "About", about_path %>
 
           <% if TeSS::Config.feature['events'] == true %>
@@ -82,34 +53,42 @@
           <% if TeSS::Config.feature['collections'] == true %>
             <%= menu_item "Collections", collections_path %>
           <% end %>
-          <% if TeSS::Config.feature['providers'] == true %>
-            <%= menu_item "Providers", content_providers_path %>
-          <% end %>
-          <% if TeSS::Config.feature['trainers'] == true %>
-            <%= menu_item "Trainers", trainers_path %>
-          <% end %>
-          <% if TeSS::Config.feature['nodes'] == true %>
-            <%= menu_item "Nodes", nodes_path %>
-          <% end %>
-
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+               aria-expanded="false">
+              Directory <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <% if TeSS::Config.feature['trainers'] == true %>
+                <%= menu_item "Trainers", trainers_path %>
+              <% end %>
+              <% if TeSS::Config.feature['providers'] == true %>
+                <%= menu_item "Providers", content_providers_path %>
+              <% end %>
+              <% if TeSS::Config.feature['nodes'] == true %>
+                <%= menu_item "Nodes", nodes_path %>
+              <% end %>
+            </ul>
+          </li>
         <% end %>
-
       </div>
-
-      <% if defined? TeSS::Config.announcement_message and !TeSS::Config.announcement_message.blank? %>
-        <div class="alert alert-info fade in" id="front-page-announcement">
-          <button class="close" data-dismiss="alert" aria-label="close">&times;</button>
-          <%= TeSS::Config.announcement_message.html_safe %>
-        </div>
-      <% end %>
-
-      <% if !defined? @skip_flash_messages_in_header or !@skip_flash_messages_in_header %>
-        <div id="flash-container">
-          <%= flash_messages %>
-        </div>
-      <% end %>
     </div>
   </nav>
+
+  <% if TeSS::Config.announcement_message&.strip.present? %>
+    <div class="container">
+      <div class="alert alert-info fade in" id="front-page-announcement">
+        <button class="close" data-dismiss="alert" aria-label="close">&times;</button>
+        <%= raw TeSS::Config.announcement_message %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if !defined? @skip_flash_messages_in_header or !@skip_flash_messages_in_header %>
+    <div id="flash-container" class="container">
+      <%= flash_messages %>
+    </div>
+  <% end %>
 </header>
 
 <%= render(partial: 'layouts/cookie_banner') if cookie_consent.show_banner? %>

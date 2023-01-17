@@ -1,61 +1,25 @@
 .unified-header {
-  background-color: $unified-header-bg;
-  margin-bottom: 25px;
-
   .navbar-brand {
-    height: auto;
-  }
-
-  .icon-bar {
-    background-color: $primary-color;
-    color: $primary-color;
-  }
-
-  .navbar-toggle {
-    padding: 18px;
-  }
-
-  .in {
-    .dropdown-menu {
-      text-align: center;
+    padding-top: 0;
+    padding-bottom: 0;
+    img {
+      padding: 10px 5px 5px 5px;
+      max-height: $navbar-height;
     }
   }
 
-  .navbar-nav {
-    float: right;
-
-    @media (max-width: $screen-sm-max) {
-      float: none;
+  @media (max-width: $grid-float-breakpoint-max) {
+    .navbar-collapse {
       text-align: center;
-    }
-
-    margin-top: 18px;
-
-    li {
-      a {
-        &:not(.btn) {
-          color: $gray-darker;
-          padding-top: 10px;
-          padding-bottom: 10px;
-          text-decoration: none;
-        }
-
-        &:hover {
-          color: $accent-color;
-          background-color: transparent;
+      .dropdown-menu {
+        border-radius: 0;
+        background: rgba(0, 0, 0, 0.03);
+        margin: 0 10px;
+        text-align: center;
+        > li > a, .dropdown-header {
+          padding: 5px 15px;
         }
       }
     }
-  }
-
-  .user-options {
-    .btn {
-      margin-left:5px;
-      margin-right: 5px;
-    }
-    a.btn-icon {
-      padding: 5px 0;
-    }
-
   }
 }
