@@ -19,41 +19,43 @@
     border-color: $primary-color;
   }
 
-  a {
-    color: $footer-text;
-    background-color: transparent;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
   h5, h6 {
     font-weight: bold;
   }
 
   .footer-item {
     margin: 6px;
-
     a {
-      color: $gray-light;
+      color: $gray;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
+  }
+
+  .contact-link {
+    text-decoration: underline;
   }
 
   .container {
     padding: 0;
   }
 
+  .supporters {
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
   .footer-logo {
+    flex-shrink: 1;
+
     img {
-      margin-left: 6px;
-      margin-right: 6px;
-      margin-bottom: 12px;
       height: 50px;
     }
-
-    text-decoration: none;
 
     &:hover {
       text-decoration: none;
@@ -67,16 +69,19 @@
   }
 
   .eu-notice {
+    flex: 1 1 16em;
     text-align: left;
-    color: $gray;
+    display: flex;
     img {
-      float: left;
-      height: 50px;
-      margin: 0.5em;
+      display: block;
+      height: 3em;
+      flex-grow: 0;
+      margin: 5px 10px 0 5px;
     }
-  }
 
-  .version {
-    margin-bottom: 25px;
+    a {
+      text-decoration: underline;
+      color: $gray;
+    }
   }
 }
