@@ -26,9 +26,7 @@ default: &default
     widget_example: 'elixir_widget_example'
     gmaps_api_key: ''
   mailer:
-    delivery_method: sendmail
-    location: /usr/sbin/sendmail
-    arguments: '-i -t'
+    delivery_method: test
   gmaps:
     center:
       latitude: 53.4674583
