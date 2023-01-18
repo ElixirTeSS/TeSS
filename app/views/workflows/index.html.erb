@@ -2,9 +2,8 @@
 
   <% if TeSS::Config.solr_enabled %>
     <div id="sidebar" class="popout-sidebar">
-      <div class="row">
-        <%= render partial: "search/common/facet_sidebar", locals: {resources: @workflows_results, resource_type: Workflow} %>
-      </div>
+      <%= render partial: "search/common/facet_sidebar",
+                 locals: { resources: @workflows_results, resource_type: Workflow } %>
     </div>
   <% end %>
 

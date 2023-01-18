@@ -1,10 +1,8 @@
 <div class="wrapper">
-
   <% if TeSS::Config.solr_enabled %>
     <div id="sidebar" class="popout-sidebar">
-      <div class="row">
-        <%= render partial: "search/common/facet_sidebar", locals: { resources: @events_results, resource_type: Event } %>
-      </div>
+      <%= render partial: "search/common/facet_sidebar",
+                 locals: { resources: @events_results, resource_type: Event } %>
     </div>
   <% end %>
 
