@@ -85,3 +85,7 @@ a {
 .btn-secondary {
   @include button-variant($secondary-color, $btn-default-bg, $secondary-color);
 }
+
+ol.breadcrumb {
+  margin-bottom: 0;
+}
