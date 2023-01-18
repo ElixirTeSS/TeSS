@@ -35,16 +35,12 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test 'should get index with solr enabled' do
-    begin
-      TeSS::Config.solr_enabled = true
-
+    with_settings(solr_enabled: true) do
       Event.stub(:search_and_filter, MockSearch.new(Event.all)) do
         get :index, params: { q: 'nightclub', keywords: 'ragtime' }
         assert_response :success
         assert_not_empty assigns(:events)
       end
-    ensure
-      TeSS::Config.solr_enabled = false
     end
   end
 
@@ -868,9 +864,7 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test 'should count index results' do
-    begin
-      TeSS::Config.solr_enabled = true
-
+    with_settings(solr_enabled: true) do
       events = Event.all
 
       Event.stub(:search_and_filter, MockSearch.new(events)) do
@@ -881,15 +875,11 @@ class EventsControllerTest < ActionController::TestCase
         assert_equal events.count, output['count']
         assert_equal events_url, output['url']
       end
-    ensure
-      TeSS::Config.solr_enabled = false
     end
   end
 
   test 'should count filtered results' do
-    begin
-      TeSS::Config.solr_enabled = true
-
+    with_settings(solr_enabled: true) do
       events = Event.limit(3)
 
       Event.stub(:search_and_filter, MockSearch.new(events)) do
@@ -901,8 +891,6 @@ class EventsControllerTest < ActionController::TestCase
         assert_equal events_url(q: 'test', keywords: 'dolphins'), output['url']
         assert_equal 'dolphins', output['params']['keywords']
       end
-    ensure
-      TeSS::Config.solr_enabled = false
     end
   end
 
@@ -1258,15 +1246,11 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test 'should not show identifiers dot org button if disabled' do
-    begin
-      prefix = TeSS::Config.identifiers_prefix
-      TeSS::Config.identifiers_prefix = nil
+    with_settings(identifiers_prefix: nil) do
       get :show, params: { id: @event }
 
       assert_response :success
       assert_select '.identifiers-button', count: 0
-    ensure
-      TeSS::Config.identifiers_prefix = prefix
     end
   end
 
@@ -1304,23 +1288,18 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test 'should hide map tab if disabled' do
-    disabled = TeSS::Config.feature['disabled'].dup
-
     get :index
     assert_response :success
     assert_select '#content .nav-tabs' do
       assert_select 'li a[href=?]', '#map', count: 1
     end
 
-    TeSS::Config.feature['disabled'] |= ['events_map']
-
-    get :index
-    assert_response :success
-    assert_select '#content .nav-tabs' do
-      assert_select 'li a[href=?]', '#map', count: 0
+    with_settings(feature: { disabled: ['events_map'] }) do
+      get :index
+      assert_response :success
+      assert_select '#content .nav-tabs' do
+        assert_select 'li a[href=?]', '#map', count: 0
+      end
     end
-
-  ensure
-    TeSS::Config.feature['disabled'] = disabled
   end
 end

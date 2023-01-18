@@ -87,18 +87,16 @@ class SourceTest < ActiveSupport::TestCase
   end
 
   test 'source approval status is set to approved by default if source_approval disabled' do
-    features = TeSS::Config.feature.dup
-    TeSS::Config.feature['user_source_creation'] = false
-    refute TeSS::Config.feature['user_source_creation']
-    User.current_user = users(:regular_user)
-    source = Source.new(content_provider: content_providers(:portal_provider),
-                        url: 'https://website.org',
-                        method: 'bioschemas',
-                        user: User.current_user)
-    assert source.save
-    assert_equal :approved, source.approval_status
-  ensure
-    TeSS::Config.feature = features
+    with_settings(feature: { user_source_creation: false }) do
+      refute TeSS::Config.feature['user_source_creation']
+      User.current_user = users(:regular_user)
+      source = Source.new(content_provider: content_providers(:portal_provider),
+                          url: 'https://website.org',
+                          method: 'bioschemas',
+                          user: User.current_user)
+      assert source.save
+      assert_equal :approved, source.approval_status
+    end
   end
 
   test 'changes to approval status are logged' do
