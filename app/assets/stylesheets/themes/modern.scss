@@ -24,15 +24,18 @@ $primary-color: #023452;
 $secondary-color: #047EAA;
 $accent-color: #F47D21;
 
+// Misc
+$layout-spacing-base: 40px;
+$item-padding-base: 38px;
+$sidebar-width: 280px;
+$transition-time: 300ms;
+
 // Footer
 $footer-bg: #fafafa;
 $footer-border: transparent;
 $footer-text: $dark-color;
 $footer-border-radius: 50px;
 $footer-padding-top: 30px;
-
-// Misc
-$transition-time: 300ms;
 
 //////////////////////////////
 // Bootstrap variable tweaks
