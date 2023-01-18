@@ -14,7 +14,7 @@ module SearchHelper
     title ||= (html_options.delete(:title) || truncate(value.to_s, length: 50))
 
     #if there's already a filter of the same facet type, create/add to an array
-    if parameters.include?(name)
+    if parameters.include?(name) && !html_options.delete(:replace)
       parameters[name] = Array.wrap(parameters[name]) | [value]
     else
       parameters[name] = value

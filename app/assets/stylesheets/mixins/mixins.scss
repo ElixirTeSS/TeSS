@@ -60,3 +60,9 @@
   box-shadow: 0px 6px 10px rgba(36, 37, 38, 0.03);
   border-radius: 8px;
 }
+
+@mixin unstyled-ul {
+  margin-left: 0;
+  list-style: outside none none;
+  padding-left: 0;
+}

@@ -3,35 +3,37 @@
 <% active_facet_values = Array.wrap(@facet_params[facet_field]) %>
 <% active_facet_rows, other_facet_rows = facet_rows.partition { |f| active_facet_values.include?(f.value.to_s) } %>
 
-<div class="sidebar-group mt-4">
-  <% if facet_rows.any? %>
-    <%# Title %>
-    <li>
-      <div class="nav-heading filter-heading"><span class="icon icon-md filter-icon"></span>
+<li class="sidebar-group mt-4">
+  <ul>
+    <% if facet_rows.any? %>
+      <%# Title %>
+      <li>
+        <div class="nav-heading filter-heading"><span class="icon icon-md filter-icon"></span>
 
-        <span>
-          <%= t("facets.titles.#{facet_field}", default: facet_field.humanize.singularize) %>
-        </span>
+          <span>
+            <%= t("facets.titles.#{facet_field}", default: facet_field.humanize.singularize) %>
+          </span>
 
-        <div class="pull-right filter-expand"><i class="icon icon-md expand-icon"></i></div>
-      </div>
-    </li>
+          <div class="pull-right filter-expand"><i class="icon icon-md expand-icon"></i></div>
+        </div>
+      </li>
 
 
-    <%# Display all filter links - active first %>
-    <% active_facet_rows.each do |facet| %>
-      <li class="nav-item active" style="display: none;">
-        <%= remove_filter_link(facet_field, facet.value.to_s, class: 'facet-option') %>
+      <%# Display all filter links - active first %>
+      <% active_facet_rows.each do |facet| %>
+        <li class="nav-item active" style="display: none;">
+          <%= remove_filter_link(facet_field, facet.value.to_s, class: 'facet-option') %>
+        </li>
+      <% end %>
+      <% other_facet_rows.each do |facet| %>
+        <li class="nav-item" style="display: none;">
+          <%= filter_link(facet_field, facet.value.to_s, facet.count, class: 'facet-option') %>
+        </li>
+      <% end %>
+
+      <li class="expand-filters" style="display:none;">
+        <a href="#">Show N_FILTERS more</a>
       </li>
     <% end %>
-    <% other_facet_rows.each do |facet| %>
-      <li class="nav-item" style="display: none;">
-        <%= filter_link(facet_field, facet.value.to_s, facet.count, class: 'facet-option') %>
-      </li>
-    <% end %>
-
-    <li class="expand-filters" style="display:none;">
-      <a href="#">Show N_FILTERS more</a>
-    </li>
-  <% end %>
-</div>
+  </ul>
+</li>

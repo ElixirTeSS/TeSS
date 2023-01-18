@@ -24,19 +24,15 @@ Variable that should be available
 
 <ul class="unstyled nav-simple">
   <li>
-    <h3 class="nav-heading">
+    <h4 class="nav-heading">
       Filter
       <% if @facet_params.present? %>
         <%= link_to clear_filters_path, class: 'btn btn-xs btn-secondary font-size-sm clear-filters-btn' do %>
           Clear filters <i class="icon icon-md clear-filters-icon"></i>
         <% end %>
       <% end %>
-    </h3>
+    </h4>
   </li>
-
-  <% if current_user && (current_user.is_curator? || current_user.is_admin?) %>
-    <%= render partial: 'search/common/facet_sidebar_curation', locals: { resource_type: resource_type } %>
-  <% end %>
 
   <% if ['Event', 'Material'].include?(resource_type.name) %>
     <%= render partial: 'search/common/facet_sidebar_max_age' %>
@@ -52,5 +48,14 @@ Variable that should be available
     <%= render partial: 'search/common/facet_sidebar_boolean_filter', locals: { facet: facet, resources: resources } %>
   <% end %>
 
-  <%= render partial: 'search/common/facet_sidebar_expired_events_filter' if resource_type.name == 'Event' %>
+  <% if resource_type.name == 'Event' %>
+    <%= render partial: 'search/common/facet_sidebar_boolean_filter', locals: { facet_field: 'include_expired',
+                                                                                count: '-',
+                                                                                enable_text: 'Show past events',
+                                                                                disable_text: 'Hide past events' } %>
+  <% end %>
 </ul>
+
+<% if current_user && (current_user.is_curator? || current_user.is_admin?) %>
+  <%= render partial: 'search/common/facet_sidebar_curation', locals: { resource_type: resource_type } %>
+<% end %>

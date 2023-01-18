@@ -63,9 +63,16 @@ input:checked + .slider:before {
 }
 
 .toggle-wrap {
-  margin: 10px 5px;
+  margin: 10px 0;
   a {
     text-decoration: none;
     color: $gray-darker;
+    &:hover {
+      background-color: inherit !important;
+      border-color: inherit !important;
+      .slider {
+        background-color: $secondary-color;
+      }
+    }
   }
 }

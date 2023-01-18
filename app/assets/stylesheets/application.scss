@@ -123,6 +123,9 @@ div.wrapper {
     background: #FFFFFF;
     box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.03);
     border-radius: 6px;
+    > ul {
+      @include unstyled-ul;
+    }
   }
 
   &.collapsing-sidebar {
@@ -187,8 +190,8 @@ div.wrapper {
 
 .facet-sort-icon {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: $padding-base-vertical + 4px;
+  left: $padding-base-horizontal - 4px;
 }
 
 .facet-select {
@@ -257,9 +260,7 @@ div.wrapper {
 
 // Modified from CKAN - for sidebar facets
 ul.unstyled {
-  margin-left: 0;
-  list-style: outside none none;
-  padding-left: 0;
+  @include unstyled-ul;
 }
 
 .nav-simple {
