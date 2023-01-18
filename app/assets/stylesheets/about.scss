@@ -29,8 +29,6 @@
 }
 
 .about-block {
-  padding: 10px 30px;
-
   .odd-about-block, .even-about-block {
     &>h1, &>h2, &>h3 {
       margin-top: 0;
@@ -48,9 +46,8 @@
   }
 
   .sub-about-block {
-    padding: 10px 15px;
+    padding: 10px 20px;
     margin-top: 10px;
-    border-radius: 10px;
   }
 
   .about-resource-icon {

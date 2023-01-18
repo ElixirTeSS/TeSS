@@ -102,25 +102,21 @@
 
       <!-- SUBSCRIBE-->
       <% if TeSS::Config.feature['subscription'] %>
-        <div id="subscribe" class="row <%= next_about_block(@feature_count += 1) %>">
-          <div class="col-lg-12">
-            <h3>Subscribe</h3>
-            <p><%== raw t 'about.subscribe' %></p>
-            <p>The <%= link_to 'subscriptions manager', subscriptions_path %> page may be used to change the
-              frequency of, or to remove, subscriptions.</p>
-            <%= image_tag 'about/subscription.png', style: 'width: 80%' %>
-          </div>
+        <div id="subscribe" class="<%= next_about_block(@feature_count += 1) %>">
+          <h3>Subscribe</h3>
+          <p><%== raw t 'about.subscribe' %></p>
+          <p>The <%= link_to 'subscriptions manager', subscriptions_path %> page may be used to change the
+            frequency of, or to remove, subscriptions.</p>
+          <%= image_tag 'about/subscription.png', style: 'width: 80%' %>
         </div>
       <% end %>
 
       <!-- WIDGET & API -->
-      <div id="widget" class="row <%= next_about_block(@feature_count += 1) %>">
-        <div class="col-lg-12">
-          <h3>Widgets & API</h3>
-          <p><%== raw t 'about.widgets_and_api' %></p>
-          <%= link_to 'Learn more about Widgets', developers_path(anchor: 'widgets'), class: 'btn btn-primary' %>
-          <%= link_to 'Learn more about our API', developers_path(anchor: 'api'), class: 'btn btn-primary' %>
-        </div>
+      <div id="widget" class="<%= next_about_block(@feature_count += 1) %>">
+        <h3>Widgets & API</h3>
+        <p><%== raw t 'about.widgets_and_api' %></p>
+        <%= link_to 'Learn more about Widgets', developers_path(anchor: 'widgets'), class: 'btn btn-default' %>
+        <%= link_to 'Learn more about our API', developers_path(anchor: 'api'), class: 'btn btn-default' %>
       </div>
     </div>
 
