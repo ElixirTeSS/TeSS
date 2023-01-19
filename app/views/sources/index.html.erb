@@ -13,10 +13,7 @@
       <% end %>
     <% end %>
 
-    <% if TeSS::Config.solr_enabled %>
-      <%= render partial: "search/common/search_panel", locals: { resources: @sources_results,
-                                                                  resource_type: Source } %>
-    <% end %>
+    <%= render partial: "search/common/search_panel", locals: { resources: @sources_results, resource_type: Source } %>
 
     <!-- %= render partial: 'search/common/pagination_bar', locals: { resources: @sources } % -->
     <hr>

@@ -29,11 +29,9 @@
       </ul>
     <% end %>
 
-    <% if TeSS::Config.solr_enabled %>
-      <%= render partial: "search/common/search_panel", locals: { resources: @events_results,
-                                                                  resource_type: Event,
-                                                                  show_subscription_button: true } %>
-    <% end %>
+    <%= render partial: "search/common/search_panel", locals: { resources: @events_results,
+                                                                resource_type: Event,
+                                                                show_subscription_button: true } %>
 
     <%# ACTUAL RESULTS LIST %>
     <% unless @events.blank? %>

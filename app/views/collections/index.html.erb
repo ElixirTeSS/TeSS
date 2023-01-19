@@ -19,10 +19,8 @@
       <% end %>
     <% end %>
 
-    <% if TeSS::Config.solr_enabled %>
-      <%= render partial: "search/common/search_panel", locals: { resources: @collections_results,
-                                                                  resource_type: Collection } %>
-    <% end %>
+    <%= render partial: "search/common/search_panel", locals: { resources: @collections_results,
+                                                                resource_type: Collection } %>
 
     <%= render partial: 'common/masonry_grid', locals: { objects: @collections } %>
 

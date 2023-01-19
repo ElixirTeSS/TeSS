@@ -1279,14 +1279,14 @@ class EventsControllerTest < ActionController::TestCase
   test 'should disable map tab if only showing online events' do
     get :index
     assert_response :success
-    assert_select '#content .nav-tabs' do
+    assert_select '#content .nav' do
       assert_select 'li.disabled a[href=?]', '#map', count: 0
       assert_select 'li a[href=?]', '#map', count: 1
     end
 
     get :index, params: { online: 'true' }
     assert_response :success
-    assert_select '#content .nav-tabs' do
+    assert_select '#content .nav' do
       assert_select 'li.disabled a[href=?]', '#map', count: 1
     end
   end
@@ -1296,7 +1296,7 @@ class EventsControllerTest < ActionController::TestCase
 
     get :index
     assert_response :success
-    assert_select '#content .nav-tabs' do
+    assert_select '#content .nav' do
       assert_select 'li a[href=?]', '#map', count: 1
     end
 
@@ -1304,7 +1304,7 @@ class EventsControllerTest < ActionController::TestCase
 
     get :index
     assert_response :success
-    assert_select '#content .nav-tabs' do
+    assert_select '#content .nav' do
       assert_select 'li a[href=?]', '#map', count: 0
     end
 

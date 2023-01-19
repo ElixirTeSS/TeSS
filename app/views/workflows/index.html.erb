@@ -1,5 +1,4 @@
 <div class="wrapper">
-
   <% if TeSS::Config.solr_enabled %>
     <div id="sidebar" class="popout-sidebar">
       <%= render partial: "search/common/facet_sidebar",
@@ -18,10 +17,8 @@
       <% end %>
     <% end %>
 
-    <% if TeSS::Config.solr_enabled %>
-      <%= render partial: "search/common/search_panel", locals: { resources: @workflows_results,
-                                                                  resource_type: Workflow } %>
-    <% end %>
+    <%= render partial: "search/common/search_panel", locals: { resources: @workflows_results,
+                                                                resource_type: Workflow } %>
 
     <%= render partial: 'common/masonry_grid', locals: { objects: @workflows } %>
 

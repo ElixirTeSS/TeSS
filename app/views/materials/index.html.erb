@@ -25,11 +25,9 @@
       <% end %>
     <% end %>
 
-    <% if TeSS::Config.solr_enabled %>
-      <%= render partial: "search/common/search_panel", locals: { resources: @materials_results,
-                                                                  resource_type: Material,
-                                                                  show_subscription_button: true } %>
-    <% end %>
+    <%= render partial: "search/common/search_panel", locals: { resources: @materials_results,
+                                                                resource_type: Material,
+                                                                show_subscription_button: true } %>
 
     <%= render partial: 'common/masonry_grid', locals: { objects: @materials } %>
 
