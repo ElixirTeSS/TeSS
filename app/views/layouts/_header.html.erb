@@ -47,6 +47,9 @@
           <% if TeSS::Config.feature['materials'] == true %>
             <%= menu_item "Materials", materials_path %>
           <% end %>
+          <% if TeSS::Config.feature['e-learnings'] == true %>
+            <%= menu_item "e-Learning", elearning_materials_path %>
+          <% end %>
           <% if TeSS::Config.feature['workflows'] == true %>
             <%= menu_item "Workflows", workflows_path %>
           <% end %>
