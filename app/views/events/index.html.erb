@@ -37,7 +37,7 @@
     <% unless @events.blank? %>
       <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
-          <ul class="masonry media-grid" style="margin-top: 15px;">
+          <ul class="masonry media-grid">
             <% @events.each do |event| %>
               <%= render partial: 'events/event', locals: { event: event, list: true} %>
             <% end %>

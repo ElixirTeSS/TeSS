@@ -60,7 +60,7 @@
                 <%= link_to "View all results.", :controller => 'events', :content_provider => @node.content_providers.map{ |x| x.title} if (upcoming_events.count > 30 || past_events.count > 0) %>
               </div>
               <% if upcoming_events.count > 0 %>
-                  <ul class="masonry media-grid" style="margin-top: 15px;">
+                  <ul class="masonry media-grid">
                     <% upcoming_events.each do |upcoming_event| %>
                         <%= render upcoming_event %>
                     <% end %>
