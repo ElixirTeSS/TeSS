@@ -87,19 +87,13 @@ $state-danger-bg: #ffe9e9;
 $state-danger-border: $state-danger-bg;
 
 // Spacing
-$padding-base-vertical:     12px;
+$padding-base-vertical:     8px;
 $padding-base-horizontal:   16px;
 
-$padding-large-vertical:    14px;
+$padding-large-vertical:    12px;
 $padding-large-horizontal:  18px;
 
-$padding-small-vertical:    5px;
-$padding-small-horizontal:  10px;
-
-$padding-xs-vertical:       1px;
-$padding-xs-horizontal:     5px;
-
-$border-radius-base:        8px;
+$border-radius-base:        6px;
 $border-radius-large:       10px;
 $border-radius-small:       4px;
 
@@ -108,7 +102,7 @@ $input-border: $gray-light;
 $input-border-focus: $secondary-color;
 
 // Navbar
-$navbar-height: 80px;
+$navbar-height: 60px;
 $navbar-default-color: $gray-darker;
 $navbar-default-bg: transparent;
 $navbar-default-border: transparent;
@@ -215,4 +209,8 @@ $badge-bg: $accent-color;
 
 .nav-tabs a, .nav-pills a {
   color: $secondary-color;
+}
+
+.unified-header .navbar-brand img {
+  max-height: 80px !important;
 }
