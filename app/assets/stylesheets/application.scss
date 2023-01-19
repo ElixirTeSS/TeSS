@@ -138,12 +138,15 @@ div.wrapper {
 
   &.popout-sidebar {
     @media (max-width: $screen-sm-max) {
-      padding: 0;
-      width: calc(100% - 30px);
+      padding: 25px;
+      width: calc(100% - 40px);
       position: absolute;
-      z-index: 10;
+      z-index: $zindex-modal;
       background: white;
       border-bottom: 1px solid #ccc;
+      border-radius: $border-radius-large;
+      top: 0;
+      left: 20px;
       display: none;
 
       &.open {
@@ -177,6 +180,12 @@ div.wrapper {
   .clear-filters-btn {
     float: right;
     margin: 5px 0;
+  }
+}
+
+.sidebar-backdrop {
+  @media (min-width: $screen-md-min) {
+    display: none;
   }
 }
 
@@ -399,11 +408,12 @@ ul.unstyled {
 
 .search-results-count {
   margin-right: 5px;
-  padding-top: 5px;
-  padding-bottom: 10px;
   display: inline-block
 }
 
+.index-display-options {
+  margin: 5px 0;
+}
 
 /* try adding !important  after 0px if doesn't work */
 
@@ -534,7 +544,8 @@ sup {
       box-shadow: none;
       outline: 0 none;
       background: transparent;
-      padding: 5px 5px 5px 15px;
+      line-height: $line-height-base;
+      padding: $padding-base-vertical $padding-base-horizontal $padding-base-vertical ($padding-base-vertical + 16px);
       flex: 1;
       min-width: 220px;
       border-radius: 100px;

@@ -91,5 +91,7 @@ ol.breadcrumb {
 }
 
 .nav.nav-xs > li > a {
-  padding: 2px 6px;
+  padding: ($padding-xs-vertical + 1px) ($padding-xs-horizontal + 1px); // +1px because no border
+  font-size: $font-size-small;
+  line-height: $line-height-small;
 }

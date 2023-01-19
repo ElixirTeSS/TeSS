@@ -19,7 +19,7 @@
       <% end %>
     <% end %>
     <% content_for :display_options do %>
-      <ul class="nav nav-xs nav-pills pull-right">
+      <ul class="nav nav-xs nav-pills index-display-options">
         <%= tab('List', 'fa fa-list', 'home', active: true) %>
         <% if !TeSS::Config.feature['disabled'].include? 'events_map' %>
           <%= tab('Map', 'fa fa-globe', 'map',

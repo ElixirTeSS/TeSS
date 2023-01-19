@@ -5,24 +5,23 @@
     <%= render partial: 'search/common/search_box', locals: { resource_path: polymorphic_path(resource_type) } %>
   </div>
   <div class="col-sm-6 text-right">
+    <button class="btn btn-secondary pull-left" id="sidebar-toggle" type="button" autocomplete="off">
+      <i class="icon icon-md filter-icon"></i> Filters
+    </button>
     <%= content_for(:buttons) %>
   </div>
-  <div class="col-xs-9">
+  <div class="col-xs-12">
+    <div class="pull-right">
+      <%= content_for(:display_options) %>
+    </div>
+    <div class="hidden-xs">
+      <%= render partial: 'search/common/search_filters', locals: { resources: resources } %>
+    </div>
     <div class="search-results-count">
       <%= pluralize(resources.total, resource_type.model_name.human.downcase ) %> found
     </div>
     <% if TeSS::Config.feature['subscription'] && show_subscription_button %>
       <%= render partial: 'subscriptions/subscribe_button', locals: { type: resource_type.name } %>
     <% end %>
-    <%= render partial: 'search/common/search_filters', locals: { resources: resources } %>
   </div>
-  <div class="col-xs-3 text-right">
-    <%= content_for(:display_options) %>
-  </div>
-</div>
-
-<div class="row">
-  <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
-    <i class="icon icon-md icon-greyscale filter-icon"></i> Filters
-  </button>
 </div>
