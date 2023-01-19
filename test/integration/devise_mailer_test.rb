@@ -15,11 +15,9 @@ class DeviseMailerTest < ActionDispatch::IntegrationTest
   end
 
   test 'mailer headers are applied to emails from devise' do
-    mailer_settings = TeSS::Config.mailer
-    TeSS::Config.mailer['headers'] = { 'Sender' => 'mail.sender@example.com', 'X-Something' => 'yes' }
-
     assert_emails 1 do
-      with_settings(force_user_confirmation: true) do
+      with_settings(force_user_confirmation: true,
+                    mailer: { headers: { 'Sender': 'mail.sender@example.com', 'X-Something': 'yes' }}) do
         post users_path, params: {
           user: {
             username: 'mileyfan1997',
@@ -39,7 +37,5 @@ class DeviseMailerTest < ActionDispatch::IntegrationTest
     assert_equal 'no-reply@example.com', email_headers['From']
     assert_equal 'mail.sender@example.com', email_headers['Sender']
     assert_equal 'yes', email_headers['X-Something']
-  ensure
-    TeSS::Config.mailer = mailer_settings
   end
 end

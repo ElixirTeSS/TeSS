@@ -9,9 +9,7 @@ class SearchControllerTest < ActionController::TestCase
   end
 
   test 'should get index' do
-    begin
-      TeSS::Config.solr_enabled = true
-
+    with_settings(solr_enabled: true) do
       search_method = proc { |model| MockSearch.new(model.limit(3).to_a) }
 
       Sunspot.blockless_stub(:search, search_method) do
@@ -19,9 +17,6 @@ class SearchControllerTest < ActionController::TestCase
         assert_response :success
         assert_not_empty assigns(:results)
       end
-
-    ensure
-      TeSS::Config.solr_enabled = false
     end
   end
 

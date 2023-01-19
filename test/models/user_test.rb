@@ -23,13 +23,17 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'default role should be configurable' do
-    default_role = TeSS::Config.default_role
-    begin
-      TeSS::Config.default_role = 'basic_user'
+    with_settings(default_role: 'basic_user') do
       user = User.create!(@user_params)
       assert_equal 'basic_user', user.role.name
-    ensure
-      TeSS::Config.default_role = default_role
+    end
+
+    with_settings(default_role: 'unverified_user') do
+      user = User.create!({ username: 'new_user2',
+                            password: '12345678',
+                            email: 'new-user2@example.com',
+                            processing_consent: '1' })
+      assert_equal 'unverified_user', user.role.name
     end
   end
 
