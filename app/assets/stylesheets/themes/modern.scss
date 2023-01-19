@@ -155,6 +155,10 @@ $btn-danger-color: $brand-danger;
 $btn-danger-bg: #fff;
 $btn-danger-border: $brand-danger;
 
+// Nav
+$nav-pills-active-link-hover-bg: $secondary-color;
+$nav-pills-active-link-hover-color: #fff;
+
 // Panels
 $panel-default-heading-bg: transparentize($secondary-color, 0.9);
 $panel-default-border: $panel-default-heading-bg;
@@ -191,10 +195,24 @@ $badge-bg: $accent-color;
   border-color: $secondary-color !important;
 }
 
+@mixin modern-button-variant($color, $background, $border) {
+  &:hover, &:active, &:focus {
+    background: $background !important;
+    border-color: darken($border, 20%) !important;
+    color: darken($color, 20%) !important;
+  }
+}
+
+.btn-info { @include modern-button-variant($btn-info-color, $btn-info-bg, $btn-info-border) }
+.btn-success { @include modern-button-variant($btn-success-color, $btn-success-bg, $btn-success-border) }
+.btn-warning { @include modern-button-variant($btn-warning-color, $btn-warning-bg, $btn-warning-border) }
+.btn-danger { @include modern-button-variant($btn-danger-color, $btn-danger-bg, $btn-danger-border) }
+.btn-secondary { @include modern-button-variant($secondary-color, $btn-default-bg, $secondary-color) }
+
 .text-primary {
   color: $secondary-color !important;
 }
 
-.nav-tabs a {
-  color: $secondary-color !important;
+.nav-tabs a, .nav-pills a {
+  color: $secondary-color;
 }

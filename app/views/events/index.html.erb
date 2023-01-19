@@ -18,6 +18,16 @@
         <%= render_markdown(events_info) %>
       <% end %>
     <% end %>
+    <% content_for :display_options do %>
+      <ul class="nav nav-xs nav-pills pull-right">
+        <%= tab('List', 'fa fa-list', 'home', active: true) %>
+        <% if !TeSS::Config.feature['disabled'].include? 'events_map' %>
+          <%= tab('Map', 'fa fa-globe', 'map',
+                  disabled: { check: (search_and_facet_params[:online] == 'true'),
+                              message: 'Only showing online events.' }) %>
+        <% end %>
+      </ul>
+    <% end %>
 
     <% if TeSS::Config.solr_enabled %>
       <%= render partial: "search/common/search_panel", locals: { resources: @events_results,
@@ -27,15 +37,6 @@
 
     <%# ACTUAL RESULTS LIST %>
     <% unless @events.blank? %>
-      <ul class="nav nav-tabs">
-        <%= tab('List', 'fa fa-list', 'home', active: true) %>
-        <% if !TeSS::Config.feature['disabled'].include? 'events_map' %>
-          <%= tab('Map', 'fa fa-globe', 'map',
-                  disabled: { check: (search_and_facet_params[:online] == 'true'),
-                              message: 'Only showing online events.' }) %>
-        <% end %>
-      </ul>
-
       <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
           <ul class="masonry media-grid" style="margin-top: 15px;">
