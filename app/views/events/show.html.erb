@@ -58,6 +58,11 @@
       </div>
 
       <div class="row">
+        <!-- Field: start and end -->
+        <%= display_attribute(@event, :start) { |t| t.strftime('%A, %d %B %Y @ %H:%M') }%>
+        <%= display_attribute(@event, :end) { |t| t.strftime('%A, %d %B %Y @ %H:%M') } %>
+        <%= display_attribute(@event, :timezone) %>
+        <%= display_attribute(@event, :duration) %>
 
         <!-- Field: description -->
         <div class="description">
@@ -66,12 +71,6 @@
             <%= render_markdown @event.description %>
           <% end %>
         </div>
-
-        <!-- Field: start and end -->
-        <%= display_attribute(@event, :start) { |t| t.strftime('%A, %d %B %Y @ %H:%M') }%>
-        <%= display_attribute(@event, :end) { |t| t.strftime('%A, %d %B %Y @ %H:%M') } %>
-        <%= display_attribute(@event, :timezone) %>
-        <%= display_attribute(@event, :duration) %>
       </div>
 
       <div>
