@@ -7,7 +7,12 @@
   <% end %>
 
   <div id="content">
-    <h2>Training materials</h2>
+    <% if @facet_params[:resource_type] == 'e-learning' %>
+      <h2>e-Learning</h2>
+    <% else %>
+      <h2>Training materials</h2>
+    <% end %>
+
     <% content_for :buttons do %>
       <!-- Register button -->
       <%= link_to new_material_path, class: 'btn btn-primary' do %>
