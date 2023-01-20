@@ -13,21 +13,21 @@
       <h4><%= material.title %></h4>
     </div>
 
-    <div class="font-size-lg"><%= display_difficulty_level(material) %></div>
 
     <div class="row no-spacing">
       <div class="col-md-9 no-spacing">
+        <div class="font-size-lg"><%= display_difficulty_level(material) %></div>
         <%= keywords_and_topics(material) %>
       </div>
 
       <div class="col-md-3 no-spacing">
-        <% if controller_name != 'content_providers' && material.content_provider %>
-          <%= image_tag(material.content_provider.image.url, class: 'medium-avatar pull-right mt-3') %>
-        <% end %>
-
         <% if material.has_node? -%>
-          <%= image_tag 'elixir/elixir_logo_orange.png', alt: 'ELIXIR node event', title: 'ELIXIR node event', class: 'elixir-node-icon' %>
+          <%= image_tag 'elixir/elixir_logo_orange.png', alt: 'ELIXIR node event', title: 'ELIXIR node event',
+                        class: 'elixir-node-icon' %>
         <% end -%>
+        <% if controller_name != 'content_providers' && material.content_provider %>
+          <%= image_tag(material.content_provider.image.url, class: 'provider-avatar') %>
+        <% end %>
       </div>
     </div>
   <% end %>
