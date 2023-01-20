@@ -23,6 +23,7 @@ require 'webmock/minitest'
 require 'minitest/mock'
 require 'fakeredis/minitest'
 require 'vcr'
+require_relative './schema_helper'
 
 VCR.configure do |config|
   config.cassette_library_dir = 'test/vcr_cassettes'

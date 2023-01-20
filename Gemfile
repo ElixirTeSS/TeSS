@@ -194,4 +194,6 @@ group :test do
   gem 'rails-controller-testing'
   gem 'vcr', '~> 6.1.0'
   gem 'webmock', '~> 3.18.1'
+  gem 'committee', '~> 4.4'
 end
+

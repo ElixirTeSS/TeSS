@@ -3,6 +3,7 @@ require 'test_helper'
 class CollectionsControllerTest < ActionController::TestCase
   include Devise::Test::ControllerHelpers
   include ActiveJob::TestHelper
+  include SchemaHelper
 
   setup do
     mock_images
@@ -32,6 +33,8 @@ class CollectionsControllerTest < ActionController::TestCase
     get :index, params: { format: :json_api }
     assert_response :success
     assert_not_nil assigns(:collections)
+    assert_valid_json_api_response
+
     body = nil
     assert_nothing_raised do
       body = JSON.parse(response.body)
@@ -169,6 +172,7 @@ class CollectionsControllerTest < ActionController::TestCase
     get :show, params: { id: @collection, format: :json_api }
     assert_response :success
     assert assigns(:collection)
+    assert_valid_json_api_response
 
     body = nil
     assert_nothing_raised do
