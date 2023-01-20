@@ -15,15 +15,9 @@
 
     <div class="font-size-lg"><%= display_difficulty_level(material) %></div>
 
-    <div class="markdown-description mt-2">
-      <%= render_sanitized_markdown truncate(material.description, length: 300, separator: ' ') %>
-    </div>
-
     <div class="row no-spacing">
       <div class="col-md-9 no-spacing">
-        <%= display_attribute(material, :scientific_topics) { |values| values.map { |x| x.preferred_label }.join(', ') } %>
-        <%= display_attribute(material, :operations) { |values| values.map { |x| x.preferred_label }.join(', ') } %>
-        <%= display_attribute(material, :keywords) { |values| values.join(', ') } %>
+        <%= keywords_and_topics(material) %>
       </div>
 
       <div class="col-md-3 no-spacing">

@@ -1,45 +1,50 @@
 <li class="masonry-brick media-item<%= ' long' if defined?(list) && list -%>">
-  <%= link_to event, class: 'link-overlay' do %>
-    <% if event.event_types.any? %>
-      <% event.event_types.each do |t| %>
-        <div class="sub-heading"><%= EventTypeDictionary.instance.lookup_value(t, 'title') %></div>
+  <%= link_to event, class: 'link-overlay with-left-icon' do %>
+    <div class="icon-container">
+      <!--    TODO: hybrid events-->
+      <% if event.online? %>
+        <i class="icon icon-h2 virtual-event-icon"></i><br/>
+        Online
+      <% else %>
+        <i class="icon icon-h2 onsite-event-icon"></i><br/>
+        Face-to-face
       <% end %>
-    <% end %>
-
-    <div class="masonry-brick-heading">
-      <div class="masonry-icons">
-        <% if current_user&.is_admin? %>
-          <%= missing_icon(event) %>
-          <%= scrape_status_icon(event) %>
-          <%= suggestion_icon(event) %>
-        <% end %>
-
-        <%= event_status_icon(event) %>
-      </div>
-      <h4>
-        <!--    TODO: hybrid events-->
-        <% if event.online? %>
-          <i class="icon icon-h4 virtual-event-icon"></i>
-        <% else %>
-          <i class="icon icon-h4 onsite-event-icon"></i>
-        <% end %>
-        <%= event.title %>
-      </h4>
     </div>
 
-    <p><%= neatly_printed_date_range(event.start, event.end) %></p>
-
-    <% unless event.online? %>
-      <% location = [event.city, event.country].reject { |field_value| field_value.blank? }.join(", ") %>
-      <% if location.present? %>
-        <p class="dont-break-out"><%= location %></p>
+    <div class="right-container">
+      <% if event.event_types.any? %>
+        <% event.event_types.each do |t| %>
+          <div class="sub-heading"><%= EventTypeDictionary.instance.lookup_value(t, 'title') %></div>
+        <% end %>
       <% end %>
-    <% end %>
 
-    <% if event.has_node? -%>
-      <%= image_tag 'elixir/elixir_logo_orange.png', alt: 'ELIXIR node event', title: 'ELIXIR node event', class: 'elixir-node-icon' %>
-    <% end -%>
+      <div class="masonry-brick-heading">
+        <div class="masonry-icons">
+          <% if current_user&.is_admin? %>
+            <%= missing_icon(event) %>
+            <%= scrape_status_icon(event) %>
+            <%= suggestion_icon(event) %>
+          <% end %>
 
-    <%= display_attribute(event, :keywords) { |values| values.join(', ') } %>
+          <%= event_status_icon(event) %>
+        </div>
+        <h4>
+          <%= event.title %>
+        </h4>
+      </div>
+
+      <p><%= neatly_printed_date_range(event.start, event.end) %></p>
+
+      <% unless event.online? %>
+        <% location = [event.city, event.country].reject { |field_value| field_value.blank? }.join(", ") %>
+        <% if location.present? %>
+          <p class="dont-break-out"><%= location %></p>
+        <% end %>
+      <% end %>
+
+      <% if event.has_node? -%>
+        <%= image_tag 'elixir/elixir_logo_orange.png', alt: 'ELIXIR node event', title: 'ELIXIR node event', class: 'elixir-node-icon' %>
+      <% end -%>
+    </div>
   <% end %>
 </li>

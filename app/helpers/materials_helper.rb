@@ -107,4 +107,8 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
       renderer.render_content.html_safe
     end
   end
+
+  def keywords_and_topics(material)
+    (material.scientific_topic_names | material.operation_names | material.keywords).join(', ')
+  end
 end
