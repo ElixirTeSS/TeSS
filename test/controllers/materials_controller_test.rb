@@ -1303,21 +1303,4 @@ class MaterialsControllerTest < ActionController::TestCase
 
     assert_select 'div.embedded-content', count: 0
   end
-
-  test 'should strip certain tags from markdown descriptions on index page' do
-    m = Material.new(title: 'Markdown Material', url: 'https://mark.down',
-                     description: "# Hello\n\n[test](https://tess.elixir-europe.org)\n\n**something**",
-                     user: @user)
-
-    m.save!
-
-    get :index
-    assert_response :success
-    assert_includes assigns(:materials), m
-
-    assert_select '.masonry-brick .markdown-description a', count: 0
-    assert_select '.masonry-brick .markdown-description h1', count: 0
-    assert_select '.masonry-brick .markdown-description strong', count: 1
-    assert_select '.masonry-brick .markdown-description p'
-  end
 end

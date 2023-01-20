@@ -485,4 +485,21 @@ class ContentProvidersControllerTest < ActionController::TestCase
     # this is a bit fragile. may be nicer to use a regex if it breaks
     assert_select 'div#events div.search-results-count', text: "Showing 2 events.\n                Found 1 past event.\n                View all results."
   end
+
+  test 'should strip certain tags from markdown descriptions on index page' do
+    c = ContentProvider.new(title: 'Markdown Provider', url: 'https://mark.down',
+                            description: "# Hello\n\n[test](https://tess.elixir-europe.org)\n\n**something**",
+                            user: users(:regular_user))
+
+    c.save!
+
+    get :index
+    assert_response :success
+    assert_includes assigns(:content_providers), c
+
+    assert_select '.masonry-brick .markdown-description a', count: 0
+    assert_select '.masonry-brick .markdown-description h1', count: 0
+    assert_select '.masonry-brick .markdown-description strong', count: 1
+    assert_select '.masonry-brick .markdown-description p'
+  end
 end
