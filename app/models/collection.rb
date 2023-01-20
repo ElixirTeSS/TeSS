@@ -16,6 +16,12 @@ class Collection < ApplicationRecord
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
   auto_strip_attributes :title, :description, :image_url, :squish => false
+  after_save do
+    index_items if saved_change_to_title?
+  end
+  after_destroy do
+    index_items
+  end
 
   validates :title, presence: true
 
@@ -42,6 +48,7 @@ class Collection < ApplicationRecord
         [user.username, user.full_name].reject(&:blank?) if user
       end
 
+      integer :collaborator_ids, multiple: true
       integer :user_id
       boolean :public
       time :created_at
@@ -85,5 +92,13 @@ class Collection < ApplicationRecord
 
   def scientific_topics
     []
+  end
+
+  private
+
+  def index_items
+    return unless TeSS::Config.solr_enabled
+
+    items.each(&:solr_index)
   end
 end

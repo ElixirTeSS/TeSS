@@ -16,8 +16,8 @@ class Event < ApplicationRecord
   include IdentifiersDotOrg
   include HasFriendlyId
   include FuzzyDictionaryMatch
+  include WithTimezone
 
-  before_validation :check_timezone # set to standard key
   before_save :check_country_name # :set_default_times
   before_save :geocoding_cache_lookup, if: :address_will_change?
   after_save :enqueue_geocoding_worker, if: :address_changed?
@@ -65,7 +65,7 @@ class Event < ApplicationRecord
         content_provider.title unless content_provider.nil?
       end
       string :node, multiple: true do
-        associated_nodes.map(&:name)
+        associated_nodes.pluck(:name)
       end
       string :scientific_topics, multiple: true do
         scientific_topic_names
@@ -87,6 +87,9 @@ class Event < ApplicationRecord
       # TODO: SOLR has a LatLonType to do geospatial searching. Have a look at that
       #       location :latitutde
       #       location :longitude
+      string :collections, multiple: true do
+        collections.where(public: true).pluck(:title)
+      end
     end
     # :nocov:
   end
@@ -114,9 +117,6 @@ class Event < ApplicationRecord
   validates :latitude, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90, allow_nil: true }
   validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true }
   # validates :duration, format: { with: /\A[0-9][0-9]:[0-5][0-9]\z/, message: "must be in format HH:MM" }, allow_blank: true
-  validates :timezone, inclusion: { in: ActiveSupport::TimeZone::MAPPING.keys,
-                                    message: 'not found and cannot be linked to a valid timezone',
-                                    allow_blank: true }
   validate :allowed_url
   clean_array_fields(:keywords, :fields, :event_types, :target_audience,
                      :eligibility, :host_institutions, :sponsors)
@@ -178,7 +178,7 @@ class Event < ApplicationRecord
 
   def self.facet_fields
     field_list = %w[ content_provider keywords scientific_topics operations tools fields online event_types
-                     venue city country organizer sponsors target_audience eligibility user ]
+                     venue city country organizer sponsors target_audience eligibility user collections ]
 
     field_list.delete('operations') if TeSS::Config.feature['disabled'].include? 'operations'
     field_list.delete('scientific_topics') if TeSS::Config.feature['disabled'].include? 'topics'
@@ -186,6 +186,7 @@ class Event < ApplicationRecord
     field_list.delete('tools') if TeSS::Config.feature['disabled'].include? 'biotools'
     field_list.delete('fields') if TeSS::Config.feature['disabled'].include? 'ardc_fields_of_research'
     field_list.delete('node') unless TeSS::Config.feature['nodes']
+    field_list.delete('collections') unless TeSS::Config.feature['collections']
 
     field_list
   end
@@ -270,35 +271,6 @@ class Event < ApplicationRecord
 
   def self.finished
     where('events.end < ?', Time.now).where.not(end: nil)
-  end
-
-  def check_timezone
-    begin
-      tz_key = find_timezone_key timezone
-      self.timezone = tz_key unless tz_key.nil? or tz_key == timezone
-    rescue Exception => e
-      # ignore error
-    end
-    nil
-  end
-
-  def find_timezone_key(name)
-    return name if name.nil?
-
-    # check name vs ActiveSupport
-    timezones = ActiveSupport::TimeZone::MAPPING
-    return name if timezones.keys.include? name
-    return timezones.key(name) unless timezones.key(name).nil?
-
-    # check for linked zones in TZInfo
-    tzinfo = TZInfo::Timezone.get(name)
-    if tzinfo.nil? and tzinfo.is_a? TZInfo::LinkedTimezone
-      # repeat search with canonical timezone identifier
-      return find_timezone_key tzinfo.canonical_zone.identifier
-    end
-
-    # otherwise
-    nil
   end
 
   # Ticket #423

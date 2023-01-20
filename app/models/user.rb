@@ -124,15 +124,19 @@ class User < ApplicationRecord
     self.has_role?('curator')
   end
 
+  def maintained_collections
+    Collection.left_outer_joins(:collaborators).where(collaborators: { id: id }).or(Collection.where(user_id: id)).distinct
+  end
+
   def skip_email_confirmation_for_non_production
     # In development and test environments, set the user as confirmed
     # after creation but before save
     # so no confirmation emails are sent
-    self.skip_confirmation! unless Rails.env.production?
+    self.skip_confirmation! unless Rails.env.production? || TeSS::Config.force_user_confirmation
   end
 
   def skip_email_reconfirmation_for_non_production
-    unless Rails.env.production?
+    unless Rails.env.production? || TeSS::Config.force_user_confirmation
       self.unconfirmed_email = nil
       self.skip_reconfirmation!
     end

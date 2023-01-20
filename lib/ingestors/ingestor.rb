@@ -65,9 +65,12 @@ module Ingestors
 
     def convert_description(input)
       return input if input.nil?
-      return input if input == ActionController::Base.helpers.strip_tags(input)
 
-      ReverseMarkdown.convert(input, tag_border: '').strip
+      if input.match?(/<(li|p|b|i|ul|div|br|strong|em|h1)\/?>/)
+        ReverseMarkdown.convert(input, tag_border: '').strip
+      else
+        input
+      end
     end
 
     def get_json_response(url, accept_params = 'application/json')

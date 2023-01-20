@@ -18,9 +18,8 @@ Variable that should be available
   <% if ['Event', 'Material'].include?(resource_type.name) %>
     <%= render partial: 'search/common/facet_sidebar_max_age' %>
   <% end %>
-  <% resources.facets.select { |f| f.rows.any? }.each do |facet| %>
-      <% if IGNORED_FILTERS.include?(facet.field_name.to_s)   %>
-      <% elsif facet.field_name == :online %>
+  <% available_facets(resources).each do |facet| %>
+      <% if facet.field_name == :online %>
           <%= render partial: 'search/common/facet_sidebar_boolean_filter',
                      locals: { facet: facet, resources: resources } %>
       <% else %>

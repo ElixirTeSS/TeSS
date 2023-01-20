@@ -412,27 +412,23 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'should get invitees if feature enabled' do
-    features = TeSS::Config.feature.dup
-    TeSS::Config.feature['invitation'] = true
-    sign_in @admin
+    with_settings(feature: { invitation: true }) do
+      sign_in @admin
 
-    get :invitees
+      get :invitees
 
-    assert_response :success
-  ensure
-    TeSS::Config.feature = features
+      assert_response :success
+    end
   end
 
   test 'should not get invitees if feature disabled' do
-    features = TeSS::Config.feature.dup
-    TeSS::Config.feature['invitation'] = false
-    sign_in @admin
+    with_settings(feature: { invitation: false }) do
+      sign_in @admin
 
-    assert_raises(ActionController::RoutingError) do
-      get :invitees
+      assert_raises(ActionController::RoutingError) do
+        get :invitees
+      end
     end
-  ensure
-    TeSS::Config.feature = features
   end
 
   test 'should show tabs for resource types and link to view all' do

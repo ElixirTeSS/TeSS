@@ -178,9 +178,6 @@ GEM
     crack (0.4.5)
       rexml
     crass (1.0.6)
-    debase (0.2.4.1)
-      debase-ruby_core_source (>= 0.10.2)
-    debase-ruby_core_source (0.10.13)
     debug_inspector (1.1.0)
     devise (4.8.0)
       bcrypt (~> 3.0)
@@ -232,7 +229,7 @@ GEM
     friendly_id (5.2.5)
       activerecord (>= 4.0.0)
     geocoder (1.7.0)
-    globalid (1.0.0)
+    globalid (1.0.1)
       activesupport (>= 5.0)
     gravtastic (3.2.6)
     haml (5.2.2)
@@ -251,8 +248,8 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.0.4)
       domain_name (~> 0.5)
-    httparty (0.20.0)
-      mime-types (~> 3.0)
+    httparty (0.21.0)
+      mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
     httpclient (2.8.3)
     i18n (1.12.0)
@@ -348,7 +345,7 @@ GEM
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     logger (1.5.1)
-    loofah (2.18.0)
+    loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     lunchy (0.10.4)
@@ -359,7 +356,7 @@ GEM
     method_source (1.0.0)
     mime-types (3.4.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2021.1115)
+    mime-types-data (3.2022.0105)
     mini_mime (1.1.2)
     mini_portile2 (2.8.0)
     minitest (5.14.4)
@@ -417,6 +414,12 @@ GEM
     progress_bar (1.1.0)
       highline (~> 1.6)
       options (~> 2.3.0)
+    pry (0.14.1)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
+    pry-byebug (3.10.1)
+      byebug (~> 11.0)
+      pry (>= 0.13, < 0.15)
     psych (4.0.6)
       stringio
     public_activity (1.6.4)
@@ -430,7 +433,7 @@ GEM
     pundit (1.1.0)
       activesupport (>= 3.0.0)
     racc (1.6.1)
-    rack (2.2.4)
+    rack (2.2.6.2)
     rack-cors (1.1.1)
       rack (>= 2.0.0)
     rack-oauth2 (1.19.0)
@@ -468,8 +471,8 @@ GEM
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.4.3)
-      loofah (~> 2.3)
+    rails-html-sanitizer (1.4.4)
+      loofah (~> 2.19, >= 2.19.1)
     rails-i18n (7.0.3)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 8)
@@ -593,8 +596,6 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.13.0)
       parser (>= 3.0.1.1)
-    ruby-debug-ide (0.7.3)
-      rake (>= 0.8.1)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
     sass (3.7.4)
@@ -747,7 +748,7 @@ GEM
       psych (>= 3.3)
       rdf (~> 3.2, >= 3.2.9)
       rdf-xsd (~> 3.2)
-    zeitwerk (2.6.0)
+    zeitwerk (2.6.6)
 
 PLATFORMS
   ruby
@@ -764,7 +765,6 @@ DEPENDENCIES
   by_star!
   byebug
   country_select (<= 4.0.0)
-  debase
   devise
   devise_invitable (~> 2.0.5)
   dynamic_sitemaps!
@@ -797,6 +797,7 @@ DEPENDENCIES
   pg
   private_address_check
   progress_bar (~> 1.1.0)
+  pry-byebug
   public_activity (~> 1.6.4)
   puma
   pundit (~> 1.1.0)
@@ -818,7 +819,6 @@ DEPENDENCIES
   reverse_markdown
   rss
   rubocop
-  ruby-debug-ide
   sass-rails (~> 5.0)
   sassc-rails (~> 2.1.2)
   sdoc (>= 1.1.0)

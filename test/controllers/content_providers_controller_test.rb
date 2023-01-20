@@ -27,17 +27,12 @@ class ContentProvidersControllerTest < ActionController::TestCase
   end
 
   test 'should get index with solr enabled' do
-    begin
-      TeSS::Config.solr_enabled = true
-
+    with_settings(solr_enabled: true) do
       ContentProvider.stub(:search_and_filter, MockSearch.new(ContentProvider.all)) do
         get :index, params: { q: 'gossip', keywords: 'celebs' }
         assert_response :success
         assert_not_empty assigns(:content_providers)
       end
-
-    ensure
-      TeSS::Config.solr_enabled = false
     end
   end
 
@@ -65,13 +60,11 @@ class ContentProvidersControllerTest < ActionController::TestCase
   end
 
   test 'should not get index if feature disabled' do
-    features = TeSS::Config.feature.dup
-    TeSS::Config.feature['providers'] = false
-    assert_raises(ActionController::RoutingError) do
-      get :index
+    with_settings(feature: { providers: false }) do
+      assert_raises(ActionController::RoutingError) do
+        get :index
+      end
     end
-  ensure
-    TeSS::Config.feature = features
   end
 
   #NEW TESTS

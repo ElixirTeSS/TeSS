@@ -10,18 +10,18 @@ class StaticControllerTest < ActionController::TestCase
   end
 
   test 'should show tabs for enabled features' do
-    features = TeSS::Config.feature.dup
+    features = { 'events': true,
+                 'materials': true,
+                 'e-learnings': true,
+                 'workflows': true,
+                 'collections': true,
+                 'providers': true,
+                 'trainers': true,
+                 'nodes': true }
 
-    TeSS::Config.feature['events'] = true
-    TeSS::Config.feature['materials'] = true
-    TeSS::Config.feature['e-learnings'] = true
-    TeSS::Config.feature['workflows'] = true
-    TeSS::Config.feature['collections'] = true
-    TeSS::Config.feature['providers'] = true
-    TeSS::Config.feature['trainers'] = true
-    TeSS::Config.feature['nodes'] = true
-
-    get :home
+    with_settings(feature: features) do
+      get :home
+    end
 
     assert_select 'ul.nav.navbar-nav' do
       assert_select 'li a[href=?]', workflows_path
@@ -34,23 +34,21 @@ class StaticControllerTest < ActionController::TestCase
       assert_select 'li a[href=?]', trainers_path
       assert_select 'li a[href=?]', nodes_path
     end
-  ensure
-    TeSS::Config.feature = features
   end
 
   test 'should not show tabs for disabled features' do
-    features = TeSS::Config.feature.dup
+    features = { 'events': false,
+                 'materials': false,
+                 'e-learnings': false,
+                 'workflows': false,
+                 'collections': false,
+                 'providers': false,
+                 'trainers': false,
+                 'nodes': false }
 
-    TeSS::Config.feature['events'] = false
-    TeSS::Config.feature['materials'] = false
-    TeSS::Config.feature['e-learnings'] = false
-    TeSS::Config.feature['workflows'] = false
-    TeSS::Config.feature['collections'] = false
-    TeSS::Config.feature['providers'] = false
-    TeSS::Config.feature['trainers'] = false
-    TeSS::Config.feature['nodes'] = false
-
-    get :home
+    with_settings(feature: features) do
+      get :home
+    end
 
     assert_select 'ul.nav.navbar-nav' do
       assert_select 'li a[href=?]', workflows_path, count: 0
@@ -63,7 +61,5 @@ class StaticControllerTest < ActionController::TestCase
       assert_select 'li a[href=?]', trainers_path, count: 0
       assert_select 'li a[href=?]', nodes_path, count: 0
     end
-  ensure
-    TeSS::Config.feature = features
   end
 end
