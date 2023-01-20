@@ -377,7 +377,7 @@ paths:
       parameters:
         - name: slug
           in: path
-          description: The _slug_ id of an material e.g. python-tutorial
+          description: The _slug_ id of a material e.g. python-tutorial
           required: true
           schema:
             type: string
@@ -474,7 +474,7 @@ paths:
       parameters:
         - name: slug
           in: path
-          description: The _slug_ id of an content provider e.g. goblet
+          description: The _slug_ id of a content provider e.g. goblet
           required: true
           schema:
             type: string
@@ -607,13 +607,13 @@ paths:
       parameters:
         - name: slug
           in: path
-          description: The _slug_ id of an workflow e.g. ember
+          description: The _slug_ id of a workflow e.g. ember
           required: true
           schema:
             type: string
       responses:
         200:
-          description: A single content provider.
+          description: A single workflow.
           content:
             application/vnd.api+json:
               schema:
@@ -636,7 +636,7 @@ paths:
       parameters:
         - name: slug
           in: path
-          description: The _slug_ id of an user e.g. niall.beard
+          description: The _slug_ id of a user e.g. niall.beard
           required: true
           schema:
             type: string
@@ -647,6 +647,80 @@ paths:
             application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/User'
+  /collections:
+    get:
+      tags:
+        - collections
+      parameters:
+        - name: q
+          in: query
+          description: Search keywords.
+          schema:
+            type: string
+        - name: page_number
+          in: query
+          description: The page of the collection to view.
+          schema:
+            type: integer
+            default: 1
+        - name: page_size
+          in: query
+          description: The number of results to return per page.
+          schema:
+            type: integer
+            default: 30
+        - name: sort
+          in: query
+          description: |
+            Sort order:
+             * default - sort by date (for Events), sort by number of resources (for Content Providers) otherwise sort by title (default).
+             * new - Sort by when the entry was created.
+             * mod - Sort by when the entry was last modified.
+             * rel - Sort by search query relevance.
+             * early - Sort by date, earliest to latest (Events only).
+             * late - Sort by date, latest to earliest (Events only).
+          schema:
+            type: string
+            enum:
+              - early
+              - late
+              - rel
+              - mod
+              - new
+        - name: keywords[]
+          in: query
+          description: Filter by keywords.
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        200:
+          description: A list of collections, and facets available to filter them.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/CollectionCollection'
+  /collections/{slug}:
+    get:
+      tags:
+        - collections
+      parameters:
+        - name: slug
+          in: path
+          description: The _slug_ id of a collection e.g. some-collection
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A single collection.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Collection'
 components:
   schemas:
     Event:
@@ -853,14 +927,7 @@ components:
                 nodes:
                   $ref: '#/components/schemas/MultiRelationshipObject'
             links:
-              type: object
-              allOf:
-                - $ref: '#/components/schemas/Links'
-                - type: object
-                  properties:
-                    redirect:
-                      type: string
-                      description: A redirect to the actual event's URL, via TeSS.
+              $ref: '#/components/schemas/Links'
     MaterialAttributes:
       type: object
       properties:
@@ -976,14 +1043,7 @@ components:
                 materials:
                   $ref: '#/components/schemas/MultiRelationshipObject'
             links:
-              type: object
-              allOf:
-                - $ref: '#/components/schemas/Links'
-                - type: object
-                  properties:
-                    redirect:
-                      type: string
-                      description: A redirect to the actual event's URL, via TeSS.
+              $ref: '#/components/schemas/Links'
     ContentProviderAttributes:
       type: object
       properties:
@@ -1041,14 +1101,7 @@ components:
             attributes:
               $ref: '#/components/schemas/UserAttributes'
             links:
-              type: object
-              allOf:
-                - $ref: '#/components/schemas/Links'
-                - type: object
-                  properties:
-                    redirect:
-                      type: string
-                      description: A redirect to the actual event's URL, via TeSS.
+              $ref: '#/components/schemas/Links'
     UserAttributes:
       type: object
       properties:
@@ -1100,14 +1153,7 @@ components:
                 user:
                   $ref: '#/components/schemas/SingleRelationshipObject'
             links:
-              type: object
-              allOf:
-                - $ref: '#/components/schemas/Links'
-                - type: object
-                  properties:
-                    redirect:
-                      type: string
-                      description: A redirect to the actual event's URL, via TeSS.
+              $ref: '#/components/schemas/Links'
     WorkflowAttributes:
       type: object
       properties:
@@ -1181,6 +1227,68 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/WorkflowResource'
+    Collection:
+      allOf:
+        - $ref: '#/components/schemas/JsonApiResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/CollectionResource'
+    CollectionResource:
+      allOf:
+        - $ref: '#/components/schemas/ResourceObject'
+        - type: object
+          properties:
+            attributes:
+              $ref: '#/components/schemas/CollectionAttributes'
+            relationships:
+              type: object
+              properties:
+                events:
+                  $ref: '#/components/schemas/MultiRelationshipObject'
+                materials:
+                  $ref: '#/components/schemas/MultiRelationshipObject'
+            links:
+              $ref: '#/components/schemas/Links'
+    CollectionAttributes:
+      type: object
+      properties:
+        slug:
+          type: string
+          description: The "friendly" identifier of the collection.
+        title:
+          type: string
+          description: The title of the collection.
+        description:
+          type: string
+          description: A description of the collection.
+        image-url:
+          type: string
+          description: A URL to an image of the collection's logo.
+        keywords:
+          type: array
+          description: A list of freetext keywords to describe the collection.
+          items:
+            type: string
+        created-at:
+          type: string
+          description: The date the collection was first created on TeSS
+          format: date
+        updated-at:
+          type: string
+          description: The date the collection was last updated on TeSS
+          format: date
+    CollectionCollection:
+      allOf:
+        - $ref: '#/components/schemas/FacetedCollection'
+        - type: object
+          properties:
+            data:
+              minItems: 0
+              uniqueItems: true
+              type: array
+              items:
+                $ref: '#/components/schemas/CollectionResource'
     FacetedCollection:
       allOf:
         - $ref: '#/components/schemas/JsonApiResponse'

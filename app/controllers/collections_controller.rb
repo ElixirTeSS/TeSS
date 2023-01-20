@@ -9,12 +9,22 @@ class CollectionsController < ApplicationController
   # GET /collections
   # GET /collections.json
   def index
+    respond_to do |format|
+      format.html
+      format.json
+      format.json_api { render({ json: @collections }.merge(api_collection_properties)) }
+    end
   end
 
   # GET /collections/1
   # GET /collections/1.json
   def show
     authorize @collection
+    respond_to do |format|
+      format.html
+      format.json
+      format.json_api { render json: @collection }
+    end
   end
 
   # GET /collections/new
@@ -117,7 +127,8 @@ class CollectionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def collection_params
-    params.require(:collection).permit(:title, :description, :image, :image_url, :public, {:keywords => []}, {:material_ids => []}, {:event_ids => []})
+    params.require(:collection).permit(:title, :description, :image, :image_url, :public, { keywords:  [] },
+                                       { material_ids: [] }, { event_ids: [] })
   end
 
   # Filter collection items based on a type
