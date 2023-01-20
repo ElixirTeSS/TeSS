@@ -1,14 +1,28 @@
 class EventSerializer < ApplicationSerializer
-  attributes :id, :external_id, :title, :subtitle, :url, :organizer, :description, :start, :end, :sponsors, :venue,
-             :city, :county, :country, :postcode, :latitude, :longitude, :source, :slug, :online, :last_scraped, :scraper_record,
-             :keywords, :event_types, :target_audience, :capacity, :eligibility, :contact, :host_institutions,
-             :scientific_topics, :operations, :external_resources, :created_at, :updated_at, :cost_basis, :cost_value
+  attributes :id, :external_id, :title, :subtitle, :url, :description,
+
+             :keywords, :event_types, :scientific_topics, :operations, :fields, :external_resources,
+
+             :start, :end, :duration, :timezone,
+
+             :organizer, :sponsors, :contact, :host_institutions,
+
+             :online, :venue, :city, :county, :country, :postcode, :latitude, :longitude,
+
+             :capacity, :cost_basis, :cost_value, :cost_currency,
+
+             :target_audience, :eligibility, :recognition, :learning_objectives,
+             :prerequisites, :tech_requirements,
+
+             :source, :slug, :last_scraped, :scraper_record, :created_at, :updated_at
 
   attribute :report, if: -> { policy(object).view_report? }
 
   belongs_to :user
   belongs_to :content_provider
   has_many :nodes
+  has_many :collections
+  has_many :materials
 
   def report
     Hash[Event::SENSITIVE_FIELDS.map { |f| [f, object.send(f)] }]
