@@ -37,6 +37,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'should get index' do
     get :index
     assert_response :success
+    assert_select '#content h2', text: 'Training materials'
     assert_not_nil assigns(:materials)
   end
 
@@ -46,6 +47,7 @@ class MaterialsControllerTest < ActionController::TestCase
         get :index, params: { q: 'breakdance for beginners', keywords: 'dancing' }
         assert_response :success
         assert_not_empty assigns(:materials)
+        assert_select '.searchbox-sm form[action=?]', materials_path
       end
     end
   end
@@ -1285,5 +1287,35 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_response :success
 
     assert_select 'div.embedded-content', count: 0
+  end
+
+  test 'can scope index according to e-learning if enabled' do
+    with_settings(solr_enabled: true, feature: { elearning_materials: true }) do
+      Material.stub(:search_and_filter, MockSearch.new(Material.all)) do
+        get :index, params: { resource_type: 'e-learning' }
+
+        assert_response :success
+      end
+    end
+
+    assert_select '#content h2', text: 'e-Learning'
+    assert_select '.searchbox-sm form[action=?]', elearning_materials_path do
+      assert_select '#q[placeholder=?]', 'Search e-learning materials...'
+    end
+  end
+
+  test 'does not scope index according to e-learning if not enabled' do
+    with_settings(solr_enabled: true, feature: { elearning_materials: false }) do
+      Material.stub(:search_and_filter, MockSearch.new(Material.all)) do
+        get :index, params: { resource_type: 'e-learning' }
+
+        assert_response :success
+      end
+    end
+
+    assert_select '#content h2', text: 'Training materials'
+    assert_select '.searchbox-sm form[action=?]', materials_path do
+      assert_select '#q[placeholder=?]', 'Search materials...'
+    end
   end
 end

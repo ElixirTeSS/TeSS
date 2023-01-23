@@ -7,7 +7,7 @@
   <% end %>
 
   <div id="content">
-    <h2>Training materials</h2>
+    <h2>e-Learning</h2>
 
     <% content_for :buttons do %>
       <!-- Register button -->
@@ -15,13 +15,13 @@
         Register training material
       <% end %>
       <!-- Info -->
-      <%= info_button("What are materials in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>
-        <%= render_markdown(materials_info) %>
+      <%= info_button("What are e-learning materials in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>
+        <%= render_markdown(elearning_materials_info) %>
       <% end %>
     <% end %>
 
     <%= render partial: "search/common/search_panel", locals: { resources: @materials_results,
-                                                                resource_type: Material,
+                                                                resource_type: ElearningMaterial,
                                                                 show_subscription_button: true } %>
 
     <%= render partial: 'common/masonry_grid', locals: { objects: @materials } %>

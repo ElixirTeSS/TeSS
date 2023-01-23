@@ -4,7 +4,8 @@
   <div class="row">
     <div class="col-sm-6">
       <% if TeSS::Config.solr_enabled %>
-        <%= render partial: 'search/common/search_box', locals: { resource_path: polymorphic_path(resource_type) } %>
+        <%= render partial: 'search/common/search_box', locals: { placeholder: "Search #{resource_type.model_name.human.downcase.pluralize}...",
+                                                                  resource_path: polymorphic_path(resource_type) } %>
       <% end %>
     </div>
     <div class="col-sm-6 text-right">

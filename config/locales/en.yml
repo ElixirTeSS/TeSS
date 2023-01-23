@@ -7,6 +7,8 @@ en:
     url: 'URL'
     doi: 'DOI'
   activerecord:
+    models:
+      elearning_material: e-Learning Material
     attributes:
       content_provider:
         user: Owner
