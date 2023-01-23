@@ -37,16 +37,12 @@
     <% unless @events.blank? %>
       <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
-          <ul class="masonry media-grid">
-            <% @events.each do |event| %>
-              <%= render partial: 'events/event', locals: { event: event, list: true} %>
-            <% end %>
-          </ul>
+          <%= render partial: 'common/masonry_grid', locals: { objects: @events } %>
 
           <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
         </div>
 
-        <% if !TeSS::Config.feature['disabled'].include? 'events_map' %>
+        <% unless TeSS::Config.feature['disabled'].include?('events_map') %>
           <div id="map" class="tab-pane fade">
             <div id="map-count" class="search-results-count"></div>
             <div id="map-content">

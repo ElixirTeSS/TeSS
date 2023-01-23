@@ -1,5 +1,6 @@
 # The controller for actions related to searchable models
 class SearchController < ApplicationController
+  PAGE_SIZE = 30
 
   before_action :set_breadcrumbs
 
@@ -35,6 +36,8 @@ class SearchController < ApplicationController
               without(:unverified, true)
             end
           end
+
+          paginate page: 1, per_page: PAGE_SIZE
         end
       end
     end
