@@ -29,7 +29,7 @@ class StaticControllerTest < ActionController::TestCase
       assert_select 'li a[href=?]', workflows_path
       assert_select 'li a[href=?]', elearning_materials_path
       assert_select 'li a[href=?]', collections_path
-      assert_select 'li.dropdown' do
+      assert_select 'li.dropdown.directory-menu' do
         assert_select 'li a[href=?]', content_providers_path
         assert_select 'li a[href=?]', trainers_path
         assert_select 'li a[href=?]', nodes_path
@@ -61,7 +61,7 @@ class StaticControllerTest < ActionController::TestCase
       assert_select 'li a[href=?]', content_providers_path, count: 0
       assert_select 'li a[href=?]', trainers_path, count: 0
       assert_select 'li a[href=?]', nodes_path, count: 0
-      assert_select 'li.dropdown', count: 0
+      assert_select 'li.dropdown.directory-menu', count: 0
     end
   end
 
@@ -148,7 +148,7 @@ class StaticControllerTest < ActionController::TestCase
         assert_select 'li a[href=?]', content_providers_path
         assert_select 'li a[href=?]', trainers_path
         assert_select 'li a[href=?]', nodes_path
-        assert_select 'li.dropdown', count: 0
+        assert_select 'li.dropdown.directory-menu', count: 0
       end
     end
 
@@ -166,7 +166,7 @@ class StaticControllerTest < ActionController::TestCase
         assert_select 'li a[href=?]', elearning_materials_path
         assert_select 'li a[href=?]', collections_path
         assert_select 'li a[href=?]', nodes_path
-        assert_select 'li.dropdown', count: 0
+        assert_select 'li.dropdown.directory-menu', count: 0
       end
     end
 
@@ -182,7 +182,7 @@ class StaticControllerTest < ActionController::TestCase
         assert_select 'li a[href=?]', elearning_materials_path
         assert_select 'li a[href=?]', collections_path
         assert_select 'li a[href=?]', nodes_path
-        assert_select 'li.dropdown' do
+        assert_select 'li.dropdown.directory-menu' do
           assert_select 'li:nth-child(1) a[href=?]', about_path
           assert_select 'li:nth-child(2) a[href=?]', materials_path
         end
