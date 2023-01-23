@@ -11,7 +11,7 @@
       <% if @results.blank? %>
           <p class="empty">No results found</p>
       <% else %>
-          <% tabs = @results.keys.sort {|a,b| a <=> b } %>
+          <% tabs = @results.keys.sort_by { |k| TeSS::Config.site['tab_order'].index(k.to_s) || 99 } %>
           <ul class="nav nav-tabs">
             <% tabs.each_with_index do |tab, index| %>
                 <li class="<%= index == 0 ? 'active' : '' %>">
