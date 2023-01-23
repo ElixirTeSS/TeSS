@@ -217,9 +217,7 @@ class EditorTest < ActiveSupport::TestCase
   end
 
   test 'get_editable_providers' do
-    option = TeSS::Config.restrict_content_provider_selection
-    begin
-      TeSS::Config.restrict_content_provider_selection = true
+    with_settings(restrict_content_provider_selection: true) do
       curator = users(:curator)
       admin = users(:admin)
       owner = users(:another_regular_user)
@@ -248,15 +246,11 @@ class EditorTest < ActiveSupport::TestCase
       assert_includes editor.get_editable_providers, provider
       assert_not_includes editor.get_editable_providers, provider2
       assert_not_includes editor.get_editable_providers, provider3
-    ensure
-      TeSS::Config.restrict_content_provider_selection = option
     end
   end
 
   test 'get_editable_providers with unrestricted provider selection' do
-    option = TeSS::Config.restrict_content_provider_selection
-    begin
-      TeSS::Config.restrict_content_provider_selection = false
+    with_settings(restrict_content_provider_selection: false) do
       curator = users(:curator)
       admin = users(:admin)
       owner = users(:another_regular_user)
@@ -285,8 +279,6 @@ class EditorTest < ActiveSupport::TestCase
       assert_includes editor.get_editable_providers, provider
       assert_includes editor.get_editable_providers, provider2
       assert_includes editor.get_editable_providers, provider3
-    ensure
-      TeSS::Config.restrict_content_provider_selection = option
     end
   end
 

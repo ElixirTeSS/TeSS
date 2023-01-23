@@ -47,8 +47,7 @@ class SourcesControllerTest < ActionController::TestCase
   end
 
   test 'admin should get index with solr enabled' do
-    begin
-      TeSS::Config.solr_enabled = true
+    with_settings(solr_enabled: true) do
       method = 'event_csv'
       mock_search = MockSearch.new(Source.where(method: method))
       sign_in users(:admin)
@@ -58,8 +57,6 @@ class SourcesControllerTest < ActionController::TestCase
         assert_not_empty assigns(:sources)
         assert_equal 2, assigns(:sources).size, 'provider'
       end
-    ensure
-      TeSS::Config.solr_enabled = false
     end
   end
 

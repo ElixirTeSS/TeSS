@@ -255,17 +255,13 @@ class EventTest < ActiveSupport::TestCase
   end
 
   test 'does not throw error when blocked domains list is blank' do
-    domains = TeSS::Config.blocked_domains
-    begin
-      TeSS::Config.blocked_domains = nil
+    with_settings(blocked_domains: nil) do
       assert_nothing_raised do
         parameters = @mandatory.merge({ user: users(:regular_user), title: 'Bad event', url: 'https://bad-domain.example/event',
                                         description: 'event for does not throw error when blocked domains list is blank',
                                         online: true })
         Event.create!(parameters)
       end
-    ensure
-      TeSS::Config.blocked_domains = domains
     end
   end
 

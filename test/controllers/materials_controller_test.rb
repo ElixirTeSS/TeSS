@@ -41,17 +41,12 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   test 'should get index with solr enabled' do
-    begin
-      TeSS::Config.solr_enabled = true
-
+    with_settings(solr_enabled: true) do
       Material.stub(:search_and_filter, MockSearch.new(Material.all)) do
         get :index, params: { q: 'breakdance for beginners', keywords: 'dancing' }
         assert_response :success
         assert_not_empty assigns(:materials)
       end
-
-    ensure
-      TeSS::Config.solr_enabled = false
     end
   end
 
@@ -91,9 +86,7 @@ class MaterialsControllerTest < ActionController::TestCase
     @material.scientific_topic_uris = ['http://edamontology.org/topic_0654']
     @material.save!
 
-    begin
-      TeSS::Config.solr_enabled = true
-
+    with_settings(solr_enabled: true) do
       Material.stub(:search_and_filter, MockSearch.new(Material.all)) do
         get :index, params: { q: 'breakdance for beginners', keywords: 'dancing', format: :json_api }
         assert_response :success
@@ -112,8 +105,6 @@ class MaterialsControllerTest < ActionController::TestCase
         assert body['links']['self'].include?('dancing')
         assert body['links']['self'].include?('breakdance+for+beginners')
       end
-    ensure
-      TeSS::Config.solr_enabled = false
     end
   end
 
@@ -1070,9 +1061,7 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   test 'should count index results' do
-    begin
-      TeSS::Config.solr_enabled = true
-
+    with_settings(solr_enabled: true) do
       materials = Material.all
 
       Material.stub(:search_and_filter, MockSearch.new(materials)) do
@@ -1083,15 +1072,11 @@ class MaterialsControllerTest < ActionController::TestCase
         assert_equal materials.count, output['count']
         assert_equal materials_url, output['url']
       end
-    ensure
-      TeSS::Config.solr_enabled = false
     end
   end
 
   test 'should count filtered results' do
-    begin
-      TeSS::Config.solr_enabled = true
-
+    with_settings(solr_enabled: true) do
       materials = Material.limit(3)
 
       Material.stub(:search_and_filter, MockSearch.new(materials)) do
@@ -1103,8 +1088,6 @@ class MaterialsControllerTest < ActionController::TestCase
         assert_equal materials_url(q: 'test', keywords: 'dolphins'), output['url']
         assert_equal 'dolphins', output['params']['keywords']
       end
-    ensure
-      TeSS::Config.solr_enabled = false
     end
   end
 
