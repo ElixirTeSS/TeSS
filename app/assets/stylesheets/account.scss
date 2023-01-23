@@ -4,8 +4,8 @@
   }
 
   .form-middle {
-    width: 70%;
-    margin: 100px auto 0;
+    max-width: 600px;
+    margin: $layout-spacing-base * 2 auto 0;
 
     @media (max-width: $screen-sm-max) {
       width: 100%;
