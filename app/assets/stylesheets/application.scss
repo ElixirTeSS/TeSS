@@ -71,11 +71,10 @@ section {
 a.btn-icon {
   transition: 0s;
   &:hover {
-    // this filter gives $secondary-color
-    filter: brightness(0) saturate(100%) invert(28%) sepia(93%) saturate(1217%) hue-rotate(168deg) brightness(102%) contrast(97%);
+    filter: brightness(95%);
   }
   &:active {
-    filter: brightness(0) saturate(100%) invert(28%) sepia(93%) saturate(1217%) hue-rotate(168deg) brightness(102%) contrast(97%);
+    filter: brightness(95%);
     -webkit-box-shadow: none;
     box-shadow: none;
   }
@@ -318,7 +317,7 @@ ul.unstyled {
 
 .nav-item.active > a {
   position: relative;
-  color: $secondary-color;
+  color: $brand-secondary;
   background-color: #eee;
 }
 
@@ -582,7 +581,7 @@ sup {
 }
 
 .muted {
-  color: #999;
+  color: $text-muted;
 }
 
 .preview-image {
@@ -644,22 +643,22 @@ sup {
 }
 
 .fresh-icon {
-  color: $secondary-color;
+  color: $brand-secondary;
   margin-left: 5px;
 }
 
 .stale-icon {
-  color: $accent-color;
+  color: $brand-primary;
   margin-left: 5px;
 }
 
 .missing-icon {
-  color: $accent-color;
+  color: $brand-primary;
   margin-left: 5px;
 }
 
 .event-started-icon {
-  color: $secondary-color;
+  color: $brand-secondary;
   margin-left: 5px;
 }
 
@@ -802,7 +801,7 @@ input[type=checkbox].field-lock + label:before,
     padding: 5px 0;
     line-height: 1.3;
 
-    color: $primary-color;
+    color: $headings-color;
     text-decoration: none;
   }
 }
@@ -850,11 +849,11 @@ input[type=checkbox].field-lock + label:before,
 
 .filter-heading {
   cursor: pointer;
-  color: $primary-color;
+  color: $headings-color;
 }
 
 .filter-heading-active {
-  color: $secondary-color;
+  color: $brand-secondary;
 }
 
 .embedded-content {

@@ -1,8 +1,8 @@
-<div class="dropdown" id="user-menu">
-  <div class="dropdown-toggle btn btn-primary navbar-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-    <%# image_tag current_user.avatar_url, class: 'rounded-avatar' %>
-    <%= current_user.username %> <span class="caret"></span>
-  </div>
+<li class="dropdown" id="user-menu">
+  <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <%= image_tag current_user.avatar_url, class: 'rounded-avatar' %>
+    <strong><%= current_user.username %></strong> <span class="caret"></span>
+  </a>
   <ul class="dropdown-menu dropdown-menu-right">
     <li class="dropdown-item">
       <%= link_to user_path(current_user),  title: current_user.username do %>
@@ -61,4 +61,4 @@
       <%= link_to 'Log out', destroy_user_session_path, method: :delete, data: { confirm: 'Are you sure you want to log out?' } %>
     </li>
   </ul>
-</div>
+</li>

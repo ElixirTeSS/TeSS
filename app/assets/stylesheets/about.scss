@@ -7,7 +7,7 @@
 
     &.active {
       li { display: block; }
-      .about-page-category a { color: $secondary-color !important; }
+      .about-page-category a { color: $brand-secondary !important; }
     }
 
     > li > a {
@@ -19,7 +19,7 @@
     font-size: $font-size-h4;
     display: block;
     a {
-      color: $primary-color !important;
+      color: $headings-color !important;
     }
   }
 
@@ -60,7 +60,7 @@
 
   .about-icon {
     font-size: 5em;
-    color: $secondary-color;
+    color: $brand-secondary;
   }
 
   .structured-data-graphic {
@@ -78,7 +78,7 @@
       font-size: $font-size-large;
       text-align: center;
       margin: 10px;
-      color: $primary-color;
+      color: $headings-color;
     }
 
     .motivation-box-graphic {

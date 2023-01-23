@@ -29,13 +29,13 @@
 
       <div class="collapse navbar-collapse" id="navbar-collapse">
         <%# User Options -%>
-        <div class="user-options navbar-nav navbar-right">
+        <ul class="user-options nav navbar-nav navbar-right">
           <% if user_signed_in? %>
             <%= render partial: 'layouts/user_menu' %>
           <% else %>
             <%= render partial: 'layouts/login_menu' %>
           <% end %>
-        </div>
+        </ul>
 
         <%# Menu -%>
         <%

@@ -25,10 +25,6 @@ a.btn {
       border-radius: 6px;
       padding: 5px 10px;
     }
-
-    a:link, a:visited, a:hover, a:active {
-      color: $primary-color;
-    }
   }
 
   li.prev, li.next, li.first, li.last {
@@ -79,11 +75,14 @@ a {
 
 .btn {
   transition: $transition-time;
-  border-radius: 6px;
 }
 
+$btn-secondary-color: #fff !default;
+$btn-secondary-bg: $brand-secondary !default;
+$btn-secondary-border: darken($btn-secondary-bg, 5%) !default;
+
 .btn-secondary {
-  @include button-variant($secondary-color, $btn-default-bg, $secondary-color);
+  @include button-variant($btn-secondary-color, $btn-secondary-bg, $btn-secondary-border);
 }
 
 ol.breadcrumb {

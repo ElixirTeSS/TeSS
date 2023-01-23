@@ -1,3 +1,4 @@
+@import "bootstrap/mixins";
 //////////////////////////////
 // Design-specific variables
 //////////////////////////////
@@ -5,6 +6,9 @@
   font-family: 'Lato';
   src: font-url('Lato-Regular.ttf') format('truetype');
 }
+$primary-color: #023452;
+$secondary-color: #047EAA;
+$accent-color: #F47D21;
 
 $dark-color: #242526;
 $dark-60-color: #7b7c7c; // rgba(36, 37, 38, 0.6);
@@ -17,13 +21,8 @@ $light-30-color: rgba(244, 247, 251, 0.3); // Unused
 $light-05-color: rgba(244, 247, 251, 0.05); // Unused
 
 //////////////////////////////
-// TeSS Variables
+// TeSS variables
 //////////////////////////////
-// Colours
-$primary-color: #023452;
-$secondary-color: #047EAA;
-$accent-color: #F47D21;
-
 // Misc
 $layout-spacing-base: 24px;
 $item-padding-base: 24px;
@@ -56,7 +55,8 @@ $font-size-h3: 32px;
 $font-size-h4: 24px;
 
 // Colours
-$brand-primary: $accent-color;
+$brand-primary: $secondary-color;
+$brand-secondary: $accent-color;
 $brand-danger: #d9534f;
 $brand-success: #129e37;
 $brand-warning: #f0be3e;
@@ -117,6 +117,7 @@ $breadcrumb-color: $dark-color !default;
 $breadcrumb-active-color: $dark-color !default;
 
 // Pagination
+$pagination-color: $primary-color;
 $pagination-active-bg: $secondary-color;
 $pagination-active-border: $secondary-color;
 
@@ -125,13 +126,17 @@ $link-color: $accent-color;
 $link-hover-color: darken(rgb(244, 125, 33), 15%);
 
 // Buttons
-$btn-default-color: $accent-color;
+$btn-default-color: $brand-secondary;
 $btn-default-bg: #fff;
-$btn-default-border: $accent-color;
+$btn-default-border: $brand-secondary;
 
 $btn-primary-color: $light-color;
 $btn-primary-bg: $accent-color;
 $btn-primary-border: $accent-color;
+
+$btn-secondary-color: $brand-primary; // Yes I know this is backwards
+$btn-secondary-bg: $btn-default-bg;
+$btn-secondary-border: $brand-primary;
 
 $btn-info-color: $brand-info;
 $btn-info-bg: #fff;
@@ -197,11 +202,11 @@ $badge-bg: $accent-color;
   }
 }
 
+.btn-secondary { @include modern-button-variant($btn-secondary-color, $btn-secondary-bg, $btn-secondary-border) }
 .btn-info { @include modern-button-variant($btn-info-color, $btn-info-bg, $btn-info-border) }
 .btn-success { @include modern-button-variant($btn-success-color, $btn-success-bg, $btn-success-border) }
 .btn-warning { @include modern-button-variant($btn-warning-color, $btn-warning-bg, $btn-warning-border) }
 .btn-danger { @include modern-button-variant($btn-danger-color, $btn-danger-bg, $btn-danger-border) }
-.btn-secondary { @include modern-button-variant($secondary-color, $btn-default-bg, $secondary-color) }
 
 .text-primary {
   color: $secondary-color !important;

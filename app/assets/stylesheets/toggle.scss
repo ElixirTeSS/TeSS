@@ -40,11 +40,11 @@
 }
 
 input:checked + .slider {
-    background-color: $secondary-color;
+    background-color: $brand-secondary;
 }
 
 input:focus + .slider {
-    box-shadow: 0 0 1px $secondary-color;
+    box-shadow: 0 0 1px $brand-secondary;
 }
 
 input:checked + .slider:before {
@@ -71,7 +71,7 @@ input:checked + .slider:before {
       background-color: inherit !important;
       border-color: inherit !important;
       .slider {
-        background-color: $secondary-color;
+        background-color: $brand-secondary;
       }
     }
   }

@@ -32,16 +32,6 @@ label.required abbr {
   outline: none;
 }
 
-.has-error {
-  @include form-control-validation($accent-color, $accent-color, $state-danger-bg);
-
-  .form-control {
-    background: image-url("modern/icons/error-icon.svg") no-repeat;
-    background-position: bottom 50% right 10px;
-    padding-right: 32px;
-  }
-}
-
 #next-tools-button {
   margin-top: 0;
 }
@@ -54,16 +44,6 @@ label.required abbr {
 
   input[type=checkbox] {
     display: none;
-  }
-
-  &:hover {
-    // this filter gives $secondary-color
-    filter: brightness(0) saturate(100%) invert(28%) sepia(93%) saturate(1217%) hue-rotate(168deg) brightness(102%) contrast(97%);
-  }
-  &:active {
-    filter: brightness(0) saturate(100%) invert(28%) sepia(93%) saturate(1217%) hue-rotate(168deg) brightness(102%) contrast(97%);
-    -webkit-box-shadow: none;
-    box-shadow: none;
   }
 }
 

@@ -92,7 +92,7 @@
   h4 {
     margin-top: 0;
     margin-bottom: 0;
-    color: $secondary-color;
+    color: $brand-primary;
   }
 
   p {
@@ -107,7 +107,6 @@
       margin-right: 20px;
       margin-bottom: 10px;
       text-align: center;
-      color: $secondary-color;
       font-size: $font-size-small;
     }
 
@@ -139,7 +138,7 @@ li.media-item {
     font-weight: 700;
     font-size: $font-size-h4;
     line-height: 1.3;
-    color: $primary-color;
+    color: $headings-color;
   }
 
   margin-bottom: 20px;

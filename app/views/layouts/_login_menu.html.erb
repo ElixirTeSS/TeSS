@@ -1,7 +1,7 @@
-<div class="dropdown">
-  <div class="dropdown-toggle btn btn-primary navbar-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-    Log In <span class="caret"></span>
-  </div>
+<li class="dropdown">
+  <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <strong>Log In</strong> <span class="caret"></span>
+  </a>
   <ul class="dropdown-menu dropdown-menu-right">
     <% Devise.omniauth_configs.each do |provider, config| -%>
       <li class="dropdown-item">
@@ -21,4 +21,4 @@
       </li>
     <% end %>
   </ul>
-</div>
+</li>
