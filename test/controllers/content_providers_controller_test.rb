@@ -60,7 +60,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
   end
 
   test 'should not get index if feature disabled' do
-    with_settings(feature: { providers: false }) do
+    with_settings(feature: { content_providers: false }) do
       assert_raises(ActionController::RoutingError) do
         get :index
       end

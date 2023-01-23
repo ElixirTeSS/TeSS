@@ -21,7 +21,7 @@ sitemap :site do
   if TeSS::Config.feature['workflows']
     url workflows_url, last_mod: Time.now, change_freq: 'daily', priority: 0.6
   end
-  if TeSS::Config.feature['providers']
+  if TeSS::Config.feature['content_providers']
     url content_providers_url, last_mod: Time.now, change_freq: 'weekly', priority: 0.4
   end
 end
@@ -36,7 +36,7 @@ end
 
 sitemap_for Material.from_verified_users if TeSS::Config.feature['materials']
 sitemap_for Event.from_verified_users if TeSS::Config.feature['events']
-sitemap_for ContentProvider if TeSS::Config.feature['providers']
+sitemap_for ContentProvider if TeSS::Config.feature['content_providers']
 sitemap_for Workflow.from_verified_users.visible_by(nil) if TeSS::Config.feature['workflows']
 
 # For products with special sitemap name and priority, and link to comments:

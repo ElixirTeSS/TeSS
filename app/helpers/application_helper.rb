@@ -182,8 +182,8 @@ module ApplicationHelper
   # End from twitter-bootstrap-rails gem for less
 
   DEFAULT_IMAGE_FOR_MODEL = {
-    'ContentProvider' => TeSS::Config.placeholder['provider'],
-    'Package' => TeSS::Config.placeholder['package'],
+    'ContentProvider' => TeSS::Config.placeholder['content_provider'],
+    'Collection' => TeSS::Config.placeholder['collection'],
     'Trainer' => TeSS::Config.placeholder['person'],
     'Node' => 'elixir/elixir_logo_orange.png'
   }.freeze

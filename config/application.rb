@@ -25,7 +25,8 @@ module TeSS
       end
     end
 
-    config.tess = config_for(Rails.env.test? ? Pathname.new(Rails.root).join('test', 'config', 'test_tess.yml') : :tess)
+    config.tess = config_for(Rails.env.test? ? Pathname.new(Rails.root).join('test', 'config', 'test_tess.yml') : 'tess')
+    config.tess_defaults = config_for('tess.example')
 
     # locales
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'overrides', '**', '*.{rb,yml}')] unless Rails.env.test?
@@ -38,7 +39,38 @@ module TeSS
     ]
   end
 
-  Config = OpenStruct.new(Rails.configuration.tess.with_indifferent_access)
+  tess_config = Rails.configuration.tess.with_indifferent_access
+
+  if tess_config['feature']&.key?('providers') && !tess_config['feature']&.key?('content_providers')
+    warn "DEPRECATION WARNING: 'providers' should now be 'content_providers' under 'features' in: config/tess.yml"
+    tess_config['feature']['content_providers'] = tess_config['feature']['providers']
+  end
+
+  if tess_config['feature']&.key?('e-learnings') && !tess_config['feature']&.key?('elearning_materials')
+    warn "DEPRECATION WARNING: 'e-learnings' should now be 'elearning_materials' under 'features' in: config/tess.yml"
+    tess_config['feature']['elearning_materials'] = tess_config['feature']['e-learnings']
+  end
+
+  if tess_config['placeholder']&.key?('provider') && !tess_config['placeholder']&.key?('content_provider')
+    warn "DEPRECATION WARNING: 'provider' should now be 'content_provider' under 'placeholders' in: config/tess.yml"
+    tess_config['placeholder']['content_provider'] = tess_config['placeholder']['provider']
+  end
+
+  def self.merge_config(default_config, config, current_path = '')
+    default_config.each do |key, value|
+      unless config.key?(key)
+        puts "Setting '#{current_path}#{key}' not configured, using defaults" if Rails.env.development?
+        config[key] = value
+      end
+      if value.is_a?(Hash) && config[key].is_a?(Hash)
+        merge_config(value, config[key], current_path + "#{key}: ")
+      end
+    end
+  end
+
+  merge_config(Rails.configuration.tess_defaults.with_indifferent_access, tess_config)
+
+  Config = OpenStruct.new(tess_config)
 
   Config.redis_url = TeSS::Config.redis_url
 

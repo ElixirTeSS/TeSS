@@ -38,41 +38,44 @@
         </div>
 
         <%# Menu -%>
-        <%= menu_group(pull: 'right') do %>
-          <%= menu_item "About", about_path %>
+        <%
+          tabs = [
+            { feature: 'about', title: "About", link: about_path },
+            { feature: 'events', title: "Events", link: events_path },
+            { feature: 'materials', title: "Materials", link: materials_path },
+            { feature: 'elearning_materials', title: "e-Learning", link: elearning_materials_path },
+            { feature: 'workflows', title: "Workflows", link: workflows_path },
+            { feature: 'collections', title: "Collections", link: collections_path },
+            { feature: 'trainers', title: "Trainers", link: trainers_path },
+            { feature: 'content_providers', title: "Providers", link: content_providers_path },
+            { feature: 'nodes', title: "Nodes", link: nodes_path }
+          ].select do |t|
+            t[:feature] == 'about' || TeSS::Config.feature[t[:feature]]
+          end.sort_by do |t|
+            TeSS::Config.site['tab_order'].index(t[:feature]) || 99
+          end
 
-          <% if TeSS::Config.feature['events'] == true %>
-            <%= menu_item "Events", events_path %>
+          directory_tabs, main_tabs = tabs.partition { |t| TeSS::Config.site['directory_tabs']&.include?(t[:feature]) }
+        %>
+
+        <%= menu_group(pull: 'right') do %>
+          <% main_tabs.each do |t| %>
+            <%= menu_item t[:title], t[:link] %>
           <% end %>
-          <% if TeSS::Config.feature['materials'] == true %>
-            <%= menu_item "Materials", materials_path %>
+
+          <% if directory_tabs.present? %>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                 aria-expanded="false">
+                Directory <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <% directory_tabs.each do |t| %>
+                  <%= menu_item t[:title], t[:link] %>
+                <% end %>
+              </ul>
+            </li>
           <% end %>
-          <% if TeSS::Config.feature['e-learnings'] == true %>
-            <%= menu_item "e-Learning", elearning_materials_path %>
-          <% end %>
-          <% if TeSS::Config.feature['workflows'] == true %>
-            <%= menu_item "Workflows", workflows_path %>
-          <% end %>
-          <% if TeSS::Config.feature['collections'] == true %>
-            <%= menu_item "Collections", collections_path %>
-          <% end %>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-               aria-expanded="false">
-              Directory <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-right">
-              <% if TeSS::Config.feature['trainers'] == true %>
-                <%= menu_item "Trainers", trainers_path %>
-              <% end %>
-              <% if TeSS::Config.feature['providers'] == true %>
-                <%= menu_item "Providers", content_providers_path %>
-              <% end %>
-              <% if TeSS::Config.feature['nodes'] == true %>
-                <%= menu_item "Nodes", nodes_path %>
-              <% end %>
-            </ul>
-          </li>
         <% end %>
       </div>
     </div>

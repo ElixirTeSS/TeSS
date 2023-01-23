@@ -35,6 +35,10 @@ default: &default
       featured_providers: # e.g. [123, 5, 10, 1]
       faq: # [who, how, why, embed, subscribe] # Questions/answers in config/en.yml: home > faq. Use empty array to hide section
       promo_blocks: false
+    # The order in which the tabs appear (if feature enabled)
+    tab_order: ['about', 'events', 'materials', 'elearning_materials', 'workflows', 'collections', 'trainers', 'content_providers', 'nodes']
+    # The tabs that should be collapsed under the "Directory" tab. Can be left blank to hide it.
+    directory_tabs: ['trainers', 'content_providers', 'nodes']
   mailer:
     delivery_method: sendmail
     location: /usr/sbin/sendmail
@@ -52,13 +56,13 @@ default: &default
     image: elixir/hub-logo.png
     url: 'http://www.elixir-europe.org'
   feature:
-    e-learnings: false
+    elearning_materials: false
     events: true
     invitation: false
     materials: true
     nodes: false
     collections: true
-    providers: true
+    content_providers: true
     subscription: true
     registration: true
     trainers: false
@@ -75,7 +79,7 @@ default: &default
   user_ingestion_methods: ['bioschemas']
   placeholder:
     collection: 'placeholder-collection.png'
-    provider: 'placeholder-organization.png'
+    content_provider: 'placeholder-organization.png'
     group: 'placeholder-group.png'
     person: 'placeholder-person.png'
   dictionaries:

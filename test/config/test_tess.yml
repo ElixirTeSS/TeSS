@@ -39,13 +39,13 @@ default: &default
     name: ''
     url: ''
   feature:
-    e-learnings: true
+    elearning_materials: true
     events: true
     invitation: true
     materials: true
     nodes: true
     collections: true
-    providers: true
+    content_providers: true
     registration: true
     subscription: true
     trainers: true
@@ -58,7 +58,7 @@ default: &default
   user_ingestion_methods: ["event_csv", "material_csv", "ical", "eventbrite", "tess_event", "zenodo", "bioschemas"]
   placeholder:
     collection: 'placeholder-collection.png'
-    provider: 'placeholder-organization.png'
+    content_provider: 'placeholder-organization.png'
     group: 'placeholder-group.png'
     person: 'placeholder-person.png'
   dictionaries:

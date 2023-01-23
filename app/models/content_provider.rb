@@ -40,7 +40,7 @@ class ContentProvider < ApplicationRecord
 
   clean_array_fields(:keywords, :approved_editors)
 
-  has_image(placeholder: TeSS::Config.placeholder['provider'])
+  has_image(placeholder: TeSS::Config.placeholder['content_provider'])
 
   if TeSS::Config.solr_enabled
     # :nocov:
