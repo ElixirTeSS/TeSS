@@ -402,8 +402,13 @@ ul.unstyled {
 .rounded-avatar {
   object-fit: cover;
   border-radius: 50%;
-  height: 24px;
-  width: 24px;
+}
+
+#user-menu .rounded-avatar {
+  height: $line-height-computed;
+  display: block;
+  float: left;
+  margin-right: 5px;
 }
 
 .search-results-count {
