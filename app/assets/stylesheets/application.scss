@@ -406,8 +406,10 @@ ul.unstyled {
 
 #user-menu .rounded-avatar {
   height: $line-height-computed;
-  display: block;
-  float: left;
+  @media (min-width: $grid-float-breakpoint) {
+    display: block;
+    float: left;
+  }
   margin-right: 5px;
 }
 
