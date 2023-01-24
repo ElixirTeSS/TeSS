@@ -2,8 +2,8 @@
 class SvgRecolourer
   # Mapping of source colour to destination colour
   MAPPING = {
-    '#F47D21' => -> { TeSS::Config.site['icon_primary_color'] }, # proc incase config is not loaded here...
-    '#047EAA' => -> { TeSS::Config.site['icon_secondary_color'] },
+    '#047EAA' => -> { TeSS::Config.site['icon_primary_color'] }, # proc incase config is not loaded here...
+    '#F47D21' => -> { TeSS::Config.site['icon_secondary_color'] },
   }
 
   # Paths in which SVGs should be recoloured
