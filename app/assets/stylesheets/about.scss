@@ -7,7 +7,7 @@
 
     &.active {
       li { display: block; }
-      .about-page-category a { color: $brand-secondary !important; }
+      .about-page-category a { color: $brand-primary !important; }
     }
 
     > li > a {
@@ -60,7 +60,7 @@
 
   .about-icon {
     font-size: 5em;
-    color: $brand-secondary;
+    color: $brand-primary;
   }
 
   .structured-data-graphic {

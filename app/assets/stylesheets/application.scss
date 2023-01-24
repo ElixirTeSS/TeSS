@@ -317,7 +317,7 @@ ul.unstyled {
 
 .nav-item.active > a {
   position: relative;
-  color: $brand-secondary;
+  color: $brand-primary;
   background-color: #eee;
 }
 
@@ -858,7 +858,7 @@ input[type=checkbox].field-lock + label:before,
 }
 
 .filter-heading-active {
-  color: $brand-secondary;
+  color: $brand-primary;
 }
 
 .embedded-content {

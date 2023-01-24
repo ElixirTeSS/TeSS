@@ -170,9 +170,9 @@ dl.faq {
     padding: 5px 30px 20px;
 
     &.opened {
-      border: 1px solid $brand-secondary;
+      border: 1px solid $brand-primary;
       dt {
-        color: $brand-secondary;
+        color: $brand-primary;
       }
     }
 
