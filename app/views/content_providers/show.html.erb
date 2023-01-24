@@ -1,7 +1,3 @@
-<% events = @content_provider.events.from_verified_users %>
-<% materials = @content_provider.materials.from_verified_users %>
-<% sources = @content_provider.sources.order(enabled: :desc, finished_at: :desc) %>
-
 <div class="wrapper collapsing-wrapper">
   <div class="collapsing-sidebar" id="sidebar">
     <%= render partial: 'content_providers/partials/content_provider_info', locals: { content_provider: @content_provider } %>
@@ -22,53 +18,52 @@
     </div>
 
     <div class="row">
+      <% resource_limit = 30 %>
+      <% materials = @content_provider.materials.from_verified_users.limit(resource_limit) %>
+      <% materials_count =  @content_provider.materials.from_verified_users.count %>
+      <% upcoming_events = @content_provider.events.from_verified_users.not_finished %>
+      <% past_events = @content_provider.events.from_verified_users.finished %>
+      <% events = upcoming_events.limit(resource_limit) %>
+      <% events_count =  @content_provider.events.from_verified_users.count %>
+      <% sources = @content_provider.sources.order(enabled: :desc, finished_at: :desc) %>
+      <% activator = tab_activator %>
       <ul class="nav nav-tabs">
-        <%= tab('Materials', icon_class_for_model('materials'), 'materials', active: materials.any? || events.none?,
-                disabled: { check: materials.none?, message: 'No associated training materials' },
-                count: materials.count) %>
+        <%= tab('Materials', icon_class_for_model('materials'), 'materials', activator: activator,
+                disabled: { check: materials_count.zero?, message: 'No associated training materials' },
+                count: materials_count) %>
 
-        <%= tab('Events', icon_class_for_model('events'), 'events', active: materials.none? && events.any?,
-                disabled: { check: events.none?, message: 'No associated events' },
-                count: events.count) %>
+        <%= tab('Events', icon_class_for_model('events'), 'events', activator: activator,
+                disabled: { check: events_count.zero?, message: 'No associated events' },
+                count: events_count) %>
 
         <% if TeSS::Config.feature['user_source_creation'] && policy(@content_provider).update? %>
-          <%= tab('Sources', icon_class_for_model('sources'), 'sources', count: sources.count) %>
+          <%= tab('Sources', icon_class_for_model('sources'), 'sources', count: sources.count, activator: activator) %>
         <% end %>
       </ul>
 
       <div class="tab-content">
-        <div id="materials" class="tab-pane fade
-              <%= "in active" if materials.any? || events.none? %>
-          ">
-          <div class="row">
-            <% limited_materials = materials.count > 30 ? materials.limit(30) : materials %>
-            <div class="search-results-count">
-              <%= (limited_materials.count > 0 ? "Showing" : "Found") + " #{pluralize(materials.count, "material")}#{(materials.count > 30) ? " out of #{materials.count}" : ''}." %>
-              <%= link_to('View all results.', materials_path(content_provider: @content_provider.title)) if (materials.count > 30) %>
-            </div>
+        <% if TeSS::Config.feature['materials'] %>
+          <%= render partial: 'common/associated_resources',
+                     locals: { model: Material,
+                               total_count: materials_count,
+                               limit: resource_limit,
+                               resources: materials,
+                               activator: activator,
+                               view_all_link: materials_path(content_provider: @content_provider.title) } %>
+        <% end %>
 
-            <%= render partial: 'common/masonry_grid', locals: { objects: materials } %>
-          </div>
-        </div>
-        <div id="events" class="tab-pane fade <%= "in active" if materials.none? && events.any? %>">
-          <div class="row">
-            <% upcoming_events = events.not_finished %>
-            <% past_events = events.finished %>
-
-            <div class="row">
-              <% limited_events = upcoming_events.count > 30 ? upcoming_events.first(30) : upcoming_events %>
-              <div class="search-results-count">
-                <%= (upcoming_events.count > 0 ? "Showing" : "Found") + " #{pluralize(limited_events.count, "event")}#{(upcoming_events.count > 30) ? " out of #{upcoming_events.count}" : ''}." %>
-                <%= "Found #{pluralize(past_events.count, "past event")}." %>
-                <%= link_to('View all results.', events_path(content_provider: @content_provider.title, include_expired: true)) if (upcoming_events.count > 30 || past_events.count > 0) %>
-              </div>
-
-              <%= render partial: 'common/masonry_grid', locals: { objects: upcoming_events } %>
-            </div>
-          </div>
-        </div>
+        <% if TeSS::Config.feature['events'] %>
+          <%= render partial: 'common/associated_events',
+                     locals: { total_count: upcoming_events.count,
+                               past_count: past_events.count,
+                               limit: resource_limit,
+                               resources: events,
+                               activator: activator,
+                               view_all_link: events_path(content_provider: @content_provider.title),
+                               inc_expired_link: events_path(content_provider: @content_provider.title, include_expired: true) } %>
+        <% end %>
         <% if policy(@content_provider).update? && TeSS::Config.feature['sources'] %>
-          <div id="sources" class="tab-pane fade">
+          <div id="sources" class="tab-pane fade<%= ' in active' if activator.check_pane('sources') %>">
             <% if policy(Source).new? %>
               <div class="row">
                 <%= link_to new_content_provider_source_path(@content_provider), class: 'btn btn-primary' do %>
@@ -88,6 +83,7 @@
         <% end %>
       </div>
     </div>
+
     <%= render partial: 'activities/activity_log_button', locals: { resource: @content_provider } %>
   </div>
 </div>

@@ -476,7 +476,9 @@ class ContentProvidersControllerTest < ActionController::TestCase
     get :show, params: { id: @content_provider }
     assert_select 'a[href=?]', '#events', text: 'Events (3)'
     # this is a bit fragile. may be nicer to use a regex if it breaks
-    assert_select 'div#events div.search-results-count', text: "Showing 2 events.\n                Found 1 past event.\n                View all results."
+    assert_select 'div#events div.search-results-count', text: /Showing 2 events/ do
+      assert_select 'span', text: '(also found 1 past event)'
+    end
   end
 
   test 'should strip certain tags from markdown descriptions on index page' do

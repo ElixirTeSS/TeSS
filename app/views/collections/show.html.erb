@@ -22,38 +22,41 @@
       </div>
     </div>
     <div class="row">
+      <% materials = @collection.materials %>
+      <% materials_count =  @collection.materials.count %>
+      <% events = @collection.events %>
+      <% events_count =  @collection.events.count %>
+      <% activator = tab_activator %>
       <ul class="nav nav-tabs">
-        <%= tab('Materials', icon_class_for_model('materials'), 'materials',
-                active: @collection.materials.any? || @collection.events.none?,
-                disabled: { check: @collection.materials.none?, message: 'No associated training materials' },
-                count: @collection.materials.count) %>
+        <%= tab('Materials', icon_class_for_model('materials'), 'materials', activator: activator,
+                disabled: { check: materials_count.zero?, message: 'No associated training materials' },
+                count: materials_count) %>
 
-        <%= tab('Events', icon_class_for_model('events'), 'events', active: @collection.materials.none? && @collection.events.any?,
-                disabled: { check: @collection.events.none?, message: 'No associated events' },
-                count: @collection.events.count) %>
+        <%= tab('Events', icon_class_for_model('events'), 'events', activator: activator,
+                disabled: { check: events_count.zero?, message: 'No associated events' },
+                count: events_count) %>
       </ul>
     </div>
 
     <div class="tab-content">
-      <div id="materials" class="tab-pane fade <%= 'in active' if @collection.materials.any? || @collection.events.none? %>">
-        <div class="row">
-          <div class="search-results-count">
-            <%= pluralize(@collection.materials.count, 'training material') %> found
-          </div>
+      <% if TeSS::Config.feature['materials'] %>
+        <%= render partial: 'common/associated_resources',
+                   locals: { model: Material,
+                             total_count: materials_count,
+                             resources: materials,
+                             activator: activator,
+                             view_all_link: materials_path(collections: @collection.title) } %>
+      <% end %>
 
-          <%= render partial: 'common/masonry_grid', locals: { objects: @collection.materials } %>
-        </div>
-      </div>
-      <div id="events" class="tab-pane fade <%= 'in active' if @collection.materials.none? && @collection.events.any? %>">
-        <div class="row">
-          <div class="search-results-count">
-            <%= pluralize(@collection.events.count, 'event') %> found
-          </div>
-
-          <%= render partial: 'common/masonry_grid', locals: { objects: @collection.events } %>
-        </div>
-      </div>
-      <%= render partial: 'activities/activity_log_button', locals: { resource: @collection } %>
+      <% if TeSS::Config.feature['events'] %>
+        <%= render partial: 'common/associated_events',
+                   locals: { total_count: events_count,
+                             resources: events,
+                             activator: activator,
+                             view_all_link: events_path(collections: @collection.title, include_expired: true) } %>
+      <% end %>
     </div>
+
+    <%= render partial: 'activities/activity_log_button', locals: { resource: @collection } %>
   </div>
 </div>

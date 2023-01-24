@@ -282,10 +282,10 @@ module ApplicationHelper
     end
   end
 
-  def tab(text, icon, href, disabled: { check: false }, active: false, count: nil)
+  def tab(text, icon, href, disabled: { check: false }, active: false, count: nil, activator: nil)
     classes = []
     classes << 'disabled' if disabled[:check]
-    classes << 'active' if active
+    classes << 'active' if active || activator&.check_tab(href, !disabled[:check])
     content_tag(:li, class: classes.join(' ')) do
       options = {}
       if disabled[:check]
@@ -630,5 +630,29 @@ module ApplicationHelper
     else
       resources.facets
     end.select { |f| f.rows.any? && !IGNORED_FILTERS.include?(f.field_name.to_s) }
+  end
+
+  class TabActivator
+    # An object to determine if a tab/tab-pane should be active.
+    def initialize
+      @tab_name = nil
+    end
+
+    # Returns `true` if the given tab should be active.
+    def check_tab(tab_name, condition = true)
+      return false unless condition
+      return @tab_name == tab_name if @tab_name
+      @tab_name = tab_name
+      true
+    end
+
+    # Returns `true` if the given tab pane should be active.
+    def check_pane(tab_name)
+      @tab_name == tab_name
+    end
+  end
+
+  def tab_activator
+    TabActivator.new
   end
 end

@@ -136,106 +136,84 @@
       <% workflows_count =  @user.workflows.visible_by(current_user).count %>
       <% collections = @user.collections.visible_by(current_user).limit(resource_limit) %>
       <% collections_count = @user.collections.visible_by(current_user).count %>
+      <% activator = tab_activator %>
 
       <ul class="nav nav-tabs">
-
         <!-- Tab: Events -->
         <% if TeSS::Config.feature['events'] %>
-          <%= tab('Events', icon_class_for_model('events'), 'events', active: true,
+          <%= tab('Events', icon_class_for_model('events'), 'events', activator: activator,
                   disabled: { check: events_count.zero?, message: 'No registered events' },
                   count: events_count) %>
         <% end %>
 
         <!-- Tab: Materials -->
         <% if TeSS::Config.feature['materials'] %>
-          <%= tab('Materials', icon_class_for_model('materials'), 'materials',
+          <%= tab('Materials', icon_class_for_model('materials'), 'materials', activator: activator,
                   disabled: { check: materials.none?, message: 'No registered training materials' },
                   count: materials_count) %>
         <% end %>
 
         <!-- Tab: Collections -->
         <% if TeSS::Config.feature['collections'] %>
-          <%= tab('Collections', icon_class_for_model('collections'), 'collections',
+          <%= tab('Collections', icon_class_for_model('collections'), 'collections', activator: activator,
                   disabled: { check: collections.none?, message: 'No registered collections' },
                   count: collections_count) %>
         <% end %>
 
         <!-- Tab: Workflows -->
         <% if TeSS::Config.feature['workflows'] %>
-          <%= tab('Workflows', icon_class_for_model('workflows'), 'workflows',
+          <%= tab('Workflows', icon_class_for_model('workflows'), 'workflows', activator: activator,
                   disabled: { check: workflows.none?, message: 'No workflows' },
                   count: workflows_count) %>
         <% end %>
       </ul>
 
       <div class="tab-content">
-
         <!-- Tab: Events -->
         <% if TeSS::Config.feature['events'] %>
-          <div id="events" class="tab-pane fade in active">
-            <div class="row">
-              <div class="search-results-count">
-                <%= (upcoming_events.count > 0 ? "Showing" : "Found") + " #{pluralize(events.count, "upcoming event")}#{(upcoming_events.count > resource_limit) ? " out of #{upcoming_events.count}" : ''}." %>
-                <%= "Found #{pluralize(past_events.count, "past event")}." %>
-              </div>
-              <ul>
-                <% if upcoming_events.count > resource_limit %>
-                  <li><%= link_to('View all upcoming events', events_path(user: @user.username)) %></li>
-                <% end %>
-                <% if past_events.count > 0 %>
-                  <li><%= link_to('View all events', events_path(user: @user.username, include_expired: true)) %></li>
-                <% end %>
-              </ul>
-
-              <%= render partial: 'common/masonry_grid', locals: { objects: events } %>
-            </div>
-          </div>
+          <%= render partial: 'common/associated_events',
+                     locals: { total_count: upcoming_events.count,
+                               past_count: past_events.count,
+                               limit: resource_limit,
+                               resources: events,
+                               activator: activator,
+                               view_all_link: events_path(user: @user.username),
+                               inc_expired_link: events_path(user: @user.username, include_expired: true) } %>
         <% end %>
 
         <!-- Tab: Materials -->
         <% if TeSS::Config.feature['materials'] %>
-          <div id="materials" class="tab-pane fade">
-            <div class="row">
-              <div class="search-results-count">
-                <%= (materials.count > 0 ? "Showing" : "Found") + " #{pluralize(materials.count, "material")}#{(materials_count > resource_limit) ? " out of #{materials_count}" : ''}." %>
-                <%= link_to('View all results', materials_path(user: @user.username)) if (materials_count > resource_limit) %>
-              </div>
-
-              <%= render partial: 'common/masonry_grid', locals: { objects: materials } %>
-             </div>
-          </div>
+          <%= render partial: 'common/associated_resources',
+                     locals: { model: Material,
+                               total_count: materials_count,
+                               limit: resource_limit,
+                               resources: materials,
+                               activator: activator,
+                               view_all_link: materials_path(user: @user.username) } %>
         <% end %>
 
         <!-- Tab: Collections -->
         <% if TeSS::Config.feature['collections'] %>
-          <div id="collections" class="tab-pane fade">
-            <div class="row">
-              <div class="search-results-count">
-                <%= (collections.count > 0 ? "Showing" : "Found") + " #{pluralize(collections.count, "collection")}#{(collections_count > resource_limit) ? " out of #{collections_count}" : ''}." %>
-                <%= link_to('View all results', collections_path(user: @user.username)) if (collections_count > resource_limit) %>
-              </div>
-
-              <%= render partial: 'common/masonry_grid', locals: { objects: collections } %>
-            </div>
-          </div>
+          <%= render partial: 'common/associated_resources',
+                     locals: { model: Collection,
+                               total_count: collections_count,
+                               limit: resource_limit,
+                               resources: collections,
+                               activator: activator,
+                               view_all_link: collections_path(user: @user.username) } %>
         <% end %>
 
         <!-- Tab: Workflows -->
         <% if TeSS::Config.feature['workflows'] %>
-          <div id="workflows" class="tab-pane fade">
-            <div class="row">
-              <div class="search-results-count">
-                <%= (workflows.count > 0 ? "Showing" : "Found") + " #{pluralize(workflows.count, "workflow")}#{(workflows_count > resource_limit) ? " out of #{workflows_count}" : ''}." %>
-                <%= link_to('View all results', workflows_path(user: @user.username)) if (workflows_count > resource_limit) %>
-              </div>
-
-              <%= render partial: 'common/masonry_grid', locals: { objects: workflows } %>
-            </div>
-          </div>
+          <%= render partial: 'common/associated_resources',
+                     locals: { model: Workflow,
+                               total_count: workflows_count,
+                               limit: resource_limit,
+                               resources: workflows,
+                               activator: activator,
+                               view_all_link: workflows_path(user: @user.username) } %>
         <% end %>
-
       </div> <!-- end tab-content -->
-
     </div>
   </div>
 </div>
