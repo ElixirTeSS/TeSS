@@ -11,3 +11,4 @@ The following people have contributed to the TeSS codebase:
 * Nick May
 * Daan van Vugt <dvanvugt@ignitioncomputing.com>
 * Xènia Pérez Sitjà <https://orcid.org/0000-0002-7166-0183>
+* Ivan Kuzmin
