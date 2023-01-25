@@ -102,8 +102,10 @@ en:
   us:
     tess_club: >
       <p>Fortnightly meetings, hackathons, shared activities, open priority setting, open contribution to unite the
-      community.</p><p>The TeSS Club runs fortnightly at 9:00 GMT / 10:00 CET Friday.</p><p>For all the details please
-      visit the <a href="https://elixirtess.github.io/about/">TeSS Club Website<i class="icon icon-md arrow-top-right-icon"></i></a></p>
+      community.</p>
+      <p>For all the details please visit the 
+      <a href="https://elixirtess.github.io/about/">TeSS Club Website<i class="icon icon-md arrow-top-right-icon"></i></a>
+      </p>
     contact: >
       For enquiries, information, or assistance; contact the TeSS support desk at <br>
       <a href="mailto:tess-support@googlegroups.com">tess-support@googlegroups.com</a>
@@ -113,16 +115,17 @@ en:
       <h5>Project Management</h5>
       <ul><li>Munazah Andrabi</li></ul>
       <h5>Software Engineering</h5>
-      <ul><li>Finn Bacall</li></ul>
+      <ul><li>Finn Bacall</li><li>Ivan Kuzmin</li></ul>
       <h5>Past Members</h5>
       <ul>
-        <li>Aleksandra Nenadic - Project Manager</li>
-        <li>Aleksandra Pawlik - Project Manager</li>
+        <li>Aleksandra Nenadic - Project Management/Software Engineering</li>
+        <li>Aleksandra Pawlik - Project Management</li>
         <li>Teresa K. Attwood - Leadership</li>
         <li>Susanna-Assunta Sansone - Leadership</li>
         <li>Niall Beard - Project Management/Software Engineering</li>
         <li>Milo Thurston - Software Engineering</li>
         <li>Chris Child - Project Management/Software Engineering</li>
+        <li>Aitor Apaolaza - Software Engineering</li>
       </ul>
     funding: >
       TeSS has been funded by:
