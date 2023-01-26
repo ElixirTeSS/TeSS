@@ -757,15 +757,20 @@ components:
                       description: A redirect to the actual event's URL, via TeSS.
     EventAttributes:
       type: object
+      required:
+        - title
+        - url
       properties:
         slug:
           type: string
+          nullable: true
           description: The "friendly" identifier of the event.
         title:
           type: string
           description: The title of the event.
         subtitle:
           type: string
+          nullable: true
           description: The subtitle of the event.
         url:
           type: string
@@ -786,27 +791,35 @@ components:
           format: date
         sponsor:
           type: string
+          nullable: true
           description: The person or organization that is sponsoring the event.
         venue:
           type: string
+          nullable: true
           description: The name of the building where the event will be hosted.
         city:
           type: string
+          nullable: true
           description: The city the where event will be hosted.
         country:
           type: string
+          nullable: true
           description: The regional where county the event will be hosted.
         county:
           type: string
+          nullable: true
           description: The name of country where the event will be hosted.
         postcode:
           type: string
+          nullable: true
           description: The postcode of the venue hosting the event.
         latitude:
           type: string
+          nullable: true
           description: The latitude co-ordinate of the event.
         longitude:
           type: string
+          nullable: true
           description: The longitude co-ordinate of the event.
         created-at:
           type: string
@@ -835,6 +848,7 @@ components:
             type: string
         capacity:
           type: integer
+          nullable: true
           description: The number of people allowed to attend the event.
         eligibility:
           type: array
@@ -843,6 +857,7 @@ components:
             type: string
         contact:
           type: string
+          nullable: true
           description: The name and/or contact details of a person or institution
             organizing the event.
         host-institutions:
@@ -874,6 +889,7 @@ components:
           properties:
             funding:
               type: string
+              nullable: true
               description: Details on who funded the event.
             attendee_count:
               type: integer
@@ -886,9 +902,11 @@ components:
               description: The number of trainers who were involved with the event.
             feedback:
               type: string
+              nullable: true
               description: Notes, or a link to feedback for the event.
             notes:
               type: string
+              nullable: true
               description: Miscellaneous notes on the event.
           description: An after-the-fact report of what happened at the event. Only
             visible to privileged users.
@@ -933,6 +951,7 @@ components:
       properties:
         slug:
           type: string
+          nullable: true
           description: The "friendly" identifier of the material.
         title:
           type: string
@@ -1049,6 +1068,7 @@ components:
       properties:
         slug:
           type: string
+          nullable: true
           description: The "friendly" identifier of the content provider.
         title:
           type: string
@@ -1061,6 +1081,7 @@ components:
           description: The URL to the content provider's website.
         image-url:
           type: string
+          nullable: true
           description: A URL to an image of the content provider's logo.
         keywords:
           type: array
@@ -1107,6 +1128,7 @@ components:
       properties:
         slug:
           type: string
+          nullable: true
           description: The "friendly" identifier of the user.
         firstname:
           type: string
@@ -1159,6 +1181,7 @@ components:
       properties:
         slug:
           type: string
+          nullable: true
           description: The "friendly" identifier of the workflow.
         title:
           type: string
@@ -1169,6 +1192,7 @@ components:
         workflow-content:
           type: object
           properties: {}
+          additionalProperties: true
           description: The cytoscape.js JSON structure describing the workflow.
         doi:
           type: string
@@ -1252,9 +1276,12 @@ components:
               $ref: '#/components/schemas/Links'
     CollectionAttributes:
       type: object
+      required:
+        - title
       properties:
         slug:
           type: string
+          nullable: true
           description: The "friendly" identifier of the collection.
         title:
           type: string
@@ -1264,6 +1291,7 @@ components:
           description: A description of the collection.
         image-url:
           type: string
+          nullable: true
           description: A URL to an image of the collection's logo.
         keywords:
           type: array
@@ -1405,9 +1433,6 @@ components:
           type: string
         type:
           type: string
-        meta:
-          type: object
-          properties: {}
     SingleRelationshipObject:
       type: object
       properties:

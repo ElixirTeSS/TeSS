@@ -51,6 +51,7 @@ class EventsControllerTest < ActionController::TestCase
     get :index, params: { format: :json }
     assert_response :success
     assert_not_nil assigns(:events)
+    assert_valid_legacy_json_response
   end
 
   test 'should get index as ICS' do
@@ -78,6 +79,8 @@ class EventsControllerTest < ActionController::TestCase
     get :index, params: { format: :json_api }
     assert_response :success
     assert_not_nil assigns(:events)
+    assert_valid_json_api_response
+
     body = nil
     assert_nothing_raised do
       body = JSON.parse(response.body)

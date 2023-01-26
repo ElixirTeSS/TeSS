@@ -2,7 +2,6 @@
 
 one:
   title: Dot Slash Configure
-  slug: dot-slash-configure
   description: MyText
   image_url: http://example.com/collection.png
   public: true
@@ -10,7 +9,6 @@ one:
 
 two:
   title: This Collection Is Big
-  slug: this-collection-is-big
   description: MyText
   image_url: http://example.com/collection.png
   public: true
@@ -18,7 +16,6 @@ two:
 
 with_resources:
   title: But My Collection Is Bigger
-  slug: but-my-collection-is-bigger
   description: text
   image_url: http://example.com/collection.png
   public: true
@@ -26,7 +23,6 @@ with_resources:
 
 secret_collection:
   title: This Collection Is Secret
-  slug: this-collection-is-secret
   description: MyText
   public: false
   user: regular_user

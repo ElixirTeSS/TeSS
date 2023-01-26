@@ -648,137 +648,15 @@ components:
           format: date
         api_url:
           type: string
+          nullable: true
           description: A URL that resolves to more information about the external
             resource represented in a common exchange format (e.g. JSON or XML)
         type:
           type: string
+          nullable: true
           description: The type of external resource. This can be 'tool', 'database,
             policy or standard' for bio.tools and bio.sharing respectively or any
             other resource type name for other external resources.
-    ShortEvent:
-      type: object
-      properties:
-        id:
-          type: number
-          description: Unique identifier of the event
-        external_id:
-          type: number
-          description: An ID provided by the original content provider. Unique to
-            their website.
-        title:
-          type: string
-          description: The title of the event
-        subtitle:
-          type: string
-          description: The subtitle of the event
-        url:
-          type: string
-          description: The URL where the actual event can be found.
-        organizer:
-          type: string
-          description: The organization responsible for creating the event.
-        description:
-          type: string
-          description: A succinct description of what the event is about.
-        start:
-          type: string
-          description: The date and time the event starts on
-          format: date
-        end:
-          type: string
-          description: The date and time the event ends on.
-          format: date
-        sponsor:
-          type: string
-          description: The person or organization that is sponsoring the event.
-        venue:
-          type: string
-          description: The name of the building the event will be hosted in
-        city:
-          type: string
-          description: The city the event will be hosted in
-        county:
-          type: string
-          description: The regional county the event will be hosted in
-        country:
-          type: string
-          description: The name of country the event will be hosted in
-        postcode:
-          type: string
-          description: The postcode of the venue hosting the event
-        latitude:
-          type: string
-          description: The latitude co-ordinate of the event.
-        longitude:
-          type: string
-          description: The longitude co-ordinate of the event.
-        created_at:
-          type: string
-          description: The date the event was first created on TeSS
-          format: date
-        updated_at:
-          type: string
-          description: The date the event was last updated on TeSS
-          format: date
-        slug:
-          type: string
-        content_provider_id:
-          type: integer
-        user_id:
-          type: integer
-        online:
-          type: boolean
-        cost:
-          type: string
-        for_profit:
-          type: boolean
-        last_scraped:
-          type: string
-          format: date
-        scraper_record:
-          type: boolean
-        keywords:
-          type: array
-          description: A series of freetext words used to describe an event.
-          items:
-            type: string
-        event_types:
-          type: array
-          description: The category of the event. This could be a meeting or a course;
-            or if unknown or neither, an event
-          items:
-            type: string
-        target_audience:
-          type: array
-          description: The intended audience of the event. This can includes things
-            like scientific discpline and expertise level
-          items:
-            type: string
-        capacity:
-          type: array
-          description: The number of people allowed to attend the event
-          items:
-            type: string
-        eligibility:
-          type: array
-          description: Various criteria require to participate in the event
-          items:
-            type: string
-        contact:
-          type: string
-          description: The name and/or contact details of a person or institution
-            organizing the event
-        host_institutions:
-          type: array
-          description: The institution physically hosting the event
-          items:
-            type: string
-        scientific_topics:
-          type: array
-          description: The classification of the material based on the EDAM ontologies
-            scientific topics.
-          items:
-            $ref: '#/components/schemas/ScientificTopic'
     Event:
       type: object
       properties:
@@ -790,47 +668,60 @@ components:
           description: The title of the event
         subtitle:
           type: string
+          nullable: true
           description: The subtitle of the event
         url:
           type: string
           description: The URL where the actual event can be found.
         organizer:
           type: string
+          nullable: true
           description: The organization responsible for creating the event.
         description:
           type: string
+          nullable: true
           description: A succinct description of what the event is about.
         start:
           type: string
+          nullable: true
           description: The date and time the event starts on
           format: date
         end:
           type: string
+          nullable: true
           description: The date and time the event ends on.
           format: date
         sponsor:
           type: string
+          nullable: true
           description: The person or organization that is sponsoring the event.
         venue:
           type: string
+          nullable: true
           description: The name of the building the event will be hosted in
         city:
           type: string
+          nullable: true
           description: The city the event will be hosted in
         country:
           type: string
+          nullable: true
           description: The regional county the event will be hosted in
         county:
           type: string
+          nullable: true
           description: The name of country the event will be hosted in
         postcode:
           type: string
+          nullable: true
           description: The postcode of the venue hosting the event
         latitude:
           type: string
+          nullable: true
           description: The latitude co-ordinate of the event.
         longitude:
           type: string
+          nullable: true
           description: The longitude co-ordinate of the event.
         created_at:
           type: string
@@ -858,7 +749,8 @@ components:
           items:
             type: string
         capacity:
-          type: array
+          type: integer
+          nullable: true
           description: The number of people allowed to attend the event
           items:
             type: string
@@ -869,6 +761,7 @@ components:
             type: string
         contact:
           type: string
+          nullable: true
           description: The name and/or contact details of a person or institution
             organizing the event
         host_institutions:

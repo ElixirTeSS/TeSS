@@ -32,6 +32,8 @@ VCR.configure do |config|
 end
 
 class ActiveSupport::TestCase
+  include SchemaHelper
+
   def setup
     redis = Redis.new
     redis.flushdb
