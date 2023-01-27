@@ -191,7 +191,6 @@ div.wrapper {
 .facet-sort-group {
   display: flex;
   align-items: center;
-  padding: 0 10px !important;
 }
 
 ul.facet-sort-wrap {
@@ -204,7 +203,7 @@ ul.facet-sort-wrap {
 
 .facet-sort-icon {
   flex-shrink: 0;
-  margin: 10px 0;
+  margin: 10px;
 }
 
 .facet-select {
