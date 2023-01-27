@@ -121,7 +121,7 @@ div.wrapper {
 
   .sidebar-group {
     background: #FFFFFF;
-    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.03);
+    @include floating-card;
     border-radius: 6px;
     > ul {
       @include unstyled-ul;
@@ -188,19 +188,23 @@ div.wrapper {
   }
 }
 
-.facet-sort-wrap {
-  position: relative;
+.facet-sort-group {
+  display: flex;
+  align-items: center;
+  padding: 0 10px !important;
+}
+
+ul.facet-sort-wrap {
   margin-bottom: $layout-spacing-base * 2;
 }
 
 .facet-sort {
-  padding-left: 36px;
+  flex-shrink: 1;
 }
 
 .facet-sort-icon {
-  position: absolute;
-  top: $padding-base-vertical + 4px;
-  left: $padding-base-horizontal - 4px;
+  flex-shrink: 0;
+  margin: 10px 0;
 }
 
 .facet-select {
@@ -794,6 +798,7 @@ input[type=checkbox].field-lock + label:before,
 
 .list-card {
   @include floating-card;
+  border-radius: 8px;
   margin: 0 10px 10px 0;
   position: relative;
   display: block;
@@ -883,7 +888,6 @@ input[type=checkbox].field-lock + label:before,
 }
 
 .bulk-import-row {
-  border-bottom: 1px solid #ccc;
   .scraped-metadata p {
     margin: 0;
   }

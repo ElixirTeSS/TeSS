@@ -20,11 +20,12 @@ e.g.
     <% options.reverse! %>
 <% end %>
 
-<ul class="unstyled nav-simple">
+<ul class="unstyled nav-simple facet-sort-wrap">
   <li><h4 class="nav-heading">Sort</h4></li>
   <li class="sidebar-group">
     <ul>
-      <li class="facet-sort-wrap"><span class="icon icon-lg sort-icon facet-sort-icon"></span>
+      <li class="facet-sort-group">
+        <span class="icon icon-lg sort-icon facet-sort-icon"></span>
         <%= select_tag(:sort, options_for_select(options, @sort_by),
                        onchange: 'redirect_to_sort_url()', class: 'form-control facet-select font-size-sm facet-sort')
         %>
