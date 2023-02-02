@@ -14,7 +14,7 @@ servers:
   - url: https://tess.elixir-europe.org/
   - url: https://dev.tess.elixir-europe.org/
 paths:
-  /materials/{name}.json:
+  /materials/{slug}.json:
     get:
       tags:
         - Materials
@@ -22,9 +22,9 @@ paths:
         in TeSS.
       description: |-
         Use the name of the training material to return a JSON object. e.g. https://tess.elixir-europe.org/materials/advanced-statistics-in-r.json - See the response schema to find out what fields are returned and what type each field is.
-        This operation does not permit any parameters except the name as part of the URL. the name is a _slug_ of the title (lowercase + hypenated)
+        This operation does not permit any parameters except the name as part of the URL. the name is a _slug_ of the title (lowercase + hyphenated)
       parameters:
-        - name: name
+        - name: slug
           in: path
           description: The _slug_ id of a training material e.g. advanced-statistics-in-r
           required: true
@@ -36,9 +36,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Material'
+                $ref: '#/components/schemas/Material'
   /materials.json:
     get:
       tags:
@@ -198,8 +196,8 @@ paths:
         - Events
       summary: Get all the information stored about a particular event in TeSS.
       description: |-
-        Use the slug name of the event (lowercase hypenathed) to return a JSON object. e.g. https://tess.elixir-europe.org/events/software-carpentry-229th-aas-meeting.json - See the response schema to find out what fields are returned and what type each field is.
-        This operation does not permit any parameters except the name as part of the URL. the name is a _slug_ of the title (lowercase + hypenated)
+        Use the slug name of the event (lowercase hyphenated) to return a JSON object. e.g. https://tess.elixir-europe.org/events/software-carpentry-229th-aas-meeting.json - See the response schema to find out what fields are returned and what type each field is.
+        This operation does not permit any parameters except the name as part of the URL. the name is a _slug_ of the title (lowercase + hyphenated)
       parameters:
         - name: slug
           in: path
@@ -213,9 +211,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Event'
+                $ref: '#/components/schemas/Event'
   /events.json:
     get:
       tags:
@@ -411,15 +407,18 @@ components:
           description: This should be a description of the training material
         doi:
           type: string
+          nullable: true
           description: This is the DOI of the material where it can be permanently
             referenced
         remote_updated_date:
           type: string
-          description: When it was last updated in TeSS
+          nullable: true
+          description: When the material was last updated (at its source)
           format: date
         remote_created_date:
           type: string
-          description: When it was first created in TeSS
+          nullable: true
+          description: When the material was created (at its source)
           format: date
     Material:
       type: object
@@ -438,13 +437,16 @@ components:
           description: A description of what the training material is about.
         doi:
           type: string
+          nullable: true
           description: The DOI of the material (if it has one).
         remote_updated_date:
           type: string
+          nullable: true
           description: The date the material was last updated on it's original site
           format: date
         remote_created_date:
           type: string
+          nullable: true
           description: The date the material was first created on it's original site
           format: date
         created_at:
@@ -455,9 +457,9 @@ components:
           type: string
           description: The date the material was last updated on TeSS
           format: date
-        package_ids:
+        collections:
           type: array
-          description: IDs of training packages this material belongs to
+          description: Training collections that this material belongs to
           items:
             type: integer
         content_provider_id:
@@ -476,9 +478,11 @@ components:
             $ref: '#/components/schemas/ScientificTopic'
         licence:
           type: string
-          description: The licence chosed to determine how the material may be re-used.
+          nullable: true
+          description: The licence chosen to determine how the material may be re-used.
         difficulty_level:
           type: string
+          nullable: true
           description: The difficulty level comprehension of the material requires.
             Can be Beginner, Intermediate, Advanced, or Not specified.
         authors:

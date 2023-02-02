@@ -36,6 +36,7 @@ class WorkflowsControllerTest < ActionController::TestCase
     get :index, params: { format: :json_api }
     assert_response :success
     assert_not_nil assigns(:workflows)
+    assert_valid_json_api_response
     body = nil
     assert_nothing_raised do
       body = JSON.parse(response.body)
@@ -110,7 +111,7 @@ class WorkflowsControllerTest < ActionController::TestCase
     get :show, params: { id: @workflow, format: :json_api }
     assert_response :success
     assert assigns(:workflow)
-
+    assert_valid_json_api_response
     body = nil
     assert_nothing_raised do
       body = JSON.parse(response.body)

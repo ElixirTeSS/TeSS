@@ -46,6 +46,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
     get :index, params: { format: :json_api }
     assert_response :success
     assert_not_nil assigns(:content_providers)
+    assert_valid_json_api_response
     body = nil
     assert_nothing_raised do
       body = JSON.parse(response.body)
@@ -179,7 +180,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
     get :show, params: { id: @content_provider, format: :json_api }
     assert_response :success
     assert assigns(:content_provider)
-
+    assert_valid_json_api_response
     body = nil
     assert_nothing_raised do
       body = JSON.parse(response.body)

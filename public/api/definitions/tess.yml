@@ -743,7 +743,7 @@ components:
                 user:
                   $ref: '#/components/schemas/SingleRelationshipObject'
                 content-provider:
-                  $ref: '#/components/schemas/SingleRelationshipObject'
+                  $ref: '#/components/schemas/OptionalRelationshipObject'
                 nodes:
                   $ref: '#/components/schemas/MultiRelationshipObject'
             links:
@@ -777,16 +777,20 @@ components:
           description: The URL where the actual event can be found.
         organizer:
           type: string
+          nullable: true
           description: The organization responsible for creating the event.
         description:
           type: string
+          nullable: true
           description: A succinct description of what the event is about.
         start:
           type: string
+          nullable: true
           description: The date and time at which the event starts.
           format: date
         end:
           type: string
+          nullable: true
           description: The date and time at which the event ends.
           format: date
         sponsor:
@@ -941,7 +945,7 @@ components:
                 user:
                   $ref: '#/components/schemas/SingleRelationshipObject'
                 content-provider:
-                  $ref: '#/components/schemas/SingleRelationshipObject'
+                  $ref: '#/components/schemas/OptionalRelationshipObject'
                 nodes:
                   $ref: '#/components/schemas/MultiRelationshipObject'
             links:
@@ -964,13 +968,16 @@ components:
           description: A description of what the training material is about.
         doi:
           type: string
+          nullable: true
           description: The DOI of the material (if it has one).
         remote-updated-date:
           type: string
+          nullable: true
           description: The date the material was last updated on its original site.
           format: date
         remote-created-date:
           type: string
+          nullable: true
           description: The date the material was first created on its original site.
           format: date
         created-at:
@@ -988,8 +995,10 @@ components:
             type: string
         licence:
           type: string
-          description: The licence chosed to determine how the material may be re-used.
+          nullable: true
+          description: The licence chosen to determine how the material may be re-used.
         difficulty-level:
+          nullable: true
           type: string
           description: The difficulty level comprehension of the material requires.
             Can be Beginner, Intermediate, Advanced, or Not specified.
@@ -1075,9 +1084,11 @@ components:
           description: The title of the content provider.
         description:
           type: string
+          nullable: true
           description: A description of the content provider.
         url:
           type: string
+          nullable: true
           description: The URL to the content provider's website.
         image-url:
           type: string
@@ -1130,11 +1141,16 @@ components:
           type: string
           nullable: true
           description: The "friendly" identifier of the user.
+        username:
+          type: string
+          description: The user's TeSS username.
         firstname:
           type: string
+          nullable: true
           description: The user's first, or given, name.
         surname:
           type: string
+          nullable: true
           description: The user's last, or family, name.
         created-at:
           type: string
@@ -1364,7 +1380,7 @@ components:
       properties:
         title:
           type: string
-          description: Title of the external resource
+          description: The title of the external resource
         url:
           type: string
           description: A URL that resolves to a description of an external resource
@@ -1376,17 +1392,18 @@ components:
           format: date
         updated-at:
           type: string
-          description: The date the association was last update between this resource
+          description: The date the association was last updated between this resource
             and the external resource within TeSS.
           format: date
         api-url:
           type: string
+          nullable: true
           description: A URL that resolves to more information about the external
             resource represented in a common exchange format (e.g. JSON or XML)
         type:
           type: string
           description: The type of external resource. This can be 'tool', 'database,
-            policy or standard' for bio.tools and bio.sharing respectively or any
+            policy or standard' for bio.tools and FAIRsharing respectively or any
             other resource type name for other external resources.
     Facet:
       type: object
@@ -1433,6 +1450,14 @@ components:
           type: string
         type:
           type: string
+    OptionalResourceIdentifierObject:
+      type: object
+      nullable: true
+      properties:
+        id:
+          type: string
+        type:
+          type: string
     SingleRelationshipObject:
       type: object
       properties:
@@ -1441,6 +1466,17 @@ components:
           properties: {}
         data:
           $ref: '#/components/schemas/ResourceIdentifierObject'
+        meta:
+          type: object
+          properties: {}
+    OptionalRelationshipObject:
+      type: object
+      properties:
+        links:
+          type: object
+          properties: {}
+        data:
+          $ref: '#/components/schemas/OptionalResourceIdentifierObject'
         meta:
           type: object
           properties: {}

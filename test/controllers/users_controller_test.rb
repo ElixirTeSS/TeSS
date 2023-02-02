@@ -24,6 +24,7 @@ class UsersControllerTest < ActionController::TestCase
     get :index, params: { format: :json_api }
     assert_response :success
     assert_not_nil assigns(:users)
+    assert_valid_json_api_response
     body = nil
     assert_nothing_raised do
       body = JSON.parse(response.body)
@@ -97,7 +98,7 @@ class UsersControllerTest < ActionController::TestCase
     get :show, params: { id: @user, format: :json_api }
     assert_response :success
     assert assigns(:user)
-
+    assert_valid_json_api_response
     body = nil
     assert_nothing_raised do
       body = JSON.parse(response.body)
