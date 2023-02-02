@@ -40,6 +40,7 @@ class NodesControllerTest < ActionController::TestCase
     get :index, params: { format: :json_api }
     assert_response :success
     assert_not_nil assigns(:nodes)
+    assert_valid_json_api_response
     body = nil
     assert_nothing_raised do
       body = JSON.parse(response.body)
@@ -102,6 +103,12 @@ class NodesControllerTest < ActionController::TestCase
   test "should show node as json" do
     get :show, params: { id: @node, format: :json }
     assert_response :success
+  end
+
+  test "should show node as json-api" do
+    get :show, params: { id: @node, format: :json_api }
+    assert_response :success
+    assert_valid_json_api_response
   end
 
   test "should get edit" do

@@ -26,9 +26,9 @@ json.extract! @event, *fields
 json.partial! 'common/ontology_terms', type: 'scientific_topics', resource: @event
 json.partial! 'common/ontology_terms', type: 'operations', resource: @event
 
-json.nodes @event.associated_nodes.collect { |x| { name: x[:name], node_id: x[:id] } }
-json.collections @event.collections.collect { |x| { title: x[:title], id: x[:id] } }
-json.materials @event.materials.collect { |x| { title: x[:title], id: x[:id] } }
+json.nodes(@event.associated_nodes.collect { |x| { name: x[:name], node_id: x[:id] } })
+json.collections(@event.collections.collect { |x| { title: x[:title], id: x[:id] } })
+json.materials(@event.materials.collect { |x| { title: x[:title], id: x[:id] } })
 
 json.external_resources do
   @event.external_resources.each do |external_resource|

@@ -659,7 +659,7 @@ paths:
             type: string
         - name: page_number
           in: query
-          description: The page of the collection to view.
+          description: The page of the collection index to view.
           schema:
             type: integer
             default: 1
@@ -721,6 +721,80 @@ paths:
             application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/Collection'
+  /nodes:
+    get:
+      tags:
+        - nodes
+      parameters:
+        - name: q
+          in: query
+          description: Search keywords.
+          schema:
+            type: string
+        - name: page_number
+          in: query
+          description: The page of the node collection to view.
+          schema:
+            type: integer
+            default: 1
+        - name: page_size
+          in: query
+          description: The number of results to return per page.
+          schema:
+            type: integer
+            default: 30
+        - name: sort
+          in: query
+          description: |
+            Sort order:
+             * default - sort by date (for Events), sort by number of resources (for Content Providers) otherwise sort by title (default).
+             * new - Sort by when the entry was created.
+             * mod - Sort by when the entry was last modified.
+             * rel - Sort by search query relevance.
+             * early - Sort by date, earliest to latest (Events only).
+             * late - Sort by date, latest to earliest (Events only).
+          schema:
+            type: string
+            enum:
+              - early
+              - late
+              - rel
+              - mod
+              - new
+        - name: keywords[]
+          in: query
+          description: Filter by keywords.
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        200:
+          description: A list of ELIXIR nodes, and facets available to filter them.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/NodeCollection'
+  /nodes/{slug}:
+    get:
+      tags:
+        - nodes
+      parameters:
+        - name: slug
+          in: path
+          description: The _slug_ id of a node e.g. belgium
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Details of an ELIXIR node.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Node'
 components:
   schemas:
     Event:
@@ -1316,11 +1390,11 @@ components:
             type: string
         created-at:
           type: string
-          description: The date the collection was first created on TeSS
+          description: The date the collection was first created on TeSS.
           format: date
         updated-at:
           type: string
-          description: The date the collection was last updated on TeSS
+          description: The date the collection was last updated on TeSS.
           format: date
     CollectionCollection:
       allOf:
@@ -1333,6 +1407,95 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CollectionResource'
+    Node:
+      allOf:
+        - $ref: '#/components/schemas/JsonApiResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/NodeResource'
+    NodeResource:
+      allOf:
+        - $ref: '#/components/schemas/ResourceObject'
+        - type: object
+          properties:
+            attributes:
+              $ref: '#/components/schemas/NodeAttributes'
+            relationships:
+              type: object
+              properties:
+                events:
+                  $ref: '#/components/schemas/MultiRelationshipObject'
+                materials:
+                  $ref: '#/components/schemas/MultiRelationshipObject'
+            links:
+              $ref: '#/components/schemas/Links'
+    NodeAttributes:
+      type: object
+      required:
+        - name
+      properties:
+        slug:
+          type: string
+          nullable: true
+          description: The "friendly" identifier of the node.
+        name:
+          type: string
+          description: The name of the node.
+        member-status:
+          type: string
+          nullable: true
+          description: Whether the node is a member or observer of ELIXIR.
+          enum:
+            - Member
+            - Observer
+        country-code:
+          type: string
+          nullable: true
+          description: The ISO 3166-1 alpha-2 code of the country this node represents.
+        home-page:
+          type: string
+          nullable: true
+          description: A URL to the node's home page.
+        staff:
+          type: array
+          description: A list of staff members belonging to this node.
+          minItems: 0
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the staff member.
+              role:
+                type: string
+                description: The role of the staff member within the node.
+              email:
+                type: string
+                description: The staff member's contact email address.
+        twitter:
+          type: string
+          nullable: true
+          description: The node's twitter handle.
+        created-at:
+          type: string
+          description: The date the node was first created on TeSS.
+          format: date
+        updated-at:
+          type: string
+          description: The date the node was last updated on TeSS.
+          format: date
+    NodeCollection:
+      allOf:
+        - $ref: '#/components/schemas/FacetedCollection'
+        - type: object
+          properties:
+            data:
+              minItems: 0
+              uniqueItems: true
+              type: array
+              items:
+                $ref: '#/components/schemas/NodeResource'
     FacetedCollection:
       allOf:
         - $ref: '#/components/schemas/JsonApiResponse'

@@ -8,8 +8,7 @@ class NodeSerializer < ApplicationSerializer
       {
         name: staff.name,
         role: staff.role,
-        email: staff.email,
-        image: staff.image.url(:media)
+        email: staff.email
       }
     end
   end
