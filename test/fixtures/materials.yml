@@ -16,6 +16,7 @@ good_material:
   remote_created_date: 2015-09-25
 
 bad_material:
+  user: regular_user
   title: Bad Training Material Example
   url: Not really a valid URL.com
   description: THis is the short descriptiopn
@@ -29,6 +30,7 @@ bad_material:
   remote_created_date: 2015-09-25
 
 biojs:
+  user: regular_user
   title: BioJS
   url: http://www.mygoblet.org//training-portal/materials/biojs
   description: BioJS is a library of graphical components easy to reuse to represent biological information
@@ -40,6 +42,7 @@ biojs:
   status: active
 
 interpro:
+  user: regular_user
   title: InterPro
   url: http://www.mygoblet.org//training-portal/materials/interpro-introduction
   description: >
@@ -52,6 +55,7 @@ interpro:
   status: active
 
 prints:
+  user: regular_user
   title: 'PRINTS: A protein family database with a difference'
   url: http://www.mygoblet.org//training-portal/materials/prints-protein-family-database-difference
   description: >
