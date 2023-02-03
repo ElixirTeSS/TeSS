@@ -12,7 +12,7 @@
    viewBox="0 100 500 300"
    version="1.1"
    id="svg35"
-   sodipodi:docname="ELIXIR-GR.svg"
+   sodipodi:docname="GR.svg"
    inkscape:version="0.92.3 (2405546, 2018-03-11)">
   <metadata
      id="metadata39">
@@ -38,9 +38,9 @@
      inkscape:window-height="1247"
      id="namedview37"
      showgrid="false"
-     inkscape:zoom="1.3350176"
-     inkscape:cx="329.00971"
-     inkscape:cy="269.89868"
+     inkscape:zoom="21.360282"
+     inkscape:cx="82.310226"
+     inkscape:cy="276.21335"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -51,7 +51,8 @@
        id="style2">.cls-1{fill:#4d4848;}.cls-2{fill:#f47d20;}</style>
   </defs>
   <g
-     id="Nodes">
+     id="Nodes"
+     transform="translate(-73.278316,-25.859552)">
     <path
        class="cls-1"
        d="m 173.19,272 c 0.63,-1.38 1.16,-2.86 1.8,-4.66 a 44.89,44.89 0 0 0 1.79,-6.25 l 6.46,-27.94 c 0.53,-2.86 0.95,-5 1.06,-6.25 a 16.19,16.19 0 0 0 0.21,-3.39 v -1.27 h 14.61 L 190.33,261 c -0.63,2.76 -1.05,4.87 -1.27,6.36 a 22.92,22.92 0 0 0 -0.31,4.55 z"
