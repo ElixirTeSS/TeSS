@@ -153,6 +153,7 @@ ActiveRecord::Schema.define(version: 2022_11_24_105520) do
     t.integer "content_provider_id"
     t.integer "user_id"
     t.boolean "online", default: false
+    t.decimal "cost_value"
     t.date "last_scraped"
     t.boolean "scraper_record", default: false
     t.string "keywords", default: [], array: true
@@ -170,7 +171,6 @@ ActiveRecord::Schema.define(version: 2022_11_24_105520) do
     t.string "feedback"
     t.text "notes"
     t.integer "nominatim_count", default: 0
-    t.decimal "cost_value"
     t.string "duration"
     t.text "recognition"
     t.text "learning_objectives"
