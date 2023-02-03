@@ -1,0 +1,57 @@
+//////////////////////////////
+// Design-specific variables
+//////////////////////////////
+/* ELIXIR brand colours */
+$elixir-orange: #f47d20;
+$elixir-grey: #484848;
+$elixir-blue: #005472;
+$elixir-green: #bebf32;
+
+/* TeSS colours */
+$bgDefault: $elixir-orange;
+$bgHighlight: darken($bgDefault, 10%);
+$colDefault: #ffe6d1;
+$colHover: #333;
+$colHover2: #eee;
+
+$blue: #206b82;
+$blue2: #085871; /* unused? */
+$blue3: #064559; /* unused? */
+
+//////////////////////////////
+// TeSS variables
+//////////////////////////////
+$layout-spacing-base: 20px;
+$item-padding-base: 20px;
+$sidebar-width: 280px;
+$transition-time: 300ms;
+
+$footer-bg: #ddd;
+$footer-border: transparent;
+$footer-text: #333;
+$footer-border-radius: 0;
+$footer-padding-top: 10px;
+
+//////////////////////////////
+// Bootstrap variable tweaks
+//////////////////////////////
+$brand-primary: $blue;
+$brand-secondary: $elixir-orange;
+
+$link-color: $blue;
+$link-hover-color: lighten($link-color, 10%);
+$link-hover-decoration: none;
+
+$navbar-height: 60px;
+$navbar-default-bg: $bgDefault;
+$navbar-default-border: transparent;
+$navbar-default-link-active-bg: $bgHighlight;
+$navbar-default-link-hover-bg: $bgHighlight;
+$navbar-default-link-color: $colDefault;
+$navbar-default-link-active-color: lighten($navbar-default-link-color, 30%);
+$navbar-default-link-hover-color: lighten($navbar-default-link-color, 40%);
+$navbar-border-radius: 0;
+
+$navbar-default-toggle-hover-bg: $bgHighlight;
+$navbar-default-toggle-icon-bar-bg: $colHover2;
+$navbar-default-toggle-border-color: $bgHighlight;
