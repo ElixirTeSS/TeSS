@@ -1,5 +1,7 @@
+require 'icalendar'
 require 'open-uri'
 require 'csv'
+require 'nokogiri'
 
 module Ingestors
   class UuIngestor < Ingestor

@@ -1,5 +1,6 @@
 require 'open-uri'
 require 'csv'
+require 'nokogiri'
 
 module Ingestors
   class WurIngestor < Ingestor
