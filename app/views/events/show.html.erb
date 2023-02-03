@@ -20,9 +20,9 @@
         <h2 class="mt-0">
           <% if @event.has_node? -%>
             <%= image_tag 'elixir/elixir_logo_orange.png',
-                          :alt => 'Elixir node event',
-                          :title => 'Elixir node event',
-                          :style => 'height: 40px;' %>
+                          alt: 'ELIXIR node event',
+                          title: 'ELIXIR node event',
+                          style: 'height: 40px;' %>
           <% end -%>
           <% if current_user&.is_admin? %>
             <%= missing_icon(@event, 'large') %>

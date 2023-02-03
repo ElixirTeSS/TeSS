@@ -1,7 +1,5 @@
 <li class="masonry-brick media-item long">
   <%= link_to material, class: 'link-overlay' do %>
-    <div class="sub-heading"><%= display_attribute_no_label(material, :resource_type) { |values| values.join(', ') } %></div>
-
     <div class="masonry-brick-heading">
       <div class="masonry-icons">
         <% if current_user&.is_admin? %>
@@ -10,17 +8,14 @@
           <%= suggestion_icon(material) %>
         <% end %>
       </div>
+      <div class="sub-heading">
+        <%= display_attribute_no_label(material, :resource_type) { |values| values.join(', ') } %>
+      </div>
       <h4><%= material.title %></h4>
     </div>
 
-
-    <div class="row no-spacing">
-      <div class="col-md-9 no-spacing">
-        <div class="font-size-lg"><%= display_difficulty_level(material) %></div>
-        <%= keywords_and_topics(material) %>
-      </div>
-
-      <div class="col-md-3 no-spacing">
+    <div class="clearfix">
+      <div class="pull-right">
         <% if material.has_node? -%>
           <%= image_tag 'elixir/elixir_logo_orange.png', alt: 'ELIXIR node event', title: 'ELIXIR node event',
                         class: 'elixir-node-icon' %>
@@ -29,6 +24,10 @@
           <%= image_tag(material.content_provider.image.url, class: 'provider-avatar') %>
         <% end %>
       </div>
+
+      <div class="font-size-lg"><%= display_difficulty_level(material) %></div>
+
+      <%= keywords_and_topics(material) %>
     </div>
   <% end %>
 </li>
