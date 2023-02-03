@@ -170,13 +170,13 @@ ActiveRecord::Schema.define(version: 2022_11_24_105520) do
     t.string "feedback"
     t.text "notes"
     t.integer "nominatim_count", default: 0
+    t.decimal "cost_value"
     t.string "duration"
     t.text "recognition"
     t.text "learning_objectives"
     t.text "prerequisites"
     t.text "tech_requirements"
     t.string "cost_basis"
-    t.decimal "cost_value"
     t.string "cost_currency"
     t.string "fields", default: [], array: true
     t.index ["online"], name: "index_events_on_online"
