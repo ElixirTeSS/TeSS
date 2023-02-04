@@ -7,7 +7,7 @@ class FixNilSponsors < ActiveRecord::Migration[4.2]
   def up
     # the below is postgresql-specific. Is that good enough?
     # Actually I think we can ignore this migration from now on.
-    # Event.where(sponsors: nil).update_all("sponsors = '{}'")
+    Event.where(sponsors: nil).update_all("sponsors = '{}'")
   end
 
   def down
