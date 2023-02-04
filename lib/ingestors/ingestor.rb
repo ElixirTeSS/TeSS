@@ -44,7 +44,7 @@ module Ingestors
       "#{type} " << [:processed, :added, :updated, :rejected].map { |key| "#{key}[#{stats[type][key]}]" }.join(' ')
     end
 
-    def open_url(url)
+    def open_url(url, raise: false)
       options = {
         redirect: false, # We're doing redirects manually below, since open-uri can't handle http -> https redirection
         read_timeout: 5
@@ -52,14 +52,18 @@ module Ingestors
       options[:ssl_verify_mode] = config[:ssl_verify_mode] if config.key?(:ssl_verify_mode)
       redirect_attempts = 5
       begin
-        URI.open(url, options)
+        URI(url).open(options)
       rescue OpenURI::HTTPRedirect => e
         url = e.uri.to_s
         retry if (redirect_attempts -= 1) > 0
         raise e
       rescue OpenURI::HTTPError => e
-        @messages << "Couldn't open URL #{url}: #{e}"
-        nil
+        if raise
+          raise e
+        else
+          @messages << "Couldn't open URL #{url}: #{e}"
+          nil
+        end
       end
     end
 
