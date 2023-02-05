@@ -36,10 +36,12 @@ class EventsControllerTest < ActionController::TestCase
 
   test 'should get index with solr enabled' do
     with_settings(solr_enabled: true) do
-      Event.stub(:search_and_filter, MockSearch.new(Event.all)) do
-        get :index, params: { q: 'nightclub', keywords: 'ragtime' }
-        assert_response :success
-        assert_not_empty assigns(:events)
+      with_solr(Event) do
+        Event.stub(:search_and_filter, MockSearch.new(Event.all)) do
+          get :index, params: { q: 'nightclub', keywords: 'ragtime' }
+          assert_response :success
+          assert_not_empty assigns(:events)
+        end
       end
     end
   end

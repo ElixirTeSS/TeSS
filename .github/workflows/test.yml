@@ -13,25 +13,29 @@ jobs:
       SECRET_BASE_KEY: test_key
       RAILS_ENV: test
     steps:
-      - uses: harmon758/postgresql-action@v1
+      - name: Set up database
+        uses: harmon758/postgresql-action@v1
         with:
           postgresql db: ${DB_NAME}
           postgresql user: ${DB_USER}
           postgresql password: ${DB_PASSWORD}
-        name: Set up database
-
-      - uses: actions/checkout@v3
-        name: Set up Ruby
-
-      - uses: ruby/setup-ruby@v1
+      - name: Checkout TeSS
+        uses: actions/checkout@v3
+      - name: Set up Solr
+        uses: addnab/docker-run-action@v3
+        with:
+          image: solr:8
+          options: -d -v ${{ github.workspace }}:/app -p 8983:8983
+          run: solr-precreate tess-test /app/solr/conf
+      - name: Set up Ruby and install gems
+        uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-        name: Bundle install
       - name: Configure and initialize database
         run: |
           cp test/config/test_tess.yml config/tess.yml
           cp config/secrets.github.yml config/secrets.yml
           cp config/ingestion.example.yml config/ingestion.yml
           bundle exec rake db:test:prepare
-      - run: bundle exec rails test
-        name: Run tests
+      - name: Run tests
+        run: bundle exec rails test

@@ -30,33 +30,31 @@ class Collection < ApplicationRecord
 
   has_image(placeholder: TeSS::Config.placeholder['collection'])
 
-  if TeSS::Config.solr_enabled
-    # :nocov:
-    searchable do
-      text :title
-      text :description
-      string :title
-      string :sort_title do
-        title.downcase.gsub(/^(an?|the) /, '')
-      end
-      string :user do
-        self.user.username.to_s unless self.user.blank?
-      end
-      string :keywords, :multiple => true
-
-      string :user, :multiple => true do
-        [user.username, user.full_name].reject(&:blank?) if user
-      end
-
-      integer :collaborator_ids, multiple: true
-      integer :user_id
-      boolean :public
-      time :created_at
-      time :updated_at
-      integer :collaborator_ids, multiple: true
+  # :nocov:
+  searchable if: -> (_) { TeSS::Config.solr_enabled } do
+    text :title
+    text :description
+    string :title
+    string :sort_title do
+      title.downcase.gsub(/^(an?|the) /, '')
     end
-    # :nocov:
+    string :user do
+      self.user.username.to_s unless self.user.blank?
+    end
+    string :keywords, :multiple => true
+
+    string :user, :multiple => true do
+      [user.username, user.full_name].reject(&:blank?) if user
+    end
+
+    integer :collaborator_ids, multiple: true
+    integer :user_id
+    boolean :public
+    time :created_at
+    time :updated_at
+    integer :collaborator_ids, multiple: true
   end
+  # :nocov:
 
   #Overwrites a collections materials and events.
   #[] or nil will delete

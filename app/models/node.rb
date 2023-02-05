@@ -26,24 +26,22 @@ class Node < ApplicationRecord
 
   alias_attribute(:title, :name)
 
-  if TeSS::Config.solr_enabled
-    # :nocov:
-    searchable do
-      string :name
-      string :sort_title do
-        name.downcase.gsub(/^(an?|the) /, '')
-      end
-      text :name
-      string :country_code
-      text :staff do
-        staff.map(&:name)
-      end
-      string :member_status
-      time :updated_at
-      integer :user_id # Used for shadowbans
+  # :nocov:
+  searchable if: -> (_) { TeSS::Config.solr_enabled } do
+    string :name
+    string :sort_title do
+      name.downcase.gsub(/^(an?|the) /, '')
     end
-    # :nocov:
+    text :name
+    string :country_code
+    text :staff do
+      staff.map(&:name)
+    end
+    string :member_status
+    time :updated_at
+    integer :user_id # Used for shadowbans
   end
+  # :nocov:
 
   MEMBER_STATUS = ['Member', 'Observer']
   COUNTRIES = JSON.parse(File.read(File.join(Rails.root, 'config', 'data', 'countries.json')))

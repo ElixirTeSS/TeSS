@@ -11,40 +11,38 @@ class Workflow < ApplicationRecord
   include CurationQueue
   include HasDifficultyLevel
 
-  if TeSS::Config.solr_enabled
-    # :nocov:
-    searchable do
-      string :title
-      string :sort_title do
-        title.downcase.gsub(/^(an?|the) /, '')
-      end
-      string :description
-      text :title
-      text :description
-      text :node_names do
-        node_index('name')
-      end
-      text :node_descriptions do
-        node_index('description')
-      end
-      text :authors
-      string :authors, :multiple => true
-      string :scientific_topics, :multiple => true do
-        self.scientific_topic_names
-      end
-      text :target_audience
-      string :target_audience, :multiple => true
-      text :keywords
-      string :keywords, :multiple => true
-      text :contributors
-      string :contributors, :multiple => true
-
-      integer :user_id
-      boolean :public
-      integer :collaborator_ids, multiple: true
+  # :nocov:
+  searchable if: -> (_) { TeSS::Config.solr_enabled } do
+    string :title
+    string :sort_title do
+      title.downcase.gsub(/^(an?|the) /, '')
     end
-    # :nocov:
+    string :description
+    text :title
+    text :description
+    text :node_names do
+      node_index('name')
+    end
+    text :node_descriptions do
+      node_index('description')
+    end
+    text :authors
+    string :authors, :multiple => true
+    string :scientific_topics, :multiple => true do
+      self.scientific_topic_names
+    end
+    text :target_audience
+    string :target_audience, :multiple => true
+    text :keywords
+    string :keywords, :multiple => true
+    text :contributors
+    string :contributors, :multiple => true
+
+    integer :user_id
+    boolean :public
+    integer :collaborator_ids, multiple: true
   end
+  # :nocov:
 
   # has_one :owner, foreign_key: "id", class_name: "User"
   belongs_to :user

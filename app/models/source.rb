@@ -27,30 +27,28 @@ class Source < ApplicationRecord
   before_update :log_approval_status_change
   before_update :reset_approval_status
 
-  if TeSS::Config.solr_enabled
-    # :nocov:
-    searchable do
-      string :sort_title do
-        title
-      end
-      time :created_at
-      time :updated_at
-      time :finished_at
-      string :url
-      string :method do
-        ingestor_title
-      end
-      string :content_provider do
-        self.content_provider.try(:title)
-      end
-      string :approval_status do
-        I18n.t("sources.approval_status.#{approval_status}")
-      end
-      integer :user_id
-      boolean :enabled
+  # :nocov:
+  searchable if: -> (_) { TeSS::Config.solr_enabled } do
+    string :sort_title do
+      title
     end
-    # :nocov:
+    time :created_at
+    time :updated_at
+    time :finished_at
+    string :url
+    string :method do
+      ingestor_title
+    end
+    string :content_provider do
+      self.content_provider.try(:title)
+    end
+    string :approval_status do
+      I18n.t("sources.approval_status.#{approval_status}")
+    end
+    integer :user_id
+    boolean :enabled
   end
+  # :nocov:
 
   # For compatibility with views that render arbitrary lists of user-creatable resources (e.g. curation page)
   def title

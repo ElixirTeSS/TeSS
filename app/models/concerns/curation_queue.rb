@@ -3,14 +3,12 @@ module CurationQueue
 
   included do
     after_commit :notify_curators, on: :create, if: :user_requires_approval?
-    if TeSS::Config.solr_enabled
-      searchable do
-        boolean :unverified do
-          from_unverified_or_rejected?
-        end
-        boolean :shadowbanned do
-          from_shadowbanned?
-        end
+    searchable if: -> (_) { TeSS::Config.solr_enabled } do
+      boolean :unverified do
+        from_unverified_or_rejected?
+      end
+      boolean :shadowbanned do
+        from_shadowbanned?
       end
     end
   end

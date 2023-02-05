@@ -22,77 +22,75 @@ class Event < ApplicationRecord
   before_save :geocoding_cache_lookup, if: :address_will_change?
   after_save :enqueue_geocoding_worker, if: :address_changed?
 
-  if TeSS::Config.solr_enabled
-    # :nocov:
-    searchable do
-      # full text search fields
-      text :title
-      text :keywords
-      text :url
-      text :organizer
-      text :venue
-      text :city
-      text :country
-      text :host_institutions
-      text :timezone
-      text :content_provider do
-        content_provider.title unless content_provider.nil?
-      end
-      # sort title
-      string :sort_title do
-        title.downcase.gsub(/^(an?|the) /, '')
-      end
-      # other fields
-      string :title
-      string :organizer
-      string :sponsors, multiple: true
-      string :venue
-      string :city
-      string :country
-      string :event_types, multiple: true do
-        EventTypeDictionary.instance.values_for_search(event_types)
-      end
-      string :eligibility, multiple: true do
-        EligibilityDictionary.instance.values_for_search(eligibility)
-      end
-      string :keywords, multiple: true
-      string :fields, multiple: true
-      time :start
-      time :end
-      time :created_at
-      time :updated_at
-      string :content_provider do
-        content_provider.title unless content_provider.nil?
-      end
-      string :node, multiple: true do
-        associated_nodes.pluck(:name)
-      end
-      string :scientific_topics, multiple: true do
-        scientific_topic_names
-      end
-      string :operations, multiple: true do
-        operation_names
-      end
-      string :target_audience, multiple: true
-      boolean :online
-      time :last_scraped
-      string :user do
-        user.username if user
-      end
-      integer :user_id # Used for shadowbans
-      boolean :failing do
-        failing?
-      end
-      string :cost_basis
-      # TODO: SOLR has a LatLonType to do geospatial searching. Have a look at that
-      #       location :latitutde
-      #       location :longitude
-      string :collections, multiple: true do
-        collections.where(public: true).pluck(:title)
-      end
+  # :nocov:
+  searchable if: -> (_) { TeSS::Config.solr_enabled } do
+    # full text search fields
+    text :title
+    text :keywords
+    text :url
+    text :organizer
+    text :venue
+    text :city
+    text :country
+    text :host_institutions
+    text :timezone
+    text :content_provider do
+      content_provider.title unless content_provider.nil?
     end
-    # :nocov:
+    # sort title
+    string :sort_title do
+      title.downcase.gsub(/^(an?|the) /, '')
+    end
+    # other fields
+    string :title
+    string :organizer
+    string :sponsors, multiple: true
+    string :venue
+    string :city
+    string :country
+    string :event_types, multiple: true do
+      EventTypeDictionary.instance.values_for_search(event_types)
+    end
+    string :eligibility, multiple: true do
+      EligibilityDictionary.instance.values_for_search(eligibility)
+    end
+    string :keywords, multiple: true
+    string :fields, multiple: true
+    time :start
+    time :end
+    time :created_at
+    time :updated_at
+    string :content_provider do
+      content_provider.title unless content_provider.nil?
+    end
+    string :node, multiple: true do
+      associated_nodes.pluck(:name)
+    end
+    string :scientific_topics, multiple: true do
+      scientific_topic_names
+    end
+    string :operations, multiple: true do
+      operation_names
+    end
+    string :target_audience, multiple: true
+    boolean :online
+    time :last_scraped
+    string :user do
+      user.username if user
+    end
+    integer :user_id # Used for shadowbans
+    boolean :failing do
+      failing?
+    end
+    string :cost_basis
+    # TODO: SOLR has a LatLonType to do geospatial searching. Have a look at that
+    #       location :latitutde
+    #       location :longitude
+    string :collections, multiple: true do
+      collections.where(public: true).pluck(:title)
+    end
   end
+  # :nocov:
 
   belongs_to :user
   has_one :edit_suggestion, as: :suggestible, dependent: :destroy

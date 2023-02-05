@@ -5,16 +5,14 @@ module HasLicence
   included do
     validates :licence, controlled_vocabulary: { dictionary: 'LicenceDictionary' }
 
-    if TeSS::Config.solr_enabled
-      # :nocov:
-      searchable do
-        text :licence
-        string :licence do
-          LicenceDictionary.instance.lookup_value(self.licence, 'title')
-        end
+    # :nocov:
+    searchable if: -> (_) { TeSS::Config.solr_enabled } do
+      text :licence
+      string :licence do
+        LicenceDictionary.instance.lookup_value(self.licence, 'title')
       end
-      # :nocov:
     end
+    # :nocov:
   end
 
   # Allows setting of the license either by using the key (CC-BY-4.0) #

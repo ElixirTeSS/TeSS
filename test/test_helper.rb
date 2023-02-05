@@ -63,6 +63,25 @@ class ActiveSupport::TestCase
     orig_config.each { |k, v| TeSS::Config[k] = v }
   end
 
+  def with_solr(*models, &block)
+    models.each(&:reindex)
+    Sunspot.commit
+
+    block.call
+  ensure
+    Sunspot.remove_all(models)
+  end
+
+  # TODO: Use this somewhere
+  def solr_available?
+    return $solr_available if defined? $solr_available
+    Sunspot.session.index
+    $solr_available = true
+  rescue StandardError => e
+    warn "Warning: Solr not available: #{e.class.name} - #{e.message}"
+    $solr_available = false
+  end
+
   # reset dictionaries to their default values
   def reset_dictionaries
     dictionaries = TeSS::Config.dictionaries

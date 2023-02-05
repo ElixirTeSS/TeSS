@@ -42,38 +42,36 @@ class ContentProvider < ApplicationRecord
 
   has_image(placeholder: TeSS::Config.placeholder['provider'])
 
-  if TeSS::Config.solr_enabled
-    # :nocov:
-    searchable do
-      # full text fields
-      text :title
-      text :description
-      text :keywords
-      # sort title
-      string :sort_title do
-        title.downcase.gsub(/^(an?|the) /, '')
-      end
-      # other fields
-      string :title
-      string :keywords, :multiple => true
-      string :node, :multiple => true do
-        unless self.node.blank?
-          self.node.name
-        end
-      end
-      string :content_provider_type
-      integer :count do
-        if self.events.count > self.materials.count
-          self.events.count
-        else
-          self.materials.count
-        end
-      end
-      integer :user_id # Used for shadowbans
-      time :updated_at
+  # :nocov:
+  searchable if: -> (_) { TeSS::Config.solr_enabled } do
+    # full text fields
+    text :title
+    text :description
+    text :keywords
+    # sort title
+    string :sort_title do
+      title.downcase.gsub(/^(an?|the) /, '')
     end
-    # :nocov:
+    # other fields
+    string :title
+    string :keywords, :multiple => true
+    string :node, :multiple => true do
+      unless self.node.blank?
+        self.node.name
+      end
+    end
+    string :content_provider_type
+    integer :count do
+      if self.events.count > self.materials.count
+        self.events.count
+      else
+        self.materials.count
+      end
+    end
+    integer :user_id # Used for shadowbans
+    time :updated_at
   end
+  # :nocov:
 
   # TODO: Add validations for these:
   # title:text url:text image_url:text description:text

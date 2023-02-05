@@ -13,20 +13,18 @@ class User < ApplicationRecord
   attr_accessor :login
   attr_accessor :processing_consent
 
-  if TeSS::Config.solr_enabled
-    # :nocov:
-    searchable do
-      text :username
-      text :email
-      boolean :unverified do
-        unverified_or_rejected?
-      end
-      boolean :shadowbanned do
-        shadowbanned?
-      end
+  # :nocov:
+  searchable if: -> (_) { TeSS::Config.solr_enabled } do
+    text :username
+    text :email
+    boolean :unverified do
+      unverified_or_rejected?
     end
-    # :nocov:
+    boolean :shadowbanned do
+      shadowbanned?
+    end
   end
+  # :nocov:
 
   has_one :profile, inverse_of: :user, dependent: :destroy
   CREATED_RESOURCE_TYPES = [:events, :materials, :workflows, :content_providers, :sources, :collections]

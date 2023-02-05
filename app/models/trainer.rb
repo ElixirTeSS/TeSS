@@ -11,57 +11,55 @@ class Trainer < Profile
 
   include Searchable
 
-  if TeSS::Config.solr_enabled
-    # :nocov:
-    searchable do
-      # full text search fields
-      text :full_name
-      text :description
-      text :location
-      text :expertise_technical do
-        expertise_technical.to_s
-      end
-      text :expertise_academic do
-        expertise_academic.to_s
-      end
-      text :interest do
-        interest.to_s
-      end
-      text :activity do
-        activity.to_s
-      end
-      text :language do
-        langs = []
-        language.each { |key| langs << language_label_by_key(key) }
-        langs.join ', '
-      end
-      # sort title
-      string :sort_title do
-        full_name.downcase
-      end
-      # other fields
-      integer :user_id
-      string :firstname
-      string :surname
-      string :location
-      string :orcid
-      string :experience do
-        TrainerExperienceDictionary.instance.lookup_value(self.experience, 'title')
-      end
-      string :expertise_academic, multiple: true
-      string :expertise_technical, multiple: true
-      string :fields, multiple: true
-      string :interest, multiple: true
-      string :activity, multiple: true
-      string :language, multiple: true do
-        languages_from_keys(self.language)
-      end
-      string :social_media, multiple: true
-      time :updated_at
-      boolean :public
+  # :nocov:
+  searchable if: -> (_) { TeSS::Config.solr_enabled } do
+    # full text search fields
+    text :full_name
+    text :description
+    text :location
+    text :expertise_technical do
+      expertise_technical.to_s
     end
-    # :nocov:
+    text :expertise_academic do
+      expertise_academic.to_s
+    end
+    text :interest do
+      interest.to_s
+    end
+    text :activity do
+      activity.to_s
+    end
+    text :language do
+      langs = []
+      language.each { |key| langs << language_label_by_key(key) }
+      langs.join ', '
+    end
+    # sort title
+    string :sort_title do
+      full_name.downcase
+    end
+    # other fields
+    integer :user_id
+    string :firstname
+    string :surname
+    string :location
+    string :orcid
+    string :experience do
+      TrainerExperienceDictionary.instance.lookup_value(self.experience, 'title')
+    end
+    string :expertise_academic, multiple: true
+    string :expertise_technical, multiple: true
+    string :fields, multiple: true
+    string :interest, multiple: true
+    string :activity, multiple: true
+    string :language, multiple: true do
+      languages_from_keys(self.language)
+    end
+    string :social_media, multiple: true
+    time :updated_at
+    boolean :public
   end
+  # :nocov:
 
   def self.facet_fields
     field_list = %w( location experience expertise_academic expertise_technical

@@ -16,62 +16,60 @@ class Material < ApplicationRecord
   include HasFriendlyId
   include HasDifficultyLevel
 
-  if TeSS::Config.solr_enabled
-    # :nocov:
-    searchable do
-      # full text search fields
-      text :title
-      text :description
-      text :contact
-      text :doi
-      text :authors
-      text :contributors
-      text :target_audience
-      text :keywords
-      text :resource_type
-      text :content_provider do
-        self.content_provider.try(:title)
-      end
-      # sort title
-      string :sort_title do
-        title.downcase.gsub(/^(an?|the) /, '')
-      end
-      # other fields
-      string :title
-      string :authors, :multiple => true
-      string :scientific_topics, :multiple => true do
-        self.scientific_topic_names
-      end
-      string :operations, :multiple => true do
-        self.operation_names
-      end
-      string :target_audience, :multiple => true
-      string :keywords, :multiple => true
-      string :fields, :multiple => true
-      string :resource_type, :multiple => true
-      string :contributors, :multiple => true
-      string :content_provider do
-        self.content_provider.try(:title)
-      end
-      string :node, multiple: true do
-        self.associated_nodes.pluck(:name)
-      end
-      time :updated_at
-      time :created_at
-      time :last_scraped
-      boolean :failing do
-        failing?
-      end
-      string :user do
-        user.username if user
-      end
-      integer :user_id # Used for shadowbans
-      string :collections, multiple: true do
-        collections.where(public: true).pluck(:title)
-      end
+  # :nocov:
+  searchable if: -> (_) { TeSS::Config.solr_enabled } do
+    # full text search fields
+    text :title
+    text :description
+    text :contact
+    text :doi
+    text :authors
+    text :contributors
+    text :target_audience
+    text :keywords
+    text :resource_type
+    text :content_provider do
+      self.content_provider.try(:title)
     end
-    # :nocov:
+    # sort title
+    string :sort_title do
+      title.downcase.gsub(/^(an?|the) /, '')
+    end
+    # other fields
+    string :title
+    string :authors, :multiple => true
+    string :scientific_topics, :multiple => true do
+      self.scientific_topic_names
+    end
+    string :operations, :multiple => true do
+      self.operation_names
+    end
+    string :target_audience, :multiple => true
+    string :keywords, :multiple => true
+    string :fields, :multiple => true
+    string :resource_type, :multiple => true
+    string :contributors, :multiple => true
+    string :content_provider do
+      self.content_provider.try(:title)
+    end
+    string :node, multiple: true do
+      self.associated_nodes.pluck(:name)
+    end
+    time :updated_at
+    time :created_at
+    time :last_scraped
+    boolean :failing do
+      failing?
+    end
+    string :user do
+      user.username if user
+    end
+    integer :user_id # Used for shadowbans
+    string :collections, multiple: true do
+      collections.where(public: true).pluck(:title)
+    end
   end
+  # :nocov:
 
   # has_one :owner, foreign_key: "id", class_name: "User"
   belongs_to :user
