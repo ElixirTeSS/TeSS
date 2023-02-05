@@ -26,7 +26,7 @@ jobs:
         with:
           image: solr:8
           options: -d -v ${{ github.workspace }}:/app -p 8983:8983
-          run: solr-precreate tess-test /app/solr/conf
+          run: solr-precreate tess_test /app/solr/conf
       - name: Set up Ruby and install gems
         uses: ruby/setup-ruby@v1
         with:
