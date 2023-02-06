@@ -1,7 +1,7 @@
 <% features = ['events', 'materials', 'workflows', 'trainers'].select { |f| TeSS::Config.feature[f] } %>
 
 <section id="catalogue">
-  <h2 class="text-center">Browse the catalogue</h2>
+  <h2 class="text-center"><%= t('home.catalogue.title') %></h2>
 
   <ul class="catalogue<%= ' catalogue-even' if features.count.even? %>">
     <% features.each do |feature| %>
@@ -16,7 +16,7 @@
 
           <div class="resource-type-link">
               <span class="pseudolink">
-                Start browsing
+                <%= t('home.catalogue.link_text') %>
               </span>&nbsp;<i class="icon icon-sm arrow-right-icon"></i>
           </div>
         <% end %>
