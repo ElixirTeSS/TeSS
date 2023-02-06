@@ -101,7 +101,7 @@ module Ingestors
           end
 
           event.set_default_times
-          event.source = 'WUR'
+          event.source = 'UU'
           event.timezone = 'Amsterdam'
 
           # the below code allows fetching the long description, at the cost of a
