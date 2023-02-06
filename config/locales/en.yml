@@ -7,6 +7,8 @@ en:
     url: 'URL'
     doi: 'DOI'
   activerecord:
+    models:
+      elearning_material: e-Learning Material
     attributes:
       content_provider:
         user: Owner
@@ -24,11 +26,11 @@ en:
       and event information; for trainees, it offers a convenient gateway via which to identify relevant training
       events and resources, and to perform specific, guided analysis tasks via customised training workflows.
     history: >
-      <p>TeSS was originally developed as part of <a href='https://elixir-europe.org/' target='_blank'>ELIXIR</a>,
+      TeSS was originally developed as part of <a href='https://elixir-europe.org/' target='_blank'>ELIXIR</a>,
       Europe's distributed infrastructure for life-science data. One of the goals of ELIXIR is to train research
       scientists to better use available computational infrastructures to address critical research questions.
       This requires access both to face-to-face training opportunities and to disparate training materials and resources,
-      currently dispersed across Europe.</p>
+      currently dispersed across Europe.
     events: >
       Events in TeSS are defined as face-to-face or online training opportunities that have set start and end times.
       These primarily take the form of workshops, courses, webinars, etc.; but TeSS also collects information about
@@ -62,8 +64,8 @@ en:
       conferences of interest to them. The service may be customised by selecting the relevant filters, and
       initiated via the subscribe button. Users may choose to receive email notifications about upcoming
       events, or have them automatically added to their preferred calendar application.
-    widgets: >
-      data, organisations may readily import information about relevant events and materials to their site using widgets,
+    widgets_and_api: >
+      To access TeSS data, organisations may readily import information about relevant events and materials to their site using widgets,
       or may create custom feeds using our API.
   developer:
     license: >
@@ -71,9 +73,9 @@ en:
       As such, all content in TeSS is available under the CC BY 4.0 licence, and can be accessed through our API
       and widgets. The TeSS codebase is also available to re-use under the BSD Licence, and can be found on GitHub.
     code_license: >
-      <a href="https://github.com/ElixirTeSS/TeSS/blob/master/LICENSE", target="_blank">BSD 3-Clause</a>
+      <a href="https://github.com/ElixirTeSS/TeSS/blob/master/LICENSE", target="_blank">BSD 3-Clause<i class="icon icon-md arrow-top-right-icon"></i></a>
     data_license: >
-      <a href="https://creativecommons.org/licenses/by/4.0/", target="_blank">Creative Commons CC-BY 4.0</a>
+      <a href="https://creativecommons.org/licenses/by/4.0/", target="_blank">CC-BY 4.0<i class="icon icon-md arrow-top-right-icon"></i></a>
     gmaps_countries: >
       'United Kingdom', 'Spain', 'Portugal', 'France', 'Belgium', 'Ireland', 'Estonia', 'Finland',
       'Germany', 'Austria', 'Italy', 'Hungary', 'Czech Republic', 'Estonia', 'Denmark',
@@ -90,41 +92,47 @@ en:
     api_example_5: "/workflows.json_api"
   us:
     tess_club: >
-      <p>Fortnightly meetings, hackathons, shared activities, open priority setting, open contribution to unite the TeSS
-      community.</p><p>For all the details please
-      visit the <a href="https://elixirtess.github.io/about/">TeSS Club Website</a>.</p>
+      <p>Fortnightly meetings, hackathons, shared activities, open priority setting, open contribution to unite the
+      community.</p>
+      <p>For all the details please visit the 
+      <a href="https://elixirtess.github.io/about/">TeSS Club Website<i class="icon icon-md arrow-top-right-icon"></i></a>
+      </p>
     contact: >
       For enquiries, information, or assistance; contact the TeSS support desk at <br>
       <a href="mailto:tess-support@googlegroups.com">tess-support@googlegroups.com</a>
     team: >
-      <div class="h4">Leadership</div>
+      <h5>Leadership</h5>
       <ul><li>Carole Goble</li><li>Hedi Peterson</li><li>Alexia Cardona</li></ul>
-      <div class="h4">Project Management</div>
+      <h5>Project Management</h5>
       <ul><li>Munazah Andrabi</li></ul>
-      <div class="h4">Software Engineering</div>
-      <ul><li>Finn Bacall</li></ul>
-      <div class="h4">Past Members</div>
+      <h5>Software Engineering</h5>
+      <ul><li>Finn Bacall</li><li>Ivan Kuzmin</li></ul>
+      <h5>Past Members</h5>
       <ul>
-        <li>Aleksandra Nenadic - Project Manager</li>
-        <li>Aleksandra Pawlik - Project Manager</li>
+        <li>Aleksandra Nenadic - Project Management/Software Engineering</li>
+        <li>Aleksandra Pawlik - Project Management</li>
         <li>Teresa K. Attwood - Leadership</li>
         <li>Susanna-Assunta Sansone - Leadership</li>
         <li>Niall Beard - Project Management/Software Engineering</li>
         <li>Milo Thurston - Software Engineering</li>
         <li>Chris Child - Project Management/Software Engineering</li>
+        <li>Aitor Apaolaza - Software Engineering</li>
       </ul>
     funding: >
-      <p>European Commission, Horizon 2020 Research Infrastructures programme (ELIXIR-EXCELERATE,
-      <a href="https://cordis.europa.eu/project/rcn/198519_en.html" target="_blank">grant agreement number 676559</a>);</p>
-      <p>ELIXIR Implementation Study (Registry Integration from a User Perspective);</p>
-      <p>ELIXIR Implementation Study (Learning Paths).</p>
-      <p>BBSRC UK (Delivering ELIXIR-UK grant, grant agreement numbers
+      TeSS has been funded by:
+      <ul>
+      <li>European Commission, Horizon 2020 Research Infrastructures programme (ELIXIR-EXCELERATE,
+      <a href="https://cordis.europa.eu/project/rcn/198519_en.html" target="_blank">grant agreement number 676559</a>);</li>
+      <li>ELIXIR Implementation Study (Registry Integration from a User Perspective);</li>
+      <li>ELIXIR Implementation Study (Learning Paths).</li>
+      <li>BBSRC UK (Delivering ELIXIR-UK grant, grant agreement numbers
         <a href="https://bbsrc.ukri.org/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1"
           target="_blank">BB/L005050/1</a> &amp;
         <a href="https://bbsrc.ukri.org/research/grants-search/AwardDetails/?FundingReference=BB/L005069/1"
           target="_blank">BB/L005069/1</a>
         ).
-      </p>
+      </li>
+      </ul>
     acknowledge: >
       <p>The TeSS team would like to acknowledge the help of a number of groups and individuals, and thank them
          for useful discussions, feedback and assistance in developing TeSS - to name but a few:</p>
@@ -233,13 +241,77 @@ en:
       <p>Once registered and logged in, the 'register event' and 'register material' buttons will become visible on the
       events and materials tabs. Alternatively click here:</p>
   home:
-    welcome: "Welcome to TeSS: ELIXIR's Training Portal"
-    subtitle: "Browsing, discovering and organising life sciences training resources, aggregated from ELIXIR nodes and 3<sup>rd</sup>-party providers."
-    events_message: "Discover the latest training events and news from ELIXIR nodes and 3<sup>rd</sup>-party providers."
-    materials_message: "Browse the catalogue of training materials offered by ELIXIR nodes and 3<sup>rd</sup>-party providers."
-    workflows_message: "Create training workflows to visualise learning steps and link to resources specific to your training needs."
-    providers_message: "Browse training providers to discover training resources they offer and follow links to their materials and courses."
-    trainers_message: "Browse a directory of trainers based on their skills and expertise."
+    welcome: |
+      How can <span class="text-primary">TeSS</span> help you?
+    subtitle: |
+      Search the portal for courses, events, videos, presentations, learning pathways, handbooks...<br>
+      All types of resources at all levels for leveraging <span class="text-primary">computational resources in the life sciences</span>.
+    catalogue:
+      title: Browse the catalogue
+      link_text: Start browsing
+      events: "Discover the latest training events and news from ELIXIR nodes and 3<sup>rd</sup>-party providers."
+      materials: "Browse the catalogue of training materials offered by ELIXIR nodes and 3<sup>rd</sup>-party providers."
+      workflows: "Create training workflows to visualise learning steps and link to resources specific to your training needs."
+      providers: "Browse training providers to discover training resources they offer and follow links to their materials and courses."
+      trainers: "Browse a directory of trainers based on their skills and expertise."
+    providers:
+      title: Providers
+      content: |
+        <p>Want to become one?</p>
+        <p>Add your institution’s training to the portal at no cost</p>
+      button_text: Contribute
+    promo:
+      nonprofit:
+        title: "Non-profit and free to use"
+        description: "No costs associated, and funded through national and EU funds"
+      sustainable:
+        title: "Sustainable"
+        description: "Open-source code that is here to stay"
+      community:
+        title: "By life sciences professionals, for a life sciences workforce"
+        description: "Built by an international community of life sciences professionals"
+      domain:
+        title: "Life sciences focused"
+        description: "For the entire life sciences workforce"
+    faq:
+      title: Frequently asked questions
+      who:
+        q: Who can register content in TeSS?
+        a: >
+          <p>We welcome any training content relevant to people working in the life sciences and adjacent fields.</p>
+      how:
+        q: How do I register content in TeSS?
+        a: >
+          <p>You can register content in TeSS automatically or manually.</p>
+          <p>To add content manually, you will need to log in and fill in the registration form for either materials or events.</p>
+          <p>TeSS can also automatically register content from an external website, or other source on the web.</p>
+          <p><a href='about/registering'>See here for more information.</a></p>
+      why:
+        q: Why register content in TeSS?
+        a: >
+          <p>Registering training events and materials in TeSS makes them more findable in a variety ways to various user bases.</p>
+
+          <p>Training in TeSS can be discovered...</p>
+          <ul>
+            <li><strong>in TeSS</strong>, by visitors browsing TeSS or subscribing to notifications.</li>
+            <li><strong>in search engine results</strong>, owing to our search-engine optimisation.</li>
+            <li><strong>through other websites</strong> that display TeSS content either using our embeddable widgets or our public API.</li>
+          </ul>
+      embed:
+        q: Can I display TeSS content on my organisation's website?
+        a: >
+          <p>Yes, a selection of embeddable widgets are available to display training events and materials from TeSS in a variety of formats.</p>
+          <p><a href='https://elixirtess.github.io/TeSS_widgets/' target='_blank'>Click here to see examples of widgets and how to use them.</a></p>
+      subscribe:
+        q: Can I subscribe to updates?
+        a: >
+          <p>TeSS provides a customizable subscription service, letting you choose exactly what types of training you want to be notified about.</p>
+          <p>Choose how you would like receive updates:</p>
+          <ul>
+            <li><strong>Email</strong> - Daily, weekly or monthly emails containing a digest of new events or materials.</li>
+            <li><strong>Calendar</strong> - See new events directly to your online calendar.</li>
+            <li><strong>RSS feed</strong> - View new events in an RSS reader.</li>
+          </ul>
   privacy:
     registration: |
       <p>When you register with TeSS we ask for a username, password and email address.</p>
@@ -253,7 +325,7 @@ en:
     server: "When you browse TeSS, the server automatically records logs of which pages you access, when you accessed them, and your IP address. These logs are used to fix errors and are not shared with any third parties. Sensitive information (such as passwords) is automatically stripped out."
     cookies: TeSS makes use of "strictly necessary cookies" for the site to function. These cookies are needed to establish your "session" with TeSS, which allows functionality such as user log-in, and secures against Cross Site Request Forgery (CSRF) attacks.
     analytics: "TeSS uses Google Analytics to track how users are discovering TeSS and interacting with the service. The information gathered includes which pages you visited, which search terms lead you to TeSS and information about your web browser. No personally identifiable information is sent to Google."
-    retention: " Your information will be retained by TeSS until you choose to remove it, you delete your account, or the TeSS service ceases to exist."
+    retention: "Your information will be retained by TeSS until you choose to remove it, you delete your account, or the TeSS service ceases to exist."
     code: "TeSS adheres to the <a href='https://wiki.refeds.org/display/CODE/Code+of+Conduct+for+Service+Providers'> GÉANT Data Protection Code of Conduct for Service Providers in EU/EEA </a>"
     controller: "The data controller for TeSS is The University of Manchester."
     post: "<strong>The TeSS Team</strong><br/>Room 1.17 c/o School of Computer Science,<br/>Kilburn Building,<br/>Oxford Road,<br/>Manchester,<br/>M13 9PL"
@@ -416,3 +488,7 @@ en:
       revoke: Revoke cookie consent
       all: Allow all cookies
       necessary: Allow necessary cookies
+  facets:
+    categories:
+      user: Owner
+      organizer: Organiser

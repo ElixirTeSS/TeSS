@@ -9,6 +9,9 @@ Globals
 <%# FILTERS APPLIED %>
 <% @facet_params.each_with_index do |(category, value), i| %>
   <p>
+    <% if i > 0 %>
+      <span class="muted">and</span>
+    <% end %>
     <b><%= case category
            when 'name'
              params[:controller] == 'nodes' ? 'Node'.pluralize(value.kind_of?(Array) ? value.length : 1) : category.humanize
@@ -20,25 +23,22 @@ Globals
     <% if value.is_a?(Array) %>
       <% value.each_with_index do |val, j| %>
               <span class="active-filters">
-                <%= remove_filter_link(category, val, { :class => "label label-default filter-button" }) %>
+                <%= remove_filter_link(category, val, class: 'label label-default filter-button') %>
                 <% if j < value.size - 1 %>
                   or
                 <% end %>
               </span>
       <% end %>
     <% else %>
-      <span class="active-filters"><%= remove_filter_link(category, value, { :class => "label label-default filter-button" }) %></span>
+      <span class="active-filters"><%= remove_filter_link(category, value, class: 'label label-default filter-button') %></span>
     <% end %>
   </p>
-  <% if i < @facet_params.size - 1 %>
-    <p>and</p>
-  <% end %>
 <% end %>
 
 <%# The search term %>
 <% unless params[:q].blank? %>
   <p>
     <b>Search query</b>:
-    <span class="active-filters"><%= remove_filter_link('q', params[:q], { class: "label label-default filter-button" }) %></span>
+    <span class="active-filters"><%= remove_filter_link('q', params[:q], class: 'label label-default filter-button') %></span>
   </p>
 <% end %>

@@ -13,6 +13,6 @@
 
 /* ### Post-load tweaks. Anything dependant on Bootstrap's variables needs to be declared below here */
 
-/* collapse navbar on md and smaller screens */
-$grid-float-breakpoint: $screen-md-min;
-$grid-float-breakpoint-max: $grid-float-breakpoint - 1;
+// Extended font sizes
+$font-size-xs: 8px;
+$font-size-xxs: 4px;

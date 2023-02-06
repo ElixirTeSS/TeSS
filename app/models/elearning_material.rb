@@ -1,0 +1,3 @@
+class ElearningMaterial < Material
+
+end

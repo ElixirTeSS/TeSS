@@ -1,32 +1,15 @@
-<% if external_resource.is_tool? -%>
-  <% api_uri = external_resource.api_url_of_tool %>
-<% end -%>
-<% id = Digest::SHA256.hexdigest external_resource.url %>
-
-<div class="col-md-12 col-sm-12 bounding-box" data-api_uri="<%=api_uri || nil%>" data-id="<%=id || nil%>">
+<% api_url = external_resource.api_url_of_tool -%>
+<%= content_tag(:div, class: 'col-md-12 col-sm-12 bounding-box', data: { 'biotools-url': api_url }) do %>
   <%= link_to(external_resource.url, target: '_blank', rel: 'nofollow noopener') do %>
-    <h4>
-      <i class="fa fa-external-link" id="<%=id%>-resource-type-icon"></i>
+    <h5>
+      <i class="fa fa-external-link"></i>
       <%= external_resource.title %>
       <% if external_resource.is_fairsharing? -%>
-        <img src="<%= image_url('fairsharing-logo.svg')-%>" class="pull-right" alt="Link to FAIRsharing" width="100px"/>
+        <img src="<%= image_url('fairsharing-logo.svg')-%>" class="pull-right external-resource-logo" alt="FAIRsharing logo"/>
+      <% elsif external_resource.is_tool? -%>
+        <img src="<%= image_url('biotools-logo.png')-%>" class="pull-right external-resource-logo" alt="bio.tools logo"/>
       <% end -%>
       <%= missing_icon(external_resource, 'medium') if current_user&.is_admin? %>
-    </h4>
+    </h5>
   <% end %>
-
-  <% if api_uri %>
-    <div class="tooltypes" id="<%=id%>-types"> </div>
-    <span id="<%=id%>-desc"></span>
-    <div class="topics external-links" id="<%=id%>-topics">
-      <strong>Topics:</strong>
-    </div>
-    <div id="<%=id%>-external-links" class="btn-group external-links"></div>
-  <% end %>
-</div>
-
-<% if api_uri %>
-  <script>
-      Biotools.displayFullTool('<%=api_uri%>', '<%=id%>');
-  </script>
 <% end %>

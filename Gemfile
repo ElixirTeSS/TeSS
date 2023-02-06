@@ -16,14 +16,14 @@ gem 'lunchy'
 gem 'sass-rails', '~> 5.0'
 gem 'sassc-rails', '~> 2.1.2'
 
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
+# Use Terser as compressor for JavaScript assets
+gem 'terser'
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer'#, platforms: :ruby
 
 # CRUD of resources via a UI
-gem 'rails_admin'
+gem 'rails_admin', '~> 2.2.1'
 gem 'haml'
 
 # Authentication
@@ -162,7 +162,7 @@ gem 'eventbrite_sdk'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-clipboard', '~> 1.5.12'
-  gem 'rails-assets-devbridge-autocomplete', '~> 1.2.26'
+  gem 'rails-assets-devbridge-autocomplete', '~> 1.4.9'
   gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '~> 4.17.42'
   gem 'rails-assets-markdown-it', '~> 7.0.1'
   gem 'rails-assets-moment', '~> 2.15.0'

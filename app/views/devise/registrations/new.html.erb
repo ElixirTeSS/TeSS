@@ -1,33 +1,33 @@
-<div class="row wrapper">
-  <div class="col-md-12">
-    <div class="page-header">
-      <%= page_title 'Registration' %>
-    </div>
-    <div class="row">
-      <% if !TeSS::Config.feature['registration'] %>
-        <div class="col-md-12">
-          <div class="panel panel-danger">
-            <div class="panel-heading">
-              <h3 class="panel-title">Registration is currently disabled</h3>
-            </div>
-            <div class="panel-body">
-              <p>Please email <%= mail_to(TeSS::Config.contact_email, TeSS::Config.contact_email) %> to request an account.</p>
-              <p>In your email please include the following information:</p>
-              <ul>
-                <li>Full name</li>
-                <li>Email address</li>
-                <li>Institution/Organisation</li>
-                <li>Brief description of why you would like an account and/or the type of materials/events you would like to add</li>
-              </ul>
-              <p>Sorry for any inconvenience caused,</p>
-              <p>The <%= TeSS::Config.site['title_short'] %> Team</p>
-            </div>
+<div class="account-form">
+  <div class="page-header">
+    <%= page_title 'Registration' %>
+  </div>
+  <div class="row">
+    <% if !TeSS::Config.feature['registration'] %>
+      <div class="col-md-12">
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            <h3 class="panel-title">Registration is currently disabled</h3>
+          </div>
+          <div class="panel-body">
+            <p>Please email <%= mail_to(TeSS::Config.contact_email, TeSS::Config.contact_email) %> to request an account.</p>
+            <p>In your email please include the following information:</p>
+            <ul>
+              <li>Full name</li>
+              <li>Email address</li>
+              <li>Institution/Organisation</li>
+              <li>Brief description of why you would like an account and/or the type of materials/events you would like to add</li>
+            </ul>
+            <p>Sorry for any inconvenience caused,</p>
+            <p>The <%= TeSS::Config.site['title_short'] %> Team</p>
           </div>
         </div>
-      <% else %>
-        <div class="col-md-6">
+      </div>
+    <% else %>
+      <div class="col-md-12">
+        <div class="form-middle">
           <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-            <%= devise_error_messages! %>
+            <%= account_error_messages! %>
 
             <%= f.input :username, autofocus: true %>
 
@@ -47,24 +47,24 @@
             <% end -%>
 
             <%= f.input :processing_consent, as: :boolean, input_html: { autocomplete: 'off' },
-                        label: "I have read and understood the #{link_to('privacy policy', privacy_path, target: '_blank')} and consent to #{TeSS::Config.site['title_short']} processing my data.".html_safe %>
-
+                        label: "I have read and understood the&nbsp;#{link_to('privacy policy', privacy_path, target: '_blank')} and consent to #{TeSS::Config.site['title_short']} processing my data.".html_safe %>
             <div class="actions">
               <%= f.submit "Register", :class => 'btn btn-primary' %>
             </div>
           <% end %>
 
+          <div class="separator"><span>or</span></div>
+
+          <div class="actions">
+            <% if resource_class.omniauth_providers.any? && devise_mapping.omniauthable? %>
+              <%= render partial: 'devise/sessions/omniauth_options' %>
+            <% end %>
+          </div>
+
           <%= render "devise/shared/links" %>
+
         </div>
-        <div class="col-md-6" id="why-register">
-          <h4>Registering on <%= TeSS::Config.site['title_short'] -%> allows you to...</h4>
-          <ul>
-            <li>Subscribe to updates of upcoming events and new training materials in your fields of interest.</li>
-            <li>Register your organization's training materials and events and increase their discoverability.</li>
-            <li>Create training workflows to break down complex topics into separate steps.</li>
-          </ul>
-        </div>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
   </div>
 </div>

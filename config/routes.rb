@@ -153,6 +153,9 @@ Rails.application.routes.draw do
 
   get 'resolve/:prefix:type:id' => 'resolution#resolve', constraints: { prefix: /(.+\:)?/, type: /[a-zA-Z]/, id: /\d+/ }
 
+  get 'theme_showcase' => 'static#showcase'
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

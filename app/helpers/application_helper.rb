@@ -49,19 +49,17 @@ module ApplicationHelper
     if !record.last_scraped.nil? && record.scraper_record
       if record.stale?
         message = ICONS[:not_scraped_recently][:message].gsub(/%SUB%/, record.last_scraped.to_s)
-        return "<span class='stale-icon pull-right'>#{icon_for(:not_scraped_recently, size, message: message)}</span>".html_safe
+        "<span class='stale-icon pull-right'>#{icon_for(:not_scraped_recently, size, message: message)}</span>".html_safe
       else
-        return "<span class='fresh-icon pull-right'>#{icon_for(:scraped_today, size)}</span>".html_safe
+        "<span class='fresh-icon pull-right'>#{icon_for(:scraped_today, size)}</span>".html_safe
       end
     end
-    nil
   end
 
   def missing_icon(record, size = nil)
     if record.failing?
-      return "<span class='missing-icon pull-right'>#{icon_for(:missing, size)}</span>".html_safe
+      "<span class='missing-icon pull-right'>#{icon_for(:missing, size)}</span>".html_safe
     end
-    nil
   end
 
   def resource_type_icon(record, size = nil)
@@ -80,20 +78,17 @@ module ApplicationHelper
     end
   end
 
-  def hide_failing(record)
-    if current_user && current_user.is_admin?
-      return false
-    else
-      if record.failing?
-        return true
-      end
-    end
-    false
-  end
-
   def suggestion_icon(record, size = nil)
     if record.edit_suggestion
-      return "<span class='fresh-icon pull-right' style='padding-right: 10px;'>#{icon_for(:suggestion, size)}</span>".html_safe
+      "<span class='fresh-icon pull-right'>#{icon_for(:suggestion, size)}</span>".html_safe
+    end
+  end
+
+  def event_status_icon(event, size = nil)
+    if event.started?
+      "<span class='event-started-icon pull-right'>#{icon_for(:started, size)}</span>".html_safe
+    elsif event.expired?
+      "<span class='event-expired-icon pull-right'>#{icon_for(:expired, size)}</span>".html_safe
     end
   end
 
@@ -107,29 +102,13 @@ module ApplicationHelper
     </i>".html_safe
   end
 
-  def tooltip_titles(event)
-    titles = []
-    types = [:started, :expired, :online]
-    types.each do |t|
-      titles << "#{ICONS[t][:message]}." if event.send("#{t}?")
-    end
-
-    if event.stale?
-      titles << "#{ICONS[:not_scraped_recently][:message].gsub(/%SUB%/, event.last_scraped.to_s)}."
-    else
-      titles << "#{ICONS[:scraped_today][:message]}."
-    end
-
-    titles.join(' &#13;').html_safe
-  end
-
   def bootstrap_class_for(flash_type)
     BOOTSTRAP_FLASH_MSG.fetch(flash_type.to_sym, 'alert-info')
   end
 
   def flash_messages(_opts = {})
     flash.each do |msg_type, message|
-      concat(content_tag(:div, message, class: "alert #{bootstrap_class_for(msg_type)} fade in", style: 'font-size: 120%; font-weight: bold;') do
+      concat(content_tag(:div, message, class: "alert #{bootstrap_class_for(msg_type)} fade in") do
         concat content_tag(:button, '&times;'.html_safe, class: 'close', data: { dismiss: 'alert' }, 'aria-label' => 'close')
         concat message
       end)
@@ -145,6 +124,10 @@ module ApplicationHelper
     else
       ''
     end
+  end
+
+  def render_sanitized_markdown(markdown_text, options = {}, renderer_options = {})
+    sanitize(render_markdown(markdown_text, options, renderer_options), tags: %w(strong em b i p br ul li))
   end
 
   # From twitter-bootstrap-rails gem for less:
@@ -199,17 +182,17 @@ module ApplicationHelper
   # End from twitter-bootstrap-rails gem for less
 
   DEFAULT_IMAGE_FOR_MODEL = {
-    'ContentProvider' => TeSS::Config.placeholder['provider'],
-    'Package' => TeSS::Config.placeholder['package'],
+    'ContentProvider' => TeSS::Config.placeholder['content_provider'],
+    'Collection' => TeSS::Config.placeholder['collection'],
     'Trainer' => TeSS::Config.placeholder['person'],
-    'Node' => 'elixir/elixir_logo_orange.png'
+    'Node' => 'elixir/elixir.svg'
   }.freeze
 
   def get_image_url_for(resource)
-    if resource.is_a?(Node) && File.exist?("#{Rails.root}/app/assets/images/nodes/logos/#{resource.country_code}.png")
-      "nodes/logos/#{resource.country_code}.png"
+    if resource.is_a?(Node) && File.exist?("#{Rails.root}/app/assets/images/nodes/logos_svg/#{resource.country_code}.svg")
+      "nodes/logos_svg/#{resource.country_code}.svg"
     elsif !resource.respond_to?(:image?) || !resource.image?
-      DEFAULT_IMAGE_FOR_MODEL.fetch(resource.class.name, TeSS::Config.placeholder['group'])
+      DEFAULT_IMAGE_FOR_MODEL.fetch(resource.class.name)
     else
       resource.image.url
     end
@@ -268,10 +251,11 @@ module ApplicationHelper
   def info_button(title, opts = {}, &block)
     classes = 'btn btn-default has-popover'
     classes << " #{opts[:class]}" if opts[:class]
+    title_text = opts[:hide_text] ? '' : title
     content_tag(:a, tabindex: 0, class: classes,
                data: { toggle: 'popover', placement: 'bottom',
                        title: title, html: true, content: capture(&block) }) do
-      "<i class='fa fa-info-circle'></i> <span class='hidden-xs'>#{title}</span>".html_safe
+      "<i class='icon icon-md information-icon'></i> <span class='hidden-xs'>#{title_text}</span>".html_safe
     end
   end
 
@@ -281,19 +265,16 @@ module ApplicationHelper
 
   def info_box(title, &block)
     content_tag(:div, class: 'info-box') do
-      content_tag(:h4, raw('<i class="glyphicon glyphicon-info-sign"></i> ' + title), class: 'info-box-header') +
+      content_tag(:div, raw('<i class="glyphicon glyphicon-info-sign"></i> ' + title), class: 'info-box-header') +
         content_tag(:div, class: 'info-box-content', &block)
     end
   end
 
   def collapsible_panel(title, id, &block)
-    content_tag(:div, class: 'panel panel-default') do
-      content_tag(:div, class: 'panel-heading') do
-        content_tag(:h4, class: 'panel-title') do
-          link_to("##{id}", 'data-toggle' => 'collapse', class: 'collapsible-panel-link') do
-            (title + ' <i class="fa fa-caret-down" aria-hidden="true"></i>').html_safe
-          end
-        end
+    content_tag(:div, class: 'panel panel-default collapsible-panel') do
+      content_tag(:div, class: 'panel-heading collapsible-panel-link collapsed', 'data-toggle' => 'collapse',
+                  'data-target' => "##{id}") do
+        content_tag(:div, title, class: 'panel-title')
       end +
         content_tag(:div, class: 'panel-collapse collapse', id: id) do
           content_tag(:div, class: 'panel-body', &block)
@@ -301,10 +282,10 @@ module ApplicationHelper
     end
   end
 
-  def tab(text, icon, href, disabled: { check: false }, active: false, count: nil)
+  def tab(text, icon, href, disabled: { check: false }, active: false, count: nil, activator: nil)
     classes = []
     classes << 'disabled' if disabled[:check]
-    classes << 'active' if active
+    classes << 'active' if active || activator&.check_tab(href, !disabled[:check])
     content_tag(:li, class: classes.join(' ')) do
       options = {}
       if disabled[:check]
@@ -357,10 +338,10 @@ module ApplicationHelper
   ActionView::Helpers::FormBuilder.class_eval do
     def markdown_area(name, options = {})
       text_area(name, options) +
-        @template.content_tag(:p, class: 'help-block text-right') do
-          @template.image_tag('markdown_logo.png', width: 18) +
-            ' This field supports markdown, ' +
-            @template.link_to('click here for a reference on markdown syntax.',
+        @template.content_tag(:p, class: 'help-block') do
+          @template.image_tag('markdown_logo.png', width: 0) +
+            'This field supports markdown. Read more on ' +
+            @template.link_to('markdown syntax',
                               'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet', target: '_blank',
                               rel: 'noopener')
         end
@@ -370,7 +351,7 @@ module ApplicationHelper
       field_name = "#{object.class.name.downcase}[locked_fields][]"
       field_id = "#{object.class.name.downcase}_locked_fields_#{name}"
       @template.check_box_tag(field_name, name.to_s, object.field_locked?(name), id: field_id, class: 'field-lock') +
-        @template.label_tag(field_id, '', title: 'Lock this field to prevent it being overwritten when automated scrapers are run')
+        @template.label_tag(field_id, '', class: 'field-lock-label', title: 'Lock this field to prevent it being overwritten when automated scrapers are run')
     end
 
     def dropdown(name, options = {})
@@ -399,14 +380,6 @@ module ApplicationHelper
                                                                   group_by: options[:group_by],
                                                                   singleton: options[:singleton],
       })
-    end
-
-    def internal_resource(name, options = {})
-      url = options[:url] || @template.polymorphic_path(name)
-      @template.render(partial: 'common/internal_resource', locals: { field_name: name, f: self, url: url,
-                                                                      template: options[:template],
-                                                                      id_field: options[:id_field] || :id,
-                                                                      label_field: options[:label_field] || :title })
     end
 
     def multi_input(name, options = {})
@@ -474,11 +447,30 @@ module ApplicationHelper
   def star_button(resource)
     star = current_user.stars.where(resource_id: resource.id, resource_type: resource.class.name).first
 
-    link_to '', '#', class: 'btn btn-default',
+    link_to '', '#', class: 'btn btn-icon',
+            title: "Star this #{resource.class.model_name.human}",
             data: { role: 'star-button',
                     starred: !star.nil?,
                     resource: { id: resource.id, type: resource.class.name },
                     url: stars_path }
+  end
+
+  def external_link_button(text, url, options = {})
+    options.reverse_merge!({ rel: 'noopener', target: '_blank', class: 'btn btn-primary' })
+    link_to((text + ' <i class="icon icon-md arrow-top-right-white-icon"></i>').html_safe, url, options)
+  end
+
+  def edit_button(resource, url: nil, text: nil)
+    url ||= polymorphic_path([:edit, resource])
+    text ||= t('.edit', default: t('helpers.links.edit'))
+    link_to text , url, class: 'btn btn-default'
+  end
+
+  def delete_button(resource, url: nil, text: nil, confirmation: nil)
+    url ||= resource
+    text ||= t('.destroy', default: t('helpers.links.destroy'))
+    confirmation ||= t('.confirm', default: t('helpers.links.confirm', default: 'Are you sure?'))
+    link_to text, url, method: 'delete', data: { confirm: confirmation }, class: 'btn btn-danger'
   end
 
   def next_about_block(feature_count)
@@ -638,5 +630,29 @@ module ApplicationHelper
     else
       resources.facets
     end.select { |f| f.rows.any? && !IGNORED_FILTERS.include?(f.field_name.to_s) }
+  end
+
+  class TabActivator
+    # An object to determine if a tab/tab-pane should be active.
+    def initialize
+      @tab_name = nil
+    end
+
+    # Returns `true` if the given tab should be active.
+    def check_tab(tab_name, condition = true)
+      return false unless condition
+      return @tab_name == tab_name if @tab_name
+      @tab_name = tab_name
+      true
+    end
+
+    # Returns `true` if the given tab pane should be active.
+    def check_pane(tab_name)
+      @tab_name == tab_name
+    end
+  end
+
+  def tab_activator
+    TabActivator.new
   end
 end

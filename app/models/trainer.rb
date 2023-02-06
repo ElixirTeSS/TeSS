@@ -63,6 +63,8 @@ class Trainer < Profile
     # :nocov:
   end
 
+  alias_method :name, :full_name
+
   def self.facet_fields
     field_list = %w( location experience expertise_academic expertise_technical
                      fields interest activity language )

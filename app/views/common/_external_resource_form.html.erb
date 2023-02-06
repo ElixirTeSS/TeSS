@@ -3,21 +3,20 @@
 <% field_name_prefix = "#{form_name}[external_resources_attributes][#{index}]" %> <%# This format is dictated by "accepts_nested_attributes_for" %>
 
 <div class="form-inline external-resource-form" data-index="<%= index -%>">
-  <span class="icon"><i class="fa fa-external-link"></i></span>
   <%= hidden_field_tag("#{field_name_prefix}[id]", external_resource.id) %>
 
   <div class="form-group">
-    <label>Title</label>
+<!--    <label>Title</label>-->
     <%= text_field_tag "#{field_name_prefix}[title]", external_resource.title, :class => 'form-control external-resource-title', :placeholder => 'Title' %>
   </div>
 
   <div class="form-group">
-    <label>URL</label>
+<!--    <label>URL</label>-->
     <%= text_field_tag "#{field_name_prefix}[url]", external_resource.url, :class => 'form-control external-resource-url', :placeholder => 'URL' %>
   </div>
 
-  <label class="delete-external-resource-btn">
-    &times;
+  <label class="ml-2 delete-external-resource-btn">
+    <i class="icon icon-sm cross-icon icon-greyscale"></i>
     <%= hidden_field_tag "#{field_name_prefix}[_destroy]", '0', :autocomplete => 'off' %>
     <%= check_box_tag "#{field_name_prefix}[_destroy]", '1', false, :class => 'destroy-attribute', :autocomplete => 'off' %>
   </label>

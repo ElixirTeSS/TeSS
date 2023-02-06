@@ -41,6 +41,13 @@ module BootstrapPagination
       super.except(*[:link_options])
     end
 
+    def pagination
+      items = super
+      items.unshift :first_page
+      items.push :last_page
+      items
+    end
+
     protected
 
     def page_number(page)
@@ -75,6 +82,16 @@ module BootstrapPagination
     def next_page
       num = @collection.current_page < @collection.total_pages && @collection.current_page + 1
       previous_or_next_page(num, @options[:next_label], 'next')
+    end
+
+    def first_page
+      num = (@collection.current_page > 1) && 1
+      previous_or_next_page(num, @options[:first_label] || 'First', 'first')
+    end
+
+    def last_page
+      num = (@collection.current_page < @collection.total_pages) && @collection.total_pages
+      previous_or_next_page(num, @options[:last_label] || 'Last', 'last')
     end
 
     def ul_class

@@ -116,7 +116,7 @@ class Material < ApplicationRecord
   def self.facet_fields
     field_list = %w(scientific_topics operations tools standard_database_or_policy content_provider keywords
                     difficulty_level fields licence target_audience authors contributors resource_type
-                    related_resources user collections)
+                    related_resources user node collections)
 
     field_list.delete('operations') if TeSS::Config.feature['disabled'].include? 'operations'
     field_list.delete('scientific_topics') if TeSS::Config.feature['disabled'].include? 'topics'

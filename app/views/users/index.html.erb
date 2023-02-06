@@ -3,23 +3,18 @@
 </div>
 
 <!-- Register button -->
-<% if TeSS::Config.feature['invitation'] %>
-  <% if current_user.try(:is_admin?) or current_user.try(:is_curator?) %>
-    <%= link_to invitees_path, class: 'btn btn-primary align-self-end' do %>Invitees<% end %>
-  <% end %>
+<% if TeSS::Config.feature['invitation'] && (current_user.try(:is_admin?) || current_user.try(:is_curator?)) %>
+    <div class="row">
+      <%= link_to 'Invitees', invitees_path, class: 'btn btn-primary align-self-end' %>
+    </div>
 <% end %>
 
 <div class="search-results-count">
   <%= pluralize(@users.count, 'user') %>
 </div>
 
-<%= render partial: "search/common/pagination_bar", locals: { resources: @users } %>
+<div class="users-list">
+  <%= render partial: 'common/masonry_grid', locals: { objects: @users } %>
+</div>
 
-<ul class="masonry media-grid" style="margin-top: 15px;">
-  <% @users.each do |user| %>
-    <%= render user %>
-  <% end %>
-</ul>
-
-<%= render partial: "search/common/pagination_bar", locals: { resources: @users } %>
-
+<%= render partial: 'search/common/pagination_bar', locals: { resources: @users } %>

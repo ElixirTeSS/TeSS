@@ -1,10 +1,9 @@
 require 'test_helper'
 
 class StaticControllerTest < ActionController::TestCase
-
   include Devise::Test::ControllerHelpers
 
-  test "should get home" do
+  test 'should get home' do
     get :home
     assert_response :success
   end
@@ -12,10 +11,10 @@ class StaticControllerTest < ActionController::TestCase
   test 'should show tabs for enabled features' do
     features = { 'events': true,
                  'materials': true,
-                 'e-learnings': true,
+                 'elearning_materials': true,
                  'workflows': true,
                  'collections': true,
-                 'providers': true,
+                 'content_providers': true,
                  'trainers': true,
                  'nodes': true }
 
@@ -24,25 +23,27 @@ class StaticControllerTest < ActionController::TestCase
     end
 
     assert_select 'ul.nav.navbar-nav' do
-      assert_select 'li a[href=?]', workflows_path
+      assert_select 'li a[href=?]', about_path
       assert_select 'li a[href=?]', events_path
       assert_select 'li a[href=?]', materials_path
-      assert_select 'li a[href=?]', elearning_materials_path
       assert_select 'li a[href=?]', workflows_path
+      assert_select 'li a[href=?]', elearning_materials_path
       assert_select 'li a[href=?]', collections_path
-      assert_select 'li a[href=?]', content_providers_path
-      assert_select 'li a[href=?]', trainers_path
-      assert_select 'li a[href=?]', nodes_path
+      assert_select 'li.dropdown.directory-menu' do
+        assert_select 'li a[href=?]', content_providers_path
+        assert_select 'li a[href=?]', trainers_path
+        assert_select 'li a[href=?]', nodes_path
+      end
     end
   end
 
   test 'should not show tabs for disabled features' do
     features = { 'events': false,
                  'materials': false,
-                 'e-learnings': false,
+                 'elearning_materials': false,
                  'workflows': false,
                  'collections': false,
-                 'providers': false,
+                 'content_providers': false,
                  'trainers': false,
                  'nodes': false }
 
@@ -51,15 +52,141 @@ class StaticControllerTest < ActionController::TestCase
     end
 
     assert_select 'ul.nav.navbar-nav' do
-      assert_select 'li a[href=?]', workflows_path, count: 0
+      assert_select 'li a[href=?]', about_path
       assert_select 'li a[href=?]', events_path, count: 0
       assert_select 'li a[href=?]', materials_path, count: 0
-      assert_select 'li a[href=?]', elearning_materials_path, count: 0
       assert_select 'li a[href=?]', workflows_path, count: 0
+      assert_select 'li a[href=?]', elearning_materials_path, count: 0
       assert_select 'li a[href=?]', collections_path, count: 0
       assert_select 'li a[href=?]', content_providers_path, count: 0
       assert_select 'li a[href=?]', trainers_path, count: 0
       assert_select 'li a[href=?]', nodes_path, count: 0
+      assert_select 'li.dropdown.directory-menu', count: 0
+    end
+  end
+
+  test 'should allow configuration of home page sections' do
+    site_settings = TeSS::Config.site.dup
+    site_settings['home_page'] = {
+      'catalogue_blocks': false,
+      'provider_carousel': false,
+      'featured_providers': nil,
+      'faq': [],
+      'promo_blocks': false
+    }
+
+    with_settings({ site: site_settings }) do
+      get :home
+      assert_select 'section#catalogue', count: 0
+      assert_select 'section#providers', count: 0
+      assert_select 'section#faq', count: 0
+      assert_select 'ul#promo-blocks', count: 0
+    end
+
+    site_settings['home_page']['catalogue_blocks'] = true
+    with_settings({ site: site_settings }) do
+      get :home
+      assert_select 'section#catalogue', count: 1
+      assert_select 'section#providers', count: 0
+      assert_select 'section#faq', count: 0
+      assert_select 'ul#promo-blocks', count: 0
+    end
+
+    site_settings['home_page']['provider_carousel'] = true
+    provider = content_providers(:goblet)
+    provider2 = content_providers(:iann)
+    site_settings['home_page']['featured_providers'] = [provider, provider2]
+    with_settings({ site: site_settings }) do
+      get :home
+      assert_select 'section#catalogue', count: 1
+      assert_select 'section#providers', count: 1
+      assert_select 'section#providers .item a[href=?]', content_provider_path(provider)
+      assert_select 'section#providers .item a[href=?]', content_provider_path(provider2)
+      assert_select 'section#faq', count: 0
+      assert_select 'ul#promo-blocks', count: 0
+    end
+
+    site_settings['home_page']['faq'] = ['who', 'why']
+    with_settings({ site: site_settings }) do
+      get :home
+      assert_select 'section#catalogue', count: 1
+      assert_select 'section#providers', count: 1
+      assert_select 'section#faq', count: 1
+      assert_select 'section#faq .question', count: 2
+      assert_select 'ul#promo-blocks', count: 0
+    end
+
+    site_settings['home_page']['promo_blocks'] = true
+    with_settings({ site: site_settings }) do
+      get :home
+      assert_select 'section#catalogue', count: 1
+      assert_select 'section#providers', count: 1
+      assert_select 'section#faq', count: 1
+      assert_select 'ul#promo-blocks', count: 1
+    end
+  end
+
+  test 'should allow configuration of tab order and directory' do
+    features = { 'events': true,
+                 'materials': true,
+                 'elearning_materials': true,
+                 'workflows': true,
+                 'collections': true,
+                 'content_providers': true,
+                 'trainers': true,
+                 'nodes': true }
+
+    with_settings(feature: features, site: { tab_order: ['materials', 'events'], directory_tabs: [] }) do
+      get :home
+      assert_select 'ul.nav.navbar-nav' do
+        assert_select 'li:nth-child(1) a[href=?]', materials_path
+        assert_select 'li:nth-child(2) a[href=?]', events_path
+        assert_select 'li a[href=?]', about_path
+        assert_select 'li a[href=?]', workflows_path
+        assert_select 'li a[href=?]', elearning_materials_path
+        assert_select 'li a[href=?]', collections_path
+        assert_select 'li a[href=?]', content_providers_path
+        assert_select 'li a[href=?]', trainers_path
+        assert_select 'li a[href=?]', nodes_path
+        assert_select 'li.dropdown.directory-menu', count: 0
+      end
+    end
+
+    with_settings(feature: features, site: { tab_order: ['content_providers', 'about', 'materials', 'trainers'],
+                                             directory_tabs: [] }) do
+      get :home
+
+      assert_select 'ul.nav.navbar-nav' do
+        assert_select 'li:nth-child(1) a[href=?]', content_providers_path
+        assert_select 'li:nth-child(2) a[href=?]', about_path
+        assert_select 'li:nth-child(3) a[href=?]', materials_path
+        assert_select 'li:nth-child(4) a[href=?]', trainers_path
+        assert_select 'li a[href=?]', events_path
+        assert_select 'li a[href=?]', workflows_path
+        assert_select 'li a[href=?]', elearning_materials_path
+        assert_select 'li a[href=?]', collections_path
+        assert_select 'li a[href=?]', nodes_path
+        assert_select 'li.dropdown.directory-menu', count: 0
+      end
+    end
+
+    with_settings(feature: features, site: { tab_order: ['content_providers', 'about', 'materials', 'trainers'],
+                                             directory_tabs: ['about', 'materials'] }) do
+      get :home
+
+      assert_select 'ul.nav.navbar-nav' do
+        assert_select 'li:nth-child(1) a[href=?]', content_providers_path
+        assert_select 'li:nth-child(2) a[href=?]', trainers_path
+        assert_select 'li a[href=?]', events_path
+        assert_select 'li a[href=?]', workflows_path
+        assert_select 'li a[href=?]', elearning_materials_path
+        assert_select 'li a[href=?]', collections_path
+        assert_select 'li a[href=?]', nodes_path
+        assert_select 'li.dropdown.directory-menu' do
+          assert_select 'li:nth-child(1) a[href=?]', about_path
+          assert_select 'li:nth-child(2) a[href=?]', materials_path
+        end
+      end
     end
   end
 end

@@ -262,7 +262,7 @@ class CollectionsControllerTest < ActionController::TestCase
     get :show, params: { :id => @collection }
     assert_response :success
     assert_select 'ul.nav-tabs' do
-      assert_select 'li.disabled', :count => 3 # This collection has no events, materials or activity
+      assert_select 'li.disabled', :count => 2 # This collection has no events, materials
     end
 
     collections(:with_resources).materials << materials(:good_material)
@@ -272,7 +272,7 @@ class CollectionsControllerTest < ActionController::TestCase
     assert_response :success
     assert_select 'ul.nav-tabs' do
       assert_select 'li' do
-        assert_select 'a[data-toggle="tab"]', :count => 3 # Events, Materials, Activity (added the resources)
+        assert_select 'a[data-toggle="tab"]', :count => 2 # Events, Materials
       end
     end
   end
@@ -281,32 +281,32 @@ class CollectionsControllerTest < ActionController::TestCase
     get :show, params: { :id => @collection }
     assert_response :success
     assert_select 'div.search-results-count', :count => 2 #Has results
-    assert_select 'a.btn-info', :text => 'Back', :count => 1 #No Edit
+    # assert_select 'a.btn-info', :text => 'Back', :count => 1 #No Edit
     #Should not show when not logged in
-    assert_select 'a.btn-primary[href=?]', edit_collection_path(@collection), :count => 0 #No Edit
-    assert_select 'a.btn-danger[href=?]', collection_path(@collection), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', edit_collection_path(@collection), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', collection_path(@collection), :count => 0 #No Edit
 
   end
 
   test 'do not show action buttons when not owner or admin' do
     sign_in users(:another_regular_user)
     get :show, params: { :id => @collection }
-    assert_select 'a.btn-primary[href=?]', edit_collection_path(@collection), :count => 0 #No Edit
-    assert_select 'a.btn-danger[href=?]', collection_path(@collection), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', edit_collection_path(@collection), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', collection_path(@collection), :count => 0 #No Edit
   end
 
   test 'show action buttons when owner' do
     sign_in @collection.user
     get :show, params: { :id => @collection }
-    assert_select 'a.btn-primary[href=?]', edit_collection_path(@collection), :count => 1
-    assert_select 'a.btn-danger[href=?]', collection_path(@collection), :text => 'Delete', :count => 1
+    assert_select 'a.btn[href=?]', edit_collection_path(@collection), :count => 1
+    assert_select 'a.btn[href=?]', collection_path(@collection), :text => 'Delete', :count => 1
   end
 
   test 'show action buttons when admin' do
     sign_in users(:admin)
     get :show, params: { :id => @collection }
-    assert_select 'a.btn-primary[href=?]', edit_collection_path(@collection), :count => 1
-    assert_select 'a.btn-danger[href=?]', collection_path(@collection), :text => 'Delete', :count => 1
+    assert_select 'a.btn[href=?]', edit_collection_path(@collection), :count => 1
+    assert_select 'a.btn[href=?]', collection_path(@collection), :text => 'Delete', :count => 1
   end
 
   #API Actions

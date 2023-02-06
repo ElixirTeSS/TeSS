@@ -1,0 +1,31 @@
+<div class="wrapper">
+  <% if TeSS::Config.solr_enabled %>
+    <div id="sidebar" class="popout-sidebar">
+      <%= render partial: "search/common/facet_sidebar",
+                 locals: { resources: @materials_results, resource_type: Material } %>
+    </div>
+  <% end %>
+
+  <div id="content">
+    <h2>e-Learning</h2>
+
+    <% content_for :buttons do %>
+      <!-- Register button -->
+      <%= link_to new_material_path, class: 'btn btn-primary' do %>
+        Register training material
+      <% end %>
+      <!-- Info -->
+      <%= info_button("What are e-learning materials in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>
+        <%= render_markdown(elearning_materials_info) %>
+      <% end %>
+    <% end %>
+
+    <%= render partial: "search/common/search_panel", locals: { resources: @materials_results,
+                                                                resource_type: ElearningMaterial,
+                                                                show_subscription_button: true } %>
+
+    <%= render partial: 'common/masonry_grid', locals: { objects: @materials } %>
+
+    <%= render partial: 'search/common/pagination_bar', locals: { resources: @materials } %>
+  </div>
+</div>

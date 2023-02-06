@@ -1,5 +1,7 @@
 <li data-id="{{ item.uri }}">
     <input type="hidden" name="{{ prefix }}[]" value="{{ item.uri }}" />
     {{ item.preferred_label }} <span class="muted">{{ item.uri }}</span>
-    <a href="#" class="delete-list-item delete-icon">&times;</a>
+    <a href="#" class="delete-list-item btn btn-icon">
+        <i class="icon cross-icon icon-sm icon-greyscale"></i>
+    </a>
 </li>

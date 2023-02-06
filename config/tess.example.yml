@@ -18,13 +18,27 @@ default: &default
     title: 'TeSS (Training eSupport System)'
     title_short: TeSS
     favicon: elixir/favicon.png
-    logo: elixir/ELIXIR_TeSS_logo_white-80px-height.png
+    logo: elixir/elixir-tess.svg
     logo_alt: 'Training eSupport System'
     logo_open_graph: ''
     logo_email: ''
+    # Colours of the SVG icons used throughout TeSS, requires `rake assets:precompile` if changed
+    icon_primary_color: '#047EAA' # Blue by default
+    icon_secondary_color: '#F47D21' # Orange by default
     repository: 'https://github.com/ElixirTeSS/TeSS'
     supported_by: 'elixir_supported_by'
     widget_example:
+    home_page: # Configuration for the sections displayed on the front page
+      catalogue_blocks: true
+      provider_carousel: true
+      # A list of content provider IDs to show in the front page carousel. Leave blank to show latest 5 (that have avatars set)
+      featured_providers: # e.g. [123, 5, 10, 1]
+      faq: # [who, how, why, embed, subscribe] # Questions/answers in config/en.yml: home > faq. Use empty array to hide section
+      promo_blocks: false
+    # The order in which the tabs appear (if feature enabled)
+    tab_order: ['about', 'events', 'materials', 'elearning_materials', 'workflows', 'collections', 'trainers', 'content_providers', 'nodes']
+    # The tabs that should be collapsed under the "Directory" tab. Can be left blank to hide it.
+    directory_tabs: ['trainers', 'content_providers', 'nodes']
   mailer:
     delivery_method: sendmail
     location: /usr/sbin/sendmail
@@ -37,18 +51,14 @@ default: &default
       latitude: 3
       longitude: 13
   header_notice: # HTML to display above the header
-  parent_org:
-    name: 'ELIXIR Hub'
-    image: elixir/hub-logo.png
-    url: 'http://www.elixir-europe.org'
   feature:
-    e-learnings: false
+    elearning_materials: false
     events: true
     invitation: false
     materials: true
     nodes: false
     collections: true
-    providers: true
+    content_providers: true
     subscription: true
     registration: true
     trainers: false
@@ -64,10 +74,9 @@ default: &default
   restrict_content_provider_selection: false
   user_ingestion_methods: ['bioschemas']
   placeholder:
-    collection: 'placeholder-collection.png'
-    provider: 'placeholder-organization.png'
-    group: 'placeholder-group.png'
-    person: 'placeholder-person.png'
+    collection: 'placeholder-collection.svg'
+    content_provider: 'placeholder-organization.svg'
+    person: 'placeholder-person.svg'
   dictionaries:
     cost_basis: 'cost_basis.yml'
     difficulty: 'difficulty.yml'

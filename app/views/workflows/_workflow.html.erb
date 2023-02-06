@@ -1,5 +1,18 @@
-<li class="masonry-brick media-item ">
-  <h3 class="media-heading"><%= title_with_privacy(workflow) %></h3>
-  <p><%= render_markdown(truncate(workflow.description, length: 300, separator: ' ')) %></p>
-  <%= link_to '', workflow, :class=>"media-view"%>
+<li class="masonry-brick media-item long">
+  <%= link_to workflow, class: 'link-overlay' do %>
+    <div class="masonry-brick-heading">
+      <div class="masonry-icons">
+        <% if current_user&.is_admin? %>
+          <%= suggestion_icon(workflow) %>
+        <% end %>
+      </div>
+      <h4>
+        <%= title_with_privacy(workflow) %>
+      </h4>
+    </div>
+
+    <div class="markdown-description">
+      <%= render_sanitized_markdown truncate(workflow.description, length: 300, separator: ' ') %>
+    </div>
+  <% end %>
 </li>

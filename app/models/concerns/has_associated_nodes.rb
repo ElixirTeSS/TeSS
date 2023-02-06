@@ -7,6 +7,10 @@ module HasAssociatedNodes
     has_many :nodes, through: :node_links
   end
 
+  def has_node?
+    nodes.any? || content_provider&.node_id
+  end
+
   def associated_nodes
     n = self.nodes.to_a
     n << self.content_provider.node if self.content_provider

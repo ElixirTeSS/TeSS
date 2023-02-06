@@ -15,9 +15,10 @@ class MaterialsController < ApplicationController
   # GET /materials.json?q=queryparam
 
   def index
+    elearning = @facet_params[:resource_type] == 'e-learning' && TeSS::Config.feature['elearning_materials']
     @bioschemas = @materials.flat_map(&:to_bioschemas)
     respond_to do |format|
-      format.html
+      format.html { render elearning ? 'elearning_materials/index' : 'index' }
       format.json
       format.json_api { render({ json: @materials }.merge(api_collection_properties)) }
     end

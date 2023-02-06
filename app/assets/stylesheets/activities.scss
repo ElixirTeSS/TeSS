@@ -1,10 +1,16 @@
-// Place all the styles related to the activities controller here.
-// They will automatically be included in application.scss.
-// You can use Sass (SCSS) here: http://sass-lang.com/
 .activity {
   padding: 5px;
 
   .sub-activity {
     margin-left: 2em;
+  }
+}
+
+.activity-log-button {
+  text-decoration: none;
+  color: $brand-primary;
+  &:hover, &:active, &:focus {
+    color: $brand-primary;
+    text-decoration: none;
   }
 }

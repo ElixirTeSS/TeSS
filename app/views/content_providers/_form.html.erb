@@ -39,7 +39,7 @@
 
   <div class="form-group">
     <%= f.submit (f.object.new_record? ? "Register" : "Update") + " content provider", class: 'btn btn-primary' %>
-    <%= link_to 'Back', content_providers_path, class: "btn btn-info" %>
+    <%= link_to 'Back', content_providers_path, class: 'btn btn-default' %>
     <%= link_to t('.cancel', default: t("helpers.links.cancel")),
                 content_providers_path, class: 'btn btn-default' %>
   </div>

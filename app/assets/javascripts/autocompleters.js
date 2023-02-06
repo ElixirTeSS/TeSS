@@ -1,6 +1,6 @@
 var Autocompleters = {
     formatResultWithHint: function (suggestion, currentValue) {
-        var result = $.Autocomplete.formatResult(suggestion, currentValue);
+        var result = $.Autocomplete.defaults.formatResult(suggestion, currentValue);
 
         if (suggestion.data && suggestion.data.hint) {
             result += '<span class="autocomplete-hint">' + suggestion.data.hint + '</span>';

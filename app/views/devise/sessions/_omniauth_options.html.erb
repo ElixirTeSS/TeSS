@@ -1,0 +1,12 @@
+<% if devise_mapping.omniauthable? -%>
+  <% Devise.omniauth_configs.each do |provider, config| -%>
+    <%= link_to(omniauth_authorize_path(resource_name, provider), method: :post,
+                class: config.options[:logo] ? '' : 'btn btn-default') do %>
+      <% if config.options[:logo] %>
+        <%= image_tag(config.options[:logo], class: "omniauth-logo omniauth-#{provider}") -%>
+      <% else %>
+        <%= "Log in with #{t("authentication.omniauth.providers.#{provider}", default: provider.to_s.titleize)}" -%>
+      <% end %>
+    <% end -%>
+  <% end -%>
+<% end -%>

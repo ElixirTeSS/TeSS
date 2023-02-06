@@ -1,0 +1,38 @@
+<% show_subscription_button ||= false %>
+
+<div class="search-panel">
+  <div class="row">
+    <div class="col-sm-6">
+      <% if TeSS::Config.solr_enabled %>
+        <%= render partial: 'search/common/search_box', locals: { placeholder: "Search #{resource_type.model_name.human.downcase.pluralize}...",
+                                                                  resource_path: polymorphic_path(resource_type) } %>
+      <% end %>
+    </div>
+    <div class="col-sm-6 text-right">
+      <% if TeSS::Config.solr_enabled %>
+        <button class="btn btn-secondary pull-left" id="sidebar-toggle" type="button" autocomplete="off">
+          <i class="fa fa-filter"></i> Filters
+        </button>
+      <% end %>
+      <%= content_for(:buttons) %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="pull-right">
+        <%= content_for(:display_options) %>
+      </div>
+      <% if TeSS::Config.solr_enabled %>
+        <div class="hidden-xs">
+          <%= render partial: 'search/common/search_filters', locals: { resources: resources } %>
+        </div>
+        <div class="search-results-count">
+          <%= pluralize(resources.total, resource_type.model_name.human.downcase ) %> found
+        </div>
+        <% if TeSS::Config.feature['subscription'] && show_subscription_button %>
+          <%= render partial: 'subscriptions/subscribe_button', locals: { type: resource_type.name } %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

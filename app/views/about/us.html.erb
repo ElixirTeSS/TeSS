@@ -1,87 +1,64 @@
 <div class="wrapper">
   <div id="sidebar" class="popout-sidebar">
-    <%= render :partial => 'about_nav', locals: { show: 'us' } %>
+    <%= render partial: 'about_nav', locals: { show: 'us' } %>
   </div>
 
-  <div id="content" class="">
+  <div id="content">
     <div class="about-block">
-      <%= render :partial => 'links', :locals => { 'show': 'about' } %>
-
+      <h2>About Us</h2>
       <% @feature_count = 0 %>
 
       <!-- TeSS Club-->
-      <div class="row">
-        <div class="<%= next_about_block(@feature_count += 1) %>">
-          <div id='tess-club' class="h3">TeSS Club</div>
-          <div class="sub-about-block">
-            <%== raw t 'us.tess_club' %>
-          </div>
-        </div>
+      <div id="tess-club" class="<%= next_about_block(@feature_count += 1) %>">
+        <h3>TeSS Club</h3>
+        <%== raw t 'us.tess_club' %>
       </div>
 
       <!-- CONTACT-->
-      <div class="row">
-        <div class="<%= next_about_block(@feature_count += 1) %>">
-          <div id='contact' class="h3">Contact</div>
-          <div class="sub-about-block">
-            <%== raw t 'us.contact' %>
-          </div>
-        </div>
+      <div id="contact" class="<%= next_about_block(@feature_count += 1) %>">
+        <h3>Contact</h3>
+        <%== raw t 'us.contact' %>
       </div>
 
       <!-- FUNDING-->
-      <section id="funding">
-        <div class="row">
-          <div class="<%= next_about_block(@feature_count += 1) %>">
-            <div id='funding' class="h3">Investment for the development of the <%= TeSS::Config.site['title_short'] %>
-              portal
-            </div>
-            <div class="sub-about-block">
-              <%== raw t 'us.funding' %>
-              <% if TeSS::Config.funders.present? %>
-                <p>
-                  <% TeSS::Config.funders.each do |funder| %>
-                    <%= link_to(funder['url'], target: '_blank', rel: 'noopener') do %>
-                      <%= image_tag(funder['logo'], class: 'funding-logo') %>
-                    <% end %>
-                  <% end %>
-                </p>
+      <div id="funding" class="<%= next_about_block(@feature_count += 1) %>">
+        <h3>Funding</h3>
+        <%== raw t 'us.funding' %>
+        <% if TeSS::Config.funders.present? %>
+          <p>
+            <% TeSS::Config.funders.each do |funder| %>
+              <%= link_to(funder['url'], target: '_blank', rel: 'noopener') do -%>
+                <%= image_tag(funder['logo'], class: 'funding-logo') -%>
               <% end %>
-            </div>
-          </div>
-        </div>
-      </section>
+            <% end %>
+          </p>
+        <% end %>
+      </div>
 
       <!-- THE TEAM-->
-      <section id="team">
-        <div class="row">
-          <div class="<%= next_about_block(@feature_count += 1) %>">
-            <div id='team' class="h3">The Team</div>
-            <%== raw t 'us.team' %>
-          </div>
-        </div>
-      </section>
+      <div id="team" class="<%= next_about_block(@feature_count += 1) %>">
+        <h3>The Team</h3>
+        <%== raw t 'us.team' %>
+      </div>
 
       <!-- ACKNOWLEDGEMENTS-->
-      <section id="acknowledgements">
-        <div class="row">
-          <div class="<%= next_about_block(@feature_count += 1) %>">
-            <div id='acknowledgments' class="h3">Acknowledgements</div>
-            <%== raw t 'us.acknowledge' %>
-          </div>
-        </div>
-      </section>
+      <div id="acknowledgements" class="<%= next_about_block(@feature_count += 1) %>">
+        <h3>Acknowledgements</h3>
+        <%== raw t 'us.acknowledge' %>
+      </div>
 
       <!-- Cite -->
-      <section id="cite">
-        <div class="row">
-          <div class="<%= next_about_block(@feature_count += 1) %>">
-            <div id='cite' class="h3">Cite Us</div>
-            <%== raw t 'us.cite' %>
-          </div>
-        </div>
-      </section>
+      <div id="cite" class="<%= next_about_block(@feature_count += 1) %>">
+        <h3>Cite Us</h3>
+        <blockquote>
+          <%== raw t 'us.cite' %>
+        </blockquote>
+      </div>
     </div>
-    <%= render :partial => 'links', :locals => { 'show': 'about' } %>
+
+    <hr/>
+
+    <%= render partial: 'links', locals: { show: 'about' } %>
   </div>
 </div>
+

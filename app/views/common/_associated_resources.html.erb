@@ -1,0 +1,29 @@
+<% activator ||= nil %>
+<% active ||= false %>
+<% view_all_link ||= nil %>
+<% shown_count ||= resources.count%>
+<% total_count ||= resources.count %>
+<% limit ||= 30 %>
+<% name ||= model.model_name.human.singularize.downcase %>
+<% id ||= model.model_name.plural %>
+<% active = activator.check_pane(id) if activator %>
+
+<div id="<%= id %>" class="tab-pane fade<%= ' in active' if active -%>">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="search-results-count">
+        Showing <%= pluralize(shown_count, name) -%>
+        <% if limit && total_count > limit %>
+          out of <%= total_count -%>
+          <% all_btn_text = 'View all & filter' %>
+        <% else %>
+          <% all_btn_text = 'Filter' %>
+        <% end %>
+      </div>
+
+      <%= link_to all_btn_text, view_all_link, class: 'btn btn-xs btn-default' if view_all_link %>
+    </div>
+  </div>
+
+  <%= render partial: 'common/masonry_grid', locals: { objects: resources } %>
+</div>

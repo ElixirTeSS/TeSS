@@ -1,97 +1,24 @@
-.top-header {
-  height: 35px;
-  line-height: 35px;
-  background-color: $top-header-bg;
-  color: $top-header-text;
-  border-bottom: 2px solid $top-header-border;
-
-  .server-name {
-    float: left;
-    display: inline-block;
-    margin-left: 1em;
-    font-style: bold;
-  }
-
-  .user-options {
-    float: right;
-
-    &> a {
-      display: block;
-      float: left;
-    }
-
-    a {
-      padding: 0 10px;
-      color: $top-header-text;
-
-      &:hover {
-        color: $top-header-hover-text !important;
-        background: $top-header-hover-bg;
-      }
-    }
-
-    .dropdown-menu {
-      background: $top-header-bg;
-    }
-  }
-}
-
-.second-header {
-  background-color: $bgDefault;
-
-  ul.navbar-nav {
-    margin-top: 10px;
-
-    li > a {
-      padding-top: 10px;
-      padding-bottom: 10px;
-      margin-right: 3px;
-      color: white;
-      @media (min-width: $screen-md) {
-        border-radius: $nav-pills-border-radius;
-      }
-    }
-  }
-
+.unified-header {
   .navbar-brand {
-    padding: 0 20px;
-  }
-
-  .navbar {
-    margin-bottom: 0;
-  }
-}
-
-#search-box {
-  input {
-    width: 100%;
-  }
-
-  @media (min-width: $screen-md) and (max-width: $screen-md-max) {
-    input {
-      width: 78px;
+    padding-top: 0;
+    padding-bottom: 0;
+    img {
+      padding: 10px 5px 5px 5px;
+      max-height: $navbar-height;
     }
   }
 
-  @media (min-width: $screen-lg) {
-    input {
-      width: 240px;
-    }
-  }
-
-  /* The following is needed to make the search bar 100% wide between 'sm' and 'md' screen sizes */
-
-  /* See: http://stackoverflow.com/a/24985419 */
-  @media (min-width: $screen-sm) and (max-width: $screen-sm-max) {
-    .input-group {
-      width: 100%;
-
-      .input-group-btn {
-        width: 32px;
-      }
-
-      .form-control {
-        width: 100%;
+  @media (max-width: $grid-float-breakpoint-max) {
+    .navbar-collapse {
+      text-align: center;
+      .dropdown-menu {
+        border-radius: 0;
+        background: rgba(0, 0, 0, 0.03);
+        margin: 0 10px;
+        text-align: center;
+        > li > a, .dropdown-header {
+          padding: 5px 15px;
+        }
       }
     }
   }

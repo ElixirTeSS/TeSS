@@ -1,39 +1,52 @@
-<ul class="unstyled nav-simple">
-  <%# Node  %>
-  <li><h4 class="nav-heading">ELIXIR node</h4></li>
-  <li style="padding: 7px 20px;">
-    <% unless node.description.blank? %>
-        <p><%= node.description %></p>
-    <% end %>
+<%# Node  %>
+<h4 class="nav-heading">ELIXIR node</h4>
+<div class="nav-block">
+  <% if node.home_page.present? %>
     <p>
-      <b>Country: </b>
-      <%= country_flag(node.country_code, class: 'small-flag') %>
-      <%= Node::COUNTRIES[node.country_code] %>
-    </p>
-    <p>
-      <b>Status: </b>
-      <%= node.member_status %>
-    </p>
-    <% unless node.home_page.blank? %>
-        <p class="dont-break-out">
-          <%= link_to node.home_page, node.home_page, class: 'h5', target: '_blank', rel: 'noopener' %>
-        </p>
-    <% end %>
-    <% unless node.twitter.blank? %>
-        <p><%= twitter_link node.twitter %></p>
-    <% end %>
-    <% training_coordinators = node.staff.training_coordinators %>
-    <p>
-      <b><%= 'Training coordinator'.pluralize(training_coordinators.count) -%>: </b>
-      <%= node_staff_list(training_coordinators, false) %>
+      <%= link_to node.home_page, class: 'h5', target: '_blank', rel: 'noopener' do %>
+        <%= image_tag(get_image_url_for(node), class: 'medium-avatar') %>
+      <% end %>
     </p>
 
-    <% other_staff = node.staff.other_roles %>
-    <% if other_staff.any? %>
-        <p>
-          <b>Staff: </b>
-          <%= node_staff_list(other_staff) %>
-        </p>
-    <% end %>
-  </li>
-</ul>
+    <p>
+      <%= link_to node.home_page, node.home_page, class: 'h5', target: '_blank', rel: 'noopener' %>
+    </p>
+  <% else %>
+    <p>
+      <%= image_tag(get_image_url_for(node), class: 'medium-avatar') %>
+    </p>
+  <% end %>
+
+  <% unless node.twitter.blank? %>
+    <p><%= twitter_link node.twitter %></p>
+  <% end %>
+
+  <% unless node.description.blank? %>
+    <div class="tess-expandable markdown"><%= render_markdown node.description %></div>
+  <% end %>
+</div>
+
+<h4 class="nav-heading">Country</h4>
+<div class="nav-block">
+  <%= country_flag(node.country_code, class: 'small-flag') %>
+  <%= Node::COUNTRIES[node.country_code] %>
+</div>
+
+<h4 class="nav-heading">Status</h4>
+<div class="nav-block">
+  <%= node.member_status %>
+</div>
+
+<% training_coordinators = node.staff.training_coordinators %>
+<h4 class="nav-heading"><%= 'Training coordinator'.pluralize(training_coordinators.count) -%></h4>
+<div class="nav-block">
+  <%= node_staff_list(training_coordinators, false) %>
+</div>
+
+<% other_staff = node.staff.other_roles %>
+<% if other_staff.any? %>
+  <h4 class="nav-heading">Staff</h4>
+  <div class="nav-block">
+    <%= node_staff_list(other_staff) %>
+  </div>
+<% end %>

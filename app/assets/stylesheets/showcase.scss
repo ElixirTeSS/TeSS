@@ -1,0 +1,27 @@
+#showcase-nav {
+  left: 0;
+  padding-left: 10px;
+  width: 150px;
+
+  &.affix {
+    top: 10px;
+  }
+
+  &.affix-top, &.affix-bottom {
+    position: absolute;
+  }
+}
+
+#showcase {
+  padding-bottom: 500px;
+  @media (min-width: $screen-sm-min) {
+    padding-left: 160px;
+  }
+  @media (min-width: $screen-md-min) {
+    padding-right: 160px;
+  }
+}
+
+#main-container.showcase-container {
+  max-width: 1720px;
+}

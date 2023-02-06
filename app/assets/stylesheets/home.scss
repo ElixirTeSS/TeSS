@@ -1,0 +1,290 @@
+// TODO: sections are styled more or less similarly, so maybe it makes sense to refactor common styles?
+
+.welcome-text {
+  padding: 20px;
+  text-align: center;
+}
+
+.searchbox {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 30px;
+
+  form {
+    padding-right: 10px;
+    text-align: center;
+    line-height: 2;
+    font-size: $font-size-large;
+    margin: auto;
+    max-width: 800px;
+
+    border: none;
+    border-radius: 50px;
+    background-color: #F4F4F4;
+
+    .searchbox-wrapper {
+      display: flex;
+    }
+
+    .searchbox-field {
+      border: none;
+      box-shadow: none;
+      outline: 0 none;
+      background: transparent;
+      padding: 15px 15px 15px 25px;
+      flex: 1;
+      min-width: 220px;
+      border-radius: 100px;
+    }
+
+    .searchbox-btn {
+      border: none;
+      background-color: transparent;
+      opacity: 0.5;
+      box-shadow: none;
+      padding: 8px 16px 8px 8px;
+      flex-shrink: 0;
+
+      transition: $transition-time;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+ul.catalogue {
+  padding: 10px 0;
+  margin: 0 -10px;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  flex-direction: row;
+  align-items: flex-start;
+
+  justify-content: center;
+
+  // Avoids visual awkwardness when 4 features are enabled and 3 appear on the top row, and 1 is wrapped under
+  &.catalogue-even {
+    li.resource-type {
+      @media (min-width: $screen-lg-min) {
+        flex-basis: 24%;
+      }
+      @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+        flex-basis: 48%;
+      }
+      .resource-type-text {
+        @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+          min-height: 4em;
+        }
+      }
+    }
+  }
+
+  li.resource-type {
+    flex: 1;
+    flex-basis: 100%;
+    padding: 0 12px;
+    margin-bottom: 15px;
+    min-width: 300px;
+
+    .pseudolink {
+      color: $link-color;
+      text-decoration: underline;
+    }
+
+    @media (min-width: $screen-lg-min) {
+      flex-basis: 0;
+    }
+
+    @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+      flex-basis: 31%;
+    }
+
+    .resource-type-text {
+      @media (min-width: $screen-md-min) {
+        min-height: 7em;
+      }
+    }
+
+    .resource-type-title {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      img {
+        margin-top: 10px;
+        max-width: 50px;
+      }
+    }
+  }
+}
+
+dl.faq {
+  display: flex;
+  padding: 10px 0;
+  margin: 0 -10px;
+  list-style: none;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  .question {
+    width: 85%;
+    margin-top: 20px;
+    border: 1px solid $panel-default-border;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.03);
+    border-radius: 8px;
+    padding: 5px 30px 20px;
+
+    &.opened {
+      border: 1px solid $brand-primary;
+      dt {
+        color: $brand-primary;
+      }
+    }
+
+    dt {
+      cursor: pointer;
+      .expand {
+        display: inline-block;
+        font-weight: 800;
+        float: right;
+      }
+    }
+
+    dd {
+      padding-top: 10px;
+    }
+
+  }
+}
+
+ul.promo-blocks {
+  padding: 10px 0;
+  margin: 0 -10px;
+  margin-top: 50px;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+
+  flex-direction: row;
+  align-content: flex-start;
+
+  justify-content: center;
+
+  @media (max-width: $screen-sm-max) {
+    flex-direction: column-reverse;
+    align-items: center;
+    align-content: center;
+  }
+
+  li {
+    width: 35%;
+    min-width: 200px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.03);
+    border-radius: 8px;
+    padding: 20px;
+
+    @media (max-width: $screen-sm-max) {
+      width: 85%;
+      border-right: none;
+      margin-bottom: 10px;
+    }
+
+    img {
+      margin-top: 10px;
+      max-width: 50px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      float: left;
+    }
+
+    h2 {
+      margin-top: 10px;
+      font-size: $font-size-large;
+      line-height: 24px;
+    }
+
+    a {
+      color: #444;
+    }
+
+    p {
+      margin: 5px 0 5px 60px;
+      color: #8D8D8D;
+    }
+  }
+}
+
+.multi-item-carousel {
+  .carousel-inner {
+    > .item {
+      transition: 500ms ease-in-out left;
+
+      > div {
+        display: flex;
+        justify-content: center;
+
+        > a {
+          min-width: 150px;
+          width: 150px;
+          height: 150px;
+          @include floating-card;
+          border-radius: 150px;
+          margin: 15px;
+          background-color: white;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &:hover, &:focus {
+            background-color: #e8f3f6;
+            border: 1px solid #e8f3f6;
+            box-shadow: none;
+          }
+
+          img {
+            width: 100px;
+          }
+        }
+      }
+    }
+
+    .active {
+      &.left {
+        left: -33%;
+      }
+
+      &.right {
+        left: 33%;
+      }
+    }
+
+    .next {
+      left: 33%;
+    }
+
+    .prev {
+      left: -33%;
+    }
+
+    @media all and (transform-3d), (-webkit-transform-3d) {
+      > .item {
+        transition: 500ms ease-in-out left;
+        transition: 500ms ease-in-out all;
+        backface-visibility: visible;
+        transform: none !important;
+      }
+    }
+  }
+
+  .carousel-control.right, .carousel-control.left {
+    background-image: none;
+    width: 30px;
+  }
+}

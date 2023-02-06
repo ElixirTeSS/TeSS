@@ -1,39 +1,27 @@
 <div class="wrapper">
   <% if TeSS::Config.solr_enabled %>
-      <div id="sidebar" class="popout-sidebar">
-        <%= render partial: "search/common/facet_sidebar", locals: {resources: @workflows_results, resource_type: Workflow} %>
-      </div>
+    <div id="sidebar" class="popout-sidebar">
+      <%= render partial: "search/common/facet_sidebar",
+                 locals: { resources: @workflows_results, resource_type: Workflow } %>
+    </div>
   <% end %>
 
   <div id="content">
-    <div class="row">
+    <h2>Workflows</h2>
+    <% content_for :buttons do %>
       <%= link_to new_workflow_path, class: 'btn btn-primary' do %>
-        <i class="fa fa-plus-square"></i> Create workflow
+        Create workflow
       <% end %>
-      <div class="pull-right">
-        <%= info_button("What are workflows in #{TeSS::Config.site['title_short']}?") do %>
-            <%= render_markdown(WorkflowsHelper::WORKFLOWS_INFO) %>
-        <% end %>
-      </div>
-    </div>
-
-    <% if false && TeSS::Config.solr_enabled %>
-        <div class="row">
-          <%= render partial: "search/common/search_box", locals: {resource_path: workflows_path} %>
-          <button class="btn btn-default" id="sidebar-toggle" type="button" autocomplete="off">
-            <i class="fa fa-filter"></i> Filters
-          </button>
-          <%= render partial: "search/common/search_info", locals: {resources: @workflows_results, resource_type: 'workflow'} %>
-          <%= render partial: "search/common/search_filters", locals: {resources: @workflows_results} %>
-        </div>
+      <%= info_button("What are workflows in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>
+        <%= render_markdown(WorkflowsHelper::WORKFLOWS_INFO) %>
+      <% end %>
     <% end %>
 
-    <%= render partial: "search/common/pagination_bar", locals: { resources: @workflows } %>
-
-    <hr>
+    <%= render partial: "search/common/search_panel", locals: { resources: @workflows_results,
+                                                                resource_type: Workflow } %>
 
     <%= render partial: 'common/masonry_grid', locals: { objects: @workflows } %>
 
-    <%= render partial: "search/common/pagination_bar", locals: { resources: @workflows } %>
+    <%= render partial: 'search/common/pagination_bar', locals: { resources: @workflows } %>
   </div>
 </div>
