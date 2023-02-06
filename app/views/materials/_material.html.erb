@@ -17,8 +17,7 @@
     <div class="clearfix">
       <div class="pull-right">
         <% if material.has_node? -%>
-          <%= image_tag 'elixir/elixir_logo_orange.png', alt: 'ELIXIR node event', title: 'ELIXIR node event',
-                        class: 'elixir-node-icon' %>
+          <%= elixir_node_icon %>
         <% end -%>
         <% if controller_name != 'content_providers' && material.content_provider %>
           <%= image_tag(material.content_provider.image.url, class: 'provider-avatar') %>

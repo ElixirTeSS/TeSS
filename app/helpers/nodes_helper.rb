@@ -34,4 +34,12 @@ module NodesHelper
     Node::COUNTRIES.map {|k, v| [v + " (#{k})", k] }.to_h
   end
 
+  def elixir_node_icon(opts = {})
+    opts.reverse_merge!({
+                          alt: 'ELIXIR node event',
+                          title: 'ELIXIR node event',
+                          class: 'elixir-node-icon' })
+    image_tag ApplicationHelper::DEFAULT_IMAGE_FOR_MODEL['Node'], opts
+  end
+
 end

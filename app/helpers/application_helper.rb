@@ -185,7 +185,7 @@ module ApplicationHelper
     'ContentProvider' => TeSS::Config.placeholder['content_provider'],
     'Collection' => TeSS::Config.placeholder['collection'],
     'Trainer' => TeSS::Config.placeholder['person'],
-    'Node' => 'elixir/elixir_logo_orange.png'
+    'Node' => 'elixir/elixir.svg'
   }.freeze
 
   def get_image_url_for(resource)

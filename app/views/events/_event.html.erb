@@ -33,8 +33,7 @@
       </div>
 
       <% if event.has_node? -%>
-        <%= image_tag 'elixir/elixir_logo_orange.png', alt: 'ELIXIR node event', title: 'ELIXIR node event',
-                      class: 'elixir-node-icon' %>
+        <%= elixir_node_icon %>
       <% end -%>
 
       <p><%= neatly_printed_date_range(event.start, event.end) %></p>

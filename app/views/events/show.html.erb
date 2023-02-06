@@ -19,10 +19,7 @@
         <%#= render :partial => 'events/partials/icon_info' %>
         <h2 class="mt-0">
           <% if @event.has_node? -%>
-            <%= image_tag 'elixir/elixir_logo_orange.png',
-                          alt: 'ELIXIR node event',
-                          title: 'ELIXIR node event',
-                          style: 'height: 40px;' %>
+            <%= elixir_node_icon %>
           <% end -%>
           <% if current_user&.is_admin? %>
             <%= missing_icon(@event, 'large') %>
