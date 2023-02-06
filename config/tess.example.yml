@@ -74,10 +74,9 @@ default: &default
   restrict_content_provider_selection: false
   user_ingestion_methods: ['bioschemas']
   placeholder:
-    collection: 'placeholder-collection.png'
-    content_provider: 'placeholder-organization.png'
-    group: 'placeholder-group.png'
-    person: 'placeholder-person.png'
+    collection: 'placeholder-collection.svg'
+    content_provider: 'placeholder-organization.svg'
+    person: 'placeholder-person.svg'
   dictionaries:
     cost_basis: 'cost_basis.yml'
     difficulty: 'difficulty.yml'
