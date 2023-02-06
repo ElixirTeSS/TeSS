@@ -27,7 +27,7 @@ module Ingestors
 
     def process_dtls(url)
       ['courses/', 'events/'].each do |url_suffix|
-        docs = Nokogiri::XML(URI.open(url + url_suffix + 'feed')).xpath('//item')
+        docs = Nokogiri::XML(open_url(url + url_suffix + 'feed', raise: true)).xpath('//item')
         docs.each do |event_item|
           begin
             event = Event.new

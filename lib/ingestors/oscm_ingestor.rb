@@ -29,16 +29,16 @@ module Ingestors
     def process_oscm(url)
       # Instead of using the sitemap we use the events page.
       # The sitemap shows also past events, but the ical link for those does not work, so we can't parse them with the below code.
-      Nokogiri::HTML5(URI.open(url)).css('.eventname > a').each do |link|
+      Nokogiri::HTML5(open_url(url, raise: true)).css('.eventname > a').each do |link|
         begin
           event_url = link.attributes['href']
-          event_page = Nokogiri::HTML5.parse(URI.open(event_url))
+          event_page = Nokogiri::HTML5.parse(open_url(event_url, raise: true))
 
           # create new event
           event = Event.new
 
           # extract event details from ical
-          ical_event = Icalendar::Event.parse(URI.open("#{event_url}/ical/").set_encoding('utf-8')).first
+          ical_event = Icalendar::Event.parse(open_url("#{event_url}/ical/", raise: true).set_encoding('utf-8')).first
           event.title = ical_event.summary
           event.description = convert_description ical_event.description
           event.url = ical_event.url

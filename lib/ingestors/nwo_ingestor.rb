@@ -28,7 +28,7 @@ module Ingestors
     def process_nwo(url)
       4.times.each do |i| # always check the first 4 pages, # of pages could be increased if needed
         sleep(1)
-        event_page = Nokogiri::HTML5.parse(URI.open("#{url}?page=#{i}")).css(".overviewContent > .listing-cards > li.list-item > a")
+        event_page = Nokogiri::HTML5.parse(open_url("#{url}?page=#{i}", raise: true)).css(".overviewContent > .listing-cards > li.list-item > a")
         event_page.each do |event_data|
           event = Event.new
 

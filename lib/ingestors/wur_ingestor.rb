@@ -26,7 +26,7 @@ module Ingestors
     private
 
     def process_wur(url)
-      docs = Nokogiri::XML(URI.open(url)).xpath('//item')
+      docs = Nokogiri::XML(open_url(url, raise: true)).xpath('//item')
       docs.each do |event_item|
         begin
           event = Event.new
@@ -69,7 +69,7 @@ module Ingestors
         # Now fetch the page to get the event date (until it is added to the RSS feed)
         unless event.start and !event.url.starts_with('https://')
           # should we do more against data exfiltration? URI.open is a known hazard
-          page = Nokogiri::XML(URI.open(event.url))
+          page = Nokogiri::XML(open_url(event.url, raise: true))
           event.start, event.end = parse_dates(page.xpath('//th[.="Date"]').first&.parent&.xpath('td')&.last&.text&.strip, 'Amsterdam')
           # in this case also grab the venue
           event.venue = page.xpath('//th[.="Venue"]').first&.parent&.xpath('td')&.last&.text

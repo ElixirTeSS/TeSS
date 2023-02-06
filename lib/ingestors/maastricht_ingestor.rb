@@ -29,7 +29,7 @@ module Ingestors
     def process_maastricht(url)
       4.times.each do |i| # always check the first 4 pages, # of pages could be increased if needed
         sleep(1)
-        event_links = Nokogiri::HTML5.parse(URI.open("#{url}?_page=#{i+1}")).css('.pt-cv-page h3 > a')
+        event_links = Nokogiri::HTML5.parse(open_url("#{url}?_page=#{i+1}", raise: true)).css('.pt-cv-page h3 > a')
         return if event_links.empty?
 
         event_links.each do |event_link|
@@ -37,7 +37,7 @@ module Ingestors
 
           event = Event.new
 
-          ical_event = Icalendar::Event.parse(URI.open("#{event_url}/ical/").set_encoding('utf-8')).first
+          ical_event = Icalendar::Event.parse(open_url("#{event_url}/ical/", raise: true).set_encoding('utf-8')).first
           event.title = ical_event.summary
           event.description = convert_description ical_event.description
           event.url = ical_event.url

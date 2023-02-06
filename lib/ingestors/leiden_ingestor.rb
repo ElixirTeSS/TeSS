@@ -28,12 +28,12 @@ module Ingestors
     def process_leiden(url)
       4.times.each do |i| # always check the first 4 pages, # of pages could be increased if needed
         sleep(1)
-        event_links = Nokogiri::HTML5.parse(URI.open("#{url}?pageNumber=#{i+1}")).css('#content > ul > li > a')
+        event_links = Nokogiri::HTML5.parse(open_url("#{url}?pageNumber=#{i+1}", raise: true)).css('#content > ul > li > a')
         return if event_links.empty?
 
         event_links.each do |event_link|
           event_url = "https://www.library.universiteitleiden.nl#{event_link.attributes['href']}"
-          event_data = Nokogiri::HTML5.parse(URI.open(event_url))
+          event_data = Nokogiri::HTML5.parse(open_url(event_url, raise: true))
 
           event = Event.new
 

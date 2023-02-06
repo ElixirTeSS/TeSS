@@ -28,7 +28,7 @@ module Ingestors
     def process_sitemap(url)
       # find urls for individual icalendar files
       begin
-        sitemap = Nokogiri::XML.parse(URI.open(url))
+        sitemap = Nokogiri::XML.parse(open_url(url, raise: true))
         locs = sitemap.xpath('/ns:urlset/ns:url/ns:loc', {
                                'ns' => 'http://www.sitemaps.org/schemas/sitemap/0.9'
                              })
@@ -53,7 +53,7 @@ module Ingestors
         file_url << query unless url.to_s.downcase.ends_with? query
 
         # process file
-        events = Icalendar::Event.parse(URI.open(file_url).set_encoding('utf-8'))
+        events = Icalendar::Event.parse(open_url(file_url, raise: true).set_encoding('utf-8'))
 
         # process each event
         events.each do |e|

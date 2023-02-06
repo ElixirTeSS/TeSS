@@ -48,7 +48,7 @@ module Ingestors
 
       url.split('=').last.split(',').each do |category_id|
         sub_url = url.split('=').first + '=' + category_id
-        docs = Nokogiri::XML(URI.open(sub_url)).xpath('//item')
+        docs = Nokogiri::XML(open_url(sub_url, raise: true)).xpath('//item')
         docs.each do |event_item|
           begin
             event = Event.new
@@ -93,7 +93,7 @@ module Ingestors
           nid = event_item.xpath('guid').text
           if nid
             ics_url = "https://www.uu.nl/node/#{nid}/ics"
-            ical_event = Icalendar::Event.parse(URI.open(ics_url).set_encoding('utf-8')).first
+            ical_event = Icalendar::Event.parse(open_url(ics_url, raise: true).set_encoding('utf-8')).first
             event.start ||= ical_event.dtstart
             event.end ||= ical_event.dtend
             event.venue ||= ical_event.location
