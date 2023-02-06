@@ -135,7 +135,7 @@ Rails.application.routes.draw do
 
   # error pages
   %w( 404 422 500 503 ).each do |code|
-    get code, :to => "application#handle_error", :status_code => code
+    get code, to: 'application#handle_error', status_code: code
   end
 
   get 'curate/topic_suggestions' => 'curator#topic_suggestions'
