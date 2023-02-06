@@ -61,7 +61,6 @@ module Ingestors
           sleep(1)
         rescue Exception => e
           @messages << "Extract event fields failed with: #{e.message} for #{event_url}"
-          Sentry.capture_exception(e)
         end
       end
     end

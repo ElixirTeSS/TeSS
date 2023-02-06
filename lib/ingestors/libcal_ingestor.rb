@@ -86,7 +86,6 @@ module Ingestors
           @ingested += 1
         rescue Exception => e
           @messages << "Extract event fields failed with: #{e.message}"
-          Sentry.capture_exception(e)
         end
       end
     end
