@@ -51,10 +51,6 @@ default: &default
       latitude: 3
       longitude: 13
   header_notice: # HTML to display above the header
-  parent_org:
-    name: 'ELIXIR Hub'
-    image: elixir/hub-logo.png
-    url: 'http://www.elixir-europe.org'
   feature:
     elearning_materials: false
     events: true

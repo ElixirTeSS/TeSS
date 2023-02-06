@@ -35,9 +35,6 @@ default: &default
       latitude: 3
       longitude: 13
   header_notice:
-  parent_org:
-    name: ''
-    url: ''
   feature:
     elearning_materials: true
     events: true
