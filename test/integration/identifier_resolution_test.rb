@@ -57,7 +57,7 @@ class IdentifierResolutionTest < ActionDispatch::IntegrationTest
 
     assert_response :bad_request
 
-    assert_select '#flash-container .alert', /Unrecognized type/
+    assert_select '#error-message', text: /Unrecognized type/
   end
 
   test 'does not resolve missing resource' do
