@@ -8,7 +8,7 @@ info:
   license:
     name: BSD 3-Clause License
     url: http://www.opensource.org/licenses/BSD-3-Clause
-  version: 0.2.0
+  version: 1.3.0
 servers:
   - url: https://tess.elixir-europe.org/
   - url: https://dev.tess.elixir-europe.org/
@@ -988,6 +988,57 @@ components:
               description: Miscellaneous notes on the event.
           description: An after-the-fact report of what happened at the event. Only
             visible to privileged users.
+        fields:
+          type: array
+          description: ARDC Fields of Research codes that describe the event.
+          items:
+            type: string
+        duration:
+          type: string
+          nullable: true
+          description: How long the event lasts.
+        timezone:
+          type: string
+          nullable: true
+          description: The timezone in which the event takes place. e.g. Europe/Brussels
+        sponsors:
+          type: array
+          description: Who sponsored, or funded the event.
+          items:
+            type: string
+        online:
+          type: boolean
+          nullable: true
+          description: Does the event take place online?
+        cost-basis:
+          type: string
+          nullable: true
+          description: Whether costs are incurred by the event, and who needs to pay
+        cost-value:
+          type: string
+          nullable: true
+          description: The cost of attending the event.
+        cost-currency:
+          type: string
+          nullable: true
+          description: The currency of the event's cost.
+        recognition:
+          type: string
+          nullable: true
+          description: A description of any qualifications, awards, certificates, diplomas, or other
+            educational credentials that will be awarded on successful completion of the training event.
+        learning-objectives:
+          type: string
+          nullable: true
+          description: A description of what knowledge, skills, or abilities are gained from attending the event.
+        prerequisites:
+          type: string
+          nullable: true
+          description: A description of what knowledge attendees should have before attending the event.
+        tech-requirements:
+          type: string
+          nullable: true
+          description: What technical requirements (e.g. software, hardware) are needed for participants of the event.
     EventCollection:
       allOf:
         - $ref: '#/components/schemas/FacetedCollection'
@@ -1112,6 +1163,54 @@ components:
             from biosharing.org - but can be anything.
           items:
             $ref: '#/components/schemas/ExternalResource'
+        resource-type:
+          type: array
+          description: The type(s) of this training material, e.g. Video, Poster.
+          items:
+            type: string
+        fields:
+          type: array
+          description: ARDC Fields of Research codes that describe the material.
+          items:
+            type: string
+        version:
+          type: string
+          nullable: true
+          description: The current version identifier of the training material.
+        contact:
+          type: string
+          nullable: true
+          description: The name and/or contact details of a person or institution
+            responsible for this training material.
+        prerequisites:
+          type: string
+          nullable: true
+          description: A description of what knowledge attendees should have before accessing this training material.
+        syllabus:
+          type: string
+          nullable: true
+          description: The syllabus of this training, or an overview of the topics covered by the training material.
+        learning-objectives:
+          type: string
+          nullable: true
+          description: A description of what knowledge, skills, or abilities are gained from this training material.
+        subsets:
+          type: array
+          description: Identifier URLs or DOIs for each subset of the training material.
+          items:
+            type: string
+        date-created:
+          type: string
+          nullable: true
+          description: The date that the training material was created.
+        date-modified:
+          type: string
+          nullable: true
+          description: The date that the training material was last updated.
+        date-published:
+          type: string
+          nullable: true
+          description: The date that the training material was published.
     MaterialCollection:
       allOf:
         - $ref: '#/components/schemas/FacetedCollection'
