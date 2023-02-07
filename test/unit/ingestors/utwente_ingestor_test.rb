@@ -7,7 +7,7 @@ class UtwenteIngestorTest < ActiveSupport::TestCase
     mock_ingestions
   end
 
-  test 'can ingest events from elixir tess' do
+  test 'can ingest events from utwente' do
     source = @content_provider.sources.build(
       url: 'https://www.utwente.nl/en/events/?startdate=2022-01-01&enddate=2022-01-10',
       method: 'utwente',

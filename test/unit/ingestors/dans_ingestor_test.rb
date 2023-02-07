@@ -9,7 +9,7 @@ class DansIngestorTest < ActiveSupport::TestCase
 
   test 'can ingest events from dans' do
     source = @content_provider.sources.build(
-      url: 'https://dans.knaw.nl/en/past-events/?filter=true&s=topics%20in%20heritage%20science,
+      url: 'https://dans.knaw.nl/en/past-events/?filter=true&s=topics%20in%20heritage%20science',
       method: 'dans',
       enabled: true
     )

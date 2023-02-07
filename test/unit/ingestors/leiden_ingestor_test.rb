@@ -7,7 +7,7 @@ class LeidenIngestorTest < ActiveSupport::TestCase
     mock_ingestions
   end
 
-  test 'can ingest events from elixir tess' do
+  test 'can ingest events from leiden' do
     source = @content_provider.sources.build(
       url: 'https://www.library.universiteitleiden.nl/events?year=2022&month=6&day=3',
       method: 'leiden',
