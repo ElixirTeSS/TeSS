@@ -47,7 +47,7 @@ class DtlsIngestorTest < ActiveSupport::TestCase
     assert_equal 'BioSB reseach schoor & TU Eindhoven', event.organizer
     assert_equal 'Wageningen', event.city
     assert_equal 'Netherlands', event.country
-    assert_equal '12 December 2022', event.start
-    assert_equal '16 December 2022', event.end
+    assert_equal '2022-12-12 09:00:00', event.start
+    assert_equal '2022-12-16 17:00:00', event.end
   end
 end

@@ -44,7 +44,7 @@ class UuIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'UU', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal '2010 12 13', event.start
-    assert_equal '2010 12 13', event.end
+    assert_equal '2010-12-13 09:00:00'.to_time, event.start
+    assert_equal '2010-12-13 17:00:00'.to_time, event.end
   end
 end

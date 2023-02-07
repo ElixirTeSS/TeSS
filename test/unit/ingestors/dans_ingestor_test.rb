@@ -9,7 +9,7 @@ class DansIngestorTest < ActiveSupport::TestCase
 
   test 'can ingest events from dans' do
     source = @content_provider.sources.build(
-      url: 'https://dans.knaw.nl/en/past-events/&%20NDE%20Annual&%20NDE%20Annual%20Conference%202022?filter=true&s=Topics%20in%20Heritage%20Science',
+      url: 'https://dans.knaw.nl/en/past-events/?filter=true&s=topics%20in%20heritage%20science,
       method: 'dans',
       enabled: true
     )
@@ -45,7 +45,7 @@ class DansIngestorTest < ActiveSupport::TestCase
     assert_equal 'DANS', event.source
     assert_equal 'Amsterdam', event.timezone
     assert_equal ['Archeology'], event.keywords
-    assert_equal '19 January 2023'.to_time, event.start
-    assert_equal '', event.end
+    assert_equal '2023-01-19 09:00:00'.to_time, event.start
+    assert_equal '2023-01-19 17:00:00'.to_time, event.end
   end
 end

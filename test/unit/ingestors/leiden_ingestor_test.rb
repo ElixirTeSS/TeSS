@@ -42,8 +42,8 @@ class LeidenIngestorTest < ActiveSupport::TestCase
     assert_equal new_url, event.url
 
     # check other fields
-    assert_equal 'June 3rd 2022 09:00', event.start
-    assert_equal 'June 3rd 2022 13:00', event.end
+    assert_equal '2022-05-03 09:00:00'.to_time, event.start
+    assert_equal '2022-05-03 13:00:00'.to_time, event.end
     assert_equal 'Europe/Amsterdam', event.timezone
     assert_equal 'Wijnhaven: Turfmarkt 99, 2511 DP The Hague', event.venue
     assert_equal 'Universiteit Leiden', event.source

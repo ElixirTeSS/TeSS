@@ -9,7 +9,7 @@ class UtwenteIngestorTest < ActiveSupport::TestCase
 
   test 'can ingest events from elixir tess' do
     source = @content_provider.sources.build(
-      url: 'https://www.utwente.nl/en/events/?categories=&startdate=2022-01-01&enddate=2022-01-10',
+      url: 'https://www.utwente.nl/en/events/?startdate=2022-01-01&enddate=2022-01-10',
       method: 'utwente',
       enabled: true
     )
@@ -44,8 +44,8 @@ class UtwenteIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'University of Twente', event.organizer
-    assert_equal '10 January 2022 09:00:00', event.start
-    assert_equal '10 January 2022 10:00:00', event.end
+    assert_equal '2022-01-10 09:00:00', event.start
+    assert_equal '2022-01-10 10:00:00', event.end
     assert event.online
     assert_equal 'Online', event.venue
   end

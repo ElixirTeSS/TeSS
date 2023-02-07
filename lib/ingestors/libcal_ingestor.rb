@@ -27,7 +27,7 @@ module Ingestors
     def process_libcal(url)
       # execute REST request
       results = get_JSON_response url
-      data = results.to_h['results']
+      data = results.to_h.fetch('results', [])
 
       # extract materials from results
       unless data.nil? or data.size < 1
@@ -60,23 +60,23 @@ module Ingestors
 
           # array fields
           event.keywords = []
-          attr['categories_arr']&.each { |category| event.keywords << category['name'] }
+          attr.fetch('categories_arr', [])&.each { |category| event.keywords << category['name'] }
 
           event.event_types = []
-          attr['event_types']&.each do |key|
+          attr.fetch('event_types', [])&.each do |key|
             value = convert_event_types(key)
             event.event_types << value unless value.nil?
           end
 
           event.target_audience = []
-          attr['audiences']&.each { |audience| event.keywords << audience['name'] }
+          attr.fetch('audiences', [])&.each { |audience| event.keywords << audience['name'] }
 
           event.host_institutions = []
-          attr['host-institutions']&.each { |host| event.host_institutions << host }
+          attr.fetch('host-institutions', [])&.each { |host| event.host_institutions << host }
 
           # dictionary fields
           event.eligibility = []
-          attr['eligibility']&.each do |key|
+          attr.fetch('eligibility', [])&.each do |key|
             value = convert_eligibility(key)
             event.eligibility << value unless value.nil?
           end
