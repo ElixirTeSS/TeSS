@@ -24,8 +24,10 @@ class UuIngestorTest < ActiveSupport::TestCase
     # run task
     assert_difference 'Event.count', 20 do
       freeze_time(Time.new(2016)) do
-        ingestor.read(source.url)
-        ingestor.write(@user, @content_provider)
+        VCR.use_cassette("ingestors/uu") do
+          ingestor.read(source.url)
+          ingestor.write(@user, @content_provider)
+        end
       end
     end
 

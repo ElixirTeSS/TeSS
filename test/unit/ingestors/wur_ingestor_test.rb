@@ -18,8 +18,10 @@ class WurIngestorTest < ActiveSupport::TestCase
 
     # run task
     freeze_time(Time.new(2019)) do
-      ingestor.read(source.url)
-      ingestor.write(@user, @content_provider)
+      VCR.use_cassette("ingestors/wur") do
+        ingestor.read(source.url)
+        ingestor.write(@user, @content_provider)
+      end
     end
 
     assert ingestor.events.count > 0

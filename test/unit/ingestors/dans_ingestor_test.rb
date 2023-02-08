@@ -24,8 +24,10 @@ class DansIngestorTest < ActiveSupport::TestCase
     # run task
     assert_difference 'Event.count', 1 do
       freeze_time(Time.new(2019)) do
-        ingestor.read(source.url)
-        ingestor.write(@user, @content_provider)
+        VCR.use_cassette("ingestors/dans") do
+          ingestor.read(source.url)
+          ingestor.write(@user, @content_provider)
+        end
       end
     end
 
