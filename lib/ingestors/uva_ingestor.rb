@@ -34,7 +34,7 @@ module Ingestors
       # extract materials from results
       data.each do |item|
         # create new event
-        event = Event.new
+        event = OpenStruct.new
 
         # extract event details from
         attr = item
@@ -59,7 +59,6 @@ module Ingestors
 
         # add event to events array
         add_event(event)
-        @ingested += 1
       rescue Exception => e
         @messages << "Extract event fields failed with: #{e.message}"
       end

@@ -77,6 +77,11 @@ module Ingestors
       end
     end
 
+    def convert_title(input)
+      return input if input.nil?
+      CGI.unescapeHTML(input)
+    end
+
     def get_json_response(url, accept_params = 'application/json')
       response = RestClient::Request.new(method: :get,
                                          url: CGI.unescape_html(url),

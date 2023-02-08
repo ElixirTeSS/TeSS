@@ -35,7 +35,7 @@ module Ingestors
           event_page = Nokogiri::HTML5.parse(open_url(event_url, raise: true))
 
           # create new event
-          event = Event.new
+          event = OpenStruct.new
 
           # extract event details from ical
           ical_event = Icalendar::Event.parse(open_url("#{event_url}/ical/", raise: true).set_encoding('utf-8')).first
@@ -56,7 +56,6 @@ module Ingestors
 
           # add event to events array
           add_event(event)
-          @ingested += 1
 
           sleep(1)
         rescue Exception => e

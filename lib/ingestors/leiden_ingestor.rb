@@ -35,7 +35,7 @@ module Ingestors
           event_url = "https://www.library.universiteitleiden.nl#{event_link.attributes['href']}"
           event_data = Nokogiri::HTML5.parse(open_url(event_url, raise: true))
 
-          event = Event.new
+          event = OpenStruct.new
 
           # dates
           event.title = convert_title event_data.css('#content h1').text
@@ -82,7 +82,6 @@ module Ingestors
           event.source = 'Universiteit Leiden'
 
           add_event(event)
-          @ingested += 1
         rescue Exception => e
           @messages << "Extract event fields failed with: #{e.message} for #{event_url}"
         end

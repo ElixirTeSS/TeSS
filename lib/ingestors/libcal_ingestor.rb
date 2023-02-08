@@ -33,7 +33,7 @@ module Ingestors
       unless data.nil? or data.size < 1
         data.each do |item|
           # create new event
-          event = Event.new
+          event = OpenStruct.new
 
           # extract event details from
           attr = item
@@ -83,7 +83,7 @@ module Ingestors
 
           # add event to events array
           add_event(event)
-          @ingested += 1
+          puts 1
         rescue Exception => e
           @messages << "Extract event fields failed with: #{e.message}"
         end

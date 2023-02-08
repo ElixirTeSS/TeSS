@@ -38,7 +38,7 @@ module Ingestors
         }.to_json)
       
       response['result']['items'].each do |item|
-        event = Event.new
+        event = OpenStruct.new
 
         event.title = item['title']
         event.url = item['link']
@@ -52,7 +52,6 @@ module Ingestors
         event.organizer = 'University of Twente'
         event.source = 'University of Twente'
         add_event(event)
-        @ingested += 1
       rescue Exception => e
         @messages << "Extract event fields failed with: #{e.message}"
       end

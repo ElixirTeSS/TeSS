@@ -29,7 +29,7 @@ module Ingestors
       docs = Nokogiri::XML(open_url(url, raise: true)).xpath('//item')
       docs.each do |event_item|
         begin
-          event = Event.new
+          event = OpenStruct.new
           event.event_types = ['workshops_and_courses']
           event_item.element_children.each do |element|
             case element.name
@@ -81,7 +81,6 @@ module Ingestors
         event.timezone = 'Amsterdam'
 
         add_event(event)
-        @ingested += 1
       rescue Exception => e
         @messages << "Extract event fields failed with: #{e.message}"
       end

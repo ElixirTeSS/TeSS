@@ -35,7 +35,7 @@ module Ingestors
         event_links.each do |event_link|
           event_url = event_link.attributes['href']
 
-          event = Event.new
+          event = OpenStruct.new
 
           ical_event = Icalendar::Event.parse(open_url("#{event_url}/ical/", raise: true).set_encoding('utf-8')).first
           event.title = ical_event.summary
@@ -55,7 +55,6 @@ module Ingestors
           event.source = 'Maastricht University'
 
           add_event(event)
-          @ingested += 1
         rescue Exception => e
           @messages << "Extract event fields failed with: #{e.message} for #{event_url}"
         end

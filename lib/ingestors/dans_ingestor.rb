@@ -30,7 +30,7 @@ module Ingestors
         sleep(1)
         event_page = Nokogiri::HTML5.parse(open_url(url + i.to_s, raise: true)).css("div[id='nieuws_item_section']")
         event_page.each do |event_data|
-          event = Event.new
+          event = OpenStruct.new
 
           # dates
           dates = event_data.css("div[id='nieuws_image_date_row']").css('p').css('span')
@@ -59,7 +59,6 @@ module Ingestors
           event.timezone = 'Amsterdam'
 
           add_event(event)
-          @ingested += 1
         rescue Exception => e
           @messages << "Extract event fields failed with: #{e.message}"
         end

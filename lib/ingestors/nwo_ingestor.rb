@@ -30,7 +30,7 @@ module Ingestors
         sleep(1)
         event_page = Nokogiri::HTML5.parse(open_url("#{url}?page=#{i}", raise: true)).css(".overviewContent > .listing-cards > li.list-item > a")
         event_page.each do |event_data|
-          event = Event.new
+          event = OpenStruct.new
 
           # dates
           event.title = convert_title event_data.css('h3.card__title').text
@@ -46,7 +46,6 @@ module Ingestors
           event.source = 'NWO'
 
           add_event(event)
-          @ingested += 1
         rescue Exception => e
           @messages << "Extract event fields failed with: #{e.message}"
         end

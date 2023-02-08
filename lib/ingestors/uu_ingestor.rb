@@ -51,7 +51,7 @@ module Ingestors
         docs = Nokogiri::XML(open_url(sub_url, raise: true)).xpath('//item')
         docs.each do |event_item|
           begin
-            event = Event.new
+            event = OpenStruct.new
             event.event_types = [categories.fetch(category_id, 'workshops_and_courses')]
             event_item.element_children.each do |element|
               case element.name
@@ -113,7 +113,6 @@ module Ingestors
           # event.description = convert_description page.css('.content-block__inner').first.inner_html
           # end
           add_event(event)
-          @ingested += 1
         rescue Exception => e
           @messages << "Extract event fields failed with: #{e.message}"
         end
