@@ -42,6 +42,8 @@ class Workflow < ApplicationRecord
       integer :user_id
       boolean :public
       integer :collaborator_ids, multiple: true
+      time :updated_at
+      time :created_at
     end
     # :nocov:
   end
