@@ -37,6 +37,8 @@ module TeSS
       Symbol, Date, Time, ActiveSupport::TimeWithZone, ActiveSupport::TimeZone,
       ActiveSupport::HashWithIndifferentAccess, BigDecimal
     ]
+
+    config.exceptions_app = self.routes
   end
 
   tess_config = Rails.configuration.tess.with_indifferent_access
