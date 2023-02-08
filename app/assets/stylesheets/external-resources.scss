@@ -1,0 +1,18 @@
+.external-resource-form {
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+
+  &.deleted {
+    color: $brand-danger;
+    text-decoration: line-through;
+  }
+}
+
+.associate-resource {
+  cursor: pointer;
+}
+
+.external-resource-logo {
+  max-width: 100px;
+  max-height: 40px;
+}

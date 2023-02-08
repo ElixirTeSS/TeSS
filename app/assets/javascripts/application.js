@@ -93,7 +93,6 @@ document.addEventListener("turbolinks:load", function() {
         format: "YYYY-MM-DD"
     });
 
-
     // On events form, if start date > end date, update the end date.
     $("#event_form").on("dp.change", function (e) {
         // Really awkward way of doing it
@@ -144,9 +143,9 @@ document.addEventListener("turbolinks:load", function() {
 
     var setStarButtonState = function (button) {
         if (button.data('starred')) {
-            button.html("<i class='fa fa-star'> </i> Un-star");
+            button.html("<i class='icon icon-h3 star-fill-icon'> </i>");
         } else {
-            button.html("<i class='fa fa-star-o'> </i> Star");
+            button.html("<i class='icon icon-h3 star-icon'> </i>");
         }
     };
 
@@ -172,18 +171,9 @@ document.addEventListener("turbolinks:load", function() {
                     button.removeClass('loading');
                 }
             });
+
+            return false;
         })
-    });
-
-    $('body').scrollspy({
-        target: '.about-page-menu',
-        offset: 40
-    });
-
-    $('.about-page-menu').affix({
-        offset: {
-            top: 100
-        }
     });
 
     $('.has-popover').each(function () {
@@ -219,6 +209,62 @@ document.addEventListener("turbolinks:load", function() {
     Fairsharing.init();
 
     Biotools.init();
+
+    $('.tess-expandable').each(function () {
+        var limit = this.dataset.heightLimit || 300;
+
+        if (this.clientHeight > limit) {
+            if (this.dataset.origHeight) { // Prevent double bind
+                return true;
+            }
+            this.dataset.origHeight = this.clientHeight;
+            this.style.maxHeight = '' + limit + 'px';
+            this.classList.add('tess-expandable-closed');
+            var btn = $('<a href="#" class="tess-expandable-btn">Show more</a>');
+            btn.insertAfter($(this));
+        }
+    });
+
+    $(document).on('click', '.tess-expandable-btn', function (event) {
+        event.preventDefault();
+        var div = this.parentElement.querySelector('.tess-expandable');
+        var maxHeight = parseInt(div.dataset.origHeight) + 80;
+        var limit = parseInt(div.dataset.heightLimit || "300");
+
+        if (div.clientHeight < maxHeight && this.innerHTML !== 'Show less') {
+            var newHeight = div.clientHeight + limit;
+            if (newHeight > maxHeight) {
+                div.classList.add('tess-expandable-open');
+                div.classList.remove('tess-expandable-closed');
+                newHeight = maxHeight;
+                this.innerHTML = 'Show less';
+            }
+            div.style.maxHeight = '' + newHeight + 'px';
+        } else {
+            div.classList.remove('tess-expandable-open');
+            div.classList.add('tess-expandable-closed');
+            div.style.maxHeight = '' + limit + 'px';
+            this.innerHTML = 'Show more';
+        }
+
+        return false;
+    });
+
+    $('.faq .question dt').click(function () {
+        var button = $(this).find('.expand');
+        var sign = button.text();
+        var question = $(this).parent();
+
+        if (sign === '+') {
+            question.addClass('opened');
+            button.text('–')
+            question.find('dd').show(300);
+        } else {
+            button.text('+')
+            question.removeClass('opened');
+            question.find('dd').hide(300);
+        }
+    });
 });
 
 function truncateWithEllipses(text, max)
@@ -238,15 +284,27 @@ $(document).on('click', '.clear-autocompleter-singleton', function () {
     return false;
 });
 
-$(document).on('shown.bs.tab', '[href="#activity_log"]', function () {
-    var tabPane = $('#activity_log');
+$(document).on('click', '[href="#activity_log"]', function () {
+    const activityLog = $('#activity_log');
 
-    $.ajax({
-        url: tabPane.data('activityPath'),
-        success: function (data) {
-            tabPane.html(data);
+    if (activityLog.length) {
+        activityLog.toggle();
+        $(this).find('.expand-icon').addClass('collapse-icon').removeClass('expand-icon');
+        if (activityLog.is(':visible')) {
+            if (!activityLog.find('.activity').length) { // Only load once
+                $.ajax({
+                    url: activityLog.data('activityPath'),
+                    success: function (data) {
+                        activityLog.html(data);
+                    }
+                });
+            }
+        } else {
+            $(this).find('.collapse-icon').addClass('expand-icon').removeClass('collapse-icon');
         }
-    });
+    }
+
+    return false;
 });
 
 /**

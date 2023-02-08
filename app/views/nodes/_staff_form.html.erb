@@ -1,12 +1,11 @@
 <div class="staff-member-fields">
   <%= form.simple_fields_for(:staff, staff_member, child_index: (staff_member.new_record? ? 'replace-me' : nil)) do |sf| %>
-      <h4>Staff member
-        <div class="pull-right">
-          <div class="checkbox btn btn-danger">
-            <%= label_tag do %>
-                <%= sf.check_box :_destroy, autocomplete: 'off', data: { role: "delete-node-staff-button" } %> Delete?
-            <% end %>
-          </div>
+      <h4>
+        Staff member
+        <div class="checkbox btn btn-xs btn-danger pull-right" style="margin-top: 0;">
+          <%= label_tag do %>
+            <%= sf.check_box :_destroy, autocomplete: 'off', data: { role: "delete-node-staff-button" } %> Delete?
+          <% end %>
         </div>
       </h4>
 

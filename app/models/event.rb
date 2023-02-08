@@ -170,15 +170,9 @@ class Event < ApplicationRecord
     end
   end
 
-  def has_node?
-    return true if content_provider && content_provider.node_id
-
-    false
-  end
-
   def self.facet_fields
     field_list = %w[ content_provider keywords scientific_topics operations tools fields online event_types
-                     venue city country organizer sponsors target_audience eligibility user collections ]
+                     venue city country organizer sponsors target_audience eligibility user node collections ]
 
     field_list.delete('operations') if TeSS::Config.feature['disabled'].include? 'operations'
     field_list.delete('scientific_topics') if TeSS::Config.feature['disabled'].include? 'topics'

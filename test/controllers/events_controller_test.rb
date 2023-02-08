@@ -409,57 +409,45 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   #OTHER CONTENT
-  test 'event has correct tabs' do
-    get :show, params: { :id => @event }
-    assert_response :success
-    assert_select 'ul.nav-tabs' do
-      assert_select 'li' do
-        assert_select 'a[data-toggle="tab"]', :count => 2 # Event, Activity
-      end
-    end
-  end
-
   test 'event has correct layout' do
     get :show, params: { id: @event }
     assert_response :success
     assert_select 'h2', :text => @event.title #Has Title
-    assert_select 'a.h5[href=?]', @event.url #Has plain written URL
-    #assert_select 'a.btn-info[href=?]', events_path, :count => 1 #Back button
-    assert_select 'a.btn-success', :text => "View event", :count => 1 do
-      assert_select 'a[href=?]', @event.url, :count => 1 #View event button
+    assert_select 'a.btn', text: 'View event', count: 1 do
+      assert_select 'a[href=?]', @event.url, count: 1
     end
     #Should not show when not logged in
-    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 0 #No Edit
-    assert_select 'a.btn-danger[href=?]', event_path(@event), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', edit_event_path(@event), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', event_path(@event), :count => 0 #No Edit
   end
 
   test 'do not show action buttons when not owner or admin' do
     sign_in users(:another_regular_user)
     get :show, params: { id: @event }
-    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 0 #No Edit
-    assert_select 'a.btn-danger[href=?]', event_path(@event), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', edit_event_path(@event), :count => 0 #No Edit
+    assert_select 'a.btn[href=?]', event_path(@event), :count => 0 #No Edit
   end
 
   test 'should show action buttons when owner' do
     sign_in @event.user
     get :show, params: { id: @event }
-    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 1
-    assert_select 'a.btn-danger[href=?]', event_path(@event), :text => 'Delete', :count => 1
+    assert_select 'a.btn[href=?]', edit_event_path(@event), :count => 1
+    assert_select 'a.btn[href=?]', event_path(@event), :text => 'Delete', :count => 1
   end
 
   test 'should show action buttons when approved editor' do
     @event.content_provider.add_editor users(:another_regular_user)
     sign_in users(:another_regular_user)
     get :show, params: { id: @event }
-    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 1
-    assert_select 'a.btn-danger[href=?]', event_path(@event), :text => 'Delete', :count => 1
+    assert_select 'a.btn[href=?]', edit_event_path(@event), :count => 1
+    assert_select 'a.btn[href=?]', event_path(@event), :text => 'Delete', :count => 1
   end
 
   test 'should show action buttons when admin' do
     sign_in users(:admin)
     get :show, params: { id: @event }
-    assert_select 'a.btn-primary[href=?]', edit_event_path(@event), :count => 1
-    assert_select 'a.btn-danger[href=?]', event_path(@event), :text => 'Delete', :count => 1
+    assert_select 'a.btn[href=?]', edit_event_path(@event), :count => 1
+    assert_select 'a.btn[href=?]', event_path(@event), :text => 'Delete', :count => 1
   end
 
   #API Actions
@@ -1298,14 +1286,14 @@ class EventsControllerTest < ActionController::TestCase
   test 'should disable map tab if only showing online events' do
     get :index
     assert_response :success
-    assert_select '#content .nav-tabs' do
+    assert_select '#content .nav' do
       assert_select 'li.disabled a[href=?]', '#map', count: 0
       assert_select 'li a[href=?]', '#map', count: 1
     end
 
     get :index, params: { online: 'true' }
     assert_response :success
-    assert_select '#content .nav-tabs' do
+    assert_select '#content .nav' do
       assert_select 'li.disabled a[href=?]', '#map', count: 1
     end
   end
@@ -1313,14 +1301,14 @@ class EventsControllerTest < ActionController::TestCase
   test 'should hide map tab if disabled' do
     get :index
     assert_response :success
-    assert_select '#content .nav-tabs' do
+    assert_select '#content .nav' do
       assert_select 'li a[href=?]', '#map', count: 1
     end
 
     with_settings(feature: { disabled: ['events_map'] }) do
       get :index
       assert_response :success
-      assert_select '#content .nav-tabs' do
+      assert_select '#content .nav' do
         assert_select 'li a[href=?]', '#map', count: 0
       end
     end

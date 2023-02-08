@@ -141,10 +141,7 @@
               field_lock: true %>
 
   <!-- Field: Materials -->
-  <%= f.internal_resource :materials %>
-  <div class="row">
-    <%= render partial: 'common/materials_suggestions', locals: { title_element: 'event_title' } %>
-  </div>
+  <%= f.autocompleter :materials, input_html: { title: t('events.hints.materials') }, url: materials_path %>
 
   <!-- Fields: that need to be check for enabled/disabled -->
 
@@ -161,7 +158,7 @@
 
   <div class="form-group">
     <%= f.submit (f.object.new_record? ? "Add" : "Update") + " event", :class => 'btn btn-primary' %>
-    <%= link_to 'Back', :back, :class => "btn btn-info" %>
+    <%= link_to 'Back', :back, class: 'btn btn-default' %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                 :back, :class => 'btn btn-default' %>
   </div>

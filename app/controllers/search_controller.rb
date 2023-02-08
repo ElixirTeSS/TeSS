@@ -1,5 +1,6 @@
 # The controller for actions related to searchable models
 class SearchController < ApplicationController
+  PAGE_SIZE = 30
 
   before_action :set_breadcrumbs
 
@@ -35,6 +36,8 @@ class SearchController < ApplicationController
               without(:unverified, true)
             end
           end
+
+          paginate page: 1, per_page: PAGE_SIZE
         end
       end
     end
@@ -54,7 +57,7 @@ class SearchController < ApplicationController
     @_models << 'Event' if TeSS::Config.feature['events']
     @_models << 'Material' if TeSS::Config.feature['materials']
     @_models << 'Collection' if TeSS::Config.feature['collections']
-    @_models << 'ContentProvider' if TeSS::Config.feature['providers']
+    @_models << 'ContentProvider' if TeSS::Config.feature['content_providers']
     @_models << 'Trainer' if TeSS::Config.feature['trainers']
     @_models
   end

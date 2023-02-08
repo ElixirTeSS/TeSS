@@ -7,24 +7,55 @@ Variable that should be available
 - @facet_params  - The facet filters the user has applied
 %>
 <h3 class="nav-heading" id="sidebar-header">
-  <i class="fa fa-filter"></i> Filters
-  <a href="#" class="pull-right" id="sidebar-close">&times;</a>
+  Filters
+  <button href="#" class="btn btn-link pull-right" id="sidebar-close"><i class="icon-lg icon cross-icon"></i></button>
 </h3>
 
+<%
+  extras = if resource_type.name == 'Event'
+             [['Most recent', 'new'], ['Earliest', 'early'], ['Latest', 'late']]
+           elsif resource_type.name == 'Source'
+             [['Most recent', 'new'], ['Last finished', 'finished']]
+           else
+             [['Most recent', 'new']]
+           end %>
+
+<%= render partial: 'search/common/sort_by', locals: { resources: resource_type, extras: extras } %>
+
 <ul class="unstyled nav-simple">
-  <% if current_user && (current_user.is_curator? || current_user.is_admin?) %>
-    <%= render partial: 'search/common/facet_sidebar_curation', locals: { resource_type: resource_type } %>
-  <% end %>
+  <li>
+    <h4 class="nav-heading">
+      Filter
+      <% if @facet_params.present? %>
+        <%= link_to clear_filters_path, class: 'btn btn-xs btn-secondary font-size-sm clear-filters-btn' do %>
+          Clear filters <i class="glyphicon glyphicon-remove"></i>
+        <% end %>
+      <% end %>
+    </h4>
+  </li>
+
   <% if ['Event', 'Material'].include?(resource_type.name) %>
     <%= render partial: 'search/common/facet_sidebar_max_age' %>
   <% end %>
-  <% available_facets(resources).each do |facet| %>
-      <% if facet.field_name == :online %>
-          <%= render partial: 'search/common/facet_sidebar_boolean_filter',
-                     locals: { facet: facet, resources: resources } %>
-      <% else %>
-          <%= render partial: 'search/common/facet_sidebar_filter',
-                     locals: { facet: facet, resources: resources } %>
-      <% end %>
+
+  <% boolean_facets, regular_facets = available_facets(resources).partition { |f| f.field_name == :online } %>
+
+  <% regular_facets.each do |facet| %>
+    <%= render partial: 'search/common/facet_sidebar_filter', locals: { facet: facet, resources: resources } %>
+  <% end %>
+
+  <% boolean_facets.each do |facet| %>
+    <%= render partial: 'search/common/facet_sidebar_boolean_filter', locals: { facet: facet, resources: resources } %>
+  <% end %>
+
+  <% if resource_type.name == 'Event' %>
+    <%= render partial: 'search/common/facet_sidebar_boolean_filter', locals: { facet_field: 'include_expired',
+                                                                                count: '-',
+                                                                                enable_text: 'Show past events',
+                                                                                disable_text: 'Hide past events' } %>
   <% end %>
 </ul>
+
+<% if current_user && (current_user.is_curator? || current_user.is_admin?) %>
+  <%= render partial: 'search/common/facet_sidebar_curation', locals: { resource_type: resource_type } %>
+<% end %>

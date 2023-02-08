@@ -1,18 +1,18 @@
 <div class="bounding-box" data-toggle="tooltip" data-placement="top" aria-hidden="true" title="{{ description }}">
     <h4>
         <i class="{{ iconClass }}"></i>
-        <a class="associate-tool" title="click to associate {{ name }} with this resource" data-title="{{ name }}" data-url="{{ url }}">
+        <a class="associate-resource" title="click to associate {{ name }} with this resource" data-title="{{ name }}" data-url="{{ url }}">
             <span class="title">{{ name }}</span> <i class="fa fa-plus-square-o"></i>
         </a>
     </h4>
     {{#if labels}}
     <p>
       {{#each labels}}
-        <span class="label label-info">{{ this }}</span>
+        <span class="label label-default">{{ this }}</span>
       {{/each}}
     </p>
     {{/if}}
-    <span>{{ truncatedDescription }}</span>
+    <span>{{{ truncatedDescription }}}</span>
     <div class="external-links">
         <a rel="noopener" target="_blank" href="{{ url }}">View on {{ siteName }} <i class="fa fa-external-link"></i></a>
     </div>

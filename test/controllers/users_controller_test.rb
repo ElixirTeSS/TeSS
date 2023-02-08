@@ -435,7 +435,7 @@ class UsersControllerTest < ActionController::TestCase
   test 'should show tabs for resource types and link to view all' do
     sign_in(@user)
 
-    assert @user.events.count > 1
+    assert @user.events.not_finished.count > 0
     assert @user.materials.count > 1
     assert @user.collections.count > 1
     assert @user.workflows.count > 1
@@ -451,9 +451,24 @@ class UsersControllerTest < ActionController::TestCase
     assert_select 'a[data-toggle="tab"]', text: "Workflows (#{@user.workflows.count})"
 
     # Links
-    assert_select '#events a[href=?]', events_path(user: @user.username, include_expired: true)
+    assert_select '#events a[href=?]', events_path(user: @user.username)
     assert_select '#materials a[href=?]', materials_path(user: @user.username)
     assert_select '#collections a[href=?]', collections_path(user: @user.username)
     assert_select '#workflows a[href=?]', workflows_path(user: @user.username)
+  end
+
+  test 'link to view all in events tab should include_expired if user has no upcoming events' do
+    user = users(:another_regular_user)
+    sign_in(user)
+
+    assert user.events.not_finished.none?
+    assert user.events.any?
+
+    UsersHelper.stub(:user_profile_resource_limit, 1) do
+      get :show, params: { id: user }
+    end
+
+    assert_select 'a[data-toggle="tab"]', text: "Events (#{user.events.count})"
+    assert_select '#events a[href=?]', events_path(user: user.username, include_expired: true)
   end
 end

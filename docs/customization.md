@@ -15,10 +15,11 @@ Secure settings such as database credentials, API keys, email settings etc. can 
 
 ## Styles
 
-To customize the appearance of TeSS, go into the themes folder (`app/assets/stylesheets/themes`) and make a copy 
-of the default theme file (`default.scss`). In your copy, you can tweak any of the existing variables, add overrides for
-any bootstrap variables (reference: https://github.com/twbs/bootstrap-sass/blob/master/assets/stylesheets/bootstrap/_variables.scss)
-and add new CSS/SASS styles.
+TeSS' UI is built on [Bootstrap 3](https://getbootstrap.com/docs/3.4/). To customize the appearance of TeSS, go into
+the themes folder (`app/assets/stylesheets/themes`) and make a copy of the default theme file (`default.scss`).
+In your copy, you can tweak any of the existing variables, add overrides for any Bootstrap variables
+([reference](https://github.com/twbs/bootstrap-sass/blob/master/assets/stylesheets/bootstrap/_variables.scss)) and add
+new CSS/Sass styles.
 
 To enable your theme, edit `app/assets/stylesheets/mixins/variables.scss` and change the line:
 ```scss
@@ -31,6 +32,9 @@ to point to your new theme file...
 
 Be sure to recompile assets (`bundle exec rake assets:recompile`), or rebuild your docker image, 
 and restart the application to apply the new styles.
+
+You can visit <http://localhost:3000/theme_showcase> on your local instance to see various Bootstrap elements with the
+current theme applied.
 
 ## Text changes
 

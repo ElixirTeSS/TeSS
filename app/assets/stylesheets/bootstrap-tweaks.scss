@@ -1,0 +1,96 @@
+a {
+  text-decoration: underline;
+}
+
+li > a {
+  text-decoration: none;
+}
+
+a.btn {
+  text-decoration: none;
+}
+
+.active-filters > a {
+  text-decoration: none;
+}
+
+.pagination {
+  display: flex;
+  flex-wrap: wrap; /* optional. only if you want the items to wrap */
+  justify-content: center; /* for horizontal alignment */
+
+  li {
+    span, a {
+      border: none !important;
+      border-radius: 6px;
+      padding: 5px 10px;
+    }
+  }
+
+  li.prev, li.next, li.first, li.last {
+    span, a {
+      color: transparent !important;
+      width: 30px;
+      height: 100%;
+      overflow: hidden;
+      background-size: 14px;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
+
+  li.prev {
+    span, a {
+      background-image: image-url("modern/icons/chevron-left-icon.svg");
+    }
+  }
+
+  li.next {
+    span, a {
+      background-image: image-url("modern/icons/chevron-right-icon.svg");
+    }
+  }
+
+  li.first {
+    span, a {
+      background-image: image-url("modern/icons/double-left-icon.svg");
+    }
+  }
+
+  li.last {
+    span, a {
+      background-image: image-url("modern/icons/double-right-icon.svg");
+    }
+  }
+
+  li.disabled {
+    filter: grayscale(1);
+  }
+
+}
+
+a {
+  transition: $transition-time;
+}
+
+.btn {
+  transition: $transition-time;
+}
+
+$btn-secondary-color: #fff !default;
+$btn-secondary-bg: $brand-secondary !default;
+$btn-secondary-border: darken($btn-secondary-bg, 5%) !default;
+
+.btn-secondary {
+  @include button-variant($btn-secondary-color, $btn-secondary-bg, $btn-secondary-border);
+}
+
+ol.breadcrumb {
+  margin-bottom: 0;
+}
+
+.nav.nav-xs > li > a {
+  padding: ($padding-xs-vertical + 1px) ($padding-xs-horizontal + 1px); // +1px because no border
+  font-size: $font-size-small;
+  line-height: $line-height-small;
+}

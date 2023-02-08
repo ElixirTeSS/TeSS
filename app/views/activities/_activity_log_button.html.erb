@@ -1,0 +1,9 @@
+<hr/>
+
+<%= link_to('#activity_log', class: 'activity-log-button') do %>
+  Activity log <i class="icon icon-md expand-icon"></i>
+<% end %>
+
+<div id="activity_log" style="display: none" data-activity-path="<%= polymorphic_path([resource, :activities]) -%>">
+  <%= image_tag('ajax-loader.gif') %>
+</div>

@@ -9,7 +9,9 @@
         <h4 class="nav-heading-darker">Training materials</h4>
         {{#each_when associatedResources "type" "materials"}}
         <div class="resourceCard">
-            <a href="{{this.url}}" target="_blank" class="h4">{{this.title}}</a>
+            <a href="{{this.url}}" target="_blank" rel="nofollow noopener" class="h4">
+                <i class="fa fa-external-link"></i> {{this.title}}
+            </a>
         </div>
         {{/each_when}}
     {{/if_any}}
@@ -18,7 +20,9 @@
         <h4 class="nav-heading-darker">Training events</h4>
         {{#each_when associatedResources "type" "events"}}
         <div class="resourceCard">
-            <a href="{{this.url}}" target="_blank" class="h4">{{this.title}}</a>
+            <a href="{{this.url}}" target="_blank" rel="nofollow noopener" class="h4">
+                <i class="fa fa-external-link"></i> {{this.title}}
+            </a>
         </div>
         {{/each_when}}
     {{/if_any}}
@@ -27,9 +31,9 @@
         <h4 class="nav-heading-darker">Tools</h4>
         {{#each_when associatedResources "type" "tools"}}
         <div class="resourceCard">
-            <a href="{{this.url}}" target="_blank" class="h4">{{this.title}}</a>
-            <i><span id=tool-description-{{this.id}}></span></i>
-            <div id=tool-topics-{{this.id}}></div>
+            <a href="{{this.url}}" target="_blank" rel="nofollow noopener" class="h4">
+                <i class="fa fa-external-link"></i> {{this.title}}
+            </a>
         </div>
         {{/each_when}}
     {{/if_any}}
@@ -38,7 +42,9 @@
     <h4 class="nav-heading-darker">Policies</h4>
         {{#each_when associatedResources "type" "policies"}}
         <div class="resourceCard">
-            <a href="{{this.url}}" target="_blank" class="h4">{{this.title}}</a>
+            <a href="{{this.url}}" target="_blank" rel="nofollow noopener" class="h4">
+                <i class="fa fa-external-link"></i> {{this.title}}
+            </a>
         </div>
         {{/each_when}}
     {{/if_any}}

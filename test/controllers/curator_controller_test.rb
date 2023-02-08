@@ -37,7 +37,7 @@ class CuratorControllerTest < ActionController::TestCase
     get :topic_suggestions
 
     assert_response :forbidden
-    assert flash[:alert].include?('curator')
+    assert_select '#error-message', text: /curator/
     assert_nil assigns(:suggestions)
   end
 
@@ -99,7 +99,7 @@ class CuratorControllerTest < ActionController::TestCase
     get :users
 
     assert_response :forbidden
-    assert flash[:alert].include?('curator')
+    assert_select '#error-message', text: /curator/
     assert_nil assigns(:suggestions)
   end
 

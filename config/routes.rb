@@ -135,7 +135,7 @@ Rails.application.routes.draw do
 
   # error pages
   %w( 404 422 500 503 ).each do |code|
-    get code, :to => "application#handle_error", :status_code => code
+    get code, to: 'application#handle_error', status_code: code
   end
 
   get 'curate/topic_suggestions' => 'curator#topic_suggestions'
@@ -152,6 +152,9 @@ Rails.application.routes.draw do
   end
 
   get 'resolve/:prefix:type:id' => 'resolution#resolve', constraints: { prefix: /(.+\:)?/, type: /[a-zA-Z]/, id: /\d+/ }
+
+  get 'theme_showcase' => 'static#showcase'
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -1,0 +1,225 @@
+.icon {
+  display: inline-block;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  vertical-align: middle;
+}
+
+.icon-xxs {
+  width: $font-size-xxs;
+  height: $font-size-xxs;
+}
+
+.icon-xs {
+  width: $font-size-xs;
+  height: $font-size-xs;
+}
+
+.icon-sm {
+  width: $font-size-small;
+  height: $font-size-small;
+}
+
+.icon-md {
+  width: $font-size-base;
+  height: $font-size-base;
+}
+
+.icon-lg {
+  width: $font-size-large;
+  height: $font-size-large;
+}
+
+.icon-h4 {
+  width: $font-size-h4;
+  height: $font-size-h4;
+}
+
+.icon-h3 {
+  width: $font-size-h3;
+  height: $font-size-h3;
+}
+
+.icon-h2 {
+  width: $font-size-h2;
+  height: $font-size-h2;
+}
+
+.icon-h1 {
+  width: $font-size-h1;
+  height: $font-size-h1;
+}
+
+.icon-greyscale {
+  filter: grayscale(1);
+}
+
+.icon-invert {
+  filter: invert(1);
+}
+
+.api-icon {
+  // image-url
+  background-image: image-url("modern/icons/api-icon.svg");
+}
+
+.star-icon {
+  background-image: image-url("modern/icons/star-icon.svg");
+}
+
+.star-fill-icon {
+  background-image: image-url("modern/icons/star-fill-icon.svg");
+}
+
+.star-primary-icon {
+  background-image: image-url("modern/icons/star-primary-icon.svg");
+}
+
+.star-primary-fill-icon {
+  background-image: image-url("modern/icons/star-primary-fill-icon.svg");
+}
+
+.search-icon {
+  background-image: image-url("modern/icons/search-icon.svg");
+}
+
+.arrow-right-icon {
+  background-image: image-url("modern/icons/arrow-right-icon.svg");
+}
+
+.arrow-top-right-icon {
+  background-image: image-url("modern/icons/arrow-top-right-icon.svg");
+}
+
+.arrow-top-right-white-icon {
+  background-image: image-url("modern/icons/arrow-top-right-white-icon.svg");
+}
+
+.chevron-left-icon {
+  background-image: image-url("modern/icons/chevron-left-icon.svg");
+}
+
+.chevron-right-icon {
+  background-image: image-url("modern/icons/modern/icons/chevron-right-icon.svg");
+}
+
+.circle-xmark-icon {
+  background-image: image-url("modern/icons/circle-xmark-icon.svg");
+}
+
+.class-icon {
+  background-image: image-url("modern/icons/class-icon.svg");
+}
+
+.clear-filters-icon {
+  background-image: image-url("modern/icons/clear-filters-icon.svg");
+}
+
+.community-icon {
+  background-image: image-url("modern/icons/community-icon.svg");
+}
+
+.cross-icon {
+  background-image: image-url("modern/icons/cross-icon.svg");
+}
+
+.developer-icon {
+  background-image: image-url("modern/icons/developer-icon.svg");
+}
+
+.double-left-icon {
+  background-image: image-url("modern/icons/double-left-icon.svg");
+}
+
+.double-right-icon {
+  background-image: image-url("modern/icons/double-right-icon.svg");
+}
+
+.events-icon {
+  background-image: image-url("modern/icons/events-icon.svg");
+}
+
+.filter-icon {
+  background-image: image-url("modern/icons/filter-icon.svg");
+}
+
+.hourglass-icon {
+  background-image: image-url("modern/icons/hourglass-icon.svg");
+}
+
+.hybrid-event-icon {
+  background-image: image-url("modern/icons/hybrid-event-icon.svg");
+}
+
+.materials-icon {
+  background-image: image-url("modern/icons/materials-icon.svg");
+}
+
+.microscope-icon {
+  background-image: image-url("modern/icons/microscope-icon.svg");
+}
+
+.minus-icon {
+  background-image: image-url("modern/icons/minus-icon.svg");
+}
+
+.nonprofit-icon {
+  background-image: image-url("modern/icons/nonprofit-icon.svg");
+}
+
+.onsite-event-icon {
+  background-image: image-url("modern/icons/onsite-event-icon.svg");
+}
+
+.plus-icon {
+  background-image: image-url("modern/icons/plus-icon.svg");
+}
+
+.search-icon {
+  background-image: image-url("modern/icons/search-icon.svg");
+}
+
+.search-icon-blue {
+  background-image: image-url("modern/icons/search-icon-blue.svg");
+}
+
+.sort-icon {
+  background-image: image-url("modern/icons/sort-icon.svg");
+}
+
+.source-code-icon {
+  background-image: image-url("modern/icons/source-code-icon.svg");
+}
+
+.star-icon {
+  background-image: image-url("modern/icons/star-icon.svg");
+}
+
+.sustainable-icon {
+  background-image: image-url("modern/icons/sustainable-icon.svg");
+}
+
+.trainers-icon {
+  background-image: image-url("modern/icons/trainers-icon.svg");
+}
+
+.virtual-event-icon {
+  background-image: image-url("modern/icons/virtual-event-icon.svg");
+}
+
+.workflows-icon {
+  background-image: image-url("modern/icons/workflows-icon.svg");
+}
+
+.expand-icon {
+  background-image: image-url("modern/icons/expand-icon.svg");
+}
+
+.collapse-icon {
+  background-image: image-url("modern/icons/collapse-icon.svg");
+}
+
+.information-icon {
+  background-image: image-url("modern/icons/info-icon.svg");
+}

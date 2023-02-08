@@ -1,0 +1,10 @@
+<div class="biotools-info">
+    {{#if labels}}
+        <div class="tooltypes">
+          {{#each labels}}
+            <span class="label label-default">{{ this }}</span>
+          {{/each}}
+        </div>
+    {{/if}}
+    <span>{{{ truncatedDescription }}}</span>
+</div>

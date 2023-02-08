@@ -8,18 +8,16 @@
     </div>
   </div>
 
-  <div class="row bounding-box">
-    <div class="tool-suggestions-header">
-      <em>Data provided by <a href="http://bio.tools">ELIXIR Tools and Data Services Registry</a></em>
-      <div>Click the <i class="fa fa-plus-square-o"></i> button to add a tool as an external resource.</div>
-    </div>
+  <div class="tool-suggestions-header">
+    <em>Data provided by <a href="http://bio.tools">ELIXIR Tools and Data Services Registry</a></em>
+    <div>Click the <i class="fa fa-plus-square-o"></i> button to add a tool as an external resource.</div>
+  </div>
 
-    <%= image_tag('loading42.gif', class: 'loading_image', id: 'biotools-loading-spinner') -%>
+  <%= image_tag('loading42.gif', class: 'loading_image', id: 'biotools-loading-spinner') -%>
 
-    <div id="biotools-results"></div>
+  <div id="biotools-results"></div>
 
-    <div class="load-more-results">
-      <a id="next-tools-button" class="btn btn-primary btn-block" style="display: none;">Load more results</a>
-    </div>
+  <div class="load-more-results">
+    <a id="next-tools-button" class="btn btn-default btn-block" style="display: none;">Load more results</a>
   </div>
 <% end %>

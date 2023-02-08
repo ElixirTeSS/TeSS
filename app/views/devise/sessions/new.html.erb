@@ -1,25 +1,14 @@
-<div class="row wrapper">
-  <div class="col-md-12">
-    <div class="page-header">
-      <%= page_title 'Log in' %>
-    </div>
-    <div class="row">
-      <div class="col-md-6">
-        <% if resource_class.omniauth_providers.any? %>
-          <% if devise_mapping.omniauthable? -%>
-            <div class="h4"><%= t('authentication.omniauth.title') %></div>
-            <p><%= t('authentication.omniauth.description') %></p>
-            <% Devise.omniauth_configs.each do |provider, config| -%>
-              <%= link_to(omniauth_authorize_path(resource_name, provider), method: :post,
-                          class: config.options[:logo] ? '' : 'btn btn-info') do %>
-                <% if config.options[:logo] %>
-                  <%= image_tag(config.options[:logo], class: "omniauth-logo omniauth-#{provider}") %>
-                <% else %>
-                  <%= "Log in with #{t("authentication.omniauth.providers.#{provider}", default: provider.to_s.titleize)}" %>
-                <% end %>
-              <% end -%>
-            <% end -%>
-          <% end -%>
+<div class="account-form">
+  <div class="page-header">
+    <%= page_title 'Log in' %>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-middle">
+        <% if resource_class.omniauth_providers.any? && devise_mapping.omniauthable? %>
+          <div class="h4"><%= t('authentication.omniauth.title') %></div>
+          <p><%= t('authentication.omniauth.description') %></p>
+          <%= render partial: 'devise/sessions/omniauth_options' %>
           <hr/>
         <% end %>
 

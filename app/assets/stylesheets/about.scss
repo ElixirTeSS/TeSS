@@ -1,0 +1,103 @@
+.about-nav {
+  .nav-stacked {
+    background: #FFFFFF;
+    box-shadow: 0 6px 10px rgba(0,0,0,0.03);
+    border-radius: 6px;
+    margin-bottom: 24px;
+
+    &.active {
+      li { display: block; }
+      .about-page-category a { color: $brand-primary !important; }
+    }
+
+    > li > a {
+      padding: 7px 15px;
+    }
+  }
+
+  .about-page-category {
+    font-size: $font-size-h4;
+    display: block;
+    a {
+      color: $headings-color !important;
+    }
+  }
+
+  a {
+    color: $gray !important;
+  }
+}
+
+.about-block {
+  .odd-about-block, .even-about-block {
+    &>h1, &>h2, &>h3 {
+      margin-top: 0;
+    }
+
+    background: $panel-bg;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.03);
+    border-radius: 8px;
+    margin: 35px 0 0 0;
+    padding: 20px;
+    &.row {
+      padding: 20px (20px - ($grid-gutter-width / 2));
+    }
+  }
+
+  .sub-about-block {
+    padding: 10px 20px;
+    margin-top: 10px;
+  }
+
+  .about-resource-icon {
+    text-align: center;
+    margin-top: 15px;
+    img {
+      width: auto;
+    }
+  }
+
+  .about-icon {
+    font-size: 5em;
+    color: $brand-primary;
+  }
+
+  .structured-data-graphic {
+    max-width: 100px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    float: right;
+  }
+
+  .motivation-box {
+    margin-top: 20px;
+    text-align: center;
+
+    .motivation-box-title {
+      font-size: $font-size-large;
+      text-align: center;
+      margin: 10px;
+      color: $headings-color;
+    }
+
+    .motivation-box-graphic {
+      height: 160px;
+      padding: 10px;
+    }
+
+    .motivation-box-graphic-small {
+      height: 80px;
+      padding: 10px;
+      &.about-icon {
+        font-size: 4em;
+      }
+    }
+  }
+}
+
+.quick-links {
+  width: 80%;
+  text-align: center;
+  margin-left: 10%;
+}

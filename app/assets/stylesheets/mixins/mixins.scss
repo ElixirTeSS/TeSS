@@ -56,7 +56,13 @@
 }
 
 @mixin floating-card {
-  box-shadow: 2px 2px 2px 0 #ccc;
-  border: 1px solid #ccc;
-  border-radius: 0;
+  border: 1px solid #F4F4F4;
+  box-shadow: 0 4px 6px rgba(36, 37, 38, 0.03);
+  border-radius: 8px;
+}
+
+@mixin unstyled-ul {
+  margin-left: 0;
+  list-style: outside none none;
+  padding-left: 0;
 }

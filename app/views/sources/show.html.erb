@@ -7,26 +7,13 @@
   </div>
 
   <div id="content">
-
-    <div class="row">
-      <div class="content_action">
-        <%= link_to 'Back', sources_path, class: "btn btn-info" %>
-
-        <% if !current_user.nil? and policy(@source).update? %>
-          <%= link_to t('.edit', default: t("helpers.links.edit")),
-                      edit_source_path(@source), class: 'btn btn-primary' %>
-        <% end %>
-
-        <% if !current_user.nil? and policy(@source).destroy? %>
-          <%= link_to t('.destroy', default: t("helpers.links.destroy")),
-                      source_path(@source),
-                      method: 'delete',
-                      data: { confirm: t('.confirm', default: t("helpers.links.confirm", default: 'Are you sure?')) },
-                      class: 'btn btn-danger' %>
-        <% end %>
-        <%= link_to @source.url, class: 'btn btn-success', target: '_blank', rel: 'noopener' do %>
-          <span class="fa fa-external-link"></span> View URL
-        <% end %>
+    <div class="content-actions">
+      <div class="content-viewer-actions">
+        <%= external_link_button 'View URL', @source.url if @source.url.present? %>
+      </div>
+      <div class="content-manager-actions">
+        <%= edit_button(@source) if policy(@source).update? %>
+        <%= delete_button(@source) if policy(@source).destroy? %>
       </div>
     </div>
 
@@ -34,14 +21,12 @@
       <ul class="nav nav-tabs">
         <%= tab('Source', icon_class_for_model('source'), 'home', active: true) %>
         <%= tab('Testing', icon_class_for_model('testing'), 'testing') %>
-        <%= tab('Activity log', icon_class_for_model('activity_logs'), 'activity_log',
-                disabled: { check: @source.activities.none?, message: 'No activities recorded' }) %>
       </ul>
 
       <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
           <div class="row">
-            <div class="text-justify">
+            <div>
 
               <h4>Source Details</h4>
 
@@ -148,22 +133,17 @@
                   </div>
                 </div>
               <% end %>
-
             </div>
-
           </div>
+          <%= render partial: 'activities/activity_log_button', locals: { resource: @source } %>
         </div>
         <div id="testing" class="tab-pane">
           <div class="row">
             <%= render partial: 'sources/test' %>
           </div>
         </div>
-        <div id="activity_log" class="tab-pane fade" data-activity-path="<%= source_activities_path(@source) -%>">
-          <%= image_tag('ajax-loader.gif') %>
-        </div>
       </div>
     </div>
-
   </div>
 </div>
 

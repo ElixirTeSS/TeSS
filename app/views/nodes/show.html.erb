@@ -1,35 +1,17 @@
 <div class="wrapper collapsing-wrapper">
   <%# SIDEBAR %>
   <div class="collapsing-sidebar" id="sidebar">
-    <%= render :partial => "nodes/partials/node_info", :locals => {:node => @node} %>
+    <%= render partial: 'nodes/partials/node_info', locals: { node: @node } %>
   </div>
+
   <div id="content">
-    <div class="row">
-      <div>
-        <h2 style="margin-top: 0px;">
-          <%= image_tag get_image_url_for(@node), :class=>"media-image listing_image" %>
-          <%=t '.title', :default => @node.name %>
-        </h2>
+    <div class="content-actions">
+      <div class="content-viewer-actions">
+        <%= external_link_button 'View home page', @node.home_page if @node.home_page.present? %>
       </div>
-      <div class="content_action" style="margin-top: -50px;">
-        <%= link_to t('.back', :default => t("helpers.links.back")),
-                    :back, :class => 'btn btn-info'  %>
-        <% if !current_user.nil? and policy(@node).update? %>
-            <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                        edit_node_path(@node), :class => 'btn btn-primary' %>
-        <% end %>
-        <% if !current_user.nil? and policy(@node).destroy? %>
-            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                        node_path(@node),
-                        :method => 'delete',
-                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                        :class => 'btn btn-danger' %>
-        <% end %>
-        <% unless @node.home_page.blank? %>
-            <a href="<%= @node.home_page %>" target="_blank" rel="noopener" class="btn btn-success">
-              <span class="fa fa-external-link"></span> View home page
-            </a>
-        <% end %>
+      <div class="content-manager-actions">
+        <%= edit_button(@node) if policy(@node).update? %>
+        <%= delete_button(@node) if policy(@node).destroy? %>
       </div>
     </div>
     <div class="row">
@@ -39,61 +21,51 @@
       <% end %>
     </div>
     <div class="row">
+      <% resource_limit = 30 %>
+      <% materials = @node.materials.limit(resource_limit) %>
+      <% materials_count =  @node.materials.count %>
+      <% upcoming_events = @node.events.not_finished %>
+      <% past_events = @node.events.finished %>
+      <% events = upcoming_events.limit(resource_limit) %>
+      <% events_count =  @node.events.count %>
+      <% activator = tab_activator %>
       <ul class="nav nav-tabs">
-        <%= tab('Materials', icon_class_for_model('materials'), 'materials', active: true,
-                disabled: { check: @node.materials.none?, message: 'No registered training materials' },
-                count: @node.materials.count) %>
-
-        <%= tab('Events', icon_class_for_model('events'), 'events',
-                disabled: { check: @node.events.none?, message: 'No registered events' },
-                count: @node.events.count) %>
-
-        <%= tab('Activity log', icon_class_for_model('activity_logs'), 'activity_log',
-                disabled: { check: @node.activities.none?, message: 'No activities recorded' }) %>
+        <% if TeSS::Config.feature['materials'] %>
+          <%= tab('Materials', icon_class_for_model('materials'), 'materials', activator: activator,
+                  disabled: { check: materials_count.zero?, message: 'No registered training materials' },
+                  count: materials_count) %>
+        <% end %>
+        <% if TeSS::Config.feature['events'] %>
+          <%= tab('Events', icon_class_for_model('events'), 'events', activator: activator,
+                  disabled: { check: events_count.zero?, message: 'No registered events' },
+                  count: events_count) %>
+        <% end %>
       </ul>
 
       <div class="tab-content">
-        <div id="materials" class="tab-pane fade in active">
-          <div class="row">
-            <% materials_for_node = @node.materials %>
-            <% materials = materials_for_node.count > 30 ? materials_for_node.first(30) : materials_for_node %>
-            <div class="search-results-count">
-              <%= (materials.count > 0 ? "Showing" : "Found") + " #{pluralize(materials.count, "material")}#{(materials_for_node.count > 30) ? " out of #{materials_for_node.count}" : ''}." %>
-              <%= link_to "View all results.", :controller => 'materials', :content_provider => @node.content_providers.map{ |x| x.title} if (materials_for_node.count > 30) %>
-            </div>
+        <% if TeSS::Config.feature['materials'] %>
+          <%= render partial: 'common/associated_resources',
+                     locals: { model: Material,
+                               total_count: materials_count,
+                               limit: resource_limit,
+                               resources: materials,
+                               activator: activator,
+                               view_all_link: materials_path(node: @node.name) } %>
+        <% end %>
 
-            <% materials.each do |material| %>
-                <%= render material %>
-            <% end %>
-          </div>
-        </div>
-        <div id="events" class="tab-pane fade">
-          <div class="row">
-            <% events_for_node = @node.events %>
-            <% upcoming_events = events_for_node.not_finished %>
-            <% past_events = events_for_node.finished %>
-
-            <div class="row">
-              <% events = upcoming_events.count > 30 ? upcoming_events.first(30) : upcoming_events %>
-              <div class="search-results-count">
-                <%= (upcoming_events.count > 0 ? "Showing" : "Found") + " #{pluralize(events.count, "event")}#{(upcoming_events.count > 30) ? " out of #{upcoming_events.count}" : ''}." %>
-                <%= "Found #{pluralize(past_events.count, "past event")}." %>
-                <%= link_to "View all results.", :controller => 'events', :content_provider => @node.content_providers.map{ |x| x.title} if (upcoming_events.count > 30 || past_events.count > 0) %>
-              </div>
-              <% if upcoming_events.count > 0 %>
-                  <ul class="masonry media-grid" style="margin-top: 15px;">
-                    <% upcoming_events.each do |upcoming_event| %>
-                        <%= render upcoming_event %>
-                    <% end %>
-                  </ul>
-              <% end %>
-            </div>
-          </div>
-        </div>
-        <div id="activity_log" class="tab-pane fade" data-activity-path="<%= node_activities_path(@node) -%>">
-          <%= image_tag('ajax-loader.gif') %>
-        </div>
+        <% if TeSS::Config.feature['events'] %>
+          <%= render partial: 'common/associated_events',
+                     locals: { total_count: upcoming_events.count,
+                               past_count: past_events.count,
+                               limit: resource_limit,
+                               resources: events,
+                               activator: activator,
+                               view_all_link: events_path(node: @node.name),
+                               inc_expired_link: events_path(node: @node.name, include_expired: true) } %>
+        <% end %>
       </div>
     </div>
+
+    <%= render partial: 'activities/activity_log_button', locals: { resource: @node } %>
   </div>
 </div>

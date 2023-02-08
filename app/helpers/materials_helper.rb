@@ -19,12 +19,12 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
 
 
   def materials_info
-    MATERIALS_INFO % { link: link_to('see here for here for details on automatic registration',
+    MATERIALS_INFO % { link: link_to('see here for details on automatic registration',
                                   registering_resources_path(anchor: 'automatic')) }
   end
 
   def elearning_materials_info
-    ELEARNING_MATERIALS_INFO % { link: link_to('see here for here for details on automatic registration',
+    ELEARNING_MATERIALS_INFO % { link: link_to('see here for details on automatic registration',
                                   registering_resources_path(anchor: 'automatic')) }
   end
 
@@ -62,13 +62,26 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
     TargetAudienceDictionary.instance.lookup_value(label, 'title') || label
   end
 
-  def display_attribute(resource, attribute, title: nil, markdown: false, list: false)
+  def display_difficulty_level(resource)
+    value = resource.send("difficulty_level")
+    if value == 'beginner'
+      "• " + value
+    elsif value == 'intermediate'
+      "•• " + value
+    elsif value == 'advanced'
+      "••• " + value
+    else
+      ""
+    end
+  end
+
+  def display_attribute(resource, attribute, show_label: true, title: nil, markdown: false, list: false)
     value = resource.send(attribute)
     value = render_markdown(value) if markdown
     value = yield(value) if block_given? && value.present? && !list
-    string = "<p class=\"#{attribute}\">"
-    if value.present? && value.try(:strip) != 'License Not Specified'
-      string << "<b> #{title || resource.class.human_attribute_name(attribute)}: </b>"
+    string = "<p class=\"#{attribute}#{show_label ? ' no-spacing' : ''}\">"
+    unless value.blank? || value.try(:strip) == 'License Not Specified'
+      string << "<strong class='text-primary'> #{title || resource.class.human_attribute_name(attribute)}: </strong>" if show_label
       if list
         string << "<ul>"
         value.each do |v|
@@ -76,10 +89,15 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
         end
         string << "</ul>"
       else
-        string << "#{value}"
+        string << value.to_s
       end
     end
-    (string + '</p>').html_safe
+    string << '</p>'
+    string.html_safe
+  end
+
+  def display_attribute_no_label(resource, attribute, markdown: false, &block) # resource e.g. <#Material> & symbol e.g. :target_audience
+    display_attribute(resource, attribute, markdown: markdown, show_label: false, &block)
   end
 
   def embed_youtube(material)
@@ -90,4 +108,7 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
     end
   end
 
+  def keywords_and_topics(material)
+    (material.scientific_topic_names | material.operation_names | material.keywords).join(', ')
+  end
 end

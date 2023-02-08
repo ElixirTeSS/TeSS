@@ -22,56 +22,31 @@
 }
 </script>
 
-<%# Welcome text %>
-<div class="welcome-text">
-  <h2 class="module-heading" style="margin-top: 5px;"><%== raw t 'home.welcome' %></h2>
-  <p><%== raw t 'home.subtitle' %></p>
-</div>
-
-<%# Big search box %>
-<div class="searchbox">
-  <%= form_tag search_path, method: :get, role: 'search' do %>
-    <div class="searchbox-wrapper">
-      <input type="text" class="searchbox-field" name="q"
-             placeholder="Search <%= TeSS::Config.site['title_short'] %>..." autofocus="autofocus">
-      <button type="submit" class="searchbox-btn">
-        <i class="fa fa-search"></i>
-      </button>
-    </div>
-  <% end %>
-</div>
-
-<%# Feature buttons %>
-<ul class="featureblocks">
-  <% ['events', 'materials', 'workflows', 'providers', 'trainers'].each do |feature| %>
-    <% if TeSS::Config.feature[feature] == true %>
-      <li>
-        <%= link_to polymorphic_path(feature) do %>
-          <div>
-            <h2><%= feature.titleize %></h2>
-            <%= image_tag(asset_path("features/#{feature}.png"), alt: feature.titleize) %>
-          </div>
-        <% end %>
-        <p><%== raw t "home.#{feature}_message" %></p>
-      </li>
-    <% end %>
-  <% end %>
-</ul>
-
-<% if @resources.length > 0 -%>
-  <div id="materials-title">
-    <h3>Latest Content in <%= TeSS::Config.site['title_short'] %></h3>
+<section>
+  <%# Welcome text %>
+  <div class="welcome-text">
+    <h1 class="module-heading"><%== raw t 'home.welcome' %></h1>
+    <p class="font-size-lg"><%== raw t 'home.subtitle' %></p>
   </div>
-  <% @resources.each do |resource| %>
-    <%= render layout: 'common/mixed_resources', locals: { resource: resource } do %>
-      <% days = ((Time.now - resource.created_at) / 1.day).to_i %>
-      <% if days == 0 %>
-        <div class="days_ago_text">Added to <%= TeSS::Config.site['title_short'] %> today</div>
-      <% else %>
-        <div class="days_ago_text">
-          Added to <%= TeSS::Config.site['title_short'] %> <%= pluralize(days, "day") %> ago
-        </div>
-      <% end %>
-    <% end -%>
-  <% end -%>
-<% end -%>
+
+  <%# Big search box %>
+  <div class="searchbox">
+    <%= form_tag search_path, method: :get, role: 'search' do %>
+      <div class="searchbox-wrapper">
+        <input type="text" class="searchbox-field" name="q"
+               placeholder="Search <%= TeSS::Config.site['title_short'] %>..." autofocus="autofocus">
+        <button type="submit" class="searchbox-btn">
+          <i class="icon icon-h3 search-icon"></i>
+        </button>
+      </div>
+    <% end %>
+  </div>
+</section>
+
+<%= render partial: 'static/home/catalogue_blocks' if TeSS::Config.site.dig('home_page', 'catalogue_blocks') %>
+
+<%= render partial: 'static/home/provider_carousel' if TeSS::Config.site.dig('home_page', 'provider_carousel') %>
+
+<%= render partial: 'static/home/faq' if TeSS::Config.site.dig('home_page', 'faq')&.any? %>
+
+<%= render partial: 'static/home/promo_blocks' if TeSS::Config.site.dig('home_page', 'promo_blocks') %>

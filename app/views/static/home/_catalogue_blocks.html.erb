@@ -1,0 +1,26 @@
+<% features = ['events', 'materials', 'workflows', 'trainers'].select { |f| TeSS::Config.feature[f] } %>
+
+<section id="catalogue">
+  <h2 class="text-center"><%= t('home.catalogue.title') %></h2>
+
+  <ul class="catalogue<%= ' catalogue-even' if features.count.even? %>">
+    <% features.each do |feature| %>
+      <li class="resource-type">
+        <%= link_to polymorphic_path(feature), class: 'link-overlay' do %>
+          <div class="resource-type-title">
+            <%= image_tag(asset_path("modern/icons/#{feature}-icon.svg"), alt: feature.titleize) %>
+            <h3><%= feature.titleize %></h3>
+          </div>
+
+          <div class="resource-type-text"><%== raw t "home.catalogue.#{feature}" %></div>
+
+          <div class="resource-type-link">
+              <span class="pseudolink">
+                <%= t('home.catalogue.link_text') %>
+              </span>&nbsp;<i class="icon icon-sm arrow-right-icon"></i>
+          </div>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</section>

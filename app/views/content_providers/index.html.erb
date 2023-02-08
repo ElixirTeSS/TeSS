@@ -2,49 +2,27 @@
   <% if TeSS::Config.solr_enabled %>
     <div id="sidebar" class="popout-sidebar">
       <%= render partial: "search/common/facet_sidebar",
-                 locals: { resources: @content_providers_results,
-                           resource_type: ContentProvider } %>
+                 locals: { resources: @content_providers_results, resource_type: ContentProvider } %>
     </div>
   <% end %>
 
   <div id="content">
-    <div class="row">
+    <h2>Content providers</h2>
+    <% content_for :buttons do %>
       <%= link_to new_content_provider_path, class: 'btn btn-primary' do %>
-        <i class="fa fa-plus-square"></i> Register content provider
+        Register content provider
       <% end %>
-      <div class="pull-right">
-        <%= info_button('What are content providers in ' +
-                          TeSS::Config.site['title_short'] + '?') do %>
-          <%= render_markdown(ContentProvidersHelper::CONTENT_PROVIDERS_INFO) %>
-        <% end %>
-      </div>
-    </div>
-
-    <% if TeSS::Config.solr_enabled %>
-      <div class="row">
-        <%= render partial: "search/common/search_box",
-                   locals: { resource_path: content_providers_path } %>
-        <button class="btn btn-default" id="sidebar-toggle" type="button"
-                autocomplete="off">
-          <i class="fa fa-filter"></i> Filters
-        </button>
-      </div>
-      <div class="row">
-        <%= render partial: "search/common/sort_by",
-                   locals: { resources: @content_providers } %>
-        <%= render partial: "search/common/search_info",
-                   locals: { resources: @content_providers_results,
-                             resource_type: 'content_provider' } %>
-        <%= render partial: "search/common/search_filters",
-                   locals: { resources: @content_providers_results } %>
-      </div>
+      <%= info_button("What are content providers in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>
+        <%= render_markdown(ContentProvidersHelper::CONTENT_PROVIDERS_INFO) %>
+      <% end %>
     <% end %>
 
-    <%= render partial: "search/common/pagination_bar",
-               locals: { resources: @content_providers } %>
-
-    <hr>
+    <%= render partial: "search/common/search_panel", locals: { resources: @content_providers_results,
+                                                                resource_type: ContentProvider } %>
 
     <%= render partial: 'common/masonry_grid', locals: { objects: @content_providers } %>
+
+    <%= render partial: 'search/common/pagination_bar', locals: { resources: @content_providers } %>
   </div>
+
 </div>

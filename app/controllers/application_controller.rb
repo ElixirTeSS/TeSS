@@ -38,26 +38,18 @@ class ApplicationController < ActionController::Base
     if status_code.is_a?(Symbol) # Convert :forbidden, :not_found, etc. to 403, 404 etc.
       status_code = Rack::Utils::SYMBOL_TO_STATUS_CODE[status_code] || status_code
     end
-    status_code = status_code.to_i
-    @skip_flash_messages_in_header = true
 
     if message.blank?
-      case status_code
-      when 500
-        message = 'Our apologies - your request caused an error (status code: 500 Server Error).'
-      when 503
-        message = 'Our apologies - the server is temporarily down or unavailable due to maintenance (status code: 503 Service Unavailable).'
-      when 422
-        message = 'The request you sent was well-formed but the change you wanted was rejected (status code: 422 Unprocessable Entity).'
-      when 404
-        message = 'The requested page could not be found - you may have mistyped the address or the page may have moved (status code: 404 Not Found).'
-      end
+      message = t("errors.#{status_code}",
+                  default: "#{TeSS::Config.site['title_short']} encountered an unexpected error: #{status_code}")
     end
 
-    flash[:alert] = message
+    status_code = status_code.to_i
+    @message = message
     respond_to do |format|
       format.html  { render 'static/error', status: status_code}
       format.json { render json: { error: { message: message, code: status_code } }, status: status_code }
+      format.json_api { render json: { error: { message: message, code: status_code } }, status: status_code }
     end
   end
 

@@ -1,0 +1,52 @@
+label.required abbr {
+  text-decoration: none;
+}
+
+//label.boolean {
+//  flex-flow: row wrap;
+//  font-size: $font-size-base;
+//  display: flex;
+//  flex-wrap: wrap;
+//  align-items: center;
+//
+//  input {
+//    margin-right: 16px;
+//    position: relative;
+//  }
+// }
+
+
+//input[type="checkbox"] {
+//  margin-top: -1px;
+//  height: 30px;
+//  width: 30px;
+//  border-radius: 4px;
+//}
+
+.help-inline-block {
+  display: inline-block;
+}
+
+.form-control {
+  box-shadow: none !important;
+  outline: none;
+}
+
+#next-tools-button {
+  margin-top: 0;
+}
+
+.delete-external-resource-btn {
+  @include delete-cross;
+
+  cursor: pointer;
+  display: inline;
+
+  input[type=checkbox] {
+    display: none;
+  }
+}
+
+hr {
+  border-top: 1px solid $input-border;
+}

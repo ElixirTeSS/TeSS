@@ -1,132 +1,78 @@
-<% events = @content_provider.events.from_verified_users %>
-<% materials = @content_provider.materials.from_verified_users %>
-<% sources = @content_provider.sources.order(enabled: :desc, finished_at: :desc) %>
-
 <div class="wrapper collapsing-wrapper">
-  <%# SIDEBAR %>
   <div class="collapsing-sidebar" id="sidebar">
-    <%= render :partial => "content_providers/partials/content_provider_sidebar",
-               :locals => { content_provider: @content_provider } %>
+    <%= render partial: 'content_providers/partials/content_provider_info', locals: { content_provider: @content_provider } %>
+    <%= render partial: 'content_providers/partials/content_provider_sidebar', locals: { content_provider: @content_provider } %>
   </div>
-  <div id="content">
-    <div class="row">
-      <div class="content_action pull-right">
-        <%= link_to t('.back', :default => t("helpers.links.back")),
-                    content_providers_path, :class => 'btn btn-info' %>
 
+  <div id="content">
+    <div class="content-actions">
+      <div class="content-viewer-actions">
+        <%= external_link_button 'View home page', @content_provider.url if @content_provider.url.present? %>
         <%= render partial: 'common/identifiers_dot_org_button',
                    locals: { resource: @content_provider } if TeSS::Config.identifiers_prefix %>
-
-        <% if !current_user.nil? and policy(@content_provider).update? %>
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_content_provider_path(@content_provider), :class => 'btn btn-primary' %>
-        <% end %>
-
-        <% if !current_user.nil? and policy(@content_provider).destroy? %>
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      content_provider_path(@content_provider),
-                      :method => 'delete',
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-danger' %>
-        <% end %>
+      </div>
+      <div class="content-manager-actions">
+        <%= edit_button(@content_provider) if policy(@content_provider).update? %>
+        <%= delete_button(@content_provider) if policy(@content_provider).destroy? %>
       </div>
     </div>
 
     <div class="row">
-      <p>
-        <%= link_to(image_tag(@content_provider.image.url, class: 'medium-content-provider-logo'),
-                    @content_provider.url, target: '_blank', rel: 'noopener',
-                    onclick: "getOutboundLink('#{@content_provider.url}'); return true;") %>
-      </p>
-
-      <p>
-        <%= link_to @content_provider.title, @content_provider.url, class: 'h5',
-                    target: '_blank', rel: 'noopener',
-                    onclick: "getOutboundLink('#{@content_provider.url}'); return true;" %>
-      </p>
-
-      <% unless @content_provider.contact.blank? %>
-        <p><strong>Contact:&nbsp;</strong><%= @content_provider.contact %></p>
-      <% end %>
-
-      <% unless @content_provider.description.blank? %>
-        <p class="minimise"><%= render_markdown @content_provider.description %></p>
-      <% end %>
-
-      <%= render partial: 'content_providers/partials/content_provider_schemaorg',
-                 locals: { content_provider: @content_provider } %>
-
-      <%= render partial: 'content_providers/partials/twitter_card',
-                 locals: { content_provider: @content_provider } %>
-    </div>
-
-    <div class="row">
+      <% resource_limit = 30 %>
+      <% materials = @content_provider.materials.from_verified_users.limit(resource_limit) %>
+      <% materials_count =  @content_provider.materials.from_verified_users.count %>
+      <% upcoming_events = @content_provider.events.from_verified_users.not_finished %>
+      <% past_events = @content_provider.events.from_verified_users.finished %>
+      <% events = upcoming_events.limit(resource_limit) %>
+      <% events_count =  @content_provider.events.from_verified_users.count %>
+      <% sources = @content_provider.sources.order(enabled: :desc, finished_at: :desc) %>
+      <% activator = tab_activator %>
       <ul class="nav nav-tabs">
-        <%= tab('Materials', icon_class_for_model('materials'), 'materials', active: materials.any? || events.none?,
-                disabled: { check: materials.none?, message: 'No associated training materials' },
-                count: materials.count) %>
+        <%= tab('Materials', icon_class_for_model('materials'), 'materials', activator: activator,
+                disabled: { check: materials_count.zero?, message: 'No associated training materials' },
+                count: materials_count) %>
 
-        <%= tab('Events', icon_class_for_model('events'), 'events', active: materials.none? && events.any?,
-                disabled: { check: events.none?, message: 'No associated events' },
-                count: events.count) %>
+        <%= tab('Events', icon_class_for_model('events'), 'events', activator: activator,
+                disabled: { check: events_count.zero?, message: 'No associated events' },
+                count: events_count) %>
 
         <% if TeSS::Config.feature['user_source_creation'] && policy(@content_provider).update? %>
-          <%= tab('Sources', icon_class_for_model('sources'), 'sources', count: sources.count) %>
+          <%= tab('Sources', icon_class_for_model('sources'), 'sources', count: sources.count, activator: activator) %>
         <% end %>
-
-        <%= tab('Activity log', icon_class_for_model('activity_logs'), 'activity_log',
-                disabled: { check: @content_provider.activities.none?, message: 'No activities recorded' }) %>
       </ul>
 
       <div class="tab-content">
-        <div id="materials" class="tab-pane fade 
-              <%= "in active" if materials.any? || events.none? %>
-          ">
-          <div class="row">
-            <% limited_materials = materials.count > 30 ? materials.limit(30) : materials %>
-            <div class="search-results-count">
-              <%= (limited_materials.count > 0 ? "Showing" : "Found") + " #{pluralize(materials.count, "material")}#{(materials.count > 30) ? " out of #{materials.count}" : ''}." %>
-              <%= link_to('View all results.', materials_path(content_provider: @content_provider.title)) if (materials.count > 30) %>
-            </div>
+        <% if TeSS::Config.feature['materials'] %>
+          <%= render partial: 'common/associated_resources',
+                     locals: { model: Material,
+                               total_count: materials_count,
+                               limit: resource_limit,
+                               resources: materials,
+                               activator: activator,
+                               view_all_link: materials_path(content_provider: @content_provider.title) } %>
+        <% end %>
 
-            <% materials.each do |material| %>
-              <%= render material %>
-            <% end %>
-          </div>
-        </div>
-        <div id="events" class="tab-pane fade <%= "in active" if materials.none? && events.any? %>">
-          <div class="row">
-            <% upcoming_events = events.not_finished %>
-            <% past_events = events.finished %>
-
-            <div class="row">
-              <% limited_events = upcoming_events.count > 30 ? upcoming_events.first(30) : upcoming_events %>
-              <div class="search-results-count">
-                <%= (upcoming_events.count > 0 ? "Showing" : "Found") + " #{pluralize(limited_events.count, "event")}#{(upcoming_events.count > 30) ? " out of #{upcoming_events.count}" : ''}." %>
-                <%= "Found #{pluralize(past_events.count, "past event")}." %>
-                <%= link_to('View all results.', events_path(content_provider: @content_provider.title, include_expired: true)) if (upcoming_events.count > 30 || past_events.count > 0) %>
-              </div>
-              <% if upcoming_events.count > 0 %>
-                <ul class="masonry media-grid" style="margin-top: 15px;">
-                  <% upcoming_events.each do |upcoming_event| %>
-                    <%= render upcoming_event %>
-                  <% end %>
-                </ul>
-              <% end %>
-            </div>
-          </div>
-        </div>
+        <% if TeSS::Config.feature['events'] %>
+          <%= render partial: 'common/associated_events',
+                     locals: { total_count: upcoming_events.count,
+                               past_count: past_events.count,
+                               limit: resource_limit,
+                               resources: events,
+                               activator: activator,
+                               view_all_link: events_path(content_provider: @content_provider.title),
+                               inc_expired_link: events_path(content_provider: @content_provider.title, include_expired: true) } %>
+        <% end %>
         <% if policy(@content_provider).update? && TeSS::Config.feature['sources'] %>
-          <div id="sources" class="tab-pane fade">
+          <div id="sources" class="tab-pane fade<%= ' in active' if activator.check_pane('sources') %>">
             <% if policy(Source).new? %>
               <div class="row">
                 <%= link_to new_content_provider_source_path(@content_provider), class: 'btn btn-primary' do %>
                   <i class="fa fa-plus-square"></i> Add source
                 <% end %>
                 <div class="pull-right">
-                <%= info_button("What are sources?") do %>
-                  <%= render_markdown(SourcesHelper::SOURCES_INFO) %>
-                <% end %>
+                  <%= info_button("What are sources?") do %>
+                    <%= render_markdown(SourcesHelper::SOURCES_INFO) %>
+                  <% end %>
                 </div>
               </div>
             <% end %>
@@ -135,10 +81,9 @@
             </div>
           </div>
         <% end %>
-        <div id="activity_log" class="tab-pane fade" data-activity-path="<%= content_provider_activities_path(@content_provider) -%>">
-          <%= image_tag('ajax-loader.gif') %>
-        </div>
       </div>
     </div>
+
+    <%= render partial: 'activities/activity_log_button', locals: { resource: @content_provider } %>
   </div>
 </div>

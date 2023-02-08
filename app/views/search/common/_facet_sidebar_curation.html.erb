@@ -1,49 +1,45 @@
-<% if resource_type.method_defined?(:last_scraped) %>
-  <li><h4 class="nav-heading">Last Checked</h4></li>
-  <%
-    selected = nil
-    opts = [[nil, ''], [1, '1 day'], [3, '3 days'], [7, '1 week'], [30, '1 month']].map do |days, text|
-      new_params = search_and_facet_params
-      if days
-        new_params[:days_since_scrape] = days
-        text = "More than #{text} ago"
-      else
-        new_params.delete(:days_since_scrape)
-        text = "Anytime"
-      end
-      url = url_for(new_params)
-      selected = url if days == params[:days_since_scrape].to_i
+<% show_last_scraped_filter = resource_type.method_defined?(:last_scraped) %>
+<% show_hidden_filter = resource_type.method_defined?(:user_requires_approval?) %>
 
-      [text, url]
-    end
+<% if show_last_scraped_filter || show_hidden_filter %>
+  <ul class="unstyled nav-simple">
+    <li>
+      <h4 class="nav-heading mt-4">
+        Curate
+      </h4>
+    </li>
 
-    blank_params = search_and_facet_params
-    blank_params.delete(:days_since_scrape)
-  %>
-
-  <%= select_tag 'days_since_scrape', options_for_select(opts, selected), id: 'last-scraped-select', class: 'form-control facet-select' %>
-<% end %>
-
-<% if resource_type.method_defined?(:user_requires_approval?) %>
-  <li><h4 class="nav-heading">Hidden Items</h4></li>
-
-  <% if @facet_params.include?(:include_hidden)  %>
-    <%= remove_filter_link(:include_hidden, 'true') do %>
-      <li class="nav-item">
-        <input type="checkbox" checked> Show hidden items </input>
+    <% if show_last_scraped_filter %>
+      <li class="sidebar-group mt-4">
+        <ul>
+          <li>
+            <div class="nav-heading filter-heading">
+              <span class="icon icon-lg events-icon"></span>
+              <span>Last Checked</span>
+              <div class="pull-right filter-expand"><i class="icon icon-md expand-icon"></i></div>
+            </div>
+          </li>
+          <% [[1, '1 day'], [3, '3 days'], [7, '1 week'], [30, '1 month']].each do |days, text| %>
+            <% text = "More than #{text} ago" %>
+            <% if days == params[:days_since_scrape].to_i %>
+            <li class="nav-item active" style="display: none;">
+              <%= remove_filter_link(:days_since_scrape, days, title: text, replace: true, class: 'facet-option') %>
+            </li>
+          <% else %>
+            <li class="nav-item" style="display: none;">
+              <%= filter_link(:days_since_scrape, days, '', title: text, replace: true, class: 'facet-option') %>
+            </li>
+          <% end %>
+        <% end %>
+        </ul>
       </li>
     <% end %>
-  <% else %>
-    <%= filter_link(:include_hidden, 'true', '-') do %>
-      <li class="nav-item active">
-        <input type="checkbox"> Show hidden items </input>
-      </li>
-    <% end %>
-  <% end %>
-<% end %>
 
-<script>
-    $('#last-scraped-select').change(function () {
-        window.location = $(this).val();
-    });
-</script>
+    <% if show_hidden_filter %>
+      <%= render partial: 'search/common/facet_sidebar_boolean_filter', locals: { facet_field: 'include_hidden',
+                                                                                  count: '-',
+                                                                                  enable_text: 'Show hidden items',
+                                                                                  disable_text: 'Hide hidden items' } %>
+    <% end %>
+  </ul>
+<% end %>

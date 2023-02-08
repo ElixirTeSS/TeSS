@@ -133,6 +133,19 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     assert_equal 'Summer Course on Learning Stuff 2', Event.find(existing_event.id).reload.title
   end
 
+  test 'open uri safety' do
+    ingestor = Ingestors::BioschemasIngestor.new
+    dir = Rails.root.join('tmp')
+    file = dir.join("test#{SecureRandom.urlsafe_base64(20)}").to_s
+    refute File.exist?(file)
+    begin
+      ingestor.open_url("| touch #{file}")
+    rescue StandardError
+    end
+    `ls #{dir}` # This is needed or the `exist?` check below seems to return a stale result
+    refute File.exist?(file)
+  end
+
   private
 
   def mock_bioschemas(url, filename)

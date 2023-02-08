@@ -1,9 +1,9 @@
-<%= link_to '#', class: 'btn btn-primary collaborators-button',
+<%= link_to '#', class: 'btn btn-default collaborators-button',
             data: { toggle: 'modal', target: '#collaborators-modal'} do %>
     <i class="fa fa-users" aria-hidden="true"></i> Collaborators
 <% end %>
 
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="collaborators-modal-title" id="collaborators-modal"
+<div class="modal fade text-left" tabindex="-1" role="dialog" aria-labelledby="collaborators-modal-title" id="collaborators-modal"
      data-url="<%= polymorphic_path([resource, :collaborations]) -%>" data-query-url="<%= users_path(q: '-query-') %>">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
