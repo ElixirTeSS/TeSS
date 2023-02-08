@@ -25,6 +25,28 @@ class CollectionsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:collections)
   end
 
+  test 'should get index as json-api' do
+    @collection.materials << materials(:good_material)
+    @collection.events << events(:one)
+
+    get :index, params: { format: :json_api }
+    assert_response :success
+    assert_not_nil assigns(:collections)
+    assert_valid_json_api_response
+
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    assert body['data'].any?
+    assert body['meta']['results-count'] > 0
+    assert body['meta'].key?('query')
+    assert body['meta'].key?('facets')
+    assert body['meta'].key?('available-facets')
+    assert_equal collections_path, body['links']['self']
+  end
+
   #NEW TESTS
   test 'should get new' do
     sign_in users(:regular_user)
@@ -133,9 +155,31 @@ class CollectionsControllerTest < ActionController::TestCase
   end
 
   test 'should show collection as json' do
+    @collection.materials << materials(:good_material)
+    @collection.events << events(:one)
+
     get :show, params: { id: @collection, format: :json }
+
     assert_response :success
     assert assigns(:collection)
+  end
+
+  test 'should show collection as json-api' do
+    @collection.materials << materials(:good_material)
+    @collection.events << events(:one)
+
+    get :show, params: { id: @collection, format: :json_api }
+    assert_response :success
+    assert assigns(:collection)
+    assert_valid_json_api_response
+
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    assert_equal @collection.title, body['data']['attributes']['title']
+    assert_equal collection_path(assigns(:collection)), body['data']['links']['self']
   end
 
   #UPDATE TEST

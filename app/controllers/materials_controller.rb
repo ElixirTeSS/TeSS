@@ -146,12 +146,12 @@ class MaterialsController < ApplicationController
                                      :last_scraped, :scraper_record, :remote_created_date, :remote_updated_date,
                                      :content_provider_id, :difficulty_level, :version, :status,
                                      :date_created, :date_modified, :date_published, :other_types,
-                                     :prerequisites, :syllabus, :learning_objectives, { :subsets => [] },
-                                     { :contributors => [] }, { :authors => [] }, { :target_audience => [] },
-                                     { :collection_ids => [] }, { :keywords => [] }, { :resource_type => [] },
-                                     { :scientific_topic_names => [] }, { :scientific_topic_uris => [] },
-                                     { :operation_names => [] }, { :operation_uris => [] },
-                                     { :node_ids => [] }, { :node_names => [] }, { :fields => [] },
+                                     :prerequisites, :syllabus, :learning_objectives, { subsets: [] },
+                                     { contributors: [] }, { authors: [] }, { target_audience: [] },
+                                     { collection_ids: [] }, { keywords: [] }, { resource_type: [] },
+                                     { scientific_topic_names: [] }, { scientific_topic_uris: [] },
+                                     { operation_names: [] }, { operation_uris: [] },
+                                     { node_ids: [] }, { node_names: [] }, { fields: [] },
                                      external_resources_attributes: [:id, :url, :title, :_destroy],
                                      event_ids: [], locked_fields: [])
   end

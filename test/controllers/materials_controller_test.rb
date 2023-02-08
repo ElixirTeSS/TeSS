@@ -59,6 +59,7 @@ class MaterialsControllerTest < ActionController::TestCase
     get :index, params: { format: :json }
     assert_response :success
     assert_not_nil assigns(:materials)
+    assert_valid_legacy_json_response
     assert_nothing_raised do
       JSON.parse(response.body)
     end
@@ -71,6 +72,7 @@ class MaterialsControllerTest < ActionController::TestCase
     get :index, params: { format: :json_api }
     assert_response :success
     assert_not_nil assigns(:materials)
+    assert_valid_json_api_response
     body = nil
     assert_nothing_raised do
       body = JSON.parse(response.body)
@@ -93,6 +95,7 @@ class MaterialsControllerTest < ActionController::TestCase
         get :index, params: { q: 'breakdance for beginners', keywords: 'dancing', format: :json_api }
         assert_response :success
         assert_not_nil assigns(:materials)
+        assert_valid_json_api_response
         body = nil
         assert_nothing_raised do
           body = JSON.parse(response.body)
@@ -116,7 +119,7 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test '...and so should users' do
+  test 'regular users should be able to directly load failing record' do
     sign_in users(:regular_user)
     get :show, params: { id: @failing_material }
     assert_response :success
@@ -366,7 +369,7 @@ class MaterialsControllerTest < ActionController::TestCase
     get :show, params: { id: @material, format: :json }
     assert_response :success
     assert assigns(:material)
-
+    assert_valid_legacy_json_response
     assert_nothing_raised do
       JSON.parse(response.body)
     end
@@ -379,7 +382,7 @@ class MaterialsControllerTest < ActionController::TestCase
     get :show, params: { id: @material, format: :json_api }
     assert_response :success
     assert assigns(:material)
-
+    assert_valid_json_api_response
     body = nil
     assert_nothing_raised do
       body = JSON.parse(response.body)

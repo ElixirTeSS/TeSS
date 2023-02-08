@@ -1,4 +1,4 @@
-json.extract! @collection, :id, :title, :description, :image_url, :events, :materials, :created_at, :updated_at
+json.extract! @collection, :id, :title, :description, :image_url, :created_at, :updated_at
 
 json.events @collection.events do |event|
   json.title event.title

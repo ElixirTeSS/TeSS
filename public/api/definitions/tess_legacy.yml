@@ -1,54 +1,46 @@
-# this is the TESS API spec SWAGGER YAML
-swagger: '2.0'
+openapi: 3.0.1
 info:
-  title: TeSS API
-  description: Access, search and filter through collections of training materials, events, packages, and workflows in TeSS.
-
+  title: TeSS Legacy API
+  description: |-
+    Access, search and filter through collections of training materials, events, packages, and workflows in TeSS.
     As a rule of thumb - You can add .json to the end of most pages to retrieve the data in a common exchange format. e.g
-
     - https://tess.elixir-europe.org/events/software-carpentry-west-virginia-university.json
-
     - https://tess.elixir-europe.org/materials/rna-seq-de-novo-transcriptome-reconstruction-with-rna-seq.json
-
     - https://tess.elixir-europe.org/packages/biocomp-computing-skills-collection.json
-
     - https://tess.elixir-europe.org/workflows/das-internet-fur-biologen.json
-
     - https://tess.elixir-europe.org/nodes/united-kingdom.json
-  version: "1.0.0"
-# the domain of the service
-host: tess.oerc.ox.ac.uk
-# array of all schemes that your API supports
-schemes:
-  - https
-# will be prefixed to all paths
-basePath: /
-produces:
-  - application/json
+  version: 1.0.0
+servers:
+  - url: https://tess.elixir-europe.org/
+  - url: https://dev.tess.elixir-europe.org/
 paths:
-  /materials/{name}.json:
+  /materials/{slug}.json:
     get:
-      summary: Get all the information stored about a particular training material in TeSS.
-      description: Use the name of the training material to return a JSON object. e.g. https://tess.elixir-europe.org/materials/advanced-statistics-in-r.json - See the response schema to find out what fields are returned and what type each field is.
-
-        This operation does not permit any parameters except the name as part of the URL. the name is a _slug_ of the title (lowercase + hypenated)
+      tags:
+        - Materials
+      summary: Get all the information stored about a particular training material
+        in TeSS.
+      description: |-
+        Use the name of the training material to return a JSON object. e.g. https://tess.elixir-europe.org/materials/advanced-statistics-in-r.json - See the response schema to find out what fields are returned and what type each field is.
+        This operation does not permit any parameters except the name as part of the URL. the name is a _slug_ of the title (lowercase + hyphenated)
       parameters:
-        - name: name
+        - name: slug
           in: path
           description: The _slug_ id of a training material e.g. advanced-statistics-in-r
           required: true
-          type: string
-      tags:
-        - Materials
+          schema:
+            type: string
       responses:
         200:
           description: A detailed JSON representation of a training material in TeSS
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Material'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Material'
   /materials.json:
     get:
+      tags:
+        - Materials
       summary: Search over the collection of training materials
       description: |
         The base url (materials.json) returns the first page of materials as seen on the UI (if you just go to /materials). To navigate through and filter out; use the below parameters. The returned value is an array of JSON objects. These parameters in JSON are formed exactly the same as within the UI so it is worth experimenting by clicking filters in the website and changing /materials to /materials.json to see how to create valid JSON requests.
@@ -59,719 +51,731 @@ paths:
       parameters:
         - name: q
           in: query
-          description: This is the search parameter. Enter terms and the resulting materials will be those that include this term in their description, name, keywords, or URL.
-          type: string
-          required: false
+          description: This is the search parameter. Enter terms and the resulting materials
+            will be those that include this term in their description, name, keywords,
+            or URL.
+          schema:
+            type: string
         - name: sort
           in: query
-          description: Sorts the results by a particular attribute. The options are 'asc' (Title ascending), 'desc' (Title descending), 'early' (Earliest first), and 'late' (Latest first).
-          required: false
-          type: string
-          default: 'desc'
+          description: Sorts the results by a particular attribute. The options are
+            'asc' (Title ascending), 'desc' (Title descending), 'early' (Earliest first),
+            and 'late' (Latest first).
+          schema:
+            type: string
+            default: desc
         - name: page
           in: query
           description: Selects which page of results to return (e.g. 2)
-          required: false
-          type: number
-          format: integer
-          default: 0
+          schema:
+            type: number
+            format: integer
+            default: 0.0
         - name: scientific_topics
           in: query
-          description: Returns all materials annotated with a certain scientific topic using EDAM (e.g. Alignment or Data+Visualization)
-          required: false
-          type: array
-          items:
-            type: string
-        - name: content_provider
-          in: query
-          description: Returns all materials from the content provider that provided records to TeSS (e.g. Goblet or Erasys+App)
-          required: false
-          type: array
-          items:
-            type: string
-        - name: tools
-          in: query
-          description: Returns all materials that have been associated with a given tool from the ELIXIR bio.tools registry.
-          required: false
-          type: array
-          items:
-            type: string
-        - name: standard_database_or_policy
-          in: query
-          description: returns all materials that have been associated with a database, standard, or policy from the ELIXIR biosharing.org registry
-          required: false
-          type: array
-          items:
-            type: string
-        - name: target_audience
-          in: query
-          description: Returns all the materials for an intended audience (e.g. PhD Student or Bench Biologist)
-          required: false
-          type: array
-          items:
-            type: string
-        - name: keywords
-          in: query
-          description: Returns all the materials that use this keyword to describe it.
-          required: false
-          type: array
-          items:
-            type: string
-        - name: difficulty_level
-          in: query
-          description: Returns all materials with the selected difficultly level (e.g. Intermediate or Novice)
-          required: false
-          type: array
-          items:
-            type: string
-        - name: authors
-          in: query
-          description: Returns all materials by the specified author (e.g. John+Smith or Sarah+Michelle+Gellar
-          required: false
-          type: array
-          items:
-            type: string
-        - name: contributors
-          in: query
-          description: Returns all materials where a given name has contribuetd to it (e.g. John+Smith or Sarah+Michelle+Gellar
-          required: false
-          type: array
-          items:
-            type: string
-        - name: licence
-          in: query
-          description: Returns all materials that have this licence associated with it. Licences are from a set list which can be found here https://github.com/ElixirUK/TeSS/blob/master/config/dictionaries/licences.yml - The term to use is the 'title' attribute
-          required: false
-          type: array
-          items:
-            type: string
-        - name: node
-          in: query
-          description: Returns all materials that have been developed by an ELIXIR node (e.g. Belgium or United+Kingdom)
-          required: false
-          type: array
-          items:
-            type: string
-      tags:
-        - Materials
-      responses:
-        200:
-          description: An array of materials
+          description: Returns all materials annotated with a certain scientific topic
+            using EDAM (e.g. Alignment or Data+Visualization)
+          style: form
+          explode: false
           schema:
             type: array
             items:
-              $ref: '#/definitions/ShortMaterial'
+              type: string
+        - name: content_provider
+          in: query
+          description: Returns all materials from the content provider that provided
+            records to TeSS (e.g. Goblet or Erasys+App)
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: tools
+          in: query
+          description: Returns all materials that have been associated with a given
+            tool from the ELIXIR bio.tools registry.
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: standard_database_or_policy
+          in: query
+          description: returns all materials that have been associated with a database,
+            standard, or policy from the ELIXIR biosharing.org registry
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: target_audience
+          in: query
+          description: Returns all the materials for an intended audience (e.g. PhD
+            Student or Bench Biologist)
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: keywords
+          in: query
+          description: Returns all the materials that use this keyword to describe it.
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: difficulty_level
+          in: query
+          description: Returns all materials with the selected difficultly level (e.g.
+            Intermediate or Novice)
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: authors
+          in: query
+          description: Returns all materials by the specified author (e.g. John+Smith
+            or Sarah+Michelle+Gellar
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: contributors
+          in: query
+          description: Returns all materials where a given name has contribuetd to it
+            (e.g. John+Smith or Sarah+Michelle+Gellar
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: licence
+          in: query
+          description: Returns all materials that have this licence associated with
+            it. Licences are from a set list which can be found here https://github.com/ElixirUK/TeSS/blob/master/config/dictionaries/licences.yml
+            - The term to use is the 'title' attribute
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: node
+          in: query
+          description: Returns all materials that have been developed by an ELIXIR node
+            (e.g. Belgium or United+Kingdom)
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        200:
+          description: An array of materials
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ShortMaterial'
   /events/{slug}.json:
     get:
+      tags:
+        - Events
       summary: Get all the information stored about a particular event in TeSS.
-      description: Use the slug name of the event (lowercase hypenathed) to return a JSON object. e.g. https://tess.elixir-europe.org/events/software-carpentry-229th-aas-meeting.json - See the response schema to find out what fields are returned and what type each field is.
-
-        This operation does not permit any parameters except the name as part of the URL. the name is a _slug_ of the title (lowercase + hypenated)
+      description: |-
+        Use the slug name of the event (lowercase hyphenated) to return a JSON object. e.g. https://tess.elixir-europe.org/events/software-carpentry-229th-aas-meeting.json - See the response schema to find out what fields are returned and what type each field is.
+        This operation does not permit any parameters except the name as part of the URL. the name is a _slug_ of the title (lowercase + hyphenated)
       parameters:
         - name: slug
           in: path
           description: The _slug_ id of an event e.g. software-carpentry-229th-aas-meeting
           required: true
-          type: string
-      tags:
-        - Events
+          schema:
+            type: string
       responses:
         200:
           description: A detailed JSON representation of an event in TeSS
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Event'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
   /events.json:
     get:
+      tags:
+        - Events
       summary: Search over the collection of events
       description: |
         The base endpoint (events.json) returns the first page of events as seen on the UI (if you just go to <tess>/events). To navigate through and filter by attributes; use the below parameters. The returned value is an array of JSON objects described below.
       parameters:
         - name: q
           in: query
-          description: This is the search parameter. Enter terms and the resulting events will be those that include this term in their description, name, keywords, or URL.
-          required: false
-          type: string
+          description: This is the search parameter. Enter terms and the resulting events
+            will be those that include this term in their description, name, keywords,
+            or URL.
+          schema:
+            type: string
         - name: include_expired
           in: query
-          description: When true; the results will return include events that have already occured. By default this is false and will only return upcoming events.
-          required: false
-          type: boolean
+          description: When true; the results will return include events that have already
+            occured. By default this is false and will only return upcoming events.
+          schema:
+            type: boolean
         - name: sort
           in: query
-          description: Sorts the results by a particular attribute. The options are 'asc' (Title ascending), 'desc' (Title descending), 'early' (Earliest first), and 'late' (Latest first).
-          required: false
-          type: string
+          description: Sorts the results by a particular attribute. The options are
+            'asc' (Title ascending), 'desc' (Title descending), 'early' (Earliest first),
+            and 'late' (Latest first).
+          schema:
+            type: string
         - name: page
           in: query
           description: Selects which page of results to return (e.g. 2)
-          required: false
-          type: number
-          format: integer
+          schema:
+            type: number
+            format: integer
         - name: event_types
           in: query
-          description: Returns all events of a categorical type. These can be 'Meetings and conferences' and 'Workshops and courses'
-          required: false
-          type: array
-          items:
-            type: string
-        - name: online
-          in: query
-          description: Filters returned events by whether or not is an online event. This can include things like telecons, webinars, and MOOCs.
-          required: false
-          type: boolean
-        - name: country
-          in: query
-          description: Returns all the events that will be hosted in a certain country (e.g. Portugal or United Kingdom)
-          required: false
-          type: array
-          items:
-            type: string
-        - name: scientific_topics
-          in: query
-          description: Returns all events annotated with a given scientific topic from the EDAM ontology.
-          required: false
-          type: array
-          items:
-            type: string
-        - name: tools
-          in: query
-          description: Returns all events that have been associated with a given tool from the ELIXIR bio.tools registry.
-          required: false
-          type: string
-          format: string
-        - name: standard_database_or_policy
-          in: query
-          description: returns all events that have been associated with a database, standard, or policy from the ELIXIR biosharing.org registry
-          required: false
-          type: string
-          format: string
-        - name: organizer
-          in: query
-          description: Returns all events that have been created by an organizing institution. This is different to content provider in that the content provider is the website that provided the information whereas the organizer was involved in creating it.
-          required: false
-          type: array
-          items:
-            type: string
-        - name: city
-          in: query
-          description: Returns all the events that are held in a certain city (e.g. London or Daghstul)
-          required: false
-          type: array
-          items:
-            type: string
-        - name: sponsor
-          in: query
-          description: Returns all the events that have been sponsored by a given institution or organization
-          required: false
-          type: array
-          items:
-            type: string
-        - name: keyword
-          in: query
-          description: Returns all the events that have been tagged with the given free text keywords
-          required: false
-          type: array
-          items:
-            type: string
-        - name: content_provider
-          in: query
-          description: Returns all events from the content provider that provided records to TeSS (e.g. DTLS, GOBLET, Software Carpentry)
-          required: false
-          type: array
-          items:
-            type: string
-        - name: venue
-          in: query
-          description: Returns all events that are held in a venue (e.g. University of Melbourne or Harvard)
-          required: false
-          type: array
-          items:
-            type: string
-        - name: node
-          in: query
-          description: Returns all events that are associated with a specified ELIXIR node (e.g. Belgium or United+Kingdom)
-          required: false
-          type: array
-          items:
-            type: string
-        - name: target_audience
-          in: query
-          description: Returns all events that have a selected target audience (e.g. Graduate students, Academics, Post-Docs)
-          required: false
-          type: array
-          items:
-            type: string
-      tags:
-        - Events
-      responses:
-        200:
-          description: An array of events
+          description: Returns all events of a categorical type. These can be 'Meetings
+            and conferences' and 'Workshops and courses'
+          style: form
+          explode: false
           schema:
             type: array
             items:
-              $ref: '#/definitions/Event'
-#   default:
-#          description: Unexpected error
-#          schema:
-#            $ref: '#/definitions/Error'
-definitions:
-  ShortMaterial:
-    type: object
-    properties:
-      id:
-        type: number
-        description: The ID given by TeSS to the material
-      title:
-        type: string
-        description: The title of the training material.
-      url:
-        type: string
-        description: The API URL of the material within TeSS e.g. https://tess.elixir-europe.org/materials/3-day-hands-on-ngs-workshop.json - Go here to find out more about this particular material.
-      description:
-        type: string
-        description: This should be a description of the training material
-      doi:
-        type: string
-        description: This is the DOI of the material where it can be permanently referenced
-      remote_updated_date:
-        type: string
-        format: date
-        description: When it was last updated in TeSS
-      remote_created_date:
-        type: string
-        format: date
-        description: When it was first created in TeSS
-  Material:
-    type: object
-    properties:
-      id:
-        type: number
-        description: Unique identifier of the material
-      title:
-        type: string
-        description: The title of the material
-      url:
-        type: string
-        description: The URL where the actual material can be found.
-      description:
-        type: string
-        description: A description of what the training material is about.
-      doi:
-        type: string
-        description: The DOI of the material (if it has one).
-      remote_updated_date:
-        type: string
-        format: date
-        description: The date the material was last updated on it's original site
-      remote_created_date:
-        type: string
-        format: date
-        description: The date the material was first created on it's original site
-      created_at:
-        type: string
-        format: date
-        description: The date the material was first created on TeSS
-      updated_at:
-        type: string
-        format: date
-        description: The date the material was last updated on TeSS
-      package_ids:
-        type: array
-        items:
+              type: string
+        - name: online
+          in: query
+          description: Filters returned events by whether or not is an online event.
+            This can include things like telecons, webinars, and MOOCs.
+          schema:
+            type: boolean
+        - name: country
+          in: query
+          description: Returns all the events that will be hosted in a certain country
+            (e.g. Portugal or United Kingdom)
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: scientific_topics
+          in: query
+          description: Returns all events annotated with a given scientific topic from
+            the EDAM ontology.
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: tools
+          in: query
+          description: Returns all events that have been associated with a given tool
+            from the ELIXIR bio.tools registry.
+          schema:
+            type: string
+            format: string
+        - name: standard_database_or_policy
+          in: query
+          description: returns all events that have been associated with a database,
+            standard, or policy from the ELIXIR biosharing.org registry
+          schema:
+            type: string
+            format: string
+        - name: organizer
+          in: query
+          description: Returns all events that have been created by an organizing institution.
+            This is different to content provider in that the content provider is the
+            website that provided the information whereas the organizer was involved
+            in creating it.
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: city
+          in: query
+          description: Returns all the events that are held in a certain city (e.g.
+            London or Daghstul)
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: sponsor
+          in: query
+          description: Returns all the events that have been sponsored by a given institution
+            or organization
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: keyword
+          in: query
+          description: Returns all the events that have been tagged with the given free
+            text keywords
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: content_provider
+          in: query
+          description: Returns all events from the content provider that provided records
+            to TeSS (e.g. DTLS, GOBLET, Software Carpentry)
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: venue
+          in: query
+          description: Returns all events that are held in a venue (e.g. University
+            of Melbourne or Harvard)
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: node
+          in: query
+          description: Returns all events that are associated with a specified ELIXIR
+            node (e.g. Belgium or United+Kingdom)
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: target_audience
+          in: query
+          description: Returns all events that have a selected target audience (e.g.
+            Graduate students, Academics, Post-Docs)
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        200:
+          description: An array of events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+components:
+  schemas:
+    ShortMaterial:
+      type: object
+      properties:
+        id:
+          type: number
+          description: The ID given by TeSS to the material
+        title:
+          type: string
+          description: The title of the training material.
+        url:
+          type: string
+          description: The API URL of the material within TeSS e.g. https://tess.elixir-europe.org/materials/3-day-hands-on-ngs-workshop.json
+            - Go here to find out more about this particular material.
+        description:
+          type: string
+          description: This should be a description of the training material
+        doi:
+          type: string
+          nullable: true
+          description: This is the DOI of the material where it can be permanently
+            referenced
+        remote_updated_date:
+          type: string
+          nullable: true
+          description: When the material was last updated (at its source)
+          format: date
+        remote_created_date:
+          type: string
+          nullable: true
+          description: When the material was created (at its source)
+          format: date
+    Material:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier of the material
+        title:
+          type: string
+          description: The title of the material
+        url:
+          type: string
+          description: The URL where the actual material can be found.
+        description:
+          type: string
+          description: A description of what the training material is about.
+        doi:
+          type: string
+          nullable: true
+          description: The DOI of the material (if it has one).
+        remote_updated_date:
+          type: string
+          nullable: true
+          description: The date the material was last updated on it's original site
+          format: date
+        remote_created_date:
+          type: string
+          nullable: true
+          description: The date the material was first created on it's original site
+          format: date
+        created_at:
+          type: string
+          description: The date the material was first created on TeSS
+          format: date
+        updated_at:
+          type: string
+          description: The date the material was last updated on TeSS
+          format: date
+        collections:
+          type: array
+          description: Training collections that this material belongs to
+          items:
+            type: integer
+        content_provider_id:
           type: integer
-        description: IDs of training packages this material belongs to
-      content_provider_id:
-        type: integer
-        description: The ID of the content provider this material was sourced from
-      keywords:
-        type: array
-        items:
+          description: The ID of the content provider this material was sourced from
+        keywords:
+          type: array
+          description: A list of freetext keywords to describe the material
+          items:
+            type: string
+        scientific_topics:
+          type: array
+          description: The classification of the material based on the EDAM ontologies
+            scientific topics.
+          items:
+            $ref: '#/components/schemas/ScientificTopic'
+        licence:
           type: string
-        description: A list of freetext keywords to describe the material
-      scientific_topics:
-        type: array
-        items:
-          $ref: '#/definitions/ScientificTopic'
-        description: The classification of the material based on the EDAM ontologies scientific topics.
-      licence:
-        type: string
-        description: The licence chosed to determine how the material may be re-used.
-      difficulty_level:
-        type: string
-        description: The difficulty level comprehension of the material requires. Can be Beginner, Intermediate, Advanced, or Not specified.
-      authors:
-        type: array
-        items:
+          nullable: true
+          description: The licence chosen to determine how the material may be re-used.
+        difficulty_level:
           type: string
-        description: A list of people who wrote or helped write the material
-      contributors:
-        type: array
-        items:
+          nullable: true
+          description: The difficulty level comprehension of the material requires.
+            Can be Beginner, Intermediate, Advanced, or Not specified.
+        authors:
+          type: array
+          description: A list of people who wrote or helped write the material
+          items:
+            type: string
+        contributors:
+          type: array
+          description: Any person who was not the author but contributed in some way.
+            Maybe they produced some software used, reviewed the paper, or helped
+            inspire the author
+          items:
+            type: string
+        target_audience:
+          type: array
+          description: The audience the material was intended for.
+          items:
+            type: string
+        external_resources:
+          type: array
+          description: A list of external resources associated with this tool. These
+            are largely tools from bio.tools, and standards, databases, and policies
+            from biosharing.org - but can be anything.
+          items:
+            $ref: '#/components/schemas/ExternalResource'
+        slug:
           type: string
-        description: Any person who was not the author but contributed in some way. Maybe they produced some software used, reviewed the paper, or helped inspire the author
-      target_audience:
-        type: array
-        items:
+        user_id:
+          type: integer
+    ScientificTopic:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique ID of scientific topic as given by TeSS. Note, this
+            is not a global persistent ID.
+        preferred_label:
           type: string
-        description: The audience the material was intended for.
-      external_resources:
-        type: array
-        items:
-          $ref: '#/definitions/ExternalResource'
-        description: A list of external resources associated with this tool. These are largely tools from bio.tools, and standards, databases, and policies from biosharing.org - but can be anything.
-      slug:
-        type: string
-      user_id:
-        type: integer
-  ScientificTopic:
-    type: object
-    properties:
-      id:
-        type: integer
-        description: Unique ID of scientific topic as given by TeSS. Note, this is not a global persistent ID.
-      preferred_label:
-        type: string
-        description: The preferred name of the scientific topic
-      obsolete:
-        type: boolean
-        description: Whether or not the term has been deprecated from EDAM
-      created_in:
-        type: string
-        description: When the term was introduced into EDAM e.g. "beta12orEarlier"
-      documentation:
-        type: string
-        description: A link, if any, to any documentation about the specific term.
-      prefix_iri:
-        type: string
-        description: The unique ID to reference the term e.g. "topic_0099"
-      has_definition:
-        type: string
-        description: A succinct canonical definition of the term e.g. "RNA sequences and structures."
-      saved_by:
-        type: string
-        description: Saved by
-      obsolete_since:
-        type: string
-        description: Which version the term has been obsolete since if it is now obsolete
-      created_at:
-        type: string
-        format: date
-        description: Timestamp of when the term was introduced to TeSS e.g. "2016-03-04T14:06:54.246Z" (Not when it was introduced to EDAM)
-      updated_at:
-        type: string
-        format: date
-        description: Timestamp of when the term was last updated in TeSS e.g. "2016-03-04T14:06:54.246Z" (Not when it was last updated in EDAM)
-      class_id:
-        type: string
-        description: full ID of ontology class. Namespaced IRI e.g. "http://edamontology.org/topic_0099"
-      slug:
-        type: string
-        description: Short hand identifier e.g. "rna"
-      synonyms:
-        type: array
-        items:
+          description: The preferred name of the scientific topic
+        obsolete:
+          type: boolean
+          description: Whether or not the term has been deprecated from EDAM
+        created_in:
           type: string
-        description: A list of synonym terms that can be used interchangably with the preferred_label.
-      definitions:
-        type: array
-        items:
+          description: When the term was introduced into EDAM e.g. "beta12orEarlier"
+        documentation:
           type: string
-        description: A list of definitions that can also be used to describe the term e.g. ["RNA sequences and structures."]
-      parents:
-        type: array
-        items:
+          description: A link, if any, to any documentation about the specific term.
+        prefix_iri:
           type: string
-        description: A list of class_ids that are the parents of this term e.g. ["http://edamontology.org/topic_0077"]
-      consider:
-        type: array
-        items:
+          description: The unique ID to reference the term e.g. "topic_0099"
+        has_definition:
           type: string
-      has_alternative_id:
-        type: array
-        items:
+          description: A succinct canonical definition of the term e.g. "RNA sequences
+            and structures."
+        saved_by:
           type: string
-      has_broad_synonym:
-        type: array
-        items:
+          description: Saved by
+        obsolete_since:
           type: string
-      has_dbxref:
-        type: array
-        items:
+          description: Which version the term has been obsolete since if it is now
+            obsolete
+        created_at:
           type: string
-      has_exact_synonym:
-        type: array
-        items:
+          description: Timestamp of when the term was introduced to TeSS e.g. "2016-03-04T14:06:54.246Z"
+            (Not when it was introduced to EDAM)
+          format: date
+        updated_at:
           type: string
-      has_related_synonym:
-        type: array
-        items:
+          description: Timestamp of when the term was last updated in TeSS e.g. "2016-03-04T14:06:54.246Z"
+            (Not when it was last updated in EDAM)
+          format: date
+        class_id:
           type: string
-      has_subset:
-        type: array
-        items:
+          description: full ID of ontology class. Namespaced IRI e.g. "http://edamontology.org/topic_0099"
+        slug:
           type: string
-      replaced_by:
-        type: array
-        items:
+          description: Short hand identifier e.g. "rna"
+        synonyms:
+          type: array
+          description: A list of synonym terms that can be used interchangably with
+            the preferred_label.
+          items:
+            type: string
+        definitions:
+          type: array
+          description: A list of definitions that can also be used to describe the
+            term e.g. ["RNA sequences and structures."]
+          items:
+            type: string
+        parents:
+          type: array
+          description: A list of class_ids that are the parents of this term e.g.
+            ["http://edamontology.org/topic_0077"]
+          items:
+            type: string
+        consider:
+          type: array
+          items:
+            type: string
+        has_alternative_id:
+          type: array
+          items:
+            type: string
+        has_broad_synonym:
+          type: array
+          items:
+            type: string
+        has_dbxref:
+          type: array
+          items:
+            type: string
+        has_exact_synonym:
+          type: array
+          items:
+            type: string
+        has_related_synonym:
+          type: array
+          items:
+            type: string
+        has_subset:
+          type: array
+          items:
+            type: string
+        replaced_by:
+          type: array
+          items:
+            type: string
+        subset_property:
+          type: array
+          items:
+            type: string
+        has_narrow_synonym:
+          type: array
+          description: e.g. ["Small RNA"]
+          items:
+            type: string
+        in_subset:
+          type: array
+          description: e.g. ["http://purl.obolibrary.org/obo/edam#edam","http://purl.obolibrary.org/obo/edam#topics"]
+          items:
+            type: string
+        in_cyclic:
+          type: array
+          items:
+            type: string
+    ExternalResource:
+      type: object
+      properties:
+        title:
           type: string
-      subset_property:
-        type: array
-        items:
+          description: Title of the external resource
+        url:
           type: string
-      has_narrow_synonym:
-        type: array
-        items:
+          description: A URL that resolves to a description of an external resource
+            or the external resource itself.
+        created_at:
           type: string
-        description: e.g. ["Small RNA"]
-      in_subset:
-        type: array
-        items:
+          description: The date the association was created between this resource
+            and the external resource within TeSS.
+          format: date
+        updated_at:
           type: string
-        description: e.g. ["http://purl.obolibrary.org/obo/edam#edam","http://purl.obolibrary.org/obo/edam#topics"]
-      in_cyclic:
-        type: array
-        items:
+          description: The date the association was last update between this resource
+            and the external resource within TeSS.
+          format: date
+        api_url:
           type: string
-  ExternalResource:
-    type: object
-    properties:
-      title:
-        type: string
-        description: Title of the external resource
-      url:
-        type: string
-        description: A URL that resolves to a description of an external resource or the external resource itself.
-      created_at:
-        type: string
-        format: date
-        description: The date the association was created between this resource and the external resource within TeSS.
-      updated_at:
-        type: string
-        format: date
-        description: The date the association was last update between this resource and the external resource within TeSS.
-      api_url:
-        type: string
-        description: A URL that resolves to more information about the external resource represented in a common exchange format (e.g. JSON or XML)
-      type:
-        type: string
-        description: The type of external resource. This can be 'tool', 'database, policy or standard' for bio.tools and bio.sharing respectively or any other resource type name for other external resources.
-  ShortEvent:
-    type: object
-    properties:
-      id:
-        type: number
-        description: Unique identifier of the event
-      external_id:
-        type: number
-        description: An ID provided by the original content provider. Unique to their website.
-      title:
-        type: string
-        description: The title of the event
-      subtitle:
-        type: string
-        description: The subtitle of the event
-      url:
-        type: string
-        description: The URL where the actual event can be found.
-      organizer:
-        type: string
-        description: The organization responsible for creating the event.
-      description:
-        type: string
-        description: A succinct description of what the event is about.
-      start:
-        type: string
-        format: date
-        description: The date and time the event starts on
-      end:
-        type: string
-        format: date
-        description: The date and time the event ends on.
-      sponsor:
-        type: string
-        description: The person or organization that is sponsoring the event.
-      venue:
-        type: string
-        description: The name of the building the event will be hosted in
-      city:
-        type: string
-        description: The city the event will be hosted in
-      county:
-        type: string
-        description: The regional county the event will be hosted in
-      country:
-        type: string
-        description: The name of country the event will be hosted in
-      postcode:
-        type: string
-        description: The postcode of the venue hosting the event
-      latitude:
-        type: string
-        description: The latitude co-ordinate of the event.
-      longitude:
-        type: string
-        description: The longitude co-ordinate of the event.
-      created_at:
-        type: string
-        format: date
-        description: The date the event was first created on TeSS
-      updated_at:
-        type: string
-        format: date
-        description: The date the event was last updated on TeSS
-      slug:
-        type: string
-      content_provider_id:
-        type: integer
-      user_id:
-        type: integer
-      online:
-        type: boolean
-      cost:
-        type: string
-      for_profit:
-        type: boolean
-      last_scraped:
-        type: string
-        format: date
-      scraper_record:
-        type: boolean
-      keywords:
-        type: array
-        items:
+          nullable: true
+          description: A URL that resolves to more information about the external
+            resource represented in a common exchange format (e.g. JSON or XML)
+        type:
           type: string
-        description: A series of freetext words used to describe an event.
-      event_types:
-        type: array
-        items:
+          nullable: true
+          description: The type of external resource. This can be 'tool', 'database,
+            policy or standard' for bio.tools and bio.sharing respectively or any
+            other resource type name for other external resources.
+    Event:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier of the event
+        title:
           type: string
-        description: The category of the event. This could be a meeting or a course; or if unknown or neither, an event
-      target_audience:
-        type: array
-        items:
+          description: The title of the event
+        subtitle:
           type: string
-        description: The intended audience of the event. This can includes things like scientific discpline and expertise level
-      capacity:
-        type: array
-        items:
+          nullable: true
+          description: The subtitle of the event
+        url:
           type: string
-        description: The number of people allowed to attend the event
-      eligibility:
-        type: array
-        items:
+          description: The URL where the actual event can be found.
+        organizer:
           type: string
-        description: Various criteria require to participate in the event
-      contact:
-        type: string
-        description: The name and/or contact details of a person or institution organizing the event
-      host_institutions:
-        type: array
-        items:
+          nullable: true
+          description: The organization responsible for creating the event.
+        description:
           type: string
-        description: The institution physically hosting the event
-      scientific_topics:
-        type: array
-        items:
-          $ref: '#/definitions/ScientificTopic'
-        description: The classification of the material based on the EDAM ontologies scientific topics.
-  Event:
-    type: object
-    properties:
-      id:
-        type: number
-        description: Unique identifier of the event
-      title:
-        type: string
-        description: The title of the event
-      subtitle:
-        type: string
-        description: The subtitle of the event
-      url:
-        type: string
-        description: The URL where the actual event can be found.
-      organizer:
-        type: string
-        description: The organization responsible for creating the event.
-      description:
-        type: string
-        description: A succinct description of what the event is about.
-      start:
-        type: string
-        format: date
-        description: The date and time the event starts on
-      end:
-        type: string
-        format: date
-        description: The date and time the event ends on.
-      sponsor:
-        type: string
-        description: The person or organization that is sponsoring the event.
-      venue:
-        type: string
-        description: The name of the building the event will be hosted in
-      city:
-        type: string
-        description: The city the event will be hosted in
-      country:
-        type: string
-        description: The regional county the event will be hosted in
-      county:
-        type: string
-        description: The name of country the event will be hosted in
-      postcode:
-        type: string
-        description: The postcode of the venue hosting the event
-      latitude:
-        type: string
-        description: The latitude co-ordinate of the event.
-      longitude:
-        type: string
-        description: The longitude co-ordinate of the event.
-      created_at:
-        type: string
-        format: date
-        description: The date the event was first created on TeSS
-      updated_at:
-        type: string
-        format: date
-        description: The date the event was last updated on TeSS
-      keywords:
-        type: array
-        items:
+          nullable: true
+          description: A succinct description of what the event is about.
+        start:
           type: string
-        description: A series of freetext words used to describe an event.
-      event_types:
-        type: array
-        items:
+          nullable: true
+          description: The date and time the event starts on
+          format: date
+        end:
           type: string
-        description: The category of the event. This could be a meeting or a course; or if unknown or neither, an event
-      target_audience:
-        type: array
-        items:
+          nullable: true
+          description: The date and time the event ends on.
+          format: date
+        sponsor:
           type: string
-        description: The intended audience of the event. This can includes things like scientific discpline and expertise level
-      capacity:
-        type: array
-        items:
+          nullable: true
+          description: The person or organization that is sponsoring the event.
+        venue:
           type: string
-        description: The number of people allowed to attend the event
-      eligibility:
-        type: array
-        items:
+          nullable: true
+          description: The name of the building the event will be hosted in
+        city:
           type: string
-        description: Various criteria require to participate in the event
-      contact:
-        type: string
-        description: The name and/or contact details of a person or institution organizing the event
-      host_institutions:
-        type: array
-        items:
+          nullable: true
+          description: The city the event will be hosted in
+        country:
           type: string
-        description: The institution physically hosting the event
-      scientific_topics:
-        type: array
-        items:
-          $ref: '#/definitions/ScientificTopic'
-        description: The classification of the material based on the EDAM ontologies scientific topics.
+          nullable: true
+          description: The regional county the event will be hosted in
+        county:
+          type: string
+          nullable: true
+          description: The name of country the event will be hosted in
+        postcode:
+          type: string
+          nullable: true
+          description: The postcode of the venue hosting the event
+        latitude:
+          type: string
+          nullable: true
+          description: The latitude co-ordinate of the event.
+        longitude:
+          type: string
+          nullable: true
+          description: The longitude co-ordinate of the event.
+        created_at:
+          type: string
+          description: The date the event was first created on TeSS
+          format: date
+        updated_at:
+          type: string
+          description: The date the event was last updated on TeSS
+          format: date
+        keywords:
+          type: array
+          description: A series of freetext words used to describe an event.
+          items:
+            type: string
+        event_types:
+          type: array
+          description: The category of the event. This could be a meeting or a course;
+            or if unknown or neither, an event
+          items:
+            type: string
+        target_audience:
+          type: array
+          description: The intended audience of the event. This can includes things
+            like scientific discpline and expertise level
+          items:
+            type: string
+        capacity:
+          type: integer
+          nullable: true
+          description: The number of people allowed to attend the event
+          items:
+            type: string
+        eligibility:
+          type: array
+          description: Various criteria require to participate in the event
+          items:
+            type: string
+        contact:
+          type: string
+          nullable: true
+          description: The name and/or contact details of a person or institution
+            organizing the event
+        host_institutions:
+          type: array
+          description: The institution physically hosting the event
+          items:
+            type: string
+        scientific_topics:
+          type: array
+          description: The classification of the material based on the EDAM ontologies
+            scientific topics.
+          items:
+            $ref: '#/components/schemas/ScientificTopic'

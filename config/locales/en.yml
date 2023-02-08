@@ -396,7 +396,7 @@ en:
       resources: 'Are there any external resources that relate to the is training material?'
       status: 'Indicate the current status of the training material.'
       subsets: 'Add identifier URLs or DOIs for each subset of the training material.'
-      syllabus: 'Describe the syllabus or provide and overview of the topics covered.'
+      syllabus: 'Describe the syllabus or provide an overview of the topics covered.'
       targets: 'Indicate the type of audience intended to use your training material.'
       time: 'What is the estimated time it takes to work through this resource in hours?'
       title: 'Add a title for your training material.'

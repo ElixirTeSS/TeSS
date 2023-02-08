@@ -51,6 +51,7 @@ class EventsControllerTest < ActionController::TestCase
     get :index, params: { format: :json }
     assert_response :success
     assert_not_nil assigns(:events)
+    assert_valid_legacy_json_response
   end
 
   test 'should get index as ICS' do
@@ -78,6 +79,8 @@ class EventsControllerTest < ActionController::TestCase
     get :index, params: { format: :json_api }
     assert_response :success
     assert_not_nil assigns(:events)
+    assert_valid_json_api_response
+
     body = nil
     assert_nothing_raised do
       body = JSON.parse(response.body)
@@ -97,7 +100,7 @@ class EventsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test '...and so should users' do
+  test 'regular users should be able to directly load failing records' do
     sign_in users(:regular_user)
     get :show, params: { id: @failing_event }
     assert_response :success
@@ -239,6 +242,7 @@ class EventsControllerTest < ActionController::TestCase
     get :show, params: { id: @event, format: :json }
     assert_response :success
     assert assigns(:event)
+    assert_valid_legacy_json_response
   end
 
   test 'should show event as json-api' do
@@ -248,6 +252,7 @@ class EventsControllerTest < ActionController::TestCase
     get :show, params: { id: @event, format: :json_api }
     assert_response :success
     assert assigns(:event)
+    assert_valid_json_api_response
 
     body = nil
     assert_nothing_raised do
@@ -997,11 +1002,20 @@ class EventsControllerTest < ActionController::TestCase
 
     get :show, params: { id: hidden_report_event, format: :json }
     refute JSON.parse(response.body).key?('funding')
+    assert_valid_legacy_json_response
 
     get :show, params: { id: visible_report_event, format: :json }
     assert_equal visible_report_event.funding, JSON.parse(response.body)['funding']
+    assert_valid_legacy_json_response
+  end
+
+  test 'should only show report fields in JSON index to privileged users' do
+    hidden_report_event = events(:event_with_report)
+    visible_report_event = events(:another_event_with_report)
+    sign_in users(:another_regular_user)
 
     get :index, format: :json
+    assert_valid_legacy_json_response
     hidden_report_event_json = JSON.parse(response.body).detect { |e| e['id'] == hidden_report_event.id }
     visible_report_event_json = JSON.parse(response.body).detect { |e| e['id'] == visible_report_event.id }
     refute hidden_report_event_json.key?('funding')
@@ -1014,12 +1028,21 @@ class EventsControllerTest < ActionController::TestCase
     sign_in users(:another_regular_user)
 
     get :show, params: { id: hidden_report_event, format: :json_api }
+    assert_valid_json_api_response
     refute JSON.parse(response.body)['data']['attributes'].key?('report')
 
     get :show, params: { id: visible_report_event, format: :json_api }
+    assert_valid_json_api_response
     assert_equal visible_report_event.funding, JSON.parse(response.body)['data']['attributes']['report']['funding']
+  end
+
+  test 'should only show report fields in JSON-API index to privileged users' do
+    hidden_report_event = events(:event_with_report)
+    visible_report_event = events(:another_event_with_report)
+    sign_in users(:another_regular_user)
 
     get :index, format: :json_api
+    assert_valid_json_api_response
     hidden_report_event_json = JSON.parse(response.body)['data'].detect { |e| e['id'].to_i == hidden_report_event.id }
     visible_report_event_json = JSON.parse(response.body)['data'].detect { |e| e['id'].to_i == visible_report_event.id }
     refute hidden_report_event_json['attributes'].key?('report')

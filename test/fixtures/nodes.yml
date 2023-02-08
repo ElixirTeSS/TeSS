@@ -2,17 +2,16 @@
 
 good:
   name: Test Node
-  member_status: MyString
+  member_status: Member
   country_code: SE
   home_page: http://example.com
 #  institutions:
   twitter: MyString
-  carousel_images: 
   user: regular_user
 
 westeros:
   name: Westeros
-  member_status: MyString
+  member_status: Observer
   country_code: HR
   home_page: http://example.com
   twitter: westeros
@@ -21,7 +20,7 @@ westeros:
 #
 #no_name:
 #  name:
-#  member_status: MyString
+#  member_status: Member
 #  country_code: MyString
 #  home_page: http://example.com
 #  institutions:
@@ -35,7 +34,7 @@ westeros:
 #
 #no_url:
 #  name: MyString
-#  member_status: MyString
+#  member_status: Member
 #  country_code: MyString
 #  home_page: Wrong!
 #  institutions:
