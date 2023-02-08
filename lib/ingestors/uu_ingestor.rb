@@ -97,7 +97,9 @@ module Ingestors
             event.start ||= ical_event.dtstart
             event.end ||= ical_event.dtend
             event.venue ||= ical_event.location
-            sleep 1
+            unless Rails.env.test?
+              sleep 1
+            end
           end
 
           event.set_default_times

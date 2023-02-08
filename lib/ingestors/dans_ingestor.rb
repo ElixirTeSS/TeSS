@@ -27,7 +27,9 @@ module Ingestors
 
     def process_dans(url)
       4.times.each do |i| # always check the first 4 pages, # of pages could be increased if needed
-        sleep(1)
+        unless rails.env.test?
+          sleep(1)
+        end
         event_page = Nokogiri::HTML5.parse(open_url(url + i.to_s, raise: true)).css("div[id='nieuws_item_section']")
         event_page.each do |event_data|
           event = OpenStruct.new

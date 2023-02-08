@@ -57,7 +57,9 @@ module Ingestors
           # add event to events array
           add_event(event)
 
-          sleep(1)
+          unless rails.env.test?
+            sleep(1)
+          end
         rescue Exception => e
           @messages << "Extract event fields failed with: #{e.message} for #{event_url}"
         end

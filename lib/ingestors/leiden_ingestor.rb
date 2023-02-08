@@ -27,7 +27,9 @@ module Ingestors
 
     def process_leiden(url)
       4.times.each do |i| # always check the first 4 pages, # of pages could be increased if needed
-        sleep(1)
+        unless rails.env.test?
+          sleep(1)
+        end
         event_links = Nokogiri::HTML5.parse(open_url("#{url}?pageNumber=#{i+1}", raise: true)).css('#content > ul > li > a')
         return if event_links.empty?
 

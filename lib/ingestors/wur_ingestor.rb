@@ -73,7 +73,9 @@ module Ingestors
           event.start, event.end = parse_dates(page.xpath('//th[.="Date"]').first&.parent&.xpath('td')&.last&.text&.strip, 'Amsterdam')
           # in this case also grab the venue
           event.venue = page.xpath('//th[.="Venue"]').first&.parent&.xpath('td')&.last&.text
-          sleep 1
+          unless rails.env.test?
+            sleep 1
+          end
         end
 
         event.set_default_times
@@ -81,6 +83,7 @@ module Ingestors
         event.timezone = 'Amsterdam'
 
         add_event(event)
+        puts event
       rescue Exception => e
         @messages << "Extract event fields failed with: #{e.message}"
       end
