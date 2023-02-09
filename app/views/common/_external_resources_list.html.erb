@@ -1,4 +1,4 @@
-<div class="my-3">
+<div class="my-3 external-resources-box">
   <% external_resources.each do |external_resource| %>
     <% unless external_resource.failing? & !current_user&.is_admin? -%>
       <%= render partial: 'common/external_resource', object: external_resource %>
