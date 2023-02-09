@@ -30,7 +30,7 @@ module Ingestors
         Hash.from_xml(Nokogiri::XML(open_url(page['loc'], raise: true)).to_s)['urlset']['url'].each do |event_page|
           next unless event_page['loc'].include?('/en/agenda/')
 
-          unless Rails.env.test?
+          unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/surf.yml')
             sleep(1)
           end
           data_json = Nokogiri::HTML5.parse(open_url(event_page['loc'], raise: true)).css('script[type="application/ld+json"]')

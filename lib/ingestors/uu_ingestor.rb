@@ -97,7 +97,7 @@ module Ingestors
             event.start ||= ical_event.dtstart
             event.end ||= ical_event.dtend
             event.venue ||= ical_event.location
-            unless Rails.env.test?
+            unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/uu.yml')
               sleep 1
             end
           end

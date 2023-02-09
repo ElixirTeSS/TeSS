@@ -57,7 +57,7 @@ module Ingestors
           # add event to events array
           add_event(event)
 
-          unless rails.env.test?
+          unless rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/oscm.yml')
             sleep(1)
           end
         rescue Exception => e
