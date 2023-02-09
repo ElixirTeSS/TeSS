@@ -127,7 +127,7 @@ module ApplicationHelper
   end
 
   def render_sanitized_markdown(markdown_text, options = {}, renderer_options = {})
-    sanitize(render_markdown(markdown_text, options, renderer_options), tags: %w(strong em b i p br ul li))
+    sanitize(render_markdown(markdown_text, options, renderer_options), tags: %w(strong em b i p br ul ol li))
   end
 
   # From twitter-bootstrap-rails gem for less:
