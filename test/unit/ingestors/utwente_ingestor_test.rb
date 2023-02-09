@@ -9,7 +9,7 @@ class UtwenteIngestorTest < ActiveSupport::TestCase
 
   test 'can ingest events from utwente' do
     source = @content_provider.sources.build(
-      url: 'https://www.utwente.nl/en/events/?startdate=2022-01-01&enddate=2022-01-10',
+      url: 'https://www.utwente.nl/en/events/?categories=417878',
       method: 'utwente',
       enabled: true
     )
@@ -17,8 +17,8 @@ class UtwenteIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::UtwenteIngestor.new
 
     # check event doesn't
-    new_title = "New Year's event 2022"
-    new_url = 'https://www.utwente.nl/en/events/2022/1/322102/new-years-event-2022'
+    new_title = 'Risk & Resilience Festival'
+    new_url = 'https://www.utwente.nl/en/events/2023/11/925436/risk-resilience-festival'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
@@ -46,9 +46,8 @@ class UtwenteIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'University of Twente', event.organizer
-    assert_equal '2022-01-10 09:00:00', event.start
-    assert_equal '2022-01-10 10:00:00', event.end
-    assert event.online
-    assert_equal 'Online', event.venue
+    assert_equal '+Thu, 09 Nov 2023 00:00:00 +0000'.to_time, event.start
+    assert_equal '+Thu, 09 Nov 2023 00:00:00 +0000'.to_time, event.end
+    assert_equal 'Waaier', event.venue
   end
 end

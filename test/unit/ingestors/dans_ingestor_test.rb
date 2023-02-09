@@ -17,12 +17,12 @@ class DansIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::DansIngestor.new
 
     # check event doesn't
-    new_title = 'The lecture series “Current Topics in Heritage Science” #5:'
-    new_url = 'https://www.iperionhs.eu/hs-academy-lecture-05/'
+    new_title = 'Train-the-Trainer: An active learning course on understanding & using EOSC'
+    new_url = 'https://eoscfuture.eu/eventsfuture/train-the-trainer-an-active-learning-course-on-understanding-using-eosc/'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference 'Event.count', 1 do
+    assert_difference 'Event.count', 8 do
       freeze_time(Time.new(2019)) do
         VCR.use_cassette("ingestors/dans") do
           ingestor.read(source.url)
@@ -31,9 +31,9 @@ class DansIngestorTest < ActiveSupport::TestCase
       end
     end
 
-    assert_equal 1, ingestor.events.count
+    assert_equal 8, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 1, ingestor.stats[:events][:added]
+    assert_equal 8, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
@@ -46,7 +46,7 @@ class DansIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'DANS', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal ['Archeology'], event.keywords
+    assert_equal ['Fair and Open data', 'Training & Outreach'], event.keywords
     assert_equal '2023-01-19 09:00:00'.to_time, event.start
     assert_equal '2023-01-19 17:00:00'.to_time, event.end
   end

@@ -45,11 +45,10 @@ class LibcalIngestorTest < ActiveSupport::TestCase
 
     # check other fields
     assert_equal 'Rick Vermunt', event.organizer
-    assert_equal '2022-01-10 13:00:00', event.start
-    assert_equal '2022-01-10 15:00:00', event.end
+    assert_equal '+Mon, 10 Jan 2022 13:00:00.000000000 UTC +00:00'.to_time, event.start
+    assert_equal '+Mon, 10 Jan 2022 15:00:00.000000000 UTC +00:00'.to_time, event.end
     assert_equal '', event.venue
-    assert_equal 'Amsterdam', event.venue
-    assert_equal 'The Netherlands', event.country
+    assert_equal 'Netherlands', event.country
     assert_equal 'VU Amsterdam', event.source
     assert_equal 'Amsterdam', event.timezone
     assert_equal true, event.online

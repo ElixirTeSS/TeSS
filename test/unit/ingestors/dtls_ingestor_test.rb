@@ -9,7 +9,7 @@ class DtlsIngestorTest < ActiveSupport::TestCase
 
   test 'can ingest events from dtls' do
     source = @content_provider.sources.build(
-      url: 'https://www.dtls.nl/courses/?s=integrated_modeling_and_optimization&filter_course=archive',
+      url: 'https://www.dtls.nl/',
       method: 'dtls',
       enabled: true
     )
@@ -17,12 +17,12 @@ class DtlsIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::DtlsIngestor.new
 
     # check event doesn't
-    new_title = 'Interated Modeling and Optimization (Fundamental)'
-    new_url = 'https://www.dtls.nl/courses/integrated-modeling-and-optimization-2022/'
+    new_title = 'Constraint-based modeling: Introduction and advanced topics'
+    new_url = 'https://www.dtls.nl/?post_type=course&p=19311'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference 'Event.count', 3 do
+    assert_difference 'Event.count', 4 do
       freeze_time(Time.new(2019)) do
         VCR.use_cassette("ingestors/dtls") do
           ingestor.read(source.url)
@@ -31,9 +31,9 @@ class DtlsIngestorTest < ActiveSupport::TestCase
       end
     end
 
-    assert_equal 3, ingestor.events.count
+    assert_equal 4, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 3, ingestor.stats[:events][:added]
+    assert_equal 4, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
@@ -44,12 +44,11 @@ class DtlsIngestorTest < ActiveSupport::TestCase
     assert_equal new_url, event.url
 
     # check other fields
-    assert_equal 'Integrated Modeling and Optimization (Fundamental)', event.title
+    assert_equal 'Constraint-based modeling: Introduction and advanced topics', event.title
     assert_equal 'Amsterdam', event.timezone
-    assert_equal 'BioSB reseach schoor & TU Eindhoven', event.organizer
-    assert_equal 'Wageningen', event.city
+    assert_equal 'Wageningen Campus', event.city
     assert_equal 'Netherlands', event.country
-    assert_equal '2022-12-12 09:00:00', event.start
-    assert_equal '2022-12-16 17:00:00', event.end
+    assert_equal '+Mon, 13 Feb 2023 00:00:00.000000000 UTC +00:00'.to_time, event.start
+    assert_equal '+Fri, 17 Feb 2023 00:00:00.000000000 UTC +00:00'.to_time, event.end
   end
 end

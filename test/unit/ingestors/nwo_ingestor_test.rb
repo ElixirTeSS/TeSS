@@ -16,17 +16,38 @@ class NwoIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::NwoIngestor.new
 
+    # check event doesn't
+    new_title = 'NWO Biophysics'
+    new_url = 'https://www.nwo.nl/en/meetings/biophysics'
+    refute Event.where(title: new_title, url: new_url).any?
+
     # run task
-    freeze_time(Time.new(2019)) do
-      VCR.use_cassette("ingestors/nwo") do
-        ingestor.read(source.url)
-        ingestor.write(@user, @content_provider)
+    assert_difference 'Event.count', 24 do
+      freeze_time(Time.new(2019)) do
+        VCR.use_cassette("ingestors/nwo") do
+          ingestor.read(source.url)
+          ingestor.write(@user, @content_provider)
+        end
       end
     end
 
-    assert ingestor.events.count > 0
-    assert ingestor.stats[:events][:added] > 0
+    assert_equal 24, ingestor.events.count
+    assert ingestor.materials.empty?
+    assert_equal 24, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
+
+    # check event does exist
+    event = Event.where(title: new_title, url: new_url).first
+    assert event
+    assert_equal new_title, event.title
+    assert_equal new_url, event.url
+
+    # check other fields
+    assert_equal 'NWO Biophysics', event.title
+    assert_equal 'Amsterdam', event.timezone
+    assert_equal 'NWO', event.source
+    assert_equal '+Mon, 09 Oct 2023 00:00:00.000000000 UTC +00:00'.to_time, event.start
+    assert_equal '+Tue, 10 Oct 2023 00:00:00.000000000 UTC +00:00'.to_time, event.end
   end
 end

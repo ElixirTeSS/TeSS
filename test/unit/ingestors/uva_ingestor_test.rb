@@ -16,17 +16,37 @@ class UvaIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::UvaIngestor.new
 
+    # check event doesn't
+    new_title = 'The Societal Impact of AI & Data Science'
+    new_url = 'https://uba.uva.nl/en/shared/subsites/data-science-centre/en/events/2023/03/the-societal-impact-of-ai-and-data-science.html?origin=ht%2ByU3HqRAGnIsBBlkOh%2Fw'
+    refute Event.where(title: new_title, url: new_url).any?
+
     # run task
-    freeze_time(Time.new(2019)) do
-      VCR.use_cassette("ingestors/uva") do
-        ingestor.read(source.url)
-        ingestor.write(@user, @content_provider)
+    assert_difference 'Event.count', 9 do
+      freeze_time(Time.new(2016)) do
+        VCR.use_cassette("ingestors/uva") do
+          ingestor.read(source.url)
+          ingestor.write(@user, @content_provider)
+        end
       end
     end
 
-    assert ingestor.events.count > 0
-    assert ingestor.stats[:events][:added] > 0
+    assert_equal 9, ingestor.events.count
+    assert ingestor.materials.empty?
+    assert_equal 9, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
+
+    # check event does exist
+    event = Event.where(title: new_title, url: new_url).first
+    assert event
+    assert_equal new_title, event.title
+    assert_equal new_url, event.url
+
+    # check other fields
+    assert_equal 'UvA', event.source
+    assert_equal 'Amsterdam', event.timezone
+    assert_equal 'Mon, 24 Mar 2023 10:00:00.000000000 UTC +00:00'.to_time, event.start
+    assert_equal 'Mon, 24 Mar 2023 12:30:00.000000000 UTC +00:00'.to_time, event.end
   end
 end

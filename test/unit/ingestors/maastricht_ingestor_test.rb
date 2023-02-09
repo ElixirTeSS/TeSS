@@ -16,17 +16,38 @@ class MaastrichtIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::MaastrichtIngestor.new
 
+    # check event doesn't
+    new_title = 'What journal to publish in'
+    new_url = 'https://library.maastrichtuniversity.nl/events/what-journal-to-publish-in/'
+    refute Event.where(title: new_title, url: new_url).any?
+
     # run task
-    freeze_time(Time.new(2019)) do
-      VCR.use_cassette("ingestors/maastricht") do
-        ingestor.read(source.url)
-        ingestor.write(@user, @content_provider)
+    assert_difference 'Event.count', 23 do
+      freeze_time(Time.new(2019)) do
+        VCR.use_cassette("ingestors/maastricht") do
+          ingestor.read(source.url)
+          ingestor.write(@user, @content_provider)
+        end
       end
     end
 
-    assert ingestor.events.count > 0
-    assert ingestor.stats[:events][:added] > 0
+    assert_equal 23, ingestor.events.count
+    assert ingestor.materials.empty?
+    assert_equal 23, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
+
+    # check event does exist
+    event = Event.where(title: new_title, url: new_url).first
+    assert event
+    assert_equal new_title, event.title
+    assert_equal new_url, event.url
+
+    # check other fields
+    assert_equal 'What journal to publish in', event.title
+    assert_equal 'Amsterdam', event.timezone
+    assert_equal 'Maastricht', event.city
+    assert_equal '+Mon, 14 Feb 2023 11:00:00.000000000 UTC +00:00'.to_time, event.start
+    assert_equal '+Fri, 14 Feb 2023 12:30:00.000000000 UTC +00:00'.to_time, event.end
   end
 end

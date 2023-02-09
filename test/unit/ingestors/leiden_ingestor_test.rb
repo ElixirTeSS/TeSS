@@ -17,12 +17,12 @@ class LeidenIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::LeidenIngestor.new
 
     # check event doesn't
-    new_title = 'Master PH student-for-a-day | June 3rd'
-    new_url = 'https://www.library.universiteitleiden.nl/events/2022/06/phm-student-for-a-day---3-june'
+    new_title = 'Faculty Career Orientation Days (FLO) 2023'
+    new_url = 'https://www.library.universiteitleiden.nl/events/2023/02/faculty-career-orientation-days-flo-2023'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference 'Event.count', 1 do
+    assert_difference 'Event.count', 15 do
       freeze_time(Time.new(2019)) do
         VCR.use_cassette("ingestors/leiden") do
           ingestor.read(source.url)
@@ -31,9 +31,9 @@ class LeidenIngestorTest < ActiveSupport::TestCase
       end
     end
 
-    assert_equal 1, ingestor.events.count
+    assert_equal 15, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 1, ingestor.stats[:events][:added]
+    assert_equal 15, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
@@ -44,10 +44,10 @@ class LeidenIngestorTest < ActiveSupport::TestCase
     assert_equal new_url, event.url
 
     # check other fields
-    assert_equal '2022-05-03 09:00:00'.to_time, event.start
-    assert_equal '2022-05-03 13:00:00'.to_time, event.end
+    assert_equal 'Tue, 07 Feb 2023 00:00:00 +0000'.to_time, event.start
+    assert_equal 'Wed, 08 Feb 2023 00:00:00 +0000'.to_time, event.start
     assert_equal 'Europe/Amsterdam', event.timezone
-    assert_equal 'Wijnhaven: Turfmarkt 99, 2511 DP The Hague', event.venue
+    assert_equal 'Pieter de la Court', event.venue
     assert_equal 'Universiteit Leiden', event.source
   end
 end
