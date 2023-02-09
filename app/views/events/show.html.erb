@@ -7,7 +7,7 @@
   </div>
 
   <div id="content">
-    <div id="home" class="row">
+    <div id="home" class="my-2">
       <div class="page-header">
         <% if @event.event_types.any? %>
           <% @event.event_types.each do |t| %>
@@ -54,7 +54,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="my-3">
         <!-- Field: start and end -->
         <%= display_attribute(@event, :start) { |t| t.strftime('%A, %d %B %Y @ %H:%M') }%>
         <%= display_attribute(@event, :end) { |t| t.strftime('%A, %d %B %Y @ %H:%M') } %>

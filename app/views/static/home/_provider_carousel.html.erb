@@ -9,29 +9,25 @@
   <% return if providers.none? %>
   <section id="providers">
     <h2 class="text-center"><%= raw t 'home.providers.title' %></h2>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="carousel slide multi-item-carousel" id="providers-carousel">
-          <div class="carousel-inner">
-            <%
-              active = true
-              count = providers.length
-              provider_pages = providers.to_a.cycle.each_cons(per_slide)
-              count.times do %>
-              <div class="item<%= ' active' if active -%>">
-                <% provider_pages.next.each do |p| %>
-                  <div class="col-xs-4">
-                    <%= link_to(image_tag(p.image.url, class: 'img-responsive'), p, title: p.title) %>
-                  </div>
-                <% end %>
+    <div class="carousel slide multi-item-carousel" id="providers-carousel">
+      <div class="carousel-inner">
+        <%
+          active = true
+          count = providers.length
+          provider_pages = providers.to_a.cycle.each_cons(per_slide)
+          count.times do %>
+          <div class="item<%= ' active' if active -%>">
+            <% provider_pages.next.each do |p| %>
+              <div class="col-xs-4">
+                <%= link_to(image_tag(p.image.url, class: 'img-responsive'), p, title: p.title) %>
               </div>
-              <% active = false %>
             <% end %>
           </div>
-          <a class="left carousel-control" href="#providers-carousel" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i></a>
-          <a class="right carousel-control" href="#providers-carousel" data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i></a>
-        </div>
+          <% active = false %>
+        <% end %>
       </div>
+      <a class="left carousel-control" href="#providers-carousel" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i></a>
+      <a class="right carousel-control" href="#providers-carousel" data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i></a>
     </div>
 
     <div class="text-center font-size-lg">

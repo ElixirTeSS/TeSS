@@ -14,13 +14,13 @@
         <%= delete_button(@node) if policy(@node).destroy? %>
       </div>
     </div>
-    <div class="row">
+    <div class="my-3">
       <% if @node.content_providers.any? %>
         <h2>Content Providers</h2>
         <%= render @node.content_providers %>
       <% end %>
     </div>
-    <div class="row">
+    <div class="my-3">
       <% resource_limit = 30 %>
       <% materials = @node.materials.limit(resource_limit) %>
       <% materials_count =  @node.materials.count %>

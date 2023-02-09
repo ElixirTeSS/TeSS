@@ -1,8 +1,8 @@
-<div class="page-header">
-  <h2><%= t '.title', default: 'Invited Users' %></h2>
-</div>
-
 <div id="content">
+  <div class="page-header">
+    <h2><%= t '.title', default: 'Invited Users' %></h2>
+  </div>
+
   <div class="content-actions">
     <div class="content-manager-actions">
       <!-- buttons -->
@@ -12,23 +12,21 @@
     </div>
   </div>
 
-  <div class="row">
-    <table class="table">
-      <thead>
-      <th scope="col">Email</th>
-      <th scope="col">Last Sent at</th>
-      <th scope="col">Sent by</th>
-      </thead>
-      <tbody>
-      <% @users.each do |user| %>
-        <tr>
-          <td><%= user.email %></td>
-          <td><%= user.invitation_sent_at %></td>
-          <td><%= user.get_inviter %></td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>
-  </div>
+  <table class="table">
+    <thead>
+    <th scope="col">Email</th>
+    <th scope="col">Last Sent at</th>
+    <th scope="col">Sent by</th>
+    </thead>
+    <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.email %></td>
+        <td><%= user.invitation_sent_at %></td>
+        <td><%= user.get_inviter %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
 </div>
 

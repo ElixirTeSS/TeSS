@@ -1,51 +1,43 @@
 <% page_size = SearchController::PAGE_SIZE %>
 
-<div class="row wrapper">
-  <div class="col-md-12">
-    <%= page_title 'Search results' %>
+<%= page_title 'Search results' %>
 
-    <%# SEARCH BAR %>
-    <div class="row">
-      <%= render partial: 'search/common/search_box', locals: { resource_path: search_path } %>
-    </div>
+<%# SEARCH BAR %>
+<div class="my-3">
+  <%= render partial: 'search/common/search_box', locals: { resource_path: search_path } %>
+</div>
 
-    <div class="row">
-      <% if @results.blank? %>
-        <p class="empty">No results found</p>
-      <% else %>
-        <% tabs = @results.keys.sort_by { |k| TeSS::Config.site['tab_order'].index(k.to_s) || 99 } %>
-        <ul class="nav nav-tabs">
-          <% tabs.each_with_index do |tab, index| %>
-            <li class="<%= index == 0 ? 'active' : '' %>">
-              <a data-toggle="tab" href="#<%= tab %>"><i class="<%= icon_class_for_model(tab) %>"></i> <%= tab.to_s.humanize.capitalize %>
-                (<%= @results[tab].total %>)</a>
-            </li>
-          <% end %>
-        </ul>
+<div class="my-3">
+  <% if @results.blank? %>
+    <p class="empty">No results found</p>
+  <% else %>
+    <% tabs = @results.keys.sort_by { |k| TeSS::Config.site['tab_order'].index(k.to_s) || 99 } %>
+    <ul class="nav nav-tabs">
+      <% tabs.each_with_index do |tab, index| %>
+        <li class="<%= index == 0 ? 'active' : '' %>">
+          <a data-toggle="tab" href="#<%= tab %>"><i class="<%= icon_class_for_model(tab) %>"></i> <%= tab.to_s.humanize.capitalize %>
+            (<%= @results[tab].total %>)</a>
+        </li>
+      <% end %>
+    </ul>
 
-        <div class="tab-content">
-          <% @results.each do |model, results_for_model| %>
-            <div class="tab-pane fade in <%= 'active'.html_safe if model == tabs.first %>" id="<%= model %>">
-              <div class="row">
-                <div class="col-xs-12">
-                  <div class="search-results-count">
-                    Showing <%= pluralize(results_for_model.results.count, model.to_s.humanize.downcase.singularize) %>
-                    <% if results_for_model.total > page_size %>
-                      out of <%=  results_for_model.total -%>
-                    <% end %>
-                  </div>
+    <div class="tab-content">
+      <% @results.each do |model, results_for_model| %>
+        <div class="tab-pane fade in <%= 'active'.html_safe if model == tabs.first %>" id="<%= model %>">
+          <div class="search-results-count my-3">
+            Showing <%= pluralize(results_for_model.results.count, model.to_s.humanize.downcase.singularize) %>
+            <% if results_for_model.total > page_size %>
+              out of <%=  results_for_model.total -%>
+            <% end %>
+          </div>
 
-                  <%= link_to "View all results & filter", polymorphic_path(model, q: params[:q]), class: 'btn btn-xs btn-default' %>
-                </div>
-              </div>
+          <%= link_to "View all results & filter", polymorphic_path(model, q: params[:q]), class: 'btn btn-xs btn-default' %>
 
-              <% if results_for_model.results.count > 0 %>
-                <%= render partial: 'common/masonry_grid', locals: { objects: results_for_model.results } %>
-              <% end %>
-            </div>
+          <% if results_for_model.results.count > 0 %>
+            <%= render partial: 'common/masonry_grid', locals: { objects: results_for_model.results } %>
           <% end %>
         </div>
       <% end %>
     </div>
-  </div>
+  <% end %>
 </div>

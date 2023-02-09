@@ -1,9 +1,5 @@
-<div class="row wrapper">
-  <div class=" col-md-12">
-    <%- model_class = Profile -%>
-    <div class="page-header">
-      <%= page_title(t('.title', :default => [:'helpers.titles.edit', 'Edit %{model}'], :model => model_class.model_name.human.titleize.downcase)) %>
-    </div>
-    <%= render :partial => 'form' %>
-  </div>
+<%- model_class = Profile -%>
+<div class="page-header">
+  <%= page_title(t('.title', :default => [:'helpers.titles.edit', 'Edit %{model}'], :model => model_class.model_name.human.titleize.downcase)) %>
 </div>
+<%= render :partial => 'form' %>

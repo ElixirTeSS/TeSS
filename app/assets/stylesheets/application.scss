@@ -107,14 +107,12 @@ div.wrapper {
 }
 
 #content {
-  padding: 10px;
   flex-grow: 1;
   overflow: hidden;
 }
 
 #sidebar {
   width: $sidebar-width;
-  padding: 10px;
   margin-right: $layout-spacing-base * 2;
   margin-top: $layout-spacing-base;
   flex-shrink: 0;
@@ -194,7 +192,7 @@ div.wrapper {
 }
 
 ul.facet-sort-wrap {
-  margin-bottom: $layout-spacing-base * 2;
+  margin-bottom: $layout-spacing-base;
 }
 
 .facet-sort {
@@ -237,12 +235,6 @@ ul.facet-sort-wrap {
 .alert {
   margin-bottom: 0;
   margin-top: 5px;
-}
-
-// Bootstrap's row
-.row {
-  margin: 10px 0 10px 0;
-  //padding: 0px 0px 10px 0px;  // Do not add padding to the row - messes up sidebar etc.
 }
 
 // From https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/

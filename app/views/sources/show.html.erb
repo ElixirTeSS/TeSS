@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="my-3">
       <ul class="nav nav-tabs">
         <%= tab('Source', icon_class_for_model('source'), 'home', active: true) %>
         <%= tab('Testing', icon_class_for_model('testing'), 'testing') %>
@@ -25,7 +25,7 @@
 
       <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
-          <div class="row">
+          <div class="my-3">
             <div>
 
               <h4>Source Details</h4>
@@ -80,65 +80,67 @@
               <hr/>
 
               <%# Show details of last run %>
-              <div class="col-md-3">
-                <h4>Last Run</h4>
-                <% if @source.finished_at.nil? %>
-                  <p><strong>No results found</strong></p>
-                <% else %>
-                  <p><strong>Finished at:</strong></p>
-                  <p><strong>Time:</strong>
-                    <%= @source.finished_at.strftime('%H:%M (UTC)') %>
-                  </p>
-                  <p><strong>Date:</strong>
-                    <%= @source.finished_at.strftime('%a, %d %B %Y') %>
-                  </p>
-                  <table class="table">
-                    <thead>
-                    <tr>
-                      <th scope="col">Records</th>
-                      <th scope="col">Count</th>
-                    </tr>
-                    </thead>
-                    <tr>
-                      <th scope="row">read</th>
-                      <td><%= @source.records_read %></td>
-                    </tr>
-                    <tr>
-                      <th scope="row">written</th>
-                      <td><%= @source.records_written %></td>
-                    </tr>
-                    <tr>
-                      <th scope="row">added</th>
-                      <td><%= @source.resources_added %></td>
-                    </tr>
-                    <tr>
-                      <th scope="row">updated</th>
-                      <td><%= @source.resources_updated %></td>
-                    </tr>
-                    <tr>
-                      <th scope="row">rejected</th>
-                      <td><%= @source.resources_rejected %></td>
-                    </tr>
-                  </table>
+              <div class="row">
+                <div class="col-md-3">
+                  <h4>Last Run</h4>
+                  <% if @source.finished_at.nil? %>
+                    <p><strong>No results found</strong></p>
+                  <% else %>
+                    <p><strong>Finished at:</strong></p>
+                    <p><strong>Time:</strong>
+                      <%= @source.finished_at.strftime('%H:%M (UTC)') %>
+                    </p>
+                    <p><strong>Date:</strong>
+                      <%= @source.finished_at.strftime('%a, %d %B %Y') %>
+                    </p>
+                    <table class="table">
+                      <thead>
+                      <tr>
+                        <th scope="col">Records</th>
+                        <th scope="col">Count</th>
+                      </tr>
+                      </thead>
+                      <tr>
+                        <th scope="row">read</th>
+                        <td><%= @source.records_read %></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">written</th>
+                        <td><%= @source.records_written %></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">added</th>
+                        <td><%= @source.resources_added %></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">updated</th>
+                        <td><%= @source.resources_updated %></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">rejected</th>
+                        <td><%= @source.resources_rejected %></td>
+                      </tr>
+                    </table>
+                  <% end %>
+                </div>
+
+                <%# Show details of log %>
+                <% unless @source.log.nil? %>
+                  <div class="col-md-9">
+                    <h4>Output</h4>
+                    <div class="panel-body"
+                         style="width: 100%; height: 300px ;overflow-y: scroll">
+                      <%= render_markdown(@source.log.html_safe) %>
+                    </div>
+                  </div>
                 <% end %>
               </div>
-
-              <%# Show details of log %>
-              <% unless @source.log.nil? %>
-                <div class="col-md-9">
-                  <h4>Output</h4>
-                  <div class="panel-body"
-                       style="width: 100%; height: 300px ;overflow-y: scroll">
-                    <%= render_markdown(@source.log.html_safe) %>
-                  </div>
-                </div>
-              <% end %>
             </div>
           </div>
           <%= render partial: 'activities/activity_log_button', locals: { resource: @source } %>
         </div>
         <div id="testing" class="tab-pane">
-          <div class="row">
+          <div class="my-3">
             <%= render partial: 'sources/test' %>
           </div>
         </div>
