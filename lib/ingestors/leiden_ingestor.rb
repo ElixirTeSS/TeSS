@@ -27,7 +27,7 @@ module Ingestors
 
     def process_leiden(url)
       4.times.each do |i| # always check the first 4 pages, # of pages could be increased if needed
-        unless rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/leiden.yml')
+        unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/leiden.yml')
           sleep(1)
         end
         event_links = Nokogiri::HTML5.parse(open_url("#{url}?pageNumber=#{i+1}", raise: true)).css('#content > ul > li > a')

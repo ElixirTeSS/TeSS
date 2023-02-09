@@ -28,7 +28,7 @@ module Ingestors
 
     def process_maastricht(url)
       4.times.each do |i| # always check the first 4 pages, # of pages could be increased if needed
-        unless rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/maastricht.yml')
+        unless (Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/maastricht.yml'))
           sleep(1)
         end
         event_links = Nokogiri::HTML5.parse(open_url("#{url}?_page=#{i+1}", raise: true)).css('.pt-cv-page h3 > a')

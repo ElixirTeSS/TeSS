@@ -27,7 +27,7 @@ module Ingestors
 
     def process_nwo(url)
       4.times.each do |i| # always check the first 4 pages, # of pages could be increased if needed
-        unless rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/nwo.yml')
+        unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/nwo.yml')
           sleep(1)
         end
         event_page = Nokogiri::HTML5.parse(open_url("#{url}?page=#{i}", raise: true)).css(".overviewContent > .listing-cards > li.list-item > a")

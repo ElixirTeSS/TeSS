@@ -73,7 +73,7 @@ module Ingestors
           event.start, event.end = parse_dates(page.xpath('//th[.="Date"]').first&.parent&.xpath('td')&.last&.text&.strip, 'Amsterdam')
           # in this case also grab the venue
           event.venue = page.xpath('//th[.="Venue"]').first&.parent&.xpath('td')&.last&.text
-          unless rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/wur.yml')
+          unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/wur.yml')
             sleep 1
           end
         end

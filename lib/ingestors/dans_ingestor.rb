@@ -27,7 +27,7 @@ module Ingestors
 
     def process_dans(url)
       4.times.each do |i| # always check the first 4 pages, # of pages could be increased if needed
-        unless rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/dans.yml')
+        unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/dans.yml')
           sleep(1)
         end
         event_page = Nokogiri::HTML5.parse(open_url(url + i.to_s, raise: true)).css("div[id='nieuws_item_section']")
