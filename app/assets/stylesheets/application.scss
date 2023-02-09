@@ -107,14 +107,12 @@ div.wrapper {
 }
 
 #content {
-  padding: 10px;
   flex-grow: 1;
   overflow: hidden;
 }
 
 #sidebar {
   width: $sidebar-width;
-  padding: 10px;
   margin-right: $layout-spacing-base * 2;
   margin-top: $layout-spacing-base;
   flex-shrink: 0;
@@ -194,7 +192,7 @@ div.wrapper {
 }
 
 ul.facet-sort-wrap {
-  margin-bottom: $layout-spacing-base * 2;
+  margin-bottom: $layout-spacing-base;
 }
 
 .facet-sort {
