@@ -12,7 +12,7 @@ fi
 export RAILS_ENV=$ENV
 
 # rebuild rails environment
-git pull
+git pull --rebase
 bundle install --deployment
 bundle exec rake db:migrate
 bundle exec rake assets:clean
