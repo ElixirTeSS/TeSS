@@ -21,7 +21,7 @@
         <%= delete_button(@collection) if policy(@collection).destroy? %>
       </div>
     </div>
-    <div class="row">
+    <div class="my-3">
       <% materials = @collection.materials %>
       <% materials_count =  @collection.materials.count %>
       <% events = @collection.events %>

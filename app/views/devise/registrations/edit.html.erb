@@ -1,43 +1,41 @@
-<div class="row wrapper">
-  <div class="col-md-12">
-    <%- model_class = Profile -%>
-    <div class="page-header">
-      <%= page_title 'Manage account' %>
-    </div>
-    <div class="col-md-6">
-      <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-          <%= account_error_messages! %>
+<%- model_class = Profile -%>
+<div class="page-header">
+  <%= page_title 'Manage account' %>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+      <%= account_error_messages! %>
 
-          <%= f.input :username, autofocus: true %>
+      <%= f.input :username, autofocus: true %>
 
-          <%= f.input :email, required: true, label: 'Account email' %>
+      <%= f.input :email, required: true, label: 'Account email' %>
 
-          <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-              <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-          <% end %>
-
-          <%= f.input :password, input_html: { autocomplete: 'off' }, placeholder: '(unchanged)',
-                      hint: "Leave blank if you don't want to change it." %>
-
-          <%= f.input :password_confirmation, input_html: { autocomplete: 'off' } %>
-
-          <% unless resource.using_omniauth? %>
-            <%= f.input :current_password, input_html: { autocomplete: 'off' }, required: true,
-                        hint: "We need your current password to confirm changes." %>
-          <% end %>
-
-          <div class="actions">
-            <%= f.submit "Update", :class => 'btn btn-primary' %>
-            <%= link_to 'Regenerate authentication token', change_token_path(resource), :method => :patch,  :class => 'btn btn-default', data: { confirm: 'Are you sure want to regenerate your authentication token? Your previous authentication token will no longer work' }  %>
-            <%= link_to "Back", :back, class: 'btn btn-default' %>
-          </div>
+      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+        <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
       <% end %>
 
-      <h3>Cancel my account</h3>
+      <%= f.input :password, input_html: { autocomplete: 'off' }, placeholder: '(unchanged)',
+                  hint: "Leave blank if you don't want to change it." %>
 
-      <p>Want to leave TeSS? <%= button_to "Delete account", registration_path(resource_name), data: { confirm: "Are you sure you want to delete your account? There is no going back once you perform this action." }, method: :delete, :class => 'btn btn-danger' %></p>
+      <%= f.input :password_confirmation, input_html: { autocomplete: 'off' } %>
 
-    </div>
+      <% unless resource.using_omniauth? %>
+        <%= f.input :current_password, input_html: { autocomplete: 'off' }, required: true,
+                    hint: "We need your current password to confirm changes." %>
+      <% end %>
+
+      <div class="actions">
+        <%= f.submit "Update", :class => 'btn btn-primary' %>
+        <%= link_to 'Regenerate authentication token', change_token_path(resource), :method => :patch,  :class => 'btn btn-default', data: { confirm: 'Are you sure want to regenerate your authentication token? Your previous authentication token will no longer work' }  %>
+        <%= link_to "Back", :back, class: 'btn btn-default' %>
+      </div>
+    <% end %>
+
+    <h3>Cancel my account</h3>
+
+    <p>Want to leave TeSS? <%= button_to "Delete account", registration_path(resource_name), data: { confirm: "Are you sure you want to delete your account? There is no going back once you perform this action." }, method: :delete, :class => 'btn btn-danger' %></p>
+
   </div>
 </div>
 

@@ -4,12 +4,12 @@
 
 <!-- Register button -->
 <% if TeSS::Config.feature['invitation'] && (current_user.try(:is_admin?) || current_user.try(:is_curator?)) %>
-    <div class="row">
-      <%= link_to 'Invitees', invitees_path, class: 'btn btn-primary align-self-end' %>
-    </div>
+  <div class="pull-right">
+    <%= link_to 'Invitees', invitees_path, class: 'btn btn-default align-self-end' %>
+  </div>
 <% end %>
 
-<div class="search-results-count">
+<div class="search-results-count my-3">
   <%= pluralize(@users.count, 'user') %>
 </div>
 

@@ -6,7 +6,7 @@
   <% leaderboard.each do |curator, scores| %>
     <div class="score-box nav-heading list-group-item">
         <% if current_user == curator %>
-          <div class="row score">
+          <div class="score">
               <b>You have made <%= pluralize scores['total'], 'contribution' %> </b>
           </div>
           <% scores.each do |score, value| %>
@@ -20,7 +20,7 @@
             </div>
           <% end %>
         <% else %>
-          <div class="row">
+          <div>
             <%=link_to "#{curator.full_name.blank? ? curator.username : curator.full_name}", curator %> has made <%= pluralize scores['total'], 'contribution' %>
           </div>
         <% end %>

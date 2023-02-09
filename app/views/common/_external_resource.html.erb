@@ -1,5 +1,5 @@
 <% api_url = external_resource.api_url_of_tool -%>
-<%= content_tag(:div, class: 'col-md-12 col-sm-12 bounding-box', data: { 'biotools-url': api_url }) do %>
+<%= content_tag(:div, class: 'bounding-box', data: { 'biotools-url': api_url }) do %>
   <%= link_to(external_resource.url, target: '_blank', rel: 'nofollow noopener') do %>
     <h5>
       <i class="fa fa-external-link"></i>

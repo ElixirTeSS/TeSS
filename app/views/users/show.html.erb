@@ -125,7 +125,7 @@
 
     <%= render(partial: 'users/partials/ban', locals: { ban: @user.ban }) if @user.banned? && current_user.try(:is_admin?) %>
 
-    <div class="row">
+    <div class="my-3">
       <% materials = @user.materials.limit(resource_limit) %>
       <% materials_count =  @user.materials.count %>
       <% upcoming_events = @user.events.not_finished %>

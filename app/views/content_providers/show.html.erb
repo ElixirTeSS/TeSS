@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="my-3">
       <% resource_limit = 30 %>
       <% materials = @content_provider.materials.from_verified_users.limit(resource_limit) %>
       <% materials_count =  @content_provider.materials.from_verified_users.count %>
@@ -65,7 +65,7 @@
         <% if policy(@content_provider).update? && TeSS::Config.feature['sources'] %>
           <div id="sources" class="tab-pane fade<%= ' in active' if activator.check_pane('sources') %>">
             <% if policy(Source).new? %>
-              <div class="row">
+              <div class="my-3">
                 <%= link_to new_content_provider_source_path(@content_provider), class: 'btn btn-primary' do %>
                   <i class="fa fa-plus-square"></i> Add source
                 <% end %>
@@ -76,9 +76,8 @@
                 </div>
               </div>
             <% end %>
-            <div class="row">
-              <%= render partial: 'common/masonry_grid', locals: { objects: sources } %>
-            </div>
+
+            <%= render partial: 'common/masonry_grid', locals: { objects: sources } %>
           </div>
         <% end %>
       </div>

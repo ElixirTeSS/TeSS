@@ -1,34 +1,23 @@
-
 <div class="wrapper">
   <div id="sidebar" class="popout-sidebar">
-
-    <h3 class="nav-heading" id="sidebar-header">
-      Blah
-    </h3>
     <% if @leaderboard %>
-        <%= render :partial => 'leaderboard', :locals => {:leaderboard => @leaderboard} %>
+      <%= render :partial => 'leaderboard', :locals => {:leaderboard => @leaderboard} %>
     <% end %>
   </div>
 
   <div id="content">
-    <div class="row">
-      <h3>Displaying all <%= pluralize @suggestions.count, 'topic suggestion' %></h3>
-      <div class="pull-right">
-        <%= info_button("How to curate topics in #{TeSS::Config.site['title_short']}") do %>
-            <%= render_markdown(MaterialsHelper::TOPICS_INFO) %>
-        <% end %>
-      </div>
+    <div class="pull-right">
+      <%= info_button("How to curate topics in #{TeSS::Config.site['title_short']}") do %>
+        <%= render_markdown(MaterialsHelper::TOPICS_INFO) %>
+      <% end %>
     </div>
+    <h3>Displaying all <%= pluralize @suggestions.count, 'topic suggestion' %></h3>
     <% @suggestions.each do |suggestion| %>
-        <% resource = suggestion.suggestible %>
-        <%= render layout: 'common/mixed_resources', locals: {resource: resource} do%>
+      <% resource = suggestion.suggestible %>
+      <%= render layout: 'common/mixed_resources', locals: {resource: resource} do%>
         <%= render partial: 'common/approve_term_suggestions', locals: { suggestion: suggestion } %>
-        <% end %>
+      <% end %>
     <% end %>
-
   </div>
 </div>
-
-
-
 
