@@ -25,7 +25,7 @@ module Ingestors
     private
 
     def process_utwente(url)
-      response = get_JSON_response(url, method: :post, referrer: url,
+      response = get_json_response(url, method: :post, referrer: url,
         headers: {
           content_type: :json,
           accept: :json

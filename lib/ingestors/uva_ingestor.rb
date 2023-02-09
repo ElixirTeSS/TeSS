@@ -26,7 +26,7 @@ module Ingestors
 
     def process_uva(url)
       # execute REST request
-      results = get_JSON_response url
+      results = get_json_response url
       data = results.to_h['items']
 
       return if data.nil? || data.empty?

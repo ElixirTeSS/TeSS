@@ -56,7 +56,6 @@ module Ingestors
 
           # add event to events array
           add_event(event)
-
           unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/oscm.yml')
             sleep(1)
           end

@@ -26,7 +26,7 @@ module Ingestors
 
     def process_libcal(url)
       # execute REST request
-      results = get_JSON_response url
+      results = get_json_response url
       data = results.to_h.fetch('results', [])
 
       # extract materials from results
@@ -83,7 +83,6 @@ module Ingestors
 
           # add event to events array
           add_event(event)
-          puts 1
         rescue Exception => e
           @messages << "Extract event fields failed with: #{e.message}"
         end
