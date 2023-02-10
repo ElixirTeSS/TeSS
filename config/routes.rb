@@ -152,7 +152,7 @@ Rails.application.routes.draw do
     mount Sidekiq::Web, at: '/sidekiq'
   end
 
-  get 'resolve/:prefix:type:id' => 'resolution#resolve', constraints: { prefix: /(.+\:)?/, type: /[a-zA-Z]/, id: /\d+/ }
+  get 'resolve/:id' => 'resolution#resolve'
 
   get 'theme_showcase' => 'static#showcase'
 
