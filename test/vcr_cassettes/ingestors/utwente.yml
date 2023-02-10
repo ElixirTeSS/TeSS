@@ -1,0 +1,67 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://www.utwente.nl/en/events/?categories=417878
+    body:
+      encoding: UTF-8
+      string: '{"id":1,"method":"GetItems","params":[{"categories":"417878"}]}'
+    headers:
+      Accept:
+      - application/json
+      User-Agent:
+      - rest-client/2.1.0 (linux x86_64) ruby/3.0.5p211
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '63'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Host:
+      - www.utwente.nl
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Thu, 09 Feb 2023 09:50:07 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Vary:
+      - Accept-Encoding
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Security-Policy:
+      - frame-ancestors 'self' https://webhare.utwente.nl https://portal-test.utsp.utwente.nl
+      Cache-Control:
+      - no-cache
+    body:
+      encoding: ASCII-8BIT
+      string: '{"error":null,"id":1,"result":{"emptyfilters":false,"items":[{"addthisdata":{"allday":true,"description":"<p
+        class=\"normal\">Indestructible adaptability and resilience are crucial in
+        this unpredictable world and uncertain time.\u00A0Risk and resilience management
+        is - especially now - invaluable. The festival consists of interactive and
+        instructive sessions. In these sessions, scientists, risk managers, professionals
+        and students will discuss safety with each other. Looking for pressing questions
+        that need to be answered.<\/p>","enddate":"09/11/2023 23:59","startdate":"09/11/2023
+        00:00"},"dateformatted":"Thu 9 Nov 2023","description":"Indestructible adaptability
+        and resilience are crucial in this unpredictable world and uncertain time.
+        Risk and resilience management is - especially now - invaluable. The festival
+        consists of interactive and instructive sessions. In these sessions, scientists,
+        risk managers, professionals and students will discuss safety with each other.
+        Looking for pressing questions that need to be answered.","id":925436,"link":"https://www.utwente.nl/en/events/2023/11/925436/risk-resilience-festival","location":"Waaier","photolink":"https://1348661504.rsc.cdn77.org/.uc/ic25c7d48010254b8df01274d47032370cbd8e18df7be0701c3a401ee0080/data.jpg","photolink_2x":"https://1348661504.rsc.cdn77.org/.uc/i58f2af55010254b8df01274d47032370cbd8e18df7be0701c34803dc0180/data.jpg","subtitle":"","summaryphotolink":"https://1348661504.rsc.cdn77.org/.uc/if4fe220801025dcc5701274d4703f2f55d25a150f54d0701c33a003a0080/data.png","summaryphotolink_2x":"https://1348661504.rsc.cdn77.org/.uc/ibf507df401025dcc5701274d4703f2f55d25a150f54d0701c37400740080/data.png","tags":[{"filter":"categories","id":417877,"tag":"Conferences
+        & Symposia"},{"filter":"categories","id":417884,"tag":"Festivals"},{"filter":"categories","id":417878,"tag":"Lectures"}],"title":"Risk
+        & Resilience Festival"}],"links":[{"id":925436,"link":"2023/11/925436/risk-resilience-festival"}],"moreitems":false,"totalresults":1}}'
+  recorded_at: Tue, 01 Jan 2019 00:00:00 GMT
+recorded_with: VCR 6.1.0

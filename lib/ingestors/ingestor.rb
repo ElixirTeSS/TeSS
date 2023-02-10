@@ -77,11 +77,16 @@ module Ingestors
       end
     end
 
-    def get_json_response(url, accept_params = 'application/json')
-      response = RestClient::Request.new(method: :get,
+    def convert_title(input)
+      return input if input.nil?
+      CGI.unescapeHTML(input)
+    end
+
+    def get_json_response(url, accept_params = 'application/json', **kwargs)
+      response = RestClient::Request.new({ method: :get,
                                          url: CGI.unescape_html(url),
                                          verify_ssl: false,
-                                         headers: { accept: accept_params }).execute
+                                         headers: { accept: accept_params } }.merge(kwargs)).execute
       # check response
       raise "invalid response code: #{response.code}" unless response.code == 200
 

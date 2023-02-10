@@ -1,0 +1,151 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://vu-nl.libcal.com/ajax/calendar/list?audience=&c=7052&camps=&cats=&date=2022-01-10&inc=0&page=1&perpage=48
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      User-Agent:
+      - rest-client/2.1.0 (linux x86_64) ruby/3.0.5p211
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Host:
+      - vu-nl.libcal.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Thu, 09 Feb 2023 09:05:10 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Vary:
+      - Accept-Encoding
+      X-Backend-Server:
+      - libcal-eu-1.springyaws.com
+      X-Content-Type-Options:
+      - nosniff
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains; preload
+      Content-Security-Policy:
+      - upgrade-insecure-requests
+    body:
+      encoding: ASCII-8BIT
+      string: '{"total_results":1,"perpage":48,"status":1,"results":[{"id":3826342,"title":"ENDNOTE
+        LIGHT","description":"\u003Cp\u003E\u003Cstrong\u003E\u003Cspan style=\u0022font-size:11pt\u0022\u003E\u003Cspan
+        style=\u0022line-height:normal\u0022\u003E\u003Cspan calibri=\u0022\u0022
+        style=\u0022font-family:\u0022\u003E\u003Cspan style=\u0022font-size:10.0pt\u0022\u003E\u003C/span\u003E\u003C/span\u003E\u003C/span\u003E\u003C/span\u003E\u003C/strong\u003E\u003C/p\u003E\r\n\r\n\u003Cp\u003E\u003Cspan
+        style=\u0022font-size:12pt\u0022\u003E\u003Cspan new=\u0022\u0022 roman=\u0022\u0022
+        style=\u0022font-family:\u0022 times=\u0022\u0022\u003E\u003Cstrong\u003E\u003Cspan
+        style=\u0022font-size:11.0pt\u0022\u003E\u003Cspan calibri=\u0022\u0022 style=\u0022font-family:\u0022\u003EImportant:\u003C/span\u003E\u003C/span\u003E\u003C/strong\u003E\u003C/span\u003E\u003C/span\u003E\u003C/p\u003E\r\n\r\n\u003Cp\u003E\u003Cspan
+        style=\u0022font-size:12pt\u0022\u003E\u003Cspan new=\u0022\u0022 roman=\u0022\u0022
+        style=\u0022font-family:\u0022 times=\u0022\u0022\u003E\u003Cspan style=\u0022font-size:11.0pt\u0022\u003E\u003Cspan
+        calibri=\u0022\u0022 style=\u0022font-family:\u0022\u003EThis workshop is
+        based on EndNote 20\u003Cbr /\u003E\r\nBefore you can register, you need to
+        do the assessment (this webpage) to determine whether this is the course for
+        you\u003C/span\u003E\u003C/span\u003E\u003C/span\u003E\u003C/span\u003E\u003C/p\u003E\r\n\r\n\u003Cp\u003E\u003Cspan
+        style=\u0022font-size:12pt\u0022\u003E\u003Cspan new=\u0022\u0022 roman=\u0022\u0022
+        style=\u0022font-family:\u0022 times=\u0022\u0022\u003E\u003C/span\u003E\u003C/span\u003E\u003C/p\u003E\r\n\r\n\u003Cp\u003E\u003Cspan
+        style=\u0022font-size:12pt\u0022\u003E\u003Cspan new=\u0022\u0022 roman=\u0022\u0022
+        style=\u0022font-family:\u0022 times=\u0022\u0022\u003E\u003Cstrong\u003EEndNote\u003C/strong\u003E:
+        \u003Cspan style=\u0022font-size:11.0pt\u0022\u003E\u003Cspan calibri=\u0022\u0022
+        style=\u0022font-family:\u0022\u003ESave yourself a great deal of time and
+        effort when writing your thesis by using EndNote.\u003Cbr /\u003E\r\nWith
+        a single click, you can ensure that citations and references are formatted
+        exactly the way you want them.\u003Cbr /\u003E\r\nSave literature references
+        and PDFs that you have collected in your own personal bibliographical database
+        within EndNote.\u003C/span\u003E\u003C/span\u003E\u003C/span\u003E\u003C/span\u003E\u003C/p\u003E\r\n\r\n\u003Cp\u003E\u003Cspan
+        style=\u0022font-size:12pt\u0022\u003E\u003Cspan new=\u0022\u0022 roman=\u0022\u0022
+        style=\u0022font-family:\u0022 times=\u0022\u0022\u003E\u003Cb\u003E\u003Cspan
+        style=\u0022font-size:11.0pt\u0022\u003E\u003Cspan calibri=\u0022\u0022 style=\u0022font-family:\u0022\u003EAbout
+        the workshop:\u003C/span\u003E\u003C/span\u003E\u003C/b\u003E\u003Cspan style=\u0022font-size:11.0pt\u0022\u003E\u003Cspan
+        calibri=\u0022\u0022 style=\u0022font-family:\u0022\u003E\u003Cbr /\u003E\r\nEndNote
+        Light is a highly tutored course where basic steps in EndNote and gathering
+        resources are demonstrated.\u003C/span\u003E\u003C/span\u003E\u003C/span\u003E\u003C/span\u003E\u003C/p\u003E\r\n\r\n\u003Cp\u003E\u003Cspan
+        style=\u0022font-size:12pt\u0022\u003E\u003Cspan new=\u0022\u0022 roman=\u0022\u0022
+        style=\u0022font-family:\u0022 times=\u0022\u0022\u003E\u003Cstrong\u003ELearning
+        goals:\u003C/strong\u003E\u003C/span\u003E\u003C/span\u003E\u003C/p\u003E\r\n\r\n\u003Cp\u003E\u003Cspan
+        style=\u0022font-size:12pt\u0022\u003E\u003Cspan new=\u0022\u0022 roman=\u0022\u0022
+        style=\u0022font-family:\u0022 times=\u0022\u0022\u003E\u003Cspan style=\u0022font-size:11.0pt\u0022\u003E\u003Cspan
+        calibri=\u0022\u0022 style=\u0022font-family:\u0022\u003E- create a database
+        in EndNote\u003Cbr /\u003E\r\n- gather references from a couple of resources\u003Cbr
+        /\u003E\r\n- import them into EndNote\u003Cbr /\u003E\r\n- export them into
+        a word document\u003C/span\u003E\u003C/span\u003E\u003C/span\u003E\u003C/span\u003E\u003Cbr
+        /\u003E\r\n\u003Cspan style=\u0022font-size:14px;\u0022\u003E\u003C/span\u003E\u003C/p\u003E\r\n\r\n\u003Cp\u003E\u003Cstrong\u003E\u003Cspan
+        style=\u0022font-size:14px;\u0022\u003EPreceding the workshop:\u003C/span\u003E\u003C/strong\u003E\u003C/p\u003E\r\n\r\n\u003Cp\u003E\u003Cspan
+        style=\u0022font-size:12px;\u0022\u003E\u003Cspan new=\u0022\u0022 roman=\u0022\u0022
+        times=\u0022\u0022\u003E\u003Cspan calibri=\u0022\u0022\u003EPlease study:
+        \u003Ca href=\u0022https://libguides.vu.nl/endnote\u0022 style=\u0022color:blue;
+        text-decoration:underline\u0022 target=\u0022_blank\u0022\u003ELibguide EndNote\u003C/a\u003E\u003Cbr
+        /\u003E\r\nThe course is particularly suited for people who are not at ease
+        with new computer applications.\u003Cbr /\u003E\r\nDownload \u0026amp; install
+        \u003Ca href=\u0022https://download.vu.nl/\u0022 style=\u0022color:blue; text-decoration:underline\u0022
+        target=\u0022_blank\u0022\u003EEndNote\u003C/a\u003E: (VU users)\u003C/span\u003E\u003C/span\u003E\u003C/span\u003E\u003C/p\u003E\r\n\r\n\u003Cp
+        style=\u0022margin-bottom:0in\u0022\u003E\u003Cspan style=\u0022font-size:12px;\u0022\u003E\u003Cspan
+        style=\u0022line-height:normal\u0022\u003E\u003Cspan style=\u0022line-height:normal\u0022\u003EA
+        few days preceding the course you receive an email containing a ZOOM invitation
+        and the exercises. \u003C/span\u003E\u003C/span\u003E\u003C/span\u003E\u003C/p\u003E\r\n\r\n\u003Cp
+        style=\u0022margin-bottom:0in\u0022\u003E\u003Cspan style=\u0022font-size:12px;\u0022\u003E\u003Cspan
+        style=\u0022line-height:normal\u0022\u003E\u003Cspan style=\u0022line-height:normal\u0022\u003EI
+        expect you to try these exercises on forehand. \u003Ca href=\u0022mailto:r.e.vermunt@vu.nl?subject=Exercises%20I%20like%20to%20have%20enlightened\u0022\u003EMail
+        me\u003C/a\u003E which excercises you need to be addressed in the workshop.\u003C/span\u003E\u003C/span\u003E\u003C/span\u003E\u003C/p\u003E\r\n\r\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\r\n\r\n\u003Cp
+        style=\u0022margin-bottom:11px\u0022\u003E\u003Cspan style=\u0022font-size:12pt\u0022\u003E\u003Cspan
+        new=\u0022\u0022 roman=\u0022\u0022 style=\u0022font-family:\u0022 times=\u0022\u0022\u003E\u003Cspan
+        style=\u0022font-size:11.0pt\u0022\u003E\u003Cspan calibri=\u0022\u0022 style=\u0022font-family:\u0022\u003E\u003C/span\u003E\u003C/span\u003E\u003C/span\u003E\u003C/span\u003E\u003C/p\u003E\r\n\r\n\u003Cp
+        style=\u0022margin-bottom:11px\u0022\u003E\u003Cspan style=\u0022font-size:11pt\u0022\u003E\u003Cspan
+        style=\u0022line-height:normal\u0022\u003E\u003Cspan calibri=\u0022\u0022
+        style=\u0022font-family:\u0022\u003E\u003Cspan style=\u0022font-size:10.0pt\u0022\u003E\u003C/span\u003E\u003C/span\u003E\u003C/span\u003E\u003C/span\u003E\u003C/p\u003E","more_info":"\u003Cscript\u003E\r\nvar
+        preselectIds ={\r\n   \u0022cName\u0022: \u0022ckEndNote\u0022,\r\n   \u0022levels\u0022:
+        [\r\n   {\r\n      \u0022avgVal\u0022: 20,\r\n      \u0022minVal\u0022: null,\r\n      \u0022maxVal\u0022:
+        30,\r\n      \u0022events\u0022: [3826342,3826343]\r\n   },\r\n   {\r\n      \u0022avgVal\u0022:
+        50,\r\n      \u0022minVal\u0022: 30,\r\n      \u0022maxVal\u0022: 81,\r\n      \u0022events\u0022:
+        [3826345,3826346,3826347,3826350,3826351]\r\n   },\r\n   {\r\n      \u0022avgVal\u0022:
+        70,\r\n      \u0022minVal\u0022: 50,\r\n      \u0022maxVal\u0022: 100,\r\n      \u0022events\u0022:
+        [3826354,3826356,3826357,3826358]\r\n   }\r\n   ]\r\n}\r\n\u003C/script\u003E\r\n\u003Cform
+        name=\u0022preSelect\u0022\u003E\r\n\u003Cp class=\u0022query\u0022\u003EDo
+        you have any experience with referencing software?\u003Cbr /\u003E\r\n\u003Clabel
+        style=\u0022font-weight:normal\u0022\u003E\u003Cinput name=\u0022q0\u0022
+        ps=\u002220\u0022 type=\u0022radio\u0022 value=\u002220\u0022 /\u003ENot any\u003C/label\u003E\u003Cbr
+        /\u003E\r\n\u003Clabel style=\u0022font-weight:normal\u0022\u003E\u003Cinput
+        name=\u0022q0\u0022 ps=\u002250\u0022 type=\u0022radio\u0022 value=\u002250\u0022
+        /\u003EYes, with Mendeley\u003C/label\u003E\u003Cbr /\u003E\r\n\u003Clabel
+        style=\u0022font-weight:normal\u0022\u003E\u003Cinput name=\u0022q0\u0022
+        ps=\u002250\u0022 type=\u0022radio\u0022 value=\u002250\u0022 /\u003EYes,
+        with Zotero\u003C/label\u003E\u003Cbr /\u003E\r\n\u003Clabel style=\u0022font-weight:normal\u0022\u003E\u003Cinput
+        name=\u0022q0\u0022 ps=\u002250\u0022 type=\u0022radio\u0022 value=\u002250\u0022
+        /\u003EYes, with another application\u003C/label\u003E\u003Cbr /\u003E\r\n\u003Clabel
+        style=\u0022font-weight:normal\u0022\u003E\u003Cinput name=\u0022q0\u0022
+        ps=\u002250\u0022 type=\u0022radio\u0022 value=\u002250\u0022 /\u003EYes,
+        with EndNote\u003C/label\u003E\u003C/p\u003E\r\n\r\n\u003Cp class=\u0022query\u0022\u003EHow
+        much guidance do you want?\u003Cbr /\u003E\r\n\u003Clabel style=\u0022font-weight:normal\u0022\u003E\u003Cinput
+        name=\u0022q1\u0022 ps=\u002210\u0022 type=\u0022radio\u0022 value=\u002210\u0022
+        /\u003EI need personal, step by step guidance\u003C/label\u003E\u003Cbr /\u003E\r\n\u003Clabel
+        style=\u0022font-weight:normal\u0022\u003E\u003Cinput name=\u0022q1\u0022
+        ps=\u002241\u0022 type=\u0022radio\u0022 value=\u002241\u0022 /\u003EI can
+        do the course with a clear explanation and exercises\u003C/label\u003E\u003Cbr
+        /\u003E\r\n\u003Clabel style=\u0022font-weight:normal\u0022\u003E\u003Cinput
+        name=\u0022q1\u0022 ps=\u002250\u0022 type=\u0022radio\u0022 value=\u002250\u0022
+        /\u003EI am an experienced user and I want to learn tips and tricks\u003C/label\u003E\u003C/p\u003E\r\n\u003C/form\u003E","shortdesc":"\r\n\r\nImportant:\r\n\r\nThis
+        workshop is based on EndNote 20\r\nBefore you can register, you need to do
+        the assessment (this webpage) to determine whether this is the course for
+        you\r\n\r\n\r\n\r\nEndNote: Save...","shortdesc_was_truncated":true,"registration_cost":"","start":"13:00","end":"15:00","all_day":false,"startdt":"2022-01-10
+        13:00:00","enddt":"2022-01-10 15:00:00","date":"Monday, January 10, 2022","ymd":"20220110","year":"2022","monthnum":1,"day":"10","daypostfix":"th","dayfull":"Monday","dayshort":"Mon","monthfull":"January","monthshort":"Jan","url":"https://vu-nl.libcal.com/event/3826342","color":"#C5A9ED","locationCount":0,"location":"","locations":[],"campus":"","presenter":"","featured_image":"","audiences":[],"categories":"Information
+        skills \u003E EndNote","categories_arr":[{"cat_id":32112,"name":"Information
+        skills \u003E EndNote","color":"#B2C8F0"}],"calendar":"University Library","calendar_url":"https://vu-nl.libcal.com/calendar/universitylibrary?","calendar_id":7052,"online_event":true,"online_registration":true,"in_person_registration":false,"org":"Rick
+        Vermunt","orgurl":"https://vu-nl.libcal.com/profile/30110","recurring_event":false,"registration_enabled":false,"registration_msg":{"msg":"Registration
+        has closed.","class":"btn-info"}}]}'
+  recorded_at: Tue, 01 Jan 2019 00:00:00 GMT
+recorded_with: VCR 6.1.0

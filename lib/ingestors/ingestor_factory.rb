@@ -2,13 +2,25 @@ module Ingestors
   class IngestorFactory
     def self.ingestors
       [
-        Ingestors::EventCsvIngestor,
-        Ingestors::MaterialCsvIngestor,
-        Ingestors::IcalIngestor,
+        Ingestors::BioschemasIngestor,
+        Ingestors::DansIngestor,
+        Ingestors::DtlsIngestor,
         Ingestors::EventbriteIngestor,
+        Ingestors::EventCsvIngestor,
+        Ingestors::IcalIngestor,
+        Ingestors::LeidenIngestor,
+        Ingestors::LibcalIngestor,
+        Ingestors::MaastrichtIngestor,
+        Ingestors::MaterialCsvIngestor,
+        Ingestors::NwoIngestor,
+        Ingestors::OscmIngestor,
+        Ingestors::SurfIngestor,
         Ingestors::TessEventIngestor,
+        Ingestors::UtwenteIngestor,
+        Ingestors::UuIngestor,
+        Ingestors::UvaIngestor,
+        Ingestors::WurIngestor,
         Ingestors::ZenodoIngestor,
-        Ingestors::BioschemasIngestor
       ]
     end
 
