@@ -30,7 +30,7 @@ module Ingestors
         unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/dans.yml')
           sleep(1)
         end
-        event_page = Nokogiri::HTML5.parse(open_url(url + i.to_s, raise: true)).css("div[id='nieuws_item_section']")
+        event_page = Nokogiri::HTML5.parse(open_url(url + (i + 1).to_s, raise: true)).css("div[id='nieuws_item_section']")
         event_page.each do |event_data|
           event = OpenStruct.new
 

@@ -9,7 +9,7 @@ class LeidenIngestorTest < ActiveSupport::TestCase
 
   test 'can ingest events from leiden' do
     source = @content_provider.sources.build(
-      url: 'https://www.library.universiteitleiden.nl/events?year=2022&month=6&day=3',
+      url: 'https://www.library.universiteitleiden.nl/events',
       method: 'leiden',
       enabled: true
     )
@@ -17,8 +17,8 @@ class LeidenIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::LeidenIngestor.new
 
     # check event doesn't
-    new_title = 'Faculty Career Orientation Days (FLO) 2023'
-    new_url = 'https://www.library.universiteitleiden.nl/events/2023/02/faculty-career-orientation-days-flo-2023'
+    new_title = 'Data Carpentry Workshop for the Social Sciences'
+    new_url = 'https://www.library.universiteitleiden.nl/events/2023/02/data-carpentry-workshop'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
@@ -44,10 +44,10 @@ class LeidenIngestorTest < ActiveSupport::TestCase
     assert_equal new_url, event.url
 
     # check other fields
-    assert_equal 'Tue, 07 Feb 2023 00:00:00 +0000'.to_time, event.start
-    assert_equal 'Wed, 08 Feb 2023 00:00:00 +0000'.to_time, event.start
-    assert_equal 'Europe/Amsterdam', event.timezone
-    assert_equal 'Pieter de la Court', event.venue
+    assert_equal 'Mon, 20 Feb 2023 00:00:00.000000000 UTC +00:00'.to_time, event.start
+    assert_equal 'Fri, 24 Feb 2023 00:00:00.000000000 UTC +00:00'.to_time, event.end
+    assert_equal 'Amsterdam', event.timezone
+    assert_equal 'Online only', event.venue
     assert_equal 'Universiteit Leiden', event.source
   end
 end

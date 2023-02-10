@@ -18,7 +18,7 @@ class OscmIngestorTest < ActiveSupport::TestCase
 
     # check event doesn't
     new_title = 'FAIR Coffee lecture - Gijs van Dijck'
-    new_url = 'https://www.openscience-maastricht.nl/events/fair-coffee-lecture-24-may-2023'
+    new_url = 'https://www.openscience-maastricht.nl/events/fair-coffee-lecture-24-may-2023/'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
@@ -45,10 +45,10 @@ class OscmIngestorTest < ActiveSupport::TestCase
 
     # check other fields
     assert_equal 'FAIR Coffee lecture - Gijs van Dijck', event.title
-    assert_equal 'Europe/Amsterdam', event.timezone
+    assert_equal 'Amsterdam', event.timezone
     assert_equal 'OSCM', event.source
     assert event.online
-    assert_equal '+Wed, 24 May 2023 11:00:00.000000000 UTC +00:00'.to_time, event.start
-    assert_equal '+Wed, 24 May 2023 12:00:00.000000000 UTC +00:00'.to_time, event.end
+    assert_equal '+Wed, 24 May 2023 09:00:00.000000000 UTC +00:00'.to_time, event.start
+    assert_equal '+Wed, 24 May 2023 10:00:00.000000000 UTC +00:00'.to_time, event.end
   end
 end
