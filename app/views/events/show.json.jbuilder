@@ -3,7 +3,7 @@ fields = [
 
   :content_provider_id, :user_id,
 
-  :keywords, :event_types, :fields, :external_resources,
+  :keywords, :event_types, :fields,
 
   :start, :end, :duration, :timezone,
 
