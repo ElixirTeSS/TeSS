@@ -57,6 +57,7 @@ class Trainer < Profile
         languages_from_keys(self.language)
       end
       string :social_media, multiple: true
+      time :created_at
       time :updated_at
       boolean :public
     end
