@@ -1,20 +1,10 @@
 <div class="col-xs-12">
   <hr/>
   <div class="supporters">
-    <%= link_to 'https://elixir.ut.ee/', class: 'footer-logo', target: '_blank', rel: 'noopener' do %>
-      <%= image_tag('nodes/logos_svg/EE.svg') %>
-    <% end %>
-    <%= link_to 'http://elixir-uk.org/', class: 'footer-logo', target: '_blank', rel: 'noopener' do %>
-      <%= image_tag('nodes/logos_svg/GB.svg') %>
-    <% end %>
-    <%= link_to 'http://www.bbsrc.ac.uk/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1', class: 'footer-logo hidden-xs', target: '_blank', rel: 'noopener' do %>
-      <%= image_tag('elixir/bbsrc-logo.svg') %>
-    <% end %>
-    <%= link_to 'http://www.manchester.ac.uk/', class: 'footer-logo hidden-xs', target: '_blank', rel: 'noopener' do %>
-      <%= image_tag('elixir/uom-logo.svg') %>
-    <% end %>
-    <%= link_to 'http://www.oerc.ox.ac.uk/', class: 'footer-logo hidden-xs', target: '_blank', rel: 'noopener' do %>
-      <%= image_tag('elixir/oerc-logo.svg') %>
+    <%- TeSS::Config.funders.reverse.each do |funder| %>
+      <%= link_to funder[:url], class: 'footer-logo', target: '_blank', rel: 'noopener' do %>
+        <%= image_tag(funder[:logo]) %>
+      <% end %>
     <% end %>
 
     <div class="eu-notice">
