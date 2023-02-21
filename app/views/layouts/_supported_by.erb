@@ -1,18 +1,20 @@
 <div class="col-xs-12">
   <hr/>
   <div class="supporters">
-    <%- TeSS::Config.funders.reverse.each do |funder| %>
+    <%- TeSS::Config&.funders&.reverse&.each do |funder| %>
       <%= link_to funder[:url], class: 'footer-logo', target: '_blank', rel: 'noopener' do %>
         <%= image_tag(funder[:logo]) %>
       <% end %>
     <% end %>
 
-    <div class="eu-notice">
-      <%= image_tag('elixir/eu-flag.svg') %>
-      <div>
-        TeSS has received funding from the European Union’s Horizon 2020 research and innovation programme under
-        grant agreement No. <a href="https://cordis.europa.eu/project/rcn/198519_en.html" target="_blank">676559</a>.
+    <%- if I18n.exists?('eu_funding.text') %>
+      <div class="eu-notice">
+        <%= image_tag('elixir/eu-flag.svg') %>
+        <div>
+          <%= I18n.t('eu_funding.text') %>
+          <a href=<%= I18n.t('eu_funding.href') %> target="_blank"><%= I18n.t('eu_funding.num') %> </a>.
+        </div>
       </div>
-    </div>
+    <% end %>
   </div>
 </div>
