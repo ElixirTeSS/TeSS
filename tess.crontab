@@ -1,0 +1,8 @@
+0 1 * * * /bin/bash -l -c 'cd /code && RAILS_ENV=production bundle exec rake sitemap:generate --silent'
+
+0 2 * * * /bin/bash -l -c 'cd /code && RAILS_ENV=production bundle exec rake tess:process_subscriptions --silent'
+
+0 3 * * * /bin/bash -l -c 'cd /code && RAILS_ENV=production bundle exec rake tess:automated_ingestion --silent'
+
+## [message] Above is your schedule file converted to cron syntax; your crontab file was not updated.
+## [message] Run `whenever --help' for more options.

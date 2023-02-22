@@ -497,3 +497,6 @@ en:
     503: "Apologies, TeSS is temporarily down or unavailable due to maintenance (503 Service Unavailable)."
     422: "The request you sent was well-formed but the change you wanted was rejected (422 Unprocessable Entity)."
     404: "The requested page could not be found - you may have mistyped the address or the page may have moved (404 Not Found)."
+  footer:
+    eu_funding: >
+      TeSS has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No. <a href="https://cordis.europa.eu/project/rcn/198519_en.html", target="_blank">676559</a>.

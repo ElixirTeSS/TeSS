@@ -7,12 +7,11 @@
       <% end %>
     <% end %>
 
-    <%- if I18n.exists?('eu_funding.text') %>
+    <%- if I18n.exists?('footer.eu_funding') %>
       <div class="eu-notice">
         <%= image_tag('elixir/eu-flag.svg') %>
         <div>
-          <%= I18n.t('eu_funding.text') %>
-          <a href=<%= I18n.t('eu_funding.href') %> target="_blank"><%= I18n.t('eu_funding.num') %> </a>.
+          <%== I18n.t('footer.eu_funding') %>
         </div>
       </div>
     <% end %>
