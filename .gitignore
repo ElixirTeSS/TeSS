@@ -37,3 +37,5 @@ docker-volumes
 shared
 vendor/bundle
 config/ontologies/*.cache
+
+tess.crontab
