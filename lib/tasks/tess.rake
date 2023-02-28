@@ -1,4 +1,5 @@
 require 'yaml'
+require 'set'
 
 namespace :tess do
 
@@ -219,5 +220,25 @@ namespace :tess do
     end
 
     File.write(File.join(Rails.root, 'config', 'dictionaries', 'licences.yml'), transformed.to_yaml)
+  end
+
+  desc 'Rebuild autocomplete suggestions'
+  task rebuild_autocomplete_suggestions: :environment do
+    suggestions = {}
+    [Material, Event, Collection, Workflow, Profile].each do |type|
+      type.suggestion_fields_to_add.each do |field|
+        suggestions[field] ||= Set.new
+        type.pluck(field).flatten.each { |s| suggestions[field].add(s) }
+      end
+    end
+
+    suggestions.each do |field, values|
+      puts "Updating #{field} suggestions..."
+      File.open(AutocompleteManager.file_path(field), 'w') do |f|
+        values.to_a.sort.each { |s| f.puts(s) }
+      end
+    end
+
+    puts "Done"
   end
 end
