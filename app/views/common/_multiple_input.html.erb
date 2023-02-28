@@ -12,6 +12,8 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
 <% label ||= f.object.class.human_attribute_name(field_name) %>
 <% model_name ||= f.object.class.name.underscore %>
 <% form_field_name = "#{model_name}[#{field_name.to_s}]" %>
+<% suggestions ||= [] %>
+<% suggestions_url ||= nil %>
 <% existing = f.object.send(field_name.to_sym) %>
 <% existing = [''] if existing.blank? %> <%# Add one placeholder if the field's value consists of an empty array %>
 <% required ||= false   # is a value required %>
@@ -31,7 +33,7 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
 
   <%= content_tag(:p, hint, class: 'help-block') if hint %>
 
-  <%= content_tag(:div, data: { role: 'multi-input', prefix: form_field_name }) do %>
+  <%= content_tag(:div, data: { role: 'multi-input', prefix: form_field_name, 'suggestions-url': suggestions_url }) do %>
     <%# This blank association is needed to trigger the delete when all associations are removed %>
     <input type="hidden" name="<%= form_field_name -%>[]" value=""/>
     <%= content_tag :script, raw(suggestions.to_json), type: 'application/json', data: { role: 'multi-input-suggestions' } %>

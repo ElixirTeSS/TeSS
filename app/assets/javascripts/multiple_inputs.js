@@ -16,20 +16,30 @@ document.addEventListener("turbolinks:load", function() {
     $('[data-role="multi-input"]').each(function () {
         var existing = JSON.parse($(this).find('[data-role="multi-input-existing"]').html()) || [];
         var suggestions = JSON.parse($(this).find('[data-role="multi-input-suggestions"]').html()) || [];
+        var suggestionsUrl = $(this).data('suggestionsUrl');
         var listElement = $(this).find('[data-role="multi-input-list"]');
         var prefix = $(this).data('prefix');
         var addItem = function (value) {
             listElement.find('[data-role="multi-input-add"]').before(HandlebarsTemplates['multi_input/field']({ prefix: prefix, value: value }));
             var input = listElement.find('.multiple-input:last');
-            input.autocomplete({
+            var opts = {
                 orientation: 'top',
-                lookupLimit: 10,
-                lookup: suggestions,
                 triggerSelectOnValidInput: false,
                 onSelect: function () {
                     goToBlankInput.apply(input);
                 }
-            });
+            }
+
+            if (suggestionsUrl) {
+                opts.serviceUrl = suggestionsUrl;
+                opts.dataType = 'json';
+                opts.deferRequestBy = 50;
+            } else {
+                opts.lookupLimit = 10;
+                opts.lookup = suggestions;
+            }
+
+            input.autocomplete(opts);
             return input;
         };
 
