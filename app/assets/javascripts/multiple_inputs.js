@@ -33,7 +33,7 @@ document.addEventListener("turbolinks:load", function() {
             if (suggestionsUrl) {
                 opts.serviceUrl = suggestionsUrl;
                 opts.dataType = 'json';
-                opts.deferRequestBy = 50;
+                opts.deferRequestBy = 100;
             } else {
                 opts.lookupLimit = 10;
                 opts.lookup = suggestions;
