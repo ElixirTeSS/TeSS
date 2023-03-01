@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_04_095643) do
+ActiveRecord::Schema.define(version: 2023_03_01_111905) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,12 @@ ActiveRecord::Schema.define(version: 2023_02_04_095643) do
     t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type"
     t.index ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type"
     t.index ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type"
+  end
+
+  create_table "autocomplete_suggestions", force: :cascade do |t|
+    t.string "field"
+    t.string "value"
+    t.index ["field", "value"], name: "index_autocomplete_suggestions_on_field_and_value", unique: true
   end
 
   create_table "bans", force: :cascade do |t|

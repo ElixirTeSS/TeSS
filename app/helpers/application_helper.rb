@@ -440,11 +440,6 @@ module ApplicationHelper
     content_tag(tag, title, opts)
   end
 
-  def people_suggestions
-    (AutocompleteManager.suggestions_array_for('contributors') +
-      AutocompleteManager.suggestions_array_for('authors')).uniq
-  end
-
   def star_button(resource)
     star = current_user.stars.where(resource_id: resource.id, resource_type: resource.class.name).first
 

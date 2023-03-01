@@ -233,12 +233,18 @@ namespace :tess do
     end
 
     suggestions.each do |field, values|
+      next unless values.any?
       puts "Updating #{field} suggestions..."
-      File.open(AutocompleteManager.file_path(field), 'w') do |f|
-        values.to_a.sort.each { |s| f.puts(s) }
-      end
+      count = AutocompleteSuggestion.refresh(field, *values)
+      puts "  Deleted #{count} redundant suggestions" if count > 0
     end
 
-    puts "Done"
+    with_redundant_fields = AutocompleteSuggestion.where.not(field: suggestions.keys)
+    if with_redundant_fields.any?
+      puts "Deleted #{with_redundant_fields.count} suggestions from unused fields"
+      with_redundant_fields.destroy_all
+    end
+
+    puts 'Done'
   end
 end

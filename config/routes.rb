@@ -155,7 +155,8 @@ Rails.application.routes.draw do
 
   get 'theme_showcase' => 'static#showcase'
 
-  get 'suggestions/:field' => 'autocompleters#suggestions', as: :autocomplete_suggestions
+  get 'autocomplete/people_suggestions' => 'autocomplete#people_suggestions', as: :people_autocomplete_suggestions
+  get 'autocomplete/suggestions/:field' => 'autocomplete#suggestions', as: :autocomplete_suggestions
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
