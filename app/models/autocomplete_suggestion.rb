@@ -1,6 +1,6 @@
 class AutocompleteSuggestion < ApplicationRecord
   def self.add(field, *suggestions)
-    upsert_all(suggestions.map { |s| { field: field, value: s } }, unique_by: [:field, :value])
+    upsert_all(suggestions.map { |s| { field: field, value: s } }, unique_by: [:field, :value]) if suggestions.any?
   end
 
   def self.people

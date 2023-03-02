@@ -30,6 +30,7 @@ class AutocompleteSuggestionTest < ActiveSupport::TestCase
   test 'add' do
     assert_difference('AutocompleteSuggestion.count', 2) do
       AutocompleteSuggestion.add('keywords', 'apple', 'banana', 'grape', 'pineapple')
+      assert AutocompleteSuggestion.where(field: 'keywords', value: 'apple').exists?
     end
 
     assert_no_difference('AutocompleteSuggestion.count', 0) do
@@ -38,10 +39,17 @@ class AutocompleteSuggestionTest < ActiveSupport::TestCase
 
     assert_difference('AutocompleteSuggestion.count', 1) do
       AutocompleteSuggestion.add('keywords', 'AppLE', 'banana', 'grape', 'pineapple')
+      old_apple = AutocompleteSuggestion.where(field: 'keywords', value: 'apple').first
+      new_apple = AutocompleteSuggestion.where(field: 'keywords', value: 'AppLE').first
+      assert old_apple
+      assert new_apple
+      assert_not_equal old_apple.id, new_apple.id
     end
 
     assert_difference('AutocompleteSuggestion.count', 4) do
       AutocompleteSuggestion.add('new_field', 'apple', 'banana', 'grapefruit', 'pineapple')
+      assert AutocompleteSuggestion.where(field: 'keywords', value: 'apple').exists?
+      assert AutocompleteSuggestion.where(field: 'new_field', value: 'apple').exists?
     end
   end
 
@@ -56,5 +64,41 @@ class AutocompleteSuggestionTest < ActiveSupport::TestCase
 
     assert_equal id, AutocompleteSuggestion.where(field: 'keywords', value: 'apple').first.id
     assert_equal ['apple', 'starfruit'], AutocompleteSuggestion.where(field: 'keywords').query('')
+  end
+
+  test 'updates suggestions when resource updated' do
+    e = events(:one)
+    e.save!
+
+    assert_difference('AutocompleteSuggestion.count', 2) do
+      e.keywords = ['apple', 'banana', 'grape', 'pineapple']
+      e.save!
+    end
+
+    assert_no_difference('AutocompleteSuggestion.count', 0) do
+      e.keywords = ['apple', 'banana', 'grape', 'pineapple']
+      e.save!
+    end
+
+    assert_difference('AutocompleteSuggestion.count', 1) do
+      e.keywords = ['AppLE', 'banana', 'grape', 'pineapple']
+      e.save!
+    end
+
+    assert_difference('AutocompleteSuggestion.count', 4) do
+      e.host_institutions = ['apple', 'banana', 'grapefruit', 'pineapple']
+      e.save!
+    end
+
+    assert_no_difference('AutocompleteSuggestion.count', 0) do
+      e.keywords = nil
+      e.save!
+    end
+
+    assert_no_difference('AutocompleteSuggestion.count', 0) do
+      e.keywords = ['potato']
+      e.title = nil
+      refute e.save
+    end
   end
 end
