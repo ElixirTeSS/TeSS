@@ -46,3 +46,13 @@ else
     rake "tess:automated_ingestion"
   end
 end
+
+if !schedules['autocomplete_suggestions'].nil?
+  every :"#{schedules['autocomplete_suggestions']['every']}", at: "#{schedules['autocomplete_suggestions']['at']}" do
+    rake "tess:rebuild_autocomplete_suggestions"
+  end
+else
+  every :tuesday, at: '5am' do
+    rake "tess:rebuild_autocomplete_suggestions"
+  end
+end
