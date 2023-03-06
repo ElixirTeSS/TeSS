@@ -1,4 +1,5 @@
 require 'yaml'
+require 'set'
 
 namespace :tess do
 
@@ -219,5 +220,31 @@ namespace :tess do
     end
 
     File.write(File.join(Rails.root, 'config', 'dictionaries', 'licences.yml'), transformed.to_yaml)
+  end
+
+  desc 'Rebuild autocomplete suggestions'
+  task rebuild_autocomplete_suggestions: :environment do
+    suggestions = {}
+    [Material, Event, Collection, Workflow, Profile].each do |type|
+      type.suggestion_fields_to_add.each do |field|
+        suggestions[field] ||= Set.new
+        type.pluck(field).flatten.each { |s| suggestions[field].add(s) }
+      end
+    end
+
+    suggestions.each do |field, values|
+      next unless values.any?
+      puts "Updating #{field} suggestions..."
+      count = AutocompleteSuggestion.refresh(field, *values)
+      puts "  Deleted #{count} redundant suggestions" if count > 0
+    end
+
+    with_redundant_fields = AutocompleteSuggestion.where.not(field: suggestions.keys)
+    if with_redundant_fields.any?
+      puts "Deleted #{with_redundant_fields.count} suggestions from unused fields"
+      with_redundant_fields.destroy_all
+    end
+
+    puts 'Done'
   end
 end

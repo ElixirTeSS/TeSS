@@ -38,9 +38,9 @@
                     selected: @workflow.licence.blank? ? "notspecified" : @workflow.licence,
                     errors: @workflow.errors[:licence] %>
 
-        <%= f.multi_input :authors, suggestions: people_suggestions %>
+        <%= f.multi_input :authors, suggestions_url: people_autocomplete_suggestions_path %>
 
-        <%= f.multi_input :contributors, suggestions: people_suggestions %>
+        <%= f.multi_input :contributors, suggestions_url: people_autocomplete_suggestions_path %>
       <% end %>
 
       <%= f.input :hide_child_nodes,

@@ -58,10 +58,10 @@
               include_blank: true, field_lock: true, label: t('materials.hints.providers') %>
 
   <!-- Field: Authors -->
-  <%= f.multi_input :authors, suggestions: people_suggestions, title: t('materials.hints.authors') %>
+  <%= f.multi_input :authors, suggestions_url: people_autocomplete_suggestions_path, title: t('materials.hints.authors') %>
 
   <!-- Field: Contributors -->
-  <%= f.multi_input :contributors, suggestions: people_suggestions, title: t('materials.hints.contributors') %>
+  <%= f.multi_input :contributors, suggestions_url: people_autocomplete_suggestions_path, title: t('materials.hints.contributors') %>
 
   <!-- Field: Target Audience -->
   <%= f.multi_input :target_audience, label: 'Target audiences', errors: @material.errors[:target_audience],

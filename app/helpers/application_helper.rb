@@ -383,10 +383,11 @@ module ApplicationHelper
     end
 
     def multi_input(name, options = {})
-      suggestions = options[:suggestions] || AutocompleteManager.suggestions_array_for(name.to_s)
+      options[:suggestions_url] ||= @template.autocomplete_suggestions_path(name) unless options[:suggestions].present?
       @template.render(partial: 'common/multiple_input', locals: { field_name: name, f: self,
                                                                    model_name: options[:model_name],
-                                                                   suggestions: suggestions,
+                                                                   suggestions_url: options[:suggestions_url],
+                                                                   suggestions: options[:suggestions],
                                                                    disabled: options[:disabled],
                                                                    required: options[:required],
                                                                    label: options[:label],
@@ -437,11 +438,6 @@ module ApplicationHelper
     content_for(:title, title)
     tag = opts.delete(:tag) || :h2
     content_tag(tag, title, opts)
-  end
-
-  def people_suggestions
-    (AutocompleteManager.suggestions_array_for('contributors') +
-      AutocompleteManager.suggestions_array_for('authors')).uniq
   end
 
   def star_button(resource)
