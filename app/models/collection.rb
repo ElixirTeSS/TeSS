@@ -35,6 +35,7 @@ class Collection < ApplicationRecord
     searchable do
       text :title
       text :description
+      text :keywords
       string :title
       string :sort_title do
         title.downcase.gsub(/^(an?|the) /, '')
@@ -42,18 +43,15 @@ class Collection < ApplicationRecord
       string :user do
         self.user.username.to_s unless self.user.blank?
       end
-      string :keywords, :multiple => true
-
-      string :user, :multiple => true do
+      string :keywords, multiple: true
+      string :user, multiple: true do
         [user.username, user.full_name].reject(&:blank?) if user
       end
-
       integer :collaborator_ids, multiple: true
       integer :user_id
       boolean :public
       time :created_at
       time :updated_at
-      integer :collaborator_ids, multiple: true
     end
     # :nocov:
   end
