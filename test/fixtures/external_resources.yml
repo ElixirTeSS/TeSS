@@ -30,3 +30,8 @@ redcap:
   source: youtube_video_material (Material)
   title: REDCap
   url: https://bio.tools/tool/redcap
+
+ena:
+  source: one (Event)
+  title: European Nucleotide Archive (ENA)
+  url: https://bio.tools/tool/ena

@@ -39,6 +39,7 @@ class Node < ApplicationRecord
         staff.map(&:name)
       end
       string :member_status
+      time :created_at
       time :updated_at
       integer :user_id # Used for shadowbans
     end

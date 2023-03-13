@@ -690,7 +690,6 @@ class EventsControllerTest < ActionController::TestCase
     assert_includes rss_events.channel.description, 'include_expired: true'
   end
 
-
   test 'should add external resource to event' do
     sign_in @event.user
 
@@ -707,7 +706,7 @@ class EventsControllerTest < ActionController::TestCase
     end
 
     assert_redirected_to event_path(assigns(:event))
-    resource = assigns(:event).external_resources.first
+    resource = assigns(:event).external_resources.last
     assert_equal 'Cool link', resource.title
     assert_equal 'https://tess.elixir-uk.org/', resource.url
   end
