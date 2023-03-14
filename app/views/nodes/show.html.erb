@@ -15,19 +15,15 @@
       </div>
     </div>
     <div class="my-3">
-      <% if @node.content_providers.any? %>
-        <h2>Content Providers</h2>
-        <%= render @node.content_providers %>
-      <% end %>
-    </div>
-    <div class="my-3">
       <% resource_limit = 30 %>
-      <% materials = @node.materials.limit(resource_limit) %>
-      <% materials_count =  @node.materials.count %>
-      <% upcoming_events = @node.events.not_finished %>
-      <% past_events = @node.events.finished %>
+      <% content_providers = @node.content_providers.from_verified_users.limit(resource_limit) %>
+      <% content_providers_count = @node.content_providers.from_verified_users.count %>
+      <% materials = @node.materials.from_verified_users.limit(resource_limit) %>
+      <% materials_count =  @node.materials.from_verified_users.count %>
+      <% upcoming_events = @node.events.from_verified_users.not_finished %>
+      <% past_events = @node.events.from_verified_users.finished %>
       <% events = upcoming_events.limit(resource_limit) %>
-      <% events_count =  @node.events.count %>
+      <% events_count =  @node.events.from_verified_users.count %>
       <% activator = tab_activator %>
       <ul class="nav nav-tabs">
         <% if TeSS::Config.feature['materials'] %>
@@ -39,6 +35,11 @@
           <%= tab('Events', icon_class_for_model('events'), 'events', activator: activator,
                   disabled: { check: events_count.zero?, message: 'No registered events' },
                   count: events_count) %>
+        <% end %>
+        <% if TeSS::Config.feature['content_providers'] %>
+          <%= tab('Providers', icon_class_for_model('content_providers'), 'content_providers', activator: activator,
+                  disabled: { check: content_providers_count.zero?, message: 'No associated content providers' },
+                  count: content_providers_count) %>
         <% end %>
       </ul>
 
@@ -62,6 +63,16 @@
                                activator: activator,
                                view_all_link: events_path(node: @node.name),
                                inc_expired_link: events_path(node: @node.name, include_expired: true) } %>
+        <% end %>
+
+        <% if TeSS::Config.feature['content_providers'] %>
+          <%= render partial: 'common/associated_resources',
+                     locals: { model: ContentProvider,
+                               total_count: content_providers_count,
+                               limit: resource_limit,
+                               resources: content_providers,
+                               activator: activator,
+                               view_all_link: content_providers_path(node: @node.name) } %>
         <% end %>
       </div>
     </div>
