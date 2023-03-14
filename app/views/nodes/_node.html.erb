@@ -1,10 +1,24 @@
-<li class="masonry-brick media-item long">
-  <%= link_to node, class: 'link-overlay' do %>
-    <%= image_tag get_image_url_for(node), class: "media-image listing_image" %>
-    <h4 class="mb-2 mt-3">
-      <%= country_flag(node.country_code, class: 'small-flag') %> <%= node.name %>
-    </h4>
-    <strong class="text-primary"><%= 'Training coordinator'.pluralize(node.training_coordinators.length) -%>: </strong>
-    <%= node_staff_list(node.training_coordinators, false, link: false) %>
-  <% end %>
-</li>
+<% cache(node, expires_in: 6.hours) do %>
+  <li class="masonry-brick media-item long">
+    <%= link_to node, class: 'link-overlay' do %>
+      <%= image_tag get_image_url_for(node), class: "media-image listing_image pull-right" %>
+      <h4 class="mb-2 mt-3">
+        <%= country_flag(node.country_code, class: 'small-flag') %> <%= node.name %>
+      </h4>
+      <div>
+        <strong class="text-primary"><%= 'Training coordinator'.pluralize(node.training_coordinators.length) -%>: </strong>
+        <%= node_staff_list(node.training_coordinators, false, link: false) %>
+      </div>
+      <% if node.materials.length > 0 %>
+        <div><strong><%= pluralize(node.materials.length, 'training material') %></strong></div>
+      <% end %>
+
+      <% if node.events.length > 0 %>
+        <div>
+          <strong><%= pluralize(node.events.not_finished.length, 'event') %></strong>
+          <em>(<%= pluralize(node.events.finished.length, 'past event') %>)</em>
+        </div>
+      <% end %>
+    <% end %>
+  </li>
+<% end %>
