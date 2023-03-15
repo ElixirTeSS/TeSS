@@ -39,6 +39,7 @@ default: &default
     tab_order: ['about', 'events', 'materials', 'elearning_materials', 'workflows', 'collections', 'trainers', 'content_providers', 'nodes']
     # The tabs that should be collapsed under the "Directory" tab. Can be left blank to hide it.
     directory_tabs: ['trainers', 'content_providers', 'nodes']
+    n_provider_ids: 5
   mailer:
     delivery_method: sendmail
     location: /usr/sbin/sendmail
