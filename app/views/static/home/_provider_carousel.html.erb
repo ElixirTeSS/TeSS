@@ -1,7 +1,7 @@
 <% per_slide = 3 %>
 <% return unless TeSS::Config.feature['content_providers'] %>
 <% provider_ids = TeSS::Config.site.dig('home_page', 'featured_providers') %>
-<% provider_ids = ContentProvider.where.not(image_file_size: nil).last(5).pluck(:id) if provider_ids.nil? %>
+<% provider_ids = ContentProvider.from_verified_users.where.not(image_file_size: nil).last(5).pluck(:id) if provider_ids.nil? %>
 <% return if provider_ids.blank? %>
 
 <% cache(['home', 'provider-carousel', provider_ids.join('-')]) do %>
