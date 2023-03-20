@@ -18,6 +18,7 @@ class Event < ApplicationRecord
   include FuzzyDictionaryMatch
   include WithTimezone
 
+  before_save :fix_keywords
   before_save :check_country_name # :set_default_times
   before_save :geocoding_cache_lookup, if: :address_will_change?
   after_save :enqueue_geocoding_worker, if: :address_changed?
@@ -433,5 +434,39 @@ class Event < ApplicationRecord
     datetime.asctime.in_time_zone(timezone)
   rescue StandardError
     datetime
+  end
+
+  def fix_online(min_sim=0.3)
+    dic = OnlineKeywordsDictionary.instance.load_dictionary
+    dic.each do |var, v|
+      downcased_var = self[var].downcase
+      v.each do |kw, val|
+        if downcased_var.include?(val['title'])
+          self.online = True
+          return
+        end
+      end
+    end
+  end
+
+  def fix_keywords
+    fix_online if !self.online.present?
+
+    keywords = self.keywords.dup
+    dicts = [
+      [TargetAudienceDictionary, 'target_audience'],
+      [EventTypeDictionary, 'event_types'],
+      [EligibilityDictionary, 'eligibility'],
+    ]
+    dicts.each do |dict, var|
+      dic = dict.instance
+      keywords.each do |kw|
+        res = dic.best_match(kw)
+        if res
+          self[var].append(kw)
+          self.keywords.delete(kw)
+        end
+      end
+    end
   end
 end

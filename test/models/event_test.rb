@@ -449,4 +449,21 @@ class EventTest < ActiveSupport::TestCase
     assert event.valid?
     assert_equal [event_type], event.event_types
   end
+
+  test 'get online status from description' do
+    event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user), url: 'https://https-website.com/mat', description: 'This event is held on Zoom')
+    assert event.valid?
+    assert_not event.online
+    event.save!
+    assert event.online
+  end
+
+  test 'get event_type from keywords' do
+    event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user), url: 'https://https-website.com/mat', keywords: ['Workshops and courses'])
+    assert event.valid?
+    assert_not event.event_types.include?('Workshops and courses')
+    event.save!
+    assert event.event_types.include?('Workshops and courses')
+  end
+
 end
