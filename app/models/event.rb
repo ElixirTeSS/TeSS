@@ -437,11 +437,11 @@ class Event < ApplicationRecord
   end
 
   def fix_online(min_sim=0.3)
-    dic = OnlineKeywordsDictionary.instance.load_dictionary
-    dic.each do |var, v|
-      downcased_var = self[var].downcase
-      v.each do |kw, val|
-        if downcased_var.include?(val['title'])
+    dic = OnlineKeywordsDictionary.instance
+    dic.keys.each do |key|
+      downcased_var = self[key].downcase
+      dic.lookup(key).each do |k, v|
+        if downcased_var.include?(v['title'])
           self.online = True
           return
         end
