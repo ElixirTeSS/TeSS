@@ -4,6 +4,13 @@ en:
       confirmed: "Your email address has been successfully confirmed."
       send_instructions: "You will receive an email with instructions for how to confirm your email address in a few minutes."
       send_paranoid_instructions: "If your email address exists in our database, you will receive an email with instructions for how to confirm your email address in a few minutes."
+      welcome: "Dear %{email}, welcome to TeSS!"
+      your_account_locked: "Your account on TeSS has been locked due to an excessive number of unsuccessful log in attempts."
+      click_link: "Click the link below to unlock your account:"
+      password_change_request: "Someone has requested a link to change your password on TeSS. You can do this through the link below."
+      ignore_if_not_you: "If you didn't request this, please ignore this email."
+      password_change_waits: "Your password won't change until you access the link above and create a new one."
+      confirm_through_link: "You can confirm your TeSS account email through the link below:"
     failure:
       already_authenticated: "You are already signed in."
       inactive: "Your account is not activated yet."
