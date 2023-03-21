@@ -439,9 +439,9 @@ class Event < ApplicationRecord
   def fix_online(min_sim=0.3)
     dic = OnlineKeywordsDictionary.instance
     dic.keys.each do |key|
-      downcased_var = self[key].downcase
-      dic.lookup(key).each do |k, v|
-        if downcased_var.include?(v['title'])
+      downcased_var = self[key]&.downcase
+      dic.lookup(key).each do |v|
+        if downcased_var.include?(v)
           self.online = True
           return
         end
@@ -450,17 +450,16 @@ class Event < ApplicationRecord
   end
 
   def fix_keywords
-    fix_online if !self.online.present?
+    fix_online if !self&.online.present?
 
-    keywords = self.keywords.dup
-    dicts = [
+    [
       [TargetAudienceDictionary, 'target_audience'],
       [EventTypeDictionary, 'event_types'],
       [EligibilityDictionary, 'eligibility'],
-    ]
-    dicts.each do |dict, var|
+    ].each do |dict, var|
+      self[var] ||= []
       dic = dict.instance
-      keywords.each do |kw|
+      self&.keywords&.dup&.each do |kw|
         res = dic.best_match(kw)
         if res
           self[var].append(kw)

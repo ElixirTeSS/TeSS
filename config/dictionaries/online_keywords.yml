@@ -1,18 +1,10 @@
 description:
-  webinar:
-    title: 'webinar'
-  zoom:
-    title: 'zoom'
-  ms_teams:
-    title: 'ms teams'
-  online_workshop:
-    title: 'online workshop'
+  - webinar
+  - zoom
+  - ms_teams
+  - online workshop
 venue:
-  webinar:
-    title: 'webinar'
-  zoom:
-    title: 'zoom'
-  ms_teams:
-    title: 'teams'
-  online_workshop:
-    title: 'online'
+  - webinar
+  - zoom
+  - teams
+  - online
