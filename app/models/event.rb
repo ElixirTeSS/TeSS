@@ -18,7 +18,7 @@ class Event < ApplicationRecord
   include FuzzyDictionaryMatch
   include WithTimezone
 
-  before_validation_on_create :fix_keywords, if: :scraper_record
+  before_validation :fix_keywords, on: :create, if: :scraper_record
   before_save :check_country_name # :set_default_times
   before_save :geocoding_cache_lookup, if: :address_will_change?
   after_save :enqueue_geocoding_worker, if: :address_changed?
