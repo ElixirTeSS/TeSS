@@ -18,7 +18,7 @@ class Event < ApplicationRecord
   include FuzzyDictionaryMatch
   include WithTimezone
 
-  before_save :fix_keywords
+  before_validation_on_create :fix_keywords, if: :scraper_record
   before_save :check_country_name # :set_default_times
   before_save :geocoding_cache_lookup, if: :address_will_change?
   after_save :enqueue_geocoding_worker, if: :address_changed?
@@ -436,7 +436,7 @@ class Event < ApplicationRecord
     datetime
   end
 
-  def fix_online(min_sim=0.3)
+  def fix_online
     dic = OnlineKeywordsDictionary.instance
     dic.keys.each do |key|
       downcased_var = self[key]&.downcase
