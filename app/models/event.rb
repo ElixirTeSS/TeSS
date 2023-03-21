@@ -453,11 +453,13 @@ class Event < ApplicationRecord
     fix_online if !self&.online.present?
 
     [
-      [TargetAudienceDictionary, 'target_audience'],
-      [EventTypeDictionary, 'event_types'],
-      [EligibilityDictionary, 'eligibility'],
+      [TargetAudienceDictionary, :target_audience],
+      [EventTypeDictionary, :event_types],
+      [EligibilityDictionary, :eligibility],
     ].each do |dict, var|
-      self[var] ||= []
+      if not self[var].present?
+        self[var] = []
+      end
       dic = dict.instance
       self&.keywords&.dup&.each do |kw|
         res = dic.best_match(kw)
