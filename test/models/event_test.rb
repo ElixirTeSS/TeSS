@@ -452,18 +452,20 @@ class EventTest < ActiveSupport::TestCase
 
   test 'get online status from description if scraped' do
     event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user), url: 'https://https-website.com/mat', description: 'This event is held on Zoom', scraper_record: true)
-    assert event.valid?
     assert_not event.online
+    assert event.valid?
     event.save!
     assert event.online
   end
 
   test 'get event_type from keywords if scraped' do
     event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user), url: 'https://https-website.com/mat', keywords: ['Workshops and courses'], scraper_record: true)
-    assert event.valid?
     assert_not event.event_types.include?('Workshops and courses')
+    assert event.keywords.include?('Workshops and courses')
+    assert event.valid?
     event.save!
     assert event.event_types.include?('Workshops and courses')
+    assert_not event.keywords.include?('Workshops and courses')
   end
 
   test 'do not get event_type from keywords if not scraped' do
