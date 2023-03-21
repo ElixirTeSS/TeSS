@@ -17,10 +17,18 @@ en:
     mailer:
       confirmation_instructions:
         subject: "Confirmation instructions"
+        confirm_through_link: "You can confirm your TeSS account email through the link below:"
       reset_password_instructions:
         subject: "Reset password instructions"
+        password_change_request: "Someone has requested a link to change your password on TeSS. You can do this through the link below."
+        ignore_if_not_you: "If you didn't request this, please ignore this email."
+        password_change_waits: "Your password won't change until you access the link above and create a new one."
       unlock_instructions:
         subject: "Unlock instructions"
+        your_account_locked: "Your account on TeSS has been locked due to an excessive number of unsuccessful log in attempts."
+        click_link: "Click the link below to unlock your account:"
+      hello: "Hello %{email}"
+      welcome: "Dear %{email}, welcome to TeSS!"
     omniauth_callbacks:
       failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
       success: "Successfully authenticated from %{kind} account."
