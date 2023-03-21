@@ -441,8 +441,8 @@ class Event < ApplicationRecord
     dic.keys.each do |key|
       downcased_var = self[key]&.downcase
       dic.lookup(key).each do |v|
-        if downcased_var.include?(v)
-          self.online = True
+        if downcased_var&.include?(v)
+          self.online = true
           return
         end
       end
