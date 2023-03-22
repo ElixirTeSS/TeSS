@@ -464,11 +464,7 @@ class EventTest < ActiveSupport::TestCase
     assert event.keywords.include?('Workshops and courses')
     assert event.valid?
     event.save!
-    puts 'hi'
-    puts event.event_types
-    puts event.keywords
-    puts 'ho'
-    assert event.event_types.include?('Workshops and courses')
+    assert event.event_types.include?('workshops_and_courses')
     assert_not event.keywords.include?('Workshops and courses')
   end
 
