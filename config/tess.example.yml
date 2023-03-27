@@ -88,6 +88,7 @@ default: &default
     material_type: 'material_type.yml'
     target_audience: 'target_audience.yml'
     trainer_experience: 'trainer_experience.yml'
+    online_keywords: 'online_keywords.yml'
   funders:
 #    - url: https://example.com/your-funders-website
 #      logo: foo.png

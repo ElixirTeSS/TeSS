@@ -93,10 +93,12 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
     assert_equal 1, event.event_types.size
     assert_includes event.event_types, 'meetings_and_conferences'
     refute_empty event.keywords
-    assert_equal 2, event.keywords.size
-    assert_includes event.keywords, 'Business & Professional'
+    assert_equal 1, event.keywords.size
+    refute_includes event.keywords, 'Business & Professional'
     assert_includes event.keywords, 'Other'
     refute_includes event.keywords, 'Dummy'
+    assert_equal 1, event.target_audience.size
+    assert_includes event.target_audience, 'Business & Professional'
 
     # check ingested event
     # eventbrite.id: 315896965327
