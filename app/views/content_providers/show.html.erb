@@ -78,6 +78,9 @@
             <% end %>
 
             <%= render partial: 'common/masonry_grid', locals: { objects: sources } %>
+            <% if sources.empty? %>
+              <span class="muted">No sources defined</span>
+            <% end %>
           </div>
         <% end %>
       </div>

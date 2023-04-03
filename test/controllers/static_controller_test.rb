@@ -189,4 +189,27 @@ class StaticControllerTest < ActionController::TestCase
       end
     end
   end
+
+  test 'should hide unverified providers from carousel' do
+    mock_images
+    ContentProvider.destroy_all
+    regular = users(:regular_user)
+    unverified = users(:unverified_user)
+    regular_provider = regular.content_providers.create!(title: 'Regular Provider',
+                                                         image_url: 'http://example.com/goblet.png',
+                                                         url: 'https://providers.com/p1')
+    unverified_provider = unverified.content_providers.create!(title: 'Unverified Provider',
+                                                               image_url: 'http://example.com/goblet.png',
+                                                               url: 'https://providers.com/p2')
+    another_provider = regular.content_providers.create!(title: 'Another Regular Provider',
+                                                         image_url: 'http://example.com/goblet.png',
+                                                         url: 'https://providers.com/p3')
+    with_settings(site: { home_page: { provider_carousel: true } }) do
+      get :home
+      assert_select 'section#providers .item', count: 2
+      assert_select 'section#providers .item a[href=?]', content_provider_path(regular_provider)
+      assert_select 'section#providers .item a[href=?]', content_provider_path(unverified_provider), count: 0
+      assert_select 'section#providers .item a[href=?]', content_provider_path(another_provider)
+    end
+  end
 end
