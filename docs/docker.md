@@ -54,7 +54,13 @@ TeSS is accessible at the following URL:
 
 ### Testing
 
-TODO
+The full test suite can be run using the following command:
+
+    docker-compose run test
+
+To run a specific test, you can override the command being passed:
+
+    docker-compose run test rails test test/models/event_test.rb
 
 ### Solr
 

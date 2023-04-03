@@ -69,9 +69,41 @@ services:
     environment:
       RAILS_ENV: development
     entrypoint: ./docker/sidekiq_entrypoint.sh
+  test:
+    profiles:
+      - test
+    depends_on:
+      - test-db
+    container_name: ${PREFIX}-test
+    image: ${PREFIX}-app
+    volumes:
+      - .:/code
+    environment:
+      RAILS_ENV: test
+      DB_HOST: test-db
+      DB_NAME: tess-test
+      DB_USER: tess-test
+      DB_PASSWORD: tess-test
+    command: sh -c "rake db:test:prepare && rails test"
+  test-db:
+    profiles:
+      - test
+    container_name: ${PREFIX}-test-db
+    logging:
+      driver: none
+    image: postgres:14.2
+    restart: always
+    environment:
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: tess-test
+      POSTGRES_USER: tess-test
+      POSTGRES_PASSWORD: tess-test
+    volumes:
+      - test-db-data:/var/lib/postgresql/data
 volumes:
   db-data:
   solr-data:
   redis-data:
   gem_cache:
   node_modules:
+  test-db-data:
