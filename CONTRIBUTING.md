@@ -79,7 +79,9 @@ git checkout -b my-feature-branch
 
 ## Set Up TeSS
 
-In order to run and test your code, you will need to be able to run TeSS locally. Follow our [installation guide](https://github.com/ElixirTeSS/TeSS/blob/master/docs/install.md) to set up your local instance of TeSS.
+In order to run and test your code, you will need to be able to run TeSS locally. 
+Follow our [native installation](https://github.com/ElixirTeSS/TeSS/blob/master/docs/install.md) or
+[docker](https://github.com/ElixirTeSS/TeSS/blob/master/docs/docker.md) guides to set up your local instance of TeSS.
 
 ## Write Code
 
@@ -107,6 +109,11 @@ TeSS has an extensive test suite and aims to have as close to 100% test coverage
 
 ```
 bundle exec rails test
+```
+
+or if using docker:
+```
+docker-compose run test
 ```
 
 You can also see the test coverage % after the tests finish - make sure it has not decreased from before adding your code.

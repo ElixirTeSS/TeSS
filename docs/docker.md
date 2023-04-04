@@ -38,6 +38,8 @@ Create TeSS configuration files:
 
 `tess.yml` is used to configure features and branding of your TeSS instance. `secrets.yml` is used to hold API keys etc.
 
+*Note: If changes are made to these files the containers will need to be restarted.*
+
 ### Start services
 
     docker-compose up -d
@@ -70,7 +72,7 @@ To force Solr to reindex all documents, you can run the following command:
 
 ### Additional development commands
 
-Update the Gemfile.lock
+Install gems
 
     docker-compose exec app bundle install
 
