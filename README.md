@@ -20,6 +20,10 @@ The TeSS code is open source and available under a [BSD 3-Clause license](LICENS
 - Administration and curation features for managing users and content
 - Customization options
 
+## Contributing
+
+Interested in contributing to TeSS? Check out [our guide](docs/CONTRIBUTING.md) on the different ways you can contribute.
+
 ## Architecture overview
 
 TeSS makes use of the following services to function:
