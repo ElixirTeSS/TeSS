@@ -95,6 +95,15 @@ class UserTest < ActiveSupport::TestCase
     user2 = User.new(@user_params.merge(email: "#{@user_data.email}1"))
     assert user1.save, 'Did not save the first user'
     assert_not user2.save, 'Saved the second user with same username as first'
+    assert user2.errors.added?(:username, :taken, value: @user_params[:username])
+  end
+
+  test "should not save two users with same case insensitive username" do
+    user1 = User.new(@user_params.merge(email: "#{@user_data.email}2"))
+    user2 = User.new(@user_params.merge(email: "#{@user_data.email}1", username: @user_params[:username].upcase))
+    assert user1.save, 'Did not save the first user'
+    assert_not user2.save, 'Saved the second user with same username as first'
+    assert user2.errors.added?(:username, :taken, value: @user_params[:username].upcase)
   end
 
   test "should not save two users with same email" do
@@ -102,6 +111,15 @@ class UserTest < ActiveSupport::TestCase
     user2 = User.new(@user_params.merge(username: "#{@user_data.username}1"))
     assert user1.save, 'Did not save the first user'
     assert_not user2.save, 'Saved a second user with same e-mail address'
+    assert user2.errors.added?(:email, :taken, value: @user_params[:email])
+  end
+
+  test "should not save user with case insensitive duplicate email" do
+    user1 = User.new(@user_params.merge(username: "#{@user_data.username}2"))
+    user2 = User.new(@user_params.merge(username: "#{@user_data.username}1", email: @user_params[:email].upcase))
+    assert user1.save, 'Did not save the first user'
+    assert_not user2.save, 'Saved a second user with same e-mail address'
+    assert user2.errors.added?(:email, :taken, value: @user_params[:email])
   end
 
   test 'should destroy user' do

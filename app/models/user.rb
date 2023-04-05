@@ -66,9 +66,7 @@ class User < ApplicationRecord
            :omniauthable, :authentication_keys => [:login]
   end
 
-  validates :username,
-            :presence => true,
-            :uniqueness => true
+  validates :username, presence: true, uniqueness: { case_sensitive: false }
 
   validate :consents_to_processing, on: :create, unless: ->(user) { user.using_omniauth? || User.current_user.try(:is_admin?) }
 
