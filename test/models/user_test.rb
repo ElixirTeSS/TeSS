@@ -249,4 +249,34 @@ class UserTest < ActiveSupport::TestCase
     assert_includes User.with_query('basic'), basic
     assert_not_includes User.with_role('registered_user').with_query('basic'), basic
   end
+
+  test 'reassigns resources when deleted' do
+    user = users(:regular_user)
+    event = events(:one)
+    material = materials(:good_material)
+    workflow = workflows(:one)
+    content_provider = content_providers(:goblet)
+    source = sources(:unapproved_source)
+    collection = collections(:one)
+    node = nodes(:good)
+
+    assert_equal user, event.user
+    assert_equal user, material.user
+    assert_equal user, workflow.user
+    assert_equal user, content_provider.user
+    assert_equal user, source.user
+    assert_equal user, collection.user
+    assert_equal user, node.user
+
+    user.destroy!
+
+    default_user = User.get_default_user
+    assert_equal default_user, event.reload.user
+    assert_equal default_user, material.reload.user
+    assert_equal default_user, workflow.reload.user
+    assert_equal default_user, content_provider.reload.user
+    assert_equal default_user, source.reload.user
+    assert_equal default_user, collection.reload.user
+    assert_equal default_user, node.reload.user
+  end
 end

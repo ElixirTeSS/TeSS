@@ -29,10 +29,10 @@ class User < ApplicationRecord
   end
 
   has_one :profile, inverse_of: :user, dependent: :destroy
-  CREATED_RESOURCE_TYPES = [:events, :materials, :workflows, :content_providers, :sources, :collections]
+  CREATED_RESOURCE_TYPES = [:events, :materials, :workflows, :content_providers, :sources, :collections, :nodes]
   has_many :materials
-  has_many :collections, dependent: :destroy
-  has_many :workflows, dependent: :destroy
+  has_many :collections
+  has_many :workflows
   has_many :content_providers
   has_many :events
   has_many :nodes
@@ -47,10 +47,12 @@ class User < ApplicationRecord
 
   has_and_belongs_to_many :editables, class_name: "ContentProvider"
 
+  has_many :collaborations, dependent: :destroy
+
   before_create :set_default_role, :set_default_profile
   before_create :skip_email_confirmation_for_non_production
   before_update :skip_email_reconfirmation_for_non_production
-  before_destroy :reassign_owner
+  before_destroy :reassign_resources
   after_update :react_to_role_change
   before_save :set_username_for_invitee
 
@@ -316,14 +318,15 @@ class User < ApplicationRecord
     end
   end
 
-  private
+  protected
 
-  def reassign_owner
-    default_user = User.get_default_user
-    [materials, events, content_providers, nodes, sources].each do |type|
-      type.find_each { |x| x.update_attribute(:user, default_user) }
+  def reassign_resources(new_owner = User.get_default_user)
+    CREATED_RESOURCE_TYPES.each do |type|
+      send(type).find_each { |x| x.update_attribute(:user, new_owner) }
     end
   end
+
+  private
 
   def react_to_role_change
     if saved_change_to_role_id?
