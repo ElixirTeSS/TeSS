@@ -279,4 +279,92 @@ class UserTest < ActiveSupport::TestCase
     assert_equal default_user, collection.reload.user
     assert_equal default_user, node.reload.user
   end
+
+  test 'merge users' do
+    user1 = User.create!(username: 'base_user', password: '12345678', email: 'base-user@example.com',
+                         processing_consent: '1', profile_attributes: {
+        expertise_technical: ['Python', 'Ruby', 'R'],
+        firstname: 'John', surname: 'Userton'
+      })
+    user1_id = user1.id
+    user2 = User.create!(username: 'merge_user', password: 'xyz123456', email: 'merge-user@example.com',
+                         processing_consent: '1', profile_attributes: {
+        firstname: 'J', surname: 'U',
+        expertise_technical: ['Java', 'Python', 'R'],
+        orcid: 'https://orcid.org/0000-0002-1825-0097'
+      })
+    user3 = User.create!(username: 'merge_user2', password: 'qwertyqwerty', email: 'merge-user2@example.com',
+                         processing_consent: '1', profile_attributes: {
+        orcid: 'https://orcid.org/0000-0001-9842-9718',
+        description: 'Cool guy',
+        expertise_technical: []
+      })
+
+    # Resources
+    material1 = user1.materials.create!(title: 'material 1', url: 'https://training.com/materials/1', description: 'material1')
+    material2 = user2.materials.create!(title: 'material 2', url: 'https://training.com/materials/2', description: 'material2')
+    event1 = user2.events.create!(title: 'event 1', url: 'https://training.com/events/1')
+    event2 = user3.events.create!(title: 'event 2', url: 'https://training.com/events/2')
+
+    # Activity
+    admin = users(:admin)
+    User.current_user = admin
+    assert_difference('PublicActivity::Activity.count', 1) do
+      assert user2.update(role_id: Role.rejected.id)
+    end
+    activity1 = PublicActivity::Activity.last # As trackable
+    assert_equal admin, activity1.owner
+    assert_equal user2, activity1.trackable
+    activity2 = event2.create_activity(:create, owner: user3) # As owner
+    assert_equal user3, activity2.owner
+    assert_equal event2, activity2.trackable
+
+    # Subscriptions
+    subscription1 = user2.subscriptions.create!(frequency: :daily, query: 'test', subscribable_type: 'Material')
+    subscription2 = user2.subscriptions.create!(frequency: :weekly, query: 'test', subscribable_type: 'Event')
+
+    # Approved editors
+    provider = content_providers(:goblet)
+    provider.add_editor(user1)
+    provider.add_editor(user2)
+
+    # Collaborations
+    workflow1 = workflows(:one)
+    workflow2 = workflows(:two)
+    workflow1.collaborators << user1
+    workflow1.collaborators << user2
+    workflow2.collaborators << user3
+
+
+    # Test
+    assert user1.merge(user2, user3)
+    assert user2.reload.destroy
+    assert user3.reload.destroy
+
+    assert_equal 'base_user', user1.username
+    assert_equal user1_id, user1.id
+    assert_equal 'base-user@example.com', user1.email
+    profile = user1.profile
+    assert_equal 'John', profile.firstname
+    assert_equal 'Userton', profile.surname
+    assert_equal 'https://orcid.org/0000-0002-1825-0097', profile.orcid
+    assert_equal 'Cool guy', profile.description
+    assert_equal ['Python', 'Ruby', 'R', 'Java'], profile.expertise_technical
+
+    assert_includes user1.materials, material1
+    assert_includes user1.materials, material2
+    assert_includes user1.events, event2
+    assert_includes user1.events, event2
+
+    assert_equal user1, activity1.reload.trackable
+    assert_equal user1, activity2.reload.owner
+
+    assert_equal user1, subscription1.reload.user
+    assert_equal user1, subscription2.reload.user
+
+    assert_includes provider.reload.editors, user1
+
+    assert_equal [user1], workflow1.reload.collaborators.to_a
+    assert_equal [user1], workflow2.reload.collaborators.to_a
+  end
 end

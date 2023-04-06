@@ -318,6 +318,34 @@ class User < ApplicationRecord
     end
   end
 
+  def merge(*others)
+    User.transaction do
+      attrs = attributes
+      new_editable_ids = []
+      new_collaborations = []
+      other_profiles = others.map(&:profile)
+      others.each do |other|
+        other.reassign_resources(self)
+        other.activities_as_owner.update_all(owner_id: id, owner_type: self.class.name)
+        other.activities.update_all(trackable_id: id, trackable_type: self.class.name)
+        other.subscriptions.update_all(user_id: id)
+        new_collaborations += other.collaborations
+        new_editable_ids = other.editable_ids
+        attrs.reverse_merge!(other.attributes)
+      end
+      self.editable_ids = self.editable_ids | new_editable_ids
+      # Avoid duplicate "collaborations" for the same resource
+      self.collaborations = (self.collaborations | new_collaborations).uniq do |collab|
+        collab.resource
+      end
+
+      self.profile.merge(*other_profiles)
+      status = self.update(attrs)
+      others.each(&:reload) # Clear stale association caches etc.
+      status
+    end
+  end
+
   protected
 
   def reassign_resources(new_owner = User.get_default_user)
