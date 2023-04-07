@@ -48,26 +48,37 @@ class UserTest < ActiveSupport::TestCase
   test "should not save user with nil email" do
     user = User.new(@user_params.merge(email: nil))
     assert_not user.save, 'Saved user with nil e-mail address field'
+    assert user.errors.added?(:email, :blank)
   end
 
   test "should not save user with empty email" do
     user = User.new(@user_params.merge(email: ''))
     assert_not user.save, 'Saved user with empty e-mail address field'
+    assert user.errors.added?(:email, :blank)
   end
 
   test "should not save user without valid email format" do
     user = User.new(@user_params.merge(email: 'horse'))
     assert_not user.save, 'Saved user with invalid e-mail address'
+    assert user.errors.added?(:email, :invalid, value: 'horse')
+  end
+
+  test "should convert user email to lowercase" do
+    user = User.new(@user_params.merge(email: 'New.User@email.com'))
+    assert user.save
+    assert_equal 'new.user@email.com', user.reload.email
   end
 
   test "should not save user with nil processing consent" do
     user = User.new(@user_params.merge(processing_consent: nil))
     assert_not user.save, 'Saved user with nil processing_consent address field'
+    assert user.errors.added?(:base, 'You must consent to TTI processing your data in order to register')
   end
 
   test "should not save user with processing consent equal to 0" do
     user = User.new(@user_params.merge(processing_consent: '0'))
     assert_not user.save, 'Saved user with processing_consent address field equal to "0"'
+    assert user.errors.added?(:base, 'You must consent to TTI processing your data in order to register')
   end  
   
   test "should not save with nil password" do
@@ -75,6 +86,7 @@ class UserTest < ActiveSupport::TestCase
     assert user.password_required?
     refute user.using_omniauth?
     assert_not user.save, 'Saved user with no password'
+    assert user.errors.added?(:password, :blank)
   end
 
   test "should save with nil password if using omniauth" do
@@ -88,6 +100,7 @@ class UserTest < ActiveSupport::TestCase
   test "should not save with password under 8 characters" do
     user = User.new(@user_params.merge(password: '1234567'))
     assert_not user.save, 'Allowed a user to have a password under 8 characters'
+    assert user.errors.added?(:password, :too_short, count: 8)
   end
 
   test "should not save two users with same username" do
@@ -337,9 +350,21 @@ class UserTest < ActiveSupport::TestCase
 
 
     # Test
-    assert user1.merge(user2, user3)
-    assert user2.reload.destroy
-    assert user3.reload.destroy
+    assert_no_difference('Event.count') do
+    assert_no_difference('Material.count') do
+    assert_no_difference('Subscription.count') do
+    assert_difference('provider.editors.count', -1) do
+    assert_difference('Collaboration.count', -1) do
+    assert_difference('User.count', -2) do
+      assert user1.merge(user2, user3)
+      assert user2.reload.destroy
+      assert user3.reload.destroy
+    end
+    end
+    end
+    end
+    end
+    end
 
     assert_equal 'base_user', user1.username
     assert_equal user1_id, user1.id
@@ -366,5 +391,14 @@ class UserTest < ActiveSupport::TestCase
 
     assert_equal [user1], workflow1.reload.collaborators.to_a
     assert_equal [user1], workflow2.reload.collaborators.to_a
+  end
+
+  test 'email but not username is downcased on save' do
+    user = users(:upcase_username_and_email)
+    assert_equal 'MixedCaseUsername', user.username
+    assert_equal 'MixedCaseEmail@example.com', user.email
+    assert user.save
+    assert_equal 'MixedCaseUsername', user.username
+    assert_equal 'mixedcaseemail@example.com', user.email
   end
 end
