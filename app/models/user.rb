@@ -186,7 +186,7 @@ class User < ApplicationRecord
 
     # find by provider and { uid or email}
     users = User.where(provider: auth.provider, uid: auth.uid)
-    if users.nil? or users.size <= 0
+    if users.none? && auth.info.email.present? && auth.provider.present?
       users = User.where(provider: auth.provider, email: auth.info.email)
     end
 
