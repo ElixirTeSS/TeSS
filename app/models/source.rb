@@ -20,7 +20,7 @@ class Source < ApplicationRecord
   validates :url, url: true
   validates :approval_status, inclusion: { in: APPROVAL_STATUS.values }
   validates :method, inclusion: { in: -> (_) { TeSS::Config.user_ingestion_methods } },
-            unless: -> { User.current_user&.is_admin? }
+            unless: -> { User.current_user&.is_admin? || User.current_user&.has_role?(:scraper_user) }
   validate :check_method
 
   before_create :set_approval_status
@@ -85,10 +85,7 @@ class Source < ApplicationRecord
   end
 
   def check_method
-    c = ingestor_class rescue nil
-    if c.nil?
-      errors.add(:method, 'is invalid')
-    end
+    errors.add(:method, 'is invalid') unless Ingestors::IngestorFactory.valid_ingestor?(method)
   end
 
   def self.approved

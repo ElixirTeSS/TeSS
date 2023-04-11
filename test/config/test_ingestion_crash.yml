@@ -1,0 +1,7 @@
+name: crash
+logfile: log/ingestion.test.log
+loglevel: 0
+username: ingestor
+sources:
+  - id: 1
+    jgrhierjvrv: gjigdfgidf

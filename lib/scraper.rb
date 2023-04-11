@@ -20,6 +20,10 @@ class Scraper
         errors.delete(:content_provider)
       end
     end
+
+    def resource_type=(*args)
+      warn %(The "resource_type" property for a source is now redundant ("#{@provider}" in config/ingestion.yml))
+    end
   end
 
   attr_reader :log_file, :name, :username, :sources
@@ -59,6 +63,7 @@ class Scraper
       if user.role.nil? or user.role.name != @default_role
         log t('scraper.messages.invalid', error_message: t('scraper.messages.bad_role')), 1
       end
+      User.current_user = user
 
       processed = 0
 
@@ -146,7 +151,9 @@ class Scraper
 
     rescue Exception => e
       log "   Run Scraper failed with: #{e.message}", 0
-      log "       #{e.backtrace[0]}", 0
+      e.backtrace.each do |line|
+        log "       #{line}", 0
+      end
     end
 
     # wrap up

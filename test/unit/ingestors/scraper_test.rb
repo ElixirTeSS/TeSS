@@ -60,8 +60,8 @@ class ScraperTest < ActiveSupport::TestCase
 
     # check user does exist
     user = User.find_by_username(scraper.username)
-    assert !user.nil?
-    assert !user.role.nil?
+    refute user.nil?
+    refute user.role.nil?
     assert_equal 'registered_user', user.role.name
 
     # run task
@@ -124,7 +124,7 @@ class ScraperTest < ActiveSupport::TestCase
     assert scraper.sources.size > 0
 
     source = scraper.sources[0]
-    assert !source.nil?
+    refute source.nil?
     title = source[:provider]
     provider = ContentProvider.find_by_title(title)
     assert provider.nil?
@@ -148,10 +148,10 @@ class ScraperTest < ActiveSupport::TestCase
     assert scraper.sources.size > 1
 
     source = scraper.sources[1]
-    assert !source.nil?
+    refute source.nil?
     title = source[:provider]
     provider = ContentProvider.find_by_title(title)
-    assert !provider.nil?, "Provider title[#{title}] not found!"
+    refute provider.nil?, "Provider title[#{title}] not found!"
 
     # run task
     freeze_time(stub_time = Time.new(2019)) do
@@ -160,7 +160,7 @@ class ScraperTest < ActiveSupport::TestCase
 
     assert check_task_finished(logfile)
     error_message = 'Content provider must exist: ' + title.to_s
-    assert !logfile_contains(logfile, error_message), "Unexpected error message: #{error_message}"
+    refute logfile_contains(logfile, error_message), "Unexpected error message: #{error_message}"
   end
 
   test 'check for invalid source parameters' do
@@ -182,6 +182,55 @@ class ScraperTest < ActiveSupport::TestCase
     assert logfile_contains(logfile, error_message), 'Error message not found: ' + error_message
     error_message = 'Method is invalid: xtc'
     assert logfile_contains(logfile, error_message), 'Error message not found: ' + error_message
+  end
+
+  test 'handles non-user ingestion methods' do
+    with_settings(user_ingestion_methods: ['bioschemas']) do
+      config = load_scraper_config('test_ingestion.yml')
+      scraper = Scraper.new(config)
+      logfile = scraper.log_file
+      assert_equal 'test', scraper.name
+
+      freeze_time(stub_time = Time.new(2019)) do
+        scraper.run
+      end
+
+      refute logfile_contains(logfile, 'Method is not included in the list: event_csv')
+      refute logfile_contains(logfile, 'Method is not included in the list: material_csv')
+    end
+  end
+
+  test 'does not crash for legacy config' do
+    logfile = nil
+    Kernel.silence_warnings do
+      config = load_scraper_config('test_ingestion_legacy.yml')
+      scraper = Scraper.new(config)
+      logfile = scraper.log_file
+      assert_equal 'legacy', scraper.name
+
+      freeze_time(stub_time = Time.new(2019)) do
+        scraper.run
+      end
+    end
+
+    refute logfile_contains(logfile, 'Run Scraper failed with')
+    assert logfile_contains(logfile, 'Method is invalid: rest')
+  end
+
+  test 'logs backtrace on error' do
+    config = load_scraper_config('test_ingestion_crash.yml')
+    scraper = Scraper.new(config)
+    logfile = scraper.log_file
+    assert_equal 'crash', scraper.name
+
+    Ingestors::IngestorFactory.stub(:get_ingestor, -> { raise 'oh no' }) do
+      scraper.run
+    end
+
+    assert logfile_contains(logfile, 'Run Scraper failed with')
+    assert logfile_contains(logfile, 'in `block in run')
+    assert logfile_contains(logfile, 'in `map')
+    assert logfile_contains(logfile, 'in `run')
   end
 
   private
