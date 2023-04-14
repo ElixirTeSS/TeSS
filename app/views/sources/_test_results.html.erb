@@ -55,7 +55,7 @@
               <i class="fa fa-exclamation-circle"></i> Errors: <%= resource.errors.full_messages.join(', ') %>
             </div>
           <% end %>
-          <%= render partial: 'common/extra_metadata', locals: { resource: resource, hide_title: true } %>
+          <%= render partial: 'common/extra_metadata', locals: { resource: resource } %>
         </div>
       </div>
     <% end %>
