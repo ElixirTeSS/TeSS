@@ -833,6 +833,7 @@ input[type=checkbox].field-lock + label:before,
   padding: 18px;
   border-radius: 5px;
   margin: 8px 0;
+  overflow: auto;
 }
 
 .description, .markdown {
