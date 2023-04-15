@@ -131,4 +131,46 @@ module EventsHelper
       'map-suggested-marker-image': image_url('suggestion.png')
     })
   end
+
+  DATE_STRF = '%-e %B %Y'
+  TIME_STRF = '%H:%M'
+
+  def neatly_printed_date_range(start, finish = nil)
+    if start.blank?
+      if finish.blank?
+        return 'No date given'
+      else
+        return 'No start date'
+      end
+    else
+      differing = []
+
+      if finish.present?
+        if finish.to_date != start.to_date
+          differing << '%-e'
+          if finish.month != start.month
+            differing << '%B'
+            if finish.year != start.year
+              differing << '%Y'
+            end
+          end
+        end
+      end
+
+      if finish.blank? || differing.empty?
+        out = start.strftime(DATE_STRF)
+        # Don't show time component if they are set to midnight since that is the default if no time specified.
+        # Revisit this decision if any events start occurring at midnight (timezone issue?)!
+
+        show_time = (start.hour != 0 || start.min != 0) || (finish.present? && (finish.hour != 0 || finish.min != 0))
+        if show_time
+          out << " @ #{start.strftime(TIME_STRF)}"
+          out << " - #{finish.strftime(TIME_STRF)}" if finish && (finish.hour != start.hour || finish.min != start.min)
+        end
+        out
+      elsif differing.any?
+        "#{start.strftime(differing.join(' '))} - #{finish.strftime(DATE_STRF)}"
+      end
+    end
+  end
 end
