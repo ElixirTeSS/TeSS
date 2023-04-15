@@ -29,10 +29,10 @@ class User < ApplicationRecord
   end
 
   has_one :profile, inverse_of: :user, dependent: :destroy
-  CREATED_RESOURCE_TYPES = [:events, :materials, :workflows, :content_providers, :sources, :collections]
+  CREATED_RESOURCE_TYPES = [:events, :materials, :workflows, :content_providers, :sources, :collections, :nodes]
   has_many :materials
-  has_many :collections, dependent: :destroy
-  has_many :workflows, dependent: :destroy
+  has_many :collections
+  has_many :workflows
   has_many :content_providers
   has_many :events
   has_many :nodes
@@ -47,10 +47,12 @@ class User < ApplicationRecord
 
   has_and_belongs_to_many :editables, class_name: "ContentProvider"
 
+  has_many :collaborations, dependent: :destroy
+
   before_create :set_default_role, :set_default_profile
   before_create :skip_email_confirmation_for_non_production
   before_update :skip_email_reconfirmation_for_non_production
-  before_destroy :reassign_owner
+  before_destroy :reassign_resources
   after_update :react_to_role_change
   before_save :set_username_for_invitee
 
@@ -66,9 +68,7 @@ class User < ApplicationRecord
            :omniauthable, :authentication_keys => [:login]
   end
 
-  validates :username,
-            :presence => true,
-            :uniqueness => true
+  validates :username, presence: true, uniqueness: { case_sensitive: false }
 
   validate :consents_to_processing, on: :create, unless: ->(user) { user.using_omniauth? || User.current_user.try(:is_admin?) }
 
@@ -186,7 +186,7 @@ class User < ApplicationRecord
 
     # find by provider and { uid or email}
     users = User.where(provider: auth.provider, uid: auth.uid)
-    if users.nil? or users.size <= 0
+    if users.none? && auth.info.email.present? && auth.provider.present?
       users = User.where(provider: auth.provider, email: auth.info.email)
     end
 
@@ -318,14 +318,43 @@ class User < ApplicationRecord
     end
   end
 
-  private
+  def merge(*others)
+    User.transaction do
+      attrs = attributes
+      new_editable_ids = []
+      new_collaborations = []
+      other_profiles = others.map(&:profile)
+      others.each do |other|
+        other.reassign_resources(self)
+        other.activities_as_owner.update_all(owner_id: id, owner_type: self.class.name)
+        other.activities.update_all(trackable_id: id, trackable_type: self.class.name)
+        other.subscriptions.update_all(user_id: id)
+        new_collaborations += other.collaborations
+        new_editable_ids = other.editable_ids
+        attrs.reverse_merge!(other.attributes)
+      end
+      self.editable_ids = self.editable_ids | new_editable_ids
+      # Avoid duplicate "collaborations" for the same resource
+      self.collaborations = (self.collaborations | new_collaborations).uniq do |collab|
+        collab.resource
+      end
 
-  def reassign_owner
-    default_user = User.get_default_user
-    [materials, events, content_providers, nodes, sources].each do |type|
-      type.find_each { |x| x.update_attribute(:user, default_user) }
+      self.profile.merge(*other_profiles)
+      status = self.update(attrs)
+      others.each(&:reload) # Clear stale association caches etc.
+      status
     end
   end
+
+  protected
+
+  def reassign_resources(new_owner = User.get_default_user)
+    CREATED_RESOURCE_TYPES.each do |type|
+      send(type).find_each { |x| x.update_attribute(:user, new_owner) }
+    end
+  end
+
+  private
 
   def react_to_role_change
     if saved_change_to_role_id?

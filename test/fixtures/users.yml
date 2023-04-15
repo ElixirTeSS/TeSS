@@ -146,3 +146,8 @@ existing_aai_user:
   provider: elixir_aai
   uid: 1234
 
+upcase_username_and_email:
+  username: 'MixedCaseUsername'
+  email: 'MixedCaseEmail@example.com'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'private') %>
+  confirmed_at: <%= Time.zone.now %>
