@@ -130,6 +130,7 @@ class CuratorControllerTest < ActionController::TestCase
     collection = nil
     provider = nil
     source = nil
+    node = nil
     4.times do |i|
       e = new_user.events.create!(title: "Spam event #{i}", url: "http://cool-event.pancakes/#{i}", start: 10.days.from_now,
                                   description: "test event", organizer: "test organizer", end: 11.days.from_now,
@@ -170,6 +171,12 @@ class CuratorControllerTest < ActionController::TestCase
       source = s
     end
 
+    4.times do |i|
+      n = new_user.nodes.create!(name: "Node#{i}", country_code: 'ES')
+      n.create_activity(:create, owner: new_user)
+      node = n
+    end
+
     get :users, params: { with_content: true }
 
     assert_response :success
@@ -184,7 +191,7 @@ class CuratorControllerTest < ActionController::TestCase
                     text: "See all 4 #{klass.model_name.human.pluralize}"
     end
 
-    [event, material, workflow, collection, provider, source].each do |resource|
+    [event, material, workflow, collection, provider, source, node].each do |resource|
       assert_select '.curate-user a[href=?]', @controller.polymorphic_path(resource), { text: resource.title },
                     "#{@controller.polymorphic_path(resource)} not found!, \nBody:\n#{response.body}"
     end

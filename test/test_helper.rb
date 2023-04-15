@@ -53,8 +53,9 @@ class ActiveSupport::TestCase
 
   # Temporarily change TeSS config for the duration of the block
   def with_settings(settings, overwrite = false, &block)
-    orig_config = TeSS::Config.to_h
+    orig_config = {}
     settings.each do |k, v|
+      orig_config[k] = TeSS::Config[k]
       if !overwrite && TeSS::Config[k].is_a?(Hash) && v.is_a?(Hash)
         TeSS::Config[k] = v.with_indifferent_access.reverse_merge!(TeSS::Config[k])
       else

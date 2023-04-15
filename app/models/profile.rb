@@ -57,6 +57,24 @@ class Profile < ApplicationRecord
     "#{firstname} #{surname}".strip
   end
 
+  def merge(*others)
+    Profile.transaction do
+      attrs = attributes
+      others.each do |other|
+        other.attributes.each do |attr, value|
+          if value.is_a?(Array)
+            attrs[attr] ||= []
+            attrs[attr] |= value
+          elsif attrs[attr].blank?
+            attrs[attr] = value
+          end
+        end
+      end
+
+      self.update(attrs)
+    end
+  end
+
   private
 
   @@orcid_host = 'orcid.org'
