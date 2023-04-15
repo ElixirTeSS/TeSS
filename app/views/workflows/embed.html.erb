@@ -2,10 +2,10 @@
     <i class="fa fa-sitemap"></i> <%= @workflow.title %>
 <% end %>
 <% content_for :sidebar_description do %>
-    <% if @workflow.description.blank? %>
-        <p class="muted">No description provided</p>
-    <% else %>
+    <% if @workflow.description.present? %>
         <%= render_markdown(@workflow.description) %>
+    <% else %>
+        <p class="muted">No description provided</p>
     <% end %>
     <%= render partial: 'common/extra_metadata', locals: { resource: @workflow } %>
 <% end %>

@@ -68,6 +68,8 @@
           <%= google_maps_javascript_api_tag(@event) if @event.show_map? %>
           <% if @event.description.present? %>
             <%= render_markdown @event.description %>
+          <% else %>
+            <span class="muted">No description provided</span>
           <% end %>
         </div>
       </div>
