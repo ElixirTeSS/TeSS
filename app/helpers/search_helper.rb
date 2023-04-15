@@ -68,34 +68,4 @@ module SearchHelper
             <i class='glyphicon glyphicon-chevron-up pull-right toggle-#{facet}' style='display: none;'></i>
             ".html_safe
   end
-
-  def neatly_printed_date_range(start, finish = nil)
-    return 'No date given' if start.blank? && finish.blank?
-    return 'No start date' if !start
-
-    if finish
-      out = ''
-
-      strftime_components = []
-      if finish.to_date != start.to_date
-        strftime_components << '%-e'
-        if finish.month != start.month
-          strftime_components << '%B'
-          if finish.year != start.year
-            strftime_components << '%Y'
-          end
-        end
-      end
-
-      if strftime_components.any?
-        out << "#{start.strftime(strftime_components.join(' '))} - "
-      end
-
-      out << "#{finish.strftime('%-e %B %Y')}"
-    else
-      out = start.strftime('%-e %B %Y')
-    end
-
-    out
-  end
 end

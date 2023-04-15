@@ -5,11 +5,6 @@
 <%= display_attribute(resource, :contact) if resource.respond_to?(:contact) %>
 <%= display_attribute(resource, :keywords) { |values| values.join(', ') } %>
 
-<% unless hide_title %>
-  <hr />
-  <h4>Additional information</h4>
-<% end %>
-
 <% if resource.is_a?(Material) %>
   <%= display_attribute(resource, :fields) { |values| values.join(', ') } %>
   <%= display_attribute(resource, :target_audience) { |values| values.map { |x| target_audience_title_for_label(x) }.join(', ') } %>

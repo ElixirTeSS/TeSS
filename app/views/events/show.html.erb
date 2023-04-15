@@ -56,8 +56,10 @@
 
       <div class="my-3">
         <!-- Field: start and end -->
-        <%= display_attribute(@event, :start) { |t| t.strftime('%A, %d %B %Y @ %H:%M') }%>
-        <%= display_attribute(@event, :end) { |t| t.strftime('%A, %d %B %Y @ %H:%M') } %>
+        <p class="date no-spacing">
+          <strong class="text-primary"> Date: </strong>
+          <%= neatly_printed_date_range(@event.start, @event.end) %>
+        </p>
         <%= display_attribute(@event, :timezone) %>
         <%= display_attribute(@event, :duration) %>
 
@@ -66,6 +68,8 @@
           <%= google_maps_javascript_api_tag(@event) if @event.show_map? %>
           <% if @event.description.present? %>
             <%= render_markdown @event.description %>
+          <% else %>
+            <span class="muted">No description provided</span>
           <% end %>
         </div>
       </div>

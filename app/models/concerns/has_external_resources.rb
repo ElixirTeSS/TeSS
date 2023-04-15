@@ -10,14 +10,17 @@ module HasExternalResources
     if TeSS::Config.solr_enabled
       # :nocov:
       searchable do
+        text :related_resources do
+          external_resources.map(&:title)
+        end
         string :tools, multiple: true do
-          self.external_resources.select(&:is_tool?).collect(&:title)
+          external_resources.select(&:is_tool?).map(&:title)
         end
         string :standard_database_or_policy, multiple: true do
-          self.external_resources.select(&:is_fairsharing?).collect(&:title)
+          external_resources.select(&:is_fairsharing?).map(&:title)
         end
         string :related_resources, multiple: true do
-          self.external_resources.select(&:is_generic_external_resource?).collect(&:title)
+          external_resources.select(&:is_generic_external_resource?).map(&:title)
         end
       end
       # :nocov:

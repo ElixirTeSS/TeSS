@@ -39,6 +39,10 @@ module Ingestors
       end
     end
 
+    def self.valid_ingestor?(method)
+      ingestor_config.key?(method)
+    end
+
     def self.grouped_options
       @grouped_options ||= ingestor_config.values.group_by { |c| c[:category] || :any }
     end
