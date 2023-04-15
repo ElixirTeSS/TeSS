@@ -651,4 +651,11 @@ module ApplicationHelper
   def tab_activator
     TabActivator.new
   end
+
+  def broken_link_notice(resource)
+    content_tag('div', t('warnings.link_broken',
+                         resource_type: resource.model_name.human.downcase,
+                         fail_date: resource.link_monitor.failed_at.strftime(EventsHelper::DATE_STRF)),
+                class: 'alert alert-warning mb-4 broken-link-notice')
+  end
 end

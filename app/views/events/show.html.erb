@@ -9,6 +9,8 @@
   <div id="content">
     <div id="home" class="my-2">
       <div class="page-header">
+        <%= broken_link_notice(@event) if @event.failing? %>
+
         <% if @event.event_types.any? %>
           <% @event.event_types.each do |t| %>
             <div class="sub-heading"><%= EventTypeDictionary.instance.lookup_value(t, 'title') %></div>
