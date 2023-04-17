@@ -119,10 +119,12 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test 'regular users should be able to directly load failing record' do
+  test 'regular users should be able to directly load failing record and see warning' do
     sign_in users(:regular_user)
+    @monitor.update(failed_at: DateTime.new(2023, 4, 2))
     get :show, params: { id: @failing_material }
     assert_response :success
+    assert_select '.broken-link-notice', text: /this material's URL.+since 2 April 2023/
   end
 
   #NEW TESTS
@@ -358,7 +360,8 @@ class MaterialsControllerTest < ActionController::TestCase
     get :show, params: { id: @material } do
       assert_response :success
       assert assigns(:material)
-      assert_select 'fa-commenting-o', :count => 0
+      assert_select 'fa-commenting-o', count: 0
+      assert_select '.broken-link-notice', count: 0
     end
   end
 

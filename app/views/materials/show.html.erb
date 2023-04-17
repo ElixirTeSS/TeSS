@@ -8,6 +8,8 @@
   <div id="content">
     <div id="home">
       <div>
+        <%= broken_link_notice(@material) if @material.failing? %>
+
         <!-- Field: title -->
         <div class="sub-heading"><%= display_attribute_no_label(@material, :resource_type) { |values| values.join(', ') } %></div>
         <h2 class="mt-0">

@@ -100,10 +100,12 @@ class EventsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test 'regular users should be able to directly load failing records' do
+  test 'regular users should be able to directly load failing records and see warning' do
     sign_in users(:regular_user)
+    @monitor.update(failed_at: DateTime.new(2003, 12, 5))
     get :show, params: { id: @failing_event }
     assert_response :success
+    assert_select '.broken-link-notice', text: /this event's URL.+since 5 December 2003/
   end
 
   #NEW TESTS
@@ -226,6 +228,7 @@ class EventsControllerTest < ActionController::TestCase
     assert_response :success
     assert assigns(:event)
     assert_equal "text/html; charset=utf-8", response.content_type, 'response content_type not matched.'
+    assert_select '.broken-link-notice', count: 0
   end
 
   test 'should show all-day event' do
