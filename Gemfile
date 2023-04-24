@@ -58,7 +58,7 @@ gem 'whenever', '~> 1.0.0'
 
 # These are required for Sidekiq, to look up scientific topics
 gem 'httparty'
-gem 'sidekiq', '~> 6.4.0'
+gem 'sidekiq', '~> 7.0.8'
 gem 'sidekiq-status'
 gem 'slim'
 
