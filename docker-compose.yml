@@ -70,6 +70,7 @@ services:
       - test
     depends_on:
       - test-db
+      - redis
     container_name: ${PREFIX}-test
     image: ${PREFIX}-app
     volumes:

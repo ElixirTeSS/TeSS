@@ -12,7 +12,7 @@ jobs:
       DB_PASSWORD: password
       SECRET_BASE_KEY: test_key
       RAILS_ENV: test
-      REDIS_URL: redis://localhost:6379/1
+      REDIS_TEST_URL: redis://localhost:6456/0
     steps:
       - name: Set up database
         uses: harmon758/postgresql-action@v1
@@ -24,6 +24,7 @@ jobs:
         uses: supercharge/redis-github-action@1.5.0
         with:
           redis-version: 6
+          redis-port: 6456
       - name: Check out code
         uses: actions/checkout@v3
       - name: Install Ruby & gems

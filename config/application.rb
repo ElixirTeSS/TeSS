@@ -74,7 +74,11 @@ module TeSS
 
   Config = OpenStruct.new(tess_config)
 
-  Config.redis_url = ENV.fetch('REDIS_URL') { Rails.env.test? ? 'redis://localhost:6379/0' : 'redis://localhost:6379/1' }
+  Config.redis_url = if Rails.env.test?
+                       ENV.fetch('REDIS_TEST_URL') { 'redis://localhost:6379/0' }
+                     else
+                       ENV.fetch('REDIS_URL') { 'redis://localhost:6379/1' }
+                     end
 
   config_file = File.join(Rails.root, 'config', 'ingestion.yml')
   Config.ingestion = YAML.safe_load(File.read(config_file)).deep_symbolize_keys! if File.exist?(config_file)
