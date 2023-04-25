@@ -3,9 +3,9 @@
 <% active_facet_values = Array.wrap(@facet_params[facet_field]) %>
 <% active_facet_rows, other_facet_rows = facet_rows.partition { |f| active_facet_values.include?(f.value.to_s) } %>
 
-<li class="sidebar-group mt-4">
-  <ul>
-    <% if facet_rows.any? %>
+<% if facet_rows.any? %>
+  <li class="sidebar-group mt-4">
+    <ul>
       <%# Title %>
       <li>
         <div class="nav-heading filter-heading"><span class="icon icon-md filter-icon"></span>
@@ -34,6 +34,6 @@
       <li class="expand-filters" style="display:none;">
         <a href="#">Show N_FILTERS more</a>
       </li>
-    <% end %>
-  </ul>
-</li>
+    </ul>
+  </li>
+<% end %>
