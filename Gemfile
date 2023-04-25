@@ -58,8 +58,8 @@ gem 'whenever', '~> 1.0.0'
 
 # These are required for Sidekiq, to look up scientific topics
 gem 'httparty'
-gem 'sidekiq', '~> 6.4.0'
-gem 'sidekiq-status'
+gem 'sidekiq', '< 8'
+gem 'sidekiq-status', '~> 3.0.2'
 gem 'slim'
 
 # Use jquery as the JavaScript library
@@ -189,7 +189,6 @@ group :development do
 end
 
 group :test do
-  gem 'fakeredis', '0.9.0'
   gem 'minitest', '5.14.4'
   gem 'rails-controller-testing'
   gem 'vcr', '~> 6.1.0'

@@ -163,7 +163,7 @@ GEM
       openapi_parser (>= 0.11.1, < 1.0)
       rack (>= 1.5)
     concurrent-ruby (1.2.2)
-    connection_pool (2.3.0)
+    connection_pool (2.4.0)
     countries (3.1.0)
       i18n_data (~> 0.11.0)
       sixarm_ruby_unaccent (~> 1.1)
@@ -446,7 +446,7 @@ GEM
     pundit (1.1.0)
       activesupport (>= 3.0.0)
     racc (1.6.2)
-    rack (2.2.6.4)
+    rack (2.2.7)
     rack-cors (1.1.1)
       rack (>= 2.0.0)
     rack-oauth2 (1.19.0)
@@ -580,6 +580,8 @@ GEM
       json
     redcarpet (3.5.1)
     redis (4.8.1)
+    redis-client (0.14.1)
+      connection_pool
     regexp_parser (2.1.1)
     remotipart (1.4.4)
     responders (3.0.1)
@@ -647,13 +649,14 @@ GEM
       rdf-xsd (~> 3.2)
       sparql (~> 3.2)
       sxp (~> 1.2)
-    sidekiq (6.4.2)
-      connection_pool (>= 2.2.2)
-      rack (~> 2.0)
-      redis (>= 4.2.0)
-    sidekiq-status (2.1.3)
+    sidekiq (7.0.9)
+      concurrent-ruby (< 2)
+      connection_pool (>= 2.3.0)
+      rack (>= 2.2.4)
+      redis-client (>= 0.11.0)
+    sidekiq-status (3.0.2)
       chronic_duration
-      sidekiq (>= 5.0)
+      sidekiq (>= 6.0, < 8)
     simple_form (5.1.0)
       actionpack (>= 5.2)
       activemodel (>= 5.2)
@@ -837,8 +840,8 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   sassc-rails (~> 2.1.2)
   sdoc (>= 1.1.0)
-  sidekiq (~> 6.4.0)
-  sidekiq-status
+  sidekiq (< 8)
+  sidekiq-status (~> 3.0.2)
   simple_form
   simple_token_authentication (~> 1.0)
   simplecov
