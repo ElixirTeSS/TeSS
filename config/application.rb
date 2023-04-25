@@ -74,7 +74,11 @@ module TeSS
 
   Config = OpenStruct.new(tess_config)
 
-  Config.redis_url = TeSS::Config.redis_url
+  Config.redis_url = if Rails.env.test?
+                       'redis://127.0.0.1:6379/0' # This URL required to talk to "fakeredis"
+                     else
+                       ENV.fetch('REDIS_URL') { 'redis://localhost:6379/1' }
+                     end
 
   config_file = File.join(Rails.root, 'config', 'ingestion.yml')
   Config.ingestion = YAML.safe_load(File.read(config_file)).deep_symbolize_keys! if File.exist?(config_file)
