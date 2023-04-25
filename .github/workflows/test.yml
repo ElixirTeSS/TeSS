@@ -12,7 +12,7 @@ jobs:
       DB_PASSWORD: password
       SECRET_BASE_KEY: test_key
       RAILS_ENV: test
-      REDIS_URL: redis://redis:6379/1
+      REDIS_URL: redis://localhost:6379/1
     steps:
       - name: Set up database
         uses: harmon758/postgresql-action@v1
