@@ -53,6 +53,9 @@ services:
       - redis-data:/data
   sidekiq:
     container_name: ${PREFIX}-sidekiq
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: ${PREFIX}-app
     depends_on:
       - app
@@ -72,6 +75,9 @@ services:
       - test-db
       - redis
     container_name: ${PREFIX}-test
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: ${PREFIX}-app
     volumes:
       - .:/code
@@ -83,6 +89,7 @@ services:
       DB_NAME: tess-test
       DB_USER: tess-test
       DB_PASSWORD: tess-test
+      REDIS_TEST_URL: redis://redis:6379/0
     command: sh -c "rake db:test:prepare && rails test"
   test-db:
     profiles:
