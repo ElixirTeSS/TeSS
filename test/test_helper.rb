@@ -34,7 +34,7 @@ class ActiveSupport::TestCase
   include SchemaHelper
 
   def setup
-    redis = Redis.new
+    redis = Redis.new(url: TeSS::Config.redis_url)
     redis.flushdb
   end
 
