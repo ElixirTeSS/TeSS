@@ -1,4 +1,4 @@
-name: CI
+name: Docker tests
 
 on: [push, pull_request]
 
@@ -21,5 +21,7 @@ jobs:
           cp env.sample .env
           cp config/tess.example.yml config/tess.yml
           cp config/secrets.example.yml config/secrets.yml
-      - name: Build and test
-        run: docker-compose run --build test
+      - name: Build
+        run: docker-compose build test
+      - name: Test
+        run: docker-compose run test
