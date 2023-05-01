@@ -5,18 +5,10 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      DB_HOST: localhost
-      DB_NAME: tess
-      DB_USER: tess
-      DB_PASSWORD: password
-      SECRET_BASE_KEY: test_key
-      RAILS_ENV: test
-      REDIS_TEST_URL: redis://localhost:6456/0
     steps:
       - name: Check out code
         uses: actions/checkout@v3
-      - name: Set up
+      - name: Setup
         run: | 
           cp env.sample .env
           cp config/tess.example.yml config/tess.yml
