@@ -21,6 +21,10 @@ module Ingestors
         Ingestors::UvaIngestor,
         Ingestors::WurIngestor,
         Ingestors::ZenodoIngestor,
+        Ingestors::RugIngestor,
+        Ingestors::LcrdmIngestor,
+        Ingestors::OscrIngestor,
+        Ingestors::OsceIngestor,
       ]
     end
 

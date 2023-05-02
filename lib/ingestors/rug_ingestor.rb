@@ -3,7 +3,7 @@ require 'csv'
 require 'nokogiri'
 
 module Ingestors
-  class RUGIngestor < Ingestor
+  class RugIngestor < Ingestor
     def self.config
       {
         key: 'rug_event',
@@ -33,11 +33,18 @@ module Ingestors
       event_page.each do |event_data|
         event = OpenStruct.new
 
-        event.url = event_page.querySelector("meta[itemprop='url']").getAttribute('content')
-        event.location = event_page.querySelector("meta[itemprop='location']").getAttribute('content')
-        event.title = event_page.querySelector("meta[itemprop='name']").getAttribute('content')
-        event.start = event_page.querySelector("meta[itemprop='startDate']").getAttribute('content')
-        event.end = event_page.querySelector("meta[itemprop='endDate']").getAttribute('content')
+        event.url = event_data.css("meta[itemprop='url']")[0].get_attribute('content')
+        event.venue = event_data.css("meta[itemprop='location']")[0].get_attribute('content')
+        event.title = event_data.css("meta[itemprop='name']")[0].get_attribute('content')
+        event.start = event_data.css("meta[itemprop='startDate']")[0].get_attribute('content').to_time.strftime('%a, %d %b %Y %H:%M:%S').to_time
+        event.end = event_data.css("meta[itemprop='endDate']")[0].get_attribute('content').to_time.strftime('%a, %d %b %Y %H:%M:%S').to_time
+
+        event_page2 = Nokogiri::HTML5.parse(open_url(event.url.to_s, raise: true)).css("div[id='main']")[0].css("div[itemtype='https://schema.org/Event']")[0]
+        unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/rug.yml')
+          sleep(1)
+        end
+
+        event.description = event_page2.css("div[class='rug-clearfix rug-theme--content rug-mb']")[0].css('p')[0].text
 
         event.source = 'RUG'
         event.timezone = 'Amsterdam'
