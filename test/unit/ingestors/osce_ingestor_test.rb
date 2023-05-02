@@ -1,20 +1,20 @@
 require 'test_helper'
 
-class OscrIngestorTest < ActiveSupport::TestCase
+class OsceIngestorTest < ActiveSupport::TestCase
   setup do
     @user = users(:regular_user)
     @content_provider = content_providers(:another_portal_provider)
     mock_ingestions
   end
 
-  test 'can ingest events from oscr' do
+  test 'can ingest events from osce' do
     source = @content_provider.sources.build(
       url: 'https://test',
-      method: 'oscr',
+      method: 'osce',
       enabled: true
     )
 
-    ingestor = Ingestors::OscrIngestor.new
+    ingestor = Ingestors::OsceIngestor.new
 
     # check event doesn't
     new_title = "Studium Generale: Work, Work, Work | The Invention and Future of Work - Jason Resnikoff"
@@ -24,7 +24,7 @@ class OscrIngestorTest < ActiveSupport::TestCase
     # run task
     assert_difference 'Event.count', 6 do
       freeze_time(Time.new(2019)) do
-        VCR.use_cassette("ingestors/oscr") do
+        VCR.use_cassette("ingestors/osce") do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end
@@ -44,7 +44,7 @@ class OscrIngestorTest < ActiveSupport::TestCase
     assert_equal new_url, event.url
 
     # check other fields
-    assert_equal 'OSCR', event.source
+    assert_equal 'OSCE', event.source
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'Mon, 08 May 2023 20:00:00.000000000 UTC +00:00'.to_time, event.start
     assert_equal 'Mon, 08 May 2023 21:30:00.000000000 UTC +00:00'.to_time, event.end

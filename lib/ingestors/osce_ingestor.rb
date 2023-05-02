@@ -3,18 +3,18 @@ require 'csv'
 require 'nokogiri'
 
 module Ingestors
-  class OscrIngestor < Ingestor
+  class OsceIngestor < Ingestor
     def self.config
       {
-        key: 'oscr_event',
-        title: 'OSCR Events API',
+        key: 'osce_event',
+        title: 'OSCE Events API',
         category: :events
       }
     end
 
     def read(url)
       begin
-        process_oscr(url)
+        process_osce(url)
       rescue Exception => e
         @messages << "#{self.class.name} failed with: #{e.message}"
       end
@@ -25,8 +25,8 @@ module Ingestors
 
     private
 
-    def process_oscr(url)
-      unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/oscr.yml')
+    def process_osce(url)
+      unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/osce.yml')
         sleep(1)
       end
       event_page = Nokogiri::HTML5.parse(open_url(url.to_s, raise: true)).css("div[class='hJDwNd-AhqUyc-wNfPc Ft7HRd-AhqUyc-wNfPc purZT-AhqUyc-II5mzb ZcASvf-AhqUyc-II5mzb pSzOP-AhqUyc-wNfPc Ktthjf-AhqUyc-wNfPc JNdkSc SQVYQc yYI8W HQwdzb']")
@@ -41,7 +41,7 @@ module Ingestors
         event.start = event_data.css("span[class='C9DxTc aw5Odc ']")[0].text
         event.end = event_data.css("span[class='C9DxTc aw5Odc ']")[0].text
 
-        event.source = 'OSCR'
+        event.source = 'OSCE'
         event.timezone = 'Amsterdam'
         event.set_default_times
 
