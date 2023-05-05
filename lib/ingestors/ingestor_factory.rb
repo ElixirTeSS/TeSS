@@ -23,8 +23,6 @@ module Ingestors
         Ingestors::ZenodoIngestor,
         Ingestors::RugIngestor,
         Ingestors::LcrdmIngestor,
-        Ingestors::OscrIngestor,
-        Ingestors::OsceIngestor,
       ]
     end
 
