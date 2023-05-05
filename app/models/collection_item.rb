@@ -8,8 +8,7 @@ class CollectionItem < ApplicationRecord
 
   before_create :set_order
   after_save :log_activity
-  after_create :solr_index
-  after_destroy :solr_index
+  after_commit :reindex_resource, on: [:create, :destroy]
 
   def log_activity
     self.collection.create_activity(:add_item, owner: User.current_user,
@@ -21,15 +20,15 @@ class CollectionItem < ApplicationRecord
                                                 collection_title: self.collection.title })
   end
 
+  def reindex_resource
+    # we should consider doing this in a background job if it turns out to be slow
+    # when curating large collections
+    resource.solr_index if TeSS::Config.solr_enabled
+  end
+
   private
 
   def set_order
     self.order ||= (collection.items.maximum(:order) || 0) + 1
-  end
-
-  def solr_index
-    # we should consider doing this in a background job if it turns out to be slow
-    # when curating large collections
-    resource.solr_index if TeSS::Config.solr_enabled
   end
 end
