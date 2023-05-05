@@ -189,7 +189,7 @@ group :development do
 end
 
 group :test do
-  gem 'fakeredis', git: 'https://github.com/artygus/fakeredis/', ref: 'f68bd4f'
+  gem 'fakeredis', git: 'https://github.com/guilleiguaran/fakeredis/', ref: 'f68bd4f'
   gem 'minitest', '5.14.4'
   gem 'rails-controller-testing'
   gem 'vcr', '~> 6.1.0'

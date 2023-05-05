@@ -6,7 +6,7 @@ GIT
       linkeddata (~> 3.2.0)
 
 GIT
-  remote: https://github.com/artygus/fakeredis/
+  remote: https://github.com/guilleiguaran/fakeredis/
   revision: f68bd4f8d2b87c6445b9166447c1752c6236d63b
   ref: f68bd4f
   specs:
