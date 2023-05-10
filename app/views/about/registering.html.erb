@@ -7,9 +7,9 @@
     <div class="about-block">
       <!-- REGISTERING CONTENT IN TESS -->
       <div id="how">
-        <h2> <%== raw t('register.registering_resources_in', site_name: TeSS::Config.site['title_short']) %></h2>
+        <h2><%== t('register.registering_resources_in', site_name: TeSS::Config.site['title_short']) %></h2>
 
-        <p><%= raw t 'register.resources' %></p>
+        <p><%== t 'register.resources' %></p>
 
         <div class="row">
           <div class="col-lg-4 motivation-box">
@@ -33,42 +33,42 @@
           </div>
         </div>
 
-        <%== raw t 'register.methods' %>
+        <%== t 'register.methods' %>
       </div>
 
       <!-- AUTOMATIC REGISTRATION -->
       <div id="automatic" class="odd-about-block">
         <h3>Automatic Registration</h3>
-        <p><%== raw t 'register.automatic' %></p>
+        <p><%== t 'register.automatic' %></p>
 
         <!-- STRUCTURED DATA -->
         <h4>Structured Data Types</h4>
-        <%== raw t 'register.structured' %>
+        <%== t 'register.structured' %>
 
         <!-- BIOSCHEMAS -->
         <div id="bioschemas" class="sub-about-block">
           <h5>Schema.org / Bioschemas</h5>
           <%= image_tag 'about/bioschemas.png', class: 'structured-data-graphic' %>
-          <%== raw t 'register.schema' %>
+          <%== t 'register.schema' %>
         </div>
 
         <div id="sitemaps" class="sub-about-block">
           <h5>Sitemaps</h5>
-          <%== raw t 'register.sitemap' %>
+          <%== t 'register.sitemap' %>
         </div>
 
         <!-- API -->
         <div id="api" class="sub-about-block">
           <h5>API</h5>
           <i class="fa fa-plug about-icon structured-data-graphic"></i>
-          <%== raw t 'register.api' %>
+          <%== t 'register.api' %>
         </div>
 
         <!-- CALENDAR -->
         <div id="calendar" class="sub-about-block">
           <h5>Calendar</h5>
           <i class="fa fa-calendar about-icon structured-data-graphic"></i>
-          <%== raw t 'register.calendar' %>
+          <%== t 'register.calendar' %>
         </div>
 
         <!--  CONTACT US -->
@@ -76,7 +76,7 @@
           <%#= render :partial => "common/contact_form"%>
           <% if user_creatable_ingestion_methods.any? %>
             <h4>Sources</h4>
-            <%== raw t('register.user_managed_sources') %>
+            <%== t('register.user_managed_sources') %>
 
             <%= link_to new_content_provider_path, class: 'btn btn-primary', target: '_blank' do %>
               <i class="fa fa-plus-square"></i> Register provider
@@ -92,13 +92,13 @@
             for other methods...
           <% end %>
           <h4>Contact Us</h4>
-          <p><%== raw t('register.advice', contact_email: TeSS::Config.contact_email) %></p>
+          <p><%== t('register.advice', contact_email: TeSS::Config.contact_email) %></p>
         </div>
       </div>
 
       <div id="manual" class="even-about-block">
         <h3>Manual Registration</h3>
-        <p><%== raw t 'register.manual' %></p>
+        <p><%== t 'register.manual' %></p>
         <p>
           <%= link_to new_event_path, class: 'btn btn-primary', target: '_blank' do %>
             <i class="fa fa-plus-square"></i> Register event

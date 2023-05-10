@@ -15,7 +15,7 @@
                       apiKey: <%= Rails.application.secrets.google_maps_api_key %> // Get your own API key!
                   },
                   params: {
-                      country: [<%== raw t 'developer.gmaps_countries' %>],
+                      country: [<%== t 'developer.gmaps_countries' %>],
                       pageSize: 500
                   }
               });

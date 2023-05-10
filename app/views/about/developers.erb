@@ -8,7 +8,7 @@
       <h2>For Developers</h2>
 
       <!-- ABOUT TESS DATA -->
-      <p><%== raw t 'developer.license' %></p>
+      <p><%== t 'developer.license' %></p>
 
       <div class="row" id="code_and_data">
         <div class="col-md-6 text-center">
@@ -25,7 +25,7 @@
           <div class="motivation-box">
             <i class="fa fa-code about-icon motivation-box-graphic-small"></i>
             <p>
-              Source code is available under the <%== raw t 'developer.code_license' %> license.
+              Source code is available under the <%== t 'developer.code_license' %> license.
             </p>
           </div>
         </div>
@@ -41,7 +41,7 @@
           <div class="motivation-box">
             <i class="fa fa-database about-icon motivation-box-graphic-small"></i>
             <p>
-              Data are made available under the <%== raw t 'developer.data_license' %> license.
+              Data are made available under the <%== t 'developer.data_license' %> license.
             </p>
           </div>
         </div>
@@ -50,7 +50,7 @@
       <!-- Widgets -->
       <div id="widgets" class="even-about-block">
         <h3>Widgets</h3>
-        <p><%== raw t 'developer.widgets' %></p>
+        <p><%== t 'developer.widgets' %></p>
         <p><%= link_to t('developer.widgets_available'), class: 'btn btn-primary', target: '_blank', rel: 'noopener' do %>
             View Our Available Widgets
           <% end %></p>
@@ -72,32 +72,32 @@
           <!-- Events -->
           <% if TeSS::Config.feature['events'] %>
             <code>
-              <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_1' %>">
-                <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_1' %></a>
+              <a href="<%= TeSS::Config.base_url %><%== t 'developer.api_example_1' %>">
+                <%= TeSS::Config.base_url %><%== t 'developer.api_example_1' %></a>
             </code><br/>
           <% end %>
 
           <!-- Materials -->
           <% if TeSS::Config.feature['materials'] %>
             <code>
-              <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_3' %>">
-                <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_3' %> </a>
+              <a href="<%= TeSS::Config.base_url %><%== t 'developer.api_example_3' %>">
+                <%= TeSS::Config.base_url %><%== t 'developer.api_example_3' %> </a>
             </code><br/>
           <% end %>
 
           <!-- Providers -->
           <% if TeSS::Config.feature['content_providers'] %>
             <code>
-              <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_4' %>">
-                <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_4' %> </a>
+              <a href="<%= TeSS::Config.base_url %><%== t 'developer.api_example_4' %>">
+                <%= TeSS::Config.base_url %><%== t 'developer.api_example_4' %> </a>
             </code><br/>
           <% end %>
 
           <!-- Workflows -->
           <% if TeSS::Config.feature['workflows'] %>
             <code>
-              <a href="<%= TeSS::Config.base_url %><%== raw t 'developer.api_example_5' %>">
-                <%= TeSS::Config.base_url %><%== raw t 'developer.api_example_5' %> </a>
+              <a href="<%= TeSS::Config.base_url %><%== t 'developer.api_example_5' %>">
+                <%= TeSS::Config.base_url %><%== t 'developer.api_example_5' %> </a>
             </code>
           <% end %>
         </p>
