@@ -7,7 +7,7 @@
     <div class="about-block">
       <!-- REGISTERING CONTENT IN TESS -->
       <div id="how">
-        <h2>Registering Resources in <%= TeSS::Config.site['title_short'] %></h2>
+        <h2> <%== raw t('register.registering_resources_in', site_name: TeSS::Config.site['title_short']) %></h2>
 
         <p><%= raw t 'register.resources' %></p>
 
