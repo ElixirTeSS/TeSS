@@ -22,17 +22,12 @@
           <div class="col-lg-10 col-lg-pull-2 about-resource">
             <p><%== raw t 'about.events' %></p>
 
-            <p>
-              <%= TeSS::Config.site['title_short'] %> collects event information
-              from <%= Event.distinct.count(:content_provider_id) %>
-              content providers, supplementing the data with geolocation information found using
-              <%== raw t 'about.nominatim' %>.
-            </p>
+            <p><%== raw t('about.collect_events', site_name: TeSS::Config.site['title_short'], count: Event.distinct.count(:content_provider_id), nominatim: t('about.nominatim'))  %></p>
 
             <br/>
 
             <%= link_to events_path do %>
-              Discover Events <i class="icon icon-sm arrow-right-icon"></i>
+              <%== raw t 'about.discover_events' %> <i class="icon icon-sm arrow-right-icon"></i>
             <% end %>
           </div>
         </div>
@@ -50,15 +45,13 @@
           <div class="col-lg-10 col-lg-pull-2 about-resource">
             <p><%== raw t 'about.materials' %></p>
 
-            <p><%= TeSS::Config.site['title_short'] %> collects materials from
-              <%= Material.distinct.count(:content_provider_id) %>
-              content providers.
+            <p><%= raw t('about.collect_materials', site_name: TeSS::Config.site['title_short'], count: Material.distinct.count(:content_provider_id)) %>
             </p>
 
             <br/>
 
             <%= link_to materials_path do %>
-              Discover Materials <i class="icon icon-sm arrow-right-icon"></i>
+              <%== raw t 'about.discover_materials' %> <i class="icon icon-sm arrow-right-icon"></i>
             <% end %>
           </div>
         </div>

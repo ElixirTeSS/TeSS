@@ -67,6 +67,11 @@ en:
     widgets_and_api: >
       To access TeSS data, organisations may readily import information about relevant events and materials to their site using widgets,
       or may create custom feeds using our API.
+    collect_events: >
+      %{site_name} collects event information from %{count} content providers, supplementing the data with geolocation information found using %{nominatim}.
+    discover_events: Discover Events
+    collect_materials: "%{site_name} collects materials from %{count} content providers."
+    discover_materials: Discover Materials
   developer:
     license: >
       TeSS is committed to the FAIR principles: making data findable, accessible, interoperable and re-usable.
@@ -150,6 +155,7 @@ en:
       <a href="https://doi.org/10.1093/bioinformatics/btaa047">https://doi.org/10.1093/bioinformatics/btaa047</a>
 
   register:
+    registering_resources_in: "Registering Resources in %{site_name}"
     resources: >
       <p>Training resources (events and materials) may be added to TeSS to reach bigger audiences, increase impact and
       bolster event attendance. Registering events and training materials makes them more findable in a variety ways
