@@ -98,8 +98,7 @@
         <div id="subscribe" class="<%= next_about_block(@feature_count += 1) %>">
           <h3>Subscribe</h3>
           <p><%== raw t 'about.subscribe' %></p>
-          <p>The <%= link_to 'subscriptions manager', subscriptions_path %> page may be used to change the
-            frequency of, or to remove, subscriptions.</p>
+          <p> raw t('about.subscription_manager', subscriptions_path: subscriptions_path)</p>
           <%= image_tag 'about/subscription.png', style: 'width: 80%' %>
         </div>
       <% end %>
