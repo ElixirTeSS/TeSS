@@ -4,40 +4,40 @@
   <h3>Information Submitted</h3>
 
   <h4>Registration</h4>
-  <%== raw t 'privacy.registration' %>
+  <%== t 'privacy.registration' %>
 
   <h4>Additional Personal Information</h4>
-  <p><%== raw t 'privacy.personal' %></p>
+  <p><%== t 'privacy.personal' %></p>
 
   <h4>Creation of <%= TeSS::Config.site['title_short'] %> Resources</h4>
-  <p><%== raw t 'privacy.resources' %></p>
+  <p><%== t 'privacy.resources' %></p>
 
   <h3>Information Automatically Collected</h3>
 
   <h4>Server Logs</h4>
-  <p><%== raw t 'privacy.server' %></p>
+  <p><%== t 'privacy.server' %></p>
 
   <h4>Cookies</h4>
-  <p><%== raw t 'privacy.cookies' %></p>
+  <p><%== t 'privacy.cookies' %></p>
 
   <% if TeSS::Config.analytics_enabled %>
     <h4>Analytics</h4>
-    <p><%== raw t 'privacy.analytics' %></p>
+    <p><%== t 'privacy.analytics' %></p>
   <% end %>
 
   <h3>Information Retention</h3>
-  <p><%== raw t 'privacy.retention' %></p>
+  <p><%== t 'privacy.retention' %></p>
 
   <h3>Code of Conduct</h3>
-  <p><%== raw t 'privacy.code' %></p>
+  <p><%== t 'privacy.code' %></p>
 
   <h3>Data Controller</h3>
-  <p><%== raw t 'privacy.controller' %></p>
+  <p><%== t 'privacy.controller' %></p>
   <em>For any enquiries or requests, please contact:</em><br/>
   <strong>Email:</strong> <%= mail_to(TeSS::Config.contact_email, TeSS::Config.contact_email) -%><br/>
   <% if !t('privacy.post').blank? %>
     <strong>Post:</strong>
 
-    <address><%== raw t 'privacy.post' %></address>
+    <address><%== t 'privacy.post' %></address>
   <% end %>
 </div>

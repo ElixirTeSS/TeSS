@@ -1,5 +1,5 @@
 <section id="faq">
-  <h2 class="text-center"><%= raw t 'home.faq.title' %></h2>
+  <h2 class="text-center"><%= t('home.faq.title') %></h2>
   <dl class="faq">
     <% TeSS::Config.site.dig('home_page', 'faq').each do |key| %>
       <div class="question">
@@ -7,7 +7,7 @@
           <h3><div class="expand">+</div><%= t("home.faq.#{key}.q") %></h3>
         </dt>
         <dd style="display: none;">
-          <%== raw t("home.faq.#{key}.a") %>
+          <%== t("home.faq.#{key}.a") %>
         </dd>
       </div>
     <% end %>

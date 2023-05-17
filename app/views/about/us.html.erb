@@ -11,19 +11,19 @@
       <!-- TeSS Club-->
       <div id="tess-club" class="<%= next_about_block(@feature_count += 1) %>">
         <h3>TeSS Club</h3>
-        <%== raw t 'us.tess_club' %>
+        <%== t 'us.tess_club' %>
       </div>
 
       <!-- CONTACT-->
       <div id="contact" class="<%= next_about_block(@feature_count += 1) %>">
         <h3>Contact</h3>
-        <%== raw t 'us.contact' %>
+        <%== t 'us.contact' %>
       </div>
 
       <!-- FUNDING-->
       <div id="funding" class="<%= next_about_block(@feature_count += 1) %>">
         <h3>Funding</h3>
-        <%== raw t 'us.funding' %>
+        <%== t 'us.funding' %>
         <% if TeSS::Config.funders.present? %>
           <p>
             <% TeSS::Config.funders.each do |funder| %>
@@ -38,20 +38,20 @@
       <!-- THE TEAM-->
       <div id="team" class="<%= next_about_block(@feature_count += 1) %>">
         <h3>The Team</h3>
-        <%== raw t 'us.team' %>
+        <%== t 'us.team' %>
       </div>
 
       <!-- ACKNOWLEDGEMENTS-->
       <div id="acknowledgements" class="<%= next_about_block(@feature_count += 1) %>">
         <h3>Acknowledgements</h3>
-        <%== raw t 'us.acknowledge' %>
+        <%== t 'us.acknowledge' %>
       </div>
 
       <!-- Cite -->
       <div id="cite" class="<%= next_about_block(@feature_count += 1) %>">
         <h3>Cite Us</h3>
         <blockquote>
-          <%== raw t 'us.cite' %>
+          <%== t 'us.cite' %>
         </blockquote>
       </div>
     </div>
