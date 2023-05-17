@@ -13,7 +13,7 @@ services:
       - solr
       - redis
     ports:
-      - '3000:3000'
+      - '80:3000'
     volumes:
       - uploads:/code/public/system
       - ./config/tess.yml:/code/config/tess.yml
