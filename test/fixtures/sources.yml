@@ -94,3 +94,11 @@ enabled_source:
   enabled: true
   user: regular_user
   approval_status: 2
+
+disabled_source:
+  content_provider: portal_provider
+  url: 'https://website.org'
+  method: bioschemas
+  enabled: false
+  user: regular_user
+  approval_status: 2
