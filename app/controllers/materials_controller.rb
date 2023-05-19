@@ -46,8 +46,7 @@ class MaterialsController < ApplicationController
   # GET /materials/1/clone
   def clone
     authorize @material
-    @material = @material.dup
-    @material.url = nil
+    @material = @material.duplicate
     render :new
   end
 

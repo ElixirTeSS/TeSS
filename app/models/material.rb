@@ -149,4 +149,17 @@ class Material < ApplicationRecord
   def to_bioschemas
     [Bioschemas::LearningResourceGenerator.new(self)]
   end
+
+  def duplicate
+    c = dup
+    c.url = nil
+    external_resources.each do |er|
+      c.external_resources.build(url: er.url, title: er.title)
+    end
+    [:events, :scientific_topics, :operations, :nodes].each do |field|
+      c.send("#{field}=", send(field))
+    end
+
+    c
+  end
 end

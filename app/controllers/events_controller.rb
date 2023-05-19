@@ -50,8 +50,7 @@ class EventsController < ApplicationController
   # GET /events/1/clone
   def clone
     authorize @event
-    @event = @event.dup
-    @event.url = nil
+    @event = @event.duplicate
     render :new
   end
 
