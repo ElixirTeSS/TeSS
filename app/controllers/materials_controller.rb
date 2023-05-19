@@ -1,7 +1,7 @@
 # The controller for actions related to the Materials model
 class MaterialsController < ApplicationController
   before_action :feature_enabled?
-  before_action :set_material, only: [:show, :edit, :update, :destroy, :update_collections, :add_term, :reject_term]
+  before_action :set_material, only: [:show, :edit, :update, :destroy, :update_collections, :add_term, :reject_term, :clone]
   before_action :set_breadcrumbs
 
   include SearchableIndex
@@ -41,6 +41,14 @@ class MaterialsController < ApplicationController
   def new
     authorize Material
     @material = Material.new
+  end
+
+  # GET /materials/1/clone
+  def clone
+    authorize @material
+    @material = @material.dup
+    @material.url = nil
+    render :new
   end
 
   # GET /materials/1/edit

@@ -1324,4 +1324,20 @@ class MaterialsControllerTest < ActionController::TestCase
       assert_select '#q[placeholder=?]', 'Search materials...'
     end
   end
+
+  test 'should clone material' do
+    sign_in @material.user
+    get :clone, params: { id: @material }
+    assert_response :success
+    assert_nil assigns(:material).url
+    assert_nil assigns(:material).id
+    assert_equal @material.title, assigns(:material).title
+    assert_select '#material_title[value=?]', @material.title
+  end
+
+  test 'should not clone material if no permission' do
+    sign_in users(:another_regular_user)
+    get :clone, params: { id: @material }
+    assert_response :forbidden
+  end
 end
