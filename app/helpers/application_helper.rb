@@ -368,6 +368,11 @@ module ApplicationHelper
                                                              title: options[:title] })
     end
 
+    def hidden_beep(name, options = {})
+      visibility_toggle = options[:visibility_toggle] || []
+      visibility_toggle.include?(name.to_s) || visibility_toggle.include?(name.to_sym)
+    end
+
     def autocompleter(name, options = {})
       url = options[:url] || @template.polymorphic_path(name)
       @template.render(partial: 'common/autocompleter', locals: { field_name: name, f: self, url: url,
@@ -379,6 +384,7 @@ module ApplicationHelper
                                                                   transform_function: options[:transform_function],
                                                                   group_by: options[:group_by],
                                                                   singleton: options[:singleton],
+                                                                  hidden: hidden_beep(name, options),
       })
     end
 
@@ -393,7 +399,9 @@ module ApplicationHelper
                                                                    label: options[:label],
                                                                    errors: options[:errors],
                                                                    title: options[:title],
-                                                                   hint: options[:hint]})
+                                                                   hint: options[:hint],
+                                                                   hidden: hidden_beep(name, options),
+      })
     end
   end
 
