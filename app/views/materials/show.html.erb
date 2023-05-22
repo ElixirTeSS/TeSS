@@ -29,7 +29,10 @@
             <%= star_button(@material) if user_signed_in? %>
           </div>
           <div class="content-manager-actions">
-            <%= edit_button(@material) if policy(@material).update? %>
+            <% if policy(@material).update? %>
+              <%= link_to 'Clone', clone_material_path(@material), class: 'btn btn-default' %>
+              <%= edit_button(@material) %>
+            <% end %>
             <%= delete_button(@material) if policy(@material).destroy? %>
           </div>
         </div>

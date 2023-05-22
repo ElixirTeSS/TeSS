@@ -1315,4 +1315,20 @@ class EventsControllerTest < ActionController::TestCase
       end
     end
   end
+
+  test 'should clone event' do
+    sign_in @event.user
+    get :clone, params: { id: @event }
+    assert_response :success
+    assert_nil assigns(:event).url
+    assert_nil assigns(:event).id
+    assert_equal @event.title, assigns(:event).title
+    assert_select '#event_title[value=?]', @event.title
+  end
+
+  test 'should not clone event if no permission' do
+    sign_in users(:another_regular_user)
+    get :clone, params: { id: @event }
+    assert_response :forbidden
+  end
 end
