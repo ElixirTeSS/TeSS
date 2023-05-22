@@ -368,13 +368,13 @@ module ApplicationHelper
                                                              title: options[:title] })
     end
 
-    def hidden_beep(name, options = {})
-      visibility_toggle = options[:visibility_toggle] || []
-      visibility_toggle.include?(name.to_s) || visibility_toggle.include?(name.to_sym)
+    def hidden_beep(name, visibility_toggle)
+      visibility_toggle.include?(name.to_s)
     end
 
     def autocompleter(name, options = {})
       url = options[:url] || @template.polymorphic_path(name)
+      visibility_toggle = options[:visibility_toggle] || []
       @template.render(partial: 'common/autocompleter', locals: { field_name: name, f: self, url: url,
                                                                   template: options[:template],
                                                                   id_field: options[:id_field] || :id,
@@ -384,12 +384,13 @@ module ApplicationHelper
                                                                   transform_function: options[:transform_function],
                                                                   group_by: options[:group_by],
                                                                   singleton: options[:singleton],
-                                                                  hidden: hidden_beep(name, options),
+                                                                  hidden: hidden_beep(name, visibility_toggle),
       })
     end
 
     def multi_input(name, options = {})
       options[:suggestions_url] ||= @template.autocomplete_suggestions_path(name) unless options[:suggestions].present?
+      visibility_toggle = options[:visibility_toggle] || []
       @template.render(partial: 'common/multiple_input', locals: { field_name: name, f: self,
                                                                    model_name: options[:model_name],
                                                                    suggestions_url: options[:suggestions_url],
@@ -400,7 +401,7 @@ module ApplicationHelper
                                                                    errors: options[:errors],
                                                                    title: options[:title],
                                                                    hint: options[:hint],
-                                                                   hidden: hidden_beep(name, options),
+                                                                   hidden: hidden_beep(name, visibility_toggle),
       })
     end
   end
