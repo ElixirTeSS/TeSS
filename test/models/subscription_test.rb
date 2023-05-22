@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class SubscriptionTest < ActiveSupport::TestCase
+  include ActionMailer::TestHelper
 
   test 'users can have subscriptions' do
     user = users(:another_regular_user)
@@ -138,14 +139,12 @@ class SubscriptionTest < ActiveSupport::TestCase
     # Mock the digest since we're not running solr
     mock_digest = MockSearchResults.new(materials(:good_material))
     sub.stub(:digest, mock_digest) do
-      assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      assert_emails 1 do
         sub.process
       end
     end
 
     assert_not_nil sub.last_sent_at
-
-    ActionMailer::Base.deliveries.clear
   end
 
   test 'does not send email if empty digest' do
@@ -155,14 +154,12 @@ class SubscriptionTest < ActiveSupport::TestCase
 
     mock_digest = MockSearchResults.new([])
     sub.stub(:digest, mock_digest) do
-      assert_no_difference 'ActionMailer::Base.deliveries.size' do
+      assert_no_emails do
         sub.process
       end
     end
 
     assert_nil sub.last_sent_at
-
-    ActionMailer::Base.deliveries.clear
   end
 
   test 'facets with max age' do

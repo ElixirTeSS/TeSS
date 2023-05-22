@@ -28,7 +28,7 @@
   <% if @bioschemas.present? %>
     <% @bioschemas.each do |data| %>
       <script type="application/ld+json">
-        <%= raw data.to_json %>
+        <%== data.to_json %>
       </script>
     <% end %>
   <% end %>

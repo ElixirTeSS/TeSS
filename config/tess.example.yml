@@ -2,7 +2,7 @@ default: &default
   base_url: http://localhost:3000
   contact_email: contact@example.com
   sender_email: no-reply@localhost
-  twitter_handle: '@handle'
+  twitter_handle: # @handle
   solr_enabled: true
   solr_facets:
     # see `searchable` block in app/model/*.rb for names
