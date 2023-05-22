@@ -14,7 +14,7 @@ module SimpleForm
       end
 
       def hidden_beep?(name, options = [])
-        visibility_toggle = options[:visibility_toggle] || TeSS::Config.feature["#{@builder.object_name.pluralize}_disabled"] || []
+        visibility_toggle = options[:visibility_toggle] || TeSS::Config&.feature&.dig("#{@builder&.object_name&.pluralize}_disabled") || []
         visibility_toggle.include?(name.to_s)
       end
     end
