@@ -368,7 +368,7 @@ module ApplicationHelper
                                                              title: options[:title] })
     end
 
-    def hidden_beep(name, visibility_toggle)
+    def hidden?(name, visibility_toggle)
       visibility_toggle.include?(name.to_s)
     end
 
@@ -384,7 +384,7 @@ module ApplicationHelper
                                                                   transform_function: options[:transform_function],
                                                                   group_by: options[:group_by],
                                                                   singleton: options[:singleton],
-                                                                  hidden: hidden_beep(name, visibility_toggle),
+                                                                  hidden: hidden?(name, visibility_toggle),
       })
     end
 
@@ -401,7 +401,7 @@ module ApplicationHelper
                                                                    errors: options[:errors],
                                                                    title: options[:title],
                                                                    hint: options[:hint],
-                                                                   hidden: hidden_beep(name, visibility_toggle),
+                                                                   hidden: hidden?(name, visibility_toggle),
       })
     end
   end
