@@ -1,13 +1,14 @@
-class ConvertEventTypesToControlledVocabulary < ActiveRecord::Migration[4.2]
+# frozen_string_literal: true
 
+class ConvertEventTypesToControlledVocabulary < ActiveRecord::Migration[4.2]
   MAPPING = {
-      'event' => '',
-      'course' => 'workshops_and_courses',
-      'meeting' => 'meetings_and_conferences'
-  }
+    'event' => '',
+    'course' => 'workshops_and_courses',
+    'meeting' => 'meetings_and_conferences'
+  }.freeze
 
   def up
-    puts 'Converting event_type to controlled vocab'
+    Rails.logger.debug 'Converting event_type to controlled vocab'
     Event.transaction do
       Event.all.each do |e|
         types = e.event_type
@@ -15,7 +16,7 @@ class ConvertEventTypesToControlledVocabulary < ActiveRecord::Migration[4.2]
         new_types = new_types.select { |type| EventTypeDictionary.instance.lookup(type) }.compact
         if types != new_types
           e.update_column(:event_type, new_types)
-          print '.'
+          Rails.logger.debug '.'
         end
       end
     end
@@ -23,14 +24,14 @@ class ConvertEventTypesToControlledVocabulary < ActiveRecord::Migration[4.2]
   end
 
   def down
-    puts 'Reverting event_type to old values'
+    Rails.logger.debug 'Reverting event_type to old values'
     Event.transaction do
       Event.all.each do |e|
         types = e.event_type                    # v  Note the invert!
         new_types = types.map { |type| MAPPING.invert[type] || type }.reject(&:blank?).compact
         if types != new_types
           e.update_column(:event_type, new_types)
-          print '.'
+          Rails.logger.debug '.'
         end
       end
     end

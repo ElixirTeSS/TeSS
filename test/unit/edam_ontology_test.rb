@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class EdamOntologyTest < ActiveSupport::TestCase
@@ -75,9 +77,9 @@ class EdamOntologyTest < ActiveSupport::TestCase
 
     assert_not_equal term1.object_id, term2.object_id, 'Terms should be different Ruby objects in memory'
     assert_equal term1.uri, term2.uri
-    assert term1 == term2
+    assert_equal term1, term2
     assert term1.eql?(term2)
-    assert [term1] == [term2]
+    assert_equal [term1], [term2]
     assert_empty [term1] - [term2]
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RailsAdmin.config do |config|
   config.main_app_name = ['TeSS', 'Administration']
 

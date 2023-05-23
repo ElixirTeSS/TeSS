@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 # The controller for actions related to the Subscriptions model
 class SubscriptionsController < ApplicationController
-
   skip_before_action :authenticate_user!, :authenticate_user_from_token!, only: :unsubscribe
   before_action :authenticate_user!, only: :index
   before_action :find_subscription, only: [:destroy, :unsubscribe]
@@ -19,7 +20,7 @@ class SubscriptionsController < ApplicationController
         format.html { redirect_to subscriptions_path }
       end
     else
-      flash[:error] = @subscription.errors.full_messages.join(", ")
+      flash[:error] = @subscription.errors.full_messages.join(', ')
       respond_to do |format|
         format.html { redirect_back(fallback_location: subscriptions_path) }
       end
@@ -67,8 +68,6 @@ class SubscriptionsController < ApplicationController
       Event
     when 'Material'
       Material
-    else
-      nil
     end
   end
 

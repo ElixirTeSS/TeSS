@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The controller for actions related to the Workflows model
 class WorkflowsController < ApplicationController
   before_action :feature_enabled?
@@ -114,10 +116,9 @@ class WorkflowsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def workflow_params
     params.require(:workflow).permit(:title, :description, :user_id, :workflow_content, :doi,
-                                     :remote_created_date,  :remote_updated_date, { keywords: [] },
+                                     :remote_created_date, :remote_updated_date, { keywords: [] },
                                      { scientific_topic_names: [] }, { scientific_topic_uris: [] }, :licence,
                                      :difficulty_level, { contributors: [] }, { authors: [] }, { target_audience: [] },
                                      :hide_child_nodes, :public)
   end
-
 end

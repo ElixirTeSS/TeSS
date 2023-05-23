@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.extract! @collection, :id, :title, :description, :image_url, :created_at, :updated_at
 
 json.events @collection.events do |event|

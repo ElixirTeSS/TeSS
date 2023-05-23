@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sitemap-parser'
 
 module Ingestors
@@ -55,7 +57,7 @@ module Ingestors
         URI(url).open(options)
       rescue OpenURI::HTTPRedirect => e
         url = e.uri.to_s
-        retry if (redirect_attempts -= 1) > 0
+        retry if (redirect_attempts -= 1).positive?
         raise e
       rescue OpenURI::HTTPError => e
         if raise
@@ -70,7 +72,7 @@ module Ingestors
     def convert_description(input)
       return input if input.nil?
 
-      if input.match?(/<(li|p|b|i|ul|div|br|strong|em|h1)\/?>/)
+      if input.match?(%r{<(li|p|b|i|ul|div|br|strong|em|h1)/?>})
         ReverseMarkdown.convert(input, tag_border: '').strip
       else
         input
@@ -79,14 +81,15 @@ module Ingestors
 
     def convert_title(input)
       return input if input.nil?
+
       CGI.unescapeHTML(input)
     end
 
     def get_json_response(url, accept_params = 'application/json', **kwargs)
       response = RestClient::Request.new({ method: :get,
-                                         url: CGI.unescape_html(url),
-                                         verify_ssl: false,
-                                         headers: { accept: accept_params } }.merge(kwargs)).execute
+                                           url: CGI.unescape_html(url),
+                                           verify_ssl: false,
+                                           headers: { accept: accept_params } }.merge(kwargs)).execute
       # check response
       raise "invalid response code: #{response.code}" unless response.code == 200
 

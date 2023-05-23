@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 # The helper for Events classes
 
 require 'rss'
 
 module EventsHelper
-
   EVENTS_INFO = "An event in #{TeSS::Config.site['title_short']} is a link to a single training event sourced by a\
   provider along with description and other meta information (e.g. date, location, audience, ontological\
   categorization, keywords, etc.).\n\n\
@@ -12,33 +13,32 @@ module EventsHelper
   %{link}.".freeze
 
   def events_info
-    EVENTS_INFO % { link: link_to('see here for details on automatic registration',
-                          registering_resources_path(anchor: 'automatic')) }
+    format(EVENTS_INFO, link: link_to('see here for details on automatic registration',
+                                      registering_resources_path(anchor: 'automatic')))
   end
 
   def google_calendar_export_url(event)
+    dates = if event.all_day?
+              # Need to add 1 day for all day events apparently
+              "#{event.start.strftime('%Y%m%d')}/#{event.end.tomorrow.strftime('%Y%m%d')}"
+            else
+              "#{event.start_utc.strftime('%Y%m%dT%H%M00Z')}/#{event.end_utc.strftime('%Y%m%dT%H%M00Z')}"
+            end
 
-    if event.all_day?
-      # Need to add 1 day for all day events apparently
-      dates = "#{event.start.strftime('%Y%m%d')}/#{event.end.tomorrow.strftime('%Y%m%d')}"
-    else
-      dates = "#{event.start_utc.strftime('%Y%m%dT%H%M00Z')}/#{event.end_utc.strftime('%Y%m%dT%H%M00Z')}"
-    end
-
-    if event.online?
-      location = 'Online'
-    else
-      location = [event.venue, event.city, event.country].join(', ')
-    end
+    location = if event.online?
+                 'Online'
+               else
+                 [event.venue, event.city, event.country].join(', ')
+               end
 
     event_params = {
-        text: event.title,
-        dates: dates,
-        ctz: event.timezone,
-        details: "#{event_url(event)}",
-        location: location,
-        sf: true,
-        output: 'xml'
+      text: event.title,
+      dates: dates,
+      ctz: event.timezone,
+      details: event_url(event).to_s,
+      location: location,
+      sf: true,
+      output: 'xml'
     }
 
     "https://www.google.com/calendar/render?action=TEMPLATE&#{event_params.to_param}"
@@ -98,38 +98,36 @@ module EventsHelper
   end
 
   def csv_column_names
-    return %w(Title Organizer Start End ContentProvider)
+    %w[Title Organizer Start End ContentProvider]
   end
 
   def csv_from_collection(events)
     CSV.generate do |csv|
       csv << csv_column_names
       events.each do |event|
-        unless event.start.nil? or event.end.nil? or event.title.nil?
-          csv << event.to_csv_event
-        end
+        csv << event.to_csv_event unless event.start.nil? || event.end.nil? || event.title.nil?
       end
     end
   end
 
   def google_maps_embed_api_tag(event)
-    src = 'https://www.google.com/maps/embed/v1/place' +
-      "?key=#{Rails.application.secrets.google_maps_api_key}" +
-      "&q=#{event.latitude},#{event.longitude}"
+    src = 'https://www.google.com/maps/embed/v1/place' \
+          "?key=#{Rails.application.secrets.google_maps_api_key}" \
+          "&q=#{event.latitude},#{event.longitude}"
 
     content_tag(:iframe, '', width: 400, height: 250, frameborder: 0, style: 'border: 0', class: 'google-map',
-                    src: src, allowfullscreen: true)
+                             src: src, allowfullscreen: true)
   end
 
   def google_maps_javascript_api_tag(event)
     content_tag(:div, 'Loading map...', id: 'map', class: 'google-map', data: {
-      'map-latitude': event.latitude,
-      'map-longitude': event.longitude,
-      'map-suggested-latitude': event.suggested_latitude,
-      'map-suggested-longitude': event.suggested_longitude,
-      'map-marker-title': event.title,
-      'map-suggested-marker-image': image_url('suggestion.png')
-    })
+                  'map-latitude': event.latitude,
+                  'map-longitude': event.longitude,
+                  'map-suggested-latitude': event.suggested_latitude,
+                  'map-suggested-longitude': event.suggested_longitude,
+                  'map-marker-title': event.title,
+                  'map-suggested-marker-image': image_url('suggestion.png')
+                })
   end
 
   DATE_STRF = '%-e %B %Y'
@@ -138,22 +136,18 @@ module EventsHelper
   def neatly_printed_date_range(start, finish = nil)
     if start.blank?
       if finish.blank?
-        return 'No date given'
+        'No date given'
       else
-        return 'No start date'
+        'No start date'
       end
     else
       differing = []
 
-      if finish.present?
-        if finish.to_date != start.to_date
-          differing << '%-e'
-          if finish.month != start.month
-            differing << '%B'
-            if finish.year != start.year
-              differing << '%Y'
-            end
-          end
+      if finish.present? && (finish.to_date != start.to_date)
+        differing << '%-e'
+        if finish.month != start.month
+          differing << '%B'
+          differing << '%Y' if finish.year != start.year
         end
       end
 

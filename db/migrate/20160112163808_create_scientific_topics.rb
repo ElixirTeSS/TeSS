@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateScientificTopics < ActiveRecord::Migration[4.2]
   def change
     create_table :scientific_topics do |t|

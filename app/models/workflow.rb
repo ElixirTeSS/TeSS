@@ -1,5 +1,6 @@
-class Workflow < ApplicationRecord
+# frozen_string_literal: true
 
+class Workflow < ApplicationRecord
   include PublicActivity::Common
   include Collaboratable
   include LogParameterChanges
@@ -28,16 +29,16 @@ class Workflow < ApplicationRecord
         node_index('description')
       end
       text :authors
-      string :authors, :multiple => true
-      string :scientific_topics, :multiple => true do
-        self.scientific_topic_names
+      string :authors, multiple: true
+      string :scientific_topics, multiple: true do
+        scientific_topic_names
       end
       text :target_audience
-      string :target_audience, :multiple => true
+      string :target_audience, multiple: true
       text :keywords
-      string :keywords, :multiple => true
+      string :keywords, multiple: true
       text :contributors
-      string :contributors, :multiple => true
+      string :contributors, multiple: true
 
       integer :user_id
       boolean :public
@@ -64,17 +65,17 @@ class Workflow < ApplicationRecord
   after_update :log_diagram_modification
 
   def self.facet_fields
-    %w(scientific_topics target_audience keywords licence difficulty_level authors contributors)
+    %w[scientific_topics target_audience keywords licence difficulty_level authors contributors]
   end
 
   def new_fork(user)
-    self.dup.tap do |wf|
+    dup.tap do |wf|
       wf.title = "Fork of #{wf.title}"
       wf.user = user
     end
   end
 
-  def workflow_content= content
+  def workflow_content=(content)
     super(content.is_a?(String) ? JSON.parse(content) : content)
   end
 
@@ -93,26 +94,30 @@ class Workflow < ApplicationRecord
 
       # Resolve the actual nodes from the IDs
       added_nodes = added_node_ids.map { |i| workflow_content['nodes'].detect { |n| n['data']['id'] == i } }
-      removed_nodes = removed_node_ids.map { |i| workflow_content_before_last_save['nodes'].detect { |n| n['data']['id'] == i } }
+      removed_nodes = removed_node_ids.map do |i|
+        workflow_content_before_last_save['nodes'].detect do |n|
+          n['data']['id'] == i
+        end
+      end
       modified_nodes = modified_node_ids.map { |i| workflow_content['nodes'].detect { |n| n['data']['id'] == i } }
 
       if added_node_ids.any? || removed_node_ids.any? || modified_node_ids.any?
-        self.create_activity :modify_diagram, owner: User.current_user,
-                             parameters: {
-                                 added_nodes: added_nodes,
-                                 removed_nodes: removed_nodes,
-                                 modified_nodes: modified_nodes
-                             }
+        create_activity :modify_diagram, owner: User.current_user,
+                                         parameters: {
+                                           added_nodes: added_nodes,
+                                           removed_nodes: removed_nodes,
+                                           modified_nodes: modified_nodes
+                                         }
       end
     end
   end
 
   def node_index(type)
     results = []
-    self.workflow_content['nodes'].each do |node|
+    workflow_content['nodes']&.each do |node|
       results << node['data'][type]
-    end if self.workflow_content['nodes']
-    return results
+    end
+    results
   end
 
   # Stop the huge JSON blob being printed in the console when inspecting a workflow
@@ -124,9 +129,9 @@ class Workflow < ApplicationRecord
     if user&.is_admin?
       all
     elsif user
-      references(:collaborations).includes(:collaborations).
-        where("#{self.table_name}.public = :public OR #{self.table_name}.user_id = :user OR collaborations.user_id = :user",
-              public: true, user: user)
+      references(:collaborations).includes(:collaborations)
+                                 .where("#{table_name}.public = :public OR #{table_name}.user_id = :user OR collaborations.user_id = :user",
+                                        public: true, user: user)
     else
       where(public: true)
     end

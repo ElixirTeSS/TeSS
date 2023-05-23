@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class AutocompleteSuggestionTest < ActiveSupport::TestCase
@@ -17,7 +19,7 @@ class AutocompleteSuggestionTest < ActiveSupport::TestCase
     assert_equal ['apple'], autocompleter.query('apple')
     assert_equal ['apple'], autocompleter.query('APPLE')
 
-    assert_equal [], autocompleter.query('plums')
+    assert_empty autocompleter.query('plums')
 
     assert_equal ['banana', 'BAnaNA'], autocompleter.query('ban')
     assert_equal ['banana', 'BAnaNA'], autocompleter.query('Ban')

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'boot'
 
 require 'rails/all'
@@ -25,11 +27,19 @@ module TeSS
       end
     end
 
-    config.tess = config_for(Rails.env.test? ? Pathname.new(Rails.root).join('test', 'config', 'test_tess.yml') : 'tess')
+    config.tess = config_for(if Rails.env.test?
+                               Pathname.new(Rails.root).join('test', 'config',
+                                                             'test_tess.yml')
+                             else
+                               'tess'
+                             end)
     config.tess_defaults = config_for('tess.example')
 
     # locales
-    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'overrides', '**', '*.{rb,yml}')] unless Rails.env.test?
+    unless Rails.env.test?
+      config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'overrides', '**',
+                                                   '*.{rb,yml}')]
+    end
     config.i18n.available_locales = [:en]
     config.i18n.default_locale = :en
 
@@ -38,7 +48,7 @@ module TeSS
       ActiveSupport::HashWithIndifferentAccess, BigDecimal
     ]
 
-    config.exceptions_app = self.routes
+    config.exceptions_app = routes
   end
 
   tess_config = Rails.configuration.tess.with_indifferent_access
@@ -61,12 +71,10 @@ module TeSS
   def self.merge_config(default_config, config, current_path = '')
     default_config.each do |key, value|
       unless config.key?(key)
-        puts "Setting '#{current_path}#{key}' not configured, using defaults" if Rails.env.development?
+        Rails.logger.debug "Setting '#{current_path}#{key}' not configured, using defaults" if Rails.env.development?
         config[key] = value
       end
-      if value.is_a?(Hash) && config[key].is_a?(Hash)
-        merge_config(value, config[key], current_path + "#{key}: ")
-      end
+      merge_config(value, config[key], current_path + "#{key}: ") if value.is_a?(Hash) && config[key].is_a?(Hash)
     end
   end
 
@@ -77,7 +85,7 @@ module TeSS
   Config.redis_url = if Rails.env.test?
                        'redis://127.0.0.1:6379/0' # This URL required to talk to "fakeredis"
                      else
-                       ENV.fetch('REDIS_URL') { 'redis://localhost:6379/1' }
+                       ENV.fetch('REDIS_URL', 'redis://localhost:6379/1')
                      end
 
   config_file = File.join(Rails.root, 'config', 'ingestion.yml')

@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class ImageAttachmentTest < ActiveSupport::TestCase
-
   setup do
     mock_images
   end
@@ -15,7 +16,7 @@ class ImageAttachmentTest < ActiveSupport::TestCase
     assert provider.save
 
     assert provider.image?
-    assert provider.image.size > 0
+    assert provider.image.size.positive?
     refute provider.image_url.blank?
   end
 
@@ -30,7 +31,7 @@ class ImageAttachmentTest < ActiveSupport::TestCase
 
     assert provider.image_url.blank?
     assert provider.image?
-    assert provider.image.size > 0
+    assert provider.image.size.positive?
   end
 
   test 'should replace URL-sourced image when URL changed' do
@@ -69,7 +70,7 @@ class ImageAttachmentTest < ActiveSupport::TestCase
     refute provider.save
 
     assert_equal 1, provider.errors[:image_url].length
-    assert provider.errors[:image_url].first.include?('not a valid')
+    assert_includes provider.errors[:image_url].first, 'not a valid'
   end
 
   test 'should gracefully handle 404 image URL' do
@@ -79,7 +80,7 @@ class ImageAttachmentTest < ActiveSupport::TestCase
     refute provider.save
 
     assert_equal 1, provider.errors[:image_url].length
-    assert provider.errors[:image_url].first.include?('could not be accessed')
+    assert_includes provider.errors[:image_url].first, 'could not be accessed'
   end
 
   test 'should not store non-image file' do
@@ -89,7 +90,7 @@ class ImageAttachmentTest < ActiveSupport::TestCase
     refute provider.save
 
     assert_equal 1, provider.errors[:image].length
-    assert provider.errors[:image].first.include?('invalid')
+    assert_includes provider.errors[:image].first, 'invalid'
   end
 
   test 'should not store potentially malicious non-image file' do
@@ -99,7 +100,7 @@ class ImageAttachmentTest < ActiveSupport::TestCase
     refute provider.save
 
     assert_equal 1, provider.errors[:image].length
-    assert provider.errors[:image].first.include?('contents that are not what they are reported to be')
+    assert_includes provider.errors[:image].first, 'contents that are not what they are reported to be'
   end
 
   test 'should not permit internal image URL address' do
@@ -109,6 +110,6 @@ class ImageAttachmentTest < ActiveSupport::TestCase
     refute provider.save
 
     assert_equal 1, provider.errors[:image_url].length
-    assert provider.errors[:image_url].first.include?('could not be accessed')
+    assert_includes provider.errors[:image_url].first, 'could not be accessed'
   end
 end

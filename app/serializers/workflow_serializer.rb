@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WorkflowSerializer < ApplicationSerializer
   attributes :id, :slug, :title, :description, :workflow_content,
              :keywords, :contributors, :authors, :target_audience,

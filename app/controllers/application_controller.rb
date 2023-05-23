@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'private_address_check'
 require 'private_address_check/tcpsocket_ext'
 
@@ -14,7 +16,7 @@ class ApplicationController < ActionController::Base
 
   # Should allow token authentication for API calls
   acts_as_token_authentication_handler_for User, except: [:index, :show, :embed, :check_exists, :handle_error, :count,
-                                                          :redirect] #only: [:new, :create, :edit, :update, :destroy]
+                                                          :redirect] # only: [:new, :create, :edit, :update, :destroy]
 
   # User auth should be required in the web interface as well; it's here rather than in routes so that it
   # doesn't override the token auth, above.
@@ -22,7 +24,7 @@ class ApplicationController < ActionController::Base
   before_action :set_current_user
 
   # Should prevent forgery errors for JSON posts.
-  skip_before_action :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
+  skip_before_action :verify_authenticity_token, if: proc { |c| c.request.format == 'application/json' }
 
   # Do some access control - see policies folder for individual policies on models
   include Pundit
@@ -47,7 +49,7 @@ class ApplicationController < ActionController::Base
     status_code = status_code.to_i
     @message = message
     respond_to do |format|
-      format.html  { render 'static/error', status: status_code}
+      format.html { render 'static/error', status: status_code }
       format.json { render json: { error: { message: message, code: status_code } }, status: status_code }
       format.json_api { render json: { error: { message: message, code: status_code } }, status: status_code }
     end
@@ -57,7 +59,11 @@ class ApplicationController < ActionController::Base
     body = {}
 
     begin
-      uri = URI.parse(params[:url]) rescue nil
+      uri = begin
+        URI.parse(params[:url])
+      rescue StandardError
+        nil
+      end
       if uri && (uri.scheme == 'http' || uri.scheme == 'https')
         PrivateAddressCheck.only_public_connections do
           res = HTTParty.get(uri.to_s, { timeout: 5 })
@@ -67,7 +73,7 @@ class ApplicationController < ActionController::Base
         body = { message: 'Invalid URL - Make sure the URL starts with "https://" or "http://"' }
       end
     rescue PrivateAddressCheck::PrivateConnectionAttemptedError, Net::OpenTimeout, SocketError, Errno::ECONNREFUSED,
-      Errno::EHOSTUNREACH
+           Errno::EHOSTUNREACH
       body = { message: 'Could not access the given URL' }
     end
 
@@ -77,17 +83,15 @@ class ApplicationController < ActionController::Base
   end
 
   def job_status
-    begin
-      status = Sidekiq::Status::status(params[:id])
+    status = Sidekiq::Status.status(params[:id])
 
-      if status.present?
-        respond_to do |format|
-          format.json { render json: { status: status } }
-        end
-      else
-        respond_to do |format|
-          format.json { render json: { status: 'not-found' }, status: 404 }
-        end
+    if status.present?
+      respond_to do |format|
+        format.json { render json: { status: status } }
+      end
+    else
+      respond_to do |format|
+        format.json { render json: { status: 'not-found' }, status: :not_found }
       end
     end
   end
@@ -96,7 +100,7 @@ class ApplicationController < ActionController::Base
 
   def feature_enabled?(feature = controller_name)
     if TeSS::Config.feature.key?(feature) && !TeSS::Config.feature[feature]
-      raise ActionController::RoutingError.new('Feature not enabled')
+      raise ActionController::RoutingError, 'Feature not enabled'
     end
   end
 
@@ -112,12 +116,14 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up) do |u| u.permit(:username, :email, :password, :password_confirmation,
-                                                                :remember_me, :publicize_email, :processing_consent)
+    devise_parameter_sanitizer.permit(:sign_up) do |u|
+      u.permit(:username, :email, :password, :password_confirmation,
+               :remember_me, :publicize_email, :processing_consent)
     end
     devise_parameter_sanitizer.permit(:sign_in) { |u| u.permit(:login, :username, :email, :password, :remember_me) }
-    devise_parameter_sanitizer.permit(:account_update) do |u| u.permit(:username, :email, :password,
-                                                                       :password_confirmation, :current_password)
+    devise_parameter_sanitizer.permit(:account_update) do |u|
+      u.permit(:username, :email, :password,
+               :password_confirmation, :current_password)
     end
   end
 

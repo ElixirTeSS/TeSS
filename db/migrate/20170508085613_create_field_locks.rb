@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateFieldLocks < ActiveRecord::Migration[4.2]
   def change
     create_table :field_locks do |t|

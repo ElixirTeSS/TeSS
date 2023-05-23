@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddExtraMetadataToWorkflows < ActiveRecord::Migration[4.2]
   def change
     add_column :workflows, :target_audience, :string, array: true, default: []

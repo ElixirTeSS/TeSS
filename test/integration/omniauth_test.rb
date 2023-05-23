@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class OmniauthTest < ActionDispatch::IntegrationTest
-
   setup do
     OmniAuth.config.test_mode = true
     OmniAuth.config.mock_auth[:oidc] = nil
@@ -22,14 +23,15 @@ class OmniauthTest < ActionDispatch::IntegrationTest
           first_name: 'AAF',
           last_name: 'User'
         }
-      })
+      }
+    )
 
     post '/users/auth/oidc'
 
     follow_redirect! # OmniAuth redirect
     follow_redirect! # CallbacksController edit profile redirect
 
-    assert_equal "/users/aaf_user/edit", path
+    assert_equal '/users/aaf_user/edit', path
     assert_select '#user-menu .dropdown-toggle', 'aaf_user'
     assert_select '#user_profile_attributes_firstname[value=?]', 'AAF'
     assert_select '#user_profile_attributes_surname[value=?]', 'User'
@@ -43,9 +45,10 @@ class OmniauthTest < ActionDispatch::IntegrationTest
         uid: user.uid,
         info: {
           email: user.email,
-          nickname: user.username,
+          nickname: user.username
         }
-      })
+      }
+    )
 
     post '/users/auth/oidc'
 
@@ -68,7 +71,8 @@ class OmniauthTest < ActionDispatch::IntegrationTest
           first_name: 'AAF',
           last_name: 'User'
         }
-      })
+      }
+    )
 
     post '/users/auth/oidc'
 
@@ -81,42 +85,40 @@ class OmniauthTest < ActionDispatch::IntegrationTest
     assert_select '#user-menu .dropdown-toggle', expected_username
   end
 
-=begin
-  # this test is not longer required as users are not shared across providers
-  test 'AAF authentication can link to an existing non-AAI user' do
-    user = users(:regular_user)
-
-    assert_nil user.provider
-    assert_nil user.uid
-
-    old_password = user.encrypted_password
-
-    OmniAuth.config.mock_auth[:oidc] = OmniAuth::AuthHash.new(
-        {
-            provider: 'oidc',
-            uid: '9876',
-            info: {
-                email: user.email,
-                nickname: 'something-different',
-            }
-        })
-
-    post '/users/auth/oidc'
-
-    follow_redirect! # OmniAuth redirect
-    follow_redirect! # CallbacksController sign_in_and_redirect
-
-    user = user.reload
-
-    assert_equal '/', path
-    assert_select '.user-options > a:first', user.username
-
-    assert_equal 'oidc', user.provider
-    assert_equal '9876', user.uid
-    assert_not_equal 'something-different', user.username, 'Username should have been preserved!'
-    assert_equal old_password, user.encrypted_password, 'Password should have been preserved!'
-  end
-=end
+  #   # this test is not longer required as users are not shared across providers
+  #   test 'AAF authentication can link to an existing non-AAI user' do
+  #     user = users(:regular_user)
+  #
+  #     assert_nil user.provider
+  #     assert_nil user.uid
+  #
+  #     old_password = user.encrypted_password
+  #
+  #     OmniAuth.config.mock_auth[:oidc] = OmniAuth::AuthHash.new(
+  #         {
+  #             provider: 'oidc',
+  #             uid: '9876',
+  #             info: {
+  #                 email: user.email,
+  #                 nickname: 'something-different',
+  #             }
+  #         })
+  #
+  #     post '/users/auth/oidc'
+  #
+  #     follow_redirect! # OmniAuth redirect
+  #     follow_redirect! # CallbacksController sign_in_and_redirect
+  #
+  #     user = user.reload
+  #
+  #     assert_equal '/', path
+  #     assert_select '.user-options > a:first', user.username
+  #
+  #     assert_equal 'oidc', user.provider
+  #     assert_equal '9876', user.uid
+  #     assert_not_equal 'something-different', user.username, 'Username should have been preserved!'
+  #     assert_equal old_password, user.encrypted_password, 'Password should have been preserved!'
+  #   end
 
   test 'AAF authentication requires POST' do
     OmniAuth.config.mock_auth[:oidc] = OmniAuth::AuthHash.new(
@@ -129,7 +131,8 @@ class OmniauthTest < ActionDispatch::IntegrationTest
           first_name: 'AAF',
           last_name: 'User'
         }
-      })
+      }
+    )
 
     get '/users/auth/oidc'
 
@@ -144,9 +147,10 @@ class OmniauthTest < ActionDispatch::IntegrationTest
         uid: user.uid,
         info: {
           email: user.email,
-          nickname: user.username,
+          nickname: user.username
         }
-      })
+      }
+    )
 
     post '/users/auth/oidc'
 
@@ -161,10 +165,11 @@ class OmniauthTest < ActionDispatch::IntegrationTest
         provider: 'oidc',
         uid: user.uid,
         info: {
-          email: "blablablablalbal@emaildomain.golf",
-          nickname: "bieberfan1997",
+          email: 'blablablablalbal@emaildomain.golf',
+          nickname: 'bieberfan1997'
         }
-      })
+      }
+    )
 
     post '/users/auth/oidc'
 
@@ -183,9 +188,10 @@ class OmniauthTest < ActionDispatch::IntegrationTest
         uid: user.uid,
         info: {
           email: user.email,
-          nickname: user.username,
+          nickname: user.username
         }
-      })
+      }
+    )
 
     post '/users/auth/oidc2'
 
@@ -206,9 +212,10 @@ class OmniauthTest < ActionDispatch::IntegrationTest
         uid: new_uid,
         info: {
           email: new_email,
-          nickname: existing_user.username,
+          nickname: existing_user.username
         }
-      })
+      }
+    )
 
     post '/users/auth/oidc2'
     follow_redirect!
@@ -219,14 +226,14 @@ class OmniauthTest < ActionDispatch::IntegrationTest
     assert_select '#user-menu .dropdown-toggle', expected_username
 
     # check old user
-    old_user = User.find_by_username(existing_user.username)
-    assert !old_user.nil?, 'old user not found?'
+    old_user = User.find_by(username: existing_user.username)
+    refute_nil old_user, 'old user not found?'
 
     # check user created
-    new_user = User.find_by_username(expected_username)
-    assert !new_user.nil?, "new username[#{expected_username}] not created successfully"
+    new_user = User.find_by(username: expected_username)
+    refute_nil new_user, "new username[#{expected_username}] not created successfully"
     assert_equal 'oidc2', new_user.provider
-    assert !new_user.uid.nil?
+    refute_nil new_user.uid
     assert_equal new_uid, new_user.uid
     assert_equal new_email, new_user.email
   end
@@ -241,16 +248,17 @@ class OmniauthTest < ActionDispatch::IntegrationTest
         uid: new_uid,
         info: {
           email: existing_user.email,
-          nickname: existing_user.username,
+          nickname: existing_user.username
         }
-      })
+      }
+    )
 
     post '/users/auth/oidc2'
     follow_redirect!
     follow_redirect!
 
     # check redirect to sign in page
-    assert_equal "/users/sign_in", path
+    assert_equal '/users/sign_in', path
     assert_equal 'Login failed: Email has already been taken', flash[:notice]
   end
 
@@ -265,14 +273,15 @@ class OmniauthTest < ActionDispatch::IntegrationTest
           first_name: 'AAI',
           last_name: 'User'
         }
-      })
+      }
+    )
 
     post '/users/auth/elixir_aai'
 
     follow_redirect! # OmniAuth redirect
     follow_redirect! # CallbacksController edit profile redirect
 
-    assert_equal "/users/aai_user/edit", path
+    assert_equal '/users/aai_user/edit', path
     assert_select '#user-menu .dropdown-toggle', 'aai_user'
     assert_select '#user_profile_attributes_firstname[value=?]', 'AAI'
     assert_select '#user_profile_attributes_surname[value=?]', 'User'
@@ -286,9 +295,10 @@ class OmniauthTest < ActionDispatch::IntegrationTest
         uid: user.uid,
         info: {
           email: user.email,
-          nickname: user.username,
+          nickname: user.username
         }
-      })
+      }
+    )
 
     post '/users/auth/elixir_aai'
 
@@ -312,7 +322,8 @@ class OmniauthTest < ActionDispatch::IntegrationTest
           first_name: 'AAI',
           last_name: 'User'
         }
-      })
+      }
+    )
 
     post '/users/auth/elixir_aai'
 
@@ -336,7 +347,8 @@ class OmniauthTest < ActionDispatch::IntegrationTest
           first_name: 'AAI',
           last_name: 'User'
         }
-      })
+      }
+    )
 
     get '/users/auth/elixir_aai'
 
@@ -351,9 +363,10 @@ class OmniauthTest < ActionDispatch::IntegrationTest
         uid: user.uid,
         info: {
           email: user.email,
-          nickname: user.username,
+          nickname: user.username
         }
-      })
+      }
+    )
 
     post '/users/auth/elixir_aai'
 
@@ -368,10 +381,11 @@ class OmniauthTest < ActionDispatch::IntegrationTest
         provider: 'elixir_aai',
         uid: user.uid,
         info: {
-          email: "blablablablalbal@emaildomain.golf",
-          nickname: "bieberfan1997",
+          email: 'blablablablalbal@emaildomain.golf',
+          nickname: 'bieberfan1997'
         }
-      })
+      }
+    )
 
     post '/users/auth/elixir_aai'
 
@@ -393,11 +407,11 @@ class OmniauthTest < ActionDispatch::IntegrationTest
           first_name: 'AAI',
           last_name: 'User'
         }
-      })
+      }
+    )
 
     assert_raises(ActionController::RoutingError) do
       post '/users/auth/not_a_real_provider'
     end
   end
-
 end

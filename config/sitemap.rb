@@ -1,28 +1,22 @@
+# frozen_string_literal: true
+
 # Change this to your host. See the readme at https://github.com/lassebunk/dynamic_sitemaps
 # for examples of multiple hosts and folders.
 base_url = URI.parse(TeSS::Config.base_url)
 host_with_port = base_url.host
-if base_url.port != base_url.default_port
-  host_with_port += ":#{base_url.port}"
-end
+host_with_port += ":#{base_url.port}" if base_url.port != base_url.default_port
 
 protocol base_url.scheme
 host host_with_port
 
 sitemap :site do
-  url root_url, last_mod: Time.now, change_freq: 'daily', priority: 1.0
+  url root_url, last_mod: Time.zone.now, change_freq: 'daily', priority: 1.0
   url about_url, change_freq: 'weekly', priority: 0.4
-  if TeSS::Config.feature['materials']
-    url materials_url, last_mod: Time.now, change_freq: 'daily', priority: 0.7
-  end
-  if TeSS::Config.feature['events']
-    url events_url, last_mod: Time.now, change_freq: 'daily', priority: 0.7
-  end
-  if TeSS::Config.feature['workflows']
-    url workflows_url, last_mod: Time.now, change_freq: 'daily', priority: 0.6
-  end
+  url materials_url, last_mod: Time.zone.now, change_freq: 'daily', priority: 0.7 if TeSS::Config.feature['materials']
+  url events_url, last_mod: Time.zone.now, change_freq: 'daily', priority: 0.7 if TeSS::Config.feature['events']
+  url workflows_url, last_mod: Time.zone.now, change_freq: 'daily', priority: 0.6 if TeSS::Config.feature['workflows']
   if TeSS::Config.feature['content_providers']
-    url content_providers_url, last_mod: Time.now, change_freq: 'weekly', priority: 0.4
+    url content_providers_url, last_mod: Time.zone.now, change_freq: 'weekly', priority: 0.4
   end
 end
 
@@ -48,15 +42,15 @@ sitemap_for Workflow.from_verified_users.visible_by(nil) if TeSS::Config.feature
 
 # If you want to generate multiple sitemaps in different folders (for example if you have
 # more than one domain, you can specify a folder before the sitemap definitions:
-# 
+#
 #   Site.all.each do |site|
 #     folder "sitemaps/#{site.domain}"
 #     host site.domain
-#     
+#
 #     sitemap :site do
 #       url root_url
 #     end
-# 
+#
 #     sitemap_for site.products.scoped
 #   end
 

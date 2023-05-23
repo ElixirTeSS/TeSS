@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class CollectionTest < ActiveSupport::TestCase
@@ -7,7 +9,7 @@ class CollectionTest < ActiveSupport::TestCase
 
   class DummyMaterial < ::Material
     def self.index
-      (@index ||= Hash.new).values.flatten.uniq
+      (@index ||= {}).values.flatten.uniq
     end
 
     def self.add_to_index(m)
@@ -16,7 +18,7 @@ class CollectionTest < ActiveSupport::TestCase
     end
 
     def self.clear_index!
-      @index = Hash.new
+      @index = {}
     end
 
     def solr_index
@@ -74,7 +76,7 @@ class CollectionTest < ActiveSupport::TestCase
       collection.materials << material
     end
 
-    assert collection.materials.include?(material)
+    assert_includes collection.materials, material
   end
 
   test 'remove from collection' do

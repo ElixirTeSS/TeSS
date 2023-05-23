@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 require 'csv'
 
@@ -30,7 +32,7 @@ module Ingestors
       data = results['data']
 
       # extract materials from results
-      unless data.nil? or data.size < 1
+      if data.present?
         data.each do |item|
           # create new event
           event = OpenStruct.new
@@ -53,25 +55,23 @@ module Ingestors
 
           # array fields
           event.keywords = []
-          attr['keywords'].each { |keyword| event.keywords << keyword } unless attr['keywords'].nil?
+          attr['keywords']&.each { |keyword| event.keywords << keyword }
 
           event.host_institutions = []
-          attr['host-institutions'].each { |host| event.host_institutions << host } unless attr['host-institutions'].nil?
+          attr['host-institutions']&.each do |host|
+            event.host_institutions << host
+          end
 
           # dictionary fields
           event.eligibility = []
-          unless attr['eligibility'].nil?
-            attr['eligibility'].each do |key|
-              value = convert_eligibility(key)
-              event.eligibility << value unless value.nil?
-            end
+          attr['eligibility']&.each do |key|
+            value = convert_eligibility(key)
+            event.eligibility << value unless value.nil?
           end
           event.event_types = []
-          unless attr['event_types'].nil?
-            attr['event_types'].each do |key|
-              value = convert_event_types(key)
-              event.event_types << value unless value.nil?
-            end
+          attr['event_types']&.each do |key|
+            value = convert_event_types(key)
+            event.event_types << value unless value.nil?
           end
 
           # add event to events array

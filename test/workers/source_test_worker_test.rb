@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require 'sidekiq/testing'
 
@@ -19,7 +21,7 @@ class SourceTestWorkerTest < ActiveSupport::TestCase
     assert_equal 0, results[:materials].length
     sample = results[:events].detect { |e| e[:title] == 'Neural Networks and Deep Learning' }
     assert sample
-    assert results[:run_time] > 0
+    assert results[:run_time].positive?
     assert results[:finished_at] > 1.day.ago
   ensure
     path = source.send(:test_results_path)
@@ -42,7 +44,7 @@ class SourceTestWorkerTest < ActiveSupport::TestCase
     assert_equal 0, results[:events].length
     assert_equal 0, results[:materials].length
     assert_includes results[:messages], "Couldn't open URL https://website.org: 404 "
-    assert results[:run_time] > 0
+    assert results[:run_time].positive?
     assert results[:finished_at] > 1.day.ago
   ensure
     path = source.send(:test_results_path)
@@ -68,8 +70,8 @@ class SourceTestWorkerTest < ActiveSupport::TestCase
     assert results
     assert_equal 0, results[:events].length
     assert_equal 0, results[:materials].length
-    assert_includes results[:messages], "Ingestor encountered an unexpected error"
-    assert results[:run_time] > 0
+    assert_includes results[:messages], 'Ingestor encountered an unexpected error'
+    assert results[:run_time].positive?
     assert results[:finished_at] > 1.day.ago
   ensure
     path = source.send(:test_results_path)
@@ -88,6 +90,6 @@ class SourceTestWorkerTest < ActiveSupport::TestCase
 
   def mock_bioschemas(url, filename)
     file = Rails.root.join('test', 'fixtures', 'files', 'ingestion', filename)
-    WebMock.stub_request(:get, url).to_return(status: 200, headers: {}, body: file.read )
+    WebMock.stub_request(:get, url).to_return(status: 200, headers: {}, body: file.read)
   end
 end

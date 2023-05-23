@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OntologyTerm
   attr_reader :ontology, :data, :uri
 
@@ -18,16 +20,15 @@ class OntologyTerm
 
   def ==(other)
     return super unless other.is_a?(OntologyTerm)
+
     uri == other.uri
   end
 
-  def hash
-    uri.hash
-  end
+  delegate :hash, to: :uri
 
-  alias_method :eql?, :==
+  alias eql? ==
 
   def inspect
-    "<#{self.class} @ontology=#{self.ontology.class.name}, @uri=#{self.uri}, label: #{self.label}>"
+    "<#{self.class} @ontology=#{ontology.class.name}, @uri=#{uri}, label: #{label}>"
   end
 end

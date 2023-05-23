@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class LcrdmIngestorTest < ActiveSupport::TestCase
@@ -17,14 +19,14 @@ class LcrdmIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::LcrdmIngestor.new
 
     # check event doesn't
-    new_title = "UKB/LCRDM Networking day"
+    new_title = 'UKB/LCRDM Networking day'
     new_url = 'https://lcrdm.nl/evenementen/ukb-lcrdm-networking-day/'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
     assert_difference 'Event.count', 2 do
-      freeze_time(Time.new(2023)) do
-        VCR.use_cassette("ingestors/lcrdm") do
+      freeze_time(Time.new(2023).utc) do
+        VCR.use_cassette('ingestors/lcrdm') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end
@@ -32,7 +34,7 @@ class LcrdmIngestorTest < ActiveSupport::TestCase
     end
 
     assert_equal 2, ingestor.events.count
-    assert ingestor.materials.empty?
+    assert_empty ingestor.materials
     assert_equal 2, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]

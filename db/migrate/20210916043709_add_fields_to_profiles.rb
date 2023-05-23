@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddFieldsToProfiles < ActiveRecord::Migration[5.2]
   def change
     add_column :profiles, :public, :boolean, default: false

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -51,5 +53,6 @@ Rails.application.configure do
 end
 
 # Override secrets with test configuration from test/config
-test_secrets = YAML.safe_load(File.read(File.join(Rails.root, 'test', 'config', 'test_secrets.yml'))).deep_symbolize_keys!
+test_secrets = YAML.safe_load(File.read(File.join(Rails.root, 'test', 'config',
+                                                  'test_secrets.yml'))).deep_symbolize_keys!
 Rails.application.secrets.merge!(test_secrets)

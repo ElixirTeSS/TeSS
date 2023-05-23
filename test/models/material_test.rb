@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class MaterialTest < ActiveSupport::TestCase
-
   setup do
     @user = users :regular_user
     @event = events :kilburn
@@ -15,29 +16,28 @@ class MaterialTest < ActiveSupport::TestCase
                                  keywords: ['goblet'],
                                  contact: 'default contact',
                                  content_provider: content_providers(:goblet),
-                                 status: 'active'
-    )
-    assert_not_nil @user
-    assert_not_nil @event
-    assert_not_nil @material
+                                 status: 'active')
+    refute_nil @user
+    refute_nil @event
+    refute_nil @material
   end
 
   test 'should update optionals' do
     m = materials(:material_with_optionals)
 
     # check original values
-    assert_not_nil m.content_provider, 'old content provider is nil.'
+    refute_nil m.content_provider, 'old content provider is nil.'
     assert_equal 'Goblet', m.content_provider.title, 'old content provider not matched.'
 
-    assert_not_nil m.events, 'old events is nil.'
+    refute_nil m.events, 'old events is nil.'
     assert_equal 2, m.events.size, 'old events size not matched.'
     assert_equal @event, m.events.find { |e| e.title == @event.title }, 'old events{:two} not matched.'
 
-    assert_not_nil m.target_audience, 'old target audience is nil.'
+    refute_nil m.target_audience, 'old target audience is nil.'
     assert_equal 2, m.target_audience.size, 'old target audience size not matched.'
     assert_equal 'ECR', m.target_audience[1], 'old target audience[1] not matched.'
 
-    assert_not_nil m.resource_type, 'old resource type is nil.'
+    refute_nil m.resource_type, 'old resource type is nil.'
     assert_equal 2, m.resource_type.size, 'old resource type size not matched.'
     assert_equal 'Quiz', m.resource_type[0], 'old resource type[0] not matched.'
 
@@ -48,15 +48,15 @@ class MaterialTest < ActiveSupport::TestCase
     assert_equal '2021-07-13', m.date_modified.to_s('%Y-%m-%d'), 'old date modified not matched.'
     assert_equal '2021-07-14', m.date_published.to_s('%Y-%m-%d'), 'old date published not matched.'
 
-    assert_not_nil m.subsets, 'old subsets is nil.'
+    refute_nil m.subsets, 'old subsets is nil.'
     assert_equal 2, m.subsets.size, 'old subsets size not matched.'
     assert_equal "#{m.url}/part-two", m.subsets[1], 'old subsets[1] not matched.'
 
-    assert_not_nil m.authors, 'old authors is nil.'
+    refute_nil m.authors, 'old authors is nil.'
     assert_equal 2, m.authors.size, 'old authors size not matched.'
     assert_equal 'Thomas Edison', m.authors[1], 'old authors[1] not matched.'
 
-    assert_not_nil m.contributors, 'old contributors is nil.'
+    refute_nil m.contributors, 'old contributors is nil.'
     assert_equal 1, m.contributors.size, 'old contributors size not matched.'
     assert_equal 'Dr Dre', m.contributors[0], 'old contributors[0] not matched.'
 
@@ -89,21 +89,21 @@ class MaterialTest < ActiveSupport::TestCase
 
     # get updated
     m2 = Material.find(m.id)
-    assert_not_nil m2, 'updated material not found.'
+    refute_nil m2, 'updated material not found.'
 
     # check updated values
-    assert_not_nil m2.content_provider, 'new content provider is nil.'
+    refute_nil m2.content_provider, 'new content provider is nil.'
     assert_equal 'iAnn', m2.content_provider.title, 'new content provider not matched.'
 
-    assert_not_nil m2.events, 'new events is nil.'
+    refute_nil m2.events, 'new events is nil.'
     assert_equal 1, m2.events.size, 'new events size not matched.'
     assert_equal events(:two), m2.events[0], 'new events[0] not matched.'
 
-    assert_not_nil m2.target_audience, 'new target audience is nil.'
+    refute_nil m2.target_audience, 'new target audience is nil.'
     assert_equal 1, m2.target_audience.size, 'new target audience size not matched.'
     assert_equal 'researcher', m2.target_audience[0], 'new target audience[0] not matched.'
 
-    assert_not_nil m2.resource_type, 'new resource type is nil.'
+    refute_nil m2.resource_type, 'new resource type is nil.'
     assert_equal 1, m2.resource_type.size, 'new resource type size not matched.'
     assert_equal 'infographic', m2.resource_type[0], 'new resource type[0] not matched.'
 
@@ -114,14 +114,14 @@ class MaterialTest < ActiveSupport::TestCase
     assert_equal '2021-06-13', m2.date_modified.to_s('%Y-%m-%d'), 'new date modified not matched.'
     assert_equal '2021-06-14', m2.date_published.to_s('%Y-%m-%d'), 'new date published not matched.'
 
-    assert_not_nil m2.subsets, 'new subsets is nil.'
+    refute_nil m2.subsets, 'new subsets is nil.'
     assert_equal 0, m2.subsets.size, 'new subsets size not matched.'
 
-    assert_not_nil m2.authors, 'new authors is nil.'
+    refute_nil m2.authors, 'new authors is nil.'
     assert_equal 1, m2.authors.size, 'new authors size not matched.'
     assert_equal 'Nikolai Tesla', m2.authors[0], 'new authors[0] not matched.'
 
-    assert_not_nil m2.contributors, 'new contributors is nil.'
+    refute_nil m2.contributors, 'new contributors is nil.'
     assert_equal 1, m2.contributors.size, 'new contributors size not matched.'
     assert_equal 'Prof. Stephen Hawking', m2.contributors[0], 'new contributors[0] not matched.'
 
@@ -135,7 +135,7 @@ class MaterialTest < ActiveSupport::TestCase
     owner = @material.user
     assert_not_equal 'default_user', owner.role.name
     owner.destroy
-    #Reload the material
+    # Reload the material
     material = @material.reload
     assert_equal 'default_user', material.user.role.name
   end
@@ -143,13 +143,13 @@ class MaterialTest < ActiveSupport::TestCase
   test 'should convert string value to empty array in authors' do
     assert_not_equal @material.authors, []
     assert @material.update(authors: 'string')
-    assert_equal [], @material.authors
+    assert_empty @material.authors
   end
 
   test 'should convert nil to empty array in authors fields' do
     assert_not_equal @material.authors, []
     assert @material.update(authors: nil)
-    assert_equal [], @material.authors
+    assert_empty @material.authors
   end
 
   test 'should strip bad values from authors array input' do
@@ -162,15 +162,15 @@ class MaterialTest < ActiveSupport::TestCase
   test 'should delete material when content provider deleted' do
     material = @material
     content_provider = @material.content_provider
-    assert Material.find_by_id(material.id)
+    assert Material.find_by(id: material.id)
     assert content_provider.destroy
-    assert_nil Material.find_by_id(material.id)
+    assert_nil Material.find_by(id: material.id)
   end
 
   test 'can get associated nodes for material' do
     m = materials(:good_material)
 
-    assert_equal [], m.nodes
+    assert_empty m.nodes
     assert_equal 1, m.associated_nodes.count
     assert_includes m.associated_nodes, nodes(:good)
   end
@@ -198,7 +198,7 @@ class MaterialTest < ActiveSupport::TestCase
     refute m.save
     assert_equal 1, m.errors.count
     # no longer valid - assert_equal ["must be a controlled vocabulary term"], m.errors[:difficulty_level]
-    assert_equal ["must be a controlled vocabulary term"], m.errors[:licence]
+    assert_equal ['must be a controlled vocabulary term'], m.errors[:licence]
 
     # no longer valid - m.difficulty_level = 'beginner'
     m.licence = 'GPL-3.0'
@@ -242,7 +242,8 @@ class MaterialTest < ActiveSupport::TestCase
 
     m.licence = 'https://not.a.real.licence.golf'
     refute m.valid?
-    assert_equal 'https://not.a.real.licence.golf', m.licence, "should preserve URL user input if it didn't match any licenses in the dictionary"
+    assert_equal 'https://not.a.real.licence.golf', m.licence,
+                 "should preserve URL user input if it didn't match any licenses in the dictionary"
   end
 
   test 'can check if matearial is stale (has not been scraped recently)' do
@@ -251,7 +252,7 @@ class MaterialTest < ActiveSupport::TestCase
     m.last_scraped = nil
     refute m.stale?
 
-    m.last_scraped = Time.now
+    m.last_scraped = Time.zone.now
     refute m.stale?
 
     m.last_scraped = (Scrapable::THRESHOLD + 1.hour).ago
@@ -383,7 +384,7 @@ class MaterialTest < ActiveSupport::TestCase
     bad_user = users(:unverified_user)
     bad_material = bad_user.materials.build(title: 'bla', url: 'http://example.com/spam', description: 'vvv',
                                             doi: 'https://doi.org/10.1111/123.1235', contact: 'default contact',
-                                            licence: 'Fair', keywords: %w{ key words }, status: 'active')
+                                            licence: 'Fair', keywords: %w[key words], status: 'active')
     assert bad_material.user_requires_approval?
     bad_material.save!
 
@@ -391,7 +392,7 @@ class MaterialTest < ActiveSupport::TestCase
     good_material = good_user.materials.build(title: 'h', url: 'http://example.com/good-stuff',
                                               description: 'vvv', contact: 'default contact',
                                               doi: 'https://doi.org/10.1111/123.1235', status: 'active',
-                                              licence: 'Fair', keywords: %w{ key words })
+                                              licence: 'Fair', keywords: %w[key words])
     refute good_material.user_requires_approval?
     good_material.save!
 
@@ -439,7 +440,6 @@ class MaterialTest < ActiveSupport::TestCase
                                 status: 'archived')
     refute_match(/\A\d+\Z/, material.friendly_id)
   end
-
 
   test 'validates URL format' do
     material = Material.new(title: 'Test', description: 'desc', user: users(:regular_user))
@@ -534,5 +534,4 @@ class MaterialTest < ActiveSupport::TestCase
       end
     end
   end
-
 end

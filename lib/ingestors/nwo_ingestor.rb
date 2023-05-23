@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 require 'csv'
 require 'nokogiri'
@@ -27,10 +29,9 @@ module Ingestors
 
     def process_nwo(url)
       4.times.each do |i| # always check the first 4 pages, # of pages could be increased if needed
-        unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/nwo.yml')
-          sleep(1)
-        end
-        event_page = Nokogiri::HTML5.parse(open_url("#{url}?page=#{i}", raise: true)).css(".overviewContent > .listing-cards > li.list-item > a")
+        sleep(1) unless Rails.env.test? && File.exist?('test/vcr_cassettes/ingestors/nwo.yml')
+        event_page = Nokogiri::HTML5.parse(open_url("#{url}?page=#{i}",
+                                                    raise: true)).css('.overviewContent > .listing-cards > li.list-item > a')
         event_page.each do |event_data|
           event = OpenStruct.new
 

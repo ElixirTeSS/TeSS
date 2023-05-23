@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class IngestorTest < ActiveSupport::TestCase
@@ -8,7 +10,7 @@ class IngestorTest < ActiveSupport::TestCase
     expected = input
     assert_equal expected, ingestor.convert_description(input)
 
-    input = "<h1>Title</h1><ul><li>Item 1</li><li>Item 2</li>"
+    input = '<h1>Title</h1><ul><li>Item 1</li><li>Item 2</li>'
     expected = "# Title\n\n- Item 1\n- Item 2"
     assert_equal expected, ingestor.convert_description(input)
   end

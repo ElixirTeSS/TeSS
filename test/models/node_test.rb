@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class NodeTest < ActiveSupport::TestCase
-
   test 'can create a node and staff' do
     node = Node.new(user: users(:admin), name: 'Kilburn', country_code: 'ES')
     node.staff.build(name: 'Tom', email: 'tk@example.com', role: 'Training coordinator')
@@ -49,7 +50,7 @@ class NodeTest < ActiveSupport::TestCase
   test 'can update staff via seed data' do
     hash = node_data_hash
     Node.load_from_hash(hash)
-    assert_equal 'Aslan', Node.find_by_name('Narnia').staff.first.name
+    assert_equal 'Aslan', Node.find_by(name: 'Narnia').staff.first.name
 
     updated_hash = node_data_hash
     updated_hash['nodes'].first['staff'] = [{ 'name' => 'White Witch',
@@ -59,7 +60,7 @@ class NodeTest < ActiveSupport::TestCase
       Node.load_from_hash(updated_hash)
     end
 
-    assert_equal 'White Witch', Node.find_by_name('Narnia').staff.first.name
+    assert_equal 'White Witch', Node.find_by(name: 'Narnia').staff.first.name
   end
 
   test 'can load countries data' do
@@ -80,7 +81,7 @@ class NodeTest < ActiveSupport::TestCase
   test 'should have content providers' do
     node = nodes(:good)
     assert_equal 1, node.content_providers.length
-    assert node.content_providers[0] == content_providers(:goblet)
+    assert_equal node.content_providers[0], content_providers(:goblet)
   end
 
   private
@@ -88,5 +89,4 @@ class NodeTest < ActiveSupport::TestCase
   def node_data_hash
     JSON.parse(File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'node_test_data.json')))
   end
-
 end

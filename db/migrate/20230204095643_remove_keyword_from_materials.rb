@@ -1,13 +1,11 @@
+# frozen_string_literal: true
+
 class RemoveKeywordFromMaterials < ActiveRecord::Migration[6.1]
   def up
-    if ActiveRecord::Base.connection.column_exists?(:materials, :keyword)
-      remove_column :materials, :keyword
-    end
+    remove_column :materials, :keyword if ActiveRecord::Base.connection.column_exists?(:materials, :keyword)
   end
 
   def down
-    unless ActiveRecord::Base.connection.column_exists?(:materials, :keyword)
-      add_column :materials, :keyword, :text
-    end
+    add_column :materials, :keyword, :text unless ActiveRecord::Base.connection.column_exists?(:materials, :keyword)
   end
 end

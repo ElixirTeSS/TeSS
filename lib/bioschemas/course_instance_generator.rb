@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Bioschemas
   class CourseInstanceGenerator < Generator
     def self.type
@@ -10,8 +12,8 @@ module Bioschemas
 
     property :startDate, :start
     property :endDate, :end
-    property :organizer, -> (event) { { '@type' => 'Organization', name: event.organizer } if event.organizer.present? }
-    property :location, -> (event) {
+    property :organizer, ->(event) { { '@type' => 'Organization', name: event.organizer } if event.organizer.present? }
+    property :location, lambda { |event|
       {
         '@type' => 'PostalAddress',
         'streetAddress' => event.venue,
@@ -22,10 +24,12 @@ module Bioschemas
         'latitude' => event.latitude,
         'longitude' => event.longitude
       }.compact
-    }, condition: -> (event) { event.venue.present? || event.city.present? || event.county.present? ||
-      event.country.present? || event.postcode.present? }
+    }, condition: lambda { |event|
+                    event.venue.present? || event.city.present? || event.county.present? ||
+                      event.country.present? || event.postcode.present?
+                  }
 
-    property :funder, -> (event) {
+    property :funder, lambda { |event|
       event.sponsors.map { |sponsor| { '@type' => 'Organization', 'name' => sponsor } }
     }
     property :maximumAttendeeCapacity, :capacity

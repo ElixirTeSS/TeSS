@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RenamePackageCols < ActiveRecord::Migration[6.1]
   def change
     rename_column :collection_events, :package_id, :collection_id

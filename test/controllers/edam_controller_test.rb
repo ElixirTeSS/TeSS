@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class EdamControllerTest < ActionController::TestCase
@@ -58,11 +60,12 @@ class EdamControllerTest < ActionController::TestCase
     # <Edam::Term @ontology=Edam::OldOntology, @uri=http://edamontology.org/operation_0421, label: Protein folding site prediction>
     # <Edam::Term @ontology=Edam::OldOntology, @uri=http://edamontology.org/operation_3088, label: Protein property calculation (from sequence)>
     # <Edam::Term @ontology=Edam::OldOntology, @uri=http://edamontology.org/operation_2506, label: Protein sequence alignment analysis>
-    deprecated_protein_operation_uris = %w(
-    http://edamontology.org/operation_0467
-    http://edamontology.org/operation_0421
-    http://edamontology.org/operation_3088
-    http://edamontology.org/operation_2506)
+    deprecated_protein_operation_uris = %w[
+      http://edamontology.org/operation_0467
+      http://edamontology.org/operation_0421
+      http://edamontology.org/operation_3088
+      http://edamontology.org/operation_2506
+    ]
 
     deprecated_protein_operation_uris.each do |uri|
       term = Edam::Ontology.instance.lookup(uri)
@@ -74,6 +77,6 @@ class EdamControllerTest < ActionController::TestCase
     assert_response :success
     res = JSON.parse(response.body)
     uris = res.map { |t| t['uri'] }
-    refute (uris & deprecated_protein_operation_uris).any?, "Response should not contain any deprecated URIs"
+    refute (uris & deprecated_protein_operation_uris).any?, 'Response should not contain any deprecated URIs'
   end
 end

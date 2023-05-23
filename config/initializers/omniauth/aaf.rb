@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 # OpenID Connect configuration for AAF (Australia)
-unless Rails.application.secrets.dig(:oidc, :client_id).blank?
+if Rails.application.secrets.dig(:oidc, :client_id).present?
   Devise.omniauth :oidc, {
     logo: 'dresa/aaf_service_223x54.png',
     name: :oidc,
@@ -20,7 +22,7 @@ unless Rails.application.secrets.dig(:oidc, :client_id).blank?
       authorization_endpoint: '/providers/op/authorize',
       userinfo_endpoint: '/providers/op/userinfo',
       token_endpoint: '/providers/op/token',
-      jwks_uri: '/providers/op/jwks',
+      jwks_uri: '/providers/op/jwks'
     }
   }
 end

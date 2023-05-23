@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The controller for actions related to the Content Providers model
 class ContentProvidersController < ApplicationController
   before_action -> { feature_enabled?('content_providers') }
@@ -43,8 +45,8 @@ class ContentProvidersController < ApplicationController
       end
     else
       respond_to do |format|
-        format.html { render :nothing => true, :status => 200, :content_type => 'text/html' }
-        format.json { render json: {}, :status => 200, :content_type => 'application/json' }
+        format.html { render nothing: true, status: :ok, content_type: 'text/html' }
+        format.json { render json: {}, status: :ok, content_type: 'application/json' }
       end
     end
   end
@@ -91,6 +93,7 @@ class ContentProvidersController < ApplicationController
   end
 
   private
+
   # Use callbacks to share common setup or constraints between actions.
   def set_content_provider
     @content_provider = ContentProvider.friendly.find(params[:id])
@@ -99,18 +102,18 @@ class ContentProvidersController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def content_provider_params
     # For calls to create/update content_provider - get the node id from node name, if node id is not passed
-    if (params[:content_provider][:node_id].blank? && !params[:content_provider][:node_name].blank?)
-      node = Node.find_by_name(params[:content_provider][:node_name])
-      params[:content_provider][:node_id] = node.id unless node.blank?
+    if params[:content_provider][:node_id].blank? && params[:content_provider][:node_name].present?
+      node = Node.find_by(name: params[:content_provider][:node_name])
+      params[:content_provider][:node_id] = node.id if node.present?
     end
 
     params[:content_provider].delete :node_name
 
     permitted = [:title, :url, :image, :image_url, :description, :id, :content_provider_type, :node_id, :contact,
-        {:keywords => []}, :remote_updated_date, :remote_created_date, { :approved_editors => [] },
-        :local_updated_date, :remote_updated_date, :node_name, :user_id]
+                 { keywords: [] }, :remote_updated_date, :remote_created_date, { approved_editors: [] },
+                 :local_updated_date, :remote_updated_date, :node_name, :user_id]
 
-    permitted.delete(:user_id) unless current_user && current_user.is_admin?
+    permitted.delete(:user_id) unless current_user&.is_admin?
 
     params.require(:content_provider).permit(permitted)
   end

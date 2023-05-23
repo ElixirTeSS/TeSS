@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class SubscriptionsControllerTest < ActionController::TestCase
-
   include Devise::Test::ControllerHelpers
 
   test 'should list subscriptions for the logged-in user' do
@@ -30,7 +31,8 @@ class SubscriptionsControllerTest < ActionController::TestCase
     sign_in users(:regular_user)
 
     assert_difference('Subscription.count') do
-      post :create, params: { subscription: { frequency: 'weekly', subscribable_type: 'Event' }, q: 'fish', country: 'Finland' }
+      post :create,
+           params: { subscription: { frequency: 'weekly', subscribable_type: 'Event' }, q: 'fish', country: 'Finland' }
     end
 
     assert_equal 'fish', assigns(:subscription).query
@@ -45,7 +47,7 @@ class SubscriptionsControllerTest < ActionController::TestCase
 
     assert_difference('Subscription.count') do
       post :create, params: { subscription: { frequency: 'weekly', subscribable_type: 'Event' }, q: 'fish', bananas: 14,
-           country: 'Finland' }
+                              country: 'Finland' }
     end
 
     assert_equal ['country'], assigns(:subscription).facets.keys

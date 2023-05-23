@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The controller for actions related to the Nodes model
 class NodesController < ApplicationController
   before_action :feature_enabled?
@@ -85,6 +87,7 @@ class NodesController < ApplicationController
   end
 
   private
+
   # Use callbacks to share common setup or constraints between actions.
   def set_node
     @node = Node.friendly.find(params[:id])
@@ -96,5 +99,4 @@ class NodesController < ApplicationController
                                  :description, { institutions: [] }, { carousel_images: [] },
                                  { staff_attributes: [:id, :name, :email, :role, :image, :image_url, :_destroy] })
   end
-
 end

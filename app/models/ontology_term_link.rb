@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OntologyTermLink < ApplicationRecord
   belongs_to :resource, polymorphic: true
 

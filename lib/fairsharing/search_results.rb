@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Fairsharing
   class SearchResults < Array
     attr_accessor :page, :first_page, :prev_page, :next_page, :last_page
@@ -7,8 +9,10 @@ module Fairsharing
       hash['links'].each do |key, value|
         value = value&.split('?')&.last
         next unless value
+
         page_number = Rack::Utils.parse_nested_query(value).dig('page', 'number')&.to_i
         next unless page_number
+
         case key
         when 'self'
           results.page = page_number

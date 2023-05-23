@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class CollectionsControllerTest < ActionController::TestCase
@@ -12,17 +14,17 @@ class CollectionsControllerTest < ActionController::TestCase
       description: 'New description'
     }
   end
-  #INDEX TESTS
+  # INDEX TESTS
   test 'should get index' do
     get :index
     assert_response :success
-    assert_not_nil assigns(:collections)
+    refute_nil assigns(:collections)
   end
 
   test 'should get index as json' do
     get :index, format: :json
     assert_response :success
-    assert_not_nil assigns(:collections)
+    refute_nil assigns(:collections)
   end
 
   test 'should get index as json-api' do
@@ -31,7 +33,7 @@ class CollectionsControllerTest < ActionController::TestCase
 
     get :index, params: { format: :json_api }
     assert_response :success
-    assert_not_nil assigns(:collections)
+    refute_nil assigns(:collections)
     assert_valid_json_api_response
 
     body = nil
@@ -40,14 +42,14 @@ class CollectionsControllerTest < ActionController::TestCase
     end
 
     assert body['data'].any?
-    assert body['meta']['results-count'] > 0
+    assert body['meta']['results-count'].positive?
     assert body['meta'].key?('query')
     assert body['meta'].key?('facets')
     assert body['meta'].key?('available-facets')
     assert_equal collections_path, body['links']['self']
   end
 
-  #NEW TESTS
+  # NEW TESTS
   test 'should get new' do
     sign_in users(:regular_user)
     get :new
@@ -55,11 +57,11 @@ class CollectionsControllerTest < ActionController::TestCase
   end
 
   test 'should get new page for logged in users only' do
-    #Redirect to login if not logged in
+    # Redirect to login if not logged in
     get :new
     assert_response :redirect
     sign_in users(:regular_user)
-    #Success for everyone else
+    # Success for everyone else
     get :new
     assert_response :success
     sign_in users(:admin)
@@ -67,14 +69,14 @@ class CollectionsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  #EDIT TESTS
+  # EDIT TESTS
   test 'should not get edit page for not logged in users' do
-    #Not logged in = Redirect to login
+    # Not logged in = Redirect to login
     get :edit, params: { id: @collection }
     assert_redirected_to new_user_session_path
   end
 
-  #logged in but insufficient permissions = ERROR
+  # logged in but insufficient permissions = ERROR
   test 'should get edit for collection owner' do
     sign_in @collection.user
     get :edit, params: { id: @collection }
@@ -82,22 +84,22 @@ class CollectionsControllerTest < ActionController::TestCase
   end
 
   test 'should get edit for admin' do
-    #Owner of collection logged in = SUCCESS
+    # Owner of collection logged in = SUCCESS
     sign_in users(:admin)
     get :edit, params: { id: @collection }
     assert_response :success
   end
 
   test 'should not get edit page for non-owner user' do
-    #Administrator = SUCCESS
+    # Administrator = SUCCESS
     sign_in users(:another_regular_user)
     get :edit, params: { id: @collection }
     assert :forbidden
   end
 
-  #CURATE TESTS
+  # CURATE TESTS
   test 'should not get curation page for not logged in users' do
-    #Not logged in = Redirect to login
+    # Not logged in = Redirect to login
     get :curate, params: { id: @collection, type: 'Event' }
     assert_redirected_to new_user_session_path
   end
@@ -109,25 +111,26 @@ class CollectionsControllerTest < ActionController::TestCase
   end
 
   test 'should get curate for admin' do
-    #Owner of collection logged in = SUCCESS
+    # Owner of collection logged in = SUCCESS
     sign_in users(:admin)
     get :curate, params: { id: @collection, type: 'Event' }
     assert_response :success
   end
 
   test 'should not get curate page for non-owner user' do
-    #Administrator = SUCCESS
+    # Administrator = SUCCESS
     sign_in users(:another_regular_user)
     get :curate, params: { id: @collection, type: 'Event' }
     assert :forbidden
   end
 
-
-  #CREATE TEST
+  # CREATE TEST
   test 'should create collection for user' do
     sign_in users(:regular_user)
     assert_difference('Collection.count') do
-      post :create, params: { collection: { title: @collection.title, image_url: @collection.image_url, description: @collection.description } }
+      post :create,
+           params: { collection: { title: @collection.title, image_url: @collection.image_url,
+                                   description: @collection.description } }
     end
     assert_redirected_to collection_path(assigns(:collection))
   end
@@ -135,19 +138,23 @@ class CollectionsControllerTest < ActionController::TestCase
   test 'should create collection for admin' do
     sign_in users(:admin)
     assert_difference('Collection.count') do
-      post :create, params: { collection: { title: @collection.title, image_url: @collection.image_url, description: @collection.description } }
+      post :create,
+           params: { collection: { title: @collection.title, image_url: @collection.image_url,
+                                   description: @collection.description } }
     end
     assert_redirected_to collection_path(assigns(:collection))
   end
 
   test 'should not create collection for non-logged in user' do
     assert_no_difference('Collection.count') do
-      post :create, params: { collection: { title: @collection.title, image_url: @collection.image_url, description: @collection.description } }
+      post :create,
+           params: { collection: { title: @collection.title, image_url: @collection.image_url,
+                                   description: @collection.description } }
     end
     assert_redirected_to new_user_session_path
   end
 
-  #SHOW TEST
+  # SHOW TEST
   test 'should show collection' do
     get :show, params: { id: @collection }
     assert_response :success
@@ -182,14 +189,14 @@ class CollectionsControllerTest < ActionController::TestCase
     assert_equal collection_path(assigns(:collection)), body['data']['links']['self']
   end
 
-  #UPDATE TEST
+  # UPDATE TEST
   test 'should update collection' do
     sign_in @collection.user
     patch :update, params: { id: @collection, collection: @updated_collection }
     assert_redirected_to collection_path(assigns(:collection))
   end
 
-  #UPDATE_CURATE TEST
+  # UPDATE_CURATE TEST
   test 'should add and remove elements' do
     sign_in @collection.user
     @collection.events << events(:one)
@@ -223,7 +230,7 @@ class CollectionsControllerTest < ActionController::TestCase
     assert_redirected_to collection_path(assigns(:collection))
   end
 
-  #DESTROY TEST
+  # DESTROY TEST
   test 'should destroy collection owned by user' do
     sign_in @collection.user
     assert_difference('Collection.count', -1) do
@@ -248,27 +255,26 @@ class CollectionsControllerTest < ActionController::TestCase
     assert_response :forbidden
   end
 
-
-  #CONTENT TESTS
-  #BREADCRUMBS
+  # CONTENT TESTS
+  # BREADCRUMBS
   test 'breadcrumbs for collections index' do
     get :index
     assert_response :success
-    assert_select 'div.breadcrumbs', :text => /Home/, :count => 1 do
-      assert_select 'a[href=?]', root_path, :count => 1
-      assert_select 'li[class=active]', :text => /Collections/, :count => 1
+    assert_select 'div.breadcrumbs', text: /Home/, count: 1 do
+      assert_select 'a[href=?]', root_path, count: 1
+      assert_select 'li[class=active]', text: /Collections/, count: 1
     end
   end
 
   test 'breadcrumbs for showing collection' do
-    get :show, params: { :id => @collection }
+    get :show, params: { id: @collection }
     assert_response :success
-    assert_select 'div.breadcrumbs', :text => /Home/, :count => 1 do
-      assert_select 'a[href=?]', root_path, :count => 1
-      assert_select 'li', :text => /Collections/, :count => 1 do
-        assert_select 'a[href=?]', collections_url, :count => 1
+    assert_select 'div.breadcrumbs', text: /Home/, count: 1 do
+      assert_select 'a[href=?]', root_path, count: 1
+      assert_select 'li', text: /Collections/, count: 1 do
+        assert_select 'a[href=?]', collections_url, count: 1
       end
-      assert_select 'li[class=active]', :text => /#{@collection.title}/, :count => 1
+      assert_select 'li[class=active]', text: /#{@collection.title}/, count: 1
     end
   end
 
@@ -276,15 +282,15 @@ class CollectionsControllerTest < ActionController::TestCase
     sign_in users(:admin)
     get :edit, params: { id: @collection }
     assert_response :success
-    assert_select 'div.breadcrumbs', :text => /Home/, :count => 1 do
-      assert_select 'a[href=?]', root_path, :count => 1
-      assert_select 'li', :text => /Collections/, :count => 1 do
-        assert_select 'a[href=?]', collections_url, :count => 1
+    assert_select 'div.breadcrumbs', text: /Home/, count: 1 do
+      assert_select 'a[href=?]', root_path, count: 1
+      assert_select 'li', text: /Collections/, count: 1 do
+        assert_select 'a[href=?]', collections_url, count: 1
       end
-      assert_select 'li', :text => /#{@collection.title}/, :count => 1 do
-        assert_select 'a[href=?]', collection_url(@collection), :count => 1
+      assert_select 'li', text: /#{@collection.title}/, count: 1 do
+        assert_select 'a[href=?]', collection_url(@collection), count: 1
       end
-      assert_select 'li[class=active]', :text => /Edit/, :count => 1
+      assert_select 'li[class=active]', text: /Edit/, count: 1
     end
   end
 
@@ -292,69 +298,68 @@ class CollectionsControllerTest < ActionController::TestCase
     sign_in users(:regular_user)
     get :new
     assert_response :success
-    assert_select 'div.breadcrumbs', :text => /Home/, :count => 1 do
-      assert_select 'a[href=?]', root_path, :count => 1
-      assert_select 'li', :text => /Collections/, :count => 1 do
-        assert_select 'a[href=?]', collections_url, :count => 1
+    assert_select 'div.breadcrumbs', text: /Home/, count: 1 do
+      assert_select 'a[href=?]', root_path, count: 1
+      assert_select 'li', text: /Collections/, count: 1 do
+        assert_select 'a[href=?]', collections_url, count: 1
       end
-      assert_select 'li[class=active]', :text => /New/, :count => 1
+      assert_select 'li[class=active]', text: /New/, count: 1
     end
   end
 
-  #OTHER CONTENT
+  # OTHER CONTENT
   test 'collection has correct tabs' do
-    get :show, params: { :id => @collection }
+    get :show, params: { id: @collection }
     assert_response :success
     assert_select 'ul.nav-tabs' do
-      assert_select 'li.disabled', :count => 2 # This collection has no events, materials
+      assert_select 'li.disabled', count: 2 # This collection has no events, materials
     end
 
     collections(:with_resources).materials << materials(:good_material)
     collections(:with_resources).events << events(:one)
 
-    get :show, params: { :id => collections(:with_resources) }
+    get :show, params: { id: collections(:with_resources) }
     assert_response :success
     assert_select 'ul.nav-tabs' do
       assert_select 'li' do
-        assert_select 'a[data-toggle="tab"]', :count => 2 # Events, Materials
+        assert_select 'a[data-toggle="tab"]', count: 2 # Events, Materials
       end
     end
   end
 
   test 'collection has correct layout' do
-    get :show, params: { :id => @collection }
+    get :show, params: { id: @collection }
     assert_response :success
-    assert_select 'div.search-results-count', :count => 2 #Has results
+    assert_select 'div.search-results-count', count: 2 # Has results
     # assert_select 'a.btn-info', :text => 'Back', :count => 1 #No Edit
-    #Should not show when not logged in
-    assert_select 'a.btn[href=?]', edit_collection_path(@collection), :count => 0 #No Edit
-    assert_select 'a.btn[href=?]', collection_path(@collection), :count => 0 #No Edit
-
+    # Should not show when not logged in
+    assert_select 'a.btn[href=?]', edit_collection_path(@collection), count: 0 # No Edit
+    assert_select 'a.btn[href=?]', collection_path(@collection), count: 0 # No Edit
   end
 
   test 'do not show action buttons when not owner or admin' do
     sign_in users(:another_regular_user)
-    get :show, params: { :id => @collection }
-    assert_select 'a.btn[href=?]', edit_collection_path(@collection), :count => 0 #No Edit
-    assert_select 'a.btn[href=?]', collection_path(@collection), :count => 0 #No Edit
+    get :show, params: { id: @collection }
+    assert_select 'a.btn[href=?]', edit_collection_path(@collection), count: 0 # No Edit
+    assert_select 'a.btn[href=?]', collection_path(@collection), count: 0 # No Edit
   end
 
   test 'show action buttons when owner' do
     sign_in @collection.user
-    get :show, params: { :id => @collection }
-    assert_select 'a.btn[href=?]', edit_collection_path(@collection), :count => 1
-    assert_select 'a.btn[href=?]', collection_path(@collection), :text => 'Delete', :count => 1
+    get :show, params: { id: @collection }
+    assert_select 'a.btn[href=?]', edit_collection_path(@collection), count: 1
+    assert_select 'a.btn[href=?]', collection_path(@collection), text: 'Delete', count: 1
   end
 
   test 'show action buttons when admin' do
     sign_in users(:admin)
-    get :show, params: { :id => @collection }
-    assert_select 'a.btn[href=?]', edit_collection_path(@collection), :count => 1
-    assert_select 'a.btn[href=?]', collection_path(@collection), :text => 'Delete', :count => 1
+    get :show, params: { id: @collection }
+    assert_select 'a.btn[href=?]', edit_collection_path(@collection), count: 1
+    assert_select 'a.btn[href=?]', collection_path(@collection), text: 'Delete', count: 1
   end
 
-  #API Actions
-  test "should remove materials from collection" do
+  # API Actions
+  test 'should remove materials from collection' do
     sign_in users(:regular_user)
     collection = collections(:with_resources)
     collection.materials = [materials(:biojs), materials(:interpro)]
@@ -366,23 +371,23 @@ class CollectionsControllerTest < ActionController::TestCase
     end
   end
 
-  test "should add events to collection" do
+  test 'should add events to collection' do
     sign_in users(:regular_user)
     assert_difference('CollectionItem.count', 2) do
       assert_difference('@collection.events.count', 2) do
-        patch :update, params: { collection: { event_ids: [events(:one), events(:two)]}, id: @collection.id }
+        patch :update, params: { collection: { event_ids: [events(:one), events(:two)] }, id: @collection.id }
       end
     end
   end
 
-  test "should remove events from collection" do
+  test 'should remove events from collection' do
     sign_in users(:regular_user)
     collection = collections(:with_resources)
     collection.events = [events(:one), events(:two)]
     collection.save!
     assert_difference('CollectionItem.count', -2) do
       assert_difference('collection.events.count', -2) do
-        patch :update, params: { collection: { event_ids: ['']}, id: collection.id }
+        patch :update, params: { collection: { event_ids: [''] }, id: collection.id }
       end
     end
   end
@@ -481,7 +486,7 @@ class CollectionsControllerTest < ActionController::TestCase
     sign_in user
 
     assert_difference('CollectionItem.count', 2) do
-      patch :update, params: { collection: { event_ids: [events(:one), events(:two)]}, id: @collection.id }
+      patch :update, params: { collection: { event_ids: [events(:one), events(:two)] }, id: @collection.id }
     end
     assert_redirected_to collection_path(assigns(:collection))
   end
@@ -491,7 +496,7 @@ class CollectionsControllerTest < ActionController::TestCase
     sign_in user
 
     assert_no_difference('CollectionItem.count') do
-      patch :update, params: { collection: { event_ids: [events(:one), events(:two)]}, id: @collection.id }
+      patch :update, params: { collection: { event_ids: [events(:one), events(:two)] }, id: @collection.id }
     end
     assert_response :forbidden
   end

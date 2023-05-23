@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class SubscriptionMailerTest < ActionMailer::TestCase
@@ -28,14 +30,15 @@ class SubscriptionMailerTest < ActionMailer::TestCase
                  email.subject
     body = email.text_part.body.to_s
 
-    assert body.include?(m1.title), 'Expected first material title to appear in email body'
-    assert body.include?(@routes.material_url(m1)), 'Expected first material URL to appear in email body'
-    assert body.include?(m2.title), 'Expected second material title to appear in email body'
-    assert body.include?(@routes.material_url(m2)), 'Expected second material URL to appear in email body'
-    assert body.include?(@routes.unsubscribe_subscription_url(sub, code: sub.unsubscribe_code)), 'Expected unsubscribe link'
-    assert body.include? 'Collections' # regular_user is owner of some collections
-    assert body.include? collections(:one).title
-    assert body.include? @routes.curate_materials_collection_url(collections(:one))
+    assert_includes body, m1.title, 'Expected first material title to appear in email body'
+    assert_includes body, @routes.material_url(m1), 'Expected first material URL to appear in email body'
+    assert_includes body, m2.title, 'Expected second material title to appear in email body'
+    assert_includes body, @routes.material_url(m2), 'Expected second material URL to appear in email body'
+    assert_includes body, @routes.unsubscribe_subscription_url(sub, code: sub.unsubscribe_code),
+                    'Expected unsubscribe link'
+    assert_includes body, 'Collections' # regular_user is owner of some collections
+    assert_includes body, collections(:one).title
+    assert_includes body, @routes.curate_materials_collection_url(collections(:one))
   end
 
   test 'text digest with collaborating collections' do
@@ -53,9 +56,9 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     end
 
     body = email.text_part.body.to_s
-    assert body.include? 'Collections'
-    assert body.include? collaborating_collection.title
-    assert body.include? @routes.curate_materials_collection_url(collaborating_collection)
+    assert_includes body, 'Collections'
+    assert_includes body, collaborating_collection.title
+    assert_includes body, @routes.curate_materials_collection_url(collaborating_collection)
   end
 
   test 'html event digest' do
@@ -75,16 +78,18 @@ class SubscriptionMailerTest < ActionMailer::TestCase
 
     assert_equal [TeSS::Config.sender_email], email.from
     assert_equal [sub.user.email], email.to
-    assert_equal "#{TeSS::Config.site['title_short']} weekly digest - #{e.length} new events matching your criteria", email.subject
+    assert_equal "#{TeSS::Config.site['title_short']} weekly digest - #{e.length} new events matching your criteria",
+                 email.subject
 
     html = email.html_part.body.to_s
 
     e.each do |event|
-      assert html.include?(@routes.event_url(event)), "Event URL was missing from email: #{@routes.event_url(event)}"
+      assert_includes html, @routes.event_url(event), "Event URL was missing from email: #{@routes.event_url(event)}"
     end
 
-    assert html.include?(@routes.unsubscribe_subscription_url(sub, code: sub.unsubscribe_code)), 'Expected unsubscribe link'
-    assert_not html.include? 'Collections' # admin is not owner of some collections
+    assert_includes html, @routes.unsubscribe_subscription_url(sub, code: sub.unsubscribe_code),
+                    'Expected unsubscribe link'
+    refute_includes html, 'Collections' # admin is not owner of some collections
   end
 
   test 'html digest with collaborating collections' do
@@ -102,8 +107,8 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     end
 
     html = email.html_part.body.to_s
-    assert html.include? 'Collections' # regular_user is owner of some collections
-    assert html.include? collections(:one).title
-    assert html.include? @routes.curate_materials_collection_url(collaborating_collection)
+    assert_includes html, 'Collections' # regular_user is owner of some collections
+    assert_includes html, collections(:one).title
+    assert_includes html, @routes.curate_materials_collection_url(collaborating_collection)
   end
 end

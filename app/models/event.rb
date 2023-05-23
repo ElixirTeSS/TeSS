@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'icalendar'
 require 'rails/html/sanitizer'
 require 'redis'
@@ -37,7 +39,7 @@ class Event < ApplicationRecord
       text :host_institutions
       text :timezone
       text :content_provider do
-        content_provider.title unless content_provider.nil?
+        content_provider&.title
       end
       # sort title
       string :sort_title do
@@ -63,7 +65,7 @@ class Event < ApplicationRecord
       time :created_at
       time :updated_at
       string :content_provider do
-        content_provider.title unless content_provider.nil?
+        content_provider&.title
       end
       string :node, multiple: true do
         associated_nodes.pluck(:name)
@@ -78,7 +80,7 @@ class Event < ApplicationRecord
       boolean :online
       time :last_scraped
       string :user do
-        user.username if user
+        user&.username
       end
       integer :user_id # Used for shadowbans
       boolean :failing do
@@ -126,9 +128,9 @@ class Event < ApplicationRecord
                          eligibility: 'EligibilityDictionary')
 
   # These fields should not been shown to users unless they have sufficient privileges
-  SENSITIVE_FIELDS = %i[funding attendee_count applicant_count trainer_count feedback notes]
+  SENSITIVE_FIELDS = %i[funding attendee_count applicant_count trainer_count feedback notes].freeze
 
-  ADDRESS_FIELDS = %i[venue city county country postcode]
+  ADDRESS_FIELDS = %i[venue city county country postcode].freeze
 
   COUNTRY_SYNONYMS = JSON.parse(File.read(File.join(Rails.root, 'config', 'data', 'country_synonyms.json')))
 
@@ -156,8 +158,8 @@ class Event < ApplicationRecord
   end
 
   def started?
-    if start and self.end
-      (Time.now > start and Time.now < self.end)
+    if start && self.end
+      (Time.zone.now > start and Time.zone.now < self.end)
     else
       false
     end
@@ -165,7 +167,7 @@ class Event < ApplicationRecord
 
   def expired?
     if self.end
-      Time.now > self.end
+      Time.zone.now > self.end
     else
       false
     end
@@ -211,17 +213,17 @@ class Event < ApplicationRecord
     Icalendar::Event.new.tap do |ical_event|
       if start && self.end
         if all_day?
-          ical_event.dtstart = Icalendar::Values::Date.new(start, tzid: 'UTC') unless start.blank?
-          ical_event.dtend = Icalendar::Values::Date.new(self.end.tomorrow, tzid: 'UTC') unless self.end.blank?
+          ical_event.dtstart = Icalendar::Values::Date.new(start, tzid: 'UTC') if start.present?
+          ical_event.dtend = Icalendar::Values::Date.new(self.end.tomorrow, tzid: 'UTC') if self.end.present?
         else
-          ical_event.dtstart = Icalendar::Values::DateTime.new(start_utc, tzid: 'UTC') unless start.blank?
-          ical_event.dtend = Icalendar::Values::DateTime.new(end_utc, tzid: 'UTC') unless self.end.blank?
+          ical_event.dtstart = Icalendar::Values::DateTime.new(start_utc, tzid: 'UTC') if start.present?
+          ical_event.dtend = Icalendar::Values::DateTime.new(end_utc, tzid: 'UTC') if self.end.present?
         end
 
       end
       ical_event.summary = title
       ical_event.description = description
-      ical_event.location = venue unless venue.blank?
+      ical_event.location = venue if venue.present?
       ical_event.url = url
     end
   end
@@ -245,7 +247,7 @@ class Event < ApplicationRecord
   def set_default_times
     return unless start
 
-    self.start = start + 9.hours if start.hour == 0 # hour set to 0 if not otherwise defined...
+    self.start = start + 9.hours if start.hour.zero? # hour set to 0 if not otherwise defined...
 
     unless self.end
       if online?
@@ -261,16 +263,16 @@ class Event < ApplicationRecord
   end
 
   def self.not_finished
-    where('events.end > ? OR events.end IS NULL', Time.now)
+    where('events.end > ? OR events.end IS NULL', Time.zone.now)
   end
 
   def self.finished
-    where('events.end < ?', Time.now).where.not(end: nil)
+    where('events.end < ?', Time.zone.now).where.not(end: nil)
   end
 
   # Ticket #423
   def check_country_name
-    if country and country.respond_to?(:parameterize)
+    if country.respond_to?(:parameterize)
       text = country.parameterize.underscore.humanize.downcase
       self.country = COUNTRY_SYNONYMS[text] if COUNTRY_SYNONYMS[text]
     end
@@ -287,9 +289,7 @@ class Event < ApplicationRecord
 
     provider_id = given_event.content_provider_id || given_event.content_provider&.id
 
-    if given_event.url.present?
-      event = where(url: given_event.url).last
-    end
+    event = where(url: given_event.url).last if given_event.url.present?
 
     if provider_id.present? && given_event.title.present? && given_event.start.present?
       event ||= where(content_provider_id: provider_id, title: given_event.title, start: given_event.start).last
@@ -299,11 +299,15 @@ class Event < ApplicationRecord
   end
 
   def suggested_latitude
-    edit_suggestion.data_fields['geographic_coordinates'][0] if edit_suggestion && edit_suggestion.data_fields['geographic_coordinates']
+    if edit_suggestion && edit_suggestion.data_fields['geographic_coordinates']
+      edit_suggestion.data_fields['geographic_coordinates'][0]
+    end
   end
 
   def suggested_longitude
-    edit_suggestion.data_fields['geographic_coordinates'][1] if edit_suggestion && edit_suggestion.data_fields['geographic_coordinates']
+    if edit_suggestion && edit_suggestion.data_fields['geographic_coordinates']
+      edit_suggestion.data_fields['geographic_coordinates'][1]
+    end
   end
 
   def geographic_coordinates
@@ -342,7 +346,7 @@ class Event < ApplicationRecord
     rescue Redis::BaseError => e
       raise e unless Rails.env.production?
 
-      puts "Redis error: #{e.message}"
+      Rails.logger.debug "Redis error: #{e.message}"
     end
 
     # return true to enable error messages
@@ -365,7 +369,7 @@ class Event < ApplicationRecord
       rescue Redis::BaseError => e
         raise e unless Rails.env.production?
 
-        puts "Redis error: #{e.message}"
+        Rails.logger.debug "Redis error: #{e.message}"
       end
     else
       update_column(:nominatim_count, nominatim_count + 1)
@@ -384,7 +388,7 @@ class Event < ApplicationRecord
 
     begin
       redis = Redis.new(url: TeSS::Config.redis_url)
-      last_geocode = redis.get('last_geocode') || Time.now
+      last_geocode = redis.get('last_geocode') || Time.zone.now
 
       run_at = [last_geocode.to_i, Time.now.to_i].max + NOMINATIM_DELAY
 
@@ -394,7 +398,7 @@ class Event < ApplicationRecord
     rescue Redis::BaseError => e
       raise e unless Rails.env.production?
 
-      puts "Redis error: #{e.message}"
+      Rails.logger.debug "Redis error: #{e.message}"
     end
   end
 
@@ -451,7 +455,7 @@ class Event < ApplicationRecord
 
   def fix_online
     dic = OnlineKeywordsDictionary.instance
-    dic.keys.each do |key|
+    dic.each_key do |key|
       downcased_var = self[key]&.downcase
       dic.lookup(key).each do |v|
         if downcased_var&.include?(v)
@@ -463,22 +467,20 @@ class Event < ApplicationRecord
   end
 
   def fix_keywords
-    fix_online if !self&.online.present?
+    fix_online if self&.online.blank?
 
     [
       [TargetAudienceDictionary, :target_audience],
       [EventTypeDictionary, :event_types],
-      [EligibilityDictionary, :eligibility],
+      [EligibilityDictionary, :eligibility]
     ].each do |dict, var|
-      if not self[var].present?
-        self[var] = []
-      end
+      self[var] = [] if self[var].blank?
       dic = dict.instance
       self&.keywords&.dup&.each do |kw|
         res = dic.best_match(kw)
         if res
           self[var].append(kw)
-          self.keywords.delete(kw)
+          keywords.delete(kw)
         end
       end
     end

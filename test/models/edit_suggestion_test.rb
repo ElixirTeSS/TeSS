@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class EditSuggestionTest < ActiveSupport::TestCase
@@ -88,14 +90,14 @@ class EditSuggestionTest < ActiveSupport::TestCase
     end
   end
 
-  test "should remove a data field by name" do
+  test 'should remove a data field by name' do
     suggestion = edit_suggestions(:two)
     assert_equal 1, suggestion.data_fields.count
     assert_equal 'banana', suggestion.data_fields.delete('fruit')
     assert_equal 0, suggestion.data_fields.count
   end
 
-  test "should return nil if remove non existent data field" do
+  test 'should return nil if remove non existent data field' do
     suggestion = edit_suggestions(:two)
     assert_equal 1, suggestion.data_fields.count
     assert_nil suggestion.data_fields.delete('vegetable')
@@ -121,5 +123,4 @@ class EditSuggestionTest < ActiveSupport::TestCase
 
     assert_not_equal 'banana', event.reload.title
   end
-
 end

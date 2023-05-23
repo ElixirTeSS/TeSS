@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require 'ostruct'
 
@@ -5,16 +7,17 @@ class UserTest < ActiveSupport::TestCase
   setup do
     mock_images
     @user_data = users(:regular_user)
-    @user_params = { username: 'new_user', password: '12345678', email: 'new-user@example.com', processing_consent: '1' }
+    @user_params = { username: 'new_user', password: '12345678', email: 'new-user@example.com',
+                     processing_consent: '1' }
     User.get_default_user
   end
 
-  test "should save new user" do
+  test 'should save new user' do
     user = User.new(@user_params)
-    assert user.save, "Did not save user"
+    assert user.save, 'Did not save user'
   end
 
-  test "should set default role after saving new user" do
+  test 'should set default role after saving new user' do
     user = User.new(@user_params)
     assert_not_instance_of Role, user.role
     user.save
@@ -37,7 +40,7 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
-  test "should set default profile after saving new user" do
+  test 'should set default profile after saving new user' do
     user = User.new(@user_params)
     assert_not_instance_of Profile, user.profile
     user.save
@@ -45,51 +48,51 @@ class UserTest < ActiveSupport::TestCase
     assert_equal user.profile.user, user
   end
 
-  test "should not save user with nil email" do
+  test 'should not save user with nil email' do
     user = User.new(@user_params.merge(email: nil))
-    assert_not user.save, 'Saved user with nil e-mail address field'
+    refute user.save, 'Saved user with nil e-mail address field'
     assert user.errors.added?(:email, :blank)
   end
 
-  test "should not save user with empty email" do
+  test 'should not save user with empty email' do
     user = User.new(@user_params.merge(email: ''))
-    assert_not user.save, 'Saved user with empty e-mail address field'
+    refute user.save, 'Saved user with empty e-mail address field'
     assert user.errors.added?(:email, :blank)
   end
 
-  test "should not save user without valid email format" do
+  test 'should not save user without valid email format' do
     user = User.new(@user_params.merge(email: 'horse'))
-    assert_not user.save, 'Saved user with invalid e-mail address'
+    refute user.save, 'Saved user with invalid e-mail address'
     assert user.errors.added?(:email, :invalid, value: 'horse')
   end
 
-  test "should convert user email to lowercase" do
+  test 'should convert user email to lowercase' do
     user = User.new(@user_params.merge(email: 'New.User@email.com'))
     assert user.save
     assert_equal 'new.user@email.com', user.reload.email
   end
 
-  test "should not save user with nil processing consent" do
+  test 'should not save user with nil processing consent' do
     user = User.new(@user_params.merge(processing_consent: nil))
-    assert_not user.save, 'Saved user with nil processing_consent address field'
+    refute user.save, 'Saved user with nil processing_consent address field'
     assert user.errors.added?(:base, 'You must consent to TTI processing your data in order to register')
   end
 
-  test "should not save user with processing consent equal to 0" do
+  test 'should not save user with processing consent equal to 0' do
     user = User.new(@user_params.merge(processing_consent: '0'))
-    assert_not user.save, 'Saved user with processing_consent address field equal to "0"'
+    refute user.save, 'Saved user with processing_consent address field equal to "0"'
     assert user.errors.added?(:base, 'You must consent to TTI processing your data in order to register')
-  end  
-  
-  test "should not save with nil password" do
+  end
+
+  test 'should not save with nil password' do
     user = User.new(@user_params.merge(password: nil))
     assert user.password_required?
     refute user.using_omniauth?
-    assert_not user.save, 'Saved user with no password'
+    refute user.save, 'Saved user with no password'
     assert user.errors.added?(:password, :blank)
   end
 
-  test "should save with nil password if using omniauth" do
+  test 'should save with nil password if using omniauth' do
     user = User.new(@user_params.merge(password: nil, provider: 'elixir_aai', uid: 'abcdefg'))
     refute user.password_required?
     assert user.using_omniauth?
@@ -97,41 +100,41 @@ class UserTest < ActiveSupport::TestCase
     assert user.reload.encrypted_password.blank?
   end
 
-  test "should not save with password under 8 characters" do
+  test 'should not save with password under 8 characters' do
     user = User.new(@user_params.merge(password: '1234567'))
-    assert_not user.save, 'Allowed a user to have a password under 8 characters'
+    refute user.save, 'Allowed a user to have a password under 8 characters'
     assert user.errors.added?(:password, :too_short, count: 8)
   end
 
-  test "should not save two users with same username" do
+  test 'should not save two users with same username' do
     user1 = User.new(@user_params.merge(email: "#{@user_data.email}2"))
     user2 = User.new(@user_params.merge(email: "#{@user_data.email}1"))
     assert user1.save, 'Did not save the first user'
-    assert_not user2.save, 'Saved the second user with same username as first'
+    refute user2.save, 'Saved the second user with same username as first'
     assert user2.errors.added?(:username, :taken, value: @user_params[:username])
   end
 
-  test "should not save two users with same case insensitive username" do
+  test 'should not save two users with same case insensitive username' do
     user1 = User.new(@user_params.merge(email: "#{@user_data.email}2"))
     user2 = User.new(@user_params.merge(email: "#{@user_data.email}1", username: @user_params[:username].upcase))
     assert user1.save, 'Did not save the first user'
-    assert_not user2.save, 'Saved the second user with same username as first'
+    refute user2.save, 'Saved the second user with same username as first'
     assert user2.errors.added?(:username, :taken, value: @user_params[:username].upcase)
   end
 
-  test "should not save two users with same email" do
+  test 'should not save two users with same email' do
     user1 = User.new(@user_params.merge(username: "#{@user_data.username}2"))
     user2 = User.new(@user_params.merge(username: "#{@user_data.username}1"))
     assert user1.save, 'Did not save the first user'
-    assert_not user2.save, 'Saved a second user with same e-mail address'
+    refute user2.save, 'Saved a second user with same e-mail address'
     assert user2.errors.added?(:email, :taken, value: @user_params[:email])
   end
 
-  test "should not save user with case insensitive duplicate email" do
+  test 'should not save user with case insensitive duplicate email' do
     user1 = User.new(@user_params.merge(username: "#{@user_data.username}2"))
     user2 = User.new(@user_params.merge(username: "#{@user_data.username}1", email: @user_params[:email].upcase))
     assert user1.save, 'Did not save the first user'
-    assert_not user2.save, 'Saved a second user with same e-mail address'
+    refute user2.save, 'Saved a second user with same e-mail address'
     assert user2.errors.added?(:email, :taken, value: @user_params[:email])
   end
 
@@ -226,7 +229,7 @@ class UserTest < ActiveSupport::TestCase
     assert_includes User.with_role('unverified_user'), users(:unverified_user)
     assert_not_includes User.with_role('unverified_user'), users(:shadowbanned_user)
     assert_includes User.with_role('unverified_user'), users(:shadowbanned_unverified_user)
-    
+
     assert_not_includes User.unbanned.with_role('unverified_user'), users(:regular_user)
     assert_includes User.unbanned.with_role('unverified_user'), users(:unverified_user)
     assert_not_includes User.unbanned.with_role('unverified_user'), users(:shadowbanned_user)
@@ -296,26 +299,28 @@ class UserTest < ActiveSupport::TestCase
   test 'merge users' do
     user1 = User.create!(username: 'base_user', password: '12345678', email: 'base-user@example.com',
                          processing_consent: '1', profile_attributes: {
-        expertise_technical: ['Python', 'Ruby', 'R'],
-        firstname: 'John', surname: 'Userton'
-      })
+                           expertise_technical: ['Python', 'Ruby', 'R'],
+                           firstname: 'John', surname: 'Userton'
+                         })
     user1_id = user1.id
     user2 = User.create!(username: 'merge_user', password: 'xyz123456', email: 'merge-user@example.com',
                          processing_consent: '1', profile_attributes: {
-        firstname: 'J', surname: 'U',
-        expertise_technical: ['Java', 'Python', 'R'],
-        orcid: 'https://orcid.org/0000-0002-1825-0097'
-      })
+                           firstname: 'J', surname: 'U',
+                           expertise_technical: ['Java', 'Python', 'R'],
+                           orcid: 'https://orcid.org/0000-0002-1825-0097'
+                         })
     user3 = User.create!(username: 'merge_user2', password: 'qwertyqwerty', email: 'merge-user2@example.com',
                          processing_consent: '1', profile_attributes: {
-        orcid: 'https://orcid.org/0000-0001-9842-9718',
-        description: 'Cool guy',
-        expertise_technical: []
-      })
+                           orcid: 'https://orcid.org/0000-0001-9842-9718',
+                           description: 'Cool guy',
+                           expertise_technical: []
+                         })
 
     # Resources
-    material1 = user1.materials.create!(title: 'material 1', url: 'https://training.com/materials/1', description: 'material1')
-    material2 = user2.materials.create!(title: 'material 2', url: 'https://training.com/materials/2', description: 'material2')
+    material1 = user1.materials.create!(title: 'material 1', url: 'https://training.com/materials/1',
+                                        description: 'material1')
+    material2 = user2.materials.create!(title: 'material 2', url: 'https://training.com/materials/2',
+                                        description: 'material2')
     event1 = user2.events.create!(title: 'event 1', url: 'https://training.com/events/1')
     event2 = user3.events.create!(title: 'event 2', url: 'https://training.com/events/2')
 
@@ -348,22 +353,21 @@ class UserTest < ActiveSupport::TestCase
     workflow1.collaborators << user2
     workflow2.collaborators << user3
 
-
     # Test
     assert_no_difference('Event.count') do
-    assert_no_difference('Material.count') do
-    assert_no_difference('Subscription.count') do
-    assert_difference('provider.editors.count', -1) do
-    assert_difference('Collaboration.count', -1) do
-    assert_difference('User.count', -2) do
-      assert user1.merge(user2, user3)
-      assert user2.reload.destroy
-      assert user3.reload.destroy
-    end
-    end
-    end
-    end
-    end
+      assert_no_difference('Material.count') do
+        assert_no_difference('Subscription.count') do
+          assert_difference('provider.editors.count', -1) do
+            assert_difference('Collaboration.count', -1) do
+              assert_difference('User.count', -2) do
+                assert user1.merge(user2, user3)
+                assert user2.reload.destroy
+                assert user3.reload.destroy
+              end
+            end
+          end
+        end
+      end
     end
 
     assert_equal 'base_user', user1.username

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class DansIngestorTest < ActiveSupport::TestCase
@@ -23,8 +25,8 @@ class DansIngestorTest < ActiveSupport::TestCase
 
     # run task
     assert_difference 'Event.count', 6 do
-      freeze_time(Time.new(2019)) do
-        VCR.use_cassette("ingestors/dans") do
+      freeze_time(Time.new(2019).utc) do
+        VCR.use_cassette('ingestors/dans') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end
@@ -32,7 +34,7 @@ class DansIngestorTest < ActiveSupport::TestCase
     end
 
     assert_equal 6, ingestor.events.count
-    assert ingestor.materials.empty?
+    assert_empty ingestor.materials
     assert_equal 6, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
@@ -46,7 +48,7 @@ class DansIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'DANS', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal ["Social Sciences and Humanities", "Training &amp; Outreach", "Consultancy"], event.keywords
+    assert_equal ['Social Sciences and Humanities', 'Training &amp; Outreach', 'Consultancy'], event.keywords
     assert_equal 'Mon, 13 Feb 2023 00:00:00.000000000 UTC +00:00'.to_time, event.start
     assert_nil event.end
   end

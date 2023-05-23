@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ConvertSourceResourceType < ActiveRecord::Migration[6.1]
   def up
     ActiveRecord::Base.connection.execute("UPDATE sources SET method = 'event_csv' WHERE method = 'csv' AND resource_type = 'event'")

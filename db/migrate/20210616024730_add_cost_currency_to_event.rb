@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddCostCurrencyToEvent < ActiveRecord::Migration[5.2]
   def change
     change_column_default :events, :cost_basis, from: '{}', to: nil

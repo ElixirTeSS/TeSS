@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class DeviseMailerTest < ActionDispatch::IntegrationTest
@@ -14,7 +16,7 @@ class DeviseMailerTest < ActionDispatch::IntegrationTest
   test 'mailer headers are applied to emails from devise' do
     assert_emails 1 do
       with_settings(force_user_confirmation: true,
-                    mailer: { headers: { 'Sender': 'mail.sender@example.com', 'X-Something': 'yes' }}) do
+                    mailer: { headers: { 'Sender': 'mail.sender@example.com', 'X-Something': 'yes' } }) do
         post users_path, params: {
           user: {
             username: 'mileyfan1997',

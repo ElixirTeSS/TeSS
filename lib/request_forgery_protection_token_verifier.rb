@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Provides a callable method that verifies Cross-Site Request Forgery protection
 # token. This class includes `ActionController::RequestForgeryProtection`
 # directly and utilizes `verified_request?` method to match the way Rails
@@ -23,13 +25,12 @@ class RequestForgeryProtectionTokenVerifier
   def call(env)
     @request = ActionDispatch::Request.new(env)
 
-    unless verified_request?
-      raise ActionController::InvalidAuthenticityToken
-    end
+    raise ActionController::InvalidAuthenticityToken unless verified_request?
   end
 
   private
 
   attr_reader :request
+
   delegate :params, :session, to: :request
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class LinkMonitorTest < ActiveSupport::TestCase
@@ -14,9 +16,9 @@ class LinkMonitorTest < ActiveSupport::TestCase
     end
 
     assert @resource.link_monitor
-    assert_not_nil @resource.link_monitor.failed_at
-    assert_not_nil @resource.link_monitor.last_failed_at
-    assert_not_nil @resource.link_monitor.fail_count
+    refute_nil @resource.link_monitor.failed_at
+    refute_nil @resource.link_monitor.last_failed_at
+    refute_nil @resource.link_monitor.fail_count
   end
 
   test 'link monitor success does not persist' do
@@ -41,8 +43,8 @@ class LinkMonitorTest < ActiveSupport::TestCase
     @link_monitor.failure(404)
 
     assert_equal 404, @link_monitor.code
-    assert_not_nil @link_monitor.failed_at
-    assert_not_nil @link_monitor.last_failed_at
+    refute_nil @link_monitor.failed_at
+    refute_nil @link_monitor.last_failed_at
 
     @link_monitor.reload
 
@@ -68,8 +70,8 @@ class LinkMonitorTest < ActiveSupport::TestCase
     @link_monitor.reload
 
     assert_equal 404, @link_monitor.code
-    assert_not_nil @link_monitor.failed_at
-    assert_not_nil @link_monitor.last_failed_at
+    refute_nil @link_monitor.failed_at
+    refute_nil @link_monitor.last_failed_at
   end
 
   test 'link monitor failing?' do
@@ -79,13 +81,13 @@ class LinkMonitorTest < ActiveSupport::TestCase
 
     assert @link_monitor.failing?
   end
-  
+
   test 'link failure updates fail count' do
     assert_difference(-> { @link_monitor.fail_count }, 1) do
       @link_monitor.fail!(404)
     end
   end
-  
+
   test 'link success resets fail count' do
     @link_monitor.update_column(:fail_count, 4)
     assert @link_monitor.failing?

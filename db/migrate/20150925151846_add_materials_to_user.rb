@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddMaterialsToUser < ActiveRecord::Migration[4.2]
   def change
     add_column :users, :material_id, :integer

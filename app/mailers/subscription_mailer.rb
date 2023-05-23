@@ -1,5 +1,6 @@
-class SubscriptionMailer < ApplicationMailer
+# frozen_string_literal: true
 
+class SubscriptionMailer < ApplicationMailer
   include ActionView::Helpers::TextHelper
   helper(SubscriptionsHelper)
   helper(EventsHelper)
@@ -20,5 +21,4 @@ class SubscriptionMailer < ApplicationMailer
       format.text
     end
   end
-
 end

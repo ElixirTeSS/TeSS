@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require 'i18n_data'
 
 # define model for Trainer as subset of Profile
 class Trainer < Profile
-
   after_update_commit :reindex
   after_destroy_commit :reindex
 
@@ -46,7 +47,7 @@ class Trainer < Profile
       string :location
       string :orcid
       string :experience do
-        TrainerExperienceDictionary.instance.lookup_value(self.experience, 'title')
+        TrainerExperienceDictionary.instance.lookup_value(experience, 'title')
       end
       string :expertise_academic, multiple: true
       string :expertise_technical, multiple: true
@@ -54,7 +55,7 @@ class Trainer < Profile
       string :interest, multiple: true
       string :activity, multiple: true
       string :language, multiple: true do
-        languages_from_keys(self.language)
+        languages_from_keys(language)
       end
       string :social_media, multiple: true
       time :created_at
@@ -64,11 +65,11 @@ class Trainer < Profile
     # :nocov:
   end
 
-  alias_method :name, :full_name
+  alias name full_name
 
   def self.facet_fields
-    field_list = %w( location experience expertise_academic expertise_technical
-                     fields interest activity language )
+    field_list = %w[ location experience expertise_academic expertise_technical
+                     fields interest activity language ]
   end
 
   def should_generate_new_friendly_id?
@@ -76,7 +77,7 @@ class Trainer < Profile
   end
 
   def language_label_by_key(key)
-    if key and !key.nil?
+    if key && !key.nil?
       I18nData.languages.each do |lang|
         return lang[1] if lang[0] == key
       end
@@ -86,11 +87,10 @@ class Trainer < Profile
   def languages_from_keys(keys)
     labels = []
     keys.each { |key| labels << language_label_by_key(key) }
-    return labels
+    labels
   end
 
   def self.finder_needs_type_condition?
     true
   end
-
 end

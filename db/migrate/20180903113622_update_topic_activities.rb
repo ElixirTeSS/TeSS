@@ -1,10 +1,14 @@
+# frozen_string_literal: true
+
 unless defined?(PublicActivity::Activity)
-  class PublicActivity::Activity < ActiveRecord::Base; end
+  module PublicActivity
+    class Activity < ApplicationRecord; end
+  end
 end
 
 class UpdateTopicActivities < ActiveRecord::Migration[4.2]
   def up
-    puts 'Updating old "*_topic" activities'
+    Rails.logger.debug 'Updating old "*_topic" activities'
     ['event', 'material'].each do |type|
       ['add', 'reject'].each do |subaction|
         PublicActivity::Activity.where(key: "#{type}.#{subaction}_topic").each do |activity|
@@ -17,13 +21,12 @@ class UpdateTopicActivities < ActiveRecord::Migration[4.2]
               activity.update_column(:parameters, parameters.merge(field: 'operations'))
             end
           end
-          print '.'
+          Rails.logger.debug '.'
         end
       end
     end
     puts
   end
 
-  def down
-  end
+  def down; end
 end

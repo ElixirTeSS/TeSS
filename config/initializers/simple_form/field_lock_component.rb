@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module SimpleForm
   module Components
     module FieldLock
       # Name of the component method
-      def field_lock(wrapper_options = nil)
+      def field_lock(_wrapper_options = nil)
         @builder.field_lock(attribute_name)
       end
 
@@ -14,4 +16,4 @@ module SimpleForm
   end
 end
 
-SimpleForm::Inputs::Base.send(:include, SimpleForm::Components::FieldLock)
+SimpleForm::Inputs::Base.include SimpleForm::Components::FieldLock

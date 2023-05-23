@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Ingestors
   class IngestorFactory
     def self.ingestors
@@ -22,7 +24,7 @@ module Ingestors
         Ingestors::WurIngestor,
         Ingestors::ZenodoIngestor,
         Ingestors::RugIngestor,
-        Ingestors::LcrdmIngestor,
+        Ingestors::LcrdmIngestor
       ]
     end
 

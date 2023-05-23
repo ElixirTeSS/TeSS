@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require 'sidekiq/testing'
 
@@ -12,7 +14,7 @@ class EventTest < ActiveSupport::TestCase
   test 'can get associated nodes for event' do
     e = events(:scraper_user_event)
 
-    assert_equal [], e.nodes
+    assert_empty e.nodes
     assert_equal 1, e.associated_nodes.count
     assert_includes e.associated_nodes, nodes(:good)
   end
@@ -251,7 +253,7 @@ class EventTest < ActiveSupport::TestCase
     event = Event.new(parameters)
 
     assert event.save
-    assert event.errors[:url].empty?
+    assert_empty event.errors[:url]
   end
 
   test 'does not throw error when blocked domains list is blank' do
@@ -271,7 +273,7 @@ class EventTest < ActiveSupport::TestCase
                                       online: false, description: 'event to test enqueing of geocoding worker',
                                       venue: 'A place', city: 'Manchester', country: 'UK', postcode: 'M16 0TH' })
       event = Event.create(parameters)
-      assert event.errors[:url].empty?
+      assert_empty event.errors[:url]
       refute event.address.blank?
     end
   end
@@ -338,7 +340,7 @@ class EventTest < ActiveSupport::TestCase
     e = events(:one)
     e.duration = valid_duration
     e.save
-    assert_equal 0, e.errors[:duration].size, 'unexpected validation error: ' + e.errors[:duration].to_s
+    assert_equal 0, e.errors[:duration].size, "unexpected validation error: #{e.errors[:duration]}"
   end
 
   test 'cannot set an invalid duration for event' do
@@ -347,7 +349,7 @@ class EventTest < ActiveSupport::TestCase
     e.duration = invalid_duration
     e.save
     # issue 172 - changed duration to allow free text
-    assert_equal 0, e.errors[:duration].size, 'unexpected number of validation errors: ' + e.errors[:duration].size.to_s
+    assert_equal 0, e.errors[:duration].size, "unexpected number of validation errors: #{e.errors[:duration].size}"
     # assert_equal "must be in format HH:MM", e.errors[:duration][0]
   end
 
@@ -356,7 +358,7 @@ class EventTest < ActiveSupport::TestCase
     e = events(:one)
     e.duration = valid_duration
     e.save
-    assert_equal 0, e.errors[:duration].size, 'unexpected validation error: ' + e.errors[:duration].to_s
+    assert_equal 0, e.errors[:duration].size, "unexpected validation error: #{e.errors[:duration]}"
   end
 
   test 'duration validation boundary testing' do
@@ -381,9 +383,11 @@ class EventTest < ActiveSupport::TestCase
       e.duration = t[:dvalue]
       e.save
       if t[:passed]
-        assert_equal 0, e.errors[:duration].size, "unexpected validation error of #{t[:dvalue]}: " + e.errors[:duration].to_s
+        assert_equal 0, e.errors[:duration].size,
+                     "unexpected validation error of #{t[:dvalue]}: " + e.errors[:duration].to_s
       else
-        assert_equal 1, e.errors[:duration].size, "expected validation error of #{t[:dvalue]}: " + e.errors[:duration].to_s
+        assert_equal 1, e.errors[:duration].size,
+                     "expected validation error of #{t[:dvalue]}: " + e.errors[:duration].to_s
       end
     end
   end
@@ -451,29 +455,32 @@ class EventTest < ActiveSupport::TestCase
   end
 
   test 'get online status from description if scraped' do
-    event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user), url: 'https://https-website.com/mat', description: 'This event is held on Zoom', scraper_record: true)
-    assert_not event.online
+    event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user),
+                      url: 'https://https-website.com/mat', description: 'This event is held on Zoom', scraper_record: true)
+    refute event.online
     assert event.valid?
     event.save!
     assert event.online
   end
 
   test 'get event_type from keywords if scraped' do
-    event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user), url: 'https://https-website.com/mat', keywords: ['Workshops and courses'], scraper_record: true)
-    assert_not event.event_types.include?('Workshops and courses')
-    assert event.keywords.include?('Workshops and courses')
+    event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user),
+                      url: 'https://https-website.com/mat', keywords: ['Workshops and courses'], scraper_record: true)
+    refute_includes event.event_types, 'Workshops and courses'
+    assert_includes event.keywords, 'Workshops and courses'
     assert event.valid?
     event.save!
-    assert event.event_types.include?('workshops_and_courses')
-    assert_not event.keywords.include?('Workshops and courses')
+    assert_includes event.event_types, 'workshops_and_courses'
+    refute_includes event.keywords, 'Workshops and courses'
   end
 
   test 'do not get event_type from keywords if not scraped' do
-    event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user), url: 'https://https-website.com/mat', keywords: ['Workshops and courses'], scraper_record: false)
+    event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user),
+                      url: 'https://https-website.com/mat', keywords: ['Workshops and courses'], scraper_record: false)
     assert event.valid?
     event.save!
-    assert_not event.event_types.include?('Workshops and courses')
-    assert event.keywords.include?('Workshops and courses')
+    refute_includes event.event_types, 'Workshops and courses'
+    assert_includes event.keywords, 'Workshops and courses'
   end
 
   test 'duplicate' do

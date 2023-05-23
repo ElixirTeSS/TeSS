@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 require 'csv'
 
@@ -30,7 +32,7 @@ module Ingestors
       data = results.to_h.fetch('results', [])
 
       # extract materials from results
-      unless data.nil? or data.size < 1
+      if data.present?
         data.each do |item|
           # create new event
           event = OpenStruct.new

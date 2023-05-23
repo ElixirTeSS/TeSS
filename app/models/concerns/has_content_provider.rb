@@ -1,5 +1,6 @@
-module HasContentProvider
+# frozen_string_literal: true
 
+module HasContentProvider
   extend ActiveSupport::Concern
 
   included do
@@ -15,7 +16,7 @@ module HasContentProvider
 
     # Revert back to the old content provider if it had a higher precedence
     if previous_content_provider && content_provider &&
-        previous_content_provider.precedence > content_provider.precedence
+       previous_content_provider.precedence > content_provider.precedence
       self.content_provider = previous_content_provider
     end
   end

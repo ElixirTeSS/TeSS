@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Ingestors
   module MaterialIngestion
     def add_material(material)

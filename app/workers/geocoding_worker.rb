@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'redis'
 require 'json'
 
@@ -11,9 +13,9 @@ class GeocodingWorker
 
   def perform(arg_array)
     event_id, location = arg_array
-    #puts "GeocodingWorker.perform(#{event_id.to_s},#{location.to_s})"
+    # puts "GeocodingWorker.perform(#{event_id.to_s},#{location.to_s})"
 
-    event = Event.find_by_id(event_id)
+    event = Event.find_by(id: event_id)
     unless event
       logger.debug "Event #{event_id} not found"
       return
@@ -31,9 +33,7 @@ class GeocodingWorker
     event.save!
   end
 
-  #def self.perform_async(i)
-   # code here
-  #end
-
+  # def self.perform_async(i)
+  # code here
+  # end
 end
-

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class BioschemasIngestorTest < ActiveSupport::TestCase
@@ -33,9 +35,15 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
 
   test 'ingest bioschemas from a sitemap' do
     mock_bioschemas('https://training.galaxyproject.org/sitemap.xml', 'gtn/sitemap.xml')
-    mock_bioschemas('https://training.galaxyproject.org/training-material/topics/introduction/slides/introduction.html', 'gtn/slides-introduction.html')
-    mock_bioschemas('https://training.galaxyproject.org/training-material/topics/introduction/tutorials/galaxy-intro-101/tutorial.html', 'gtn/galaxy-intro-101.html')
-    mock_bioschemas('https://training.galaxyproject.org/training-material/topics/introduction/tutorials/galaxy-intro-strands/tutorial.html', 'gtn/galaxy-intro-strands.html')
+    mock_bioschemas(
+      'https://training.galaxyproject.org/training-material/topics/introduction/slides/introduction.html', 'gtn/slides-introduction.html'
+    )
+    mock_bioschemas(
+      'https://training.galaxyproject.org/training-material/topics/introduction/tutorials/galaxy-intro-101/tutorial.html', 'gtn/galaxy-intro-101.html'
+    )
+    mock_bioschemas(
+      'https://training.galaxyproject.org/training-material/topics/introduction/tutorials/galaxy-intro-strands/tutorial.html', 'gtn/galaxy-intro-strands.html'
+    )
     mock_bioschemas('https://training.galaxyproject.org/page-with-no-bioschemas', 'gtn/faq.html')
     mock_bioschemas('https://training.galaxyproject.org/page-with-no-bioschemas-2', 'gtn/faq.html')
     WebMock.stub_request(:get, 'https://training.galaxyproject.org/404').to_return(status: 404, headers: {})
@@ -54,7 +62,8 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
 
     sample = @ingestor.materials.detect { |e| e.title == "Introduction to 'Introduction to Galaxy Analyses'" }
     assert sample.persisted?
-    assert_equal 'https://training.galaxyproject.org/training-material/topics/introduction/slides/introduction.html', sample.url
+    assert_equal 'https://training.galaxyproject.org/training-material/topics/introduction/slides/introduction.html',
+                 sample.url
     assert_equal 'Slides for Introduction to Galaxy Analyses', sample.description
     assert_equal ['Students'], sample.target_audience
     assert_equal ['Andrea Bagnacani',

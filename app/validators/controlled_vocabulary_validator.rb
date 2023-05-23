@@ -1,5 +1,6 @@
-class ControlledVocabularyValidator < ActiveModel::EachValidator
+# frozen_string_literal: true
 
+class ControlledVocabularyValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     if value.respond_to?(:each)
       bad_terms = value.reject { |v| lookup(options[:dictionary], v) }
@@ -8,7 +9,7 @@ class ControlledVocabularyValidator < ActiveModel::EachValidator
       end
     else
       unless lookup(options[:dictionary], value)
-        record.errors.add(attribute, (options[:message] || "must be a controlled vocabulary term"))
+        record.errors.add(attribute, (options[:message] || 'must be a controlled vocabulary term'))
       end
     end
   end
@@ -18,5 +19,4 @@ class ControlledVocabularyValidator < ActiveModel::EachValidator
   def lookup(dictionary, value)
     dictionary.constantize.instance.lookup(value)
   end
-
 end

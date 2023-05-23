@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'i18n_data'
 
 # The core application helper
@@ -29,27 +31,29 @@ module ApplicationHelper
     private: { icon: 'fa-eye-slash', message: 'This resource is private' },
     missing: { icon: 'fa-chain-broken', message: 'This resource has been offline for over three days' },
     check: { icon: 'fa-check', message: 'This resource is enabled' },
-    cross: { icon: 'fa-times', message: 'This resource has been disabled' },
+    cross: { icon: 'fa-times', message: 'This resource has been disabled' }
   }.freeze
 
   # Countries that have priority in the country selection menu. Using ISO 3166-1 Alpha2 code.
-  PRIORITY_COUNTRIES = []
+  PRIORITY_COUNTRIES = [].freeze
 
   # Languages that have priority in the trainer language selection menu. Using ISO 639-1 Alpha2 code.
-  PRIORITY_LANGUAGES = ['EN']
+  PRIORITY_LANGUAGES = ['EN'].freeze
 
   # Country timezones that have priority in the timezone selection menu. Using ISO 3166-1 Alpha2 country code.
-  PRIORITY_TIME_ZONES = ['NL', 'GB']
+  PRIORITY_TIME_ZONES = ['NL', 'GB'].freeze
 
   # Currencies that have priority in the currency selection menu. Using ISO 4217 code.
-  PRIORITY_CURRENCIES = ['EUR', 'GBP']
+  PRIORITY_CURRENCIES = ['EUR', 'GBP'].freeze
 
   def scrape_status_icon(record, size = nil)
     return unless record.respond_to?(:last_scraped)
+
     if !record.last_scraped.nil? && record.scraper_record
       if record.stale?
         message = ICONS[:not_scraped_recently][:message].gsub(/%SUB%/, record.last_scraped.to_s)
-        "<span class='stale-icon pull-right'>#{icon_for(:not_scraped_recently, size, message: message)}</span>".html_safe
+        "<span class='stale-icon pull-right'>#{icon_for(:not_scraped_recently, size,
+                                                        message: message)}</span>".html_safe
       else
         "<span class='fresh-icon pull-right'>#{icon_for(:scraped_today, size)}</span>".html_safe
       end
@@ -57,9 +61,7 @@ module ApplicationHelper
   end
 
   def missing_icon(record, size = nil)
-    if record.failing?
-      "<span class='missing-icon pull-right'>#{icon_for(:missing, size)}</span>".html_safe
-    end
+    "<span class='missing-icon pull-right'>#{icon_for(:missing, size)}</span>".html_safe if record.failing?
   end
 
   def resource_type_icon(record, size = nil)
@@ -69,7 +71,7 @@ module ApplicationHelper
   end
 
   def enabled_icon(record, size = nil)
-    unless record.nil? or record.enabled.nil?
+    unless record.nil? || record.enabled.nil?
       if record.enabled
         "<span class='fresh-icon pull-right'>#{icon_for(:check, size)}</span>".html_safe
       else
@@ -79,9 +81,7 @@ module ApplicationHelper
   end
 
   def suggestion_icon(record, size = nil)
-    if record.edit_suggestion
-      "<span class='fresh-icon pull-right'>#{icon_for(:suggestion, size)}</span>".html_safe
-    end
+    "<span class='fresh-icon pull-right'>#{icon_for(:suggestion, size)}</span>".html_safe if record.edit_suggestion
   end
 
   def event_status_icon(event, size = nil)
@@ -93,7 +93,7 @@ module ApplicationHelper
   end
 
   def icon_for(type, size = nil, options = {})
-    options[:class] ||= "info-icon#{'-' + size.to_s if size}"
+    options[:class] ||= "info-icon#{"-#{size}" if size}"
     "<i class=\"fa #{ICONS[type][:icon]} has-tooltip #{options[:class]}\"
     aria-hidden=\"true\"
     data-toggle=\"tooltip\"
@@ -109,7 +109,8 @@ module ApplicationHelper
   def flash_messages(_opts = {})
     flash.each do |msg_type, message|
       concat(content_tag(:div, message, class: "alert #{bootstrap_class_for(msg_type)} fade in") do
-        concat content_tag(:button, '&times;'.html_safe, class: 'close', data: { dismiss: 'alert' }, 'aria-label' => 'close')
+        concat content_tag(:button, '&times;'.html_safe, class: 'close', data: { dismiss: 'alert' },
+                                                         'aria-label' => 'close')
         concat message
       end)
     end
@@ -127,7 +128,7 @@ module ApplicationHelper
   end
 
   def render_sanitized_markdown(markdown_text, options = {}, renderer_options = {})
-    sanitize(render_markdown(markdown_text, options, renderer_options), tags: %w(strong em b i p br ul ol li))
+    sanitize(render_markdown(markdown_text, options, renderer_options), tags: %w[strong em b i p br ul ol li])
   end
 
   # From twitter-bootstrap-rails gem for less:
@@ -164,7 +165,7 @@ module ApplicationHelper
   def uri_state(uri, options = {})
     return options[:status] if options.key?(:status)
 
-    root_url = request.host_with_port + '/'
+    root_url = "#{request.host_with_port}/"
     root = uri == '/' || uri == root_url
     request_uri = (uri.start_with?(root_url) ? request.url : request.path)
 
@@ -239,7 +240,8 @@ module ApplicationHelper
     if request.env['PATH_INFO'] == '/users/sign_up'
       return "<script src='https://www.google.com/recaptcha/api.js'></script>\n"
     end
-    return ''
+
+    ''
   end
 
   def twitter_link(username)
@@ -249,12 +251,12 @@ module ApplicationHelper
   end
 
   def info_button(title, opts = {}, &block)
-    classes = 'btn btn-default has-popover'
-    classes << " #{opts[:class]}" if opts[:class]
+    classes = %w[btn btn-default has-popover]
+    classes << opts[:class] if opts[:class]
     title_text = opts[:hide_text] ? '' : title
-    content_tag(:a, tabindex: 0, class: classes,
-               data: { toggle: 'popover', placement: 'bottom',
-                       title: title, html: true, content: capture(&block) }) do
+    content_tag(:a, tabindex: 0, class: classes.join(' '),
+                    data: { toggle: 'popover', placement: 'bottom',
+                            title: title, html: true, content: capture(&block) }) do
       "<i class='icon icon-md information-icon'></i> <span class='hidden-xs'>#{title_text}</span>".html_safe
     end
   end
@@ -265,7 +267,7 @@ module ApplicationHelper
 
   def info_box(title, &block)
     content_tag(:div, class: 'info-box') do
-      content_tag(:div, raw('<i class="glyphicon glyphicon-info-sign"></i> ' + title), class: 'info-box-header') +
+      content_tag(:div, raw("<i class=\"glyphicon glyphicon-info-sign\"></i> #{title}"), class: 'info-box-header') +
         content_tag(:div, class: 'info-box-content', &block)
     end
   end
@@ -273,7 +275,7 @@ module ApplicationHelper
   def collapsible_panel(title, id, &block)
     content_tag(:div, class: 'panel panel-default collapsible-panel') do
       content_tag(:div, class: 'panel-heading collapsible-panel-link collapsed', 'data-toggle' => 'collapse',
-                  'data-target' => "##{id}") do
+                        'data-target' => "##{id}") do
         content_tag(:div, title, class: 'panel-title')
       end +
         content_tag(:div, class: 'panel-collapse collapse', id: id) do
@@ -304,7 +306,7 @@ module ApplicationHelper
   end
 
   def datetime_picker(form, field, options)
-    #puts "datetime_picker options: #{options.to_s}"
+    # puts "datetime_picker options: #{options.to_s}"
     content_tag(:div, class: 'input-group date', data: { datetimepicker: true }) do
       content_tag(:span, class: 'input-group-addon', title: 'Click to display calendar') do
         content_tag(:i, '', class: 'glyphicon glyphicon-calendar')
@@ -314,7 +316,7 @@ module ApplicationHelper
   end
 
   def date_picker(form, field, options)
-    #puts "date_picker options: #{options.to_s}"
+    # puts "date_picker options: #{options.to_s}"
     content_tag(:div, class: 'input-group date', data: { datepicker: true }) do
       content_tag(:span, class: 'input-group-addon', title: 'Click to display calendar') do
         content_tag(:i, '', class: 'glyphicon glyphicon-calendar')
@@ -343,20 +345,21 @@ module ApplicationHelper
             'This field supports markdown. Read more on ' +
             @template.link_to('markdown syntax',
                               'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet', target: '_blank',
-                              rel: 'noopener')
+                                                                                                  rel: 'noopener')
         end
     end
 
-    def field_lock(name, options = {})
+    def field_lock(name, _options = {})
       field_name = "#{object.class.name.downcase}[locked_fields][]"
       field_id = "#{object.class.name.downcase}_locked_fields_#{name}"
       @template.check_box_tag(field_name, name.to_s, object.field_locked?(name), id: field_id, class: 'field-lock') +
-        @template.label_tag(field_id, '', class: 'field-lock-label', title: 'Lock this field to prevent it being overwritten when automated scrapers are run')
+        @template.label_tag(field_id, '', class: 'field-lock-label',
+                                          title: 'Lock this field to prevent it being overwritten when automated scrapers are run')
     end
 
     def dropdown(name, options = {})
       existing_values = object.send(name.to_sym)
-      existing = options[:options].select { |label, value| existing_values.include?(value) }
+      existing = options[:options].select { |_label, value| existing_values.include?(value) }
       @template.render(partial: 'common/dropdown', locals: { field_name: name, f: self,
                                                              model_name: options[:model_name],
                                                              resource: object,
@@ -378,12 +381,11 @@ module ApplicationHelper
                                                                   existing_items_method: options[:existing_items_method],
                                                                   transform_function: options[:transform_function],
                                                                   group_by: options[:group_by],
-                                                                  singleton: options[:singleton],
-      })
+                                                                  singleton: options[:singleton] })
     end
 
     def multi_input(name, options = {})
-      options[:suggestions_url] ||= @template.autocomplete_suggestions_path(name) unless options[:suggestions].present?
+      options[:suggestions_url] ||= @template.autocomplete_suggestions_path(name) if options[:suggestions].blank?
       @template.render(partial: 'common/multiple_input', locals: { field_name: name, f: self,
                                                                    model_name: options[:model_name],
                                                                    suggestions_url: options[:suggestions_url],
@@ -393,7 +395,7 @@ module ApplicationHelper
                                                                    label: options[:label],
                                                                    errors: options[:errors],
                                                                    title: options[:title],
-                                                                   hint: options[:hint]})
+                                                                   hint: options[:hint] })
     end
   end
 
@@ -401,15 +403,17 @@ module ApplicationHelper
     attributes = resource.send(attribute)
     string = ''
     if attributes
-      if attributes.class == Array and not attributes.empty?
+      if attributes.instance_of?(Array) && !attributes.empty?
         attributes.each do |attr|
-          string += content_tag :span, attr, { itemprop: attribute.camelize(:lower), content: attr, class: 'schemaorg-element' }
+          string += content_tag :span, attr,
+                                { itemprop: attribute.camelize(:lower), content: attr, class: 'schemaorg-element' }
         end
       else
-        string += content_tag :span, attributes, { itemprop: attribute.camelize(:lower), content: attributes, class: 'schemaorg-element' }
+        string += content_tag :span, attributes,
+                              { itemprop: attribute.camelize(:lower), content: attributes, class: 'schemaorg-element' }
       end
     end
-    return string
+    string
   end
 
   # Try and get a suitable page title
@@ -428,7 +432,7 @@ module ApplicationHelper
       "#{controller_name.humanize} - "
     else
       ''
-      #end + "TeSS (Training eSupport System)"
+      # end + "TeSS (Training eSupport System)"
     end + TeSS::Config.site['title']
   end
 
@@ -444,22 +448,22 @@ module ApplicationHelper
     star = current_user.stars.where(resource_id: resource.id, resource_type: resource.class.name).first
 
     link_to '', '#', class: 'btn btn-icon',
-            title: "Star this #{resource.class.model_name.human}",
-            data: { role: 'star-button',
-                    starred: !star.nil?,
-                    resource: { id: resource.id, type: resource.class.name },
-                    url: stars_path }
+                     title: "Star this #{resource.class.model_name.human}",
+                     data: { role: 'star-button',
+                             starred: !star.nil?,
+                             resource: { id: resource.id, type: resource.class.name },
+                             url: stars_path }
   end
 
   def external_link_button(text, url, options = {})
     options.reverse_merge!({ rel: 'noopener', target: '_blank', class: 'btn btn-primary' })
-    link_to((text + ' <i class="icon icon-md arrow-top-right-white-icon"></i>').html_safe, url, options)
+    link_to("#{text} <i class=\"icon icon-md arrow-top-right-white-icon\"></i>".html_safe, url, options)
   end
 
   def edit_button(resource, url: nil, text: nil)
     url ||= polymorphic_path([:edit, resource])
     text ||= t('.edit', default: t('helpers.links.edit'))
-    link_to text , url, class: 'btn btn-default'
+    link_to text, url, class: 'btn btn-default'
   end
 
   def delete_button(resource, url: nil, text: nil, confirmation: nil)
@@ -470,50 +474,48 @@ module ApplicationHelper
   end
 
   def next_about_block(feature_count)
-    if feature_count & 1 == 0
-      result = "even-about-block"
-    else
-      result = "odd-about-block"
-    end
+    result = if (feature_count & 1).zero?
+               'even-about-block'
+             else
+               'odd-about-block'
+             end
   end
 
   def show_active(show, block)
-    if show == block
-      result = "active"
-    else
-      result = ""
-    end
+    result = if show == block
+               'active'
+             else
+               ''
+             end
   end
 
   def currency_collection(priority = priority_currencies)
     priors = []
     others = []
-    Money::Currency.table.each do |key, value|
-      if !priority.empty? and priority.include?(value[:iso_code])
+    Money::Currency.table.each do |_key, value|
+      if !priority.empty? && priority.include?(value[:iso_code])
         priors << [value[:name], value[:iso_code]]
       else
         others << [value[:name], value[:iso_code]]
       end
     end
-    return priors + others
+    priors + others
   end
 
   def currency_by_iso_code(iso_code)
-    if !iso_code.nil? and !iso_code.blank?
-      Money::Currency.table.each do |key, value|
-        if value[:iso_code] == iso_code
-          return value
-        end
+    if !iso_code.nil? && iso_code.present?
+      Money::Currency.table.each do |_key, value|
+        return value if value[:iso_code] == iso_code
       end
     end
   end
 
   def currency_symbol_by_iso_code(iso_code)
     currency = currency_by_iso_code(iso_code)
-    if !currency.nil? and !currency[:symbol].nil?
-      return currency[:symbol]
+    if !currency.nil? && !currency[:symbol].nil?
+      currency[:symbol]
     else
-      return ''
+      ''
     end
   end
 
@@ -525,18 +527,16 @@ module ApplicationHelper
       if name.length < 4
         # search by alpha2 or alpha3
         code = IsoCountryCodes.find(name)
-        if name.casecmp(code.alpha2) == 0 or
-          name.casecmp(code.alpha3) == 0
+        if name.casecmp(code.alpha2).zero? ||
+           name.casecmp(code.alpha3).zero?
           return code.alpha2
         end
       else
         # search by name
         codes = IsoCountryCodes.search_by_name(name)
-        if !codes.nil? and codes.length > 0
+        if !codes.nil? && codes.length.positive?
           codes.each do |code|
-            if !code.nil? and code.name == name
-              return code.alpha2
-            end
+            return code.alpha2 if !code.nil? && (code.name == name)
           end
         end
       end
@@ -546,7 +546,7 @@ module ApplicationHelper
     end
 
     # nothing found
-    return failed
+    failed
   end
 
   def language_options_for_select(priority = priority_languages)
@@ -554,23 +554,23 @@ module ApplicationHelper
     others = []
 
     I18nData.languages.each do |lang|
-      if lang and !lang.empty?
-        value = lang[1]
-        key = lang[0]
-        #Rails.logger.debug "language: key[#{key}] value[#{value}]"
-        if priority and !priority.empty? and priority.include?(key)
-          priors << [value, key]
-        else
-          others << [value, key]
-        end
+      next if lang.blank?
+
+      value = lang[1]
+      key = lang[0]
+      # Rails.logger.debug "language: key[#{key}] value[#{value}]"
+      if priority.present? && priority.include?(key)
+        priors << [value, key]
+      else
+        others << [value, key]
       end
     end
 
-    return priors + others
+    priors + others
   end
 
   def language_label_by_key(key)
-    if key and !key.nil?
+    if key && !key.nil?
       I18nData.languages.each do |lang|
         return lang[1] if lang[0] == key
       end
@@ -580,9 +580,9 @@ module ApplicationHelper
   def get_list_of_user_names
     user_list = []
     User.visible.each do |u|
-      u.full_name.blank? ? user_list << [u.username, u.username] : user_list << [u.full_name, u.username]
+      user_list << (u.full_name.blank? ? [u.username, u.username] : [u.full_name, u.username])
     end
-    user_list.sort_by { |u| u.last }
+    user_list.sort_by(&:last)
   end
 
   def providers_path
@@ -638,6 +638,7 @@ module ApplicationHelper
     def check_tab(tab_name, condition = true)
       return false unless condition
       return @tab_name == tab_name if @tab_name
+
       @tab_name = tab_name
       true
     end

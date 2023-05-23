@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class UuIngestorTest < ActiveSupport::TestCase
@@ -23,8 +25,8 @@ class UuIngestorTest < ActiveSupport::TestCase
 
     # run task
     assert_difference 'Event.count', 57 do
-      freeze_time(Time.new(2016)) do
-        VCR.use_cassette("ingestors/uu") do
+      freeze_time(Time.new(2016).utc) do
+        VCR.use_cassette('ingestors/uu') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end
@@ -32,7 +34,7 @@ class UuIngestorTest < ActiveSupport::TestCase
     end
 
     assert_equal 58, ingestor.events.count
-    assert ingestor.materials.empty?
+    assert_empty ingestor.materials
     assert_equal 57, ingestor.stats[:events][:added]
     assert_equal 1, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]

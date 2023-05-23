@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class SearchControllerTest < ActionController::TestCase
-
   include Devise::Test::ControllerHelpers
 
   setup do
@@ -45,5 +46,4 @@ class SearchControllerTest < ActionController::TestCase
       end
     end
   end
-
 end

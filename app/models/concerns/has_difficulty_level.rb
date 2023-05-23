@@ -1,5 +1,6 @@
-module HasDifficultyLevel
+# frozen_string_literal: true
 
+module HasDifficultyLevel
   extend ActiveSupport::Concern
 
   included do
@@ -9,7 +10,7 @@ module HasDifficultyLevel
       # :nocov:
       searchable do
         string :difficulty_level do
-          DifficultyDictionary.instance.lookup_value(self.difficulty_level, 'title')
+          DifficultyDictionary.instance.lookup_value(difficulty_level, 'title')
         end
       end
       # :nocov:
@@ -22,5 +23,4 @@ module HasDifficultyLevel
 
     super(id || id_or_title)
   end
-
 end

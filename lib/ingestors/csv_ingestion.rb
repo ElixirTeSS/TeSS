@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module Ingestors
   module CsvIngestion
     def process_url(row, header)
-      row[header].to_s.lstrip unless row[header].nil?
+      row[header]&.to_s&.lstrip
     end
 
     def process_description(row, header)
@@ -19,7 +21,7 @@ module Ingestors
     end
 
     def get_column(row, header)
-      row[header].to_s.lstrip unless row[header].nil?
+      row[header]&.to_s&.lstrip
     end
   end
 end

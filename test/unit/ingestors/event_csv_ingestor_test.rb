@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class EventCsvIngestorTest < ActiveSupport::TestCase
@@ -24,14 +26,14 @@ class EventCsvIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::EventCsvIngestor.new
 
     assert_difference('Event.count', 14) do
-      freeze_time(stub_time = Time.new(2021)) do
+      freeze_time(Time.new(2021).utc) do
         ingestor.read(source.url)
         ingestor.write(@user, @content_provider)
       end
     end
 
     assert_equal 14, ingestor.events.count
-    assert ingestor.materials.empty?
+    assert_empty ingestor.materials
     assert_equal 14, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
@@ -83,7 +85,7 @@ class EventCsvIngestorTest < ActiveSupport::TestCase
     check_array event.target_audience, %w[ecr researcher phd mbr], ['ugrad']
     assert_equal 'To provide a basic intro to supercomputing on the **Gadi** system',
                  event.learning_objectives
-    assert_equal "To get the most of this session, it would be good to have a basic awareness of:\n\n" +
+    assert_equal "To get the most of this session, it would be good to have a basic awareness of:\n\n" \
                  "- Supercomputing\n" + "- Bioinformatics\n" + '- Software Design',
                  event.prerequisites
     assert_equal 'There are no technical requirements.',
@@ -93,13 +95,13 @@ class EventCsvIngestorTest < ActiveSupport::TestCase
   private
 
   def check_array(collection, values, exclusions = [])
-    assert_not_nil collection
-    assert_not_nil values
+    refute_nil collection
+    refute_nil values
     assert_kind_of Array, collection
     assert_kind_of Array, values
     assert_equal collection.size, values.size
     values.each { |item| assert_includes collection, item }
-    exclusions.each { |item| refute_includes collection, item } unless exclusions.nil?
+    exclusions&.each { |item| refute_includes collection, item }
   end
 
   def get_event(title, url, provider = nil)

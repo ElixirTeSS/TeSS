@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   concern :collaboratable do
     resources :collaborations, only: [:create, :destroy, :index, :show]
@@ -11,7 +13,7 @@ Rails.application.routes.draw do
   get 'edam/topics' => 'edam#topics'
   get 'edam/operations' => 'edam#operations'
 
-  #get 'static/home'
+  # get 'static/home'
   get 'about' => 'about#tess', as: 'about'
   get 'about/registering' => 'about#registering', as: 'registering_resources'
   get 'about/developers' => 'about#developers', as: 'developers'
@@ -24,18 +26,18 @@ Rails.application.routes.draw do
   post 'content_providers/check_exists' => 'content_providers#check_exists'
   post 'sources/check_exists' => 'sources#check_exists'
 
-  #devise_for :users
+  # devise_for :users
   # Use custom invitations and registrations controllers that subclasses devise's
   # Devise will try to connect to the DB at initialization, which we don't want
   # to happen when precompiling assets in the docker build script.
   unless Rake.try(:application)&.top_level_tasks&.include? 'assets:precompile'
-    devise_for :users, :controllers => {
-      :registrations => 'tess_devise/registrations',
-      :invitations => 'tess_devise/invitations',
-      :omniauth_callbacks => 'callbacks'
+    devise_for :users, controllers: {
+      registrations: 'tess_devise/registrations',
+      invitations: 'tess_devise/invitations',
+      omniauth_callbacks: 'callbacks'
     }
   end
-  #Redirect to users index page after devise user account update
+  # Redirect to users index page after devise user account update
   # as :user do
   #   get 'users', :to => 'users#index', :as => :user_root
   # end
@@ -135,7 +137,7 @@ Rails.application.routes.draw do
   get 'job_status' => 'application#job_status'
 
   # error pages
-  %w( 404 422 500 503 ).each do |code|
+  %w[404 422 500 503].each do |code|
     get code, to: 'application#handle_error', status_code: code
   end
 
@@ -148,11 +150,11 @@ Rails.application.routes.draw do
   post 'cookies/consent' => 'cookies#set_consent'
 
   require 'sidekiq/web'
-  authenticate :user, lambda { |u| u.is_admin? } do
+  authenticate :user, ->(u) { u.is_admin? } do
     mount Sidekiq::Web, at: '/sidekiq'
   end
 
-  get 'resolve/:prefix:type:id' => 'resolution#resolve', constraints: { prefix: /(.+\:)?/, type: /[a-zA-Z]/, id: /\d+/ }
+  get 'resolve/:prefix:type:id' => 'resolution#resolve', constraints: { prefix: /(.+:)?/, type: /[a-zA-Z]/, id: /\d+/ }
 
   get 'theme_showcase' => 'static#showcase'
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Preview all emails at http://localhost:3000/rails/mailers/curation_mailer
 class CurationMailerPreview < ActionMailer::Preview
   def unverified_user_needs_approval

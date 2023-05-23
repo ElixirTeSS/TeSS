@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class UsersControllerTest < ActionController::TestCase
@@ -14,16 +16,16 @@ class UsersControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     sign_in users(:regular_user)
-    assert_not_nil assigns(:users)
+    refute_nil assigns(:users)
     get :index
     assert_response :success
-    assert_not_nil assigns(:users)
+    refute_nil assigns(:users)
   end
 
   test 'should get index as json-api' do
     get :index, params: { format: :json_api }
     assert_response :success
-    assert_not_nil assigns(:users)
+    refute_nil assigns(:users)
     assert_valid_json_api_response
     body = nil
     assert_nothing_raised do
@@ -35,7 +37,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   # User new is handled by devise
-  test "should never allow user new route" do
+  test 'should never allow user new route' do
     get :new
     assert_redirected_to new_user_session_path
     sign_in users(:regular_user)
@@ -46,7 +48,7 @@ class UsersControllerTest < ActionController::TestCase
     assert_response :forbidden
   end
 
-  test "should be able to create user whilst logged in as admin" do
+  test 'should be able to create user whilst logged in as admin' do
     sign_in users(:admin) # should this be restricted to admins?
     assert_difference('User.count') do
       post :create, params: {
@@ -56,42 +58,44 @@ class UsersControllerTest < ActionController::TestCase
     assert_redirected_to user_path(assigns(:user))
   end
 
-  test "should not be able create user if not admin" do
-    #because you use users#sign_up in devise
+  test 'should not be able create user if not admin' do
+    # because you use users#sign_up in devise
     assert_no_difference('User.count') do
-      post :create, params: { user: { username: 'frank', email: 'frank@notarealdomain.org', password: 'franksreallylongpass' } }
+      post :create,
+           params: { user: { username: 'frank', email: 'frank@notarealdomain.org', password: 'franksreallylongpass' } }
     end
     assert_redirected_to new_user_session_path
     sign_in users(:regular_user)
     assert_no_difference('User.count') do
-      post :create, params: { user: { username: 'frank', email: 'frank@notarealdomain.org', password: 'franksreallylongpass' } }
+      post :create,
+           params: { user: { username: 'frank', email: 'frank@notarealdomain.org', password: 'franksreallylongpass' } }
     end
     assert_response :forbidden
   end
 
-  test "should show user if admin" do
+  test 'should show user if admin' do
     sign_in users(:admin)
     get :show, params: { id: @user }
     assert_response :success
   end
 
-  test "should show other users page if not admin or self" do
+  test 'should show other users page if not admin or self' do
     sign_in users(:another_regular_user)
     get :show, params: { id: @user }
-    assert_response :success #FORBIDDEN PAGE!?
+    assert_response :success # FORBIDDEN PAGE!?
   end
 
-  test "should show user with email address as username" do
+  test 'should show user with email address as username' do
     user = users(:email_address_user)
     sign_in user
     get :show, params: { id: user }
     assert_response :success
   end
 
-  test "should show user as json" do
+  test 'should show user as json' do
     sign_in users(:another_regular_user)
     get :show, params: { id: @user, format: 'json' }
-    assert_response :success #FORBIDDEN PAGE!?
+    assert_response :success # FORBIDDEN PAGE!?
   end
 
   test 'should show user as json-api' do
@@ -108,7 +112,7 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal user_path(assigns(:user)), body['data']['links']['self']
   end
 
-  test "should only allow edit for admin and self" do
+  test 'should only allow edit for admin and self' do
     sign_in users(:regular_user)
     get :edit, params: { id: @user }
     assert_response :success
@@ -119,24 +123,24 @@ class UsersControllerTest < ActionController::TestCase
 
     sign_in users(:another_regular_user)
     get :edit, params: { id: @user }
-    #assert_redirected_to root_path
+    # assert_redirected_to root_path
   end
 
-  test "should update profile" do
+  test 'should update profile' do
     sign_in users(:regular_user)
     patch :update, params: { id: @user, user: { profile_attributes: { email: 'hot@mail.com' } } }
     assert_redirected_to user_path(assigns(:user))
   end
 
-  test "should reset token" do
+  test 'should reset token' do
     sign_in users(:regular_user)
     old_token = @user.authentication_token
     patch :change_token, params: { id: @user }
-    new_token = User.find_by_username('Bob').authentication_token
+    new_token = User.find_by(username: 'Bob').authentication_token
     assert_not_equal old_token, new_token
   end
 
-  test "should destroy user" do
+  test 'should destroy user' do
     sign_in @user
 
     # Create default user that will be used as the new 'owner' of objects
@@ -175,7 +179,8 @@ class UsersControllerTest < ActionController::TestCase
     sign_in @user
     assert_not_equal roles(:admin), @user.role
 
-    patch :update, params: { id: @user, user: { profile_attributes: { firstname: 'George' }, role_id: roles(:admin).id } }
+    patch :update,
+          params: { id: @user, user: { profile_attributes: { firstname: 'George' }, role_id: roles(:admin).id } }
 
     assert_redirected_to user_path(assigns(:user))
     assert_not_equal roles(:admin), assigns(:user).role
@@ -186,7 +191,8 @@ class UsersControllerTest < ActionController::TestCase
     sign_in users(:curator)
     assert_not_equal roles(:curator), @user.role
 
-    patch :update, params: { id: @user, user: { profile_attributes: { firstname: 'George' }, role_id: roles(:admin).id } }
+    patch :update,
+          params: { id: @user, user: { profile_attributes: { firstname: 'George' }, role_id: roles(:admin).id } }
 
     assert_response :forbidden
     assert_not_equal roles(:curator), assigns(:user).role
@@ -217,11 +223,11 @@ class UsersControllerTest < ActionController::TestCase
     get :show, params: { id: user }
     assert_response :success
     profile_old = assigns(:user).profile
-    assert_equal true, profile_old.public
+    assert profile_old.public
     assert_equal 'https://library.brown.edu/info/hay/carberry/', profile_old.website
     assert_equal 'Josiah Carberry', profile_old.full_name
     assert_equal 'jcarberry@research.org', profile_old.email
-    assert profile_old.description.include?('Josiah Carberry is a fictitious person.')
+    assert_includes profile_old.description, 'Josiah Carberry is a fictitious person.'
 
     # update profile data
     profile = { public: false, email: 'fake@email.com', orcid: '', website: '', location: '',
@@ -233,7 +239,7 @@ class UsersControllerTest < ActionController::TestCase
     get :show, params: { id: user }
     assert_response :success
     profile_new = assigns(:user).profile
-    assert_equal false, profile_new.public
+    refute profile_new.public
     assert_equal 'fake@email.com', profile_new.email
     assert_nil profile_new.image_url
     assert_equal '', profile_new.orcid
@@ -258,7 +264,6 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal 1, profile.errors.full_messages_for(:surname).size, 'missing message for: surname'
     assert_equal 1, profile.errors.full_messages_for(:description).size, 'missing message for: description'
     assert_equal "Description can't be blank", profile.errors.full_messages_for(:description).first
-
   end
 
   test 'check orcid urls' do
@@ -314,7 +319,6 @@ class UsersControllerTest < ActionController::TestCase
     assert profile.orcid.blank?
   end
 
-
   test 'should not update trainer profile for invalid urls' do
     user = users(:trainer_user)
     sign_in user
@@ -329,8 +333,8 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal 3, profile.errors.size, 'invalid number of errors'
     assert_equal 2, profile.errors.full_messages_for(:website).size, 'invalid error count for: website'
     assert_equal 1, profile.errors.full_messages_for(:orcid).size, 'invalid error count for: orcid'
-    assert_equal "Website is not a valid URL", profile.errors.full_messages_for(:website).first
-    assert_equal "Orcid is not accessible", profile.errors.full_messages_for(:orcid).first
+    assert_equal 'Website is not a valid URL', profile.errors.full_messages_for(:website).first
+    assert_equal 'Orcid is not accessible', profile.errors.full_messages_for(:orcid).first
   end
 
   test 'update profile to private' do
@@ -341,7 +345,7 @@ class UsersControllerTest < ActionController::TestCase
     get :show, params: { id: user }
     assert_response :success
     profile = assigns(:user).profile
-    assert_equal true, profile.public
+    assert profile.public
     assert_equal 'Josiah Carberry', profile.full_name
     assert_equal 'Trainer', profile.type
 
@@ -357,7 +361,7 @@ class UsersControllerTest < ActionController::TestCase
     get :show, params: { id: user }
     assert_response :success
     profile = assigns(:user).profile
-    assert_equal false, profile.public
+    refute profile.public
     assert_equal 'Profile', profile.type
   end
 
@@ -371,7 +375,7 @@ class UsersControllerTest < ActionController::TestCase
     profile = assigns(:user).profile
     assert_equal 'Lucifer MorningStar', profile.full_name
     assert_equal 'Profile', profile.type
-    assert_equal false, profile.public
+    refute profile.public
 
     # update flag
     patch :update, params: { id: user, user: { profile_attributes: { public: true, firstname: profile.firstname,
@@ -390,15 +394,15 @@ class UsersControllerTest < ActionController::TestCase
     profile = puser.profile
     assert_equal 'Lucifer MorningStar', profile.full_name
     assert_equal 'Trainer', profile.type
-    assert_equal true, profile.public
+    assert profile.public
   end
 
   test 'should be able to filter user index with a query' do
     get :index, params: { q: 'Reg' }
 
     assert_response :success
-    assert assigns(:users).include?(users(:regular_user))
-    refute assigns(:users).include?(users(:another_regular_user))
+    assert_includes assigns(:users), users(:regular_user)
+    refute_includes assigns(:users), users(:another_regular_user)
   end
 
   test 'should not show banned or unverified/basic users in index' do
@@ -435,7 +439,7 @@ class UsersControllerTest < ActionController::TestCase
   test 'should show tabs for resource types and link to view all' do
     sign_in(@user)
 
-    assert @user.events.not_finished.count > 0
+    assert @user.events.not_finished.count.positive?
     assert @user.materials.count > 1
     assert @user.collections.count > 1
     assert @user.workflows.count > 1

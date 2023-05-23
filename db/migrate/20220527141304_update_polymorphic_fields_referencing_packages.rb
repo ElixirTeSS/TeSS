@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UpdatePolymorphicFieldsReferencingPackages < ActiveRecord::Migration[6.1]
   POLYMORPHIC = {
     activities: [:trackable_type, :owner_type, :recipient_type],
@@ -12,7 +14,7 @@ class UpdatePolymorphicFieldsReferencingPackages < ActiveRecord::Migration[6.1]
     stars: [:resource_type],
     subscriptions: [:subscribable_type],
     widget_logs: [:resource_type]
-  }
+  }.freeze
 
   def up
     update_fields('Package', 'Collection')

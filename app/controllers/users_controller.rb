@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The controller for actions related to the Users model
 class UsersController < ApplicationController
   before_action -> { feature_enabled?('invitation') }, only: [:invitees]
@@ -23,7 +25,7 @@ class UsersController < ApplicationController
 
   # GET/invitees
   def invitees
-    if current_user.is_admin? or current_user.is_curator?
+    if current_user.is_admin? || current_user.is_curator?
       @users = User.invited
       respond_to do |format|
         format.html
@@ -75,7 +77,7 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
-  #THIS IS FOR UPDATING PROFILES
+  # THIS IS FOR UPDATING PROFILES
   def update
     authorize @user
     respond_to do |format|
@@ -99,7 +101,10 @@ class UsersController < ApplicationController
     @user.create_activity :destroy, owner: current_user
     @user.destroy
     respond_to do |format|
-      format.html { redirect_to users_path, notice: 'User was successfully destroyed.' } # Devise is also doing redirection here
+      # Devise is also doing redirection here
+      format.html do
+        redirect_to users_path, notice: 'User was successfully destroyed.'
+      end
       format.json { head :no_content }
     end
   end
@@ -107,14 +112,17 @@ class UsersController < ApplicationController
   def change_token
     authorize @user
     if @user.authentication_token.nil?
-      handle_error(:unprocessable_entity, "Authentication token cannot be set to nil - action not allowed (status code: 422 Unprocessable Entity).") and return
+      handle_error(:unprocessable_entity,
+                   'Authentication token cannot be set to nil - action not allowed (status code: 422 Unprocessable Entity).') and return
     end
+
     @user.authentication_token = Devise.friendly_token
     if @user.save
-      flash[:notice] = "Authentication token successfully regenerated."
+      flash[:notice] = 'Authentication token successfully regenerated.'
       redirect_to @user
     else
-      handle_error(:unprocessable_entity, "Failed to regenerate Authentication token (status code: 422 Unprocessable Entity).")
+      handle_error(:unprocessable_entity,
+                   'Failed to regenerate Authentication token (status code: 422 Unprocessable Entity).')
     end
   end
 
@@ -133,10 +141,10 @@ class UsersController < ApplicationController
     allowed_parameters = [:email, :username, :password, :image, :image_url, {
       profile_attributes: [:firstname, :surname, :email, :website, :public,
                            :description, :location, :orcid, :experience,
-                           { :expertise_academic => [] }, { :expertise_technical => [] },
-                           { :interest => [] }, { :activity => [] }, { :language => [] },
-                           { :fields => [] }, { :social_media => [] }
-      ] }]
+                           { expertise_academic: [] }, { expertise_technical: [] },
+                           { interest: [] }, { activity: [] }, { language: [] },
+                           { fields: [] }, { social_media: [] }]
+    }]
     allowed_parameters << :role_id if policy(@user).change_role?
     params.require(:user).permit(allowed_parameters)
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class CurationMailerTest < ActionMailer::TestCase
@@ -37,11 +39,11 @@ class CurationMailerTest < ActionMailer::TestCase
 
     body = email.text_part.body.to_s
 
-    assert body.include?(@material.title), 'Expected material title to appear in email body'
-    assert body.include?(@routes.material_url(@material)), 'Expected TeSS material URL to appear in email body'
-    assert body.include?(@material.url), 'Expected material URL to appear in email body'
+    assert_includes body, @material.title, 'Expected material title to appear in email body'
+    assert_includes body, @routes.material_url(@material), 'Expected TeSS material URL to appear in email body'
+    assert_includes body, @material.url, 'Expected material URL to appear in email body'
 
-    assert body.include?(@routes.curate_users_url), 'Expected curation link'
+    assert_includes body, @routes.curate_users_url, 'Expected curation link'
   end
 
   test 'html user approval' do
@@ -59,15 +61,15 @@ class CurationMailerTest < ActionMailer::TestCase
 
     html = email.html_part.body.to_s
 
-    assert html.include?(@material.title), 'Expected material title to appear in email body'
-    assert html.include?(@routes.material_url(@material)), 'Expected TeSS material URL to appear in email body'
-    assert html.include?(@material.url), 'Expected material URL to appear in email body'
+    assert_includes html, @material.title, 'Expected material title to appear in email body'
+    assert_includes html, @routes.material_url(@material), 'Expected TeSS material URL to appear in email body'
+    assert_includes html, @material.url, 'Expected material URL to appear in email body'
 
-    assert html.include?(@routes.curate_users_url), 'Expected curation link'
+    assert_includes html, @routes.curate_users_url, 'Expected curation link'
   end
 
   test 'can set mailer headers in config' do
-    with_settings(mailer: { headers: { 'Sender': 'mail.sender@example.com', 'X-Something': 'yes' }}) do
+    with_settings(mailer: { headers: { 'Sender': 'mail.sender@example.com', 'X-Something': 'yes' } }) do
       email = CurationMailer.user_requires_approval(@user)
 
       email_headers = {}

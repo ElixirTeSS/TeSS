@@ -1,17 +1,12 @@
+# frozen_string_literal: true
+
 json.extract! @material, :id, :title, :url, :description,
-
               :content_provider_id, :user_id,
-
               :keywords, :resource_type, :other_types, :fields,
-
               :doi, :licence, :version, :status,
-
               :contact, :contributors, :authors,
-
               :difficulty_level, :target_audience, :prerequisites, :syllabus, :learning_objectives, :subsets,
-
               :date_created, :date_modified, :date_published, :remote_updated_date, :remote_created_date,
-
               :slug, :last_scraped, :scraper_record, :created_at, :updated_at
 
 json.partial! 'common/ontology_terms', type: 'scientific_topics', resource: @material

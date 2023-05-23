@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 require 'tess_rdf_extractors'
 
@@ -51,10 +53,10 @@ module Ingestors
           convert_params(p)
         end
         if verbose
-          puts "Events: #{events.count}"
-          puts "Courses: #{courses.count}"
-          puts "CourseInstances (without Course): #{course_instances.count}"
-          puts "LearningResources: #{learning_resources.count}"
+          Rails.logger.debug "Events: #{events.count}"
+          Rails.logger.debug "Courses: #{courses.count}"
+          Rails.logger.debug "CourseInstances (without Course): #{course_instances.count}"
+          Rails.logger.debug "LearningResources: #{learning_resources.count}"
         end
 
         deduplicate(events + courses + course_instances).each do |event|
@@ -79,29 +81,29 @@ module Ingestors
     def deduplicate(resources)
       return [] unless resources.any?
 
-      puts "De-duplicating #{resources.count} resources" if verbose
+      Rails.logger.debug "De-duplicating #{resources.count} resources" if verbose
       hash = {}
       scores = {}
       resources.each do |resource|
         resource_url = resource[:url]
-        puts "  Considering: #{resource_url}" if verbose
+        Rails.logger.debug "  Considering: #{resource_url}" if verbose
         if hash[resource_url]
           score = metadata_score(resource)
           # Replace the resource if this resource has a higher metadata score
-          puts "    Duplicate! Comparing #{score} vs. #{scores[resource_url]}" if verbose
+          Rails.logger.debug "    Duplicate! Comparing #{score} vs. #{scores[resource_url]}" if verbose
           if score > scores[resource_url]
-            puts '    Replacing resource' if verbose
+            Rails.logger.debug '    Replacing resource' if verbose
             hash[resource_url] = resource
             scores[resource_url] = score
           end
         else
-          puts '    Not present, adding' if verbose
+          Rails.logger.debug '    Not present, adding' if verbose
           hash[resource_url] = resource
           scores[resource_url] = metadata_score(resource)
         end
       end
 
-      puts "#{hash.values.count} resources after de-duplication" if verbose
+      Rails.logger.debug "#{hash.values.count} resources after de-duplication" if verbose
 
       hash.values
     end

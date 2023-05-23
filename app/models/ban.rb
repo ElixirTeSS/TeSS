@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Ban < ApplicationRecord
   belongs_to :user, inverse_of: :ban
   belongs_to :banner, class_name: 'User'

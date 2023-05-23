@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Role < ApplicationRecord
   has_many :users
 
@@ -16,12 +18,12 @@ class Role < ApplicationRecord
   end
 
   def self.fetch(name)
-    role = find_by_name(name)
+    role = find_by(name: name)
     if role
       role
     else
       create_roles
-      find_by_name(name)
+      find_by(name: name)
     end
   end
 
@@ -35,5 +37,4 @@ class Role < ApplicationRecord
       r.save! if r.changed?
     end
   end
-
 end

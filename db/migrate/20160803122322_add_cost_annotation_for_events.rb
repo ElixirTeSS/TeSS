@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddCostAnnotationForEvents < ActiveRecord::Migration[4.2]
   def up
     add_column :events, :cost, :text

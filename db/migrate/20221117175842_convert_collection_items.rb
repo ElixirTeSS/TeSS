@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class ConvertCollectionItems < ActiveRecord::Migration[6.1]
-  class CollectionEvent < ActiveRecord::Base; end
-  class CollectionMaterial < ActiveRecord::Base; end
-  class CollectionItem < ActiveRecord::Base; end
+  class CollectionEvent < ApplicationRecord; end
+  class CollectionMaterial < ApplicationRecord; end
+  class CollectionItem < ApplicationRecord; end
 
   def up
     CollectionEvent.all.each do |i|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 fields = [
   :id, :external_id, :title, :subtitle, :url, :description,
 

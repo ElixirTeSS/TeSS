@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateAutocompleteSuggestions < ActiveRecord::Migration[6.1]
   def change
     create_table :autocomplete_suggestions do |t|

@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 # The controller for actions related to the Ban model
 class BansController < ApplicationController
-
   before_action :get_user
   before_action :auth
   before_action :set_breadcrumbs

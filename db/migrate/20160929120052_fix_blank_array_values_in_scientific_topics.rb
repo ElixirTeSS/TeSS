@@ -1,4 +1,6 @@
-class ScientificTopic < ActiveRecord::Base; end
+# frozen_string_literal: true
+
+class ScientificTopic < ApplicationRecord; end
 
 class FixBlankArrayValuesInScientificTopics < ActiveRecord::Migration[4.2]
   def change
@@ -10,7 +12,7 @@ class FixBlankArrayValuesInScientificTopics < ActiveRecord::Migration[4.2]
       array_fields.each do |field|
         values = st.send(field)
         if values.any?(&:blank?)
-          puts "Fixing #{field} in scientific topic #{st.id}"
+          Rails.logger.debug "Fixing #{field} in scientific topic #{st.id}"
           st.update_column(field, values.reject(&:blank?))
         end
       end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'uri'
 
 class Profile < ApplicationRecord
@@ -34,11 +36,11 @@ class Profile < ApplicationRecord
       string :location
       string :orcid
       string :experience do
-        TrainerExperienceDictionary.instance.lookup_value(self.experience, 'title')
+        TrainerExperienceDictionary.instance.lookup_value(experience, 'title')
       end
       string :expertise_academic, multiple: true
       string :expertise_technical, multiple: true
-      string :fields, :multiple => true
+      string :fields, multiple: true
       string :interest, multiple: true
       string :activity, multiple: true
       string :language, multiple: true
@@ -50,7 +52,7 @@ class Profile < ApplicationRecord
   end
 
   def self.facet_fields
-    field_list = %w( full_name )
+    field_list = %w[full_name]
   end
 
   def full_name
@@ -71,7 +73,7 @@ class Profile < ApplicationRecord
         end
       end
 
-      self.update(attrs)
+      update(attrs)
     end
   end
 
@@ -82,38 +84,34 @@ class Profile < ApplicationRecord
   @@orcid_root_url = "#{@@orcid_scheme}://#{@@orcid_host}"
 
   def check_orcid
-    if !orcid.nil? && !orcid.blank?
+    if !orcid.nil? && orcid.present?
       begin
-        uri = URI.parse(self.orcid)
-        raise if uri.path.blank? or uri.path == '/'
-        uri.path = '/' + uri.path unless uri.path.start_with? '/'
+        uri = URI.parse(orcid)
+        raise if uri.path.blank? || (uri.path == '/')
+
+        uri.path = "/#{uri.path}" unless uri.path.start_with? '/'
         uri.host = @@orcid_host
         uri.scheme = @@orcid_scheme
         self.orcid = uri.to_s
-      rescue
-        errors.add(:orcid, "invalid id or URL")
+      rescue StandardError
+        errors.add(:orcid, 'invalid id or URL')
       end
     end
   end
 
   def valid_orcid
-    if !orcid.nil? && !orcid.blank?
-      errors.add(:orcid, "invalid domain") unless self.orcid.to_s.start_with?(@@orcid_root_url)
-    end
+    errors.add(:orcid, 'invalid domain') if !orcid.nil? && orcid.present? && !orcid.to_s.start_with?(@@orcid_root_url)
   end
 
   def check_public
-    public ? self.type = 'Trainer' : self.type = 'Profile'
+    self.type = (public ? 'Trainer' : 'Profile')
   end
 
   def reindex
-    if Rails.env.production?
-      Trainer.reindex
-    end
+    Trainer.reindex if Rails.env.production?
   end
 
   def should_generate_new_friendly_id?
     firstname_changed? or surname_changed?
   end
-
 end

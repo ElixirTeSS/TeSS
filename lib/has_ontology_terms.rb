@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # A module to handle association of ontology terms to an ActiveRecord model.
 # use like so (make sure to use a plural):
 #
@@ -22,7 +24,8 @@ module HasOntologyTerms
   end
 
   module ClassMethods
-    def has_ontology_terms(association_name, ontology: Edam::Ontology.instance, branch: :_) # :_ is essentially a wildcard, meaning it will match any branch.
+    # :_ is essentially a wildcard, meaning it will match any branch.
+    def has_ontology_terms(association_name, ontology: Edam::Ontology.instance, branch: :_)
       method = association_name.to_s
       singular = association_name.to_s.singularize
       links_method = "#{singular}_links"
@@ -53,7 +56,9 @@ module HasOntologyTerms
       end
 
       define_method "#{method}=" do |terms|
-        send("#{links_method}=", terms.uniq.map { |term| send(links_method).build(term_uri: term.uri) if term.present? && term.uri }.compact)
+        send("#{links_method}=", terms.uniq.map do |term|
+                                   send(links_method).build(term_uri: term.uri) if term.present? && term.uri
+                                 end.compact)
       end
 
       # Names/Labels
@@ -64,12 +69,12 @@ module HasOntologyTerms
       define_method "#{names_method}=" do |names|
         terms = []
         [names].flatten.each do |name|
-          unless name.blank?
-            st = [ontology.scoped_lookup_by_name(name, branch)].compact # FIXME: This is probably too EDAM specific
-            st = ontology.find_by(OBO.hasExactSynonym, name) if st.empty?
-            st = ontology.find_by(OBO.hasNarrowSynonym, name) if st.empty?
-            terms += st
-          end
+          next if name.blank?
+
+          st = [ontology.scoped_lookup_by_name(name, branch)].compact # FIXME: This is probably too EDAM specific
+          st = ontology.find_by(OBO.hasExactSynonym, name) if st.empty?
+          st = ontology.find_by(OBO.hasNarrowSynonym, name) if st.empty?
+          terms += st
         end
         send("#{method}=", terms.uniq)
       end

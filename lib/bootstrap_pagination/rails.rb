@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright (c) 2012 Nicholas Dainty
 #
 # Permission is hereby granted, free of charge, to any person obtaining
@@ -19,10 +21,11 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
 module BootstrapPagination
   class Rails < WillPaginate::ActionView::LinkRenderer
-    ELLIPSIS = "&hellip;"
+    ELLIPSIS = '&hellip;'
+
+    alias content_tag tag
 
     def to_html
       list_items = pagination.map do |item|
@@ -38,7 +41,7 @@ module BootstrapPagination
     end
 
     def container_attributes
-      super.except(*[:link_options])
+      super.except(:link_options)
     end
 
     def pagination
@@ -54,9 +57,9 @@ module BootstrapPagination
       link_options = @options[:link_options] || {}
 
       if page == current_page
-        tag('li', tag('span', page), class: 'active')
+        content_tag('li', content_tag('span', page), class: 'active')
       else
-        tag('li', link(page, page, link_options.merge(rel: rel_value(page))))
+        content_tag('li', link(page, page, link_options.merge(rel: rel_value(page))))
       end
     end
 
@@ -64,14 +67,14 @@ module BootstrapPagination
       link_options = @options[:link_options] || {}
 
       if page
-        tag('li', link(text, page, link_options), class: classname)
+        content_tag('li', link(text, page, link_options), class: classname)
       else
-        tag('li', tag('span', text), class: "%s disabled" % classname)
+        content_tag('li', content_tag('span', text), class: '%s disabled' % classname)
       end
     end
 
     def gap
-      tag('li', tag('span', ELLIPSIS), class: 'disabled')
+      content_tag('li', content_tag('span', ELLIPSIS), class: 'disabled')
     end
 
     def previous_page

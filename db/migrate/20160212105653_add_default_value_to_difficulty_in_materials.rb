@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddDefaultValueToDifficultyInMaterials < ActiveRecord::Migration[4.2]
   def change
     change_column_default :materials, :difficulty_level, 'notspecified'

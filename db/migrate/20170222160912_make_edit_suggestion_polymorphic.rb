@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MakeEditSuggestionPolymorphic < ActiveRecord::Migration[4.2]
   def up
     add_reference :materials, :suggestible, polymorphic: true

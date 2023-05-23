@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StaffMember < ApplicationRecord
   TRAINING_COORDINATOR_ROLE = 'Training coordinator'
 

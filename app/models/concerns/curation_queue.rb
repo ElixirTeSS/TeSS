@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CurationQueue
   extend ActiveSupport::Concern
 
@@ -22,11 +24,11 @@ module CurationQueue
   end
 
   def user_requires_approval?
-    user && user.has_role?('unverified_user') && (user.created_resources - [self]).none?
+    user&.has_role?('unverified_user') && (user.created_resources - [self]).none?
   end
 
   def notify_curators
-    CurationMailer.user_requires_approval(self.user).deliver_later
+    CurationMailer.user_requires_approval(user).deliver_later
   end
 
   def from_unverified_or_rejected?

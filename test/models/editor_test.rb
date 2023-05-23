@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class EditorTest < ActiveSupport::TestCase
-
   setup do
     mock_images
   end
@@ -89,7 +90,7 @@ class EditorTest < ActiveSupport::TestCase
     prov1 = content_providers :organisation_provider
     prov2 = content_providers :goblet
 
-    #check empty list
+    # check empty list
     assert trainer.editables
     assert_equal 0, trainer.editables.size
 
@@ -103,8 +104,8 @@ class EditorTest < ActiveSupport::TestCase
     # check user's references to providers
     assert trainer.editables
     assert_equal 2, trainer.editables.size
-    assert trainer.editables.include?(prov1)
-    assert trainer.editables.include?(prov2)
+    assert_includes trainer.editables, prov1
+    assert_includes trainer.editables, prov2
   end
 
   test 'reassign resources on removal' do
@@ -130,19 +131,19 @@ class EditorTest < ActiveSupport::TestCase
     # check editors
     assert provider.editors
     provider.add_editor(trainer)
-    assert provider.editors.include?(trainer),
-           "trainer[#{trainer.username}] not found in provider[#{provider.title}].editors"
-    assert trainer.editables.include?(provider),
-           "trainer[#{trainer.username}] cannot edit provider[#{provider.title}]"
+    assert_includes provider.editors, trainer,
+                    "trainer[#{trainer.username}] not found in provider[#{provider.title}].editors"
+    assert_includes trainer.editables, provider,
+                    "trainer[#{trainer.username}] cannot edit provider[#{provider.title}]"
     assert_equal 1, provider.editors.size
     assert_equal 1, trainer.editables.size
 
     # remove editor
     provider.remove_editor(trainer)
-    assert !provider.editors.include?(trainer),
-           "trainer[#{trainer.username}] still in provider[#{provider.title}].editors"
-    assert !trainer.editables.include?(provider),
-           "trainer[#{trainer.username}] can still edit provider[#{provider.title}]"
+    refute_includes provider.editors, trainer,
+                    "trainer[#{trainer.username}] still in provider[#{provider.title}].editors"
+    refute_includes trainer.editables, provider,
+                    "trainer[#{trainer.username}] can still edit provider[#{provider.title}]"
 
     # check reassignments
     event.reload
@@ -167,7 +168,7 @@ class EditorTest < ActiveSupport::TestCase
     assert_equal 0, provider.approved_editors.size
 
     # add an approved editor
-    provider.approved_editors = [ owner.username, trainer.username ]
+    provider.approved_editors = [owner.username, trainer.username]
     provider.save
     assert_equal 1, provider.approved_editors.size
     assert_equal trainer.username, provider.approved_editors.first
@@ -183,13 +184,13 @@ class EditorTest < ActiveSupport::TestCase
     assert_equal admin.username, provider.approved_editors.last
 
     # remove an approved editor
-    assert provider.approved_editors.include?(private_user.username)
+    assert_includes provider.approved_editors, private_user.username
     editors = provider.approved_editors
     editors.delete(private_user.username)
     provider.approved_editors = editors
     assert_equal 2, provider.approved_editors.size
-    assert !provider.approved_editors.include?(private_user.username)
-    assert !provider.editors.include?(private_user)
+    refute_includes provider.approved_editors, private_user.username
+    refute_includes provider.editors, private_user
   end
 
   test 'reassigning resources works for resources without content provider set' do
@@ -198,15 +199,16 @@ class EditorTest < ActiveSupport::TestCase
     event = events :training_event
     provider.add_editor(trainer)
 
-    another_event = Event.create!(user: trainer, title: 'New event', timezone: 'UTC', url: 'http://example.com', online: true)
+    another_event = Event.create!(user: trainer, title: 'New event', timezone: 'UTC', url: 'http://example.com',
+                                  online: true)
     assert_nil another_event.content_provider
 
     # remove editor
     provider.remove_editor(trainer)
-    assert !provider.editors.include?(trainer),
-           "trainer[#{trainer.username}] still in provider[#{provider.title}].editors"
-    assert !trainer.editables.include?(provider),
-           "trainer[#{trainer.username}] can still edit provider[#{provider.title}]"
+    refute_includes provider.editors, trainer,
+                    "trainer[#{trainer.username}] still in provider[#{provider.title}].editors"
+    refute_includes trainer.editables, provider,
+                    "trainer[#{trainer.username}] can still edit provider[#{provider.title}]"
 
     # check reassignments
     event.reload

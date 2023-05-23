@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 module TessDevise
   class RegistrationsControllerTest < ActionController::TestCase
-
     include Devise::Test::ControllerHelpers
 
     setup do
@@ -10,30 +11,29 @@ module TessDevise
     end
 
     test 'should register user' do
-       assert_difference('User.count') do
-         post :create, params: {
-             user: {
-                 username: 'mileyfan1997',
-                 email: 'h4nn4hm0nt4n4@example.com',
-                 password: '12345678',
-                 password_confirmation: '12345678',
-                 processing_consent: '1'
-             }
-         }
-       end
+      assert_difference('User.count') do
+        post :create, params: {
+          user: {
+            username: 'mileyfan1997',
+            email: 'h4nn4hm0nt4n4@example.com',
+            password: '12345678',
+            password_confirmation: '12345678',
+            processing_consent: '1'
+          }
+        }
+      end
 
-       assert_redirected_to root_path
+      assert_redirected_to root_path
     end
 
     test 'should not register user when passwords do not match' do
       assert_no_difference('User.count') do
         post :create, params: {
-            user: { username: 'mileyfan1997',
-                    email: 'h4nn4hm0nt4n4@example.com',
-                    password: '12345678',
-                    password_confirmation: '353278532',
-                    processing_consent: '1'
-            }
+          user: { username: 'mileyfan1997',
+                  email: 'h4nn4hm0nt4n4@example.com',
+                  password: '12345678',
+                  password_confirmation: '353278532',
+                  processing_consent: '1' }
         }
       end
     end
@@ -42,30 +42,31 @@ module TessDevise
       Recaptcha.with_configuration(skip_verify_env: []) do
         assert_no_difference('User.count') do
           post :create, params: {
-              user: {
-                  username: 'mileyfan1997',
-                  email: 'h4nn4hm0nt4n4@example.com',
-                  password: '12345678',
-                  password_confirmation: '12345678',
-                  processing_consent: '1'
-              }
+            user: {
+              username: 'mileyfan1997',
+              email: 'h4nn4hm0nt4n4@example.com',
+              password: '12345678',
+              password_confirmation: '12345678',
+              processing_consent: '1'
+            }
           }
         end
       end
     end
 
     test 'should not register user when no consent given' do
-       assert_no_difference('User.count') do
-         post :create, params: {
-             user: {
-                 username: 'mileyfan1997',
-                 email: 'h4nn4hm0nt4n4@example.com',
-                 password: '12345678',
-                 password_confirmation: '12345678' }
-         }
-       end
+      assert_no_difference('User.count') do
+        post :create, params: {
+          user: {
+            username: 'mileyfan1997',
+            email: 'h4nn4hm0nt4n4@example.com',
+            password: '12345678',
+            password_confirmation: '12345678'
+          }
+        }
+      end
 
-       assert assigns(:user).errors[:base].first.include?('processing')
+      assert_includes assigns(:user).errors[:base].first, 'processing'
     end
 
     test 'should redirect to user page after changing password' do
@@ -73,13 +74,13 @@ module TessDevise
       sign_in user
 
       put :update, params: {
-          user: {
-              username: user.username,
-              email: user.email,
-              password: '12345678',
-              password_confirmation: '12345678',
-              current_password: 'hello'
-          }
+        user: {
+          username: user.username,
+          email: user.email,
+          password: '12345678',
+          password_confirmation: '12345678',
+          current_password: 'hello'
+        }
       }
 
       assert_redirected_to assigns(:user)
@@ -90,11 +91,11 @@ module TessDevise
       sign_in user
 
       put :update, params: {
-          user: {
-              username: user.username,
-              email: "123#{user.email}",
-              current_password: 'hello'
-          }
+        user: {
+          username: user.username,
+          email: "123#{user.email}",
+          current_password: 'hello'
+        }
       }
 
       assert_redirected_to assigns(:user)

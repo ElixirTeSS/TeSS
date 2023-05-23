@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 module Fairsharing
   class ClientTest < ActiveSupport::TestCase
     setup do
       @client = Fairsharing::Client.new
-      @token_issue_date = Time.new(2022, 12, 1, 16, 7, 18)
+      @token_issue_date = Time.new(2022, 12, 1, 16, 7, 18).utc
       @token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyMjIxMDlhMi0wZWZkLTQ0Y2EtYTYzOC1jNjFmMWZmNmQxYjAiLCJzdWIiOiI4MjI0Iiwic2NwIjoidXNlciIsImF1ZCI6bnVsbCwiaWF0IjoxNjY5OTEwODM4LCJleHAiOjE2Njk5OTcyMzh9.Dv_E6JiyRSrvoOZMHZeQLiEbqYnsTR0qkyrKyWWqb80'
       @expiry = '1669997238'
       @redis = Redis.new

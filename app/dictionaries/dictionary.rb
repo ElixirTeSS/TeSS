@@ -1,7 +1,11 @@
+# frozen_string_literal: true
+
 # Base dictionary class
 class Dictionary
   include Singleton
   include TrigramSimilarity
+
+  delegate :keys, :each_key, to: :@dictionary
 
   def initialize
     @dictionary = load_dictionary
@@ -17,7 +21,7 @@ class Dictionary
 
   # Find by id, or by case-insensitive fuzzy matching
   def best_match(id)
-    return id if @dictionary.has_key? id
+    return id if @dictionary.key? id
 
     best_score = 0
     best_key = nil
@@ -69,10 +73,6 @@ class Dictionary
 
   def values_for_search(keys)
     @dictionary.select { |key, _value| keys.include?(key) }.map { |_key, value| value['title'] }
-  end
-
-  def keys
-    @dictionary.keys
   end
 
   private

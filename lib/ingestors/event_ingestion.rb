@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Ingestors
   module EventIngestion
     def add_event(event)

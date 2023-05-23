@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sprockets/processing'
 extend Sprockets::Processing
 

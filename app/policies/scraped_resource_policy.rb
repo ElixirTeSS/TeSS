@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 # A policy specific to things that have been scraped. Events and Materials
 
 class ScrapedResourcePolicy < ResourcePolicy
-
   def manage?
-    super || (@user && @user.is_curator?) || is_content_provider_editor?
+    super || @user&.is_curator? || is_content_provider_editor?
   end
 
   private
@@ -15,5 +16,4 @@ class ScrapedResourcePolicy < ResourcePolicy
 
     (@user && provider && (provider.user == @user || provider.editors.include?(@user)))
   end
-
 end

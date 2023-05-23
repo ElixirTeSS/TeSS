@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Source < ApplicationRecord
   include LogParameterChanges
   include HasTestJob
@@ -19,8 +21,8 @@ class Source < ApplicationRecord
   validates :url, :method, presence: true
   validates :url, url: true
   validates :approval_status, inclusion: { in: APPROVAL_STATUS.values }
-  validates :method, inclusion: { in: -> (_) { TeSS::Config.user_ingestion_methods } },
-            unless: -> { User.current_user&.is_admin? || User.current_user&.has_role?(:scraper_user) }
+  validates :method, inclusion: { in: ->(_) { TeSS::Config.user_ingestion_methods } },
+                     unless: -> { User.current_user&.is_admin? || User.current_user&.has_role?(:scraper_user) }
   validate :check_method
 
   before_create :set_approval_status
@@ -41,7 +43,7 @@ class Source < ApplicationRecord
         ingestor_title
       end
       string :content_provider do
-        self.content_provider.try(:title)
+        content_provider.try(:title)
       end
       string :approval_status do
         I18n.t("sources.approval_status.#{approval_status}")
@@ -66,16 +68,14 @@ class Source < ApplicationRecord
   end
 
   def self.facet_fields
-    %w( content_provider method enabled approval_status )
+    %w[content_provider method enabled approval_status]
   end
 
   def self.check_exists(source_params)
-    given_source = self.new(source_params)
+    given_source = new(source_params)
     source = nil
 
-    if given_source.url.present?
-      source = self.find_by_url(given_source.url)
-    end
+    source = find_by(url: given_source.url) if given_source.url.present?
 
     source
   end
@@ -129,19 +129,15 @@ class Source < ApplicationRecord
   private
 
   def set_approval_status
-    if self.class.approval_required?
-      self.approval_status = :not_approved
-    else
-      self.approval_status = :approved
-    end
+    self.approval_status = if self.class.approval_required?
+                             :not_approved
+                           else
+                             :approved
+                           end
   end
 
   def reset_approval_status
-    if self.class.approval_required?
-      if method_changed? || url_changed?
-        self.approval_status = :not_approved
-      end
-    end
+    self.approval_status = :not_approved if self.class.approval_required? && (method_changed? || url_changed?)
   end
 
   def log_approval_status_change

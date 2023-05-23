@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class CuratorControllerTest < ActionController::TestCase
@@ -81,10 +83,9 @@ class CuratorControllerTest < ActionController::TestCase
     assert_not_includes assigns(:users), new_user
 
     e = new_user.events.create!(title: 'Spam event', url: 'http://cool-event.pancakes', start: 10.days.from_now,
-                                description: "test event", organizer: "test organizer", end: 11.days.from_now,
-                                eligibility: [ 'registration_of_interest' ], host_institutions: [ "MIT" ],
-                                contact: "me", online: true, timezone: 'UTC'
-                                )
+                                description: 'test event', organizer: 'test organizer', end: 11.days.from_now,
+                                eligibility: ['registration_of_interest'], host_institutions: ['MIT'],
+                                contact: 'me', online: true, timezone: 'UTC')
     e.create_activity(:create, owner: new_user)
 
     get :users, params: { with_content: true }
@@ -116,8 +117,10 @@ class CuratorControllerTest < ActionController::TestCase
     get :users
 
     assert_response :success
-    assert_select '#recent-user-curation-activity ul li', text: /#{approved.name}\s+was\s+approved\s+by\s+#{admin.username}/
-    assert_select '#recent-user-curation-activity ul li', text: /#{rejected.name}\s+was\s+rejected\s+by\s+#{admin.username}/
+    assert_select '#recent-user-curation-activity ul li',
+                  text: /#{approved.name}\s+was\s+approved\s+by\s+#{admin.username}/
+    assert_select '#recent-user-curation-activity ul li',
+                  text: /#{rejected.name}\s+was\s+rejected\s+by\s+#{admin.username}/
   end
 
   test 'should show all possible resource types under user' do
@@ -133,15 +136,16 @@ class CuratorControllerTest < ActionController::TestCase
     node = nil
     4.times do |i|
       e = new_user.events.create!(title: "Spam event #{i}", url: "http://cool-event.pancakes/#{i}", start: 10.days.from_now,
-                                  description: "test event", organizer: "test organizer", end: 11.days.from_now,
-                                  eligibility: [ 'registration_of_interest' ], host_institutions: [ "MIT" ],
-                                  contact: "me", online: true, timezone: 'UTC')
+                                  description: 'test event', organizer: 'test organizer', end: 11.days.from_now,
+                                  eligibility: ['registration_of_interest'], host_institutions: ['MIT'],
+                                  contact: 'me', online: true, timezone: 'UTC')
       e.create_activity(:create, owner: new_user)
       event = e
     end
 
     4.times do |i|
-      m = new_user.materials.create!(title: "Spam material #{i}", url: "http://cool-material.pancakes/#{i}", description: 'material')
+      m = new_user.materials.create!(title: "Spam material #{i}", url: "http://cool-material.pancakes/#{i}",
+                                     description: 'material')
       m.create_activity(:create, owner: new_user)
       material = m
     end

@@ -1,11 +1,12 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class AutocompleteControllerTest < ActionController::TestCase
-
   include Devise::Test::ControllerHelpers
 
   setup do
-    AutocompleteSuggestion.add('cat', *%w(meow feline purr paws))
+    AutocompleteSuggestion.add('cat', *%w[meow feline purr paws])
   end
 
   test 'should get suggestions' do
@@ -24,12 +25,12 @@ class AutocompleteControllerTest < ActionController::TestCase
     get :suggestions, params: { field: 'cat', query: 'x' }, format: :json
     assert_response :success
     res = JSON.parse(response.body)
-    assert_equal [], res['suggestions']
+    assert_empty res['suggestions']
 
     get :suggestions, params: { field: 'type_that_does_not_have_suggestions', query: 'paw' }, format: :json
     assert_response :success
     res = JSON.parse(response.body)
-    assert_equal [], res['suggestions']
+    assert_empty res['suggestions']
   end
 
   test 'should get people suggestions' do
@@ -66,12 +67,12 @@ class AutocompleteControllerTest < ActionController::TestCase
     get :people_suggestions, params: { query: 'q' }, format: :json
     assert_response :success
     res = JSON.parse(response.body)
-    assert_equal [], res['suggestions']
+    assert_empty res['suggestions']
 
     get :people_suggestions, params: { field: 'cat', query: 'm' }, format: :json
     assert_response :success
     res = JSON.parse(response.body)
-    assert_equal [], res['suggestions']
+    assert_empty res['suggestions']
   end
 
   test 'should not get suggestions if not logged in' do

@@ -1,5 +1,6 @@
-class CollectionPolicy < ResourcePolicy
+# frozen_string_literal: true
 
+class CollectionPolicy < ResourcePolicy
   def update?
     super || @record.collaborator?(@user)
   end
@@ -21,5 +22,4 @@ class CollectionPolicy < ResourcePolicy
       Collection.visible_by(@user)
     end
   end
-
 end

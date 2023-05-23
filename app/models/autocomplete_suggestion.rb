@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AutocompleteSuggestion < ApplicationRecord
   def self.add(field, *suggestions)
     upsert_all(suggestions.map { |s| { field: field, value: s } }, unique_by: [:field, :value]) if suggestions.any?
@@ -21,7 +23,7 @@ class AutocompleteSuggestion < ApplicationRecord
     add(field, *suggestions)
     redundant = where(field: field).where.not(value: suggestions)
     count = redundant.count
-    redundant.destroy_all if count > 0
+    redundant.destroy_all if count.positive?
     count
   end
 end

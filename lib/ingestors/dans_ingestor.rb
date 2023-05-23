@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 require 'csv'
 require 'nokogiri'
@@ -27,10 +29,9 @@ module Ingestors
 
     def process_dans(url)
       4.times.each do |i| # always check the first 4 pages, # of pages could be increased if needed
-        unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/dans.yml')
-          sleep(1)
-        end
-        event_page = Nokogiri::HTML5.parse(open_url(url + (i + 1).to_s, raise: true)).css("div[id='nieuws_item_section']")
+        sleep(1) unless Rails.env.test? && File.exist?('test/vcr_cassettes/ingestors/dans.yml')
+        event_page = Nokogiri::HTML5.parse(open_url(url + (i + 1).to_s,
+                                                    raise: true)).css("div[id='nieuws_item_section']")
         event_page.each do |event_data|
           event = OpenStruct.new
 

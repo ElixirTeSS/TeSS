@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class TessEventIngestorTest < ActiveSupport::TestCase
@@ -23,14 +25,14 @@ class TessEventIngestorTest < ActiveSupport::TestCase
 
     # run task
     assert_difference 'Event.count', 2 do
-      freeze_time(Time.new(2019)) do
+      freeze_time(Time.new(2019).utc) do
         ingestor.read(source.url)
         ingestor.write(@user, @content_provider)
       end
     end
 
     assert_equal 2, ingestor.events.count
-    assert ingestor.materials.empty?
+    assert_empty ingestor.materials
     assert_equal 2, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
@@ -47,9 +49,9 @@ class TessEventIngestorTest < ActiveSupport::TestCase
     assert_equal 'Melissa Burke (melissa@biocommons.org.au)', event.contact
     assert_equal 'Australian BioCommons', event.organizer
     assert_equal 1, event.eligibility.size, 'event eligibility size not matched!'
-    assert event.eligibility.include?('registration_of_interest')
+    assert_includes event.eligibility, 'registration_of_interest'
     assert_equal 1, event.host_institutions.size
-    assert event.host_institutions.include?('Australian Biocommons')
+    assert_includes event.host_institutions, 'Australian Biocommons'
     assert_equal 4, event.keywords.size
     assert event.online
     assert_equal '', event.city
@@ -60,10 +62,10 @@ class TessEventIngestorTest < ActiveSupport::TestCase
     other_title = 'WEBINAR: Establishing Gen3 to enable better human genome data sharing in Australia'
     other_url = 'https://www.biocommons.org.au/events/gen3-webinar'
     events = Event.where(title: other_title, url: other_url)
-    assert !events.nil?, 'Post-task: other event search error.'
+    refute_nil events, 'Post-task: other event search error.'
     assert_equal 1, events.size, "Post-task: other event search title[#{other_title}] found nothing"
     event = events.first
-    assert !event.nil?
+    refute_nil event
     # noinspection RubyNilAnalysis
     assert_equal other_title, event.title
     assert_equal other_url, event.url

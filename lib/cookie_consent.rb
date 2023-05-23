@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class CookieConsent
-  OPTIONS = %w(necessary tracking).freeze
+  OPTIONS = %w[necessary tracking].freeze
 
   def initialize(store)
     @store = store

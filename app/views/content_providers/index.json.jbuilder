@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.array!(@content_providers) do |content_provider|
   json.extract! content_provider, :id, :id, :title, :image_url, :description,
                 :url, :created_at, :updated_at, :contact

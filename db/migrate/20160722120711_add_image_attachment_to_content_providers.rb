@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddImageAttachmentToContentProviders < ActiveRecord::Migration[4.2]
   def change
     add_attachment :content_providers, :image

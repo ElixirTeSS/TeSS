@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateExternalResources < ActiveRecord::Migration[4.2]
   def change
     create_table :external_resources do |t|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class EventbriteIngestorTest < ActiveSupport::TestCase
@@ -26,7 +28,7 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
     end
 
     assert_equal 13, ingestor.events.count
-    assert ingestor.materials.empty?
+    assert_empty ingestor.materials
     assert_equal 13, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
@@ -145,9 +147,9 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
   def get_event(id, title, url)
     return Event.find(id) unless id.nil?
 
-    unless title.nil? or url.nil?
+    unless title.nil? || url.nil?
       events = Event.where(title: title, url: url)
-      return events.first unless events.nil? or events.empty?
+      return events.first if events.present?
     end
   end
 end

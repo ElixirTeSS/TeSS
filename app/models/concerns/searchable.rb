@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Searchable
   # Associations that are used on the index pages. Eager load them to prevent N+1 queries.
   EAGER_LOADABLE = [:content_provider, :ontology_term_links, :edit_suggestion, :materials, :events,
@@ -43,37 +45,37 @@ module Searchable
 
         if sort_by && sort_by != 'default'
           case sort_by
-            when 'early'
-              # Sort by start date asc
-              order_by(:start, :asc)
-            when 'late'
-              # Sort by start date desc
-              order_by(:start, :desc)
-            when 'rel'
-              # Sort by relevance
-            when 'mod'
-              # Sort by last modified
-              order_by(:updated_at, :desc)
-            when 'new'
-              # Sort by newest
-              order_by(:created_at, :desc)
-            when 'finished'
-              # Sort by last finished
-              order_by(:finished_at, :desc)
-            else
-              order_by(:sort_title, sort_by.to_sym)
+          when 'early'
+            # Sort by start date asc
+            order_by(:start, :asc)
+          when 'late'
+            # Sort by start date desc
+            order_by(:start, :desc)
+          when 'rel'
+          # Sort by relevance
+          when 'mod'
+            # Sort by last modified
+            order_by(:updated_at, :desc)
+          when 'new'
+            # Sort by newest
+            order_by(:created_at, :desc)
+          when 'finished'
+            # Sort by last finished
+            order_by(:finished_at, :desc)
+          else
+            order_by(:sort_title, sort_by.to_sym)
           end
           # Defaults
         else
           case name
-            when 'Event'
-              order_by(:start, :asc)
-            when 'ContentProvider'
-              order_by(:count, :desc)
-            when 'Material'
-              order_by(:created_at, :desc)
-            else
-              order_by(:sort_title, :asc)
+          when 'Event'
+            order_by(:start, :asc)
+          when 'ContentProvider'
+            order_by(:count, :desc)
+          when 'Material'
+            order_by(:created_at, :desc)
+          else
+            order_by(:sort_title, :asc)
           end
         end
 
@@ -90,9 +92,7 @@ module Searchable
           any_of do
             with(:public, true)
             with(:user_id, user.id) if user
-            if attribute_method?(:collaborators)
-              with(:collaborator_ids, user.id) if user
-            end
+            with(:collaborator_ids, user.id) if attribute_method?(:collaborators) && user
           end
         end
 
@@ -101,12 +101,7 @@ module Searchable
         end
 
         # Hide records the urls of which are failing
-        if method_defined?(:link_monitor)
-          unless user&.is_admin?
-            without(:failing, true)
-          end
-        end
-
+        without(:failing, true) if method_defined?(:link_monitor) && !user&.is_admin?
       end
     end
   end
@@ -114,6 +109,7 @@ module Searchable
   def failing?
     if respond_to?(:link_monitor)
       return false if link_monitor.nil?
+
       return link_monitor.failing?
     end
     false

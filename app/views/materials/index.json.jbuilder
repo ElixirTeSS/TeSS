@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.array!(@materials) do |material|
   json.extract! material, :id, :title, :url, :description, :doi, :remote_updated_date, :remote_created_date
   json.url material_url(material, format: :json)
@@ -10,7 +12,4 @@ json.array!(@materials) do |material|
       json.partial! 'common/external_resource', external_resource: external_resource
     end
   end
-
 end
-
-

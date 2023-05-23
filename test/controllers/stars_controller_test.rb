@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class StarsControllerTest < ActionController::TestCase
-
   include Devise::Test::ControllerHelpers
 
-  test "can star a resource" do
+  test 'can star a resource' do
     sign_in users(:regular_user)
     material = materials(:good_material)
 
@@ -15,7 +16,7 @@ class StarsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "does not add duplicate star to resource" do
+  test 'does not add duplicate star to resource' do
     user = users(:regular_user)
     sign_in user
     material = materials(:good_material)
@@ -28,7 +29,7 @@ class StarsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "can un-star resource" do
+  test 'can un-star resource' do
     user = users(:regular_user)
     sign_in user
     material = materials(:good_material)
@@ -41,7 +42,7 @@ class StarsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "cannot star a resource if not logged in" do
+  test 'cannot star a resource if not logged in' do
     material = materials(:good_material)
 
     assert_no_difference('Star.count') do
@@ -51,18 +52,19 @@ class StarsControllerTest < ActionController::TestCase
     assert_response :unauthorized
   end
 
-  test "cannot create bad star" do
+  test 'cannot create bad star' do
     user = users(:regular_user)
     sign_in user
 
     assert_no_difference('Star.count') do
-      post :create, params: { star: { resource_id: Material.maximum(:id) + 1, resource_type: 'Material' }, format: :json }
+      post :create,
+           params: { star: { resource_id: Material.maximum(:id) + 1, resource_type: 'Material' }, format: :json }
     end
 
     assert_response :unprocessable_entity
   end
 
-  test "can view list of stars" do
+  test 'can view list of stars' do
     user = users(:regular_user)
     sign_in user
     material = materials(:good_material)
@@ -71,7 +73,7 @@ class StarsControllerTest < ActionController::TestCase
     get :index
 
     assert_response :success
-    assert_select '#materials div.search-results-count', text: "1 Material", count: 1
+    assert_select '#materials div.search-results-count', text: '1 Material', count: 1
     assert_select '#materials li.masonry-brick a.link-overlay[href=?]', material_path(material), count: 1
   end
 end

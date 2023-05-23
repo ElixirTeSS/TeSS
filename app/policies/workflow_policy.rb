@@ -1,5 +1,6 @@
-class WorkflowPolicy < ResourcePolicy
+# frozen_string_literal: true
 
+class WorkflowPolicy < ResourcePolicy
   def update?
     super || @record.collaborator?(@user)
   end
@@ -13,5 +14,4 @@ class WorkflowPolicy < ResourcePolicy
       Workflow.visible_by(@user)
     end
   end
-
 end

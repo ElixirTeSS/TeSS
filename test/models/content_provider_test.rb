@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class ContentProviderTest < ActiveSupport::TestCase
-
   setup do
     mock_images
   end
@@ -26,31 +27,30 @@ class ContentProviderTest < ActiveSupport::TestCase
 
   test 'should have node' do
     content_provider = content_providers(:goblet)
-    assert content_provider.node == nodes(:good)
+    assert_equal content_provider.node, nodes(:good)
   end
 
   test 'should have contact' do
     # not added
-    assert !content_providers(:organisation_provider).nil?
-    assert content_providers(:organisation_provider).contact.nil?
+    refute_nil content_providers(:organisation_provider)
+    assert_nil content_providers(:organisation_provider).contact
 
     # blank
-    assert !content_providers(:project_provider).nil?
-    assert !content_providers(:project_provider).contact.nil?
+    refute_nil content_providers(:project_provider)
+    refute_nil content_providers(:project_provider).contact
     assert content_providers(:project_provider).contact.blank?
 
     # just email
-    assert !content_providers(:another_portal_provider).nil?
-    assert !content_providers(:another_portal_provider).contact.nil?
+    refute_nil content_providers(:another_portal_provider)
+    refute_nil content_providers(:another_portal_provider).contact
     assert_equal 'user@provider.portal',
                  content_providers(:another_portal_provider).contact
 
     # name and email
-    assert !content_providers(:portal_provider).nil?
-    assert !content_providers(:portal_provider).contact.nil?
+    refute_nil content_providers(:portal_provider)
+    refute_nil content_providers(:portal_provider).contact
     assert_equal 'Jim (jim@provider.portal)',
                  content_providers(:portal_provider).contact
-
   end
 
   test 'should validate content provider type' do
@@ -64,5 +64,4 @@ class ContentProviderTest < ActiveSupport::TestCase
     content_provider.content_provider_type = 'Organisation'
     assert content_provider.valid?
   end
-
 end

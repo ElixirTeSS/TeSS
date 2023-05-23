@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 require 'csv'
 require 'nokogiri'
@@ -27,7 +29,7 @@ module Ingestors
 
     def process_dtls(url)
       ['courses/', 'events/'].each do |url_suffix|
-        docs = Nokogiri::XML(open_url(url + url_suffix + 'feed', raise: true)).xpath('//item')
+        docs = Nokogiri::XML(open_url("#{url}#{url_suffix}feed", raise: true)).xpath('//item')
         docs.each do |event_item|
           begin
             event = OpenStruct.new

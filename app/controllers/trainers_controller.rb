@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The controller for actions related to the Profiles model
 class TrainersController < ApplicationController
   before_action :feature_enabled?
@@ -41,9 +43,8 @@ class TrainersController < ApplicationController
   def trainer_params
     params.require(:trainer).permit(:id, :firstname, :surname, :website,
                                     :orcid, :email, :public, :description,
-                                    :location, :experience, { :language => [] }, { :expertise_academic => [] },
-                                    { :expertise_technical => [] }, { :interest => [] }, { :activity => [] },
-                                    { :fields => [] }, { :social_media => [] })
+                                    :location, :experience, { language: [] }, { expertise_academic: [] },
+                                    { expertise_technical: [] }, { interest: [] }, { activity: [] },
+                                    { fields: [] }, { social_media: [] })
   end
-
 end

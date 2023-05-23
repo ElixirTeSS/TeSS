@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 # The controller for actions related to the EDAM ontology
 class EdamController < ApplicationController
-
   skip_before_action :authenticate_user!, :authenticate_user_from_token!
 
   def terms
@@ -20,9 +21,7 @@ class EdamController < ApplicationController
   def list(terms)
     @terms = terms
 
-    if filter_param
-      @terms = @terms.select { |t| t.preferred_label.downcase.start_with?(filter_param.downcase) }
-    end
+    @terms = @terms.select { |t| t.preferred_label.downcase.start_with?(filter_param.downcase) } if filter_param
 
     render 'index', format: :json
   end
@@ -34,5 +33,4 @@ class EdamController < ApplicationController
       params[:q].chomp('*') # Chop off the * appended automatically by the autocompleter
     end
   end
-
 end

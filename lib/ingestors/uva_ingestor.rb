@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 require 'csv'
 
@@ -29,7 +31,7 @@ module Ingestors
       results = get_json_response url
       data = results.to_h['items']
 
-      return if data.nil? || data.empty?
+      return if data.blank?
 
       # extract materials from results
       data.each do |item|

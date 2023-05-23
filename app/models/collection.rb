@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Collection < ApplicationRecord
   include PublicActivity::Model
   include LogParameterChanges
@@ -10,12 +12,12 @@ class Collection < ApplicationRecord
   has_many :events, through: :items, source: :resource, source_type: 'Event', inverse_of: :collections
   has_many :materials, through: :items, source: :resource, source_type: 'Material', inverse_of: :collections
 
-  #has_one :owner, foreign_key: "id", class_name: "User"
+  # has_one :owner, foreign_key: "id", class_name: "User"
   belongs_to :user
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
-  auto_strip_attributes :title, :description, :image_url, :squish => false
+  auto_strip_attributes :title, :description, :image_url, squish: false
 
   after_commit :index_items, if: :title_previously_changed?
 
@@ -37,7 +39,7 @@ class Collection < ApplicationRecord
         title.downcase.gsub(/^(an?|the) /, '')
       end
       string :user do
-        self.user.username.to_s unless self.user.blank?
+        user.username.to_s if user.present?
       end
       string :keywords, multiple: true
       string :user, multiple: true do
@@ -52,24 +54,28 @@ class Collection < ApplicationRecord
     # :nocov:
   end
 
-  #Overwrites a collections materials and events.
-  #[] or nil will delete
-  def update_resources_by_id(materials=[], events=[])
-    self.update_attribute('materials', materials.uniq.collect{|materials| Material.find_by_id(materials)}.compact) if materials
-    self.update_attribute('events', events.uniq.collect{|events| Event.find_by_id(events)}.compact) if events
+  # Overwrites a collections materials and events.
+  # [] or nil will delete
+  def update_resources_by_id(materials = [], events = [])
+    if materials
+      update_attribute('materials', materials.uniq.collect do |materials|
+                                      Material.find_by(id: materials)
+                                    end.compact)
+    end
+    update_attribute('events', events.uniq.collect { |events| Event.find_by(id: events) }.compact) if events
   end
 
   def self.facet_fields
-    %w( keywords user )
+    %w[keywords user]
   end
 
   def self.visible_by(user)
     if user&.is_admin?
       all
     elsif user
-      references(:collaborations).includes(:collaborations).
-        where("#{self.table_name}.public = :public OR #{self.table_name}.user_id = :user OR collaborations.user_id = :user",
-              public: true, user: user)
+      references(:collaborations).includes(:collaborations)
+                                 .where("#{table_name}.public = :public OR #{table_name}.user_id = :user OR collaborations.user_id = :user",
+                                        public: true, user: user)
     else
       where(public: true)
     end

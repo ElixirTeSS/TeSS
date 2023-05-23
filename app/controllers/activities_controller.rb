@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 # The controller for actions related to the Activities model
 class ActivitiesController < ApplicationController
-
   before_action :set_resource, only: [:index]
   before_action :set_breadcrumbs
 
@@ -24,7 +25,7 @@ class ActivitiesController < ApplicationController
 
   def set_resource
     MODELS.each do |model|
-      parameter_name = model+'_id'
+      parameter_name = "#{model}_id"
       if params.include?(parameter_name)
         resource_model = model.camelcase.constantize
         @resource = (resource_model.respond_to?(:friendly) ? resource_model.friendly : resource_model).find(params[parameter_name])

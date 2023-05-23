@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CookiesController < ApplicationController
   skip_before_action :authenticate_user!, :authenticate_user_from_token!
   before_action :set_cookie_consent_object

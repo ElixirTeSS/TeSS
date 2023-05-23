@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'yaml'
 
 class ConvertEventSerializedTextFieldsToArrays < ActiveRecord::Migration[4.2]
@@ -8,13 +10,13 @@ class ConvertEventSerializedTextFieldsToArrays < ActiveRecord::Migration[4.2]
     add_column :events, :field2, :string, array: true, default: []
 
     # De-serialize data and copy into new columns
-    puts 'Converting serialized attributes to Postgres arrays'
+    Rails.logger.debug 'Converting serialized attributes to Postgres arrays'
     Event.transaction do
       Event.all.each do |e|
-        e.update_column(:keywords2, YAML.load(e.keywords)) unless e.keywords.blank?
-        e.update_column(:category2, YAML.load(e.category)) unless e.category.blank?
-        e.update_column(:field2, YAML.load(e.field)) unless e.field.blank?
-        print '.'
+        e.update_column(:keywords2, YAML.safe_load(e.keywords)) if e.keywords.present?
+        e.update_column(:category2, YAML.safe_load(e.category)) if e.category.present?
+        e.update_column(:field2, YAML.safe_load(e.field)) if e.field.present?
+        Rails.logger.debug '.'
       end
     end
 
@@ -34,13 +36,13 @@ class ConvertEventSerializedTextFieldsToArrays < ActiveRecord::Migration[4.2]
     add_column :events, :field2, :text
 
     # Re-serialize data and copy into old columns
-    puts 'Converting Postgres arrays to serialized attributes'
+    Rails.logger.debug 'Converting Postgres arrays to serialized attributes'
     Event.transaction do
       Event.all.each do |e|
         e.update_column(:keywords2, e.keywords.to_yaml) unless e.keywords.empty?
         e.update_column(:category, e.category2.to_yaml) unless e.category2.empty?
         e.update_column(:field, e.field2.to_yaml) unless e.field2.empty?
-        print '.'
+        Rails.logger.debug '.'
       end
     end
 

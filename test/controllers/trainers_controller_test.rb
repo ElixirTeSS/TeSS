@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class TrainersControllerTest < ActionController::TestCase
@@ -7,8 +9,7 @@ class TrainersControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     trainers = assigns(:trainers)
-    assert_not_nil trainers
+    refute_nil trainers
     assert_equal 1, trainers.size
   end
-
 end

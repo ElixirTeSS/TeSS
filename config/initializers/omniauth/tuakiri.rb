@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 # OpenID Connect configuration for Tuakiri (New Zealand)
-unless Rails.application.secrets.dig(:oidc, :client_id).blank?
+if Rails.application.secrets.dig(:oidc, :client_id).present?
   Devise.omniauth :oidc2, {
     name: :oidc2,
     issuer: Rails.application.secrets.oidc2[:issuer],
@@ -19,7 +21,7 @@ unless Rails.application.secrets.dig(:oidc, :client_id).blank?
       authorization_endpoint: '/Saml2/OIDC/authorization',
       userinfo_endpoint: '/OIDC/userinfo',
       token_endpoint: '/OIDC/token',
-      jwks_uri: '/OIDC/jwks',
+      jwks_uri: '/OIDC/jwks'
     }
   }
 end

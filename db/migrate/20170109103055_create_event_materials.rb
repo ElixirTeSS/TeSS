@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateEventMaterials < ActiveRecord::Migration[4.2]
   def change
     create_table :event_materials do |t|

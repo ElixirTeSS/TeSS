@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SourcesController < ApplicationController
   before_action :set_source, except: [:index, :new, :create, :check_exists]
   before_action :set_content_provider, except: [:index, :check_exists]
@@ -64,8 +66,8 @@ class SourcesController < ApplicationController
       end
     else
       respond_to do |format|
-        format.html { render :nothing => true, :status => 200, :content_type => 'text/html' }
-        format.json { render json: {}, :status => 200, :content_type => 'application/json' }
+        format.html { render nothing: true, status: :ok, content_type: 'text/html' }
+        format.json { render json: {}, status: :ok, content_type: 'application/json' }
       end
     end
   end
@@ -93,8 +95,10 @@ class SourcesController < ApplicationController
     @source.create_activity :destroy, owner: current_user
     @source.destroy
     respond_to do |format|
-      format.html { redirect_to policy(Source).index? ? sources_path : content_provider_path(@content_provider),
-                                notice: 'Source was successfully deleted.' }
+      format.html do
+        redirect_to policy(Source).index? ? sources_path : content_provider_path(@content_provider),
+                    notice: 'Source was successfully deleted.'
+      end
       format.json { head :no_content }
     end
   end
@@ -105,7 +109,7 @@ class SourcesController < ApplicationController
     @source.test_job_id = job_id
 
     respond_to do |format|
-      format.json { render json: { id: job_id }}
+      format.json { render json: { id: job_id } }
     end
   end
 
@@ -164,7 +168,10 @@ class SourcesController < ApplicationController
       add_breadcrumb 'Sources'
 
       if params[:id]
-        add_breadcrumb @source.title, content_provider_source_path(@content_provider, @source) if (@source && !@source.new_record?)
+        if @source && !@source.new_record?
+          add_breadcrumb @source.title,
+                         content_provider_source_path(@content_provider, @source)
+        end
         add_breadcrumb action_name.capitalize.humanize, request.path unless action_name == 'show'
       elsif action_name != 'index'
         add_breadcrumb action_name.capitalize.humanize, request.path
@@ -173,5 +180,4 @@ class SourcesController < ApplicationController
       super
     end
   end
-
 end

@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class IdentifierResolutionTest < ActionDispatch::IntegrationTest
-
   test 'resolve event' do
     event = events(:one)
 

@@ -1,5 +1,6 @@
-class TrainerPolicy < ApplicationPolicy
+# frozen_string_literal: true
 
+class TrainerPolicy < ApplicationPolicy
   def index?
     true
   end
@@ -9,5 +10,4 @@ class TrainerPolicy < ApplicationPolicy
     # that owners and admins only can see their authentication token and email
     true
   end
-
 end

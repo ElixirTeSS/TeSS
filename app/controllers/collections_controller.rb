@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The controller for actions related to the Collection model
 class CollectionsController < ApplicationController
   before_action :feature_enabled?
@@ -44,10 +46,13 @@ class CollectionsController < ApplicationController
 
     # the default date range is given by the highest created_at date of the collection
     @item_class = item_class
-    @since = params[:since]&.to_date || @collection.send(@item_class.table_name).maximum(:created_at) || Time.at(0)
+    @since = params[:since]&.to_date || @collection.send(@item_class.table_name).maximum(:created_at) || Time.zone.at(0)
     @items = @item_class.where('created_at >= ?', @since).order('created_at ASC')
     # If we are looking at Events, only show those that have not yet ended unless params[:past] is set
-    @items = @items.where('"events"."end" > ?', Time.zone.now) unless (@show_past = params[:past]) || params[:type] != 'Event'
+    unless (@show_past = params[:past]) || params[:type] != 'Event'
+      @items = @items.where('"events"."end" > ?',
+                            Time.zone.now)
+    end
   end
 
   # PATCH/PUT /collections/1/curate_#{type}
@@ -127,7 +132,7 @@ class CollectionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def collection_params
-    params.require(:collection).permit(:title, :description, :image, :image_url, :public, { keywords:  [] },
+    params.require(:collection).permit(:title, :description, :image, :image_url, :public, { keywords: [] },
                                        { material_ids: [] }, { event_ids: [] })
   end
 

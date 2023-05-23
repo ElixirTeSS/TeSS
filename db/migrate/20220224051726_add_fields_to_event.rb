@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddFieldsToEvent < ActiveRecord::Migration[5.2]
   def change
     add_column :events, :fields, :string, array: true, default: []

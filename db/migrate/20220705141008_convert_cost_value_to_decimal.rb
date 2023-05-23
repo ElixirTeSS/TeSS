@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ConvertCostValueToDecimal < ActiveRecord::Migration[6.1]
   def up
     unless Event.type_for_attribute('cost_value').type == :decimal

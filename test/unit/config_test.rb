@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class ConfigTest < ActiveSupport::TestCase
@@ -10,12 +12,12 @@ class ConfigTest < ActiveSupport::TestCase
   end
 
   test 'site title should not be nil' do
-    assert_not_nil TeSS::Config.site['title']
+    refute_nil TeSS::Config.site['title']
     assert_equal 'TeSS Test Instance', TeSS::Config.site['title']
   end
 
   test 'site title short should not be nil' do
-    assert_not_nil TeSS::Config.site['title_short']
+    refute_nil TeSS::Config.site['title_short']
     assert_equal 'TTI', TeSS::Config.site['title_short']
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class MaastrichtIngestorTest < ActiveSupport::TestCase
@@ -23,8 +25,8 @@ class MaastrichtIngestorTest < ActiveSupport::TestCase
 
     # run task
     assert_difference 'Event.count', 23 do
-      freeze_time(Time.new(2019)) do
-        VCR.use_cassette("ingestors/maastricht") do
+      freeze_time(Time.new(2019).utc) do
+        VCR.use_cassette('ingestors/maastricht') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end
@@ -32,7 +34,7 @@ class MaastrichtIngestorTest < ActiveSupport::TestCase
     end
 
     assert_equal 23, ingestor.events.count
-    assert ingestor.materials.empty?
+    assert_empty ingestor.materials
     assert_equal 23, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]

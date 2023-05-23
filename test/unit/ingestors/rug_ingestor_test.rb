@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class RugIngestorTest < ActiveSupport::TestCase
@@ -17,14 +19,14 @@ class RugIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::RugIngestor.new
 
     # check event doesn't
-    new_title = "Studium Generale: Work, Work, Work | The Invention and Future of Work - Jason Resnikoff"
+    new_title = 'Studium Generale: Work, Work, Work | The Invention and Future of Work - Jason Resnikoff'
     new_url = 'https://www.rug.nl/about-ug/latest-news/events/calendar/studium-generale/work-jason-resnikoff'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
     assert_difference 'Event.count', 7 do
-      freeze_time(Time.new(2019)) do
-        VCR.use_cassette("ingestors/rug") do
+      freeze_time(Time.new(2019).utc) do
+        VCR.use_cassette('ingestors/rug') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end
@@ -32,7 +34,7 @@ class RugIngestorTest < ActiveSupport::TestCase
     end
 
     assert_equal 7, ingestor.events.count
-    assert ingestor.materials.empty?
+    assert_empty ingestor.materials
     assert_equal 7, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]

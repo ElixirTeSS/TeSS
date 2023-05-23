@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class SubscriptionTest < ActiveSupport::TestCase
@@ -37,7 +39,7 @@ class SubscriptionTest < ActiveSupport::TestCase
     sub = user.subscriptions.build(frequency: 'qwerty', subscribable_type: 'Event')
     assert_nil sub.frequency
     refute sub.valid?
-    assert sub.errors.attribute_names.include?(:frequency)
+    assert_includes sub.errors.attribute_names, :frequency
   end
 
   test 'validates subscribable type' do
@@ -48,11 +50,11 @@ class SubscriptionTest < ActiveSupport::TestCase
 
     sub = user.subscriptions.build(frequency: :daily, subscribable_type: 'Role')
     refute sub.valid?
-    assert sub.errors.attribute_names.include?(:subscribable_type)
+    assert_includes sub.errors.attribute_names, :subscribable_type
 
     sub = user.subscriptions.build(frequency: :daily)
     refute sub.valid?
-    assert sub.errors.attribute_names.include?(:subscribable_type)
+    assert_includes sub.errors.attribute_names, :subscribable_type
   end
 
   test 'can generate and verify unsubscribe code' do
@@ -71,7 +73,7 @@ class SubscriptionTest < ActiveSupport::TestCase
     user = users(:regular_user)
     sub = user.subscriptions.create(frequency: :daily, subscribable_type: 'Event')
 
-    assert_not_nil sub.last_checked_at
+    refute_nil sub.last_checked_at
   end
 
   test 'sets last_checked_at field on check' do
@@ -80,7 +82,7 @@ class SubscriptionTest < ActiveSupport::TestCase
 
     sub.check
 
-    assert_not_nil sub.last_checked_at
+    refute_nil sub.last_checked_at
     assert_not_equal old_date, sub.last_checked_at
   end
 
@@ -144,7 +146,7 @@ class SubscriptionTest < ActiveSupport::TestCase
       end
     end
 
-    assert_not_nil sub.last_sent_at
+    refute_nil sub.last_sent_at
   end
 
   test 'does not send email if empty digest' do
@@ -170,6 +172,6 @@ class SubscriptionTest < ActiveSupport::TestCase
     assert_equal({ type: ['fruit', 'veg'], max_age: '1 month' }.with_indifferent_access, sub.facets_with_max_age)
 
     sub = subscriptions(:event_subscription)
-    assert_equal({ times: ["good", "great"], max_age: '1 week' }.with_indifferent_access, sub.facets_with_max_age)
+    assert_equal({ times: ['good', 'great'], max_age: '1 week' }.with_indifferent_access, sub.facets_with_max_age)
   end
 end

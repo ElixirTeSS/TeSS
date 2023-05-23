@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 require 'csv'
 
@@ -47,21 +49,21 @@ module Ingestors
           next_page = nil
           pagination = results['pagination']
           begin
-            if !(pagination.nil? or pagination['has_more_items'].nil? or pagination['page_number'].nil?) && (pagination['has_more_items'])
+            if !(pagination.nil? || pagination['has_more_items'].nil? || pagination['page_number'].nil?) && (pagination['has_more_items'])
               page = pagination['page_number'].to_i
               next_page = "#{url}/events/?page=#{page + 1}"
             end
           rescue Exception => e
-            puts "format next_page failed with: #{e.message}"
+            Rails.logger.debug "format next_page failed with: #{e.message}"
           end
 
           # check events
           events = results['events']
-          next if events.nil? or events.empty?
+          next if events.blank?
 
           events.each do |item|
             records_read += 1
-            if item['status'].nil? or item['status'] != 'live'
+            if item['status'].nil? || (item['status'] != 'live')
               records_inactive += 1
             else
               # create new event
@@ -78,7 +80,7 @@ module Ingestors
                 event.title = item['name']['text'] unless item['name'].nil?
                 event.url = item['url']
                 event.description = convert_description item['description']['html'] unless item['description'].nil?
-                event.online = if item['online_event'].nil? or item['online_event'] == false
+                event.online = if item['online_event'].nil? || (item['online_event'] == false)
                                  false
                                else
                                  true
@@ -90,10 +92,10 @@ module Ingestors
 
                 # address fields
                 venue = get_eventbrite_venue item['venue_id']
-                unless venue.nil? or venue['address'].nil?
+                unless venue.nil? || venue['address'].nil?
                   address = venue['address']
                   venue = address['address_1']
-                  venue += (', ' + address['address_2']) unless address['address_2'].blank?
+                  venue += ", #{address['address_2']}" if address['address_2'].present?
                   event.venue = venue
                   event.city = address['city']
                   event.country = address['country']
@@ -111,7 +113,7 @@ module Ingestors
                 event.keywords << category['name'] unless category.nil?
                 event.keywords << subcategory['name'] unless subcategory.nil?
 
-                event.capacity = item['capacity'].to_i unless item['capacity'].nil? or item['capacity'] == 'null'
+                event.capacity = item['capacity'].to_i unless item['capacity'].nil? || (item['capacity'] == 'null')
 
                 event.event_types = []
                 format = get_eventbrite_format item['format_id']
@@ -120,13 +122,13 @@ module Ingestors
                   event.event_types << type unless type.nil?
                 end
 
-                event.eligibility = if item['invite_only'].nil? or !item['invite_only']
+                event.eligibility = if item['invite_only'].nil? || !item['invite_only']
                                       'open_to_all'
                                     else
                                       'by_invitation'
                                     end
 
-                if item['is_free'].nil? or !item['is_free']
+                if item['is_free'].nil? || !item['is_free']
                   event.cost_basis = 'charge'
                   event.cost_currency = item['currency']
                 else
@@ -163,7 +165,7 @@ module Ingestors
 
     def populate_eventbrite_formats
       # get formats from Eventbrite
-      url = "https://www.eventbriteapi.com/v3/formats/"
+      url = 'https://www.eventbriteapi.com/v3/formats/'
       response = get_json_response url
       # process formats
       response['formats'].each do |format|
@@ -176,7 +178,7 @@ module Ingestors
 
     def get_eventbrite_venue(id)
       # abort on bad input
-      return nil if id.nil? or id == 'null'
+      return nil if id.nil? || (id == 'null')
 
       # initialize cache
       @eventbrite_objects[:venues] = {} if @eventbrite_objects[:venues].nil?
@@ -199,7 +201,7 @@ module Ingestors
 
     def get_eventbrite_category(id)
       # abort on bad input
-      return nil if id.nil? or id == 'null'
+      return nil if id.nil? || (id == 'null')
 
       # initialize cache
       @eventbrite_objects[:categories] = {} if @eventbrite_objects[:categories].nil?
@@ -214,7 +216,7 @@ module Ingestors
     def populate_eventbrite_categories
       # initialise pagination
       has_more_items = true
-      url = "https://www.eventbriteapi.com/v3/categories/"
+      url = 'https://www.eventbriteapi.com/v3/categories/'
 
       # query until no more pages
       while has_more_items
@@ -226,7 +228,7 @@ module Ingestors
 
         # process categories
         cats = response['categories']
-        unless cats.nil? or !cats.is_a? Array
+        unless cats.nil? || !cats.is_a?(Array)
           cats.each do |cat|
             @eventbrite_objects[:categories][cat['id']] = cat
           end
@@ -246,7 +248,7 @@ module Ingestors
 
     def get_eventbrite_subcategory(id, category_id)
       # abort on bad input
-      return nil if id.nil? or id == 'null'
+      return nil if id.nil? || (id == 'null')
 
       # get category
       category = get_eventbrite_category category_id
@@ -259,7 +261,7 @@ module Ingestors
       subcategories = populate_eventbrite_subcategories id, category if subcategories.nil?
 
       # check for subcategory
-      if !subcategories.nil? and subcategories.is_a?(Array)
+      if !subcategories.nil? && subcategories.is_a?(Array)
         subcategories.each { |sub| return sub if sub['id'] == id }
       end
 
@@ -270,7 +272,7 @@ module Ingestors
     def populate_eventbrite_subcategories(id, category)
       subcategories = nil
       begin
-        url = "#{category['resource_uri']}"
+        url = (category['resource_uri']).to_s
         response = get_json_response url
         # updated cached category
         @eventbrite_objects[:categories][id] = response
@@ -283,7 +285,7 @@ module Ingestors
 
     def get_eventbrite_organizer(id)
       # abort on bad input
-      return nil if id.nil? or id == 'null'
+      return nil if id.nil? || (id == 'null')
 
       # initialize cache
       @eventbrite_objects[:organizers] = {} if @eventbrite_objects[:organizers].nil?

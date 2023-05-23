@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RemoveOldIndexAndForeignKeyFromEditSuggestions < ActiveRecord::Migration[6.1]
   def up
     remove_index :edit_suggestions, :suggestible_id, if_exists: true

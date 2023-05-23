@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 require 'csv'
 require 'nokogiri'
@@ -27,10 +29,9 @@ module Ingestors
 
     def process_leiden(url)
       4.times.each do |i| # always check the first 4 pages, # of pages could be increased if needed
-        unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/leiden.yml')
-          sleep(1)
-        end
-        event_links = Nokogiri::HTML5.parse(open_url("#{url}?pageNumber=#{i+1}", raise: true)).css('#content > ul > li > a')
+        sleep(1) unless Rails.env.test? && File.exist?('test/vcr_cassettes/ingestors/leiden.yml')
+        event_links = Nokogiri::HTML5.parse(open_url("#{url}?pageNumber=#{i + 1}",
+                                                     raise: true)).css('#content > ul > li > a')
         return if event_links.empty?
 
         event_links.each do |event_link|
@@ -55,18 +56,17 @@ module Ingestors
               event.start, event.end = parse_dates("#{date} #{time}")
             when 'Address'
               lines = value.text.strip.split("\n")
+              event.venue = lines.first.strip
               if lines.length > 2
                 # if multi-line, use the first line for venue and get the city from the last line
-                event.venue = lines.first.strip
                 event.city = lines.last.gsub(/[0-9]{4} ?[a-zA-Z]{2}/, '')
               else
                 # if it is a single line just use it as venue
-                event.venue = lines.first.strip
               end
             when 'Room'
               if event.venue
                 # skip the info for now
-                #event.venue += " - #{value.text.strip}"
+                # event.venue += " - #{value.text.strip}"
               else
                 event.venue = value.text.strip
               end
