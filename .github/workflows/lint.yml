@@ -3,14 +3,9 @@ name: Linting
 on: [push, pull_request]
 
 jobs:
-  test:
+  ruby_lint:
     runs-on: ubuntu-latest
     env:
-      DB_HOST: localhost
-      DB_NAME: tess
-      DB_USER: tess
-      DB_PASSWORD: password
-      SECRET_BASE_KEY: test_key
       RAILS_ENV: test
     steps:
       - name: Checkout code
@@ -23,5 +18,16 @@ jobs:
         run: bundle exec bundler-audit --update
       - name: Lint Ruby files
         run: bundle exec rubocop --parallel --format progress
+  erb_lint:
+    runs-on: ubuntu-latest
+    env:
+      RAILS_ENV: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: Lint ERB files
         run: bundle exec erblint --lint-all
