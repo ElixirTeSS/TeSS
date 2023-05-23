@@ -158,4 +158,12 @@ class CollectionTest < ActiveSupport::TestCase
       assert_equal 0, DummyMaterial.index.length
     end
   end
+
+  test 'should strip attributes' do
+    mock_images
+    collection = collections(:one)
+    assert collection.update(title: ' Collection  Title  ', image_url: " http://image.host/another_image.png\n")
+    assert_equal 'Collection  Title', collection.title
+    assert_equal 'http://image.host/another_image.png', collection.image_url
+  end
 end

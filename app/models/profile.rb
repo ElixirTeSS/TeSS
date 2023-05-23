@@ -1,6 +1,7 @@
 require 'uri'
 
 class Profile < ApplicationRecord
+  auto_strip_attributes :firstname, :surname, :website, :orcid, squish: false
   belongs_to :user, inverse_of: :profile
 
   before_validation :check_orcid

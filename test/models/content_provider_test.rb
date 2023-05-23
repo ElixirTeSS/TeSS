@@ -65,4 +65,15 @@ class ContentProviderTest < ActiveSupport::TestCase
     assert content_provider.valid?
   end
 
+  test 'should strip attributes' do
+    mock_images
+    WebMock.stub_request(:any, 'http://website.com').to_return(status: 200, body: 'hi')
+    content_provider = content_providers(:goblet)
+    assert content_provider.update(title: ' Provider  Title  ',
+                                   url: "\t  \t  http://website.com ",
+                                   image_url: " http://image.host/another_image.png\n")
+    assert_equal 'Provider  Title', content_provider.title
+    assert_equal 'http://website.com', content_provider.url
+    assert_equal 'http://image.host/another_image.png', content_provider.image_url
+  end
 end

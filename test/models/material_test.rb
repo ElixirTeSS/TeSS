@@ -152,8 +152,8 @@ class MaterialTest < ActiveSupport::TestCase
     assert_equal [], @material.authors
   end
 
-  test 'should strip bad values from authors array input' do
-    authors = ['john', 'bob', nil, [], '', 'frank']
+  test 'should remove bad values and strip authors array input' do
+    authors = ['john', 'bob', nil, [], '', 'frank ']
     expected_authors = ['john', 'bob', 'frank']
     assert @material.update(authors: authors)
     assert_equal expected_authors, @material.authors
@@ -535,4 +535,9 @@ class MaterialTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should strip attributes' do
+    assert @material.update(title: ' Material  Title  ', url: " https://material.com\n")
+    assert_equal 'Material  Title', @material.title
+    assert_equal 'https://material.com', @material.url
+  end
 end

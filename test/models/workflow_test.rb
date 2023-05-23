@@ -104,4 +104,9 @@ class WorkflowTest < ActiveSupport::TestCase
     assert_equal 'something', workflow.difficulty_level
     assert workflow.errors.added?(:difficulty_level, 'must be a controlled vocabulary term')
   end
+
+  test 'should strip attributes' do
+    assert @wf1.update(title: ' Workflow  Title  ')
+    assert_equal 'Workflow  Title', @wf1.title
+  end
 end
