@@ -138,6 +138,13 @@ GEM
       coderay (>= 1.0.0)
       erubi (>= 1.0.0)
       rack (>= 0.9.0)
+    better_html (2.0.1)
+      actionview (>= 6.0)
+      activesupport (>= 6.0)
+      ast (~> 2.0)
+      erubi (~> 1.4)
+      parser (>= 2.4)
+      smart_properties
     bindata (2.4.10)
     bindex (0.8.1)
     binding_of_caller (1.0.0)
@@ -149,6 +156,7 @@ GEM
     bootstrap-sass (3.4.1)
       autoprefixer-rails (>= 5.2.1)
       sassc (>= 2.0.0)
+    brakeman (5.4.1)
     builder (3.2.4)
     bundler-audit (0.9.1)
       bundler (>= 1.2.0, < 3)
@@ -198,6 +206,13 @@ GEM
       scanf (~> 1.0)
       sxp (~> 1.2)
       unicode-types (~> 1.7)
+    erb_lint (0.4.0)
+      activesupport
+      better_html (>= 2.0.1)
+      parser (>= 2.7.1.4)
+      rainbow
+      rubocop
+      smart_properties
     erubi (1.12.0)
     ethon (0.16.0)
       ffi (>= 1.15.0)
@@ -678,6 +693,7 @@ GEM
     slim (4.1.0)
       temple (>= 0.7.6, < 0.9)
       tilt (>= 2.0.6, < 2.1)
+    smart_properties (1.17.0)
     sort_alphabetical (1.1.0)
       unicode_utils (>= 1.2.2)
     sparql (3.2.4)
@@ -779,6 +795,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.4)
   bootstrap-datepicker-rails (~> 1.6.4.1)
   bootstrap-sass (>= 3.4.1)
+  brakeman
   bundler-audit
   by_star!
   byebug
@@ -787,6 +804,7 @@ DEPENDENCIES
   devise
   devise_invitable (~> 2.0.5)
   dynamic_sitemaps!
+  erb_lint
   eventbrite_sdk
   fakeredis (= 0.9.0)
   font-awesome-sass (~> 4.7.0)

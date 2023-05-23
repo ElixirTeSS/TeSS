@@ -177,6 +177,7 @@ group :development, :test do
   gem 'simplecov-lcov', require: false
   gem 'brakeman'
   gem 'bundler-audit'
+  gem 'erb_lint'
 end
 
 group :development do
