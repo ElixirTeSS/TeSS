@@ -178,6 +178,8 @@ group :development, :test do
   gem 'brakeman'
   gem 'bundler-audit'
   gem 'erb_lint'
+  gem 'rubocop-minitest'
+  gem 'rubocop-rails'
 end
 
 group :development do
