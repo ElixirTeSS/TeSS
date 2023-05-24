@@ -1342,7 +1342,7 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   test 'should hide fields' do
-    with_settings(feature: { materials_disabled: ['licence', 'scientific_topics', 'resource_type'] }) do 
+    with_settings(solr_enabled: true, feature: { materials_disabled: ['licence', 'scientific_topics', 'resource_type'] }) do 
       sign_in users(:regular_user)
       get :new
       assert_response :success
