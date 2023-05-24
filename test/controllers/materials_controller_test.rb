@@ -1324,4 +1324,18 @@ class MaterialsControllerTest < ActionController::TestCase
       assert_select '#q[placeholder=?]', 'Search materials...'
     end
   end
+
+  test 'should hide fields' do
+    with_settings(feature: { materials_disabled: ['licence', 'scientific_topics', 'resource_type'] }) do 
+      sign_in users(:regular_user)
+      get :new
+      assert_response :success
+      assert_select "div label", {:count=>1, :text=>"Description"}
+      assert_select "div label", {:count=>1, :text=>"Keywords"}
+      assert_select "div label", {:count=>1, :text=>"Operations"}
+      assert_select "div label", {:count=>0, :text=>"Licence"}
+      assert_select "div label", {:count=>0, :text=>"Resource types"}
+      assert_select "div label", {:count=>0, :text=>"Scientific topics"}
+    end
+  end
 end
