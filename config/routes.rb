@@ -58,17 +58,17 @@ Rails.application.routes.draw do
 
   resources :events, concerns: :activities do
     collection do
-      get 'count'
+      get :count
     end
     member do
-      get 'redirect'
-      post 'add_term'
-      post 'add_data'
-      post 'reject_term'
-      post 'reject_data'
-      get 'report'
-      patch 'report', to: 'events#update_report'
-      get 'clone', to: 'events#clone'
+      get :redirect
+      post :add_term
+      post :add_data
+      post :reject_term
+      post :reject_data
+      get :report
+      patch :report, to: 'events#update_report'
+      get :clone
     end
   end
 
@@ -106,9 +106,10 @@ Rails.application.routes.draw do
       post :reject_data
       post :add_term
       post :add_data
+      get :clone
     end
     collection do
-      get 'count'
+      get :count
     end
   end
 
@@ -118,7 +119,7 @@ Rails.application.routes.draw do
 
   resources :subscriptions, only: [:show, :index, :create, :destroy] do
     member do
-      get 'unsubscribe'
+      get :unsubscribe
     end
   end
 

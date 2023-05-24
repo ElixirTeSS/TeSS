@@ -471,4 +471,68 @@ class MaterialTest < ActiveSupport::TestCase
     refute material.valid?
     assert material.errors.added?(:url, :url, value: 'ftp://something/something')
   end
+
+  test 'duplicate' do
+    user = users(:regular_user)
+    node = nodes(:westeros)
+    event = events(:one)
+    material = Material.new(
+      title: 'A material',
+      description: 'Very helpful',
+      user: user,
+      url: 'https://materials.com/1',
+      keywords: ['cool', 'great'],
+      nodes: [node],
+      external_resources_attributes: { '0' => { title: 'test', url: 'https://external-resource.com' } },
+      events: [event],
+      scientific_topic_names: ['Proteins', 'DNA'],
+      operation_names: ['Variant calling']
+    )
+
+    assert material.save
+    dup = nil
+    assert material.slug
+
+    # Duplicating should not create any records
+    assert_no_difference('Material.count') do
+      assert_no_difference('OntologyTermLink.count') do
+        assert_no_difference('NodeLink.count') do
+          assert_no_difference('ExternalResource.count') do
+            assert_no_difference('EventMaterial.count') do
+              dup = material.duplicate
+
+              assert_equal 'A material', dup.title
+              assert_equal 'Very helpful', dup.description
+              assert_equal ['cool', 'great'], dup.keywords
+              assert_nil dup.id
+              assert_nil dup.slug
+              assert_nil dup.url
+              assert_equal [event], dup.events
+              assert_equal [node], dup.nodes
+              assert_equal ['Proteins', 'DNA'], dup.scientific_topic_names
+              assert_equal ['Variant calling'], dup.operation_names
+              assert_equal 1, dup.external_resources.length
+              assert_equal 'test', dup.external_resources.first.title
+              assert_equal 'https://external-resource.com', dup.external_resources.first.url
+            end
+          end
+        end
+      end
+    end
+
+    # Records are created when duplicate is saved
+    assert_difference('Material.count', 1) do
+      assert_difference('OntologyTermLink.count', 3) do
+        assert_difference('NodeLink.count', 1) do
+          assert_difference('ExternalResource.count', 1) do
+            assert_difference('EventMaterial.count', 1) do
+              dup.url = 'https://materials.com/2'
+              assert dup.save
+            end
+          end
+        end
+      end
+    end
+  end
+
 end
