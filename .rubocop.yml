@@ -7,15 +7,34 @@ Layout/LineLength:
   Exclude:
     - 'test/*'
 
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
 Metrics/MethodLength:
+  Enabled: false
   Max: 20
   Exclude:
     - 'test/*'
+
+Metrics/ParameterLists:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
 
 Rails/OutputSafety:
   Enabled: false
 
 Rails/RefuteMethods:
+  Enabled: false
+
+Rails/SkipsModelValidations:
   Enabled: false
 
 Style/ClassAndModuleChildren:
