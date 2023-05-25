@@ -401,4 +401,11 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 'MixedCaseUsername', user.username
     assert_equal 'mixedcaseemail@example.com', user.email
   end
+
+  test 'should strip attributes' do
+    user = User.new(@user_params.merge(username: ' space ', email: ' new-user@example.com '))
+    assert user.save
+    assert_equal 'space', user.username
+    assert_equal 'new-user@example.com', user.email
+  end
 end

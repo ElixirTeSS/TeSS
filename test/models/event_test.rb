@@ -537,4 +537,10 @@ class EventTest < ActiveSupport::TestCase
       end
     end
   end
+
+  test 'should strip attributes' do
+    assert @event.update(title: ' Event  Title  ', url: " https://event.com\n")
+    assert_equal 'Event  Title', @event.title
+    assert_equal 'https://event.com', @event.url
+  end
 end

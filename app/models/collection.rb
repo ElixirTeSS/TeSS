@@ -15,7 +15,7 @@ class Collection < ApplicationRecord
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
-  auto_strip_attributes :title, :description, :image_url, :squish => false
+  auto_strip_attributes :title, :description, :image_url, squish: false
 
   after_commit :index_items, if: :title_previously_changed?
 

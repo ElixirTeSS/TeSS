@@ -29,7 +29,7 @@ class AutocompleteSuggestionTest < ActiveSupport::TestCase
 
   test 'add' do
     assert_difference('AutocompleteSuggestion.count', 2) do
-      AutocompleteSuggestion.add('keywords', 'apple', 'banana', 'grape', 'pineapple')
+      AutocompleteSuggestion.add('keywords', 'apple', 'banana', 'grape', 'pineapple', 'banana ')
       assert AutocompleteSuggestion.where(field: 'keywords', value: 'apple').exists?
     end
 
@@ -59,7 +59,7 @@ class AutocompleteSuggestionTest < ActiveSupport::TestCase
     id = suggestion.id
 
     assert_difference('AutocompleteSuggestion.count', -3) do
-      AutocompleteSuggestion.refresh('keywords', 'apple', 'starfruit')
+      AutocompleteSuggestion.refresh('keywords', 'apple', 'starfruit', 'apple ')
     end
 
     assert_equal id, AutocompleteSuggestion.where(field: 'keywords', value: 'apple').first.id
@@ -81,7 +81,7 @@ class AutocompleteSuggestionTest < ActiveSupport::TestCase
     end
 
     assert_difference('AutocompleteSuggestion.count', 1) do
-      e.keywords = ['AppLE', 'banana', 'grape', 'pineapple']
+      e.keywords = ['AppLE', 'banana', 'grape', 'pineapple', 'banana ']
       e.save!
     end
 

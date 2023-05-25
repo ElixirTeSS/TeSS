@@ -17,7 +17,7 @@ class WurIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::WurIngestor.new
 
     # check event doesn't
-    new_title = ' Genetic Diversity - key to transitions in agriculture and forestry '
+    new_title = 'Genetic Diversity - key to transitions in agriculture and forestry'
     new_url = 'https://www.wur.nl/en/activity/genetic-diversity-key-to-transitions-in-agriculture-and-forestry-1.htm'
     refute Event.where(title: new_title, url: new_url).any?
 

@@ -88,7 +88,7 @@ class Material < ApplicationRecord
   
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
-  auto_strip_attributes :title, :description, :url, :squish => false
+  auto_strip_attributes :title, :description, :url, squish: false
 
   validates :title, :description, :url, presence: true
   validates :url, url: true
