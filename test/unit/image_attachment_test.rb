@@ -27,6 +27,7 @@ class ImageAttachmentTest < ActiveSupport::TestCase
     refute provider.image?
 
     provider.image = File.new(File.join(Rails.root, 'test/fixtures/files/image.png'))
+
     assert provider.save
 
     assert provider.image_url.blank?
@@ -41,6 +42,7 @@ class ImageAttachmentTest < ActiveSupport::TestCase
     old_url = provider.image.url
 
     provider.image_url = 'http://image.host/another_image.png'
+
     assert provider.save
 
     assert_not_equal old_size, provider.image.size
@@ -57,6 +59,7 @@ class ImageAttachmentTest < ActiveSupport::TestCase
     old_url = provider.image.url
 
     provider.image_url = 'http://image.host/another_image.png'
+
     assert provider.save
 
     assert_not_equal old_size, provider.image.size

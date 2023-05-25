@@ -21,6 +21,7 @@ class LeidenIngestorTest < ActiveSupport::TestCase
     # check event doesn't
     new_title = 'Data Carpentry Workshop for the Social Sciences'
     new_url = 'https://www.library.universiteitleiden.nl/events/2023/02/data-carpentry-workshop'
+
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
@@ -41,6 +42,7 @@ class LeidenIngestorTest < ActiveSupport::TestCase
 
     # check event does exist
     event = Event.where(title: new_title, url: new_url).first
+
     assert event
     assert_equal new_title, event.title
     assert_equal new_url, event.url

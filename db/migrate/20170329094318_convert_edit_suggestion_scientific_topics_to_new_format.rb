@@ -12,7 +12,7 @@ class ConvertEditSuggestionScientificTopicsToNewFormat < ActiveRecord::Migration
     Rails.logger.debug 'Creating ScientificTopicLinks for EditSuggestions'
     EditSuggestion.all.each do |es|
       es.scientific_topics_old.each do |topic|
-        unless es.scientific_topic_links.where(term_uri: topic.class_id).exists?
+        unless es.scientific_topic_links.exists?(term_uri: topic.class_id)
           es.scientific_topic_links.create(term_uri: topic.class_id)
         end
       end

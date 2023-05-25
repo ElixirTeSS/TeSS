@@ -34,7 +34,7 @@ class LicenceDictionary < Dictionary
       uris = data['see_also'] || []
       uris << data['reference']
       uris << data['details_url']
-      uris.reject(&:blank?).each do |uri|
+      uris.compact_blank.each do |uri|
         @uri_mapping[uri] = id
       end
     end

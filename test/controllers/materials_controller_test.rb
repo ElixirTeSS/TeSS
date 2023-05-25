@@ -37,6 +37,7 @@ class MaterialsControllerTest < ActionController::TestCase
   # INDEX TESTS
   test 'should get index' do
     get :index
+
     assert_response :success
     assert_select '#content h2', text: 'Training materials'
     refute_nil assigns(:materials)
@@ -46,6 +47,7 @@ class MaterialsControllerTest < ActionController::TestCase
     with_settings(solr_enabled: true) do
       Material.stub(:search_and_filter, MockSearch.new(Material.all)) do
         get :index, params: { q: 'breakdance for beginners', keywords: 'dancing' }
+
         assert_response :success
         assert_not_empty assigns(:materials)
         assert_select '.searchbox-sm form[action=?]', materials_path
@@ -58,6 +60,7 @@ class MaterialsControllerTest < ActionController::TestCase
     @material.save!
 
     get :index, params: { format: :json }
+
     assert_response :success
     refute_nil assigns(:materials)
     assert_valid_legacy_json_response
@@ -71,6 +74,7 @@ class MaterialsControllerTest < ActionController::TestCase
     @material.save!
 
     get :index, params: { format: :json_api }
+
     assert_response :success
     refute_nil assigns(:materials)
     assert_valid_json_api_response
@@ -94,6 +98,7 @@ class MaterialsControllerTest < ActionController::TestCase
     with_settings(solr_enabled: true) do
       Material.stub(:search_and_filter, MockSearch.new(Material.all)) do
         get :index, params: { q: 'breakdance for beginners', keywords: 'dancing', format: :json_api }
+
         assert_response :success
         refute_nil assigns(:materials)
         assert_valid_json_api_response
@@ -117,6 +122,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'admins should be able to directly load failing records' do
     sign_in users(:admin)
     get :show, params: { id: @failing_material }
+
     assert_response :success
   end
 
@@ -124,6 +130,7 @@ class MaterialsControllerTest < ActionController::TestCase
     sign_in users(:regular_user)
     @monitor.update(failed_at: DateTime.new(2023, 4, 2))
     get :show, params: { id: @failing_material }
+
     assert_response :success
     assert_select '.broken-link-notice', text: /this material's URL.+since 2 April 2023/
   end
@@ -132,25 +139,30 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'should get new' do
     sign_in users(:regular_user)
     get :new
+
     assert_response :success
   end
 
   test 'should get new page for logged in users only' do
     # Redirect to login if not logged in
     get :new
+
     assert_response :redirect
     sign_in users(:regular_user)
     # Success for everyone else
     get :new
+
     assert_response :success
     sign_in users(:admin)
     get :new
+
     assert_response :success
   end
 
   test 'should not get new page for basic users' do
     sign_in users(:basic_user)
     get :new
+
     assert_response :forbidden
   end
 
@@ -158,6 +170,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'should not get edit page for not logged in users' do
     # Not logged in = Redirect to login
     get :edit, params: { id: @material }
+
     assert_redirected_to new_user_session_path
   end
 
@@ -165,6 +178,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'should get edit for material owner' do
     sign_in users(:regular_user)
     get :edit, params: { id: @material }
+
     assert_response :success
   end
 
@@ -172,18 +186,21 @@ class MaterialsControllerTest < ActionController::TestCase
     # Owner of material logged in = SUCCESS
     sign_in users(:admin)
     get :edit, params: { id: @material }
+
     assert_response :success
   end
 
   test 'should get edit for curator' do
     sign_in users(:curator)
     get :edit, params: { id: @material }
+
     assert_response :success
   end
 
   test 'should get edit for content provider owner' do
     sign_in users(:curator)
     get :edit, params: { id: materials(:scraper_user_material) }
+
     assert_response :success
   end
 
@@ -191,6 +208,7 @@ class MaterialsControllerTest < ActionController::TestCase
     # Administrator = SUCCESS
     sign_in users(:another_regular_user)
     get :edit, params: { id: @material }
+
     assert :forbidden
   end
 
@@ -198,6 +216,7 @@ class MaterialsControllerTest < ActionController::TestCase
     @material.content_provider.add_editor users(:another_regular_user)
     sign_in users(:another_regular_user)
     get :edit, params: { id: @material }
+
     assert_response :success
   end
 
@@ -230,6 +249,7 @@ class MaterialsControllerTest < ActionController::TestCase
     test_url = 'https://test.of.create/with/optionals_via_post'
     test_material = materials(:material_with_optionals)
     test_provider = content_providers(:portal_provider)
+
     refute_nil test_material, 'missing reference material'
     refute_nil test_provider, 'missing reference provider'
 
@@ -276,6 +296,7 @@ class MaterialsControllerTest < ActionController::TestCase
                   url: test_url,
                   content_provider_id: test_provider.id }
     }
+
     assert_response :success
     assert_equal 'application/json; charset=utf-8', response.content_type, 'response content type not matched'
 
@@ -371,6 +392,7 @@ class MaterialsControllerTest < ActionController::TestCase
     @material.save!
 
     get :show, params: { id: @material, format: :json }
+
     assert_response :success
     assert assigns(:material)
     assert_valid_legacy_json_response
@@ -384,6 +406,7 @@ class MaterialsControllerTest < ActionController::TestCase
     @material.save!
 
     get :show, params: { id: @material, format: :json_api }
+
     assert_response :success
     assert assigns(:material)
     assert_valid_json_api_response
@@ -401,44 +424,54 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'should update material' do
     sign_in @material.user
     patch :update, params: { id: @material, material: @updated_material }
+
     assert_redirected_to material_path(assigns(:material))
   end
 
   test 'should update material if curator' do
     sign_in users(:curator)
+
     assert_not_equal @material.user, users(:curator)
     patch :update, params: { id: @material, material: @updated_material }
+
     assert_redirected_to material_path(assigns(:material))
   end
 
   test 'should update material if content provider owner' do
     material = materials(:scraper_user_material)
     user = material.content_provider.user
+
     assert_not_equal material.user, user
     assert_equal material.content_provider.user, user
 
     sign_in user
     patch :update, params: { id: material, material: @updated_material }
+
     assert_redirected_to material_path(assigns(:material))
   end
 
   test 'should not update material if not owner or curator etc.' do
     sign_in users(:collaborative_user)
+
     assert_not_equal @material.user, users(:collaborative_user)
     patch :update, params: { id: @material, material: @updated_material }
+
     assert_response :forbidden
   end
 
   test 'should update material if approved editor' do
     @material.content_provider.add_editor users(:collaborative_user)
     sign_in users(:collaborative_user)
+
     assert_not_equal @material.user, users(:curator)
     patch :update, params: { id: @material, material: @updated_material }
+
     assert_redirected_to material_path(assigns(:material))
   end
 
   test 'should apply edit suggestions to material' do
     sign_in users(:admin)
+
     assert_empty @material_with_suggestions.scientific_topics
     assert_not_equal @material_with_suggestions.edit_suggestion, nil
     get :show, params: { id: @material_with_suggestions } do
@@ -454,7 +487,7 @@ class MaterialsControllerTest < ActionController::TestCase
     end
     patch :update, params: { id: @material_with_suggestions, material: @updated_material_with_suggestions } do
       assert_redirected_to material_path(assigns(:material))
-      assert_equal @material_with_suggestions.edit_suggestion, nil
+      assert_nil(@material_with_suggestions.edit_suggestion)
     end
   end
 
@@ -515,6 +548,7 @@ class MaterialsControllerTest < ActionController::TestCase
   # BREADCRUMBS
   test 'breadcrumbs for materials index' do
     get :index
+
     assert_response :success
     assert_select 'div.breadcrumbs', text: /Home/, count: 1 do
       assert_select 'a[href=?]', root_path, count: 1
@@ -524,6 +558,7 @@ class MaterialsControllerTest < ActionController::TestCase
 
   test 'breadcrumbs for showing material' do
     get :show, params: { id: @material }
+
     assert_response :success
     assert_select 'div.breadcrumbs', text: /Home/, count: 1 do
       assert_select 'a[href=?]', root_path, count: 1
@@ -537,6 +572,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'breadcrumbs for editing material' do
     sign_in users(:regular_user)
     get :edit, params: { id: @material }
+
     assert_response :success
     assert_select 'div.breadcrumbs', text: /Home/, count: 1 do
       assert_select 'a[href=?]', root_path, count: 1
@@ -553,6 +589,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'breadcrumbs for creating new material' do
     sign_in users(:regular_user)
     get :new
+
     assert_response :success
     assert_select 'div.breadcrumbs', text: /Home/, count: 1 do
       assert_select 'a[href=?]', root_path, count: 1
@@ -567,6 +604,7 @@ class MaterialsControllerTest < ActionController::TestCase
 
   test 'material has correct layout' do
     get :show, params: { id: @material }
+
     assert_response :success
     assert_select 'h2', text: @material.title # Has Title
     assert_select 'a.btn', text: 'View material', count: 1 do
@@ -580,6 +618,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'do not show action buttons when not owner or admin' do
     sign_in users(:another_regular_user)
     get :show, params: { id: @material }
+
     assert_select 'a.btn[href=?]', edit_material_path(@material), count: 0 # No Edit
     assert_select 'a.btn[href=?]', material_path(@material), count: 0 # No Edit
   end
@@ -587,6 +626,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'show action buttons when owner' do
     sign_in users(:regular_user)
     get :show, params: { id: @material }
+
     assert_select 'a.btn[href=?]', edit_material_path(@material), count: 1
     assert_select 'a.btn[href=?]', material_path(@material), text: 'Delete', count: 1
   end
@@ -594,6 +634,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'show action buttons when admin' do
     sign_in users(:admin)
     get :show, params: { id: @material }
+
     assert_select 'a.btn[href=?]', edit_material_path(@material), count: 1
     assert_select 'a.btn[href=?]', material_path(@material), text: 'Delete', count: 1
   end
@@ -602,6 +643,7 @@ class MaterialsControllerTest < ActionController::TestCase
     @material.content_provider.add_editor users(:another_regular_user)
     sign_in users(:another_regular_user)
     get :show, params: { id: @material }
+
     assert_select 'a.btn[href=?]', edit_material_path(@material), count: 1
     assert_select 'a.btn[href=?]', material_path(@material), text: 'Delete', count: 1
   end
@@ -614,6 +656,7 @@ class MaterialsControllerTest < ActionController::TestCase
                   url: 'whatever.com',
                   content_provider_id: @material.content_provider_id }
     }
+
     assert_response :success
     assert_equal(JSON.parse(response.body)['id'], @material.id)
   end
@@ -625,6 +668,7 @@ class MaterialsControllerTest < ActionController::TestCase
                   url: @material.url,
                   content_provider_id: @material.content_provider_id }
     }
+
     assert_response :success
     assert_equal(JSON.parse(response.body)['id'], @material.id)
   end
@@ -634,6 +678,7 @@ class MaterialsControllerTest < ActionController::TestCase
       format: :json,
       material: { url: 'http://no-such-url.com' }
     }
+
     assert_response :success
     assert_equal '{}', response.body
   end
@@ -643,12 +688,14 @@ class MaterialsControllerTest < ActionController::TestCase
       format: :json,
       material: { url: nil }
     }
+
     assert_response :success
     assert_equal '{}', response.body
   end
 
   test 'should display filters on index' do
     get :index
+
     assert_select 'h4.nav-heading', text: /Content provider/, count: 0
     assert_select 'li.masonry-brick', count: Material.count
   end
@@ -657,6 +704,7 @@ class MaterialsControllerTest < ActionController::TestCase
     scraper_role = Role.fetch('scraper_user')
     scraper_user = User.where(role_id: scraper_role.id).first
     material_title = 'horse'
+
     assert scraper_user
     assert_difference('Material.count') do
       post :create, params: {
@@ -681,6 +729,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'should not create new material without valid authentication token' do
     scraper_role = Role.fetch('scraper_user')
     scraper_user = User.where(role_id: scraper_role.id).first
+
     assert scraper_user
 
     assert_no_difference('Material.count') do
@@ -803,6 +852,7 @@ class MaterialsControllerTest < ActionController::TestCase
 
     assert_redirected_to material_path(assigns(:material))
     resource = assigns(:material).external_resources.first
+
     assert_equal 'Cool link', resource.title
     assert_equal 'https://tess.elixir-uk.org/', resource.url
   end
@@ -871,6 +921,7 @@ class MaterialsControllerTest < ActionController::TestCase
     topic_two = Edam::Ontology.instance.lookup('http://edamontology.org/topic_0078')
     topics = [topic_one.preferred_label, topic_two.preferred_label]
     @material.scientific_topic_names = topics
+
     assert_not_empty @material.scientific_topics
     assert_equal [topic_one, topic_two], @material.scientific_topics
   end
@@ -878,6 +929,7 @@ class MaterialsControllerTest < ActionController::TestCase
     topic_one = Edam::Ontology.instance.lookup('http://edamontology.org/topic_0154')
     topics = topic_one.preferred_label
     @material.scientific_topic_names = topics
+
     assert_not_empty @material.scientific_topics
     assert_equal [topic_one], @material.scientific_topics
   end
@@ -886,6 +938,7 @@ class MaterialsControllerTest < ActionController::TestCase
     synonym_topic = Edam::Ontology.instance.lookup('http://edamontology.org/topic_0092')
     topics = synonym_topic.has_exact_synonym
     @material.scientific_topic_names = topics
+
     assert_equal [synonym_topic], @material.scientific_topics
   end
 
@@ -893,12 +946,14 @@ class MaterialsControllerTest < ActionController::TestCase
     narrow_topic = Edam::Ontology.instance.lookup('http://edamontology.org/topic_3957')
     topics = narrow_topic.has_narrow_synonym
     @material.scientific_topic_names = topics
+
     assert_equal [narrow_topic], @material.scientific_topics
   end
 
   test 'set topics to nil if empty array passed' do
     topics = []
     @material.scientific_topic_names = topics
+
     assert_empty @material.scientific_topics
   end
 
@@ -1051,6 +1106,7 @@ class MaterialsControllerTest < ActionController::TestCase
     end
 
     parsed_response = JSON.parse(response.body)
+
     assert_equal material.title, parsed_response['title'], 'Title should not have changed'
     assert_equal 'new description', parsed_response['description']
   end
@@ -1061,6 +1117,7 @@ class MaterialsControllerTest < ActionController::TestCase
 
     sign_in @material.user
     patch :update, params: { id: @material, material: { title: 'new title' } }
+
     assert_redirected_to material_path(assigns(:material))
 
     assert_equal 'new title', assigns(:material).title
@@ -1241,6 +1298,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'can view material with external resources' do
     material = materials(:material_with_external_resource)
     get :show, params: { id: material }
+
     assert_response :success
 
     assert_select '.external-resources-box div.bounding-box', count: material.external_resources.count
@@ -1282,6 +1340,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'can render embedded youtube video' do
     sign_in users(:regular_user)
     get :show, params: { id: materials(:youtube_video_material) }
+
     assert_response :success
 
     assert_select 'div.embedded-content iframe[src=?]', 'https://www.youtube.com/embed/1T_2xMTQCv4'
@@ -1290,6 +1349,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'no embedded content section if not available' do
     sign_in users(:regular_user)
     get :show, params: { id: materials(:good_material) }
+
     assert_response :success
 
     assert_select 'div.embedded-content', count: 0
@@ -1328,6 +1388,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'should clone material' do
     sign_in @material.user
     get :clone, params: { id: @material }
+
     assert_response :success
     assert_nil assigns(:material).url
     assert_nil assigns(:material).id
@@ -1338,6 +1399,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'should not clone material if no permission' do
     sign_in users(:another_regular_user)
     get :clone, params: { id: @material }
+
     assert_response :forbidden
   end
 end

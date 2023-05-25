@@ -56,6 +56,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     end
 
     body = email.text_part.body.to_s
+
     assert_includes body, 'Collections'
     assert_includes body, collaborating_collection.title
     assert_includes body, @routes.curate_materials_collection_url(collaborating_collection)
@@ -107,6 +108,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     end
 
     html = email.html_part.body.to_s
+
     assert_includes html, 'Collections' # regular_user is owner of some collections
     assert_includes html, collections(:one).title
     assert_includes html, @routes.curate_materials_collection_url(collaborating_collection)

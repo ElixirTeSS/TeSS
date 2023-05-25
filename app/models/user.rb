@@ -49,12 +49,12 @@ class User < ApplicationRecord
 
   has_many :collaborations, dependent: :destroy
 
+  before_save :set_username_for_invitee
   before_create :set_default_role, :set_default_profile
   before_create :skip_email_confirmation_for_non_production
   before_update :skip_email_reconfirmation_for_non_production
-  before_destroy :reassign_resources
   after_update :react_to_role_change
-  before_save :set_username_for_invitee
+  before_destroy :reassign_resources
 
   # Include default devise modules. Others available are: :lockable, :timeoutable
   if TeSS::Config.feature['registration']

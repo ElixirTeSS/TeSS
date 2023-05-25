@@ -21,6 +21,7 @@ class DansIngestorTest < ActiveSupport::TestCase
     # check event doesn't
     new_title = 'Open Hour SSH: live Q&A on Monday'
     new_url = 'https://dans.knaw.nl/en/agenda/open-hour-ssh-live-qa-on-monday-2/'
+
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
@@ -41,6 +42,7 @@ class DansIngestorTest < ActiveSupport::TestCase
 
     # check event does exist
     event = Event.where(title: new_title, url: new_url).first
+
     assert event
     assert_equal new_title, event.title
     assert_equal new_url, event.url

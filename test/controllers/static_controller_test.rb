@@ -7,18 +7,19 @@ class StaticControllerTest < ActionController::TestCase
 
   test 'should get home' do
     get :home
+
     assert_response :success
   end
 
   test 'should show tabs for enabled features' do
-    features = { 'events': true,
-                 'materials': true,
-                 'elearning_materials': true,
-                 'workflows': true,
-                 'collections': true,
-                 'content_providers': true,
-                 'trainers': true,
-                 'nodes': true }
+    features = { events: true,
+                 materials: true,
+                 elearning_materials: true,
+                 workflows: true,
+                 collections: true,
+                 content_providers: true,
+                 trainers: true,
+                 nodes: true }
 
     with_settings(feature: features) do
       get :home
@@ -40,14 +41,14 @@ class StaticControllerTest < ActionController::TestCase
   end
 
   test 'should not show tabs for disabled features' do
-    features = { 'events': false,
-                 'materials': false,
-                 'elearning_materials': false,
-                 'workflows': false,
-                 'collections': false,
-                 'content_providers': false,
-                 'trainers': false,
-                 'nodes': false }
+    features = { events: false,
+                 materials: false,
+                 elearning_materials: false,
+                 workflows: false,
+                 collections: false,
+                 content_providers: false,
+                 trainers: false,
+                 nodes: false }
 
     with_settings(feature: features) do
       get :home
@@ -70,15 +71,16 @@ class StaticControllerTest < ActionController::TestCase
   test 'should allow configuration of home page sections' do
     site_settings = TeSS::Config.site.dup
     site_settings['home_page'] = {
-      'catalogue_blocks': false,
-      'provider_carousel': false,
-      'featured_providers': nil,
-      'faq': [],
-      'promo_blocks': false
+      catalogue_blocks: false,
+      provider_carousel: false,
+      featured_providers: nil,
+      faq: [],
+      promo_blocks: false
     }
 
     with_settings({ site: site_settings }) do
       get :home
+
       assert_select 'section#catalogue', count: 0
       assert_select 'section#providers', count: 0
       assert_select 'section#faq', count: 0
@@ -88,6 +90,7 @@ class StaticControllerTest < ActionController::TestCase
     site_settings['home_page']['catalogue_blocks'] = true
     with_settings({ site: site_settings }) do
       get :home
+
       assert_select 'section#catalogue', count: 1
       assert_select 'section#providers', count: 0
       assert_select 'section#faq', count: 0
@@ -100,6 +103,7 @@ class StaticControllerTest < ActionController::TestCase
     site_settings['home_page']['featured_providers'] = [provider, provider2]
     with_settings({ site: site_settings }) do
       get :home
+
       assert_select 'section#catalogue', count: 1
       assert_select 'section#providers', count: 1
       assert_select 'section#providers .item a[href=?]', content_provider_path(provider)
@@ -111,6 +115,7 @@ class StaticControllerTest < ActionController::TestCase
     site_settings['home_page']['faq'] = ['who', 'why']
     with_settings({ site: site_settings }) do
       get :home
+
       assert_select 'section#catalogue', count: 1
       assert_select 'section#providers', count: 1
       assert_select 'section#faq', count: 1
@@ -121,6 +126,7 @@ class StaticControllerTest < ActionController::TestCase
     site_settings['home_page']['promo_blocks'] = true
     with_settings({ site: site_settings }) do
       get :home
+
       assert_select 'section#catalogue', count: 1
       assert_select 'section#providers', count: 1
       assert_select 'section#faq', count: 1
@@ -129,14 +135,14 @@ class StaticControllerTest < ActionController::TestCase
   end
 
   test 'should allow configuration of tab order and directory' do
-    features = { 'events': true,
-                 'materials': true,
-                 'elearning_materials': true,
-                 'workflows': true,
-                 'collections': true,
-                 'content_providers': true,
-                 'trainers': true,
-                 'nodes': true }
+    features = { events: true,
+                 materials: true,
+                 elearning_materials: true,
+                 workflows: true,
+                 collections: true,
+                 content_providers: true,
+                 trainers: true,
+                 nodes: true }
 
     with_settings(feature: features, site: { tab_order: ['materials', 'events'], directory_tabs: [] }) do
       get :home
@@ -208,6 +214,7 @@ class StaticControllerTest < ActionController::TestCase
                                                          url: 'https://providers.com/p3')
     with_settings(site: { home_page: { provider_carousel: true } }) do
       get :home
+
       assert_select 'section#providers .item', count: 2
       assert_select 'section#providers .item a[href=?]', content_provider_path(regular_provider)
       assert_select 'section#providers .item a[href=?]', content_provider_path(unverified_provider), count: 0

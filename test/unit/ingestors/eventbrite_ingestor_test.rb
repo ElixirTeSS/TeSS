@@ -14,10 +14,12 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
     source = sources(:eventbrite_source)
     ingestor = Ingestors::EventbriteIngestor.new
     ingestor.token = source.token
+
     refute_nil source
     refute_nil source.token
     # set enabled
     source.enabled = true
+
     assert source.save
 
     assert_difference 'Event.count', 13 do
@@ -41,6 +43,7 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
     url = 'https://www.eventbrite.com.au/e/the-institutional-underpinnings-draft-rdm-framework-universities-tickets-293623976217'
     desc = 'Learn about progress in the Institutional Underpinnings program and find out about how to give feedback on the draft framework.'
     event = get_event nil, title, url
+
     refute_nil event
     assert_equal desc, event.description
     assert_equal 'ARDC', event.organizer # organizer.name ARDC
@@ -61,6 +64,7 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
     title = 'The Institutional Underpinnings Draft RDM Framework - Universities'
     url = 'https://www.eventbrite.com.au/e/getting-started-with-nectar-research-cloud-training-tickets-291075754417'
     event = get_event nil, title, url
+
     assert_nil event
 
     # check draft event
@@ -69,6 +73,7 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
     title = 'TEST TEMPLATE TO COPY FOR ARDC EVENTS'
     url = 'https://www.eventbrite.com.au/e/test-template-to-copy-for-ardc-events-tickets-294940824947'
     event = get_event nil, title, url
+
     assert_nil event
 
     # check ingested event
@@ -79,6 +84,7 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
     url = 'https://www.eventbrite.com.au/e/sharing-sensitive-and-identifiable-human-data-tickets-298980718377'
     desc = 'The ARDC Leadership Series is a new event series providing decision makers with an opportunity to work through big data challenges.'
     event = get_event nil, title, url
+
     refute_nil event
     assert_equal desc, event.description
     assert_equal 'Australian Research Data Commons', event.organizer
@@ -110,6 +116,7 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
     url = 'https://www.eventbrite.com.au/e/getting-started-with-nectar-research-cloud-training-tickets-315896965327'
     desc = 'Learn the basics of using the **ARDC Nectar Cloud** for your research.'
     event = get_event nil, title, url
+
     refute_nil event
     assert_equal desc, event.description
     assert_equal 'Australian Research Data Commons', event.organizer
@@ -130,6 +137,7 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
     url = 'https://www.eventbrite.com.au/e/sharing-sensitive-and-identifiable-human-data-tickets-298980718377'
     desc = 'The ARDC Leadership Series is a new event series providing decision makers with an opportunity to work through big data challenges.'
     event = get_event nil, title, url
+
     refute_nil event
     assert_equal desc, event.description
     assert_equal 'Australian Research Data Commons', event.organizer
@@ -139,6 +147,7 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
 
     # check source
     source = Source.where(url: 'https://www.eventbriteapi.com/v3/organizations/34338661734').first
+
     refute_nil source
   end
 

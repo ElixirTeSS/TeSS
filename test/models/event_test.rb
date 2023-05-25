@@ -39,6 +39,7 @@ class EventTest < ActiveSupport::TestCase
     e.eligibility = ['cool dudes only']
 
     e.valid?
+
     refute e.save
     assert_equal 2, e.errors.count
     assert_equal ['contained invalid terms: warehouse rave'], e.errors[:event_types]
@@ -68,11 +69,14 @@ class EventTest < ActiveSupport::TestCase
 
   test 'set default start time' do
     e = events(:event_with_no_start)
+
     assert_nil e.start
     e.save
+
     assert_nil e.start
     e.start = '2016-11-22'
     e.save
+
     assert_equal 0, e.start.hour
   end
 
@@ -111,9 +115,10 @@ class EventTest < ActiveSupport::TestCase
 
   test 'country name is corrected before save' do
     e = events(:dodgy_country_event)
-    assert_equal e.country, 'üK'
+
+    assert_equal('üK', e.country)
     assert e.save
-    assert_equal e.country, 'United Kingdom'
+    assert_equal('United Kingdom', e.country)
   end
 
   test 'destroys redundant scientific topic links' do
@@ -121,6 +126,7 @@ class EventTest < ActiveSupport::TestCase
 
     e.scientific_topic_names = %w[Proteins Chromosomes]
     e.save!
+
     assert_equal 2, e.scientific_topics.count
 
     assert_difference('OntologyTermLink.count', -2) do
@@ -136,12 +142,14 @@ class EventTest < ActiveSupport::TestCase
     assert_difference('OntologyTermLink.count', 2) do
       e.scientific_topic_names = %w[Proteins Chromosomes Proteins Chromosomes]
       e.save!
+
       assert_equal 2, e.scientific_topics.count
     end
 
     assert_no_difference('OntologyTermLink.count') do
       e.scientific_topic_names = %w[Proteins Chromosomes]
       e.save!
+
       assert_equal 2, e.scientific_topics.count
     end
 
@@ -154,12 +162,14 @@ class EventTest < ActiveSupport::TestCase
       e.scientific_topic_uris = ['http://edamontology.org/topic_0078', 'http://edamontology.org/topic_0654',
                                  'http://edamontology.org/topic_0078', 'http://edamontology.org/topic_0654']
       e.save!
+
       assert_equal 2, e.scientific_topics.count
     end
 
     assert_no_difference('OntologyTermLink.count') do
       e.scientific_topic_uris = ['http://edamontology.org/topic_0078', 'http://edamontology.org/topic_0654']
       e.save!
+
       assert_equal 2, e.scientific_topics.count
     end
 
@@ -273,6 +283,7 @@ class EventTest < ActiveSupport::TestCase
                                       online: false, description: 'event to test enqueing of geocoding worker',
                                       venue: 'A place', city: 'Manchester', country: 'UK', postcode: 'M16 0TH' })
       event = Event.create(parameters)
+
       assert_empty event.errors[:url]
       refute event.address.blank?
     end
@@ -290,6 +301,7 @@ class EventTest < ActiveSupport::TestCase
   test 'does not enqueue a geocoding worker after creating an event with no address' do
     assert_no_difference('GeocodingWorker.jobs.size') do
       event = Event.create(user: users(:regular_user), title: 'New event', url: 'http://example.com', online: true)
+
       assert event.address.blank?
     end
   end
@@ -298,6 +310,7 @@ class EventTest < ActiveSupport::TestCase
     assert_no_difference('GeocodingWorker.jobs.size') do
       event = Event.create(user: users(:regular_user), title: 'New event', url: 'http://example.com',
                            latitude: 25, longitude: 25, venue: 'Place')
+
       refute event.address.blank?
     end
   end
@@ -330,6 +343,7 @@ class EventTest < ActiveSupport::TestCase
 
     assert_no_difference('GeocodingWorker.jobs.size') do
       event.save!
+
       assert_equal 45, event.latitude
       assert_equal 45, event.longitude
     end
@@ -340,6 +354,7 @@ class EventTest < ActiveSupport::TestCase
     e = events(:one)
     e.duration = valid_duration
     e.save
+
     assert_equal 0, e.errors[:duration].size, "unexpected validation error: #{e.errors[:duration]}"
   end
 
@@ -358,6 +373,7 @@ class EventTest < ActiveSupport::TestCase
     e = events(:one)
     e.duration = valid_duration
     e.save
+
     assert_equal 0, e.errors[:duration].size, "unexpected validation error: #{e.errors[:duration]}"
   end
 
@@ -394,16 +410,20 @@ class EventTest < ActiveSupport::TestCase
 
   test 'validates timezone if present' do
     event = Event.new(title: 'An event', url: 'https://myevent.com', timezone: 'UTC', user: users(:regular_user))
+
     assert event.valid?
 
     event.timezone = '123'
+
     refute event.valid?
     assert event.errors.added?(:timezone, 'not found and cannot be linked to a valid timezone')
 
     event.timezone = nil
+
     assert event.valid?
 
     event.timezone = ''
+
     assert event.valid?
   end
 
@@ -414,42 +434,51 @@ class EventTest < ActiveSupport::TestCase
     assert event.errors.added?(:url, :blank)
 
     event.url = '123'
+
     refute event.valid?
     assert event.errors.added?(:url, :url, value: '123')
 
     event.url = '/relative'
+
     refute event.valid?
     assert event.errors.added?(:url, :url, value: '/relative')
 
     event.url = 'git://something.git'
+
     refute event.valid?
     assert event.errors.added?(:url, :url, value: 'git://something.git')
 
     event.url = 'http://http-website.com/mat'
+
     assert event.valid?
     refute event.errors.added?(:url, :url, value: 'http://http-website.com/mat')
 
     event.url = 'https://https-website.com/mat'
+
     assert event.valid?
     refute event.errors.added?(:url, :url, value: 'https://https-website.com/mat')
 
     event.url = 'ftp://something/something'
+
     refute event.valid?
     assert event.errors.added?(:url, :url, value: 'ftp://something/something')
   end
 
   test 'fuzzy-matches event types according to dictionary' do
     event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user), url: 'https://https-website.com/mat')
+
     assert event.valid?
 
     eligibility = EligibilityDictionary.instance.keys.first
     # ensure a ~50% match
     event.eligibility = [eligibility[0..(eligibility.length / 2)]]
+
     assert event.valid?
     assert_equal [eligibility], event.eligibility
 
     event_type = EventTypeDictionary.instance.keys.first
     event.event_types = [event_type[0..(event_type.length / 2)]]
+
     assert event.valid?
     assert_equal [event_type], event.event_types
   end
@@ -457,19 +486,23 @@ class EventTest < ActiveSupport::TestCase
   test 'get online status from description if scraped' do
     event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user),
                       url: 'https://https-website.com/mat', description: 'This event is held on Zoom', scraper_record: true)
+
     refute event.online
     assert event.valid?
     event.save!
+
     assert event.online
   end
 
   test 'get event_type from keywords if scraped' do
     event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user),
                       url: 'https://https-website.com/mat', keywords: ['Workshops and courses'], scraper_record: true)
+
     refute_includes event.event_types, 'Workshops and courses'
     assert_includes event.keywords, 'Workshops and courses'
     assert event.valid?
     event.save!
+
     assert_includes event.event_types, 'workshops_and_courses'
     refute_includes event.keywords, 'Workshops and courses'
   end
@@ -477,8 +510,10 @@ class EventTest < ActiveSupport::TestCase
   test 'do not get event_type from keywords if not scraped' do
     event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user),
                       url: 'https://https-website.com/mat', keywords: ['Workshops and courses'], scraper_record: false)
+
     assert event.valid?
     event.save!
+
     refute_includes event.event_types, 'Workshops and courses'
     assert_includes event.keywords, 'Workshops and courses'
   end
@@ -502,6 +537,7 @@ class EventTest < ActiveSupport::TestCase
 
     assert event.save
     dup = nil
+
     assert event.slug
 
     # Duplicating should not create any records
@@ -537,6 +573,7 @@ class EventTest < ActiveSupport::TestCase
           assert_difference('ExternalResource.count', 1) do
             assert_difference('EventMaterial.count', 1) do
               dup.url = 'https://events.com/2'
+
               assert dup.save
             end
           end

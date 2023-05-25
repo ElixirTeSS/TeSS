@@ -11,7 +11,7 @@ class Subscription < ApplicationRecord
     { key: :monthly, id: 3, period: 1.month, title: '1 month' }.with_indifferent_access
   ].freeze
 
-  validates :frequency, presence: true, inclusion: { in: FREQUENCY.map { |f| f[:key] } }
+  validates :frequency, presence: true, inclusion: { in: FREQUENCY.pluck(:key) }
   validates :subscribable_type, presence: true
   validate :valid_subscribable_type
   belongs_to :user

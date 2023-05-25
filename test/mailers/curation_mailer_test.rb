@@ -69,7 +69,7 @@ class CurationMailerTest < ActionMailer::TestCase
   end
 
   test 'can set mailer headers in config' do
-    with_settings(mailer: { headers: { 'Sender': 'mail.sender@example.com', 'X-Something': 'yes' } }) do
+    with_settings(mailer: { headers: { Sender: 'mail.sender@example.com', 'X-Something': 'yes' } }) do
       email = CurationMailer.user_requires_approval(@user)
 
       email_headers = {}

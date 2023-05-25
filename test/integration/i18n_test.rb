@@ -19,6 +19,7 @@ class I18nTest < ActionDispatch::IntegrationTest
     post '/users/sign_in', params: { 'user[login]' => @user.email, 'user[password]' => 'hello' }
 
     follow_redirect!
+
     assert_equal 'Logged in successfully.', flash[:notice]
   end
 
@@ -27,6 +28,7 @@ class I18nTest < ActionDispatch::IntegrationTest
     post '/users/sign_in', params: { 'user[login]' => @user.email, 'user[password]' => 'hello' }
 
     follow_redirect!
+
     assert_equal 'Logged in successfully!!!', flash[:notice]
   end
 
@@ -36,6 +38,7 @@ class I18nTest < ActionDispatch::IntegrationTest
 
     delete '/users/sign_out'
     follow_redirect!
+
     assert_equal 'Logged out successfully.', flash[:notice]
   end
 

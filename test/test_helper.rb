@@ -333,7 +333,7 @@ class Object
         self
       end
 
-    if respond_to?(name) && !methods.map(&:to_s).include?(name.to_s)
+    if respond_to?(name) && methods.map(&:to_s).exclude?(name.to_s)
       metaclass.send :define_method, name do |*args|
         super(*args)
       end

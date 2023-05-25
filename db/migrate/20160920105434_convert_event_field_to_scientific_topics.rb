@@ -65,7 +65,7 @@ class ConvertEventFieldToScientificTopics < ActiveRecord::Migration[4.2]
     topic_mapping = IANN_MAPPING.dup
     topic_mapping.each do |key, value|
       topic = Edam::Ontology.instance.lookup(value)
-      Rails.logger.debug "Couldn't find ScientificTopic for class ID: #{value}" if topic.nil?
+      Rails.logger.debug { "Couldn't find ScientificTopic for class ID: #{value}" } if topic.nil?
       topic_mapping[key] = topic
     end
 
@@ -97,8 +97,8 @@ class ConvertEventFieldToScientificTopics < ActiveRecord::Migration[4.2]
       Rails.logger.debug "WARNING - Please take note of this, you won't see this error again!"
       Rails.logger.debug "Couldn't find scientific topics for the following fields:"
       fields_without_topic.each do |field, events|
-        Rails.logger.debug "  Field: #{field}"
-        Rails.logger.debug "  Event IDs: #{events.map(&:id).inspect}"
+        Rails.logger.debug { "  Field: #{field}" }
+        Rails.logger.debug { "  Event IDs: #{events.map(&:id).inspect}" }
         puts
       end
     end

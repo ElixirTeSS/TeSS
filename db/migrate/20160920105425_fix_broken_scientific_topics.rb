@@ -9,7 +9,7 @@ class FixBrokenScientificTopics < ActiveRecord::Migration[4.2]
       ScientificTopic.all.each do |st|
         next unless st.class_id.blank? || !st.class_id.start_with?('http://edamontology.org')
 
-        Rails.logger.debug "Fixing scientific topic #{st.id}"
+        Rails.logger.debug { "Fixing scientific topic #{st.id}" }
         st.class_id = "http://edamontology.org/#{st.prefix_iri}"
         st.save
       end

@@ -14,13 +14,16 @@ class UserTest < ActiveSupport::TestCase
 
   test 'should save new user' do
     user = User.new(@user_params)
+
     assert user.save, 'Did not save user'
   end
 
   test 'should set default role after saving new user' do
     user = User.new(@user_params)
+
     assert_not_instance_of Role, user.role
     user.save
+
     assert_instance_of Role, user.role
     assert_equal 'registered_user', user.role.name
   end
@@ -28,6 +31,7 @@ class UserTest < ActiveSupport::TestCase
   test 'default role should be configurable' do
     with_settings(default_role: 'basic_user') do
       user = User.create!(@user_params)
+
       assert_equal 'basic_user', user.role.name
     end
 
@@ -36,56 +40,66 @@ class UserTest < ActiveSupport::TestCase
                             password: '12345678',
                             email: 'new-user2@example.com',
                             processing_consent: '1' })
+
       assert_equal 'unverified_user', user.role.name
     end
   end
 
   test 'should set default profile after saving new user' do
     user = User.new(@user_params)
+
     assert_not_instance_of Profile, user.profile
     user.save
+
     assert_instance_of Profile, user.profile
     assert_equal user.profile.user, user
   end
 
   test 'should not save user with nil email' do
     user = User.new(@user_params.merge(email: nil))
+
     refute user.save, 'Saved user with nil e-mail address field'
     assert user.errors.added?(:email, :blank)
   end
 
   test 'should not save user with empty email' do
     user = User.new(@user_params.merge(email: ''))
+
     refute user.save, 'Saved user with empty e-mail address field'
     assert user.errors.added?(:email, :blank)
   end
 
   test 'should not save user without valid email format' do
     user = User.new(@user_params.merge(email: 'horse'))
+
     refute user.save, 'Saved user with invalid e-mail address'
     assert user.errors.added?(:email, :invalid, value: 'horse')
   end
 
   test 'should convert user email to lowercase' do
     user = User.new(@user_params.merge(email: 'New.User@email.com'))
+
     assert user.save
     assert_equal 'new.user@email.com', user.reload.email
   end
 
   test 'should not save user with nil processing consent' do
     user = User.new(@user_params.merge(processing_consent: nil))
+
     refute user.save, 'Saved user with nil processing_consent address field'
     assert user.errors.added?(:base, 'You must consent to TTI processing your data in order to register')
   end
 
   test 'should not save user with processing consent equal to 0' do
     user = User.new(@user_params.merge(processing_consent: '0'))
+
     refute user.save, 'Saved user with processing_consent address field equal to "0"'
     assert user.errors.added?(:base, 'You must consent to TTI processing your data in order to register')
   end
 
   test 'should not save with nil password' do
     user = User.new(@user_params.merge(password: nil))
+
     assert user.password_required?
     refute user.using_omniauth?
     refute user.save, 'Saved user with no password'
@@ -94,6 +108,7 @@ class UserTest < ActiveSupport::TestCase
 
   test 'should save with nil password if using omniauth' do
     user = User.new(@user_params.merge(password: nil, provider: 'elixir_aai', uid: 'abcdefg'))
+
     refute user.password_required?
     assert user.using_omniauth?
     assert user.save
@@ -102,6 +117,7 @@ class UserTest < ActiveSupport::TestCase
 
   test 'should not save with password under 8 characters' do
     user = User.new(@user_params.merge(password: '1234567'))
+
     refute user.save, 'Allowed a user to have a password under 8 characters'
     assert user.errors.added?(:password, :too_short, count: 8)
   end
@@ -109,6 +125,7 @@ class UserTest < ActiveSupport::TestCase
   test 'should not save two users with same username' do
     user1 = User.new(@user_params.merge(email: "#{@user_data.email}2"))
     user2 = User.new(@user_params.merge(email: "#{@user_data.email}1"))
+
     assert user1.save, 'Did not save the first user'
     refute user2.save, 'Saved the second user with same username as first'
     assert user2.errors.added?(:username, :taken, value: @user_params[:username])
@@ -117,6 +134,7 @@ class UserTest < ActiveSupport::TestCase
   test 'should not save two users with same case insensitive username' do
     user1 = User.new(@user_params.merge(email: "#{@user_data.email}2"))
     user2 = User.new(@user_params.merge(email: "#{@user_data.email}1", username: @user_params[:username].upcase))
+
     assert user1.save, 'Did not save the first user'
     refute user2.save, 'Saved the second user with same username as first'
     assert user2.errors.added?(:username, :taken, value: @user_params[:username].upcase)
@@ -125,6 +143,7 @@ class UserTest < ActiveSupport::TestCase
   test 'should not save two users with same email' do
     user1 = User.new(@user_params.merge(username: "#{@user_data.username}2"))
     user2 = User.new(@user_params.merge(username: "#{@user_data.username}1"))
+
     assert user1.save, 'Did not save the first user'
     refute user2.save, 'Saved a second user with same e-mail address'
     assert user2.errors.added?(:email, :taken, value: @user_params[:email])
@@ -133,6 +152,7 @@ class UserTest < ActiveSupport::TestCase
   test 'should not save user with case insensitive duplicate email' do
     user1 = User.new(@user_params.merge(username: "#{@user_data.username}2"))
     user2 = User.new(@user_params.merge(username: "#{@user_data.username}1", email: @user_params[:email].upcase))
+
     assert user1.save, 'Did not save the first user'
     refute user2.save, 'Saved a second user with same e-mail address'
     assert user2.errors.added?(:email, :taken, value: @user_params[:email])
@@ -171,29 +191,35 @@ class UserTest < ActiveSupport::TestCase
     user = users(:regular_user)
     assert_no_difference('PublicActivity::Activity.count') do
       user.email = 'new-email@example.com'
+
       assert user.save
     end
   end
 
   test 'generates appropriate usernames from AAI auth info' do
     auth_info = OpenStruct.new({ nickname: 'coolguy1996', openid: 'coolguyinmcr', email: 'richard.smith@example.com' })
+
     refute User.where(username: 'coolguy1996').any?
     assert_equal 'coolguy1996', User.username_from_auth_info(auth_info)
 
     auth_info = OpenStruct.new({ openid: 'coolguyinmcr', email: 'richard.smith@example.com' })
+
     refute User.where(username: 'coolguyinmcr').any?
     assert_equal 'coolguyinmcr', User.username_from_auth_info(auth_info)
 
     auth_info = OpenStruct.new({ email: 'richard.smith@example.com' })
+
     refute User.where(username: 'richard.smith').any?
     assert_equal 'richard.smith', User.username_from_auth_info(auth_info)
 
     auth_info = OpenStruct.new({})
+
     refute User.where(username: 'user').any?
     assert_equal 'user', User.username_from_auth_info(auth_info)
 
     User.create({ username: 'user', password: '12345678', email: 'new-user@example.com', processing_consent: '1' })
     auth_info = OpenStruct.new({})
+
     assert User.where(username: 'user').any?
     refute User.where(username: 'user1').any?
     assert_equal 'user1', User.username_from_auth_info(auth_info)
@@ -212,6 +238,7 @@ class UserTest < ActiveSupport::TestCase
 
     assert_equal roles(:admin), user.reload.role
     activity = user.activities.last
+
     assert_equal admin, activity.owner
     assert_equal user, activity.trackable
     assert_equal 'user.change_role', activity.key
@@ -287,6 +314,7 @@ class UserTest < ActiveSupport::TestCase
     user.destroy!
 
     default_user = User.get_default_user
+
     assert_equal default_user, event.reload.user
     assert_equal default_user, material.reload.user
     assert_equal default_user, workflow.reload.user
@@ -331,9 +359,11 @@ class UserTest < ActiveSupport::TestCase
       assert user2.update(role_id: Role.rejected.id)
     end
     activity1 = PublicActivity::Activity.last # As trackable
+
     assert_equal admin, activity1.owner
     assert_equal user2, activity1.trackable
     activity2 = event2.create_activity(:create, owner: user3) # As owner
+
     assert_equal user3, activity2.owner
     assert_equal event2, activity2.trackable
 
@@ -374,6 +404,7 @@ class UserTest < ActiveSupport::TestCase
     assert_equal user1_id, user1.id
     assert_equal 'base-user@example.com', user1.email
     profile = user1.profile
+
     assert_equal 'John', profile.firstname
     assert_equal 'Userton', profile.surname
     assert_equal 'https://orcid.org/0000-0002-1825-0097', profile.orcid
@@ -399,6 +430,7 @@ class UserTest < ActiveSupport::TestCase
 
   test 'email but not username is downcased on save' do
     user = users(:upcase_username_and_email)
+
     assert_equal 'MixedCaseUsername', user.username
     assert_equal 'MixedCaseEmail@example.com', user.email
     assert user.save

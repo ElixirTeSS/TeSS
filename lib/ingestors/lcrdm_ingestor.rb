@@ -41,9 +41,9 @@ module Ingestors
         time_str = event_data.css("ul[class='post-item__meta']")[0].css("svg[class='icon icon--calendar ']")[0].parent.text.strip
         split_time_str = time_str.split(' — ')
         event.start = split_time_str[0].to_time
-        case split_time_str[1].split(' ').length
+        case split_time_str[1].split.length
         when 1
-          a = split_time_str[0].split(' ')
+          a = split_time_str[0].split
           b = split_time_str[1]
           event.end = [a[0], a[1], b].join(' ').to_time
         when 3

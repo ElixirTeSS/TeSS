@@ -21,6 +21,7 @@ class MaastrichtIngestorTest < ActiveSupport::TestCase
     # check event doesn't
     new_title = 'What journal to publish in'
     new_url = 'https://library.maastrichtuniversity.nl/events/what-journal-to-publish-in/'
+
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
@@ -41,6 +42,7 @@ class MaastrichtIngestorTest < ActiveSupport::TestCase
 
     # check event does exist
     event = Event.where(title: new_title, url: new_url).first
+
     assert event
     assert_equal new_title, event.title
     assert_equal new_url, event.url

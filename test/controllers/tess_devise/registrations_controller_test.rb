@@ -123,6 +123,7 @@ module TessDevise
       assert user.using_omniauth?
 
       put :update, params: { user: { username: 'cooldude99' } }
+
       assert_redirected_to assigns(:user)
     end
   end

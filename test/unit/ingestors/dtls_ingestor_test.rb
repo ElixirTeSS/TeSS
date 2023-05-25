@@ -21,6 +21,7 @@ class DtlsIngestorTest < ActiveSupport::TestCase
     # check event doesn't
     new_title = 'Constraint-based modeling: Introduction and advanced topics'
     new_url = 'https://www.dtls.nl/?post_type=course&p=19311'
+
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
@@ -41,6 +42,7 @@ class DtlsIngestorTest < ActiveSupport::TestCase
 
     # check event does exist
     event = Event.where(title: new_title, url: new_url).first
+
     assert event
     assert_equal new_title, event.title
     assert_equal new_url, event.url

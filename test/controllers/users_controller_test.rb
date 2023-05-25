@@ -14,16 +14,20 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'should get index page for everyone' do
     get :index
+
     assert_response :success
     sign_in users(:regular_user)
+
     refute_nil assigns(:users)
     get :index
+
     assert_response :success
     refute_nil assigns(:users)
   end
 
   test 'should get index as json-api' do
     get :index, params: { format: :json_api }
+
     assert_response :success
     refute_nil assigns(:users)
     assert_valid_json_api_response
@@ -39,12 +43,15 @@ class UsersControllerTest < ActionController::TestCase
   # User new is handled by devise
   test 'should never allow user new route' do
     get :new
+
     assert_redirected_to new_user_session_path
     sign_in users(:regular_user)
     get :new
+
     assert_response :forbidden
     sign_in users(:admin)
     get :new
+
     assert_response :forbidden
   end
 
@@ -76,12 +83,14 @@ class UsersControllerTest < ActionController::TestCase
   test 'should show user if admin' do
     sign_in users(:admin)
     get :show, params: { id: @user }
+
     assert_response :success
   end
 
   test 'should show other users page if not admin or self' do
     sign_in users(:another_regular_user)
     get :show, params: { id: @user }
+
     assert_response :success # FORBIDDEN PAGE!?
   end
 
@@ -89,17 +98,20 @@ class UsersControllerTest < ActionController::TestCase
     user = users(:email_address_user)
     sign_in user
     get :show, params: { id: user }
+
     assert_response :success
   end
 
   test 'should show user as json' do
     sign_in users(:another_regular_user)
     get :show, params: { id: @user, format: 'json' }
+
     assert_response :success # FORBIDDEN PAGE!?
   end
 
   test 'should show user as json-api' do
     get :show, params: { id: @user, format: :json_api }
+
     assert_response :success
     assert assigns(:user)
     assert_valid_json_api_response
@@ -115,10 +127,12 @@ class UsersControllerTest < ActionController::TestCase
   test 'should only allow edit for admin and self' do
     sign_in users(:regular_user)
     get :edit, params: { id: @user }
+
     assert_response :success
 
     sign_in users(:admin)
     get :edit, params: { id: @user }
+
     assert_response :success
 
     sign_in users(:another_regular_user)
@@ -129,6 +143,7 @@ class UsersControllerTest < ActionController::TestCase
   test 'should update profile' do
     sign_in users(:regular_user)
     patch :update, params: { id: @user, user: { profile_attributes: { email: 'hot@mail.com' } } }
+
     assert_redirected_to user_path(assigns(:user))
   end
 
@@ -137,6 +152,7 @@ class UsersControllerTest < ActionController::TestCase
     old_token = @user.authentication_token
     patch :change_token, params: { id: @user }
     new_token = User.find_by(username: 'Bob').authentication_token
+
     assert_not_equal old_token, new_token
   end
 
@@ -157,6 +173,7 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'should change user role' do
     sign_in @admin
+
     assert_not_equal roles(:admin), @user.role
 
     patch :update, params: { id: @user, user: { role_id: roles(:admin).id } }
@@ -167,6 +184,7 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'should change user role as js' do
     sign_in @admin
+
     assert_not_equal roles(:admin), @user.role
 
     patch :update, params: { id: @user, user: { role_id: roles(:admin).id }, format: :js }
@@ -177,6 +195,7 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'should not change user role if not an admin' do
     sign_in @user
+
     assert_not_equal roles(:admin), @user.role
 
     patch :update,
@@ -189,6 +208,7 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'should not update user if curator' do
     sign_in users(:curator)
+
     assert_not_equal roles(:curator), @user.role
 
     patch :update,
@@ -203,6 +223,7 @@ class UsersControllerTest < ActionController::TestCase
     user = users(:shadowbanned_user)
     sign_in users(:admin)
     get :show, params: { id: user }
+
     assert_response :success
     assert_select '.ban-info', count: 1
   end
@@ -211,6 +232,7 @@ class UsersControllerTest < ActionController::TestCase
     user = users(:shadowbanned_user)
     sign_in user
     get :show, params: { id: user }
+
     assert_response :success
     assert_select '.ban-info', count: 0
   end
@@ -221,8 +243,10 @@ class UsersControllerTest < ActionController::TestCase
 
     # check profile
     get :show, params: { id: user }
+
     assert_response :success
     profile_old = assigns(:user).profile
+
     assert profile_old.public
     assert_equal 'https://library.brown.edu/info/hay/carberry/', profile_old.website
     assert_equal 'Josiah Carberry', profile_old.full_name
@@ -233,12 +257,15 @@ class UsersControllerTest < ActionController::TestCase
     profile = { public: false, email: 'fake@email.com', orcid: '', website: '', location: '',
                 experience: 'expert', image_url: nil, expertise_technical: ['java', 'python', 'ruby'] }
     patch :update, params: { id: user, user: { profile_attributes: profile } }
+
     assert_redirected_to user_path(assigns(:user))
 
     # get user
     get :show, params: { id: user }
+
     assert_response :success
     profile_new = assigns(:user).profile
+
     refute profile_new.public
     assert_equal 'fake@email.com', profile_new.email
     assert_nil profile_new.image_url
@@ -254,10 +281,12 @@ class UsersControllerTest < ActionController::TestCase
     # check validation for public fields
     profile_new = { public: true, first_name: '', last_name: '', description: '', website: '' }
     patch :update, params: { id: user, user: { profile_attributes: profile_new } }
+
     assert_response :success
 
     # check errors
     profile = assigns(:user).profile
+
     assert_equal 3, profile.errors.size, 'invalid number of errors'
     assert_equal 0, profile.errors.full_messages_for(:website).size, 'invalid message for: website'
     assert_equal 1, profile.errors.full_messages_for(:firstname).size, 'missing message for: firstname'
@@ -273,48 +302,60 @@ class UsersControllerTest < ActionController::TestCase
     # check validation of invalid orcid
     profile_new = { orcid: 'https://orcid.org/000-0002-1825-0097x' }
     patch :update, params: { id: user, user: { profile_attributes: profile_new } }
+
     assert_response :success
     profile = assigns(:user).profile
+
     assert_equal 1, profile.errors.full_messages_for(:orcid).size, 'invalid error count for: orcid'
     assert_equal 'Orcid is not accessible', profile.errors.full_messages_for(:orcid).first
 
     # check validation of valid orcid - id only
     profile_new = { orcid: '0000-0001-1234-0000' }
     patch :update, params: { id: user, user: { profile_attributes: profile_new } }
+
     assert_redirected_to user_path(assigns(:user))
     profile = assigns(:user).profile
+
     assert_equal 0, profile.errors.full_messages_for(:orcid).size, 'invalid error count for: orcid'
     assert_equal 'https://orcid.org/0000-0001-1234-0000', profile.orcid
 
     # check validation of invalid orcid
     profile_new = { orcid: 'https://orcid.org/0000-0001-1234-9999' }
     patch :update, params: { id: user, user: { profile_attributes: profile_new } }
+
     assert_response :success
     profile = assigns(:user).profile
+
     assert_equal 1, profile.errors.full_messages_for(:orcid).size, 'invalid error count for: orcid'
     assert_equal 'Orcid is not accessible', profile.errors.full_messages_for(:orcid).first
 
     # check validation of valid orcid - non-secure scheme
     profile_new = { orcid: 'http://orcid.org/0000-0001-1234-0000' }
     patch :update, params: { id: user, user: { profile_attributes: profile_new } }
+
     assert_redirected_to user_path(assigns(:user))
     profile = assigns(:user).profile
+
     assert_equal 0, profile.errors.full_messages_for(:orcid).size, 'invalid error count for: orcid'
     assert_equal 'https://orcid.org/0000-0001-1234-0000', profile.orcid
 
     # check validation of invalid orcid - scheme and host only
     profile_new = { orcid: 'https://orcid.org/' }
     patch :update, params: { id: user, user: { profile_attributes: profile_new } }
+
     assert_response :success
     profile = assigns(:user).profile
+
     assert_equal 1, profile.errors.full_messages_for(:orcid).size, 'invalid error count for: orcid'
     assert_equal 'Orcid invalid id or URL', profile.errors.full_messages_for(:orcid).first
 
     # check validation of blank orcid
     profile_new = { orcid: '' }
     patch :update, params: { id: user, user: { profile_attributes: profile_new } }
+
     assert_redirected_to user_path(assigns(:user))
     profile = assigns(:user).profile
+
     assert_equal 0, profile.errors.full_messages_for(:orcid).size, 'invalid error count for: orcid'
     assert profile.orcid.blank?
   end
@@ -326,10 +367,12 @@ class UsersControllerTest < ActionController::TestCase
     # check validation of urls
     profile_new = { website: 'httpx://dresa.org.au', orcid: 'https://orcid.org/000-0002-1825-0097x' }
     patch :update, params: { id: user, user: { profile_attributes: profile_new } }
+
     assert_response :success
 
     # check errors
     profile = assigns(:user).profile
+
     assert_equal 3, profile.errors.size, 'invalid number of errors'
     assert_equal 2, profile.errors.full_messages_for(:website).size, 'invalid error count for: website'
     assert_equal 1, profile.errors.full_messages_for(:orcid).size, 'invalid error count for: orcid'
@@ -343,8 +386,10 @@ class UsersControllerTest < ActionController::TestCase
 
     # check type
     get :show, params: { id: user }
+
     assert_response :success
     profile = assigns(:user).profile
+
     assert profile.public
     assert_equal 'Josiah Carberry', profile.full_name
     assert_equal 'Trainer', profile.type
@@ -353,14 +398,17 @@ class UsersControllerTest < ActionController::TestCase
     patch :update, params: { id: user, user: { profile_attributes: { public: false, firstname: profile.firstname,
                                                                      surname: profile.surname, email: profile.email,
                                                                      description: profile.description } } }
+
     assert assigns(:user).profile
     assert_equal 0, assigns(:user).profile.errors.size
     assert_response :redirect
 
     # recheck type
     get :show, params: { id: user }
+
     assert_response :success
     profile = assigns(:user).profile
+
     refute profile.public
     assert_equal 'Profile', profile.type
   end
@@ -371,8 +419,10 @@ class UsersControllerTest < ActionController::TestCase
 
     # check type
     get :show, params: { id: user }
+
     assert_response :success
     profile = assigns(:user).profile
+
     assert_equal 'Lucifer MorningStar', profile.full_name
     assert_equal 'Profile', profile.type
     refute profile.public
@@ -381,17 +431,21 @@ class UsersControllerTest < ActionController::TestCase
     patch :update, params: { id: user, user: { profile_attributes: { public: true, firstname: profile.firstname,
                                                                      surname: profile.surname, email: profile.email,
                                                                      description: profile.description } } }
+
     assert assigns(:user).profile
     assert_equal 0, assigns(:user).profile.errors.size
     assert_response :redirect
 
     # recheck type
     get :show, params: { id: user }
+
     assert_response :success
     puser = assigns(:user)
+
     assert puser
     assert_equal 'StevieN', puser.username
     profile = puser.profile
+
     assert_equal 'Lucifer MorningStar', profile.full_name
     assert_equal 'Trainer', profile.type
     assert profile.public
@@ -407,8 +461,10 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'should not show banned or unverified/basic users in index' do
     get :index
+
     assert_response :success
     all_users = assigns(:users).to_a
+
     assert users(:shadowbanned_user).banned?
     assert_not_includes all_users, users(:shadowbanned_user)
     assert_not_includes all_users, users(:unverified_user)

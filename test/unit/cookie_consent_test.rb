@@ -6,6 +6,7 @@ class CookieConsentTest < ActiveSupport::TestCase
   test 'should check if consent required?' do
     with_settings({ require_cookie_consent: false }) do
       cookie_consent = CookieConsent.new({})
+
       refute cookie_consent.required?
       refute cookie_consent.show_banner?
       refute cookie_consent.given?
@@ -15,6 +16,7 @@ class CookieConsentTest < ActiveSupport::TestCase
 
     with_settings({ require_cookie_consent: true }) do
       cookie_consent = CookieConsent.new({})
+
       assert cookie_consent.required?
       assert cookie_consent.show_banner?
       refute cookie_consent.given?
@@ -22,6 +24,7 @@ class CookieConsentTest < ActiveSupport::TestCase
       refute cookie_consent.allow_necessary?
 
       cookie_consent = CookieConsent.new({ cookie_consent: 'embedding,tracking,necessary' })
+
       assert cookie_consent.required?
       refute cookie_consent.show_banner?
       assert cookie_consent.given?
@@ -29,6 +32,7 @@ class CookieConsentTest < ActiveSupport::TestCase
       assert cookie_consent.allow_necessary?
 
       cookie_consent = CookieConsent.new({ cookie_consent: 'necessary' })
+
       assert cookie_consent.required?
       refute cookie_consent.show_banner?
       assert cookie_consent.given?
@@ -36,6 +40,7 @@ class CookieConsentTest < ActiveSupport::TestCase
       assert cookie_consent.allow_necessary?
 
       cookie_consent = CookieConsent.new({ cookie_consent: 'banana,necessary' })
+
       assert cookie_consent.required?
       refute cookie_consent.show_banner?
       assert cookie_consent.given?
@@ -43,6 +48,7 @@ class CookieConsentTest < ActiveSupport::TestCase
       assert cookie_consent.allow_necessary?
 
       cookie_consent = CookieConsent.new({ cookie_consent: 'banana,golf' })
+
       assert cookie_consent.required?
       assert cookie_consent.show_banner?
       refute cookie_consent.given?
@@ -60,22 +66,27 @@ class CookieConsentTest < ActiveSupport::TestCase
       refute cookie_consent.given?
 
       cookie_consent.options = 'necessary'
+
       assert_equal ['necessary'], cookie_consent.options
       assert cookie_consent.given?
 
       cookie_consent.options = 'necessary,tracking'
+
       assert_equal ['necessary', 'tracking'], cookie_consent.options
       assert cookie_consent.given?
 
       cookie_consent.options = 'necessary,something else'
+
       assert_equal ['necessary', 'tracking'], cookie_consent.options, 'Should not change if invalid option provided'
       assert cookie_consent.given?
 
       cookie_consent.options = 'banana'
+
       assert_equal ['necessary', 'tracking'], cookie_consent.options, 'Should not change if invalid option provided'
       assert cookie_consent.given?
 
       cookie_consent.revoke
+
       assert_empty cookie_consent.options
       refute cookie_consent.given?
     end

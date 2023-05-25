@@ -18,7 +18,7 @@ class CallbacksController < Devise::OmniauthCallbacksController
       begin
         save_result = @user.save
         unless save_result
-          Rails.logger.debug "CallbacksController.#{provider}: #{@user.errors.full_messages}"
+          Rails.logger.debug { "CallbacksController.#{provider}: #{@user.errors.full_messages}" }
           if @user.errors.full_messages.size.positive?
             raise @user.errors.full_messages.first.to_s
           else

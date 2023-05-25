@@ -21,6 +21,7 @@ class TessEventIngestorTest < ActiveSupport::TestCase
     # check event doesn't
     new_title = 'WORKSHOP: Introduction to Metabarcoding using Qiime2'
     new_url = 'https://www.biocommons.org.au/events/metabarcoding-qiime2'
+
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
@@ -39,6 +40,7 @@ class TessEventIngestorTest < ActiveSupport::TestCase
 
     # check event does exist
     event = Event.where(title: new_title, url: new_url).first
+
     assert event
     assert_equal new_title, event.title
     assert_equal new_url, event.url
@@ -62,9 +64,11 @@ class TessEventIngestorTest < ActiveSupport::TestCase
     other_title = 'WEBINAR: Establishing Gen3 to enable better human genome data sharing in Australia'
     other_url = 'https://www.biocommons.org.au/events/gen3-webinar'
     events = Event.where(title: other_title, url: other_url)
+
     refute_nil events, 'Post-task: other event search error.'
     assert_equal 1, events.size, "Post-task: other event search title[#{other_title}] found nothing"
     event = events.first
+
     refute_nil event
     # noinspection RubyNilAnalysis
     assert_equal other_title, event.title

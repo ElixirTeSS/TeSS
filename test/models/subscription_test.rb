@@ -20,6 +20,7 @@ class SubscriptionTest < ActiveSupport::TestCase
 
     assert_equal 1, user.subscriptions.count
     sub = Subscription.last
+
     assert_equal 'apples', sub.query
     assert_includes sub.facets['categories'], 'fruit'
     assert_includes sub.facets['categories'], 'vegetables'
@@ -29,14 +30,17 @@ class SubscriptionTest < ActiveSupport::TestCase
     user = users(:regular_user)
 
     sub = user.subscriptions.build(frequency: :daily, subscribable_type: 'Event')
+
     assert_equal :daily, sub.frequency
     assert sub.valid?
 
     sub = user.subscriptions.build(frequency: 'weekly', subscribable_type: 'Event')
+
     assert_equal :weekly, sub.frequency
     assert sub.valid?
 
     sub = user.subscriptions.build(frequency: 'qwerty', subscribable_type: 'Event')
+
     assert_nil sub.frequency
     refute sub.valid?
     assert_includes sub.errors.attribute_names, :frequency
@@ -46,13 +50,16 @@ class SubscriptionTest < ActiveSupport::TestCase
     user = users(:regular_user)
 
     sub = user.subscriptions.build(frequency: :daily, subscribable_type: 'Event')
+
     assert sub.valid?
 
     sub = user.subscriptions.build(frequency: :daily, subscribable_type: 'Role')
+
     refute sub.valid?
     assert_includes sub.errors.attribute_names, :subscribable_type
 
     sub = user.subscriptions.build(frequency: :daily)
+
     refute sub.valid?
     assert_includes sub.errors.attribute_names, :subscribable_type
   end
@@ -96,6 +103,7 @@ class SubscriptionTest < ActiveSupport::TestCase
     assert monthly_sub.due?
 
     due = Subscription.due
+
     assert_includes due, daily_sub
     assert_includes due, weekly_sub
     assert_includes due, monthly_sub
@@ -108,6 +116,7 @@ class SubscriptionTest < ActiveSupport::TestCase
     assert monthly_sub.due?
 
     due = Subscription.due
+
     assert_not_includes due, daily_sub
     assert_not_includes due, weekly_sub
     assert_includes due, monthly_sub
@@ -118,18 +127,23 @@ class SubscriptionTest < ActiveSupport::TestCase
     sub = Subscription.new(frequency: :daily, user: users(:regular_user), query: 'test', subscribable_type: 'Material',
                            last_checked_at: 60.minutes.ago)
     sub.save!
+
     refute sub.due?
 
     sub.update_column(:last_checked_at, 21.hours.ago)
+
     refute sub.due?
 
     sub.update_column(:last_checked_at, (24.hours - 10.minutes).ago)
+
     assert sub.due?
 
     sub.update_column(:last_checked_at, (24.hours + 10.minutes).ago)
+
     assert sub.due?
 
     sub.update_column(:last_checked_at, 27.hours.ago)
+
     assert sub.due?
   end
 
@@ -140,6 +154,7 @@ class SubscriptionTest < ActiveSupport::TestCase
 
     # Mock the digest since we're not running solr
     mock_digest = MockSearchResults.new(materials(:good_material))
+
     sub.stub(:digest, mock_digest) do
       assert_emails 1 do
         sub.process
@@ -155,6 +170,7 @@ class SubscriptionTest < ActiveSupport::TestCase
     assert_nil sub.last_sent_at
 
     mock_digest = MockSearchResults.new([])
+
     sub.stub(:digest, mock_digest) do
       assert_no_emails do
         sub.process
@@ -166,12 +182,15 @@ class SubscriptionTest < ActiveSupport::TestCase
 
   test 'facets with max age' do
     sub = subscriptions(:daily_subscription)
+
     assert_equal({ type: ['fruit', 'veg'], max_age: '24 hours' }.with_indifferent_access, sub.facets_with_max_age)
 
     sub = subscriptions(:monthly_subscription)
+
     assert_equal({ type: ['fruit', 'veg'], max_age: '1 month' }.with_indifferent_access, sub.facets_with_max_age)
 
     sub = subscriptions(:event_subscription)
+
     assert_equal({ times: ['good', 'great'], max_age: '1 week' }.with_indifferent_access, sub.facets_with_max_age)
   end
 end

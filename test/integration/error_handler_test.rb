@@ -26,7 +26,7 @@ class ErrorHandlerTest < ActionDispatch::IntegrationTest
     end
 
     test "should get #{code} error as json-api" do
-      get "/#{code}", headers: { 'Accept': 'application/vnd.api+json' }
+      get "/#{code}", headers: { Accept: 'application/vnd.api+json' }
 
       assert_response code
       assert_match message_matcher, JSON.parse(response.body).dig('error', 'message')

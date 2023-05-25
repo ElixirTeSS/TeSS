@@ -31,6 +31,7 @@ class EventsControllerTest < ActionController::TestCase
   # INDEX TESTS
   test 'should get index' do
     get :index
+
     assert_response :success
     refute_nil assigns(:events)
   end
@@ -39,6 +40,7 @@ class EventsControllerTest < ActionController::TestCase
     with_settings(solr_enabled: true) do
       Event.stub(:search_and_filter, MockSearch.new(Event.all)) do
         get :index, params: { q: 'nightclub', keywords: 'ragtime' }
+
         assert_response :success
         assert_not_empty assigns(:events)
       end
@@ -50,6 +52,7 @@ class EventsControllerTest < ActionController::TestCase
     @event.save!
 
     get :index, params: { format: :json }
+
     assert_response :success
     refute_nil assigns(:events)
     assert_valid_legacy_json_response
@@ -60,6 +63,7 @@ class EventsControllerTest < ActionController::TestCase
     @event.save!
 
     get :index, params: { format: :ics }
+
     assert_response :success
     refute_nil assigns(:events)
   end
@@ -69,6 +73,7 @@ class EventsControllerTest < ActionController::TestCase
     @event.save!
 
     get :index, params: { format: :rss }
+
     assert_response :success
     refute_nil assigns(:events)
   end
@@ -78,6 +83,7 @@ class EventsControllerTest < ActionController::TestCase
     @event.save!
 
     get :index, params: { format: :json_api }
+
     assert_response :success
     refute_nil assigns(:events)
     assert_valid_json_api_response
@@ -98,6 +104,7 @@ class EventsControllerTest < ActionController::TestCase
   test 'admins should be able to directly load failing records' do
     sign_in users(:admin)
     get :show, params: { id: @failing_event }
+
     assert_response :success
   end
 
@@ -105,6 +112,7 @@ class EventsControllerTest < ActionController::TestCase
     sign_in users(:regular_user)
     @monitor.update(failed_at: DateTime.new(2003, 12, 5))
     get :show, params: { id: @failing_event }
+
     assert_response :success
     assert_select '.broken-link-notice', text: /this event's URL.+since 5 December 2003/
   end
@@ -113,25 +121,30 @@ class EventsControllerTest < ActionController::TestCase
   test 'should get new' do
     sign_in users(:regular_user)
     get :new
+
     assert_response :success
   end
 
   test 'should get new page for logged in users only' do
     # Redirect to login if not logged in
     get :new
+
     assert_response :redirect
     sign_in users(:regular_user)
     # Success for everyone else
     get :new
+
     assert_response :success
     sign_in users(:admin)
     get :new
+
     assert_response :success
   end
 
   test 'should not get new page for basic users' do
     sign_in users(:basic_user)
     get :new
+
     assert_response :forbidden
   end
 
@@ -139,6 +152,7 @@ class EventsControllerTest < ActionController::TestCase
   test 'should not get edit page for not logged in users' do
     # Not logged in = Redirect to login
     get :edit, params: { id: @event }
+
     assert_redirected_to new_user_session_path
   end
 
@@ -146,6 +160,7 @@ class EventsControllerTest < ActionController::TestCase
   test 'should get edit for event owner' do
     sign_in @event.user
     get :edit, params: { id: @event }
+
     assert_response :success
   end
 
@@ -153,12 +168,14 @@ class EventsControllerTest < ActionController::TestCase
     # Owner of event logged in = SUCCESS
     sign_in users(:admin)
     get :edit, params: { id: @event }
+
     assert_response :success
   end
 
   test 'should get edit for curator' do
     sign_in users(:curator)
     get :edit, params: { id: @event }
+
     assert_response :success
   end
 
@@ -168,12 +185,14 @@ class EventsControllerTest < ActionController::TestCase
 
     sign_in user
     get :edit, params: { id: event }
+
     assert_response :success
   end
 
   test 'should not get edit page for non-owner user' do
     sign_in users(:another_regular_user)
     get :edit, params: { id: @event }
+
     assert :forbidden
   end
 
@@ -182,6 +201,7 @@ class EventsControllerTest < ActionController::TestCase
     @event.content_provider.add_editor users(:another_regular_user)
     sign_in users(:another_regular_user)
     get :edit, params: { id: @event }
+
     assert_response :success
   end
 
@@ -227,6 +247,7 @@ class EventsControllerTest < ActionController::TestCase
   # SHOW TEST
   test 'should show event' do
     get :show, params: { id: @event }
+
     assert_response :success
     assert assigns(:event)
     assert_equal 'text/html; charset=utf-8', response.content_type, 'response content_type not matched.'
@@ -235,6 +256,7 @@ class EventsControllerTest < ActionController::TestCase
 
   test 'should show all-day event' do
     get :show, params: { id: events(:two) }
+
     assert_response :success
     assert assigns(:event)
     assert_equal 'text/html; charset=utf-8', response.content_type, 'response content_type not matched.'
@@ -245,6 +267,7 @@ class EventsControllerTest < ActionController::TestCase
     @event.save!
 
     get :show, params: { id: @event, format: :json }
+
     assert_response :success
     assert assigns(:event)
     assert_valid_legacy_json_response
@@ -255,6 +278,7 @@ class EventsControllerTest < ActionController::TestCase
     @event.save!
 
     get :show, params: { id: @event, format: :json_api }
+
     assert_response :success
     assert assigns(:event)
     assert_valid_json_api_response
@@ -274,13 +298,16 @@ class EventsControllerTest < ActionController::TestCase
   test 'should update event' do
     sign_in @event.user
     patch :update, params: { id: @event, event: @updated_event }
+
     assert_redirected_to event_path(assigns(:event))
   end
 
   test 'should update event if curator' do
     sign_in users(:curator)
+
     assert_not_equal @event.user, users(:curator)
     patch :update, params: { id: @event, event: @updated_event }
+
     assert_redirected_to event_path(assigns(:event))
   end
 
@@ -300,8 +327,10 @@ class EventsControllerTest < ActionController::TestCase
 
   test 'should not update event if not owner or curator etc.' do
     sign_in users(:collaborative_user)
+
     assert_not_equal @event.user, users(:collaborative_user)
     patch :update, params: { id: @event, event: @updated_event }
+
     assert_response :forbidden
   end
 
@@ -362,6 +391,7 @@ class EventsControllerTest < ActionController::TestCase
   # BREADCRUMBS
   test 'breadcrumbs for events index' do
     get :index
+
     assert_response :success
     assert_select 'div.breadcrumbs', text: /Home/, count: 1 do
       assert_select 'a[href=?]', root_path, count: 1
@@ -371,6 +401,7 @@ class EventsControllerTest < ActionController::TestCase
 
   test 'breadcrumbs for showing event' do
     get :show, params: { id: @event }
+
     assert_response :success
     assert_select 'div.breadcrumbs', text: /Home/, count: 1 do
       assert_select 'a[href=?]', root_path, count: 1
@@ -384,6 +415,7 @@ class EventsControllerTest < ActionController::TestCase
   test 'breadcrumbs for editing event' do
     sign_in users(:admin)
     get :edit, params: { id: @event }
+
     assert_response :success
     assert_select 'div.breadcrumbs', text: /Home/, count: 1 do
       assert_select 'a[href=?]', root_path, count: 1
@@ -400,6 +432,7 @@ class EventsControllerTest < ActionController::TestCase
   test 'breadcrumbs for creating new event' do
     sign_in users(:regular_user)
     get :new
+
     assert_response :success
     assert_select 'div.breadcrumbs', text: /Home/, count: 1 do
       assert_select 'a[href=?]', root_path, count: 1
@@ -413,6 +446,7 @@ class EventsControllerTest < ActionController::TestCase
   # OTHER CONTENT
   test 'event has correct layout' do
     get :show, params: { id: @event }
+
     assert_response :success
     assert_select 'h2', text: @event.title # Has Title
     assert_select 'a.btn', text: 'View event', count: 1 do
@@ -426,6 +460,7 @@ class EventsControllerTest < ActionController::TestCase
   test 'do not show action buttons when not owner or admin' do
     sign_in users(:another_regular_user)
     get :show, params: { id: @event }
+
     assert_select 'a.btn[href=?]', edit_event_path(@event), count: 0 # No Edit
     assert_select 'a.btn[href=?]', event_path(@event), count: 0 # No Edit
   end
@@ -433,6 +468,7 @@ class EventsControllerTest < ActionController::TestCase
   test 'should show action buttons when owner' do
     sign_in @event.user
     get :show, params: { id: @event }
+
     assert_select 'a.btn[href=?]', edit_event_path(@event), count: 1
     assert_select 'a.btn[href=?]', event_path(@event), text: 'Delete', count: 1
   end
@@ -441,6 +477,7 @@ class EventsControllerTest < ActionController::TestCase
     @event.content_provider.add_editor users(:another_regular_user)
     sign_in users(:another_regular_user)
     get :show, params: { id: @event }
+
     assert_select 'a.btn[href=?]', edit_event_path(@event), count: 1
     assert_select 'a.btn[href=?]', event_path(@event), text: 'Delete', count: 1
   end
@@ -448,6 +485,7 @@ class EventsControllerTest < ActionController::TestCase
   test 'should show action buttons when admin' do
     sign_in users(:admin)
     get :show, params: { id: @event }
+
     assert_select 'a.btn[href=?]', edit_event_path(@event), count: 1
     assert_select 'a.btn[href=?]', event_path(@event), text: 'Delete', count: 1
   end
@@ -458,6 +496,7 @@ class EventsControllerTest < ActionController::TestCase
                                                           url: 'whatever.com',
                                                           content_provider_id: @event.content_provider_id,
                                                           start: @event.start } }
+
     assert_response :success
     assert_equal(JSON.parse(response.body)['id'], @event.id)
   end
@@ -476,6 +515,7 @@ class EventsControllerTest < ActionController::TestCase
     post :check_exists, params: { format: :json, event: { title: 'whatever',
                                                           url: @event.url,
                                                           content_provider_id: @event.content_provider_id } }
+
     assert_response :success
     assert_equal(JSON.parse(response.body)['url'], @event.url)
     assert_equal(JSON.parse(response.body)['id'], @event.id)
@@ -483,12 +523,14 @@ class EventsControllerTest < ActionController::TestCase
 
   test 'should return nothing when event does not exist' do
     post :check_exists, params: { format: :json, event: { url: 'http://no-such-site.com' } }
+
     assert_response :success
     assert_equal '{}', response.body
   end
 
   test 'should render properly when no url supplied' do
     post :check_exists, params: { format: :json, event: { url: nil } }
+
     assert_response :success
     assert_equal '{}', response.body
   end
@@ -516,6 +558,7 @@ class EventsControllerTest < ActionController::TestCase
     scraper_role = Role.fetch('scraper_user')
     scraper_user = User.where(role_id: scraper_role.id).first
     event_title = 'horse'
+
     assert scraper_user
     assert_difference('Event.count') do
       post :create, params: {
@@ -532,6 +575,7 @@ class EventsControllerTest < ActionController::TestCase
   test 'should not create new event without valid authentication token' do
     scraper_role = Role.fetch('scraper_user')
     scraper_user = User.where(role_id: scraper_role.id).first
+
     assert scraper_user
 
     assert_no_difference('Event.count') do
@@ -631,6 +675,7 @@ class EventsControllerTest < ActionController::TestCase
 
   test 'should provide an ics file' do
     get :show, params: { format: :ics, id: @event.id }
+
     assert_response :success
     assert_equal 'text/calendar', @response.content_type
 
@@ -650,6 +695,7 @@ class EventsControllerTest < ActionController::TestCase
 
     # get the icalendar content
     get :show, params: { format: :ics, id: local.id }
+
     assert_response :success
     assert_equal 'text/calendar', @response.content_type
     cal_event = Icalendar::Calendar.parse(@response.body).first.events.first
@@ -662,14 +708,17 @@ class EventsControllerTest < ActionController::TestCase
 
   test 'should provide a csv file' do
     get :index, params: { format: :csv }
+
     assert_response :success
     assert_equal 'text/csv; charset=utf-8', @response.content_type
     csv_events = CSV.parse(@response.body)
-    assert_equal csv_events.first, ['Title', 'Organizer', 'Start', 'End', 'ContentProvider']
+
+    assert_equal(['Title', 'Organizer', 'Start', 'End', 'ContentProvider'], csv_events.first)
   end
 
   test 'should provide an RSS file' do
     get :index, params: { format: :rss }
+
     assert_response :success
     assert_equal 'application/rss+xml; charset=utf-8', @response.content_type
     rss_events = RSS::Parser.parse(@response.body)
@@ -682,10 +731,12 @@ class EventsControllerTest < ActionController::TestCase
 
   test 'should include parameters in RSS file' do
     get :index, params: { format: :rss, include_expired: true }
+
     assert_response :success
     assert_equal 'application/rss+xml; charset=utf-8', @response.content_type
     require 'rss'
     rss_events = RSS::Parser.parse(@response.body)
+
     assert_equal Event.count, rss_events.items.count
 
     assert_includes rss_events.channel.description, 'include_expired: true'
@@ -709,6 +760,7 @@ class EventsControllerTest < ActionController::TestCase
 
     assert_redirected_to event_path(assigns(:event))
     resource = assigns(:event).external_resources.last
+
     assert_equal 'Cool link', resource.title
     assert_equal 'https://tess.elixir-uk.org/', resource.url
   end
@@ -827,6 +879,7 @@ class EventsControllerTest < ActionController::TestCase
     end
 
     parsed_response = JSON.parse(response.body)
+
     assert_equal event.title, parsed_response['title'], 'Title should not have changed'
     assert_equal 'new description', parsed_response['description']
   end
@@ -837,6 +890,7 @@ class EventsControllerTest < ActionController::TestCase
 
     sign_in @event.user
     patch :update, params: { id: @event, event: { title: 'new title' } }
+
     assert_redirected_to event_path(assigns(:event))
 
     assert_equal 'new title', assigns(:event).title
@@ -893,6 +947,7 @@ class EventsControllerTest < ActionController::TestCase
     sign_in users(:another_regular_user)
 
     get :report, params: { id: event }
+
     assert_response :forbidden
   end
 
@@ -901,6 +956,7 @@ class EventsControllerTest < ActionController::TestCase
     sign_in event.user
 
     get :report, params: { id: event }
+
     assert_response :success
   end
 
@@ -909,6 +965,7 @@ class EventsControllerTest < ActionController::TestCase
     sign_in users(:curator)
 
     get :report, params: { id: event }
+
     assert_response :success
   end
 
@@ -917,6 +974,7 @@ class EventsControllerTest < ActionController::TestCase
     sign_in users(:admin)
 
     get :report, params: { id: event }
+
     assert_response :success
   end
 
@@ -969,6 +1027,7 @@ class EventsControllerTest < ActionController::TestCase
     sign_in users(:another_regular_user)
 
     get :show, params: { id: event }
+
     assert_select '#report', count: 0
   end
 
@@ -977,6 +1036,7 @@ class EventsControllerTest < ActionController::TestCase
     sign_in event.user
 
     get :show, params: { id: event }
+
     assert_select '#report', count: 1
   end
 
@@ -985,6 +1045,7 @@ class EventsControllerTest < ActionController::TestCase
     sign_in users(:curator)
 
     get :show, params: { id: event }
+
     assert_select '#report', count: 1
   end
 
@@ -993,6 +1054,7 @@ class EventsControllerTest < ActionController::TestCase
     sign_in users(:admin)
 
     get :show, params: { id: event }
+
     assert_select '#report', count: 1
   end
 
@@ -1002,10 +1064,12 @@ class EventsControllerTest < ActionController::TestCase
     sign_in users(:another_regular_user)
 
     get :show, params: { id: hidden_report_event, format: :json }
+
     refute JSON.parse(response.body).key?('funding')
     assert_valid_legacy_json_response
 
     get :show, params: { id: visible_report_event, format: :json }
+
     assert_equal visible_report_event.funding, JSON.parse(response.body)['funding']
     assert_valid_legacy_json_response
   end
@@ -1016,9 +1080,11 @@ class EventsControllerTest < ActionController::TestCase
     sign_in users(:another_regular_user)
 
     get :index, format: :json
+
     assert_valid_legacy_json_response
     hidden_report_event_json = JSON.parse(response.body).detect { |e| e['id'] == hidden_report_event.id }
     visible_report_event_json = JSON.parse(response.body).detect { |e| e['id'] == visible_report_event.id }
+
     refute hidden_report_event_json.key?('funding')
     assert_equal visible_report_event.funding, visible_report_event_json['funding']
   end
@@ -1029,10 +1095,12 @@ class EventsControllerTest < ActionController::TestCase
     sign_in users(:another_regular_user)
 
     get :show, params: { id: hidden_report_event, format: :json_api }
+
     assert_valid_json_api_response
     refute JSON.parse(response.body)['data']['attributes'].key?('report')
 
     get :show, params: { id: visible_report_event, format: :json_api }
+
     assert_valid_json_api_response
     assert_equal visible_report_event.funding, JSON.parse(response.body)['data']['attributes']['report']['funding']
   end
@@ -1043,9 +1111,11 @@ class EventsControllerTest < ActionController::TestCase
     sign_in users(:another_regular_user)
 
     get :index, format: :json_api
+
     assert_valid_json_api_response
     hidden_report_event_json = JSON.parse(response.body)['data'].detect { |e| e['id'].to_i == hidden_report_event.id }
     visible_report_event_json = JSON.parse(response.body)['data'].detect { |e| e['id'].to_i == visible_report_event.id }
+
     refute hidden_report_event_json['attributes'].key?('report')
     assert_equal visible_report_event.funding, visible_report_event_json['attributes']['report']['funding']
   end
@@ -1230,6 +1300,7 @@ class EventsControllerTest < ActionController::TestCase
     sign_in users(:admin)
 
     get :show, params: { id: event }
+
     assert_response :success
     assert_select '.ban-info', count: 1
   end
@@ -1239,6 +1310,7 @@ class EventsControllerTest < ActionController::TestCase
     sign_in users(:shadowbanned_user)
 
     get :show, params: { id: event }
+
     assert_response :success
     assert_select '.ban-info', count: 0
   end
@@ -1249,6 +1321,7 @@ class EventsControllerTest < ActionController::TestCase
     suggestion.save!
 
     get :show, params: { id: @event }
+
     assert_response :success
   end
 
@@ -1289,6 +1362,7 @@ class EventsControllerTest < ActionController::TestCase
 
   test 'should disable map tab if only showing online events' do
     get :index
+
     assert_response :success
     assert_select '#content .nav' do
       assert_select 'li.disabled a[href=?]', '#map', count: 0
@@ -1296,6 +1370,7 @@ class EventsControllerTest < ActionController::TestCase
     end
 
     get :index, params: { online: 'true' }
+
     assert_response :success
     assert_select '#content .nav' do
       assert_select 'li.disabled a[href=?]', '#map', count: 1
@@ -1304,6 +1379,7 @@ class EventsControllerTest < ActionController::TestCase
 
   test 'should hide map tab if disabled' do
     get :index
+
     assert_response :success
     assert_select '#content .nav' do
       assert_select 'li a[href=?]', '#map', count: 1
@@ -1311,6 +1387,7 @@ class EventsControllerTest < ActionController::TestCase
 
     with_settings(feature: { disabled: ['events_map'] }) do
       get :index
+
       assert_response :success
       assert_select '#content .nav' do
         assert_select 'li a[href=?]', '#map', count: 0
@@ -1321,6 +1398,7 @@ class EventsControllerTest < ActionController::TestCase
   test 'should clone event' do
     sign_in @event.user
     get :clone, params: { id: @event }
+
     assert_response :success
     assert_nil assigns(:event).url
     assert_nil assigns(:event).id
@@ -1331,6 +1409,7 @@ class EventsControllerTest < ActionController::TestCase
   test 'should not clone event if no permission' do
     sign_in users(:another_regular_user)
     get :clone, params: { id: @event }
+
     assert_response :forbidden
   end
 end

@@ -21,6 +21,7 @@ class UuIngestorTest < ActiveSupport::TestCase
     # check event doesn't
     new_title = 'Inloopspreekuur voor alle vragen over research data en software - week 13 2023'
     new_url = 'https://www.uu.nl/agenda/inloopspreekuur-voor-alle-vragen-over-research-data-en-software-230327'
+
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
@@ -41,6 +42,7 @@ class UuIngestorTest < ActiveSupport::TestCase
 
     # check event does exist
     event = Event.where(title: new_title, url: new_url).first
+
     assert event
     assert_equal new_title, event.title
     assert_equal new_url, event.url

@@ -43,7 +43,7 @@ class Collection < ApplicationRecord
       end
       string :keywords, multiple: true
       string :user, multiple: true do
-        [user.username, user.full_name].reject(&:blank?) if user
+        [user.username, user.full_name].compact_blank if user
       end
       integer :collaborator_ids, multiple: true
       integer :user_id

@@ -15,6 +15,7 @@ class SearchControllerTest < ActionController::TestCase
 
       Sunspot.blockless_stub(:search, search_method) do
         get :index, params: { q: 'banana' }
+
         assert_response :success
         assert_not_empty assigns(:results)
 
@@ -34,6 +35,7 @@ class SearchControllerTest < ActionController::TestCase
 
       Sunspot.blockless_stub(:search, search_method) do
         get :index, params: { q: 'banana' }
+
         assert_response :success
         assert_not_empty assigns(:results)
 

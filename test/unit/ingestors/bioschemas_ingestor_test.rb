@@ -12,6 +12,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
   test 'ingest events from a bioschemas courseinstance json endpoint' do
     mock_bioschemas('https://website.org/courseinstances.json', 'nbis-course-instances.json')
     @ingestor.read('https://website.org/courseinstances.json')
+
     assert_equal 23, @ingestor.events.count
     assert_equal 0, @ingestor.materials.count
 
@@ -20,6 +21,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     end
 
     sample = @ingestor.events.detect { |e| e.title == 'Neural Networks and Deep Learning' }
+
     assert sample.persisted?
     assert_equal 'https://uppsala.instructure.com/courses/75565', sample.url
     assert_includes sample.description, 'This course will give an introduction to the concept of Neural Networks'
@@ -49,6 +51,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     WebMock.stub_request(:get, 'https://training.galaxyproject.org/404').to_return(status: 404, headers: {})
 
     @ingestor.read('https://training.galaxyproject.org/sitemap.xml')
+
     assert_equal 0, @ingestor.events.count
     assert_equal 3, @ingestor.materials.count
 
@@ -61,6 +64,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     assert_equal 0, @ingestor.stats[:materials][:rejected]
 
     sample = @ingestor.materials.detect { |e| e.title == "Introduction to 'Introduction to Galaxy Analyses'" }
+
     assert sample.persisted?
     assert_equal 'https://training.galaxyproject.org/training-material/topics/introduction/slides/introduction.html',
                  sample.url
@@ -100,6 +104,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     existing_event = events(:course_event)
     mock_bioschemas('https://website.org/courseinstances.json', 'existing.json')
     @ingestor.read('https://website.org/courseinstances.json')
+
     assert_equal 1, @ingestor.events.count
     assert_equal 0, @ingestor.materials.count
 
@@ -112,6 +117,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     assert_equal 0, @ingestor.stats[:events][:rejected]
 
     added_event = @ingestor.events.detect { |e| e.title == 'Summer Course on Learning Stuff 2' }
+
     assert added_event.persisted?
     assert_equal @content_provider, added_event.content_provider
 
@@ -126,9 +132,11 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     provider = existing_event.content_provider
     mock_bioschemas('https://website.org/courseinstances.json', 'existing.json')
     @ingestor.read('https://website.org/courseinstances.json')
+
     assert_equal 1, @ingestor.events.count
     assert_equal 0, @ingestor.materials.count
     added_event = @ingestor.events.detect { |e| e.title == 'Summer Course on Learning Stuff 2' }
+
     assert added_event
 
     assert_no_difference('Event.count') do
@@ -146,13 +154,15 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::BioschemasIngestor.new
     dir = Rails.root.join('tmp')
     file = dir.join("test#{SecureRandom.urlsafe_base64(20)}").to_s
-    refute File.exist?(file)
+
+    refute_path_exists(file)
     begin
       ingestor.open_url("| touch #{file}")
     rescue StandardError
     end
     `ls #{dir}` # This is needed or the `exist?` check below seems to return a stale result
-    refute File.exist?(file)
+
+    refute_path_exists(file)
   end
 
   private

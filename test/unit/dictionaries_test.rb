@@ -16,17 +16,22 @@ class DictionariesTest < ActiveSupport::TestCase
 
   test 'check target audience dictionary' do
     dic = TargetAudienceDictionary.instance
+
     assert dic.is_a?(TargetAudienceDictionary)
     refute_nil dic, 'target audience dictionary should exist'
 
     key = 'dummy'
+
     assert_nil dic.lookup(key), "#{key}: invalid key was found?"
     key = 'researcher'
+
     refute_nil dic.lookup(key), "#{key}: key not found"
     key = 'phd'
+
     refute_nil dic.lookup(key), "#{key}: key not found"
     assert_equal 'PhD student', dic.lookup(key)['title'], "#{key}: title not matched"
     key = 'ecr'
+
     refute_nil dic.lookup(key), "#{key}: key not found"
     assert_equal 'Early career researchers and research fellows.', dic.lookup(key)['description'],
                  "#{key}: description not matched"
@@ -34,17 +39,22 @@ class DictionariesTest < ActiveSupport::TestCase
 
   test 'check material type dictionary' do
     dic = MaterialTypeDictionary.instance
+
     assert dic.is_a?(MaterialTypeDictionary)
     refute_nil dic, 'material type dictionary should exist'
 
     key = 'dummy'
+
     assert_nil dic.lookup(key), "#{key}: invalid key was found?"
     key = 'presentation'
+
     refute_nil dic.lookup(key), "#{key}: key not found"
     key = 'activity'
+
     refute_nil dic.lookup(key), "#{key}: key not found"
     assert_equal 'Learning Activity', dic.lookup(key)['title'], "#{key}: title not matched"
     key = 'rubric'
+
     refute_nil dic.lookup(key), "#{key}: key not found"
     assert_equal 'A scoring guide used to evaluate performance.',
                  dic.lookup(key)['description'], "#{key}: description not matched"
@@ -52,34 +62,44 @@ class DictionariesTest < ActiveSupport::TestCase
 
   test 'check material status dictionary' do
     dic = MaterialStatusDictionary.instance
+
     assert dic.is_a?(MaterialStatusDictionary)
     refute_nil dic, 'material status dictionary should exist'
 
     key = 'dummy'
+
     assert_nil dic.lookup(key), "#{key}: invalid key was found?"
     key = 'active'
+
     refute_nil dic.lookup(key), "#{key}: key not found"
     key = 'development'
+
     refute_nil dic.lookup(key), "#{key}: key not found"
     assert_equal 'Under development', dic.lookup(key)['title'], "#{key}: title not matched"
     key = 'archived'
+
     refute_nil dic.lookup(key), "#{key}: key not found"
     assert_equal 'The material has been archived.', dic.lookup(key)['description'], "#{key}: description not matched"
   end
 
   test 'check cost basis dictionary' do
     dic = CostBasisDictionary.instance
+
     assert dic.is_a?(CostBasisDictionary)
     refute_nil dic, 'cost basis dictionary should exist'
 
     key = 'dummy'
+
     assert_nil dic.lookup(key), "#{key}: invalid key was found?"
     key = 'free'
+
     refute_nil dic.lookup(key), "#{key}: key not found"
     key = 'hosts'
+
     refute_nil dic.lookup(key), "#{key}: key not found"
     assert_equal 'Cost to non-members', dic.lookup(key)['title'], "#{key}: title not matched"
     key = 'charge'
+
     refute_nil dic.lookup(key), "#{key}: key not found"
     assert_equal 'This event has an associated charge for participants.', dic.lookup(key)['description'],
                  "#{key}: description not matched"
@@ -87,6 +107,7 @@ class DictionariesTest < ActiveSupport::TestCase
 
   test 'check default difficulty dictionary' do
     dic = DifficultyDictionary.instance
+
     assert dic.is_a?(DifficultyDictionary)
     refute_nil dic, 'difficulty dictionary should exist'
 
@@ -101,6 +122,7 @@ class DictionariesTest < ActiveSupport::TestCase
 
   test 'check default eligibility dictionary' do
     dic = EligibilityDictionary.instance
+
     assert dic.is_a?(EligibilityDictionary)
     refute_nil dic, 'eligibility dictionary should exist'
 
@@ -116,6 +138,7 @@ class DictionariesTest < ActiveSupport::TestCase
 
   test 'check default event_type dictionary' do
     dic = EventTypeDictionary.instance
+
     assert dic.is_a?(EventTypeDictionary)
     refute_nil dic, 'event type dictionary should exist'
 
@@ -136,6 +159,7 @@ class DictionariesTest < ActiveSupport::TestCase
     # - meetings_and_conferences
     # - awards_and_prizegivings
     dic = EventTypeDictionary.instance
+
     assert_equal 'workshops_and_courses', dic.best_match('workshops_and_courses')
     assert_equal 'workshops_and_courses', dic.best_match('workshops')
     # once we start adding 'match' modifiers to the default EventTypeDictionary
@@ -151,6 +175,7 @@ class DictionariesTest < ActiveSupport::TestCase
 
   test 'check alternate event_type dictionary' do
     dic = EventTypeDictionary.instance
+
     assert dic.is_a?(EventTypeDictionary)
     refute_nil dic, 'event type dictionary should exist'
 
@@ -163,6 +188,7 @@ class DictionariesTest < ActiveSupport::TestCase
 
   test 'check invalid event_types dictionary' do
     dic = EventTypeDictionary.instance
+
     assert dic.is_a?(EventTypeDictionary)
     refute_nil dic, 'event type dictionary should exist'
 
@@ -181,6 +207,7 @@ class DictionariesTest < ActiveSupport::TestCase
 
   test 'check invalid difficulty dictionary' do
     dic = DifficultyDictionary.instance
+
     assert dic.is_a?(DifficultyDictionary)
     refute_nil dic, 'difficulty dictionary should exist'
 
@@ -193,6 +220,7 @@ class DictionariesTest < ActiveSupport::TestCase
 
   test 'check invalid eligibility dictionary' do
     dic = EligibilityDictionary.instance
+
     assert dic.is_a?(EligibilityDictionary)
     refute_nil dic, 'eligibility dictionary should exist'
 
@@ -206,6 +234,7 @@ class DictionariesTest < ActiveSupport::TestCase
 
   test 'check options include descriptions' do
     dic = EligibilityDictionary.instance
+
     assert dic.is_a?(EligibilityDictionary)
     refute_nil dic, 'eligibility dictionary should exist'
 
@@ -216,9 +245,11 @@ class DictionariesTest < ActiveSupport::TestCase
     refute_nil dic, 'eligibility (dresa) dictionary should exist'
 
     ops = dic.options_for_select
+
     refute_nil ops, 'options should not be nil'
     assert_equal 4, ops.size, 'options size not matched'
     item = 0
+
     assert_equal 'open_to_all', ops[item][1], "item[#{item}] key not matched"
     assert_equal 'Open to all', ops[item][0], "item[#{item}] title not matched"
     refute_nil ops[item][2], "item[#{item}] description is nil"
@@ -227,14 +258,17 @@ class DictionariesTest < ActiveSupport::TestCase
 
   test 'check options with no descriptions' do
     dic = EventTypeDictionary.instance
+
     assert dic.is_a?(EventTypeDictionary)
     refute_nil dic, 'event type dictionary should exist'
 
     # test options for select
     ops = dic.options_for_select
+
     refute_nil ops, 'options should not be nil'
     assert_equal 4, ops.size, 'options size not matched'
     item = 2
+
     assert_equal 'receptions_and_networking', ops[item][1], "item[#{item}] key not matched"
     assert_equal 'Receptions and networking', ops[item][0], "item[#{item}] title not matched"
     refute_nil ops[item][2], "item[#{item}] description is nil"
@@ -243,6 +277,7 @@ class DictionariesTest < ActiveSupport::TestCase
 
   test 'check trainer experience dictionary' do
     dic = TrainerExperienceDictionary.instance
+
     assert dic.is_a?(TrainerExperienceDictionary)
     refute_nil dic, 'trainer experience dictionary should exist'
 

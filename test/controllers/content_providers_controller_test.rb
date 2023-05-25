@@ -24,6 +24,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
   # INDEX TESTS
   test 'should get index' do
     get :index
+
     assert_response :success
     refute_nil assigns(:content_providers)
   end
@@ -32,6 +33,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
     with_settings(solr_enabled: true) do
       ContentProvider.stub(:search_and_filter, MockSearch.new(ContentProvider.all)) do
         get :index, params: { q: 'gossip', keywords: 'celebs' }
+
         assert_response :success
         assert_not_empty assigns(:content_providers)
       end
@@ -40,12 +42,14 @@ class ContentProvidersControllerTest < ActionController::TestCase
 
   test 'should get index as json' do
     get :index, params: { format: :json }
+
     assert_response :success
     refute_nil assigns(:content_providers)
   end
 
   test 'should get index as json-api' do
     get :index, params: { format: :json_api }
+
     assert_response :success
     refute_nil assigns(:content_providers)
     assert_valid_json_api_response
@@ -74,25 +78,30 @@ class ContentProvidersControllerTest < ActionController::TestCase
   test 'should get new' do
     sign_in users(:regular_user)
     get :new
+
     assert_response :success
   end
 
   test 'should get new page for logged in users only' do
     # Redirect to login if not logged in
     get :new
+
     assert_response :redirect
     sign_in users(:regular_user)
     # Success for everyone else
     get :new
+
     assert_response :success
     sign_in users(:admin)
     get :new
+
     assert_response :success
   end
 
   test 'should not get new page for basic users' do
     sign_in users(:basic_user)
     get :new
+
     assert_response :forbidden
   end
 
@@ -100,6 +109,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
   test 'should not get edit page for not logged in users' do
     # Not logged in = Redirect to login
     get :edit, params: { id: @content_provider }
+
     assert_redirected_to new_user_session_path
   end
 
@@ -107,6 +117,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
   test 'should get edit for content provider owner' do
     sign_in @content_provider.user
     get :edit, params: { id: @content_provider }
+
     assert_response :success
   end
 
@@ -114,18 +125,21 @@ class ContentProvidersControllerTest < ActionController::TestCase
     # Owner of content_provider logged in = SUCCESS
     sign_in users(:admin)
     get :edit, params: { id: @content_provider }
+
     assert_response :success
   end
 
   test 'should get edit for curator' do
     sign_in users(:curator)
     get :edit, params: { id: @content_provider }
+
     assert_response :success
   end
 
   test 'should not get edit page for non-owner user' do
     sign_in users(:another_regular_user)
     get :edit, params: { id: @content_provider }
+
     assert :forbidden
   end
 
@@ -171,18 +185,21 @@ class ContentProvidersControllerTest < ActionController::TestCase
   # SHOW TEST
   test 'should show content provider' do
     get :show, params: { id: @content_provider }
+
     assert_response :success
     assert assigns(:content_provider)
   end
 
   test 'should show content provider as json' do
     get :show, params: { id: @content_provider, format: :json }
+
     assert_response :success
     assert assigns(:content_provider)
   end
 
   test 'should show content provider as json-api' do
     get :show, params: { id: @content_provider, format: :json_api }
+
     assert_response :success
     assert assigns(:content_provider)
     assert_valid_json_api_response
@@ -199,20 +216,25 @@ class ContentProvidersControllerTest < ActionController::TestCase
   test 'should update content provider' do
     sign_in @content_provider.user
     patch :update, params: { id: @content_provider, content_provider: @updated_content_provider }
+
     assert_redirected_to content_provider_path(assigns(:content_provider))
   end
 
   test 'should update content provider if curator' do
     sign_in users(:curator)
+
     assert_not_equal @content_provider.user, users(:curator)
     patch :update, params: { id: @content_provider, content_provider: @updated_content_provider }
+
     assert_redirected_to content_provider_path(assigns(:content_provider))
   end
 
   test 'should not update content provider if not owner or curator etc.' do
     sign_in users(:collaborative_user)
+
     assert_not_equal @content_provider.user, users(:collaborative_user)
     patch :update, params: { id: @content_provider, content_provider: @updated_content_provider }
+
     assert_response :forbidden
   end
 
@@ -253,6 +275,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
   # BREADCRUMBS
   test 'breadcrumbs for content_providers index' do
     get :index
+
     assert_response :success
     assert_select 'div.breadcrumbs', text: /Home/, count: 1 do
       assert_select 'a[href=?]', root_path, count: 1
@@ -262,6 +285,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
 
   test 'breadcrumbs for showing content_provider' do
     get :show, params: { id: @content_provider }
+
     assert_response :success
     assert_select 'div.breadcrumbs', text: /Home/, count: 1 do
       assert_select 'a[href=?]', root_path, count: 1
@@ -275,6 +299,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
   test 'breadcrumbs for editing content_provider' do
     sign_in users(:admin)
     get :edit, params: { id: @content_provider }
+
     assert_response :success
     assert_select 'div.breadcrumbs', text: /Home/, count: 1 do
       assert_select 'a[href=?]', root_path, count: 1
@@ -291,6 +316,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
   test 'breadcrumbs for creating new content_provider' do
     sign_in users(:regular_user)
     get :new
+
     assert_response :success
     assert_select 'div.breadcrumbs', text: /Home/, count: 1 do
       assert_select 'a[href=?]', root_path, count: 1
@@ -304,6 +330,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
   # OTHER CONTENT
   test 'content provider has correct tabs' do
     get :show, params: { id: @content_provider }
+
     assert_response :success
     assert_select 'ul.nav-tabs' do
       assert_select 'li' do
@@ -314,6 +341,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
 
   test 'content provider has correct layout' do
     get :show, params: { id: @content_provider }
+
     assert_response :success
     # assert_select 'h4.nav-heading', :text => /Content provider/
     assert_select 'a[href=?]', @content_provider.url do #
@@ -328,6 +356,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
   test 'do not show action buttons when not owner or admin' do
     sign_in users(:another_regular_user)
     get :show, params: { id: @content_provider }
+
     assert_select 'a.btn[href=?]', edit_content_provider_path(@content_provider), count: 0 # No Edit
     assert_select 'a.btn[href=?]', content_provider_path(@content_provider), count: 0 # No Edit
   end
@@ -335,6 +364,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
   test 'show action buttons when owner' do
     sign_in @content_provider.user
     get :show, params: { id: @content_provider }
+
     assert_select 'a.btn[href=?]', edit_content_provider_path(@content_provider), count: 1
     assert_select 'a.btn[href=?]', content_provider_path(@content_provider), text: 'Delete', count: 1
   end
@@ -342,6 +372,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
   test 'show action buttons when admin' do
     sign_in users(:admin)
     get :show, params: { id: @content_provider }
+
     assert_select 'a.btn[href=?]', edit_content_provider_path(@content_provider), count: 1
     assert_select 'a.btn[href=?]', content_provider_path(@content_provider), text: 'Delete', count: 1
   end
@@ -349,24 +380,28 @@ class ContentProvidersControllerTest < ActionController::TestCase
   # API Actions
   test 'should find existing content_provider by url' do
     post :check_exists, params: { format: :json, content_provider: { url: @content_provider.url } }
+
     assert_response :success
     assert_equal(JSON.parse(response.body)['id'], @content_provider.id)
   end
 
   test 'should find existing content_provider by title' do
     post :check_exists, params: { format: :json, content_provider: { title: @content_provider.title } }
+
     assert_response :success
     assert_equal(JSON.parse(response.body)['id'], @content_provider.id)
   end
 
   test 'should return nothing when content_provider does not exist' do
     post :check_exists, params: { format: :json, content_provider: { url: 'http://no-such-site.com' } }
+
     assert_response :success
     assert_equal '{}', response.body
   end
 
   test 'should render properly when url parameter missing' do
     post :check_exists, params: { format: :json, content_provider: { url: nil } }
+
     assert_response :success
     assert_equal '{}', response.body
   end
@@ -388,6 +423,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
     other_user = users(:another_regular_user)
 
     patch :update, params: { id: @content_provider, content_provider: { user_id: other_user.id, title: 'test' } }
+
     assert_redirected_to content_provider_path(assigns(:content_provider))
 
     assert_equal other_user, assigns(:content_provider).user
@@ -398,6 +434,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
     other_user = users(:another_regular_user)
 
     patch :update, params: { id: @content_provider, content_provider: { user_id: other_user.id, title: 'test' } }
+
     assert_redirected_to content_provider_path(assigns(:content_provider))
 
     assert_not_equal other_user, assigns(:content_provider).user
@@ -411,6 +448,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
                                             keywords: %w[bad material user], status: 'active',
                                             contact: 'bad contact',
                                             content_provider: @content_provider)
+
     assert bad_material.user_requires_approval?
     bad_material.save!
 
@@ -422,10 +460,12 @@ class ContentProvidersControllerTest < ActionController::TestCase
                                               contact: 'good contact',
                                               content_provider: @content_provider,
                                               status: 'development')
+
     refute good_material.user_requires_approval?
     good_material.save!
 
     get :show, params: { id: @content_provider }
+
     assert_response :success
     assert_select '#materials a[href=?]', material_path(good_material), count: 1
     assert_select '#materials a[href=?]', material_path(bad_material), count: 0
@@ -482,6 +522,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
     dateless_event.save!
 
     get :show, params: { id: @content_provider }
+
     assert_select 'a[href=?]', '#events', text: 'Events (3)'
     # this is a bit fragile. may be nicer to use a regex if it breaks
     assert_select 'div#events div.search-results-count', text: /Showing 2 events/ do
@@ -497,6 +538,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
     c.save!
 
     get :index
+
     assert_response :success
     assert_includes assigns(:content_providers), c
 

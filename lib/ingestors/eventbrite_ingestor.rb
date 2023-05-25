@@ -54,7 +54,7 @@ module Ingestors
               next_page = "#{url}/events/?page=#{page + 1}"
             end
           rescue Exception => e
-            Rails.logger.debug "format next_page failed with: #{e.message}"
+            Rails.logger.debug { "format next_page failed with: #{e.message}" }
           end
 
           # check events
@@ -80,11 +80,7 @@ module Ingestors
                 event.title = item['name']['text'] unless item['name'].nil?
                 event.url = item['url']
                 event.description = convert_description item['description']['html'] unless item['description'].nil?
-                event.online = if item['online_event'].nil? || (item['online_event'] == false)
-                                 false
-                               else
-                                 true
-                               end
+                event.online = !(item['online_event'].nil? || (item['online_event'] == false))
 
                 # organizer
                 organizer = get_eventbrite_organizer item['organizer_id']

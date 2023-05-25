@@ -28,18 +28,21 @@ class NodesControllerTest < ActionController::TestCase
 
   test 'should get index' do
     get :index
+
     assert_response :success
     assert_includes assigns(:nodes), @node
   end
 
   test 'should get index as json' do
     get :index, format: :json
+
     assert_response :success
     assert_includes assigns(:nodes), @node
   end
 
   test 'should get index as json-api' do
     get :index, params: { format: :json_api }
+
     assert_response :success
     refute_nil assigns(:nodes)
     assert_valid_json_api_response
@@ -60,6 +63,7 @@ class NodesControllerTest < ActionController::TestCase
     sign_in users(:admin)
 
     get :new
+
     assert_response :success
   end
 
@@ -99,16 +103,19 @@ class NodesControllerTest < ActionController::TestCase
 
   test 'should show node' do
     get :show, params: { id: @node }
+
     assert_response :success
   end
 
   test 'should show node as json' do
     get :show, params: { id: @node, format: :json }
+
     assert_response :success
   end
 
   test 'should show node as json-api' do
     get :show, params: { id: @node, format: :json_api }
+
     assert_response :success
     assert_valid_json_api_response
   end
@@ -117,6 +124,7 @@ class NodesControllerTest < ActionController::TestCase
     sign_in users(:admin)
 
     get :edit, params: { id: @node }
+
     assert_response :success
   end
 
@@ -130,6 +138,7 @@ class NodesControllerTest < ActionController::TestCase
               member_status: @node.member_status, name: @node.name,
               twitter: @node.twitter }
     }
+
     assert_redirected_to node_path(assigns(:node))
     assert_equal ':)', assigns(:node).country_code
   end
@@ -213,6 +222,7 @@ class NodesControllerTest < ActionController::TestCase
 
     assert_redirected_to node_path(assigns(:node))
     updated_staff = assigns(:node).staff.detect { |s| s.name == 'Updated name' }
+
     refute_nil updated_staff
     assert_equal 'u@example.com', updated_staff.email
     assert_equal 'Nobody', updated_staff.role

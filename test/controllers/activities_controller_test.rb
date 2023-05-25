@@ -7,6 +7,7 @@ class ActivitiesControllerTest < ActionController::TestCase
 
   test 'should get activities for a material' do
     get :index, params: { material_id: materials(:good_material).id }
+
     assert_response :success
   end
 
@@ -17,6 +18,7 @@ class ActivitiesControllerTest < ActionController::TestCase
     event.save
 
     get :index, params: { event_id: event }
+
     assert_select '.sub-activity em', text: /Funding/, count: 0
   end
 
@@ -27,6 +29,7 @@ class ActivitiesControllerTest < ActionController::TestCase
     event.save
 
     get :index, params: { event_id: event }
+
     assert_select '.sub-activity em', text: /Funding/, count: 1
   end
 

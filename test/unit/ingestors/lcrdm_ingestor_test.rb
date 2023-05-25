@@ -21,6 +21,7 @@ class LcrdmIngestorTest < ActiveSupport::TestCase
     # check event doesn't
     new_title = 'UKB/LCRDM Networking day'
     new_url = 'https://lcrdm.nl/evenementen/ukb-lcrdm-networking-day/'
+
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
@@ -41,6 +42,7 @@ class LcrdmIngestorTest < ActiveSupport::TestCase
 
     # check event does exist
     event = Event.where(title: new_title, url: new_url).first
+
     assert event
     assert_equal new_title, event.title
     assert_equal new_url, event.url

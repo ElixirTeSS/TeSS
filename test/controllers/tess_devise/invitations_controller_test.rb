@@ -15,6 +15,7 @@ module TessDevise
       sign_in users(:regular_user)
 
       get :new
+
       assert_response :redirect
       assert_redirected_to root_path
       sign_out users(:regular_user)
@@ -24,6 +25,7 @@ module TessDevise
       refute_nil users(:curator), 'curator is nil.'
       sign_in users(:curator)
       get :new
+
       assert_response :success
       sign_out users(:curator)
     end
@@ -32,12 +34,14 @@ module TessDevise
       refute_nil users(:admin), 'admin is nil.'
       sign_in users(:admin)
       get :new
+
       assert_response :success
       sign_out users(:admin)
     end
 
     test 'new invitation access for public' do
       get :new
+
       assert_response :redirect
       assert_redirected_to new_user_session_path
     end

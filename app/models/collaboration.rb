@@ -6,9 +6,9 @@ class Collaboration < ApplicationRecord
 
   validates :user, uniqueness: { scope: :resource, message: 'is already a collaborator' }
 
+  after_destroy :reindex_resource
   # Re-index the associated resource to index the newly added/removed collaborators
   after_save :reindex_resource
-  after_destroy :reindex_resource
 
   private
 

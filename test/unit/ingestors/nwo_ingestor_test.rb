@@ -21,6 +21,7 @@ class NwoIngestorTest < ActiveSupport::TestCase
     # check event doesn't
     new_title = 'NWO Biophysics'
     new_url = 'https://www.nwo.nl/en/meetings/biophysics'
+
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
@@ -41,6 +42,7 @@ class NwoIngestorTest < ActiveSupport::TestCase
 
     # check event does exist
     event = Event.where(title: new_title, url: new_url).first
+
     assert event
     assert_equal new_title, event.title
     assert_equal new_url, event.url

@@ -12,7 +12,7 @@ module LockableFields
   end
 
   def locked_fields=(fields)
-    self.field_locks = fields.reject(&:blank?).uniq.map { |f| field_locks.build(field: f.to_s) }
+    self.field_locks = fields.compact_blank.uniq.map { |f| field_locks.build(field: f.to_s) }
   end
 
   def field_locked?(field)

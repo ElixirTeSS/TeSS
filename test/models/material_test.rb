@@ -17,6 +17,7 @@ class MaterialTest < ActiveSupport::TestCase
                                  contact: 'default contact',
                                  content_provider: content_providers(:goblet),
                                  status: 'active')
+
     refute_nil @user
     refute_nil @event
     refute_nil @material
@@ -89,6 +90,7 @@ class MaterialTest < ActiveSupport::TestCase
 
     # get updated
     m2 = Material.find(m.id)
+
     refute_nil m2, 'updated material not found.'
 
     # check updated values
@@ -133,10 +135,12 @@ class MaterialTest < ActiveSupport::TestCase
 
   test 'should reassign owner when user deleted' do
     owner = @material.user
+
     assert_not_equal 'default_user', owner.role.name
     owner.destroy
     # Reload the material
     material = @material.reload
+
     assert_equal 'default_user', material.user.role.name
   end
 
@@ -155,6 +159,7 @@ class MaterialTest < ActiveSupport::TestCase
   test 'should strip bad values from authors array input' do
     authors = ['john', 'bob', nil, [], '', 'frank']
     expected_authors = ['john', 'bob', 'frank']
+
     assert @material.update(authors: authors)
     assert_equal expected_authors, @material.authors
   end
@@ -162,6 +167,7 @@ class MaterialTest < ActiveSupport::TestCase
   test 'should delete material when content provider deleted' do
     material = @material
     content_provider = @material.content_provider
+
     assert Material.find_by(id: material.id)
     assert content_provider.destroy
     assert_nil Material.find_by(id: material.id)
@@ -202,6 +208,7 @@ class MaterialTest < ActiveSupport::TestCase
 
     # no longer valid - m.difficulty_level = 'beginner'
     m.licence = 'GPL-3.0'
+
     assert m.save
     assert_equal 0, m.errors.count
   end
@@ -225,22 +232,27 @@ class MaterialTest < ActiveSupport::TestCase
     m = materials(:good_material)
 
     m.licence = 'CC-BY-4.0'
+
     assert m.valid?
     assert_equal 'CC-BY-4.0', m.licence
 
     m.licence = 'https://creativecommons.org/licenses/by-sa/4.0/'
+
     assert m.valid?
     assert_equal 'CC-BY-SA-4.0', m.licence
 
     m.licence = 'https://spdx.org/licenses/BSD-4-Clause-Shortened.html'
+
     assert m.valid?
     assert_equal 'BSD-4-Clause-Shortened', m.licence
 
     m.licence = 'https://spdx.org/licenses/MIT.json'
+
     assert m.valid?
     assert_equal 'MIT', m.licence
 
     m.licence = 'https://not.a.real.licence.golf'
+
     refute m.valid?
     assert_equal 'https://not.a.real.licence.golf', m.licence,
                  "should preserve URL user input if it didn't match any licenses in the dictionary"
@@ -250,12 +262,15 @@ class MaterialTest < ActiveSupport::TestCase
     m = materials(:good_material)
 
     m.last_scraped = nil
+
     refute m.stale?
 
     m.last_scraped = Time.zone.now
+
     refute m.stale?
 
     m.last_scraped = (Scrapable::THRESHOLD + 1.hour).ago
+
     assert m.stale?
   end
 
@@ -289,6 +304,7 @@ class MaterialTest < ActiveSupport::TestCase
 
     assert_includes material.reload.scientific_topic_names, 'Mice or rats'
     topic = material.scientific_topics.last
+
     assert_equal 'Mice or rats', topic.label
     assert topic.deprecated?
   end
@@ -299,6 +315,7 @@ class MaterialTest < ActiveSupport::TestCase
     first_material = user.materials.build(title: 'bla', url: 'http://example.com/spam', description: '123',
                                           doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['uno'],
                                           contact: 'default contact', status: 'active')
+
     assert first_material.user_requires_approval?
     assert first_material.from_unverified_or_rejected?
     first_material.save!
@@ -306,6 +323,7 @@ class MaterialTest < ActiveSupport::TestCase
     second_material = user.materials.build(title: 'bla', url: 'http://example.com/spam2', description: '123',
                                            doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['dos'],
                                            contact: 'default contact', status: 'active')
+
     refute second_material.user_requires_approval?
   end
 
@@ -315,6 +333,7 @@ class MaterialTest < ActiveSupport::TestCase
     first_material = user.materials.create!(title: 'bla', url: 'http://example.com/spam', description: '123',
                                             doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['uno'],
                                             contact: 'default contact', status: 'active')
+
     assert first_material.from_unverified_or_rejected?
 
     user.role = Role.rejected
@@ -323,6 +342,7 @@ class MaterialTest < ActiveSupport::TestCase
     second_material = user.materials.create(title: 'bla', url: 'http://example.com/spam2', description: '123',
                                             doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['dos'],
                                             contact: 'default contact', status: 'development')
+
     assert second_material.from_unverified_or_rejected?
 
     user.role = Role.approved
@@ -331,6 +351,7 @@ class MaterialTest < ActiveSupport::TestCase
     third_material = user.materials.create(title: 'bla', url: 'http://example.com/spam3', description: '123',
                                            doi: 'https://doi.org/10.1111/123.1235', licence: 'Fair', keywords: ['tres'],
                                            contact: 'default contact', status: 'archived')
+
     refute third_material.from_unverified_or_rejected?
   end
 
@@ -368,6 +389,7 @@ class MaterialTest < ActiveSupport::TestCase
     material = materials(:material_with_external_resource)
     res_count = material.external_resources.count
     new_resource = material.external_resources.create!({ title: 'TeSS', url: 'https://tess.elixir-uk.org/' })
+
     assert_equal res_count + 1, material.reload.external_resources.count
     assert_equal 2, material.external_resources.where(title: 'TeSS').count
 
@@ -385,6 +407,7 @@ class MaterialTest < ActiveSupport::TestCase
     bad_material = bad_user.materials.build(title: 'bla', url: 'http://example.com/spam', description: 'vvv',
                                             doi: 'https://doi.org/10.1111/123.1235', contact: 'default contact',
                                             licence: 'Fair', keywords: %w[key words], status: 'active')
+
     assert bad_material.user_requires_approval?
     bad_material.save!
 
@@ -393,6 +416,7 @@ class MaterialTest < ActiveSupport::TestCase
                                               description: 'vvv', contact: 'default contact',
                                               doi: 'https://doi.org/10.1111/123.1235', status: 'active',
                                               licence: 'Fair', keywords: %w[key words])
+
     refute good_material.user_requires_approval?
     good_material.save!
 
@@ -415,6 +439,7 @@ class MaterialTest < ActiveSupport::TestCase
                                           contact: 'default contact',
                                           user: @user,
                                           status: 'active')
+
     refute reserved_word_material.save
 
     # Numeric slug generates UUID slug
@@ -427,6 +452,7 @@ class MaterialTest < ActiveSupport::TestCase
                                 contact: 'default contact',
                                 user: @user,
                                 status: 'development')
+
     refute_match(/\A\d+\Z/, material.friendly_id)
 
     material = Material.create!(title: '第9回研究会開催案内',
@@ -438,6 +464,7 @@ class MaterialTest < ActiveSupport::TestCase
                                 contact: 'default contact',
                                 user: @user,
                                 status: 'archived')
+
     refute_match(/\A\d+\Z/, material.friendly_id)
   end
 
@@ -448,26 +475,32 @@ class MaterialTest < ActiveSupport::TestCase
     assert material.errors.added?(:url, :blank)
 
     material.url = '123'
+
     refute material.valid?
     assert material.errors.added?(:url, :url, value: '123')
 
     material.url = '/relative'
+
     refute material.valid?
     assert material.errors.added?(:url, :url, value: '/relative')
 
     material.url = 'git://something.git'
+
     refute material.valid?
     assert material.errors.added?(:url, :url, value: 'git://something.git')
 
     material.url = 'http://http-website.com/mat'
+
     assert material.valid?
     refute material.errors.added?(:url, :url, value: 'http://http-website.com/mat')
 
     material.url = 'https://https-website.com/mat'
+
     assert material.valid?
     refute material.errors.added?(:url, :url, value: 'https://https-website.com/mat')
 
     material.url = 'ftp://something/something'
+
     refute material.valid?
     assert material.errors.added?(:url, :url, value: 'ftp://something/something')
   end
@@ -491,6 +524,7 @@ class MaterialTest < ActiveSupport::TestCase
 
     assert material.save
     dup = nil
+
     assert material.slug
 
     # Duplicating should not create any records
@@ -527,6 +561,7 @@ class MaterialTest < ActiveSupport::TestCase
           assert_difference('ExternalResource.count', 1) do
             assert_difference('EventMaterial.count', 1) do
               dup.url = 'https://materials.com/2'
+
               assert dup.save
             end
           end

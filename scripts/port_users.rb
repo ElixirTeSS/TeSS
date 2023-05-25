@@ -8,7 +8,7 @@
 # rails runner -e $ENVIRONMENT $PATH_TO_SCRIPT
 # Note that I've assumed you'll put users.csv in a particular place.
 
-IO.readlines("#{Rails.root}/scripts/users.csv").each do |line|
+File.readlines("#{Rails.root}/scripts/users.csv").each do |line|
   parts = line.split('|').map(&:strip)
   username = parts[0]
   email = parts[1]

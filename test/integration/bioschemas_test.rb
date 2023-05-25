@@ -22,6 +22,7 @@ class BioschemasTest < ActionDispatch::IntegrationTest
 
     results = graph.query([:subject, RDF.type, RDF::Vocab::SCHEMA.Event])
     event_uri = results.first.subject
+
     assert_equal 1, results.count
     assert_equal url, event_uri
 
@@ -31,6 +32,7 @@ class BioschemasTest < ActionDispatch::IntegrationTest
       props[key] ||= []
       props[key] << result.object.to_s
     end
+
     assert_equal ['calendar event'], props['name']
     assert_equal ['an event to test calendar exports'], props['alternateName']
     assert_equal ['http://microsoft.com'], props['url']
@@ -50,6 +52,7 @@ class BioschemasTest < ActionDispatch::IntegrationTest
       pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.longitude, :longitude, optional: true)
     end
     results = graph.query(q)
+
     assert_equal 1, results.count
     assert_equal '100, Lygon Street', results.first.street_address
     assert_equal 'Carlton', results.first.locality
@@ -64,6 +67,7 @@ class BioschemasTest < ActionDispatch::IntegrationTest
       pattern RDF::Query::Pattern.new(:funder_info, RDF::Vocab::SCHEMA.name, :funder)
     end
     results = graph.query(q)
+
     assert_equal 1, results.count
     assert_equal 'FundingCorp', results.first.funder
 
@@ -73,6 +77,7 @@ class BioschemasTest < ActionDispatch::IntegrationTest
       pattern RDF::Query::Pattern.new(:organizer_info, RDF::Vocab::SCHEMA.name, :organizer)
     end
     results = graph.query(q)
+
     assert_equal 1, results.count
     assert_equal 'EventsCo', results.first.organizer
   end
@@ -89,14 +94,17 @@ class BioschemasTest < ActionDispatch::IntegrationTest
 
     results = graph.query([:subject, RDF.type, RDF::Vocab::SCHEMA.Course])
     course_uri = results.first.subject
+
     assert_equal 1, results.count
     assert_equal url, course_uri
 
     results = graph.query([course_uri, RDF::Vocab::SCHEMA.hasCourseInstance, :course_instance])
+
     assert_equal 1, results.count
 
     results = graph.query([results.first.object, RDF.type, RDF::Vocab::SCHEMA.CourseInstance])
     course_instance_uri = results.first.subject
+
     assert_equal 1, results.count
 
     course_props = {}
@@ -128,6 +136,7 @@ class BioschemasTest < ActionDispatch::IntegrationTest
     end
 
     results = graph.query(q)
+
     assert_equal 1, results.count
     assert_equal 'Everyone!', results.first.target_audience
 
@@ -137,8 +146,10 @@ class BioschemasTest < ActionDispatch::IntegrationTest
       pattern RDF::Query::Pattern.new(:topic_info, RDF::Vocab::SCHEMA.name, :scientific_topic_name)
     end
     results = graph.query(q)
+
     assert_equal 2, results.count
     topics = results.map(&:scientific_topic_name)
+
     assert_includes topics, 'Sequencing'
     assert_includes topics, 'Genetic variation'
 
@@ -154,6 +165,7 @@ class BioschemasTest < ActionDispatch::IntegrationTest
       pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.longitude, :longitude, optional: true)
     end
     results = graph.query(q)
+
     assert_equal 1, results.count
     assert_equal 'Kilburn Building', results.first.street_address
     assert_equal 'Manchester', results.first.locality
@@ -169,8 +181,10 @@ class BioschemasTest < ActionDispatch::IntegrationTest
       pattern RDF::Query::Pattern.new(:funder_info, RDF::Vocab::SCHEMA.name, :funder)
     end
     results = graph.query(q)
+
     assert_equal 3, results.count
     sponsors = results.map(&:funder)
+
     assert_includes sponsors, 'Amazon'
     assert_includes sponsors, 'Google'
     assert_includes sponsors, 'GitHub'
@@ -181,6 +195,7 @@ class BioschemasTest < ActionDispatch::IntegrationTest
       pattern RDF::Query::Pattern.new(:organizer_info, RDF::Vocab::SCHEMA.name, :organizer)
     end
     results = graph.query(q)
+
     assert_equal 1, results.count
     assert_equal 'CourseCo', results.first.organizer
   end
@@ -197,10 +212,12 @@ class BioschemasTest < ActionDispatch::IntegrationTest
     graph.insert_statements(reader)
 
     results = graph.query([:subject, RDF.type, RDF::Vocab::SCHEMA.Event])
+
     assert_equal 1, results.count
     assert_equal event_url(event), results.first.subject.to_s
 
     results = graph.query([:subject, RDF.type, RDF::Vocab::SCHEMA.Course])
+
     assert_equal 1, results.count
     assert_equal event_url(course), results.first.subject.to_s
   end
@@ -217,6 +234,7 @@ class BioschemasTest < ActionDispatch::IntegrationTest
 
     results = graph.query([:subject, RDF.type, RDF::Vocab::SCHEMA.LearningResource])
     material_uri = results.first.subject
+
     assert_equal 1, results.count
     assert_equal url, material_uri
     props = {}
@@ -225,6 +243,7 @@ class BioschemasTest < ActionDispatch::IntegrationTest
       props[key] ||= []
       props[key] << result.object.to_s
     end
+
     assert_equal ['Training Material with All Optionals'], props['name']
     assert_equal ['This is a Training Material produced by an example organization'], props['description']
     assert_equal ['https://training.com/material/023'], props['url']
@@ -241,8 +260,10 @@ class BioschemasTest < ActionDispatch::IntegrationTest
     end
 
     results = graph.query(q)
+
     assert_equal 2, results.count
     audiences = results.map(&:target_audience)
+
     assert_includes audiences, 'HDR'
     assert_includes audiences, 'ECR'
 
@@ -252,8 +273,10 @@ class BioschemasTest < ActionDispatch::IntegrationTest
       pattern RDF::Query::Pattern.new(:topic_info, RDF::Vocab::SCHEMA.name, :scientific_topic_name)
     end
     results = graph.query(q)
+
     assert_equal 1, results.count
     topics = results.map(&:scientific_topic_name)
+
     assert_includes topics, 'Metabolomics'
 
     # Authors
@@ -262,8 +285,10 @@ class BioschemasTest < ActionDispatch::IntegrationTest
       pattern RDF::Query::Pattern.new(:author_info, RDF::Vocab::SCHEMA.name, :author)
     end
     results = graph.query(q)
+
     assert_equal 2, results.count
     authors = results.map(&:author)
+
     assert_includes authors, 'Nicolai Tesla'
     assert_includes authors, 'Thomas Edison'
 
@@ -273,8 +298,10 @@ class BioschemasTest < ActionDispatch::IntegrationTest
       pattern RDF::Query::Pattern.new(:contributor_info, RDF::Vocab::SCHEMA.name, :contributor)
     end
     results = graph.query(q)
+
     assert_equal 1, results.count
     authors = results.map(&:contributor)
+
     assert_includes authors, 'Dr Dre'
   end
 
@@ -290,6 +317,7 @@ class BioschemasTest < ActionDispatch::IntegrationTest
     graph.insert_statements(reader)
 
     results = graph.query([:subject, RDF.type, RDF::Vocab::SCHEMA.LearningResource])
+
     assert_equal 2, results.count
     assert_equal [material_url(material), material_url(other_material)].sort, results.map { |result|
                                                                                 result.subject.to_s

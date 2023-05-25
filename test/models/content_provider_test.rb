@@ -9,6 +9,7 @@ class ContentProviderTest < ActiveSupport::TestCase
 
   test 'should not save invalid content provider' do
     content_provider = ContentProvider.new
+
     assert content_provider.invalid?
     assert content_provider.errors[:title].any?
     assert content_provider.errors[:url].any?
@@ -16,17 +17,20 @@ class ContentProviderTest < ActiveSupport::TestCase
 
   test 'should allow empty image_url' do
     content_provider = content_providers(:provider_with_empty_image_url)
+
     assert content_provider.valid?
   end
 
   test 'should not allow invalid image_url' do
     content_provider = content_providers(:provider_with_invalid_image_url)
+
     assert content_provider.invalid?
     assert content_provider.errors[:image_url].any?
   end
 
   test 'should have node' do
     content_provider = content_providers(:goblet)
+
     assert_equal content_provider.node, nodes(:good)
   end
 
@@ -58,10 +62,12 @@ class ContentProviderTest < ActiveSupport::TestCase
                                            url: 'https://website.internet',
                                            user: users(:regular_user),
                                            content_provider_type: 'Something')
+
     refute content_provider.valid?
     assert content_provider.errors.added?(:content_provider_type, :inclusion, value: 'Something')
 
     content_provider.content_provider_type = 'Organisation'
+
     assert content_provider.valid?
   end
 end

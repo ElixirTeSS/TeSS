@@ -17,21 +17,27 @@ class ApplicationControllerTest < ActionController::TestCase
 
   test 'can check URLs' do
     get :test_url, params: { url: 'http://200host.com', format: :json }
+
     assert_equal 200, JSON.parse(response.body)['code']
 
     get :test_url, params: { url: 'http://404host.com', format: :json }
+
     assert_equal 404, JSON.parse(response.body)['code']
 
     get :test_url, params: { url: 'http://500host.com', format: :json }
+
     assert_equal 500, JSON.parse(response.body)['code']
 
     get :test_url, params: { url: 'http://slowhost.com', format: :json }
+
     assert_equal 'Could not access the given URL', JSON.parse(response.body)['message']
 
     get :test_url, params: { url: 'http://notrealhost.goldfish', format: :json }
+
     assert_equal 'Could not access the given URL', JSON.parse(response.body)['message']
 
     get :test_url, params: { url: 'http://127.0.0.1', format: :json }
+
     assert_equal 'Could not access the given URL', JSON.parse(response.body)['message']
   end
 end

@@ -53,12 +53,12 @@ module SearchableIndex
       facets = @facet_params.to_h
       facets.each { |key, value| facets[key] = Array(value) }
 
-      available_facets = Hash[@search_results.facets.map do |f|
+      available_facets = @search_results.facets.map do |f|
         [
           f.field_name,
           f.rows.map { |r| { value: r.value, count: r.count } }
         ]
-      end]
+      end.to_h
       total = @search_results.total
 
       res = @index_resources

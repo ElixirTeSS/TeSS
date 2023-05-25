@@ -8,7 +8,7 @@ namespace :fairsharing do
     # Parse data file manually imported from FAIRsharing
     datafile = "#{Rails.root}/config/data/tess_links.csv"
     begin
-      lines = IO.readlines(datafile)
+      lines = File.readlines(datafile)
     rescue StandardError
       puts "Could not open datafile: #{datafile}"
       exit 0

@@ -21,6 +21,7 @@ class LibcalIngestorTest < ActiveSupport::TestCase
     # check event doesn't
     new_title = 'ENDNOTE LIGHT'
     new_url = 'https://vu-nl.libcal.com/event/3826342'
+
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
@@ -41,6 +42,7 @@ class LibcalIngestorTest < ActiveSupport::TestCase
 
     # check event does exist
     event = Event.where(title: new_title, url: new_url).first
+
     assert event
     assert_equal new_title, event.title
     assert_equal new_url, event.url

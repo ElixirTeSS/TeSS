@@ -6,6 +6,7 @@ class NodeTest < ActiveSupport::TestCase
   test 'can create a node and staff' do
     node = Node.new(user: users(:admin), name: 'Kilburn', country_code: 'ES')
     node.staff.build(name: 'Tom', email: 'tk@example.com', role: 'Training coordinator')
+
     assert node.valid?
     assert node.save
     assert node.staff.any?
@@ -14,6 +15,7 @@ class NodeTest < ActiveSupport::TestCase
   test 'cannot create a node with duplicate name' do
     Node.create(user: users(:admin), name: 'Kilburn', country_code: 'ES')
     node2 = Node.new(user: users(:admin), name: 'Kilburn', country_code: 'ES')
+
     refute node2.valid?
     refute node2.save
     assert node2.errors.any?
@@ -33,6 +35,7 @@ class NodeTest < ActiveSupport::TestCase
     nodes = Node.load_from_hash(hash)
     node_ids = nodes.map(&:id).sort
     narnia = nodes.first
+
     assert_equal 'NN', narnia.country_code
 
     updated_hash = node_data_hash
@@ -50,6 +53,7 @@ class NodeTest < ActiveSupport::TestCase
   test 'can update staff via seed data' do
     hash = node_data_hash
     Node.load_from_hash(hash)
+
     assert_equal 'Aslan', Node.find_by(name: 'Narnia').staff.first.name
 
     updated_hash = node_data_hash
@@ -72,6 +76,7 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'can get staff and training coordinators' do
     node = nodes(:good)
+
     assert_equal 2, node.staff.length
     assert_equal 1, node.staff.training_coordinators.length
     assert_equal 'John Doe', node.staff.training_coordinators.first.name
@@ -80,6 +85,7 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'should have content providers' do
     node = nodes(:good)
+
     assert_equal 1, node.content_providers.length
     assert_equal node.content_providers[0], content_providers(:goblet)
   end

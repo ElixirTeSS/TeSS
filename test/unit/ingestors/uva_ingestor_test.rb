@@ -21,6 +21,7 @@ class UvaIngestorTest < ActiveSupport::TestCase
     # check event doesn't
     new_title = 'The Societal Impact of AI & Data Science'
     new_url = 'https://uba.uva.nl/en/shared/subsites/data-science-centre/en/events/2023/03/the-societal-impact-of-ai-and-data-science.html?origin=ht%2ByU3HqRAGnIsBBlkOh%2Fw'
+
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
@@ -41,6 +42,7 @@ class UvaIngestorTest < ActiveSupport::TestCase
 
     # check event does exist
     event = Event.where(title: new_title, url: new_url).first
+
     assert event
     assert_equal new_title, event.title
     assert_equal new_url, event.url

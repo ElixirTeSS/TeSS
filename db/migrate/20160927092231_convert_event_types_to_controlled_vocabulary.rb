@@ -12,7 +12,7 @@ class ConvertEventTypesToControlledVocabulary < ActiveRecord::Migration[4.2]
     Event.transaction do
       Event.all.each do |e|
         types = e.event_type
-        new_types = types.map { |type| MAPPING[type] || type }.reject(&:blank?)
+        new_types = types.map { |type| MAPPING[type] || type }.compact_blank
         new_types = new_types.select { |type| EventTypeDictionary.instance.lookup(type) }.compact
         if types != new_types
           e.update_column(:event_type, new_types)
@@ -28,7 +28,7 @@ class ConvertEventTypesToControlledVocabulary < ActiveRecord::Migration[4.2]
     Event.transaction do
       Event.all.each do |e|
         types = e.event_type                    # v  Note the invert!
-        new_types = types.map { |type| MAPPING.invert[type] || type }.reject(&:blank?).compact
+        new_types = types.map { |type| MAPPING.invert[type] || type }.compact_blank.compact
         if types != new_types
           e.update_column(:event_type, new_types)
           Rails.logger.debug '.'

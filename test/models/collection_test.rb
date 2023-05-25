@@ -42,11 +42,13 @@ class CollectionTest < ActiveSupport::TestCase
     user = users(:unverified_user)
 
     first_collection = user.collections.build(title: 'bla')
+
     assert first_collection.user_requires_approval?
     assert first_collection.from_unverified_or_rejected?
     first_collection.save!
 
     second_collection = user.collections.build(title: 'bla')
+
     refute second_collection.user_requires_approval?
   end
 
@@ -54,18 +56,21 @@ class CollectionTest < ActiveSupport::TestCase
     user = users(:unverified_user)
 
     first_collection = user.collections.create!(title: 'bla')
+
     assert first_collection.from_unverified_or_rejected?
 
     user.role = Role.rejected
     user.save!
 
     second_collection = user.collections.create(title: 'bla')
+
     assert second_collection.from_unverified_or_rejected?
 
     user.role = Role.approved
     user.save!
 
     third_collection = user.collections.create(title: 'bla')
+
     refute third_collection.from_unverified_or_rejected?
   end
 
@@ -136,12 +141,14 @@ class CollectionTest < ActiveSupport::TestCase
     user = users(:regular_user)
     material = materials(:good_material).becomes(DummyMaterial)
     collection = user.collections.create!(title: 'test 123', materials: [material])
+
     assert collection
 
     with_settings(solr_enabled: true) do
       assert_equal 0, DummyMaterial.index.length
 
       collection.update!(title: 'Hello world')
+
       assert_includes DummyMaterial.index, collection
       assert_equal 1, DummyMaterial.index.length
     end
@@ -151,12 +158,14 @@ class CollectionTest < ActiveSupport::TestCase
     user = users(:regular_user)
     material = materials(:good_material).becomes(DummyMaterial)
     collection = user.collections.create!(title: 'test 123', materials: [material])
+
     assert collection
 
     with_settings(solr_enabled: true) do
       assert_equal 0, DummyMaterial.index.length
 
       collection.update!(description: 'hello')
+
       assert_equal 0, DummyMaterial.index.length
     end
   end

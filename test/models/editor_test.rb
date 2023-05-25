@@ -31,10 +31,12 @@ class EditorTest < ActiveSupport::TestCase
     # add another couple
     prov.add_editor users(:trainer_user)
     prov.add_editor users(:private_user)
+
     assert_equal 3, prov.editors.size
 
     # remove an editor
     prov.remove_editor users(:trainer_user)
+
     assert_equal 2, prov.editors.size
     assert_equal 'StevieN', prov.editors[1].username
   end
@@ -57,6 +59,7 @@ class EditorTest < ActiveSupport::TestCase
 
     # try to add the same user
     prov.add_editor users(:another_regular_user)
+
     assert_equal 1, prov.editors.size
   end
 
@@ -96,9 +99,11 @@ class EditorTest < ActiveSupport::TestCase
 
     # add to providers
     prov1.add_editor trainer
+
     assert_equal 1, prov1.editors.size
 
     prov2.add_editor trainer
+
     assert_equal 1, prov2.editors.size
 
     # check user's references to providers
@@ -131,6 +136,7 @@ class EditorTest < ActiveSupport::TestCase
     # check editors
     assert provider.editors
     provider.add_editor(trainer)
+
     assert_includes provider.editors, trainer,
                     "trainer[#{trainer.username}] not found in provider[#{provider.title}].editors"
     assert_includes trainer.editables, provider,
@@ -140,6 +146,7 @@ class EditorTest < ActiveSupport::TestCase
 
     # remove editor
     provider.remove_editor(trainer)
+
     refute_includes provider.editors, trainer,
                     "trainer[#{trainer.username}] still in provider[#{provider.title}].editors"
     refute_includes trainer.editables, provider,
@@ -148,6 +155,7 @@ class EditorTest < ActiveSupport::TestCase
     # check reassignments
     event.reload
     material.reload
+
     assert_equal provider.title, event.content_provider.title
     assert_equal provider.title, material.content_provider.title
     assert_equal provider.user.username, event.user.username, "event[#{event.title}] owner not matched"
@@ -170,6 +178,7 @@ class EditorTest < ActiveSupport::TestCase
     # add an approved editor
     provider.approved_editors = [owner.username, trainer.username]
     provider.save
+
     assert_equal 1, provider.approved_editors.size
     assert_equal trainer.username, provider.approved_editors.first
     assert_equal 1, provider.editors.size
@@ -180,6 +189,7 @@ class EditorTest < ActiveSupport::TestCase
     editors << private_user.username
     editors << admin.username
     provider.approved_editors = editors
+
     assert_equal 3, provider.approved_editors.size
     assert_equal admin.username, provider.approved_editors.last
 
@@ -188,6 +198,7 @@ class EditorTest < ActiveSupport::TestCase
     editors = provider.approved_editors
     editors.delete(private_user.username)
     provider.approved_editors = editors
+
     assert_equal 2, provider.approved_editors.size
     refute_includes provider.approved_editors, private_user.username
     refute_includes provider.editors, private_user
@@ -201,10 +212,12 @@ class EditorTest < ActiveSupport::TestCase
 
     another_event = Event.create!(user: trainer, title: 'New event', timezone: 'UTC', url: 'http://example.com',
                                   online: true)
+
     assert_nil another_event.content_provider
 
     # remove editor
     provider.remove_editor(trainer)
+
     refute_includes provider.editors, trainer,
                     "trainer[#{trainer.username}] still in provider[#{provider.title}].editors"
     refute_includes trainer.editables, provider,
@@ -213,6 +226,7 @@ class EditorTest < ActiveSupport::TestCase
     # check reassignments
     event.reload
     another_event.reload
+
     assert_nil another_event.content_provider
     assert_equal trainer, another_event.user
     assert_equal provider.user, event.user

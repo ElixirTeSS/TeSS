@@ -71,7 +71,11 @@ module TeSS
   def self.merge_config(default_config, config, current_path = '')
     default_config.each do |key, value|
       unless config.key?(key)
-        Rails.logger.debug "Setting '#{current_path}#{key}' not configured, using defaults" if Rails.env.development?
+        if Rails.env.development?
+          Rails.logger.debug do
+            "Setting '#{current_path}#{key}' not configured, using defaults"
+          end
+        end
         config[key] = value
       end
       merge_config(value, config[key], current_path + "#{key}: ") if value.is_a?(Hash) && config[key].is_a?(Hash)

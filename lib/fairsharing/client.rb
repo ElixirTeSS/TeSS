@@ -11,7 +11,7 @@ module Fairsharing
     def search(query:, type: 'any', page: 1, per_page: 25)
       path = '/search/fairsharing_records'
       params = {
-        'q': query,
+        q: query,
         'page[number]': page.to_i,
         'page[size]': per_page.to_i
       }
@@ -25,9 +25,9 @@ module Fairsharing
       username ||= Rails.application.secrets.fairsharing&.dig(:username)
       password ||= Rails.application.secrets.fairsharing&.dig(:password)
       body = {
-        'user': {
-          'login': username,
-          'password': password
+        user: {
+          login: username,
+          password: password
         }
       }
 

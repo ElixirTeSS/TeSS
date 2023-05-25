@@ -21,6 +21,7 @@ class SurfIngestorTest < ActiveSupport::TestCase
     # check event doesn't
     new_title = 'National XR Day'
     new_url = 'https://www.surf.nl/en/agenda/national-xr-day-0'
+
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
@@ -41,6 +42,7 @@ class SurfIngestorTest < ActiveSupport::TestCase
 
     # check event does exist
     event = Event.where(title: new_title, url: new_url).first
+
     assert event
     assert_equal new_title, event.title
     assert_equal new_url, event.url

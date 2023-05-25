@@ -171,7 +171,7 @@ module ApplicationHelper
 
     if !options[:method].nil? || !options['data-method'].nil?
       :inactive
-    elsif uri == request_uri || (options[:root] && (request_uri == '/') || (request_uri == root_url))
+    elsif uri == request_uri || ((options[:root] && (request_uri == '/')) || (request_uri == root_url))
       :active
     elsif request_uri.start_with?(uri) && !root
       :chosen
@@ -625,7 +625,7 @@ module ApplicationHelper
       resources.facets.values_at(*indices)
     else
       resources.facets
-    end.select { |f| f.rows.any? && !IGNORED_FILTERS.include?(f.field_name.to_s) }
+    end.select { |f| f.rows.any? && IGNORED_FILTERS.exclude?(f.field_name.to_s) }
   end
 
   class TabActivator

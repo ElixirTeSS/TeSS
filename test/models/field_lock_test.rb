@@ -8,6 +8,7 @@ class FieldLockTest < ActiveSupport::TestCase
 
     assert_empty event.locked_fields
     event.locked_fields = [:title, :description]
+
     assert_equal 2, event.locked_fields.length
 
     assert_difference('FieldLock.count', 2) do

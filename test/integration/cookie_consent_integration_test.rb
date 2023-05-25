@@ -8,6 +8,7 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
       get root_path
 
       cookie_consent = CookieConsent.new(cookies)
+
       refute cookie_consent.given?
       assert cookie_consent.show_banner?
       assert_select '#cookie-banner' do
@@ -33,6 +34,7 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
       get root_path
 
       cookie_consent = CookieConsent.new(cookies)
+
       refute cookie_consent.given?
       refute cookie_consent.show_banner?
       assert_select '#cookie-banner', count: 0
@@ -46,6 +48,7 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
       get root_path
 
       cookie_consent = CookieConsent.new(cookies)
+
       assert_equal ['necessary', 'tracking'], cookie_consent.options
       assert cookie_consent.given?
       assert_select '#cookie-banner', count: 0
@@ -81,6 +84,7 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
       get root_path
 
       cookie_consent = CookieConsent.new(cookies)
+
       assert_equal ['necessary'], cookie_consent.options
       assert cookie_consent.allow_tracking?
       assert_select '#ga-script', count: 1
@@ -101,6 +105,7 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
       post cookies_consent_path, params: { allow: 'necessary' }
 
       follow_redirect!
+
       assert_select '#flash-container .alert-danger', count: 0
 
       get cookies_consent_path
@@ -136,6 +141,7 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
       post cookies_consent_path, params: { allow: all_options }
 
       get cookies_consent_path
+
       assert_response :success
 
       assert_select '#cookie-consent-level li', text: /Cookies required for Google Analytics/
@@ -157,9 +163,11 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
     with_settings({ require_cookie_consent: true, analytics_enabled: true }) do
       post cookies_consent_path, params: { allow: 'necessary' }
       follow_redirect!
+
       assert_select '#flash-container .alert-danger', count: 0
 
       get cookies_consent_path
+
       assert_response :success
 
       assert_select '#cookie-consent-level', text: /No cookie consent/, count: 0
@@ -169,9 +177,11 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
 
       post cookies_consent_path, params: { allow: 'none' }
       follow_redirect!
+
       assert_select '#flash-container .alert-danger', count: 0
 
       get cookies_consent_path
+
       assert_response :success
 
       assert_select '#cookie-consent-level', text: /No cookie consent/

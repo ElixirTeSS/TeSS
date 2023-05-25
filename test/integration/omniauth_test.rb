@@ -222,15 +222,18 @@ class OmniauthTest < ActionDispatch::IntegrationTest
     follow_redirect!
 
     expected_username = "#{existing_user.username}1" # Adds 1 to end of name!
+
     assert_equal "/users/#{expected_username.downcase}/edit", path
     assert_select '#user-menu .dropdown-toggle', expected_username
 
     # check old user
     old_user = User.find_by(username: existing_user.username)
+
     refute_nil old_user, 'old user not found?'
 
     # check user created
     new_user = User.find_by(username: expected_username)
+
     refute_nil new_user, "new username[#{expected_username}] not created successfully"
     assert_equal 'oidc2', new_user.provider
     refute_nil new_user.uid

@@ -37,6 +37,7 @@ class ZenodoIngestorTest < ActiveSupport::TestCase
 
     # check material added successfully
     material = get_zenodo_id(5_711_863, 'ML4AU: Trainings, trainers and building an ML community', 'Portal Provider')
+
     refute_nil material.description, 'material description is nil!'
     refute_nil material.keywords, 'material keywords is nil'
     assert_equal 5, material.keywords.size, 'material keywords count not matched.'
@@ -50,6 +51,7 @@ class ZenodoIngestorTest < ActiveSupport::TestCase
 
     # check material with contributors
     material = get_zenodo_id(5_091_260, 'How can software containers help your research?', 'Portal Provider')
+
     refute_nil material.description, 'material description is nil!'
     refute_nil material.contributors, 'material keywords is nil'
     assert_equal 6, material.contributors.size, 'material contributors count not matched!'
@@ -65,9 +67,11 @@ class ZenodoIngestorTest < ActiveSupport::TestCase
   def get_zenodo_id(id, title, provider)
     url = "https://zenodo.org/record/#{id}"
     materials = Material.where(title: title, url: url)
+
     refute_nil materials, "Post-task: Material title[#{title}] search error."
     assert_equal 1, materials.size, "Post-task: materials search title[#{title}] found nothing"
     material = materials.first
+
     refute_nil material, "Post-task: first material from search title[#{title}] in nil."
     assert_equal title, material.title, 'material title not matched!'
     assert_equal url, material.url, 'material url not matched!'

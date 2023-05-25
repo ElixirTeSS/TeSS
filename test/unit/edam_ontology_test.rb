@@ -51,6 +51,7 @@ class EdamOntologyTest < ActiveSupport::TestCase
     assert_includes term.subclasses.map(&:label), 'Enzymes'
 
     another_term = Edam::Ontology.instance.lookup_by_name('Membrane and lipoproteins')
+
     assert_empty another_term.subclasses
   end
 

@@ -43,6 +43,7 @@ class MaterialCsvIngestorTest < ActiveSupport::TestCase
     assert_equal 1, ingestor.stats[:materials][:rejected]
 
     material = ingestor.materials.detect { |e| e.title == 'The Final Draft' }
+
     assert material
     assert material.errors.added?(:other_types, :blank)
 
@@ -50,6 +51,7 @@ class MaterialCsvIngestorTest < ActiveSupport::TestCase
     title = 'My First Material'
     url = 'https://app.com/materials/material1.html'
     material = get_material title, url
+
     refute_nil material, "material title[#{title}] not found."
     refute_nil material.errors
     assert_empty material.errors, "material title[#{title}] has errors"
@@ -131,6 +133,7 @@ class MaterialCsvIngestorTest < ActiveSupport::TestCase
     title = 'Another Material'
     url = 'https://app.com/materials/material2.html'
     material = get_material title, url
+
     refute_nil material, "Post-task: material from search title[#{title}] in nil."
     # refute material.contact.nil?, "#{title}: contact is nil."
     # assert_equal 'user@provider.portal', material.contact, "#{title}: contact should match default (content_provider)."
@@ -167,6 +170,7 @@ class MaterialCsvIngestorTest < ActiveSupport::TestCase
       freeze_time(Time.new(2022).utc) do
         ingestor.read(source.url)
         ingestor.write(@user, @content_provider)
+
         assert_equal 3, ingestor.materials.count
         assert_empty ingestor.events
         assert_equal 1, ingestor.stats[:materials][:added]
@@ -177,6 +181,7 @@ class MaterialCsvIngestorTest < ActiveSupport::TestCase
 
     # get event (again)
     updated = get_material title, url, @content_provider
+
     refute_nil updated, 'Updated material not found!'
 
     # check fields of updated material

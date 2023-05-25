@@ -28,7 +28,7 @@ module ArrayFieldCleaner
         self[field] = if self[field].nil?
                         []
                       else
-                        self[field].reject(&:blank?)
+                        self[field].compact_blank
                       end
       end
     end

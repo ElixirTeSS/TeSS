@@ -322,7 +322,7 @@ class Event < ApplicationRecord
   end
 
   def address
-    ADDRESS_FIELDS.map { |field| send(field) }.reject(&:blank?).join(', ')
+    ADDRESS_FIELDS.map { |field| send(field) }.compact_blank.join(', ')
   end
 
   def address_will_change?
@@ -346,7 +346,7 @@ class Event < ApplicationRecord
     rescue Redis::BaseError => e
       raise e unless Rails.env.production?
 
-      Rails.logger.debug "Redis error: #{e.message}"
+      Rails.logger.debug { "Redis error: #{e.message}" }
     end
 
     # return true to enable error messages
@@ -369,7 +369,7 @@ class Event < ApplicationRecord
       rescue Redis::BaseError => e
         raise e unless Rails.env.production?
 
-        Rails.logger.debug "Redis error: #{e.message}"
+        Rails.logger.debug { "Redis error: #{e.message}" }
       end
     else
       update_column(:nominatim_count, nominatim_count + 1)
@@ -398,7 +398,7 @@ class Event < ApplicationRecord
     rescue Redis::BaseError => e
       raise e unless Rails.env.production?
 
-      Rails.logger.debug "Redis error: #{e.message}"
+      Rails.logger.debug { "Redis error: #{e.message}" }
     end
   end
 

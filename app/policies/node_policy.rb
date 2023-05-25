@@ -18,10 +18,6 @@ class NodePolicy < ApplicationPolicy
       end
     end
 
-    if @user.has_role?(:curator) || @user.has_role?(:node_curator) || @user.is_owner?(@record)
-      true
-    else
-      false
-    end
+    @user.has_role?(:curator) || @user.has_role?(:node_curator) || @user.is_owner?(@record)
   end
 end

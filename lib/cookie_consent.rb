@@ -9,7 +9,7 @@ class CookieConsent
 
   def options=(opts)
     opts = opts.split(',').map(&:strip)
-    @store[:cookie_consent] = opts.join(',') unless opts.any? { |opt| !OPTIONS.include?(opt) }
+    @store[:cookie_consent] = opts.join(',') unless opts.any? { |opt| OPTIONS.exclude?(opt) }
   end
 
   def options

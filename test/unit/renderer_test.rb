@@ -50,6 +50,7 @@ class RendererTest < ActiveSupport::TestCase
 
   test 'render content' do
     content = @renderer.render_content
+
     assert content.html_safe?
     assert content.start_with?('<iframe width="560" height="315" src="https://www.youtube.com/embed/1T_2xMTQCv4"')
     assert content.end_with?('</iframe>')

@@ -21,6 +21,7 @@ class OscmIngestorTest < ActiveSupport::TestCase
     # check event doesn't
     new_title = 'FAIR Coffee lecture - Gijs van Dijck'
     new_url = 'https://www.openscience-maastricht.nl/events/fair-coffee-lecture-24-may-2023/'
+
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
@@ -41,6 +42,7 @@ class OscmIngestorTest < ActiveSupport::TestCase
 
     # check event does exist
     event = Event.where(title: new_title, url: new_url).first
+
     assert event
     assert_equal new_title, event.title
     assert_equal new_url, event.url

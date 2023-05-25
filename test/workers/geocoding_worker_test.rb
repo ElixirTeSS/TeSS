@@ -8,6 +8,7 @@ class GeocodingWorkerTest < ActiveSupport::TestCase
     mock_nominatim
 
     event = events(:kilburn)
+
     assert_nil event.latitude
     assert_nil event.longitude
 
@@ -16,12 +17,14 @@ class GeocodingWorkerTest < ActiveSupport::TestCase
     end
 
     event.reload
-    assert_equal 53.14375, event.latitude.to_f.round(5)
-    assert_equal 0.34290, event.longitude.to_f.round(5)
+
+    assert_in_delta(53.14375, event.latitude.to_f.round(5))
+    assert_in_delta(0.34290, event.longitude.to_f.round(5))
   end
 
   test 'get coordinates for an event from cache' do
     event = events(:kilburn)
+
     assert_nil event.latitude
     assert_nil event.longitude
 
@@ -33,6 +36,7 @@ class GeocodingWorkerTest < ActiveSupport::TestCase
     end
 
     event.reload
+
     assert_equal 45, event.latitude
     assert_equal 45, event.longitude
   end

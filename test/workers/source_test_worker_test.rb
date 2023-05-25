@@ -8,6 +8,7 @@ class SourceTestWorkerTest < ActiveSupport::TestCase
     mock_bioschemas('https://website.org', 'nbis-course-instances.json')
 
     source = sources(:unapproved_source)
+
     assert_nil source.test_results
 
     Sidekiq::Testing.inline! do
@@ -16,10 +17,12 @@ class SourceTestWorkerTest < ActiveSupport::TestCase
 
     source.reload
     results = source.test_results
+
     assert results
     assert_equal 23, results[:events].length
     assert_equal 0, results[:materials].length
     sample = results[:events].detect { |e| e[:title] == 'Neural Networks and Deep Learning' }
+
     assert sample
     assert results[:run_time].positive?
     assert results[:finished_at] > 1.day.ago
@@ -32,6 +35,7 @@ class SourceTestWorkerTest < ActiveSupport::TestCase
     WebMock.stub_request(:get, 'https://website.org').to_return(status: 404)
 
     source = sources(:unapproved_source)
+
     assert_nil source.test_results
 
     Sidekiq::Testing.inline! do
@@ -40,6 +44,7 @@ class SourceTestWorkerTest < ActiveSupport::TestCase
 
     source.reload
     results = source.test_results
+
     assert results
     assert_equal 0, results[:events].length
     assert_equal 0, results[:materials].length
@@ -55,6 +60,7 @@ class SourceTestWorkerTest < ActiveSupport::TestCase
     WebMock.stub_request(:get, 'https://website.org').to_return(status: 404)
 
     source = sources(:unapproved_source)
+
     assert_nil source.test_results
 
     Sidekiq::Testing.inline! do
@@ -67,6 +73,7 @@ class SourceTestWorkerTest < ActiveSupport::TestCase
 
     source.reload
     results = source.test_results
+
     assert results
     assert_equal 0, results[:events].length
     assert_equal 0, results[:materials].length

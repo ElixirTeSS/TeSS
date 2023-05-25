@@ -37,6 +37,7 @@ class LoginTest < ActionDispatch::IntegrationTest
     get '/users/sign_in'
     post '/users/sign_in', params: { 'user[login]' => identifier, 'user[password]' => password }
     follow_redirect!
+
     assert_equal '/', path
     assert_select '#user-menu .dropdown-toggle', username
     assert_equal 'Logged in successfully.', flash[:notice]
@@ -45,6 +46,7 @@ class LoginTest < ActionDispatch::IntegrationTest
   def logout_user
     delete '/users/sign_out'
     follow_redirect!
+
     assert_equal '/', path
     assert_select '#navbar-collapse .dropdown-toggle strong', 'Log In'
     assert_equal 'Logged out successfully.', flash[:notice]

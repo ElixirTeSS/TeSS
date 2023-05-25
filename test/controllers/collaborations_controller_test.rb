@@ -15,6 +15,7 @@ class CollaborationsControllerTest < ActionController::TestCase
     sign_in(@workflow.user)
 
     get :index, params: { format: :json, workflow_id: @workflow.id }
+
     assert_response :success
     collaborations = JSON.parse(@response.body)
 
@@ -27,6 +28,7 @@ class CollaborationsControllerTest < ActionController::TestCase
     sign_in(users(:another_regular_user))
 
     get :index, params: { format: :json, workflow_id: @workflow.id }
+
     assert_response :forbidden
   end
 

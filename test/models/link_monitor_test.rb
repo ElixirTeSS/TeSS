@@ -90,6 +90,7 @@ class LinkMonitorTest < ActiveSupport::TestCase
 
   test 'link success resets fail count' do
     @link_monitor.update_column(:fail_count, 4)
+
     assert @link_monitor.failing?
     assert_equal 4, @link_monitor.fail_count
 

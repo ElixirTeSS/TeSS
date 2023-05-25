@@ -9,6 +9,7 @@ class AutocompleteSuggestionTest < ActiveSupport::TestCase
 
   test 'query' do
     autocompleter = AutocompleteSuggestion.where(field: 'keywords')
+
     assert_equal ['Aardvark', 'apple', 'APPLICATION'], autocompleter.query('a')
 
     assert_equal ['apple', 'APPLICATION'], autocompleter.query('ap')
@@ -32,7 +33,8 @@ class AutocompleteSuggestionTest < ActiveSupport::TestCase
   test 'add' do
     assert_difference('AutocompleteSuggestion.count', 2) do
       AutocompleteSuggestion.add('keywords', 'apple', 'banana', 'grape', 'pineapple')
-      assert AutocompleteSuggestion.where(field: 'keywords', value: 'apple').exists?
+
+      assert AutocompleteSuggestion.exists?(field: 'keywords', value: 'apple')
     end
 
     assert_no_difference('AutocompleteSuggestion.count', 0) do
@@ -43,6 +45,7 @@ class AutocompleteSuggestionTest < ActiveSupport::TestCase
       AutocompleteSuggestion.add('keywords', 'AppLE', 'banana', 'grape', 'pineapple')
       old_apple = AutocompleteSuggestion.where(field: 'keywords', value: 'apple').first
       new_apple = AutocompleteSuggestion.where(field: 'keywords', value: 'AppLE').first
+
       assert old_apple
       assert new_apple
       assert_not_equal old_apple.id, new_apple.id
@@ -50,13 +53,15 @@ class AutocompleteSuggestionTest < ActiveSupport::TestCase
 
     assert_difference('AutocompleteSuggestion.count', 4) do
       AutocompleteSuggestion.add('new_field', 'apple', 'banana', 'grapefruit', 'pineapple')
-      assert AutocompleteSuggestion.where(field: 'keywords', value: 'apple').exists?
-      assert AutocompleteSuggestion.where(field: 'new_field', value: 'apple').exists?
+
+      assert AutocompleteSuggestion.exists?(field: 'keywords', value: 'apple')
+      assert AutocompleteSuggestion.exists?(field: 'new_field', value: 'apple')
     end
   end
 
   test 'refresh' do
     suggestion = AutocompleteSuggestion.where(field: 'keywords', value: 'apple').first
+
     assert suggestion
     id = suggestion.id
 
@@ -100,6 +105,7 @@ class AutocompleteSuggestionTest < ActiveSupport::TestCase
     assert_no_difference('AutocompleteSuggestion.count', 0) do
       e.keywords = ['potato']
       e.title = nil
+
       refute e.save
     end
   end

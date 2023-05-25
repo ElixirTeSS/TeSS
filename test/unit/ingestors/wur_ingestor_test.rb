@@ -21,6 +21,7 @@ class WurIngestorTest < ActiveSupport::TestCase
     # check event doesn't
     new_title = ' Genetic Diversity - key to transitions in agriculture and forestry '
     new_url = 'https://www.wur.nl/en/activity/genetic-diversity-key-to-transitions-in-agriculture-and-forestry-1.htm'
+
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
@@ -41,6 +42,7 @@ class WurIngestorTest < ActiveSupport::TestCase
 
     # check event does exist
     event = Event.where(title: new_title, url: new_url).first
+
     assert event
     assert_equal new_title, event.title
     assert_equal new_url, event.url

@@ -11,6 +11,7 @@ class WorkflowsControllerTest < ActionController::TestCase
 
   test 'should get index' do
     get :index
+
     assert_response :success
     assert_not_empty assigns(:workflows)
   end
@@ -19,6 +20,7 @@ class WorkflowsControllerTest < ActionController::TestCase
     with_settings(solr_enabled: true) do
       Workflow.stub(:search_and_filter, MockSearch.new(Workflow.all)) do
         get :index, params: { q: 'bananas', keywords: 'fruit' }
+
         assert_response :success
         assert_not_empty assigns(:workflows)
       end
@@ -30,12 +32,14 @@ class WorkflowsControllerTest < ActionController::TestCase
     @workflow.save!
 
     get :index, params: { format: :json }
+
     assert_response :success
     assert_not_empty assigns(:workflows)
   end
 
   test 'should get index as json-api' do
     get :index, params: { format: :json_api }
+
     assert_response :success
     refute_nil assigns(:workflows)
     assert_valid_json_api_response
@@ -55,12 +59,14 @@ class WorkflowsControllerTest < ActionController::TestCase
   test 'should get new' do
     sign_in users(:admin)
     get :new
+
     assert_response :success
   end
 
   test 'should not get new page for basic users' do
     sign_in users(:basic_user)
     get :new
+
     assert_response :forbidden
   end
 
@@ -82,6 +88,7 @@ class WorkflowsControllerTest < ActionController::TestCase
 
   test 'should show workflow' do
     get :show, params: { id: @workflow }
+
     assert_response :success
     assert_includes response.headers.keys, 'X-Frame-Options',
                     'X-Frame-Options header should be present in all actions except `embed`'
@@ -93,12 +100,14 @@ class WorkflowsControllerTest < ActionController::TestCase
     @workflow.save!
 
     get :show, params: { id: @workflow, format: :json }
+
     assert_response :success
     assert assigns(:workflow)
   end
 
   test 'should show embedded workflow' do
     get :embed, params: { id: @workflow }
+
     assert_response :success
     assert_select '.embedded-container', count: 1
     assert_not_includes response.headers.keys, 'X-Frame-Options',
@@ -107,12 +116,14 @@ class WorkflowsControllerTest < ActionController::TestCase
 
   test 'should not show embedded private workflow' do
     get :embed, params: { id: workflows(:private_workflow) }
+
     assert_response :forbidden
     assert_select '.embedded-container', count: 0
   end
 
   test 'should show workflow as json-api' do
     get :show, params: { id: @workflow, format: :json_api }
+
     assert_response :success
     assert assigns(:workflow)
     assert_valid_json_api_response
@@ -129,6 +140,7 @@ class WorkflowsControllerTest < ActionController::TestCase
     sign_in users(:admin)
 
     get :edit, params: { id: @workflow }
+
     assert_response :success
   end
 
@@ -143,6 +155,7 @@ class WorkflowsControllerTest < ActionController::TestCase
         workflow_content: @workflow.workflow_content
       }
     }
+
     assert_redirected_to workflow_path(assigns(:workflow))
     assert_equal 'hello', assigns(:workflow).title
   end
@@ -163,6 +176,7 @@ class WorkflowsControllerTest < ActionController::TestCase
     sign_in user
 
     get :edit, params: { id: @workflow }
+
     assert_response :success
   end
 
@@ -171,6 +185,7 @@ class WorkflowsControllerTest < ActionController::TestCase
     sign_in user
 
     get :edit, params: { id: @workflow }
+
     assert_response :forbidden
   end
 
@@ -228,6 +243,7 @@ class WorkflowsControllerTest < ActionController::TestCase
     sign_in users(:another_regular_user)
 
     get :fork, params: { id: @workflow.id }
+
     assert_response :success
     assert_select '#workflow_title[value=?]', "Fork of #{@workflow.title}"
   end

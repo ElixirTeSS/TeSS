@@ -12,8 +12,8 @@ class FixBlankArrayValuesInScientificTopics < ActiveRecord::Migration[4.2]
       array_fields.each do |field|
         values = st.send(field)
         if values.any?(&:blank?)
-          Rails.logger.debug "Fixing #{field} in scientific topic #{st.id}"
-          st.update_column(field, values.reject(&:blank?))
+          Rails.logger.debug { "Fixing #{field} in scientific topic #{st.id}" }
+          st.update_column(field, values.compact_blank)
         end
       end
     end

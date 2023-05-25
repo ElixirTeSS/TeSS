@@ -44,6 +44,7 @@ class EventCsvIngestorTest < ActiveSupport::TestCase
     title = 'Data Manipulation and Visualisation in Python'
     url = 'https://opus.nci.org.au/display/Help/Data+Manipulation+and+Visualisation+in+Python'
     event = get_event title, url
+
     refute_nil event
     assert_equal 'Sydney', event.timezone
 
@@ -52,6 +53,7 @@ class EventCsvIngestorTest < ActiveSupport::TestCase
     url = 'https://opus.nci.org.au/display/Help/Introduction+to+Gadi'
     description = 'Introduction to Gadi is designed for new users, or users that want a refresher on the basics of Gadi.'
     event = get_event title, url
+
     refute_nil event
 
     # check required attributes
@@ -65,6 +67,7 @@ class EventCsvIngestorTest < ActiveSupport::TestCase
     assert_equal 'NCI', event.organizer
     check_array event.eligibility, ['by_invitation'], ['open_to_all']
     check_array event.host_institutions, ['NCI'], ['Intersect']
+
     refute event.online
 
     # check optional attributes
@@ -76,13 +79,15 @@ class EventCsvIngestorTest < ActiveSupport::TestCase
     assert_equal '1.3 hours', event.duration
     assert_equal 'None', event.recognition
     check_array event.event_types, %w[webinar hackathon], ['workshop']
+
     assert_equal 'charge', event.cost_basis
     assert_equal 'AUD', event.cost_currency
-    assert_equal 9.99, event.cost_value
+    assert_in_delta(9.99, event.cost_value)
     assert_equal 25, event.capacity
     check_array event.fields, ['BIOINFORMATICS', 'Software Engineering'], ['MATHEMATICS']
     check_array event.keywords, %w[Supercomputing Gadi]
     check_array event.target_audience, %w[ecr researcher phd mbr], ['ugrad']
+
     assert_equal 'To provide a basic intro to supercomputing on the **Gadi** system',
                  event.learning_objectives
     assert_equal "To get the most of this session, it would be good to have a basic awareness of:\n\n" \

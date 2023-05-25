@@ -7,7 +7,7 @@
 outfile = File.open('timezones.yml', 'w')
 id = 0
 
-zones = IO.readlines("#{Rails.root}/scripts/timezone.csv").collect { |x| x.split(',')[1] }
+zones = File.readlines("#{Rails.root}/scripts/timezone.csv").collect { |x| x.split(',')[1] }
 
 zones.uniq.sort.each do |z|
   next if z =~ /[+-]/

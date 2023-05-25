@@ -21,6 +21,7 @@ class RugIngestorTest < ActiveSupport::TestCase
     # check event doesn't
     new_title = 'Studium Generale: Work, Work, Work | The Invention and Future of Work - Jason Resnikoff'
     new_url = 'https://www.rug.nl/about-ug/latest-news/events/calendar/studium-generale/work-jason-resnikoff'
+
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
@@ -41,6 +42,7 @@ class RugIngestorTest < ActiveSupport::TestCase
 
     # check event does exist
     event = Event.where(title: new_title, url: new_url).first
+
     assert event
     assert_equal new_title, event.title
     assert_equal new_url, event.url

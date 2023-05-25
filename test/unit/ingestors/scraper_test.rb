@@ -19,6 +19,7 @@ class ScraperTest < ActiveSupport::TestCase
   test 'default configuration file' do
     # set config file
     scraper = Scraper.new(load_scraper_config('test_ingestion.yml'))
+
     assert_equal 'test', scraper.name
 
     # run task
@@ -27,7 +28,8 @@ class ScraperTest < ActiveSupport::TestCase
     end
 
     logfile = scraper.log_file
-    assert File.exist?(logfile), "logfile[#{logfile}] missing"
+
+    assert_path_exists(logfile, "logfile[#{logfile}] missing")
     assert logfile_contains(logfile, 'ingestion file = test')
   end
 
@@ -35,10 +37,12 @@ class ScraperTest < ActiveSupport::TestCase
     existing = users(:scraper_user)
     config = load_scraper_config('test_ingestion_example.yml').merge(username: existing.username)
     scraper = Scraper.new(config)
+
     assert_equal 'production', scraper.name
 
     # check user exists
     user = User.find_by(username: scraper.username)
+
     assert user
 
     # run task
@@ -50,6 +54,7 @@ class ScraperTest < ActiveSupport::TestCase
 
     # check user exists
     user = User.find_by(username: scraper.username)
+
     assert user
     assert_equal config[:username], user.username
     assert_equal 'scraper_user', user.role.name
@@ -58,10 +63,12 @@ class ScraperTest < ActiveSupport::TestCase
   test 'check user has role scraper_user' do
     # set config file
     scraper = Scraper.new(load_scraper_config('test_ingestion_bad.yml'))
+
     assert_equal 'dummy', scraper.name
 
     # check user does exist
     user = User.find_by(username: scraper.username)
+
     refute_nil user
     refute_nil user.role
     assert_equal 'registered_user', user.role.name
@@ -73,7 +80,7 @@ class ScraperTest < ActiveSupport::TestCase
 
     logfile = scraper.log_file
     # check ingestion config rejected: bad user role
-    assert File.exist?(logfile)
+    assert_path_exists(logfile)
     assert logfile_contains(logfile, 'Validation error: User has invalid role')
   end
 
@@ -81,10 +88,12 @@ class ScraperTest < ActiveSupport::TestCase
     # set config file
     config = load_scraper_config('test_ingestion.yml')
     scraper = Scraper.new(config)
+
     assert_equal 'test', scraper.name
 
     # check user does not exist
     user = User.find_by(username: scraper.username)
+
     assert_nil user
 
     # run task
@@ -96,6 +105,7 @@ class ScraperTest < ActiveSupport::TestCase
 
     # check user exists
     user = User.find_by(username: scraper.username)
+
     assert user
     assert_equal config[:username], user.username
     assert_equal 'scraper_user', user.role.name
@@ -106,6 +116,7 @@ class ScraperTest < ActiveSupport::TestCase
     config = load_scraper_config('test_ingestion.yml')
     scraper = Scraper.new(config)
     logfile = scraper.log_file
+
     assert_equal 'test', scraper.name
     assert scraper.sources.size.positive?
 
@@ -122,13 +133,16 @@ class ScraperTest < ActiveSupport::TestCase
     config = load_scraper_config('test_ingestion.yml')
     scraper = Scraper.new(config)
     logfile = scraper.log_file
+
     assert_equal 'test', scraper.name
     assert scraper.sources.size.positive?
 
     source = scraper.sources[0]
+
     refute_nil source
     title = source[:provider]
     provider = ContentProvider.find_by(title: title)
+
     assert_nil provider
 
     # run task
@@ -138,6 +152,7 @@ class ScraperTest < ActiveSupport::TestCase
 
     assert check_task_finished(logfile)
     error_message = "Validation error: Provider not found: #{title}"
+
     assert logfile_contains(logfile, error_message), "Error message '#{error_message}' not found in logfile!"
   end
 
@@ -146,13 +161,16 @@ class ScraperTest < ActiveSupport::TestCase
     config = load_scraper_config('test_ingestion.yml')
     scraper = Scraper.new(config)
     logfile = scraper.log_file
+
     assert_equal 'test', scraper.name
     assert scraper.sources.size > 1
 
     source = scraper.sources[1]
+
     refute_nil source
     title = source[:provider]
     provider = ContentProvider.find_by(title: title)
+
     refute_nil provider, "Provider title[#{title}] not found!"
 
     # run task
@@ -162,6 +180,7 @@ class ScraperTest < ActiveSupport::TestCase
 
     assert check_task_finished(logfile)
     error_message = "Content provider must exist: #{title}"
+
     refute logfile_contains(logfile, error_message), "Unexpected error message: #{error_message}"
   end
 
@@ -170,6 +189,7 @@ class ScraperTest < ActiveSupport::TestCase
     config = load_scraper_config('test_ingestion.yml')
     scraper = Scraper.new(config)
     logfile = scraper.log_file
+
     assert_equal 'test', scraper.name
 
     # run task
@@ -179,10 +199,13 @@ class ScraperTest < ActiveSupport::TestCase
 
     # check validation errors
     error_message = 'Provider not found: Dummy Provider'
+
     assert logfile_contains(logfile, error_message), "Error message not found: #{error_message}"
     error_message = 'URL not accessible: https://dummy.com/events.csv'
+
     assert logfile_contains(logfile, error_message), "Error message not found: #{error_message}"
     error_message = 'Method is invalid: xtc'
+
     assert logfile_contains(logfile, error_message), "Error message not found: #{error_message}"
   end
 
@@ -191,6 +214,7 @@ class ScraperTest < ActiveSupport::TestCase
       config = load_scraper_config('test_ingestion.yml')
       scraper = Scraper.new(config)
       logfile = scraper.log_file
+
       assert_equal 'test', scraper.name
 
       freeze_time(Time.new(2019).utc) do
@@ -208,6 +232,7 @@ class ScraperTest < ActiveSupport::TestCase
       config = load_scraper_config('test_ingestion_legacy.yml')
       scraper = Scraper.new(config)
       logfile = scraper.log_file
+
       assert_equal 'legacy', scraper.name
 
       freeze_time(Time.new(2019).utc) do
@@ -223,6 +248,7 @@ class ScraperTest < ActiveSupport::TestCase
     config = load_scraper_config('test_ingestion_crash.yml')
     scraper = Scraper.new(config)
     logfile = scraper.log_file
+
     assert_equal 'crash', scraper.name
 
     Ingestors::IngestorFactory.stub(:get_ingestor, -> { raise 'oh no' }) do

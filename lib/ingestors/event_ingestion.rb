@@ -43,7 +43,7 @@ module Ingestors
 
           # if one of the two failed to parse, find a numeric component
           # and replace it from the original in the other part
-          if endt && !start || parts.first.length < 7
+          if (endt && !start) || parts.first.length < 7
             begin
               start = Time.zone.parse(parts.second.sub(/[0-9:]+/, parts.first)) # or are days 0-based?
             rescue ArgumentError

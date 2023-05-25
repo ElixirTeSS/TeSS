@@ -9,6 +9,7 @@ class BansControllerTest < ActionController::TestCase
     sign_in users(:admin)
 
     get :new, params: { user_id: users(:regular_user) }
+
     assert_response :success
   end
 
@@ -16,6 +17,7 @@ class BansControllerTest < ActionController::TestCase
     sign_in users(:another_regular_user)
 
     get :new, params: { user_id: users(:regular_user) }
+
     assert_response :forbidden
   end
 

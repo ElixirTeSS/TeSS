@@ -7,8 +7,10 @@ class TrainersControllerTest < ActionController::TestCase
 
   test 'get all trainers' do
     get :index
+
     assert_response :success
     trainers = assigns(:trainers)
+
     refute_nil trainers
     assert_equal 1, trainers.size
   end

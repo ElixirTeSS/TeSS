@@ -18,6 +18,7 @@ class FairsharingControllerTest < ActionController::TestCase
 
     res = JSON.parse(response.body)
     results = res['results']
+
     assert_equal 25, results.length
     assert_equal 'FAIRsharing record for: Clusters of Orthologous Groups (COG) Analysis Ontology',
                  results.last['attributes']['name']
@@ -38,6 +39,7 @@ class FairsharingControllerTest < ActionController::TestCase
 
     res = JSON.parse(response.body)
     results = res['results']
+
     assert_equal 25, results.length
     assert_equal 'FAIRsharing record for: Logical Observation Identifier Names and Codes',
                  results.last['attributes']['name']
@@ -59,6 +61,7 @@ class FairsharingControllerTest < ActionController::TestCase
     res = JSON.parse(response.body)
     results = res['results']
     fairdomhub = results[0]
+
     assert_equal 'FAIRDOMHub', fairdomhub['attributes']['metadata']['name']
     assert_equal 'Database', fairdomhub['attributes']['fairsharing_registry']
     assert_not_equal 'FAIRDOM Community Standards', results[1]['attributes']['metadata']['name']

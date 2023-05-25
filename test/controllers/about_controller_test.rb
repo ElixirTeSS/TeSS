@@ -7,21 +7,25 @@ class AboutControllerTest < ActionController::TestCase
 
   test 'should get first about page' do
     get :tess
+
     assert_response :success
   end
 
   test 'should get about us' do
     get :us
+
     assert_response :success
   end
 
   test 'should get about registering' do
     get :registering
+
     assert_response :success
   end
 
   test 'should get about developers' do
     get :developers
+
     assert_response :success
   end
 end

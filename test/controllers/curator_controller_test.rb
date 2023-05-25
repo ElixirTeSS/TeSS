@@ -53,6 +53,7 @@ class CuratorControllerTest < ActionController::TestCase
     assert_equal roles(:unverified_user), assigns(:role)
 
     get :users, params: { role: :basic_user }
+
     assert_response :success
     assert_not_includes assigns(:users), users(:basic_user)
     assert_not_equal roles(:basic_user), assigns(:role)
@@ -68,6 +69,7 @@ class CuratorControllerTest < ActionController::TestCase
     assert_equal roles(:unverified_user), assigns(:role)
 
     get :users, params: { role: :basic_user }
+
     assert_response :success
     assert_includes assigns(:users), users(:basic_user)
     assert_equal roles(:basic_user), assigns(:role)
@@ -111,6 +113,7 @@ class CuratorControllerTest < ActionController::TestCase
 
     sign_in admin
     User.current_user = admin # This is needed to set the correct "owner" on the activity logs
+
     assert approved.update(role_id: Role.approved.id)
     assert rejected.update(role_id: Role.rejected.id)
 
@@ -189,6 +192,7 @@ class CuratorControllerTest < ActionController::TestCase
 
     User::CREATED_RESOURCE_TYPES.each do |type|
       klass = type.to_s.classify.constantize
+
       assert_select '.curate-user strong', { text: klass.model_name.human },
                     "#{klass.name.pluralize} missing from list of resources"
       assert_select '.curate-user a[href=?]', @controller.polymorphic_path(type, user: new_user.username),

@@ -13,23 +13,31 @@ class AutocompleteControllerTest < ActionController::TestCase
     sign_in users(:regular_user)
 
     get :suggestions, params: { field: 'cat', query: 'p' }, format: :json
+
     assert_response :success
     res = JSON.parse(response.body)
+
     assert_equal ['paws', 'purr'], res['suggestions']
 
     get :suggestions, params: { field: 'cat', query: 'paw' }, format: :json
+
     assert_response :success
     res = JSON.parse(response.body)
+
     assert_equal ['paws'], res['suggestions']
 
     get :suggestions, params: { field: 'cat', query: 'x' }, format: :json
+
     assert_response :success
     res = JSON.parse(response.body)
+
     assert_empty res['suggestions']
 
     get :suggestions, params: { field: 'type_that_does_not_have_suggestions', query: 'paw' }, format: :json
+
     assert_response :success
     res = JSON.parse(response.body)
+
     assert_empty res['suggestions']
   end
 
@@ -40,38 +48,52 @@ class AutocompleteControllerTest < ActionController::TestCase
     sign_in users(:regular_user)
 
     get :people_suggestions, params: { query: 'a' }, format: :json
+
     assert_response :success
     res = JSON.parse(response.body)
+
     assert_equal ['adam eve', 'andrew anderson'], res['suggestions']
 
     get :people_suggestions, params: { query: 'A' }, format: :json
+
     assert_response :success
     res = JSON.parse(response.body)
+
     assert_equal ['adam eve', 'andrew anderson'], res['suggestions']
 
     get :people_suggestions, params: { query: 'ad' }, format: :json
+
     assert_response :success
     res = JSON.parse(response.body)
+
     assert_equal ['adam eve'], res['suggestions']
 
     get :people_suggestions, params: { query: '' }, format: :json
+
     assert_response :success
     res = JSON.parse(response.body)
+
     assert_equal ['adam eve', 'andrew anderson', 'ruby gems', 'zane zebra'], res['suggestions']
 
     get :people_suggestions, params: { query: 'zane z' }, format: :json
+
     assert_response :success
     res = JSON.parse(response.body)
+
     assert_equal ['zane zebra'], res['suggestions']
 
     get :people_suggestions, params: { query: 'q' }, format: :json
+
     assert_response :success
     res = JSON.parse(response.body)
+
     assert_empty res['suggestions']
 
     get :people_suggestions, params: { field: 'cat', query: 'm' }, format: :json
+
     assert_response :success
     res = JSON.parse(response.body)
+
     assert_empty res['suggestions']
   end
 

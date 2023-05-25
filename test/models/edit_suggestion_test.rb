@@ -81,6 +81,7 @@ class EditSuggestionTest < ActiveSupport::TestCase
 
   test 'should destroy associated scientific_topic_links on destroy' do
     suggestion = edit_suggestions(:one)
+
     assert_equal 2, suggestion.scientific_topic_links.count
 
     assert_difference('EditSuggestion.count', -1) do
@@ -92,6 +93,7 @@ class EditSuggestionTest < ActiveSupport::TestCase
 
   test 'should remove a data field by name' do
     suggestion = edit_suggestions(:two)
+
     assert_equal 1, suggestion.data_fields.count
     assert_equal 'banana', suggestion.data_fields.delete('fruit')
     assert_equal 0, suggestion.data_fields.count
@@ -99,6 +101,7 @@ class EditSuggestionTest < ActiveSupport::TestCase
 
   test 'should return nil if remove non existent data field' do
     suggestion = edit_suggestions(:two)
+
     assert_equal 1, suggestion.data_fields.count
     assert_nil suggestion.data_fields.delete('vegetable')
     assert_equal 1, suggestion.data_fields.count
@@ -107,6 +110,7 @@ class EditSuggestionTest < ActiveSupport::TestCase
   test 'should delete edit suggestion once all data fields have gone' do
     suggestion = edit_suggestions(:multiple_fields)
     event = suggestion.suggestible
+
     assert_equal 2, suggestion.data_fields.count
 
     assert_nil event.reload.latitude

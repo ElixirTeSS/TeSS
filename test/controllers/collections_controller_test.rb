@@ -17,12 +17,14 @@ class CollectionsControllerTest < ActionController::TestCase
   # INDEX TESTS
   test 'should get index' do
     get :index
+
     assert_response :success
     refute_nil assigns(:collections)
   end
 
   test 'should get index as json' do
     get :index, format: :json
+
     assert_response :success
     refute_nil assigns(:collections)
   end
@@ -32,6 +34,7 @@ class CollectionsControllerTest < ActionController::TestCase
     @collection.events << events(:one)
 
     get :index, params: { format: :json_api }
+
     assert_response :success
     refute_nil assigns(:collections)
     assert_valid_json_api_response
@@ -53,19 +56,23 @@ class CollectionsControllerTest < ActionController::TestCase
   test 'should get new' do
     sign_in users(:regular_user)
     get :new
+
     assert_response :success
   end
 
   test 'should get new page for logged in users only' do
     # Redirect to login if not logged in
     get :new
+
     assert_response :redirect
     sign_in users(:regular_user)
     # Success for everyone else
     get :new
+
     assert_response :success
     sign_in users(:admin)
     get :new
+
     assert_response :success
   end
 
@@ -73,6 +80,7 @@ class CollectionsControllerTest < ActionController::TestCase
   test 'should not get edit page for not logged in users' do
     # Not logged in = Redirect to login
     get :edit, params: { id: @collection }
+
     assert_redirected_to new_user_session_path
   end
 
@@ -80,6 +88,7 @@ class CollectionsControllerTest < ActionController::TestCase
   test 'should get edit for collection owner' do
     sign_in @collection.user
     get :edit, params: { id: @collection }
+
     assert_response :success
   end
 
@@ -87,6 +96,7 @@ class CollectionsControllerTest < ActionController::TestCase
     # Owner of collection logged in = SUCCESS
     sign_in users(:admin)
     get :edit, params: { id: @collection }
+
     assert_response :success
   end
 
@@ -94,6 +104,7 @@ class CollectionsControllerTest < ActionController::TestCase
     # Administrator = SUCCESS
     sign_in users(:another_regular_user)
     get :edit, params: { id: @collection }
+
     assert :forbidden
   end
 
@@ -101,12 +112,14 @@ class CollectionsControllerTest < ActionController::TestCase
   test 'should not get curation page for not logged in users' do
     # Not logged in = Redirect to login
     get :curate, params: { id: @collection, type: 'Event' }
+
     assert_redirected_to new_user_session_path
   end
 
   test 'should get curate for collection owner' do
     sign_in @collection.user
     get :curate, params: { id: @collection, type: 'Event' }
+
     assert_response :success
   end
 
@@ -114,6 +127,7 @@ class CollectionsControllerTest < ActionController::TestCase
     # Owner of collection logged in = SUCCESS
     sign_in users(:admin)
     get :curate, params: { id: @collection, type: 'Event' }
+
     assert_response :success
   end
 
@@ -121,6 +135,7 @@ class CollectionsControllerTest < ActionController::TestCase
     # Administrator = SUCCESS
     sign_in users(:another_regular_user)
     get :curate, params: { id: @collection, type: 'Event' }
+
     assert :forbidden
   end
 
@@ -157,6 +172,7 @@ class CollectionsControllerTest < ActionController::TestCase
   # SHOW TEST
   test 'should show collection' do
     get :show, params: { id: @collection }
+
     assert_response :success
     assert assigns(:collection)
   end
@@ -176,6 +192,7 @@ class CollectionsControllerTest < ActionController::TestCase
     @collection.events << events(:one)
 
     get :show, params: { id: @collection, format: :json_api }
+
     assert_response :success
     assert assigns(:collection)
     assert_valid_json_api_response
@@ -193,6 +210,7 @@ class CollectionsControllerTest < ActionController::TestCase
   test 'should update collection' do
     sign_in @collection.user
     patch :update, params: { id: @collection, collection: @updated_collection }
+
     assert_redirected_to collection_path(assigns(:collection))
   end
 
@@ -200,6 +218,7 @@ class CollectionsControllerTest < ActionController::TestCase
   test 'should add and remove elements' do
     sign_in @collection.user
     @collection.events << events(:one)
+
     assert_equal [events(:one).id], @collection.reload.event_ids
 
     patch :update_curation, params: {
@@ -216,6 +235,7 @@ class CollectionsControllerTest < ActionController::TestCase
   test 'should not create double CollectionItems' do
     sign_in @collection.user
     @collection.events << events(:one)
+
     assert_equal [events(:one).id], @collection.reload.event_ids
 
     patch :update_curation, params: {
@@ -259,6 +279,7 @@ class CollectionsControllerTest < ActionController::TestCase
   # BREADCRUMBS
   test 'breadcrumbs for collections index' do
     get :index
+
     assert_response :success
     assert_select 'div.breadcrumbs', text: /Home/, count: 1 do
       assert_select 'a[href=?]', root_path, count: 1
@@ -268,6 +289,7 @@ class CollectionsControllerTest < ActionController::TestCase
 
   test 'breadcrumbs for showing collection' do
     get :show, params: { id: @collection }
+
     assert_response :success
     assert_select 'div.breadcrumbs', text: /Home/, count: 1 do
       assert_select 'a[href=?]', root_path, count: 1
@@ -281,6 +303,7 @@ class CollectionsControllerTest < ActionController::TestCase
   test 'breadcrumbs for editing collection' do
     sign_in users(:admin)
     get :edit, params: { id: @collection }
+
     assert_response :success
     assert_select 'div.breadcrumbs', text: /Home/, count: 1 do
       assert_select 'a[href=?]', root_path, count: 1
@@ -297,6 +320,7 @@ class CollectionsControllerTest < ActionController::TestCase
   test 'breadcrumbs for creating new collection' do
     sign_in users(:regular_user)
     get :new
+
     assert_response :success
     assert_select 'div.breadcrumbs', text: /Home/, count: 1 do
       assert_select 'a[href=?]', root_path, count: 1
@@ -310,6 +334,7 @@ class CollectionsControllerTest < ActionController::TestCase
   # OTHER CONTENT
   test 'collection has correct tabs' do
     get :show, params: { id: @collection }
+
     assert_response :success
     assert_select 'ul.nav-tabs' do
       assert_select 'li.disabled', count: 2 # This collection has no events, materials
@@ -319,6 +344,7 @@ class CollectionsControllerTest < ActionController::TestCase
     collections(:with_resources).events << events(:one)
 
     get :show, params: { id: collections(:with_resources) }
+
     assert_response :success
     assert_select 'ul.nav-tabs' do
       assert_select 'li' do
@@ -329,6 +355,7 @@ class CollectionsControllerTest < ActionController::TestCase
 
   test 'collection has correct layout' do
     get :show, params: { id: @collection }
+
     assert_response :success
     assert_select 'div.search-results-count', count: 2 # Has results
     # assert_select 'a.btn-info', :text => 'Back', :count => 1 #No Edit
@@ -340,6 +367,7 @@ class CollectionsControllerTest < ActionController::TestCase
   test 'do not show action buttons when not owner or admin' do
     sign_in users(:another_regular_user)
     get :show, params: { id: @collection }
+
     assert_select 'a.btn[href=?]', edit_collection_path(@collection), count: 0 # No Edit
     assert_select 'a.btn[href=?]', collection_path(@collection), count: 0 # No Edit
   end
@@ -347,6 +375,7 @@ class CollectionsControllerTest < ActionController::TestCase
   test 'show action buttons when owner' do
     sign_in @collection.user
     get :show, params: { id: @collection }
+
     assert_select 'a.btn[href=?]', edit_collection_path(@collection), count: 1
     assert_select 'a.btn[href=?]', collection_path(@collection), text: 'Delete', count: 1
   end
@@ -354,6 +383,7 @@ class CollectionsControllerTest < ActionController::TestCase
   test 'show action buttons when admin' do
     sign_in users(:admin)
     get :show, params: { id: @collection }
+
     assert_select 'a.btn[href=?]', edit_collection_path(@collection), count: 1
     assert_select 'a.btn[href=?]', collection_path(@collection), text: 'Delete', count: 1
   end
@@ -394,17 +424,20 @@ class CollectionsControllerTest < ActionController::TestCase
 
   test 'should not allow access to private collections' do
     get :show, params: { id: collections(:secret_collection) }
+
     assert_response :forbidden
   end
 
   test 'should allow access to private collections if privileged' do
     sign_in users(:regular_user)
     get :show, params: { id: collections(:secret_collection) }
+
     assert_response :success
   end
 
   test 'should hide private collections from index' do
     get :index
+
     assert_response :success
     assert_not_includes assigns(:collections).map(&:id), collections(:secret_collection).id
   end
@@ -412,6 +445,7 @@ class CollectionsControllerTest < ActionController::TestCase
   test 'should not hide private collections from index from collection owner' do
     sign_in users(:regular_user)
     get :index
+
     assert_response :success
     assert_includes assigns(:collections).map(&:id), collections(:secret_collection).id
   end
@@ -419,12 +453,14 @@ class CollectionsControllerTest < ActionController::TestCase
   test 'should not hide private collections from index from admin' do
     sign_in users(:admin)
     get :index
+
     assert_response :success
     assert_includes assigns(:collections).map(&:id), collections(:secret_collection).id
   end
 
   test 'should log changes when updating a collection' do
     sign_in @collection.user
+
     assert @collection.save
     @collection.activities.destroy_all
 

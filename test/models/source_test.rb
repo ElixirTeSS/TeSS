@@ -5,13 +5,16 @@ require 'test_helper'
 class SourceTest < ActiveSupport::TestCase
   setup do
     @user = users :scraper_user
+
     refute_nil @user
   end
 
   test 'scraper user can update source' do
     source = sources :first_source
+
     refute_nil source
     source_id = source.id
+
     refute_nil source_id
 
     # check run details not set
@@ -37,6 +40,7 @@ class SourceTest < ActiveSupport::TestCase
 
     # check updated details
     updated = Source.find(source_id)
+
     refute_nil updated, 'updated source is nil'
     assert_equal output, updated.log, 'updated log not matched'
     refute_nil updated.finished_at, 'updated finished_at is nil'
@@ -46,6 +50,7 @@ class SourceTest < ActiveSupport::TestCase
 
   test 'can get enabled sources' do
     sources = Source.enabled
+
     assert_includes sources, sources(:enabled_source)
     assert_not_includes sources, sources(:first_source)
     assert_not_includes sources, sources(:second_source)
@@ -53,6 +58,7 @@ class SourceTest < ActiveSupport::TestCase
 
   test 'can get approved sources' do
     sources = Source.approved
+
     assert_includes sources, sources(:first_source)
     assert_not_includes sources, sources(:unapproved_source)
     assert_not_includes sources, sources(:approval_requested_source)
@@ -60,6 +66,7 @@ class SourceTest < ActiveSupport::TestCase
 
   test 'can get approval-requested sources' do
     sources = Source.approval_requested
+
     assert_not_includes sources, sources(:first_source)
     assert_not_includes sources, sources(:unapproved_source)
     assert_includes sources, sources(:approval_requested_source)
@@ -72,6 +79,7 @@ class SourceTest < ActiveSupport::TestCase
                         url: 'https://website.org',
                         method: 'bioschemas',
                         user: User.current_user)
+
     assert source.save
     assert_equal :not_approved, source.approval_status
   end
@@ -83,6 +91,7 @@ class SourceTest < ActiveSupport::TestCase
                         url: 'https://website.org',
                         method: 'bioschemas',
                         user: User.current_user)
+
     assert source.save
     assert_equal :approved, source.approval_status
   end
@@ -95,6 +104,7 @@ class SourceTest < ActiveSupport::TestCase
                           url: 'https://website.org',
                           method: 'bioschemas',
                           user: User.current_user)
+
       assert source.save
       assert_equal :approved, source.approval_status
     end
@@ -112,6 +122,7 @@ class SourceTest < ActiveSupport::TestCase
     end
 
     activity = source.activities.last
+
     assert_equal admin, activity.owner
     assert_equal source, activity.trackable
     assert_equal 'source.approval_status_changed', activity.key
@@ -177,6 +188,7 @@ class SourceTest < ActiveSupport::TestCase
     user = users(:regular_user)
     User.current_user = user
     source = sources(:unapproved_source)
+
     refute source.approval_requested?
 
     assert_difference('PublicActivity::Activity.count', 1) do # approval status change
@@ -185,6 +197,7 @@ class SourceTest < ActiveSupport::TestCase
 
     assert source.reload.approval_requested?
     activity = source.activities.last
+
     assert_equal user, activity.owner
     assert_equal source, activity.trackable
     assert_equal 'source.approval_status_changed', activity.key
@@ -200,6 +213,7 @@ class SourceTest < ActiveSupport::TestCase
 
       assert source.valid?
       source.method = 'tess_event'
+
       refute source.valid?
       assert source.errors.added?(:method, :inclusion, value: 'tess_event')
     end
@@ -213,6 +227,7 @@ class SourceTest < ActiveSupport::TestCase
 
       assert source.valid?
       source.method = 'tess_event'
+
       assert source.valid?
       assert_empty source.errors
     end

@@ -107,7 +107,7 @@ class ContentProvider < ApplicationRecord
   end
 
   def add_editor(editor)
-    if !editor.nil? && !editors.include?(editor) && !user.nil? && (user.id != editor.id)
+    if !editor.nil? && editors.exclude?(editor) && !user.nil? && (user.id != editor.id)
       editors << editor
       save!
       editor.editables.reload
