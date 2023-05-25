@@ -20,8 +20,11 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
 <% errors ||= []        # check error count %>
 <% title ||= ''         # check title defined %>
 <% hint ||= nil %>
+<% classes = 'form-group' %>
+<% classes += ' hidden' if hidden %>
+<% classes += ' has-error' if errors.size > 0 %>
 
-<div class="form-group<%= ' has-error' if errors.size > 0 %>" title='<%= title %>'>
+<div class=<%= classes %> title='<%= title %>'>
   <% if required %>
     <label class="control-label string required">
       <abbr title="required">*</abbr>
