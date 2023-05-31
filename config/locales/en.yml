@@ -1,4 +1,32 @@
 en:
+  features:
+    about:
+      short: About
+      long: About
+    events:
+      short: Events
+      long: Events
+    materials:
+      short: Materials
+      long: Training Materials
+    elearning_materials:
+      short: e-Learning
+      long: e-Learning
+    workflows:
+      short: Workflows
+      long: Workflows
+    collections:
+      short: Collections
+      long: Collections
+    trainers:
+      short: Trainers
+      long: Trainers
+    content_providers:
+      short: Providers
+      long: Content Providers
+    nodes:
+      short: Nodes
+      long: Nodes
   pundit:
     default: 'You are not authorised to perform this action.'
     material_policy:
