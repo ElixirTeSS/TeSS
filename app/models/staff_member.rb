@@ -1,7 +1,7 @@
 class StaffMember < ApplicationRecord
   TRAINING_COORDINATOR_ROLE = 'Training coordinator'
 
-  belongs_to :node
+  belongs_to :node, touch: true
 
   validates :name, presence: true
 
