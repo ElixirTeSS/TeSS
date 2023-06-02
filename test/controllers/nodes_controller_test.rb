@@ -8,7 +8,7 @@ class NodesControllerTest < ActionController::TestCase
     @node = nodes(:good)
     @node_attributes = {
         carousel_images: '',
-        country_code: 'FN',
+        country_code: 'FI',
         home_page: 'http://www.example.com', #institutions: '',
         member_status: 'Member',
         name: 'Finnland',
@@ -123,26 +123,26 @@ class NodesControllerTest < ActionController::TestCase
 
     patch :update, params: {
         id: @node,
-        node: { carousel_images: @node.carousel_images, country_code: ':)',
+        node: { carousel_images: @node.carousel_images, country_code: 'EE',
                 home_page: @node.home_page, #institutions: @node.institutions,
                 member_status: @node.member_status, name: @node.name,
                 twitter: @node.twitter
         }
     }
     assert_redirected_to node_path(assigns(:node))
-    assert_equal ':)', assigns(:node).country_code
+    assert_equal 'EE', assigns(:node).country_code
   end
 
   test "should not allow update if non-admin, non-owner" do
     sign_in users(:another_regular_user)
 
-    patch :update, params: { id: @node, node: { country_code: ':)' } }
+    patch :update, params: { id: @node, node: { country_code: 'EE' } }
 
     assert_response :forbidden
   end
 
   test "should not allow update if not logged-in" do
-    patch :update, params: { id: @node, node: { country_code: ':)' } }
+    patch :update, params: { id: @node, node: { country_code: 'EE' } }
 
     assert_redirected_to new_user_session_path
   end
@@ -228,5 +228,15 @@ class NodesControllerTest < ActionController::TestCase
     end
 
     assert_redirected_to nodes_path
+  end
+
+  test 'should cope with node without country' do
+    n = Node.create(user: users(:admin), name: 'No Country Node')
+    assert n.valid?
+    assert_nil n.country_code
+
+    get :index, params: { sort: 'new' }
+
+    assert_select 'h4', text: 'No Country Node'
   end
 end

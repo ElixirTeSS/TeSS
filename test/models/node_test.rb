@@ -32,10 +32,10 @@ class NodeTest < ActiveSupport::TestCase
     nodes = Node.load_from_hash(hash)
     node_ids = nodes.map(&:id).sort
     narnia = nodes.first
-    assert_equal 'NN', narnia.country_code
+    assert_equal 'DE', narnia.country_code
 
     updated_hash = node_data_hash
-    updated_hash['nodes'].first['country_code'] = 'XY'
+    updated_hash['nodes'].first['country_code'] = 'ES'
     updated_nodes = []
     assert_no_difference('Node.count') do
       assert_no_difference('StaffMember.count') do
@@ -43,7 +43,7 @@ class NodeTest < ActiveSupport::TestCase
       end
     end
     assert_equal node_ids, updated_nodes.map(&:id).sort
-    assert_equal 'XY', narnia.reload.country_code
+    assert_equal 'ES', narnia.reload.country_code
   end
 
   test 'can update staff via seed data' do
@@ -64,7 +64,7 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'can load countries data' do
     countries_hash = {}
-    assert_difference('countries_hash.keys.size', 250) do
+    assert_difference('countries_hash.keys.size', 251) do
       countries_hash = JSON.parse(File.read(File.join(Rails.root, 'config', 'data', 'countries.json')))
     end
   end
@@ -107,6 +107,18 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal [m1], node.provider_materials.to_a
     assert_equal [m2], node.materials.to_a
     assert_equal [m1, m2], node.related_materials.to_a.sort_by(&:title)
+  end
+
+  test 'validates country code' do
+    node = nodes(:good)
+    assert node.valid?
+
+    node.country_code = 'XZ'
+    refute node.valid?
+    assert node.errors.added?(:country_code, :inclusion, value: 'XZ')
+
+    node.country_code = nil
+    assert node.valid?
   end
 
   private
