@@ -36,7 +36,14 @@ en:
     doi: 'DOI'
   activerecord:
     models:
+      event: Event
+      material: Material
       elearning_material: e-Learning Material
+      workflow: Workflow
+      collection: Collection
+      trainer: Trainer
+      content_provider: Content Provider
+      node: Node
     attributes:
       content_provider:
         user: Owner
