@@ -83,6 +83,32 @@ class NodeTest < ActiveSupport::TestCase
     assert node.content_providers[0] == content_providers(:goblet)
   end
 
+  test 'can get resources through providers and directly associated' do
+    node = nodes(:westeros)
+    provider = content_providers(:provider_with_empty_image_url)
+    provider.update!(node: node)
+
+    e1 = events(:one)
+    e1.update!(content_provider: provider)
+    e2 = events(:two)
+    node.events << e2
+    node.reload
+
+    assert_equal [e1], node.provider_events.to_a
+    assert_equal [e2], node.events.to_a
+    assert_equal [e1, e2], node.related_events.to_a.sort_by(&:title)
+
+    m1 = materials(:interpro)
+    m1.update!(content_provider: provider)
+    m2 = materials(:prints)
+    node.materials << m2
+    node.reload
+
+    assert_equal [m1], node.provider_materials.to_a
+    assert_equal [m2], node.materials.to_a
+    assert_equal [m1, m2], node.related_materials.to_a.sort_by(&:title)
+  end
+
   private
 
   def node_data_hash
