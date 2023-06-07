@@ -132,7 +132,7 @@ module Ingestors
         resource.content_provider_id ||= provider.id
         existing_resource = type.check_exists(resource.to_h)
 
-        update = existing_resource && existing_resource.content_provider == provider
+        update = existing_resource
         resource = if update
                      update_resource(existing_resource, resource.to_h)
                    else

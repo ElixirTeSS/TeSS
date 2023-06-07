@@ -85,7 +85,7 @@ class Material < ApplicationRecord
   has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 
   has_many :stars,  as: :resource, dependent: :destroy
-  
+
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
   auto_strip_attributes :title, :description, :url, squish: false
@@ -133,14 +133,16 @@ class Material < ApplicationRecord
     given_material = material_params.is_a?(Material) ? material_params : new(material_params)
     material = nil
 
-    provider_id = given_material.content_provider_id || given_material.content_provider&.id
+    provider_id = (given_material.content_provider_id || given_material.content_provider&.id)&.to_s
+
+    scope = provider_id.present? ? where(content_provider_id: provider_id) : all
 
     if given_material.url.present?
-      material = where(url: given_material.url).last
+      material = scope.where(url: given_material.url).last
     end
 
     if provider_id.present? && given_material.title.present?
-      material ||= where(content_provider_id: provider_id, title: given_material.title).last
+      material ||= scope.where(content_provider_id: provider_id, title: given_material.title).last
     end
 
     material
