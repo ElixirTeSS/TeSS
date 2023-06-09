@@ -84,6 +84,10 @@ Update specific Gem
 
     docker-compose exec app bundle update <gem>
 
+Install specific Gem (and save changes in Gemfile to current folder)
+
+    docker run -v .:/code -it tess-app bundle add <gem>
+
 Rebuild the tess-app image when composing up.
 
     docker-compose up -d --build

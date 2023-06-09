@@ -197,3 +197,5 @@ group :test do
   gem 'committee', '~> 4.4'
 end
 
+
+gem "sqlite3", "~> 1.6"
