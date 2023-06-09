@@ -9,6 +9,7 @@ default: &default
     # events: [content_provider, keywords, event_type, ...]
     # materials:
     # trainers:
+  facets_max_age_list: ['Event', 'Material']
   announcement_message:
   prevent_robot_indexing: false
   require_cookie_consent: true
