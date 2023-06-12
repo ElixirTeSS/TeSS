@@ -160,8 +160,16 @@ a new collection, you can run the following command:
 
 TeSS uses Redis to handle caching of various things (geocoding results etc.) as well as sidekiq jobs (asynchronous tasks).
 
-To install run:
+Redis 6.2+ is required.
 
+The following steps were taken from the official 
+[Redis documentation](https://redis.io/docs/getting-started/installation/install-redis-on-linux/).
+
+    curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+    
+    echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
+    
+    sudo apt-get update
     sudo apt-get install redis
 
 On macOS these can be installed and run as follows:
