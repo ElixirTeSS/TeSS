@@ -233,6 +233,36 @@ class ScraperTest < ActiveSupport::TestCase
     assert logfile_contains(logfile, 'in `run')
   end
 
+  test 'does not scrape disabled or unapproved sources' do
+    WebMock.stub_request(:get, /https:\/\/app.com\/\d/).to_return(status: 200,
+      body: File.open(Rails.root.join('test', 'fixtures', 'files', 'ingestion', 'events.csv')))
+
+    scraper = Scraper.new(load_scraper_config('test_ingestion_disabled.yml'))
+    provider = content_providers(:goblet)
+    user = users(:admin)
+    unapproved_source = provider.sources.create!(url: 'https://app.com/2', method: 'event_csv', user: user,
+                                                 enabled: true, approval_status: 'not_approved')
+    approval_requested_source = provider.sources.create!(url: 'https://app.com/3', method: 'event_csv', user: user,
+                                                         enabled: true, approval_status: 'requested')
+    User.current_user = user # Admin is required to save approved status
+    enabled_source = provider.sources.create!(url: 'https://app.com/1', method: 'event_csv', user: user,
+                                              enabled: true, approval_status: 'approved')
+    disabled_source = provider.sources.create!(url: 'https://app.com/4', method: 'event_csv', user: user,
+                                               enabled: false, approval_status: 'approved')
+
+    scraper.run
+
+    logfile = scraper.log_file
+    # From Config
+    assert logfile_contains(logfile, "Source URL[https://app.com/events/sitemap.xml]")
+    refute logfile_contains(logfile, "Source URL[https://app.com/events/disabled.xml]")
+    # From Database
+    assert logfile_contains(logfile, "Source URL[#{enabled_source.url}]")
+    refute logfile_contains(logfile, "Source URL[#{disabled_source.url}]")
+    refute logfile_contains(logfile, "Source URL[#{unapproved_source.url}]")
+    refute logfile_contains(logfile, "Source URL[#{approval_requested_source.url}]")
+  end
+
   private
 
   def check_task_finished(logfile)

@@ -3,7 +3,7 @@
   <% if Rails.application.secrets.google_maps_api_key.present? &&
         !TeSS::Config.feature['disabled'].include?('address_finder') %>
     <input id="map-search" class="map-control form-control" type="text" placeholder="Start typing an address..."
-           title="<%== raw t 'events.hints.address' %>">
+           title="<%== t 'events.hints.address' %>">
     <%= content_tag(:div, id: 'google-map-form', data: {
         'map-latitude': f.object.latitude || TeSS::Config.gmaps['center']['latitude'],
         'map-longitude': f.object.longitude || TeSS::Config.gmaps['center']['longitude'],

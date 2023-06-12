@@ -55,6 +55,8 @@ class Workflow < ApplicationRecord
 
   has_many :stars,  as: :resource, dependent: :destroy
 
+  auto_strip_attributes :title, squish: false
+
   validates :title, presence: true
 
   clean_array_fields(:keywords, :contributors, :authors, :target_audience)

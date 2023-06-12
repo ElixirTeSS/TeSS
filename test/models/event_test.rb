@@ -476,4 +476,71 @@ class EventTest < ActiveSupport::TestCase
     assert event.keywords.include?('Workshops and courses')
   end
 
+  test 'duplicate' do
+    user = users(:regular_user)
+    node = nodes(:westeros)
+    material = materials(:good_material)
+    event = Event.new(
+      title: 'An event',
+      timezone: 'UTC',
+      user: user,
+      url: 'https://events.com/1',
+      keywords: ['fun times'],
+      nodes: [node],
+      external_resources_attributes: { '0' => { title: 'test', url: 'https://external-resource.com' } },
+      materials: [material],
+      scientific_topic_names: ['Proteins', 'DNA'],
+      operation_names: ['Variant calling']
+    )
+
+    assert event.save
+    dup = nil
+    assert event.slug
+
+    # Duplicating should not create any records
+    assert_no_difference('Event.count') do
+      assert_no_difference('OntologyTermLink.count') do
+        assert_no_difference('NodeLink.count') do
+          assert_no_difference('ExternalResource.count') do
+            assert_no_difference('EventMaterial.count') do
+              dup = event.duplicate
+
+              assert_equal 'An event', dup.title
+              assert_equal 'UTC', dup.timezone
+              assert_nil dup.id
+              assert_nil dup.slug
+              assert_nil dup.url
+              assert_equal [material], dup.materials
+              assert_equal [node], dup.nodes
+              assert_equal ['Proteins', 'DNA'], dup.scientific_topic_names
+              assert_equal ['Variant calling'], dup.operation_names
+              assert_equal 1, dup.external_resources.length
+              assert_equal 'test', dup.external_resources.first.title
+              assert_equal 'https://external-resource.com', dup.external_resources.first.url
+            end
+          end
+        end
+      end
+    end
+
+    # Records are created when duplicate is saved
+    assert_difference('Event.count', 1) do
+      assert_difference('OntologyTermLink.count', 3) do
+        assert_difference('NodeLink.count', 1) do
+          assert_difference('ExternalResource.count', 1) do
+            assert_difference('EventMaterial.count', 1) do
+              dup.url = 'https://events.com/2'
+              assert dup.save
+            end
+          end
+        end
+      end
+    end
+  end
+
+  test 'should strip attributes' do
+    assert @event.update(title: ' Event  Title  ', url: " https://event.com\n")
+    assert_equal 'Event  Title', @event.title
+    assert_equal 'https://event.com', @event.url
+  end
 end

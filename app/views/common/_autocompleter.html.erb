@@ -24,9 +24,11 @@
                      else
                        "Add a new #{f.object.class.human_attribute_name(field_name).singularize.downcase}"
                      end
+  classes = 'form-group'
+  classes += ' hidden' if hidden
 %>
 
-<div class="form-group">
+<div class=<%= classes-%>>
   <%= f.label field_name %><%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
 
   <%= content_tag(:div, data: data) do %>

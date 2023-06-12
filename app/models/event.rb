@@ -109,6 +109,8 @@ class Event < ApplicationRecord
 
   has_many :stars,  as: :resource, dependent: :destroy
 
+  auto_strip_attributes :title, :description, :url, squish: false
+
   validates :title, :url, presence: true
   validates :url, url: true
   validates :capacity, numericality: { greater_than_or_equal_to: 1 }, allow_blank: true
@@ -285,13 +287,15 @@ class Event < ApplicationRecord
     given_event = event_params.is_a?(Event) ? event_params : new(event_params)
     event = nil
 
-    provider_id = given_event.content_provider_id || given_event.content_provider&.id
+    provider_id = (given_event.content_provider_id || given_event.content_provider&.id)&.to_s
+
+    scope = provider_id.present? ? where(content_provider_id: provider_id) : all
 
     if given_event.url.present?
-      event = where(url: given_event.url).last
+      event = scope.where(url: given_event.url).last
     end
 
-    if provider_id.present? && given_event.title.present? && given_event.start.present?
+    if given_event.title.present? && given_event.start.present?
       event ||= where(content_provider_id: provider_id, title: given_event.title, start: given_event.start).last
     end
 
@@ -412,6 +416,19 @@ class Event < ApplicationRecord
     else
       [Bioschemas::EventGenerator.new(self)]
     end
+  end
+
+  def duplicate
+    c = dup
+    c.url = nil
+    external_resources.each do |er|
+      c.external_resources.build(url: er.url, title: er.title)
+    end
+    [:materials, :scientific_topics, :operations, :nodes].each do |field|
+      c.send("#{field}=", send(field))
+    end
+
+    c
   end
 
   private

@@ -15,13 +15,9 @@ class Collection < ApplicationRecord
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
-  auto_strip_attributes :title, :description, :image_url, :squish => false
-  after_save do
-    index_items if saved_change_to_title?
-  end
-  after_destroy do
-    index_items
-  end
+  auto_strip_attributes :title, :description, :image_url, squish: false
+
+  after_commit :index_items, if: :title_previously_changed?
 
   validates :title, presence: true
 
@@ -97,6 +93,6 @@ class Collection < ApplicationRecord
   def index_items
     return unless TeSS::Config.solr_enabled
 
-    items.each(&:solr_index)
+    items.each(&:reindex_resource)
   end
 end

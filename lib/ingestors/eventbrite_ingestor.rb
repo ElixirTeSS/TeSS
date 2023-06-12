@@ -37,7 +37,7 @@ module Ingestors
 
       begin
         # initialise next_page
-        next_page = "#{url}/events/?status=live&token=#{@token}"
+        next_page = "#{url}/events/?status=live"
 
         while next_page
           # execute REST request
@@ -49,7 +49,7 @@ module Ingestors
           begin
             if !(pagination.nil? or pagination['has_more_items'].nil? or pagination['page_number'].nil?) && (pagination['has_more_items'])
               page = pagination['page_number'].to_i
-              next_page = "#{url}/events/?page=#{page + 1}&token=#{@token}"
+              next_page = "#{url}/events/?page=#{page + 1}"
             end
           rescue Exception => e
             puts "format next_page failed with: #{e.message}"
@@ -163,7 +163,7 @@ module Ingestors
 
     def populate_eventbrite_formats
       # get formats from Eventbrite
-      url = "https://www.eventbriteapi.com/v3/formats/?token=#{@token}"
+      url = "https://www.eventbriteapi.com/v3/formats/"
       response = get_json_response url
       # process formats
       response['formats'].each do |format|
@@ -190,7 +190,7 @@ module Ingestors
 
     def add_eventbrite_venue(id)
       # get from query and add to cache if found
-      url = "https://www.eventbriteapi.com/v3/venues/#{id}/?token=#{@token}"
+      url = "https://www.eventbriteapi.com/v3/venues/#{id}/"
       venue = get_json_response url
       @eventbrite_objects[:venues][id] = venue unless venue.nil?
     rescue Exception => e
@@ -214,7 +214,7 @@ module Ingestors
     def populate_eventbrite_categories
       # initialise pagination
       has_more_items = true
-      url = "https://www.eventbriteapi.com/v3/categories/?token=#{@token}"
+      url = "https://www.eventbriteapi.com/v3/categories/"
 
       # query until no more pages
       while has_more_items
@@ -238,7 +238,7 @@ module Ingestors
 
         has_more_items = pagination['has_more_items']
         page_number = pagination['page_number'] + 1
-        url = "https://www.eventbriteapi.com/v3/categories/?page=#{page_number}&token=#{token}"
+        url = "https://www.eventbriteapi.com/v3/categories/?page=#{page_number}"
       end
     rescue Exception => e
       @messages << "get Eventbrite format failed with: #{e.message}"
@@ -270,7 +270,7 @@ module Ingestors
     def populate_eventbrite_subcategories(id, category)
       subcategories = nil
       begin
-        url = "#{category['resource_uri']}?token=#{@token}"
+        url = "#{category['resource_uri']}"
         response = get_json_response url
         # updated cached category
         @eventbrite_objects[:categories][id] = response
@@ -297,7 +297,7 @@ module Ingestors
 
     def populate_eventbrite_organizer(id)
       # get from query and add to cache if found
-      url = "https://www.eventbriteapi.com/v3/organizers/#{id}/?token=#{@token}"
+      url = "https://www.eventbriteapi.com/v3/organizers/#{id}/"
       organizer = get_json_response url
       # add to cache
       @eventbrite_objects[:organizers][id] = organizer unless organizer.nil?
@@ -309,7 +309,8 @@ module Ingestors
       response = RestClient::Request.new(method: :get,
                                          url: CGI.unescape_html(url),
                                          verify_ssl: false,
-                                         headers: { accept: accept_params }).execute
+                                         headers: { accept: accept_params,
+                                                    authorization: "Bearer #{@token}" }).execute
       # check response
       raise "invalid response code: #{response.code}" unless response.code == 200
 

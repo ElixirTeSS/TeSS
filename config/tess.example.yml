@@ -2,7 +2,7 @@ default: &default
   base_url: http://localhost:3000
   contact_email: contact@example.com
   sender_email: no-reply@localhost
-  twitter_handle: '@handle'
+  twitter_handle: # @handle
   solr_enabled: true
   solr_facets:
     # see `searchable` block in app/model/*.rb for names
@@ -72,6 +72,7 @@ default: &default
     #  biotools, topics, operations, sponsors, fairshare, county, ardc_fields_of_research,
     #  other_types, subsets, syllabus, approved_editors address_finder
     disabled: ['ardc_fields_of_research', 'other_types', 'subsets', 'syllabus', 'approved_editors']
+    materials_disabled: []
   restrict_content_provider_selection: false
   user_ingestion_methods: ['bioschemas']
   placeholder:

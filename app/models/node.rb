@@ -13,8 +13,12 @@ class Node < ApplicationRecord
   has_many :training_coordinators, -> { training_coordinators }, class_name: 'StaffMember'
 
   has_many :content_providers, dependent: :nullify
-  has_many :materials, through: :content_providers
-  has_many :events, through: :content_providers
+  has_many :provider_materials, through: :content_providers, source: :materials
+  has_many :provider_events, through: :content_providers, source: :events
+
+  has_many :node_links, dependent: :destroy
+  has_many :materials, through: :node_links, source: :resource, source_type: 'Material'
+  has_many :events, through: :node_links, source: :resource, source_type: 'Event'
 
   accepts_nested_attributes_for :staff, allow_destroy: true
 
@@ -48,6 +52,14 @@ class Node < ApplicationRecord
 
   MEMBER_STATUS = ['Member', 'Observer']
   COUNTRIES = JSON.parse(File.read(File.join(Rails.root, 'config', 'data', 'countries.json')))
+
+  def related_events
+    Event.where(id: provider_event_ids | event_ids)
+  end
+
+  def related_materials
+    Material.where(id: provider_material_ids | material_ids)
+  end
 
   def self.load_from_hash(hash, verbose: false)
     hash["nodes"].map do |node_data|

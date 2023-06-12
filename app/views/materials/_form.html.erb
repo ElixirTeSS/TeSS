@@ -12,7 +12,7 @@
 
   <!-- Field: URL -->
   <%= render partial: 'common/url_checker',
-             locals: { f: f, url: materials_check_exists_path, title: t('materials.hints.url') } %>
+    locals: { f: f, url: materials_check_exists_path, title: t('materials.hints.url') } %>
 
   <!-- Field: Description -->
   <%= f.input :description, as: :markdown_area, field_lock: true, label: 'Description',
@@ -22,88 +22,96 @@
 
   <!-- Field: Resource Type -->
   <%= f.multi_input :resource_type, label: 'Resource types', errors: @material.errors[:material_types],
-                    title: t('materials.hints.resource_type') %>
+                    title: t('materials.hints.resource_type'), visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
   <!-- Field: Scientific Topics -->
-  <% if !TeSS::Config.feature['disabled'].include? 'topics' %>
-    <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term',
-                        id_field: :uri, label_field: :preferred_label %>
-  <% end %>
+  <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term',
+                      id_field: :uri, label_field: :preferred_label,
+                      visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
   <hr>
 
   <!-- Field: Keywords -->
-  <%= f.multi_input :keywords, title: t('materials.hints.keywords') %>
+  <%= f.multi_input :keywords, title: t('materials.hints.keywords'), visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
   <!-- Field: Licence -->
   <%= f.input :licence, collection: licence_options_for_select, input_html: { title: t('materials.hints.licence') },
-              prompt: 'Select a licence...', errors: @material.errors[:licence], field_lock: true %>
+              prompt: 'Select a licence...', errors: @material.errors[:licence], field_lock: true,
+              visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
   <!-- Field: Status -->
   <%= f.input :status, collection: MaterialStatusDictionary.instance.options_for_select, prompt: 'Select a status...',
               errors: @material.errors[:status], input_html: { title: t('materials.hints.status') },
-              field_lock: true %>
+              field_lock: true, visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
   <!-- Field: Contact -->
-  <%= f.input :contact, input_html: { rows: '5', title: t('materials.hints.contact') }, field_lock: true %>
+  <%= f.input :contact, input_html: { rows: '5', title: t('materials.hints.contact') }, field_lock: true,
+              visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
   <!-- Field: DOI -->
-  <%= f.input :doi, field_lock: true, input_html: { title: t('materials.hints.doi') } %>
+  <%= f.input :doi, field_lock: true, input_html: { title: t('materials.hints.doi') },
+              visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
   <!-- Field: Version -->
-  <%= f.input :version, input_html: { title: t('materials.hints.version') }, field_lock: true %>
+  <%= f.input :version, input_html: { title: t('materials.hints.version') }, field_lock: true,
+              visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
   <!-- Field: Provider -->
   <%= f.input :content_provider_id, collection: current_user.get_editable_providers, label_method: :title, value_method: :id,
-              include_blank: true, field_lock: true, label: t('materials.hints.providers') %>
+              include_blank: true, field_lock: true, label: t('materials.hints.providers'),
+              visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
   <!-- Field: Authors -->
-  <%= f.multi_input :authors, suggestions_url: people_autocomplete_suggestions_path, title: t('materials.hints.authors') %>
+  <%= f.multi_input :authors, suggestions_url: people_autocomplete_suggestions_path, title: t('materials.hints.authors'),
+                    visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
   <!-- Field: Contributors -->
-  <%= f.multi_input :contributors, suggestions_url: people_autocomplete_suggestions_path, title: t('materials.hints.contributors') %>
+  <%= f.multi_input :contributors, suggestions_url: people_autocomplete_suggestions_path, title: t('materials.hints.contributors'),
+                    visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
   <!-- Field: Target Audience -->
   <%= f.multi_input :target_audience, label: 'Target audiences', errors: @material.errors[:target_audience],
-                    title: t('events.hints.targets') %>
+                    title: t('events.hints.targets'), visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
   <!-- Field: Prerequisites -->
   <%= f.input :prerequisites, as: :markdown_area, field_lock: true,
-              input_html: { rows: '3', title: t('materials.hints.prerequisites') } %>
+              input_html: { rows: '3', title: t('materials.hints.prerequisites') },
+              visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
   <!-- Field: Level -->
   <%= f.input :difficulty_level, collection: DifficultyDictionary.instance.options_for_select,
               label: 'Competency level', prompt: 'Select a difficulty level...', field_lock: true,
-              errors: @material.errors[:difficulty_level], input_html: { title: t('materials.hints.difficulty') } %>
+              errors: @material.errors[:difficulty_level], input_html: { title: t('materials.hints.difficulty') },
+              visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
   <!-- Field: Learning Objectives-->
   <%= f.input :learning_objectives, as: :markdown_area, field_lock: true,
-              input_html: { rows: '3', title: t('materials.hints.objectives') } %>
+              input_html: { rows: '3', title: t('materials.hints.objectives') },
+              visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
   <!-- Field: Date Created -->
-  <%= f.input :date_created, as: :date_picker, field_lock: true, input_html: { title: t('materials.hints.date_created') } %>
+  <%= f.input :date_created, as: :date_picker, field_lock: true, input_html: { title: t('materials.hints.date_created') },
+              visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
 
   <!-- Field: Dates -->
-  <%= f.input :date_modified, as: :date_picker, field_lock: true, input_html: { title: t('materials.hints.date_modified') } %>
-  <%= f.input :date_published, as: :date_picker, field_lock: true, input_html: { title: t('materials.hints.date_published') } %>
+  <%= f.input :date_modified, as: :date_picker, field_lock: true, input_html: { title: t('materials.hints.date_modified') },
+              visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
+  <%= f.input :date_published, as: :date_picker, field_lock: true, input_html: { title: t('materials.hints.date_published') },
+              visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
   <!-- Field: Other Types -->
-  <% if !TeSS::Config.feature['disabled'].include? 'other_types' %>
-    <%= f.input :other_types, input_html: { title: t('materials.hints.other_types') }, field_lock: true %>
-  <% end %>
+  <%= f.input :other_types, input_html: { title: t('materials.hints.other_types') }, field_lock: true,
+              visibility_toggle: TeSS::Config.feature['disabled'] %>
 
   <!-- Field: Subsets -->
-  <% if !TeSS::Config.feature['disabled'].include? 'subsets' %>
-    <%= f.multi_input :subsets, title: t('materials.hints.subsets') %>
-  <% end %>
+  <%= f.multi_input :subsets, title: t('materials.hints.subsets'), visibility_toggle: TeSS::Config.feature['disabled'] %>
 
 
   <!-- Field: Syllabus -->
-  <% if !TeSS::Config.feature['disabled'].include? 'syllabus' %>
-    <%= f.input :syllabus, as: :markdown_area, field_lock: true,
-                input_html: { rows: '3', title: t('materials.hints.syllabus') } %>
-  <% end %>
+  <%= f.input :syllabus, as: :markdown_area, field_lock: true,
+              input_html: { rows: '3', title: t('materials.hints.syllabus') },
+              visibility_toggle: TeSS::Config.feature['disabled'] %>
 
   <!-- Nodes: check feature enabled -->
   <% if TeSS::Config.feature['nodes'] %>
@@ -120,10 +128,8 @@
   %>
 
   <!-- Operations: check disabled -->
-  <% if !TeSS::Config.feature['disabled'].include? 'operations' %>
-    <%= f.autocompleter :operations, url: edam_operations_path, template: 'autocompleter/term',
-                        id_field: :uri, label_field: :preferred_label %>
-  <% end %>
+  <%= f.autocompleter :operations, url: edam_operations_path, template: 'autocompleter/term',
+                      id_field: :uri, label_field: :preferred_label, visibility_toggle: TeSS::Config.feature['disabled'] %>
 
   <!-- Field: External Resources -->
   <div class="form-group" id="external-resources">

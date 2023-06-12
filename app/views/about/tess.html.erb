@@ -6,9 +6,9 @@
   <div id="content">
     <div class="about-block">
       <h2><%== TeSS::Config.site['title'] %></h2>
-      <p><%== raw t 'about.registry' %></p>
+      <p><%== t 'about.registry' %></p>
 
-      <p><%== raw t 'about.history' %></p>
+      <p><%== t 'about.history' %></p>
 
       <% @feature_count = 0 %>
 
@@ -20,19 +20,14 @@
             <%= image_tag('modern/icons/events-icon.svg', height: '65px', alt: 'Events') %>
           </div>
           <div class="col-lg-10 col-lg-pull-2 about-resource">
-            <p><%== raw t 'about.events' %></p>
+            <p><%== t 'about.events' %></p>
 
-            <p>
-              <%= TeSS::Config.site['title_short'] %> collects event information
-              from <%= Event.distinct.count(:content_provider_id) %>
-              content providers, supplementing the data with geolocation information found using
-              <%== raw t 'about.nominatim' %>.
-            </p>
+            <p><%== t('about.collect_events', site_name: TeSS::Config.site['title_short'], count: Event.distinct.count(:content_provider_id), nominatim: t('about.nominatim'))  %></p>
 
             <br/>
 
             <%= link_to events_path do %>
-              Discover Events <i class="icon icon-sm arrow-right-icon"></i>
+              <%== t 'about.discover_events' %> <i class="icon icon-sm arrow-right-icon"></i>
             <% end %>
           </div>
         </div>
@@ -48,17 +43,15 @@
           </div>
 
           <div class="col-lg-10 col-lg-pull-2 about-resource">
-            <p><%== raw t 'about.materials' %></p>
+            <p><%== t 'about.materials' %></p>
 
-            <p><%= TeSS::Config.site['title_short'] %> collects materials from
-              <%= Material.distinct.count(:content_provider_id) %>
-              content providers.
+            <p><%== t('about.collect_materials', site_name: TeSS::Config.site['title_short'], count: Material.distinct.count(:content_provider_id)) %>
             </p>
 
             <br/>
 
             <%= link_to materials_path do %>
-              Discover Materials <i class="icon icon-sm arrow-right-icon"></i>
+              <%== t 'about.discover_materials' %> <i class="icon icon-sm arrow-right-icon"></i>
             <% end %>
           </div>
         </div>
@@ -76,19 +69,19 @@
           </div>
 
           <div class="col-lg-10 col-lg-pull-2 about-resource">
-            <p><%== raw t 'about.workflows' %></p>
+            <p><%== t 'about.workflows' %></p>
           </div>
 
           <div class="col-lg-12">
             <!-- INDIVIDUAL WORKFLOW TYPES-->
             <div class="sub-about-block">
               <h4>Learning Paths</h4>
-              <p><%== raw t 'about.learning_paths' %></p>
+              <p><%== t 'about.learning_paths' %></p>
             </div>
 
             <div class="sub-about-block">
               <h4>Educational Resource</h4>
-              <p><%== raw t 'about.resources' %></p>
+              <p><%== t 'about.resources' %></p>
             </div>
 
             <br/>
@@ -104,9 +97,8 @@
       <% if TeSS::Config.feature['subscription'] %>
         <div id="subscribe" class="<%= next_about_block(@feature_count += 1) %>">
           <h3>Subscribe</h3>
-          <p><%== raw t 'about.subscribe' %></p>
-          <p>The <%= link_to 'subscriptions manager', subscriptions_path %> page may be used to change the
-            frequency of, or to remove, subscriptions.</p>
+          <p><%== t 'about.subscribe' %></p>
+          <p><%== t('about.subscription_manager', subscriptions_path: subscriptions_path) %></p>
           <%= image_tag 'about/subscription.png', style: 'width: 80%' %>
         </div>
       <% end %>
@@ -114,7 +106,7 @@
       <!-- WIDGET & API -->
       <div id="widget" class="<%= next_about_block(@feature_count += 1) %>">
         <h3>Widgets & API</h3>
-        <p><%== raw t 'about.widgets_and_api' %></p>
+        <p><%== t 'about.widgets_and_api' %></p>
         <%= link_to 'Learn more about Widgets', developers_path(anchor: 'widgets'), class: 'btn btn-default' %>
         <%= link_to 'Learn more about our API', developers_path(anchor: 'api'), class: 'btn btn-default' %>
       </div>

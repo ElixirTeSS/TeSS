@@ -1,39 +1,39 @@
 require 'test_helper'
 
-class WurIngestorTest < ActiveSupport::TestCase
+class LcrdmIngestorTest < ActiveSupport::TestCase
   setup do
     @user = users(:regular_user)
     @content_provider = content_providers(:another_portal_provider)
     mock_ingestions
   end
 
-  test 'can ingest events from wur' do
+  test 'can ingest events from lcrdm' do
     source = @content_provider.sources.build(
-      url: 'https://www.wur.nl/en/Resources-1/RSS/Calendar.htm',
-      method: 'wur',
+      url: 'https://lcrdm.nl/evenementen/',
+      method: 'lcrdm',
       enabled: true
     )
 
-    ingestor = Ingestors::WurIngestor.new
+    ingestor = Ingestors::LcrdmIngestor.new
 
     # check event doesn't
-    new_title = 'Genetic Diversity - key to transitions in agriculture and forestry'
-    new_url = 'https://www.wur.nl/en/activity/genetic-diversity-key-to-transitions-in-agriculture-and-forestry-1.htm'
+    new_title = "UKB/LCRDM Networking day"
+    new_url = 'https://lcrdm.nl/evenementen/ukb-lcrdm-networking-day/'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference 'Event.count', 24 do
-      freeze_time(Time.new(2016)) do
-        VCR.use_cassette("ingestors/wur") do
+    assert_difference 'Event.count', 2 do
+      freeze_time(Time.new(2023)) do
+        VCR.use_cassette("ingestors/lcrdm") do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end
       end
     end
 
-    assert_equal 24, ingestor.events.count
+    assert_equal 2, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 24, ingestor.stats[:events][:added]
+    assert_equal 2, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
@@ -44,9 +44,10 @@ class WurIngestorTest < ActiveSupport::TestCase
     assert_equal new_url, event.url
 
     # check other fields
-    assert_equal 'WUR', event.source
+    assert_equal 'LCRDM', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal 'Wed, 15 Mar 2023 11:00:00.000000000 UTC +00:00'.to_time, event.start
-    assert_equal 'Fri, 01 Jan 2016 17:00:00.000000000 UTC +00:00'.to_time, event.end
+    assert_equal 'Thu, 25 May 2023 09:30:00.000000000 UTC +00:00'.to_time, event.start
+    assert_equal 'Thu, 25 May 2023 17:00:00.000000000 UTC +00:00'.to_time, event.end
+    assert_equal 'Maastricht University', event.venue
   end
 end

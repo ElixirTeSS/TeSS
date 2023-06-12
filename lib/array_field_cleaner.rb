@@ -30,7 +30,7 @@ module ArrayFieldCleaner
         if self[field].nil?
           self[field] = []
         else
-          self[field] = self[field].reject{ |element| element.blank? }
+          self[field] = self[field].reject{ |element| element.blank? }.map(&:strip)
         end
       end
     end

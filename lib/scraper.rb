@@ -69,7 +69,7 @@ class Scraper
 
       data_sources = {
         config: @sources.map { |c| Scraper::ConfigSource.new(c.merge(user: user)) },
-        database: Source.find_each
+        database: Source.approved.find_each
       }
 
       data_sources.each do |key, sources|
@@ -80,7 +80,12 @@ class Scraper
           output = '<ins>**Processing Ingestion Source**</ins><br />'
           processed += 1
           log '', 1
-          log t('scraper.messages.processing', source: processed.to_s), 1
+          if source.enabled
+            log t('scraper.messages.processing', source: source.content_provider&.title, num: processed.to_s), 1
+          else
+            log t('scraper.messages.skipped', source: source.content_provider&.title, num: processed.to_s), 1
+            next
+          end
           if validate_source(source)
             log t('scraper.messages.valid_source'), 2
             output.concat '<br />'

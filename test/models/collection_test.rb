@@ -1,6 +1,28 @@
 require 'test_helper'
 
 class CollectionTest < ActiveSupport::TestCase
+  teardown do
+    DummyMaterial.clear_index!
+  end
+
+  class DummyMaterial < ::Material
+    def self.index
+      (@index ||= Hash.new).values.flatten.uniq
+    end
+
+    def self.add_to_index(m)
+      index
+      @index[m.id] = m.reload.collections.to_a
+    end
+
+    def self.clear_index!
+      @index = Hash.new
+    end
+
+    def solr_index
+      self.class.add_to_index(self)
+    end
+  end
 
   test 'visibility scope' do
     assert_not_includes Collection.visible_by(nil), collections(:secret_collection)
@@ -91,5 +113,57 @@ class CollectionTest < ActiveSupport::TestCase
     assert_difference('CollectionItem.count', -2) do
       assert collection.destroy
     end
+  end
+
+  test 'index collection resources when collection created or destroyed' do
+    user = users(:regular_user)
+    material = materials(:good_material).becomes(DummyMaterial)
+    with_settings(solr_enabled: true) do
+      collection = user.collections.create!(title: 'test 123', materials: [material])
+
+      assert collection
+      assert_includes DummyMaterial.index, collection
+      assert_equal 1, DummyMaterial.index.length
+
+      assert collection.destroy
+      assert_equal 0, DummyMaterial.index.length
+    end
+  end
+
+  test 'index collection resources when collection renamed' do
+    user = users(:regular_user)
+    material = materials(:good_material).becomes(DummyMaterial)
+    collection = user.collections.create!(title: 'test 123', materials: [material])
+    assert collection
+
+    with_settings(solr_enabled: true) do
+      assert_equal 0, DummyMaterial.index.length
+
+      collection.update!(title: 'Hello world')
+      assert_includes DummyMaterial.index, collection
+      assert_equal 1, DummyMaterial.index.length
+    end
+  end
+
+  test 'do not index collection resources when collection updated without renaming' do
+    user = users(:regular_user)
+    material = materials(:good_material).becomes(DummyMaterial)
+    collection = user.collections.create!(title: 'test 123', materials: [material])
+    assert collection
+
+    with_settings(solr_enabled: true) do
+      assert_equal 0, DummyMaterial.index.length
+
+      collection.update!(description: 'hello')
+      assert_equal 0, DummyMaterial.index.length
+    end
+  end
+
+  test 'should strip attributes' do
+    mock_images
+    collection = collections(:one)
+    assert collection.update(title: ' Collection  Title  ', image_url: " http://image.host/another_image.png\n")
+    assert_equal 'Collection  Title', collection.title
+    assert_equal 'http://image.host/another_image.png', collection.image_url
   end
 end

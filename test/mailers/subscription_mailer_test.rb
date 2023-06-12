@@ -5,9 +5,6 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     @routes = Rails.application.routes.url_helpers
     @url_opts = Rails.application.routes.default_url_options
     Rails.application.routes.default_url_options = Rails.application.config.action_mailer.default_url_options
-    # Avoids queued emails affecting `assert_email` counts. See: https://github.com/ElixirTeSS/TeSS/issues/719
-    perform_enqueued_jobs
-    ActionMailer::Base.deliveries.clear
   end
 
   teardown do
@@ -54,7 +51,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     assert_emails 1 do
       email.deliver_now
     end
-    
+
     body = email.text_part.body.to_s
     assert body.include? 'Collections'
     assert body.include? collaborating_collection.title
@@ -103,7 +100,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     assert_emails 1 do
       email.deliver_now
     end
-    
+
     html = email.html_part.body.to_s
     assert html.include? 'Collections' # regular_user is owner of some collections
     assert html.include? collections(:one).title

@@ -482,6 +482,29 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal(JSON.parse(response.body)['id'], @event.id)
   end
 
+  test 'should find existing event by url without provider' do
+    post :check_exists, params: { format: :json, event: { title: 'whatever', url: @event.url } }
+    assert_response :success
+    assert_equal(JSON.parse(response.body)['url'], @event.url)
+    assert_equal(JSON.parse(response.body)['id'], @event.id)
+  end
+
+  test 'should find existing event by url and given content provider' do
+    provider1 = content_providers(:iann)
+    provider2 = content_providers(:two)
+
+    e1 = provider1.events.create!(title: 'another event', url: @event.url, user: users(:regular_user))
+    e2 = provider2.events.create!(title: 'a third event', url: @event.url, user: users(:regular_user))
+
+    post :check_exists, params: { format: :json, event: { url: @event.url, content_provider_id: provider1.id } }
+    assert_response :success
+    assert_equal(JSON.parse(response.body)['id'], e1.id)
+
+    post :check_exists, params: { format: :json, event: { url: @event.url, content_provider_id: provider2.id } }
+    assert_response :success
+    assert_equal(JSON.parse(response.body)['id'], e2.id)
+  end
+
   test 'should return nothing when event does not exist' do
     post :check_exists, params: { format: :json, event: { url: 'http://no-such-site.com' } }
     assert_response :success
@@ -1314,5 +1337,21 @@ class EventsControllerTest < ActionController::TestCase
         assert_select 'li a[href=?]', '#map', count: 0
       end
     end
+  end
+
+  test 'should clone event' do
+    sign_in @event.user
+    get :clone, params: { id: @event }
+    assert_response :success
+    assert_nil assigns(:event).url
+    assert_nil assigns(:event).id
+    assert_equal @event.title, assigns(:event).title
+    assert_select '#event_title[value=?]', @event.title
+  end
+
+  test 'should not clone event if no permission' do
+    sign_in users(:another_regular_user)
+    get :clone, params: { id: @event }
+    assert_response :forbidden
   end
 end

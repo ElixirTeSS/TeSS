@@ -10,7 +10,7 @@
   <% providers = ContentProvider.where(id: provider_ids) %>
   <% return if providers.none? %>
   <section id="providers">
-    <h2 class="text-center"><%= raw t 'home.providers.title' %></h2>
+    <h2 class="text-center"><%= t('home.providers.title') %></h2>
     <div class="carousel slide multi-item-carousel" id="providers-carousel">
       <div class="carousel-inner">
         <%
@@ -33,7 +33,7 @@
     </div>
 
     <div class="text-center font-size-lg">
-      <%== raw t 'home.providers.content' %>
+      <%== t 'home.providers.content' %>
       <p>
         <%= link_to t('home.providers.button_text'), registering_resources_path, class: 'btn btn-primary' %>
       </p>

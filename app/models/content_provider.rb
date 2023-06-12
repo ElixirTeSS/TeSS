@@ -29,7 +29,7 @@ class ContentProvider < ApplicationRecord
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
-  auto_strip_attributes :title, :description, :url, :image_url, :squish => false
+  auto_strip_attributes :title, :description, :url, :image_url, squish: false
 
   validates :title, :url, presence: true
 

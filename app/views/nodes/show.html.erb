@@ -18,12 +18,12 @@
       <% resource_limit = 30 %>
       <% content_providers = @node.content_providers.from_verified_users.limit(resource_limit) %>
       <% content_providers_count = @node.content_providers.from_verified_users.count %>
-      <% materials = @node.materials.from_verified_users.limit(resource_limit) %>
-      <% materials_count =  @node.materials.from_verified_users.count %>
-      <% upcoming_events = @node.events.from_verified_users.not_finished %>
-      <% past_events = @node.events.from_verified_users.finished %>
+      <% materials = @node.related_materials.from_verified_users.limit(resource_limit) %>
+      <% materials_count =  @node.related_materials.from_verified_users.count %>
+      <% upcoming_events = @node.related_events.from_verified_users.not_finished %>
+      <% past_events = @node.related_events.from_verified_users.finished %>
       <% events = upcoming_events.limit(resource_limit) %>
-      <% events_count =  @node.events.from_verified_users.count %>
+      <% events_count =  @node.related_events.from_verified_users.count %>
       <% activator = tab_activator %>
       <ul class="nav nav-tabs">
         <% if TeSS::Config.feature['materials'] %>

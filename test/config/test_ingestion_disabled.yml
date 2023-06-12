@@ -1,0 +1,15 @@
+name: test disabled
+logfile: log/ingestion.test.log
+loglevel: 0
+username: ingestor
+sources:
+  - id: 1
+    provider: 'Another Portal Provider'
+    url: 'https://app.com/events/sitemap.xml'
+    method: ical
+    enabled: true
+  - id: 2
+    provider: 'Another Portal Provider'
+    url: 'https://app.com/events/disabled.xml'
+    method: ical
+    enabled: false

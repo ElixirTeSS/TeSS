@@ -629,6 +629,29 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_equal(JSON.parse(response.body)['id'], @material.id)
   end
 
+  test 'should find existing material by url without provider' do
+    post :check_exists, params: { format: :json, material: { title: 'whatever', url: @material.url } }
+    assert_response :success
+    assert_equal(JSON.parse(response.body)['url'], @material.url)
+    assert_equal(JSON.parse(response.body)['id'], @material.id)
+  end
+
+  test 'should find existing material by url and given content provider' do
+    provider1 = content_providers(:iann)
+    provider2 = content_providers(:two)
+
+    e1 = provider1.materials.create!(title: 'another material', url: @material.url, description: '123', user: users(:regular_user))
+    e2 = provider2.materials.create!(title: 'a third material', url: @material.url, description: '123', user: users(:regular_user))
+
+    post :check_exists, params: { format: :json, material: { url: @material.url, content_provider_id: provider1.id } }
+    assert_response :success
+    assert_equal(JSON.parse(response.body)['id'], e1.id)
+
+    post :check_exists, params: { format: :json, material: { url: @material.url, content_provider_id: provider2.id } }
+    assert_response :success
+    assert_equal(JSON.parse(response.body)['id'], e2.id)
+  end
+
   test 'should return nothing when material does not exist' do
     post :check_exists, params: {
       format: :json,
@@ -1322,6 +1345,43 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_select '#content h2', text: 'Training materials'
     assert_select '.searchbox-sm form[action=?]', materials_path do
       assert_select '#q[placeholder=?]', 'Search materials...'
+    end
+  end
+  
+  test 'should clone material' do
+    sign_in @material.user
+    get :clone, params: { id: @material }
+    assert_response :success
+    assert_nil assigns(:material).url
+    assert_nil assigns(:material).id
+    assert_equal @material.title, assigns(:material).title
+    assert_select '#material_title[value=?]', @material.title
+  end
+
+  test 'should not clone material if no permission' do
+    sign_in users(:another_regular_user)
+    get :clone, params: { id: @material }
+    assert_response :forbidden
+  end
+
+  test 'should hide fields' do
+    with_settings(feature: { materials_disabled: ['licence', 'scientific_topics', 'resource_type'] }) do 
+      sign_in users(:regular_user)
+      get :new
+      assert_response :success
+      assert_select "div.hidden" do |div|
+        assert_select "label", text: 'Licence', count: 1
+        assert_select "label", text: 'Status', count: 0
+      end
+      assert_select 'div[hidden]' do |el|
+        assert_select el, "label", text: 'Resource types', count: 1
+        assert_select el, "label", text: 'Scientific topics', count: 1
+        assert_select el, "label", text: 'Keywords', count: 0
+        assert_select el, "label", text: 'Operations', count: 0
+      end
+      assert_select "label", {:count=>1, :text=>"Status"}
+      assert_select "label", {:count=>1, :text=>"Keywords"}
+      assert_select "label", {:count=>1, :text=>"Operations"}
     end
   end
 end

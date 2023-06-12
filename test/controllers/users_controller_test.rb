@@ -236,8 +236,8 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal false, profile_new.public
     assert_equal 'fake@email.com', profile_new.email
     assert_nil profile_new.image_url
-    assert_equal '', profile_new.orcid
-    assert_equal '', profile_new.website
+    assert_nil profile_new.orcid
+    assert_nil profile_new.website
     assert_equal 3, profile_new.expertise_technical.size, 'expertise_technical array size not matchted.'
   end
 
