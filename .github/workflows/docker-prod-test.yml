@@ -1,0 +1,17 @@
+name: Docker production build
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Setup
+        run: | 
+          cp env.sample .env
+          cp docker/tess.docker-test.yml config/tess.yml
+          cp config/secrets.example.yml config/secrets.yml
+      - name: Build
+        run: docker-compose -f docker-compose-prod.yml build
