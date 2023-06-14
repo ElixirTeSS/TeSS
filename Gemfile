@@ -33,7 +33,7 @@ gem "omniauth-rails_csrf_protection"
 gem 'devise_invitable', '~> 2.0.5'
 
 # Activity logging
-gem 'public_activity', '~> 1.6.4'
+gem 'public_activity', '~> 2.0.2'
 
 gem 'simple_token_authentication', '~> 1.0'
 
