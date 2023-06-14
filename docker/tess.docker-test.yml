@@ -3,10 +3,10 @@ default: &default
   base_url: http://localhost:3000
   contact_email: contact@example.com
   sender_email: no-reply@localhost
-  twitter_handle: @handle
+  twitter_handle: '@handle'
   solr_enabled: true
   solr_facets:
-    events: [content_provider, keywords, event_type]
+    events: [content_provider, keywords, event_types]
   announcement_message: Test 123
   prevent_robot_indexing: false
   require_cookie_consent: true

@@ -6,7 +6,7 @@ default: &default
   solr_enabled: true
   solr_facets:
     # see `searchable` block in app/model/*.rb for names
-    # events: [content_provider, keywords, event_type, ...]
+    # events: [content_provider, keywords, event_types, ...]
     # materials:
     # trainers:
   announcement_message:
