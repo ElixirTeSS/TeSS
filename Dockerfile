@@ -1,11 +1,13 @@
+ARG RUBY_VERSION=3.0.6
+
 #use ruby base image
-FROM ruby:3.0.6
+FROM ruby:$RUBY_VERSION-slim AS base
 
 # set work dir
 WORKDIR /code
 
 # install dependencies
-RUN apt-get update && apt-get install libpq-dev imagemagick nodejs -y
+RUN apt-get update && apt-get install build-essential curl file git gnupg2 imagemagick libpq-dev nodejs -y
 
 # install supercronic - a cron alternative
 ENV SUPERCRONIC_URL=https://github.com/aptible/supercronic/releases/download/v0.1.12/supercronic-linux-amd64 \
@@ -17,6 +19,18 @@ RUN curl -fsSLO "$SUPERCRONIC_URL" \
  && chmod +x "$SUPERCRONIC" \
  && mv "$SUPERCRONIC" "/usr/local/bin/${SUPERCRONIC}" \
  && ln -s "/usr/local/bin/${SUPERCRONIC}" /usr/local/bin/supercronic
+
+ENTRYPOINT ["docker/entrypoint.sh"]
+
+EXPOSE 3000
+
+
+FROM base AS development
+
+CMD bundle exec rails server -b 0.0.0.0
+
+
+FROM base AS production
 
 # copy gemfile
 COPY Gemfile Gemfile.lock ./
@@ -30,10 +44,7 @@ COPY . .
 # precompile assets
 RUN bundle exec rake assets:precompile
 
-ENTRYPOINT ["docker/entrypoint.sh"]
-
-# expose port
-EXPOSE 3000
-
 # run rails server, need bind for docker
-CMD bundle exec rails server -b 0.0.0.0
+CMD bundle exec whenever > /code/tess.crontab \
+    && (supercronic /code/tess.crontab &) \
+    && bundle exec rails server -b 0.0.0.0

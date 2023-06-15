@@ -1,15 +1,13 @@
+# Complete config with all options enabled
 default: &default
   base_url: http://localhost:3000
   contact_email: contact@example.com
   sender_email: no-reply@localhost
-  twitter_handle: # @handle
+  twitter_handle: '@handle'
   solr_enabled: true
   solr_facets:
-    # see `searchable` block in app/model/*.rb for names
-    # events: [content_provider, keywords, event_types, ...]
-    # materials:
-    # trainers:
-  announcement_message:
+    events: [content_provider, keywords, event_types]
+  announcement_message: Test 123
   prevent_robot_indexing: false
   require_cookie_consent: true
   blocked_domains:
@@ -32,8 +30,8 @@ default: &default
       catalogue_blocks: true
       provider_carousel: true
       # A list of content provider IDs to show in the front page carousel. Leave blank to show latest 5 (that have avatars set)
-      featured_providers: # e.g. [123, 5, 10, 1]
-      faq: # [who, how, why, embed, subscribe] # Questions/answers in config/en.yml: home > faq. Use empty array to hide section
+      featured_providers: [1]
+      faq: [who, how, why, embed, subscribe] # Questions/answers in config/en.yml: home > faq. Use empty array to hide section
       promo_blocks: false
     # The order in which the tabs appear (if feature enabled)
     tab_order: ['about', 'events', 'materials', 'elearning_materials', 'workflows', 'collections', 'trainers', 'content_providers', 'nodes']
@@ -72,7 +70,7 @@ default: &default
     #  biotools, topics, operations, sponsors, fairshare, county, ardc_fields_of_research,
     #  other_types, subsets, syllabus, approved_editors address_finder
     disabled: ['ardc_fields_of_research', 'other_types', 'subsets', 'syllabus', 'approved_editors']
-    materials_disabled: []
+    materials_disabled: [status]
   restrict_content_provider_selection: false
   user_ingestion_methods: ['bioschemas']
   placeholder:
@@ -91,8 +89,16 @@ default: &default
     trainer_experience: 'trainer_experience.yml'
     online_keywords: 'online_keywords.yml'
   funders:
-#    - url: https://example.com/your-funders-website
-#      logo: foo.png
+    - url: https://elixir.ut.ee/
+      logo: nodes/logos_svg/EE.svg
+    - url: http://elixir-uk.org/
+      logo: nodes/logos_svg/GB.svg
+    - url: http://www.bbsrc.ac.uk/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1
+      logo: elixir/bbsrc-logo.svg
+    - url: http://www.manchester.ac.uk/
+      logo: elixir/uom-logo.svg
+    - url: http://www.oerc.ox.ac.uk/
+      logo: elixir/oerc-logo.svg
 
 development:
   <<: *default

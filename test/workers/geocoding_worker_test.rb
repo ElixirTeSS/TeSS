@@ -23,7 +23,7 @@ class GeocodingWorkerTest < ActiveSupport::TestCase
     assert_nil event.latitude
     assert_nil event.longitude
 
-    redis = Redis.new
+    redis = Redis.new(url: TeSS::Config.redis_url)
     redis.set(event.address, [45, 45].to_json)
 
     Sidekiq::Testing.inline! do

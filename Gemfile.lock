@@ -163,7 +163,7 @@ GEM
       openapi_parser (>= 0.11.1, < 1.0)
       rack (>= 1.5)
     concurrent-ruby (1.2.2)
-    connection_pool (2.3.0)
+    connection_pool (2.4.0)
     countries (3.1.0)
       i18n_data (~> 0.11.0)
       sixarm_ruby_unaccent (~> 1.1)
@@ -201,8 +201,6 @@ GEM
     eventbrite_sdk (3.6.0)
       rest-client (~> 2.0)
     execjs (2.8.1)
-    fakeredis (0.9.0)
-      redis (~> 4.8)
     faraday (1.8.0)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
@@ -435,18 +433,18 @@ GEM
       pry (>= 0.13, < 0.15)
     psych (4.0.6)
       stringio
-    public_activity (1.6.4)
-      actionpack (>= 3.0.0)
-      activerecord (>= 3.0)
+    public_activity (2.0.2)
+      actionpack (>= 5.0.0)
+      activerecord (>= 5.0)
       i18n (>= 0.5.0)
-      railties (>= 3.0.0)
+      railties (>= 5.0.0)
     public_suffix (5.0.0)
     puma (5.6.4)
       nio4r (~> 2.0)
     pundit (1.1.0)
       activesupport (>= 3.0.0)
     racc (1.6.2)
-    rack (2.2.6.4)
+    rack (2.2.7)
     rack-cors (1.1.1)
       rack (>= 2.0.0)
     rack-oauth2 (1.19.0)
@@ -580,6 +578,8 @@ GEM
       json
     redcarpet (3.5.1)
     redis (4.8.1)
+    redis-client (0.14.1)
+      connection_pool
     regexp_parser (2.1.1)
     remotipart (1.4.4)
     responders (3.0.1)
@@ -647,13 +647,14 @@ GEM
       rdf-xsd (~> 3.2)
       sparql (~> 3.2)
       sxp (~> 1.2)
-    sidekiq (6.4.2)
-      connection_pool (>= 2.2.2)
-      rack (~> 2.0)
-      redis (>= 4.2.0)
-    sidekiq-status (2.1.3)
+    sidekiq (7.0.9)
+      concurrent-ruby (< 2)
+      connection_pool (>= 2.3.0)
+      rack (>= 2.2.4)
+      redis-client (>= 0.11.0)
+    sidekiq-status (3.0.2)
       chronic_duration
-      sidekiq (>= 5.0)
+      sidekiq (>= 6.0, < 8)
     simple_form (5.1.0)
       actionpack (>= 5.2)
       activemodel (>= 5.2)
@@ -784,7 +785,6 @@ DEPENDENCIES
   devise_invitable (~> 2.0.5)
   dynamic_sitemaps!
   eventbrite_sdk
-  fakeredis (= 0.9.0)
   font-awesome-sass (~> 4.7.0)
   friendly_id (~> 5.2.4)
   geocoder
@@ -813,7 +813,7 @@ DEPENDENCIES
   private_address_check
   progress_bar (~> 1.1.0)
   pry-byebug
-  public_activity (~> 1.6.4)
+  public_activity (~> 2.0.2)
   puma
   pundit (~> 1.1.0)
   rack-cors
@@ -837,8 +837,8 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   sassc-rails (~> 2.1.2)
   sdoc (>= 1.1.0)
-  sidekiq (~> 6.4.0)
-  sidekiq-status
+  sidekiq (< 8)
+  sidekiq-status (~> 3.0.2)
   simple_form
   simple_token_authentication (~> 1.0)
   simplecov

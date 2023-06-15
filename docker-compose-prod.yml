@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: production
     image: ${PREFIX}-app
     restart: always
     env_file: .env
@@ -34,6 +35,9 @@ services:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+    healthcheck:
+      test: pg_isready -U postgres -h 127.0.0.1
+      interval: 5s
     volumes:
       - db-data:/var/lib/postgresql/data
   solr:
@@ -51,10 +55,19 @@ services:
     container_name: ${PREFIX}-redis
     image: redis:6
     restart: always
+    healthcheck:
+      test: redis-cli ping
+      interval: 1s
+      timeout: 3s
+      retries: 30
     volumes:
       - redis-data:/data
   sidekiq:
     container_name: ${PREFIX}-sidekiq
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
     image: ${PREFIX}-app
     depends_on:
       - app
@@ -67,7 +80,7 @@ services:
     env_file: .env
     environment:
       RAILS_ENV: production
-    entrypoint: ./docker/sidekiq_entrypoint.sh
+    command: bundle exec sidekiq
   dbbackups:
     container_name: ${PREFIX}-dbbackups
     image: kartoza/pg-backup:14-3.1
@@ -81,7 +94,8 @@ services:
       - REMOVE_BEFORE=7
     restart: on-failure
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 volumes:
   db-data:
   db-backups:

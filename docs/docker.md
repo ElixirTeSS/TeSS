@@ -40,13 +40,13 @@ Create TeSS configuration files:
 
 *Note: If changes are made to these files the containers will need to be restarted.*
 
+### Install gems and set up the database (migrations + seed data + create admin user)
+
+    docker-compose run app bundle install && bundle exec rake db:setup
+
 ### Start services
 
     docker-compose up -d
-
-### Setup the database (migrations + seed data + create admin user)
-
-    docker-compose exec app bundle exec rake db:setup
 
 ### Access TeSS
 
@@ -96,7 +96,7 @@ Create the `.env` file:
 
     cp env.sample .env
 
-*Important* make sure the various credentials are changed! You can set some random values for these fields like so:
+**Important** make sure the various credentials are changed! You can set some random values for these fields like so:
 
     sed s/SECRET_KEY_BASE=.*/SECRET_KEY_BASE=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32`/ -i .env
     sed s/DB_PASSWORD=.*/DB_PASSWORD=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16`/ -i .env

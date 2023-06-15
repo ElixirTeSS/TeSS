@@ -4,7 +4,16 @@ This page contains some extra notes about setting up TeSS for production on an U
 
 ## System Dependencies
 
-    sudo apt-get install git postgresql libpq-dev imagemagick nodejs redis-server openjdk-11-jdk apache2 gnupg2
+    sudo apt-get install git postgresql libpq-dev imagemagick nodejs openjdk-11-jdk apache2 gnupg2
+    
+To install a recent version of Redis (6.2+), use the official Redis APT repo:
+
+    curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+    
+    echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
+    
+    sudo apt-get update
+    sudo apt-get install redis
 
 ## Install RVM
 
