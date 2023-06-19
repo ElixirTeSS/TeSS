@@ -20,7 +20,7 @@ class ConfigTest < ActiveSupport::TestCase
   end
 
   test 'redis URL should be set' do
-    exp = if ENV['REDIS_TEST_URL'].present? # Used in CI
+    exp = if ENV['REDIS_TEST_URL'].present? # Used in docker/CI
             ENV['REDIS_TEST_URL']
           else
             'redis://localhost:6379/0'
