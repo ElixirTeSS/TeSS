@@ -5,10 +5,10 @@
   where.not(image_file_size: nil).
   last(TeSS::Config.site['n_provider_ids']).pluck(:id) if provider_ids.nil? %>
 <% return if provider_ids.blank? %>
+<% providers = ContentProvider.where(id: provider_ids) %>
+<% return if providers.none? %>
 
-<% cache(['home', 'provider-carousel', provider_ids.join('-')]) do %>
-  <% providers = ContentProvider.where(id: provider_ids) %>
-  <% return if providers.none? %>
+<% cache(['home', 'provider-carousel', providers]) do %>
   <section id="providers">
     <h2 class="text-center"><%= t('home.providers.title') %></h2>
     <div class="carousel slide multi-item-carousel" id="providers-carousel">
