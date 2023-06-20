@@ -9,7 +9,7 @@ class OdisseiIngestorTest < ActiveSupport::TestCase
 
   test 'can ingest events from odissei' do
     source = @content_provider.sources.build(
-      url: 'https://www.openscience-rotterdam.com/tags/#workshops-list',
+      url: 'https://odissei-data.nl/calendar/',
       method: 'odissei',
       enabled: true
     )
@@ -48,7 +48,7 @@ class OdisseiIngestorTest < ActiveSupport::TestCase
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'Mon, 19 Jun 2023 09:00:00.000000000 UTC +00:00'.to_time, event.start
     assert_equal 'Fri, 30 Jun 2023 17:00:00.000000000 UTC +00:00'.to_time, event.end
-    assert_equal 'Supnova, Jaarbeurs Utrecht Jaarbeursplein 6 Utrecht, 3521AL Netherlands', event.venue
+    assert_equal 'Erasmus University Rotterdam', event.venue
     assert_equal false, event.online
   end
 end

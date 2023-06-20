@@ -34,18 +34,18 @@ module Ingestors
       event_page.each do |event_section|
         event = OpenStruct.new
         el = event_section.css("div[class='tribe-events-calendar-list__event-details tribe-common-g-col']").first
-        event.title = el.css("a[class='tribe-events-calendar-list__event-title-link tribe-common-anchor-thin']").first.text
+        event.title = el.css("a[class='tribe-events-calendar-list__event-title-link tribe-common-anchor-thin']").first.text.gsub("\n", ' ').gsub("\t", '')
         event.url = el.css("a[class='tribe-events-calendar-list__event-title-link tribe-common-anchor-thin']").first.get_attribute('href')
         event.description = el.css("div[class='tribe-events-calendar-list__event-description tribe-common-b2 tribe-common-a11y-hidden']").first.css('p').first.text
-        unless (Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/maastricht.yml'))
+        unless (Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/odissei.yml'))
           sleep(1)
         end
         el = Nokogiri::HTML5.parse(open_url(event.url.to_s, raise: true)).css("div[id='tribe-events-content']").first
-        venue_css = el&.css("div[class='tribe-events-meta-group tribe-events-meta-group-venue']")&.first&.css("address[class='tribe-events-address]")&.first&.css('span')
+        venue_css = el&.css("div[class='tribe-events-meta-group tribe-events-meta-group-venue']")&.first&.css("dl")
         if !venue_css
           next
         end
-        event.venue = recursive_description_func(venue_css)
+        event.venue = recursive_description_func(venue_css).gsub("\n", ' ').gsub("\t", '')
         times = scrape_start_and_end_time(el.css("div[class='tribe-events-meta-group tribe-events-meta-group-details']").first)
         event.start = times[0]
         event.end = times[1]
@@ -61,26 +61,26 @@ module Ingestors
 end
 
 def scrape_start_and_end_time(el)
-  start_date = el&.css("abbr[class='tribe-events-abbr tribe-events-start-date published dtstart']")
-  start_time = el&.css("div[class='tribe-events-abbr tribe-events-start-time published dtstart']")
-  start_date_time = el&.css("abbr[class='tribe-events-abbr tribe-events-start-datetime updated published dtstart']")
-  end_date_time = el&.css("abbr[class='tribe-events-abbr tribe-events-end-datetime dtend']")
+  start_date = el&.css("abbr[class='tribe-events-abbr tribe-events-start-date published dtstart']")&.first
+  start_time = el&.css("div[class='tribe-events-abbr tribe-events-start-time published dtstart']")&.first
+  start_date_time = el&.css("abbr[class='tribe-events-abbr tribe-events-start-datetime updated published dtstart']")&.first
+  end_date_time = el&.css("abbr[class='tribe-events-abbr tribe-events-end-datetime dtend']")&.first
   if start_time
     start_date = start_time.get_attribute('title').strip
     end_date = start_date
     time = start_time.text.strip
     if time.include?('-')
-      start_time = timp.split('-').strip
-      end_time = time.split('-').strip
+      start_time = time.split('-')[0].strip
+      end_time = time.split('-')[1].strip
     else
       start_time = time
       end_time = [time.to_i + 1, 18].max.to_s + ':00'
     end
   elsif start_date_time
     start_date = start_date_time.get_attribute('title').strip
-    start_time = start_date_time.split('@').last.strip
+    start_time = start_date_time.text.split('@').last.strip
     end_date = end_date_time.get_attribute('title').strip
-    end_time = end_date_time.split('@').last.strip
+    end_time = end_date_time.text.split('@').last.strip
   end
   event_start = (start_date + ' ' + start_time).to_time
   event_end = (end_date + ' ' + end_time).to_time
