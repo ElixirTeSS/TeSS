@@ -461,8 +461,22 @@ module ApplicationHelper
   end
 
   def external_link_button(text, url, options = {})
-    options.reverse_merge!({ rel: 'noopener', target: '_blank', class: 'btn btn-primary' })
-    link_to((text + ' <i class="icon icon-md arrow-top-right-white-icon"></i>').html_safe, url, options)
+    options.reverse_merge!({ class: 'btn btn-primary' })
+    text = (text + ' <i class="icon icon-md arrow-top-right-white-icon"></i>').html_safe
+    external_link(text, url, options)
+  end
+
+  def external_link(text, url, options = {})
+    track = options.delete(:track)
+    if track && cookie_consent.allow_tracking?
+      options.reverse_merge!('data-trackable' => true)
+      if track.is_a?(ApplicationRecord)
+        options.reverse_merge!('data-trackable-type' => track.class.name)
+        options.reverse_merge!('data-trackable-id' => track.id)
+      end
+    end
+    options.reverse_merge!({ rel: 'noopener', target: '_blank' })
+    link_to(text, url, options)
   end
 
   def edit_button(resource, url: nil, text: nil)

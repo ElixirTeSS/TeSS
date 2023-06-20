@@ -25,7 +25,7 @@
 
         <div class="content-actions">
           <div class="content-viewer-actions">
-            <%= external_link_button 'View material', @material.url, onclick: "getOutboundLink('#{@material.url}'); return true;" %>
+            <%= external_link_button 'View material', @material.url, track: @material %>
             <%= render partial: 'common/identifiers_dot_org_button', locals: { resource: @material } if TeSS::Config.identifiers_prefix %>
             <%= star_button(@material) if user_signed_in? %>
           </div>

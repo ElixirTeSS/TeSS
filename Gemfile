@@ -160,6 +160,9 @@ gem 'reverse_markdown'
 # eventbrite api
 gem 'eventbrite_sdk'
 
+gem 'ahoy_matey'
+
+
 source 'https://rails-assets.org' do
   gem 'rails-assets-clipboard', '~> 1.5.12'
   gem 'rails-assets-devbridge-autocomplete', '~> 1.4.9'
