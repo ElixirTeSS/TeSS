@@ -27,17 +27,19 @@ module Ingestors
 
     def process_uhasselt(url)
       uhasselt_url = 'https://bibliotheek.uhasselt.be/nl/resources#kalender'
-      event_page = Nokogiri::HTML5.parse(open_url(uhasselt_url.to_s, raise: true)).css("table[summary='RDM training activitites at Hasselt University']").css('tr')
-      event_page.each do |el|
-        if el.get_attribute('bgcolor') || el.css('td').length < 9
+      event_page = Nokogiri::HTML5.parse(open_url(uhasselt_url.to_s, raise: true)).css("table[summary='RDM training activities at Hasselt University']").first.css('tr')
+      event_page.each_with_index do |el, idx|
+        if el.css('td').length != 9
           next
         end
 
         event = OpenStruct.new
 
+        puts "idx: #{idx}"
+
         # date
         date_el = el.css('td')[0]
-        if date_el&.text
+        if date_el&.text&.strip.nil?
           date_el = date_el.css('p')[0]
           time_list = date_el.css('p')[1].text.strip.sub('(', '').sub(')', '').split('-')
           start_hours = time_list[0]
@@ -48,6 +50,7 @@ module Ingestors
         end
         date_s = date_el.text.strip.split('/')
         if date_s.length == 1
+          puts 'next'
           next
         end
         start_date = "#{date_s[1]}/#{date_s[0]} #{start_hours}:00".to_time
@@ -70,25 +73,20 @@ module Ingestors
           title = title_el&.css('a')&.first&.text
         elsif title_el&.css('a')&.first&.css('#text').length
           url = title_el&.css('a')&.first&.get_attribute('href')
-          title = ''
-          title_el&.css('a')&.first&.css('#text').each do |e|
-            title += e.text.strip + ' '
-          end
-          title = title.strip
+          title_el&.css('a')&.first&.css('#text').map{ |e| e.text.strip}.join(' ')
         else
           next
         end
-        event.title = title
+        event.title = title.gsub("\n\t\t\t", ' ')
         event.url = url
+        puts "title: #{event.title}"
+        puts "date: #{event.start}"
 
         # location
-        location_el = el.css('td')[5]
-        location = ''
-        location_el.css(h5).each do |e|
-          location += e.text.strip + ' '
-        end
-        location = location.strip
-        event.location = location
+        location = el.css('td')[5].css('h5').map{ |e| e.text.strip}.join(' ')
+
+        event.venue = location
+        puts "location: #{event.venue}"
 
         event.source = 'UHasselt'
         event.timezone = 'Amsterdam'

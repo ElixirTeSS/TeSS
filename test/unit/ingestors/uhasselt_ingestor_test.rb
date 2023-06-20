@@ -48,7 +48,7 @@ class UhassoltIngestorTest < ActiveSupport::TestCase
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'Tue, 03 Oct 2023 13:00:00.000000000 UTC +00:00'.to_time, event.start
     assert_equal 'Tue, 03 Oct 2023 15:00:00.000000000 UTC +00:00'.to_time, event.end
-    assert_equal 'Campus Diepenbeek CD-D A54', event.location
+    assert_equal 'Campus Diepenbeek CD-D A54', event.venue
     assert_equal false, event.online
   end
 end
