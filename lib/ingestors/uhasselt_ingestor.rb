@@ -39,11 +39,11 @@ module Ingestors
 
         # date
         date_el = el.css('td')[0]
-        if date_el&.text&.strip.nil?
-          date_el = date_el.css('p')[0]
-          time_list = date_el.css('p')[1].text.strip.sub('(', '').sub(')', '').split('-')
+        if date_el&.children.length == 2
+          time_list = date_el.children[1].text.strip.gsub('(', '').gsub(')', '').split('-')
           start_hours = time_list[0]
           end_hours = time_list[1]
+          date_el = date_el.children[0]
         else
           start_hours = 9
           end_hours = 17
@@ -81,16 +81,17 @@ module Ingestors
         event.url = url
         puts "title: #{event.title}"
         puts "date: #{event.start}"
+        puts "end : #{event.end}"
 
         # location
         location = el.css('td')[5].css('h5').map{ |e| e.text.strip}.join(' ')
-
         event.venue = location
         puts "location: #{event.venue}"
 
         event.source = 'UHasselt'
         event.timezone = 'Amsterdam'
 
+        puts event.valid?
         add_event(event)
       rescue Exception => e
         @messages << "Extract event fields failed with: #{e.message}"
