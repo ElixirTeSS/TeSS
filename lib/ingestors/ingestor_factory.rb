@@ -24,6 +24,7 @@ module Ingestors
         Ingestors::RugIngestor,
         Ingestors::LcrdmIngestor,
         Ingestors::TdccIngestor,
+        Ingestors::UhasseltIngestor,
       ]
     end
 
