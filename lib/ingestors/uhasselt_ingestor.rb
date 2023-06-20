@@ -38,19 +38,21 @@ module Ingestors
         puts "idx: #{idx}"
 
         # date
-        date_el = el.css('td')[0]
-        if date_el&.children.length == 2
-          time_list = date_el.children[1].text.strip.gsub('(', '').gsub(')', '').split('-')
+        datetime_text = el.css('td')[0].text.gsub("\n", '').gsub("\t", '').strip
+        if datetime_text.include?('(')
+          datetime_list = datetime_text.split('(')
+          date_text = datetime_list[0].strip
+          time_text = datetime_list[1].gsub(")", '').strip
+          time_list = time_text.split('-')
           start_hours = time_list[0]
           end_hours = time_list[1]
-          date_el = date_el.children[0]
         else
           start_hours = 9
           end_hours = 17
         end
-        date_s = date_el.text.strip.split('/')
+        date_s = date_text.split('/')
         if date_s.length == 1
-          puts 'next'
+          puts 'NEXT'
           next
         end
         start_date = "#{date_s[1]}/#{date_s[0]} #{start_hours}:00".to_time
@@ -65,28 +67,27 @@ module Ingestors
 
         # title & description
         title_el = el.css('td')[1]
+        url = title_el&.css('a')&.first&.get_attribute('href') || uhasselt_url
         if title_el&.text
-          url = uhasselt_url
           title = title_el.text
         elsif title_el&.css('a')&.first&.text
-          url = title_el&.css('a')&.first&.get_attribute('href')
           title = title_el&.css('a')&.first&.text
         elsif title_el&.css('a')&.first&.css('#text').length
-          url = title_el&.css('a')&.first&.get_attribute('href')
-          title_el&.css('a')&.first&.css('#text').map{ |e| e.text.strip}.join(' ')
+          title = title_el&.css('a')&.first&.css('#text').map{ |e| e.text.strip}.join(' ')
         else
           next
         end
         event.title = title.gsub("\n\t\t\t", ' ')
         event.url = url
-        puts "title: #{event.title}"
-        puts "date: #{event.start}"
-        puts "end : #{event.end}"
+        puts "TITLE: #{event.title}"
+        puts "URL: #{event.url}"
+        puts "START: #{event.start}"
+        puts "END : #{event.end}"
 
         # location
         location = el.css('td')[5].css('h5').map{ |e| e.text.strip}.join(' ')
         event.venue = location
-        puts "location: #{event.venue}"
+        puts "VENUE: #{event.venue}"
 
         event.source = 'UHasselt'
         event.timezone = 'Amsterdam'
