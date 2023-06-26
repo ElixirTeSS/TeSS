@@ -17,12 +17,12 @@ class LeidenIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::LeidenIngestor.new
 
     # check event doesn't
-    new_title = 'Data Carpentry Workshop for the Social Sciences'
-    new_url = 'https://www.library.universiteitleiden.nl/events/2023/02/data-carpentry-workshop'
+    new_title = 'Workshop: How to write a Data Management Plan (DMP)'
+    new_url = 'https://www.library.universiteitleiden.nl/events/2023/07/workshop-how-to-write-a-data-management-plan-dmp'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference 'Event.count', 15 do
+    assert_difference 'Event.count', 9 do
       freeze_time(Time.new(2019)) do
         VCR.use_cassette("ingestors/leiden") do
           ingestor.read(source.url)
@@ -31,9 +31,9 @@ class LeidenIngestorTest < ActiveSupport::TestCase
       end
     end
 
-    assert_equal 15, ingestor.events.count
+    assert_equal 9, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 15, ingestor.stats[:events][:added]
+    assert_equal 9, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
@@ -44,10 +44,10 @@ class LeidenIngestorTest < ActiveSupport::TestCase
     assert_equal new_url, event.url
 
     # check other fields
-    assert_equal 'Mon, 20 Feb 2023 00:00:00.000000000 UTC +00:00'.to_time, event.start
-    assert_equal 'Fri, 24 Feb 2023 00:00:00.000000000 UTC +00:00'.to_time, event.end
+    assert_equal 'Thu, 6 Jul 2023 14:00:00.000000000 UTC +00:00'.to_time, event.start
+    assert_equal 'Thu, 6 Jul 2023 16:30:00.000000000 UTC +00:00'.to_time, event.end
     assert_equal 'Amsterdam', event.timezone
-    assert_equal 'Online only', event.venue
+    assert_equal 'University Library', event.venue
     assert_equal 'Universiteit Leiden', event.source
   end
 end
