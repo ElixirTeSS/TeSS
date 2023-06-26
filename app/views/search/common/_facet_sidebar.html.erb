@@ -34,7 +34,7 @@ Variable that should be available
     </h4>
   </li>
 
-  <% if ['Event', 'Material'].include?(resource_type.name) %>
+  <% if TeSS::Config.facets_max_age_list.include?(resource_type.name) %>
     <%= render partial: 'search/common/facet_sidebar_max_age' %>
   <% end %>
 
