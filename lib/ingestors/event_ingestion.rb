@@ -35,7 +35,7 @@ module Ingestors
             # Timecop.freeze(start) do
             #   endt = Time.zone.parse(parts.second) if parts.second
             # end
-            endt = Time.zone.parse(parts.second) if parts.second
+            endt = Time.zone.parse(parts.second, now=start) if parts.second
           rescue ArgumentError
           end
 
@@ -49,7 +49,7 @@ module Ingestors
           end
           if start && !endt
             begin
-              endt = Time.zone.parse(parts.first.sub(/[0-9:]+/, parts.second))
+              endt = Time.zone.parse(parts.first.sub(/[0-9:]+/, parts.second), now=start)
             rescue ArgumentError
             end
           end
