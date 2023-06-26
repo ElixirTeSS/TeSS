@@ -47,6 +47,6 @@ class WurIngestorTest < ActiveSupport::TestCase
     assert_equal 'WUR', event.source
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'Wed, 15 Mar 2023 11:00:00.000000000 UTC +00:00'.to_time, event.start
-    assert_equal 'Fri, 01 Jan 2016 17:00:00.000000000 UTC +00:00'.to_time, event.end
+    assert_equal 'Wed, 15 Mar 2023 17:00:00.000000000 UTC +00:00'.to_time, event.end
   end
 end
