@@ -6,7 +6,7 @@
   <% end %>
 
   <div id="content">
-    <h2>Nodes</h2>
+    <h2><%=t("features.nodes.long")%></h2>
     <% content_for :buttons do %>
       <% if policy(:node).create? %>
         <%= link_to new_node_path, class: 'btn btn-primary' do %>

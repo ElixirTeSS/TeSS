@@ -629,6 +629,29 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_equal(JSON.parse(response.body)['id'], @material.id)
   end
 
+  test 'should find existing material by url without provider' do
+    post :check_exists, params: { format: :json, material: { title: 'whatever', url: @material.url } }
+    assert_response :success
+    assert_equal(JSON.parse(response.body)['url'], @material.url)
+    assert_equal(JSON.parse(response.body)['id'], @material.id)
+  end
+
+  test 'should find existing material by url and given content provider' do
+    provider1 = content_providers(:iann)
+    provider2 = content_providers(:two)
+
+    e1 = provider1.materials.create!(title: 'another material', url: @material.url, description: '123', user: users(:regular_user))
+    e2 = provider2.materials.create!(title: 'a third material', url: @material.url, description: '123', user: users(:regular_user))
+
+    post :check_exists, params: { format: :json, material: { url: @material.url, content_provider_id: provider1.id } }
+    assert_response :success
+    assert_equal(JSON.parse(response.body)['id'], e1.id)
+
+    post :check_exists, params: { format: :json, material: { url: @material.url, content_provider_id: provider2.id } }
+    assert_response :success
+    assert_equal(JSON.parse(response.body)['id'], e2.id)
+  end
+
   test 'should return nothing when material does not exist' do
     post :check_exists, params: {
       format: :json,

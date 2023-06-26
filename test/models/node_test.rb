@@ -32,10 +32,10 @@ class NodeTest < ActiveSupport::TestCase
     nodes = Node.load_from_hash(hash)
     node_ids = nodes.map(&:id).sort
     narnia = nodes.first
-    assert_equal 'NN', narnia.country_code
+    assert_equal 'DE', narnia.country_code
 
     updated_hash = node_data_hash
-    updated_hash['nodes'].first['country_code'] = 'XY'
+    updated_hash['nodes'].first['country_code'] = 'ES'
     updated_nodes = []
     assert_no_difference('Node.count') do
       assert_no_difference('StaffMember.count') do
@@ -43,7 +43,7 @@ class NodeTest < ActiveSupport::TestCase
       end
     end
     assert_equal node_ids, updated_nodes.map(&:id).sort
-    assert_equal 'XY', narnia.reload.country_code
+    assert_equal 'ES', narnia.reload.country_code
   end
 
   test 'can update staff via seed data' do
@@ -64,7 +64,7 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'can load countries data' do
     countries_hash = {}
-    assert_difference('countries_hash.keys.size', 250) do
+    assert_difference('countries_hash.keys.size', 251) do
       countries_hash = JSON.parse(File.read(File.join(Rails.root, 'config', 'data', 'countries.json')))
     end
   end
@@ -81,6 +81,44 @@ class NodeTest < ActiveSupport::TestCase
     node = nodes(:good)
     assert_equal 1, node.content_providers.length
     assert node.content_providers[0] == content_providers(:goblet)
+  end
+
+  test 'can get resources through providers and directly associated' do
+    node = nodes(:westeros)
+    provider = content_providers(:provider_with_empty_image_url)
+    provider.update!(node: node)
+
+    e1 = events(:one)
+    e1.update!(content_provider: provider)
+    e2 = events(:two)
+    node.events << e2
+    node.reload
+
+    assert_equal [e1], node.provider_events.to_a
+    assert_equal [e2], node.events.to_a
+    assert_equal [e1, e2], node.related_events.to_a.sort_by(&:title)
+
+    m1 = materials(:interpro)
+    m1.update!(content_provider: provider)
+    m2 = materials(:prints)
+    node.materials << m2
+    node.reload
+
+    assert_equal [m1], node.provider_materials.to_a
+    assert_equal [m2], node.materials.to_a
+    assert_equal [m1, m2], node.related_materials.to_a.sort_by(&:title)
+  end
+
+  test 'validates country code' do
+    node = nodes(:good)
+    assert node.valid?
+
+    node.country_code = 'XZ'
+    refute node.valid?
+    assert node.errors.added?(:country_code, :inclusion, value: 'XZ')
+
+    node.country_code = nil
+    assert node.valid?
   end
 
   private

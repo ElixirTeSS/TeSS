@@ -12,21 +12,25 @@ jobs:
       DB_PASSWORD: password
       SECRET_BASE_KEY: test_key
       RAILS_ENV: test
+      REDIS_TEST_URL: redis://localhost:6456/0
     steps:
-      - uses: harmon758/postgresql-action@v1
+      - name: Set up database
+        uses: harmon758/postgresql-action@v1
         with:
           postgresql db: ${DB_NAME}
           postgresql user: ${DB_USER}
           postgresql password: ${DB_PASSWORD}
-        name: Set up database
-
-      - uses: actions/checkout@v3
-        name: Set up Ruby
-
-      - uses: ruby/setup-ruby@v1
+      - name: Set up Redis
+        uses: supercharge/redis-github-action@1.5.0
+        with:
+          redis-version: 6
+          redis-port: 6456
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Install Ruby & gems
+        uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-        name: Bundle install
       - name: Configure and initialize database
         run: |
           cp test/config/test_tess.yml config/tess.yml

@@ -7,7 +7,7 @@ module Fairsharing
       @token_issue_date = Time.new(2022, 12, 1, 16, 7, 18)
       @token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyMjIxMDlhMi0wZWZkLTQ0Y2EtYTYzOC1jNjFmMWZmNmQxYjAiLCJzdWIiOiI4MjI0Iiwic2NwIjoidXNlciIsImF1ZCI6bnVsbCwiaWF0IjoxNjY5OTEwODM4LCJleHAiOjE2Njk5OTcyMzh9.Dv_E6JiyRSrvoOZMHZeQLiEbqYnsTR0qkyrKyWWqb80'
       @expiry = '1669997238'
-      @redis = Redis.new
+      @redis = Redis.new(url: TeSS::Config.redis_url)
     end
 
     test 'should get token' do

@@ -7,7 +7,7 @@
   <% end %>
 
   <div id="content">
-    <h2>Content providers</h2>
+    <h2><%=t("features.content_providers.long")%></h2>
     <% content_for :buttons do %>
       <%= link_to new_content_provider_path, class: 'btn btn-primary' do %>
         Register content provider

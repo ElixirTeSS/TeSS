@@ -21,7 +21,6 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'webmock/minitest'
 require 'minitest/mock'
-require 'fakeredis/minitest'
 require 'vcr'
 require_relative './schema_helper'
 
@@ -35,7 +34,7 @@ class ActiveSupport::TestCase
   include SchemaHelper
 
   def setup
-    redis = Redis.new
+    redis = Redis.new(url: TeSS::Config.redis_url)
     redis.flushdb
   end
 

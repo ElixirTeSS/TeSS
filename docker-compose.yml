@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: development
     image: ${PREFIX}-app
     restart: unless-stopped
     env_file: .env
@@ -32,6 +33,9 @@ services:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+    healthcheck:
+      test: pg_isready -U postgres -h 127.0.0.1
+      interval: 5s
     volumes:
       - db-data:/var/lib/postgresql/data
   solr:
@@ -49,10 +53,19 @@ services:
   redis:
     container_name: ${PREFIX}-redis
     image: redis:6
+    healthcheck:
+      test: redis-cli ping
+      interval: 1s
+      timeout: 3s
+      retries: 30
     volumes:
       - redis-data:/data
   sidekiq:
     container_name: ${PREFIX}-sidekiq
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
     image: ${PREFIX}-app
     depends_on:
       - app
@@ -64,13 +77,17 @@ services:
     env_file: .env
     environment:
       RAILS_ENV: development
-    entrypoint: ./docker/sidekiq_entrypoint.sh
+    command: bundle exec sidekiq
   test:
     profiles:
       - test
     depends_on:
       - test-db
+      - redis
     container_name: ${PREFIX}-test
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: ${PREFIX}-app
     volumes:
       - .:/code
@@ -82,6 +99,7 @@ services:
       DB_NAME: tess-test
       DB_USER: tess-test
       DB_PASSWORD: tess-test
+      REDIS_TEST_URL: redis://redis:6379/0
     command: sh -c "rake db:test:prepare && rails test"
   test-db:
     profiles:

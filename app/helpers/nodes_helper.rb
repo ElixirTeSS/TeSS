@@ -27,11 +27,11 @@ module NodesHelper
   end
 
   def country_flag(country_code, options = {})
-    image_tag "nodes/flags/#{country_code}.png", options
+    image_tag("nodes/flags/#{country_code}.png", options) if country_code.present?
   end
 
   def countries_options_for_select
-    Node::COUNTRIES.map {|k, v| [v + " (#{k})", k] }.to_h
+    Node::COUNTRIES.map {|k, v| [v + " (#{k})", k] }.sort_by { |o| o[0] }
   end
 
   def elixir_node_icon(opts = {})

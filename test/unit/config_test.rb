@@ -20,6 +20,11 @@ class ConfigTest < ActiveSupport::TestCase
   end
 
   test 'redis URL should be set' do
-    assert_equal 'redis://127.0.0.1:6379/0', TeSS::Config.redis_url
+    exp = if ENV['REDIS_TEST_URL'].present? # Used in docker/CI
+            ENV['REDIS_TEST_URL']
+          else
+            'redis://localhost:6379/0'
+          end
+    assert_equal exp, TeSS::Config.redis_url
   end
 end

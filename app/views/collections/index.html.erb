@@ -7,7 +7,7 @@
   <% end %>
 
   <div id="content">
-    <h2>Collections</h2>
+    <h2><%=t("features.collections.long")%></h2>
     <% content_for :buttons do %>
       <%= link_to new_collection_path, class: 'btn btn-primary' do %>
         Create collection

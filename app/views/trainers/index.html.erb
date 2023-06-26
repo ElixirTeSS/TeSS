@@ -7,7 +7,7 @@
   <% end %>
 
   <div id="content">
-    <h2>Trainers</h2>
+    <h2><%=t("features.trainers.long")%></h2>
     <% content_for :buttons do %>
       <%= info_button("What are trainers in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>
         <%= render_markdown(TrainersHelper::TRAINERS_INFO) %>

@@ -75,7 +75,7 @@ module TeSS
   Config = OpenStruct.new(tess_config)
 
   Config.redis_url = if Rails.env.test?
-                       'redis://127.0.0.1:6379/0' # This URL required to talk to "fakeredis"
+                       ENV.fetch('REDIS_TEST_URL') { 'redis://localhost:6379/0' }
                      else
                        ENV.fetch('REDIS_URL') { 'redis://localhost:6379/1' }
                      end
