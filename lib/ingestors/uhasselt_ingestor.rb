@@ -35,8 +35,6 @@ module Ingestors
 
         event = OpenStruct.new
 
-        puts "idx: #{idx}"
-
         # date
         datetime_text = el.css('td')[0].text.gsub("\n", '').gsub("\t", '').strip
         if datetime_text.include?('(')
@@ -47,12 +45,12 @@ module Ingestors
           start_hours = time_list[0]
           end_hours = time_list[1]
         else
+          date_text = datetime_text
           start_hours = 9
           end_hours = 17
         end
         date_s = date_text.split('/')
         if date_s.length == 1
-          puts 'NEXT'
           next
         end
         start_date = "#{date_s[1]}/#{date_s[0]} #{start_hours}:00".to_time
@@ -61,13 +59,13 @@ module Ingestors
           start_date += 1.year
           end_date += 1.year
         end
-        event.start = start_date
-        event.end = end_date
+        event.start = start_date.to_time
+        event.end = end_date.to_time
         event.set_default_times
 
         # title & description
         title_el = el.css('td')[1]
-        url = title_el&.css('a')&.first&.get_attribute('href') || uhasselt_url
+        url = title_el&.css('a')&.first&.get_attribute('href')&.gsub(' ', '') || uhasselt_url
         if title_el&.text
           title = title_el.text
         elsif title_el&.css('a')&.first&.text
@@ -77,22 +75,17 @@ module Ingestors
         else
           next
         end
-        event.title = title.gsub("\n\t\t\t", ' ')
+        # weird case where multiple types of space character where used in same title
+        event.title = title.gsub("\n\t\t\t", ' ').strip.chars.map{ |ch| ch.ord == 160 ? ' ' : ch }.join('')
         event.url = url
-        puts "TITLE: #{event.title}"
-        puts "URL: #{event.url}"
-        puts "START: #{event.start}"
-        puts "END : #{event.end}"
 
         # location
         location = el.css('td')[5].css('h5').map{ |e| e.text.strip}.join(' ')
         event.venue = location
-        puts "VENUE: #{event.venue}"
 
         event.source = 'UHasselt'
         event.timezone = 'Amsterdam'
 
-        puts event.valid?
         add_event(event)
       rescue Exception => e
         @messages << "Extract event fields failed with: #{e.message}"
