@@ -23,7 +23,7 @@ class OdisseiIngestorTest < ActiveSupport::TestCase
 
     # run task
     assert_difference 'Event.count', 2 do
-      freeze_time(Time.new(2019)) do
+      freeze_time(2019) do
         VCR.use_cassette("ingestors/odissei") do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
@@ -46,8 +46,8 @@ class OdisseiIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'ODISSEI', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal 'Mon, 19 Jun 2023 09:00:00.000000000 UTC +00:00'.to_time, event.start
-    assert_equal 'Fri, 30 Jun 2023 17:00:00.000000000 UTC +00:00'.to_time, event.end
+    assert_equal Time.zone.parse('Mon, 19 Jun 2023 09:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Fri, 30 Jun 2023 17:00:00.000000000 UTC +00:00'), event.end
     assert_equal 'Erasmus University Rotterdam', event.venue
     assert_equal false, event.online
   end

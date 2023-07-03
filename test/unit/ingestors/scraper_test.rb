@@ -20,7 +20,7 @@ class ScraperTest < ActiveSupport::TestCase
     assert_equal 'test', scraper.name
 
     # run task
-    freeze_time(stub_time = Time.new(2019)) do
+    freeze_time(2019) do
       scraper.run
     end
 
@@ -41,7 +41,7 @@ class ScraperTest < ActiveSupport::TestCase
 
     # run task
     assert_no_difference('User.count') do
-      freeze_time(stub_time = Time.new(2019)) do
+      freeze_time(2019) do
         scraper.run
       end
     end
@@ -65,7 +65,7 @@ class ScraperTest < ActiveSupport::TestCase
     assert_equal 'registered_user', user.role.name
 
     # run task
-    freeze_time(stub_time = Time.new(2019)) do
+    freeze_time(2019) do
       scraper.run
     end
 
@@ -87,7 +87,7 @@ class ScraperTest < ActiveSupport::TestCase
 
     # run task
     assert_difference('User.count', 1) do
-      freeze_time(stub_time = Time.new(2019)) do
+      freeze_time(2019) do
         scraper.run
       end
     end
@@ -108,7 +108,7 @@ class ScraperTest < ActiveSupport::TestCase
     assert scraper.sources.size > 0
 
     # run task
-    freeze_time(stub_time = Time.new(2019)) do
+    freeze_time(2019) do
       scraper.run
     end
 
@@ -130,7 +130,7 @@ class ScraperTest < ActiveSupport::TestCase
     assert provider.nil?
 
     # run task
-    freeze_time(stub_time = Time.new(2019)) do
+    freeze_time(2019) do
       scraper.run
     end
 
@@ -154,7 +154,7 @@ class ScraperTest < ActiveSupport::TestCase
     refute provider.nil?, "Provider title[#{title}] not found!"
 
     # run task
-    freeze_time(stub_time = Time.new(2019)) do
+    freeze_time(2019) do
       scraper.run
     end
 
@@ -171,7 +171,7 @@ class ScraperTest < ActiveSupport::TestCase
     assert_equal 'test', scraper.name
 
     # run task
-    freeze_time(stub_time = Time.new(2019)) do
+    freeze_time(2019) do
       scraper.run
     end
 
@@ -191,7 +191,7 @@ class ScraperTest < ActiveSupport::TestCase
       logfile = scraper.log_file
       assert_equal 'test', scraper.name
 
-      freeze_time(stub_time = Time.new(2019)) do
+      freeze_time(2019) do
         scraper.run
       end
 
@@ -208,7 +208,7 @@ class ScraperTest < ActiveSupport::TestCase
       logfile = scraper.log_file
       assert_equal 'legacy', scraper.name
 
-      freeze_time(stub_time = Time.new(2019)) do
+      freeze_time(2019) do
         scraper.run
       end
     end

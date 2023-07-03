@@ -28,7 +28,7 @@ class MaterialCsvIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::MaterialCsvIngestor.new
 
     assert_difference('Material.count', 2) do
-      freeze_time(stub_time = Time.new(2022)) do
+      freeze_time(2022) do
         ingestor.read(source.url)
         ingestor.write(@user, @content_provider)
       end
@@ -162,7 +162,7 @@ class MaterialCsvIngestorTest < ActiveSupport::TestCase
 
     # expect to add 1 material and update 1 material
     assert_difference 'Material.count', 1 do
-      freeze_time(stub_time = Time.new(2022)) do
+      freeze_time(2022) do
         ingestor.read(source.url)
         ingestor.write(@user, @content_provider)
         assert_equal 3, ingestor.materials.count

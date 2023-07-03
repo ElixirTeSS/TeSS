@@ -5,6 +5,11 @@ class LcrdmIngestorTest < ActiveSupport::TestCase
     @user = users(:regular_user)
     @content_provider = content_providers(:another_portal_provider)
     mock_ingestions
+    mock_timezone('Africa/Johannesburg') # System time zone should not affect test result
+  end
+
+  teardown do
+    reset_timezone
   end
 
   test 'can ingest events from lcrdm' do
@@ -23,7 +28,7 @@ class LcrdmIngestorTest < ActiveSupport::TestCase
 
     # run task
     assert_difference 'Event.count', 2 do
-      freeze_time(Time.new(2023)) do
+      freeze_time(2023) do
         VCR.use_cassette("ingestors/lcrdm") do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
@@ -46,8 +51,8 @@ class LcrdmIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'LCRDM', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal 'Thu, 25 May 2023 09:30:00.000000000 UTC +00:00'.to_time, event.start
-    assert_equal 'Thu, 25 May 2023 17:00:00.000000000 UTC +00:00'.to_time, event.end
+    assert_equal Time.zone.parse('Thu, 25 May 2023 09:30:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Thu, 25 May 2023 17:00:00.000000000 UTC +00:00'), event.end
     assert_equal 'Maastricht University', event.venue
   end
 end

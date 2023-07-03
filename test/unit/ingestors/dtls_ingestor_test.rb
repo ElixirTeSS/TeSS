@@ -5,6 +5,11 @@ class DtlsIngestorTest < ActiveSupport::TestCase
     @user = users(:regular_user)
     @content_provider = content_providers(:another_portal_provider)
     mock_ingestions
+    mock_timezone('Europe/Amsterdam') # System time zone should not affect test result
+  end
+
+  teardown do
+    reset_timezone
   end
 
   test 'can ingest events from dtls' do
@@ -23,7 +28,7 @@ class DtlsIngestorTest < ActiveSupport::TestCase
 
     # run task
     assert_difference 'Event.count', 4 do
-      freeze_time(Time.new(2019)) do
+      freeze_time(2019) do
         VCR.use_cassette("ingestors/dtls") do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
@@ -48,7 +53,7 @@ class DtlsIngestorTest < ActiveSupport::TestCase
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'Wageningen Campus', event.city
     assert_equal 'Netherlands', event.country
-    assert_equal '+Mon, 13 Feb 2023 00:00:00.000000000 UTC +00:00'.to_time, event.start
-    assert_equal '+Fri, 17 Feb 2023 00:00:00.000000000 UTC +00:00'.to_time, event.end
+    assert_equal Time.zone.parse('Mon, 13 Feb 2023 00:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Fri, 17 Feb 2023 00:00:00.000000000 UTC +00:00'), event.end
   end
 end

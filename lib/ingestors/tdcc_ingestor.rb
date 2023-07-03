@@ -38,13 +38,13 @@ module Ingestors
 
         time_str = event_data.css("ul[class='post-item__meta']")[0].css("svg[class='icon icon--calendar ']")[0].parent.text.strip
         split_time_str = time_str.split(' — ')
-        event.start = split_time_str[0].to_time
+        event.start = Time.zone.parse(split_time_str[0])
         if split_time_str[1].split(' ').length == 1
           a = split_time_str[0].split(' ')
           b = split_time_str[1]
-          event.end =  [a[0], a[1], b].join(' ').to_time
+          event.end =  Time.zone.parse([a[0], a[1], b].join(' '))
         elsif split_time_str[1].split(' ').length == 3
-          event.end = split_time_str[1].to_time
+          event.end = Time.zone.parse(split_time_str[1])
         end
 
         event_page2 = Nokogiri::HTML5.parse(open_url(event.url.to_s, raise: true)).css("article")[0]

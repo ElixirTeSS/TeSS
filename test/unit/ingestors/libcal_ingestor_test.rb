@@ -23,7 +23,7 @@ class LibcalIngestorTest < ActiveSupport::TestCase
 
     # run task
     assert_difference 'Event.count', 1 do
-      freeze_time(Time.new(2019)) do
+      freeze_time(2019) do
         VCR.use_cassette("ingestors/libcal") do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
@@ -45,8 +45,8 @@ class LibcalIngestorTest < ActiveSupport::TestCase
 
     # check other fields
     assert_equal 'Rick Vermunt', event.organizer
-    assert_equal '+Mon, 10 Jan 2022 13:00:00.000000000 UTC +00:00'.to_time, event.start
-    assert_equal '+Mon, 10 Jan 2022 15:00:00.000000000 UTC +00:00'.to_time, event.end
+    assert_equal Time.zone.parse('Mon, 10 Jan 2022 13:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Mon, 10 Jan 2022 15:00:00.000000000 UTC +00:00'), event.end
     assert_equal '', event.venue
     assert_equal 'Netherlands', event.country
     assert_equal 'VU Amsterdam', event.source

@@ -36,8 +36,8 @@ module Ingestors
 
           # dates
           dates = event_data.css("div[id='nieuws_image_date_row']").css('p').css('span')
-          event.start = dates[0].children.to_s.to_time
-          event.end = dates[1].children.to_s.to_time if dates.length == 2
+          event.start = Time.zone.parse(dates[0].children.to_s)
+          event.end = Time.zone.parse(dates[1].children.to_s) if dates.length == 2
           event.set_default_times
 
           data = event_data.css("div[id='nieuws_content_row']").css('div')[0].css('div')[0]

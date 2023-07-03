@@ -23,7 +23,7 @@ class NwoIngestorTest < ActiveSupport::TestCase
 
     # run task
     assert_difference 'Event.count', 24 do
-      freeze_time(Time.new(2019)) do
+      freeze_time(2019) do
         VCR.use_cassette("ingestors/nwo") do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
@@ -47,7 +47,7 @@ class NwoIngestorTest < ActiveSupport::TestCase
     assert_equal 'NWO Biophysics', event.title
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'NWO', event.source
-    assert_equal '+Mon, 09 Oct 2023 00:00:00.000000000 UTC +00:00'.to_time, event.start
-    assert_equal '+Tue, 10 Oct 2023 00:00:00.000000000 UTC +00:00'.to_time, event.end
+    assert_equal Time.zone.parse('Mon, 09 Oct 2023 00:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Tue, 10 Oct 2023 00:00:00.000000000 UTC +00:00'), event.end
   end
 end

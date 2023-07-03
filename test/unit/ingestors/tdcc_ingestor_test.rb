@@ -5,11 +5,14 @@ class TdccIngestorTest < ActiveSupport::TestCase
     @user = users(:regular_user)
     @content_provider = content_providers(:another_portal_provider)
     mock_ingestions
+    mock_timezone('America/Barbados') # System time zone should not affect test result
+  end
+
+  teardown do
+    reset_timezone
   end
 
   test 'can ingest events from tdcc' do
-    prev_tz = ENV['TZ']  # Time zone should not affect test result
-    ENV['TZ'] = 'America/Barbados'
     source = @content_provider.sources.build(
       url: 'https://tdcc.nl/evenementen/',
       method: 'tdcc',
@@ -25,7 +28,7 @@ class TdccIngestorTest < ActiveSupport::TestCase
 
     # run task
     assert_difference 'Event.count', 4 do
-      freeze_time(Time.new(2023)) do
+      freeze_time(2023) do
         VCR.use_cassette("ingestors/tdcc") do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
@@ -48,10 +51,8 @@ class TdccIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'TDCC', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal 'Thu, 25 May 2023 09:00:00.000000000 UTC +00:00'.to_time, event.start
-    assert_equal 'Thu, 25 May 2023 18:00:00.000000000 UTC +00:00'.to_time, event.end
+    assert_equal Time.zone.parse('Thu, 25 May 2023 09:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Thu, 25 May 2023 18:00:00.000000000 UTC +00:00'), event.end
     assert_equal 'School of Business and Economics (SBE) in MaastrichtTongersestraat 536211 LM Maastricht', event.venue
-  ensure
-    ENV['TZ'] = prev_tz
   end
 end

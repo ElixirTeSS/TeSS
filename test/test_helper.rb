@@ -127,9 +127,11 @@ class ActiveSupport::TestCase
   end
 
   # override Time.now for testing calendars, etc.
-  def freeze_time(fixed_time=Time.now, &block)
-    Time.stub(:now, fixed_time) do
-      fixed_time.stub(:iso8601, fixed_time) do
+  def freeze_time(time_or_year = Time.now, &block)
+    # 3rd of Jan in given year (stops year/month underflowing if timezone changes)
+    time_or_year = Time.new(time_or_year, 1, 3).utc if time_or_year.is_a?(Integer)
+    Time.stub(:now, time_or_year) do
+      time_or_year.stub(:iso8601, time_or_year) do
         block.call
       end
     end
@@ -252,6 +254,15 @@ class ActiveSupport::TestCase
 
   def refute_permitted(*args)
     !assert_permitted(*args)
+  end
+
+  def mock_timezone(tz)
+    @_prev_tz = ENV['TZ']  # Time zone should not affect test result
+    ENV['TZ'] = tz
+  end
+
+  def reset_timezone
+    ENV['TZ'] = @_prev_tz
   end
 
   # This should probably live somewhere else

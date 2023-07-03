@@ -23,7 +23,7 @@ class OscmIngestorTest < ActiveSupport::TestCase
 
     # run task
     assert_difference 'Event.count', 3 do
-      freeze_time(Time.new(2019)) do
+      freeze_time(2019) do
         VCR.use_cassette("ingestors/oscm") do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
@@ -48,7 +48,7 @@ class OscmIngestorTest < ActiveSupport::TestCase
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'OSCM', event.source
     assert event.online
-    assert_equal '+Wed, 24 May 2023 09:00:00.000000000 UTC +00:00'.to_time, event.start
-    assert_equal '+Wed, 24 May 2023 10:00:00.000000000 UTC +00:00'.to_time, event.end
+    assert_equal Time.zone.parse('Wed, 24 May 2023 09:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Wed, 24 May 2023 10:00:00.000000000 UTC +00:00'), event.end
   end
 end

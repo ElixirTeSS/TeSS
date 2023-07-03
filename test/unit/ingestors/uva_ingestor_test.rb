@@ -23,7 +23,7 @@ class UvaIngestorTest < ActiveSupport::TestCase
 
     # run task
     assert_difference 'Event.count', 9 do
-      freeze_time(Time.new(2016)) do
+      freeze_time(2016) do
         VCR.use_cassette("ingestors/uva") do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
@@ -46,7 +46,7 @@ class UvaIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'UvA', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal 'Mon, 24 Mar 2023 10:00:00.000000000 UTC +00:00'.to_time, event.start
-    assert_equal 'Mon, 24 Mar 2023 12:30:00.000000000 UTC +00:00'.to_time, event.end
+    assert_equal Time.zone.parse('Mon, 24 Mar 2023 10:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Mon, 24 Mar 2023 12:30:00.000000000 UTC +00:00'), event.end
   end
 end

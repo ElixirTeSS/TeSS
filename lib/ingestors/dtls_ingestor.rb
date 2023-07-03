@@ -54,9 +54,9 @@ module Ingestors
               when 'provider'
                 event.organizer = element.text
               when 'startdate', 'courseDate'
-                event.start = element.text.to_s.to_time
+                event.start = Time.zone.parse(element.text.to_s)
               when 'enddate', 'courseEndDate'
-                event.end = element.text.to_s.to_time
+                event.end = Time.zone.parse(element.text.to_s)
               when 'latitude'
                 event.latitude = element.text
               when 'longitude'
