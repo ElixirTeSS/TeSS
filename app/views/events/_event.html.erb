@@ -44,6 +44,8 @@
           <i class="icon icon-md <%= event.presence %>-event-icon"></i>
           <span class="muted"><%= t("activerecord.attributes.event.presence.#{event.presence}") %></span>
         </p>
+
+        <%= keywords_and_topics(event) %>
       </div>
     </div>
 

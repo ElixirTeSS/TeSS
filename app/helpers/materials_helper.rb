@@ -109,6 +109,8 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
   end
 
   def keywords_and_topics(material)
-    (material.scientific_topic_names | material.operation_names | material.keywords).join(', ')
+    (material.scientific_topic_names | material.operation_names | material.keywords).map do |tag|
+      content_tag(:span, tag, class: 'label label-default')
+    end.join(' ').html_safe
   end
 end
