@@ -100,7 +100,7 @@ en:
       initiated via the subscribe button. Users may choose to receive email notifications about upcoming
       events, or have them automatically added to their preferred calendar application.
     subscription_manager: >
-      The <%= link_to 'subscriptions manager', %{subscriptions_path} %> page may be used to change the frequency of, or to remove, subscriptions.
+      The <a href='%{subscriptions_path}'>subscriptions manager</a> page may be used to change the frequency of, or to remove, subscriptions.
     widgets_and_api: >
       To access TeSS data, organisations may readily import information about relevant events and materials to their site using widgets,
       or may create custom feeds using our API.
