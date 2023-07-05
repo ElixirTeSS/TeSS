@@ -63,6 +63,10 @@ module Ingestors
         event.end = end_date.to_time
         event.set_default_times
 
+        # location
+        location = el.css('td')[5].css('h5').map{ |e| e.text.strip}.join(' ')
+        event.venue = location
+
         # title & description
         title_el = el.css('td')[1]
         url = title_el&.css('a')&.first&.get_attribute('href')&.gsub(' ', '') || uhasselt_url
@@ -77,11 +81,8 @@ module Ingestors
         end
         # weird case where multiple types of space character where used in same title
         event.title = title.gsub("\n\t\t\t", ' ').strip.chars.map{ |ch| ch.ord == 160 ? ' ' : ch }.join('')
-        event.url = url
-
-        # location
-        location = el.css('td')[5].css('h5').map{ |e| e.text.strip}.join(' ')
-        event.venue = location
+        hash = "#{event.title}#{event.start.strftime('%y%m%d')}#{event.venue}".gsub(' ', '').strip.chars.filter{ |ch| (ch.to_i(36) > 0) || (ch == '0') }.join('')
+        event.url = url.split('#').first + '#' + hash
 
         event.source = 'UHasselt'
         event.timezone = 'Amsterdam'

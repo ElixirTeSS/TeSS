@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class UhassoltIngestorTest < ActiveSupport::TestCase
+class UhasseltIngestorTest < ActiveSupport::TestCase
   setup do
     @user = users(:regular_user)
     @content_provider = content_providers(:another_portal_provider)
@@ -18,7 +18,7 @@ class UhassoltIngestorTest < ActiveSupport::TestCase
 
     # check event doesn't
     new_title = 'Data Management Plan - DMP writing session'
-    new_url = 'http://bibliotheek.uhasselt.be/nl/een-woordje-uitleg-over-onze-opleidingen#WritingDMP'
+    new_url = 'http://bibliotheek.uhasselt.be/nl/een-woordje-uitleg-over-onze-opleidingen#DataManagementPlanDMPwritingsession230606CampusDiepenbeekE140'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task

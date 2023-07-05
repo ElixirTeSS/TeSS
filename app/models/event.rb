@@ -291,8 +291,12 @@ class Event < ApplicationRecord
 
     scope = provider_id.present? ? where(content_provider_id: provider_id) : all
 
-    if given_event.url.present? && given_event.title.present? && given_event.start.present?
-      event = scope.where(content_provider_id: provider_id, url: given_event.url, title: given_event.title, start: given_event.start).last
+    if given_event.url.present?
+      event = scope.where(url: given_event.url).last
+    end
+
+    if given_event.title.present? && given_event.start.present?
+      event ||= where(content_provider_id: provider_id, title: given_event.title, start: given_event.start).last
     end
 
     event

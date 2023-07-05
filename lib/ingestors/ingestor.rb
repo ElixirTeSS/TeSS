@@ -130,7 +130,7 @@ module Ingestors
         # check for matched events
         resource.user_id ||= user.id
         resource.content_provider_id ||= provider.id
-        existing_resource = type.check_exists(resource.to_h)
+        existing_resource = find_existing(type, resource)
 
         update = existing_resource
         resource = if update
@@ -153,6 +153,10 @@ module Ingestors
 
         resources[i] = resource
       end
+    end
+
+    def find_existing(type, resource)
+      type.check_exists(resource.to_h)
     end
 
     def update_resource(existing_resource, fields)
