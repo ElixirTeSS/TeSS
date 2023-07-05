@@ -5,6 +5,11 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     @ingestor = Ingestors::BioschemasIngestor.new
     @user = users(:regular_user)
     @content_provider = content_providers(:portal_provider)
+    mock_timezone # System time zone should not affect test result
+  end
+
+  teardown do
+    reset_timezone
   end
 
   test 'ingest events from a bioschemas courseinstance json endpoint' do

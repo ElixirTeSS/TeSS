@@ -256,7 +256,7 @@ class ActiveSupport::TestCase
     !assert_permitted(*args)
   end
 
-  def mock_timezone(tz)
+  def mock_timezone(tz = ActiveSupport::TimeZone.all.sample.tzinfo.identifier)
     @_prev_tz = ENV['TZ']  # Time zone should not affect test result
     ENV['TZ'] = tz
   end

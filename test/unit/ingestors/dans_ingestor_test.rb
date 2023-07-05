@@ -5,7 +5,7 @@ class DansIngestorTest < ActiveSupport::TestCase
     @user = users(:regular_user)
     @content_provider = content_providers(:another_portal_provider)
     mock_ingestions
-    mock_timezone('Asia/Damascus') # System time zone should not affect test result
+    mock_timezone # System time zone should not affect test result
   end
 
   teardown do

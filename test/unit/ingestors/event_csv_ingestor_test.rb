@@ -6,6 +6,11 @@ class EventCsvIngestorTest < ActiveSupport::TestCase
     @content_provider = content_providers(:another_portal_provider)
     mock_ingestions
     mock_nominatim
+    mock_timezone # System time zone should not affect test result
+  end
+
+  teardown do
+    reset_timezone
   end
 
   def run
