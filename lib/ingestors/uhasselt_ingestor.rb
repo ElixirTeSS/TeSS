@@ -95,13 +95,3 @@ module Ingestors
   end
 end
 
-def recursive_date_func(css, res='')
-  if css.length == 1
-    res += css.text.strip
-  else
-    css.each do |css2|
-      res += recursive_description_func(css2, res)
-    end
-  end
-  res
-end
