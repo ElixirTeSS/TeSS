@@ -5,6 +5,11 @@ class UtwenteIngestorTest < ActiveSupport::TestCase
     @user = users(:regular_user)
     @content_provider = content_providers(:another_portal_provider)
     mock_ingestions
+    mock_timezone # System time zone should not affect test result
+  end
+
+  teardown do
+    reset_timezone
   end
 
   test 'can ingest events from utwente' do
@@ -23,7 +28,7 @@ class UtwenteIngestorTest < ActiveSupport::TestCase
 
     # run task
     assert_difference 'Event.count', 1 do
-      freeze_time(Time.new(2019)) do
+      freeze_time(2019) do
         VCR.use_cassette("ingestors/utwente") do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
@@ -46,8 +51,8 @@ class UtwenteIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'University of Twente', event.organizer
-    assert_equal '+Thu, 09 Nov 2023 00:00:00 +0000'.to_time, event.start
-    assert_equal '+Thu, 09 Nov 2023 00:00:00 +0000'.to_time, event.end
+    assert_equal Time.zone.parse('Thu, 09 Nov 2023 00:00:00 +0000'), event.start
+    assert_equal Time.zone.parse('Thu, 09 Nov 2023 00:00:00 +0000'), event.end
     assert_equal 'Waaier', event.venue
   end
 end

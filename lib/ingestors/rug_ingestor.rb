@@ -36,8 +36,8 @@ module Ingestors
         event.url = event_data.css("meta[itemprop='url']")[0].get_attribute('content')
         event.venue = event_data.css("meta[itemprop='location']")[0].get_attribute('content')
         event.title = event_data.css("meta[itemprop='name']")[0].get_attribute('content')
-        event.start = event_data.css("meta[itemprop='startDate']")[0].get_attribute('content').to_time.strftime('%a, %d %b %Y %H:%M:%S').to_time
-        event.end = event_data.css("meta[itemprop='endDate']")[0].get_attribute('content').to_time.strftime('%a, %d %b %Y %H:%M:%S').to_time
+        event.start = Time.zone.parse(event_data.css("meta[itemprop='startDate']")[0].get_attribute('content').split('+').first)
+        event.end = Time.zone.parse(event_data.css("meta[itemprop='endDate']")[0].get_attribute('content').split('+').first)
 
         event_page2 = Nokogiri::HTML5.parse(open_url(event.url.to_s, raise: true)).css("div[id='main']")[0].css("div[itemtype='https://schema.org/Event']")[0]
         unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/rug.yml')

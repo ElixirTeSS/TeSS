@@ -5,6 +5,11 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
     @user = users(:regular_user)
     @content_provider = content_providers(:portal_provider)
     mock_ingestions
+    mock_timezone # System time zone should not affect test result
+  end
+
+  teardown do
+    reset_timezone
   end
 
   test 'can ingest events from eventbrite' do
@@ -19,7 +24,7 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
     assert source.save
 
     assert_difference 'Event.count', 13 do
-      freeze_time(Time.utc(2019)) do
+      freeze_time(2019) do
         ingestor.read(source.url)
         ingestor.write(@user, @content_provider)
       end

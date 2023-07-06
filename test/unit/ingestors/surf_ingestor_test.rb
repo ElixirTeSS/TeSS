@@ -5,6 +5,11 @@ class SurfIngestorTest < ActiveSupport::TestCase
     @user = users(:regular_user)
     @content_provider = content_providers(:another_portal_provider)
     mock_ingestions
+    mock_timezone # System time zone should not affect test result
+  end
+
+  teardown do
+    reset_timezone
   end
 
   test 'can ingest events from surf' do
@@ -23,7 +28,7 @@ class SurfIngestorTest < ActiveSupport::TestCase
 
     # run task
     assert_difference 'Event.count', 45 do
-      freeze_time(Time.new(2019)) do
+      freeze_time(2019) do
         VCR.use_cassette("ingestors/surf") do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
@@ -47,7 +52,7 @@ class SurfIngestorTest < ActiveSupport::TestCase
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'SURF', event.source
     assert event.online
-    assert_equal '+Wed, 05 Jul 2023 12:00:00.000000000 UTC +00:00'.to_time, event.start
-    assert_equal '+Wed, 05 Jul 2023 12:00:00.000000000 UTC +00:00'.to_time, event.end
+    assert_equal Time.zone.parse('Wed, 05 Jul 2023 12:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Wed, 05 Jul 2023 12:00:00.000000000 UTC +00:00'), event.end
   end
 end

@@ -6,6 +6,11 @@ class IcalIngestorTest < ActiveSupport::TestCase
     @content_provider = content_providers(:another_portal_provider)
     mock_ingestions
     # mock_nominatim
+    mock_timezone # System time zone should not affect test result
+  end
+
+  teardown do
+    reset_timezone
   end
 
   test 'sitemap not found' do
@@ -49,7 +54,7 @@ class IcalIngestorTest < ActiveSupport::TestCase
                  "event title[#{title}] content provider not matched"
 
     assert_difference('Event.count', 4) do
-      freeze_time(stub_time = Time.new(2019)) do
+      freeze_time(2019) do
         ingestor.read(source.url)
         ingestor.write(@user, @content_provider)
       end
@@ -135,7 +140,7 @@ class IcalIngestorTest < ActiveSupport::TestCase
   test 'check single ical sources' do
     # override time
     assert_no_difference 'Event.count' do
-      freeze_time(stub_time = Time.new(2019)) do
+      freeze_time(2019) do
         ingestor = Ingestors::IcalIngestor.new
         source = @content_provider.sources.build(
           url: 'https://pawsey.org.au/event/pcon-embracing-new-solutions-for-in-situ-visualisation/?ical=true',

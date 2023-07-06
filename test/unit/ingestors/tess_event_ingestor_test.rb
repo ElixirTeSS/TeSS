@@ -5,6 +5,11 @@ class TessEventIngestorTest < ActiveSupport::TestCase
     @user = users(:regular_user)
     @content_provider = content_providers(:another_portal_provider)
     mock_ingestions
+    mock_timezone # System time zone should not affect test result
+  end
+
+  teardown do
+    reset_timezone
   end
 
   test 'can ingest events from elixir tess' do
@@ -23,7 +28,7 @@ class TessEventIngestorTest < ActiveSupport::TestCase
 
     # run task
     assert_difference 'Event.count', 2 do
-      freeze_time(Time.new(2019)) do
+      freeze_time(2019) do
         ingestor.read(source.url)
         ingestor.write(@user, @content_provider)
       end

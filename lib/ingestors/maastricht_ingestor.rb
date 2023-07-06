@@ -45,8 +45,8 @@ module Ingestors
           event.url = ical_event.url
           # TeSS timezone handling is a bit special.
           # remove the timezone shift since else TeSS will shift it too much
-          event.start = ical_event.dtstart.to_s.split[0,2].join(' ').to_time
-          event.end = ical_event.dtend.to_s.split[0,2].join(' ').to_time
+          event.start = Time.zone.parse(ical_event.dtstart.to_s.split[0,2].join(' '))
+          event.end = Time.zone.parse(ical_event.dtend.to_s.split[0,2].join(' '))
           event.set_default_times
           event.venue = ical_event.try(:location)&.split(',')&.first
           event.city = 'Maastricht'

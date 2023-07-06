@@ -117,7 +117,7 @@ module Ingestors
 
     def set_resource_defaults(resource)
       resource.scraper_record = true
-      resource.last_scraped = DateTime.now
+      resource.last_scraped = Time.now
 
       resource
     end

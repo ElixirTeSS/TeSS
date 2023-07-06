@@ -6,6 +6,11 @@ class EventCsvIngestorTest < ActiveSupport::TestCase
     @content_provider = content_providers(:another_portal_provider)
     mock_ingestions
     mock_nominatim
+    mock_timezone # System time zone should not affect test result
+  end
+
+  teardown do
+    reset_timezone
   end
 
   def run
@@ -24,7 +29,7 @@ class EventCsvIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::EventCsvIngestor.new
 
     assert_difference('Event.count', 14) do
-      freeze_time(stub_time = Time.new(2021)) do
+      freeze_time(2021) do
         ingestor.read(source.url)
         ingestor.write(@user, @content_provider)
       end

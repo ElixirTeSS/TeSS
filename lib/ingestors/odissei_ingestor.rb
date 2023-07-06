@@ -82,8 +82,8 @@ def scrape_start_and_end_time(el)
     end_date = end_date_time.get_attribute('title').strip
     end_time = end_date_time.text.split('@').last.strip
   end
-  event_start = (start_date + ' ' + start_time).to_time
-  event_end = (end_date + ' ' + end_time).to_time
+  event_start = Time.zone.parse(start_date + ' ' + start_time)
+  event_end = Time.zone.parse(end_date + ' ' + end_time)
   return [event_start, event_end]
 end
 

@@ -5,6 +5,11 @@ class ZenodoIngestorTest < ActiveSupport::TestCase
     @user = users(:regular_user)
     @content_provider = content_providers(:portal_provider)
     mock_ingestions
+    mock_timezone # System time zone should not affect test result
+  end
+
+  teardown do
+    reset_timezone
   end
 
   test 'can ingest materials from zenodo' do
@@ -21,7 +26,7 @@ class ZenodoIngestorTest < ActiveSupport::TestCase
 
     # run task
     assert_difference('Material.count', 17) do
-      freeze_time(Time.new(2019)) do
+      freeze_time(2019) do
         ingestor.read(source.url)
         ingestor.write(@user, @content_provider)
       end
