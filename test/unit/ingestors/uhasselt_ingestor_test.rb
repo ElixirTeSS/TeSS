@@ -5,6 +5,7 @@ class UhasseltIngestorTest < ActiveSupport::TestCase
     @user = users(:regular_user)
     @content_provider = content_providers(:another_portal_provider)
     mock_ingestions
+    mock_timezone
   end
 
   test 'can ingest events from uhasselt' do
@@ -46,8 +47,8 @@ class UhasseltIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'UHasselt', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal 'Tue, 06 Jun 2023 13:00:00.000000000 UTC +00:00'.to_time, event.start
-    assert_equal 'Tue, 06 Jun 2023 15:00:00.000000000 UTC +00:00'.to_time, event.end
+    assert_equal Time.zone.parse('Tue, 06 Jun 2023 13:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Tue, 06 Jun 2023 15:00:00.000000000 UTC +00:00'), event.end
     assert_equal 'Campus Diepenbeek E140', event.venue
     assert_equal false, event.online
   end

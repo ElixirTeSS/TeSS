@@ -53,14 +53,15 @@ module Ingestors
         if date_s.length == 1
           next
         end
-        start_date = "#{date_s[1]}/#{date_s[0]} #{start_hours}:00".to_time
-        end_date = "#{date_s[1]}/#{date_s[0]} #{end_hours}:00".to_time
+        start_date = Time.zone.parse("#{date_s[1]}/#{date_s[0]} #{start_hours}:00")
+        end_date = Time.zone.parse("#{date_s[1]}/#{date_s[0]} #{end_hours}:00")
         if start_date < Date.today - 2.months
           start_date += 1.year
           end_date += 1.year
         end
-        event.start = start_date.to_time
-        event.end = end_date.to_time
+
+        event.start = start_date
+        event.end = end_date
         event.set_default_times
 
         # location

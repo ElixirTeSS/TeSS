@@ -81,7 +81,7 @@ class RugIngestorTest < ActiveSupport::TestCase
     end
 
     year = 2016
-    ['Europe/London', 'Asia/Damascus', 'Australia/Adelaide', 'America/Barbados'].each do |timezone|
+    ['Europe/London', 'Asia/Damascus', 'Australia/Adelaide', 'America/Barbados', 'Asia/Colombo'].each do |timezone|
       ingestor = Ingestors::RugIngestor.new # Reset ingestor
       mock_timezone(timezone)
       year += 1
