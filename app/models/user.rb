@@ -87,7 +87,7 @@ class User < ApplicationRecord
 
   scope :accepteds, -> { invited.where.not(invitation_accepted_at: nil) }
 
-  scope :visible, -> { not_banned.non_default.verified.where(invitation_token: nil).or(accepteds) }
+  scope :visible, -> { not_banned.non_default.not_rejected.where(invitation_token: nil).or(accepteds) }
   # ---
 
   def self.find_for_database_authentication(warden_conditions)
@@ -305,6 +305,10 @@ class User < ApplicationRecord
 
   def self.verified
     where.not(role_id: [Role.rejected, Role.unverified])
+  end
+
+  def self.not_rejected
+    where.not(role_id: Role.rejected)
   end
 
   def unverified_or_rejected?

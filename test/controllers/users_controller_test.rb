@@ -401,13 +401,13 @@ class UsersControllerTest < ActionController::TestCase
     refute assigns(:users).include?(users(:another_regular_user))
   end
 
-  test 'should not show banned or unverified/basic users in index' do
+  test 'should not show banned or basic users in index' do
     get :index
     assert_response :success
     all_users = assigns(:users).to_a
     assert users(:shadowbanned_user).banned?
     assert_not_includes all_users, users(:shadowbanned_user)
-    assert_not_includes all_users, users(:unverified_user)
+    assert_includes all_users, users(:unverified_user)
     assert_not_includes all_users, users(:basic_user)
     assert_includes all_users, users(:regular_user)
   end
@@ -470,5 +470,22 @@ class UsersControllerTest < ActionController::TestCase
 
     assert_select 'a[data-toggle="tab"]', text: "Events (#{user.events.count})"
     assert_select '#events a[href=?]', events_path(user: user.username, include_expired: true)
+  end
+
+  test 'should be able to filter for new user with a query' do
+    get :index, params: { q: 'unver' }
+
+    assert_response :success
+    assert assigns(:users).include?(users(:unverified_user))
+
+    get :index, params: { q: 'naugh' }
+
+    assert_response :success
+    refute assigns(:users).include?(users(:shadowbanned_unverified_user))
+
+    get :index, params: { q: 'basic' }
+
+    assert_response :success
+    refute assigns(:users).include?(users(:basic_user))
   end
 end
