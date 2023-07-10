@@ -540,4 +540,11 @@ class MaterialTest < ActiveSupport::TestCase
     assert_equal 'Material  Title', @material.title
     assert_equal 'https://material.com', @material.url
   end
+
+  test 'archived?' do
+    assert materials(:material_with_external_resource).archived?
+    refute materials(:material_with_suggestions).archived?
+    refute materials(:bad_material).archived?
+    refute Material.new.archived?
+  end
 end

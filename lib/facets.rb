@@ -1,6 +1,7 @@
 module Facets
   SPECIAL = {
       include_expired: -> (c) { c.name == 'Event' },
+      include_archived: -> (c) { c.name == 'Material' },
       days_since_scrape: -> (c) { c.method_defined?(:last_scraped) },
       elixir: -> (c) { ['Event', 'Material', 'ContentProvider'].include?(c.name) },
       max_age: -> (c) { ['Event', 'Material'].include?(c.name) },
@@ -10,6 +11,7 @@ module Facets
   CONVERSIONS = {
       online: -> (value) { value == 'true' },
       include_expired: -> (value) { value == 'true'},
+      include_archived: -> (value) { value == 'true'},
       max_age: -> (value) { Subscription::FREQUENCY.detect { |f| f[:title] == value }.try(:[], :period) },
       include_hidden: -> (value) { value == 'true'}
   }
@@ -40,6 +42,12 @@ module Facets
 
     def include_expired(scope, value, _)
       sunspot_scoped(scope) { with('end').greater_than(Time.zone.now) } unless value
+    end
+
+    def include_archived(scope, value, _)
+      return if value
+      label = MaterialStatusDictionary.instance.lookup_value('archived', 'title')
+      sunspot_scoped(scope) { without(:status, label) } if label
     end
 
     def include_hidden(scope, value, user)
