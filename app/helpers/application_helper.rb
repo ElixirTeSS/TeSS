@@ -468,7 +468,7 @@ module ApplicationHelper
 
   def external_link(text, url, options = {})
     track = options.delete(:track)
-    if track && cookie_consent.allow_tracking?
+    if track
       options.reverse_merge!('data-trackable' => true)
       if track.is_a?(ApplicationRecord)
         options.reverse_merge!('data-trackable-type' => track.class.name)
