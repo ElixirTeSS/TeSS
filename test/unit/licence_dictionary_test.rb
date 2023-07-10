@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class LicenceDictionaryTest < ActiveSupport::TestCase
-
   test "singleton" do
     dic = LicenceDictionary.instance
     assert dic.is_a?(LicenceDictionary)
@@ -30,7 +29,38 @@ class LicenceDictionaryTest < ActiveSupport::TestCase
            "'Apache License 2.0' should be among the licence names"
     assert_includes dic.lookup("Apache-2.0")['see_also'], "http://www.opensource.org/licenses/Apache-2.0",
                  "'http://www.opensource.org/licenses/Apache-2.0' should be among the licence URLs"
-
   end
 
+  test 'group licences according to priority' do
+    dic = LicenceDictionary.instance
+    grouped = dic.grouped_options_for_select
+    assert_equal 3, grouped.keys.length
+
+    special = grouped[nil].map { |l| l[1] }
+    assert special
+    assert_equal 1, special.length
+    assert_includes special, 'notspecified'
+
+    common = grouped['Common'].map { |l| l[1] }
+    assert common
+    assert_equal TeSS::Config.priority_licences.length, common.length
+    assert_includes common, 'MIT'
+    assert_not_includes common, 'gnuplot'
+
+    other = grouped['Other'].map { |l| l[1] }
+    assert other
+    assert_not_includes other, 'MIT'
+    assert_includes other, 'gnuplot'
+
+    with_settings(priority_licences: ['BSD-3-Clause']) do
+      dic = LicenceDictionary.instance
+      grouped = dic.grouped_options_for_select
+      assert_equal 3, grouped.keys.length
+      common = grouped['Common'].map { |l| l[1] }
+      assert common
+      assert_equal 1, common.length
+      assert_includes common, 'BSD-3-Clause'
+      assert_not_includes common, 'MIT'
+    end
+  end
 end

@@ -19,6 +19,29 @@ class LicenceDictionary < Dictionary
     @uri_mapping[uri]
   end
 
+  def grouped_options_for_select(existing = nil)
+    existing = Set.new(existing) if existing
+    d = if existing
+          @dictionary.select { |key, _value| existing.include?(key) }
+        else
+          @dictionary
+        end
+    priority = Set.new(TeSS::Config.priority_licences || [])
+    groups = { nil => [], 'Common' => [], 'Other' => [] }
+    d.each do |key, value|
+      opt = if value['description'].nil?
+              [value['title'], key, '']
+            else
+              [value['title'], key, value['description']]
+            end
+
+      group = priority.include?(key) ? 'Common' : 'Other'
+      group = nil if key == 'notspecified'
+      groups[group] << opt
+    end
+    groups.transform_values { |opts| opts.sort_by { |x| x[0] } }
+  end
+
   private
 
   def dictionary_filepath

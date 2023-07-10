@@ -35,7 +35,7 @@
   <%= f.multi_input :keywords, title: t('materials.hints.keywords'), visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
   <!-- Field: Licence -->
-  <%= f.input :licence, collection: licence_options_for_select,
+  <%= f.input :licence, collection: licence_options_for_select, as: :grouped_select, group_method: :last, group_label_method: :first,
               input_html: { title: t('materials.hints.licence'), class: 'js-select2' },
               prompt: 'Select a licence...', errors: @material.errors[:licence], field_lock: true,
               visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
