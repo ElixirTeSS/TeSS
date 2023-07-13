@@ -31,7 +31,7 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
   # Returns an array of two-element arrays of licences ready to be used in options_for_select() for generating option/select tags
   # [['Licence 1 full name','Licence 1 abbreviation'], ['Licence 2 full name','Licence 2 abbreviation'], ...]
   def licence_options_for_select
-    LicenceDictionary.instance.options_for_select.sort_by { |x| x[0] }
+    LicenceDictionary.instance.grouped_options_for_select
   end
 
   def licence_name_for_abbreviation(licence)

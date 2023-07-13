@@ -43,6 +43,7 @@ GEM
     rails-assets-jquery (3.6.0)
     rails-assets-markdown-it (7.0.1)
     rails-assets-moment (2.15.2)
+    rails-assets-select2 (4.0.8)
 
 GEM
   remote: https://rubygems.org/
@@ -823,6 +824,7 @@ DEPENDENCIES
   rails-assets-eonasdan-bootstrap-datetimepicker (~> 4.17.42)!
   rails-assets-markdown-it (~> 7.0.1)!
   rails-assets-moment (~> 2.15.0)!
+  rails-assets-select2 (~> 4.0.8)!
   rails-controller-testing
   rails-i18n
   rails_admin (~> 2.2.1)

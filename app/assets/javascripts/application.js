@@ -30,6 +30,7 @@
 //= require devbridge-autocomplete
 //= require clipboard
 //= require ardc_vocab_widget_v2
+//= require select2
 //= require_tree ./templates
 //= require_tree .
 //= require_self
@@ -264,6 +265,16 @@ document.addEventListener("turbolinks:load", function() {
             question.removeClass('opened');
             question.find('dd').hide(300);
         }
+    });
+
+    $('.js-select2').select2({ theme: 'bootstrap' });
+
+    // Focus select2 search field when the select is opened.
+    // Needs timeout because the "select2-container--open" is not yet rendered when the event is fired.
+    $(document).on('select2:open', function (e) {
+        setTimeout(function () {
+            document.querySelector('.select2-container--open .select2-search__field').focus();
+        }, 1);
     });
 });
 

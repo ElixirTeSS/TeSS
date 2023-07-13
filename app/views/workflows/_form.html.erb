@@ -34,7 +34,8 @@
                     selected: @workflow.difficulty_level.blank? ? "notspecified" : @workflow.difficulty_level,
                     errors: @workflow.errors[:difficulty_level] %>
 
-        <%= f.input :licence, collection: licence_options_for_select,
+        <%= f.input :licence, collection: licence_options_for_select, as: :grouped_select, group_method: :last,
+                    group_label_method: :first, input_html: { class: 'js-select2' },
                     selected: @workflow.licence.blank? ? "notspecified" : @workflow.licence,
                     errors: @workflow.errors[:licence] %>
 
