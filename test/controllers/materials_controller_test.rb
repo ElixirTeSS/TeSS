@@ -362,6 +362,7 @@ class MaterialsControllerTest < ActionController::TestCase
       assert assigns(:material)
       assert_select 'fa-commenting-o', count: 0
       assert_select '.broken-link-notice', count: 0
+      assert_select '.archived-notice', count: 0
     end
   end
 
@@ -1383,5 +1384,15 @@ class MaterialsControllerTest < ActionController::TestCase
       assert_select "label", {:count=>1, :text=>"Keywords"}
       assert_select "label", {:count=>1, :text=>"Operations"}
     end
+  end
+
+  test 'should display archived warning' do
+    material = materials(:material_with_external_resource)
+    assert material.archived?
+
+    get :show, params: { id: material }
+
+    assert_response :success
+    assert_select '.archived-notice', text: /material has been archived/
   end
 end

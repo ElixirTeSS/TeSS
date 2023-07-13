@@ -667,4 +667,9 @@ module ApplicationHelper
                          fail_date: resource.link_monitor.failed_at.strftime(EventsHelper::DATE_STRF)),
                 class: 'alert alert-warning mb-4 broken-link-notice')
   end
+
+  def archived_notice(resource)
+    content_tag('div', t('warnings.archived', resource_type: resource.model_name.human.downcase),
+                class: 'alert alert-warning mb-4 archived-notice')
+  end
 end
