@@ -17,6 +17,8 @@ class Collection < ApplicationRecord
   # e.g. "James     Bond  " => "James Bond"
   auto_strip_attributes :title, :description, :image_url, squish: false
 
+  accepts_nested_attributes_for :items, allow_destroy: true
+
   after_commit :index_items, if: :title_previously_changed?
 
   validates :title, presence: true

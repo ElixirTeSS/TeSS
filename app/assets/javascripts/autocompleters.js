@@ -50,65 +50,75 @@ var Autocompleters = {
 
     init: function () {
         $("[data-role='autocompleter-group']").each(function () {
-            var element = this;
-            var existingValues = JSON.parse($(element).find('[data-role="autocompleter-existing"]').html()) || [];
-            var listElement = $(element).find('[data-role="autocompleter-list"]');
-            var inputElement = $(element).find('[data-role="autocompleter-input"]');
-            var url = $(element).data("url");
-            var prefix = $(element).data("prefix");
-            var labelField = $(element).data("labelField") || "title";
-            var idField = $(element).data("idField") || "id";
-            var singleton = $(element).data("singleton") || false;
-            var groupBy = $(element).data("groupBy") || false;
-            var templateName = $(element).data("template") ||
-                (singleton ? "autocompleter/singleton_resource" : "autocompleter/resource");
-            var transformFunction = Autocompleters.transformFunctions[$(element).data("transformFunction") || "default"];
+            Autocompleters.initGroup(this);
+        });
+    },
 
-            // Render the existing associations on page load
-            if (!listElement.children("li").length) {
-                for (var i = 0; i < existingValues.length; i++) {
-                    listElement.append(HandlebarsTemplates[templateName](existingValues[i]));
-                }
+    initGroup: function (element, opts) {
+        var existingValues = JSON.parse($(element).find('[data-role="autocompleter-existing"]').html()) || [];
+        var listElement = $(element).find('[data-role="autocompleter-list"]');
+        var inputElement = $(element).find('[data-role="autocompleter-input"]');
+        var defaults = {
+            url: $(element).data("url"),
+            prefix: $(element).data("prefix"),
+            labelField: $(element).data("labelField") || "title",
+            idField: $(element).data("idField") || "id",
+            singleton: $(element).data("singleton") || false,
+            groupBy: $(element).data("groupBy") || false,
+            templateName: $(element).data("template"),
+            transformFunction: Autocompleters.transformFunctions[$(element).data("transformFunction") || "default"]
+        }
+        opts = Object.assign({}, defaults, opts);
 
-                if (singleton && existingValues.length) {
-                    inputElement.hide();
-                }
+        opts.templateName = opts.templateName || (opts.singleton ? "autocompleter/singleton_resource" :
+            "autocompleter/resource");
+
+        // Render the existing associations on page load
+        if (!listElement.children("li").length) {
+            for (var i = 0; i < existingValues.length; i++) {
+                listElement.append(HandlebarsTemplates[opts.templateName](existingValues[i]));
             }
 
-            inputElement.autocomplete({
-                serviceUrl: url,
-                dataType: "json",
-                deferRequestBy: 300, // Wait 300ms before submitting to stop search being flooded
-                paramName: "q",
-                groupBy: groupBy,
-                formatResult: Autocompleters.formatResultWithHint,
-                transformResult: function(response) {
-                    return transformFunction(response, { labelField: labelField, idField: idField });
-                },
-                onSelect: function (suggestion) {
-                    // Don't add duplicates
-                    var id = suggestion.data.id;
-                    if (!$("[data-id='" + id + "']", listElement).length) {
-                        var obj = { item: suggestion.data.item };
-                        if (prefix) {
-                            obj.prefix = prefix;
-                        }
+            if (opts.singleton && existingValues.length) {
+                inputElement.hide();
+            }
+        }
 
-                        listElement.append(HandlebarsTemplates[templateName](obj));
-                        if (singleton) {
-                            inputElement.hide();
-                        }
+        inputElement.autocomplete({
+            serviceUrl: opts.url,
+            dataType: "json",
+            deferRequestBy: 300, // Wait 300ms before submitting to stop search being flooded
+            paramName: "q",
+            groupBy: opts.groupBy,
+            formatResult: Autocompleters.formatResultWithHint,
+            transformResult: function(response) {
+                return opts.transformFunction(response, opts);
+            },
+            onSelect: function (suggestion) {
+                // Don't add duplicates
+                var id = suggestion.data.id;
+                if (!$("[data-id='" + id + "']", listElement).length) {
+                    var obj = { item: suggestion.data.item };
+                    if (opts.prefix) {
+                        obj.prefix = opts.prefix;
                     }
 
-                    $(this).val('').focus();
-                },
-                onSearchStart: function (query) {
-                    inputElement.addClass("loading");
-                },
-                onSearchComplete: function () {
-                    inputElement.removeClass("loading");
+                    listElement.append(HandlebarsTemplates[opts.templateName](obj));
+                    if (opts.singleton) {
+                        inputElement.hide();
+                    }
                 }
-            });
+
+                $(this).val('').focus();
+                const event = new CustomEvent('autocompleters:added', {  bubbles: true, detail: { object: obj } });
+                listElement[0].dispatchEvent(event);
+            },
+            onSearchStart: function (query) {
+                inputElement.addClass("loading");
+            },
+            onSearchComplete: function () {
+                inputElement.removeClass("loading");
+            }
         });
     }
 }

@@ -17,13 +17,14 @@
 
     <%= f.multi_input :keywords %>
 
-    <%= f.autocompleter :materials %>
+    <%= render partial: 'collections/collection_items_form',
+               locals: { f: f, field_name: 'materials', url: materials_path,
+                         items: @collection.items.where(resource_type: 'Material') } %>
 
-    <%= f.autocompleter :events,
-                        url: events_path(include_expired: true, sort: 'late'),
-                        group_by: 'group',
-                        transform_function: 'events'
-    %>
+    <%= render partial: 'collections/collection_items_form',
+               locals: { f: f, field_name: 'events', url: events_path(include_expired: true, sort: 'late'),
+                         items: @collection.items.where(resource_type: 'Event'),
+                         group_by: 'group', transform_function: 'events' } %>
 
     <div class="form-group actions">
       <%= f.submit ( f.object.new_record? ? "Create" : "Update") + " collection", :class => 'btn btn-primary' %>

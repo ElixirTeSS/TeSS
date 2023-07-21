@@ -1,0 +1,42 @@
+<%
+  form_field_name = 'collection[items_attributes]'
+  data = { role: 'collection-items-group',
+           url: url,
+           prefix: form_field_name,
+           'label-field' => 'title',
+           'id-field' => 'id',
+           'resource-type' => field_name.singularize.classify,
+           template: 'autocompleter/collection_item' }
+  transform_function ||= nil
+  group_by ||= nil
+  data['transform-function'] = transform_function if transform_function
+  data['group-by'] = group_by if group_by
+
+  json = items.map do |item|
+    { item: { id: item.id, order: item.order, comment: item.comment,
+              resource_id: item.resource_id, resource_type: item.resource_type,
+              title: item.resource.title, url: polymorphic_path(item.resource) },
+      prefix: form_field_name }
+  end.to_json
+
+  placeholder_text = "Add a new #{f.object.class.human_attribute_name(field_name).singularize.downcase}"
+%>
+
+<div class="form-group">
+  <%= f.label field_name %>
+
+  <p class="help-block">
+    Re-order items by clicking and dragging the icon on the left-hand side.
+  </p>
+
+  <%= content_tag(:div, data: data) do %>
+      <%= content_tag :script, json.html_safe, type: 'application/json', data: { role: 'autocompleter-existing' } %>
+
+      <ul data-role="autocompleter-list" class="collection-items">
+        <%# Populated via javascript from the JSON above %>
+      </ul>
+
+      <input type="text" data-role="autocompleter-input" autocomplete="off" class="form-control"
+             placeholder="<%= placeholder_text %>">
+  <% end %>
+</div>

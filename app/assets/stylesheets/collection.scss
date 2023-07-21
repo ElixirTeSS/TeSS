@@ -12,3 +12,37 @@
     cursor: pointer;
   }
 }
+
+.collection-items {
+  list-style: none;
+  padding-left: 0;
+
+  .collection-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: $border-radius-base;
+
+    .collection-item-title {
+      flex-grow: 1;
+      flex-shrink: 1;
+    }
+
+    .collection-item-handle {
+      color: $text-muted;
+      padding: 0 15px;
+      user-select: none;
+      flex-shrink: 0;
+      align-self: stretch;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    &.pending-delete {
+      background-color: $alert-danger-bg;
+      text-decoration: line-through;
+    }
+  }
+}
