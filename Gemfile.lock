@@ -125,6 +125,10 @@ GEM
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
     aes_key_wrap (1.1.0)
+    ahoy_matey (4.2.1)
+      activesupport (>= 5.2)
+      device_detector
+      safely_block (>= 0.2.1)
     amazing_print (1.4.0)
     ast (2.4.2)
     attr_required (1.0.1)
@@ -177,6 +181,7 @@ GEM
     crass (1.0.6)
     date (3.3.3)
     debug_inspector (1.1.0)
+    device_detector (1.1.0)
     devise (4.8.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -612,6 +617,7 @@ GEM
       parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
+    safely_block (0.4.0)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -772,6 +778,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers (~> 0.10.13)
   activerecord-session_store
+  ahoy_matey
   auto_strip_attributes (~> 2.0)
   better_errors
   binding_of_caller

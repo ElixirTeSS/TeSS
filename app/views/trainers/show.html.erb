@@ -14,16 +14,14 @@
     <!-- Field: website -->
     <% if @trainer.website.present? %>
       <div class="url-wrap">
-        <%= link_to @trainer.website, @trainer.website, class: 'h5', target: '_blank', rel: 'noopener',
-                    onclick:  "getOutboundLink('#{@trainer.website}'); return true;" %>
+        <%= external_link @trainer.website, @trainer.website, class: 'h5', target: '_blank', rel: 'noopener', track: true %>
       </div>
     <% end %>
 
     <!-- Field: orcid -->
     <% if @trainer.orcid.present? %>
       <div class="url-wrap">
-        <%= link_to @trainer.orcid, @trainer.orcid, class: 'h5', target: '_blank', rel: 'noopener',
-                    onclick: "getOutboundLink('#{@trainer.orcid}'); return true;" %>
+        <%= external_link @trainer.orcid, @trainer.orcid, class: 'h5', target: '_blank', rel: 'noopener', track: true %>
       </div>
     <% end %>
 

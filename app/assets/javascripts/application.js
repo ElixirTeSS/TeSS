@@ -31,6 +31,7 @@
 //= require clipboard
 //= require ardc_vocab_widget_v2
 //= require select2
+//= require ahoy
 //= require_tree ./templates
 //= require_tree .
 //= require_self
@@ -211,6 +212,8 @@ document.addEventListener("turbolinks:load", function() {
 
     Biotools.init();
 
+    Tracking.init();
+
     $('.tess-expandable').each(function () {
         var limit = this.dataset.heightLimit || 300;
 
@@ -317,21 +320,3 @@ $(document).on('click', '[href="#activity_log"]', function () {
 
     return false;
 });
-
-/**
- * Function that registers a click on an outbound link in Analytics.
- * This function takes a valid URL string as an argument, and uses that URL string
- * as the event label. Setting the transport method to 'beacon' lets the hit be sent
- * using 'navigator.sendBeacon' in browser that support it.
- */
-var getOutboundLink = function(url) {
-    if (!window.captureClicks) {
-        return;
-    }
-    gtag('event', 'click', {
-        'event_category': 'outbound',
-        'event_label': url,
-        'transport_type': 'beacon',
-        'event_callback': function() {} // Not needed
-    });
-}
