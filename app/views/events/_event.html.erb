@@ -3,14 +3,8 @@
     <%= item_order_badge(collection_item) if defined? collection_item %>
     <div class="with-left-icon">
       <div class="icon-container hidden-xs">
-        <!--    TODO: hybrid events-->
-        <% if event.online? %>
-          <i class="icon icon-h2 virtual-event-icon"></i><br/>
-          <span class="muted">Online</span>
-        <% else %>
-          <i class="icon icon-h2 onsite-event-icon"></i><br/>
-          <span class="muted">Face-to-face</span>
-        <% end %>
+        <i class="icon icon-h2 <%= event.online %>-event-icon"></i><br/>
+        <span class="muted"><%= t("activerecord.attributes.event.presence.#{event.online}") %></span>
       </div>
 
       <div class="right-container">
@@ -40,19 +34,16 @@
 
         <p><%= neatly_printed_date_range(event.start, event.end) %></p>
 
-        <% if event.online? %>
-          <p class="visible-xs-block">
-            <i class="icon icon-md virtual-event-icon"></i> <span class="muted">Online</span>
-          </p>
-        <% else %>
+        <% if event.onsite? %>
           <% location = [event.city, event.country].reject { |field_value| field_value.blank? }.join(", ") %>
           <% if location.present? %>
             <p class="dont-break-out"><i class="fa fa-map-marker"></i> <%= location %></p>
           <% end %>
-          <p class="visible-xs-block">
-            <i class="icon icon-md onsite-event-icon"></i> <span class="muted">Face-to-face</span>
-          </p>
         <% end %>
+        <p class="visible-xs-block">
+          <i class="icon icon-md <%= event.online %>-event-icon"></i>
+          <span class="muted"><%= t("activerecord.attributes.event.presence.#{event.online}") %></span>
+        </p>
       </div>
     </div>
 

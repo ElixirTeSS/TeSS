@@ -75,7 +75,9 @@ class Event < ApplicationRecord
         operation_names
       end
       string :target_audience, multiple: true
-      boolean :online
+      boolean :online do
+        online? || hybrid?
+      end
       time :last_scraped
       string :user do
         user.username if user
@@ -94,6 +96,9 @@ class Event < ApplicationRecord
     end
     # :nocov:
   end
+
+  # TODO: Rails 7 - Migrate this to use hash-syntax with explicit values, e.g.: { onsite: 0, online: 1, hybrid: 2 }
+  enum online: [:onsite, :online, :hybrid]
 
   belongs_to :user
   has_one :edit_suggestion, as: :suggestible, dependent: :destroy
@@ -427,6 +432,12 @@ class Event < ApplicationRecord
     end
 
     c
+  end
+
+  def online= value
+    value = :online if value.is_a?(TrueClass) || value == '1' || value == 1 || value == 'true'
+    value = :onsite if value.is_a?(FalseClass) || value == '0' || value == 0 || value == 'false'
+    super(value)
   end
 
   private

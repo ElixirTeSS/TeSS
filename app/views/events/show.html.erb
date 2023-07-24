@@ -29,11 +29,7 @@
             <%= suggestion_icon(@event, 'large') -%>
           <% end %>
 
-          <% if @event.online? %>
-            <i class="icon icon-h2 virtual-event-icon"></i>
-          <% else %>
-            <i class="icon icon-h2 onsite-event-icon"></i>
-          <% end %>
+          <i class="icon icon-h2 <%= @event.online %>-event-icon" ></i>
 
           <%= @event.title %>
         </h2>

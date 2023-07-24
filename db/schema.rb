@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_17_092354) do
+ActiveRecord::Schema.define(version: 2023_07_24_162231) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -200,7 +200,7 @@ ActiveRecord::Schema.define(version: 2023_06_17_092354) do
     t.string "slug"
     t.integer "content_provider_id"
     t.integer "user_id"
-    t.boolean "online", default: false
+    t.integer "online", default: 0
     t.decimal "cost_value"
     t.date "last_scraped"
     t.boolean "scraper_record", default: false
