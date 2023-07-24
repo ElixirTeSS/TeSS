@@ -166,4 +166,18 @@ class CollectionTest < ActiveSupport::TestCase
     assert_equal 'Collection  Title', collection.title
     assert_equal 'http://image.host/another_image.png', collection.image_url
   end
+
+  test 'should normalize order of items' do
+    collection = collections(:secret_collection)
+    collection.items.create!(resource: materials(:biojs), order: 2)
+    collection.items.create!(resource: materials(:interpro), order: 3)
+    collection.items.create!(resource: events(:one), order: 42)
+    collection.items.create!(resource: events(:two), order: 13)
+    collection.save!
+
+    assert_equal [1, 2], collection.material_items.pluck(:order)
+    assert_equal [materials(:biojs), materials(:interpro)], collection.material_items.map(&:resource)
+    assert_equal [1, 2], collection.event_items.pluck(:order)
+    assert_equal [events(:two), events(:one)], collection.event_items.map(&:resource)
+  end
 end
