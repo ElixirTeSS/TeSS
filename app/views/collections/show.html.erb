@@ -22,10 +22,10 @@
       </div>
     </div>
     <div class="my-3">
-      <% materials = @collection.materials %>
-      <% materials_count =  @collection.materials.count %>
-      <% events = @collection.events %>
-      <% events_count =  @collection.events.count %>
+      <% materials = @collection.material_items %>
+      <% materials_count = materials.count %>
+      <% events = @collection.event_items %>
+      <% events_count = events.count %>
       <% activator = tab_activator %>
       <ul class="nav nav-tabs">
         <%= tab('Materials', icon_class_for_model('materials'), 'materials', activator: activator,
@@ -38,7 +38,7 @@
       </ul>
     </div>
 
-    <div class="tab-content">
+    <div class="tab-content ml-3">
       <% if TeSS::Config.feature['materials'] %>
         <%= render partial: 'common/associated_resources',
                    locals: { model: Material,

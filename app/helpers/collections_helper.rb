@@ -16,4 +16,12 @@ module CollectionsHelper
       []
     end
   end
+
+  def item_order_badge(collection_item)
+    content_tag(:div, collection_item.order, class: 'collection-item-order-badge')
+  end
+
+  def item_comment(collection_item)
+    content_tag(:blockquote, collection_item.comment, class: 'collection-item-comment')
+  end
 end

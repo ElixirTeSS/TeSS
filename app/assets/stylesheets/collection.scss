@@ -46,3 +46,21 @@
     }
   }
 }
+
+.collection-item-order-badge {
+  position: absolute;
+  left: -0.5em;
+  top: -0.5em;
+  border-radius: 50%;
+  width: 2em;
+  line-height: 2em;
+  height: 2em;
+  text-align: center;
+  background: $badge-bg;
+  color: $badge-color;
+}
+
+.collection-item-comment {
+  margin: 10px 0 0 0;
+  font-style: italic;
+}

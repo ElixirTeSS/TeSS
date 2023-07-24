@@ -459,6 +459,16 @@ class CollectionsControllerTest < ActionController::TestCase
   end
 
   #API Actions
+  test "should add materials to collection" do
+    sign_in users(:regular_user)
+    collection = collections(:with_resources)
+    assert_difference('CollectionItem.count', 2) do
+      assert_difference('collection.materials.count', 2) do
+        patch :update, params: { collection: { material_ids: [materials(:biojs), materials(:interpro)] }, id: collection.id }
+      end
+    end
+  end
+
   test "should remove materials from collection" do
     sign_in users(:regular_user)
     collection = collections(:with_resources)
@@ -599,5 +609,76 @@ class CollectionsControllerTest < ActionController::TestCase
       patch :update, params: { collection: { event_ids: [events(:one), events(:two)]}, id: @collection.id }
     end
     assert_response :forbidden
+  end
+
+  test 'should render collection items in order' do
+    materials = [materials(:good_material), materials(:biojs), materials(:interpro)]
+    events = [events(:two), events(:one)]
+    @collection.items.create!(resource: materials[0], order: 2, comment: 'A good material')
+    @collection.items.create!(resource: materials[1], order: 1, comment: 'Start here')
+    @collection.items.create!(resource: materials[2], order: 3, comment: 'End here')
+    @collection.items.create!(resource: events[0], order: 2, comment: 'End here')
+    @collection.items.create!(resource: events[1], order: 1, comment: 'Start here')
+
+    get :show, params: { id: @collection }
+
+    assert_response :success
+
+    assert_select '#materials ul li:nth-child(1) .link-overlay' do
+      assert_select 'h4', text: 'BioJS'
+      assert_select '.collection-item-comment', text: 'Start here'
+      assert_select '.collection-item-order-badge', text: '1'
+    end
+
+    assert_select '#materials ul li:nth-child(2) .link-overlay' do
+      assert_select 'h4', text: 'Training Material Example'
+      assert_select '.collection-item-comment', text: 'A good material'
+      assert_select '.collection-item-order-badge', text: '2'
+    end
+
+    assert_select '#materials ul li:nth-child(3) .link-overlay' do
+      assert_select 'h4', text: 'InterPro'
+      assert_select '.collection-item-comment', text: 'End here'
+      assert_select '.collection-item-order-badge', text: '3'
+    end
+
+    assert_select '#events ul li:nth-child(1) .link-overlay' do
+      assert_select 'h4', text: 'event one'
+      assert_select '.collection-item-comment', text: 'Start here'
+      assert_select '.collection-item-order-badge', text: '1'
+    end
+
+    assert_select '#events ul li:nth-child(2) .link-overlay' do
+      assert_select 'h4', text: 'event two'
+      assert_select '.collection-item-comment', text: 'End here'
+      assert_select '.collection-item-order-badge', text: '2'
+    end
+  end
+
+  test 'should render collection items in order as json-api' do
+    materials = [materials(:good_material), materials(:biojs), materials(:interpro)]
+    events = [events(:two), events(:one)]
+    @collection.items.create!(resource: materials[0], order: 2, comment: 'A good material')
+    @collection.items.create!(resource: materials[1], order: 1, comment: 'Start here')
+    @collection.items.create!(resource: materials[2], order: 3, comment: 'End here')
+    @collection.items.create!(resource: events[0], order: 2, comment: 'End here')
+    @collection.items.create!(resource: events[1], order: 1, comment: 'Start here')
+
+    get :show, params: { id: @collection, format: :json_api }
+
+    assert_response :success
+    assert assigns(:collection)
+    assert_valid_json_api_response
+
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    response_materials = body.dig('data', 'relationships', 'materials', 'data')
+    assert_equal [materials[1].id, materials[0].id, materials[2].id], response_materials.map { |m| m['id'].to_i }
+
+    response_events = body.dig('data', 'relationships', 'events', 'data')
+    assert_equal [events[1].id, events[0].id], response_events.map { |e| e['id'].to_i }
   end
 end
