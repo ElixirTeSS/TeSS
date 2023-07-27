@@ -19,7 +19,7 @@ module HasAssociatedNodes
   end
 
   def node_names= names
-    nodes = Node.where(name: names).to_a
+    nodes = Node.where('LOWER(name) IN (?)', names.map { |n| n.strip.downcase }).to_a
 
     self.nodes = nodes
   end

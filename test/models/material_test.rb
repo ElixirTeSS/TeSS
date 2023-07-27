@@ -547,4 +547,9 @@ class MaterialTest < ActiveSupport::TestCase
     refute materials(:bad_material).archived?
     refute Material.new.archived?
   end
+
+  test 'can set nodes using case insensitive names' do
+    @material.node_names = ['ignore me', 'test node', '  WeSTeRoS', 'Ignore me', '']
+    assert_equal ['Test Node', 'Westeros'], @material.nodes.map(&:name)
+  end
 end
