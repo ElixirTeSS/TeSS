@@ -1,1 +1,2 @@
 $("#events_calendar").html("<%= escape_javascript render("events/partials/calendar", events: @events) %>");
+$("#events_calendar_long_events").html("<%= escape_javascript render("events/partials/calendar_long_events", events: @long_events) %>");

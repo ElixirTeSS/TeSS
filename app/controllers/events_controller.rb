@@ -30,9 +30,9 @@ class EventsController < ApplicationController
   # GET /events/calendar
   # GET /events/calendar.js
   def calendar
-    set_params
-    fetch_resources
     @bioschemas = @events.flat_map(&:to_bioschemas)
+    # now customize the list by moving all events longer than 3 days into a separate array
+    @long_events, @events = @events.partition { |e| (e.end - e.start) > 3.days }
     respond_to do |format|
       format.js
     end

@@ -984,3 +984,15 @@ div {
   word-break: break-word;
   display: inline-block
 }
+
+/* Calendar inset numbers */
+td.day {
+  position: relative;
+}
+td.day .day-number {
+  position: absolute;
+  bottom: 0px;
+  right: 6px;
+  font-size: 1.5em;
+  color: rgb(186, 186, 186);
+}
