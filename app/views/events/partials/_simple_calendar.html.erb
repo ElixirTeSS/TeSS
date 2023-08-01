@@ -1,0 +1,7 @@
+<%= month_calendar(events: events, attribute: :start, end_attribute: :end) do |date, events| %>
+  <%= date.day %>
+
+  <% events.each do |event| %>
+    <%= link_to "#{event.title} #{l event.start, format: :time_short} - #{l event.end, format: :time_short}", event, class: 'clear-both' %>
+  <% end %>
+<% end %>

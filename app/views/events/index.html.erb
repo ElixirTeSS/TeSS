@@ -21,6 +21,7 @@
     <% content_for :display_options do %>
       <ul class="nav nav-xs nav-pills index-display-options">
         <%= tab('List', 'fa fa-list', 'home', active: true) %>
+        <%= tab('Calendar', 'fa fa-calendar', 'calendar') %>
         <% if !TeSS::Config.feature['disabled'].include? 'events_map' %>
           <%= tab('Map', 'fa fa-globe', 'map',
                   disabled: { check: (search_and_facet_params[:online] == 'true'),
@@ -40,6 +41,10 @@
           <%= render partial: 'common/masonry_grid', locals: { objects: @events } %>
 
           <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
+        </div>
+
+        <div id="calendar" class="tab-pane fade in">
+          <%= render partial: 'events/partials/simple_calendar', locals: { events: @events } %>
         </div>
 
         <% unless TeSS::Config.feature['disabled'].include?('events_map') %>

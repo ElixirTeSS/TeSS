@@ -662,6 +662,8 @@ GEM
     sidekiq-status (3.0.2)
       chronic_duration
       sidekiq (>= 6.0, < 8)
+    simple_calendar (2.4.3)
+      rails (>= 3.0)
     simple_form (5.1.0)
       actionpack (>= 5.2)
       activemodel (>= 5.2)
@@ -848,6 +850,7 @@ DEPENDENCIES
   sdoc (>= 1.1.0)
   sidekiq (< 8)
   sidekiq-status (~> 3.0.2)
+  simple_calendar (~> 2.4)
   simple_form
   simple_token_authentication (~> 1.0)
   simplecov

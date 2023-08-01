@@ -46,6 +46,9 @@ gem 'friendly_id', '~> 5.2.4'
 # gem 'sunspot_rails', '~> 2.5.0'
 gem 'sunspot_rails', github: 'sunspot/sunspot', branch: 'master'
 
+# https://github.com/excid3/simple_calendar
+gem 'simple_calendar', '~> 2.4'
+
 gem 'progress_bar', '~> 1.1.0'
 
 gem 'activerecord-session_store'

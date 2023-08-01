@@ -547,3 +547,6 @@ en:
   footer:
     eu_funding: >
       TeSS has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No. <a href="https://cordis.europa.eu/project/rcn/198519_en.html", target="_blank">676559</a>.
+  time:
+    formats:
+      time_short: "%H:%M"
