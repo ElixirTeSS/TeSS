@@ -154,6 +154,8 @@ GEM
     bootstrap-sass (3.4.1)
       autoprefixer-rails (>= 5.2.1)
       sassc (>= 2.0.0)
+    bootstrap-tab-history-rails (0.1.0)
+      railties (>= 3.1)
     builder (3.2.4)
     byebug (11.1.3)
     case_transform (0.2)
@@ -785,6 +787,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.4)
   bootstrap-datepicker-rails (~> 1.6.4.1)
   bootstrap-sass (>= 3.4.1)
+  bootstrap-tab-history-rails
   by_star!
   byebug
   committee (~> 4.4)
