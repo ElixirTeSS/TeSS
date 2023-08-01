@@ -282,12 +282,11 @@ module ApplicationHelper
     end
   end
 
-  def tab(text, icon, href, disabled: { check: false }, active: false, count: nil, activator: nil)
+  def tab(text, icon, href, disabled: { check: false }, active: false, count: nil, activator: nil, options: {})
     classes = []
     classes << 'disabled' if disabled[:check]
     classes << 'active' if active || activator&.check_tab(href, !disabled[:check])
     content_tag(:li, class: classes.join(' ')) do
-      options = {}
       if disabled[:check]
         options['title'] = disabled[:message]
         options['data-toggle'] = 'tooltip'

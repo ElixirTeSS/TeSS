@@ -27,6 +27,18 @@ class EventsController < ApplicationController
     end
   end
 
+  # GET /events/calendar
+  # GET /events/calendar.js
+  def calendar
+    set_params
+    fetch_resources
+    @bioschemas = @events.flat_map(&:to_bioschemas)
+    respond_to do |format|
+      format.js
+    end
+  end
+
+
   # GET /events/1
   # GET /events/1.json
   # GET /events/1.ics

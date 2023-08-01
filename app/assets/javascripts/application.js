@@ -70,6 +70,13 @@ function reposition_tiles(container, tileClass){
     });
 }
 
+// Perform an ajax request to load the calendar and replace the contents
+window.loadCalendar = function(url) {
+    req = $.ajax(url);
+    req.done((res) => eval(res));
+    return true;
+}
+
 document.addEventListener("turbolinks:load", function() {
     // Disabled tabs
     $(".nav-tabs li a[data-toggle='tooltip']").tooltip();

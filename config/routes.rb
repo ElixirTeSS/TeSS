@@ -59,6 +59,7 @@ Rails.application.routes.draw do
   resources :events, concerns: :activities do
     collection do
       get :count
+      get :calendar, format: :js
     end
     member do
       get :redirect
