@@ -13,7 +13,7 @@ module Facets
       include_expired: -> (value) { value == 'true'},
       include_archived: -> (value) { value == 'true'},
       max_age: -> (value) { Subscription::FREQUENCY.detect { |f| f[:title] == value }.try(:[], :period) },
-      start: -> (value) { value.split('..').map {|d| Date.parse(d) } },
+      start: -> (value) { value.split('..').map {|d| Date.parse(d) rescue nil } },
       include_hidden: -> (value) { value == 'true'}
   }
 
