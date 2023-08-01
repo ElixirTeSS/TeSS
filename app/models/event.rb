@@ -58,9 +58,9 @@ class Event < ApplicationRecord
       end
       string :keywords, multiple: true
       string :fields, multiple: true
-      time :start
+      time :start, trie: true
       time :end
-      time :created_at
+      time :created_at, trie: true
       time :updated_at
       string :content_provider do
         content_provider.title unless content_provider.nil?
@@ -175,7 +175,7 @@ class Event < ApplicationRecord
 
   def self.facet_fields
     field_list = %w[ content_provider keywords scientific_topics operations tools fields online event_types
-                     venue city country organizer sponsors target_audience eligibility user node collections ]
+                     start venue city country organizer sponsors target_audience eligibility user node collections ]
 
     field_list.delete('operations') if TeSS::Config.feature['disabled'].include? 'operations'
     field_list.delete('scientific_topics') if TeSS::Config.feature['disabled'].include? 'topics'

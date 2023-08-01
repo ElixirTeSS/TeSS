@@ -13,7 +13,7 @@ Variable that should be available
 
 <%
   extras = if resource_type.name == 'Event'
-             [['Most recent', 'new'], ['Earliest', 'early'], ['Latest', 'late']]
+             [['Earliest', 'early'], ['Latest', 'late'], ['Most recent', 'new']]
            elsif resource_type.name == 'Source'
              [['Most recent', 'new'], ['Last finished', 'finished']]
            else
@@ -34,14 +34,14 @@ Variable that should be available
     </h4>
   </li>
 
-  <% if TeSS::Config.facets_max_age_list.include?(resource_type.name) %>
-    <%= render partial: 'search/common/facet_sidebar_max_age' %>
-  <% end %>
-
   <% boolean_facets, regular_facets = available_facets(resources).partition { |f| f.field_name == :online } %>
 
   <% regular_facets.each do |facet| %>
-    <%= render partial: 'search/common/facet_sidebar_filter', locals: { facet: facet, resources: resources } %>
+    <% if facet.field_name == :start %>
+      <%= render partial: 'search/common/facet_sidebar_date_filter', locals: { facet: facet, resources: resources } %>
+    <% else %>
+      <%= render partial: 'search/common/facet_sidebar_filter', locals: { facet: facet, resources: resources } %>
+    <% end %>
   <% end %>
 
   <% boolean_facets.each do |facet| %>
@@ -58,6 +58,10 @@ Variable that should be available
                                                                                 count: '-',
                                                                                 enable_text: 'Show archived materials',
                                                                                 disable_text: 'Hide archived materials' } %>
+  <% end %>
+
+  <% if TeSS::Config.facets_max_age_list.include?(resource_type.name) %>
+    <%= render partial: 'search/common/facet_sidebar_max_age' %>
   <% end %>
 </ul>
 

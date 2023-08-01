@@ -38,6 +38,8 @@
 //= require turbolinks
 
 function updateURLParameter(url, param, paramVal){
+    // This can be done in a nicer way with URLSearchParams
+    // https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
     var newAdditionalURL = "";
     var tempArray = url.split("?");
     var baseURL = tempArray[0];
@@ -53,7 +55,11 @@ function updateURLParameter(url, param, paramVal){
             }
         }
     }
-    var rowsTxt = temp + "" + param + "=" + paramVal;
+    if (paramVal) {
+        var rowsTxt = temp + "" + param + "=" + paramVal;
+    } else {
+        rowsTxt = "";
+    }
     return baseURL + "?" + newAdditionalURL + rowsTxt;
 }
 
@@ -63,6 +69,20 @@ function redirect_to_sort_url(){
             window.location.href,
             "sort",
             $("#sort").find(":selected").val()
+        )
+    );
+}
+
+function redirect_with_updated_search(param, paramVal) {
+    // special case for empty range types
+    if (param == 'start' && paramVal == '..') {
+        paramVal = undefined;
+    }
+    window.location.replace(
+        updateURLParameter(
+            window.location.href,
+            param,
+            paramVal
         )
     );
 }

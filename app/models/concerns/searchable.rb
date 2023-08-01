@@ -32,11 +32,26 @@ module Searchable
         any do
           # Set all facets
           normal_facets.each do |facet_title, facet_value|
-            any do # Conjunction clause
-              # Add to array that get executed lower down
+            # Start date is a AND search parameter in my opinion.
+            if facet_title == 'start'
               active_facets[facet_title] ||= []
-              val = Facets.process(facet_title, facet_value)
-              active_facets[facet_title] << with(facet_title, val)
+              lb, ub = Facets.process(facet_title, facet_value)
+              # We should think about timezone handling here
+              if lb && ub
+                active_facets[facet_title] << with(facet_title).between(lb..ub)
+              elsif lb
+                active_facets[facet_title] << with(facet_title).greater_than_or_equal_to(lb)
+              elsif ub
+                active_facets[facet_title] << with(facet_title).less_than_or_equal_to(ub)
+              else
+              end
+            else
+              any do # Conjunction clause
+                # Add to array that get executed lower down
+                active_facets[facet_title] ||= []
+                val = Facets.process(facet_title, facet_value)
+                active_facets[facet_title] << with(facet_title, val)
+              end
             end
           end
         end
