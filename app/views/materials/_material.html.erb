@@ -1,5 +1,7 @@
 <li class="masonry-brick media-item long">
   <%= link_to material, class: 'link-overlay' do %>
+    <%= item_order_badge(collection_item) if defined? collection_item %>
+
     <div class="masonry-brick-heading">
       <div class="masonry-icons">
         <% if current_user&.is_admin? %>
@@ -28,5 +30,7 @@
 
       <%= keywords_and_topics(material) %>
     </div>
+
+    <%= item_comment(collection_item) if defined? collection_item %>
   <% end %>
 </li>

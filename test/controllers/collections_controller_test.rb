@@ -189,6 +189,111 @@ class CollectionsControllerTest < ActionController::TestCase
     assert_redirected_to collection_path(assigns(:collection))
   end
 
+  test "should add items to collection" do
+    sign_in users(:regular_user)
+    collection = collections(:with_resources)
+    assert_difference('CollectionItem.count', 3) do
+      assert_difference('collection.events.count', 1) do
+        assert_difference('collection.materials.count', 2) do
+          patch :update, params: { id: collection.id, collection: { items_attributes: {
+            '0' => { resource_type: 'Material', resource_id: materials(:biojs).id, order: 2, comment: 'hello' },
+            '1' => { resource_type: 'Event', resource_id: events(:one).id, order: 1, comment: 'hello!' },
+            '2' => { resource_type: 'Material', resource_id: materials(:interpro).id, order: 1, comment: 'hello!!' }
+          } } }
+
+          mats = assigns(:collection).material_items
+          assert_equal 2, mats.length
+          assert_equal 1, mats[0].order
+          assert_equal 'hello!!', mats[0].comment
+          assert_equal materials(:interpro), mats[0].resource
+          assert_equal 2, mats[1].order
+          assert_equal 'hello', mats[1].comment
+          assert_equal materials(:biojs), mats[1].resource
+
+          events = assigns(:collection).event_items
+          assert_equal 1, events.length
+          assert_equal 1, events[0].order
+          assert_equal 'hello!', events[0].comment
+          assert_equal events(:one), events[0].resource
+        end
+      end
+    end
+  end
+
+  test "should remove items from collection" do
+    sign_in users(:regular_user)
+    collection = collections(:with_resources)
+    ci1 = collection.items.create!(resource: materials(:biojs), order: 2, comment: 'hello')
+    ci2 = collection.items.create!(resource: materials(:interpro), order: 1, comment: 'hello!!')
+    ci3 = collection.items.create!(resource: events(:one), order: 1, comment: 'hello!')
+
+
+    assert_difference('CollectionItem.count', -1) do
+      assert_difference('collection.materials.count', -1) do
+        assert_no_difference('collection.events.count') do
+          patch :update, params: { id: collection.id, collection: { items_attributes: {
+            '0' => { id: ci1.id, resource_type: 'Material', resource_id: materials(:biojs).id, order: 2, comment: 'hello' },
+            '1' => { id: ci3.id, resource_type: 'Event', resource_id: events(:one).id, order: 1, comment: 'hello!' },
+            '2' => { id: ci2.id, resource_type: 'Material', resource_id: materials(:interpro).id, order: 1, comment: 'hello!!', _destroy: '1' }
+          } } }
+
+          mats = assigns(:collection).material_items
+          assert_equal ci1.id, mats[0].id
+          assert_equal 1, mats.length
+          assert_equal 1, mats[0].order
+          assert_equal 'hello', mats[0].comment
+          assert_equal materials(:biojs), mats[0].resource
+
+          events = assigns(:collection).event_items
+          assert_equal 1, events.length
+          assert_equal ci3.id, events[0].id
+          assert_equal 1, events[0].order
+          assert_equal 'hello!', events[0].comment
+          assert_equal events(:one), events[0].resource
+        end
+      end
+    end
+  end
+
+  test "should modify items in collection" do
+    sign_in users(:regular_user)
+    collection = collections(:with_resources)
+    ci1 = collection.items.create!(resource: materials(:biojs), order: 2, comment: 'hello')
+    ci2 = collection.items.create!(resource: materials(:interpro), order: 1, comment: 'hello!!')
+    ci3 = collection.items.create!(resource: events(:one), order: 1, comment: 'hello!')
+
+    assert_no_difference('CollectionItem.count') do
+      assert_no_difference('collection.materials.count') do
+        assert_no_difference('collection.events.count') do
+          patch :update, params: { id: collection.id, collection: { items_attributes: {
+            '0' => { id: ci1.id, resource_type: 'Material', resource_id: materials(:biojs).id, order: 1, comment: 'hello world' },
+            '1' => { id: ci3.id, resource_type: 'Event', resource_id: events(:one).id, order: 1, comment: 'hello world!' },
+            '2' => { id: ci2.id, resource_type: 'Material', resource_id: materials(:interpro).id, order: 2, comment: 'hello world!!' }
+          } } }
+
+          mats = assigns(:collection).material_items
+          assert_equal 2, mats.length
+          assert_equal ci1.id, mats[0].id
+          assert_equal 1, mats[0].order
+          assert_equal 'hello world', mats[0].comment
+          assert_equal materials(:biojs), mats[0].resource
+          assert_equal ci2.id, mats[1].id
+          assert_equal 2, mats[1].order
+          assert_equal 'hello world!!', mats[1].comment
+          assert_equal materials(:interpro), mats[1].resource
+
+          events = assigns(:collection).event_items
+          assert_equal 1, events.length
+          assert_equal ci3.id, events[0].id
+          assert_equal 1, events[0].order
+          assert_equal 'hello world!', events[0].comment
+          assert_equal events(:one), events[0].resource
+        end
+      end
+    end
+  end
+
+
   #UPDATE_CURATE TEST
   test 'should add and remove elements' do
     sign_in @collection.user
@@ -354,6 +459,16 @@ class CollectionsControllerTest < ActionController::TestCase
   end
 
   #API Actions
+  test "should add materials to collection" do
+    sign_in users(:regular_user)
+    collection = collections(:with_resources)
+    assert_difference('CollectionItem.count', 2) do
+      assert_difference('collection.materials.count', 2) do
+        patch :update, params: { collection: { material_ids: [materials(:biojs), materials(:interpro)] }, id: collection.id }
+      end
+    end
+  end
+
   test "should remove materials from collection" do
     sign_in users(:regular_user)
     collection = collections(:with_resources)
@@ -494,5 +609,76 @@ class CollectionsControllerTest < ActionController::TestCase
       patch :update, params: { collection: { event_ids: [events(:one), events(:two)]}, id: @collection.id }
     end
     assert_response :forbidden
+  end
+
+  test 'should render collection items in order' do
+    materials = [materials(:good_material), materials(:biojs), materials(:interpro)]
+    events = [events(:two), events(:one)]
+    @collection.items.create!(resource: materials[0], order: 2, comment: 'A good material')
+    @collection.items.create!(resource: materials[1], order: 1, comment: 'Start here')
+    @collection.items.create!(resource: materials[2], order: 3, comment: 'End here')
+    @collection.items.create!(resource: events[0], order: 2, comment: 'End here')
+    @collection.items.create!(resource: events[1], order: 1, comment: 'Start here')
+
+    get :show, params: { id: @collection }
+
+    assert_response :success
+
+    assert_select '#materials ul li:nth-child(1) .link-overlay' do
+      assert_select 'h4', text: 'BioJS'
+      assert_select '.collection-item-comment', text: 'Start here'
+      assert_select '.collection-item-order-badge', text: '1'
+    end
+
+    assert_select '#materials ul li:nth-child(2) .link-overlay' do
+      assert_select 'h4', text: 'Training Material Example'
+      assert_select '.collection-item-comment', text: 'A good material'
+      assert_select '.collection-item-order-badge', text: '2'
+    end
+
+    assert_select '#materials ul li:nth-child(3) .link-overlay' do
+      assert_select 'h4', text: 'InterPro'
+      assert_select '.collection-item-comment', text: 'End here'
+      assert_select '.collection-item-order-badge', text: '3'
+    end
+
+    assert_select '#events ul li:nth-child(1) .link-overlay' do
+      assert_select 'h4', text: 'event one'
+      assert_select '.collection-item-comment', text: 'Start here'
+      assert_select '.collection-item-order-badge', text: '1'
+    end
+
+    assert_select '#events ul li:nth-child(2) .link-overlay' do
+      assert_select 'h4', text: 'event two'
+      assert_select '.collection-item-comment', text: 'End here'
+      assert_select '.collection-item-order-badge', text: '2'
+    end
+  end
+
+  test 'should render collection items in order as json-api' do
+    materials = [materials(:good_material), materials(:biojs), materials(:interpro)]
+    events = [events(:two), events(:one)]
+    @collection.items.create!(resource: materials[0], order: 2, comment: 'A good material')
+    @collection.items.create!(resource: materials[1], order: 1, comment: 'Start here')
+    @collection.items.create!(resource: materials[2], order: 3, comment: 'End here')
+    @collection.items.create!(resource: events[0], order: 2, comment: 'End here')
+    @collection.items.create!(resource: events[1], order: 1, comment: 'Start here')
+
+    get :show, params: { id: @collection, format: :json_api }
+
+    assert_response :success
+    assert assigns(:collection)
+    assert_valid_json_api_response
+
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    response_materials = body.dig('data', 'relationships', 'materials', 'data')
+    assert_equal [materials[1].id, materials[0].id, materials[2].id], response_materials.map { |m| m['id'].to_i }
+
+    response_events = body.dig('data', 'relationships', 'events', 'data')
+    assert_equal [events[1].id, events[0].id], response_events.map { |e| e['id'].to_i }
   end
 end

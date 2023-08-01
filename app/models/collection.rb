@@ -7,6 +7,10 @@ class Collection < ApplicationRecord
   include Collaboratable
 
   has_many :items, -> { order(:order) }, class_name: 'CollectionItem', inverse_of: :collection, dependent: :destroy
+  has_many :material_items, -> { where(resource_type: 'Material').order(:order) }, class_name: 'CollectionItem',
+           inverse_of: :collection
+  has_many :event_items, -> { where(resource_type: 'Event').order(:order) }, class_name: 'CollectionItem',
+           inverse_of: :collection
   has_many :events, through: :items, source: :resource, source_type: 'Event', inverse_of: :collections
   has_many :materials, through: :items, source: :resource, source_type: 'Material', inverse_of: :collections
 
@@ -17,6 +21,9 @@ class Collection < ApplicationRecord
   # e.g. "James     Bond  " => "James Bond"
   auto_strip_attributes :title, :description, :image_url, squish: false
 
+  accepts_nested_attributes_for :items, allow_destroy: true
+
+  after_validation :normalize_order
   after_commit :index_items, if: :title_previously_changed?
 
   validates :title, presence: true
@@ -94,5 +101,14 @@ class Collection < ApplicationRecord
     return unless TeSS::Config.solr_enabled
 
     items.each(&:reindex_resource)
+  end
+
+  # Make sure order for each type goes from 1 to n with no gaps.
+  def normalize_order
+    indexes = Hash.new(0)
+    items.sort_by(&:order).each do |item|
+      next if item.marked_for_destruction?
+      item.order = indexes[item.resource_type] += 1
+    end
   end
 end

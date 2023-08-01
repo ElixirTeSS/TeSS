@@ -32,6 +32,7 @@
 //= require ardc_vocab_widget_v2
 //= require select2
 //= require ahoy
+//= require sortable
 //= require_tree ./templates
 //= require_tree .
 //= require_self
@@ -213,6 +214,8 @@ document.addEventListener("turbolinks:load", function() {
     Biotools.init();
 
     Tracking.init();
+
+    Collections.init();
 
     $('.tess-expandable').each(function () {
         var limit = this.dataset.heightLimit || 300;
