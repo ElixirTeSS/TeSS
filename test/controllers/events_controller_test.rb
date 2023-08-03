@@ -44,6 +44,26 @@ class EventsControllerTest < ActionController::TestCase
     end
   end
 
+  test 'should render a calendar' do
+    with_settings(solr_enabled: true) do
+      Event.stub(:search_and_filter, MockSearch.new(Event.all)) do
+        get :calendar
+        assert_response :success
+        assert_not_empty assigns(:events)
+      end
+    end
+  end
+
+  test 'should render a calendar into a JS update command' do
+    with_settings(solr_enabled: true) do
+      Event.stub(:search_and_filter, MockSearch.new(Event.all)) do
+        get :calendar, format: :js
+        assert_response :success
+        assert_not_empty assigns(:events)
+      end
+    end
+  end
+
   test 'should get index as json' do
     @event.scientific_topic_uris = ['http://edamontology.org/topic_0654']
     @event.save!
