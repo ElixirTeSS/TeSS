@@ -59,7 +59,7 @@ Rails.application.routes.draw do
   resources :events, concerns: :activities do
     collection do
       get :count
-      get :calendar, format: :js
+      get :calendar, format: %i[js html]
     end
     member do
       get :redirect
