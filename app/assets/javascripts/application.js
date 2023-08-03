@@ -38,34 +38,24 @@
 //= require_self
 //= require turbolinks
 
-function updateURLParameter(url, param, paramVal){
-    var newAdditionalURL = "";
-    var tempArray = url.split("?");
-    var baseURL = tempArray[0];
-    var additionalURL = tempArray[1];
-    var temp = "";
-
-    if (additionalURL) {
-        tempArray = additionalURL.split("&");
-        for (var i=0; i<tempArray.length; i++){
-            if(tempArray[i].split("=")[0] != param){
-                newAdditionalURL += temp + tempArray[i];
-                temp = "&";
-            }
-        }
-    }
-    var rowsTxt = temp + "" + param + "=" + paramVal;
-    return baseURL + "?" + newAdditionalURL + rowsTxt;
+function redirect_to_sort_url(){
+    url = new URL(window.location.href);
+    url.searchParams.set(
+        "sort",
+        $("#sort").find(":selected").val()
+    );
+    window.location.replace(url.toString());
 }
 
-function redirect_to_sort_url(){
-    window.location.replace(
-        updateURLParameter(
-            window.location.href,
-            "sort",
-            $("#sort").find(":selected").val()
-        )
-    );
+function redirect_with_updated_search(param, paramVal) {
+    url = new URL(window.location.href);
+    // special case for empty range types
+    if (param == 'start' && paramVal == '/') {
+        url.searchParams.delete(param);
+    } else {
+        url.searchParams.set(param, paramVal);
+    }
+    window.location.replace(url.toString());
 }
 
 function reposition_tiles(container, tileClass){
