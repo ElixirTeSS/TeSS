@@ -37,7 +37,7 @@ class EventsController < ApplicationController
     set_params
     fetch_resources
     # now customize the list by moving all events longer than 3 days into a separate array
-    @long_events, @events = @events.partition { |e| (e.end - e.start) > 3.days }
+    @long_events, @events = @events.partition { |e| (e.end - e.start) > TeSS::Config.site.fetch(:calendar_event_maxlength, 5).to_i.days }
 
     respond_to do |format|
       format.js
