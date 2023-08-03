@@ -3,8 +3,8 @@
     <%= item_order_badge(collection_item) if defined? collection_item %>
     <div class="with-left-icon">
       <div class="icon-container hidden-xs">
-        <i class="icon icon-h2 <%= event.online %>-event-icon"></i><br/>
-        <span class="muted"><%= t("activerecord.attributes.event.presence.#{event.online}") %></span>
+        <i class="icon icon-h2 <%= event.presence %>-event-icon"></i><br/>
+        <span class="muted"><%= t("activerecord.attributes.event.presence.#{event.presence}") %></span>
       </div>
 
       <div class="right-container">
@@ -41,7 +41,7 @@
           <% end %>
         <% end %>
         <p class="visible-xs-block">
-          <i class="icon icon-md <%= event.online %>-event-icon"></i>
+          <i class="icon icon-md <%= event.presence %>-event-icon"></i>
           <span class="muted"><%= t("activerecord.attributes.event.presence.#{event.online}") %></span>
         </p>
       </div>

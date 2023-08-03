@@ -39,7 +39,7 @@ class IcalIngestorTest < ActiveSupport::TestCase
     name = 'ical_event_1'
     event = events(:ical_event_1)
     refute event.nil?, "event[#{name}] not found"
-    refute event.online, "event[#{name}] online not matched"
+    refute event.online?, "event[#{name}] online not matched"
     assert_equal 'Another Portal Provider', event.content_provider.title,
                  "event[#{name}] content provider not matched"
 
@@ -49,7 +49,7 @@ class IcalIngestorTest < ActiveSupport::TestCase
     url = 'https://pawsey.org.au/event/pacer-seminar-computational-fluid-dynamics/'
     event = check_event_exists title, url
     refute event.nil?, "event title[#{title}] not found"
-    refute event.online, "event title[#{title}] online not matched"
+    refute event.online?, "event title[#{title}] online not matched"
     assert_equal 'Another Portal Provider', event.content_provider.title,
                  "event title[#{title}] content provider not matched"
 
@@ -81,7 +81,7 @@ class IcalIngestorTest < ActiveSupport::TestCase
     # check added
     title = 'Ask Me Anything: Porous media visualisation and LBPM'
     event = check_event_exists title, 'https://pawsey.org.au/event/ask-me-anything-porous-media-visualisation-and-lbpm/'
-    assert event.online, "event title[#{event.title}] online not matched"
+    assert event.online?, "event title[#{event.title}] online not matched"
     assert (!event.keywords.nil? and event.keywords.size == 2), "event title[#{event.title}] keywords.size not matched"
     assert event.keywords.include?('AMA'), "event title[#{event.title}] keyword[AMA] not found"
     assert event.keywords.include?('Visualisation'), "event title[#{event.title}] keyword[Visualisation] not found"
@@ -96,11 +96,11 @@ class IcalIngestorTest < ActiveSupport::TestCase
 
     title = 'P\'Con - Experience with porting and scaling codes on AMD GPUs'
     event = check_event_exists title, 'https://pawsey.org.au/event/experience-with-porting-and-scaling-codes-on-amd-gpus/'
-    assert event.online, "event title[#{title}] online not matched"
+    assert event.online?, "event title[#{title}] online not matched"
 
     title = 'Overview of High Performance Computing Resources at OLCF'
     event = check_event_exists title, 'https://pawsey.org.au/event/overview-of-high-performance-computing-resources-at-olcf/'
-    refute event.online, "event title[#{title}] online not matched"
+    refute event.online?, "event title[#{title}] online not matched"
     location = 'Pawsey Supercomputing Centre, 1 Bryce Avenue, Kensington, Western Australia, 6151, Australia'
     assert_equal location, event.venue, "event title[#{title}] venue not matched"
     # Geocoding is disabled so these fail TODO: Re-enable, but using cache + rate limiting
@@ -114,7 +114,7 @@ class IcalIngestorTest < ActiveSupport::TestCase
     assert_equal '2022-06-15 03:00:00 UTC', event.end.utc.to_s, "event title[#{event.title}] updated end not matched"
     assert event.description != 'MyText', "event title[#{event.title}] description not updated"
     assert event.description.size > 100, "event title[#{event.title}] description too short"
-    assert event.online, "event title[#{event.title}] online not matched"
+    assert event.online?, "event title[#{event.title}] online not matched"
     assert_equal 2, event.keywords.size, "event title[#{event.title}] keywords size not matched"
     %w[Supercomputing Seminar].each do |keyword|
       assert event.keywords.include?(keyword), "event title[#{event.title}] keyword[#{keyword}] not found"
@@ -126,7 +126,7 @@ class IcalIngestorTest < ActiveSupport::TestCase
 
     title = "P'Con - Embracing new solutions for in-situ visualisation"
     event = check_event_exists title, 'https://pawsey.org.au/event/pcon-embracing-new-solutions-for-in-situ-visualisation/'
-    assert event.online, "event title[#{event.title}] online not matched"
+    assert event.online?, "event title[#{event.title}] online not matched"
     assert_equal 3, event.keywords.size, "event title[#{event.title}] keywords size not matched"
     %w[Supercomputing Conference Visualisation].each do |keyword|
       assert event.keywords.include?(keyword), "event title[#{event.title}] keyword[#{keyword}] not found"

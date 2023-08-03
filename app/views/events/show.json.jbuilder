@@ -9,7 +9,7 @@ fields = [
 
   :organizer, :sponsors, :contact, :host_institutions,
 
-  :online, :venue, :city, :county, :country, :postcode, :latitude, :longitude,
+  :venue, :city, :county, :country, :postcode, :latitude, :longitude,
 
   :capacity, :cost_basis, :cost_value, :cost_currency,
 
@@ -22,6 +22,7 @@ fields = [
 fields += Event::SENSITIVE_FIELDS if policy(@event).view_report?
 
 json.extract! @event, *fields
+json.online(@event.online? || @event.hybrid?)
 
 json.partial! 'common/ontology_terms', type: 'scientific_topics', resource: @event
 json.partial! 'common/ontology_terms', type: 'operations', resource: @event

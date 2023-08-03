@@ -5,7 +5,7 @@ module Bioschemas
     end
 
     def self.bioschemas_profile
-      'https://bioschemas.org/profiles/Course/0.10-DRAFT'
+      'https://bioschemas.org/profiles/Course/1.0-RELEASE'
     end
 
     property :name, :title

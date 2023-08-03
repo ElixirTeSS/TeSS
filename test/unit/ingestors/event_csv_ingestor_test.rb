@@ -68,7 +68,7 @@ class EventCsvIngestorTest < ActiveSupport::TestCase
     assert_equal 'NCI', event.organizer
     check_array event.eligibility, ['by_invitation'], ['open_to_all']
     check_array event.host_institutions, ['NCI'], ['Intersect']
-    refute event.online
+    refute event.online?
 
     # check optional attributes
     assert_equal 'NCI, ANU, Ward Road', event.venue

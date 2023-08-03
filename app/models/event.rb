@@ -98,7 +98,7 @@ class Event < ApplicationRecord
   end
 
   # TODO: Rails 7 - Migrate this to use hash-syntax with explicit values, e.g.: { onsite: 0, online: 1, hybrid: 2 }
-  enum online: [:onsite, :online, :hybrid]
+  enum presence: [:onsite, :online, :hybrid]
 
   belongs_to :user
   has_one :edit_suggestion, as: :suggestible, dependent: :destroy
@@ -437,7 +437,7 @@ class Event < ApplicationRecord
   def online= value
     value = :online if value.is_a?(TrueClass) || value == '1' || value == 1 || value == 'true'
     value = :onsite if value.is_a?(FalseClass) || value == '0' || value == 0 || value == 'false'
-    super(value)
+    self.presence = value
   end
 
   private
@@ -468,7 +468,7 @@ class Event < ApplicationRecord
       downcased_var = self[key]&.downcase
       dic.lookup(key).each do |v|
         if downcased_var&.include?(v)
-          self.online = true
+          self.presence = :online
           return
         end
       end
@@ -476,14 +476,14 @@ class Event < ApplicationRecord
   end
 
   def fix_keywords
-    fix_online if !self&.online.present?
+    fix_online unless online? || hybrid?
 
     [
       [TargetAudienceDictionary, :target_audience],
       [EventTypeDictionary, :event_types],
       [EligibilityDictionary, :eligibility],
     ].each do |dict, var|
-      if not self[var].present?
+      if self[var].blank?
         self[var] = []
       end
       dic = dict.instance
