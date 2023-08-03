@@ -294,7 +294,7 @@ module ApplicationHelper
       else
         options['data-toggle'] = 'tab'
         options['data-tab-history'] = true
-        options['data-tab-history-changer'] = 'push'
+        options['data-tab-history-changer'] = 'replace'
         options['data-tab-history-update-url'] = true
       end
 
