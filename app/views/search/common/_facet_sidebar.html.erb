@@ -36,12 +36,13 @@ Variable that should be available
 
   <% boolean_facets, regular_facets = available_facets(resources).partition { |f| f.field_name == :online } %>
 
-  <% regular_facets.each do |facet| %>
-    <% if facet.field_name == :start %>
-      <%= render partial: 'search/common/facet_sidebar_date_filter', locals: { facet: facet, resources: resources } %>
-    <% else %>
-      <%= render partial: 'search/common/facet_sidebar_filter', locals: { facet: facet, resources: resources } %>
-    <% end %>
+  <% if resource_type.name == 'Event' %>
+    <%= render partial: 'search/common/facet_sidebar_date_filter', locals: { facet_field: 'start' } %>
+  <% end %>
+
+  <%# We ignore the start facet, since this needs to be always available, not just when there are records%>
+  <% regular_facets.reject{ |f| f.field_name.to_s == 'start' }.each do |facet| %>
+    <%= render partial: 'search/common/facet_sidebar_filter', locals: { facet: facet, resources: resources } %>
   <% end %>
 
   <% boolean_facets.each do |facet| %>

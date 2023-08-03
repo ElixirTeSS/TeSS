@@ -5,6 +5,7 @@ module Facets
       days_since_scrape: -> (c) { c.method_defined?(:last_scraped) },
       elixir: -> (c) { ['Event', 'Material', 'ContentProvider'].include?(c.name) },
       max_age: -> (c) { ['Event', 'Material'].include?(c.name) },
+      start: -> (c) { c.name == 'Event' },
       include_hidden: -> (c) { c.method_defined?(:user_requires_approval?) }
   }.with_indifferent_access.freeze
 
@@ -13,7 +14,7 @@ module Facets
       include_expired: -> (value) { value == 'true'},
       include_archived: -> (value) { value == 'true'},
       max_age: -> (value) { Subscription::FREQUENCY.detect { |f| f[:title] == value }.try(:[], :period) },
-      start: -> (value) { value.split('/').map {|d| Date.parse(d) rescue nil } },
+      start: -> (value) { value&.split('/')&.map {|d| Date.parse(d) rescue nil } },
       include_hidden: -> (value) { value == 'true'}
   }
 
@@ -38,6 +39,20 @@ module Facets
       return if age.blank?
       sunspot_scoped(scope) do
         with(:created_at).greater_than(age.ago)
+      end
+    end
+
+    def start(scope, bounds, _)
+      lb, ub = bounds
+
+      sunspot_scoped(scope) do
+        if lb && ub
+          with(:start).between(lb..ub)
+        elsif lb
+          with(:start).greater_than_or_equal_to(lb)
+        elsif ub
+          with(:start).less_than_or_equal_to(ub)
+        end
       end
     end
 
