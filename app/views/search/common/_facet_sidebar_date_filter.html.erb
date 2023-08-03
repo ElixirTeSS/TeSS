@@ -1,5 +1,5 @@
 <% facet_field = facet.field_name.to_s %>
-<% lb, ub = params[facet_field]&.split('..') %>
+<% lb, ub = params[facet_field]&.split('/') %>
 <li class="sidebar-group mt-4">
   <ul>
     <li>
@@ -11,9 +11,9 @@
     </li>
 
     <li class="nav-item active" style="display: none; font-size: 15px; text-align: center;">
-      <input type="date" name="<%= facet_field %>_lb" value="<%= lb %>" style="width: 47%;" onchange="redirect_with_updated_search('<%= facet_field %>', this.value + '..' + '<%= ub %>');">
+      <input type="date" name="<%= facet_field %>_lb" value="<%= lb %>" style="width: 47%;" onchange="redirect_with_updated_search('<%= facet_field %>', this.value + '/' + '<%= ub %>');">
        - 
-      <input type="date" name="<%= facet_field %>_ub" value="<%= ub %>" style="width: 47%;" onchange="redirect_with_updated_search('<%= facet_field %>', '<%= lb %>' + '..' + this.value);">
+      <input type="date" name="<%= facet_field %>_ub" value="<%= ub %>" style="width: 47%;" onchange="redirect_with_updated_search('<%= facet_field %>', '<%= lb %>' + '/' + this.value);">
     </li>
   </ul>
 </li>

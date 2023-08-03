@@ -49,7 +49,7 @@ function redirect_to_sort_url(){
 function redirect_with_updated_search(param, paramVal) {
     url = new URL(window.location.href);
     // special case for empty range types
-    if (param == 'start' && paramVal == '..') {
+    if (param == 'start' && paramVal == '/') {
         url.searchParams.delete(param);
     } else {
         url.searchParams.set(param, paramVal);
