@@ -72,18 +72,31 @@ module TeSS
 
   merge_config(Rails.configuration.tess_defaults.with_indifferent_access, tess_config)
 
-  Config = OpenStruct.new(tess_config)
+  class TessConfig < OpenStruct
+    def redis_url
+      if Rails.env.test?
+        ENV.fetch('REDIS_TEST_URL') { 'redis://localhost:6379/0' }
+      else
+        ENV.fetch('REDIS_URL') { 'redis://localhost:6379/1' }
+      end
+    end
 
-  Config.redis_url = if Rails.env.test?
-                       ENV.fetch('REDIS_TEST_URL') { 'redis://localhost:6379/0' }
-                     else
-                       ENV.fetch('REDIS_URL') { 'redis://localhost:6379/1' }
-                     end
+    def ingestion
+      return @ingestion if @ingestion
+      config_file = File.join(Rails.root, 'config', 'ingestion.yml')
+      @ingestion = YAML.safe_load(File.read(config_file)).deep_symbolize_keys! if File.exist?(config_file)
+    end
 
-  config_file = File.join(Rails.root, 'config', 'ingestion.yml')
-  Config.ingestion = YAML.safe_load(File.read(config_file)).deep_symbolize_keys! if File.exist?(config_file)
+    def analytics_enabled
+      force_analytics_enabled || (Rails.application.secrets.google_analytics_code.present? && Rails.env.production?)
+    end
 
-  Config.analytics_enabled = Rails.application.secrets.google_analytics_code.present? && Rails.env.production?
+    def map_enabled
+      !feature['disabled'].include?('events_map') && Rails.application.secrets.google_maps_api_key.present?
+    end
+  end
+
+  Config = TessConfig.new(tess_config)
 
   tess_base_uri = URI.parse(TeSS::Config.base_url)
   Rails.application.default_url_options = {
