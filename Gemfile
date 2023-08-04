@@ -115,6 +115,7 @@ gem 'icalendar', '~> 2.4.1'
 gem 'rss'
 
 gem 'bootstrap-datepicker-rails', '~> 1.6.4.1'
+gem 'bootstrap-tab-history-rails'
 
 gem 'rack-cors', require: 'rack/cors'
 

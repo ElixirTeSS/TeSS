@@ -14,6 +14,7 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require bootstrap-sprockets
+//= require bootstrap-tab-history
 //= require cytoscape
 //= require cytoscape-panzoom
 //= require jscolor

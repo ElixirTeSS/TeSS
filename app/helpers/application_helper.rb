@@ -293,6 +293,9 @@ module ApplicationHelper
         options['data-toggle'] = 'tooltip'
       else
         options['data-toggle'] = 'tab'
+        options['data-tab-history'] = true
+        options['data-tab-history-changer'] = 'replace'
+        options['data-tab-history-update-url'] = true
       end
 
       text << " (#{count})" if count
