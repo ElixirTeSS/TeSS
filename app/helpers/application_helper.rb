@@ -18,9 +18,6 @@ module ApplicationHelper
   ICONS = {
     started: { icon: 'fa-hourglass-half', message: 'This event has already started' },
     expired: { icon: 'fa-hourglass-end', message: 'This event has finished' },
-    online: { icon: 'fa-desktop', message: 'This is an online event' },
-    onsite: { icon: 'fa-users', message: 'This is a physical event' },
-    hybrid: { icon: 'fa-camera', message: 'This is a hybrid event' },
     scraped_today: { icon: 'fa-check-circle-o', message: 'This record was updated today' },
     not_scraped_recently: { icon: 'fa-exclamation-circle', message: 'This record has not been updated since %SUB%' },
     event: { icon: 'fa-calendar', message: 'This is a training event' },

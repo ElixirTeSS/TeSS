@@ -8,10 +8,10 @@
     <div class="btn-group" data-toggle="buttons">
       <% [:onsite, :hybrid, :online].each do |presence| %>
         <% active = @event.send("#{presence}?") %>
-        <label class="btn btn-default <%= 'active' if active %>">
+        <label class="btn btn-lg btn-secondary <%= 'active' if active %>">
           <%= f.radio_button 'online', presence, class: 'location', data: { role: 'online-switch' },
                              checked: active, autocomplete: 'off' %>
-          <%= icon_for(presence, :small) %> <%= t("activerecord.attributes.event.presence.#{presence}") %>
+          <i class="icon icon-lg <%= presence %>-event-icon"></i> <%= t("activerecord.attributes.event.presence.#{presence}") %>
         </label>
       <% end %>
     </div>
