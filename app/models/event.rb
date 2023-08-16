@@ -229,9 +229,7 @@ class Event < ApplicationRecord
   end
 
   def show_map?
-    Rails.application.secrets.google_maps_api_key.present? && # !self.online? &&
-      ((latitude.present? && longitude.present?) ||
-        (suggested_latitude.present? && suggested_longitude.present?))
+    TeSS::Config.map_enabled && ((latitude.present? && longitude.present?) || (suggested_latitude.present? && suggested_longitude.present?))
   end
 
   def all_day?

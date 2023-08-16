@@ -21,7 +21,7 @@
     <% content_for :display_options do %>
       <ul class="nav nav-xs nav-pills index-display-options">
         <%= tab('List', 'fa fa-list', 'home', active: true) %>
-        <% if !TeSS::Config.feature['disabled'].include? 'events_map' %>
+        <% if TeSS::Config.map_enabled %>
           <%= tab('Map', 'fa fa-globe', 'map',
                   disabled: { check: (search_and_facet_params[:online] == 'true'),
                               message: 'Only showing online events.' }) %>
@@ -42,7 +42,7 @@
           <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
         </div>
 
-        <% unless TeSS::Config.feature['disabled'].include?('events_map') %>
+        <% if TeSS::Config.map_enabled %>
           <div id="map" class="tab-pane fade">
             <div id="map-count" class="search-results-count"></div>
             <div id="map-content">
