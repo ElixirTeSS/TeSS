@@ -2,7 +2,7 @@ require 'test_helper'
 
 class ProfileTest < ActiveSupport::TestCase
   setup do
-    WebMock.stub_request(:any, 'http://website.com').to_return(status: 200, body: 'hi')
+    WebMock.stub_request(:any, 'http://example.com').to_return(status: 200, body: 'hi')
   end
 
   test 'full name' do
@@ -11,6 +11,7 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   test 'should strip name and email' do
+    WebMock.stub_request(:any, 'http://website.com').to_return(status: 200, body: 'hi')
     profile = users(:regular_user).profile
     assert profile.update(firstname: ' Space ',
                           surname: "\tSpaceson\r\n",
