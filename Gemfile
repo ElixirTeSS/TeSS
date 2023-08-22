@@ -195,6 +195,7 @@ end
 
 group :test do
   gem 'minitest', '5.14.4'
+  gem 'minitest-reporters'
   gem 'rails-controller-testing'
   gem 'vcr', '~> 6.1.0'
   gem 'webmock', '~> 3.18.1'
