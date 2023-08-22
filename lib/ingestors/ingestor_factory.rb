@@ -26,6 +26,7 @@ module Ingestors
         Ingestors::TdccIngestor,
         Ingestors::UhasseltIngestor,
         Ingestors::OdisseiIngestor,
+        Ingestors::RstIngestor,
       ]
     end
 

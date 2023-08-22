@@ -55,7 +55,7 @@ module Ingestors
         end
         start_date = Time.zone.parse("#{date_s[1]}/#{date_s[0]} #{start_hours}:00")
         end_date = Time.zone.parse("#{date_s[1]}/#{date_s[0]} #{end_hours}:00")
-        if start_date < Date.today - 2.months
+        if start_date < Time.zone.now - 2.months
           start_date += 1.year
           end_date += 1.year
         end
