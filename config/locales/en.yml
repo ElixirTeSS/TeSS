@@ -34,6 +34,7 @@ en:
   attributes:
     url: 'URL'
     doi: 'DOI'
+    orcid: 'ORCID'
   activerecord:
     models:
       event: Event

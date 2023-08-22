@@ -24,6 +24,8 @@ require 'minitest/mock'
 require 'vcr'
 require_relative './schema_helper'
 
+WebMock.disable_net_connect!(allow_localhost: true, allow: 'api.codacy.com')
+
 VCR.configure do |config|
   config.cassette_library_dir = 'test/vcr_cassettes'
   config.hook_into :webmock
@@ -136,8 +138,6 @@ class ActiveSupport::TestCase
       end
     end
   end
-
-  WebMock.disable_net_connect!(allow_localhost: true, allow: 'api.codacy.com')
 
   # Mock remote images so paperclip doesn't break:
   def mock_images

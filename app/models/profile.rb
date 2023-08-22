@@ -4,9 +4,10 @@ class Profile < ApplicationRecord
   auto_strip_attributes :firstname, :surname, :website, :orcid, squish: false
   belongs_to :user, inverse_of: :profile
 
-  before_validation :check_orcid
+  before_validation :normalize_orcid
   validates :firstname, :surname, :description, presence: true, if: :public?
-  validates :website, :orcid, url: true, http_url: true, allow_blank: true
+  validates :website, url: true, http_url: true, allow_blank: true
+  validates :orcid, orcid: true, allow_blank: true
   after_validation :check_public
   clean_array_fields(:expertise_academic, :expertise_technical, :fields,
                      :interest, :activity, :language, :social_media)
@@ -78,28 +79,13 @@ class Profile < ApplicationRecord
 
   private
 
-  @@orcid_host = 'orcid.org'
-  @@orcid_scheme = 'https'
-  @@orcid_root_url = "#{@@orcid_scheme}://#{@@orcid_host}"
-
-  def check_orcid
-    if !orcid.nil? && !orcid.blank?
-      begin
-        uri = URI.parse(self.orcid)
-        raise if uri.path.blank? or uri.path == '/'
-        uri.path = '/' + uri.path unless uri.path.start_with? '/'
-        uri.host = @@orcid_host
-        uri.scheme = @@orcid_scheme
-        self.orcid = uri.to_s
-      rescue
-        errors.add(:orcid, "invalid id or URL")
-      end
-    end
-  end
-
-  def valid_orcid
-    if !orcid.nil? && !orcid.blank?
-      errors.add(:orcid, "invalid domain") unless self.orcid.to_s.start_with?(@@orcid_root_url)
+  def normalize_orcid
+    return if orcid.blank?
+    self.orcid = orcid.strip
+    if orcid =~ OrcidValidator::ORCID_ID_REGEX
+      self.orcid = "#{OrcidValidator::ORCID_PREFIX}#{orcid}"
+    elsif orcid.start_with?(OrcidValidator::ORCID_DOMAIN_REGEX)
+      self.orcid = orcid.sub(OrcidValidator::ORCID_DOMAIN_REGEX, OrcidValidator::ORCID_PREFIX)
     end
   end
 
