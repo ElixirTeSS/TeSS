@@ -133,6 +133,13 @@ en:
     api_example_4: "/content_providers.json_api"
     api_example_5: "/workflows.json_api"
   us:
+    keys:
+      tess_club: TeSS Club
+      contact: Contact
+      team: The Team
+      funding: Funding
+      acknowledgements: Acknowledgments
+      cite: Cite us
     tess_club: >
       <p>Fortnightly meetings, hackathons, shared activities, open priority setting, open contribution to unite the
       community.</p>
@@ -175,7 +182,7 @@ en:
         ).
       </li>
       </ul>
-    acknowledge: >
+    acknowledgements: >
       <p>The TeSS team would like to acknowledge the help of a number of groups and individuals, and thank them
          for useful discussions, feedback and assistance in developing TeSS - to name but a few:</p>
        <ul>

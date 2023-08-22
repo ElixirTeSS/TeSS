@@ -34,11 +34,22 @@
     <li class="about-page-category">
       <%= link_to 'About Us', us_path %>
     </li>
-    <li><%= about_nav_link('TeSS Club', us_path, 'tess-club') %></li>
-    <li><%= about_nav_link('Contact', us_path, 'contact') %></li>
-    <li><%= about_nav_link('The Team', us_path, 'team') %></li>
-    <li><%= about_nav_link('Funding', us_path, 'funding') %></li>
-    <li><%= about_nav_link('Acknowledgements', us_path, 'acknowledgments') %></li>
-    <li><%= about_nav_link('Cite Us', us_path, 'cite') %></li>
+    <% 
+      about_us_tabs = [
+        {link: us_path , key:'tess_club'},
+        {link: us_path , key:'contact'},
+        {link: us_path , key:'team'},
+        {link: us_path , key:'funding'},
+        {link: us_path , key:'acknowledgements'},
+        {link: us_path , key:'cite'}
+      ].select do |tab|
+        TeSS::Config.site['about_us_tab_order'].include?(tab[:key])
+      end.sort_by do |tab|
+        TeSS::Config.site['about_us_tab_order'].index(tab[:key]) || 99
+      end
+    %>
+    <% about_us_tabs.each do |tab| %>
+      <li><%= about_nav_link(t("us.keys.#{tab[:key]}"), tab[:link], tab[:key]) %></li>
+    <% end %>
   </ul>
 </nav>
