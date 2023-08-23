@@ -60,7 +60,8 @@ module SchemaHelper
 
   def current_committee_options
     @current_committee_options ||= {
-      schema: Committee::Drivers::load_from_file('public/api/definitions/tess.yml'),
+      schema: Committee::Drivers::load_from_file('public/api/definitions/tess.yml',
+                                                 parser_options: { strict_reference_validation: true }),
       query_hash_key: 'rack.request.query_hash',
       parse_response_by_content_type: false
     }
@@ -68,7 +69,8 @@ module SchemaHelper
 
   def legacy_committee_options
     @legacy_committee_options ||= {
-      schema: Committee::Drivers::load_from_file('public/api/definitions/tess_legacy.yml'),
+      schema: Committee::Drivers::load_from_file('public/api/definitions/tess_legacy.yml',
+                                                 parser_options: { strict_reference_validation: true }),
       query_hash_key: 'rack.request.query_hash',
       parse_response_by_content_type: false
     }
