@@ -1,30 +1,32 @@
-require 'net/http'
-
 class HttpUrlValidator < ActiveModel::EachValidator
-
   def self.blocked?(value)
-    blocked = (TeSS::Config.blocked_domains || []).any? do |regex|
+    (TeSS::Config.blocked_domains || []).any? do |regex|
       value =~ regex
     end
   end
 
   def self.accessible?(value)
     begin
-      case Net::HTTP.get_response(URI.parse(value))
-      when Net::HTTPSuccess then true
-      else false
+      uri = URI.parse(value) rescue nil
+      if uri && (uri.scheme == 'http' || uri.scheme == 'https')
+        PrivateAddressCheck.only_public_connections do
+          res = HTTParty.get(value, { timeout: Rails.env.test? ? 1 : 5 })
+          res.code == 200
+        end
       end
-    rescue
+    rescue PrivateAddressCheck::PrivateConnectionAttemptedError, Net::OpenTimeout, SocketError, Errno::ECONNREFUSED,
+      Errno::EHOSTUNREACH
       false
     end
-
   end
 
   def validate_each(record, attribute, value)
     if value.present?
-      record.errors.add(attribute, "is blocked") if self.class.blocked?(value)
-      record.errors.add(attribute, "is not accessible") unless self.class.accessible?(value)
+      if self.class.blocked?(value)
+        record.errors.add(attribute, 'is blocked')
+      elsif !self.class.accessible?(value)
+        record.errors.add(attribute, 'is not accessible')
+      end
     end
   end
-
 end

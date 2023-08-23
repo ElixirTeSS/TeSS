@@ -130,6 +130,7 @@ GEM
       device_detector
       safely_block (>= 0.2.1)
     amazing_print (1.4.0)
+    ansi (1.5.0)
     ast (2.4.2)
     attr_required (1.0.1)
     auto_strip_attributes (2.6.0)
@@ -369,6 +370,11 @@ GEM
     mini_mime (1.1.2)
     mini_portile2 (2.8.1)
     minitest (5.14.4)
+    minitest-reporters (1.6.1)
+      ansi
+      builder
+      minitest (>= 5.0)
+      ruby-progressbar
     monetize (1.12.0)
       money (~> 6.12)
     money (6.16.0)
@@ -817,6 +823,7 @@ DEPENDENCIES
   listen
   lunchy
   minitest (= 5.14.4)
+  minitest-reporters
   money-rails
   omniauth-rails_csrf_protection
   omniauth_openid_connect
