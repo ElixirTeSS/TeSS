@@ -38,14 +38,12 @@ end
 class ActiveSupport::TestCase
   include SchemaHelper
 
-  def setup
-    super
+  setup do
     redis = Redis.new(url: TeSS::Config.redis_url)
     redis.flushdb
   end
 
-  def teardown
-    super
+  teardown do
     User.current_user = nil
   end
 
