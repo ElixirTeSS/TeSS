@@ -20,10 +20,10 @@ class OrcidValidator < ActiveModel::EachValidator
     end
   end
 
-  # calculating the checksum according to ISO/IEC 7064:2003, MOD 11-2 ; see - http://support.orcid.org/knowledgebase/articles/116780-structure-of-the-orcid-identifier
+  # calculating the checksum according to ISO/IEC 7064:2003, MOD 11-2 ;
+  # see - https://support.orcid.org/hc/en-us/articles/360006897674-Structure-of-the-ORCID-Identifier
   def orcid_checksum(id)
-    total = 0
-    (0...15).each { |x| total = (total + id[x].to_i) * 2 }
+    total = id.chars.first(15).inject(0) { |sum, value| (sum + value.to_i) * 2 }
     remainder = total % 11
     result = (12 - remainder) % 11
     result == 10 ? 'X' : result.to_s

@@ -33,6 +33,8 @@ class ProfileTest < ActiveSupport::TestCase
 
     # check validation of valid orcid - id only
     assert profile.update(orcid: '0000-0002-1825-0097')
+    assert profile.update(orcid: '0000-0001-5109-3700')
+    assert profile.update(orcid: '0000-0002-1694-233X')
 
     # check validation of valid orcid - bad check bit
     refute profile.update(orcid: '0000-0002-1825-0099')
@@ -42,7 +44,7 @@ class ProfileTest < ActiveSupport::TestCase
     refute profile.update(orcid: 'https://orcid.org/0000-0001-1234-9999')
     assert profile.errors.added?(:orcid, "isn't a valid ORCID identifier")
 
-    # check validation of valid orcid - non-secure scheme
+    # check validation of valid orcid - fixes non-secure scheme
     assert profile.update(orcid: 'http://orcid.org/0000-0002-1825-0097')
     assert_equal 'https://orcid.org/0000-0002-1825-0097', profile.orcid
 
@@ -50,7 +52,7 @@ class ProfileTest < ActiveSupport::TestCase
     refute profile.update(orcid: 'https://orcid.org/')
     assert_equal "ORCID isn't a valid ORCID identifier", profile.errors.full_messages_for(:orcid).first
 
-    # check validation of invalid orcid - scheme and host only
+    # check validation of invalid orcid, preserves original value
     refute profile.update(orcid: 'some junk')
     assert_equal "ORCID isn't a valid ORCID identifier", profile.errors.full_messages_for(:orcid).first
     assert_equal 'some junk', profile.orcid
