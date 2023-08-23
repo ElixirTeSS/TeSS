@@ -207,6 +207,7 @@ ServerName appropriately):
     <VirtualHost *:80>
         ServerName www.yourhost.com
         
+        PassengerPreloadBundler on
         PassengerRuby /usr/local/rvm/rubies/tess/bin/ruby
         
         DocumentRoot /home/tess/TeSS/public
