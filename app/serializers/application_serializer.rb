@@ -1,6 +1,6 @@
 class ApplicationSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
-  include Pundit
+  include Pundit::Authorization
 
   def scientific_topics
     ontology_terms(:scientific_topics)
