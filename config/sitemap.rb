@@ -1,66 +1,30 @@
-# Change this to your host. See the readme at https://github.com/lassebunk/dynamic_sitemaps
-# for examples of multiple hosts and folders.
-base_url = URI.parse(TeSS::Config.base_url)
-host_with_port = base_url.host
-if base_url.port != base_url.default_port
-  host_with_port += ":#{base_url.port}"
+# Set the host name for URL creation
+SitemapGenerator::Sitemap.default_host = TeSS::Config.base_url
+
+SitemapGenerator::Sitemap.create(compress: false, sitemaps_path: 'sitemaps/', include_root: false) do
+  types = {
+    materials: { resources: Material.from_verified_users, changefreq: 'daily', priority: 0.7 },
+    events: { resources: Event.from_verified_users, changefreq: 'daily', priority: 0.7 },
+    content_providers: { resources: ContentProvider, changefreq: 'weekly', priority: 0.4 },
+    workflows: { resources: Workflow.from_verified_users.visible_by(nil), changefreq: 'daily', priority: 0.6 },
+    collections: { resources: Collection.from_verified_users.visible_by(nil), changefreq: 'daily', priority: 0.6 }
+  }
+
+  group(filename: :site) do
+    add root_path, changefreq: 'daily', priority: 1.0
+    add about_path, priority: 0.4
+    types.each do |type, options|
+      next unless TeSS::Config.feature[type.to_s]
+      add polymorphic_path(type), lastmod: options[:resources].maximum(:updated_at), **options.except(:resources)
+    end
+  end
+
+  types.each do |type, options|
+    next unless TeSS::Config.feature[type.to_s]
+    group(filename: type) do
+      options[:resources].find_each do |resource|
+        add polymorphic_path(resource), lastmod: resource.updated_at
+      end
+    end
+  end
 end
-
-protocol base_url.scheme
-host host_with_port
-
-sitemap :site do
-  url root_url, last_mod: Time.now, change_freq: 'daily', priority: 1.0
-  url about_url, change_freq: 'weekly', priority: 0.4
-  if TeSS::Config.feature['materials']
-    url materials_url, last_mod: Time.now, change_freq: 'daily', priority: 0.7
-  end
-  if TeSS::Config.feature['events']
-    url events_url, last_mod: Time.now, change_freq: 'daily', priority: 0.7
-  end
-  if TeSS::Config.feature['workflows']
-    url workflows_url, last_mod: Time.now, change_freq: 'daily', priority: 0.6
-  end
-  if TeSS::Config.feature['content_providers']
-    url content_providers_url, last_mod: Time.now, change_freq: 'weekly', priority: 0.4
-  end
-end
-
-# You can have multiple sitemaps like the above – just make sure their names are different.
-
-# Automatically link to all pages using the routes specified
-# using "resources :pages" in config/routes.rb. This will also
-# automatically set <lastmod> to the date and time in page.updated_at:
-#
-#   sitemap_for Page.scoped
-
-sitemap_for Material.from_verified_users if TeSS::Config.feature['materials']
-sitemap_for Event.from_verified_users if TeSS::Config.feature['events']
-sitemap_for ContentProvider if TeSS::Config.feature['content_providers']
-sitemap_for Workflow.from_verified_users.visible_by(nil) if TeSS::Config.feature['workflows']
-
-# For products with special sitemap name and priority, and link to comments:
-#
-#   sitemap_for Product.published, name: :published_products do |product|
-#     url product, last_mod: product.updated_at, priority: (product.featured? ? 1.0 : 0.7)
-#     url product_comments_url(product)
-#   end
-
-# If you want to generate multiple sitemaps in different folders (for example if you have
-# more than one domain, you can specify a folder before the sitemap definitions:
-# 
-#   Site.all.each do |site|
-#     folder "sitemaps/#{site.domain}"
-#     host site.domain
-#     
-#     sitemap :site do
-#       url root_url
-#     end
-# 
-#     sitemap_for site.products.scoped
-#   end
-
-# Ping search engines after sitemap generation:
-#
-
-ping_with "#{base_url.scheme}://#{host}/sitemap.xml" if Rails.env.production?

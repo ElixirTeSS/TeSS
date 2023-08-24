@@ -6,13 +6,6 @@ GIT
       linkeddata (~> 3.2.0)
 
 GIT
-  remote: https://github.com/lassebunk/dynamic_sitemaps.git
-  revision: 37beeba143e8202218ee814056231b0e6974bafb
-  branch: master
-  specs:
-    dynamic_sitemaps (2.0.0)
-
-GIT
   remote: https://github.com/radar/by_star
   revision: d7811c0c50f30262b4862b384c50f22f36e54f07
   specs:
@@ -687,6 +680,8 @@ GEM
     sitemap-parser (0.5.6)
       nokogiri (~> 1.6)
       typhoeus (>= 0.6, < 2.0)
+    sitemap_generator (6.3.0)
+      builder (~> 3.0)
     sixarm_ruby_unaccent (1.2.0)
     slim (4.1.0)
       temple (>= 0.7.6, < 0.9)
@@ -800,7 +795,6 @@ DEPENDENCIES
   country_select (<= 4.0.0)
   devise
   devise_invitable (~> 2.0.5)
-  dynamic_sitemaps!
   eventbrite_sdk
   font-awesome-sass (~> 4.7.0)
   friendly_id (~> 5.2.4)
@@ -863,6 +857,7 @@ DEPENDENCIES
   simplecov
   simplecov-lcov
   sitemap-parser (~> 0.5.6)
+  sitemap_generator
   slim
   sunspot_rails!
   terser
