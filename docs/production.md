@@ -74,7 +74,7 @@ and clone the TeSS repo (for this guide we will put it in the `tess` user's home
 
 ## Install Ruby
 
-Enter the TeSS directory we just cloned, and install TeSS' current version (3.0.4 at time of writing) of Ruby via RVM:
+Enter the TeSS directory we just cloned, and install TeSS' current version (3.2.2 at time of writing) of Ruby via RVM:
 
     cd TeSS
 
