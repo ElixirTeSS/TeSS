@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 source 'https://rubygems.org'
 
-gem 'rails', '6.1.7.6'
+gem 'rails', '7.0.7.2'
 
 gem 'active_model_serializers'
 gem 'activerecord-session_store'
@@ -41,7 +41,7 @@ gem 'public_activity'
 gem 'pundit'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rails-i18n'
-gem 'rails_admin', '~> 2.2.1' # Version 3 is not compatible with our version of Bootstrap
+gem 'rails_admin'
 gem 'recaptcha', require: 'recaptcha/rails'
 gem 'redcarpet'
 gem 'redis'
