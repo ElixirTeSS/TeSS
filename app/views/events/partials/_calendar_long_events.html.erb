@@ -5,7 +5,7 @@
       <%= link_to event do %>
         <%= event.title %>
         -
-        <%= l event.start, format: :long %> - <%= l event.end, format: :long %>
+        <%= l event.start, format: :long if event.start %> - <%= l event.end, format: :long if event.end %>
       <% end %>
     </li>
   <% end %>
