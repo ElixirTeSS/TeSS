@@ -409,6 +409,7 @@ en:
       timezone: 'Select the appropriate timezone'
       title: 'Add a title for your training event.'
       url: 'Enter a valid URL for the event landing page.'
+    long: 'Long events'
   materials:
     hints:
       authors: >

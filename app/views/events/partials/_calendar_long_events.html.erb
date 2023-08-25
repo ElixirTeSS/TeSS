@@ -1,10 +1,11 @@
-<h4>Long events</h4>
+<h4><%= t('events.long') %></h4>
 <ul>
   <% events.each do |event| %>
     <li>
       <%= link_to event do %>
         <%= event.title %>
-        <%= l event.start, format: :short %> - <%= l event.end, format: :short %>
+        -
+        <%= l event.start, format: :long %> - <%= l event.end, format: :long %>
       <% end %>
     </li>
   <% end %>
