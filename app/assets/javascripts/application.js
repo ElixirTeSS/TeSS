@@ -113,6 +113,14 @@ document.addEventListener("turbolinks:load", function() {
         }
     });
 
+    // Load event calendar when tab is shown for the first time
+    $('.nav li a[data-calendar]').on("show.bs.tab", function(e) {
+        data = e.target.dataset
+        if (!data.loaded) loadCalendar(data.calendar);
+        // avoid loading on the second click
+        data.loaded = true;
+    })
+
     // Masonry
     $(".nav-tabs a").on("shown.bs.tab", function(e) {
         reposition_tiles('masonry', 'masonry-brick');
