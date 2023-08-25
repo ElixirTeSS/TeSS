@@ -31,14 +31,12 @@ class EventsController < ApplicationController
   # GET /events/calendar.js
   def calendar
     # set a higher limit so we ensure to have enough results to fill a month
-    # include expired results so we also fill past pages
     params[:per_page] ||= 200
-    params[:include_expired] ||= 'true'
     @start_date = Date.parse(params.fetch(:start_date, Date.today.to_s)).beginning_of_month
 
     set_params
     # override @facet_params to get only events relevant for the current month view
-    @facet_params[:running_during] = "#{@start_date.to_s}/#{(@start_date + 1.month).to_s}"
+    @facet_params[:running_during] = "#{@start_date}/#{@start_date + 1.month}"
 
     fetch_resources
     # now customize the list by moving all events longer than 3 days into a separate array
