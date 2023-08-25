@@ -57,7 +57,7 @@ class EventsControllerTest < ActionController::TestCase
   test 'should render a calendar into a JS update command' do
     with_settings(solr_enabled: true) do
       Event.stub(:search_and_filter, MockSearch.new(Event.all)) do
-        get :calendar, format: :js
+        get :calendar, format: :js, xhr: true
         assert_response :success
         assert_not_empty assigns(:events)
       end
