@@ -52,7 +52,7 @@ gem 'activerecord-session_store'
 
 gem 'gravtastic', '~> 3.2.6'
 
-gem 'dynamic_sitemaps', github: 'lassebunk/dynamic_sitemaps', branch: 'master'
+gem 'sitemap_generator'
 
 gem 'whenever', '~> 1.0.0'
 
