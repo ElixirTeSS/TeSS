@@ -34,11 +34,15 @@ class EventsController < ApplicationController
     # include expired results so we also fill past pages
     params[:per_page] ||= 200
     params[:include_expired] ||= 'true'
+    @start_date = Date.parse(params.fetch(:start_date, Date.today.to_s)).beginning_of_month
+
     set_params
+    # override @facet_params to get only events relevant for the current month view
+    @facet_params[:running_during] = "#{@start_date.to_s}/#{(@start_date + 1.month).to_s}"
+
     fetch_resources
     # now customize the list by moving all events longer than 3 days into a separate array
     @long_events, @events = @events.partition { |e| e.end.nil? || e.start.nil? || e.start + TeSS::Config.site.fetch(:calendar_event_maxlength, 5).to_i.days < e.end }
-    @start_date = params[:start_date]
 
     respond_to do |format|
       format.js
