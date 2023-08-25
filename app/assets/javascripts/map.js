@@ -42,6 +42,26 @@ var Map = {
     }
 }
 
+/* Set all filter links to include the anchor */
+var addTabToFilters = function (tab) {
+    if (tab) {
+        $(function () {
+            $('.active-filters a').attr('href', function (_, oldHref) {
+                oldHref = oldHref.replace(/\#(.*)/g, "#" + tab);
+                if (oldHref.indexOf('#') == -1)
+                    oldHref += "#" + tab;
+                return oldHref;
+            })
+            $('.nav-item a').attr('href', function (_, oldHref) {
+                oldHref = oldHref.replace(/\#(.*)/g, "#" + tab);
+                if (oldHref.indexOf('#') == -1)
+                    oldHref += "#" + tab;
+                return oldHref;
+            });
+        });
+    }
+};
+
 var EventsMap = {
     map: null,
     init: function () {
@@ -49,25 +69,6 @@ var EventsMap = {
         var element = $('[data-role="events-map"]');
         if (element.length) {
             EventsMap.map = null;
-            /* Set all filter links to include the anchor */
-            var addTabToFilters = function (tab) {
-                if (tab) {
-                    $(function () {
-                        $('.active-filters a').attr('href', function (_, oldHref) {
-                            oldHref = oldHref.replace(/\#(.*)/g, "#" + tab);
-                            if (oldHref.indexOf('#') == -1)
-                                oldHref += "#" + tab;
-                            return oldHref;
-                        })
-                        $('.nav-item a').attr('href', function (_, oldHref) {
-                            oldHref = oldHref.replace(/\#(.*)/g, "#" + tab);
-                            if (oldHref.indexOf('#') == -1)
-                                oldHref += "#" + tab;
-                            return oldHref;
-                        });
-                    });
-                }
-            };
 
             var getTab = function () {
                 var tab = window.location.hash;
