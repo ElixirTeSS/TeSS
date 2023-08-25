@@ -40,6 +40,8 @@ default: &default
     tab_order: ['about', 'events', 'materials', 'elearning_materials', 'workflows', 'collections', 'trainers', 'content_providers', 'nodes']
     # The tabs that should be collapsed under the "Directory" tab. Can be left blank to hide it.
     directory_tabs: ['trainers', 'content_providers', 'nodes']
+    # The order in with the 'about us' tabs appear
+    about_us_tab_order: ['tess_club', 'contact', 'team', 'funding', 'acknowledgements', 'cite']
     n_provider_ids: 5
     calendar_event_maxlength: 5
   mailer:

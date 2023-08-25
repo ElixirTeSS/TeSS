@@ -8,52 +8,39 @@
       <h2>About Us</h2>
       <% @feature_count = 0 %>
 
-      <!-- TeSS Club-->
-      <div id="tess-club" class="<%= next_about_block(@feature_count += 1) %>">
-        <h3>TeSS Club</h3>
-        <%== t 'us.tess_club' %>
-      </div>
-
-      <!-- CONTACT-->
-      <div id="contact" class="<%= next_about_block(@feature_count += 1) %>">
-        <h3>Contact</h3>
-        <%== t 'us.contact' %>
-      </div>
-
-      <!-- FUNDING-->
-      <div id="funding" class="<%= next_about_block(@feature_count += 1) %>">
-        <h3>Funding</h3>
-        <%== t 'us.funding' %>
-        <% if TeSS::Config.funders.present? %>
-          <p>
-            <% TeSS::Config.funders.each do |funder| %>
-              <%= link_to(funder['url'], target: '_blank', rel: 'noopener') do -%>
-                <%= image_tag(funder['logo'], class: 'funding-logo') -%>
-              <% end %>
+      <% TeSS::Config.site['about_us_tab_order'].each do |key| %>
+        <% case key %>
+        <% when 'funding' %>
+          <%# FUNDING %>
+          <div id="funding" class="<%= next_about_block(@feature_count += 1) %>">
+            <h3><%== t "us.keys.#{key}" %></h3>
+            <%== t 'us.funding' %>
+            <% if TeSS::Config.funders.present? %>
+              <p>
+                <% TeSS::Config.funders.each do |funder| %>
+                  <%= link_to(funder['url'], target: '_blank', rel: 'noopener') do -%>
+                    <%= image_tag(funder['logo'], class: 'funding-logo') -%>
+                  <% end %>
+                <% end %>
+              </p>
             <% end %>
-          </p>
+          </div>
+        <% when 'cite' %>
+          <%# CITE %>
+          <div id=key class="<%= next_about_block(@feature_count += 1) %>">
+            <h3><%== t "us.keys.#{key}" %></h3>
+            <blockquote>
+              <%== t "us.#{key}" %>
+            <blockquote>
+          </div>
+        <% else %>
+          <%# OTHERS %>
+          <div id=key class="<%= next_about_block(@feature_count += 1) %>">
+            <h3><%== t "us.keys.#{key}" %></h3>
+            <%== t "us.#{key}" %>
+          </div>
         <% end %>
-      </div>
-
-      <!-- THE TEAM-->
-      <div id="team" class="<%= next_about_block(@feature_count += 1) %>">
-        <h3>The Team</h3>
-        <%== t 'us.team' %>
-      </div>
-
-      <!-- ACKNOWLEDGEMENTS-->
-      <div id="acknowledgements" class="<%= next_about_block(@feature_count += 1) %>">
-        <h3>Acknowledgements</h3>
-        <%== t 'us.acknowledge' %>
-      </div>
-
-      <!-- Cite -->
-      <div id="cite" class="<%= next_about_block(@feature_count += 1) %>">
-        <h3>Cite Us</h3>
-        <blockquote>
-          <%== t 'us.cite' %>
-        </blockquote>
-      </div>
+      <% end %>
     </div>
 
     <hr/>

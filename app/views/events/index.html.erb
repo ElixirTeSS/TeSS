@@ -23,7 +23,7 @@
         <%# We should consider setting the active status based on the query fragment so we can deeplink %>
         <%= tab('List', 'fa fa-list', 'home', active: true) %>
         <%= tab('Calendar', 'fa fa-calendar', 'calendar', options: { 'onclick': 'loadCalendar(this.dataset.url)', 'data-url': calendar_events_path(search_and_facet_params.merge(format: :js, per_page: 200))}) %>
-        <% if !TeSS::Config.feature['disabled'].include? 'events_map' %>
+        <% if TeSS::Config.map_enabled %>
           <%= tab('Map', 'fa fa-globe', 'map',
                   disabled: { check: (search_and_facet_params[:online] == 'true'),
                               message: 'Only showing online events.' }) %>
@@ -48,7 +48,7 @@
           <%= render partial: 'events/partials/calendar_loader' %>
         </div>
 
-        <% unless TeSS::Config.feature['disabled'].include?('events_map') %>
+        <% if TeSS::Config.map_enabled %>
           <div id="map" class="tab-pane fade">
             <div id="map-count" class="search-results-count"></div>
             <div id="map-content">

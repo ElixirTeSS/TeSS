@@ -16,7 +16,7 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test 'cookie consent banner shown with tracking option if analytics enabled' do
-    with_settings({ require_cookie_consent: true, analytics_enabled: true }) do
+    with_settings({ require_cookie_consent: true, force_analytics_enabled: true }) do
       get root_path
 
       assert_select '#cookie-banner' do
@@ -51,7 +51,7 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test 'analytics code not present if only necessary cookies allowed' do
-    with_settings({ require_cookie_consent: true, analytics_enabled: true }) do
+    with_settings({ require_cookie_consent: true, force_analytics_enabled: true }) do
       post cookies_consent_path, params: { allow: 'necessary' }
 
       get root_path
@@ -62,7 +62,7 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test 'analytics code present if only all cookies allowed' do
-    with_settings({ require_cookie_consent: true, analytics_enabled: true }) do
+    with_settings({ require_cookie_consent: true, force_analytics_enabled: true }) do
       post cookies_consent_path, params: { allow: all_options }
 
       get root_path
@@ -73,7 +73,7 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test 'analytics code present if cookie consent not required' do
-    with_settings({ require_cookie_consent: false, analytics_enabled: true }) do
+    with_settings({ require_cookie_consent: false, force_analytics_enabled: true }) do
       post cookies_consent_path, params: { allow: 'necessary' }
 
       get root_path
@@ -86,7 +86,7 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test 'can access and use cookie consent page as anonymous user' do
-    with_settings({ require_cookie_consent: true, analytics_enabled: true }) do
+    with_settings({ require_cookie_consent: true, force_analytics_enabled: true }) do
       get cookies_consent_path
 
       assert_nil User.current_user
@@ -122,7 +122,7 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
     user = users(:regular_user)
     post '/users/sign_in', params: { 'user[login]' => user.username, 'user[password]' => 'hello' }
 
-    with_settings({ require_cookie_consent: true, analytics_enabled: true }) do
+    with_settings({ require_cookie_consent: true, force_analytics_enabled: true }) do
       get cookies_consent_path
 
       assert_equal user, User.current_user
@@ -152,7 +152,7 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test 'revoke consent' do
-    with_settings({ require_cookie_consent: true, analytics_enabled: true }) do
+    with_settings({ require_cookie_consent: true, force_analytics_enabled: true }) do
       post cookies_consent_path, params: { allow: 'necessary' }
       follow_redirect!
       assert_select '#flash-container .alert-danger', count: 0

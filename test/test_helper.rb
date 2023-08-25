@@ -21,8 +21,13 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'webmock/minitest'
 require 'minitest/mock'
+require 'minitest/reporters'
 require 'vcr'
 require_relative './schema_helper'
+
+WebMock.disable_net_connect!(allow_localhost: true, allow: 'api.codacy.com')
+Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(
+  fast_fail: true, color: true, detailed_skip: false, slow_count: 10)] unless ENV['RM_INFO']
 
 VCR.configure do |config|
   config.cassette_library_dir = 'test/vcr_cassettes'
@@ -33,12 +38,12 @@ end
 class ActiveSupport::TestCase
   include SchemaHelper
 
-  def setup
+  setup do
     redis = Redis.new(url: TeSS::Config.redis_url)
     redis.flushdb
   end
 
-  def teardown
+  teardown do
     User.current_user = nil
   end
 
@@ -136,8 +141,6 @@ class ActiveSupport::TestCase
       end
     end
   end
-
-  WebMock.disable_net_connect!(allow_localhost: true, allow: 'api.codacy.com')
 
   # Mock remote images so paperclip doesn't break:
   def mock_images

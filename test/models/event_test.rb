@@ -543,4 +543,18 @@ class EventTest < ActiveSupport::TestCase
     assert_equal 'Event  Title', @event.title
     assert_equal 'https://event.com', @event.url
   end
+
+  test 'show_map?' do
+    assert TeSS::Config.map_enabled
+
+    assert events(:one).show_map?
+    refute events(:portal_event).show_map?
+    assert events(:kilburn).suggested_latitude
+    assert events(:kilburn).show_map?
+
+    with_settings(feature: { disabled: ['events_map'] }) do
+      refute TeSS::Config.map_enabled
+      refute events(:one).show_map?
+    end
+  end
 end

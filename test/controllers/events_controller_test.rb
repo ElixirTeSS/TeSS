@@ -1344,6 +1344,9 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test 'should hide map tab if disabled' do
+    assert Rails.application.secrets.google_maps_api_key.present?
+    assert TeSS::Config.map_enabled
+
     get :index
     assert_response :success
     assert_select '#content .nav' do
@@ -1351,6 +1354,22 @@ class EventsControllerTest < ActionController::TestCase
     end
 
     with_settings(feature: { disabled: ['events_map'] }) do
+      assert Rails.application.secrets.google_maps_api_key.present?
+      refute TeSS::Config.map_enabled
+
+      get :index
+      assert_response :success
+      assert_select '#content .nav' do
+        assert_select 'li a[href=?]', '#map', count: 0
+      end
+    end
+  end
+
+  test 'should hide map tab if no API key' do
+    Rails.application.secrets.stub(:google_maps_api_key, nil) do
+      refute Rails.application.secrets.google_maps_api_key.present?
+      refute TeSS::Config.map_enabled
+
       get :index
       assert_response :success
       assert_select '#content .nav' do
@@ -1373,5 +1392,27 @@ class EventsControllerTest < ActionController::TestCase
     sign_in users(:another_regular_user)
     get :clone, params: { id: @event }
     assert_response :forbidden
+  end
+
+  test 'should show map if location data' do
+    get :show, params: { id: events(:one) }
+    assert_response :success
+    assert_select '#map'
+  end
+
+  test 'should not show map if no location data' do
+    get :show, params: { id: events(:portal_event) }
+    assert_response :success
+    assert_select '#map', count: 0
+  end
+
+  test 'should not show map if disabled' do
+    with_settings(feature: { disabled: ['events_map'] }) do
+      assert Rails.application.secrets.google_maps_api_key.present?
+      refute TeSS::Config.map_enabled
+      get :show, params: { id: events(:one) }
+      assert_response :success
+      assert_select '#map', count: 0
+    end
   end
 end

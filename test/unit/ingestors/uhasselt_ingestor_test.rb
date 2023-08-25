@@ -24,7 +24,7 @@ class UhasseltIngestorTest < ActiveSupport::TestCase
 
     # run task
     assert_difference 'Event.count', 14 do
-      freeze_time(Time.new('2023-06-18')) do
+      freeze_time(2023) do
         VCR.use_cassette("ingestors/uhasselt") do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)

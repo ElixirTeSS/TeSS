@@ -118,6 +118,7 @@ gem 'icalendar', '~> 2.4.1'
 gem 'rss'
 
 gem 'bootstrap-datepicker-rails', '~> 1.6.4.1'
+gem 'bootstrap-tab-history-rails'
 
 gem 'rack-cors', require: 'rack/cors'
 
@@ -197,6 +198,7 @@ end
 
 group :test do
   gem 'minitest', '5.14.4'
+  gem 'minitest-reporters'
   gem 'rails-controller-testing'
   gem 'vcr', '~> 6.1.0'
   gem 'webmock', '~> 3.18.1'

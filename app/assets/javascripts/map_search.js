@@ -46,14 +46,10 @@ var MapSearch = {
                 var street_number = '';
                 var street_name = '';
                 var street_short = '';
-
-                //var message = 'place.name: ' + place.name;
-                //var newline = '\r\n';
+                var city = '';
 
                 for (var i = 0; i < place.address_components.length; i++) {
                     var addressType = place.address_components[i].types[0];
-                    //message = message + newline + addressType + ': ' + place.address_components[i].long_name + ' (' +
-                    //    place.address_components[i].short_name + ')';
                     switch (addressType) {
                         case 'street_number':
                             street_number = place.address_components[i].short_name;
@@ -63,7 +59,8 @@ var MapSearch = {
                             street_short = place.address_components[i].short_name;
                             break;
                         case 'locality':
-                            $('#event_city').val(place.address_components[i].long_name);
+                        case 'postal_town':
+                            city = place.address_components[i].long_name;
                             break;
                         case 'administrative_area_level_2':
                             $('#event_county').val(place.address_components[i].long_name);
@@ -79,17 +76,16 @@ var MapSearch = {
 
                 var street_address_short = street_number + ' ' + street_short;
                 var street_address_long = street_number + ' ' + street_name;
-                if (street_address_long.trim().length > 0 && venue != street_address_long) {
-                    if (venue == street_address_short) {
+                if (street_address_long.trim().length > 0 && venue !== street_address_long) {
+                    if (venue === street_address_short) {
                         venue = street_address_long;
                     } else {
                         venue = place.name + ', ' + street_address_long;
                     }
                 }
 
-                //window.alert(message);
-
                 $('#event_venue').val(venue);
+                $('#event_city').val(city);
                 $('#event_latitude').val(place.geometry.location.lat());
                 $('#event_longitude').val(place.geometry.location.lng());
 
@@ -106,7 +102,6 @@ var MapSearch = {
         var venue = $('#event_venue').val();
         var city = $('#event_city').val();
         var country = $('#event_country').val();
-        var postcode = $('#event_postcode').val();
         var lat = $('#event_latitude').val();
         var lon = $('#event_longitude').val();
 

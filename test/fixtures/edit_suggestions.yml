@@ -17,3 +17,8 @@ multiple_fields:
   data_fields:
     title: banana
     latitude: 15
+
+location_suggestions:
+  suggestible: kilburn (Event)
+  data_fields:
+    geographic_coordinates: [43, 43]
