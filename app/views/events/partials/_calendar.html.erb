@@ -11,3 +11,9 @@
     <% end %>
   </ul>
 <% end %>
+
+<% if events.count < 10 %>
+  <div >
+    <%= t('events.pick_date') %>
+  </div>
+<% end %>
