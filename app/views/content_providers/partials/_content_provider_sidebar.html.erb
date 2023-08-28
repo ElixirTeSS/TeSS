@@ -1,8 +1,10 @@
-<h4 class="nav-heading">Type</h4>
-<div class="nav-block">
-  <%= content_provider.content_provider_type %>
-</div>
-<% unless content_provider.keywords.blank? %>
+<% unless TeSS::Config.site['content_provider_sidebar_skip'].include?('type') %>
+  <h4 class="nav-heading">Type</h4>
+  <div class="nav-block">
+    <%= content_provider.content_provider_type %>
+  </div>
+<% end %>
+<% unless content_provider.keywords.blank? || TeSS::Config.site['content_provider_sidebar_skip'].include?('keywords') %>
   <h4 class="nav-heading">Keywords</h4>
   <div class="nav-block">
     <%= content_provider.keywords.join(', ') %>
@@ -21,7 +23,7 @@
     </p>
   </div>
 <% end %>
-<% unless @content_provider.contact.blank? %>
+<% unless @content_provider.contact.blank? || TeSS::Config.site['content_provider_sidebar_skip'].include?('contact') %>
   <h4 class="nav-heading">Contact</h4>
   <div class="nav-block">
     <%= content_provider.contact %>
@@ -33,11 +35,13 @@
 
 <%= render partial: 'content_providers/partials/twitter_card',
            locals: { content_provider: @content_provider } %>
-<h4 class="nav-heading">Owner</h4>
-<div class="nav-block">
-  <%= link_to content_provider.user.name, content_provider.user %>
-</div>
-<% if content_provider.editors.any? %>
+<% unless TeSS::Config.site['content_provider_sidebar_skip'].include?('owner') %>
+  <h4 class="nav-heading">Owner</h4>
+  <div class="nav-block">
+    <%= link_to content_provider.user.name, content_provider.user %>
+  </div>
+<% end %>
+<% unless !content_provider.editors.any? || TeSS::Config.site['content_provider_sidebar_skip'].include?('editors') %>
   <h4 class="nav-heading"><%= ContentProvider.human_attribute_name(:editors) %></h4>
   <% content_provider.editors.each do |editor| %>
     <div class="nav-block">

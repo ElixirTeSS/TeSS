@@ -42,6 +42,7 @@ default: &default
     directory_tabs: ['trainers', 'content_providers', 'nodes']
     # The order in with the 'about us' tabs appear
     about_us_tab_order: ['tess_club', 'contact', 'team', 'funding', 'acknowledgements', 'cite']
+    content_provider_sidebar_skip: []
     n_provider_ids: 5
   mailer:
     delivery_method: sendmail
