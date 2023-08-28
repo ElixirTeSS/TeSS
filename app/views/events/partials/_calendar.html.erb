@@ -5,7 +5,7 @@
 
   <ul class="list-unstyled">
     <% events.each do |event| %>
-      <li>
+      <li class= "calendar-text">
         <%= link_to "#{event.title}", event, class: 'clear-both', 'title': "#{l event.start, format: :time_short} - #{l event.end, format: :time_short}" %>
       </li>
     <% end %>
