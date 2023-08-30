@@ -42,7 +42,6 @@ default: &default
     directory_tabs: ['trainers', 'content_providers', 'nodes']
     # The order in with the 'about us' tabs appear
     about_us_tab_order: ['tess_club', 'contact', 'team', 'funding', 'acknowledgements', 'cite']
-    content_provider_sidebar_skip: []
     n_provider_ids: 5
   mailer:
     delivery_method: sendmail
@@ -77,6 +76,7 @@ default: &default
     #  other_types, subsets, syllabus, approved_editors address_finder
     disabled: ['ardc_fields_of_research', 'other_types', 'subsets', 'syllabus', 'approved_editors']
     materials_disabled: []
+    content_provider_disabled: []
   restrict_content_provider_selection: false
   user_ingestion_methods: ['bioschemas']
   placeholder:
