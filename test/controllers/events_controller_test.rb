@@ -1415,4 +1415,20 @@ class EventsControllerTest < ActionController::TestCase
       assert_select '#map', count: 0
     end
   end
+
+  # test 'should show calendar events' do
+  #   (1..200).each do |i|
+  #     Event.create(title: "hi#{i}", url: "http://google.com#hi#{i}",
+  #     user: User.first, content_provider: ContentProvider.first, timezone: 'UTC',
+  #     start: Time.now.beginning_of_month - 8.days, end: Time.now + 1.day + 7.hours, city: 'Tilburg', country: 'Netherlands')
+  #   end
+  #     Event.create(title: 'relevant_event', url: 'http://google.com#relevant',
+  #     user: User.first, content_provider: ContentProvider.first, timezone: 'UTC',
+  #     start: Time.now, end: Time.now + 7.hours, city: 'Tilburg', country: 'Netherlands')
+  #   sign_in users(:another_regular_user)
+  #   get :index
+  #   #show calendar
+  #   #assert_text 'relevant_event
+  #   end
+  # end
 end
