@@ -1,10 +1,10 @@
-<% unless TeSS::Config.feature['content_provider_disabled'].include?('type') %>
+<% unless TeSS::Config.feature['content_providers_disabled'].include?('type') %>
   <h4 class="nav-heading">Type</h4>
   <div class="nav-block">
     <%= content_provider.content_provider_type %>
   </div>
 <% end %>
-<% unless content_provider.keywords.blank? || TeSS::Config.feature['content_provider_disabled'].include?('keywords') %>
+<% unless content_provider.keywords.blank? || TeSS::Config.feature['content_providers_disabled'].include?('keywords') %>
   <h4 class="nav-heading">Keywords</h4>
   <div class="nav-block">
     <%= content_provider.keywords.join(', ') %>
@@ -23,7 +23,7 @@
     </p>
   </div>
 <% end %>
-<% unless @content_provider.contact.blank? || TeSS::Config.feature['content_provider_disabled'].include?('contact') %>
+<% unless @content_provider.contact.blank? || TeSS::Config.feature['content_providers_disabled'].include?('contact') %>
   <h4 class="nav-heading">Contact</h4>
   <div class="nav-block">
     <%= content_provider.contact %>
@@ -35,13 +35,13 @@
 
 <%= render partial: 'content_providers/partials/twitter_card',
            locals: { content_provider: @content_provider } %>
-<% unless TeSS::Config.feature['content_provider_disabled'].include?('owner') %>
+<% unless TeSS::Config.feature['content_providers_disabled'].include?('owner') %>
   <h4 class="nav-heading">Owner</h4>
   <div class="nav-block">
     <%= link_to content_provider.user.name, content_provider.user %>
   </div>
 <% end %>
-<% unless !content_provider.editors.any? || TeSS::Config.feature['content_provider_disabled'].include?('editors') %>
+<% unless !content_provider.editors.any? || TeSS::Config.feature['content_providers_disabled'].include?('editors') %>
   <h4 class="nav-heading"><%= ContentProvider.human_attribute_name(:editors) %></h4>
   <% content_provider.editors.each do |editor| %>
     <div class="nav-block">
