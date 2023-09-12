@@ -27,6 +27,7 @@ module Ingestors
         Ingestors::UhasseltIngestor,
         Ingestors::OdisseiIngestor,
         Ingestors::RstIngestor,
+        Ingestors::OsciIngestor,
       ]
     end
 
