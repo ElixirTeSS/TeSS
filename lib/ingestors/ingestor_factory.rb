@@ -28,6 +28,7 @@ module Ingestors
         Ingestors::OdisseiIngestor,
         Ingestors::RstIngestor,
         Ingestors::OsciIngestor,
+        Ingestors::DccIngestor
       ]
     end
 
