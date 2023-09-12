@@ -58,7 +58,7 @@ gem 'sitemap-parser'
 gem 'slim'
 gem 'sunspot_rails', github: 'sunspot/sunspot', branch: 'master' # Contains Ruby 3 fixes that are not released
 gem 'terser'
-gem 'tess_rdf_extractors', git: 'https://github.com/ElixirTeSS/TeSS_RDF_Extractors'
+gem 'tess_rdf_extractors', git: 'https://github.com/ElixirTeSS/TeSS_RDF_Extractors', tag: '1.0.0'
 gem 'turbolinks'
 gem 'tzinfo'
 gem 'tzinfo-data'
