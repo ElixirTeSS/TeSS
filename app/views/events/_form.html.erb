@@ -2,20 +2,18 @@
 
   <%= render partial: 'common/error_summary', locals: { resource: @event } %>
 
-  <!-- Field: Online? -->
+  <!-- Field: presence -->
   <div class="form-group">
     <%= label_tag('type') %> <br/>
     <div class="btn-group" data-toggle="buttons">
-      <label class="btn btn-default <%= 'active' unless @event.online? %>">
-        <%= f.radio_button 'online', 'false', class: 'location', data: { role: 'online-switch' },
-                           checked: !@event.online?, autocomplete: 'off' %>
-        <%= icon_for(:face_to_face, :small) %> Face-to-face
-      </label>
-      <label class="btn btn-default <%= 'active' if @event.online? %>">
-        <%= f.radio_button 'online', 'true', class: 'location', data: { role: 'online-switch' },
-                           checked: @event.online?, autocomplete: 'off' %>
-        <i class="fa fa-desktop" aria-hidden="true" id="online-symbol"></i> Online
-      </label>
+      <% [:onsite, :hybrid, :online].each do |presence| %>
+        <% active = @event.send("#{presence}?") %>
+        <label class="btn btn-lg btn-secondary <%= 'active' if active %>">
+          <%= f.radio_button 'online', presence, class: 'location', data: { role: 'online-switch' },
+                             checked: active, autocomplete: 'off' %>
+          <i class="icon icon-lg <%= presence %>-event-icon"></i> <%= t("activerecord.attributes.event.presence.#{presence}") %>
+        </label>
+      <% end %>
     </div>
   </div>
 

@@ -52,7 +52,7 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
     assert_equal Time.utc(2022, 4, 11, 12, 0, 0).to_s, event.start.to_s
     assert_equal Time.utc(2022, 4, 11, 13, 0, 0).to_s, event.end.to_s
     assert_equal 300, event.capacity
-    assert event.online
+    assert event.online?
     assert_equal 'free', event.cost_basis
     assert_nil event.cost_currency # as cost_basis is free
     assert_empty event.keywords
@@ -88,7 +88,7 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
     assert_equal 'Sydney', event.timezone
     assert_equal Time.utc(2022, 5, 3, 13, 30, 0), event.start
     assert_equal Time.utc(2022, 5, 3, 15, 0, 0), event.end
-    refute event.online
+    refute event.online?
     assert_equal 'free', event.cost_basis
     assert_equal 'UNSW', event.venue
     assert_equal 'Sydney', event.city
@@ -120,7 +120,7 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
     assert_equal Time.utc(2022, 6, 1, 13, 0, 0), event.start
     assert_equal Time.utc(2022, 6, 1, 15, 0, 0), event.end
     assert_equal 10, event.capacity
-    assert event.online
+    assert event.online?
     assert_equal 2, event.keywords.size
     assert_includes event.keywords, 'Science & Technology'
     assert_includes event.keywords, 'High Tech'

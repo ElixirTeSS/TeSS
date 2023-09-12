@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_17_092354) do
+ActiveRecord::Schema.define(version: 2023_08_03_095429) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -200,7 +200,7 @@ ActiveRecord::Schema.define(version: 2023_06_17_092354) do
     t.string "slug"
     t.integer "content_provider_id"
     t.integer "user_id"
-    t.boolean "online", default: false
+    t.integer "presence", default: 0
     t.decimal "cost_value"
     t.date "last_scraped"
     t.boolean "scraper_record", default: false
@@ -227,7 +227,7 @@ ActiveRecord::Schema.define(version: 2023_06_17_092354) do
     t.string "cost_basis"
     t.string "cost_currency"
     t.string "fields", default: [], array: true
-    t.index ["online"], name: "index_events_on_online"
+    t.index ["presence"], name: "index_events_on_presence"
     t.index ["slug"], name: "index_events_on_slug", unique: true
     t.index ["user_id"], name: "index_events_on_user_id"
   end

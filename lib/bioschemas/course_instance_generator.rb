@@ -5,7 +5,7 @@ module Bioschemas
     end
 
     def self.bioschemas_profile
-      'https://bioschemas.org/profiles/CourseInstance/0.9-DRAFT'
+      'https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE'
     end
 
     property :startDate, :start
@@ -29,5 +29,6 @@ module Bioschemas
       event.sponsors.map { |sponsor| { '@type' => 'Organization', 'name' => sponsor } }
     }
     property :maximumAttendeeCapacity, :capacity
+    property :courseMode, :presence
   end
 end

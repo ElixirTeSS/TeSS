@@ -177,7 +177,7 @@ online_event_with_no_end:
   user: scraper_user
   content_provider: goblet
   start: 2016-11-22 14:00
-  online: true
+  presence: 1
   host_institutions: ["MyHost"]
   timezone: UTC
   contact: MyContact
@@ -207,7 +207,7 @@ organisation_event:
   organizer: AnOrganizer
 
 portal_event:
-  online: false
+  presence: 0
   title: Awesome Training Day
   url: http://content-provider.portal/event
   description: 'Such Bioinformatics, many DNA, very Protein. Wow!'
@@ -480,3 +480,14 @@ course_event:
   learning_objectives: "There are none."
   recognition: "Yup. You attended the workshop."
   target_audience: ['Everyone!']
+
+hybrid_event:
+  presence: 2
+  title: Remote Participation Available
+  url: http://content-provider.portal/hybrid
+  description: Hybrid in theory
+  user: scraper_user
+  content_provider: portal_provider
+  start: 2024-12-12 10:00:00
+  end: 2024-12-12 12:00:00
+  timezone: UTC

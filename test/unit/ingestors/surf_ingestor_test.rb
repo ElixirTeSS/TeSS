@@ -51,7 +51,7 @@ class SurfIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'SURF', event.source
-    assert event.online
+    assert event.online?
     assert_equal Time.zone.parse('Wed, 05 Jul 2023 12:00:00.000000000 UTC +00:00'), event.start
     assert_equal Time.zone.parse('Wed, 05 Jul 2023 12:00:00.000000000 UTC +00:00'), event.end
   end
