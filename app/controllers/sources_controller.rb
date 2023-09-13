@@ -161,7 +161,7 @@ class SourcesController < ApplicationController
     if @content_provider
       add_base_breadcrumbs('content_providers')
       add_show_breadcrumb(@content_provider)
-      add_breadcrumb 'Sources'
+      add_breadcrumb 'Sources', content_provider_path(@content_provider, anchor: 'sources')
 
       if params[:id]
         add_breadcrumb @source.title, content_provider_source_path(@content_provider, @source) if (@source && !@source.new_record?)
