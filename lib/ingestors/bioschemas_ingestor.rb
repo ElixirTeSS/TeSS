@@ -17,17 +17,21 @@ module Ingestors
       sitemap_regex = nil
       @verbose = false
       sources = if source_url.downcase.match?(/sitemap(.*)?.xml\Z/)
-                  SitemapParser.new(source_url, {
+                  @messages << "\nParsing sitemap: #{source_url}\n"
+                  urls = SitemapParser.new(source_url, {
                                       recurse: true,
                                       url_regex: sitemap_regex,
                                       headers: { 'User-Agent' => config[:user_agent] }
                                     }).to_a.uniq.map(&:strip)
+                  @messages << " - #{urls.count} URLs found"
+                  urls
                 else
                   [source_url]
                 end
 
       provider_events = []
       provider_materials = []
+      totals = Hash.new(0)
       sources.each do |url|
         source = open_url(url)
         next unless source
@@ -50,6 +54,10 @@ module Ingestors
         learning_resources = Tess::Rdf::LearningResourceExtractor.new(source, format, base_uri: url).extract do |p|
           convert_params(p)
         end
+        totals['Events'] += events.count
+        totals['Courses'] += courses.count
+        totals['CourseInstances (without Course)'] += course_instances.count
+        totals['LearningResources'] += learning_resources.count
         if verbose
           puts "Events: #{events.count}"
           puts "Courses: #{courses.count}"
@@ -64,6 +72,14 @@ module Ingestors
         deduplicate(learning_resources).each do |material|
           provider_materials << material
         end
+      end
+
+      if totals.keys.any?
+        @messages << "\nBioschemas summary:\n"
+        totals.each do |type, count|
+          @messages << " - #{type}: #{count}"
+        end
+
       end
 
       deduplicate(provider_events).each do |event_params|

@@ -830,7 +830,7 @@ input[type=checkbox].field-lock + label:before,
 }
 
 
-.description {
+.description, .source-log {
   border: 1px solid lightgrey;
   padding: 18px;
   border-radius: 5px;
@@ -982,4 +982,9 @@ div {
 .markdown-description {
   word-break: break-word;
   display: inline-block
+}
+
+.source-log {
+  max-height: 20pc;
+  overflow-y: scroll;
 }

@@ -41,7 +41,13 @@ module Ingestors
     end
 
     def stats_summary(type)
-      "#{type} " << [:processed, :added, :updated, :rejected].map { |key| "#{key}[#{stats[type][key]}]" }.join(' ')
+      summary = "\n### #{type.to_s.titleize}\n\n"
+
+      [:processed, :added, :updated, :rejected].each do |key|
+        summary += " - #{key.to_s.titleize}: #{stats[type][key]}\n"
+      end
+
+      summary
     end
 
     def open_url(url, raise: false)
@@ -145,9 +151,11 @@ module Ingestors
           @stats[key][update ? :updated : :added] += 1
         else
           @stats[key][:rejected] += 1
-          @messages << "#{type.model_name.human} failed validation: #{resource.title}"
+          title = resource.title
+          title = "[#{title}](#{resource.url})" if resource.url
+          @messages << "\n#{type.model_name.human} failed validation: #{title}\n"
           resource.errors.full_messages.each do |m|
-            @messages << "Error: #{m}"
+            @messages << " - #{m}"
           end
         end
 
