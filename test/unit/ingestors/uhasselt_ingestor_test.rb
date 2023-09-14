@@ -50,6 +50,6 @@ class UhasseltIngestorTest < ActiveSupport::TestCase
     assert_equal Time.zone.parse('Tue, 06 Jun 2023 13:00:00.000000000 UTC +00:00'), event.start
     assert_equal Time.zone.parse('Tue, 06 Jun 2023 15:00:00.000000000 UTC +00:00'), event.end
     assert_equal 'Campus Diepenbeek E140', event.venue
-    assert_equal false, event.online
+    refute event.online?
   end
 end

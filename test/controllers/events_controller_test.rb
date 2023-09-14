@@ -248,6 +248,22 @@ class EventsControllerTest < ActionController::TestCase
     assert_valid_legacy_json_response
   end
 
+  test 'should show hybrid event as json' do
+    event = events(:hybrid_event)
+
+    get :show, params: { id: event, format: :json }
+    assert_response :success
+    assert assigns(:event)
+    assert_valid_legacy_json_response
+
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    assert_equal true, body['online']
+  end
+
   test 'should show event as json-api' do
     @event.scientific_topic_uris = ['http://edamontology.org/topic_0654']
     @event.save!
@@ -266,6 +282,23 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal @event.scientific_topic_uris.first, body['data']['attributes']['scientific-topics'].first['uri']
     assert_equal event_path(assigns(:event)), body['data']['links']['self']
     assert_equal "application/vnd.api+json; charset=utf-8", response.content_type, 'response content_type not matched.'
+  end
+
+  test 'should show hybrid event as json-api' do
+    event = events(:hybrid_event)
+
+    get :show, params: { id: event, format: :json_api }
+    assert_response :success
+    assert assigns(:event)
+    assert_valid_json_api_response
+
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    assert_equal true, body['data']['attributes']['online']
+    assert_equal 'hybrid', body['data']['attributes']['presence']
   end
 
   #UPDATE TEST

@@ -1,7 +1,8 @@
 # The controller for actions related to the Materials model
 class MaterialsController < ApplicationController
   before_action :feature_enabled?
-  before_action :set_material, only: [:show, :edit, :update, :destroy, :update_collections, :add_term, :reject_term, :clone]
+  before_action :set_material, only: [:show, :edit, :update, :destroy, :update_collections, :clone,
+                                      :add_term, :reject_term, :add_data, :reject_data]
   before_action :set_breadcrumbs
 
   include SearchableIndex

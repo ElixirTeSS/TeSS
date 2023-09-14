@@ -451,15 +451,26 @@ class EventTest < ActiveSupport::TestCase
   end
 
   test 'get online status from description if scraped' do
-    event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user), url: 'https://https-website.com/mat', description: 'This event is held on Zoom', scraper_record: true)
-    assert_not event.online
+    event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user), url: 'https://https-website.com/mat',
+                      description: 'This event is held on Zoom', scraper_record: true)
+    refute event.online?
     assert event.valid?
     event.save!
-    assert event.online
+    assert event.online?
+  end
+
+  test 'do not fix online status if hybrid' do
+    event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user), url: 'https://https-website.com/mat',
+                      description: 'This event is held on Zoom', scraper_record: true, presence: :hybrid)
+    assert event.hybrid?
+    assert event.valid?
+    event.save!
+    assert event.hybrid?
   end
 
   test 'get event_type from keywords if scraped' do
-    event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user), url: 'https://https-website.com/mat', keywords: ['Workshops and courses'], scraper_record: true)
+    event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user), url: 'https://https-website.com/mat',
+                      keywords: ['Workshops and courses'], scraper_record: true)
     assert_not event.event_types.include?('Workshops and courses')
     assert event.keywords.include?('Workshops and courses')
     assert event.valid?
@@ -469,7 +480,8 @@ class EventTest < ActiveSupport::TestCase
   end
 
   test 'do not get event_type from keywords if not scraped' do
-    event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user), url: 'https://https-website.com/mat', keywords: ['Workshops and courses'], scraper_record: false)
+    event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user), url: 'https://https-website.com/mat',
+                      keywords: ['Workshops and courses'], scraper_record: false)
     assert event.valid?
     event.save!
     assert_not event.event_types.include?('Workshops and courses')
@@ -556,5 +568,23 @@ class EventTest < ActiveSupport::TestCase
       refute TeSS::Config.map_enabled
       refute events(:one).show_map?
     end
+  end
+
+  test 'can still set presence through online setter' do
+    assert @event.onsite?
+    refute @event.online?
+    refute @event.hybrid?
+
+    @event.online = true
+
+    refute @event.onsite?
+    assert @event.online?
+    refute @event.hybrid?
+
+    @event.online = false
+
+    assert @event.onsite?
+    refute @event.online?
+    refute @event.hybrid?
   end
 end

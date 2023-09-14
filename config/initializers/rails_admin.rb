@@ -1,5 +1,6 @@
 RailsAdmin.config do |config|
   config.main_app_name = ['TeSS', 'Administration']
+  config.asset_source = :sprockets
 
   config.authenticate_with do
     redirect_to main_app.root_path unless current_user.try(:is_admin?)

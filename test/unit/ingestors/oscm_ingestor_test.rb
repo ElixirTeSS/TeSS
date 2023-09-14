@@ -52,7 +52,7 @@ class OscmIngestorTest < ActiveSupport::TestCase
     assert_equal 'FAIR Coffee lecture - Gijs van Dijck', event.title
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'OSCM', event.source
-    assert event.online
+    assert event.online?
     assert_equal Time.zone.parse('Wed, 24 May 2023 09:00:00.000000000 UTC +00:00'), event.start
     assert_equal Time.zone.parse('Wed, 24 May 2023 10:00:00.000000000 UTC +00:00'), event.end
   end
