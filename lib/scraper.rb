@@ -77,7 +77,7 @@ class Scraper
         log '', 1
         log t('scraper.messages.sources_size', sources_size: sources.size) + " (from #{key})", 1
         sources.each do |source|
-          output = '<ins>**Processing Ingestion Source**</ins><br />'
+          output = ''
           processed += 1
           log '', 1
           if source.enabled
@@ -88,10 +88,9 @@ class Scraper
           end
           if validate_source(source)
             log t('scraper.messages.valid_source'), 2
-            output.concat '<br />'
-            output.concat "**Provider:** #{source.content_provider.title}<br />"
-            output.concat "<span style='url-wrap'>**URL:** #{source.url}</span><br />"
-            output.concat "**Method:** #{source.ingestor_title}<br />"
+            output.concat "**Provider:** #{source.content_provider.title}\n\n"
+            output.concat "<span style='url-wrap'>**URL:** #{source.url}</span>\n\n"
+            output.concat "**Method:** #{source.ingestor_title}\n\n"
 
             # get ingestor
             ingestor = Ingestors::IngestorFactory.get_ingestor(source.method)
@@ -101,19 +100,17 @@ class Scraper
 
             # read records
             ingestor.read(source.url)
-            unless ingestor.messages.nil? or ingestor.messages.empty?
-              output.concat '<br />'
-              output.concat '**Input Process:**<br />'
-              ingestor.messages.each { |m| output.concat "-  #{m}<br />" }
+            unless ingestor.messages.blank?
+              output.concat "\n## Reading\n\n"
+              ingestor.messages.each { |m| output.concat "#{m}\n" }
               ingestor.messages.clear
             end
 
             # write resources
             ingestor.write(user, source.content_provider)
-            unless ingestor.messages.nil? or ingestor.messages.empty?
-              output.concat '<br />'
-              output.concat '**Output Process:**<br />'
-              ingestor.messages.each { |m| output.concat "-  #{m}<br />" }
+            unless ingestor.messages.blank?
+              output.concat "\n## Writing\n\n"
+              ingestor.messages.each { |m| output.concat "#{m}\n" }
               ingestor.messages.clear
             end
 
@@ -129,15 +126,13 @@ class Scraper
                   ", rejected[#{source.resources_rejected}]", 2
           end
         rescue StandardError => e
-          output.concat '<br />'
-          output.concat "**Failed with:** #{e.message}<br />"
+          output.concat "\n**Failed:** #{e.message}\n\n"
           log "Ingestor: #{ingestor.class} failed with: #{e.message}\t#{e.backtrace[0]}", 2
         ensure
           source.finished_at = Time.now
           run_time = source.finished_at - source_start
-          output.concat '<br />'
-          output.concat "**Finished at:** #{source.finished_at.strftime '%H:%M on %A, %d %B %Y (UTC)'}<br />"
-          output.concat "**Run time:** #{run_time.round(2)}s<br />"
+          output.concat "\n**Finished at:** #{source.finished_at.strftime '%H:%M on %A, %d %B %Y (UTC)'}\n"
+          output.concat "\n**Run time:** #{run_time.round(2)}s\n"
           source.log = output
           begin
             # only update enabled sources
@@ -154,7 +149,7 @@ class Scraper
       # --- finished
       log t('scraper.messages.status', status: 'finish'), 0
 
-    rescue Exception => e
+    rescue StandardError => e
       log "   Run Scraper failed with: #{e.message}", 0
       e.backtrace.each do |line|
         log "       #{line}", 0
@@ -229,7 +224,7 @@ class Scraper
         user.processing_consent = '1'
         user.save!
         log "User created: username[#{user.username}] role[#{user.role.name}]", 1
-      rescue Exception => e
+      rescue StandardError => e
         log "User create failed with: #{e}", 1
       end
     else

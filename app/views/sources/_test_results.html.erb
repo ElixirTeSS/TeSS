@@ -10,7 +10,9 @@
 </p>
 <% unless test_results[:messages].blank? %>
   <h5>Log</h5>
-  <%= content_tag(:pre, test_results[:messages].join("\n"), style: 'max-height: 20pc; overflow-y: scroll;') %>
+  <div class="markdown source-log">
+    <%= render_markdown(test_results[:messages].join("\n")) %>
+  </div>
 <% end %>
 
 <h5>Resources found:</h5>
@@ -50,12 +52,12 @@
             <%= display_attribute(resource, :timezone) %>
             <%= display_attribute(resource, :duration) %>
           <% end %>
+          <%= render partial: 'common/extra_metadata', locals: { resource: resource } %>
           <% unless resource.valid? %>
             <div class="alert alert-danger">
               <i class="fa fa-exclamation-circle"></i> Errors: <%= resource.errors.full_messages.join(', ') %>
             </div>
           <% end %>
-          <%= render partial: 'common/extra_metadata', locals: { resource: resource } %>
         </div>
       </div>
     <% end %>

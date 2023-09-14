@@ -27,7 +27,6 @@
         <div id="home" class="tab-pane fade in active">
           <div class="my-3">
             <div>
-
               <h4>Source Details</h4>
 
               <!-- Field: URL -->
@@ -43,11 +42,11 @@
 
               <!-- Field: created at -->
               <p><strong>Created at:</strong>
-                <%= @source.created_at.strftime('%H:%M on %A, %d %B %Y (UTC)') %>
+                <%= @source.created_at.strftime('%A, %d %B %Y @ %H:%M') %>
               </p>
 
               <!-- Field: token -->
-              <% if !current_user.nil? and (current_user.is_curator? or current_user.is_admin?) %>
+              <% if current_user && (current_user.is_curator? || current_user.is_admin?) %>
                 <p><strong>Token:</strong>
                   <%= @source.token %>
                 </p>
@@ -80,58 +79,28 @@
               <hr/>
 
               <%# Show details of last run %>
-              <div class="row">
-                <div class="col-md-3">
-                  <h4>Last Run</h4>
-                  <% if @source.finished_at.nil? %>
-                    <p><strong>No results found</strong></p>
-                  <% else %>
-                    <p><strong>Finished at:</strong></p>
-                    <p><strong>Time:</strong>
-                      <%= @source.finished_at.strftime('%H:%M (UTC)') %>
-                    </p>
-                    <p><strong>Date:</strong>
-                      <%= @source.finished_at.strftime('%a, %d %B %Y') %>
-                    </p>
-                    <table class="table">
-                      <thead>
-                      <tr>
-                        <th scope="col">Records</th>
-                        <th scope="col">Count</th>
-                      </tr>
-                      </thead>
-                      <tr>
-                        <th scope="row">read</th>
-                        <td><%= @source.records_read %></td>
-                      </tr>
-                      <tr>
-                        <th scope="row">written</th>
-                        <td><%= @source.records_written %></td>
-                      </tr>
-                      <tr>
-                        <th scope="row">added</th>
-                        <td><%= @source.resources_added %></td>
-                      </tr>
-                      <tr>
-                        <th scope="row">updated</th>
-                        <td><%= @source.resources_updated %></td>
-                      </tr>
-                      <tr>
-                        <th scope="row">rejected</th>
-                        <td><%= @source.resources_rejected %></td>
-                      </tr>
-                    </table>
-                  <% end %>
-                </div>
+              <div>
+                <h4>Last Run</h4>
+                <% if @source.finished_at.nil? %>
+                  <p><strong>No results found</strong></p>
+                <% else %>
+                  <p>
+                    <strong>Finished:</strong> <%= time_ago_in_words(@source.finished_at) %> ago
+                    (<%= @source.finished_at.strftime('%A, %d %B %Y @ %H:%M') %>)
+                  </p>
+                  <strong>Resources:</strong>
+                  <ul>
+                    <li>Added: <span class="text-success"><%= @source.resources_added %></span></li>
+                    <li>Updated: <span class="text-warning"><%= @source.resources_updated %></span></li>
+                    <li>Rejected: <span class="text-danger"><%= @source.resources_rejected %></span></li>
+                  </ul>
+                <% end %>
 
                 <%# Show details of log %>
                 <% unless @source.log.nil? %>
-                  <div class="col-md-9">
-                    <h4>Output</h4>
-                    <div class="panel-body"
-                         style="width: 100%; height: 300px ;overflow-y: scroll">
-                      <%= render_markdown(@source.log.html_safe) %>
-                    </div>
+                  <h5>Log</h5>
+                  <div class="markdown source-log">
+                    <%= render_markdown(@source.log.html_safe) %>
                   </div>
                 <% end %>
               </div>
