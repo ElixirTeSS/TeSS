@@ -303,11 +303,11 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_equal test_material.syllabus, JSON.parse(response.body)['syllabus'], 'syllabus not matched'
     assert_equal test_material.learning_objectives, JSON.parse(response.body)['learning_objectives'],
                  'learning objectives not matched'
-    assert_equal test_material.date_created.to_s("%Y-%m-%d"), JSON.parse(response.body)['date_created'],
+    assert_equal test_material.date_created.to_fs('%Y-%m-%d'), JSON.parse(response.body)['date_created'],
                  'date created not matched'
-    assert_equal test_material.date_modified.to_s("%Y-%m-%d"), JSON.parse(response.body)['date_modified'],
+    assert_equal test_material.date_modified.to_fs('%Y-%m-%d'), JSON.parse(response.body)['date_modified'],
                  'date modified not matched'
-    assert_equal test_material.date_published.to_s("%Y-%m-%d"), JSON.parse(response.body)['date_published'],
+    assert_equal test_material.date_published.to_fs('%Y-%m-%d'), JSON.parse(response.body)['date_published'],
                  'date published not matched'
 
     # reload

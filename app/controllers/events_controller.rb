@@ -171,7 +171,7 @@ class EventsController < ApplicationController
                               action: "#{controller_name}##{action_name}",
                               data: @event.url, params: params)
 
-    redirect_to @event.url
+    redirect_to @event.url, allow_other_host: true
   end
 
   private
