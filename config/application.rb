@@ -94,6 +94,14 @@ module TeSS
     def map_enabled
       !feature['disabled'].include?('events_map') && Rails.application.secrets.google_maps_api_key.present?
     end
+
+    def _sentry_dsn
+      ENV.fetch('SENTRY_DSN') { sentry_dsn }
+    end
+
+    def sentry_enabled?
+      _sentry_dsn.present? && Rails.env.production?
+    end
   end
 
   Config = TessConfig.new(tess_config)

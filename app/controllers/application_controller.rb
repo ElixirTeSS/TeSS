@@ -107,6 +107,9 @@ class ApplicationController < ActionController::Base
 
   def set_current_user
     User.current_user = current_user
+    if TeSS::Config.sentry_enabled?
+      Sentry.set_user(current_user ? { id: current_user.id, username: current_user.username } : {})
+    end
   end
 
   protected
