@@ -8,7 +8,8 @@ Rails.configuration.after_initialize do
       config.before_send = lambda do |event, hint|
         filter.filter(event.to_hash)
       end
-      config.release = `git rev-parse --short HEAD`&.chomp("\n")
+      git_rev = `git rev-parse --short HEAD`&.chomp("\n")
+      config.release = git_rev if git_rev.present?
     end
     Sentry.configure_scope do |scope|
       scope.set_context('app', {
