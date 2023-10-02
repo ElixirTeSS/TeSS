@@ -27,15 +27,15 @@
           </div>
         <% when 'cite' %>
           <%# CITE %>
-          <div id=key class="<%= next_about_block(@feature_count += 1) %>">
+          <div id="<%= key -%>" class="<%= next_about_block(@feature_count += 1) %>">
             <h3><%== t "us.keys.#{key}" %></h3>
             <blockquote>
               <%== t "us.#{key}" %>
-            <blockquote>
+            </blockquote>
           </div>
         <% else %>
           <%# OTHERS %>
-          <div id=key class="<%= next_about_block(@feature_count += 1) %>">
+          <div id="<%= key -%>" class="<%= next_about_block(@feature_count += 1) %>">
             <h3><%== t "us.keys.#{key}" %></h3>
             <%== t "us.#{key}" %>
           </div>
