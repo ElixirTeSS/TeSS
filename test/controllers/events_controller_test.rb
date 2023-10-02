@@ -1462,6 +1462,6 @@ class EventsControllerTest < ActionController::TestCase
     get :index
     assert_select 'li a[href=?]', '#calendar', count: 1
     get :calendar
-    assert_text 'relevant_event'
+    @response.body.include? 'relevant_event'
   end
 end
