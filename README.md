@@ -1,6 +1,6 @@
 # TeSS
 
-[![Actions Status](https://github.com/ElixirTeSS/TeSS/workflows/Test/badge.svg)](https://github.com/ElixirTeSS/TeSS/actions)
+[![Actions Status](https://github.com/ElixirTeSS/TeSS/workflows/CI/badge.svg)](https://github.com/ElixirTeSS/TeSS/actions)
 
 [ELIXIR's](https://www.elixir-europe.org/) **T**raining **e**-**S**upport **S**ervice - A Ruby on Rails application providing a portal for registering and discovering training events and materials.
 
