@@ -15,6 +15,7 @@ default: &default
   require_cookie_consent: true
   blocked_domains:
     - !ruby/regexp '/bad-domain\.example/'
+  sentry_dsn:
   site:
     title: 'TeSS (Training eSupport System)'
     title_short: TeSS
