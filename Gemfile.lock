@@ -614,6 +614,14 @@ GEM
       sprockets-rails
       tilt
     scanf (1.0.0)
+    sentry-rails (5.11.0)
+      railties (>= 5.0)
+      sentry-ruby (~> 5.11.0)
+    sentry-ruby (5.11.0)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+    sentry-sidekiq (5.11.0)
+      sentry-ruby (~> 5.11.0)
+      sidekiq (>= 3.0)
     shacl (0.3.0)
       json-ld (~> 3.2)
       rdf (~> 3.2, >= 3.2.8)
@@ -817,6 +825,9 @@ DEPENDENCIES
   rubocop
   sass-rails
   sassc-rails
+  sentry-rails
+  sentry-ruby
+  sentry-sidekiq
   sidekiq
   sidekiq-status
   simple_form
