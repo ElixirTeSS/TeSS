@@ -15,14 +15,9 @@ ensure
 end
 
 # Generate a new sitemap...
-if !schedules['sitemap'].nil?
-  every :"#{schedules['sitemap']['every']}", at: "#{schedules['sitemap']['at']}" do
-    rake "sitemap:generate"
-  end
-else
-  every :day, at: '1am' do
-    rake "sitemap:generate"
-  end
+every schedules.dig('sitemap', 'every')&.to_sym || :day,
+      at: schedules.dig('sitemap', 'at') || '1am' do
+  rake "sitemap:refresh"
 end
 
 # Process subscriptions...

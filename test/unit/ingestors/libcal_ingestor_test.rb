@@ -56,6 +56,6 @@ class LibcalIngestorTest < ActiveSupport::TestCase
     assert_equal 'Netherlands', event.country
     assert_equal 'VU Amsterdam', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal true, event.online
+    assert event.online?
   end
 end

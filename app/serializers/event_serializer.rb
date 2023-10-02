@@ -7,7 +7,7 @@ class EventSerializer < ApplicationSerializer
 
              :organizer, :sponsors, :contact, :host_institutions,
 
-             :online, :venue, :city, :county, :country, :postcode, :latitude, :longitude,
+             :online, :presence, :venue, :city, :county, :country, :postcode, :latitude, :longitude,
 
              :capacity, :cost_basis, :cost_value, :cost_currency,
 
@@ -23,6 +23,14 @@ class EventSerializer < ApplicationSerializer
   has_many :nodes
   has_many :collections
   has_many :materials
+
+  def online
+    object.online? || object.hybrid?
+  end
+
+  def presence
+    object.presence.to_s
+  end
 
   def report
     Hash[Event::SENSITIVE_FIELDS.map { |f| [f, object.send(f)] }]

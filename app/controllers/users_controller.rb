@@ -2,7 +2,7 @@
 class UsersController < ApplicationController
   before_action -> { feature_enabled?('invitation') }, only: [:invitees]
   prepend_before_action :set_user, only: [:show, :edit, :update, :destroy, :change_token]
-  prepend_before_action :init_user, only: [:new, :create]
+  prepend_before_action :init_user, only: [:create]
   before_action :set_breadcrumbs
 
   include ActionView::Helpers::TextHelper
@@ -41,11 +41,6 @@ class UsersController < ApplicationController
       format.json
       format.json_api { render json: @user }
     end
-  end
-
-  # GET /users/new
-  def new
-    authorize User
   end
 
   # GET /users/1/edit

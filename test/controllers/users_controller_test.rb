@@ -36,14 +36,9 @@ class UsersControllerTest < ActionController::TestCase
 
   # User new is handled by devise
   test "should never allow user new route" do
-    get :new
-    assert_redirected_to new_user_session_path
-    sign_in users(:regular_user)
-    get :new
-    assert_response :forbidden
-    sign_in users(:admin)
-    get :new
-    assert_response :forbidden
+    assert_raises(ActionController::UrlGenerationError) do
+      get :new
+    end
   end
 
   test "should be able to create user whilst logged in as admin" do

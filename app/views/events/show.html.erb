@@ -17,8 +17,6 @@
           <% end %>
         <% end %>
 
-        <!--          TODO: refactor event type using...-->
-        <%#= render :partial => 'events/partials/icon_info' %>
         <h2 class="mt-0">
           <% if @event.has_node? -%>
             <%= elixir_node_icon %>
@@ -29,11 +27,7 @@
             <%= suggestion_icon(@event, 'large') -%>
           <% end %>
 
-          <% if @event.online? %>
-            <i class="icon icon-h2 virtual-event-icon"></i>
-          <% else %>
-            <i class="icon icon-h2 onsite-event-icon"></i>
-          <% end %>
+          <i class="icon icon-h2 <%= @event.presence %>-event-icon" ></i>
 
           <%= @event.title %>
         </h2>

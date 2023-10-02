@@ -168,7 +168,7 @@ paths:
               type: string
         - name: online
           in: query
-          description: Only show online events?
+          description: Only show events with online access?
           schema:
             type: boolean
         - name: sponsor[]
@@ -1010,6 +1010,14 @@ components:
           type: boolean
           nullable: true
           description: Does the event take place online?
+        presence:
+          type: string
+          nullable: true
+          description: Is the event onsite (face-to-face), online or hybrid?
+          enum:
+            - onsite
+            - online
+            - hybrid
         cost-basis:
           type: string
           nullable: true

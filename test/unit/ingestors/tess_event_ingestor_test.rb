@@ -56,7 +56,7 @@ class TessEventIngestorTest < ActiveSupport::TestCase
     assert_equal 1, event.host_institutions.size
     assert event.host_institutions.include?('Australian Biocommons')
     assert_equal 4, event.keywords.size
-    assert event.online
+    assert event.online?
     assert_equal '', event.city
     assert_equal 'Australia', event.country
     assert_equal 'Online', event.venue

@@ -77,6 +77,7 @@ default: &default
     #  other_types, subsets, syllabus, approved_editors address_finder
     disabled: ['ardc_fields_of_research', 'other_types', 'subsets', 'syllabus', 'approved_editors']
     materials_disabled: []
+    content_providers_disabled: []
   restrict_content_provider_selection: false
   user_ingestion_methods: ['bioschemas']
   placeholder:

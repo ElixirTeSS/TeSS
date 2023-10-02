@@ -831,7 +831,7 @@ input[type=checkbox].field-lock + label:before,
 }
 
 
-.description {
+.description, .source-log {
   border: 1px solid lightgrey;
   padding: 18px;
   border-radius: 5px;
@@ -1000,4 +1000,9 @@ td.day .calendar-text {
   font-size: 12px;
   line-height: 14px;
   margin-bottom: 12px;
+}
+
+.source-log {
+  max-height: 20pc;
+  overflow-y: scroll;
 }

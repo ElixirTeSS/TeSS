@@ -53,6 +53,10 @@ en:
         surname: 'Last name'
       event:
         county: Region
+        presence:
+          online: Online
+          onsite: Face-to-face
+          hybrid: Hybrid
   about:
     registry: >
       TeSS is a platform that was developed to provide a one-stop shop for trainers and trainees to discover

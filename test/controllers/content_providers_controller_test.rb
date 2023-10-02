@@ -498,4 +498,35 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_select '.masonry-brick .markdown-description strong', count: 1
     assert_select '.masonry-brick .markdown-description p'
   end
+
+  test 'should hide disabled fields' do
+    sign_in users(:regular_user)
+    @content_provider.add_editor(users(:another_regular_user))
+    assert @content_provider.update(keywords: ['Science'])
+
+    get :show, params: { id: @content_provider }
+    assert_response :success
+    assert_select '#sidebar' do
+      assert_select '.nav-heading', text: 'Type', count: 1
+      assert_select '.nav-heading', text: 'ELIXIR node', count: 1
+      assert_select '.nav-heading', text: 'Keywords', count: 1
+      assert_select '.nav-heading', text: 'Contact', count: 1
+      assert_select '.nav-heading', text: 'Owner', count: 1
+      assert_select '.nav-heading', text: 'Editors', count: 1
+    end
+
+    with_settings(feature: { nodes: false,
+                             content_providers_disabled: ['type', 'keywords', 'contact', 'owner', 'editors'] }) do
+      get :show, params: { id: @content_provider }
+      assert_response :success
+      assert_select '#sidebar' do
+        assert_select '.nav-heading', text: 'Type', count: 0
+        assert_select '.nav-heading', text: 'ELIXIR node', count: 0
+        assert_select '.nav-heading', text: 'Keywords', count: 0
+        assert_select '.nav-heading', text: 'Contact', count: 0
+        assert_select '.nav-heading', text: 'Owner', count: 0
+        assert_select '.nav-heading', text: 'Editors', count: 0
+      end
+    end
+  end
 end

@@ -22,6 +22,6 @@ module CollectionsHelper
   end
 
   def item_comment(collection_item)
-    content_tag(:blockquote, collection_item.comment, class: 'collection-item-comment')
+    content_tag(:blockquote, collection_item.comment, class: 'collection-item-comment') unless collection_item&.comment.blank?
   end
 end

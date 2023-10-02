@@ -2,6 +2,8 @@ require 'i18n_data'
 
 # The core application helper
 module ApplicationHelper
+  IGNORED_FILTERS = %w[user].freeze
+
   # def bootstrap_class_for flash_type
   #   { success: "alert-success", error: "alert-danger", alert: "alert-warning", notice: "alert-info" }[flash_type] || flash_type.to_s
   # end
@@ -18,8 +20,6 @@ module ApplicationHelper
   ICONS = {
     started: { icon: 'fa-hourglass-half', message: 'This event has already started' },
     expired: { icon: 'fa-hourglass-end', message: 'This event has finished' },
-    online: { icon: 'fa-desktop', message: 'This is an online event' },
-    face_to_face: { icon: 'fa-users', message: 'This is a physical event' },
     scraped_today: { icon: 'fa-check-circle-o', message: 'This record was updated today' },
     not_scraped_recently: { icon: 'fa-exclamation-circle', message: 'This record has not been updated since %SUB%' },
     event: { icon: 'fa-calendar', message: 'This is a training event' },
