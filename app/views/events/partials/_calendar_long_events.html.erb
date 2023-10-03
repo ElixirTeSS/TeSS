@@ -5,7 +5,8 @@
       <%= link_to event do %>
         <%= event.title %>
         -
-        <%= l event.start, format: :long if event.start %> - <%= l event.end, format: :long if event.end %> 
+
+        <%= neatly_printed_date_range(event.start, event&.end) %> 
       <% end %>
     </li>
   <% end %>
