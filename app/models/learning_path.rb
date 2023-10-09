@@ -64,12 +64,16 @@ class LearningPath < ApplicationRecord
   # has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 
   has_many :stars,  as: :resource, dependent: :destroy
+  has_many :learning_paths_topics
+  has_many :topics, through: :learning_paths_topics, class_name: 'Collection'
   auto_strip_attributes :title, :description, squish: false
 
   validates :title, :description, presence: true
 
   clean_array_fields(:keywords, :contributors, :authors, :target_audience)
   update_suggestions(:keywords, :contributors, :authors, :target_audience)
+
+  accepts_nested_attributes_for :learning_paths_topics, allow_destroy: true
 
   def description= desc
     super(Rails::Html::FullSanitizer.new.sanitize(desc))

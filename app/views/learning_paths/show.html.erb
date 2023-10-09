@@ -49,7 +49,40 @@
         <% end %>
 
       </div>
+
+      <h3>Topics</h3>
+      <div class="learning-path-topics">
+        <% @learning_path.learning_paths_topics.joins(:topic).each do |lpt| %>
+          <div class="learning-path-topic">
+            <div class="learning-path-topic-order"><%= lpt.order %></div>
+            <div class="learning-path-topic-title"><h4><%= lpt.topic.title %> <i class="icon icon-md expand-icon"></i></h4></div>
+            <div class="learning-path-topic-contents">
+              <% if lpt.topic.description.present? %>
+                <div class="description">
+                  <%= render_markdown lpt.topic.description %>
+                </div>
+              <% end %>
+
+              <ul style="padding-left: 0; overflow: auto;">
+                <% lpt.topic.materials.each do |object| %>
+                  <%= render object %>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+      </div>
     </div>
     <%= render partial: 'activities/activity_log_button', locals: { resource: @learning_path } %>
   </div>
 </div>
+
+<script>
+    $(document).on('click', '.learning-path-topic-title', function () {
+        console.log(this);
+        const container = $(this).closest('.learning-path-topic');
+        const contents = container.find('.learning-path-topic-contents');
+        $(this).find('.expand-icon, .collapse-icon').toggleClass('collapse-icon').toggleClass('expand-icon');
+        contents.slideToggle();
+    });
+</script>

@@ -1,0 +1,31 @@
+.learning-path-topics {
+
+}
+
+.learning-path-topic {
+  position: relative;
+  padding: 1em 0 1em 2em;
+  margin-left: 2em;
+  border-left: 2px solid #ccc;
+
+  .learning-path-topic-order {
+    position: absolute;
+    left: -1em;
+    top: 1.5em;
+    border-radius: 50%;
+    width: 2em;
+    line-height: 2em;
+    height: 2em;
+    text-align: center;
+    background: $badge-bg;
+    color: $badge-color;
+  }
+
+  .learning-path-topic-title {
+    cursor: pointer;
+  }
+
+  .learning-path-topic-contents {
+    display: none;
+  }
+}

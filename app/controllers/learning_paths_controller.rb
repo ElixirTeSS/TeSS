@@ -98,13 +98,14 @@ class LearningPathsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def learning_path_params
-    params.require(:learning_path).permit(:id, :title, :description, :licence,
-                                     :content_provider_id, :difficulty_level, :status,
-                                     :prerequisites, :syllabus, :learning_objectives,
-                                     { contributors: [] }, { authors: [] }, { target_audience: [] },
-                                     { keywords: [] },
-                                     { scientific_topic_names: [] }, { scientific_topic_uris: [] },
-                                     { node_ids: [] }, { node_names: [] })
+    params.require(:learning_path).permit(:id, :title, :description, :licence, :doi,
+                                          :content_provider_id, :difficulty_level, :status,
+                                          :prerequisites, :syllabus, :learning_objectives,
+                                          { contributors: [] }, { authors: [] }, { target_audience: [] },
+                                          { keywords: [] },
+                                          { scientific_topic_names: [] }, { scientific_topic_uris: [] },
+                                          { node_ids: [] }, { node_names: [] },
+                                          { learning_paths_topics_attributes: [:id, :topic_id, :order, :_destroy] })
   end
 
 end

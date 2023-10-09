@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_09_124628) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_09_140131) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -282,6 +282,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_09_124628) do
     t.index ["content_provider_id"], name: "index_learning_paths_on_content_provider_id"
     t.index ["slug"], name: "index_learning_paths_on_slug", unique: true
     t.index ["user_id"], name: "index_learning_paths_on_user_id"
+  end
+
+  create_table "learning_paths_topics", force: :cascade do |t|
+    t.bigint "learning_path_id"
+    t.bigint "topic_id"
+    t.integer "order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["learning_path_id"], name: "index_learning_paths_topics_on_learning_path_id"
+    t.index ["topic_id"], name: "index_learning_paths_topics_on_topic_id"
   end
 
   create_table "link_monitors", force: :cascade do |t|
@@ -569,6 +579,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_09_124628) do
   add_foreign_key "events", "users"
   add_foreign_key "learning_paths", "content_providers"
   add_foreign_key "learning_paths", "users"
+  add_foreign_key "learning_paths_topics", "learning_paths"
   add_foreign_key "materials", "content_providers"
   add_foreign_key "materials", "users"
   add_foreign_key "node_links", "nodes"
