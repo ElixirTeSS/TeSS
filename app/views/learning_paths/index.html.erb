@@ -1,0 +1,33 @@
+<div class="wrapper">
+  <% if TeSS::Config.solr_enabled %>
+    <div id="sidebar" class="popout-sidebar">
+      <%= render partial: "search/common/facet_sidebar",
+                 locals: { resources: @learning_paths_results, resource_type: LearningPath } %>
+    </div>
+  <% end %>
+
+  <div id="content">
+    <h2><%=t("features.learning_paths.long")%></h2>
+
+    <% content_for :buttons do %>
+      <!-- Register button -->
+      <% if policy(LearningPath).create? %>
+        <%= link_to new_learning_path_path, class: 'btn btn-primary' do %>
+          Register learning path
+        <% end %>
+      <% end %>
+      <!-- Info -->
+      <%= info_button("What are learning paths in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>
+        <%= render_markdown(learning_paths_info) %>
+      <% end %>
+    <% end %>
+
+    <%= render partial: "search/common/search_panel", locals: { resources: @learning_paths_results,
+                                                                resource_type: LearningPath,
+                                                                show_subscription_button: true } %>
+
+    <%= render partial: 'common/masonry_grid', locals: { objects: @learning_paths } %>
+
+    <%= render partial: 'search/common/pagination_bar', locals: { resources: @learning_paths } %>
+  </div>
+</div>
