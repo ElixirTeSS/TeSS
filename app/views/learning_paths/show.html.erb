@@ -1,0 +1,55 @@
+<div class="wrapper collapsing-wrapper">
+  <div class="collapsing-sidebar" id="sidebar">
+    <%= render partial: 'content_providers/partials/content_provider_info', locals: { content_provider: @learning_path.content_provider } %>
+    <%= render partial: 'nodes/partials/associated_node_info', locals: { associated_nodes: @learning_path.associated_nodes } %>
+    <%= render(partial: 'users/partials/user_info', locals: { user: @learning_path.user }) if current_user.try(:is_admin?) %>
+  </div>
+
+  <div id="content">
+    <div id="home">
+      <div>
+        <%= archived_notice(@learning_path) if @learning_path.archived? %>
+
+        <!-- Field: title -->
+        <div class="sub-heading"><%= display_attribute_no_label(@learning_path, :learning_path_type) %></div>
+        <h2 class="mt-0">
+          <% if current_user&.is_admin? %>
+            <%= missing_icon(@learning_path, 'large') %>
+            <%= scrape_status_icon(@learning_path, 'large') %>
+            <%= suggestion_icon(@learning_path, 'large') %>
+          <% end %>
+
+          <%=t '.title', :default => @learning_path.title %>
+        </h2>
+
+        <div class="content-actions">
+          <div class="content-viewer-actions">
+            <%= star_button(@learning_path) if user_signed_in? %>
+          </div>
+          <div class="content-manager-actions">
+            <% if policy(@learning_path).update? %>
+              <%= edit_button(@learning_path) %>
+            <% end %>
+            <%= delete_button(@learning_path) if policy(@learning_path).destroy? %>
+          </div>
+        </div>
+
+        <!-- Field: long description -->
+        <div class="description">
+          <%= render_markdown @learning_path.description %>
+        </div>
+      </div>
+
+      <div>
+        <!-- Other metadata -->
+        <%= render partial: 'common/extra_metadata', locals: { resource: @learning_path } %>
+
+        <% if policy(@learning_path).update? && @learning_path.edit_suggestion %>
+          <%= render partial: 'common/approve_term_suggestions', locals: { suggestion: @learning_path.edit_suggestion } %>
+        <% end %>
+
+      </div>
+    </div>
+    <%= render partial: 'activities/activity_log_button', locals: { resource: @learning_path } %>
+  </div>
+</div>
