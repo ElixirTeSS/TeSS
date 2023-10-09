@@ -5,6 +5,13 @@
 <%= display_attribute(resource, :contact) if resource.respond_to?(:contact) %>
 <%= display_attribute(resource, :keywords) { |values| values.join(', ') } %>
 
+<% if resource.is_a?(LearningPath) %>
+  <%= display_attribute(resource, :status) { |value| material_status_title_for_label(value) } %>
+  <%= display_attribute(resource, :target_audience) { |values| values.map { |x| target_audience_title_for_label(x) }.join(', ') } %>
+  <%= display_attribute(resource, :prerequisites, markdown: true) %>
+  <%= display_attribute(resource, :learning_objectives, markdown: true) %>
+<% end %>
+
 <% if resource.is_a?(Material) %>
   <%= display_attribute(resource, :fields) { |values| values.join(', ') } %>
   <%= display_attribute(resource, :target_audience) { |values| values.map { |x| target_audience_title_for_label(x) }.join(', ') } %>

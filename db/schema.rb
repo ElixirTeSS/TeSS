@@ -285,6 +285,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_19_101101) do
     t.index ["user_id"], name: "index_learning_paths_on_user_id"
   end
 
+  create_table "learning_paths_topics", force: :cascade do |t|
+    t.bigint "learning_path_id"
+    t.bigint "topic_id"
+    t.integer "order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["learning_path_id"], name: "index_learning_paths_topics_on_learning_path_id"
+    t.index ["topic_id"], name: "index_learning_paths_topics_on_topic_id"
+  end
+
   create_table "link_monitors", force: :cascade do |t|
     t.string "url"
     t.integer "code"
@@ -570,6 +580,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_19_101101) do
   add_foreign_key "events", "users"
   add_foreign_key "learning_paths", "content_providers"
   add_foreign_key "learning_paths", "users"
+  add_foreign_key "learning_paths_topics", "learning_paths"
   add_foreign_key "materials", "content_providers"
   add_foreign_key "materials", "users"
   add_foreign_key "node_links", "nodes"
