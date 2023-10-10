@@ -25,10 +25,19 @@
           <%= image_tag(learning_path.content_provider.image.url, class: 'provider-avatar') %>
         <% end %>
       </div>
+      <div class="markdown-description">
+        <%= render_sanitized_markdown truncate(learning_path.description, length: 300, separator: ' ') %>
+      </div>
 
-      <div class="font-size-lg"><%= display_difficulty_level(learning_path) %></div>
+      <div>
+        <% if learning_path.difficulty_level.present? %>
+          <span class="label label-default"><%= display_difficulty_level(learning_path) %></span>
+        <% end %>
 
-      <%= keywords_and_topics(learning_path) %>
+        <span class="label label-default"><i class="fa fa-book"></i> <%= pluralize(learning_path.topics.count, 'topic') %></span>
+
+        <%= keywords_and_topics(learning_path) %>
+      </div>
     </div>
 
     <%= item_comment(collection_item) if defined? collection_item %>
