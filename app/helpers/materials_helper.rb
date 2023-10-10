@@ -122,6 +122,8 @@ to acquire the desired knowledge and skills on a subject by the end of the pathw
       tags |= resource.send(field) if resource.respond_to?(field)
     end
 
-    tags.join(', ')
+    tags.map do |tag|
+      content_tag(:span, tag, class: 'label label-info')
+    end.join(' ').html_safe
   end
 end
