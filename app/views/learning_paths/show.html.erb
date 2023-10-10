@@ -58,9 +58,9 @@
             <div class="learning-path-topic-title"><h4><%= lpt.topic.title %> <i class="icon icon-md expand-icon"></i></h4></div>
             <div class="learning-path-topic-contents">
               <% if lpt.topic.description.present? %>
-                <div class="description">
+                <blockquote class="description learning-path-topic-desc collection-item-comment">
                   <%= render_markdown lpt.topic.description %>
-                </div>
+                </blockquote>
               <% end %>
 
               <ul style="padding-left: 0; overflow: auto;">
@@ -76,13 +76,3 @@
     <%= render partial: 'activities/activity_log_button', locals: { resource: @learning_path } %>
   </div>
 </div>
-
-<script>
-    $(document).on('click', '.learning-path-topic-title', function () {
-        console.log(this);
-        const container = $(this).closest('.learning-path-topic');
-        const contents = container.find('.learning-path-topic-contents');
-        $(this).find('.expand-icon, .collapse-icon').toggleClass('collapse-icon').toggleClass('expand-icon');
-        contents.slideToggle();
-    });
-</script>
