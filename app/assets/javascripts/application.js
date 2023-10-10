@@ -283,6 +283,13 @@ document.addEventListener("turbolinks:load", function() {
             document.querySelector('.select2-container--open .select2-search__field').focus();
         }, 1);
     });
+
+    $('.learning-path-topic-title').click(function () {
+        const container = $(this).closest('.learning-path-topic');
+        const contents = container.find('.learning-path-topic-contents');
+        $(this).find('.expand-icon, .collapse-icon').toggleClass('collapse-icon').toggleClass('expand-icon');
+        contents.slideToggle();
+    });
 });
 
 function truncateWithEllipses(text, max)
