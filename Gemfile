@@ -66,7 +66,7 @@ gem 'turbolinks'
 gem 'tzinfo'
 gem 'tzinfo-data'
 gem 'validate_url'
-gem 'whenever'
+gem 'whenever', require: false # Work around https://github.com/javan/whenever/issues/831
 gem 'will_paginate'
 
 source 'https://rails-assets.org' do
