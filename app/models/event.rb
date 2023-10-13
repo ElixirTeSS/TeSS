@@ -97,8 +97,7 @@ class Event < ApplicationRecord
     # :nocov:
   end
 
-  # TODO: Rails 7 - Migrate this to use hash-syntax with explicit values, e.g.: { onsite: 0, online: 1, hybrid: 2 }
-  enum presence: [:onsite, :online, :hybrid]
+  enum presence: { onsite: 0, online: 1, hybrid: 2 }
 
   belongs_to :user
   has_one :edit_suggestion, as: :suggestible, dependent: :destroy
