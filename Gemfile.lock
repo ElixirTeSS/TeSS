@@ -644,6 +644,8 @@ GEM
     sidekiq-status (3.0.3)
       chronic_duration
       sidekiq (>= 6.0, < 8)
+    simple_calendar (2.4.3)
+      rails (>= 3.0)
     simple_form (5.2.0)
       actionpack (>= 5.2)
       activemodel (>= 5.2)
@@ -830,6 +832,7 @@ DEPENDENCIES
   sentry-sidekiq
   sidekiq
   sidekiq-status
+  simple_calendar (~> 2.4)
   simple_form
   simple_token_authentication
   simplecov
@@ -851,4 +854,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   2.4.19
+   2.4.20

@@ -1,0 +1,4 @@
+$("#events_calendar").html("<%= escape_javascript render("events/partials/calendar", events: @events) %>");
+$("#events_calendar_long_events").html("<%= escape_javascript render("events/partials/calendar_long_events", events: @long_events) %>");
+<%# Store the start_date in LocalStorage so we can render the calendar from the correct month %>
+localStorage.setItem('calendar_start_date', '<%= @start_date %>');

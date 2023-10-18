@@ -44,6 +44,7 @@ default: &default
     # The order in with the 'about us' tabs appear
     about_us_tab_order: ['tess_club', 'contact', 'team', 'funding', 'acknowledgements', 'cite']
     n_provider_ids: 5
+    calendar_event_maxlength: 5
   mailer:
     delivery_method: sendmail
     location: /usr/sbin/sendmail

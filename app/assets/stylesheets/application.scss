@@ -27,6 +27,7 @@
 @import "jquery.qtip.min";
 @import "select2";
 @import "select2-bootstrap-theme";
+@import "simple_calendar";
 
 // Sticky but not fixed footer
 // http://cbracco.me/css-sticky-footer-effect/
@@ -982,6 +983,23 @@ div {
 .markdown-description {
   word-break: break-word;
   display: inline-block
+}
+
+/* Calendar inset numbers */
+td.day {
+  position: relative;
+}
+td.day .day-number {
+  position: absolute;
+  bottom: 0px;
+  right: 6px;
+  font-size: 1.5em;
+  color: rgb(186, 186, 186);
+}
+td.day .calendar-text {
+  font-size: 12px;
+  line-height: 14px;
+  margin-bottom: 12px;
 }
 
 .source-log {

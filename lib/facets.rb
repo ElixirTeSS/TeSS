@@ -6,6 +6,7 @@ module Facets
       elixir: -> (c) { ['Event', 'Material', 'ContentProvider'].include?(c.name) },
       max_age: -> (c) { ['Event', 'Material'].include?(c.name) },
       start: -> (c) { c.name == 'Event' },
+      running_during: -> (c) { c.name == 'Event' },
       include_hidden: -> (c) { c.method_defined?(:user_requires_approval?) }
   }.with_indifferent_access.freeze
 
@@ -15,6 +16,7 @@ module Facets
       include_archived: -> (value) { value == 'true'},
       max_age: -> (value) { Subscription::FREQUENCY.detect { |f| f[:title] == value }.try(:[], :period) },
       start: -> (value) { value&.split('/')&.map {|d| Date.parse(d) rescue nil } },
+      running_during: -> (value) { value&.split('/')&.map {|d| Date.parse(d) rescue nil } },
       include_hidden: -> (value) { value == 'true'}
   }
 
@@ -50,6 +52,20 @@ module Facets
           with(:start).between(lb..ub)
         elsif lb
           with(:start).greater_than_or_equal_to(lb)
+        elsif ub
+          with(:start).less_than_or_equal_to(ub)
+        end
+      end
+    end
+
+    def running_during(scope, bounds, _)
+      lb, ub = bounds
+
+      sunspot_scoped(scope) do
+        if lb && ub
+          with(:end).between(lb..(ub + TeSS::Config.site.fetch(:calendar_event_maxlength, 5).to_i.days))
+        elsif lb
+          with(:end).greater_than_or_equal_to(lb)
         elsif ub
           with(:start).less_than_or_equal_to(ub)
         end

@@ -71,7 +71,14 @@ function reposition_tiles(container, tileClass){
     });
 }
 
-document.addEventListener("turbolinks:load", function() {
+// Perform an ajax request to load the calendar and replace the contents
+window.loadCalendar = function(url) {
+    req = $.ajax(url);
+    req.done((res) => eval(res));
+    return true;
+}
+
+document.addEventListener("turbolinks:load", function(e) {
     // Show the tab associated with the window location hash (e.g. "#packages")
     if (window.location.hash) {
         var tab = $('ul.nav a[href="' + window.location.hash + '"]');
@@ -115,6 +122,41 @@ document.addEventListener("turbolinks:load", function() {
             }
         }
     });
+
+    // Load event calendar when tab is shown for the first time
+    $('.nav li a[data-calendar]').on("show.bs.tab", function(e) {
+        data = e.target.dataset
+        // calendar has already been loaded, only perform the filter sidebar url fragment replacing
+        if (!data.loaded) {
+            let url = data.calendar;
+            if (date = localStorage.getItem('calendar_start_date')) {
+                // Only use the start date in localstorage if it is in the future
+                if (Date.parse(date) > Date.now() - 60*60*24*30*1000) url += '&start_date=' + date
+            }
+
+            loadCalendar(url);
+            // avoid loading again on the second click
+            data.loaded = true;
+        }
+    });
+
+    // after switching tabs automatically update the url fragment
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        addTabToFilters(e.target.href.split('#').pop());
+        // and reposition masonry tiles
+        reposition_tiles('masonry', 'masonry-brick');
+    });
+
+    // Manually trigger bootstrap tab history (we should probably remove the dependency and reimplement in a turbolink-compatible way)
+    // Specialised form of https://github.com/mnarayan01/bootstrap-tab-history/blob/master/vendor/assets/javascripts/bootstrap-tab-history.js
+    // go through the tabs to find one which has ah ref identical to the page we have just moved to and show it
+    $('[data-toggle="tab"]').each(function() {
+        if (("#" + this.href.split("#").pop()) === window.location.hash) {
+            if (!("active" in this.parentElement.classList)) {
+                $(this).tab('show'); 
+            }
+        }
+    })
 
     // Masonry
     $(".nav-tabs a").on("shown.bs.tab", function(e) {

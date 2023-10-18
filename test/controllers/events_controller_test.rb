@@ -44,6 +44,26 @@ class EventsControllerTest < ActionController::TestCase
     end
   end
 
+  test 'should render a calendar' do
+    with_settings(solr_enabled: true) do
+      Event.stub(:search_and_filter, MockSearch.new(Event.all)) do
+        get :calendar
+        assert_response :success
+        assert_not_empty assigns(:events)
+      end
+    end
+  end
+
+  test 'should render a calendar into a JS update command' do
+    with_settings(solr_enabled: true) do
+      Event.stub(:search_and_filter, MockSearch.new(Event.all)) do
+        get :calendar, format: :js, xhr: true
+        assert_response :success
+        assert_not_empty assigns(:events)
+      end
+    end
+  end
+
   test 'should get index as json' do
     @event.scientific_topic_uris = ['http://edamontology.org/topic_0654']
     @event.save!
@@ -1427,5 +1447,21 @@ class EventsControllerTest < ActionController::TestCase
       assert_response :success
       assert_select '#map', count: 0
     end
+  end
+
+  test 'should show calendar events' do
+    (1..200).each do |i|
+      Event.create(title: "hi#{i}", url: "http://google.com#hi#{i}",
+        user: User.first, content_provider: ContentProvider.first, timezone: 'UTC',
+        start: Time.now.beginning_of_month.noon - 8.days, end: Time.now.noon - 1.day + 7.hours, city: 'Tilburg', country: 'Netherlands')
+    end
+    Event.create(title: 'relevant_event', url: 'http://google.com#relevant',
+      user: User.first, content_provider: ContentProvider.first, timezone: 'UTC',
+      start: Time.now.noon, end: Time.now.noon + 7.hours, city: 'Tilburg', country: 'Netherlands')
+    sign_in users(:another_regular_user)
+    get :index
+    assert_select 'li a[href=?]', '#calendar', count: 1
+    get :calendar
+    @response.body.include? 'relevant_event'
   end
 end

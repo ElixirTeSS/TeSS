@@ -1,0 +1,19 @@
+<%= month_calendar(events: events, attribute: :start, end_attribute: :end) do |date, events| %>
+  <div class="day-number">
+    <%= date.day %>
+  </div>
+
+  <ul class="list-unstyled">
+    <% events.each do |event| %>
+      <li class= "calendar-text">
+        <%= link_to "#{event.title}", event, class: 'clear-both', 'title': "#{l event.start, format: :time_short} - #{l event.end, format: :time_short}" %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if events.count < 10 %>
+  <div >
+    <%= t('events.pick_date') %>
+  </div>
+<% end %>
