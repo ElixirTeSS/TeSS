@@ -1,0 +1,130 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": "First steps with R in Life Sciences",
+  "description": "**This course is now full.**  If you do not want to miss your chance to be part of the next session and remain informed about all training activities at SIB, we highly recommend you to keep an eye on our list of [upcoming events](https://www.sib.swiss/training/upcoming-training-courses) and subscribe to our courses [mailing list](https://lists.sib.swiss/mailman/listinfo/courses) here (if you haven't done so already).\n\n\n\n\n\n# Overview\nR is a complete, flexible and open source system for statistical analysis and graphics, which has become a tool of choice for biologists and biomedical scientists who need to analyse and visualise large amounts of data. Due to its popularity, R is continuously updated and extended with the latest libraries for data manipulation, modelling and visualisation. \n\nThis course will give an introduction to R and Rstudio (an integrated development environment for R) in an interactive manner. Participants will receive example data sets to practise data manipulation, graphical exploration and statistical hypothesis testing.\n\n# Audience\nThis \"First Steps with R\" two-day course is addressed to beginners wanting to become familiar with the R syntax, environment, and the most common commands to start using R to explore and interpret their data.\n\n# Learning objectives\nAt the end of the course, participants should be comfortable with the R environment and be able to read, understand and write R commands, allowing them to implement and interpret a workflow for their data analysis:\n* interact with the R environment\n* import data, explore it and summarise it\n* explore data with graphs\n* perform simple statistical tests\n\n\n# Prerequisites\n#### Knowledge / competencies\nAs it is a course for beginners, no background in R or any programming language is required. However, you are encouraged to go through some of the R documentation available [here](http://cran.r-project.org/doc/manuals/r-release/R-intro.html).\n\nPlease also note this course is NOT a training on statistics but rather a training on how to use R to perform different tasks, statistics being one of them.\n#### Technical\nA Wi-Fi enabled laptop with latest [R](https://www.r-project.org/) and [RStudio](https://www.rstudio.com/products/rstudio/download/#download) versions installed. There will be access to the eduroam and guest-unil networks. \n\n# Application\n\n\nRegistration fees are **120 CHF** for academics and **600 CHF** for for-profit companies. While participants are registered on a first come, first served basis, exceptions may be made to ensure diversity and equity, which may increase the time before your registration is confirmed.\n\nYou will be informed by email of your registration confirmation. Upon reception of the confirmation email, participants will be asked to confirm attendance by paying the fees within 5 days.\n\nApplications will close as soon as the places will be filled up. Deadline for free-of-charge cancellation is set to **25/05/2022**. Cancellation after this date will not be reimbursed. Please note that participation to SIB courses is subject to our [general conditions](http://www.sib.swiss/training/terms-and-conditions).\n\n\n # Venue and  time\nThis course will take place at the University of Lausanne.\n\nIt will start at 9:00 and end around 17:30.\n\nPrecise information will be provided to the participants on due time.\n\n#  Additional information\nCoordination: Valeria Di Cola.\n\nWe will recommend 0.5 ECTS credits for this course (given a passed exam at the end of the course).\n\nYou are welcome to register to the SIB courses mailing list to be informed of all future courses and workshops, as well as all important deadlines using the form [here](http://lists.sib.swiss/mailman/listinfo/courses).\n\nSIB abides by the [ELIXIR Code of Conduct](https://elixir-europe.org/events/code-of-conduct). Participants of SIB courses are also required to abide by the same code.\n\nFor more information, please contact [training@sib.swiss](mailto:training@sib.swiss).",
+  "inLanguage": "en-GB",
+  "provider": {
+    "@type": "Organization",
+    "name": "SIB Swiss Institute of Bioinformatics",
+    "@id": "https://ror.org/002n09z45"
+  },
+  "abstract": "This 2-day course will introduce participants to R syntax, the Rstudio environment, and to the use of R to explore and interpret data.",
+  "educationalLevel": "Beginner",
+  "http://purl.org/dc/terms/conformsTo": {
+    "@id": "https://bioschemas.org/profiles/Course/0.9-DRAFT-2020_12_08",
+    "@type": "CreativeWork"
+  },
+  "hasCourseInstance": [
+    {
+      "@type": "CourseInstance",
+      "name": "First steps with R in Life Sciences",
+      "description": "**This course is now full.**  If you do not want to miss your chance to be part of the next session and remain informed about all training activities at SIB, we highly recommend you to keep an eye on our list of [upcoming events](https://www.sib.swiss/training/upcoming-training-courses) and subscribe to our courses [mailing list](https://lists.sib.swiss/mailman/listinfo/courses) here (if you haven't done so already).\n\n\n\n\n\n# Overview\nR is a complete, flexible and open source system for statistical analysis and graphics, which has become a tool of choice for biologists and biomedical scientists who need to analyse and visualise large amounts of data. Due to its popularity, R is continuously updated and extended with the latest libraries for data manipulation, modelling and visualisation. \n\nThis course will give an introduction to R and Rstudio (an integrated development environment for R) in an interactive manner. Participants will receive example data sets to practise data manipulation, graphical exploration and statistical hypothesis testing.\n\n# Audience\nThis \"First Steps with R\" two-day course is addressed to beginners wanting to become familiar with the R syntax, environment, and the most common commands to start using R to explore and interpret their data.\n\n# Learning objectives\nAt the end of the course, participants should be comfortable with the R environment and be able to read, understand and write R commands, allowing them to implement and interpret a workflow for their data analysis:\n* interact with the R environment\n* import data, explore it and summarise it\n* explore data with graphs\n* perform simple statistical tests\n\n\n# Prerequisites\n#### Knowledge / competencies\nAs it is a course for beginners, no background in R or any programming language is required. However, you are encouraged to go through some of the R documentation available [here](http://cran.r-project.org/doc/manuals/r-release/R-intro.html).\n\nPlease also note this course is NOT a training on statistics but rather a training on how to use R to perform different tasks, statistics being one of them.\n#### Technical\nA Wi-Fi enabled laptop with latest [R](https://www.r-project.org/) and [RStudio](https://www.rstudio.com/products/rstudio/download/#download) versions installed. There will be access to the eduroam and guest-unil networks. \n\n# Application\n\n\nRegistration fees are **120 CHF** for academics and **600 CHF** for for-profit companies. While participants are registered on a first come, first served basis, exceptions may be made to ensure diversity and equity, which may increase the time before your registration is confirmed.\n\nYou will be informed by email of your registration confirmation. Upon reception of the confirmation email, participants will be asked to confirm attendance by paying the fees within 5 days.\n\nApplications will close as soon as the places will be filled up. Deadline for free-of-charge cancellation is set to **25/05/2022**. Cancellation after this date will not be reimbursed. Please note that participation to SIB courses is subject to our [general conditions](http://www.sib.swiss/training/terms-and-conditions).\n\n\n # Venue and  time\nThis course will take place at the University of Lausanne.\n\nIt will start at 9:00 and end around 17:30.\n\nPrecise information will be provided to the participants on due time.\n\n#  Additional information\nCoordination: Valeria Di Cola.\n\nWe will recommend 0.5 ECTS credits for this course (given a passed exam at the end of the course).\n\nYou are welcome to register to the SIB courses mailing list to be informed of all future courses and workshops, as well as all important deadlines using the form [here](http://lists.sib.swiss/mailman/listinfo/courses).\n\nSIB abides by the [ELIXIR Code of Conduct](https://elixir-europe.org/events/code-of-conduct). Participants of SIB courses are also required to abide by the same code.\n\nFor more information, please contact [training@sib.swiss](mailto:training@sib.swiss).",
+      "url": "https://webapp2.vital-it.ch/courseadmin/website/course/20220608_XXX12",
+      "@id": "https://webapp2.vital-it.ch/courseadmin/website/course/20220608_XXX12",
+      "http://purl.org/dc/terms/conformsTo": {
+        "@id": "https://bioschemas.org/profiles/CourseInstance/0.8-DRAFT-2020_10_06",
+        "@type": "CreativeWork"
+      },
+      "about": [
+        {
+          "@type": "Event",
+          "name": "First steps with R in Life Sciences"
+        }
+      ],
+      "courseMode": [
+        "onsite",
+        "synchronous"
+      ],
+      "keywords": "biostatistics,data visualisation,programming",
+      "location": "Lausanne",
+      "endDate": "2022-06-09",
+      "inLanguage": "en-GB",
+      "instructor": [
+        {
+          "@type": "Person",
+          "name": "Valeria Di Cola"
+        }
+      ],
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Academic Price",
+          "price": 120,
+          "eligibleCustomerType": {
+            "@type": "BusinessEntityType",
+            "name": "Academic"
+          },
+          "priceCurrency": "CHF"
+        },
+        {
+          "@type": "Offer",
+          "name": "Industry Price",
+          "price": 600,
+          "priceCurrency": "CHF",
+          "eligibleCustomerType": {
+            "@type": "BusinessEntityType",
+            "name": "Industrial"
+          }
+        }
+      ],
+      "startDate": "2022-06-08",
+      "duration": "P1DT6H"
+    },
+    {
+      "@type": "CourseInstance",
+      "name": "First steps with R in Life Sciences",
+      "description": "\n\n **This course is now full with a long waiting list.**  If you do not want to miss your chance to be part of the next session and remain informed about all training activities at SIB, we highly recommend you to keep an eye on our list of [upcoming events](https://www.sib.swiss/training/upcoming-training-courses) and subscribe to our courses [mailing list](https://lists.sib.swiss/mailman/listinfo/courses) here (if you haven't done so already).\n\n# Overview\nR is a complete, flexible and open source system for statistical analysis and graphics, which has become a tool of choice for biologists and biomedical scientists who need to analyse and visualise large amounts of data. Due to its popularity, R is continuously updated and extended with the latest libraries for data manipulation, modelling and visualisation. \n\nThis course will give an introduction to R and Rstudio (an integrated development environment for R) in an interactive manner. Participants will receive example data sets to practise data manipulation, graphical exploration and statistical hypothesis testing.\n\n# Audience\nThis \"First Steps with R\" two-day course is addressed to beginners wanting to become familiar with the R syntax, environment, and the most common commands to start using R to explore and interpret their data.\n\n# Learning objectives\nAt the end of the course, participants should be comfortable with the R environment and be able to read, understand and write R commands, allowing them to implement and interpret a workflow for their data analysis:\n* interact with the R environment\n* import data, explore it and summarise it\n* explore data with graphs\n* perform simple statistical tests\n\n\n# Prerequisites\n#### Knowledge / competencies\nAs it is a course for beginners, no background in R or any programming language is required. However, you are encouraged to go through some of the R documentation available [here](http://cran.r-project.org/doc/manuals/r-release/R-intro.html).\n\nPlease also note this course is NOT a training on statistics but rather a training on how to use R to perform different tasks, statistics being one of them.\n#### Technical\nA Wi-Fi enabled laptop with latest [R](https://www.r-project.org/) and [RStudio](https://www.rstudio.com/products/rstudio/download/#download) versions installed. There will be access to the eduroam and guest network. \n\n# Application\n\n\nThe course is now full with a long waiting list. We therefore can't take any other application. There will be other sessions in the future. Thank you for your understanding.\n\nRegistration fees are **120 CHF** for academics and **600 CHF** for for-profit companies. While participants are registered on a first come, first served basis, exceptions may be made to ensure diversity and equity, which may increase the time before your registration is confirmed.\n\nApplications will close as soon as the places will be filled up. Deadline for free-of-charge cancellation is set to **26/09/2022**. Cancellation after this date will not be reimbursed. Please note that participation to SIB courses is subject to our [general conditions](http://www.sib.swiss/training/terms-and-conditions).\n\nYou will be informed by email of your registration confirmation. Upon reception of the confirmation email, participants will be asked to confirm attendance by paying the fees within 5 days.\n\n\n # Venue and  time\nThis course will take place at the University of Zurich, on the Irchel campus.\n\nIt will start at 9:00 and end around 17:30.\n\nPrecise information will be provided to the participants on due time.\n\n#  Additional information\nCoordination: Diana Marek.\n\nWe will recommend 0.5 ECTS credits for this course (given a passed exam at the end of the course).\n\nYou are welcome to register to the SIB courses mailing list to be informed of all future courses and workshops, as well as all important deadlines using the form [here](http://lists.sib.swiss/mailman/listinfo/courses).\n\nSIB abides by the [ELIXIR Code of Conduct](https://elixir-europe.org/events/code-of-conduct). Participants of SIB courses are also required to abide by the same code.\n\nFor more information, please contact [training@sib.swiss](mailto:training@sib.swiss).",
+      "url": "https://webapp2.vital-it.ch/courseadmin/website/course/20221010_XXX12",
+      "@id": "https://webapp2.vital-it.ch/courseadmin/website/course/20221010_XXX12",
+      "http://purl.org/dc/terms/conformsTo": {
+        "@id": "https://bioschemas.org/profiles/CourseInstance/0.8-DRAFT-2020_10_06",
+        "@type": "CreativeWork"
+      },
+      "about": [
+        {
+          "@type": "Event",
+          "name": "First steps with R in Life Sciences"
+        }
+      ],
+      "courseMode": [
+        "onsite",
+        "synchronous"
+      ],
+      "keywords": "training,biostatistics,data visualisation,programming,torsten schwede &amp; thierry sengstag group",
+      "location": "Zürich",
+      "endDate": "2022-10-11",
+      "inLanguage": "en-GB",
+      "instructor": [
+        {
+          "@type": "Person",
+          "name": "Diana Marek"
+        }
+      ],
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Academic Price",
+          "price": 120,
+          "eligibleCustomerType": {
+            "@type": "BusinessEntityType",
+            "name": "Academic"
+          },
+          "priceCurrency": "CHF"
+        },
+        {
+          "@type": "Offer",
+          "name": "Industry Price",
+          "price": 600,
+          "priceCurrency": "CHF",
+          "eligibleCustomerType": {
+            "@type": "BusinessEntityType",
+            "name": "Industrial"
+          }
+        }
+      ],
+      "startDate": "2022-10-10",
+      "duration": "P1DT6H"
+    }
+  ]
+}

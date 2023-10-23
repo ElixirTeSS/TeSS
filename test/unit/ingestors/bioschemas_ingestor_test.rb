@@ -154,6 +154,21 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     refute File.exist?(file)
   end
 
+  test 'filters unrecognized fields when scraping' do
+    mock_bioschemas('https://website.org/courseinstances.json', 'sib_course.json')
+    @ingestor.stub(:convert_params, -> (p) { p[:blabla_123] = 'woowoo'; p }) do
+      @ingestor.read('https://website.org/courseinstances.json')
+      assert_difference('Event.count', 2) do
+        @ingestor.write(@user, @content_provider)
+      end
+    end
+
+    sample = @ingestor.events.detect { |e| e.url == 'https://webapp2.vital-it.ch/courseadmin/website/course/20221010_XXX12' }
+    assert sample.persisted?
+    assert_includes sample.description, 'This course is now full with a long waiting list.'
+    assert_equal @content_provider, sample.content_provider
+  end
+
   private
 
   def mock_bioschemas(url, filename)

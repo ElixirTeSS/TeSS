@@ -1,7 +1,7 @@
 module Ingestors
   module EventIngestion
     def add_event(event)
-      event = OpenStruct.new(event) if event.is_a?(Hash)
+      event = OpenStruct.new(event.with_indifferent_access.slice(*Event.attribute_names)) if event.is_a?(Hash)
       @events << event unless event.nil?
     end
 
