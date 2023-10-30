@@ -34,6 +34,13 @@ module HasTestJob
     end
   end
 
+  class_methods do
+    def get_test_resource(type, params, **extras)
+      klass = type.singularize.capitalize.constantize
+      klass.new(params.with_indifferent_access.slice(*klass.attribute_names).merge(extras))
+    end
+  end
+
   private
 
   def test_job_id_key

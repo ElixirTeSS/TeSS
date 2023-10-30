@@ -570,4 +570,27 @@ class SourcesControllerTest < ActionController::TestCase
 
     refute source.reload.approval_requested?
   end
+
+  test 'ignores unrecognized fields when displaying test results' do
+    source = sources(:unapproved_source)
+    user = source.user
+    sign_in user
+    source.test_results = {
+      events: [{ title: 'test 123', url: 'https://tess.elixir-europe.org', some_random_field: 'hello' }],
+      materials: [],
+      messages: [], run_time: 120, finished_at: Time.now }
+    assert source.test_results
+
+    get :test_results, params: { id: source }, xhr: true
+
+    assert_response :success
+    assert_select 'h4', text: 'Last Test Results'
+    assert_select '#events' do
+      assert_select 'h4', text: 'test 123'
+      assert_select 'a[href=?]', 'https://tess.elixir-europe.org'
+    end
+  ensure
+    path = source.send(:test_results_path)
+    FileUtils.rm(path) if File.exist?(path)
+  end
 end
