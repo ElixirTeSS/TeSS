@@ -29,8 +29,8 @@
       Showing <%= pluralize(sample.count, 'sample') %>
     <% end %>
     <% sample.each do |resource_params| %>
-      <% resource = type.singularize.capitalize.constantize.new(resource_params.merge(user: User.get_default_user,
-                                                                                      content_provider: @content_provider)) %>
+      <% resource = Source.get_test_resource(type, resource_params, user: User.get_default_user,
+                                                                    content_provider: @content_provider) %>
       <% existing = klass.check_exists(resource) %>
       <div class="list-card bulk-import-row<%= ' new' unless existing -%>">
         <h4>

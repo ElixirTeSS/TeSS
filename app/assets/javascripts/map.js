@@ -1,4 +1,4 @@
-var Map = {
+var EventMap = {
     init: function () {
         // Map on event show page
         var element = $('div.google-map');

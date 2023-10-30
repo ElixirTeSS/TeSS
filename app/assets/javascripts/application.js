@@ -179,7 +179,7 @@ document.addEventListener("turbolinks:load", function(e) {
     MapSearch.init();
 
     // Map on event show page
-    Map.init();
+    EventMap.init();
 
     // Map on event index page
     EventsMap.init();

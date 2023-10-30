@@ -34,7 +34,7 @@
 
   <!-- Nodes: check feature enabled -->
   <% if TeSS::Config.feature['nodes'] %>
-    <%= f.input :node_id, label: 'ELIXIR node', collection: Node.all, label_method: :title %>
+    <%= f.input :node_id, label: 'ELIXIR node', collection: Node.order(:name).all, label_method: :name %>
   <% end %>
 
   <div class="form-group">
