@@ -5,12 +5,7 @@ json.array!(@materials) do |material|
   json.partial! 'common/ontology_terms', type: 'scientific_topics', resource: material
   json.partial! 'common/ontology_terms', type: 'operations', resource: material
 
-  json.external_resources do
-    material.external_resources.each do |external_resource|
-      json.partial! 'common/external_resource', external_resource: external_resource
-    end
-  end
-
+  json.external_resources material.external_resources, partial: 'common/external_resource', as: :external_resource
 end
 
 
