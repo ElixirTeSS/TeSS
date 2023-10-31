@@ -19,7 +19,7 @@ json.partial! 'common/ontology_terms', type: 'operations', resource: @material
 
 json.nodes @material.associated_nodes.collect { |x| { name: x[:name], node_id: x[:id] } }
 json.collections @material.collections.collect { |x| { title: x[:title], id: x[:id] } }
-json.materials @material.events.collect { |x| { title: x[:title], id: x[:id] } }
+json.events @material.events.collect { |x| { title: x[:title], id: x[:id] } }
 
 json.external_resources do
   @material.external_resources.each do |external_resource|
