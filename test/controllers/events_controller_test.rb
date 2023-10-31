@@ -8,6 +8,8 @@ class EventsControllerTest < ActionController::TestCase
   setup do
     mock_images
     @event = events(:one)
+    @material = materials(:good_material)
+    @collection = collections(:two)
     u = users(:regular_user)
     @event.user = u
     @event.save!
@@ -282,6 +284,8 @@ class EventsControllerTest < ActionController::TestCase
 
   test 'should show event as json-api' do
     @event.scientific_topic_uris = ['http://edamontology.org/topic_0654']
+    @event.materials << @material
+    @event.collections << @collection
     @event.save!
 
     get :show, params: { id: @event, format: :json_api }
@@ -297,6 +301,8 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal @event.title, body['data']['attributes']['title']
     assert_equal @event.scientific_topic_uris.first, body['data']['attributes']['scientific-topics'].first['uri']
     assert_equal event_path(assigns(:event)), body['data']['links']['self']
+    assert_equal @material.id.to_s, body['data']['relationships']['materials']['data'][0]['id']
+    assert_equal @collection.id.to_s, body['data']['relationships']['collections']['data'][0]['id']
     assert_equal 'application/vnd.api+json; charset=utf-8', response.content_type, 'response content_type not matched.'
   end
 
