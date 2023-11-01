@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/ElixirTeSS/TeSS_RDF_Extractors
-  revision: e941e5f706e849eef36d33fb702282576c00f21d
-  tag: 1.0.1
+  revision: fd317c69c75e3945975111814137c586c92a582f
+  ref: master
   specs:
     tess_rdf_extractors (1.0.1)
       linkeddata (~> 3.2.0)
