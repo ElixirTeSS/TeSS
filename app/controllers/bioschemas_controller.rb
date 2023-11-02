@@ -1,4 +1,7 @@
 class BioschemasController < ApplicationController
+
+  skip_before_action :authenticate_user!, :authenticate_user_from_token!
+
   def test
     if params[:url].present?
       body = fetch_url
