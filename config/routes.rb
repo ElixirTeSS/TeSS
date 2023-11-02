@@ -60,6 +60,7 @@ Rails.application.routes.draw do
     collection do
       get :count
       get :calendar, format: %i[js html]
+      post :preview
     end
     member do
       get :redirect
@@ -111,6 +112,7 @@ Rails.application.routes.draw do
     end
     collection do
       get :count
+      post :preview
     end
   end
 
@@ -159,6 +161,9 @@ Rails.application.routes.draw do
 
   get 'autocomplete/people_suggestions' => 'autocomplete#people_suggestions', as: :people_autocomplete_suggestions
   get 'autocomplete/suggestions/:field' => 'autocomplete#suggestions', as: :autocomplete_suggestions
+
+  get 'bioschemas/test' => 'bioschemas#test'
+  post 'bioschemas/test' => 'bioschemas#test'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

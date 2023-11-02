@@ -1,0 +1,20 @@
+<div id="content">
+  <h2>Bioschemas Testing Tool</h2>
+  <%= form_tag bioschemas_test_path do %>
+    <div class="form-group">
+      <label>URL</label>
+      <%= text_field_tag :url, params[:url], class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <label>HTML/JSON-LD Snippet</label>
+      <%= text_area_tag :snippet, params[:snippet], class: 'form-control', rows: 5 %>
+    </div>
+
+    <%= submit_tag('Test', class: 'btn btn-primary') %>
+  <% end %>
+
+  <% if @output %>
+    <%= render partial: 'bioschemas/test_results' %>
+  <% end %>
+</div>
