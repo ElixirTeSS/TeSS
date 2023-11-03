@@ -60,16 +60,18 @@ module Ingestors
     end
 
     def read_content(content, url: nil)
-      resources = {
-        events: [],
-        materials: []
+      output = {
+        resources: {
+          events: [],
+          materials: []
+        },
+        totals:  Hash.new(0)
       }
 
-      totals = Hash.new(0)
-      return resources unless content
+      return output unless content
 
       sample = content.read(256)&.strip
-      return resources unless sample
+      return output unless sample
 
       format = sample.start_with?('[') || sample.start_with?('{') ? :jsonld : :rdfa
       content.rewind
@@ -86,10 +88,10 @@ module Ingestors
       learning_resources = Tess::Rdf::LearningResourceExtractor.new(source, format, base_uri: url).extract do |p|
         convert_params(p)
       end
-      totals['Events'] += events.count
-      totals['Courses'] += courses.count
-      totals['CourseInstances'] += course_instances.count
-      totals['LearningResources'] += learning_resources.count
+      output[:totals]['Events'] += events.count
+      output[:totals]['Courses'] += courses.count
+      output[:totals]['CourseInstances'] += course_instances.count
+      output[:totals]['LearningResources'] += learning_resources.count
       if verbose
         puts "Events: #{events.count}"
         puts "Courses: #{courses.count}"
@@ -98,14 +100,14 @@ module Ingestors
       end
 
       deduplicate(events + courses + course_instances).each do |event|
-        resources[:events] << event
+        output[:resources][:events] << event
       end
 
       deduplicate(learning_resources).each do |material|
-        resources[:materials] << material
+        output[:resources][:materials] << material
       end
 
-      { resources: resources, totals: totals }
+      output
     end
 
     # If duplicate resources have been extracted, prefer ones with the most metadata.

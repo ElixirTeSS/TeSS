@@ -79,7 +79,7 @@ class EventsController < ApplicationController
         format.html { render :show }
       else
         flash[:error] = 'This resource is invalid.'
-        format.html { render 'bioschemas/test'}
+        format.html { render 'bioschemas/test', status: :unprocessable_entity }
       end
     end
   end
