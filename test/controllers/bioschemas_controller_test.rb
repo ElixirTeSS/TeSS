@@ -33,7 +33,7 @@ class BioschemasControllerTest < ActionController::TestCase
   test 'should test HTML snippet' do
     sign_in users(:regular_user)
 
-    post :run_test, params: { snippet: fixture_file('gtn/slides-introduction.html').read }
+    post :run_test, params: { snippet: fixture_file('gtn/slides-introduction-modified.html').read }
 
     assert_response :success
 
@@ -60,7 +60,7 @@ class BioschemasControllerTest < ActionController::TestCase
 
   test 'should test HTML URL' do
     WebMock.stub_request(:get, 'https://website.com/material.html').
-      to_return(status: 200, headers: {}, body: fixture_file('gtn/slides-introduction.html').read)
+      to_return(status: 200, headers: {}, body: fixture_file('gtn/slides-introduction-modified.html').read)
 
     sign_in users(:regular_user)
 
@@ -75,12 +75,18 @@ class BioschemasControllerTest < ActionController::TestCase
   end
 
   test 'should gracefully handle malformed JSON-LD snippet' do
+    # Silence error stdout from RDF library
+    old_method = JSON::LD::Reader.instance_method(:logger_common)
+    JSON::LD::Reader.define_method(:logger_common) { |*args| }
+
     sign_in users(:regular_user)
 
     post :run_test, params: { snippet: "{ 'oh dear }" }
 
     assert_response :unprocessable_entity
     assert flash[:error].include?('parsing error')
+  ensure
+    JSON::LD::Reader.define_method(old_method.name, old_method)
   end
 
   test 'should gracefully handle URL timeout' do
