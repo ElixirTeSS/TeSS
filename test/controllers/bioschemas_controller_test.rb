@@ -17,6 +17,16 @@ class BioschemasControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_path
   end
 
+  test 'should not get bioschemas test page if feature disabled' do
+    sign_in users(:regular_user)
+
+    with_settings(feature: { bioschemas_testing: false }) do
+      assert_raises(ActionController::RoutingError) do
+        get :test
+      end
+    end
+  end
+
   test 'should test JSON-LD snippet' do
     sign_in users(:regular_user)
 

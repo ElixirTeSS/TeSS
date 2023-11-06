@@ -1,4 +1,5 @@
 class BioschemasController < ApplicationController
+  before_action -> { feature_enabled?('bioschemas_testing') }
 
   def test
 
