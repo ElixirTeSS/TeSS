@@ -119,6 +119,24 @@ class BioschemasControllerTest < ActionController::TestCase
     assert flash[:error].include?('Could not access')
   end
 
+  test 'should gracefully handle missing params' do
+    sign_in users(:regular_user)
+
+    post :run_test, params: { }
+
+    assert_response :unprocessable_entity
+    assert flash[:error].include?('Please enter a URL')
+  end
+
+  test 'should gracefully handle bad URL' do
+    sign_in users(:regular_user)
+
+    post :run_test, params: { url: '123' }
+
+    assert_response :unprocessable_entity
+    assert flash[:error].include?('Invalid URL')
+  end
+
   test 'should not test for anonymous users' do
     post :run_test, params: { snippet: fixture_file('ext_res.json').read }
 
