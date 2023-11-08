@@ -52,7 +52,7 @@
 
       <h3>Topics</h3>
       <div class="learning-path-topics">
-        <% @learning_path.learning_paths_topics.joins(:topic).each do |lpt| %>
+        <% @learning_path.topic_links.joins(:topic).each do |lpt| %>
           <div class="learning-path-topic">
             <div class="learning-path-topic-order"><%= lpt.order %></div>
             <div class="learning-path-topic-title"><h4><%= lpt.topic.title %> <i class="icon icon-md expand-icon"></i></h4></div>

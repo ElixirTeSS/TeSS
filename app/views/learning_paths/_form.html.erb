@@ -79,10 +79,10 @@
   <hr>
 
   <%
-    form_field_name = 'learning_path[learning_paths_topics_attributes]'
-    items = @learning_path.learning_paths_topics
+    form_field_name = 'learning_path[topic_links_attributes]'
+    items = @learning_path.topic_links
     data = { role: 'collection-items-group',
-             url: collections_path(keywords: 'Topic'),
+             url: learning_path_topics_path,
              prefix: form_field_name,
              'label-field' => 'title',
              'id-field' => 'id',

@@ -117,6 +117,7 @@ Rails.application.routes.draw do
   end
 
   resources :learning_paths, concerns: :activities
+  resources :learning_path_topics, concerns: %i[collaboratable activities]
 
   get 'elearning_materials' => 'materials#index', defaults: { 'resource_type' => 'e-learning' }
 

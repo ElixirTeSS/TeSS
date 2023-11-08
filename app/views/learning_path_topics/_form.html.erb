@@ -1,0 +1,28 @@
+<%= simple_form_for @learning_path_topic, html: { class: 'prevent-enter-submit', multipart: true } do |f| %>
+
+    <%= render partial: 'common/error_summary', locals: { resource: @learning_path_topic } %>
+
+    <%= f.input :title %>
+
+    <%= f.input :description, as: :markdown_area, input_html: { rows: '10' } %>
+
+    <%= f.multi_input :keywords %>
+
+    <%= render partial: 'collections/collection_items_form',
+               locals: { f: f, field_name: 'materials', form_field_name: 'learning_path_topic[items_attributes]',
+                         url: materials_path,
+                         items: @learning_path_topic.items.where(resource_type: 'Material') } %>
+
+    <%# render partial: 'collections/collection_items_form',
+               locals: { f: f, field_name: 'events', form_field_name: 'learning_path_topic[items_attributes]',
+                         url: events_path(include_expired: true, sort: 'late'),
+                         items: @learning_path_topic.items.where(resource_type: 'Event'),
+                         group_by: 'group', transform_function: 'events' } %>
+
+    <div class="form-group actions">
+      <%= f.submit ( f.object.new_record? ? "Create" : "Update") + " topic", class: 'btn btn-primary' %>
+      <%= link_to 'Back', collections_path, class: 'btn btn-default' %>
+      <%= link_to t('.cancel', default: t("helpers.links.cancel")),
+                  collections_path, class: 'btn btn-default' %>
+    </div>
+<% end %>
