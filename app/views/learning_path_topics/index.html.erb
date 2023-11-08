@@ -1,0 +1,26 @@
+<div class="wrapper">
+  <% if TeSS::Config.solr_enabled %>
+    <div id="sidebar" class="popout-sidebar">
+      <%= render partial: "search/common/facet_sidebar",
+                 locals:  { resources: @learning_path_topics_results, resource_type: LearningPathTopic } %>
+    </div>
+  <% end %>
+
+  <div id="content">
+    <h2>Learning path topics</h2>
+    <% content_for :buttons do %>
+      <%= link_to new_learning_path_topic_path, class: 'btn btn-primary' do %>
+        Create topic
+      <% end %>
+
+    <% end %>
+
+    <%= render partial: "search/common/search_panel", locals: { resources: @learning_path_topics_results,
+                                                                resource_type: LearningPathTopic } %>
+
+    <%= render partial: 'common/masonry_grid', locals: { objects: @learning_path_topics } %>
+
+    <%= render partial: 'search/common/pagination_bar', locals: { resources: @learning_path_topics } %>
+  </div>
+
+</div>

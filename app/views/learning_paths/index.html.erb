@@ -16,6 +16,11 @@
           Register learning path
         <% end %>
       <% end %>
+      <% if policy(LearningPathTopic).create? %>
+        <%= link_to learning_path_topics_path, class: 'btn btn-default' do %>
+          Topics
+        <% end %>
+      <% end %>
       <!-- Info -->
       <%= info_button("What are learning paths in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>
         <%= render_markdown(learning_paths_info) %>

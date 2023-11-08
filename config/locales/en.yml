@@ -30,6 +30,9 @@ en:
     learning_paths:
       short: Learning paths
       long: Learning paths
+    learning_path_topics:
+      short: Topics
+      long: Learning path topics
   pundit:
     default: 'You are not authorised to perform this action.'
     material_policy:

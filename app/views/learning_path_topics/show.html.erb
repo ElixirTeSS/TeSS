@@ -1,0 +1,85 @@
+<div class="wrapper collapsing-wrapper">
+  <div class="collapsing-sidebar" id="sidebar">
+    <h4 class="nav-heading">Topic</h4>
+    <div class="nav-block">
+      <h5>
+        <%= @learning_path_topic.title %>
+      </h5>
+      <% unless @learning_path_topic.description.blank? %>
+        <div class="tess-expandable markdown">
+          <%= render_markdown @learning_path_topic.description  %>
+        </div>
+      <% end %>
+    </div>
+    <h4 class="nav-heading">Keywords</h4>
+    <div class="nav-block">
+      <% if @learning_path_topic.keywords.any? %>
+        <%= @learning_path_topic.keywords.join(', ') %>
+      <% else %>
+        <span class="empty">None</span>
+      <% end %>
+    </div>
+    <h4 class="nav-heading">Owner</h4>
+    <div class="nav-block">
+      <%= link_to @learning_path_topic.user.name, @learning_path_topic.user %>
+    </div>
+    <% if @learning_path_topic.collaborators.any? %>
+      <h4 class="nav-heading"><%= Collection.human_attribute_name(:collaborators) %></h4>
+      <% @learning_path_topic.collaborators.each do |collaborator| %>
+        <div class="nav-block">
+          <%= link_to collaborator.name, collaborator %>
+        </div>
+      <% end %>
+    <% end %>
+
+  </div>
+
+  <div id="content">
+    <div class="content-actions">
+      <div class="content-manager-actions">
+        <% if policy(@learning_path_topic).manage? %>
+          <%= render partial: 'collaborations/collaborators_button', locals: { resource: @learning_path_topic } %>
+        <% end %>
+        <%= edit_button(@learning_path_topic) if policy(@learning_path_topic).update? %>
+        <%= delete_button(@learning_path_topic) if policy(@learning_path_topic).destroy? %>
+      </div>
+    </div>
+    <div class="my-3">
+      <% materials = @learning_path_topic.material_items %>
+      <% materials_count = materials.count %>
+      <% events = @learning_path_topic.event_items %>
+      <% events_count = events.count %>
+      <% activator = tab_activator %>
+      <ul class="nav nav-tabs">
+        <%= tab('Materials', icon_class_for_model('materials'), 'materials', activator: activator,
+                disabled: { check: materials_count.zero?, message: 'No associated training materials' },
+                count: materials_count) %>
+
+        <%# tab('Events', icon_class_for_model('events'), 'events', activator: activator,
+                disabled: { check: events_count.zero?, message: 'No associated events' },
+                count: events_count) %>
+      </ul>
+    </div>
+
+    <div class="tab-content ml-3">
+      <% if TeSS::Config.feature['materials'] %>
+        <%= render partial: 'common/associated_resources',
+                   locals: { model: Material,
+                             total_count: materials_count,
+                             resources: materials,
+                             activator: activator,
+                             view_all_link: materials_path(collections: @learning_path_topic.title) } %>
+      <% end %>
+
+      <% if TeSS::Config.feature['events'] %>
+        <%= render partial: 'common/associated_events',
+                   locals: { total_count: events_count,
+                             resources: events,
+                             activator: activator,
+                             view_all_link: events_path(collections: @learning_path_topic.title, include_expired: true) } %>
+      <% end %>
+    </div>
+
+    <%= render partial: 'activities/activity_log_button', locals: { resource: @learning_path_topic } %>
+  </div>
+</div>
