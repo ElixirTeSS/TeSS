@@ -49,7 +49,7 @@ module Ingestors
         event.city = 'Amsterdam'
         event.country = 'The Netherlands'
         event.source = 'UvA'
-        event.online = attr.fetch('online_event', '')
+        event.online = attr.fetch('online_event', false)
         event.timezone = 'Amsterdam'
 
         # array fields
