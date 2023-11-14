@@ -3,6 +3,14 @@
     <%= render partial: 'content_providers/partials/content_provider_info', locals: { content_provider: @learning_path.content_provider } %>
     <%= render partial: 'nodes/partials/associated_node_info', locals: { associated_nodes: @learning_path.associated_nodes } %>
     <%= render(partial: 'users/partials/user_info', locals: { user: @learning_path.user }) if current_user.try(:is_admin?) %>
+    <% if @learning_path.collaborators.any? %>
+      <h4 class="nav-heading"><%= Collection.human_attribute_name(:collaborators) %></h4>
+      <% @learning_path.collaborators.each do |collaborator| %>
+        <div class="nav-block">
+          <%= link_to collaborator.name, collaborator %>
+        </div>
+      <% end %>
+    <% end %>
   </div>
 
   <div id="content">
@@ -27,6 +35,7 @@
             <%= star_button(@learning_path) if user_signed_in? %>
           </div>
           <div class="content-manager-actions">
+            <%= render partial: 'collaborations/collaborators_button', locals: { resource: @learning_path } if policy(@learning_path).manage? %>
             <% if policy(@learning_path).update? %>
               <%= edit_button(@learning_path) %>
             <% end %>
