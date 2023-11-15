@@ -64,7 +64,15 @@
         <% @learning_path.topic_links.joins(:topic).each do |lpt| %>
           <div class="learning-path-topic">
             <div class="learning-path-topic-order"><%= lpt.order %></div>
-            <div class="learning-path-topic-title"><h4><%= lpt.topic.title %> <i class="icon icon-md expand-icon"></i></h4></div>
+            <div class="learning-path-topic-title">
+              <h4><%= lpt.topic.title %> <i class="icon icon-md expand-icon"></i></h4>
+              <% if lpt.topic.difficulty_level.present? %>
+                <span class="label label-default"><%= display_difficulty_level(lpt.topic) %></span>
+              <% end %>
+              <span class="label label-default">
+                <i class="fa fa-book"></i> <%= pluralize(lpt.topic.material_items.count, 'material') %>
+              </span>
+            </div>
             <div class="learning-path-topic-contents">
               <% if lpt.topic.description.present? %>
                 <blockquote class="description learning-path-topic-desc collection-item-comment">

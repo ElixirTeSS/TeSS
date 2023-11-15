@@ -80,7 +80,7 @@ class LearningPathTopicsController < ApplicationController
 
   def topic_params
     params.require(:learning_path_topic).permit(
-      :title, :description, { keywords:  [] }, { material_ids: [] }, { event_ids: [] },
+      :title, :description, :difficulty_level, { keywords:  [] }, { material_ids: [] }, { event_ids: [] },
       { items_attributes: [:id, :resource_type, :resource_id, :order, :comment, :_destroy] })
   end
 

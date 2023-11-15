@@ -60,12 +60,6 @@
               input_html: { rows: '3', title: t('learning_paths.hints.prerequisites') },
               visibility_toggle: TeSS::Config.feature['learning_paths_disabled'] %>
 
-  <!-- Field: Level -->
-  <%= f.input :difficulty_level, collection: DifficultyDictionary.instance.options_for_select,
-              label: 'Competency level', prompt: 'Select a difficulty level...',
-              errors: @learning_path.errors[:difficulty_level], input_html: { title: t('learning_paths.hints.difficulty') },
-              visibility_toggle: TeSS::Config.feature['learning_paths_disabled'] %>
-
   <!-- Field: Learning Objectives-->
   <%= f.input :learning_objectives, as: :markdown_area,
               input_html: { rows: '3', title: t('learning_paths.hints.objectives') },
