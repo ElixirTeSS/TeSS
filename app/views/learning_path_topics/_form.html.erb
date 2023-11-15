@@ -8,7 +8,13 @@
 
     <%= f.multi_input :keywords %>
 
-    <%= render partial: 'collections/collection_items_form',
+    <!-- Field: Level -->
+    <%= f.input :difficulty_level, collection: DifficultyDictionary.instance.options_for_select,
+                label: 'Competency level', prompt: 'Select a difficulty level...',
+                errors: @learning_path_topic.errors[:difficulty_level], input_html: { title: t('learning_paths.hints.difficulty') } %>
+
+
+  <%= render partial: 'collections/collection_items_form',
                locals: { f: f, field_name: 'materials', form_field_name: 'learning_path_topic[items_attributes]',
                          url: materials_path,
                          items: @learning_path_topic.items.where(resource_type: 'Material') } %>
