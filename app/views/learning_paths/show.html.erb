@@ -56,10 +56,8 @@
         <% if policy(@learning_path).update? && @learning_path.edit_suggestion %>
           <%= render partial: 'common/approve_term_suggestions', locals: { suggestion: @learning_path.edit_suggestion } %>
         <% end %>
-
       </div>
 
-      <h3>Topics</h3>
       <div class="learning-path-topics">
         <% @learning_path.topic_links.joins(:topic).each do |lpt| %>
           <div class="learning-path-topic">
