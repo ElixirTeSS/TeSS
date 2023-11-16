@@ -67,6 +67,7 @@ class LearningPath < ApplicationRecord
   has_many :stars,  as: :resource, dependent: :destroy
   has_many :topic_links, class_name: 'LearningPathTopicLink'
   has_many :topics, through: :topic_links, class_name: 'LearningPathTopic'
+  has_many :topics_materials, through: :topics, source: :materials, class_name: 'Material'
   auto_strip_attributes :title, :description, squish: false
 
   validates :title, :description, presence: true

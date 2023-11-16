@@ -1,4 +1,4 @@
-<li class="masonry-brick media-item long">
+<li class="masonry-brick media-item">
   <%= link_to learning_path, class: 'link-overlay' do %>
     <%= item_order_badge(collection_item) if defined? collection_item %>
 
@@ -22,12 +22,10 @@
           <%= image_tag(learning_path.content_provider.image.url, class: 'provider-avatar') %>
         <% end %>
       </div>
-      <div class="markdown-description">
-        <%= render_sanitized_markdown truncate(learning_path.description, length: 300, separator: ' ') %>
-      </div>
 
       <div>
         <span class="label label-default"><i class="fa fa-folder-open"></i> <%= pluralize(learning_path.topics.count, 'topic') %></span>
+        <span class="label label-default"><i class="fa fa-book"></i> <%= pluralize(learning_path.topics_materials.count, 'materials') %></span>
 
         <%= keywords_and_topics(learning_path) %>
       </div>
