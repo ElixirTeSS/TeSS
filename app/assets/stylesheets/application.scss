@@ -830,6 +830,9 @@ input[type=checkbox].field-lock + label:before,
   top: 3px;
 }
 
+.description p:last-child {
+  margin-bottom: 0;
+}
 
 .description, .source-log {
   border: 1px solid lightgrey;
