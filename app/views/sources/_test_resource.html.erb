@@ -1,0 +1,32 @@
+<% existing = resource.class.check_exists(resource) %>
+
+<div class="list-card bulk-import-row<%= ' new' unless existing -%>">
+  <h4>
+    <% if existing %>
+      <%= link_to(existing, target: '_blank', class: 'btn btn-xs btn-default pull-right') do %>
+        Current <%= TeSS::Config.site['title_short'] %> entry
+        <span class="fa fa-external-link"></span>
+      <% end %>
+    <% end %>
+    <%= resource.title %>
+  </h4>
+  <p>
+    <%= link_to(resource.url, resource.url, target: '_blank', rel: 'noopener') %>
+  </p>
+  <div class="scraped-metadata">
+    <% if resource.is_a?(Event) %>
+      <%= display_attribute(resource, :start) { |t| t.strftime('%A, %d %B %Y @ %H:%M') }%>
+      <%= display_attribute(resource, :end) { |t| t.strftime('%A, %d %B %Y @ %H:%M') } %>
+      <%= display_attribute(resource, :timezone) %>
+      <%= display_attribute(resource, :duration) %>
+    <% end %>
+    <%= render partial: 'common/extra_metadata', locals: { resource: resource } %>
+    <% if resource.valid? %>
+      <%= render partial: 'bioschemas/preview_button', locals: { resource: resource } %>
+    <% else %>
+      <div class="alert alert-danger">
+        <i class="fa fa-exclamation-circle"></i> Errors: <%= resource.errors.full_messages.join(', ') %>
+      </div>
+    <% end %>
+  </div>
+</div>

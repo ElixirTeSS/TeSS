@@ -27,14 +27,26 @@ class MaterialsController < ApplicationController
 
   # GET /materials/1
   # GET /materials/1.json
-  # TODO: This is probably not a good way of concealing an individual record from a user.
-  # TODO: In any case, it breaks various tests.
   def show
     @bioschemas = @material.to_bioschemas
     respond_to do |format|
       format.html
       format.json
       format.json_api { render json: @material }
+    end
+  end
+
+  def preview
+    @material = User.get_default_user.materials.new(material_params)
+
+    respond_to do |format|
+      if @material.valid?
+        @bioschemas = @material.to_bioschemas
+        format.html { render :show }
+      else
+        flash[:error] = 'This resource is invalid.'
+        format.html { render 'bioschemas/test', status: :unprocessable_entity }
+      end
     end
   end
 

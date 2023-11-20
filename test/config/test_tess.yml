@@ -52,6 +52,7 @@ default: &default
     edit_suggestions: true
     geocoding: true
     disabled: []
+    bioschemas_testing: true
   user_ingestion_methods: ["event_csv", "material_csv", "ical", "eventbrite", "tess_event", "zenodo", "bioschemas"]
   placeholder:
     collection: 'placeholder-collection.png'

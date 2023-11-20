@@ -169,6 +169,35 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     assert_equal @content_provider, sample.content_provider
   end
 
+  test 'does not duplicate external resources' do
+    mock_bioschemas('https://website.org/ext_res.json', 'ext_res.json')
+    @ingestor.read('https://website.org/ext_res.json')
+    assert_difference('Material.count', 1) do
+      assert_difference('ExternalResource.count', 2) do
+        @ingestor.write(@user, @content_provider)
+      end
+    end
+
+    material = @ingestor.materials.first
+    assert_equal 2, material.external_resources.count
+    tool = material.external_resources.detect { |e| e.url == 'https://bio.tools/galaxy' }
+    assert_equal 'Galaxy', tool.title
+    assert tool.is_tool?
+    other = material.external_resources.detect { |e| e.url == 'https://www.ebi.ac.uk/ega/home' }
+    assert_equal 'European Genome-phenome Archive', other.title
+    refute other.is_tool?
+
+    new_ingestor = Ingestors::BioschemasIngestor.new
+    new_ingestor.read('https://website.org/ext_res.json')
+    assert_no_difference('Material.count') do
+      assert_no_difference('ExternalResource.count') do
+        new_ingestor.write(@user, @content_provider)
+      end
+    end
+
+    assert_equal [tool.id, other.id].sort, material.reload.external_resource_ids.sort
+  end
+
   private
 
   def mock_bioschemas(url, filename)

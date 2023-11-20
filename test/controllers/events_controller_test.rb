@@ -1464,4 +1464,35 @@ class EventsControllerTest < ActionController::TestCase
     get :calendar
     @response.body.include? 'relevant_event'
   end
+
+  test 'should preview event' do
+    sign_in users(:regular_user)
+
+    assert_no_difference('Event.count') do
+      assert_no_difference('ExternalResource.count') do
+        post :preview, params: { event: { title: 'Potential event',
+                                          url: 'https://someevent.com',
+                                          external_resources_attributes: [
+                                            { title: 'A tool perhaps', url: 'https://bio.tools/some_tool' }
+                                          ]
+        }}
+
+        assert_response :success
+        assert_select 'h2', text: 'Potential event'
+        assert_select '.external-resources-box a[href=?]', 'https://bio.tools/some_tool'
+      end
+    end
+  end
+
+  test 'should not preview invalid event' do
+    sign_in users(:regular_user)
+
+    assert_no_difference('Event.count') do
+      assert_no_difference('ExternalResource.count') do
+        post :preview, params: { event: { title: 'Missing URL' } }
+
+        assert_response :unprocessable_entity
+      end
+    end
+  end
 end

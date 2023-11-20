@@ -34,43 +34,11 @@ module Ingestors
       totals = Hash.new(0)
       sources.each do |url|
         source = open_url(url)
-        next unless source
-
-        sample = source.read(256)&.strip
-        next unless sample
-
-        format = sample.start_with?('[') || sample.start_with?('{') ? :jsonld : :rdfa
-        source.rewind
-        source = source.read
-        events = Tess::Rdf::EventExtractor.new(source, format, base_uri: url).extract do |p|
-          convert_params(p)
-        end
-        courses = Tess::Rdf::CourseExtractor.new(source, format, base_uri: url).extract do |p|
-          convert_params(p)
-        end
-        course_instances = Tess::Rdf::CourseInstanceExtractor.new(source, format, base_uri: url).extract do |p|
-          convert_params(p)
-        end
-        learning_resources = Tess::Rdf::LearningResourceExtractor.new(source, format, base_uri: url).extract do |p|
-          convert_params(p)
-        end
-        totals['Events'] += events.count
-        totals['Courses'] += courses.count
-        totals['CourseInstances (without Course)'] += course_instances.count
-        totals['LearningResources'] += learning_resources.count
-        if verbose
-          puts "Events: #{events.count}"
-          puts "Courses: #{courses.count}"
-          puts "CourseInstances (without Course): #{course_instances.count}"
-          puts "LearningResources: #{learning_resources.count}"
-        end
-
-        deduplicate(events + courses + course_instances).each do |event|
-          provider_events << event
-        end
-
-        deduplicate(learning_resources).each do |material|
-          provider_materials << material
+        output = read_content(source, url: url)
+        provider_events += output[:resources][:events]
+        provider_materials += output[:resources][:materials]
+        output[:totals].each do |key, value|
+          totals[key] += value
         end
       end
 
@@ -89,6 +57,57 @@ module Ingestors
       deduplicate(provider_materials).each do |material_params|
         add_material(material_params)
       end
+    end
+
+    def read_content(content, url: nil)
+      output = {
+        resources: {
+          events: [],
+          materials: []
+        },
+        totals:  Hash.new(0)
+      }
+
+      return output unless content
+
+      sample = content.read(256)&.strip
+      return output unless sample
+
+      format = sample.start_with?('[') || sample.start_with?('{') ? :jsonld : :rdfa
+      content.rewind
+      source = content.read
+      events = Tess::Rdf::EventExtractor.new(source, format, base_uri: url).extract do |p|
+        convert_params(p)
+      end
+      courses = Tess::Rdf::CourseExtractor.new(source, format, base_uri: url).extract do |p|
+        convert_params(p)
+      end
+      course_instances = Tess::Rdf::CourseInstanceExtractor.new(source, format, base_uri: url).extract do |p|
+        convert_params(p)
+      end
+      learning_resources = Tess::Rdf::LearningResourceExtractor.new(source, format, base_uri: url).extract do |p|
+        convert_params(p)
+      end
+      output[:totals]['Events'] += events.count
+      output[:totals]['Courses'] += courses.count
+      output[:totals]['CourseInstances'] += course_instances.count
+      output[:totals]['LearningResources'] += learning_resources.count
+      if verbose
+        puts "Events: #{events.count}"
+        puts "Courses: #{courses.count}"
+        puts "CourseInstances: #{course_instances.count}"
+        puts "LearningResources: #{learning_resources.count}"
+      end
+
+      deduplicate(events + courses + course_instances).each do |event|
+        output[:resources][:events] << event
+      end
+
+      deduplicate(learning_resources).each do |material|
+        output[:resources][:materials] << material
+      end
+
+      output
     end
 
     # If duplicate resources have been extracted, prefer ones with the most metadata.

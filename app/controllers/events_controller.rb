@@ -70,6 +70,20 @@ class EventsController < ApplicationController
     end
   end
 
+  def preview
+    @event = User.get_default_user.events.new(event_params)
+
+    respond_to do |format|
+      if @event.valid?
+        @bioschemas = @event.to_bioschemas
+        format.html { render :show }
+      else
+        flash[:error] = 'This resource is invalid.'
+        format.html { render 'bioschemas/test', status: :unprocessable_entity }
+      end
+    end
+  end
+
   # GET /events/new
   def new
     authorize Event
