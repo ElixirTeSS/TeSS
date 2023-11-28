@@ -1,3 +1,22 @@
+# Training Hub
+The [Scilifelab](https://www.scilifelab.se/) **T**raining **H**ub is dedicated to fostering a diverse and inclusive community of instructors and learners, where we can all gain new skills and benefit from the minds of many.
+
+We are building a training portal from exisiting open source project [TeSS](https://github.com/ElixirTeSS/TeSS) where the life science community in Sweden can find opportunities to gain relevant skills, and experts can find support in creating training that captures their knowledge. 
+
+## Getting Started
+Training Hub can be installed using [Docker](docs/docker.md#Development). Just follow all the steps in the develop branch instead of master.
+
+### Contributions to code
+In order to contribute to code,
+1. Start with develop branch, create your feature branch: name_feature. 
+    E.g.,  I am working on creating search functionality so my branch name is harshita_searchfunc
+    Once the project board is setup then we will even refine the naming convention of feature branches to specific issue title no.
+
+2. Create a PR for your feature branches and add either Nina or Harshita in the reviewer.
+After creating a PR, drop the message in the slack with PR url and notify the reviewer in the #trainghub-portal channel.
+
+3. Branch linked to Elixir/TeSS is master. It is in read only mode and can only sync fork from its upstream repository. No developer should push code to master.
+
 # TeSS
 
 [![Actions Status](https://github.com/ElixirTeSS/TeSS/workflows/CI/badge.svg)](https://github.com/ElixirTeSS/TeSS/actions)
