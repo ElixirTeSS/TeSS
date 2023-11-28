@@ -1,0 +1,412 @@
+@import "bootstrap/mixins";
+//////////////////////////////
+// Design-specific variables
+//////////////////////////////
+@font-face {
+  font-family: 'Lato';
+  src: font-url('Lato-Regular.ttf') format('truetype');
+}
+$primary-color: #045C64;    // SciLifeLab color
+$secondary-color: #491F53;  // SciLifeLab color
+$accent-color: #A7C947;     // SciLifeLab color
+
+$dark-color: #242526;
+$dark-60-color: #7b7c7c; // rgba(36, 37, 38, 0.6);
+$dark-30-color: #bcbdbd; // rgba(36, 37, 38, 0.3);
+$dark-05-color: #f3f4f4; // rgba(36, 37, 38, 0.05); // Unused
+
+$light-color: #F4F7FB;
+$light-60-color: rgba(244, 247, 251, 0.6); // Unused
+$light-30-color: rgba(244, 247, 251, 0.3); // Unused
+$light-05-color: rgba(244, 247, 251, 0.05); // Unused
+
+//////////////////////////////
+// TeSS variables
+//////////////////////////////
+// Misc
+$layout-spacing-base: 30px;
+$item-padding-base: 24px;
+$sidebar-width: 280px;
+$transition-time: 300ms;
+
+// Footer
+$footer-bg: #fafafa;
+$footer-border: transparent;
+$footer-text: $dark-color;
+$footer-border-radius: 50px;
+$footer-padding-top: 30px;
+
+//////////////////////////////
+// Bootstrap variable tweaks
+//////////////////////////////
+
+// For reference: https://github.com/twbs/bootstrap-sass/blob/master/assets/stylesheets/bootstrap/_variables.scss
+
+// Font
+$font-family-base: 'Lato', sans-serif;
+
+$font-size-base: 16px;
+$font-size-large: 18px;
+$font-size-small: 14px;
+
+$font-size-h1: 58px;
+$font-size-h2: 44px;
+$font-size-h3: 32px;
+$font-size-h4: 24px;
+
+// Colours
+$brand-primary: $secondary-color;
+$brand-secondary: $accent-color;
+$brand-danger: #d9534f;
+$brand-success: #129e37;
+$brand-warning: #f0be3e;
+$brand-info: #7bd5d1;
+
+$headings-color: $primary-color;
+
+$gray-darker: $dark-color;
+$gray-dark: darken($dark-60-color, 25%);
+$gray: darken($dark-60-color, 10%);
+$gray-light: $dark-60-color;
+$gray-lighter: #fafafa;
+
+$state-success-text: darken($brand-success, 10%);
+$state-success-bg: #d5f5dd;
+$state-success-border: $state-success-bg;
+
+$state-info-text: darken($brand-info, 35%);
+$state-info-bg: #d9f4f3;
+$state-info-border: $state-info-bg;
+
+$state-warning-text: darken($brand-warning, 30%);
+$state-warning-bg: #fff6c6;
+$state-warning-border: $state-warning-bg;
+
+$state-danger-text: darken($brand-danger, 20%);
+$state-danger-bg: #ffe9e9;
+$state-danger-border: $state-danger-bg;
+
+// Spacing
+$padding-base-vertical:     8px;
+$padding-base-horizontal:   16px;
+
+$padding-large-vertical:    12px;
+$padding-large-horizontal:  18px;
+
+$border-radius-base:        6px;
+$border-radius-large:       10px;
+$border-radius-small:       4px;
+
+// Forms
+$input-border: $gray-light;
+$input-border-focus: $secondary-color;
+
+// Navbar
+$navbar-height: 85px;
+$navbar-default-color: $gray-darker;
+$navbar-default-bg: rgba($accent-color, 0.8);
+$navbar-default-border: transparent;
+$navbar-default-link-color: $gray-darker;
+$navbar-default-link-hover-color: white;
+$navbar-default-link-active-color: white;
+
+.navbar {
+  font-weight: bold;
+}
+
+//header, adding SciLifelab specific menu bar item
+header-container {
+  position: relative;
+}
+
+
+#header-container::before {
+  background-image: asset-url('scilifelab/Fasad-SciLifeLab-Solna-2022-2-1-scaled-cut.jpeg');
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 85px; /* Covers the #header-container */
+  z-index: -1; /* Puts it behind the content */
+  bottom: 0;
+}
+
+//index page
+.welcome-text {
+  background-color: $secondary-color;
+  margin-top: -53px;
+  height: 80px;
+  width: 100vw; 
+  margin-left: calc((-100vw + 100%) / 2);
+  margin-right: calc((-100vw + 100%) / 2);
+  margin-bottom: 150px;;
+
+  h3 {
+    margin-top: 0px;
+    color: white;
+  }
+  h2 {
+    font-weight: lighter;
+  }
+}
+
+
+// Resources page
+text-boxes-container {
+  display: inline-flex;
+ // flex-direction: row; /* Horizontal layout */
+}
+
+.text-box {
+  padding: 20px; /* Add spacing between text boxes */
+  border: 1px solid #ccc; /* Optional: Add borders for separation */
+  margin: 5px; /* Optional: Add margin around each text box */
+  height: 300px;
+  font-size: 27px;
+  color: white;
+  background-color: $primary-color;
+}
+
+.white-box {
+  position: absolute;
+  bottom: 35px;
+  left: 3px;
+  width: 80%; /* Adjust the width as needed */
+  height: 50px; /* Adjust the height as needed */
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  padding: 10px;
+}
+
+.white-box p {
+  margin-left: 10px;
+}
+
+.icon-circle {
+  width: 70px; /* Adjust the size of the circle */
+  height: 70px; /* Adjust the size of the circle */
+  background-color: $accent-color; /* Replace with your desired color */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: -25px; /* Adjust the margin as needed */
+}
+
+.icon-circle img {
+  width: 40px; /* Adjust the width of the icon as needed */
+  height: 40px; /* Adjust the height of the icon as needed */
+}
+
+// Guides
+.guide-box {
+  border: 1px solid  #4C979F;
+  margin: 5px; /* Add margin around each text box */
+  height: 300px;
+  font-size: 27px;
+  color: black;
+  border-radius: 25px;
+  box-shadow: 0px 0px 10px 0px rgba(#4C979F, 0.5);
+}
+
+#guide-type {
+  position: absolute;
+  bottom: 0;
+  left: 50%; /* Position at the horizontal center */
+  transform: translateX(-50%); /* Center the text horizontally */
+  font-size: 17px;
+}
+
+// Training community
+.community-box {
+  width: 80%;
+  margin: 0 auto; /* Center the box */
+  padding: 20px;
+  margin-top: 20px;
+  border: 1px solid  #4C979F;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px 0px rgba(#4C979F, 0.5);
+}
+
+// Support page
+.support-box {
+  border: 1px solid  #4C979F;
+  margin: 5px; /* Add margin around each text box */
+  height: 200px;
+  font-size: 27px;
+  color: black;
+  border-radius: 25px;
+  box-shadow: 0px 0px 10px 0px rgba(#4C979F, 0.5);
+}
+
+
+// About page
+.image-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.image-container img {
+  max-width: 100%;
+  height: auto;
+}
+
+.image-header {
+  font-size: 20px;
+  margin-bottom: 5px;
+  text-align: left;
+  border-bottom: 2px solid black; /* Add a border under the header */
+  padding-bottom: 5px;
+  display: inline-block;
+}
+
+.image-text {
+  background-color: #4C979F; /* Background color */
+  padding: 10px;
+  text-align: center;
+
+  h4 {
+    color: black;
+    margin-bottom: 0px;
+  }
+}
+
+.no-bullet-point {
+  list-style-type: none;
+
+  li {
+    margin-left: -30px;
+  }
+}
+
+.research-box {
+  width: 90%;
+  margin: 0 auto; /* Center the box */
+  padding: 20px;
+  margin-top: 20px;
+  border: 1px solid  #4C979F;
+  border-radius: 5px;
+  color: black;
+}
+
+
+// Breadcrumb
+$breadcrumb-bg: transparent;
+$breadcrumb-separator: "/";
+$breadcrumb-color: $dark-color !default;
+$breadcrumb-active-color: $dark-color !default;
+$breadcrumb-padding-horizontal: 5px;
+$breadcrumb-padding-vertical: $layout-spacing-base / 2;
+
+// Pagination
+$pagination-color: $primary-color;
+$pagination-active-bg: $secondary-color;
+$pagination-active-border: $secondary-color;
+
+// Links
+$link-color: $accent-color;
+$link-hover-color: darken(rgb(244, 125, 33), 15%);
+
+// Buttons
+$btn-default-color: $brand-secondary;
+$btn-default-bg: #fff;
+$btn-default-border: $brand-secondary;
+
+$btn-primary-color: $light-color;
+$btn-primary-bg: $accent-color;
+$btn-primary-border: $accent-color;
+
+$btn-secondary-color: $brand-primary; // Yes I know this is backwards
+$btn-secondary-bg: $btn-default-bg;
+$btn-secondary-border: $brand-primary;
+
+$btn-info-color: $brand-info;
+$btn-info-bg: #fff;
+$btn-info-border: $brand-info;
+
+$btn-success-color: $brand-success;
+$btn-success-bg: #fff;
+$btn-success-border: $brand-success;
+
+$btn-warning-color: $brand-warning;
+$btn-warning-bg: #fff;
+$btn-warning-border: $brand-warning;
+
+$btn-danger-color: $brand-danger;
+$btn-danger-bg: #fff;
+$btn-danger-border: $brand-danger;
+
+// Nav
+$nav-pills-active-link-hover-bg: $secondary-color;
+$nav-pills-active-link-hover-color: #fff;
+
+// Panels
+$panel-default-heading-bg: transparentize($secondary-color, 0.9);
+$panel-default-border: $panel-default-heading-bg;
+
+// Misc
+$label-default-bg: $secondary-color;
+$badge-bg: $accent-color;
+
+
+//////////////////////////////
+// Theme-specific style tweaks
+//////////////////////////////
+.btn-default:hover, .btn-default:active, .btn-default:focus {
+  color: $secondary-color !important;
+  background-color: #fff !important;
+  border-color: $secondary-color !important;
+
+  i {
+    filter: brightness(0) saturate(100%) invert(28%) sepia(93%) saturate(1217%) hue-rotate(168deg) brightness(102%) contrast(97%);
+  }
+}
+
+.btn-group.open {
+  .btn-default.dropdown-toggle {
+    color: $secondary-color !important;
+    background-color: #fff !important;
+    border-color: $secondary-color !important;
+  }
+}
+
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus {
+  color: $light-color !important;
+  background-color: $secondary-color !important;
+  border-color: $secondary-color !important;
+}
+
+@mixin modern-button-variant($color, $background, $border) {
+  &:hover, &:active, &:focus {
+    background: $background !important;
+    border-color: darken($border, 20%) !important;
+    color: darken($color, 20%) !important;
+  }
+}
+
+.btn-secondary { @include modern-button-variant($btn-secondary-color, $btn-secondary-bg, $btn-secondary-border) }
+.btn-info { @include modern-button-variant($btn-info-color, $btn-info-bg, $btn-info-border) }
+.btn-success { @include modern-button-variant($btn-success-color, $btn-success-bg, $btn-success-border) }
+.btn-warning { @include modern-button-variant($btn-warning-color, $btn-warning-bg, $btn-warning-border) }
+.btn-danger { @include modern-button-variant($btn-danger-color, $btn-danger-bg, $btn-danger-border) }
+
+.text-primary {
+  color: $secondary-color !important;
+}
+
+.nav-tabs a, .nav-pills a {
+  color: $secondary-color;
+}
+
+.unified-header .navbar-brand img {
+  max-height: 80px !important;
+}
+
+.unified-header {
+  font-size: 25px;
+}

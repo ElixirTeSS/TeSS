@@ -1,0 +1,64 @@
+<div class="container mt-4">
+  <h3 style="text-align: Left;"> <%= image_tag(asset_path("scilifelab/fairicon-black.png"), alt: "community", size: "30x30") %> FAIR Training</h3>
+  <br>
+  <p>We are developing community standards that training activities at SciLifeLab should meet 
+    in order to ensure quality, sustainable training within the ecosystem.
+  </p>
+  <p>
+    Currently the Training Hub promotes adhering to FAIR principles. Making training FAIR allows your 
+    knowledge and materials to be found and built from, supporting sustainable community development.
+  </p>
+  <br>
+</div>
+
+<div class="container mt-4">
+  <div class="row">
+    <!-- Image Section -->
+    <div class="col-md-5">
+      <%= image_tag(asset_path("scilifelab/FAIRgraphic.png"), alt: 'guide', width: '100%') %>
+      <br><br>
+      <p>Figure 1. From Garcia et al, 2020.</p>
+    </div>
+    <!-- Text Section -->
+    <div class="col-md-7">
+      <%= link_to "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1007854", target: "_blank", rel: "noopener noreferrer" do %>
+        <div class="community-box">
+          <div class="row">
+            <!-- Image Section -->
+            <div class="col-md-2">
+              <%= image_tag(asset_path("scilifelab/shelficon.png"), alt: 'guide', width: '50') %>
+            </div>
+            <!-- Text Section -->
+            <div class="col-md-10" style="color:black;">
+              <b>10 simple rules for making training materials FAIR</b>
+              <p>PLOS Computational Biology, 2020.</p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <%= link_to "https://elixir-europe-training.github.io/ELIXIR-TrP-FAIR-training-handbook/", target: "_blank", rel: "noopener noreferrer" do %>
+        <div class="community-box">
+          <div class="row">
+            <!-- Image Section -->
+            <div class="col-md-2">
+              <%= image_tag(asset_path("scilifelab/ELIXIRlogo.png"), alt: 'guide', width: '50') %>
+            </div>
+            <!-- Text Section -->
+            <div class="col-md-10" style="color:black;">
+              <b>ELIXIR FAIR training handbook</b>
+              <p>A manual for creating FAIR training</p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="row text-center">
+  <br>
+  <p>Want to ensure your're on the right track? Connect with us at <%= mail_to(TeSS::Config.contact_email) %></p>
+</div>
+
+

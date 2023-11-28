@@ -12,10 +12,17 @@ Rails.application.routes.draw do
   get 'edam/operations' => 'edam#operations'
 
   #get 'static/home'
-  get 'about' => 'about#tess', as: 'about'
+  get 'about' => 'about#us', as: 'about'
   get 'about/registering' => 'about#registering', as: 'registering_resources'
-  get 'about/developers' => 'about#developers', as: 'developers'
+  #get 'about/developers' => 'about#developers', as: 'developers'
   get 'about/us' => 'about#us', as: 'us'
+
+  # Add resource page
+  get 'our_resources' => 'our_resources#our_resources', as: 'our_resources'
+  get 'our_resources/guides' => 'our_resources#guides', as: 'guides'
+  get 'our_resources/pedagogic_support' => 'our_resources#pedagogic_support', as: 'pedagogic'
+  get 'our_resources/trainer_community' => 'our_resources#trainer_community', as: 'community'
+  get 'our_resources/fair_training' => 'our_resources#fair_training', as: 'fair'
 
   get 'privacy' => 'static#privacy', as: 'privacy'
 
@@ -115,6 +122,8 @@ Rails.application.routes.draw do
       post :preview
     end
   end
+
+  resources :our_resources, only: [:index]
 
   get 'elearning_materials' => 'materials#index', defaults: { 'resource_type' => 'e-learning' }
 

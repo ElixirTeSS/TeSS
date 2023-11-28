@@ -5,47 +5,220 @@
 
   <div id="content">
     <div class="about-block">
-      <h2>About Us</h2>
-      <% @feature_count = 0 %>
 
-      <% TeSS::Config.site['about_us_tab_order'].each do |key| %>
-        <% case key %>
-        <% when 'funding' %>
-          <%# FUNDING %>
-          <div id="funding" class="<%= next_about_block(@feature_count += 1) %>">
-            <h3><%== t "us.keys.#{key}" %></h3>
-            <%== t 'us.funding' %>
-            <% if TeSS::Config.funders.present? %>
-              <p>
-                <% TeSS::Config.funders.each do |funder| %>
-                  <%= link_to(funder['url'], target: '_blank', rel: 'noopener') do -%>
-                    <%= image_tag(funder['logo'], class: 'funding-logo') -%>
-                  <% end %>
-                <% end %>
-              </p>
-            <% end %>
+      <!-- Our Team -->
+      <div id="team" class="odd-about-block">
+        <h3><%== t "us.keys.team" %></h3>
+        <div class="container">
+          <div class="row">
+            <!-- Head of Training -->
+            <div class="col-md-3">
+              <div class="image-container">
+                <div class="image-header">Head of Training</div>
+                  <%= image_tag(asset_path("scilifelab/staff/Jessica_Lindvall_chair-300x300.jpg"), alt: 'staff') %>
+                  <div class="image-text">
+                    <h4>Jessica Lindvall</h4><br>
+                    jessica.lindvall@scilifelab.se<br>
+                    Stockholm University <br>
+                    SciLifeLab Solna
+                  </div>
+              </div>
+            </div>
+            <!-- Training Manager -->
+            <div class="col-md-3">
+              <div class="image-container">
+                <div class="image-header">Training Manager</div>
+                  <%= image_tag(asset_path("scilifelab/staff/nina-resize.png"), alt: 'staff') %>
+                  <div class="image-text">
+                    <h4>Nina Norgren</h4><br>
+                    nina.norgren@scilifelab.se<br>
+                    Umeå University <br>
+                    SciLifeLab Umeå
+                  </div>
+              </div>
+            </div>
+            <!-- Systems Developer -->
+            <div class="col-md-3">
+              <div class="image-container">
+                <div class="image-header">Systems Developer</div>
+                  <%= image_tag(asset_path("scilifelab/staff/harshita-resize.png"), alt: 'staff') %>
+                  <div class="image-text">
+                    <h4>Harshita Gupta</h4><br>
+                    harshita.gupta@scilifelab.se<br>
+                    Uppsala University <br>
+                    SciLifeLab Uppsala
+                  </div>
+              </div>
+            </div>
           </div>
-        <% when 'cite' %>
-          <%# CITE %>
-          <div id="<%= key -%>" class="<%= next_about_block(@feature_count += 1) %>">
-            <h3><%== t "us.keys.#{key}" %></h3>
-            <blockquote>
-              <%== t "us.#{key}" %>
-            </blockquote>
+          <div class="row">
+            <!-- Training Officers -->
+            <div class="col-md-12">
+              <div class="image-header">Scientific Training Officers</div>
+            </div>
+            <div class="col-md-3">
+              <div class="image-container">
+                <%= image_tag(asset_path("scilifelab/staff/cat-resize.png"), alt: 'staff') %>
+                <div class="image-text">
+                  <h4>Cat Halthur</h4> <br>
+                  cat.halthur@scilifelab.se<br>
+                  Stockholm University <br>
+                  SciLifeLab Lund
+                </div>
+              </div>
+            </div>
+            <!-- Image 2 -->
+            <div class="col-md-3">
+              <div class="image-container">
+                <%= image_tag(asset_path("scilifelab/staff/kristen-resize.png"), alt: 'staff') %>
+                <div class="image-text">
+                  <h4>Kristen Schroeder</h4> <br>
+                  kristen.schroeder@scilifelab.se<br>
+                  Stockholm University <br>
+                  SciLifeLab Solna
+                </div>
+              </div>
+            </div>
+            <!-- Image 3 -->
+            <div class="col-md-3">
+              <div class="image-container">
+                <%= image_tag(asset_path("scilifelab/staff/jill-resize.png"), alt: 'staff') %>
+                <div class="image-text">
+                  <h4>Jill Jaworski</h4> <br>
+                  jillian.jaworski@scilifelab.se<br>
+                  Stockholm University <br>
+                  SciLifeLab Lund
+                </div>
+              </div>
+            </div>
           </div>
-        <% else %>
-          <%# OTHERS %>
-          <div id="<%= key -%>" class="<%= next_about_block(@feature_count += 1) %>">
-            <h3><%== t "us.keys.#{key}" %></h3>
-            <%== t "us.#{key}" %>
-          </div>
-        <% end %>
-      <% end %>
-    </div>
+        </div>
+      </div>
 
-    <hr/>
+      <!-- Our funding and research -->
+      <div id="funding" class="even-about-block">
+        <h3><%== t "us.keys.funding" %></h3>
+        <p>
+          <br>
+          The Training Hub is committed to best practices in training to support the 
+          continuous upskilling of the life science community in Sweden. We participate 
+          in securing funding and research to support this goal.<br><br>
+          Our funding and research highlights:
+        </p>
+          <%= link_to "https://doi.org/10.1371/journal.pone.0293879", target: "_blank", rel: "noopener noreferrer" do %>
+            <div class="research-box">
+              <div class="row">
+                <!-- Image Section -->
+                <div class="col-md-1">
+                  <%= image_tag(asset_path("scilifelab/shelficon.png"), alt: 'guide', size: '60x80') %>
+                </div>
+                <!-- Text Section -->
+                <div class="col-md-11">
+                  <b>An international consensus on effective, inclusive, and career-spanning short-format training in 
+                    the life sciences and beyond - Co-author Jessica Lindvall.
+                  </b>
+                  <p>PLoS ONE, 2023</p>
+                </div>
+              </div>
+            </div>
+          <% end %>
 
-    <%= render partial: 'links', locals: { show: 'about' } %>
+          <%= link_to "https://www.scilifelab.se/news/major-vr-grants-to-scilifelab-for-accessibility-to-infrastructure/", target: "_blank", rel: "noopener noreferrer" do %>
+            <div class="research-box">
+              <div class="row">
+                <!-- Image Section -->
+                <div class="col-md-1">
+                  <%= image_tag(asset_path("scilifelab/trophyicon.png"), alt: 'guide', size: '60x80') %>
+                </div>
+                <!-- Text Section -->
+                <div class="col-md-11">
+                  <b>
+                    VR grant awarded to SciLifeLab Training Hub
+                  </b>
+                  <p>See the press release for details</p>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+          <%= link_to "https://doi.org/10.1371/journal.pone.0225256", target: "_blank", rel: "noopener noreferrer" do %>
+            <div class="research-box">
+              <div class="row">
+                <!-- Image Section -->
+                <div class="col-md-1">
+                  <%= image_tag(asset_path("scilifelab/shelficon.png"), alt: 'guide', size: '60x80') %>
+                </div>
+                <!-- Text Section -->
+                <div class="col-md-11">
+                  <b>The Mastery Rubric for Bioinformatics: A tool to support design and evaluation 
+                    of career-spanning education and training - Co-author Jessica Lindvall.
+                  </b>
+                  <p>PLoS ONE, 2020</p>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+      </div>
+
+      <!-- Our mission -->
+      <div id="mission" class="odd-about-block">
+        <h3><%== t "us.keys.mission" %></h3>
+        <%= image_tag(asset_path("scilifelab/BioVis-scaled-overlay.jpg"), alt: 'mision', height: '230px') %>
+        <p>
+          <br>
+          The Training Hub was established at SciLifeLab in 2023 to support, consolidate, and enable 
+          access to the Research Infrastructure’s knowledge, skills and expertise. <br><br>
+          We are building a training portal where the life science community in Sweden can 
+          find opportunities to gain relevant skills, and experts can find support in creating 
+          training that captures their knowledge. <br><br>
+          To learn more about what we are planning, find our 2023-2028 Roadmap
+          <%= link_to "here.", "https://www.scilifelab.se/training/training-roadmap/", target: "_blank", rel: "noopener noreferrer" %>
+        </p> 
+      </div>
+
+      <!-- Get involved -->
+      <div id="involved" class="even-about-block">
+        <h3><%== t "us.keys.involved" %></h3>
+        <p>
+          <br>
+          The SciLifeLab Training Hub is dedicated to fostering a diverse and inclusive community 
+          of instructors and learners, where we can all gain new skills and benefit from the 
+          minds of many.<br><br>
+
+          You can find us and join in our efforts here:<br>
+          <ul class="no-bullet-point">
+            <li>
+              <%= image_tag(asset_path("scilifelab/github-mark.png"), alt: 'icon', height: '40px', style: 'margin-right: 10px;') %>
+              <%= link_to "GitHub", "https://github.com/SciLifeLab-Training", target: "_blank", rel: "noopener noreferrer" %>
+            </li>
+            <li>
+              <%= image_tag(asset_path("scilifelab/vimeo_icon_dark.png"), alt: 'icon', height: '40px', style: 'margin-right: 10px;') %>
+              <%= link_to "Vimeo", "https://vimeo.com/channels/scilifelabtraining", target: "_blank", rel: "noopener noreferrer" %>
+            </li>
+            <li>
+              <%= image_tag(asset_path("scilifelab/Slack-mark-black-RGB.png"), alt: 'icon', height: '40px', style: 'margin-right: 10px;') %>
+              <%= link_to "#training", "#", target: "_blank", rel: "noopener noreferrer" %>
+              Slack Channel (SciLifelab affiliation required)
+            </li>
+          </ul>
+
+          <p>
+            <br>
+            Subscribe to our 
+            <%= link_to "newsletter", "https://forms.gle/d3mHw2TGaQLFxS7c7", target: "_blank", rel: "noopener noreferrer" %>
+            <br>
+            Connect with us at
+            <%= mail_to(TeSS::Config.contact_email) %>
+            <br><br>
+
+            Training Hub Fika - drop in and borrow a training officer's brain (coming 2024)
+          </p>
+          <%= image_tag(asset_path("scilifelab/Navet2-scaled-overlay.jpg"), alt: 'mision', height: '220px', class: 'image-tag') %>
+          
+        </p>
+      </div>
+
   </div>
 </div>
 

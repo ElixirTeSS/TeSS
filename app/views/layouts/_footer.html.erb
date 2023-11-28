@@ -3,22 +3,17 @@
     <div class="row">
       <div class="col-sm-4 col-xs-6">
         <div class="footer-logo footer-item">
-          <%= image_tag(TeSS::Config.site['logo'], :alt => TeSS::Config.site['logo_alt']) %>
+          <%= image_tag(TeSS::Config.site['favicon'], :alt => TeSS::Config.site['logo_alt']) %>
         </div>
 
         <div class="footer-item contact-link">
           <%= mail_to(TeSS::Config.contact_email) %><br/>
         </div>
-
-        <%= link_to "Contribute", registering_resources_path, class: 'btn btn-primary btn-sm', style: 'margin-top: 1em' %>
       </div>
 
       <div class="col-sm-4 col-xs-6 text-left">
         <div class="footer-item">
           <%= link_to "About #{TeSS::Config.site['title_short']}", about_path %>
-        </div>
-        <div class="footer-item">
-          <%= link_to 'Funding & acknowledgements', us_path(anchor: 'funding') %>
         </div>
         <div class="footer-item">
           <%= link_to 'Privacy', privacy_path %>
@@ -38,19 +33,7 @@
         <div class="footer-item">
           <%= link_to 'Source code', TeSS::Config.site['repository'], target: '_blank', rel: 'noopener' %>
         </div>
-
-        <div class="footer-item">
-          <%= link_to 'API documentation', asset_path('api/json_api', skip_pipeline: true) %>
-        </div>
-
-        <% if TeSS::Config.feature['bioschemas_testing'] %>
-          <div class="footer-item">
-            <%= link_to 'Bioschemas testing tool', bioschemas_test_path %>
-          </div>
-        <% end %>
       </div>
-
-      <%= render partial: 'layouts/supported_by' %>
     </div>
   </div>
 </footer>

@@ -1,0 +1,107 @@
+default: &default
+  base_url: http://localhost:3000
+  contact_email: traininghub@scilifelab.se
+  sender_email: no-reply@localhost
+  twitter_handle: # @handle
+  solr_enabled: true
+  solr_facets:
+    # see `searchable` block in app/model/*.rb for names
+    # events: [content_provider, keywords, event_types, ...]
+    # materials:
+    # trainers:
+  facets_max_age_list: ['Event', 'Material', 'Resources']
+  announcement_message:
+  prevent_robot_indexing: false
+  require_cookie_consent: true
+  blocked_domains:
+    - !ruby/regexp '/bad-domain\.example/'
+  site:
+    title: 'SciLifeLab Training Portal'
+    title_short: SciLifeLab Training
+    favicon: scilifelab/SciLifeLab_symbol_green.png
+    logo: scilifelab/SciLifeLab_symbol_NEG.png
+    logo_alt: 'Training Hub Portal'
+    logo_open_graph: ''
+    logo_email: ''
+    # Colours of the SVG icons used throughout TeSS, requires `rake assets:precompile` if changed
+    icon_primary_color: '#A7C947' # Blue by default
+    icon_secondary_color: '#045C64' # Orange by default
+    repository: 'https://github.com/SciLifeLab-TrainingHub-Platform/TeSS'
+    supported_by: ''
+    widget_example:
+    home_page: # Configuration for the sections displayed on the front page
+      catalogue_blocks: true
+      provider_carousel: true
+      # A list of content provider IDs to show in the front page carousel. Leave blank to show latest 5 (that have avatars set)
+      featured_providers: # e.g. [123, 5, 10, 1]
+      faq: # [who, how, why, embed, subscribe] # Questions/answers in config/en.yml: home > faq. Use empty array to hide section
+      promo_blocks: false
+    # The order in which the tabs appear (if feature enabled)
+    tab_order: ['home', 'about', 'events', 'material', 'our_resources']
+    # The tabs that should be collapsed under the "Directory" tab. Can be left blank to hide it.
+    directory_tabs: [] # ['trainers', 'content_providers', 'nodes']
+    n_provider_ids: 5
+    about_us_tab_order: ['team', 'funding', 'mission', 'involved'] # tab order for about page navbar
+  mailer:
+    delivery_method: sendmail
+    location: /usr/sbin/sendmail
+    arguments: '-i -t'
+  gmaps:
+    center:
+      latitude: 53.4674583
+      longitude: -2.233948899999973
+    zoom:
+      latitude: 3
+      longitude: 13
+  header_notice: # HTML to display above the header
+  feature:
+    elearning_materials: false
+    events: true
+    invitation: false
+    materials: false
+    nodes: false
+    collections: false
+    content_providers: false
+    subscription: false
+    registration: true
+    trainers: false
+    workflows: false
+    sources: false
+    user_source_creation: false
+    edit_suggestions: false
+    geocoding: false
+    our_resources: true
+    # Possible features to disable:
+    #  biotools, topics, operations, sponsors, fairshare, county, ardc_fields_of_research,
+    #  other_types, subsets, syllabus, approved_editors address_finder
+    disabled: ['ardc_fields_of_research', 'other_types', 'subsets', 'syllabus', 'approved_editors']
+    materials_disabled: []
+  restrict_content_provider_selection: false
+  user_ingestion_methods: ['bioschemas']
+  placeholder:
+    collection: 'placeholder-collection.svg'
+    content_provider: 'placeholder-organization.svg'
+    person: 'placeholder-person.svg'
+  dictionaries:
+    cost_basis: 'cost_basis.yml'
+    difficulty: 'difficulty.yml'
+    eligibility: 'eligibility.yml'
+    event_types: 'event_types.yml'
+    licences: 'licences.yml'
+    material_status: 'material_status.yml'
+    material_type: 'material_type.yml'
+    target_audience: 'target_audience.yml'
+    trainer_experience: 'trainer_experience.yml'
+    online_keywords: 'online_keywords.yml'
+  funders:
+#    - url: https://example.com/your-funders-website
+#      logo: foo.png
+
+development:
+  <<: *default
+
+production:
+  <<: *default
+
+test:
+  <<: *default

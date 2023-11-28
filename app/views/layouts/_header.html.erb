@@ -29,6 +29,7 @@
 
       <div class="collapse navbar-collapse" id="navbar-collapse">
         <%# User Options -%>
+
         <ul class="user-options nav navbar-nav navbar-right">
           <% if user_signed_in? %>
             <%= render partial: 'layouts/user_menu' %>
@@ -42,13 +43,13 @@
           tabs = [
             { feature: 'about', link: about_path },
             { feature: 'events', link: events_path },
-            { feature: 'materials', link: materials_path },
             { feature: 'elearning_materials', link: elearning_materials_path },
             { feature: 'workflows', link: workflows_path },
             { feature: 'collections', link: collections_path },
             { feature: 'trainers', link: trainers_path },
             { feature: 'content_providers', link: content_providers_path },
-            { feature: 'nodes', link: nodes_path }
+            { feature: 'nodes', link: nodes_path },
+            { feature: 'our_resources', link: our_resources_path}
           ].select do |t|
             t[:feature] == 'about' || TeSS::Config.feature[t[:feature]]
           end.sort_by do |t|

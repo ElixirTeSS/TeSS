@@ -1,45 +1,20 @@
 <!-- SIDEBAR -->
 <nav class="about-nav">
-  <!-- WHAT IS TESS -->
-  <ul class="nav nav-stacked <%= show_active(show, 'home') %>">
-    <li class="about-page-category">
-      <%= link_to 'What is ' + TeSS::Config.site['title_short'] + '?', about_path %>
-    </li>
-    <li><%= about_nav_link('What we catalogue', about_path, 'events') %></li>
-    <li><%= about_nav_link('Subscribing to notifications', about_path, 'subscribe') %></li>
-    <li><%= about_nav_link('Widgets & API', about_path, 'widget') %></li>
-  </ul>
-
-  <!-- REGISTERING YOUR RESOURCES -->
-  <ul class="nav nav-stacked <%= show_active(show, 'registering') %>">
-    <li class="about-page-category">
-      <%= link_to 'Registering Content', registering_resources_path %>
-    </li>
-    <li><%= about_nav_link('Automatic Registration', registering_resources_path, 'automatic') %></li>
-    <li><%= about_nav_link('Manual Registration', registering_resources_path, 'manual') %></li>
-  </ul>
-
-  <!-- DEVELOPERS -->
-  <ul class="nav nav-stacked <%= show_active(show, 'developers') %>">
-    <li class="about-page-category">
-      <%= link_to 'Developers', developers_path %>
-    </li>
-    <li><%= about_nav_link('Code and Data', developers_path, 'code_and_data') %></li>
-    <li><%= about_nav_link('Widgets', developers_path, 'widgets') %></li>
-    <li><%= about_nav_link('API', developers_path, 'api') %></li>
-  </ul>
 
   <!-- ABOUT US -->
   <ul class="nav nav-stacked <%= show_active(show, 'us') %>">
     <li class="about-page-category">
-      <%= link_to 'About Us', us_path %>
+      <%= link_to 'The SciLifeLab Training Hub', us_path %>
     </li>
     <% 
       about_us_tabs = [
-        {link: us_path , key:'tess_club'},
-        {link: us_path , key:'contact'},
         {link: us_path , key:'team'},
         {link: us_path , key:'funding'},
+        {link: us_path , key:'mission'},
+        {link: us_path , key:'involved'},
+
+        {link: us_path , key:'tess_club'},
+        {link: us_path , key:'contact'},
         {link: us_path , key:'acknowledgements'},
         {link: us_path , key:'cite'}
       ].select do |tab|

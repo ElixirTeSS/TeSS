@@ -1,0 +1,554 @@
+en:
+  features:
+    about:
+      short: About
+      long: About
+    events:
+      short: Events
+      long: Training Courses
+    materials:
+      short: Materials
+      long: Training materials
+    elearning_materials:
+      short: e-Learning
+      long: e-Learning
+    workflows:
+      short: Workflows
+      long: Workflows
+    collections:
+      short: Collections
+      long: Collections
+    trainers:
+      short: Trainers
+      long: Trainers
+    content_providers:
+      short: Providers
+      long: Content Providers
+    nodes:
+      short: Nodes
+      long: Nodes
+    our_resources:
+      short: Resources
+      long: Resources
+  pundit:
+    default: 'You are not authorised to perform this action.'
+    material_policy:
+    event_policy:
+  attributes:
+    url: 'URL'
+    doi: 'DOI'
+  activerecord:
+    models:
+      event: Event
+      material: Material
+      elearning_material: e-Learning Material
+      workflow: Workflow
+      collection: Collection
+      trainer: Trainer
+      content_provider: Content Provider
+      node: Node
+    attributes:
+      content_provider:
+        user: Owner
+      profile:
+        firstname: 'First name'
+        surname: 'Last name'
+      event:
+        county: Region
+  about:
+    registry: >
+      The Training Hub was established in 2023 to support, consolidate, and enable access to the SciLifeLab 
+      infrastructure’s knowledge, skills and expertise. 
+    history: >
+      We are building a portal where the Swedish life science community can find opportunities to gain 
+      relevant skills, and experts can find support in creating training that captures their knowledge.
+      To learn more about what we are planning, find our 2023-2028 Roadmap here.
+
+    events: >
+      Events in TeSS are defined as face-to-face or online training opportunities that have set start and end times.
+      These primarily take the form of workshops, courses, webinars, etc.; but TeSS also collects information about
+      conferences, meetings and hackathons, as these may also provide opportunities for learning.
+    nominatim: "<a href='https://wiki.openstreetmap.org/wiki/Nominatim' target='_blank' rel='noopener'>Nominatim</a>"
+    materials: >
+      Materials in TeSS are defined as training resources that can be accessed at any time. These may be in
+      a variety of different formats, including online tutorials, videos, PowerPoint presentations, and so on.
+    workflows: >
+      New to TeSS are graphical training tools termed 'Training Workflows'.
+      Three main types of workflow are in development: Educational Resources, Learning Pathways and Concept Maps.
+      These encapsulate different types of, and/or approaches to, training, at different levels of granularity,
+      within easy-to-use visual displays.
+    learning_paths: >
+      In order to advance their skills, trainees need to embark on a path, or developmental trajectory.
+      To facilitate this journey, learning paths aim to structure, within simple visual workflows, the set of
+      relevant training resources that trainees need to study in order to accomplish their learning objectives.
+      Learning paths are being developed by ELIXIR TeSS, ELIXIR-NL and ELIXIR UK.
+    resources: >
+      In this type of workflow, trainees are introduced to various practical tasks, linked to associated
+      online tools and/or databases, within self-contained modules. Each module includes
+      i) succinct statements of teaching goals and learning outcomes, to convey to trainees what they will be able to do
+      on completion of the module;
+      ii) a series of questions or ‘Reflections’ to provoke critical thinking about the tasks that have been completed;
+      iii) additional background information and further reading to help support learning and enquiry; and
+      iv) multiple choice quiz questions to evaluate understanding at the end.
+      Educational Resources for introductory sequence and structural bioinformatics are currently being developed by
+      ELIXIR TeSS, ELIXIR-UK and the UK Structural Bioinformatics group (via the FunPDBe project).
+    subscribe: >
+      TeSS also provides a subscription feature to help users to stay informed about courses, workshops and
+      conferences of interest to them. The service may be customised by selecting the relevant filters, and
+      initiated via the subscribe button. Users may choose to receive email notifications about upcoming
+      events, or have them automatically added to their preferred calendar application.
+    subscription_manager: >
+      The <a href='%{subscriptions_path}'>subscriptions manager</a> page may be used to change the frequency of, or to remove, subscriptions.
+    widgets_and_api: >
+      To access TeSS data, organisations may readily import information about relevant events and materials to their site using widgets,
+      or may create custom feeds using our API.
+    collect_events: >
+      %{site_name} collects event information from %{count} content providers, supplementing the data with geolocation information found using %{nominatim}.
+    discover_events: Discover Events
+    collect_materials: "%{site_name} collects materials from %{count} content providers."
+    discover_materials: Discover Materials
+  developer:
+    license: >
+      TeSS is committed to the FAIR principles: making data findable, accessible, interoperable and re-usable.
+      As such, all content in TeSS is available under the CC BY 4.0 licence, and can be accessed through our API
+      and widgets. The TeSS codebase is also available to re-use under the BSD Licence, and can be found on GitHub.
+    code_license: >
+      <a href="https://github.com/ElixirTeSS/TeSS/blob/master/LICENSE", target="_blank">BSD 3-Clause<i class="icon icon-md arrow-top-right-icon"></i></a>
+    data_license: >
+      <a href="https://creativecommons.org/licenses/by/4.0/", target="_blank">CC-BY 4.0<i class="icon icon-md arrow-top-right-icon"></i></a>
+    gmaps_countries: >
+      'United Kingdom', 'Spain', 'Portugal', 'France', 'Belgium', 'Ireland', 'Estonia', 'Finland',
+      'Germany', 'Austria', 'Italy', 'Hungary', 'Czech Republic', 'Estonia', 'Denmark',
+      'Greece', 'Luxembourg', 'The Netherlands', 'Switzerland', 'Norway', 'Sweden', 'Slovenia'
+    widgets: >
+      Widgets are chunks of javascript code that can be copied into website source code to display TeSS content.
+      There are several different styles and functionalities available from our configurable widget suite.
+      Widgets can be used to enhance your site and offer your community lists of relevant events or training resources.
+    widgets_available: "https://elixirtess.github.io/TeSS_widgets/"
+    api_example_1: "/events.json_api"
+    api_example_2: "/events/data-fairification-for-data-stewards.json_api"
+    api_example_3: "/materials.json_api?scientific_topics=RNA-Seq"
+    api_example_4: "/content_providers.json_api"
+    api_example_5: "/workflows.json_api"
+  us:
+    keys:
+      team: Our Team
+      funding: Our funding and research
+      mission: Our mission
+      involved: Get involved
+      
+    funding: >
+      TeSS has been funded by:
+      <ul>
+      <li>European Commission, Horizon 2020 Research Infrastructures programme (ELIXIR-EXCELERATE,
+      <a href="https://cordis.europa.eu/project/rcn/198519_en.html" target="_blank">grant agreement number 676559</a>);</li>
+      <li>ELIXIR Implementation Study (Registry Integration from a User Perspective);</li>
+      <li>ELIXIR Implementation Study (Learning Paths).</li>
+      <li>BBSRC UK (Delivering ELIXIR-UK grant, grant agreement numbers
+        <a href="https://bbsrc.ukri.org/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1"
+          target="_blank">BB/L005050/1</a> &amp;
+        <a href="https://bbsrc.ukri.org/research/grants-search/AwardDetails/?FundingReference=BB/L005069/1"
+          target="_blank">BB/L005069/1</a>
+        ).
+      </li>
+      </ul>
+    involved: >
+      Niall Beard, Finn Bacall, Aleksandra Nenadic, Milo Thurston, Carole A Goble, Susanna-Assunta Sansone, Teresa K Attwood,
+      <strong>TeSS: a platform for discovering life-science training opportunities</strong>,
+      <em>Bioinformatics</em>, Volume 36, Issue 10, 15 May 2020, Pages 3290-3291,
+      <a href="https://doi.org/10.1093/bioinformatics/btaa047">https://doi.org/10.1093/bioinformatics/btaa047</a>
+
+  register:
+    registering_resources_in: "Registering Resources in %{site_name}"
+    resources: >
+      <p>Training resources (events and materials) may be added to TeSS to reach bigger audiences, increase impact and
+      bolster event attendance. Registering events and training materials makes them more findable in a variety ways
+      to various user bases.</p>
+    methods: >
+      <p>There are two ways to register training materials or events for display in TeSS:
+      <ol><li>Arrange for an <a href="#automatic">automatic registration</a> solution;</li>
+      <li>Use our form to register them <a href="#manual">manually</a>.</li></ol></p>
+    automatic: >
+      TeSS features several options for automatically "harvesting" resources from external sources.
+      This can be helpful if you are maintaining a large collection of events and materials that changes frequently.
+    structured: >
+      <p>To register resources in TeSS automatically, we need to be able to extract data from target
+      sources reliably. To this end, it is helpful if the data is structured according to some kind of standard format.</p>
+      <p>The following are examples of the kinds of structured data that TeSS can work with.</p>
+      <p>If your website currently includes no structured data, and you’d like your resources added to TeSS, we recommend using
+      <a href="http://bioschemas.org" target="_blank">Bioschemas</a> to structure your site.</p>
+    schema: >
+      <p><a href='https://schema.org', target='_blank'>Schema.org</a> is a project run by a consortium of search engines.
+      Schema.org has created an extensive library of schemas that web-masters can use to explicitly
+      mark-up their websites content in order to improve search engine visibility and interoperability.</p>
+      </p><p><a target='_blank', href='https://bioschemas.org'>Bioschemas</a> is an initiative to supplement the work of
+      schema.org to help improve the findability of online resources in the life sciences.</p>
+      The two main activities of Bioschemas are:
+      <ul>
+      <li>Proposing new types and properties to Schema.org to allow for the description of life science resources.</li>
+      <li>Defining usage profiles over the Schema.org types that identify the essential properties to use in describing a resource.</li>
+      </ul>
+      <p>
+      TeSS supports the following Bioschemas profiles:<br/>
+      <strong>for events that are courses</strong>
+      <ul>
+      <li><a target='_blank', href='https://bioschemas.org/profiles/CourseInstance/0.9-DRAFT'>CourseInstance</a></li>
+      <li><a target='_blank', href='https://bioschemas.org/profiles/Course/0.10-DRAFT'>Course</a></li>
+      </ul>
+      <strong>for other events</strong>
+      <ul>
+      <li><a target='_blank', href='https://bioschemas.org/profiles/Event/0.2-DRAFT-2019_06_14'>Event</a></li>
+      </ul>
+      <strong>for training materials</strong>
+      <ul>
+      <li><a target='_blank', href='https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE'>TrainingMaterial</a></li>
+      </ul>
+    sitemap: >
+      <p>To help search engines (and TeSS) discover all the pages on a site that have Bioschemas markup, a
+      <a target='_blank', href='https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview'>sitemap</a>
+      should be used. Sitemaps are basically a directory listing of all the pages on your site.</p>
+
+      <p>Sitemaps are a well-established standard, and there should be sitemap libraries and plugins available for
+      whichever software you are using to provide your site.</p>
+    api: >
+      <p>Application Programming Interfaces, or APIs, typically have endpoint URLs that, when accessed, return data in a
+      common exchange format, such as JSON.</p>
+      <p>TeSS currently supports the APIs for:
+      <ul>
+      <li><a target='_blank', href='https://eventbrite.com'>Eventbrite</a> - for events</li>
+      <li><a target='_blank', href='https://zenodo.com'>Zenodo</a> - for materials</li>
+      <li>Other TeSS instances - for events</li>
+      </ul>
+      </p>
+    calendar: >
+      <p>Many organisations use calendar applications to organise and display their events.
+      These may be custom-made or, more likely, utilise applications like Google Calendar. Calendar applications
+      maintain an underlying file for event storage and retrieval, typically in the iCal (.ics) format.</p>
+      <p>TeSS can extract event descriptions, dates and locations from iCal files.</p>
+    other_types: >
+      <ul><li><b>RSS Feed</b>: an RSS feed is a type of news format. Many websites have such feeds, which list recent
+      posts in a standard format. We can write scripts to parse this format;</li>
+      <li><b>Git Repository:</b> a git repository is a directory containing files that can be edited collaboratively.
+      If you are using GitHub (or similar) to develop your training resources, and/or use GitHub Pages to render them,
+      we can write a script that clones the repository and extracts resource information. We may ask you to create a
+      metadata file in YAML format to help us extract the metadata;</li>
+      <li><b>Other:</b> if you have training metadata in another structured format (e.g., an XML or JSON dump, a CSV
+      file, a YAML file, or other format), it may be possible for the TeSS team to write a script to parse it.</li></ul>
+    user_managed_sources: >
+      <p>Owners and editors of content providers in TeSS can register and manage <em>Sources</em> to be automatically
+      ingested. A source consists of a URL for TeSS to fetch, and an "ingestion method" - which hints to TeSS how the
+      contents of the URL should be processed.</p>
+      <p>Once registered, a source will need to be approved by an administrator before it is active, but can be tested
+      to see exactly what metadata TeSS can extract from the source.</p>
+      <p>To register a source, click the "Sources" tab on your content provider page, or if you have not yet registered
+      a content provider, click the button below.</p>
+    advice: >
+      Contact <a href="mailto:%{contact_email}">%{contact_email}</a> to discuss how to register your content
+      automatically in TeSS.
+    manual: >
+      <p>Resources may be added manually to TeSS.</p>
+      <p>To do so, first register for a free account. Members of academic institutions may be able to log-in via LS-Login.</p>
+      <p>Once registered and logged in, the 'register event' and 'register material' buttons will become visible on the
+      events and materials tabs. Alternatively click here:</p>
+  home:
+    welcome: |
+      Welcome to the SciLifeLab Training Portal
+    subtitle: |
+      What are you looking for?
+    new: |
+      What's new
+    emaillist: |
+      Email lists
+    emaillisttext: |
+      Interested to know more about our upcoming courses? Sign up to our <b>course newsletter</b>.<br><br>
+      Want to be kept in the loop about training and pedagogy? Sign up to our newsletter for <b>trainers</b>. <br>
+
+    catalogue:
+      title: ""
+      link_text: Start browsing
+      events: "Browse training available from SciLifeLab and the EU life science community"
+      materials: "Browse the catalogue of training materials offered by ELIXIR nodes and 3<sup>rd</sup>-party providers."
+      workflows: "Create training workflows to visualise learning steps and link to resources specific to your training needs."
+      providers: "Browse training providers to discover training resources they offer and follow links to their materials and courses."
+      trainers: "Browse a directory of trainers based on their skills and expertise."
+      our_resources: "Access resources for instructors and training providers"
+    providers:
+      title: Providers
+      content: |
+        <p>Want to become one?</p>
+        <p>Add your institution’s training to the portal at no cost</p>
+      button_text: Contribute
+    promo:
+      nonprofit:
+        title: "Non-profit and free to use"
+        description: "No costs associated, and funded through national and EU funds"
+      sustainable:
+        title: "Sustainable"
+        description: "Open-source code that is here to stay"
+      community:
+        title: "By life sciences professionals, for a life sciences workforce"
+        description: "Built by an international community of life sciences professionals"
+      domain:
+        title: "Life sciences focused"
+        description: "For the entire life sciences workforce"
+    faq:
+      title: Frequently asked questions
+      who:
+        q: Who can register content in TeSS?
+        a: >
+          <p>We welcome any training content relevant to people working in the life sciences and adjacent fields.</p>
+      how:
+        q: How do I register content in TeSS?
+        a: >
+          <p>You can register content in TeSS automatically or manually.</p>
+          <p>To add content manually, you will need to log in and fill in the registration form for either materials or events.</p>
+          <p>TeSS can also automatically register content from an external website, or other source on the web.</p>
+          <p><a href='about/registering'>See here for more information.</a></p>
+      why:
+        q: Why register content in TeSS?
+        a: >
+          <p>Registering training events and materials in TeSS makes them more findable in a variety ways to various user bases.</p>
+
+          <p>Training in TeSS can be discovered...</p>
+          <ul>
+            <li><strong>in TeSS</strong>, by visitors browsing TeSS or subscribing to notifications.</li>
+            <li><strong>in search engine results</strong>, owing to our search-engine optimisation.</li>
+            <li><strong>through other websites</strong> that display TeSS content either using our embeddable widgets or our public API.</li>
+          </ul>
+      embed:
+        q: Can I display TeSS content on my organisation's website?
+        a: >
+          <p>Yes, a selection of embeddable widgets are available to display training events and materials from TeSS in a variety of formats.</p>
+          <p><a href='https://elixirtess.github.io/TeSS_widgets/' target='_blank'>Click here to see examples of widgets and how to use them.</a></p>
+      subscribe:
+        q: Can I subscribe to updates?
+        a: >
+          <p>TeSS provides a customizable subscription service, letting you choose exactly what types of training you want to be notified about.</p>
+          <p>Choose how you would like receive updates:</p>
+          <ul>
+            <li><strong>Email</strong> - Daily, weekly or monthly emails containing a digest of new events or materials.</li>
+            <li><strong>Calendar</strong> - See new events directly to your online calendar.</li>
+            <li><strong>RSS feed</strong> - View new events in an RSS reader.</li>
+          </ul>
+  privacy:
+    registration: |
+      <p>When you register with TeSS we ask for a username, password and email address.</p>
+      <ul>
+      <li>Your username is used for authentication and attribution. This information is publicly visible, e.g. when a user views a resource you have created.</li>
+      <li>Your password is stored as a cryptographically-secure hash and is not publicly visible.</li>
+      <li>Your email address is used to confirm your identity and for use when requesting your password to be reset. This email address is not publicly visible, but you may specify an additional public email address (see below).</li>
+      </ul>
+    personal: "You may additionally provide a profile, containing your name, a public email address, website link and avatar. This information is publicly available to all users."
+    resources: "The details of any training materials and events that you register will be publicly visible and searchable. Any workflows and packages created can be opted to be made private, in which case only you, any collaborators you specify, and the TeSS administrators will be able to view and search for them."
+    server: "When you browse TeSS, the server automatically records logs of which pages you access, when you accessed them, and your IP address. These logs are used to fix errors and are not shared with any third parties. Sensitive information (such as passwords) is automatically stripped out."
+    cookies: TeSS makes use of "strictly necessary cookies" for the site to function. These cookies are needed to establish your "session" with TeSS, which allows functionality such as user log-in, and secures against Cross Site Request Forgery (CSRF) attacks.
+    analytics: "TeSS uses Google Analytics to track how users are discovering TeSS and interacting with the service. The information gathered includes which pages you visited, which search terms lead you to TeSS and information about your web browser. No personally identifiable information is sent to Google."
+    retention: "Your information will be retained by TeSS until you choose to remove it, you delete your account, or the TeSS service ceases to exist."
+    code: "TeSS adheres to the <a href='https://wiki.refeds.org/display/CODE/Code+of+Conduct+for+Service+Providers'> GÉANT Data Protection Code of Conduct for Service Providers in EU/EEA </a>"
+    controller: "The data controller for TeSS is The University of Manchester."
+    post: "<strong>The TeSS Team</strong><br/>Room 1.17 c/o School of Computer Science,<br/>Kilburn Building,<br/>Oxford Road,<br/>Manchester,<br/>M13 9PL"
+  providers:
+    info: >
+      Content providers are entities (such as academic institutions, non-profit organisations, portals etc.) that
+      provide training materials of relevance to life sciences and ELIXIR.
+  events:
+    hints:
+      address: 'Where is this event being held?'
+      capacity: >
+        Provide the total number (cap) of individuals that can attend the training event.
+        Leave blank if there is no limit.
+      contact: ''
+      cost_basis: 'Select the basis by which costs, if any, are applied.'
+      cost_value: 'Input the cost of the training event.'
+      cost_currency: 'Select the currency associated with the cost.'
+      description: 'Provide a textual description of the training event, for additional context.'
+      duration: 'In hours and minutes (HH:MM), how long will your training event run?'
+      eligibility: 'Who can attend the training event?'
+      end: 'When does the event end?'
+      event_type: 'Select the most appropriate event type for the training event.'
+      fields: 'Select Fields of Research to better classify your event.'
+      hosts: ''
+      keywords: "Provide words or terms that clearly identify the training event's topics."
+      materials: 'Add any training materials that are associated with the training event.'
+      objectives: 'What knowledge, skills, or abilities should your audience gain from completing the training?'
+      organizer: ''
+      prerequisites: 'What understanding or knowledge does the audience need to have covered before the training event?'
+      recognition: 'Provide a description of any qualifications, awards, certificates, diplomas, or other
+        educational credentials that will be awarded on successful completion of the training event.'
+      requirements: 'Indicate the technical requirements needed to participate in the training event.'
+      sponsors: 'Who sponsored, or funded the event?'
+      start: 'When does the event start?'
+      subtitle: 'Include a subtitle to add context for your intended audience.'
+      targets: 'Indicate the type of audience for which the training event is intended.'
+      topics: 'Select the Fields of Research (FoR) codes that the training covers.'
+      timezone: 'Select the appropriate timezone'
+      title: 'Add a title for your training event.'
+      url: 'Enter a valid URL for the event landing page.'
+  materials:
+    hints:
+      authors: >
+        Add individuals and organisations involved in the preparation, creation or presentation of the published work.
+      contact: >
+        Include the first name, last name and contact details of the person or organisation that can be contacted about
+        the training material.
+      contributors: 'Add individual and organisations that contributed to the training material.'
+      date_created: 'Add the date that the training material was created.'
+      date_modified: 'Add the date that the training material was last modified.'
+      date_published: 'Add the date that the training material was published.'
+      description: 'Provide a textual description of your training material, for additional context.'
+      difficulty: 'Indicate the learners expected level of competency in the topic covered by the material.'
+      doi: 'Include a DOI if one exists for the training material.'
+      events: ''
+      fields: 'Select Fields of Research to better classify your material.'
+      keywords: "Provide words or terms that clearly identify the training material's topics."
+      licence: 'Select the licence for the training material.'
+      objectives: >
+        Describe the knowledge, skills or abilities that students should acquire throught the completion or use of the
+        training material.
+      other_types: 'Enter the types of resources that are not included on the above list.'
+      part_of: 'Describe the larger service of training to which this material belongs.'
+      prerequisites: >
+        What prior understanding or knowledge does your audience need to have on the topics covered in the training
+        material?
+      providers: ''
+      resources: 'Are there any external resources that relate to the is training material?'
+      status: 'Indicate the current status of the training material.'
+      subsets: 'Add identifier URLs or DOIs for each subset of the training material.'
+      syllabus: 'Describe the syllabus or provide an overview of the topics covered.'
+      targets: 'Indicate the type of audience intended to use your training material.'
+      time: 'What is the estimated time it takes to work through this resource in hours?'
+      title: 'Add a title for your training material.'
+      resource_type: 'Select the type of resource that best matches the training material. '
+      url: 'Preferred URL to direct people to your training material landing page.'
+      version: 'Indicate the current version of the training material.'
+  profile:
+    user:
+      disclaimer: >
+        Please, note that the following user details are publicly visible and so by updating these fields you are giving
+        permission for us to share the information via your public user profile.
+    trainer:
+      gravitar:
+        help: >
+          The image displayed with your profile is the Gravatar image associated with the provided contact email address, unless you upload another image above.
+          Gravatar provides a way to link an avatar to an email address so that it can be used across sites and
+          platforms. To set-up a linked avatar, go to the Gravatar site:
+        url: https://en.gravatar.com
+      disclaimer: >
+        By clicking the box below you are giving permission for us to share the information in your trainer profile
+        through a public search of registered trainers.
+    hints:
+      public: 'Select if you wish to publish your trainer profile.'
+      description: 'For additional context, provide a textual description of your training experience.'
+      email: 'Include your preferred email address.'
+      website: 'Include a preferred URL for your professional profile.'
+      orcid: 'Include your ORCID Id or full URL'
+      image_url: ''
+      location: 'The location where you are primarily based.'
+      experience: 'Select your level of experience as a trainer.'
+      expertise_academic: 'Terms and phrases that describe your academic expertise.'
+      fields: 'Select Fields of Research to better classify your training experience.'
+      expertise_technical: 'Terms and phrases that describe your technical expertise.'
+      language: 'Include languages in which you are fluent.'
+      interest: 'Add keyword(s) to identify your main areas of interest.'
+      activity: 'Include any global connections or activities that relate to your skills and training work.'
+      social_media: 'Links or handles for your social media profiles.'
+  authentication:
+    password:
+      title: Login
+      description: ''
+    omniauth:
+      title: Institutional Login
+      description: ''
+      providers:
+        elixir_aai: LS Login
+        oidc: AAF (Australia)
+        oidc2: Tuakiri (NZ)
+  ingestion:
+    categories:
+      events: 'Events'
+      materials: 'Materials'
+      any: 'Any'
+  sources:
+    info:
+      approval_notice: This source will need to be approved by an administrator before being ingested.
+      reapproval_notice: If the source URL or ingestion method are changed, approval will need to be requested again.
+    hints:
+      url: 'The URL of the source to be ingested.'
+      method: 'The method used to ingest the contents of the source URL.'
+      token: Some ingestion methods require an authentication token, leave blank if you aren't sure.
+      enabled: Sources that are not enabled will not be ingested.
+    approval_status:
+      not_approved: Not approved
+      requested: Approval requested
+      approved: Approved
+  scraper:
+    messages:
+      status: 'Scraper.run: %{status}'
+      processing: 'Processing source %{num}: %{source}'
+      skipped: 'Skipped source %{num}: %{source}'
+      processed: 'Sources processed = %{processed}'
+      invalid: 'Validation error: %{error_message}'
+      valid_source: 'Validation passed!'
+      bad_role: 'User has invalid role'
+      url_not_accessible: 'URL not accessible'
+      sources_size: 'Sources count = %{sources_size}'
+      bad_source_save: 'Source save failed with: %{error_message}'
+      not_source_enabled: 'Source not enabled.'
+  cookies:
+    notice: TeSS makes use of some necessary cookies to provide its core functionality.
+    google_analytics: Additionally, we make use of Google Analytics to discover how people are using TeSS in order to help us improve the service. To opt out of this, choose the "Allow necessary cookies" option.
+    necessary_cookies_btn: Only allow necessary cookies
+    all_cookies_btn: Allow all cookies
+    no_consent: No cookie consent provided
+    options:
+      tracking: Cookies required for Google Analytics, to help TeSS improve its service.
+      necessary: Cookies necessary for TeSS to function, for example to provide user-authentication and forgery protection.
+    buttons:
+      revoke: Revoke cookie consent
+      all: Allow all cookies
+      necessary: Allow necessary cookies
+  facets:
+    categories:
+      user: Owner
+      organizer: Organiser
+  errors:
+    500: "Apologies, TeSS encountered an error whilst handling your request (500 Internal Server Error)."
+    503: "Apologies, TeSS is temporarily down or unavailable due to maintenance (503 Service Unavailable)."
+    422: "The request you sent was well-formed but the change you wanted was rejected (422 Unprocessable Entity)."
+    404: "The requested page could not be found - you may have mistyped the address or the page may have moved (404 Not Found)."
+  warnings:
+    link_broken: TeSS has been unable to access this %{resource_type}'s URL since %{fail_date} - the page may have been moved.
+  footer:
+    eu_funding: >
+      TeSS has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No. <a href="https://cordis.europa.eu/project/rcn/198519_en.html", target="_blank">676559</a>.
+  guides:
+    webinar:
+      name: 'Recorded Webinar and Lecture Guides'
+      type: 'guide collection'
+      image: 'scilifelab/guides/TH-asynchguide-image.png'
+      url: 'https://10.17044/scilifelab.24512674'
+    LPs:
+      name: 'Developing Learning Paths'
+      type: 'video presentation'
+      image: 'scilifelab/guides/learningpaths.png'
+      url: 'https://zenodo.org/records/10082795'
+    videoproduction:
+      name: 'Manual for Producing Video Training'
+      type: 'technical guide'
+      image: 'scilifelab/guides/asynchpreview.png'
+      url: 'https://zenodo.org/records/10082795'
+    bicycle:
+      name: 'Bicycle Principles for Short Form Training'
+      type: 'training framework'
+      image: 'scilifelab/guides/bike-graphic.png'
+      url: 'https://www.bikeprinciples.org/'
+    rubric:
+      name: 'Mastery Rubric for Bioinformatics Training'
+      type: 'training framework'
+      image: 'scilifelab/guides/masteryrubric.png'
+      url: 'https://f1000research.com/documents/11-743'
+    coursedesign:
+      name: 'Course Design Considerations for Trainers'
+      type: 'creation guide'
+      image: 'scilifelab/guides/masteryrubric.png'
+      url: 'https://f1000research.com/documents/9-1377'

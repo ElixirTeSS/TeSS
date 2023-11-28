@@ -1,0 +1,71 @@
+<div class="container">
+  <h3 style="text-align: center;">What can we help you with?</h3>
+  <br>
+  <div class="row">
+    <%= link_to guides_path do %>
+      <div class="col-md-6">
+        <div class="text-box">
+          <p>I am developing my training and need quick information on creating materials.</p>
+          <div class="white-box">
+            <p><h3 style="text-align: center;"> <%= content_tag(:span, "Content Guides  ") %> </h3></p>
+            <div class="icon-circle">
+              <%= image_tag(asset_path("scilifelab/guidesicon-white.png"), alt: "guides") %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <%= link_to pedagogic_path do %>
+      <div class="col-md-6">
+        <div class="text-box">
+          <p>I have expertise I want to share, and need developmental support to deliver it.</p>
+          <div class="white-box">
+            <p><h3 style="text-align: center;"><%= content_tag(:span, "Pedagogic Support  ") %></h3></p>
+            <div class="icon-circle">
+              <%= image_tag(asset_path("scilifelab/supporticon-white.png"), alt: "support") %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <%= link_to community_path do %>
+      <div class="col-md-6">
+        <div class="text-box">
+          <p>I want to level up my skills as an instructor and connect with other experts.</p>
+          <div class="white-box">
+            <p><h3 style="text-align: center;"><%= content_tag(:span, "Training Community  ") %></h3></p>
+            <div class="icon-circle">
+              <%= image_tag(asset_path("scilifelab/transfericon-white.png"), alt: "community") %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <%= link_to fair_path do %>
+      <div class="col-md-6">
+        <div class="text-box">
+          <p>I want to ensure my course meets quality standards for SciLifeLab training.</p>
+          <div class="white-box">
+            <p><h3 style="text-align: center;"><%= content_tag(:span, "FAIR Training  ") %></h3></p>
+            <div class="icon-circle">
+              <%= image_tag(asset_path("scilifelab/fairicon-white.png"), alt: "fair") %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+  <div class="row">
+  <br>
+    <div class="col-md-12">
+    <p style="text-align: center;">Can't find what you're looking for? Connect with us at 
+      <%= mail_to(TeSS::Config.contact_email) %>
+    </p>
+    </div>
+  </div>
+
+</div>
