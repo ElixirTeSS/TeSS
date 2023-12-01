@@ -27,11 +27,12 @@
 
       <div class="col-sm-4 col-xs-6 text-left">
         <div class="footer-item">
-          Version: <code><%= app_version_text -%></code>
-        </div>
-
-        <div class="footer-item">
           <%= link_to 'Source code', TeSS::Config.site['repository'], target: '_blank', rel: 'noopener' %>
+        </div>
+        <div class="footer-item">
+          <%= link_to "https://www.scilifelab.se/", target: "_blank", rel: "noopener noreferrer" do %>
+            <%= image_tag(asset_path('scilifelab/SciLifeLab_Logotype_POS.png'), :alt => 'logo', width:'170px') %>
+          <% end %>
         </div>
       </div>
     </div>
