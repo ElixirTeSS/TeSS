@@ -526,7 +526,7 @@ en:
       name: 'Recorded Webinar and Lecture Guides'
       type: 'guide collection'
       image: 'scilifelab/guides/TH-asynchguide-image.png'
-      url: 'https://10.17044/scilifelab.24512674'
+      url: 'https://doi.org/10.17044/scilifelab.24512674.v1'
     LPs:
       name: 'Developing Learning Paths'
       type: 'video presentation'
