@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   get 'our_resources/pedagogic_support' => 'our_resources#pedagogic_support', as: 'pedagogic'
   get 'our_resources/trainer_community' => 'our_resources#trainer_community', as: 'community'
   get 'our_resources/fair_training' => 'our_resources#fair_training', as: 'fair'
+  get 'our_resources/our_courses' => 'our_resources#our_courses', as: 'courses'
 
   get 'privacy' => 'static#privacy', as: 'privacy'
 

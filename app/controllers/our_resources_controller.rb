@@ -33,7 +33,10 @@ class OurResourcesController < ApplicationController
       @breadcrumbs += [{ name: 'FAIR', url: fair_path }]
     end
 
-    
+    def our_courses
+      set_breadcrumbs
+      @breadcrumbs += [{ name: 'Our courses', url: courses_path }]
+    end
   
   end
   

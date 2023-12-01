@@ -58,6 +58,37 @@
       </div>
     <% end %>
 
+    <%= link_to courses_path do %>
+      <div class="col-md-12">
+        <div class="text-box text-box-narrow">
+          <div class="row">
+            <!-- Left Side: Two smaller boxes -->
+            <div class="col-md-7">
+              <div class="green-box" style="width:90%;">
+                <p><h3 style="text-align: center;"><%= content_tag(:span, "Train-the-Trainer  ") %></h3></p>
+                <div class="icon-circle purple">
+                  <%= image_tag(asset_path("scilifelab/resourcesicon-white.png"), alt: "fair") %>
+                </div>  
+              </div>
+              <div class="green-box longer">
+                <p><h3 style="text-align: center;"><%= content_tag(:span, "Organizational learning  ") %></h3></p>
+                <div class="icon-circle purple">
+                  <%= image_tag(asset_path("scilifelab/lightbulb-white.png"), alt: "fair") %>
+                </div>  
+              </div>
+            </div>
+      
+            <!-- Right Side: One larger box -->
+            <div class="col-md-5">
+              <div class="course-box">
+                <p>I want to take a course developed by the SciLifeLab Training Hub</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
   </div>
   <div class="row">
   <br>

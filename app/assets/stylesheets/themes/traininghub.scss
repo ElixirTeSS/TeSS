@@ -170,6 +170,10 @@ text-boxes-container {
   background-color: $primary-color;
 }
 
+.text-box-narrow {
+  height: 200px;
+}
+
 .white-box {
   position: absolute;
   bottom: 35px;
@@ -187,6 +191,28 @@ text-boxes-container {
   margin-left: 10px;
 }
 
+.green-box {
+  margin-left: -20px;
+  height: 50px; /* Adjust the height as needed */
+  background-color: #4C979F;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  margin-bottom: 40px;
+}
+
+.green-box h3 {
+  margin-right: 20px;
+  color: white;
+}
+
+.course-box {
+  text-align: right;
+  margin-left: 20%;
+  margin-right: 10%;
+  margin-top: 4%;
+}
+
 .icon-circle {
   width: 70px; /* Adjust the size of the circle */
   height: 70px; /* Adjust the size of the circle */
@@ -199,8 +225,11 @@ text-boxes-container {
 }
 
 .icon-circle img {
-  width: 40px; /* Adjust the width of the icon as needed */
-  height: 40px; /* Adjust the height of the icon as needed */
+  height: 45px;
+}
+
+.purple {
+  background-color: $secondary-color;
 }
 
 // Guides
@@ -244,6 +273,27 @@ text-boxes-container {
   box-shadow: 0px 0px 10px 0px rgba(#4C979F, 0.5);
 }
 
+// Our courses page
+.custom-image-col {
+  text-align: center; /* Center the image horizontally */
+}
+
+.custom-image {
+  max-width: 100%; /* Make the image responsive */
+}
+
+.course-text {
+  margin-left: 10%;
+}
+
+.courses-box {
+  margin: 0 auto; /* Center the box */
+  padding: 20px;
+  margin-top: 20px;
+  border: 1px solid  #4C979F;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px 0px rgba(#4C979F, 0.5);
+}
 
 // About page
 .image-container {
