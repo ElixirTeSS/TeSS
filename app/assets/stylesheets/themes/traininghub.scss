@@ -237,7 +237,7 @@ text-boxes-container {
 .support-box {
   border: 1px solid  #4C979F;
   margin: 5px; /* Add margin around each text box */
-  height: 200px;
+  height: 220px;
   font-size: 27px;
   color: black;
   border-radius: 25px;
@@ -262,7 +262,6 @@ text-boxes-container {
   text-align: left;
   border-bottom: 2px solid black; /* Add a border under the header */
   padding-bottom: 5px;
-  display: inline-block;
 }
 
 .image-text {
