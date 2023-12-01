@@ -1,6 +1,14 @@
 <!-- SIDEBAR -->
 <nav class="about-nav">
 
+  <!-- PORTAL -->
+  <ul class="nav nav-stacked <%= show_active(show, 'portal') %>">
+    <li class="about-page-category">
+      <%= link_to 'The Training Portal', portal_path %>
+    </li>
+    <li><%= about_nav_link('What is it?', portal_path, 'portal') %></li>
+  </ul>
+
   <!-- ABOUT US -->
   <ul class="nav nav-stacked <%= show_active(show, 'us') %>">
     <li class="about-page-category">

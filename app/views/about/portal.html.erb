@@ -1,0 +1,34 @@
+<div class="wrapper">
+  <div id="sidebar" class="popout-sidebar">
+    <%= render partial: 'about_nav', locals: { show: 'us' } %>
+  </div>
+
+  <div id="content">
+    <div class="about-block">
+
+      <!-- Get involved -->
+      <div id="portal" class="even-about-block">
+        <h3><%== t "us.keys.portal" %></h3>
+        <p>
+          <br>
+          The SciLifeLab Training Portal is a dedicated space that enables training 
+          across Sweden through  consolidating and delivering training for life science 
+          professionals.
+        </p>
+        <p>
+          <b>For experts</b><br>
+          Within the Portal, guides & support provided by the Training Hub are available 
+          to support everyone in creating effective training.
+        </p>
+        <p>
+          <b>For everyone</b><br>
+          Through the Portal’s course listings, everyone is able to search upcoming and 
+          digital training courses, enabling the  life science community in Sweden with 
+          easy, one-stop-shop access to new or more advanced skills!
+        </p>
+        <br><br>
+        <%= image_tag(asset_path("scilifelab/knowledgetransfer5.png"), alt: 'portal', height: '300px', style: 'display: block; margin: 0 auto;') %>
+      </div>
+    </div>
+  </div>
+</div>
