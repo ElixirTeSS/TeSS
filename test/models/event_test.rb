@@ -571,20 +571,87 @@ class EventTest < ActiveSupport::TestCase
   end
 
   test 'can still set presence through online setter' do
+    assert @event.valid?
     assert @event.onsite?
     refute @event.online?
     refute @event.hybrid?
 
     @event.online = true
 
+    assert @event.valid?
     refute @event.onsite?
     assert @event.online?
     refute @event.hybrid?
 
     @event.online = false
 
+    assert @event.valid?
     assert @event.onsite?
     refute @event.online?
     refute @event.hybrid?
+
+    @event.online = ''
+
+    assert @event.valid?
+    assert @event.onsite?
+    refute @event.online?
+    refute @event.hybrid?
+  end
+
+  test 'validates presence' do
+    @event.presence = 'onsite'
+
+    assert @event.valid?
+    assert @event.onsite?
+    refute @event.online?
+    refute @event.hybrid?
+
+    @event.presence = 0
+
+    assert @event.valid?
+    assert @event.onsite?
+    refute @event.online?
+    refute @event.hybrid?
+
+    @event.presence = :online
+
+    assert @event.valid?
+    refute @event.onsite?
+    assert @event.online?
+    refute @event.hybrid?
+
+    @event.presence = 1
+
+    assert @event.valid?
+    refute @event.onsite?
+    assert @event.online?
+    refute @event.hybrid?
+
+    @event.presence = 'hybrid'
+
+    assert @event.valid?
+    refute @event.onsite?
+    refute @event.online?
+    assert @event.hybrid?
+
+    @event.presence = nil
+
+    assert @event.valid?
+    assert @event.onsite?
+    refute @event.online?
+    refute @event.hybrid?
+
+    @event.presence = ''
+
+    assert @event.valid?
+    assert @event.onsite?
+    refute @event.online?
+    refute @event.hybrid?
+
+    # TODO: Use enum validation in Rails 7.1 https://github.com/rails/rails/pull/49100
+    assert_raises(ArgumentError) do
+      @event.presence = 'xyz'
+      refute @event.valid?
+    end
   end
 end

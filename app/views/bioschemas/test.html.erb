@@ -1,0 +1,39 @@
+<div id="content">
+  <div class="page-header">
+    <%= page_title('Bioschemas Testing Tool') %>
+  </div>
+  <div class="row">
+    <div class="col-md-4 col-md-push-8">
+      <%= info_box('Bioschemas testing') do %>
+        <p>This page can be used to test Bioschemas markup and preview how Events and Materials will appear in <%= TeSS::Config.site['title_short'] -%> when harvested.</p>
+        <p>Bioschemas markup can be...</p>
+        <ul>
+          <li>Extracted from an HTML page as <a href="https://bioschemas.org/tutorials/what_why_schema#3-schemaorg-formats" target="_blank" rel="noopener">JSON-LD, RDFa or Microdata</a>.</li>
+          <li>Parsed directly from JSON-LD.</li>
+        </ul>
+        <p>Either enter a URL to an HTML page or JSON endpoint, making sure it is publicly accessible, or paste a code snippet directly into the text box.</p>
+      <% end %>
+    </div>
+    <div class="col-md-8 col-md-pull-4">
+      <%= form_tag bioschemas_test_path do %>
+        <div class="form-group">
+          <label>URL</label>
+          <%= text_field_tag :url, params[:url], class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <label>HTML/JSON-LD Snippet</label>
+          <%= text_area_tag :snippet, params[:snippet], class: 'form-control', rows: 5 %>
+        </div>
+
+        <%= submit_tag('Test', class: 'btn btn-primary') %>
+      <% end %>
+
+    </div>
+  </div>
+  <% if @output %>
+    <div>
+      <%= render partial: 'bioschemas/test_results' %>
+  <% end %>
+  </div>
+</div>

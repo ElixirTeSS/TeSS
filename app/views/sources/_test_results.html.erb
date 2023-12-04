@@ -20,7 +20,6 @@
 <% ['events', 'materials'].each do |type| %>
   <% resources = test_results[type.to_sym] || [] %>
   <% results_count += resources.count %>
-  <% klass = type.singularize.capitalize.constantize %>
   <% sample = resources.sample(sample_size) %>
   <% next if resources.none? %>
 
@@ -29,37 +28,9 @@
       Showing <%= pluralize(sample.count, 'sample') %>
     <% end %>
     <% sample.each do |resource_params| %>
-      <% resource = type.singularize.capitalize.constantize.new(resource_params.merge(user: User.get_default_user,
-                                                                                      content_provider: @content_provider)) %>
-      <% existing = klass.check_exists(resource) %>
-      <div class="list-card bulk-import-row<%= ' new' unless existing -%>">
-        <h4>
-          <% if existing %>
-            <%= link_to(existing, target: '_blank', class: 'btn btn-xs btn-default pull-right') do %>
-              Current <%= TeSS::Config.site['title_short'] %> entry
-              <span class="fa fa-external-link"></span>
-            <% end %>
-          <% end %>
-          <%= resource.title %>
-        </h4>
-        <p>
-          <%= link_to(resource.url, resource.url, target: '_blank', rel: 'noopener') %>
-        </p>
-        <div class="scraped-metadata">
-          <% if type == 'events' %>
-            <%= display_attribute(resource, :start) { |t| t.strftime('%A, %d %B %Y @ %H:%M') }%>
-            <%= display_attribute(resource, :end) { |t| t.strftime('%A, %d %B %Y @ %H:%M') } %>
-            <%= display_attribute(resource, :timezone) %>
-            <%= display_attribute(resource, :duration) %>
-          <% end %>
-          <%= render partial: 'common/extra_metadata', locals: { resource: resource } %>
-          <% unless resource.valid? %>
-            <div class="alert alert-danger">
-              <i class="fa fa-exclamation-circle"></i> Errors: <%= resource.errors.full_messages.join(', ') %>
-            </div>
-          <% end %>
-        </div>
-      </div>
+      <% resource = Source.get_test_resource(type, resource_params, user: User.get_default_user,
+                                                                    content_provider: @content_provider) %>
+      <%= render partial: 'sources/test_resource', locals: { resource: resource } %>
     <% end %>
   <% end %>
 <% end %>

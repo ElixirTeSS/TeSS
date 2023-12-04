@@ -27,6 +27,36 @@ class EventsController < ApplicationController
     end
   end
 
+  # GET /events/calendar
+  # GET /events/calendar.js
+  def calendar
+    # set a higher limit so we ensure to have enough results to fill a month
+    params[:per_page] ||= 200
+    @start_date = Date.parse(params.fetch(:start_date, Date.today.to_s)).beginning_of_month
+
+    set_params
+
+    # override @facet_params to get only events relevant for the current month view
+    @facet_params[:running_during] = "#{Date.today.beginning_of_day}/#{@start_date + 1.month}"
+    fetch_resources
+    events_set = @events
+
+    @facet_params[:running_during] = "#{@start_date}/#{@start_date + 1.month}"
+    fetch_resources
+    events_set += @events
+
+    @events = events_set.to_set.to_a
+
+    # now customize the list by moving all events longer than 3 days into a separate array
+    @long_events, @events = @events.partition { |e| e.end.nil? || e.start.nil? || e.start + TeSS::Config.site.fetch(:calendar_event_maxlength, 5).to_i.days < e.end }
+
+    respond_to do |format|
+      format.js
+      format.html
+    end
+  end
+
+
   # GET /events/1
   # GET /events/1.json
   # GET /events/1.ics
@@ -37,6 +67,20 @@ class EventsController < ApplicationController
       format.json
       format.json_api { render json: @event }
       format.ics { send_data @event.to_ical, type: 'text/calendar', disposition: 'attachment', filename: "#{@event.slug}.ics" }
+    end
+  end
+
+  def preview
+    @event = User.get_default_user.events.new(event_params)
+
+    respond_to do |format|
+      if @event.valid?
+        @bioschemas = @event.to_bioschemas
+        format.html { render :show }
+      else
+        flash[:error] = 'This resource is invalid.'
+        format.html { render 'bioschemas/test', status: :unprocessable_entity }
+      end
     end
   end
 

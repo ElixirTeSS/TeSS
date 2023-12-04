@@ -42,6 +42,12 @@
         <div class="footer-item">
           <%= link_to 'API documentation', asset_path('api/json_api', skip_pipeline: true) %>
         </div>
+
+        <% if TeSS::Config.feature['bioschemas_testing'] %>
+          <div class="footer-item">
+            <%= link_to 'Bioschemas testing tool', bioschemas_test_path %>
+          </div>
+        <% end %>
       </div>
 
       <%= render partial: 'layouts/supported_by' %>

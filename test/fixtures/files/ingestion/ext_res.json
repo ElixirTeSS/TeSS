@@ -1,0 +1,208 @@
+[
+  {
+    "@context": "http://schema.org",
+    "@type": "LearningResource",
+    "http://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE",
+      "@type": "CreativeWork"
+    },
+    "audience": {
+      "@type": "EducationalAudience",
+      "educationalRole": "Students"
+    },
+    "citation": {
+      "@type": "CreativeWork",
+      "name": "Community-Driven Data Analysis Training for Biology",
+      "url": "https://doi.org/10.1016/j.cels.2018.05.012"
+    },
+    "copyrightHolder": {
+      "@type": "Organization",
+      "email": "galaxytrainingnetwork@gmail.com",
+      "name": "Galaxy Training Network",
+      "url": "https://galaxyproject.org/teach/gtn/"
+    },
+    "dateModified": "1970-01-01 00:00:09 +0000",
+    "discussionUrl": "https://gitter.im/Galaxy-Training-Network/Lobby",
+    "headline": "Introduction to metagenomics",
+    "interactivityType": "mixed",
+    "isAccessibleForFree": true,
+    "isFamilyFriendly": true,
+    "license": "https://spdx.org/licenses/CC-BY-4.0.html",
+    "producer": {
+      "@type": "Organization",
+      "email": "galaxytrainingnetwork@gmail.com",
+      "name": "Galaxy Training Network",
+      "url": "https://galaxyproject.org/teach/gtn/"
+    },
+    "provider": [
+      {
+        "@type": "Organization",
+        "email": "galaxytrainingnetwork@gmail.com",
+        "name": "Galaxy Training Network",
+        "url": "https://galaxyproject.org/teach/gtn/"
+      },
+      {
+        "@type": "Organization",
+        "name": "Elixir Belgium",
+        "url": "https://tess.elixir-europe.org/nodes/belgium"
+      }
+    ],
+    "sourceOrganization": {
+      "@type": "Organization",
+      "email": "galaxytrainingnetwork@gmail.com",
+      "name": "Galaxy Training Network",
+      "url": "https://galaxyproject.org/teach/gtn/"
+    },
+    "identifier": "https://github.com/galaxyproject/training-material",
+    "accessMode": [
+      "textual",
+      "visual"
+    ],
+    "accessModeSufficient": [
+      "textual",
+      "visual"
+    ],
+    "accessibilityControl": [
+      "fullKeyboardControl",
+      "fullMouseControl"
+    ],
+    "accessibilityFeature": [
+      "alternativeText",
+      "tableOfContents"
+    ],
+    "accessibilitySummary": "The text aims to be as accessible as possible. Image descriptions will vary per tutorial, from images being completely inaccessible, to images with good descriptions for non-visual users.",
+    "isPartOf": {
+      "@type": "CreativeWork",
+      "name": "Metagenomics",
+      "description": "Metagenomics is a discipline that enables the genomic study of uncultured microorganisms",
+      "url": "https://training.galaxyproject.org/training-material/topics/metagenomics/"
+    },
+    "learningResourceType": "slides",
+    "name": "Introduction to 'Metagenomics'",
+    "url": "https://training.galaxyproject.org/training-material/topics/metagenomics/slides/introduction.html",
+    "description": "Slides for Metagenomics",
+    "inLanguage": {
+      "@type": "Language",
+      "name": "English",
+      "alternateName": "en"
+    },
+    "author": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "http://purl.org/dc/terms/conformsTo": {
+          "@id": "https://bioschemas.org/profiles/Person/0.2-DRAFT-2019_07_19",
+          "@type": "Person"
+        },
+        "url": "https://training.galaxyproject.org/training-material/hall-of-fame/bebatut/",
+        "mainEntityOfPage": "https://training.galaxyproject.org/training-material/hall-of-fame/bebatut/",
+        "name": "Bérénice Batut",
+        "image": "https://avatars.githubusercontent.com/bebatut",
+        "description": "A contributor to the GTN project.",
+        "memberOf": [
+          {
+            "@type": "Organization",
+            "email": "galaxytrainingnetwork@gmail.com",
+            "name": "Galaxy Training Network",
+            "url": "https://galaxyproject.org/teach/gtn/"
+          }
+        ],
+        "identifier": "https://orcid.org/0000-0001-9852-1987",
+        "orcid": "https://orcid.org/0000-0001-9852-1987"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "http://purl.org/dc/terms/conformsTo": {
+          "@id": "https://bioschemas.org/profiles/Person/0.2-DRAFT-2019_07_19",
+          "@type": "Person"
+        },
+        "url": "https://training.galaxyproject.org/training-material/hall-of-fame/shiltemann/",
+        "mainEntityOfPage": "https://training.galaxyproject.org/training-material/hall-of-fame/shiltemann/",
+        "name": "Saskia Hiltemann",
+        "image": "https://avatars.githubusercontent.com/shiltemann",
+        "description": "Researcher at Erasmus Medical Center",
+        "memberOf": [
+          {
+            "@type": "Organization",
+            "email": "galaxytrainingnetwork@gmail.com",
+            "name": "Galaxy Training Network",
+            "url": "https://galaxyproject.org/teach/gtn/"
+          }
+        ],
+        "identifier": "https://orcid.org/0000-0003-3803-468X",
+        "orcid": "https://orcid.org/0000-0003-3803-468X"
+      }
+    ],
+    "contributor": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "http://purl.org/dc/terms/conformsTo": {
+          "@id": "https://bioschemas.org/profiles/Person/0.2-DRAFT-2019_07_19",
+          "@type": "Person"
+        },
+        "url": "https://training.galaxyproject.org/training-material/hall-of-fame/bebatut/",
+        "mainEntityOfPage": "https://training.galaxyproject.org/training-material/hall-of-fame/bebatut/",
+        "name": "Bérénice Batut",
+        "image": "https://avatars.githubusercontent.com/bebatut",
+        "description": "A contributor to the GTN project.",
+        "memberOf": [
+          {
+            "@type": "Organization",
+            "email": "galaxytrainingnetwork@gmail.com",
+            "name": "Galaxy Training Network",
+            "url": "https://galaxyproject.org/teach/gtn/"
+          }
+        ],
+        "identifier": "https://orcid.org/0000-0001-9852-1987",
+        "orcid": "https://orcid.org/0000-0001-9852-1987"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "http://purl.org/dc/terms/conformsTo": {
+          "@id": "https://bioschemas.org/profiles/Person/0.2-DRAFT-2019_07_19",
+          "@type": "Person"
+        },
+        "url": "https://training.galaxyproject.org/training-material/hall-of-fame/shiltemann/",
+        "mainEntityOfPage": "https://training.galaxyproject.org/training-material/hall-of-fame/shiltemann/",
+        "name": "Saskia Hiltemann",
+        "image": "https://avatars.githubusercontent.com/shiltemann",
+        "description": "Researcher at Erasmus Medical Center",
+        "memberOf": [
+          {
+            "@type": "Organization",
+            "email": "galaxytrainingnetwork@gmail.com",
+            "name": "Galaxy Training Network",
+            "url": "https://galaxyproject.org/teach/gtn/"
+          }
+        ],
+        "identifier": "https://orcid.org/0000-0003-3803-468X",
+        "orcid": "https://orcid.org/0000-0003-3803-468X"
+      }
+    ],
+    "about": [
+      {
+        "@type": "DefinedTerm",
+        "@id": "http://edamontology.org/topic_3174",
+        "inDefinedTermSet": "http://edamontology.org",
+        "termCode": "topic_3174",
+        "url": "https://bioportal.bioontology.org/ontologies/EDAM/?p=classes&conceptid=http%3A%2F%2Fedamontology.org%2Ftopic_3174"
+      }
+    ],
+    "mentions": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "Galaxy",
+        "url": "https://bio.tools/galaxy",
+        "description": "Open, web-based platform for data intensive biomedical research"
+      },{
+        "@type": "Dataset",
+        "name": "European Genome-phenome Archive",
+        "url": "https://www.ebi.ac.uk/ega/home",
+        "description": "The EGA archives a large number of datasets, the access to which is controlled by a Data Access Committee (DAC)."
+      }
+    ]
+  }
+]

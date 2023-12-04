@@ -1348,7 +1348,7 @@ class MaterialsControllerTest < ActionController::TestCase
       assert_select '#q[placeholder=?]', 'Search materials...'
     end
   end
-  
+
   test 'should clone material' do
     sign_in @material.user
     get :clone, params: { id: @material }
@@ -1366,7 +1366,7 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   test 'should hide fields' do
-    with_settings(feature: { materials_disabled: ['licence', 'scientific_topics', 'resource_type'] }) do 
+    with_settings(feature: { materials_disabled: ['licence', 'scientific_topics', 'resource_type'] }) do
       sign_in users(:regular_user)
       get :new
       assert_response :success
@@ -1394,5 +1394,37 @@ class MaterialsControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_select '.archived-notice', text: /material has been archived/
+  end
+
+  test 'should preview material' do
+    sign_in users(:regular_user)
+
+    assert_no_difference('Material.count') do
+      assert_no_difference('ExternalResource.count') do
+        post :preview, params: { material: { title: 'Potential material',
+                                             url: 'https://somematerial.com',
+                                             description: 'hey',
+                                             external_resources_attributes: [
+                                               { title: 'A tool perhaps', url: 'https://bio.tools/some_tool' }
+                                             ]
+        }}
+
+        assert_response :success
+        assert_select 'h2', text: 'Potential material'
+        assert_select '.external-resources-box a[href=?]', 'https://bio.tools/some_tool'
+      end
+    end
+  end
+
+  test 'should not preview invalid material' do
+    sign_in users(:regular_user)
+
+    assert_no_difference('Material.count') do
+      assert_no_difference('ExternalResource.count') do
+        post :preview, params: { material: { title: 'Missing URL', description: 'hey' } }
+
+        assert_response :unprocessable_entity
+      end
+    end
   end
 end

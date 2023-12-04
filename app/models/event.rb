@@ -19,6 +19,7 @@ class Event < ApplicationRecord
   include WithTimezone
 
   before_validation :fix_keywords, on: :create, if: :scraper_record
+  before_validation :presence_default
   before_save :check_country_name # :set_default_times
   before_save :geocoding_cache_lookup, if: :address_will_change?
   after_save :enqueue_geocoding_worker, if: :address_changed?
@@ -97,8 +98,7 @@ class Event < ApplicationRecord
     # :nocov:
   end
 
-  # TODO: Rails 7 - Migrate this to use hash-syntax with explicit values, e.g.: { onsite: 0, online: 1, hybrid: 2 }
-  enum presence: [:onsite, :online, :hybrid]
+  enum presence: { onsite: 0, online: 1, hybrid: 2 }
 
   belongs_to :user
   has_one :edit_suggestion, as: :suggestible, dependent: :destroy
@@ -125,6 +125,7 @@ class Event < ApplicationRecord
   validates :latitude, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90, allow_nil: true }
   validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true }
   # validates :duration, format: { with: /\A[0-9][0-9]:[0-5][0-9]\z/, message: "must be in format HH:MM" }, allow_blank: true
+  validates :presence, inclusion: { in: presences.keys, allow_blank: true }
   validate :allowed_url
   clean_array_fields(:keywords, :fields, :event_types, :target_audience,
                      :eligibility, :host_institutions, :sponsors)
@@ -495,5 +496,9 @@ class Event < ApplicationRecord
         end
       end
     end
+  end
+
+  def presence_default
+    self.presence = :onsite if presence.blank?
   end
 end

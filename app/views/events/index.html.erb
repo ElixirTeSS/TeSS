@@ -20,7 +20,9 @@
     <% end %>
     <% content_for :display_options do %>
       <ul class="nav nav-xs nav-pills index-display-options">
+        <%# We should consider setting the active status based on the query fragment so we can deeplink %>
         <%= tab('List', 'fa fa-list', 'home', active: true) %>
+        <%= tab('Calendar', 'fa fa-calendar', 'calendar', options: { 'data-calendar': calendar_events_path(search_and_facet_params.merge(format: :js, per_page: 200))}) %>
         <% if TeSS::Config.map_enabled %>
           <%= tab('Map', 'fa fa-globe', 'map',
                   disabled: { check: (search_and_facet_params[:online] == 'true'),
@@ -40,6 +42,10 @@
           <%= render partial: 'common/masonry_grid', locals: { objects: @events } %>
 
           <%= render partial: "search/common/pagination_bar", locals: { resources: @events } %>
+        </div>
+
+        <div id="calendar" class="tab-pane fade in">
+          <%= render partial: 'events/partials/calendar_loader' %>
         </div>
 
         <% if TeSS::Config.map_enabled %>

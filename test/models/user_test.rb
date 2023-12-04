@@ -340,6 +340,10 @@ class UserTest < ActiveSupport::TestCase
     provider = content_providers(:goblet)
     provider.add_editor(user1)
     provider.add_editor(user2)
+    provider2 = content_providers(:iann)
+    provider2.add_editor(user2)
+    provider3 = content_providers(:two)
+    provider3.add_editor(user3)
 
     # Collaborations
     workflow1 = workflows(:one)
@@ -348,17 +352,20 @@ class UserTest < ActiveSupport::TestCase
     workflow1.collaborators << user2
     workflow2.collaborators << user3
 
-
     # Test
     assert_no_difference('Event.count') do
     assert_no_difference('Material.count') do
     assert_no_difference('Subscription.count') do
     assert_difference('provider.editors.count', -1) do
+    assert_no_difference('provider2.editors.count') do
+    assert_no_difference('provider3.editors.count') do
     assert_difference('Collaboration.count', -1) do
     assert_difference('User.count', -2) do
       assert user1.merge(user2, user3)
       assert user2.reload.destroy
       assert user3.reload.destroy
+    end
+    end
     end
     end
     end
@@ -387,7 +394,9 @@ class UserTest < ActiveSupport::TestCase
     assert_equal user1, subscription1.reload.user
     assert_equal user1, subscription2.reload.user
 
-    assert_includes provider.reload.editors, user1
+    assert_equal [user1], provider.reload.editors
+    assert_equal [user1], provider2.reload.editors
+    assert_equal [user1], provider3.reload.editors
 
     assert_equal [user1], workflow1.reload.collaborators.to_a
     assert_equal [user1], workflow2.reload.collaborators.to_a

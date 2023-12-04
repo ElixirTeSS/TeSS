@@ -42,7 +42,7 @@
 
   <!-- Field: Timezone -->
   <%= f.input :timezone, as: :time_zone, field_lock: true, priority: priority_time_zones,
-              input_html: { title: t('events.hints.timezone') } %>
+              input_html: { class: 'js-select2', title: t('events.hints.timezone') } %>
 
   <!-- Field: Duration -->
   <%= f.input :duration, as: :string, input_html: { title: t('events.hints.duration') } %>

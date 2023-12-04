@@ -1,7 +1,12 @@
 module Ingestors
   module EventIngestion
     def add_event(event)
-      event = OpenStruct.new(event) if event.is_a?(Hash)
+      if event.is_a?(Hash)
+        c = EventsController.new
+        c.params = { event: event }
+        c.send(:event_params)
+        event = OpenStruct.new(c.send(:event_params))
+      end
       @events << event unless event.nil?
     end
 

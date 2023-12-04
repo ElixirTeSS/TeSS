@@ -55,18 +55,19 @@ gem 'sentry-ruby'
 gem 'sentry-sidekiq'
 gem 'sidekiq'
 gem 'sidekiq-status'
+gem 'simple_calendar', '~> 2.4'
 gem 'simple_form'
 gem 'simple_token_authentication'
 gem 'sitemap-parser'
 gem 'slim'
 gem 'sunspot_rails', github: 'sunspot/sunspot', branch: 'master' # Contains Ruby 3 fixes that are not released
 gem 'terser'
-gem 'tess_rdf_extractors', git: 'https://github.com/ElixirTeSS/TeSS_RDF_Extractors', tag: '1.0.0'
+gem 'tess_rdf_extractors', git: 'https://github.com/ElixirTeSS/TeSS_RDF_Extractors', tag: '1.1.0'
 gem 'turbolinks'
 gem 'tzinfo'
 gem 'tzinfo-data'
 gem 'validate_url'
-gem 'whenever'
+gem 'whenever', require: false # Work around https://github.com/javan/whenever/issues/831
 gem 'will_paginate'
 
 source 'https://rails-assets.org' do

@@ -1,0 +1,13 @@
+<h4><%= t('events.long') %></h4>
+<ul>
+  <% events.each do |event| %>
+    <li>
+      <%= link_to event do %>
+        <%= event.title %>
+        -
+
+        <%= neatly_printed_date_range(event.start, event&.end) %> 
+      <% end %>
+    </li>
+  <% end %>
+</ul>

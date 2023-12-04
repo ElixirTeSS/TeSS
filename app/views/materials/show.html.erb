@@ -26,16 +26,20 @@
         <div class="content-actions">
           <div class="content-viewer-actions">
             <%= external_link_button 'View material', @material.url, track: @material %>
-            <%= render partial: 'common/identifiers_dot_org_button', locals: { resource: @material } if TeSS::Config.identifiers_prefix %>
-            <%= star_button(@material) if user_signed_in? %>
-          </div>
-          <div class="content-manager-actions">
-            <% if policy(@material).update? %>
-              <%= link_to 'Clone', clone_material_path(@material), class: 'btn btn-default' %>
-              <%= edit_button(@material) %>
+            <% if @material.persisted? %>
+              <%= render partial: 'common/identifiers_dot_org_button', locals: { resource: @material } if TeSS::Config.identifiers_prefix %>
+              <%= star_button(@material) if user_signed_in? %>
             <% end %>
-            <%= delete_button(@material) if policy(@material).destroy? %>
           </div>
+          <% if @material.persisted? %>
+            <div class="content-manager-actions">
+              <% if policy(@material).update? %>
+                <%= link_to 'Clone', clone_material_path(@material), class: 'btn btn-default' %>
+                <%= edit_button(@material) %>
+              <% end %>
+              <%= delete_button(@material) if policy(@material).destroy? %>
+            </div>
+          <% end %>
         </div>
 
         <%= embed_youtube(@material) %>
@@ -80,6 +84,6 @@
         <%= render :partial => 'materials/partials/twitter_card', :locals => {:material => @material} %>
       </div>
     </div>
-    <%= render partial: 'activities/activity_log_button', locals: { resource: @material } %>
+    <%= render partial: 'activities/activity_log_button', locals: { resource: @material } if @material.persisted? %>
   </div>
 </div>

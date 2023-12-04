@@ -42,7 +42,8 @@ Create TeSS configuration files:
 
 ### Install gems and set up the database (migrations + seed data + create admin user)
 
-    docker-compose run app bundle install && bundle exec rake db:setup
+    docker-compose run app bundle install
+    docker-compose run app bundle exec rake db:setup
 
 ### Start services
 

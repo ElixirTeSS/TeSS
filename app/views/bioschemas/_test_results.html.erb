@@ -1,0 +1,57 @@
+<hr/>
+<% sample_size ||= 5 %>
+<div class="row">
+  <div class="col-md-4 col-md-push-8">
+    <%= info_box('Test results') do %>
+      <p>On the left is a summary of the <%= TeSS::Config.site['title_short'] -%>-compatible Bioschemas types that were
+        found.
+      </p>
+      <p>
+        If any compatible resources are found, they will be listed below along with their metadata.
+      </p>
+      <p>
+        If the resource is already registered in <%= TeSS::Config.site['title_short'] -%>,
+        a button will display to go to the existing entry in the catalogue.
+      </p>
+      <p>
+        If the resource has missing metadata, or other errors that prevent it from being registered, they will be
+        listed below.
+      </p>
+      <p>
+        If the resource has no errors, a "Preview" button will appear allowing you to preview exactly how the
+        Event/Material will appear in <%= TeSS::Config.site['title_short'] -%> when registered.
+      </p>
+    <% end %>
+  </div>
+  <div class="col-md-8 col-md-pull-4">
+    <h4>Bioschemas summary:</h4>
+    <table class="table" style="max-width: 20em">
+      <% @output[:totals].each do |type, total| %>
+        <tr><td><%= type %></td><td><%= total %></td></tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<h4>As <%= TeSS::Config.site['title_short'] %> resources:</h4>
+<% results_count = 0 %>
+<% ['events', 'materials'].each do |type| %>
+  <% resources = @output[:resources][type.to_sym] || [] %>
+  <% results_count += resources.count %>
+  <% sample = resources.sample(sample_size) %>
+  <% next if resources.none? %>
+
+  <h5><%= pluralize(resources.count, type.singularize) -%></h5>
+  <div>
+    <% if sample.count < resources.count %>
+      Showing <%= pluralize(sample.count, 'sample') %>
+    <% end %>
+    <% sample.each do |resource_params| %>
+      <% resource = Source.get_test_resource(type, resource_params, user: User.get_default_user) %>
+      <%= render partial: 'sources/test_resource', locals: { resource: resource } %>
+    <% end %>
+  </div>
+<% end %>
+<% if results_count == 0 %>
+  <span class="muted">No resources were found</span>
+<% end %>

@@ -1,0 +1,13 @@
+<%= form_for(resource, url: polymorphic_path([:preview, resource.class])) do |f| %>
+  <% resource.attributes.each do |key, value| %>
+    <%= f.hidden_field(key, multiple: value.is_a?(Array)) %>
+  <% end %>
+  <div style="display: none">
+    <% resource.external_resources.each_with_index do |external_resource, index| %>
+      <%= render partial: 'common/external_resource_form',
+                 locals: { form_name: resource.class.name.downcase, index: index, external_resource: external_resource } %>
+    <% end %>
+  </div>
+
+  <%= f.submit('Preview', class: 'btn btn-primary', formtarget: '_blank') %>
+<% end %>

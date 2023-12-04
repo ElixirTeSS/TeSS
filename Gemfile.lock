@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/ElixirTeSS/TeSS_RDF_Extractors
-  revision: f2f5173736d97166f7dc255ea3be4d749882a960
-  tag: 1.0.0
+  revision: 9f266a978e7715181dc36325c75b4657b43a2aef
+  tag: 1.1.0
   specs:
-    tess_rdf_extractors (1.0.0)
+    tess_rdf_extractors (1.1.0)
       linkeddata (~> 3.2.0)
 
 GIT
@@ -644,6 +644,8 @@ GEM
     sidekiq-status (3.0.3)
       chronic_duration
       sidekiq (>= 6.0, < 8)
+    simple_calendar (2.4.3)
+      rails (>= 3.0)
     simple_form (5.2.0)
       actionpack (>= 5.2)
       activemodel (>= 5.2)
@@ -830,6 +832,7 @@ DEPENDENCIES
   sentry-sidekiq
   sidekiq
   sidekiq-status
+  simple_calendar (~> 2.4)
   simple_form
   simple_token_authentication
   simplecov
@@ -851,4 +854,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   2.4.19
+   2.4.20

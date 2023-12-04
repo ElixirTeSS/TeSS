@@ -34,6 +34,17 @@ module HasTestJob
     end
   end
 
+  class_methods do
+    def get_test_resource(type, params, **extras)
+      klass = type.singularize.capitalize.constantize
+      controller = "#{klass.name.pluralize}Controller".constantize
+      c = controller.new
+      c.params = { klass.model_name.param_key => params }
+      safe_params = c.send("#{klass.model_name.param_key}_params")
+      klass.new(safe_params.merge(extras))
+    end
+  end
+
   private
 
   def test_job_id_key

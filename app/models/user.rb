@@ -336,7 +336,7 @@ class User < ApplicationRecord
         other.activities.update_all(trackable_id: id, trackable_type: self.class.name)
         other.subscriptions.update_all(user_id: id)
         new_collaborations += other.collaborations
-        new_editable_ids = other.editable_ids
+        new_editable_ids |= other.editable_ids
         attrs.reverse_merge!(other.attributes)
       end
       self.editable_ids = self.editable_ids | new_editable_ids

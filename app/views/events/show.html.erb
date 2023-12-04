@@ -37,17 +37,21 @@
       <div class="content-actions">
         <div class="content-viewer-actions">
           <%= external_link_button 'View event', @event.url, track: @event %>
-          <%= render partial: 'events/add_to_calendar_button', locals: { event: @event } if @event.start && @event.end %>
-          <%= render partial: 'common/identifiers_dot_org_button', locals: { resource: @event } if TeSS::Config.identifiers_prefix %>
-          <%= star_button(@event) if user_signed_in? %>
-        </div>
-        <div class="content-manager-actions">
-          <% if policy(@event).update? %>
-            <%= link_to 'Clone', clone_event_path(@event), class: 'btn btn-default' %>
-            <%= edit_button(@event) %>
+          <% if @event.persisted? %>
+            <%= render partial: 'events/add_to_calendar_button', locals: { event: @event } if @event.start && @event.end %>
+            <%= render partial: 'common/identifiers_dot_org_button', locals: { resource: @event } if TeSS::Config.identifiers_prefix %>
+            <%= star_button(@event) if user_signed_in? %>
           <% end %>
-          <%= delete_button(@event) if policy(@event).destroy? %>
         </div>
+        <% if @event.persisted? %>
+          <div class="content-manager-actions">
+            <% if policy(@event).update? %>
+              <%= link_to 'Clone', clone_event_path(@event), class: 'btn btn-default' %>
+              <%= edit_button(@event) %>
+            <% end %>
+            <%= delete_button(@event) if policy(@event).destroy? %>
+          </div>
+        <% end %>
       </div>
 
       <div class="my-3">
@@ -94,7 +98,7 @@
 
         <%= render partial: 'events/partials/twitter_card', locals: { event: @event } %>
 
-        <%= render partial: 'events/report' if policy(@event).view_report? %>
+        <%= render partial: 'events/report' if policy(@event).view_report? && @event.persisted? %>
 
         <% if policy(@event).update? && @event.edit_suggestion %>
           <%= render partial: 'common/approve_term_suggestions',
@@ -104,6 +108,6 @@
       </div>
     </div>
 
-    <%= render partial: 'activities/activity_log_button', locals: { resource: @event } %>
+    <%= render partial: 'activities/activity_log_button', locals: { resource: @event } if @event.persisted? %>
   </div>
 </div>
