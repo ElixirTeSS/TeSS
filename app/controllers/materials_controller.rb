@@ -4,6 +4,7 @@ class MaterialsController < ApplicationController
   before_action :set_material, only: [:show, :edit, :update, :destroy, :update_collections, :clone,
                                       :add_term, :reject_term, :add_data, :reject_data]
   before_action :set_breadcrumbs
+  before_action :disable_pagination, only: :index, if: lambda { |controller| controller.request.format.csv? }
 
   include SearchableIndex
   include ActionView::Helpers::TextHelper
@@ -21,6 +22,7 @@ class MaterialsController < ApplicationController
     respond_to do |format|
       format.html { render elearning ? 'elearning_materials/index' : 'index' }
       format.json
+      format.csv { render 'elearning_materials/index' } if elearning
       format.json_api { render({ json: @materials }.merge(api_collection_properties)) }
     end
   end

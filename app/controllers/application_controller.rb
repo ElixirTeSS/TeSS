@@ -127,4 +127,8 @@ class ApplicationController < ActionController::Base
   def allow_embedding
     response.headers.delete 'X-Frame-Options'
   end
+
+  def disable_pagination
+    params[:per_page] = 2 ** 10
+  end
 end

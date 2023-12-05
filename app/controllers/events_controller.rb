@@ -243,8 +243,4 @@ class EventsController < ApplicationController
   def event_report_params
     params.require(:event).permit(:funding, :attendee_count, :applicant_count, :trainer_count, :feedback, :notes)
   end
-
-  def disable_pagination
-    params[:per_page] = 2 ** 10
-  end
 end
