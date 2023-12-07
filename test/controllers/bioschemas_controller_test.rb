@@ -143,6 +143,19 @@ class BioschemasControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_path
   end
 
+  test 'should detect resources in JSON-LD snippet with relative IDs' do
+    sign_in users(:regular_user)
+
+    post :run_test, params: { snippet: fixture_file('ols_relative_id.json').read }
+
+    assert_response :success
+
+    output = assigns(:output)
+    assert_equal 1, output[:totals]['LearningResources']
+    assert_equal 1, output[:resources][:materials].count
+    assert_equal "https://test.url", output[:resources][:materials].first[:url]
+  end
+
   private
 
   def fixture_file(filename)
