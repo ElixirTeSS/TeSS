@@ -37,3 +37,25 @@
     display: none;
   }
 }
+
+.learning-path-item {
+  text-align: center;
+  border-image-slice: 80;
+  border-image-width: 80px;
+}
+
+.learning-path-bg-1 {
+  border-image-source: image-url("modern/learning_paths/learning-path-bg-1.svg");
+}
+
+.learning-path-bg-2 {
+  border-image-source: image-url("modern/learning_paths/learning-path-bg-2.svg");
+}
+
+.learning-path-bg-3 {
+  border-image-source: image-url("modern/learning_paths/learning-path-bg-3.svg");
+}
+
+.learning-path-bg-4 {
+  border-image-source: image-url("modern/learning_paths/learning-path-bg-4.svg");
+}
