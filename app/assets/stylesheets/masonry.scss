@@ -36,6 +36,20 @@
   background-color: white;
 }
 
+.media-item.large {
+  width: 45%;
+
+  @include sm {
+    float: none;
+    width: 95%;
+  }
+
+  @include xs {
+    float: none;
+    width: 95%;
+  }
+}
+
 .media-item.long {
   width: 100%;
 }
