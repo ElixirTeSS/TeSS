@@ -1,7 +1,7 @@
 module Facets
   SPECIAL = {
       include_expired: -> (c) { c.name == 'Event' },
-      include_archived: -> (c) { c.name == 'Material' },
+      include_archived: -> (c) { c.name == 'Material' || c.name == 'LearningPath' },
       days_since_scrape: -> (c) { c.method_defined?(:last_scraped) },
       elixir: -> (c) { ['Event', 'Material', 'ContentProvider'].include?(c.name) },
       max_age: -> (c) { ['Event', 'Material'].include?(c.name) },
