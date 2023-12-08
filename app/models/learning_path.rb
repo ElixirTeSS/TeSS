@@ -43,6 +43,7 @@ class LearningPath < ApplicationRecord
       string :node, multiple: true do
         self.associated_nodes.pluck(:name)
       end
+      boolean :public
       time :updated_at
       time :created_at
       boolean :failing do
@@ -94,5 +95,17 @@ class LearningPath < ApplicationRecord
     field_list.delete('status') if TeSS::Config.feature['disabled'].include? 'status'
 
     field_list
+  end
+
+  def self.visible_by(user)
+    if user&.is_admin?
+      all
+    elsif user
+      references(:collaborations).includes(:collaborations).
+        where("#{self.table_name}.public = :public OR #{self.table_name}.user_id = :user OR collaborations.user_id = :user",
+              public: true, user: user)
+    else
+      where(public: true)
+    end
   end
 end

@@ -105,7 +105,7 @@ class LearningPathsController < ApplicationController
                                           { keywords: [] },
                                           { scientific_topic_names: [] }, { scientific_topic_uris: [] },
                                           { node_ids: [] }, { node_names: [] },
-                                          { topic_links_attributes: [:id, :topic_id, :order, :_destroy] })
+                                          { topic_links_attributes: [:id, :topic_id, :order, :_destroy] }, :public)
   end
 
 end

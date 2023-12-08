@@ -10,10 +10,8 @@
       <%= render partial: 'common/image_form', locals: { form: f } %>
     </div>
 
-    <div class="form-group">
-      <%= f.label :public, :class=>"checkbox inline" %>
-      <%= f.check_box :public %>
-    </div>
+  <%= f.input :public,
+              hint: "Un-ticking this box will hide this collection from anyone who isn't the creator or a collaborator." %>
 
     <%= f.multi_input :keywords %>
 
