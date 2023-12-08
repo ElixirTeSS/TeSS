@@ -11,14 +11,10 @@
   <%= f.input :description, as: :markdown_area, label: 'Description',
               input_html: { rows: '5', title: t('learning_paths.hints.description') } %>
 
-  <hr />
-
   <!-- Field: Scientific Topics -->
   <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term',
                       id_field: :uri, label_field: :preferred_label,
                       visibility_toggle: TeSS::Config.feature['learning_paths_disabled'] %>
-
-  <hr>
 
   <!-- Field: Keywords -->
   <%= f.multi_input :keywords, title: t('learning_paths.hints.keywords'), visibility_toggle: TeSS::Config.feature['learning_paths_disabled'] %>
@@ -116,6 +112,9 @@
   </div>
 
   <hr>
+
+  <%= f.input :public,
+              hint: "Un-ticking this box will hide this learning path from anyone who isn't the creator or a collaborator." %>
 
   <!-- Form Buttons -->
   <div class="form-group">

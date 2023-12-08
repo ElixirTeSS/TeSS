@@ -312,6 +312,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_19_101101) do
     t.string "learning_path_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "public", default: true
     t.index ["content_provider_id"], name: "index_learning_paths_on_content_provider_id"
     t.index ["slug"], name: "index_learning_paths_on_slug", unique: true
     t.index ["user_id"], name: "index_learning_paths_on_user_id"
