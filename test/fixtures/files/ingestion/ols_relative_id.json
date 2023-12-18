@@ -1,0 +1,59 @@
+{
+  "@context": "https://schema.org",
+  "@type": "LearningResource",
+  "@id": "some%20id",
+  "url": "https://test.url",
+  "dct:conformsTo": {
+    "https://purl.org/dc/terms/conformsTo": {
+      "@id": "https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE",
+      "@type": "CreativeWork"
+    }
+  },
+  "description": "Video from the talk 'Welcome to OLS!', by  Emmy Tsang, on March 07, 2022, in Open Seeds ols-5 cohort",
+  "keywords": ["Open Science", "Open Life Science", "OLS Introduction"],
+  "name": "Recording of the talk 'Welcome to OLS!', by  Emmy Tsang, on March 07, 2022",
+  "educationalLevel": "Beginner",
+  "inLanguage": "en-US",
+  "learningResourceType": "video",
+  "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "contributor":  [
+    {
+      "@type": "Organization",
+      "name": "Open Life Science",
+      "email": "team@we-are-ols.org",
+      "url": "https://openlifesci.org/"
+    },{
+      "@type": "Person",
+      "name": "Emmy Tsang",
+      "url": "https://openlifesci.org//people#emmyft"
+    }],
+  "dateCreated": "2022-03-07",
+  "hasPart": {
+    "@type": "CreativeWork",
+    "url": "https://docs.google.com/presentation/d/1B-TiVAHx6OVririv88-H59_BlPwniS5xDnhZtoDU280/edit#slide=id.g6e457e6ac5_0_69",
+    "name": "Slides for the talk 'Welcome to OLS!', by  Emmy Tsang, on March 07, 2022"
+  },
+  "isPartOf": {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "@id": "https://openlifesci.org//ols-5",
+    "dct:conformsTo": {
+      "https://purl.org/dc/terms/conformsTo": {
+        "@id": "https://bioschemas.org/profiles/Course/1.0-RELEASE",
+        "@type": "CreativeWork"
+      }
+    },
+    "description": "OLS is a mentoring mentoring & training program for Open Science ambassadors. It runs cohorts with calls every 1-2 weeks.",
+    "keywords": "Open Science",
+    "name": "Open Seeds ols-5 cohort",
+    "url": "https://openlifesci.org//openseeds/ols-5",
+    "educationalLevel": "Beginner",
+    "inLanguage": "en-US",
+    "provider":  [{
+      "@type": "Organization",
+      "name": "Open Life Science",
+      "email": "team@we-are-ols.org",
+      "url": "https://openlifesci.org/"
+    }]
+  }
+}

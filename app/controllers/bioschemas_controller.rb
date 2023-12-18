@@ -19,7 +19,7 @@ class BioschemasController < ApplicationController
       if body
         begin
           ingestor = Ingestors::BioschemasIngestor.new
-          @output = ingestor.read_content(StringIO.new(body), url: params[:url])
+          @output = ingestor.read_content(StringIO.new(body), url: params[:url] || 'https://example.com')
         rescue RDF::ReaderError
           flash[:error] = 'A parsing error occurred. Please check your document contains valid JSON-LD or HTML.'
           format.html { render :test, status: :unprocessable_entity }
