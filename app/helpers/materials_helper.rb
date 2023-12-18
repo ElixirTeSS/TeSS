@@ -115,12 +115,14 @@ to acquire the desired knowledge and skills on a subject by the end of the pathw
     end
   end
 
-  def keywords_and_topics(resource)
+  def keywords_and_topics(resource, limit: nil)
     tags = []
 
     [:scientific_topic_names, :operation_names, :keywords].each do |field|
       tags |= resource.send(field) if resource.respond_to?(field)
     end
+
+    tags = tags.first(limit) if limit
 
     tags.map do |tag|
       content_tag(:span, tag, class: 'label label-info')
