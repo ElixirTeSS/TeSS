@@ -42,6 +42,12 @@
   text-align: center;
   border-image-slice: 80;
   border-image-width: 80px;
+  .link-overlay {
+    height: 12em;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+  }
 }
 
 .learning-path-bg-1 {
