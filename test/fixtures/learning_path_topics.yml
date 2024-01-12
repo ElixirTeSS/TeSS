@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+good_and_bad:
+  title: My Learning Path Topic
+  description: MyText
+  user: regular_user
+  keywords: ["Learning", "Discovery"]
+
+goblet_things:
+  title: Another Learning Path Topic
+  description: Some text
+  user: regular_user
+  keywords: ["Interesting"]

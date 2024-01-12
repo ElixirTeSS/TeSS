@@ -1,0 +1,38 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: My Learning Path
+  description: MyText
+  public: true
+  user: regular_user
+
+two:
+  title: Another Learning Path
+  description: MyText
+  public: true
+  user: regular_user
+  doi: Text
+  target_audience: ['Researchers']
+  authors: ['Firstname Lastname', 'Someone Else']
+  contributors: ['Contri Butor', 'Person Two']
+  licence: CC-BY-NC-4.0
+  difficulty_level: beginner
+  content_provider: iann
+  keywords: ['one', 'two', 'three']
+  prerequisites: Text
+  learning_objectives: Text
+  status: active
+
+in_development_learning_path:
+  title: InDev
+  description: MyText
+  public: false
+  user: regular_user
+  status: development
+
+archived_learning_path:
+  title: This Learning Path Is Hidden
+  description: MyText
+  public: false
+  user: regular_user
+  status: development
