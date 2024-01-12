@@ -274,6 +274,8 @@ class UserTest < ActiveSupport::TestCase
     source = sources(:unapproved_source)
     collection = collections(:one)
     node = nodes(:good)
+    learning_path = learning_paths(:one)
+    learning_path_topic = learning_path_topics(:good_and_bad)
 
     assert_equal user, event.user
     assert_equal user, material.user
@@ -282,6 +284,8 @@ class UserTest < ActiveSupport::TestCase
     assert_equal user, source.user
     assert_equal user, collection.user
     assert_equal user, node.user
+    assert_equal user, learning_path.user
+    assert_equal user, learning_path_topic.user
 
     user.destroy!
 
@@ -293,6 +297,8 @@ class UserTest < ActiveSupport::TestCase
     assert_equal default_user, source.reload.user
     assert_equal default_user, collection.reload.user
     assert_equal default_user, node.reload.user
+    assert_equal default_user, learning_path.reload.user
+    assert_equal default_user, learning_path_topic.reload.user
   end
 
   test 'merge users' do
