@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+item1a:
+  order: 2
+  comment: Some explanation
+  topic: good_and_bad
+  resource: good_material (Material)
+
+item1b:
+  order: 1
+  topic: good_and_bad
+  resource: bad_material (Material)
+
+item2a:
+  order: 1
+  topic: goblet_things
+  resource: biojs (Material)
+
+item2b:
+  order: 2
+  topic: goblet_things
+  resource: interpro (Material)
+
+item2c:
+  order: 3
+  topic: goblet_things
+  resource: prints (Material)

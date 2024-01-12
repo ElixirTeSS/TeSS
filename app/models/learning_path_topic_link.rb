@@ -4,6 +4,8 @@ class LearningPathTopicLink < ApplicationRecord
 
   before_create :set_order
 
+  validates :topic_id, uniqueness: { scope: %i[learning_path_id], message: 'already included in learning path' }
+
   private
 
   def set_order
