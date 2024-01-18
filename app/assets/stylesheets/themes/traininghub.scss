@@ -343,6 +343,16 @@ text-boxes-container {
   color: black;
 }
 
+// Make sure font color match on the About page left side menu
+.about-nav {
+  .about-page-category {
+    font-size: $font-size-h4;
+    display: block;
+    a {
+      color: $secondary-color !important;
+    }
+  }
+}
 
 // Breadcrumb
 $breadcrumb-bg: transparent;
