@@ -4,6 +4,7 @@ on:
   push: 
     branches:
       - develop
+      - harshita_buildflow
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}-app
