@@ -4,7 +4,6 @@ on:
   push: 
     branches:
       - develop
-      - harshita_buildflow
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}-app
@@ -21,11 +20,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-
-    # - name: Setup
-    #   run: | 
-    #     cp env.sample .env
-    #     cp config/secrets.example.yml config/secrets.yml
 
     - name: Log in to the container registry
       uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1

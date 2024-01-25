@@ -1,5 +1,6 @@
 .git/
 Dockerfile
+Dockerfile-dev
 coverage/
 solr/*
 !solr/conf
