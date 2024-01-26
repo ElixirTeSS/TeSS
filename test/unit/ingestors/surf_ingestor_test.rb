@@ -22,23 +22,23 @@ class SurfIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::SurfIngestor.new
 
     # check event doesn't
-    new_title = 'National XR Day'
-    new_url = 'https://www.surf.nl/en/agenda/national-xr-day-0'
+    new_title = 'Master class Privacy Assessment Framework'
+    new_url = 'https://www.surf.nl/en/agenda/masterclass-review-framework-privacy-apr-1'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference 'Event.count', 45 do
+    assert_difference 'Event.count', 52 do
       freeze_time(2019) do
-        VCR.use_cassette("ingestors/surf") do
+        VCR.use_cassette('ingestors/surf') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end
       end
     end
 
-    assert_equal 45, ingestor.events.count
+    assert_equal 52, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 45, ingestor.stats[:events][:added]
+    assert_equal 52, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
@@ -52,7 +52,7 @@ class SurfIngestorTest < ActiveSupport::TestCase
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'SURF', event.source
     assert event.online?
-    assert_equal Time.zone.parse('Wed, 05 Jul 2023 12:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Wed, 05 Jul 2023 12:00:00.000000000 UTC +00:00'), event.end
+    assert_equal Time.zone.parse('Thu, 25 Apr 2024 12:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Thu, 25 Apr 2024 12:00:00.000000000 UTC +00:00'), event.end
   end
 end
