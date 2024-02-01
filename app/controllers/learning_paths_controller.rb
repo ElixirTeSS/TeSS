@@ -15,6 +15,7 @@ class LearningPathsController < ApplicationController
   end
 
   def show
+    authorize @learning_path
     # @bioschemas = @learning_path.to_bioschemas
     respond_to do |format|
       format.html
