@@ -4,13 +4,13 @@ one:
   title: My Learning Path
   description: MyText
   public: true
-  user: regular_user
+  user: admin
 
 two:
   title: Another Learning Path
   description: MyText
   public: true
-  user: regular_user
+  user: admin
   doi: Text
   target_audience: ['Researchers']
   authors: ['Firstname Lastname', 'Someone Else']
@@ -27,12 +27,12 @@ in_development_learning_path:
   title: InDev
   description: MyText
   public: false
-  user: regular_user
+  user: admin
   status: development
 
 archived_learning_path:
   title: This Learning Path Is Hidden
   description: MyText
   public: false
-  user: regular_user
+  user: admin
   status: development

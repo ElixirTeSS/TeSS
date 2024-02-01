@@ -1,0 +1,14 @@
+<% type = activity.parameters[:resource_type].constantize %>
+
+<i class="fa fa-pencil-square-o"></i>
+
+<% if activity.owner %>
+    <%= link_to activity.owner.username, activity.owner %>
+<% end %>
+
+added <%= type.model_name.human.downcase %>
+<%= link_to activity.parameters[:topic_title], learning_path_topic_path(activity.parameters[:topic_id]) %>
+to
+<%= link_to activity.trackable.title, activity.trackable %>
+at
+<%= activity.created_at -%>.
