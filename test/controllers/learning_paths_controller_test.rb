@@ -89,7 +89,7 @@ class LearningPathsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test 'should not get edit page for non-owner user' do
+  test 'should not get edit page for regular user' do
     #Administrator = SUCCESS
     sign_in users(:another_regular_user)
     get :edit, params: { id: @learning_path }

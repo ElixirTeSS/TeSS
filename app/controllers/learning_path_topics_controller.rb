@@ -1,6 +1,6 @@
 class LearningPathTopicsController < ApplicationController
   before_action -> { feature_enabled?('learning_paths') }
-  before_action :set_topic, only: %i[show edit add_item remove_item update destroy]
+  before_action :set_topic, only: %i[show edit update destroy]
   before_action :set_breadcrumbs
 
   include SearchableIndex
@@ -67,7 +67,7 @@ class LearningPathTopicsController < ApplicationController
     @learning_path_topic.create_activity :destroy, owner: current_user
     @learning_path_topic.destroy
     respond_to do |format|
-      format.html { redirect_to topics_url, notice: 'Topic was successfully destroyed.' }
+      format.html { redirect_to learning_path_topics_url, notice: 'Topic was successfully destroyed.' }
       # format.json { head :no_content }
     end
   end
