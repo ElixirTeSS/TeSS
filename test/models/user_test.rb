@@ -284,8 +284,6 @@ class UserTest < ActiveSupport::TestCase
     assert_equal user, source.user
     assert_equal user, collection.user
     assert_equal user, node.user
-    assert_equal user, learning_path.user
-    assert_equal user, learning_path_topic.user
 
     user.destroy!
 
@@ -297,6 +295,11 @@ class UserTest < ActiveSupport::TestCase
     assert_equal default_user, source.reload.user
     assert_equal default_user, collection.reload.user
     assert_equal default_user, node.reload.user
+
+    admin = users(:admin)
+    assert_equal admin, learning_path.user
+    assert_equal admin, learning_path_topic.user
+    admin.destroy!
     assert_equal default_user, learning_path.reload.user
     assert_equal default_user, learning_path_topic.reload.user
   end

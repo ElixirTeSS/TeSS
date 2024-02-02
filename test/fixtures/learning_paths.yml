@@ -34,5 +34,5 @@ archived_learning_path:
   title: This Learning Path Is Hidden
   description: MyText
   public: false
-  user: admin
+  user: curator
   status: development
