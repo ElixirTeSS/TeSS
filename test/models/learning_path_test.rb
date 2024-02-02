@@ -2,15 +2,20 @@ require 'test_helper'
 
 class LearningPathTest < ActiveSupport::TestCase
   test 'visibility scope' do
-    assert_not_includes LearningPath.visible_by(nil), learning_paths(:archived_learning_path)
-    assert_not_includes LearningPath.visible_by(users(:another_regular_user)), learning_paths(:archived_learning_path)
-    assert_includes LearningPath.visible_by(users(:regular_user)), learning_paths(:archived_learning_path)
-    assert_includes LearningPath.visible_by(users(:admin)), learning_paths(:archived_learning_path)
+    archived = learning_paths(:archived_learning_path)
+    archived.collaborators << users(:another_regular_user)
+    assert_not_includes LearningPath.visible_by(nil), archived
+    assert_not_includes LearningPath.visible_by(users(:regular_user)), archived
+    assert_includes LearningPath.visible_by(users(:admin)), archived
+    assert_includes LearningPath.visible_by(users(:curator)), archived
+    assert_includes LearningPath.visible_by(users(:another_regular_user)), archived
 
-    assert_includes LearningPath.visible_by(nil), learning_paths(:one)
-    assert_includes LearningPath.visible_by(users(:another_regular_user)), learning_paths(:one)
-    assert_includes LearningPath.visible_by(users(:regular_user)), learning_paths(:one)
-    assert_includes LearningPath.visible_by(users(:admin)), learning_paths(:one)
+    visible = learning_paths(:one)
+    assert_includes LearningPath.visible_by(nil), visible
+    assert_includes LearningPath.visible_by(users(:regular_user)), visible
+    assert_includes LearningPath.visible_by(users(:admin)), visible
+    assert_includes LearningPath.visible_by(users(:curator)), visible
+    assert_includes LearningPath.visible_by(users(:another_regular_user)), visible
   end
 
   test 'add topic to learning path' do
