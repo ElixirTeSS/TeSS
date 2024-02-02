@@ -11,3 +11,8 @@ goblet_things:
   description: Some text
   user: admin
   keywords: ["Interesting"]
+
+empty_topic:
+  title: Empty topic
+  description: Under development
+  user: curator
