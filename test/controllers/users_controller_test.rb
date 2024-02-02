@@ -204,6 +204,21 @@ class UsersControllerTest < ActionController::TestCase
     assert_select '.ban-info', count: 0
   end
 
+  test 'should show ban info from deleted user' do
+    user = users(:shadowbanned_user)
+    other_admin = users(:regular_user)
+    user.ban.update_column(:banner_id, other_admin.id)
+    other_admin.destroy!
+
+    sign_in users(:admin)
+    get :show, params: { id: user }
+
+    assert_response :success
+    assert_select '.ban-info' do
+      assert_select 'p', text: 'By: Deleted user'
+    end
+  end
+
   test 'should update trainer profile' do
     user = users(:trainer_user)
     sign_in user

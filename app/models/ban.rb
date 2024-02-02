@@ -1,6 +1,6 @@
 class Ban < ApplicationRecord
   belongs_to :user, inverse_of: :ban
-  belongs_to :banner, class_name: 'User'
+  belongs_to :banner, class_name: 'User', optional: true
   after_create :reindex_user
   after_destroy :reindex_user
 
