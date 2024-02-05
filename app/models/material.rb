@@ -15,6 +15,7 @@ class Material < ApplicationRecord
   include IdentifiersDotOrg
   include HasFriendlyId
   include HasDifficultyLevel
+  include HasEdamTerms
 
   if TeSS::Config.solr_enabled
     # :nocov:
@@ -32,6 +33,12 @@ class Material < ApplicationRecord
       text :content_provider do
         self.content_provider.try(:title)
       end
+      text :scientific_topics do
+        scientific_topics_and_synonyms
+      end
+      text :operations do
+        scientific_topics_and_synonyms
+      end
       # sort title
       string :sort_title do
         title.downcase.gsub(/^(an?|the) /, '')
@@ -40,10 +47,10 @@ class Material < ApplicationRecord
       string :title
       string :authors, :multiple => true
       string :scientific_topics, :multiple => true do
-        self.scientific_topic_names
+        scientific_topics_and_synonyms
       end
       string :operations, :multiple => true do
-        self.operation_names
+        operations_and_synonyms
       end
       string :target_audience, :multiple => true
       string :keywords, :multiple => true

@@ -17,6 +17,7 @@ class Event < ApplicationRecord
   include HasFriendlyId
   include FuzzyDictionaryMatch
   include WithTimezone
+  include HasEdamTerms
 
   before_validation :fix_keywords, on: :create, if: :scraper_record
   before_validation :presence_default
@@ -39,6 +40,12 @@ class Event < ApplicationRecord
       text :timezone
       text :content_provider do
         content_provider.title unless content_provider.nil?
+      end
+      text :scientific_topics do
+        scientific_topics_and_synonyms
+      end
+      text :operations do
+        scientific_topics_and_synonyms
       end
       # sort title
       string :sort_title do
@@ -70,10 +77,10 @@ class Event < ApplicationRecord
         associated_nodes.pluck(:name)
       end
       string :scientific_topics, multiple: true do
-        scientific_topic_names
+        scientific_topics_and_synonyms
       end
       string :operations, multiple: true do
-        operation_names
+        operations_and_synonyms
       end
       string :target_audience, multiple: true
       boolean :online do
