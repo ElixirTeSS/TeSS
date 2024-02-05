@@ -37,7 +37,7 @@ class Material < ApplicationRecord
         scientific_topics_and_synonyms
       end
       text :operations do
-        scientific_topics_and_synonyms
+        operations_and_synonyms
       end
       # sort title
       string :sort_title do
