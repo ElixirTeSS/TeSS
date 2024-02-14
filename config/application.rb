@@ -10,6 +10,7 @@ module TeSS
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
+    config.autoload_paths << Rails.root.join('lib/modules')
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
@@ -21,7 +22,7 @@ module TeSS
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins '*'
-        resource '*', headers: :any, methods: [:get, :post, :options]
+        resource '*', headers: :any, methods: %i[get post options]
       end
     end
 
@@ -38,7 +39,7 @@ module TeSS
       ActiveSupport::HashWithIndifferentAccess, BigDecimal
     ]
 
-    config.exceptions_app = self.routes
+    config.exceptions_app = routes
   end
 
   tess_config = Rails.configuration.tess.with_indifferent_access
@@ -64,9 +65,7 @@ module TeSS
         puts "Setting '#{current_path}#{key}' not configured, using defaults" if Rails.env.development?
         config[key] = value
       end
-      if value.is_a?(Hash) && config[key].is_a?(Hash)
-        merge_config(value, config[key], current_path + "#{key}: ")
-      end
+      merge_config(value, config[key], current_path + "#{key}: ") if value.is_a?(Hash) && config[key].is_a?(Hash)
     end
   end
 
@@ -83,6 +82,7 @@ module TeSS
 
     def ingestion
       return @ingestion if @ingestion
+
       config_file = File.join(Rails.root, 'config', 'ingestion.yml')
       @ingestion = YAML.safe_load(File.read(config_file)).deep_symbolize_keys! if File.exist?(config_file)
     end

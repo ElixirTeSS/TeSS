@@ -29,7 +29,8 @@ module Ingestors
         Ingestors::RstIngestor,
         Ingestors::OsciIngestor,
         Ingestors::DccIngestor,
-        Ingestors::SenseIngestor
+        Ingestors::SenseIngestor,
+        Ingestors::GptIngestor
       ]
     end
 
@@ -41,11 +42,9 @@ module Ingestors
 
     def self.get_ingestor(method)
       config = ingestor_config[method]
-      if config
-        config[:ingestor].new
-      else
-        raise "Invalid method: [#{method}]"
-      end
+      raise "Invalid method: [#{method}]" unless config
+
+      config[:ingestor].new
     end
 
     def self.valid_ingestor?(method)
