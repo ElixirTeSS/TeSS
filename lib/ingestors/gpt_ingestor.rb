@@ -55,7 +55,7 @@ module Ingestors
     end
 
     def beep_func(event_page) # rubocop:disable Metrics
-      prompt = File.read('beepboop.txt')
+      prompt = File.read('llm_scrape_prompt.txt')
       event_page.css('script, link').each { |node| node.remove }
       event_page = event_page.text.squeeze(" \n").squeeze("\n").squeeze("\t").squeeze(' ')
       response = ChatgptService.new.scrape(event_page, prompt).dig('choices', 0, 'message', 'content')
