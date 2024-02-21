@@ -13,7 +13,7 @@ Rails.application.config.content_security_policy do |policy|
   policy.style_src   :self, :https, :'unsafe_inline' # Inline styles :(
 
   # Specify URI for violation reports
-  # policy.report_uri "/csp-violation-report-endpoint"
+  policy.report_uri TeSS::Config.csp_report_uri if TeSS::Config.csp_report_uri
 end
 
 # If you are using UJS then enable automatic nonce generation
