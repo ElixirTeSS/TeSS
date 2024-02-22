@@ -6,7 +6,7 @@ module Ingestors
   class OsciIngestor < Ingestor
     def self.config
       {
-        key: 'osci',
+        key: 'osci_event',
         title: 'OSCI Events API',
         category: :events
       }
