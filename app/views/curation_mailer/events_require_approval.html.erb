@@ -1,0 +1,16 @@
+<p>
+  You are receiving this automated email because you are a curator of <%= @provider.title %> on <%= TeSS::Config.site['title_short'] %>.
+</p>
+<p>
+  If any of these events are incorrect or should not be shown, please follow the link to change them.
+</p>
+
+<% @events.each do |event| %>
+  <p>
+    <%= link_to event.title, event %><br/>
+    <strong>description:</strong> <%= event.description %><br/>
+    <strong>start:</strong> <%= event.start %><br/>
+    <strong>end:</strong> <%= event.end %><br/>
+    <strong>venue:</strong> <%= event.venue %><br/>
+  </p>
+<% end %>

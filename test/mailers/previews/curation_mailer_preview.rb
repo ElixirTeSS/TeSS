@@ -9,4 +9,9 @@ class CurationMailerPreview < ActionMailer::Preview
     source = Source.first
     CurationMailer.source_requires_approval(source, source.user)
   end
+
+  def events_need_approval
+    provider = ContentProvider.first
+    CurationMailer.events_require_approval(provider)
+  end
 end
