@@ -1,9 +1,7 @@
 require 'yaml'
-require 'set'
 
 namespace :tess do
-
-  task :remove_spam_activities, [:type] => [:environment] do |t, args|
+  task :remove_spam_activities, [:type] => [:environment] do |_t, args|
     types = args[:type] ? [args[:type].constantize] : [Node, Workflow, ContentProvider, Material, Event]
     total_deleted_count = 0
     total_activity_count = PublicActivity::Activity.count
@@ -11,7 +9,7 @@ namespace :tess do
 
     types.each do |type|
       deleted_count = 0
-      records = (type == Event) ? type.all.not_finished : type.all
+      records = type == Event ? type.all.not_finished : type.all
       puts "Looking at #{records.count} #{type.name.pluralize}:"
       records.each do |record|
         ##########
@@ -34,13 +32,11 @@ namespace :tess do
         # are the same value (when sorted). If so, delete the newer one.
         grouped.each_value do |activities|
           activities.to_a.unshift(nil).reverse.each_cons(2) do |newer, older|
-            if newer && older
-              if newer.parameters[:new_val].length == older.parameters[:new_val].length &&
-                newer.parameters[:new_val].sort == older.parameters[:new_val].sort
-                newer.destroy
-                deleted_count += 1
-              end
-            end
+            next unless newer && older && (newer.parameters[:new_val].length == older.parameters[:new_val].length &&
+                 newer.parameters[:new_val].sort == older.parameters[:new_val].sort)
+
+            newer.destroy
+            deleted_count += 1
           end
         end
 
@@ -50,12 +46,12 @@ namespace :tess do
         updates.each do |activity|
           # Have to do this very awkward query due to `update_parameter` activities being created separately from
           # `update` activities and not necessarily at the same time!
-          if record.activities.where(key: "#{type.name.underscore}.update_parameter").
-            where('id < ?', activity.id).
-            where('created_at > ?', (activity.created_at - 2.seconds)).none?
-            activity.destroy
-            deleted_count += 1
-          end
+          next unless record.activities.where(key: "#{type.name.underscore}.update_parameter")
+                            .where('id < ?', activity.id)
+                            .where('created_at > ?', (activity.created_at - 2.seconds)).none?
+
+          activity.destroy
+          deleted_count += 1
         end
         print '.'
       end
@@ -66,10 +62,10 @@ namespace :tess do
 
     puts
     puts "Deleted #{total_deleted_count} activities in total"
-    puts "Done"
+    puts 'Done'
   end
 
-  desc "Populates the database with Node information from a JSON document"
+  desc 'Populates the database with Node information from a JSON document'
   task load_node_json: :environment do
     path = File.join(Rails.root, 'config', 'data', 'elixir_nodes.json')
 
@@ -79,7 +75,7 @@ namespace :tess do
     nodes = Node.load_from_hash(hash, verbose: true)
 
     puts "#{nodes.select(&:valid?).count}/#{nodes.count} succeeded"
-    puts "Done"
+    puts 'Done'
   end
 
   task download_images: :environment do
@@ -91,12 +87,10 @@ namespace :tess do
           puts "Downloading #{downloadable.length} images for #{klass.name}s"
 
           downloadable.each do |resource|
-            begin
-              resource.save!
-            rescue Exception => e
-              puts "Exception occurred fetching image for #{klass.name} ID: #{resource.id}"
-              raise e
-            end
+            resource.save!
+          rescue Exception => e
+            puts "Exception occurred fetching image for #{klass.name} ID: #{resource.id}"
+            raise e
           end
           puts
         else
@@ -106,7 +100,7 @@ namespace :tess do
     ensure
       ActiveRecord::Base.record_timestamps = true
     end
-    puts "Done"
+    puts 'Done'
   end
 
   task expire_sessions: :environment do
@@ -123,7 +117,7 @@ namespace :tess do
       sub.process
       print '.'
     end
-    puts " Done"
+    puts ' Done'
   end
 
   task reset_subscriptions: :environment do
@@ -133,7 +127,7 @@ namespace :tess do
       sub.reset_due
       print '.'
     end
-    puts " Done"
+    puts ' Done'
   end
 
   desc 'run generic ingestion process'
@@ -145,9 +139,19 @@ namespace :tess do
     puts "Finished successfully, output written to: #{log.path}"
   end
 
+  desc 'mail content providers for curation of scraped events'
+  task event_curation_mails: :environment do
+    cut_off_time = Time.zone.now - 1.week
+    providers = ContentProvider.all.filter { |provider| provider.contact.present? }
+    providers.each do |provider|
+      CurationMailer.events_require_approval(provider, cut_off_time)
+    end
+    puts 'Curation mails sent'
+  end
+
   desc 'check and update time zones'
   task check_timezones: :environment do
-    puts "Task: check_timezones - start"
+    puts 'Task: check_timezones - start'
     overrides = { 'AEDT' => 'Sydney',
                   'AEST' => 'Sydney' }
     begin
@@ -162,11 +166,11 @@ namespace :tess do
         event.check_timezone
         event.timezone = overrides[event.timezone] if overrides.keys.include? event.timezone
         if event.save
-          unless event.timezone == pre_tz
+          if event.timezone == pre_tz
+            unchanged += 1
+          else
             updated += 1
             messages << "event[#{event.title}] updated to timezone[#{event.timezone}]"
-          else
-            unchanged += 1
           end
         else
           failed += 1
@@ -179,7 +183,7 @@ namespace :tess do
     end
     messages.each { |m| puts m }
     puts "Task: check_timezones - processed[#{processed}] unchanged[#{unchanged}] updated[#{updated}] failed[#{failed}]"
-    puts "Task: check_timezones - finished."
+    puts 'Task: check_timezones - finished.'
   end
 
   desc 'Fetch and convert SPDX licenses from GitHub'
@@ -193,20 +197,20 @@ namespace :tess do
         'title' => 'License Not Specified'
       },
       'other-at' => {
-        'title' => "Other (Attribution)"
+        'title' => 'Other (Attribution)'
       },
       'other-closed' => {
-        'title' => "Other (Not Open)"
+        'title' => 'Other (Not Open)'
       },
       'other-nc' => {
-        'title' => "Other (Non-Commercial)"
+        'title' => 'Other (Non-Commercial)'
       },
       'other-open' => {
-        'title' => "Other (Open)"
+        'title' => 'Other (Open)'
       },
       'other-pd' => {
-        'title' => "Other (Public Domain)"
-      },
+        'title' => 'Other (Public Domain)'
+      }
     }
     hash['licenses'].each do |license|
       id = license.delete('licenseId')
@@ -214,9 +218,7 @@ namespace :tess do
       transformed[id] = license.transform_keys(&:underscore)
       # Supplement with URLs from old licences dictionary
       old_url = old_licenses.dig(id, 'url')
-      unless old_url.blank? || transformed[id]['see_also'].include?(old_url)
-        transformed[id]['see_also'] << old_url
-      end
+      transformed[id]['see_also'] << old_url unless old_url.blank? || transformed[id]['see_also'].include?(old_url)
     end
 
     File.write(File.join(Rails.root, 'config', 'dictionaries', 'licences.yml'), transformed.to_yaml)
@@ -234,6 +236,7 @@ namespace :tess do
 
     suggestions.each do |field, values|
       next unless values.any?
+
       puts "Updating #{field} suggestions..."
       count = AutocompleteSuggestion.refresh(field, *values)
       puts "  Deleted #{count} redundant suggestions" if count > 0

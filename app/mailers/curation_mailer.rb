@@ -21,10 +21,10 @@ class CurationMailer < ApplicationMailer
     end
   end
 
-  def events_require_approval(provider)
+  def events_require_approval(provider, cut_off_time)
     @provider = provider
-    # @events = @provider.events.where { |e| e.lmm_processed > Time.zone.now - 1.week }
-    @events = @provider.events.filter { |e| e.created_at > Time.zone.now - 1.week }
+    # @events = @provider.events.where { |e| e.lmm_processed > cut_off_time }
+    @events = @provider.events.filter { |e| e.created_at > cut_off_time }
     return if @events.count.zero? || @provider.contact.nil?
 
     subject = "#{TeSS::Config.site['title_short']} events require approval"

@@ -12,6 +12,6 @@ class CurationMailerPreview < ActionMailer::Preview
 
   def events_need_approval
     provider = ContentProvider.first
-    CurationMailer.events_require_approval(provider)
+    CurationMailer.events_require_approval(provider, Time.zone.now - 1.week)
   end
 end
