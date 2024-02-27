@@ -39,7 +39,7 @@ class BioschemasController < ApplicationController
       uri = URI.parse(params[:url]) rescue nil
       if uri && (uri.scheme == 'http' || uri.scheme == 'https')
         PrivateAddressCheck.only_public_connections do
-          res = HTTParty.get(uri.to_s, { timeout: 5 })
+          res = HTTParty.get(uri.to_s, timeout: 5, format: :plain)
           if res.code == 200
             res.body
           else

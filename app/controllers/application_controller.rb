@@ -60,8 +60,8 @@ class ApplicationController < ActionController::Base
       uri = URI.parse(params[:url]) rescue nil
       if uri && (uri.scheme == 'http' || uri.scheme == 'https')
         PrivateAddressCheck.only_public_connections do
-          res = HTTParty.get(uri.to_s, { timeout: 5 })
-          body = { code: res.code, message: res.message }
+          res = HTTParty.get(uri.to_s, timeout: 5, format: :plain)
+          body = { code: res.code, message: 'OK' }
         end
       else
         body = { message: 'Invalid URL - Make sure the URL starts with "https://" or "http://"' }
