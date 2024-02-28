@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 source 'https://rubygems.org'
 
-gem 'rails', '7.0.7.2'
+gem 'rails', '7.0.8.1'
 
 gem 'active_model_serializers'
 gem 'activerecord-session_store'
