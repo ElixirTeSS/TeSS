@@ -19,7 +19,7 @@ const Sources = {
                         error: function (data) {
                             console.log('error', data);
                             $('#test-status').text('');
-                            $('#test-errors').show().text('There was a problem rendering the results. ' + data.responseText);
+                            $('#test-errors').show().text('There was a problem rendering the results.');
                         },
                         complete: function () {
                             spinner.hide();
