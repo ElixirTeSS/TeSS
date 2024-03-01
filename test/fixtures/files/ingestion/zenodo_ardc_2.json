@@ -1,1114 +1,1712 @@
 {
-  "aggregations": {
-    "access_right": {
-      "buckets": [
-        {
-          "doc_count": 107,
-          "key": "open"
-        }
-      ],
-      "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 0
-    },
-    "file_type": {
-      "buckets": [
-        {
-          "doc_count": 96,
-          "key": "pdf"
-        },
-        {
-          "doc_count": 6,
-          "key": "mp4"
-        },
-        {
-          "doc_count": 5,
-          "key": "zip"
-        },
-        {
-          "doc_count": 4,
-          "key": "pptx"
-        },
-        {
-          "doc_count": 1,
-          "key": "ods"
-        },
-        {
-          "doc_count": 1,
-          "key": "txt"
-        },
-        {
-          "doc_count": 1,
-          "key": "xlsx"
-        }
-      ],
-      "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 0
-    },
-    "keywords": {
-      "buckets": [
-        {
-          "doc_count": 36,
-          "key": "FAIR"
-        },
-        {
-          "doc_count": 33,
-          "key": "ARDC"
-        },
-        {
-          "doc_count": 31,
-          "key": "Infrastructure"
-        },
-        {
-          "doc_count": 30,
-          "key": "NCRIS"
-        },
-        {
-          "doc_count": 29,
-          "key": "Storage and Compute Summit"
-        },
-        {
-          "doc_count": 29,
-          "key": "eResearch"
-        },
-        {
-          "doc_count": 13,
-          "key": "training"
-        },
-        {
-          "doc_count": 10,
-          "key": "skills"
-        },
-        {
-          "doc_count": 9,
-          "key": "data skills"
-        },
-        {
-          "doc_count": 9,
-          "key": "research infrastructure"
-        }
-      ],
-      "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 340
-    },
-    "type": {
-      "buckets": [
-        {
-          "doc_count": 60,
-          "key": "presentation",
-          "subtype": {
-            "buckets": [],
-            "doc_count_error_upper_bound": 0,
-            "sum_other_doc_count": 0
-          }
-        },
-        {
-          "doc_count": 25,
-          "key": "publication",
-          "subtype": {
-            "buckets": [
-              {
-                "doc_count": 15,
-                "key": "report"
-              },
-              {
-                "doc_count": 4,
-                "key": "article"
-              },
-              {
-                "doc_count": 3,
-                "key": "other"
-              },
-              {
-                "doc_count": 2,
-                "key": "book"
-              },
-              {
-                "doc_count": 1,
-                "key": "proposal"
-              }
-            ],
-            "doc_count_error_upper_bound": 0,
-            "sum_other_doc_count": 0
-          }
-        },
-        {
-          "doc_count": 10,
-          "key": "poster",
-          "subtype": {
-            "buckets": [],
-            "doc_count_error_upper_bound": 0,
-            "sum_other_doc_count": 0
-          }
-        },
-        {
-          "doc_count": 5,
-          "key": "video",
-          "subtype": {
-            "buckets": [],
-            "doc_count_error_upper_bound": 0,
-            "sum_other_doc_count": 0
-          }
-        },
-        {
-          "doc_count": 3,
-          "key": "lesson",
-          "subtype": {
-            "buckets": [],
-            "doc_count_error_upper_bound": 0,
-            "sum_other_doc_count": 0
-          }
-        },
-        {
-          "doc_count": 2,
-          "key": "other",
-          "subtype": {
-            "buckets": [],
-            "doc_count_error_upper_bound": 0,
-            "sum_other_doc_count": 0
-          }
-        },
-        {
-          "doc_count": 2,
-          "key": "software",
-          "subtype": {
-            "buckets": [],
-            "doc_count_error_upper_bound": 0,
-            "sum_other_doc_count": 0
-          }
-        }
-      ],
-      "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 0
-    }
-  },
   "hits": {
     "hits": [
       {
-        "conceptdoi": "10.5281/zenodo.5003933",
-        "conceptrecid": "5003933",
-        "created": "2021-08-26T22:49:53.694439+00:00",
-        "doi": "10.5281/zenodo.5276003",
-        "files": [
-          {
-            "bucket": "fa0b679d-2df8-4a73-ac68-238ba95062f9",
-            "checksum": "md5:33e2040662cf5526306a3d4ddcfb3ccc",
-            "key": "Training Materials Checklist v1.1.pdf",
-            "links": {
-              "self": "https://zenodo.org/api/files/fa0b679d-2df8-4a73-ac68-238ba95062f9/Training%20Materials%20Checklist%20v1.1.pdf"
-            },
-            "size": 1367635,
-            "type": "pdf"
-          }
-        ],
-        "id": 5276003,
-        "links": {
-          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5276003.svg",
-          "bucket": "https://zenodo.org/api/files/fa0b679d-2df8-4a73-ac68-238ba95062f9",
-          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5003933.svg",
-          "conceptdoi": "https://doi.org/10.5281/zenodo.5003933",
-          "doi": "https://doi.org/10.5281/zenodo.5276003",
-          "html": "https://zenodo.org/record/5276003",
-          "latest": "https://zenodo.org/api/records/5276003",
-          "latest_html": "https://zenodo.org/record/5276003",
-          "self": "https://zenodo.org/api/records/5276003"
-        },
+        "created": "2023-11-20T20:06:06.826733+00:00",
+        "modified": "2023-11-23T02:06:25.946152+00:00",
+        "id": 10161571,
+        "conceptrecid": "10051989",
+        "doi": "10.5281/zenodo.10161571",
+        "conceptdoi": "10.5281/zenodo.10051989",
+        "doi_url": "https://doi.org/10.5281/zenodo.10161571",
         "metadata": {
+          "title": "Space Vocabularies: Research, Development, Alignment, and Formalization (RAFD) in Astronomy and Astronautics",
+          "doi": "10.5281/zenodo.10161571",
+          "publication_date": "2023-11-21",
+          "description": "<p>Applying conceptual, terminological, semantic, and ontological analysis to spaceflight and space sciences such as astronomy, the author describes their Space Knowledge Organization and Modeling project. With origins in 2011, the project conducts research and development of vocabularies and other knowledge organization systems (KOS) for astronautics and astronomy related topics. Specific research and activities include knowledge representation and reasoning, and other modeling and formalization processes. The ongoing development of domain and application specific vocabularies, other KOS, and proposed standards will be introduced. Alignment or harmonization of these systems, including external existing systems and relevant (inter)national standards, is another project track and goal. The concept of knowledge networks in relation to so-called knowledge commons, among other concepts such as FAIR and contemporary AI techniques, will likewise be summarized. In all, the project hopes to support and innovate for space data, sciences, and activities, and help address challenges therein. The project and author are actively open to formal support, including patrons, partners, work and study opportunities to sustainably pursue this promising line of research. Interested parties are encouraged to make contact.<br><br><strong>References</strong><br>1. Space Domain Knowledge Organization and Modeling, https://ontospace.wordpress.com<br>2. \"Research &amp; development in Astronautical Terminology – A project summary and call for support\", R.J. Rovetto, 73rd International Astronautical Congress, Adelaide, Australia, 2017.<br>3. \"Orbital Debris Ontology, Terminology, and Knowledge Modeling\", R.J. Rovetto, T.S. Kelso, and D.A. O'Neil. 1st International Orbital Debris Conference. December 2019. In NASA TRS. In Journal of Space Safety Engineering (Sept, 2020).<br>4. \"An Ontological Architecture for Orbital Debris Data\", R.J. Rovetto, (2015) Earth Science Informatics, 9(1), 67-82.<br>5. \"Preliminary Results of the International Astronautical Federation Space Traffic Management Technical Committee #26 Working Group on Terminology\" (2021),<br>Rovetto, Oltrogge, Strah, Skinner, Mark, Laurent, Lacroix, Kumar, Grattan, Alonso. In 11th IAASS Conference – Managing Risk in Space.<br>6. \"An Ontology-Based Virtual Orrery\" Dr. D.A. O'Neil, R.J.Rovetto, NASA Technical Memorandum (2017-2021).</p><p>&nbsp;</p><p><strong>Version note</strong></p><p><i>Addition of presentation slides</i></p>",
           "access_right": "open",
-          "access_right_category": "success",
-          "communities": [
-            {
-              "id": "ardc"
-            }
-          ],
           "creators": [
             {
-              "affiliation": "Australian Research Data Commons",
-              "name": "Martinez, Paula Andrea",
-              "orcid": "0000-0002-8990-1985"
-            },
-            {
-              "affiliation": "Australian Research Data Commons",
-              "name": "Unsworth, Kathryn",
-              "orcid": "0000-0002-5407-9987"
+              "name": "Rovetto, Robert",
+              "affiliation": null,
+              "orcid": "0000-0003-3835-7817"
             }
           ],
-          "description": "<p>The ARDC Training Materials Metadata Checklist aims to support learning designers, training materials creators, trainers and national training infrastructure providers to capture key information and apply appropriate mechanisms to enable sharing and reuse of their training materials</p>",
-          "doi": "10.5281/zenodo.5276003",
           "keywords": [
-            "checklist",
-            "Training materials",
-            "FAIR",
-            "standard",
-            "requirements",
-            "metadata"
+            "Vocabularies",
+            "Terminologies",
+            "Semantic"
+          ],
+          "related_identifiers": [
+            {
+              "identifier": "10.5281/zenodo.10052531",
+              "relation": "isReferencedBy",
+              "resource_type": "event",
+              "scheme": "doi"
+            }
           ],
           "language": "eng",
-          "license": {
-            "id": "CC-BY-4.0"
-          },
-          "notes": "The ARDC is a transformational initiative that enables Australian research community and industry access to nationally significant, leading edge data intensive eInfrastructure, platforms, skills and collections of high-quality data. The purpose of the ARDC is to provide Australian researchers with competitive advantage through data, providing access to leading edge eResearch collections, tools, infrastructure and services. Its mission is to accelerate research and innovation by driving excellence in the creation, analysis and retention of high-quality data assets.",
-          "publication_date": "2021-06-30",
-          "references": [
-            "Garcia et al. (2020). Ten simple rules for making training materials FAIR. https://doi.org/10.1371/journal.pcbi.1007854"
-          ],
-          "related_identifiers": [
-            {
-              "identifier": "10.1371/journal.pcbi.1007854",
-              "relation": "references",
-              "resource_type": "publication-article",
-              "scheme": "doi"
-            },
-            {
-              "identifier": "10.5281/zenodo.5003933",
-              "relation": "isVersionOf",
-              "scheme": "doi"
-            }
-          ],
-          "relations": {
-            "version": [
-              {
-                "count": 2,
-                "index": 1,
-                "is_last": true,
-                "last_child": {
-                  "pid_type": "recid",
-                  "pid_value": "5276003"
-                },
-                "parent": {
-                  "pid_type": "recid",
-                  "pid_value": "5003933"
-                }
-              }
-            ]
-          },
-          "resource_type": {
-            "subtype": "proposal",
-            "title": "Proposal",
-            "type": "publication"
-          },
-          "title": "ARDC Training Materials Metadata Checklist v1.1",
-          "version": "1.1"
-        },
-        "owners": [
-          82930
-        ],
-        "revision": 2,
-        "stats": {
-          "downloads": 48.0,
-          "unique_downloads": 44.0,
-          "unique_views": 52.0,
-          "version_downloads": 159.0,
-          "version_unique_downloads": 144.0,
-          "version_unique_views": 174.0,
-          "version_views": 214.0,
-          "version_volume": 249677154.0,
-          "views": 69.0,
-          "volume": 65646480.0
-        },
-        "updated": "2021-08-27T01:48:28.043477+00:00"
-      },
-      {
-        "conceptdoi": "10.5281/zenodo.5275822",
-        "conceptrecid": "5275822",
-        "created": "2021-08-26T22:18:32.710771+00:00",
-        "doi": "10.5281/zenodo.5275823",
-        "files": [
-          {
-            "bucket": "7fc4c42e-2ef7-4107-b79d-ca4116ad3868",
-            "checksum": "md5:e485f3447ca9e3a82b2d9ccdb87a2ba8",
-            "key": "HeSANDA initiative_Consultation Summary V1.0.pdf",
-            "links": {
-              "self": "https://zenodo.org/api/files/7fc4c42e-2ef7-4107-b79d-ca4116ad3868/HeSANDA%20initiative_Consultation%20Summary%20V1.0.pdf"
-            },
-            "size": 494081,
-            "type": "pdf"
-          }
-        ],
-        "id": 5275823,
-        "links": {
-          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5275823.svg",
-          "bucket": "https://zenodo.org/api/files/7fc4c42e-2ef7-4107-b79d-ca4116ad3868",
-          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5275822.svg",
-          "conceptdoi": "https://doi.org/10.5281/zenodo.5275822",
-          "doi": "https://doi.org/10.5281/zenodo.5275823",
-          "html": "https://zenodo.org/record/5275823",
-          "latest": "https://zenodo.org/api/records/5275823",
-          "latest_html": "https://zenodo.org/record/5275823",
-          "self": "https://zenodo.org/api/records/5275823"
-        },
-        "metadata": {
-          "access_right": "open",
-          "access_right_category": "success",
-          "communities": [
-            {
-              "id": "ardc"
-            }
-          ],
-          "creators": [
-            {
-              "affiliation": "Australian Clinical Trials Alliance (ACTA)",
-              "name": "Evans, Alison",
-              "orcid": "0000-0001-9998-4289"
-            },
-            {
-              "affiliation": "Australian Clinical Trials Alliance (ACTA)",
-              "name": "Henwood, Jen"
-            },
-            {
-              "affiliation": "Australian Clinical Trials Alliance (ACTA)",
-              "name": "Nemeh, Fiona",
-              "orcid": "0000-0001-9412-1732"
-            }
-          ],
-          "description": "<p>HeSANDA Stakeholder Consultation Project: Summary of consultation feedback.</p>",
-          "doi": "10.5281/zenodo.5275823",
-          "keywords": [
-            "Secondary health data",
-            "clinical trials",
-            "consultation"
-          ],
-          "license": {
-            "id": "CC-BY-4.0"
-          },
-          "publication_date": "2021-08-12",
-          "related_identifiers": [
-            {
-              "identifier": "10.5281/zenodo.5275822",
-              "relation": "isVersionOf",
-              "scheme": "doi"
-            }
-          ],
-          "relations": {
-            "version": [
-              {
-                "count": 1,
-                "index": 0,
-                "is_last": true,
-                "last_child": {
-                  "pid_type": "recid",
-                  "pid_value": "5275823"
-                },
-                "parent": {
-                  "pid_type": "recid",
-                  "pid_value": "5275822"
-                }
-              }
-            ]
-          },
-          "resource_type": {
-            "subtype": "report",
-            "title": "Report",
-            "type": "publication"
-          },
-          "title": "HeSANDA Stakeholder Consultation Report"
-        },
-        "owners": [
-          82930
-        ],
-        "revision": 2,
-        "stats": {
-          "downloads": 70.0,
-          "unique_downloads": 62.0,
-          "unique_views": 90.0,
-          "version_downloads": 70.0,
-          "version_unique_downloads": 62.0,
-          "version_unique_views": 90.0,
-          "version_views": 94.0,
-          "version_volume": 34585670.0,
-          "views": 94.0,
-          "volume": 34585670.0
-        },
-        "updated": "2021-08-27T01:48:27.481029+00:00"
-      },
-      {
-        "conceptdoi": "10.5281/zenodo.5194258",
-        "conceptrecid": "5194258",
-        "created": "2021-08-13T03:24:32.019929+00:00",
-        "doi": "10.5281/zenodo.5194259",
-        "files": [
-          {
-            "bucket": "c8cc4c00-d66c-475f-a60c-7c585ad2ed3c",
-            "checksum": "md5:dc8126b477cbab28c206a5f7816d28f9",
-            "key": "National PID Infrastructure (Australia) - Natasha Simons.pptx",
-            "links": {
-              "self": "https://zenodo.org/api/files/c8cc4c00-d66c-475f-a60c-7c585ad2ed3c/National%20PID%20Infrastructure%20%28Australia%29%20-%20Natasha%20Simons.pptx"
-            },
-            "size": 7209908,
-            "type": "pptx"
-          }
-        ],
-        "id": 5194259,
-        "links": {
-          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5194259.svg",
-          "bucket": "https://zenodo.org/api/files/c8cc4c00-d66c-475f-a60c-7c585ad2ed3c",
-          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5194258.svg",
-          "conceptdoi": "https://doi.org/10.5281/zenodo.5194258",
-          "doi": "https://doi.org/10.5281/zenodo.5194259",
-          "html": "https://zenodo.org/record/5194259",
-          "latest": "https://zenodo.org/api/records/5194259",
-          "latest_html": "https://zenodo.org/record/5194259",
-          "self": "https://zenodo.org/api/records/5194259"
-        },
-        "metadata": {
-          "access_right": "open",
-          "access_right_category": "success",
-          "communities": [
-            {
-              "id": "ardc"
-            }
-          ],
-          "creators": [
-            {
-              "affiliation": "Australian Research Data Commons",
-              "name": "Natasha Simons",
-              "orcid": "0000-0003-0635-1998"
-            }
-          ],
-          "description": "<p>Presentation&nbsp;for a 12 August 2021 webinar on <strong>ORCID, DOIs and return on investment for research infrastructure </strong>co-sponsored by the Council of Australian University Librarians (CAUL), Australian Research Data Commons (ARDC) and Australian Access Federation (AAF).&nbsp;</p>\n\n<p>Description of webinar from registration page:</p>\n\n<p>Did you know that use of&nbsp;<a href=\"https://ardc.edu.au/resources/working-with-data/citation-identifiers/\">persistent identifiers</a>&nbsp;(such as ORCID and DOIs) can result in significant savings for the research sector, savings that could be channelled back into research?&nbsp;</p>\n\n<p>A June 2021&nbsp;<a href=\"http://doi.org/10.5281/zenodo.4772627\">report&nbsp;</a>by MoreBrains Cooperative for Jisc UK found significant savings based on current levels of PID adoption and that investment in PID integration could generate an estimated net saving of &pound;5.67M over the course of five years if PID adoption targets are met. These savings will only expand once other &lsquo;priority PIDs&rsquo; are equally well adopted, according to the report. Not only can investment in PIDs save time through efficiency gains, it can produce more accurate reporting and provide more meaningful metrics. According to report author, Josh Brown, &ldquo;Investment in PIDs will also lead to improved, evidence-based decision-making by institutions, funders, and policy makers which, while less tangible and difficult to estimate, is likely to be significant&rdquo;.</p>\n\n<p>Sounds too good to be true? We invite you to join us at a collaborative webinar co-sponsored by CAUL, ARDC and AAF where we will unpack the UK report with author&nbsp;<a href=\"https://orcid.org/0000-0002-8689-4935\">Josh Brown</a>&nbsp;(<a href=\"https://www.morebrainsconsulting.coop/\">MoreBrains Coop</a>erative) and talk about how Australia might achieve similar benefits through adoption of &lsquo;priority PIDs&rsquo; with&nbsp;<a href=\"https://orcid.org/0000-0003-0635-1998\">Natasha Simons</a>&nbsp;(<a href=\"https://ardc.edu.au/\">ARDC</a>) and&nbsp;<a href=\"https://orcid.org/0000-0003-3522-7849\">Melroy Almeida</a>&nbsp;(<a href=\"https://aaf.edu.au/orcid/\">AAF ORCID Consortium</a>). The webinar will be moderated by&nbsp;<a href=\"https://orcid.org/0000-0002-0365-112X\">Simon Huggard</a>&nbsp;(<a href=\"https://www.caul.edu.au/\">CAUL</a>), Chair of the Australian ORCID Advisory Group.</p>\n\n<p><strong>Background&nbsp;</strong></p>\n\n<p>The use of Persistent Identifiers (PIDs) in research outputs is critical because they provide identification of and connection between research objects and entities such as researchers, funders, organisations, articles, datasets, software, and samples. This enables better attribution and discovery of research and lays the foundation for better tracking of research impact. The ARDC&rsquo;s suite of PID services, combined with those available through the AAF led Australian ORCID Consortium, form the backbone of enabling FAIR research outputs via PIDs in Australia.</p>",
-          "doi": "10.5281/zenodo.5194259",
-          "keywords": [
-            "persistent identifiers",
-            "policy",
-            "research infrastructure",
-            "cost benefit",
-            "PID"
-          ],
-          "language": "eng",
-          "license": {
-            "id": "CC-BY-4.0"
-          },
-          "publication_date": "2021-08-13",
-          "related_identifiers": [
-            {
-              "identifier": "10.5281/zenodo.5194258",
-              "relation": "isVersionOf",
-              "scheme": "doi"
-            }
-          ],
-          "relations": {
-            "version": [
-              {
-                "count": 1,
-                "index": 0,
-                "is_last": true,
-                "last_child": {
-                  "pid_type": "recid",
-                  "pid_value": "5194259"
-                },
-                "parent": {
-                  "pid_type": "recid",
-                  "pid_value": "5194258"
-                }
-              }
-            ]
-          },
           "resource_type": {
             "title": "Presentation",
             "type": "presentation"
           },
-          "title": "National Identifier Infrastructure - Australia"
-        },
-        "owners": [
-          72975
-        ],
-        "revision": 3,
-        "stats": {
-          "downloads": 12.0,
-          "unique_downloads": 11.0,
-          "unique_views": 28.0,
-          "version_downloads": 12.0,
-          "version_unique_downloads": 11.0,
-          "version_unique_views": 28.0,
-          "version_views": 31.0,
-          "version_volume": 86518896.0,
-          "views": 31.0,
-          "volume": 86518896.0
-        },
-        "updated": "2021-08-16T22:53:49.544677+00:00"
-      },
-      {
-        "conceptdoi": "10.5281/zenodo.5091259",
-        "conceptrecid": "5091259",
-        "created": "2021-07-26T07:09:14.640836+00:00",
-        "doi": "10.5281/zenodo.5091260",
-        "files": [
-          {
-            "bucket": "40e17f21-8dd5-4008-a62b-1eb88c2eba65",
-            "checksum": "md5:d7cf1f3ea0837dfe74579572de0a45e6",
-            "key": "ARDC__How-can-software-containers-help-your-research.pdf",
-            "links": {
-              "self": "https://zenodo.org/api/files/40e17f21-8dd5-4008-a62b-1eb88c2eba65/ARDC__How-can-software-containers-help-your-research.pdf"
-            },
-            "size": 123261,
-            "type": "pdf"
-          }
-        ],
-        "id": 5091260,
-        "links": {
-          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5091260.svg",
-          "bucket": "https://zenodo.org/api/files/40e17f21-8dd5-4008-a62b-1eb88c2eba65",
-          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5091259.svg",
-          "conceptdoi": "https://doi.org/10.5281/zenodo.5091259",
-          "doi": "https://doi.org/10.5281/zenodo.5091260",
-          "html": "https://zenodo.org/record/5091260",
-          "latest": "https://zenodo.org/api/records/5091260",
-          "latest_html": "https://zenodo.org/record/5091260",
-          "self": "https://zenodo.org/api/records/5091260"
-        },
-        "metadata": {
-          "access_right": "open",
-          "access_right_category": "success",
+          "meeting": {
+            "title": "2023 Vocabulary Symposium",
+            "dates": "14-15 November 2023",
+            "place": "Onsite (Canberra, ANU) and online.",
+            "url": "https://sites.google.com/ardc.edu.au/vocabulary-symposium-2023/"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
           "communities": [
             {
               "id": "ardc"
             }
           ],
-          "contributors": [
-            {
-              "affiliation": "Australian Research Data Commons",
-              "name": "Martinez, Paula Andrea",
-              "type": "ProjectLeader"
-            },
-            {
-              "affiliation": "Camera Libre",
-              "name": "Sam Muirhead",
-              "type": "Producer"
-            },
-            {
-              "affiliation": "Australian Research Data Commons",
-              "name": "The ARDC Communications Team",
-              "type": "Editor"
-            },
-            {
-              "affiliation": "Australian Research Data Commons",
-              "name": "The ARDC Skills and Workforce Development Team",
-              "type": "ProjectMember"
-            },
-            {
-              "affiliation": "Australian Research Data Commons",
-              "name": "The ARDC eResearch Infrastructure & Services",
-              "type": "ProjectMember"
-            },
-            {
-              "affiliation": "Australian Research Data Commons",
-              "name": "The ARDC Nectar Cloud Services team",
-              "type": "ProjectMember"
+          "relations": {
+            "version": [
+              {
+                "index": 1,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "10051989"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Space Vocabularies: Research, Development, Alignment, and Formalization (RAFD) in Astronomy and Astronautics",
+        "links": {
+          "self": "https://zenodo.org/api/records/10161571",
+          "self_html": "https://zenodo.org/records/10161571",
+          "self_doi": "https://zenodo.org/doi/10.5281/zenodo.10161571",
+          "doi": "https://doi.org/10.5281/zenodo.10161571",
+          "parent": "https://zenodo.org/api/records/10051989",
+          "parent_html": "https://zenodo.org/records/10051989",
+          "parent_doi": "https://zenodo.org/doi/10.5281/zenodo.10051989",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:10161571/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:10161571/sequence/default",
+          "files": "https://zenodo.org/api/records/10161571/files",
+          "media_files": "https://zenodo.org/api/records/10161571/media-files",
+          "archive": "https://zenodo.org/api/records/10161571/files-archive",
+          "archive_media": "https://zenodo.org/api/records/10161571/media-files-archive",
+          "latest": "https://zenodo.org/api/records/10161571/versions/latest",
+          "latest_html": "https://zenodo.org/records/10161571/latest",
+          "draft": "https://zenodo.org/api/records/10161571/draft",
+          "versions": "https://zenodo.org/api/records/10161571/versions",
+          "access_links": "https://zenodo.org/api/records/10161571/access/links",
+          "access_users": "https://zenodo.org/api/records/10161571/access/users",
+          "access_request": "https://zenodo.org/api/records/10161571/access/request",
+          "access": "https://zenodo.org/api/records/10161571/access",
+          "reserve_doi": "https://zenodo.org/api/records/10161571/draft/pids/doi",
+          "communities": "https://zenodo.org/api/records/10161571/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/10161571/communities-suggestions",
+          "requests": "https://zenodo.org/api/records/10161571/requests"
+        },
+        "updated": "2023-11-23T02:06:25.946152+00:00",
+        "recid": "10161571",
+        "revision": 10,
+        "files": [
+          {
+            "id": "54aaa953-8be1-4b14-a219-6826ffe2e3bb",
+            "key": "Rovetto Robert - SPACE - SESSION 9 - v3.pdf",
+            "size": 535805,
+            "checksum": "md5:009f608a64f8a8554adfc8991868e820",
+            "links": {
+              "self": "https://zenodo.org/api/records/10161571/files/Rovetto Robert - SPACE - SESSION 9 - v3.pdf/content"
             }
-          ],
+          },
+          {
+            "id": "a155a22e-451e-470a-acd6-38d743993fdd",
+            "key": "abstract - Rovetto, Robert - Space-1.pdf",
+            "size": 117721,
+            "checksum": "md5:4c12e22041f4064ded8cf41444cef7df",
+            "links": {
+              "self": "https://zenodo.org/api/records/10161571/files/abstract - Rovetto, Robert - Space-1.pdf/content"
+            }
+          }
+        ],
+        "owners": [
+          {
+            "id": 82930
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 42,
+          "unique_downloads": 29,
+          "views": 135,
+          "unique_views": 125,
+          "version_downloads": 30,
+          "version_unique_downloads": 20,
+          "version_unique_views": 65,
+          "version_views": 72
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2023-11-20T19:58:59.918354+00:00",
+        "modified": "2023-11-23T02:27:39.141301+00:00",
+        "id": 10161560,
+        "conceptrecid": "10052001",
+        "doi": "10.5281/zenodo.10161560",
+        "conceptdoi": "10.5281/zenodo.10052001",
+        "doi_url": "https://doi.org/10.5281/zenodo.10161560",
+        "metadata": {
+          "title": "The Ethics of Vocabulary Development and Use",
+          "doi": "10.5281/zenodo.10161560",
+          "publication_date": "2023-11-21",
+          "description": "<p>The ethics of vocabulary development and use, and similar knowledge organization systems (or semantic artifacts) is introduced. It is a seldom-discussed or explored topic, but it's relevance to contemporary computational research and data sciences is made clear, the motivating case being a more complex semantic artefact (namely ontologies). Broadly construed, this project includes the ethics of metadata, of semantics, of ontology, and similar artifacts. The ongoing project aims to complete and propose a set of principles for the ethics of these systems, as well as explore and identify the potential or actual ethical and moral implications of various aspects of these artifacts. Concerns and topics from the ethics of artificial intelligence and digital ethics are relevant and inform this research and development activity, such as privacy, bias, data- sharing, machine ethics, and so on. The project and author are actively open to formal support to sustainably pursue this promising line of research. Interested parties are encouraged to make contact.<br><br><strong>References</strong><br>1. Rovetto, R.J. The ethics of conceptual, ontological, semantic and knowledge modeling. AI &amp; Soc (2023). https://doi.org/10.1007/s00146-022-01563-3<br>2. Rovetto, R.J., \"Ethics of Semantics\" in US2TS 2022<br>3. \"The Ethics of Ontology\", poster presented at OntoCommons 2nd Global Workshop (June 2023).<br>4. Rovetto, R.J., \"Ethics in Ontology\", (2013-present), Abstract via PhilPapers.<br>5. Ethics of Ontology GitHub page, <a href=\"http://purl.org/rrovetto/ethics-of-ontology\">http://purl.org/rrovetto/ethics-of-ontology</a></p><p>&nbsp;</p><p><strong>Version note</strong></p><p><i>Addition of presentation slides</i></p>",
+          "access_right": "open",
           "creators": [
             {
-              "affiliation": "Australian Research Data Commons",
-              "name": "Australian Research Data Commons"
+              "name": "Rovetto, Robert",
+              "affiliation": null,
+              "orcid": "0000-0003-3835-7817"
             }
           ],
-          "description": "<p>This video explains software containers to a research audience. It is an introduction to why containers are beneficial for research. These benefits are standardisation, portability, reliability and reproducibility.&nbsp;</p>\n\n<p>Software Containers in research are a solution that addresses the challenge of a replicable computational environment and supports reproducibility of research results. Understanding the concept of software containers enables researchers to better communicate their research needs with their colleagues and other researchers using and developing containers.</p>\n\n<p><strong>Watch the video here: <a href=\"https://www.youtube.com/watch?v=HelrQnm3v4g\">https://www.youtube.com/watch?v=HelrQnm3v4g</a></strong></p>\n\n<p>If you want to share this video please use this:</p>\n\n<p>Australian Research Data Commons, 2021. <em>How can software containers help your research?</em>. [video] Available at: <a href=\"https://www.youtube.com/watch?v=HelrQnm3v4g\">https://www.youtube.com/watch?v=HelrQnm3v4g</a>&nbsp;DOI: <a href=\"http://doi.org/10.5281/zenodo.5091260\">http://doi.org/10.5281/zenodo.5091260</a> [Accessed dd Month YYYY].</p>",
-          "doi": "10.5281/zenodo.5091260",
           "keywords": [
-            "containers",
-            "software",
-            "research",
-            "reproducibility",
-            "RSE",
-            "standard",
-            "agility",
-            "portable",
-            "reusable",
-            "code",
-            "application",
-            "reproducible",
-            "standardisation",
-            "package",
-            "system",
-            "cloud",
-            "server",
-            "version",
-            "reliability",
-            "program",
-            "collaborator",
-            "ARDC_AU"
+            "Vocabularies",
+            "Terminologies",
+            "Semantic"
           ],
-          "language": "eng",
-          "license": {
-            "id": "CC-BY-4.0"
-          },
-          "notes": "The ARDC is a transformational initiative that enables Australian research community and industry access to nationally significant, leading edge data intensive eInfrastructure, platforms, skills and collections of high-quality data. The purpose of the ARDC is to provide Australian researchers with competitive advantage through data, providing access to leading edge eResearch collections, tools, infrastructure and services. Its mission is to accelerate research and innovation by driving excellence in the creation, analysis and retention of high-quality data assets.",
-          "publication_date": "2021-07-26",
           "related_identifiers": [
             {
-              "identifier": "https://www.youtube.com/watch?v=HelrQnm3v4g",
-              "relation": "isSupplementTo",
+              "identifier": "10.5281/zenodo.10052531",
+              "relation": "isReferencedBy",
+              "resource_type": "event",
+              "scheme": "doi"
+            }
+          ],
+          "language": "eng",
+          "resource_type": {
+            "title": "Presentation",
+            "type": "presentation"
+          },
+          "meeting": {
+            "title": "2023 Vocabulary Symposium",
+            "dates": "14-15 November 2023",
+            "place": "Onsite (Canberra, ANU) and online.",
+            "url": "https://sites.google.com/ardc.edu.au/vocabulary-symposium-2023/"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "communities": [
+            {
+              "id": "ardc"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "index": 1,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "10052001"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The Ethics of Vocabulary Development and Use",
+        "links": {
+          "self": "https://zenodo.org/api/records/10161560",
+          "self_html": "https://zenodo.org/records/10161560",
+          "self_doi": "https://zenodo.org/doi/10.5281/zenodo.10161560",
+          "doi": "https://doi.org/10.5281/zenodo.10161560",
+          "parent": "https://zenodo.org/api/records/10052001",
+          "parent_html": "https://zenodo.org/records/10052001",
+          "parent_doi": "https://zenodo.org/doi/10.5281/zenodo.10052001",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:10161560/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:10161560/sequence/default",
+          "files": "https://zenodo.org/api/records/10161560/files",
+          "media_files": "https://zenodo.org/api/records/10161560/media-files",
+          "archive": "https://zenodo.org/api/records/10161560/files-archive",
+          "archive_media": "https://zenodo.org/api/records/10161560/media-files-archive",
+          "latest": "https://zenodo.org/api/records/10161560/versions/latest",
+          "latest_html": "https://zenodo.org/records/10161560/latest",
+          "draft": "https://zenodo.org/api/records/10161560/draft",
+          "versions": "https://zenodo.org/api/records/10161560/versions",
+          "access_links": "https://zenodo.org/api/records/10161560/access/links",
+          "access_users": "https://zenodo.org/api/records/10161560/access/users",
+          "access_request": "https://zenodo.org/api/records/10161560/access/request",
+          "access": "https://zenodo.org/api/records/10161560/access",
+          "reserve_doi": "https://zenodo.org/api/records/10161560/draft/pids/doi",
+          "communities": "https://zenodo.org/api/records/10161560/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/10161560/communities-suggestions",
+          "requests": "https://zenodo.org/api/records/10161560/requests"
+        },
+        "updated": "2023-11-23T02:27:39.141301+00:00",
+        "recid": "10161560",
+        "revision": 8,
+        "files": [
+          {
+            "id": "8b2dde77-5aae-4012-8ec8-fa535b3f983f",
+            "key": "Rovetto Robert - ETHICS - SESSION 10 - v3.pdf",
+            "size": 576913,
+            "checksum": "md5:7ba23488ed0a6668b1079ebc16313c31",
+            "links": {
+              "self": "https://zenodo.org/api/records/10161560/files/Rovetto Robert - ETHICS - SESSION 10 - v3.pdf/content"
+            }
+          },
+          {
+            "id": "e668dfee-0200-4c10-80db-979359abc561",
+            "key": "abstract - Rovetto, Robert - Ethics.pdf",
+            "size": 108836,
+            "checksum": "md5:d137779f69d5bc5082712e04b400f2bf",
+            "links": {
+              "self": "https://zenodo.org/api/records/10161560/files/abstract - Rovetto, Robert - Ethics.pdf/content"
+            }
+          }
+        ],
+        "owners": [
+          {
+            "id": 82930
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 46,
+          "unique_downloads": 33,
+          "views": 145,
+          "unique_views": 136,
+          "version_downloads": 31,
+          "version_unique_downloads": 21,
+          "version_unique_views": 65,
+          "version_views": 70
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2023-11-16T23:53:45.599089+00:00",
+        "modified": "2023-11-23T02:02:34.203358+00:00",
+        "id": 10146028,
+        "conceptrecid": "10020417",
+        "doi": "10.5281/zenodo.10146028",
+        "conceptdoi": "10.5281/zenodo.10020417",
+        "doi_url": "https://doi.org/10.5281/zenodo.10146028",
+        "metadata": {
+          "title": "Advancing HIVE-4-MAT's Capacity to Leverage Multiple Vocabularies",
+          "doi": "10.5281/zenodo.10146028",
+          "publication_date": "2023-11-17",
+          "description": "<p>HIVE (Helping Interdisciplinary Vocabulary Engineering) is a linked-data, automatic indexing application. HIVE dynamically integrates vocabularies and expedites semantic tagging of data and other digital resources. A HIVE innovation called HIVE-4-MAT was created to improve the interoperability and usability of material science vocabularies. HIVE-4-MAT contains over 30 vocabularies covering material science, its subdisciplines, and related fields such as chemistry. The application allows for many different user interactions which include exploring a vocabulary in the user interface, searching the vocabularies for any shared terms, and using a keyword extraction algorithm to search articles and find related keywords belonging to one or more of the vocabularies. Our presentation will present these functionalities, highlight recent algorithm speed and accuracy improvements, and share future development ideas.</p><p>&nbsp;</p><p><strong>Version note</strong></p><p><i>Presentation updated to provide contextual information concerning funding</i></p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Polson, Kio",
+              "affiliation": "Drexel University"
+            },
+            {
+              "name": "McClellan, Scott",
+              "affiliation": "Drexel University"
+            },
+            {
+              "name": "Greenberg, Jane",
+              "affiliation": "Drexel University",
+              "orcid": "0000-0001-7819-5360"
+            }
+          ],
+          "keywords": [
+            "Vocabularies",
+            "Terminologies",
+            "Semantic"
+          ],
+          "related_identifiers": [
+            {
+              "identifier": "https://www.youtube.com/watch?v=nWG3kBmdnbY",
+              "relation": "isReferencedBy",
               "resource_type": "video",
               "scheme": "url"
             },
             {
-              "identifier": "10.5281/zenodo.5091259",
-              "relation": "isVersionOf",
+              "identifier": "10.5281/zenodo.10052531",
+              "relation": "isReferencedBy",
+              "resource_type": "event",
               "scheme": "doi"
             }
           ],
-          "relations": {
-            "version": [
-              {
-                "count": 1,
-                "index": 0,
-                "is_last": true,
-                "last_child": {
-                  "pid_type": "recid",
-                  "pid_value": "5091260"
-                },
-                "parent": {
-                  "pid_type": "recid",
-                  "pid_value": "5091259"
-                }
-              }
-            ]
-          },
-          "resource_type": {
-            "title": "Video/Audio",
-            "type": "video"
-          },
-          "title": "How can software containers help your research?"
-        },
-        "owners": [
-          82930
-        ],
-        "revision": 1,
-        "stats": {
-          "downloads": 84.0,
-          "unique_downloads": 80.0,
-          "unique_views": 113.0,
-          "version_downloads": 84.0,
-          "version_unique_downloads": 80.0,
-          "version_unique_views": 113.0,
-          "version_views": 125.0,
-          "version_volume": 10353924.0,
-          "views": 125.0,
-          "volume": 10353924.0
-        },
-        "updated": "2021-07-26T07:09:15.501327+00:00"
-      },
-      {
-        "conceptdoi": "10.5281/zenodo.4414979",
-        "conceptrecid": "4414979",
-        "created": "2021-07-13T02:48:21.341865+00:00",
-        "doi": "10.5281/zenodo.5094034",
-        "files": [
-          {
-            "bucket": "2a39b441-ca2f-4992-99d3-b29e58e71783",
-            "checksum": "md5:263fda482117e2c968925cb0d1e88caf",
-            "key": "au-research/FAIR-data-101-training-v3.0.zip",
-            "links": {
-              "self": "https://zenodo.org/api/files/2a39b441-ca2f-4992-99d3-b29e58e71783/au-research/FAIR-data-101-training-v3.0.zip"
-            },
-            "size": 20411104,
-            "type": "zip"
-          }
-        ],
-        "id": 5094034,
-        "links": {
-          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5094034.svg",
-          "bucket": "https://zenodo.org/api/files/2a39b441-ca2f-4992-99d3-b29e58e71783",
-          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.4414979.svg",
-          "conceptdoi": "https://doi.org/10.5281/zenodo.4414979",
-          "doi": "https://doi.org/10.5281/zenodo.5094034",
-          "html": "https://zenodo.org/record/5094034",
-          "latest": "https://zenodo.org/api/records/5094034",
-          "latest_html": "https://zenodo.org/record/5094034",
-          "self": "https://zenodo.org/api/records/5094034"
-        },
-        "metadata": {
-          "access_right": "open",
-          "access_right_category": "success",
-          "communities": [
-            {
-              "id": "ardc"
-            }
-          ],
-          "creators": [
-            {
-              "affiliation": "Australian Research Data Commons",
-              "name": "Stokes, Liz",
-              "orcid": "0000-0002-2973-5647"
-            },
-            {
-              "affiliation": "Australian Research Data Commons",
-              "name": "Liffers, Matthias",
-              "orcid": "0000-0002-3639-2080"
-            },
-            {
-              "affiliation": "Australian Research Data Commons",
-              "name": "Burton, Nichola",
-              "orcid": "0000-0003-4470-4846"
-            },
-            {
-              "affiliation": "Australian Research Data Commons",
-              "name": "Martinez, Paula A.",
-              "orcid": "0000-0002-8990-1985"
-            },
-            {
-              "affiliation": "Australian Research Data Commons",
-              "name": "Simons, Natasha",
-              "orcid": "0000-0003-0635-1998"
-            },
-            {
-              "affiliation": "Australian Research Data Commons",
-              "name": "Russell, Keith",
-              "orcid": "0000-0001-5390-2719"
-            },
-            {
-              "affiliation": "Australian Research Data Commons",
-              "name": "McCafferty, Siobhann",
-              "orcid": "0000-0002-2491-0995"
-            },
-            {
-              "affiliation": "Australian Research Data Commons",
-              "name": "Ferrers, Richard",
-              "orcid": "0000-0002-2923-9889"
-            },
-            {
-              "affiliation": "Australian Data Archive",
-              "name": "McEachern, Steve",
-              "orcid": "0000-0001-7848-4912"
-            },
-            {
-              "affiliation": "Australian Research Data Commons",
-              "name": "Barlow, Melanie",
-              "orcid": "0000-0002-3956-5784"
-            },
-            {
-              "affiliation": "Australian Research Data Commons",
-              "name": "Brady, Catherine",
-              "orcid": "0000-0002-7919-7592"
-            },
-            {
-              "affiliation": "Australian Research Data Commons",
-              "name": "Brownlee, Rowan",
-              "orcid": "0000-0002-1955-1262"
-            },
-            {
-              "affiliation": "Australian Research Data Commons",
-              "name": "Honeyman, Tom",
-              "orcid": "0000-0001-9448-4023"
-            },
-            {
-              "affiliation": "The University of Melbourne",
-              "name": "Quiroga, Maria del Mar",
-              "orcid": "0000-0002-8943-2808"
-            }
-          ],
-          "description": "<p>FAIR Data 101 v3.0 is a self-guided course covering the FAIR Data principles</p>\n\n<p>The FAIR Data 101 virtual course was designed and delivered by the ARDC Skilled Workforce Program twice in 2020 and has now been reworked as a self-guided course.</p>\n\n<p>The course structure was based on &#39;FAIR Data in the Scholarly Communications Lifecycle&#39;, run by Natasha Simons at the FORCE11 Scholarly Communications Institute. These training materials are hosted on GitHub.</p>",
-          "doi": "10.5281/zenodo.5094034",
-          "keywords": [
-            "training materials",
-            "FAIR data",
-            "video",
-            "webinar",
-            "activities",
-            "quiz",
-            "FAIR",
-            "research data management"
-          ],
-          "language": "eng",
-          "license": {
-            "id": "CC-BY-4.0"
-          },
-          "notes": "This version adds instructor guidelines and extra resources.\n\nThe ARDC is a transformational initiative that enables Australian research community and industry access to nationally significant, leading edge data intensive eInfrastructure, platforms, skills and collections of high-quality data. The purpose of the ARDC is to provide Australian researchers with competitive advantage through data, providing access to leading edge eResearch collections, tools, infrastructure and services. Its mission is to accelerate research and innovation by driving excellence in the creation, analysis and retention of high-quality data assets.",
-          "publication_date": "2021-07-13",
-          "related_identifiers": [
-            {
-              "identifier": "https://github.com/au-research/FAIR-data-101-training/tree/v3.0",
-              "relation": "isSupplementTo",
-              "scheme": "url"
-            },
-            {
-              "identifier": "10.5281/zenodo.4414979",
-              "relation": "isVersionOf",
-              "scheme": "doi"
-            }
-          ],
-          "relations": {
-            "version": [
-              {
-                "count": 2,
-                "index": 1,
-                "is_last": true,
-                "last_child": {
-                  "pid_type": "recid",
-                  "pid_value": "5094034"
-                },
-                "parent": {
-                  "pid_type": "recid",
-                  "pid_value": "4414979"
-                }
-              }
-            ]
-          },
-          "resource_type": {
-            "title": "Lesson",
-            "type": "lesson"
-          },
-          "title": "ARDC FAIR Data 101 self-guided",
-          "version": "v3.0"
-        },
-        "owners": [
-          82930
-        ],
-        "revision": 3,
-        "stats": {
-          "downloads": 13.0,
-          "unique_downloads": 13.0,
-          "unique_views": 85.0,
-          "version_downloads": 26.0,
-          "version_unique_downloads": 25.0,
-          "version_unique_views": 316.0,
-          "version_views": 364.0,
-          "version_volume": 530560641.0,
-          "views": 95.0,
-          "volume": 265344352.0
-        },
-        "updated": "2021-07-21T03:56:00.890213+00:00"
-      },
-      {
-        "conceptdoi": "10.5281/zenodo.5091716",
-        "conceptrecid": "5091716",
-        "created": "2021-07-12T11:03:20.254037+00:00",
-        "doi": "10.5281/zenodo.5091717",
-        "files": [
-          {
-            "bucket": "f626910a-7ad9-4944-9afe-2b00050e0a49",
-            "checksum": "md5:94edbee6e811b91a9f1fe634470c4a0e",
-            "key": "SCG_slide-deck-notes.txt",
-            "links": {
-              "self": "https://zenodo.org/api/files/f626910a-7ad9-4944-9afe-2b00050e0a49/SCG_slide-deck-notes.txt"
-            },
-            "size": 10290,
-            "type": "txt"
-          },
-          {
-            "bucket": "f626910a-7ad9-4944-9afe-2b00050e0a49",
-            "checksum": "md5:46c7c17f2d7cbed65d3e2b4d7aeb486b",
-            "key": "SCG_slide-deck.pdf",
-            "links": {
-              "self": "https://zenodo.org/api/files/f626910a-7ad9-4944-9afe-2b00050e0a49/SCG_slide-deck.pdf"
-            },
-            "size": 1643732,
-            "type": "pdf"
-          }
-        ],
-        "id": 5091717,
-        "links": {
-          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5091717.svg",
-          "bucket": "https://zenodo.org/api/files/f626910a-7ad9-4944-9afe-2b00050e0a49",
-          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5091716.svg",
-          "conceptdoi": "https://doi.org/10.5281/zenodo.5091716",
-          "doi": "https://doi.org/10.5281/zenodo.5091717",
-          "html": "https://zenodo.org/record/5091717",
-          "latest": "https://zenodo.org/api/records/5091717",
-          "latest_html": "https://zenodo.org/record/5091717",
-          "self": "https://zenodo.org/api/records/5091717"
-        },
-        "metadata": {
-          "access_right": "open",
-          "access_right_category": "success",
-          "communities": [
-            {
-              "id": "ardc"
-            }
-          ],
-          "contributors": [
-            {
-              "affiliation": "Australian Research Data Commons",
-              "name": "Martinez, Paula Andrea",
-              "orcid": "0000-0002-8990-1985",
-              "type": "ProjectLeader"
-            }
-          ],
-          "creators": [
-            {
-              "affiliation": "Australian Research Data Commons",
-              "name": "Liffers, Matthias",
-              "orcid": "0000-0002-3639-2080"
-            }
-          ],
-          "description": "<p>A short presentation for reuse includes speaker notes.</p>\n\n<p>Making software citable using a code repository, an&nbsp;ORCID and a licence.</p>",
-          "doi": "10.5281/zenodo.5091717",
-          "keywords": [
-            "Software citation",
-            "Software publishing",
-            "Software registries",
-            "Software Repositories",
-            "research Software"
-          ],
-          "language": "eng",
-          "license": {
-            "id": "CC-BY-4.0"
-          },
-          "notes": "The ARDC is a transformational initiative that enables Australian research community and industry access to nationally significant, leading edge data intensive eInfrastructure, platforms, skills and collections of high-quality data. The purpose of the ARDC is to provide Australian researchers with competitive advantage through data, providing access to leading edge eResearch collections, tools, infrastructure and services. Its mission is to accelerate research and innovation by driving excellence in the creation, analysis and retention of high-quality data assets.",
-          "publication_date": "2021-07-12",
-          "related_identifiers": [
-            {
-              "identifier": "10.5281/zenodo.5003989",
-              "relation": "isSupplementTo",
-              "scheme": "doi"
-            },
-            {
-              "identifier": "10.5281/zenodo.5091716",
-              "relation": "isVersionOf",
-              "scheme": "doi"
-            }
-          ],
-          "relations": {
-            "version": [
-              {
-                "count": 1,
-                "index": 0,
-                "is_last": true,
-                "last_child": {
-                  "pid_type": "recid",
-                  "pid_value": "5091717"
-                },
-                "parent": {
-                  "pid_type": "recid",
-                  "pid_value": "5091716"
-                }
-              }
-            ]
-          },
+          "language": "enc",
           "resource_type": {
             "title": "Presentation",
             "type": "presentation"
           },
-          "title": "Software publishing, licensing, and citation"
-        },
-        "owners": [
-          82930
-        ],
-        "revision": 3,
-        "stats": {
-          "downloads": 72.0,
-          "unique_downloads": 58.0,
-          "unique_views": 79.0,
-          "version_downloads": 72.0,
-          "version_unique_downloads": 58.0,
-          "version_unique_views": 79.0,
-          "version_views": 84.0,
-          "version_volume": 111814936.0,
-          "views": 84.0,
-          "volume": 111814936.0
-        },
-        "updated": "2021-07-21T03:41:31.625694+00:00"
-      },
-      {
-        "conceptdoi": "10.5281/zenodo.5039511",
-        "conceptrecid": "5039511",
-        "created": "2021-06-28T23:26:37.182331+00:00",
-        "doi": "10.5281/zenodo.5039512",
-        "files": [
-          {
-            "bucket": "75ce35da-ca96-4524-aa99-0cb3f0e8d480",
-            "checksum": "md5:89e3c04c7b5bc595ed44e5545187a0d1",
-            "key": "ARDC PID services review FINAL.pdf",
-            "links": {
-              "self": "https://zenodo.org/api/files/75ce35da-ca96-4524-aa99-0cb3f0e8d480/ARDC%20PID%20services%20review%20FINAL.pdf"
-            },
-            "size": 1078359,
-            "type": "pdf"
-          }
-        ],
-        "id": 5039512,
-        "links": {
-          "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.5039512.svg",
-          "bucket": "https://zenodo.org/api/files/75ce35da-ca96-4524-aa99-0cb3f0e8d480",
-          "conceptbadge": "https://zenodo.org/badge/doi/10.5281/zenodo.5039511.svg",
-          "conceptdoi": "https://doi.org/10.5281/zenodo.5039511",
-          "doi": "https://doi.org/10.5281/zenodo.5039512",
-          "html": "https://zenodo.org/record/5039512",
-          "latest": "https://zenodo.org/api/records/5039512",
-          "latest_html": "https://zenodo.org/record/5039512",
-          "self": "https://zenodo.org/api/records/5039512"
-        },
-        "metadata": {
-          "access_right": "open",
-          "access_right_category": "success",
+          "meeting": {
+            "title": "2023 Vocabulary Symposium",
+            "dates": "14-15 November 2023",
+            "place": "Onsite (Canberra, ANU) and online.",
+            "url": "https://sites.google.com/ardc.edu.au/vocabulary-symposium-2023/"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
           "communities": [
             {
               "id": "ardc"
             }
           ],
+          "relations": {
+            "version": [
+              {
+                "index": 1,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "10020417"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Advancing HIVE-4-MAT's Capacity to Leverage Multiple Vocabularies",
+        "links": {
+          "self": "https://zenodo.org/api/records/10146028",
+          "self_html": "https://zenodo.org/records/10146028",
+          "self_doi": "https://zenodo.org/doi/10.5281/zenodo.10146028",
+          "doi": "https://doi.org/10.5281/zenodo.10146028",
+          "parent": "https://zenodo.org/api/records/10020417",
+          "parent_html": "https://zenodo.org/records/10020417",
+          "parent_doi": "https://zenodo.org/doi/10.5281/zenodo.10020417",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:10146028/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:10146028/sequence/default",
+          "files": "https://zenodo.org/api/records/10146028/files",
+          "media_files": "https://zenodo.org/api/records/10146028/media-files",
+          "archive": "https://zenodo.org/api/records/10146028/files-archive",
+          "archive_media": "https://zenodo.org/api/records/10146028/media-files-archive",
+          "latest": "https://zenodo.org/api/records/10146028/versions/latest",
+          "latest_html": "https://zenodo.org/records/10146028/latest",
+          "draft": "https://zenodo.org/api/records/10146028/draft",
+          "versions": "https://zenodo.org/api/records/10146028/versions",
+          "access_links": "https://zenodo.org/api/records/10146028/access/links",
+          "access_users": "https://zenodo.org/api/records/10146028/access/users",
+          "access_request": "https://zenodo.org/api/records/10146028/access/request",
+          "access": "https://zenodo.org/api/records/10146028/access",
+          "reserve_doi": "https://zenodo.org/api/records/10146028/draft/pids/doi",
+          "communities": "https://zenodo.org/api/records/10146028/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/10146028/communities-suggestions",
+          "requests": "https://zenodo.org/api/records/10146028/requests"
+        },
+        "updated": "2023-11-23T02:02:34.203358+00:00",
+        "recid": "10146028",
+        "revision": 6,
+        "files": [
+          {
+            "id": "acf24bd3-c3d4-4d28-a1fa-d1a22dec87f5",
+            "key": "kio-vocab-symposium-presentation-1.pdf",
+            "size": 1033728,
+            "checksum": "md5:496ee45c2a24d3444f5f553cd2a08d91",
+            "links": {
+              "self": "https://zenodo.org/api/records/10146028/files/kio-vocab-symposium-presentation-1.pdf/content"
+            }
+          },
+          {
+            "id": "eb018db4-bdf3-4432-9207-bec7d11568c6",
+            "key": "abstract - Polson, Kio .docx.pdf",
+            "size": 29336,
+            "checksum": "md5:396f00200f0512fa9d505b8bf6936e89",
+            "links": {
+              "self": "https://zenodo.org/api/records/10146028/files/abstract - Polson, Kio .docx.pdf/content"
+            }
+          }
+        ],
+        "owners": [
+          {
+            "id": 82930
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 64,
+          "unique_downloads": 46,
+          "views": 161,
+          "unique_views": 151,
+          "version_downloads": 48,
+          "version_unique_downloads": 35,
+          "version_unique_views": 102,
+          "version_views": 109
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2023-11-16T22:18:55.429332+00:00",
+        "modified": "2023-11-17T06:29:26.421576+00:00",
+        "id": 10145667,
+        "conceptrecid": "10145666",
+        "doi": "10.5281/zenodo.10145667",
+        "conceptdoi": "10.5281/zenodo.10145666",
+        "doi_url": "https://doi.org/10.5281/zenodo.10145667",
+        "metadata": {
+          "title": "Event report: 2023 Vocabulary Symposium",
+          "doi": "10.5281/zenodo.10145667",
+          "publication_date": "2023-11-17",
+          "description": "<p>Event report from the 2023 Vocabulary Symposium. &nbsp;An event led by ARDC, in partnership with <a href=\"https://ada.edu.au/\">ADA</a>, <a href=\"https://ahra.org.au/\">AHRA</a>, <a href=\"https://www.aihw.gov.au/\">AIHW</a>, <a href=\"https://www.plantphenomics.org.au/\">APPF</a>, <a href=\"https://aurin.org.au/\">AURIN</a>, <a href=\"https://www.auscope.org.au/\">AuScope</a>, <a href=\"https://austraits.org/\">AusTraits</a>, <a href=\"https://codata.org/\">CODATA</a>, <a href=\"https://imos.org.au/\">IMOS</a>, <a href=\"https://www.ldaca.edu.au/\">LDaCA </a>and <a href=\"https://www.tern.org.au/\">TERN</a></p><p>Following the success of a <a href=\"https://zenodo.org/doi/10.5281/zenodo.7824028\">2022 Vocabulary Symposium</a>, the ARDC led, with event partners, a <a href=\"https://ardc.edu.au/event/2023-vocabulary-symposium-fair-vocabularies-for-all/\">2023 Symposium</a> on November 14 and 15.&nbsp; A hybrid event, online via Zoom Webinar and onsite at the <a href=\"https://rsss.cass.anu.edu.au/\">RSSS&nbsp;</a> (Australian National University).&nbsp; The event brought together people from domains across disciplines spanning research, government and industry, including those from the <a href=\"https://ardc.edu.au/case-study/thematic-rdc/\">ARDC Thematic Research Data Commons</a>. Its aim was to communicate and promote approaches to using, developing, publishing and maintaining vocabularies.&nbsp;&nbsp;</p>",
+          "access_right": "open",
           "creators": [
             {
-              "affiliation": "MoreBrains Cooperative",
-              "name": "Brown, Josh",
-              "orcid": "0000-0002-8689-4935"
+              "name": "Australian Research Data Commons",
+              "affiliation": null
             }
           ],
-          "description": "<p>This review was commissioned in 2019 by ARDC&rsquo;s Director of Data and Services. The remit was to evaluate ARDC&rsquo;s current persistent identifier (PID) portfolio, and to recommend future business planning and development activities for the component PIDs and services within it.</p>\n\n<p>Research was conducted from September 2019 to February 2020. Landscape analyses were complemented by interviews with ARDC staff and partners, PID providers, and domain experts. While each PID chosen for review was evaluated individually, an agreed set of overarching principles was chosen to ensure consistency and clarity of purpose across the review (See page 13). While the individual review documents were under preparation, regular meetings with the ARDC team helped to shape the structure and context for this synthesis report.</p>\n\n<p>The review includes PIDs for people, organisations, data, physical samples, instruments and projects including ORCID, ROR, DOI, IGSN, Handle and RAiD, among others.</p>\n\n<p>The initial analysis confirmed that PIDs are a key dependency for many ARDC services, and PIDs are adopted and used throughout the research lifecycle. The FAIR data principles are a significant driver for ARDC&rsquo;s PIDs agenda (and widespread adoption of PIDs more generally).</p>",
-          "doi": "10.5281/zenodo.5039512",
           "keywords": [
-            "persistent identifiers",
-            "PIDs",
-            "strategy"
+            "Vocabularies",
+            "Terminologies",
+            "Semantic"
           ],
-          "language": "eng",
-          "license": {
-            "id": "CC-BY-4.0"
+          "resource_type": {
+            "title": "Report",
+            "type": "publication",
+            "subtype": "report"
           },
-          "publication_date": "2020-04-23",
-          "related_identifiers": [
+          "meeting": {
+            "title": "2023 Vocabulary Symposium",
+            "dates": "14-15 November 2023",
+            "place": "Onsite (Canberra, ANU) and online.",
+            "url": "https://sites.google.com/ardc.edu.au/vocabulary-symposium-2023/"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "communities": [
             {
-              "identifier": "10.5281/zenodo.5039511",
-              "relation": "isVersionOf",
-              "scheme": "doi"
+              "id": "ardc"
             }
           ],
           "relations": {
             "version": [
               {
-                "count": 1,
                 "index": 0,
                 "is_last": true,
-                "last_child": {
-                  "pid_type": "recid",
-                  "pid_value": "5039512"
-                },
                 "parent": {
                   "pid_type": "recid",
-                  "pid_value": "5039511"
+                  "pid_value": "10145666"
                 }
               }
             ]
-          },
-          "resource_type": {
-            "subtype": "report",
-            "title": "Report",
-            "type": "publication"
-          },
-          "title": "ARDC Persistent Identifier (PID) Portfolio Review",
-          "version": "2.0"
+          }
         },
-        "owners": [
-          72975
+        "title": "Event report: 2023 Vocabulary Symposium",
+        "links": {
+          "self": "https://zenodo.org/api/records/10145667",
+          "self_html": "https://zenodo.org/records/10145667",
+          "self_doi": "https://zenodo.org/doi/10.5281/zenodo.10145667",
+          "doi": "https://doi.org/10.5281/zenodo.10145667",
+          "parent": "https://zenodo.org/api/records/10145666",
+          "parent_html": "https://zenodo.org/records/10145666",
+          "parent_doi": "https://zenodo.org/doi/10.5281/zenodo.10145666",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:10145667/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:10145667/sequence/default",
+          "files": "https://zenodo.org/api/records/10145667/files",
+          "media_files": "https://zenodo.org/api/records/10145667/media-files",
+          "archive": "https://zenodo.org/api/records/10145667/files-archive",
+          "archive_media": "https://zenodo.org/api/records/10145667/media-files-archive",
+          "latest": "https://zenodo.org/api/records/10145667/versions/latest",
+          "latest_html": "https://zenodo.org/records/10145667/latest",
+          "draft": "https://zenodo.org/api/records/10145667/draft",
+          "versions": "https://zenodo.org/api/records/10145667/versions",
+          "access_links": "https://zenodo.org/api/records/10145667/access/links",
+          "access_users": "https://zenodo.org/api/records/10145667/access/users",
+          "access_request": "https://zenodo.org/api/records/10145667/access/request",
+          "access": "https://zenodo.org/api/records/10145667/access",
+          "reserve_doi": "https://zenodo.org/api/records/10145667/draft/pids/doi",
+          "communities": "https://zenodo.org/api/records/10145667/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/10145667/communities-suggestions",
+          "requests": "https://zenodo.org/api/records/10145667/requests"
+        },
+        "updated": "2023-11-17T06:29:26.421576+00:00",
+        "recid": "10145667",
+        "revision": 6,
+        "files": [
+          {
+            "id": "f1996a36-e4af-487c-8185-fc6dacfdc05c",
+            "key": "2023 Vocabulary Symposium Report-1.pdf",
+            "size": 560411,
+            "checksum": "md5:c45c1c42a91bc874abc5c31b420eaca8",
+            "links": {
+              "self": "https://zenodo.org/api/records/10145667/files/2023 Vocabulary Symposium Report-1.pdf/content"
+            }
+          }
         ],
-        "revision": 3,
+        "owners": [
+          {
+            "id": 82930
+          }
+        ],
+        "status": "published",
         "stats": {
-          "downloads": 129.0,
-          "unique_downloads": 120.0,
-          "unique_views": 147.0,
-          "version_downloads": 129.0,
-          "version_unique_downloads": 120.0,
-          "version_unique_views": 147.0,
-          "version_views": 155.0,
-          "version_volume": 139108311.0,
-          "views": 155.0,
-          "volume": 139108311.0
+          "downloads": 84,
+          "unique_downloads": 51,
+          "views": 146,
+          "unique_views": 121,
+          "version_downloads": 84,
+          "version_unique_downloads": 51,
+          "version_unique_views": 121,
+          "version_views": 146
         },
-        "updated": "2021-06-29T01:48:18.507399+00:00"
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2023-11-16T21:43:31.589687+00:00",
+        "modified": "2023-11-23T02:24:19.152373+00:00",
+        "id": 10052306,
+        "conceptrecid": "10052305",
+        "doi": "10.5281/zenodo.10052306",
+        "conceptdoi": "10.5281/zenodo.10052305",
+        "doi_url": "https://doi.org/10.5281/zenodo.10052306",
+        "metadata": {
+          "title": "A sustainable model to maintain and promote vocabularies: the AGROVOC use case",
+          "doi": "10.5281/zenodo.10052306",
+          "publication_date": "2023-11-17",
+          "description": "<p>AGROVOC is a multilingual agricultural thesaurus developed by the Food and Agriculture Organization of the United Nations (FAO). It serves as a controlled vocabulary and information retrieval tool for the agricultural domain. AGROVOC's usefulness lies in its contribution to standardization, interoperability, information retrieval, multilingual support, and data integration.<br><br>AGROVOC is curated by its editorial community through a collaborative and participatory approach. FAO facilitates the development and maintenance of AGROVOC, but actively involves experts, researchers, and practitioners from the agricultural domain and related fields. The AGROVOC editorial community consists of a number of institutions serving as focal points for specific languages or topics. The community's contributions and expertise are vital to ensure the vocabulary's relevance, accuracy, and coverage. Thanks to this, AGROVOC is available in up to 42 languages. Subject matter experts who are fluent in different languages contribute translations, ensuring the vocabulary's multilingual support and cross-cultural relevance. It also ensures that the vocabulary reflects the collective expertise and needs of those who use it, making AGROVOC a valuable and trusted resource for organizing and sharing agricultural knowledge.<br><br>There is growing interest in how AGROVOC can support and host technical vocabularies developed at institutional level. These vocabularies can be isolated, managed in spreadsheets, and many do not yet leverage the power of being FAIR. Bringing vocabularies within the AGROVOC umbrella does take considerable work and requires creating awareness of the benefits and advantages of using linked open data and encouraging individuals and organizations to use it consistently in their work. Demonstrating benefits and socializing the value of vocabularies is key: promoting the use of controlled vocabularies within a community or group of people, highlighting the advantages of improved information retrieval, better data integration, and safeguarding of valuable vocabulary work is needed.<br><br><strong>References</strong><br>1. Imma Subirats-Coll, Kristin Kolshus, Andrea Turbati, Armando Stellato, Esther Mietzsch, Daniel Martini, Marcia Zeng, AGROVOC: The linked data concept hub for food and agriculture, Computers and Electronics in Agriculture, Volume 196, 2022. https://doi.org/10.1016/j.compag.2020.105965<br>2. FAO. 2021. AGROVOC – Semantic data interoperability on food and agriculture. Rome.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Kolshus, Kristin",
+              "affiliation": "Food and Agriculture Organization of the United Nations",
+              "orcid": "0000-0003-4560-1478"
+            },
+            {
+              "name": "Martini, Daniel",
+              "affiliation": "Kuratorium für Technik und Bauwesen in der Landwirtschaft",
+              "orcid": "0000-0002-6953-4524"
+            },
+            {
+              "name": "Mietzsch, Esther",
+              "affiliation": "Kuratorium für Technik und Bauwesen in der Landwirtschaft",
+              "orcid": "0009-0003-6687-7593"
+            },
+            {
+              "name": "Subirats-Coll, Imma",
+              "affiliation": "Food and Agriculture Organization of the United Nations",
+              "orcid": "0000-0002-3401-8597"
+            },
+            {
+              "name": "Turbati, Andrea",
+              "affiliation": "Food and Agriculture Organization of the United Nations",
+              "orcid": "0000-0002-6214-4099"
+            },
+            {
+              "name": "Venturini, Veronica",
+              "affiliation": "Food and Agriculture Organization of the United Nations",
+              "orcid": "0009-0008-5755-8685"
+            }
+          ],
+          "keywords": [
+            "Vocabularies",
+            "Terminologies",
+            "Semantic"
+          ],
+          "related_identifiers": [
+            {
+              "identifier": "10.5281/zenodo.10052531",
+              "relation": "isReferencedBy",
+              "resource_type": "event",
+              "scheme": "doi"
+            },
+            {
+              "identifier": "https://www.youtube.com/watch?v=nWG3kBmdnbY",
+              "relation": "isReferencedBy",
+              "resource_type": "video",
+              "scheme": "url"
+            }
+          ],
+          "language": "eng",
+          "resource_type": {
+            "title": "Presentation",
+            "type": "presentation"
+          },
+          "meeting": {
+            "title": "2023 Vocabulary Symposium",
+            "dates": "14-15 November 2023",
+            "place": "Onsite (Canberra, ANU) and online.",
+            "url": "https://sites.google.com/ardc.edu.au/vocabulary-symposium-2023/"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "communities": [
+            {
+              "id": "ardc"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "10052305"
+                }
+              }
+            ]
+          }
+        },
+        "title": "A sustainable model to maintain and promote vocabularies: the AGROVOC use case",
+        "links": {
+          "self": "https://zenodo.org/api/records/10052306",
+          "self_html": "https://zenodo.org/records/10052306",
+          "self_doi": "https://zenodo.org/doi/10.5281/zenodo.10052306",
+          "doi": "https://doi.org/10.5281/zenodo.10052306",
+          "parent": "https://zenodo.org/api/records/10052305",
+          "parent_html": "https://zenodo.org/records/10052305",
+          "parent_doi": "https://zenodo.org/doi/10.5281/zenodo.10052305",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:10052306/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:10052306/sequence/default",
+          "files": "https://zenodo.org/api/records/10052306/files",
+          "media_files": "https://zenodo.org/api/records/10052306/media-files",
+          "archive": "https://zenodo.org/api/records/10052306/files-archive",
+          "archive_media": "https://zenodo.org/api/records/10052306/media-files-archive",
+          "latest": "https://zenodo.org/api/records/10052306/versions/latest",
+          "latest_html": "https://zenodo.org/records/10052306/latest",
+          "draft": "https://zenodo.org/api/records/10052306/draft",
+          "versions": "https://zenodo.org/api/records/10052306/versions",
+          "access_links": "https://zenodo.org/api/records/10052306/access/links",
+          "access_users": "https://zenodo.org/api/records/10052306/access/users",
+          "access_request": "https://zenodo.org/api/records/10052306/access/request",
+          "access": "https://zenodo.org/api/records/10052306/access",
+          "reserve_doi": "https://zenodo.org/api/records/10052306/draft/pids/doi",
+          "communities": "https://zenodo.org/api/records/10052306/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/10052306/communities-suggestions",
+          "requests": "https://zenodo.org/api/records/10052306/requests"
+        },
+        "updated": "2023-11-23T02:24:19.152373+00:00",
+        "recid": "10052306",
+        "revision": 6,
+        "files": [
+          {
+            "id": "47581253-c140-475c-b9ad-dd4349139d68",
+            "key": "presentation - Subirats-Coll, Imma.pdf",
+            "size": 2236956,
+            "checksum": "md5:64bb8aa8876976bca8745807a2dbe320",
+            "links": {
+              "self": "https://zenodo.org/api/records/10052306/files/presentation - Subirats-Coll, Imma.pdf/content"
+            }
+          },
+          {
+            "id": "9983dd4a-2ca1-4a98-a307-d062c2eec21e",
+            "key": "abstract- Subirats-Coll, Imma.pdf",
+            "size": 69008,
+            "checksum": "md5:521dab1293274ac07a9ac6e0dbcde1d6",
+            "links": {
+              "self": "https://zenodo.org/api/records/10052306/files/abstract- Subirats-Coll, Imma.pdf/content"
+            }
+          }
+        ],
+        "owners": [
+          {
+            "id": 82930
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 43,
+          "unique_downloads": 31,
+          "views": 122,
+          "unique_views": 110,
+          "version_downloads": 43,
+          "version_unique_downloads": 31,
+          "version_unique_views": 110,
+          "version_views": 122
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2023-11-16T21:11:10.079447+00:00",
+        "modified": "2023-11-24T06:19:32.078151+00:00",
+        "id": 10052278,
+        "conceptrecid": "10052277",
+        "doi": "10.5281/zenodo.10052278",
+        "conceptdoi": "10.5281/zenodo.10052277",
+        "doi_url": "https://doi.org/10.5281/zenodo.10052278",
+        "metadata": {
+          "title": "Defining Indigenous Data Custody and Governance: The case of frozen- negated pathways autonomous transformation and other unknown community – civilization.",
+          "doi": "10.5281/zenodo.10052278",
+          "publication_date": "2023-11-17",
+          "description": "<p>Vocabulary, language and data are a simultaneous or concurrent phenomenon with a historical reference and characterized by the value of indispensability. Functionally interwoven in time and place they find meaningful expression within society as it fulfills its mission on one hand and conveniently curving space in a global village where simultaneously it inputs and derives value to guarantee existence with integrity; safeguard against marginalization and risks in this digital phase. Highest form of expression of vocabulary, language and data constitute culture and history of society while the opposite is true signifying death or alternatively a literally disabled, marginalized people without institutional representation. Language, vocabulary and data have a generational dimension characterizing them as they transition from one phase to another more precisely from traditional society; colonial society; post-colonial society; lastly transformation-digital society influenced by scientific and technological development. Major questions arise regarding data storage, who collects and keeps it; data sources, classes and collection levels and methods; data classification or declassification; partnership in data institution development; data sharing; data storage technologies; development planning data; data collection and Smart Cities; data quality and management through phases; what do we loose or gain moving from this phase to the next? Alternatively, what is the LOSS- GAIN balance on each phase, the previous and forthcoming? Equally is the pathway deserved by all or an alternative is inevitable? Vocabulary, language and data play a complimentary role in these processes consistent with the level of cultural development and data management culture too. Depth and level of development of vocabulary determine data quality and its utility level, more precisely the way it uplifts the citizen and society on one hand or alternatively the way it condemns the same to ranks of dejection when the world is visibly advancing digitally vibrant in all circles of human life.<br><br><strong>Acknowledgements</strong><br>Recognition is owed ARDC Hosts; Midlands State University, Faculty of Arts and Humanities, Department of Development Studies new generation courses and programs. Equally, the ASC -AfCFTA Studies Centre with its innovative Pan African AfCFTA robust engagement and its \"Transformative AfCFTA: Southern – Sub Saharan Africa and GLOBE Issues\" Newsletter greatly nourishes this generation changing submission.<br><br><strong>References</strong><br>AGENDA AFRICA 2063., 2015. The Africa We Want. Final Edition. April 2015. Popular Version. Addis Ababa: African Union Commission. pp 4.</p><p>ANDREW, HEYWOOD., 2011. Global Politics. Palgrave Foundations. New York: Palgrave MacMillan. pp 560.</p><p>ASC-AfCFTA NEWSLETTER., 2023. Transformative AfCFTA: Southern – Sub Saharan Africa – the GLOBE Issues. April Issue. Vol 1. Number 2. Edited by Chikowore G. Focusing on AfCFTA exploits Americas: Latin America and the Caribbean cross sector value. Harare: ASC -AfCFTA Studies Centre / CCLTZ Publishing House. p 38.<br><br>CHIKOWORE, GODFREY., 2017.Transformative essence of Japan Official Development Assistance Policy: Significance for millennium regional economic cooperation and integration in Southern and Sub Saharan Africa 1980-2015 and Post 2015 Agenda Phase. Harare: University of Zimbabwe Publications. pp119.<br><br>FORREST, E. BAIRD., WALTER, KAUFMANN., 2008. From Plato to Derrida. Philosophic Classics, Fifth Edition. Upper Saddle River. New Jersey: Pearson Prentice Hall. Upper Saddle River. New Jersey. pp1201.<br><br>FREDERICK, P. STUTZ., BARNEY, WARF., 2012. The World Economy: geography, business, development. International Edition. Boston: Pearson. pp 435.<br><br>HIGH LEVEL PANEL REPORT., 2015. A New Global Partnership: Eradicate Poverty and Transform Economies through Sustainable Development. UNSDGs. New York: UN Publications.<br><br>JORGE, J. E. GRACIA., GREGORY, M. REICHBERG., BERNARD, N. SCHUMACHER.,2008. The Classics of Western Philosophy: A Readers Guide. Malden: Blackwell Publishing. p 614.<br><br>KAULEMU, DAVID., 2010. Ending Violence in Zimbabwe. African Forum for Catholic Social Teachings. Harare: Konrad Adenauer Stiftung. Arupe College. p 146.<br><br>UN HFA (2005) Hyogo Framework for Action 2005-2015: Building the resilience of Nations and Communities to Disasters (Extract from the final report on World Conference on Disaster Reduction - A/CONF206/6). United Nations. p 29.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Chikowore, Godfrey",
+              "affiliation": "Midlands State University",
+              "orcid": "0000-0001-9930-8133"
+            }
+          ],
+          "keywords": [
+            "Vocabularies",
+            "Terminologies",
+            "Semantic"
+          ],
+          "related_identifiers": [
+            {
+              "identifier": "https://youtu.be/75itYMTfNlI",
+              "relation": "isReferencedBy",
+              "resource_type": "video",
+              "scheme": "url"
+            },
+            {
+              "identifier": "10.5281/zenodo.10052531",
+              "relation": "isReferencedBy",
+              "resource_type": "event",
+              "scheme": "doi"
+            }
+          ],
+          "language": "eng",
+          "resource_type": {
+            "title": "Presentation",
+            "type": "presentation"
+          },
+          "meeting": {
+            "title": "2023 Vocabulary Symposium",
+            "dates": "14-15 November 2023",
+            "place": "Onsite (Canberra, ANU) and online.",
+            "url": "https://sites.google.com/ardc.edu.au/vocabulary-symposium-2023/"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "communities": [
+            {
+              "id": "ardc"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "10052277"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Defining Indigenous Data Custody and Governance: The case of frozen- negated pathways autonomous transformation and other unknown community – civilization.",
+        "links": {
+          "self": "https://zenodo.org/api/records/10052278",
+          "self_html": "https://zenodo.org/records/10052278",
+          "self_doi": "https://zenodo.org/doi/10.5281/zenodo.10052278",
+          "doi": "https://doi.org/10.5281/zenodo.10052278",
+          "parent": "https://zenodo.org/api/records/10052277",
+          "parent_html": "https://zenodo.org/records/10052277",
+          "parent_doi": "https://zenodo.org/doi/10.5281/zenodo.10052277",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:10052278/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:10052278/sequence/default",
+          "files": "https://zenodo.org/api/records/10052278/files",
+          "media_files": "https://zenodo.org/api/records/10052278/media-files",
+          "archive": "https://zenodo.org/api/records/10052278/files-archive",
+          "archive_media": "https://zenodo.org/api/records/10052278/media-files-archive",
+          "latest": "https://zenodo.org/api/records/10052278/versions/latest",
+          "latest_html": "https://zenodo.org/records/10052278/latest",
+          "draft": "https://zenodo.org/api/records/10052278/draft",
+          "versions": "https://zenodo.org/api/records/10052278/versions",
+          "access_links": "https://zenodo.org/api/records/10052278/access/links",
+          "access_users": "https://zenodo.org/api/records/10052278/access/users",
+          "access_request": "https://zenodo.org/api/records/10052278/access/request",
+          "access": "https://zenodo.org/api/records/10052278/access",
+          "reserve_doi": "https://zenodo.org/api/records/10052278/draft/pids/doi",
+          "communities": "https://zenodo.org/api/records/10052278/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/10052278/communities-suggestions",
+          "requests": "https://zenodo.org/api/records/10052278/requests"
+        },
+        "updated": "2023-11-24T06:19:32.078151+00:00",
+        "recid": "10052278",
+        "revision": 8,
+        "files": [
+          {
+            "id": "6ab01d6e-aabb-46ca-8ab0-44c471cd7952",
+            "key": "presentation - Chikowore, Godfrey.pdf",
+            "size": 408212,
+            "checksum": "md5:437163a9a1c89b9fe9e64109dc1543cc",
+            "links": {
+              "self": "https://zenodo.org/api/records/10052278/files/presentation - Chikowore, Godfrey.pdf/content"
+            }
+          },
+          {
+            "id": "fb82b10e-7b57-4f4e-88d5-a1486ca610a3",
+            "key": "abstract - Chikowore, Godfrey-1.pdf",
+            "size": 203463,
+            "checksum": "md5:abb88da257e3c79667da5648052b53e4",
+            "links": {
+              "self": "https://zenodo.org/api/records/10052278/files/abstract - Chikowore, Godfrey-1.pdf/content"
+            }
+          }
+        ],
+        "owners": [
+          {
+            "id": 82930
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 59,
+          "unique_downloads": 39,
+          "views": 150,
+          "unique_views": 140,
+          "version_downloads": 59,
+          "version_unique_downloads": 39,
+          "version_unique_views": 140,
+          "version_views": 150
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2023-11-16T21:04:27.396634+00:00",
+        "modified": "2023-11-24T06:15:35.194178+00:00",
+        "id": 10020437,
+        "conceptrecid": "10020436",
+        "doi": "10.5281/zenodo.10020437",
+        "conceptdoi": "10.5281/zenodo.10020436",
+        "doi_url": "https://doi.org/10.5281/zenodo.10020437",
+        "metadata": {
+          "title": "Learning From Language: Strategies for Building CAREful Vocabularies",
+          "doi": "10.5281/zenodo.10020437",
+          "publication_date": "2023-11-16",
+          "description": "<p>Language is, as Capak notes \"…one of the most intimate and most political of human activities. The power of naming in fact shapes and defines the institutions that structure so much of our lives\" (Capak, 1987, xvi). The challenges of inclusion and diverse representation in our language and naming activities are not new. However, in an age when automation and AI play increasing roles in our data and information systems, it becomes even more critical to address the oft-invisible power of language to include or exclude. Building FAIR vocabularies for all therefore requires us to take up the ongoing challenge of maintaining vocabularies that are inclusive as well as actionable.</p><p>Paying attention to ethical considerations of vocabulary construction and use is a vital aspect of building FAIR vocabularies sufficiently representative of community diversity. Language is dynamic and diverse and transversing communities are more the norm than the exception. Consequently, our vocabularies need to be crafted through ongoing engagement with communities. Drawing on insights gained through training we have provided in cross-disciplinary contexts such as global health and government services, this presentation shares ideas about how to capture and locate language to accommodate its mutability. Our approach is strongly influenced by Bowker and Star (1999), who propose keeping political and organizational dimensions shaping a classification's creation accessible while responding to institutional arrangements necessitated by new contexts and emerging understandings. We will also demonstrate how the CARE principles emerging from indigenous data governance (Carroll et al, 2020) serve as valuable guides for more inclusive and participatory practice for all communities.</p><p>Designing with communities enables us to make space for the learning that emerges through practice and language use. By sharing some of the techniques we use in our work, we hope to help others build FAIR vocabularies connected to the representative richness of the communities represented in that language.</p><p><strong>References </strong>-</p><p>1. Capek, Mary Ellen S., ED. 1987. A women's thesaurus. New York: Harper &amp; Row.</p><p>2. Bowker, G.C. &amp; Star, S. 1999. Sorting things out: classification and its consequences.Cambridge MA: MIT Press.</p><p>3. Carroll, S. R. et al. 2020. The CARE principles for Indigenous data governance. Data Science Journal. 19, 1–12.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Anderson, Theresa Dirndorfer",
+              "affiliation": "Connecting Stones",
+              "orcid": "0000-0003-1792-3728"
+            },
+            {
+              "name": "Marshall, Ruth",
+              "affiliation": "Hocone",
+              "orcid": "0000-0002-4040-3360"
+            }
+          ],
+          "keywords": [
+            "Vocabularies",
+            "Terminologies",
+            "Semantic"
+          ],
+          "related_identifiers": [
+            {
+              "identifier": "10.5281/zenodo.10052531",
+              "relation": "isReferencedBy",
+              "resource_type": "event",
+              "scheme": "doi"
+            },
+            {
+              "identifier": "https://youtu.be/75itYMTfNlI",
+              "relation": "isReferencedBy",
+              "resource_type": "video",
+              "scheme": "url"
+            }
+          ],
+          "language": "eng",
+          "resource_type": {
+            "title": "Presentation",
+            "type": "presentation"
+          },
+          "meeting": {
+            "title": "2023 Vocabulary Symposium",
+            "dates": "14-15 November 2023",
+            "place": "Onsite (Canberra, ANU) and online.",
+            "url": "https://sites.google.com/ardc.edu.au/vocabulary-symposium-2023/"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "communities": [
+            {
+              "id": "ardc"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "10020436"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Learning From Language: Strategies for Building CAREful Vocabularies",
+        "links": {
+          "self": "https://zenodo.org/api/records/10020437",
+          "self_html": "https://zenodo.org/records/10020437",
+          "self_doi": "https://zenodo.org/doi/10.5281/zenodo.10020437",
+          "doi": "https://doi.org/10.5281/zenodo.10020437",
+          "parent": "https://zenodo.org/api/records/10020436",
+          "parent_html": "https://zenodo.org/records/10020436",
+          "parent_doi": "https://zenodo.org/doi/10.5281/zenodo.10020436",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:10020437/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:10020437/sequence/default",
+          "files": "https://zenodo.org/api/records/10020437/files",
+          "media_files": "https://zenodo.org/api/records/10020437/media-files",
+          "archive": "https://zenodo.org/api/records/10020437/files-archive",
+          "archive_media": "https://zenodo.org/api/records/10020437/media-files-archive",
+          "latest": "https://zenodo.org/api/records/10020437/versions/latest",
+          "latest_html": "https://zenodo.org/records/10020437/latest",
+          "draft": "https://zenodo.org/api/records/10020437/draft",
+          "versions": "https://zenodo.org/api/records/10020437/versions",
+          "access_links": "https://zenodo.org/api/records/10020437/access/links",
+          "access_users": "https://zenodo.org/api/records/10020437/access/users",
+          "access_request": "https://zenodo.org/api/records/10020437/access/request",
+          "access": "https://zenodo.org/api/records/10020437/access",
+          "reserve_doi": "https://zenodo.org/api/records/10020437/draft/pids/doi",
+          "communities": "https://zenodo.org/api/records/10020437/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/10020437/communities-suggestions",
+          "requests": "https://zenodo.org/api/records/10020437/requests"
+        },
+        "updated": "2023-11-24T06:15:35.194178+00:00",
+        "recid": "10020437",
+        "revision": 6,
+        "files": [
+          {
+            "id": "fdf4c0c8-7075-4237-95f1-7c528a6a94ac",
+            "key": "presentation - Anderson, Theresa.pdf",
+            "size": 1793720,
+            "checksum": "md5:e0e36e9d39f28ca746df9bc0c2f5d8d5",
+            "links": {
+              "self": "https://zenodo.org/api/records/10020437/files/presentation - Anderson, Theresa.pdf/content"
+            }
+          },
+          {
+            "id": "0b68c511-d1c5-4ce9-9a68-4408300cd5d1",
+            "key": "abstract - Anderson, Theresa.docx.pdf",
+            "size": 67384,
+            "checksum": "md5:46fd47493f6489a3d11e74bafa6c54f7",
+            "links": {
+              "self": "https://zenodo.org/api/records/10020437/files/abstract - Anderson, Theresa.docx.pdf/content"
+            }
+          }
+        ],
+        "owners": [
+          {
+            "id": 82930
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 44,
+          "unique_downloads": 33,
+          "views": 93,
+          "unique_views": 85,
+          "version_downloads": 44,
+          "version_unique_downloads": 33,
+          "version_unique_views": 85,
+          "version_views": 93
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2023-11-16T20:58:33.835655+00:00",
+        "modified": "2023-11-23T02:08:38.425986+00:00",
+        "id": 10145276,
+        "conceptrecid": "10052040",
+        "doi": "10.5281/zenodo.10145276",
+        "conceptdoi": "10.5281/zenodo.10052040",
+        "doi_url": "https://doi.org/10.5281/zenodo.10145276",
+        "metadata": {
+          "title": "Building domain specific vocabularies for packaging and archiving research and cultural data",
+          "doi": "10.5281/zenodo.10145276",
+          "publication_date": "2023-11-17",
+          "description": "<p>This presentation will cover a complete ecosystem showing tooling for creating vocabularies in the Schema.org Schema style, publishing them online so that URLs resolve to useful definitions for users (which is often NOT the case with linked data vocabularies, including quite widely used ones), generating user interfaces for editing metadata and data records that use the vocabularies via automatically generated Editor Profiles and show the resulting data in use in repository portals.<br><br>This work is built on the Research Object Crate (RO-Crate)(1) specification for linked-data object description which was designed to be as programmer and end-user friendly as possible.<br><br>Examples will be drawn from the Language Data Commons of Australia where the vocabulary ecosystem was largely developed and refined, as well as other projects that use this general approach including two ARDC co-investments in data integration, the OHRM and Heurist projects.<br><br><strong>Acknowledgements</strong><br>The Language Data Commons of Australia (LDaCA) project received investment ([https://doi.org/10.47486/HIR001](https://doi.org/10.47486/HIR001)) from the Australian<br>Research Data Commons (ARDC). The ARDC is funded by the National Collaborative Research Infrastructure Strategy (NCRIS).<br><br><strong>Reference</strong><br>1. Soiland-Reyes S, Sefton P, Crosas M, Castro LJ, Coppens F, Fernández JM, et al. <i>Packaging research artefacts with RO-Crate</i>. Data Sci. 2022 Jan 1;5(2):97–138.</p><p>&nbsp;</p><p><strong>Version note</strong></p><p><i>Corrects a spelling error in the presentation</i></p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Lynch, Michael",
+              "affiliation": "University of Sydney",
+              "orcid": "0000-0001-5152-5307"
+            },
+            {
+              "name": "Sefton, Peter",
+              "affiliation": "University of Queensland",
+              "orcid": "0000-0002-3545-944X"
+            }
+          ],
+          "keywords": [
+            "Vocabularies",
+            "Terminologies",
+            "Semantic"
+          ],
+          "related_identifiers": [
+            {
+              "identifier": "10.5281/zenodo.10052531",
+              "relation": "isReferencedBy",
+              "resource_type": "event",
+              "scheme": "doi"
+            }
+          ],
+          "language": "eng",
+          "resource_type": {
+            "title": "Presentation",
+            "type": "presentation"
+          },
+          "meeting": {
+            "title": "2023 Vocabulary Symposium",
+            "dates": "14-15 November 2023",
+            "place": "Onsite (Canberra, ANU) and online.",
+            "url": "https://sites.google.com/ardc.edu.au/vocabulary-symposium-2023/"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "communities": [
+            {
+              "id": "ardc"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "index": 1,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "10052040"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Building domain specific vocabularies for packaging and archiving research and cultural data",
+        "links": {
+          "self": "https://zenodo.org/api/records/10145276",
+          "self_html": "https://zenodo.org/records/10145276",
+          "self_doi": "https://zenodo.org/doi/10.5281/zenodo.10145276",
+          "doi": "https://doi.org/10.5281/zenodo.10145276",
+          "parent": "https://zenodo.org/api/records/10052040",
+          "parent_html": "https://zenodo.org/records/10052040",
+          "parent_doi": "https://zenodo.org/doi/10.5281/zenodo.10052040",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:10145276/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:10145276/sequence/default",
+          "files": "https://zenodo.org/api/records/10145276/files",
+          "media_files": "https://zenodo.org/api/records/10145276/media-files",
+          "archive": "https://zenodo.org/api/records/10145276/files-archive",
+          "archive_media": "https://zenodo.org/api/records/10145276/media-files-archive",
+          "latest": "https://zenodo.org/api/records/10145276/versions/latest",
+          "latest_html": "https://zenodo.org/records/10145276/latest",
+          "draft": "https://zenodo.org/api/records/10145276/draft",
+          "versions": "https://zenodo.org/api/records/10145276/versions",
+          "access_links": "https://zenodo.org/api/records/10145276/access/links",
+          "access_users": "https://zenodo.org/api/records/10145276/access/users",
+          "access_request": "https://zenodo.org/api/records/10145276/access/request",
+          "access": "https://zenodo.org/api/records/10145276/access",
+          "reserve_doi": "https://zenodo.org/api/records/10145276/draft/pids/doi",
+          "communities": "https://zenodo.org/api/records/10145276/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/10145276/communities-suggestions",
+          "requests": "https://zenodo.org/api/records/10145276/requests"
+        },
+        "updated": "2023-11-23T02:08:38.425986+00:00",
+        "recid": "10145276",
+        "revision": 6,
+        "files": [
+          {
+            "id": "a3df5ce0-47b7-4ec1-9088-31559ea26ae2",
+            "key": "abstract- Sefton, Peter.docx.pdf",
+            "size": 53251,
+            "checksum": "md5:28b6d416b066a5a9ee63d77f88f64fd7",
+            "links": {
+              "self": "https://zenodo.org/api/records/10145276/files/abstract- Sefton, Peter.docx.pdf/content"
+            }
+          },
+          {
+            "id": "0126f5bc-896c-4c60-ac0a-f9450bbcb288",
+            "key": "presentation - Sefton, Peter -2.pdf",
+            "size": 4725927,
+            "checksum": "md5:dff7f241d623cc88e1eb9045bc84b78e",
+            "links": {
+              "self": "https://zenodo.org/api/records/10145276/files/presentation - Sefton, Peter -2.pdf/content"
+            }
+          }
+        ],
+        "owners": [
+          {
+            "id": 82930
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 81,
+          "unique_downloads": 52,
+          "views": 203,
+          "unique_views": 187,
+          "version_downloads": 41,
+          "version_unique_downloads": 30,
+          "version_unique_views": 105,
+          "version_views": 119
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2023-11-16T20:44:38.433981+00:00",
+        "modified": "2023-11-24T06:10:23.960556+00:00",
+        "id": 10020478,
+        "conceptrecid": "10020477",
+        "doi": "10.5281/zenodo.10020478",
+        "conceptdoi": "10.5281/zenodo.10020477",
+        "doi_url": "https://doi.org/10.5281/zenodo.10020478",
+        "metadata": {
+          "title": "Geoscience Australia Vocabularies as a FAIR'ly useful communication tool",
+          "doi": "10.5281/zenodo.10020478",
+          "publication_date": "2023-11-17",
+          "description": "<p>Vocabularies or data dictionaries reflect agreed terms and their definitions as used by an organisation or domain specific community. Further, if the publisher of the vocabulary repository is trusted both in content and delivery, then it will support interoperability by allowing terms to be re-used or matched in other repositories.</p><p>Vocabularies published by GA are a relatively new communications tool and comprise three sub-types:</p><p>1. Controlled code lists</p><p>2. Glossaries or data dictionaries</p><p>3. Reference information</p><p>Currently the most important thing about vocabs at GA is in the creation of the vocab in the first place. We have many control lists in the building and needed a process for creating vocabs for non-technical users and a means to encourage consistency of understanding. Increasingly we have domain communities that are recognising the value of vocabularies and are interested in developing them.</p><p>Our vocabularies are being used as reference for terms in GA's catalogue and products such as web services. However, the machine-to-machine incorporation of vocabs into GA applications and databases is an aspiration - currently they are persistent but static reference objects. This presentation will cover the vocabulary publishing process at GA and a user's experience in managing a glossary to be used across government organisations.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Smith, Margie",
+              "affiliation": "Geoscience Australia",
+              "orcid": "0000-0003-2696-189X"
+            },
+            {
+              "name": "Sedgmen, Lara",
+              "affiliation": "Geoscience Australia"
+            }
+          ],
+          "keywords": [
+            "vocabularies",
+            "terminologies",
+            "semantic"
+          ],
+          "related_identifiers": [
+            {
+              "identifier": "10.5281/zenodo.10052531",
+              "relation": "isReferencedBy",
+              "resource_type": "event",
+              "scheme": "doi"
+            },
+            {
+              "identifier": "https://youtu.be/75itYMTfNlI",
+              "relation": "isReferencedBy",
+              "resource_type": "video",
+              "scheme": "url"
+            }
+          ],
+          "language": "eng",
+          "resource_type": {
+            "title": "Presentation",
+            "type": "presentation"
+          },
+          "meeting": {
+            "title": "2023 Vocabulary Symposium",
+            "dates": "14-15 November 2023",
+            "place": "Onsite (Canberra, ANU) and online.",
+            "url": "https://sites.google.com/ardc.edu.au/vocabulary-symposium-2023/"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "communities": [
+            {
+              "id": "ardc"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "10020477"
+                }
+              }
+            ]
+          }
+        },
+        "title": "Geoscience Australia Vocabularies as a FAIR'ly useful communication tool",
+        "links": {
+          "self": "https://zenodo.org/api/records/10020478",
+          "self_html": "https://zenodo.org/records/10020478",
+          "self_doi": "https://zenodo.org/doi/10.5281/zenodo.10020478",
+          "doi": "https://doi.org/10.5281/zenodo.10020478",
+          "parent": "https://zenodo.org/api/records/10020477",
+          "parent_html": "https://zenodo.org/records/10020477",
+          "parent_doi": "https://zenodo.org/doi/10.5281/zenodo.10020477",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:10020478/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:10020478/sequence/default",
+          "files": "https://zenodo.org/api/records/10020478/files",
+          "media_files": "https://zenodo.org/api/records/10020478/media-files",
+          "archive": "https://zenodo.org/api/records/10020478/files-archive",
+          "archive_media": "https://zenodo.org/api/records/10020478/media-files-archive",
+          "latest": "https://zenodo.org/api/records/10020478/versions/latest",
+          "latest_html": "https://zenodo.org/records/10020478/latest",
+          "draft": "https://zenodo.org/api/records/10020478/draft",
+          "versions": "https://zenodo.org/api/records/10020478/versions",
+          "access_links": "https://zenodo.org/api/records/10020478/access/links",
+          "access_users": "https://zenodo.org/api/records/10020478/access/users",
+          "access_request": "https://zenodo.org/api/records/10020478/access/request",
+          "access": "https://zenodo.org/api/records/10020478/access",
+          "reserve_doi": "https://zenodo.org/api/records/10020478/draft/pids/doi",
+          "communities": "https://zenodo.org/api/records/10020478/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/10020478/communities-suggestions",
+          "requests": "https://zenodo.org/api/records/10020478/requests"
+        },
+        "updated": "2023-11-24T06:10:23.960556+00:00",
+        "recid": "10020478",
+        "revision": 6,
+        "files": [
+          {
+            "id": "fef8c52e-8cac-4d7e-ba27-88bea36fa47d",
+            "key": "presentation - Smith, Margie.pdf",
+            "size": 2888880,
+            "checksum": "md5:422a044bfa22ea483099a5e6565895a1",
+            "links": {
+              "self": "https://zenodo.org/api/records/10020478/files/presentation - Smith, Margie.pdf/content"
+            }
+          },
+          {
+            "id": "1f342625-7099-45c2-9145-af33c14400be",
+            "key": "abstract - Smith, Margie.docx.pdf",
+            "size": 42838,
+            "checksum": "md5:7c7524cfb8c204b1ab508f5b899c3057",
+            "links": {
+              "self": "https://zenodo.org/api/records/10020478/files/abstract - Smith, Margie.docx.pdf/content"
+            }
+          }
+        ],
+        "owners": [
+          {
+            "id": 82930
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 47,
+          "unique_downloads": 33,
+          "views": 88,
+          "unique_views": 78,
+          "version_downloads": 47,
+          "version_unique_downloads": 33,
+          "version_unique_views": 78,
+          "version_views": 88
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2023-11-16T08:25:17.512812+00:00",
+        "modified": "2023-11-24T06:23:13.565338+00:00",
+        "id": 10141762,
+        "conceptrecid": "10020389",
+        "doi": "10.5281/zenodo.10141762",
+        "conceptdoi": "10.5281/zenodo.10020389",
+        "doi_url": "https://doi.org/10.5281/zenodo.10141762",
+        "metadata": {
+          "title": "The role of vocabularies in cultural heritage and the impact of new strategic drivers",
+          "doi": "10.5281/zenodo.10141762",
+          "publication_date": "2023-11-16",
+          "description": "<p>The NFSA collection covers video games, film, television, sound, radio, oral history, documents, and artefacts that reflect Australian audio-visual industries, history, and culture. NFSA is revising its collection data model from traditional records-based cataloguing to a knowledge graph and drawing upon the FRBR model generated by the library world to structure information conceptually (works/expressions) through to the versions of those expressions (files/items). Works/expressions have a mix of vocabulary information ranging from forms and genre (conceptual in nature) to artefact and media types (material in nature). Therefore, vocabulary terms may be consistent across all classes e.g., genre, or they may be applied at specific points in the class structure e.g., media type. The interlacing of the FRBR model and conceptual and actual vocabulary terms is significant. Conceptual information aids in understanding the breadth and quality of the collection and material information aids in understanding the nature of collection management (including digitisation and preservation). The impact of the new collection data model on NFSA operations, is that it will streamline data access, enhance governance, efficiency, and insights, ultimately empowering NFSA to better share their rich audio-visual heritage. Vocabularies play a critical role as \"translation tools\" that structure, categorise, and decipher vast data sets, ensuring accessibility, interoperability, and deeper understanding of cultural heritage data. Examples from the NFSA collection highlight the power of conceptual and material vocabularies for research and collection management.</p><p><strong>Version note</strong></p><p><i>Abstract edited to clarify terminology, replacing \"stories\" with \"works/expressions\". &nbsp;Originally, \"stories\" referred to the upper layer of content group 1, but this terminology may prove confusing since stories are not exclusive to one layer but are present across various layers of the model.&nbsp;</i></p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Drysdale, Jen",
+              "affiliation": "National Film and Sound Archive of Australia"
+            }
+          ],
+          "keywords": [
+            "Vocabularies",
+            "Terminologies",
+            "Semantic"
+          ],
+          "related_identifiers": [
+            {
+              "identifier": "https://youtu.be/nWG3kBmdnbY",
+              "relation": "isReferencedBy",
+              "resource_type": "video",
+              "scheme": "url"
+            },
+            {
+              "identifier": "10.5281/zenodo.10052531",
+              "relation": "isReferencedBy",
+              "resource_type": "event",
+              "scheme": "doi"
+            }
+          ],
+          "language": "enc",
+          "resource_type": {
+            "title": "Presentation",
+            "type": "presentation"
+          },
+          "meeting": {
+            "title": "2023 Vocabulary Symposium",
+            "dates": "14-15 November 2023",
+            "place": "Onsite (Canberra, ANU) and online.",
+            "url": "https://sites.google.com/ardc.edu.au/vocabulary-symposium-2023/"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "communities": [
+            {
+              "id": "ardc"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "index": 1,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "10020389"
+                }
+              }
+            ]
+          }
+        },
+        "title": "The role of vocabularies in cultural heritage and the impact of new strategic drivers",
+        "links": {
+          "self": "https://zenodo.org/api/records/10141762",
+          "self_html": "https://zenodo.org/records/10141762",
+          "self_doi": "https://zenodo.org/doi/10.5281/zenodo.10141762",
+          "doi": "https://doi.org/10.5281/zenodo.10141762",
+          "parent": "https://zenodo.org/api/records/10020389",
+          "parent_html": "https://zenodo.org/records/10020389",
+          "parent_doi": "https://zenodo.org/doi/10.5281/zenodo.10020389",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:10141762/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:10141762/sequence/default",
+          "files": "https://zenodo.org/api/records/10141762/files",
+          "media_files": "https://zenodo.org/api/records/10141762/media-files",
+          "archive": "https://zenodo.org/api/records/10141762/files-archive",
+          "archive_media": "https://zenodo.org/api/records/10141762/media-files-archive",
+          "latest": "https://zenodo.org/api/records/10141762/versions/latest",
+          "latest_html": "https://zenodo.org/records/10141762/latest",
+          "draft": "https://zenodo.org/api/records/10141762/draft",
+          "versions": "https://zenodo.org/api/records/10141762/versions",
+          "access_links": "https://zenodo.org/api/records/10141762/access/links",
+          "access_users": "https://zenodo.org/api/records/10141762/access/users",
+          "access_request": "https://zenodo.org/api/records/10141762/access/request",
+          "access": "https://zenodo.org/api/records/10141762/access",
+          "reserve_doi": "https://zenodo.org/api/records/10141762/draft/pids/doi",
+          "communities": "https://zenodo.org/api/records/10141762/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/10141762/communities-suggestions",
+          "requests": "https://zenodo.org/api/records/10141762/requests"
+        },
+        "updated": "2023-11-24T06:23:13.565338+00:00",
+        "recid": "10141762",
+        "revision": 10,
+        "files": [
+          {
+            "id": "b3fbce87-141a-4fcb-8955-cf024fa04e3c",
+            "key": "abstract - keynote - Drysdale, Jen-2.pdf",
+            "size": 151008,
+            "checksum": "md5:530f4dce71af318000639dd6c614fc29",
+            "links": {
+              "self": "https://zenodo.org/api/records/10141762/files/abstract - keynote - Drysdale, Jen-2.pdf/content"
+            }
+          },
+          {
+            "id": "1928c8ac-ad45-474b-a1f7-38f3227c98d4",
+            "key": "presentation - keynote - Drysdale, Jen.pdf",
+            "size": 3811149,
+            "checksum": "md5:8bd262644fd74dade2c8f940316d2f4b",
+            "links": {
+              "self": "https://zenodo.org/api/records/10141762/files/presentation - keynote - Drysdale, Jen.pdf/content"
+            }
+          }
+        ],
+        "owners": [
+          {
+            "id": 82930
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 126,
+          "unique_downloads": 78,
+          "views": 178,
+          "unique_views": 165,
+          "version_downloads": 92,
+          "version_unique_downloads": 55,
+          "version_unique_views": 116,
+          "version_views": 127
+        },
+        "state": "done",
+        "submitted": true
       }
     ],
-    "total": 17
+    "total": 309
+  },
+  "aggregations": {
+    "access_status": {
+      "buckets": [
+        {
+          "key": "open",
+          "doc_count": 308,
+          "label": "Open",
+          "is_selected": false
+        },
+        {
+          "key": "restricted",
+          "doc_count": 1,
+          "label": "Restricted",
+          "is_selected": false
+        }
+      ],
+      "label": "Access status"
+    },
+    "resource_type": {
+      "buckets": [
+        {
+          "key": "presentation",
+          "doc_count": 147,
+          "label": "Presentation",
+          "is_selected": false,
+          "inner": {
+            "buckets": [
+
+            ]
+          }
+        },
+        {
+          "key": "publication",
+          "doc_count": 116,
+          "label": "Publication",
+          "is_selected": false,
+          "inner": {
+            "buckets": [
+              {
+                "key": "publication-report",
+                "doc_count": 64,
+                "label": "Report",
+                "is_selected": false
+              },
+              {
+                "key": "publication-other",
+                "doc_count": 27,
+                "label": "Other",
+                "is_selected": false
+              },
+              {
+                "key": "publication-article",
+                "doc_count": 14,
+                "label": "Journal article",
+                "is_selected": false
+              },
+              {
+                "key": "publication-book",
+                "doc_count": 4,
+                "label": "Book",
+                "is_selected": false
+              },
+              {
+                "key": "publication-proposal",
+                "doc_count": 4,
+                "label": "Proposal",
+                "is_selected": false
+              },
+              {
+                "key": "publication-deliverable",
+                "doc_count": 2,
+                "label": "Project deliverable",
+                "is_selected": false
+              }
+            ]
+          }
+        },
+        {
+          "key": "other",
+          "doc_count": 16,
+          "label": "Other",
+          "is_selected": false,
+          "inner": {
+            "buckets": [
+
+            ]
+          }
+        },
+        {
+          "key": "poster",
+          "doc_count": 12,
+          "label": "Poster",
+          "is_selected": false,
+          "inner": {
+            "buckets": [
+
+            ]
+          }
+        },
+        {
+          "key": "dataset",
+          "doc_count": 6,
+          "label": "Dataset",
+          "is_selected": false,
+          "inner": {
+            "buckets": [
+
+            ]
+          }
+        },
+        {
+          "key": "video",
+          "doc_count": 5,
+          "label": "Video/Audio",
+          "is_selected": false,
+          "inner": {
+            "buckets": [
+
+            ]
+          }
+        },
+        {
+          "key": "lesson",
+          "doc_count": 4,
+          "label": "Lesson",
+          "is_selected": false,
+          "inner": {
+            "buckets": [
+
+            ]
+          }
+        },
+        {
+          "key": "software",
+          "doc_count": 3,
+          "label": "Software",
+          "is_selected": false,
+          "inner": {
+            "buckets": [
+
+            ]
+          }
+        }
+      ],
+      "label": "Resource types"
+    },
+    "subject": {
+      "buckets": [
+        {
+          "key": "training material",
+          "doc_count": 55,
+          "label": "training material",
+          "is_selected": false
+        },
+        {
+          "key": "ARDC",
+          "doc_count": 39,
+          "label": "ARDC",
+          "is_selected": false
+        },
+        {
+          "key": "FAIR",
+          "doc_count": 39,
+          "label": "FAIR",
+          "is_selected": false
+        },
+        {
+          "key": "Infrastructure",
+          "doc_count": 31,
+          "label": "Infrastructure",
+          "is_selected": false
+        },
+        {
+          "key": "NCRIS",
+          "doc_count": 31,
+          "label": "NCRIS",
+          "is_selected": false
+        },
+        {
+          "key": "vocabularies",
+          "doc_count": 30,
+          "label": "vocabularies",
+          "is_selected": false
+        },
+        {
+          "key": "Storage and Compute Summit",
+          "doc_count": 29,
+          "label": "Storage and Compute Summit",
+          "is_selected": false
+        },
+        {
+          "key": "eResearch",
+          "doc_count": 29,
+          "label": "eResearch",
+          "is_selected": false
+        },
+        {
+          "key": "semantics",
+          "doc_count": 26,
+          "label": "semantics",
+          "is_selected": false
+        },
+        {
+          "key": "Semantic",
+          "doc_count": 23,
+          "label": "Semantic",
+          "is_selected": false
+        }
+      ],
+      "label": "Subjects"
+    },
+    "file_type": {
+      "buckets": [
+        {
+          "key": "pdf",
+          "doc_count": 267,
+          "label": "PDF",
+          "is_selected": false
+        },
+        {
+          "key": "pptx",
+          "doc_count": 25,
+          "label": "PPTX",
+          "is_selected": false
+        },
+        {
+          "key": "mp4",
+          "doc_count": 8,
+          "label": "MP4",
+          "is_selected": false
+        },
+        {
+          "key": "zip",
+          "doc_count": 6,
+          "label": "ZIP",
+          "is_selected": false
+        },
+        {
+          "key": "xlsx",
+          "doc_count": 5,
+          "label": "XLSX",
+          "is_selected": false
+        },
+        {
+          "key": "csv",
+          "doc_count": 4,
+          "label": "CSV",
+          "is_selected": false
+        },
+        {
+          "key": "txt",
+          "doc_count": 3,
+          "label": "TXT",
+          "is_selected": false
+        },
+        {
+          "key": "docx",
+          "doc_count": 1,
+          "label": "DOCX",
+          "is_selected": false
+        },
+        {
+          "key": "gz",
+          "doc_count": 1,
+          "label": "GZ",
+          "is_selected": false
+        },
+        {
+          "key": "ods",
+          "doc_count": 1,
+          "label": "ODS",
+          "is_selected": false
+        }
+      ],
+      "label": "File type"
+    }
   },
   "links": {
-    "prev": "https://zenodo.org/api/records/?sort=mostrecent&communities=ardc&page=1&size=10",
-    "self": "https://zenodo.org/api/records/?sort=mostrecent&communities=ardc&page=2&size=10"
+    "prev": "https://zenodo.org/api/records?communities=ardc&page=1&size=25&sort=mostrecent",
+    "self": "https://zenodo.org/api/records?communities=ardc&page=2&size=25&sort=mostrecent"
   }
 }
