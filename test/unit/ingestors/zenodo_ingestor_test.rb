@@ -25,17 +25,17 @@ class ZenodoIngestorTest < ActiveSupport::TestCase
     refute Material.where(title: 'My First Material', url: 'https://app.com/materials/material1.html').any?
 
     # run task
-    assert_difference('Material.count', 25) do
+    assert_difference('Material.count', 50) do
       freeze_time(2019) do
         ingestor.read(source.url)
         ingestor.write(@user, @content_provider)
       end
     end
 
-    assert_equal 35, ingestor.materials.count
+    assert_equal 50, ingestor.materials.count
     assert ingestor.events.empty?
-    assert_equal 25, ingestor.stats[:materials][:added]
-    assert_equal 10, ingestor.stats[:materials][:updated]
+    assert_equal 50, ingestor.stats[:materials][:added]
+    assert_equal 0, ingestor.stats[:materials][:updated]
     assert_equal 0, ingestor.stats[:materials][:rejected]
 
     # check material added successfully
@@ -61,8 +61,8 @@ class ZenodoIngestorTest < ActiveSupport::TestCase
     assert_equal '10.5281/zenodo.10525947', material.doi, 'material.doi not matched.'
 
     # check material from page 2
-    material = get_zenodo_id(10020437, 'Learning From Language: Strategies for Building CAREful Vocabularies', 'Portal Provider')
-    assert material.authors.include?('Anderson, Theresa Dirndorfer (orcid: 0000-0003-1792-3728)'), 'material contributors[0] missing.'
+    material = get_zenodo_id(10052012, 'Privacy focused health data storage and access control through personal online datastores', 'Portal Provider')
+    assert material.authors.include?('Vidanage, Anushka (orcid: 0000-0002-5386-5871)'), 'material contributors[0] missing.'
   end
 
   private

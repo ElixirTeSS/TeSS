@@ -116,14 +116,14 @@
         ],
         "status": "published",
         "stats": {
-          "downloads": 65,
-          "unique_downloads": 33,
-          "views": 45,
-          "unique_views": 40,
-          "version_downloads": 65,
-          "version_unique_downloads": 33,
-          "version_unique_views": 40,
-          "version_views": 45
+          "downloads": 78,
+          "unique_downloads": 42,
+          "views": 58,
+          "unique_views": 53,
+          "version_downloads": 78,
+          "version_unique_downloads": 42,
+          "version_unique_views": 53,
+          "version_views": 58
         },
         "state": "done",
         "submitted": true
@@ -269,14 +269,127 @@
         ],
         "status": "published",
         "stats": {
-          "downloads": 88,
-          "unique_downloads": 36,
-          "views": 43,
-          "unique_views": 39,
-          "version_downloads": 88,
-          "version_unique_downloads": 36,
-          "version_unique_views": 39,
-          "version_views": 43
+          "downloads": 144,
+          "unique_downloads": 55,
+          "views": 69,
+          "unique_views": 62,
+          "version_downloads": 144,
+          "version_unique_downloads": 55,
+          "version_unique_views": 62,
+          "version_views": 69
+        },
+        "state": "done",
+        "submitted": true
+      },
+      {
+        "created": "2024-02-28T03:41:31.516329+00:00",
+        "modified": "2024-02-28T03:53:30.920399+00:00",
+        "id": 10668770,
+        "conceptrecid": "10668769",
+        "doi": "10.5281/zenodo.10668770",
+        "conceptdoi": "10.5281/zenodo.10668769",
+        "doi_url": "https://doi.org/10.5281/zenodo.10668770",
+        "metadata": {
+          "title": "ARDC co-investment guidelines",
+          "doi": "10.5281/zenodo.10668770",
+          "publication_date": "2024-02-16",
+          "description": "<p>This document provides guidelines for co-investment project partners regarding the co-investment of ARDC projects. It answers common questions raised by co-investment partners, including:</p>\n<ul>\n<li>strategic requirements for co-investment</li>\n<li>ARDC investment principles in projects&nbsp;&nbsp;</li>\n<li>eligible partner co-investment</li>\n<li>definition of cash co-investment</li>\n<li>definition of in-kind co-investment</li>\n<li>period of co-investment</li>\n<li>reporting of co-investment.</li>\n</ul>\n<p><strong>This is guidance only and any specific questions related to project co-investment reporting should be directed to <a href=\"mailto:ops@ardc.edu.au\">ops@ardc.edu.au</a>.</strong></p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Australian Research Data Commons",
+              "affiliation": null
+            }
+          ],
+          "keywords": [
+            "ARDC",
+            "Australian Research Data Commons",
+            "project",
+            "co-investment"
+          ],
+          "language": "eng",
+          "resource_type": {
+            "title": "Publication",
+            "type": "publication"
+          },
+          "license": {
+            "id": "cc-by-4.0"
+          },
+          "communities": [
+            {
+              "id": "ardc"
+            }
+          ],
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "10668769"
+                }
+              }
+            ]
+          }
+        },
+        "title": "ARDC co-investment guidelines",
+        "links": {
+          "self": "https://zenodo.org/api/records/10668770",
+          "self_html": "https://zenodo.org/records/10668770",
+          "self_doi": "https://zenodo.org/doi/10.5281/zenodo.10668770",
+          "doi": "https://doi.org/10.5281/zenodo.10668770",
+          "parent": "https://zenodo.org/api/records/10668769",
+          "parent_html": "https://zenodo.org/records/10668769",
+          "parent_doi": "https://zenodo.org/doi/10.5281/zenodo.10668769",
+          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:10668770/manifest",
+          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:10668770/sequence/default",
+          "files": "https://zenodo.org/api/records/10668770/files",
+          "media_files": "https://zenodo.org/api/records/10668770/media-files",
+          "archive": "https://zenodo.org/api/records/10668770/files-archive",
+          "archive_media": "https://zenodo.org/api/records/10668770/media-files-archive",
+          "latest": "https://zenodo.org/api/records/10668770/versions/latest",
+          "latest_html": "https://zenodo.org/records/10668770/latest",
+          "draft": "https://zenodo.org/api/records/10668770/draft",
+          "versions": "https://zenodo.org/api/records/10668770/versions",
+          "access_links": "https://zenodo.org/api/records/10668770/access/links",
+          "access_users": "https://zenodo.org/api/records/10668770/access/users",
+          "access_request": "https://zenodo.org/api/records/10668770/access/request",
+          "access": "https://zenodo.org/api/records/10668770/access",
+          "reserve_doi": "https://zenodo.org/api/records/10668770/draft/pids/doi",
+          "communities": "https://zenodo.org/api/records/10668770/communities",
+          "communities-suggestions": "https://zenodo.org/api/records/10668770/communities-suggestions",
+          "requests": "https://zenodo.org/api/records/10668770/requests"
+        },
+        "updated": "2024-02-28T03:53:30.920399+00:00",
+        "recid": "10668770",
+        "revision": 8,
+        "files": [
+          {
+            "id": "258aba78-e31f-499b-a492-fd15f1cf0099",
+            "key": "ARDC Co-Investment Guidelines_v 1.0.pdf",
+            "size": 234532,
+            "checksum": "md5:09f8140a86fa31ccd2db506c3205b8dc",
+            "links": {
+              "self": "https://zenodo.org/api/records/10668770/files/ARDC Co-Investment Guidelines_v 1.0.pdf/content"
+            }
+          }
+        ],
+        "owners": [
+          {
+            "id": 82930
+          }
+        ],
+        "status": "published",
+        "stats": {
+          "downloads": 29,
+          "unique_downloads": 16,
+          "views": 27,
+          "unique_views": 18,
+          "version_downloads": 29,
+          "version_unique_downloads": 16,
+          "version_unique_views": 18,
+          "version_views": 27
         },
         "state": "done",
         "submitted": true
@@ -404,14 +517,14 @@
         ],
         "status": "published",
         "stats": {
-          "downloads": 55,
-          "unique_downloads": 34,
-          "views": 59,
-          "unique_views": 53,
-          "version_downloads": 55,
-          "version_unique_downloads": 34,
-          "version_unique_views": 53,
-          "version_views": 59
+          "downloads": 58,
+          "unique_downloads": 35,
+          "views": 60,
+          "unique_views": 54,
+          "version_downloads": 58,
+          "version_unique_downloads": 35,
+          "version_unique_views": 54,
+          "version_views": 60
         },
         "state": "done",
         "submitted": true
@@ -548,14 +661,14 @@
         ],
         "status": "published",
         "stats": {
-          "downloads": 138,
-          "unique_downloads": 100,
-          "views": 138,
-          "unique_views": 122,
-          "version_downloads": 131,
-          "version_unique_downloads": 95,
-          "version_unique_views": 112,
-          "version_views": 127
+          "downloads": 139,
+          "unique_downloads": 101,
+          "views": 142,
+          "unique_views": 126,
+          "version_downloads": 132,
+          "version_unique_downloads": 96,
+          "version_unique_views": 116,
+          "version_views": 131
         },
         "state": "done",
         "submitted": true
@@ -668,12 +781,12 @@
         "stats": {
           "downloads": 85,
           "unique_downloads": 64,
-          "views": 109,
-          "unique_views": 99,
+          "views": 112,
+          "unique_views": 102,
           "version_downloads": 85,
           "version_unique_downloads": 64,
-          "version_unique_views": 99,
-          "version_views": 109
+          "version_unique_views": 102,
+          "version_views": 112
         },
         "state": "done",
         "submitted": true
@@ -1024,14 +1137,14 @@
         ],
         "status": "published",
         "stats": {
-          "downloads": 315,
-          "unique_downloads": 162,
-          "views": 464,
-          "unique_views": 328,
-          "version_downloads": 173,
-          "version_unique_downloads": 110,
-          "version_unique_views": 204,
-          "version_views": 246
+          "downloads": 316,
+          "unique_downloads": 163,
+          "views": 467,
+          "unique_views": 331,
+          "version_downloads": 174,
+          "version_unique_downloads": 111,
+          "version_unique_views": 207,
+          "version_views": 249
         },
         "state": "done",
         "submitted": true
@@ -1300,14 +1413,14 @@
         ],
         "status": "published",
         "stats": {
-          "downloads": 68,
-          "unique_downloads": 52,
-          "views": 90,
-          "unique_views": 77,
-          "version_downloads": 68,
-          "version_unique_downloads": 52,
-          "version_unique_views": 77,
-          "version_views": 90
+          "downloads": 76,
+          "unique_downloads": 57,
+          "views": 98,
+          "unique_views": 84,
+          "version_downloads": 76,
+          "version_unique_downloads": 57,
+          "version_unique_views": 84,
+          "version_views": 98
         },
         "state": "done",
         "submitted": true
@@ -2151,12 +2264,12 @@
         "stats": {
           "downloads": 59,
           "unique_downloads": 39,
-          "views": 150,
-          "unique_views": 140,
+          "views": 151,
+          "unique_views": 141,
           "version_downloads": 59,
           "version_unique_downloads": 39,
-          "version_unique_views": 140,
-          "version_views": 150
+          "version_unique_views": 141,
+          "version_views": 151
         },
         "state": "done",
         "submitted": true
@@ -2298,12 +2411,12 @@
         "stats": {
           "downloads": 44,
           "unique_downloads": 33,
-          "views": 93,
-          "unique_views": 85,
+          "views": 94,
+          "unique_views": 86,
           "version_downloads": 44,
           "version_unique_downloads": 33,
-          "version_unique_views": 85,
-          "version_views": 93
+          "version_unique_views": 86,
+          "version_views": 94
         },
         "state": "done",
         "submitted": true
@@ -2439,12 +2552,12 @@
         "stats": {
           "downloads": 81,
           "unique_downloads": 52,
-          "views": 203,
-          "unique_views": 187,
+          "views": 204,
+          "unique_views": 188,
           "version_downloads": 41,
           "version_unique_downloads": 30,
-          "version_unique_views": 105,
-          "version_views": 119
+          "version_unique_views": 106,
+          "version_views": 120
         },
         "state": "done",
         "submitted": true
@@ -2585,12 +2698,12 @@
         "stats": {
           "downloads": 47,
           "unique_downloads": 33,
-          "views": 88,
-          "unique_views": 78,
+          "views": 89,
+          "unique_views": 79,
           "version_downloads": 47,
           "version_unique_downloads": 33,
-          "version_unique_views": 78,
-          "version_views": 88
+          "version_unique_views": 79,
+          "version_views": 89
         },
         "state": "done",
         "submitted": true
@@ -2726,8 +2839,8 @@
         "stats": {
           "downloads": 126,
           "unique_downloads": 78,
-          "views": 178,
-          "unique_views": 165,
+          "views": 179,
+          "unique_views": 166,
           "version_downloads": 92,
           "version_unique_downloads": 55,
           "version_unique_views": 116,
@@ -2866,12 +2979,12 @@
         "stats": {
           "downloads": 77,
           "unique_downloads": 51,
-          "views": 157,
-          "unique_views": 144,
+          "views": 159,
+          "unique_views": 146,
           "version_downloads": 55,
           "version_unique_downloads": 40,
-          "version_unique_views": 104,
-          "version_views": 114
+          "version_unique_views": 106,
+          "version_views": 116
         },
         "state": "done",
         "submitted": true
@@ -3028,12 +3141,12 @@
         "stats": {
           "downloads": 66,
           "unique_downloads": 44,
-          "views": 183,
-          "unique_views": 174,
+          "views": 186,
+          "unique_views": 177,
           "version_downloads": 66,
           "version_unique_downloads": 44,
-          "version_unique_views": 174,
-          "version_views": 183
+          "version_unique_views": 177,
+          "version_views": 186
         },
         "state": "done",
         "submitted": true
@@ -3175,12 +3288,12 @@
         "stats": {
           "downloads": 60,
           "unique_downloads": 43,
-          "views": 151,
-          "unique_views": 141,
+          "views": 152,
+          "unique_views": 142,
           "version_downloads": 60,
           "version_unique_downloads": 43,
-          "version_unique_views": 141,
-          "version_views": 151
+          "version_unique_views": 142,
+          "version_views": 152
         },
         "state": "done",
         "submitted": true
@@ -3296,138 +3409,16 @@
         },
         "state": "done",
         "submitted": true
-      },
-      {
-        "created": "2023-11-15T19:00:14.251314+00:00",
-        "modified": "2023-11-15T19:01:58.895229+00:00",
-        "id": 10138707,
-        "conceptrecid": "10138706",
-        "doi": "10.5281/zenodo.10138707",
-        "conceptdoi": "10.5281/zenodo.10138706",
-        "doi_url": "https://doi.org/10.5281/zenodo.10138707",
-        "metadata": {
-          "title": "Notes from group brainstorm sessions from the 2023 Vocabulary Symposium",
-          "doi": "10.5281/zenodo.10138707",
-          "publication_date": "2023-11-16",
-          "description": "<p>The 2023 Vocabulary Symposium held two brainstorming sessions. &nbsp;These are the session notes</p><ul><li>FAIR Vocabularies For Cross Domain Data Integration - what is key?</li><li>Moving FAIR Vocabularies Forward For All: what are our priorities?</li></ul>",
-          "access_right": "open",
-          "creators": [
-            {
-              "name": "Australian Research Data Commons",
-              "affiliation": null
-            }
-          ],
-          "language": "eng",
-          "resource_type": {
-            "title": "Other",
-            "type": "publication",
-            "subtype": "other"
-          },
-          "meeting": {
-            "title": "2023 Vocabulary Symposium",
-            "place": "Onsite (Canberra, ANU) and online.",
-            "url": "https://sites.google.com/ardc.edu.au/vocabulary-symposium-2023/"
-          },
-          "license": {
-            "id": "cc-by-4.0"
-          },
-          "communities": [
-            {
-              "id": "ardc"
-            }
-          ],
-          "relations": {
-            "version": [
-              {
-                "index": 0,
-                "is_last": true,
-                "parent": {
-                  "pid_type": "recid",
-                  "pid_value": "10138706"
-                }
-              }
-            ]
-          }
-        },
-        "title": "Notes from group brainstorm sessions from the 2023 Vocabulary Symposium",
-        "links": {
-          "self": "https://zenodo.org/api/records/10138707",
-          "self_html": "https://zenodo.org/records/10138707",
-          "self_doi": "https://zenodo.org/doi/10.5281/zenodo.10138707",
-          "doi": "https://doi.org/10.5281/zenodo.10138707",
-          "parent": "https://zenodo.org/api/records/10138706",
-          "parent_html": "https://zenodo.org/records/10138706",
-          "parent_doi": "https://zenodo.org/doi/10.5281/zenodo.10138706",
-          "self_iiif_manifest": "https://zenodo.org/api/iiif/record:10138707/manifest",
-          "self_iiif_sequence": "https://zenodo.org/api/iiif/record:10138707/sequence/default",
-          "files": "https://zenodo.org/api/records/10138707/files",
-          "media_files": "https://zenodo.org/api/records/10138707/media-files",
-          "archive": "https://zenodo.org/api/records/10138707/files-archive",
-          "archive_media": "https://zenodo.org/api/records/10138707/media-files-archive",
-          "latest": "https://zenodo.org/api/records/10138707/versions/latest",
-          "latest_html": "https://zenodo.org/records/10138707/latest",
-          "draft": "https://zenodo.org/api/records/10138707/draft",
-          "versions": "https://zenodo.org/api/records/10138707/versions",
-          "access_links": "https://zenodo.org/api/records/10138707/access/links",
-          "access_users": "https://zenodo.org/api/records/10138707/access/users",
-          "access_request": "https://zenodo.org/api/records/10138707/access/request",
-          "access": "https://zenodo.org/api/records/10138707/access",
-          "reserve_doi": "https://zenodo.org/api/records/10138707/draft/pids/doi",
-          "communities": "https://zenodo.org/api/records/10138707/communities",
-          "communities-suggestions": "https://zenodo.org/api/records/10138707/communities-suggestions",
-          "requests": "https://zenodo.org/api/records/10138707/requests"
-        },
-        "updated": "2023-11-15T19:01:58.895229+00:00",
-        "recid": "10138707",
-        "revision": 6,
-        "files": [
-          {
-            "id": "4a0d5b14-bb56-4650-b1d4-db98f00a5c22",
-            "key": "Notes from the day two group brainstorming session.pdf",
-            "size": 237451,
-            "checksum": "md5:efe0b359f014a0c45d94ae381ab17447",
-            "links": {
-              "self": "https://zenodo.org/api/records/10138707/files/Notes from the day two group brainstorming session.pdf/content"
-            }
-          },
-          {
-            "id": "5dcaca06-5824-46b6-ac85-4d47a16e5e25",
-            "key": "Notes from the day one group brainstorming session.pdf",
-            "size": 72760,
-            "checksum": "md5:85d1045a58f2bae7aa69b2b671bf6999",
-            "links": {
-              "self": "https://zenodo.org/api/records/10138707/files/Notes from the day one group brainstorming session.pdf/content"
-            }
-          }
-        ],
-        "owners": [
-          {
-            "id": 82930
-          }
-        ],
-        "status": "published",
-        "stats": {
-          "downloads": 80,
-          "unique_downloads": 60,
-          "views": 89,
-          "unique_views": 67,
-          "version_downloads": 80,
-          "version_unique_downloads": 60,
-          "version_unique_views": 67,
-          "version_views": 89
-        },
-        "state": "done",
-        "submitted": true
       }
     ],
-    "total": 309
+    "total": 310
   },
   "aggregations": {
     "access_status": {
       "buckets": [
         {
           "key": "open",
-          "doc_count": 308,
+          "doc_count": 309,
           "label": "Open",
           "is_selected": false
         },
@@ -3455,7 +3446,7 @@
         },
         {
           "key": "publication",
-          "doc_count": 116,
+          "doc_count": 117,
           "label": "Publication",
           "is_selected": false,
           "inner": {
@@ -3578,7 +3569,7 @@
         },
         {
           "key": "ARDC",
-          "doc_count": 39,
+          "doc_count": 40,
           "label": "ARDC",
           "is_selected": false
         },
@@ -3637,7 +3628,7 @@
       "buckets": [
         {
           "key": "pdf",
-          "doc_count": 267,
+          "doc_count": 268,
           "label": "PDF",
           "is_selected": false
         },
