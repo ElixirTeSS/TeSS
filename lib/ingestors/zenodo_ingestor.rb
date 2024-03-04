@@ -66,7 +66,7 @@ module Ingestors
           material.title = metadata['title'] unless metadata['title'].nil?
           material.description = process_description metadata['description']
           material.keywords = metadata['keywords'] unless metadata['keywords'].nil?
-          material.licence = metadata['license']['id'].upcase unless metadata.dig('license', 'id').nil?
+          material.licence = metadata['license']['id'] unless metadata.dig('license', 'id').nil?
           unless metadata['creators'].nil?
             metadata['creators'].each do |c|
               entry = c['orcid'].nil? ? c['name'] : "#{c['name']} (orcid: #{c['orcid']})"
