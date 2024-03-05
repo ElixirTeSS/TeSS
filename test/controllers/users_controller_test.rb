@@ -370,7 +370,19 @@ class UsersControllerTest < ActionController::TestCase
     refute assigns(:users).include?(users(:another_regular_user))
   end
 
-  test 'should not show banned or basic users in index' do
+  test 'should not show banned or basic users in index if not admin' do
+    get :index
+    assert_response :success
+    all_users = assigns(:users).to_a
+    assert users(:shadowbanned_user).banned?
+    assert_not_includes all_users, users(:shadowbanned_user)
+    assert_not_includes all_users, users(:unverified_user)
+    assert_not_includes all_users, users(:basic_user)
+    assert_includes all_users, users(:regular_user)
+  end
+
+  test 'should show banned or basic users in index if admin' do
+    sign_in @admin
     get :index
     assert_response :success
     all_users = assigns(:users).to_a
