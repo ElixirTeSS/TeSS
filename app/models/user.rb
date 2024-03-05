@@ -374,6 +374,10 @@ class User < ApplicationRecord
     end
   end
 
+  def show_website?
+    sign_in_count > 10
+  end
+
   protected
 
   def reassign_resources(new_owner = User.get_default_user)

@@ -36,14 +36,16 @@
         <% end %>
       </p>
 
-      <p>
-        <strong><%= model_class.human_attribute_name(:website) %></strong><br/>
-        <% if @user.profile.website.blank? %>
-          <span class="empty">None specified</span>
-        <% else %>
-          <%= link_to @user.profile.website, @user.profile.website, rel: 'nofollow', target: '_blank' %>
-        <% end %>
-      </p>
+      <% if @user.show_website? || (current_user&.is_admin? || current_user&.is_curator?) %>
+        <p>
+          <strong><%= model_class.human_attribute_name(:website) %></strong><br/>
+          <% if @user.profile.website.blank? %>
+            <span class="empty">None specified</span>
+          <% else %>
+            <%= link_to @user.profile.website, @user.profile.website, rel: 'nofollow', target: '_blank' %>
+          <% end %>
+        </p>
+      <% end %>
 
       <p>
         <strong>ORCID</strong><br/>

@@ -11,7 +11,11 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     @users = User.visible
-    @users = @users.with_query(params[:q].chomp('*')) if params[:q].present?
+    if params[:q].present?
+      @users = @users.with_query(params[:q].chomp('*'))
+    elsif !(current_user&.is_admin? || current_user&.is_curator?)
+      @users = @users.verified
+    end
     @users = @users.paginate(page: params[:page], per_page: 50)
 
     respond_to do |format|
@@ -23,7 +27,7 @@ class UsersController < ApplicationController
 
   # GET/invitees
   def invitees
-    if current_user.is_admin? or current_user.is_curator?
+    if current_user&.is_admin? || current_user&.is_curator?
       @users = User.invited
       respond_to do |format|
         format.html
