@@ -55,12 +55,11 @@ class BioschemasControllerTest < ActionController::TestCase
 
   test 'should test JSON-LD URL' do
     WebMock.stub_request(:get, 'https://website.com/material.json').
-      to_return(status: 200, headers: {}, body: fixture_file('ext_res.json').read)
+      to_return(status: 200, headers: { content_type: 'application/json' }, body: fixture_file('ext_res.json').read)
 
     sign_in users(:regular_user)
 
     post :run_test, params: { url: 'https://website.com/material.json' }
-
 
     output = assigns(:output)
     assert_equal 1, output[:totals]['LearningResources']
@@ -92,6 +91,25 @@ class BioschemasControllerTest < ActionController::TestCase
     sign_in users(:regular_user)
 
     post :run_test, params: { snippet: "{ 'oh dear }" }
+
+    assert_response :unprocessable_entity
+    assert flash[:error].include?('parsing error')
+  ensure
+    JSON::LD::Reader.define_method(old_method.name, old_method)
+  end
+
+  test 'should gracefully handle malformed JSON-LD URL' do
+    # Silence error stdout from RDF library
+    old_method = JSON::LD::Reader.instance_method(:logger_common)
+    JSON::LD::Reader.define_method(:logger_common) { |*args| }
+
+    WebMock.stub_request(:get, 'https://website.com/material.json').
+      to_return(status: 200, body: '{ { "wut ;}',
+                headers: { content_type: 'application/json' })
+
+    sign_in users(:regular_user)
+
+    post :run_test, params: { url: 'https://website.com/material.json' }
 
     assert_response :unprocessable_entity
     assert flash[:error].include?('parsing error')
