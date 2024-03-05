@@ -92,8 +92,9 @@ class BioschemasControllerTest < ActionController::TestCase
 
     post :run_test, params: { snippet: "{ 'oh dear }" }
 
-    assert_response :unprocessable_entity
-    assert flash[:error].include?('parsing error')
+    assert_response :success
+    assert_select '.source-log', text:
+      'A parsing error occurred while reading the source. Please check your page contains valid JSON-LD or HTML.'
   ensure
     JSON::LD::Reader.define_method(old_method.name, old_method)
   end
@@ -111,8 +112,9 @@ class BioschemasControllerTest < ActionController::TestCase
 
     post :run_test, params: { url: 'https://website.com/material.json' }
 
-    assert_response :unprocessable_entity
-    assert flash[:error].include?('parsing error')
+    assert_response :success
+    assert_select '.source-log', text:
+      'A parsing error occurred while reading: https://website.com/material.json . Please check your page contains valid JSON-LD or HTML.'
   ensure
     JSON::LD::Reader.define_method(old_method.name, old_method)
   end

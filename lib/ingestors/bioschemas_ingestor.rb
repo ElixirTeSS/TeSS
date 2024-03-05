@@ -3,6 +3,8 @@ require 'tess_rdf_extractors'
 
 module Ingestors
   class BioschemasIngestor < Ingestor
+    DUMMY_URL = 'https://example.com'
+
     attr_reader :verbose
 
     def self.config
@@ -17,13 +19,14 @@ module Ingestors
       sitemap_regex = nil
       @verbose = false
       sources = if source_url.downcase.match?(/sitemap(.*)?.xml\Z/)
-                  @messages << "\nParsing sitemap: #{source_url}\n"
+                  sitemap_message = "Parsing sitemap: #{source_url}\n"
                   urls = SitemapParser.new(source_url, {
-                                      recurse: true,
-                                      url_regex: sitemap_regex,
-                                      headers: { 'User-Agent' => config[:user_agent] }
-                                    }).to_a.uniq.map(&:strip)
-                  @messages << " - #{urls.count} URLs found"
+                    recurse: true,
+                    url_regex: sitemap_regex,
+                    headers: { 'User-Agent' => config[:user_agent] }
+                  }).to_a.uniq.map(&:strip)
+                  sitemap_message << "\n - #{urls.count} URLs found"
+                  @messages << sitemap_message
                   urls
                 else
                   [source_url]
@@ -35,19 +38,21 @@ module Ingestors
       sources.each do |url|
         source = open_url(url)
         output = read_content(source, url: url)
-        provider_events += output[:resources][:events]
-        provider_materials += output[:resources][:materials]
-        output[:totals].each do |key, value|
-          totals[key] += value
+        if output
+          provider_events += output[:resources][:events]
+          provider_materials += output[:resources][:materials]
+          output[:totals].each do |key, value|
+            totals[key] += value
+          end
         end
       end
 
       if totals.keys.any?
-        @messages << "\nBioschemas summary:\n"
+        bioschemas_summary = "Bioschemas summary:\n"
         totals.each do |type, count|
-          @messages << " - #{type}: #{count}"
+          bioschemas_summary << "\n - #{type}: #{count}"
         end
-
+        @messages << bioschemas_summary
       end
 
       deduplicate(provider_events).each do |event_params|
@@ -65,46 +70,65 @@ module Ingestors
           events: [],
           materials: []
         },
-        totals:  Hash.new(0)
+        totals: Hash.new(0)
       }
 
       return output unless content
 
-      sample = content.read(256)&.strip
-      return output unless sample
+      begin
+        sample = content.read(256)&.strip
+        return output unless sample
 
-      format = sample.start_with?('[') || sample.start_with?('{') ? :jsonld : :rdfa
-      content.rewind
-      source = content.read
-      events = Tess::Rdf::EventExtractor.new(source, format, base_uri: url).extract do |p|
-        convert_params(p)
-      end
-      courses = Tess::Rdf::CourseExtractor.new(source, format, base_uri: url).extract do |p|
-        convert_params(p)
-      end
-      course_instances = Tess::Rdf::CourseInstanceExtractor.new(source, format, base_uri: url).extract do |p|
-        convert_params(p)
-      end
-      learning_resources = Tess::Rdf::LearningResourceExtractor.new(source, format, base_uri: url).extract do |p|
-        convert_params(p)
-      end
-      output[:totals]['Events'] += events.count
-      output[:totals]['Courses'] += courses.count
-      output[:totals]['CourseInstances'] += course_instances.count
-      output[:totals]['LearningResources'] += learning_resources.count
-      if verbose
-        puts "Events: #{events.count}"
-        puts "Courses: #{courses.count}"
-        puts "CourseInstances: #{course_instances.count}"
-        puts "LearningResources: #{learning_resources.count}"
-      end
+        format = sample.start_with?('[') || sample.start_with?('{') ? :jsonld : :rdfa
+        content.rewind
+        source = content.read
+        events = Tess::Rdf::EventExtractor.new(source, format, base_uri: url).extract do |p|
+          convert_params(p)
+        end
+        courses = Tess::Rdf::CourseExtractor.new(source, format, base_uri: url).extract do |p|
+          convert_params(p)
+        end
+        course_instances = Tess::Rdf::CourseInstanceExtractor.new(source, format, base_uri: url).extract do |p|
+          convert_params(p)
+        end
+        learning_resources = Tess::Rdf::LearningResourceExtractor.new(source, format, base_uri: url).extract do |p|
+          convert_params(p)
+        end
+        output[:totals]['Events'] += events.count
+        output[:totals]['Courses'] += courses.count
+        output[:totals]['CourseInstances'] += course_instances.count
+        output[:totals]['LearningResources'] += learning_resources.count
+        if verbose
+          puts "Events: #{events.count}"
+          puts "Courses: #{courses.count}"
+          puts "CourseInstances: #{course_instances.count}"
+          puts "LearningResources: #{learning_resources.count}"
+        end
 
-      deduplicate(events + courses + course_instances).each do |event|
-        output[:resources][:events] << event
-      end
+        deduplicate(events + courses + course_instances).each do |event|
+          output[:resources][:events] << event
+        end
 
-      deduplicate(learning_resources).each do |material|
-        output[:resources][:materials] << material
+        deduplicate(learning_resources).each do |material|
+          output[:resources][:materials] << material
+        end
+      rescue StandardError => e
+        Rails.logger.error("#{e.class}: #{e.message}")
+        Rails.logger.error(e.backtrace.join("\n")) if e.backtrace&.any?
+        error = 'An error'
+        comment = nil
+        if e.is_a?(RDF::ReaderError)
+          error = 'A parsing error'
+          comment = 'Please check your page contains valid JSON-LD or HTML.'
+        end
+        message = "#{error} occurred while reading"
+        if url.present? && url != 'https://example.com'
+          message << ": #{url} "
+        else
+          message << " the source"
+        end
+        message << ". #{comment}" if comment
+        @messages << message
       end
 
       output
