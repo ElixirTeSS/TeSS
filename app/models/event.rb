@@ -20,7 +20,8 @@ class Event < ApplicationRecord
 
   before_validation :fix_keywords, on: :create, if: :scraper_record
   before_validation :presence_default
-  before_save :check_country_name # :set_default_times
+  before_save :check_country_name
+  before_save :set_default_times
   before_save :geocoding_cache_lookup, if: :address_will_change?
   after_save :enqueue_geocoding_worker, if: :address_changed?
 
@@ -253,7 +254,9 @@ class Event < ApplicationRecord
 
     self.start = start + 9.hours if start.hour == 0 # hour set to 0 if not otherwise defined...
 
-    unless self.end
+    if self.end
+      self.end = end + 17.hours if start.hour == 0 # hour set to 0 if not otherwise defined...
+    else
       if online?
         self.end = start + 1.hour
       else
