@@ -35,7 +35,7 @@ class Event < ApplicationRecord
       text :venue
       text :city
       text :country
-      boolean :curation
+      boolean :curation_show
       text :host_institutions
       text :timezone
       text :content_provider do

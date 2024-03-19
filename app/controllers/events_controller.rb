@@ -231,7 +231,7 @@ class EventsController < ApplicationController
                                   { keywords: [] }, { fields: [] }, :start, :end, :duration, { sponsors: [] },
                                   :online, :venue, :city, :county, :country, :postcode, :latitude, :longitude,
                                   :timezone, :content_provider_id, { collection_ids: [] }, { node_ids: [] },
-                                  { node_names: [] }, { target_audience: [] }, { eligibility: [] }, :curation,
+                                  { node_names: [] }, { target_audience: [] }, { eligibility: [] }, :curation_show,
                                   { host_institutions: [] }, :capacity, :contact, :recognition, :learning_objectives,
                                   :prerequisites, :tech_requirements, :cost_basis, :cost_value, :cost_currency,
                                   external_resources_attributes: %i[id url title _destroy], material_ids: [],

@@ -226,7 +226,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_19_101101) do
     t.string "cost_basis"
     t.string "cost_currency"
     t.string "fields", default: [], array: true
-    t.boolean "curation", default: true
+    t.boolean "curation_show", default: true
     t.index ["presence"], name: "index_events_on_presence"
     t.index ["slug"], name: "index_events_on_slug", unique: true
     t.index ["user_id"], name: "index_events_on_user_id"
