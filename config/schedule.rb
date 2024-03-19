@@ -42,6 +42,17 @@ else
   end
 end
 
+# Curation mail
+if !schedules['curation_mail'].nil?
+  every :"#{schedules['curation_mail']['every']}", at: "#{schedules['curation_mail']['at']}" do
+    rake "tess:event_curation_mails"
+  end
+else
+  every :monday, at: '9am' do
+    rake "tess:event_curation_mails"
+  end
+end
+
 if !schedules['autocomplete_suggestions'].nil?
   every :"#{schedules['autocomplete_suggestions']['every']}", at: "#{schedules['autocomplete_suggestions']['at']}" do
     rake "tess:rebuild_autocomplete_suggestions"
