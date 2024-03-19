@@ -21,8 +21,8 @@ class SourceTestWorker
       ingestor.token = source.token
       ingestor.read(source.url)
       results = {
-        events: ingestor.events.map { |r| r.to_h },
-        materials: ingestor.materials.map { |r| r.to_h },
+        events: ingestor.events,
+        materials: ingestor.materials,
         messages: ingestor.messages,
       }
     rescue StandardError => e

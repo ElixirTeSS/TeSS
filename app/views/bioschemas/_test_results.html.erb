@@ -24,12 +24,22 @@
     <% end %>
   </div>
   <div class="col-md-8 col-md-pull-4">
+    <% unless @output[:messages].blank? %>
+      <h5>Log</h5>
+      <div class="markdown source-log">
+        <%= render_markdown(@output[:messages].join("\n\n")) %>
+      </div>
+    <% end %>
     <h4>Bioschemas summary:</h4>
-    <table class="table" style="max-width: 20em">
-      <% @output[:totals].each do |type, total| %>
-        <tr><td><%= type %></td><td><%= total %></td></tr>
-      <% end %>
-    </table>
+    <% if @output[:totals].values.sum.zero? %>
+      <span class="muted">Nothing found</span>
+    <% else %>
+      <table class="table" style="max-width: 20em">
+        <% @output[:totals].each do |type, total| %>
+          <tr><td><%= type %></td><td><%= total %></td></tr>
+        <% end %>
+      </table>
+    <% end %>
   </div>
 </div>
 

@@ -19,6 +19,7 @@
     <hr>
     <%= render partial: 'common/masonry_grid', locals: { objects: @sources } %>
 
+    <%= render partial: "search/common/pagination_bar", locals: { resources: @sources } %>
   </div>
 
 </div>

@@ -48,9 +48,10 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     @ingestor.read('https://training.galaxyproject.org/sitemap.xml')
     assert_equal 0, @ingestor.events.count
     assert_equal 3, @ingestor.materials.count
-    assert_includes @ingestor.messages, " - 6 URLs found"
-    assert_includes @ingestor.messages, " - Events: 0"
-    assert_includes @ingestor.messages, " - LearningResources: 3"
+    messages = @ingestor.messages.join("\n")
+    assert_includes messages, "\n - 6 URLs found"
+    assert_includes messages, "\n - Events: 0"
+    assert_includes messages, "\n - LearningResources: 3"
 
     assert_difference('Material.count', 3) do
       @ingestor.write(@user, @content_provider)

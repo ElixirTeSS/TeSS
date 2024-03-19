@@ -11,12 +11,13 @@ class LicenceDictionary < Dictionary
     @abbrvs ||= @dictionary.keys
   end
 
-  def licence_names(licence_dictionary=@dictionary)
+  def licence_names(licence_dictionary = @dictionary)
     @licence_names ||= licence_dictionary.map { |_, value| value['title'] }
   end
 
-  def lookup_uri(uri)
-    @uri_mapping[uri]
+  # Translate a URI or ID in the wrong case to a valid ID, if one exists.
+  def normalize_id(id)
+    @uri_mapping[id] || @downcase_mapping[id.downcase]
   end
 
   def grouped_options_for_select(existing = nil)
@@ -52,6 +53,7 @@ class LicenceDictionary < Dictionary
   def load_dictionary
     d = super
     @uri_mapping = {}
+    @downcase_mapping = {}
     d.each do |id, data|
       uris = data['see_also'] || []
       uris << data['reference']
@@ -59,6 +61,7 @@ class LicenceDictionary < Dictionary
       uris.reject(&:blank?).each do |uri|
         @uri_mapping[uri] = id
       end
+      @downcase_mapping[id.downcase] = id
     end
     d
   end

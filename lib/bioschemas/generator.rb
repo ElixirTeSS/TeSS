@@ -85,5 +85,21 @@ module Bioschemas
         "name" => person
       }
     end
+
+    def self.address(event)
+      {
+        '@type' => 'Place',
+        'address' => {
+          '@type' => 'PostalAddress',
+          'streetAddress' => event.venue,
+          'addressLocality' => event.city,
+          'addressRegion' => event.county,
+          'addressCountry' => event.country,
+          'postalCode' => event.postcode
+        }.compact,
+        'latitude' => event.latitude,
+        'longitude' => event.longitude
+      }.compact
+    end
   end
 end

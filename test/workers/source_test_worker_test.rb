@@ -84,6 +84,38 @@ class SourceTestWorkerTest < ActiveSupport::TestCase
     end
   end
 
+  test 'test source with nested attributes (mentions)' do
+    mock_bioschemas('https://website.org', 'mentions.jsonld')
+
+    source = sources(:unapproved_source)
+    assert_nil source.test_results
+
+    Sidekiq::Testing.inline! do
+      SourceTestWorker.perform_async([source.id])
+    end
+
+    source.reload
+    results = nil
+    assert_nothing_raised do
+      results = source.test_results
+    end
+    assert results
+    assert_equal 1, results[:materials].length
+    sample = results[:materials].detect { |e| e[:title] == 'helloworld tutorial. dancing in a nutshell' }
+    assert sample
+    assert results[:run_time] > 0
+    assert results[:finished_at] > 1.day.ago
+    ext_res = sample[:external_resources_attributes]
+    assert_equal 1, ext_res.length
+    res = ext_res.first
+    assert res.is_a?(Hash)
+    assert_equal 'https://doi.org/10.1086/679716', res['url']
+    assert_equal 'An Article About Something', res['title']
+  ensure
+    path = source.send(:test_results_path)
+    FileUtils.rm(path) if File.exist?(path)
+  end
+
   private
 
   def mock_bioschemas(url, filename)

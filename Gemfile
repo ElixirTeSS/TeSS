@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '7.0.7.2'
+gem 'rails', '7.0.8.1'
 
 gem 'active_model_serializers'
 gem 'activerecord-session_store'
@@ -63,7 +63,7 @@ gem 'sitemap-parser'
 gem 'slim'
 gem 'sunspot_rails', github: 'sunspot/sunspot', branch: 'master' # Contains Ruby 3 fixes that are not released
 gem 'terser'
-gem 'tess_rdf_extractors', git: 'https://github.com/ElixirTeSS/TeSS_RDF_Extractors', tag: '1.1.0'
+gem 'tess_rdf_extractors', git: 'https://github.com/ElixirTeSS/TeSS_RDF_Extractors', branch: 'master'
 gem 'turbolinks'
 gem 'tzinfo'
 gem 'tzinfo-data'
