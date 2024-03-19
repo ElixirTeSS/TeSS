@@ -35,6 +35,7 @@ class Event < ApplicationRecord
       text :venue
       text :city
       text :country
+      boolean :curation
       text :host_institutions
       text :timezone
       text :content_provider do
@@ -112,7 +113,7 @@ class Event < ApplicationRecord
   has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
   has_ontology_terms(:operations, branch: OBO_EDAM.operations)
 
-  has_many :stars,  as: :resource, dependent: :destroy
+  has_many :stars, as: :resource, dependent: :destroy
 
   auto_strip_attributes :title, :description, :url, squish: false
 
@@ -253,14 +254,15 @@ class Event < ApplicationRecord
 
     self.start = start + 9.hours if start.hour == 0 # hour set to 0 if not otherwise defined...
 
-    unless self.end
-      if online?
-        self.end = start + 1.hour
-      else
-        diff = 17 - start.hour
-        self.end = start + diff.hours
-      end
+    return if self.end
+
+    if online?
+      self.end = start + 1.hour
+    else
+      diff = 17 - start.hour
+      self.end = start + diff.hours
     end
+
     # TODO: Set timezone for online events. Where to get it from, though?
     # TODO: Check events form to add timezone autocomplete.
     # Get timezones from: https://timezonedb.com/download
@@ -295,13 +297,9 @@ class Event < ApplicationRecord
 
     scope = provider_id.present? ? where(content_provider_id: provider_id) : all
 
-    if given_event.url.present?
-      event = scope.where(url: given_event.url).last
-    end
+    event = scope.where(url: given_event.url).last if given_event.url.present?
 
-    if given_event.title.present? && given_event.start.present?
-      event ||= where(content_provider_id: provider_id, title: given_event.title, start: given_event.start).last
-    end
+    event ||= where(content_provider_id: provider_id, title: given_event.title, start: given_event.start).last if given_event.title.present? && given_event.start.present?
 
     event
   end
@@ -362,7 +360,7 @@ class Event < ApplicationRecord
     location = address
 
     # result = Geocoder.search(location).first
-    args = { postalcode: postcode, city: city, county: county, country: country, format: 'json' }
+    args = { postalcode: postcode, city:, county:, country:, format: 'json' }
     result = nominatim_lookup(args)
     if result
       self.latitude = result[:lat]
@@ -428,14 +426,14 @@ class Event < ApplicationRecord
     external_resources.each do |er|
       c.external_resources.build(url: er.url, title: er.title)
     end
-    [:materials, :scientific_topics, :operations, :nodes].each do |field|
+    %i[materials scientific_topics operations nodes].each do |field|
       c.send("#{field}=", send(field))
     end
 
     c
   end
 
-  def online= value
+  def online=(value)
     value = :online if value.is_a?(TrueClass) || value == '1' || value == 1 || value == 'true'
     value = :onsite if value.is_a?(FalseClass) || value == '0' || value == 0 || value == 'false'
     self.presence = value
@@ -482,17 +480,15 @@ class Event < ApplicationRecord
     [
       [TargetAudienceDictionary, :target_audience],
       [EventTypeDictionary, :event_types],
-      [EligibilityDictionary, :eligibility],
+      [EligibilityDictionary, :eligibility]
     ].each do |dict, var|
-      if self[var].blank?
-        self[var] = []
-      end
+      self[var] = [] if self[var].blank?
       dic = dict.instance
       self&.keywords&.dup&.each do |kw|
         res = dic.best_match(kw)
         if res
           self[var].append(kw)
-          self.keywords.delete(kw)
+          keywords.delete(kw)
         end
       end
     end
