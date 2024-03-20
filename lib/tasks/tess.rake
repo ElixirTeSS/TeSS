@@ -141,6 +141,13 @@ namespace :tess do
 
   desc 'run LLM post processing'
   task llm_post_processing: :environment do
+    prompt = File.read('llm_process_prompt.txt')
+    Events.each do |event|
+      unless event&.llm_object&.prompt == prompt
+        event = GptIngestor.new.post_process_func(event)
+        event.save!
+      end
+    end
   end
 
   desc 'open all events to being llm processed again'
