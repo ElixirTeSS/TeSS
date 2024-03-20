@@ -1,12 +1,16 @@
+# frozen_string_literal: true
+
 unless defined?(PublicActivity::Activity)
-  class PublicActivity::Activity < ActiveRecord::Base; end
+  module PublicActivity
+    class Activity < ActiveRecord::Base; end
+  end
 end
 
 class UpdateTopicActivities < ActiveRecord::Migration[4.2]
   def up
     puts 'Updating old "*_topic" activities'
-    ['event', 'material'].each do |type|
-      ['add', 'reject'].each do |subaction|
+    %w[event material].each do |type|
+      %w[add reject].each do |subaction|
         PublicActivity::Activity.where(key: "#{type}.#{subaction}_topic").each do |activity|
           activity.update_column(:key, "#{type}.#{subaction}_term")
           parameters = activity.parameters
@@ -24,6 +28,5 @@ class UpdateTopicActivities < ActiveRecord::Migration[4.2]
     puts
   end
 
-  def down
-  end
+  def down; end
 end

@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 # OpenID Connect configuration for LS Login nee Elixir AAI
 unless Rails.application.secrets.dig(:elixir_aai, :client_id).blank?
   Devise.omniauth :openid_connect, {
     logo: 'ls-login.png',
     name: :elixir_aai,
-    scope: [:openid, :email, :profile],
+    scope: %i[openid email profile],
     response_type: 'code',
     issuer: 'https://login.elixir-czech.org/oidc/',
     discovery: false,
@@ -21,7 +23,7 @@ unless Rails.application.secrets.dig(:elixir_aai, :client_id).blank?
       authorization_endpoint: '/oidc/authorize',
       token_endpoint: '/oidc/token',
       userinfo_endpoint: '/oidc/userinfo',
-      jwks_uri: '/oidc/jwk',
+      jwks_uri: '/oidc/jwk'
     }
   }
 end

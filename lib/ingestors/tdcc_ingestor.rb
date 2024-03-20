@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 require 'csv'
 require 'nokogiri'
@@ -26,7 +28,7 @@ module Ingestors
     private
 
     def process_tdcc(url)
-      sleep(1) unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/tdcc.yml')
+      sleep(1) unless Rails.env.test? && File.exist?('test/vcr_cassettes/ingestors/tdcc.yml')
       event_page = Nokogiri::HTML5.parse(open_url(url.to_s, raise: true)).css("div[class='archive__content grid']")[0].css("div[class='column span-4-sm span-8-md span-6-lg']")
       event_page.each do |event_data|
         event = OpenStruct.new
@@ -37,18 +39,19 @@ module Ingestors
         time_str = event_data.css("ul[class='post-item__meta']")[0].css("svg[class='icon icon--calendar ']")[0].parent.text.strip
         split_time_str = time_str.split(' — ')
         event.start = Time.zone.parse(split_time_str[0])
-        if split_time_str[1].split(' ').length == 1
+        case split_time_str[1].split(' ').length
+        when 1
           a = split_time_str[0].split(' ')
           b = split_time_str[1]
           event.end = Time.zone.parse([a[0], a[1], b].join(' '))
-        elsif split_time_str[1].split(' ').length == 3
+        when 3
           event.end = Time.zone.parse(split_time_str[1])
-        elsif split_time_str[1].split(' ').length == 2
+        when 2
           event.end = Time.zone.parse(split_time_str[1])
         end
 
         event_page2 = Nokogiri::HTML5.parse(open_url(event.url.to_s, raise: true)).css('article')[0]
-        sleep(1) unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/tdcc.yml')
+        sleep(1) unless Rails.env.test? && File.exist?('test/vcr_cassettes/ingestors/tdcc.yml')
         event.description = recursive_description_func(event_page2.css("div[class='entry__inner padded container']"))
         venue_string = event_page2&.css('*:has(strong)')&.select { |x| x&.css('strong')&.first&.text&.downcase&.include?('location') }&.first&.text || 'Online'
         ['Location:', 'Location', 'location:', 'location'].each do |s|

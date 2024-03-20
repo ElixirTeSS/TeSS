@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class IcalIngestorTest < ActiveSupport::TestCase
@@ -190,8 +192,8 @@ class IcalIngestorTest < ActiveSupport::TestCase
   private
 
   def check_event_exists(title, url)
-    events = Event.where(title: title, url: url)
-    assert (!events.nil? and events.size > 0), "event title[#{title}] not found"
+    events = Event.where(title:, url:)
+    assert (!events.nil? and events.size.positive?), "event title[#{title}] not found"
     assert events.size < 2, "event[#{title}] duplicates found = #{events.size}"
     events.first
   end

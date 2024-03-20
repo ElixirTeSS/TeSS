@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'request_forgery_protection_token_verifier'
 
 Rails.application.config.middleware.use OmniAuth::Builder do

@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class MaterialTest < ActiveSupport::TestCase
-
   setup do
     @user = users :regular_user
     @event = events :kilburn
@@ -9,14 +10,13 @@ class MaterialTest < ActiveSupport::TestCase
                                  description: 'short desc',
                                  url: 'http://goog.e.com',
                                  user: @user,
-                                 authors: ['horace', 'flo'],
+                                 authors: %w[horace flo],
                                  doi: 'https://doi.org/10.1011/RSE.2019.55',
                                  licence: 'CC-BY-NC-SA-4.0',
                                  keywords: ['goblet'],
                                  contact: 'default contact',
                                  content_provider: content_providers(:goblet),
-                                 status: 'active'
-    )
+                                 status: 'active')
     assert_not_nil @user
     assert_not_nil @event
     assert_not_nil @material
@@ -135,7 +135,7 @@ class MaterialTest < ActiveSupport::TestCase
     owner = @material.user
     assert_not_equal 'default_user', owner.role.name
     owner.destroy
-    #Reload the material
+    # Reload the material
     material = @material.reload
     assert_equal 'default_user', material.user.role.name
   end
@@ -154,8 +154,8 @@ class MaterialTest < ActiveSupport::TestCase
 
   test 'should remove bad values and strip authors array input' do
     authors = ['john', 'bob', nil, [], '', 'frank ']
-    expected_authors = ['john', 'bob', 'frank']
-    assert @material.update(authors: authors)
+    expected_authors = %w[john bob frank]
+    assert @material.update(authors:)
     assert_equal expected_authors, @material.authors
   end
 
@@ -198,7 +198,7 @@ class MaterialTest < ActiveSupport::TestCase
     refute m.save
     assert_equal 1, m.errors.count
     # no longer valid - assert_equal ["must be a controlled vocabulary term"], m.errors[:difficulty_level]
-    assert_equal ["must be a controlled vocabulary term"], m.errors[:licence]
+    assert_equal ['must be a controlled vocabulary term'], m.errors[:licence]
 
     # no longer valid - m.difficulty_level = 'beginner'
     m.licence = 'GPL-3.0'
@@ -395,7 +395,7 @@ class MaterialTest < ActiveSupport::TestCase
     bad_user = users(:unverified_user)
     bad_material = bad_user.materials.build(title: 'bla', url: 'http://example.com/spam', description: 'vvv',
                                             doi: 'https://doi.org/10.1111/123.1235', contact: 'default contact',
-                                            licence: 'Fair', keywords: %w{ key words }, status: 'active')
+                                            licence: 'Fair', keywords: %w[key words], status: 'active')
     assert bad_material.user_requires_approval?
     bad_material.save!
 
@@ -403,7 +403,7 @@ class MaterialTest < ActiveSupport::TestCase
     good_material = good_user.materials.build(title: 'h', url: 'http://example.com/good-stuff',
                                               description: 'vvv', contact: 'default contact',
                                               doi: 'https://doi.org/10.1111/123.1235', status: 'active',
-                                              licence: 'Fair', keywords: %w{ key words })
+                                              licence: 'Fair', keywords: %w[key words])
     refute good_material.user_requires_approval?
     good_material.save!
 
@@ -452,7 +452,6 @@ class MaterialTest < ActiveSupport::TestCase
     refute_match(/\A\d+\Z/, material.friendly_id)
   end
 
-
   test 'validates URL format' do
     material = Material.new(title: 'Test', description: 'desc', user: users(:regular_user))
 
@@ -491,13 +490,13 @@ class MaterialTest < ActiveSupport::TestCase
     material = Material.new(
       title: 'A material',
       description: 'Very helpful',
-      user: user,
+      user:,
       url: 'https://materials.com/1',
-      keywords: ['cool', 'great'],
+      keywords: %w[cool great],
       nodes: [node],
       external_resources_attributes: { '0' => { title: 'test', url: 'https://external-resource.com' } },
       events: [event],
-      scientific_topic_names: ['Proteins', 'DNA'],
+      scientific_topic_names: %w[Proteins DNA],
       operation_names: ['Variant calling']
     )
 
@@ -515,13 +514,13 @@ class MaterialTest < ActiveSupport::TestCase
 
               assert_equal 'A material', dup.title
               assert_equal 'Very helpful', dup.description
-              assert_equal ['cool', 'great'], dup.keywords
+              assert_equal %w[cool great], dup.keywords
               assert_nil dup.id
               assert_nil dup.slug
               assert_nil dup.url
               assert_equal [event], dup.events
               assert_equal [node], dup.nodes
-              assert_equal ['Proteins', 'DNA'], dup.scientific_topic_names
+              assert_equal %w[Proteins DNA], dup.scientific_topic_names
               assert_equal ['Variant calling'], dup.operation_names
               assert_equal 1, dup.external_resources.length
               assert_equal 'test', dup.external_resources.first.title

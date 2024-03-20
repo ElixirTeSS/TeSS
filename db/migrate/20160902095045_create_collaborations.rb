@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateCollaborations < ActiveRecord::Migration[4.2]
   def change
     create_table :collaborations do |t|

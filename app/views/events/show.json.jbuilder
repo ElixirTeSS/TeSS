@@ -1,22 +1,24 @@
-fields = [
-  :id, :external_id, :title, :subtitle, :url, :description,
+# frozen_string_literal: true
 
-  :content_provider_id, :user_id,
+fields = %i[
+  id external_id title subtitle url description
 
-  :keywords, :event_types, :fields,
+  content_provider_id user_id
 
-  :start, :end, :duration, :timezone,
+  keywords event_types fields
 
-  :organizer, :sponsors, :contact, :host_institutions,
+  start end duration timezone
 
-  :venue, :city, :county, :country, :postcode, :latitude, :longitude,
+  organizer sponsors contact host_institutions
 
-  :capacity, :cost_basis, :cost_value, :cost_currency,
+  venue city county country postcode latitude longitude
 
-  :target_audience, :eligibility, :recognition, :learning_objectives,
-  :prerequisites, :tech_requirements,
+  capacity cost_basis cost_value cost_currency
 
-  :source, :slug, :last_scraped, :scraper_record, :created_at, :updated_at
+  target_audience eligibility recognition learning_objectives
+  prerequisites tech_requirements
+
+  source slug last_scraped scraper_record created_at updated_at
 ]
 
 fields += Event::SENSITIVE_FIELDS if policy(@event).view_report?
@@ -33,6 +35,6 @@ json.materials(@event.materials.collect { |x| { title: x[:title], id: x[:id] } }
 
 json.external_resources do
   @event.external_resources.each do |external_resource|
-    json.partial! 'common/external_resource', external_resource: external_resource
+    json.partial! 'common/external_resource', external_resource:
   end
 end

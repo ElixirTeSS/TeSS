@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CurationMailer < ApplicationMailer
   include ActionView::Helpers::TextHelper
 
@@ -5,7 +7,7 @@ class CurationMailer < ApplicationMailer
     @user = user
     @resources = user.reload.created_resources
     subject = "#{TeSS::Config.site['title_short']} user \"#{user.name}\" requires approval"
-    mail(subject: subject, to: User.with_role('admin').map(&:email)) do |format|
+    mail(subject:, to: User.with_role('admin').map(&:email)) do |format|
       format.html
       format.text
     end
@@ -15,7 +17,7 @@ class CurationMailer < ApplicationMailer
     @user = user
     @source = source
     subject = "#{TeSS::Config.site['title_short']} source \"#{@source.title}\" requires approval"
-    mail(subject: subject, to: User.with_role('admin').map(&:email)) do |format|
+    mail(subject:, to: User.with_role('admin').map(&:email)) do |format|
       format.html
       format.text
     end

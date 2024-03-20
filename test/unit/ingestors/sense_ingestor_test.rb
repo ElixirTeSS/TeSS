@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class SenseIngestorTest < ActiveSupport::TestCase
@@ -22,14 +24,14 @@ class SenseIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::SenseIngestor.new
 
     # check event doesn't
-    new_title = "Reinventing the city; Scientific Conference AMS Institute"
-    new_url = "https://sense.nl/event/reinventing-the-city-scientific-conference-ams-institute/"
+    new_title = 'Reinventing the city; Scientific Conference AMS Institute'
+    new_url = 'https://sense.nl/event/reinventing-the-city-scientific-conference-ams-institute/'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
     assert_difference 'Event.count', 14 do
       freeze_time(2019) do
-        VCR.use_cassette("ingestors/sense") do
+        VCR.use_cassette('ingestors/sense') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end

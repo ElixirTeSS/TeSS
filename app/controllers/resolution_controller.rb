@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 # The controller for actions related to Resolution actions
 class ResolutionController < ApplicationController
-
   before_action :parse_identifier
   skip_before_action :authenticate_user!, :authenticate_user_from_token!
 
@@ -32,11 +33,9 @@ class ResolutionController < ApplicationController
   end
 
   def parse_identifier
-    matches = params[:id].match(/(?<prefix>.+\:)?(?<type>[a-zA-Z])(?<id>\d+)/)
-    if matches
-      @identifier = matches
-    else
-      raise ActionController:RoutingError
-    end
+    matches = params[:id].match(/(?<prefix>.+:)?(?<type>[a-zA-Z])(?<id>\d+)/)
+    raise ActionController: RoutingError unless matches
+
+    @identifier = matches
   end
 end

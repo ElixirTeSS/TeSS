@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require 'json'
 require 'httparty'
 
 namespace :tess do
-
   desc 'Get a list of country synonyms from restcountries.eu'
   task get_country_synonyms: :environment do
     url = 'https://restcountries.eu/rest/v2/all'
@@ -10,20 +11,15 @@ namespace :tess do
     countries = response.parsed_response
     output = {}
 
-
     # Use both alternate names and translations
     countries.each do |line|
       line['altSpellings'].each do |alt|
         text = clean_text(alt)
-        if text
-          output[text] = line['name']
-        end
+        output[text] = line['name'] if text
       end
       line['translations'].each do |alt|
         text = clean_text(alt[1])
-        if text
-          output[text] = line['name']
-        end
+        output[text] = line['name'] if text
       end
     end
 
@@ -40,31 +36,28 @@ namespace :tess do
     count = 0
     Event.all.each do |event|
       puts "Checking: #{event.title}"
-      if !event.country
+      unless event.country
         puts "No country for: #{event.title}"
         next
       end
-      if event.country.respond_to?(:parameterize)
-        text = event.country.parameterize.underscore.humanize.downcase
-        if COUNTRY_SYNONYMS[text]
-          puts "#{event.title}: Changing #{text} -> #{COUNTRY_SYNONYMS[text]}"
-          event.country = COUNTRY_SYNONYMS[text]
-          event.save()
-          count += 1
-        end
-      end
+      next unless event.country.respond_to?(:parameterize)
+
+      text = event.country.parameterize.underscore.humanize.downcase
+      next unless COUNTRY_SYNONYMS[text]
+
+      puts "#{event.title}: Changing #{text} -> #{COUNTRY_SYNONYMS[text]}"
+      event.country = COUNTRY_SYNONYMS[text]
+      event.save
+      count += 1
     end
     puts "Updated #{count} countries out of #{Event.all.length}"
   end
-
 end
 
 def clean_text(text)
   if text.respond_to?(:parameterize)
     text = text.parameterize.underscore.humanize.downcase
-    if text.length > 0
-      return text
-    end
+    return text if text.length.positive?
   end
-  return nil
+  nil
 end

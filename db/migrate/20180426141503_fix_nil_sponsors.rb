@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FixNilSponsors < ActiveRecord::Migration[4.2]
   # We need to define the Event class locally,
   # so it doesn't use any of the logic defined in the application
@@ -10,6 +12,5 @@ class FixNilSponsors < ActiveRecord::Migration[4.2]
     Event.where(sponsors: nil).update_all("sponsors = '{}'")
   end
 
-  def down
-  end
+  def down; end
 end

@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 module TessDevise
   class InvitationsControllerTest < ActionController::TestCase
-
     include Devise::Test::ControllerHelpers
 
     setup do
@@ -41,18 +42,16 @@ module TessDevise
       assert_redirected_to new_user_session_path
     end
 
-=begin
-        test 'create invitation' do
-          sign_in users(:curator)
-          assert_difference('User.count') do
-            post :create, params: {
-              email: 'invite@test.domain.com'
-            }
-          end
-          assert_response :success
-          assert_redirected_to root_path
-          sign_out users(:curator)
-        end
-=end
+    #         test 'create invitation' do
+    #           sign_in users(:curator)
+    #           assert_difference('User.count') do
+    #             post :create, params: {
+    #               email: 'invite@test.domain.com'
+    #             }
+    #           end
+    #           assert_response :success
+    #           assert_redirected_to root_path
+    #           sign_out users(:curator)
+    #         end
   end
 end

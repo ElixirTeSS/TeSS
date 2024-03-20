@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class EventCsvIngestorTest < ActiveSupport::TestCase
@@ -88,7 +90,7 @@ class EventCsvIngestorTest < ActiveSupport::TestCase
     check_array event.target_audience, %w[ecr researcher phd mbr], ['ugrad']
     assert_equal 'To provide a basic intro to supercomputing on the **Gadi** system',
                  event.learning_objectives
-    assert_equal "To get the most of this session, it would be good to have a basic awareness of:\n\n" +
+    assert_equal "To get the most of this session, it would be good to have a basic awareness of:\n\n" \
                  "- Supercomputing\n" + "- Bioinformatics\n" + '- Software Design',
                  event.prerequisites
     assert_equal 'There are no technical requirements.',
@@ -104,14 +106,14 @@ class EventCsvIngestorTest < ActiveSupport::TestCase
     assert_kind_of Array, values
     assert_equal collection.size, values.size
     values.each { |item| assert_includes collection, item }
-    exclusions.each { |item| refute_includes collection, item } unless exclusions.nil?
+    exclusions&.each { |item| refute_includes collection, item }
   end
 
   def get_event(title, url, provider = nil)
     results = if provider.nil?
-                Event.where(title: title, url: url)
+                Event.where(title:, url:)
               else
-                Event.where(title: title, url: url, content_provider: provider)
+                Event.where(title:, url:, content_provider: provider)
               end
     results.nil? or results.empty? ? nil : results.first
   end

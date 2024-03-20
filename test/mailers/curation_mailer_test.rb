@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class CurationMailerTest < ActionMailer::TestCase
@@ -11,7 +13,7 @@ class CurationMailerTest < ActionMailer::TestCase
                                         description: '123',
                                         licence: 'Fair',
                                         doi: 'https://doi.org/10.1200/RSE.2020.123',
-                                        keywords: ['unverified', 'user', 'material'],
+                                        keywords: %w[unverified user material],
                                         contact: 'main contact',
                                         status: 'active')
     # Avoids queued emails affecting `assert_email` counts. See: https://github.com/ElixirTeSS/TeSS/issues/719
@@ -67,7 +69,7 @@ class CurationMailerTest < ActionMailer::TestCase
   end
 
   test 'can set mailer headers in config' do
-    with_settings(mailer: { headers: { 'Sender': 'mail.sender@example.com', 'X-Something': 'yes' }}) do
+    with_settings(mailer: { headers: { 'Sender': 'mail.sender@example.com', 'X-Something': 'yes' } }) do
       email = CurationMailer.user_requires_approval(@user)
 
       email_headers = {}

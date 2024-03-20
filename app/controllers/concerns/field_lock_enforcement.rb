@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 # The module for enforcement of field locks
 module FieldLockEnforcement
   extend ActiveSupport::Concern
 
   included do
     before_action :filter_locked_fields, only: :update,
-                  if: -> { current_user && current_user.has_role?(:scraper_user) }
+                                         if: -> { current_user && current_user.has_role?(:scraper_user) }
   end
 
   def filter_locked_fields

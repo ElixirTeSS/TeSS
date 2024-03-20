@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sidekiq-status'
 
 Sidekiq.configure_server do |config|

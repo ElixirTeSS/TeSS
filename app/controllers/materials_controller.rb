@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 # The controller for actions related to the Materials model
 class MaterialsController < ApplicationController
   before_action :feature_enabled?
-  before_action :set_material, only: [:show, :edit, :update, :destroy, :update_collections, :clone,
-                                      :add_term, :reject_term, :add_data, :reject_data]
+  before_action :set_material, only: %i[show edit update destroy update_collections clone
+                                        add_term reject_term add_data reject_data]
   before_action :set_breadcrumbs
 
   include SearchableIndex
@@ -80,8 +82,8 @@ class MaterialsController < ApplicationController
       end
     else
       respond_to do |format|
-        format.html { render :nothing => true, :status => 200, :content_type => 'text/html' }
-        format.json { render json: {}, :status => 200, :content_type => 'application/json' }
+        format.html { render nothing: true, status: 200, content_type: 'text/html' }
+        format.json { render json: {}, status: 200, content_type: 'application/json' }
       end
     end
   end
@@ -139,14 +141,14 @@ class MaterialsController < ApplicationController
     # Go through each selected collection
     # and update its resources to include this material.
     # Go through each other collection that is not selected and remove this material from it.
-    collections = params[:material][:collection_ids].select { |p| !p.blank? }
+    collections = params[:material][:collection_ids].reject(&:blank?)
     collections = collections.collect { |collection| Collection.find_by_id(collection) }
     collections_to_remove = @material.collections - collections
     collections.each do |collection|
       collection.update_resources_by_id((collection.materials + [@material.id]).uniq, nil)
     end
     collections_to_remove.each do |collection|
-      collection.update_resources_by_id((collection.materials.collect { |x| x.id } - [@material.id]).uniq, nil)
+      collection.update_resources_by_id((collection.materials.collect(&:id) - [@material.id]).uniq, nil)
     end
     flash[:notice] = "Material has been included in #{pluralize(collections.count, 'collection')}"
     redirect_to @material
@@ -172,8 +174,7 @@ class MaterialsController < ApplicationController
                                      { scientific_topic_names: [] }, { scientific_topic_uris: [] },
                                      { operation_names: [] }, { operation_uris: [] },
                                      { node_ids: [] }, { node_names: [] }, { fields: [] },
-                                     external_resources_attributes: [:id, :url, :title, :_destroy],
+                                     external_resources_attributes: %i[id url title _destroy],
                                      event_ids: [], locked_fields: [])
   end
-
 end

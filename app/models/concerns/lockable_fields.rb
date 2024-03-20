@@ -1,5 +1,6 @@
-module LockableFields
+# frozen_string_literal: true
 
+module LockableFields
   extend ActiveSupport::Concern
 
   included do
@@ -15,7 +16,6 @@ module LockableFields
   end
 
   def field_locked?(field)
-    field_locks.where(field: field).any?
+    field_locks.where(field:).any?
   end
-
 end

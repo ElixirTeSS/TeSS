@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FixNilLicenceAndDifficultyInMaterials < ActiveRecord::Migration[4.2]
   def change
     Material.transaction do

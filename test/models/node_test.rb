@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class NodeTest < ActiveSupport::TestCase
-
   test 'can create a node and staff' do
     node = Node.new(user: users(:admin), name: 'Kilburn', country_code: 'ES')
     node.staff.build(name: 'Tom', email: 'tk@example.com', role: 'Training coordinator')
@@ -86,7 +87,7 @@ class NodeTest < ActiveSupport::TestCase
   test 'can get resources through providers and directly associated' do
     node = nodes(:westeros)
     provider = content_providers(:provider_with_empty_image_url)
-    provider.update!(node: node)
+    provider.update!(node:)
 
     e1 = events(:one)
     e1.update!(content_provider: provider)
@@ -126,5 +127,4 @@ class NodeTest < ActiveSupport::TestCase
   def node_data_hash
     JSON.parse(File.read(File.join(Rails.root, 'test', 'fixtures', 'files', 'node_test_data.json')))
   end
-
 end

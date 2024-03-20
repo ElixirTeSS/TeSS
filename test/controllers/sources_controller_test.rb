@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class SourcesControllerTest < ActionController::TestCase
-
   include Devise::Test::ControllerHelpers
   include ActiveJob::TestHelper
   include ActionMailer::TestHelper
@@ -49,10 +50,10 @@ class SourcesControllerTest < ActionController::TestCase
   test 'admin should get index with solr enabled' do
     with_settings(solr_enabled: true) do
       method = 'event_csv'
-      mock_search = MockSearch.new(Source.where(method: method))
+      mock_search = MockSearch.new(Source.where(method:))
       sign_in users(:admin)
       Source.stub(:search_and_filter, mock_search) do
-        get :index, params: { method: method }
+        get :index, params: { method: }
         assert_response :success
         assert_not_empty assigns(:sources)
         assert_equal 2, assigns(:sources).size, 'provider'
@@ -71,10 +72,10 @@ class SourcesControllerTest < ActionController::TestCase
     get :show, params: { id: @source } do
       assert_response :success
       assert assigns(:source)
-      assert_select "h4", count: 2
-      assert_select "h4", { count: 1, text: 'Source Details' }
-      assert_select "h4", { count: 1, text: 'Last Run' }
-      assert_select "strong", { count: 1, text: 'No results found' }
+      assert_select 'h4', count: 2
+      assert_select 'h4', { count: 1, text: 'Source Details' }
+      assert_select 'h4', { count: 1, text: 'Last Run' }
+      assert_select 'strong', { count: 1, text: 'No results found' }
     end
   end
 
@@ -124,9 +125,9 @@ class SourcesControllerTest < ActionController::TestCase
       get :new, params: { content_provider_id: content_providers(:goblet) }
       assert_response :success
       assert_select '#source_method option[value=?]', 'tess_event', { count: 0 },
-                    "Should not show ingestion methods unavailable to user"
+                    'Should not show ingestion methods unavailable to user'
       assert_select '#source_method option[value=?]', 'bioschemas', { count: 1 },
-                    "Should show ingestion methods available to user"
+                    'Should show ingestion methods available to user'
     end
   end
 
@@ -136,9 +137,9 @@ class SourcesControllerTest < ActionController::TestCase
       get :new, params: { content_provider_id: content_providers(:goblet) }
       assert_response :success
       assert_select '#source_method option[value=?]', 'tess_event', { count: 1 },
-                    "Should show all ingestion methods"
+                    'Should show all ingestion methods'
       assert_select '#source_method option[value=?]', 'bioschemas', { count: 1 },
-                    "Should show all ingestion methods"
+                    'Should show all ingestion methods'
     end
   end
 
@@ -578,7 +579,8 @@ class SourcesControllerTest < ActionController::TestCase
     source.test_results = {
       events: [{ title: 'test 123', url: 'https://tess.elixir-europe.org', some_random_field: 'hello' }],
       materials: [],
-      messages: [], run_time: 120, finished_at: Time.now }
+      messages: [], run_time: 120, finished_at: Time.now
+    }
     assert source.test_results
 
     get :test_results, params: { id: source }, xhr: true

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'icalendar'
 require 'nokogiri'
 require 'open-uri'
@@ -14,12 +16,12 @@ module Ingestors
     end
 
     def read(url)
-      unless url.nil?
-        if url.to_s.downcase.end_with? 'sitemap.xml'
-          process_sitemap url
-        else
-          process_icalendar url
-        end
+      return if url.nil?
+
+      if url.to_s.downcase.end_with? 'sitemap.xml'
+        process_sitemap url
+      else
+        process_icalendar url
       end
     end
 
@@ -84,7 +86,7 @@ module Ingestors
           dtstart = calevent.dtstart
           event.start = dtstart
           tzid = dtstart.ical_params['tzid']
-          event.timezone = tzid.first.to_s if !tzid.nil? and tzid.size > 0
+          event.timezone = tzid.first.to_s if !tzid.nil? && tzid.size.positive?
         end
 
         event.venue = calevent.location.to_s
@@ -100,7 +102,7 @@ module Ingestors
           event.postcode = location['postcode'] unless location['postcode'].nil?
         end
         event.keywords = []
-        unless calevent.categories.nil? or calevent.categories.first.nil?
+        unless calevent.categories.nil? || calevent.categories.first.nil?
           cats = calevent.categories.first
           if cats.is_a?(Icalendar::Values::Array)
             cats.each do |item|

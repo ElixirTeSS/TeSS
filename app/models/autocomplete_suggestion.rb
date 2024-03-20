@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 class AutocompleteSuggestion < ApplicationRecord
   def self.add(field, *suggestions)
     suggestions = clean(suggestions)
-    upsert_all(suggestions.map { |s| { field: field, value: s } }, unique_by: [:field, :value]) if suggestions.any?
+    upsert_all(suggestions.map { |s| { field:, value: s } }, unique_by: %i[field value]) if suggestions.any?
   end
 
   def self.people
-    where(field: ['authors', 'contributors'])
+    where(field: %w[authors contributors])
   end
 
   def self.starting_with(query)
@@ -21,9 +23,9 @@ class AutocompleteSuggestion < ApplicationRecord
   def self.refresh(field, *suggestions)
     suggestions = clean(suggestions)
     add(field, *suggestions)
-    redundant = where(field: field).where.not(value: suggestions)
+    redundant = where(field:).where.not(value: suggestions)
     count = redundant.count
-    redundant.destroy_all if count > 0
+    redundant.destroy_all if count.positive?
     count
   end
 

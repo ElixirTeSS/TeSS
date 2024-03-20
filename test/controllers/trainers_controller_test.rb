@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class TrainersControllerTest < ActionController::TestCase
@@ -10,5 +12,4 @@ class TrainersControllerTest < ActionController::TestCase
     assert_not_nil trainers
     assert_equal 1, trainers.size
   end
-
 end

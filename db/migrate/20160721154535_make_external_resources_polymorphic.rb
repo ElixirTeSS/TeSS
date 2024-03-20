@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MakeExternalResourcesPolymorphic < ActiveRecord::Migration[4.2]
   def up
     remove_foreign_key :external_resources, :materials
@@ -10,11 +12,11 @@ class MakeExternalResourcesPolymorphic < ActiveRecord::Migration[4.2]
 
     ExternalResource.connection.execute("UPDATE external_resources SET source_type = 'Material'")
 
-    add_index :external_resources, [:source_id, :source_type]
+    add_index :external_resources, %i[source_id source_type]
   end
 
   def down
-    remove_index :external_resources, [:source_id, :source_type]
+    remove_index :external_resources, %i[source_id source_type]
 
     rename_column :external_resources, :source_id, :material_id
 

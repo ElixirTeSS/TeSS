@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Renderers
   class Youtube
     VALID_HOSTS = %w[youtube.com youtu.be m.youtube.com www.youtube.com].freeze
     VALID_SCHEMES = %w[http https].freeze
-    TEMPLATE = %(<iframe width="560" height="315" src="https://www.youtube.com/embed/%{code}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>)
+    TEMPLATE = %(<iframe width="560" height="315" src="https://www.youtube.com/embed/%<code>s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>)
 
     def initialize(resource)
       @resource = resource
@@ -14,16 +16,16 @@ module Renderers
 
     def render_content
       code = extract_video_code(@resource.url)
-      (TEMPLATE % { code: code }).html_safe
+      format(TEMPLATE, code:).html_safe
     end
 
     def extract_video_code(url)
       return unless is_youtube_url?(url)
 
-      match = url.match(/[\?\&]v[i]?\=([-_a-zA-Z0-9]+)/) ||
-        url.match(/youtu\.be\/([-_a-zA-Z0-9]+)/) ||
-        url.match(/\/v\/([-_a-zA-Z0-9]+)/) ||
-        url.match(/\/embed\/([-_a-zA-Z0-9]+)/)
+      match = url.match(/[?&]vi?=([-_a-zA-Z0-9]+)/) ||
+              url.match(%r{youtu\.be/([-_a-zA-Z0-9]+)}) ||
+              url.match(%r{/v/([-_a-zA-Z0-9]+)}) ||
+              url.match(%r{/embed/([-_a-zA-Z0-9]+)})
       match[1] if match
     end
 
@@ -32,7 +34,7 @@ module Renderers
     def is_youtube_url?(url)
       parsed_url = URI.parse(url)
       VALID_HOSTS.include?(parsed_url.host) && VALID_SCHEMES.include?(parsed_url.scheme)
-    rescue
+    rescue StandardError
       false
     end
   end

@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module HasFriendlyId
   extend ActiveSupport::Concern
 
   included do
     extend FriendlyId
     friendly_id :title, use: :slugged
-    # Note: I had to include instance methods manually (rather than doing in the normal concern way)
+    # NOTE: I had to include instance methods manually (rather than doing in the normal concern way)
     #  because FriendlyId does some insane metaprogramming that makes that not work for whatever reason...
     include InstanceMethods
   end

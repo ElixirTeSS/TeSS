@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class DccIngestorTest < ActiveSupport::TestCase
@@ -22,14 +24,14 @@ class DccIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::DccIngestor.new
 
     # check event doesn't
-    new_title = "DCC-PO dag"
+    new_title = 'DCC-PO dag'
     new_url = 'https://dcc-po.nl/agenda/dcc-po-dag/'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
     assert_difference 'Event.count', 1 do
       freeze_time(2019) do
-        VCR.use_cassette("ingestors/dcc") do
+        VCR.use_cassette('ingestors/dcc') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end

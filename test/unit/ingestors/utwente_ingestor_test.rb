@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class UtwenteIngestorTest < ActiveSupport::TestCase
@@ -29,7 +31,7 @@ class UtwenteIngestorTest < ActiveSupport::TestCase
     # run task
     assert_difference 'Event.count', 1 do
       freeze_time(2019) do
-        VCR.use_cassette("ingestors/utwente") do
+        VCR.use_cassette('ingestors/utwente') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EditSuggestion < ApplicationRecord
   belongs_to :suggestible, polymorphic: true
   after_create :init_data_fields
@@ -13,26 +15,24 @@ class EditSuggestion < ApplicationRecord
   end
 
   def accept_suggestion(field, term)
-    if drop_term(field, term)
-      if suggestible.class.ontology_term_fields.include?(field.to_sym)
-        suggestible.ontology_term_links.create!(field: field, term_uri: term.uri)
-      end
-      destroy if redundant?
-    end
+    return unless drop_term(field, term)
+
+    suggestible.ontology_term_links.create!(field:, term_uri: term.uri) if suggestible.class.ontology_term_fields.include?(field.to_sym)
+    destroy if redundant?
   end
 
   def reject_suggestion(field, term)
-    if drop_term(field, term)
-      destroy if redundant?
-    end
+    return unless drop_term(field, term)
+
+    destroy if redundant?
   end
 
   def accept_data(field)
-    if suggestible.update_attribute(field, data_fields[field])
-      data_fields.delete(field)
-      save!
-      destroy if redundant?
-    end
+    return unless suggestible.update_attribute(field, data_fields[field])
+
+    data_fields.delete(field)
+    save!
+    destroy if redundant?
   end
 
   def reject_data(field)
@@ -48,11 +48,11 @@ class EditSuggestion < ApplicationRecord
   private
 
   def drop_term(field, term)
-    link = ontology_term_links.find_by(term_uri: term.uri, field: field)
-    if link
-      link.destroy
-      self.reload
-    end
+    link = ontology_term_links.find_by(term_uri: term.uri, field:)
+    return unless link
+
+    link.destroy
+    reload
   end
 
   def redundant?

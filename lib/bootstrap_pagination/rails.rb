@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Copyright (c) 2012 Nicholas Dainty
 #
 # Permission is hereby granted, free of charge, to any person obtaining
@@ -22,7 +24,7 @@ require 'will_paginate/view_helpers/action_view'
 
 module BootstrapPagination
   class Rails < WillPaginate::ActionView::LinkRenderer
-    ELLIPSIS = "&hellip;"
+    ELLIPSIS = '&hellip;'
 
     def to_html
       list_items = pagination.map do |item|
@@ -38,7 +40,7 @@ module BootstrapPagination
     end
 
     def container_attributes
-      super.except(*[:link_options])
+      super.except(:link_options)
     end
 
     def pagination
@@ -66,7 +68,7 @@ module BootstrapPagination
       if page
         tag('li', link(text, page, link_options), class: classname)
       else
-        tag('li', tag('span', text), class: "%s disabled" % classname)
+        tag('li', tag('span', text), class: '%s disabled' % classname)
       end
     end
 

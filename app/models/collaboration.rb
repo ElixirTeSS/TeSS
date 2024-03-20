@@ -1,5 +1,6 @@
-class Collaboration < ApplicationRecord
+# frozen_string_literal: true
 
+class Collaboration < ApplicationRecord
   belongs_to :user
   belongs_to :resource, polymorphic: true
 
@@ -14,5 +15,4 @@ class Collaboration < ApplicationRecord
   def reindex_resource
     Sunspot.index(resource) if TeSS::Config.solr_enabled
   end
-
 end

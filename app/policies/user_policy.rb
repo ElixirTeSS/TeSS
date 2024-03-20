@@ -1,5 +1,6 @@
-class UserPolicy < ApplicationPolicy
+# frozen_string_literal: true
 
+class UserPolicy < ApplicationPolicy
   def index?
     true
   end
@@ -26,7 +27,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def change_role?
-    @user && @user.is_admin?
+    @user&.is_admin?
   end
 
   def ban?
@@ -36,5 +37,4 @@ class UserPolicy < ApplicationPolicy
   def destroy?
     manage?
   end
-
 end

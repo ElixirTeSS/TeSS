@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class ActivitiesControllerTest < ActionController::TestCase
-
   include Devise::Test::ControllerHelpers
 
   test 'should get activities for a material' do

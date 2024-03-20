@@ -1,17 +1,17 @@
-class User < ApplicationRecord
+# frozen_string_literal: true
 
+class User < ApplicationRecord
   include PublicActivity::Common
 
   acts_as_token_authenticatable
   include Gravtastic
-  gravtastic :secure => true, :size => 250
+  gravtastic secure: true, size: 250
   has_image(placeholder: TeSS::Config.placeholder['person'])
 
   extend FriendlyId
   friendly_id :username, use: :slugged
 
-  attr_accessor :login
-  attr_accessor :processing_consent
+  attr_accessor :login, :processing_consent, :publicize_email
 
   if TeSS::Config.solr_enabled
     # :nocov:
@@ -29,7 +29,7 @@ class User < ApplicationRecord
   end
 
   has_one :profile, inverse_of: :user, dependent: :destroy
-  CREATED_RESOURCE_TYPES = [:events, :materials, :workflows, :content_providers, :sources, :collections, :nodes]
+  CREATED_RESOURCE_TYPES = %i[events materials workflows content_providers sources collections nodes].freeze
   has_many :materials
   has_many :collections
   has_many :workflows
@@ -45,7 +45,7 @@ class User < ApplicationRecord
            class_name: '::PublicActivity::Activity',
            as: :owner
 
-  has_and_belongs_to_many :editables, class_name: "ContentProvider"
+  has_and_belongs_to_many :editables, class_name: 'ContentProvider'
 
   has_many :collaborations, dependent: :destroy
 
@@ -59,13 +59,13 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are: :lockable, :timeoutable
   if TeSS::Config.feature['registration']
     devise :database_authenticatable, :confirmable, :registerable, :invitable, :recoverable, :rememberable, :trackable,
-           :validatable, :omniauthable, :authentication_keys => [:login]
+           :validatable, :omniauthable, authentication_keys: [:login]
   elsif TeSS::Config.feature['invitation']
     devise :database_authenticatable, :confirmable, :invitable, :recoverable, :rememberable, :trackable,
-           :validatable, :omniauthable, :authentication_keys => [:login]
+           :validatable, :omniauthable, authentication_keys: [:login]
   else
     devise :database_authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable,
-           :omniauthable, :authentication_keys => [:login]
+           :omniauthable, authentication_keys: [:login]
   end
 
   auto_strip_attributes :username, squish: false
@@ -75,8 +75,6 @@ class User < ApplicationRecord
   validate :consents_to_processing, on: :create, unless: ->(user) { user.using_omniauth? || User.current_user.try(:is_admin?) }
 
   accepts_nested_attributes_for :profile
-
-  attr_accessor :publicize_email
 
   # --- scopes
   scope :non_default, -> { where.not(role_id: Role.fetch('default_user').id) }
@@ -92,8 +90,8 @@ class User < ApplicationRecord
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
-    if login = conditions.delete(:login)
-      where(conditions.to_h).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
+    if (login = conditions.delete(:login))
+      where(conditions.to_h).where(['lower(username) = :value OR lower(email) = :value', { value: login.downcase }]).first
     else
       where(conditions.to_h).first
     end
@@ -105,7 +103,7 @@ class User < ApplicationRecord
 
   def set_default_profile
     self.profile ||= Profile.new
-    self.profile.email = (email || unconfirmed_email) if (publicize_email.to_s == '1')
+    self.profile.email = (email || unconfirmed_email) if publicize_email.to_s == '1'
   end
 
   # Check if user has a particular role
@@ -114,51 +112,51 @@ class User < ApplicationRecord
   end
 
   def is_admin?
-    self.has_role?('admin')
+    has_role?('admin')
   end
 
   # Check if user is owner of a resource
   def is_owner?(resource)
-    resource&.respond_to?(:user) && resource.user == self
+    resource.respond_to?(:user) && resource.user == self
   end
 
   def is_curator?
-    self.has_role?('curator')
+    has_role?('curator')
   end
 
   def maintained_collections
-    Collection.left_outer_joins(:collaborators).where(collaborators: { id: id }).or(Collection.where(user_id: id)).distinct
+    Collection.left_outer_joins(:collaborators).where(collaborators: { id: }).or(Collection.where(user_id: id)).distinct
   end
 
   def skip_email_confirmation_for_non_production
     # In development and test environments, set the user as confirmed
     # after creation but before save
     # so no confirmation emails are sent
-    self.skip_confirmation! unless Rails.env.production? || TeSS::Config.force_user_confirmation
+    skip_confirmation! unless Rails.env.production? || TeSS::Config.force_user_confirmation
   end
 
   def skip_email_reconfirmation_for_non_production
-    unless Rails.env.production? || TeSS::Config.force_user_confirmation
-      self.unconfirmed_email = nil
-      self.skip_reconfirmation!
-    end
+    return if Rails.env.production? || TeSS::Config.force_user_confirmation
+
+    self.unconfirmed_email = nil
+    skip_reconfirmation!
   end
 
   def self.get_default_user
     User.default_scoped.where(role_id: Role.fetch('default_user').id).first_or_create!(username: 'default_user',
-                                                                   email: TeSS::Config.contact_email,
-                                                                   password: SecureRandom.base64,
-                                                                   processing_consent: '1')
+                                                                                       email: TeSS::Config.contact_email,
+                                                                                       password: SecureRandom.base64,
+                                                                                       processing_consent: '1')
   end
 
   def name
-    "#{username}".tap do |n|
+    username.to_s.tap do |n|
       n << " (#{full_name})" unless full_name.blank?
     end
   end
 
   def full_name
-    profile.full_name if profile
+    profile&.full_name
   end
 
   def self.current_user=(user)
@@ -174,9 +172,7 @@ class User < ApplicationRecord
     unique_username = username
     number = 0
 
-    while User.where(username: unique_username).any?
-      unique_username = "#{username}#{number += 1}"
-    end
+    unique_username = "#{username}#{number += 1}" while User.where(username: unique_username).any?
 
     unique_username
   end
@@ -188,16 +184,14 @@ class User < ApplicationRecord
 
     # find by provider and { uid or email}
     users = User.where(provider: auth.provider, uid: auth.uid)
-    if users.none? && auth.info.email.present? && auth.provider.present?
-      users = User.where(provider: auth.provider, email: auth.info.email)
-    end
+    users = User.where(provider: auth.provider, email: auth.info.email) if users.none? && auth.info.email.present? && auth.provider.present?
 
     # get first user
     user = users.first
 
     if user
       # update provider and uid if present
-      if user.provider.nil? and user.uid.nil?
+      if user.provider.nil? && user.uid.nil?
         user.uid = auth.uid
         user.provider = auth.provider
         user.save
@@ -214,9 +208,8 @@ class User < ApplicationRecord
       user = User.new(provider: auth.provider,
                       uid: auth.uid,
                       email: auth.info.email,
-                      username: username,
-                      profile_attributes: { firstname: first_name, surname: last_name },
-      )
+                      username:,
+                      profile_attributes: { firstname: first_name, surname: last_name })
       user.skip_confirmation!
     end
 
@@ -297,10 +290,10 @@ class User < ApplicationRecord
   end
 
   def get_inviter
-    unless invited_by_id.nil?
-      inviter = User.find_by_id(self.invited_by_id)
-      inviter.username
-    end
+    return if invited_by_id.nil?
+
+    inviter = User.find_by_id(invited_by_id)
+    inviter.username
   end
 
   def self.verified
@@ -316,7 +309,7 @@ class User < ApplicationRecord
   end
 
   # Override the gravatar URL to first check for a locally uploaded image
-  def avatar_url(image_params={}, gravatar_params={})
+  def avatar_url(image_params = {}, gravatar_params = {})
     if image.present?
       image.url(**image_params)
     else
@@ -339,14 +332,12 @@ class User < ApplicationRecord
         new_editable_ids |= other.editable_ids
         attrs.reverse_merge!(other.attributes)
       end
-      self.editable_ids = self.editable_ids | new_editable_ids
+      self.editable_ids = editable_ids | new_editable_ids
       # Avoid duplicate "collaborations" for the same resource
-      self.collaborations = (self.collaborations | new_collaborations).uniq do |collab|
-        collab.resource
-      end
+      self.collaborations = (collaborations | new_collaborations).uniq(&:resource)
 
       self.profile.merge(*other_profiles)
-      status = self.update(attrs)
+      status = update(attrs)
       others.each(&:reload) # Clear stale association caches etc.
       status
     end
@@ -363,24 +354,24 @@ class User < ApplicationRecord
   private
 
   def react_to_role_change
-    if saved_change_to_role_id?
-      create_activity(:change_role, owner: User.current_user, parameters: { old: role_id_before_last_save,
-                                                                            new: role_id })
-      Sunspot.index(created_resources.to_a) if TeSS::Config.solr_enabled
-    end
+    return unless saved_change_to_role_id?
+
+    create_activity(:change_role, owner: User.current_user, parameters: { old: role_id_before_last_save,
+                                                                          new: role_id })
+    Sunspot.index(created_resources.to_a) if TeSS::Config.solr_enabled
   end
 
   def consents_to_processing
-    if processing_consent!="1"
-      errors.add(:base, "You must consent to #{TeSS::Config.site['title_short']} processing your data in order to register")
+    return unless processing_consent != '1'
 
-      false
-    end
+    errors.add(:base, "You must consent to #{TeSS::Config.site['title_short']} processing your data in order to register")
+
+    false
   end
 
   def set_username_for_invitee
-    if !self.invitation_token.nil? and !self.email.nil? and self.username.nil?
-      self.username = self.email
-    end
+    return unless !invitation_token.nil? && !email.nil? && username.nil?
+
+    self.username = email
   end
 end

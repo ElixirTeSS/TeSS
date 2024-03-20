@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FixDataFieldsInEditSuggestions < ActiveRecord::Migration[4.2]
   class EditSuggestion < ActiveRecord::Base
   end
@@ -6,6 +8,5 @@ class FixDataFieldsInEditSuggestions < ActiveRecord::Migration[4.2]
     EditSuggestion.where(data_fields: nil).update_all(data_fields: {})
   end
 
-  def down
-  end
+  def down; end
 end

@@ -1,24 +1,38 @@
+# frozen_string_literal: true
+
 module Facets
   SPECIAL = {
-      include_expired: -> (c) { c.name == 'Event' },
-      include_archived: -> (c) { c.name == 'Material' },
-      days_since_scrape: -> (c) { c.method_defined?(:last_scraped) },
-      elixir: -> (c) { ['Event', 'Material', 'ContentProvider'].include?(c.name) },
-      max_age: -> (c) { ['Event', 'Material'].include?(c.name) },
-      start: -> (c) { c.name == 'Event' },
-      running_during: -> (c) { c.name == 'Event' },
-      include_hidden: -> (c) { c.method_defined?(:user_requires_approval?) }
+    include_expired: ->(c) { c.name == 'Event' },
+    include_archived: ->(c) { c.name == 'Material' },
+    days_since_scrape: ->(c) { c.method_defined?(:last_scraped) },
+    elixir: ->(c) { %w[Event Material ContentProvider].include?(c.name) },
+    max_age: ->(c) { %w[Event Material].include?(c.name) },
+    start: ->(c) { c.name == 'Event' },
+    running_during: ->(c) { c.name == 'Event' },
+    include_hidden: ->(c) { c.method_defined?(:user_requires_approval?) }
   }.with_indifferent_access.freeze
 
   CONVERSIONS = {
-      online: -> (value) { value == 'true' },
-      include_expired: -> (value) { value == 'true'},
-      include_archived: -> (value) { value == 'true'},
-      max_age: -> (value) { Subscription::FREQUENCY.detect { |f| f[:title] == value }.try(:[], :period) },
-      start: -> (value) { value&.split('/')&.map {|d| Date.parse(d) rescue nil } },
-      running_during: -> (value) { value&.split('/')&.map {|d| Date.parse(d) rescue nil } },
-      include_hidden: -> (value) { value == 'true'}
-  }
+    online: ->(value) { value == 'true' },
+    include_expired: ->(value) { value == 'true' },
+    include_archived: ->(value) { value == 'true' },
+    max_age: ->(value) { Subscription::FREQUENCY.detect { |f| f[:title] == value }.try(:[], :period) },
+    start: lambda { |value|
+             value&.split('/')&.map do |d|
+               Date.parse(d)
+             rescue StandardError
+               nil
+             end
+           },
+    running_during: lambda { |value|
+                      value&.split('/')&.map do |d|
+                        Date.parse(d)
+                      rescue StandardError
+                        nil
+                      end
+                    },
+    include_hidden: ->(value) { value == 'true' }
+  }.freeze
 
   class << self
     def process(facet, value)
@@ -39,6 +53,7 @@ module Facets
 
     def max_age(scope, age, _)
       return if age.blank?
+
       sunspot_scoped(scope) do
         with(:created_at).greater_than(age.ago)
       end
@@ -78,6 +93,7 @@ module Facets
 
     def include_archived(scope, value, _)
       return if value
+
       label = MaterialStatusDictionary.instance.lookup_value('archived', 'title')
       sunspot_scoped(scope) { without(:status, label) } if label
     end
@@ -85,14 +101,10 @@ module Facets
     def include_hidden(scope, value, user)
       sunspot_scoped(scope) do
         # Hide shadowbanned users' events, except from other shadowbanned users and administrators
-        unless user && (user.shadowbanned? || (user.is_admin? && value))
-          without(:shadowbanned, true)
-        end
+        without(:shadowbanned, true) unless user && (user.shadowbanned? || (user.is_admin? && value))
 
         # Hide unverified/rejected users' things, except from curators and admins
-        unless user && ((user.is_curator? || user.is_admin?) && value)
-          without(:unverified, true)
-        end
+        without(:unverified, true) unless user && ((user.is_curator? || user.is_admin?) && value)
       end
     end
 
@@ -102,6 +114,7 @@ module Facets
 
     def elixir(scope, value, _)
       return if value.blank?
+
       sunspot_scoped(scope) do
         if value == 'true'
           any_of do

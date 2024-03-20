@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class EventbriteIngestorTest < ActiveSupport::TestCase
@@ -150,9 +152,9 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
   def get_event(id, title, url)
     return Event.find(id) unless id.nil?
 
-    unless title.nil? or url.nil?
-      events = Event.where(title: title, url: url)
-      return events.first unless events.nil? or events.empty?
-    end
+    return if title.nil? || url.nil?
+
+    events = Event.where(title:, url:)
+    events.first unless events.nil? || events.empty?
   end
 end

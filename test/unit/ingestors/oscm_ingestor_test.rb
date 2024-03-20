@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class OscmIngestorTest < ActiveSupport::TestCase
@@ -29,7 +31,7 @@ class OscmIngestorTest < ActiveSupport::TestCase
     # run task
     assert_difference 'Event.count', 3 do
       freeze_time(2019) do
-        VCR.use_cassette("ingestors/oscm") do
+        VCR.use_cassette('ingestors/oscm') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end

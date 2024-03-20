@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 # The helper for searches
 module SearchHelper
-
   def search_and_facet_params
     params.permit(*@model.search_and_facet_keys)
   end
@@ -13,21 +14,21 @@ module SearchHelper
     parameters = search_and_facet_params
     title ||= (html_options.delete(:title) || truncate(value.to_s, length: 50))
 
-    #if there's already a filter of the same facet type, create/add to an array
-    if parameters.include?(name) && !html_options.delete(:replace)
-      parameters[name] = Array.wrap(parameters[name]) | [value]
-    else
-      parameters[name] = value
-    end
+    # if there's already a filter of the same facet type, create/add to an array
+    parameters[name] = if parameters.include?(name) && !html_options.delete(:replace)
+                         Array.wrap(parameters[name]) | [value]
+                       else
+                         value
+                       end
 
-    parameters.delete('page') #remove the page option if it exists
+    parameters.delete('page') # remove the page option if it exists
     html_options.reverse_merge!(title: value.to_s)
 
     link_to parameters, html_options do
       if block_given?
         block.call
       else
-        content_tag(:span, title, class: 'facet-label') + content_tag(:span, "#{count}", class: 'facet-count')
+        content_tag(:span, title, class: 'facet-label') + content_tag(:span, count.to_s, class: 'facet-count')
       end
     end
   end
@@ -36,7 +37,7 @@ module SearchHelper
     parameters = search_and_facet_params
     title ||= (html_options.delete(:title) || truncate(value.to_s, length: 50))
 
-    #delete a filter from an array or delete the whole facet if it is the only one
+    # delete a filter from an array or delete the whole facet if it is the only one
     if parameters.include?(name)
       if parameters[name].is_a?(Array)
         parameters[name].delete(value)
@@ -47,7 +48,7 @@ module SearchHelper
       end
     end
 
-    parameters.delete('page') #remove the page option if it exists
+    parameters.delete('page') # remove the page option if it exists
     html_options.reverse_merge!(title: value.to_s)
 
     link_to parameters, html_options do
@@ -59,8 +60,8 @@ module SearchHelper
     end
   end
 
-  def toggle_hidden_facet_link facet
-    return "<span class='toggle-#{facet}' style='font-weight: bold;'>
+  def toggle_hidden_facet_link(facet)
+    "<span class='toggle-#{facet}' style='font-weight: bold;'>
             Show more #{facet.humanize.pluralize.downcase}</span>
             <i class='glyphicon glyphicon-chevron-down pull-right toggle-#{facet}'></i>
             <span class='toggle-#{facet}' style='font-weight: bold; display: none;'>

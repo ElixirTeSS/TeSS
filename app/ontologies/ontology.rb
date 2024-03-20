@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Ontology
   def initialize(filename, term_class = OntologyTerm)
     @filename = filename
@@ -42,11 +44,9 @@ class Ontology
   def query(q)
     results = graph.query(q)
 
-    if results.any?
-      @term_class.new(self, results)
-    else
-      nil
-    end
+    return unless results.any?
+
+    @term_class.new(self, results)
   end
 
   private
@@ -78,6 +78,6 @@ class Ontology
   end
 
   def cache_path
-    "#{path}--linkeddata-#{Gem.loaded_specs["linkeddata"].version}.cache"
+    "#{path}--linkeddata-#{Gem.loaded_specs['linkeddata'].version}.cache"
   end
 end

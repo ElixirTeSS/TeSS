@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FuzzyDictionaryMatch
   def self.included(mod)
     mod.extend(ClassMethods)

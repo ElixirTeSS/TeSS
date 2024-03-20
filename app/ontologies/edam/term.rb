@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 module Edam
   class Term < ::OntologyTerm
-    alias_method :preferred_label, :label
+    alias preferred_label label
 
     def has_exact_synonym
       data[OBO.hasExactSynonym] ? data[OBO.hasExactSynonym].map(&:value) : []
     end
-    alias_method :synonyms, :has_exact_synonym
+    alias synonyms has_exact_synonym
 
     def has_narrow_synonym
       data[OBO.hasNarrowSynonym] ? data[OBO.hasNarrowSynonym].map(&:value) : []
@@ -21,11 +23,12 @@ module Edam
 
     def parent
       return @parent if defined? @parent
+
       @parent = (data[RDF::RDFS.subClassOf] ? ontology.lookup(data[RDF::RDFS.subClassOf].first) : nil)
     end
 
     def parent_uri
-      parent ? parent.uri : nil
+      parent&.uri
     end
 
     def deprecated?

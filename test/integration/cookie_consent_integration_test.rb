@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
@@ -44,7 +46,7 @@ class CookieConsentIntegrationTest < ActionDispatch::IntegrationTest
       get root_path
 
       cookie_consent = CookieConsent.new(cookies)
-      assert_equal ['necessary', 'tracking'], cookie_consent.options
+      assert_equal %w[necessary tracking], cookie_consent.options
       assert cookie_consent.given?
       assert_select '#cookie-banner', count: 0
     end

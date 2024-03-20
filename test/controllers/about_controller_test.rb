@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class AboutControllerTest < ActionController::TestCase
@@ -13,16 +15,13 @@ class AboutControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-
   test 'should get about registering' do
     get :registering
     assert_response :success
   end
 
-
   test 'should get about developers' do
     get :developers
     assert_response :success
   end
-
 end

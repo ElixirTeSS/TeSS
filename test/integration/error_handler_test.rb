@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class ErrorHandlerTest < ActionDispatch::IntegrationTest
@@ -6,7 +8,7 @@ class ErrorHandlerTest < ActionDispatch::IntegrationTest
     422 => /change you wanted was rejected/,
     500 => /TeSS encountered an error/,
     503 => /TeSS is temporarily down/
-  }
+  }.freeze
 
   ERRORS.each do |code, message_matcher|
     test "should get #{code} error as html" do

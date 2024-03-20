@@ -1,10 +1,13 @@
+# frozen_string_literal: true
+
 class OrcidValidator < ActiveModel::EachValidator
-  ORCID_PREFIX = 'https://orcid.org/'.freeze
-  ORCID_DOMAIN_REGEX = /http(s)?\:\/\/orcid.org\//.freeze
-  ORCID_ID_REGEX = /\A[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9,X]{4}\Z/.freeze
+  ORCID_PREFIX = 'https://orcid.org/'
+  ORCID_DOMAIN_REGEX = %r{http(s)?://orcid.org/}
+  ORCID_ID_REGEX = /\A[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9,X]{4}\Z/
 
   def validate_each(record, attribute, value)
     return if value.nil? || valid_orcid_id?(value.sub(ORCID_DOMAIN_REGEX, ''))
+
     record.errors.add(attribute, options[:message] || "isn't a valid ORCID identifier")
   end
 

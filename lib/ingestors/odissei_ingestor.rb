@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 require 'csv'
 require 'nokogiri'
@@ -25,26 +27,21 @@ module Ingestors
 
     private
 
-    def process_odissei(url)
+    def process_odissei(_url)
       odissei_url = 'https://odissei-data.nl/calendar/'
-
-      workshop_title_list = []
-      workshop_url_list = []
-      event_page = Nokogiri::HTML5.parse(open_url(odissei_url.to_s, raise: true)).css("div[class='tribe-events-calendar-list']").first.css("div[class='tribe-common-g-row tribe-events-calendar-list__event-row']")
+      event_page = Nokogiri::HTML5.parse(open_url(odissei_url.to_s,
+                                                  raise: true)).css("div[class='tribe-events-calendar-list']").first.css("div[class='tribe-common-g-row tribe-events-calendar-list__event-row']")
       event_page.each do |event_section|
         event = OpenStruct.new
         el = event_section.css("div[class='tribe-events-calendar-list__event-details tribe-common-g-col']").first
         event.title = el.css("a[class='tribe-events-calendar-list__event-title-link tribe-common-anchor-thin']").first.text.gsub("\n", ' ').gsub("\t", '')
         event.url = el.css("a[class='tribe-events-calendar-list__event-title-link tribe-common-anchor-thin']").first.get_attribute('href')
         event.description = el.css("div[class='tribe-events-calendar-list__event-description tribe-common-b2 tribe-common-a11y-hidden']").first.css('p').first.text
-        unless (Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/odissei.yml'))
-          sleep(1)
-        end
+        sleep(1) unless Rails.env.test? && File.exist?('test/vcr_cassettes/ingestors/odissei.yml')
         el = Nokogiri::HTML5.parse(open_url(event.url.to_s, raise: true)).css("div[id='tribe-events-content']").first
-        venue_css = el&.css("div[class='tribe-events-meta-group tribe-events-meta-group-venue']")&.first&.css("dl")
-        if !venue_css
-          next
-        end
+        venue_css = el&.css("div[class='tribe-events-meta-group tribe-events-meta-group-venue']")&.first&.css('dl')
+        next unless venue_css
+
         event.venue = recursive_description_func(venue_css).gsub("\n", ' ').gsub("\t", '')
         times = scrape_start_and_end_time(el.css("div[class='tribe-events-meta-group tribe-events-meta-group-details']").first)
         event.start = times[0]
@@ -74,7 +71,7 @@ def scrape_start_and_end_time(el)
       end_time = time.split('-')[1].strip
     else
       start_time = time
-      end_time = [time.to_i + 1, 18].max.to_s + ':00'
+      end_time = "#{[time.to_i + 1, 18].max}:00"
     end
   elsif start_date_time
     start_date = start_date_time.get_attribute('title').strip
@@ -82,12 +79,12 @@ def scrape_start_and_end_time(el)
     end_date = end_date_time.get_attribute('title').strip
     end_time = end_date_time.text.split('@').last.strip
   end
-  event_start = Time.zone.parse(start_date + ' ' + start_time)
-  event_end = Time.zone.parse(end_date + ' ' + end_time)
-  return [event_start, event_end]
+  event_start = Time.zone.parse("#{start_date} #{start_time}")
+  event_end = Time.zone.parse("#{end_date} #{end_time}")
+  [event_start, event_end]
 end
 
-def recursive_description_func(css, res='')
+def recursive_description_func(css, res = '')
   if css.length == 1
     res += css.text.strip
   else

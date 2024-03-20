@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Role < ApplicationRecord
   has_many :users
 
@@ -30,10 +32,9 @@ class Role < ApplicationRecord
   def self.create_roles
     roles = YAML.safe_load(File.read(File.join(Rails.root, 'config', 'data', 'roles.yml')))
     roles.each do |name, data|
-      r = find_or_create_by(name: name)
+      r = find_or_create_by(name:)
       r.assign_attributes(data)
       r.save! if r.changed?
     end
   end
-
 end

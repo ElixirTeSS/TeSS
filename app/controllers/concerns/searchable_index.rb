@@ -1,11 +1,14 @@
+# frozen_string_literal: true
+
 # The concern for searchable index
 module SearchableIndex
   extend ActiveSupport::Concern
 
   included do
     attr_reader :facet_fields, :search_params, :facet_params, :page, :sort_by, :index_resources
-    before_action :set_params, only: [:index, :count]
-    before_action :fetch_resources, only: [:index, :count]
+
+    before_action :set_params, only: %i[index count]
+    before_action :fetch_resources, only: %i[index count]
 
     helper 'search'
   end
@@ -22,7 +25,7 @@ module SearchableIndex
       per_page = per_page_param.blank? ? 10 : per_page_param.to_i
 
       @search_results = @model.search_and_filter(current_user, @search_params, @facet_params,
-                                    page: page, per_page: per_page, sort_by: @sort_by)
+                                                 page:, per_page:, sort_by: @sort_by)
       @index_resources = @search_results.results
       instance_variable_set("@#{controller_name}_results", @search_results) # e.g. @nodes_results
     else
@@ -43,7 +46,7 @@ module SearchableIndex
 
   def api_collection_properties
     links = {
-        self: polymorphic_path(@model, search_and_facet_params)
+      self: polymorphic_path(@model, search_and_facet_params)
     }
     if TeSS::Config.solr_enabled
       # Transform facets so value is always an array
@@ -52,8 +55,8 @@ module SearchableIndex
 
       available_facets = Hash[@search_results.facets.map do |f|
         [
-            f.field_name,
-            f.rows.map { |r| { value: r.value, count: r.count } }
+          f.field_name,
+          f.rows.map { |r| { value: r.value, count: r.count } }
         ]
       end]
       total = @search_results.total
@@ -70,15 +73,14 @@ module SearchableIndex
       total = @index_resources.count
     end
 
-
     {
-        links: links,
-        meta: {
-            facets: facets,
-            available_facets: available_facets,
-            query: @search_params,
-            results_count: total
-        }
+      links:,
+      meta: {
+        facets:,
+        available_facets:,
+        query: @search_params,
+        results_count: total
+      }
     }
   end
 
@@ -95,6 +97,6 @@ module SearchableIndex
   end
 
   def search_and_facet_params
-    params.permit(*(@model.search_and_facet_keys | [:page_size, :page_number, :page, :per_page]))
+    params.permit(*(@model.search_and_facet_keys | %i[page_size page_number page per_page]))
   end
 end

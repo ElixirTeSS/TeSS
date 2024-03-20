@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 # The controller for actions related to the Nodes model
 class NodesController < ApplicationController
   before_action :feature_enabled?
-  before_action :set_node, only: [:show, :edit, :update, :destroy]
+  before_action :set_node, only: %i[show edit update destroy]
   before_action :set_breadcrumbs
 
   include SearchableIndex
@@ -85,6 +87,7 @@ class NodesController < ApplicationController
   end
 
   private
+
   # Use callbacks to share common setup or constraints between actions.
   def set_node
     @node = Node.friendly.find(params[:id])
@@ -94,7 +97,6 @@ class NodesController < ApplicationController
   def node_params
     params.require(:node).permit(:name, :member_status, :country_code, :home_page, :staff, :twitter, :image_url,
                                  :description, { institutions: [] }, { carousel_images: [] },
-                                 { staff_attributes: [:id, :name, :email, :role, :image, :image_url, :_destroy] })
+                                 { staff_attributes: %i[id name email role image image_url _destroy] })
   end
-
 end

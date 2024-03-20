@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class MaterialCsvIngestorTest < ActiveSupport::TestCase
@@ -158,9 +160,9 @@ class MaterialCsvIngestorTest < ActiveSupport::TestCase
     # expect to add 1 material
     assert get_material(title, url).nil?
     assert_difference 'Material.count', 1 do
-      params = { user: @user, content_provider: @content_provider, url: url, title: title, description: description,
+      params = { user: @user, content_provider: @content_provider, url:, title:, description:,
                  keywords: %w[Man Woman Person Computer Window], contact: 'Dummy Contact',
-                 licence: 'GPL-3.0', status: ['development'], locked_fields: locked_fields }
+                 licence: 'GPL-3.0', status: ['development'], locked_fields: }
       material = Material.new(params)
       material.save!
     end
@@ -209,9 +211,9 @@ class MaterialCsvIngestorTest < ActiveSupport::TestCase
 
   def get_material(title, url, provider = nil)
     if provider.nil?
-      Material.where(title: title, url: url)
+      Material.where(title:, url:)
     else
-      Material.where(title: title, url: url, content_provider: provider)
+      Material.where(title:, url:, content_provider: provider)
     end.first
   end
 end

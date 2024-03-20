@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # OpenID Connect configuration for AAF (Australia)
 unless Rails.application.secrets.dig(:oidc, :client_id).blank?
   Devise.omniauth :oidc, {
@@ -5,7 +7,7 @@ unless Rails.application.secrets.dig(:oidc, :client_id).blank?
     name: :oidc,
     issuer: Rails.application.secrets.oidc[:issuer],
     strategy_class: OmniAuth::Strategies::OpenIDConnect,
-    scope: [:openid, :email, :profile],
+    scope: %i[openid email profile],
     response_type: 'code',                                 # default is 'code'
     discovery: true,                                       # default is false
     send_nonce: true,
@@ -20,7 +22,7 @@ unless Rails.application.secrets.dig(:oidc, :client_id).blank?
       authorization_endpoint: '/providers/op/authorize',
       userinfo_endpoint: '/providers/op/userinfo',
       token_endpoint: '/providers/op/token',
-      jwks_uri: '/providers/op/jwks',
+      jwks_uri: '/providers/op/jwks'
     }
   }
 end

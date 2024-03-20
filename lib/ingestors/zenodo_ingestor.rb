@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rest-client'
 require 'json'
 
@@ -25,7 +27,7 @@ module Ingestors
             results = JSON.parse(content.read)
 
             # extract materials from results
-            unless results['hits'].nil? and results['hits']['hits'].nil?
+            unless results['hits'].nil? && results['hits']['hits'].nil?
               hits = results['hits']['hits']
               hits.each do |item|
                 process_material item
@@ -37,7 +39,7 @@ module Ingestors
 
           # set next page
           old_page = next_page
-          next_page = results['links']['next'] unless results['links'].nil? or results['links']['next'].nil?
+          next_page = results['links']['next'] unless results['links'].nil? || results['links']['next'].nil?
           next_page = nil if next_page == old_page
         end
       rescue Exception => e
@@ -67,17 +69,13 @@ module Ingestors
           material.description = process_description metadata['description']
           material.keywords = metadata['keywords'] unless metadata['keywords'].nil?
           material.licence = metadata['license']['id'] unless metadata.dig('license', 'id').nil?
-          unless metadata['creators'].nil?
-            metadata['creators'].each do |c|
-              entry = c['orcid'].nil? ? c['name'] : "#{c['name']} (orcid: #{c['orcid']})"
-              material.authors << entry
-            end
+          metadata['creators']&.each do |c|
+            entry = c['orcid'].nil? ? c['name'] : "#{c['name']} (orcid: #{c['orcid']})"
+            material.authors << entry
           end
-          unless metadata['contributors'].nil?
-            metadata['contributors'].each do |c|
-              entry = c['type'].nil? ? c['name'] : "#{c['name']} (type: #{c['type']})"
-              material.contributors << entry
-            end
+          metadata['contributors']&.each do |c|
+            entry = c['type'].nil? ? c['name'] : "#{c['name']} (type: #{c['type']})"
+            material.contributors << entry
           end
 
         end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 require 'csv'
 
@@ -30,55 +32,51 @@ module Ingestors
       data = results['data']
 
       # extract materials from results
-      unless data.nil? or data.size < 1
-        data.each do |item|
-          # create new event
-          event = OpenStruct.new
+      return if data.nil? || data.empty?
 
-          # extract event details from
-          attr = item['attributes']
-          event.title = attr['title']
-          event.url = attr['url'].strip unless attr['url'].nil?
-          event.description = convert_description attr['description']
-          event.start = attr['start']
-          event.end = attr['end']
-          event.timezone = 'UTC'
-          event.contact = attr['contact']
-          event.organizer = attr['organizer']
-          event.online = attr['online']
-          event.city = attr['city']
-          event.country = attr['country']
-          event.venue = attr['venue']
-          event.online = true if attr['venue'] == 'Online'
+      data.each do |item|
+        # create new event
+        event = OpenStruct.new
 
-          # array fields
-          event.keywords = []
-          attr['keywords'].each { |keyword| event.keywords << keyword } unless attr['keywords'].nil?
+        # extract event details from
+        attr = item['attributes']
+        event.title = attr['title']
+        event.url = attr['url'].strip unless attr['url'].nil?
+        event.description = convert_description attr['description']
+        event.start = attr['start']
+        event.end = attr['end']
+        event.timezone = 'UTC'
+        event.contact = attr['contact']
+        event.organizer = attr['organizer']
+        event.online = attr['online']
+        event.city = attr['city']
+        event.country = attr['country']
+        event.venue = attr['venue']
+        event.online = true if attr['venue'] == 'Online'
 
-          event.host_institutions = []
-          attr['host-institutions'].each { |host| event.host_institutions << host } unless attr['host-institutions'].nil?
+        # array fields
+        event.keywords = []
+        attr['keywords']&.each { |keyword| event.keywords << keyword }
 
-          # dictionary fields
-          event.eligibility = []
-          unless attr['eligibility'].nil?
-            attr['eligibility'].each do |key|
-              value = convert_eligibility(key)
-              event.eligibility << value unless value.nil?
-            end
-          end
-          event.event_types = []
-          unless attr['event_types'].nil?
-            attr['event_types'].each do |key|
-              value = convert_event_types(key)
-              event.event_types << value unless value.nil?
-            end
-          end
+        event.host_institutions = []
+        attr['host-institutions']&.each { |host| event.host_institutions << host }
 
-          # add event to events array
-          add_event(event)
-        rescue Exception => e
-          @messages << "Extract event fields failed with: #{e.message}"
+        # dictionary fields
+        event.eligibility = []
+        attr['eligibility']&.each do |key|
+          value = convert_eligibility(key)
+          event.eligibility << value unless value.nil?
         end
+        event.event_types = []
+        attr['event_types']&.each do |key|
+          value = convert_event_types(key)
+          event.event_types << value unless value.nil?
+        end
+
+        # add event to events array
+        add_event(event)
+      rescue Exception => e
+        @messages << "Extract event fields failed with: #{e.message}"
       end
     end
   end

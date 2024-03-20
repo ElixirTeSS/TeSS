@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 class BioschemasController < ApplicationController
   before_action -> { feature_enabled?('bioschemas_testing') }
 
-  def test
-
-  end
+  def test; end
 
   def run_test
     body = nil
@@ -35,27 +35,28 @@ class BioschemasController < ApplicationController
   private
 
   def fetch_url
-    begin
-      uri = URI.parse(params[:url]) rescue nil
-      if uri && (uri.scheme == 'http' || uri.scheme == 'https')
-        PrivateAddressCheck.only_public_connections do
-          res = HTTParty.get(uri.to_s, timeout: 5, format: :plain)
-          if res.code == 200
-            res.body
-          else
-            flash[:error] = "Could not access the given URL, status: #{res.code}"
-            nil
-          end
-        end
-      else
-        flash[:error] = 'Invalid URL - Make sure the URL starts with "https://" or "http://"'
-        nil
-      end
-    rescue PrivateAddressCheck::PrivateConnectionAttemptedError, Net::OpenTimeout, SocketError, Errno::ECONNREFUSED,
-      Errno::EHOSTUNREACH
-      flash[:error] = 'Could not access the given URL.'
+    uri = begin
+      URI.parse(params[:url])
+    rescue StandardError
       nil
     end
+    if uri && (uri.scheme == 'http' || uri.scheme == 'https')
+      PrivateAddressCheck.only_public_connections do
+        res = HTTParty.get(uri.to_s, timeout: 5, format: :plain)
+        if res.code == 200
+          res.body
+        else
+          flash[:error] = "Could not access the given URL, status: #{res.code}"
+          nil
+        end
+      end
+    else
+      flash[:error] = 'Invalid URL - Make sure the URL starts with "https://" or "http://"'
+      nil
+    end
+  rescue PrivateAddressCheck::PrivateConnectionAttemptedError, Net::OpenTimeout, SocketError, Errno::ECONNREFUSED,
+         Errno::EHOSTUNREACH
+    flash[:error] = 'Could not access the given URL.'
+    nil
   end
-
 end

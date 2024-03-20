@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Bioschemas
   class EventGenerator < Generator
     def self.type
@@ -15,22 +17,24 @@ module Bioschemas
     property :keywords, :keywords
     property :startDate, :start
     property :endDate, :end
-    property :organizer, -> (event) { { '@type' => 'Organization', name: event.organizer } if event.organizer.present? }
-    property :location, -> (event) { address(event) },
-             condition: -> (event) { event.venue.present? || event.city.present? || event.county.present? ||
-               event.country.present? || event.postcode.present? }
+    property :organizer, ->(event) { { '@type' => 'Organization', name: event.organizer } if event.organizer.present? }
+    property :location, ->(event) { address(event) },
+             condition: lambda { |event|
+                          event.venue.present? || event.city.present? || event.county.present? ||
+                            event.country.present? || event.postcode.present?
+                        }
     property :hostInstitution, :host_institutions
     property :contact, :contact
-    property :funder, -> (event) {
+    property :funder, lambda { |event|
       event.sponsors.map { |sponsor| { '@type' => 'Organization', 'name' => sponsor } }
     }
-    property :audience, -> (event) {
+    property :audience, lambda { |event|
       event.target_audience.map { |audience| { '@type' => 'Audience', 'audienceType' => audience } }
     }
     property :maximumAttendeeCapacity, :capacity
     property :event_types, :event_types
     property :eligibility, :eligibility
-    property :about, -> (event) {
+    property :about, lambda { |event|
       event.scientific_topics.map { |t| term(t) }
     }
   end

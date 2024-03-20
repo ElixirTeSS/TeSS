@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HasTestJob
   extend ActiveSupport::Concern
 
@@ -10,22 +12,20 @@ module HasTestJob
   end
 
   def test_job_status
-    Sidekiq::Status::status(test_job_id)
+    Sidekiq::Status.status(test_job_id)
   end
 
   def test_in_progress?
-    [:queued, :working, :retrying].include?(test_job_status)
+    %i[queued working retrying].include?(test_job_status)
   end
 
   def test_results
     file = test_results_path
-    if File.exist?(file)
-      YAML.load(File.read(file),
-                aliases: true,
-                permitted_classes: Rails.application.config.active_record.yaml_column_permitted_classes)
-    else
-      nil
-    end
+    return unless File.exist?(file)
+
+    YAML.load(File.read(file),
+              aliases: true,
+              permitted_classes: Rails.application.config.active_record.yaml_column_permitted_classes)
   end
 
   def test_results=(results)

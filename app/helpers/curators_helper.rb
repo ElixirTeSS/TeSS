@@ -1,15 +1,14 @@
+# frozen_string_literal: true
+
 # The controller for actions related to the Ban model
 module CuratorsHelper
-
   def print_curation_action(action)
     resource, action = action.split('.')
-    if action
-      action, topic = action.split('_')
-      action += 'ed'
-      return "#{topic} suggestions #{action=='rejected' ? action + " from " : action + ' to '}#{resource}s".humanize
-    else
-      return resource.humanize
-    end
+    return resource.humanize unless action
+
+    action, topic = action.split('_')
+    action += 'ed'
+    "#{topic} suggestions #{action == 'rejected' ? "#{action} from " : "#{action} to "}#{resource}s".humanize
   end
 
   def role_options(selected_role, scope: User)

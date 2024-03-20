@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'redis'
 require 'json'
 
@@ -29,4 +31,3 @@ class GeocodingWorker
     event.save!
   end
 end
-

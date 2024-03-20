@@ -1,5 +1,6 @@
-class SubscriptionMailer < ApplicationMailer
+# frozen_string_literal: true
 
+class SubscriptionMailer < ApplicationMailer
   include ActionView::Helpers::TextHelper
   helper(SubscriptionsHelper)
   helper(EventsHelper)
@@ -15,10 +16,9 @@ class SubscriptionMailer < ApplicationMailer
                    end
     subs = pluralize(@digest.total_count, "new #{@subscription.subscribable_type.downcase}")
     subject = "#{TeSS::Config.site['title_short']} #{sub.frequency} digest - #{subs} matching your criteria"
-    mail(subject: subject, to: sub.user.email) do |format|
+    mail(subject:, to: sub.user.email) do |format|
       format.html
       format.text
     end
   end
-
 end

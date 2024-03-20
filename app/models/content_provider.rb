@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class ContentProvider < ApplicationRecord
   # The order of these determines which providers have precedence when scraping.
   # Low -> High
-  PROVIDER_TYPE = ['Portal', 'Organisation', 'Project']
+  PROVIDER_TYPE = %w[Portal Organisation Project].freeze
 
   include PublicActivity::Common
   include LogParameterChanges
@@ -10,20 +12,20 @@ class ContentProvider < ApplicationRecord
   include HasFriendlyId
   include CurationQueue
 
-  has_many :materials, :dependent => :destroy
-  has_many :events, :dependent => :destroy
-  has_many :sources, :dependent => :destroy
+  has_many :materials, dependent: :destroy
+  has_many :events, dependent: :destroy
+  has_many :sources, dependent: :destroy
 
   belongs_to :user
   belongs_to :node, optional: true
 
-  has_and_belongs_to_many :editors, class_name: "User"
+  has_and_belongs_to_many :editors, class_name: 'User'
 
   attribute :approved_editors, :string, array: true
   attribute :contact, :string
 
-  #has_many :content_provider_users
-  #has_many :editors, through: :users, source: :user, inverse_of: :providers
+  # has_many :content_provider_users
+  # has_many :editors, through: :users, source: :user, inverse_of: :providers
 
   delegate :name, to: :node, prefix: true, allow_nil: true
 
@@ -55,18 +57,16 @@ class ContentProvider < ApplicationRecord
       end
       # other fields
       string :title
-      string :keywords, :multiple => true
-      string :node, :multiple => true do
-        unless self.node.blank?
-          self.node.name
-        end
+      string :keywords, multiple: true
+      string :node, multiple: true do
+        node.name unless node.blank?
       end
       string :content_provider_type
       integer :count do
-        if self.events.count > self.materials.count
-          self.events.count
+        if events.count > materials.count
+          events.count
         else
-          self.materials.count
+          materials.count
         end
       end
       integer :user_id # Used for shadowbans
@@ -80,10 +80,10 @@ class ContentProvider < ApplicationRecord
   # title:text url:text image_url:text description:text
 
   def self.facet_fields
-    %w( keywords node content_provider_type)
+    %w[keywords node content_provider_type]
   end
 
-  def node_name= name
+  def node_name=(name)
     self.node = Node.find_by_name(name)
   end
 
@@ -92,16 +92,12 @@ class ContentProvider < ApplicationRecord
   end
 
   def self.check_exists(content_provider_params)
-    given_content_provider = self.new(content_provider_params)
+    given_content_provider = new(content_provider_params)
     content_provider = nil
 
-    if given_content_provider.url.present?
-      content_provider = self.find_by_url(given_content_provider.url)
-    end
+    content_provider = find_by_url(given_content_provider.url) if given_content_provider.url.present?
 
-    if given_content_provider.title.present?
-      content_provider ||= self.where(title: given_content_provider.title).last
-    end
+    content_provider ||= where(title: given_content_provider.title).last if given_content_provider.title.present?
 
     content_provider
   end
@@ -111,57 +107,55 @@ class ContentProvider < ApplicationRecord
   end
 
   def add_editor(editor)
-    if !editor.nil? and !editors.include?(editor) and !user.nil? and user.id != editor.id
-      editors << editor
-      save!
-      editor.editables.reload
-    end
+    return unless !editor.nil? && !editors.include?(editor) && !user.nil? && (user.id != editor.id)
+
+    editors << editor
+    save!
+    editor.editables.reload
   end
 
   def remove_editor(editor)
-    if !editor.nil? and editors.include?(editor)
-      # remove from array
-      editors.delete(editor)
-      save!
-      editor.editables.reload
+    return unless !editor.nil? && editors.include?(editor)
 
-      # transfer events to the provider's user
-      editor.events.where(content_provider_id: id).find_each do |event|
-        event.user = user
-        event.save!
-      end
+    # remove from array
+    editors.delete(editor)
+    save!
+    editor.editables.reload
 
-      # transfer materials to the provider's user
-      editor.materials.where(content_provider_id: id).find_each do |material|
-        material.user = user
-        material.save!
-      end
-      editor.reload
-      editor.save!
+    # transfer events to the provider's user
+    editor.events.where(content_provider_id: id).find_each do |event|
+      event.user = user
+      event.save!
     end
 
+    # transfer materials to the provider's user
+    editor.materials.where(content_provider_id: id).find_each do |material|
+      material.user = user
+      material.save!
+    end
+    editor.reload
+    editor.save!
   end
 
   def approved_editors
     result = []
     editors.each { |editor| result << editor.username }
-    #puts "get approved_editors: found #{result.size} editors"
-    return result
+    # puts "get approved_editors: found #{result.size} editors"
+    result
   end
 
-  def approved_editors= values
-    #puts "set approved_editors: user count #{values.size}"
+  def approved_editors=(values)
+    # puts "set approved_editors: user count #{values.size}"
     editors_list = []
     values.each do |item|
-      if !item.nil? and !item.blank?
+      if !item.nil? && !item.blank?
         list_user = User.find_by_username(item)
-        editors_list << list_user if !list_user.nil?
+        editors_list << list_user unless list_user.nil?
       end
     end
     # add missing
-    editors_list.each { |item| add_editor(item) if !editors.include?(item) }
+    editors_list.each { |item| add_editor(item) unless editors.include?(item) }
     # remove old
-    editors.each { |item| remove_editor(item) if !editors_list.include?(item) }
+    editors.each { |item| remove_editor(item) unless editors_list.include?(item) }
   end
-
 end

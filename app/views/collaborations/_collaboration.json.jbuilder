@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.extract! collaboration, :id
 
 json.user do

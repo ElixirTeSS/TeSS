@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddDefaultToTimezone < ActiveRecord::Migration[6.1]
   def up
     change_column_default :events, :timezone, from: nil, to: 'UTC'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class SubscriptionTest < ActiveSupport::TestCase
@@ -10,7 +12,7 @@ class SubscriptionTest < ActiveSupport::TestCase
 
     sub = user.subscriptions.build(frequency: :daily, subscribable_type: 'Event',
                                    query: 'apples',
-                                   facets: { categories: ['fruit', 'vegetables'] })
+                                   facets: { categories: %w[fruit vegetables] })
 
     assert_difference('Subscription.count') do
       sub.save
@@ -164,12 +166,12 @@ class SubscriptionTest < ActiveSupport::TestCase
 
   test 'facets with max age' do
     sub = subscriptions(:daily_subscription)
-    assert_equal({ type: ['fruit', 'veg'], max_age: '24 hours' }.with_indifferent_access, sub.facets_with_max_age)
+    assert_equal({ type: %w[fruit veg], max_age: '24 hours' }.with_indifferent_access, sub.facets_with_max_age)
 
     sub = subscriptions(:monthly_subscription)
-    assert_equal({ type: ['fruit', 'veg'], max_age: '1 month' }.with_indifferent_access, sub.facets_with_max_age)
+    assert_equal({ type: %w[fruit veg], max_age: '1 month' }.with_indifferent_access, sub.facets_with_max_age)
 
     sub = subscriptions(:event_subscription)
-    assert_equal({ times: ["good", "great"], max_age: '1 week' }.with_indifferent_access, sub.facets_with_max_age)
+    assert_equal({ times: %w[good great], max_age: '1 week' }.with_indifferent_access, sub.facets_with_max_age)
   end
 end

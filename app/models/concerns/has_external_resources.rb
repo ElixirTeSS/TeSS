@@ -1,5 +1,6 @@
-module HasExternalResources
+# frozen_string_literal: true
 
+module HasExternalResources
   extend ActiveSupport::Concern
 
   included do

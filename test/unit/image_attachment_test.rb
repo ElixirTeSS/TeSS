@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class ImageAttachmentTest < ActiveSupport::TestCase
-
   setup do
     mock_images
   end
@@ -15,7 +16,7 @@ class ImageAttachmentTest < ActiveSupport::TestCase
     assert provider.save
 
     assert provider.image?
-    assert provider.image.size > 0
+    assert provider.image.size.positive?
     refute provider.image_url.blank?
   end
 
@@ -30,7 +31,7 @@ class ImageAttachmentTest < ActiveSupport::TestCase
 
     assert provider.image_url.blank?
     assert provider.image?
-    assert provider.image.size > 0
+    assert provider.image.size.positive?
   end
 
   test 'should replace URL-sourced image when URL changed' do

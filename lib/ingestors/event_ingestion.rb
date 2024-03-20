@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module Ingestors
   module EventIngestion
     def add_event(event)
       if event.is_a?(Hash)
         c = EventsController.new
-        c.params = { event: event }
+        c.params = { event: }
         c.send(:event_params)
         event = OpenStruct.new(c.send(:event_params))
       end
@@ -40,7 +42,7 @@ module Ingestors
             # Timecop.freeze(start) do
             #   endt = Time.zone.parse(parts.second) if parts.second
             # end
-            endt = Time.zone.parse(parts.second, now=start) if parts.second
+            endt = Time.zone.parse(parts.second, start) if parts.second
           rescue ArgumentError
           end
 
@@ -54,7 +56,7 @@ module Ingestors
           end
           if start && !endt
             begin
-              endt = Time.zone.parse(parts.first.sub(/[0-9:]+/, parts.second), now=start)
+              endt = Time.zone.parse(parts.first.sub(/[0-9:]+/, parts.second), start)
             rescue ArgumentError
             end
           end

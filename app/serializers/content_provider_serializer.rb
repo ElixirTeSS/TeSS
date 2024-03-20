@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ContentProviderSerializer < ApplicationSerializer
   attributes :id, :slug, :title, :description, :url, :image_url, :keywords, :created_at, :updated_at, :contact
 

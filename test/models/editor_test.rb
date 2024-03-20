@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class EditorTest < ActiveSupport::TestCase
-
   setup do
     mock_images
   end
@@ -89,7 +90,7 @@ class EditorTest < ActiveSupport::TestCase
     prov1 = content_providers :organisation_provider
     prov2 = content_providers :goblet
 
-    #check empty list
+    # check empty list
     assert trainer.editables
     assert_equal 0, trainer.editables.size
 
@@ -167,7 +168,7 @@ class EditorTest < ActiveSupport::TestCase
     assert_equal 0, provider.approved_editors.size
 
     # add an approved editor
-    provider.approved_editors = [ owner.username, trainer.username ]
+    provider.approved_editors = [owner.username, trainer.username]
     provider.save
     assert_equal 1, provider.approved_editors.size
     assert_equal trainer.username, provider.approved_editors.first

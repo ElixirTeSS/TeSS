@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddClassIdHasNarrowSynonymInSubsetInCyclic < ActiveRecord::Migration[4.2]
   def change
     add_column :scientific_topics, :class_id, :string

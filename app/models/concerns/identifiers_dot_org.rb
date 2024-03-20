@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module IdentifiersDotOrg
   extend ActiveSupport::Concern
 
@@ -9,7 +11,7 @@ module IdentifiersDotOrg
   end
 
   def identifiers_dot_org_id
-    "#{TeSS::Config.identifiers_prefix}:#{self.class.identifiers_dot_org_key}#{self.id}"
+    "#{TeSS::Config.identifiers_prefix}:#{self.class.identifiers_dot_org_key}#{id}"
   end
 
   def identifiers_dot_org_url

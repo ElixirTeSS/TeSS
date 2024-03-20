@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class SourceTest < ActiveSupport::TestCase
-
   setup do
     @user = users :scraper_user
     assert_not_nil @user
@@ -14,9 +15,9 @@ class SourceTest < ActiveSupport::TestCase
     refute source_id.nil?
 
     # check run details not set
-    refute source.url.nil?, "source url is nil"
-    refute source.content_provider.nil?, "source content_provider is nil"
-    assert source.finished_at.nil?,  "Pre-update: source finished_at is not nil"
+    refute source.url.nil?, 'source url is nil'
+    refute source.content_provider.nil?, 'source content_provider is nil'
+    assert source.finished_at.nil?, 'Pre-update: source finished_at is not nil'
 
     # update run details
     finished = Time.now

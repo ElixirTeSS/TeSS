@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FairsharingController < ApplicationController
   before_action :client
 

@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class SearchControllerTest < ActionController::TestCase
-
   include Devise::Test::ControllerHelpers
 
   setup do
@@ -28,7 +29,7 @@ class SearchControllerTest < ActionController::TestCase
 
   test 'search result tabs should respect configured tab order' do
     with_settings(solr_enabled: true,
-                  site: { tab_order: ['content_providers', 'materials', 'collections', 'events'] }) do
+                  site: { tab_order: %w[content_providers materials collections events] }) do
       search_method = proc { |model| MockSearch.new(model.limit(3).to_a) }
 
       Sunspot.blockless_stub(:search, search_method) do
@@ -45,5 +46,4 @@ class SearchControllerTest < ActionController::TestCase
       end
     end
   end
-
 end

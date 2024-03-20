@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ConvertCollectionItems < ActiveRecord::Migration[6.1]
   class CollectionEvent < ActiveRecord::Base; end
   class CollectionMaterial < ActiveRecord::Base; end

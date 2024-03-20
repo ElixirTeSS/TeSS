@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 require 'csv'
 require 'nokogiri'
@@ -67,15 +69,13 @@ module Ingestors
           end
         end
         # Now fetch the page to get the event date (until it is added to the RSS feed)
-        unless event.start and !event.url.starts_with('https://')
+        unless event.start && !event.url.starts_with('https://')
           # should we do more against data exfiltration? URI.open is a known hazard
           page = Nokogiri::XML(open_url(event.url, raise: true))
           event.start, event.end = parse_dates(page.xpath('//th[.="Date"]').first&.parent&.xpath('td')&.last&.text&.strip, 'Amsterdam')
           # in this case also grab the venue
           event.venue = page.xpath('//th[.="Venue"]').first&.parent&.xpath('td')&.last&.text
-          unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/wur.yml')
-            sleep 1
-          end
+          sleep 1 unless Rails.env.test? && File.exist?('test/vcr_cassettes/ingestors/wur.yml')
         end
 
         event.set_default_times

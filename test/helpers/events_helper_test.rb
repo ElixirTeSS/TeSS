@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class EventsHelperTest < ActionView::TestCase
-
-  test "neatly_printed_date_range" do
+  test 'neatly_printed_date_range' do
     assert_equal '15 April 2023',
                  neatly_printed_date_range(DateTime.new(2023, 4, 15, 0)),
                  'Should display single date without time if time is midnight'

@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class ContentProviderTest < ActiveSupport::TestCase
-
   setup do
     mock_images
   end
@@ -50,7 +51,6 @@ class ContentProviderTest < ActiveSupport::TestCase
     assert !content_providers(:portal_provider).contact.nil?
     assert_equal 'Jim (jim@provider.portal)',
                  content_providers(:portal_provider).contact
-
   end
 
   test 'should validate content provider type' do

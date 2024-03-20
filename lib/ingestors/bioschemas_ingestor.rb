@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 require 'tess_rdf_extractors'
 
@@ -21,10 +23,10 @@ module Ingestors
       sources = if source_url.downcase.match?(/sitemap(.*)?.xml\Z/)
                   sitemap_message = "Parsing sitemap: #{source_url}\n"
                   urls = SitemapParser.new(source_url, {
-                    recurse: true,
-                    url_regex: sitemap_regex,
-                    headers: { 'User-Agent' => config[:user_agent] }
-                  }).to_a.uniq.map(&:strip)
+                                             recurse: true,
+                                             url_regex: sitemap_regex,
+                                             headers: { 'User-Agent' => config[:user_agent] }
+                                           }).to_a.uniq.map(&:strip)
                   sitemap_message << "\n - #{urls.count} URLs found"
                   @messages << sitemap_message
                   urls
@@ -37,13 +39,13 @@ module Ingestors
       totals = Hash.new(0)
       sources.each do |url|
         source = open_url(url)
-        output = read_content(source, url: url)
-        if output
-          provider_events += output[:resources][:events]
-          provider_materials += output[:resources][:materials]
-          output[:totals].each do |key, value|
-            totals[key] += value
-          end
+        output = read_content(source, url:)
+        next unless output
+
+        provider_events += output[:resources][:events]
+        provider_materials += output[:resources][:materials]
+        output[:totals].each do |key, value|
+          totals[key] += value
         end
       end
 
@@ -122,11 +124,11 @@ module Ingestors
           comment = 'Please check your page contains valid JSON-LD or HTML.'
         end
         message = "#{error} occurred while reading"
-        if url.present? && url != 'https://example.com'
-          message << ": #{url} "
-        else
-          message << " the source"
-        end
+        message << if url.present? && url != 'https://example.com'
+                     ": #{url} "
+                   else
+                     ' the source'
+                   end
         message << ". #{comment}" if comment
         @messages << message
       end

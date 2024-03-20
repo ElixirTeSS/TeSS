@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class RugIngestorTest < ActiveSupport::TestCase
@@ -22,14 +24,14 @@ class RugIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::RugIngestor.new
 
     # check event doesn't
-    new_title = "Studium Generale: Work, Work, Work | The Invention and Future of Work - Jason Resnikoff"
+    new_title = 'Studium Generale: Work, Work, Work | The Invention and Future of Work - Jason Resnikoff'
     new_url = 'https://www.rug.nl/about-ug/latest-news/events/calendar/studium-generale/work-jason-resnikoff'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
     assert_difference 'Event.count', 7 do
       freeze_time(2019) do
-        VCR.use_cassette("ingestors/rug") do
+        VCR.use_cassette('ingestors/rug') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end
@@ -56,7 +58,6 @@ class RugIngestorTest < ActiveSupport::TestCase
     assert_equal 'Academy Building, Broerstraat 5, Groningen', event.venue
   end
 
-
   test 'can ingest events from rug in various timezones' do
     source = @content_provider.sources.build(
       url: 'https://www.rug.nl/about-ug/latest-news/events/calendar/',
@@ -66,14 +67,14 @@ class RugIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::RugIngestor.new
     # check event doesn't exist
-    new_title = "Studium Generale: Work, Work, Work | The Invention and Future of Work - Jason Resnikoff"
+    new_title = 'Studium Generale: Work, Work, Work | The Invention and Future of Work - Jason Resnikoff'
     new_url = 'https://www.rug.nl/about-ug/latest-news/events/calendar/studium-generale/work-jason-resnikoff'
     refute Event.where(title: new_title, url: new_url).any?
 
     # Scrape the initial events
     assert_difference 'Event.count', 7 do
       freeze_time(2016) do
-        VCR.use_cassette("ingestors/rug") do
+        VCR.use_cassette('ingestors/rug') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end
@@ -88,7 +89,7 @@ class RugIngestorTest < ActiveSupport::TestCase
 
       assert_no_difference 'Event.count' do
         freeze_time(year) do
-          VCR.use_cassette("ingestors/rug") do
+          VCR.use_cassette('ingestors/rug') do
             ingestor.read(source.url)
             ingestor.write(@user, @content_provider)
           end

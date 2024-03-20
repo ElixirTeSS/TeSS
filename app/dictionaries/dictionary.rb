@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Base dictionary class
 class Dictionary
   include Singleton
@@ -17,7 +19,7 @@ class Dictionary
 
   # Find by id, or by case-insensitive fuzzy matching
   def best_match(id)
-    return id if @dictionary.has_key? id
+    return id if @dictionary.key? id
 
     best_score = 0
     best_key = nil
@@ -31,7 +33,7 @@ class Dictionary
         end
       end
     end
-    return best_key if best_score > 0.3
+    best_key if best_score > 0.3
   end
 
   # Returns an array: [id, values]

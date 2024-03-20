@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require 'sidekiq/testing'
 
@@ -338,7 +340,7 @@ class EventTest < ActiveSupport::TestCase
     e = events(:one)
     e.duration = valid_duration
     e.save
-    assert_equal 0, e.errors[:duration].size, 'unexpected validation error: ' + e.errors[:duration].to_s
+    assert_equal 0, e.errors[:duration].size, "unexpected validation error: #{e.errors[:duration]}"
   end
 
   test 'cannot set an invalid duration for event' do
@@ -347,7 +349,7 @@ class EventTest < ActiveSupport::TestCase
     e.duration = invalid_duration
     e.save
     # issue 172 - changed duration to allow free text
-    assert_equal 0, e.errors[:duration].size, 'unexpected number of validation errors: ' + e.errors[:duration].size.to_s
+    assert_equal 0, e.errors[:duration].size, "unexpected number of validation errors: #{e.errors[:duration].size}"
     # assert_equal "must be in format HH:MM", e.errors[:duration][0]
   end
 
@@ -356,7 +358,7 @@ class EventTest < ActiveSupport::TestCase
     e = events(:one)
     e.duration = valid_duration
     e.save
-    assert_equal 0, e.errors[:duration].size, 'unexpected validation error: ' + e.errors[:duration].to_s
+    assert_equal 0, e.errors[:duration].size, "unexpected validation error: #{e.errors[:duration]}"
   end
 
   test 'duration validation boundary testing' do
@@ -495,13 +497,13 @@ class EventTest < ActiveSupport::TestCase
     event = Event.new(
       title: 'An event',
       timezone: 'UTC',
-      user: user,
+      user:,
       url: 'https://events.com/1',
       keywords: ['fun times'],
       nodes: [node],
       external_resources_attributes: { '0' => { title: 'test', url: 'https://external-resource.com' } },
       materials: [material],
-      scientific_topic_names: ['Proteins', 'DNA'],
+      scientific_topic_names: %w[Proteins DNA],
       operation_names: ['Variant calling']
     )
 
@@ -524,7 +526,7 @@ class EventTest < ActiveSupport::TestCase
               assert_nil dup.url
               assert_equal [material], dup.materials
               assert_equal [node], dup.nodes
-              assert_equal ['Proteins', 'DNA'], dup.scientific_topic_names
+              assert_equal %w[Proteins DNA], dup.scientific_topic_names
               assert_equal ['Variant calling'], dup.operation_names
               assert_equal 1, dup.external_resources.length
               assert_equal 'test', dup.external_resources.first.title

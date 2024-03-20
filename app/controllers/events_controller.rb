@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 require 'tzinfo'
 
 # The controller for actions related to the Events model
 class EventsController < ApplicationController
   before_action :feature_enabled?
-  before_action :set_event, only: [:show, :edit, :clone, :update, :destroy, :update_collections, :add_term, :reject_term,
-                                   :redirect, :report, :update_report, :add_data, :reject_data]
+  before_action :set_event, only: %i[show edit clone update destroy update_collections add_term reject_term
+                                     redirect report update_report add_data reject_data]
   before_action :set_breadcrumbs
-  before_action :disable_pagination, only: :index, if: lambda { |controller| controller.request.format.ics? or controller.request.format.csv? or controller.request.format.rss? }
+  before_action :disable_pagination, only: :index, if: ->(controller) { controller.request.format.ics? or controller.request.format.csv? or controller.request.format.rss? }
 
   include SearchableIndex
   include ActionView::Helpers::TextHelper
@@ -55,7 +57,6 @@ class EventsController < ApplicationController
       format.html
     end
   end
-
 
   # GET /events/1
   # GET /events/1.json
@@ -137,11 +138,10 @@ class EventsController < ApplicationController
       end
     else
       respond_to do |format|
-        format.html { render :nothing => true, :status => 200, :content_type => 'text/html' }
-        format.json { render json: {}, :status => 200, :content_type => 'application/json' }
+        format.html { render nothing: true, status: 200, content_type: 'text/html' }
+        format.json { render json: {}, status: 200, content_type: 'application/json' }
       end
     end
-
   end
 
   # POST /events
@@ -197,14 +197,14 @@ class EventsController < ApplicationController
     # Go through each selected collection
     # and update its resources to include this one.
     # Go through each other collection
-    collections = params[:event][:collection_ids].select { |p| !p.blank? }
+    collections = params[:event][:collection_ids].reject(&:blank?)
     collections = collections.collect { |collection| Collection.find_by_id(collection) }
     collections_to_remove = @event.collections - collections
     collections.each do |collection|
       collection.update_resources_by_id(nil, (collection.events + [@event.id]).uniq)
     end
     collections_to_remove.each do |collection|
-      collection.update_resources_by_id(nil, (collection.events.collect { |x| x.id } - [@event.id]).uniq)
+      collection.update_resources_by_id(nil, (collection.events.collect(&:id) - [@event.id]).uniq)
     end
     flash[:notice] = "Event has been included in #{pluralize(collections.count, 'collection')}"
     redirect_to @event
@@ -213,7 +213,7 @@ class EventsController < ApplicationController
   def redirect
     @event.widget_logs.create(widget_name: params[:widget],
                               action: "#{controller_name}##{action_name}",
-                              data: @event.url, params: params)
+                              data: @event.url, params:)
 
     redirect_to @event.url, allow_other_host: true
   end
@@ -236,7 +236,7 @@ class EventsController < ApplicationController
                                   { node_names: [] }, { target_audience: [] }, { eligibility: [] },
                                   { host_institutions: [] }, :capacity, :contact, :recognition, :learning_objectives,
                                   :prerequisites, :tech_requirements, :cost_basis, :cost_value, :cost_currency,
-                                  external_resources_attributes: [:id, :url, :title, :_destroy], material_ids: [],
+                                  external_resources_attributes: %i[id url title _destroy], material_ids: [],
                                   locked_fields: [])
   end
 
@@ -245,6 +245,6 @@ class EventsController < ApplicationController
   end
 
   def disable_pagination
-    params[:per_page] = 2 ** 10
+    params[:per_page] = 2**10
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 require 'csv'
 require 'nokogiri'
@@ -30,9 +32,9 @@ module Ingestors
       Hash.from_xml(Nokogiri::XML(open_url(url, raise: true)).to_s)['urlset']['url'].each do |event_page|
         next unless event_page['loc'].include?('/en/agenda/')
 
-        sleep(1) unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/surf.yml')
+        sleep(1) unless Rails.env.test? && File.exist?('test/vcr_cassettes/ingestors/surf.yml')
         data_json = Nokogiri::HTML5.parse(open_url(event_page['loc'], raise: false))&.css('script[type="application/ld+json"]')
-        next unless data_json.present? && data_json.length > 0
+        next unless data_json.present? && data_json.length.positive?
 
         data = JSON.parse(data_json.first.text)
         begin

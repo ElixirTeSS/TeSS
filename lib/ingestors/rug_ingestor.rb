@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 require 'csv'
 require 'nokogiri'
@@ -26,9 +28,7 @@ module Ingestors
     private
 
     def process_rug(url)
-      unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/rug.yml')
-        sleep(1)
-      end
+      sleep(1) unless Rails.env.test? && File.exist?('test/vcr_cassettes/ingestors/rug.yml')
       event_page = Nokogiri::HTML5.parse(open_url(url.to_s, raise: true)).css("div[class='rug-mb']")[0].css("div[itemtype='https://schema.org/Event']")
       event_page.each do |event_data|
         event = OpenStruct.new
@@ -40,9 +40,7 @@ module Ingestors
         event.end = Time.zone.parse(event_data.css("meta[itemprop='endDate']")[0].get_attribute('content').split('+').first)
 
         event_page2 = Nokogiri::HTML5.parse(open_url(event.url.to_s, raise: true)).css("div[id='main']")[0].css("div[itemtype='https://schema.org/Event']")[0]
-        unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/rug.yml')
-          sleep(1)
-        end
+        sleep(1) unless Rails.env.test? && File.exist?('test/vcr_cassettes/ingestors/rug.yml')
 
         event.description = event_page2.css("div[class='rug-clearfix rug-theme--content rug-mb']")[0].css('p')[0].text
 

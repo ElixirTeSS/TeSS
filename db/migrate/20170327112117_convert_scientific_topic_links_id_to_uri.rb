@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ScientificTopicLink < ActiveRecord::Base
   belongs_to :scientific_topic
 end
@@ -13,7 +15,7 @@ class ConvertScientificTopicLinksIdToUri < ActiveRecord::Migration[4.2]
     ScientificTopicLink.transaction do
       ScientificTopicLink.all.each do |l|
         topic = l.scientific_topic
-        l.update_column(:term_uri, topic.class_id) if topic && topic.class_id
+        l.update_column(:term_uri, topic.class_id) if topic&.class_id
         print '.'
       end
     end
@@ -21,7 +23,6 @@ class ConvertScientificTopicLinksIdToUri < ActiveRecord::Migration[4.2]
 
     remove_reference :scientific_topic_links, :scientific_topic
   end
-
 
   def down
     add_reference :scientific_topic_links, :scientific_topic

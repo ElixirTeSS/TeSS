@@ -1,21 +1,23 @@
+# frozen_string_literal: true
+
 module Fairsharing
   class Client
-    REDIS_KEY = 'fairsharing:token'.freeze
+    REDIS_KEY = 'fairsharing:token'
 
     def initialize(base = 'https://api.fairsharing.org')
       @base = RestClient::Resource.new(base)
     end
 
     def search(query:, type: 'any', page: 1, per_page: 25)
-      path = "/search/fairsharing_records"
+      path = '/search/fairsharing_records'
       params = {
         'q': query,
         'page[number]': page.to_i,
-        'page[size]': per_page.to_i,
+        'page[size]': per_page.to_i
       }
       params['fairsharing_registry'] = type unless type.nil? || type == 'any'
 
-      response = authenticated_request(path, method: :post, body: '', params: params)
+      response = authenticated_request(path, method: :post, body: '', params:)
       SearchResults.from_api_response(JSON.parse(response.body))
     end
 
@@ -44,7 +46,7 @@ module Fairsharing
           payload = JSON.parse(response.body)
           redis.hset(REDIS_KEY, 'token', payload['jwt'])
           redis.hset(REDIS_KEY, 'expiry', payload['expiry'])
-          return payload['jwt']
+          payload['jwt']
         end
       end
     end

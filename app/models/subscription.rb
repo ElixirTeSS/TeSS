@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 class Subscription < ApplicationRecord
   CHECK_WINDOW = 1.hour # Window to add to subscription period to avoid synchronization issues with cronjob to process
-                        # subscriptions.
-                        # e.g. A window of 1 hour will make a daily subscription "due" 23 hours after it was last checked.
+  # subscriptions.
+  # e.g. A window of 1 hour will make a daily subscription "due" 23 hours after it was last checked.
 
   FREQUENCY = [
-      { key: :daily, id: 1, period: 1.day, title: '24 hours' }.with_indifferent_access,
-      { key: :weekly, id: 2, period: 1.week, title: '1 week' }.with_indifferent_access,
-      { key: :monthly, id: 3, period: 1.month, title: '1 month' }.with_indifferent_access
+    { key: :daily, id: 1, period: 1.day, title: '24 hours' }.with_indifferent_access,
+    { key: :weekly, id: 2, period: 1.week, title: '1 week' }.with_indifferent_access,
+    { key: :monthly, id: 3, period: 1.month, title: '1 month' }.with_indifferent_access
   ].freeze
 
   validates :frequency, presence: true, inclusion: { in: FREQUENCY.map { |f| f[:key] } }
@@ -20,16 +22,16 @@ class Subscription < ApplicationRecord
     FREQUENCY.detect { |f| f[:id] == super }.try(:[], :key)
   end
 
-  def frequency= freq
+  def frequency=(freq)
     super(FREQUENCY.detect { |f| f[:key] == freq.to_sym }.try(:[], :id))
   end
 
   def unsubscribe_code
-    unsubscribe_verifier.generate(self.id).split('--').last
+    unsubscribe_verifier.generate(id).split('--').last
   end
 
   def valid_unsubscribe_code?(code)
-    unsubscribe_verifier.verify("#{Base64.encode64(Marshal.dump(self.id)).chomp}--#{code}") == self.id
+    unsubscribe_verifier.verify("#{Base64.encode64(Marshal.dump(id)).chomp}--#{code}") == id
   rescue ActiveSupport::MessageVerifier::InvalidSignature
     false
   end
@@ -41,7 +43,7 @@ class Subscription < ApplicationRecord
   end
 
   def facets_with_max_age
-    facets.merge(max_age: max_age).with_indifferent_access
+    facets.merge(max_age:).with_indifferent_access
   end
 
   def period
@@ -86,14 +88,14 @@ class Subscription < ApplicationRecord
 
   def valid_subscribable_type
     begin
-      type = self.subscribable_type.constantize
+      type = subscribable_type.constantize
     rescue NameError
       type = nil
     end
 
-    unless type && type.respond_to?(:search_and_filter)
-      errors.add(:subscribable_type, 'not valid')
-    end
+    return if type.respond_to?(:search_and_filter)
+
+    errors.add(:subscribable_type, 'not valid')
   end
 
   def unsubscribe_verifier
@@ -103,5 +105,4 @@ class Subscription < ApplicationRecord
   def set_last_checked_at
     self.last_checked_at = Time.now
   end
-
 end

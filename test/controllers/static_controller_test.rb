@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class StaticControllerTest < ActionController::TestCase
@@ -106,7 +108,7 @@ class StaticControllerTest < ActionController::TestCase
       assert_select 'ul#promo-blocks', count: 0
     end
 
-    site_settings['home_page']['faq'] = ['who', 'why']
+    site_settings['home_page']['faq'] = %w[who why]
     with_settings({ site: site_settings }) do
       get :home
       assert_select 'section#catalogue', count: 1
@@ -136,7 +138,7 @@ class StaticControllerTest < ActionController::TestCase
                  'trainers': true,
                  'nodes': true }
 
-    with_settings(feature: features, site: { tab_order: ['materials', 'events'], directory_tabs: [] }) do
+    with_settings(feature: features, site: { tab_order: %w[materials events], directory_tabs: [] }) do
       get :home
       assert_select 'ul.nav.navbar-nav' do
         assert_select 'li:nth-child(1) a[href=?]', materials_path
@@ -152,7 +154,7 @@ class StaticControllerTest < ActionController::TestCase
       end
     end
 
-    with_settings(feature: features, site: { tab_order: ['content_providers', 'about', 'materials', 'trainers'],
+    with_settings(feature: features, site: { tab_order: %w[content_providers about materials trainers],
                                              directory_tabs: [] }) do
       get :home
 
@@ -170,8 +172,8 @@ class StaticControllerTest < ActionController::TestCase
       end
     end
 
-    with_settings(feature: features, site: { tab_order: ['content_providers', 'about', 'materials', 'trainers'],
-                                             directory_tabs: ['about', 'materials'] }) do
+    with_settings(feature: features, site: { tab_order: %w[content_providers about materials trainers],
+                                             directory_tabs: %w[about materials] }) do
       get :home
 
       assert_select 'ul.nav.navbar-nav' do

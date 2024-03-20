@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ExternalResource < ApplicationRecord
   belongs_to :source, polymorphic: true
   has_one :link_monitor, as: :lcheck, dependent: :destroy
@@ -25,28 +27,30 @@ class ExternalResource < ApplicationRecord
   end
 
   def api_url_of_fairsharing
-    if is_fairsharing?
-      fairsharing_id = url.split(/\//)[-1]
-      if fairsharing_id =~ /biodbcore-\d{6}/
-        return "#{FAIRSHARING_BASE}/api/database/summary/#{fairsharing_id}"
-      elsif fairsharing_id =~ /bsg-d\d{6}/
-        return "#{FAIRSHARING_BASE}/api/database/summary/#{fairsharing_id}"
-      elsif fairsharing_id =~ /bsg-s\d{6}/
-        return "#{FAIRSHARING_BASE}/api/standard/summary/#{fairsharing_id}"
-      elsif fairsharing_id =~ /bsg-p\d{6}/
-        return "#{FAIRSHARING_BASE}/api/policy/summary/#{fairsharing_id}"
-      end
+    return unless is_fairsharing?
+
+    fairsharing_id = url.split(%r{/})[-1]
+    case fairsharing_id
+    when /biodbcore-\d{6}/
+      "#{FAIRSHARING_BASE}/api/database/summary/#{fairsharing_id}"
+    when /bsg-d\d{6}/
+      "#{FAIRSHARING_BASE}/api/database/summary/#{fairsharing_id}"
+    when /bsg-s\d{6}/
+      "#{FAIRSHARING_BASE}/api/standard/summary/#{fairsharing_id}"
+    when /bsg-p\d{6}/
+      "#{FAIRSHARING_BASE}/api/policy/summary/#{fairsharing_id}"
     end
   end
 
   def failing?
     return false unless link_monitor
+
     link_monitor.failing?
   end
 
   private
 
   def tool_id
-    URI.split(self.url)[5]
+    URI.split(url)[5]
   end
 end

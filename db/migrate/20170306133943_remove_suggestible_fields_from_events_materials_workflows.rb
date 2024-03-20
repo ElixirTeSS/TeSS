@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RemoveSuggestibleFieldsFromEventsMaterialsWorkflows < ActiveRecord::Migration[4.2]
   def change
     remove_reference :materials, :suggestible, polymorphic: true

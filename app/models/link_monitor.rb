@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LinkMonitor < ApplicationRecord
   belongs_to :link_checkable, polymorphic: true, foreign_key: :lcheck_id, foreign_type: :lcheck_type
   before_create :set_initial_date
@@ -10,7 +12,8 @@ class LinkMonitor < ApplicationRecord
     self.fail_count ||= 1
   end
 
-  def failure(code = nil) # `fail` is a Ruby Kernel method
+  # `fail` is a Ruby Kernel method
+  def failure(code = nil)
     self.code = code if code
     self.failed_at ||= Time.now
     self.last_failed_at = Time.now

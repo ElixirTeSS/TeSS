@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 require 'csv'
 require 'nokogiri'
@@ -30,14 +32,14 @@ module Ingestors
       event_page.each do |event_data|
         event = OpenStruct.new
 
-        event.url = event_data.css("h2[class='post-item__title h5']")[0].css("a")[0].get_attribute('href')
-        event.title = event_data.css("h2[class='post-item__title h5']")[0].css("a")[0].text.strip
+        event.url = event_data.css("h2[class='post-item__title h5']")[0].css('a')[0].get_attribute('href')
+        event.title = event_data.css("h2[class='post-item__title h5']")[0].css('a')[0].text.strip
 
-        start_str = event_data.css("ul[class='post-item__meta']")[0].css("li")[0].text.strip.split('—')
+        start_str = event_data.css("ul[class='post-item__meta']")[0].css('li')[0].text.strip.split('—')
         event.start = Time.zone.parse(start_str[0])
         event.end = Time.zone.parse(start_str[0]).beginning_of_day + Time.zone.parse(start_str[1]).seconds_since_midnight.seconds
 
-        event.venue = event_data.css("ul[class='post-item__meta']")[0].css("li")[1].text.strip
+        event.venue = event_data.css("ul[class='post-item__meta']")[0].css('li')[1].text.strip
 
         event.source = 'DCC'
         event.timezone = 'Amsterdam'

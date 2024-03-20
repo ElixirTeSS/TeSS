@@ -1,5 +1,6 @@
-class ApplicationPolicy
+# frozen_string_literal: true
 
+class ApplicationPolicy
   attr_reader :user, :record
   attr_accessor :request
 
@@ -29,7 +30,7 @@ class ApplicationPolicy
 
   def create?
     # Only admin, scraper_user or curator roles can create
-    #@user.has_role?(:admin) or @user.has_role?(:scraper_user) or @user.has_role?(:curator)
+    # @user.has_role?(:admin) or @user.has_role?(:scraper_user) or @user.has_role?(:curator)
     # Any registered user user can create
     @user && !@user.role.blank?
   end
@@ -52,12 +53,13 @@ class ApplicationPolicy
 
   # "manage" isn't actually an action, but the "destroy?" and "update?" policies delegate to this method.
   def manage?
-    @user && @user.is_admin?
+    @user&.is_admin?
   end
 
   def request_is_api?(request)
     return false if request.nil?
-    return ((request.post? or request.put? or request.patch?) and request.format.json?)
+
+    ((request.post? or request.put? or request.patch?) and request.format.json?)
   end
 
   def scope
@@ -76,5 +78,4 @@ class ApplicationPolicy
       scope
     end
   end
-
 end

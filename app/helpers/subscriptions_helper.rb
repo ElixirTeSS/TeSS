@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 # The helper for Subscription classes
 module SubscriptionsHelper
-
   def frequency_options_for_select
     options_for_select(Subscription::FREQUENCY.map { |k| [k[:key].to_s.humanize, k[:key]] })
   end
@@ -16,9 +17,7 @@ module SubscriptionsHelper
   def digest_event_title(event)
     title = neatly_printed_date_range(event.start, event.end)
 
-    if event.city || event.country
-      title << " | #{[event.city, event.country].reject(&:blank?).join(', ')}"
-    end
+    title << " | #{[event.city, event.country].reject(&:blank?).join(', ')}" if event.city || event.country
 
     title
   end
@@ -27,7 +26,6 @@ module SubscriptionsHelper
 
   def subscription_results_options(sub)
     max_age = Subscription::FREQUENCY.detect { |f| f[:key] == sub.frequency }.try(:[], :title)
-    [sub.subscribable_type.constantize, sub.facets.merge(q: sub.query, max_age: max_age)]
+    [sub.subscribable_type.constantize, sub.facets.merge(q: sub.query, max_age:)]
   end
-
 end

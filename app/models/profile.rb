@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'uri'
 
 class Profile < ApplicationRecord
@@ -36,11 +38,11 @@ class Profile < ApplicationRecord
       string :location
       string :orcid
       string :experience do
-        TrainerExperienceDictionary.instance.lookup_value(self.experience, 'title')
+        TrainerExperienceDictionary.instance.lookup_value(experience, 'title')
       end
       string :expertise_academic, multiple: true
       string :expertise_technical, multiple: true
-      string :fields, :multiple => true
+      string :fields, multiple: true
       string :interest, multiple: true
       string :activity, multiple: true
       string :language, multiple: true
@@ -52,7 +54,7 @@ class Profile < ApplicationRecord
   end
 
   def self.facet_fields
-    field_list = %w( full_name )
+    %w[full_name]
   end
 
   def full_name
@@ -73,7 +75,7 @@ class Profile < ApplicationRecord
         end
       end
 
-      self.update(attrs)
+      update(attrs)
     end
   end
 
@@ -81,6 +83,7 @@ class Profile < ApplicationRecord
 
   def normalize_orcid
     return if orcid.blank?
+
     self.orcid = orcid.strip
     if orcid =~ OrcidValidator::ORCID_ID_REGEX
       self.orcid = "#{OrcidValidator::ORCID_PREFIX}#{orcid}"
@@ -90,17 +93,16 @@ class Profile < ApplicationRecord
   end
 
   def check_public
-    public ? self.type = 'Trainer' : self.type = 'Profile'
+    self.type = (public ? 'Trainer' : 'Profile')
   end
 
   def reindex
-    if Rails.env.production?
-      Trainer.reindex
-    end
+    return unless Rails.env.production?
+
+    Trainer.reindex
   end
 
   def should_generate_new_friendly_id?
     firstname_changed? or surname_changed?
   end
-
 end

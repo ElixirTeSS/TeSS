@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class BioschemasControllerTest < ActionController::TestCase
@@ -54,8 +56,8 @@ class BioschemasControllerTest < ActionController::TestCase
   end
 
   test 'should test JSON-LD URL' do
-    WebMock.stub_request(:get, 'https://website.com/material.json').
-      to_return(status: 200, headers: { content_type: 'application/json' }, body: fixture_file('ext_res.json').read)
+    WebMock.stub_request(:get, 'https://website.com/material.json')
+           .to_return(status: 200, headers: { content_type: 'application/json' }, body: fixture_file('ext_res.json').read)
 
     sign_in users(:regular_user)
 
@@ -68,8 +70,8 @@ class BioschemasControllerTest < ActionController::TestCase
   end
 
   test 'should test HTML URL' do
-    WebMock.stub_request(:get, 'https://website.com/material.html').
-      to_return(status: 200, headers: {}, body: fixture_file('gtn/slides-introduction-modified.html').read)
+    WebMock.stub_request(:get, 'https://website.com/material.html')
+           .to_return(status: 200, headers: {}, body: fixture_file('gtn/slides-introduction-modified.html').read)
 
     sign_in users(:regular_user)
 
@@ -104,9 +106,9 @@ class BioschemasControllerTest < ActionController::TestCase
     old_method = JSON::LD::Reader.instance_method(:logger_common)
     JSON::LD::Reader.define_method(:logger_common) { |*args| }
 
-    WebMock.stub_request(:get, 'https://website.com/material.json').
-      to_return(status: 200, body: '{ { "wut ;}',
-                headers: { content_type: 'application/json' })
+    WebMock.stub_request(:get, 'https://website.com/material.json')
+           .to_return(status: 200, body: '{ { "wut ;}',
+                      headers: { content_type: 'application/json' })
 
     sign_in users(:regular_user)
 
@@ -142,7 +144,7 @@ class BioschemasControllerTest < ActionController::TestCase
   test 'should gracefully handle missing params' do
     sign_in users(:regular_user)
 
-    post :run_test, params: { }
+    post :run_test, params: {}
 
     assert_response :unprocessable_entity
     assert flash[:error].include?('Please enter a URL')
@@ -173,7 +175,7 @@ class BioschemasControllerTest < ActionController::TestCase
     output = assigns(:output)
     assert_equal 1, output[:totals]['LearningResources']
     assert_equal 1, output[:resources][:materials].count
-    assert_equal "https://test.url", output[:resources][:materials].first[:url]
+    assert_equal 'https://test.url', output[:resources][:materials].first[:url]
   end
 
   private

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class AutocompleteSuggestionTest < ActiveSupport::TestCase
@@ -7,24 +9,24 @@ class AutocompleteSuggestionTest < ActiveSupport::TestCase
 
   test 'query' do
     autocompleter = AutocompleteSuggestion.where(field: 'keywords')
-    assert_equal ['Aardvark', 'apple', 'APPLICATION'], autocompleter.query('a')
+    assert_equal %w[Aardvark apple APPLICATION], autocompleter.query('a')
 
-    assert_equal ['apple', 'APPLICATION'], autocompleter.query('ap')
-    assert_equal ['apple', 'APPLICATION'], autocompleter.query('Ap')
-    assert_equal ['apple', 'APPLICATION'], autocompleter.query('aP')
-    assert_equal ['apple', 'APPLICATION'], autocompleter.query('AP')
+    assert_equal %w[apple APPLICATION], autocompleter.query('ap')
+    assert_equal %w[apple APPLICATION], autocompleter.query('Ap')
+    assert_equal %w[apple APPLICATION], autocompleter.query('aP')
+    assert_equal %w[apple APPLICATION], autocompleter.query('AP')
 
     assert_equal ['apple'], autocompleter.query('apple')
     assert_equal ['apple'], autocompleter.query('APPLE')
 
     assert_equal [], autocompleter.query('plums')
 
-    assert_equal ['banana', 'BAnaNA'], autocompleter.query('ban')
-    assert_equal ['banana', 'BAnaNA'], autocompleter.query('Ban')
-    assert_equal ['banana', 'BAnaNA'], autocompleter.query('bAn')
+    assert_equal %w[banana BAnaNA], autocompleter.query('ban')
+    assert_equal %w[banana BAnaNA], autocompleter.query('Ban')
+    assert_equal %w[banana BAnaNA], autocompleter.query('bAn')
 
     assert_equal ['Aardvark'], autocompleter.query('a', 1)
-    assert_equal ['Aardvark', 'apple'], autocompleter.query('a', 2)
+    assert_equal %w[Aardvark apple], autocompleter.query('a', 2)
   end
 
   test 'add' do
@@ -63,7 +65,7 @@ class AutocompleteSuggestionTest < ActiveSupport::TestCase
     end
 
     assert_equal id, AutocompleteSuggestion.where(field: 'keywords', value: 'apple').first.id
-    assert_equal ['apple', 'starfruit'], AutocompleteSuggestion.where(field: 'keywords').query('')
+    assert_equal %w[apple starfruit], AutocompleteSuggestion.where(field: 'keywords').query('')
   end
 
   test 'updates suggestions when resource updated' do
@@ -71,12 +73,12 @@ class AutocompleteSuggestionTest < ActiveSupport::TestCase
     e.save!
 
     assert_difference('AutocompleteSuggestion.count', 2) do
-      e.keywords = ['apple', 'banana', 'grape', 'pineapple']
+      e.keywords = %w[apple banana grape pineapple]
       e.save!
     end
 
     assert_no_difference('AutocompleteSuggestion.count', 0) do
-      e.keywords = ['apple', 'banana', 'grape', 'pineapple']
+      e.keywords = %w[apple banana grape pineapple]
       e.save!
     end
 
@@ -86,7 +88,7 @@ class AutocompleteSuggestionTest < ActiveSupport::TestCase
     end
 
     assert_difference('AutocompleteSuggestion.count', 4) do
-      e.host_institutions = ['apple', 'banana', 'grapefruit', 'pineapple']
+      e.host_institutions = %w[apple banana grapefruit pineapple]
       e.save!
     end
 

@@ -1,5 +1,6 @@
-module HasLicence
+# frozen_string_literal: true
 
+module HasLicence
   extend ActiveSupport::Concern
 
   included do
@@ -10,7 +11,7 @@ module HasLicence
       searchable do
         text :licence
         string :licence do
-          LicenceDictionary.instance.lookup_value(self.licence, 'title')
+          LicenceDictionary.instance.lookup_value(licence, 'title')
         end
       end
       # :nocov:
@@ -24,5 +25,4 @@ module HasLicence
 
     super(id || key_or_uri)
   end
-
 end

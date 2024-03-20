@@ -1,10 +1,11 @@
-class ConvertEventTypesToControlledVocabulary < ActiveRecord::Migration[4.2]
+# frozen_string_literal: true
 
+class ConvertEventTypesToControlledVocabulary < ActiveRecord::Migration[4.2]
   MAPPING = {
-      'event' => '',
-      'course' => 'workshops_and_courses',
-      'meeting' => 'meetings_and_conferences'
-  }
+    'event' => '',
+    'course' => 'workshops_and_courses',
+    'meeting' => 'meetings_and_conferences'
+  }.freeze
 
   def up
     puts 'Converting event_type to controlled vocab'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateContentProvidersUsersJoinTable < ActiveRecord::Migration[5.2]
   def down
     drop_table(:content_providers_users, if_exists: true)
@@ -9,7 +11,6 @@ class CreateContentProvidersUsersJoinTable < ActiveRecord::Migration[5.2]
       t.belongs_to :user, index: true
     end
 
-    add_index :content_providers_users, [:content_provider_id, :user_id], unique: true, name: :provider_user_unique
+    add_index :content_providers_users, %i[content_provider_id user_id], unique: true, name: :provider_user_unique
   end
-
 end

@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class SourcePolicy < ScrapedResourcePolicy
   def show?
     user_management? || administration?
   end
 
-  alias_method :orig_manage?, :manage?
+  alias orig_manage? manage?
   def manage?
     (user_management? && !@record.approval_requested?) || administration?
   end
@@ -21,7 +23,7 @@ class SourcePolicy < ScrapedResourcePolicy
   end
 
   def approve?
-    @user && @user.has_role?(:admin)
+    @user&.has_role?(:admin)
   end
 
   def request_approval?
@@ -30,7 +32,8 @@ class SourcePolicy < ScrapedResourcePolicy
 
   private
 
-  def administration? # Can edit sources for any content provider
+  # Can edit sources for any content provider
+  def administration?
     curators_and_admin
   end
 

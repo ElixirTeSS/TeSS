@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class CookieConsentTest < ActiveSupport::TestCase
@@ -62,15 +64,15 @@ class CookieConsentTest < ActiveSupport::TestCase
       assert cookie_consent.given?
 
       cookie_consent.options = 'necessary,tracking'
-      assert_equal ['necessary', 'tracking'], cookie_consent.options
+      assert_equal %w[necessary tracking], cookie_consent.options
       assert cookie_consent.given?
 
       cookie_consent.options = 'necessary,something else'
-      assert_equal ['necessary', 'tracking'], cookie_consent.options, 'Should not change if invalid option provided'
+      assert_equal %w[necessary tracking], cookie_consent.options, 'Should not change if invalid option provided'
       assert cookie_consent.given?
 
       cookie_consent.options = 'banana'
-      assert_equal ['necessary', 'tracking'], cookie_consent.options, 'Should not change if invalid option provided'
+      assert_equal %w[necessary tracking], cookie_consent.options, 'Should not change if invalid option provided'
       assert cookie_consent.given?
 
       cookie_consent.revoke

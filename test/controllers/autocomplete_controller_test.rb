@@ -1,11 +1,12 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class AutocompleteControllerTest < ActionController::TestCase
-
   include Devise::Test::ControllerHelpers
 
   setup do
-    AutocompleteSuggestion.add('cat', *%w(meow feline purr paws))
+    AutocompleteSuggestion.add('cat', *%w[meow feline purr paws])
   end
 
   test 'should get suggestions' do
@@ -14,7 +15,7 @@ class AutocompleteControllerTest < ActionController::TestCase
     get :suggestions, params: { field: 'cat', query: 'p' }, format: :json
     assert_response :success
     res = JSON.parse(response.body)
-    assert_equal ['paws', 'purr'], res['suggestions']
+    assert_equal %w[paws purr], res['suggestions']
 
     get :suggestions, params: { field: 'cat', query: 'paw' }, format: :json
     assert_response :success

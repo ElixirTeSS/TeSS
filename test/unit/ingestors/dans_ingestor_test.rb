@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class DansIngestorTest < ActiveSupport::TestCase
@@ -29,7 +31,7 @@ class DansIngestorTest < ActiveSupport::TestCase
     # run task
     assert_difference 'Event.count', 6 do
       freeze_time(2019) do
-        VCR.use_cassette("ingestors/dans") do
+        VCR.use_cassette('ingestors/dans') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end
@@ -51,7 +53,7 @@ class DansIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'DANS', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal ["Social Sciences and Humanities", "Training &amp; Outreach", "Consultancy"], event.keywords
+    assert_equal ['Social Sciences and Humanities', 'Training &amp; Outreach', 'Consultancy'], event.keywords
     assert_equal Time.zone.parse('Mon, 13 Feb 2023 00:00:00.000000000 UTC +00:00'), event.start
     assert_nil event.end
   end

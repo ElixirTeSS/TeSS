@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RemoveScientificTopicsFromMaterialsAndWorkflows < ActiveRecord::Migration[4.2]
   def change
     remove_column :materials, :scientific_topics, :string, array: true, default: []

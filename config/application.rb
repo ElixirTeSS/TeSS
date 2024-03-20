@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'boot'
 
 require 'rails/all'
@@ -21,7 +23,7 @@ module TeSS
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins '*'
-        resource '*', headers: :any, methods: [:get, :post, :options]
+        resource '*', headers: :any, methods: %i[get post options]
       end
     end
 
@@ -38,7 +40,7 @@ module TeSS
       ActiveSupport::HashWithIndifferentAccess, BigDecimal
     ]
 
-    config.exceptions_app = self.routes
+    config.exceptions_app = routes
   end
 
   tess_config = Rails.configuration.tess.with_indifferent_access
@@ -64,9 +66,7 @@ module TeSS
         puts "Setting '#{current_path}#{key}' not configured, using defaults" if Rails.env.development?
         config[key] = value
       end
-      if value.is_a?(Hash) && config[key].is_a?(Hash)
-        merge_config(value, config[key], current_path + "#{key}: ")
-      end
+      merge_config(value, config[key], current_path + "#{key}: ") if value.is_a?(Hash) && config[key].is_a?(Hash)
     end
   end
 
@@ -75,14 +75,15 @@ module TeSS
   class TessConfig < OpenStruct
     def redis_url
       if Rails.env.test?
-        ENV.fetch('REDIS_TEST_URL') { 'redis://localhost:6379/0' }
+        ENV.fetch('REDIS_TEST_URL', 'redis://localhost:6379/0')
       else
-        ENV.fetch('REDIS_URL') { 'redis://localhost:6379/1' }
+        ENV.fetch('REDIS_URL', 'redis://localhost:6379/1')
       end
     end
 
     def ingestion
       return @ingestion if @ingestion
+
       config_file = File.join(Rails.root, 'config', 'ingestion.yml')
       @ingestion = YAML.safe_load(File.read(config_file)).deep_symbolize_keys! if File.exist?(config_file)
     end

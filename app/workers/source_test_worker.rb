@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'tess_rdf_extractors'
 require 'open-uri'
 
@@ -9,6 +11,7 @@ class SourceTestWorker
   def perform(source_id)
     source = Source.find_by_id(source_id)
     return unless source
+
     results = {
       events: [],
       materials: [],
@@ -23,10 +26,10 @@ class SourceTestWorker
       results = {
         events: ingestor.events,
         materials: ingestor.materials,
-        messages: ingestor.messages,
+        messages: ingestor.messages
       }
     rescue StandardError => e
-      results[:messages] << "Ingestor encountered an unexpected error"
+      results[:messages] << 'Ingestor encountered an unexpected error'
       exception = e
     end
 

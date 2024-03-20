@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class Node < ApplicationRecord
-  MEMBER_STATUS = ['Member', 'Observer']
+  MEMBER_STATUS = %w[Member Observer].freeze
   COUNTRIES = JSON.parse(File.read(File.join(Rails.root, 'config', 'data', 'countries.json')))
 
   include PublicActivity::Common
@@ -24,10 +26,10 @@ class Node < ApplicationRecord
 
   accepts_nested_attributes_for :staff, allow_destroy: true
 
-  clean_array_fields(:carousel_images) #, :institutions
+  clean_array_fields(:carousel_images) # , :institutions
 
   validates :name, presence: true, uniqueness: true
-  validates :home_page, format: { with: URI.regexp }, if: Proc.new { |a| a.home_page.present? }
+  validates :home_page, format: { with: URI::DEFAULT_PARSER.make_regexp }, if: proc { |a| a.home_page.present? }
   validates :country_code, inclusion: { in: COUNTRIES.keys, allow_blank: true }
   # validate :has_training_coordinator
 
@@ -62,8 +64,8 @@ class Node < ApplicationRecord
   end
 
   def self.load_from_hash(hash, verbose: false)
-    hash["nodes"].map do |node_data|
-      node = Node.find_or_initialize_by(name: node_data["name"])
+    hash['nodes'].map do |node_data|
+      node = Node.find_or_initialize_by(name: node_data['name'])
       puts "#{node.new_record? ? 'Creating' : 'Updating'}: #{node_data['name']}" if verbose
       staff_data = node_data.delete('staff')
       node.attributes = node_data
@@ -78,7 +80,7 @@ class Node < ApplicationRecord
         puts 'Success' if verbose
       elsif verbose
         puts 'Failure:'
-        node.errors.full_messages.each { |msg|  puts " * #{msg}" }
+        node.errors.full_messages.each { |msg| puts " * #{msg}" }
       end
       puts if verbose
 
@@ -87,15 +89,14 @@ class Node < ApplicationRecord
   end
 
   def self.facet_fields
-    %w( member_status )
+    %w[member_status]
   end
 
   private
 
   def has_training_coordinator
-    unless staff.select { |s| s.role == StaffMember::TRAINING_COORDINATOR_ROLE }.any?
-      errors.add(:base, 'Requires at least one training coordinator to be defined')
-    end
-  end
+    return if staff.select { |s| s.role == StaffMember::TRAINING_COORDINATOR_ROLE }.any?
 
+    errors.add(:base, 'Requires at least one training coordinator to be defined')
+  end
 end

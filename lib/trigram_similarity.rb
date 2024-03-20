@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TrigramSimilarity
   def trigram(word)
     return [] if word.strip.blank?

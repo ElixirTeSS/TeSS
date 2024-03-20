@@ -1,5 +1,6 @@
-class EventPolicy < ScrapedResourcePolicy
+# frozen_string_literal: true
 
+class EventPolicy < ScrapedResourcePolicy
   def edit_report?
     manage?
   end
@@ -11,5 +12,4 @@ class EventPolicy < ScrapedResourcePolicy
   def clone?
     manage?
   end
-
 end

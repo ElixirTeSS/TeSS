@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class OdisseiIngestorTest < ActiveSupport::TestCase
@@ -22,14 +24,14 @@ class OdisseiIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::OdisseiIngestor.new
 
     # check event doesn't
-    new_title = "SICSS – ODISSEI Summer School 2023"
+    new_title = 'SICSS – ODISSEI Summer School 2023'
     new_url = 'https://odissei-data.nl/calendar/sicss-odissei-summer-school-2023/'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
     assert_difference 'Event.count', 2 do
       freeze_time(2019) do
-        VCR.use_cassette("ingestors/odissei") do
+        VCR.use_cassette('ingestors/odissei') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end

@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 # Dictionary of Target Audiences
 class TargetAudienceDictionary < Dictionary
-
   DEFAULT_FILE = 'target_audience.yml'
 
   private
@@ -8,5 +9,4 @@ class TargetAudienceDictionary < Dictionary
   def dictionary_filepath
     get_file_path 'target_audience', DEFAULT_FILE
   end
-
 end

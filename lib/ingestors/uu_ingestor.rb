@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'icalendar'
 require 'open-uri'
 require 'csv'
@@ -38,7 +40,7 @@ module Ingestors
         4296 => 'lectures',
         4295 => 'training',
         4293 => 'congresses, symposia',
-        2162490 => 'workshops, masterclasses', # not really sure what this should be
+        2_162_490 => 'workshops, masterclasses', # not really sure what this should be
         # nl
         4043 => 'workshops, masterclasses',
         1_916_692 => 'lectures', # lezingen, debatten,
@@ -47,7 +49,7 @@ module Ingestors
       }
 
       url.split('=').last.split(',').each do |category_id|
-        sub_url = url.split('=').first + '=' + category_id
+        sub_url = "#{url.split('=').first}=#{category_id}"
         docs = Nokogiri::XML(open_url(sub_url, raise: true)).xpath('//item')
         docs.each do |event_item|
           begin
@@ -97,9 +99,7 @@ module Ingestors
             event.start ||= ical_event.dtstart
             event.end ||= ical_event.dtend
             event.venue ||= ical_event.location
-            unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/uu.yml')
-              sleep 1
-            end
+            sleep 1 unless Rails.env.test? && File.exist?('test/vcr_cassettes/ingestors/uu.yml')
           end
 
           event.set_default_times

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class RstIngestorTest < ActiveSupport::TestCase
@@ -29,7 +31,7 @@ class RstIngestorTest < ActiveSupport::TestCase
     # run task
     assert_difference('Material.count', 24) do
       freeze_time(2019) do
-        VCR.use_cassette("ingestors/rst") do
+        VCR.use_cassette('ingestors/rst') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end

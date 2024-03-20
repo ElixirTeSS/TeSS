@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SetOrderOnCollectionItems < ActiveRecord::Migration[7.0]
   class Collection < ApplicationRecord
     has_many :items, -> { order(:order) }, class_name: 'CollectionItem'
@@ -16,6 +18,5 @@ class SetOrderOnCollectionItems < ActiveRecord::Migration[7.0]
     end
   end
 
-  def down
-  end
+  def down; end
 end

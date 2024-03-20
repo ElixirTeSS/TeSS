@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class CuratorControllerTest < ActionController::TestCase
@@ -5,8 +7,8 @@ class CuratorControllerTest < ActionController::TestCase
 
   test 'should get topic suggestions if curator' do
     sign_in users(:curator)
-    e1 = add_topic_suggestions(events(:one), ['Genomics', 'Animals'])
-    e2 = add_topic_suggestions(materials(:good_material), ['Biology', 'Proteins'])
+    e1 = add_topic_suggestions(events(:one), %w[Genomics Animals])
+    e2 = add_topic_suggestions(materials(:good_material), %w[Biology Proteins])
     add_topic_activity(materials(:good_material), Edam::Ontology.instance.lookup_by_name('Proteins'), users(:curator))
 
     get :topic_suggestions
@@ -19,7 +21,7 @@ class CuratorControllerTest < ActionController::TestCase
 
   test 'should get topic suggestions if admin' do
     sign_in users(:admin)
-    e1 = add_topic_suggestions(events(:one), ['Genomics', 'Animals'])
+    e1 = add_topic_suggestions(events(:one), %w[Genomics Animals])
     e2 = add_topic_suggestions(materials(:good_material), ['Biology'])
     e3 = add_topic_suggestions(workflows(:one), ['Proteins'])
 
@@ -81,10 +83,9 @@ class CuratorControllerTest < ActionController::TestCase
     assert_not_includes assigns(:users), new_user
 
     e = new_user.events.create!(title: 'Spam event', url: 'http://cool-event.pancakes', start: 10.days.from_now,
-                                description: "test event", organizer: "test organizer", end: 11.days.from_now,
-                                eligibility: [ 'registration_of_interest' ], host_institutions: [ "MIT" ],
-                                contact: "me", online: true, timezone: 'UTC'
-                                )
+                                description: 'test event', organizer: 'test organizer', end: 11.days.from_now,
+                                eligibility: ['registration_of_interest'], host_institutions: ['MIT'],
+                                contact: 'me', online: true, timezone: 'UTC')
     e.create_activity(:create, owner: new_user)
 
     get :users, params: { with_content: true }
@@ -133,9 +134,9 @@ class CuratorControllerTest < ActionController::TestCase
     node = nil
     4.times do |i|
       e = new_user.events.create!(title: "Spam event #{i}", url: "http://cool-event.pancakes/#{i}", start: 10.days.from_now,
-                                  description: "test event", organizer: "test organizer", end: 11.days.from_now,
-                                  eligibility: [ 'registration_of_interest' ], host_institutions: [ "MIT" ],
-                                  contact: "me", online: true, timezone: 'UTC')
+                                  description: 'test event', organizer: 'test organizer', end: 11.days.from_now,
+                                  eligibility: ['registration_of_interest'], host_institutions: ['MIT'],
+                                  contact: 'me', online: true, timezone: 'UTC')
       e.create_activity(:create, owner: new_user)
       event = e
     end

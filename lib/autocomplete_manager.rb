@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AutocompleteManager
   def self.included(mod)
     mod.extend(ClassMethods)
@@ -6,7 +8,7 @@ module AutocompleteManager
   module ClassMethods
     def update_suggestions(*fields)
       cattr_accessor :suggestion_fields_to_add
-      self.suggestion_fields_to_add= fields
+      self.suggestion_fields_to_add = fields
 
       after_save :add_suggestions
       include AutocompleteManager::InstanceMethods
@@ -15,6 +17,7 @@ module AutocompleteManager
 
   module InstanceMethods
     private
+
     def add_suggestions
       self.class.suggestion_fields_to_add.each do |field|
         AutocompleteSuggestion.add(field, *self[field])

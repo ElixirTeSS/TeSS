@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :tess do
   task add_topic_suggestions: :environment do
     [Material, Event, Workflow].each do |klass|

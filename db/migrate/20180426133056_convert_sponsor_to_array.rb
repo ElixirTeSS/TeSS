@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ConvertSponsorToArray < ActiveRecord::Migration[4.2]
   def up
     change_column :events, :sponsor, :string, array: true, default: [], using: "(string_to_array(sponsor, ','))"

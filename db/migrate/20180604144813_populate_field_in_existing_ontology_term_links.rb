@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OntologyTermLink < ApplicationRecord; end
 
 class PopulateFieldInExistingOntologyTermLinks < ActiveRecord::Migration[4.2]

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class BioschemasIngestorTest < ActiveSupport::TestCase
@@ -157,7 +159,10 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
 
   test 'filters unrecognized fields when scraping' do
     mock_bioschemas('https://website.org/courseinstances.json', 'sib_course.json')
-    @ingestor.stub(:convert_params, -> (p) { p[:blabla_123] = 'woowoo'; p }) do
+    @ingestor.stub(:convert_params, lambda { |p|
+                                      p[:blabla_123] = 'woowoo'
+                                      p
+                                    }) do
       @ingestor.read('https://website.org/courseinstances.json')
       assert_difference('Event.count', 2) do
         @ingestor.write(@user, @content_provider)

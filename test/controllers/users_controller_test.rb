@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class UsersControllerTest < ActionController::TestCase
@@ -35,13 +37,13 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   # User new is handled by devise
-  test "should never allow user new route" do
+  test 'should never allow user new route' do
     assert_raises(ActionController::UrlGenerationError) do
       get :new
     end
   end
 
-  test "should be able to create user whilst logged in as admin" do
+  test 'should be able to create user whilst logged in as admin' do
     sign_in users(:admin) # should this be restricted to admins?
     assert_difference('User.count') do
       post :create, params: {
@@ -51,8 +53,8 @@ class UsersControllerTest < ActionController::TestCase
     assert_redirected_to user_path(assigns(:user))
   end
 
-  test "should not be able create user if not admin" do
-    #because you use users#sign_up in devise
+  test 'should not be able create user if not admin' do
+    # because you use users#sign_up in devise
     assert_no_difference('User.count') do
       post :create, params: { user: { username: 'frank', email: 'frank@notarealdomain.org', password: 'franksreallylongpass' } }
     end
@@ -64,29 +66,29 @@ class UsersControllerTest < ActionController::TestCase
     assert_response :forbidden
   end
 
-  test "should show user if admin" do
+  test 'should show user if admin' do
     sign_in users(:admin)
     get :show, params: { id: @user }
     assert_response :success
   end
 
-  test "should show other users page if not admin or self" do
+  test 'should show other users page if not admin or self' do
     sign_in users(:another_regular_user)
     get :show, params: { id: @user }
-    assert_response :success #FORBIDDEN PAGE!?
+    assert_response :success # FORBIDDEN PAGE!?
   end
 
-  test "should show user with email address as username" do
+  test 'should show user with email address as username' do
     user = users(:email_address_user)
     sign_in user
     get :show, params: { id: user }
     assert_response :success
   end
 
-  test "should show user as json" do
+  test 'should show user as json' do
     sign_in users(:another_regular_user)
     get :show, params: { id: @user, format: 'json' }
-    assert_response :success #FORBIDDEN PAGE!?
+    assert_response :success # FORBIDDEN PAGE!?
   end
 
   test 'should show user as json-api' do
@@ -103,7 +105,7 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal user_path(assigns(:user)), body['data']['links']['self']
   end
 
-  test "should only allow edit for admin and self" do
+  test 'should only allow edit for admin and self' do
     sign_in users(:regular_user)
     get :edit, params: { id: @user }
     assert_response :success
@@ -114,16 +116,16 @@ class UsersControllerTest < ActionController::TestCase
 
     sign_in users(:another_regular_user)
     get :edit, params: { id: @user }
-    #assert_redirected_to root_path
+    # assert_redirected_to root_path
   end
 
-  test "should update profile" do
+  test 'should update profile' do
     sign_in users(:regular_user)
     patch :update, params: { id: @user, user: { profile_attributes: { email: 'hot@mail.com' } } }
     assert_redirected_to user_path(assigns(:user))
   end
 
-  test "should reset token" do
+  test 'should reset token' do
     sign_in users(:regular_user)
     old_token = @user.authentication_token
     patch :change_token, params: { id: @user }
@@ -131,7 +133,7 @@ class UsersControllerTest < ActionController::TestCase
     assert_not_equal old_token, new_token
   end
 
-  test "should destroy user" do
+  test 'should destroy user' do
     sign_in @user
 
     # Create default user that will be used as the new 'owner' of objects
@@ -220,7 +222,7 @@ class UsersControllerTest < ActionController::TestCase
 
     # update profile data
     profile = { public: false, email: 'fake@email.com', orcid: '', website: '', location: '',
-                experience: 'expert', image_url: nil, expertise_technical: ['java', 'python', 'ruby'] }
+                experience: 'expert', image_url: nil, expertise_technical: %w[java python ruby] }
     patch :update, params: { id: user, user: { profile_attributes: profile } }
     assert_redirected_to user_path(assigns(:user))
 
@@ -253,7 +255,6 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal 1, profile.errors.full_messages_for(:surname).size, 'missing message for: surname'
     assert_equal 1, profile.errors.full_messages_for(:description).size, 'missing message for: description'
     assert_equal "Description can't be blank", profile.errors.full_messages_for(:description).first
-
   end
 
   test 'check orcid' do
@@ -283,7 +284,7 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal 3, profile.errors.size, 'invalid number of errors'
     assert_equal 2, profile.errors.full_messages_for(:website).size, 'invalid error count for: website'
     assert_equal 1, profile.errors.full_messages_for(:orcid).size, 'invalid error count for: orcid'
-    assert_equal "Website is not a valid URL", profile.errors.full_messages_for(:website).first
+    assert_equal 'Website is not a valid URL', profile.errors.full_messages_for(:website).first
     assert_equal "ORCID isn't a valid ORCID identifier", profile.errors.full_messages_for(:orcid).first
   end
 
@@ -389,7 +390,7 @@ class UsersControllerTest < ActionController::TestCase
   test 'should show tabs for resource types and link to view all' do
     sign_in(@user)
 
-    assert @user.events.not_finished.count > 0
+    assert @user.events.not_finished.count.positive?
     assert @user.materials.count > 1
     assert @user.collections.count > 1
     assert @user.workflows.count > 1

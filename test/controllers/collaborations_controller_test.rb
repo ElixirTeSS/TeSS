@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class CollaborationsControllerTest < ActionController::TestCase
@@ -9,7 +11,7 @@ class CollaborationsControllerTest < ActionController::TestCase
     @workflow.collaborators << users(:collaborative_user)
   end
 
-  test "should list collaborations" do
+  test 'should list collaborations' do
     sign_in(@workflow.user)
 
     get :index, params: { format: :json, workflow_id: @workflow.id }
@@ -21,14 +23,14 @@ class CollaborationsControllerTest < ActionController::TestCase
     assert_includes collaborations.map { |e| e['user']['id'] }, users(:collaborative_user).id
   end
 
-  test "should not list collaborations if not a manager" do
+  test 'should not list collaborations if not a manager' do
     sign_in(users(:another_regular_user))
 
     get :index, params: { format: :json, workflow_id: @workflow.id }
     assert_response :forbidden
   end
 
-  test "should add collaborator" do
+  test 'should add collaborator' do
     sign_in(@workflow.user)
 
     assert_difference('Collaboration.count', 1) do
@@ -41,7 +43,7 @@ class CollaborationsControllerTest < ActionController::TestCase
     assert_equal users(:non_collaborative_user).id, collaboration['user']['id']
   end
 
-  test "should not add duplicate collaborator" do
+  test 'should not add duplicate collaborator' do
     sign_in(@workflow.user)
 
     assert_no_difference('Collaboration.count') do
@@ -52,7 +54,7 @@ class CollaborationsControllerTest < ActionController::TestCase
     assert JSON.parse(@response.body)['errors']['user'].join.include?('already a collaborator')
   end
 
-  test "should not add collaborator if not a manager" do
+  test 'should not add collaborator if not a manager' do
     sign_in(users(:another_regular_user))
 
     assert_no_difference('Collaboration.count') do
@@ -62,7 +64,7 @@ class CollaborationsControllerTest < ActionController::TestCase
     assert_response :forbidden
   end
 
-  test "should delete collaborator" do
+  test 'should delete collaborator' do
     sign_in(@workflow.user)
     collaboration = @workflow.collaborations.where(user_id: users(:another_regular_user).id).first
 
@@ -75,7 +77,7 @@ class CollaborationsControllerTest < ActionController::TestCase
     assert_not_includes @workflow.collaborators.reload, users(:another_regular_user)
   end
 
-  test "should not delete collaborator if not a manager" do
+  test 'should not delete collaborator if not a manager' do
     sign_in(users(:another_regular_user))
     collaboration = @workflow.collaborations.where(user_id: users(:another_regular_user).id).first
 
@@ -85,5 +87,4 @@ class CollaborationsControllerTest < ActionController::TestCase
 
     assert_response :forbidden
   end
-
 end

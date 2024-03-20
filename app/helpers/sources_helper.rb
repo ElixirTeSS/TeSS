@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 module SourcesHelper
-  SOURCES_INFO = "#{TeSS::Config.site['title_short']} provides a facility" +
-    " to automatically ingest events and materials from a variety of sources.".freeze
+  SOURCES_INFO = "#{TeSS::Config.site['title_short']} provides a facility" \
+                 ' to automatically ingest events and materials from a variety of sources.'.freeze
 
   def grouped_ingestor_options_for_select
     opts = []
 
     Ingestors::IngestorFactory.grouped_options.each do |category, configs|
-        category_options = configs.map do |c|
-          [c[:title], c[:key], ''] if current_user&.is_admin? || TeSS::Config.user_ingestion_methods&.include?(c[:key].to_s)
-        end.compact
-        opts << [t("ingestion.categories.#{category}"), category_options] if category_options.any?
+      category_options = configs.map do |c|
+        [c[:title], c[:key], ''] if current_user&.is_admin? || TeSS::Config.user_ingestion_methods&.include?(c[:key].to_s)
+      end.compact
+      opts << [t("ingestion.categories.#{category}"), category_options] if category_options.any?
     end
 
     opts.sort_by { |o| o[0] }
@@ -36,8 +38,8 @@ module SourcesHelper
 
   def user_creatable_ingestion_methods
     return [] unless TeSS::Config.feature['sources'] &&
-      TeSS::Config.feature['user_source_creation'] &&
-      TeSS::Config.user_ingestion_methods&.any?
+                     TeSS::Config.feature['user_source_creation'] &&
+                     TeSS::Config.user_ingestion_methods&.any?
 
     TeSS::Config.user_ingestion_methods.map do |key|
       Ingestors::IngestorFactory.ingestor_config.dig(key, :title)

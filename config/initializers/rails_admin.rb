@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 RailsAdmin.config do |config|
-  config.main_app_name = ['TeSS', 'Administration']
+  config.main_app_name = %w[TeSS Administration]
   config.asset_source = :sprockets
 
   config.authenticate_with do

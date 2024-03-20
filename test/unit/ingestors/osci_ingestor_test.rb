@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class OsciIngestorTest < ActiveSupport::TestCase
@@ -22,7 +24,7 @@ class OsciIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::OsciIngestor.new
 
     # check event doesn't
-    new_title = "14:00: Open Science Coffee: Assessing robustness through multiverse analysis – Applications in research and education"
+    new_title = '14:00: Open Science Coffee: Assessing robustness through multiverse analysis – Applications in research and education'
     new_url = 'https://osc-international.com/my-calendar/?format=calendar&month=9&yr=2023#mc_calendar_03_2-calendar-details-my-calendar'
 
     refute Event.where(title: new_title, url: new_url).any?
@@ -30,7 +32,7 @@ class OsciIngestorTest < ActiveSupport::TestCase
     # run task
     assert_difference 'Event.count', 12 do
       freeze_time(2023) do
-        VCR.use_cassette("ingestors/osci") do
+        VCR.use_cassette('ingestors/osci') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end

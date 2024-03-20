@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class TdccIngestorTest < ActiveSupport::TestCase
@@ -22,14 +24,14 @@ class TdccIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::TdccIngestor.new
 
     # check event doesn't
-    new_title = "Open Science Festival Maastricht"
+    new_title = 'Open Science Festival Maastricht'
     new_url = 'https://tdcc.nl/evenementen/open-science-festival-maastricht/'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
     assert_difference 'Event.count', 4 do
       freeze_time(2023) do
-        VCR.use_cassette("ingestors/tdcc") do
+        VCR.use_cassette('ingestors/tdcc') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end

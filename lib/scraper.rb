@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'net/http'
 
 class Scraper
@@ -15,13 +17,13 @@ class Scraper
     end
 
     def provider_exists
-      unless self.content_provider
-        errors.add(:provider, 'not found')
-        errors.delete(:content_provider)
-      end
+      return if content_provider
+
+      errors.add(:provider, 'not found')
+      errors.delete(:content_provider)
     end
 
-    def resource_type=(*args)
+    def resource_type=(*_args)
       warn %(The "resource_type" property for a source is now redundant ("#{@provider}" in config/ingestion.yml))
     end
   end
@@ -30,13 +32,13 @@ class Scraper
 
   def initialize(config = TeSS::Config.ingestion, log_file: nil)
     config = config.reverse_merge({
-      name: nil,
-      logfile: nil,
-      loglevel: 0,
-      default_role: 'scraper_user',
-      username: nil,
-      sources: []
-    })
+                                    name: nil,
+                                    logfile: nil,
+                                    loglevel: 0,
+                                    default_role: 'scraper_user',
+                                    username: nil,
+                                    sources: []
+                                  })
 
     @name = config[:name]
     @log_file = log_file || Rails.root.join(config[:logfile]).open('w+')
@@ -50,9 +52,8 @@ class Scraper
     begin
       start = Time.now
       log 'Task: automated_ingestion', 0
-      log '   Started at... ' + start.strftime("%Y-%m-%d %H:%M:%s"), 0
+      log "   Started at... #{start.strftime('%Y-%m-%d %H:%M:%s')}", 0
       log t('scraper.messages.status', status: 'start'), 0
-      errors = 0
       # --- started
 
       log "ingestion file = #{@name}", 1
@@ -60,15 +61,13 @@ class Scraper
 
       # check user
       user = get_user
-      if user.role.nil? or user.role.name != @default_role
-        log t('scraper.messages.invalid', error_message: t('scraper.messages.bad_role')), 1
-      end
+      log t('scraper.messages.invalid', error_message: t('scraper.messages.bad_role')), 1 if user.role.nil? || (user.role.name != @default_role)
       User.current_user = user
 
       processed = 0
 
       data_sources = {
-        config: @sources.map { |c| Scraper::ConfigSource.new(c.merge(user: user)) },
+        config: @sources.map { |c| Scraper::ConfigSource.new(c.merge(user:)) },
         database: Source.approved.find_each
       }
 
@@ -120,10 +119,10 @@ class Scraper
             source.resources_added = ingestor.added
             source.resources_updated = ingestor.updated
             source.resources_rejected = ingestor.rejected
-            log "Source URL[#{source.url}] resources read[#{source.records_read}]" +
-                  ", added[#{source.resources_added}]" +
-                  ", updated[#{source.resources_updated}]" +
-                  ", rejected[#{source.resources_rejected}]", 2
+            log "Source URL[#{source.url}] resources read[#{source.records_read}]" \
+                ", added[#{source.resources_added}]" \
+                ", updated[#{source.resources_updated}]" \
+                ", rejected[#{source.resources_rejected}]", 2
           end
         rescue StandardError => e
           output.concat "\n**Failed:** #{e.message}\n\n"
@@ -144,11 +143,10 @@ class Scraper
       end
 
       log '', 1
-      log t('scraper.messages.processed', processed: processed), 1
+      log t('scraper.messages.processed', processed:), 1
 
       # --- finished
       log t('scraper.messages.status', status: 'finish'), 0
-
     rescue StandardError => e
       log "   Run Scraper failed with: #{e.message}", 0
       e.backtrace.each do |line|
@@ -158,7 +156,7 @@ class Scraper
 
     # wrap up
     finish = Time.now
-    log '   Finished at.. ' + finish.strftime("%Y-%m-%d %H:%M:%s"), 0
+    log "   Finished at.. #{finish.strftime('%Y-%m-%d %H:%M:%s')}", 0
     log "   Time taken was #{(1000 * (finish.to_f - start.to_f)).round(3)} ms", 0
     log 'Done.', 0
     @log_file.rewind
@@ -184,18 +182,18 @@ class Scraper
     result = true
     eventbrite_api = 'https://www.eventbriteapi.com/v3/'
     begin
-      if input.starts_with?(eventbrite_api) and not token.nil?
-        response = Net::HTTP.get_response(URI.parse(input + '/events/?token=' + token))
-      else
-        response = Net::HTTP.get_response(URI.parse(input))
-      end
+      response = if input.starts_with?(eventbrite_api) && !token.nil?
+                   Net::HTTP.get_response(URI.parse("#{input}/events/?token=#{token}"))
+                 else
+                   Net::HTTP.get_response(URI.parse(input))
+                 end
 
       case response
       when Net::HTTPSuccess then true
       when Net::HTTPOK then true
       else raise 'Invalid URL'
       end
-    rescue
+    rescue StandardError
       log t('scraper.messages.invalid', error_message: "#{t('scraper.messages.url_not_accessible')}: #{input}"), 2
       result = false
     end
@@ -204,11 +202,11 @@ class Scraper
   end
 
   def log(message, level)
-    if @log_level == 0 or @log_level.to_i >= level.to_i
-      tab = 3
-      prepend = level.nil? ? '' : ' ' * (tab * level)
-      @log_file.puts('   ' + prepend + message)
-    end
+    return unless @log_level.zero? || (@log_level.to_i >= level.to_i)
+
+    tab = 3
+    prepend = level.nil? ? '' : ' ' * (tab * level)
+    @log_file.puts("   #{prepend}#{message}")
   end
 
   def get_user

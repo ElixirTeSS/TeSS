@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class EdamOntologyTest < ActiveSupport::TestCase
@@ -38,7 +40,7 @@ class EdamOntologyTest < ActiveSupport::TestCase
       topic = Edam::Ontology.instance.scoped_lookup_by_name(label, OBO_EDAM.topics)
 
       assert topic
-      assert_match /.+topic_/, topic.uri
+      assert_match(/.+topic_/, topic.uri)
     end
   end
 

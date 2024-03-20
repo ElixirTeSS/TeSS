@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 # OpenID Connect configuration for Tuakiri (New Zealand)
 unless Rails.application.secrets.dig(:oidc, :client_id).blank?
   Devise.omniauth :oidc2, {
     name: :oidc2,
     issuer: Rails.application.secrets.oidc2[:issuer],
     strategy_class: OmniAuth::Strategies::OpenIDConnect,
-    scope: [:openid, :email, :profile],
+    scope: %i[openid email profile],
     response_type: :code,                                  # default is 'code'
     discovery: true,                                       # default is false
     send_nonce: true,
@@ -19,7 +21,7 @@ unless Rails.application.secrets.dig(:oidc, :client_id).blank?
       authorization_endpoint: '/Saml2/OIDC/authorization',
       userinfo_endpoint: '/OIDC/userinfo',
       token_endpoint: '/OIDC/token',
-      jwks_uri: '/OIDC/jwks',
+      jwks_uri: '/OIDC/jwks'
     }
   }
 end

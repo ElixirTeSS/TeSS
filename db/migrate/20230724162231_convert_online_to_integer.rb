@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ConvertOnlineToInteger < ActiveRecord::Migration[6.1]
   def up
     change_column_default :events, :online, nil

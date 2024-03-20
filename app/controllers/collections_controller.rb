@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The controller for actions related to the Collection model
 class CollectionsController < ApplicationController
   before_action :feature_enabled?
@@ -127,9 +129,9 @@ class CollectionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def collection_params
-    params.require(:collection).permit(:title, :description, :image, :image_url, :public, { keywords:  [] },
+    params.require(:collection).permit(:title, :description, :image, :image_url, :public, { keywords: [] },
                                        { material_ids: [] }, { event_ids: [] },
-                                       { items_attributes: [:id, :resource_type, :resource_id, :order, :comment, :_destroy] })
+                                       { items_attributes: %i[id resource_type resource_id order comment _destroy] })
   end
 
   # Filter collection items based on a type

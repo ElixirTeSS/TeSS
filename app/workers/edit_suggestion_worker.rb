@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EditSuggestionWorker
   include Sidekiq::Worker
 
@@ -37,10 +39,10 @@ class EditSuggestionWorker
     # See String#encode documentation
 
     encoding_options = {
-      :invalid => :replace,
-      :undef => :replace,
-      :replace => '',
-      :universal_newline => true
+      invalid: :replace,
+      undef: :replace,
+      replace: '',
+      universal_newline: true
     }
     clean_desc = desc.encode(Encoding.find('ASCII'), **encoding_options).gsub(/[\n#]/, '')
 
@@ -71,12 +73,12 @@ class EditSuggestionWorker
           end
         end
       end
-    rescue StandardError => exception
-      logger.error("Suggestible #{suggestible.inspect} threw an exception when checking BioPortal: #{exception}\nTrace: \n\t#{exception.backtrace.join("\n\t")}\n\nBioPortal response (#{response.code}):\n#{response.body}")
+    rescue StandardError => e
+      logger.error("Suggestible #{suggestible.inspect} threw an exception when checking BioPortal: #{e}\nTrace: \n\t#{e.backtrace.join("\n\t")}\n\nBioPortal response (#{response.code}):\n#{response.body}")
     end
 
     # Create some topics and an edit_suggestion if some annotations were returned
-    #logger.info("ANNOTATION: #{annotations}")
+    # logger.info("ANNOTATION: #{annotations}")
     [[topic_uris, 'scientific_topic'], [operation_uris, 'operation']].each do |ids, type|
       if ids.any?
         terms = ids.map { |id| Edam::Ontology.instance.lookup(id) }.compact
@@ -84,12 +86,10 @@ class EditSuggestionWorker
         if terms.any?
           suggestion = suggestible.build_edit_suggestion
           terms.each do |term|
-            #logger.info("Added topic #{term} to #{suggestible.inspect}")
+            # logger.info("Added topic #{term} to #{suggestible.inspect}")
             suggestion.ontology_term_links.build(term_uri: term.uri, field: type.pluralize)
           end
-          unless suggestion.save
-            logger.error("Suggestion didn't save: #{suggestion.errors.full_messages.inspect}")
-          end
+          logger.error("Suggestion didn't save: #{suggestion.errors.full_messages.inspect}") unless suggestion.save
         end
       else
         logger.debug("No #{type.pluralize} found for #{suggestible.inspect}")
