@@ -521,7 +521,7 @@ en:
     retention: "Your information will be retained by TeSS until you choose to remove it, you delete your account, or the TeSS service ceases to exist."
     code: "TeSS adheres to the <a href='https://wiki.refeds.org/display/CODE/Code+of+Conduct+for+Service+Providers'> GÉANT Data Protection Code of Conduct for Service Providers in EU/EEA </a>"
     controller: "The data controller for TeSS is The University of Manchester."
-    post: "<strong>The TeSS Team</strong><br/>Room 1.17 c/o School of Computer Science,<br/>Kilburn Building,<br/>Oxford Road,<br/>Manchester,<br/>M13 9PL"
+    post: "<strong>The TeSS Team</strong><br/>Room 2.86 c/o School of Computer Science,<br/>Kilburn Building,<br/>Oxford Road,<br/>Manchester,<br/>M13 9PL"
   providers:
     info: >
       Content providers are entities (such as academic institutions, non-profit organisations, portals etc.) that
