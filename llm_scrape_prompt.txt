@@ -1,4 +1,3 @@
-Prompt Scraper:
 Based on the following webpage describing a research event:
 *replace_with_event_page*
 

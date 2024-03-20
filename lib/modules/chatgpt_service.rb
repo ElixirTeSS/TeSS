@@ -13,6 +13,16 @@ class ChatgptService
     }
   end
 
+  def llm_object
+    LlmObject.new(
+      scrape_or_process: @scrape_or_process,
+      model: @params[:model],
+      prompt: @prompt,
+      input: @input,
+      output: @output
+    )
+  end
+
   def run(content)
     beep = content
     params = @params.merge(
@@ -34,16 +44,22 @@ class ChatgptService
   end
 
   def scrape(event_page)
-    content = File.read('llm_scrape_prompt.txt')
-                  .gsub('*replace_with_event_page*', event_page)
-    run(content)
+    @scrape_or_process = 'scrape'
+    @prompt = File.read('llm_scrape_prompt.txt')
+    @input = event_page
+    content = @prompt.gsub('*replace_with_event_page*', event_page)
+    @output = run(content)
+    @output
   end
 
   def process(event)
+    @scrape_or_process = 'process'
     event_json = JSON.generate(event.to_json)
-    content = File.read('llm_process_prompt.txt')
-                  .gsub('*replace_with_event*', event_json)
-    run(content)
+    @prompt = File.read('llm_process_prompt.txt')
+    @input = event_json
+    content = @prompt.gsub('*replace_with_event*', event_json)
+    @output = run(content)
+    @output
   end
 
   class << self

@@ -91,15 +91,21 @@ module Ingestors
     end
 
     def scrape_func(event, event_page)
-      response = ChatgptService.new.scrape(event_page).dig('choices', 0, 'message', 'content')
+      llm_service = ChatgptService.new
+      response = llm_service.scrape(event_page).dig('choices', 0, 'message', 'content')
       puts response
-      unload_json(event, response)
+      event = unload_json(event, response)
+      event.llm_object = llm_service.llm_object
+      event
     end
 
     def post_process_func(event)
-      response = ChatgptService.new.process(event).dig('choices', 0, 'message', 'content')
+      llm_service = ChatgptService.new
+      response = llm_service.process(event).dig('choices', 0, 'message', 'content')
       puts response
-      unload_json(event, response)
+      event = unload_json(event, response)
+      event.llm_object = llm_service.llm_object
+      event
     end
 
     def beep_func(url, event_page) # rubocop:disable Metrics

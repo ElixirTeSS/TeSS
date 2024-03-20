@@ -6,7 +6,6 @@ class AddLlmCheck < ActiveRecord::Migration[7.0]
       t.datetime :updated_at
       t.string :scrape_or_process
       t.string :model
-      t.string :model_version
       t.string :prompt
       t.string :input
       t.string :output
