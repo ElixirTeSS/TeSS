@@ -7,7 +7,8 @@ SitemapGenerator::Sitemap.create(compress: false, sitemaps_path: 'sitemaps/', in
     events: { resources: Event.from_verified_users, changefreq: 'daily', priority: 0.7 },
     content_providers: { resources: ContentProvider, changefreq: 'weekly', priority: 0.4 },
     workflows: { resources: Workflow.from_verified_users.visible_by(nil), changefreq: 'daily', priority: 0.6 },
-    collections: { resources: Collection.from_verified_users.visible_by(nil), changefreq: 'daily', priority: 0.6 }
+    collections: { resources: Collection.from_verified_users.visible_by(nil), changefreq: 'daily', priority: 0.6 },
+    learning_paths: { resources: LearningPath.visible_by(nil), changefreq: 'daily', priority: 0.6 }
   }
 
   group(filename: :site) do
