@@ -1,7 +1,7 @@
 # Set the host name for URL creation
 SitemapGenerator::Sitemap.default_host = TeSS::Config.base_url
 
-SitemapGenerator::Sitemap.create(compress: false, sitemaps_path: 'sitemaps/', include_root: false) do
+SitemapGenerator::Sitemap.create(compress: false, sitemaps_path: Rails.env.test? ? 'test_sitemaps/' : 'sitemaps/', include_root: false) do
   types = {
     materials: { resources: Material.from_verified_users, changefreq: 'daily', priority: 0.7 },
     events: { resources: Event.from_verified_users, changefreq: 'daily', priority: 0.7 },
