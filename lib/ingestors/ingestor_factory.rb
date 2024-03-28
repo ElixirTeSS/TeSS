@@ -30,7 +30,7 @@ module Ingestors
         Ingestors::OsciIngestor,
         Ingestors::DccIngestor,
         Ingestors::SenseIngestor,
-        Ingestors::GptIngestor
+        Ingestors::LlmIngestor
       ]
     end
 

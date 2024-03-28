@@ -115,6 +115,9 @@ default: &default
     - CC-BY-NC-SA-4.0
     - CC-BY-ND-4.0
     - CC-BY-SA-4.0
+  llm_scraper:
+    model:
+    model_version:
 
 development:
   <<: *default

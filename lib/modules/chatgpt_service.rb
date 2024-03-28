@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ChatgptService
+class ChatgptService < LlmService
   require 'openai'
   def initialize
     api_key = ENV.fetch('GPT_API_KEY', nil)
@@ -8,19 +8,9 @@ class ChatgptService
     @params = {
       # max_tokens: 50,
       # model: 'gpt-3.5-turbo-1106',
-      model: 'gpt-4',
+      model: TeSS::Config.llm_scraper.model_version,
       temperature: 0.7
     }
-  end
-
-  def llm_object
-    LlmObject.new(
-      scrape_or_process: @scrape_or_process,
-      model: @params[:model],
-      prompt: @prompt,
-      input: @input,
-      output: @output
-    )
   end
 
   def run(content)
@@ -31,7 +21,7 @@ class ChatgptService
         messages: [{ role: 'user', content: beep }]
       }
     )
-    @client.chat(parameters: params)
+    @client.chat(parameters: params).dig('choices', 0, 'message', 'content')
   end
 
   def call(prompt)
@@ -41,25 +31,6 @@ class ChatgptService
       }
     )
     @client.chat(parameters: params)
-  end
-
-  def scrape(event_page)
-    @scrape_or_process = 'scrape'
-    @prompt = File.read('llm_scrape_prompt.txt')
-    @input = event_page
-    content = @prompt.gsub('*replace_with_event_page*', event_page)
-    @output = run(content)
-    @output
-  end
-
-  def process(event)
-    @scrape_or_process = 'process'
-    event_json = JSON.generate(event.to_json)
-    @prompt = File.read('llm_process_prompt.txt')
-    @input = event_json
-    content = @prompt.gsub('*replace_with_event*', event_json)
-    @output = run(content)
-    @output
   end
 
   class << self

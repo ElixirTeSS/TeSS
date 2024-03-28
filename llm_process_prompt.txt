@@ -15,7 +15,7 @@ title (string): The title of the event
 keywords (array of strings): A set of keywords based which the event can be filtered.
 target_audience (array of strings): The target audience for this event.
 open_science (array of strings): The type of open science that this event advocates for, if any.
-curation (bool): Whether or not the event is relevant according to the curation criteria
+visible (bool): Whether or not the event is relevant according to the curation criteria
 
 keywords options:
 [

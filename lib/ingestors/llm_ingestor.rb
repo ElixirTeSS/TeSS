@@ -3,7 +3,7 @@ require 'csv'
 require 'nokogiri'
 
 module Ingestors
-  class GptIngestor < Ingestor
+  class LlmIngestor < Ingestor
     def self.config
       {
         key: 'gpt_event',
@@ -82,39 +82,20 @@ module Ingestors
       # XML not necessary (wur)
     end
 
-    def unload_json(event, response)
-      response_json = JSON.parse(response)
-      response_json.each_key do |key|
-        event[key] = response_json[key]
-      end
-      event
-    end
-
-    def scrape_func(event, event_page)
-      llm_service = ChatgptService.new
-      response = llm_service.scrape(event_page).dig('choices', 0, 'message', 'content')
-      puts response
-      event = unload_json(event, response)
-      event.llm_object = llm_service.llm_object
-      event
-    end
-
-    def post_process_func(event)
-      llm_service = ChatgptService.new
-      response = llm_service.process(event).dig('choices', 0, 'message', 'content')
-      puts response
-      event = unload_json(event, response)
-      event.llm_object = llm_service.llm_object
-      event
-    end
-
     def beep_func(url, event_page) # rubocop:disable Metrics
       event_page.css('script, link').each { |node| node.remove }
       event_page = event_page.text.squeeze(" \n").squeeze("\n").squeeze("\t").squeeze(' ')
+      llm_service_hash = {
+        chatgpt: ChatgptService
+      }
+      llm_service_class = llm_service_hash.fetch(TeSS::Config.llm_scraper.model, nil)
+      return unless llm_service_class
+
       begin
+        llm_service = llm_service_class.new
         event = OpenStruct.new
-        event = scrape_func(event, event_page)
-        event = post_process_func(event)
+        event = llm_service.scrape_func(event, event_page)
+        event = llm_service.post_process_func(event)
         event.url = url
         event.source = 'GPT'
         event.timezone = 'Amsterdam'
