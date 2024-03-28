@@ -3,7 +3,7 @@
   <%= render partial: 'common/error_summary', locals: { resource: @event } %>
 
   <!-- Field: Disabled -->
-  <%= f.input :curation_show, input_html: { title: t('events.hints.curation_show') } %>
+  <%= f.input :visible, input_html: { title: t('events.hints.visible') } %>
 
   <!-- Field: presence -->
   <div class="form-group">

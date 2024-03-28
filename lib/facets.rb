@@ -92,7 +92,7 @@ module Facets
     end
 
     def include_disabled(scope, value, _)
-      sunspot_scoped(scope) { with('curation_show', true) } unless value
+      sunspot_scoped(scope) { with('visible', true) } unless value
     end
 
     def include_archived(scope, value, _)
