@@ -54,6 +54,10 @@ Variable that should be available
                                                                                 count: '-',
                                                                                 enable_text: 'Show past events',
                                                                                 disable_text: 'Hide past events' } %>
+    <%= render partial: 'search/common/facet_sidebar_boolean_filter', locals: { facet_field: 'include_disabled',
+                                                                                count: '-',
+                                                                                enable_text: 'Show disabled events',
+                                                                                disable_text: 'Hide disabled events' } %>
   <% elsif resource_type.name == 'Material' %>
     <%= render partial: 'search/common/facet_sidebar_boolean_filter', locals: { facet_field: 'include_archived',
                                                                                 count: '-',

@@ -401,6 +401,7 @@ en:
       cost_value: 'Input the cost of the training event.'
       cost_currency: 'Select the currency associated with the cost.'
       description: 'Provide a textual description of the training event, for additional context.'
+      visible: 'Whether or not this event should be shown on the events page'
       duration: 'In hours and minutes (HH:MM), how long will your training event run?'
       eligibility: 'Who can attend the training event?'
       end: 'When does the event end?'
