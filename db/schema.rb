@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_13_134117) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_19_101101) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -104,8 +104,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_13_134117) do
     t.bigint "resource_id"
     t.text "comment"
     t.integer "order"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["collection_id"], name: "index_collection_items_on_collection_id"
     t.index ["resource_type", "resource_id"], name: "index_collection_items_on_resource"
   end
@@ -226,6 +226,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_13_134117) do
     t.string "cost_basis"
     t.string "cost_currency"
     t.string "fields", default: [], array: true
+    t.boolean "visible", default: true
     t.index ["presence"], name: "index_events_on_presence"
     t.index ["slug"], name: "index_events_on_slug", unique: true
     t.index ["user_id"], name: "index_events_on_user_id"

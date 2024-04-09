@@ -16,6 +16,7 @@ default: &default
   blocked_domains:
     - !ruby/regexp '/bad-domain\.example/'
   sentry_dsn:
+  csp_report_uri: 
   site:
     title: 'TeSS (Training eSupport System)'
     title_short: TeSS

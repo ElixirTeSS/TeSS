@@ -43,6 +43,8 @@ module Ingestors
           event.end = Time.zone.parse([a[0], a[1], b].join(' '))
         elsif split_time_str[1].split(' ').length == 3
           event.end = Time.zone.parse(split_time_str[1])
+        elsif split_time_str[1].split(' ').length == 2
+          event.end = Time.zone.parse(split_time_str[1])
         end
 
         event_page2 = Nokogiri::HTML5.parse(open_url(event.url.to_s, raise: true)).css('article')[0]

@@ -38,14 +38,15 @@ class BioschemasTest < ActionDispatch::IntegrationTest
 
     # Address
     q = RDF::Query.new do
-      pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.location, :address)
+      pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.location, :place)
+      pattern RDF::Query::Pattern.new(:place, RDF::Vocab::SCHEMA.address, :address)
       pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.streetAddress, :street_address, optional: true)
       pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.addressLocality, :locality, optional: true)
       pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.addressRegion, :region, optional: true)
       pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.addressCountry, :country, optional: true)
       pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.postalCode, :postcode, optional: true)
-      pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.latitude, :latitude, optional: true)
-      pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.longitude, :longitude, optional: true)
+      pattern RDF::Query::Pattern.new(:place, RDF::Vocab::SCHEMA.latitude, :latitude, optional: true)
+      pattern RDF::Query::Pattern.new(:place, RDF::Vocab::SCHEMA.longitude, :longitude, optional: true)
     end
     results = graph.query(q)
     assert_equal 1, results.count
@@ -142,14 +143,15 @@ class BioschemasTest < ActionDispatch::IntegrationTest
 
     # Address
     q = RDF::Query.new do
-      pattern RDF::Query::Pattern.new(course_instance_uri, RDF::Vocab::SCHEMA.location, :address)
+      pattern RDF::Query::Pattern.new(course_instance_uri, RDF::Vocab::SCHEMA.location, :place)
+      pattern RDF::Query::Pattern.new(:place, RDF::Vocab::SCHEMA.address, :address)
       pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.streetAddress, :street_address, optional: true)
       pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.addressLocality, :locality, optional: true)
       pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.addressRegion, :region, optional: true)
       pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.addressCountry, :country, optional: true)
       pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.postalCode, :postcode, optional: true)
-      pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.latitude, :latitude, optional: true)
-      pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.longitude, :longitude, optional: true)
+      pattern RDF::Query::Pattern.new(:place, RDF::Vocab::SCHEMA.latitude, :latitude, optional: true)
+      pattern RDF::Query::Pattern.new(:place, RDF::Vocab::SCHEMA.longitude, :longitude, optional: true)
     end
     results = graph.query(q)
     assert_equal 1, results.count

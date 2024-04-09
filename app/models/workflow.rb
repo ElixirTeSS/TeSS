@@ -10,6 +10,7 @@ class Workflow < ApplicationRecord
   include HasFriendlyId
   include CurationQueue
   include HasDifficultyLevel
+  include HasEdamTerms
 
   if TeSS::Config.solr_enabled
     # :nocov:
@@ -28,9 +29,12 @@ class Workflow < ApplicationRecord
         node_index('description')
       end
       text :authors
+      text :scientific_topics do
+        scientific_topics_and_synonyms
+      end
       string :authors, :multiple => true
       string :scientific_topics, :multiple => true do
-        self.scientific_topic_names
+        scientific_topics_and_synonyms
       end
       text :target_audience
       string :target_audience, :multiple => true

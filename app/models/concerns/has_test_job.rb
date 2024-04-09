@@ -30,7 +30,7 @@ module HasTestJob
 
   def test_results=(results)
     File.open(test_results_path, 'w') do |file|
-      file.write(results.to_yaml)
+      file.write(deep_hashify(results).to_yaml)
     end
   end
 
@@ -54,5 +54,17 @@ module HasTestJob
   def test_results_path
     path_id = Rails.env.test? ? "fakeid_#{model_name.singular}_#{id}" : test_job_id
     File.join(Rails.root, 'tmp', "test_results_#{path_id}.yml")
+  end
+
+  def deep_hashify(params)
+    params = params.to_h if params.is_a?(OpenStruct) || params.is_a?(ActionController::Parameters)
+
+    if params.is_a?(Hash)
+      params.transform_values { |v| deep_hashify(v) }
+    elsif params.is_a?(Array)
+      params.map { |p| deep_hashify(p) }
+    else
+      params
+    end
   end
 end

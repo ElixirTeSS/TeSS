@@ -654,4 +654,21 @@ class EventTest < ActiveSupport::TestCase
       refute @event.valid?
     end
   end
+
+  test 'scientific_topics_and_synonyms' do
+    @event.scientific_topic_names = ['Data governance']
+    @event.save!
+    assert_equal ['Data governance', 'Data stewardship'], @event.reload.scientific_topics_and_synonyms
+
+    @event.scientific_topic_names = ['Data governance', 'Data stewardship']
+    @event.save!
+    assert_equal ['Data governance', 'Data stewardship'], @event.reload.scientific_topics_and_synonyms
+  end
+
+  test 'operations_and_synonyms' do
+    @event.operation_names = ['Fold recognition', 'Fold prediction']
+    @event.save!
+    assert_equal ['Fold recognition', 'Domain prediction', 'Fold prediction', 'Protein domain prediction',
+                  'Protein fold prediction', 'Protein fold recognition'], @event.reload.operations_and_synonyms
+  end
 end

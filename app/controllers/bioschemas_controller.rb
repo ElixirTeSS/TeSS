@@ -19,7 +19,7 @@ class BioschemasController < ApplicationController
       if body
         begin
           ingestor = Ingestors::BioschemasIngestor.new
-          @output = ingestor.read_content(StringIO.new(body), url: params[:url] || 'https://example.com')
+          @output = ingestor.read_content(StringIO.new(body), url: params[:url] || Ingestors::BioschemasIngestor::DUMMY_URL).merge(messages: ingestor.messages)
         rescue RDF::ReaderError
           flash[:error] = 'A parsing error occurred. Please check your document contains valid JSON-LD or HTML.'
           format.html { render :test, status: :unprocessable_entity }
@@ -39,7 +39,7 @@ class BioschemasController < ApplicationController
       uri = URI.parse(params[:url]) rescue nil
       if uri && (uri.scheme == 'http' || uri.scheme == 'https')
         PrivateAddressCheck.only_public_connections do
-          res = HTTParty.get(uri.to_s, { timeout: 5 })
+          res = HTTParty.get(uri.to_s, timeout: 5, format: :plain)
           if res.code == 200
             res.body
           else
