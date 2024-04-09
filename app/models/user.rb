@@ -145,10 +145,18 @@ class User < ApplicationRecord
   end
 
   def self.get_default_user
-    User.default_scoped.where(role_id: Role.fetch('default_user').id).first_or_create!(username: 'default_user',
-                                                                   email: TeSS::Config.contact_email,
-                                                                   password: SecureRandom.base64,
-                                                                   processing_consent: '1')
+    User.default_scoped.where(role_id: Role.fetch('default_user').id).first || create_default_user
+  end
+
+  def self.create_default_user
+    u = User.new(role_id: Role.fetch('default_user').id,
+             username: 'default_user',
+             email: TeSS::Config.contact_email,
+             password: SecureRandom.base64,
+             processing_consent: '1')
+    u.skip_confirmation!
+    u.save!
+    u
   end
 
   def name
