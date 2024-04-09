@@ -1,6 +1,5 @@
 # The controller for actions related to home page
 class StaticController < ApplicationController
-
   skip_before_action :authenticate_user!, :authenticate_user_from_token!
 
   def privacy; end
@@ -20,6 +19,18 @@ class StaticController < ApplicationController
     end
 
     @resources = @resources.sort_by(&:created_at).reverse
+
+    @events = []
+    n_events = TeSS::Config.site.dig('home_page', 'upcoming_events')
+    return unless n_events
+
+    @events += Event.search_and_filter(
+      nil,
+      '',
+      { 'start' => "#{Date.tomorrow.beginning_of_day}/" },
+      sort_by: 'early',
+      per_page: n_events
+    ).results
   end
 
   def showcase
