@@ -232,10 +232,6 @@ class StaticControllerTest < ActionController::TestCase
 
   test 'should show latest materials' do
     my_materials = [materials(:good_material), materials(:interpro)]
-    my_materials.each do |e|
-      e.created_at = Time.zone.yesterday
-      e.save!
-    end
     Material.stub(:search_and_filter, MockSearch.new(my_materials)) do
       with_settings({ site: { home_page: { latest_materials: 5 } } }) do
         get :home
