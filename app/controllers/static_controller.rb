@@ -39,8 +39,7 @@ class StaticController < ApplicationController
   end
 
   def set_latest_materials
-    # n_materials = TeSS::Config.site.dig('home_page', 'latest_materials')
-    n_materials = 5
+    n_materials = TeSS::Config.site.dig('home_page', 'latest_materials')
     return [] unless n_materials
 
     Material.search_and_filter(
@@ -49,6 +48,6 @@ class StaticController < ApplicationController
       { 'max_age' => '1 month' },
       sort_by: 'new',
       per_page: 10 * n_materials
-    ).results.group_by(&:content_provider_id).map { |_p_id, p_materials| p_materials.first }.first(n_materials)
+    )&.results&.group_by(&:content_provider_id)&.map { |_p_id, p_materials| p_materials&.first }&.first(n_materials)
   end
 end

@@ -236,7 +236,7 @@ class StaticControllerTest < ActionController::TestCase
       e.created_at = Time.zone.yesterday
       e.save!
     end
-    material.stub(:search_and_filter, MockSearch.new(my_materials)) do
+    Material.stub(:search_and_filter, MockSearch.new(my_materials)) do
       with_settings({ site: { home_page: { latest_materials: 5 } } }) do
         get :home
         assert_select 'section#latest_materials', count: 1
