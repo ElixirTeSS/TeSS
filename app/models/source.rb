@@ -1,6 +1,7 @@
 class Source < ApplicationRecord
   include LogParameterChanges
   include HasTestJob
+  include HasAssociatedNodes
 
   APPROVAL_STATUS = {
     0 => :not_approved,
@@ -43,6 +44,9 @@ class Source < ApplicationRecord
       string :content_provider do
         self.content_provider.try(:title)
       end
+      string :node, multiple: true do
+        associated_nodes.pluck(:name)
+      end
       string :approval_status do
         I18n.t("sources.approval_status.#{approval_status}")
       end
@@ -66,7 +70,9 @@ class Source < ApplicationRecord
   end
 
   def self.facet_fields
-    %w( content_provider method enabled approval_status )
+    field_list = %w( content_provider node method enabled approval_status )
+    field_list.delete('node') unless TeSS::Config.feature['nodes']
+    field_list
   end
 
   def self.check_exists(source_params)

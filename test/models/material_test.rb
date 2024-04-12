@@ -221,7 +221,7 @@ class MaterialTest < ActiveSupport::TestCase
     assert_includes m.node_names, nodes(:westeros).name
   end
 
-  test 'can set licence either using key, URL or SPDX URL' do
+  test 'can set licence either using key, URL or SPDX URL in any case' do
     m = materials(:good_material)
 
     m.licence = 'CC-BY-4.0'
@@ -243,6 +243,18 @@ class MaterialTest < ActiveSupport::TestCase
     m.licence = 'https://not.a.real.licence.golf'
     refute m.valid?
     assert_equal 'https://not.a.real.licence.golf', m.licence, "should preserve URL user input if it didn't match any licenses in the dictionary"
+
+    m.licence = 'cc-by-4.0'
+    assert m.valid?
+    assert_equal 'CC-BY-4.0', m.licence
+
+    m.licence = 'MPL-2.0-NO-COPYLEFT-EXCEPTION'
+    assert m.valid?
+    assert_equal 'MPL-2.0-no-copyleft-exception', m.licence
+
+    m.licence = 'abcXYZ123'
+    refute m.valid?
+    assert_equal 'abcXYZ123', m.licence, "should preserve user input if it didn't match any licenses in the dictionary"
   end
 
   test 'can check if matearial is stale (has not been scraped recently)' do

@@ -18,10 +18,11 @@ module Ingestors
       begin
         # process each page
         until next_page.nil?
-          response = RestClient::Request.new(method: :get, url: CGI.unescape_html(next_page), verify_ssl: false).execute
-          if response.code == 200
+          content = open_url(CGI.unescape_html(next_page))
+
+          if content
             # format response
-            results = JSON.parse(response.to_str)
+            results = JSON.parse(content.read)
 
             # extract materials from results
             unless results['hits'].nil? and results['hits']['hits'].nil?
@@ -65,7 +66,7 @@ module Ingestors
           material.title = metadata['title'] unless metadata['title'].nil?
           material.description = process_description metadata['description']
           material.keywords = metadata['keywords'] unless metadata['keywords'].nil?
-          material.licence = metadata['license']['id'] unless metadata['license'].nil? or metadata['license']['id'].nil?
+          material.licence = metadata['license']['id'] unless metadata.dig('license', 'id').nil?
           unless metadata['creators'].nil?
             metadata['creators'].each do |c|
               entry = c['orcid'].nil? ? c['name'] : "#{c['name']} (orcid: #{c['orcid']})"
@@ -80,7 +81,7 @@ module Ingestors
           end
 
         end
-        material.url = links['html'] if !links.nil? && !links['html'].nil?
+        material.url = links['self_html'] if !links.nil? && !links['self_html'].nil?
 
         # add material to array
         add_material material

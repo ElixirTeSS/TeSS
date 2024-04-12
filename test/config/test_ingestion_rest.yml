@@ -6,21 +6,21 @@ sources:
   - id: 1
     provider: 'Portal Provider'         # content provider's title
     url: https://zenodo.org/api/records/?communities=ardc  # the root URL to access the source
-    method: zenodo                        # one of 'csv', 'rest'
+    method: zenodo                      # the `key` of one of the ingestors located in `lib/ingestors`
     enabled: true
   - id: 2
-    provider: 'Portal Provider'         # content provider's title
-    url: https://zenodo.org/api/records/?communities=dummy  # the root URL to access the source
-    method: zenodo                        # one of 'csv', 'rest',
+    provider: 'Portal Provider'
+    url: https://zenodo.org/api/records/?communities=dummy
+    method: zenodo
     enabled: true
   - id: 3
-    provider: 'Another Portal Provider' # content provider's title
-    url: https://zenodo.org/api/records/?communities=australianbiocommons-training  # the root URL to access the source
-    method: zenodo                        # one of 'csv', 'rest',
+    provider: 'Another Portal Provider'
+    url: https://zenodo.org/api/records/?communities=australianbiocommons-training
+    method: zenodo
     enabled: true
   - id: 4
-    provider: 'Portal Provider'         # content provider's title
-    url: https://zenodo.org/api/records/?communities=ardc-again  # the root URL to access the source
-    method: zenodo                        # one of 'csv', 'rest'
+    provider: 'Portal Provider'
+    url: https://zenodo.org/api/records/?communities=ardc-again
+    method: zenodo
     enabled: true
 

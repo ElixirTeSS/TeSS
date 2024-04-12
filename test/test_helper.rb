@@ -187,7 +187,7 @@ class ActiveSupport::TestCase
      { url: 'https://app.com/materials.csv', filename: 'materials.csv' },
      { url: 'https://app.com/events/event3.html' },
      { url: 'https://zenodo.org/api/records/?communities=ardc', filename: 'zenodo_ardc.json' },
-     { url: 'https://zenodo.org/api/records/?sort=mostrecent&communities=ardc&page=2&size=10', filename: 'zenodo_ardc_2.json' },
+     { url: 'https://zenodo.org/api/records?communities=ardc&page=2&size=25&sort=newest', filename: 'zenodo_ardc_2.json' },
      { url: 'https://zenodo.org/api/records/?communities=ardc-again', filename: 'zenodo_ardc_3.json' },
      { url: 'https://zenodo.org/api/records/?communities=australianbiocommons-training', filename: 'zenodo_abt.json' },
      { url: 'https://tess.elixir-europe.org/events?include_expired=false&content_provider[]=Australian BioCommons', filename: 'response_1642570417380.json' },
