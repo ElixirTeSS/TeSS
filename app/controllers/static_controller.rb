@@ -39,10 +39,11 @@ class StaticController < ApplicationController
   end
 
   def set_latest_materials
-    n_materials = TeSS::Config.site.dig('home_page', 'latest_materials')
+    # n_materials = TeSS::Config.site.dig('home_page', 'latest_materials')
+    n_materials = 5
     return [] unless n_materials
 
-    Materials.search_and_filter(
+    Material.search_and_filter(
       nil,
       '',
       { 'max_age' => '1 month' },
