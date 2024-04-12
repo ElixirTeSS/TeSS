@@ -19,21 +19,23 @@ class StaticController < ApplicationController
     end
 
     @resources = @resources.sort_by(&:created_at).reverse
-
-    @events = []
-    n_events = TeSS::Config.site.dig('home_page', 'upcoming_events')
-    return unless n_events
-
-    @events += Event.search_and_filter(
-      nil,
-      '',
-      { 'start' => "#{Date.tomorrow.beginning_of_day}/" },
-      sort_by: 'early',
-      per_page: n_events
-    ).results
+    @events = set_upcoming_events
   end
 
   def showcase
     @container_class = 'showcase-container container-fluid'
+  end
+
+  def set_upcoming_events
+    n_events = TeSS::Config.site.dig('home_page', 'upcoming_events')
+    return [] unless n_events
+
+    Event.search_and_filter(
+      nil,
+      '',
+      { 'start' => "#{Date.tomorrow.beginning_of_day}/" },
+      sort_by: 'early',
+      per_page: 5 * n_events
+    ).results.group_by(&:provider_id).map { |_p_id, p_events| p_events.first }.first(n_events)
   end
 end
