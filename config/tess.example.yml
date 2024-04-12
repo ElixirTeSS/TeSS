@@ -39,6 +39,7 @@ default: &default
       faq: # [who, how, why, embed, subscribe] # Questions/answers in config/en.yml: home > faq. Use empty array to hide section
       promo_blocks: false
       upcoming_events: # Number of events on home page. Leave blank to turn off
+      latest_materials: # Number of materials on home page. Leave blank to turn off
     # The order in which the tabs appear (if feature enabled)
     tab_order: ['about', 'events', 'materials', 'elearning_materials', 'workflows', 'collections', 'trainers', 'content_providers', 'nodes']
     # The tabs that should be collapsed under the "Directory" tab. Can be left blank to hide it.
