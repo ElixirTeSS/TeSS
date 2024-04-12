@@ -481,8 +481,9 @@ module ApplicationHelper
 
   def edit_button(resource, url: nil, text: nil, anchor: nil)
     url ||= polymorphic_path([:edit, resource])
+    url += "##{anchor}" if anchor
     text ||= t('.edit', default: t('helpers.links.edit'))
-    link_to text, url, class: 'btn btn-default', anchor:
+    link_to text, url, class: 'btn btn-default'
   end
 
   def delete_button(resource, url: nil, text: nil, confirmation: nil)
