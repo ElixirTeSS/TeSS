@@ -39,8 +39,11 @@
         <% if TeSS::Config.feature['trainers'] %>
           <p><br/>
 
-          <h3>Trainer Details</h3>
+          <h3 id='trainer_details'>Trainer Details</h3>
           <hr>
+
+          <%= f.input :public, label: 'Show in Registry of Trainers?',
+                      input_html: { title: t('profile.hints.public') } %>
 
           <%= f.input :description, label: 'Summary', input_html: { title: t('profile.hints.description') } %>
 
@@ -93,9 +96,6 @@
                             title: t('profile.hints.social_media') %>
 
           <p><i class="fa fa-exclamation-triangle"></i>&nbsp;<%= t 'profile.trainer.disclaimer' %></p>
-
-          <%= f.input :public, label: 'Show in Registry of Trainers?',
-                      input_html: { title: t('profile.hints.public') } %>
 
 
         <% end %>
