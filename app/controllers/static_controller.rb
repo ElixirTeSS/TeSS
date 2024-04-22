@@ -45,6 +45,6 @@ class StaticController < ApplicationController
     return nil unless TeSS::Config.site.dig('home_page', 'featured_trainer')
 
     srand(Date.today.beginning_of_day.to_i)
-    Trainer.order(:id).sample
+    Trainer.order(:id).sample(1)
   end
 end
