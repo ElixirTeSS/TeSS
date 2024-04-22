@@ -20,11 +20,19 @@ class StaticController < ApplicationController
 
     @resources = @resources.sort_by(&:created_at).reverse
 
-    @events = []
-    n_events = TeSS::Config.site.dig('home_page', 'upcoming_events')
-    return unless n_events
+    @events = set_upcoming_events
+    @featured_trainer = set_featured_trainer
+  end
 
-    @events += Event.search_and_filter(
+  def showcase
+    @container_class = 'showcase-container container-fluid'
+  end
+
+  def set_upcoming_events
+    n_events = TeSS::Config.site.dig('home_page', 'upcoming_events')
+    return [] unless n_events
+
+    Event.search_and_filter(
       nil,
       '',
       { 'start' => "#{Date.tomorrow.beginning_of_day}/" },
@@ -33,7 +41,10 @@ class StaticController < ApplicationController
     ).results
   end
 
-  def showcase
-    @container_class = 'showcase-container container-fluid'
+  def set_featured_trainer
+    return nil unless TeSS::Config.site.dig('home_page', 'featured_trainer')
+
+    srand(Date.today.beginning_of_day.to_i)
+    Trainer.order(:id).sample
   end
 end
