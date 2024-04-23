@@ -29,7 +29,7 @@ module ApplicationHelper
     private: { icon: 'fa-eye-slash', message: 'This resource is private' },
     missing: { icon: 'fa-chain-broken', message: 'This resource has been offline for over three days' },
     check: { icon: 'fa-check', message: 'This resource is enabled' },
-    cross: { icon: 'fa-times', message: 'This resource has been disabled' },
+    cross: { icon: 'fa-times', message: 'This resource has been disabled' }
   }.freeze
 
   # Countries that have priority in the country selection menu. Using ISO 3166-1 Alpha2 code.
@@ -39,49 +39,50 @@ module ApplicationHelper
   PRIORITY_LANGUAGES = ['EN']
 
   # Country timezones that have priority in the timezone selection menu. Using ISO 3166-1 Alpha2 country code.
-  PRIORITY_TIME_ZONES = ['NL', 'GB']
+  PRIORITY_TIME_ZONES = %w[NL GB]
 
   # Currencies that have priority in the currency selection menu. Using ISO 4217 code.
-  PRIORITY_CURRENCIES = ['EUR', 'GBP']
+  PRIORITY_CURRENCIES = %w[EUR GBP]
 
   def scrape_status_icon(record, size = nil)
     return unless record.respond_to?(:last_scraped)
-    if !record.last_scraped.nil? && record.scraper_record
-      if record.stale?
-        message = ICONS[:not_scraped_recently][:message].gsub(/%SUB%/, record.last_scraped.to_s)
-        "<span class='stale-icon pull-right'>#{icon_for(:not_scraped_recently, size, message: message)}</span>".html_safe
-      else
-        "<span class='fresh-icon pull-right'>#{icon_for(:scraped_today, size)}</span>".html_safe
-      end
+
+    return unless !record.last_scraped.nil? && record.scraper_record
+
+    if record.stale?
+      message = ICONS[:not_scraped_recently][:message].gsub(/%SUB%/, record.last_scraped.to_s)
+      "<span class='stale-icon pull-right'>#{icon_for(:not_scraped_recently, size, message:)}</span>".html_safe
+    else
+      "<span class='fresh-icon pull-right'>#{icon_for(:scraped_today, size)}</span>".html_safe
     end
   end
 
   def missing_icon(record, size = nil)
-    if record.failing?
-      "<span class='missing-icon pull-right'>#{icon_for(:missing, size)}</span>".html_safe
-    end
+    return unless record.failing?
+
+    "<span class='missing-icon pull-right'>#{icon_for(:missing, size)}</span>".html_safe
   end
 
   def resource_type_icon(record, size = nil)
-    unless record.resource_type.nil?
-      "<span class='missing-icon pull-right'>#{icon_for(record.resource_type.to_sym, size)}</span>".html_safe
-    end
+    return if record.resource_type.nil?
+
+    "<span class='missing-icon pull-right'>#{icon_for(record.resource_type.to_sym, size)}</span>".html_safe
   end
 
   def enabled_icon(record, size = nil)
-    unless record.nil? or record.enabled.nil?
-      if record.enabled
-        "<span class='fresh-icon pull-right'>#{icon_for(:check, size)}</span>".html_safe
-      else
-        "<span class='missing-icon pull-right'>#{icon_for(:cross, size)}</span>".html_safe
-      end
+    return if record.nil? or record.enabled.nil?
+
+    if record.enabled
+      "<span class='fresh-icon pull-right'>#{icon_for(:check, size)}</span>".html_safe
+    else
+      "<span class='missing-icon pull-right'>#{icon_for(:cross, size)}</span>".html_safe
     end
   end
 
   def suggestion_icon(record, size = nil)
-    if record.edit_suggestion
-      "<span class='fresh-icon pull-right'>#{icon_for(:suggestion, size)}</span>".html_safe
-    end
+    return unless record.edit_suggestion
+
+    "<span class='fresh-icon pull-right'>#{icon_for(:suggestion, size)}</span>".html_safe
   end
 
   def event_status_icon(event, size = nil)
@@ -127,7 +128,7 @@ module ApplicationHelper
   end
 
   def render_sanitized_markdown(markdown_text, options = {}, renderer_options = {})
-    sanitize(render_markdown(markdown_text, options, renderer_options), tags: %w(strong em b i p br ul ol li))
+    sanitize(render_markdown(markdown_text, options, renderer_options), tags: %w[strong em b i p br ul ol li])
   end
 
   # From twitter-bootstrap-rails gem for less:
@@ -151,7 +152,7 @@ module ApplicationHelper
 
   def is_active?(path, options = {})
     state = uri_state(path, options)
-    'active' if state.in?([:active, :chosen]) || state === true
+    'active' if state.in?(%i[active chosen]) || state === true
   end
 
   # Returns current url or path state (useful for buttons).
@@ -236,10 +237,9 @@ module ApplicationHelper
   end
 
   def signup_js
-    if request.env['PATH_INFO'] == '/users/sign_up'
-      return "<script src='https://www.google.com/recaptcha/api.js'></script>\n"
-    end
-    return ''
+    return "<script src='https://www.google.com/recaptcha/api.js'></script>\n" if request.env['PATH_INFO'] == '/users/sign_up'
+
+    ''
   end
 
   def twitter_link(username)
@@ -253,14 +253,14 @@ module ApplicationHelper
     classes << " #{opts[:class]}" if opts[:class]
     title_text = opts[:hide_text] ? '' : title
     content_tag(:a, tabindex: 0, class: classes,
-               data: { toggle: 'popover', placement: 'bottom',
-                       title: title, html: true, content: capture(&block) }) do
+                    data: { toggle: 'popover', placement: 'bottom',
+                            title:, html: true, content: capture(&block) }) do
       "<i class='icon icon-md information-icon'></i> <span class='hidden-xs'>#{title_text}</span>".html_safe
     end
   end
 
   def empty_tag(tag_symbol, text, style = nil)
-    content_tag tag_symbol, text, class: 'empty', style: style
+    content_tag tag_symbol, text, class: 'empty', style:
   end
 
   def info_box(title, &block)
@@ -273,10 +273,10 @@ module ApplicationHelper
   def collapsible_panel(title, id, &block)
     content_tag(:div, class: 'panel panel-default collapsible-panel') do
       content_tag(:div, class: 'panel-heading collapsible-panel-link collapsed', 'data-toggle' => 'collapse',
-                  'data-target' => "##{id}") do
+                        'data-target' => "##{id}") do
         content_tag(:div, title, class: 'panel-title')
       end +
-        content_tag(:div, class: 'panel-collapse collapse', id: id) do
+        content_tag(:div, class: 'panel-collapse collapse', id:) do
           content_tag(:div, class: 'panel-body', &block)
         end
     end
@@ -306,7 +306,7 @@ module ApplicationHelper
   end
 
   def datetime_picker(form, field, options)
-    #puts "datetime_picker options: #{options.to_s}"
+    # puts "datetime_picker options: #{options.to_s}"
     content_tag(:div, class: 'input-group date', data: { datetimepicker: true }) do
       content_tag(:span, class: 'input-group-addon', title: 'Click to display calendar') do
         content_tag(:i, '', class: 'glyphicon glyphicon-calendar')
@@ -316,7 +316,7 @@ module ApplicationHelper
   end
 
   def date_picker(form, field, options)
-    #puts "date_picker options: #{options.to_s}"
+    # puts "date_picker options: #{options.to_s}"
     content_tag(:div, class: 'input-group date', data: { datepicker: true }) do
       content_tag(:span, class: 'input-group-addon', title: 'Click to display calendar') do
         content_tag(:i, '', class: 'glyphicon glyphicon-calendar')
@@ -345,11 +345,11 @@ module ApplicationHelper
             'This field supports markdown. Read more on ' +
             @template.link_to('markdown syntax',
                               'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet', target: '_blank',
-                              rel: 'noopener')
+                                                                                                  rel: 'noopener')
         end
     end
 
-    def field_lock(name, options = {})
+    def field_lock(name, _options = {})
       field_name = "#{object.class.name.downcase}[locked_fields][]"
       field_id = "#{object.class.name.downcase}_locked_fields_#{name}"
       @template.check_box_tag(field_name, name.to_s, object.field_locked?(name), id: field_id, class: 'field-lock') +
@@ -358,12 +358,12 @@ module ApplicationHelper
 
     def dropdown(name, options = {})
       existing_values = object.send(name.to_sym)
-      existing = options[:options].select { |label, value| existing_values.include?(value) }
+      existing = options[:options].select { |_label, value| existing_values.include?(value) }
       @template.render(partial: 'common/dropdown', locals: { field_name: name, f: self,
                                                              model_name: options[:model_name],
                                                              resource: object,
                                                              options: options[:options],
-                                                             existing: existing,
+                                                             existing:,
                                                              field_label: options[:label],
                                                              required: options[:required],
                                                              errors: options[:errors],
@@ -377,7 +377,7 @@ module ApplicationHelper
     def autocompleter(name, options = {})
       url = options[:url] || @template.polymorphic_path(name)
       visibility_toggle = options[:visibility_toggle] || []
-      @template.render(partial: 'common/autocompleter', locals: { field_name: name, f: self, url: url,
+      @template.render(partial: 'common/autocompleter', locals: { field_name: name, f: self, url:,
                                                                   template: options[:template],
                                                                   id_field: options[:id_field] || :id,
                                                                   label_field: options[:label_field] || :title,
@@ -386,8 +386,7 @@ module ApplicationHelper
                                                                   transform_function: options[:transform_function],
                                                                   group_by: options[:group_by],
                                                                   singleton: options[:singleton],
-                                                                  hidden: hidden?(name, visibility_toggle),
-      })
+                                                                  hidden: hidden?(name, visibility_toggle) })
     end
 
     def multi_input(name, options = {})
@@ -403,8 +402,7 @@ module ApplicationHelper
                                                                    errors: options[:errors],
                                                                    title: options[:title],
                                                                    hint: options[:hint],
-                                                                   hidden: hidden?(name, visibility_toggle),
-      })
+                                                                   hidden: hidden?(name, visibility_toggle) })
     end
   end
 
@@ -412,7 +410,7 @@ module ApplicationHelper
     attributes = resource.send(attribute)
     string = ''
     if attributes
-      if attributes.class == Array and not attributes.empty?
+      if attributes.instance_of?(Array) and !attributes.empty?
         attributes.each do |attr|
           string += content_tag :span, attr, { itemprop: attribute.camelize(:lower), content: attr, class: 'schemaorg-element' }
         end
@@ -420,7 +418,7 @@ module ApplicationHelper
         string += content_tag :span, attributes, { itemprop: attribute.camelize(:lower), content: attributes, class: 'schemaorg-element' }
       end
     end
-    return string
+    string
   end
 
   # Try and get a suitable page title
@@ -439,7 +437,7 @@ module ApplicationHelper
       "#{controller_name.humanize} - "
     else
       ''
-      #end + "TeSS (Training eSupport System)"
+      # end + "TeSS (Training eSupport System)"
     end + TeSS::Config.site['title']
   end
 
@@ -455,11 +453,11 @@ module ApplicationHelper
     star = current_user.stars.where(resource_id: resource.id, resource_type: resource.class.name).first
 
     link_to '', '#', class: 'btn btn-icon',
-            title: "Star this #{resource.class.model_name.human}",
-            data: { role: 'star-button',
-                    starred: !star.nil?,
-                    resource: { id: resource.id, type: resource.class.name },
-                    url: stars_path }
+                     title: "Star this #{resource.class.model_name.human}",
+                     data: { role: 'star-button',
+                             starred: !star.nil?,
+                             resource: { id: resource.id, type: resource.class.name },
+                             url: stars_path }
   end
 
   def external_link_button(text, url, options = {})
@@ -481,10 +479,11 @@ module ApplicationHelper
     link_to(text, url, options)
   end
 
-  def edit_button(resource, url: nil, text: nil)
+  def edit_button(resource, url: nil, text: nil, anchor: nil)
     url ||= polymorphic_path([:edit, resource])
+    url += "##{anchor}" if anchor
     text ||= t('.edit', default: t('helpers.links.edit'))
-    link_to text , url, class: 'btn btn-default'
+    link_to text, url, class: 'btn btn-default'
   end
 
   def delete_button(resource, url: nil, text: nil, confirmation: nil)
@@ -495,51 +494,47 @@ module ApplicationHelper
   end
 
   def next_about_block(feature_count)
-    if feature_count & 1 == 0
-      result = "even-about-block"
-    else
-      result = "odd-about-block"
-    end
+    result = if feature_count & 1 == 0
+               'even-about-block'
+             else
+               'odd-about-block'
+             end
   end
 
   def show_active(show, block)
-    if show == block
-      result = "active"
-    else
-      result = ""
-    end
+    result = if show == block
+               'active'
+             else
+               ''
+             end
   end
 
   def currency_collection(priority = priority_currencies)
     priors = []
     others = []
-    Money::Currency.table.each do |key, value|
+    Money::Currency.table.each do |_key, value|
       if !priority.empty? and priority.include?(value[:iso_code])
         priors << [value[:name], value[:iso_code]]
       else
         others << [value[:name], value[:iso_code]]
       end
     end
-    return priors + others
+    priors + others
   end
 
   def currency_by_iso_code(iso_code)
-    if !iso_code.nil? and !iso_code.blank?
-      Money::Currency.table.each do |key, value|
-        if value[:iso_code] == iso_code
-          return value
-        end
-      end
+    return unless !iso_code.nil? and !iso_code.blank?
+
+    Money::Currency.table.each do |_key, value|
+      return value if value[:iso_code] == iso_code
     end
   end
 
   def currency_symbol_by_iso_code(iso_code)
     currency = currency_by_iso_code(iso_code)
-    if !currency.nil? and !currency[:symbol].nil?
-      return currency[:symbol]
-    else
-      return ''
-    end
+    return currency[:symbol] if !currency.nil? and !currency[:symbol].nil?
+
+    ''
   end
 
   def country_alpha2_by_name(name)
@@ -551,7 +546,7 @@ module ApplicationHelper
         # search by alpha2 or alpha3
         code = IsoCountryCodes.find(name)
         if name.casecmp(code.alpha2) == 0 or
-          name.casecmp(code.alpha3) == 0
+           name.casecmp(code.alpha3) == 0
           return code.alpha2
         end
       else
@@ -559,9 +554,7 @@ module ApplicationHelper
         codes = IsoCountryCodes.search_by_name(name)
         if !codes.nil? and codes.length > 0
           codes.each do |code|
-            if !code.nil? and code.name == name
-              return code.alpha2
-            end
+            return code.alpha2 if !code.nil? and code.name == name
           end
         end
       end
@@ -571,7 +564,7 @@ module ApplicationHelper
     end
 
     # nothing found
-    return failed
+    failed
   end
 
   def language_options_for_select(priority = priority_languages)
@@ -579,33 +572,33 @@ module ApplicationHelper
     others = []
 
     I18nData.languages.each do |lang|
-      if lang and !lang.empty?
-        value = lang[1]
-        key = lang[0]
-        #Rails.logger.debug "language: key[#{key}] value[#{value}]"
-        if priority and !priority.empty? and priority.include?(key)
-          priors << [value, key]
-        else
-          others << [value, key]
-        end
+      next unless lang and !lang.empty?
+
+      value = lang[1]
+      key = lang[0]
+      # Rails.logger.debug "language: key[#{key}] value[#{value}]"
+      if priority and !priority.empty? and priority.include?(key)
+        priors << [value, key]
+      else
+        others << [value, key]
       end
     end
 
-    return priors + others
+    priors + others
   end
 
   def language_label_by_key(key)
-    if key and !key.nil?
-      I18nData.languages.each do |lang|
-        return lang[1] if lang[0] == key
-      end
+    return unless key and !key.nil?
+
+    I18nData.languages.each do |lang|
+      return lang[1] if lang[0] == key
     end
   end
 
   def get_list_of_user_names
     user_list = []
     User.visible.each do |u|
-      u.full_name.blank? ? user_list << [u.username, u.username] : user_list << [u.full_name, u.username]
+      user_list << (u.full_name.blank? ? [u.username, u.username] : [u.full_name, u.username])
     end
     user_list.sort_by { |u| u.last }
   end
@@ -663,6 +656,7 @@ module ApplicationHelper
     def check_tab(tab_name, condition = true)
       return false unless condition
       return @tab_name == tab_name if @tab_name
+
       @tab_name = tab_name
       true
     end
