@@ -86,7 +86,7 @@ default: &default
     materials_disabled: []
     content_providers_disabled: []
     bioschemas_testing: false
-    learning_paths: true
+    learning_paths: false
   restrict_content_provider_selection: false
   user_ingestion_methods: ['bioschemas']
   placeholder:
