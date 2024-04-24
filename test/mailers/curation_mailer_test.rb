@@ -11,7 +11,7 @@ class CurationMailerTest < ActionMailer::TestCase
                                         description: '123',
                                         licence: 'Fair',
                                         doi: 'https://doi.org/10.1200/RSE.2020.123',
-                                        keywords: ['unverified', 'user', 'material'],
+                                        keywords: %w[unverified user material],
                                         contact: 'main contact',
                                         status: 'active')
     # Avoids queued emails affecting `assert_email` counts. See: https://github.com/ElixirTeSS/TeSS/issues/719
@@ -67,7 +67,7 @@ class CurationMailerTest < ActionMailer::TestCase
   end
 
   test 'can set mailer headers in config' do
-    with_settings(mailer: { headers: { 'Sender': 'mail.sender@example.com', 'X-Something': 'yes' }}) do
+    with_settings(mailer: { headers: { 'Sender': 'mail.sender@example.com', 'X-Something': 'yes' } }) do
       email = CurationMailer.user_requires_approval(@user)
 
       email_headers = {}
@@ -76,6 +76,34 @@ class CurationMailerTest < ActionMailer::TestCase
       assert_equal 'no-reply@example.com', email_headers['From']
       assert_equal 'mail.sender@example.com', email_headers['Sender']
       assert_equal 'yes', email_headers['X-Something']
+    end
+  end
+
+  test 'text events approval' do
+    @content_provider = content_providers(:goblet)
+    @events = [events(:one), events(:scraper_user_event)]
+    email = CurationMailer.events_require_approval(@content_provider, @events.pluck(:created_at).min - 1.week)
+
+    assert_emails 1 do
+      email.deliver_now
+    end
+
+    assert_equal [TeSS::Config.sender_email], email.from
+    assert_equal [@content_provider.contact], email.to
+    assert_equal "#{TeSS::Config.site['title_short']} events require approval", email.subject
+
+    text_body = email.text_part.body.to_s
+    html_body = email.html_part.body.to_s
+
+    [text_body, html_body].each do |body|
+      @events.each do |event|
+        assert body.include?(event.title)
+        assert body.include?(event.description)
+        assert body.include?(event.start.to_s)
+        assert body.include?(event.end.to_s)
+        assert body.include?(event.venue)
+        assert body.include?(event.visible.to_s)
+      end
     end
   end
 end

@@ -2,11 +2,12 @@ You are receiving this automated email because you are a curator of <%= @provide
 If any of these events are incorrect or should not be shown, please follow the link to change them.
 
 <% @events.each do |event| %>
-  "<%= event.title %>" (<%= url_for(event) %>)
+  <%= event.title %> (<%= url_for(event) %>)
   description: <%= event.description %>
   start: <%= event.start %>
   end: <%= event.end %>
   venue: <%= event.venue %>
-  show: <%= event.curation %>
+  show: <%= event.visible %>
+
 <% end %>
 
