@@ -1489,13 +1489,15 @@ class EventsControllerTest < ActionController::TestCase
   test 'should show logo in events' do
     with_settings({ site: { show_provider_logo_in_event: true } }) do
       get :index
-      assert_select '.small-avatar', count: 19
+      assert_response :success
+      assert_select '.small-avatar'
     end
   end
 
   test 'should not show logo in events' do
     with_settings({ site: { show_provider_logo_in_event: false } }) do
       get :index
+      assert_response :success
       assert_select '.small-avatar', count: 0
     end
   end

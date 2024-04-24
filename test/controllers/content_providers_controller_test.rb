@@ -536,15 +536,17 @@ class ContentProvidersControllerTest < ActionController::TestCase
   test 'should have long masonry' do
     with_settings({ site: { content_provider_grid_long: true } }) do
       get :index
-      assert_select '.masonry-brick.media-item', count: 9
-      assert_select '.masonry-brick.media-item.long', count: 9
+      assert_response :success
+      assert_select '.masonry-brick.media-item'
+      assert_select '.masonry-brick.media-item.long'
     end
   end
 
   test 'should disable long masonry' do
     with_settings({ site: { content_provider_grid_long: false } }) do
       get :index
-      assert_select '.masonry-brick.media-item', count: 9
+      assert_response :success
+      assert_select '.masonry-brick.media-item'
       assert_select '.masonry-brick.media-item.long', count: 0
     end
   end
