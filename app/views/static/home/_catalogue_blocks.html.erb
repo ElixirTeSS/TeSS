@@ -1,4 +1,4 @@
-<% features = ['events', 'materials', 'trainers'].select { |f| TeSS::Config.feature[f] } %>
+<% features = ['events', 'materials', 'workflows', 'trainers'].select { |f| TeSS::Config.feature[f] } %>
 
 <section id="catalogue">
   <h2 class="text-center"><%= t('home.catalogue.title') %></h2>
@@ -14,7 +14,7 @@
 
           <div class="resource-type-text"><%== t "home.catalogue.#{feature}" %></div>
 
-          <div> <%= @catalogue_count_strings[feature] %> </div>
+          <div id='catalogue_count'> <%= @catalogue_count_strings[feature] %> </div>
 
           <div class="resource-type-link">
               <span class="pseudolink">
