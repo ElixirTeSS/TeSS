@@ -230,8 +230,19 @@ class StaticControllerTest < ActionController::TestCase
     end
   end
 
+  test 'should show latest materials' do
+    my_materials = [materials(:good_material), materials(:interpro)]
+    Material.stub(:search_and_filter, MockSearch.new(my_materials)) do
+      with_settings({ site: { home_page: { latest_materials: 5 } } }) do
+        get :home
+        assert_select 'section#latest_materials', count: 1
+        assert_select 'section#latest_materials h2', count: 1
+        assert_select 'section#latest_materials ul', count: 2
+      end
+    end
+  end
+
   test 'should show featured trainer' do
-    my_profiles = [profiles(:trainer_one_profile), profiles(:trainer_two_profile)]
     with_settings({ site: { home_page: { featured_trainer: true } } }) do
       get :home
       assert_select 'section#featured_trainer', count: 1
