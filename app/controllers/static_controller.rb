@@ -20,12 +20,20 @@ class StaticController < ApplicationController
 
     @resources = @resources.sort_by(&:created_at).reverse
 
+    @featured_trainer = set_featured_trainer
     @events = set_upcoming_events
     @materials = set_latest_materials
   end
 
   def showcase
     @container_class = 'showcase-container container-fluid'
+  end
+
+  def set_featured_trainer
+    return nil unless TeSS::Config.site.dig('home_page', 'featured_trainer')
+
+    srand(Date.today.beginning_of_day.to_i)
+    Trainer.order(:id).sample(1)
   end
 
   def set_latest_materials
