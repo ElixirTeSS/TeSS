@@ -2,6 +2,8 @@ require 'test_helper'
 require 'ostruct'
 
 class UserTest < ActiveSupport::TestCase
+  include ActionMailer::TestHelper
+
   setup do
     mock_images
     @user_data = users(:regular_user)
@@ -416,5 +418,19 @@ class UserTest < ActiveSupport::TestCase
     assert user.save
     assert_equal 'space', user.username
     assert_equal 'new-user@example.com', user.email
+  end
+
+  test 'should not send confirmation email when creating default user' do
+    User.get_default_user.update!(role_id: Role.approved.id,
+                                  username: 'default_user2',
+                                  email: 'defaultuser2@example.com')
+
+    assert_no_enqueued_emails do
+      with_settings(force_user_confirmation: true) do
+        assert_difference('User.count', 1) do
+          User.create_default_user
+        end
+      end
+    end
   end
 end
